@@ -1,4 +1,6 @@
+
 'use strict';
+import '../css/style.css'
 
 // navbar variables
 const nav = document.querySelector('.mobile-nav');
