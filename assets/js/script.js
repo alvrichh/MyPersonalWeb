@@ -1,72 +1,126 @@
-
 'use strict';
-import '../css/style.css'
 
-// navbar variables
-const nav = document.querySelector('.mobile-nav');
-const navMenuBtn = document.querySelector('.nav-menu-btn');
-const navCloseBtn = document.querySelector('.nav-close-btn');
+import '../css/style.css';
 
+const sidebar = document.querySelector('[data-sidebar]');
+const sidebarToggle = document.querySelector('[data-sidebar-toggle]');
+const sidebarPanel = document.querySelector('[data-sidebar-panel]');
+const sectionButtons = Array.from(document.querySelectorAll('.nav-tab'));
+const panels = Array.from(document.querySelectorAll('[data-panel]'));
+const filterButtons = Array.from(document.querySelectorAll('[data-filter]'));
+const projectCards = Array.from(document.querySelectorAll('.project-card'));
+const desktopQuery = window.matchMedia('(min-width: 1100px)');
 
-// navToggle function
-const navToggleFunc = function () { nav.classList.toggle('active'); }
+const getPanelById = (id) => panels.find((panel) => panel.id === id);
 
-navMenuBtn.addEventListener('click', navToggleFunc);
-navCloseBtn.addEventListener('click', navToggleFunc);
+const updateSidebarState = (expanded) => {
+  if (!sidebar || !sidebarPanel || !sidebarToggle) {
+    return;
+  }
 
-// Constants
-const authorElements = document.querySelectorAll('.author');
-authorElements.forEach(function(element) {
-    element.textContent = "alvrich";
+  const shouldStayOpen = desktopQuery.matches;
+  const nextState = shouldStayOpen ? true : expanded;
+
+  sidebar.classList.toggle('is-open', nextState);
+  sidebarPanel.hidden = !nextState;
+  sidebarToggle.setAttribute('aria-expanded', String(nextState));
+};
+
+const setActivePanel = (panelId, options = {}) => {
+  const { updateHash = true } = options;
+  const nextPanel = getPanelById(panelId) || panels[0];
+
+  if (!nextPanel) {
+    return;
+  }
+
+  panels.forEach((panel) => {
+    const isActive = panel === nextPanel;
+    panel.classList.toggle('is-active', isActive);
+    panel.hidden = !isActive;
+  });
+
+  sectionButtons.forEach((button) => {
+    const isActive = button.dataset.target === nextPanel.id;
+    button.classList.toggle('is-active', isActive);
+    button.setAttribute('aria-pressed', String(isActive));
+  });
+
+  if (updateHash) {
+    window.history.replaceState(null, '', `#${nextPanel.id}`);
+  }
+};
+
+const setProjectFilter = (filter) => {
+  filterButtons.forEach((button) => {
+    const isActive = button.dataset.filter === filter;
+    button.classList.toggle('is-active', isActive);
+    button.setAttribute('aria-pressed', String(isActive));
+  });
+
+  projectCards.forEach((card) => {
+    const matches = filter === 'all' || card.dataset.category === filter;
+    card.classList.toggle('is-hidden', !matches);
+  });
+};
+
+sectionButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    setActivePanel(button.dataset.target);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 });
-const loadMoreBtn = document.getElementById('loadMoreBtn');
-const loadingSpinner = document.getElementById('loadingSpinner');
-loadMoreBtn.addEventListener('click', () => {
-  loadMoreBtn.classList.add('hidden');
-  loadingSpinner.classList.remove('hidden');
-  setTimeout(() => {
-    // Add more blog cards dynamically here
-    loadMoreBtn.classList.remove('hidden');
-    loadingSpinner.classList.add('hidden');
-  }, 2000);
+
+document.querySelectorAll('a[href^="#"]').forEach((link) => {
+  const targetId = link.getAttribute('href')?.slice(1);
+
+  if (!targetId || !getPanelById(targetId)) {
+    return;
+  }
+
+  link.addEventListener('click', (event) => {
+    event.preventDefault();
+    setActivePanel(targetId);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 });
 
-const newsletterForm = document.getElementById('newsletterForm');
-const subscriptionModal = document.getElementById('subscriptionModal');
-const closeModal = document.querySelector('.close');
-
-newsletterForm.addEventListener('submit', (event) => {
-  event.preventDefault();
-  subscriptionModal.classList.remove('hidden');
+filterButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    setProjectFilter(button.dataset.filter);
+  });
 });
 
-closeModal.addEventListener('click', () => {
-  subscriptionModal.classList.add('hidden');
+sidebarToggle?.addEventListener('click', () => {
+  const expanded = sidebarToggle.getAttribute('aria-expanded') === 'true';
+  updateSidebarState(!expanded);
 });
 
+const handleViewportChange = () => {
+  const expanded = sidebar?.classList.contains('is-open') ?? false;
+  updateSidebarState(expanded);
+};
 
-// theme toggle variables
-const themeBtn = document.querySelectorAll('.theme-btn');
-
-
-for (let i = 0; i < themeBtn.length; i++) {
-
-  themeBtn[i].addEventListener('click', function () {
-
-    // toggle `light-theme` & `dark-theme` class from `body`
-    // when clicked `theme-btn`
-    document.body.classList.toggle('light-theme');
-    document.body.classList.toggle('dark-theme');
-
-    for (let i = 0; i < themeBtn.length; i++) {
-
-      // When the `theme-btn` is clicked,
-      // it toggles classes between `light` & `dark` for all `theme-btn`.
-      themeBtn[i].classList.toggle('light');
-      themeBtn[i].classList.toggle('dark');
-
-    }
-
-  })
-
+if (typeof desktopQuery.addEventListener === 'function') {
+  desktopQuery.addEventListener('change', handleViewportChange);
+} else {
+  desktopQuery.addListener(handleViewportChange);
 }
+
+window.addEventListener('hashchange', () => {
+  const hashPanelId = window.location.hash.replace('#', '');
+
+  if (getPanelById(hashPanelId)) {
+    setActivePanel(hashPanelId, { updateHash: false });
+  }
+});
+
+const initialPanelId = window.location.hash.replace('#', '') || panels[0]?.id;
+
+setActivePanel(initialPanelId, { updateHash: Boolean(window.location.hash) });
+setProjectFilter('all');
+updateSidebarState(false);
+
+window.requestAnimationFrame(() => {
+  document.body.classList.add('is-ready');
+});
