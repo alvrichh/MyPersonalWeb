@@ -889,14 +889,67 @@ button {
   position: fixed;
   top: 0.9rem;
   right: 0.9rem;
-  width: min(290px, calc(100vw - 1rem));
+  width: auto;
   display: grid;
-  gap: 0.65rem;
+  gap: 0.5rem;
+  justify-items: end;
   z-index: 40;
 }
 
+.floating-controls .picker {
+  width: auto;
+  justify-self: end;
+}
+
 .floating-controls .picker-trigger {
-  min-height: 3.4rem;
+  width: fit-content;
+  min-width: 0;
+  min-height: 2.9rem;
+  gap: 0.45rem;
+  padding: 0.55rem 0.62rem;
+  border-radius: 18px;
+}
+
+.floating-controls .picker-trigger-main {
+  gap: 0.42rem;
+}
+
+.floating-controls .picker-trigger-copy {
+  gap: 0;
+}
+
+.floating-controls .picker-trigger-label,
+.floating-controls .picker-trigger-current span:last-child {
+  display: none;
+}
+
+.floating-controls .picker-trigger-current {
+  gap: 0;
+}
+
+.floating-controls .picker-trigger-icon {
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+.floating-controls .picker-trigger-dot {
+  width: 0.82rem;
+  height: 0.82rem;
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.12);
+}
+
+.floating-controls .picker-trigger-current .flag-custom,
+.floating-controls .picker-trigger-current .flag-emoji {
+  width: 1.15rem;
+  min-width: 1.15rem;
+}
+
+.floating-controls .picker-trigger-current .flag-custom {
+  height: 0.82rem;
+}
+
+.floating-controls .picker-trigger-side {
+  gap: 0.2rem;
 }
 
 .floating-controls .picker-menu {
@@ -904,8 +957,8 @@ button {
   top: calc(100% + 0.7rem);
   right: 0;
   left: auto;
-  width: min(100%, 280px);
-  min-width: 250px;
+  width: min(250px, calc(100vw - 1rem));
+  min-width: 0;
 }
 
 .picker-menu[hidden] {
@@ -1339,77 +1392,6 @@ html[dir="rtl"] .metric-card {
     padding-top: 1.25rem;
     overflow: visible;
     border-top: 1px solid var(--line);
-  }
-}
-
-@media (max-width: 920px) {
-  .floating-controls {
-    top: 0.75rem;
-    right: 0.75rem;
-    width: auto;
-    gap: 0.5rem;
-    justify-items: end;
-  }
-
-  .floating-controls .picker {
-    width: auto;
-    justify-self: end;
-  }
-
-  .floating-controls .picker-trigger {
-    width: fit-content;
-    min-width: 0;
-    min-height: 2.9rem;
-    gap: 0.45rem;
-    padding: 0.55rem 0.62rem;
-    border-radius: 18px;
-  }
-
-  .floating-controls .picker-trigger-main {
-    gap: 0.42rem;
-  }
-
-  .floating-controls .picker-trigger-copy {
-    gap: 0;
-  }
-
-  .floating-controls .picker-trigger-label,
-  .floating-controls .picker-trigger-current span:last-child {
-    display: none;
-  }
-
-  .floating-controls .picker-trigger-current {
-    gap: 0;
-  }
-
-  .floating-controls .picker-trigger-icon {
-    width: 1.8rem;
-    height: 1.8rem;
-  }
-
-  .floating-controls .picker-trigger-dot {
-    width: 0.82rem;
-    height: 0.82rem;
-    box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.12);
-  }
-
-  .floating-controls .picker-trigger-current .flag-custom,
-  .floating-controls .picker-trigger-current .flag-emoji {
-    width: 1.15rem;
-    min-width: 1.15rem;
-  }
-
-  .floating-controls .picker-trigger-current .flag-custom {
-    height: 0.82rem;
-  }
-
-  .floating-controls .picker-trigger-side {
-    gap: 0.2rem;
-  }
-
-  .floating-controls .picker-menu {
-    width: min(250px, calc(100vw - 1rem));
-    min-width: 0;
   }
 }
 
