@@ -1342,6 +1342,77 @@ html[dir="rtl"] .metric-card {
   }
 }
 
+@media (max-width: 920px) {
+  .floating-controls {
+    top: 0.75rem;
+    right: 0.75rem;
+    width: auto;
+    gap: 0.5rem;
+    justify-items: end;
+  }
+
+  .floating-controls .picker {
+    width: auto;
+    justify-self: end;
+  }
+
+  .floating-controls .picker-trigger {
+    width: fit-content;
+    min-width: 0;
+    min-height: 2.9rem;
+    gap: 0.45rem;
+    padding: 0.55rem 0.62rem;
+    border-radius: 18px;
+  }
+
+  .floating-controls .picker-trigger-main {
+    gap: 0.42rem;
+  }
+
+  .floating-controls .picker-trigger-copy {
+    gap: 0;
+  }
+
+  .floating-controls .picker-trigger-label,
+  .floating-controls .picker-trigger-current span:last-child {
+    display: none;
+  }
+
+  .floating-controls .picker-trigger-current {
+    gap: 0;
+  }
+
+  .floating-controls .picker-trigger-icon {
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+
+  .floating-controls .picker-trigger-dot {
+    width: 0.82rem;
+    height: 0.82rem;
+    box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.12);
+  }
+
+  .floating-controls .picker-trigger-current .flag-custom,
+  .floating-controls .picker-trigger-current .flag-emoji {
+    width: 1.15rem;
+    min-width: 1.15rem;
+  }
+
+  .floating-controls .picker-trigger-current .flag-custom {
+    height: 0.82rem;
+  }
+
+  .floating-controls .picker-trigger-side {
+    gap: 0.2rem;
+  }
+
+  .floating-controls .picker-menu {
+    width: min(250px, calc(100vw - 1rem));
+    min-width: 0;
+  }
+}
+
 @media (max-width: 719px) {
   .sidebar,
   .topbar,
@@ -1369,54 +1440,6 @@ html[dir="rtl"] .metric-card {
 
   .brand {
     width: 100%;
-  }
-
-  .floating-controls {
-    top: 0.75rem;
-    right: 0.75rem;
-    width: auto;
-    gap: 0.5rem;
-    justify-items: end;
-  }
-
-  .floating-controls .picker {
-    width: auto;
-  }
-
-  .floating-controls .picker-trigger {
-    width: auto;
-    min-width: 0;
-    min-height: 3rem;
-    gap: 0.55rem;
-    padding: 0.65rem 0.72rem;
-    border-radius: 18px;
-  }
-
-  .floating-controls .picker-trigger-main {
-    gap: 0.5rem;
-  }
-
-  .floating-controls .picker-trigger-copy {
-    gap: 0.45rem;
-  }
-
-  .floating-controls .picker-trigger-label,
-  .floating-controls .picker-trigger-current span:last-child {
-    display: none;
-  }
-
-  .floating-controls .picker-trigger-icon {
-    width: 1.85rem;
-    height: 1.85rem;
-  }
-
-  .floating-controls .picker-trigger-side {
-    gap: 0.35rem;
-  }
-
-  .floating-controls .picker-menu {
-    width: min(250px, calc(100vw - 1rem));
-    min-width: 0;
   }
 
 }
