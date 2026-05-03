@@ -15,6 +15,7 @@ module.exports = {
     navScrollFix: './assets/js/nav-scroll-fix.js',
     giraldaFix: './assets/js/giralda-fix.js',
     glassBackgroundPolish: './assets/js/glass-background-polish.js',
+    gymPolish: './assets/js/gym-polish.js',
   },
   output: {
     filename: '[name].js',
