@@ -16,6 +16,7 @@ module.exports = {
     giraldaFix: './assets/js/giralda-fix.js',
     glassBackgroundPolish: './assets/js/glass-background-polish.js',
     gymPolish: './assets/js/gym-polish.js',
+    gymViewFocus: './assets/js/gym-view-focus.js',
     cvDownloadSection: './assets/js/cv-download-section.js',
     scrollExperience: './assets/js/scroll-experience.js',
     verticalScrollProgress: './assets/js/vertical-scroll-progress.js',
