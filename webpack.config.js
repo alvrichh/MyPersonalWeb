@@ -12,6 +12,7 @@ module.exports = {
     script: './assets/js/script.js',
     gymLink: './assets/js/gym-link.js',
     mobilePolish: './assets/js/mobile-polish.js',
+    navScrollFix: './assets/js/nav-scroll-fix.js',
   },
   output: {
     filename: '[name].js',
