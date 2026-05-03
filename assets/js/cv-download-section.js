@@ -1,7 +1,7 @@
 'use strict';
 
-const CV_FILE_PATH = './cv/alvrodmol-cv.pdf';
-const CV_FILE_NAME = 'alvrodmol-cv.pdf';
+const CV_FILE_PATH = './cv/alvrodmol%20CV.pdf';
+const CV_FILE_NAME = 'alvrodmol CV.pdf';
 
 const cvCopy = {
   en: {
