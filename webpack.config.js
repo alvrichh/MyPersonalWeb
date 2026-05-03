@@ -10,6 +10,7 @@ module.exports = {
   mode: 'development',
   entry: { 
     script: './assets/js/script.js',
+    gymLink: './assets/js/gym-link.js',
   },
   output: {
     filename: '[name].js',
@@ -22,6 +23,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({filename:'index.html', template: './index.html'}),
+    new HtmlWebpackPlugin({filename:'gym.html', template: './gym.html', inject: false}),
     
     new miniCssExtractPlugin(),
     new CopyWebpackPlugin({
@@ -47,7 +49,7 @@ module.exports = {
           },
           {
             // Loader for webpack to process CSS with PostCSS
-            loader: 'postcss-loader',
+            loader: 'postcss-loader'
            /* options: {
               postcssOptions: {
                 plugins: [
