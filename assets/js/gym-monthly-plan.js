@@ -6,7 +6,7 @@ const GYM_STORE_KEYS = ['alvrichGymMayAutoV2', 'alvrichGymMayAutoV1'];
 const monthlyPlan = {
   Lunes: {
     title: 'Espalda + bíceps + cardio',
-    cardio: '20 min de cinta inclinada o bici al final.',
+    cardio: '15-20 min de cinta inclinada o bici al final. Opcional: comba suave 5 rondas de 1 min salto + 1 min descanso.',
     exercises: [
       ['Jalón al pecho', '4 x 8-12'],
       ['Remo sentado en polea', '4 x 10-12'],
@@ -18,7 +18,7 @@ const monthlyPlan = {
   },
   Martes: {
     title: 'Piernas + core',
-    cardio: '10-15 min suave. Pierna fuerte, cardio sin matarte.',
+    cardio: '10-15 min suave. Mejor bici o caminar; evitar comba fuerte para no machacar gemelos/rodillas después de pierna.',
     exercises: [
       ['Prensa de piernas', '4 x 10-12'],
       ['Hack squat o sentadilla goblet', '3 x 10-12'],
@@ -29,8 +29,8 @@ const monthlyPlan = {
     ],
   },
   Miércoles: {
-    title: 'Pecho + tríceps + cardio',
-    cardio: '20-30 min de cardio final a ritmo medio.',
+    title: 'Pecho + tríceps + comba',
+    cardio: '15-20 min cardio final. Si hay ganas: comba 8-10 rondas de 1 min salto + 45 s descanso.',
     exercises: [
       ['Press pecho máquina o banca', '4 x 8-12'],
       ['Press inclinado con mancuernas', '3 x 10-12'],
@@ -41,8 +41,8 @@ const monthlyPlan = {
     ],
   },
   Jueves: {
-    title: 'Hombros + abdomen',
-    cardio: '15-20 min suave/medio al final.',
+    title: 'Hombros + abdomen + cardio',
+    cardio: '15-20 min suave/medio al final. Bici, elíptica o cinta inclinada para sumar gasto sin romperte.',
     exercises: [
       ['Press hombro máquina o mancuernas', '4 x 8-12'],
       ['Elevaciones laterales', '4 x 12-15'],
@@ -53,8 +53,8 @@ const monthlyPlan = {
     ],
   },
   Viernes: {
-    title: 'Full upper + brazos',
-    cardio: '15-20 min final. Día para rematar torso y brazos.',
+    title: 'Full upper + brazos + comba',
+    cardio: '15 min final. Opción rápida: comba 6-8 rondas de 1 min salto + 1 min descanso.',
     exercises: [
       ['Jalón al pecho', '3 x 10-12'],
       ['Press pecho máquina', '3 x 10-12'],
@@ -66,9 +66,9 @@ const monthlyPlan = {
   },
   Sábado: {
     title: 'Cardio largo + movilidad',
-    cardio: '45-60 min cardio. Ritmo constante, sudar sin reventarte.',
+    cardio: '40-60 min cardio. Ritmo constante: cinta inclinada, bici, elíptica o caminata larga. Prioridad: sudar sin reventarte.',
     exercises: [
-      ['Cardio largo', '45-60 min'],
+      ['Cardio largo', '40-60 min'],
       ['Movilidad cadera/espalda', '10 min'],
       ['Estiramientos suaves', '10 min'],
       ['Core opcional', '2-3 series'],
@@ -76,7 +76,7 @@ const monthlyPlan = {
   },
   Domingo: {
     title: 'Descanso activo editable',
-    cardio: 'Puedes cambiarlo por paseo, movilidad, descanso total o lo que realmente hagas.',
+    cardio: 'Paseo largo o descanso total. Si te apetece: 8.000-12.000 pasos y movilidad suave.',
     exercises: [
       ['Caminar', '8.000-12.000 pasos'],
       ['Movilidad o estiramientos', '10-15 min'],
@@ -84,6 +84,13 @@ const monthlyPlan = {
     ],
   },
 };
+
+const cardioRules = [
+  'Pesas: 15-20 min de cardio al final casi todos los días.',
+  'Comba: 2-3 días por semana, por intervalos, no todos los días fuerte.',
+  'Pierna: cardio suave; evitar comba fuerte ese día.',
+  'Sábado: cardio largo 40-60 min a ritmo constante.',
+];
 
 const readJson = (key, fallback) => {
   try {
@@ -121,7 +128,7 @@ const ensureStyles = () => {
   const style = document.createElement('style');
   style.setAttribute('data-gym-monthly-plan-style', 'true');
   style.textContent = `
-    .actualLogCard{border:1px solid rgba(112,225,161,.28);background:rgba(112,225,161,.07);border-radius:20px;padding:14px;margin:12px 0}.actualLogCard h3{margin:0 0 10px}.extraExerciseGrid{display:grid;gap:8px;margin-top:10px}.extraExerciseRow{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}.extraExerciseRow button{border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.06);color:var(--text);padding:8px 10px;font-weight:900}.recommendedTag{display:inline-flex;margin-top:5px;color:var(--accent);font-size:.68rem;font-weight:900}.calPlanTitle{font-size:.64rem;color:var(--accent);line-height:1.12;font-weight:900;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.gym-modal-plan{border:1px solid rgba(112,225,161,.22);border-radius:18px;background:rgba(112,225,161,.07);padding:13px}.gym-modal-plan span{display:block;color:var(--accent);font-size:.78rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px}.gym-modal-plan ul{margin:8px 0 0;padding-left:18px;color:var(--muted);line-height:1.45}.gym-modal-plan p{margin:0;color:var(--text);line-height:1.45}.gym-modal-plan strong{color:var(--text)}
+    .actualLogCard{border:1px solid rgba(112,225,161,.28);background:rgba(112,225,161,.07);border-radius:20px;padding:14px;margin:12px 0}.actualLogCard h3{margin:0 0 10px}.cardioRulesCard{border:1px solid rgba(101,167,255,.24);background:rgba(101,167,255,.07);border-radius:20px;padding:14px;margin:12px 0}.cardioRulesCard h3{margin:0 0 8px}.cardioRulesCard ul{margin:0;padding-left:18px;color:var(--muted);line-height:1.5}.extraExerciseGrid{display:grid;gap:8px;margin-top:10px}.extraExerciseRow{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}.extraExerciseRow button{border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.06);color:var(--text);padding:8px 10px;font-weight:900}.recommendedTag{display:inline-flex;margin-top:5px;color:var(--accent);font-size:.68rem;font-weight:900}.calPlanTitle{font-size:.64rem;color:var(--accent);line-height:1.12;font-weight:900;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.gym-modal-plan{border:1px solid rgba(112,225,161,.22);border-radius:18px;background:rgba(112,225,161,.07);padding:13px}.gym-modal-plan span{display:block;color:var(--accent);font-size:.78rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px}.gym-modal-plan ul{margin:8px 0 0;padding-left:18px;color:var(--muted);line-height:1.45}.gym-modal-plan p{margin:0;color:var(--text);line-height:1.45}.gym-modal-plan strong{color:var(--text)}
   `;
   document.head.appendChild(style);
 };
@@ -160,6 +167,10 @@ const renderTodayEnhanced = () => {
 
   target.innerHTML = `
     <div class="today"><strong>Rutina recomendada:</strong> ${currentDayName} · ${plan.title}<br><span class="small">Puedes seguirla tal cual, saltarte cosas o añadir lo que hayas hecho realmente.</span></div>
+    <section class="cardioRulesCard">
+      <h3>Cardio recomendado</h3>
+      <ul>${cardioRules.map((rule) => `<li>${rule}</li>`).join('')}</ul>
+    </section>
     <section class="actualLogCard">
       <h3>Lo que he hecho hoy</h3>
       <label>Título real del entreno<input id="actualWorkoutTitle" class="input" placeholder="Ej: Espalda fuerte + cardio" value="${actual.title || ''}"></label>
@@ -264,6 +275,7 @@ const enhanceCalendarModal = (date) => {
     <p><strong>${actual.title || plan.title}</strong></p>
     ${actual.description ? `<p>${actual.description}</p>` : `<p class="small">Rutina recomendada para ${dayName(date)}. Puedes editar lo real desde Hoy.</p>`}
     <ul>${plan.exercises.map(([name, detail]) => `<li>${name} · ${detail}</li>`).join('')}${extra.map((item) => `<li>${item.name} · ${item.detail || 'Extra'}</li>`).join('')}</ul>
+    <p class="small" style="margin-top:8px"><strong>Cardio:</strong> ${plan.cardio}</p>
   `;
   body.prepend(panel);
 };
