@@ -1,6 +1,6 @@
 'use strict';
 
-const SECTION_IDS = ['about', 'focus', 'work', 'contact'];
+const SECTION_IDS = ['about', 'focus', 'work', 'cv', 'contact'];
 
 const getSectionLabel = (id) => {
   const navButton = document.querySelector(`.nav-tab[data-target="${id}"]`);
