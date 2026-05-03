@@ -16,6 +16,7 @@ module.exports = {
     giraldaFix: './assets/js/giralda-fix.js',
     glassBackgroundPolish: './assets/js/glass-background-polish.js',
     gymPolish: './assets/js/gym-polish.js',
+    scrollExperience: './assets/js/scroll-experience.js',
   },
   output: {
     filename: '[name].js',
