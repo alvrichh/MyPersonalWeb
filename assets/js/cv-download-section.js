@@ -1,7 +1,7 @@
 'use strict';
 
-const CV_FILE_PATH = './cv/alvaro-rodriguez-molina-cv.pdf';
-const CV_FILE_NAME = 'alvaro-rodriguez-molina-cv.pdf';
+const CV_FILE_PATH = './cv/alvrodmol-cv.pdf';
+const CV_FILE_NAME = 'alvrodmol-cv.pdf';
 
 const cvCopy = {
   en: {
@@ -10,7 +10,7 @@ const cvCopy = {
     title: 'Download my CV.',
     body: 'A compact resume focused on full-stack development, integrations, automation, Azure-connected workflows and technical delivery.',
     download: 'Download CV',
-    fallback: 'If the PDF file is not deployed yet, the button generates a clean PDF version directly in your browser.',
+    fallback: 'Downloads the exact PDF resume uploaded to this portfolio.',
     chips: ['Full Stack', 'Integration', 'Automation', 'Azure', 'APIs'],
   },
   es: {
@@ -19,7 +19,7 @@ const cvCopy = {
     title: 'Descarga mi CV.',
     body: 'Un currículum enfocado en desarrollo full-stack, integraciones, automatización, flujos conectados con Azure y entrega técnica.',
     download: 'Descargar CV',
-    fallback: 'Si el PDF todavía no está desplegado, el botón genera una versión limpia en PDF directamente desde el navegador.',
+    fallback: 'Descarga el PDF exacto subido a este portfolio.',
     chips: ['Full Stack', 'Integración', 'Automatización', 'Azure', 'APIs'],
   },
   and: {
@@ -28,69 +28,10 @@ const cvCopy = {
     title: 'Dezcarga mi CV.',
     body: 'Un currículum enfocado en dezarrollo full-stack, integrazioneh, automatizazión, flujoh con Azure y entrega técnica, zabe.',
     download: 'Dezcargar CV',
-    fallback: 'Zi el PDF todavía no está desplegao, el botón genera una verzión limpia en PDF desde el navegador.',
+    fallback: 'Dezcarga el PDF exacto subío a este portfolio, zabe.',
     chips: ['Full Stack', 'Integrazión', 'Automatizazión', 'Azure', 'APIs'],
   },
 };
-
-const cvLines = [
-  'ALVARO RODRIGUEZ MOLINA',
-  'FULL STACK DEVELOPER | INTEGRATION, AUTOMATION & AZURE SOLUTIONS',
-  '',
-  'CONTACT',
-  'Phone: +3530858187983',
-  'Email: alvrodmol@gmail.com',
-  'LinkedIn: https://www.linkedin.com/in/alvrich/',
-  'GitHub: https://github.com/alvrichh',
-  'Web: https://alvrich.vercel.app/',
-  '',
-  'PROFILE',
-  'R&D Technical Specialist, Full Stack Developer, and System Administrator with experience in SAP S/4 HANA, web application development, and system administration.',
-  'Experienced in API integration, authentication workflows, Azure-based services, and automation-driven solutions for real-time and client-oriented digital processes.',
-  '',
-  'PROFESSIONAL EXPERIENCE',
-  'Fusion Analyst | Full Stack & Automation - Synovia Digital - 01/2026 - Present - Ireland',
-  '- Built and supported full-stack solutions involving frontend, backend, APIs, authentication, and cloud-connected services.',
-  '- Worked with Azure-based tools and services to deliver scalable integration and automation solutions.',
-  '- Implemented authentication flows across web applications, including Microsoft-based and third-party login providers.',
-  '- Developed API-driven workflows for real-time data extraction, processing, and database updates.',
-  '- Automated operational and client-facing processes to improve efficiency, usability, and delivery speed.',
-  '- Helped define project setup, repository structure, infrastructure decisions, and development best practices.',
-  '',
-  'IT Business Consultant SAP Analyst - Primeline Group - 05/2025 - 01/2026 - Ashbourne, Ireland',
-  '- SAP S/4 HANA management.',
-  '- Trained 3 end-users on SAP S/4 HANA, boosting adoption rates.',
-  '- Optimized SAP S/4 HANA workflows, improving process efficiency.',
-  '',
-  'Multimodal AI Training Specialist - Outlier (Remote, Freelance) - 12/2025 - Present',
-  '- Created video, image, audio, and text content to simulate AI-generated outputs and provide human feedback for training multimodal AI models.',
-  '',
-  'System Admin - Primeline Group - 11/2024 - 05/2025 - Ashbourne, Ireland',
-  '- Managed order distribution, system updates, and shipment coordination to ensure timely deliveries and KPI.',
-  '- Conducted data analysis and reporting using Excel.',
-  '- Optimized workflows and team performance through communication on Microsoft Teams.',
-  '',
-  'Junior Programmer Intern - Getronics - 04/2024 - 06/2024 - Seville, Spain',
-  '- Performed Java testing with Spring Boot, JUnit, and Mockito for Notific@, a government notification system.',
-  '- Identified and resolved software bugs, improving product stability.',
-  '- Implemented frontend and backend improvements to increase application stability and scalability.',
-  '',
-  'SKILLS',
-  'Programming: Python, Java, JavaScript, TypeScript, SQL, HTML, CSS.',
-  'Frameworks: Spring Boot, Spring Security, JUnit, Mockito, Angular, React, Django, Node.js, Express, Hibernate, Webpack, Bootstrap, Tailwind CSS, Pandas.',
-  'Cloud, APIs & Deployment: Azure, Azure SQL, AWS, Google Cloud Platform, REST APIs, API Integration, Swagger, Docker, Kubernetes, Firebase, Render.',
-  'Authentication & Security: OAuth2, JWT, Authentication Flows, HTTPS, SSL, CORS, API Security, Data Encryption, Cybersecurity.',
-  'Databases & Data: PostgreSQL, MySQL, MariaDB, MongoDB, Power BI, Excel, Data Preprocessing, Real-Time Data Workflows.',
-  'Tools: GitHub, GitLab, Bitbucket, Jenkins, Postman, Jira, Eclipse, VS Code, IntelliJ IDEA, PyCharm, NPM, Gradle, WebStorm.',
-  '',
-  'EDUCATION',
-  'Specialist in Web Application Development - I.E.S. ALIXAR - 2022 - 2024 - Seville, Spain.',
-  'Degree in Computer Engineering - University of Seville (ETSSII) - 2019 - 2024 - Seville, Spain.',
-  'Technological Bachelor - School Inmaculado Corazon de Maria Portaceli - 2017 - 2019 - Seville, Spain.',
-  '',
-  'LANGUAGES',
-  'Spanish: Native. English: Professional Working Proficiency. German: Basic.',
-];
 
 const getCurrentLanguage = () => document.body?.dataset?.language || 'en';
 const getCvCopy = () => cvCopy[getCurrentLanguage()] || cvCopy.en;
@@ -186,125 +127,13 @@ const createCvStyles = () => {
   document.head.appendChild(style);
 };
 
-const escapePdfText = (value) => String(value)
-  .replace(/\\/g, '\\\\')
-  .replace(/\(/g, '\\(')
-  .replace(/\)/g, '\\)')
-  .replace(/[\u2018\u2019]/g, "'")
-  .replace(/[\u201c\u201d]/g, '"')
-  .replace(/[\u2013\u2014]/g, '-')
-  .replace(/[^\x09\x0A\x0D\x20-\x7E]/g, '');
-
-const wrapLine = (line, limit = 86) => {
-  if (!line) return [''];
-  const words = line.split(/\s+/);
-  const lines = [];
-  let current = '';
-
-  words.forEach((word) => {
-    const candidate = current ? `${current} ${word}` : word;
-    if (candidate.length > limit) {
-      if (current) lines.push(current);
-      current = word;
-    } else {
-      current = candidate;
-    }
-  });
-
-  if (current) lines.push(current);
-  return lines;
-};
-
-const buildPdf = () => {
-  const pageWidth = 595;
-  const pageHeight = 842;
-  const margin = 46;
-  const lineHeight = 13;
-  const maxLines = Math.floor((pageHeight - margin * 2) / lineHeight);
-  const wrappedLines = cvLines.flatMap((line) => wrapLine(line));
-  const pages = [];
-
-  for (let i = 0; i < wrappedLines.length; i += maxLines) {
-    pages.push(wrappedLines.slice(i, i + maxLines));
-  }
-
-  const objects = [];
-  const addObject = (body) => {
-    objects.push(body);
-    return objects.length;
-  };
-
-  const catalogId = addObject('<< /Type /Catalog /Pages 2 0 R >>');
-  const pagesId = addObject('');
-  const fontId = addObject('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>');
-  const pageIds = [];
-
-  pages.forEach((pageLines, pageIndex) => {
-    const commands = ['BT', `/F1 ${pageIndex === 0 ? 11 : 10} Tf`, `${margin} ${pageHeight - margin} Td`];
-    pageLines.forEach((line, index) => {
-      if (index > 0) commands.push(`0 -${lineHeight} Td`);
-      const isHeading = line && line === line.toUpperCase() && line.length < 48;
-      if (isHeading) commands.push('/F1 12 Tf');
-      commands.push(`(${escapePdfText(line)}) Tj`);
-      if (isHeading) commands.push(`/F1 ${pageIndex === 0 ? 11 : 10} Tf`);
-    });
-    commands.push('ET');
-
-    const stream = commands.join('\n');
-    const contentId = addObject(`<< /Length ${stream.length} >>\nstream\n${stream}\nendstream`);
-    const pageId = addObject(`<< /Type /Page /Parent ${pagesId} 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Resources << /Font << /F1 ${fontId} 0 R >> >> /Contents ${contentId} 0 R >>`);
-    pageIds.push(pageId);
-  });
-
-  objects[pagesId - 1] = `<< /Type /Pages /Kids [${pageIds.map((id) => `${id} 0 R`).join(' ')}] /Count ${pageIds.length} >>`;
-
-  let pdf = '%PDF-1.4\n';
-  const offsets = [0];
-  objects.forEach((body, index) => {
-    offsets.push(pdf.length);
-    pdf += `${index + 1} 0 obj\n${body}\nendobj\n`;
-  });
-
-  const xrefOffset = pdf.length;
-  pdf += `xref\n0 ${objects.length + 1}\n`;
-  pdf += '0000000000 65535 f \n';
-  offsets.slice(1).forEach((offset) => {
-    pdf += `${String(offset).padStart(10, '0')} 00000 n \n`;
-  });
-  pdf += `trailer\n<< /Size ${objects.length + 1} /Root ${catalogId} 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`;
-
-  return pdf;
-};
-
-const downloadBlob = (blob, filename) => {
-  const url = URL.createObjectURL(blob);
+const downloadCv = () => {
   const link = document.createElement('a');
-  link.href = url;
-  link.download = filename;
+  link.href = CV_FILE_PATH;
+  link.download = CV_FILE_NAME;
   document.body.appendChild(link);
   link.click();
   link.remove();
-  URL.revokeObjectURL(url);
-};
-
-const downloadCv = async () => {
-  try {
-    const response = await fetch(CV_FILE_PATH, { method: 'HEAD', cache: 'no-store' });
-    if (response.ok) {
-      const link = document.createElement('a');
-      link.href = CV_FILE_PATH;
-      link.download = CV_FILE_NAME;
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      return;
-    }
-  } catch (error) {
-    // Fallback below.
-  }
-
-  const pdf = buildPdf();
-  downloadBlob(new Blob([pdf], { type: 'application/pdf' }), CV_FILE_NAME);
 };
 
 const insertCvNav = () => {
