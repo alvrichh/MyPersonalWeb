@@ -11,6 +11,7 @@ module.exports = {
   entry: { 
     script: './assets/js/script.js',
     gymLink: './assets/js/gym-link.js',
+    mobilePolish: './assets/js/mobile-polish.js',
   },
   output: {
     filename: '[name].js',
