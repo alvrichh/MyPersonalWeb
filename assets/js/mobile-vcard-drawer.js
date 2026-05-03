@@ -39,6 +39,13 @@ const createMobileMenuDrawerStyles = () => {
           inset 0 1px 0 rgba(255,255,255,.08);
         backdrop-filter: blur(22px) saturate(1.2);
         -webkit-backdrop-filter: blur(22px) saturate(1.2);
+        transition: opacity .16s ease, transform .16s ease;
+      }
+
+      body.mobile-vcard-open .mobile-vcard-trigger {
+        opacity: 0;
+        transform: scale(.88);
+        pointer-events: none;
       }
 
       .mobile-vcard-trigger span {
@@ -47,7 +54,6 @@ const createMobileMenuDrawerStyles = () => {
         height: 2px;
         border-radius: 999px;
         background: currentColor;
-        transition: background .18s ease;
       }
 
       .mobile-vcard-trigger span::before,
@@ -59,25 +65,10 @@ const createMobileMenuDrawerStyles = () => {
         height: 2px;
         border-radius: 999px;
         background: currentColor;
-        transition: transform .18s ease, top .18s ease;
       }
 
       .mobile-vcard-trigger span::before { top: -.46rem; }
       .mobile-vcard-trigger span::after { top: .46rem; }
-
-      body.mobile-vcard-open .mobile-vcard-trigger span {
-        background: transparent;
-      }
-
-      body.mobile-vcard-open .mobile-vcard-trigger span::before {
-        top: 0;
-        transform: rotate(45deg);
-      }
-
-      body.mobile-vcard-open .mobile-vcard-trigger span::after {
-        top: 0;
-        transform: rotate(-45deg);
-      }
 
       .mobile-vcard-backdrop {
         position: fixed;
@@ -100,6 +91,8 @@ const createMobileMenuDrawerStyles = () => {
 
       .mobile-vcard-panel {
         width: min(100%, 430px);
+        height: auto;
+        max-height: calc(100vh - 1.8rem - env(safe-area-inset-top) - env(safe-area-inset-bottom));
         margin-left: auto;
         border: 1px solid rgba(255,255,255,.16);
         border-radius: 34px;
@@ -125,7 +118,7 @@ const createMobileMenuDrawerStyles = () => {
         align-items: center;
         justify-content: space-between;
         gap: 1rem;
-        padding: 1rem 1rem .85rem;
+        padding: 1rem;
         border-bottom: 1px solid rgba(255,255,255,.1);
       }
 
@@ -168,27 +161,42 @@ const createMobileMenuDrawerStyles = () => {
       }
 
       .mobile-vcard-close {
-        width: 2.55rem;
-        height: 2.55rem;
+        width: 2.65rem;
+        height: 2.65rem;
         flex: 0 0 auto;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         border: 1px solid rgba(255,255,255,.13);
-        border-radius: 16px;
+        border-radius: 17px;
         color: var(--text);
-        background: rgba(255,255,255,.055);
-        font-size: 1.35rem;
-        font-weight: 900;
+        background: rgba(255,255,255,.065);
+        font-size: 1.45rem;
+        line-height: 1;
+        font-weight: 700;
+        box-shadow: none;
       }
 
       .mobile-vcard-nav {
         display: grid;
         gap: .72rem;
         padding: 1rem;
+        max-height: calc(100vh - 8.5rem - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+        overflow: auto;
+        overscroll-behavior: contain;
+      }
+
+      .mobile-vcard-nav::-webkit-scrollbar {
+        width: 0;
       }
 
       .mobile-vcard-nav .nav-tab,
       .mobile-vcard-nav .gym-nav-link {
         width: 100%;
-        justify-content: flex-start;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
         padding: 1rem;
         border-radius: 20px;
         font-family: var(--font-display);
@@ -250,7 +258,7 @@ const createMobileMenuDrawer = () => {
     <aside class="mobile-vcard-panel" role="dialog" aria-modal="true" aria-label="Menú de secciones">
       <header class="mobile-vcard-head">
         <div class="mobile-vcard-brand">
-          <span class="mobile-vcard-brand-mark">am</span>
+          <span class="mobile-vcard-brand-mark">AM</span>
           <span class="mobile-vcard-brand-copy">
             <strong>alvrich</strong>
             <span>sections</span>
