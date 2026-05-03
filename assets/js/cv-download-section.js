@@ -122,6 +122,28 @@ const createCvStyles = () => {
       font-size: .84rem;
       line-height: 1.45;
     }
+
+    .cv-priority-action,
+    .cv-hero-download {
+      border: 1px solid rgba(var(--accent-rgb), .28) !important;
+      background:
+        linear-gradient(135deg, rgba(var(--accent-rgb), .18), rgba(var(--secondary-rgb), .11)),
+        rgba(255,255,255,.055) !important;
+      color: var(--text) !important;
+      box-shadow: 0 16px 34px rgba(var(--accent-rgb), .12);
+    }
+
+    .cv-priority-action ion-icon,
+    .cv-hero-download ion-icon {
+      color: var(--accent-strong);
+    }
+
+    @media (max-width: 760px) {
+      .cv-hero-download {
+        order: 3;
+        width: 100%;
+      }
+    }
   `;
 
   document.head.appendChild(style);
@@ -134,6 +156,34 @@ const downloadCv = () => {
   document.body.appendChild(link);
   link.click();
   link.remove();
+};
+
+const createCvButton = (className, markerAttribute) => {
+  const button = document.createElement('button');
+  button.className = className;
+  button.type = 'button';
+  button.setAttribute('data-download-cv', 'true');
+  button.setAttribute(markerAttribute, 'true');
+  button.innerHTML = `
+    <ion-icon name="document-text-outline" aria-hidden="true"></ion-icon>
+    <span data-cv-button-copy>${getCvCopy().download}</span>
+  `;
+  return button;
+};
+
+const insertPriorityCvActions = () => {
+  const sidebarActions = document.querySelector('.sidebar-actions');
+  if (sidebarActions && !sidebarActions.querySelector('[data-cv-sidebar-action]')) {
+    const sidebarButton = createCvButton('btn btn-secondary has-icon cv-priority-action', 'data-cv-sidebar-action');
+    const secondaryAction = sidebarActions.querySelector('.btn-secondary');
+    sidebarActions.insertBefore(sidebarButton, secondaryAction || null);
+  }
+
+  const aboutActions = document.querySelector('#about .cta-row');
+  if (aboutActions && !aboutActions.querySelector('[data-cv-hero-action]')) {
+    const heroButton = createCvButton('btn btn-secondary has-icon cv-hero-download', 'data-cv-hero-action');
+    aboutActions.appendChild(heroButton);
+  }
 };
 
 const insertCvNav = () => {
@@ -197,6 +247,9 @@ const refreshCvCopy = () => {
   const chips = document.querySelector('[data-cv-chips]');
   if (chips) chips.innerHTML = data.chips.map((chip) => `<span>${chip}</span>`).join('');
   document.querySelector('[data-download-cv]')?.replaceChildren(document.createTextNode(data.download));
+  document.querySelectorAll('[data-cv-button-copy]').forEach((node) => {
+    node.textContent = data.download;
+  });
 };
 
 const bindCvEvents = () => {
@@ -212,6 +265,7 @@ const bindCvEvents = () => {
 const initCvDownloadSection = () => {
   createCvStyles();
   insertCvNav();
+  insertPriorityCvActions();
   insertCvSection();
   refreshCvCopy();
   bindCvEvents();
