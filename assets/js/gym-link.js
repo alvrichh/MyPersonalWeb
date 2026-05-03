@@ -17,6 +17,14 @@ const gymCopy = {
     action: 'Abrir gym tracker',
     nav: 'Life',
   },
+  and: {
+    tagOne: 'Life',
+    tagTwo: 'Zeguimiento',
+    title: 'alvrich gym · plan de mayo',
+    body: 'Un tracker perzoná pa mayo con check diario der entreno, pezo, notita e hittoriá der progrezo.',
+    action: 'Abrí er gym tracker',
+    nav: 'Life',
+  },
 };
 
 const getCopy = () => {
@@ -146,10 +154,32 @@ const refreshGymCopy = () => {
   });
 };
 
+const applyAndaluhTone = () => {
+  if (document.body?.dataset?.language !== 'and') return;
+
+  const exactTexts = {
+    'sidebar.role': 'Web dezarrolladó con ojo vizuá y mentalidá comerziá.',
+    'about.metricTitle': 'Dezarrollo con criterio comerziá',
+    'focus.cardTwoTitle': 'HTML, CSS y JavaScript bien rezueltoh',
+    'work.projectFourTitle': 'Interfazeh operativah y de zeguimiento',
+    'work.projectSixBody': 'Una ehtructura zimple y cuidá lista pa crecer a algo mah grande.',
+  };
+
+  Object.entries(exactTexts).forEach(([key, value]) => {
+    const node = document.querySelector(`[data-i18n="${key}"]`);
+    if (node) node.textContent = value;
+  });
+};
+
+const refreshAllLanguageTweaks = () => {
+  refreshGymCopy();
+  window.setTimeout(applyAndaluhTone, 0);
+};
+
 const observeLanguageChanges = () => {
   if (!document.body) return;
 
-  const observer = new MutationObserver(refreshGymCopy);
+  const observer = new MutationObserver(refreshAllLanguageTweaks);
   observer.observe(document.body, { attributes: true, attributeFilter: ['data-language'] });
 };
 
@@ -157,7 +187,7 @@ const initGymEntryPoints = () => {
   ensureGymStyles();
   createGymProjectCard();
   createLifeNavShortcut();
-  refreshGymCopy();
+  refreshAllLanguageTweaks();
   observeLanguageChanges();
 };
 
