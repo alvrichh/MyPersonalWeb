@@ -1,79 +1,168 @@
 'use strict';
 
-const createGymLink = () => {
-  if (document.querySelector('[data-gym-life-link]')) return;
+const gymCopy = {
+  en: {
+    tagOne: 'Life',
+    tagTwo: 'Tracker',
+    title: 'alvrich gym · May plan',
+    body: 'A personal training tracker for May with daily workout checks, weight logs, notes, and progress history.',
+    action: 'Open gym tracker',
+    nav: 'Life',
+  },
+  es: {
+    tagOne: 'Life',
+    tagTwo: 'Seguimiento',
+    title: 'alvrich gym · plan de mayo',
+    body: 'Un tracker personal para mayo con checks diarios de entrenamiento, peso, notas e historial de progreso.',
+    action: 'Abrir gym tracker',
+    nav: 'Life',
+  },
+};
 
-  const link = document.createElement('a');
-  link.href = './gym.html';
-  link.setAttribute('data-gym-life-link', 'true');
-  link.setAttribute('aria-label', 'Abrir alvrich gym');
-  link.innerHTML = '<span class="gym-life-kicker">Life</span><strong>Gym</strong>';
+const getCopy = () => {
+  const language = document.body?.dataset?.language || 'en';
+  return gymCopy[language] || gymCopy.en;
+};
+
+const ensureGymStyles = () => {
+  if (document.querySelector('[data-gym-project-style]')) return;
 
   const style = document.createElement('style');
+  style.setAttribute('data-gym-project-style', 'true');
   style.textContent = `
-    [data-gym-life-link] {
-      position: fixed;
-      right: max(16px, env(safe-area-inset-right));
-      bottom: calc(18px + env(safe-area-inset-bottom));
-      z-index: 9999;
-      display: inline-flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      gap: 1px;
-      min-width: 82px;
-      min-height: 58px;
-      padding: 11px 15px;
-      border-radius: 20px;
-      border: 1px solid rgba(255,255,255,.22);
+    .gym-project-card .project-media {
+      min-height: 210px;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(112,225,161,.34), transparent 34%),
+        radial-gradient(circle at 80% 10%, rgba(101,167,255,.28), transparent 30%),
+        linear-gradient(135deg, rgba(112,225,161,.14), rgba(101,167,255,.12));
+    }
+
+    .gym-project-visual {
+      width: min(76%, 250px);
+      aspect-ratio: 1 / .72;
+      border-radius: 26px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(7,10,18,.72);
+      box-shadow: 0 24px 50px rgba(0,0,0,.28);
+      padding: 18px;
+      display: grid;
+      gap: 10px;
+      align-content: center;
+    }
+
+    .gym-project-visual span {
+      display: block;
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.14);
+    }
+
+    .gym-project-visual span:nth-child(1) {
+      width: 54%;
       background: linear-gradient(135deg, #70e1a1, #65a7ff);
-      color: #06101a;
-      font-family: inherit;
-      text-decoration: none;
-      box-shadow: 0 16px 42px rgba(0,0,0,.35);
-      -webkit-tap-highlight-color: transparent;
-      transition: transform .18s ease, box-shadow .18s ease;
     }
 
-    [data-gym-life-link]:active {
-      transform: scale(.96);
-    }
+    .gym-project-visual span:nth-child(2) { width: 82%; }
+    .gym-project-visual span:nth-child(3) { width: 68%; }
 
-    [data-gym-life-link] .gym-life-kicker {
-      font-size: .68rem;
+    .gym-project-visual strong {
+      color: #70e1a1;
+      font-size: clamp(1.4rem, 6vw, 2.1rem);
       line-height: 1;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: .12em;
-      opacity: .74;
-    }
-
-    [data-gym-life-link] strong {
-      font-size: 1rem;
-      line-height: 1;
-      font-weight: 1000;
+      letter-spacing: -.04em;
       text-transform: lowercase;
     }
 
-    @media (min-width: 900px) {
-      [data-gym-life-link] {
-        right: 28px;
-        bottom: 28px;
-      }
-
-      [data-gym-life-link]:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 20px 52px rgba(0,0,0,.45);
-      }
+    .gym-nav-link {
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
   `;
 
   document.head.appendChild(style);
-  document.body.appendChild(link);
+};
+
+const createGymProjectCard = () => {
+  const projectGrid = document.querySelector('.project-grid');
+  if (!projectGrid || document.querySelector('[data-gym-project-card]')) return;
+
+  const copy = getCopy();
+  const card = document.createElement('article');
+  card.className = 'project-card gym-project-card';
+  card.dataset.category = 'systems';
+  card.setAttribute('data-gym-project-card', 'true');
+  card.innerHTML = `
+    <a class="project-media" href="./gym.html" aria-label="${copy.action}">
+      <div class="gym-project-visual" aria-hidden="true">
+        <strong>gym</strong>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </a>
+    <div class="project-copy">
+      <div class="project-tags">
+        <span class="tag" data-gym-copy="tagOne">${copy.tagOne}</span>
+        <span class="tag" data-gym-copy="tagTwo">${copy.tagTwo}</span>
+      </div>
+      <h3 data-gym-copy="title">${copy.title}</h3>
+      <p data-gym-copy="body">${copy.body}</p>
+      <div class="project-links">
+        <a class="project-link has-icon" href="./gym.html">
+          <ion-icon name="barbell-outline" aria-hidden="true"></ion-icon>
+          <span data-gym-copy="action">${copy.action}</span>
+        </a>
+      </div>
+    </div>
+  `;
+
+  projectGrid.prepend(card);
+};
+
+const createLifeNavShortcut = () => {
+  const sectionNav = document.querySelector('.section-nav');
+  if (!sectionNav || document.querySelector('[data-gym-nav-link]')) return;
+
+  const copy = getCopy();
+  const link = document.createElement('a');
+  link.className = 'nav-tab gym-nav-link';
+  link.href = './gym.html';
+  link.setAttribute('data-gym-nav-link', 'true');
+  link.setAttribute('data-gym-copy', 'nav');
+  link.textContent = copy.nav;
+  sectionNav.appendChild(link);
+};
+
+const refreshGymCopy = () => {
+  const copy = getCopy();
+  document.querySelectorAll('[data-gym-copy]').forEach((node) => {
+    const key = node.getAttribute('data-gym-copy');
+    if (copy[key]) node.textContent = copy[key];
+  });
+};
+
+const observeLanguageChanges = () => {
+  if (!document.body) return;
+
+  const observer = new MutationObserver(refreshGymCopy);
+  observer.observe(document.body, { attributes: true, attributeFilter: ['data-language'] });
+};
+
+const initGymEntryPoints = () => {
+  ensureGymStyles();
+  createGymProjectCard();
+  createLifeNavShortcut();
+  refreshGymCopy();
+  observeLanguageChanges();
 };
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', createGymLink);
+  document.addEventListener('DOMContentLoaded', initGymEntryPoints);
 } else {
-  createGymLink();
+  initGymEntryPoints();
 }
