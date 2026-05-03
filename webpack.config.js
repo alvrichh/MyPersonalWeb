@@ -13,6 +13,7 @@ module.exports = {
     gymLink: './assets/js/gym-link.js',
     mobilePolish: './assets/js/mobile-polish.js',
     navScrollFix: './assets/js/nav-scroll-fix.js',
+    giraldaFix: './assets/js/giralda-fix.js',
   },
   output: {
     filename: '[name].js',
