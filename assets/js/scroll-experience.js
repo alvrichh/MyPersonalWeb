@@ -96,6 +96,10 @@ const notifyProgressSection = (sectionId) => {
   }));
 };
 
+const closeMobileMenuAfterNavigation = () => {
+  window.dispatchEvent(new CustomEvent('alvrich:close-mobile-menu'));
+};
+
 const revealAllPanels = () => {
   SECTION_IDS.forEach((id) => {
     const panel = document.getElementById(id);
@@ -135,6 +139,10 @@ const interceptNavClicks = () => {
     event.stopImmediatePropagation();
     revealAllPanels();
     scrollToSection(button.dataset.target);
+
+    if (button.closest('.mobile-vcard-nav')) {
+      closeMobileMenuAfterNavigation();
+    }
   }, true);
 };
 
@@ -175,6 +183,9 @@ const patchHashLinks = () => {
     event.preventDefault();
     revealAllPanels();
     scrollToSection(sectionId);
+    if (link.closest('.mobile-vcard-nav')) {
+      closeMobileMenuAfterNavigation();
+    }
   });
 };
 
