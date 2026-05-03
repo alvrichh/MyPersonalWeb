@@ -19,6 +19,7 @@ module.exports = {
     scrollExperience: './assets/js/scroll-experience.js',
     verticalScrollProgress: './assets/js/vertical-scroll-progress.js',
     premiumScrollPolish: './assets/js/premium-scroll-polish.js',
+    mobileVcardDrawer: './assets/js/mobile-vcard-drawer.js',
   },
   output: {
     filename: '[name].js',
