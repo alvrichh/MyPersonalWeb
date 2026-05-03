@@ -103,7 +103,7 @@ const createVerticalScrollProgressStyles = () => {
     .vertical-scroll-progress__bubble {
       position: absolute;
       left: 0%;
-      bottom: calc(100% + .85rem);
+      top: calc(100% + .85rem);
       max-width: 12rem;
       padding: .48rem .68rem;
       border: 1px solid rgba(255,255,255,.15);
@@ -121,7 +121,7 @@ const createVerticalScrollProgressStyles = () => {
       font-weight: 900;
       line-height: 1;
       white-space: nowrap;
-      transform: translateX(-50%) translateY(4px) scale(.96);
+      transform: translateX(-50%) translateY(-4px) scale(.96);
       opacity: 0;
       transition: left .18s ease, opacity .18s ease, transform .18s ease;
       pointer-events: none;
@@ -131,11 +131,11 @@ const createVerticalScrollProgressStyles = () => {
       content: "";
       position: absolute;
       left: 50%;
-      top: calc(100% - 1px);
+      bottom: calc(100% - 1px);
       width: .55rem;
       height: .55rem;
-      border-right: 1px solid rgba(255,255,255,.15);
-      border-bottom: 1px solid rgba(255,255,255,.15);
+      border-left: 1px solid rgba(255,255,255,.15);
+      border-top: 1px solid rgba(255,255,255,.15);
       background: rgba(8, 13, 22, .82);
       transform: translateX(-50%) rotate(45deg);
     }
@@ -164,7 +164,7 @@ const createVerticalScrollProgressStyles = () => {
       }
 
       .vertical-scroll-progress__bubble {
-        bottom: calc(100% + .7rem);
+        top: calc(100% + .7rem);
         font-size: .72rem;
         max-width: 9rem;
       }
