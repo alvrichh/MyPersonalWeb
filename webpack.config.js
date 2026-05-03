@@ -17,6 +17,7 @@ module.exports = {
     glassBackgroundPolish: './assets/js/glass-background-polish.js',
     gymPolish: './assets/js/gym-polish.js',
     scrollExperience: './assets/js/scroll-experience.js',
+    verticalScrollProgress: './assets/js/vertical-scroll-progress.js',
   },
   output: {
     filename: '[name].js',
