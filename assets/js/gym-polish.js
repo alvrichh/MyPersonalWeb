@@ -1,3 +1,6 @@
+import './gym-view-focus.js';
+import './gym-monthly-plan.js';
+
 'use strict';
 
 const GYM_STORAGE_KEYS = ['alvrichGymMayAutoV2', 'alvrichGymMayAutoV1'];
