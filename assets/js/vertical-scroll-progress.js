@@ -1,6 +1,6 @@
 'use strict';
 
-const PROGRESS_SECTION_IDS = ['about', 'focus', 'work', 'contact'];
+const PROGRESS_SECTION_IDS = ['about', 'focus', 'work', 'cv', 'contact'];
 
 const getProgressSectionLabel = (id) => {
   const navButton = document.querySelector(`.nav-tab[data-target="${id}"]`);
