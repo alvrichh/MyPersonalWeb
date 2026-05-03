@@ -450,6 +450,8 @@ const bindMobileMenuEvents = () => {
     if (event.key === 'Escape') closeMobileMenu();
   });
 
+  window.addEventListener('alvrich:close-mobile-menu', closeMobileMenu);
+
   window.addEventListener('resize', () => {
     if (window.innerWidth > MOBILE_MENU_BREAKPOINT) closeMobileMenu();
   });
