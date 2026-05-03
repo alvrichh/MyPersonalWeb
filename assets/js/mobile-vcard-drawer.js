@@ -217,6 +217,94 @@ const createMobileMenuDrawerStyles = () => {
         color: var(--accent-text);
         border-color: transparent;
       }
+
+      .mobile-vcard-controls {
+        display: grid;
+        gap: .72rem;
+        margin-top: .18rem;
+        padding-top: .95rem;
+        border-top: 1px solid rgba(255,255,255,.1);
+      }
+
+      .mobile-menu-control {
+        position: relative;
+      }
+
+      .mobile-menu-control__trigger {
+        width: 100%;
+        min-height: 3.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: .85rem;
+        padding: .9rem 1rem;
+        border: 1px solid rgba(255,255,255,.13);
+        border-radius: 20px;
+        color: var(--text);
+        background: rgba(255,255,255,.055);
+      }
+
+      .mobile-menu-control__label {
+        display: grid;
+        gap: .12rem;
+        text-align: left;
+      }
+
+      .mobile-menu-control__label small {
+        color: var(--text-soft);
+        font-size: .72rem;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        font-weight: 900;
+      }
+
+      .mobile-menu-control__label strong {
+        color: var(--text);
+        font-size: .98rem;
+      }
+
+      .mobile-menu-control__value {
+        display: inline-flex;
+        align-items: center;
+        gap: .45rem;
+        color: var(--accent-strong);
+        font-weight: 900;
+        white-space: nowrap;
+      }
+
+      .mobile-menu-control__menu {
+        display: none;
+        gap: .5rem;
+        margin-top: .55rem;
+        padding: .65rem;
+        border: 1px solid rgba(255,255,255,.12);
+        border-radius: 20px;
+        background: rgba(0,0,0,.18);
+      }
+
+      .mobile-menu-control.is-open .mobile-menu-control__menu {
+        display: grid;
+      }
+
+      .mobile-menu-option {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: .8rem;
+        padding: .78rem .85rem;
+        border: 1px solid transparent;
+        border-radius: 16px;
+        color: var(--text);
+        background: rgba(255,255,255,.05);
+        font-weight: 900;
+      }
+
+      .mobile-menu-option.is-active {
+        border-color: rgba(var(--accent-rgb), .34);
+        background: rgba(var(--accent-rgb), .14);
+        color: var(--accent-strong);
+      }
     }
   `;
 
@@ -237,7 +325,51 @@ const cloneNav = () => {
     button.setAttribute('aria-pressed', 'false');
   });
 
+  const controls = document.createElement('div');
+  controls.className = 'mobile-vcard-controls';
+  controls.innerHTML = createControlsMarkup();
+  clone.appendChild(controls);
+
   return clone.outerHTML;
+};
+
+const getActiveLanguageOption = () => document.querySelector('.language-option.is-active') || document.querySelector('.language-option');
+const getActiveThemeOption = () => document.querySelector('.theme-option.is-active') || document.querySelector('.theme-option');
+
+const optionLabel = (option) => option?.textContent?.trim() || '';
+const optionIcon = (option) => {
+  const icon = option?.querySelector('.flag-custom, .flag-emoji, .swatch-dot');
+  return icon ? icon.outerHTML : '';
+};
+
+const createOptionButtons = (selector, type) => {
+  return [...document.querySelectorAll(selector)].map((option) => {
+    const value = option.dataset.languageOption || option.dataset.themeOption || '';
+    const active = option.classList.contains('is-active') ? ' is-active' : '';
+    return `<button class="mobile-menu-option${active}" type="button" data-mobile-${type}="${value}"><span>${optionLabel(option)}</span>${optionIcon(option)}</button>`;
+  }).join('');
+};
+
+const createControlsMarkup = () => {
+  const activeLanguage = getActiveLanguageOption();
+  const activeTheme = getActiveThemeOption();
+
+  return `
+    <div class="mobile-menu-control" data-mobile-control="language">
+      <button class="mobile-menu-control__trigger" type="button" data-mobile-control-trigger="language">
+        <span class="mobile-menu-control__label"><small>Idioma</small><strong>Language</strong></span>
+        <span class="mobile-menu-control__value">${optionIcon(activeLanguage)}${optionLabel(activeLanguage)}</span>
+      </button>
+      <div class="mobile-menu-control__menu">${createOptionButtons('.language-option', 'language')}</div>
+    </div>
+    <div class="mobile-menu-control" data-mobile-control="theme">
+      <button class="mobile-menu-control__trigger" type="button" data-mobile-control-trigger="theme">
+        <span class="mobile-menu-control__label"><small>Color</small><strong>Acento</strong></span>
+        <span class="mobile-menu-control__value">${optionIcon(activeTheme)}${optionLabel(activeTheme)}</span>
+      </button>
+      <div class="mobile-menu-control__menu">${createOptionButtons('.theme-option', 'theme')}</div>
+    </div>
+  `;
 };
 
 const createMobileMenuDrawer = () => {
@@ -317,6 +449,33 @@ const bindMobileMenuEvents = () => {
       return;
     }
 
+    const controlTrigger = event.target.closest('[data-mobile-control-trigger]');
+    if (controlTrigger) {
+      event.preventDefault();
+      const control = controlTrigger.closest('.mobile-menu-control');
+      document.querySelectorAll('.mobile-menu-control.is-open').forEach((node) => {
+        if (node !== control) node.classList.remove('is-open');
+      });
+      control?.classList.toggle('is-open');
+      return;
+    }
+
+    const languageOption = event.target.closest('[data-mobile-language]');
+    if (languageOption) {
+      event.preventDefault();
+      document.querySelector(`.language-option[data-language-option="${languageOption.dataset.mobileLanguage}"]`)?.click();
+      window.setTimeout(syncDrawerLanguage, 80);
+      return;
+    }
+
+    const themeOption = event.target.closest('[data-mobile-theme]');
+    if (themeOption) {
+      event.preventDefault();
+      document.querySelector(`.theme-option[data-theme-option="${themeOption.dataset.mobileTheme}"]`)?.click();
+      window.setTimeout(syncDrawerLanguage, 80);
+      return;
+    }
+
     const backdrop = event.target.closest('[data-mobile-vcard-backdrop]');
     const panel = event.target.closest('.mobile-vcard-panel');
     if (backdrop && !panel) {
@@ -345,7 +504,7 @@ const observeLanguageChanges = () => {
   const observer = new MutationObserver(() => {
     window.setTimeout(syncDrawerLanguage, 0);
   });
-  observer.observe(document.body, { attributes: true, attributeFilter: ['data-language'] });
+  observer.observe(document.body, { attributes: true, attributeFilter: ['data-language', 'data-theme'] });
 };
 
 const initMobileMenuDrawer = () => {
