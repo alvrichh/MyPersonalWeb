@@ -94,6 +94,7 @@ const createMobileMenuDrawerStyles = () => {
         height: auto;
         max-height: calc(100vh - 1.8rem - env(safe-area-inset-top) - env(safe-area-inset-bottom));
         margin-left: auto;
+        position: relative;
         border: 1px solid rgba(255,255,255,.16);
         border-radius: 34px;
         overflow: hidden;
@@ -114,55 +115,20 @@ const createMobileMenuDrawerStyles = () => {
       }
 
       .mobile-vcard-head {
+        min-height: 3.55rem;
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-        padding: 1rem;
-        border-bottom: 1px solid rgba(255,255,255,.1);
+        justify-content: flex-end;
+        padding: .72rem .72rem .25rem;
       }
 
       .mobile-vcard-brand {
-        display: inline-flex;
-        align-items: center;
-        gap: .75rem;
-        min-width: 0;
-      }
-
-      .mobile-vcard-brand-mark {
-        width: 2.55rem;
-        height: 2.55rem;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 17px;
-        font-family: var(--font-display);
-        font-weight: 900;
-        text-transform: uppercase;
-        color: var(--accent-strong);
-        background: linear-gradient(135deg, rgba(var(--accent-rgb), .24), rgba(var(--secondary-rgb), .14));
-      }
-
-      .mobile-vcard-brand-copy {
-        display: grid;
-        min-width: 0;
-      }
-
-      .mobile-vcard-brand-copy strong {
-        font-family: var(--font-display);
-        font-size: 1rem;
-      }
-
-      .mobile-vcard-brand-copy span {
-        color: var(--text-soft);
-        font-size: .78rem;
-        letter-spacing: .1em;
-        text-transform: uppercase;
+        display: none;
       }
 
       .mobile-vcard-close {
-        width: 2.65rem;
-        height: 2.65rem;
+        width: 2.6rem;
+        height: 2.6rem;
         flex: 0 0 auto;
         display: inline-flex;
         align-items: center;
@@ -171,7 +137,7 @@ const createMobileMenuDrawerStyles = () => {
         border-radius: 17px;
         color: var(--text);
         background: rgba(255,255,255,.065);
-        font-size: 1.45rem;
+        font-size: 1.35rem;
         line-height: 1;
         font-weight: 700;
         box-shadow: none;
@@ -179,9 +145,9 @@ const createMobileMenuDrawerStyles = () => {
 
       .mobile-vcard-nav {
         display: grid;
-        gap: .72rem;
-        padding: 1rem;
-        max-height: calc(100vh - 8.5rem - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+        gap: .6rem;
+        padding: .2rem 1rem 1rem;
+        max-height: calc(100vh - 5.6rem - env(safe-area-inset-top) - env(safe-area-inset-bottom));
         overflow: auto;
         overscroll-behavior: contain;
       }
@@ -197,10 +163,11 @@ const createMobileMenuDrawerStyles = () => {
         align-items: center;
         justify-content: center;
         text-align: center;
-        padding: 1rem;
+        padding: .82rem 1rem;
+        min-height: 4.25rem;
         border-radius: 20px;
         font-family: var(--font-display);
-        font-size: clamp(1.45rem, 8vw, 2.35rem);
+        font-size: clamp(1.25rem, 6.8vw, 2rem);
         line-height: 1;
         letter-spacing: -.05em;
         background: rgba(255,255,255,.055);
@@ -220,10 +187,10 @@ const createMobileMenuDrawerStyles = () => {
 
       .mobile-vcard-controls {
         display: grid;
-        gap: .72rem;
-        margin-top: .18rem;
-        padding-top: .95rem;
-        border-top: 1px solid rgba(255,255,255,.1);
+        gap: .62rem;
+        margin-top: .32rem;
+        padding-top: .8rem;
+        border-top: 1px solid rgba(255,255,255,.065);
       }
 
       .mobile-menu-control {
@@ -232,35 +199,31 @@ const createMobileMenuDrawerStyles = () => {
 
       .mobile-menu-control__trigger {
         width: 100%;
-        min-height: 3.8rem;
+        min-height: 3.45rem;
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: .85rem;
-        padding: .9rem 1rem;
+        padding: .8rem .95rem;
         border: 1px solid rgba(255,255,255,.13);
-        border-radius: 20px;
+        border-radius: 18px;
         color: var(--text);
-        background: rgba(255,255,255,.055);
+        background: rgba(255,255,255,.052);
       }
 
       .mobile-menu-control__label {
         display: grid;
-        gap: .12rem;
+        gap: .08rem;
         text-align: left;
       }
 
       .mobile-menu-control__label small {
-        color: var(--text-soft);
-        font-size: .72rem;
-        letter-spacing: .12em;
-        text-transform: uppercase;
-        font-weight: 900;
+        display: none;
       }
 
       .mobile-menu-control__label strong {
         color: var(--text);
-        font-size: .98rem;
+        font-size: 1rem;
       }
 
       .mobile-menu-control__value {
@@ -364,7 +327,7 @@ const createControlsMarkup = () => {
     </div>
     <div class="mobile-menu-control" data-mobile-control="theme">
       <button class="mobile-menu-control__trigger" type="button" data-mobile-control-trigger="theme">
-        <span class="mobile-menu-control__label"><small>Color</small><strong>Acento</strong></span>
+        <span class="mobile-menu-control__label"><small>Color</small><strong>Accent</strong></span>
         <span class="mobile-menu-control__value">${optionIcon(activeTheme)}${optionLabel(activeTheme)}</span>
       </button>
       <div class="mobile-menu-control__menu">${createOptionButtons('.theme-option', 'theme')}</div>
@@ -389,13 +352,7 @@ const createMobileMenuDrawer = () => {
   backdrop.innerHTML = `
     <aside class="mobile-vcard-panel" role="dialog" aria-modal="true" aria-label="Menú de secciones">
       <header class="mobile-vcard-head">
-        <div class="mobile-vcard-brand">
-          <span class="mobile-vcard-brand-mark">AM</span>
-          <span class="mobile-vcard-brand-copy">
-            <strong>alvrich</strong>
-            <span>sections</span>
-          </span>
-        </div>
+        <div class="mobile-vcard-brand" aria-hidden="true"></div>
         <button class="mobile-vcard-close" type="button" data-mobile-vcard-close aria-label="Cerrar">×</button>
       </header>
       ${cloneNav()}
