@@ -51,69 +51,7 @@ const createScrollExperienceStyles = () => {
     }
 
     .section-toast {
-      position: fixed;
-      left: 50%;
-      bottom: calc(1.15rem + env(safe-area-inset-bottom));
-      z-index: 120;
-      max-width: min(calc(100vw - 2rem), 420px);
-      display: inline-flex;
-      align-items: center;
-      gap: .62rem;
-      padding: .76rem 1rem;
-      border-radius: 999px;
-      color: var(--text);
-      border: 1px solid rgba(255,255,255,.16);
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.105), rgba(255,255,255,.045)),
-        rgba(8, 13, 22, .74);
-      box-shadow:
-        0 18px 52px rgba(0,0,0,.32),
-        inset 0 1px 0 rgba(255,255,255,.08);
-      backdrop-filter: blur(22px) saturate(1.22);
-      -webkit-backdrop-filter: blur(22px) saturate(1.22);
-      transform: translate(-50%, 18px) scale(.97);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .18s ease, transform .18s ease;
-    }
-
-    .section-toast.is-visible {
-      opacity: 1;
-      transform: translate(-50%, 0) scale(1);
-    }
-
-    .section-toast-dot {
-      width: .62rem;
-      height: .62rem;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--accent), var(--secondary));
-      box-shadow: 0 0 0 6px rgba(var(--accent-rgb), .12);
-      flex: 0 0 auto;
-    }
-
-    .section-toast-copy {
-      display: grid;
-      gap: .02rem;
-      min-width: 0;
-    }
-
-    .section-toast-kicker {
-      color: var(--text-soft);
-      font-size: .68rem;
-      line-height: 1;
-      text-transform: uppercase;
-      letter-spacing: .13em;
-      font-weight: 900;
-    }
-
-    .section-toast-title {
-      color: var(--text);
-      font-weight: 900;
-      font-size: .92rem;
-      line-height: 1.15;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      display: none !important;
     }
 
     @media (min-width: 980px) {
@@ -143,48 +81,19 @@ const createScrollExperienceStyles = () => {
       body.scroll-experience .topbar {
         position: relative;
       }
-
-      .section-toast {
-        bottom: calc(5.65rem + env(safe-area-inset-bottom));
-      }
     }
   `;
 
   document.head.appendChild(style);
 };
 
-const createToast = () => {
-  let toast = document.querySelector('[data-section-toast]');
-  if (toast) return toast;
-
-  toast = document.createElement('div');
-  toast.className = 'section-toast';
-  toast.setAttribute('data-section-toast', 'true');
-  toast.setAttribute('role', 'status');
-  toast.setAttribute('aria-live', 'polite');
-  toast.innerHTML = `
-    <span class="section-toast-dot" aria-hidden="true"></span>
-    <span class="section-toast-copy">
-      <span class="section-toast-kicker">Sección</span>
-      <strong class="section-toast-title" data-section-toast-title></strong>
-    </span>
-  `;
-
-  document.body.appendChild(toast);
-  return toast;
-};
-
-let toastTimer;
-const showSectionToast = (sectionId) => {
-  const toast = createToast();
-  const title = toast.querySelector('[data-section-toast-title]');
-  if (title) title.textContent = getSectionLabel(sectionId);
-
-  toast.classList.add('is-visible');
-  window.clearTimeout(toastTimer);
-  toastTimer = window.setTimeout(() => {
-    toast.classList.remove('is-visible');
-  }, 1500);
+const notifyProgressSection = (sectionId) => {
+  window.dispatchEvent(new CustomEvent('alvrich:section-change', {
+    detail: {
+      sectionId,
+      label: getSectionLabel(sectionId),
+    },
+  }));
 };
 
 const revealAllPanels = () => {
@@ -204,6 +113,8 @@ const setActiveNav = (sectionId) => {
     button.classList.toggle('is-active', isActive);
     button.setAttribute('aria-pressed', String(isActive));
   });
+
+  notifyProgressSection(sectionId);
 };
 
 const scrollToSection = (sectionId) => {
@@ -212,7 +123,6 @@ const scrollToSection = (sectionId) => {
 
   section.scrollIntoView({ behavior: 'smooth', block: 'start' });
   setActiveNav(sectionId);
-  showSectionToast(sectionId);
 };
 
 const interceptNavClicks = () => {
@@ -245,7 +155,6 @@ const observeSections = () => {
 
     currentSection = visible.target.id;
     setActiveNav(currentSection);
-    showSectionToast(currentSection);
   }, {
     root: null,
     threshold: [0.24, 0.38, 0.52],
@@ -272,7 +181,7 @@ const patchHashLinks = () => {
 const initScrollExperience = () => {
   document.body.classList.add('scroll-experience');
   createScrollExperienceStyles();
-  createToast();
+  document.querySelector('[data-section-toast]')?.remove();
   revealAllPanels();
   interceptNavClicks();
   patchHashLinks();
