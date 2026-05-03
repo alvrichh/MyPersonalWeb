@@ -1,8 +1,8 @@
 'use strict';
 
-const MOBILE_VCARD_BREAKPOINT = 760;
+const MOBILE_MENU_BREAKPOINT = 760;
 
-const createMobileVcardDrawerStyles = () => {
+const createMobileMenuDrawerStyles = () => {
   if (document.querySelector('[data-mobile-vcard-drawer-style]')) return;
 
   const style = document.createElement('style');
@@ -14,7 +14,7 @@ const createMobileVcardDrawerStyles = () => {
     }
 
     @media (max-width: 760px) {
-      body.has-mobile-vcard-drawer .sidebar.card {
+      body.has-mobile-vcard-drawer .topbar .section-nav {
         display: none;
       }
 
@@ -22,7 +22,7 @@ const createMobileVcardDrawerStyles = () => {
         position: fixed;
         top: max(.72rem, env(safe-area-inset-top));
         right: max(.72rem, env(safe-area-inset-right));
-        z-index: 150;
+        z-index: 180;
         width: 3.15rem;
         height: 3.15rem;
         display: inline-flex;
@@ -82,7 +82,7 @@ const createMobileVcardDrawerStyles = () => {
       .mobile-vcard-backdrop {
         position: fixed;
         inset: 0;
-        z-index: 140;
+        z-index: 170;
         display: block;
         padding: max(.9rem, env(safe-area-inset-top)) max(.72rem, env(safe-area-inset-right)) max(.9rem, env(safe-area-inset-bottom)) max(.72rem, env(safe-area-inset-left));
         background: rgba(3, 6, 12, .64);
@@ -100,10 +100,7 @@ const createMobileVcardDrawerStyles = () => {
 
       .mobile-vcard-panel {
         width: min(100%, 430px);
-        max-height: calc(100vh - 1.8rem - env(safe-area-inset-top) - env(safe-area-inset-bottom));
         margin-left: auto;
-        display: grid;
-        grid-template-rows: auto minmax(0, 1fr) auto;
         border: 1px solid rgba(255,255,255,.16);
         border-radius: 34px;
         overflow: hidden;
@@ -182,68 +179,35 @@ const createMobileVcardDrawerStyles = () => {
         font-weight: 900;
       }
 
-      .mobile-vcard-scroll {
-        min-height: 0;
-        overflow: auto;
-        overscroll-behavior: contain;
-        padding: 1rem;
-      }
-
-      .mobile-vcard-scroll::-webkit-scrollbar {
-        width: 0;
-      }
-
-      .mobile-vcard-content .sidebar {
-        display: block !important;
-        padding: 0;
-        border: 0;
-        border-radius: 0;
-        box-shadow: none;
-        background: transparent;
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
-        animation: none;
-      }
-
-      .mobile-vcard-content .profile-block {
-        gap: 1rem;
-      }
-
-      .mobile-vcard-content .avatar-wrap {
-        width: 132px;
-      }
-
-      .mobile-vcard-content .contact-toggle {
-        display: none;
-      }
-
-      .mobile-vcard-content .sidebar-panel {
-        max-height: none !important;
-        opacity: 1 !important;
-        overflow: visible !important;
-        margin-top: 1rem;
-        padding-top: 1rem;
-        border-top: 1px solid rgba(255,255,255,.1);
-      }
-
-      .mobile-vcard-content .sidebar-panel[hidden] {
-        display: block !important;
-      }
-
       .mobile-vcard-nav {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: .6rem;
-        padding: 0 1rem 1rem;
-        border-top: 1px solid rgba(255,255,255,.1);
+        gap: .72rem;
+        padding: 1rem;
       }
 
       .mobile-vcard-nav .nav-tab,
       .mobile-vcard-nav .gym-nav-link {
         width: 100%;
-        justify-content: center;
-        padding: .78rem .7rem;
-        font-size: .86rem;
+        justify-content: flex-start;
+        padding: 1rem;
+        border-radius: 20px;
+        font-family: var(--font-display);
+        font-size: clamp(1.45rem, 8vw, 2.35rem);
+        line-height: 1;
+        letter-spacing: -.05em;
+        background: rgba(255,255,255,.055);
+      }
+
+      .mobile-vcard-nav .gym-nav-link {
+        text-decoration: none;
+      }
+
+      .mobile-vcard-nav .nav-tab.is-active,
+      .mobile-vcard-nav .nav-tab:hover,
+      .mobile-vcard-nav .gym-nav-link:hover {
+        background: linear-gradient(135deg, rgba(var(--accent-rgb), .95), rgba(var(--accent-strong-rgb), .95));
+        color: var(--accent-text);
+        border-color: transparent;
       }
     }
   `;
@@ -251,38 +215,15 @@ const createMobileVcardDrawerStyles = () => {
   document.head.appendChild(style);
 };
 
-const cloneSidebar = () => {
-  const sidebar = document.querySelector('.sidebar.card');
-  if (!sidebar) return '';
-
-  const clone = sidebar.cloneNode(true);
-  clone.removeAttribute('data-sidebar');
-  clone.classList.remove('is-open');
-
-  clone.querySelectorAll('[id]').forEach((node) => {
-    node.id = `mobile-vcard-${node.id}`;
-  });
-
-  const panel = clone.querySelector('[data-sidebar-panel]');
-  if (panel) {
-    panel.hidden = false;
-    panel.removeAttribute('data-sidebar-panel');
-  }
-
-  clone.querySelector('[data-sidebar-toggle]')?.remove();
-
-  return clone.outerHTML;
-};
-
 const cloneNav = () => {
-  const nav = document.querySelector('.section-nav');
+  const nav = document.querySelector('.topbar .section-nav') || document.querySelector('.section-nav');
   if (!nav) return '';
 
   const clone = nav.cloneNode(true);
   clone.className = 'mobile-vcard-nav';
   clone.removeAttribute('data-i18n');
   clone.removeAttribute('data-i18n-attr');
-  clone.setAttribute('aria-label', 'Mobile menu sections');
+  clone.setAttribute('aria-label', 'Mobile section menu');
 
   clone.querySelectorAll('[aria-pressed]').forEach((button) => {
     button.setAttribute('aria-pressed', 'false');
@@ -291,14 +232,14 @@ const cloneNav = () => {
   return clone.outerHTML;
 };
 
-const createMobileVcardDrawer = () => {
+const createMobileMenuDrawer = () => {
   if (document.querySelector('[data-mobile-vcard-trigger]')) return;
 
   const trigger = document.createElement('button');
   trigger.className = 'mobile-vcard-trigger';
   trigger.type = 'button';
   trigger.setAttribute('data-mobile-vcard-trigger', 'true');
-  trigger.setAttribute('aria-label', 'Abrir vCard');
+  trigger.setAttribute('aria-label', 'Abrir menú');
   trigger.setAttribute('aria-expanded', 'false');
   trigger.innerHTML = '<span aria-hidden="true"></span>';
 
@@ -306,20 +247,17 @@ const createMobileVcardDrawer = () => {
   backdrop.className = 'mobile-vcard-backdrop';
   backdrop.setAttribute('data-mobile-vcard-backdrop', 'true');
   backdrop.innerHTML = `
-    <aside class="mobile-vcard-panel" role="dialog" aria-modal="true" aria-label="vCard de Alvaro Molina">
+    <aside class="mobile-vcard-panel" role="dialog" aria-modal="true" aria-label="Menú de secciones">
       <header class="mobile-vcard-head">
         <div class="mobile-vcard-brand">
           <span class="mobile-vcard-brand-mark">am</span>
           <span class="mobile-vcard-brand-copy">
             <strong>alvrich</strong>
-            <span>portfolio / vcard</span>
+            <span>sections</span>
           </span>
         </div>
         <button class="mobile-vcard-close" type="button" data-mobile-vcard-close aria-label="Cerrar">×</button>
       </header>
-      <div class="mobile-vcard-scroll">
-        <div class="mobile-vcard-content">${cloneSidebar()}</div>
-      </div>
       ${cloneNav()}
     </aside>
   `;
@@ -327,13 +265,13 @@ const createMobileVcardDrawer = () => {
   document.body.append(trigger, backdrop);
 };
 
-const openMobileVcard = () => {
+const openMobileMenu = () => {
   document.body.classList.add('mobile-vcard-open');
   document.querySelector('[data-mobile-vcard-trigger]')?.setAttribute('aria-expanded', 'true');
   document.body.style.overflow = 'hidden';
 };
 
-const closeMobileVcard = () => {
+const closeMobileMenu = () => {
   document.body.classList.remove('mobile-vcard-open');
   document.querySelector('[data-mobile-vcard-trigger]')?.setAttribute('aria-expanded', 'false');
   document.body.style.overflow = '';
@@ -342,9 +280,6 @@ const closeMobileVcard = () => {
 const syncDrawerLanguage = () => {
   const backdrop = document.querySelector('[data-mobile-vcard-backdrop]');
   if (!backdrop) return;
-
-  const content = backdrop.querySelector('.mobile-vcard-content');
-  if (content) content.innerHTML = cloneSidebar();
 
   const oldNav = backdrop.querySelector('.mobile-vcard-nav');
   const newNavHtml = cloneNav();
@@ -355,42 +290,44 @@ const syncDrawerLanguage = () => {
   }
 };
 
-const bindMobileVcardEvents = () => {
+const bindMobileMenuEvents = () => {
   document.addEventListener('click', (event) => {
     if (event.target.closest('[data-mobile-vcard-trigger]')) {
-      openMobileVcard();
+      event.preventDefault();
+      if (document.body.classList.contains('mobile-vcard-open')) {
+        closeMobileMenu();
+      } else {
+        syncDrawerLanguage();
+        openMobileMenu();
+      }
       return;
     }
 
     if (event.target.closest('[data-mobile-vcard-close]')) {
-      closeMobileVcard();
+      event.preventDefault();
+      closeMobileMenu();
       return;
     }
 
     const backdrop = event.target.closest('[data-mobile-vcard-backdrop]');
     const panel = event.target.closest('.mobile-vcard-panel');
     if (backdrop && !panel) {
-      closeMobileVcard();
+      closeMobileMenu();
       return;
     }
 
-    const navButton = event.target.closest('.mobile-vcard-nav .nav-tab[data-target]');
+    const navButton = event.target.closest('.mobile-vcard-nav .nav-tab[data-target], .mobile-vcard-nav .gym-nav-link');
     if (navButton) {
-      closeMobileVcard();
-    }
-
-    const drawerLink = event.target.closest('.mobile-vcard-content a');
-    if (drawerLink && drawerLink.href) {
-      closeMobileVcard();
+      window.setTimeout(closeMobileMenu, 80);
     }
   });
 
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') closeMobileVcard();
+    if (event.key === 'Escape') closeMobileMenu();
   });
 
   window.addEventListener('resize', () => {
-    if (window.innerWidth > MOBILE_VCARD_BREAKPOINT) closeMobileVcard();
+    if (window.innerWidth > MOBILE_MENU_BREAKPOINT) closeMobileMenu();
   });
 };
 
@@ -403,16 +340,16 @@ const observeLanguageChanges = () => {
   observer.observe(document.body, { attributes: true, attributeFilter: ['data-language'] });
 };
 
-const initMobileVcardDrawer = () => {
+const initMobileMenuDrawer = () => {
   document.body.classList.add('has-mobile-vcard-drawer');
-  createMobileVcardDrawerStyles();
-  createMobileVcardDrawer();
-  bindMobileVcardEvents();
+  createMobileMenuDrawerStyles();
+  createMobileMenuDrawer();
+  bindMobileMenuEvents();
   observeLanguageChanges();
 };
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initMobileVcardDrawer);
+  document.addEventListener('DOMContentLoaded', initMobileMenuDrawer);
 } else {
-  initMobileVcardDrawer();
+  initMobileMenuDrawer();
 }
