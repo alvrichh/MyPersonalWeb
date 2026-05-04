@@ -3,15 +3,17 @@
 const CUSTOM_LANGUAGE_OPTIONS = {
   fr: {
     label: 'Français',
-    flag: '🇫🇷',
+    flagClass: 'flag-france',
   },
   ga: {
     label: 'Gaeilge',
-    flag: '🇮🇪',
+    flagClass: 'flag-ireland',
   },
 };
 
 const LANGUAGE_OPTION_ORDER = ['en', 'es', 'de', 'fr', 'ru', 'pl', 'zh', 'ar', 'and', 'ga'];
+
+const customFlagMarkup = (option) => `<span class="flag-custom ${option.flagClass}" aria-hidden="true"></span>`;
 
 const createCustomLanguageButton = (code) => {
   const option = CUSTOM_LANGUAGE_OPTIONS[code];
@@ -21,7 +23,7 @@ const createCustomLanguageButton = (code) => {
   button.dataset.languageOption = code;
   button.setAttribute('aria-pressed', 'false');
   button.innerHTML = `
-    <span class="flag-emoji" aria-hidden="true">${option.flag}</span>
+    ${customFlagMarkup(option)}
     <span>${option.label}</span>
   `;
   return button;
@@ -66,8 +68,8 @@ const updateCustomLanguageCurrentState = (code) => {
   });
 
   document.querySelectorAll('[data-language-current-flag]').forEach((flag) => {
-    flag.className = 'flag-emoji';
-    flag.textContent = option.flag;
+    flag.className = `flag-custom ${option.flagClass}`;
+    flag.textContent = '';
   });
 };
 
