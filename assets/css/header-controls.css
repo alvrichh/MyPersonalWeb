@@ -1,3 +1,45 @@
+body::after {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(7, 9, 12, 0.04) 0%,
+      rgba(7, 9, 12, 0.28) 62%,
+      rgba(7, 9, 12, 0.58) 100%
+    );
+}
+
+.mobile-menu-option[data-mobile-theme="blue"] .swatch-dot {
+  background: linear-gradient(135deg, #6c98ff 0%, #7ad8ff 100%);
+}
+
+.mobile-menu-option[data-mobile-theme="green"] .swatch-dot {
+  background: linear-gradient(135deg, #67dfa0 0%, #7de0c7 100%);
+}
+
+.mobile-menu-option[data-mobile-theme="red"] .swatch-dot {
+  background: linear-gradient(135deg, #ff6f79 0%, #ffad7b 100%);
+}
+
+.mobile-menu-option[data-mobile-theme="orange"] .swatch-dot {
+  background: linear-gradient(135deg, #ff9e4c 0%, #ffb86f 100%);
+}
+
+.mobile-menu-option[data-mobile-theme="yellow"] .swatch-dot {
+  background: linear-gradient(135deg, #ffd45f 0%, #ffbf68 100%);
+}
+
+.mobile-menu-option[data-mobile-theme="pink"] .swatch-dot {
+  background: linear-gradient(135deg, #ff79c9 0%, #ffc58f 100%);
+}
+
+.mobile-menu-option[data-mobile-theme="white"] .swatch-dot {
+  background: linear-gradient(135deg, #edf2fb 0%, #ffffff 100%);
+}
+
+.mobile-menu-option[data-mobile-theme="black"] .swatch-dot {
+  background: linear-gradient(135deg, #2a2f39 0%, #a0adbe 100%);
+}
+
 @media (min-width: 1100px) {
   .topbar {
     padding-right: clamp(7.2rem, 11vw, 9rem);
