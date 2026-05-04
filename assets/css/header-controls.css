@@ -1,10 +1,19 @@
+body::before {
+  opacity: 0.026;
+  background-size: 380px;
+  filter: blur(0.2px);
+}
+
 body::after {
   background:
+    radial-gradient(circle at 50% 0%, rgba(var(--accent-rgb), 0.08), transparent 34%),
     linear-gradient(
       180deg,
-      rgba(7, 9, 12, 0.04) 0%,
-      rgba(7, 9, 12, 0.28) 62%,
-      rgba(7, 9, 12, 0.58) 100%
+      rgba(7, 9, 12, 0.22) 0%,
+      rgba(7, 9, 12, 0.06) 18%,
+      rgba(7, 9, 12, 0.08) 48%,
+      rgba(7, 9, 12, 0.34) 78%,
+      rgba(7, 9, 12, 0.74) 100%
     );
 }
 
