@@ -2,6 +2,8 @@
 
 const PROGRESS_SECTION_IDS = ['about', 'focus', 'work', 'cv', 'contact'];
 
+const isDesktopProgress = () => window.matchMedia('(min-width: 1024px)').matches;
+
 const getProgressSectionLabel = (id) => {
   const navButton = document.querySelector(`.nav-tab[data-target="${id}"]`);
   const heading = document.querySelector(`#${id} .panel-heading h2`);
@@ -123,7 +125,7 @@ const createVerticalScrollProgressStyles = () => {
       white-space: nowrap;
       transform: translateX(-50%) translateY(-4px) scale(.96);
       opacity: 0;
-      transition: left .18s ease, opacity .18s ease, transform .18s ease;
+      transition: left .18s ease, top .18s ease, opacity .18s ease, transform .18s ease;
       pointer-events: none;
     }
 
@@ -143,6 +145,61 @@ const createVerticalScrollProgressStyles = () => {
     .vertical-scroll-progress__bubble.is-visible {
       opacity: 1;
       transform: translateX(-50%) translateY(0) scale(1);
+    }
+
+    @media (min-width: 1024px) {
+      .vertical-scroll-progress {
+        top: 50%;
+        right: max(1.15rem, env(safe-area-inset-right));
+        left: auto;
+        width: 5px;
+        height: min(420px, calc(100vh - 9rem));
+        transform: translateY(-50%);
+      }
+
+      .vertical-scroll-progress__bar {
+        top: 0;
+        right: 0;
+        bottom: auto;
+        left: 0;
+        width: 100%;
+        height: 0%;
+        background: linear-gradient(180deg, var(--accent), var(--secondary));
+        transition: height 90ms linear;
+      }
+
+      .vertical-scroll-progress__dot {
+        left: 50%;
+        top: 0%;
+        transition: top 90ms linear;
+      }
+
+      .vertical-scroll-progress__section-dot {
+        left: 50%;
+        top: 0%;
+      }
+
+      .vertical-scroll-progress__bubble {
+        left: auto;
+        right: calc(100% + .9rem);
+        top: 0%;
+        transform: translateY(-50%) translateX(6px) scale(.96);
+        transition: top .18s ease, opacity .18s ease, transform .18s ease;
+      }
+
+      .vertical-scroll-progress__bubble::after {
+        left: calc(100% - 1px);
+        top: 50%;
+        bottom: auto;
+        border: 0;
+        border-top: 1px solid rgba(255,255,255,.15);
+        border-right: 1px solid rgba(255,255,255,.15);
+        transform: translateY(-50%) rotate(45deg);
+      }
+
+      .vertical-scroll-progress__bubble.is-visible {
+        transform: translateY(-50%) translateX(0) scale(1);
+      }
     }
 
     @media (max-width: 760px) {
@@ -208,9 +265,10 @@ const renderSectionDots = () => {
     const section = document.getElementById(id);
     if (!section) return '';
 
-    const left = getSectionScrollPercent(section);
+    const percent = getSectionScrollPercent(section);
     const label = getProgressSectionLabel(id);
-    return `<span class="vertical-scroll-progress__section-dot" data-progress-section="${id}" aria-label="${label}" style="left:${left}%"></span>`;
+    const positionStyle = isDesktopProgress() ? `top:${percent}%` : `left:${percent}%`;
+    return `<span class="vertical-scroll-progress__section-dot" data-progress-section="${id}" aria-label="${label}" style="${positionStyle}"></span>`;
   }).join('');
 };
 
@@ -229,9 +287,15 @@ const setActiveProgressSection = (sectionId, label = getProgressSectionLabel(sec
 
   if (!bubble || !dot) return;
 
-  const left = dot.style.left || '0%';
+  const position = isDesktopProgress() ? dot.style.top || '0%' : dot.style.left || '0%';
   bubble.textContent = label;
-  bubble.style.left = left;
+  if (isDesktopProgress()) {
+    bubble.style.top = position;
+    bubble.style.left = '';
+  } else {
+    bubble.style.left = position;
+    bubble.style.top = '';
+  }
   bubble.classList.add('is-visible');
 
   window.clearTimeout(bubbleTimer);
@@ -264,8 +328,17 @@ const updateVerticalScrollProgress = () => {
   const progress = Math.min(1, Math.max(0, window.scrollY / scrollable));
   const percentage = `${progress * 100}%`;
 
-  bar.style.width = percentage;
-  dot.style.left = percentage;
+  if (isDesktopProgress()) {
+    bar.style.width = '100%';
+    bar.style.height = percentage;
+    dot.style.left = '50%';
+    dot.style.top = percentage;
+  } else {
+    bar.style.height = '';
+    bar.style.width = percentage;
+    dot.style.top = '50%';
+    dot.style.left = percentage;
+  }
 
   const current = inferCurrentSection();
   if (current && current !== activeSectionId) {
