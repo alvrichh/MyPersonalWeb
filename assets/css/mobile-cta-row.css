@@ -1,0 +1,25 @@
+@media (max-width: 760px) {
+  #about .intro-copy > .cta-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.72rem;
+    width: 100%;
+  }
+
+  #about .intro-copy > .cta-row .btn {
+    width: 100%;
+    min-width: 0;
+    padding-inline: 0.75rem;
+    white-space: nowrap;
+  }
+
+  #about .intro-copy > .cta-row .btn ion-icon {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 370px) {
+  #about .intro-copy > .cta-row {
+    grid-template-columns: 1fr;
+  }
+}
