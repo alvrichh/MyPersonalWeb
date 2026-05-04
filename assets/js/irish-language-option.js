@@ -13,6 +13,52 @@ const CUSTOM_LANGUAGE_OPTIONS = {
 
 const LANGUAGE_OPTION_ORDER = ['en', 'es', 'de', 'fr', 'ru', 'pl', 'zh', 'ar', 'and', 'ga'];
 
+const ensureLanguageReliabilityStyles = () => {
+  if (document.querySelector('[data-language-reliability-style]')) return;
+
+  const style = document.createElement('style');
+  style.setAttribute('data-language-reliability-style', 'true');
+  style.textContent = `
+    .flag-france {
+      background-image: url('./images/flag-france.svg'), url('../images/flag-france.svg') !important;
+    }
+
+    .flag-ireland {
+      background-image: url('./images/flag-ireland.svg'), url('../images/flag-ireland.svg') !important;
+    }
+
+    .language-picker .picker-menu {
+      max-height: min(25rem, calc(100vh - 7rem)) !important;
+      overflow-y: auto !important;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+    }
+
+    .language-picker .picker-menu::-webkit-scrollbar {
+      width: .35rem;
+    }
+
+    .language-picker .picker-menu::-webkit-scrollbar-thumb {
+      border-radius: 999px;
+      background: rgba(var(--accent-rgb), .42);
+    }
+
+    @media (max-width: 760px) {
+      .language-picker .picker-menu {
+        max-height: min(22rem, calc(100vh - 10rem)) !important;
+      }
+
+      .mobile-menu-control[data-mobile-control='language'] .mobile-menu-control__menu {
+        max-height: min(23rem, calc(100vh - 14rem)) !important;
+        overflow-y: auto !important;
+        overscroll-behavior: contain;
+      }
+    }
+  `;
+
+  document.head.appendChild(style);
+};
+
 const customFlagMarkup = (option) => `<span class="flag-custom ${option.flagClass}" aria-hidden="true"></span>`;
 
 const createCustomLanguageButton = (code) => {
@@ -93,6 +139,7 @@ const bindCustomLanguageOptions = () => {
 };
 
 const initLanguageOptionsOrder = () => {
+  ensureLanguageReliabilityStyles();
   ensureCustomLanguageOptions();
   orderLanguageOptions();
   bindCustomLanguageOptions();
