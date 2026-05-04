@@ -1,0 +1,35 @@
+.language-picker .picker-menu {
+  max-height: min(25rem, calc(100vh - 7rem));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+
+.language-picker .picker-menu::-webkit-scrollbar {
+  width: 0.35rem;
+}
+
+.language-picker .picker-menu::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(var(--accent-rgb), 0.42);
+}
+
+.flag-france {
+  background-image: url("../images/flag-france.svg");
+}
+
+.flag-ireland {
+  background-image: url("../images/flag-ireland.svg");
+}
+
+@media (max-width: 760px) {
+  .language-picker .picker-menu {
+    max-height: min(22rem, calc(100vh - 10rem));
+  }
+
+  .mobile-menu-control[data-mobile-control="language"] .mobile-menu-control__menu {
+    max-height: min(23rem, calc(100vh - 14rem));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+}
