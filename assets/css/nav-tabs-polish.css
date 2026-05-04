@@ -11,3 +11,21 @@
     line-height: 1;
   }
 }
+
+@media (min-width: 1032px) and (max-width: 1280px) {
+  .topbar {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .topbar .brand {
+    grid-row: 1;
+  }
+
+  .topbar .section-nav {
+    grid-row: 2;
+    width: 100%;
+    max-width: calc(100% - 7.4rem);
+    margin-top: -0.1rem;
+  }
+}
