@@ -1,0 +1,110 @@
+'use strict';
+
+const createHeaderControlsPolish = () => {
+  if (document.querySelector('[data-header-controls-polish]')) return;
+
+  const style = document.createElement('style');
+  style.setAttribute('data-header-controls-polish', 'true');
+  style.textContent = `
+    @media (min-width: 1100px) {
+      .topbar {
+        padding-right: clamp(7.2rem, 11vw, 9rem);
+      }
+
+      .floating-controls {
+        position: fixed;
+        top: calc(2rem + 1.05rem);
+        right: max(1.45rem, calc((100vw - 1280px) / 2 + 1.45rem));
+        z-index: 42;
+        display: flex;
+        align-items: center;
+        gap: .45rem;
+        width: auto;
+        justify-items: initial;
+        pointer-events: none;
+      }
+
+      .floating-controls .picker {
+        pointer-events: auto;
+      }
+
+      .floating-controls .picker-trigger {
+        width: auto;
+        min-width: 0;
+        min-height: 2.55rem;
+        padding: .48rem .58rem;
+        border-radius: 18px;
+      }
+
+      .floating-controls .picker-trigger-main {
+        gap: .42rem;
+      }
+
+      .floating-controls .picker-trigger-icon {
+        width: 1.65rem;
+        height: 1.65rem;
+      }
+
+      .floating-controls .picker-trigger-current .flag-custom,
+      .floating-controls .picker-trigger-current .flag-emoji {
+        width: 1.05rem;
+        min-width: 1.05rem;
+      }
+
+      .floating-controls .picker-trigger-current .flag-custom {
+        height: .75rem;
+      }
+
+      .floating-controls .picker-trigger-dot {
+        width: .72rem;
+        height: .72rem;
+        box-shadow: 0 0 0 3px rgba(var(--accent-rgb), .11);
+      }
+
+      .floating-controls .picker-trigger-label,
+      .floating-controls .picker-trigger-current span:last-child {
+        display: none;
+      }
+
+      .floating-controls .picker-menu {
+        top: calc(100% + .65rem);
+        right: 0;
+      }
+    }
+
+    @media (min-width: 1100px) and (max-width: 1230px) {
+      .topbar {
+        padding-right: 6.25rem;
+      }
+
+      .floating-controls {
+        gap: .35rem;
+        right: max(1rem, calc((100vw - 1280px) / 2 + 1rem));
+      }
+
+      .floating-controls .picker-trigger {
+        width: 2.55rem;
+        height: 2.55rem;
+        padding: 0;
+        justify-content: center;
+      }
+
+      .floating-controls .picker-trigger-current,
+      .floating-controls .picker-trigger-side {
+        display: none;
+      }
+
+      .floating-controls .picker-trigger-main {
+        gap: 0;
+      }
+    }
+  `;
+
+  document.head.appendChild(style);
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', createHeaderControlsPolish);
+} else {
+  createHeaderControlsPolish();
+}
