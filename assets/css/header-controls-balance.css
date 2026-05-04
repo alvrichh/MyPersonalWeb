@@ -13,7 +13,7 @@
 
 @media (min-width: 1100px) {
   .floating-controls {
-    top: calc(2rem + 4.82rem);
+    top: calc(2rem + 1.88rem);
     align-items: center;
   }
 
