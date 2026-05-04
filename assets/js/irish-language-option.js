@@ -11,7 +11,7 @@ const CUSTOM_LANGUAGE_OPTIONS = {
   },
 };
 
-const LANGUAGE_OPTION_ORDER = ['en', 'es', 'de', 'fr', 'ru', 'pl', 'zh', 'ar', 'and', 'ga'];
+const LANGUAGE_OPTION_ORDER = ['en', 'es', 'ga', 'fr', 'de', 'ru', 'pl', 'zh', 'ar', 'and'];
 
 const ensureLanguageReliabilityStyles = () => {
   if (document.querySelector('[data-language-reliability-style]')) return;
