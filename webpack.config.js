@@ -9,7 +9,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 module.exports = {
   mode: 'development',
   entry: { 
-    script: './assets/js/script.js',
+    script: ['./assets/js/script.js', './assets/css/header-controls.css'],
     gymLink: './assets/js/gym-link.js',
     mobilePolish: './assets/js/mobile-polish.js',
     navScrollFix: './assets/js/nav-scroll-fix.js',
