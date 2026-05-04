@@ -13,7 +13,7 @@
 
 @media (min-width: 1100px) {
   .floating-controls {
-    top: calc(2rem + 4.25rem);
+    top: calc(2rem + 4.82rem);
     align-items: center;
   }
 
@@ -24,10 +24,14 @@
 }
 
 @media (min-width: 1100px) and (max-width: 1280px) {
+  .floating-controls {
+    right: max(1.45rem, calc((100vw - 1280px) / 2 + 1.45rem));
+  }
+
   .floating-controls .picker-trigger {
-    width: 3rem;
-    min-width: 3rem;
-    max-width: 3rem;
+    width: 3.25rem;
+    min-width: 3.25rem;
+    max-width: 3.25rem;
     height: 2.45rem;
     padding: 0;
     justify-content: center;
