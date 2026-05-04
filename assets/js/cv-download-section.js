@@ -7,7 +7,7 @@ const cvCopy = {
   en: {
     nav: 'CV',
     eyebrow: 'Resume',
-    title: 'Download my CV.',
+    title: 'Download my <span class="cv-accent-word">resume</span>.',
     body: 'A compact resume focused on full-stack development, integrations, automation, Azure-connected workflows and technical delivery.',
     download: 'Download CV',
     fallback: 'Downloads the exact PDF resume uploaded to this portfolio.',
@@ -16,7 +16,7 @@ const cvCopy = {
   es: {
     nav: 'CV',
     eyebrow: 'Currículum',
-    title: 'Descarga mi CV.',
+    title: 'Descarga mi <span class="cv-accent-word">currículum</span>.',
     body: 'Un currículum enfocado en desarrollo full-stack, integraciones, automatización, flujos conectados con Azure y entrega técnica.',
     download: 'Descargar CV',
     fallback: 'Descarga el PDF exacto subido a este portfolio.',
@@ -25,7 +25,7 @@ const cvCopy = {
   and: {
     nav: 'CV',
     eyebrow: 'Currículum',
-    title: 'Dezcarga mi CV.',
+    title: 'Dezcarga mi <span class="cv-accent-word">currículum</span>.',
     body: 'Un currículum enfocado en dezarrollo full-stack, integrazioneh, automatizazión, flujoh con Azure y entrega técnica, zabe.',
     download: 'Dezcargar CV',
     fallback: 'Dezcarga el PDF exacto subío a este portfolio, zabe.',
@@ -54,6 +54,11 @@ const createCvStyles = () => {
       box-shadow:
         0 22px 60px rgba(0,0,0,.22),
         inset 0 1px 0 rgba(255,255,255,.07);
+    }
+
+    .cv-accent-word {
+      color: var(--accent);
+      text-shadow: 0 0 28px rgba(var(--accent-rgb), .18);
     }
 
     .cv-download-section__eyebrow {
@@ -241,7 +246,8 @@ const refreshCvCopy = () => {
     button.textContent = data.nav;
   });
   document.querySelector('[data-cv-copy="eyebrow"]')?.replaceChildren(document.createTextNode(data.eyebrow));
-  document.querySelector('[data-cv-copy="title"]')?.replaceChildren(document.createTextNode(data.title));
+  const title = document.querySelector('[data-cv-copy="title"]');
+  if (title) title.innerHTML = data.title;
   document.querySelector('[data-cv-copy="body"]')?.replaceChildren(document.createTextNode(data.body));
   document.querySelector('[data-cv-copy="fallback"]')?.replaceChildren(document.createTextNode(data.fallback));
   const chips = document.querySelector('[data-cv-chips]');
