@@ -1,77 +1,103 @@
 'use strict';
 
-const IRISH_LANGUAGE_CODE = 'ga';
-const IRISH_LANGUAGE_LABEL = 'Gaeilge';
-const IRISH_LANGUAGE_FLAG = '🇮🇪';
+const CUSTOM_LANGUAGE_OPTIONS = {
+  fr: {
+    label: 'Français',
+    flag: '🇫🇷',
+  },
+  ga: {
+    label: 'Gaeilge',
+    flag: '🇮🇪',
+  },
+};
 
-const createIrishLanguageButton = () => {
+const LANGUAGE_OPTION_ORDER = ['en', 'es', 'de', 'fr', 'ru', 'pl', 'zh', 'ar', 'and', 'ga'];
+
+const createCustomLanguageButton = (code) => {
+  const option = CUSTOM_LANGUAGE_OPTIONS[code];
   const button = document.createElement('button');
   button.className = 'picker-option language-option';
   button.type = 'button';
-  button.dataset.languageOption = IRISH_LANGUAGE_CODE;
+  button.dataset.languageOption = code;
   button.setAttribute('aria-pressed', 'false');
   button.innerHTML = `
-    <span class="flag-emoji" aria-hidden="true">${IRISH_LANGUAGE_FLAG}</span>
-    <span>${IRISH_LANGUAGE_LABEL}</span>
+    <span class="flag-emoji" aria-hidden="true">${option.flag}</span>
+    <span>${option.label}</span>
   `;
   return button;
 };
 
-const ensureIrishLanguageOption = () => {
+const ensureCustomLanguageOptions = () => {
   const languageMenu = document.querySelector('[data-language-menu]');
-  if (!languageMenu || languageMenu.querySelector(`[data-language-option="${IRISH_LANGUAGE_CODE}"]`)) return;
+  if (!languageMenu) return;
 
-  const arabicOption = languageMenu.querySelector('[data-language-option="ar"]');
-  const andalusianOption = languageMenu.querySelector('[data-language-option="and"]');
-  const button = createIrishLanguageButton();
-
-  languageMenu.insertBefore(button, arabicOption || andalusianOption || null);
+  Object.keys(CUSTOM_LANGUAGE_OPTIONS).forEach((code) => {
+    if (!languageMenu.querySelector(`[data-language-option="${code}"]`)) {
+      languageMenu.appendChild(createCustomLanguageButton(code));
+    }
+  });
 };
 
-const updateIrishCurrentState = () => {
-  document.body.dataset.language = IRISH_LANGUAGE_CODE;
-  document.documentElement.lang = IRISH_LANGUAGE_CODE;
+const orderLanguageOptions = () => {
+  const languageMenu = document.querySelector('[data-language-menu]');
+  if (!languageMenu) return;
 
-  document.querySelectorAll('.language-option').forEach((option) => {
-    const isIrish = option.dataset.languageOption === IRISH_LANGUAGE_CODE;
-    option.classList.toggle('is-active', isIrish);
-    option.setAttribute('aria-pressed', String(isIrish));
+  LANGUAGE_OPTION_ORDER.forEach((code) => {
+    const option = languageMenu.querySelector(`[data-language-option="${code}"]`);
+    if (option) languageMenu.appendChild(option);
+  });
+};
+
+const updateCustomLanguageCurrentState = (code) => {
+  const option = CUSTOM_LANGUAGE_OPTIONS[code];
+  if (!option) return;
+
+  document.body.dataset.language = code;
+  document.documentElement.lang = code;
+
+  document.querySelectorAll('.language-option').forEach((languageOption) => {
+    const isCurrent = languageOption.dataset.languageOption === code;
+    languageOption.classList.toggle('is-active', isCurrent);
+    languageOption.setAttribute('aria-pressed', String(isCurrent));
   });
 
   document.querySelectorAll('[data-language-current]').forEach((label) => {
-    label.textContent = IRISH_LANGUAGE_LABEL;
+    label.textContent = option.label;
   });
 
   document.querySelectorAll('[data-language-current-flag]').forEach((flag) => {
     flag.className = 'flag-emoji';
-    flag.textContent = IRISH_LANGUAGE_FLAG;
+    flag.textContent = option.flag;
   });
 };
 
-const selectIrishLanguage = () => {
+const selectCustomLanguage = (code) => {
   const englishOption = document.querySelector('.language-option[data-language-option="en"]');
   englishOption?.click();
-  window.requestAnimationFrame(updateIrishCurrentState);
+  window.requestAnimationFrame(() => updateCustomLanguageCurrentState(code));
 };
 
-const bindIrishLanguageOption = () => {
+const bindCustomLanguageOptions = () => {
   document.addEventListener('click', (event) => {
-    const irishOption = event.target.closest(`[data-language-option="${IRISH_LANGUAGE_CODE}"], [data-mobile-language="${IRISH_LANGUAGE_CODE}"]`);
-    if (!irishOption) return;
+    const customOption = event.target.closest('[data-language-option="fr"], [data-language-option="ga"], [data-mobile-language="fr"], [data-mobile-language="ga"]');
+    if (!customOption) return;
 
     event.preventDefault();
     event.stopPropagation();
-    selectIrishLanguage();
+
+    const code = customOption.dataset.languageOption || customOption.dataset.mobileLanguage;
+    selectCustomLanguage(code);
   }, true);
 };
 
-const initIrishLanguageOption = () => {
-  ensureIrishLanguageOption();
-  bindIrishLanguageOption();
+const initLanguageOptionsOrder = () => {
+  ensureCustomLanguageOptions();
+  orderLanguageOptions();
+  bindCustomLanguageOptions();
 };
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initIrishLanguageOption);
+  document.addEventListener('DOMContentLoaded', initLanguageOptionsOrder);
 } else {
-  initIrishLanguageOption();
+  initLanguageOptionsOrder();
 }
