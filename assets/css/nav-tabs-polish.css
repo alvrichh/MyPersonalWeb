@@ -1,19 +1,13 @@
-.section-nav {
-  justify-content: flex-start;
-  gap: 0.5rem;
-}
+@media (min-width: 761px) {
+  .section-nav {
+    justify-content: flex-start;
+    gap: 0.5rem;
+  }
 
-.section-nav .nav-tab {
-  min-height: 2.45rem;
-  padding: 0.56rem 0.76rem;
-  font-size: 0.88rem;
-  line-height: 1;
-}
-
-@media (max-width: 760px) {
   .section-nav .nav-tab {
-    min-height: initial;
-    padding: 0.78rem 1rem;
-    font-size: inherit;
+    min-height: 2.45rem;
+    padding: 0.56rem 0.76rem;
+    font-size: 0.88rem;
+    line-height: 1;
   }
 }
