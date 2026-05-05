@@ -9,7 +9,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 module.exports = {
   mode: 'development',
   entry: { 
-    script: ['./assets/js/script.js', './assets/js/header-controls-align.js', './assets/js/mobile-controls-cleanup.js', './assets/js/irish-language-option.js', './assets/js/extended-language-translations.js', './assets/js/cv-language-translations.js', './assets/css/header-controls.css', './assets/css/nav-tabs-polish.css', './assets/css/header-controls-balance.css', './assets/css/mobile-cta-row.css', './assets/css/language-menu-scroll.css'],
+    script: ['./assets/js/script.js', './assets/js/header-controls-align.js', './assets/js/mobile-controls-cleanup.js', './assets/js/irish-language-option.js', './assets/js/extended-language-translations.js', './assets/js/cv-language-translations.js', './assets/js/premium-language-translations.js', './assets/css/header-controls.css', './assets/css/nav-tabs-polish.css', './assets/css/header-controls-balance.css', './assets/css/mobile-cta-row.css', './assets/css/language-menu-scroll.css'],
     gymLink: './assets/js/gym-link.js',
     mobilePolish: './assets/js/mobile-polish.js',
     navScrollFix: './assets/js/nav-scroll-fix.js',
