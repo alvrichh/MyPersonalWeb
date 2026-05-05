@@ -84,15 +84,22 @@ const applyCvLanguageTranslation = () => {
   });
 };
 
-const initCvLanguageTranslations = () => {
-  applyCvLanguageTranslation();
-
-  const observer = new MutationObserver(() => {
-    window.requestAnimationFrame(applyCvLanguageTranslation);
+const scheduleCvLanguageTranslation = () => {
+  window.requestAnimationFrame(() => {
+    applyCvLanguageTranslation();
+    window.setTimeout(applyCvLanguageTranslation, 150);
   });
+};
+
+const initCvLanguageTranslations = () => {
+  scheduleCvLanguageTranslation();
+
+  const observer = new MutationObserver(scheduleCvLanguageTranslation);
 
   observer.observe(document.body, {
     attributes: true,
+    childList: true,
+    subtree: true,
     attributeFilter: ['data-language'],
   });
 
