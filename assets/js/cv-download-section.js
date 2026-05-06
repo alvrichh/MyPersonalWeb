@@ -22,6 +22,69 @@ const cvCopy = {
     fallback: 'Descarga el PDF exacto subido a este portfolio.',
     chips: ['Full Stack', 'Integración', 'Automatización', 'Azure', 'APIs'],
   },
+  ga: {
+    nav: 'CV',
+    eyebrow: 'CV',
+    title: 'Íoslódáil mo <span class="cv-accent-word">CV</span>.',
+    body: 'CV dlúth dírithe ar fhorbairt full-stack, comhtháthuithe, uathoibriú, workflows ceangailte le Azure agus seachadadh teicniúil.',
+    download: 'Íoslódáil CV',
+    fallback: 'Íoslódálann sé an PDF cruinn atá curtha leis an bpunann seo.',
+    chips: ['Full Stack', 'Comhtháthú', 'Uathoibriú', 'Azure', 'APIs'],
+  },
+  fr: {
+    nav: 'CV',
+    eyebrow: 'CV',
+    title: 'Téléchargez mon <span class="cv-accent-word">CV</span>.',
+    body: 'Un CV compact axé sur le développement full-stack, les intégrations, l’automatisation, les workflows connectés à Azure et la livraison technique.',
+    download: 'Télécharger le CV',
+    fallback: 'Télécharge le PDF exact ajouté à ce portfolio.',
+    chips: ['Full Stack', 'Intégration', 'Automatisation', 'Azure', 'APIs'],
+  },
+  de: {
+    nav: 'CV',
+    eyebrow: 'Lebenslauf',
+    title: 'Lade meinen <span class="cv-accent-word">Lebenslauf</span> herunter.',
+    body: 'Ein kompakter Lebenslauf mit Fokus auf Full-Stack-Entwicklung, Integrationen, Automatisierung, Azure-verbundene Workflows und technische Umsetzung.',
+    download: 'CV herunterladen',
+    fallback: 'Lädt die exakte PDF-Datei herunter, die in dieses Portfolio hochgeladen wurde.',
+    chips: ['Full Stack', 'Integration', 'Automatisierung', 'Azure', 'APIs'],
+  },
+  ru: {
+    nav: 'CV',
+    eyebrow: 'Резюме',
+    title: 'Скачать мое <span class="cv-accent-word">резюме</span>.',
+    body: 'Краткое резюме с фокусом на full-stack разработке, интеграциях, автоматизации, рабочих процессах с Azure и технической поставке.',
+    download: 'Скачать CV',
+    fallback: 'Скачивает точный PDF-файл резюме, загруженный в это портфолио.',
+    chips: ['Full Stack', 'Интеграции', 'Автоматизация', 'Azure', 'APIs'],
+  },
+  pl: {
+    nav: 'CV',
+    eyebrow: 'CV',
+    title: 'Pobierz moje <span class="cv-accent-word">CV</span>.',
+    body: 'Kompaktowe CV skupione na full-stack developmencie, integracjach, automatyzacji, przepływach pracy połączonych z Azure i dostarczaniu technicznym.',
+    download: 'Pobierz CV',
+    fallback: 'Pobiera dokładny plik PDF CV dodany do tego portfolio.',
+    chips: ['Full Stack', 'Integracje', 'Automatyzacja', 'Azure', 'APIs'],
+  },
+  zh: {
+    nav: 'CV',
+    eyebrow: '简历',
+    title: '下载我的<span class="cv-accent-word">简历</span>。',
+    body: '一份简洁的简历，聚焦 full-stack 开发、集成、自动化、Azure 连接的工作流和技术交付。',
+    download: '下载 CV',
+    fallback: '下载此作品集中上传的准确 PDF 简历。',
+    chips: ['Full Stack', '集成', '自动化', 'Azure', 'APIs'],
+  },
+  ar: {
+    nav: 'CV',
+    eyebrow: 'السيرة الذاتية',
+    title: 'حمّل <span class="cv-accent-word">سيرتي الذاتية</span>.',
+    body: 'سيرة ذاتية مختصرة تركز على تطوير full-stack، التكاملات، الأتمتة، سير العمل المرتبط بـ Azure، والتسليم التقني.',
+    download: 'تحميل CV',
+    fallback: 'يحمّل ملف PDF الدقيق للسيرة الذاتية المرفوع إلى هذا البورتفوليو.',
+    chips: ['Full Stack', 'تكاملات', 'أتمتة', 'Azure', 'APIs'],
+  },
   and: {
     nav: 'CV',
     eyebrow: 'Currículum',
@@ -252,7 +315,9 @@ const refreshCvCopy = () => {
   document.querySelector('[data-cv-copy="fallback"]')?.replaceChildren(document.createTextNode(data.fallback));
   const chips = document.querySelector('[data-cv-chips]');
   if (chips) chips.innerHTML = data.chips.map((chip) => `<span>${chip}</span>`).join('');
-  document.querySelector('[data-download-cv]')?.replaceChildren(document.createTextNode(data.download));
+  document.querySelectorAll('[data-download-cv]').forEach((button) => {
+    button.replaceChildren(document.createTextNode(data.download));
+  });
   document.querySelectorAll('[data-cv-button-copy]').forEach((node) => {
     node.textContent = data.download;
   });
