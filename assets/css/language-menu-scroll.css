@@ -1,17 +1,17 @@
-.language-picker .picker-menu {
+.language-picker .picker-menu,
+.theme-picker .picker-menu {
   max-height: min(25rem, calc(100vh - 7rem));
   overflow-y: auto;
   overscroll-behavior: contain;
-  scrollbar-width: thin;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-.language-picker .picker-menu::-webkit-scrollbar {
-  width: 0.35rem;
-}
-
-.language-picker .picker-menu::-webkit-scrollbar-thumb {
-  border-radius: 999px;
-  background: rgba(var(--accent-rgb), 0.42);
+.language-picker .picker-menu::-webkit-scrollbar,
+.theme-picker .picker-menu::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
 }
 
 .flag-france {
@@ -23,13 +23,26 @@
 }
 
 @media (max-width: 760px) {
-  .language-picker .picker-menu {
+  .language-picker .picker-menu,
+  .theme-picker .picker-menu {
     max-height: min(22rem, calc(100vh - 10rem));
   }
 
-  .mobile-menu-control[data-mobile-control="language"] .mobile-menu-control__menu {
+  .mobile-menu-control[data-mobile-control="language"] .mobile-menu-control__menu,
+  .mobile-menu-control[data-mobile-control="theme"] .mobile-menu-control__menu,
+  .mobile-menu-control[data-mobile-control="accent"] .mobile-menu-control__menu {
     max-height: min(23rem, calc(100vh - 14rem));
     overflow-y: auto;
     overscroll-behavior: contain;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .mobile-menu-control[data-mobile-control="language"] .mobile-menu-control__menu::-webkit-scrollbar,
+  .mobile-menu-control[data-mobile-control="theme"] .mobile-menu-control__menu::-webkit-scrollbar,
+  .mobile-menu-control[data-mobile-control="accent"] .mobile-menu-control__menu::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
   }
 }
