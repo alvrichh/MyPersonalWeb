@@ -6,6 +6,10 @@ Personal portfolio / vCard website for Alvaro Molina.
 
 https://alvrich.vercel.app
 
+## Planning OS
+
+https://alvrich.vercel.app/planning.html
+
 ## Preview
 
 ![Alvrich portfolio preview](./assets/images/hero.png)
