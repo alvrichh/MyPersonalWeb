@@ -3,198 +3,24 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>alvrich planning · agenda</title>
-  <meta name="description" content="Agenda personal de alvrich para planificar tareas, marcar completadas y organizar el día.">
-  <meta name="theme-color" content="#08101a">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9C%85%3C/text%3E%3C/svg%3E">
+  <title>alvrich planning · mission control</title>
+  <meta name="description" content="Agenda creativa tipo mission control para organizar tareas, foco, sprints y planificación semanal.">
+  <meta name="theme-color" content="#060a12">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9C%A6%3C/text%3E%3C/svg%3E">
   <style>
     :root{
-      --bg:#05070d;
-      --bg2:#08101a;
-      --panel:rgba(16,24,39,.86);
-      --panel2:rgba(255,255,255,.06);
-      --line:rgba(255,255,255,.13);
-      --line2:rgba(255,255,255,.2);
-      --text:#f7fbff;
-      --muted:#9aa8bd;
-      --soft:#718197;
-      --accent:#70e1a1;
-      --accent2:#65a7ff;
-      --warn:#ffd166;
-      --danger:#ff7777;
-      --done:#7cf5bf;
-      --shadow:0 26px 72px rgba(0,0,0,.4);
-      --radius-xl:30px;
-      --radius-lg:22px;
-      --radius-md:16px;
-      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    }
-
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth;scroll-padding-top:14px}
-    body{
-      margin:0;
-      min-height:100vh;
-      padding:14px 10px 104px;
-      color:var(--text);
-      background:
-        radial-gradient(circle at 16% -8%,rgba(112,225,161,.24),transparent 30%),
-        radial-gradient(circle at 92% 4%,rgba(101,167,255,.24),transparent 27%),
-        linear-gradient(180deg,var(--bg2) 0%,var(--bg) 60%,#060a12 100%);
-      overflow-x:hidden;
-    }
-
-    body::before{
-      content:"";
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      opacity:.32;
-      background-image:
-        linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
-        linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
-      background-size:42px 42px;
-      mask-image:radial-gradient(circle at top,#000 0%,transparent 68%);
-      -webkit-mask-image:radial-gradient(circle at top,#000 0%,transparent 68%);
-    }
-
-    button,input,select,textarea{font:inherit}
-    button{border:0;background:none;color:inherit;cursor:pointer}
-    a{color:inherit;text-decoration:none}
-    :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-
-    .app{position:relative;z-index:1;width:min(980px,100%);margin:0 auto}
-    .top{display:grid;gap:12px;margin-bottom:12px}
-    .back{
-      width:max-content;
-      min-height:2.75rem;
-      display:inline-flex;
-      align-items:center;
-      border:1px solid var(--line);
-      border-radius:999px;
-      padding:9px 13px;
-      background:rgba(255,255,255,.055);
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
-      transition:transform .18s ease,border-color .18s ease,background .18s ease;
-    }
-    .back:hover{transform:translateY(-1px);border-color:rgba(112,225,161,.36);background:rgba(112,225,161,.09)}
-
-    .hero{
-      position:relative;
-      overflow:hidden;
-      border:1px solid var(--line);
-      border-radius:var(--radius-xl);
-      padding:18px;
-      background:
-        radial-gradient(circle at 0% 0%,rgba(112,225,161,.2),transparent 38%),
-        radial-gradient(circle at 100% 8%,rgba(101,167,255,.18),transparent 35%),
-        linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.024)),
-        var(--panel);
-      box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,.065);
-      backdrop-filter:blur(18px);
-      -webkit-backdrop-filter:blur(18px);
-    }
-    .hero::after{
-      content:"";
-      position:absolute;
-      inset:auto -18% -42% -18%;
-      height:12rem;
-      background:radial-gradient(circle,rgba(112,225,161,.14),transparent 64%);
-      pointer-events:none;
-    }
-    .hero > *{position:relative;z-index:1}
-    .kicker{margin:0 0 8px;color:var(--accent);font-size:.74rem;font-weight:1000;letter-spacing:.16em;text-transform:uppercase}
-    h1{margin:0;font-size:clamp(2.25rem,11vw,5.2rem);line-height:.9;letter-spacing:-.075em;background:linear-gradient(135deg,#f7fbff 12%,var(--accent) 58%,var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
-    .lead{max-width:64ch;margin:14px 0 0;color:#d7e5f5;line-height:1.55;font-size:clamp(.98rem,2.5vw,1.1rem)}
-
-    .command-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:15px}
-    .command-card{min-width:0;border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:12px;background:rgba(0,0,0,.18)}
-    .command-card span{display:block;color:var(--muted);font-size:.68rem;font-weight:1000;letter-spacing:.09em;text-transform:uppercase;line-height:1.2}
-    .command-card strong{display:block;margin-top:5px;font-size:clamp(1rem,4vw,1.4rem);line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-
-    .panel,.task-card,.form-card,.day-column,.empty-state{
-      border:1px solid var(--line);
-      border-radius:var(--radius-lg);
-      background:
-        linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.022)),
-        var(--panel);
-      box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,.055);
-      backdrop-filter:blur(18px);
-      -webkit-backdrop-filter:blur(18px);
-    }
-
-    .tabs{
-      position:fixed;
-      left:0;
-      right:0;
-      bottom:0;
-      z-index:20;
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:7px;
-      padding:10px max(10px,env(safe-area-inset-left)) calc(10px + env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-right));
-      border-top:1px solid var(--line);
-      background:rgba(7,10,18,.92);
-      box-shadow:0 -18px 54px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.055);
-      backdrop-filter:blur(16px);
-      -webkit-backdrop-filter:blur(16px);
-    }
-    .tab{min-height:3rem;display:inline-flex;align-items:center;justify-content:center;text-align:center;border:1px solid var(--line);border-radius:15px;padding:10px 5px;color:var(--muted);background:rgba(255,255,255,.06);font-size:.78rem;font-weight:1000;transition:transform .16s ease,background .16s ease,color .16s ease,border-color .16s ease}
-    .tab.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#06101a;border-color:transparent}
-    .tab:active{transform:scale(.97)}
-
-    .view{display:none;margin-top:12px}
-    .view.active{display:block}
-
-    .grid{display:grid;gap:12px}
-    .form-card{padding:14px}
-    .form-grid{display:grid;gap:10px}
-    label{display:block;color:var(--muted);font-size:.78rem;font-weight:1000;letter-spacing:.06em;text-transform:uppercase}
-    input,select,textarea{width:100%;margin-top:6px;border:1px solid var(--line);border-radius:15px;background:#0b1220;color:var(--text);padding:13px;font:inherit;transition:border-color .16s ease,box-shadow .16s ease,background .16s ease}
-    textarea{min-height:82px;resize:vertical}
-    input:focus,select:focus,textarea:focus{outline:0;border-color:rgba(112,225,161,.48);box-shadow:0 0 0 4px rgba(112,225,161,.12);background:#0c1627}
-
-    .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-    .btn{min-height:3.2rem;display:inline-flex;align-items:center;justify-content:center;border-radius:17px;padding:12px 13px;font-weight:1000;transition:transform .16s ease,filter .16s ease,border-color .16s ease,background .16s ease}
-    .btn:hover,.btn:focus-visible{transform:translateY(-1px);filter:brightness(1.04)}
-    .btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#06101a;box-shadow:0 18px 42px rgba(112,225,161,.14)}
-    .btn.ghost{border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text)}
-    .btn.danger{border:1px solid rgba(255,119,119,.28);background:rgba(255,119,119,.1);color:#ffd6d6}
-
-    .section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:16px 0 9px}
-    .section-head h2{margin:0;font-size:clamp(1.35rem,6vw,2.1rem);line-height:1;letter-spacing:-.05em}
-    .section-head p{margin:0;color:var(--muted);font-size:.9rem;text-align:right}
-
-    .task-list{display:grid;gap:10px}
-    .task-card{position:relative;overflow:hidden;padding:13px;transition:transform .18s ease,border-color .18s ease,background .18s ease,opacity .18s ease}
-    .task-card:hover,.task-card:focus-within{transform:translateY(-2px);border-color:rgba(112,225,161,.3)}
-    .task-card.done{opacity:.64;background:linear-gradient(180deg,rgba(112,225,161,.08),rgba(255,255,255,.02)),var(--panel)}
-    .task-top{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:start}
-    .task-check{width:32px;height:32px;margin:0;accent-color:#70e1a1;cursor:pointer}
-    .task-title{margin:1px 0 0;font-size:1rem;line-height:1.22;font-weight:1000}
-    .task-card.done .task-title{text-decoration:line-through;color:var(--muted)}
-    .task-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-    .chip{display:inline-flex;align-items:center;gap:5px;border:1px solid rgba(255,255,255,.11);border-radius:999px;padding:5px 8px;background:rgba(255,255,255,.045);color:var(--muted);font-size:.72rem;font-weight:900;line-height:1}
-    .chip.priority-high{color:#ffd6d6;border-color:rgba(255,119,119,.28);background:rgba(255,119,119,.09)}
-    .chip.priority-medium{color:#fff0bc;border-color:rgba(255,209,102,.26);background:rgba(255,209,102,.08)}
-    .chip.priority-low{color:#d7e5f5}
-    .task-note{margin:10px 0 0;color:var(--muted);line-height:1.45;font-size:.9rem}
-    .task-menu{display:flex;gap:6px}.icon-btn{width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:13px;background:rgba(255,255,255,.055);font-weight:1000}.icon-btn:hover{border-color:rgba(112,225,161,.32);background:rgba(112,225,161,.08)}
-
-    .empty-state{padding:18px;text-align:center;color:var(--muted)}
-    .empty-state strong{display:block;color:var(--text);font-size:1.1rem;margin-bottom:5px}
-
-    .week-grid{display:grid;grid-template-columns:1fr;gap:10px}
-    .day-column{padding:12px}.day-column.today{border-color:rgba(112,225,161,.38);background:linear-gradient(180deg,rgba(112,225,161,.08),rgba(255,255,255,.022)),var(--panel)}
-    .day-column h3{margin:0;display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:1rem;letter-spacing:-.02em}.day-column h3 span{color:var(--accent);font-size:.76rem;font-weight:1000;text-transform:uppercase;letter-spacing:.08em}
-    .mini-tasks{display:grid;gap:7px;margin-top:10px}.mini-task{border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:9px;background:rgba(0,0,0,.16);color:var(--text);font-size:.9rem}.mini-task.done{color:var(--muted);text-decoration:line-through;opacity:.65}
-
-    .progress-wrap{height:13px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:10px}.progress-bar{height:100%;width:0;background:linear-gradient(135deg,var(--accent),var(--accent2));transition:width .28s ease}.small{color:var(--muted);font-size:.9rem;line-height:1.45}.danger-text{color:var(--danger)}
-
-    @media(max-width:520px){
-      .command-strip{grid-template-columns:1fr}.command-card{display:flex;align-items:center;justify-content:space-between;gap:12px}.command-card strong{margin-top:0;text-align:right;max-width:50%}.actions{grid-template-columns:1fr}.section-head{align-items:start}.section-head p{text-align:left}.task-top{grid-template-columns:auto 1fr}.task-menu{grid-column:1/-1;justify-content:flex-end}.hero{padding:16px;border-radius:26px}
-    }
-    @media(min-width:760px){body{padding:22px 16px 34px}.tabs{position:sticky;top:12px;width:min(980px,100%);margin:14px auto 0;border:1px solid var(--line);border-radius:22px;padding:10px;background:rgba(7,10,18,.74)}.view{margin-top:16px}.form-grid{grid-template-columns:1.25fr .7fr .7fr}.form-grid label:first-child{grid-column:1/-1}.week-grid{grid-template-columns:repeat(7,minmax(0,1fr))}.day-column{min-height:190px}.task-list{grid-template-columns:repeat(2,minmax(0,1fr))}.task-card.featured{grid-column:1/-1}}
+      --bg:#05070d;--bg2:#08101a;--panel:rgba(16,24,39,.86);--panel2:rgba(255,255,255,.06);--line:rgba(255,255,255,.13);--line2:rgba(255,255,255,.22);--text:#f7fbff;--muted:#9aa8bd;--soft:#718197;--accent:#70e1a1;--accent2:#65a7ff;--violet:#b28cff;--warn:#ffd166;--danger:#ff7777;--done:#7cf5bf;--shadow:0 26px 72px rgba(0,0,0,.42);--radius-xl:32px;--radius-lg:23px;--radius-md:16px;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:14px}body{margin:0;min-height:100vh;padding:14px 10px 108px;color:var(--text);background:radial-gradient(circle at 12% -10%,rgba(112,225,161,.25),transparent 30%),radial-gradient(circle at 90% 3%,rgba(101,167,255,.26),transparent 26%),radial-gradient(circle at 50% 55%,rgba(178,140,255,.10),transparent 32%),linear-gradient(180deg,var(--bg2),var(--bg) 58%,#060a12);overflow-x:hidden}body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.33;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:44px 44px;mask-image:radial-gradient(circle at top,#000 0%,transparent 68%);-webkit-mask-image:radial-gradient(circle at top,#000 0%,transparent 68%)}body::after{content:"";position:fixed;inset:-30%;pointer-events:none;background:conic-gradient(from 130deg at 50% 50%,transparent,rgba(112,225,161,.08),transparent,rgba(101,167,255,.08),transparent);filter:blur(70px);opacity:.55;animation:orbit 18s linear infinite}button,input,select,textarea{font:inherit}button{border:0;background:none;color:inherit;cursor:pointer}a{color:inherit;text-decoration:none}:focus-visible{outline:2px solid var(--accent);outline-offset:3px}.app{position:relative;z-index:1;width:min(1120px,100%);margin:0 auto}.top{display:grid;gap:12px;margin-bottom:12px}.back{width:max-content;min-height:2.75rem;display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;padding:9px 13px;background:rgba(255,255,255,.055);box-shadow:inset 0 1px 0 rgba(255,255,255,.06);transition:transform .18s ease,border-color .18s ease,background .18s ease}.back:hover{transform:translateY(-1px);border-color:rgba(112,225,161,.36);background:rgba(112,225,161,.09)}
+    .hero{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:var(--radius-xl);padding:18px;background:radial-gradient(circle at 0 0,rgba(112,225,161,.22),transparent 38%),radial-gradient(circle at 100% 8%,rgba(101,167,255,.2),transparent 35%),linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.024)),var(--panel);box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,.065);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}.hero::after{content:"";position:absolute;right:-5rem;bottom:-6rem;width:17rem;height:17rem;border-radius:50%;background:radial-gradient(circle,rgba(112,225,161,.16),transparent 63%);pointer-events:none}.hero>*{position:relative;z-index:1}.kicker{margin:0 0 8px;color:var(--accent);font-size:.72rem;font-weight:1000;letter-spacing:.16em;text-transform:uppercase}h1{margin:0;font-size:clamp(2.45rem,12vw,6.4rem);line-height:.86;letter-spacing:-.082em;background:linear-gradient(135deg,#f7fbff 10%,var(--accent) 52%,var(--accent2) 80%,var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}.lead{max-width:70ch;margin:14px 0 0;color:#d7e5f5;line-height:1.55;font-size:clamp(.98rem,2.4vw,1.12rem)}
+    .hud{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:15px}.hud-card{min-width:0;border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:12px;background:rgba(0,0,0,.19);overflow:hidden}.hud-card span{display:block;color:var(--muted);font-size:.66rem;font-weight:1000;letter-spacing:.09em;text-transform:uppercase;line-height:1.2}.hud-card strong{display:block;margin-top:5px;font-size:clamp(1rem,4vw,1.35rem);line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.progress-wrap{height:13px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:12px}.progress-bar{height:100%;width:0;background:linear-gradient(135deg,var(--accent),var(--accent2),var(--violet));transition:width .28s ease}
+    .panel,.task-card,.form-card,.day-column,.empty-state,.focus-console,.matrix-cell,.timer-card{border:1px solid var(--line);border-radius:var(--radius-lg);background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.022)),var(--panel);box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,.055);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;display:grid;grid-template-columns:repeat(5,1fr);gap:6px;padding:10px max(8px,env(safe-area-inset-left)) calc(10px + env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-right));border-top:1px solid var(--line);background:rgba(7,10,18,.92);box-shadow:0 -18px 54px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.055);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}.tab{min-height:3rem;display:inline-flex;align-items:center;justify-content:center;text-align:center;border:1px solid var(--line);border-radius:15px;padding:10px 4px;color:var(--muted);background:rgba(255,255,255,.06);font-size:.72rem;font-weight:1000;transition:transform .16s ease,background .16s ease,color .16s ease,border-color .16s ease}.tab.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#06101a;border-color:transparent}.tab:active{transform:scale(.97)}.view{display:none;margin-top:12px}.view.active{display:block}.grid{display:grid;gap:12px}.section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:16px 0 9px}.section-head h2{margin:0;font-size:clamp(1.45rem,6vw,2.4rem);line-height:1;letter-spacing:-.055em}.section-head p{margin:0;color:var(--muted);font-size:.9rem;text-align:right}.small{color:var(--muted);font-size:.9rem;line-height:1.45}
+    .focus-grid{display:grid;gap:12px}.focus-console{position:relative;overflow:hidden;padding:15px}.focus-console::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at top right,rgba(112,225,161,.12),transparent 42%);pointer-events:none}.focus-console>*{position:relative}.focus-title{margin:0;font-size:clamp(1.35rem,7vw,2.25rem);letter-spacing:-.055em;line-height:1}.focus-note{margin:8px 0 0;color:var(--muted);line-height:1.45}.focus-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.timer-card{padding:15px;display:grid;gap:12px}.timer-display{font-size:clamp(2.4rem,16vw,5rem);font-weight:1000;letter-spacing:-.08em;line-height:.85;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}.timer-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+    .form-card{padding:14px}.form-grid{display:grid;gap:10px}label{display:block;color:var(--muted);font-size:.76rem;font-weight:1000;letter-spacing:.06em;text-transform:uppercase}input,select,textarea{width:100%;margin-top:6px;border:1px solid var(--line);border-radius:15px;background:#0b1220;color:var(--text);padding:13px;font:inherit;transition:border-color .16s ease,box-shadow .16s ease,background .16s ease}textarea{min-height:84px;resize:vertical}input:focus,select:focus,textarea:focus{outline:0;border-color:rgba(112,225,161,.48);box-shadow:0 0 0 4px rgba(112,225,161,.12);background:#0c1627}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.btn{min-height:3.15rem;display:inline-flex;align-items:center;justify-content:center;text-align:center;border-radius:17px;padding:12px 13px;font-weight:1000;transition:transform .16s ease,filter .16s ease,border-color .16s ease,background .16s ease}.btn:hover,.btn:focus-visible{transform:translateY(-1px);filter:brightness(1.04)}.btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#06101a;box-shadow:0 18px 42px rgba(112,225,161,.14)}.btn.ghost{border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text)}.btn.danger{border:1px solid rgba(255,119,119,.28);background:rgba(255,119,119,.1);color:#ffd6d6}
+    .task-list{display:grid;gap:10px}.task-card{position:relative;overflow:hidden;padding:13px;transition:transform .18s ease,border-color .18s ease,background .18s ease,opacity .18s ease}.task-card::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 100% 0,rgba(112,225,161,.08),transparent 44%);opacity:.8;pointer-events:none}.task-card>*{position:relative}.task-card:hover,.task-card:focus-within{transform:translateY(-2px);border-color:rgba(112,225,161,.3)}.task-card.done{opacity:.62;background:linear-gradient(180deg,rgba(112,225,161,.08),rgba(255,255,255,.02)),var(--panel)}.task-card.pinned{border-color:rgba(112,225,161,.4);box-shadow:0 30px 78px rgba(112,225,161,.08),var(--shadow)}.task-top{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:start}.task-check{width:32px;height:32px;margin:0;accent-color:#70e1a1;cursor:pointer}.task-title{margin:1px 0 0;font-size:1rem;line-height:1.22;font-weight:1000}.task-card.done .task-title{text-decoration:line-through;color:var(--muted)}.task-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.chip{display:inline-flex;align-items:center;gap:5px;border:1px solid rgba(255,255,255,.11);border-radius:999px;padding:5px 8px;background:rgba(255,255,255,.045);color:var(--muted);font-size:.72rem;font-weight:900;line-height:1}.chip.priority-high{color:#ffd6d6;border-color:rgba(255,119,119,.28);background:rgba(255,119,119,.09)}.chip.priority-medium{color:#fff0bc;border-color:rgba(255,209,102,.26);background:rgba(255,209,102,.08)}.chip.energy-deep{color:#d6c8ff;border-color:rgba(178,140,255,.28);background:rgba(178,140,255,.09)}.task-note{margin:10px 0 0;color:var(--muted);line-height:1.45;font-size:.9rem}.task-menu{display:flex;gap:6px}.icon-btn{width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:13px;background:rgba(255,255,255,.055);font-weight:1000}.icon-btn:hover{border-color:rgba(112,225,161,.32);background:rgba(112,225,161,.08)}.empty-state{padding:18px;text-align:center;color:var(--muted)}.empty-state strong{display:block;color:var(--text);font-size:1.1rem;margin-bottom:5px}
+    .week-grid{display:grid;grid-template-columns:1fr;gap:10px}.day-column{padding:12px}.day-column.today{border-color:rgba(112,225,161,.38);background:linear-gradient(180deg,rgba(112,225,161,.08),rgba(255,255,255,.022)),var(--panel)}.day-column h3{margin:0;display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:1rem;letter-spacing:-.02em}.day-column h3 span{color:var(--accent);font-size:.76rem;font-weight:1000;text-transform:uppercase;letter-spacing:.08em}.mini-tasks{display:grid;gap:7px;margin-top:10px}.mini-task{border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:9px;background:rgba(0,0,0,.16);color:var(--text);font-size:.88rem}.mini-task.done{color:var(--muted);text-decoration:line-through;opacity:.65}.matrix{display:grid;grid-template-columns:1fr;gap:10px}.matrix-cell{padding:12px;min-height:160px}.matrix-cell h3{margin:0 0 9px;font-size:1.05rem}.matrix-cell .mini-task{display:flex;justify-content:space-between;gap:8px}.matrix-count{color:var(--accent);font-size:.8rem}.confetti{position:fixed;inset:0;z-index:100;pointer-events:none;overflow:hidden}.confetti i{position:absolute;width:8px;height:14px;border-radius:3px;background:var(--accent);animation:fall .9s ease-out forwards}.toast{position:fixed;left:50%;bottom:calc(86px + env(safe-area-inset-bottom));z-index:90;transform:translateX(-50%) translateY(20px);opacity:0;max-width:min(92vw,420px);border:1px solid var(--line);border-radius:999px;padding:11px 14px;background:rgba(7,10,18,.88);box-shadow:var(--shadow);color:var(--text);font-weight:900;transition:opacity .2s ease,transform .2s ease}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+    @keyframes fall{0%{transform:translateY(-20px) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(420deg);opacity:0}}@keyframes orbit{to{transform:rotate(1turn)}}
+    @media(max-width:560px){.hud{grid-template-columns:1fr 1fr}.hud-card:nth-child(3),.hud-card:nth-child(4){grid-column:auto}.actions,.focus-actions{grid-template-columns:1fr}.timer-row{grid-template-columns:1fr 1fr 1fr}.section-head{align-items:start}.section-head p{text-align:left}.task-top{grid-template-columns:auto 1fr}.task-menu{grid-column:1/-1;justify-content:flex-end}.hero{padding:16px;border-radius:28px}}
+    @media(min-width:760px){body{padding:22px 16px 34px}.tabs{position:sticky;top:12px;width:min(1120px,100%);margin:14px auto 0;border:1px solid var(--line);border-radius:22px;padding:10px;background:rgba(7,10,18,.74)}.view{margin-top:16px}.focus-grid{grid-template-columns:1.2fr .8fr}.form-grid{grid-template-columns:1.2fr .55fr .55fr .55fr}.form-grid label:first-child,.form-grid label:last-child{grid-column:1/-1}.week-grid{grid-template-columns:repeat(7,minmax(0,1fr))}.day-column{min-height:190px}.task-list{grid-template-columns:repeat(2,minmax(0,1fr))}.task-card.featured{grid-column:1/-1}.matrix{grid-template-columns:repeat(2,minmax(0,1fr))}}
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
   </style>
 </head>
@@ -203,13 +29,14 @@
     <header class="top">
       <a class="back" href="./index.html">← volver al portfolio</a>
       <section class="hero">
-        <p class="kicker">alvrich command center</p>
-        <h1>Planning inteligente.</h1>
-        <p class="lead">Una agenda rápida para convertir ideas sueltas en tareas claras: prioridades, foco diario, backlog y una semana visible de un vistazo.</p>
-        <div class="command-strip" aria-label="Resumen de planificación">
-          <div class="command-card"><span>Hoy</span><strong id="todayLabel">—</strong></div>
-          <div class="command-card"><span>Completado</span><strong id="doneRatio">0/0</strong></div>
-          <div class="command-card"><span>Foco</span><strong id="focusLabel">Sin foco</strong></div>
+        <p class="kicker">alvrich mission control</p>
+        <h1>Agenda orbital.</h1>
+        <p class="lead">Un centro de mando para convertir caos en ejecución: foco del día, sprints, matriz de impacto, semana visible y backlog vivo. Todo privado en este navegador.</p>
+        <div class="hud" aria-label="Resumen de planificación">
+          <div class="hud-card"><span>Hoy</span><strong id="todayLabel">—</strong></div>
+          <div class="hud-card"><span>Completado</span><strong id="doneRatio">0/0</strong></div>
+          <div class="hud-card"><span>Foco</span><strong id="focusLabel">Sin foco</strong></div>
+          <div class="hud-card"><span>Racha</span><strong id="streakLabel">0 días</strong></div>
         </div>
         <div class="progress-wrap" aria-label="Progreso de tareas de hoy"><div class="progress-bar" id="progressBar"></div></div>
       </section>
@@ -217,176 +44,69 @@
 
     <nav class="tabs" aria-label="Secciones de agenda">
       <a class="tab active" href="#todayView" data-view-tab="todayView">Hoy</a>
-      <a class="tab" href="#addView" data-view-tab="addView">Añadir</a>
+      <a class="tab" href="#addView" data-view-tab="addView">Crear</a>
       <a class="tab" href="#weekView" data-view-tab="weekView">Semana</a>
-      <a class="tab" href="#backlogView" data-view-tab="backlogView">Backlog</a>
+      <a class="tab" href="#matrixView" data-view-tab="matrixView">Matriz</a>
+      <a class="tab" href="#backlogView" data-view-tab="backlogView">Todo</a>
     </nav>
 
     <section id="todayView" class="view active">
-      <div class="section-head"><div><p class="kicker">today protocol</p><h2>Tareas de hoy</h2></div><p id="todaySubtitle">Prioridad, claridad y ejecución.</p></div>
+      <div class="section-head"><div><p class="kicker">launch sequence</p><h2>Foco de hoy</h2></div><p id="todaySubtitle">Prioridad, claridad y ejecución.</p></div>
+      <div class="focus-grid">
+        <article class="focus-console"><p class="kicker">next mission</p><h3 class="focus-title" id="missionTitle">Sin misión activa</h3><p class="focus-note" id="missionNote">Crea una tarea o activa la demo semanal para empezar.</p><div class="focus-actions"><button class="btn primary" id="completeMission" type="button">Completar misión</button><button class="btn ghost" id="ritualBtn" type="button">Crear ritual diario</button></div></article>
+        <article class="timer-card"><p class="kicker">deep work sprint</p><div class="timer-display" id="timerDisplay">25:00</div><div class="timer-row"><button class="btn primary" id="timerToggle" type="button">Start</button><button class="btn ghost" id="timerShort" type="button">5m</button><button class="btn ghost" id="timerReset" type="button">Reset</button></div><p class="small">Modo sprint visual: no bloquea nada, solo te mete presión elegante.</p></article>
+      </div>
+      <div class="section-head"><div><p class="kicker">today queue</p><h2>Tareas de hoy</h2></div><p>La primera sin completar se convierte en misión.</p></div>
       <div id="todayTasks" class="task-list"></div>
     </section>
 
     <section id="addView" class="view">
-      <div class="section-head"><div><p class="kicker">capture</p><h2>Nueva tarea</h2></div><p>Rápida, clara y accionable.</p></div>
+      <div class="section-head"><div><p class="kicker">capture dock</p><h2>Nueva tarea</h2></div><p>Captura rápido, decide después.</p></div>
       <form class="form-card" id="taskForm">
         <div class="form-grid">
-          <label>Tarea<input id="taskTitle" required maxlength="90" placeholder="Ej: revisar responsive del portfolio"></label>
+          <label>Tarea<input id="taskTitle" required maxlength="100" placeholder="Ej: preparar una versión brutal del planning"></label>
           <label>Día<select id="taskDate"></select></label>
           <label>Prioridad<select id="taskPriority"><option value="high">Alta</option><option value="medium" selected>Media</option><option value="low">Baja</option></select></label>
+          <label>Energía<select id="taskEnergy"><option value="deep">Deep</option><option value="medium" selected>Normal</option><option value="light">Light</option></select></label>
           <label>Categoría<select id="taskCategory"><option>Personal</option><option>Trabajo</option><option>Web</option><option>Gym</option><option>Estudio</option><option>Recados</option></select></label>
-          <label style="grid-column:1/-1">Nota<textarea id="taskNote" placeholder="Contexto, enlace, siguiente paso o criterio de terminado..."></textarea></label>
+          <label>Impacto<select id="taskImpact"><option value="high">Alto</option><option value="low" selected>Bajo</option></select></label>
+          <label>Urgencia<select id="taskUrgency"><option value="high">Alta</option><option value="low" selected>Baja</option></select></label>
+          <label style="grid-column:1/-1">Nota<textarea id="taskNote" placeholder="Contexto, enlace, siguiente paso, criterio de terminado..."></textarea></label>
         </div>
-        <div class="actions">
-          <button class="btn primary" type="submit">Guardar tarea</button>
-          <button class="btn ghost" type="button" id="seedTasks">Crear demo semanal</button>
-        </div>
+        <div class="actions"><button class="btn primary" type="submit">Guardar tarea</button><button class="btn ghost" type="button" id="seedTasks">Crear demo pro</button></div>
       </form>
     </section>
 
-    <section id="weekView" class="view">
-      <div class="section-head"><div><p class="kicker">weekly map</p><h2>Semana</h2></div><p>Lo importante visible, sin ruido.</p></div>
-      <div id="weekGrid" class="week-grid"></div>
-    </section>
-
-    <section id="backlogView" class="view">
-      <div class="section-head"><div><p class="kicker">backlog</p><h2>Todas las tareas</h2></div><p>Arrastra mentalmente, ejecuta en orden.</p></div>
-      <div class="actions" style="margin-bottom:12px">
-        <button class="btn ghost" type="button" id="clearDone">Limpiar completadas</button>
-        <button class="btn danger" type="button" id="clearAll">Reset agenda</button>
-      </div>
-      <div id="allTasks" class="task-list"></div>
-    </section>
-  </main>
+    <section id="weekView" class="view"><div class="section-head"><div><p class="kicker">weekly orbit</p><h2>Semana</h2></div><p>Lo importante visible, sin ruido.</p></div><div id="weekGrid" class="week-grid"></div></section>
+    <section id="matrixView" class="view"><div class="section-head"><div><p class="kicker">impact matrix</p><h2>Matriz</h2></div><p>Decide qué hacer, delegar, posponer o borrar.</p></div><div id="matrixGrid" class="matrix"></div></section>
+    <section id="backlogView" class="view"><div class="section-head"><div><p class="kicker">backlog vault</p><h2>Todas las tareas</h2></div><p>Tu inventario completo.</p></div><div class="actions" style="margin-bottom:12px"><button class="btn ghost" type="button" id="exportData">Exportar</button><button class="btn ghost" type="button" id="clearDone">Limpiar completadas</button><button class="btn danger" type="button" id="clearAll">Reset agenda</button></div><div id="allTasks" class="task-list"></div></section>
+  </main><div class="toast" id="toast"></div>
 
   <script>
-    const STORAGE_KEY='alvrichPlanningAgendaV1';
-    const dayNames=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
-    const shortDayNames=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
-    const priorityLabel={high:'Alta',medium:'Media',low:'Baja'};
-    const priorityOrder={high:0,medium:1,low:2};
-
-    const isoDate=(date=new Date())=>{const d=new Date(date);d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)};
-    const addDays=(date,days)=>{const d=new Date(date+'T12:00:00');d.setDate(d.getDate()+days);return isoDate(d)};
-    const dateLabel=(date)=>{const d=new Date(date+'T12:00:00');return `${shortDayNames[d.getDay()]} ${String(d.getDate()).padStart(2,'0')}`};
-    const today=isoDate();
-
-    const defaultState={tasks:[]};
-    const readState=()=>{try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||defaultState}catch{return defaultState}};
-    const writeState=(state)=>localStorage.setItem(STORAGE_KEY,JSON.stringify(state));
-    const uid=()=>`${Date.now()}-${Math.random().toString(16).slice(2)}`;
-
-    const sortTasks=(tasks)=>[...tasks].sort((a,b)=>{
-      if(Boolean(a.done)!==Boolean(b.done)) return a.done?1:-1;
-      if((a.date||'')!==(b.date||'')) return String(a.date||'9999').localeCompare(String(b.date||'9999'));
-      return priorityOrder[a.priority]-priorityOrder[b.priority];
-    });
-
-    const taskTemplate=(task,featured=false)=>`
-      <article class="task-card ${task.done?'done':''} ${featured?'featured':''}" data-task-id="${task.id}">
-        <div class="task-top">
-          <input class="task-check" type="checkbox" ${task.done?'checked':''} aria-label="Marcar tarea como completada">
-          <div>
-            <h3 class="task-title">${escapeHtml(task.title)}</h3>
-            <div class="task-meta">
-              <span class="chip priority-${task.priority}">${priorityLabel[task.priority]}</span>
-              <span class="chip">${escapeHtml(task.category)}</span>
-              <span class="chip">${dateLabel(task.date)}</span>
-            </div>
-            ${task.note?`<p class="task-note">${escapeHtml(task.note)}</p>`:''}
-          </div>
-          <div class="task-menu">
-            <button class="icon-btn" type="button" data-action="move-today" title="Mover a hoy">↯</button>
-            <button class="icon-btn" type="button" data-action="delete" title="Borrar">×</button>
-          </div>
-        </div>
-      </article>
-    `;
-
-    function escapeHtml(value){return String(value).replace(/[&<>'"]/g,(char)=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[char]))}
-
-    function fillDateSelect(){
-      const select=document.getElementById('taskDate');
-      select.innerHTML=Array.from({length:14},(_,index)=>{const date=addDays(today,index);return `<option value="${date}">${index===0?'Hoy':dateLabel(date)} · ${date}</option>`}).join('');
-    }
-
-    function render(){
-      const state=readState();
-      const tasks=sortTasks(state.tasks||[]);
-      const todayTasks=tasks.filter(task=>task.date===today);
-      const todayDone=todayTasks.filter(task=>task.done).length;
-      const openTasks=tasks.filter(task=>!task.done);
-      const focus=openTasks.find(task=>task.date===today)||openTasks[0];
-
-      document.getElementById('todayLabel').textContent=`${dayNames[new Date(today+'T12:00:00').getDay()]} · ${today}`;
-      document.getElementById('doneRatio').textContent=`${todayDone}/${todayTasks.length}`;
-      document.getElementById('focusLabel').textContent=focus?focus.title:'Sin foco';
-      document.getElementById('progressBar').style.width=todayTasks.length?`${Math.round((todayDone/todayTasks.length)*100)}%`:'0%';
-      document.getElementById('todaySubtitle').textContent=todayTasks.length?`${todayTasks.length} tareas · ${todayDone} completadas`:'Sin tareas todavía. Crea una o usa la demo semanal.';
-
-      document.getElementById('todayTasks').innerHTML=todayTasks.length?todayTasks.map((task,index)=>taskTemplate(task,index===0&&!task.done)).join(''):'<div class="empty-state"><strong>Hoy está limpio.</strong><span>Añade una tarea o mueve algo del backlog a hoy.</span></div>';
-      document.getElementById('allTasks').innerHTML=tasks.length?tasks.map(task=>taskTemplate(task)).join(''):'<div class="empty-state"><strong>No hay tareas.</strong><span>Tu agenda está preparada para empezar desde cero.</span></div>';
-      renderWeek(tasks);
-    }
-
-    function renderWeek(tasks){
-      const grid=document.getElementById('weekGrid');
-      grid.innerHTML=Array.from({length:7},(_,index)=>{
-        const date=addDays(today,index);
-        const dayTasks=sortTasks(tasks.filter(task=>task.date===date)).slice(0,4);
-        const done=dayTasks.filter(task=>task.done).length;
-        return `<article class="day-column ${date===today?'today':''}"><h3>${dateLabel(date)} <span>${done}/${dayTasks.length}</span></h3><div class="mini-tasks">${dayTasks.length?dayTasks.map(task=>`<div class="mini-task ${task.done?'done':''}">${escapeHtml(task.title)}</div>`).join(''):'<div class="mini-task">Libre</div>'}</div></article>`;
-      }).join('');
-    }
-
-    function addTask(event){
-      event.preventDefault();
-      const title=document.getElementById('taskTitle').value.trim();
-      if(!title)return;
-      const state=readState();
-      state.tasks=state.tasks||[];
-      state.tasks.push({id:uid(),title,date:document.getElementById('taskDate').value,priority:document.getElementById('taskPriority').value,category:document.getElementById('taskCategory').value,note:document.getElementById('taskNote').value.trim(),done:false,createdAt:new Date().toISOString()});
-      writeState(state);
-      event.target.reset();
-      fillDateSelect();
-      render();
-      switchView('todayView');
-    }
-
-    function seedDemo(){
-      const state=readState();
-      const demo=[
-        ['Revisar responsive móvil del portfolio','Web','high',today,'Probar 390px, 430px y 768px.'],
-        ['Actualizar una captura del README','Web','medium',today,'Que la preview se vea profesional.'],
-        ['Registrar peso y sensación','Gym','medium',today,'Después del entrenamiento.'],
-        ['Preparar 3 objetivos de la semana','Personal','high',addDays(today,1),'Máximo tres, bien definidos.'],
-        ['Repasar LinkedIn y GitHub profile','Trabajo','medium',addDays(today,2),'Alinear CV, web y repos.'],
-        ['Bloque de estudio Azure/API','Estudio','low',addDays(today,3),'45 minutos sin distracciones.']
-      ];
-      state.tasks=[...(state.tasks||[]),...demo.map(([title,category,priority,date,note])=>({id:uid(),title,category,priority,date,note,done:false,createdAt:new Date().toISOString()}))];
-      writeState(state);render();switchView('todayView');
-    }
-
-    function updateTask(id,patch){const state=readState();state.tasks=(state.tasks||[]).map(task=>task.id===id?{...task,...patch}:task);writeState(state);render()}
-    function deleteTask(id){const state=readState();state.tasks=(state.tasks||[]).filter(task=>task.id!==id);writeState(state);render()}
-    function switchView(id){document.querySelectorAll('.view').forEach(view=>view.classList.toggle('active',view.id===id));document.querySelectorAll('[data-view-tab]').forEach(tab=>tab.classList.toggle('active',tab.dataset.viewTab===id));history.replaceState(null,'','#'+id);document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'})}
-
-    document.addEventListener('click',(event)=>{
-      const tab=event.target.closest('[data-view-tab]');
-      if(tab){event.preventDefault();switchView(tab.dataset.viewTab);return}
-      const card=event.target.closest('[data-task-id]');
-      const action=event.target.closest('[data-action]');
-      if(card&&action){const id=card.dataset.taskId;if(action.dataset.action==='delete')deleteTask(id);if(action.dataset.action==='move-today')updateTask(id,{date:today,done:false});}
-    });
-    document.addEventListener('change',(event)=>{const check=event.target.closest('.task-check');if(!check)return;const card=check.closest('[data-task-id]');if(card)updateTask(card.dataset.taskId,{done:check.checked})});
-    document.getElementById('taskForm').addEventListener('submit',addTask);
-    document.getElementById('seedTasks').addEventListener('click',seedDemo);
-    document.getElementById('clearDone').addEventListener('click',()=>{const state=readState();state.tasks=(state.tasks||[]).filter(task=>!task.done);writeState(state);render()});
-    document.getElementById('clearAll').addEventListener('click',()=>{if(confirm('¿Borrar toda la agenda?')){writeState({tasks:[]});render()}});
-
-    fillDateSelect();
-    render();
-    if(location.hash&&document.querySelector(location.hash)) switchView(location.hash.slice(1));
+    const STORAGE_KEY='alvrichPlanningAgendaV2';const OLD_KEY='alvrichPlanningAgendaV1';const dayNames=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];const shortDayNames=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];const priorityLabel={high:'Alta',medium:'Media',low:'Baja'};const energyLabel={deep:'Deep',medium:'Normal',light:'Light'};const priorityOrder={high:0,medium:1,low:2};
+    const isoDate=(date=new Date())=>{const d=new Date(date);d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)};const addDays=(date,days)=>{const d=new Date(date+'T12:00:00');d.setDate(d.getDate()+days);return isoDate(d)};const dateLabel=(date)=>{const d=new Date(date+'T12:00:00');return `${shortDayNames[d.getDay()]} ${String(d.getDate()).padStart(2,'0')}`};const today=isoDate();
+    const defaultState={tasks:[],timer:{remaining:1500,running:false,mode:'focus'}};const migrate=(state)=>({...defaultState,...state,tasks:(state.tasks||[]).map(t=>({impact:'low',urgency:t.priority==='high'?'high':'low',energy:'medium',pinned:false,...t}))});const readState=()=>{try{return migrate(JSON.parse(localStorage.getItem(STORAGE_KEY)||localStorage.getItem(OLD_KEY))||defaultState)}catch{return defaultState}};const writeState=(state)=>localStorage.setItem(STORAGE_KEY,JSON.stringify(state));const uid=()=>`${Date.now()}-${Math.random().toString(16).slice(2)}`;const escapeHtml=value=>String(value).replace(/[&<>'"]/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[char]));
+    const toast=(msg)=>{const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(window.__toast);window.__toast=setTimeout(()=>el.classList.remove('show'),1700)};
+    const sortTasks=tasks=>[...tasks].sort((a,b)=>{if(Boolean(a.done)!==Boolean(b.done))return a.done?1:-1;if(Boolean(a.pinned)!==Boolean(b.pinned))return a.pinned?-1:1;if((a.date||'')!==(b.date||''))return String(a.date||'9999').localeCompare(String(b.date||'9999'));return priorityOrder[a.priority]-priorityOrder[b.priority]});
+    const quadrant=t=>t.impact==='high'&&t.urgency==='high'?'do':t.impact==='high'?'plan':t.urgency==='high'?'delegate':'drop';
+    const taskTemplate=(task,featured=false)=>`<article class="task-card ${task.done?'done':''} ${task.pinned?'pinned':''} ${featured?'featured':''}" data-task-id="${task.id}"><div class="task-top"><input class="task-check" type="checkbox" ${task.done?'checked':''} aria-label="Marcar tarea como completada"><div><h3 class="task-title">${escapeHtml(task.title)}</h3><div class="task-meta"><span class="chip priority-${task.priority}">${priorityLabel[task.priority]}</span><span class="chip energy-${task.energy}">${energyLabel[task.energy]}</span><span class="chip">${escapeHtml(task.category)}</span><span class="chip">${dateLabel(task.date)}</span><span class="chip">${task.impact==='high'?'Impacto alto':'Impacto bajo'} · ${task.urgency==='high'?'Urgente':'No urgente'}</span></div>${task.note?`<p class="task-note">${escapeHtml(task.note)}</p>`:''}</div><div class="task-menu"><button class="icon-btn" type="button" data-action="pin" title="Fijar misión">★</button><button class="icon-btn" type="button" data-action="move-today" title="Mover a hoy">↯</button><button class="icon-btn" type="button" data-action="delete" title="Borrar">×</button></div></div></article>`;
+    function fillDateSelect(){taskDate.innerHTML=Array.from({length:21},(_,i)=>{const date=addDays(today,i);return `<option value="${date}">${i===0?'Hoy':dateLabel(date)} · ${date}</option>`}).join('')}
+    function getFocus(tasks){return tasks.find(t=>!t.done&&t.pinned)||tasks.find(t=>!t.done&&t.date===today)||tasks.find(t=>!t.done)}
+    function streak(tasks){let count=0;for(let i=0;i<30;i++){const date=addDays(today,-i);const day=tasks.filter(t=>t.date===date);if(day.length&&day.every(t=>t.done))count++;else if(i>0)break}return count}
+    function render(){const state=readState();const tasks=sortTasks(state.tasks||[]);const todayTasks=tasks.filter(t=>t.date===today);const todayDone=todayTasks.filter(t=>t.done).length;const focus=getFocus(tasks);todayLabel.textContent=`${dayNames[new Date(today+'T12:00:00').getDay()]} · ${today}`;doneRatio.textContent=`${todayDone}/${todayTasks.length}`;focusLabel.textContent=focus?focus.title:'Sin foco';streakLabel.textContent=`${streak(tasks)} días`;progressBar.style.width=todayTasks.length?`${Math.round(todayDone/todayTasks.length*100)}%`:'0%';todaySubtitle.textContent=todayTasks.length?`${todayTasks.length} tareas · ${todayDone} completadas`:'Sin tareas todavía. Crea una o usa la demo pro.';missionTitle.textContent=focus?focus.title:'Sin misión activa';missionNote.textContent=focus?(focus.note||`${priorityLabel[focus.priority]} · ${energyLabel[focus.energy]} · ${focus.category}`):'Crea una tarea o activa la demo pro para empezar.';todayTasksEl.innerHTML=todayTasks.length?todayTasks.map((t,i)=>taskTemplate(t,i===0&&!t.done)).join(''):'<div class="empty-state"><strong>Hoy está limpio.</strong><span>Añade una tarea, crea un ritual o mueve algo del backlog a hoy.</span></div>';allTasks.innerHTML=tasks.length?tasks.map(t=>taskTemplate(t)).join(''):'<div class="empty-state"><strong>No hay tareas.</strong><span>Tu agenda está lista para empezar desde cero.</span></div>';renderWeek(tasks);renderMatrix(tasks);renderTimer()}
+    function renderWeek(tasks){weekGrid.innerHTML=Array.from({length:7},(_,i)=>{const date=addDays(today,i);const dayTasks=sortTasks(tasks.filter(t=>t.date===date)).slice(0,5);const done=dayTasks.filter(t=>t.done).length;return `<article class="day-column ${date===today?'today':''}"><h3>${dateLabel(date)} <span>${done}/${dayTasks.length}</span></h3><div class="mini-tasks">${dayTasks.length?dayTasks.map(t=>`<div class="mini-task ${t.done?'done':''}">${escapeHtml(t.title)}</div>`).join(''):'<div class="mini-task">Libre</div>'}</div></article>`}).join('')}
+    function renderMatrix(tasks){const labels={do:['Hacer ahora','Alto impacto + urgente'],plan:['Planificar','Alto impacto + no urgente'],delegate:['Resolver rápido','Bajo impacto + urgente'],drop:['Aparcar / borrar','Bajo impacto + no urgente']};matrixGrid.innerHTML=Object.entries(labels).map(([key,[title,desc]])=>{const items=sortTasks(tasks.filter(t=>!t.done&&quadrant(t)===key)).slice(0,6);return `<article class="matrix-cell"><h3>${title} <span class="matrix-count">${items.length}</span></h3><p class="small">${desc}</p><div class="mini-tasks">${items.length?items.map(t=>`<div class="mini-task"><span>${escapeHtml(t.title)}</span><button class="icon-btn" data-task-id="${t.id}" data-action="move-today" title="Mover a hoy">↯</button></div>`).join(''):'<div class="mini-task">Vacío</div>'}</div></article>`}).join('')}
+    function addTask(e){e.preventDefault();const title=taskTitle.value.trim();if(!title)return;const state=readState();state.tasks.push({id:uid(),title,date:taskDate.value,priority:taskPriority.value,category:taskCategory.value,energy:taskEnergy.value,impact:taskImpact.value,urgency:taskUrgency.value,note:taskNote.value.trim(),done:false,pinned:false,createdAt:new Date().toISOString()});writeState(state);e.target.reset();fillDateSelect();render();switchView('todayView');toast('Tarea capturada')}
+    function seedDemo(){const state=readState();const demo=[['Revisar responsive móvil del portfolio','Web','high','deep','high','high',today,'Probar 390px, 430px, 768px y scroll real.'],['Preparar captura brutal del README','Web','medium','medium','high','low',today,'Que parezca producto real.'],['Registrar peso y sensación','Gym','medium','light','low','high',today,'Después del entrenamiento.'],['Bloque Azure/API sin distracciones','Estudio','high','deep','high','low',addDays(today,1),'45 minutos con una sola meta.'],['Actualizar LinkedIn + GitHub profile','Trabajo','medium','medium','high','low',addDays(today,2),'Alinear CV, web y repos.'],['Comprar / preparar comida base','Personal','low','light','low','high',addDays(today,2),'Simplificar la semana.']];state.tasks=[...state.tasks,...demo.map(([title,category,priority,energy,impact,urgency,date,note])=>({id:uid(),title,category,priority,energy,impact,urgency,date,note,done:false,pinned:false,createdAt:new Date().toISOString()}))];writeState(state);render();switchView('todayView');toast('Demo pro creada')}
+    function createRitual(){const state=readState();const ritual=[['Ordenar el día en 3 prioridades','Personal','high','light','high','high',today,'Elegir una misión principal y dos secundarias.'],['Sprint profundo de 25 minutos','Trabajo','high','deep','high','low',today,'Sin móvil, sin pestañas extra.'],['Cerrar el día con mini review','Personal','medium','light','high','low',today,'Qué avancé, qué bloqueo queda, siguiente paso.']];state.tasks=[...state.tasks,...ritual.map(([title,category,priority,energy,impact,urgency,date,note])=>({id:uid(),title,category,priority,energy,impact,urgency,date,note,done:false,pinned:false,createdAt:new Date().toISOString()}))];writeState(state);render();toast('Ritual diario creado')}
+    function updateTask(id,patch){const state=readState();state.tasks=state.tasks.map(t=>t.id===id?{...t,...patch}:t);writeState(state);render()}function deleteTask(id){const state=readState();state.tasks=state.tasks.filter(t=>t.id!==id);writeState(state);render();toast('Tarea eliminada')}function completeFocus(){const focus=getFocus(readState().tasks||[]);if(focus)updateTask(focus.id,{done:true,pinned:false});celebrate();toast('Misión completada')}
+    function switchView(id){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));document.querySelectorAll('[data-view-tab]').forEach(t=>t.classList.toggle('active',t.dataset.viewTab===id));history.replaceState(null,'','#'+id);document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'})}
+    function celebrate(){const wrap=document.createElement('div');wrap.className='confetti';document.body.appendChild(wrap);for(let i=0;i<34;i++){const p=document.createElement('i');p.style.left=Math.random()*100+'%';p.style.top='-20px';p.style.background=['#70e1a1','#65a7ff','#b28cff','#ffd166'][i%4];p.style.animationDelay=Math.random()*0.18+'s';wrap.appendChild(p)}setTimeout(()=>wrap.remove(),1100)}
+    let timerInterval;function renderTimer(){const s=readState();const rem=s.timer?.remaining??1500;const m=String(Math.floor(rem/60)).padStart(2,'0');const sec=String(rem%60).padStart(2,'0');timerDisplay.textContent=`${m}:${sec}`;timerToggle.textContent=s.timer?.running?'Pause':'Start'}function setTimer(patch){const s=readState();s.timer={remaining:1500,running:false,mode:'focus',...(s.timer||{}),...patch};writeState(s);renderTimer()}function tick(){const s=readState();if(!s.timer?.running)return;const next=Math.max(0,(s.timer.remaining||0)-1);setTimer({remaining:next,running:next>0});if(next===0){toast('Sprint terminado');celebrate();clearInterval(timerInterval)}}function startTimerLoop(){clearInterval(timerInterval);timerInterval=setInterval(tick,1000)}
+    document.addEventListener('click',e=>{const tab=e.target.closest('[data-view-tab]');if(tab){e.preventDefault();switchView(tab.dataset.viewTab);return}const action=e.target.closest('[data-action]');const card=e.target.closest('[data-task-id]');if(card&&action){const id=card.dataset.taskId;if(action.dataset.action==='delete')deleteTask(id);if(action.dataset.action==='move-today'){updateTask(id,{date:today,done:false});toast('Movida a hoy')}if(action.dataset.action==='pin'){updateTask(id,{pinned:true,done:false});toast('Misión fijada')}}});
+    document.addEventListener('change',e=>{const check=e.target.closest('.task-check');if(!check)return;const card=check.closest('[data-task-id]');if(card){updateTask(card.dataset.taskId,{done:check.checked,pinned:false});if(check.checked){celebrate();toast('Completada')}}});
+    taskForm.addEventListener('submit',addTask);seedTasks.addEventListener('click',seedDemo);ritualBtn.addEventListener('click',createRitual);completeMission.addEventListener('click',completeFocus);clearDone.addEventListener('click',()=>{const s=readState();s.tasks=s.tasks.filter(t=>!t.done);writeState(s);render();toast('Completadas limpiadas')});clearAll.addEventListener('click',()=>{if(confirm('¿Borrar toda la agenda?')){writeState(defaultState);render();toast('Agenda reseteada')}});exportData.addEventListener('click',async()=>{const data=JSON.stringify(readState(),null,2);try{await navigator.clipboard.writeText(data);toast('Backup copiado al portapapeles')}catch{prompt('Copia tu backup:',data)}});timerToggle.addEventListener('click',()=>{const s=readState();setTimer({running:!s.timer?.running});startTimerLoop()});timerShort.addEventListener('click',()=>setTimer({remaining:300,running:false,mode:'break'}));timerReset.addEventListener('click',()=>setTimer({remaining:1500,running:false,mode:'focus'}));
+    const todayTasksEl=document.getElementById('todayTasks');fillDateSelect();render();startTimerLoop();if(location.hash&&document.querySelector(location.hash))switchView(location.hash.slice(1));
   </script>
 </body>
 </html>
