@@ -1,6 +1,7 @@
 'use strict';
 
 const PROJECTS_DROPDOWN_SELECTOR = '[data-projects-dropdown]';
+const PROJECTS_MENU_SELECTOR = '[data-projects-menu]';
 
 const projectFallbacks = [
   {
@@ -25,11 +26,18 @@ const ensureProjectsDropdownStyles = () => {
   const style = document.createElement('style');
   style.setAttribute('data-projects-dropdown-style', 'true');
   style.textContent = `
+    .topbar.card,
+    .section-nav {
+      overflow: visible !important;
+    }
+
     .projects-dropdown {
       position: relative;
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      flex: 0 0 auto;
+      z-index: 4;
     }
 
     .projects-dropdown-trigger {
@@ -37,15 +45,16 @@ const ensureProjectsDropdownStyles = () => {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: .48rem;
+      gap: .38rem;
       border: 1px solid rgba(255,255,255,.14);
       border-radius: 999px;
-      padding: .72rem 1rem;
+      padding: .68rem .82rem;
       color: var(--text, #fff);
-      background: rgba(255,255,255,.055);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+      background: rgba(255,255,255,.045);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.055);
       font: inherit;
-      font-weight: 800;
+      font-size: .92rem;
+      font-weight: 700;
       line-height: 1;
       white-space: nowrap;
       cursor: pointer;
@@ -56,30 +65,25 @@ const ensureProjectsDropdownStyles = () => {
     .projects-dropdown-trigger:focus-visible,
     .projects-dropdown.is-open .projects-dropdown-trigger {
       transform: translateY(-1px);
-      border-color: rgba(112,225,161,.36);
-      background: rgba(255,255,255,.085);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 18px 40px rgba(0,0,0,.16);
+      border-color: rgba(112,225,161,.28);
+      background: rgba(255,255,255,.07);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 14px 32px rgba(0,0,0,.12);
     }
 
     .projects-dropdown-label {
       display: inline-flex;
       align-items: center;
-      gap: .42rem;
     }
 
     .projects-dropdown-label::before {
-      content: "";
-      width: .45rem;
-      height: .45rem;
-      border-radius: 999px;
-      background: var(--accent, #70e1a1);
-      box-shadow: 0 0 0 5px rgba(112,225,161,.12);
+      content: none !important;
+      display: none !important;
     }
 
     .projects-dropdown-chevron {
       display: inline-grid;
       place-items: center;
-      opacity: .75;
+      opacity: .68;
       transition: transform .2s ease;
     }
 
@@ -88,20 +92,18 @@ const ensureProjectsDropdownStyles = () => {
     }
 
     .projects-dropdown-menu {
-      position: absolute;
-      z-index: 60;
-      right: 0;
-      top: calc(100% + .55rem);
-      min-width: min(18rem, 84vw);
+      position: fixed;
+      z-index: 9999;
+      min-width: min(17rem, 86vw);
       display: grid;
       gap: .45rem;
       padding: .55rem;
       border: 1px solid rgba(255,255,255,.14);
-      border-radius: 1.25rem;
+      border-radius: 1.2rem;
       background:
         radial-gradient(circle at 10% 0%, rgba(112,225,161,.14), transparent 38%),
-        linear-gradient(135deg, rgba(20,29,44,.94), rgba(9,13,22,.94));
-      box-shadow: 0 28px 70px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.08);
+        linear-gradient(135deg, rgba(20,29,44,.96), rgba(9,13,22,.96));
+      box-shadow: 0 28px 70px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.08);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
     }
@@ -114,11 +116,11 @@ const ensureProjectsDropdownStyles = () => {
       display: grid;
       grid-template-columns: auto minmax(0, 1fr) auto;
       align-items: center;
-      gap: .75rem;
-      min-height: 3.45rem;
+      gap: .68rem;
+      min-height: 3.35rem;
       border: 1px solid rgba(255,255,255,.1);
       border-radius: .95rem;
-      padding: .62rem .72rem;
+      padding: .58rem .68rem;
       color: var(--text, #fff);
       text-decoration: none;
       background: rgba(255,255,255,.045);
@@ -133,11 +135,11 @@ const ensureProjectsDropdownStyles = () => {
     }
 
     .projects-dropdown-icon {
-      width: 2.25rem;
-      height: 2.25rem;
+      width: 2.15rem;
+      height: 2.15rem;
       display: inline-grid;
       place-items: center;
-      border-radius: .8rem;
+      border-radius: .78rem;
       background: rgba(112,225,161,.13);
       color: var(--accent, #70e1a1);
     }
@@ -151,7 +153,7 @@ const ensureProjectsDropdownStyles = () => {
     .projects-dropdown-copy strong {
       display: block;
       color: var(--text, #fff);
-      font-size: .92rem;
+      font-size: .9rem;
       line-height: 1.05;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -161,7 +163,7 @@ const ensureProjectsDropdownStyles = () => {
     .projects-dropdown-copy span {
       display: block;
       color: var(--text-muted, rgba(255,255,255,.62));
-      font-size: .74rem;
+      font-size: .72rem;
       line-height: 1.1;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -169,7 +171,7 @@ const ensureProjectsDropdownStyles = () => {
     }
 
     .projects-dropdown-arrow {
-      opacity: .58;
+      opacity: .55;
     }
 
     .projects-dropdown-source-link {
@@ -177,19 +179,10 @@ const ensureProjectsDropdownStyles = () => {
     }
 
     @media (max-width: 760px) {
-      .projects-dropdown {
-        width: auto;
-      }
-
       .projects-dropdown-trigger {
         min-height: 2.85rem;
-        padding: .68rem .88rem;
-      }
-
-      .projects-dropdown-menu {
-        right: auto;
-        left: 0;
-        min-width: min(18rem, 88vw);
+        padding: .66rem .78rem;
+        font-size: .9rem;
       }
     }
   `;
@@ -204,7 +197,7 @@ const getExistingProjectLinks = () => {
   return [
     planningLink && {
       key: 'planning',
-      label: planningLink.textContent?.trim() || 'Planning OS',
+      label: 'Planning OS',
       description: 'Bubble agenda',
       href: planningLink.getAttribute('href') || './planning.html',
       icon: 'sparkles-outline',
@@ -212,7 +205,7 @@ const getExistingProjectLinks = () => {
     },
     lifeLink && {
       key: 'life',
-      label: lifeLink.textContent?.trim() || 'Life',
+      label: 'Life',
       description: 'Gym tracker',
       href: lifeLink.getAttribute('href') || './gym.html',
       icon: 'barbell-outline',
@@ -232,12 +225,31 @@ const getProjectItems = () => {
   return Array.from(byKey.values());
 };
 
+const getProjectsDropdown = () => document.querySelector(PROJECTS_DROPDOWN_SELECTOR);
+const getProjectsMenu = () => document.querySelector(PROJECTS_MENU_SELECTOR);
+
+const positionProjectsMenu = () => {
+  const dropdown = getProjectsDropdown();
+  const trigger = dropdown?.querySelector('[data-projects-toggle]');
+  const menu = getProjectsMenu();
+  if (!trigger || !menu || menu.hidden) return;
+
+  const rect = trigger.getBoundingClientRect();
+  const menuWidth = Math.min(272, window.innerWidth - 24);
+  const left = Math.min(Math.max(12, rect.right - menuWidth), window.innerWidth - menuWidth - 12);
+  const top = Math.min(rect.bottom + 8, window.innerHeight - 12);
+
+  menu.style.width = `${menuWidth}px`;
+  menu.style.left = `${left}px`;
+  menu.style.top = `${top}px`;
+};
+
 const closeProjectsDropdown = () => {
-  const dropdown = document.querySelector(PROJECTS_DROPDOWN_SELECTOR);
+  const dropdown = getProjectsDropdown();
+  const menu = getProjectsMenu();
   if (!dropdown) return;
 
   const trigger = dropdown.querySelector('[data-projects-toggle]');
-  const menu = dropdown.querySelector('[data-projects-menu]');
 
   dropdown.classList.remove('is-open');
   trigger?.setAttribute('aria-expanded', 'false');
@@ -245,31 +257,40 @@ const closeProjectsDropdown = () => {
 };
 
 const toggleProjectsDropdown = () => {
-  const dropdown = document.querySelector(PROJECTS_DROPDOWN_SELECTOR);
-  if (!dropdown) return;
+  const dropdown = getProjectsDropdown();
+  const menu = getProjectsMenu();
+  if (!dropdown || !menu) return;
 
   const trigger = dropdown.querySelector('[data-projects-toggle]');
-  const menu = dropdown.querySelector('[data-projects-menu]');
   const isOpen = !dropdown.classList.contains('is-open');
 
   dropdown.classList.toggle('is-open', isOpen);
   trigger?.setAttribute('aria-expanded', String(isOpen));
-  if (menu) menu.hidden = !isOpen;
+  menu.hidden = !isOpen;
+
+  if (isOpen) window.requestAnimationFrame(positionProjectsMenu);
 };
 
+const escapeHtml = (value) => String(value)
+  .replaceAll('&', '&amp;')
+  .replaceAll('<', '&lt;')
+  .replaceAll('>', '&gt;')
+  .replaceAll('"', '&quot;')
+  .replaceAll("'", '&#039;');
+
 const renderProjectsDropdownItems = () => {
-  const menu = document.querySelector('[data-projects-menu]');
+  const menu = getProjectsMenu();
   if (!menu) return;
 
   const items = getProjectItems();
   menu.innerHTML = items.map((item) => `
-    <a class="projects-dropdown-item" href="${item.href}" data-project-key="${item.key}">
+    <a class="projects-dropdown-item" href="${escapeHtml(item.href)}" data-project-key="${escapeHtml(item.key)}">
       <span class="projects-dropdown-icon" aria-hidden="true">
-        <ion-icon name="${item.icon}"></ion-icon>
+        <ion-icon name="${escapeHtml(item.icon)}"></ion-icon>
       </span>
       <span class="projects-dropdown-copy">
-        <strong>${item.label}</strong>
-        <span>${item.description}</span>
+        <strong>${escapeHtml(item.label)}</strong>
+        <span>${escapeHtml(item.description)}</span>
       </span>
       <span class="projects-dropdown-arrow" aria-hidden="true">
         <ion-icon name="arrow-forward-outline"></ion-icon>
@@ -284,11 +305,29 @@ const renderProjectsDropdownItems = () => {
   });
 };
 
+const ensureProjectsMenu = () => {
+  let menu = getProjectsMenu();
+  if (menu) return menu;
+
+  menu = document.createElement('div');
+  menu.className = 'projects-dropdown-menu';
+  menu.setAttribute('data-projects-menu', 'true');
+  menu.hidden = true;
+  document.body.appendChild(menu);
+
+  menu.addEventListener('click', (event) => {
+    event.stopPropagation();
+    if (event.target.closest('.projects-dropdown-item')) closeProjectsDropdown();
+  });
+
+  return menu;
+};
+
 const createProjectsDropdown = () => {
   const sectionNav = document.querySelector('.section-nav');
   if (!sectionNav) return;
 
-  let dropdown = document.querySelector(PROJECTS_DROPDOWN_SELECTOR);
+  let dropdown = getProjectsDropdown();
   if (!dropdown) {
     dropdown = document.createElement('div');
     dropdown.className = 'projects-dropdown';
@@ -300,22 +339,18 @@ const createProjectsDropdown = () => {
           <ion-icon name="chevron-down-outline"></ion-icon>
         </span>
       </button>
-      <div class="projects-dropdown-menu" data-projects-menu hidden></div>
     `;
 
-    sectionNav.appendChild(dropdown);
+    const firstProjectLink = sectionNav.querySelector('[data-planning-nav-link], [data-gym-nav-link]');
+    sectionNav.insertBefore(dropdown, firstProjectLink || null);
 
     dropdown.querySelector('[data-projects-toggle]')?.addEventListener('click', (event) => {
       event.stopPropagation();
       toggleProjectsDropdown();
     });
-
-    dropdown.addEventListener('click', (event) => {
-      event.stopPropagation();
-      if (event.target.closest('.projects-dropdown-item')) closeProjectsDropdown();
-    });
   }
 
+  ensureProjectsMenu();
   renderProjectsDropdownItems();
 };
 
@@ -327,12 +362,17 @@ const initProjectsDropdown = () => {
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') closeProjectsDropdown();
   });
+  window.addEventListener('resize', positionProjectsMenu);
+  window.addEventListener('scroll', positionProjectsMenu, true);
 
   const sectionNav = document.querySelector('.section-nav');
   if (!sectionNav) return;
 
   const observer = new MutationObserver(() => {
-    window.requestAnimationFrame(renderProjectsDropdownItems);
+    window.requestAnimationFrame(() => {
+      createProjectsDropdown();
+      positionProjectsMenu();
+    });
   });
 
   observer.observe(sectionNav, { childList: true, subtree: false });
