@@ -36,6 +36,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({filename:'index.html', template: './index.html'}),
     new HtmlWebpackPlugin({filename:'gym.html', template: './gym.html', inject: false}),
+    new HtmlWebpackPlugin({filename:'planning.html', template: './planning.html', inject: false}),
     
     new miniCssExtractPlugin(),
     new CopyWebpackPlugin({
