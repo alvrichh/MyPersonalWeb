@@ -1,5 +1,6 @@
 import './gym-view-focus.js';
 import './gym-monthly-plan.js';
+import './gym-pro-max-ui.js';
 
 'use strict';
 
