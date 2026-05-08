@@ -179,10 +179,45 @@ const ensureProjectsDropdownStyles = () => {
     }
 
     @media (max-width: 760px) {
-      .projects-dropdown-trigger {
-        min-height: 2.85rem;
-        padding: .66rem .78rem;
-        font-size: .9rem;
+      .section-nav .projects-dropdown {
+        width: 100% !important;
+        display: flex !important;
+        flex: 0 0 100% !important;
+      }
+
+      .section-nav .projects-dropdown-trigger {
+        width: 100% !important;
+        min-height: clamp(4.85rem, 17vw, 6.05rem) !important;
+        justify-content: center !important;
+        gap: .72rem !important;
+        border-radius: clamp(1.35rem, 5vw, 1.85rem) !important;
+        padding: 1rem 1.25rem !important;
+        font-size: clamp(1.85rem, 7vw, 2.55rem) !important;
+        font-weight: 700 !important;
+        letter-spacing: -.035em !important;
+        background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.035)) !important;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,.07) !important;
+      }
+
+      .section-nav .projects-dropdown-trigger:hover,
+      .section-nav .projects-dropdown-trigger:focus-visible,
+      .section-nav .projects-dropdown.is-open .projects-dropdown-trigger {
+        transform: none !important;
+        border-color: rgba(255,255,255,.18) !important;
+        background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.045)) !important;
+      }
+
+      .section-nav .projects-dropdown-chevron {
+        font-size: .82em !important;
+      }
+
+      .projects-dropdown-menu {
+        border-radius: 1.35rem;
+      }
+
+      .projects-dropdown-item {
+        min-height: 4.25rem;
+        border-radius: 1.05rem;
       }
     }
   `;
@@ -235,8 +270,11 @@ const positionProjectsMenu = () => {
   if (!trigger || !menu || menu.hidden) return;
 
   const rect = trigger.getBoundingClientRect();
-  const menuWidth = Math.min(272, window.innerWidth - 24);
-  const left = Math.min(Math.max(12, rect.right - menuWidth), window.innerWidth - menuWidth - 12);
+  const isMobileMenu = window.innerWidth <= 760;
+  const menuWidth = isMobileMenu ? Math.min(rect.width, window.innerWidth - 48) : Math.min(272, window.innerWidth - 24);
+  const left = isMobileMenu
+    ? Math.min(Math.max(24, rect.left), window.innerWidth - menuWidth - 24)
+    : Math.min(Math.max(12, rect.right - menuWidth), window.innerWidth - menuWidth - 12);
   const top = Math.min(rect.bottom + 8, window.innerHeight - 12);
 
   menu.style.width = `${menuWidth}px`;
