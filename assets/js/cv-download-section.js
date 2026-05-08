@@ -191,8 +191,7 @@ const createCvStyles = () => {
       line-height: 1.45;
     }
 
-    .cv-priority-action,
-    .cv-hero-download {
+    .cv-priority-action {
       border: 1px solid rgba(var(--accent-rgb), .28) !important;
       background:
         linear-gradient(135deg, rgba(var(--accent-rgb), .18), rgba(var(--secondary-rgb), .11)),
@@ -201,9 +200,30 @@ const createCvStyles = () => {
       box-shadow: 0 16px 34px rgba(var(--accent-rgb), .12);
     }
 
-    .cv-priority-action ion-icon,
-    .cv-hero-download ion-icon {
+    .cv-priority-action ion-icon {
       color: var(--accent-strong);
+    }
+
+    #about .intro-copy > .cta-row > a.btn-primary {
+      border: 1px solid rgba(255,255,255,.13) !important;
+      background: rgba(255,255,255,.045) !important;
+      color: var(--text) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.06) !important;
+    }
+
+    #about .intro-copy > .cta-row > a.btn-primary ion-icon {
+      color: var(--text) !important;
+    }
+
+    #about .intro-copy > .cta-row > .cv-hero-download {
+      border: 0 !important;
+      color: var(--accent-text) !important;
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong)) !important;
+      box-shadow: 0 18px 42px rgba(var(--accent-rgb), .2) !important;
+    }
+
+    #about .intro-copy > .cta-row > .cv-hero-download ion-icon {
+      color: currentColor !important;
     }
 
     @media (max-width: 760px) {
@@ -315,9 +335,6 @@ const refreshCvCopy = () => {
   document.querySelector('[data-cv-copy="fallback"]')?.replaceChildren(document.createTextNode(data.fallback));
   const chips = document.querySelector('[data-cv-chips]');
   if (chips) chips.innerHTML = data.chips.map((chip) => `<span>${chip}</span>`).join('');
-  document.querySelectorAll('[data-download-cv]').forEach((button) => {
-    button.replaceChildren(document.createTextNode(data.download));
-  });
   document.querySelectorAll('[data-cv-button-copy]').forEach((node) => {
     node.textContent = data.download;
   });
