@@ -2,46 +2,74 @@
 
 const planningCopy = {
   en: {
-    nav: 'Planning',
-    eyebrow: 'New personal tool',
+    tagOne: 'Tool',
+    tagTwo: 'Planning',
     title: 'Bubble Planning OS',
     body: 'A soft, visual agenda for daily focus, tasks, weekly planning, and decision-making with a premium bubble interface.',
     primary: 'Open planning',
-    secondary: 'View live site',
-    statOneLabel: 'Mode',
-    statOneValue: 'Light / Dark',
-    statTwoLabel: 'Focus',
-    statTwoValue: 'Daily cockpit',
-    statThreeLabel: 'Storage',
-    statThreeValue: 'Local',
   },
   es: {
-    nav: 'Planning',
-    eyebrow: 'Nueva herramienta personal',
+    tagOne: 'Herramienta',
+    tagTwo: 'Planning',
     title: 'Bubble Planning OS',
     body: 'Una agenda visual y suave para foco diario, tareas, semana y decisiones con una interfaz premium estilo burbuja.',
     primary: 'Abrir planning',
-    secondary: 'Ver web live',
-    statOneLabel: 'Modo',
-    statOneValue: 'Claro / Oscuro',
-    statTwoLabel: 'Foco',
-    statTwoValue: 'Cockpit diario',
-    statThreeLabel: 'Datos',
-    statThreeValue: 'Local',
+  },
+  ga: {
+    tagOne: 'Uirlis',
+    tagTwo: 'Pleanáil',
+    title: 'Bubble Planning OS',
+    body: 'Clár oibre bog, amhairc le haghaidh fócas laethúil, tascanna, pleanáil seachtainiúil agus cinnteoireacht.',
+    primary: 'Oscail planning',
+  },
+  fr: {
+    tagOne: 'Outil',
+    tagTwo: 'Planning',
+    title: 'Bubble Planning OS',
+    body: 'Un agenda visuel et doux pour le focus quotidien, les tâches, la semaine et la prise de décision.',
+    primary: 'Ouvrir planning',
+  },
+  de: {
+    tagOne: 'Tool',
+    tagTwo: 'Planung',
+    title: 'Bubble Planning OS',
+    body: 'Eine weiche, visuelle Agenda für täglichen Fokus, Aufgaben, Wochenplanung und Entscheidungen.',
+    primary: 'Planning öffnen',
+  },
+  ru: {
+    tagOne: 'Инструмент',
+    tagTwo: 'Планирование',
+    title: 'Bubble Planning OS',
+    body: 'Мягкая визуальная agenda для ежедневного фокуса, задач, недельного планирования и принятия решений.',
+    primary: 'Открыть planning',
+  },
+  pl: {
+    tagOne: 'Narzędzie',
+    tagTwo: 'Planowanie',
+    title: 'Bubble Planning OS',
+    body: 'Miękka, wizualna agenda do codziennego fokusu, zadań, planowania tygodnia i decyzji.',
+    primary: 'Otwórz planning',
+  },
+  zh: {
+    tagOne: '工具',
+    tagTwo: '计划',
+    title: 'Bubble Planning OS',
+    body: '一个柔和的可视化日程工具，用于每日专注、任务、周计划和决策整理。',
+    primary: '打开 planning',
+  },
+  ar: {
+    tagOne: 'أداة',
+    tagTwo: 'تخطيط',
+    title: 'Bubble Planning OS',
+    body: 'أجندة مرئية وناعمة للتركيز اليومي، المهام، التخطيط الأسبوعي واتخاذ القرار.',
+    primary: 'افتح planning',
   },
   and: {
-    nav: 'Planning',
-    eyebrow: 'Nueva herramienta personá',
+    tagOne: 'Herramienta',
+    tagTwo: 'Planning',
     title: 'Bubble Planning OS',
     body: 'Una agenda vizuá y suave pa foco diario, tareah, semana y decizioneh con una interfaz premium de burbujah.',
     primary: 'Abrí planning',
-    secondary: 'Vé la web live',
-    statOneLabel: 'Modo',
-    statOneValue: 'Claro / Oscuro',
-    statTwoLabel: 'Foco',
-    statTwoValue: 'Cockpit diario',
-    statThreeLabel: 'Dato',
-    statThreeValue: 'Local',
   },
 };
 
@@ -56,250 +84,115 @@ const ensurePlanningStyles = () => {
   const style = document.createElement('style');
   style.setAttribute('data-planning-section-style', 'true');
   style.textContent = `
-    .planning-showcase {
-      position: relative;
-      overflow: hidden;
-      display: grid;
-      gap: 1.2rem;
-      margin: clamp(1.2rem, 4vw, 2rem) 0 0;
-      padding: clamp(1.15rem, 4vw, 1.7rem);
-      border: 1px solid rgba(255, 255, 255, .14);
-      border-radius: clamp(1.65rem, 5vw, 2.35rem);
-      background:
-        radial-gradient(circle at 9% 14%, rgba(186, 255, 213, .3), transparent 30%),
-        radial-gradient(circle at 92% 4%, rgba(184, 137, 255, .38), transparent 31%),
-        linear-gradient(135deg, rgba(255,255,255,.095), rgba(255,255,255,.036));
-      box-shadow: 0 28px 90px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.08);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
+    [data-planning-nav-link],
+    [data-planning-showcase],
+    [data-projects-dropdown],
+    [data-projects-menu] {
+      display: none !important;
     }
 
-    .planning-showcase::before,
-    .planning-showcase::after {
+    .planning-project-card {
+      position: relative;
+      overflow: hidden;
+      border-color: rgba(var(--accent-rgb), .24) !important;
+      background:
+        radial-gradient(circle at 12% 0%, rgba(var(--accent-rgb), .17), transparent 34%),
+        radial-gradient(circle at 92% 10%, rgba(255,123,213,.16), transparent 30%),
+        linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.026)),
+        rgba(255,255,255,.035);
+    }
+
+    .planning-project-card::before,
+    .planning-project-card::after {
       content: "";
       position: absolute;
       border-radius: 999px;
       pointer-events: none;
     }
 
-    .planning-showcase::before {
-      width: clamp(8.2rem, 30vw, 14rem);
-      height: clamp(8.2rem, 30vw, 14rem);
-      right: clamp(-3rem, -5vw, -1rem);
-      top: clamp(-2rem, -4vw, -.6rem);
-      background: radial-gradient(circle at 32% 25%, rgba(255,255,255,.9), rgba(255,255,255,.28) 34%, rgba(184,137,255,.2) 68%, rgba(184,137,255,.04));
-      box-shadow: inset 0 1px 1px rgba(255,255,255,.68), 0 30px 90px rgba(184,137,255,.2);
-      opacity: .92;
+    .planning-project-card::before {
+      width: 9rem;
+      height: 9rem;
+      right: -3rem;
+      top: -3rem;
+      background: radial-gradient(circle at 32% 24%, rgba(255,255,255,.86), rgba(255,255,255,.22) 35%, rgba(184,137,255,.18) 68%, transparent);
+      opacity: .9;
     }
 
-    .planning-showcase::after {
-      width: clamp(5.8rem, 18vw, 8.8rem);
-      height: clamp(5.8rem, 18vw, 8.8rem);
-      left: clamp(-2.6rem, -4vw, -1.2rem);
-      bottom: -2.8rem;
-      background: radial-gradient(circle at 35% 25%, rgba(255,255,255,.82), rgba(255,255,255,.18) 38%, rgba(102,240,178,.18));
-      opacity: .85;
+    .planning-project-card::after {
+      width: 6.2rem;
+      height: 6.2rem;
+      left: -2.5rem;
+      bottom: -2.5rem;
+      background: radial-gradient(circle at 32% 24%, rgba(255,255,255,.78), rgba(255,255,255,.16) 38%, rgba(142,255,207,.16));
+      opacity: .8;
     }
 
-    .planning-showcase-main,
-    .planning-showcase-visual {
+    .planning-project-card > * {
       position: relative;
       z-index: 1;
     }
 
-    .planning-showcase-main {
-      display: grid;
-      gap: 1rem;
-      align-content: center;
-    }
-
-    .planning-showcase-kicker {
-      margin: 0;
-      color: var(--accent, #70e1a1);
-      font-size: .74rem;
-      font-weight: 900;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-    }
-
-    .planning-showcase h3 {
-      margin: 0;
-      max-width: 9ch;
-      font-size: clamp(2.35rem, 9vw, 5rem);
-      line-height: .82;
-      letter-spacing: -.075em;
-    }
-
-    .planning-gradient-text {
-      background: linear-gradient(125deg, #fff 0%, #d7c3ff 38%, #ff7bd5 60%, #8effcf 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .planning-showcase p:not(.planning-showcase-kicker) {
-      margin: 0;
-      max-width: 56ch;
-      color: var(--text-muted, rgba(255,255,255,.72));
-      line-height: 1.55;
-      font-size: clamp(.98rem, 2.4vw, 1.08rem);
-    }
-
-    .planning-showcase-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: .72rem;
-      margin-top: .2rem;
-    }
-
-    .planning-showcase .planning-action {
-      min-height: 3.15rem;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: .45rem;
-      border-radius: 999px;
-      padding: 0 1rem;
-      text-decoration: none;
-      font-weight: 900;
-      border: 1px solid rgba(255,255,255,.14);
-      transition: transform .18s ease, filter .18s ease, border-color .18s ease;
-    }
-
-    .planning-showcase .planning-action.primary {
-      color: #160f22;
-      background: linear-gradient(135deg, #d7c3ff, #ff7bd5 46%, #8effcf);
-      border-color: transparent;
-      box-shadow: 0 22px 54px rgba(184,137,255,.2);
-    }
-
-    .planning-showcase .planning-action.secondary {
-      color: var(--text, #fff);
-      background: rgba(255,255,255,.055);
-    }
-
-    .planning-showcase .planning-action:hover,
-    .planning-showcase .planning-action:focus-visible {
-      transform: translateY(-2px);
-      filter: brightness(1.04);
-    }
-
-    .planning-showcase-visual {
-      min-height: 15rem;
+    .planning-project-media {
+      min-height: clamp(12rem, 28vw, 17rem);
       display: grid;
       place-items: center;
-      border: 1px solid rgba(255,255,255,.13);
-      border-radius: 2rem;
+      border-bottom: 1px solid rgba(255,255,255,.11);
       background:
-        radial-gradient(circle at center, rgba(255,255,255,.12) 0 18%, transparent 19% 42%, rgba(184,137,255,.16) 43% 44%, transparent 45% 63%, rgba(142,255,207,.2) 64% 65%, transparent 66%),
-        linear-gradient(145deg, rgba(18, 12, 31, .72), rgba(31, 22, 48, .4));
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+        radial-gradient(circle at center, rgba(255,255,255,.12) 0 18%, transparent 19% 42%, rgba(184,137,255,.2) 43% 44%, transparent 45% 63%, rgba(142,255,207,.22) 64% 65%, transparent 66%),
+        linear-gradient(145deg, rgba(18,12,31,.78), rgba(31,22,48,.42));
     }
 
-    .planning-showcase-core {
-      width: clamp(7.4rem, 28vw, 10rem);
+    .planning-project-orb {
+      width: clamp(7.5rem, 20vw, 10rem);
       aspect-ratio: 1;
       display: grid;
       place-items: center;
       text-align: center;
       border-radius: 999px;
-      background: linear-gradient(145deg, rgba(255,255,255,.94), rgba(255,255,255,.56));
       color: #17131f;
-      box-shadow: 0 0 0 16px rgba(255,255,255,.075), 0 24px 70px rgba(0,0,0,.22);
+      background: linear-gradient(145deg, rgba(255,255,255,.96), rgba(255,255,255,.58));
+      box-shadow: 0 0 0 16px rgba(255,255,255,.08), 0 24px 70px rgba(0,0,0,.24);
     }
 
-    .planning-showcase-core span {
+    .planning-project-orb span {
       display: block;
       color: #776b86;
       font-size: .68rem;
-      font-weight: 900;
+      font-weight: 950;
       letter-spacing: .12em;
       text-transform: uppercase;
     }
 
-    .planning-showcase-core strong {
+    .planning-project-orb strong {
       display: block;
-      margin-top: .18rem;
-      font-size: clamp(1.65rem, 6vw, 2.2rem);
-      line-height: 1;
+      margin-top: .15rem;
+      font-size: clamp(1.75rem, 5vw, 2.3rem);
       letter-spacing: -.06em;
+      line-height: 1;
     }
 
-    .planning-stats {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: .65rem;
-    }
-
-    .planning-stat {
-      min-width: 0;
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 1.25rem;
-      padding: .8rem;
-      background: rgba(255,255,255,.055);
-    }
-
-    .planning-stat span {
-      display: block;
-      color: var(--text-muted, rgba(255,255,255,.62));
-      font-size: .68rem;
-      font-weight: 900;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-    }
-
-    .planning-stat strong {
-      display: block;
-      margin-top: .25rem;
-      color: var(--text, #fff);
-      font-size: clamp(.94rem, 2.6vw, 1.08rem);
-      line-height: 1.05;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .planning-nav-link {
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+    .planning-project-card .project-link.primary-planning-link {
+      color: var(--accent-text, #07110d);
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+      border-color: transparent;
+      box-shadow: 0 18px 38px rgba(var(--accent-rgb), .16);
     }
 
     @media (min-width: 860px) {
-      .planning-showcase {
-        grid-template-columns: minmax(0, 1.05fr) minmax(320px, .95fr);
-        align-items: center;
-        padding: clamp(1.4rem, 3vw, 2rem);
+      .planning-project-card {
+        grid-column: span 2;
       }
 
-      .planning-showcase-visual {
-        min-height: 21rem;
-      }
-
-      .planning-showcase h3 {
-        font-size: clamp(3.7rem, 6.2vw, 5.9rem);
+      .planning-project-card .project-copy {
+        display: grid;
+        align-content: center;
       }
     }
 
     @media (max-width: 640px) {
-      .planning-showcase {
-        margin-top: 1rem;
-      }
-
-      .planning-showcase-actions {
-        display: grid;
-        grid-template-columns: 1fr;
-      }
-
-      .planning-stats {
-        grid-template-columns: 1fr;
-      }
-
-      .planning-showcase-visual {
-        min-height: 12.5rem;
+      .planning-project-media {
+        min-height: 12rem;
       }
     }
   `;
@@ -307,74 +200,45 @@ const ensurePlanningStyles = () => {
   document.head.appendChild(style);
 };
 
-const createPlanningShowcase = () => {
-  const aboutPanel = document.querySelector('#about');
-  if (!aboutPanel || document.querySelector('[data-planning-showcase]')) return;
+const removeOldPlanningEntrypoints = () => {
+  document.querySelectorAll('[data-planning-nav-link], [data-planning-showcase], [data-projects-dropdown], [data-projects-menu]').forEach((node) => node.remove());
+};
+
+const createPlanningPortfolioCard = () => {
+  const projectGrid = document.querySelector('#work .project-grid');
+  if (!projectGrid || document.querySelector('[data-planning-project-card]')) return;
 
   const copy = getPlanningCopy();
-  const section = document.createElement('section');
-  section.className = 'planning-showcase';
-  section.setAttribute('data-planning-showcase', 'true');
-  section.innerHTML = `
-    <div class="planning-showcase-main">
-      <p class="planning-showcase-kicker" data-planning-copy="eyebrow">${copy.eyebrow}</p>
-      <h3><span class="planning-gradient-text" data-planning-copy="title">${copy.title}</span></h3>
-      <p data-planning-copy="body">${copy.body}</p>
-      <div class="planning-showcase-actions">
-        <a class="planning-action primary" href="./planning.html">
-          <ion-icon name="sparkles-outline" aria-hidden="true"></ion-icon>
-          <span data-planning-copy="primary">${copy.primary}</span>
-        </a>
-        <a class="planning-action secondary" href="https://alvrich.vercel.app" target="_blank" rel="noreferrer">
-          <ion-icon name="open-outline" aria-hidden="true"></ion-icon>
-          <span data-planning-copy="secondary">${copy.secondary}</span>
-        </a>
-      </div>
-    </div>
-    <div class="planning-showcase-visual" aria-hidden="true">
-      <div class="planning-showcase-core">
+  const card = document.createElement('article');
+  card.className = 'project-card planning-project-card';
+  card.setAttribute('data-category', 'systems');
+  card.setAttribute('data-planning-project-card', 'true');
+  card.innerHTML = `
+    <div class="project-media planning-project-media" aria-hidden="true">
+      <div class="planning-project-orb">
         <div>
           <span>Bubble</span>
           <strong>OS</strong>
         </div>
       </div>
     </div>
-    <div class="planning-stats">
-      <div class="planning-stat">
-        <span data-planning-copy="statOneLabel">${copy.statOneLabel}</span>
-        <strong data-planning-copy="statOneValue">${copy.statOneValue}</strong>
+    <div class="project-copy">
+      <div class="project-tags">
+        <span class="tag" data-planning-copy="tagOne">${copy.tagOne}</span>
+        <span class="tag" data-planning-copy="tagTwo">${copy.tagTwo}</span>
       </div>
-      <div class="planning-stat">
-        <span data-planning-copy="statTwoLabel">${copy.statTwoLabel}</span>
-        <strong data-planning-copy="statTwoValue">${copy.statTwoValue}</strong>
-      </div>
-      <div class="planning-stat">
-        <span data-planning-copy="statThreeLabel">${copy.statThreeLabel}</span>
-        <strong data-planning-copy="statThreeValue">${copy.statThreeValue}</strong>
+      <h3 data-planning-copy="title">${copy.title}</h3>
+      <p data-planning-copy="body">${copy.body}</p>
+      <div class="project-links">
+        <a class="project-link has-icon primary-planning-link" href="./planning.html">
+          <ion-icon name="sparkles-outline" aria-hidden="true"></ion-icon>
+          <span data-planning-copy="primary">${copy.primary}</span>
+        </a>
       </div>
     </div>
   `;
 
-  const introGrid = aboutPanel.querySelector('.intro-grid');
-  if (introGrid) {
-    introGrid.insertAdjacentElement('afterend', section);
-  } else {
-    aboutPanel.appendChild(section);
-  }
-};
-
-const createPlanningNavShortcut = () => {
-  const sectionNav = document.querySelector('.section-nav');
-  if (!sectionNav || document.querySelector('[data-planning-nav-link]')) return;
-
-  const copy = getPlanningCopy();
-  const link = document.createElement('a');
-  link.className = 'nav-tab planning-nav-link';
-  link.href = './planning.html';
-  link.setAttribute('data-planning-nav-link', 'true');
-  link.setAttribute('data-planning-copy', 'nav');
-  link.textContent = copy.nav;
-  sectionNav.appendChild(link);
+  projectGrid.insertAdjacentElement('afterbegin', card);
 };
 
 const refreshPlanningCopy = () => {
@@ -385,6 +249,15 @@ const refreshPlanningCopy = () => {
   });
 };
 
+const updatePlanningFilterVisibility = () => {
+  const card = document.querySelector('[data-planning-project-card]');
+  const activeFilter = document.querySelector('.filter-chip.is-active')?.getAttribute('data-filter') || 'all';
+  if (!card) return;
+
+  const shouldShow = activeFilter === 'all' || activeFilter === card.getAttribute('data-category');
+  card.hidden = !shouldShow;
+};
+
 const observeLanguageChanges = () => {
   if (!document.body) return;
 
@@ -392,12 +265,21 @@ const observeLanguageChanges = () => {
   observer.observe(document.body, { attributes: true, attributeFilter: ['data-language'] });
 };
 
+const bindPlanningFilterSync = () => {
+  document.addEventListener('click', (event) => {
+    if (!event.target.closest('.filter-chip')) return;
+    window.requestAnimationFrame(updatePlanningFilterVisibility);
+  });
+};
+
 const initPlanningEntryPoints = () => {
   ensurePlanningStyles();
-  createPlanningShowcase();
-  createPlanningNavShortcut();
+  removeOldPlanningEntrypoints();
+  createPlanningPortfolioCard();
   refreshPlanningCopy();
+  updatePlanningFilterVisibility();
   observeLanguageChanges();
+  bindPlanningFilterSync();
 };
 
 if (document.readyState === 'loading') {
