@@ -1,0 +1,57 @@
+/* General quality layer: accessibility, anchor spacing and dynamic-card safety. */
+:where(.nav-tab, .btn, .project-link, .filter-chip, .picker-trigger, .mobile-menu-toggle, .details-toggle, .social-link, .meta-link):focus-visible {
+  outline: 2px solid rgba(var(--accent-rgb), .72);
+  outline-offset: 4px;
+  box-shadow: 0 0 0 7px rgba(var(--accent-rgb), .14);
+}
+
+:where(.panel, .project-card, #about, #focus, #work, #cv, #contact) {
+  scroll-margin-top: clamp(5.5rem, 12vh, 8rem);
+}
+
+.project-card[hidden],
+[data-tech-card][hidden],
+[data-ai-card][hidden],
+[data-flow-bkd-card][hidden],
+[data-planning-project-card][hidden] {
+  display: none !important;
+}
+
+.project-card {
+  contain: layout paint;
+}
+
+.project-card :where(a, button, .project-link) {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.project-media {
+  isolation: isolate;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .project-card:hover .project-media {
+    filter: saturate(1.06) contrast(1.02);
+  }
+}
+
+@media (max-width: 760px) {
+  :where(.nav-tab, .btn, .project-link, .filter-chip) {
+    touch-action: manipulation;
+  }
+
+  .project-card {
+    min-width: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .001ms !important;
+  }
+}
