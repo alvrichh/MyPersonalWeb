@@ -1,0 +1,80 @@
+name: Daily AI maintenance
+
+on:
+  schedule:
+    # 07:30 UTC = 08:30/09:30 in Spain depending on daylight saving time.
+    - cron: "30 7 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: daily-ai-maintenance
+  cancel-in-progress: false
+
+jobs:
+  ai-maintenance:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify production build
+        run: npm run build
+
+      - name: Generate AI maintenance report
+        run: npm run ai:maintenance
+
+      - name: Check generated changes
+        id: changes
+        run: |
+          if git diff --quiet -- docs/ai-watch; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create pull request branch
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          BRANCH="bot/daily-ai-maintenance-${{ github.run_id }}"
+          echo "BRANCH=$BRANCH" >> "$GITHUB_ENV"
+          git switch -c "$BRANCH"
+
+      - name: Commit AI maintenance report
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config user.name "alvrich-ai-maintenance-bot"
+          git config user.email "actions@github.com"
+          git add docs/ai-watch
+          git commit -m "Daily AI maintenance report"
+          git push --set-upstream origin "$BRANCH"
+
+      - name: Open pull request
+        if: steps.changes.outputs.has_changes == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr create \
+            --title "Daily AI maintenance report" \
+            --body "Automated AI maintenance report. This PR only updates docs/ai-watch and does not modify the live portfolio UI. Review candidates manually before adding anything to the public site." \
+            --base main \
+            --head "$BRANCH"
+
+      - name: No changes summary
+        if: steps.changes.outputs.has_changes != 'true'
+        run: echo "No AI maintenance changes detected today."
