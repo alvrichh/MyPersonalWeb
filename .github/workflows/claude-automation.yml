@@ -1,0 +1,101 @@
+name: Claude AI Automation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  claude-review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Get changed files
+        id: changed
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -E '\.(html|css|js)$' | head -20 || echo "")
+          else
+            FILES=$(git diff --name-only HEAD~1 HEAD | grep -E '\.(html|css|js)$' | head -20 || echo "")
+          fi
+          echo "files=$FILES" >> $GITHUB_OUTPUT
+          echo "Archivos cambiados: $FILES"
+
+      - name: Get file contents
+        id: contents
+        run: |
+          FILES="${{ steps.changed.outputs.files }}"
+          CONTENT=""
+          for FILE in $FILES; do
+            if [ -f "$FILE" ]; then
+              CONTENT="$CONTENT\n\n### $FILE\n\`\`\`\n$(head -100 $FILE)\n\`\`\`"
+            fi
+          done
+          # Guardar en archivo para evitar problemas con caracteres especiales
+          echo -e "$CONTENT" > /tmp/file_contents.txt
+          echo "content_file=/tmp/file_contents.txt" >> $GITHUB_OUTPUT
+
+      - name: Ask Claude to review
+        id: claude
+        run: |
+          CONTENT=$(cat /tmp/file_contents.txt)
+          PAYLOAD=$(jq -n \
+            --arg content "$CONTENT" \
+            '{
+              model: "claude-sonnet-4-20250514",
+              max_tokens: 1000,
+              messages: [{
+                role: "user",
+                content: ("Eres un code reviewer experto. Revisa estos archivos del portfolio personal de Álvaro (HTML/CSS/JS) y da feedback en español:\n\n" + $content + "\n\nDa feedback concreto sobre: calidad del código, accesibilidad, rendimiento, buenas prácticas. Sé directo y útil. Máximo 5 puntos clave.")
+              }]
+            }')
+
+          RESPONSE=$(curl -s https://api.anthropic.com/v1/messages \
+            -H "Content-Type: application/json" \
+            -H "x-api-key: ${{ secrets.ANTHROPIC_API_KEY }}" \
+            -H "anthropic-version: 2023-06-01" \
+            -d "$PAYLOAD")
+
+          REVIEW=$(echo "$RESPONSE" | jq -r '.content[0].text // "No se pudo obtener respuesta de Claude."')
+          echo "$REVIEW" > /tmp/review.txt
+          echo "review_file=/tmp/review.txt" >> $GITHUB_OUTPUT
+
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const review = fs.readFileSync('/tmp/review.txt', 'utf8');
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `## 🤖 Claude AI Review\n\n${review}\n\n---\n*Revisión automática generada por Claude Sonnet*`
+            });
+
+      - name: Create issue on push
+        if: github.event_name == 'push'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const review = fs.readFileSync('/tmp/review.txt', 'utf8');
+            const sha = context.sha.substring(0, 7);
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🤖 Claude Review — commit ${sha}`,
+              body: `## Revisión automática del commit \`${sha}\`\n\n${review}\n\n---\n*Generado automáticamente por Claude Sonnet en cada push a main*`,
+              labels: ['claude-review']
+            });
