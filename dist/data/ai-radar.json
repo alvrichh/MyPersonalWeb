@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-05-16T00:00:00.000Z",
+  "date": "2026-05-16",
+  "mode": "initial-safe-data",
+  "headline": "AI radar initialized",
+  "insight": "This card is ready to receive daily AI, agent and developer-tooling updates from official feeds.",
+  "portfolioAngle": "The portfolio can surface fresh AI signals without changing the visible layout or manually editing HTML/CSS.",
+  "items": [
+    {
+      "title": "AI agents and tool-connected workflows",
+      "source": "Portfolio radar",
+      "date": "2026-05-16",
+      "url": "https://alvrich.vercel.app",
+      "summary": "Initial radar item for MCP, agent workflows, ChatGPT, Claude, Copilot, Gemini and AI automation monitoring."
+    }
+  ],
+  "candidates": []
+}
