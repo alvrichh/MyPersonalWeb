@@ -9,7 +9,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 module.exports = {
   mode: 'development',
   entry: { 
-    script: ['./assets/js/script.js', './assets/js/header-controls-align.js', './assets/js/mobile-controls-cleanup.js', './assets/js/irish-language-option.js', './assets/js/planning-link-section.js', './assets/js/portfolio-flow-bkd-card.js', './assets/js/portfolio-ai-cards.js', './assets/js/portfolio-tech-cards.js', './assets/js/portfolio-card-visual-upgrade.js', './assets/css/header-controls.css', './assets/css/nav-tabs-polish.css', './assets/css/header-controls-balance.css', './assets/css/mobile-cta-row.css', './assets/css/language-menu-scroll.css', './assets/css/circular-profile-photo.css', './assets/css/sidebar-scroll-desktop.css'],
+    script: ['./assets/js/script.js', './assets/js/header-controls-align.js', './assets/js/mobile-controls-cleanup.js', './assets/js/irish-language-option.js', './assets/js/planning-link-section.js', './assets/js/portfolio-flow-bkd-card.js', './assets/js/portfolio-ai-cards.js', './assets/js/portfolio-tech-cards.js', './assets/js/portfolio-card-visual-upgrade.js', './assets/css/header-controls.css', './assets/css/nav-tabs-polish.css', './assets/css/header-controls-balance.css', './assets/css/mobile-cta-row.css', './assets/css/language-menu-scroll.css', './assets/css/circular-profile-photo.css', './assets/css/sidebar-scroll-desktop.css', './assets/css/quality-polish.css'],
     gymLink: './assets/js/gym-link.js',
     mobilePolish: './assets/js/mobile-polish.js',
     navScrollFix: './assets/js/nav-scroll-fix.js',
