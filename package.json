@@ -7,6 +7,7 @@
     "start": "webpack serve",
     "build": "webpack build --mode=production",
     "ai:maintenance": "node scripts/daily-ai-maintenance.mjs",
+    "ai:radar": "node scripts/daily-ai-maintenance.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
