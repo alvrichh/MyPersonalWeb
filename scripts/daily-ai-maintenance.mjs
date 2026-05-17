@@ -18,12 +18,14 @@ const SOURCES = [
   { name: 'Google AI Blog', url: 'https://blog.google/technology/ai/rss/', homepage: 'https://blog.google/technology/ai/' },
   { name: 'GitHub AI & ML Blog', url: 'https://github.blog/ai-and-ml/feed/', homepage: 'https://github.blog/ai-and-ml/' },
   { name: 'Microsoft AI Blog', url: 'https://blogs.microsoft.com/ai/feed/', homepage: 'https://blogs.microsoft.com/ai/' },
+  { name: 'The Verge AI', url: 'https://www.theverge.com/rss/ai-artificial-intelligence/index.xml', homepage: 'https://www.theverge.com/ai-artificial-intelligence' },
 ];
 
 const KEYWORDS = [
   'ai', 'agent', 'agents', 'agentic', 'mcp', 'model context protocol', 'tool use',
   'chatgpt', 'claude', 'copilot', 'gemini', 'openai', 'anthropic', 'multimodal',
   'coding', 'developer', 'automation', 'workflow', 'reasoning', 'assistant', 'tools',
+  'llm', 'model', 'developer tools',
 ];
 
 const PORTFOLIO_SIGNALS = [
@@ -39,6 +41,12 @@ const PORTFOLIO_SIGNALS = [
   ['gemini', 'Gemini multimodal exploration'],
   ['automation', 'AI automation and workflow design'],
 ];
+
+const DEFAULT_FALLBACK = {
+  headline: 'AI radar update',
+  insight: 'Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.',
+  portfolioAngle: 'Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.',
+};
 
 const decodeEntities = (value = '') => value
   .replaceAll('<![CDATA[', '')
@@ -77,7 +85,8 @@ const parseItems = (xml, source) => {
       source: source.name,
       title,
       description,
-      date: pubDate ? new Date(pubDate).toISOString().slice(0, 10) : '',
+      date: pubDate ? new Date(pubDate).toISOString().slice(0, 10) : TODAY,
+      url: link,
       link,
     };
   }).filter((item) => item.title);
@@ -124,13 +133,13 @@ const buildPortfolioCandidates = (items) => {
         signals.set(label, {
           label,
           status: 'safe-data-candidate',
-          reason: 'Detected in official AI/news feeds. Displayed as radar data, not as a personal certification claim.',
+          reason: 'Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.',
           examples: [],
         });
       }
       const signal = signals.get(label);
       if (signal.examples.length < 3) {
-        signal.examples.push({ title: item.title, source: item.source, link: item.link, date: item.date });
+        signal.examples.push({ title: item.title, source: item.source, link: item.url, date: item.date });
       }
     }
   }
@@ -138,17 +147,90 @@ const buildPortfolioCandidates = (items) => {
   return [...signals.values()].slice(0, 8);
 };
 
-const buildRadarItems = (items) => items.slice(0, 8).map((item) => ({
+const buildRadarItems = (items) => items.slice(0, 12).map((item) => ({
   title: item.title,
   source: item.source,
   date: item.date || TODAY,
-  url: item.link,
-  summary: item.description ? `${item.description.slice(0, 180)}${item.description.length > 180 ? '...' : ''}` : 'AI update detected from an official or high-signal source.',
+  url: item.url || item.link,
+  summary: item.description ? `${item.description.slice(0, 220)}${item.description.length > 220 ? '...' : ''}` : 'AI update detected from an official or high-signal source.',
 }));
+
+const readExistingJson = async (filePath, fallback) => {
+  if (!existsSync(filePath)) return fallback;
+  try {
+    return JSON.parse(await readFile(filePath, 'utf8'));
+  } catch {
+    return fallback;
+  }
+};
+
+const mergeRadarItems = (freshItems, existingRadar) => {
+  const existingItems = Array.isArray(existingRadar?.items) ? existingRadar.items : [];
+  const seen = new Set();
+  const merged = [];
+
+  for (const item of [...freshItems, ...existingItems]) {
+    const url = item.url || item.link || item.title;
+    if (!url || seen.has(url)) continue;
+    seen.add(url);
+    merged.push({
+      title: item.title,
+      source: item.source || 'AI Radar',
+      date: item.date || TODAY,
+      url,
+      summary: item.aiSummary || item.summary || item.description || item.title,
+    });
+    if (merged.length >= 20) break;
+  }
+
+  return merged;
+};
+
+const parseJsonFromText = (text) => {
+  const clean = String(text || '').replace(/```json|```/g, '').trim();
+  return JSON.parse(clean);
+};
+
+const normalizeEnrichment = (enrichment = {}) => ({
+  headline: String(enrichment.headline || DEFAULT_FALLBACK.headline).slice(0, 90),
+  insight: String(enrichment.insight || DEFAULT_FALLBACK.insight).slice(0, 320),
+  portfolioAngle: String(enrichment.portfolioAngle || DEFAULT_FALLBACK.portfolioAngle).slice(0, 260),
+});
+
+const enhanceWithClaude = async (radarItems, candidates) => {
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey || !radarItems.length) return null;
+
+  const prompt = `Eres un radar de novedades de IA para el portfolio de un desarrollador Full Stack.\n\nAnaliza estas noticias/candidatos y devuelve SOLO JSON válido con esta forma:\n{\n  "headline": "máx 90 caracteres",\n  "insight": "resumen técnico útil en español, máx 320 caracteres",\n  "portfolioAngle": "cómo puede inspirar una card futura de portfolio sin afirmar certificaciones, máx 260 caracteres"\n}\n\nNo inventes nada y no afirmes experiencia personal nueva.\n\n${JSON.stringify({ radarItems, candidates }).slice(0, 18000)}`;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+      },
+      body: JSON.stringify({
+        model: process.env.ANTHROPIC_MODEL || 'claude-sonnet-4-20250514',
+        max_tokens: 900,
+        messages: [{ role: 'user', content: prompt }],
+      }),
+    });
+
+    if (!response.ok) throw new Error(`Claude HTTP ${response.status}`);
+    const payload = await response.json();
+    const text = payload.content?.map((part) => part.text || '').join('\n') || '';
+    return { enrichment: normalizeEnrichment(parseJsonFromText(text)), provider: 'claude' };
+  } catch (error) {
+    console.log(`Claude enrichment skipped: ${error.message}`);
+    return null;
+  }
+};
 
 const enhanceWithOpenAI = async (radarItems, candidates) => {
   const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey || !radarItems.length) return { radarItems, candidates, usedOpenAI: false };
+  if (!apiKey || !radarItems.length) return null;
 
   try {
     const response = await fetch('https://api.openai.com/v1/responses', {
@@ -160,14 +242,8 @@ const enhanceWithOpenAI = async (radarItems, candidates) => {
       body: JSON.stringify({
         model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
         input: [
-          {
-            role: 'system',
-            content: 'You create conservative portfolio radar summaries. Do not claim personal experience or certifications. Return valid JSON only.',
-          },
-          {
-            role: 'user',
-            content: JSON.stringify({ radarItems, candidates }).slice(0, 18000),
-          },
+          { role: 'system', content: 'You create conservative Spanish portfolio radar summaries. Do not claim personal experience or certifications. Return valid JSON only.' },
+          { role: 'user', content: JSON.stringify({ radarItems, candidates }).slice(0, 18000) },
         ],
         text: {
           format: {
@@ -191,12 +267,19 @@ const enhanceWithOpenAI = async (radarItems, candidates) => {
     if (!response.ok) throw new Error(`OpenAI HTTP ${response.status}`);
     const payload = await response.json();
     const text = payload.output_text || payload.output?.flatMap((part) => part.content || []).map((part) => part.text).filter(Boolean).join('\n') || '';
-    const enrichment = JSON.parse(text);
-    return { radarItems, candidates, enrichment, usedOpenAI: true };
+    return { enrichment: normalizeEnrichment(parseJsonFromText(text)), provider: 'openai' };
   } catch (error) {
     console.log(`OpenAI enrichment skipped: ${error.message}`);
-    return { radarItems, candidates, usedOpenAI: false };
+    return null;
   }
+};
+
+const enrichRadar = async (radarItems, candidates) => {
+  const claude = await enhanceWithClaude(radarItems, candidates);
+  if (claude) return claude;
+  const openai = await enhanceWithOpenAI(radarItems, candidates);
+  if (openai) return openai;
+  return { enrichment: DEFAULT_FALLBACK, provider: 'rules' };
 };
 
 const buildReport = (results, items, candidates, enrichmentMeta) => {
@@ -206,18 +289,14 @@ const buildReport = (results, items, candidates, enrichmentMeta) => {
   }).join('\n');
 
   const itemRows = items.length
-    ? items.map((item) => `- **${item.title}** — ${item.source}${item.date ? ` · ${item.date}` : ''}\n  ${item.link}`).join('\n')
+    ? items.map((item) => `- **${item.title}** — ${item.source}${item.date ? ` · ${item.date}` : ''}\n  ${item.url}`).join('\n')
     : '- No relevant items detected today from the configured sources.';
 
   const candidateRows = candidates.length
     ? candidates.map((candidate) => `- **${candidate.label}** — ${candidate.reason}`).join('\n')
     : '- No new portfolio candidates generated today.';
 
-  const enrichmentRows = enrichmentMeta?.usedOpenAI && enrichmentMeta.enrichment
-    ? `\n## AI enrichment\n\n- **Headline:** ${enrichmentMeta.enrichment.headline}\n- **Insight:** ${enrichmentMeta.enrichment.insight}\n- **Portfolio angle:** ${enrichmentMeta.enrichment.portfolioAngle}\n`
-    : '\n## AI enrichment\n\n- OpenAI enrichment was not used. RSS/rules fallback generated the radar safely.\n';
-
-  return `# Daily AI maintenance report — ${TODAY}\n\nThis file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.\n\n## Source status\n\n${sourceRows}\n\n## Relevant AI updates\n\n${itemRows}\n\n## Portfolio candidates\n\n${candidateRows}\n${enrichmentRows}\n## Safety policy\n\n- Do not edit live HTML/CSS layout automatically.\n- Only update docs/ai-watch and assets/data/ai-radar.json.\n- Do not claim certifications or experience that has not been manually confirmed.\n- Production build must pass before commit/push.\n`;
+  return `# Daily AI maintenance report — ${TODAY}\n\nThis file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.\n\n## Source status\n\n${sourceRows}\n\n## Relevant AI updates\n\n${itemRows}\n\n## Portfolio candidates\n\n${candidateRows}\n\n## AI enrichment\n\n- **Provider:** ${enrichmentMeta.provider}\n- **Headline:** ${enrichmentMeta.enrichment.headline}\n- **Insight:** ${enrichmentMeta.enrichment.insight}\n- **Portfolio angle:** ${enrichmentMeta.enrichment.portfolioAngle}\n\n## Safety policy\n\n- Do not edit live HTML/CSS layout automatically.\n- Only update docs/ai-watch and assets/data/ai-radar.json.\n- Do not claim certifications or experience that has not been manually confirmed.\n- Production build must pass before commit/push.\n`;
 };
 
 const readExisting = async (filePath) => existsSync(filePath) ? readFile(filePath, 'utf8') : '';
@@ -236,21 +315,23 @@ const results = await Promise.all(SOURCES.map(fetchSource));
 const items = results
   .flatMap((result) => result.ok ? result.items : [])
   .sort((a, b) => String(b.date).localeCompare(String(a.date)) || a.source.localeCompare(b.source))
-  .slice(0, 32);
+  .slice(0, 36);
 const candidates = buildPortfolioCandidates(items);
-const radarItems = buildRadarItems(items);
-const enriched = await enhanceWithOpenAI(radarItems, candidates);
+const freshRadarItems = buildRadarItems(items);
+const existingRadar = await readExistingJson(RADAR_PATH, { items: [] });
+const mergedRadarItems = mergeRadarItems(freshRadarItems, existingRadar);
+const enriched = await enrichRadar(freshRadarItems, candidates);
 const report = buildReport(results, items, candidates, enriched);
 
 const radarPayload = {
   generatedAt: new Date().toISOString(),
   date: TODAY,
-  mode: enriched.usedOpenAI ? 'rss-plus-openai' : 'rss-rules-fallback',
-  headline: enriched.enrichment?.headline || 'AI radar update',
-  insight: enriched.enrichment?.insight || 'Recent AI, agent and developer-tooling signals collected from official feeds.',
-  portfolioAngle: enriched.enrichment?.portfolioAngle || 'Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.',
-  items: enriched.radarItems,
-  candidates: enriched.candidates,
+  mode: enriched.provider === 'claude' ? 'rss-plus-claude' : enriched.provider === 'openai' ? 'rss-plus-openai' : 'rss-rules-fallback',
+  headline: enriched.enrichment.headline,
+  insight: enriched.enrichment.insight,
+  portfolioAngle: enriched.enrichment.portfolioAngle,
+  items: mergedRadarItems,
+  candidates,
 };
 
 const candidatePayload = `${JSON.stringify({ generatedAt: radarPayload.generatedAt, candidates }, null, 2)}\n`;
@@ -266,4 +347,4 @@ const changed = [
 console.log(changed ? 'AI maintenance report and radar updated.' : 'AI maintenance files already up to date.');
 console.log(`Relevant items: ${items.length}`);
 console.log(`Portfolio candidates: ${candidates.length}`);
-console.log(`OpenAI enrichment: ${enriched.usedOpenAI ? 'yes' : 'no'}`);
+console.log(`AI enrichment provider: ${enriched.provider}`);
