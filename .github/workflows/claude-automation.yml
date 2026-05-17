@@ -1,13 +1,17 @@
-name: Claude AI Automation
+name: OpenAI Code Review
 
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
+    inputs:
+      commit_sha:
+        description: "Optional commit SHA to review manually"
+        required: false
+        type: string
 
 jobs:
-  claude-review:
+  openai-review:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -18,60 +22,117 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 3
 
-      - name: Get changed files
-        id: changed
+      - name: Prepare review context
+        id: context
         run: |
+          set -euo pipefail
+
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -E '\.(html|css|js)$' | head -20 || echo "")
+            git fetch origin "${{ github.base_ref }}" --depth=3
+            FILES=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD" | grep -E '\.(html|css|js|mjs|json|yml|yaml|md)$' | head -25 || true)
+            git diff --unified=40 "origin/${{ github.base_ref }}...HEAD" -- $FILES > /tmp/review_diff.txt || true
+            TARGET_LABEL="PR #${{ github.event.pull_request.number }}"
+          elif [ -n "${{ inputs.commit_sha }}" ]; then
+            TARGET="${{ inputs.commit_sha }}"
+            FILES=$(git diff-tree --no-commit-id --name-only -r "$TARGET" | grep -E '\.(html|css|js|mjs|json|yml|yaml|md)$' | head -25 || true)
+            git show --unified=40 --format=short "$TARGET" -- $FILES > /tmp/review_diff.txt || true
+            TARGET_LABEL="commit $TARGET"
           else
-            FILES=$(git diff --name-only HEAD~1 HEAD | grep -E '\.(html|css|js)$' | head -20 || echo "")
+            FILES=$(git diff --name-only HEAD~1 HEAD | grep -E '\.(html|css|js|mjs|json|yml|yaml|md)$' | head -25 || true)
+            git diff --unified=40 HEAD~1 HEAD -- $FILES > /tmp/review_diff.txt || true
+            TARGET_LABEL="manual workflow run"
           fi
-          echo "files=$FILES" >> $GITHUB_OUTPUT
-          echo "Archivos cambiados: $FILES"
 
-      - name: Get file contents
-        id: contents
-        run: |
-          FILES="${{ steps.changed.outputs.files }}"
-          CONTENT=""
-          for FILE in $FILES; do
-            if [ -f "$FILE" ]; then
-              CONTENT="$CONTENT\n\n### $FILE\n\`\`\`\n$(head -100 $FILE)\n\`\`\`"
-            fi
-          done
-          # Guardar en archivo para evitar problemas con caracteres especiales
-          echo -e "$CONTENT" > /tmp/file_contents.txt
-          echo "content_file=/tmp/file_contents.txt" >> $GITHUB_OUTPUT
+          if [ -z "$FILES" ]; then
+            echo "has_files=false" >> "$GITHUB_OUTPUT"
+            echo "No relevant files changed." > /tmp/review_diff.txt
+          else
+            echo "has_files=true" >> "$GITHUB_OUTPUT"
+          fi
 
-      - name: Ask Claude to review
-        id: claude
+          echo "target_label=$TARGET_LABEL" >> "$GITHUB_OUTPUT"
+          printf '%s\n' "$FILES" > /tmp/changed_files.txt
+
+      - name: Build prompt
         run: |
-          CONTENT=$(cat /tmp/file_contents.txt)
+          set -euo pipefail
+          REVIEW_GUIDE=""
+          if [ -f .github/ai-review/SKILL.md ]; then
+            REVIEW_GUIDE=$(cat .github/ai-review/SKILL.md)
+          fi
+
+          DIFF=$(head -c 50000 /tmp/review_diff.txt)
+          FILES=$(cat /tmp/changed_files.txt)
+
+          cat > /tmp/review_prompt.txt <<EOF
+          Eres un code reviewer senior para el portfolio personal MyPersonalWeb.
+
+          Usa esta memoria del proyecto como guía:
+
+          $REVIEW_GUIDE
+
+          Archivos cambiados:
+          $FILES
+
+          Diff/contexto a revisar:
+          $DIFF
+
+          Devuelve SOLO una review en español, máximo 5 bullets. Sé crítico y constructivo. No repitas consejos genéricos. Si no hay problemas reales, dilo y explica qué comprobaste.
+          EOF
+
+      - name: Ask OpenAI to review
+        id: openai
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: ${{ vars.OPENAI_REVIEW_MODEL || 'gpt-4o-mini' }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${OPENAI_API_KEY:-}" ]; then
+            echo "OpenAI API key is missing. Skipping review without creating noise."
+            echo "has_review=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          PROMPT=$(cat /tmp/review_prompt.txt)
           PAYLOAD=$(jq -n \
-            --arg content "$CONTENT" \
+            --arg model "$OPENAI_MODEL" \
+            --arg prompt "$PROMPT" \
             '{
-              model: "claude-sonnet-4-20250514",
-              max_tokens: 1000,
-              messages: [{
-                role: "user",
-                content: ("Eres un code reviewer experto. Revisa estos archivos del portfolio personal de Álvaro (HTML/CSS/JS) y da feedback en español:\n\n" + $content + "\n\nDa feedback concreto sobre: calidad del código, accesibilidad, rendimiento, buenas prácticas. Sé directo y útil. Máximo 5 puntos clave.")
-              }]
+              model: $model,
+              input: [
+                {role: "system", content: "You are a senior code reviewer. Follow the project memory exactly. Return concise Spanish feedback only."},
+                {role: "user", content: $prompt}
+              ]
             }')
 
-          RESPONSE=$(curl -s https://api.anthropic.com/v1/messages \
+          HTTP_CODE=$(curl -sS -w "%{http_code}" -o /tmp/openai_response.json https://api.openai.com/v1/responses \
             -H "Content-Type: application/json" \
-            -H "x-api-key: ${{ secrets.ANTHROPIC_API_KEY }}" \
-            -H "anthropic-version: 2023-06-01" \
+            -H "Authorization: Bearer ${OPENAI_API_KEY}" \
             -d "$PAYLOAD")
 
-          REVIEW=$(echo "$RESPONSE" | jq -r '.content[0].text // "No se pudo obtener respuesta de Claude."')
+          if [ "$HTTP_CODE" -lt 200 ] || [ "$HTTP_CODE" -ge 300 ]; then
+            echo "OpenAI API returned HTTP $HTTP_CODE. Skipping review comment."
+            cat /tmp/openai_response.json
+            echo "has_review=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          REVIEW=$(jq -r '.output_text // ([.output[]?.content[]?.text] | join("\n")) // empty' /tmp/openai_response.json)
+
+          if [ -z "$REVIEW" ]; then
+            echo "OpenAI returned an empty review. Skipping comment."
+            echo "has_review=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
           echo "$REVIEW" > /tmp/review.txt
-          echo "review_file=/tmp/review.txt" >> $GITHUB_OUTPUT
+          echo "has_review=true" >> "$GITHUB_OUTPUT"
 
       - name: Comment on PR
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && steps.openai.outputs.has_review == 'true'
         uses: actions/github-script@v7
         with:
           script: |
@@ -81,21 +142,21 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: `## 🤖 Claude AI Review\n\n${review}\n\n---\n*Revisión automática generada por Claude Sonnet*`
+              body: `## 🤖 OpenAI Code Review\n\n${review}\n\n---\n*Revisión automática generada con OpenAI y .github/ai-review/SKILL.md*`
             });
 
-      - name: Create issue on push
-        if: github.event_name == 'push'
+      - name: Create manual review issue
+        if: github.event_name == 'workflow_dispatch' && steps.openai.outputs.has_review == 'true'
         uses: actions/github-script@v7
         with:
           script: |
             const fs = require('fs');
             const review = fs.readFileSync('/tmp/review.txt', 'utf8');
-            const sha = context.sha.substring(0, 7);
+            const target = `${{ steps.context.outputs.target_label }}`;
             await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: `🤖 Claude Review — commit ${sha}`,
-              body: `## Revisión automática del commit \`${sha}\`\n\n${review}\n\n---\n*Generado automáticamente por Claude Sonnet en cada push a main*`,
-              labels: ['claude-review']
+              title: `🤖 OpenAI Review — ${target}`,
+              body: `## Revisión automática de ${target}\n\n${review}\n\n---\n*Generado con OpenAI y .github/ai-review/SKILL.md*`,
+              labels: ['ai-review']
             });
