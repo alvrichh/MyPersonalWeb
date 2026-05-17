@@ -86,6 +86,8 @@ const portfolioFilterCopy = {
 const portfolioFilters = ['all', 'ui', 'systems', 'automation', 'ai', 'quality'];
 let activePortfolioFilter = 'all';
 let portfolioFilterObserver;
+let portfolioRefreshQueued = false;
+let isPortfolioRefreshing = false;
 
 const getPortfolioLanguage = () => document.body?.dataset?.language || 'en';
 const getPortfolioFilterCopy = () => portfolioFilterCopy[getPortfolioLanguage()] || portfolioFilterCopy.en;
@@ -171,9 +173,11 @@ const renderPortfolioFilters = () => {
   if (!row) return;
 
   const copy = getPortfolioFilterCopy();
-  row.innerHTML = portfolioFilters.map((filter) => `
+  const nextMarkup = portfolioFilters.map((filter) => `
     <button class="filter-chip ${filter === activePortfolioFilter ? 'is-active' : ''}" type="button" data-filter="${filter}" aria-pressed="${filter === activePortfolioFilter}">${copy[filter]}</button>
   `).join('');
+
+  if (row.innerHTML.trim() !== nextMarkup.trim()) row.innerHTML = nextMarkup;
 };
 
 const normalizePortfolioCards = () => {
@@ -181,8 +185,8 @@ const normalizePortfolioCards = () => {
 
   getPortfolioCards().forEach((card) => {
     const category = inferPortfolioCategory(card);
-    card.setAttribute('data-category', category);
-    card.setAttribute('data-portfolio-category', category);
+    if (card.getAttribute('data-category') !== category) card.setAttribute('data-category', category);
+    if (card.getAttribute('data-portfolio-category') !== category) card.setAttribute('data-portfolio-category', category);
 
     const tagContainer = card.querySelector('.project-tags');
     if (!tagContainer) return;
@@ -195,7 +199,8 @@ const normalizePortfolioCards = () => {
       tagContainer.prepend(categoryTag);
     }
 
-    categoryTag.textContent = copy[category] || category;
+    const label = copy[category] || category;
+    if (categoryTag.textContent !== label) categoryTag.textContent = label;
   });
 };
 
@@ -214,15 +219,27 @@ const applyPortfolioFilter = (filter = activePortfolioFilter) => {
   getPortfolioCards().forEach((card) => {
     const category = card.getAttribute('data-portfolio-category') || inferPortfolioCategory(card);
     const isVisible = activePortfolioFilter === 'all' || category === activePortfolioFilter;
-    card.hidden = !isVisible;
+    if (card.hidden === isVisible) card.hidden = !isVisible;
     card.classList.toggle('is-hidden', !isVisible);
   });
 };
 
 const refreshPortfolioFilters = () => {
+  if (isPortfolioRefreshing) return;
+  isPortfolioRefreshing = true;
   renderPortfolioFilters();
   normalizePortfolioCards();
   applyPortfolioFilter(activePortfolioFilter);
+  isPortfolioRefreshing = false;
+};
+
+const queuePortfolioRefresh = () => {
+  if (portfolioRefreshQueued) return;
+  portfolioRefreshQueued = true;
+  window.requestAnimationFrame(() => {
+    portfolioRefreshQueued = false;
+    refreshPortfolioFilters();
+  });
 };
 
 const bindPortfolioFilters = () => {
@@ -231,8 +248,7 @@ const bindPortfolioFilters = () => {
     if (!button) return;
 
     event.preventDefault();
-    refreshPortfolioFilters();
-    window.requestAnimationFrame(() => applyPortfolioFilter(button.getAttribute('data-filter')));
+    applyPortfolioFilter(button.getAttribute('data-filter'));
   });
 };
 
@@ -241,10 +257,10 @@ const observePortfolioGrid = () => {
   if (!grid || portfolioFilterObserver) return;
 
   portfolioFilterObserver = new MutationObserver(() => {
-    window.requestAnimationFrame(refreshPortfolioFilters);
+    if (!isPortfolioRefreshing) queuePortfolioRefresh();
   });
 
-  portfolioFilterObserver.observe(grid, { childList: true, subtree: true });
+  portfolioFilterObserver.observe(grid, { childList: true });
 };
 
 const initPortfolioFilterSystem = () => {
@@ -254,15 +270,15 @@ const initPortfolioFilterSystem = () => {
   observePortfolioGrid();
 
   if (document.body) {
-    new MutationObserver(refreshPortfolioFilters).observe(document.body, {
+    new MutationObserver(queuePortfolioRefresh).observe(document.body, {
       attributes: true,
       attributeFilter: ['data-language'],
     });
   }
 
-  window.setTimeout(refreshPortfolioFilters, 50);
-  window.setTimeout(refreshPortfolioFilters, 250);
-  window.setTimeout(refreshPortfolioFilters, 800);
+  window.setTimeout(queuePortfolioRefresh, 50);
+  window.setTimeout(queuePortfolioRefresh, 250);
+  window.setTimeout(queuePortfolioRefresh, 800);
 };
 
 if (document.readyState === 'loading') {
