@@ -46,6 +46,17 @@ jobs:
       - name: Verify production build after maintenance
         run: npm run build
 
+      - name: Write safe daily streak heartbeat
+        run: |
+          mkdir -p docs/ai-watch
+          {
+            echo "# Daily maintenance heartbeat"
+            echo
+            echo "Last successful maintenance build: $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+            echo
+            echo "This file is intentionally updated by the safe daily AI maintenance workflow after both production builds pass."
+          } > docs/ai-watch/streak.md
+
       - name: Check safe generated changes
         id: changes
         run: |
@@ -69,8 +80,8 @@ jobs:
       - name: Commit and push safe AI maintenance data
         if: steps.changes.outputs.has_changes == 'true'
         run: |
-          git config user.name "Claude AI Bot"
-          git config user.email "bot@alvrichh.dev"
+          git config user.name "Alvaro Rodriguez Molina"
+          git config user.email "81918923+alvrichh@users.noreply.github.com"
           git add docs/ai-watch assets/data/ai-radar.json
           git commit -m "AI Radar update — $(date +'%Y-%m-%d')"
           git push
