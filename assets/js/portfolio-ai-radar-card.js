@@ -5,10 +5,13 @@ const DEFAULT_VISIBLE_RADAR_ITEMS = 3;
 
 const aiRadarStaticCopy = {
   en: {
+    eyebrow: 'Market intelligence',
+    sectionTitle: 'AI Radar',
+    sectionIntro: 'A compact, auto-maintained stream of AI, agent and developer-tooling signals. It stays separate from Portfolio so projects remain projects, and market updates remain research.',
     tagOne: 'AI Radar',
     tagTwo: 'Daily signal',
     title: 'Live AI Radar',
-    body: 'Daily AI, agent and developer-tooling updates collected from official feeds. Safe data-driven card: the bot updates JSON, not the layout.',
+    body: 'Daily AI, agent and developer-tooling updates collected from official feeds. Safe data-driven section: the bot updates JSON, not the layout.',
     open: 'Open source',
     empty: 'Waiting for the next AI maintenance run.',
     updated: 'Updated',
@@ -17,10 +20,13 @@ const aiRadarStaticCopy = {
     showLess: 'Show less',
   },
   es: {
+    eyebrow: 'Inteligencia de mercado',
+    sectionTitle: 'AI Radar',
+    sectionIntro: 'Un stream compacto y auto-mantenido de señales sobre IA, agentes y herramientas developer. Va separado de Portfolio para que los proyectos sigan siendo proyectos y las novedades sean research.',
     tagOne: 'Radar IA',
     tagTwo: 'Señal diaria',
     title: 'Live AI Radar',
-    body: 'Novedades diarias sobre IA, agentes y herramientas developer desde fuentes oficiales. Card segura por datos: el bot actualiza JSON, no el layout.',
+    body: 'Novedades diarias sobre IA, agentes y herramientas developer desde fuentes oficiales. Sección segura por datos: el bot actualiza JSON, no el layout.',
     open: 'Abrir fuente',
     empty: 'Esperando la siguiente ejecución de mantenimiento IA.',
     updated: 'Actualizado',
@@ -29,10 +35,13 @@ const aiRadarStaticCopy = {
     showLess: 'Ver menos',
   },
   and: {
+    eyebrow: 'Inteligencia de mercao',
+    sectionTitle: 'AI Radar',
+    sectionIntro: 'Un stream compacto y auto-mantenío de señaleh sobre IA, agenteh y herramienta developer. Separao de Portfolio pa que loh proyectoh sigan siendo proyectoh.',
     tagOne: 'Radar IA',
     tagTwo: 'Señal diaria',
     title: 'Live AI Radar',
-    body: 'Novedadeh diariah sobre IA, agenteh y herramienta developer desde fuenteh oficialeh. Card segura por datoh: el bot actualiza JSON, no el layout.',
+    body: 'Novedadeh diariah sobre IA, agenteh y herramienta developer desde fuenteh oficialeh. Sección segura por datoh: el bot actualiza JSON, no el layout.',
     open: 'Abrí fuente',
     empty: 'Esperando la siguiente ejecución de mantenimiento IA.',
     updated: 'Actualizao',
@@ -66,51 +75,93 @@ const ensureAiRadarStyles = () => {
   const style = document.createElement('style');
   style.setAttribute('data-ai-radar-style', 'true');
   style.textContent = `
-    .ai-radar-card {
+    .ai-radar-section {
       position: relative;
       overflow: hidden;
-      border-color: rgba(142, 255, 207, .26) !important;
+      margin-top: clamp(1rem, 3vw, 1.4rem);
+      border-color: rgba(142, 255, 207, .22) !important;
       background:
-        radial-gradient(circle at 8% 0%, rgba(142,255,207,.16), transparent 34%),
-        radial-gradient(circle at 92% 8%, rgba(157,125,255,.18), transparent 34%),
-        linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.026)),
-        rgba(255,255,255,.035);
+        radial-gradient(circle at 8% 0%, rgba(142,255,207,.14), transparent 34%),
+        radial-gradient(circle at 92% 8%, rgba(157,125,255,.16), transparent 34%),
+        linear-gradient(180deg, rgba(255,255,255,.065), rgba(255,255,255,.022)),
+        rgba(255,255,255,.032);
     }
 
-    .ai-radar-card::before,
-    .ai-radar-card::after {
+    .ai-radar-section::before,
+    .ai-radar-section::after {
       content: "";
       position: absolute;
       border-radius: 999px;
       pointer-events: none;
     }
 
-    .ai-radar-card::before {
-      right: -4rem;
-      top: -4rem;
-      width: 14rem;
-      height: 14rem;
-      background: radial-gradient(circle, rgba(142,255,207,.18), transparent 64%);
+    .ai-radar-section::before {
+      right: -5rem;
+      top: -5rem;
+      width: 16rem;
+      height: 16rem;
+      background: radial-gradient(circle, rgba(142,255,207,.16), transparent 64%);
     }
 
-    .ai-radar-card::after {
-      left: -3.8rem;
-      bottom: -3.8rem;
-      width: 10rem;
-      height: 10rem;
-      background: radial-gradient(circle, rgba(157,125,255,.16), transparent 64%);
+    .ai-radar-section::after {
+      left: -4rem;
+      bottom: -4rem;
+      width: 12rem;
+      height: 12rem;
+      background: radial-gradient(circle, rgba(157,125,255,.14), transparent 64%);
     }
 
-    .ai-radar-card > * {
+    .ai-radar-section > * {
       position: relative;
       z-index: 1;
     }
 
-    .ai-radar-media {
-      min-height: clamp(13rem, 30vw, 18rem);
+    .ai-radar-heading {
+      display: grid;
+      gap: .6rem;
+      margin-bottom: 1rem;
+    }
+
+    .ai-radar-heading .eyebrow {
+      width: fit-content;
+    }
+
+    .ai-radar-heading h2 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 7vw, 4.2rem);
+      letter-spacing: -.065em;
+      line-height: .92;
+    }
+
+    .ai-radar-heading p {
+      max-width: 64ch;
+      margin: 0;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    .ai-radar-shell {
+      display: grid;
+      grid-template-columns: minmax(0, .78fr) minmax(0, 1.22fr);
+      gap: clamp(1rem, 3vw, 1.35rem);
+      align-items: stretch;
+    }
+
+    .ai-radar-visual-card,
+    .ai-radar-feed-card {
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: clamp(1.25rem, 4vw, 1.75rem);
+      background: rgba(255,255,255,.045);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.07);
+      overflow: hidden;
+    }
+
+    .ai-radar-visual-card {
+      min-height: clamp(15rem, 32vw, 22rem);
       display: grid;
       place-items: center;
-      border-bottom: 1px solid rgba(255,255,255,.11);
+      padding: clamp(1rem, 3vw, 1.25rem);
       background:
         linear-gradient(90deg, rgba(255,255,255,.065) 1px, transparent 1px),
         linear-gradient(180deg, rgba(255,255,255,.065) 1px, transparent 1px),
@@ -120,14 +171,14 @@ const ensureAiRadarStyles = () => {
     }
 
     .ai-radar-visual {
-      width: min(86%, 22rem);
+      width: min(88%, 23rem);
       display: grid;
-      gap: .66rem;
+      gap: .7rem;
     }
 
     .ai-radar-core {
       justify-self: center;
-      width: clamp(7rem, 19vw, 9rem);
+      width: clamp(7.4rem, 19vw, 9.6rem);
       aspect-ratio: 1;
       display: grid;
       place-items: center;
@@ -154,8 +205,7 @@ const ensureAiRadarStyles = () => {
       line-height: .95;
     }
 
-    .ai-radar-feed,
-    .ai-radar-list {
+    .ai-radar-feed {
       display: grid;
       gap: .5rem;
     }
@@ -175,17 +225,40 @@ const ensureAiRadarStyles = () => {
       white-space: nowrap;
     }
 
+    .ai-radar-feed-card {
+      padding: clamp(1rem, 3vw, 1.2rem);
+    }
+
+    .ai-radar-card-top {
+      display: grid;
+      gap: .65rem;
+      margin-bottom: .9rem;
+    }
+
+    .ai-radar-card-top h3 {
+      margin: 0;
+      font-size: clamp(1.35rem, 4vw, 2rem);
+      letter-spacing: -.045em;
+      line-height: 1;
+    }
+
+    .ai-radar-card-top p {
+      margin: 0;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
     .ai-radar-filters {
       display: flex;
       flex-wrap: wrap;
       gap: .45rem;
-      margin-top: .9rem;
+      margin-top: .85rem;
     }
 
     .ai-radar-filter {
       border: 1px solid rgba(255,255,255,.13);
       border-radius: 999px;
-      padding: .48rem .66rem;
+      padding: .5rem .68rem;
       color: var(--text-muted);
       background: rgba(255,255,255,.045);
       font-size: .76rem;
@@ -204,30 +277,32 @@ const ensureAiRadarStyles = () => {
     }
 
     .ai-radar-list {
-      margin-top: .85rem;
+      display: grid;
+      gap: .6rem;
+      margin-top: .95rem;
     }
 
     .ai-radar-item {
       display: grid;
-      gap: .46rem;
+      gap: .5rem;
       border: 1px solid rgba(255,255,255,.12);
       border-radius: 1.05rem;
-      padding: .76rem;
+      padding: .8rem;
       background: rgba(255,255,255,.045);
       box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
     }
 
     .ai-radar-item strong {
       color: var(--text);
-      font-size: .94rem;
+      font-size: .96rem;
       line-height: 1.18;
     }
 
     .ai-radar-item p {
       margin: 0;
       color: var(--text-muted);
-      font-size: .82rem;
-      line-height: 1.42;
+      font-size: .84rem;
+      line-height: 1.45;
     }
 
     .ai-radar-item-meta,
@@ -258,7 +333,7 @@ const ensureAiRadarStyles = () => {
       gap: .35rem;
       border: 1px solid rgba(142,255,207,.24);
       border-radius: 999px;
-      padding: .48rem .64rem;
+      padding: .5rem .66rem;
       color: var(--accent-strong, #8effcf);
       background: rgba(142,255,207,.08);
       font-size: .76rem;
@@ -268,22 +343,61 @@ const ensureAiRadarStyles = () => {
 
     .ai-radar-actions {
       display: flex;
-      margin-top: .75rem;
+      margin-top: .8rem;
     }
 
     .ai-radar-toggle {
       border: 1px solid rgba(255,255,255,.13);
       border-radius: 999px;
-      padding: .62rem .78rem;
+      padding: .66rem .82rem;
       color: var(--text);
       background: rgba(255,255,255,.055);
       font-weight: 950;
       cursor: pointer;
     }
 
-    @media (min-width: 860px) {
-      .ai-radar-card {
-        grid-column: span 2;
+    @media (max-width: 920px) {
+      .ai-radar-shell {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .ai-radar-section {
+        margin-top: 1rem;
+        padding: clamp(1rem, 5vw, 1.1rem) !important;
+      }
+
+      .ai-radar-heading h2 {
+        font-size: clamp(2.25rem, 12vw, 3.35rem);
+      }
+
+      .ai-radar-visual-card {
+        min-height: 13.5rem;
+      }
+
+      .ai-radar-filters {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: .2rem;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+
+      .ai-radar-filters::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+        display: none;
+      }
+
+      .ai-radar-filter {
+        flex: 0 0 auto;
+      }
+
+      .ai-radar-item a,
+      .ai-radar-toggle {
+        width: 100%;
+        justify-content: center;
       }
     }
   `;
@@ -313,15 +427,17 @@ const getFilteredItems = (items) => {
   return items.filter((item) => (item.tags || []).some((tag) => tagKey(tag) === aiRadarState.activeTag));
 };
 
-const renderRadarList = (card) => {
-  if (!card || !aiRadarState.data) return;
+const getAiRadarSection = () => document.querySelector('[data-ai-radar-section]');
+
+const renderRadarList = (section) => {
+  if (!section || !aiRadarState.data) return;
   const copy = getAiRadarCopy();
   const allItems = getRadarItems(aiRadarState.data);
   const filtered = getFilteredItems(allItems);
   const visible = aiRadarState.expanded ? filtered : filtered.slice(0, DEFAULT_VISIBLE_RADAR_ITEMS);
-  const list = card.querySelector('[data-ai-radar-list]');
-  const filters = card.querySelector('[data-ai-radar-filters]');
-  const actions = card.querySelector('[data-ai-radar-actions]');
+  const list = section.querySelector('[data-ai-radar-list]');
+  const filters = section.querySelector('[data-ai-radar-filters]');
+  const actions = section.querySelector('[data-ai-radar-actions]');
   const tags = getAvailableTags(allItems, copy);
 
   if (filters) {
@@ -359,57 +475,64 @@ const renderRadarList = (card) => {
   }
 };
 
-const createAiRadarCard = () => {
-  const projectGrid = document.querySelector('#work .project-grid');
-  if (!projectGrid || document.querySelector('[data-ai-radar-card]')) return null;
+const createAiRadarSection = () => {
+  const workSection = document.getElementById('work');
+  if (!workSection || getAiRadarSection()) return getAiRadarSection();
+
+  document.querySelectorAll('[data-ai-radar-card]').forEach((node) => node.remove());
 
   const copy = getAiRadarCopy();
-  const card = document.createElement('article');
-  card.className = 'project-card ai-radar-card';
-  card.setAttribute('data-category', 'ai');
-  card.setAttribute('data-ai-radar-card', 'true');
-  card.innerHTML = `
-    <div class="project-media ai-radar-media" aria-hidden="true">
-      <div class="ai-radar-visual">
-        <div class="ai-radar-core"><div><span>Live</span><strong>AI Radar</strong></div></div>
-        <div class="ai-radar-feed" data-ai-radar-feed>
-          <span>${escapeRadarHtml(copy.empty)}</span>
+  const section = document.createElement('section');
+  section.id = 'ai-radar';
+  section.className = 'panel card ai-radar-section premium-reveal';
+  section.setAttribute('data-ai-radar-section', 'true');
+  section.setAttribute('data-scroll-section', 'true');
+  section.innerHTML = `
+    <div class="ai-radar-heading">
+      <span class="eyebrow" data-ai-radar-copy="eyebrow">${escapeRadarHtml(copy.eyebrow)}</span>
+      <h2 data-ai-radar-copy="sectionTitle">${escapeRadarHtml(copy.sectionTitle)}</h2>
+      <p data-ai-radar-copy="sectionIntro">${escapeRadarHtml(copy.sectionIntro)}</p>
+    </div>
+    <div class="ai-radar-shell">
+      <div class="ai-radar-visual-card" aria-hidden="true">
+        <div class="ai-radar-visual">
+          <div class="ai-radar-core"><div><span>Live</span><strong>AI Radar</strong></div></div>
+          <div class="ai-radar-feed" data-ai-radar-feed>
+            <span>${escapeRadarHtml(copy.empty)}</span>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="project-copy">
-      <div class="project-tags">
-        <span class="tag" data-ai-radar-copy="tagOne">${escapeRadarHtml(copy.tagOne)}</span>
-        <span class="tag" data-ai-radar-copy="tagTwo">${escapeRadarHtml(copy.tagTwo)}</span>
+      <div class="ai-radar-feed-card">
+        <div class="project-tags">
+          <span class="tag" data-ai-radar-copy="tagOne">${escapeRadarHtml(copy.tagOne)}</span>
+          <span class="tag" data-ai-radar-copy="tagTwo">${escapeRadarHtml(copy.tagTwo)}</span>
+        </div>
+        <div class="ai-radar-card-top">
+          <h3 data-ai-radar-title>${escapeRadarHtml(copy.title)}</h3>
+          <p data-ai-radar-body>${escapeRadarHtml(copy.body)}</p>
+          <div class="ai-radar-meta" data-ai-radar-meta></div>
+        </div>
+        <div class="ai-radar-filters" data-ai-radar-filters></div>
+        <div class="ai-radar-list" data-ai-radar-list></div>
+        <div class="ai-radar-actions" data-ai-radar-actions></div>
       </div>
-      <h3 data-ai-radar-title>${escapeRadarHtml(copy.title)}</h3>
-      <p data-ai-radar-body>${escapeRadarHtml(copy.body)}</p>
-      <div class="ai-radar-meta" data-ai-radar-meta></div>
-      <div class="ai-radar-filters" data-ai-radar-filters></div>
-      <div class="ai-radar-list" data-ai-radar-list></div>
-      <div class="ai-radar-actions" data-ai-radar-actions></div>
     </div>
   `;
 
-  const firstAiCard = projectGrid.querySelector('[data-ai-card]');
-  const flowCard = projectGrid.querySelector('[data-flow-bkd-card]');
-  const anchor = firstAiCard || flowCard || projectGrid.querySelector('[data-planning-project-card]');
-  if (anchor) anchor.insertAdjacentElement('afterend', card);
-  else projectGrid.insertAdjacentElement('afterbegin', card);
-
-  return card;
+  workSection.insertAdjacentElement('afterend', section);
+  return section;
 };
 
-const renderAiRadarData = (card, data) => {
-  if (!card || !data) return;
+const renderAiRadarData = (section, data) => {
+  if (!section || !data) return;
   const copy = getAiRadarCopy();
   aiRadarState.data = data;
   const items = getRadarItems(data).slice(0, 3);
 
-  const title = card.querySelector('[data-ai-radar-title]');
-  const body = card.querySelector('[data-ai-radar-body]');
-  const feed = card.querySelector('[data-ai-radar-feed]');
-  const meta = card.querySelector('[data-ai-radar-meta]');
+  const title = section.querySelector('[data-ai-radar-title]');
+  const body = section.querySelector('[data-ai-radar-body]');
+  const feed = section.querySelector('[data-ai-radar-feed]');
+  const meta = section.querySelector('[data-ai-radar-meta]');
 
   if (title) title.textContent = data.headline || copy.title;
   if (body) body.textContent = data.insight || copy.body;
@@ -425,14 +548,7 @@ const renderAiRadarData = (card, data) => {
     `;
   }
 
-  renderRadarList(card);
-};
-
-const syncAiRadarFilter = () => {
-  const card = document.querySelector('[data-ai-radar-card]');
-  const activeFilter = document.querySelector('.filter-chip.is-active')?.getAttribute('data-filter') || 'all';
-  if (!card) return;
-  card.hidden = !(activeFilter === 'all' || activeFilter === 'ai');
+  renderRadarList(section);
 };
 
 const refreshStaticCopy = () => {
@@ -441,33 +557,29 @@ const refreshStaticCopy = () => {
     const key = node.getAttribute('data-ai-radar-copy');
     if (copy[key]) node.textContent = copy[key];
   });
-  renderRadarList(document.querySelector('[data-ai-radar-card]'));
+  renderRadarList(getAiRadarSection());
 };
 
-const initAiRadarCard = async () => {
+const initAiRadarSection = async () => {
   ensureAiRadarStyles();
-  const card = createAiRadarCard();
+  const section = createAiRadarSection();
   refreshStaticCopy();
-  syncAiRadarFilter();
   const data = await fetchAiRadarData();
-  renderAiRadarData(card || document.querySelector('[data-ai-radar-card]'), data);
+  renderAiRadarData(section || getAiRadarSection(), data);
 
   document.addEventListener('click', (event) => {
     const radarFilter = event.target.closest('[data-ai-radar-filter]');
     if (radarFilter) {
       aiRadarState.activeTag = radarFilter.getAttribute('data-ai-radar-filter') || 'all';
       aiRadarState.expanded = false;
-      renderRadarList(document.querySelector('[data-ai-radar-card]'));
+      renderRadarList(getAiRadarSection());
       return;
     }
 
     if (event.target.closest('[data-ai-radar-toggle]')) {
       aiRadarState.expanded = !aiRadarState.expanded;
-      renderRadarList(document.querySelector('[data-ai-radar-card]'));
-      return;
+      renderRadarList(getAiRadarSection());
     }
-
-    if (event.target.closest('.filter-chip')) window.requestAnimationFrame(syncAiRadarFilter);
   });
 
   if (document.body) {
@@ -479,7 +591,7 @@ const initAiRadarCard = async () => {
 };
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initAiRadarCard);
+  document.addEventListener('DOMContentLoaded', initAiRadarSection);
 } else {
-  initAiRadarCard();
+  initAiRadarSection();
 }
