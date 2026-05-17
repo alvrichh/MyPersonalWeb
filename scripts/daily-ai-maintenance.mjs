@@ -28,6 +28,19 @@ const KEYWORDS = [
   'llm', 'model', 'developer tools',
 ];
 
+const RADAR_TAG_RULES = [
+  ['Agents', ['agent', 'agents', 'agentic', 'assistant', 'tool use', 'tools']],
+  ['MCP', ['mcp', 'model context protocol']],
+  ['ChatGPT', ['chatgpt', 'openai', 'gpt']],
+  ['Claude', ['claude', 'anthropic']],
+  ['Copilot', ['copilot', 'github copilot']],
+  ['Gemini', ['gemini', 'google ai']],
+  ['Dev Tools', ['developer', 'coding', 'code', 'dev tool', 'developer tools']],
+  ['Automation', ['automation', 'workflow', 'workflows', 'orchestration']],
+  ['Multimodal', ['multimodal', 'image', 'vision', 'audio', 'video']],
+  ['Models', ['model', 'llm', 'reasoning']],
+];
+
 const PORTFOLIO_SIGNALS = [
   ['agent', 'AI agents / automation workflows'],
   ['mcp', 'MCP / tool-connected assistants'],
@@ -65,6 +78,15 @@ const strip = (value = '') => decodeEntities(String(value).replace(/\s+/g, ' '))
 const getTag = (item, tag) => {
   const match = item.match(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, 'i'));
   return match ? strip(match[1]) : '';
+};
+
+const getRadarTags = (item) => {
+  const haystack = `${item.title || ''} ${item.description || ''} ${item.summary || ''} ${item.source || ''}`.toLowerCase();
+  const tags = RADAR_TAG_RULES
+    .filter(([, keywords]) => keywords.some((keyword) => haystack.includes(keyword)))
+    .map(([tag]) => tag);
+
+  return tags.length ? [...new Set(tags)].slice(0, 4) : ['AI'];
 };
 
 const parseItems = (xml, source) => {
@@ -147,13 +169,21 @@ const buildPortfolioCandidates = (items) => {
   return [...signals.values()].slice(0, 8);
 };
 
-const buildRadarItems = (items) => items.slice(0, 12).map((item) => ({
-  title: item.title,
-  source: item.source,
-  date: item.date || TODAY,
-  url: item.url || item.link,
-  summary: item.description ? `${item.description.slice(0, 220)}${item.description.length > 220 ? '...' : ''}` : 'AI update detected from an official or high-signal source.',
-}));
+const buildRadarItems = (items) => items.slice(0, 12).map((item) => {
+  const summary = item.description ? `${item.description.slice(0, 220)}${item.description.length > 220 ? '...' : ''}` : 'AI update detected from an official or high-signal source.';
+  const normalized = {
+    title: item.title,
+    source: item.source,
+    date: item.date || TODAY,
+    url: item.url || item.link,
+    summary,
+  };
+
+  return {
+    ...normalized,
+    tags: getRadarTags({ ...item, summary }),
+  };
+});
 
 const readExistingJson = async (filePath, fallback) => {
   if (!existsSync(filePath)) return fallback;
@@ -173,13 +203,15 @@ const mergeRadarItems = (freshItems, existingRadar) => {
     const url = item.url || item.link || item.title;
     if (!url || seen.has(url)) continue;
     seen.add(url);
-    merged.push({
+    const normalized = {
       title: item.title,
       source: item.source || 'AI Radar',
       date: item.date || TODAY,
       url,
       summary: item.aiSummary || item.summary || item.description || item.title,
-    });
+      tags: Array.isArray(item.tags) && item.tags.length ? item.tags : getRadarTags(item),
+    };
+    merged.push(normalized);
     if (merged.length >= 20) break;
   }
 
