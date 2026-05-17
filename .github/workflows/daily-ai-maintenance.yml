@@ -2,8 +2,8 @@ name: Daily AI maintenance
 
 on:
   schedule:
-    # 07:30 UTC = 08:30/09:30 in Spain depending on daylight saving time.
-    - cron: "30 7 * * *"
+    # 08:00 UTC = daily AI radar maintenance.
+    - cron: "0 8 * * *"
   workflow_dispatch:
 
 permissions:
@@ -37,9 +37,11 @@ jobs:
 
       - name: Generate AI maintenance report and radar data
         env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_MODEL: ${{ vars.ANTHROPIC_MODEL || 'claude-sonnet-4-20250514' }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           OPENAI_MODEL: ${{ vars.OPENAI_MODEL || 'gpt-4o-mini' }}
-        run: npm run ai:maintenance
+        run: npm run ai:radar
 
       - name: Verify production build after maintenance
         run: npm run build
@@ -62,14 +64,15 @@ jobs:
             echo "$UNSAFE_CHANGES"
             exit 1
           fi
+          echo "Only safe AI radar files changed."
 
       - name: Commit and push safe AI maintenance data
         if: steps.changes.outputs.has_changes == 'true'
         run: |
-          git config user.name "alvrich-ai-maintenance-bot"
-          git config user.email "actions@github.com"
+          git config user.name "Claude AI Bot"
+          git config user.email "bot@alvrichh.dev"
           git add docs/ai-watch assets/data/ai-radar.json
-          git commit -m "Daily AI radar maintenance"
+          git commit -m "AI Radar update — $(date +'%Y-%m-%d')"
           git push
 
       - name: No changes summary
