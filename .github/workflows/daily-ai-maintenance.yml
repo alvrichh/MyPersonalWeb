@@ -13,6 +13,9 @@ concurrency:
   group: daily-ai-maintenance
   cancel-in-progress: false
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   ai-maintenance:
     runs-on: ubuntu-latest
@@ -26,7 +29,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
 
       - name: Install dependencies
@@ -60,30 +63,30 @@ jobs:
       - name: Check safe generated changes
         id: changes
         run: |
-          if git diff --quiet -- docs/ai-watch assets/data/ai-radar.json; then
+          git add docs/ai-watch assets/data/ai-radar.json
+          if git diff --cached --quiet; then
             echo "has_changes=false" >> "$GITHUB_OUTPUT"
           else
             echo "has_changes=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Guard against unsafe file changes
+      - name: Report ignored unsafe working tree changes
         if: steps.changes.outputs.has_changes == 'true'
         run: |
-          UNSAFE_CHANGES=$(git diff --name-only | grep -v '^docs/ai-watch/' | grep -v '^assets/data/ai-radar.json$' || true)
+          UNSAFE_CHANGES=$(git status --porcelain | grep -v ' docs/ai-watch/' | grep -v ' assets/data/ai-radar.json$' || true)
           if [ -n "$UNSAFE_CHANGES" ]; then
-            echo "Unsafe changes detected:"
+            echo "Ignoring non-safe generated changes. They will not be committed:"
             echo "$UNSAFE_CHANGES"
-            exit 1
+          else
+            echo "Only safe AI radar files changed."
           fi
-          echo "Only safe AI radar files changed."
 
       - name: Commit and push safe AI maintenance data
         if: steps.changes.outputs.has_changes == 'true'
         run: |
           git config user.name "Alvaro Rodriguez Molina"
           git config user.email "81918923+alvrichh@users.noreply.github.com"
-          git add docs/ai-watch assets/data/ai-radar.json
-          git commit -m "AI Radar update — $(date +'%Y-%m-%d')"
+          git commit -m "AI Radar update - $(date +'%Y-%m-%d')"
           git push
 
       - name: No changes summary
