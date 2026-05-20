@@ -1,18 +1,268 @@
 {
-  "generatedAt": "2026-05-16T00:00:00.000Z",
-  "date": "2026-05-16",
-  "mode": "initial-safe-data",
-  "headline": "AI radar initialized",
-  "insight": "This card is ready to receive daily AI, agent and developer-tooling updates from official feeds.",
-  "portfolioAngle": "The portfolio can surface fresh AI signals without changing the visible layout or manually editing HTML/CSS.",
+  "generatedAt": "2026-05-20T10:47:27.155Z",
+  "date": "2026-05-20",
+  "mode": "rss-rules-fallback",
+  "headline": "AI radar update",
+  "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
+  "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "The next phase of OpenAI’s Education for Countries",
+      "source": "OpenAI News",
+      "date": "2026-05-20",
+      "url": "https://openai.com/index/the-next-phase-of-education-for-countries",
+      "summary": "OpenAI advances Education for Countries, expanding AI adoption in schools with new partnerships, teacher training, and tools to improve global learning outcomes.",
+      "tags": [
+        "Agents",
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "I/O 2026",
+      "source": "Google AI Blog",
+      "date": "2026-05-19",
+      "url": "https://blog.google/innovation-and-ai/technology/developers-tools/google-io-2026-collection/",
+      "summary": "At Google I/O 2026, we shared how we’re making AI more helpful for everyone. See everything we announced.",
+      "tags": [
+        "Gemini"
+      ]
+    },
+    {
+      "title": "How AI Mode is changing the way people search in the U.S.",
+      "source": "Google AI Blog",
+      "date": "2026-05-19",
+      "url": "https://blog.google/products-and-platforms/products/search/ai-mode-us-insights/",
+      "summary": "One year after launch, see how AI Mode’s users are shifting from keywords to natural language queries.",
+      "tags": [
+        "Gemini"
+      ]
+    },
+    {
+      "title": "New ways to create and get things done in Google Workspace",
+      "source": "Google AI Blog",
+      "date": "2026-05-19",
+      "url": "https://blog.google/products-and-platforms/products/workspace/workspace-updates/",
+      "summary": "Announcing new voice capabilities in Gmail, Docs and Keep, a new design tool called Google Pics and updates to AI Inbox.",
+      "tags": [
+        "Gemini"
+      ]
+    },
+    {
+      "title": "I/O 2026: Welcome to the agentic Gemini era",
+      "source": "Google AI Blog",
+      "date": "2026-05-19",
+      "url": "https://blog.google/innovation-and-ai/sundar-pichai-io-2026/",
+      "summary": "The latest from Google I/O: See how we’re helping you get more done with Gemini.",
+      "tags": [
+        "Agents",
+        "Gemini"
+      ]
+    },
+    {
+      "title": "Gemini 3.5: frontier intelligence with action",
+      "source": "Google AI Blog",
+      "date": "2026-05-19",
+      "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-5/",
+      "summary": "At Google I/O we released Gemini 3.5, our latest series of models combining frontier intelligence with action.",
+      "tags": [
+        "Gemini",
+        "Models"
+      ]
+    },
+    {
+      "title": "A new era for AI Search",
+      "source": "Google AI Blog",
+      "date": "2026-05-19",
+      "url": "https://blog.google/products-and-platforms/products/search/search-io-2026/",
+      "summary": "We shared the next step in our journey to bring together the best of a search engine with the best of AI.",
+      "tags": [
+        "Gemini"
+      ]
+    },
+    {
+      "title": "Everything new in our Google AI subscriptions, fresh from I/O 2026",
+      "source": "Google AI Blog",
+      "date": "2026-05-19",
+      "url": "https://blog.google/products-and-platforms/products/google-one/google-ai-subscriptions/",
+      "summary": "Introducing a $100 AI Ultra plan — plus, new features and benefits for Google AI Plus, Pro and Ultra subscribers.",
+      "tags": [
+        "Gemini"
+      ]
+    },
+    {
+      "title": "Introducing OpenAI for Singapore",
+      "source": "OpenAI News",
+      "date": "2026-05-19",
+      "url": "https://openai.com/index/introducing-openai-for-singapore",
+      "summary": "OpenAI for Singapore launches a multi-year AI partnership to expand deployment, build local talent, and support businesses and public services with AI.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Advancing content provenance for a safer, more transparent AI ecosystem",
+      "source": "OpenAI News",
+      "date": "2026-05-19",
+      "url": "https://openai.com/index/advancing-content-provenance",
+      "summary": "OpenAI advances AI content provenance with Content Credentials, SynthID, and a verification tool to help people identify and trust AI-generated media.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Demis Hassabis said this might be the ‘foothills of the singularity.’ What?",
+      "source": "The Verge AI",
+      "date": "2026-05-19",
+      "url": "https://www.theverge.com/tech/934260/google-io-ai-singularity-demis-hassabis",
+      "summary": "Welcome to a \"profound moment for humanity,\" according to Google DeepMind CEO Demis Hassabis, who closed out Google I/O's keynote presentation on Tuesday, saying: Google's cutting-edge research and products will help unl...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Google’s AI future demands trust — and your personal data",
+      "source": "The Verge AI",
+      "date": "2026-05-19",
+      "url": "https://www.theverge.com/tech/934172/google-io-gemini-ai-trust-personal-data",
+      "summary": "Google has big promises for its AI-powered future - and a lot of it depends on your trust. At I/O 2026, Google described a bunch of new tools that it claims will make your life easier. Gemini Spark, Google's always-on AI...",
+      "tags": [
+        "Agents",
+        "Gemini"
+      ]
+    },
     {
       "title": "AI agents and tool-connected workflows",
       "source": "Portfolio radar",
       "date": "2026-05-16",
       "url": "https://alvrich.vercel.app",
-      "summary": "Initial radar item for MCP, agent workflows, ChatGPT, Claude, Copilot, Gemini and AI automation monitoring."
+      "summary": "Initial radar item for MCP, agent workflows, ChatGPT, Claude, Copilot, Gemini and AI automation monitoring.",
+      "tags": [
+        "Agents",
+        "MCP",
+        "ChatGPT",
+        "Claude"
+      ]
     }
   ],
-  "candidates": []
+  "candidates": [
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "I/O 2026: Welcome to the agentic Gemini era",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/sundar-pichai-io-2026/",
+          "date": "2026-05-19"
+        },
+        {
+          "title": "Google’s AI future demands trust — and your personal data",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/934172/google-io-gemini-ai-trust-personal-data",
+          "date": "2026-05-19"
+        },
+        {
+          "title": "Google wants to compete with Anthropic’s Mythos",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/933921/google-wants-to-compete-with-anthropics-mythos",
+          "date": "2026-05-19"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "I/O 2026: Welcome to the agentic Gemini era",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/sundar-pichai-io-2026/",
+          "date": "2026-05-19"
+        },
+        {
+          "title": "Gemini 3.5: frontier intelligence with action",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-5/",
+          "date": "2026-05-19"
+        },
+        {
+          "title": "Google’s AI future demands trust — and your personal data",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/934172/google-io-gemini-ai-trust-personal-data",
+          "date": "2026-05-19"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Google can now vibe-code you an Android app",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/932364/google-ai-studio-native-android-apps-vibe-code-google-io-2026",
+          "date": "2026-05-19"
+        },
+        {
+          "title": "OpenAI and Dell partner to bring Codex to hybrid and on-premise enterprise environments",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/dell-codex-enterprise-partnership",
+          "date": "2026-05-18"
+        },
+        {
+          "title": "Validating agentic behavior when “correct” isn’t deterministic",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/generative-ai/validating-agentic-behavior-when-correct-isnt-deterministic/",
+          "date": "2026-05-06"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Take your local GitHub sessions anywhere",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/news-insights/product-news/take-your-local-github-sessions-anywhere/",
+          "date": "2026-05-18"
+        },
+        {
+          "title": "Dungeons &#038; Desktops: Building a procedurally generated roguelike with GitHub Copilot CLI",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/dungeons-desktops-building-a-procedurally-generated-roguelike-with-github-copilot-cli/",
+          "date": "2026-05-12"
+        },
+        {
+          "title": "Validating agentic behavior when “correct” isn’t deterministic",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/generative-ai/validating-agentic-behavior-when-correct-isnt-deterministic/",
+          "date": "2026-05-06"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "OpenAI and Malta partner to bring ChatGPT Plus to all citizens",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/malta-chatgpt-plus-partnership",
+          "date": "2026-05-16"
+        },
+        {
+          "title": "A new personal finance experience in ChatGPT",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/personal-finance-chatgpt",
+          "date": "2026-05-15"
+        }
+      ]
+    }
+  ]
 }
