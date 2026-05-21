@@ -1,11 +1,41 @@
 {
-  "generatedAt": "2026-05-20T10:47:27.155Z",
-  "date": "2026-05-20",
+  "generatedAt": "2026-05-21T11:18:52.132Z",
+  "date": "2026-05-21",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Meta lays off thousands of employees to offset AI investments",
+      "source": "The Verge AI",
+      "date": "2026-05-21",
+      "url": "https://www.theverge.com/tech/935163/meta-layoffs-ai-investment-offset-memo",
+      "summary": "Meta has reportedly notified thousands of employees that they've been laid off as the company attempts to compensate for its hefty AI investments. In an email from Meta management shared by Business Insider, impacted sta...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "In SpaceX’s IPO, Elon Musk is a risk factor",
+      "source": "The Verge AI",
+      "date": "2026-05-21",
+      "url": "https://www.theverge.com/science/935102/spacex-ipo-elon-musk-tesla-cybertruck-xai-risk-factor",
+      "summary": "The SpaceX IPO is here, and it's more than just an historic public offering that could make Elon Musk the world's first trillionaire. It also reveals more ways in which Elon Musk's companies interact and overlap with eac...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "100 things we announced at I/O 2026",
+      "source": "Google AI Blog",
+      "date": "2026-05-20",
+      "url": "https://blog.google/innovation-and-ai/technology/ai/google-io-2026-all-our-announcements/",
+      "summary": "This year at Google I/O 2026, we announced Gemini Omni, Google Antigravity, Universal Cart and so much more. Here are the highlights.",
+      "tags": [
+        "Gemini"
+      ]
+    },
     {
       "title": "The next phase of OpenAI’s Education for Countries",
       "source": "OpenAI News",
@@ -15,6 +45,69 @@
       "tags": [
         "Agents",
         "ChatGPT"
+      ]
+    },
+    {
+      "title": "An OpenAI model has disproved a central conjecture in discrete geometry",
+      "source": "OpenAI News",
+      "date": "2026-05-20",
+      "url": "https://openai.com/index/model-disproves-discrete-geometry-conjecture",
+      "summary": "An OpenAI model solved the 80-year-old unit distance problem, disproving a major conjecture in discrete geometry and marking a milestone in AI-driven mathematics.",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ]
+    },
+    {
+      "title": "Vibe coding is coming to your phone",
+      "source": "The Verge AI",
+      "date": "2026-05-20",
+      "url": "https://www.theverge.com/tech/934628/google-io-2026-android-ai-studio-widgets-shortcuts",
+      "summary": "\"There's an app for that\" was the promise of the App Store from the very beginning. The app that will get your phone to do the thing you want it to? It's just a few taps away. The tagline wasn't strictly true - I'm still...",
+      "tags": [
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "You can now remix other people’s YouTube Shorts with AI",
+      "source": "The Verge AI",
+      "date": "2026-05-20",
+      "url": "https://www.theverge.com/tech/934704/google-gemini-omni-youtub-shorts-remix-ai",
+      "summary": "Google announced a new YouTube Shorts Remix feature that lets users restyle clips or even insert themselves into other people's videos using Gemini Omni. Now, at the bottom of a YouTube Short, when you click the remix ic...",
+      "tags": [
+        "Gemini",
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "Google Search’s AI evolution includes more ads",
+      "source": "The Verge AI",
+      "date": "2026-05-20",
+      "url": "https://www.theverge.com/tech/934585/google-ai-shopping-ads-search",
+      "summary": "Google's AI-powered Search era apparently also extends to its ads. Now, when you look for a product in Search, Google's Gemini AI model will surface relevant items and generate a \"custom explainer\" about why you should p...",
+      "tags": [
+        "Gemini",
+        "Models"
+      ]
+    },
+    {
+      "title": "It&#8217;s make or break time for AI labeling systems",
+      "source": "The Verge AI",
+      "date": "2026-05-20",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/934521/google-synthid-c2pa-content-credentials-ai-labelling-efforts",
+      "summary": "We're about to find out if the systems designed to make deepfakes and AI-generated content easy to spot are actually up to snuff. SynthID and C2PA Content Credentials, two distinct technologies for invisibly tagging imag...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "If Google can’t make AI agents useful, maybe no one can",
+      "source": "The Verge AI",
+      "date": "2026-05-20",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/934478/if-google-cant-make-ai-agents-useful-maybe-no-one-can",
+      "summary": "For years, tech companies have promised AI will give everyone a capable personal assistant but delivered something more like a clueless intern. Over the past six months, that has started to change, thanks largely to the ...",
+      "tags": [
+        "Agents"
       ]
     },
     {
@@ -118,80 +211,31 @@
       "tags": [
         "AI"
       ]
-    },
-    {
-      "title": "Google’s AI future demands trust — and your personal data",
-      "source": "The Verge AI",
-      "date": "2026-05-19",
-      "url": "https://www.theverge.com/tech/934172/google-io-gemini-ai-trust-personal-data",
-      "summary": "Google has big promises for its AI-powered future - and a lot of it depends on your trust. At I/O 2026, Google described a bunch of new tools that it claims will make your life easier. Gemini Spark, Google's always-on AI...",
-      "tags": [
-        "Agents",
-        "Gemini"
-      ]
-    },
-    {
-      "title": "AI agents and tool-connected workflows",
-      "source": "Portfolio radar",
-      "date": "2026-05-16",
-      "url": "https://alvrich.vercel.app",
-      "summary": "Initial radar item for MCP, agent workflows, ChatGPT, Claude, Copilot, Gemini and AI automation monitoring.",
-      "tags": [
-        "Agents",
-        "MCP",
-        "ChatGPT",
-        "Claude"
-      ]
     }
   ],
   "candidates": [
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "I/O 2026: Welcome to the agentic Gemini era",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/sundar-pichai-io-2026/",
-          "date": "2026-05-19"
-        },
-        {
-          "title": "Google’s AI future demands trust — and your personal data",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/934172/google-io-gemini-ai-trust-personal-data",
-          "date": "2026-05-19"
-        },
-        {
-          "title": "Google wants to compete with Anthropic’s Mythos",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/933921/google-wants-to-compete-with-anthropics-mythos",
-          "date": "2026-05-19"
-        }
-      ]
-    },
     {
       "label": "Gemini multimodal exploration",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "I/O 2026: Welcome to the agentic Gemini era",
+          "title": "100 things we announced at I/O 2026",
           "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/sundar-pichai-io-2026/",
-          "date": "2026-05-19"
+          "link": "https://blog.google/innovation-and-ai/technology/ai/google-io-2026-all-our-announcements/",
+          "date": "2026-05-20"
         },
         {
-          "title": "Gemini 3.5: frontier intelligence with action",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-5/",
-          "date": "2026-05-19"
-        },
-        {
-          "title": "Google’s AI future demands trust — and your personal data",
+          "title": "You can now remix other people’s YouTube Shorts with AI",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/934172/google-io-gemini-ai-trust-personal-data",
-          "date": "2026-05-19"
+          "link": "https://www.theverge.com/tech/934704/google-gemini-omni-youtub-shorts-remix-ai",
+          "date": "2026-05-20"
+        },
+        {
+          "title": "Google Search’s AI evolution includes more ads",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/934585/google-ai-shopping-ads-search",
+          "date": "2026-05-20"
         }
       ]
     },
@@ -201,10 +245,10 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Google can now vibe-code you an Android app",
+          "title": "Vibe coding is coming to your phone",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/932364/google-ai-studio-native-android-apps-vibe-code-google-io-2026",
-          "date": "2026-05-19"
+          "link": "https://www.theverge.com/tech/934628/google-io-2026-android-ai-studio-widgets-shortcuts",
+          "date": "2026-05-20"
         },
         {
           "title": "OpenAI and Dell partner to bring Codex to hybrid and on-premise enterprise environments",
@@ -217,6 +261,31 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/generative-ai/validating-agentic-behavior-when-correct-isnt-deterministic/",
           "date": "2026-05-06"
+        }
+      ]
+    },
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "If Google can’t make AI agents useful, maybe no one can",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/934478/if-google-cant-make-ai-agents-useful-maybe-no-one-can",
+          "date": "2026-05-20"
+        },
+        {
+          "title": "I/O 2026: Welcome to the agentic Gemini era",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/sundar-pichai-io-2026/",
+          "date": "2026-05-19"
+        },
+        {
+          "title": "OpenAI and Dell partner to bring Codex to hybrid and on-premise enterprise environments",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/dell-codex-enterprise-partnership",
+          "date": "2026-05-18"
         }
       ]
     },
