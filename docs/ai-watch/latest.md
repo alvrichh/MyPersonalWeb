@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-05-21
+# Daily AI maintenance report — 2026-05-22
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,26 +13,30 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
-- **Meta lays off thousands of employees to offset AI investments** — The Verge AI · 2026-05-21
-  https://www.theverge.com/tech/935163/meta-layoffs-ai-investment-offset-memo
-- **In SpaceX’s IPO, Elon Musk is a risk factor** — The Verge AI · 2026-05-21
-  https://www.theverge.com/science/935102/spacex-ipo-elon-musk-tesla-cybertruck-xai-risk-factor
+- **AdventHealth advances whole-person care with OpenAI** — OpenAI News · 2026-05-21
+  https://openai.com/index/adventhealth
+- **All of the updates from Elon Musk and Sam Altman’s battle over OpenAI** — The Verge AI · 2026-05-21
+  https://www.theverge.com/tech/917225/sam-altman-elon-musk-openai-lawsuit
+- **In desperate times, graduates find hope in humiliating tech CEOs** — The Verge AI · 2026-05-21
+  https://www.theverge.com/ai-artificial-intelligence/935602/graduates-boo-ai-ceos
+- **This AI guitar pedal let me roll my own effects** — The Verge AI · 2026-05-21
+  https://www.theverge.com/ai-artificial-intelligence/935219/polyend-endless-ai-guitar-effects-pedal
+- **Spotify is launching AI-generated remixes** — The Verge AI · 2026-05-21
+  https://www.theverge.com/ai-artificial-intelligence/935379/spotify-umg-ai-covers-remix
+- **Spotify Studio&#8217;s AI agent creates a daily podcast just for you** — The Verge AI · 2026-05-21
+  https://www.theverge.com/entertainment/935390/spotify-studio-ai-app-personal-podcasts
+- **AI video is moving beyond clip slop** — The Verge AI · 2026-05-21
+  https://www.theverge.com/column/935310/ai-video-luma-hollywood
+- **Musk v. Altman: Much ado about nothing** — The Verge AI · 2026-05-21
+  https://www.theverge.com/podcast/934869/elon-musk-sam-altman-openai-suit-loss-pointless
+- **Anthropic is paying $15 billion a year for access to Elon Musk’s data centers** — The Verge AI · 2026-05-21
+  https://www.theverge.com/science/935229/spacex-anthropic-ipo-ai-capacity-deal-colossus
 - **100 things we announced at I/O 2026** — Google AI Blog · 2026-05-20
   https://blog.google/innovation-and-ai/technology/ai/google-io-2026-all-our-announcements/
 - **The next phase of OpenAI’s Education for Countries** — OpenAI News · 2026-05-20
   https://openai.com/index/the-next-phase-of-education-for-countries
 - **An OpenAI model has disproved a central conjecture in discrete geometry** — OpenAI News · 2026-05-20
   https://openai.com/index/model-disproves-discrete-geometry-conjecture
-- **Vibe coding is coming to your phone** — The Verge AI · 2026-05-20
-  https://www.theverge.com/tech/934628/google-io-2026-android-ai-studio-widgets-shortcuts
-- **You can now remix other people’s YouTube Shorts with AI** — The Verge AI · 2026-05-20
-  https://www.theverge.com/tech/934704/google-gemini-omni-youtub-shorts-remix-ai
-- **Google Search’s AI evolution includes more ads** — The Verge AI · 2026-05-20
-  https://www.theverge.com/tech/934585/google-ai-shopping-ads-search
-- **It&#8217;s make or break time for AI labeling systems** — The Verge AI · 2026-05-20
-  https://www.theverge.com/ai-artificial-intelligence/934521/google-synthid-c2pa-content-credentials-ai-labelling-efforts
-- **If Google can’t make AI agents useful, maybe no one can** — The Verge AI · 2026-05-20
-  https://www.theverge.com/ai-artificial-intelligence/934478/if-google-cant-make-ai-agents-useful-maybe-no-one-can
 - **I/O 2026** — Google AI Blog · 2026-05-19
   https://blog.google/innovation-and-ai/technology/developers-tools/google-io-2026-collection/
 - **How AI Mode is changing the way people search in the U.S.** — Google AI Blog · 2026-05-19
@@ -51,8 +55,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/introducing-openai-for-singapore
 - **Advancing content provenance for a safer, more transparent AI ecosystem** — OpenAI News · 2026-05-19
   https://openai.com/index/advancing-content-provenance
-- **The biggest data center ever is becoming a huge problem in Utah** — The Verge AI · 2026-05-19
-  https://www.theverge.com/ai-artificial-intelligence/933687/utah-stratos-project-data-center-kevin-oleary
 - **Take your local GitHub sessions anywhere** — GitHub AI & ML Blog · 2026-05-18
   https://github.blog/news-insights/product-news/take-your-local-github-sessions-anywhere/
 - **OpenAI and Dell partner to bring Codex to hybrid and on-premise enterprise environments** — OpenAI News · 2026-05-18
@@ -63,8 +65,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://github.blog/ai-and-ml/github-copilot/building-a-general-purpose-accessibility-agent-and-what-we-learned-in-the-process/
 - **Databricks brings GPT-5.5 to enterprise agent workflows** — OpenAI News · 2026-05-15
   https://openai.com/index/databricks
-- **A new personal finance experience in ChatGPT** — OpenAI News · 2026-05-15
-  https://openai.com/index/personal-finance-chatgpt
 - **Dungeons &#038; Desktops: Building a procedurally generated roguelike with GitHub Copilot CLI** — GitHub AI & ML Blog · 2026-05-12
   https://github.blog/ai-and-ml/github-copilot/dungeons-desktops-building-a-procedurally-generated-roguelike-with-github-copilot-cli/
 - **Improving token efficiency in GitHub Agentic Workflows** — GitHub AI & ML Blog · 2026-05-07
@@ -88,11 +88,11 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
-- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
 

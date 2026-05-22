@@ -1,29 +1,100 @@
 {
-  "generatedAt": "2026-05-21T11:18:52.132Z",
-  "date": "2026-05-21",
+  "generatedAt": "2026-05-22T10:47:15.105Z",
+  "date": "2026-05-22",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
     {
-      "title": "Meta lays off thousands of employees to offset AI investments",
+      "title": "AdventHealth advances whole-person care with OpenAI",
+      "source": "OpenAI News",
+      "date": "2026-05-21",
+      "url": "https://openai.com/index/adventhealth",
+      "summary": "AdventHealth is using ChatGPT for Healthcare to streamline workflows, reduce administrative burden, and return more time to patient care.",
+      "tags": [
+        "ChatGPT",
+        "Automation"
+      ]
+    },
+    {
+      "title": "All of the updates from Elon Musk and Sam Altman’s battle over OpenAI",
       "source": "The Verge AI",
       "date": "2026-05-21",
-      "url": "https://www.theverge.com/tech/935163/meta-layoffs-ai-investment-offset-memo",
-      "summary": "Meta has reportedly notified thousands of employees that they've been laid off as the company attempts to compensate for its hefty AI investments. In an email from Meta management shared by Business Insider, impacted sta...",
+      "url": "https://www.theverge.com/tech/917225/sam-altman-elon-musk-openai-lawsuit",
+      "summary": "Sam Altman and Elon Musk are facing off in a high-stakes trial that could alter the future of OpenAI and its most well-known product, ChatGPT. In 2024, Musk filed a lawsuit accusing OpenAI of abandoning its founding miss...",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "In desperate times, graduates find hope in humiliating tech CEOs",
+      "source": "The Verge AI",
+      "date": "2026-05-21",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/935602/graduates-boo-ai-ceos",
+      "summary": "University graduates are booing and heckling corporate executives who praise AI during their commencement ceremonies, and the only people who seem to be genuinely surprised by this are the executives themselves. In a pro...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "This AI guitar pedal let me roll my own effects",
+      "source": "The Verge AI",
+      "date": "2026-05-21",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/935219/polyend-endless-ai-guitar-effects-pedal",
+      "summary": "I'm not sure anyone was really asking for an AI guitar pedal. But it was inevitable that someone would build one. One of the first to take the plunge is Polyend, a well-respected music gear maker with a reputation for bu...",
       "tags": [
         "AI"
       ]
     },
     {
-      "title": "In SpaceX’s IPO, Elon Musk is a risk factor",
+      "title": "Spotify is launching AI-generated remixes",
       "source": "The Verge AI",
       "date": "2026-05-21",
-      "url": "https://www.theverge.com/science/935102/spacex-ipo-elon-musk-tesla-cybertruck-xai-risk-factor",
-      "summary": "The SpaceX IPO is here, and it's more than just an historic public offering that could make Elon Musk the world's first trillionaire. It also reveals more ways in which Elon Musk's companies interact and overlap with eac...",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/935379/spotify-umg-ai-covers-remix",
+      "summary": "Spotify and Universal Music Group (UMG) just announced a licensing deal that will allow users to prompt the creation of AI-generated remixes and covers for streaming songs. The tool will be a paid add-on for Premium subs...",
       "tags": [
         "AI"
+      ]
+    },
+    {
+      "title": "Spotify Studio&#8217;s AI agent creates a daily podcast just for you",
+      "source": "The Verge AI",
+      "date": "2026-05-21",
+      "url": "https://www.theverge.com/entertainment/935390/spotify-studio-ai-app-personal-podcasts",
+      "summary": "Studio by Spotify Labs is a new standalone AI app that generates a daily briefing, podcasts, and playlists on your PC using chatbot prompts. The AI-generated content draws from your Spotify listening history, as well as ...",
+      "tags": [
+        "Agents"
+      ]
+    },
+    {
+      "title": "AI video is moving beyond clip slop",
+      "source": "The Verge AI",
+      "date": "2026-05-21",
+      "url": "https://www.theverge.com/column/935310/ai-video-luma-hollywood",
+      "summary": "This is Lowpass by Janko Roettgers, a newsletter on the ever-evolving intersection of tech and entertainment, syndicated just for The Verge subscribers once a week. Hollywood is cooked - or so a growing number of people ...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "Musk v. Altman: Much ado about nothing",
+      "source": "The Verge AI",
+      "date": "2026-05-21",
+      "url": "https://www.theverge.com/podcast/934869/elon-musk-sam-altman-openai-suit-loss-pointless",
+      "summary": "Today I’m talking with Liz Lopatto, who spent the last month covering the Musk v. Altman trial in all its chaos. You’ll hear her describe the courthouse as a “zoo” and explain that there were protests of one kind or anot...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Anthropic is paying $15 billion a year for access to Elon Musk’s data centers",
+      "source": "The Verge AI",
+      "date": "2026-05-21",
+      "url": "https://www.theverge.com/science/935229/spacex-anthropic-ipo-ai-capacity-deal-colossus",
+      "summary": "Earlier this month, SpaceX and Anthropic announced a new compute partnership that provides access to the rocket company's Colossus data centers in Memphis, TN. Now, with the release of SpaceX's IPO filing, we have more d...",
+      "tags": [
+        "Claude"
       ]
     },
     {
@@ -56,6 +127,26 @@
       "tags": [
         "ChatGPT",
         "Models"
+      ]
+    },
+    {
+      "title": "Meta lays off thousands of employees to offset AI investments",
+      "source": "The Verge AI",
+      "date": "2026-05-21",
+      "url": "https://www.theverge.com/tech/935163/meta-layoffs-ai-investment-offset-memo",
+      "summary": "Meta has reportedly notified thousands of employees that they've been laid off as the company attempts to compensate for its hefty AI investments. In an email from Meta management shared by Business Insider, impacted sta...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "In SpaceX’s IPO, Elon Musk is a risk factor",
+      "source": "The Verge AI",
+      "date": "2026-05-21",
+      "url": "https://www.theverge.com/science/935102/spacex-ipo-elon-musk-tesla-cybertruck-xai-risk-factor",
+      "summary": "The SpaceX IPO is here, and it's more than just an historic public offering that could make Elon Musk the world's first trillionaire. It also reveals more ways in which Elon Musk's companies interact and overlap with eac...",
+      "tags": [
+        "AI"
       ]
     },
     {
@@ -119,148 +210,31 @@
       "tags": [
         "Gemini"
       ]
-    },
-    {
-      "title": "How AI Mode is changing the way people search in the U.S.",
-      "source": "Google AI Blog",
-      "date": "2026-05-19",
-      "url": "https://blog.google/products-and-platforms/products/search/ai-mode-us-insights/",
-      "summary": "One year after launch, see how AI Mode’s users are shifting from keywords to natural language queries.",
-      "tags": [
-        "Gemini"
-      ]
-    },
-    {
-      "title": "New ways to create and get things done in Google Workspace",
-      "source": "Google AI Blog",
-      "date": "2026-05-19",
-      "url": "https://blog.google/products-and-platforms/products/workspace/workspace-updates/",
-      "summary": "Announcing new voice capabilities in Gmail, Docs and Keep, a new design tool called Google Pics and updates to AI Inbox.",
-      "tags": [
-        "Gemini"
-      ]
-    },
-    {
-      "title": "I/O 2026: Welcome to the agentic Gemini era",
-      "source": "Google AI Blog",
-      "date": "2026-05-19",
-      "url": "https://blog.google/innovation-and-ai/sundar-pichai-io-2026/",
-      "summary": "The latest from Google I/O: See how we’re helping you get more done with Gemini.",
-      "tags": [
-        "Agents",
-        "Gemini"
-      ]
-    },
-    {
-      "title": "Gemini 3.5: frontier intelligence with action",
-      "source": "Google AI Blog",
-      "date": "2026-05-19",
-      "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-5/",
-      "summary": "At Google I/O we released Gemini 3.5, our latest series of models combining frontier intelligence with action.",
-      "tags": [
-        "Gemini",
-        "Models"
-      ]
-    },
-    {
-      "title": "A new era for AI Search",
-      "source": "Google AI Blog",
-      "date": "2026-05-19",
-      "url": "https://blog.google/products-and-platforms/products/search/search-io-2026/",
-      "summary": "We shared the next step in our journey to bring together the best of a search engine with the best of AI.",
-      "tags": [
-        "Gemini"
-      ]
-    },
-    {
-      "title": "Everything new in our Google AI subscriptions, fresh from I/O 2026",
-      "source": "Google AI Blog",
-      "date": "2026-05-19",
-      "url": "https://blog.google/products-and-platforms/products/google-one/google-ai-subscriptions/",
-      "summary": "Introducing a $100 AI Ultra plan — plus, new features and benefits for Google AI Plus, Pro and Ultra subscribers.",
-      "tags": [
-        "Gemini"
-      ]
-    },
-    {
-      "title": "Introducing OpenAI for Singapore",
-      "source": "OpenAI News",
-      "date": "2026-05-19",
-      "url": "https://openai.com/index/introducing-openai-for-singapore",
-      "summary": "OpenAI for Singapore launches a multi-year AI partnership to expand deployment, build local talent, and support businesses and public services with AI.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Advancing content provenance for a safer, more transparent AI ecosystem",
-      "source": "OpenAI News",
-      "date": "2026-05-19",
-      "url": "https://openai.com/index/advancing-content-provenance",
-      "summary": "OpenAI advances AI content provenance with Content Credentials, SynthID, and a verification tool to help people identify and trust AI-generated media.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Demis Hassabis said this might be the ‘foothills of the singularity.’ What?",
-      "source": "The Verge AI",
-      "date": "2026-05-19",
-      "url": "https://www.theverge.com/tech/934260/google-io-ai-singularity-demis-hassabis",
-      "summary": "Welcome to a \"profound moment for humanity,\" according to Google DeepMind CEO Demis Hassabis, who closed out Google I/O's keynote presentation on Tuesday, saying: Google's cutting-edge research and products will help unl...",
-      "tags": [
-        "AI"
-      ]
     }
   ],
   "candidates": [
     {
-      "label": "Gemini multimodal exploration",
+      "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "100 things we announced at I/O 2026",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/ai/google-io-2026-all-our-announcements/",
-          "date": "2026-05-20"
-        },
-        {
-          "title": "You can now remix other people’s YouTube Shorts with AI",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/934704/google-gemini-omni-youtub-shorts-remix-ai",
-          "date": "2026-05-20"
-        },
-        {
-          "title": "Google Search’s AI evolution includes more ads",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/934585/google-ai-shopping-ads-search",
-          "date": "2026-05-20"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Vibe coding is coming to your phone",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/934628/google-io-2026-android-ai-studio-widgets-shortcuts",
-          "date": "2026-05-20"
-        },
-        {
-          "title": "OpenAI and Dell partner to bring Codex to hybrid and on-premise enterprise environments",
+          "title": "AdventHealth advances whole-person care with OpenAI",
           "source": "OpenAI News",
-          "link": "https://openai.com/index/dell-codex-enterprise-partnership",
-          "date": "2026-05-18"
+          "link": "https://openai.com/index/adventhealth",
+          "date": "2026-05-21"
         },
         {
-          "title": "Validating agentic behavior when “correct” isn’t deterministic",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/generative-ai/validating-agentic-behavior-when-correct-isnt-deterministic/",
-          "date": "2026-05-06"
+          "title": "All of the updates from Elon Musk and Sam Altman’s battle over OpenAI",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/917225/sam-altman-elon-musk-openai-lawsuit",
+          "date": "2026-05-21"
+        },
+        {
+          "title": "OpenAI and Malta partner to bring ChatGPT Plus to all citizens",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/malta-chatgpt-plus-partnership",
+          "date": "2026-05-16"
         }
       ]
     },
@@ -270,10 +244,10 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "If Google can’t make AI agents useful, maybe no one can",
+          "title": "Spotify Studio&#8217;s AI agent creates a daily podcast just for you",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/934478/if-google-cant-make-ai-agents-useful-maybe-no-one-can",
-          "date": "2026-05-20"
+          "link": "https://www.theverge.com/entertainment/935390/spotify-studio-ai-app-personal-podcasts",
+          "date": "2026-05-21"
         },
         {
           "title": "I/O 2026: Welcome to the agentic Gemini era",
@@ -286,6 +260,31 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/dell-codex-enterprise-partnership",
           "date": "2026-05-18"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "100 things we announced at I/O 2026",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/ai/google-io-2026-all-our-announcements/",
+          "date": "2026-05-20"
+        },
+        {
+          "title": "I/O 2026: Welcome to the agentic Gemini era",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/sundar-pichai-io-2026/",
+          "date": "2026-05-19"
+        },
+        {
+          "title": "Gemini 3.5: frontier intelligence with action",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-5/",
+          "date": "2026-05-19"
         }
       ]
     },
@@ -315,21 +314,21 @@
       ]
     },
     {
-      "label": "ChatGPT workflow design",
+      "label": "AI coding assistant workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "OpenAI and Malta partner to bring ChatGPT Plus to all citizens",
+          "title": "OpenAI and Dell partner to bring Codex to hybrid and on-premise enterprise environments",
           "source": "OpenAI News",
-          "link": "https://openai.com/index/malta-chatgpt-plus-partnership",
-          "date": "2026-05-16"
+          "link": "https://openai.com/index/dell-codex-enterprise-partnership",
+          "date": "2026-05-18"
         },
         {
-          "title": "A new personal finance experience in ChatGPT",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/personal-finance-chatgpt",
-          "date": "2026-05-15"
+          "title": "Validating agentic behavior when “correct” isn’t deterministic",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/generative-ai/validating-agentic-behavior-when-correct-isnt-deterministic/",
+          "date": "2026-05-06"
         }
       ]
     }
