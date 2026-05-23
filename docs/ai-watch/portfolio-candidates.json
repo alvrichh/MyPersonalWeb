@@ -1,6 +1,69 @@
 {
-  "generatedAt": "2026-05-22T10:47:15.105Z",
+  "generatedAt": "2026-05-23T09:48:10.458Z",
   "candidates": [
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
+          "date": "2026-05-22"
+        },
+        {
+          "title": "OpenAI named a Leader in enterprise coding agents by Gartner",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/gartner-2026-agentic-coding-leader",
+          "date": "2026-05-22"
+        },
+        {
+          "title": "I/O 2026: Welcome to the agentic Gemini era",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/sundar-pichai-io-2026/",
+          "date": "2026-05-19"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
+          "date": "2026-05-22"
+        },
+        {
+          "title": "OpenAI named a Leader in enterprise coding agents by Gartner",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/gartner-2026-agentic-coding-leader",
+          "date": "2026-05-22"
+        },
+        {
+          "title": "OpenAI and Dell partner to bring Codex to hybrid and on-premise enterprise environments",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/dell-codex-enterprise-partnership",
+          "date": "2026-05-18"
+        }
+      ]
+    },
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
+          "date": "2026-05-22"
+        }
+      ]
+    },
     {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
@@ -23,31 +86,6 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/malta-chatgpt-plus-partnership",
           "date": "2026-05-16"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Spotify Studio&#8217;s AI agent creates a daily podcast just for you",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/entertainment/935390/spotify-studio-ai-app-personal-podcasts",
-          "date": "2026-05-21"
-        },
-        {
-          "title": "I/O 2026: Welcome to the agentic Gemini era",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/sundar-pichai-io-2026/",
-          "date": "2026-05-19"
-        },
-        {
-          "title": "OpenAI and Dell partner to bring Codex to hybrid and on-premise enterprise environments",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/dell-codex-enterprise-partnership",
-          "date": "2026-05-18"
         }
       ]
     },
@@ -92,25 +130,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/dungeons-desktops-building-a-procedurally-generated-roguelike-with-github-copilot-cli/",
           "date": "2026-05-12"
-        },
-        {
-          "title": "Validating agentic behavior when “correct” isn’t deterministic",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/generative-ai/validating-agentic-behavior-when-correct-isnt-deterministic/",
-          "date": "2026-05-06"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "OpenAI and Dell partner to bring Codex to hybrid and on-premise enterprise environments",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/dell-codex-enterprise-partnership",
-          "date": "2026-05-18"
         },
         {
           "title": "Validating agentic behavior when “correct” isn’t deterministic",
