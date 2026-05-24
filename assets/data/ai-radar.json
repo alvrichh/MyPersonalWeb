@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-05-23T09:48:10.458Z",
-  "date": "2026-05-23",
+  "generatedAt": "2026-05-24T09:51:23.951Z",
+  "date": "2026-05-24",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
@@ -37,6 +37,18 @@
         "Agents",
         "ChatGPT",
         "Dev Tools"
+      ]
+    },
+    {
+      "title": "Google’s new anything-to-anything AI model is wild",
+      "source": "The Verge AI",
+      "date": "2026-05-22",
+      "url": "https://www.theverge.com/tech/936507/gemini-omni-hands-on-deepfake-ai-video",
+      "summary": "Last year I deepfaked my kid's stuffed animal to make it look like his plush deer was on vacation. It was an experiment to see if I could re-create the events depicted in a Gemini ad Google was running, and I never showe...",
+      "tags": [
+        "Gemini",
+        "Multimodal",
+        "Models"
       ]
     },
     {
@@ -200,17 +212,6 @@
         "Agents",
         "ChatGPT"
       ]
-    },
-    {
-      "title": "An OpenAI model has disproved a central conjecture in discrete geometry",
-      "source": "OpenAI News",
-      "date": "2026-05-20",
-      "url": "https://openai.com/index/model-disproves-discrete-geometry-conjecture",
-      "summary": "An OpenAI model solved the 80-year-old unit distance problem, disproving a major conjecture in discrete geometry and marking a milestone in AI-driven mathematics.",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
     }
   ],
   "candidates": [
@@ -278,6 +279,31 @@
       ]
     },
     {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Google’s new anything-to-anything AI model is wild",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/936507/gemini-omni-hands-on-deepfake-ai-video",
+          "date": "2026-05-22"
+        },
+        {
+          "title": "100 things we announced at I/O 2026",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/ai/google-io-2026-all-our-announcements/",
+          "date": "2026-05-20"
+        },
+        {
+          "title": "I/O 2026: Welcome to the agentic Gemini era",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/sundar-pichai-io-2026/",
+          "date": "2026-05-19"
+        }
+      ]
+    },
+    {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
@@ -299,31 +325,6 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/malta-chatgpt-plus-partnership",
           "date": "2026-05-16"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "100 things we announced at I/O 2026",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/ai/google-io-2026-all-our-announcements/",
-          "date": "2026-05-20"
-        },
-        {
-          "title": "I/O 2026: Welcome to the agentic Gemini era",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/sundar-pichai-io-2026/",
-          "date": "2026-05-19"
-        },
-        {
-          "title": "Gemini 3.5: frontier intelligence with action",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-5/",
-          "date": "2026-05-19"
         }
       ]
     },

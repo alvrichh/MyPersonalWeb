@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-05-23
+# Daily AI maintenance report — 2026-05-24
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -19,6 +19,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blog.google/innovation-and-ai/technology/ai/io-2026-dialogues-recap/
 - **OpenAI named a Leader in enterprise coding agents by Gartner** — OpenAI News · 2026-05-22
   https://openai.com/index/gartner-2026-agentic-coding-leader
+- **Google’s new anything-to-anything AI model is wild** — The Verge AI · 2026-05-22
+  https://www.theverge.com/tech/936507/gemini-omni-hands-on-deepfake-ai-video
 - **Google&#8217;s AI search is so broken it can &#8216;disregard&#8217; what you&#8217;re looking for** — The Verge AI · 2026-05-22
   https://www.theverge.com/tech/936176/google-ai-overviews-search-disregard
 - **Elon, stop trying to make Grok happen** — The Verge AI · 2026-05-22
@@ -35,8 +37,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/adventhealth
 - **All of the updates from Elon Musk and Sam Altman’s battle over OpenAI** — The Verge AI · 2026-05-21
   https://www.theverge.com/tech/917225/sam-altman-elon-musk-openai-lawsuit
-- **This AI guitar pedal let me roll my own effects** — The Verge AI · 2026-05-21
-  https://www.theverge.com/ai-artificial-intelligence/935219/polyend-endless-ai-guitar-effects-pedal
 - **100 things we announced at I/O 2026** — Google AI Blog · 2026-05-20
   https://blog.google/innovation-and-ai/technology/ai/google-io-2026-all-our-announcements/
 - **An OpenAI model has disproved a central conjecture in discrete geometry** — OpenAI News · 2026-05-20
@@ -91,8 +91,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
