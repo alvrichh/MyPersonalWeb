@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-05-24
+# Daily AI maintenance report — 2026-05-25
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -31,10 +31,10 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/ai-artificial-intelligence/936072/spotify-umg-ai-music-remix-cover-superfan
 - **Samsung&#8217;s memory chip employees negotiated $340,000 bonuses this year** — The Verge AI · 2026-05-22
   https://www.theverge.com/tech/936002/samsung-memory-chip-employees-deal-strike-bonus
-- **In desperate times, graduates find hope in humiliating tech CEOs** — The Verge AI · 2026-05-22
-  https://www.theverge.com/ai-artificial-intelligence/935602/graduates-boo-ai-ceos
 - **AdventHealth advances whole-person care with OpenAI** — OpenAI News · 2026-05-21
   https://openai.com/index/adventhealth
+- **Hackers are learning to exploit chatbot &#8216;personalities&#8217;** — The Verge AI · 2026-05-21
+  https://www.theverge.com/column/935545/hackers-ai-chatbots
 - **All of the updates from Elon Musk and Sam Altman’s battle over OpenAI** — The Verge AI · 2026-05-21
   https://www.theverge.com/tech/917225/sam-altman-elon-musk-openai-lawsuit
 - **100 things we announced at I/O 2026** — Google AI Blog · 2026-05-20

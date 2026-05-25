@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-05-24T09:51:23.951Z",
-  "date": "2026-05-24",
+  "generatedAt": "2026-05-25T11:51:03.158Z",
+  "date": "2026-05-25",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
@@ -102,16 +102,6 @@
       ]
     },
     {
-      "title": "In desperate times, graduates find hope in humiliating tech CEOs",
-      "source": "The Verge AI",
-      "date": "2026-05-22",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/935602/graduates-boo-ai-ceos",
-      "summary": "University graduates are booing and heckling corporate executives who praise AI during their commencement ceremonies, and the only people who seem to be genuinely surprised by this are the executives themselves. In a pro...",
-      "tags": [
-        "Multimodal"
-      ]
-    },
-    {
       "title": "AdventHealth advances whole-person care with OpenAI",
       "source": "OpenAI News",
       "date": "2026-05-21",
@@ -123,6 +113,16 @@
       ]
     },
     {
+      "title": "Hackers are learning to exploit chatbot &#8216;personalities&#8217;",
+      "source": "The Verge AI",
+      "date": "2026-05-21",
+      "url": "https://www.theverge.com/column/935545/hackers-ai-chatbots",
+      "summary": "This is The Stepback, a weekly newsletter breaking down one essential story from the tech world. For more on AI mischief, follow Robert Hart. The Stepback arrives in our subscribers' inboxes at 8AM ET. Opt in for The Ste...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
       "title": "All of the updates from Elon Musk and Sam Altman’s battle over OpenAI",
       "source": "The Verge AI",
       "date": "2026-05-21",
@@ -130,6 +130,16 @@
       "summary": "Sam Altman and Elon Musk are facing off in a high-stakes trial that could alter the future of OpenAI and its most well-known product, ChatGPT. In 2024, Musk filed a lawsuit accusing OpenAI of abandoning its founding miss...",
       "tags": [
         "ChatGPT"
+      ]
+    },
+    {
+      "title": "In desperate times, graduates find hope in humiliating tech CEOs",
+      "source": "The Verge AI",
+      "date": "2026-05-22",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/935602/graduates-boo-ai-ceos",
+      "summary": "University graduates are booing and heckling corporate executives who praise AI during their commencement ceremonies, and the only people who seem to be genuinely surprised by this are the executives themselves. In a pro...",
+      "tags": [
+        "Multimodal"
       ]
     },
     {
@@ -200,17 +210,6 @@
       "summary": "This year at Google I/O 2026, we announced Gemini Omni, Google Antigravity, Universal Cart and so much more. Here are the highlights.",
       "tags": [
         "Gemini"
-      ]
-    },
-    {
-      "title": "The next phase of OpenAI’s Education for Countries",
-      "source": "OpenAI News",
-      "date": "2026-05-20",
-      "url": "https://openai.com/index/the-next-phase-of-education-for-countries",
-      "summary": "OpenAI advances Education for Countries, expanding AI adoption in schools with new partnerships, teacher training, and tools to improve global learning outcomes.",
-      "tags": [
-        "Agents",
-        "ChatGPT"
       ]
     }
   ],
