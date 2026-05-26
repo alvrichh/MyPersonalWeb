@@ -121,7 +121,7 @@ const upgradeTechVisuals = () => {
   document.querySelectorAll('.portfolio-tech-card[data-tech-card]').forEach((card) => {
     const id = card.getAttribute('data-tech-card');
     const media = card.querySelector('.portfolio-tech-media');
-    if (!media || media.classList.contains('is-upgraded')) return;
+    if (!media || media.classList.contains('is-upgraded') || media.querySelector('img')) return;
 
     const labels = visualLabels[id] || ['Build', 'Ship', 'Scale'];
     const display = id === 'javascript' ? 'JS' : id === 'azure' ? 'AZ' : id === 'python' ? 'PY' : id === 'docker' ? 'DKR' : 'RE';
