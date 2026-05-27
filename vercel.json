@@ -1,5 +1,5 @@
 {
-  "installCommand": "npm ci",
-  "buildCommand": "npm run build",
+  "installCommand": "echo \"Install handled by buildCommand\"",
+  "buildCommand": "npm ci && npm run build",
   "outputDirectory": "dist"
 }
