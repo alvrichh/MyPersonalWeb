@@ -6,10 +6,38 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const miniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
+const portfolioStyles = [
+  './assets/css/header-controls.css',
+  './assets/css/nav-tabs-polish.css',
+  './assets/css/header-controls-balance.css',
+  './assets/css/mobile-cta-row.css',
+  './assets/css/language-menu-scroll.css',
+  './assets/css/circular-profile-photo.css',
+  './assets/css/sidebar-scroll-desktop.css',
+  './assets/css/quality-polish.css',
+];
+
+const portfolioChunks = [
+  'script',
+  'gymLink',
+  'mobilePolish',
+  'navScrollFix',
+  'giraldaFix',
+  'glassBackgroundPolish',
+  'gymPolish',
+  'gymViewFocus',
+  'cvDownloadSection',
+  'scrollExperience',
+  'verticalScrollProgress',
+  'premiumScrollPolish',
+  'mobileVcardDrawer',
+];
+
 module.exports = {
   mode: 'development',
   entry: { 
-    script: ['./assets/js/script.js', './assets/js/header-controls-align.js', './assets/js/mobile-controls-cleanup.js', './assets/js/irish-language-option.js', './assets/js/planning-link-section.js', './assets/js/portfolio-flow-bkd-card.js', './assets/js/portfolio-ai-radar-card.js', './assets/js/ai-radar-link-polish.js', './assets/js/portfolio-ai-cards.js', './assets/js/portfolio-tech-cards.js', './assets/js/portfolio-card-visual-upgrade.js', './assets/js/portfolio-filter-system.js', './assets/js/personal-portfolio-highlights.js', './assets/css/header-controls.css', './assets/css/nav-tabs-polish.css', './assets/css/header-controls-balance.css', './assets/css/mobile-cta-row.css', './assets/css/language-menu-scroll.css', './assets/css/circular-profile-photo.css', './assets/css/sidebar-scroll-desktop.css', './assets/css/quality-polish.css'],
+    script: ['./assets/js/script.js', './assets/js/header-controls-align.js', './assets/js/mobile-controls-cleanup.js', './assets/js/irish-language-option.js', './assets/js/planning-link-section.js', './assets/js/portfolio-flow-bkd-card.js', './assets/js/portfolio-tech-cards.js', './assets/js/portfolio-card-visual-upgrade.js', './assets/js/portfolio-filter-system.js', './assets/js/personal-portfolio-highlights.js', ...portfolioStyles],
+    aiRadar: ['./assets/js/portfolio-ai-radar-card.js', './assets/js/ai-radar-link-polish.js'],
     gymLink: './assets/js/gym-link.js',
     mobilePolish: './assets/js/mobile-polish.js',
     navScrollFix: './assets/js/nav-scroll-fix.js',
@@ -34,7 +62,8 @@ module.exports = {
     hot: true
   },
   plugins: [
-    new HtmlWebpackPlugin({filename:'index.html', template: './index.html'}),
+    new HtmlWebpackPlugin({filename:'index.html', template: './templates/index.html', chunks: portfolioChunks}),
+    new HtmlWebpackPlugin({filename:'ai-radar.html', template: './templates/ai-radar.html', inject: false}),
     new HtmlWebpackPlugin({filename:'gym.html', template: './gym.html', inject: false}),
     new HtmlWebpackPlugin({filename:'planning.html', template: './planning.html', inject: false}),
     
