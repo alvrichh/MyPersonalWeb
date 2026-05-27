@@ -475,9 +475,12 @@ const renderRadarList = (section) => {
   }
 };
 
+const getAiRadarMount = () => document.querySelector('[data-ai-radar-mount]');
+
 const createAiRadarSection = () => {
+  const mount = getAiRadarMount();
   const workSection = document.getElementById('work');
-  if (!workSection || getAiRadarSection()) return getAiRadarSection();
+  if ((!mount && !workSection) || getAiRadarSection()) return getAiRadarSection();
 
   document.querySelectorAll('[data-ai-radar-card]').forEach((node) => node.remove());
 
@@ -519,7 +522,12 @@ const createAiRadarSection = () => {
     </div>
   `;
 
-  workSection.insertAdjacentElement('afterend', section);
+  if (mount) {
+    mount.appendChild(section);
+  } else {
+    workSection.insertAdjacentElement('afterend', section);
+  }
+
   return section;
 };
 

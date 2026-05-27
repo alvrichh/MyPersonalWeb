@@ -239,6 +239,7 @@ const techCardDefinitions = [
     category: 'ui',
     icon: 'logo-react',
     glow: 'react',
+    imageSrc: './images/react-blog.png',
     titleKey: 'reactTitle',
     bodyKey: 'reactBody',
     tagOneKey: 'reactTagOne',
@@ -249,6 +250,7 @@ const techCardDefinitions = [
     category: 'systems',
     icon: 'code-slash-outline',
     glow: 'js',
+    imageSrc: './images/javascript-blog.png',
     titleKey: 'jsTitle',
     bodyKey: 'jsBody',
     tagOneKey: 'jsTagOne',
@@ -259,6 +261,7 @@ const techCardDefinitions = [
     category: 'systems',
     icon: 'cloud-outline',
     glow: 'azure',
+    imageSrc: './images/azure-blog.jpeg',
     titleKey: 'azureTitle',
     bodyKey: 'azureBody',
     tagOneKey: 'azureTagOne',
@@ -269,6 +272,7 @@ const techCardDefinitions = [
     category: 'systems',
     icon: 'terminal-outline',
     glow: 'python',
+    imageSrc: './images/python-blog.png',
     titleKey: 'pythonTitle',
     bodyKey: 'pythonBody',
     tagOneKey: 'pythonTagOne',
@@ -279,6 +283,7 @@ const techCardDefinitions = [
     category: 'performance',
     icon: 'cube-outline',
     glow: 'docker',
+    imageSrc: './images/docker-blog.jpeg',
     titleKey: 'dockerTitle',
     bodyKey: 'dockerBody',
     tagOneKey: 'dockerTagOne',
@@ -341,6 +346,21 @@ const ensureTechCardStyles = () => {
         linear-gradient(145deg, rgba(255,255,255,.07), rgba(255,255,255,.025));
     }
 
+    .portfolio-tech-media.has-photo {
+      display: block;
+      min-height: 0;
+      aspect-ratio: 16 / 10;
+      background: linear-gradient(145deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+    }
+
+    .portfolio-tech-media.has-photo img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center;
+    }
+
     .portfolio-tech-orb {
       width: clamp(5.8rem, 16vw, 7.8rem);
       aspect-ratio: 1;
@@ -395,10 +415,8 @@ const buildTechCard = (definition, copy) => {
   card.setAttribute('data-tech-card', definition.id);
   card.setAttribute('data-tech-glow', definition.glow);
   card.innerHTML = `
-    <div class="project-media portfolio-tech-media" aria-hidden="true">
-      <div class="portfolio-tech-orb">
-        <ion-icon name="${escapeTechHtml(definition.icon)}"></ion-icon>
-      </div>
+    <div class="project-media portfolio-tech-media has-photo" aria-hidden="true">
+      <img src="${escapeTechHtml(definition.imageSrc)}" alt="" loading="lazy" decoding="async">
     </div>
     <div class="project-copy">
       <div class="project-tags">

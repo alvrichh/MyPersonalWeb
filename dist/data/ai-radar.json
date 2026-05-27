@@ -1,18 +1,356 @@
 {
-  "generatedAt": "2026-05-16T00:00:00.000Z",
-  "date": "2026-05-16",
-  "mode": "initial-safe-data",
-  "headline": "AI radar initialized",
-  "insight": "This card is ready to receive daily AI, agent and developer-tooling updates from official feeds.",
-  "portfolioAngle": "The portfolio can surface fresh AI signals without changing the visible layout or manually editing HTML/CSS.",
+  "generatedAt": "2026-05-25T11:51:03.158Z",
+  "date": "2026-05-25",
+  "mode": "rss-rules-fallback",
+  "headline": "AI radar update",
+  "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
+  "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
     {
-      "title": "AI agents and tool-connected workflows",
-      "source": "Portfolio radar",
-      "date": "2026-05-16",
-      "url": "https://alvrich.vercel.app",
-      "summary": "Initial radar item for MCP, agent workflows, ChatGPT, Claude, Copilot, Gemini and AI automation monitoring."
+      "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
+      "source": "GitHub AI & ML Blog",
+      "date": "2026-05-22",
+      "url": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
+      "summary": "We are committed to empowering every developer by building an open, secure, and AI-powered platform that defines the future of software development. The post GitHub recognized as a Leader in the Gartner® Magic Quadrant™ ...",
+      "tags": [
+        "Agents",
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "Catch up on the Dialogues stage at Google I/O 2026.",
+      "source": "Google AI Blog",
+      "date": "2026-05-22",
+      "url": "https://blog.google/innovation-and-ai/technology/ai/io-2026-dialogues-recap/",
+      "summary": "A recap of the 2026 I/O Dialogues, where leaders discuss the future of AI, quantum computing, robotics and creativity.",
+      "tags": [
+        "Gemini"
+      ]
+    },
+    {
+      "title": "OpenAI named a Leader in enterprise coding agents by Gartner",
+      "source": "OpenAI News",
+      "date": "2026-05-22",
+      "url": "https://openai.com/index/gartner-2026-agentic-coding-leader",
+      "summary": "OpenAI is named a leader in the 2026 Gartner Magic Quadrant for Enterprise AI Coding Agents, with Codex recognized for innovation and enterprise-scale deployment.",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "Google’s new anything-to-anything AI model is wild",
+      "source": "The Verge AI",
+      "date": "2026-05-22",
+      "url": "https://www.theverge.com/tech/936507/gemini-omni-hands-on-deepfake-ai-video",
+      "summary": "Last year I deepfaked my kid's stuffed animal to make it look like his plush deer was on vacation. It was an experiment to see if I could re-create the events depicted in a Gemini ad Google was running, and I never showe...",
+      "tags": [
+        "Gemini",
+        "Multimodal",
+        "Models"
+      ]
+    },
+    {
+      "title": "Google&#8217;s AI search is so broken it can &#8216;disregard&#8217; what you&#8217;re looking for",
+      "source": "The Verge AI",
+      "date": "2026-05-22",
+      "url": "https://www.theverge.com/tech/936176/google-ai-overviews-search-disregard",
+      "summary": "Google's AI Overviews are running into an interesting problem right now. Earlier on Friday, if you searched for the term \"disregard,\" the AI Overview section would include a response like what you'd see from a more tradi...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Elon, stop trying to make Grok happen",
+      "source": "The Verge AI",
+      "date": "2026-05-22",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/936219/elon-stop-trying-to-make-grok-happen",
+      "summary": "There is a harsh truth about Elon Musk's \"truth-seeking\" AI chatbot Grok: It's not very good, and not many people are using it. That's the takeaway of a new Reuters report, which found that Grok barely appears in federal...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "The literary world isn’t prepared for AI",
+      "source": "The Verge AI",
+      "date": "2026-05-22",
+      "url": "https://www.theverge.com/tech/936073/ai-writing-granta-commonwealth-prize",
+      "summary": "Since 2012, the British literary magazine Granta has published the regional winners of the annual Commonwealth Short Story Prize. This year, however, there was something off about one of the selections for the prestigiou...",
+      "tags": [
+        "Models"
+      ]
+    },
+    {
+      "title": "Spotify says its AI remix tool is for superfans, but I&#8217;m not convinced",
+      "source": "The Verge AI",
+      "date": "2026-05-22",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/936072/spotify-umg-ai-music-remix-cover-superfan",
+      "summary": "AI covers and remixes of songs are already a blight on the internet. Spotify, YouTube, TikTok, and Instagram are awash in flat reggae versions of \"Smells Like Teen Spirit,\" dinky country renditions of The Weeknd, and mon...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Samsung&#8217;s memory chip employees negotiated $340,000 bonuses this year",
+      "source": "The Verge AI",
+      "date": "2026-05-22",
+      "url": "https://www.theverge.com/tech/936002/samsung-memory-chip-employees-deal-strike-bonus",
+      "summary": "Details have emerged about a tentative deal struck between Samsung and semiconductor employees who had threatened to strike. The deal reportedly makes some workers eligible for average annual bonuses of $340,000. The pro...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "AdventHealth advances whole-person care with OpenAI",
+      "source": "OpenAI News",
+      "date": "2026-05-21",
+      "url": "https://openai.com/index/adventhealth",
+      "summary": "AdventHealth is using ChatGPT for Healthcare to streamline workflows, reduce administrative burden, and return more time to patient care.",
+      "tags": [
+        "ChatGPT",
+        "Automation"
+      ]
+    },
+    {
+      "title": "Hackers are learning to exploit chatbot &#8216;personalities&#8217;",
+      "source": "The Verge AI",
+      "date": "2026-05-21",
+      "url": "https://www.theverge.com/column/935545/hackers-ai-chatbots",
+      "summary": "This is The Stepback, a weekly newsletter breaking down one essential story from the tech world. For more on AI mischief, follow Robert Hart. The Stepback arrives in our subscribers' inboxes at 8AM ET. Opt in for The Ste...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "All of the updates from Elon Musk and Sam Altman’s battle over OpenAI",
+      "source": "The Verge AI",
+      "date": "2026-05-21",
+      "url": "https://www.theverge.com/tech/917225/sam-altman-elon-musk-openai-lawsuit",
+      "summary": "Sam Altman and Elon Musk are facing off in a high-stakes trial that could alter the future of OpenAI and its most well-known product, ChatGPT. In 2024, Musk filed a lawsuit accusing OpenAI of abandoning its founding miss...",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "In desperate times, graduates find hope in humiliating tech CEOs",
+      "source": "The Verge AI",
+      "date": "2026-05-22",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/935602/graduates-boo-ai-ceos",
+      "summary": "University graduates are booing and heckling corporate executives who praise AI during their commencement ceremonies, and the only people who seem to be genuinely surprised by this are the executives themselves. In a pro...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "This AI guitar pedal let me roll my own effects",
+      "source": "The Verge AI",
+      "date": "2026-05-21",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/935219/polyend-endless-ai-guitar-effects-pedal",
+      "summary": "I'm not sure anyone was really asking for an AI guitar pedal. But it was inevitable that someone would build one. One of the first to take the plunge is Polyend, a well-respected music gear maker with a reputation for bu...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Spotify is launching AI-generated remixes",
+      "source": "The Verge AI",
+      "date": "2026-05-21",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/935379/spotify-umg-ai-covers-remix",
+      "summary": "Spotify and Universal Music Group (UMG) just announced a licensing deal that will allow users to prompt the creation of AI-generated remixes and covers for streaming songs. The tool will be a paid add-on for Premium subs...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Spotify Studio&#8217;s AI agent creates a daily podcast just for you",
+      "source": "The Verge AI",
+      "date": "2026-05-21",
+      "url": "https://www.theverge.com/entertainment/935390/spotify-studio-ai-app-personal-podcasts",
+      "summary": "Studio by Spotify Labs is a new standalone AI app that generates a daily briefing, podcasts, and playlists on your PC using chatbot prompts. The AI-generated content draws from your Spotify listening history, as well as ...",
+      "tags": [
+        "Agents"
+      ]
+    },
+    {
+      "title": "AI video is moving beyond clip slop",
+      "source": "The Verge AI",
+      "date": "2026-05-21",
+      "url": "https://www.theverge.com/column/935310/ai-video-luma-hollywood",
+      "summary": "This is Lowpass by Janko Roettgers, a newsletter on the ever-evolving intersection of tech and entertainment, syndicated just for The Verge subscribers once a week. Hollywood is cooked - or so a growing number of people ...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "Musk v. Altman: Much ado about nothing",
+      "source": "The Verge AI",
+      "date": "2026-05-21",
+      "url": "https://www.theverge.com/podcast/934869/elon-musk-sam-altman-openai-suit-loss-pointless",
+      "summary": "Today I’m talking with Liz Lopatto, who spent the last month covering the Musk v. Altman trial in all its chaos. You’ll hear her describe the courthouse as a “zoo” and explain that there were protests of one kind or anot...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Anthropic is paying $15 billion a year for access to Elon Musk’s data centers",
+      "source": "The Verge AI",
+      "date": "2026-05-21",
+      "url": "https://www.theverge.com/science/935229/spacex-anthropic-ipo-ai-capacity-deal-colossus",
+      "summary": "Earlier this month, SpaceX and Anthropic announced a new compute partnership that provides access to the rocket company's Colossus data centers in Memphis, TN. Now, with the release of SpaceX's IPO filing, we have more d...",
+      "tags": [
+        "Claude"
+      ]
+    },
+    {
+      "title": "100 things we announced at I/O 2026",
+      "source": "Google AI Blog",
+      "date": "2026-05-20",
+      "url": "https://blog.google/innovation-and-ai/technology/ai/google-io-2026-all-our-announcements/",
+      "summary": "This year at Google I/O 2026, we announced Gemini Omni, Google Antigravity, Universal Cart and so much more. Here are the highlights.",
+      "tags": [
+        "Gemini"
+      ]
     }
   ],
-  "candidates": []
+  "candidates": [
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
+          "date": "2026-05-22"
+        },
+        {
+          "title": "OpenAI named a Leader in enterprise coding agents by Gartner",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/gartner-2026-agentic-coding-leader",
+          "date": "2026-05-22"
+        },
+        {
+          "title": "I/O 2026: Welcome to the agentic Gemini era",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/sundar-pichai-io-2026/",
+          "date": "2026-05-19"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
+          "date": "2026-05-22"
+        },
+        {
+          "title": "OpenAI named a Leader in enterprise coding agents by Gartner",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/gartner-2026-agentic-coding-leader",
+          "date": "2026-05-22"
+        },
+        {
+          "title": "OpenAI and Dell partner to bring Codex to hybrid and on-premise enterprise environments",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/dell-codex-enterprise-partnership",
+          "date": "2026-05-18"
+        }
+      ]
+    },
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
+          "date": "2026-05-22"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Google’s new anything-to-anything AI model is wild",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/936507/gemini-omni-hands-on-deepfake-ai-video",
+          "date": "2026-05-22"
+        },
+        {
+          "title": "100 things we announced at I/O 2026",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/ai/google-io-2026-all-our-announcements/",
+          "date": "2026-05-20"
+        },
+        {
+          "title": "I/O 2026: Welcome to the agentic Gemini era",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/sundar-pichai-io-2026/",
+          "date": "2026-05-19"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "AdventHealth advances whole-person care with OpenAI",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/adventhealth",
+          "date": "2026-05-21"
+        },
+        {
+          "title": "All of the updates from Elon Musk and Sam Altman’s battle over OpenAI",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/917225/sam-altman-elon-musk-openai-lawsuit",
+          "date": "2026-05-21"
+        },
+        {
+          "title": "OpenAI and Malta partner to bring ChatGPT Plus to all citizens",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/malta-chatgpt-plus-partnership",
+          "date": "2026-05-16"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Take your local GitHub sessions anywhere",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/news-insights/product-news/take-your-local-github-sessions-anywhere/",
+          "date": "2026-05-18"
+        },
+        {
+          "title": "Dungeons &#038; Desktops: Building a procedurally generated roguelike with GitHub Copilot CLI",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/dungeons-desktops-building-a-procedurally-generated-roguelike-with-github-copilot-cli/",
+          "date": "2026-05-12"
+        },
+        {
+          "title": "Validating agentic behavior when “correct” isn’t deterministic",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/generative-ai/validating-agentic-behavior-when-correct-isnt-deterministic/",
+          "date": "2026-05-06"
+        }
+      ]
+    }
+  ]
 }
