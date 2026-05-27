@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-05-25
+# Daily AI maintenance report — 2026-05-27
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,20 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Did the Pope use AI to write about the dangers of AI?** — The Verge AI · 2026-05-27
+  https://www.theverge.com/ai-artificial-intelligence/937801/pope-leo-xiv-magnifica-humanitas-ai-pangram
+- **Sundar Pichai on AI, the future of search, and what’s happening to the web** — The Verge AI · 2026-05-26
+  https://www.theverge.com/podcast/936445/sundar-pichai-ai-search-google-zero-youtube-web
+- **Nobody wants to tell me why they only listen to their own Suno slop** — The Verge AI · 2026-05-26
+  https://www.theverge.com/ai-artificial-intelligence/937059/nobody-wants-to-tell-me-why-they-only-listen-their-own-suno-slop
+- **AI warfare is already here** — The Verge AI · 2026-05-26
+  https://www.theverge.com/ai-artificial-intelligence/937028/military-ai-warfare-red-lines
+- **Uber president says AI spending is getting ‘harder to justify’** — The Verge AI · 2026-05-26
+  https://www.theverge.com/transportation/937116/uber-ai-investment-hard-to-justify
+- **Pope Leo calls for being ‘profoundly human’ in the age of AI** — The Verge AI · 2026-05-26
+  https://www.theverge.com/news/936945/pope-leo-letter-encyclical-ai-anthropic-labor-warfare
+- **OpenAI, Grupo Folha and Grupo UOL announce strategic content partnership** — OpenAI News · 2026-05-25
+  https://openai.com/index/grupo-folha-grupo-uol-partnership
 - **GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row** — GitHub AI & ML Blog · 2026-05-22
   https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/
 - **Catch up on the Dialogues stage at Google I/O 2026.** — Google AI Blog · 2026-05-22
@@ -21,24 +35,10 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/gartner-2026-agentic-coding-leader
 - **Google’s new anything-to-anything AI model is wild** — The Verge AI · 2026-05-22
   https://www.theverge.com/tech/936507/gemini-omni-hands-on-deepfake-ai-video
-- **Google&#8217;s AI search is so broken it can &#8216;disregard&#8217; what you&#8217;re looking for** — The Verge AI · 2026-05-22
-  https://www.theverge.com/tech/936176/google-ai-overviews-search-disregard
-- **Elon, stop trying to make Grok happen** — The Verge AI · 2026-05-22
-  https://www.theverge.com/ai-artificial-intelligence/936219/elon-stop-trying-to-make-grok-happen
-- **The literary world isn’t prepared for AI** — The Verge AI · 2026-05-22
-  https://www.theverge.com/tech/936073/ai-writing-granta-commonwealth-prize
-- **Spotify says its AI remix tool is for superfans, but I&#8217;m not convinced** — The Verge AI · 2026-05-22
-  https://www.theverge.com/ai-artificial-intelligence/936072/spotify-umg-ai-music-remix-cover-superfan
-- **Samsung&#8217;s memory chip employees negotiated $340,000 bonuses this year** — The Verge AI · 2026-05-22
-  https://www.theverge.com/tech/936002/samsung-memory-chip-employees-deal-strike-bonus
 - **AdventHealth advances whole-person care with OpenAI** — OpenAI News · 2026-05-21
   https://openai.com/index/adventhealth
 - **Hackers are learning to exploit chatbot &#8216;personalities&#8217;** — The Verge AI · 2026-05-21
   https://www.theverge.com/column/935545/hackers-ai-chatbots
-- **All of the updates from Elon Musk and Sam Altman’s battle over OpenAI** — The Verge AI · 2026-05-21
-  https://www.theverge.com/tech/917225/sam-altman-elon-musk-openai-lawsuit
-- **100 things we announced at I/O 2026** — Google AI Blog · 2026-05-20
-  https://blog.google/innovation-and-ai/technology/ai/google-io-2026-all-our-announcements/
 - **An OpenAI model has disproved a central conjecture in discrete geometry** — OpenAI News · 2026-05-20
   https://openai.com/index/model-disproves-discrete-geometry-conjecture
 - **The next phase of OpenAI’s Education for Countries** — OpenAI News · 2026-05-20
@@ -55,6 +55,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-5/
 - **A new era for AI Search** — Google AI Blog · 2026-05-19
   https://blog.google/products-and-platforms/products/search/search-io-2026/
+- **Everything new in our Google AI subscriptions, fresh from I/O 2026** — Google AI Blog · 2026-05-19
+  https://blog.google/products-and-platforms/products/google-one/google-ai-subscriptions/
 - **Introducing OpenAI for Singapore** — OpenAI News · 2026-05-19
   https://openai.com/index/introducing-openai-for-singapore
 - **Advancing content provenance for a safer, more transparent AI ecosystem** — OpenAI News · 2026-05-19
@@ -63,8 +65,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://github.blog/news-insights/product-news/take-your-local-github-sessions-anywhere/
 - **OpenAI and Dell partner to bring Codex to hybrid and on-premise enterprise environments** — OpenAI News · 2026-05-18
   https://openai.com/index/dell-codex-enterprise-partnership
-- **OpenAI and Malta partner to bring ChatGPT Plus to all citizens** — OpenAI News · 2026-05-16
-  https://openai.com/index/malta-chatgpt-plus-partnership
 - **Building a general-purpose accessibility agent—and what we learned in the process** — GitHub AI & ML Blog · 2026-05-15
   https://github.blog/ai-and-ml/github-copilot/building-a-general-purpose-accessibility-agent-and-what-we-learned-in-the-process/
 - **Dungeons &#038; Desktops: Building a procedurally generated roguelike with GitHub Copilot CLI** — GitHub AI & ML Blog · 2026-05-12
@@ -88,11 +88,12 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
+- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
