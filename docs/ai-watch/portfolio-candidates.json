@@ -1,6 +1,57 @@
 {
-  "generatedAt": "2026-05-25T11:51:03.158Z",
+  "generatedAt": "2026-05-27T11:34:52.817Z",
   "candidates": [
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Sundar Pichai on AI, the future of search, and what’s happening to the web",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/podcast/936445/sundar-pichai-ai-search-google-zero-youtube-web",
+          "date": "2026-05-26"
+        },
+        {
+          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
+          "date": "2026-05-22"
+        }
+      ]
+    },
+    {
+      "label": "Claude research and documentation flow",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Uber president says AI spending is getting ‘harder to justify’",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/transportation/937116/uber-ai-investment-hard-to-justify",
+          "date": "2026-05-26"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "OpenAI, Grupo Folha and Grupo UOL announce strategic content partnership",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/grupo-folha-grupo-uol-partnership",
+          "date": "2026-05-25"
+        },
+        {
+          "title": "AdventHealth advances whole-person care with OpenAI",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/adventhealth",
+          "date": "2026-05-21"
+        }
+      ]
+    },
     {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
@@ -52,19 +103,6 @@
       ]
     },
     {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
-          "date": "2026-05-22"
-        }
-      ]
-    },
-    {
       "label": "Gemini multimodal exploration",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
@@ -76,41 +114,16 @@
           "date": "2026-05-22"
         },
         {
-          "title": "100 things we announced at I/O 2026",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/ai/google-io-2026-all-our-announcements/",
-          "date": "2026-05-20"
-        },
-        {
           "title": "I/O 2026: Welcome to the agentic Gemini era",
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/sundar-pichai-io-2026/",
           "date": "2026-05-19"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "AdventHealth advances whole-person care with OpenAI",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/adventhealth",
-          "date": "2026-05-21"
         },
         {
-          "title": "All of the updates from Elon Musk and Sam Altman’s battle over OpenAI",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/917225/sam-altman-elon-musk-openai-lawsuit",
-          "date": "2026-05-21"
-        },
-        {
-          "title": "OpenAI and Malta partner to bring ChatGPT Plus to all citizens",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/malta-chatgpt-plus-partnership",
-          "date": "2026-05-16"
+          "title": "Gemini 3.5: frontier intelligence with action",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-5/",
+          "date": "2026-05-19"
         }
       ]
     },
