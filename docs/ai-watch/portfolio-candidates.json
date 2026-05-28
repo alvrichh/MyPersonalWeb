@@ -1,35 +1,53 @@
 {
-  "generatedAt": "2026-05-27T11:34:52.817Z",
+  "generatedAt": "2026-05-28T11:36:02.949Z",
   "candidates": [
     {
-      "label": "AI developer tooling",
+      "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Sundar Pichai on AI, the future of search, and what’s happening to the web",
+          "title": "Building self-improving tax agents with Codex",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/building-self-improving-tax-agents-with-codex",
+          "date": "2026-05-27"
+        },
+        {
+          "title": "Warp’s big bet on building open source with GPT-5.5",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/warp",
+          "date": "2026-05-27"
+        },
+        {
+          "title": "Robinhood will let your AI agent trade stocks and make (or lose) lots of money",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/podcast/936445/sundar-pichai-ai-search-google-zero-youtube-web",
-          "date": "2026-05-26"
+          "link": "https://www.theverge.com/ai-artificial-intelligence/938095/robinhood-ai-agent-stock-trading",
+          "date": "2026-05-27"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Warp’s big bet on building open source with GPT-5.5",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/warp",
+          "date": "2026-05-27"
         },
         {
           "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
           "date": "2026-05-22"
-        }
-      ]
-    },
-    {
-      "label": "Claude research and documentation flow",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
+        },
         {
-          "title": "Uber president says AI spending is getting ‘harder to justify’",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/transportation/937116/uber-ai-investment-hard-to-justify",
-          "date": "2026-05-26"
+          "title": "OpenAI named a Leader in enterprise coding agents by Gartner",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/gartner-2026-agentic-coding-leader",
+          "date": "2026-05-22"
         }
       ]
     },
@@ -53,7 +71,7 @@
       ]
     },
     {
-      "label": "AI agents / automation workflows",
+      "label": "AI developer tooling",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
@@ -62,43 +80,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
           "date": "2026-05-22"
-        },
-        {
-          "title": "OpenAI named a Leader in enterprise coding agents by Gartner",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/gartner-2026-agentic-coding-leader",
-          "date": "2026-05-22"
-        },
-        {
-          "title": "I/O 2026: Welcome to the agentic Gemini era",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/sundar-pichai-io-2026/",
-          "date": "2026-05-19"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
-          "date": "2026-05-22"
-        },
-        {
-          "title": "OpenAI named a Leader in enterprise coding agents by Gartner",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/gartner-2026-agentic-coding-leader",
-          "date": "2026-05-22"
-        },
-        {
-          "title": "OpenAI and Dell partner to bring Codex to hybrid and on-premise enterprise environments",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/dell-codex-enterprise-partnership",
-          "date": "2026-05-18"
         }
       ]
     },
@@ -107,12 +88,6 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
-        {
-          "title": "Google’s new anything-to-anything AI model is wild",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/936507/gemini-omni-hands-on-deepfake-ai-video",
-          "date": "2026-05-22"
-        },
         {
           "title": "I/O 2026: Welcome to the agentic Gemini era",
           "source": "Google AI Blog",
