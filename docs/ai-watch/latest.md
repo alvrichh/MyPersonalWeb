@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-05-28
+# Daily AI maintenance report — 2026-05-29
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,42 +13,44 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Strengthening societal resilience with Rosalind Biodefense** — OpenAI News · 2026-05-29
+  https://openai.com/index/strengthening-societal-resilience-with-rosalind-biodefense
+- **Adobe’s conversational AI agent is a mediocre design intern** — The Verge AI · 2026-05-29
+  https://www.theverge.com/tech/939686/adobes-conversational-ai-agent-is-a-mediocre-design-intern
+- **Catch up on 12 major I/O 2026 moments** — Google AI Blog · 2026-05-28
+  https://blog.google/innovation-and-ai/technology/ai/io-2026-keynote-moment-videos/
+- **How Endava builds an agentic organization with Codex** — OpenAI News · 2026-05-28
+  https://openai.com/index/endava
+- **OpenAI’s Frontier Governance Framework** — OpenAI News · 2026-05-28
+  https://openai.com/index/openai-frontier-governance-framework
+- **MUFG aims to become AI-native with OpenAI** — OpenAI News · 2026-05-28
+  https://openai.com/index/mufg
+- **Microsoft 365 Copilot gets a speed boost and cleaner design** — The Verge AI · 2026-05-28
+  https://www.theverge.com/tech/939273/microsoft-365-copilot-redesign
+- **Claude’s new model is more ‘honest’ when it messes up** — The Verge AI · 2026-05-28
+  https://www.theverge.com/ai-artificial-intelligence/939094/anthropic-claude-4-8-opus-honesty-effort
+- **A $2,000 AI-generated film will make its debut at Tribeca** — The Verge AI · 2026-05-28
+  https://www.theverge.com/entertainment/939067/ai-film-dreams-of-violets-tribeca
+- **These new iOS 27 renders hint at Siri’s big redesign** — The Verge AI · 2026-05-28
+  https://www.theverge.com/tech/938915/ios-27-siri-renders-bloomberg
+- **CNN sues Perplexity over ‘verbatim’ copycat articles** — The Verge AI · 2026-05-28
+  https://www.theverge.com/ai-artificial-intelligence/938893/cnn-perplexity-ai-copyright-lawsuit
+- **Rivian’s software chief thinks you don&#8217;t need CarPlay or buttons** — The Verge AI · 2026-05-28
+  https://www.theverge.com/podcast/929940/rivian-wassym-bensaid-software-volkswagen-carplay-assistant-ai
 - **YouTube will let you ask AI to make a custom video feed** — The Verge AI · 2026-05-28
   https://www.theverge.com/streaming/938759/youtube-custom-ai-feed-prompt-availability
 - **Cisco and OpenAI redefine enterprise engineering with Codex** — OpenAI News · 2026-05-27
   https://openai.com/index/cisco
 - **Building self-improving tax agents with Codex** — OpenAI News · 2026-05-27
   https://openai.com/index/building-self-improving-tax-agents-with-codex
-- **Election information and safeguards in 2026** — OpenAI News · 2026-05-27
-  https://openai.com/index/election-safeguards-2026
 - **Warp’s big bet on building open source with GPT-5.5** — OpenAI News · 2026-05-27
   https://openai.com/index/warp
-- **AI tried to bury this politician — now people have actually heard of him** — The Verge AI · 2026-05-27
-  https://www.theverge.com/policy/937650/ai-alex-bores-openai-anthropic-ny12
-- **Robinhood will let your AI agent trade stocks and make (or lose) lots of money** — The Verge AI · 2026-05-27
-  https://www.theverge.com/ai-artificial-intelligence/938095/robinhood-ai-agent-stock-trading
-- **This smart bird feeder captures more of my backyard drama** — The Verge AI · 2026-05-27
-  https://www.theverge.com/tech/937628/coolfly-aura-smart-bird-feeder-review
-- **YouTube is putting AI labels where you’ll actually see them** — The Verge AI · 2026-05-27
-  https://www.theverge.com/streaming/937915/youtube-ai-labels-shorts-automatic-identification-updates
-- **The AI fight brewing inside The New York Times** — The Verge AI · 2026-05-27
-  https://www.theverge.com/ai-artificial-intelligence/937689/new-york-times-tech-guild-ai-monitoring-performance-union-contract
-- **The Pope isn’t AGI-pilled** — The Verge AI · 2026-05-27
-  https://www.theverge.com/ai-artificial-intelligence/937933/pope-ai-encyclical-tech-industry-reactions
-- **Did the Pope use AI to write about the dangers of AI?** — The Verge AI · 2026-05-27
-  https://www.theverge.com/ai-artificial-intelligence/937801/pope-leo-xiv-magnifica-humanitas-ai-pangram
-- **OpenAI, Grupo Folha and Grupo UOL announce strategic content partnership** — OpenAI News · 2026-05-25
-  https://openai.com/index/grupo-folha-grupo-uol-partnership
+- **Election information and safeguards in 2026** — OpenAI News · 2026-05-27
+  https://openai.com/index/election-safeguards-2026
 - **GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row** — GitHub AI & ML Blog · 2026-05-22
   https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/
 - **Catch up on the Dialogues stage at Google I/O 2026.** — Google AI Blog · 2026-05-22
   https://blog.google/innovation-and-ai/technology/ai/io-2026-dialogues-recap/
-- **OpenAI named a Leader in enterprise coding agents by Gartner** — OpenAI News · 2026-05-22
-  https://openai.com/index/gartner-2026-agentic-coding-leader
-- **AdventHealth advances whole-person care with OpenAI** — OpenAI News · 2026-05-21
-  https://openai.com/index/adventhealth
-- **An OpenAI model has disproved a central conjecture in discrete geometry** — OpenAI News · 2026-05-20
-  https://openai.com/index/model-disproves-discrete-geometry-conjecture
 - **I/O 2026** — Google AI Blog · 2026-05-19
   https://blog.google/innovation-and-ai/technology/developers-tools/google-io-2026-collection/
 - **How AI Mode is changing the way people search in the U.S.** — Google AI Blog · 2026-05-19
@@ -61,8 +63,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-5/
 - **A new era for AI Search** — Google AI Blog · 2026-05-19
   https://blog.google/products-and-platforms/products/search/search-io-2026/
-- **Everything new in our Google AI subscriptions, fresh from I/O 2026** — Google AI Blog · 2026-05-19
-  https://blog.google/products-and-platforms/products/google-one/google-ai-subscriptions/
 - **Take your local GitHub sessions anywhere** — GitHub AI & ML Blog · 2026-05-18
   https://github.blog/news-insights/product-news/take-your-local-github-sessions-anywhere/
 - **Building a general-purpose accessibility agent—and what we learned in the process** — GitHub AI & ML Blog · 2026-05-15
@@ -88,12 +88,13 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
-- **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
 

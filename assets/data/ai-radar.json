@@ -1,11 +1,137 @@
 {
-  "generatedAt": "2026-05-28T11:36:02.949Z",
-  "date": "2026-05-28",
+  "generatedAt": "2026-05-29T11:24:52.079Z",
+  "date": "2026-05-29",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Strengthening societal resilience with Rosalind Biodefense",
+      "source": "OpenAI News",
+      "date": "2026-05-29",
+      "url": "https://openai.com/index/strengthening-societal-resilience-with-rosalind-biodefense",
+      "summary": "OpenAI launches Rosalind Biodefense, expanding trusted access to GPT-Rosalind for vetted developers and U.S. government partners advancing biodefense, public health, and pandemic preparedness through frontier AI.",
+      "tags": [
+        "ChatGPT",
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "Adobe’s conversational AI agent is a mediocre design intern",
+      "source": "The Verge AI",
+      "date": "2026-05-29",
+      "url": "https://www.theverge.com/tech/939686/adobes-conversational-ai-agent-is-a-mediocre-design-intern",
+      "summary": "AI image tools rarely make me feel like I'm part of the creative process. They are, after all, mostly designed so that people with no design experience can type in a few words and get back a usable result. So I was pleas...",
+      "tags": [
+        "Agents",
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "Catch up on 12 major I/O 2026 moments",
+      "source": "Google AI Blog",
+      "date": "2026-05-28",
+      "url": "https://blog.google/innovation-and-ai/technology/ai/io-2026-keynote-moment-videos/",
+      "summary": "Here are 12 of the biggest Google I/O 2026 keynote moments, including news about Gemini Omni, Gemini 3.5 Flash and more.",
+      "tags": [
+        "Gemini"
+      ]
+    },
+    {
+      "title": "How Endava builds an agentic organization with Codex",
+      "source": "OpenAI News",
+      "date": "2026-05-28",
+      "url": "https://openai.com/index/endava",
+      "summary": "Learn how Endava uses Codex to build an agentic organization, accelerating software delivery and reducing requirements analysis from weeks to hours.",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "OpenAI’s Frontier Governance Framework",
+      "source": "OpenAI News",
+      "date": "2026-05-28",
+      "url": "https://openai.com/index/openai-frontier-governance-framework",
+      "summary": "Explore OpenAI’s Frontier Governance Framework and how our AI safety, security, and risk practices align with emerging EU and California regulations.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "MUFG aims to become AI-native with OpenAI",
+      "source": "OpenAI News",
+      "date": "2026-05-28",
+      "url": "https://openai.com/index/mufg",
+      "summary": "MUFG uses ChatGPT Enterprise to build an AI-native organization, improve workflows, and deliver new AI-powered financial services at scale.",
+      "tags": [
+        "ChatGPT",
+        "Automation"
+      ]
+    },
+    {
+      "title": "Microsoft 365 Copilot gets a speed boost and cleaner design",
+      "source": "The Verge AI",
+      "date": "2026-05-28",
+      "url": "https://www.theverge.com/tech/939273/microsoft-365-copilot-redesign",
+      "summary": "Microsoft is launching a revamped version of Microsoft 365 Copilot, offering a cleaner design that the company claims loads twice as fast. As part of this update, Copilot will provide more reliable and structured respons...",
+      "tags": [
+        "Copilot"
+      ]
+    },
+    {
+      "title": "Claude’s new model is more ‘honest’ when it messes up",
+      "source": "The Verge AI",
+      "date": "2026-05-28",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/939094/anthropic-claude-4-8-opus-honesty-effort",
+      "summary": "Anthropic is releasing Claude Opus 4.8 on Thursday, and the company is touting the model's \"honesty.\" According to Anthropic, it trains \"all [its] models to be honest - for instance, to avoid making claims that they can'...",
+      "tags": [
+        "Claude",
+        "Models"
+      ]
+    },
+    {
+      "title": "A $2,000 AI-generated film will make its debut at Tribeca",
+      "source": "The Verge AI",
+      "date": "2026-05-28",
+      "url": "https://www.theverge.com/entertainment/939067/ai-film-dreams-of-violets-tribeca",
+      "summary": "Next month's Tribeca Festival will include the premiere of an AI-generated film: Dreams of Violets. The 75-minute film is a fictional dramatization of the Iranian government's mass killing of protestors in January, with ...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "These new iOS 27 renders hint at Siri’s big redesign",
+      "source": "The Verge AI",
+      "date": "2026-05-28",
+      "url": "https://www.theverge.com/tech/938915/ios-27-siri-renders-bloomberg",
+      "summary": "Apple's long-awaited Siri overhaul, expected to arrive in iOS 27, might look a lot like ChatGPT with a splash of Liquid Glass. Renders from Bloomberg offer a preview of iOS 27, including the new app and chat interface fo...",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "CNN sues Perplexity over ‘verbatim’ copycat articles",
+      "source": "The Verge AI",
+      "date": "2026-05-28",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/938893/cnn-perplexity-ai-copyright-lawsuit",
+      "summary": "CNN has filed a lawsuit against Perplexity, claiming that the startup's AI tools generate \"verbatim\" copies of its work, as reported earlier by CNN. The lawsuit, filed in a New York court on Thursday, also alleges that P...",
+      "tags": [
+        "Agents"
+      ]
+    },
+    {
+      "title": "Rivian’s software chief thinks you don&#8217;t need CarPlay or buttons",
+      "source": "The Verge AI",
+      "date": "2026-05-28",
+      "url": "https://www.theverge.com/podcast/929940/rivian-wassym-bensaid-software-volkswagen-carplay-assistant-ai",
+      "summary": "Today, I’m talking with Wassym Bensaid, the chief software officer at Rivian, and the co-CEO of Rivian’s platform joint venture with Volkswagen, which everyone just calls RV Tech. That joint venture kicked off about a ye...",
+      "tags": [
+        "AI"
+      ]
+    },
     {
       "title": "YouTube will let you ask AI to make a custom video feed",
       "source": "The Verge AI",
@@ -93,153 +219,132 @@
       "tags": [
         "AI"
       ]
-    },
-    {
-      "title": "YouTube is putting AI labels where you’ll actually see them",
-      "source": "The Verge AI",
-      "date": "2026-05-27",
-      "url": "https://www.theverge.com/streaming/937915/youtube-ai-labels-shorts-automatic-identification-updates",
-      "summary": "In the wake of Google expanding its AI verification efforts at I/O, YouTube is now finally going to start taking AI labeling seriously. YouTube has announced that it's relocating AI disclosures on Shorts and long-form vi...",
-      "tags": [
-        "Multimodal"
-      ]
-    },
-    {
-      "title": "The AI fight brewing inside The New York Times",
-      "source": "The Verge AI",
-      "date": "2026-05-27",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/937689/new-york-times-tech-guild-ai-monitoring-performance-union-contract",
-      "summary": "How newsrooms should use AI - or if they should at all - has been a recurrent debate within the media industry over the last several years. Increasingly, these rules are being hammered out at the bargaining table between...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "The Pope isn’t AGI-pilled",
-      "source": "The Verge AI",
-      "date": "2026-05-27",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/937933/pope-ai-encyclical-tech-industry-reactions",
-      "summary": "On Monday, Pope Leo XIV unveiled an encyclical letter addressing the societal implications of artificial intelligence. The letter, titled Magnifica Humanitas, warned that the \"use of AI is never a purely technical matter...",
-      "tags": [
-        "Claude"
-      ]
-    },
-    {
-      "title": "Did the Pope use AI to write about the dangers of AI?",
-      "source": "The Verge AI",
-      "date": "2026-05-27",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/937801/pope-leo-xiv-magnifica-humanitas-ai-pangram",
-      "summary": "It's possible that AI was used to write parts of Pope Leo XIV's latest encyclical about AI's impact on humanity. An analysis by Linch Zhang posted on the forum LessWrong found certain paragraphs of Magnifica Humanitas to...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Sundar Pichai on AI, the future of search, and what’s happening to the web",
-      "source": "The Verge AI",
-      "date": "2026-05-26",
-      "url": "https://www.theverge.com/podcast/936445/sundar-pichai-ai-search-google-zero-youtube-web",
-      "summary": "Today, I’m talking with Google and Alphabet CEO Sundar Pichai, in a conversation we recorded just after the Google I/O developer conference. This is the fifth year Sundar and I have sat down after I/O, and it’s become on...",
-      "tags": [
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "Nobody wants to tell me why they only listen to their own Suno slop",
-      "source": "The Verge AI",
-      "date": "2026-05-26",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/937059/nobody-wants-to-tell-me-why-they-only-listen-their-own-suno-slop",
-      "summary": "There's this alarming trend in the Suno subreddit. People aren't just prompting AI songs; they're sitting around listening almost exclusively to their own slop. And in some cases, they proudly proclaim that they don't li...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "AI warfare is already here",
-      "source": "The Verge AI",
-      "date": "2026-05-26",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/937028/military-ai-warfare-red-lines",
-      "summary": "The Convention on Certain Conventional Weapons, an international forum that focuses on lethal autonomous systems, is hosted twice a year at the United Nations in Geneva. When Branka Marijan attended in November 2017, she...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Uber president says AI spending is getting ‘harder to justify’",
-      "source": "The Verge AI",
-      "date": "2026-05-26",
-      "url": "https://www.theverge.com/transportation/937116/uber-ai-investment-hard-to-justify",
-      "summary": "After reportedly exhausting its annual AI budget just four months into 2026, Uber is now questioning whether it's actually seeing meaningful returns on its investments. In an interview with Rapid Response, Uber president...",
-      "tags": [
-        "Claude",
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "Pope Leo calls for being ‘profoundly human’ in the age of AI",
-      "source": "The Verge AI",
-      "date": "2026-05-26",
-      "url": "https://www.theverge.com/news/936945/pope-leo-letter-encyclical-ai-anthropic-labor-warfare",
-      "summary": "Pope Leo XIV warned of the risks of AI and unconstrained technological power in his first major papal document released on Monday. Magnifica Humanitas is the pope's manifesto on \"safeguarding the human person in the time...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "OpenAI, Grupo Folha and Grupo UOL announce strategic content partnership",
-      "source": "OpenAI News",
-      "date": "2026-05-25",
-      "url": "https://openai.com/index/grupo-folha-grupo-uol-partnership",
-      "summary": "OpenAI partners with Grupo Folha and Grupo UOL to bring trusted Brazilian journalism to ChatGPT, expanding access to news with attribution and transparency.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-05-22",
-      "url": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
-      "summary": "We are committed to empowering every developer by building an open, secure, and AI-powered platform that defines the future of software development. The post GitHub recognized as a Leader in the Gartner® Magic Quadrant™ ...",
-      "tags": [
-        "Agents",
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "Catch up on the Dialogues stage at Google I/O 2026.",
-      "source": "Google AI Blog",
-      "date": "2026-05-22",
-      "url": "https://blog.google/innovation-and-ai/technology/ai/io-2026-dialogues-recap/",
-      "summary": "A recap of the 2026 I/O Dialogues, where leaders discuss the future of AI, quantum computing, robotics and creativity.",
-      "tags": [
-        "Gemini"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Strengthening societal resilience with Rosalind Biodefense",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/strengthening-societal-resilience-with-rosalind-biodefense",
+          "date": "2026-05-29"
+        },
+        {
+          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
+          "date": "2026-05-22"
+        }
+      ]
+    },
     {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "Adobe’s conversational AI agent is a mediocre design intern",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/939686/adobes-conversational-ai-agent-is-a-mediocre-design-intern",
+          "date": "2026-05-29"
+        },
+        {
+          "title": "How Endava builds an agentic organization with Codex",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/endava",
+          "date": "2026-05-28"
+        },
+        {
           "title": "Building self-improving tax agents with Codex",
           "source": "OpenAI News",
           "link": "https://openai.com/index/building-self-improving-tax-agents-with-codex",
           "date": "2026-05-27"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Catch up on 12 major I/O 2026 moments",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-keynote-moment-videos/",
+          "date": "2026-05-28"
         },
         {
-          "title": "Warp’s big bet on building open source with GPT-5.5",
+          "title": "I/O 2026: Welcome to the agentic Gemini era",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/sundar-pichai-io-2026/",
+          "date": "2026-05-19"
+        },
+        {
+          "title": "Gemini 3.5: frontier intelligence with action",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-5/",
+          "date": "2026-05-19"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "MUFG aims to become AI-native with OpenAI",
           "source": "OpenAI News",
-          "link": "https://openai.com/index/warp",
-          "date": "2026-05-27"
+          "link": "https://openai.com/index/mufg",
+          "date": "2026-05-28"
         },
         {
-          "title": "Robinhood will let your AI agent trade stocks and make (or lose) lots of money",
+          "title": "These new iOS 27 renders hint at Siri’s big redesign",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/938095/robinhood-ai-agent-stock-trading",
-          "date": "2026-05-27"
+          "link": "https://www.theverge.com/tech/938915/ios-27-siri-renders-bloomberg",
+          "date": "2026-05-28"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Microsoft 365 Copilot gets a speed boost and cleaner design",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/939273/microsoft-365-copilot-redesign",
+          "date": "2026-05-28"
+        },
+        {
+          "title": "Take your local GitHub sessions anywhere",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/news-insights/product-news/take-your-local-github-sessions-anywhere/",
+          "date": "2026-05-18"
+        },
+        {
+          "title": "Dungeons &#038; Desktops: Building a procedurally generated roguelike with GitHub Copilot CLI",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/dungeons-desktops-building-a-procedurally-generated-roguelike-with-github-copilot-cli/",
+          "date": "2026-05-12"
+        }
+      ]
+    },
+    {
+      "label": "Claude research and documentation flow",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Claude’s new model is more ‘honest’ when it messes up",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/939094/anthropic-claude-4-8-opus-honesty-effort",
+          "date": "2026-05-28"
         }
       ]
     },
@@ -259,88 +364,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
           "date": "2026-05-22"
-        },
-        {
-          "title": "OpenAI named a Leader in enterprise coding agents by Gartner",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/gartner-2026-agentic-coding-leader",
-          "date": "2026-05-22"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "OpenAI, Grupo Folha and Grupo UOL announce strategic content partnership",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/grupo-folha-grupo-uol-partnership",
-          "date": "2026-05-25"
-        },
-        {
-          "title": "AdventHealth advances whole-person care with OpenAI",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/adventhealth",
-          "date": "2026-05-21"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
-          "date": "2026-05-22"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "I/O 2026: Welcome to the agentic Gemini era",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/sundar-pichai-io-2026/",
-          "date": "2026-05-19"
-        },
-        {
-          "title": "Gemini 3.5: frontier intelligence with action",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-5/",
-          "date": "2026-05-19"
-        }
-      ]
-    },
-    {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Take your local GitHub sessions anywhere",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/news-insights/product-news/take-your-local-github-sessions-anywhere/",
-          "date": "2026-05-18"
-        },
-        {
-          "title": "Dungeons &#038; Desktops: Building a procedurally generated roguelike with GitHub Copilot CLI",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/dungeons-desktops-building-a-procedurally-generated-roguelike-with-github-copilot-cli/",
-          "date": "2026-05-12"
-        },
-        {
-          "title": "Validating agentic behavior when “correct” isn’t deterministic",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/generative-ai/validating-agentic-behavior-when-correct-isnt-deterministic/",
-          "date": "2026-05-06"
         }
       ]
     }
