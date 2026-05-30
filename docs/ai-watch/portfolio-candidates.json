@@ -1,6 +1,31 @@
 {
-  "generatedAt": "2026-05-29T11:24:52.079Z",
+  "generatedAt": "2026-05-30T09:56:24.821Z",
   "candidates": [
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "9 demos of Gemini Omni and Gemini 3.5 in action",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-3-5-videos/",
+          "date": "2026-05-29"
+        },
+        {
+          "title": "Catch up on 12 major I/O 2026 moments",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-keynote-moment-videos/",
+          "date": "2026-05-28"
+        },
+        {
+          "title": "I/O 2026: Welcome to the agentic Gemini era",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/sundar-pichai-io-2026/",
+          "date": "2026-05-19"
+        }
+      ]
+    },
     {
       "label": "AI developer tooling",
       "status": "safe-data-candidate",
@@ -38,35 +63,10 @@
           "date": "2026-05-28"
         },
         {
-          "title": "Building self-improving tax agents with Codex",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/building-self-improving-tax-agents-with-codex",
-          "date": "2026-05-27"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Catch up on 12 major I/O 2026 moments",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-keynote-moment-videos/",
-          "date": "2026-05-28"
-        },
-        {
-          "title": "I/O 2026: Welcome to the agentic Gemini era",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/sundar-pichai-io-2026/",
-          "date": "2026-05-19"
-        },
-        {
-          "title": "Gemini 3.5: frontier intelligence with action",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-5/",
-          "date": "2026-05-19"
+          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
+          "date": "2026-05-22"
         }
       ]
     },
@@ -132,12 +132,6 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
-        {
-          "title": "Warp’s big bet on building open source with GPT-5.5",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/warp",
-          "date": "2026-05-27"
-        },
         {
           "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
           "source": "GitHub AI & ML Blog",

@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-05-29
+# Daily AI maintenance report — 2026-05-30
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,8 +13,24 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Take our I/O 2026 quiz, vibe coded in Google AI Studio.** — Google AI Blog · 2026-05-29
+  https://blog.google/innovation-and-ai/technology/ai/io-2026-vibe-coded-quiz/
+- **9 demos of Gemini Omni and Gemini 3.5 in action** — Google AI Blog · 2026-05-29
+  https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-3-5-videos/
+- **Check out real-life AI prototypes from the Futures Lab.** — Google AI Blog · 2026-05-29
+  https://blog.google/innovation-and-ai/technology/ai/university-waterloo-labs/
+- **Boston Children’s uses AI to unlock new diagnoses** — OpenAI News · 2026-05-29
+  https://openai.com/index/boston-childrens-hospital
+- **How Braintrust turns customer requests into code with Codex** — OpenAI News · 2026-05-29
+  https://openai.com/index/braintrust
 - **Strengthening societal resilience with Rosalind Biodefense** — OpenAI News · 2026-05-29
   https://openai.com/index/strengthening-societal-resilience-with-rosalind-biodefense
+- **A shared playbook for trustworthy third party evaluations** — OpenAI News · 2026-05-29
+  https://openai.com/index/trustworthy-third-party-evaluations-foundations
+- **Tech companies desperately want to film you doing chores** — The Verge AI · 2026-05-29
+  https://www.theverge.com/ai-artificial-intelligence/940007/ai-companies-will-pay-for-robot-training-data
+- **This AI startup will clean your home for free to train future robots** — The Verge AI · 2026-05-29
+  https://www.theverge.com/ai-artificial-intelligence/939765/ai-training-data-startup-shift-free-cleaning
 - **Adobe’s conversational AI agent is a mediocre design intern** — The Verge AI · 2026-05-29
   https://www.theverge.com/tech/939686/adobes-conversational-ai-agent-is-a-mediocre-design-intern
 - **Catch up on 12 major I/O 2026 moments** — Google AI Blog · 2026-05-28
@@ -35,34 +51,18 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/tech/938915/ios-27-siri-renders-bloomberg
 - **CNN sues Perplexity over ‘verbatim’ copycat articles** — The Verge AI · 2026-05-28
   https://www.theverge.com/ai-artificial-intelligence/938893/cnn-perplexity-ai-copyright-lawsuit
-- **Rivian’s software chief thinks you don&#8217;t need CarPlay or buttons** — The Verge AI · 2026-05-28
-  https://www.theverge.com/podcast/929940/rivian-wassym-bensaid-software-volkswagen-carplay-assistant-ai
-- **YouTube will let you ask AI to make a custom video feed** — The Verge AI · 2026-05-28
-  https://www.theverge.com/streaming/938759/youtube-custom-ai-feed-prompt-availability
 - **Cisco and OpenAI redefine enterprise engineering with Codex** — OpenAI News · 2026-05-27
   https://openai.com/index/cisco
-- **Building self-improving tax agents with Codex** — OpenAI News · 2026-05-27
-  https://openai.com/index/building-self-improving-tax-agents-with-codex
-- **Warp’s big bet on building open source with GPT-5.5** — OpenAI News · 2026-05-27
-  https://openai.com/index/warp
-- **Election information and safeguards in 2026** — OpenAI News · 2026-05-27
-  https://openai.com/index/election-safeguards-2026
 - **GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row** — GitHub AI & ML Blog · 2026-05-22
   https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/
 - **Catch up on the Dialogues stage at Google I/O 2026.** — Google AI Blog · 2026-05-22
   https://blog.google/innovation-and-ai/technology/ai/io-2026-dialogues-recap/
-- **I/O 2026** — Google AI Blog · 2026-05-19
-  https://blog.google/innovation-and-ai/technology/developers-tools/google-io-2026-collection/
 - **How AI Mode is changing the way people search in the U.S.** — Google AI Blog · 2026-05-19
   https://blog.google/products-and-platforms/products/search/ai-mode-us-insights/
 - **New ways to create and get things done in Google Workspace** — Google AI Blog · 2026-05-19
   https://blog.google/products-and-platforms/products/workspace/workspace-updates/
 - **I/O 2026: Welcome to the agentic Gemini era** — Google AI Blog · 2026-05-19
   https://blog.google/innovation-and-ai/sundar-pichai-io-2026/
-- **Gemini 3.5: frontier intelligence with action** — Google AI Blog · 2026-05-19
-  https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-5/
-- **A new era for AI Search** — Google AI Blog · 2026-05-19
-  https://blog.google/products-and-platforms/products/search/search-io-2026/
 - **Take your local GitHub sessions anywhere** — GitHub AI & ML Blog · 2026-05-18
   https://github.blog/news-insights/product-news/take-your-local-github-sessions-anywhere/
 - **Building a general-purpose accessibility agent—and what we learned in the process** — GitHub AI & ML Blog · 2026-05-15
@@ -88,9 +88,9 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
+- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.

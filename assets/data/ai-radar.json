@@ -1,11 +1,64 @@
 {
-  "generatedAt": "2026-05-29T11:24:52.079Z",
-  "date": "2026-05-29",
+  "generatedAt": "2026-05-30T09:56:24.821Z",
+  "date": "2026-05-30",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Take our I/O 2026 quiz, vibe coded in Google AI Studio.",
+      "source": "Google AI Blog",
+      "date": "2026-05-29",
+      "url": "https://blog.google/innovation-and-ai/technology/ai/io-2026-vibe-coded-quiz/",
+      "summary": "We used Google AI Studio to vibe code a quiz about our top I/O 2026 announcements.",
+      "tags": [
+        "Gemini",
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "9 demos of Gemini Omni and Gemini 3.5 in action",
+      "source": "Google AI Blog",
+      "date": "2026-05-29",
+      "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-3-5-videos/",
+      "summary": "Watch 9 videos showing the capabilities of Gemini Omni and Gemini 3.5, announced at Google I/O 2026.",
+      "tags": [
+        "Gemini",
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "Check out real-life AI prototypes from the Futures Lab.",
+      "source": "Google AI Blog",
+      "date": "2026-05-29",
+      "url": "https://blog.google/innovation-and-ai/technology/ai/university-waterloo-labs/",
+      "summary": "University of Waterloo students develop AI prototypes like sign language tutors to reshape the future of education and work.",
+      "tags": [
+        "Gemini"
+      ]
+    },
+    {
+      "title": "Boston Children’s uses AI to unlock new diagnoses",
+      "source": "OpenAI News",
+      "date": "2026-05-29",
+      "url": "https://openai.com/index/boston-childrens-hospital",
+      "summary": "Boston Children’s Hospital uses OpenAI technology to improve patient care, reduce operational burden, and help diagnose more than 40 rare disease cases.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "How Braintrust turns customer requests into code with Codex",
+      "source": "OpenAI News",
+      "date": "2026-05-29",
+      "url": "https://openai.com/index/braintrust",
+      "summary": "How Braintrust engineers use Codex with GPT-5.5 to run experiments and code faster.",
+      "tags": [
+        "ChatGPT",
+        "Dev Tools"
+      ]
+    },
     {
       "title": "Strengthening societal resilience with Rosalind Biodefense",
       "source": "OpenAI News",
@@ -15,6 +68,37 @@
       "tags": [
         "ChatGPT",
         "Dev Tools"
+      ]
+    },
+    {
+      "title": "A shared playbook for trustworthy third party evaluations",
+      "source": "OpenAI News",
+      "date": "2026-05-29",
+      "url": "https://openai.com/index/trustworthy-third-party-evaluations-foundations",
+      "summary": "OpenAI shares guidance on third-party AI evaluations, covering how to assess model capabilities, safeguards, and validity for frontier systems.",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ]
+    },
+    {
+      "title": "Tech companies desperately want to film you doing chores",
+      "source": "The Verge AI",
+      "date": "2026-05-29",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/940007/ai-companies-will-pay-for-robot-training-data",
+      "summary": "This week, an AI training startup called Shift said it would clean New Yorkers' homes for free. It has plans to expand into other cities as well, including London, and looking around my flat, I get the appeal. But there'...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "This AI startup will clean your home for free to train future robots",
+      "source": "The Verge AI",
+      "date": "2026-05-29",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/939765/ai-training-data-startup-shift-free-cleaning",
+      "summary": "AI training startup Shift wants to clean your home for free. The catch - because, despite what its website says, there's always a catch - is that it will record cleaners as they scrub, vacuum, dust, tidy, and wash, and u...",
+      "tags": [
+        "AI"
       ]
     },
     {
@@ -131,97 +215,34 @@
       "tags": [
         "AI"
       ]
-    },
-    {
-      "title": "YouTube will let you ask AI to make a custom video feed",
-      "source": "The Verge AI",
-      "date": "2026-05-28",
-      "url": "https://www.theverge.com/streaming/938759/youtube-custom-ai-feed-prompt-availability",
-      "summary": "YouTube is launching a new AI feature that creates a personalized video feed based on descriptions of what you want to watch. In its announcement, YouTube says custom content feeds can be built around your specific inter...",
-      "tags": [
-        "Multimodal"
-      ]
-    },
-    {
-      "title": "Cisco and OpenAI redefine enterprise engineering with Codex",
-      "source": "OpenAI News",
-      "date": "2026-05-27",
-      "url": "https://openai.com/index/cisco",
-      "summary": "Cisco and OpenAI are redefining enterprise engineering with Codex, helping Cisco scale AI-native development, accelerate AI Defense work, and automate defect remediation.",
-      "tags": [
-        "ChatGPT",
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "Building self-improving tax agents with Codex",
-      "source": "OpenAI News",
-      "date": "2026-05-27",
-      "url": "https://openai.com/index/building-self-improving-tax-agents-with-codex",
-      "summary": "See how OpenAI, Thrive, and Crete built a self-improving tax agent with Codex, automating filings, improving accuracy, and accelerating workflows.",
-      "tags": [
-        "Agents",
-        "ChatGPT",
-        "Dev Tools",
-        "Automation"
-      ]
-    },
-    {
-      "title": "Election information and safeguards in 2026",
-      "source": "OpenAI News",
-      "date": "2026-05-27",
-      "url": "https://openai.com/index/election-safeguards-2026",
-      "summary": "Ahead of global elections, we’re helping people access information, supporting cyber defenders, and increasing AI transparency",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Warp’s big bet on building open source with GPT-5.5",
-      "source": "OpenAI News",
-      "date": "2026-05-27",
-      "url": "https://openai.com/index/warp",
-      "summary": "Warp uses GPT-5.5 and OpenAI models to coordinate coding agents across local, cloud, and open-source development workflows.",
-      "tags": [
-        "Agents",
-        "ChatGPT",
-        "Dev Tools",
-        "Automation"
-      ]
-    },
-    {
-      "title": "AI tried to bury this politician — now people have actually heard of him",
-      "source": "The Verge AI",
-      "date": "2026-05-27",
-      "url": "https://www.theverge.com/policy/937650/ai-alex-bores-openai-anthropic-ny12",
-      "summary": "By the time that the Democratic primary for New York's 12th congressional district wraps up in June, Anthropic and OpenAI will have spent millions on their battle over the political future of AI: who gets to regulate it,...",
-      "tags": [
-        "ChatGPT",
-        "Claude"
-      ]
-    },
-    {
-      "title": "Robinhood will let your AI agent trade stocks and make (or lose) lots of money",
-      "source": "The Verge AI",
-      "date": "2026-05-27",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/938095/robinhood-ai-agent-stock-trading",
-      "summary": "Robinhood is opening its trading platform to AI agents. In an announcement on Wednesday, Robinhood says traders can now create a separate account for an AI agent and add a specific amount of money, allowing the agent to ...",
-      "tags": [
-        "Agents"
-      ]
-    },
-    {
-      "title": "This smart bird feeder captures more of my backyard drama",
-      "source": "The Verge AI",
-      "date": "2026-05-27",
-      "url": "https://www.theverge.com/tech/937628/coolfly-aura-smart-bird-feeder-review",
-      "summary": "Since moving to South Carolina's Lowcountry, I've been spellbound by the myriad of beautiful birds that share the coast with us - ospreys raising their babies in towering nests beside the road to my daughter's school, ro...",
-      "tags": [
-        "AI"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "9 demos of Gemini Omni and Gemini 3.5 in action",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-3-5-videos/",
+          "date": "2026-05-29"
+        },
+        {
+          "title": "Catch up on 12 major I/O 2026 moments",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-keynote-moment-videos/",
+          "date": "2026-05-28"
+        },
+        {
+          "title": "I/O 2026: Welcome to the agentic Gemini era",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/sundar-pichai-io-2026/",
+          "date": "2026-05-19"
+        }
+      ]
+    },
     {
       "label": "AI developer tooling",
       "status": "safe-data-candidate",
@@ -259,35 +280,10 @@
           "date": "2026-05-28"
         },
         {
-          "title": "Building self-improving tax agents with Codex",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/building-self-improving-tax-agents-with-codex",
-          "date": "2026-05-27"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Catch up on 12 major I/O 2026 moments",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-keynote-moment-videos/",
-          "date": "2026-05-28"
-        },
-        {
-          "title": "I/O 2026: Welcome to the agentic Gemini era",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/sundar-pichai-io-2026/",
-          "date": "2026-05-19"
-        },
-        {
-          "title": "Gemini 3.5: frontier intelligence with action",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-5/",
-          "date": "2026-05-19"
+          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
+          "date": "2026-05-22"
         }
       ]
     },
@@ -353,12 +349,6 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
-        {
-          "title": "Warp’s big bet on building open source with GPT-5.5",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/warp",
-          "date": "2026-05-27"
-        },
         {
           "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
           "source": "GitHub AI & ML Blog",
