@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-05-30
+# Daily AI maintenance report — 2026-05-31
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -27,6 +27,10 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/strengthening-societal-resilience-with-rosalind-biodefense
 - **A shared playbook for trustworthy third party evaluations** — OpenAI News · 2026-05-29
   https://openai.com/index/trustworthy-third-party-evaluations-foundations
+- **How one founder’s bet on ‘the old school web’ is paying off** — The Verge AI · 2026-05-29
+  https://www.theverge.com/tech/938245/past-maps-website-google-zero-ai
+- **AI grifters are creating fake Black people to sell Shein junk** — The Verge AI · 2026-05-29
+  https://www.theverge.com/ai-artificial-intelligence/938844/ai-tiktok-shop-blackface-shein-dropshipping
 - **Tech companies desperately want to film you doing chores** — The Verge AI · 2026-05-29
   https://www.theverge.com/ai-artificial-intelligence/940007/ai-companies-will-pay-for-robot-training-data
 - **This AI startup will clean your home for free to train future robots** — The Verge AI · 2026-05-29
@@ -47,10 +51,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/ai-artificial-intelligence/939094/anthropic-claude-4-8-opus-honesty-effort
 - **A $2,000 AI-generated film will make its debut at Tribeca** — The Verge AI · 2026-05-28
   https://www.theverge.com/entertainment/939067/ai-film-dreams-of-violets-tribeca
-- **These new iOS 27 renders hint at Siri’s big redesign** — The Verge AI · 2026-05-28
-  https://www.theverge.com/tech/938915/ios-27-siri-renders-bloomberg
-- **CNN sues Perplexity over ‘verbatim’ copycat articles** — The Verge AI · 2026-05-28
-  https://www.theverge.com/ai-artificial-intelligence/938893/cnn-perplexity-ai-copyright-lawsuit
 - **Cisco and OpenAI redefine enterprise engineering with Codex** — OpenAI News · 2026-05-27
   https://openai.com/index/cisco
 - **GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row** — GitHub AI & ML Blog · 2026-05-22
