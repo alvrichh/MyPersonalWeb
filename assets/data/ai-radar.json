@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-05-30T09:56:24.821Z",
-  "date": "2026-05-30",
+  "generatedAt": "2026-05-31T10:11:59.419Z",
+  "date": "2026-05-31",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
@@ -79,6 +79,26 @@
       "tags": [
         "ChatGPT",
         "Models"
+      ]
+    },
+    {
+      "title": "How one founder’s bet on ‘the old school web’ is paying off",
+      "source": "The Verge AI",
+      "date": "2026-05-29",
+      "url": "https://www.theverge.com/tech/938245/past-maps-website-google-zero-ai",
+      "summary": "Craig Campbell walked away from the river of investor money flowing into AI to create, of all things, a website. Sure, Campbell probably could have started an AI company. He's a former engineer at Meta and an experienced...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "AI grifters are creating fake Black people to sell Shein junk",
+      "source": "The Verge AI",
+      "date": "2026-05-29",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/938844/ai-tiktok-shop-blackface-shein-dropshipping",
+      "summary": "Aliyah, a light-skinned Black woman dressed in country-western gear, is struggling to sell metal buckles she handmade on TikTok. In a video for the social media platform from March, she cries to the camera and pleads for...",
+      "tags": [
+        "Multimodal"
       ]
     },
     {
@@ -195,26 +215,6 @@
       "tags": [
         "ChatGPT"
       ]
-    },
-    {
-      "title": "CNN sues Perplexity over ‘verbatim’ copycat articles",
-      "source": "The Verge AI",
-      "date": "2026-05-28",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/938893/cnn-perplexity-ai-copyright-lawsuit",
-      "summary": "CNN has filed a lawsuit against Perplexity, claiming that the startup's AI tools generate \"verbatim\" copies of its work, as reported earlier by CNN. The lawsuit, filed in a New York court on Thursday, also alleges that P...",
-      "tags": [
-        "Agents"
-      ]
-    },
-    {
-      "title": "Rivian’s software chief thinks you don&#8217;t need CarPlay or buttons",
-      "source": "The Verge AI",
-      "date": "2026-05-28",
-      "url": "https://www.theverge.com/podcast/929940/rivian-wassym-bensaid-software-volkswagen-carplay-assistant-ai",
-      "summary": "Today, I’m talking with Wassym Bensaid, the chief software officer at Rivian, and the co-CEO of Rivian’s platform joint venture with Volkswagen, which everyone just calls RV Tech. That joint venture kicked off about a ye...",
-      "tags": [
-        "AI"
-      ]
     }
   ],
   "candidates": [
@@ -296,12 +296,6 @@
           "title": "MUFG aims to become AI-native with OpenAI",
           "source": "OpenAI News",
           "link": "https://openai.com/index/mufg",
-          "date": "2026-05-28"
-        },
-        {
-          "title": "These new iOS 27 renders hint at Siri’s big redesign",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/938915/ios-27-siri-renders-bloomberg",
           "date": "2026-05-28"
         }
       ]
