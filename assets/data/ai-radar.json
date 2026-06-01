@@ -1,11 +1,31 @@
 {
-  "generatedAt": "2026-05-31T10:11:59.419Z",
-  "date": "2026-05-31",
+  "generatedAt": "2026-06-01T13:33:01.216Z",
+  "date": "2026-06-01",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "I went looking for the AI weed vape that gives you Bitcoin for smoking",
+      "source": "The Verge AI",
+      "date": "2026-06-01",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/933916/ai-powered-crypto-cannabis-vape",
+      "summary": "The crypto weed vape found me on 4/20, the high holiday of cannabis enthusiasts everywhere. It arrived over Slack with the thumbnail of a man exhaling a plume of vapor, the words \"every hit delivers Bitcoin\" emblazoned a...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "AI grifters are creating fake Black people to sell Shein junk",
+      "source": "The Verge AI",
+      "date": "2026-05-31",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/938844/ai-tiktok-shop-blackface-shein-dropshipping",
+      "summary": "Aliyah, a light-skinned Black woman dressed in country-western gear, is struggling to sell metal buckles she handmade on TikTok. In a video for the social media platform from March, she cries to the camera and pleads for...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
     {
       "title": "Take our I/O 2026 quiz, vibe coded in Google AI Studio.",
       "source": "Google AI Blog",
@@ -89,16 +109,6 @@
       "summary": "Craig Campbell walked away from the river of investor money flowing into AI to create, of all things, a website. Sure, Campbell probably could have started an AI company. He's a former engineer at Meta and an experienced...",
       "tags": [
         "AI"
-      ]
-    },
-    {
-      "title": "AI grifters are creating fake Black people to sell Shein junk",
-      "source": "The Verge AI",
-      "date": "2026-05-29",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/938844/ai-tiktok-shop-blackface-shein-dropshipping",
-      "summary": "Aliyah, a light-skinned Black woman dressed in country-western gear, is struggling to sell metal buckles she handmade on TikTok. In a video for the social media platform from March, she cries to the camera and pleads for...",
-      "tags": [
-        "Multimodal"
       ]
     },
     {
@@ -204,16 +214,6 @@
       "summary": "Next month's Tribeca Festival will include the premiere of an AI-generated film: Dreams of Violets. The 75-minute film is a fictional dramatization of the Iranian government's mass killing of protestors in January, with ...",
       "tags": [
         "Multimodal"
-      ]
-    },
-    {
-      "title": "These new iOS 27 renders hint at Siri’s big redesign",
-      "source": "The Verge AI",
-      "date": "2026-05-28",
-      "url": "https://www.theverge.com/tech/938915/ios-27-siri-renders-bloomberg",
-      "summary": "Apple's long-awaited Siri overhaul, expected to arrive in iOS 27, might look a lot like ChatGPT with a splash of Liquid Glass. Renders from Bloomberg offer a preview of iOS 27, including the new app and chat interface fo...",
-      "tags": [
-        "ChatGPT"
       ]
     }
   ],
