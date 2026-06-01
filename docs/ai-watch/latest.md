@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-05-31
+# Daily AI maintenance report — 2026-06-01
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,10 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **I went looking for the AI weed vape that gives you Bitcoin for smoking** — The Verge AI · 2026-06-01
+  https://www.theverge.com/ai-artificial-intelligence/933916/ai-powered-crypto-cannabis-vape
+- **AI grifters are creating fake Black people to sell Shein junk** — The Verge AI · 2026-05-31
+  https://www.theverge.com/ai-artificial-intelligence/938844/ai-tiktok-shop-blackface-shein-dropshipping
 - **Take our I/O 2026 quiz, vibe coded in Google AI Studio.** — Google AI Blog · 2026-05-29
   https://blog.google/innovation-and-ai/technology/ai/io-2026-vibe-coded-quiz/
 - **9 demos of Gemini Omni and Gemini 3.5 in action** — Google AI Blog · 2026-05-29
@@ -29,8 +33,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/trustworthy-third-party-evaluations-foundations
 - **How one founder’s bet on ‘the old school web’ is paying off** — The Verge AI · 2026-05-29
   https://www.theverge.com/tech/938245/past-maps-website-google-zero-ai
-- **AI grifters are creating fake Black people to sell Shein junk** — The Verge AI · 2026-05-29
-  https://www.theverge.com/ai-artificial-intelligence/938844/ai-tiktok-shop-blackface-shein-dropshipping
 - **Tech companies desperately want to film you doing chores** — The Verge AI · 2026-05-29
   https://www.theverge.com/ai-artificial-intelligence/940007/ai-companies-will-pay-for-robot-training-data
 - **This AI startup will clean your home for free to train future robots** — The Verge AI · 2026-05-29
@@ -41,16 +43,14 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blog.google/innovation-and-ai/technology/ai/io-2026-keynote-moment-videos/
 - **How Endava builds an agentic organization with Codex** — OpenAI News · 2026-05-28
   https://openai.com/index/endava
-- **OpenAI’s Frontier Governance Framework** — OpenAI News · 2026-05-28
-  https://openai.com/index/openai-frontier-governance-framework
 - **MUFG aims to become AI-native with OpenAI** — OpenAI News · 2026-05-28
   https://openai.com/index/mufg
+- **OpenAI’s Frontier Governance Framework** — OpenAI News · 2026-05-28
+  https://openai.com/index/openai-frontier-governance-framework
 - **Microsoft 365 Copilot gets a speed boost and cleaner design** — The Verge AI · 2026-05-28
   https://www.theverge.com/tech/939273/microsoft-365-copilot-redesign
 - **Claude’s new model is more ‘honest’ when it messes up** — The Verge AI · 2026-05-28
   https://www.theverge.com/ai-artificial-intelligence/939094/anthropic-claude-4-8-opus-honesty-effort
-- **A $2,000 AI-generated film will make its debut at Tribeca** — The Verge AI · 2026-05-28
-  https://www.theverge.com/entertainment/939067/ai-film-dreams-of-violets-tribeca
 - **Cisco and OpenAI redefine enterprise engineering with Codex** — OpenAI News · 2026-05-27
   https://openai.com/index/cisco
 - **GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row** — GitHub AI & ML Blog · 2026-05-22
