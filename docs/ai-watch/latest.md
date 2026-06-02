@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-06-01
+# Daily AI maintenance report — 2026-06-02
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,10 +13,30 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Codex is becoming a productivity tool for everyone** — OpenAI News · 2026-06-02
+  https://openai.com/index/codex-for-knowledge-work
+- **How we used Gemini to build Google I/O 2026** — Google AI Blog · 2026-06-01
+  https://blog.google/innovation-and-ai/technology/ai/io-2026-google-ai/
+- **Our views on AI policy and political advocacy** — OpenAI News · 2026-06-01
+  https://openai.com/index/our-views-on-ai-policy-and-political-advocacy
+- **Building the infrastructure for the Intelligence Age in Michigan** — OpenAI News · 2026-06-01
+  https://openai.com/index/stargate-michigan-data-center
+- **OpenAI frontier models and Codex are now available on AWS** — OpenAI News · 2026-06-01
+  https://openai.com/index/openai-frontier-models-and-codex-are-now-available-on-aws
+- **Gemini’s new AI agent is about as good as Google’s demo** — The Verge AI · 2026-06-01
+  https://www.theverge.com/tech/941138/google-gemini-spark-ai-agent-hands-on
+- **Meta&#8217;s own AI was exploited to hijack Instagram accounts** — The Verge AI · 2026-06-01
+  https://www.theverge.com/tech/941179/meta-instagram-ai-support-chatbot-exploit-hacked
+- **Anthropic has officially filed to go public** — The Verge AI · 2026-06-01
+  https://www.theverge.com/ai-artificial-intelligence/941016/anthropic-has-officially-filed-to-go-public
+- **Microsoft to unveil new AI models and Windows improvements at Build** — The Verge AI · 2026-06-01
+  https://www.theverge.com/report/940861/microsoft-build-ai-models-windows-dev-mode-what-to-expect
+- **AI is blowing up music. How should the Grammys handle it?** — The Verge AI · 2026-06-01
+  https://www.theverge.com/podcast/940831/ai-grammys-music-recording-harvey-mason
+- **Strava blames zero-code AI apps and scrapers as it tightens API access** — The Verge AI · 2026-06-01
+  https://www.theverge.com/gadgets/940854/strava-restricts-api-access-ai-apps
 - **I went looking for the AI weed vape that gives you Bitcoin for smoking** — The Verge AI · 2026-06-01
   https://www.theverge.com/ai-artificial-intelligence/933916/ai-powered-crypto-cannabis-vape
-- **AI grifters are creating fake Black people to sell Shein junk** — The Verge AI · 2026-05-31
-  https://www.theverge.com/ai-artificial-intelligence/938844/ai-tiktok-shop-blackface-shein-dropshipping
 - **Take our I/O 2026 quiz, vibe coded in Google AI Studio.** — Google AI Blog · 2026-05-29
   https://blog.google/innovation-and-ai/technology/ai/io-2026-vibe-coded-quiz/
 - **9 demos of Gemini Omni and Gemini 3.5 in action** — Google AI Blog · 2026-05-29
@@ -33,26 +53,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/trustworthy-third-party-evaluations-foundations
 - **How one founder’s bet on ‘the old school web’ is paying off** — The Verge AI · 2026-05-29
   https://www.theverge.com/tech/938245/past-maps-website-google-zero-ai
-- **Tech companies desperately want to film you doing chores** — The Verge AI · 2026-05-29
-  https://www.theverge.com/ai-artificial-intelligence/940007/ai-companies-will-pay-for-robot-training-data
-- **This AI startup will clean your home for free to train future robots** — The Verge AI · 2026-05-29
-  https://www.theverge.com/ai-artificial-intelligence/939765/ai-training-data-startup-shift-free-cleaning
-- **Adobe’s conversational AI agent is a mediocre design intern** — The Verge AI · 2026-05-29
-  https://www.theverge.com/tech/939686/adobes-conversational-ai-agent-is-a-mediocre-design-intern
 - **Catch up on 12 major I/O 2026 moments** — Google AI Blog · 2026-05-28
   https://blog.google/innovation-and-ai/technology/ai/io-2026-keynote-moment-videos/
-- **How Endava builds an agentic organization with Codex** — OpenAI News · 2026-05-28
-  https://openai.com/index/endava
-- **MUFG aims to become AI-native with OpenAI** — OpenAI News · 2026-05-28
-  https://openai.com/index/mufg
-- **OpenAI’s Frontier Governance Framework** — OpenAI News · 2026-05-28
-  https://openai.com/index/openai-frontier-governance-framework
-- **Microsoft 365 Copilot gets a speed boost and cleaner design** — The Verge AI · 2026-05-28
-  https://www.theverge.com/tech/939273/microsoft-365-copilot-redesign
-- **Claude’s new model is more ‘honest’ when it messes up** — The Verge AI · 2026-05-28
-  https://www.theverge.com/ai-artificial-intelligence/939094/anthropic-claude-4-8-opus-honesty-effort
-- **Cisco and OpenAI redefine enterprise engineering with Codex** — OpenAI News · 2026-05-27
-  https://openai.com/index/cisco
 - **GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row** — GitHub AI & ML Blog · 2026-05-22
   https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/
 - **Catch up on the Dialogues stage at Google I/O 2026.** — Google AI Blog · 2026-05-22
@@ -61,8 +63,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blog.google/products-and-platforms/products/search/ai-mode-us-insights/
 - **New ways to create and get things done in Google Workspace** — Google AI Blog · 2026-05-19
   https://blog.google/products-and-platforms/products/workspace/workspace-updates/
-- **I/O 2026: Welcome to the agentic Gemini era** — Google AI Blog · 2026-05-19
-  https://blog.google/innovation-and-ai/sundar-pichai-io-2026/
 - **Take your local GitHub sessions anywhere** — GitHub AI & ML Blog · 2026-05-18
   https://github.blog/news-insights/product-news/take-your-local-github-sessions-anywhere/
 - **Building a general-purpose accessibility agent—and what we learned in the process** — GitHub AI & ML Blog · 2026-05-15
@@ -88,13 +88,12 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
+- **AI automation and workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
 
