@@ -1,11 +1,55 @@
 {
-  "generatedAt": "2026-06-03T12:39:02.303Z",
+  "generatedAt": "2026-06-04T10:58:44.516Z",
   "candidates": [
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "How Endava is redesigning software delivery around AI agents",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/endava-frontiers",
+          "date": "2026-06-04"
+        },
+        {
+          "title": "As AI gets better, it reveals an empty promise",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/942629/as-ai-gets-better-it-reveals-an-empty-promise",
+          "date": "2026-06-03"
+        },
+        {
+          "title": "Microsoft and OpenAI broke up — now they’re ready to fight",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/942242/microsoft-build-ai-agents-openai-competition",
+          "date": "2026-06-03"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "How Endava is redesigning software delivery around AI agents",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/endava-frontiers",
+          "date": "2026-06-04"
+        }
+      ]
+    },
     {
       "label": "AI automation and workflow design",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Amazon develops a warehouse robot workers can speak to",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/942884/amazon-next-generation-warehouse-robot-proteus",
+          "date": "2026-06-04"
+        },
         {
           "title": "Codex is becoming a productivity tool for everyone",
           "source": "OpenAI News",
@@ -15,60 +59,16 @@
       ]
     },
     {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Microsoft Scout is a new AI personal assistant built on OpenClaw",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/news/939713/microsoft-scout-assistant-openclaw",
-          "date": "2026-06-02"
-        },
-        {
-          "title": "Take your local GitHub sessions anywhere",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/news-insights/product-news/take-your-local-github-sessions-anywhere/",
-          "date": "2026-05-18"
-        },
-        {
-          "title": "Dungeons &#038; Desktops: Building a procedurally generated roguelike with GitHub Copilot CLI",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/dungeons-desktops-building-a-procedurally-generated-roguelike-with-github-copilot-cli/",
-          "date": "2026-05-12"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Microsoft&#8217;s Project Solara is an OS for AI agent gadgets",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/news/941830/microsoft-project-solara-os-ai-agent-gadgets",
-          "date": "2026-06-02"
-        },
-        {
-          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
-          "date": "2026-05-22"
-        },
-        {
-          "title": "Building a general-purpose accessibility agent—and what we learned in the process",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/building-a-general-purpose-accessibility-agent-and-what-we-learned-in-the-process/",
-          "date": "2026-05-15"
-        }
-      ]
-    },
-    {
       "label": "Gemini multimodal exploration",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "As AI gets better, it reveals an empty promise",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/942629/as-ai-gets-better-it-reveals-an-empty-promise",
+          "date": "2026-06-03"
+        },
         {
           "title": "How we used Gemini to build Google I/O 2026",
           "source": "Google AI Blog",
@@ -80,12 +80,6 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-3-5-videos/",
           "date": "2026-05-29"
-        },
-        {
-          "title": "Catch up on 12 major I/O 2026 moments",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-keynote-moment-videos/",
-          "date": "2026-05-28"
         }
       ]
     },
@@ -112,6 +106,31 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
           "date": "2026-05-22"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Take your local GitHub sessions anywhere",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/news-insights/product-news/take-your-local-github-sessions-anywhere/",
+          "date": "2026-05-18"
+        },
+        {
+          "title": "Dungeons &#038; Desktops: Building a procedurally generated roguelike with GitHub Copilot CLI",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/dungeons-desktops-building-a-procedurally-generated-roguelike-with-github-copilot-cli/",
+          "date": "2026-05-12"
+        },
+        {
+          "title": "Validating agentic behavior when “correct” isn’t deterministic",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/generative-ai/validating-agentic-behavior-when-correct-isnt-deterministic/",
+          "date": "2026-05-06"
         }
       ]
     }
