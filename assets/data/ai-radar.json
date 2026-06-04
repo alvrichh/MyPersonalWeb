@@ -1,13 +1,113 @@
 {
-  "generatedAt": "2026-06-03T12:39:02.303Z",
-  "date": "2026-06-03",
+  "generatedAt": "2026-06-04T10:58:44.516Z",
+  "date": "2026-06-04",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
     {
-      "title": "AI has a water problem. Google thinks it has a fix",
+      "title": "How Endava is redesigning software delivery around AI agents",
+      "source": "OpenAI News",
+      "date": "2026-06-04",
+      "url": "https://openai.com/index/endava-frontiers",
+      "summary": "Learn how Endava is using AI agents, ChatGPT Enterprise, and Codex to accelerate software delivery, automate workflows, and build an AI-native culture across the enterprise.",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Dev Tools",
+        "Automation"
+      ]
+    },
+    {
+      "title": "Amazon develops a warehouse robot workers can speak to",
+      "source": "The Verge AI",
+      "date": "2026-06-04",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/942884/amazon-next-generation-warehouse-robot-proteus",
+      "summary": "Amazon has announced a new version of its fully autonomous warehouse robot, Proteus, that will can interact using language instead of code. The expanded capabilities come as part of a growing pivot toward automation as t...",
+      "tags": [
+        "Dev Tools",
+        "Automation"
+      ]
+    },
+    {
+      "title": "5 ways Google Search can level up your thrift and vintage shopping",
+      "source": "Google AI Blog",
+      "date": "2026-06-03",
+      "url": "https://blog.google/products-and-platforms/products/search/thrifting-tips/",
+      "summary": "Uncover second-hand scores with AI tools in Google Search and Shopping.",
+      "tags": [
+        "Agents",
+        "Gemini"
+      ]
+    },
+    {
+      "title": "Introducing new capabilities to GPT-Rosalind",
+      "source": "OpenAI News",
+      "date": "2026-06-03",
+      "url": "https://openai.com/index/introducing-new-capabilities-to-gpt-rosalind",
+      "summary": "GPT-Rosalind advances life sciences research with enhanced biological reasoning, medicinal chemistry expertise, genomics analysis, and experimental workflow capabilities.",
+      "tags": [
+        "ChatGPT",
+        "Automation",
+        "Models"
+      ]
+    },
+    {
+      "title": "OpenAI public policy agenda",
+      "source": "OpenAI News",
+      "date": "2026-06-03",
+      "url": "https://openai.com/index/public-policy-agenda",
+      "summary": "OpenAI outlines its public policy agenda for AI, including safety, youth protection, workforce transition, and global standards to ensure AI benefits society.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "A blueprint for democratic governance of frontier AI",
+      "source": "OpenAI News",
+      "date": "2026-06-03",
+      "url": "https://openai.com/index/frontier-safety-blueprint",
+      "summary": "OpenAI outlines a blueprint for U.S. governance of frontier AI, proposing a federal framework for safety, resilience, and national security.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "As AI gets better, it reveals an empty promise",
+      "source": "The Verge AI",
+      "date": "2026-06-03",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/942629/as-ai-gets-better-it-reveals-an-empty-promise",
+      "summary": "This week we've got tandem hands-ons with Google's new Gemini AI agent - Spark - from my colleagues David Pierce and Jay Peters. Their takeaways are similar: It's so effective that it's scary. Spark knew that David's dog...",
+      "tags": [
+        "Agents",
+        "Gemini"
+      ]
+    },
+    {
+      "title": "Amazon&#8217;s search bar will invent AI-generated products you can&#8217;t buy",
+      "source": "The Verge AI",
+      "date": "2026-06-03",
+      "url": "https://www.theverge.com/tech/942547/amazon-search-bar-ai-images",
+      "summary": "Amazon's updated search bar will now show you AI-generated images of products as you describe them. For now, the in-app feature only surfaces AI images of clothing and home goods, allowing you to tap on the image that be...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "Microsoft and OpenAI broke up — now they’re ready to fight",
+      "source": "The Verge AI",
+      "date": "2026-06-03",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/942242/microsoft-build-ai-agents-openai-competition",
+      "summary": "At Microsoft's annual Build conference on Tuesday, the company announced a slew of new or expanded AI initiatives, including a super app, in-house reasoning models, a cybersecurity tool, and OpenClaw-esque AI agents. All...",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Models"
+      ]
+    },
+    {
+      "title": "AI has a water problem — Google thinks it has a fix",
       "source": "The Verge AI",
       "date": "2026-06-03",
       "url": "https://www.theverge.com/policy/942296/google-water-commitments-data-centers",
@@ -123,110 +223,58 @@
       "tags": [
         "AI"
       ]
-    },
-    {
-      "title": "Microsoft&#8217;s Project Solara is an OS for AI agent gadgets",
-      "source": "The Verge AI",
-      "date": "2026-06-02",
-      "url": "https://www.theverge.com/news/941830/microsoft-project-solara-os-ai-agent-gadgets",
-      "summary": "Microsoft just announced \"Project Solara,\" a new OS designed for gadgets that run AI agents, at Build 2026. The company is calling it \"a new platform built from the ground up to power agent-driven experiences.\" It's buil...",
-      "tags": [
-        "Agents"
-      ]
-    },
-    {
-      "title": "How we used Gemini to build Google I/O 2026",
-      "source": "Google AI Blog",
-      "date": "2026-06-01",
-      "url": "https://blog.google/innovation-and-ai/technology/ai/io-2026-google-ai/",
-      "summary": "Learn how Googlers used AI to produce Google I/O 2026.",
-      "tags": [
-        "Gemini"
-      ]
-    },
-    {
-      "title": "Our views on AI policy and political advocacy",
-      "source": "OpenAI News",
-      "date": "2026-06-01",
-      "url": "https://openai.com/index/our-views-on-ai-policy-and-political-advocacy",
-      "summary": "Our approach to AI policy and political advocacy, transparency, support for thoughtful regulation and AI safety, and that no outside political group speaks on the company’s behalf.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Building the infrastructure for the Intelligence Age in Michigan",
-      "source": "OpenAI News",
-      "date": "2026-06-01",
-      "url": "https://openai.com/index/stargate-michigan-data-center",
-      "summary": "OpenAI breaks ground on a 1GW data center project in Michigan as part of Stargate, building AI infrastructure to expand access, create jobs, and support communities.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "OpenAI frontier models and Codex are now available on AWS",
-      "source": "OpenAI News",
-      "date": "2026-06-01",
-      "url": "https://openai.com/index/openai-frontier-models-and-codex-are-now-available-on-aws",
-      "summary": "OpenAI frontier models and Codex are now generally available on AWS, giving enterprises a new path to build with OpenAI through the AWS environments, controls, and procurement workflows they already use. Customers can ge...",
-      "tags": [
-        "ChatGPT",
-        "Dev Tools",
-        "Automation",
-        "Models"
-      ]
-    },
-    {
-      "title": "Gemini’s new AI agent is about as good as Google’s demo",
-      "source": "The Verge AI",
-      "date": "2026-06-01",
-      "url": "https://www.theverge.com/tech/941138/google-gemini-spark-ai-agent-hands-on",
-      "summary": "Google's new \"24/7\" AI agent, Gemini Spark, can be shockingly good at doing things on your behalf. But I'm not sure it's worth the financial cost and potential privacy tradeoffs. The company gave me access to Spark last ...",
-      "tags": [
-        "Agents",
-        "Gemini"
-      ]
-    },
-    {
-      "title": "Meta&#8217;s own AI was exploited to hijack Instagram accounts",
-      "source": "The Verge AI",
-      "date": "2026-06-01",
-      "url": "https://www.theverge.com/tech/941179/meta-instagram-ai-support-chatbot-exploit-hacked",
-      "summary": "Meta's AI support chatbot helped hackers hijack Instagram accounts, as reported earlier by 404 Media. In a video shared on Telegram, a hacker shows how they could take over an account by asking Meta's chatbot to switch t...",
-      "tags": [
-        "Multimodal"
-      ]
-    },
-    {
-      "title": "Anthropic has officially filed to go public",
-      "source": "The Verge AI",
-      "date": "2026-06-01",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/941016/anthropic-has-officially-filed-to-go-public",
-      "summary": "After months of speculation about whether OpenAI or Anthropic would be first in their race to IPO, Anthropic on Monday reached a key milestone: filing to kick off the process with the U.S. Securities and Exchange Commiss...",
-      "tags": [
-        "ChatGPT",
-        "Claude"
-      ]
-    },
-    {
-      "title": "Microsoft to unveil new AI models and Windows improvements at Build",
-      "source": "The Verge AI",
-      "date": "2026-06-01",
-      "url": "https://www.theverge.com/report/940861/microsoft-build-ai-models-windows-dev-mode-what-to-expect",
-      "summary": "Microsoft is heading to San Francisco this week in a bid to win back developers at its Build conference. I've been attending Build since the days when Microsoft called it the Professional Developers Conference, and I can...",
-      "tags": [
-        "Dev Tools",
-        "Models"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "How Endava is redesigning software delivery around AI agents",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/endava-frontiers",
+          "date": "2026-06-04"
+        },
+        {
+          "title": "As AI gets better, it reveals an empty promise",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/942629/as-ai-gets-better-it-reveals-an-empty-promise",
+          "date": "2026-06-03"
+        },
+        {
+          "title": "Microsoft and OpenAI broke up — now they’re ready to fight",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/942242/microsoft-build-ai-agents-openai-competition",
+          "date": "2026-06-03"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "How Endava is redesigning software delivery around AI agents",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/endava-frontiers",
+          "date": "2026-06-04"
+        }
+      ]
+    },
     {
       "label": "AI automation and workflow design",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Amazon develops a warehouse robot workers can speak to",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/942884/amazon-next-generation-warehouse-robot-proteus",
+          "date": "2026-06-04"
+        },
         {
           "title": "Codex is becoming a productivity tool for everyone",
           "source": "OpenAI News",
@@ -236,60 +284,16 @@
       ]
     },
     {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Microsoft Scout is a new AI personal assistant built on OpenClaw",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/news/939713/microsoft-scout-assistant-openclaw",
-          "date": "2026-06-02"
-        },
-        {
-          "title": "Take your local GitHub sessions anywhere",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/news-insights/product-news/take-your-local-github-sessions-anywhere/",
-          "date": "2026-05-18"
-        },
-        {
-          "title": "Dungeons &#038; Desktops: Building a procedurally generated roguelike with GitHub Copilot CLI",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/dungeons-desktops-building-a-procedurally-generated-roguelike-with-github-copilot-cli/",
-          "date": "2026-05-12"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Microsoft&#8217;s Project Solara is an OS for AI agent gadgets",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/news/941830/microsoft-project-solara-os-ai-agent-gadgets",
-          "date": "2026-06-02"
-        },
-        {
-          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
-          "date": "2026-05-22"
-        },
-        {
-          "title": "Building a general-purpose accessibility agent—and what we learned in the process",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/building-a-general-purpose-accessibility-agent-and-what-we-learned-in-the-process/",
-          "date": "2026-05-15"
-        }
-      ]
-    },
-    {
       "label": "Gemini multimodal exploration",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "As AI gets better, it reveals an empty promise",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/942629/as-ai-gets-better-it-reveals-an-empty-promise",
+          "date": "2026-06-03"
+        },
         {
           "title": "How we used Gemini to build Google I/O 2026",
           "source": "Google AI Blog",
@@ -301,12 +305,6 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-3-5-videos/",
           "date": "2026-05-29"
-        },
-        {
-          "title": "Catch up on 12 major I/O 2026 moments",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-keynote-moment-videos/",
-          "date": "2026-05-28"
         }
       ]
     },
@@ -333,6 +331,31 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
           "date": "2026-05-22"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Take your local GitHub sessions anywhere",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/news-insights/product-news/take-your-local-github-sessions-anywhere/",
+          "date": "2026-05-18"
+        },
+        {
+          "title": "Dungeons &#038; Desktops: Building a procedurally generated roguelike with GitHub Copilot CLI",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/dungeons-desktops-building-a-procedurally-generated-roguelike-with-github-copilot-cli/",
+          "date": "2026-05-12"
+        },
+        {
+          "title": "Validating agentic behavior when “correct” isn’t deterministic",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/generative-ai/validating-agentic-behavior-when-correct-isnt-deterministic/",
+          "date": "2026-05-06"
         }
       ]
     }

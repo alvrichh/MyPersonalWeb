@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-06-03
+# Daily AI maintenance report — 2026-06-04
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,7 +13,25 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
-- **AI has a water problem. Google thinks it has a fix** — The Verge AI · 2026-06-03
+- **How Endava is redesigning software delivery around AI agents** — OpenAI News · 2026-06-04
+  https://openai.com/index/endava-frontiers
+- **Amazon develops a warehouse robot workers can speak to** — The Verge AI · 2026-06-04
+  https://www.theverge.com/ai-artificial-intelligence/942884/amazon-next-generation-warehouse-robot-proteus
+- **5 ways Google Search can level up your thrift and vintage shopping** — Google AI Blog · 2026-06-03
+  https://blog.google/products-and-platforms/products/search/thrifting-tips/
+- **Introducing new capabilities to GPT-Rosalind** — OpenAI News · 2026-06-03
+  https://openai.com/index/introducing-new-capabilities-to-gpt-rosalind
+- **OpenAI public policy agenda** — OpenAI News · 2026-06-03
+  https://openai.com/index/public-policy-agenda
+- **A blueprint for democratic governance of frontier AI** — OpenAI News · 2026-06-03
+  https://openai.com/index/frontier-safety-blueprint
+- **As AI gets better, it reveals an empty promise** — The Verge AI · 2026-06-03
+  https://www.theverge.com/ai-artificial-intelligence/942629/as-ai-gets-better-it-reveals-an-empty-promise
+- **Amazon&#8217;s search bar will invent AI-generated products you can&#8217;t buy** — The Verge AI · 2026-06-03
+  https://www.theverge.com/tech/942547/amazon-search-bar-ai-images
+- **Microsoft and OpenAI broke up — now they’re ready to fight** — The Verge AI · 2026-06-03
+  https://www.theverge.com/ai-artificial-intelligence/942242/microsoft-build-ai-agents-openai-competition
+- **AI has a water problem — Google thinks it has a fix** — The Verge AI · 2026-06-03
   https://www.theverge.com/policy/942296/google-water-commitments-data-centers
 - **Google must let publishers opt out of AI Search features, rules UK** — The Verge AI · 2026-06-03
   https://www.theverge.com/tech/942302/google-search-ai-overviews-uk-cma-publisher-opt-out
@@ -29,30 +47,14 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/tech/941738/microsoft-build-2026-biggest-announcements
 - **Trump signs executive order to review AI models before they’re released** — The Verge AI · 2026-06-02
   https://www.theverge.com/policy/941775/trump-ai-executive-order
-- **Microsoft’s first advanced reasoning AI is here** — The Verge AI · 2026-06-02
-  https://www.theverge.com/tech/941664/microsoft-ai-model-reasoning-mai-thinking-1-build-2026
-- **Microsoft Scout is a new AI personal assistant built on OpenClaw** — The Verge AI · 2026-06-02
-  https://www.theverge.com/news/939713/microsoft-scout-assistant-openclaw
-- **Google’s Phone app will tell you if a scammer is impersonating one of your contacts** — The Verge AI · 2026-06-02
-  https://www.theverge.com/tech/941517/google-phone-scammer-ai-impersonation
-- **Microsoft&#8217;s Project Solara is an OS for AI agent gadgets** — The Verge AI · 2026-06-02
-  https://www.theverge.com/news/941830/microsoft-project-solara-os-ai-agent-gadgets
 - **How we used Gemini to build Google I/O 2026** — Google AI Blog · 2026-06-01
   https://blog.google/innovation-and-ai/technology/ai/io-2026-google-ai/
-- **Our views on AI policy and political advocacy** — OpenAI News · 2026-06-01
-  https://openai.com/index/our-views-on-ai-policy-and-political-advocacy
-- **Building the infrastructure for the Intelligence Age in Michigan** — OpenAI News · 2026-06-01
-  https://openai.com/index/stargate-michigan-data-center
-- **OpenAI frontier models and Codex are now available on AWS** — OpenAI News · 2026-06-01
-  https://openai.com/index/openai-frontier-models-and-codex-are-now-available-on-aws
 - **Take our I/O 2026 quiz, vibe coded in Google AI Studio.** — Google AI Blog · 2026-05-29
   https://blog.google/innovation-and-ai/technology/ai/io-2026-vibe-coded-quiz/
 - **9 demos of Gemini Omni and Gemini 3.5 in action** — Google AI Blog · 2026-05-29
   https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-3-5-videos/
 - **Check out real-life AI prototypes from the Futures Lab.** — Google AI Blog · 2026-05-29
   https://blog.google/innovation-and-ai/technology/ai/university-waterloo-labs/
-- **Boston Children’s uses AI to unlock new diagnoses** — OpenAI News · 2026-05-29
-  https://openai.com/index/boston-childrens-hospital
 - **Catch up on 12 major I/O 2026 moments** — Google AI Blog · 2026-05-28
   https://blog.google/innovation-and-ai/technology/ai/io-2026-keynote-moment-videos/
 - **GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row** — GitHub AI & ML Blog · 2026-05-22
@@ -61,8 +63,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blog.google/innovation-and-ai/technology/ai/io-2026-dialogues-recap/
 - **How AI Mode is changing the way people search in the U.S.** — Google AI Blog · 2026-05-19
   https://blog.google/products-and-platforms/products/search/ai-mode-us-insights/
-- **New ways to create and get things done in Google Workspace** — Google AI Blog · 2026-05-19
-  https://blog.google/products-and-platforms/products/workspace/workspace-updates/
 - **Take your local GitHub sessions anywhere** — GitHub AI & ML Blog · 2026-05-18
   https://github.blog/news-insights/product-news/take-your-local-github-sessions-anywhere/
 - **Building a general-purpose accessibility agent—and what we learned in the process** — GitHub AI & ML Blog · 2026-05-15
@@ -88,12 +88,13 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
-- **AI automation and workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI automation and workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
 
