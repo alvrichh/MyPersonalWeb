@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-06-04T10:58:44.516Z",
-  "date": "2026-06-04",
+  "generatedAt": "2026-06-05T11:24:28.061Z",
+  "date": "2026-06-05",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
@@ -20,11 +20,71 @@
       ]
     },
     {
-      "title": "Amazon develops a warehouse robot workers can speak to",
+      "title": "Dreaming: Better memory for a more helpful ChatGPT",
+      "source": "OpenAI News",
+      "date": "2026-06-04",
+      "url": "https://openai.com/index/chatgpt-memory-dreaming",
+      "summary": "ChatGPT introduces a new memory system to better remember preferences, keeping context fresh and relevant across conversations.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Biodefense in the Intelligence Age",
+      "source": "OpenAI News",
+      "date": "2026-06-04",
+      "url": "https://openai.com/index/biodefense-in-the-intelligence-age",
+      "summary": "An action plan for AI-powered biological resilience",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "TSMC struggles to keep up with AI demand: &#8216;We can only support so much&#8217;",
+      "source": "The Verge AI",
+      "date": "2026-06-04",
+      "url": "https://www.theverge.com/tech/943066/tsmc-ai-demand-struggles",
+      "summary": "Taiwan Semiconductor Manufacturing Co. - the world's biggest semiconductor-maker - is struggling to meet demands from American customers even with its factory buildout in the US, according to reports from Reuters and Blo...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Elon Musk is steamrolling Wall Street to become a trillionaire",
+      "source": "The Verge AI",
+      "date": "2026-06-04",
+      "url": "https://www.theverge.com/podcast/942586/elon-musk-spacex-ipo-x-xai-index-funds",
+      "summary": "Today on Decoder, I’m talking to Ryan Mac, a technology reporter at The New York Times and coauthor of the excellent book Character Limit: How Elon Musk Destroyed Twitter, which came out in 2024. I can’t recommend it eno...",
+      "tags": [
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "Let us filter AI slop, you cowards",
+      "source": "The Verge AI",
+      "date": "2026-06-04",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/942909/let-us-filter-ai-slop-google-youtube-meta-instagram-tiktok",
+      "summary": "It's almost impossible to avoid seeing AI-generated content online, but it doesn't have to be this way. YouTube, Instagram, TikTok, and more have ramped up content authentication efforts over the last year, with many now...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "AI leaders call for tougher protections against AI-aided bioweapons",
+      "source": "The Verge AI",
+      "date": "2026-06-04",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/942956/ai-biological-weapons-open-letter-congress",
+      "summary": "Some of the AI industry's biggest rivals have put their many, many grievances aside for a common cause: making it harder for people to use their technology to develop biological weapons. In an open letter to US lawmakers...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Amazon develops a warehouse robot that workers can speak to",
       "source": "The Verge AI",
       "date": "2026-06-04",
       "url": "https://www.theverge.com/ai-artificial-intelligence/942884/amazon-next-generation-warehouse-robot-proteus",
-      "summary": "Amazon has announced a new version of its fully autonomous warehouse robot, Proteus, that will can interact using language instead of code. The expanded capabilities come as part of a growing pivot toward automation as t...",
+      "summary": "Amazon has announced a new version of its fully autonomous warehouse robot, Proteus, that will interact using language instead of code. The expanded capabilities come as part of a growing pivot toward automation as the e...",
       "tags": [
         "Dev Tools",
         "Automation"
@@ -54,21 +114,21 @@
       ]
     },
     {
-      "title": "OpenAI public policy agenda",
-      "source": "OpenAI News",
-      "date": "2026-06-03",
-      "url": "https://openai.com/index/public-policy-agenda",
-      "summary": "OpenAI outlines its public policy agenda for AI, including safety, youth protection, workforce transition, and global standards to ensure AI benefits society.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
       "title": "A blueprint for democratic governance of frontier AI",
       "source": "OpenAI News",
       "date": "2026-06-03",
       "url": "https://openai.com/index/frontier-safety-blueprint",
       "summary": "OpenAI outlines a blueprint for U.S. governance of frontier AI, proposing a federal framework for safety, resilience, and national security.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "OpenAI public policy agenda",
+      "source": "OpenAI News",
+      "date": "2026-06-03",
+      "url": "https://openai.com/index/public-policy-agenda",
+      "summary": "OpenAI outlines its public policy agenda for AI, including safety, youth protection, workforce transition, and global standards to ensure AI benefits society.",
       "tags": [
         "ChatGPT"
       ]
@@ -158,71 +218,6 @@
       "tags": [
         "ChatGPT"
       ]
-    },
-    {
-      "title": "Codex is becoming a productivity tool for everyone",
-      "source": "OpenAI News",
-      "date": "2026-06-02",
-      "url": "https://openai.com/index/codex-for-knowledge-work",
-      "summary": "The Next Era of Knowledge Work report explores how Codex is transforming productivity through AI-powered research, data analysis, workflow automation, and content creation.",
-      "tags": [
-        "ChatGPT",
-        "Dev Tools",
-        "Automation"
-      ]
-    },
-    {
-      "title": "Microsoft Build 2026: The 7 biggest announcements",
-      "source": "The Verge AI",
-      "date": "2026-06-02",
-      "url": "https://www.theverge.com/tech/941738/microsoft-build-2026-biggest-announcements",
-      "summary": "Microsoft just kicked off Build 2026 with a keynote from CEO Satya Nadella and other company leaders. As expected, it was filled with announcements, ranging from new Surface hardware to an always-on personal assistant an...",
-      "tags": [
-        "Agents",
-        "Models"
-      ]
-    },
-    {
-      "title": "Trump signs executive order to review AI models before they’re released",
-      "source": "The Verge AI",
-      "date": "2026-06-02",
-      "url": "https://www.theverge.com/policy/941775/trump-ai-executive-order",
-      "summary": "President Donald Trump signed an executive order Tuesday creating a \"voluntary framework\" for AI companies to share their frontier models with the federal government before they're released \"to promote secure innovation ...",
-      "tags": [
-        "Models"
-      ]
-    },
-    {
-      "title": "Microsoft’s first advanced reasoning AI is here",
-      "source": "The Verge AI",
-      "date": "2026-06-02",
-      "url": "https://www.theverge.com/tech/941664/microsoft-ai-model-reasoning-mai-thinking-1-build-2026",
-      "summary": "Microsoft announced a bunch of new in-house AI models at Build 2026, including a new \"flagship\" model: MAI-Thinking-1. It's an ambitious step into model development for Microsoft, which introduced its initial in-house mo...",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "Microsoft Scout is a new AI personal assistant built on OpenClaw",
-      "source": "The Verge AI",
-      "date": "2026-06-02",
-      "url": "https://www.theverge.com/news/939713/microsoft-scout-assistant-openclaw",
-      "summary": "Much like Google, Microsoft is launching its own version of OpenClaw. Microsoft Scout is an always-on assistant that integrates into Microsoft 365 apps like Outlook, OneDrive, and Microsoft Teams, allowing businesses to ...",
-      "tags": [
-        "Agents",
-        "Copilot"
-      ]
-    },
-    {
-      "title": "Google’s Phone app will tell you if a scammer is impersonating one of your contacts",
-      "source": "The Verge AI",
-      "date": "2026-06-02",
-      "url": "https://www.theverge.com/tech/941517/google-phone-scammer-ai-impersonation",
-      "summary": "Google is launching a new feature for its Phone app that aims to protect you from AI impersonation scams. Now, when you receive a call from a scammer that appears to be coming from the same number as one of your contacts...",
-      "tags": [
-        "AI"
-      ]
     }
   ],
   "candidates": [
@@ -261,6 +256,12 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/endava-frontiers",
           "date": "2026-06-04"
+        },
+        {
+          "title": "Dreaming: Better memory for a more helpful ChatGPT",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/chatgpt-memory-dreaming",
+          "date": "2026-06-04"
         }
       ]
     },
@@ -270,16 +271,10 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Amazon develops a warehouse robot workers can speak to",
+          "title": "Amazon develops a warehouse robot that workers can speak to",
           "source": "The Verge AI",
           "link": "https://www.theverge.com/ai-artificial-intelligence/942884/amazon-next-generation-warehouse-robot-proteus",
           "date": "2026-06-04"
-        },
-        {
-          "title": "Codex is becoming a productivity tool for everyone",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/codex-for-knowledge-work",
-          "date": "2026-06-02"
         }
       ]
     },

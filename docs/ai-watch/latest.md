@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-06-04
+# Daily AI maintenance report — 2026-06-05
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -15,38 +15,38 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 - **How Endava is redesigning software delivery around AI agents** — OpenAI News · 2026-06-04
   https://openai.com/index/endava-frontiers
-- **Amazon develops a warehouse robot workers can speak to** — The Verge AI · 2026-06-04
+- **Dreaming: Better memory for a more helpful ChatGPT** — OpenAI News · 2026-06-04
+  https://openai.com/index/chatgpt-memory-dreaming
+- **Biodefense in the Intelligence Age** — OpenAI News · 2026-06-04
+  https://openai.com/index/biodefense-in-the-intelligence-age
+- **TSMC struggles to keep up with AI demand: &#8216;We can only support so much&#8217;** — The Verge AI · 2026-06-04
+  https://www.theverge.com/tech/943066/tsmc-ai-demand-struggles
+- **Elon Musk is steamrolling Wall Street to become a trillionaire** — The Verge AI · 2026-06-04
+  https://www.theverge.com/podcast/942586/elon-musk-spacex-ipo-x-xai-index-funds
+- **Let us filter AI slop, you cowards** — The Verge AI · 2026-06-04
+  https://www.theverge.com/ai-artificial-intelligence/942909/let-us-filter-ai-slop-google-youtube-meta-instagram-tiktok
+- **AI leaders call for tougher protections against AI-aided bioweapons** — The Verge AI · 2026-06-04
+  https://www.theverge.com/ai-artificial-intelligence/942956/ai-biological-weapons-open-letter-congress
+- **Amazon develops a warehouse robot that workers can speak to** — The Verge AI · 2026-06-04
   https://www.theverge.com/ai-artificial-intelligence/942884/amazon-next-generation-warehouse-robot-proteus
 - **5 ways Google Search can level up your thrift and vintage shopping** — Google AI Blog · 2026-06-03
   https://blog.google/products-and-platforms/products/search/thrifting-tips/
 - **Introducing new capabilities to GPT-Rosalind** — OpenAI News · 2026-06-03
   https://openai.com/index/introducing-new-capabilities-to-gpt-rosalind
-- **OpenAI public policy agenda** — OpenAI News · 2026-06-03
-  https://openai.com/index/public-policy-agenda
 - **A blueprint for democratic governance of frontier AI** — OpenAI News · 2026-06-03
   https://openai.com/index/frontier-safety-blueprint
+- **OpenAI public policy agenda** — OpenAI News · 2026-06-03
+  https://openai.com/index/public-policy-agenda
 - **As AI gets better, it reveals an empty promise** — The Verge AI · 2026-06-03
   https://www.theverge.com/ai-artificial-intelligence/942629/as-ai-gets-better-it-reveals-an-empty-promise
 - **Amazon&#8217;s search bar will invent AI-generated products you can&#8217;t buy** — The Verge AI · 2026-06-03
   https://www.theverge.com/tech/942547/amazon-search-bar-ai-images
 - **Microsoft and OpenAI broke up — now they’re ready to fight** — The Verge AI · 2026-06-03
   https://www.theverge.com/ai-artificial-intelligence/942242/microsoft-build-ai-agents-openai-competition
-- **AI has a water problem — Google thinks it has a fix** — The Verge AI · 2026-06-03
-  https://www.theverge.com/policy/942296/google-water-commitments-data-centers
-- **Google must let publishers opt out of AI Search features, rules UK** — The Verge AI · 2026-06-03
-  https://www.theverge.com/tech/942302/google-search-ai-overviews-uk-cma-publisher-opt-out
 - **Travelers deploys AI-powered claims countrywide with OpenAI** — OpenAI News · 2026-06-02
   https://openai.com/index/travelers
 - **Codex for every role, tool, and workflow** — OpenAI News · 2026-06-02
   https://openai.com/index/codex-for-every-role-tool-workflow
-- **Advancing youth safety and opportunity through global leadership** — OpenAI News · 2026-06-02
-  https://openai.com/index/advancing-youth-safety-and-opportunity-through-global-leadership
-- **Codex is becoming a productivity tool for everyone** — OpenAI News · 2026-06-02
-  https://openai.com/index/codex-for-knowledge-work
-- **Microsoft Build 2026: The 7 biggest announcements** — The Verge AI · 2026-06-02
-  https://www.theverge.com/tech/941738/microsoft-build-2026-biggest-announcements
-- **Trump signs executive order to review AI models before they’re released** — The Verge AI · 2026-06-02
-  https://www.theverge.com/policy/941775/trump-ai-executive-order
 - **How we used Gemini to build Google I/O 2026** — Google AI Blog · 2026-06-01
   https://blog.google/innovation-and-ai/technology/ai/io-2026-google-ai/
 - **Take our I/O 2026 quiz, vibe coded in Google AI Studio.** — Google AI Blog · 2026-05-29

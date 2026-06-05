@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-04T10:58:44.516Z",
+  "generatedAt": "2026-06-05T11:24:28.061Z",
   "candidates": [
     {
       "label": "AI agents / automation workflows",
@@ -36,6 +36,12 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/endava-frontiers",
           "date": "2026-06-04"
+        },
+        {
+          "title": "Dreaming: Better memory for a more helpful ChatGPT",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/chatgpt-memory-dreaming",
+          "date": "2026-06-04"
         }
       ]
     },
@@ -45,16 +51,10 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Amazon develops a warehouse robot workers can speak to",
+          "title": "Amazon develops a warehouse robot that workers can speak to",
           "source": "The Verge AI",
           "link": "https://www.theverge.com/ai-artificial-intelligence/942884/amazon-next-generation-warehouse-robot-proteus",
           "date": "2026-06-04"
-        },
-        {
-          "title": "Codex is becoming a productivity tool for everyone",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/codex-for-knowledge-work",
-          "date": "2026-06-02"
         }
       ]
     },
