@@ -1,11 +1,41 @@
 {
-  "generatedAt": "2026-06-05T11:24:28.061Z",
-  "date": "2026-06-05",
+  "generatedAt": "2026-06-06T10:00:04.034Z",
+  "date": "2026-06-06",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "The latest AI news we announced in May 2026",
+      "source": "Google AI Blog",
+      "date": "2026-06-05",
+      "url": "https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-may-2026/",
+      "summary": "Here are Google’s latest AI updates from May 2026",
+      "tags": [
+        "Gemini"
+      ]
+    },
+    {
+      "title": "This is your laptop… on AI",
+      "source": "The Verge AI",
+      "date": "2026-06-05",
+      "url": "https://www.theverge.com/podcast/944058/ai-laptop-nvidia-build-gemini-spark-vergecast",
+      "summary": "We're now deep into developer conference season, and one of the themes so far is the relentless conviction from Big Tech companies that AI is going to change everything about how we do everything. Nvidia's Jensen Huang m...",
+      "tags": [
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "This AI startup says it can tell if a script will make a hit film",
+      "source": "The Verge AI",
+      "date": "2026-06-05",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/943531/ai-script-quilty-simon-horsman-daniel-wood",
+      "summary": "When Quilty hit the industry trades earlier this year, the AI startup promised that its tool could accurately predict a film's success just by reading the script. When people actually got a chance to experiment with Quil...",
+      "tags": [
+        "AI"
+      ]
+    },
     {
       "title": "How Endava is redesigning software delivery around AI agents",
       "source": "OpenAI News",
@@ -185,42 +215,28 @@
       "tags": [
         "AI"
       ]
-    },
-    {
-      "title": "Travelers deploys AI-powered claims countrywide with OpenAI",
-      "source": "OpenAI News",
-      "date": "2026-06-02",
-      "url": "https://openai.com/index/travelers",
-      "summary": "Travelers built an AI-powered Claim Assistant with OpenAI to guide customers through filing claims, provide 24/7 support, and scale operations during peak demand.",
-      "tags": [
-        "Agents",
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Codex for every role, tool, and workflow",
-      "source": "OpenAI News",
-      "date": "2026-06-02",
-      "url": "https://openai.com/index/codex-for-every-role-tool-workflow",
-      "summary": "Discover new Codex plugins, sites, and annotations that help analysts, marketers, designers, investors, and other teams get more done with AI.",
-      "tags": [
-        "ChatGPT",
-        "Dev Tools",
-        "Automation"
-      ]
-    },
-    {
-      "title": "Advancing youth safety and opportunity through global leadership",
-      "source": "OpenAI News",
-      "date": "2026-06-02",
-      "url": "https://openai.com/index/advancing-youth-safety-and-opportunity-through-global-leadership",
-      "summary": "OpenAI calls for global action on youth AI safety, proposing an international institute to strengthen safeguards, standards, and opportunities for young people.",
-      "tags": [
-        "ChatGPT"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "This is your laptop… on AI",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/podcast/944058/ai-laptop-nvidia-build-gemini-spark-vergecast",
+          "date": "2026-06-05"
+        },
+        {
+          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
+          "date": "2026-05-22"
+        }
+      ]
+    },
     {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
@@ -239,10 +255,10 @@
           "date": "2026-06-03"
         },
         {
-          "title": "Microsoft and OpenAI broke up — now they’re ready to fight",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/942242/microsoft-build-ai-agents-openai-competition",
-          "date": "2026-06-03"
+          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
+          "date": "2026-05-22"
         }
       ]
     },
@@ -305,19 +321,6 @@
     },
     {
       "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
-          "date": "2026-05-22"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [

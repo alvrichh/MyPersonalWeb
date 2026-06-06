@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-06-05
+# Daily AI maintenance report — 2026-06-06
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,12 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **The latest AI news we announced in May 2026** — Google AI Blog · 2026-06-05
+  https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-may-2026/
+- **This is your laptop… on AI** — The Verge AI · 2026-06-05
+  https://www.theverge.com/podcast/944058/ai-laptop-nvidia-build-gemini-spark-vergecast
+- **This AI startup says it can tell if a script will make a hit film** — The Verge AI · 2026-06-05
+  https://www.theverge.com/ai-artificial-intelligence/943531/ai-script-quilty-simon-horsman-daniel-wood
 - **How Endava is redesigning software delivery around AI agents** — OpenAI News · 2026-06-04
   https://openai.com/index/endava-frontiers
 - **Dreaming: Better memory for a more helpful ChatGPT** — OpenAI News · 2026-06-04
@@ -39,10 +45,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/public-policy-agenda
 - **As AI gets better, it reveals an empty promise** — The Verge AI · 2026-06-03
   https://www.theverge.com/ai-artificial-intelligence/942629/as-ai-gets-better-it-reveals-an-empty-promise
-- **Amazon&#8217;s search bar will invent AI-generated products you can&#8217;t buy** — The Verge AI · 2026-06-03
-  https://www.theverge.com/tech/942547/amazon-search-bar-ai-images
-- **Microsoft and OpenAI broke up — now they’re ready to fight** — The Verge AI · 2026-06-03
-  https://www.theverge.com/ai-artificial-intelligence/942242/microsoft-build-ai-agents-openai-competition
 - **Travelers deploys AI-powered claims countrywide with OpenAI** — OpenAI News · 2026-06-02
   https://openai.com/index/travelers
 - **Codex for every role, tool, and workflow** — OpenAI News · 2026-06-02
@@ -61,8 +63,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/
 - **Catch up on the Dialogues stage at Google I/O 2026.** — Google AI Blog · 2026-05-22
   https://blog.google/innovation-and-ai/technology/ai/io-2026-dialogues-recap/
-- **How AI Mode is changing the way people search in the U.S.** — Google AI Blog · 2026-05-19
-  https://blog.google/products-and-platforms/products/search/ai-mode-us-insights/
 - **Take your local GitHub sessions anywhere** — GitHub AI & ML Blog · 2026-05-18
   https://github.blog/news-insights/product-news/take-your-local-github-sessions-anywhere/
 - **Building a general-purpose accessibility agent—and what we learned in the process** — GitHub AI & ML Blog · 2026-05-15
@@ -88,12 +88,12 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
+- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI automation and workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
