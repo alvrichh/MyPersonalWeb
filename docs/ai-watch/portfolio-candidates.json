@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-06T10:00:04.034Z",
+  "generatedAt": "2026-06-07T10:25:26.691Z",
   "candidates": [
     {
       "label": "AI developer tooling",
@@ -32,16 +32,16 @@
           "date": "2026-06-04"
         },
         {
-          "title": "As AI gets better, it reveals an empty promise",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/942629/as-ai-gets-better-it-reveals-an-empty-promise",
-          "date": "2026-06-03"
-        },
-        {
           "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
           "date": "2026-05-22"
+        },
+        {
+          "title": "Building a general-purpose accessibility agent—and what we learned in the process",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/building-a-general-purpose-accessibility-agent-and-what-we-learned-in-the-process/",
+          "date": "2026-05-15"
         }
       ]
     },
@@ -65,29 +65,10 @@
       ]
     },
     {
-      "label": "AI automation and workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Amazon develops a warehouse robot that workers can speak to",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/942884/amazon-next-generation-warehouse-robot-proteus",
-          "date": "2026-06-04"
-        }
-      ]
-    },
-    {
       "label": "Gemini multimodal exploration",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
-        {
-          "title": "As AI gets better, it reveals an empty promise",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/942629/as-ai-gets-better-it-reveals-an-empty-promise",
-          "date": "2026-06-03"
-        },
         {
           "title": "How we used Gemini to build Google I/O 2026",
           "source": "Google AI Blog",
@@ -99,6 +80,12 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-3-5-videos/",
           "date": "2026-05-29"
+        },
+        {
+          "title": "Catch up on 12 major I/O 2026 moments",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-keynote-moment-videos/",
+          "date": "2026-05-28"
         }
       ]
     },
