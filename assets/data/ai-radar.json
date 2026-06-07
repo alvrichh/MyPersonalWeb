@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-06-06T10:00:04.034Z",
-  "date": "2026-06-06",
+  "generatedAt": "2026-06-07T10:25:26.691Z",
+  "date": "2026-06-07",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
@@ -14,6 +14,26 @@
       "summary": "Here are Google’s latest AI updates from May 2026",
       "tags": [
         "Gemini"
+      ]
+    },
+    {
+      "title": "Meta made its own AI-generated clickbait news feed",
+      "source": "The Verge AI",
+      "date": "2026-06-05",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/944235/meta-app-ai-clickbait-articles",
+      "summary": "Facebook has long been filled with feeds of clickbait articles. Now, Meta is making its own clickbait articles with AI. The standalone Meta AI app now has a \"For You\" section that populates a list of clickbait-style stor...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "Here comes new Siri again",
+      "source": "The Verge AI",
+      "date": "2026-06-05",
+      "url": "https://www.theverge.com/tech/944245/apple-wwdc-2026-ai-siri-gemini",
+      "summary": "Apple has been on its back foot, AI-wise, for the past few years. But in a strange way, playing from behind might not be such a bad move. At WWDC on Monday, Apple appears to be getting ready to reintroduce us to the new ...",
+      "tags": [
+        "AI"
       ]
     },
     {
@@ -100,6 +120,17 @@
       ]
     },
     {
+      "title": "5 ways Google Search can level up your thrift and vintage shopping",
+      "source": "Google AI Blog",
+      "date": "2026-06-03",
+      "url": "https://blog.google/products-and-platforms/products/search/thrifting-tips/",
+      "summary": "Uncover second-hand scores with AI tools in Google Search and Shopping.",
+      "tags": [
+        "Agents",
+        "Gemini"
+      ]
+    },
+    {
       "title": "AI leaders call for tougher protections against AI-aided bioweapons",
       "source": "The Verge AI",
       "date": "2026-06-04",
@@ -118,17 +149,6 @@
       "tags": [
         "Dev Tools",
         "Automation"
-      ]
-    },
-    {
-      "title": "5 ways Google Search can level up your thrift and vintage shopping",
-      "source": "Google AI Blog",
-      "date": "2026-06-03",
-      "url": "https://blog.google/products-and-platforms/products/search/thrifting-tips/",
-      "summary": "Uncover second-hand scores with AI tools in Google Search and Shopping.",
-      "tags": [
-        "Agents",
-        "Gemini"
       ]
     },
     {
@@ -195,26 +215,6 @@
         "ChatGPT",
         "Models"
       ]
-    },
-    {
-      "title": "AI has a water problem — Google thinks it has a fix",
-      "source": "The Verge AI",
-      "date": "2026-06-03",
-      "url": "https://www.theverge.com/policy/942296/google-water-commitments-data-centers",
-      "summary": "In the face of widespread backlash to the AI data center buildout throughout the US, Google is touting its efforts to minimize the environmental impact by actually increasing water for local communities. The company laid...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Google must let publishers opt out of AI Search features, rules UK",
-      "source": "The Verge AI",
-      "date": "2026-06-03",
-      "url": "https://www.theverge.com/tech/942302/google-search-ai-overviews-uk-cma-publisher-opt-out",
-      "summary": "Online publishers are getting more control over whether their websites appear in Google's AI Search features, thanks to a UK regulatory ruling. The new conduct rule imposed by the Competition and Markets Authority (CMA) ...",
-      "tags": [
-        "AI"
-      ]
     }
   ],
   "candidates": [
@@ -249,16 +249,16 @@
           "date": "2026-06-04"
         },
         {
-          "title": "As AI gets better, it reveals an empty promise",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/942629/as-ai-gets-better-it-reveals-an-empty-promise",
-          "date": "2026-06-03"
-        },
-        {
           "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
           "date": "2026-05-22"
+        },
+        {
+          "title": "Building a general-purpose accessibility agent—and what we learned in the process",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/building-a-general-purpose-accessibility-agent-and-what-we-learned-in-the-process/",
+          "date": "2026-05-15"
         }
       ]
     },
@@ -282,29 +282,10 @@
       ]
     },
     {
-      "label": "AI automation and workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Amazon develops a warehouse robot that workers can speak to",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/942884/amazon-next-generation-warehouse-robot-proteus",
-          "date": "2026-06-04"
-        }
-      ]
-    },
-    {
       "label": "Gemini multimodal exploration",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
-        {
-          "title": "As AI gets better, it reveals an empty promise",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/942629/as-ai-gets-better-it-reveals-an-empty-promise",
-          "date": "2026-06-03"
-        },
         {
           "title": "How we used Gemini to build Google I/O 2026",
           "source": "Google AI Blog",
@@ -316,6 +297,12 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-3-5-videos/",
           "date": "2026-05-29"
+        },
+        {
+          "title": "Catch up on 12 major I/O 2026 moments",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-keynote-moment-videos/",
+          "date": "2026-05-28"
         }
       ]
     },

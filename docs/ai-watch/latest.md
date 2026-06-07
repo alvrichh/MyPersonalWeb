@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-06-06
+# Daily AI maintenance report — 2026-06-07
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -9,12 +9,16 @@ This file is generated automatically by the daily maintenance workflow. It updat
 - Google AI Blog: OK (8 relevant items)
 - GitHub AI & ML Blog: OK (8 relevant items)
 - Microsoft AI Blog: OK (8 relevant items)
-- The Verge AI: OK (8 relevant items)
+- The Verge AI: OK (7 relevant items)
 
 ## Relevant AI updates
 
 - **The latest AI news we announced in May 2026** — Google AI Blog · 2026-06-05
   https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-may-2026/
+- **Meta made its own AI-generated clickbait news feed** — The Verge AI · 2026-06-05
+  https://www.theverge.com/ai-artificial-intelligence/944235/meta-app-ai-clickbait-articles
+- **Here comes new Siri again** — The Verge AI · 2026-06-05
+  https://www.theverge.com/tech/944245/apple-wwdc-2026-ai-siri-gemini
 - **This is your laptop… on AI** — The Verge AI · 2026-06-05
   https://www.theverge.com/podcast/944058/ai-laptop-nvidia-build-gemini-spark-vergecast
 - **This AI startup says it can tell if a script will make a hit film** — The Verge AI · 2026-06-05
@@ -31,10 +35,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/podcast/942586/elon-musk-spacex-ipo-x-xai-index-funds
 - **Let us filter AI slop, you cowards** — The Verge AI · 2026-06-04
   https://www.theverge.com/ai-artificial-intelligence/942909/let-us-filter-ai-slop-google-youtube-meta-instagram-tiktok
-- **AI leaders call for tougher protections against AI-aided bioweapons** — The Verge AI · 2026-06-04
-  https://www.theverge.com/ai-artificial-intelligence/942956/ai-biological-weapons-open-letter-congress
-- **Amazon develops a warehouse robot that workers can speak to** — The Verge AI · 2026-06-04
-  https://www.theverge.com/ai-artificial-intelligence/942884/amazon-next-generation-warehouse-robot-proteus
 - **5 ways Google Search can level up your thrift and vintage shopping** — Google AI Blog · 2026-06-03
   https://blog.google/products-and-platforms/products/search/thrifting-tips/
 - **Introducing new capabilities to GPT-Rosalind** — OpenAI News · 2026-06-03
@@ -43,8 +43,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/frontier-safety-blueprint
 - **OpenAI public policy agenda** — OpenAI News · 2026-06-03
   https://openai.com/index/public-policy-agenda
-- **As AI gets better, it reveals an empty promise** — The Verge AI · 2026-06-03
-  https://www.theverge.com/ai-artificial-intelligence/942629/as-ai-gets-better-it-reveals-an-empty-promise
 - **Travelers deploys AI-powered claims countrywide with OpenAI** — OpenAI News · 2026-06-02
   https://openai.com/index/travelers
 - **Codex for every role, tool, and workflow** — OpenAI News · 2026-06-02
@@ -85,13 +83,14 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blogs.microsoft.com/ai/microsoft-open-sources-its-farm-of-the-future-toolkit/
 - **How data and AI will transform contact centres for financial services** — Microsoft AI Blog · 2022-07-25
   https://cloudblogs.microsoft.com/industry-blog/en-gb/financial-services/2022/07/25/how-data-and-ai-will-transform-contact-centres-for-financial-services/
+- **AI-equipped drones study dolphins on the edge of extinction** — Microsoft AI Blog · 2022-07-21
+  https://news.microsoft.com/apac/features/ai-drones-dolphins-maui63/
 
 ## Portfolio candidates
 
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI automation and workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
