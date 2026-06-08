@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-06-07
+# Daily AI maintenance report — 2026-06-08
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **WWDC 2026: How to watch and what to expect** — The Verge AI · 2026-06-06
+  https://www.theverge.com/tech/944099/wwdc-2026-how-to-watch
 - **The latest AI news we announced in May 2026** — Google AI Blog · 2026-06-05
   https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-may-2026/
 - **Meta made its own AI-generated clickbait news feed** — The Verge AI · 2026-06-05
@@ -29,20 +31,18 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/chatgpt-memory-dreaming
 - **Biodefense in the Intelligence Age** — OpenAI News · 2026-06-04
   https://openai.com/index/biodefense-in-the-intelligence-age
+- **AI ‘content creators’ are getting harder to spot** — The Verge AI · 2026-06-04
+  https://www.theverge.com/ai-artificial-intelligence/943187/ai-content-creators
 - **TSMC struggles to keep up with AI demand: &#8216;We can only support so much&#8217;** — The Verge AI · 2026-06-04
   https://www.theverge.com/tech/943066/tsmc-ai-demand-struggles
-- **Elon Musk is steamrolling Wall Street to become a trillionaire** — The Verge AI · 2026-06-04
-  https://www.theverge.com/podcast/942586/elon-musk-spacex-ipo-x-xai-index-funds
-- **Let us filter AI slop, you cowards** — The Verge AI · 2026-06-04
-  https://www.theverge.com/ai-artificial-intelligence/942909/let-us-filter-ai-slop-google-youtube-meta-instagram-tiktok
 - **5 ways Google Search can level up your thrift and vintage shopping** — Google AI Blog · 2026-06-03
   https://blog.google/products-and-platforms/products/search/thrifting-tips/
 - **Introducing new capabilities to GPT-Rosalind** — OpenAI News · 2026-06-03
   https://openai.com/index/introducing-new-capabilities-to-gpt-rosalind
-- **A blueprint for democratic governance of frontier AI** — OpenAI News · 2026-06-03
-  https://openai.com/index/frontier-safety-blueprint
 - **OpenAI public policy agenda** — OpenAI News · 2026-06-03
   https://openai.com/index/public-policy-agenda
+- **A blueprint for democratic governance of frontier AI** — OpenAI News · 2026-06-03
+  https://openai.com/index/frontier-safety-blueprint
 - **Travelers deploys AI-powered claims countrywide with OpenAI** — OpenAI News · 2026-06-02
   https://openai.com/index/travelers
 - **Codex for every role, tool, and workflow** — OpenAI News · 2026-06-02

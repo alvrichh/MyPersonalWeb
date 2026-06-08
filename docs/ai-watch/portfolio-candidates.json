@@ -1,11 +1,17 @@
 {
-  "generatedAt": "2026-06-07T10:25:26.691Z",
+  "generatedAt": "2026-06-08T12:25:26.517Z",
   "candidates": [
     {
       "label": "AI developer tooling",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "WWDC 2026: How to watch and what to expect",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/944099/wwdc-2026-how-to-watch",
+          "date": "2026-06-06"
+        },
         {
           "title": "This is your laptop… on AI",
           "source": "The Verge AI",

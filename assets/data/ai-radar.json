@@ -1,11 +1,21 @@
 {
-  "generatedAt": "2026-06-07T10:25:26.691Z",
-  "date": "2026-06-07",
+  "generatedAt": "2026-06-08T12:25:26.517Z",
+  "date": "2026-06-08",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "WWDC 2026: How to watch and what to expect",
+      "source": "The Verge AI",
+      "date": "2026-06-06",
+      "url": "https://www.theverge.com/tech/944099/wwdc-2026-how-to-watch",
+      "summary": "Apple's biggest event of the year is nearly here. The company's Worldwide Developers Conference will spotlight updates to iOS, macOS, and all of Apple's other operating systems, and this year's event could also include a...",
+      "tags": [
+        "Dev Tools"
+      ]
+    },
     {
       "title": "The latest AI news we announced in May 2026",
       "source": "Google AI Blog",
@@ -90,6 +100,16 @@
       ]
     },
     {
+      "title": "AI ‘content creators’ are getting harder to spot",
+      "source": "The Verge AI",
+      "date": "2026-06-04",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/943187/ai-content-creators",
+      "summary": "This is The Stepback, a weekly newsletter breaking down one essential story from the tech world. For more on AI confusion, follow Robert Hart. The Stepback arrives in our subscribers' inboxes at 8AM ET. Opt in for The St...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
       "title": "TSMC struggles to keep up with AI demand: &#8216;We can only support so much&#8217;",
       "source": "The Verge AI",
       "date": "2026-06-04",
@@ -97,6 +117,17 @@
       "summary": "Taiwan Semiconductor Manufacturing Co. - the world's biggest semiconductor-maker - is struggling to meet demands from American customers even with its factory buildout in the US, according to reports from Reuters and Blo...",
       "tags": [
         "AI"
+      ]
+    },
+    {
+      "title": "5 ways Google Search can level up your thrift and vintage shopping",
+      "source": "Google AI Blog",
+      "date": "2026-06-03",
+      "url": "https://blog.google/products-and-platforms/products/search/thrifting-tips/",
+      "summary": "Uncover second-hand scores with AI tools in Google Search and Shopping.",
+      "tags": [
+        "Agents",
+        "Gemini"
       ]
     },
     {
@@ -117,17 +148,6 @@
       "summary": "It's almost impossible to avoid seeing AI-generated content online, but it doesn't have to be this way. YouTube, Instagram, TikTok, and more have ramped up content authentication efforts over the last year, with many now...",
       "tags": [
         "Multimodal"
-      ]
-    },
-    {
-      "title": "5 ways Google Search can level up your thrift and vintage shopping",
-      "source": "Google AI Blog",
-      "date": "2026-06-03",
-      "url": "https://blog.google/products-and-platforms/products/search/thrifting-tips/",
-      "summary": "Uncover second-hand scores with AI tools in Google Search and Shopping.",
-      "tags": [
-        "Agents",
-        "Gemini"
       ]
     },
     {
@@ -193,28 +213,6 @@
         "Agents",
         "Gemini"
       ]
-    },
-    {
-      "title": "Amazon&#8217;s search bar will invent AI-generated products you can&#8217;t buy",
-      "source": "The Verge AI",
-      "date": "2026-06-03",
-      "url": "https://www.theverge.com/tech/942547/amazon-search-bar-ai-images",
-      "summary": "Amazon's updated search bar will now show you AI-generated images of products as you describe them. For now, the in-app feature only surfaces AI images of clothing and home goods, allowing you to tap on the image that be...",
-      "tags": [
-        "Multimodal"
-      ]
-    },
-    {
-      "title": "Microsoft and OpenAI broke up — now they’re ready to fight",
-      "source": "The Verge AI",
-      "date": "2026-06-03",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/942242/microsoft-build-ai-agents-openai-competition",
-      "summary": "At Microsoft's annual Build conference on Tuesday, the company announced a slew of new or expanded AI initiatives, including a super app, in-house reasoning models, a cybersecurity tool, and OpenClaw-esque AI agents. All...",
-      "tags": [
-        "Agents",
-        "ChatGPT",
-        "Models"
-      ]
     }
   ],
   "candidates": [
@@ -223,6 +221,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "WWDC 2026: How to watch and what to expect",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/944099/wwdc-2026-how-to-watch",
+          "date": "2026-06-06"
+        },
         {
           "title": "This is your laptop… on AI",
           "source": "The Verge AI",
