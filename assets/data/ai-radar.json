@@ -1,15 +1,108 @@
 {
-  "generatedAt": "2026-06-08T12:25:26.517Z",
-  "date": "2026-06-08",
+  "generatedAt": "2026-06-09T10:57:04.368Z",
+  "date": "2026-06-09",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
     {
+      "title": "Confidential submission of draft S-1 to the SEC",
+      "source": "OpenAI News",
+      "date": "2026-06-08",
+      "url": "https://openai.com/index/openai-submits-confidential-s-1",
+      "summary": "OpenAI confirms a confidential S-1 submission to the SEC and has not yet determined timing for further action.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Built to benefit everyone: our plan",
+      "source": "OpenAI News",
+      "date": "2026-06-08",
+      "url": "https://openai.com/index/built-to-benefit-everyone-our-plan",
+      "summary": "A vision for the future of AI, focusing on access, safety, and shared prosperity as OpenAI works to ensure AGI benefits everyone.",
+      "tags": [
+        "ChatGPT",
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "Introducing the OpenAI Economic Research Exchange",
+      "source": "OpenAI News",
+      "date": "2026-06-08",
+      "url": "https://openai.com/index/economic-research-exchange",
+      "summary": "OpenAI launches the Economic Research Exchange to study AI’s impact on jobs, productivity, and the economy. Applications are now open for selected research projects.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Apple is using AI to fix Safari’s extension problem",
+      "source": "The Verge AI",
+      "date": "2026-06-08",
+      "url": "https://www.theverge.com/tech/946345/apple-safari-ai-update-extensions",
+      "summary": "Apple is trying to solve one of Safari's biggest weaknesses with AI. Safari has long lacked the robust library of extensions that its rivals have, mainly due to the stringent development requirements from Apple. But now,...",
+      "tags": [
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "OpenAI files for IPO, following Anthropic",
+      "source": "The Verge AI",
+      "date": "2026-06-08",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/946335/openai-ipo-s-1-confidential",
+      "summary": "OpenAI on Monday checked off a preliminary step in the IPO race that it and rival Anthropic have been competing in for the better part of a year: The company announced it has confidentially submitted a Form S-1 with the ...",
+      "tags": [
+        "ChatGPT",
+        "Claude"
+      ]
+    },
+    {
+      "title": "Amazon is launching AI-generated custom merch",
+      "source": "The Verge AI",
+      "date": "2026-06-08",
+      "url": "https://www.theverge.com/news/945905/amazon-alexa-shopping-ai-generated-custom-merch-design-printing",
+      "summary": "Amazon is expanding its print-on-demand features to AI-generated designs created using Alexa for Shopping for products like T-shirts, water bottles, and hoodies. Shoppers can use text prompts to generate images that are ...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "Apple announces Siri AI and its next generation of Apple Intelligence",
+      "source": "The Verge AI",
+      "date": "2026-06-08",
+      "url": "https://www.theverge.com/tech/942416/apple-siri-ai-update-wwdc",
+      "summary": "Two years after first revealing its plans for Apple Intelligence and a smarter Siri that never fully materialized, at WWDC, Apple just revealed a new set of AI features and a smarter, more personalized Siri. Apple calls ...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "NotebookLM&#8217;s Gemini 3.5 upgrade adds a cloud computer and help finding sources",
+      "source": "The Verge AI",
+      "date": "2026-06-08",
+      "url": "https://www.theverge.com/tech/944325/google-notebooklm-ai-gemini-update",
+      "summary": "Google is rolling out \"across the board\" updates to NotebookLM. The AI-powered note-taking app now uses Google's upgraded Gemini 3.5 model, which will allow it to respond with \"more accurate and reliable information,\" ac...",
+      "tags": [
+        "Gemini",
+        "Models"
+      ]
+    },
+    {
+      "title": "Microsoft’s AI chief says superintelligence is near, but won’t take your job",
+      "source": "The Verge AI",
+      "date": "2026-06-08",
+      "url": "https://www.theverge.com/podcast/944138/microsoft-ai-ceo-mustafa-suleyman-superintelligence-agi-openai-automation",
+      "summary": "Today I’m talking with Mustafa Suleyman, the CEO of Microsoft AI. And I’m actually going to keep today’s intro short — I’m working from my wife’s family farm this week, as you’ll see in the video, but also this is a real...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
+    {
       "title": "WWDC 2026: How to watch and what to expect",
       "source": "The Verge AI",
-      "date": "2026-06-06",
+      "date": "2026-06-08",
       "url": "https://www.theverge.com/tech/944099/wwdc-2026-how-to-watch",
       "summary": "Apple's biggest event of the year is nearly here. The company's Worldwide Developers Conference will spotlight updates to iOS, macOS, and all of Apple's other operating systems, and this year's event could also include a...",
       "tags": [
@@ -24,6 +117,19 @@
       "summary": "Here are Google’s latest AI updates from May 2026",
       "tags": [
         "Gemini"
+      ]
+    },
+    {
+      "title": "How Endava is redesigning software delivery around AI agents",
+      "source": "OpenAI News",
+      "date": "2026-06-04",
+      "url": "https://openai.com/index/endava-frontiers",
+      "summary": "Learn how Endava is using AI agents, ChatGPT Enterprise, and Codex to accelerate software delivery, automate workflows, and build an AI-native culture across the enterprise.",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Dev Tools",
+        "Automation"
       ]
     },
     {
@@ -67,19 +173,6 @@
       ]
     },
     {
-      "title": "How Endava is redesigning software delivery around AI agents",
-      "source": "OpenAI News",
-      "date": "2026-06-04",
-      "url": "https://openai.com/index/endava-frontiers",
-      "summary": "Learn how Endava is using AI agents, ChatGPT Enterprise, and Codex to accelerate software delivery, automate workflows, and build an AI-native culture across the enterprise.",
-      "tags": [
-        "Agents",
-        "ChatGPT",
-        "Dev Tools",
-        "Automation"
-      ]
-    },
-    {
       "title": "Dreaming: Better memory for a more helpful ChatGPT",
       "source": "OpenAI News",
       "date": "2026-06-04",
@@ -118,104 +211,34 @@
       "tags": [
         "AI"
       ]
-    },
-    {
-      "title": "5 ways Google Search can level up your thrift and vintage shopping",
-      "source": "Google AI Blog",
-      "date": "2026-06-03",
-      "url": "https://blog.google/products-and-platforms/products/search/thrifting-tips/",
-      "summary": "Uncover second-hand scores with AI tools in Google Search and Shopping.",
-      "tags": [
-        "Agents",
-        "Gemini"
-      ]
-    },
-    {
-      "title": "Elon Musk is steamrolling Wall Street to become a trillionaire",
-      "source": "The Verge AI",
-      "date": "2026-06-04",
-      "url": "https://www.theverge.com/podcast/942586/elon-musk-spacex-ipo-x-xai-index-funds",
-      "summary": "Today on Decoder, I’m talking to Ryan Mac, a technology reporter at The New York Times and coauthor of the excellent book Character Limit: How Elon Musk Destroyed Twitter, which came out in 2024. I can’t recommend it eno...",
-      "tags": [
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "Let us filter AI slop, you cowards",
-      "source": "The Verge AI",
-      "date": "2026-06-04",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/942909/let-us-filter-ai-slop-google-youtube-meta-instagram-tiktok",
-      "summary": "It's almost impossible to avoid seeing AI-generated content online, but it doesn't have to be this way. YouTube, Instagram, TikTok, and more have ramped up content authentication efforts over the last year, with many now...",
-      "tags": [
-        "Multimodal"
-      ]
-    },
-    {
-      "title": "AI leaders call for tougher protections against AI-aided bioweapons",
-      "source": "The Verge AI",
-      "date": "2026-06-04",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/942956/ai-biological-weapons-open-letter-congress",
-      "summary": "Some of the AI industry's biggest rivals have put their many, many grievances aside for a common cause: making it harder for people to use their technology to develop biological weapons. In an open letter to US lawmakers...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Amazon develops a warehouse robot that workers can speak to",
-      "source": "The Verge AI",
-      "date": "2026-06-04",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/942884/amazon-next-generation-warehouse-robot-proteus",
-      "summary": "Amazon has announced a new version of its fully autonomous warehouse robot, Proteus, that will interact using language instead of code. The expanded capabilities come as part of a growing pivot toward automation as the e...",
-      "tags": [
-        "Dev Tools",
-        "Automation"
-      ]
-    },
-    {
-      "title": "Introducing new capabilities to GPT-Rosalind",
-      "source": "OpenAI News",
-      "date": "2026-06-03",
-      "url": "https://openai.com/index/introducing-new-capabilities-to-gpt-rosalind",
-      "summary": "GPT-Rosalind advances life sciences research with enhanced biological reasoning, medicinal chemistry expertise, genomics analysis, and experimental workflow capabilities.",
-      "tags": [
-        "ChatGPT",
-        "Automation",
-        "Models"
-      ]
-    },
-    {
-      "title": "A blueprint for democratic governance of frontier AI",
-      "source": "OpenAI News",
-      "date": "2026-06-03",
-      "url": "https://openai.com/index/frontier-safety-blueprint",
-      "summary": "OpenAI outlines a blueprint for U.S. governance of frontier AI, proposing a federal framework for safety, resilience, and national security.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "OpenAI public policy agenda",
-      "source": "OpenAI News",
-      "date": "2026-06-03",
-      "url": "https://openai.com/index/public-policy-agenda",
-      "summary": "OpenAI outlines its public policy agenda for AI, including safety, youth protection, workforce transition, and global standards to ensure AI benefits society.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "As AI gets better, it reveals an empty promise",
-      "source": "The Verge AI",
-      "date": "2026-06-03",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/942629/as-ai-gets-better-it-reveals-an-empty-promise",
-      "summary": "This week we've got tandem hands-ons with Google's new Gemini AI agent - Spark - from my colleagues David Pierce and Jay Peters. Their takeaways are similar: It's so effective that it's scary. Spark knew that David's dog...",
-      "tags": [
-        "Agents",
-        "Gemini"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "NotebookLM&#8217;s Gemini 3.5 upgrade adds a cloud computer and help finding sources",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/944325/google-notebooklm-ai-gemini-update",
+          "date": "2026-06-08"
+        },
+        {
+          "title": "How we used Gemini to build Google I/O 2026",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-google-ai/",
+          "date": "2026-06-01"
+        },
+        {
+          "title": "9 demos of Gemini Omni and Gemini 3.5 in action",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-3-5-videos/",
+          "date": "2026-05-29"
+        }
+      ]
+    },
     {
       "label": "AI developer tooling",
       "status": "safe-data-candidate",
@@ -225,13 +248,7 @@
           "title": "WWDC 2026: How to watch and what to expect",
           "source": "The Verge AI",
           "link": "https://www.theverge.com/tech/944099/wwdc-2026-how-to-watch",
-          "date": "2026-06-06"
-        },
-        {
-          "title": "This is your laptop… on AI",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/podcast/944058/ai-laptop-nvidia-build-gemini-spark-vergecast",
-          "date": "2026-06-05"
+          "date": "2026-06-08"
         },
         {
           "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
@@ -282,31 +299,6 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/chatgpt-memory-dreaming",
           "date": "2026-06-04"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "How we used Gemini to build Google I/O 2026",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-google-ai/",
-          "date": "2026-06-01"
-        },
-        {
-          "title": "9 demos of Gemini Omni and Gemini 3.5 in action",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-3-5-videos/",
-          "date": "2026-05-29"
-        },
-        {
-          "title": "Catch up on 12 major I/O 2026 moments",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-keynote-moment-videos/",
-          "date": "2026-05-28"
         }
       ]
     },

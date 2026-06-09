@@ -1,6 +1,31 @@
 {
-  "generatedAt": "2026-06-08T12:25:26.517Z",
+  "generatedAt": "2026-06-09T10:57:04.368Z",
   "candidates": [
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "NotebookLM&#8217;s Gemini 3.5 upgrade adds a cloud computer and help finding sources",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/944325/google-notebooklm-ai-gemini-update",
+          "date": "2026-06-08"
+        },
+        {
+          "title": "How we used Gemini to build Google I/O 2026",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-google-ai/",
+          "date": "2026-06-01"
+        },
+        {
+          "title": "9 demos of Gemini Omni and Gemini 3.5 in action",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-3-5-videos/",
+          "date": "2026-05-29"
+        }
+      ]
+    },
     {
       "label": "AI developer tooling",
       "status": "safe-data-candidate",
@@ -10,13 +35,7 @@
           "title": "WWDC 2026: How to watch and what to expect",
           "source": "The Verge AI",
           "link": "https://www.theverge.com/tech/944099/wwdc-2026-how-to-watch",
-          "date": "2026-06-06"
-        },
-        {
-          "title": "This is your laptop… on AI",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/podcast/944058/ai-laptop-nvidia-build-gemini-spark-vergecast",
-          "date": "2026-06-05"
+          "date": "2026-06-08"
         },
         {
           "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
@@ -67,31 +86,6 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/chatgpt-memory-dreaming",
           "date": "2026-06-04"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "How we used Gemini to build Google I/O 2026",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-google-ai/",
-          "date": "2026-06-01"
-        },
-        {
-          "title": "9 demos of Gemini Omni and Gemini 3.5 in action",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-3-5-videos/",
-          "date": "2026-05-29"
-        },
-        {
-          "title": "Catch up on 12 major I/O 2026 moments",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-keynote-moment-videos/",
-          "date": "2026-05-28"
         }
       ]
     },
