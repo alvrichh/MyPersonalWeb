@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-06-08
+# Daily AI maintenance report — 2026-06-09
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -9,22 +9,32 @@ This file is generated automatically by the daily maintenance workflow. It updat
 - Google AI Blog: OK (8 relevant items)
 - GitHub AI & ML Blog: OK (8 relevant items)
 - Microsoft AI Blog: OK (8 relevant items)
-- The Verge AI: OK (7 relevant items)
+- The Verge AI: OK (8 relevant items)
 
 ## Relevant AI updates
 
-- **WWDC 2026: How to watch and what to expect** — The Verge AI · 2026-06-06
+- **Confidential submission of draft S-1 to the SEC** — OpenAI News · 2026-06-08
+  https://openai.com/index/openai-submits-confidential-s-1
+- **Built to benefit everyone: our plan** — OpenAI News · 2026-06-08
+  https://openai.com/index/built-to-benefit-everyone-our-plan
+- **Introducing the OpenAI Economic Research Exchange** — OpenAI News · 2026-06-08
+  https://openai.com/index/economic-research-exchange
+- **Apple is using AI to fix Safari’s extension problem** — The Verge AI · 2026-06-08
+  https://www.theverge.com/tech/946345/apple-safari-ai-update-extensions
+- **OpenAI files for IPO, following Anthropic** — The Verge AI · 2026-06-08
+  https://www.theverge.com/ai-artificial-intelligence/946335/openai-ipo-s-1-confidential
+- **Amazon is launching AI-generated custom merch** — The Verge AI · 2026-06-08
+  https://www.theverge.com/news/945905/amazon-alexa-shopping-ai-generated-custom-merch-design-printing
+- **Apple announces Siri AI and its next generation of Apple Intelligence** — The Verge AI · 2026-06-08
+  https://www.theverge.com/tech/942416/apple-siri-ai-update-wwdc
+- **NotebookLM&#8217;s Gemini 3.5 upgrade adds a cloud computer and help finding sources** — The Verge AI · 2026-06-08
+  https://www.theverge.com/tech/944325/google-notebooklm-ai-gemini-update
+- **Microsoft’s AI chief says superintelligence is near, but won’t take your job** — The Verge AI · 2026-06-08
+  https://www.theverge.com/podcast/944138/microsoft-ai-ceo-mustafa-suleyman-superintelligence-agi-openai-automation
+- **WWDC 2026: How to watch and what to expect** — The Verge AI · 2026-06-08
   https://www.theverge.com/tech/944099/wwdc-2026-how-to-watch
 - **The latest AI news we announced in May 2026** — Google AI Blog · 2026-06-05
   https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-may-2026/
-- **Meta made its own AI-generated clickbait news feed** — The Verge AI · 2026-06-05
-  https://www.theverge.com/ai-artificial-intelligence/944235/meta-app-ai-clickbait-articles
-- **Here comes new Siri again** — The Verge AI · 2026-06-05
-  https://www.theverge.com/tech/944245/apple-wwdc-2026-ai-siri-gemini
-- **This is your laptop… on AI** — The Verge AI · 2026-06-05
-  https://www.theverge.com/podcast/944058/ai-laptop-nvidia-build-gemini-spark-vergecast
-- **This AI startup says it can tell if a script will make a hit film** — The Verge AI · 2026-06-05
-  https://www.theverge.com/ai-artificial-intelligence/943531/ai-script-quilty-simon-horsman-daniel-wood
 - **How Endava is redesigning software delivery around AI agents** — OpenAI News · 2026-06-04
   https://openai.com/index/endava-frontiers
 - **Dreaming: Better memory for a more helpful ChatGPT** — OpenAI News · 2026-06-04
@@ -33,20 +43,12 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/biodefense-in-the-intelligence-age
 - **AI ‘content creators’ are getting harder to spot** — The Verge AI · 2026-06-04
   https://www.theverge.com/ai-artificial-intelligence/943187/ai-content-creators
-- **TSMC struggles to keep up with AI demand: &#8216;We can only support so much&#8217;** — The Verge AI · 2026-06-04
-  https://www.theverge.com/tech/943066/tsmc-ai-demand-struggles
 - **5 ways Google Search can level up your thrift and vintage shopping** — Google AI Blog · 2026-06-03
   https://blog.google/products-and-platforms/products/search/thrifting-tips/
 - **Introducing new capabilities to GPT-Rosalind** — OpenAI News · 2026-06-03
   https://openai.com/index/introducing-new-capabilities-to-gpt-rosalind
-- **OpenAI public policy agenda** — OpenAI News · 2026-06-03
-  https://openai.com/index/public-policy-agenda
 - **A blueprint for democratic governance of frontier AI** — OpenAI News · 2026-06-03
   https://openai.com/index/frontier-safety-blueprint
-- **Travelers deploys AI-powered claims countrywide with OpenAI** — OpenAI News · 2026-06-02
-  https://openai.com/index/travelers
-- **Codex for every role, tool, and workflow** — OpenAI News · 2026-06-02
-  https://openai.com/index/codex-for-every-role-tool-workflow
 - **How we used Gemini to build Google I/O 2026** — Google AI Blog · 2026-06-01
   https://blog.google/innovation-and-ai/technology/ai/io-2026-google-ai/
 - **Take our I/O 2026 quiz, vibe coded in Google AI Studio.** — Google AI Blog · 2026-05-29
@@ -83,15 +85,13 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blogs.microsoft.com/ai/microsoft-open-sources-its-farm-of-the-future-toolkit/
 - **How data and AI will transform contact centres for financial services** — Microsoft AI Blog · 2022-07-25
   https://cloudblogs.microsoft.com/industry-blog/en-gb/financial-services/2022/07/25/how-data-and-ai-will-transform-contact-centres-for-financial-services/
-- **AI-equipped drones study dolphins on the edge of extinction** — Microsoft AI Blog · 2022-07-21
-  https://news.microsoft.com/apac/features/ai-drones-dolphins-maui63/
 
 ## Portfolio candidates
 
+- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
