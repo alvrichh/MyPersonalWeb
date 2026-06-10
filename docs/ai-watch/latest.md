@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-06-09
+# Daily AI maintenance report — 2026-06-10
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,42 +13,44 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **From data to decisions: how LSEG is scaling trusted AI** — OpenAI News · 2026-06-10
+  https://openai.com/index/lseg
+- **From one-off prompts to workflows: How to use custom agents in GitHub Copilot CLI** — GitHub AI & ML Blog · 2026-06-09
+  https://github.blog/ai-and-ml/github-copilot/from-one-off-prompts-to-workflows-how-to-use-custom-agents-in-github-copilot-cli/
+- **What Codex unlocks for Notion** — OpenAI News · 2026-06-09
+  https://openai.com/index/notion
+- **Industrial policy for the Intelligence Age** — OpenAI News · 2026-06-09
+  https://openai.com/index/industrial-policy-for-the-intelligence-age
+- **I tried Siri AI, and so far it actually works** — The Verge AI · 2026-06-09
+  https://www.theverge.com/tech/947432/siri-ai-apple-intelligence-ios-27-wwdc
+- **GM thinks EVs can help offset AI’s energy suck with vehicle-to-grid tech** — The Verge AI · 2026-06-09
+  https://www.theverge.com/transportation/946820/gm-energy-ev-v2g-storage-sodium-ion
+- **Microsoft AI head calls out Anthropic for acting like Claude is conscious** — The Verge AI · 2026-06-09
+  https://www.theverge.com/tech/947197/microsoft-ai-mustafa-suleyman-anthropic-claude-conscious
+- **Anthropic releases its first Mythos-class model Claude Fable** — The Verge AI · 2026-06-09
+  https://www.theverge.com/news/946725/anthropic-releases-claude-fable-5-mythos
+- **Apple is embracing the fantasy of AI photo editing** — The Verge AI · 2026-06-09
+  https://www.theverge.com/tech/946850/apple-ai-photo-editing-tools-ios27-wwdc-2026-deepfakes
+- **Microsoft AI chief walks back comments about AI taking over white-collar work** — The Verge AI · 2026-06-09
+  https://www.theverge.com/tech/946879/microsoft-mustafa-suleyman-ai-white-collar-jobs
+- **Apple’s AI promises are finally, almost, sort of here** — The Verge AI · 2026-06-09
+  https://www.theverge.com/ai-artificial-intelligence/946780/apples-ai-promises-are-finally-almost-sort-of-here
+- **Apple’s best AI idea looks a lot like vibe coding** — The Verge AI · 2026-06-09
+  https://www.theverge.com/tech/946733/apple-shortcuts-ai-safari-tabs-vibe-code
 - **Confidential submission of draft S-1 to the SEC** — OpenAI News · 2026-06-08
   https://openai.com/index/openai-submits-confidential-s-1
 - **Built to benefit everyone: our plan** — OpenAI News · 2026-06-08
   https://openai.com/index/built-to-benefit-everyone-our-plan
 - **Introducing the OpenAI Economic Research Exchange** — OpenAI News · 2026-06-08
   https://openai.com/index/economic-research-exchange
-- **Apple is using AI to fix Safari’s extension problem** — The Verge AI · 2026-06-08
-  https://www.theverge.com/tech/946345/apple-safari-ai-update-extensions
-- **OpenAI files for IPO, following Anthropic** — The Verge AI · 2026-06-08
-  https://www.theverge.com/ai-artificial-intelligence/946335/openai-ipo-s-1-confidential
-- **Amazon is launching AI-generated custom merch** — The Verge AI · 2026-06-08
-  https://www.theverge.com/news/945905/amazon-alexa-shopping-ai-generated-custom-merch-design-printing
-- **Apple announces Siri AI and its next generation of Apple Intelligence** — The Verge AI · 2026-06-08
-  https://www.theverge.com/tech/942416/apple-siri-ai-update-wwdc
-- **NotebookLM&#8217;s Gemini 3.5 upgrade adds a cloud computer and help finding sources** — The Verge AI · 2026-06-08
-  https://www.theverge.com/tech/944325/google-notebooklm-ai-gemini-update
-- **Microsoft’s AI chief says superintelligence is near, but won’t take your job** — The Verge AI · 2026-06-08
-  https://www.theverge.com/podcast/944138/microsoft-ai-ceo-mustafa-suleyman-superintelligence-agi-openai-automation
-- **WWDC 2026: How to watch and what to expect** — The Verge AI · 2026-06-08
-  https://www.theverge.com/tech/944099/wwdc-2026-how-to-watch
 - **The latest AI news we announced in May 2026** — Google AI Blog · 2026-06-05
   https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-may-2026/
 - **How Endava is redesigning software delivery around AI agents** — OpenAI News · 2026-06-04
   https://openai.com/index/endava-frontiers
 - **Dreaming: Better memory for a more helpful ChatGPT** — OpenAI News · 2026-06-04
   https://openai.com/index/chatgpt-memory-dreaming
-- **Biodefense in the Intelligence Age** — OpenAI News · 2026-06-04
-  https://openai.com/index/biodefense-in-the-intelligence-age
-- **AI ‘content creators’ are getting harder to spot** — The Verge AI · 2026-06-04
-  https://www.theverge.com/ai-artificial-intelligence/943187/ai-content-creators
 - **5 ways Google Search can level up your thrift and vintage shopping** — Google AI Blog · 2026-06-03
   https://blog.google/products-and-platforms/products/search/thrifting-tips/
-- **Introducing new capabilities to GPT-Rosalind** — OpenAI News · 2026-06-03
-  https://openai.com/index/introducing-new-capabilities-to-gpt-rosalind
-- **A blueprint for democratic governance of frontier AI** — OpenAI News · 2026-06-03
-  https://openai.com/index/frontier-safety-blueprint
 - **How we used Gemini to build Google I/O 2026** — Google AI Blog · 2026-06-01
   https://blog.google/innovation-and-ai/technology/ai/io-2026-google-ai/
 - **Take our I/O 2026 quiz, vibe coded in Google AI Studio.** — Google AI Blog · 2026-05-29
@@ -75,8 +77,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://github.blog/ai-and-ml/generative-ai/agent-pull-requests-are-everywhere-heres-how-to-review-them/
 - **Validating agentic behavior when “correct” isn’t deterministic** — GitHub AI & ML Blog · 2026-05-06
   https://github.blog/ai-and-ml/generative-ai/validating-agentic-behavior-when-correct-isnt-deterministic/
-- **GitHub Copilot CLI for Beginners: Interactive v. non-interactive mode** — GitHub AI & ML Blog · 2026-04-30
-  https://github.blog/ai-and-ml/github-copilot/github-copilot-cli-for-beginners-interactive-v-non-interactive-mode/
 - **A conversation with Kevin Scott: What’s next in AI** — Microsoft AI Blog · 2022-12-06
   https://blogs.microsoft.com/ai/a-conversation-with-kevin-scott-whats-next-in-ai/
 - **From Hot Wheels to handling content: How brands are using Microsoft AI to be more productive and imaginative** — Microsoft AI Blog · 2022-10-12
@@ -88,12 +88,13 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
-- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
 
