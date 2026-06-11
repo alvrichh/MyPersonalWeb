@@ -1,6 +1,69 @@
 {
-  "generatedAt": "2026-06-10T11:35:59.698Z",
+  "generatedAt": "2026-06-11T12:07:12.453Z",
   "candidates": [
+    {
+      "label": "Claude research and documentation flow",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Anthropic apologizes for invisible Claude Fable guardrails",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/948280/anthropic-claude-fable-invisible-distillation-guardrail",
+          "date": "2026-06-11"
+        },
+        {
+          "title": "Claude Fable won’t answer basic biology questions",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/947973/fable-wont-answer-basic-biology-questions",
+          "date": "2026-06-10"
+        },
+        {
+          "title": "Microsoft restricts Claude Fable for employees over data retention concerns",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/report/947575/microsoft-claude-fable-5-restricted-internally",
+          "date": "2026-06-10"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Give GitHub Copilot CLI real code intelligence with language servers",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/give-github-copilot-cli-real-code-intelligence-with-language-servers/",
+          "date": "2026-06-10"
+        },
+        {
+          "title": "Microsoft restricts Claude Fable for employees over data retention concerns",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/report/947575/microsoft-claude-fable-5-restricted-internally",
+          "date": "2026-06-10"
+        },
+        {
+          "title": "From one-off prompts to workflows: How to use custom agents in GitHub Copilot CLI",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/from-one-off-prompts-to-workflows-how-to-use-custom-agents-in-github-copilot-cli/",
+          "date": "2026-06-09"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "PRC-linked influence operations are targeting AI debates in the US",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/prc-linked-influence-operations-ai-debates",
+          "date": "2026-06-10"
+        }
+      ]
+    },
     {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
@@ -13,117 +76,16 @@
           "date": "2026-06-09"
         },
         {
-          "title": "How Endava is redesigning software delivery around AI agents",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/endava-frontiers",
-          "date": "2026-06-04"
-        },
-        {
           "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
           "date": "2026-05-22"
-        }
-      ]
-    },
-    {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
+        },
         {
-          "title": "From one-off prompts to workflows: How to use custom agents in GitHub Copilot CLI",
+          "title": "Building a general-purpose accessibility agent—and what we learned in the process",
           "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/from-one-off-prompts-to-workflows-how-to-use-custom-agents-in-github-copilot-cli/",
-          "date": "2026-06-09"
-        },
-        {
-          "title": "Take your local GitHub sessions anywhere",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/news-insights/product-news/take-your-local-github-sessions-anywhere/",
-          "date": "2026-05-18"
-        },
-        {
-          "title": "Dungeons &#038; Desktops: Building a procedurally generated roguelike with GitHub Copilot CLI",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/dungeons-desktops-building-a-procedurally-generated-roguelike-with-github-copilot-cli/",
-          "date": "2026-05-12"
-        }
-      ]
-    },
-    {
-      "label": "Claude research and documentation flow",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Microsoft AI head calls out Anthropic for acting like Claude is conscious",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/947197/microsoft-ai-mustafa-suleyman-anthropic-claude-conscious",
-          "date": "2026-06-09"
-        },
-        {
-          "title": "Anthropic releases its first Mythos-class model Claude Fable",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/news/946725/anthropic-releases-claude-fable-5-mythos",
-          "date": "2026-06-09"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Apple’s AI promises are finally, almost, sort of here",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/946780/apples-ai-promises-are-finally-almost-sort-of-here",
-          "date": "2026-06-09"
-        },
-        {
-          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
-          "date": "2026-05-22"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Apple’s best AI idea looks a lot like vibe coding",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/946733/apple-shortcuts-ai-safari-tabs-vibe-code",
-          "date": "2026-06-09"
-        },
-        {
-          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
-          "date": "2026-05-22"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "How Endava is redesigning software delivery around AI agents",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/endava-frontiers",
-          "date": "2026-06-04"
-        },
-        {
-          "title": "Dreaming: Better memory for a more helpful ChatGPT",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/chatgpt-memory-dreaming",
-          "date": "2026-06-04"
+          "link": "https://github.blog/ai-and-ml/github-copilot/building-a-general-purpose-accessibility-agent-and-what-we-learned-in-the-process/",
+          "date": "2026-05-15"
         }
       ]
     },
@@ -149,6 +111,32 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-keynote-moment-videos/",
           "date": "2026-05-28"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
+          "date": "2026-05-22"
+        }
+      ]
+    },
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
+          "date": "2026-05-22"
         }
       ]
     }
