@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-06-11
+# Daily AI maintenance report — 2026-06-12
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,8 +13,20 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **How Preply combines AI and human tutors to personalize learning** — OpenAI News · 2026-06-12
+  https://openai.com/index/preply
+- **Siri won’t be your AI girlfriend** — The Verge AI · 2026-06-12
+  https://www.theverge.com/tech/948890/siri-wont-be-your-ai-girlfriend
+- **Amazon&#8217;s data centers used 2.5 billion gallons of water last year** — The Verge AI · 2026-06-12
+  https://www.theverge.com/tech/948534/amazon-data-centers-water-use
+- **Making secret scanning more trustworthy: Reducing false positives at scale** — GitHub AI & ML Blog · 2026-06-11
+  https://github.blog/security/making-secret-scanning-more-trustworthy-reducing-false-positives-at-scale/
 - **Supporting Europe’s work in ensuring a trustworthy AI ecosystem** — OpenAI News · 2026-06-11
   https://openai.com/index/supporting-eu-trustworthy-ai-ecosystem
+- **OpenAI to acquire Ona** — OpenAI News · 2026-06-11
+  https://openai.com/index/openai-to-acquire-ona
+- **BBVA puts AI at the core of banking with OpenAI** — OpenAI News · 2026-06-11
+  https://openai.com/index/bbva
 - **Anthropic apologizes for invisible Claude Fable guardrails** — The Verge AI · 2026-06-11
   https://www.theverge.com/ai-artificial-intelligence/948280/anthropic-claude-fable-invisible-distillation-guardrail
 - **Give GitHub Copilot CLI real code intelligence with language servers** — GitHub AI & ML Blog · 2026-06-10
@@ -35,20 +47,10 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/column/947838/washington-ai-network-honors-2026-midterms
 - **Google won’t just admit it’s feeding YouTube creators to its music AI** — The Verge AI · 2026-06-10
   https://www.theverge.com/tech/947770/google-lyria-music-ai-lawsuit-youtube
-- **Microsoft restricts Claude Fable for employees over data retention concerns** — The Verge AI · 2026-06-10
-  https://www.theverge.com/report/947575/microsoft-claude-fable-5-restricted-internally
-- **Google will save your Lens photos, Search Live recordings, and Translate audio for AI training** — The Verge AI · 2026-06-10
-  https://www.theverge.com/tech/947836/google-search-privacy-settings-images-audio
 - **From one-off prompts to workflows: How to use custom agents in GitHub Copilot CLI** — GitHub AI & ML Blog · 2026-06-09
   https://github.blog/ai-and-ml/github-copilot/from-one-off-prompts-to-workflows-how-to-use-custom-agents-in-github-copilot-cli/
 - **What Codex unlocks for Notion** — OpenAI News · 2026-06-09
   https://openai.com/index/notion
-- **Industrial policy for the Intelligence Age** — OpenAI News · 2026-06-09
-  https://openai.com/index/industrial-policy-for-the-intelligence-age
-- **Confidential submission of draft S-1 to the SEC** — OpenAI News · 2026-06-08
-  https://openai.com/index/openai-submits-confidential-s-1
-- **Built to benefit everyone: our plan** — OpenAI News · 2026-06-08
-  https://openai.com/index/built-to-benefit-everyone-our-plan
 - **The latest AI news we announced in May 2026** — Google AI Blog · 2026-06-05
   https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-may-2026/
 - **5 ways Google Search can level up your thrift and vintage shopping** — Google AI Blog · 2026-06-03
@@ -75,15 +77,13 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://github.blog/ai-and-ml/github-copilot/dungeons-desktops-building-a-procedurally-generated-roguelike-with-github-copilot-cli/
 - **Improving token efficiency in GitHub Agentic Workflows** — GitHub AI & ML Blog · 2026-05-07
   https://github.blog/ai-and-ml/github-copilot/improving-token-efficiency-in-github-agentic-workflows/
-- **Agent pull requests are everywhere. Here&#8217;s how to review them.** — GitHub AI & ML Blog · 2026-05-07
-  https://github.blog/ai-and-ml/generative-ai/agent-pull-requests-are-everywhere-heres-how-to-review-them/
 
 ## Portfolio candidates
 
+- **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.

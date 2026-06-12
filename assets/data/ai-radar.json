@@ -1,11 +1,51 @@
 {
-  "generatedAt": "2026-06-11T12:07:12.453Z",
-  "date": "2026-06-11",
+  "generatedAt": "2026-06-12T11:41:09.816Z",
+  "date": "2026-06-12",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "How Preply combines AI and human tutors to personalize learning",
+      "source": "OpenAI News",
+      "date": "2026-06-12",
+      "url": "https://openai.com/index/preply",
+      "summary": "Preply uses OpenAI to launch AI-generated lesson summaries, providing personalised feedback and language learning exercises.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Siri won’t be your AI girlfriend",
+      "source": "The Verge AI",
+      "date": "2026-06-12",
+      "url": "https://www.theverge.com/tech/948890/siri-wont-be-your-ai-girlfriend",
+      "summary": "Our early testing has already shown that Siri AI knows when to shut up, and that's very much by design. In an interview with Mostly Human spotted by MacRumors, Craig Federighi said Apple's new Siri won't act all sycophan...",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Amazon&#8217;s data centers used 2.5 billion gallons of water last year",
+      "source": "The Verge AI",
+      "date": "2026-06-12",
+      "url": "https://www.theverge.com/tech/948534/amazon-data-centers-water-use",
+      "summary": "Just after Seattle enacted a one-year data center moratorium that some of Amazon's own employees pushed for, Amazon shared how much water its data centers use, reportedly for the first time. With concerns about water con...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Making secret scanning more trustworthy: Reducing false positives at scale",
+      "source": "GitHub AI & ML Blog",
+      "date": "2026-06-11",
+      "url": "https://github.blog/security/making-secret-scanning-more-trustworthy-reducing-false-positives-at-scale/",
+      "summary": "Alerts are more trustworthy and actionable when noise is reduced. See how we improved the verification step with context-aware LLM reasoning. The post Making secret scanning more trustworthy: Reducing false positives at ...",
+      "tags": [
+        "Models"
+      ]
+    },
     {
       "title": "Supporting Europe’s work in ensuring a trustworthy AI ecosystem",
       "source": "OpenAI News",
@@ -16,6 +56,29 @@
         "Agents",
         "ChatGPT",
         "Dev Tools"
+      ]
+    },
+    {
+      "title": "OpenAI to acquire Ona",
+      "source": "OpenAI News",
+      "date": "2026-06-11",
+      "url": "https://openai.com/index/openai-to-acquire-ona",
+      "summary": "OpenAI plans to acquire Ona to expand Codex with secure, persistent cloud environments, enabling long-running AI agents across enterprise workflows.",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Dev Tools",
+        "Automation"
+      ]
+    },
+    {
+      "title": "BBVA puts AI at the core of banking with OpenAI",
+      "source": "OpenAI News",
+      "date": "2026-06-11",
+      "url": "https://openai.com/index/bbva",
+      "summary": "Learn how BBVA scaled ChatGPT Enterprise to 100,000 employees and partnered with OpenAI to accelerate AI-powered banking transformation worldwide.",
+      "tags": [
+        "ChatGPT"
       ]
     },
     {
@@ -158,74 +221,53 @@
         "ChatGPT",
         "Dev Tools"
       ]
-    },
-    {
-      "title": "Industrial policy for the Intelligence Age",
-      "source": "OpenAI News",
-      "date": "2026-06-09",
-      "url": "https://openai.com/index/industrial-policy-for-the-intelligence-age",
-      "summary": "Explore our ambitious, people-first industrial policy ideas for the AI era—focused on expanding opportunity, sharing prosperity, and building resilient institutions as advanced intelligence evolves.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "I tried Siri AI, and so far it actually works",
-      "source": "The Verge AI",
-      "date": "2026-06-09",
-      "url": "https://www.theverge.com/tech/947432/siri-ai-apple-intelligence-ios-27-wwdc",
-      "summary": "Parents want one thing, and one thing only, out of AI: to add a list of soccer games or \"spirit week\" theme days from an email or a poorly formatted flyer onto their calendar in one shot. And I have good news for parents...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "GM thinks EVs can help offset AI’s energy suck with vehicle-to-grid tech",
-      "source": "The Verge AI",
-      "date": "2026-06-09",
-      "url": "https://www.theverge.com/transportation/946820/gm-energy-ev-v2g-storage-sodium-ion",
-      "summary": "At an event in San Francisco today, General Motors made a series of announcements around EV batteries, energy storage, and grid resiliency in the face of growing electricity demand from AI data centers. The automaker ann...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Microsoft AI head calls out Anthropic for acting like Claude is conscious",
-      "source": "The Verge AI",
-      "date": "2026-06-09",
-      "url": "https://www.theverge.com/tech/947197/microsoft-ai-mustafa-suleyman-anthropic-claude-conscious",
-      "summary": "Microsoft AI CEO Mustafa Suleyman says it's \"really, really dangerous\" for Anthropic to speculate about Claude's consciousness inside its \"constitution,\" or the instructions that tell the model how to behave. During an e...",
-      "tags": [
-        "Claude",
-        "Dev Tools",
-        "Models"
-      ]
-    },
-    {
-      "title": "Anthropic releases its first Mythos-class model Claude Fable",
-      "source": "The Verge AI",
-      "date": "2026-06-09",
-      "url": "https://www.theverge.com/news/946725/anthropic-releases-claude-fable-5-mythos",
-      "summary": "Anthropic just announced Claude Fable 5, a new AI model it said is the most powerful model it has ever made widely available. According to the company, Fable 5 \"shows exceptional performance in software engineering, know...",
-      "tags": [
-        "Claude",
-        "Multimodal",
-        "Models"
-      ]
-    },
-    {
-      "title": "Apple is embracing the fantasy of AI photo editing",
-      "source": "The Verge AI",
-      "date": "2026-06-09",
-      "url": "https://www.theverge.com/tech/946850/apple-ai-photo-editing-tools-ios27-wwdc-2026-deepfakes",
-      "summary": "Apple used to question whether generative AI-powered editing features were worth the risk of distorting our perceptions of the world. Now it seems Apple no longer believes that photos should accurately capture reality. A...",
-      "tags": [
-        "Agents",
-        "Multimodal"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "OpenAI to acquire Ona",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/openai-to-acquire-ona",
+          "date": "2026-06-11"
+        },
+        {
+          "title": "From one-off prompts to workflows: How to use custom agents in GitHub Copilot CLI",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/from-one-off-prompts-to-workflows-how-to-use-custom-agents-in-github-copilot-cli/",
+          "date": "2026-06-09"
+        },
+        {
+          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
+          "date": "2026-05-22"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "BBVA puts AI at the core of banking with OpenAI",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/bbva",
+          "date": "2026-06-11"
+        },
+        {
+          "title": "PRC-linked influence operations are targeting AI debates in the US",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/prc-linked-influence-operations-ai-debates",
+          "date": "2026-06-10"
+        }
+      ]
+    },
     {
       "label": "Claude research and documentation flow",
       "status": "safe-data-candidate",
@@ -242,12 +284,6 @@
           "source": "The Verge AI",
           "link": "https://www.theverge.com/ai-artificial-intelligence/947973/fable-wont-answer-basic-biology-questions",
           "date": "2026-06-10"
-        },
-        {
-          "title": "Microsoft restricts Claude Fable for employees over data retention concerns",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/report/947575/microsoft-claude-fable-5-restricted-internally",
-          "date": "2026-06-10"
         }
       ]
     },
@@ -263,54 +299,16 @@
           "date": "2026-06-10"
         },
         {
-          "title": "Microsoft restricts Claude Fable for employees over data retention concerns",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/report/947575/microsoft-claude-fable-5-restricted-internally",
-          "date": "2026-06-10"
-        },
-        {
-          "title": "From one-off prompts to workflows: How to use custom agents in GitHub Copilot CLI",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/from-one-off-prompts-to-workflows-how-to-use-custom-agents-in-github-copilot-cli/",
-          "date": "2026-06-09"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "PRC-linked influence operations are targeting AI debates in the US",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/prc-linked-influence-operations-ai-debates",
-          "date": "2026-06-10"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
           "title": "From one-off prompts to workflows: How to use custom agents in GitHub Copilot CLI",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/from-one-off-prompts-to-workflows-how-to-use-custom-agents-in-github-copilot-cli/",
           "date": "2026-06-09"
         },
         {
-          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
+          "title": "Take your local GitHub sessions anywhere",
           "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
-          "date": "2026-05-22"
-        },
-        {
-          "title": "Building a general-purpose accessibility agent—and what we learned in the process",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/building-a-general-purpose-accessibility-agent-and-what-we-learned-in-the-process/",
-          "date": "2026-05-15"
+          "link": "https://github.blog/news-insights/product-news/take-your-local-github-sessions-anywhere/",
+          "date": "2026-05-18"
         }
       ]
     },
