@@ -1,6 +1,50 @@
 {
-  "generatedAt": "2026-06-11T12:07:12.453Z",
+  "generatedAt": "2026-06-12T11:41:09.816Z",
   "candidates": [
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "OpenAI to acquire Ona",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/openai-to-acquire-ona",
+          "date": "2026-06-11"
+        },
+        {
+          "title": "From one-off prompts to workflows: How to use custom agents in GitHub Copilot CLI",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/from-one-off-prompts-to-workflows-how-to-use-custom-agents-in-github-copilot-cli/",
+          "date": "2026-06-09"
+        },
+        {
+          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
+          "date": "2026-05-22"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "BBVA puts AI at the core of banking with OpenAI",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/bbva",
+          "date": "2026-06-11"
+        },
+        {
+          "title": "PRC-linked influence operations are targeting AI debates in the US",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/prc-linked-influence-operations-ai-debates",
+          "date": "2026-06-10"
+        }
+      ]
+    },
     {
       "label": "Claude research and documentation flow",
       "status": "safe-data-candidate",
@@ -17,12 +61,6 @@
           "source": "The Verge AI",
           "link": "https://www.theverge.com/ai-artificial-intelligence/947973/fable-wont-answer-basic-biology-questions",
           "date": "2026-06-10"
-        },
-        {
-          "title": "Microsoft restricts Claude Fable for employees over data retention concerns",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/report/947575/microsoft-claude-fable-5-restricted-internally",
-          "date": "2026-06-10"
         }
       ]
     },
@@ -38,54 +76,16 @@
           "date": "2026-06-10"
         },
         {
-          "title": "Microsoft restricts Claude Fable for employees over data retention concerns",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/report/947575/microsoft-claude-fable-5-restricted-internally",
-          "date": "2026-06-10"
-        },
-        {
-          "title": "From one-off prompts to workflows: How to use custom agents in GitHub Copilot CLI",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/from-one-off-prompts-to-workflows-how-to-use-custom-agents-in-github-copilot-cli/",
-          "date": "2026-06-09"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "PRC-linked influence operations are targeting AI debates in the US",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/prc-linked-influence-operations-ai-debates",
-          "date": "2026-06-10"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
           "title": "From one-off prompts to workflows: How to use custom agents in GitHub Copilot CLI",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/from-one-off-prompts-to-workflows-how-to-use-custom-agents-in-github-copilot-cli/",
           "date": "2026-06-09"
         },
         {
-          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
+          "title": "Take your local GitHub sessions anywhere",
           "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
-          "date": "2026-05-22"
-        },
-        {
-          "title": "Building a general-purpose accessibility agent—and what we learned in the process",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/building-a-general-purpose-accessibility-agent-and-what-we-learned-in-the-process/",
-          "date": "2026-05-15"
+          "link": "https://github.blog/news-insights/product-news/take-your-local-github-sessions-anywhere/",
+          "date": "2026-05-18"
         }
       ]
     },
