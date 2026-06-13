@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-06-12
+# Daily AI maintenance report — 2026-06-13
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,8 +13,18 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **SpaceX’s massive IPO: all the latest news** — The Verge AI · 2026-06-13
+  https://www.theverge.com/business/948996/spacex-ipo-elon-musk
+- **How we made GitHub Copilot CLI more selective about delegation** — GitHub AI & ML Blog · 2026-06-12
+  https://github.blog/ai-and-ml/how-we-made-github-copilot-cli-more-selective-about-delegation/
+- **New OpenAI Academy courses for the next era of work** — OpenAI News · 2026-06-12
+  https://openai.com/index/academy-courses-applying-ai-at-work
 - **How Preply combines AI and human tutors to personalize learning** — OpenAI News · 2026-06-12
   https://openai.com/index/preply
+- **Elon Musk is the world&#8217;s first trillionaire** — The Verge AI · 2026-06-12
+  https://www.theverge.com/ai-artificial-intelligence/948409/elon-musk-trillionaire-spacex-ipo
+- **Jeff Bezos’ AI startup aims to build an ‘artificial general engineer’** — The Verge AI · 2026-06-12
+  https://www.theverge.com/ai-artificial-intelligence/949005/jeff-bezos-prometheus-artificial-general-engineer
 - **Siri won’t be your AI girlfriend** — The Verge AI · 2026-06-12
   https://www.theverge.com/tech/948890/siri-wont-be-your-ai-girlfriend
 - **Amazon&#8217;s data centers used 2.5 billion gallons of water last year** — The Verge AI · 2026-06-12
@@ -23,10 +33,10 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://github.blog/security/making-secret-scanning-more-trustworthy-reducing-false-positives-at-scale/
 - **Supporting Europe’s work in ensuring a trustworthy AI ecosystem** — OpenAI News · 2026-06-11
   https://openai.com/index/supporting-eu-trustworthy-ai-ecosystem
-- **OpenAI to acquire Ona** — OpenAI News · 2026-06-11
-  https://openai.com/index/openai-to-acquire-ona
 - **BBVA puts AI at the core of banking with OpenAI** — OpenAI News · 2026-06-11
   https://openai.com/index/bbva
+- **OpenAI to acquire Ona** — OpenAI News · 2026-06-11
+  https://openai.com/index/openai-to-acquire-ona
 - **Anthropic apologizes for invisible Claude Fable guardrails** — The Verge AI · 2026-06-11
   https://www.theverge.com/ai-artificial-intelligence/948280/anthropic-claude-fable-invisible-distillation-guardrail
 - **Give GitHub Copilot CLI real code intelligence with language servers** — GitHub AI & ML Blog · 2026-06-10
@@ -41,16 +51,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/ai-artificial-intelligence/948153/deezer-ai-music-detector-spotify-apple
 - **Claude Fable won’t answer basic biology questions** — The Verge AI · 2026-06-10
   https://www.theverge.com/ai-artificial-intelligence/947973/fable-wont-answer-basic-biology-questions
-- **Microsoft, like, totally gets why students are booing AI-pilled graduation speakers** — The Verge AI · 2026-06-10
-  https://www.theverge.com/news/947831/college-speakers-booed-ai-microsoft
-- **The future of AI regulation is courting the strangest, most anxious bedfellows** — The Verge AI · 2026-06-10
-  https://www.theverge.com/column/947838/washington-ai-network-honors-2026-midterms
-- **Google won’t just admit it’s feeding YouTube creators to its music AI** — The Verge AI · 2026-06-10
-  https://www.theverge.com/tech/947770/google-lyria-music-ai-lawsuit-youtube
 - **From one-off prompts to workflows: How to use custom agents in GitHub Copilot CLI** — GitHub AI & ML Blog · 2026-06-09
   https://github.blog/ai-and-ml/github-copilot/from-one-off-prompts-to-workflows-how-to-use-custom-agents-in-github-copilot-cli/
-- **What Codex unlocks for Notion** — OpenAI News · 2026-06-09
-  https://openai.com/index/notion
 - **The latest AI news we announced in May 2026** — Google AI Blog · 2026-06-05
   https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-may-2026/
 - **5 ways Google Search can level up your thrift and vintage shopping** — Google AI Blog · 2026-06-03
@@ -75,15 +77,13 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://github.blog/ai-and-ml/github-copilot/building-a-general-purpose-accessibility-agent-and-what-we-learned-in-the-process/
 - **Dungeons &#038; Desktops: Building a procedurally generated roguelike with GitHub Copilot CLI** — GitHub AI & ML Blog · 2026-05-12
   https://github.blog/ai-and-ml/github-copilot/dungeons-desktops-building-a-procedurally-generated-roguelike-with-github-copilot-cli/
-- **Improving token efficiency in GitHub Agentic Workflows** — GitHub AI & ML Blog · 2026-05-07
-  https://github.blog/ai-and-ml/github-copilot/improving-token-efficiency-in-github-agentic-workflows/
 
 ## Portfolio candidates
 
+- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
