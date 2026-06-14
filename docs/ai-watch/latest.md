@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-06-13
+# Daily AI maintenance report — 2026-06-14
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,10 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Amazon security research reportedly led to the White House’s Anthropic Fable ban** — The Verge AI · 2026-06-13
+  https://www.theverge.com/ai-artificial-intelligence/949601/amazon-anthropic-fablemythos-government-ban
+- **Anthropic cuts off Fable 5 and Mythos 5 access following government order** — The Verge AI · 2026-06-13
+  https://www.theverge.com/ai-artificial-intelligence/949553/anthropic-fable-5-mythos-5-government-national-security
 - **SpaceX’s massive IPO: all the latest news** — The Verge AI · 2026-06-13
   https://www.theverge.com/business/948996/spacex-ipo-elon-musk
 - **How we made GitHub Copilot CLI more selective about delegation** — GitHub AI & ML Blog · 2026-06-12
@@ -21,14 +25,16 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/academy-courses-applying-ai-at-work
 - **How Preply combines AI and human tutors to personalize learning** — OpenAI News · 2026-06-12
   https://openai.com/index/preply
+- **My yard is dying, so I made an app for that** — The Verge AI · 2026-06-12
+  https://www.theverge.com/ai-artificial-intelligence/942119/vibecoding-backyard-app-gardening-organizing
+- **Apple’s new AI photo editing tools mostly work, for better and worse** — The Verge AI · 2026-06-12
+  https://www.theverge.com/tech/949360/apple-ai-photo-edit-reframe-extend-clean-up-hands-on
+- **The future of Hollywood isn’t feeding prompts into vanilla gen AI models** — The Verge AI · 2026-06-12
+  https://www.theverge.com/ai-artificial-intelligence/948425/tribeca-2026-dear-upstairs-neighbors-google-deepmind-openai
 - **Elon Musk is the world&#8217;s first trillionaire** — The Verge AI · 2026-06-12
   https://www.theverge.com/ai-artificial-intelligence/948409/elon-musk-trillionaire-spacex-ipo
 - **Jeff Bezos’ AI startup aims to build an ‘artificial general engineer’** — The Verge AI · 2026-06-12
   https://www.theverge.com/ai-artificial-intelligence/949005/jeff-bezos-prometheus-artificial-general-engineer
-- **Siri won’t be your AI girlfriend** — The Verge AI · 2026-06-12
-  https://www.theverge.com/tech/948890/siri-wont-be-your-ai-girlfriend
-- **Amazon&#8217;s data centers used 2.5 billion gallons of water last year** — The Verge AI · 2026-06-12
-  https://www.theverge.com/tech/948534/amazon-data-centers-water-use
 - **Making secret scanning more trustworthy: Reducing false positives at scale** — GitHub AI & ML Blog · 2026-06-11
   https://github.blog/security/making-secret-scanning-more-trustworthy-reducing-false-positives-at-scale/
 - **Supporting Europe’s work in ensuring a trustworthy AI ecosystem** — OpenAI News · 2026-06-11
@@ -37,8 +43,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/bbva
 - **OpenAI to acquire Ona** — OpenAI News · 2026-06-11
   https://openai.com/index/openai-to-acquire-ona
-- **Anthropic apologizes for invisible Claude Fable guardrails** — The Verge AI · 2026-06-11
-  https://www.theverge.com/ai-artificial-intelligence/948280/anthropic-claude-fable-invisible-distillation-guardrail
 - **Give GitHub Copilot CLI real code intelligence with language servers** — GitHub AI & ML Blog · 2026-06-10
   https://github.blog/ai-and-ml/github-copilot/give-github-copilot-cli-real-code-intelligence-with-language-servers/
 - **Access OpenAI models and Codex through your Oracle cloud commitment** — OpenAI News · 2026-06-10
@@ -47,10 +51,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/prc-linked-influence-operations-ai-debates
 - **From data to decisions: how LSEG is scaling trusted AI** — OpenAI News · 2026-06-10
   https://openai.com/index/lseg
-- **Deezer launches an AI music detector for other streaming services** — The Verge AI · 2026-06-10
-  https://www.theverge.com/ai-artificial-intelligence/948153/deezer-ai-music-detector-spotify-apple
-- **Claude Fable won’t answer basic biology questions** — The Verge AI · 2026-06-10
-  https://www.theverge.com/ai-artificial-intelligence/947973/fable-wont-answer-basic-biology-questions
 - **From one-off prompts to workflows: How to use custom agents in GitHub Copilot CLI** — GitHub AI & ML Blog · 2026-06-09
   https://github.blog/ai-and-ml/github-copilot/from-one-off-prompts-to-workflows-how-to-use-custom-agents-in-github-copilot-cli/
 - **The latest AI news we announced in May 2026** — Google AI Blog · 2026-06-05
@@ -82,9 +82,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 

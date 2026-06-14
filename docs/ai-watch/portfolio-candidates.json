@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-13T10:24:54.430Z",
+  "generatedAt": "2026-06-14T10:46:43.302Z",
   "candidates": [
     {
       "label": "GitHub Copilot developer loop",
@@ -52,6 +52,31 @@
       ]
     },
     {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "My yard is dying, so I made an app for that",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/942119/vibecoding-backyard-app-gardening-organizing",
+          "date": "2026-06-12"
+        },
+        {
+          "title": "How we used Gemini to build Google I/O 2026",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-google-ai/",
+          "date": "2026-06-01"
+        },
+        {
+          "title": "9 demos of Gemini Omni and Gemini 3.5 in action",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-3-5-videos/",
+          "date": "2026-05-29"
+        }
+      ]
+    },
+    {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
@@ -67,50 +92,6 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/prc-linked-influence-operations-ai-debates",
           "date": "2026-06-10"
-        }
-      ]
-    },
-    {
-      "label": "Claude research and documentation flow",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Anthropic apologizes for invisible Claude Fable guardrails",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/948280/anthropic-claude-fable-invisible-distillation-guardrail",
-          "date": "2026-06-11"
-        },
-        {
-          "title": "Claude Fable won’t answer basic biology questions",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/947973/fable-wont-answer-basic-biology-questions",
-          "date": "2026-06-10"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "How we used Gemini to build Google I/O 2026",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-google-ai/",
-          "date": "2026-06-01"
-        },
-        {
-          "title": "9 demos of Gemini Omni and Gemini 3.5 in action",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-3-5-videos/",
-          "date": "2026-05-29"
-        },
-        {
-          "title": "Catch up on 12 major I/O 2026 moments",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-keynote-moment-videos/",
-          "date": "2026-05-28"
         }
       ]
     },
