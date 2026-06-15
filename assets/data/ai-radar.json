@@ -1,19 +1,39 @@
 {
-  "generatedAt": "2026-06-14T10:46:43.302Z",
-  "date": "2026-06-14",
+  "generatedAt": "2026-06-15T13:51:19.842Z",
+  "date": "2026-06-15",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
     {
-      "title": "Amazon security research reportedly led to the White House’s Anthropic Fable ban",
+      "title": "China may have accessed Mythos",
       "source": "The Verge AI",
-      "date": "2026-06-13",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/949601/amazon-anthropic-fablemythos-government-ban",
-      "summary": "According to the Wall Street Journal, the export control directive that led to Anthropic cutting off access to Fable 5 and Mythos 5 was triggered in part by cybersecurity research from Amazon and conversations between CE...",
+      "date": "2026-06-15",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/949644/china-white-house-anthropic-mythos",
+      "summary": "According to a new report from Semafor, the White House's decision to impose export restrictions on Anthropic's Mythos was driven in part by fears that it had been accessed by a group linked to China. If the Chinese gove...",
       "tags": [
         "Claude"
+      ]
+    },
+    {
+      "title": "Amazon security research reportedly led to the White House’s Anthropic Fable ban",
+      "source": "The Verge AI",
+      "date": "2026-06-15",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/949601/amazon-anthropic-fablemythos-government-ban",
+      "summary": "According to the The Wall Street Journal, the export control directive that led to Anthropic cutting off access to Fable 5 and Mythos 5 was triggered in part by cybersecurity research from Amazon and conversations betwee...",
+      "tags": [
+        "Claude"
+      ]
+    },
+    {
+      "title": "Introducing the OpenAI Partner Network",
+      "source": "OpenAI News",
+      "date": "2026-06-14",
+      "url": "https://openai.com/index/introducing-openai-partner-network",
+      "summary": "OpenAI launches the Partner Network, investing $150M to help global partners accelerate enterprise AI adoption, deployment, and transformation.",
+      "tags": [
+        "ChatGPT"
       ]
     },
     {
@@ -194,29 +214,6 @@
       "summary": "Anthropic has apologized for stealthily throttling its new AI model, Claude Fable 5, with hidden guardrails that undermine both researchers and rivals using it to develop competing systems. The company says it is reversi...",
       "tags": [
         "Claude",
-        "Models"
-      ]
-    },
-    {
-      "title": "Give GitHub Copilot CLI real code intelligence with language servers",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-06-10",
-      "url": "https://github.blog/ai-and-ml/github-copilot/give-github-copilot-cli-real-code-intelligence-with-language-servers/",
-      "summary": "Install and configure LSP servers for GitHub Copilot CLI, replacing brute-force grep/decompile with real code intelligence.  The post Give GitHub Copilot CLI real code intelligence with language servers appeared first on...",
-      "tags": [
-        "Copilot",
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "Access OpenAI models and Codex through your Oracle cloud commitment",
-      "source": "OpenAI News",
-      "date": "2026-06-10",
-      "url": "https://openai.com/index/openai-on-oracle-cloud",
-      "summary": "Access OpenAI models and Codex through Oracle Cloud, using existing commitments to build and deploy AI with enterprise security and governance.",
-      "tags": [
-        "ChatGPT",
-        "Dev Tools",
         "Models"
       ]
     }

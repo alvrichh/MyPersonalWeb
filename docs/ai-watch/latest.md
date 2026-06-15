@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-06-14
+# Daily AI maintenance report — 2026-06-15
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,8 +13,12 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
-- **Amazon security research reportedly led to the White House’s Anthropic Fable ban** — The Verge AI · 2026-06-13
+- **China may have accessed Mythos** — The Verge AI · 2026-06-15
+  https://www.theverge.com/ai-artificial-intelligence/949644/china-white-house-anthropic-mythos
+- **Amazon security research reportedly led to the White House’s Anthropic Fable ban** — The Verge AI · 2026-06-15
   https://www.theverge.com/ai-artificial-intelligence/949601/amazon-anthropic-fablemythos-government-ban
+- **Introducing the OpenAI Partner Network** — OpenAI News · 2026-06-14
+  https://openai.com/index/introducing-openai-partner-network
 - **Anthropic cuts off Fable 5 and Mythos 5 access following government order** — The Verge AI · 2026-06-13
   https://www.theverge.com/ai-artificial-intelligence/949553/anthropic-fable-5-mythos-5-government-national-security
 - **SpaceX’s massive IPO: all the latest news** — The Verge AI · 2026-06-13
@@ -33,8 +37,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/ai-artificial-intelligence/948425/tribeca-2026-dear-upstairs-neighbors-google-deepmind-openai
 - **Elon Musk is the world&#8217;s first trillionaire** — The Verge AI · 2026-06-12
   https://www.theverge.com/ai-artificial-intelligence/948409/elon-musk-trillionaire-spacex-ipo
-- **Jeff Bezos’ AI startup aims to build an ‘artificial general engineer’** — The Verge AI · 2026-06-12
-  https://www.theverge.com/ai-artificial-intelligence/949005/jeff-bezos-prometheus-artificial-general-engineer
 - **Making secret scanning more trustworthy: Reducing false positives at scale** — GitHub AI & ML Blog · 2026-06-11
   https://github.blog/security/making-secret-scanning-more-trustworthy-reducing-false-positives-at-scale/
 - **Supporting Europe’s work in ensuring a trustworthy AI ecosystem** — OpenAI News · 2026-06-11
@@ -49,8 +51,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/openai-on-oracle-cloud
 - **PRC-linked influence operations are targeting AI debates in the US** — OpenAI News · 2026-06-10
   https://openai.com/index/prc-linked-influence-operations-ai-debates
-- **From data to decisions: how LSEG is scaling trusted AI** — OpenAI News · 2026-06-10
-  https://openai.com/index/lseg
 - **From one-off prompts to workflows: How to use custom agents in GitHub Copilot CLI** — GitHub AI & ML Blog · 2026-06-09
   https://github.blog/ai-and-ml/github-copilot/from-one-off-prompts-to-workflows-how-to-use-custom-agents-in-github-copilot-cli/
 - **The latest AI news we announced in May 2026** — Google AI Blog · 2026-06-05
