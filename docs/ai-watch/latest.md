@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-06-15
+# Daily AI maintenance report — 2026-06-16
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,38 +13,42 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **SpaceX is officially buying Cursor for $60 billion** — The Verge AI · 2026-06-16
+  https://www.theverge.com/ai-artificial-intelligence/950571/spacex-is-officially-buying-cursor-for-60-billion
+- **Inside the fight over Claude Mythos 5** — The Verge AI · 2026-06-16
+  https://www.theverge.com/ai-artificial-intelligence/950412/anthropic-trump-adminstration-claude-mythos-fable-5-export-controls
+- **GitHub Copilot CLI for Beginners: Overview of common slash commands** — GitHub AI & ML Blog · 2026-06-15
+  https://github.blog/ai-and-ml/github-copilot/github-copilot-cli-for-beginners-overview-of-common-slash-commands/
+- **Accelerating researchers and developers building multilingual AI with a new open dataset** — GitHub AI & ML Blog · 2026-06-15
+  https://github.blog/ai-and-ml/llms/accelerating-researchers-and-developers-building-multilingual-ai-with-a-new-open-dataset/
+- **Facebook’s new AI Mode search gets its info from public posts** — The Verge AI · 2026-06-15
+  https://www.theverge.com/tech/950264/meta-ai-mode-search-facebook
+- **All the news about Anthropic&#8217;s new AI fight with the White House** — The Verge AI · 2026-06-15
+  https://www.theverge.com/ai-artificial-intelligence/950026/anthropic-fable-mythos-ban-ai-shutdown
+- **Trump’s Anthropic shutdown just made the case for non-American AI** — The Verge AI · 2026-06-15
+  https://www.theverge.com/ai-artificial-intelligence/949986/anthropic-fable-mythos-shutdown-sovereign-ai
+- **Big Tech’s desperate last push at AI regulation** — The Verge AI · 2026-06-15
+  https://www.theverge.com/policy/949970/ai-regulation-child-safety-kosa-congress
 - **China may have accessed Mythos** — The Verge AI · 2026-06-15
   https://www.theverge.com/ai-artificial-intelligence/949644/china-white-house-anthropic-mythos
 - **Amazon security research reportedly led to the White House’s Anthropic Fable ban** — The Verge AI · 2026-06-15
   https://www.theverge.com/ai-artificial-intelligence/949601/amazon-anthropic-fablemythos-government-ban
 - **Introducing the OpenAI Partner Network** — OpenAI News · 2026-06-14
   https://openai.com/index/introducing-openai-partner-network
-- **Anthropic cuts off Fable 5 and Mythos 5 access following government order** — The Verge AI · 2026-06-13
-  https://www.theverge.com/ai-artificial-intelligence/949553/anthropic-fable-5-mythos-5-government-national-security
-- **SpaceX’s massive IPO: all the latest news** — The Verge AI · 2026-06-13
-  https://www.theverge.com/business/948996/spacex-ipo-elon-musk
 - **How we made GitHub Copilot CLI more selective about delegation** — GitHub AI & ML Blog · 2026-06-12
   https://github.blog/ai-and-ml/how-we-made-github-copilot-cli-more-selective-about-delegation/
 - **New OpenAI Academy courses for the next era of work** — OpenAI News · 2026-06-12
   https://openai.com/index/academy-courses-applying-ai-at-work
 - **How Preply combines AI and human tutors to personalize learning** — OpenAI News · 2026-06-12
   https://openai.com/index/preply
-- **My yard is dying, so I made an app for that** — The Verge AI · 2026-06-12
-  https://www.theverge.com/ai-artificial-intelligence/942119/vibecoding-backyard-app-gardening-organizing
-- **Apple’s new AI photo editing tools mostly work, for better and worse** — The Verge AI · 2026-06-12
-  https://www.theverge.com/tech/949360/apple-ai-photo-edit-reframe-extend-clean-up-hands-on
-- **The future of Hollywood isn’t feeding prompts into vanilla gen AI models** — The Verge AI · 2026-06-12
-  https://www.theverge.com/ai-artificial-intelligence/948425/tribeca-2026-dear-upstairs-neighbors-google-deepmind-openai
-- **Elon Musk is the world&#8217;s first trillionaire** — The Verge AI · 2026-06-12
-  https://www.theverge.com/ai-artificial-intelligence/948409/elon-musk-trillionaire-spacex-ipo
 - **Making secret scanning more trustworthy: Reducing false positives at scale** — GitHub AI & ML Blog · 2026-06-11
   https://github.blog/security/making-secret-scanning-more-trustworthy-reducing-false-positives-at-scale/
-- **Supporting Europe’s work in ensuring a trustworthy AI ecosystem** — OpenAI News · 2026-06-11
-  https://openai.com/index/supporting-eu-trustworthy-ai-ecosystem
 - **BBVA puts AI at the core of banking with OpenAI** — OpenAI News · 2026-06-11
   https://openai.com/index/bbva
 - **OpenAI to acquire Ona** — OpenAI News · 2026-06-11
   https://openai.com/index/openai-to-acquire-ona
+- **Supporting Europe’s work in ensuring a trustworthy AI ecosystem** — OpenAI News · 2026-06-11
+  https://openai.com/index/supporting-eu-trustworthy-ai-ecosystem
 - **Give GitHub Copilot CLI real code intelligence with language servers** — GitHub AI & ML Blog · 2026-06-10
   https://github.blog/ai-and-ml/github-copilot/give-github-copilot-cli-real-code-intelligence-with-language-servers/
 - **Access OpenAI models and Codex through your Oracle cloud commitment** — OpenAI News · 2026-06-10
@@ -73,19 +77,16 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blog.google/innovation-and-ai/technology/ai/io-2026-dialogues-recap/
 - **Take your local GitHub sessions anywhere** — GitHub AI & ML Blog · 2026-05-18
   https://github.blog/news-insights/product-news/take-your-local-github-sessions-anywhere/
-- **Building a general-purpose accessibility agent—and what we learned in the process** — GitHub AI & ML Blog · 2026-05-15
-  https://github.blog/ai-and-ml/github-copilot/building-a-general-purpose-accessibility-agent-and-what-we-learned-in-the-process/
-- **Dungeons &#038; Desktops: Building a procedurally generated roguelike with GitHub Copilot CLI** — GitHub AI & ML Blog · 2026-05-12
-  https://github.blog/ai-and-ml/github-copilot/dungeons-desktops-building-a-procedurally-generated-roguelike-with-github-copilot-cli/
 
 ## Portfolio candidates
 
-- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
 
