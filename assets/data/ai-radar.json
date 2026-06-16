@@ -1,11 +1,96 @@
 {
-  "generatedAt": "2026-06-15T13:51:19.842Z",
-  "date": "2026-06-15",
+  "generatedAt": "2026-06-16T12:49:54.133Z",
+  "date": "2026-06-16",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "SpaceX is officially buying Cursor for $60 billion",
+      "source": "The Verge AI",
+      "date": "2026-06-16",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/950571/spacex-is-officially-buying-cursor-for-60-billion",
+      "summary": "Days after its massive IPO, SpaceX says it is spending $60 billion to buy Cursor - a bet designed to help Elon Musk's sprawling rocket / AI / social media behemoth win over lucrative enterprise customers and close the ga...",
+      "tags": [
+        "ChatGPT",
+        "Claude"
+      ]
+    },
+    {
+      "title": "Inside the fight over Claude Mythos 5",
+      "source": "The Verge AI",
+      "date": "2026-06-16",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/950412/anthropic-trump-adminstration-claude-mythos-fable-5-export-controls",
+      "summary": "As the rest of the country celebrated the USA's first World Cup win and the New York Knicks championship, Anthropic spent its weekend fighting the Trump administration over its latest model release. At 5:21 PM on Friday,...",
+      "tags": [
+        "Claude",
+        "Models"
+      ]
+    },
+    {
+      "title": "GitHub Copilot CLI for Beginners: Overview of common slash commands",
+      "source": "GitHub AI & ML Blog",
+      "date": "2026-06-15",
+      "url": "https://github.blog/ai-and-ml/github-copilot/github-copilot-cli-for-beginners-overview-of-common-slash-commands/",
+      "summary": "GitHub Copilot CLI for Beginners: Learn how to use slash commands to control your terminal AI agent. The post GitHub Copilot CLI for Beginners: Overview of common slash commands appeared first on The GitHub Blog.",
+      "tags": [
+        "Agents",
+        "Copilot"
+      ]
+    },
+    {
+      "title": "Accelerating researchers and developers building multilingual AI with a new open dataset",
+      "source": "GitHub AI & ML Blog",
+      "date": "2026-06-15",
+      "url": "https://github.blog/ai-and-ml/llms/accelerating-researchers-and-developers-building-multilingual-ai-with-a-new-open-dataset/",
+      "summary": "A new repository-level dataset, published on GitHub under CC0-1.0, helps researchers and developers discover multilingual developer content across READMEs, issues, and pull requests. The post Accelerating researchers and...",
+      "tags": [
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "Facebook’s new AI Mode search gets its info from public posts",
+      "source": "The Verge AI",
+      "date": "2026-06-15",
+      "url": "https://www.theverge.com/tech/950264/meta-ai-mode-search-facebook",
+      "summary": "Your public Facebook posts could help inform AI-generated results in Meta's new AI Mode. When you search on Facebook, the \"AI Mode\" option will appear alongside the usual search modes like \"People\" and \"Marketplace.\" It'...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "All the news about Anthropic&#8217;s new AI fight with the White House",
+      "source": "The Verge AI",
+      "date": "2026-06-15",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/950026/anthropic-fable-mythos-ban-ai-shutdown",
+      "summary": "Anthropic was already navigating one dispute with the government in its standoff with the Pentagon, and then came an order on June 12th to block off foreign access to its most recently released AI models, Fable 5 and Myt...",
+      "tags": [
+        "Claude",
+        "Models"
+      ]
+    },
+    {
+      "title": "Trump’s Anthropic shutdown just made the case for non-American AI",
+      "source": "The Verge AI",
+      "date": "2026-06-15",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/949986/anthropic-fable-mythos-shutdown-sovereign-ai",
+      "summary": "At Washington's request, Anthropic suddenly took its newest and most powerful AI models offline over the weekend. The American company said it had little choice after the White House demanded it block access for all fore...",
+      "tags": [
+        "Claude",
+        "Models"
+      ]
+    },
+    {
+      "title": "Big Tech’s desperate last push at AI regulation",
+      "source": "The Verge AI",
+      "date": "2026-06-15",
+      "url": "https://www.theverge.com/policy/949970/ai-regulation-child-safety-kosa-congress",
+      "summary": "For months, Big Tech's Washington lobbyists have chased after the holy grail of pro-AI legislation: preemption. This would be a comprehensive federal law, passed in Congress and signed by the president, applying one set ...",
+      "tags": [
+        "AI"
+      ]
+    },
     {
       "title": "China may have accessed Mythos",
       "source": "The Verge AI",
@@ -37,6 +122,17 @@
       ]
     },
     {
+      "title": "How we made GitHub Copilot CLI more selective about delegation",
+      "source": "GitHub AI & ML Blog",
+      "date": "2026-06-12",
+      "url": "https://github.blog/ai-and-ml/how-we-made-github-copilot-cli-more-selective-about-delegation/",
+      "summary": "Better orchestration, fewer handoffs, faster progress, without a single new knob. The post How we made GitHub Copilot CLI more selective about delegation appeared first on The GitHub Blog.",
+      "tags": [
+        "Copilot",
+        "Automation"
+      ]
+    },
+    {
       "title": "Anthropic cuts off Fable 5 and Mythos 5 access following government order",
       "source": "The Verge AI",
       "date": "2026-06-13",
@@ -55,17 +151,6 @@
       "summary": "SpaceX&#8217;s IPO on Friday allows the public to buy shares of the combined rocket, AI, and social media company for the first time, and raised enough money to make Elon Musk the first trillionaire. He has more wealth, ...",
       "tags": [
         "AI"
-      ]
-    },
-    {
-      "title": "How we made GitHub Copilot CLI more selective about delegation",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-06-12",
-      "url": "https://github.blog/ai-and-ml/how-we-made-github-copilot-cli-more-selective-about-delegation/",
-      "summary": "Better orchestration, fewer handoffs, faster progress, without a single new knob. The post How we made GitHub Copilot CLI more selective about delegation appeared first on The GitHub Blog.",
-      "tags": [
-        "Copilot",
-        "Automation"
       ]
     },
     {
@@ -130,117 +215,19 @@
       "tags": [
         "AI"
       ]
-    },
-    {
-      "title": "Jeff Bezos’ AI startup aims to build an ‘artificial general engineer’",
-      "source": "The Verge AI",
-      "date": "2026-06-12",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/949005/jeff-bezos-prometheus-artificial-general-engineer",
-      "summary": "Amazon founder Jeff Bezos says his new AI startup will work toward developing an \"artificial general engineer,\" according to reports from The New York Times and CNBC. The startup, called Prometheus, aims to develop AI-po...",
-      "tags": [
-        "Agents"
-      ]
-    },
-    {
-      "title": "Making secret scanning more trustworthy: Reducing false positives at scale",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-06-11",
-      "url": "https://github.blog/security/making-secret-scanning-more-trustworthy-reducing-false-positives-at-scale/",
-      "summary": "Alerts are more trustworthy and actionable when noise is reduced. See how we improved the verification step with context-aware LLM reasoning. The post Making secret scanning more trustworthy: Reducing false positives at ...",
-      "tags": [
-        "Models"
-      ]
-    },
-    {
-      "title": "Siri won’t be your AI girlfriend",
-      "source": "The Verge AI",
-      "date": "2026-06-12",
-      "url": "https://www.theverge.com/tech/948890/siri-wont-be-your-ai-girlfriend",
-      "summary": "Our early testing has already shown that Siri AI knows when to shut up, and that's very much by design. In an interview with Mostly Human spotted by MacRumors, Craig Federighi said Apple's new Siri won't act all sycophan...",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Amazon&#8217;s data centers used 2.5 billion gallons of water last year",
-      "source": "The Verge AI",
-      "date": "2026-06-12",
-      "url": "https://www.theverge.com/tech/948534/amazon-data-centers-water-use",
-      "summary": "Just after Seattle enacted a one-year data center moratorium that some of Amazon's own employees pushed for, Amazon shared how much water its data centers use, reportedly for the first time. With concerns about water con...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Supporting Europe’s work in ensuring a trustworthy AI ecosystem",
-      "source": "OpenAI News",
-      "date": "2026-06-11",
-      "url": "https://openai.com/index/supporting-eu-trustworthy-ai-ecosystem",
-      "summary": "OpenAI supports the EU Code of Practice on AI content transparency, advancing provenance standards and tools to help people understand AI-generated content.",
-      "tags": [
-        "Agents",
-        "ChatGPT",
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "BBVA puts AI at the core of banking with OpenAI",
-      "source": "OpenAI News",
-      "date": "2026-06-11",
-      "url": "https://openai.com/index/bbva",
-      "summary": "Learn how BBVA scaled ChatGPT Enterprise to 100,000 employees and partnered with OpenAI to accelerate AI-powered banking transformation worldwide.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "OpenAI to acquire Ona",
-      "source": "OpenAI News",
-      "date": "2026-06-11",
-      "url": "https://openai.com/index/openai-to-acquire-ona",
-      "summary": "OpenAI plans to acquire Ona to expand Codex with secure, persistent cloud environments, enabling long-running AI agents across enterprise workflows.",
-      "tags": [
-        "Agents",
-        "ChatGPT",
-        "Dev Tools",
-        "Automation"
-      ]
-    },
-    {
-      "title": "Anthropic apologizes for invisible Claude Fable guardrails",
-      "source": "The Verge AI",
-      "date": "2026-06-11",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/948280/anthropic-claude-fable-invisible-distillation-guardrail",
-      "summary": "Anthropic has apologized for stealthily throttling its new AI model, Claude Fable 5, with hidden guardrails that undermine both researchers and rivals using it to develop competing systems. The company says it is reversi...",
-      "tags": [
-        "Claude",
-        "Models"
-      ]
     }
   ],
   "candidates": [
     {
-      "label": "GitHub Copilot developer loop",
+      "label": "Claude research and documentation flow",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "How we made GitHub Copilot CLI more selective about delegation",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/how-we-made-github-copilot-cli-more-selective-about-delegation/",
-          "date": "2026-06-12"
-        },
-        {
-          "title": "Give GitHub Copilot CLI real code intelligence with language servers",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/give-github-copilot-cli-real-code-intelligence-with-language-servers/",
-          "date": "2026-06-10"
-        },
-        {
-          "title": "From one-off prompts to workflows: How to use custom agents in GitHub Copilot CLI",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/from-one-off-prompts-to-workflows-how-to-use-custom-agents-in-github-copilot-cli/",
-          "date": "2026-06-09"
+          "title": "Inside the fight over Claude Mythos 5",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/950412/anthropic-trump-adminstration-claude-mythos-fable-5-export-controls",
+          "date": "2026-06-16"
         }
       ]
     },
@@ -249,6 +236,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "GitHub Copilot CLI for Beginners: Overview of common slash commands",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-cli-for-beginners-overview-of-common-slash-commands/",
+          "date": "2026-06-15"
+        },
         {
           "title": "New OpenAI Academy courses for the next era of work",
           "source": "OpenAI News",
@@ -260,37 +253,50 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/openai-to-acquire-ona",
           "date": "2026-06-11"
-        },
-        {
-          "title": "From one-off prompts to workflows: How to use custom agents in GitHub Copilot CLI",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/from-one-off-prompts-to-workflows-how-to-use-custom-agents-in-github-copilot-cli/",
-          "date": "2026-06-09"
         }
       ]
     },
     {
-      "label": "Gemini multimodal exploration",
+      "label": "GitHub Copilot developer loop",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "My yard is dying, so I made an app for that",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/942119/vibecoding-backyard-app-gardening-organizing",
+          "title": "GitHub Copilot CLI for Beginners: Overview of common slash commands",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-cli-for-beginners-overview-of-common-slash-commands/",
+          "date": "2026-06-15"
+        },
+        {
+          "title": "How we made GitHub Copilot CLI more selective about delegation",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/how-we-made-github-copilot-cli-more-selective-about-delegation/",
           "date": "2026-06-12"
         },
         {
-          "title": "How we used Gemini to build Google I/O 2026",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-google-ai/",
-          "date": "2026-06-01"
+          "title": "Give GitHub Copilot CLI real code intelligence with language servers",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/give-github-copilot-cli-real-code-intelligence-with-language-servers/",
+          "date": "2026-06-10"
+        }
+      ]
+    },
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Accelerating researchers and developers building multilingual AI with a new open dataset",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/llms/accelerating-researchers-and-developers-building-multilingual-ai-with-a-new-open-dataset/",
+          "date": "2026-06-15"
         },
         {
-          "title": "9 demos of Gemini Omni and Gemini 3.5 in action",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-3-5-videos/",
-          "date": "2026-05-29"
+          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
+          "date": "2026-05-22"
         }
       ]
     },
@@ -314,20 +320,32 @@
       ]
     },
     {
-      "label": "AI coding assistant workflows",
+      "label": "Gemini multimodal exploration",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
-          "date": "2026-05-22"
+          "title": "How we used Gemini to build Google I/O 2026",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-google-ai/",
+          "date": "2026-06-01"
+        },
+        {
+          "title": "9 demos of Gemini Omni and Gemini 3.5 in action",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-3-5-videos/",
+          "date": "2026-05-29"
+        },
+        {
+          "title": "Catch up on 12 major I/O 2026 moments",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-keynote-moment-videos/",
+          "date": "2026-05-28"
         }
       ]
     },
     {
-      "label": "AI developer tooling",
+      "label": "AI coding assistant workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
