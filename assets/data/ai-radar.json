@@ -1,11 +1,42 @@
 {
-  "generatedAt": "2026-06-16T12:49:54.133Z",
-  "date": "2026-06-16",
+  "generatedAt": "2026-06-17T12:13:16.141Z",
+  "date": "2026-06-17",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "The next humanoid robot might not look human at all",
+      "source": "The Verge AI",
+      "date": "2026-06-17",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/951283/genesis-ai-humanoid-robot-eno",
+      "summary": "The next humanoid robot might not have a head. It might not have legs. It might even sit on a wheeled base and fold down like a deck chair. But, as Genesis AI puts it, \"humanoid robots don't need to look human.\" That exp...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Predicting model behavior before release by simulating deployment",
+      "source": "OpenAI News",
+      "date": "2026-06-16",
+      "url": "https://openai.com/index/deployment-simulation",
+      "summary": "OpenAI introduces Deployment Simulation, a method to predict AI model behavior before deployment using real conversation data to improve safety and evaluation accuracy.",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ]
+    },
+    {
+      "title": "Apple 2027 rumors: AirPods with cameras for AI and the second folding iPhone",
+      "source": "The Verge AI",
+      "date": "2026-06-16",
+      "url": "https://www.theverge.com/tech/950826/apple-airpod-camera-ai-foldable-iphone-rumor",
+      "summary": "Now that we're clear of WWDC and all of the new AI-powered features coming to Apple's platforms, Bloomberg reporter Mark Gurman has more details about rumored new hardware, like the camera-equipped AirPods he'd previousl...",
+      "tags": [
+        "AI"
+      ]
+    },
     {
       "title": "SpaceX is officially buying Cursor for $60 billion",
       "source": "The Verge AI",
@@ -23,6 +54,17 @@
       "date": "2026-06-16",
       "url": "https://www.theverge.com/ai-artificial-intelligence/950412/anthropic-trump-adminstration-claude-mythos-fable-5-export-controls",
       "summary": "As the rest of the country celebrated the USA's first World Cup win and the New York Knicks championship, Anthropic spent its weekend fighting the Trump administration over its latest model release. At 5:21 PM on Friday,...",
+      "tags": [
+        "Claude",
+        "Models"
+      ]
+    },
+    {
+      "title": "All the news about Anthropic&#8217;s new AI fight with the White House",
+      "source": "The Verge AI",
+      "date": "2026-06-16",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/950026/anthropic-fable-mythos-ban-ai-shutdown",
+      "summary": "Anthropic was already navigating one dispute with the government in its standoff with the Pentagon, and then came an order on June 12th to block off foreign access to its most recently released AI models, Fable 5 and Myt...",
       "tags": [
         "Claude",
         "Models"
@@ -60,17 +102,6 @@
       ]
     },
     {
-      "title": "All the news about Anthropic&#8217;s new AI fight with the White House",
-      "source": "The Verge AI",
-      "date": "2026-06-15",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/950026/anthropic-fable-mythos-ban-ai-shutdown",
-      "summary": "Anthropic was already navigating one dispute with the government in its standoff with the Pentagon, and then came an order on June 12th to block off foreign access to its most recently released AI models, Fable 5 and Myt...",
-      "tags": [
-        "Claude",
-        "Models"
-      ]
-    },
-    {
       "title": "Trump’s Anthropic shutdown just made the case for non-American AI",
       "source": "The Verge AI",
       "date": "2026-06-15",
@@ -92,6 +123,16 @@
       ]
     },
     {
+      "title": "Introducing the OpenAI Partner Network",
+      "source": "OpenAI News",
+      "date": "2026-06-14",
+      "url": "https://openai.com/index/introducing-openai-partner-network",
+      "summary": "OpenAI launches the Partner Network, investing $150M to help global partners accelerate enterprise AI adoption, deployment, and transformation.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
       "title": "China may have accessed Mythos",
       "source": "The Verge AI",
       "date": "2026-06-15",
@@ -109,16 +150,6 @@
       "summary": "According to the The Wall Street Journal, the export control directive that led to Anthropic cutting off access to Fable 5 and Mythos 5 was triggered in part by cybersecurity research from Amazon and conversations betwee...",
       "tags": [
         "Claude"
-      ]
-    },
-    {
-      "title": "Introducing the OpenAI Partner Network",
-      "source": "OpenAI News",
-      "date": "2026-06-14",
-      "url": "https://openai.com/index/introducing-openai-partner-network",
-      "summary": "OpenAI launches the Partner Network, investing $150M to help global partners accelerate enterprise AI adoption, deployment, and transformation.",
-      "tags": [
-        "ChatGPT"
       ]
     },
     {
@@ -183,37 +214,6 @@
       "summary": "When I returned to my computer five minutes after giving Gemini a lengthy prompt, I had two things: a functional app in a preview window, and a message about a bug. \"~ Channel is unrecoverably broken and will be disposed...",
       "tags": [
         "Gemini"
-      ]
-    },
-    {
-      "title": "Apple’s new AI photo editing tools mostly work, for better and worse",
-      "source": "The Verge AI",
-      "date": "2026-06-12",
-      "url": "https://www.theverge.com/tech/949360/apple-ai-photo-edit-reframe-extend-clean-up-hands-on",
-      "summary": "The most popular camera in the world just got its first set of serious AI photo editing features, and I don't think any of us are ready. As far as AI photo editing goes, the new features in iOS 27 are pretty tame compare...",
-      "tags": [
-        "Agents"
-      ]
-    },
-    {
-      "title": "The future of Hollywood isn’t feeding prompts into vanilla gen AI models",
-      "source": "The Verge AI",
-      "date": "2026-06-12",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/948425/tribeca-2026-dear-upstairs-neighbors-google-deepmind-openai",
-      "summary": "For all the noise that's been made about how generative AI is poised to revolutionize the filmmaking industry, there haven't really been any projects created with the technology that felt like the sort of entertainment p...",
-      "tags": [
-        "Multimodal",
-        "Models"
-      ]
-    },
-    {
-      "title": "Elon Musk is the world&#8217;s first trillionaire",
-      "source": "The Verge AI",
-      "date": "2026-06-12",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/948409/elon-musk-trillionaire-spacex-ipo",
-      "summary": "Elon Musk's net worth has passed the trillion-dollar mark after SpaceX's IPO. His net worth, which was hovering around $800 billion before the IPO, includes the value of his 4.8 billion shares in SpaceX, along with his w...",
-      "tags": [
-        "AI"
       ]
     }
   ],
@@ -310,12 +310,6 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/bbva",
           "date": "2026-06-11"
-        },
-        {
-          "title": "PRC-linked influence operations are targeting AI debates in the US",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/prc-linked-influence-operations-ai-debates",
-          "date": "2026-06-10"
         }
       ]
     },

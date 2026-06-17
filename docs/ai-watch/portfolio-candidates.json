@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-16T12:49:54.133Z",
+  "generatedAt": "2026-06-17T12:13:16.141Z",
   "candidates": [
     {
       "label": "Claude research and documentation flow",
@@ -93,12 +93,6 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/bbva",
           "date": "2026-06-11"
-        },
-        {
-          "title": "PRC-linked influence operations are targeting AI debates in the US",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/prc-linked-influence-operations-ai-debates",
-          "date": "2026-06-10"
         }
       ]
     },

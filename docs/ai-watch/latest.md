@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-06-16
+# Daily AI maintenance report — 2026-06-17
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,26 +13,28 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **The next humanoid robot might not look human at all** — The Verge AI · 2026-06-17
+  https://www.theverge.com/ai-artificial-intelligence/951283/genesis-ai-humanoid-robot-eno
+- **Predicting model behavior before release by simulating deployment** — OpenAI News · 2026-06-16
+  https://openai.com/index/deployment-simulation
+- **Apple 2027 rumors: AirPods with cameras for AI and the second folding iPhone** — The Verge AI · 2026-06-16
+  https://www.theverge.com/tech/950826/apple-airpod-camera-ai-foldable-iphone-rumor
 - **SpaceX is officially buying Cursor for $60 billion** — The Verge AI · 2026-06-16
   https://www.theverge.com/ai-artificial-intelligence/950571/spacex-is-officially-buying-cursor-for-60-billion
 - **Inside the fight over Claude Mythos 5** — The Verge AI · 2026-06-16
   https://www.theverge.com/ai-artificial-intelligence/950412/anthropic-trump-adminstration-claude-mythos-fable-5-export-controls
+- **All the news about Anthropic&#8217;s new AI fight with the White House** — The Verge AI · 2026-06-16
+  https://www.theverge.com/ai-artificial-intelligence/950026/anthropic-fable-mythos-ban-ai-shutdown
 - **GitHub Copilot CLI for Beginners: Overview of common slash commands** — GitHub AI & ML Blog · 2026-06-15
   https://github.blog/ai-and-ml/github-copilot/github-copilot-cli-for-beginners-overview-of-common-slash-commands/
 - **Accelerating researchers and developers building multilingual AI with a new open dataset** — GitHub AI & ML Blog · 2026-06-15
   https://github.blog/ai-and-ml/llms/accelerating-researchers-and-developers-building-multilingual-ai-with-a-new-open-dataset/
 - **Facebook’s new AI Mode search gets its info from public posts** — The Verge AI · 2026-06-15
   https://www.theverge.com/tech/950264/meta-ai-mode-search-facebook
-- **All the news about Anthropic&#8217;s new AI fight with the White House** — The Verge AI · 2026-06-15
-  https://www.theverge.com/ai-artificial-intelligence/950026/anthropic-fable-mythos-ban-ai-shutdown
 - **Trump’s Anthropic shutdown just made the case for non-American AI** — The Verge AI · 2026-06-15
   https://www.theverge.com/ai-artificial-intelligence/949986/anthropic-fable-mythos-shutdown-sovereign-ai
 - **Big Tech’s desperate last push at AI regulation** — The Verge AI · 2026-06-15
   https://www.theverge.com/policy/949970/ai-regulation-child-safety-kosa-congress
-- **China may have accessed Mythos** — The Verge AI · 2026-06-15
-  https://www.theverge.com/ai-artificial-intelligence/949644/china-white-house-anthropic-mythos
-- **Amazon security research reportedly led to the White House’s Anthropic Fable ban** — The Verge AI · 2026-06-15
-  https://www.theverge.com/ai-artificial-intelligence/949601/amazon-anthropic-fablemythos-government-ban
 - **Introducing the OpenAI Partner Network** — OpenAI News · 2026-06-14
   https://openai.com/index/introducing-openai-partner-network
 - **How we made GitHub Copilot CLI more selective about delegation** — GitHub AI & ML Blog · 2026-06-12
@@ -53,8 +55,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://github.blog/ai-and-ml/github-copilot/give-github-copilot-cli-real-code-intelligence-with-language-servers/
 - **Access OpenAI models and Codex through your Oracle cloud commitment** — OpenAI News · 2026-06-10
   https://openai.com/index/openai-on-oracle-cloud
-- **PRC-linked influence operations are targeting AI debates in the US** — OpenAI News · 2026-06-10
-  https://openai.com/index/prc-linked-influence-operations-ai-debates
 - **From one-off prompts to workflows: How to use custom agents in GitHub Copilot CLI** — GitHub AI & ML Blog · 2026-06-09
   https://github.blog/ai-and-ml/github-copilot/from-one-off-prompts-to-workflows-how-to-use-custom-agents-in-github-copilot-cli/
 - **The latest AI news we announced in May 2026** — Google AI Blog · 2026-06-05
