@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-06-18
+# Daily AI maintenance report — 2026-06-19
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -9,10 +9,26 @@ This file is generated automatically by the daily maintenance workflow. It updat
 - Google AI Blog: OK (8 relevant items)
 - GitHub AI & ML Blog: OK (8 relevant items)
 - Microsoft AI Blog: unavailable (HTTP 410)
-- The Verge AI: OK (7 relevant items)
+- The Verge AI: OK (8 relevant items)
 
 ## Relevant AI updates
 
+- **Barret Zoph is out at OpenAI again after just five months** — The Verge AI · 2026-06-19
+  https://www.theverge.com/ai-artificial-intelligence/952837/barret-zoph-openai-thinking-machines-lab
+- **New usage analytics and updated spend controls for enterprises** — OpenAI News · 2026-06-18
+  https://openai.com/index/chatgpt-enterprise-spend-controls
+- **Improving health intelligence in ChatGPT** — OpenAI News · 2026-06-18
+  https://openai.com/index/improving-health-intelligence-in-chatgpt
+- **Using AI to help physicians diagnose rare genetic diseases affecting children** — OpenAI News · 2026-06-18
+  https://openai.com/index/diagnose-rare-childhood-diseases
+- **Amazon employees say they’re facing termination for backing data center limits** — The Verge AI · 2026-06-18
+  https://www.theverge.com/ai-artificial-intelligence/952180/amazon-seattle-data-center-moratorium-aecj-disciplinary-action
+- **Who decides when AI is too dangerous?** — The Verge AI · 2026-06-18
+  https://www.theverge.com/podcast/951542/anthropic-claude-fable-5-mythos-ban-pentagon-ai-regulation-trump
+- **Photoshop and Premiere now have AI assistants** — The Verge AI · 2026-06-18
+  https://www.theverge.com/tech/952099/adobe-ai-assistants-photoshop-premiere-illustrator-beta-launch
+- **Adobe’s redesigned AI studio remembers what your creations look like** — The Verge AI · 2026-06-18
+  https://www.theverge.com/tech/952104/adobe-firefly-ai-agent-elements-projects-update
 - **Midjourney goes from generating cat images to full-body ultrasound scans** — The Verge AI · 2026-06-18
   https://www.theverge.com/ai-artificial-intelligence/952011/midjourney-medical-ai-ultrasound-scan
 - **Getting more from each token: How Copilot improves context handling and model routing** — GitHub AI & ML Blog · 2026-06-17
@@ -27,16 +43,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/ai-artificial-intelligence/951703/anthropic-shutdown-export-controls
 - **Two-thirds of Americans think AI is advancing too quickly** — The Verge AI · 2026-06-17
   https://www.theverge.com/ai-artificial-intelligence/951653/pew-research-ai-chatbot-usage-advancing-too-quickly
-- **Vibe-decoding the White House-Anthropic fight over Fable** — The Verge AI · 2026-06-17
-  https://www.theverge.com/column/951516/trump-anthropic-feud-mythos-fable-white-house
-- **AI search grounded in Facebook posts? What could go wrong?** — The Verge AI · 2026-06-17
-  https://www.theverge.com/ai-artificial-intelligence/951099/meta-ai-mode-search-hands-on
-- **The next humanoid robot might not look human at all** — The Verge AI · 2026-06-17
-  https://www.theverge.com/ai-artificial-intelligence/951283/genesis-ai-humanoid-robot-eno
 - **Predicting model behavior before release by simulating deployment** — OpenAI News · 2026-06-16
   https://openai.com/index/deployment-simulation
-- **Apple 2027 rumors: AirPods with cameras for AI and the second folding iPhone** — The Verge AI · 2026-06-16
-  https://www.theverge.com/tech/950826/apple-airpod-camera-ai-foldable-iphone-rumor
 - **GitHub Copilot CLI for Beginners: Overview of common slash commands** — GitHub AI & ML Blog · 2026-06-15
   https://github.blog/ai-and-ml/github-copilot/github-copilot-cli-for-beginners-overview-of-common-slash-commands/
 - **Accelerating researchers and developers building multilingual AI with a new open dataset** — GitHub AI & ML Blog · 2026-06-15
@@ -47,14 +55,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://github.blog/ai-and-ml/how-we-made-github-copilot-cli-more-selective-about-delegation/
 - **New OpenAI Academy courses for the next era of work** — OpenAI News · 2026-06-12
   https://openai.com/index/academy-courses-applying-ai-at-work
-- **How Preply combines AI and human tutors to personalize learning** — OpenAI News · 2026-06-12
-  https://openai.com/index/preply
 - **Making secret scanning more trustworthy: Reducing false positives at scale** — GitHub AI & ML Blog · 2026-06-11
   https://github.blog/security/making-secret-scanning-more-trustworthy-reducing-false-positives-at-scale/
-- **OpenAI to acquire Ona** — OpenAI News · 2026-06-11
-  https://openai.com/index/openai-to-acquire-ona
-- **BBVA puts AI at the core of banking with OpenAI** — OpenAI News · 2026-06-11
-  https://openai.com/index/bbva
 - **Give GitHub Copilot CLI real code intelligence with language servers** — GitHub AI & ML Blog · 2026-06-10
   https://github.blog/ai-and-ml/github-copilot/give-github-copilot-cli-real-code-intelligence-with-language-servers/
 - **From one-off prompts to workflows: How to use custom agents in GitHub Copilot CLI** — GitHub AI & ML Blog · 2026-06-09
@@ -78,12 +80,12 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
-- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
 

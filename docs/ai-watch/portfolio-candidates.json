@@ -1,6 +1,31 @@
 {
-  "generatedAt": "2026-06-18T11:48:15.185Z",
+  "generatedAt": "2026-06-19T12:02:53.290Z",
   "candidates": [
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "New usage analytics and updated spend controls for enterprises",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/chatgpt-enterprise-spend-controls",
+          "date": "2026-06-18"
+        },
+        {
+          "title": "Improving health intelligence in ChatGPT",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/improving-health-intelligence-in-chatgpt",
+          "date": "2026-06-18"
+        },
+        {
+          "title": "Two-thirds of Americans think AI is advancing too quickly",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/951653/pew-research-ai-chatbot-usage-advancing-too-quickly",
+          "date": "2026-06-17"
+        }
+      ]
+    },
     {
       "label": "GitHub Copilot developer loop",
       "status": "safe-data-candidate",
@@ -27,44 +52,6 @@
       ]
     },
     {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Two-thirds of Americans think AI is advancing too quickly",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/951653/pew-research-ai-chatbot-usage-advancing-too-quickly",
-          "date": "2026-06-17"
-        },
-        {
-          "title": "BBVA puts AI at the core of banking with OpenAI",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/bbva",
-          "date": "2026-06-11"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Vibe-decoding the White House-Anthropic fight over Fable",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/column/951516/trump-anthropic-feud-mythos-fable-white-house",
-          "date": "2026-06-17"
-        },
-        {
-          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
-          "date": "2026-05-22"
-        }
-      ]
-    },
-    {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
@@ -82,10 +69,10 @@
           "date": "2026-06-12"
         },
         {
-          "title": "OpenAI to acquire Ona",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/openai-to-acquire-ona",
-          "date": "2026-06-11"
+          "title": "From one-off prompts to workflows: How to use custom agents in GitHub Copilot CLI",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/from-one-off-prompts-to-workflows-how-to-use-custom-agents-in-github-copilot-cli/",
+          "date": "2026-06-09"
         }
       ]
     },
@@ -130,6 +117,19 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-keynote-moment-videos/",
           "date": "2026-05-28"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
+          "date": "2026-05-22"
         }
       ]
     }

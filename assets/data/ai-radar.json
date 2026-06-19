@@ -1,11 +1,96 @@
 {
-  "generatedAt": "2026-06-18T11:48:15.185Z",
-  "date": "2026-06-18",
+  "generatedAt": "2026-06-19T12:02:53.290Z",
+  "date": "2026-06-19",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Barret Zoph is out at OpenAI again after just five months",
+      "source": "The Verge AI",
+      "date": "2026-06-19",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/952837/barret-zoph-openai-thinking-machines-lab",
+      "summary": "Five months after returning to OpenAI, Barret Zoph - the company's head of enterprise AI sales - has departed, The Verge has learned. Zoph returned to OpenAI in mid-January after a stint as co-founder and CTO of Thinking...",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "New usage analytics and updated spend controls for enterprises",
+      "source": "OpenAI News",
+      "date": "2026-06-18",
+      "url": "https://openai.com/index/chatgpt-enterprise-spend-controls",
+      "summary": "OpenAI introduces new spend controls and usage analytics for ChatGPT Enterprise, helping organizations manage costs and scale AI with confidence.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Improving health intelligence in ChatGPT",
+      "source": "OpenAI News",
+      "date": "2026-06-18",
+      "url": "https://openai.com/index/improving-health-intelligence-in-chatgpt",
+      "summary": "Learn how GPT-5.5 Instant improves ChatGPT’s health and wellness responses with stronger reasoning, better context, clearer communication, and physician-informed evaluations.",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ]
+    },
+    {
+      "title": "Using AI to help physicians diagnose rare genetic diseases affecting children",
+      "source": "OpenAI News",
+      "date": "2026-06-18",
+      "url": "https://openai.com/index/diagnose-rare-childhood-diseases",
+      "summary": "Researchers used an OpenAI reasoning model to help diagnose rare diseases, identifying 18 new diagnoses in previously unsolved cases.",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ]
+    },
+    {
+      "title": "Amazon employees say they’re facing termination for backing data center limits",
+      "source": "The Verge AI",
+      "date": "2026-06-18",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/952180/amazon-seattle-data-center-moratorium-aecj-disciplinary-action",
+      "summary": "When three Amazon software engineers testified earlier this month at Seattle City Council hearings about data centers, they started their testimony by citing a city law barring employment discrimination over political sp...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Who decides when AI is too dangerous?",
+      "source": "The Verge AI",
+      "date": "2026-06-18",
+      "url": "https://www.theverge.com/podcast/951542/anthropic-claude-fable-5-mythos-ban-pentagon-ai-regulation-trump",
+      "summary": "On today’s episode of Decoder, my guest is Hayden Field, senior AI reporter for The Verge. Often when Hayden comes on the show, it’s because something has gone wrong in the world of AI. Last weekend, that something was a...",
+      "tags": [
+        "Claude",
+        "Dev Tools",
+        "Models"
+      ]
+    },
+    {
+      "title": "Photoshop and Premiere now have AI assistants",
+      "source": "The Verge AI",
+      "date": "2026-06-18",
+      "url": "https://www.theverge.com/tech/952099/adobe-ai-assistants-photoshop-premiere-illustrator-beta-launch",
+      "summary": "Adobe's plan to stick AI assistants into all of its Creative Cloud suite is now fully underway, with new chatbots now rolling out to its biggest editing and design apps. As part of a public beta launching today, Photosho...",
+      "tags": [
+        "Agents"
+      ]
+    },
+    {
+      "title": "Adobe’s redesigned AI studio remembers what your creations look like",
+      "source": "The Verge AI",
+      "date": "2026-06-18",
+      "url": "https://www.theverge.com/tech/952104/adobe-firefly-ai-agent-elements-projects-update",
+      "summary": "Adobe is introducing some new capabilities for its Firefly AI assistant, alongside a \"reimagined\" AI studio that lets you edit and generate new designs from a single interface. The new Firefly experience launching today ...",
+      "tags": [
+        "Agents",
+        "Automation"
+      ]
+    },
     {
       "title": "Midjourney goes from generating cat images to full-body ultrasound scans",
       "source": "The Verge AI",
@@ -129,94 +214,34 @@
       "tags": [
         "AI"
       ]
-    },
-    {
-      "title": "SpaceX is officially buying Cursor for $60 billion",
-      "source": "The Verge AI",
-      "date": "2026-06-16",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/950571/spacex-is-officially-buying-cursor-for-60-billion",
-      "summary": "Days after its massive IPO, SpaceX says it is spending $60 billion to buy Cursor - a bet designed to help Elon Musk's sprawling rocket / AI / social media behemoth win over lucrative enterprise customers and close the ga...",
-      "tags": [
-        "ChatGPT",
-        "Claude"
-      ]
-    },
-    {
-      "title": "Inside the fight over Claude Mythos 5",
-      "source": "The Verge AI",
-      "date": "2026-06-16",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/950412/anthropic-trump-adminstration-claude-mythos-fable-5-export-controls",
-      "summary": "As the rest of the country celebrated the USA's first World Cup win and the New York Knicks championship, Anthropic spent its weekend fighting the Trump administration over its latest model release. At 5:21 PM on Friday,...",
-      "tags": [
-        "Claude",
-        "Models"
-      ]
-    },
-    {
-      "title": "All the news about Anthropic&#8217;s new AI fight with the White House",
-      "source": "The Verge AI",
-      "date": "2026-06-16",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/950026/anthropic-fable-mythos-ban-ai-shutdown",
-      "summary": "Anthropic was already navigating one dispute with the government in its standoff with the Pentagon, and then came an order on June 12th to block off foreign access to its most recently released AI models, Fable 5 and Myt...",
-      "tags": [
-        "Claude",
-        "Models"
-      ]
-    },
-    {
-      "title": "GitHub Copilot CLI for Beginners: Overview of common slash commands",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-06-15",
-      "url": "https://github.blog/ai-and-ml/github-copilot/github-copilot-cli-for-beginners-overview-of-common-slash-commands/",
-      "summary": "GitHub Copilot CLI for Beginners: Learn how to use slash commands to control your terminal AI agent. The post GitHub Copilot CLI for Beginners: Overview of common slash commands appeared first on The GitHub Blog.",
-      "tags": [
-        "Agents",
-        "Copilot"
-      ]
-    },
-    {
-      "title": "Accelerating researchers and developers building multilingual AI with a new open dataset",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-06-15",
-      "url": "https://github.blog/ai-and-ml/llms/accelerating-researchers-and-developers-building-multilingual-ai-with-a-new-open-dataset/",
-      "summary": "A new repository-level dataset, published on GitHub under CC0-1.0, helps researchers and developers discover multilingual developer content across READMEs, issues, and pull requests. The post Accelerating researchers and...",
-      "tags": [
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "Facebook’s new AI Mode search gets its info from public posts",
-      "source": "The Verge AI",
-      "date": "2026-06-15",
-      "url": "https://www.theverge.com/tech/950264/meta-ai-mode-search-facebook",
-      "summary": "Your public Facebook posts could help inform AI-generated results in Meta's new AI Mode. When you search on Facebook, the \"AI Mode\" option will appear alongside the usual search modes like \"People\" and \"Marketplace.\" It'...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Trump’s Anthropic shutdown just made the case for non-American AI",
-      "source": "The Verge AI",
-      "date": "2026-06-15",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/949986/anthropic-fable-mythos-shutdown-sovereign-ai",
-      "summary": "At Washington's request, Anthropic suddenly took its newest and most powerful AI models offline over the weekend. The American company said it had little choice after the White House demanded it block access for all fore...",
-      "tags": [
-        "Claude",
-        "Models"
-      ]
-    },
-    {
-      "title": "Big Tech’s desperate last push at AI regulation",
-      "source": "The Verge AI",
-      "date": "2026-06-15",
-      "url": "https://www.theverge.com/policy/949970/ai-regulation-child-safety-kosa-congress",
-      "summary": "For months, Big Tech's Washington lobbyists have chased after the holy grail of pro-AI legislation: preemption. This would be a comprehensive federal law, passed in Congress and signed by the president, applying one set ...",
-      "tags": [
-        "AI"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "New usage analytics and updated spend controls for enterprises",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/chatgpt-enterprise-spend-controls",
+          "date": "2026-06-18"
+        },
+        {
+          "title": "Improving health intelligence in ChatGPT",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/improving-health-intelligence-in-chatgpt",
+          "date": "2026-06-18"
+        },
+        {
+          "title": "Two-thirds of Americans think AI is advancing too quickly",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/951653/pew-research-ai-chatbot-usage-advancing-too-quickly",
+          "date": "2026-06-17"
+        }
+      ]
+    },
     {
       "label": "GitHub Copilot developer loop",
       "status": "safe-data-candidate",
@@ -243,44 +268,6 @@
       ]
     },
     {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Two-thirds of Americans think AI is advancing too quickly",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/951653/pew-research-ai-chatbot-usage-advancing-too-quickly",
-          "date": "2026-06-17"
-        },
-        {
-          "title": "BBVA puts AI at the core of banking with OpenAI",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/bbva",
-          "date": "2026-06-11"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Vibe-decoding the White House-Anthropic fight over Fable",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/column/951516/trump-anthropic-feud-mythos-fable-white-house",
-          "date": "2026-06-17"
-        },
-        {
-          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
-          "date": "2026-05-22"
-        }
-      ]
-    },
-    {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
@@ -298,10 +285,10 @@
           "date": "2026-06-12"
         },
         {
-          "title": "OpenAI to acquire Ona",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/openai-to-acquire-ona",
-          "date": "2026-06-11"
+          "title": "From one-off prompts to workflows: How to use custom agents in GitHub Copilot CLI",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/from-one-off-prompts-to-workflows-how-to-use-custom-agents-in-github-copilot-cli/",
+          "date": "2026-06-09"
         }
       ]
     },
@@ -346,6 +333,19 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-keynote-moment-videos/",
           "date": "2026-05-28"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
+          "date": "2026-05-22"
         }
       ]
     }
