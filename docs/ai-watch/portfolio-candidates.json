@@ -1,6 +1,56 @@
 {
-  "generatedAt": "2026-06-19T12:02:53.290Z",
+  "generatedAt": "2026-06-20T10:29:39.589Z",
   "candidates": [
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "How we built an internal data analytics agent",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/",
+          "date": "2026-06-19"
+        },
+        {
+          "title": "GitHub Copilot CLI for Beginners: Overview of common slash commands",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-cli-for-beginners-overview-of-common-slash-commands/",
+          "date": "2026-06-15"
+        },
+        {
+          "title": "New OpenAI Academy courses for the next era of work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/academy-courses-applying-ai-at-work",
+          "date": "2026-06-12"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "How we built an internal data analytics agent",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/",
+          "date": "2026-06-19"
+        },
+        {
+          "title": "Getting more from each token: How Copilot improves context handling and model routing",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/getting-more-from-each-token-how-copilot-improves-context-handling-and-model-routing/",
+          "date": "2026-06-17"
+        },
+        {
+          "title": "GitHub Copilot CLI for Beginners: Overview of common slash commands",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-cli-for-beginners-overview-of-common-slash-commands/",
+          "date": "2026-06-15"
+        }
+      ]
+    },
     {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
@@ -17,62 +67,6 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/improving-health-intelligence-in-chatgpt",
           "date": "2026-06-18"
-        },
-        {
-          "title": "Two-thirds of Americans think AI is advancing too quickly",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/951653/pew-research-ai-chatbot-usage-advancing-too-quickly",
-          "date": "2026-06-17"
-        }
-      ]
-    },
-    {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Getting more from each token: How Copilot improves context handling and model routing",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/getting-more-from-each-token-how-copilot-improves-context-handling-and-model-routing/",
-          "date": "2026-06-17"
-        },
-        {
-          "title": "GitHub Copilot CLI for Beginners: Overview of common slash commands",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-cli-for-beginners-overview-of-common-slash-commands/",
-          "date": "2026-06-15"
-        },
-        {
-          "title": "How we made GitHub Copilot CLI more selective about delegation",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/how-we-made-github-copilot-cli-more-selective-about-delegation/",
-          "date": "2026-06-12"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "GitHub Copilot CLI for Beginners: Overview of common slash commands",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-cli-for-beginners-overview-of-common-slash-commands/",
-          "date": "2026-06-15"
-        },
-        {
-          "title": "New OpenAI Academy courses for the next era of work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/academy-courses-applying-ai-at-work",
-          "date": "2026-06-12"
-        },
-        {
-          "title": "From one-off prompts to workflows: How to use custom agents in GitHub Copilot CLI",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/from-one-off-prompts-to-workflows-how-to-use-custom-agents-in-github-copilot-cli/",
-          "date": "2026-06-09"
         }
       ]
     },
@@ -86,12 +80,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/llms/accelerating-researchers-and-developers-building-multilingual-ai-with-a-new-open-dataset/",
           "date": "2026-06-15"
-        },
-        {
-          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
-          "date": "2026-05-22"
         }
       ]
     },
@@ -117,19 +105,6 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-keynote-moment-videos/",
           "date": "2026-05-28"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
-          "date": "2026-05-22"
         }
       ]
     }

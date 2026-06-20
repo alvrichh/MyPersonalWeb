@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-06-19
+# Daily AI maintenance report — 2026-06-20
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,10 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **How we built an internal data analytics agent** — GitHub AI & ML Blog · 2026-06-19
+  https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/
+- **The film about Sam Altman has been dropped by Amazon MGM** — The Verge AI · 2026-06-19
+  https://www.theverge.com/ai-artificial-intelligence/952906/sam-altman-film-artificial-openai-amazon-mgm-dropped
 - **Barret Zoph is out at OpenAI again after just five months** — The Verge AI · 2026-06-19
   https://www.theverge.com/ai-artificial-intelligence/952837/barret-zoph-openai-thinking-machines-lab
 - **New usage analytics and updated spend controls for enterprises** — OpenAI News · 2026-06-18
@@ -41,8 +45,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/introducing-life-sci-bench
 - **Anthropic got hit by export rules nobody understands** — The Verge AI · 2026-06-17
   https://www.theverge.com/ai-artificial-intelligence/951703/anthropic-shutdown-export-controls
-- **Two-thirds of Americans think AI is advancing too quickly** — The Verge AI · 2026-06-17
-  https://www.theverge.com/ai-artificial-intelligence/951653/pew-research-ai-chatbot-usage-advancing-too-quickly
 - **Predicting model behavior before release by simulating deployment** — OpenAI News · 2026-06-16
   https://openai.com/index/deployment-simulation
 - **GitHub Copilot CLI for Beginners: Overview of common slash commands** — GitHub AI & ML Blog · 2026-06-15
@@ -75,17 +77,14 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blog.google/innovation-and-ai/technology/ai/university-waterloo-labs/
 - **Catch up on 12 major I/O 2026 moments** — Google AI Blog · 2026-05-28
   https://blog.google/innovation-and-ai/technology/ai/io-2026-keynote-moment-videos/
-- **GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row** — GitHub AI & ML Blog · 2026-05-22
-  https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/
 
 ## Portfolio candidates
 
-- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
 
