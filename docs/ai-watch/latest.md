@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-06-20
+# Daily AI maintenance report — 2026-06-21
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **The Atlantic created a searchable database of the music used to train AI** — The Verge AI · 2026-06-20
+  https://www.theverge.com/ai-artificial-intelligence/953183/the-atlantic-searchable-database-music-ai-training-data
 - **How we built an internal data analytics agent** — GitHub AI & ML Blog · 2026-06-19
   https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/
 - **The film about Sam Altman has been dropped by Amazon MGM** — The Verge AI · 2026-06-19
@@ -43,8 +45,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/ai-chemist-improves-reaction
 - **Introducing LifeSciBench** — OpenAI News · 2026-06-17
   https://openai.com/index/introducing-life-sci-bench
-- **Anthropic got hit by export rules nobody understands** — The Verge AI · 2026-06-17
-  https://www.theverge.com/ai-artificial-intelligence/951703/anthropic-shutdown-export-controls
 - **Predicting model behavior before release by simulating deployment** — OpenAI News · 2026-06-16
   https://openai.com/index/deployment-simulation
 - **GitHub Copilot CLI for Beginners: Overview of common slash commands** — GitHub AI & ML Blog · 2026-06-15
