@@ -1,11 +1,21 @@
 {
-  "generatedAt": "2026-06-20T10:29:39.589Z",
-  "date": "2026-06-20",
+  "generatedAt": "2026-06-21T11:13:14.070Z",
+  "date": "2026-06-21",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "The Atlantic created a searchable database of the music used to train AI",
+      "source": "The Verge AI",
+      "date": "2026-06-20",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/953183/the-atlantic-searchable-database-music-ai-training-data",
+      "summary": "Atlantic reporter Alex Reisner recently uncovered four datasets of music being used to train AI models and made them fully searchable for the public. Two of the sets are absolutely enormous at 12 million and 9 million tr...",
+      "tags": [
+        "Models"
+      ]
+    },
     {
       "title": "How we built an internal data analytics agent",
       "source": "GitHub AI & ML Blog",
@@ -201,16 +211,6 @@
       "date": "2026-06-17",
       "url": "https://www.theverge.com/ai-artificial-intelligence/951099/meta-ai-mode-search-hands-on",
       "summary": "AI is pretty reliable at putting things on your calendar these days, but it hasn't quite cracked answering the related and all-important question of \"What should I do this weekend?\" Meta's new AI Mode in search could be ...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "The next humanoid robot might not look human at all",
-      "source": "The Verge AI",
-      "date": "2026-06-17",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/951283/genesis-ai-humanoid-robot-eno",
-      "summary": "The next humanoid robot might not have a head. It might not have legs. It might even sit on a wheeled base and fold down like a deck chair. But, as Genesis AI puts it, \"humanoid robots don't need to look human.\" That exp...",
       "tags": [
         "AI"
       ]
