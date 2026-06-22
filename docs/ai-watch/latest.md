@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-06-21
+# Daily AI maintenance report — 2026-06-22
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,14 +13,16 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
-- **The Atlantic created a searchable database of the music used to train AI** — The Verge AI · 2026-06-20
+- **The Atlantic created a searchable database of the music used to train AI** — The Verge AI · 2026-06-22
   https://www.theverge.com/ai-artificial-intelligence/953183/the-atlantic-searchable-database-music-ai-training-data
+- **Barret Zoph is out at OpenAI again after just five months** — The Verge AI · 2026-06-22
+  https://www.theverge.com/ai-artificial-intelligence/952837/barret-zoph-openai-thinking-machines-lab
+- **Samsung Electronics brings ChatGPT and Codex to employees** — OpenAI News · 2026-06-21
+  https://openai.com/index/samsung-electronics-chatgpt-codex-deployment
 - **How we built an internal data analytics agent** — GitHub AI & ML Blog · 2026-06-19
   https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/
 - **The film about Sam Altman has been dropped by Amazon MGM** — The Verge AI · 2026-06-19
   https://www.theverge.com/ai-artificial-intelligence/952906/sam-altman-film-artificial-openai-amazon-mgm-dropped
-- **Barret Zoph is out at OpenAI again after just five months** — The Verge AI · 2026-06-19
-  https://www.theverge.com/ai-artificial-intelligence/952837/barret-zoph-openai-thinking-machines-lab
 - **New usage analytics and updated spend controls for enterprises** — OpenAI News · 2026-06-18
   https://openai.com/index/chatgpt-enterprise-spend-controls
 - **Improving health intelligence in ChatGPT** — OpenAI News · 2026-06-18
@@ -55,8 +57,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/introducing-openai-partner-network
 - **How we made GitHub Copilot CLI more selective about delegation** — GitHub AI & ML Blog · 2026-06-12
   https://github.blog/ai-and-ml/how-we-made-github-copilot-cli-more-selective-about-delegation/
-- **New OpenAI Academy courses for the next era of work** — OpenAI News · 2026-06-12
-  https://openai.com/index/academy-courses-applying-ai-at-work
 - **Making secret scanning more trustworthy: Reducing false positives at scale** — GitHub AI & ML Blog · 2026-06-11
   https://github.blog/security/making-secret-scanning-more-trustworthy-reducing-false-positives-at-scale/
 - **Give GitHub Copilot CLI real code intelligence with language servers** — GitHub AI & ML Blog · 2026-06-10
@@ -80,9 +80,9 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
+- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
