@@ -1,6 +1,31 @@
 {
-  "generatedAt": "2026-06-21T11:13:14.070Z",
+  "generatedAt": "2026-06-22T13:31:55.410Z",
   "candidates": [
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Samsung Electronics brings ChatGPT and Codex to employees",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/samsung-electronics-chatgpt-codex-deployment",
+          "date": "2026-06-21"
+        },
+        {
+          "title": "New usage analytics and updated spend controls for enterprises",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/chatgpt-enterprise-spend-controls",
+          "date": "2026-06-18"
+        },
+        {
+          "title": "Improving health intelligence in ChatGPT",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/improving-health-intelligence-in-chatgpt",
+          "date": "2026-06-18"
+        }
+      ]
+    },
     {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
@@ -19,10 +44,10 @@
           "date": "2026-06-15"
         },
         {
-          "title": "New OpenAI Academy courses for the next era of work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/academy-courses-applying-ai-at-work",
-          "date": "2026-06-12"
+          "title": "From one-off prompts to workflows: How to use custom agents in GitHub Copilot CLI",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/from-one-off-prompts-to-workflows-how-to-use-custom-agents-in-github-copilot-cli/",
+          "date": "2026-06-09"
         }
       ]
     },
@@ -48,25 +73,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-cli-for-beginners-overview-of-common-slash-commands/",
           "date": "2026-06-15"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "New usage analytics and updated spend controls for enterprises",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/chatgpt-enterprise-spend-controls",
-          "date": "2026-06-18"
-        },
-        {
-          "title": "Improving health intelligence in ChatGPT",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/improving-health-intelligence-in-chatgpt",
-          "date": "2026-06-18"
         }
       ]
     },
