@@ -1,11 +1,63 @@
 {
-  "generatedAt": "2026-06-22T13:31:55.410Z",
-  "date": "2026-06-22",
+  "generatedAt": "2026-06-23T10:58:53.052Z",
+  "date": "2026-06-23",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "How Omio is building the future of conversational travel",
+      "source": "OpenAI News",
+      "date": "2026-06-23",
+      "url": "https://openai.com/index/omio",
+      "summary": "Discover how Omio uses OpenAI to power conversational travel experiences, accelerate product development, and transform into an AI-native company.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Daybreak: Tools for securing every organization in the world",
+      "source": "OpenAI News",
+      "date": "2026-06-22",
+      "url": "https://openai.com/index/daybreak-securing-the-world",
+      "summary": "OpenAI introduces new Daybreak tools, including Codex Security and GPT-5.5-Cyber, to help organizations find, validate, and patch vulnerabilities at scale.",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "Patch the Planet: a Daybreak initiative to support open source maintainers",
+      "source": "OpenAI News",
+      "date": "2026-06-22",
+      "url": "https://openai.com/index/patch-the-planet",
+      "summary": "OpenAI introduces Patch the Planet, a Daybreak initiative helping open-source maintainers find, validate, and fix vulnerabilities with AI and expert review.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Nvidia says its AI data center design runs hotter to use a lot less water",
+      "source": "The Verge AI",
+      "date": "2026-06-22",
+      "url": "https://www.theverge.com/tech/954139/nvidia-data-centers-rubin-liquid-cooling",
+      "summary": "Public pushback against data centers has emphasized their water and energy consumption, and now Nvidia is highlighting its claim that the Rubin generation reference design for a fully liquid-cooled data center has \"elimi...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "AI is cursing renters with the promise of impossible homes",
+      "source": "The Verge AI",
+      "date": "2026-06-22",
+      "url": "https://www.theverge.com/report/953888/ai-virtual-staging-real-estate-apartment-listings",
+      "summary": "Joyce, a native New Yorker, didn't think finding her first solo apartment in the city would be easy. But she also didn't think it'd be \"hell.\" After looking at a lot of tiny, overpriced places she described as \"shitholes...",
+      "tags": [
+        "AI"
+      ]
+    },
     {
       "title": "The Atlantic created a searchable database of the music used to train AI",
       "source": "The Verge AI",
@@ -162,58 +214,6 @@
       "summary": "Research in “Nature” shows our conversational AI system matches primary care physicians in complex disease management.",
       "tags": [
         "Gemini"
-      ]
-    },
-    {
-      "title": "A near-autonomous AI chemist improves a challenging reaction in medicinal chemistry",
-      "source": "OpenAI News",
-      "date": "2026-06-17",
-      "url": "https://openai.com/index/ai-chemist-improves-reaction",
-      "summary": "OpenAI and Molecule.one show how a near-autonomous AI chemist using GPT-5.4 improved a key drug-making reaction, advancing medicinal chemistry research.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Introducing LifeSciBench",
-      "source": "OpenAI News",
-      "date": "2026-06-17",
-      "url": "https://openai.com/index/introducing-life-sci-bench",
-      "summary": "Introducing LifeSciBench, an expert-authored, expert-reviewed benchmark for evaluating how AI systems handle real-world life science research tasks and decisions.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Anthropic got hit by export rules nobody understands",
-      "source": "The Verge AI",
-      "date": "2026-06-17",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/951703/anthropic-shutdown-export-controls",
-      "summary": "Anthropic has spent much of this week fighting to get its newest AI models back online after the Trump administration abruptly ordered the company to cut access for all foreign nationals, including users inside the US an...",
-      "tags": [
-        "Claude",
-        "Models"
-      ]
-    },
-    {
-      "title": "Two-thirds of Americans think AI is advancing too quickly",
-      "source": "The Verge AI",
-      "date": "2026-06-17",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/951653/pew-research-ai-chatbot-usage-advancing-too-quickly",
-      "summary": "According to the latest Pew Research poll, 49 percent of Americans report using chatbots at least occasionally, but 63 percent think the tech is advancing too quickly. Overall, use of AI chatbots has increased dramatical...",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Vibe-decoding the White House-Anthropic fight over Fable",
-      "source": "The Verge AI",
-      "date": "2026-06-17",
-      "url": "https://www.theverge.com/column/951516/trump-anthropic-feud-mythos-fable-white-house",
-      "summary": "Hello and welcome to Regulator, an email for Verge subscribers about technology, politics, and what happens when science crashes headlong into self-interest. Not a subscriber? Sign up here today! Got the scoop on a petty...",
-      "tags": [
-        "Claude",
-        "Dev Tools"
       ]
     }
   ],
