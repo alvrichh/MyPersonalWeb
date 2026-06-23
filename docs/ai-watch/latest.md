@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-06-22
+# Daily AI maintenance report — 2026-06-23
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,16 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **How Omio is building the future of conversational travel** — OpenAI News · 2026-06-23
+  https://openai.com/index/omio
+- **Daybreak: Tools for securing every organization in the world** — OpenAI News · 2026-06-22
+  https://openai.com/index/daybreak-securing-the-world
+- **Patch the Planet: a Daybreak initiative to support open source maintainers** — OpenAI News · 2026-06-22
+  https://openai.com/index/patch-the-planet
+- **Nvidia says its AI data center design runs hotter to use a lot less water** — The Verge AI · 2026-06-22
+  https://www.theverge.com/tech/954139/nvidia-data-centers-rubin-liquid-cooling
+- **AI is cursing renters with the promise of impossible homes** — The Verge AI · 2026-06-22
+  https://www.theverge.com/report/953888/ai-virtual-staging-real-estate-apartment-listings
 - **The Atlantic created a searchable database of the music used to train AI** — The Verge AI · 2026-06-22
   https://www.theverge.com/ai-artificial-intelligence/953183/the-atlantic-searchable-database-music-ai-training-data
 - **Barret Zoph is out at OpenAI again after just five months** — The Verge AI · 2026-06-22
@@ -35,26 +45,16 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/podcast/951542/anthropic-claude-fable-5-mythos-ban-pentagon-ai-regulation-trump
 - **Photoshop and Premiere now have AI assistants** — The Verge AI · 2026-06-18
   https://www.theverge.com/tech/952099/adobe-ai-assistants-photoshop-premiere-illustrator-beta-launch
-- **Adobe’s redesigned AI studio remembers what your creations look like** — The Verge AI · 2026-06-18
-  https://www.theverge.com/tech/952104/adobe-firefly-ai-agent-elements-projects-update
-- **Midjourney goes from generating cat images to full-body ultrasound scans** — The Verge AI · 2026-06-18
-  https://www.theverge.com/ai-artificial-intelligence/952011/midjourney-medical-ai-ultrasound-scan
 - **Getting more from each token: How Copilot improves context handling and model routing** — GitHub AI & ML Blog · 2026-06-17
   https://github.blog/ai-and-ml/github-copilot/getting-more-from-each-token-how-copilot-improves-context-handling-and-model-routing/
 - **New research shows how AMIE, our medical AI, could help manage health conditions.** — Google AI Blog · 2026-06-17
   https://blog.google/innovation-and-ai/models-and-research/google-research/amie-for-disease-management-in-nature/
 - **A near-autonomous AI chemist improves a challenging reaction in medicinal chemistry** — OpenAI News · 2026-06-17
   https://openai.com/index/ai-chemist-improves-reaction
-- **Introducing LifeSciBench** — OpenAI News · 2026-06-17
-  https://openai.com/index/introducing-life-sci-bench
-- **Predicting model behavior before release by simulating deployment** — OpenAI News · 2026-06-16
-  https://openai.com/index/deployment-simulation
 - **GitHub Copilot CLI for Beginners: Overview of common slash commands** — GitHub AI & ML Blog · 2026-06-15
   https://github.blog/ai-and-ml/github-copilot/github-copilot-cli-for-beginners-overview-of-common-slash-commands/
 - **Accelerating researchers and developers building multilingual AI with a new open dataset** — GitHub AI & ML Blog · 2026-06-15
   https://github.blog/ai-and-ml/llms/accelerating-researchers-and-developers-building-multilingual-ai-with-a-new-open-dataset/
-- **Introducing the OpenAI Partner Network** — OpenAI News · 2026-06-14
-  https://openai.com/index/introducing-openai-partner-network
 - **How we made GitHub Copilot CLI more selective about delegation** — GitHub AI & ML Blog · 2026-06-12
   https://github.blog/ai-and-ml/how-we-made-github-copilot-cli-more-selective-about-delegation/
 - **Making secret scanning more trustworthy: Reducing false positives at scale** — GitHub AI & ML Blog · 2026-06-11
