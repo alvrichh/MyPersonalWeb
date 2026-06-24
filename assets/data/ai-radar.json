@@ -1,11 +1,31 @@
 {
-  "generatedAt": "2026-06-23T10:58:53.052Z",
-  "date": "2026-06-23",
+  "generatedAt": "2026-06-24T10:45:01.950Z",
+  "date": "2026-06-24",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "I automated my job (and it made me a better leader)",
+      "source": "GitHub AI & ML Blog",
+      "date": "2026-06-23",
+      "url": "https://github.blog/developer-skills/github/i-automated-my-job-and-it-made-me-a-better-leader/",
+      "summary": "Explore how my day as a senior leader looks now that I use 40 automations to help, and learn more about some of my favorites. The post I automated my job (and it made me a better leader) appeared first on The GitHub Blog...",
+      "tags": [
+        "Automation"
+      ]
+    },
+    {
+      "title": "Helping build shared standards for advanced AI",
+      "source": "OpenAI News",
+      "date": "2026-06-23",
+      "url": "https://openai.com/index/helping-build-shared-standards-for-advanced-ai",
+      "summary": "OpenAI helps build shared standards for advanced AI, supporting evaluation frameworks, safety practices, and global cooperation through the Appia Foundation.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
     {
       "title": "How Omio is building the future of conversational travel",
       "source": "OpenAI News",
@@ -14,6 +34,66 @@
       "summary": "Discover how Omio uses OpenAI to power conversational travel experiences, accelerate product development, and transform into an AI-native company.",
       "tags": [
         "ChatGPT"
+      ]
+    },
+    {
+      "title": "Hollywood is bending the knee to OpenAI",
+      "source": "The Verge AI",
+      "date": "2026-06-23",
+      "url": "https://www.theverge.com/entertainment/954899/luca-guadagnino-artificial-sam-altman-amazon-a24-neon-mubi-chatgpt",
+      "summary": "Netflix, A24, Focus Features, and Warner Bros.' Clockwork have all reportedly decided to pass on picking up Artificial - director Luca Guadagnino's new biographical drama about OpenAI cofounder / CEO Sam Altman - for dis...",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Why corporate AI super PACs spent $27 million on a local election",
+      "source": "The Verge AI",
+      "date": "2026-06-23",
+      "url": "https://www.theverge.com/policy/954970/ai-super-pacs-alex-bores-new-york-12th-district",
+      "summary": "Hello and welcome to Regulator, the newsletter for Verge subscribers chronicling the misadventures of their favorite tech overlords and Washington swamp creatures. (\"Favorite\" is, of course, subjective.) Not a subscriber...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Something&#8217;s off with Midjourney’s pivot to body scanners",
+      "source": "The Verge AI",
+      "date": "2026-06-23",
+      "url": "https://www.theverge.com/report/954826/midjourney-medical-ai-ultrasound-body-scanner-lacks-evidence",
+      "summary": "Last week, Midjourney, an AI startup best known for its image generator, made an unusual pivot: medical imaging. The company announced a futuristic ultrasound scanner that would dunk users into a vat of water and, hopefu...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "The Fitbit Air takes a smarter approach to the AI health dumpster fire",
+      "source": "The Verge AI",
+      "date": "2026-06-23",
+      "url": "https://www.theverge.com/tech/954768/google-fitbit-air-review-fitness-tracker-wearable-ai-health-coach",
+      "summary": "Google Health Coach seems to think I'm on the verge of physical collapse. My sleep is not where it needs to be, hence my unimpressive readiness score. My heart rate variability, a measure of how recovered I am, is below ...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Sony’s AI Camera Assistant is exactly as bad as it looks",
+      "source": "The Verge AI",
+      "date": "2026-06-23",
+      "url": "https://www.theverge.com/tech/954676/sony-xperia-1-viii-ai-camera-assistant",
+      "summary": "When Sony announced the Xperia 1 VIII last month, it promoted the phone by sharing some of the worst photos taken on a Sony camera in years. These weren't just any photos, though: they were taken with Sony's new AI Camer...",
+      "tags": [
+        "Agents"
+      ]
+    },
+    {
+      "title": "Meta launches cheaper smart glasses without Ray-Ban",
+      "source": "The Verge AI",
+      "date": "2026-06-23",
+      "url": "https://www.theverge.com/tech/954052/meta-glasses-hands-on-kylie-jenner-smart-glasses-price-battery-privacy",
+      "summary": "For the past three years, \"Meta\" and \"Ray-Ban\" have been synonymous in the smart glasses space. Not anymore. Yesterday, I slipped on several pairs of Meta Glasses - no Ray-Bans - in three different styles and seven color...",
+      "tags": [
+        "AI"
       ]
     },
     {
@@ -130,94 +210,22 @@
         "ChatGPT",
         "Models"
       ]
-    },
-    {
-      "title": "Using AI to help physicians diagnose rare genetic diseases affecting children",
-      "source": "OpenAI News",
-      "date": "2026-06-18",
-      "url": "https://openai.com/index/diagnose-rare-childhood-diseases",
-      "summary": "Researchers used an OpenAI reasoning model to help diagnose rare diseases, identifying 18 new diagnoses in previously unsolved cases.",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "Amazon employees say they’re facing termination for backing data center limits",
-      "source": "The Verge AI",
-      "date": "2026-06-18",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/952180/amazon-seattle-data-center-moratorium-aecj-disciplinary-action",
-      "summary": "When three Amazon software engineers testified earlier this month at Seattle City Council hearings about data centers, they started their testimony by citing a city law barring employment discrimination over political sp...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Who decides when AI is too dangerous?",
-      "source": "The Verge AI",
-      "date": "2026-06-18",
-      "url": "https://www.theverge.com/podcast/951542/anthropic-claude-fable-5-mythos-ban-pentagon-ai-regulation-trump",
-      "summary": "On today’s episode of Decoder, my guest is Hayden Field, senior AI reporter for The Verge. Often when Hayden comes on the show, it’s because something has gone wrong in the world of AI. Last weekend, that something was a...",
-      "tags": [
-        "Claude",
-        "Dev Tools",
-        "Models"
-      ]
-    },
-    {
-      "title": "Photoshop and Premiere now have AI assistants",
-      "source": "The Verge AI",
-      "date": "2026-06-18",
-      "url": "https://www.theverge.com/tech/952099/adobe-ai-assistants-photoshop-premiere-illustrator-beta-launch",
-      "summary": "Adobe's plan to stick AI assistants into all of its Creative Cloud suite is now fully underway, with new chatbots now rolling out to its biggest editing and design apps. As part of a public beta launching today, Photosho...",
-      "tags": [
-        "Agents"
-      ]
-    },
-    {
-      "title": "Adobe’s redesigned AI studio remembers what your creations look like",
-      "source": "The Verge AI",
-      "date": "2026-06-18",
-      "url": "https://www.theverge.com/tech/952104/adobe-firefly-ai-agent-elements-projects-update",
-      "summary": "Adobe is introducing some new capabilities for its Firefly AI assistant, alongside a \"reimagined\" AI studio that lets you edit and generate new designs from a single interface. The new Firefly experience launching today ...",
-      "tags": [
-        "Agents",
-        "Automation"
-      ]
-    },
-    {
-      "title": "Midjourney goes from generating cat images to full-body ultrasound scans",
-      "source": "The Verge AI",
-      "date": "2026-06-18",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/952011/midjourney-medical-ai-ultrasound-scan",
-      "summary": "Midjourney CEO David Holz just showed off the company's first hardware product and plans to build a San Francisco spa, which he admitted is a bit different from the \"cat pictures\" produced by its AI image generator. Dubb...",
-      "tags": [
-        "Multimodal"
-      ]
-    },
-    {
-      "title": "Getting more from each token: How Copilot improves context handling and model routing",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-06-17",
-      "url": "https://github.blog/ai-and-ml/github-copilot/getting-more-from-each-token-how-copilot-improves-context-handling-and-model-routing/",
-      "summary": "How GitHub Copilot is making more of each session go toward useful work, so your credits go further. The post Getting more from each token: How Copilot improves context handling and model routing appeared first on The Gi...",
-      "tags": [
-        "Copilot",
-        "Models"
-      ]
-    },
-    {
-      "title": "New research shows how AMIE, our medical AI, could help manage health conditions.",
-      "source": "Google AI Blog",
-      "date": "2026-06-17",
-      "url": "https://blog.google/innovation-and-ai/models-and-research/google-research/amie-for-disease-management-in-nature/",
-      "summary": "Research in “Nature” shows our conversational AI system matches primary care physicians in complex disease management.",
-      "tags": [
-        "Gemini"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "AI automation and workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "I automated my job (and it made me a better leader)",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/developer-skills/github/i-automated-my-job-and-it-made-me-a-better-leader/",
+          "date": "2026-06-23"
+        }
+      ]
+    },
     {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
@@ -259,12 +267,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-cli-for-beginners-overview-of-common-slash-commands/",
           "date": "2026-06-15"
-        },
-        {
-          "title": "From one-off prompts to workflows: How to use custom agents in GitHub Copilot CLI",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/from-one-off-prompts-to-workflows-how-to-use-custom-agents-in-github-copilot-cli/",
-          "date": "2026-06-09"
         }
       ]
     },

@@ -1,6 +1,19 @@
 {
-  "generatedAt": "2026-06-23T10:58:53.052Z",
+  "generatedAt": "2026-06-24T10:45:01.950Z",
   "candidates": [
+    {
+      "label": "AI automation and workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "I automated my job (and it made me a better leader)",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/developer-skills/github/i-automated-my-job-and-it-made-me-a-better-leader/",
+          "date": "2026-06-23"
+        }
+      ]
+    },
     {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
@@ -42,12 +55,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-cli-for-beginners-overview-of-common-slash-commands/",
           "date": "2026-06-15"
-        },
-        {
-          "title": "From one-off prompts to workflows: How to use custom agents in GitHub Copilot CLI",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/from-one-off-prompts-to-workflows-how-to-use-custom-agents-in-github-copilot-cli/",
-          "date": "2026-06-09"
         }
       ]
     },
