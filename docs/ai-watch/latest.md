@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-06-23
+# Daily AI maintenance report — 2026-06-24
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,8 +13,24 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **I automated my job (and it made me a better leader)** — GitHub AI & ML Blog · 2026-06-23
+  https://github.blog/developer-skills/github/i-automated-my-job-and-it-made-me-a-better-leader/
+- **Helping build shared standards for advanced AI** — OpenAI News · 2026-06-23
+  https://openai.com/index/helping-build-shared-standards-for-advanced-ai
 - **How Omio is building the future of conversational travel** — OpenAI News · 2026-06-23
   https://openai.com/index/omio
+- **Hollywood is bending the knee to OpenAI** — The Verge AI · 2026-06-23
+  https://www.theverge.com/entertainment/954899/luca-guadagnino-artificial-sam-altman-amazon-a24-neon-mubi-chatgpt
+- **Why corporate AI super PACs spent $27 million on a local election** — The Verge AI · 2026-06-23
+  https://www.theverge.com/policy/954970/ai-super-pacs-alex-bores-new-york-12th-district
+- **Something&#8217;s off with Midjourney’s pivot to body scanners** — The Verge AI · 2026-06-23
+  https://www.theverge.com/report/954826/midjourney-medical-ai-ultrasound-body-scanner-lacks-evidence
+- **The Fitbit Air takes a smarter approach to the AI health dumpster fire** — The Verge AI · 2026-06-23
+  https://www.theverge.com/tech/954768/google-fitbit-air-review-fitness-tracker-wearable-ai-health-coach
+- **Sony’s AI Camera Assistant is exactly as bad as it looks** — The Verge AI · 2026-06-23
+  https://www.theverge.com/tech/954676/sony-xperia-1-viii-ai-camera-assistant
+- **Meta launches cheaper smart glasses without Ray-Ban** — The Verge AI · 2026-06-23
+  https://www.theverge.com/tech/954052/meta-glasses-hands-on-kylie-jenner-smart-glasses-price-battery-privacy
 - **Daybreak: Tools for securing every organization in the world** — OpenAI News · 2026-06-22
   https://openai.com/index/daybreak-securing-the-world
 - **Patch the Planet: a Daybreak initiative to support open source maintainers** — OpenAI News · 2026-06-22
@@ -23,34 +39,20 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/tech/954139/nvidia-data-centers-rubin-liquid-cooling
 - **AI is cursing renters with the promise of impossible homes** — The Verge AI · 2026-06-22
   https://www.theverge.com/report/953888/ai-virtual-staging-real-estate-apartment-listings
-- **The Atlantic created a searchable database of the music used to train AI** — The Verge AI · 2026-06-22
-  https://www.theverge.com/ai-artificial-intelligence/953183/the-atlantic-searchable-database-music-ai-training-data
-- **Barret Zoph is out at OpenAI again after just five months** — The Verge AI · 2026-06-22
-  https://www.theverge.com/ai-artificial-intelligence/952837/barret-zoph-openai-thinking-machines-lab
 - **Samsung Electronics brings ChatGPT and Codex to employees** — OpenAI News · 2026-06-21
   https://openai.com/index/samsung-electronics-chatgpt-codex-deployment
 - **How we built an internal data analytics agent** — GitHub AI & ML Blog · 2026-06-19
   https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/
-- **The film about Sam Altman has been dropped by Amazon MGM** — The Verge AI · 2026-06-19
-  https://www.theverge.com/ai-artificial-intelligence/952906/sam-altman-film-artificial-openai-amazon-mgm-dropped
 - **New usage analytics and updated spend controls for enterprises** — OpenAI News · 2026-06-18
   https://openai.com/index/chatgpt-enterprise-spend-controls
 - **Improving health intelligence in ChatGPT** — OpenAI News · 2026-06-18
   https://openai.com/index/improving-health-intelligence-in-chatgpt
 - **Using AI to help physicians diagnose rare genetic diseases affecting children** — OpenAI News · 2026-06-18
   https://openai.com/index/diagnose-rare-childhood-diseases
-- **Amazon employees say they’re facing termination for backing data center limits** — The Verge AI · 2026-06-18
-  https://www.theverge.com/ai-artificial-intelligence/952180/amazon-seattle-data-center-moratorium-aecj-disciplinary-action
-- **Who decides when AI is too dangerous?** — The Verge AI · 2026-06-18
-  https://www.theverge.com/podcast/951542/anthropic-claude-fable-5-mythos-ban-pentagon-ai-regulation-trump
-- **Photoshop and Premiere now have AI assistants** — The Verge AI · 2026-06-18
-  https://www.theverge.com/tech/952099/adobe-ai-assistants-photoshop-premiere-illustrator-beta-launch
 - **Getting more from each token: How Copilot improves context handling and model routing** — GitHub AI & ML Blog · 2026-06-17
   https://github.blog/ai-and-ml/github-copilot/getting-more-from-each-token-how-copilot-improves-context-handling-and-model-routing/
 - **New research shows how AMIE, our medical AI, could help manage health conditions.** — Google AI Blog · 2026-06-17
   https://blog.google/innovation-and-ai/models-and-research/google-research/amie-for-disease-management-in-nature/
-- **A near-autonomous AI chemist improves a challenging reaction in medicinal chemistry** — OpenAI News · 2026-06-17
-  https://openai.com/index/ai-chemist-improves-reaction
 - **GitHub Copilot CLI for Beginners: Overview of common slash commands** — GitHub AI & ML Blog · 2026-06-15
   https://github.blog/ai-and-ml/github-copilot/github-copilot-cli-for-beginners-overview-of-common-slash-commands/
 - **Accelerating researchers and developers building multilingual AI with a new open dataset** — GitHub AI & ML Blog · 2026-06-15
@@ -61,8 +63,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://github.blog/security/making-secret-scanning-more-trustworthy-reducing-false-positives-at-scale/
 - **Give GitHub Copilot CLI real code intelligence with language servers** — GitHub AI & ML Blog · 2026-06-10
   https://github.blog/ai-and-ml/github-copilot/give-github-copilot-cli-real-code-intelligence-with-language-servers/
-- **From one-off prompts to workflows: How to use custom agents in GitHub Copilot CLI** — GitHub AI & ML Blog · 2026-06-09
-  https://github.blog/ai-and-ml/github-copilot/from-one-off-prompts-to-workflows-how-to-use-custom-agents-in-github-copilot-cli/
 - **The latest AI news we announced in May 2026** — Google AI Blog · 2026-06-05
   https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-may-2026/
 - **5 ways Google Search can level up your thrift and vintage shopping** — Google AI Blog · 2026-06-03
@@ -80,6 +80,7 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
+- **AI automation and workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
