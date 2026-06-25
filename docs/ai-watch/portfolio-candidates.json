@@ -1,6 +1,44 @@
 {
-  "generatedAt": "2026-06-24T10:45:01.950Z",
+  "generatedAt": "2026-06-25T10:38:54.262Z",
   "candidates": [
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "How agents are transforming work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/how-agents-are-transforming-work",
+          "date": "2026-06-25"
+        },
+        {
+          "title": "Figma now has AI motion graphics and shader tools",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/955831/figma-code-design-tools-config-2026-announcements",
+          "date": "2026-06-24"
+        },
+        {
+          "title": "How we built an internal data analytics agent",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/",
+          "date": "2026-06-19"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Figma now has AI motion graphics and shader tools",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/955831/figma-code-design-tools-config-2026-announcements",
+          "date": "2026-06-24"
+        }
+      ]
+    },
     {
       "label": "AI automation and workflow design",
       "status": "safe-data-candidate",
@@ -30,31 +68,6 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/chatgpt-enterprise-spend-controls",
           "date": "2026-06-18"
-        },
-        {
-          "title": "Improving health intelligence in ChatGPT",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/improving-health-intelligence-in-chatgpt",
-          "date": "2026-06-18"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "How we built an internal data analytics agent",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/",
-          "date": "2026-06-19"
-        },
-        {
-          "title": "GitHub Copilot CLI for Beginners: Overview of common slash commands",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-cli-for-beginners-overview-of-common-slash-commands/",
-          "date": "2026-06-15"
         }
       ]
     },
