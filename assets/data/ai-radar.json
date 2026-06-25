@@ -1,11 +1,96 @@
 {
-  "generatedAt": "2026-06-24T10:45:01.950Z",
-  "date": "2026-06-24",
+  "generatedAt": "2026-06-25T10:38:54.262Z",
+  "date": "2026-06-25",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "How agents are transforming work",
+      "source": "OpenAI News",
+      "date": "2026-06-25",
+      "url": "https://openai.com/index/how-agents-are-transforming-work",
+      "summary": "A new OpenAI research paper shows how AI agents are transforming work, enabling longer, more complex tasks and expanding productivity across roles.",
+      "tags": [
+        "Agents",
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Facebook’s Creator Studio has been revived as an AI companion app",
+      "source": "The Verge AI",
+      "date": "2026-06-25",
+      "url": "https://www.theverge.com/tech/956668/meta-facebook-creator-studio-ai-app-relaunch",
+      "summary": "Meta is bringing back the Facebook Creator Studio page manager, now \"reimagined\" as a standalone AI companion app. The new app aims to make it easier for creators to connect with their audiences and show them \"exactly ho...",
+      "tags": [
+        "Agents"
+      ]
+    },
+    {
+      "title": "OpenAI and Broadcom unveil LLM-optimized inference chip",
+      "source": "OpenAI News",
+      "date": "2026-06-24",
+      "url": "https://openai.com/index/openai-broadcom-jalapeno-inference-chip",
+      "summary": "OpenAI and Broadcom introduce Jalapeño, a custom AI chip built for LLM inference to improve performance, efficiency, and scale across AI systems.",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ]
+    },
+    {
+      "title": "Congresswoman denies staff used AI to write defense funding amendment",
+      "source": "The Verge AI",
+      "date": "2026-06-24",
+      "url": "https://www.theverge.com/policy/956394/florida-anna-paulina-luna-anthropic-claude",
+      "summary": "Rep. Anna Paulina Luna (R-FL) says her staff used AI for \"spellcheck\" in an amendment summary for a major defense bill, but denies it was used for the bill text itself and says \"NO Legislation is ever drafted with AI.\" L...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "The $27 million Al proxy war over Alex Bores ends in a draw",
+      "source": "The Verge AI",
+      "date": "2026-06-24",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/956263/alex-bores-new-york-12th-district-congressional-primary-results",
+      "summary": "The expensive, $27 million political proxy war between Anthropic and OpenAI came to a draw last night when Alex Bores, a New York state Assemblyman whose popularity surged after being targeted by a pro-AI super PAC, narr...",
+      "tags": [
+        "ChatGPT",
+        "Claude"
+      ]
+    },
+    {
+      "title": "Figma now has AI motion graphics and shader tools",
+      "source": "The Verge AI",
+      "date": "2026-06-24",
+      "url": "https://www.theverge.com/tech/955831/figma-code-design-tools-config-2026-announcements",
+      "summary": "Figma has revealed some new design and coding product updates at its annual Config conference that aim to help creatives \"push their ideas further\" and automate tedious tasks with AI. Part of this is a reimagined canvas ...",
+      "tags": [
+        "Agents",
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "OpenAI reveals its first AI processor: Jalapeño",
+      "source": "The Verge AI",
+      "date": "2026-06-24",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/955939/openai-reveals-its-first-ai-processor-jalapeno",
+      "summary": "OpenAI has just revealed a new \"intelligence processor\" chip for AI servers made in partnership with Broadcom. The chip, called Jalape&#241;o, is designed to power current and future large language models, according to a...",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ]
+    },
+    {
+      "title": "The Google Home Speaker sounds good and looks great — but it’s finicky",
+      "source": "The Verge AI",
+      "date": "2026-06-24",
+      "url": "https://www.theverge.com/gadgets/955537/google-home-smart-speaker-hands-on",
+      "summary": "Right out of the box, the new Google Home Speaker passed a couple of important tests. Even with the volume at 100 percent and music blaring out of the speaker, it quickly ducked the audio and listened every time I said \"...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
     {
       "title": "I automated my job (and it made me a better leader)",
       "source": "GitHub AI & ML Blog",
@@ -127,92 +212,47 @@
       "tags": [
         "AI"
       ]
-    },
-    {
-      "title": "AI is cursing renters with the promise of impossible homes",
-      "source": "The Verge AI",
-      "date": "2026-06-22",
-      "url": "https://www.theverge.com/report/953888/ai-virtual-staging-real-estate-apartment-listings",
-      "summary": "Joyce, a native New Yorker, didn't think finding her first solo apartment in the city would be easy. But she also didn't think it'd be \"hell.\" After looking at a lot of tiny, overpriced places she described as \"shitholes...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "The Atlantic created a searchable database of the music used to train AI",
-      "source": "The Verge AI",
-      "date": "2026-06-22",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/953183/the-atlantic-searchable-database-music-ai-training-data",
-      "summary": "Atlantic reporter Alex Reisner recently uncovered four datasets of music being used to train AI models and made them fully searchable for the public. Two of the sets are absolutely enormous at 12 million and 9 million tr...",
-      "tags": [
-        "Models"
-      ]
-    },
-    {
-      "title": "Barret Zoph is out at OpenAI again after just five months",
-      "source": "The Verge AI",
-      "date": "2026-06-22",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/952837/barret-zoph-openai-thinking-machines-lab",
-      "summary": "Five months after returning to OpenAI, Barret Zoph - the company's head of enterprise AI sales - has departed, The Verge has learned. Zoph returned to OpenAI in mid-January after a stint as cofounder and CTO of Thinking ...",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Samsung Electronics brings ChatGPT and Codex to employees",
-      "source": "OpenAI News",
-      "date": "2026-06-21",
-      "url": "https://openai.com/index/samsung-electronics-chatgpt-codex-deployment",
-      "summary": "Samsung Electronics deploys ChatGPT Enterprise and Codex to employees worldwide, marking one of OpenAI’s largest enterprise AI rollouts.",
-      "tags": [
-        "ChatGPT",
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "How we built an internal data analytics agent",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-06-19",
-      "url": "https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/",
-      "summary": "Qubot, our internal Copilot-powered analytics agent, allows any GitHub employee to ask questions about our data in plain language. Here's what we learned as we built it. The post How we built an internal data analytics a...",
-      "tags": [
-        "Agents",
-        "Copilot"
-      ]
-    },
-    {
-      "title": "The film about Sam Altman has been dropped by Amazon MGM",
-      "source": "The Verge AI",
-      "date": "2026-06-19",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/952906/sam-altman-film-artificial-openai-amazon-mgm-dropped",
-      "summary": "Luca Guadagnino's film about OpenAI CEO Sam Altman, Artificial, has reportedly been dropped by Amazon MGM. The film, which stars Andrew Garfield and covers the rollercoaster five days in 2023 spanning Altman's terminatio...",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "New usage analytics and updated spend controls for enterprises",
-      "source": "OpenAI News",
-      "date": "2026-06-18",
-      "url": "https://openai.com/index/chatgpt-enterprise-spend-controls",
-      "summary": "OpenAI introduces new spend controls and usage analytics for ChatGPT Enterprise, helping organizations manage costs and scale AI with confidence.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Improving health intelligence in ChatGPT",
-      "source": "OpenAI News",
-      "date": "2026-06-18",
-      "url": "https://openai.com/index/improving-health-intelligence-in-chatgpt",
-      "summary": "Learn how GPT-5.5 Instant improves ChatGPT’s health and wellness responses with stronger reasoning, better context, clearer communication, and physician-informed evaluations.",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "How agents are transforming work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/how-agents-are-transforming-work",
+          "date": "2026-06-25"
+        },
+        {
+          "title": "Figma now has AI motion graphics and shader tools",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/955831/figma-code-design-tools-config-2026-announcements",
+          "date": "2026-06-24"
+        },
+        {
+          "title": "How we built an internal data analytics agent",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/",
+          "date": "2026-06-19"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Figma now has AI motion graphics and shader tools",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/955831/figma-code-design-tools-config-2026-announcements",
+          "date": "2026-06-24"
+        }
+      ]
+    },
     {
       "label": "AI automation and workflow design",
       "status": "safe-data-candidate",
@@ -242,31 +282,6 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/chatgpt-enterprise-spend-controls",
           "date": "2026-06-18"
-        },
-        {
-          "title": "Improving health intelligence in ChatGPT",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/improving-health-intelligence-in-chatgpt",
-          "date": "2026-06-18"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "How we built an internal data analytics agent",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/",
-          "date": "2026-06-19"
-        },
-        {
-          "title": "GitHub Copilot CLI for Beginners: Overview of common slash commands",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-cli-for-beginners-overview-of-common-slash-commands/",
-          "date": "2026-06-15"
         }
       ]
     },

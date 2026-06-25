@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-06-24
+# Daily AI maintenance report — 2026-06-25
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,22 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **How agents are transforming work** — OpenAI News · 2026-06-25
+  https://openai.com/index/how-agents-are-transforming-work
+- **Facebook’s Creator Studio has been revived as an AI companion app** — The Verge AI · 2026-06-25
+  https://www.theverge.com/tech/956668/meta-facebook-creator-studio-ai-app-relaunch
+- **OpenAI and Broadcom unveil LLM-optimized inference chip** — OpenAI News · 2026-06-24
+  https://openai.com/index/openai-broadcom-jalapeno-inference-chip
+- **Congresswoman denies staff used AI to write defense funding amendment** — The Verge AI · 2026-06-24
+  https://www.theverge.com/policy/956394/florida-anna-paulina-luna-anthropic-claude
+- **The $27 million Al proxy war over Alex Bores ends in a draw** — The Verge AI · 2026-06-24
+  https://www.theverge.com/ai-artificial-intelligence/956263/alex-bores-new-york-12th-district-congressional-primary-results
+- **Figma now has AI motion graphics and shader tools** — The Verge AI · 2026-06-24
+  https://www.theverge.com/tech/955831/figma-code-design-tools-config-2026-announcements
+- **OpenAI reveals its first AI processor: Jalapeño** — The Verge AI · 2026-06-24
+  https://www.theverge.com/ai-artificial-intelligence/955939/openai-reveals-its-first-ai-processor-jalapeno
+- **The Google Home Speaker sounds good and looks great — but it’s finicky** — The Verge AI · 2026-06-24
+  https://www.theverge.com/gadgets/955537/google-home-smart-speaker-hands-on
 - **I automated my job (and it made me a better leader)** — GitHub AI & ML Blog · 2026-06-23
   https://github.blog/developer-skills/github/i-automated-my-job-and-it-made-me-a-better-leader/
 - **Helping build shared standards for advanced AI** — OpenAI News · 2026-06-23
@@ -23,32 +39,16 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/entertainment/954899/luca-guadagnino-artificial-sam-altman-amazon-a24-neon-mubi-chatgpt
 - **Why corporate AI super PACs spent $27 million on a local election** — The Verge AI · 2026-06-23
   https://www.theverge.com/policy/954970/ai-super-pacs-alex-bores-new-york-12th-district
-- **Something&#8217;s off with Midjourney’s pivot to body scanners** — The Verge AI · 2026-06-23
-  https://www.theverge.com/report/954826/midjourney-medical-ai-ultrasound-body-scanner-lacks-evidence
-- **The Fitbit Air takes a smarter approach to the AI health dumpster fire** — The Verge AI · 2026-06-23
-  https://www.theverge.com/tech/954768/google-fitbit-air-review-fitness-tracker-wearable-ai-health-coach
-- **Sony’s AI Camera Assistant is exactly as bad as it looks** — The Verge AI · 2026-06-23
-  https://www.theverge.com/tech/954676/sony-xperia-1-viii-ai-camera-assistant
-- **Meta launches cheaper smart glasses without Ray-Ban** — The Verge AI · 2026-06-23
-  https://www.theverge.com/tech/954052/meta-glasses-hands-on-kylie-jenner-smart-glasses-price-battery-privacy
-- **Daybreak: Tools for securing every organization in the world** — OpenAI News · 2026-06-22
-  https://openai.com/index/daybreak-securing-the-world
 - **Patch the Planet: a Daybreak initiative to support open source maintainers** — OpenAI News · 2026-06-22
   https://openai.com/index/patch-the-planet
-- **Nvidia says its AI data center design runs hotter to use a lot less water** — The Verge AI · 2026-06-22
-  https://www.theverge.com/tech/954139/nvidia-data-centers-rubin-liquid-cooling
-- **AI is cursing renters with the promise of impossible homes** — The Verge AI · 2026-06-22
-  https://www.theverge.com/report/953888/ai-virtual-staging-real-estate-apartment-listings
+- **Daybreak: Tools for securing every organization in the world** — OpenAI News · 2026-06-22
+  https://openai.com/index/daybreak-securing-the-world
 - **Samsung Electronics brings ChatGPT and Codex to employees** — OpenAI News · 2026-06-21
   https://openai.com/index/samsung-electronics-chatgpt-codex-deployment
 - **How we built an internal data analytics agent** — GitHub AI & ML Blog · 2026-06-19
   https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/
 - **New usage analytics and updated spend controls for enterprises** — OpenAI News · 2026-06-18
   https://openai.com/index/chatgpt-enterprise-spend-controls
-- **Improving health intelligence in ChatGPT** — OpenAI News · 2026-06-18
-  https://openai.com/index/improving-health-intelligence-in-chatgpt
-- **Using AI to help physicians diagnose rare genetic diseases affecting children** — OpenAI News · 2026-06-18
-  https://openai.com/index/diagnose-rare-childhood-diseases
 - **Getting more from each token: How Copilot improves context handling and model routing** — GitHub AI & ML Blog · 2026-06-17
   https://github.blog/ai-and-ml/github-copilot/getting-more-from-each-token-how-copilot-improves-context-handling-and-model-routing/
 - **New research shows how AMIE, our medical AI, could help manage health conditions.** — Google AI Blog · 2026-06-17
@@ -80,9 +80,10 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
+- **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI automation and workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
