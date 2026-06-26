@@ -1,11 +1,23 @@
 {
-  "generatedAt": "2026-06-25T10:38:54.262Z",
-  "date": "2026-06-25",
+  "generatedAt": "2026-06-26T10:47:16.069Z",
+  "date": "2026-06-26",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Evaluating performance and efficiency of the GitHub Copilot agentic harness across models and tasks",
+      "source": "GitHub AI & ML Blog",
+      "date": "2026-06-25",
+      "url": "https://github.blog/ai-and-ml/github-copilot/evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harness-across-models-and-tasks/",
+      "summary": "Explore how the GitHub Copilot agentic harness delivers strong results across multiple benchmarks and leading token efficiency, while maintaining flexibility to choose among more than 20 models. The post Evaluating perfo...",
+      "tags": [
+        "Agents",
+        "Copilot",
+        "Models"
+      ]
+    },
     {
       "title": "How agents are transforming work",
       "source": "OpenAI News",
@@ -15,6 +27,17 @@
       "tags": [
         "Agents",
         "ChatGPT"
+      ]
+    },
+    {
+      "title": "OpenAI will delay GPT-5.6 after Trump administration request",
+      "source": "The Verge AI",
+      "date": "2026-06-25",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/957372/openai-will-delay-gpt-5-6-after-trump-administration-request",
+      "summary": "The Trump administration, apprehensive of potential security issues, has reportedly asked OpenAI to stagger the release of its next big-ticket model, GPT-5.6. The Information reported that OpenAI CEO Sam Altman told empl...",
+      "tags": [
+        "ChatGPT",
+        "Models"
       ]
     },
     {
@@ -36,6 +59,16 @@
       "tags": [
         "ChatGPT",
         "Models"
+      ]
+    },
+    {
+      "title": "Ford had to hire back former engineers to fix mistakes made by its automated systems",
+      "source": "The Verge AI",
+      "date": "2026-06-24",
+      "url": "https://www.theverge.com/transportation/956316/ford-quality-jd-power-ranking-ai-automated-mistakes",
+      "summary": "To celebrate its new status as No. 1 in JD Power's initial quality ranking among mainstream automakers, Ford is opening up about the challenges it has faced in recent years, especially around its reliance on automated sy...",
+      "tags": [
+        "AI"
       ]
     },
     {
@@ -180,38 +213,6 @@
       "tags": [
         "AI"
       ]
-    },
-    {
-      "title": "Daybreak: Tools for securing every organization in the world",
-      "source": "OpenAI News",
-      "date": "2026-06-22",
-      "url": "https://openai.com/index/daybreak-securing-the-world",
-      "summary": "OpenAI introduces new Daybreak tools, including Codex Security and GPT-5.5-Cyber, to help organizations find, validate, and patch vulnerabilities at scale.",
-      "tags": [
-        "Agents",
-        "ChatGPT",
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "Patch the Planet: a Daybreak initiative to support open source maintainers",
-      "source": "OpenAI News",
-      "date": "2026-06-22",
-      "url": "https://openai.com/index/patch-the-planet",
-      "summary": "OpenAI introduces Patch the Planet, a Daybreak initiative helping open-source maintainers find, validate, and fix vulnerabilities with AI and expert review.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Nvidia says its AI data center design runs hotter to use a lot less water",
-      "source": "The Verge AI",
-      "date": "2026-06-22",
-      "url": "https://www.theverge.com/tech/954139/nvidia-data-centers-rubin-liquid-cooling",
-      "summary": "Public pushback against data centers has emphasized their water and energy consumption, and now Nvidia is highlighting its claim that the Rubin generation reference design for a fully liquid-cooled data center has \"elimi...",
-      "tags": [
-        "AI"
-      ]
     }
   ],
   "candidates": [
@@ -220,6 +221,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Evaluating performance and efficiency of the GitHub Copilot agentic harness across models and tasks",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harness-across-models-and-tasks/",
+          "date": "2026-06-25"
+        },
         {
           "title": "How agents are transforming work",
           "source": "OpenAI News",
@@ -231,12 +238,31 @@
           "source": "The Verge AI",
           "link": "https://www.theverge.com/tech/955831/figma-code-design-tools-config-2026-announcements",
           "date": "2026-06-24"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Evaluating performance and efficiency of the GitHub Copilot agentic harness across models and tasks",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harness-across-models-and-tasks/",
+          "date": "2026-06-25"
         },
         {
           "title": "How we built an internal data analytics agent",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/",
           "date": "2026-06-19"
+        },
+        {
+          "title": "Getting more from each token: How Copilot improves context handling and model routing",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/getting-more-from-each-token-how-copilot-improves-context-handling-and-model-routing/",
+          "date": "2026-06-17"
         }
       ]
     },
@@ -282,31 +308,6 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/chatgpt-enterprise-spend-controls",
           "date": "2026-06-18"
-        }
-      ]
-    },
-    {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "How we built an internal data analytics agent",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/",
-          "date": "2026-06-19"
-        },
-        {
-          "title": "Getting more from each token: How Copilot improves context handling and model routing",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/getting-more-from-each-token-how-copilot-improves-context-handling-and-model-routing/",
-          "date": "2026-06-17"
-        },
-        {
-          "title": "GitHub Copilot CLI for Beginners: Overview of common slash commands",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-cli-for-beginners-overview-of-common-slash-commands/",
-          "date": "2026-06-15"
         }
       ]
     },
