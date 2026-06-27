@@ -1,6 +1,19 @@
 {
-  "generatedAt": "2026-06-26T10:47:16.069Z",
+  "generatedAt": "2026-06-27T10:02:27.980Z",
   "candidates": [
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Previewing GPT-5.6 Sol: a next-generation model",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/previewing-gpt-5-6-sol",
+          "date": "2026-06-26"
+        }
+      ]
+    },
     {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
@@ -19,10 +32,10 @@
           "date": "2026-06-25"
         },
         {
-          "title": "Figma now has AI motion graphics and shader tools",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/955831/figma-code-design-tools-config-2026-announcements",
-          "date": "2026-06-24"
+          "title": "How we built an internal data analytics agent",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/",
+          "date": "2026-06-19"
         }
       ]
     },
@@ -52,19 +65,6 @@
       ]
     },
     {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Figma now has AI motion graphics and shader tools",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/955831/figma-code-design-tools-config-2026-announcements",
-          "date": "2026-06-24"
-        }
-      ]
-    },
-    {
       "label": "AI automation and workflow design",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
@@ -87,12 +87,6 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/samsung-electronics-chatgpt-codex-deployment",
           "date": "2026-06-21"
-        },
-        {
-          "title": "New usage analytics and updated spend controls for enterprises",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/chatgpt-enterprise-spend-controls",
-          "date": "2026-06-18"
         }
       ]
     },
