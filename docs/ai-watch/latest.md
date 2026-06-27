@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-06-26
+# Daily AI maintenance report — 2026-06-27
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,14 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Anthropic&#8217;s Mythos 5 is back** — The Verge AI · 2026-06-27
+  https://www.theverge.com/ai-artificial-intelligence/958458/anthropic-mythos-5-is-back-trump-negotiations
+- **Previewing GPT-5.6 Sol: a next-generation model** — OpenAI News · 2026-06-26
+  https://openai.com/index/previewing-gpt-5-6-sol
+- **OpenAI unveils GPT-5.6 amid US AI regulatory drama** — The Verge AI · 2026-06-26
+  https://www.theverge.com/ai-artificial-intelligence/957845/openai-gpt-5-6-trump-administration-ai-preview
+- **Anthropic&#8217;s Mythos mess is only getting worse** — The Verge AI · 2026-06-26
+  https://www.theverge.com/ai-artificial-intelligence/957327/anthropic-mythos-fable-ai-trump-administration-negotiations
 - **Evaluating performance and efficiency of the GitHub Copilot agentic harness across models and tasks** — GitHub AI & ML Blog · 2026-06-25
   https://github.blog/ai-and-ml/github-copilot/evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harness-across-models-and-tasks/
 - **How agents are transforming work** — OpenAI News · 2026-06-25
@@ -29,12 +37,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/policy/956394/florida-anna-paulina-luna-anthropic-claude
 - **The $27 million Al proxy war over Alex Bores ends in a draw** — The Verge AI · 2026-06-24
   https://www.theverge.com/ai-artificial-intelligence/956263/alex-bores-new-york-12th-district-congressional-primary-results
-- **Figma now has AI motion graphics and shader tools** — The Verge AI · 2026-06-24
-  https://www.theverge.com/tech/955831/figma-code-design-tools-config-2026-announcements
-- **OpenAI reveals its first AI processor: Jalapeño** — The Verge AI · 2026-06-24
-  https://www.theverge.com/ai-artificial-intelligence/955939/openai-reveals-its-first-ai-processor-jalapeno
-- **The Google Home Speaker sounds good and looks great — but it’s finicky** — The Verge AI · 2026-06-24
-  https://www.theverge.com/gadgets/955537/google-home-smart-speaker-hands-on
 - **I automated my job (and it made me a better leader)** — GitHub AI & ML Blog · 2026-06-23
   https://github.blog/developer-skills/github/i-automated-my-job-and-it-made-me-a-better-leader/
 - **Helping build shared standards for advanced AI** — OpenAI News · 2026-06-23
@@ -49,8 +51,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/samsung-electronics-chatgpt-codex-deployment
 - **How we built an internal data analytics agent** — GitHub AI & ML Blog · 2026-06-19
   https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/
-- **New usage analytics and updated spend controls for enterprises** — OpenAI News · 2026-06-18
-  https://openai.com/index/chatgpt-enterprise-spend-controls
 - **Getting more from each token: How Copilot improves context handling and model routing** — GitHub AI & ML Blog · 2026-06-17
   https://github.blog/ai-and-ml/github-copilot/getting-more-from-each-token-how-copilot-improves-context-handling-and-model-routing/
 - **New research shows how AMIE, our medical AI, could help manage health conditions.** — Google AI Blog · 2026-06-17
@@ -80,9 +80,9 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
+- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI automation and workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
