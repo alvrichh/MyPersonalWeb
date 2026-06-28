@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-06-27
+# Daily AI maintenance report — 2026-06-28
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,10 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Margaret Atwood says the problem with AI is &#8216;garbage in, garbage out&#8217;** — The Verge AI · 2026-06-27
+  https://www.theverge.com/ai-artificial-intelligence/958715/margaret-atwood-ai-problem-garbage-in-garbage-out
+- **Why is Apple asking me to pay more for Big Tech’s AI obsession?** — The Verge AI · 2026-06-27
+  https://www.theverge.com/report/958678/apple-consumer-price-increase-ai-big-tech
 - **Anthropic&#8217;s Mythos 5 is back** — The Verge AI · 2026-06-27
   https://www.theverge.com/ai-artificial-intelligence/958458/anthropic-mythos-5-is-back-trump-negotiations
 - **Previewing GPT-5.6 Sol: a next-generation model** — OpenAI News · 2026-06-26
@@ -33,10 +37,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/openai-broadcom-jalapeno-inference-chip
 - **Ford had to hire back former engineers to fix mistakes made by its automated systems** — The Verge AI · 2026-06-24
   https://www.theverge.com/transportation/956316/ford-quality-jd-power-ranking-ai-automated-mistakes
-- **Congresswoman denies staff used AI to write defense funding amendment** — The Verge AI · 2026-06-24
-  https://www.theverge.com/policy/956394/florida-anna-paulina-luna-anthropic-claude
-- **The $27 million Al proxy war over Alex Bores ends in a draw** — The Verge AI · 2026-06-24
-  https://www.theverge.com/ai-artificial-intelligence/956263/alex-bores-new-york-12th-district-congressional-primary-results
 - **I automated my job (and it made me a better leader)** — GitHub AI & ML Blog · 2026-06-23
   https://github.blog/developer-skills/github/i-automated-my-job-and-it-made-me-a-better-leader/
 - **Helping build shared standards for advanced AI** — OpenAI News · 2026-06-23

@@ -1,11 +1,31 @@
 {
-  "generatedAt": "2026-06-27T10:02:27.980Z",
-  "date": "2026-06-27",
+  "generatedAt": "2026-06-28T10:24:20.663Z",
+  "date": "2026-06-28",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Margaret Atwood says the problem with AI is &#8216;garbage in, garbage out&#8217;",
+      "source": "The Verge AI",
+      "date": "2026-06-27",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/958715/margaret-atwood-ai-problem-garbage-in-garbage-out",
+      "summary": "Maraget Atwood, the storied author of The Handmaid's Tale and The Blind Assassin, was interviewed as part of the Babell Literary and Cultural Festival in Porto, Portugal. As it usually does at these things, the issue of ...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Why is Apple asking me to pay more for Big Tech’s AI obsession?",
+      "source": "The Verge AI",
+      "date": "2026-06-27",
+      "url": "https://www.theverge.com/report/958678/apple-consumer-price-increase-ai-big-tech",
+      "summary": "Tim Cook recently said price increases were \"unavoidable\" and described the company's pricing as \"unsustainable.\" The 16-inch MacBook Pro saw its price go up by $300. The 11-inch iPad Air went from $599 to $749. Even the...",
+      "tags": [
+        "AI"
+      ]
+    },
     {
       "title": "Anthropic&#8217;s Mythos 5 is back",
       "source": "The Verge AI",
@@ -196,26 +216,6 @@
       "summary": "Discover how Omio uses OpenAI to power conversational travel experiences, accelerate product development, and transform into an AI-native company.",
       "tags": [
         "ChatGPT"
-      ]
-    },
-    {
-      "title": "Hollywood is bending the knee to OpenAI",
-      "source": "The Verge AI",
-      "date": "2026-06-23",
-      "url": "https://www.theverge.com/entertainment/954899/luca-guadagnino-artificial-sam-altman-amazon-a24-neon-mubi-chatgpt",
-      "summary": "Netflix, A24, Focus Features, and Warner Bros.' Clockwork have all reportedly decided to pass on picking up Artificial - director Luca Guadagnino's new biographical drama about OpenAI cofounder / CEO Sam Altman - for dis...",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Why corporate AI super PACs spent $27 million on a local election",
-      "source": "The Verge AI",
-      "date": "2026-06-23",
-      "url": "https://www.theverge.com/policy/954970/ai-super-pacs-alex-bores-new-york-12th-district",
-      "summary": "Hello and welcome to Regulator, the newsletter for Verge subscribers chronicling the misadventures of their favorite tech overlords and Washington swamp creatures. (\"Favorite\" is, of course, subjective.) Not a subscriber...",
-      "tags": [
-        "AI"
       ]
     }
   ],
