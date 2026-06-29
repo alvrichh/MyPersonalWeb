@@ -1,6 +1,38 @@
 {
-  "generatedAt": "2026-06-28T10:24:20.663Z",
+  "generatedAt": "2026-06-29T12:27:55.457Z",
   "candidates": [
+    {
+      "label": "AI automation and workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Mapping Europe’s AI Workforce Opportunity",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/mapping-ai-jobs-transition-eu",
+          "date": "2026-06-29"
+        },
+        {
+          "title": "I automated my job (and it made me a better leader)",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/developer-skills/github/i-automated-my-job-and-it-made-me-a-better-leader/",
+          "date": "2026-06-23"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Prosecutors used ChatGPT logs as evidence in the Palisades fire trial",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/958751/prosecutors-chatgpt-palisades-wildfire-arson-mistrial",
+          "date": "2026-06-28"
+        }
+      ]
+    },
     {
       "label": "AI coding assistant workflows",
       "status": "safe-data-candidate",
@@ -61,32 +93,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/getting-more-from-each-token-how-copilot-improves-context-handling-and-model-routing/",
           "date": "2026-06-17"
-        }
-      ]
-    },
-    {
-      "label": "AI automation and workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "I automated my job (and it made me a better leader)",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/developer-skills/github/i-automated-my-job-and-it-made-me-a-better-leader/",
-          "date": "2026-06-23"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Samsung Electronics brings ChatGPT and Codex to employees",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/samsung-electronics-chatgpt-codex-deployment",
-          "date": "2026-06-21"
         }
       ]
     },
