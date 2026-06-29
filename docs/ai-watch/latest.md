@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-06-28
+# Daily AI maintenance report — 2026-06-29
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,12 +13,22 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
-- **Margaret Atwood says the problem with AI is &#8216;garbage in, garbage out&#8217;** — The Verge AI · 2026-06-27
+- **Mapping Europe’s AI Workforce Opportunity** — OpenAI News · 2026-06-29
+  https://openai.com/index/mapping-ai-jobs-transition-eu
+- **Margaret Atwood says the problem with AI is &#8216;garbage in, garbage out&#8217;** — The Verge AI · 2026-06-29
   https://www.theverge.com/ai-artificial-intelligence/958715/margaret-atwood-ai-problem-garbage-in-garbage-out
+- **Anthropic&#8217;s Mythos 5 is back** — The Verge AI · 2026-06-29
+  https://www.theverge.com/ai-artificial-intelligence/958458/anthropic-mythos-5-is-back-trump-negotiations
+- **HP Inc. launches Frontier strategic partnership with OpenAI** — OpenAI News · 2026-06-28
+  https://openai.com/index/hp-frontier-partnership
+- **China’s Z.ai claims it can match Mythos on cybersecurity** — The Verge AI · 2026-06-28
+  https://www.theverge.com/ai-artificial-intelligence/958804/chinas-z-ai-glm-52-mythos-cybersecurity
+- **Suno launches Spark incubator program to feed independent artists to its AI machine** — The Verge AI · 2026-06-28
+  https://www.theverge.com/ai-artificial-intelligence/958801/suno-launches-spark-incubator-program-to-feed-independent-artists-to-its-ai-machine
+- **Prosecutors used ChatGPT logs as evidence in the Palisades fire trial** — The Verge AI · 2026-06-28
+  https://www.theverge.com/ai-artificial-intelligence/958751/prosecutors-chatgpt-palisades-wildfire-arson-mistrial
 - **Why is Apple asking me to pay more for Big Tech’s AI obsession?** — The Verge AI · 2026-06-27
   https://www.theverge.com/report/958678/apple-consumer-price-increase-ai-big-tech
-- **Anthropic&#8217;s Mythos 5 is back** — The Verge AI · 2026-06-27
-  https://www.theverge.com/ai-artificial-intelligence/958458/anthropic-mythos-5-is-back-trump-negotiations
 - **Previewing GPT-5.6 Sol: a next-generation model** — OpenAI News · 2026-06-26
   https://openai.com/index/previewing-gpt-5-6-sol
 - **OpenAI unveils GPT-5.6 amid US AI regulatory drama** — The Verge AI · 2026-06-26
@@ -29,26 +39,16 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://github.blog/ai-and-ml/github-copilot/evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harness-across-models-and-tasks/
 - **How agents are transforming work** — OpenAI News · 2026-06-25
   https://openai.com/index/how-agents-are-transforming-work
-- **OpenAI will delay GPT-5.6 after Trump administration request** — The Verge AI · 2026-06-25
-  https://www.theverge.com/ai-artificial-intelligence/957372/openai-will-delay-gpt-5-6-after-trump-administration-request
-- **Facebook’s Creator Studio has been revived as an AI companion app** — The Verge AI · 2026-06-25
-  https://www.theverge.com/tech/956668/meta-facebook-creator-studio-ai-app-relaunch
 - **OpenAI and Broadcom unveil LLM-optimized inference chip** — OpenAI News · 2026-06-24
   https://openai.com/index/openai-broadcom-jalapeno-inference-chip
-- **Ford had to hire back former engineers to fix mistakes made by its automated systems** — The Verge AI · 2026-06-24
-  https://www.theverge.com/transportation/956316/ford-quality-jd-power-ranking-ai-automated-mistakes
 - **I automated my job (and it made me a better leader)** — GitHub AI & ML Blog · 2026-06-23
   https://github.blog/developer-skills/github/i-automated-my-job-and-it-made-me-a-better-leader/
 - **Helping build shared standards for advanced AI** — OpenAI News · 2026-06-23
   https://openai.com/index/helping-build-shared-standards-for-advanced-ai
 - **How Omio is building the future of conversational travel** — OpenAI News · 2026-06-23
   https://openai.com/index/omio
-- **Patch the Planet: a Daybreak initiative to support open source maintainers** — OpenAI News · 2026-06-22
-  https://openai.com/index/patch-the-planet
 - **Daybreak: Tools for securing every organization in the world** — OpenAI News · 2026-06-22
   https://openai.com/index/daybreak-securing-the-world
-- **Samsung Electronics brings ChatGPT and Codex to employees** — OpenAI News · 2026-06-21
-  https://openai.com/index/samsung-electronics-chatgpt-codex-deployment
 - **How we built an internal data analytics agent** — GitHub AI & ML Blog · 2026-06-19
   https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/
 - **Getting more from each token: How Copilot improves context handling and model routing** — GitHub AI & ML Blog · 2026-06-17
@@ -80,11 +80,11 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
+- **AI automation and workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI automation and workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 

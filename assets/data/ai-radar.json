@@ -1,19 +1,82 @@
 {
-  "generatedAt": "2026-06-28T10:24:20.663Z",
-  "date": "2026-06-28",
+  "generatedAt": "2026-06-29T12:27:55.457Z",
+  "date": "2026-06-29",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
     {
+      "title": "Mapping Europe’s AI Workforce Opportunity",
+      "source": "OpenAI News",
+      "date": "2026-06-29",
+      "url": "https://openai.com/index/mapping-ai-jobs-transition-eu",
+      "summary": "A new OpenAI report maps how AI could reshape jobs across the EU, highlighting which occupations may face automation, growth, or workflow changes.",
+      "tags": [
+        "ChatGPT",
+        "Automation"
+      ]
+    },
+    {
       "title": "Margaret Atwood says the problem with AI is &#8216;garbage in, garbage out&#8217;",
       "source": "The Verge AI",
-      "date": "2026-06-27",
+      "date": "2026-06-29",
       "url": "https://www.theverge.com/ai-artificial-intelligence/958715/margaret-atwood-ai-problem-garbage-in-garbage-out",
       "summary": "Maraget Atwood, the storied author of The Handmaid's Tale and The Blind Assassin, was interviewed as part of the Babell Literary and Cultural Festival in Porto, Portugal. As it usually does at these things, the issue of ...",
       "tags": [
         "AI"
+      ]
+    },
+    {
+      "title": "Anthropic&#8217;s Mythos 5 is back",
+      "source": "The Verge AI",
+      "date": "2026-06-29",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/958458/anthropic-mythos-5-is-back-trump-negotiations",
+      "summary": "After a rollercoaster negotiation process with the Trump administration that dragged on for two weeks, Anthropic's Mythos 5 is finally back in action - at least, somewhat, for a select group of organizations, according t...",
+      "tags": [
+        "Claude"
+      ]
+    },
+    {
+      "title": "HP Inc. launches Frontier strategic partnership with OpenAI",
+      "source": "OpenAI News",
+      "date": "2026-06-28",
+      "url": "https://openai.com/index/hp-frontier-partnership",
+      "summary": "HP Inc. scales its OpenAI Frontier partnership to deploy AI across customer experiences, software development, and enterprise operations.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "China’s Z.ai claims it can match Mythos on cybersecurity",
+      "source": "The Verge AI",
+      "date": "2026-06-28",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/958804/chinas-z-ai-glm-52-mythos-cybersecurity",
+      "summary": "China's Zhipu AI (Z.ai) released its open-weight GLM-5.2, and some researchers have claimed that it matches Mythos in certain bug-finding and cybersecurity scenarios. While GLM lags behind models from Anthropic and OpenA...",
+      "tags": [
+        "ChatGPT",
+        "Claude",
+        "Models"
+      ]
+    },
+    {
+      "title": "Suno launches Spark incubator program to feed independent artists to its AI machine",
+      "source": "The Verge AI",
+      "date": "2026-06-28",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/958801/suno-launches-spark-incubator-program-to-feed-independent-artists-to-its-ai-machine",
+      "summary": "Suno has ambitions to be more than just a toy to churn out AI slop, it also wants to be a streaming destination and to break new artists. Spark is their new incubator program for independent artists that provides grants,...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Prosecutors used ChatGPT logs as evidence in the Palisades fire trial",
+      "source": "The Verge AI",
+      "date": "2026-06-28",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/958751/prosecutors-chatgpt-palisades-wildfire-arson-mistrial",
+      "summary": "Jonathan Rinderknecht was facing arson charges for setting a fire on New Year's Day in 2025, which became one of the deadliest wildfires in LA history. To make their case, prosecutors turned to location data from his iPh...",
+      "tags": [
+        "ChatGPT"
       ]
     },
     {
@@ -24,16 +87,6 @@
       "summary": "Tim Cook recently said price increases were \"unavoidable\" and described the company's pricing as \"unsustainable.\" The 16-inch MacBook Pro saw its price go up by $300. The 11-inch iPad Air went from $599 to $749. Even the...",
       "tags": [
         "AI"
-      ]
-    },
-    {
-      "title": "Anthropic&#8217;s Mythos 5 is back",
-      "source": "The Verge AI",
-      "date": "2026-06-27",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/958458/anthropic-mythos-5-is-back-trump-negotiations",
-      "summary": "After a rollercoaster negotiation process with the Trump administration that dragged on for two weeks, Anthropic's Mythos 5 is finally back in action - at least, somewhat, for a select group of organizations, according t...",
-      "tags": [
-        "Claude"
       ]
     },
     {
@@ -166,60 +219,41 @@
         "Agents",
         "Dev Tools"
       ]
-    },
-    {
-      "title": "OpenAI reveals its first AI processor: Jalapeño",
-      "source": "The Verge AI",
-      "date": "2026-06-24",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/955939/openai-reveals-its-first-ai-processor-jalapeno",
-      "summary": "OpenAI has just revealed a new \"intelligence processor\" chip for AI servers made in partnership with Broadcom. The chip, called Jalape&#241;o, is designed to power current and future large language models, according to a...",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "The Google Home Speaker sounds good and looks great — but it’s finicky",
-      "source": "The Verge AI",
-      "date": "2026-06-24",
-      "url": "https://www.theverge.com/gadgets/955537/google-home-smart-speaker-hands-on",
-      "summary": "Right out of the box, the new Google Home Speaker passed a couple of important tests. Even with the volume at 100 percent and music blaring out of the speaker, it quickly ducked the audio and listened every time I said \"...",
-      "tags": [
-        "Multimodal"
-      ]
-    },
-    {
-      "title": "I automated my job (and it made me a better leader)",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-06-23",
-      "url": "https://github.blog/developer-skills/github/i-automated-my-job-and-it-made-me-a-better-leader/",
-      "summary": "Explore how my day as a senior leader looks now that I use 40 automations to help, and learn more about some of my favorites. The post I automated my job (and it made me a better leader) appeared first on The GitHub Blog...",
-      "tags": [
-        "Automation"
-      ]
-    },
-    {
-      "title": "Helping build shared standards for advanced AI",
-      "source": "OpenAI News",
-      "date": "2026-06-23",
-      "url": "https://openai.com/index/helping-build-shared-standards-for-advanced-ai",
-      "summary": "OpenAI helps build shared standards for advanced AI, supporting evaluation frameworks, safety practices, and global cooperation through the Appia Foundation.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "How Omio is building the future of conversational travel",
-      "source": "OpenAI News",
-      "date": "2026-06-23",
-      "url": "https://openai.com/index/omio",
-      "summary": "Discover how Omio uses OpenAI to power conversational travel experiences, accelerate product development, and transform into an AI-native company.",
-      "tags": [
-        "ChatGPT"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "AI automation and workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Mapping Europe’s AI Workforce Opportunity",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/mapping-ai-jobs-transition-eu",
+          "date": "2026-06-29"
+        },
+        {
+          "title": "I automated my job (and it made me a better leader)",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/developer-skills/github/i-automated-my-job-and-it-made-me-a-better-leader/",
+          "date": "2026-06-23"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Prosecutors used ChatGPT logs as evidence in the Palisades fire trial",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/958751/prosecutors-chatgpt-palisades-wildfire-arson-mistrial",
+          "date": "2026-06-28"
+        }
+      ]
+    },
     {
       "label": "AI coding assistant workflows",
       "status": "safe-data-candidate",
@@ -280,32 +314,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/getting-more-from-each-token-how-copilot-improves-context-handling-and-model-routing/",
           "date": "2026-06-17"
-        }
-      ]
-    },
-    {
-      "label": "AI automation and workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "I automated my job (and it made me a better leader)",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/developer-skills/github/i-automated-my-job-and-it-made-me-a-better-leader/",
-          "date": "2026-06-23"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Samsung Electronics brings ChatGPT and Codex to employees",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/samsung-electronics-chatgpt-codex-deployment",
-          "date": "2026-06-21"
         }
       ]
     },
