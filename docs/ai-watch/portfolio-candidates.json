@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-29T12:27:55.457Z",
+  "generatedAt": "2026-06-30T10:53:32.790Z",
   "candidates": [
     {
       "label": "AI automation and workflow design",
@@ -21,10 +21,35 @@
       ]
     },
     {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "OpenAI is teasing new hardware… for Codex",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/959174/openai-codex-hardware-work-louder",
+          "date": "2026-06-29"
+        },
+        {
+          "title": "Previewing GPT-5.6 Sol: a next-generation model",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/previewing-gpt-5-6-sol",
+          "date": "2026-06-26"
+        }
+      ]
+    },
+    {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Lawmakers want to ban AI companies from selling your health data",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/959033/health-location-data-protection-act-ai-warren-scanlon",
+          "date": "2026-06-29"
+        },
         {
           "title": "Prosecutors used ChatGPT logs as evidence in the Palisades fire trial",
           "source": "The Verge AI",
@@ -34,15 +59,15 @@
       ]
     },
     {
-      "label": "AI coding assistant workflows",
+      "label": "Claude research and documentation flow",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Previewing GPT-5.6 Sol: a next-generation model",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/previewing-gpt-5-6-sol",
-          "date": "2026-06-26"
+          "title": "Lawmakers want to ban AI companies from selling your health data",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/959033/health-location-data-protection-act-ai-warren-scanlon",
+          "date": "2026-06-29"
         }
       ]
     },
@@ -125,12 +150,6 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-3-5-videos/",
           "date": "2026-05-29"
-        },
-        {
-          "title": "Catch up on 12 major I/O 2026 moments",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-keynote-moment-videos/",
-          "date": "2026-05-28"
         }
       ]
     }

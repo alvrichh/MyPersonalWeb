@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-06-29
+# Daily AI maintenance report — 2026-06-30
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,12 +13,20 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Unlocking Britain’s next era of productivity: Building a nation of AI trailblazers** — Google AI Blog · 2026-06-30
+  https://blog.google/company-news/inside-google/around-the-globe/google-europe/united-kingdom/unlocking-britains-next-era-of-productivity-building-a-nation-of-ai-trailblazers/
+- **Ask an AI expert: What exactly is the full stack?** — Google AI Blog · 2026-06-29
+  https://blog.google/innovation-and-ai/technology/ai/full-stack-ai-explainer/
 - **Mapping Europe’s AI Workforce Opportunity** — OpenAI News · 2026-06-29
   https://openai.com/index/mapping-ai-jobs-transition-eu
+- **Tidal won’t pay royalties on AI-generated music but isn’t banning it outright** — The Verge AI · 2026-06-29
+  https://www.theverge.com/tech/959211/tidal-ai-music-policy-demonetizingdetect-label
+- **OpenAI is teasing new hardware… for Codex** — The Verge AI · 2026-06-29
+  https://www.theverge.com/ai-artificial-intelligence/959174/openai-codex-hardware-work-louder
+- **Lawmakers want to ban AI companies from selling your health data** — The Verge AI · 2026-06-29
+  https://www.theverge.com/ai-artificial-intelligence/959033/health-location-data-protection-act-ai-warren-scanlon
 - **Margaret Atwood says the problem with AI is &#8216;garbage in, garbage out&#8217;** — The Verge AI · 2026-06-29
   https://www.theverge.com/ai-artificial-intelligence/958715/margaret-atwood-ai-problem-garbage-in-garbage-out
-- **Anthropic&#8217;s Mythos 5 is back** — The Verge AI · 2026-06-29
-  https://www.theverge.com/ai-artificial-intelligence/958458/anthropic-mythos-5-is-back-trump-negotiations
 - **HP Inc. launches Frontier strategic partnership with OpenAI** — OpenAI News · 2026-06-28
   https://openai.com/index/hp-frontier-partnership
 - **China’s Z.ai claims it can match Mythos on cybersecurity** — The Verge AI · 2026-06-28
@@ -31,10 +39,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/report/958678/apple-consumer-price-increase-ai-big-tech
 - **Previewing GPT-5.6 Sol: a next-generation model** — OpenAI News · 2026-06-26
   https://openai.com/index/previewing-gpt-5-6-sol
-- **OpenAI unveils GPT-5.6 amid US AI regulatory drama** — The Verge AI · 2026-06-26
-  https://www.theverge.com/ai-artificial-intelligence/957845/openai-gpt-5-6-trump-administration-ai-preview
-- **Anthropic&#8217;s Mythos mess is only getting worse** — The Verge AI · 2026-06-26
-  https://www.theverge.com/ai-artificial-intelligence/957327/anthropic-mythos-fable-ai-trump-administration-negotiations
 - **Evaluating performance and efficiency of the GitHub Copilot agentic harness across models and tasks** — GitHub AI & ML Blog · 2026-06-25
   https://github.blog/ai-and-ml/github-copilot/evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harness-across-models-and-tasks/
 - **How agents are transforming work** — OpenAI News · 2026-06-25
@@ -73,16 +77,13 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blog.google/innovation-and-ai/technology/ai/io-2026-vibe-coded-quiz/
 - **9 demos of Gemini Omni and Gemini 3.5 in action** — Google AI Blog · 2026-05-29
   https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-3-5-videos/
-- **Check out real-life AI prototypes from the Futures Lab.** — Google AI Blog · 2026-05-29
-  https://blog.google/innovation-and-ai/technology/ai/university-waterloo-labs/
-- **Catch up on 12 major I/O 2026 moments** — Google AI Blog · 2026-05-28
-  https://blog.google/innovation-and-ai/technology/ai/io-2026-keynote-moment-videos/
 
 ## Portfolio candidates
 
 - **AI automation and workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
