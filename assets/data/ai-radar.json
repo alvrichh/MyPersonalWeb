@@ -1,11 +1,31 @@
 {
-  "generatedAt": "2026-06-29T12:27:55.457Z",
-  "date": "2026-06-29",
+  "generatedAt": "2026-06-30T10:53:32.790Z",
+  "date": "2026-06-30",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Unlocking Britain’s next era of productivity: Building a nation of AI trailblazers",
+      "source": "Google AI Blog",
+      "date": "2026-06-30",
+      "url": "https://blog.google/company-news/inside-google/around-the-globe/google-europe/united-kingdom/unlocking-britains-next-era-of-productivity-building-a-nation-of-ai-trailblazers/",
+      "summary": "Google UK shares its latest Economic Impact Report and how to enable more people to unlock the benefits of AI-powered technologies.",
+      "tags": [
+        "Gemini"
+      ]
+    },
+    {
+      "title": "Ask an AI expert: What exactly is the full stack?",
+      "source": "Google AI Blog",
+      "date": "2026-06-29",
+      "url": "https://blog.google/innovation-and-ai/technology/ai/full-stack-ai-explainer/",
+      "summary": "A Google expert explains what it means to take a full-stack approach to AI and why it’s been the foundation of our AI work for so long.",
+      "tags": [
+        "Gemini"
+      ]
+    },
     {
       "title": "Mapping Europe’s AI Workforce Opportunity",
       "source": "OpenAI News",
@@ -18,23 +38,46 @@
       ]
     },
     {
-      "title": "Margaret Atwood says the problem with AI is &#8216;garbage in, garbage out&#8217;",
+      "title": "Tidal won’t pay royalties on AI-generated music but isn’t banning it outright",
       "source": "The Verge AI",
       "date": "2026-06-29",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/958715/margaret-atwood-ai-problem-garbage-in-garbage-out",
-      "summary": "Maraget Atwood, the storied author of The Handmaid's Tale and The Blind Assassin, was interviewed as part of the Babell Literary and Cultural Festival in Porto, Portugal. As it usually does at these things, the issue of ...",
+      "url": "https://www.theverge.com/tech/959211/tidal-ai-music-policy-demonetizingdetect-label",
+      "summary": "Tidal shared its new policies regarding AI-generated music today and how the platform plans to \"protect artists\" and \"inform listeners.\" Instead of banning it outright, starting on July 15th Tidal will label tracks it ha...",
       "tags": [
         "AI"
       ]
     },
     {
-      "title": "Anthropic&#8217;s Mythos 5 is back",
+      "title": "OpenAI is teasing new hardware… for Codex",
       "source": "The Verge AI",
       "date": "2026-06-29",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/958458/anthropic-mythos-5-is-back-trump-negotiations",
-      "summary": "After a rollercoaster negotiation process with the Trump administration that dragged on for two weeks, Anthropic's Mythos 5 is finally back in action - at least, somewhat, for a select group of organizations, according t...",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/959174/openai-codex-hardware-work-louder",
+      "summary": "OpenAI is releasing some sort of device related to its AI-powered coding tool, Codex, on July 15th. In a video posted to X on Monday, OpenAI shows a square-shaped device with several buttons, alongside the caption, \"Your...",
       "tags": [
+        "ChatGPT",
+        "Dev Tools",
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "Lawmakers want to ban AI companies from selling your health data",
+      "source": "The Verge AI",
+      "date": "2026-06-29",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/959033/health-location-data-protection-act-ai-warren-scanlon",
+      "summary": "A new proposal would ban the sale of Americans' health and location information to data brokers - including information people reveal to an AI chatbot like ChatGPT or Claude. In the coming weeks, Senator Elizabeth Warren...",
+      "tags": [
+        "ChatGPT",
         "Claude"
+      ]
+    },
+    {
+      "title": "Margaret Atwood says the problem with AI is &#8216;garbage in, garbage out&#8217;",
+      "source": "The Verge AI",
+      "date": "2026-06-29",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/958715/margaret-atwood-ai-problem-garbage-in-garbage-out",
+      "summary": "Margaret Atwood, the storied author of The Handmaid's Tale and The Blind Assassin, was interviewed as part of the Babell Literary and Cultural Festival in Porto, Portugal. As it usually does at these things, the issue of...",
+      "tags": [
+        "AI"
       ]
     },
     {
@@ -87,6 +130,16 @@
       "summary": "Tim Cook recently said price increases were \"unavoidable\" and described the company's pricing as \"unsustainable.\" The 16-inch MacBook Pro saw its price go up by $300. The 11-inch iPad Air went from $599 to $749. Even the...",
       "tags": [
         "AI"
+      ]
+    },
+    {
+      "title": "Anthropic&#8217;s Mythos 5 is back",
+      "source": "The Verge AI",
+      "date": "2026-06-29",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/958458/anthropic-mythos-5-is-back-trump-negotiations",
+      "summary": "After a rollercoaster negotiation process with the Trump administration that dragged on for two weeks, Anthropic's Mythos 5 is finally back in action - at least, somewhat, for a select group of organizations, according t...",
+      "tags": [
+        "Claude"
       ]
     },
     {
@@ -166,59 +219,6 @@
       "tags": [
         "Agents"
       ]
-    },
-    {
-      "title": "OpenAI and Broadcom unveil LLM-optimized inference chip",
-      "source": "OpenAI News",
-      "date": "2026-06-24",
-      "url": "https://openai.com/index/openai-broadcom-jalapeno-inference-chip",
-      "summary": "OpenAI and Broadcom introduce Jalapeño, a custom AI chip built for LLM inference to improve performance, efficiency, and scale across AI systems.",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "Ford had to hire back former engineers to fix mistakes made by its automated systems",
-      "source": "The Verge AI",
-      "date": "2026-06-24",
-      "url": "https://www.theverge.com/transportation/956316/ford-quality-jd-power-ranking-ai-automated-mistakes",
-      "summary": "To celebrate its new status as No. 1 in JD Power's initial quality ranking among mainstream automakers, Ford is opening up about the challenges it has faced in recent years, especially around its reliance on automated sy...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Congresswoman denies staff used AI to write defense funding amendment",
-      "source": "The Verge AI",
-      "date": "2026-06-24",
-      "url": "https://www.theverge.com/policy/956394/florida-anna-paulina-luna-anthropic-claude",
-      "summary": "Rep. Anna Paulina Luna (R-FL) says her staff used AI for \"spellcheck\" in an amendment summary for a major defense bill, but denies it was used for the bill text itself and says \"NO Legislation is ever drafted with AI.\" L...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "The $27 million Al proxy war over Alex Bores ends in a draw",
-      "source": "The Verge AI",
-      "date": "2026-06-24",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/956263/alex-bores-new-york-12th-district-congressional-primary-results",
-      "summary": "The expensive, $27 million political proxy war between Anthropic and OpenAI came to a draw last night when Alex Bores, a New York state Assemblyman whose popularity surged after being targeted by a pro-AI super PAC, narr...",
-      "tags": [
-        "ChatGPT",
-        "Claude"
-      ]
-    },
-    {
-      "title": "Figma now has AI motion graphics and shader tools",
-      "source": "The Verge AI",
-      "date": "2026-06-24",
-      "url": "https://www.theverge.com/tech/955831/figma-code-design-tools-config-2026-announcements",
-      "summary": "Figma has revealed some new design and coding product updates at its annual Config conference that aim to help creatives \"push their ideas further\" and automate tedious tasks with AI. Part of this is a reimagined canvas ...",
-      "tags": [
-        "Agents",
-        "Dev Tools"
-      ]
     }
   ],
   "candidates": [
@@ -242,10 +242,35 @@
       ]
     },
     {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "OpenAI is teasing new hardware… for Codex",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/959174/openai-codex-hardware-work-louder",
+          "date": "2026-06-29"
+        },
+        {
+          "title": "Previewing GPT-5.6 Sol: a next-generation model",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/previewing-gpt-5-6-sol",
+          "date": "2026-06-26"
+        }
+      ]
+    },
+    {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Lawmakers want to ban AI companies from selling your health data",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/959033/health-location-data-protection-act-ai-warren-scanlon",
+          "date": "2026-06-29"
+        },
         {
           "title": "Prosecutors used ChatGPT logs as evidence in the Palisades fire trial",
           "source": "The Verge AI",
@@ -255,15 +280,15 @@
       ]
     },
     {
-      "label": "AI coding assistant workflows",
+      "label": "Claude research and documentation flow",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Previewing GPT-5.6 Sol: a next-generation model",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/previewing-gpt-5-6-sol",
-          "date": "2026-06-26"
+          "title": "Lawmakers want to ban AI companies from selling your health data",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/959033/health-location-data-protection-act-ai-warren-scanlon",
+          "date": "2026-06-29"
         }
       ]
     },
@@ -346,12 +371,6 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-3-5-videos/",
           "date": "2026-05-29"
-        },
-        {
-          "title": "Catch up on 12 major I/O 2026 moments",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-keynote-moment-videos/",
-          "date": "2026-05-28"
         }
       ]
     }
