@@ -1,11 +1,21 @@
 {
-  "generatedAt": "2026-06-30T10:53:32.790Z",
-  "date": "2026-06-30",
+  "generatedAt": "2026-07-01T11:20:28.082Z",
+  "date": "2026-07-01",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Anthropic&#8217;s long-sidelined Fable 5 is greenlit to return",
+      "source": "The Verge AI",
+      "date": "2026-07-01",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/958964/anthropic-claude-fable-5-is-back",
+      "summary": "After weeks of negotiating with the Trump administration, Anthropic is finally going to be able to bring Claude Fable 5 back online. In a post on X, Anthropic said it plans to begin restoring access Wednesday to users gl...",
+      "tags": [
+        "Claude"
+      ]
+    },
     {
       "title": "Unlocking Britain’s next era of productivity: Building a nation of AI trailblazers",
       "source": "Google AI Blog",
@@ -14,6 +24,87 @@
       "summary": "Google UK shares its latest Economic Impact Report and how to enable more people to unlock the benefits of AI-powered technologies.",
       "tags": [
         "Gemini"
+      ]
+    },
+    {
+      "title": "How ChatGPT adoption has expanded",
+      "source": "OpenAI News",
+      "date": "2026-06-30",
+      "url": "https://openai.com/index/how-chatgpt-adoption-has-expanded",
+      "summary": "New OpenAI Signals data shows how ChatGPT adoption is growing globally, with users increasing usage, exploring more capabilities, and driving growth across regions and languages.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Introducing GeneBench-Pro",
+      "source": "OpenAI News",
+      "date": "2026-06-30",
+      "url": "https://openai.com/index/introducing-genebench-pro",
+      "summary": "Introducing GeneBench-Pro, a new benchmark testing AI performance in genomics, biology, and scientific research using complex, real-world datasets.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Core dump epidemiology: fixing an 18-year-old bug",
+      "source": "OpenAI News",
+      "date": "2026-06-30",
+      "url": "https://openai.com/index/core-dump-epidemiology-data-infrastructure-bug",
+      "summary": "OpenAI engineers used large-scale core dump analysis to debug rare infrastructure crashes, uncovering both a hardware fault and a long-standing software bug.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Google’s NotebookLM can sum up your research in a TikTok-style clip",
+      "source": "The Verge AI",
+      "date": "2026-06-30",
+      "url": "https://www.theverge.com/tech/959778/google-notebooklm-ai-clips",
+      "summary": "Google's NotebookLM is adding a new way to catch up on your notes: TikTok-style AI videos. The new feature is rolling out to Google AI Ultra and Pro subscribers, allowing NotebookLM to generate 60-second vertical AI clip...",
+      "tags": [
+        "Gemini",
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "Netflix is using an AI-generated Gene Wilder voice in its Willy Wonka reality show",
+      "source": "The Verge AI",
+      "date": "2026-06-30",
+      "url": "https://www.theverge.com/streaming/959684/netflix-wonka-golden-ticket-gene-wilder",
+      "summary": "A new teaser trailer confirmed that Wonka's The Golden Ticket will premiere on Netflix on September 23rd, following its Squid Game reality show in the trend of creating real competitions based on fictional torture scenar...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Libby will filter out AI content, kind of",
+      "source": "The Verge AI",
+      "date": "2026-06-30",
+      "url": "https://www.theverge.com/column/959433/libby-ai-filter",
+      "summary": "This is Lowpass by Janko Roettgers, a newsletter on the ever-evolving intersection of tech and entertainment, syndicated just for The Verge subscribers once a week. \"AI is the new frontier for us,\" says Marc DeBevoise, w...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Meet the lawyer who beat Elon Musk — twice",
+      "source": "The Verge AI",
+      "date": "2026-06-30",
+      "url": "https://www.theverge.com/column/959270/elon-musk-open-ai-bill-savitt-twitter",
+      "summary": "Watching Elon Musk fulminate at Bill Savitt during Musk v. Altman - the case in which Musk sued Sam Altman and OpenAI instead of seeing a therapist about his AI failures - was a bit like watching a toddler have a temper ...",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Tidal won’t pay royalties on AI-generated music, but isn’t banning it outright",
+      "source": "The Verge AI",
+      "date": "2026-06-30",
+      "url": "https://www.theverge.com/tech/959211/tidal-ai-music-policy-demonetizingdetect-label",
+      "summary": "Tidal shared its new policies regarding AI-generated music today and how the platform plans to \"protect artists\" and \"inform listeners.\" Instead of banning it outright, starting on July 15th Tidal will label tracks it ha...",
+      "tags": [
+        "AI"
       ]
     },
     {
@@ -35,16 +126,6 @@
       "tags": [
         "ChatGPT",
         "Automation"
-      ]
-    },
-    {
-      "title": "Tidal won’t pay royalties on AI-generated music but isn’t banning it outright",
-      "source": "The Verge AI",
-      "date": "2026-06-29",
-      "url": "https://www.theverge.com/tech/959211/tidal-ai-music-policy-demonetizingdetect-label",
-      "summary": "Tidal shared its new policies regarding AI-generated music today and how the platform plans to \"protect artists\" and \"inform listeners.\" Instead of banning it outright, starting on July 15th Tidal will label tracks it ha...",
-      "tags": [
-        "AI"
       ]
     },
     {
@@ -131,97 +212,47 @@
       "tags": [
         "AI"
       ]
-    },
-    {
-      "title": "Anthropic&#8217;s Mythos 5 is back",
-      "source": "The Verge AI",
-      "date": "2026-06-29",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/958458/anthropic-mythos-5-is-back-trump-negotiations",
-      "summary": "After a rollercoaster negotiation process with the Trump administration that dragged on for two weeks, Anthropic's Mythos 5 is finally back in action - at least, somewhat, for a select group of organizations, according t...",
-      "tags": [
-        "Claude"
-      ]
-    },
-    {
-      "title": "Previewing GPT-5.6 Sol: a next-generation model",
-      "source": "OpenAI News",
-      "date": "2026-06-26",
-      "url": "https://openai.com/index/previewing-gpt-5-6-sol",
-      "summary": "OpenAI previews GPT-5.6 Sol, a next-generation model with stronger capabilities in coding, science, and cybersecurity, paired with its most advanced safety stack.",
-      "tags": [
-        "ChatGPT",
-        "Dev Tools",
-        "Models"
-      ]
-    },
-    {
-      "title": "OpenAI unveils GPT-5.6 amid US AI regulatory drama",
-      "source": "The Verge AI",
-      "date": "2026-06-26",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/957845/openai-gpt-5-6-trump-administration-ai-preview",
-      "summary": "Less than 24 hours after news broke that OpenAI would stagger its next model release at the request of the Trump administration, that model, GPT-5.6, is here. On Friday, the company unveiled the limited preview of its ne...",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "Anthropic&#8217;s Mythos mess is only getting worse",
-      "source": "The Verge AI",
-      "date": "2026-06-26",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/957327/anthropic-mythos-fable-ai-trump-administration-negotiations",
-      "summary": "It's been two weeks since Anthropic took its Mythos-class models offline after a Friday evening ultimatum from the Trump administration. The company sprang into action immediately, sending a barrage of executives to Wash...",
-      "tags": [
-        "Claude",
-        "Models"
-      ]
-    },
-    {
-      "title": "Evaluating performance and efficiency of the GitHub Copilot agentic harness across models and tasks",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-06-25",
-      "url": "https://github.blog/ai-and-ml/github-copilot/evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harness-across-models-and-tasks/",
-      "summary": "Explore how the GitHub Copilot agentic harness delivers strong results across multiple benchmarks and leading token efficiency, while maintaining flexibility to choose among more than 20 models. The post Evaluating perfo...",
-      "tags": [
-        "Agents",
-        "Copilot",
-        "Models"
-      ]
-    },
-    {
-      "title": "How agents are transforming work",
-      "source": "OpenAI News",
-      "date": "2026-06-25",
-      "url": "https://openai.com/index/how-agents-are-transforming-work",
-      "summary": "A new OpenAI research paper shows how AI agents are transforming work, enabling longer, more complex tasks and expanding productivity across roles.",
-      "tags": [
-        "Agents",
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "OpenAI will delay GPT-5.6 after Trump administration request",
-      "source": "The Verge AI",
-      "date": "2026-06-25",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/957372/openai-will-delay-gpt-5-6-after-trump-administration-request",
-      "summary": "The Trump administration, apprehensive of potential security issues, has reportedly asked OpenAI to stagger the release of its next big-ticket model, GPT-5.6. The Information reported that OpenAI CEO Sam Altman told empl...",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "Facebook’s Creator Studio has been revived as an AI companion app",
-      "source": "The Verge AI",
-      "date": "2026-06-25",
-      "url": "https://www.theverge.com/tech/956668/meta-facebook-creator-studio-ai-app-relaunch",
-      "summary": "Meta is bringing back the Facebook Creator Studio page manager, now \"reimagined\" as a standalone AI companion app. The new app aims to make it easier for creators to connect with their audiences and show them \"exactly ho...",
-      "tags": [
-        "Agents"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "Claude research and documentation flow",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Anthropic&#8217;s long-sidelined Fable 5 is greenlit to return",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/958964/anthropic-claude-fable-5-is-back",
+          "date": "2026-07-01"
+        },
+        {
+          "title": "Lawmakers want to ban AI companies from selling your health data",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/959033/health-location-data-protection-act-ai-warren-scanlon",
+          "date": "2026-06-29"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "How ChatGPT adoption has expanded",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/how-chatgpt-adoption-has-expanded",
+          "date": "2026-06-30"
+        },
+        {
+          "title": "Lawmakers want to ban AI companies from selling your health data",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/959033/health-location-data-protection-act-ai-warren-scanlon",
+          "date": "2026-06-29"
+        }
+      ]
+    },
     {
       "label": "AI automation and workflow design",
       "status": "safe-data-candidate",
@@ -257,38 +288,6 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/previewing-gpt-5-6-sol",
           "date": "2026-06-26"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Lawmakers want to ban AI companies from selling your health data",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/959033/health-location-data-protection-act-ai-warren-scanlon",
-          "date": "2026-06-29"
-        },
-        {
-          "title": "Prosecutors used ChatGPT logs as evidence in the Palisades fire trial",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/958751/prosecutors-chatgpt-palisades-wildfire-arson-mistrial",
-          "date": "2026-06-28"
-        }
-      ]
-    },
-    {
-      "label": "Claude research and documentation flow",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Lawmakers want to ban AI companies from selling your health data",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/959033/health-location-data-protection-act-ai-warren-scanlon",
-          "date": "2026-06-29"
         }
       ]
     },
