@@ -1,6 +1,44 @@
 {
-  "generatedAt": "2026-06-30T10:53:32.790Z",
+  "generatedAt": "2026-07-01T11:20:28.082Z",
   "candidates": [
+    {
+      "label": "Claude research and documentation flow",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Anthropic&#8217;s long-sidelined Fable 5 is greenlit to return",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/958964/anthropic-claude-fable-5-is-back",
+          "date": "2026-07-01"
+        },
+        {
+          "title": "Lawmakers want to ban AI companies from selling your health data",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/959033/health-location-data-protection-act-ai-warren-scanlon",
+          "date": "2026-06-29"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "How ChatGPT adoption has expanded",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/how-chatgpt-adoption-has-expanded",
+          "date": "2026-06-30"
+        },
+        {
+          "title": "Lawmakers want to ban AI companies from selling your health data",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/959033/health-location-data-protection-act-ai-warren-scanlon",
+          "date": "2026-06-29"
+        }
+      ]
+    },
     {
       "label": "AI automation and workflow design",
       "status": "safe-data-candidate",
@@ -36,38 +74,6 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/previewing-gpt-5-6-sol",
           "date": "2026-06-26"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Lawmakers want to ban AI companies from selling your health data",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/959033/health-location-data-protection-act-ai-warren-scanlon",
-          "date": "2026-06-29"
-        },
-        {
-          "title": "Prosecutors used ChatGPT logs as evidence in the Palisades fire trial",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/958751/prosecutors-chatgpt-palisades-wildfire-arson-mistrial",
-          "date": "2026-06-28"
-        }
-      ]
-    },
-    {
-      "label": "Claude research and documentation flow",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Lawmakers want to ban AI companies from selling your health data",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/959033/health-location-data-protection-act-ai-warren-scanlon",
-          "date": "2026-06-29"
         }
       ]
     },

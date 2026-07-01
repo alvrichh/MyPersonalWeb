@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-06-30
+# Daily AI maintenance report — 2026-07-01
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,30 +13,36 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Anthropic&#8217;s long-sidelined Fable 5 is greenlit to return** — The Verge AI · 2026-07-01
+  https://www.theverge.com/ai-artificial-intelligence/958964/anthropic-claude-fable-5-is-back
 - **Unlocking Britain’s next era of productivity: Building a nation of AI trailblazers** — Google AI Blog · 2026-06-30
   https://blog.google/company-news/inside-google/around-the-globe/google-europe/united-kingdom/unlocking-britains-next-era-of-productivity-building-a-nation-of-ai-trailblazers/
+- **How ChatGPT adoption has expanded** — OpenAI News · 2026-06-30
+  https://openai.com/index/how-chatgpt-adoption-has-expanded
+- **Introducing GeneBench-Pro** — OpenAI News · 2026-06-30
+  https://openai.com/index/introducing-genebench-pro
+- **Core dump epidemiology: fixing an 18-year-old bug** — OpenAI News · 2026-06-30
+  https://openai.com/index/core-dump-epidemiology-data-infrastructure-bug
+- **Google’s NotebookLM can sum up your research in a TikTok-style clip** — The Verge AI · 2026-06-30
+  https://www.theverge.com/tech/959778/google-notebooklm-ai-clips
+- **Netflix is using an AI-generated Gene Wilder voice in its Willy Wonka reality show** — The Verge AI · 2026-06-30
+  https://www.theverge.com/streaming/959684/netflix-wonka-golden-ticket-gene-wilder
+- **Libby will filter out AI content, kind of** — The Verge AI · 2026-06-30
+  https://www.theverge.com/column/959433/libby-ai-filter
+- **Meet the lawyer who beat Elon Musk — twice** — The Verge AI · 2026-06-30
+  https://www.theverge.com/column/959270/elon-musk-open-ai-bill-savitt-twitter
+- **Tidal won’t pay royalties on AI-generated music, but isn’t banning it outright** — The Verge AI · 2026-06-30
+  https://www.theverge.com/tech/959211/tidal-ai-music-policy-demonetizingdetect-label
 - **Ask an AI expert: What exactly is the full stack?** — Google AI Blog · 2026-06-29
   https://blog.google/innovation-and-ai/technology/ai/full-stack-ai-explainer/
 - **Mapping Europe’s AI Workforce Opportunity** — OpenAI News · 2026-06-29
   https://openai.com/index/mapping-ai-jobs-transition-eu
-- **Tidal won’t pay royalties on AI-generated music but isn’t banning it outright** — The Verge AI · 2026-06-29
-  https://www.theverge.com/tech/959211/tidal-ai-music-policy-demonetizingdetect-label
 - **OpenAI is teasing new hardware… for Codex** — The Verge AI · 2026-06-29
   https://www.theverge.com/ai-artificial-intelligence/959174/openai-codex-hardware-work-louder
 - **Lawmakers want to ban AI companies from selling your health data** — The Verge AI · 2026-06-29
   https://www.theverge.com/ai-artificial-intelligence/959033/health-location-data-protection-act-ai-warren-scanlon
-- **Margaret Atwood says the problem with AI is &#8216;garbage in, garbage out&#8217;** — The Verge AI · 2026-06-29
-  https://www.theverge.com/ai-artificial-intelligence/958715/margaret-atwood-ai-problem-garbage-in-garbage-out
 - **HP Inc. launches Frontier strategic partnership with OpenAI** — OpenAI News · 2026-06-28
   https://openai.com/index/hp-frontier-partnership
-- **China’s Z.ai claims it can match Mythos on cybersecurity** — The Verge AI · 2026-06-28
-  https://www.theverge.com/ai-artificial-intelligence/958804/chinas-z-ai-glm-52-mythos-cybersecurity
-- **Suno launches Spark incubator program to feed independent artists to its AI machine** — The Verge AI · 2026-06-28
-  https://www.theverge.com/ai-artificial-intelligence/958801/suno-launches-spark-incubator-program-to-feed-independent-artists-to-its-ai-machine
-- **Prosecutors used ChatGPT logs as evidence in the Palisades fire trial** — The Verge AI · 2026-06-28
-  https://www.theverge.com/ai-artificial-intelligence/958751/prosecutors-chatgpt-palisades-wildfire-arson-mistrial
-- **Why is Apple asking me to pay more for Big Tech’s AI obsession?** — The Verge AI · 2026-06-27
-  https://www.theverge.com/report/958678/apple-consumer-price-increase-ai-big-tech
 - **Previewing GPT-5.6 Sol: a next-generation model** — OpenAI News · 2026-06-26
   https://openai.com/index/previewing-gpt-5-6-sol
 - **Evaluating performance and efficiency of the GitHub Copilot agentic harness across models and tasks** — GitHub AI & ML Blog · 2026-06-25
@@ -47,12 +53,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/openai-broadcom-jalapeno-inference-chip
 - **I automated my job (and it made me a better leader)** — GitHub AI & ML Blog · 2026-06-23
   https://github.blog/developer-skills/github/i-automated-my-job-and-it-made-me-a-better-leader/
-- **Helping build shared standards for advanced AI** — OpenAI News · 2026-06-23
-  https://openai.com/index/helping-build-shared-standards-for-advanced-ai
-- **How Omio is building the future of conversational travel** — OpenAI News · 2026-06-23
-  https://openai.com/index/omio
-- **Daybreak: Tools for securing every organization in the world** — OpenAI News · 2026-06-22
-  https://openai.com/index/daybreak-securing-the-world
 - **How we built an internal data analytics agent** — GitHub AI & ML Blog · 2026-06-19
   https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/
 - **Getting more from each token: How Copilot improves context handling and model routing** — GitHub AI & ML Blog · 2026-06-17
@@ -80,10 +80,10 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
+- **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI automation and workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
