@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-07-01
+# Daily AI maintenance report — 2026-07-02
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,14 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **OpenAI floats giving Trump administration 5 percent cut of AI boom** — The Verge AI · 2026-07-02
+  https://www.theverge.com/ai-artificial-intelligence/960588/openai-government-5-percent-stake-trump
+- **The latest AI news we announced in June 2026** — Google AI Blog · 2026-07-01
+  https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-june-2026/
+- **New York City educators and industry leaders gathered at Google’s offices to shape the future of AI in classrooms.** — Google AI Blog · 2026-07-01
+  https://blog.google/products-and-platforms/products/education/nyc-ai-summit/
+- **Google built a great smart speaker, but Gemini isn’t ready for it** — The Verge AI · 2026-07-01
+  https://www.theverge.com/tech/959503/google-home-speaker-review-gemini-for-home
 - **Anthropic&#8217;s long-sidelined Fable 5 is greenlit to return** — The Verge AI · 2026-07-01
   https://www.theverge.com/ai-artificial-intelligence/958964/anthropic-claude-fable-5-is-back
 - **Unlocking Britain’s next era of productivity: Building a nation of AI trailblazers** — Google AI Blog · 2026-06-30
@@ -37,10 +45,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blog.google/innovation-and-ai/technology/ai/full-stack-ai-explainer/
 - **Mapping Europe’s AI Workforce Opportunity** — OpenAI News · 2026-06-29
   https://openai.com/index/mapping-ai-jobs-transition-eu
-- **OpenAI is teasing new hardware… for Codex** — The Verge AI · 2026-06-29
-  https://www.theverge.com/ai-artificial-intelligence/959174/openai-codex-hardware-work-louder
-- **Lawmakers want to ban AI companies from selling your health data** — The Verge AI · 2026-06-29
-  https://www.theverge.com/ai-artificial-intelligence/959033/health-location-data-protection-act-ai-warren-scanlon
 - **HP Inc. launches Frontier strategic partnership with OpenAI** — OpenAI News · 2026-06-28
   https://openai.com/index/hp-frontier-partnership
 - **Previewing GPT-5.6 Sol: a next-generation model** — OpenAI News · 2026-06-26
@@ -73,13 +77,10 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blog.google/products-and-platforms/products/search/thrifting-tips/
 - **How we used Gemini to build Google I/O 2026** — Google AI Blog · 2026-06-01
   https://blog.google/innovation-and-ai/technology/ai/io-2026-google-ai/
-- **Take our I/O 2026 quiz, vibe coded in Google AI Studio.** — Google AI Blog · 2026-05-29
-  https://blog.google/innovation-and-ai/technology/ai/io-2026-vibe-coded-quiz/
-- **9 demos of Gemini Omni and Gemini 3.5 in action** — Google AI Blog · 2026-05-29
-  https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-3-5-videos/
 
 ## Portfolio candidates
 
+- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI automation and workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
@@ -87,7 +88,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
 

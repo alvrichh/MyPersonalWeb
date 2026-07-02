@@ -1,6 +1,25 @@
 {
-  "generatedAt": "2026-07-01T11:20:28.082Z",
+  "generatedAt": "2026-07-02T10:33:39.695Z",
   "candidates": [
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Google built a great smart speaker, but Gemini isn’t ready for it",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/959503/google-home-speaker-review-gemini-for-home",
+          "date": "2026-07-01"
+        },
+        {
+          "title": "How we used Gemini to build Google I/O 2026",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-google-ai/",
+          "date": "2026-06-01"
+        }
+      ]
+    },
     {
       "label": "Claude research and documentation flow",
       "status": "safe-data-candidate",
@@ -11,12 +30,6 @@
           "source": "The Verge AI",
           "link": "https://www.theverge.com/ai-artificial-intelligence/958964/anthropic-claude-fable-5-is-back",
           "date": "2026-07-01"
-        },
-        {
-          "title": "Lawmakers want to ban AI companies from selling your health data",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/959033/health-location-data-protection-act-ai-warren-scanlon",
-          "date": "2026-06-29"
         }
       ]
     },
@@ -30,12 +43,6 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/how-chatgpt-adoption-has-expanded",
           "date": "2026-06-30"
-        },
-        {
-          "title": "Lawmakers want to ban AI companies from selling your health data",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/959033/health-location-data-protection-act-ai-warren-scanlon",
-          "date": "2026-06-29"
         }
       ]
     },
@@ -63,12 +70,6 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
-        {
-          "title": "OpenAI is teasing new hardware… for Codex",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/959174/openai-codex-hardware-work-louder",
-          "date": "2026-06-29"
-        },
         {
           "title": "Previewing GPT-5.6 Sol: a next-generation model",
           "source": "OpenAI News",
@@ -137,25 +138,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/llms/accelerating-researchers-and-developers-building-multilingual-ai-with-a-new-open-dataset/",
           "date": "2026-06-15"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "How we used Gemini to build Google I/O 2026",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-google-ai/",
-          "date": "2026-06-01"
-        },
-        {
-          "title": "9 demos of Gemini Omni and Gemini 3.5 in action",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-omni-3-5-videos/",
-          "date": "2026-05-29"
         }
       ]
     }
