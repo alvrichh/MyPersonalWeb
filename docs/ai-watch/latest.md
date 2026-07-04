@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-07-03
+# Daily AI maintenance report — 2026-07-04
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,10 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Anthropic wants to develop its own drugs** — The Verge AI · 2026-07-03
+  https://www.theverge.com/ai-artificial-intelligence/961311/anthropic-claude-science-ai-drug-development
+- **A behind-the-scenes look at Midjourney’s medical scanner leaves many questions unanswered** — The Verge AI · 2026-07-03
+  https://www.theverge.com/ai-artificial-intelligence/961265/midjourney-medical-ultrasound-scanner-behind-the-scenes-video
 - **OpenAI floats giving Trump administration 5 percent cut of AI boom** — The Verge AI · 2026-07-02
   https://www.theverge.com/ai-artificial-intelligence/960588/openai-government-5-percent-stake-trump
 - **The latest AI news we announced in June 2026** — Google AI Blog · 2026-07-01
@@ -37,10 +41,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/streaming/959684/netflix-wonka-golden-ticket-gene-wilder
 - **Libby will filter out AI content, kind of** — The Verge AI · 2026-06-30
   https://www.theverge.com/column/959433/libby-ai-filter
-- **Meet the lawyer who beat Elon Musk — twice** — The Verge AI · 2026-06-30
-  https://www.theverge.com/column/959270/elon-musk-open-ai-bill-savitt-twitter
-- **Tidal won’t pay royalties on AI-generated music, but isn’t banning it outright** — The Verge AI · 2026-06-30
-  https://www.theverge.com/tech/959211/tidal-ai-music-policy-demonetizingdetect-label
 - **Ask an AI expert: What exactly is the full stack?** — Google AI Blog · 2026-06-29
   https://blog.google/innovation-and-ai/technology/ai/full-stack-ai-explainer/
 - **Mapping Europe’s AI Workforce Opportunity** — OpenAI News · 2026-06-29
@@ -80,11 +80,11 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
-- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI automation and workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.

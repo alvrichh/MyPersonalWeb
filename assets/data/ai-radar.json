@@ -1,11 +1,34 @@
 {
-  "generatedAt": "2026-07-03T10:31:25.192Z",
-  "date": "2026-07-03",
+  "generatedAt": "2026-07-04T10:04:34.372Z",
+  "date": "2026-07-04",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Anthropic wants to develop its own drugs",
+      "source": "The Verge AI",
+      "date": "2026-07-03",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/961311/anthropic-claude-science-ai-drug-development",
+      "summary": "At the event \"The Briefing: AI for Science\" earlier this week, Anthropic announced Claude Science, a new \"AI workbench for scientists\" that pulls fragmented tools and datasets into one environment, and generates figures ...",
+      "tags": [
+        "Agents",
+        "Claude",
+        "Dev Tools",
+        "Models"
+      ]
+    },
+    {
+      "title": "A behind-the-scenes look at Midjourney’s medical scanner leaves many questions unanswered",
+      "source": "The Verge AI",
+      "date": "2026-07-03",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/961265/midjourney-medical-ultrasound-scanner-behind-the-scenes-video",
+      "summary": "Midjourney has shown more of its futuristic medical scanner. It still hasn't shown much proof it works. The AI startup, best known for generating images, released a behind-the-scenes video of its dunk-tank ultrasound sca...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
     {
       "title": "OpenAI floats giving Trump administration 5 percent cut of AI boom",
       "source": "The Verge AI",
@@ -190,29 +213,47 @@
         "ChatGPT",
         "Claude"
       ]
-    },
-    {
-      "title": "Margaret Atwood says the problem with AI is &#8216;garbage in, garbage out&#8217;",
-      "source": "The Verge AI",
-      "date": "2026-06-29",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/958715/margaret-atwood-ai-problem-garbage-in-garbage-out",
-      "summary": "Margaret Atwood, the storied author of The Handmaid's Tale and The Blind Assassin, was interviewed as part of the Babell Literary and Cultural Festival in Porto, Portugal. As it usually does at these things, the issue of...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "HP Inc. launches Frontier strategic partnership with OpenAI",
-      "source": "OpenAI News",
-      "date": "2026-06-28",
-      "url": "https://openai.com/index/hp-frontier-partnership",
-      "summary": "HP Inc. scales its OpenAI Frontier partnership to deploy AI across customer experiences, software development, and enterprise operations.",
-      "tags": [
-        "ChatGPT"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Anthropic wants to develop its own drugs",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/961311/anthropic-claude-science-ai-drug-development",
+          "date": "2026-07-03"
+        },
+        {
+          "title": "Previewing GPT-5.6 Sol: a next-generation model",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/previewing-gpt-5-6-sol",
+          "date": "2026-06-26"
+        }
+      ]
+    },
+    {
+      "label": "Claude research and documentation flow",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Anthropic wants to develop its own drugs",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/961311/anthropic-claude-science-ai-drug-development",
+          "date": "2026-07-03"
+        },
+        {
+          "title": "Anthropic&#8217;s long-sidelined Fable 5 is greenlit to return",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/958964/anthropic-claude-fable-5-is-back",
+          "date": "2026-07-01"
+        }
+      ]
+    },
     {
       "label": "Gemini multimodal exploration",
       "status": "safe-data-candidate",
@@ -229,19 +270,6 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-google-ai/",
           "date": "2026-06-01"
-        }
-      ]
-    },
-    {
-      "label": "Claude research and documentation flow",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Anthropic&#8217;s long-sidelined Fable 5 is greenlit to return",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/958964/anthropic-claude-fable-5-is-back",
-          "date": "2026-07-01"
         }
       ]
     },
@@ -274,19 +302,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/developer-skills/github/i-automated-my-job-and-it-made-me-a-better-leader/",
           "date": "2026-06-23"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Previewing GPT-5.6 Sol: a next-generation model",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/previewing-gpt-5-6-sol",
-          "date": "2026-06-26"
         }
       ]
     },
