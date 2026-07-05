@@ -1,6 +1,50 @@
 {
-  "generatedAt": "2026-07-04T10:04:34.372Z",
+  "generatedAt": "2026-07-05T10:07:54.358Z",
   "candidates": [
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "The fanfiction community is at war with AI — and itself",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/960854/ai-fanfiction-ao3-claude-detector",
+          "date": "2026-07-03"
+        },
+        {
+          "title": "How ChatGPT adoption has expanded",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/how-chatgpt-adoption-has-expanded",
+          "date": "2026-06-30"
+        }
+      ]
+    },
+    {
+      "label": "Claude research and documentation flow",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "The fanfiction community is at war with AI — and itself",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/960854/ai-fanfiction-ao3-claude-detector",
+          "date": "2026-07-03"
+        },
+        {
+          "title": "Anthropic wants to develop its own drugs",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/961311/anthropic-claude-science-ai-drug-development",
+          "date": "2026-07-03"
+        },
+        {
+          "title": "Anthropic&#8217;s long-sidelined Fable 5 is greenlit to return",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/958964/anthropic-claude-fable-5-is-back",
+          "date": "2026-07-01"
+        }
+      ]
+    },
     {
       "label": "AI coding assistant workflows",
       "status": "safe-data-candidate",
@@ -21,25 +65,6 @@
       ]
     },
     {
-      "label": "Claude research and documentation flow",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Anthropic wants to develop its own drugs",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/961311/anthropic-claude-science-ai-drug-development",
-          "date": "2026-07-03"
-        },
-        {
-          "title": "Anthropic&#8217;s long-sidelined Fable 5 is greenlit to return",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/958964/anthropic-claude-fable-5-is-back",
-          "date": "2026-07-01"
-        }
-      ]
-    },
-    {
       "label": "Gemini multimodal exploration",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
@@ -55,19 +80,6 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-google-ai/",
           "date": "2026-06-01"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "How ChatGPT adoption has expanded",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/how-chatgpt-adoption-has-expanded",
-          "date": "2026-06-30"
         }
       ]
     },
