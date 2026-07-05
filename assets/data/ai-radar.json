@@ -1,11 +1,23 @@
 {
-  "generatedAt": "2026-07-04T10:04:34.372Z",
-  "date": "2026-07-04",
+  "generatedAt": "2026-07-05T10:07:54.358Z",
+  "date": "2026-07-05",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "The fanfiction community is at war with AI — and itself",
+      "source": "The Verge AI",
+      "date": "2026-07-03",
+      "url": "https://www.theverge.com/tech/960854/ai-fanfiction-ao3-claude-detector",
+      "summary": "Over the past week, a new fanworks movement has kicked off, with the aim to root out authors using generative AI. But the detection methods being implemented are questionable, and any fanfic writer could be caught in the...",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Claude"
+      ]
+    },
     {
       "title": "Anthropic wants to develop its own drugs",
       "source": "The Verge AI",
@@ -202,20 +214,53 @@
         "Dev Tools",
         "Multimodal"
       ]
-    },
-    {
-      "title": "Lawmakers want to ban AI companies from selling your health data",
-      "source": "The Verge AI",
-      "date": "2026-06-29",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/959033/health-location-data-protection-act-ai-warren-scanlon",
-      "summary": "A new proposal would ban the sale of Americans' health and location information to data brokers - including information people reveal to an AI chatbot like ChatGPT or Claude. In the coming weeks, Senator Elizabeth Warren...",
-      "tags": [
-        "ChatGPT",
-        "Claude"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "The fanfiction community is at war with AI — and itself",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/960854/ai-fanfiction-ao3-claude-detector",
+          "date": "2026-07-03"
+        },
+        {
+          "title": "How ChatGPT adoption has expanded",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/how-chatgpt-adoption-has-expanded",
+          "date": "2026-06-30"
+        }
+      ]
+    },
+    {
+      "label": "Claude research and documentation flow",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "The fanfiction community is at war with AI — and itself",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/960854/ai-fanfiction-ao3-claude-detector",
+          "date": "2026-07-03"
+        },
+        {
+          "title": "Anthropic wants to develop its own drugs",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/961311/anthropic-claude-science-ai-drug-development",
+          "date": "2026-07-03"
+        },
+        {
+          "title": "Anthropic&#8217;s long-sidelined Fable 5 is greenlit to return",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/958964/anthropic-claude-fable-5-is-back",
+          "date": "2026-07-01"
+        }
+      ]
+    },
     {
       "label": "AI coding assistant workflows",
       "status": "safe-data-candidate",
@@ -236,25 +281,6 @@
       ]
     },
     {
-      "label": "Claude research and documentation flow",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Anthropic wants to develop its own drugs",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/961311/anthropic-claude-science-ai-drug-development",
-          "date": "2026-07-03"
-        },
-        {
-          "title": "Anthropic&#8217;s long-sidelined Fable 5 is greenlit to return",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/958964/anthropic-claude-fable-5-is-back",
-          "date": "2026-07-01"
-        }
-      ]
-    },
-    {
       "label": "Gemini multimodal exploration",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
@@ -270,19 +296,6 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-google-ai/",
           "date": "2026-06-01"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "How ChatGPT adoption has expanded",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/how-chatgpt-adoption-has-expanded",
-          "date": "2026-06-30"
         }
       ]
     },
