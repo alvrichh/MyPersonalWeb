@@ -1,11 +1,32 @@
 {
-  "generatedAt": "2026-07-05T10:07:54.358Z",
-  "date": "2026-07-05",
+  "generatedAt": "2026-07-06T12:00:21.973Z",
+  "date": "2026-07-06",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Some of the nation’s rich are letting AI teach their kids",
+      "source": "The Verge AI",
+      "date": "2026-07-06",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/961505/wealthy-ai-schools-alpha-forge-prep",
+      "summary": "Most Americans don't trust AI. It's proven that it doesn't know what safe toppings for pizza are. People don't even want to listen to AI music. But none of that matters for some of America's wealthy, who are turning to A...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Infuriating Google commercial imagines the founding fathers embracing AI",
+      "source": "The Verge AI",
+      "date": "2026-07-06",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/961468/google-ai-commercial-founding-fathers-declaration-of-independence",
+      "summary": "\"Group project, but make it 1776.\" That's how a new commercial for Google Workspace opens. And things only get cringier from there. The clip imagines what it would be like if the founding fathers turned to Google's colla...",
+      "tags": [
+        "Agents",
+        "Gemini"
+      ]
+    },
     {
       "title": "The fanfiction community is at war with AI — and itself",
       "source": "The Verge AI",
@@ -191,32 +212,34 @@
       "tags": [
         "Gemini"
       ]
-    },
-    {
-      "title": "Mapping Europe’s AI Workforce Opportunity",
-      "source": "OpenAI News",
-      "date": "2026-06-29",
-      "url": "https://openai.com/index/mapping-ai-jobs-transition-eu",
-      "summary": "A new OpenAI report maps how AI could reshape jobs across the EU, highlighting which occupations may face automation, growth, or workflow changes.",
-      "tags": [
-        "ChatGPT",
-        "Automation"
-      ]
-    },
-    {
-      "title": "OpenAI is teasing new hardware… for Codex",
-      "source": "The Verge AI",
-      "date": "2026-06-29",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/959174/openai-codex-hardware-work-louder",
-      "summary": "OpenAI is releasing some sort of device related to its AI-powered coding tool, Codex, on July 15th. In a video posted to X on Monday, OpenAI shows a square-shaped device with several buttons, alongside the caption, \"Your...",
-      "tags": [
-        "ChatGPT",
-        "Dev Tools",
-        "Multimodal"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Infuriating Google commercial imagines the founding fathers embracing AI",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/961468/google-ai-commercial-founding-fathers-declaration-of-independence",
+          "date": "2026-07-06"
+        },
+        {
+          "title": "Google built a great smart speaker, but Gemini isn’t ready for it",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/959503/google-home-speaker-review-gemini-for-home",
+          "date": "2026-07-01"
+        },
+        {
+          "title": "How we used Gemini to build Google I/O 2026",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-google-ai/",
+          "date": "2026-06-01"
+        }
+      ]
+    },
     {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
@@ -277,25 +300,6 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/previewing-gpt-5-6-sol",
           "date": "2026-06-26"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Google built a great smart speaker, but Gemini isn’t ready for it",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/959503/google-home-speaker-review-gemini-for-home",
-          "date": "2026-07-01"
-        },
-        {
-          "title": "How we used Gemini to build Google I/O 2026",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-google-ai/",
-          "date": "2026-06-01"
         }
       ]
     },

@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-07-05
+# Daily AI maintenance report — 2026-07-06
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,10 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Some of the nation’s rich are letting AI teach their kids** — The Verge AI · 2026-07-06
+  https://www.theverge.com/ai-artificial-intelligence/961505/wealthy-ai-schools-alpha-forge-prep
+- **Infuriating Google commercial imagines the founding fathers embracing AI** — The Verge AI · 2026-07-06
+  https://www.theverge.com/ai-artificial-intelligence/961468/google-ai-commercial-founding-fathers-declaration-of-independence
 - **The fanfiction community is at war with AI — and itself** — The Verge AI · 2026-07-03
   https://www.theverge.com/tech/960854/ai-fanfiction-ao3-claude-detector
 - **Anthropic wants to develop its own drugs** — The Verge AI · 2026-07-03
@@ -37,10 +41,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/introducing-genebench-pro
 - **Core dump epidemiology: fixing an 18-year-old bug** — OpenAI News · 2026-06-30
   https://openai.com/index/core-dump-epidemiology-data-infrastructure-bug
-- **Google’s NotebookLM can sum up your research in a TikTok-style clip** — The Verge AI · 2026-06-30
-  https://www.theverge.com/tech/959778/google-notebooklm-ai-clips
-- **Netflix is using an AI-generated Gene Wilder voice in its Willy Wonka reality show** — The Verge AI · 2026-06-30
-  https://www.theverge.com/streaming/959684/netflix-wonka-golden-ticket-gene-wilder
 - **Ask an AI expert: What exactly is the full stack?** — Google AI Blog · 2026-06-29
   https://blog.google/innovation-and-ai/technology/ai/full-stack-ai-explainer/
 - **Mapping Europe’s AI Workforce Opportunity** — OpenAI News · 2026-06-29
@@ -80,10 +80,10 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
+- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI automation and workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
