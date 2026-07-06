@@ -1,6 +1,31 @@
 {
-  "generatedAt": "2026-07-05T10:07:54.358Z",
+  "generatedAt": "2026-07-06T12:00:21.973Z",
   "candidates": [
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Infuriating Google commercial imagines the founding fathers embracing AI",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/961468/google-ai-commercial-founding-fathers-declaration-of-independence",
+          "date": "2026-07-06"
+        },
+        {
+          "title": "Google built a great smart speaker, but Gemini isn’t ready for it",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/959503/google-home-speaker-review-gemini-for-home",
+          "date": "2026-07-01"
+        },
+        {
+          "title": "How we used Gemini to build Google I/O 2026",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-google-ai/",
+          "date": "2026-06-01"
+        }
+      ]
+    },
     {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
@@ -61,25 +86,6 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/previewing-gpt-5-6-sol",
           "date": "2026-06-26"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Google built a great smart speaker, but Gemini isn’t ready for it",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/959503/google-home-speaker-review-gemini-for-home",
-          "date": "2026-07-01"
-        },
-        {
-          "title": "How we used Gemini to build Google I/O 2026",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-google-ai/",
-          "date": "2026-06-01"
         }
       ]
     },
