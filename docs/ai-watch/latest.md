@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-07-06
+# Daily AI maintenance report — 2026-07-07
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -37,10 +37,10 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blog.google/company-news/inside-google/around-the-globe/google-europe/united-kingdom/unlocking-britains-next-era-of-productivity-building-a-nation-of-ai-trailblazers/
 - **How ChatGPT adoption has expanded** — OpenAI News · 2026-06-30
   https://openai.com/index/how-chatgpt-adoption-has-expanded
-- **Introducing GeneBench-Pro** — OpenAI News · 2026-06-30
-  https://openai.com/index/introducing-genebench-pro
 - **Core dump epidemiology: fixing an 18-year-old bug** — OpenAI News · 2026-06-30
   https://openai.com/index/core-dump-epidemiology-data-infrastructure-bug
+- **Introducing GeneBench-Pro** — OpenAI News · 2026-06-30
+  https://openai.com/index/introducing-genebench-pro
 - **Ask an AI expert: What exactly is the full stack?** — Google AI Blog · 2026-06-29
   https://blog.google/innovation-and-ai/technology/ai/full-stack-ai-explainer/
 - **Mapping Europe’s AI Workforce Opportunity** — OpenAI News · 2026-06-29
