@@ -1,11 +1,78 @@
 {
-  "generatedAt": "2026-07-07T10:51:35.291Z",
-  "date": "2026-07-07",
+  "generatedAt": "2026-07-08T10:12:26.513Z",
+  "date": "2026-07-08",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Meta’s new Muse Image model can pull other Instagram users into AI photos",
+      "source": "The Verge AI",
+      "date": "2026-07-08",
+      "url": "https://www.theverge.com/tech/962485/meta-muse-image-ai-model-instagram",
+      "summary": "Meta is launching the first AI image generation model made by its Superintelligence Labs division. The Muse Image model now powers the image-making tools across the Meta AI app, Instagram, and WhatsApp, and it's coming s...",
+      "tags": [
+        "Agents",
+        "Multimodal",
+        "Models"
+      ]
+    },
+    {
+      "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
+      "source": "Google AI Blog",
+      "date": "2026-07-07",
+      "url": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
+      "summary": "We’re announcing new capabilities in Managed Agents in Gemini API so developers can build reliable, production-ready agents.",
+      "tags": [
+        "Agents",
+        "MCP",
+        "Gemini",
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "Australian Payments Plus moves faster with ChatGPT and Codex",
+      "source": "OpenAI News",
+      "date": "2026-07-07",
+      "url": "https://openai.com/index/australian-payments-plus",
+      "summary": "See how Australian Payments Plus uses ChatGPT Enterprise and Codex to move faster through payments complexity. AP+ saves time, improves quality, and keeps human judgment central.",
+      "tags": [
+        "ChatGPT",
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "MUFG aims to become AI-native with OpenAI",
+      "source": "OpenAI News",
+      "date": "2026-07-07",
+      "url": "https://openai.com/index/mufg",
+      "summary": "MUFG uses ChatGPT Enterprise to build an AI-native organization, improve workflows, and deliver new AI-powered financial services at scale.",
+      "tags": [
+        "ChatGPT",
+        "Automation"
+      ]
+    },
+    {
+      "title": "Anthropic is launching Claude Cowork on mobile and web",
+      "source": "The Verge AI",
+      "date": "2026-07-07",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/961978/anthropic-claude-cowork-mobile-web",
+      "summary": "Starting Tuesday, Anthropic's Claude Cowork AI platform will be available on mobile and web for the first time. The expanded access is rolling out first to Max subscribers and coming to Claude users on other plans \"in th...",
+      "tags": [
+        "Claude"
+      ]
+    },
+    {
+      "title": "Solos debuts an even lighter version of its camera-less smart glasses",
+      "source": "The Verge AI",
+      "date": "2026-07-06",
+      "url": "https://www.theverge.com/tech/961711/solos-airgo-a6-smart-glasses-ai-assistant-privacy",
+      "summary": "Solos announced a new version of its AirGo smart glasses, one that forgoes cameras for a sleeker design and an AI assistant that relies on voice interactions. Last year's AirGo A5 weighed 36 to 40 grams depending on the ...",
+      "tags": [
+        "Agents"
+      ]
+    },
     {
       "title": "Some of the nation’s rich are letting AI teach their kids",
       "source": "The Verge AI",
@@ -63,16 +130,6 @@
       ]
     },
     {
-      "title": "OpenAI floats giving Trump administration 5 percent cut of AI boom",
-      "source": "The Verge AI",
-      "date": "2026-07-02",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/960588/openai-government-5-percent-stake-trump",
-      "summary": "OpenAI has floated giving the US government a 5 percent ownership stake as a way of easing tensions with the Trump administration and blunting mounting public backlash against AI, according to the Financial Times. CEO Sa...",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
       "title": "The latest AI news we announced in June 2026",
       "source": "Google AI Blog",
       "date": "2026-07-01",
@@ -80,6 +137,16 @@
       "summary": "Here are Google’s latest AI updates from June 2026.",
       "tags": [
         "Gemini"
+      ]
+    },
+    {
+      "title": "OpenAI floats giving Trump administration 5 percent cut of AI boom",
+      "source": "The Verge AI",
+      "date": "2026-07-02",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/960588/openai-government-5-percent-stake-trump",
+      "summary": "OpenAI has floated giving the US government a 5 percent ownership stake as a way of easing tensions with the Trump administration and blunting mounting public backlash against AI, according to the Financial Times. CEO Sa...",
+      "tags": [
+        "ChatGPT"
       ]
     },
     {
@@ -151,92 +218,82 @@
       "tags": [
         "ChatGPT"
       ]
-    },
-    {
-      "title": "Google’s NotebookLM can sum up your research in a TikTok-style clip",
-      "source": "The Verge AI",
-      "date": "2026-06-30",
-      "url": "https://www.theverge.com/tech/959778/google-notebooklm-ai-clips",
-      "summary": "Google's NotebookLM is adding a new way to catch up on your notes: TikTok-style AI videos. The new feature is rolling out to Google AI Ultra and Pro subscribers, allowing NotebookLM to generate 60-second vertical AI clip...",
-      "tags": [
-        "Gemini",
-        "Multimodal"
-      ]
-    },
-    {
-      "title": "Netflix is using an AI-generated Gene Wilder voice in its Willy Wonka reality show",
-      "source": "The Verge AI",
-      "date": "2026-06-30",
-      "url": "https://www.theverge.com/streaming/959684/netflix-wonka-golden-ticket-gene-wilder",
-      "summary": "A new teaser trailer confirmed that Wonka's The Golden Ticket will premiere on Netflix on September 23rd, following its Squid Game reality show in the trend of creating real competitions based on fictional torture scenar...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Libby will filter out AI content, kind of",
-      "source": "The Verge AI",
-      "date": "2026-06-30",
-      "url": "https://www.theverge.com/column/959433/libby-ai-filter",
-      "summary": "This is Lowpass by Janko Roettgers, a newsletter on the ever-evolving intersection of tech and entertainment, syndicated just for The Verge subscribers once a week. \"AI is the new frontier for us,\" says Marc DeBevoise, w...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Meet the lawyer who beat Elon Musk — twice",
-      "source": "The Verge AI",
-      "date": "2026-06-30",
-      "url": "https://www.theverge.com/column/959270/elon-musk-open-ai-bill-savitt-twitter",
-      "summary": "Watching Elon Musk fulminate at Bill Savitt during Musk v. Altman - the case in which Musk sued Sam Altman and OpenAI instead of seeing a therapist about his AI failures - was a bit like watching a toddler have a temper ...",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Tidal won’t pay royalties on AI-generated music, but isn’t banning it outright",
-      "source": "The Verge AI",
-      "date": "2026-06-30",
-      "url": "https://www.theverge.com/tech/959211/tidal-ai-music-policy-demonetizingdetect-label",
-      "summary": "Tidal shared its new policies regarding AI-generated music today and how the platform plans to \"protect artists\" and \"inform listeners.\" Instead of banning it outright, starting on July 15th Tidal will label tracks it ha...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Ask an AI expert: What exactly is the full stack?",
-      "source": "Google AI Blog",
-      "date": "2026-06-29",
-      "url": "https://blog.google/innovation-and-ai/technology/ai/full-stack-ai-explainer/",
-      "summary": "A Google expert explains what it means to take a full-stack approach to AI and why it’s been the foundation of our AI work for so long.",
-      "tags": [
-        "Gemini"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
+          "date": "2026-07-07"
+        },
+        {
+          "title": "Evaluating performance and efficiency of the GitHub Copilot agentic harness across models and tasks",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harness-across-models-and-tasks/",
+          "date": "2026-06-25"
+        },
+        {
+          "title": "How we built an internal data analytics agent",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/",
+          "date": "2026-06-19"
+        }
+      ]
+    },
+    {
+      "label": "MCP / tool-connected assistants",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
+          "date": "2026-07-07"
+        }
+      ]
+    },
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
+          "date": "2026-07-07"
+        },
+        {
+          "title": "Accelerating researchers and developers building multilingual AI with a new open dataset",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/llms/accelerating-researchers-and-developers-building-multilingual-ai-with-a-new-open-dataset/",
+          "date": "2026-06-15"
+        }
+      ]
+    },
     {
       "label": "Gemini multimodal exploration",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
+          "date": "2026-07-07"
+        },
+        {
           "title": "Infuriating Google commercial imagines the founding fathers embracing AI",
           "source": "The Verge AI",
           "link": "https://www.theverge.com/ai-artificial-intelligence/961468/google-ai-commercial-founding-fathers-declaration-of-independence",
           "date": "2026-07-06"
-        },
-        {
-          "title": "Google built a great smart speaker, but Gemini isn’t ready for it",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/959503/google-home-speaker-review-gemini-for-home",
-          "date": "2026-07-01"
-        },
-        {
-          "title": "How we used Gemini to build Google I/O 2026",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-google-ai/",
-          "date": "2026-06-01"
         }
       ]
     },
@@ -246,16 +303,22 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "Australian Payments Plus moves faster with ChatGPT and Codex",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/australian-payments-plus",
+          "date": "2026-07-07"
+        },
+        {
+          "title": "MUFG aims to become AI-native with OpenAI",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/mufg",
+          "date": "2026-07-07"
+        },
+        {
           "title": "The fanfiction community is at war with AI — and itself",
           "source": "The Verge AI",
           "link": "https://www.theverge.com/tech/960854/ai-fanfiction-ao3-claude-detector",
           "date": "2026-07-03"
-        },
-        {
-          "title": "How ChatGPT adoption has expanded",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/how-chatgpt-adoption-has-expanded",
-          "date": "2026-06-30"
         }
       ]
     },
@@ -264,6 +327,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Anthropic is launching Claude Cowork on mobile and web",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/961978/anthropic-claude-cowork-mobile-web",
+          "date": "2026-07-07"
+        },
         {
           "title": "The fanfiction community is at war with AI — and itself",
           "source": "The Verge AI",
@@ -275,12 +344,6 @@
           "source": "The Verge AI",
           "link": "https://www.theverge.com/ai-artificial-intelligence/961311/anthropic-claude-science-ai-drug-development",
           "date": "2026-07-03"
-        },
-        {
-          "title": "Anthropic&#8217;s long-sidelined Fable 5 is greenlit to return",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/958964/anthropic-claude-fable-5-is-back",
-          "date": "2026-07-01"
         }
       ]
     },
@@ -319,69 +382,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/developer-skills/github/i-automated-my-job-and-it-made-me-a-better-leader/",
           "date": "2026-06-23"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Evaluating performance and efficiency of the GitHub Copilot agentic harness across models and tasks",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harness-across-models-and-tasks/",
-          "date": "2026-06-25"
-        },
-        {
-          "title": "How agents are transforming work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/how-agents-are-transforming-work",
-          "date": "2026-06-25"
-        },
-        {
-          "title": "How we built an internal data analytics agent",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/",
-          "date": "2026-06-19"
-        }
-      ]
-    },
-    {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Evaluating performance and efficiency of the GitHub Copilot agentic harness across models and tasks",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harness-across-models-and-tasks/",
-          "date": "2026-06-25"
-        },
-        {
-          "title": "How we built an internal data analytics agent",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/",
-          "date": "2026-06-19"
-        },
-        {
-          "title": "Getting more from each token: How Copilot improves context handling and model routing",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/getting-more-from-each-token-how-copilot-improves-context-handling-and-model-routing/",
-          "date": "2026-06-17"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Accelerating researchers and developers building multilingual AI with a new open dataset",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/llms/accelerating-researchers-and-developers-building-multilingual-ai-with-a-new-open-dataset/",
-          "date": "2026-06-15"
         }
       ]
     }
