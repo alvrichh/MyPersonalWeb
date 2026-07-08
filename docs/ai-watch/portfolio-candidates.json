@@ -1,28 +1,79 @@
 {
-  "generatedAt": "2026-07-07T10:51:35.291Z",
+  "generatedAt": "2026-07-08T10:12:26.513Z",
   "candidates": [
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
+          "date": "2026-07-07"
+        },
+        {
+          "title": "Evaluating performance and efficiency of the GitHub Copilot agentic harness across models and tasks",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harness-across-models-and-tasks/",
+          "date": "2026-06-25"
+        },
+        {
+          "title": "How we built an internal data analytics agent",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/",
+          "date": "2026-06-19"
+        }
+      ]
+    },
+    {
+      "label": "MCP / tool-connected assistants",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
+          "date": "2026-07-07"
+        }
+      ]
+    },
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
+          "date": "2026-07-07"
+        },
+        {
+          "title": "Accelerating researchers and developers building multilingual AI with a new open dataset",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/llms/accelerating-researchers-and-developers-building-multilingual-ai-with-a-new-open-dataset/",
+          "date": "2026-06-15"
+        }
+      ]
+    },
     {
       "label": "Gemini multimodal exploration",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
+          "date": "2026-07-07"
+        },
+        {
           "title": "Infuriating Google commercial imagines the founding fathers embracing AI",
           "source": "The Verge AI",
           "link": "https://www.theverge.com/ai-artificial-intelligence/961468/google-ai-commercial-founding-fathers-declaration-of-independence",
           "date": "2026-07-06"
-        },
-        {
-          "title": "Google built a great smart speaker, but Gemini isn’t ready for it",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/959503/google-home-speaker-review-gemini-for-home",
-          "date": "2026-07-01"
-        },
-        {
-          "title": "How we used Gemini to build Google I/O 2026",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/ai/io-2026-google-ai/",
-          "date": "2026-06-01"
         }
       ]
     },
@@ -32,16 +83,22 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "Australian Payments Plus moves faster with ChatGPT and Codex",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/australian-payments-plus",
+          "date": "2026-07-07"
+        },
+        {
+          "title": "MUFG aims to become AI-native with OpenAI",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/mufg",
+          "date": "2026-07-07"
+        },
+        {
           "title": "The fanfiction community is at war with AI — and itself",
           "source": "The Verge AI",
           "link": "https://www.theverge.com/tech/960854/ai-fanfiction-ao3-claude-detector",
           "date": "2026-07-03"
-        },
-        {
-          "title": "How ChatGPT adoption has expanded",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/how-chatgpt-adoption-has-expanded",
-          "date": "2026-06-30"
         }
       ]
     },
@@ -50,6 +107,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Anthropic is launching Claude Cowork on mobile and web",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/961978/anthropic-claude-cowork-mobile-web",
+          "date": "2026-07-07"
+        },
         {
           "title": "The fanfiction community is at war with AI — and itself",
           "source": "The Verge AI",
@@ -61,12 +124,6 @@
           "source": "The Verge AI",
           "link": "https://www.theverge.com/ai-artificial-intelligence/961311/anthropic-claude-science-ai-drug-development",
           "date": "2026-07-03"
-        },
-        {
-          "title": "Anthropic&#8217;s long-sidelined Fable 5 is greenlit to return",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/958964/anthropic-claude-fable-5-is-back",
-          "date": "2026-07-01"
         }
       ]
     },
@@ -105,69 +162,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/developer-skills/github/i-automated-my-job-and-it-made-me-a-better-leader/",
           "date": "2026-06-23"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Evaluating performance and efficiency of the GitHub Copilot agentic harness across models and tasks",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harness-across-models-and-tasks/",
-          "date": "2026-06-25"
-        },
-        {
-          "title": "How agents are transforming work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/how-agents-are-transforming-work",
-          "date": "2026-06-25"
-        },
-        {
-          "title": "How we built an internal data analytics agent",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/",
-          "date": "2026-06-19"
-        }
-      ]
-    },
-    {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Evaluating performance and efficiency of the GitHub Copilot agentic harness across models and tasks",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harness-across-models-and-tasks/",
-          "date": "2026-06-25"
-        },
-        {
-          "title": "How we built an internal data analytics agent",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/",
-          "date": "2026-06-19"
-        },
-        {
-          "title": "Getting more from each token: How Copilot improves context handling and model routing",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/getting-more-from-each-token-how-copilot-improves-context-handling-and-model-routing/",
-          "date": "2026-06-17"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Accelerating researchers and developers building multilingual AI with a new open dataset",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/llms/accelerating-researchers-and-developers-building-multilingual-ai-with-a-new-open-dataset/",
-          "date": "2026-06-15"
         }
       ]
     }
