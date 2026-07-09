@@ -1,11 +1,86 @@
 {
-  "generatedAt": "2026-07-08T10:12:26.513Z",
-  "date": "2026-07-08",
+  "generatedAt": "2026-07-09T10:50:19.535Z",
+  "date": "2026-07-09",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Automating cross-repo documentation with GitHub Agentic Workflows",
+      "source": "GitHub AI & ML Blog",
+      "date": "2026-07-08",
+      "url": "https://github.blog/ai-and-ml/github-copilot/automating-cross-repo-documentation-with-github-agentic-workflows/",
+      "summary": "Explore how the Aspire team turns merged product changes into SME-reviewed docs pull requests, closing the gap between release and documentation. The post Automating cross-repo documentation with GitHub Agentic Workflows...",
+      "tags": [
+        "Agents",
+        "Automation"
+      ]
+    },
+    {
+      "title": "How GitHub Copilot enables zero DNS configuration for GitHub Pages",
+      "source": "GitHub AI & ML Blog",
+      "date": "2026-07-08",
+      "url": "https://github.blog/ai-and-ml/github-copilot/how-github-copilot-enables-zero-dns-configuration-for-github-pages/",
+      "summary": "Go from an empty repository to a live custom domain with HTTPS in about 14 minutes, without manually editing a single DNS record. The post How GitHub Copilot enables zero DNS configuration for GitHub Pages appeared first...",
+      "tags": [
+        "Copilot"
+      ]
+    },
+    {
+      "title": "Our approach to government and national security partnerships",
+      "source": "OpenAI News",
+      "date": "2026-07-08",
+      "url": "https://openai.com/index/government-national-security-partnerships",
+      "summary": "Learn how OpenAI approaches government and national security partnerships, with principles for responsible AI use, democratic accountability, and public safety.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Separating signal from noise in coding evaluations",
+      "source": "OpenAI News",
+      "date": "2026-07-08",
+      "url": "https://openai.com/index/separating-signal-from-noise-coding-evaluations",
+      "summary": "A new analysis from OpenAI reveals issues in SWE-Bench Pro, a popular coding benchmark, raising concerns about reliability and accuracy in evaluating AI models.",
+      "tags": [
+        "ChatGPT",
+        "Dev Tools",
+        "Models"
+      ]
+    },
+    {
+      "title": "Helping K–12 educators build practical AI skills",
+      "source": "OpenAI News",
+      "date": "2026-07-08",
+      "url": "https://openai.com/index/k-12-educators-practical-skills",
+      "summary": "OpenAI Academy and the Walton Family Foundation are bringing hands-on AI Skills Jams to help K–12 educators build practical AI skills for the classroom.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Introducing GPT-Live",
+      "source": "OpenAI News",
+      "date": "2026-07-08",
+      "url": "https://openai.com/index/introducing-gpt-live",
+      "summary": "A new generation of voice models for natural human-AI interaction, now powering ChatGPT Voice.",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ]
+    },
+    {
+      "title": "ChatGPT’s upgraded voice mode is better at shutting up",
+      "source": "The Verge AI",
+      "date": "2026-07-08",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/962856/chatgpt-upgraded-voice-mode-gpt-live",
+      "summary": "OpenAI is overhauling ChatGPT's voice mode with a new model that it says is more like \"talking to another person.\" The new GPT-Live-1 is designed to interrupt you less and will also wait for you to continue speaking if y...",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ]
+    },
     {
       "title": "Meta’s new Muse Image model can pull other Instagram users into AI photos",
       "source": "The Verge AI",
@@ -148,76 +223,6 @@
       "tags": [
         "ChatGPT"
       ]
-    },
-    {
-      "title": "New York City educators and industry leaders gathered at Google’s offices to shape the future of AI in classrooms.",
-      "source": "Google AI Blog",
-      "date": "2026-07-01",
-      "url": "https://blog.google/products-and-platforms/products/education/nyc-ai-summit/",
-      "summary": "Google, the New York Jobs CEO Council and Urban Assembly hosted an AI summit for 150 education and industry leaders.",
-      "tags": [
-        "Gemini"
-      ]
-    },
-    {
-      "title": "Google built a great smart speaker, but Gemini isn’t ready for it",
-      "source": "The Verge AI",
-      "date": "2026-07-01",
-      "url": "https://www.theverge.com/tech/959503/google-home-speaker-review-gemini-for-home",
-      "summary": "Smart speakers have spent the past few years searching for a compelling second act. Beyond music, timers, and controlling your lights, they've struggled to justify taking up space on the kitchen counter. AI promised to c...",
-      "tags": [
-        "Gemini"
-      ]
-    },
-    {
-      "title": "Anthropic&#8217;s long-sidelined Fable 5 is greenlit to return",
-      "source": "The Verge AI",
-      "date": "2026-07-01",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/958964/anthropic-claude-fable-5-is-back",
-      "summary": "After weeks of negotiating with the Trump administration, Anthropic is finally going to be able to bring Claude Fable 5 back online. In a post on X, Anthropic said it plans to begin restoring access Wednesday to users gl...",
-      "tags": [
-        "Claude"
-      ]
-    },
-    {
-      "title": "Unlocking Britain’s next era of productivity: Building a nation of AI trailblazers",
-      "source": "Google AI Blog",
-      "date": "2026-06-30",
-      "url": "https://blog.google/company-news/inside-google/around-the-globe/google-europe/united-kingdom/unlocking-britains-next-era-of-productivity-building-a-nation-of-ai-trailblazers/",
-      "summary": "Google UK shares its latest Economic Impact Report and how to enable more people to unlock the benefits of AI-powered technologies.",
-      "tags": [
-        "Gemini"
-      ]
-    },
-    {
-      "title": "How ChatGPT adoption has expanded",
-      "source": "OpenAI News",
-      "date": "2026-06-30",
-      "url": "https://openai.com/index/how-chatgpt-adoption-has-expanded",
-      "summary": "New OpenAI Signals data shows how ChatGPT adoption is growing globally, with users increasing usage, exploring more capabilities, and driving growth across regions and languages.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Introducing GeneBench-Pro",
-      "source": "OpenAI News",
-      "date": "2026-06-30",
-      "url": "https://openai.com/index/introducing-genebench-pro",
-      "summary": "Introducing GeneBench-Pro, a new benchmark testing AI performance in genomics, biology, and scientific research using complex, real-world datasets.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Core dump epidemiology: fixing an 18-year-old bug",
-      "source": "OpenAI News",
-      "date": "2026-06-30",
-      "url": "https://openai.com/index/core-dump-epidemiology-data-infrastructure-bug",
-      "summary": "OpenAI engineers used large-scale core dump analysis to debug rare infrastructure crashes, uncovering both a hardware fault and a long-standing software bug.",
-      "tags": [
-        "ChatGPT"
-      ]
     }
   ],
   "candidates": [
@@ -227,10 +232,35 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "Automating cross-repo documentation with GitHub Agentic Workflows",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/automating-cross-repo-documentation-with-github-agentic-workflows/",
+          "date": "2026-07-08"
+        },
+        {
           "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
           "date": "2026-07-07"
+        },
+        {
+          "title": "Evaluating performance and efficiency of the GitHub Copilot agentic harness across models and tasks",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harness-across-models-and-tasks/",
+          "date": "2026-06-25"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "How GitHub Copilot enables zero DNS configuration for GitHub Pages",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-github-copilot-enables-zero-dns-configuration-for-github-pages/",
+          "date": "2026-07-08"
         },
         {
           "title": "Evaluating performance and efficiency of the GitHub Copilot agentic harness across models and tasks",
@@ -243,6 +273,50 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/",
           "date": "2026-06-19"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Separating signal from noise in coding evaluations",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/separating-signal-from-noise-coding-evaluations",
+          "date": "2026-07-08"
+        },
+        {
+          "title": "Anthropic wants to develop its own drugs",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/961311/anthropic-claude-science-ai-drug-development",
+          "date": "2026-07-03"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Introducing GPT-Live",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/introducing-gpt-live",
+          "date": "2026-07-08"
+        },
+        {
+          "title": "ChatGPT’s upgraded voice mode is better at shutting up",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/962856/chatgpt-upgraded-voice-mode-gpt-live",
+          "date": "2026-07-08"
+        },
+        {
+          "title": "Australian Payments Plus moves faster with ChatGPT and Codex",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/australian-payments-plus",
+          "date": "2026-07-07"
         }
       ]
     },
@@ -298,31 +372,6 @@
       ]
     },
     {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Australian Payments Plus moves faster with ChatGPT and Codex",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/australian-payments-plus",
-          "date": "2026-07-07"
-        },
-        {
-          "title": "MUFG aims to become AI-native with OpenAI",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/mufg",
-          "date": "2026-07-07"
-        },
-        {
-          "title": "The fanfiction community is at war with AI — and itself",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/960854/ai-fanfiction-ao3-claude-detector",
-          "date": "2026-07-03"
-        }
-      ]
-    },
-    {
       "label": "Claude research and documentation flow",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
@@ -344,44 +393,6 @@
           "source": "The Verge AI",
           "link": "https://www.theverge.com/ai-artificial-intelligence/961311/anthropic-claude-science-ai-drug-development",
           "date": "2026-07-03"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Anthropic wants to develop its own drugs",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/961311/anthropic-claude-science-ai-drug-development",
-          "date": "2026-07-03"
-        },
-        {
-          "title": "Previewing GPT-5.6 Sol: a next-generation model",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/previewing-gpt-5-6-sol",
-          "date": "2026-06-26"
-        }
-      ]
-    },
-    {
-      "label": "AI automation and workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Mapping Europe’s AI Workforce Opportunity",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/mapping-ai-jobs-transition-eu",
-          "date": "2026-06-29"
-        },
-        {
-          "title": "I automated my job (and it made me a better leader)",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/developer-skills/github/i-automated-my-job-and-it-made-me-a-better-leader/",
-          "date": "2026-06-23"
         }
       ]
     }
