@@ -1,36 +1,17 @@
 {
-  "generatedAt": "2026-07-09T10:50:19.535Z",
+  "generatedAt": "2026-07-10T10:48:57.245Z",
   "candidates": [
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Automating cross-repo documentation with GitHub Agentic Workflows",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/automating-cross-repo-documentation-with-github-agentic-workflows/",
-          "date": "2026-07-08"
-        },
-        {
-          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
-          "date": "2026-07-07"
-        },
-        {
-          "title": "Evaluating performance and efficiency of the GitHub Copilot agentic harness across models and tasks",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harness-across-models-and-tasks/",
-          "date": "2026-06-25"
-        }
-      ]
-    },
     {
       "label": "GitHub Copilot developer loop",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "GPT-5.6 is now the preferred model in Microsoft 365 Copilot",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/gpt-5-6-preferred-model-microsoft-365-copilot",
+          "date": "2026-07-09"
+        },
         {
           "title": "How GitHub Copilot enables zero DNS configuration for GitHub Pages",
           "source": "GitHub AI & ML Blog",
@@ -42,31 +23,31 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harness-across-models-and-tasks/",
           "date": "2026-06-25"
-        },
-        {
-          "title": "How we built an internal data analytics agent",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/",
-          "date": "2026-06-19"
         }
       ]
     },
     {
-      "label": "AI coding assistant workflows",
+      "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Separating signal from noise in coding evaluations",
+          "title": "ChatGPT is now a partner for your most ambitious work",
           "source": "OpenAI News",
-          "link": "https://openai.com/index/separating-signal-from-noise-coding-evaluations",
+          "link": "https://openai.com/index/chatgpt-for-your-most-ambitious-work",
+          "date": "2026-07-09"
+        },
+        {
+          "title": "Automating cross-repo documentation with GitHub Agentic Workflows",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/automating-cross-repo-documentation-with-github-agentic-workflows/",
           "date": "2026-07-08"
         },
         {
-          "title": "Anthropic wants to develop its own drugs",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/961311/anthropic-claude-science-ai-drug-development",
-          "date": "2026-07-03"
+          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
+          "date": "2026-07-07"
         }
       ]
     },
@@ -76,22 +57,79 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Introducing GPT-Live",
+          "title": "ChatGPT is now a partner for your most ambitious work",
           "source": "OpenAI News",
-          "link": "https://openai.com/index/introducing-gpt-live",
-          "date": "2026-07-08"
+          "link": "https://openai.com/index/chatgpt-for-your-most-ambitious-work",
+          "date": "2026-07-09"
         },
         {
-          "title": "ChatGPT’s upgraded voice mode is better at shutting up",
+          "title": "The ChatGPT browser is already dead",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/962856/chatgpt-upgraded-voice-mode-gpt-live",
-          "date": "2026-07-08"
+          "link": "https://www.theverge.com/ai-artificial-intelligence/963654/openai-chatgpt-atlas-ai-browser-shut-down-sunset",
+          "date": "2026-07-09"
         },
         {
-          "title": "Australian Payments Plus moves faster with ChatGPT and Codex",
+          "title": "OpenAI rolls out GPT-5.6 after government greenlight — and announces ‘ChatGPT Work’",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/963464/openai-gpt-5-6-codex-chatgpt-work",
+          "date": "2026-07-09"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Meta says its new AI model is ready to compete on coding",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/963193/meta-muse-spark-model-api",
+          "date": "2026-07-09"
+        },
+        {
+          "title": "Separating signal from noise in coding evaluations",
           "source": "OpenAI News",
-          "link": "https://openai.com/index/australian-payments-plus",
+          "link": "https://openai.com/index/separating-signal-from-noise-coding-evaluations",
+          "date": "2026-07-08"
+        }
+      ]
+    },
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Meta says its new AI model is ready to compete on coding",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/963193/meta-muse-spark-model-api",
+          "date": "2026-07-09"
+        },
+        {
+          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
           "date": "2026-07-07"
+        },
+        {
+          "title": "Accelerating researchers and developers building multilingual AI with a new open dataset",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/llms/accelerating-researchers-and-developers-building-multilingual-ai-with-a-new-open-dataset/",
+          "date": "2026-06-15"
+        }
+      ]
+    },
+    {
+      "label": "Claude research and documentation flow",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Say hello to Claude Wrapped",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/963105/anthropic-claude-wrapped-reflection-ai-usage",
+          "date": "2026-07-09"
         }
       ]
     },
@@ -109,25 +147,6 @@
       ]
     },
     {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
-          "date": "2026-07-07"
-        },
-        {
-          "title": "Accelerating researchers and developers building multilingual AI with a new open dataset",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/llms/accelerating-researchers-and-developers-building-multilingual-ai-with-a-new-open-dataset/",
-          "date": "2026-06-15"
-        }
-      ]
-    },
-    {
       "label": "Gemini multimodal exploration",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
@@ -137,37 +156,6 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
           "date": "2026-07-07"
-        },
-        {
-          "title": "Infuriating Google commercial imagines the founding fathers embracing AI",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/961468/google-ai-commercial-founding-fathers-declaration-of-independence",
-          "date": "2026-07-06"
-        }
-      ]
-    },
-    {
-      "label": "Claude research and documentation flow",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Anthropic is launching Claude Cowork on mobile and web",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/961978/anthropic-claude-cowork-mobile-web",
-          "date": "2026-07-07"
-        },
-        {
-          "title": "The fanfiction community is at war with AI — and itself",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/960854/ai-fanfiction-ao3-claude-detector",
-          "date": "2026-07-03"
-        },
-        {
-          "title": "Anthropic wants to develop its own drugs",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/961311/anthropic-claude-science-ai-drug-development",
-          "date": "2026-07-03"
         }
       ]
     }
