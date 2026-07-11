@@ -1,36 +1,17 @@
 {
-  "generatedAt": "2026-07-10T10:48:57.245Z",
+  "generatedAt": "2026-07-11T09:23:49.148Z",
   "candidates": [
-    {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "GPT-5.6 is now the preferred model in Microsoft 365 Copilot",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/gpt-5-6-preferred-model-microsoft-365-copilot",
-          "date": "2026-07-09"
-        },
-        {
-          "title": "How GitHub Copilot enables zero DNS configuration for GitHub Pages",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/how-github-copilot-enables-zero-dns-configuration-for-github-pages/",
-          "date": "2026-07-08"
-        },
-        {
-          "title": "Evaluating performance and efficiency of the GitHub Copilot agentic harness across models and tasks",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harness-across-models-and-tasks/",
-          "date": "2026-06-25"
-        }
-      ]
-    },
     {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Better tools made Copilot code review worse. Here&#8217;s how we actually improved it.",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/",
+          "date": "2026-07-10"
+        },
         {
           "title": "ChatGPT is now a partner for your most ambitious work",
           "source": "OpenAI News",
@@ -42,12 +23,31 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/automating-cross-repo-documentation-with-github-agentic-workflows/",
           "date": "2026-07-08"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Better tools made Copilot code review worse. Here&#8217;s how we actually improved it.",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/",
+          "date": "2026-07-10"
         },
         {
-          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
-          "date": "2026-07-07"
+          "title": "GPT-5.6 is now the preferred model in Microsoft 365 Copilot",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/gpt-5-6-preferred-model-microsoft-365-copilot",
+          "date": "2026-07-09"
+        },
+        {
+          "title": "How GitHub Copilot enables zero DNS configuration for GitHub Pages",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-github-copilot-enables-zero-dns-configuration-for-github-pages/",
+          "date": "2026-07-08"
         }
       ]
     },
@@ -69,10 +69,10 @@
           "date": "2026-07-09"
         },
         {
-          "title": "OpenAI rolls out GPT-5.6 after government greenlight — and announces ‘ChatGPT Work’",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/963464/openai-gpt-5-6-codex-chatgpt-work",
-          "date": "2026-07-09"
+          "title": "Introducing GPT-Live",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/introducing-gpt-live",
+          "date": "2026-07-08"
         }
       ]
     },
@@ -82,12 +82,6 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Meta says its new AI model is ready to compete on coding",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/963193/meta-muse-spark-model-api",
-          "date": "2026-07-09"
-        },
-        {
           "title": "Separating signal from noise in coding evaluations",
           "source": "OpenAI News",
           "link": "https://openai.com/index/separating-signal-from-noise-coding-evaluations",
@@ -96,45 +90,20 @@
       ]
     },
     {
-      "label": "AI developer tooling",
+      "label": "MCP / tool-connected assistants",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
-        {
-          "title": "Meta says its new AI model is ready to compete on coding",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/963193/meta-muse-spark-model-api",
-          "date": "2026-07-09"
-        },
         {
           "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
           "date": "2026-07-07"
-        },
-        {
-          "title": "Accelerating researchers and developers building multilingual AI with a new open dataset",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/llms/accelerating-researchers-and-developers-building-multilingual-ai-with-a-new-open-dataset/",
-          "date": "2026-06-15"
         }
       ]
     },
     {
-      "label": "Claude research and documentation flow",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Say hello to Claude Wrapped",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/963105/anthropic-claude-wrapped-reflection-ai-usage",
-          "date": "2026-07-09"
-        }
-      ]
-    },
-    {
-      "label": "MCP / tool-connected assistants",
+      "label": "AI developer tooling",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
@@ -156,6 +125,19 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
           "date": "2026-07-07"
+        }
+      ]
+    },
+    {
+      "label": "AI automation and workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "I automated my job (and it made me a better leader)",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/developer-skills/github/i-automated-my-job-and-it-made-me-a-better-leader/",
+          "date": "2026-06-23"
         }
       ]
     }
