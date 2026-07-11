@@ -1,11 +1,24 @@
 {
-  "generatedAt": "2026-07-10T10:48:57.245Z",
-  "date": "2026-07-10",
+  "generatedAt": "2026-07-11T09:23:49.148Z",
+  "date": "2026-07-11",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Better tools made Copilot code review worse. Here&#8217;s how we actually improved it.",
+      "source": "GitHub AI & ML Blog",
+      "date": "2026-07-10",
+      "url": "https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/",
+      "summary": "How migrating Copilot code review to shared Unix-style code exploration tools reduced review cost by reshaping agent workflows around pull request evidence. The post Better tools made Copilot code review worse. Here&#821...",
+      "tags": [
+        "Agents",
+        "Copilot",
+        "Dev Tools",
+        "Automation"
+      ]
+    },
     {
       "title": "How Deutsche Telekom is rewiring telecommunications with AI",
       "source": "OpenAI News",
@@ -15,6 +28,46 @@
       "tags": [
         "ChatGPT",
         "Automation"
+      ]
+    },
+    {
+      "title": "Meta turns off the Instagram feature that let users make AI deepfakes of public accounts",
+      "source": "The Verge AI",
+      "date": "2026-07-10",
+      "url": "https://www.theverge.com/tech/964416/meta-instagram-ai-muse-image-deepfakes",
+      "summary": "Following significant backlash, Meta is turning off the feature it announced this week that let users generate AI images based on content from public Instagram accounts just by tagging them. The feature, as originally se...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "Apple sues OpenAI for allegedly stealing hardware secrets",
+      "source": "The Verge AI",
+      "date": "2026-07-10",
+      "url": "https://www.theverge.com/tech/964350/apple-openai-lawsuit-trade-secrets",
+      "summary": "Apple has sued OpenAI, alleging that engineers stole Apple secrets to advance the AI startup's hardware plans. In its complaint, Apple says it uncovered \"a pattern of theft of Apple's trade secrets by OpenAI employees wh...",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Instagram’s Adam Mosseri: If you don&#8217;t like AI, &#8216;then you shouldn&#8217;t have it in your feed&#8217;",
+      "source": "The Verge AI",
+      "date": "2026-07-10",
+      "url": "https://www.theverge.com/tech/963961/instagram-adam-mosseri-ai-feed-filters",
+      "summary": "Though Instagram head Adam Mosseri doesn't want to filter out AI content on the platform, he argues that you \"shouldn't have it in your feed\" if you don't like it. \"I don't think we should filter out AI content,\" Mosseri...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Would you host part of an AI data center in your home?",
+      "source": "The Verge AI",
+      "date": "2026-07-10",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/963930/sunrun-distributed-ai-data-center",
+      "summary": "A solar and home energy storage company is expanding into AI data centers, but not by building one - instead, it's offering to pay its customers to put its compute units in their homes. Sunrun is launching a pilot progra...",
+      "tags": [
+        "AI"
       ]
     },
     {
@@ -162,95 +215,20 @@
       "tags": [
         "ChatGPT"
       ]
-    },
-    {
-      "title": "Separating signal from noise in coding evaluations",
-      "source": "OpenAI News",
-      "date": "2026-07-08",
-      "url": "https://openai.com/index/separating-signal-from-noise-coding-evaluations",
-      "summary": "A new analysis from OpenAI reveals issues in SWE-Bench Pro, a popular coding benchmark, raising concerns about reliability and accuracy in evaluating AI models.",
-      "tags": [
-        "ChatGPT",
-        "Dev Tools",
-        "Models"
-      ]
-    },
-    {
-      "title": "Helping K–12 educators build practical AI skills",
-      "source": "OpenAI News",
-      "date": "2026-07-08",
-      "url": "https://openai.com/index/k-12-educators-practical-skills",
-      "summary": "OpenAI Academy and the Walton Family Foundation are bringing hands-on AI Skills Jams to help K–12 educators build practical AI skills for the classroom.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Introducing GPT-Live",
-      "source": "OpenAI News",
-      "date": "2026-07-08",
-      "url": "https://openai.com/index/introducing-gpt-live",
-      "summary": "A new generation of voice models for natural human-AI interaction, now powering ChatGPT Voice.",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "ChatGPT’s upgraded voice mode is better at shutting up",
-      "source": "The Verge AI",
-      "date": "2026-07-08",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/962856/chatgpt-upgraded-voice-mode-gpt-live",
-      "summary": "OpenAI is overhauling ChatGPT's voice mode with a new model that it says is more like \"talking to another person.\" The new GPT-Live-1 is designed to interrupt you less and will also wait for you to continue speaking if y...",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "Meta’s new Muse Image model can pull other Instagram users into AI photos",
-      "source": "The Verge AI",
-      "date": "2026-07-08",
-      "url": "https://www.theverge.com/tech/962485/meta-muse-image-ai-model-instagram",
-      "summary": "Meta is launching the first AI image generation model made by its Superintelligence Labs division. The Muse Image model now powers the image-making tools across the Meta AI app, Instagram, and WhatsApp, and it's coming s...",
-      "tags": [
-        "Agents",
-        "Multimodal",
-        "Models"
-      ]
     }
   ],
   "candidates": [
-    {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "GPT-5.6 is now the preferred model in Microsoft 365 Copilot",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/gpt-5-6-preferred-model-microsoft-365-copilot",
-          "date": "2026-07-09"
-        },
-        {
-          "title": "How GitHub Copilot enables zero DNS configuration for GitHub Pages",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/how-github-copilot-enables-zero-dns-configuration-for-github-pages/",
-          "date": "2026-07-08"
-        },
-        {
-          "title": "Evaluating performance and efficiency of the GitHub Copilot agentic harness across models and tasks",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harness-across-models-and-tasks/",
-          "date": "2026-06-25"
-        }
-      ]
-    },
     {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Better tools made Copilot code review worse. Here&#8217;s how we actually improved it.",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/",
+          "date": "2026-07-10"
+        },
         {
           "title": "ChatGPT is now a partner for your most ambitious work",
           "source": "OpenAI News",
@@ -262,12 +240,31 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/automating-cross-repo-documentation-with-github-agentic-workflows/",
           "date": "2026-07-08"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Better tools made Copilot code review worse. Here&#8217;s how we actually improved it.",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/",
+          "date": "2026-07-10"
         },
         {
-          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
-          "date": "2026-07-07"
+          "title": "GPT-5.6 is now the preferred model in Microsoft 365 Copilot",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/gpt-5-6-preferred-model-microsoft-365-copilot",
+          "date": "2026-07-09"
+        },
+        {
+          "title": "How GitHub Copilot enables zero DNS configuration for GitHub Pages",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-github-copilot-enables-zero-dns-configuration-for-github-pages/",
+          "date": "2026-07-08"
         }
       ]
     },
@@ -289,10 +286,10 @@
           "date": "2026-07-09"
         },
         {
-          "title": "OpenAI rolls out GPT-5.6 after government greenlight — and announces ‘ChatGPT Work’",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/963464/openai-gpt-5-6-codex-chatgpt-work",
-          "date": "2026-07-09"
+          "title": "Introducing GPT-Live",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/introducing-gpt-live",
+          "date": "2026-07-08"
         }
       ]
     },
@@ -302,12 +299,6 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Meta says its new AI model is ready to compete on coding",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/963193/meta-muse-spark-model-api",
-          "date": "2026-07-09"
-        },
-        {
           "title": "Separating signal from noise in coding evaluations",
           "source": "OpenAI News",
           "link": "https://openai.com/index/separating-signal-from-noise-coding-evaluations",
@@ -316,45 +307,20 @@
       ]
     },
     {
-      "label": "AI developer tooling",
+      "label": "MCP / tool-connected assistants",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
-        {
-          "title": "Meta says its new AI model is ready to compete on coding",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/963193/meta-muse-spark-model-api",
-          "date": "2026-07-09"
-        },
         {
           "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
           "date": "2026-07-07"
-        },
-        {
-          "title": "Accelerating researchers and developers building multilingual AI with a new open dataset",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/llms/accelerating-researchers-and-developers-building-multilingual-ai-with-a-new-open-dataset/",
-          "date": "2026-06-15"
         }
       ]
     },
     {
-      "label": "Claude research and documentation flow",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Say hello to Claude Wrapped",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/963105/anthropic-claude-wrapped-reflection-ai-usage",
-          "date": "2026-07-09"
-        }
-      ]
-    },
-    {
-      "label": "MCP / tool-connected assistants",
+      "label": "AI developer tooling",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
@@ -376,6 +342,19 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
           "date": "2026-07-07"
+        }
+      ]
+    },
+    {
+      "label": "AI automation and workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "I automated my job (and it made me a better leader)",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/developer-skills/github/i-automated-my-job-and-it-made-me-a-better-leader/",
+          "date": "2026-06-23"
         }
       ]
     }

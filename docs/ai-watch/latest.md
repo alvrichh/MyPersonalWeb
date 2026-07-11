@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-07-10
+# Daily AI maintenance report — 2026-07-11
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,8 +13,18 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Better tools made Copilot code review worse. Here&#8217;s how we actually improved it.** — GitHub AI & ML Blog · 2026-07-10
+  https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/
 - **How Deutsche Telekom is rewiring telecommunications with AI** — OpenAI News · 2026-07-10
   https://openai.com/index/deutsche-telekom
+- **Meta turns off the Instagram feature that let users make AI deepfakes of public accounts** — The Verge AI · 2026-07-10
+  https://www.theverge.com/tech/964416/meta-instagram-ai-muse-image-deepfakes
+- **Apple sues OpenAI for allegedly stealing hardware secrets** — The Verge AI · 2026-07-10
+  https://www.theverge.com/tech/964350/apple-openai-lawsuit-trade-secrets
+- **Instagram’s Adam Mosseri: If you don&#8217;t like AI, &#8216;then you shouldn&#8217;t have it in your feed&#8217;** — The Verge AI · 2026-07-10
+  https://www.theverge.com/tech/963961/instagram-adam-mosseri-ai-feed-filters
+- **Would you host part of an AI data center in your home?** — The Verge AI · 2026-07-10
+  https://www.theverge.com/ai-artificial-intelligence/963930/sunrun-distributed-ai-data-center
 - **Microsoft’s carbon emissions went up 25 percent last year** — The Verge AI · 2026-07-10
   https://www.theverge.com/tech/963728/microsoft-sustainability-report-2026
 - **Google will now tell you if an ad was made with AI** — The Verge AI · 2026-07-10
@@ -29,14 +39,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/ai-artificial-intelligence/963738/openai-fidji-simo-steps-down-ceo-advisor
 - **The ChatGPT browser is already dead** — The Verge AI · 2026-07-09
   https://www.theverge.com/ai-artificial-intelligence/963654/openai-chatgpt-atlas-ai-browser-shut-down-sunset
-- **Microsoft’s patch Tuesdays are about to get bigger** — The Verge AI · 2026-07-09
-  https://www.theverge.com/tech/963307/microsoft-patch-tuesday-ai-security-updates
-- **OpenAI rolls out GPT-5.6 after government greenlight — and announces ‘ChatGPT Work’** — The Verge AI · 2026-07-09
-  https://www.theverge.com/ai-artificial-intelligence/963464/openai-gpt-5-6-codex-chatgpt-work
-- **Meta says its new AI model is ready to compete on coding** — The Verge AI · 2026-07-09
-  https://www.theverge.com/ai-artificial-intelligence/963193/meta-muse-spark-model-api
-- **Say hello to Claude Wrapped** — The Verge AI · 2026-07-09
-  https://www.theverge.com/ai-artificial-intelligence/963105/anthropic-claude-wrapped-reflection-ai-usage
 - **Automating cross-repo documentation with GitHub Agentic Workflows** — GitHub AI & ML Blog · 2026-07-08
   https://github.blog/ai-and-ml/github-copilot/automating-cross-repo-documentation-with-github-agentic-workflows/
 - **How GitHub Copilot enables zero DNS configuration for GitHub Pages** — GitHub AI & ML Blog · 2026-07-08
@@ -71,8 +73,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blog.google/innovation-and-ai/models-and-research/google-research/amie-for-disease-management-in-nature/
 - **GitHub Copilot CLI for Beginners: Overview of common slash commands** — GitHub AI & ML Blog · 2026-06-15
   https://github.blog/ai-and-ml/github-copilot/github-copilot-cli-for-beginners-overview-of-common-slash-commands/
-- **Accelerating researchers and developers building multilingual AI with a new open dataset** — GitHub AI & ML Blog · 2026-06-15
-  https://github.blog/ai-and-ml/llms/accelerating-researchers-and-developers-building-multilingual-ai-with-a-new-open-dataset/
 - **The latest AI news we announced in May 2026** — Google AI Blog · 2026-06-05
   https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-may-2026/
 - **5 ways Google Search can level up your thrift and vintage shopping** — Google AI Blog · 2026-06-03
@@ -80,14 +80,14 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
-- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **MCP / tool-connected assistants** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI automation and workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
 
