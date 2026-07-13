@@ -1,11 +1,52 @@
 {
-  "generatedAt": "2026-07-12T09:47:07.448Z",
-  "date": "2026-07-12",
+  "generatedAt": "2026-07-13T10:55:59.793Z",
+  "date": "2026-07-13",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Waze is getting a bunch of new AI-powered features",
+      "source": "The Verge AI",
+      "date": "2026-07-13",
+      "url": "https://www.theverge.com/transportation/964132/waze-gemini-ai-voice-commands-less-chatty",
+      "summary": "Waze is getting an AI makeover. Google is integrating its flagship AI assistant, Gemini, into the driving app with the goal of letting users personalize their trips a little more. Of the four new updates, only two are be...",
+      "tags": [
+        "Agents",
+        "Gemini"
+      ]
+    },
+    {
+      "title": "Lorde says Ray-Ban Meta AI glasses are ‘not sexy’",
+      "source": "The Verge AI",
+      "date": "2026-07-13",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/964539/lorde-says-ray-ban-meta-ai-glasses-are-not-sexy",
+      "summary": "Lorde was performing at the Real Cool Festival in Madrid on Thursday and took some time during her set to speak out against AI glasses. While she didn't specify any brands in particular, it's likely she was taking a shot...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Apple’s failed self-driving car program left a legacy of powerful AI chips",
+      "source": "The Verge AI",
+      "date": "2026-07-13",
+      "url": "https://www.theverge.com/tech/964519/apple-silicon-self-driving-car-ai-m7-ultra",
+      "summary": "Apple's self-driving car program never really got off the ground, but it may have been what made the company's chips the powerful AI performers they are. Early in the development of the self-driving platform, Apple reali...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Meta turns off the Instagram feature that let users make AI deepfakes of public accounts",
+      "source": "The Verge AI",
+      "date": "2026-07-13",
+      "url": "https://www.theverge.com/tech/964416/meta-instagram-ai-muse-image-deepfakes",
+      "summary": "Following significant backlash, Meta is turning off the feature it announced this week that let users generate AI images based on content from public Instagram accounts just by tagging them. The feature, as originally se...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
     {
       "title": "Better tools made Copilot code review worse. Here&#8217;s how we actually improved it.",
       "source": "GitHub AI & ML Blog",
@@ -31,13 +72,13 @@
       ]
     },
     {
-      "title": "Meta turns off the Instagram feature that let users make AI deepfakes of public accounts",
+      "title": "The fight against AI data centers is just beginning",
       "source": "The Verge AI",
       "date": "2026-07-10",
-      "url": "https://www.theverge.com/tech/964416/meta-instagram-ai-muse-image-deepfakes",
-      "summary": "Following significant backlash, Meta is turning off the feature it announced this week that let users generate AI images based on content from public Instagram accounts just by tagging them. The feature, as originally se...",
+      "url": "https://www.theverge.com/column/963346/ai-data-centers-fight",
+      "summary": "This is The Stepback, a weekly newsletter breaking down one essential story from the tech world. For more on the data center buildout, follow Emma Roth. The Stepback arrives in our subscribers' inboxes on Sunday at 8AM E...",
       "tags": [
-        "Multimodal"
+        "AI"
       ]
     },
     {
@@ -71,26 +112,6 @@
       ]
     },
     {
-      "title": "Microsoft’s carbon emissions went up 25 percent last year",
-      "source": "The Verge AI",
-      "date": "2026-07-10",
-      "url": "https://www.theverge.com/tech/963728/microsoft-sustainability-report-2026",
-      "summary": "Microsoft may once again be struggling to keep up with its own climate goals, according to its 2026 sustainability report. As reported by GeekWire, the report states that Microsoft's carbon emissions increased 25 percent...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Google will now tell you if an ad was made with AI",
-      "source": "The Verge AI",
-      "date": "2026-07-10",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/963628/google-ai-generated-ads-label",
-      "summary": "You can see if ads on Google Search, Google Discover, and YouTube were made or edited using AI from a new section in Google's \"My Ad Center,\" as reported earlier by TechCrunch. The update, announced on Thursday, adds a \"...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
       "title": "GPT-5.6 is now the preferred model in Microsoft 365 Copilot",
       "source": "OpenAI News",
       "date": "2026-07-09",
@@ -111,6 +132,26 @@
       "tags": [
         "Agents",
         "ChatGPT"
+      ]
+    },
+    {
+      "title": "Microsoft’s carbon emissions went up 25 percent last year",
+      "source": "The Verge AI",
+      "date": "2026-07-10",
+      "url": "https://www.theverge.com/tech/963728/microsoft-sustainability-report-2026",
+      "summary": "Microsoft may once again be struggling to keep up with its own climate goals, according to its 2026 sustainability report. As reported by GeekWire, the report states that Microsoft's carbon emissions increased 25 percent...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Google will now tell you if an ad was made with AI",
+      "source": "The Verge AI",
+      "date": "2026-07-10",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/963628/google-ai-generated-ads-label",
+      "summary": "You can see if ads on Google Search, Google Discover, and YouTube were made or edited using AI from a new section in Google's \"My Ad Center,\" as reported earlier by TechCrunch. The update, announced on Thursday, adds a \"...",
+      "tags": [
+        "AI"
       ]
     },
     {
@@ -174,50 +215,28 @@
         "Dev Tools",
         "Models"
       ]
-    },
-    {
-      "title": "Say hello to Claude Wrapped",
-      "source": "The Verge AI",
-      "date": "2026-07-09",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/963105/anthropic-claude-wrapped-reflection-ai-usage",
-      "summary": "The popularity of Spotify Wrapped has kicked off a wide range of year-in-review features, on apps from YouTube to Uber - and now, the lookback trend has come to AI. Anthropic on Thursday announced a \"reflect\" feature for...",
-      "tags": [
-        "Claude"
-      ]
-    },
-    {
-      "title": "Automating cross-repo documentation with GitHub Agentic Workflows",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-07-08",
-      "url": "https://github.blog/ai-and-ml/github-copilot/automating-cross-repo-documentation-with-github-agentic-workflows/",
-      "summary": "Explore how the Aspire team turns merged product changes into SME-reviewed docs pull requests, closing the gap between release and documentation. The post Automating cross-repo documentation with GitHub Agentic Workflows...",
-      "tags": [
-        "Agents",
-        "Automation"
-      ]
-    },
-    {
-      "title": "How GitHub Copilot enables zero DNS configuration for GitHub Pages",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-07-08",
-      "url": "https://github.blog/ai-and-ml/github-copilot/how-github-copilot-enables-zero-dns-configuration-for-github-pages/",
-      "summary": "Go from an empty repository to a live custom domain with HTTPS in about 14 minutes, without manually editing a single DNS record. The post How GitHub Copilot enables zero DNS configuration for GitHub Pages appeared first...",
-      "tags": [
-        "Copilot"
-      ]
-    },
-    {
-      "title": "Our approach to government and national security partnerships",
-      "source": "OpenAI News",
-      "date": "2026-07-08",
-      "url": "https://openai.com/index/government-national-security-partnerships",
-      "summary": "Learn how OpenAI approaches government and national security partnerships, with principles for responsible AI use, democratic accountability, and public safety.",
-      "tags": [
-        "ChatGPT"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Waze is getting a bunch of new AI-powered features",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/transportation/964132/waze-gemini-ai-voice-commands-less-chatty",
+          "date": "2026-07-13"
+        },
+        {
+          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
+          "date": "2026-07-07"
+        }
+      ]
+    },
     {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
@@ -280,12 +299,6 @@
           "date": "2026-07-09"
         },
         {
-          "title": "The ChatGPT browser is already dead",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/963654/openai-chatgpt-atlas-ai-browser-shut-down-sunset",
-          "date": "2026-07-09"
-        },
-        {
           "title": "Introducing GPT-Live",
           "source": "OpenAI News",
           "link": "https://openai.com/index/introducing-gpt-live",
@@ -321,19 +334,6 @@
     },
     {
       "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
-          "date": "2026-07-07"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [

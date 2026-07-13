@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-07-12
+# Daily AI maintenance report — 2026-07-13
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,32 +13,32 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Waze is getting a bunch of new AI-powered features** — The Verge AI · 2026-07-13
+  https://www.theverge.com/transportation/964132/waze-gemini-ai-voice-commands-less-chatty
+- **Lorde says Ray-Ban Meta AI glasses are ‘not sexy’** — The Verge AI · 2026-07-13
+  https://www.theverge.com/ai-artificial-intelligence/964539/lorde-says-ray-ban-meta-ai-glasses-are-not-sexy
+- **Apple’s failed self-driving car program left a legacy of powerful AI chips** — The Verge AI · 2026-07-13
+  https://www.theverge.com/tech/964519/apple-silicon-self-driving-car-ai-m7-ultra
+- **Meta turns off the Instagram feature that let users make AI deepfakes of public accounts** — The Verge AI · 2026-07-13
+  https://www.theverge.com/tech/964416/meta-instagram-ai-muse-image-deepfakes
 - **Better tools made Copilot code review worse. Here&#8217;s how we actually improved it.** — GitHub AI & ML Blog · 2026-07-10
   https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/
 - **How Deutsche Telekom is rewiring telecommunications with AI** — OpenAI News · 2026-07-10
   https://openai.com/index/deutsche-telekom
-- **Meta turns off the Instagram feature that let users make AI deepfakes of public accounts** — The Verge AI · 2026-07-10
-  https://www.theverge.com/tech/964416/meta-instagram-ai-muse-image-deepfakes
+- **The fight against AI data centers is just beginning** — The Verge AI · 2026-07-10
+  https://www.theverge.com/column/963346/ai-data-centers-fight
 - **Apple sues OpenAI for allegedly stealing hardware secrets** — The Verge AI · 2026-07-10
   https://www.theverge.com/tech/964350/apple-openai-lawsuit-trade-secrets
 - **Instagram’s Adam Mosseri: If you don&#8217;t like AI, &#8216;then you shouldn&#8217;t have it in your feed&#8217;** — The Verge AI · 2026-07-10
   https://www.theverge.com/tech/963961/instagram-adam-mosseri-ai-feed-filters
 - **Would you host part of an AI data center in your home?** — The Verge AI · 2026-07-10
   https://www.theverge.com/ai-artificial-intelligence/963930/sunrun-distributed-ai-data-center
-- **Microsoft’s carbon emissions went up 25 percent last year** — The Verge AI · 2026-07-10
-  https://www.theverge.com/tech/963728/microsoft-sustainability-report-2026
-- **Google will now tell you if an ad was made with AI** — The Verge AI · 2026-07-10
-  https://www.theverge.com/ai-artificial-intelligence/963628/google-ai-generated-ads-label
 - **GPT-5.6 is now the preferred model in Microsoft 365 Copilot** — OpenAI News · 2026-07-09
   https://openai.com/index/gpt-5-6-preferred-model-microsoft-365-copilot
 - **ChatGPT is now a partner for your most ambitious work** — OpenAI News · 2026-07-09
   https://openai.com/index/chatgpt-for-your-most-ambitious-work
 - **GPT-5.5 Bio Bug Bounty** — OpenAI News · 2026-07-09
   https://openai.com/index/bio-bug-bounty
-- **Fidji Simo steps down from leading OpenAI’s AGI work due to illness** — The Verge AI · 2026-07-09
-  https://www.theverge.com/ai-artificial-intelligence/963738/openai-fidji-simo-steps-down-ceo-advisor
-- **The ChatGPT browser is already dead** — The Verge AI · 2026-07-09
-  https://www.theverge.com/ai-artificial-intelligence/963654/openai-chatgpt-atlas-ai-browser-shut-down-sunset
 - **Automating cross-repo documentation with GitHub Agentic Workflows** — GitHub AI & ML Blog · 2026-07-08
   https://github.blog/ai-and-ml/github-copilot/automating-cross-repo-documentation-with-github-agentic-workflows/
 - **How GitHub Copilot enables zero DNS configuration for GitHub Pages** — GitHub AI & ML Blog · 2026-07-08
@@ -80,13 +80,13 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
+- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **MCP / tool-connected assistants** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI automation and workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
