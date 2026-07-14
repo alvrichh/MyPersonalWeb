@@ -1,6 +1,25 @@
 {
-  "generatedAt": "2026-07-13T10:55:59.793Z",
+  "generatedAt": "2026-07-14T09:53:58.498Z",
   "candidates": [
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Siri AI is already changing how I use my iPhone",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/964714/siri-ai-public-beta-preview-ios-27-hands-on",
+          "date": "2026-07-13"
+        },
+        {
+          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
+          "date": "2026-07-07"
+        }
+      ]
+    },
     {
       "label": "Gemini multimodal exploration",
       "status": "safe-data-candidate",
@@ -76,16 +95,16 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "Getting started with ChatGPT",
+          "source": "OpenAI News",
+          "link": "https://openai.com/academy/getting-started",
+          "date": "2026-07-10"
+        },
+        {
           "title": "ChatGPT is now a partner for your most ambitious work",
           "source": "OpenAI News",
           "link": "https://openai.com/index/chatgpt-for-your-most-ambitious-work",
           "date": "2026-07-09"
-        },
-        {
-          "title": "Introducing GPT-Live",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/introducing-gpt-live",
-          "date": "2026-07-08"
         }
       ]
     },
@@ -104,19 +123,6 @@
     },
     {
       "label": "MCP / tool-connected assistants",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
-          "date": "2026-07-07"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
