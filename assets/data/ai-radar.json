@@ -1,11 +1,41 @@
 {
-  "generatedAt": "2026-07-13T10:55:59.793Z",
-  "date": "2026-07-13",
+  "generatedAt": "2026-07-14T09:53:58.498Z",
+  "date": "2026-07-14",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "New York becomes the first state to enact a data center moratorium",
+      "source": "The Verge AI",
+      "date": "2026-07-13",
+      "url": "https://www.theverge.com/policy/965110/new-york-ai-data-center-moratorium",
+      "summary": "New hyperscale data centers can't set up shop in New York for up to a year now that Governor Kathy Hochul (D) has signed the nation's first statewide moratorium. But a bill passed by the state legislature that could rest...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Siri AI is already changing how I use my iPhone",
+      "source": "The Verge AI",
+      "date": "2026-07-13",
+      "url": "https://www.theverge.com/tech/964714/siri-ai-public-beta-preview-ios-27-hands-on",
+      "summary": "iOS 27 escaped the developer world today with the launch of the first public beta. I've been testing the new operating system since early June, looking for quirks and seeing if it can live up to the hype Apple promised i...",
+      "tags": [
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "The 6 wildest claims in Apple&#8217;s lawsuit against OpenAI",
+      "source": "The Verge AI",
+      "date": "2026-07-13",
+      "url": "https://www.theverge.com/tech/964843/apple-openai-lawsuit-wildest-claims",
+      "summary": "When Apple employees interviewed for jobs at OpenAI, the AI startup's hardware head allegedly asked them to show up with something unusual: components they were working on and unreleased product samples. That's according...",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
     {
       "title": "Waze is getting a bunch of new AI-powered features",
       "source": "The Verge AI",
@@ -22,7 +52,7 @@
       "source": "The Verge AI",
       "date": "2026-07-13",
       "url": "https://www.theverge.com/ai-artificial-intelligence/964539/lorde-says-ray-ban-meta-ai-glasses-are-not-sexy",
-      "summary": "Lorde was performing at the Real Cool Festival in Madrid on Thursday and took some time during her set to speak out against AI glasses. While she didn't specify any brands in particular, it's likely she was taking a shot...",
+      "summary": "Lorde was performing at the Mad Cool Festival in Madrid on Thursday and took some time during her set to speak out against AI glasses. While she didn't specify any brands in particular, it's likely she was taking a shot ...",
       "tags": [
         "AI"
       ]
@@ -33,6 +63,16 @@
       "date": "2026-07-13",
       "url": "https://www.theverge.com/tech/964519/apple-silicon-self-driving-car-ai-m7-ultra",
       "summary": "Apple's self-driving car program never really got off the ground, but it may have been what made the company's chips the powerful AI performers they are. Early in the development of the self-driving platform, Apple reali...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "The fight against AI data centers is just beginning",
+      "source": "The Verge AI",
+      "date": "2026-07-13",
+      "url": "https://www.theverge.com/column/963346/ai-data-centers-fight",
+      "summary": "This is The Stepback, a weekly newsletter breaking down one essential story from the tech world. For more on the data center buildout, follow Emma Roth. The Stepback arrives in our subscribers' inboxes on Sunday at 8AM E...",
       "tags": [
         "AI"
       ]
@@ -72,13 +112,25 @@
       ]
     },
     {
-      "title": "The fight against AI data centers is just beginning",
-      "source": "The Verge AI",
+      "title": "Getting started with ChatGPT",
+      "source": "OpenAI News",
       "date": "2026-07-10",
-      "url": "https://www.theverge.com/column/963346/ai-data-centers-fight",
-      "summary": "This is The Stepback, a weekly newsletter breaking down one essential story from the tech world. For more on the data center buildout, follow Emma Roth. The Stepback arrives in our subscribers' inboxes on Sunday at 8AM E...",
+      "url": "https://openai.com/academy/getting-started",
+      "summary": "Learn how to use ChatGPT, start your first conversation, and discover simple ways to write, brainstorm, and solve problems with AI.",
       "tags": [
-        "AI"
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "GPT-5.6 is now the preferred model in Microsoft 365 Copilot",
+      "source": "OpenAI News",
+      "date": "2026-07-09",
+      "url": "https://openai.com/index/gpt-5-6-preferred-model-microsoft-365-copilot",
+      "summary": "Learn how GPT-5.6 powers Microsoft 365 Copilot with stronger AI capabilities across Word, Excel, PowerPoint, Chat, and Cowork for faster, higher-quality work.",
+      "tags": [
+        "ChatGPT",
+        "Copilot",
+        "Models"
       ]
     },
     {
@@ -109,18 +161,6 @@
       "summary": "A solar and home energy storage company is expanding into AI data centers, but not by building one - instead, it's offering to pay its customers to put its compute units in their homes. Sunrun is launching a pilot progra...",
       "tags": [
         "AI"
-      ]
-    },
-    {
-      "title": "GPT-5.6 is now the preferred model in Microsoft 365 Copilot",
-      "source": "OpenAI News",
-      "date": "2026-07-09",
-      "url": "https://openai.com/index/gpt-5-6-preferred-model-microsoft-365-copilot",
-      "summary": "Learn how GPT-5.6 powers Microsoft 365 Copilot with stronger AI capabilities across Word, Excel, PowerPoint, Chat, and Cowork for faster, higher-quality work.",
-      "tags": [
-        "ChatGPT",
-        "Copilot",
-        "Models"
       ]
     },
     {
@@ -173,51 +213,28 @@
       "tags": [
         "ChatGPT"
       ]
-    },
-    {
-      "title": "The ChatGPT browser is already dead",
-      "source": "The Verge AI",
-      "date": "2026-07-09",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/963654/openai-chatgpt-atlas-ai-browser-shut-down-sunset",
-      "summary": "OpenAI is already shutting down ChatGPT Atlas, its browser that could do tasks for you on your behalf, less than a year after launching it. Atlas was announced in October, but as part of its wave of news about ChatGPT Wo...",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Microsoft’s patch Tuesdays are about to get bigger",
-      "source": "The Verge AI",
-      "date": "2026-07-09",
-      "url": "https://www.theverge.com/tech/963307/microsoft-patch-tuesday-ai-security-updates",
-      "summary": "Windows 11 updates could soon include fixes for more security issues at once. Microsoft said in a blog post on Thursday that it's now using AI to \"identify potential issues earlier,\" which means \"customers will see a hig...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "OpenAI rolls out GPT-5.6 after government greenlight — and announces ‘ChatGPT Work’",
-      "source": "The Verge AI",
-      "date": "2026-07-09",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/963464/openai-gpt-5-6-codex-chatgpt-work",
-      "summary": "About two weeks after OpenAI's GPT-5.6 was caught up in regulatory drama - rolled out only to government-approved organizations during a \"limited preview\" period - the company has received the Trump administration's gree...",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "Meta says its new AI model is ready to compete on coding",
-      "source": "The Verge AI",
-      "date": "2026-07-09",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/963193/meta-muse-spark-model-api",
-      "summary": "After reentering the AI race with its first in-house Muse Spark model in April, Meta is now opening up the doors to developers with a new model that can plug into AI coding software with the new Meta Model API. Meta says...",
-      "tags": [
-        "Dev Tools",
-        "Models"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Siri AI is already changing how I use my iPhone",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/964714/siri-ai-public-beta-preview-ios-27-hands-on",
+          "date": "2026-07-13"
+        },
+        {
+          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
+          "date": "2026-07-07"
+        }
+      ]
+    },
     {
       "label": "Gemini multimodal exploration",
       "status": "safe-data-candidate",
@@ -293,16 +310,16 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "Getting started with ChatGPT",
+          "source": "OpenAI News",
+          "link": "https://openai.com/academy/getting-started",
+          "date": "2026-07-10"
+        },
+        {
           "title": "ChatGPT is now a partner for your most ambitious work",
           "source": "OpenAI News",
           "link": "https://openai.com/index/chatgpt-for-your-most-ambitious-work",
           "date": "2026-07-09"
-        },
-        {
-          "title": "Introducing GPT-Live",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/introducing-gpt-live",
-          "date": "2026-07-08"
         }
       ]
     },
@@ -321,19 +338,6 @@
     },
     {
       "label": "MCP / tool-connected assistants",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
-          "date": "2026-07-07"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
