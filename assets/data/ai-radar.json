@@ -1,15 +1,107 @@
 {
-  "generatedAt": "2026-07-14T09:53:58.498Z",
-  "date": "2026-07-14",
+  "generatedAt": "2026-07-15T09:58:06.266Z",
+  "date": "2026-07-15",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
     {
+      "title": "How to manage AI investments in the agentic era",
+      "source": "OpenAI News",
+      "date": "2026-07-14",
+      "url": "https://openai.com/index/managing-ai-investments-in-agentic-era",
+      "summary": "Learn how enterprises can manage AI investments in the agentic era by measuring useful work per dollar, improving efficiency, and scaling high-value workflows.",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Automation"
+      ]
+    },
+    {
+      "title": "How data science teams use ChatGPT Work",
+      "source": "OpenAI News",
+      "date": "2026-07-14",
+      "url": "https://openai.com/academy/codex-for-work/how-data-science-teams-use-codex",
+      "summary": "See how data science teams can use ChatGPT Work to build root-cause briefs, impact readouts, KPI memos, scoped analyses, and dashboard specs from real work inputs.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "How sales teams use ChatGPT Work",
+      "source": "OpenAI News",
+      "date": "2026-07-14",
+      "url": "https://openai.com/academy/codex-for-work/how-sales-teams-use-codex",
+      "summary": "See how sales teams can use ChatGPT Work to create pipeline briefs, meeting prep packets, forecast reviews, account plans, and stalled-deal diagnoses from real work inputs.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "OpenAI may announce a ChatGPT smart speaker this year",
+      "source": "The Verge AI",
+      "date": "2026-07-14",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/965670/openai-chatgpt-ai-smart-speaker-hardware-device",
+      "summary": "OpenAI's first device is set to be a smart speaker that lets you talk with ChatGPT, according to a report from Bloomberg. The device apparently won't have a screen, but will use a camera and additional sensors to \"unders...",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "SpaceXAI&#8217;s Grok programming tool was uploading its users&#8217; entire codebase to cloud storage",
+      "source": "The Verge AI",
+      "date": "2026-07-14",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/965600/spacexai-grok-build-repository-upload",
+      "summary": "SpaceXAI's Grok Build AI coding tool was spotted uploading users' entire codebases to Google Cloud before it was reported, and the company turned it off. The Register reports that Cereblab published findings on Monday sh...",
+      "tags": [
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "Meta accused of using biased AI targeting for mass layoffs",
+      "source": "The Verge AI",
+      "date": "2026-07-14",
+      "url": "https://www.theverge.com/tech/965486/meta-lawsuit-former-employees-ai-layoffs",
+      "summary": "A group of 26 former Meta employees is suing the company over claims that it used AI tools to unfairly target workers on leave with layoffs, as reported earlier by Reuters. In the lawsuit, the employees allege Meta deter...",
+      "tags": [
+        "Agents"
+      ]
+    },
+    {
+      "title": "Spotify is now an AI chatbot, too",
+      "source": "The Verge AI",
+      "date": "2026-07-14",
+      "url": "https://www.theverge.com/entertainment/965358/spotify-ai-chatbot-interface-music-audiobooks-podcasts",
+      "summary": "Spotify is experimenting with a new AI feature that allows Premium subscribers to play and explore music, audiobooks, and podcasts by having conversations with a chatbot. The \"Talk to Spotify\" feature appears across the ...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "Sam Altman didn’t need another lawsuit",
+      "source": "The Verge AI",
+      "date": "2026-07-14",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/965294/openai-apple-trade-secrets-lawsuit-sam-altman-ipo",
+      "summary": "OpenAI has spent the better part of the year involved in lawsuit after lawsuit, including one from the world's richest man. But last Friday, the company was hit with one of the highest-profile legal actions yet - from Ap...",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Google’s Demis Hassabis says it’s time for a global AI watchdog — led by the US",
+      "source": "The Verge AI",
+      "date": "2026-07-14",
+      "url": "https://www.theverge.com/tech/965270/google-deepmind-demis-hassabis-global-ai-watchdog",
+      "summary": "Demis Hassabis thinks the world needs an AI watchdog with the power to hit the brakes if frontier models become too dangerous. Writing in a blog post, the Google DeepMind CEO and cofounder said the US should lead the ini...",
+      "tags": [
+        "Models"
+      ]
+    },
+    {
       "title": "New York becomes the first state to enact a data center moratorium",
       "source": "The Verge AI",
-      "date": "2026-07-13",
+      "date": "2026-07-14",
       "url": "https://www.theverge.com/policy/965110/new-york-ai-data-center-moratorium",
       "summary": "New hyperscale data centers can't set up shop in New York for up to a year now that Governor Kathy Hochul (D) has signed the nation's first statewide moratorium. But a bill passed by the state legislature that could rest...",
       "tags": [
@@ -24,6 +116,19 @@
       "summary": "iOS 27 escaped the developer world today with the launch of the first public beta. I've been testing the new operating system since early June, looking for quirks and seeing if it can live up to the hype Apple promised i...",
       "tags": [
         "Dev Tools"
+      ]
+    },
+    {
+      "title": "Better tools made Copilot code review worse. Here&#8217;s how we actually improved it.",
+      "source": "GitHub AI & ML Blog",
+      "date": "2026-07-10",
+      "url": "https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/",
+      "summary": "How migrating Copilot code review to shared Unix-style code exploration tools reduced review cost by reshaping agent workflows around pull request evidence. The post Better tools made Copilot code review worse. Here&#821...",
+      "tags": [
+        "Agents",
+        "Copilot",
+        "Dev Tools",
+        "Automation"
       ]
     },
     {
@@ -88,19 +193,6 @@
       ]
     },
     {
-      "title": "Better tools made Copilot code review worse. Here&#8217;s how we actually improved it.",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-07-10",
-      "url": "https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/",
-      "summary": "How migrating Copilot code review to shared Unix-style code exploration tools reduced review cost by reshaping agent workflows around pull request evidence. The post Better tools made Copilot code review worse. Here&#821...",
-      "tags": [
-        "Agents",
-        "Copilot",
-        "Dev Tools",
-        "Automation"
-      ]
-    },
-    {
       "title": "How Deutsche Telekom is rewiring telecommunications with AI",
       "source": "OpenAI News",
       "date": "2026-07-10",
@@ -120,102 +212,72 @@
       "tags": [
         "ChatGPT"
       ]
-    },
-    {
-      "title": "GPT-5.6 is now the preferred model in Microsoft 365 Copilot",
-      "source": "OpenAI News",
-      "date": "2026-07-09",
-      "url": "https://openai.com/index/gpt-5-6-preferred-model-microsoft-365-copilot",
-      "summary": "Learn how GPT-5.6 powers Microsoft 365 Copilot with stronger AI capabilities across Word, Excel, PowerPoint, Chat, and Cowork for faster, higher-quality work.",
-      "tags": [
-        "ChatGPT",
-        "Copilot",
-        "Models"
-      ]
-    },
-    {
-      "title": "Apple sues OpenAI for allegedly stealing hardware secrets",
-      "source": "The Verge AI",
-      "date": "2026-07-10",
-      "url": "https://www.theverge.com/tech/964350/apple-openai-lawsuit-trade-secrets",
-      "summary": "Apple has sued OpenAI, alleging that engineers stole Apple secrets to advance the AI startup's hardware plans. In its complaint, Apple says it uncovered \"a pattern of theft of Apple's trade secrets by OpenAI employees wh...",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Instagram’s Adam Mosseri: If you don&#8217;t like AI, &#8216;then you shouldn&#8217;t have it in your feed&#8217;",
-      "source": "The Verge AI",
-      "date": "2026-07-10",
-      "url": "https://www.theverge.com/tech/963961/instagram-adam-mosseri-ai-feed-filters",
-      "summary": "Though Instagram head Adam Mosseri doesn't want to filter out AI content on the platform, he argues that you \"shouldn't have it in your feed\" if you don't like it. \"I don't think we should filter out AI content,\" Mosseri...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Would you host part of an AI data center in your home?",
-      "source": "The Verge AI",
-      "date": "2026-07-10",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/963930/sunrun-distributed-ai-data-center",
-      "summary": "A solar and home energy storage company is expanding into AI data centers, but not by building one - instead, it's offering to pay its customers to put its compute units in their homes. Sunrun is launching a pilot progra...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "ChatGPT is now a partner for your most ambitious work",
-      "source": "OpenAI News",
-      "date": "2026-07-09",
-      "url": "https://openai.com/index/chatgpt-for-your-most-ambitious-work",
-      "summary": "ChatGPT Work is an agent that can take action across your apps and files, stay with a project for hours if needed, and turn a goal into finished work.",
-      "tags": [
-        "Agents",
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Microsoft’s carbon emissions went up 25 percent last year",
-      "source": "The Verge AI",
-      "date": "2026-07-10",
-      "url": "https://www.theverge.com/tech/963728/microsoft-sustainability-report-2026",
-      "summary": "Microsoft may once again be struggling to keep up with its own climate goals, according to its 2026 sustainability report. As reported by GeekWire, the report states that Microsoft's carbon emissions increased 25 percent...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Google will now tell you if an ad was made with AI",
-      "source": "The Verge AI",
-      "date": "2026-07-10",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/963628/google-ai-generated-ads-label",
-      "summary": "You can see if ads on Google Search, Google Discover, and YouTube were made or edited using AI from a new section in Google's \"My Ad Center,\" as reported earlier by TechCrunch. The update, announced on Thursday, adds a \"...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "GPT-5.5 Bio Bug Bounty",
-      "source": "OpenAI News",
-      "date": "2026-07-09",
-      "url": "https://openai.com/index/bio-bug-bounty",
-      "summary": "Details about the OpenAI Bio Bounty program",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Fidji Simo steps down from leading OpenAI’s AGI work due to illness",
-      "source": "The Verge AI",
-      "date": "2026-07-09",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/963738/openai-fidji-simo-steps-down-ceo-advisor",
-      "summary": "OpenAI's Fidji Simo is departing her full-time role as the company's AGI chief and is transitioning to being a \"part-time advisor,\" she said on X. The news follows Simo's original announcement in April that she would tak...",
-      "tags": [
-        "ChatGPT"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "How to manage AI investments in the agentic era",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/managing-ai-investments-in-agentic-era",
+          "date": "2026-07-14"
+        },
+        {
+          "title": "Better tools made Copilot code review worse. Here&#8217;s how we actually improved it.",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/",
+          "date": "2026-07-10"
+        },
+        {
+          "title": "ChatGPT is now a partner for your most ambitious work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/chatgpt-for-your-most-ambitious-work",
+          "date": "2026-07-09"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "How data science teams use ChatGPT Work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/academy/codex-for-work/how-data-science-teams-use-codex",
+          "date": "2026-07-14"
+        },
+        {
+          "title": "How sales teams use ChatGPT Work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/academy/codex-for-work/how-sales-teams-use-codex",
+          "date": "2026-07-14"
+        },
+        {
+          "title": "OpenAI may announce a ChatGPT smart speaker this year",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/965670/openai-chatgpt-ai-smart-speaker-hardware-device",
+          "date": "2026-07-14"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "SpaceXAI&#8217;s Grok programming tool was uploading its users&#8217; entire codebase to cloud storage",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/965600/spacexai-grok-build-repository-upload",
+          "date": "2026-07-14"
+        }
+      ]
+    },
     {
       "label": "AI developer tooling",
       "status": "safe-data-candidate",
@@ -232,50 +294,6 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
           "date": "2026-07-07"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Waze is getting a bunch of new AI-powered features",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/transportation/964132/waze-gemini-ai-voice-commands-less-chatty",
-          "date": "2026-07-13"
-        },
-        {
-          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
-          "date": "2026-07-07"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Better tools made Copilot code review worse. Here&#8217;s how we actually improved it.",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/",
-          "date": "2026-07-10"
-        },
-        {
-          "title": "ChatGPT is now a partner for your most ambitious work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/chatgpt-for-your-most-ambitious-work",
-          "date": "2026-07-09"
-        },
-        {
-          "title": "Automating cross-repo documentation with GitHub Agentic Workflows",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/automating-cross-repo-documentation-with-github-agentic-workflows/",
-          "date": "2026-07-08"
         }
       ]
     },
@@ -305,39 +323,20 @@
       ]
     },
     {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Getting started with ChatGPT",
-          "source": "OpenAI News",
-          "link": "https://openai.com/academy/getting-started",
-          "date": "2026-07-10"
-        },
-        {
-          "title": "ChatGPT is now a partner for your most ambitious work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/chatgpt-for-your-most-ambitious-work",
-          "date": "2026-07-09"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Separating signal from noise in coding evaluations",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/separating-signal-from-noise-coding-evaluations",
-          "date": "2026-07-08"
-        }
-      ]
-    },
-    {
       "label": "MCP / tool-connected assistants",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
+          "date": "2026-07-07"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [

@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-07-14
+# Daily AI maintenance report — 2026-07-15
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,22 +13,28 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
-- **New York becomes the first state to enact a data center moratorium** — The Verge AI · 2026-07-13
+- **How to manage AI investments in the agentic era** — OpenAI News · 2026-07-14
+  https://openai.com/index/managing-ai-investments-in-agentic-era
+- **How data science teams use ChatGPT Work** — OpenAI News · 2026-07-14
+  https://openai.com/academy/codex-for-work/how-data-science-teams-use-codex
+- **How sales teams use ChatGPT Work** — OpenAI News · 2026-07-14
+  https://openai.com/academy/codex-for-work/how-sales-teams-use-codex
+- **OpenAI may announce a ChatGPT smart speaker this year** — The Verge AI · 2026-07-14
+  https://www.theverge.com/ai-artificial-intelligence/965670/openai-chatgpt-ai-smart-speaker-hardware-device
+- **SpaceXAI&#8217;s Grok programming tool was uploading its users&#8217; entire codebase to cloud storage** — The Verge AI · 2026-07-14
+  https://www.theverge.com/ai-artificial-intelligence/965600/spacexai-grok-build-repository-upload
+- **Meta accused of using biased AI targeting for mass layoffs** — The Verge AI · 2026-07-14
+  https://www.theverge.com/tech/965486/meta-lawsuit-former-employees-ai-layoffs
+- **Spotify is now an AI chatbot, too** — The Verge AI · 2026-07-14
+  https://www.theverge.com/entertainment/965358/spotify-ai-chatbot-interface-music-audiobooks-podcasts
+- **Sam Altman didn’t need another lawsuit** — The Verge AI · 2026-07-14
+  https://www.theverge.com/ai-artificial-intelligence/965294/openai-apple-trade-secrets-lawsuit-sam-altman-ipo
+- **Google’s Demis Hassabis says it’s time for a global AI watchdog — led by the US** — The Verge AI · 2026-07-14
+  https://www.theverge.com/tech/965270/google-deepmind-demis-hassabis-global-ai-watchdog
+- **New York becomes the first state to enact a data center moratorium** — The Verge AI · 2026-07-14
   https://www.theverge.com/policy/965110/new-york-ai-data-center-moratorium
 - **Siri AI is already changing how I use my iPhone** — The Verge AI · 2026-07-13
   https://www.theverge.com/tech/964714/siri-ai-public-beta-preview-ios-27-hands-on
-- **The 6 wildest claims in Apple&#8217;s lawsuit against OpenAI** — The Verge AI · 2026-07-13
-  https://www.theverge.com/tech/964843/apple-openai-lawsuit-wildest-claims
-- **Waze is getting a bunch of new AI-powered features** — The Verge AI · 2026-07-13
-  https://www.theverge.com/transportation/964132/waze-gemini-ai-voice-commands-less-chatty
-- **Lorde says Ray-Ban Meta AI glasses are ‘not sexy’** — The Verge AI · 2026-07-13
-  https://www.theverge.com/ai-artificial-intelligence/964539/lorde-says-ray-ban-meta-ai-glasses-are-not-sexy
-- **Apple’s failed self-driving car program left a legacy of powerful AI chips** — The Verge AI · 2026-07-13
-  https://www.theverge.com/tech/964519/apple-silicon-self-driving-car-ai-m7-ultra
-- **The fight against AI data centers is just beginning** — The Verge AI · 2026-07-13
-  https://www.theverge.com/column/963346/ai-data-centers-fight
-- **Meta turns off the Instagram feature that let users make AI deepfakes of public accounts** — The Verge AI · 2026-07-13
-  https://www.theverge.com/tech/964416/meta-instagram-ai-muse-image-deepfakes
 - **Better tools made Copilot code review worse. Here&#8217;s how we actually improved it.** — GitHub AI & ML Blog · 2026-07-10
   https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/
 - **How Deutsche Telekom is rewiring telecommunications with AI** — OpenAI News · 2026-07-10
@@ -45,12 +51,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://github.blog/ai-and-ml/github-copilot/automating-cross-repo-documentation-with-github-agentic-workflows/
 - **How GitHub Copilot enables zero DNS configuration for GitHub Pages** — GitHub AI & ML Blog · 2026-07-08
   https://github.blog/ai-and-ml/github-copilot/how-github-copilot-enables-zero-dns-configuration-for-github-pages/
-- **Our approach to government and national security partnerships** — OpenAI News · 2026-07-08
-  https://openai.com/index/government-national-security-partnerships
-- **Separating signal from noise in coding evaluations** — OpenAI News · 2026-07-08
-  https://openai.com/index/separating-signal-from-noise-coding-evaluations
-- **Helping K–12 educators build practical AI skills** — OpenAI News · 2026-07-08
-  https://openai.com/index/k-12-educators-practical-skills
 - **Expanding Managed Agents in Gemini API: background tasks, remote MCP and more** — Google AI Blog · 2026-07-07
   https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/
 - **The latest AI news we announced in June 2026** — Google AI Blog · 2026-07-01
@@ -80,13 +80,13 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
-- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **MCP / tool-connected assistants** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI automation and workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment

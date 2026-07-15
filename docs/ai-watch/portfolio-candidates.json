@@ -1,6 +1,69 @@
 {
-  "generatedAt": "2026-07-14T09:53:58.498Z",
+  "generatedAt": "2026-07-15T09:58:06.266Z",
   "candidates": [
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "How to manage AI investments in the agentic era",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/managing-ai-investments-in-agentic-era",
+          "date": "2026-07-14"
+        },
+        {
+          "title": "Better tools made Copilot code review worse. Here&#8217;s how we actually improved it.",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/",
+          "date": "2026-07-10"
+        },
+        {
+          "title": "ChatGPT is now a partner for your most ambitious work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/chatgpt-for-your-most-ambitious-work",
+          "date": "2026-07-09"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "How data science teams use ChatGPT Work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/academy/codex-for-work/how-data-science-teams-use-codex",
+          "date": "2026-07-14"
+        },
+        {
+          "title": "How sales teams use ChatGPT Work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/academy/codex-for-work/how-sales-teams-use-codex",
+          "date": "2026-07-14"
+        },
+        {
+          "title": "OpenAI may announce a ChatGPT smart speaker this year",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/965670/openai-chatgpt-ai-smart-speaker-hardware-device",
+          "date": "2026-07-14"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "SpaceXAI&#8217;s Grok programming tool was uploading its users&#8217; entire codebase to cloud storage",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/965600/spacexai-grok-build-repository-upload",
+          "date": "2026-07-14"
+        }
+      ]
+    },
     {
       "label": "AI developer tooling",
       "status": "safe-data-candidate",
@@ -17,50 +80,6 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
           "date": "2026-07-07"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Waze is getting a bunch of new AI-powered features",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/transportation/964132/waze-gemini-ai-voice-commands-less-chatty",
-          "date": "2026-07-13"
-        },
-        {
-          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
-          "date": "2026-07-07"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Better tools made Copilot code review worse. Here&#8217;s how we actually improved it.",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/",
-          "date": "2026-07-10"
-        },
-        {
-          "title": "ChatGPT is now a partner for your most ambitious work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/chatgpt-for-your-most-ambitious-work",
-          "date": "2026-07-09"
-        },
-        {
-          "title": "Automating cross-repo documentation with GitHub Agentic Workflows",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/automating-cross-repo-documentation-with-github-agentic-workflows/",
-          "date": "2026-07-08"
         }
       ]
     },
@@ -90,39 +109,20 @@
       ]
     },
     {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Getting started with ChatGPT",
-          "source": "OpenAI News",
-          "link": "https://openai.com/academy/getting-started",
-          "date": "2026-07-10"
-        },
-        {
-          "title": "ChatGPT is now a partner for your most ambitious work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/chatgpt-for-your-most-ambitious-work",
-          "date": "2026-07-09"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Separating signal from noise in coding evaluations",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/separating-signal-from-noise-coding-evaluations",
-          "date": "2026-07-08"
-        }
-      ]
-    },
-    {
       "label": "MCP / tool-connected assistants",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
+          "date": "2026-07-07"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
