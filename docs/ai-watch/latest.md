@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-07-15
+# Daily AI maintenance report — 2026-07-16
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,12 +13,24 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **The US is advancing AI safety through state and federal action** — OpenAI News · 2026-07-15
+  https://openai.com/index/advancing-ai-safety-through-state-and-federal-action
+- **GPT-Red: Unlocking Self-Improvement for Robustness** — OpenAI News · 2026-07-15
+  https://openai.com/index/unlocking-self-improvement-gpt-red
+- **xAI sues a man for using Grok to generate CSAM &#8216;deepfakes&#8217;** — The Verge AI · 2026-07-15
+  https://www.theverge.com/ai-artificial-intelligence/966293/xai-grok-user-lawsuit-csam
+- **AI slop movies are the new direct-to-video cash grabs** — The Verge AI · 2026-07-15
+  https://www.theverge.com/entertainment/965616/ash-koosha-odysseus-the-fall-foundtain-zero-tilly-norwood
+- **Suno snatched millions of songs from YouTube, Genius, and Deezer** — The Verge AI · 2026-07-15
+  https://www.theverge.com/ai-artificial-intelligence/966072/suno-ai-music-training-scraping-youtube-hack
+- **OpenAI finally launches hardware… for Codex** — The Verge AI · 2026-07-15
+  https://www.theverge.com/ai-artificial-intelligence/965901/openai-hardware-codex-micro-launch
 - **How to manage AI investments in the agentic era** — OpenAI News · 2026-07-14
   https://openai.com/index/managing-ai-investments-in-agentic-era
-- **How data science teams use ChatGPT Work** — OpenAI News · 2026-07-14
-  https://openai.com/academy/codex-for-work/how-data-science-teams-use-codex
 - **How sales teams use ChatGPT Work** — OpenAI News · 2026-07-14
   https://openai.com/academy/codex-for-work/how-sales-teams-use-codex
+- **How data science teams use ChatGPT Work** — OpenAI News · 2026-07-14
+  https://openai.com/academy/codex-for-work/how-data-science-teams-use-codex
 - **OpenAI may announce a ChatGPT smart speaker this year** — The Verge AI · 2026-07-14
   https://www.theverge.com/ai-artificial-intelligence/965670/openai-chatgpt-ai-smart-speaker-hardware-device
 - **SpaceXAI&#8217;s Grok programming tool was uploading its users&#8217; entire codebase to cloud storage** — The Verge AI · 2026-07-14
@@ -27,14 +39,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/tech/965486/meta-lawsuit-former-employees-ai-layoffs
 - **Spotify is now an AI chatbot, too** — The Verge AI · 2026-07-14
   https://www.theverge.com/entertainment/965358/spotify-ai-chatbot-interface-music-audiobooks-podcasts
-- **Sam Altman didn’t need another lawsuit** — The Verge AI · 2026-07-14
-  https://www.theverge.com/ai-artificial-intelligence/965294/openai-apple-trade-secrets-lawsuit-sam-altman-ipo
-- **Google’s Demis Hassabis says it’s time for a global AI watchdog — led by the US** — The Verge AI · 2026-07-14
-  https://www.theverge.com/tech/965270/google-deepmind-demis-hassabis-global-ai-watchdog
-- **New York becomes the first state to enact a data center moratorium** — The Verge AI · 2026-07-14
-  https://www.theverge.com/policy/965110/new-york-ai-data-center-moratorium
-- **Siri AI is already changing how I use my iPhone** — The Verge AI · 2026-07-13
-  https://www.theverge.com/tech/964714/siri-ai-public-beta-preview-ios-27-hands-on
 - **Better tools made Copilot code review worse. Here&#8217;s how we actually improved it.** — GitHub AI & ML Blog · 2026-07-10
   https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/
 - **How Deutsche Telekom is rewiring telecommunications with AI** — OpenAI News · 2026-07-10
@@ -43,10 +47,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/academy/getting-started
 - **GPT-5.6 is now the preferred model in Microsoft 365 Copilot** — OpenAI News · 2026-07-09
   https://openai.com/index/gpt-5-6-preferred-model-microsoft-365-copilot
-- **GPT-5.5 Bio Bug Bounty** — OpenAI News · 2026-07-09
-  https://openai.com/index/bio-bug-bounty
-- **ChatGPT is now a partner for your most ambitious work** — OpenAI News · 2026-07-09
-  https://openai.com/index/chatgpt-for-your-most-ambitious-work
 - **Automating cross-repo documentation with GitHub Agentic Workflows** — GitHub AI & ML Blog · 2026-07-08
   https://github.blog/ai-and-ml/github-copilot/automating-cross-repo-documentation-with-github-agentic-workflows/
 - **How GitHub Copilot enables zero DNS configuration for GitHub Pages** — GitHub AI & ML Blog · 2026-07-08
@@ -80,12 +80,12 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
+- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **MCP / tool-connected assistants** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI automation and workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
