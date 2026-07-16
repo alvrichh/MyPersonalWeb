@@ -1,6 +1,25 @@
 {
-  "generatedAt": "2026-07-15T09:58:06.266Z",
+  "generatedAt": "2026-07-16T10:04:19.909Z",
   "candidates": [
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "OpenAI finally launches hardware… for Codex",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/965901/openai-hardware-codex-micro-launch",
+          "date": "2026-07-15"
+        },
+        {
+          "title": "SpaceXAI&#8217;s Grok programming tool was uploading its users&#8217; entire codebase to cloud storage",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/965600/spacexai-grok-build-repository-upload",
+          "date": "2026-07-14"
+        }
+      ]
+    },
     {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
@@ -19,10 +38,10 @@
           "date": "2026-07-10"
         },
         {
-          "title": "ChatGPT is now a partner for your most ambitious work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/chatgpt-for-your-most-ambitious-work",
-          "date": "2026-07-09"
+          "title": "Automating cross-repo documentation with GitHub Agentic Workflows",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/automating-cross-repo-documentation-with-github-agentic-workflows/",
+          "date": "2026-07-08"
         }
       ]
     },
@@ -32,15 +51,15 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "How data science teams use ChatGPT Work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/academy/codex-for-work/how-data-science-teams-use-codex",
-          "date": "2026-07-14"
-        },
-        {
           "title": "How sales teams use ChatGPT Work",
           "source": "OpenAI News",
           "link": "https://openai.com/academy/codex-for-work/how-sales-teams-use-codex",
+          "date": "2026-07-14"
+        },
+        {
+          "title": "How data science teams use ChatGPT Work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/academy/codex-for-work/how-data-science-teams-use-codex",
           "date": "2026-07-14"
         },
         {
@@ -48,38 +67,6 @@
           "source": "The Verge AI",
           "link": "https://www.theverge.com/ai-artificial-intelligence/965670/openai-chatgpt-ai-smart-speaker-hardware-device",
           "date": "2026-07-14"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "SpaceXAI&#8217;s Grok programming tool was uploading its users&#8217; entire codebase to cloud storage",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/965600/spacexai-grok-build-repository-upload",
-          "date": "2026-07-14"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Siri AI is already changing how I use my iPhone",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/964714/siri-ai-public-beta-preview-ios-27-hands-on",
-          "date": "2026-07-13"
-        },
-        {
-          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
-          "date": "2026-07-07"
         }
       ]
     },
@@ -110,6 +97,19 @@
     },
     {
       "label": "MCP / tool-connected assistants",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
+          "date": "2026-07-07"
+        }
+      ]
+    },
+    {
+      "label": "AI developer tooling",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
