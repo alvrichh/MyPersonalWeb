@@ -1,47 +1,28 @@
 {
-  "generatedAt": "2026-07-16T10:04:19.909Z",
+  "generatedAt": "2026-07-17T09:52:56.389Z",
   "candidates": [
     {
-      "label": "AI coding assistant workflows",
+      "label": "Gemini multimodal exploration",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "OpenAI finally launches hardware… for Codex",
+          "title": "Create, edit and star in videos with two Google Vids updates",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/products-and-platforms/products/workspace/gemini-omni-personal-avatars/",
+          "date": "2026-07-16"
+        },
+        {
+          "title": "Google is renaming NotebookLM to Gemini Notebook",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/965901/openai-hardware-codex-micro-launch",
-          "date": "2026-07-15"
+          "link": "https://www.theverge.com/tech/966112/google-gemini-notebook-notebooklm",
+          "date": "2026-07-16"
         },
         {
-          "title": "SpaceXAI&#8217;s Grok programming tool was uploading its users&#8217; entire codebase to cloud storage",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/965600/spacexai-grok-build-repository-upload",
-          "date": "2026-07-14"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "How to manage AI investments in the agentic era",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/managing-ai-investments-in-agentic-era",
-          "date": "2026-07-14"
-        },
-        {
-          "title": "Better tools made Copilot code review worse. Here&#8217;s how we actually improved it.",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/",
-          "date": "2026-07-10"
-        },
-        {
-          "title": "Automating cross-repo documentation with GitHub Agentic Workflows",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/automating-cross-repo-documentation-with-github-agentic-workflows/",
-          "date": "2026-07-08"
+          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
+          "date": "2026-07-07"
         }
       ]
     },
@@ -50,6 +31,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Why teens deserve access to safe AI",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/why-teens-deserve-access-safe-ai",
+          "date": "2026-07-16"
+        },
         {
           "title": "How sales teams use ChatGPT Work",
           "source": "OpenAI News",
@@ -61,12 +48,57 @@
           "source": "OpenAI News",
           "link": "https://openai.com/academy/codex-for-work/how-data-science-teams-use-codex",
           "date": "2026-07-14"
+        }
+      ]
+    },
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "How Cars24 scales conversations and builds faster with OpenAI",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/cars24",
+          "date": "2026-07-16"
         },
         {
-          "title": "OpenAI may announce a ChatGPT smart speaker this year",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/965670/openai-chatgpt-ai-smart-speaker-hardware-device",
+          "title": "How to manage AI investments in the agentic era",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/managing-ai-investments-in-agentic-era",
           "date": "2026-07-14"
+        },
+        {
+          "title": "Better tools made Copilot code review worse. Here&#8217;s how we actually improved it.",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/",
+          "date": "2026-07-10"
+        }
+      ]
+    },
+    {
+      "label": "Claude research and documentation flow",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Claude can now use your 1Password credentials for you",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/966442/1password-anthropic-claude-browser-integration",
+          "date": "2026-07-16"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "OpenAI finally launches hardware… for Codex",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/965901/openai-hardware-codex-micro-launch",
+          "date": "2026-07-15"
         }
       ]
     },
@@ -82,16 +114,16 @@
           "date": "2026-07-10"
         },
         {
-          "title": "GPT-5.6 is now the preferred model in Microsoft 365 Copilot",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/gpt-5-6-preferred-model-microsoft-365-copilot",
-          "date": "2026-07-09"
-        },
-        {
           "title": "How GitHub Copilot enables zero DNS configuration for GitHub Pages",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/how-github-copilot-enables-zero-dns-configuration-for-github-pages/",
           "date": "2026-07-08"
+        },
+        {
+          "title": "Evaluating performance and efficiency of the GitHub Copilot agentic harness across models and tasks",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harness-across-models-and-tasks/",
+          "date": "2026-06-25"
         }
       ]
     },
@@ -118,32 +150,6 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
           "date": "2026-07-07"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
-          "date": "2026-07-07"
-        }
-      ]
-    },
-    {
-      "label": "AI automation and workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "I automated my job (and it made me a better leader)",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/developer-skills/github/i-automated-my-job-and-it-made-me-a-better-leader/",
-          "date": "2026-06-23"
         }
       ]
     }
