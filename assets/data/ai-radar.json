@@ -1,11 +1,95 @@
 {
-  "generatedAt": "2026-07-16T10:04:19.909Z",
-  "date": "2026-07-16",
+  "generatedAt": "2026-07-17T09:52:56.389Z",
+  "date": "2026-07-17",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Connect more of your apps to Search",
+      "source": "Google AI Blog",
+      "date": "2026-07-16",
+      "url": "https://blog.google/products-and-platforms/products/search/connected-apps/",
+      "summary": "You’ll be able to securely link and interact with your go-to services directly in AI Mode.",
+      "tags": [
+        "Gemini"
+      ]
+    },
+    {
+      "title": "Create, edit and star in videos with two Google Vids updates",
+      "source": "Google AI Blog",
+      "date": "2026-07-16",
+      "url": "https://blog.google/products-and-platforms/products/workspace/gemini-omni-personal-avatars/",
+      "summary": "Gemini Omni and personal avatars in Google Vids make video creation easier than ever.",
+      "tags": [
+        "Gemini",
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "Why teens deserve access to safe AI",
+      "source": "OpenAI News",
+      "date": "2026-07-16",
+      "url": "https://openai.com/index/why-teens-deserve-access-safe-ai",
+      "summary": "Learn how OpenAI is making ChatGPT safer for teens with age-appropriate protections, learning tools, parental controls, and expert partnerships.",
+      "tags": [
+        "Agents",
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "How Cars24 scales conversations and builds faster with OpenAI",
+      "source": "OpenAI News",
+      "date": "2026-07-16",
+      "url": "https://openai.com/index/cars24",
+      "summary": "Cars24 uses OpenAI-powered voice and chat agents to handle 1M+ monthly conversation minutes, recover 12% of lost leads, and bring agentic workflows to teams across the company.",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Automation"
+      ]
+    },
+    {
+      "title": "New York governor says she&#8217;s using AI to analyze &#8216;every single rule&#8217; in the state",
+      "source": "The Verge AI",
+      "date": "2026-07-16",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/966647/new-york-governor-kathy-hochul-ai-policies",
+      "summary": "New York Governor Kathy Hochul might have just signed a moratorium on new AI data centers in the state, but she's not against using the technology herself. During an interview with Bloomberg's Odd Lots podcast, Hochul sa...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Google is renaming NotebookLM to Gemini Notebook",
+      "source": "The Verge AI",
+      "date": "2026-07-16",
+      "url": "https://www.theverge.com/tech/966112/google-gemini-notebook-notebooklm",
+      "summary": "Google is giving its AI note-taking app a new name. The company announced on Thursday that NotebookLM is becoming Gemini Notebook, but will remain a standalone app even as it integrates more deeply across Gemini and Goog...",
+      "tags": [
+        "Gemini"
+      ]
+    },
+    {
+      "title": "Claude can now use your 1Password credentials for you",
+      "source": "The Verge AI",
+      "date": "2026-07-16",
+      "url": "https://www.theverge.com/tech/966442/1password-anthropic-claude-browser-integration",
+      "summary": "1Password has launched a new browser integration for Claude that allows the Anthropic chatbot to access stored security credentials like usernames and passwords. The 1Password for Claude feature means that users can auth...",
+      "tags": [
+        "Claude"
+      ]
+    },
+    {
+      "title": "Google ordered to open Android and Search to rivals in Europe",
+      "source": "The Verge AI",
+      "date": "2026-07-16",
+      "url": "https://www.theverge.com/policy/966438/eu-google-android-ai-interoperability-search-data-dma",
+      "summary": "Google must give rival AI assistants and search engines greater access to key parts of Android and Google Search after the European Union ordered the company to comply with the bloc's digital antitrust rules. The two dec...",
+      "tags": [
+        "Agents"
+      ]
+    },
     {
       "title": "The US is advancing AI safety through state and federal action",
       "source": "OpenAI News",
@@ -128,134 +212,31 @@
       "tags": [
         "Agents"
       ]
-    },
-    {
-      "title": "Spotify is now an AI chatbot, too",
-      "source": "The Verge AI",
-      "date": "2026-07-14",
-      "url": "https://www.theverge.com/entertainment/965358/spotify-ai-chatbot-interface-music-audiobooks-podcasts",
-      "summary": "Spotify is experimenting with a new AI feature that allows Premium subscribers to play and explore music, audiobooks, and podcasts by having conversations with a chatbot. The \"Talk to Spotify\" feature appears across the ...",
-      "tags": [
-        "Multimodal"
-      ]
-    },
-    {
-      "title": "Sam Altman didn’t need another lawsuit",
-      "source": "The Verge AI",
-      "date": "2026-07-14",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/965294/openai-apple-trade-secrets-lawsuit-sam-altman-ipo",
-      "summary": "OpenAI has spent the better part of the year involved in lawsuit after lawsuit, including one from the world's richest man. But last Friday, the company was hit with one of the highest-profile legal actions yet - from Ap...",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Google’s Demis Hassabis says it’s time for a global AI watchdog — led by the US",
-      "source": "The Verge AI",
-      "date": "2026-07-14",
-      "url": "https://www.theverge.com/tech/965270/google-deepmind-demis-hassabis-global-ai-watchdog",
-      "summary": "Demis Hassabis thinks the world needs an AI watchdog with the power to hit the brakes if frontier models become too dangerous. Writing in a blog post, the Google DeepMind CEO and cofounder said the US should lead the ini...",
-      "tags": [
-        "Models"
-      ]
-    },
-    {
-      "title": "New York becomes the first state to enact a data center moratorium",
-      "source": "The Verge AI",
-      "date": "2026-07-14",
-      "url": "https://www.theverge.com/policy/965110/new-york-ai-data-center-moratorium",
-      "summary": "New hyperscale data centers can't set up shop in New York for up to a year now that Governor Kathy Hochul (D) has signed the nation's first statewide moratorium. But a bill passed by the state legislature that could rest...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Siri AI is already changing how I use my iPhone",
-      "source": "The Verge AI",
-      "date": "2026-07-13",
-      "url": "https://www.theverge.com/tech/964714/siri-ai-public-beta-preview-ios-27-hands-on",
-      "summary": "iOS 27 escaped the developer world today with the launch of the first public beta. I've been testing the new operating system since early June, looking for quirks and seeing if it can live up to the hype Apple promised i...",
-      "tags": [
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "Better tools made Copilot code review worse. Here&#8217;s how we actually improved it.",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-07-10",
-      "url": "https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/",
-      "summary": "How migrating Copilot code review to shared Unix-style code exploration tools reduced review cost by reshaping agent workflows around pull request evidence. The post Better tools made Copilot code review worse. Here&#821...",
-      "tags": [
-        "Agents",
-        "Copilot",
-        "Dev Tools",
-        "Automation"
-      ]
-    },
-    {
-      "title": "The 6 wildest claims in Apple&#8217;s lawsuit against OpenAI",
-      "source": "The Verge AI",
-      "date": "2026-07-13",
-      "url": "https://www.theverge.com/tech/964843/apple-openai-lawsuit-wildest-claims",
-      "summary": "When Apple employees interviewed for jobs at OpenAI, the AI startup's hardware head allegedly asked them to show up with something unusual: components they were working on and unreleased product samples. That's according...",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Waze is getting a bunch of new AI-powered features",
-      "source": "The Verge AI",
-      "date": "2026-07-13",
-      "url": "https://www.theverge.com/transportation/964132/waze-gemini-ai-voice-commands-less-chatty",
-      "summary": "Waze is getting an AI makeover. Google is integrating its flagship AI assistant, Gemini, into the driving app with the goal of letting users personalize their trips a little more. Of the four new updates, only two are be...",
-      "tags": [
-        "Agents",
-        "Gemini"
-      ]
     }
   ],
   "candidates": [
     {
-      "label": "AI coding assistant workflows",
+      "label": "Gemini multimodal exploration",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "OpenAI finally launches hardware… for Codex",
+          "title": "Create, edit and star in videos with two Google Vids updates",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/products-and-platforms/products/workspace/gemini-omni-personal-avatars/",
+          "date": "2026-07-16"
+        },
+        {
+          "title": "Google is renaming NotebookLM to Gemini Notebook",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/965901/openai-hardware-codex-micro-launch",
-          "date": "2026-07-15"
+          "link": "https://www.theverge.com/tech/966112/google-gemini-notebook-notebooklm",
+          "date": "2026-07-16"
         },
         {
-          "title": "SpaceXAI&#8217;s Grok programming tool was uploading its users&#8217; entire codebase to cloud storage",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/965600/spacexai-grok-build-repository-upload",
-          "date": "2026-07-14"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "How to manage AI investments in the agentic era",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/managing-ai-investments-in-agentic-era",
-          "date": "2026-07-14"
-        },
-        {
-          "title": "Better tools made Copilot code review worse. Here&#8217;s how we actually improved it.",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/",
-          "date": "2026-07-10"
-        },
-        {
-          "title": "Automating cross-repo documentation with GitHub Agentic Workflows",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/automating-cross-repo-documentation-with-github-agentic-workflows/",
-          "date": "2026-07-08"
+          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
+          "date": "2026-07-07"
         }
       ]
     },
@@ -264,6 +245,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Why teens deserve access to safe AI",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/why-teens-deserve-access-safe-ai",
+          "date": "2026-07-16"
+        },
         {
           "title": "How sales teams use ChatGPT Work",
           "source": "OpenAI News",
@@ -275,12 +262,57 @@
           "source": "OpenAI News",
           "link": "https://openai.com/academy/codex-for-work/how-data-science-teams-use-codex",
           "date": "2026-07-14"
+        }
+      ]
+    },
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "How Cars24 scales conversations and builds faster with OpenAI",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/cars24",
+          "date": "2026-07-16"
         },
         {
-          "title": "OpenAI may announce a ChatGPT smart speaker this year",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/965670/openai-chatgpt-ai-smart-speaker-hardware-device",
+          "title": "How to manage AI investments in the agentic era",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/managing-ai-investments-in-agentic-era",
           "date": "2026-07-14"
+        },
+        {
+          "title": "Better tools made Copilot code review worse. Here&#8217;s how we actually improved it.",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/",
+          "date": "2026-07-10"
+        }
+      ]
+    },
+    {
+      "label": "Claude research and documentation flow",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Claude can now use your 1Password credentials for you",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/966442/1password-anthropic-claude-browser-integration",
+          "date": "2026-07-16"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "OpenAI finally launches hardware… for Codex",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/965901/openai-hardware-codex-micro-launch",
+          "date": "2026-07-15"
         }
       ]
     },
@@ -296,16 +328,16 @@
           "date": "2026-07-10"
         },
         {
-          "title": "GPT-5.6 is now the preferred model in Microsoft 365 Copilot",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/gpt-5-6-preferred-model-microsoft-365-copilot",
-          "date": "2026-07-09"
-        },
-        {
           "title": "How GitHub Copilot enables zero DNS configuration for GitHub Pages",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/how-github-copilot-enables-zero-dns-configuration-for-github-pages/",
           "date": "2026-07-08"
+        },
+        {
+          "title": "Evaluating performance and efficiency of the GitHub Copilot agentic harness across models and tasks",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harness-across-models-and-tasks/",
+          "date": "2026-06-25"
         }
       ]
     },
@@ -332,32 +364,6 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
           "date": "2026-07-07"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
-          "date": "2026-07-07"
-        }
-      ]
-    },
-    {
-      "label": "AI automation and workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "I automated my job (and it made me a better leader)",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/developer-skills/github/i-automated-my-job-and-it-made-me-a-better-leader/",
-          "date": "2026-06-23"
         }
       ]
     }
