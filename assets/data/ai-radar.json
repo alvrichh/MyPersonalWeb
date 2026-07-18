@@ -1,11 +1,41 @@
 {
-  "generatedAt": "2026-07-17T09:52:56.389Z",
-  "date": "2026-07-17",
+  "generatedAt": "2026-07-18T09:19:55.929Z",
+  "date": "2026-07-18",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "A scorecard for the AI age",
+      "source": "OpenAI News",
+      "date": "2026-07-17",
+      "url": "https://openai.com/index/a-scorecard-for-the-ai-age",
+      "summary": "Sarah Friar, CFO of OpenAI, introduces a practical AI scorecard to measure ROI through useful work, cost per successful task, dependability, and return on compute.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "TikTok is testing an AI likeness detection tool",
+      "source": "The Verge AI",
+      "date": "2026-07-17",
+      "url": "https://www.theverge.com/tech/967486/tiktok-ai-likeness-detection-tool",
+      "summary": "TikTok is starting to test an opt-in tool that scans for AI likenesses and lets creators report them to the company, as spotted by social media consultant Matt Navarra. The tool is initially being tested with \"some\" US c...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Apple’s plot to crush OpenAI",
+      "source": "The Verge AI",
+      "date": "2026-07-17",
+      "url": "https://www.theverge.com/podcast/967244/apple-openai-lawsuit-vergecast",
+      "summary": "Apple is suing OpenAI. The complaint is readable and intense, as these things often are, though many experts seem to think many of the allegations are just the ways things are done. So what does Apple really want here, a...",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
     {
       "title": "Connect more of your apps to Search",
       "source": "Google AI Blog",
@@ -182,36 +212,6 @@
       "tags": [
         "ChatGPT"
       ]
-    },
-    {
-      "title": "OpenAI may announce a ChatGPT smart speaker this year",
-      "source": "The Verge AI",
-      "date": "2026-07-14",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/965670/openai-chatgpt-ai-smart-speaker-hardware-device",
-      "summary": "OpenAI's first device is set to be a smart speaker that lets you talk with ChatGPT, according to a report from Bloomberg. The device apparently won't have a screen, but will use a camera and additional sensors to \"unders...",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "SpaceXAI&#8217;s Grok programming tool was uploading its users&#8217; entire codebase to cloud storage",
-      "source": "The Verge AI",
-      "date": "2026-07-14",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/965600/spacexai-grok-build-repository-upload",
-      "summary": "SpaceXAI's Grok Build AI coding tool was spotted uploading users' entire codebases to Google Cloud before it was reported, and the company turned it off. The Register reports that Cereblab published findings on Monday sh...",
-      "tags": [
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "Meta accused of using biased AI targeting for mass layoffs",
-      "source": "The Verge AI",
-      "date": "2026-07-14",
-      "url": "https://www.theverge.com/tech/965486/meta-lawsuit-former-employees-ai-layoffs",
-      "summary": "A group of 26 former Meta employees is suing the company over claims that it used AI tools to unfairly target workers on leave with layoffs, as reported earlier by Reuters. In the lawsuit, the employees allege Meta deter...",
-      "tags": [
-        "Agents"
-      ]
     }
   ],
   "candidates": [
@@ -304,19 +304,6 @@
       ]
     },
     {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "OpenAI finally launches hardware… for Codex",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/965901/openai-hardware-codex-micro-launch",
-          "date": "2026-07-15"
-        }
-      ]
-    },
-    {
       "label": "GitHub Copilot developer loop",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
@@ -364,6 +351,19 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
           "date": "2026-07-07"
+        }
+      ]
+    },
+    {
+      "label": "AI automation and workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "I automated my job (and it made me a better leader)",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/developer-skills/github/i-automated-my-job-and-it-made-me-a-better-leader/",
+          "date": "2026-06-23"
         }
       ]
     }

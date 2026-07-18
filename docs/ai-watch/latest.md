@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-07-17
+# Daily AI maintenance report — 2026-07-18
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,12 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **A scorecard for the AI age** — OpenAI News · 2026-07-17
+  https://openai.com/index/a-scorecard-for-the-ai-age
+- **TikTok is testing an AI likeness detection tool** — The Verge AI · 2026-07-17
+  https://www.theverge.com/tech/967486/tiktok-ai-likeness-detection-tool
+- **Apple’s plot to crush OpenAI** — The Verge AI · 2026-07-17
+  https://www.theverge.com/podcast/967244/apple-openai-lawsuit-vergecast
 - **Connect more of your apps to Search** — Google AI Blog · 2026-07-16
   https://blog.google/products-and-platforms/products/search/connected-apps/
 - **Create, edit and star in videos with two Google Vids updates** — Google AI Blog · 2026-07-16
@@ -37,10 +43,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/ai-artificial-intelligence/966293/xai-grok-user-lawsuit-csam
 - **AI slop movies are the new direct-to-video cash grabs** — The Verge AI · 2026-07-15
   https://www.theverge.com/entertainment/965616/ash-koosha-odysseus-the-fall-foundtain-zero-tilly-norwood
-- **Suno snatched millions of songs from YouTube, Genius, and Deezer** — The Verge AI · 2026-07-15
-  https://www.theverge.com/ai-artificial-intelligence/966072/suno-ai-music-training-scraping-youtube-hack
-- **OpenAI finally launches hardware… for Codex** — The Verge AI · 2026-07-15
-  https://www.theverge.com/ai-artificial-intelligence/965901/openai-hardware-codex-micro-launch
 - **How to manage AI investments in the agentic era** — OpenAI News · 2026-07-14
   https://openai.com/index/managing-ai-investments-in-agentic-era
 - **How sales teams use ChatGPT Work** — OpenAI News · 2026-07-14
@@ -49,8 +51,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/academy/codex-for-work/how-data-science-teams-use-codex
 - **Better tools made Copilot code review worse. Here&#8217;s how we actually improved it.** — GitHub AI & ML Blog · 2026-07-10
   https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/
-- **How Deutsche Telekom is rewiring telecommunications with AI** — OpenAI News · 2026-07-10
-  https://openai.com/index/deutsche-telekom
 - **Automating cross-repo documentation with GitHub Agentic Workflows** — GitHub AI & ML Blog · 2026-07-08
   https://github.blog/ai-and-ml/github-copilot/automating-cross-repo-documentation-with-github-agentic-workflows/
 - **How GitHub Copilot enables zero DNS configuration for GitHub Pages** — GitHub AI & ML Blog · 2026-07-08
@@ -84,10 +84,10 @@ This file is generated automatically by the daily maintenance workflow. It updat
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **MCP / tool-connected assistants** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI automation and workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
 
