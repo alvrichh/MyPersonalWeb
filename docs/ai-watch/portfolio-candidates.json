@@ -1,6 +1,31 @@
 {
-  "generatedAt": "2026-07-18T09:19:55.929Z",
+  "generatedAt": "2026-07-19T09:48:24.876Z",
   "candidates": [
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Dave Eggers told OpenAI staff that ChatGPT was ‘silencing an entire generation’",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/967630/dave-eggers-openai-chatgpt-silencing-an-entire-generation",
+          "date": "2026-07-18"
+        },
+        {
+          "title": "Why teens deserve access to safe AI",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/why-teens-deserve-access-safe-ai",
+          "date": "2026-07-16"
+        },
+        {
+          "title": "How sales teams use ChatGPT Work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/academy/codex-for-work/how-sales-teams-use-codex",
+          "date": "2026-07-14"
+        }
+      ]
+    },
     {
       "label": "Gemini multimodal exploration",
       "status": "safe-data-candidate",
@@ -23,31 +48,6 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
           "date": "2026-07-07"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Why teens deserve access to safe AI",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/why-teens-deserve-access-safe-ai",
-          "date": "2026-07-16"
-        },
-        {
-          "title": "How sales teams use ChatGPT Work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/academy/codex-for-work/how-sales-teams-use-codex",
-          "date": "2026-07-14"
-        },
-        {
-          "title": "How data science teams use ChatGPT Work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/academy/codex-for-work/how-data-science-teams-use-codex",
-          "date": "2026-07-14"
         }
       ]
     },

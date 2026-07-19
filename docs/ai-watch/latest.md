@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-07-18
+# Daily AI maintenance report — 2026-07-19
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,8 +13,12 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Dave Eggers told OpenAI staff that ChatGPT was ‘silencing an entire generation’** — The Verge AI · 2026-07-18
+  https://www.theverge.com/ai-artificial-intelligence/967630/dave-eggers-openai-chatgpt-silencing-an-entire-generation
 - **A scorecard for the AI age** — OpenAI News · 2026-07-17
   https://openai.com/index/a-scorecard-for-the-ai-age
+- **The apps, gadgets, and tools every reader needs** — The Verge AI · 2026-07-17
+  https://www.theverge.com/tech/967544/best-apps-gadgets-reading-installer
 - **TikTok is testing an AI likeness detection tool** — The Verge AI · 2026-07-17
   https://www.theverge.com/tech/967486/tiktok-ai-likeness-detection-tool
 - **Apple’s plot to crush OpenAI** — The Verge AI · 2026-07-17
@@ -39,10 +43,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/advancing-ai-safety-through-state-and-federal-action
 - **GPT-Red: Unlocking Self-Improvement for Robustness** — OpenAI News · 2026-07-15
   https://openai.com/index/unlocking-self-improvement-gpt-red
-- **xAI sues a man for using Grok to generate CSAM &#8216;deepfakes&#8217;** — The Verge AI · 2026-07-15
-  https://www.theverge.com/ai-artificial-intelligence/966293/xai-grok-user-lawsuit-csam
-- **AI slop movies are the new direct-to-video cash grabs** — The Verge AI · 2026-07-15
-  https://www.theverge.com/entertainment/965616/ash-koosha-odysseus-the-fall-foundtain-zero-tilly-norwood
 - **How to manage AI investments in the agentic era** — OpenAI News · 2026-07-14
   https://openai.com/index/managing-ai-investments-in-agentic-era
 - **How sales teams use ChatGPT Work** — OpenAI News · 2026-07-14
@@ -80,8 +80,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
-- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.

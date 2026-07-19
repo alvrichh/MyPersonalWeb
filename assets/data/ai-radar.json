@@ -1,11 +1,21 @@
 {
-  "generatedAt": "2026-07-18T09:19:55.929Z",
-  "date": "2026-07-18",
+  "generatedAt": "2026-07-19T09:48:24.876Z",
+  "date": "2026-07-19",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Dave Eggers told OpenAI staff that ChatGPT was ‘silencing an entire generation’",
+      "source": "The Verge AI",
+      "date": "2026-07-18",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/967630/dave-eggers-openai-chatgpt-silencing-an-entire-generation",
+      "summary": "Last year, Sam Altman invited author Dave Eggers to give a talk to around 200 OpenAI staffers. The man has written countless novels, screenplays, pieces of journalism, started McSweeney's, and founded multiple schools an...",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
     {
       "title": "A scorecard for the AI age",
       "source": "OpenAI News",
@@ -14,6 +24,16 @@
       "summary": "Sarah Friar, CFO of OpenAI, introduces a practical AI scorecard to measure ROI through useful work, cost per successful task, dependability, and return on compute.",
       "tags": [
         "ChatGPT"
+      ]
+    },
+    {
+      "title": "The apps, gadgets, and tools every reader needs",
+      "source": "The Verge AI",
+      "date": "2026-07-17",
+      "url": "https://www.theverge.com/tech/967544/best-apps-gadgets-reading-installer",
+      "summary": "Hi, friends! Welcome to Installer No. 136, your guide to the best and Verge-iest stuff in the world. (If you're new here, welcome, hope your neighborhood isn't as smoky as mine, and also you can read all the old editions...",
+      "tags": [
+        "Agents"
       ]
     },
     {
@@ -192,29 +212,34 @@
         "ChatGPT",
         "Automation"
       ]
-    },
-    {
-      "title": "How sales teams use ChatGPT Work",
-      "source": "OpenAI News",
-      "date": "2026-07-14",
-      "url": "https://openai.com/academy/codex-for-work/how-sales-teams-use-codex",
-      "summary": "See how sales teams can use ChatGPT Work to create pipeline briefs, meeting prep packets, forecast reviews, account plans, and stalled-deal diagnoses from real work inputs.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "How data science teams use ChatGPT Work",
-      "source": "OpenAI News",
-      "date": "2026-07-14",
-      "url": "https://openai.com/academy/codex-for-work/how-data-science-teams-use-codex",
-      "summary": "See how data science teams can use ChatGPT Work to build root-cause briefs, impact readouts, KPI memos, scoped analyses, and dashboard specs from real work inputs.",
-      "tags": [
-        "ChatGPT"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Dave Eggers told OpenAI staff that ChatGPT was ‘silencing an entire generation’",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/967630/dave-eggers-openai-chatgpt-silencing-an-entire-generation",
+          "date": "2026-07-18"
+        },
+        {
+          "title": "Why teens deserve access to safe AI",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/why-teens-deserve-access-safe-ai",
+          "date": "2026-07-16"
+        },
+        {
+          "title": "How sales teams use ChatGPT Work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/academy/codex-for-work/how-sales-teams-use-codex",
+          "date": "2026-07-14"
+        }
+      ]
+    },
     {
       "label": "Gemini multimodal exploration",
       "status": "safe-data-candidate",
@@ -237,31 +262,6 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
           "date": "2026-07-07"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Why teens deserve access to safe AI",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/why-teens-deserve-access-safe-ai",
-          "date": "2026-07-16"
-        },
-        {
-          "title": "How sales teams use ChatGPT Work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/academy/codex-for-work/how-sales-teams-use-codex",
-          "date": "2026-07-14"
-        },
-        {
-          "title": "How data science teams use ChatGPT Work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/academy/codex-for-work/how-data-science-teams-use-codex",
-          "date": "2026-07-14"
         }
       ]
     },
