@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-07-19
+# Daily AI maintenance report — 2026-07-20
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,7 +13,9 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
-- **Dave Eggers told OpenAI staff that ChatGPT was ‘silencing an entire generation’** — The Verge AI · 2026-07-18
+- **I hate that I don’t hate this song made with Suno** — The Verge AI · 2026-07-20
+  https://www.theverge.com/entertainment/967678/1010benja-semiramis-dream-suno-ai-music
+- **Dave Eggers told OpenAI staff that ChatGPT was ‘silencing an entire generation’** — The Verge AI · 2026-07-20
   https://www.theverge.com/ai-artificial-intelligence/967630/dave-eggers-openai-chatgpt-silencing-an-entire-generation
 - **A scorecard for the AI age** — OpenAI News · 2026-07-17
   https://openai.com/index/a-scorecard-for-the-ai-age
@@ -37,8 +39,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/tech/966112/google-gemini-notebook-notebooklm
 - **Claude can now use your 1Password credentials for you** — The Verge AI · 2026-07-16
   https://www.theverge.com/tech/966442/1password-anthropic-claude-browser-integration
-- **Google ordered to open Android and Search to rivals in Europe** — The Verge AI · 2026-07-16
-  https://www.theverge.com/policy/966438/eu-google-android-ai-interoperability-search-data-dma
 - **The US is advancing AI safety through state and federal action** — OpenAI News · 2026-07-15
   https://openai.com/index/advancing-ai-safety-through-state-and-federal-action
 - **GPT-Red: Unlocking Self-Improvement for Robustness** — OpenAI News · 2026-07-15

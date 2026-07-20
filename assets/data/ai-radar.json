@@ -1,15 +1,25 @@
 {
-  "generatedAt": "2026-07-19T09:48:24.876Z",
-  "date": "2026-07-19",
+  "generatedAt": "2026-07-20T10:47:09.755Z",
+  "date": "2026-07-20",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
     {
+      "title": "I hate that I don’t hate this song made with Suno",
+      "source": "The Verge AI",
+      "date": "2026-07-20",
+      "url": "https://www.theverge.com/entertainment/967678/1010benja-semiramis-dream-suno-ai-music",
+      "summary": "I would never go so far as to say there's no place for AI in music (I'm a fan of Holly Herndon, after all). But I generally find music made with generative AI to be offensively boring, especially the outputs of Suno. So ...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
       "title": "Dave Eggers told OpenAI staff that ChatGPT was ‘silencing an entire generation’",
       "source": "The Verge AI",
-      "date": "2026-07-18",
+      "date": "2026-07-20",
       "url": "https://www.theverge.com/ai-artificial-intelligence/967630/dave-eggers-openai-chatgpt-silencing-an-entire-generation",
       "summary": "Last year, Sam Altman invited author Dave Eggers to give a talk to around 200 OpenAI staffers. The man has written countless novels, screenplays, pieces of journalism, started McSweeney's, and founded multiple schools an...",
       "tags": [
@@ -200,18 +210,6 @@
         "ChatGPT",
         "Dev Tools"
       ]
-    },
-    {
-      "title": "How to manage AI investments in the agentic era",
-      "source": "OpenAI News",
-      "date": "2026-07-14",
-      "url": "https://openai.com/index/managing-ai-investments-in-agentic-era",
-      "summary": "Learn how enterprises can manage AI investments in the agentic era by measuring useful work per dollar, improving efficiency, and scaling high-value workflows.",
-      "tags": [
-        "Agents",
-        "ChatGPT",
-        "Automation"
-      ]
     }
   ],
   "candidates": [
@@ -224,7 +222,7 @@
           "title": "Dave Eggers told OpenAI staff that ChatGPT was ‘silencing an entire generation’",
           "source": "The Verge AI",
           "link": "https://www.theverge.com/ai-artificial-intelligence/967630/dave-eggers-openai-chatgpt-silencing-an-entire-generation",
-          "date": "2026-07-18"
+          "date": "2026-07-20"
         },
         {
           "title": "Why teens deserve access to safe AI",
