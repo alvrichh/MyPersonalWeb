@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-07-20
+# Daily AI maintenance report — 2026-07-21
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,16 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Safety and alignment in an era of long-horizon models** — OpenAI News · 2026-07-20
+  https://openai.com/index/safety-alignment-long-horizon-models
+- **Here are the 30,000 songs Sony is suing Udio&#8217;s AI music generator over** — The Verge AI · 2026-07-20
+  https://www.theverge.com/tech/968375/sony-udio-lawsuit-songs-ai-copyright
+- **SpaceX in your index fund, explained** — The Verge AI · 2026-07-20
+  https://www.theverge.com/business/968257/spacex-in-your-index-fund-explained
+- **Adobe’s ‘natural look’ camera app embraces generative AI** — The Verge AI · 2026-07-20
+  https://www.theverge.com/tech/967791/adobe-indigo-camera-app-ai-playground-update
+- **China delivers a one-two punch to America’s AI dominance** — The Verge AI · 2026-07-20
+  https://www.theverge.com/ai-artificial-intelligence/967781/chinese-ai-models-open-source-moonshot-kimi-k3-alibaba-qwen
 - **I hate that I don’t hate this song made with Suno** — The Verge AI · 2026-07-20
   https://www.theverge.com/entertainment/967678/1010benja-semiramis-dream-suno-ai-music
 - **Dave Eggers told OpenAI staff that ChatGPT was ‘silencing an entire generation’** — The Verge AI · 2026-07-20
@@ -23,8 +33,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/tech/967544/best-apps-gadgets-reading-installer
 - **TikTok is testing an AI likeness detection tool** — The Verge AI · 2026-07-17
   https://www.theverge.com/tech/967486/tiktok-ai-likeness-detection-tool
-- **Apple’s plot to crush OpenAI** — The Verge AI · 2026-07-17
-  https://www.theverge.com/podcast/967244/apple-openai-lawsuit-vergecast
 - **Connect more of your apps to Search** — Google AI Blog · 2026-07-16
   https://blog.google/products-and-platforms/products/search/connected-apps/
 - **Create, edit and star in videos with two Google Vids updates** — Google AI Blog · 2026-07-16
@@ -33,12 +41,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/why-teens-deserve-access-safe-ai
 - **How Cars24 scales conversations and builds faster with OpenAI** — OpenAI News · 2026-07-16
   https://openai.com/index/cars24
-- **New York governor says she&#8217;s using AI to analyze &#8216;every single rule&#8217; in the state** — The Verge AI · 2026-07-16
-  https://www.theverge.com/ai-artificial-intelligence/966647/new-york-governor-kathy-hochul-ai-policies
-- **Google is renaming NotebookLM to Gemini Notebook** — The Verge AI · 2026-07-16
-  https://www.theverge.com/tech/966112/google-gemini-notebook-notebooklm
-- **Claude can now use your 1Password credentials for you** — The Verge AI · 2026-07-16
-  https://www.theverge.com/tech/966442/1password-anthropic-claude-browser-integration
 - **The US is advancing AI safety through state and federal action** — OpenAI News · 2026-07-15
   https://openai.com/index/advancing-ai-safety-through-state-and-federal-action
 - **GPT-Red: Unlocking Self-Improvement for Robustness** — OpenAI News · 2026-07-15
@@ -47,8 +49,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/managing-ai-investments-in-agentic-era
 - **How sales teams use ChatGPT Work** — OpenAI News · 2026-07-14
   https://openai.com/academy/codex-for-work/how-sales-teams-use-codex
-- **How data science teams use ChatGPT Work** — OpenAI News · 2026-07-14
-  https://openai.com/academy/codex-for-work/how-data-science-teams-use-codex
 - **Better tools made Copilot code review worse. Here&#8217;s how we actually improved it.** — GitHub AI & ML Blog · 2026-07-10
   https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/
 - **Automating cross-repo documentation with GitHub Agentic Workflows** — GitHub AI & ML Blog · 2026-07-08
@@ -83,7 +83,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **MCP / tool-connected assistants** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
