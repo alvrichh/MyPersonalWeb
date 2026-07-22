@@ -1,28 +1,41 @@
 {
-  "generatedAt": "2026-07-21T10:21:41.637Z",
+  "generatedAt": "2026-07-22T10:21:40.840Z",
   "candidates": [
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Utility companies are promising to spare us from AI’s energy bill",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/969137/us-utility-ai-electricty-data-center-rate-pledge-trump",
+          "date": "2026-07-22"
+        },
+        {
+          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
+          "date": "2026-07-07"
+        }
+      ]
+    },
     {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Dave Eggers told OpenAI staff that ChatGPT was ‘silencing an entire generation’",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/967630/dave-eggers-openai-chatgpt-silencing-an-entire-generation",
-          "date": "2026-07-20"
+          "title": "Introducing the ChatGPT for small business program",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/introducing-chatgpt-small-business-program",
+          "date": "2026-07-21"
         },
         {
           "title": "Why teens deserve access to safe AI",
           "source": "OpenAI News",
           "link": "https://openai.com/index/why-teens-deserve-access-safe-ai",
           "date": "2026-07-16"
-        },
-        {
-          "title": "How sales teams use ChatGPT Work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/academy/codex-for-work/how-sales-teams-use-codex",
-          "date": "2026-07-14"
         }
       ]
     },
@@ -31,6 +44,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Google launches a cheaper alternative to large AI security models like Mythos",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/968572/google-gemini-flash-cyber-ai-security-model",
+          "date": "2026-07-21"
+        },
         {
           "title": "Create, edit and star in videos with two Google Vids updates",
           "source": "Google AI Blog",
@@ -57,16 +76,16 @@
           "date": "2026-07-16"
         },
         {
-          "title": "How to manage AI investments in the agentic era",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/managing-ai-investments-in-agentic-era",
-          "date": "2026-07-14"
-        },
-        {
           "title": "Better tools made Copilot code review worse. Here&#8217;s how we actually improved it.",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/",
           "date": "2026-07-10"
+        },
+        {
+          "title": "Automating cross-repo documentation with GitHub Agentic Workflows",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/automating-cross-repo-documentation-with-github-agentic-workflows/",
+          "date": "2026-07-08"
         }
       ]
     },
@@ -97,19 +116,6 @@
     },
     {
       "label": "MCP / tool-connected assistants",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
-          "date": "2026-07-07"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
