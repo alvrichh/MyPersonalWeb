@@ -1,11 +1,128 @@
 {
-  "generatedAt": "2026-07-21T10:21:41.637Z",
-  "date": "2026-07-21",
+  "generatedAt": "2026-07-22T10:21:40.840Z",
+  "date": "2026-07-22",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Utility companies are promising to spare us from AI’s energy bill",
+      "source": "The Verge AI",
+      "date": "2026-07-22",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/969137/us-utility-ai-electricty-data-center-rate-pledge-trump",
+      "summary": "In the face of backlash to concerns the AI boom will increase consumer electricity bills, the largest utility companies and data center developers in the US are now promising to do something about it. The Wall Street Jou...",
+      "tags": [
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "OpenAI says it accidentally hacked Hugging Face with a new AI system",
+      "source": "The Verge AI",
+      "date": "2026-07-22",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/968988/openai-hugging-face-hack-ai",
+      "summary": "OpenAI says its AI models mistakenly breached open-source AI platform Hugging Face during internal testing. In a blog post on Tuesday, OpenAI writes that GPT-5.6 Sol and \"an even more capable pre-release model\" discovere...",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ]
+    },
+    {
+      "title": "Substack adds an AI detector to help spot blogs written by no one",
+      "source": "The Verge AI",
+      "date": "2026-07-22",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/968855/substack-pangram-ai-detecting-tool",
+      "summary": "Substack will now help users determine whether what they're reading may have been written by AI. A new tool coming to the platform can scan posts, notes, replies, and comments to provide an estimate of how much text coul...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "How to build interactive experiences with canvases",
+      "source": "GitHub AI & ML Blog",
+      "date": "2026-07-21",
+      "url": "https://github.blog/ai-and-ml/github-copilot/how-to-build-interactive-experiences-with-canvases/",
+      "summary": "Canvases turn AI into interactive workspaces where you can visualize information, explore workflows, and take action across complex tasks. The post How to build interactive experiences with canvases appeared first on The...",
+      "tags": [
+        "Automation"
+      ]
+    },
+    {
+      "title": "Introducing the ChatGPT for small business program",
+      "source": "OpenAI News",
+      "date": "2026-07-21",
+      "url": "https://openai.com/index/introducing-chatgpt-small-business-program",
+      "summary": "OpenAI launches the ChatGPT for Small Businesses program, helping entrepreneurs build AI skills, automate work, and grow with ChatGPT Work.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "OpenAI and Hugging Face partner to address security incident during model evaluation",
+      "source": "OpenAI News",
+      "date": "2026-07-21",
+      "url": "https://openai.com/index/hugging-face-model-evaluation-security-incident",
+      "summary": "OpenAI and Hugging Face share early findings from a security incident during AI model evaluation, highlighting advanced cyber capabilities and lessons for defenders.",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ]
+    },
+    {
+      "title": "David Vélez and Robin Vince join the boards of the OpenAI Foundation and OpenAI Group PBC",
+      "source": "OpenAI News",
+      "date": "2026-07-21",
+      "url": "https://openai.com/index/david-velez-robin-vince-join-openai-boards",
+      "summary": "David Vélez and Robin Vince join the boards of the OpenAI Foundation and OpenAI Group PBC, bringing global leadership in finance, technology, and governance.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Neill Blomkamp’s new zombie AI ‘film’ is just slop warmed over",
+      "source": "The Verge AI",
+      "date": "2026-07-21",
+      "url": "https://www.theverge.com/entertainment/968703/neill-blomkamps-nightborne-barley-studios-seedance",
+      "summary": "On Monday, District 9 and Gran Turismo director Neill Blomkamp unveiled his latest project: a 13-minute sci-fi short titled Nightborne that's loosely based on Peter Watts' 2014 novel Echopraxia. The short comes from Blom...",
+      "tags": [
+        "Models"
+      ]
+    },
+    {
+      "title": "Anthropic’s $1.5 billion book piracy settlement approved by judge",
+      "source": "The Verge AI",
+      "date": "2026-07-21",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/968724/anthropic-authors-settlement-ai-copyright-approved",
+      "summary": "A federal judge has signed off on Anthropic's $1.5 billion class action settlement with authors who accused the company of training its AI models on copyrighted books, as reported earlier by Reuters. In an order on Monda...",
+      "tags": [
+        "Claude",
+        "Models"
+      ]
+    },
+    {
+      "title": "Google launches a cheaper alternative to large AI security models like Mythos",
+      "source": "The Verge AI",
+      "date": "2026-07-21",
+      "url": "https://www.theverge.com/tech/968572/google-gemini-flash-cyber-ai-security-model",
+      "summary": "Google is launching Gemini 3.6 Flash alongside a new security model dedicated to quickly finding and patching security vulnerabilities. In a blog post on Tuesday, Google describes Gemini 3.5 Flash Cyber as a \"cost-effici...",
+      "tags": [
+        "Claude",
+        "Gemini",
+        "Models"
+      ]
+    },
+    {
+      "title": "America needs to stop getting shocked by Chinese AI",
+      "source": "The Verge AI",
+      "date": "2026-07-21",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/968136/chinese-ai-models-another-sputnik-moment",
+      "summary": "Last week, two Chinese AI companies unveiled models they say can credibly compete with the best systems from OpenAI and Anthropic. The response was swift and predictable. Markets wobbled, commentators declared Silicon Va...",
+      "tags": [
+        "ChatGPT",
+        "Claude",
+        "Models"
+      ]
+    },
     {
       "title": "Safety and alignment in an era of long-horizon models",
       "source": "OpenAI News",
@@ -99,145 +216,44 @@
       "tags": [
         "Agents"
       ]
-    },
-    {
-      "title": "TikTok is testing an AI likeness detection tool",
-      "source": "The Verge AI",
-      "date": "2026-07-17",
-      "url": "https://www.theverge.com/tech/967486/tiktok-ai-likeness-detection-tool",
-      "summary": "TikTok is starting to test an opt-in tool that scans for AI likenesses and lets creators report them to the company, as spotted by social media consultant Matt Navarra. The tool is initially being tested with \"some\" US c...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Connect more of your apps to Search",
-      "source": "Google AI Blog",
-      "date": "2026-07-16",
-      "url": "https://blog.google/products-and-platforms/products/search/connected-apps/",
-      "summary": "You’ll be able to securely link and interact with your go-to services directly in AI Mode.",
-      "tags": [
-        "Gemini"
-      ]
-    },
-    {
-      "title": "Create, edit and star in videos with two Google Vids updates",
-      "source": "Google AI Blog",
-      "date": "2026-07-16",
-      "url": "https://blog.google/products-and-platforms/products/workspace/gemini-omni-personal-avatars/",
-      "summary": "Gemini Omni and personal avatars in Google Vids make video creation easier than ever.",
-      "tags": [
-        "Gemini",
-        "Multimodal"
-      ]
-    },
-    {
-      "title": "Apple’s plot to crush OpenAI",
-      "source": "The Verge AI",
-      "date": "2026-07-17",
-      "url": "https://www.theverge.com/podcast/967244/apple-openai-lawsuit-vergecast",
-      "summary": "Apple is suing OpenAI. The complaint is readable and intense, as these things often are, though many experts seem to think many of the allegations are just the ways things are done. So what does Apple really want here, a...",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Why teens deserve access to safe AI",
-      "source": "OpenAI News",
-      "date": "2026-07-16",
-      "url": "https://openai.com/index/why-teens-deserve-access-safe-ai",
-      "summary": "Learn how OpenAI is making ChatGPT safer for teens with age-appropriate protections, learning tools, parental controls, and expert partnerships.",
-      "tags": [
-        "Agents",
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "How Cars24 scales conversations and builds faster with OpenAI",
-      "source": "OpenAI News",
-      "date": "2026-07-16",
-      "url": "https://openai.com/index/cars24",
-      "summary": "Cars24 uses OpenAI-powered voice and chat agents to handle 1M+ monthly conversation minutes, recover 12% of lost leads, and bring agentic workflows to teams across the company.",
-      "tags": [
-        "Agents",
-        "ChatGPT",
-        "Automation"
-      ]
-    },
-    {
-      "title": "New York governor says she&#8217;s using AI to analyze &#8216;every single rule&#8217; in the state",
-      "source": "The Verge AI",
-      "date": "2026-07-16",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/966647/new-york-governor-kathy-hochul-ai-policies",
-      "summary": "New York Governor Kathy Hochul might have just signed a moratorium on new AI data centers in the state, but she's not against using the technology herself. During an interview with Bloomberg's Odd Lots podcast, Hochul sa...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Google is renaming NotebookLM to Gemini Notebook",
-      "source": "The Verge AI",
-      "date": "2026-07-16",
-      "url": "https://www.theverge.com/tech/966112/google-gemini-notebook-notebooklm",
-      "summary": "Google is giving its AI note-taking app a new name. The company announced on Thursday that NotebookLM is becoming Gemini Notebook, but will remain a standalone app even as it integrates more deeply across Gemini and Goog...",
-      "tags": [
-        "Gemini"
-      ]
-    },
-    {
-      "title": "Claude can now use your 1Password credentials for you",
-      "source": "The Verge AI",
-      "date": "2026-07-16",
-      "url": "https://www.theverge.com/tech/966442/1password-anthropic-claude-browser-integration",
-      "summary": "1Password has launched a new browser integration for Claude that allows the Anthropic chatbot to access stored security credentials like usernames and passwords. The 1Password for Claude feature means that users can auth...",
-      "tags": [
-        "Claude"
-      ]
-    },
-    {
-      "title": "Google ordered to open Android and Search to rivals in Europe",
-      "source": "The Verge AI",
-      "date": "2026-07-16",
-      "url": "https://www.theverge.com/policy/966438/eu-google-android-ai-interoperability-search-data-dma",
-      "summary": "Google must give rival AI assistants and search engines greater access to key parts of Android and Google Search after the European Union ordered the company to comply with the bloc's digital antitrust rules. The two dec...",
-      "tags": [
-        "Agents"
-      ]
-    },
-    {
-      "title": "The US is advancing AI safety through state and federal action",
-      "source": "OpenAI News",
-      "date": "2026-07-15",
-      "url": "https://openai.com/index/advancing-ai-safety-through-state-and-federal-action",
-      "summary": "OpenAI outlines a “reverse federalism” approach to AI governance, where state laws help build a national framework for safe, democratic AI.",
-      "tags": [
-        "ChatGPT"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Utility companies are promising to spare us from AI’s energy bill",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/969137/us-utility-ai-electricty-data-center-rate-pledge-trump",
+          "date": "2026-07-22"
+        },
+        {
+          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
+          "date": "2026-07-07"
+        }
+      ]
+    },
     {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Dave Eggers told OpenAI staff that ChatGPT was ‘silencing an entire generation’",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/967630/dave-eggers-openai-chatgpt-silencing-an-entire-generation",
-          "date": "2026-07-20"
+          "title": "Introducing the ChatGPT for small business program",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/introducing-chatgpt-small-business-program",
+          "date": "2026-07-21"
         },
         {
           "title": "Why teens deserve access to safe AI",
           "source": "OpenAI News",
           "link": "https://openai.com/index/why-teens-deserve-access-safe-ai",
           "date": "2026-07-16"
-        },
-        {
-          "title": "How sales teams use ChatGPT Work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/academy/codex-for-work/how-sales-teams-use-codex",
-          "date": "2026-07-14"
         }
       ]
     },
@@ -246,6 +262,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Google launches a cheaper alternative to large AI security models like Mythos",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/968572/google-gemini-flash-cyber-ai-security-model",
+          "date": "2026-07-21"
+        },
         {
           "title": "Create, edit and star in videos with two Google Vids updates",
           "source": "Google AI Blog",
@@ -272,16 +294,16 @@
           "date": "2026-07-16"
         },
         {
-          "title": "How to manage AI investments in the agentic era",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/managing-ai-investments-in-agentic-era",
-          "date": "2026-07-14"
-        },
-        {
           "title": "Better tools made Copilot code review worse. Here&#8217;s how we actually improved it.",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/",
           "date": "2026-07-10"
+        },
+        {
+          "title": "Automating cross-repo documentation with GitHub Agentic Workflows",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/automating-cross-repo-documentation-with-github-agentic-workflows/",
+          "date": "2026-07-08"
         }
       ]
     },
@@ -312,19 +334,6 @@
     },
     {
       "label": "MCP / tool-connected assistants",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
-          "date": "2026-07-07"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
