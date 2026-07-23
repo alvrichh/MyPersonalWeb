@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-07-22
+# Daily AI maintenance report — 2026-07-23
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,7 +13,23 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
-- **Utility companies are promising to spare us from AI’s energy bill** — The Verge AI · 2026-07-22
+- **Copilot vs. raw API access: What are you actually paying for?** — GitHub AI & ML Blog · 2026-07-22
+  https://github.blog/ai-and-ml/github-copilot/copilot-vs-raw-api-access-what-are-you-actually-paying-for/
+- **Building AI infrastructure with the Effingham County community** — OpenAI News · 2026-07-22
+  https://openai.com/index/building-ai-infrastructure-with-the-effingham-county-community
+- **How news organizations are using AI to advance their vital missions** — OpenAI News · 2026-07-22
+  https://openai.com/index/how-news-organizations-are-using-ai
+- **Advancing the next era of national science** — OpenAI News · 2026-07-22
+  https://openai.com/index/advancing-the-next-era-of-national-science
+- **Introducing OpenAI Presence** — OpenAI News · 2026-07-22
+  https://openai.com/index/introducing-openai-presence
+- **NTT DATA Group cuts incident analysis to 30 minutes with Codex** — OpenAI News · 2026-07-22
+  https://openai.com/index/ntt-data
+- **AMD commits up to $5 billion to Anthropic** — The Verge AI · 2026-07-22
+  https://www.theverge.com/ai-artificial-intelligence/969285/amd-anthropic-ai-infrastructure-deal
+- **Meta made its own AI detection system. It should have just used Google’s** — The Verge AI · 2026-07-22
+  https://www.theverge.com/tech/968680/meta-ai-detection-labeling-content-seal-watermarks-synthid
+- **Utility companies promise to spare us from AI’s energy bill** — The Verge AI · 2026-07-22
   https://www.theverge.com/ai-artificial-intelligence/969137/us-utility-ai-electricty-data-center-rate-pledge-trump
 - **OpenAI says it accidentally hacked Hugging Face with a new AI system** — The Verge AI · 2026-07-22
   https://www.theverge.com/ai-artificial-intelligence/968988/openai-hugging-face-hack-ai
@@ -33,24 +49,10 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/ai-artificial-intelligence/968724/anthropic-authors-settlement-ai-copyright-approved
 - **Google launches a cheaper alternative to large AI security models like Mythos** — The Verge AI · 2026-07-21
   https://www.theverge.com/tech/968572/google-gemini-flash-cyber-ai-security-model
-- **America needs to stop getting shocked by Chinese AI** — The Verge AI · 2026-07-21
-  https://www.theverge.com/ai-artificial-intelligence/968136/chinese-ai-models-another-sputnik-moment
-- **Safety and alignment in an era of long-horizon models** — OpenAI News · 2026-07-20
-  https://openai.com/index/safety-alignment-long-horizon-models
-- **Here are the 30,000 songs Sony is suing Udio&#8217;s AI music generator over** — The Verge AI · 2026-07-20
-  https://www.theverge.com/tech/968375/sony-udio-lawsuit-songs-ai-copyright
-- **A scorecard for the AI age** — OpenAI News · 2026-07-17
-  https://openai.com/index/a-scorecard-for-the-ai-age
 - **Connect more of your apps to Search** — Google AI Blog · 2026-07-16
   https://blog.google/products-and-platforms/products/search/connected-apps/
 - **Create, edit and star in videos with two Google Vids updates** — Google AI Blog · 2026-07-16
   https://blog.google/products-and-platforms/products/workspace/gemini-omni-personal-avatars/
-- **Why teens deserve access to safe AI** — OpenAI News · 2026-07-16
-  https://openai.com/index/why-teens-deserve-access-safe-ai
-- **How Cars24 scales conversations and builds faster with OpenAI** — OpenAI News · 2026-07-16
-  https://openai.com/index/cars24
-- **The US is advancing AI safety through state and federal action** — OpenAI News · 2026-07-15
-  https://openai.com/index/advancing-ai-safety-through-state-and-federal-action
 - **Better tools made Copilot code review worse. Here&#8217;s how we actually improved it.** — GitHub AI & ML Blog · 2026-07-10
   https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/
 - **Automating cross-repo documentation with GitHub Agentic Workflows** — GitHub AI & ML Blog · 2026-07-08
@@ -73,18 +75,17 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://github.blog/developer-skills/github/i-automated-my-job-and-it-made-me-a-better-leader/
 - **How we built an internal data analytics agent** — GitHub AI & ML Blog · 2026-06-19
   https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/
-- **Getting more from each token: How Copilot improves context handling and model routing** — GitHub AI & ML Blog · 2026-06-17
-  https://github.blog/ai-and-ml/github-copilot/getting-more-from-each-token-how-copilot-improves-context-handling-and-model-routing/
 - **New research shows how AMIE, our medical AI, could help manage health conditions.** — Google AI Blog · 2026-06-17
   https://blog.google/innovation-and-ai/models-and-research/google-research/amie-for-disease-management-in-nature/
 
 ## Portfolio candidates
 
-- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **MCP / tool-connected assistants** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI automation and workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
