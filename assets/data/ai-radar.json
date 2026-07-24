@@ -1,11 +1,84 @@
 {
-  "generatedAt": "2026-07-23T10:16:33.510Z",
-  "date": "2026-07-23",
+  "generatedAt": "2026-07-24T10:12:32.483Z",
+  "date": "2026-07-24",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Launching Health in ChatGPT",
+      "source": "OpenAI News",
+      "date": "2026-07-23",
+      "url": "https://openai.com/index/health-in-chatgpt",
+      "summary": "Health in ChatGPT now lets eligible U.S. users securely connect medical records and Apple Health to get more personalized insights and better understand their health.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Alexa Plus is getting an AI update to handle more complicated instructions",
+      "source": "The Verge AI",
+      "date": "2026-07-23",
+      "url": "https://www.theverge.com/tech/970399/amazon-alexa-plus-ai-update-smart-home-devices",
+      "summary": "Amazon is launching an update to its Alexa Plus assistant that will allow it to connect to smart home devices in new ways. With the update, which is currently in preview, Alexa Plus can link up with tech from Bosch, Delt...",
+      "tags": [
+        "Agents"
+      ]
+    },
+    {
+      "title": "Claude’s voice mode is now available for Opus and Sonnet",
+      "source": "The Verge AI",
+      "date": "2026-07-23",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/970065/anthropic-voice-mode-claude-opus-sonnet-haiku-ai",
+      "summary": "Until now, voice mode has only been available on Claude Haiku, Anthropic's faster but less powerful model. Now the company is making its Opus and Sonnet models available in voice mode, and extending its reach into apps l...",
+      "tags": [
+        "Claude",
+        "Models"
+      ]
+    },
+    {
+      "title": "Patreon is laying off 20 percent of workers",
+      "source": "The Verge AI",
+      "date": "2026-07-23",
+      "url": "https://www.theverge.com/tech/970211/patreon-layoffs-ai",
+      "summary": "Patreon is laying off 20 percent of its workers, or around 93 employees, as reported earlier by 404 Media. In a memo to employees, Patreon CEO Jack Conte writes that the company isn't making these changes \"because we bel...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "OpenAI is making big claims as it rolls out ChatGPT Health to everyone",
+      "source": "The Verge AI",
+      "date": "2026-07-23",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/970115/openai-chatgpt-health-launch-claims",
+      "summary": "OpenAI is rolling out ChatGPT Health to everyone in the US on Thursday, allowing more people to connect their medical records and health-tracking information to the chatbot. During a briefing, Ashley Alexander, OpenAI's ...",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ]
+    },
+    {
+      "title": "Lawmakers prepare bill requiring AI ‘kill switch’",
+      "source": "The Verge AI",
+      "date": "2026-07-23",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/969939/lawmakers-ai-kill-switch-proposal",
+      "summary": "Lawmakers are preparing to introduce an \"AI Kill Switch Act\" that would require AI companies to shut down or throttle their systems on orders from the Department of Homeland Security, according to a report from Politico....",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Apple’s OpenAI lawsuit is about who gets to define the post-smartphone era",
+      "source": "The Verge AI",
+      "date": "2026-07-23",
+      "url": "https://www.theverge.com/podcast/968787/apple-openai-trade-secrets-lawsuit-ai-hardware-smartphone-jony-ive",
+      "summary": "Today on Decoder, I’m talking with Hayden Field, The Verge’s senior AI reporter, about the major trade secrets lawsuit between Apple and OpenAI and what this tells us about OpenAI’s future. By now I’m sure most Decoder l...",
+      "tags": [
+        "ChatGPT",
+        "Dev Tools"
+      ]
+    },
     {
       "title": "Copilot vs. raw API access: What are you actually paying for?",
       "source": "GitHub AI & ML Blog",
@@ -146,86 +219,47 @@
       "tags": [
         "ChatGPT"
       ]
-    },
-    {
-      "title": "OpenAI and Hugging Face partner to address security incident during model evaluation",
-      "source": "OpenAI News",
-      "date": "2026-07-21",
-      "url": "https://openai.com/index/hugging-face-model-evaluation-security-incident",
-      "summary": "OpenAI and Hugging Face share early findings from a security incident during AI model evaluation, highlighting advanced cyber capabilities and lessons for defenders.",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "David Vélez and Robin Vince join the boards of the OpenAI Foundation and OpenAI Group PBC",
-      "source": "OpenAI News",
-      "date": "2026-07-21",
-      "url": "https://openai.com/index/david-velez-robin-vince-join-openai-boards",
-      "summary": "David Vélez and Robin Vince join the boards of the OpenAI Foundation and OpenAI Group PBC, bringing global leadership in finance, technology, and governance.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Neill Blomkamp’s new zombie AI ‘film’ is just slop warmed over",
-      "source": "The Verge AI",
-      "date": "2026-07-21",
-      "url": "https://www.theverge.com/entertainment/968703/neill-blomkamps-nightborne-barley-studios-seedance",
-      "summary": "On Monday, District 9 and Gran Turismo director Neill Blomkamp unveiled his latest project: a 13-minute sci-fi short titled Nightborne that's loosely based on Peter Watts' 2014 novel Echopraxia. The short comes from Blom...",
-      "tags": [
-        "Models"
-      ]
-    },
-    {
-      "title": "Anthropic’s $1.5 billion book piracy settlement approved by judge",
-      "source": "The Verge AI",
-      "date": "2026-07-21",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/968724/anthropic-authors-settlement-ai-copyright-approved",
-      "summary": "A federal judge has signed off on Anthropic's $1.5 billion class action settlement with authors who accused the company of training its AI models on copyrighted books, as reported earlier by Reuters. In an order on Monda...",
-      "tags": [
-        "Claude",
-        "Models"
-      ]
-    },
-    {
-      "title": "Google launches a cheaper alternative to large AI security models like Mythos",
-      "source": "The Verge AI",
-      "date": "2026-07-21",
-      "url": "https://www.theverge.com/tech/968572/google-gemini-flash-cyber-ai-security-model",
-      "summary": "Google is launching Gemini 3.6 Flash alongside a new security model dedicated to quickly finding and patching security vulnerabilities. In a blog post on Tuesday, Google describes Gemini 3.5 Flash Cyber as a \"cost-effici...",
-      "tags": [
-        "Claude",
-        "Gemini",
-        "Models"
-      ]
-    },
-    {
-      "title": "America needs to stop getting shocked by Chinese AI",
-      "source": "The Verge AI",
-      "date": "2026-07-21",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/968136/chinese-ai-models-another-sputnik-moment",
-      "summary": "Last week, two Chinese AI companies unveiled models they say can credibly compete with the best systems from OpenAI and Anthropic. The response was swift and predictable. Markets wobbled, commentators declared Silicon Va...",
-      "tags": [
-        "ChatGPT",
-        "Claude",
-        "Models"
-      ]
-    },
-    {
-      "title": "Safety and alignment in an era of long-horizon models",
-      "source": "OpenAI News",
-      "date": "2026-07-20",
-      "url": "https://openai.com/index/safety-alignment-long-horizon-models",
-      "summary": "OpenAI shares lessons from deploying long-running AI models, highlighting new safety risks, observed failures, and improved safeguards through iterative deployment.",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Launching Health in ChatGPT",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/health-in-chatgpt",
+          "date": "2026-07-23"
+        },
+        {
+          "title": "OpenAI is making big claims as it rolls out ChatGPT Health to everyone",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/970115/openai-chatgpt-health-launch-claims",
+          "date": "2026-07-23"
+        },
+        {
+          "title": "NTT DATA Group cuts incident analysis to 30 minutes with Codex",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/ntt-data",
+          "date": "2026-07-22"
+        }
+      ]
+    },
+    {
+      "label": "Claude research and documentation flow",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Claude’s voice mode is now available for Opus and Sonnet",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/970065/anthropic-voice-mode-claude-opus-sonnet-haiku-ai",
+          "date": "2026-07-23"
+        }
+      ]
+    },
     {
       "label": "AI coding assistant workflows",
       "status": "safe-data-candidate",
@@ -290,54 +324,10 @@
       ]
     },
     {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "NTT DATA Group cuts incident analysis to 30 minutes with Codex",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/ntt-data",
-          "date": "2026-07-22"
-        },
-        {
-          "title": "Introducing the ChatGPT for small business program",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/introducing-chatgpt-small-business-program",
-          "date": "2026-07-21"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Utility companies promise to spare us from AI’s energy bill",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/969137/us-utility-ai-electricty-data-center-rate-pledge-trump",
-          "date": "2026-07-22"
-        },
-        {
-          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
-          "date": "2026-07-07"
-        }
-      ]
-    },
-    {
       "label": "Gemini multimodal exploration",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
-        {
-          "title": "Google launches a cheaper alternative to large AI security models like Mythos",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/968572/google-gemini-flash-cyber-ai-security-model",
-          "date": "2026-07-21"
-        },
         {
           "title": "Create, edit and star in videos with two Google Vids updates",
           "source": "Google AI Blog",
@@ -366,15 +356,15 @@
       ]
     },
     {
-      "label": "AI automation and workflow design",
+      "label": "AI developer tooling",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "I automated my job (and it made me a better leader)",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/developer-skills/github/i-automated-my-job-and-it-made-me-a-better-leader/",
-          "date": "2026-06-23"
+          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
+          "date": "2026-07-07"
         }
       ]
     }
