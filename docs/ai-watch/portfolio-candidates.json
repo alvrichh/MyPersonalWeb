@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-24T10:12:32.483Z",
+  "generatedAt": "2026-07-25T09:41:38.332Z",
   "candidates": [
     {
       "label": "ChatGPT workflow design",
@@ -7,15 +7,15 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "Meta is making its AI chatbot more like an assistant",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/970570/meta-ai-chatbot-productivity-update",
+          "date": "2026-07-24"
+        },
+        {
           "title": "Launching Health in ChatGPT",
           "source": "OpenAI News",
           "link": "https://openai.com/index/health-in-chatgpt",
-          "date": "2026-07-23"
-        },
-        {
-          "title": "OpenAI is making big claims as it rolls out ChatGPT Health to everyone",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/970115/openai-chatgpt-health-launch-claims",
           "date": "2026-07-23"
         },
         {
@@ -32,10 +32,47 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "Meta is making its AI chatbot more like an assistant",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/970570/meta-ai-chatbot-productivity-update",
+          "date": "2026-07-24"
+        },
+        {
+          "title": "Anthropic releases Opus 5 with ‘close’ to Fable 5’s capabilities",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/970105/claude-opus-5-announced-anthropic-ai-model-release",
+          "date": "2026-07-23"
+        },
+        {
           "title": "Claude’s voice mode is now available for Opus and Sonnet",
           "source": "The Verge AI",
           "link": "https://www.theverge.com/ai-artificial-intelligence/970065/anthropic-voice-mode-claude-opus-sonnet-haiku-ai",
           "date": "2026-07-23"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Meta is making its AI chatbot more like an assistant",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/970570/meta-ai-chatbot-productivity-update",
+          "date": "2026-07-24"
+        },
+        {
+          "title": "Create, edit and star in videos with two Google Vids updates",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/products-and-platforms/products/workspace/gemini-omni-personal-avatars/",
+          "date": "2026-07-16"
+        },
+        {
+          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
+          "date": "2026-07-07"
         }
       ]
     },
@@ -99,25 +136,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/automating-cross-repo-documentation-with-github-agentic-workflows/",
           "date": "2026-07-08"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Create, edit and star in videos with two Google Vids updates",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/products-and-platforms/products/workspace/gemini-omni-personal-avatars/",
-          "date": "2026-07-16"
-        },
-        {
-          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
-          "date": "2026-07-07"
         }
       ]
     },
