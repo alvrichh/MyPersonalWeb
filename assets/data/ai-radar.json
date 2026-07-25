@@ -1,11 +1,54 @@
 {
-  "generatedAt": "2026-07-24T10:12:32.483Z",
-  "date": "2026-07-24",
+  "generatedAt": "2026-07-25T09:41:38.332Z",
+  "date": "2026-07-25",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Midjourney bought the astrology app Co-Star",
+      "source": "The Verge AI",
+      "date": "2026-07-24",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/970894/midjourney-co-star-acquisition",
+      "summary": "Midjourney, which has gone from generating AI cat images to full-body ultrasound scans, is getting into a new field: astrology. The AI startup announced on Thursday that it has acquired the personalized astrology app Co-...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "You can’t ignore Google Zero anymore",
+      "source": "The Verge AI",
+      "date": "2026-07-24",
+      "url": "https://www.theverge.com/podcast/970735/google-zero-reddit-ai-publishers-vergecast",
+      "summary": "The web and Google once had a deal: Google collects data and indexes webpages and in exchange sends oceans of traffic to websites. The deal wasn't perfect and certainly made Google more money than it made the websites, b...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Meta is making its AI chatbot more like an assistant",
+      "source": "The Verge AI",
+      "date": "2026-07-24",
+      "url": "https://www.theverge.com/tech/970570/meta-ai-chatbot-productivity-update",
+      "summary": "Meta is upgrading its AI chatbot with new productivity features in a bid to compete with rivals like Gemini, ChatGPT, and Claude. The update will allow Meta AI to tap into your calendar to help you plan events and genera...",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Claude",
+        "Gemini"
+      ]
+    },
+    {
+      "title": "The tech-broification of American science has officially begun",
+      "source": "The Verge AI",
+      "date": "2026-07-24",
+      "url": "https://www.theverge.com/science/970534/genesis-mission-ai-science-funding-trump-grants",
+      "summary": "The Trump administration unveiled the first \"Genesis Mission\" grants on Thursday, directing $5 billion toward hundreds of AI-driven science projects in an effort the White House has described as \"comparable in urgency an...",
+      "tags": [
+        "AI"
+      ]
+    },
     {
       "title": "Launching Health in ChatGPT",
       "source": "OpenAI News",
@@ -14,6 +57,18 @@
       "summary": "Health in ChatGPT now lets eligible U.S. users securely connect medical records and Apple Health to get more personalized insights and better understand their health.",
       "tags": [
         "ChatGPT"
+      ]
+    },
+    {
+      "title": "Anthropic releases Opus 5 with ‘close’ to Fable 5’s capabilities",
+      "source": "The Verge AI",
+      "date": "2026-07-23",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/970105/claude-opus-5-announced-anthropic-ai-model-release",
+      "summary": "Weeks after Anthropic's latest toe-to-toe with the US government, and days after an OpenAI security incident that dominated tech industry discussions, Anthropic on Thursday released its newest model, Claude Opus 5. The c...",
+      "tags": [
+        "ChatGPT",
+        "Claude",
+        "Models"
       ]
     },
     {
@@ -45,38 +100,6 @@
       "summary": "Patreon is laying off 20 percent of its workers, or around 93 employees, as reported earlier by 404 Media. In a memo to employees, Patreon CEO Jack Conte writes that the company isn't making these changes \"because we bel...",
       "tags": [
         "AI"
-      ]
-    },
-    {
-      "title": "OpenAI is making big claims as it rolls out ChatGPT Health to everyone",
-      "source": "The Verge AI",
-      "date": "2026-07-23",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/970115/openai-chatgpt-health-launch-claims",
-      "summary": "OpenAI is rolling out ChatGPT Health to everyone in the US on Thursday, allowing more people to connect their medical records and health-tracking information to the chatbot. During a briefing, Ashley Alexander, OpenAI's ...",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "Lawmakers prepare bill requiring AI ‘kill switch’",
-      "source": "The Verge AI",
-      "date": "2026-07-23",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/969939/lawmakers-ai-kill-switch-proposal",
-      "summary": "Lawmakers are preparing to introduce an \"AI Kill Switch Act\" that would require AI companies to shut down or throttle their systems on orders from the Department of Homeland Security, according to a report from Politico....",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Apple’s OpenAI lawsuit is about who gets to define the post-smartphone era",
-      "source": "The Verge AI",
-      "date": "2026-07-23",
-      "url": "https://www.theverge.com/podcast/968787/apple-openai-trade-secrets-lawsuit-ai-hardware-smartphone-jony-ive",
-      "summary": "Today on Decoder, I’m talking with Hayden Field, The Verge’s senior AI reporter, about the major trade secrets lawsuit between Apple and OpenAI and what this tells us about OpenAI’s future. By now I’m sure most Decoder l...",
-      "tags": [
-        "ChatGPT",
-        "Dev Tools"
       ]
     },
     {
@@ -112,6 +135,38 @@
       "tags": [
         "Agents",
         "ChatGPT"
+      ]
+    },
+    {
+      "title": "OpenAI is making big claims as it rolls out ChatGPT Health to everyone",
+      "source": "The Verge AI",
+      "date": "2026-07-23",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/970115/openai-chatgpt-health-launch-claims",
+      "summary": "OpenAI is rolling out ChatGPT Health to everyone in the US on Thursday, allowing more people to connect their medical records and health-tracking information to the chatbot. During a briefing, Ashley Alexander, OpenAI's ...",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ]
+    },
+    {
+      "title": "Lawmakers prepare bill requiring AI ‘kill switch’",
+      "source": "The Verge AI",
+      "date": "2026-07-23",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/969939/lawmakers-ai-kill-switch-proposal",
+      "summary": "Lawmakers are preparing to introduce an \"AI Kill Switch Act\" that would require AI companies to shut down or throttle their systems on orders from the Department of Homeland Security, according to a report from Politico....",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Apple’s OpenAI lawsuit is about who gets to define the post-smartphone era",
+      "source": "The Verge AI",
+      "date": "2026-07-23",
+      "url": "https://www.theverge.com/podcast/968787/apple-openai-trade-secrets-lawsuit-ai-hardware-smartphone-jony-ive",
+      "summary": "Today on Decoder, I’m talking with Hayden Field, The Verge’s senior AI reporter, about the major trade secrets lawsuit between Apple and OpenAI and what this tells us about OpenAI’s future. By now I’m sure most Decoder l...",
+      "tags": [
+        "ChatGPT",
+        "Dev Tools"
       ]
     },
     {
@@ -168,57 +223,6 @@
         "Multimodal",
         "Models"
       ]
-    },
-    {
-      "title": "Utility companies promise to spare us from AI’s energy bill",
-      "source": "The Verge AI",
-      "date": "2026-07-22",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/969137/us-utility-ai-electricty-data-center-rate-pledge-trump",
-      "summary": "In the face of backlash to concerns the AI boom will increase consumer electricity bills, the largest utility companies and data center developers in the US are now promising to do something about it. The Wall Street Jou...",
-      "tags": [
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "OpenAI says it accidentally hacked Hugging Face with a new AI system",
-      "source": "The Verge AI",
-      "date": "2026-07-22",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/968988/openai-hugging-face-hack-ai",
-      "summary": "OpenAI says its AI models mistakenly breached open-source AI platform Hugging Face during internal testing. In a blog post on Tuesday, OpenAI writes that GPT-5.6 Sol and \"an even more capable pre-release model\" discovere...",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "Substack adds an AI detector to help spot blogs written by no one",
-      "source": "The Verge AI",
-      "date": "2026-07-22",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/968855/substack-pangram-ai-detecting-tool",
-      "summary": "Substack will now help users determine whether what they're reading may have been written by AI. A new tool coming to the platform can scan posts, notes, replies, and comments to provide an estimate of how much text coul...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "How to build interactive experiences with canvases",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-07-21",
-      "url": "https://github.blog/ai-and-ml/github-copilot/how-to-build-interactive-experiences-with-canvases/",
-      "summary": "Canvases turn AI into interactive workspaces where you can visualize information, explore workflows, and take action across complex tasks. The post How to build interactive experiences with canvases appeared first on The...",
-      "tags": [
-        "Automation"
-      ]
-    },
-    {
-      "title": "Introducing the ChatGPT for small business program",
-      "source": "OpenAI News",
-      "date": "2026-07-21",
-      "url": "https://openai.com/index/introducing-chatgpt-small-business-program",
-      "summary": "OpenAI launches the ChatGPT for Small Businesses program, helping entrepreneurs build AI skills, automate work, and grow with ChatGPT Work.",
-      "tags": [
-        "ChatGPT"
-      ]
     }
   ],
   "candidates": [
@@ -228,15 +232,15 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "Meta is making its AI chatbot more like an assistant",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/970570/meta-ai-chatbot-productivity-update",
+          "date": "2026-07-24"
+        },
+        {
           "title": "Launching Health in ChatGPT",
           "source": "OpenAI News",
           "link": "https://openai.com/index/health-in-chatgpt",
-          "date": "2026-07-23"
-        },
-        {
-          "title": "OpenAI is making big claims as it rolls out ChatGPT Health to everyone",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/970115/openai-chatgpt-health-launch-claims",
           "date": "2026-07-23"
         },
         {
@@ -253,10 +257,47 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "Meta is making its AI chatbot more like an assistant",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/970570/meta-ai-chatbot-productivity-update",
+          "date": "2026-07-24"
+        },
+        {
+          "title": "Anthropic releases Opus 5 with ‘close’ to Fable 5’s capabilities",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/970105/claude-opus-5-announced-anthropic-ai-model-release",
+          "date": "2026-07-23"
+        },
+        {
           "title": "Claude’s voice mode is now available for Opus and Sonnet",
           "source": "The Verge AI",
           "link": "https://www.theverge.com/ai-artificial-intelligence/970065/anthropic-voice-mode-claude-opus-sonnet-haiku-ai",
           "date": "2026-07-23"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Meta is making its AI chatbot more like an assistant",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/970570/meta-ai-chatbot-productivity-update",
+          "date": "2026-07-24"
+        },
+        {
+          "title": "Create, edit and star in videos with two Google Vids updates",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/products-and-platforms/products/workspace/gemini-omni-personal-avatars/",
+          "date": "2026-07-16"
+        },
+        {
+          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
+          "date": "2026-07-07"
         }
       ]
     },
@@ -320,25 +361,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/automating-cross-repo-documentation-with-github-agentic-workflows/",
           "date": "2026-07-08"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Create, edit and star in videos with two Google Vids updates",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/products-and-platforms/products/workspace/gemini-omni-personal-avatars/",
-          "date": "2026-07-16"
-        },
-        {
-          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
-          "date": "2026-07-07"
         }
       ]
     },
