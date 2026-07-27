@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-07-26
+# Daily AI maintenance report — 2026-07-27
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **How AI is expanding what people do at work** — OpenAI News · 2026-07-27
+  https://openai.com/index/how-ai-is-expanding-what-people-do-at-work
 - **Midjourney bought the astrology app Co-Star** — The Verge AI · 2026-07-24
   https://www.theverge.com/ai-artificial-intelligence/970894/midjourney-co-star-acquisition
 - **You can’t ignore Google Zero anymore** — The Verge AI · 2026-07-24
@@ -47,8 +49,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://github.blog/ai-and-ml/github-copilot/how-to-build-interactive-experiences-with-canvases/
 - **Introducing the ChatGPT for small business program** — OpenAI News · 2026-07-21
   https://openai.com/index/introducing-chatgpt-small-business-program
-- **OpenAI and Hugging Face partner to address security incident during model evaluation** — OpenAI News · 2026-07-21
-  https://openai.com/index/hugging-face-model-evaluation-security-incident
 - **Connect more of your apps to Search** — Google AI Blog · 2026-07-16
   https://blog.google/products-and-platforms/products/search/connected-apps/
 - **Create, edit and star in videos with two Google Vids updates** — Google AI Blog · 2026-07-16
