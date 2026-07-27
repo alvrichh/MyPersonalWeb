@@ -1,66 +1,53 @@
 {
-  "generatedAt": "2026-05-25T11:51:03.158Z",
+  "generatedAt": "2026-07-26T09:54:40.850Z",
   "candidates": [
     {
-      "label": "AI agents / automation workflows",
+      "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
-          "date": "2026-05-22"
+          "title": "Meta is making its AI chatbot more like an assistant",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/970570/meta-ai-chatbot-productivity-update",
+          "date": "2026-07-24"
         },
         {
-          "title": "OpenAI named a Leader in enterprise coding agents by Gartner",
+          "title": "Launching Health in ChatGPT",
           "source": "OpenAI News",
-          "link": "https://openai.com/index/gartner-2026-agentic-coding-leader",
-          "date": "2026-05-22"
+          "link": "https://openai.com/index/health-in-chatgpt",
+          "date": "2026-07-23"
         },
         {
-          "title": "I/O 2026: Welcome to the agentic Gemini era",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/sundar-pichai-io-2026/",
-          "date": "2026-05-19"
+          "title": "NTT DATA Group cuts incident analysis to 30 minutes with Codex",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/ntt-data",
+          "date": "2026-07-22"
         }
       ]
     },
     {
-      "label": "AI coding assistant workflows",
+      "label": "Claude research and documentation flow",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
-          "date": "2026-05-22"
+          "title": "Meta is making its AI chatbot more like an assistant",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/970570/meta-ai-chatbot-productivity-update",
+          "date": "2026-07-24"
         },
         {
-          "title": "OpenAI named a Leader in enterprise coding agents by Gartner",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/gartner-2026-agentic-coding-leader",
-          "date": "2026-05-22"
+          "title": "Anthropic releases Opus 5 with ‘close’ to Fable 5’s capabilities",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/970105/claude-opus-5-announced-anthropic-ai-model-release",
+          "date": "2026-07-23"
         },
         {
-          "title": "OpenAI and Dell partner to bring Codex to hybrid and on-premise enterprise environments",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/dell-codex-enterprise-partnership",
-          "date": "2026-05-18"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/",
-          "date": "2026-05-22"
+          "title": "Claude’s voice mode is now available for Opus and Sonnet",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/970065/anthropic-voice-mode-claude-opus-sonnet-haiku-ai",
+          "date": "2026-07-23"
         }
       ]
     },
@@ -70,47 +57,35 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Google’s new anything-to-anything AI model is wild",
+          "title": "Meta is making its AI chatbot more like an assistant",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/936507/gemini-omni-hands-on-deepfake-ai-video",
-          "date": "2026-05-22"
+          "link": "https://www.theverge.com/tech/970570/meta-ai-chatbot-productivity-update",
+          "date": "2026-07-24"
         },
         {
-          "title": "100 things we announced at I/O 2026",
+          "title": "Create, edit and star in videos with two Google Vids updates",
           "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/ai/google-io-2026-all-our-announcements/",
-          "date": "2026-05-20"
+          "link": "https://blog.google/products-and-platforms/products/workspace/gemini-omni-personal-avatars/",
+          "date": "2026-07-16"
         },
         {
-          "title": "I/O 2026: Welcome to the agentic Gemini era",
+          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
           "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/sundar-pichai-io-2026/",
-          "date": "2026-05-19"
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
+          "date": "2026-07-07"
         }
       ]
     },
     {
-      "label": "ChatGPT workflow design",
+      "label": "AI coding assistant workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "AdventHealth advances whole-person care with OpenAI",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/adventhealth",
-          "date": "2026-05-21"
-        },
-        {
-          "title": "All of the updates from Elon Musk and Sam Altman’s battle over OpenAI",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/917225/sam-altman-elon-musk-openai-lawsuit",
-          "date": "2026-05-21"
-        },
-        {
-          "title": "OpenAI and Malta partner to bring ChatGPT Plus to all citizens",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/malta-chatgpt-plus-partnership",
-          "date": "2026-05-16"
+          "title": "Copilot vs. raw API access: What are you actually paying for?",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/copilot-vs-raw-api-access-what-are-you-actually-paying-for/",
+          "date": "2026-07-22"
         }
       ]
     },
@@ -120,22 +95,73 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Take your local GitHub sessions anywhere",
+          "title": "Copilot vs. raw API access: What are you actually paying for?",
           "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/news-insights/product-news/take-your-local-github-sessions-anywhere/",
-          "date": "2026-05-18"
+          "link": "https://github.blog/ai-and-ml/github-copilot/copilot-vs-raw-api-access-what-are-you-actually-paying-for/",
+          "date": "2026-07-22"
         },
         {
-          "title": "Dungeons &#038; Desktops: Building a procedurally generated roguelike with GitHub Copilot CLI",
+          "title": "Better tools made Copilot code review worse. Here&#8217;s how we actually improved it.",
           "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/dungeons-desktops-building-a-procedurally-generated-roguelike-with-github-copilot-cli/",
-          "date": "2026-05-12"
+          "link": "https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/",
+          "date": "2026-07-10"
         },
         {
-          "title": "Validating agentic behavior when “correct” isn’t deterministic",
+          "title": "How GitHub Copilot enables zero DNS configuration for GitHub Pages",
           "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/generative-ai/validating-agentic-behavior-when-correct-isnt-deterministic/",
-          "date": "2026-05-06"
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-github-copilot-enables-zero-dns-configuration-for-github-pages/",
+          "date": "2026-07-08"
+        }
+      ]
+    },
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Introducing OpenAI Presence",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/introducing-openai-presence",
+          "date": "2026-07-22"
+        },
+        {
+          "title": "Better tools made Copilot code review worse. Here&#8217;s how we actually improved it.",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/",
+          "date": "2026-07-10"
+        },
+        {
+          "title": "Automating cross-repo documentation with GitHub Agentic Workflows",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/automating-cross-repo-documentation-with-github-agentic-workflows/",
+          "date": "2026-07-08"
+        }
+      ]
+    },
+    {
+      "label": "MCP / tool-connected assistants",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
+          "date": "2026-07-07"
+        }
+      ]
+    },
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
+          "date": "2026-07-07"
         }
       ]
     }
