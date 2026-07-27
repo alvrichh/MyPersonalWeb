@@ -204,7 +204,8 @@ button {
 }
 
 .portfolio-shell {
-  width: min(1240px, calc(100% - 1.4rem));
+  width: min(1240px, calc(100vw - 1.4rem));
+  max-width: calc(100vw - 1.4rem);
   margin: 0 auto;
   padding: 1rem 0 3.5rem;
   display: grid;
@@ -1364,7 +1365,8 @@ html[dir="rtl"] .metric-card {
 
 @media (min-width: 1100px) {
   .portfolio-shell {
-    width: min(1280px, calc(100% - 2.5rem));
+    width: min(1280px, calc(100vw - 2.5rem));
+    max-width: calc(100vw - 2.5rem);
     padding-top: 2rem;
     grid-template-columns: 320px minmax(0, 1fr);
     align-items: start;
