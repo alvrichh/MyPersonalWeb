@@ -1,11 +1,17 @@
 {
-  "generatedAt": "2026-07-26T09:54:40.850Z",
+  "generatedAt": "2026-07-27T11:15:12.081Z",
   "candidates": [
     {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "How AI is expanding what people do at work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/how-ai-is-expanding-what-people-do-at-work",
+          "date": "2026-07-27"
+        },
         {
           "title": "Meta is making its AI chatbot more like an assistant",
           "source": "The Verge AI",
@@ -17,12 +23,6 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/health-in-chatgpt",
           "date": "2026-07-23"
-        },
-        {
-          "title": "NTT DATA Group cuts incident analysis to 30 minutes with Codex",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/ntt-data",
-          "date": "2026-07-22"
         }
       ]
     },
