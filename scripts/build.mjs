@@ -1,4 +1,4 @@
-import { existsSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
@@ -9,6 +9,9 @@ const npmBin = isWindows ? 'npm.cmd' : 'npm';
 const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const webpackBin = join(rootDir, 'node_modules', '.bin', binName);
 const distDir = join(rootDir, 'dist');
+const vercelOutputDir = join(rootDir, '.vercel', 'output');
+const vercelStaticDir = join(vercelOutputDir, 'static');
+const vercelConfigFile = join(vercelOutputDir, 'config.json');
 const requiredOutputFiles = [
   'index.html',
   'ai-radar.html',
@@ -59,4 +62,10 @@ if (missingFiles.length > 0) {
   process.exit(1);
 }
 
+rmSync(vercelOutputDir, { recursive: true, force: true });
+mkdirSync(vercelStaticDir, { recursive: true });
+cpSync(distDir, vercelStaticDir, { recursive: true });
+writeFileSync(vercelConfigFile, `${JSON.stringify({ version: 3 }, null, 2)}\n`);
+
 console.log(`Verified Vercel output directory: ${distDir}`);
+console.log(`Verified Vercel Build Output API directory: ${vercelStaticDir}`);
