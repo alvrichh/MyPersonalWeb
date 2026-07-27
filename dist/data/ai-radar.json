@@ -1,11 +1,21 @@
 {
-  "generatedAt": "2026-07-26T09:54:40.850Z",
-  "date": "2026-07-26",
+  "generatedAt": "2026-07-27T11:15:12.081Z",
+  "date": "2026-07-27",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "How AI is expanding what people do at work",
+      "source": "OpenAI News",
+      "date": "2026-07-27",
+      "url": "https://openai.com/index/how-ai-is-expanding-what-people-do-at-work",
+      "summary": "New OpenAI research shows how AI is expanding what workers do, with ChatGPT users taking on tasks across roles and reshaping job boundaries.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
     {
       "title": "Midjourney bought the astrology app Co-Star",
       "source": "The Verge AI",
@@ -211,18 +221,6 @@
       "tags": [
         "Claude"
       ]
-    },
-    {
-      "title": "Meta made its own AI detection system. It should have just used Google’s",
-      "source": "The Verge AI",
-      "date": "2026-07-22",
-      "url": "https://www.theverge.com/tech/968680/meta-ai-detection-labeling-content-seal-watermarks-synthid",
-      "summary": "IIn March, Meta's Oversight Board called on the company to \"meet its public commitments and employ its own tools\" to help quell the spread of deceptive generative AI content across platforms. Meta responded in July by in...",
-      "tags": [
-        "Agents",
-        "Multimodal",
-        "Models"
-      ]
     }
   ],
   "candidates": [
@@ -231,6 +229,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "How AI is expanding what people do at work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/how-ai-is-expanding-what-people-do-at-work",
+          "date": "2026-07-27"
+        },
         {
           "title": "Meta is making its AI chatbot more like an assistant",
           "source": "The Verge AI",
@@ -242,12 +246,6 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/health-in-chatgpt",
           "date": "2026-07-23"
-        },
-        {
-          "title": "NTT DATA Group cuts incident analysis to 30 minutes with Codex",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/ntt-data",
-          "date": "2026-07-22"
         }
       ]
     },

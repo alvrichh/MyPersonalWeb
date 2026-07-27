@@ -488,6 +488,9 @@ const createAiRadarSection = () => {
   const section = document.createElement('section');
   section.id = 'ai-radar';
   section.className = 'panel card ai-radar-section premium-reveal';
+  if (mount) {
+    section.classList.add('is-active', 'is-visible');
+  }
   section.setAttribute('data-ai-radar-section', 'true');
   section.setAttribute('data-scroll-section', 'true');
   section.innerHTML = `
