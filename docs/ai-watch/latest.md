@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-07-27
+# Daily AI maintenance report — 2026-07-28
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,26 +13,30 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Hugging Face is being used to easily undress women and children** — The Verge AI · 2026-07-28
+  https://www.theverge.com/ai-artificial-intelligence/971723/hugging-face-nudify-deepfake-undress-women-children
+- **The harness is all you need (mostly)** — GitHub AI & ML Blog · 2026-07-27
+  https://github.blog/ai-and-ml/github-copilot/the-harness-is-all-you-need-mostly/
+- **GitHub Copilot app for Beginners: Getting started** — GitHub AI & ML Blog · 2026-07-27
+  https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-getting-started/
 - **How AI is expanding what people do at work** — OpenAI News · 2026-07-27
   https://openai.com/index/how-ai-is-expanding-what-people-do-at-work
+- **Why China is giving away its best AI models** — The Verge AI · 2026-07-27
+  https://www.theverge.com/ai-artificial-intelligence/971444/how-chinese-open-weight-ai-models-impact-us-companies
+- **Nvidia, Microsoft launch open AI security alliance — without OpenAI, Google, or Anthropic** — The Verge AI · 2026-07-27
+  https://www.theverge.com/ai-artificial-intelligence/971281/nvidia-open-secure-ai-alliance-cybersecurity
+- **The tech-broification of American science has officially begun** — The Verge AI · 2026-07-27
+  https://www.theverge.com/science/970534/genesis-mission-ai-science-funding-trump-grants
 - **Midjourney bought the astrology app Co-Star** — The Verge AI · 2026-07-24
   https://www.theverge.com/ai-artificial-intelligence/970894/midjourney-co-star-acquisition
 - **You can’t ignore Google Zero anymore** — The Verge AI · 2026-07-24
   https://www.theverge.com/podcast/970735/google-zero-reddit-ai-publishers-vergecast
 - **Meta is making its AI chatbot more like an assistant** — The Verge AI · 2026-07-24
   https://www.theverge.com/tech/970570/meta-ai-chatbot-productivity-update
-- **The tech-broification of American science has officially begun** — The Verge AI · 2026-07-24
-  https://www.theverge.com/science/970534/genesis-mission-ai-science-funding-trump-grants
 - **Launching Health in ChatGPT** — OpenAI News · 2026-07-23
   https://openai.com/index/health-in-chatgpt
 - **Anthropic releases Opus 5 with ‘close’ to Fable 5’s capabilities** — The Verge AI · 2026-07-23
   https://www.theverge.com/ai-artificial-intelligence/970105/claude-opus-5-announced-anthropic-ai-model-release
-- **Alexa Plus is getting an AI update to handle more complicated instructions** — The Verge AI · 2026-07-23
-  https://www.theverge.com/tech/970399/amazon-alexa-plus-ai-update-smart-home-devices
-- **Claude’s voice mode is now available for Opus and Sonnet** — The Verge AI · 2026-07-23
-  https://www.theverge.com/ai-artificial-intelligence/970065/anthropic-voice-mode-claude-opus-sonnet-haiku-ai
-- **Patreon is laying off 20 percent of workers** — The Verge AI · 2026-07-23
-  https://www.theverge.com/tech/970211/patreon-layoffs-ai
 - **Copilot vs. raw API access: What are you actually paying for?** — GitHub AI & ML Blog · 2026-07-22
   https://github.blog/ai-and-ml/github-copilot/copilot-vs-raw-api-access-what-are-you-actually-paying-for/
 - **Building AI infrastructure with the Effingham County community** — OpenAI News · 2026-07-22
@@ -71,21 +75,17 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blog.google/innovation-and-ai/technology/ai/full-stack-ai-explainer/
 - **Evaluating performance and efficiency of the GitHub Copilot agentic harness across models and tasks** — GitHub AI & ML Blog · 2026-06-25
   https://github.blog/ai-and-ml/github-copilot/evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harness-across-models-and-tasks/
-- **I automated my job (and it made me a better leader)** — GitHub AI & ML Blog · 2026-06-23
-  https://github.blog/developer-skills/github/i-automated-my-job-and-it-made-me-a-better-leader/
-- **How we built an internal data analytics agent** — GitHub AI & ML Blog · 2026-06-19
-  https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/
 - **New research shows how AMIE, our medical AI, could help manage health conditions.** — Google AI Blog · 2026-06-17
   https://blog.google/innovation-and-ai/models-and-research/google-research/amie-for-disease-management-in-nature/
 
 ## Portfolio candidates
 
+- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **MCP / tool-connected assistants** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 

@@ -1,6 +1,56 @@
 {
-  "generatedAt": "2026-07-27T11:15:12.081Z",
+  "generatedAt": "2026-07-28T10:30:22.663Z",
   "candidates": [
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "The harness is all you need (mostly)",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/the-harness-is-all-you-need-mostly/",
+          "date": "2026-07-27"
+        },
+        {
+          "title": "GitHub Copilot app for Beginners: Getting started",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-getting-started/",
+          "date": "2026-07-27"
+        },
+        {
+          "title": "Copilot vs. raw API access: What are you actually paying for?",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/copilot-vs-raw-api-access-what-are-you-actually-paying-for/",
+          "date": "2026-07-22"
+        }
+      ]
+    },
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "GitHub Copilot app for Beginners: Getting started",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-getting-started/",
+          "date": "2026-07-27"
+        },
+        {
+          "title": "Introducing OpenAI Presence",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/introducing-openai-presence",
+          "date": "2026-07-22"
+        },
+        {
+          "title": "Better tools made Copilot code review worse. Here&#8217;s how we actually improved it.",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/",
+          "date": "2026-07-10"
+        }
+      ]
+    },
     {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
@@ -42,12 +92,6 @@
           "source": "The Verge AI",
           "link": "https://www.theverge.com/ai-artificial-intelligence/970105/claude-opus-5-announced-anthropic-ai-model-release",
           "date": "2026-07-23"
-        },
-        {
-          "title": "Claude’s voice mode is now available for Opus and Sonnet",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/970065/anthropic-voice-mode-claude-opus-sonnet-haiku-ai",
-          "date": "2026-07-23"
         }
       ]
     },
@@ -86,56 +130,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/copilot-vs-raw-api-access-what-are-you-actually-paying-for/",
           "date": "2026-07-22"
-        }
-      ]
-    },
-    {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Copilot vs. raw API access: What are you actually paying for?",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/copilot-vs-raw-api-access-what-are-you-actually-paying-for/",
-          "date": "2026-07-22"
-        },
-        {
-          "title": "Better tools made Copilot code review worse. Here&#8217;s how we actually improved it.",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/",
-          "date": "2026-07-10"
-        },
-        {
-          "title": "How GitHub Copilot enables zero DNS configuration for GitHub Pages",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/how-github-copilot-enables-zero-dns-configuration-for-github-pages/",
-          "date": "2026-07-08"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Introducing OpenAI Presence",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/introducing-openai-presence",
-          "date": "2026-07-22"
-        },
-        {
-          "title": "Better tools made Copilot code review worse. Here&#8217;s how we actually improved it.",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/",
-          "date": "2026-07-10"
-        },
-        {
-          "title": "Automating cross-repo documentation with GitHub Agentic Workflows",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/automating-cross-repo-documentation-with-github-agentic-workflows/",
-          "date": "2026-07-08"
         }
       ]
     },
