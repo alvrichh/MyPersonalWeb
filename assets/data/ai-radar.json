@@ -1,11 +1,97 @@
 {
-  "generatedAt": "2026-07-28T10:30:22.663Z",
-  "date": "2026-07-28",
+  "generatedAt": "2026-07-29T10:34:26.789Z",
+  "date": "2026-07-29",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
+      "source": "Google AI Blog",
+      "date": "2026-07-28",
+      "url": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
+      "summary": "We’re announcing even more new capabilities in Managed Agents in Gemini API so developers can build reliable, production-ready agents.",
+      "tags": [
+        "Agents",
+        "Gemini",
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "5 ways AI Mode in Search helps you enjoy the real world",
+      "source": "Google AI Blog",
+      "date": "2026-07-28",
+      "url": "https://blog.google/products-and-platforms/products/search/ai-mode-real-world-tips/",
+      "summary": "It might sound counterintuitive, but Search's AI tools can actually help you make the most of your time offline whether you want to book concert tickets or find the perf…",
+      "tags": [
+        "Agents",
+        "Gemini"
+      ]
+    },
+    {
+      "title": "5 ways to host the ultimate dinner party with Google Search",
+      "source": "Google AI Blog",
+      "date": "2026-07-28",
+      "url": "https://blog.google/products-and-platforms/products/search/dinner-party-hosting-tips/",
+      "summary": "These AI features can help you craft a menu, design a tablescape, and handle other party-planning tasks.",
+      "tags": [
+        "Gemini"
+      ]
+    },
+    {
+      "title": "Scientific computing in the age of agentic AI",
+      "source": "OpenAI News",
+      "date": "2026-07-28",
+      "url": "https://openai.com/index/scientific-computing-agentic-ai",
+      "summary": "A new field report shows how scientists use AI coding agents to modernize scientific computing, accelerating software development and discovery in genomics and beyond.",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "AI leaders sign a statement asking the government to do something about automated AI",
+      "source": "The Verge AI",
+      "date": "2026-07-28",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/972161/ai-leaders-us-government-openai-anthropic-google-meta",
+      "summary": "Employees of OpenAI and Anthropic, as well as Google, Meta, Thinking Machines, Microsoft, Mistral, and other leading AI labs, have written a statement to the US government supporting a potential slowdown of sorts for fro...",
+      "tags": [
+        "ChatGPT",
+        "Claude"
+      ]
+    },
+    {
+      "title": "AI’s finally expensive enough to make Wall Street nervous",
+      "source": "The Verge AI",
+      "date": "2026-07-28",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/972119/ai-stock-fall-google-capex",
+      "summary": "It's earnings season, and investors got an unpleasant surprise from Google: an increase on its spending estimate, to as much as $205 billion - from the last quarter's projection of up to $190 billion. Even the lower end ...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Perplexity’s Personal Computer turns Windows PCs into AI agents",
+      "source": "The Verge AI",
+      "date": "2026-07-28",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/971750/perplexity-personal-computer-windows-ai-agents",
+      "summary": "Perplexity has expanded its agentic Personal Computer tool to Windows, allowing computers running the world's most popular OS to be used as a locally run AI system. Like the Mac version that Perplexity launched in April,...",
+      "tags": [
+        "Agents"
+      ]
+    },
+    {
+      "title": "Smart rings are looking like my kind of AI gadget",
+      "source": "The Verge AI",
+      "date": "2026-07-28",
+      "url": "https://www.theverge.com/gadgets/971744/smart-ring-ai-gadget-stream-index",
+      "summary": "Over the last few months, I've spent a lot of time talking to my computer. One underrated feature of the LLM revolution has been a remarkable leap in all kinds of dictation technology - even the fastest, cheapest models ...",
+      "tags": [
+        "Models"
+      ]
+    },
     {
       "title": "Hugging Face is being used to easily undress women and children",
       "source": "The Verge AI",
@@ -137,96 +223,97 @@
         "Claude",
         "Models"
       ]
-    },
-    {
-      "title": "Alexa Plus is getting an AI update to handle more complicated instructions",
-      "source": "The Verge AI",
-      "date": "2026-07-23",
-      "url": "https://www.theverge.com/tech/970399/amazon-alexa-plus-ai-update-smart-home-devices",
-      "summary": "Amazon is launching an update to its Alexa Plus assistant that will allow it to connect to smart home devices in new ways. With the update, which is currently in preview, Alexa Plus can link up with tech from Bosch, Delt...",
-      "tags": [
-        "Agents"
-      ]
-    },
-    {
-      "title": "Claude’s voice mode is now available for Opus and Sonnet",
-      "source": "The Verge AI",
-      "date": "2026-07-23",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/970065/anthropic-voice-mode-claude-opus-sonnet-haiku-ai",
-      "summary": "Until now, voice mode has only been available on Claude Haiku, Anthropic's faster but less powerful model. Now the company is making its Opus and Sonnet models available in voice mode, and extending its reach into apps l...",
-      "tags": [
-        "Claude",
-        "Models"
-      ]
-    },
-    {
-      "title": "Patreon is laying off 20 percent of workers",
-      "source": "The Verge AI",
-      "date": "2026-07-23",
-      "url": "https://www.theverge.com/tech/970211/patreon-layoffs-ai",
-      "summary": "Patreon is laying off 20 percent of its workers, or around 93 employees, as reported earlier by 404 Media. In a memo to employees, Patreon CEO Jack Conte writes that the company isn't making these changes \"because we bel...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Copilot vs. raw API access: What are you actually paying for?",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-07-22",
-      "url": "https://github.blog/ai-and-ml/github-copilot/copilot-vs-raw-api-access-what-are-you-actually-paying-for/",
-      "summary": "Copilot now bills usage at listed API rates. Compare direct model access with the coding workflow, policy, and harness work around it. The post Copilot vs. raw API access: What are you actually paying for? appeared first...",
-      "tags": [
-        "Copilot",
-        "Dev Tools",
-        "Automation",
-        "Models"
-      ]
-    },
-    {
-      "title": "Building AI infrastructure with the Effingham County community",
-      "source": "OpenAI News",
-      "date": "2026-07-22",
-      "url": "https://openai.com/index/building-ai-infrastructure-with-the-effingham-county-community",
-      "summary": "OpenAI announces Project Camellia in Effingham County, Georgia, with commitments to responsible energy, community investment, jobs, and access to Codex.",
-      "tags": [
-        "ChatGPT",
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "How news organizations are using AI to advance their vital missions",
-      "source": "OpenAI News",
-      "date": "2026-07-22",
-      "url": "https://openai.com/index/how-news-organizations-are-using-ai",
-      "summary": "News organizations are using AI to strengthen reporting, grow audiences, and improve business operations, with OpenAI tools supporting journalists and publishers worldwide.",
-      "tags": [
-        "Agents",
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "OpenAI is making big claims as it rolls out ChatGPT Health to everyone",
-      "source": "The Verge AI",
-      "date": "2026-07-23",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/970115/openai-chatgpt-health-launch-claims",
-      "summary": "OpenAI is rolling out ChatGPT Health to everyone in the US on Thursday, allowing more people to connect their medical records and health-tracking information to the chatbot. During a briefing, Ashley Alexander, OpenAI's ...",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "Lawmakers prepare bill requiring AI ‘kill switch’",
-      "source": "The Verge AI",
-      "date": "2026-07-23",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/969939/lawmakers-ai-kill-switch-proposal",
-      "summary": "Lawmakers are preparing to introduce an \"AI Kill Switch Act\" that would require AI companies to shut down or throttle their systems on orders from the Department of Homeland Security, according to a report from Politico....",
-      "tags": [
-        "AI"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
+          "date": "2026-07-28"
+        },
+        {
+          "title": "Scientific computing in the age of agentic AI",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/scientific-computing-agentic-ai",
+          "date": "2026-07-28"
+        },
+        {
+          "title": "Perplexity’s Personal Computer turns Windows PCs into AI agents",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/971750/perplexity-personal-computer-windows-ai-agents",
+          "date": "2026-07-28"
+        }
+      ]
+    },
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
+          "date": "2026-07-28"
+        },
+        {
+          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
+          "date": "2026-07-07"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
+          "date": "2026-07-28"
+        },
+        {
+          "title": "Create, edit and star in videos with two Google Vids updates",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/products-and-platforms/products/workspace/gemini-omni-personal-avatars/",
+          "date": "2026-07-16"
+        },
+        {
+          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
+          "date": "2026-07-07"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Scientific computing in the age of agentic AI",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/scientific-computing-agentic-ai",
+          "date": "2026-07-28"
+        },
+        {
+          "title": "Copilot vs. raw API access: What are you actually paying for?",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/copilot-vs-raw-api-access-what-are-you-actually-paying-for/",
+          "date": "2026-07-22"
+        }
+      ]
+    },
     {
       "label": "GitHub Copilot developer loop",
       "status": "safe-data-candidate",
@@ -253,31 +340,6 @@
       ]
     },
     {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "GitHub Copilot app for Beginners: Getting started",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-getting-started/",
-          "date": "2026-07-27"
-        },
-        {
-          "title": "Introducing OpenAI Presence",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/introducing-openai-presence",
-          "date": "2026-07-22"
-        },
-        {
-          "title": "Better tools made Copilot code review worse. Here&#8217;s how we actually improved it.",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/",
-          "date": "2026-07-10"
-        }
-      ]
-    },
-    {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
@@ -289,91 +351,21 @@
           "date": "2026-07-27"
         },
         {
-          "title": "Meta is making its AI chatbot more like an assistant",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/970570/meta-ai-chatbot-productivity-update",
-          "date": "2026-07-24"
-        },
-        {
           "title": "Launching Health in ChatGPT",
           "source": "OpenAI News",
           "link": "https://openai.com/index/health-in-chatgpt",
           "date": "2026-07-23"
-        }
-      ]
-    },
-    {
-      "label": "Claude research and documentation flow",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Meta is making its AI chatbot more like an assistant",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/970570/meta-ai-chatbot-productivity-update",
-          "date": "2026-07-24"
         },
         {
-          "title": "Anthropic releases Opus 5 with ‘close’ to Fable 5’s capabilities",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/970105/claude-opus-5-announced-anthropic-ai-model-release",
-          "date": "2026-07-23"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Meta is making its AI chatbot more like an assistant",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/970570/meta-ai-chatbot-productivity-update",
-          "date": "2026-07-24"
-        },
-        {
-          "title": "Create, edit and star in videos with two Google Vids updates",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/products-and-platforms/products/workspace/gemini-omni-personal-avatars/",
-          "date": "2026-07-16"
-        },
-        {
-          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
-          "date": "2026-07-07"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Copilot vs. raw API access: What are you actually paying for?",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/copilot-vs-raw-api-access-what-are-you-actually-paying-for/",
+          "title": "NTT DATA Group cuts incident analysis to 30 minutes with Codex",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/ntt-data",
           "date": "2026-07-22"
         }
       ]
     },
     {
       "label": "MCP / tool-connected assistants",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
-          "date": "2026-07-07"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
