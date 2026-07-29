@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-07-28
+# Daily AI maintenance report — 2026-07-29
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,22 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Gemini API Managed Agents: 3.6 Flash, hooks, and more** — Google AI Blog · 2026-07-28
+  https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/
+- **5 ways AI Mode in Search helps you enjoy the real world** — Google AI Blog · 2026-07-28
+  https://blog.google/products-and-platforms/products/search/ai-mode-real-world-tips/
+- **5 ways to host the ultimate dinner party with Google Search** — Google AI Blog · 2026-07-28
+  https://blog.google/products-and-platforms/products/search/dinner-party-hosting-tips/
+- **Scientific computing in the age of agentic AI** — OpenAI News · 2026-07-28
+  https://openai.com/index/scientific-computing-agentic-ai
+- **AI leaders sign a statement asking the government to do something about automated AI** — The Verge AI · 2026-07-28
+  https://www.theverge.com/ai-artificial-intelligence/972161/ai-leaders-us-government-openai-anthropic-google-meta
+- **AI’s finally expensive enough to make Wall Street nervous** — The Verge AI · 2026-07-28
+  https://www.theverge.com/ai-artificial-intelligence/972119/ai-stock-fall-google-capex
+- **Perplexity’s Personal Computer turns Windows PCs into AI agents** — The Verge AI · 2026-07-28
+  https://www.theverge.com/ai-artificial-intelligence/971750/perplexity-personal-computer-windows-ai-agents
+- **Smart rings are looking like my kind of AI gadget** — The Verge AI · 2026-07-28
+  https://www.theverge.com/gadgets/971744/smart-ring-ai-gadget-stream-index
 - **Hugging Face is being used to easily undress women and children** — The Verge AI · 2026-07-28
   https://www.theverge.com/ai-artificial-intelligence/971723/hugging-face-nudify-deepfake-undress-women-children
 - **The harness is all you need (mostly)** — GitHub AI & ML Blog · 2026-07-27
@@ -25,18 +41,10 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/ai-artificial-intelligence/971444/how-chinese-open-weight-ai-models-impact-us-companies
 - **Nvidia, Microsoft launch open AI security alliance — without OpenAI, Google, or Anthropic** — The Verge AI · 2026-07-27
   https://www.theverge.com/ai-artificial-intelligence/971281/nvidia-open-secure-ai-alliance-cybersecurity
-- **The tech-broification of American science has officially begun** — The Verge AI · 2026-07-27
-  https://www.theverge.com/science/970534/genesis-mission-ai-science-funding-trump-grants
 - **Midjourney bought the astrology app Co-Star** — The Verge AI · 2026-07-24
   https://www.theverge.com/ai-artificial-intelligence/970894/midjourney-co-star-acquisition
-- **You can’t ignore Google Zero anymore** — The Verge AI · 2026-07-24
-  https://www.theverge.com/podcast/970735/google-zero-reddit-ai-publishers-vergecast
-- **Meta is making its AI chatbot more like an assistant** — The Verge AI · 2026-07-24
-  https://www.theverge.com/tech/970570/meta-ai-chatbot-productivity-update
 - **Launching Health in ChatGPT** — OpenAI News · 2026-07-23
   https://openai.com/index/health-in-chatgpt
-- **Anthropic releases Opus 5 with ‘close’ to Fable 5’s capabilities** — The Verge AI · 2026-07-23
-  https://www.theverge.com/ai-artificial-intelligence/970105/claude-opus-5-announced-anthropic-ai-model-release
 - **Copilot vs. raw API access: What are you actually paying for?** — GitHub AI & ML Blog · 2026-07-22
   https://github.blog/ai-and-ml/github-copilot/copilot-vs-raw-api-access-what-are-you-actually-paying-for/
 - **Building AI infrastructure with the Effingham County community** — OpenAI News · 2026-07-22
@@ -51,8 +59,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/ntt-data
 - **How to build interactive experiences with canvases** — GitHub AI & ML Blog · 2026-07-21
   https://github.blog/ai-and-ml/github-copilot/how-to-build-interactive-experiences-with-canvases/
-- **Introducing the ChatGPT for small business program** — OpenAI News · 2026-07-21
-  https://openai.com/index/introducing-chatgpt-small-business-program
 - **Connect more of your apps to Search** — Google AI Blog · 2026-07-16
   https://blog.google/products-and-platforms/products/search/connected-apps/
 - **Create, edit and star in videos with two Google Vids updates** — Google AI Blog · 2026-07-16
@@ -69,25 +75,18 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-june-2026/
 - **New York City educators and industry leaders gathered at Google’s offices to shape the future of AI in classrooms.** — Google AI Blog · 2026-07-01
   https://blog.google/products-and-platforms/products/education/nyc-ai-summit/
-- **Unlocking Britain’s next era of productivity: Building a nation of AI trailblazers** — Google AI Blog · 2026-06-30
-  https://blog.google/company-news/inside-google/around-the-globe/google-europe/united-kingdom/unlocking-britains-next-era-of-productivity-building-a-nation-of-ai-trailblazers/
-- **Ask an AI expert: What exactly is the full stack?** — Google AI Blog · 2026-06-29
-  https://blog.google/innovation-and-ai/technology/ai/full-stack-ai-explainer/
 - **Evaluating performance and efficiency of the GitHub Copilot agentic harness across models and tasks** — GitHub AI & ML Blog · 2026-06-25
   https://github.blog/ai-and-ml/github-copilot/evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harness-across-models-and-tasks/
-- **New research shows how AMIE, our medical AI, could help manage health conditions.** — Google AI Blog · 2026-06-17
-  https://blog.google/innovation-and-ai/models-and-research/google-research/amie-for-disease-management-in-nature/
 
 ## Portfolio candidates
 
-- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **MCP / tool-connected assistants** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
 
