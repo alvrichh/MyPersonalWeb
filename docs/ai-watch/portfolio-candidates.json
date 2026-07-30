@@ -1,16 +1,66 @@
 {
-  "generatedAt": "2026-07-29T10:34:26.789Z",
+  "generatedAt": "2026-07-30T10:20:38.753Z",
   "candidates": [
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Accelerating scientific discovery with ChatGPT for Academic Researchers",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/chatgpt-for-academic-researchers",
+          "date": "2026-07-29"
+        },
+        {
+          "title": "How AI is expanding what people do at work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/how-ai-is-expanding-what-people-do-at-work",
+          "date": "2026-07-27"
+        },
+        {
+          "title": "Launching Health in ChatGPT",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/health-in-chatgpt",
+          "date": "2026-07-23"
+        }
+      ]
+    },
     {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
-          "date": "2026-07-28"
+          "title": "How GPT-5.6 fuses frontier intelligence with frontier efficiency",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/gpt-5-6-frontier-intelligence-efficiency",
+          "date": "2026-07-29"
+        },
+        {
+          "title": "Microsoft confirms Copilot ‘super app’ coming this year",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/972927/microsoft-copilot-super-app-confirmed",
+          "date": "2026-07-29"
+        },
+        {
+          "title": "Mark Zuckerberg is planning a big push into personal AI agents",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/972294/meta-q2-2026-earnings-mark-zuckerberg-personal-ai-agents",
+          "date": "2026-07-29"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Microsoft confirms Copilot ‘super app’ coming this year",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/972927/microsoft-copilot-super-app-confirmed",
+          "date": "2026-07-29"
         },
         {
           "title": "Scientific computing in the age of agentic AI",
@@ -19,10 +69,35 @@
           "date": "2026-07-28"
         },
         {
-          "title": "Perplexity’s Personal Computer turns Windows PCs into AI agents",
+          "title": "Copilot vs. raw API access: What are you actually paying for?",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/copilot-vs-raw-api-access-what-are-you-actually-paying-for/",
+          "date": "2026-07-22"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Microsoft confirms Copilot ‘super app’ coming this year",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/971750/perplexity-personal-computer-windows-ai-agents",
-          "date": "2026-07-28"
+          "link": "https://www.theverge.com/tech/972927/microsoft-copilot-super-app-confirmed",
+          "date": "2026-07-29"
+        },
+        {
+          "title": "The harness is all you need (mostly)",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/the-harness-is-all-you-need-mostly/",
+          "date": "2026-07-27"
+        },
+        {
+          "title": "GitHub Copilot app for Beginners: Getting started",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-getting-started/",
+          "date": "2026-07-27"
         }
       ]
     },
@@ -31,6 +106,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "OpenAI’s rogue AI agent didn’t stop at hacking Hugging Face",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/972441/openai-rogue-ai-agent-hacked-more-than-hugging-face",
+          "date": "2026-07-29"
+        },
         {
           "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
           "source": "Google AI Blog",
@@ -67,75 +148,6 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
           "date": "2026-07-07"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Scientific computing in the age of agentic AI",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/scientific-computing-agentic-ai",
-          "date": "2026-07-28"
-        },
-        {
-          "title": "Copilot vs. raw API access: What are you actually paying for?",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/copilot-vs-raw-api-access-what-are-you-actually-paying-for/",
-          "date": "2026-07-22"
-        }
-      ]
-    },
-    {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "The harness is all you need (mostly)",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/the-harness-is-all-you-need-mostly/",
-          "date": "2026-07-27"
-        },
-        {
-          "title": "GitHub Copilot app for Beginners: Getting started",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-getting-started/",
-          "date": "2026-07-27"
-        },
-        {
-          "title": "Copilot vs. raw API access: What are you actually paying for?",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/copilot-vs-raw-api-access-what-are-you-actually-paying-for/",
-          "date": "2026-07-22"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "How AI is expanding what people do at work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/how-ai-is-expanding-what-people-do-at-work",
-          "date": "2026-07-27"
-        },
-        {
-          "title": "Launching Health in ChatGPT",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/health-in-chatgpt",
-          "date": "2026-07-23"
-        },
-        {
-          "title": "NTT DATA Group cuts incident analysis to 30 minutes with Codex",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/ntt-data",
-          "date": "2026-07-22"
         }
       ]
     },

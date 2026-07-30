@@ -1,11 +1,113 @@
 {
-  "generatedAt": "2026-07-29T10:34:26.789Z",
-  "date": "2026-07-29",
+  "generatedAt": "2026-07-30T10:20:38.753Z",
+  "date": "2026-07-30",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "How enabling two settings tripled our scores on the ARC-AGI-3 benchmark",
+      "source": "OpenAI News",
+      "date": "2026-07-29",
+      "url": "https://openai.com/index/how-two-settings-tripled-our-arc-agi-3-scores",
+      "summary": "How two API settings improved GPT-5.6 performance on ARC-AGI-3, boosting scores and efficiency by retaining reasoning and enabling compaction.",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ]
+    },
+    {
+      "title": "Accelerating scientific discovery with ChatGPT for Academic Researchers",
+      "source": "OpenAI News",
+      "date": "2026-07-29",
+      "url": "https://openai.com/index/chatgpt-for-academic-researchers",
+      "summary": "OpenAI is giving 100,000 academic researchers free access to ChatGPT's most advanced AI models to accelerate scientific research, collaboration, and discovery.",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ]
+    },
+    {
+      "title": "How GPT-5.6 fuses frontier intelligence with frontier efficiency",
+      "source": "OpenAI News",
+      "date": "2026-07-29",
+      "url": "https://openai.com/index/gpt-5-6-frontier-intelligence-efficiency",
+      "summary": "GPT-5.6 improves AI efficiency across models, inference, and agentic workflows, helping deliver more useful intelligence per dollar.",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Automation",
+        "Models"
+      ]
+    },
+    {
+      "title": "Microsoft confirms Copilot ‘super app’ coming this year",
+      "source": "The Verge AI",
+      "date": "2026-07-29",
+      "url": "https://www.theverge.com/tech/972927/microsoft-copilot-super-app-confirmed",
+      "summary": "Microsoft is working on an AI \"super app\" that combines Copilot's chat, coding, and agentic capabilities. During an earnings call on Wednesday, Microsoft CEO Satya Nadella said the app will span \"both consumer and commer...",
+      "tags": [
+        "Agents",
+        "Copilot",
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "Mark Zuckerberg is planning a big push into personal AI agents",
+      "source": "The Verge AI",
+      "date": "2026-07-29",
+      "url": "https://www.theverge.com/tech/972294/meta-q2-2026-earnings-mark-zuckerberg-personal-ai-agents",
+      "summary": "Meta is all-in on AI, and sometime soon, the company is going to make a big push into personal AI agents that can do things on your behalf. On Wednesday's Q2 2026 earnings call, CEO Mark Zuckerberg previewed a high-level...",
+      "tags": [
+        "Agents",
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "xAI’s last-minute scramble to stop Minnesota’s anti-nudification app law",
+      "source": "The Verge AI",
+      "date": "2026-07-29",
+      "url": "https://www.theverge.com/policy/972850/xai-grok-minnesota-nudification-lawsuit",
+      "summary": "xAI is suing Minnesota Attorney General Keith Ellison over a law passed back in May that broadly targets \"nudification\" apps, claiming that the statute's punitive provisions leave the company with \"no practical choice bu...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "OpenAI president says it&#8217;s &#8216;building a family of devices&#8217; for its AI chatbots",
+      "source": "The Verge AI",
+      "date": "2026-07-29",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/972709/openai-hardware-greg-brockman-interview",
+      "summary": "In an interview with our friend Joanna Stern on her YouTube channel, OpenAI president Greg Brockman said the company is working on a \"family of devices\" for interacting with its AI models. However, Brockman didn't confir...",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ]
+    },
+    {
+      "title": "OpenAI’s rogue AI agent didn’t stop at hacking Hugging Face",
+      "source": "The Verge AI",
+      "date": "2026-07-29",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/972441/openai-rogue-ai-agent-hacked-more-than-hugging-face",
+      "summary": "The AI agent that escaped from OpenAI and hacked developer platform Hugging Face attacked other companies as well, OpenAI revealed on Tuesday. The update substantially widens the scope of an already concerning incident, ...",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "We’re running out of reasons to ignore AI safety",
+      "source": "The Verge AI",
+      "date": "2026-07-29",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/972380/open-ai-hugging-face-hack-ai-safety-warning",
+      "summary": "Earlier this month, OpenAI gave several of its AI models a task: complete a test designed to measure their cybersecurity capabilities. It put the systems in a sandboxed environment without an internet connection and set ...",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ]
+    },
     {
       "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
       "source": "Google AI Blog",
@@ -125,117 +227,69 @@
         "Copilot",
         "Automation"
       ]
-    },
-    {
-      "title": "How AI is expanding what people do at work",
-      "source": "OpenAI News",
-      "date": "2026-07-27",
-      "url": "https://openai.com/index/how-ai-is-expanding-what-people-do-at-work",
-      "summary": "New OpenAI research shows how AI is expanding what workers do, with ChatGPT users taking on tasks across roles and reshaping job boundaries.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Why China is giving away its best AI models",
-      "source": "The Verge AI",
-      "date": "2026-07-27",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/971444/how-chinese-open-weight-ai-models-impact-us-companies",
-      "summary": "Silicon Valley has spent much of the past week on red alert, digesting the arrival of Moonshot AI's Kimi K3, a Chinese AI model that can allegedly beat some of the best systems built by US companies at a fraction of the ...",
-      "tags": [
-        "Models"
-      ]
-    },
-    {
-      "title": "Nvidia, Microsoft launch open AI security alliance — without OpenAI, Google, or Anthropic",
-      "source": "The Verge AI",
-      "date": "2026-07-27",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/971281/nvidia-open-secure-ai-alliance-cybersecurity",
-      "summary": "Nvidia on Monday said it is joining forces with Microsoft, SpaceX, IBM, and other tech companies to build and share open-source AI security tools. The new Open Secure AI Alliance said open tools are required to effective...",
-      "tags": [
-        "Agents",
-        "ChatGPT",
-        "Claude",
-        "Models"
-      ]
-    },
-    {
-      "title": "The tech-broification of American science has officially begun",
-      "source": "The Verge AI",
-      "date": "2026-07-27",
-      "url": "https://www.theverge.com/science/970534/genesis-mission-ai-science-funding-trump-grants",
-      "summary": "The Trump administration unveiled the first \"Genesis Mission\" grants on Thursday, directing $5 billion toward hundreds of AI-driven science projects in an effort the White House has described as \"comparable in urgency an...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Midjourney bought the astrology app Co-Star",
-      "source": "The Verge AI",
-      "date": "2026-07-24",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/970894/midjourney-co-star-acquisition",
-      "summary": "Midjourney, which has gone from generating AI cat images to full-body ultrasound scans, is getting into a new field: astrology. The AI startup announced on Thursday that it has acquired the personalized astrology app Co-...",
-      "tags": [
-        "Multimodal"
-      ]
-    },
-    {
-      "title": "You can’t ignore Google Zero anymore",
-      "source": "The Verge AI",
-      "date": "2026-07-24",
-      "url": "https://www.theverge.com/podcast/970735/google-zero-reddit-ai-publishers-vergecast",
-      "summary": "The web and Google once had a deal: Google collects data and indexes webpages and in exchange sends oceans of traffic to websites. The deal wasn't perfect and certainly made Google more money than it made the websites, b...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Meta is making its AI chatbot more like an assistant",
-      "source": "The Verge AI",
-      "date": "2026-07-24",
-      "url": "https://www.theverge.com/tech/970570/meta-ai-chatbot-productivity-update",
-      "summary": "Meta is upgrading its AI chatbot with new productivity features in a bid to compete with rivals like Gemini, ChatGPT, and Claude. The update will allow Meta AI to tap into your calendar to help you plan events and genera...",
-      "tags": [
-        "Agents",
-        "ChatGPT",
-        "Claude",
-        "Gemini"
-      ]
-    },
-    {
-      "title": "Launching Health in ChatGPT",
-      "source": "OpenAI News",
-      "date": "2026-07-23",
-      "url": "https://openai.com/index/health-in-chatgpt",
-      "summary": "Health in ChatGPT now lets eligible U.S. users securely connect medical records and Apple Health to get more personalized insights and better understand their health.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Anthropic releases Opus 5 with ‘close’ to Fable 5’s capabilities",
-      "source": "The Verge AI",
-      "date": "2026-07-23",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/970105/claude-opus-5-announced-anthropic-ai-model-release",
-      "summary": "Weeks after Anthropic's latest toe-to-toe with the US government, and days after an OpenAI security incident that dominated tech industry discussions, Anthropic on Thursday released its newest model, Claude Opus 5. The c...",
-      "tags": [
-        "ChatGPT",
-        "Claude",
-        "Models"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Accelerating scientific discovery with ChatGPT for Academic Researchers",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/chatgpt-for-academic-researchers",
+          "date": "2026-07-29"
+        },
+        {
+          "title": "How AI is expanding what people do at work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/how-ai-is-expanding-what-people-do-at-work",
+          "date": "2026-07-27"
+        },
+        {
+          "title": "Launching Health in ChatGPT",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/health-in-chatgpt",
+          "date": "2026-07-23"
+        }
+      ]
+    },
     {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
-          "date": "2026-07-28"
+          "title": "How GPT-5.6 fuses frontier intelligence with frontier efficiency",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/gpt-5-6-frontier-intelligence-efficiency",
+          "date": "2026-07-29"
+        },
+        {
+          "title": "Microsoft confirms Copilot ‘super app’ coming this year",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/972927/microsoft-copilot-super-app-confirmed",
+          "date": "2026-07-29"
+        },
+        {
+          "title": "Mark Zuckerberg is planning a big push into personal AI agents",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/972294/meta-q2-2026-earnings-mark-zuckerberg-personal-ai-agents",
+          "date": "2026-07-29"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Microsoft confirms Copilot ‘super app’ coming this year",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/972927/microsoft-copilot-super-app-confirmed",
+          "date": "2026-07-29"
         },
         {
           "title": "Scientific computing in the age of agentic AI",
@@ -244,10 +298,35 @@
           "date": "2026-07-28"
         },
         {
-          "title": "Perplexity’s Personal Computer turns Windows PCs into AI agents",
+          "title": "Copilot vs. raw API access: What are you actually paying for?",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/copilot-vs-raw-api-access-what-are-you-actually-paying-for/",
+          "date": "2026-07-22"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Microsoft confirms Copilot ‘super app’ coming this year",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/971750/perplexity-personal-computer-windows-ai-agents",
-          "date": "2026-07-28"
+          "link": "https://www.theverge.com/tech/972927/microsoft-copilot-super-app-confirmed",
+          "date": "2026-07-29"
+        },
+        {
+          "title": "The harness is all you need (mostly)",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/the-harness-is-all-you-need-mostly/",
+          "date": "2026-07-27"
+        },
+        {
+          "title": "GitHub Copilot app for Beginners: Getting started",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-getting-started/",
+          "date": "2026-07-27"
         }
       ]
     },
@@ -256,6 +335,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "OpenAI’s rogue AI agent didn’t stop at hacking Hugging Face",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/972441/openai-rogue-ai-agent-hacked-more-than-hugging-face",
+          "date": "2026-07-29"
+        },
         {
           "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
           "source": "Google AI Blog",
@@ -292,75 +377,6 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
           "date": "2026-07-07"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Scientific computing in the age of agentic AI",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/scientific-computing-agentic-ai",
-          "date": "2026-07-28"
-        },
-        {
-          "title": "Copilot vs. raw API access: What are you actually paying for?",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/copilot-vs-raw-api-access-what-are-you-actually-paying-for/",
-          "date": "2026-07-22"
-        }
-      ]
-    },
-    {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "The harness is all you need (mostly)",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/the-harness-is-all-you-need-mostly/",
-          "date": "2026-07-27"
-        },
-        {
-          "title": "GitHub Copilot app for Beginners: Getting started",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-getting-started/",
-          "date": "2026-07-27"
-        },
-        {
-          "title": "Copilot vs. raw API access: What are you actually paying for?",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/copilot-vs-raw-api-access-what-are-you-actually-paying-for/",
-          "date": "2026-07-22"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "How AI is expanding what people do at work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/how-ai-is-expanding-what-people-do-at-work",
-          "date": "2026-07-27"
-        },
-        {
-          "title": "Launching Health in ChatGPT",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/health-in-chatgpt",
-          "date": "2026-07-23"
-        },
-        {
-          "title": "NTT DATA Group cuts incident analysis to 30 minutes with Codex",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/ntt-data",
-          "date": "2026-07-22"
         }
       ]
     },
