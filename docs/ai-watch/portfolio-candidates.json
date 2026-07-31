@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-30T10:20:38.753Z",
+  "generatedAt": "2026-07-31T10:34:26.039Z",
   "candidates": [
     {
       "label": "ChatGPT workflow design",
@@ -7,22 +7,41 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "Univé builds an AI-ready workforce",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/unive",
+          "date": "2026-07-31"
+        },
+        {
           "title": "Accelerating scientific discovery with ChatGPT for Academic Researchers",
           "source": "OpenAI News",
           "link": "https://openai.com/index/chatgpt-for-academic-researchers",
           "date": "2026-07-29"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Stacked sessions and pull requests in the GitHub Copilot app",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/stacked-sessions-and-pull-requests-in-the-github-copilot-app/",
+          "date": "2026-07-30"
         },
         {
-          "title": "How AI is expanding what people do at work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/how-ai-is-expanding-what-people-do-at-work",
+          "title": "Microsoft confirms Copilot ‘super app’ coming this year",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/972927/microsoft-copilot-super-app-confirmed",
+          "date": "2026-07-29"
+        },
+        {
+          "title": "The harness is all you need (mostly)",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/the-harness-is-all-you-need-mostly/",
           "date": "2026-07-27"
-        },
-        {
-          "title": "Launching Health in ChatGPT",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/health-in-chatgpt",
-          "date": "2026-07-23"
         }
       ]
     },
@@ -31,6 +50,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "How avatarin built a 24/7 retail agent with GPT-Realtime",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/avatarin",
+          "date": "2026-07-30"
+        },
         {
           "title": "How GPT-5.6 fuses frontier intelligence with frontier efficiency",
           "source": "OpenAI News",
@@ -42,12 +67,31 @@
           "source": "The Verge AI",
           "link": "https://www.theverge.com/tech/972927/microsoft-copilot-super-app-confirmed",
           "date": "2026-07-29"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Google DeepMind’s new AI model can control a robot’s entire body",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/973276/google-deepmind-gemini-robotics-2-whole-body",
+          "date": "2026-07-30"
         },
         {
-          "title": "Mark Zuckerberg is planning a big push into personal AI agents",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/972294/meta-q2-2026-earnings-mark-zuckerberg-personal-ai-agents",
-          "date": "2026-07-29"
+          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
+          "date": "2026-07-28"
+        },
+        {
+          "title": "Create, edit and star in videos with two Google Vids updates",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/products-and-platforms/products/workspace/gemini-omni-personal-avatars/",
+          "date": "2026-07-16"
         }
       ]
     },
@@ -77,71 +121,15 @@
       ]
     },
     {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Microsoft confirms Copilot ‘super app’ coming this year",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/972927/microsoft-copilot-super-app-confirmed",
-          "date": "2026-07-29"
-        },
-        {
-          "title": "The harness is all you need (mostly)",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/the-harness-is-all-you-need-mostly/",
-          "date": "2026-07-27"
-        },
-        {
-          "title": "GitHub Copilot app for Beginners: Getting started",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-getting-started/",
-          "date": "2026-07-27"
-        }
-      ]
-    },
-    {
       "label": "AI developer tooling",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "OpenAI’s rogue AI agent didn’t stop at hacking Hugging Face",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/972441/openai-rogue-ai-agent-hacked-more-than-hugging-face",
-          "date": "2026-07-29"
-        },
-        {
           "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
           "date": "2026-07-28"
-        },
-        {
-          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
-          "date": "2026-07-07"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
-          "date": "2026-07-28"
-        },
-        {
-          "title": "Create, edit and star in videos with two Google Vids updates",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/products-and-platforms/products/workspace/gemini-omni-personal-avatars/",
-          "date": "2026-07-16"
         },
         {
           "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
