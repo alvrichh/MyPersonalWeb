@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-31T10:34:26.039Z",
+  "generatedAt": "2026-08-01T09:53:56.897Z",
   "candidates": [
     {
       "label": "ChatGPT workflow design",
@@ -13,10 +13,73 @@
           "date": "2026-07-31"
         },
         {
-          "title": "Accelerating scientific discovery with ChatGPT for Academic Researchers",
+          "title": "Disrupting a Criminal Scam Operation",
           "source": "OpenAI News",
-          "link": "https://openai.com/index/chatgpt-for-academic-researchers",
-          "date": "2026-07-29"
+          "link": "https://openai.com/index/disrupting-malicious-uses-of-ai-criminal-scam-operation",
+          "date": "2026-07-31"
+        }
+      ]
+    },
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "It’s time to panic about AI safety",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/podcast/973668/ai-safety-openai-hugging-face-vergecast",
+          "date": "2026-07-31"
+        },
+        {
+          "title": "How avatarin built a 24/7 retail agent with GPT-Realtime",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/avatarin",
+          "date": "2026-07-30"
+        },
+        {
+          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
+          "date": "2026-07-28"
+        }
+      ]
+    },
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Anthropic says Claude accidentally hacked real companies too",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/973670/anthropic-claude-hacked-organizations-during-cyber-tests",
+          "date": "2026-07-31"
+        },
+        {
+          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
+          "date": "2026-07-28"
+        },
+        {
+          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
+          "date": "2026-07-07"
+        }
+      ]
+    },
+    {
+      "label": "Claude research and documentation flow",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Anthropic says Claude accidentally hacked real companies too",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/973670/anthropic-claude-hacked-organizations-during-cyber-tests",
+          "date": "2026-07-31"
         }
       ]
     },
@@ -32,41 +95,16 @@
           "date": "2026-07-30"
         },
         {
-          "title": "Microsoft confirms Copilot ‘super app’ coming this year",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/972927/microsoft-copilot-super-app-confirmed",
-          "date": "2026-07-29"
-        },
-        {
           "title": "The harness is all you need (mostly)",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/the-harness-is-all-you-need-mostly/",
           "date": "2026-07-27"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "How avatarin built a 24/7 retail agent with GPT-Realtime",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/avatarin",
-          "date": "2026-07-30"
         },
         {
-          "title": "How GPT-5.6 fuses frontier intelligence with frontier efficiency",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/gpt-5-6-frontier-intelligence-efficiency",
-          "date": "2026-07-29"
-        },
-        {
-          "title": "Microsoft confirms Copilot ‘super app’ coming this year",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/972927/microsoft-copilot-super-app-confirmed",
-          "date": "2026-07-29"
+          "title": "GitHub Copilot app for Beginners: Getting started",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-getting-started/",
+          "date": "2026-07-27"
         }
       ]
     },
@@ -101,41 +139,10 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Microsoft confirms Copilot ‘super app’ coming this year",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/972927/microsoft-copilot-super-app-confirmed",
-          "date": "2026-07-29"
-        },
-        {
-          "title": "Scientific computing in the age of agentic AI",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/scientific-computing-agentic-ai",
-          "date": "2026-07-28"
-        },
-        {
           "title": "Copilot vs. raw API access: What are you actually paying for?",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/copilot-vs-raw-api-access-what-are-you-actually-paying-for/",
           "date": "2026-07-22"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
-          "date": "2026-07-28"
-        },
-        {
-          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
-          "date": "2026-07-07"
         }
       ]
     },
