@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-01T09:53:56.897Z",
-  "date": "2026-08-01",
+  "generatedAt": "2026-08-02T09:52:09.003Z",
+  "date": "2026-08-02",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
@@ -14,6 +14,16 @@
       "summary": "OpenAI shares new results on long-standing open problems in mathematics and theoretical computer science, including advances in geometry, cryptography, and complexity.",
       "tags": [
         "ChatGPT"
+      ]
+    },
+    {
+      "title": "Is this Billboard Hot 100 hit AI slop?",
+      "source": "The Verge AI",
+      "date": "2026-08-01",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/974209/fenix-flexin-billboard-hot-100-rubberz-ai-slop",
+      "summary": "Fenix Flexin is best known as a member of Shoreline Mafia, a rap duo from Los Angeles. But he's recently found solo success with the track \"Rubberz,\" which has climbed to number 58 on the Billboard Hot 100. Almost immedi...",
+      "tags": [
+        "AI"
       ]
     },
     {
@@ -206,19 +216,6 @@
         "ChatGPT",
         "Models"
       ]
-    },
-    {
-      "title": "How GPT-5.6 fuses frontier intelligence with frontier efficiency",
-      "source": "OpenAI News",
-      "date": "2026-07-29",
-      "url": "https://openai.com/index/gpt-5-6-frontier-intelligence-efficiency",
-      "summary": "GPT-5.6 improves AI efficiency across models, inference, and agentic workflows, helping deliver more useful intelligence per dollar.",
-      "tags": [
-        "Agents",
-        "ChatGPT",
-        "Automation",
-        "Models"
-      ]
     }
   ],
   "candidates": [
@@ -335,12 +332,6 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Google DeepMind’s new AI model can control a robot’s entire body",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/973276/google-deepmind-gemini-robotics-2-whole-body",
-          "date": "2026-07-30"
-        },
-        {
           "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
@@ -351,6 +342,12 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/products-and-platforms/products/workspace/gemini-omni-personal-avatars/",
           "date": "2026-07-16"
+        },
+        {
+          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
+          "date": "2026-07-07"
         }
       ]
     },
