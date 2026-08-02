@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-01T09:53:56.897Z",
+  "generatedAt": "2026-08-02T09:52:09.003Z",
   "candidates": [
     {
       "label": "ChatGPT workflow design",
@@ -114,12 +114,6 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Google DeepMind’s new AI model can control a robot’s entire body",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/973276/google-deepmind-gemini-robotics-2-whole-body",
-          "date": "2026-07-30"
-        },
-        {
           "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
@@ -130,6 +124,12 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/products-and-platforms/products/workspace/gemini-omni-personal-avatars/",
           "date": "2026-07-16"
+        },
+        {
+          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
+          "date": "2026-07-07"
         }
       ]
     },

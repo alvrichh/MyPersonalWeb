@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-08-01
+# Daily AI maintenance report — 2026-08-02
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -15,6 +15,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 - **Ten advances in mathematics and theoretical computer science** — OpenAI News · 2026-08-01
   https://openai.com/index/ten-advances-in-mathematics
+- **Is this Billboard Hot 100 hit AI slop?** — The Verge AI · 2026-08-01
+  https://www.theverge.com/ai-artificial-intelligence/974209/fenix-flexin-billboard-hot-100-rubberz-ai-slop
 - **Advancing responsible AI across Europe** — OpenAI News · 2026-07-31
   https://openai.com/index/advancing-responsible-ai-across-europe
 - **Building abundant intelligence** — OpenAI News · 2026-07-31
@@ -43,8 +45,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/avatarin
 - **Tim Cook hints at iCloud Plus tier for AI power users** — The Verge AI · 2026-07-30
   https://www.theverge.com/tech/973552/apple-ceo-tim-cook-icloud-plus-ai
-- **Google DeepMind’s new AI model can control a robot’s entire body** — The Verge AI · 2026-07-30
-  https://www.theverge.com/tech/973276/google-deepmind-gemini-robotics-2-whole-body
 - **How enabling two settings tripled our scores on the ARC-AGI-3 benchmark** — OpenAI News · 2026-07-29
   https://openai.com/index/how-two-settings-tripled-our-arc-agi-3-scores
 - **Gemini API Managed Agents: 3.6 Flash, hooks, and more** — Google AI Blog · 2026-07-28
