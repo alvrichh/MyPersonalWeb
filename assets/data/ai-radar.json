@@ -1,11 +1,31 @@
 {
-  "generatedAt": "2026-08-02T09:52:09.003Z",
-  "date": "2026-08-02",
+  "generatedAt": "2026-08-03T11:17:54.132Z",
+  "date": "2026-08-03",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Fender’s CEO seems to think your bandmates are just analog AI",
+      "source": "The Verge AI",
+      "date": "2026-08-02",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/974265/fender-ceo-bud-cole-ai-music",
+      "summary": "Fender CEO Edward \"Bud\" Cole gave an interview to T3 in May celebrating the 75th anniversary of the Telecaster with comments on AI and music that initially flew under the radar. But it has started making the rounds recen...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Is this Billboard Hot 100 hit AI slop?",
+      "source": "The Verge AI",
+      "date": "2026-08-02",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/974209/fenix-flexin-billboard-hot-100-rubberz-ai-slop",
+      "summary": "Fenix Flexin is best known as a member of Shoreline Mafia, a rap duo from Los Angeles. But he's recently found solo success with the track \"Rubberz,\" which has climbed to number 58 on the Billboard Hot 100. Almost immedi...",
+      "tags": [
+        "AI"
+      ]
+    },
     {
       "title": "Ten advances in mathematics and theoretical computer science",
       "source": "OpenAI News",
@@ -14,16 +34,6 @@
       "summary": "OpenAI shares new results on long-standing open problems in mathematics and theoretical computer science, including advances in geometry, cryptography, and complexity.",
       "tags": [
         "ChatGPT"
-      ]
-    },
-    {
-      "title": "Is this Billboard Hot 100 hit AI slop?",
-      "source": "The Verge AI",
-      "date": "2026-08-01",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/974209/fenix-flexin-billboard-hot-100-rubberz-ai-slop",
-      "summary": "Fenix Flexin is best known as a member of Shoreline Mafia, a rap duo from Los Angeles. But he's recently found solo success with the track \"Rubberz,\" which has climbed to number 58 on the Billboard Hot 100. Almost immedi...",
-      "tags": [
-        "AI"
       ]
     },
     {
@@ -64,6 +74,16 @@
       "summary": "OpenAI disrupted a Cambodia-based scam operation using ChatGPT to support investment, romance, gambling, and impersonation schemes.",
       "tags": [
         "ChatGPT"
+      ]
+    },
+    {
+      "title": "Is paying artists enough to convince them to embrace AI?",
+      "source": "The Verge AI",
+      "date": "2026-07-31",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/974018/pippa-seedance-artist-royalties",
+      "summary": "Illustrators have spent years sounding the alarm about generative artificial intelligence startups training their models on artists' work without permission. They've pointed out how the practice is tantamount to theft, a...",
+      "tags": [
+        "Models"
       ]
     },
     {
@@ -193,28 +213,6 @@
       "summary": "Do you remember Friend? The Friend that launched an AI pendant, spent $1.8 million of its $2.5 million in funding to acquire friend.com, and plastered the NYC subway with ads promoting artificial companionship? Yeah well...",
       "tags": [
         "AI"
-      ]
-    },
-    {
-      "title": "How enabling two settings tripled our scores on the ARC-AGI-3 benchmark",
-      "source": "OpenAI News",
-      "date": "2026-07-29",
-      "url": "https://openai.com/index/how-two-settings-tripled-our-arc-agi-3-scores",
-      "summary": "How two API settings improved GPT-5.6 performance on ARC-AGI-3, boosting scores and efficiency by retaining reasoning and enabling compaction.",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "Accelerating scientific discovery with ChatGPT for Academic Researchers",
-      "source": "OpenAI News",
-      "date": "2026-07-29",
-      "url": "https://openai.com/index/chatgpt-for-academic-researchers",
-      "summary": "OpenAI is giving 100,000 academic researchers free access to ChatGPT's most advanced AI models to accelerate scientific research, collaboration, and discovery.",
-      "tags": [
-        "ChatGPT",
-        "Models"
       ]
     }
   ],

@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-08-02
+# Daily AI maintenance report — 2026-08-03
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,10 +13,12 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Fender’s CEO seems to think your bandmates are just analog AI** — The Verge AI · 2026-08-02
+  https://www.theverge.com/ai-artificial-intelligence/974265/fender-ceo-bud-cole-ai-music
+- **Is this Billboard Hot 100 hit AI slop?** — The Verge AI · 2026-08-02
+  https://www.theverge.com/ai-artificial-intelligence/974209/fenix-flexin-billboard-hot-100-rubberz-ai-slop
 - **Ten advances in mathematics and theoretical computer science** — OpenAI News · 2026-08-01
   https://openai.com/index/ten-advances-in-mathematics
-- **Is this Billboard Hot 100 hit AI slop?** — The Verge AI · 2026-08-01
-  https://www.theverge.com/ai-artificial-intelligence/974209/fenix-flexin-billboard-hot-100-rubberz-ai-slop
 - **Advancing responsible AI across Europe** — OpenAI News · 2026-07-31
   https://openai.com/index/advancing-responsible-ai-across-europe
 - **Building abundant intelligence** — OpenAI News · 2026-07-31
@@ -25,6 +27,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/unive
 - **Disrupting a Criminal Scam Operation** — OpenAI News · 2026-07-31
   https://openai.com/index/disrupting-malicious-uses-of-ai-criminal-scam-operation
+- **Is paying artists enough to convince them to embrace AI?** — The Verge AI · 2026-07-31
+  https://www.theverge.com/ai-artificial-intelligence/974018/pippa-seedance-artist-royalties
 - **Google Earth&#8217;s AI deepfake tool only lasted one day** — The Verge AI · 2026-07-31
   https://www.theverge.com/tech/973943/google-earth-ai-image-generation-deepfake-tool
 - **Here’s the problem with putting an AI image generator in Google Earth** — The Verge AI · 2026-07-31
@@ -35,16 +39,12 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/podcast/973668/ai-safety-openai-hugging-face-vergecast
 - **Anthropic says Claude accidentally hacked real companies too** — The Verge AI · 2026-07-31
   https://www.theverge.com/ai-artificial-intelligence/973670/anthropic-claude-hacked-organizations-during-cyber-tests
-- **LinkedIn actually adds a ‘seems like AI slop’ button** — The Verge AI · 2026-07-31
-  https://www.theverge.com/ai-artificial-intelligence/973384/linkedin-seems-like-ai-slop-button
 - **Stacked sessions and pull requests in the GitHub Copilot app** — GitHub AI & ML Blog · 2026-07-30
   https://github.blog/ai-and-ml/github-copilot/stacked-sessions-and-pull-requests-in-the-github-copilot-app/
 - **Advancing the price-performance frontier with GPT-5.6** — OpenAI News · 2026-07-30
   https://openai.com/index/advancing-the-price-performance-frontier-with-gpt-5-6
 - **How avatarin built a 24/7 retail agent with GPT-Realtime** — OpenAI News · 2026-07-30
   https://openai.com/index/avatarin
-- **Tim Cook hints at iCloud Plus tier for AI power users** — The Verge AI · 2026-07-30
-  https://www.theverge.com/tech/973552/apple-ceo-tim-cook-icloud-plus-ai
 - **How enabling two settings tripled our scores on the ARC-AGI-3 benchmark** — OpenAI News · 2026-07-29
   https://openai.com/index/how-two-settings-tripled-our-arc-agi-3-scores
 - **Gemini API Managed Agents: 3.6 Flash, hooks, and more** — Google AI Blog · 2026-07-28
