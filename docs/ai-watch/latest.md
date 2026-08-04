@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-08-03
+# Daily AI maintenance report — 2026-08-04
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,9 +13,21 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
-- **Fender’s CEO seems to think your bandmates are just analog AI** — The Verge AI · 2026-08-02
+- **Can Reddit fend off a new wave of AI SEO spam?** — The Verge AI · 2026-08-04
+  https://www.theverge.com/ai-artificial-intelligence/973098/reddit-ai-search-seo-marketing-brands-spam
+- **Apple is getting this wrong** — OpenAI News · 2026-08-03
+  https://openai.com/index/apple-is-getting-this-wrong
+- **How we built a realtime system for responsive voice AI in six months** — OpenAI News · 2026-08-03
+  https://openai.com/index/continuous-voice-interaction-with-gpt-live
+- **Circles powers telco personalization with OpenAI technology** — OpenAI News · 2026-08-03
+  https://openai.com/index/circles
+- **Europe’s AI labeling and transparency rules are now in effect** — The Verge AI · 2026-08-03
+  https://www.theverge.com/ai-artificial-intelligence/974571/eu-ai-act-transparency-labels-rules-deepfakes
+- **China&#8217;s Alibaba takes another swipe at America’s AI supremacy** — The Verge AI · 2026-08-03
+  https://www.theverge.com/ai-artificial-intelligence/974342/alibaba-qwen-max-open-weight-ai
+- **Fender’s CEO seems to think your bandmates are just analog AI** — The Verge AI · 2026-08-03
   https://www.theverge.com/ai-artificial-intelligence/974265/fender-ceo-bud-cole-ai-music
-- **Is this Billboard Hot 100 hit AI slop?** — The Verge AI · 2026-08-02
+- **Is this Billboard Hot 100 hit AI slop?** — The Verge AI · 2026-08-03
   https://www.theverge.com/ai-artificial-intelligence/974209/fenix-flexin-billboard-hot-100-rubberz-ai-slop
 - **Ten advances in mathematics and theoretical computer science** — OpenAI News · 2026-08-01
   https://openai.com/index/ten-advances-in-mathematics
@@ -33,20 +45,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/tech/973943/google-earth-ai-image-generation-deepfake-tool
 - **Here’s the problem with putting an AI image generator in Google Earth** — The Verge AI · 2026-07-31
   https://www.theverge.com/ai-artificial-intelligence/973764/google-earth-ai-satellite-images
-- **The major labels propose rules to keep AI slop off the charts** — The Verge AI · 2026-07-31
-  https://www.theverge.com/ai-artificial-intelligence/973741/ai-music-major-record-labels-charts
-- **It’s time to panic about AI safety** — The Verge AI · 2026-07-31
-  https://www.theverge.com/podcast/973668/ai-safety-openai-hugging-face-vergecast
-- **Anthropic says Claude accidentally hacked real companies too** — The Verge AI · 2026-07-31
-  https://www.theverge.com/ai-artificial-intelligence/973670/anthropic-claude-hacked-organizations-during-cyber-tests
 - **Stacked sessions and pull requests in the GitHub Copilot app** — GitHub AI & ML Blog · 2026-07-30
   https://github.blog/ai-and-ml/github-copilot/stacked-sessions-and-pull-requests-in-the-github-copilot-app/
-- **Advancing the price-performance frontier with GPT-5.6** — OpenAI News · 2026-07-30
-  https://openai.com/index/advancing-the-price-performance-frontier-with-gpt-5-6
-- **How avatarin built a 24/7 retail agent with GPT-Realtime** — OpenAI News · 2026-07-30
-  https://openai.com/index/avatarin
-- **How enabling two settings tripled our scores on the ARC-AGI-3 benchmark** — OpenAI News · 2026-07-29
-  https://openai.com/index/how-two-settings-tripled-our-arc-agi-3-scores
 - **Gemini API Managed Agents: 3.6 Flash, hooks, and more** — Google AI Blog · 2026-07-28
   https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/
 - **5 ways AI Mode in Search helps you enjoy the real world** — Google AI Blog · 2026-07-28
@@ -81,10 +81,9 @@ This file is generated automatically by the daily maintenance workflow. It updat
 ## Portfolio candidates
 
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **MCP / tool-connected assistants** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
