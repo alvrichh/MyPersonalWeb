@@ -1,30 +1,17 @@
 {
-  "generatedAt": "2026-08-04T10:33:00.841Z",
+  "generatedAt": "2026-08-05T10:30:02.531Z",
   "candidates": [
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Univé builds an AI-ready workforce",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/unive",
-          "date": "2026-07-31"
-        },
-        {
-          "title": "Disrupting a Criminal Scam Operation",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/disrupting-malicious-uses-of-ai-criminal-scam-operation",
-          "date": "2026-07-31"
-        }
-      ]
-    },
     {
       "label": "GitHub Copilot developer loop",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "How the GitHub legal team used Copilot CLI to streamline their workflows",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-the-github-legal-team-used-copilot-cli-to-streamline-their-workflows/",
+          "date": "2026-08-04"
+        },
         {
           "title": "Stacked sessions and pull requests in the GitHub Copilot app",
           "source": "GitHub AI & ML Blog",
@@ -36,12 +23,25 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/the-harness-is-all-you-need-mostly/",
           "date": "2026-07-27"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "New ways to learn and teach with ChatGPT Work and Codex",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/learn-teach-chatgpt-work-codex",
+          "date": "2026-08-04"
         },
         {
-          "title": "GitHub Copilot app for Beginners: Getting started",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-getting-started/",
-          "date": "2026-07-27"
+          "title": "OpenAI drags Apple’s lawsuit into the court of public opinion",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/974914/openai-blog-response-apple-lawsuit-messages",
+          "date": "2026-08-04"
         }
       ]
     },
@@ -50,6 +50,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Inside our 353,000-person vibe coding course",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/ai-agents-intensive-recap-2026/",
+          "date": "2026-08-03"
+        },
         {
           "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
           "source": "Google AI Blog",
@@ -61,12 +67,25 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-getting-started/",
           "date": "2026-07-27"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Inside our 353,000-person vibe coding course",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/ai-agents-intensive-recap-2026/",
+          "date": "2026-08-03"
         },
         {
-          "title": "Better tools made Copilot code review worse. Here&#8217;s how we actually improved it.",
+          "title": "Copilot vs. raw API access: What are you actually paying for?",
           "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/",
-          "date": "2026-07-10"
+          "link": "https://github.blog/ai-and-ml/github-copilot/copilot-vs-raw-api-access-what-are-you-actually-paying-for/",
+          "date": "2026-07-22"
         }
       ]
     },
@@ -111,19 +130,6 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
           "date": "2026-07-07"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Copilot vs. raw API access: What are you actually paying for?",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/copilot-vs-raw-api-access-what-are-you-actually-paying-for/",
-          "date": "2026-07-22"
         }
       ]
     },
