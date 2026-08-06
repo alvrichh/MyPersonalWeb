@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-08-05
+# Daily AI maintenance report — 2026-08-06
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,22 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **OpenAI says Apple’s trade secrets lawsuit is ‘rotten to its core’** — The Verge AI · 2026-08-06
+  https://www.theverge.com/tech/976042/openai-apple-trade-secrets-lawsuit-dismissal-request
+- **Elon Musk&#8217;s attempt at an AI Wikipedia hasn&#8217;t been updated in months** — The Verge AI · 2026-08-06
+  https://www.theverge.com/ai-artificial-intelligence/976004/elon-musk-grokipedia-ai-wikipedia-not-updating-dead
+- **Sure seems like Fenix Flexin used AI music generator Treblo** — The Verge AI · 2026-08-05
+  https://www.theverge.com/ai-artificial-intelligence/975528/fenix-flexin-ai-music-generator-treblo
+- **Google just announced a major shakeup of its top AI leadership** — The Verge AI · 2026-08-05
+  https://www.theverge.com/tech/975677/google-deepmind-ai-demis-hassabis-shakeup
+- **SpaceX is barely Space and mostly X** — The Verge AI · 2026-08-05
+  https://www.theverge.com/science/975545/spacex-x-earnings-ai-data-centers-compute-space
+- **Reddit is introducing a new moderator: AI** — The Verge AI · 2026-08-05
+  https://www.theverge.com/tech/975398/reddit-ai-rules-hub-moderator-old-reddit-developer-platform
+- **Rogue AI agents created fake online identities in another hacking attempt** — The Verge AI · 2026-08-05
+  https://www.theverge.com/ai-artificial-intelligence/975577/aisi-openai-anthropic-agent-hacking
+- **Google Assistant will disappear from your phone next month** — The Verge AI · 2026-08-05
+  https://www.theverge.com/tech/975516/google-assistant-android-phones-tablets-shutdown
 - **How the GitHub legal team used Copilot CLI to streamline their workflows** — GitHub AI & ML Blog · 2026-08-04
   https://github.blog/ai-and-ml/github-copilot/how-the-github-legal-team-used-copilot-cli-to-streamline-their-workflows/
 - **The latest AI news we announced in July 2026** — Google AI Blog · 2026-08-04
@@ -21,20 +37,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/third-party-cyber-evaluations-involving-openai-models
 - **New ways to learn and teach with ChatGPT Work and Codex** — OpenAI News · 2026-08-04
   https://openai.com/index/learn-teach-chatgpt-work-codex
-- **AMD&#8217;s data center business is booming while gaming takes a backseat** — The Verge AI · 2026-08-04
-  https://www.theverge.com/tech/975381/amd-q2-2026-earnings-ai-gaming-ryzen
-- **SpaceX made more revenue as an AI company than a space company** — The Verge AI · 2026-08-04
-  https://www.theverge.com/science/975335/spacex-made-more-money-as-a-neocloud
-- **How an OpenAI influencer trip backfired** — The Verge AI · 2026-08-04
-  https://www.theverge.com/tech/975173/openai-influencers-brand-trip-ai-backlash-marketing
-- **‘Not healthy’ LLM use is more common than you think** — The Verge AI · 2026-08-04
-  https://www.theverge.com/ai-artificial-intelligence/975180/llm-ai-chatbot-use-not-healthy
-- **OpenAI drags Apple’s lawsuit into the court of public opinion** — The Verge AI · 2026-08-04
-  https://www.theverge.com/ai-artificial-intelligence/974914/openai-blog-response-apple-lawsuit-messages
-- **Can Reddit fend off a new wave of AI SEO spam?** — The Verge AI · 2026-08-04
-  https://www.theverge.com/ai-artificial-intelligence/973098/reddit-ai-search-seo-marketing-brands-spam
-- **Europe’s AI labeling and transparency rules are now in effect** — The Verge AI · 2026-08-04
-  https://www.theverge.com/ai-artificial-intelligence/974571/eu-ai-act-transparency-labels-rules-deepfakes
 - **Inside our 353,000-person vibe coding course** — Google AI Blog · 2026-08-03
   https://blog.google/innovation-and-ai/technology/developers-tools/ai-agents-intensive-recap-2026/
 - **Apple is getting this wrong** — OpenAI News · 2026-08-03
@@ -43,8 +45,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/continuous-voice-interaction-with-gpt-live
 - **Circles powers telco personalization with OpenAI technology** — OpenAI News · 2026-08-03
   https://openai.com/index/circles
-- **China&#8217;s Alibaba takes another swipe at America’s AI supremacy** — The Verge AI · 2026-08-03
-  https://www.theverge.com/ai-artificial-intelligence/974342/alibaba-qwen-max-open-weight-ai
 - **Ten advances in mathematics and theoretical computer science** — OpenAI News · 2026-08-01
   https://openai.com/index/ten-advances-in-mathematics
 - **Advancing responsible AI across Europe** — OpenAI News · 2026-07-31
@@ -80,12 +80,12 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
-- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **MCP / tool-connected assistants** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
