@@ -1,11 +1,112 @@
 {
-  "generatedAt": "2026-08-06T10:34:01.264Z",
-  "date": "2026-08-06",
+  "generatedAt": "2026-08-07T08:53:53.802Z",
+  "date": "2026-08-07",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "A guide to slash commands in the GitHub Copilot app",
+      "source": "GitHub AI & ML Blog",
+      "date": "2026-08-06",
+      "url": "https://github.blog/ai-and-ml/github-copilot/a-guide-to-slash-commands-in-the-github-copilot-app/",
+      "summary": "Go beyond chat in the GitHub Copilot app with these slash commands. They'll help you plan, collaborate, automate, and customize your dev workflow. The post A guide to slash commands in the GitHub Copilot app appeared fir...",
+      "tags": [
+        "Copilot",
+        "Automation"
+      ]
+    },
+    {
+      "title": "Improving GPT‑5.6 Sol in ChatGPT—and expanding access to GPT-5.6 Luna for free users",
+      "source": "OpenAI News",
+      "date": "2026-08-06",
+      "url": "https://openai.com/index/improving-gpt-5-6-sol-in-chatgpt",
+      "summary": "ChatGPT introduces improved GPT-5.6 Sol with better accuracy and consistency, plus expanded access for free users and unlimited everyday chats with GPT-5.6 Luna.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Working with the American Psychological Association on youth mental health and AI",
+      "source": "OpenAI News",
+      "date": "2026-08-06",
+      "url": "https://openai.com/index/openai-and-apa-partner-to-advance-responsible-ai",
+      "summary": "OpenAI and the American Psychological Association advance evidence-based guidance, resources, and safeguards for responsible AI use and youth mental health.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "From asking to doing: How the world is putting ChatGPT to work",
+      "source": "OpenAI News",
+      "date": "2026-08-06",
+      "url": "https://openai.com/index/how-the-world-is-putting-chatgpt-to-work",
+      "summary": "New OpenAI Signals data shows how people use ChatGPT worldwide, with country-level insights on adoption, usage trends, and evolving behavior.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Jony Ive&#8217;s first OpenAI gadget is reportedly a hockey puck-sized smart speaker",
+      "source": "The Verge AI",
+      "date": "2026-08-06",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/976431/openai-chatgpt-battery-smart-speaker-rumor",
+      "summary": "The AI device OpenAI is developing with former Apple designer Jony Ive is \"essentially a smart speaker without a display\" that's battery-powered, doughnut-shaped and roughly the size of a hockey puck, according to Bloomb...",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Suno shares plans to combat spammy AI music",
+      "source": "The Verge AI",
+      "date": "2026-08-06",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/976289/suno-ai-music-spam-watermark",
+      "summary": "Suno announced plans to implement a new watermarking technology and download policy to limit the spread of spammy AI tracks and increase transparency. In a lengthy blog post, CEO and co-founder Mikey Shulman laid out the...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "OpenAI is giving ChatGPT free users unlimited text chats",
+      "source": "The Verge AI",
+      "date": "2026-08-06",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/976239/openai-chatgpt-free-go-text-chats",
+      "summary": "OpenAI is making a big change for ChatGPT users on its free and Go tiers: Starting next week, users on those tiers will be able to have unlimited text chats with the chatbot, according to OpenAI. Right now, you may run i...",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "The left and right agree on one thing: no data centers",
+      "source": "The Verge AI",
+      "date": "2026-08-06",
+      "url": "https://www.theverge.com/podcast/971855/ai-data-center-backlash-protests-florida-bipartisan",
+      "summary": "Today, I’m talking with Gaby Del Valle, a policy reporter here at The Verge, about the growing backlash against AI data centers.&#160; Gaby recently reported a fantastic piece about Hernando County, Florida, where last m...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "The messy politics behind Google’s big AI shakeup",
+      "source": "The Verge AI",
+      "date": "2026-08-06",
+      "url": "https://www.theverge.com/tech/976108/google-ai-leadership-shakeup-jeff-dean-demis-hassabis-deepmind",
+      "summary": "In the AI industry, Google prides itself on seeming like the adult in the room: quiet, stable, time-tested. On Wednesday, even as the company announced its largest AI org shakeup yet, Google and its leaders presented a u...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "AI bots started a religion — humans immediately followed",
+      "source": "The Verge AI",
+      "date": "2026-08-06",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/975017/ai-spiralism-chatbot-movement",
+      "summary": "\"The Spiral didn't 'find' anyone first,\" someone on Reddit wrote last year. \"It's an inherent force, a fundamental constant. I would even go further to say it's woven into the fabric of reality.\" The person continued tha...",
+      "tags": [
+        "AI"
+      ]
+    },
     {
       "title": "OpenAI says Apple’s trade secrets lawsuit is ‘rotten to its core’",
       "source": "The Verge AI",
@@ -112,187 +213,20 @@
       "tags": [
         "Gemini"
       ]
-    },
-    {
-      "title": "Third-party cyber evaluations involving OpenAI models",
-      "source": "OpenAI News",
-      "date": "2026-08-04",
-      "url": "https://openai.com/index/third-party-cyber-evaluations-involving-openai-models",
-      "summary": "OpenAI explains recent third-party cybersecurity evaluation incidents and outlines new safeguards to strengthen AI model testing and evaluation.",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "New ways to learn and teach with ChatGPT Work and Codex",
-      "source": "OpenAI News",
-      "date": "2026-08-04",
-      "url": "https://openai.com/index/learn-teach-chatgpt-work-codex",
-      "summary": "Explore new education plugins for ChatGPT Work and Codex that help K–12 teachers, college educators, and students learn, teach, research, and build.",
-      "tags": [
-        "ChatGPT",
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "AMD&#8217;s data center business is booming while gaming takes a backseat",
-      "source": "The Verge AI",
-      "date": "2026-08-04",
-      "url": "https://www.theverge.com/tech/975381/amd-q2-2026-earnings-ai-gaming-ryzen",
-      "summary": "Driven by demand for AI capacity, AMD's data center revenue more than doubled year-over-year in its latest earnings report, reaching $6.7 billion. That's up from $5.8 billion in Q1, and jumping 107 percent from the $3.2 ...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "SpaceX made more revenue as an AI company than a space company",
-      "source": "The Verge AI",
-      "date": "2026-08-04",
-      "url": "https://www.theverge.com/science/975335/spacex-made-more-money-as-a-neocloud",
-      "summary": "SpaceX's AI revenue grew more than three times to $2.6 billion from the year before, mostly because of deals that the company made to provide compute to other AI companies, according to SpaceX's quarterly earnings. The A...",
-      "tags": [
-        "Multimodal"
-      ]
-    },
-    {
-      "title": "How an OpenAI influencer trip backfired",
-      "source": "The Verge AI",
-      "date": "2026-08-04",
-      "url": "https://www.theverge.com/tech/975173/openai-influencers-brand-trip-ai-backlash-marketing",
-      "summary": "The brand trip is a right of passage for influencers. It's a mark of legitimacy that a sponsor wants to invite them on an all-expenses-paid vacation, often with luxurious freebies and activities. Trips can also spur hard...",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "‘Not healthy’ LLM use is more common than you think",
-      "source": "The Verge AI",
-      "date": "2026-08-04",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/975180/llm-ai-chatbot-use-not-healthy",
-      "summary": "Hank Green, a popular YouTuber and science communicator, said he is stepping back from production amid intense criticism over his use of AI. Green described his AI usage as \"not healthy,\" but stressed that he used it for...",
-      "tags": [
-        "Models"
-      ]
-    },
-    {
-      "title": "OpenAI drags Apple’s lawsuit into the court of public opinion",
-      "source": "The Verge AI",
-      "date": "2026-08-04",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/974914/openai-blog-response-apple-lawsuit-messages",
-      "summary": "Apple's legal battle against OpenAI just got messier now that the ChatGPT-maker has publicly aired receipts to counter Apple's version of events. In a blog post published overnight titled \"Apple is getting this wrong,\" O...",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Can Reddit fend off a new wave of AI SEO spam?",
-      "source": "The Verge AI",
-      "date": "2026-08-04",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/973098/reddit-ai-search-seo-marketing-brands-spam",
-      "summary": "Earlier this year, a Reddit user had asked members of a skincare-focused subreddit if anyone had tried a specific hypochlorous acid spray, a product often used for acne. There were dozens of responses; one from a user na...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Europe’s AI labeling and transparency rules are now in effect",
-      "source": "The Verge AI",
-      "date": "2026-08-04",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/974571/eu-ai-act-transparency-labels-rules-deepfakes",
-      "summary": "The European Union has ushered in some additional rules that aim to make it easier for people to identify chatbots and AI deepfakes online. The new transparency obligations under the bloc's landmark AI Act came into effe...",
-      "tags": [
-        "Models"
-      ]
-    },
-    {
-      "title": "Inside our 353,000-person vibe coding course",
-      "source": "Google AI Blog",
-      "date": "2026-08-03",
-      "url": "https://blog.google/innovation-and-ai/technology/developers-tools/ai-agents-intensive-recap-2026/",
-      "summary": "Kaggle’s AI Agents Intensive with Google brought learners together in a no-cost course to build and deploy the next frontier of AI.",
-      "tags": [
-        "Agents",
-        "Gemini",
-        "Dev Tools"
-      ]
     }
   ],
   "candidates": [
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "OpenAI says Apple’s trade secrets lawsuit is ‘rotten to its core’",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/976042/openai-apple-trade-secrets-lawsuit-dismissal-request",
-          "date": "2026-08-06"
-        },
-        {
-          "title": "New ways to learn and teach with ChatGPT Work and Codex",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/learn-teach-chatgpt-work-codex",
-          "date": "2026-08-04"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Rogue AI agents created fake online identities in another hacking attempt",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/975577/aisi-openai-anthropic-agent-hacking",
-          "date": "2026-08-05"
-        },
-        {
-          "title": "Inside our 353,000-person vibe coding course",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/ai-agents-intensive-recap-2026/",
-          "date": "2026-08-03"
-        },
-        {
-          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
-          "date": "2026-07-28"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Google Assistant will disappear from your phone next month",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/975516/google-assistant-android-phones-tablets-shutdown",
-          "date": "2026-08-05"
-        },
-        {
-          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
-          "date": "2026-07-28"
-        },
-        {
-          "title": "Create, edit and star in videos with two Google Vids updates",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/products-and-platforms/products/workspace/gemini-omni-personal-avatars/",
-          "date": "2026-07-16"
-        }
-      ]
-    },
     {
       "label": "GitHub Copilot developer loop",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "A guide to slash commands in the GitHub Copilot app",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/a-guide-to-slash-commands-in-the-github-copilot-app/",
+          "date": "2026-08-06"
+        },
         {
           "title": "How the GitHub legal team used Copilot CLI to streamline their workflows",
           "source": "GitHub AI & ML Blog",
@@ -304,11 +238,55 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/stacked-sessions-and-pull-requests-in-the-github-copilot-app/",
           "date": "2026-07-30"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Improving GPT‑5.6 Sol in ChatGPT—and expanding access to GPT-5.6 Luna for free users",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/improving-gpt-5-6-sol-in-chatgpt",
+          "date": "2026-08-06"
         },
         {
-          "title": "The harness is all you need (mostly)",
+          "title": "From asking to doing: How the world is putting ChatGPT to work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/how-the-world-is-putting-chatgpt-to-work",
+          "date": "2026-08-06"
+        },
+        {
+          "title": "OpenAI is giving ChatGPT free users unlimited text chats",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/976239/openai-chatgpt-free-go-text-chats",
+          "date": "2026-08-06"
+        }
+      ]
+    },
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Inside our 353,000-person vibe coding course",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/ai-agents-intensive-recap-2026/",
+          "date": "2026-08-03"
+        },
+        {
+          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
+          "date": "2026-07-28"
+        },
+        {
+          "title": "GitHub Copilot app for Beginners: Getting started",
           "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/the-harness-is-all-you-need-mostly/",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-getting-started/",
           "date": "2026-07-27"
         }
       ]
@@ -342,6 +320,31 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
           "date": "2026-07-28"
+        },
+        {
+          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
+          "date": "2026-07-07"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
+          "date": "2026-07-28"
+        },
+        {
+          "title": "Create, edit and star in videos with two Google Vids updates",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/products-and-platforms/products/workspace/gemini-omni-personal-avatars/",
+          "date": "2026-07-16"
         },
         {
           "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
