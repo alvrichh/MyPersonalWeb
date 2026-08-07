@@ -1,4 +1,4 @@
-import { existsSync } from 'node:fs';
+import { cpSync, existsSync, rmSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
@@ -9,6 +9,7 @@ const npmBin = isWindows ? 'npm.cmd' : 'npm';
 const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const webpackBin = join(rootDir, 'node_modules', '.bin', binName);
 const distDir = join(rootDir, 'dist');
+const publicDir = join(rootDir, 'public');
 const requiredOutputFiles = [
   'index.html',
   'ai-radar.html',
@@ -59,4 +60,12 @@ if (missingFiles.length > 0) {
   process.exit(1);
 }
 
-console.log(`Verified Vercel output directory: ${distDir}`);
+// Vercel's static builder treats `public` as the canonical output directory for
+// projects using the "Other" framework preset. Keep `dist` as the canonical
+// local/CI build output, but publish an exact copy from a clean directory so
+// Vercel never has to infer or relocate the webpack output.
+rmSync(publicDir, { recursive: true, force: true });
+cpSync(distDir, publicDir, { recursive: true });
+
+console.log(`Verified local output directory: ${distDir}`);
+console.log(`Prepared Vercel output directory: ${publicDir}`);
