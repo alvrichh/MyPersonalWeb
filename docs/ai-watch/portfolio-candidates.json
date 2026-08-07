@@ -1,80 +1,17 @@
 {
-  "generatedAt": "2026-08-06T10:34:01.264Z",
+  "generatedAt": "2026-08-07T08:53:53.802Z",
   "candidates": [
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "OpenAI says Apple’s trade secrets lawsuit is ‘rotten to its core’",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/976042/openai-apple-trade-secrets-lawsuit-dismissal-request",
-          "date": "2026-08-06"
-        },
-        {
-          "title": "New ways to learn and teach with ChatGPT Work and Codex",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/learn-teach-chatgpt-work-codex",
-          "date": "2026-08-04"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Rogue AI agents created fake online identities in another hacking attempt",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/975577/aisi-openai-anthropic-agent-hacking",
-          "date": "2026-08-05"
-        },
-        {
-          "title": "Inside our 353,000-person vibe coding course",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/ai-agents-intensive-recap-2026/",
-          "date": "2026-08-03"
-        },
-        {
-          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
-          "date": "2026-07-28"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Google Assistant will disappear from your phone next month",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/975516/google-assistant-android-phones-tablets-shutdown",
-          "date": "2026-08-05"
-        },
-        {
-          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
-          "date": "2026-07-28"
-        },
-        {
-          "title": "Create, edit and star in videos with two Google Vids updates",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/products-and-platforms/products/workspace/gemini-omni-personal-avatars/",
-          "date": "2026-07-16"
-        }
-      ]
-    },
     {
       "label": "GitHub Copilot developer loop",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "A guide to slash commands in the GitHub Copilot app",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/a-guide-to-slash-commands-in-the-github-copilot-app/",
+          "date": "2026-08-06"
+        },
         {
           "title": "How the GitHub legal team used Copilot CLI to streamline their workflows",
           "source": "GitHub AI & ML Blog",
@@ -86,11 +23,55 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/stacked-sessions-and-pull-requests-in-the-github-copilot-app/",
           "date": "2026-07-30"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Improving GPT‑5.6 Sol in ChatGPT—and expanding access to GPT-5.6 Luna for free users",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/improving-gpt-5-6-sol-in-chatgpt",
+          "date": "2026-08-06"
         },
         {
-          "title": "The harness is all you need (mostly)",
+          "title": "From asking to doing: How the world is putting ChatGPT to work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/how-the-world-is-putting-chatgpt-to-work",
+          "date": "2026-08-06"
+        },
+        {
+          "title": "OpenAI is giving ChatGPT free users unlimited text chats",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/976239/openai-chatgpt-free-go-text-chats",
+          "date": "2026-08-06"
+        }
+      ]
+    },
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Inside our 353,000-person vibe coding course",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/ai-agents-intensive-recap-2026/",
+          "date": "2026-08-03"
+        },
+        {
+          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
+          "date": "2026-07-28"
+        },
+        {
+          "title": "GitHub Copilot app for Beginners: Getting started",
           "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/the-harness-is-all-you-need-mostly/",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-getting-started/",
           "date": "2026-07-27"
         }
       ]
@@ -124,6 +105,31 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
           "date": "2026-07-28"
+        },
+        {
+          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
+          "date": "2026-07-07"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
+          "date": "2026-07-28"
+        },
+        {
+          "title": "Create, edit and star in videos with two Google Vids updates",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/products-and-platforms/products/workspace/gemini-omni-personal-avatars/",
+          "date": "2026-07-16"
         },
         {
           "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
