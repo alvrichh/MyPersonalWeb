@@ -1,11 +1,76 @@
 {
-  "generatedAt": "2026-08-07T08:53:53.802Z",
-  "date": "2026-08-07",
+  "generatedAt": "2026-08-08T08:34:18.310Z",
+  "date": "2026-08-08",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Responding to the next frontier of critical cyber capabilities",
+      "source": "OpenAI News",
+      "date": "2026-08-07",
+      "url": "https://openai.com/index/responding-next-frontier-critical-cyber-capabilities",
+      "summary": "OpenAI is sharing preliminary cybersecurity evaluations for Astra and the steps we’re taking to strengthen safeguards and security controls.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "How HSP GRUPPE builds AI capabilities for tax advisory",
+      "source": "OpenAI News",
+      "date": "2026-08-07",
+      "url": "https://openai.com/index/hsp-gruppe",
+      "summary": "Discover how HSP GRUPPE uses ChatGPT Enterprise to boost productivity, improve work quality, and create more capacity for tax advisory and client service.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Fenix Flexin isn’t even denying using AI to make ‘Rubberz’ anymore",
+      "source": "The Verge AI",
+      "date": "2026-08-07",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/976801/fenix-flexin-rubberz-ai-song-treblo",
+      "summary": "It took long enough, but now LA rapper Fenix Flexin appears to have admitted using AI for the 80s synth pop-themed song \"Rubberz.\" His comments follow the producer Medasin's videos claiming that an AI tool called Treblo ...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "Watching Roku’s AI channel is like eating from a trough",
+      "source": "The Verge AI",
+      "date": "2026-08-07",
+      "url": "https://www.theverge.com/entertainment/976939/roku-fairground-ai-fast-channel",
+      "summary": "The appeal of free ad-supported streaming television (FAST) channels has always been the way they make it easier to (re)discover classic films and series. But Roku's latest experiment in the FAST space has less to do wit...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "OpenAI puts the brakes on a new model because it&#8217;s supposedly too powerful",
+      "source": "The Verge AI",
+      "date": "2026-08-07",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/976948/openai-astra-model-pause-critical-cyber-capabilities",
+      "summary": "OpenAI says it is pausing \"internal activities\" around an in-development AI model, Astra, because it doesn't yet meet new security standards the company is putting in place. The announcement follows its recent disclosure...",
+      "tags": [
+        "ChatGPT",
+        "Claude",
+        "Models"
+      ]
+    },
+    {
+      "title": "What&#8217;s behind the Google AI shake-up",
+      "source": "The Verge AI",
+      "date": "2026-08-07",
+      "url": "https://www.theverge.com/podcast/976784/google-deepmind-ai-race-vergecast",
+      "summary": "Some of the biggest names on Google's AI team got new jobs this week. In some cases, including for legendary Googler Jeff Dean, those jobs are no longer at Google. Given that Google's models seem to be behind the best of...",
+      "tags": [
+        "ChatGPT",
+        "Claude",
+        "Gemini",
+        "Models"
+      ]
+    },
     {
       "title": "A guide to slash commands in the GitHub Copilot app",
       "source": "GitHub AI & ML Blog",
@@ -146,76 +211,34 @@
       "tags": [
         "AI"
       ]
-    },
-    {
-      "title": "SpaceX is barely Space and mostly X",
-      "source": "The Verge AI",
-      "date": "2026-08-05",
-      "url": "https://www.theverge.com/science/975545/spacex-x-earnings-ai-data-centers-compute-space",
-      "summary": "Once, I had some questions about why SpaceX, Elon Musk's healthiest company, acquired xAI, his sickliest one. Now I have some questions about why we're calling the whole thing SpaceX. Look, what we have here, by revenue,...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Reddit is introducing a new moderator: AI",
-      "source": "The Verge AI",
-      "date": "2026-08-05",
-      "url": "https://www.theverge.com/tech/975398/reddit-ai-rules-hub-moderator-old-reddit-developer-platform",
-      "summary": "Reddit is enlisting AI to help moderate new subreddits - and eventually the rest of site. The company is introducing automated moderation tools that rely on LLMs to help mods manage their communities, and it's expanding ...",
-      "tags": [
-        "Agents",
-        "Models"
-      ]
-    },
-    {
-      "title": "Rogue AI agents created fake online identities in another hacking attempt",
-      "source": "The Verge AI",
-      "date": "2026-08-05",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/975577/aisi-openai-anthropic-agent-hacking",
-      "summary": "Yet more rogue AI agents from OpenAI and Anthropic have been caught attempting to hack real targets online without permission. The discoveries add to a growing list of previously unknown incidents that have alarmed AI sa...",
-      "tags": [
-        "Agents",
-        "ChatGPT",
-        "Claude"
-      ]
-    },
-    {
-      "title": "Google Assistant will disappear from your phone next month",
-      "source": "The Verge AI",
-      "date": "2026-08-05",
-      "url": "https://www.theverge.com/tech/975516/google-assistant-android-phones-tablets-shutdown",
-      "summary": "Google Assistant's days have been numbered ever since Gemini arrived on the scene, and its time is now up. Google has announced that it will be removing access to Assistant on Android phones and tablets, along with paire...",
-      "tags": [
-        "Agents",
-        "Gemini"
-      ]
-    },
-    {
-      "title": "How the GitHub legal team used Copilot CLI to streamline their workflows",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-08-04",
-      "url": "https://github.blog/ai-and-ml/github-copilot/how-the-github-legal-team-used-copilot-cli-to-streamline-their-workflows/",
-      "summary": "Learn how to build tools to simplify how you work—without writing a single line of code. The post How the GitHub legal team used Copilot CLI to streamline their workflows appeared first on The GitHub Blog.",
-      "tags": [
-        "Agents",
-        "Copilot",
-        "Dev Tools",
-        "Automation"
-      ]
-    },
-    {
-      "title": "The latest AI news we announced in July 2026",
-      "source": "Google AI Blog",
-      "date": "2026-08-04",
-      "url": "https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-july-2026/",
-      "summary": "Here are Google’s latest AI updates from July 2026",
-      "tags": [
-        "Gemini"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "How HSP GRUPPE builds AI capabilities for tax advisory",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/hsp-gruppe",
+          "date": "2026-08-07"
+        },
+        {
+          "title": "Improving GPT‑5.6 Sol in ChatGPT—and expanding access to GPT-5.6 Luna for free users",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/improving-gpt-5-6-sol-in-chatgpt",
+          "date": "2026-08-06"
+        },
+        {
+          "title": "From asking to doing: How the world is putting ChatGPT to work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/how-the-world-is-putting-chatgpt-to-work",
+          "date": "2026-08-06"
+        }
+      ]
+    },
     {
       "label": "GitHub Copilot developer loop",
       "status": "safe-data-candidate",
@@ -238,31 +261,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/stacked-sessions-and-pull-requests-in-the-github-copilot-app/",
           "date": "2026-07-30"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Improving GPT‑5.6 Sol in ChatGPT—and expanding access to GPT-5.6 Luna for free users",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/improving-gpt-5-6-sol-in-chatgpt",
-          "date": "2026-08-06"
-        },
-        {
-          "title": "From asking to doing: How the world is putting ChatGPT to work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/how-the-world-is-putting-chatgpt-to-work",
-          "date": "2026-08-06"
-        },
-        {
-          "title": "OpenAI is giving ChatGPT free users unlimited text chats",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/976239/openai-chatgpt-free-go-text-chats",
-          "date": "2026-08-06"
         }
       ]
     },
