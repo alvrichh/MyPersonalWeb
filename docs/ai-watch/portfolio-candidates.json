@@ -1,6 +1,31 @@
 {
-  "generatedAt": "2026-08-07T08:53:53.802Z",
+  "generatedAt": "2026-08-08T08:34:18.310Z",
   "candidates": [
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "How HSP GRUPPE builds AI capabilities for tax advisory",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/hsp-gruppe",
+          "date": "2026-08-07"
+        },
+        {
+          "title": "Improving GPT‑5.6 Sol in ChatGPT—and expanding access to GPT-5.6 Luna for free users",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/improving-gpt-5-6-sol-in-chatgpt",
+          "date": "2026-08-06"
+        },
+        {
+          "title": "From asking to doing: How the world is putting ChatGPT to work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/how-the-world-is-putting-chatgpt-to-work",
+          "date": "2026-08-06"
+        }
+      ]
+    },
     {
       "label": "GitHub Copilot developer loop",
       "status": "safe-data-candidate",
@@ -23,31 +48,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/stacked-sessions-and-pull-requests-in-the-github-copilot-app/",
           "date": "2026-07-30"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Improving GPT‑5.6 Sol in ChatGPT—and expanding access to GPT-5.6 Luna for free users",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/improving-gpt-5-6-sol-in-chatgpt",
-          "date": "2026-08-06"
-        },
-        {
-          "title": "From asking to doing: How the world is putting ChatGPT to work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/how-the-world-is-putting-chatgpt-to-work",
-          "date": "2026-08-06"
-        },
-        {
-          "title": "OpenAI is giving ChatGPT free users unlimited text chats",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/976239/openai-chatgpt-free-go-text-chats",
-          "date": "2026-08-06"
         }
       ]
     },

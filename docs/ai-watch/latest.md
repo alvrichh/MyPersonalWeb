@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-08-07
+# Daily AI maintenance report — 2026-08-08
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,18 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Responding to the next frontier of critical cyber capabilities** — OpenAI News · 2026-08-07
+  https://openai.com/index/responding-next-frontier-critical-cyber-capabilities
+- **How HSP GRUPPE builds AI capabilities for tax advisory** — OpenAI News · 2026-08-07
+  https://openai.com/index/hsp-gruppe
+- **Fenix Flexin isn’t even denying using AI to make ‘Rubberz’ anymore** — The Verge AI · 2026-08-07
+  https://www.theverge.com/ai-artificial-intelligence/976801/fenix-flexin-rubberz-ai-song-treblo
+- **Watching Roku’s AI channel is like eating from a trough** — The Verge AI · 2026-08-07
+  https://www.theverge.com/entertainment/976939/roku-fairground-ai-fast-channel
+- **OpenAI puts the brakes on a new model because it&#8217;s supposedly too powerful** — The Verge AI · 2026-08-07
+  https://www.theverge.com/ai-artificial-intelligence/976948/openai-astra-model-pause-critical-cyber-capabilities
+- **What&#8217;s behind the Google AI shake-up** — The Verge AI · 2026-08-07
+  https://www.theverge.com/podcast/976784/google-deepmind-ai-race-vergecast
 - **A guide to slash commands in the GitHub Copilot app** — GitHub AI & ML Blog · 2026-08-06
   https://github.blog/ai-and-ml/github-copilot/a-guide-to-slash-commands-in-the-github-copilot-app/
 - **Improving GPT‑5.6 Sol in ChatGPT—and expanding access to GPT-5.6 Luna for free users** — OpenAI News · 2026-08-06
@@ -29,14 +41,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/ai-artificial-intelligence/976239/openai-chatgpt-free-go-text-chats
 - **The left and right agree on one thing: no data centers** — The Verge AI · 2026-08-06
   https://www.theverge.com/podcast/971855/ai-data-center-backlash-protests-florida-bipartisan
-- **The messy politics behind Google’s big AI shakeup** — The Verge AI · 2026-08-06
-  https://www.theverge.com/tech/976108/google-ai-leadership-shakeup-jeff-dean-demis-hassabis-deepmind
-- **AI bots started a religion — humans immediately followed** — The Verge AI · 2026-08-06
-  https://www.theverge.com/ai-artificial-intelligence/975017/ai-spiralism-chatbot-movement
-- **OpenAI says Apple’s trade secrets lawsuit is ‘rotten to its core’** — The Verge AI · 2026-08-06
-  https://www.theverge.com/tech/976042/openai-apple-trade-secrets-lawsuit-dismissal-request
-- **Elon Musk&#8217;s attempt at an AI Wikipedia hasn&#8217;t been updated in months** — The Verge AI · 2026-08-06
-  https://www.theverge.com/ai-artificial-intelligence/976004/elon-musk-grokipedia-ai-wikipedia-not-updating-dead
 - **How the GitHub legal team used Copilot CLI to streamline their workflows** — GitHub AI & ML Blog · 2026-08-04
   https://github.blog/ai-and-ml/github-copilot/how-the-github-legal-team-used-copilot-cli-to-streamline-their-workflows/
 - **The latest AI news we announced in July 2026** — Google AI Blog · 2026-08-04
@@ -49,10 +53,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blog.google/innovation-and-ai/technology/developers-tools/ai-agents-intensive-recap-2026/
 - **Apple is getting this wrong** — OpenAI News · 2026-08-03
   https://openai.com/index/apple-is-getting-this-wrong
-- **How we built a realtime system for responsive voice AI in six months** — OpenAI News · 2026-08-03
-  https://openai.com/index/continuous-voice-interaction-with-gpt-live
-- **Circles powers telco personalization with OpenAI technology** — OpenAI News · 2026-08-03
-  https://openai.com/index/circles
 - **Stacked sessions and pull requests in the GitHub Copilot app** — GitHub AI & ML Blog · 2026-07-30
   https://github.blog/ai-and-ml/github-copilot/stacked-sessions-and-pull-requests-in-the-github-copilot-app/
 - **Gemini API Managed Agents: 3.6 Flash, hooks, and more** — Google AI Blog · 2026-07-28
@@ -80,8 +80,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
-- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
