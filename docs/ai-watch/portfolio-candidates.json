@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-09T08:36:11.472Z",
+  "generatedAt": "2026-08-10T09:14:27.924Z",
   "candidates": [
     {
       "label": "ChatGPT workflow design",
@@ -13,15 +13,15 @@
           "date": "2026-08-07"
         },
         {
+          "title": "AI detectors are creating a new era of distrust",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/column/976690/ai-writing-detectors-suspicion",
+          "date": "2026-08-07"
+        },
+        {
           "title": "Improving GPT‑5.6 Sol in ChatGPT—and expanding access to GPT-5.6 Luna for free users",
           "source": "OpenAI News",
           "link": "https://openai.com/index/improving-gpt-5-6-sol-in-chatgpt",
-          "date": "2026-08-06"
-        },
-        {
-          "title": "From asking to doing: How the world is putting ChatGPT to work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/how-the-world-is-putting-chatgpt-to-work",
           "date": "2026-08-06"
         }
       ]
