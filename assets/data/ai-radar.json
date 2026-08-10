@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-09T08:36:11.472Z",
-  "date": "2026-08-09",
+  "generatedAt": "2026-08-10T09:14:27.924Z",
+  "date": "2026-08-10",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
@@ -22,6 +22,16 @@
       "date": "2026-08-07",
       "url": "https://openai.com/index/hsp-gruppe",
       "summary": "Discover how HSP GRUPPE uses ChatGPT Enterprise to boost productivity, improve work quality, and create more capacity for tax advisory and client service.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "AI detectors are creating a new era of distrust",
+      "source": "The Verge AI",
+      "date": "2026-08-07",
+      "url": "https://www.theverge.com/column/976690/ai-writing-detectors-suspicion",
+      "summary": "This is The Stepback, a weekly newsletter breaking down one essential story from the tech world. For more news about how AI is changing our daily lives, follow Emma Roth. The Stepback arrives in our subscribers' inboxes ...",
       "tags": [
         "ChatGPT"
       ]
@@ -201,16 +211,6 @@
       "tags": [
         "AI"
       ]
-    },
-    {
-      "title": "Google just announced a major shakeup of its top AI leadership",
-      "source": "The Verge AI",
-      "date": "2026-08-05",
-      "url": "https://www.theverge.com/tech/975677/google-deepmind-ai-demis-hassabis-shakeup",
-      "summary": "Google is making some significant AI leadership changes, including a major shift for Google DeepMind leader Demis Hassabis. Hassabis will become the chair of Google DeepMind and the chief scientist at Alphabet, CEO Sunda...",
-      "tags": [
-        "AI"
-      ]
     }
   ],
   "candidates": [
@@ -226,15 +226,15 @@
           "date": "2026-08-07"
         },
         {
+          "title": "AI detectors are creating a new era of distrust",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/column/976690/ai-writing-detectors-suspicion",
+          "date": "2026-08-07"
+        },
+        {
           "title": "Improving GPT‑5.6 Sol in ChatGPT—and expanding access to GPT-5.6 Luna for free users",
           "source": "OpenAI News",
           "link": "https://openai.com/index/improving-gpt-5-6-sol-in-chatgpt",
-          "date": "2026-08-06"
-        },
-        {
-          "title": "From asking to doing: How the world is putting ChatGPT to work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/how-the-world-is-putting-chatgpt-to-work",
           "date": "2026-08-06"
         }
       ]

@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-08-09
+# Daily AI maintenance report — 2026-08-10
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -17,6 +17,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/responding-next-frontier-critical-cyber-capabilities
 - **How HSP GRUPPE builds AI capabilities for tax advisory** — OpenAI News · 2026-08-07
   https://openai.com/index/hsp-gruppe
+- **AI detectors are creating a new era of distrust** — The Verge AI · 2026-08-07
+  https://www.theverge.com/column/976690/ai-writing-detectors-suspicion
 - **Fenix Flexin isn’t even denying using AI to make ‘Rubberz’ anymore** — The Verge AI · 2026-08-07
   https://www.theverge.com/ai-artificial-intelligence/976801/fenix-flexin-rubberz-ai-song-treblo
 - **Watching Roku’s AI channel is like eating from a trough** — The Verge AI · 2026-08-07
@@ -39,8 +41,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/ai-artificial-intelligence/976289/suno-ai-music-spam-watermark
 - **OpenAI is giving ChatGPT free users unlimited text chats** — The Verge AI · 2026-08-06
   https://www.theverge.com/ai-artificial-intelligence/976239/openai-chatgpt-free-go-text-chats
-- **The left and right agree on one thing: no data centers** — The Verge AI · 2026-08-06
-  https://www.theverge.com/podcast/971855/ai-data-center-backlash-protests-florida-bipartisan
 - **How the GitHub legal team used Copilot CLI to streamline their workflows** — GitHub AI & ML Blog · 2026-08-04
   https://github.blog/ai-and-ml/github-copilot/how-the-github-legal-team-used-copilot-cli-to-streamline-their-workflows/
 - **The latest AI news we announced in July 2026** — Google AI Blog · 2026-08-04
