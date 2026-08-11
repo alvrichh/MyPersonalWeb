@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-08-10
+# Daily AI maintenance report — 2026-08-11
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,10 +13,34 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
-- **Responding to the next frontier of critical cyber capabilities** — OpenAI News · 2026-08-07
-  https://openai.com/index/responding-next-frontier-critical-cyber-capabilities
-- **How HSP GRUPPE builds AI capabilities for tax advisory** — OpenAI News · 2026-08-07
-  https://openai.com/index/hsp-gruppe
+- **What happens to Bose when headphones become AI?** — The Verge AI · 2026-08-11
+  https://www.theverge.com/podcast/975732/bose-ceo-lila-snyder-ai-wearables-licensing-headphones-audio
+- **Using the GitHub Copilot SDK for Java** — GitHub AI & ML Blog · 2026-08-10
+  https://github.blog/engineering/using-the-github-copilot-sdk-for-java/
+- **Evolve your marketing with new AI tools** — Google AI Blog · 2026-08-10
+  https://blog.google/products/ads-commerce/google-ads-analytics-ai-updates/
+- **OpenAI’s letter to Governor Abbott on responsible AI infrastructure in Texas** — OpenAI News · 2026-08-10
+  https://openai.com/index/responsible-ai-infrastructure-texas
+- **Model ML completes finance work more efficiently with GPT-5.6 Sol** — OpenAI News · 2026-08-10
+  https://openai.com/index/model-ml
+- **What building an AI-native finance function taught me** — OpenAI News · 2026-08-10
+  https://openai.com/index/building-an-ai-native-finance-function
+- **Expanding Daybreak as the Cyber Defense Window Narrows** — OpenAI News · 2026-08-10
+  https://openai.com/index/expanding-daybreak-as-the-cyber-defense-window-narrows
+- **Putting frontier cyber models in more trusted hands** — OpenAI News · 2026-08-10
+  https://openai.com/index/putting-frontier-cyber-models-in-more-trusted-hands
+- **Premium seats are coming to ChatGPT Business** — OpenAI News · 2026-08-10
+  https://openai.com/index/premium-seats-chatgpt-business
+- **How Zapier transformed core marketing processes with ChatGPT Work** — OpenAI News · 2026-08-10
+  https://openai.com/index/zapier
+- **Virgin Atlantic sharpens customer journeys with ChatGPT Work** — OpenAI News · 2026-08-10
+  https://openai.com/index/virgin-atlantic/chatgpt-work
+- **Mark Zuckerberg doesn’t understand how to live** — The Verge AI · 2026-08-10
+  https://www.theverge.com/ai-artificial-intelligence/977623/mark-zuckerberg-ai-manifesto-dim-vision
+- **Four takeaways from Mark Zuckerberg&#8217;s massive AI manifesto** — The Verge AI · 2026-08-10
+  https://www.theverge.com/tech/977395/meta-mark-zuckerberg-superintelligent-ai-ramble
+- **Ford’s new AI assistant can check your fuel levels and tire pressure** — The Verge AI · 2026-08-07
+  https://www.theverge.com/transportation/976748/ford-ai-assistant-mobile-app
 - **AI detectors are creating a new era of distrust** — The Verge AI · 2026-08-07
   https://www.theverge.com/column/976690/ai-writing-detectors-suspicion
 - **Fenix Flexin isn’t even denying using AI to make ‘Rubberz’ anymore** — The Verge AI · 2026-08-07
@@ -25,34 +49,14 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/entertainment/976939/roku-fairground-ai-fast-channel
 - **OpenAI puts the brakes on a new model because it&#8217;s supposedly too powerful** — The Verge AI · 2026-08-07
   https://www.theverge.com/ai-artificial-intelligence/976948/openai-astra-model-pause-critical-cyber-capabilities
-- **What&#8217;s behind the Google AI shake-up** — The Verge AI · 2026-08-07
-  https://www.theverge.com/podcast/976784/google-deepmind-ai-race-vergecast
 - **A guide to slash commands in the GitHub Copilot app** — GitHub AI & ML Blog · 2026-08-06
   https://github.blog/ai-and-ml/github-copilot/a-guide-to-slash-commands-in-the-github-copilot-app/
-- **Improving GPT‑5.6 Sol in ChatGPT—and expanding access to GPT-5.6 Luna for free users** — OpenAI News · 2026-08-06
-  https://openai.com/index/improving-gpt-5-6-sol-in-chatgpt
-- **Working with the American Psychological Association on youth mental health and AI** — OpenAI News · 2026-08-06
-  https://openai.com/index/openai-and-apa-partner-to-advance-responsible-ai
-- **From asking to doing: How the world is putting ChatGPT to work** — OpenAI News · 2026-08-06
-  https://openai.com/index/how-the-world-is-putting-chatgpt-to-work
-- **Jony Ive&#8217;s first OpenAI gadget is reportedly a hockey puck-sized smart speaker** — The Verge AI · 2026-08-06
-  https://www.theverge.com/ai-artificial-intelligence/976431/openai-chatgpt-battery-smart-speaker-rumor
-- **Suno shares plans to combat spammy AI music** — The Verge AI · 2026-08-06
-  https://www.theverge.com/ai-artificial-intelligence/976289/suno-ai-music-spam-watermark
-- **OpenAI is giving ChatGPT free users unlimited text chats** — The Verge AI · 2026-08-06
-  https://www.theverge.com/ai-artificial-intelligence/976239/openai-chatgpt-free-go-text-chats
 - **How the GitHub legal team used Copilot CLI to streamline their workflows** — GitHub AI & ML Blog · 2026-08-04
   https://github.blog/ai-and-ml/github-copilot/how-the-github-legal-team-used-copilot-cli-to-streamline-their-workflows/
 - **The latest AI news we announced in July 2026** — Google AI Blog · 2026-08-04
   https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-july-2026/
-- **Third-party cyber evaluations involving OpenAI models** — OpenAI News · 2026-08-04
-  https://openai.com/index/third-party-cyber-evaluations-involving-openai-models
-- **New ways to learn and teach with ChatGPT Work and Codex** — OpenAI News · 2026-08-04
-  https://openai.com/index/learn-teach-chatgpt-work-codex
 - **Inside our 353,000-person vibe coding course** — Google AI Blog · 2026-08-03
   https://blog.google/innovation-and-ai/technology/developers-tools/ai-agents-intensive-recap-2026/
-- **Apple is getting this wrong** — OpenAI News · 2026-08-03
-  https://openai.com/index/apple-is-getting-this-wrong
 - **Stacked sessions and pull requests in the GitHub Copilot app** — GitHub AI & ML Blog · 2026-07-30
   https://github.blog/ai-and-ml/github-copilot/stacked-sessions-and-pull-requests-in-the-github-copilot-app/
 - **Gemini API Managed Agents: 3.6 Flash, hooks, and more** — Google AI Blog · 2026-07-28
@@ -73,20 +77,15 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blog.google/products-and-platforms/products/search/connected-apps/
 - **Create, edit and star in videos with two Google Vids updates** — Google AI Blog · 2026-07-16
   https://blog.google/products-and-platforms/products/workspace/gemini-omni-personal-avatars/
-- **Better tools made Copilot code review worse. Here&#8217;s how we actually improved it.** — GitHub AI & ML Blog · 2026-07-10
-  https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/
-- **Expanding Managed Agents in Gemini API: background tasks, remote MCP and more** — Google AI Blog · 2026-07-07
-  https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/
 
 ## Portfolio candidates
 
-- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **MCP / tool-connected assistants** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
 
