@@ -1,28 +1,22 @@
 {
-  "generatedAt": "2026-08-10T09:14:27.924Z",
+  "generatedAt": "2026-08-11T08:48:58.226Z",
   "candidates": [
     {
-      "label": "ChatGPT workflow design",
+      "label": "AI developer tooling",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "How HSP GRUPPE builds AI capabilities for tax advisory",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/hsp-gruppe",
-          "date": "2026-08-07"
+          "title": "Using the GitHub Copilot SDK for Java",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/engineering/using-the-github-copilot-sdk-for-java/",
+          "date": "2026-08-10"
         },
         {
-          "title": "AI detectors are creating a new era of distrust",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/column/976690/ai-writing-detectors-suspicion",
-          "date": "2026-08-07"
-        },
-        {
-          "title": "Improving GPT‑5.6 Sol in ChatGPT—and expanding access to GPT-5.6 Luna for free users",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/improving-gpt-5-6-sol-in-chatgpt",
-          "date": "2026-08-06"
+          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
+          "date": "2026-07-28"
         }
       ]
     },
@@ -31,6 +25,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Using the GitHub Copilot SDK for Java",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/engineering/using-the-github-copilot-sdk-for-java/",
+          "date": "2026-08-10"
+        },
         {
           "title": "A guide to slash commands in the GitHub Copilot app",
           "source": "GitHub AI & ML Blog",
@@ -42,12 +42,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/how-the-github-legal-team-used-copilot-cli-to-streamline-their-workflows/",
           "date": "2026-08-04"
-        },
-        {
-          "title": "Stacked sessions and pull requests in the GitHub Copilot app",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/stacked-sessions-and-pull-requests-in-the-github-copilot-app/",
-          "date": "2026-07-30"
         }
       ]
     },
@@ -56,6 +50,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Evolve your marketing with new AI tools",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/products/ads-commerce/google-ads-analytics-ai-updates/",
+          "date": "2026-08-10"
+        },
         {
           "title": "Inside our 353,000-person vibe coding course",
           "source": "Google AI Blog",
@@ -67,12 +67,31 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
           "date": "2026-07-28"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Premium seats are coming to ChatGPT Business",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/premium-seats-chatgpt-business",
+          "date": "2026-08-10"
         },
         {
-          "title": "GitHub Copilot app for Beginners: Getting started",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-getting-started/",
-          "date": "2026-07-27"
+          "title": "How Zapier transformed core marketing processes with ChatGPT Work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/zapier",
+          "date": "2026-08-10"
+        },
+        {
+          "title": "Virgin Atlantic sharpens customer journeys with ChatGPT Work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/virgin-atlantic/chatgpt-work",
+          "date": "2026-08-10"
         }
       ]
     },
@@ -96,25 +115,6 @@
       ]
     },
     {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
-          "date": "2026-07-28"
-        },
-        {
-          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
-          "date": "2026-07-07"
-        }
-      ]
-    },
-    {
       "label": "Gemini multimodal exploration",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
@@ -130,25 +130,6 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/products-and-platforms/products/workspace/gemini-omni-personal-avatars/",
           "date": "2026-07-16"
-        },
-        {
-          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
-          "date": "2026-07-07"
-        }
-      ]
-    },
-    {
-      "label": "MCP / tool-connected assistants",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
-          "date": "2026-07-07"
         }
       ]
     }
