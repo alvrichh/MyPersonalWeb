@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-08-11
+# Daily AI maintenance report — 2026-08-12
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,8 +13,28 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
-- **What happens to Bose when headphones become AI?** — The Verge AI · 2026-08-11
-  https://www.theverge.com/podcast/975732/bose-ceo-lila-snyder-ai-wearables-licensing-headphones-audio
+- **Saber denies replacing Rideshare Stimulator&#8217;s writers with ChatGPT** — The Verge AI · 2026-08-12
+  https://www.theverge.com/games/978558/rideshare-stimulator-writer-ai-saber-interactive
+- **AMIE, our research medical AI system, demonstrates real-time clinical video consultation capabilities in a first-of-its-kind study.** — Google AI Blog · 2026-08-11
+  https://blog.google/innovation-and-ai/models-and-research/google-research/amie-video-consultations/
+- **Testing ads in ChatGPT** — OpenAI News · 2026-08-11
+  https://openai.com/index/testing-ads-in-chatgpt
+- **Daybreak models are now available on AWS** — OpenAI News · 2026-08-11
+  https://openai.com/index/daybreak-models-are-now-available-on-aws
+- **ChatGPT and Gemini both just passed 1 billion users** — The Verge AI · 2026-08-11
+  https://www.theverge.com/ai-artificial-intelligence/978113/chatgpt-gemini-1-billion-users
+- **Another OpenAI executive takes off** — The Verge AI · 2026-08-11
+  https://www.theverge.com/ai-artificial-intelligence/978048/brad-lightcap-openai-executive-departure
+- **Made by Google 2026: all the Pixel news and announcements** — The Verge AI · 2026-08-11
+  https://www.theverge.com/tech/977561/made-by-google-2026-pixel-11-news
+- **‘Zoomsday’ hack uncovered using fewer than 20 AI prompts** — The Verge AI · 2026-08-11
+  https://www.theverge.com/ai-artificial-intelligence/977909/zoom-vulnerability-ai-attack
+- **Why your Amazon order confirmation emails have become so unhelpful** — The Verge AI · 2026-08-11
+  https://www.theverge.com/ai-artificial-intelligence/977733/amazon-order-emails-google-gmail-ai-agents-data
+- **Spotify says it won&#8217;t recommend music from &#8216;AI Personas&#8217;** — The Verge AI · 2026-08-11
+  https://www.theverge.com/entertainment/977815/spotify-ai-persona-label-recommendations
+- **Claude will apply invisible watermarks to AI text and images** — The Verge AI · 2026-08-11
+  https://www.theverge.com/ai-artificial-intelligence/977823/anthropic-claude-ai-watermarks-c2pa-text-images
 - **Using the GitHub Copilot SDK for Java** — GitHub AI & ML Blog · 2026-08-10
   https://github.blog/engineering/using-the-github-copilot-sdk-for-java/
 - **Evolve your marketing with new AI tools** — Google AI Blog · 2026-08-10
@@ -31,24 +51,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/putting-frontier-cyber-models-in-more-trusted-hands
 - **Premium seats are coming to ChatGPT Business** — OpenAI News · 2026-08-10
   https://openai.com/index/premium-seats-chatgpt-business
-- **How Zapier transformed core marketing processes with ChatGPT Work** — OpenAI News · 2026-08-10
-  https://openai.com/index/zapier
-- **Virgin Atlantic sharpens customer journeys with ChatGPT Work** — OpenAI News · 2026-08-10
-  https://openai.com/index/virgin-atlantic/chatgpt-work
-- **Mark Zuckerberg doesn’t understand how to live** — The Verge AI · 2026-08-10
-  https://www.theverge.com/ai-artificial-intelligence/977623/mark-zuckerberg-ai-manifesto-dim-vision
-- **Four takeaways from Mark Zuckerberg&#8217;s massive AI manifesto** — The Verge AI · 2026-08-10
-  https://www.theverge.com/tech/977395/meta-mark-zuckerberg-superintelligent-ai-ramble
-- **Ford’s new AI assistant can check your fuel levels and tire pressure** — The Verge AI · 2026-08-07
-  https://www.theverge.com/transportation/976748/ford-ai-assistant-mobile-app
-- **AI detectors are creating a new era of distrust** — The Verge AI · 2026-08-07
-  https://www.theverge.com/column/976690/ai-writing-detectors-suspicion
-- **Fenix Flexin isn’t even denying using AI to make ‘Rubberz’ anymore** — The Verge AI · 2026-08-07
-  https://www.theverge.com/ai-artificial-intelligence/976801/fenix-flexin-rubberz-ai-song-treblo
-- **Watching Roku’s AI channel is like eating from a trough** — The Verge AI · 2026-08-07
-  https://www.theverge.com/entertainment/976939/roku-fairground-ai-fast-channel
-- **OpenAI puts the brakes on a new model because it&#8217;s supposedly too powerful** — The Verge AI · 2026-08-07
-  https://www.theverge.com/ai-artificial-intelligence/976948/openai-astra-model-pause-critical-cyber-capabilities
 - **A guide to slash commands in the GitHub Copilot app** — GitHub AI & ML Blog · 2026-08-06
   https://github.blog/ai-and-ml/github-copilot/a-guide-to-slash-commands-in-the-github-copilot-app/
 - **How the GitHub legal team used Copilot CLI to streamline their workflows** — GitHub AI & ML Blog · 2026-08-04
@@ -75,17 +77,16 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://github.blog/ai-and-ml/github-copilot/how-to-build-interactive-experiences-with-canvases/
 - **Connect more of your apps to Search** — Google AI Blog · 2026-07-16
   https://blog.google/products-and-platforms/products/search/connected-apps/
-- **Create, edit and star in videos with two Google Vids updates** — Google AI Blog · 2026-07-16
-  https://blog.google/products-and-platforms/products/workspace/gemini-omni-personal-avatars/
 
 ## Portfolio candidates
 
+- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
 
