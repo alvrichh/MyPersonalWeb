@@ -1,6 +1,63 @@
 {
-  "generatedAt": "2026-08-11T08:48:58.226Z",
+  "generatedAt": "2026-08-12T09:07:53.416Z",
   "candidates": [
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Saber denies replacing Rideshare Stimulator&#8217;s writers with ChatGPT",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/games/978558/rideshare-stimulator-writer-ai-saber-interactive",
+          "date": "2026-08-12"
+        },
+        {
+          "title": "Testing ads in ChatGPT",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/testing-ads-in-chatgpt",
+          "date": "2026-08-11"
+        },
+        {
+          "title": "ChatGPT and Gemini both just passed 1 billion users",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/978113/chatgpt-gemini-1-billion-users",
+          "date": "2026-08-11"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "ChatGPT and Gemini both just passed 1 billion users",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/978113/chatgpt-gemini-1-billion-users",
+          "date": "2026-08-11"
+        },
+        {
+          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
+          "date": "2026-07-28"
+        }
+      ]
+    },
+    {
+      "label": "Claude research and documentation flow",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Claude will apply invisible watermarks to AI text and images",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/977823/anthropic-claude-ai-watermarks-c2pa-text-images",
+          "date": "2026-08-11"
+        }
+      ]
+    },
     {
       "label": "AI developer tooling",
       "status": "safe-data-candidate",
@@ -71,31 +128,6 @@
       ]
     },
     {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Premium seats are coming to ChatGPT Business",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/premium-seats-chatgpt-business",
-          "date": "2026-08-10"
-        },
-        {
-          "title": "How Zapier transformed core marketing processes with ChatGPT Work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/zapier",
-          "date": "2026-08-10"
-        },
-        {
-          "title": "Virgin Atlantic sharpens customer journeys with ChatGPT Work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/virgin-atlantic/chatgpt-work",
-          "date": "2026-08-10"
-        }
-      ]
-    },
-    {
       "label": "AI coding assistant workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
@@ -111,25 +143,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/copilot-vs-raw-api-access-what-are-you-actually-paying-for/",
           "date": "2026-07-22"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
-          "date": "2026-07-28"
-        },
-        {
-          "title": "Create, edit and star in videos with two Google Vids updates",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/products-and-platforms/products/workspace/gemini-omni-personal-avatars/",
-          "date": "2026-07-16"
         }
       ]
     }

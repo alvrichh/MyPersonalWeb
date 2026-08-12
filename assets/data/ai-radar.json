@@ -1,19 +1,124 @@
 {
-  "generatedAt": "2026-08-11T08:48:58.226Z",
-  "date": "2026-08-11",
+  "generatedAt": "2026-08-12T09:07:53.416Z",
+  "date": "2026-08-12",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
     {
-      "title": "What happens to Bose when headphones become AI?",
+      "title": "Saber denies replacing Rideshare Stimulator&#8217;s writers with ChatGPT",
+      "source": "The Verge AI",
+      "date": "2026-08-12",
+      "url": "https://www.theverge.com/games/978558/rideshare-stimulator-writer-ai-saber-interactive",
+      "summary": "After a former lead writer claimed Saber \"replaced me with ChatGPT,\" CEO Matthew Karch now claims, \"Neither Saber nor Unigine have replaced any writers with AI,\" for the Rideshare \"Stimulator\" game announced last month, ...",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "AMIE, our research medical AI system, demonstrates real-time clinical video consultation capabilities in a first-of-its-kind study.",
+      "source": "Google AI Blog",
+      "date": "2026-08-11",
+      "url": "https://blog.google/innovation-and-ai/models-and-research/google-research/amie-video-consultations/",
+      "summary": "Google introduces AMIE for real-time clinical video consultations in simulated settings.",
+      "tags": [
+        "Gemini",
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "Testing ads in ChatGPT",
+      "source": "OpenAI News",
+      "date": "2026-08-11",
+      "url": "https://openai.com/index/testing-ads-in-chatgpt",
+      "summary": "OpenAI begins testing ads in ChatGPT to support free access, with clear labeling, answer independence, strong privacy protections, and user control.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Daybreak models are now available on AWS",
+      "source": "OpenAI News",
+      "date": "2026-08-11",
+      "url": "https://openai.com/index/daybreak-models-are-now-available-on-aws",
+      "summary": "OpenAI and AWS are making Daybreak cybersecurity capabilities available through Amazon Bedrock to support enterprise security workflows.",
+      "tags": [
+        "ChatGPT",
+        "Automation",
+        "Models"
+      ]
+    },
+    {
+      "title": "ChatGPT and Gemini both just passed 1 billion users",
       "source": "The Verge AI",
       "date": "2026-08-11",
-      "url": "https://www.theverge.com/podcast/975732/bose-ceo-lila-snyder-ai-wearables-licensing-headphones-audio",
-      "summary": "Today, I’m talking with Lila Snyder, who is the CEO of Bose. You certainly know Bose — it’s one of the most famous brands in all of consumer tech. The company started 60 years ago selling speakers to consumers, and its f...",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/978113/chatgpt-gemini-1-billion-users",
+      "summary": "For the 14th time, a Google product has hit 1 billion users. Google CEO Sundar Pichai posted on X that a billion people are using Gemini every month, and that Gemini is Google's fastest-growing product ever. A billion us...",
+      "tags": [
+        "ChatGPT",
+        "Gemini"
+      ]
+    },
+    {
+      "title": "Another OpenAI executive takes off",
+      "source": "The Verge AI",
+      "date": "2026-08-11",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/978048/brad-lightcap-openai-executive-departure",
+      "summary": "Brad Lightcap, OpenAI's special projects lead and the company's former COO, announced his departure after an eight-year stint at the AI lab. In an internal memo he later posted to X, Lightcap told colleagues he'd be star...",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Made by Google 2026: all the Pixel news and announcements",
+      "source": "The Verge AI",
+      "date": "2026-08-11",
+      "url": "https://www.theverge.com/tech/977561/made-by-google-2026-pixel-11-news",
+      "summary": "Google is gearing up to reveal a bunch of new Pixel devices on August 12th. A series of leaks leading up to the event suggest that the Pixel 11 lineup will come in an array of colors, with signs pointing to a built-in li...",
+      "tags": [
+        "Models"
+      ]
+    },
+    {
+      "title": "‘Zoomsday’ hack uncovered using fewer than 20 AI prompts",
+      "source": "The Verge AI",
+      "date": "2026-08-11",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/977909/zoom-vulnerability-ai-attack",
+      "summary": "Zoom has patched a major security vulnerability that could allow an attacker to hijack anyone's device during a meeting. In a blog post on Tuesday, researchers at A Security say they uncovered the flaw using \"fewer than ...",
+      "tags": [
+        "Models"
+      ]
+    },
+    {
+      "title": "Why your Amazon order confirmation emails have become so unhelpful",
+      "source": "The Verge AI",
+      "date": "2026-08-11",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/977733/amazon-order-emails-google-gmail-ai-agents-data",
+      "summary": "Earlier this summer, Amazon customers began noticing that emails related to their online orders looked sparse: Order confirmation emails didn't name specific items anymore, and instead listed only item categories. \"Your ...",
       "tags": [
         "AI"
+      ]
+    },
+    {
+      "title": "Spotify says it won&#8217;t recommend music from &#8216;AI Personas&#8217;",
+      "source": "The Verge AI",
+      "date": "2026-08-11",
+      "url": "https://www.theverge.com/entertainment/977815/spotify-ai-persona-label-recommendations",
+      "summary": "Spotify will soon label AI artists and remove their music from your recommendations. The change, which will start rolling out in mid-September, means you'll see an \"AI Persona\" badge on an artist's profile across the app...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Claude will apply invisible watermarks to AI text and images",
+      "source": "The Verge AI",
+      "date": "2026-08-11",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/977823/anthropic-claude-ai-watermarks-c2pa-text-images",
+      "summary": "Anthropic has pledged to start marking Claude-generated text and images with machine-readable data, in an effort to comply with European rules for AI transparency. \"Generated text will carry embedded watermarks, and gene...",
+      "tags": [
+        "Claude",
+        "Multimodal"
       ]
     },
     {
@@ -25,6 +130,16 @@
       "tags": [
         "Copilot",
         "Dev Tools"
+      ]
+    },
+    {
+      "title": "What happens to Bose when headphones become AI?",
+      "source": "The Verge AI",
+      "date": "2026-08-11",
+      "url": "https://www.theverge.com/podcast/975732/bose-ceo-lila-snyder-ai-wearables-licensing-headphones-audio",
+      "summary": "Today, I’m talking with Lila Snyder, who is the CEO of Bose. You certainly know Bose — it’s one of the most famous brands in all of consumer tech. The company started 60 years ago selling speakers to consumers, and its f...",
+      "tags": [
+        "AI"
       ]
     },
     {
@@ -101,125 +216,66 @@
       "tags": [
         "ChatGPT"
       ]
-    },
-    {
-      "title": "How Zapier transformed core marketing processes with ChatGPT Work",
-      "source": "OpenAI News",
-      "date": "2026-08-10",
-      "url": "https://openai.com/index/zapier",
-      "summary": "The enterprise marketing team at Zapier uses ChatGPT Work to reduce the number of drop-offs in its lead funnel, build campaign assets, and automate reporting.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Virgin Atlantic sharpens customer journeys with ChatGPT Work",
-      "source": "OpenAI News",
-      "date": "2026-08-10",
-      "url": "https://openai.com/index/virgin-atlantic/chatgpt-work",
-      "summary": "Virgin Atlantic is accelerating research, product planning, and decision-making with ChatGPT Work, helping teams connect signals across the customer journey.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Mark Zuckerberg doesn’t understand how to live",
-      "source": "The Verge AI",
-      "date": "2026-08-10",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/977623/mark-zuckerberg-ai-manifesto-dim-vision",
-      "summary": "Recently, a man I was rock climbing with told me about how he'd used AI to make a motivational poster for himself, which he'd hung on his bedroom wall: a bear, walking a slackline over a canyon, holding a sign that said,...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Responding to the next frontier of critical cyber capabilities",
-      "source": "OpenAI News",
-      "date": "2026-08-07",
-      "url": "https://openai.com/index/responding-next-frontier-critical-cyber-capabilities",
-      "summary": "OpenAI is sharing preliminary cybersecurity evaluations for Astra and the steps we’re taking to strengthen safeguards and security controls.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "How HSP GRUPPE builds AI capabilities for tax advisory",
-      "source": "OpenAI News",
-      "date": "2026-08-07",
-      "url": "https://openai.com/index/hsp-gruppe",
-      "summary": "Discover how HSP GRUPPE uses ChatGPT Enterprise to boost productivity, improve work quality, and create more capacity for tax advisory and client service.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "AI detectors are creating a new era of distrust",
-      "source": "The Verge AI",
-      "date": "2026-08-07",
-      "url": "https://www.theverge.com/column/976690/ai-writing-detectors-suspicion",
-      "summary": "This is The Stepback, a weekly newsletter breaking down one essential story from the tech world. For more news about how AI is changing our daily lives, follow Emma Roth. The Stepback arrives in our subscribers' inboxes ...",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Fenix Flexin isn’t even denying using AI to make ‘Rubberz’ anymore",
-      "source": "The Verge AI",
-      "date": "2026-08-07",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/976801/fenix-flexin-rubberz-ai-song-treblo",
-      "summary": "It took long enough, but now LA rapper Fenix Flexin appears to have admitted using AI for the 80s synth pop-themed song \"Rubberz.\" His comments follow the producer Medasin's videos claiming that an AI tool called Treblo ...",
-      "tags": [
-        "Multimodal"
-      ]
-    },
-    {
-      "title": "Watching Roku’s AI channel is like eating from a trough",
-      "source": "The Verge AI",
-      "date": "2026-08-07",
-      "url": "https://www.theverge.com/entertainment/976939/roku-fairground-ai-fast-channel",
-      "summary": "The appeal of free ad-supported streaming television (FAST) channels has always been the way they make it easier to (re)discover classic films and series. But Roku's latest experiment in the FAST space has less to do wit...",
-      "tags": [
-        "Multimodal"
-      ]
-    },
-    {
-      "title": "OpenAI puts the brakes on a new model because it&#8217;s supposedly too powerful",
-      "source": "The Verge AI",
-      "date": "2026-08-07",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/976948/openai-astra-model-pause-critical-cyber-capabilities",
-      "summary": "OpenAI says it is pausing \"internal activities\" around an in-development AI model, Astra, because it doesn't yet meet new security standards the company is putting in place. The announcement follows its recent disclosure...",
-      "tags": [
-        "ChatGPT",
-        "Claude",
-        "Models"
-      ]
-    },
-    {
-      "title": "What&#8217;s behind the Google AI shake-up",
-      "source": "The Verge AI",
-      "date": "2026-08-07",
-      "url": "https://www.theverge.com/podcast/976784/google-deepmind-ai-race-vergecast",
-      "summary": "Some of the biggest names on Google's AI team got new jobs this week. In some cases, including for legendary Googler Jeff Dean, those jobs are no longer at Google. Given that Google's models seem to be behind the best of...",
-      "tags": [
-        "ChatGPT",
-        "Claude",
-        "Gemini",
-        "Models"
-      ]
-    },
-    {
-      "title": "A guide to slash commands in the GitHub Copilot app",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-08-06",
-      "url": "https://github.blog/ai-and-ml/github-copilot/a-guide-to-slash-commands-in-the-github-copilot-app/",
-      "summary": "Go beyond chat in the GitHub Copilot app with these slash commands. They'll help you plan, collaborate, automate, and customize your dev workflow. The post A guide to slash commands in the GitHub Copilot app appeared fir...",
-      "tags": [
-        "Copilot",
-        "Automation"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Saber denies replacing Rideshare Stimulator&#8217;s writers with ChatGPT",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/games/978558/rideshare-stimulator-writer-ai-saber-interactive",
+          "date": "2026-08-12"
+        },
+        {
+          "title": "Testing ads in ChatGPT",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/testing-ads-in-chatgpt",
+          "date": "2026-08-11"
+        },
+        {
+          "title": "ChatGPT and Gemini both just passed 1 billion users",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/978113/chatgpt-gemini-1-billion-users",
+          "date": "2026-08-11"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "ChatGPT and Gemini both just passed 1 billion users",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/978113/chatgpt-gemini-1-billion-users",
+          "date": "2026-08-11"
+        },
+        {
+          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
+          "date": "2026-07-28"
+        }
+      ]
+    },
+    {
+      "label": "Claude research and documentation flow",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Claude will apply invisible watermarks to AI text and images",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/977823/anthropic-claude-ai-watermarks-c2pa-text-images",
+          "date": "2026-08-11"
+        }
+      ]
+    },
     {
       "label": "AI developer tooling",
       "status": "safe-data-candidate",
@@ -290,31 +346,6 @@
       ]
     },
     {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Premium seats are coming to ChatGPT Business",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/premium-seats-chatgpt-business",
-          "date": "2026-08-10"
-        },
-        {
-          "title": "How Zapier transformed core marketing processes with ChatGPT Work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/zapier",
-          "date": "2026-08-10"
-        },
-        {
-          "title": "Virgin Atlantic sharpens customer journeys with ChatGPT Work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/virgin-atlantic/chatgpt-work",
-          "date": "2026-08-10"
-        }
-      ]
-    },
-    {
       "label": "AI coding assistant workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
@@ -330,25 +361,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/copilot-vs-raw-api-access-what-are-you-actually-paying-for/",
           "date": "2026-07-22"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
-          "date": "2026-07-28"
-        },
-        {
-          "title": "Create, edit and star in videos with two Google Vids updates",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/products-and-platforms/products/workspace/gemini-omni-personal-avatars/",
-          "date": "2026-07-16"
         }
       ]
     }
