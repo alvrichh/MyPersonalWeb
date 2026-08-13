@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-08-12
+# Daily AI maintenance report — 2026-08-13
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,22 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Write your first prompt with the GitHub Copilot app** — GitHub AI & ML Blog · 2026-08-12
+  https://github.blog/ai-and-ml/github-copilot/write-your-first-prompt-with-the-github-copilot-app/
+- **From assistance to execution: How enterprises put AI to work** — OpenAI News · 2026-08-12
+  https://openai.com/index/how-enterprises-put-ai-to-work
+- **How RingCentral builds AI-native work from engineering to ops** — OpenAI News · 2026-08-12
+  https://openai.com/index/ringcentral
+- **Twitch streamers can now opt out from training Amazon’s AI** — The Verge AI · 2026-08-12
+  https://www.theverge.com/tech/979112/twitch-streamers-can-now-opt-out-from-training-amazons-ai
+- **Guitar company D’Addario admits that AI music was used in a promotional video** — The Verge AI · 2026-08-12
+  https://www.theverge.com/ai-artificial-intelligence/978982/daddario-guitar-ai-music-suno
+- **Google’s Pixel Watch 5 dives deeper into AI and health** — The Verge AI · 2026-08-12
+  https://www.theverge.com/tech/978094/pixel-watch-5-hands-on-made-by-google-gemini-wearables-smartwatch
+- **Of course the ChatGPT dog cancer vaccine spawned a startup** — The Verge AI · 2026-08-12
+  https://www.theverge.com/ai-artificial-intelligence/978671/ai-cured-dog-cancer-mrna-vaccine-startup-gamgee
+- **Grok is now an AI ‘teammate’ you can assign work** — The Verge AI · 2026-08-12
+  https://www.theverge.com/ai-artificial-intelligence/978666/spacexai-grok-bot-ai-agent-beta-launch
 - **Saber denies replacing Rideshare Stimulator&#8217;s writers with ChatGPT** — The Verge AI · 2026-08-12
   https://www.theverge.com/games/978558/rideshare-stimulator-writer-ai-saber-interactive
 - **AMIE, our research medical AI system, demonstrates real-time clinical video consultation capabilities in a first-of-its-kind study.** — Google AI Blog · 2026-08-11
@@ -25,16 +41,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/ai-artificial-intelligence/978113/chatgpt-gemini-1-billion-users
 - **Another OpenAI executive takes off** — The Verge AI · 2026-08-11
   https://www.theverge.com/ai-artificial-intelligence/978048/brad-lightcap-openai-executive-departure
-- **Made by Google 2026: all the Pixel news and announcements** — The Verge AI · 2026-08-11
-  https://www.theverge.com/tech/977561/made-by-google-2026-pixel-11-news
-- **‘Zoomsday’ hack uncovered using fewer than 20 AI prompts** — The Verge AI · 2026-08-11
-  https://www.theverge.com/ai-artificial-intelligence/977909/zoom-vulnerability-ai-attack
-- **Why your Amazon order confirmation emails have become so unhelpful** — The Verge AI · 2026-08-11
-  https://www.theverge.com/ai-artificial-intelligence/977733/amazon-order-emails-google-gmail-ai-agents-data
-- **Spotify says it won&#8217;t recommend music from &#8216;AI Personas&#8217;** — The Verge AI · 2026-08-11
-  https://www.theverge.com/entertainment/977815/spotify-ai-persona-label-recommendations
-- **Claude will apply invisible watermarks to AI text and images** — The Verge AI · 2026-08-11
-  https://www.theverge.com/ai-artificial-intelligence/977823/anthropic-claude-ai-watermarks-c2pa-text-images
 - **Using the GitHub Copilot SDK for Java** — GitHub AI & ML Blog · 2026-08-10
   https://github.blog/engineering/using-the-github-copilot-sdk-for-java/
 - **Evolve your marketing with new AI tools** — Google AI Blog · 2026-08-10
@@ -45,12 +51,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/model-ml
 - **What building an AI-native finance function taught me** — OpenAI News · 2026-08-10
   https://openai.com/index/building-an-ai-native-finance-function
-- **Expanding Daybreak as the Cyber Defense Window Narrows** — OpenAI News · 2026-08-10
-  https://openai.com/index/expanding-daybreak-as-the-cyber-defense-window-narrows
 - **Putting frontier cyber models in more trusted hands** — OpenAI News · 2026-08-10
   https://openai.com/index/putting-frontier-cyber-models-in-more-trusted-hands
-- **Premium seats are coming to ChatGPT Business** — OpenAI News · 2026-08-10
-  https://openai.com/index/premium-seats-chatgpt-business
 - **A guide to slash commands in the GitHub Copilot app** — GitHub AI & ML Blog · 2026-08-06
   https://github.blog/ai-and-ml/github-copilot/a-guide-to-slash-commands-in-the-github-copilot-app/
 - **How the GitHub legal team used Copilot CLI to streamline their workflows** — GitHub AI & ML Blog · 2026-08-04
@@ -73,19 +75,16 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-getting-started/
 - **Copilot vs. raw API access: What are you actually paying for?** — GitHub AI & ML Blog · 2026-07-22
   https://github.blog/ai-and-ml/github-copilot/copilot-vs-raw-api-access-what-are-you-actually-paying-for/
-- **How to build interactive experiences with canvases** — GitHub AI & ML Blog · 2026-07-21
-  https://github.blog/ai-and-ml/github-copilot/how-to-build-interactive-experiences-with-canvases/
 - **Connect more of your apps to Search** — Google AI Blog · 2026-07-16
   https://blog.google/products-and-platforms/products/search/connected-apps/
 
 ## Portfolio candidates
 
-- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
