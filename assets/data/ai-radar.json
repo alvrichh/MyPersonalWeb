@@ -1,11 +1,125 @@
 {
-  "generatedAt": "2026-08-13T09:07:03.983Z",
-  "date": "2026-08-13",
+  "generatedAt": "2026-08-14T09:03:09.960Z",
+  "date": "2026-08-14",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "The builder’s guide to GPT‑5.6",
+      "source": "OpenAI News",
+      "date": "2026-08-13",
+      "url": "https://openai.com/index/builders-guide-to-gpt-5-6",
+      "summary": "Learn how startups use GPT-5.6 to build faster, more cost-efficient AI agents with smarter model selection and new Responses API capabilities.",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Models"
+      ]
+    },
+    {
+      "title": "Previewing Ultrafast mode: GPT-5.6 Sol at up to 14X the speed",
+      "source": "OpenAI News",
+      "date": "2026-08-13",
+      "url": "https://openai.com/index/previewing-ultrafast",
+      "summary": "Preview Ultrafast, a new OpenAI API service tier that runs GPT-5.6 Sol up to 14× faster. Powered by Cerebras, it delivers up to 750 output tokens per second.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "OpenAI appoints Dali Rajic as Chief Revenue Officer",
+      "source": "OpenAI News",
+      "date": "2026-08-13",
+      "url": "https://openai.com/index/dali-rajic-chief-revenue-officer",
+      "summary": "OpenAI appoints Dali Rajic as Chief Revenue Officer to lead its global revenue organization and help businesses realize the full value of AI.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Microsoft’s Clippy-like Mico character is no longer the face of Copilot",
+      "source": "The Verge AI",
+      "date": "2026-08-13",
+      "url": "https://www.theverge.com/tech/979871/microsoft-copilot-mico-retired",
+      "summary": "Microsoft Copilot will no longer show its emotive yellow blob, Mico, when you use the chatbot's voice mode. In a support page, Microsoft says it's going to move Mico to its Learn Live platform, where the avatar will have...",
+      "tags": [
+        "Copilot"
+      ]
+    },
+    {
+      "title": "OpenAI is losing its second executive this week",
+      "source": "The Verge AI",
+      "date": "2026-08-13",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/979815/openai-denise-dresser-leaving-executive-departure",
+      "summary": "Another OpenAI executive is departing. Denise Dresser, who joined OpenAI as its chief revenue officer in December after serving as CEO of Slack, will be leaving in the \"coming weeks\" to \"pursue other opportunities,\" she ...",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Suno is trying to look more like a real music production tool",
+      "source": "The Verge AI",
+      "date": "2026-08-13",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/979345/suno-studio-2-0-midi-chatbot-custom-effects",
+      "summary": "Suno is releasing Studio 2.0 with significant upgrades that push it closer to an actual digital audio workstation (DAW), rather than a bare-bones audio editor with generative AI features. The biggest addition is undoubte...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "I looked inside an AI generated movie, and the best parts were all human",
+      "source": "The Verge AI",
+      "date": "2026-08-13",
+      "url": "https://www.theverge.com/entertainment/977994/higgsfield-ai-cully-hill-boys-black-list",
+      "summary": "Imagine a trio of bumbling, English lads who fantasize about becoming megastars while knocking back a few pints in a grimy pub somewhere in London. Picture the guys chortling and trying to one-up each other's idealized v...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "Does Google even want to win at AI?",
+      "source": "The Verge AI",
+      "date": "2026-08-13",
+      "url": "https://www.theverge.com/podcast/979370/google-deepmind-ai-race-lose-jeff-dean-demis-hassabis",
+      "summary": "Today on Decoder, I’m talking with Hayden Field, The Verge’s senior AI reporter, about a question that’s been rocketing around the tech industry for the past week: Is Google losing the AI race? That’s because last week G...",
+      "tags": [
+        "Dev Tools",
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "Microsoft is combining its Copilot apps ahead of a ‘super app’",
+      "source": "The Verge AI",
+      "date": "2026-08-13",
+      "url": "https://www.theverge.com/tech/979466/microsoft-copilot-365-app-unified-experience",
+      "summary": "Microsoft is finally beginning to combine its consumer and commercial Copilot AI assistants into a single \"super app\" interface, starting with the Copilot and Microsoft 365 Copilot apps. Both personal and work accounts w...",
+      "tags": [
+        "Agents",
+        "Copilot"
+      ]
+    },
+    {
+      "title": "Twitch streamers can now opt out from training Amazon’s AI",
+      "source": "The Verge AI",
+      "date": "2026-08-13",
+      "url": "https://www.theverge.com/tech/979112/twitch-streamers-can-now-opt-out-from-training-amazons-ai",
+      "summary": "Twitch users can now opt out of allowing their content to be used to train Amazon's generative AI models. Opting out means that \"your streams, VODs, clips, stream chats, and pictures and text on your channel\" won't be us...",
+      "tags": [
+        "Models"
+      ]
+    },
+    {
+      "title": "Guitar company D’Addario admits that AI music was used in a promotional video",
+      "source": "The Verge AI",
+      "date": "2026-08-13",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/978982/daddario-guitar-ai-music-suno",
+      "summary": "After weeks of controversy and speculation, music company D'Addario has admitted that AI, specifically Suno, was used as part of a recent promotional video. For nearly two weeks, the company has denied the allegations, e...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
     {
       "title": "Write your first prompt with the GitHub Copilot app",
       "source": "GitHub AI & ML Blog",
@@ -38,26 +152,6 @@
       "tags": [
         "ChatGPT",
         "Dev Tools"
-      ]
-    },
-    {
-      "title": "Twitch streamers can now opt out from training Amazon’s AI",
-      "source": "The Verge AI",
-      "date": "2026-08-12",
-      "url": "https://www.theverge.com/tech/979112/twitch-streamers-can-now-opt-out-from-training-amazons-ai",
-      "summary": "Twitch users can now opt out of allowing their content to be used to train Amazon's generative AI models. Opting out means that \"your streams, VODs, clips, stream chats, and pictures and text on your channel\" won't be us...",
-      "tags": [
-        "Models"
-      ]
-    },
-    {
-      "title": "Guitar company D’Addario admits that AI music was used in a promotional video",
-      "source": "The Verge AI",
-      "date": "2026-08-12",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/978982/daddario-guitar-ai-music-suno",
-      "summary": "After weeks of controversy and speculation, music company D'Addario has admitted that AI, specifically Suno, was used as part of a recent promotional video. For nearly two weeks, the company has denied the allegations, e...",
-      "tags": [
-        "Multimodal"
       ]
     },
     {
@@ -121,134 +215,20 @@
       "tags": [
         "ChatGPT"
       ]
-    },
-    {
-      "title": "Daybreak models are now available on AWS",
-      "source": "OpenAI News",
-      "date": "2026-08-11",
-      "url": "https://openai.com/index/daybreak-models-are-now-available-on-aws",
-      "summary": "OpenAI and AWS are making Daybreak cybersecurity capabilities available through Amazon Bedrock to support enterprise security workflows.",
-      "tags": [
-        "ChatGPT",
-        "Automation",
-        "Models"
-      ]
-    },
-    {
-      "title": "ChatGPT and Gemini both just passed 1 billion users",
-      "source": "The Verge AI",
-      "date": "2026-08-11",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/978113/chatgpt-gemini-1-billion-users",
-      "summary": "For the 14th time, a Google product has hit 1 billion users. Google CEO Sundar Pichai posted on X that a billion people are using Gemini every month, and that Gemini is Google's fastest-growing product ever. A billion us...",
-      "tags": [
-        "ChatGPT",
-        "Gemini"
-      ]
-    },
-    {
-      "title": "Another OpenAI executive takes off",
-      "source": "The Verge AI",
-      "date": "2026-08-11",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/978048/brad-lightcap-openai-executive-departure",
-      "summary": "Brad Lightcap, OpenAI's special projects lead and the company's former COO, announced his departure after an eight-year stint at the AI lab. In an internal memo he later posted to X, Lightcap told colleagues he'd be star...",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Made by Google 2026: all the Pixel news and announcements",
-      "source": "The Verge AI",
-      "date": "2026-08-11",
-      "url": "https://www.theverge.com/tech/977561/made-by-google-2026-pixel-11-news",
-      "summary": "Google is gearing up to reveal a bunch of new Pixel devices on August 12th. A series of leaks leading up to the event suggest that the Pixel 11 lineup will come in an array of colors, with signs pointing to a built-in li...",
-      "tags": [
-        "Models"
-      ]
-    },
-    {
-      "title": "‘Zoomsday’ hack uncovered using fewer than 20 AI prompts",
-      "source": "The Verge AI",
-      "date": "2026-08-11",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/977909/zoom-vulnerability-ai-attack",
-      "summary": "Zoom has patched a major security vulnerability that could allow an attacker to hijack anyone's device during a meeting. In a blog post on Tuesday, researchers at A Security say they uncovered the flaw using \"fewer than ...",
-      "tags": [
-        "Models"
-      ]
-    },
-    {
-      "title": "Why your Amazon order confirmation emails have become so unhelpful",
-      "source": "The Verge AI",
-      "date": "2026-08-11",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/977733/amazon-order-emails-google-gmail-ai-agents-data",
-      "summary": "Earlier this summer, Amazon customers began noticing that emails related to their online orders looked sparse: Order confirmation emails didn't name specific items anymore, and instead listed only item categories. \"Your ...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Spotify says it won&#8217;t recommend music from &#8216;AI Personas&#8217;",
-      "source": "The Verge AI",
-      "date": "2026-08-11",
-      "url": "https://www.theverge.com/entertainment/977815/spotify-ai-persona-label-recommendations",
-      "summary": "Spotify will soon label AI artists and remove their music from your recommendations. The change, which will start rolling out in mid-September, means you'll see an \"AI Persona\" badge on an artist's profile across the app...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Claude will apply invisible watermarks to AI text and images",
-      "source": "The Verge AI",
-      "date": "2026-08-11",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/977823/anthropic-claude-ai-watermarks-c2pa-text-images",
-      "summary": "Anthropic has pledged to start marking Claude-generated text and images with machine-readable data, in an effort to comply with European rules for AI transparency. \"Generated text will carry embedded watermarks, and gene...",
-      "tags": [
-        "Claude",
-        "Multimodal"
-      ]
-    },
-    {
-      "title": "Using the GitHub Copilot SDK for Java",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-08-10",
-      "url": "https://github.blog/engineering/using-the-github-copilot-sdk-for-java/",
-      "summary": "Enterprise Java developers have a new superpower—drive GitHub Copilot from idiomatic Java code with annotations, virtual threads, and more. The post Using the GitHub Copilot SDK for Java appeared first on The GitHub Blog...",
-      "tags": [
-        "Copilot",
-        "Dev Tools"
-      ]
     }
   ],
   "candidates": [
-    {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Write your first prompt with the GitHub Copilot app",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/write-your-first-prompt-with-the-github-copilot-app/",
-          "date": "2026-08-12"
-        },
-        {
-          "title": "Using the GitHub Copilot SDK for Java",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/engineering/using-the-github-copilot-sdk-for-java/",
-          "date": "2026-08-10"
-        },
-        {
-          "title": "A guide to slash commands in the GitHub Copilot app",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/a-guide-to-slash-commands-in-the-github-copilot-app/",
-          "date": "2026-08-06"
-        }
-      ]
-    },
     {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "The builder’s guide to GPT‑5.6",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/builders-guide-to-gpt-5-6",
+          "date": "2026-08-13"
+        },
         {
           "title": "From assistance to execution: How enterprises put AI to work",
           "source": "OpenAI News",
@@ -256,16 +236,35 @@
           "date": "2026-08-12"
         },
         {
-          "title": "Grok is now an AI ‘teammate’ you can assign work",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/978666/spacexai-grok-bot-ai-agent-beta-launch",
-          "date": "2026-08-12"
-        },
-        {
           "title": "Evolve your marketing with new AI tools",
           "source": "Google AI Blog",
           "link": "https://blog.google/products/ads-commerce/google-ads-analytics-ai-updates/",
           "date": "2026-08-10"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Microsoft’s Clippy-like Mico character is no longer the face of Copilot",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/979871/microsoft-copilot-mico-retired",
+          "date": "2026-08-13"
+        },
+        {
+          "title": "Microsoft is combining its Copilot apps ahead of a ‘super app’",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/979466/microsoft-copilot-365-app-unified-experience",
+          "date": "2026-08-13"
+        },
+        {
+          "title": "Write your first prompt with the GitHub Copilot app",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/write-your-first-prompt-with-the-github-copilot-app/",
+          "date": "2026-08-12"
         }
       ]
     },
@@ -287,29 +286,10 @@
           "date": "2026-08-12"
         },
         {
-          "title": "Of course the ChatGPT dog cancer vaccine spawned a startup",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/978671/ai-cured-dog-cancer-mrna-vaccine-startup-gamgee",
-          "date": "2026-08-12"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "ChatGPT and Gemini both just passed 1 billion users",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/978113/chatgpt-gemini-1-billion-users",
+          "title": "Testing ads in ChatGPT",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/testing-ads-in-chatgpt",
           "date": "2026-08-11"
-        },
-        {
-          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
-          "date": "2026-07-28"
         }
       ]
     },
@@ -348,6 +328,19 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/copilot-vs-raw-api-access-what-are-you-actually-paying-for/",
           "date": "2026-07-22"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
+          "date": "2026-07-28"
         }
       ]
     }
