@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-08-14
+# Daily AI maintenance report — 2026-08-15
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,14 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **How to bring your software delivery workflow into GitHub with agent apps** — GitHub AI & ML Blog · 2026-08-14
+  https://github.blog/ai-and-ml/github-copilot/how-to-bring-your-software-delivery-workflow-into-github-with-agent-apps/
+- **You can now turn off Google Gemini&#8217;s visible watermarks** — The Verge AI · 2026-08-14
+  https://www.theverge.com/tech/980416/google-gemini-ai-watermarks-removal
+- **Apple trained its own AI model for China with help from Alibaba** — The Verge AI · 2026-08-14
+  https://www.theverge.com/ai-artificial-intelligence/980160/apple-intelligence-china-custom-ai-model-alibaba
+- **Suno is trying to look more like a real music production tool** — The Verge AI · 2026-08-14
+  https://www.theverge.com/ai-artificial-intelligence/979345/suno-studio-2-0-midi-chatbot-custom-effects
 - **The builder’s guide to GPT‑5.6** — OpenAI News · 2026-08-13
   https://openai.com/index/builders-guide-to-gpt-5-6
 - **Previewing Ultrafast mode: GPT-5.6 Sol at up to 14X the speed** — OpenAI News · 2026-08-13
@@ -23,18 +31,12 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/tech/979871/microsoft-copilot-mico-retired
 - **OpenAI is losing its second executive this week** — The Verge AI · 2026-08-13
   https://www.theverge.com/ai-artificial-intelligence/979815/openai-denise-dresser-leaving-executive-departure
-- **Suno is trying to look more like a real music production tool** — The Verge AI · 2026-08-13
-  https://www.theverge.com/ai-artificial-intelligence/979345/suno-studio-2-0-midi-chatbot-custom-effects
 - **I looked inside an AI generated movie, and the best parts were all human** — The Verge AI · 2026-08-13
   https://www.theverge.com/entertainment/977994/higgsfield-ai-cully-hill-boys-black-list
 - **Does Google even want to win at AI?** — The Verge AI · 2026-08-13
   https://www.theverge.com/podcast/979370/google-deepmind-ai-race-lose-jeff-dean-demis-hassabis
 - **Microsoft is combining its Copilot apps ahead of a ‘super app’** — The Verge AI · 2026-08-13
   https://www.theverge.com/tech/979466/microsoft-copilot-365-app-unified-experience
-- **Twitch streamers can now opt out from training Amazon’s AI** — The Verge AI · 2026-08-13
-  https://www.theverge.com/tech/979112/twitch-streamers-can-now-opt-out-from-training-amazons-ai
-- **Guitar company D’Addario admits that AI music was used in a promotional video** — The Verge AI · 2026-08-13
-  https://www.theverge.com/ai-artificial-intelligence/978982/daddario-guitar-ai-music-suno
 - **Write your first prompt with the GitHub Copilot app** — GitHub AI & ML Blog · 2026-08-12
   https://github.blog/ai-and-ml/github-copilot/write-your-first-prompt-with-the-github-copilot-app/
 - **From assistance to execution: How enterprises put AI to work** — OpenAI News · 2026-08-12
@@ -73,19 +75,17 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://github.blog/ai-and-ml/github-copilot/the-harness-is-all-you-need-mostly/
 - **GitHub Copilot app for Beginners: Getting started** — GitHub AI & ML Blog · 2026-07-27
   https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-getting-started/
-- **Copilot vs. raw API access: What are you actually paying for?** — GitHub AI & ML Blog · 2026-07-22
-  https://github.blog/ai-and-ml/github-copilot/copilot-vs-raw-api-access-what-are-you-actually-paying-for/
 - **Connect more of your apps to Search** — Google AI Blog · 2026-07-16
   https://blog.google/products-and-platforms/products/search/connected-apps/
 
 ## Portfolio candidates
 
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
 
