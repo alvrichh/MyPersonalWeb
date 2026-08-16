@@ -1,11 +1,21 @@
 {
-  "generatedAt": "2026-08-15T08:21:35.891Z",
-  "date": "2026-08-15",
+  "generatedAt": "2026-08-16T08:23:14.632Z",
+  "date": "2026-08-16",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Have a laugh at AI’s expense by roleplaying as a chatbot",
+      "source": "The Verge AI",
+      "date": "2026-08-15",
+      "url": "https://www.theverge.com/entertainment/980502/roleplay-as-an-ai-chatbot",
+      "summary": "Your AI Slop Bores Me is brilliant in its simplicity. There are two tabs: human and LARP as an AI. On one side you enter a request. On the other, you submit an answer. But the important thing is that there's a human on b...",
+      "tags": [
+        "AI"
+      ]
+    },
     {
       "title": "How to bring your software delivery workflow into GitHub with agent apps",
       "source": "GitHub AI & ML Blog",
@@ -207,16 +217,6 @@
         "Agents",
         "ChatGPT"
       ]
-    },
-    {
-      "title": "Grok is now an AI ‘teammate’ you can assign work",
-      "source": "The Verge AI",
-      "date": "2026-08-12",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/978666/spacexai-grok-bot-ai-agent-beta-launch",
-      "summary": "SpaceXAI has introduced Grok Bot, an always-on AI agent service designed to behave like independent \"AI teammates\" that can do your work for you. The bots share their own cloud-based computer environment, and can sign in...",
-      "tags": [
-        "Agents"
-      ]
     }
   ],
   "candidates": [
@@ -276,16 +276,16 @@
           "date": "2026-08-13"
         },
         {
-          "title": "Microsoft is combining its Copilot apps ahead of a ‘super app’",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/979466/microsoft-copilot-365-app-unified-experience",
-          "date": "2026-08-13"
-        },
-        {
           "title": "Write your first prompt with the GitHub Copilot app",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/write-your-first-prompt-with-the-github-copilot-app/",
           "date": "2026-08-12"
+        },
+        {
+          "title": "Using the GitHub Copilot SDK for Java",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/engineering/using-the-github-copilot-sdk-for-java/",
+          "date": "2026-08-10"
         }
       ]
     },

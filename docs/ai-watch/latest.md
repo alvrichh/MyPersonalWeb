@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-08-15
+# Daily AI maintenance report — 2026-08-16
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Have a laugh at AI’s expense by roleplaying as a chatbot** — The Verge AI · 2026-08-15
+  https://www.theverge.com/entertainment/980502/roleplay-as-an-ai-chatbot
 - **How to bring your software delivery workflow into GitHub with agent apps** — GitHub AI & ML Blog · 2026-08-14
   https://github.blog/ai-and-ml/github-copilot/how-to-bring-your-software-delivery-workflow-into-github-with-agent-apps/
 - **You can now turn off Google Gemini&#8217;s visible watermarks** — The Verge AI · 2026-08-14
@@ -35,8 +37,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/entertainment/977994/higgsfield-ai-cully-hill-boys-black-list
 - **Does Google even want to win at AI?** — The Verge AI · 2026-08-13
   https://www.theverge.com/podcast/979370/google-deepmind-ai-race-lose-jeff-dean-demis-hassabis
-- **Microsoft is combining its Copilot apps ahead of a ‘super app’** — The Verge AI · 2026-08-13
-  https://www.theverge.com/tech/979466/microsoft-copilot-365-app-unified-experience
 - **Write your first prompt with the GitHub Copilot app** — GitHub AI & ML Blog · 2026-08-12
   https://github.blog/ai-and-ml/github-copilot/write-your-first-prompt-with-the-github-copilot-app/
 - **From assistance to execution: How enterprises put AI to work** — OpenAI News · 2026-08-12
