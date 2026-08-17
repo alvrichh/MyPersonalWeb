@@ -1,15 +1,48 @@
 {
-  "generatedAt": "2026-08-16T08:23:14.632Z",
-  "date": "2026-08-16",
+  "generatedAt": "2026-08-17T08:36:54.095Z",
+  "date": "2026-08-17",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
     {
+      "title": "Get closer to the game with Gemini and Pixel",
+      "source": "Google AI Blog",
+      "date": "2026-08-17",
+      "url": "https://blog.google/products-and-platforms/products/gemini/google-gemini-pixel-football-club-partnerships/",
+      "summary": "Google Gemini and Pixel partner with five global football clubs to elevate the fan matchday experience through AI and Smartphone Technology.",
+      "tags": [
+        "Gemini"
+      ]
+    },
+    {
+      "title": "OpenAI reportedly disbanded its preparedness team",
+      "source": "The Verge AI",
+      "date": "2026-08-16",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/980817/openai-disbands-preparedness-team",
+      "summary": "According to the Financial Times, OpenAI disbanded its preparedness team at the end of last month. The job of the preparedness team was to assess if models posed serious risks and develop ways to mitigate those risks. (Y...",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ]
+    },
+    {
+      "title": "ChatGPT’s Computer History tracks your clicks and keystrokes",
+      "source": "The Verge AI",
+      "date": "2026-08-16",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/980742/chatgpts-computer-history-tracks-your-clicks-and-keystrokes",
+      "summary": "ChatGPT's desktop app on macOS has a new feature called Computer History that turns your actions into training data, learning how you work, suggesting automations, and even picking up tasks you left half done. It uses yo...",
+      "tags": [
+        "ChatGPT",
+        "Dev Tools",
+        "Automation"
+      ]
+    },
+    {
       "title": "Have a laugh at AI’s expense by roleplaying as a chatbot",
       "source": "The Verge AI",
-      "date": "2026-08-15",
+      "date": "2026-08-16",
       "url": "https://www.theverge.com/entertainment/980502/roleplay-as-an-ai-chatbot",
       "summary": "Your AI Slop Bores Me is brilliant in its simplicity. There are two tabs: human and LARP as an AI. On one side you enter a request. On the other, you submit an answer. But the important thing is that there's a human on b...",
       "tags": [
@@ -25,6 +58,17 @@
       "tags": [
         "Agents",
         "Automation"
+      ]
+    },
+    {
+      "title": "Rogue AI aren’t science fiction anymore",
+      "source": "The Verge AI",
+      "date": "2026-08-14",
+      "url": "https://www.theverge.com/column/980337/rogue-ai-science-fiction-openai",
+      "summary": "This is The Stepback, a weekly newsletter breaking down one essential story from the tech world. For more on AI safety, follow Robert Hart. The Stepback arrives in our subscribers' inboxes at 8AM ET. Opt in for The Stepb...",
+      "tags": [
+        "Agents",
+        "ChatGPT"
       ]
     },
     {
@@ -47,16 +91,6 @@
       "summary": "Apple has reportedly trained a custom AI model for the China market alongside domestic tech giant Alibaba, a rare cross-border partnership that cuts across growing tensions between Beijing and Washington. The China-focus...",
       "tags": [
         "Models"
-      ]
-    },
-    {
-      "title": "Suno is trying to look more like a real music production tool",
-      "source": "The Verge AI",
-      "date": "2026-08-14",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/979345/suno-studio-2-0-midi-chatbot-custom-effects",
-      "summary": "Suno is releasing Studio 2.0 with significant upgrades that push it closer to an actual digital audio workstation (DAW), rather than a bare-bones audio editor with generative AI features. The biggest addition is undoubte...",
-      "tags": [
-        "Multimodal"
       ]
     },
     {
@@ -99,6 +133,16 @@
       "summary": "Microsoft Copilot will no longer show its emotive yellow blob, Mico, when you use the chatbot's voice mode. In a support page, Microsoft says it's going to move Mico to its Learn Live platform, where the avatar will have...",
       "tags": [
         "Copilot"
+      ]
+    },
+    {
+      "title": "Suno is trying to look more like a real music production tool",
+      "source": "The Verge AI",
+      "date": "2026-08-14",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/979345/suno-studio-2-0-midi-chatbot-custom-effects",
+      "summary": "Suno is releasing Studio 2.0 with significant upgrades that push it closer to an actual digital audio workstation (DAW), rather than a bare-bones audio editor with generative AI features. The biggest addition is undoubte...",
+      "tags": [
+        "Multimodal"
       ]
     },
     {
@@ -173,53 +217,72 @@
         "Copilot",
         "Models"
       ]
-    },
-    {
-      "title": "From assistance to execution: How enterprises put AI to work",
-      "source": "OpenAI News",
-      "date": "2026-08-12",
-      "url": "https://openai.com/index/how-enterprises-put-ai-to-work",
-      "summary": "OpenAI research reveals how enterprises are adopting agentic AI, using ChatGPT and Codex, and how frontier firms are pulling ahead in AI adoption.",
-      "tags": [
-        "Agents",
-        "ChatGPT",
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "How RingCentral builds AI-native work from engineering to ops",
-      "source": "OpenAI News",
-      "date": "2026-08-12",
-      "url": "https://openai.com/index/ringcentral",
-      "summary": "See how RingCentral uses ChatGPT Work and Codex to accelerate AI product development and centralize operational intelligence across engineering and operations.",
-      "tags": [
-        "ChatGPT",
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "Google’s Pixel Watch 5 dives deeper into AI and health",
-      "source": "The Verge AI",
-      "date": "2026-08-12",
-      "url": "https://www.theverge.com/tech/978094/pixel-watch-5-hands-on-made-by-google-gemini-wearables-smartwatch",
-      "summary": "The $399 Google Pixel Watch 5 isn't about the hardware. Sure, there's a new satin pyrite case finish, a few new strap colors, and a Steph Curry Special Edition. Under the hood, there's a slightly faster Qualcomm processo...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Of course the ChatGPT dog cancer vaccine spawned a startup",
-      "source": "The Verge AI",
-      "date": "2026-08-12",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/978671/ai-cured-dog-cancer-mrna-vaccine-startup-gamgee",
-      "summary": "Remember that much-hyped story about an Australian tech entrepreneur using ChatGPT, Grok, and other AI tools to craft a personalized cancer vaccine for his dog? Well, surprise: He's launched a startup. That entrepreneur ...",
-      "tags": [
-        "Agents",
-        "ChatGPT"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Get closer to the game with Gemini and Pixel",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/products-and-platforms/products/gemini/google-gemini-pixel-football-club-partnerships/",
+          "date": "2026-08-17"
+        },
+        {
+          "title": "You can now turn off Google Gemini&#8217;s visible watermarks",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/980416/google-gemini-ai-watermarks-removal",
+          "date": "2026-08-14"
+        },
+        {
+          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
+          "date": "2026-07-28"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "ChatGPT’s Computer History tracks your clicks and keystrokes",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/980742/chatgpts-computer-history-tracks-your-clicks-and-keystrokes",
+          "date": "2026-08-16"
+        },
+        {
+          "title": "From assistance to execution: How enterprises put AI to work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/how-enterprises-put-ai-to-work",
+          "date": "2026-08-12"
+        },
+        {
+          "title": "How RingCentral builds AI-native work from engineering to ops",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/ringcentral",
+          "date": "2026-08-12"
+        }
+      ]
+    },
+    {
+      "label": "AI automation and workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "ChatGPT’s Computer History tracks your clicks and keystrokes",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/980742/chatgpts-computer-history-tracks-your-clicks-and-keystrokes",
+          "date": "2026-08-16"
+        }
+      ]
+    },
     {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
@@ -232,35 +295,16 @@
           "date": "2026-08-14"
         },
         {
+          "title": "Rogue AI aren’t science fiction anymore",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/column/980337/rogue-ai-science-fiction-openai",
+          "date": "2026-08-14"
+        },
+        {
           "title": "The builder’s guide to GPT‑5.6",
           "source": "OpenAI News",
           "link": "https://openai.com/index/builders-guide-to-gpt-5-6",
           "date": "2026-08-13"
-        },
-        {
-          "title": "From assistance to execution: How enterprises put AI to work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/how-enterprises-put-ai-to-work",
-          "date": "2026-08-12"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "You can now turn off Google Gemini&#8217;s visible watermarks",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/980416/google-gemini-ai-watermarks-removal",
-          "date": "2026-08-14"
-        },
-        {
-          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
-          "date": "2026-07-28"
         }
       ]
     },
@@ -286,31 +330,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/engineering/using-the-github-copilot-sdk-for-java/",
           "date": "2026-08-10"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "From assistance to execution: How enterprises put AI to work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/how-enterprises-put-ai-to-work",
-          "date": "2026-08-12"
-        },
-        {
-          "title": "How RingCentral builds AI-native work from engineering to ops",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/ringcentral",
-          "date": "2026-08-12"
-        },
-        {
-          "title": "Testing ads in ChatGPT",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/testing-ads-in-chatgpt",
-          "date": "2026-08-11"
         }
       ]
     },
