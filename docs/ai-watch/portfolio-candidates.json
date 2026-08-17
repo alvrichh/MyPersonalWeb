@@ -1,6 +1,69 @@
 {
-  "generatedAt": "2026-08-16T08:23:14.632Z",
+  "generatedAt": "2026-08-17T08:36:54.095Z",
   "candidates": [
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Get closer to the game with Gemini and Pixel",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/products-and-platforms/products/gemini/google-gemini-pixel-football-club-partnerships/",
+          "date": "2026-08-17"
+        },
+        {
+          "title": "You can now turn off Google Gemini&#8217;s visible watermarks",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/980416/google-gemini-ai-watermarks-removal",
+          "date": "2026-08-14"
+        },
+        {
+          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
+          "date": "2026-07-28"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "ChatGPT’s Computer History tracks your clicks and keystrokes",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/980742/chatgpts-computer-history-tracks-your-clicks-and-keystrokes",
+          "date": "2026-08-16"
+        },
+        {
+          "title": "From assistance to execution: How enterprises put AI to work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/how-enterprises-put-ai-to-work",
+          "date": "2026-08-12"
+        },
+        {
+          "title": "How RingCentral builds AI-native work from engineering to ops",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/ringcentral",
+          "date": "2026-08-12"
+        }
+      ]
+    },
+    {
+      "label": "AI automation and workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "ChatGPT’s Computer History tracks your clicks and keystrokes",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/980742/chatgpts-computer-history-tracks-your-clicks-and-keystrokes",
+          "date": "2026-08-16"
+        }
+      ]
+    },
     {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
@@ -13,35 +76,16 @@
           "date": "2026-08-14"
         },
         {
+          "title": "Rogue AI aren’t science fiction anymore",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/column/980337/rogue-ai-science-fiction-openai",
+          "date": "2026-08-14"
+        },
+        {
           "title": "The builder’s guide to GPT‑5.6",
           "source": "OpenAI News",
           "link": "https://openai.com/index/builders-guide-to-gpt-5-6",
           "date": "2026-08-13"
-        },
-        {
-          "title": "From assistance to execution: How enterprises put AI to work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/how-enterprises-put-ai-to-work",
-          "date": "2026-08-12"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "You can now turn off Google Gemini&#8217;s visible watermarks",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/980416/google-gemini-ai-watermarks-removal",
-          "date": "2026-08-14"
-        },
-        {
-          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
-          "date": "2026-07-28"
         }
       ]
     },
@@ -67,31 +111,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/engineering/using-the-github-copilot-sdk-for-java/",
           "date": "2026-08-10"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "From assistance to execution: How enterprises put AI to work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/how-enterprises-put-ai-to-work",
-          "date": "2026-08-12"
-        },
-        {
-          "title": "How RingCentral builds AI-native work from engineering to ops",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/ringcentral",
-          "date": "2026-08-12"
-        },
-        {
-          "title": "Testing ads in ChatGPT",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/testing-ads-in-chatgpt",
-          "date": "2026-08-11"
         }
       ]
     },
