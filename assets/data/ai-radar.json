@@ -1,11 +1,22 @@
 {
-  "generatedAt": "2026-08-17T08:36:54.095Z",
-  "date": "2026-08-17",
+  "generatedAt": "2026-08-18T08:30:42.674Z",
+  "date": "2026-08-18",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "How canvases make agentic workflows visible, steerable, and cost-efficient",
+      "source": "GitHub AI & ML Blog",
+      "date": "2026-08-17",
+      "url": "https://github.blog/ai-and-ml/github-copilot/how-canvases-make-agentic-workflows-visible-steerable-and-cost-efficient/",
+      "summary": "Chat is great for intent, but agent work gets lost in the scroll. Here is how I use canvases with my agentic workflows—and why your workflow also deserves a canvas. The post How canvases make agentic workflows visible, s...",
+      "tags": [
+        "Agents",
+        "Automation"
+      ]
+    },
     {
       "title": "Get closer to the game with Gemini and Pixel",
       "source": "Google AI Blog",
@@ -17,9 +28,59 @@
       ]
     },
     {
+      "title": "The Defender’s Window",
+      "source": "OpenAI News",
+      "date": "2026-08-17",
+      "url": "https://openai.com/index/the-defenders-window",
+      "summary": "AI is reshaping cybersecurity for attackers and defenders alike. Learn how OpenAI is strengthening its defenses and what security teams can do now.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "OpenAI joins PORTS-Pike project",
+      "source": "OpenAI News",
+      "date": "2026-08-17",
+      "url": "https://openai.com/index/openai-joins-ports-pike-project",
+      "summary": "OpenAI joins PORTS-Pike project, expanding community investment and supporting thousands of Southern Ohio jobs",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "New policy ideas for the Intelligence Age",
+      "source": "OpenAI News",
+      "date": "2026-08-17",
+      "url": "https://openai.com/index/new-policy-ideas-for-the-intelligence-age",
+      "summary": "OpenAI funds 14 independent projects exploring new AI policy ideas to expand economic opportunity and strengthen societal resilience in the Intelligence Age.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Whisker’s AI-powered litter robot thinks my cats swapped bodies",
+      "source": "The Verge AI",
+      "date": "2026-08-17",
+      "url": "https://www.theverge.com/tech/978323/whisker-litter-robot-5-pro-review",
+      "summary": "The greatest invention in pet tech in recent years is the litter robot. A machine that scoops your kitties' poop so you don't have to - what else could a cat owner possibly want? How about insights into your kitty's litt...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Anthropic explains how Claude&#8217;s invisible text watermarks will work",
+      "source": "The Verge AI",
+      "date": "2026-08-17",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/980869/anthropic-claude-watermarks-synthid-text-system",
+      "summary": "Anthropic has clarified how it's planning to apply invisible watermarks to Claude-generated text in order to comply with Europe's AI transparency rules. On Friday, Anthropic announced that Claude's text marking system is...",
+      "tags": [
+        "Claude"
+      ]
+    },
+    {
       "title": "OpenAI reportedly disbanded its preparedness team",
       "source": "The Verge AI",
-      "date": "2026-08-16",
+      "date": "2026-08-17",
       "url": "https://www.theverge.com/ai-artificial-intelligence/980817/openai-disbands-preparedness-team",
       "summary": "According to the Financial Times, OpenAI disbanded its preparedness team at the end of last month. The job of the preparedness team was to assess if models posed serious risks and develop ways to mitigate those risks. (Y...",
       "tags": [
@@ -30,7 +91,7 @@
     {
       "title": "ChatGPT’s Computer History tracks your clicks and keystrokes",
       "source": "The Verge AI",
-      "date": "2026-08-16",
+      "date": "2026-08-17",
       "url": "https://www.theverge.com/ai-artificial-intelligence/980742/chatgpts-computer-history-tracks-your-clicks-and-keystrokes",
       "summary": "ChatGPT's desktop app on macOS has a new feature called Computer History that turns your actions into training data, learning how you work, suggesting automations, and even picking up tasks you left half done. It uses yo...",
       "tags": [
@@ -42,9 +103,9 @@
     {
       "title": "Have a laugh at AI’s expense by roleplaying as a chatbot",
       "source": "The Verge AI",
-      "date": "2026-08-16",
+      "date": "2026-08-17",
       "url": "https://www.theverge.com/entertainment/980502/roleplay-as-an-ai-chatbot",
-      "summary": "Your AI Slop Bores Me is brilliant in its simplicity. There are two tabs: human and LARP as an AI. On one side you enter a request. On the other, you submit an answer. But the important thing is that there's a human on b...",
+      "summary": "Your AI Slop Bores Me is brilliant in its simplicity. There are two tabs: human and LARP as an AI. On one side, you enter a request. On the other, you submit an answer. But the important thing is that there's a human on ...",
       "tags": [
         "AI"
       ]
@@ -154,72 +215,34 @@
       "tags": [
         "ChatGPT"
       ]
-    },
-    {
-      "title": "I looked inside an AI generated movie, and the best parts were all human",
-      "source": "The Verge AI",
-      "date": "2026-08-13",
-      "url": "https://www.theverge.com/entertainment/977994/higgsfield-ai-cully-hill-boys-black-list",
-      "summary": "Imagine a trio of bumbling, English lads who fantasize about becoming megastars while knocking back a few pints in a grimy pub somewhere in London. Picture the guys chortling and trying to one-up each other's idealized v...",
-      "tags": [
-        "Multimodal"
-      ]
-    },
-    {
-      "title": "Does Google even want to win at AI?",
-      "source": "The Verge AI",
-      "date": "2026-08-13",
-      "url": "https://www.theverge.com/podcast/979370/google-deepmind-ai-race-lose-jeff-dean-demis-hassabis",
-      "summary": "Today on Decoder, I’m talking with Hayden Field, The Verge’s senior AI reporter, about a question that’s been rocketing around the tech industry for the past week: Is Google losing the AI race? That’s because last week G...",
-      "tags": [
-        "Dev Tools",
-        "Multimodal"
-      ]
-    },
-    {
-      "title": "Microsoft is combining its Copilot apps ahead of a ‘super app’",
-      "source": "The Verge AI",
-      "date": "2026-08-13",
-      "url": "https://www.theverge.com/tech/979466/microsoft-copilot-365-app-unified-experience",
-      "summary": "Microsoft is finally beginning to combine its consumer and commercial Copilot AI assistants into a single \"super app\" interface, starting with the Copilot and Microsoft 365 Copilot apps. Both personal and work accounts w...",
-      "tags": [
-        "Agents",
-        "Copilot"
-      ]
-    },
-    {
-      "title": "Twitch streamers can now opt out from training Amazon’s AI",
-      "source": "The Verge AI",
-      "date": "2026-08-13",
-      "url": "https://www.theverge.com/tech/979112/twitch-streamers-can-now-opt-out-from-training-amazons-ai",
-      "summary": "Twitch users can now opt out of allowing their content to be used to train Amazon's generative AI models. Opting out means that \"your streams, VODs, clips, stream chats, and pictures and text on your channel\" won't be us...",
-      "tags": [
-        "Models"
-      ]
-    },
-    {
-      "title": "Guitar company D’Addario admits that AI music was used in a promotional video",
-      "source": "The Verge AI",
-      "date": "2026-08-13",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/978982/daddario-guitar-ai-music-suno",
-      "summary": "After weeks of controversy and speculation, music company D'Addario has admitted that AI, specifically Suno, was used as part of a recent promotional video. For nearly two weeks, the company has denied the allegations, e...",
-      "tags": [
-        "Multimodal"
-      ]
-    },
-    {
-      "title": "Write your first prompt with the GitHub Copilot app",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-08-12",
-      "url": "https://github.blog/ai-and-ml/github-copilot/write-your-first-prompt-with-the-github-copilot-app/",
-      "summary": "Learn how to write your first prompt in the GitHub Copilot app, choose the right context and model, and start your first task with confidence. The post Write your first prompt with the GitHub Copilot app appeared first o...",
-      "tags": [
-        "Copilot",
-        "Models"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "How canvases make agentic workflows visible, steerable, and cost-efficient",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-canvases-make-agentic-workflows-visible-steerable-and-cost-efficient/",
+          "date": "2026-08-17"
+        },
+        {
+          "title": "How to bring your software delivery workflow into GitHub with agent apps",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-to-bring-your-software-delivery-workflow-into-github-with-agent-apps/",
+          "date": "2026-08-14"
+        },
+        {
+          "title": "Rogue AI aren’t science fiction anymore",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/column/980337/rogue-ai-science-fiction-openai",
+          "date": "2026-08-14"
+        }
+      ]
+    },
     {
       "label": "Gemini multimodal exploration",
       "status": "safe-data-candidate",
@@ -246,6 +269,19 @@
       ]
     },
     {
+      "label": "Claude research and documentation flow",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Anthropic explains how Claude&#8217;s invisible text watermarks will work",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/980869/anthropic-claude-watermarks-synthid-text-system",
+          "date": "2026-08-17"
+        }
+      ]
+    },
+    {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
@@ -254,7 +290,7 @@
           "title": "ChatGPT’s Computer History tracks your clicks and keystrokes",
           "source": "The Verge AI",
           "link": "https://www.theverge.com/ai-artificial-intelligence/980742/chatgpts-computer-history-tracks-your-clicks-and-keystrokes",
-          "date": "2026-08-16"
+          "date": "2026-08-17"
         },
         {
           "title": "From assistance to execution: How enterprises put AI to work",
@@ -279,32 +315,7 @@
           "title": "ChatGPT’s Computer History tracks your clicks and keystrokes",
           "source": "The Verge AI",
           "link": "https://www.theverge.com/ai-artificial-intelligence/980742/chatgpts-computer-history-tracks-your-clicks-and-keystrokes",
-          "date": "2026-08-16"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "How to bring your software delivery workflow into GitHub with agent apps",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/how-to-bring-your-software-delivery-workflow-into-github-with-agent-apps/",
-          "date": "2026-08-14"
-        },
-        {
-          "title": "Rogue AI aren’t science fiction anymore",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/column/980337/rogue-ai-science-fiction-openai",
-          "date": "2026-08-14"
-        },
-        {
-          "title": "The builder’s guide to GPT‑5.6",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/builders-guide-to-gpt-5-6",
-          "date": "2026-08-13"
+          "date": "2026-08-17"
         }
       ]
     },
@@ -314,13 +325,7 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Microsoft’s Clippy-like Mico character is no longer the face of Copilot",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/979871/microsoft-copilot-mico-retired",
-          "date": "2026-08-13"
-        },
-        {
-          "title": "Write your first prompt with the GitHub Copilot app",
+          "title": "GitHub Copilot app for Beginners: Write your first prompt",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/write-your-first-prompt-with-the-github-copilot-app/",
           "date": "2026-08-12"
@@ -330,6 +335,12 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/engineering/using-the-github-copilot-sdk-for-java/",
           "date": "2026-08-10"
+        },
+        {
+          "title": "A guide to slash commands in the GitHub Copilot app",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/a-guide-to-slash-commands-in-the-github-copilot-app/",
+          "date": "2026-08-06"
         }
       ]
     },

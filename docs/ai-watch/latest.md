@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-08-17
+# Daily AI maintenance report — 2026-08-18
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,13 +13,25 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **How canvases make agentic workflows visible, steerable, and cost-efficient** — GitHub AI & ML Blog · 2026-08-17
+  https://github.blog/ai-and-ml/github-copilot/how-canvases-make-agentic-workflows-visible-steerable-and-cost-efficient/
 - **Get closer to the game with Gemini and Pixel** — Google AI Blog · 2026-08-17
   https://blog.google/products-and-platforms/products/gemini/google-gemini-pixel-football-club-partnerships/
-- **OpenAI reportedly disbanded its preparedness team** — The Verge AI · 2026-08-16
+- **The Defender’s Window** — OpenAI News · 2026-08-17
+  https://openai.com/index/the-defenders-window
+- **OpenAI joins PORTS-Pike project** — OpenAI News · 2026-08-17
+  https://openai.com/index/openai-joins-ports-pike-project
+- **New policy ideas for the Intelligence Age** — OpenAI News · 2026-08-17
+  https://openai.com/index/new-policy-ideas-for-the-intelligence-age
+- **Whisker’s AI-powered litter robot thinks my cats swapped bodies** — The Verge AI · 2026-08-17
+  https://www.theverge.com/tech/978323/whisker-litter-robot-5-pro-review
+- **Anthropic explains how Claude&#8217;s invisible text watermarks will work** — The Verge AI · 2026-08-17
+  https://www.theverge.com/ai-artificial-intelligence/980869/anthropic-claude-watermarks-synthid-text-system
+- **OpenAI reportedly disbanded its preparedness team** — The Verge AI · 2026-08-17
   https://www.theverge.com/ai-artificial-intelligence/980817/openai-disbands-preparedness-team
-- **ChatGPT’s Computer History tracks your clicks and keystrokes** — The Verge AI · 2026-08-16
+- **ChatGPT’s Computer History tracks your clicks and keystrokes** — The Verge AI · 2026-08-17
   https://www.theverge.com/ai-artificial-intelligence/980742/chatgpts-computer-history-tracks-your-clicks-and-keystrokes
-- **Have a laugh at AI’s expense by roleplaying as a chatbot** — The Verge AI · 2026-08-16
+- **Have a laugh at AI’s expense by roleplaying as a chatbot** — The Verge AI · 2026-08-17
   https://www.theverge.com/entertainment/980502/roleplay-as-an-ai-chatbot
 - **How to bring your software delivery workflow into GitHub with agent apps** — GitHub AI & ML Blog · 2026-08-14
   https://github.blog/ai-and-ml/github-copilot/how-to-bring-your-software-delivery-workflow-into-github-with-agent-apps/
@@ -35,11 +47,7 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/previewing-ultrafast
 - **OpenAI appoints Dali Rajic as Chief Revenue Officer** — OpenAI News · 2026-08-13
   https://openai.com/index/dali-rajic-chief-revenue-officer
-- **Microsoft’s Clippy-like Mico character is no longer the face of Copilot** — The Verge AI · 2026-08-13
-  https://www.theverge.com/tech/979871/microsoft-copilot-mico-retired
-- **OpenAI is losing its second executive this week** — The Verge AI · 2026-08-13
-  https://www.theverge.com/ai-artificial-intelligence/979815/openai-denise-dresser-leaving-executive-departure
-- **Write your first prompt with the GitHub Copilot app** — GitHub AI & ML Blog · 2026-08-12
+- **GitHub Copilot app for Beginners: Write your first prompt** — GitHub AI & ML Blog · 2026-08-12
   https://github.blog/ai-and-ml/github-copilot/write-your-first-prompt-with-the-github-copilot-app/
 - **From assistance to execution: How enterprises put AI to work** — OpenAI News · 2026-08-12
   https://openai.com/index/how-enterprises-put-ai-to-work
@@ -47,16 +55,10 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/ringcentral
 - **AMIE, our research medical AI system, demonstrates real-time clinical video consultation capabilities in a first-of-its-kind study.** — Google AI Blog · 2026-08-11
   https://blog.google/innovation-and-ai/models-and-research/google-research/amie-video-consultations/
-- **Testing ads in ChatGPT** — OpenAI News · 2026-08-11
-  https://openai.com/index/testing-ads-in-chatgpt
-- **Daybreak models are now available on AWS** — OpenAI News · 2026-08-11
-  https://openai.com/index/daybreak-models-are-now-available-on-aws
 - **Using the GitHub Copilot SDK for Java** — GitHub AI & ML Blog · 2026-08-10
   https://github.blog/engineering/using-the-github-copilot-sdk-for-java/
 - **Evolve your marketing with new AI tools** — Google AI Blog · 2026-08-10
   https://blog.google/products/ads-commerce/google-ads-analytics-ai-updates/
-- **OpenAI’s letter to Governor Abbott on responsible AI infrastructure in Texas** — OpenAI News · 2026-08-10
-  https://openai.com/index/responsible-ai-infrastructure-texas
 - **A guide to slash commands in the GitHub Copilot app** — GitHub AI & ML Blog · 2026-08-06
   https://github.blog/ai-and-ml/github-copilot/a-guide-to-slash-commands-in-the-github-copilot-app/
 - **How the GitHub legal team used Copilot CLI to streamline their workflows** — GitHub AI & ML Blog · 2026-08-04
@@ -75,15 +77,14 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blog.google/products-and-platforms/products/search/dinner-party-hosting-tips/
 - **The harness is all you need (mostly)** — GitHub AI & ML Blog · 2026-07-27
   https://github.blog/ai-and-ml/github-copilot/the-harness-is-all-you-need-mostly/
-- **GitHub Copilot app for Beginners: Getting started** — GitHub AI & ML Blog · 2026-07-27
-  https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-getting-started/
 
 ## Portfolio candidates
 
+- **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI automation and workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
