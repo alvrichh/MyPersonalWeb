@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-08-18
+# Daily AI maintenance report — 2026-08-19
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,46 +13,46 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **ChatGPT Ads expands across Europe** — OpenAI News · 2026-08-18
+  https://openai.com/index/chatgpt-ads-expands-across-europe
+- **Strengthening democratic oversight in national security** — OpenAI News · 2026-08-18
+  https://openai.com/index/strengthening-democratic-oversight-in-national-security
+- **Partnering with CodeAI to prepare the first AI generation** — OpenAI News · 2026-08-18
+  https://openai.com/index/partnering-with-codeai
+- **Pacing model development in an era of cyber-critical capabilities** — OpenAI News · 2026-08-18
+  https://openai.com/index/pacing-model-development-cyber-capabilities
+- **Introducing ChatGPT for Teens: Built for learning, backed by protections** — OpenAI News · 2026-08-18
+  https://openai.com/index/chatgpt-for-teens
+- **How NVIDIA scales expertise with ChatGPT Work** — OpenAI News · 2026-08-18
+  https://openai.com/index/nvidia/chatgpt-work
+- **Asana cleared 5 years of engineering work in 2 weeks with Codex** — OpenAI News · 2026-08-18
+  https://openai.com/index/asana
+- **Robin Williams’ Instagram account brought back to fight ‘AI abuse’** — The Verge AI · 2026-08-18
+  https://www.theverge.com/entertainment/981644/robin-williams-instagram-account-ai
+- **OpenAI lays out new security changes after its AI hacked Hugging Face** — The Verge AI · 2026-08-18
+  https://www.theverge.com/ai-artificial-intelligence/981640/openai-security-changes-ai-hugging-face-hack
+- **Firefox&#8217;s Smart Window promises a better AI browser** — The Verge AI · 2026-08-18
+  https://www.theverge.com/ai-artificial-intelligence/981283/mozilla-firefox-smart-window-ai-features
+- **Google&#8217;s Pet Memory forgot who my cats are** — The Verge AI · 2026-08-18
+  https://www.theverge.com/tech/981269/google-home-gemini-pet-memory-nest-camera-review
+- **Elon Musk broke the FAA — Palantir is picking up the pieces** — The Verge AI · 2026-08-18
+  https://www.theverge.com/transportation/981194/faa-air-traffic-elon-musk-peter-thiel-palantir
+- **ChatGPT is getting a dedicated mode for teens** — The Verge AI · 2026-08-18
+  https://www.theverge.com/ai-artificial-intelligence/981333/openai-chatgpt-teen-mode
+- **Apple&#8217;s camera-equipped AirPods appear in leaked video** — The Verge AI · 2026-08-18
+  https://www.theverge.com/tech/981326/apple-airpods-with-cameras-demo-video-leak
+- **Whisker’s AI-powered litter robot thinks my cats swapped bodies** — The Verge AI · 2026-08-18
+  https://www.theverge.com/tech/978323/whisker-litter-robot-5-pro-review
 - **How canvases make agentic workflows visible, steerable, and cost-efficient** — GitHub AI & ML Blog · 2026-08-17
   https://github.blog/ai-and-ml/github-copilot/how-canvases-make-agentic-workflows-visible-steerable-and-cost-efficient/
 - **Get closer to the game with Gemini and Pixel** — Google AI Blog · 2026-08-17
   https://blog.google/products-and-platforms/products/gemini/google-gemini-pixel-football-club-partnerships/
 - **The Defender’s Window** — OpenAI News · 2026-08-17
   https://openai.com/index/the-defenders-window
-- **OpenAI joins PORTS-Pike project** — OpenAI News · 2026-08-17
-  https://openai.com/index/openai-joins-ports-pike-project
-- **New policy ideas for the Intelligence Age** — OpenAI News · 2026-08-17
-  https://openai.com/index/new-policy-ideas-for-the-intelligence-age
-- **Whisker’s AI-powered litter robot thinks my cats swapped bodies** — The Verge AI · 2026-08-17
-  https://www.theverge.com/tech/978323/whisker-litter-robot-5-pro-review
-- **Anthropic explains how Claude&#8217;s invisible text watermarks will work** — The Verge AI · 2026-08-17
-  https://www.theverge.com/ai-artificial-intelligence/980869/anthropic-claude-watermarks-synthid-text-system
-- **OpenAI reportedly disbanded its preparedness team** — The Verge AI · 2026-08-17
-  https://www.theverge.com/ai-artificial-intelligence/980817/openai-disbands-preparedness-team
-- **ChatGPT’s Computer History tracks your clicks and keystrokes** — The Verge AI · 2026-08-17
-  https://www.theverge.com/ai-artificial-intelligence/980742/chatgpts-computer-history-tracks-your-clicks-and-keystrokes
-- **Have a laugh at AI’s expense by roleplaying as a chatbot** — The Verge AI · 2026-08-17
-  https://www.theverge.com/entertainment/980502/roleplay-as-an-ai-chatbot
 - **How to bring your software delivery workflow into GitHub with agent apps** — GitHub AI & ML Blog · 2026-08-14
   https://github.blog/ai-and-ml/github-copilot/how-to-bring-your-software-delivery-workflow-into-github-with-agent-apps/
-- **Rogue AI aren’t science fiction anymore** — The Verge AI · 2026-08-14
-  https://www.theverge.com/column/980337/rogue-ai-science-fiction-openai
-- **You can now turn off Google Gemini&#8217;s visible watermarks** — The Verge AI · 2026-08-14
-  https://www.theverge.com/tech/980416/google-gemini-ai-watermarks-removal
-- **Apple trained its own AI model for China with help from Alibaba** — The Verge AI · 2026-08-14
-  https://www.theverge.com/ai-artificial-intelligence/980160/apple-intelligence-china-custom-ai-model-alibaba
-- **The builder’s guide to GPT‑5.6** — OpenAI News · 2026-08-13
-  https://openai.com/index/builders-guide-to-gpt-5-6
-- **Previewing Ultrafast mode: GPT-5.6 Sol at up to 14X the speed** — OpenAI News · 2026-08-13
-  https://openai.com/index/previewing-ultrafast
-- **OpenAI appoints Dali Rajic as Chief Revenue Officer** — OpenAI News · 2026-08-13
-  https://openai.com/index/dali-rajic-chief-revenue-officer
 - **GitHub Copilot app for Beginners: Write your first prompt** — GitHub AI & ML Blog · 2026-08-12
   https://github.blog/ai-and-ml/github-copilot/write-your-first-prompt-with-the-github-copilot-app/
-- **From assistance to execution: How enterprises put AI to work** — OpenAI News · 2026-08-12
-  https://openai.com/index/how-enterprises-put-ai-to-work
-- **How RingCentral builds AI-native work from engineering to ops** — OpenAI News · 2026-08-12
-  https://openai.com/index/ringcentral
 - **AMIE, our research medical AI system, demonstrates real-time clinical video consultation capabilities in a first-of-its-kind study.** — Google AI Blog · 2026-08-11
   https://blog.google/innovation-and-ai/models-and-research/google-research/amie-video-consultations/
 - **Using the GitHub Copilot SDK for Java** — GitHub AI & ML Blog · 2026-08-10
@@ -80,11 +80,9 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
-- **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI automation and workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
