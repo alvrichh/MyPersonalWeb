@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-08-19
+# Daily AI maintenance report — 2026-08-20
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,20 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **GitHub Copilot app for Beginners: Managing your work** — GitHub AI & ML Blog · 2026-08-19
+  https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-managing-your-work/
+- **5 new ways to level up your learning with Search** — Google AI Blog · 2026-08-19
+  https://blog.google/products-and-platforms/products/search/back-to-school-study-tools/
+- **Offering Zero Data Retention for frontier models** — OpenAI News · 2026-08-19
+  https://openai.com/index/offering-zero-data-retention-for-frontier-models
+- **Google Gemini is getting a dedicated student hub** — The Verge AI · 2026-08-19
+  https://www.theverge.com/ai-artificial-intelligence/982425/google-gemini-student-hub
+- **OpenAI hit the brakes. Now what?** — The Verge AI · 2026-08-19
+  https://www.theverge.com/ai-artificial-intelligence/982323/openai-hit-brakes-voluntary-pacing-ai
+- **Meta AI is getting a Mac app** — The Verge AI · 2026-08-19
+  https://www.theverge.com/tech/982270/meta-ai-mac-app
+- **Nvidia’s new financial strategy does not compute** — The Verge AI · 2026-08-19
+  https://www.theverge.com/ai-artificial-intelligence/981668/nvidias-goldman-blackrock-gpu-compute-asset
 - **ChatGPT Ads expands across Europe** — OpenAI News · 2026-08-18
   https://openai.com/index/chatgpt-ads-expands-across-europe
 - **Strengthening democratic oversight in national security** — OpenAI News · 2026-08-18
@@ -35,20 +49,10 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/ai-artificial-intelligence/981283/mozilla-firefox-smart-window-ai-features
 - **Google&#8217;s Pet Memory forgot who my cats are** — The Verge AI · 2026-08-18
   https://www.theverge.com/tech/981269/google-home-gemini-pet-memory-nest-camera-review
-- **Elon Musk broke the FAA — Palantir is picking up the pieces** — The Verge AI · 2026-08-18
-  https://www.theverge.com/transportation/981194/faa-air-traffic-elon-musk-peter-thiel-palantir
-- **ChatGPT is getting a dedicated mode for teens** — The Verge AI · 2026-08-18
-  https://www.theverge.com/ai-artificial-intelligence/981333/openai-chatgpt-teen-mode
-- **Apple&#8217;s camera-equipped AirPods appear in leaked video** — The Verge AI · 2026-08-18
-  https://www.theverge.com/tech/981326/apple-airpods-with-cameras-demo-video-leak
-- **Whisker’s AI-powered litter robot thinks my cats swapped bodies** — The Verge AI · 2026-08-18
-  https://www.theverge.com/tech/978323/whisker-litter-robot-5-pro-review
 - **How canvases make agentic workflows visible, steerable, and cost-efficient** — GitHub AI & ML Blog · 2026-08-17
   https://github.blog/ai-and-ml/github-copilot/how-canvases-make-agentic-workflows-visible-steerable-and-cost-efficient/
 - **Get closer to the game with Gemini and Pixel** — Google AI Blog · 2026-08-17
   https://blog.google/products-and-platforms/products/gemini/google-gemini-pixel-football-club-partnerships/
-- **The Defender’s Window** — OpenAI News · 2026-08-17
-  https://openai.com/index/the-defenders-window
 - **How to bring your software delivery workflow into GitHub with agent apps** — GitHub AI & ML Blog · 2026-08-14
   https://github.blog/ai-and-ml/github-copilot/how-to-bring-your-software-delivery-workflow-into-github-with-agent-apps/
 - **GitHub Copilot app for Beginners: Write your first prompt** — GitHub AI & ML Blog · 2026-08-12
@@ -73,17 +77,13 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/
 - **5 ways AI Mode in Search helps you enjoy the real world** — Google AI Blog · 2026-07-28
   https://blog.google/products-and-platforms/products/search/ai-mode-real-world-tips/
-- **5 ways to host the ultimate dinner party with Google Search** — Google AI Blog · 2026-07-28
-  https://blog.google/products-and-platforms/products/search/dinner-party-hosting-tips/
-- **The harness is all you need (mostly)** — GitHub AI & ML Blog · 2026-07-27
-  https://github.blog/ai-and-ml/github-copilot/the-harness-is-all-you-need-mostly/
 
 ## Portfolio candidates
 
-- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
