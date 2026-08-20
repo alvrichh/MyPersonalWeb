@@ -1,11 +1,85 @@
 {
-  "generatedAt": "2026-08-19T08:31:08.124Z",
-  "date": "2026-08-19",
+  "generatedAt": "2026-08-20T08:31:52.163Z",
+  "date": "2026-08-20",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "GitHub Copilot app for Beginners: Managing your work",
+      "source": "GitHub AI & ML Blog",
+      "date": "2026-08-19",
+      "url": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-managing-your-work/",
+      "summary": "If you’re juggling multiple Copilot sessions, use the My work pane to track what's in flight, what's done, and what's next. The post GitHub Copilot app for Beginners: Managing your work appeared first on The GitHub Blog.",
+      "tags": [
+        "Copilot"
+      ]
+    },
+    {
+      "title": "5 new ways to level up your learning with Search",
+      "source": "Google AI Blog",
+      "date": "2026-08-19",
+      "url": "https://blog.google/products-and-platforms/products/search/back-to-school-study-tools/",
+      "summary": "Here’s how you can use Google Search tools to study for classes and standardized tests.",
+      "tags": [
+        "Agents",
+        "Gemini"
+      ]
+    },
+    {
+      "title": "Offering Zero Data Retention for frontier models",
+      "source": "OpenAI News",
+      "date": "2026-08-19",
+      "url": "https://openai.com/index/offering-zero-data-retention-for-frontier-models",
+      "summary": "OpenAI reaffirms Zero Data Retention for eligible API customers and previews Private Safety Processing for advanced AI safety without compromising data privacy.",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ]
+    },
+    {
+      "title": "Google Gemini is getting a dedicated student hub",
+      "source": "The Verge AI",
+      "date": "2026-08-19",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/982425/google-gemini-student-hub",
+      "summary": "As we're gearing up for back-to-school season, Google is rolling out a new dedicated student hub in Gemini. It's a one-stop repository for collecting research in a study notebook, creating flashcards, taking practice qui...",
+      "tags": [
+        "Gemini",
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "OpenAI hit the brakes. Now what?",
+      "source": "The Verge AI",
+      "date": "2026-08-19",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/982323/openai-hit-brakes-voluntary-pacing-ai",
+      "summary": "With a looming IPO, intense competition from Anthropic, and Chinese and open-weight rivals nipping at its heels, OpenAI has plenty of reasons to move fast. Instead, it hit the brakes. On Tuesday, the company said it had ...",
+      "tags": [
+        "ChatGPT",
+        "Claude"
+      ]
+    },
+    {
+      "title": "Meta AI is getting a Mac app",
+      "source": "The Verge AI",
+      "date": "2026-08-19",
+      "url": "https://www.theverge.com/tech/982270/meta-ai-mac-app",
+      "summary": "Meta is launching a new Mac app dedicated to its AI chatbot. In an announcement on Wednesday, Meta says you can share your window with its AI chatbot, which can provide suggestions, answer questions, or create content ba...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Nvidia’s new financial strategy does not compute",
+      "source": "The Verge AI",
+      "date": "2026-08-19",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/981668/nvidias-goldman-blackrock-gpu-compute-asset",
+      "summary": "April - 1805 Napoleon is master of Europe Only the British fleet stands before him Compute is now an asset class I see it is once again time to talk financial innovation. Apollo, BlackRock, Blackstone, Brookfield, Goldma...",
+      "tags": [
+        "AI"
+      ]
+    },
     {
       "title": "ChatGPT Ads expands across Europe",
       "source": "OpenAI News",
@@ -142,80 +216,59 @@
         "Agents",
         "Automation"
       ]
-    },
-    {
-      "title": "Get closer to the game with Gemini and Pixel",
-      "source": "Google AI Blog",
-      "date": "2026-08-17",
-      "url": "https://blog.google/products-and-platforms/products/gemini/google-gemini-pixel-football-club-partnerships/",
-      "summary": "Google Gemini and Pixel partner with five global football clubs to elevate the fan matchday experience through AI and Smartphone Technology.",
-      "tags": [
-        "Gemini"
-      ]
-    },
-    {
-      "title": "The Defender’s Window",
-      "source": "OpenAI News",
-      "date": "2026-08-17",
-      "url": "https://openai.com/index/the-defenders-window",
-      "summary": "AI is reshaping cybersecurity for attackers and defenders alike. Learn how OpenAI is strengthening its defenses and what security teams can do now.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "OpenAI joins PORTS-Pike project",
-      "source": "OpenAI News",
-      "date": "2026-08-17",
-      "url": "https://openai.com/index/openai-joins-ports-pike-project",
-      "summary": "OpenAI joins PORTS-Pike project, expanding community investment and supporting thousands of Southern Ohio jobs",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "New policy ideas for the Intelligence Age",
-      "source": "OpenAI News",
-      "date": "2026-08-17",
-      "url": "https://openai.com/index/new-policy-ideas-for-the-intelligence-age",
-      "summary": "OpenAI funds 14 independent projects exploring new AI policy ideas to expand economic opportunity and strengthen societal resilience in the Intelligence Age.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Whisker’s AI-powered litter robot thinks my cats swapped bodies",
-      "source": "The Verge AI",
-      "date": "2026-08-17",
-      "url": "https://www.theverge.com/tech/978323/whisker-litter-robot-5-pro-review",
-      "summary": "The greatest invention in pet tech in recent years is the litter robot. A machine that scoops your kitties' poop so you don't have to - what else could a cat owner possibly want? How about insights into your kitty's litt...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Anthropic explains how Claude&#8217;s invisible text watermarks will work",
-      "source": "The Verge AI",
-      "date": "2026-08-17",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/980869/anthropic-claude-watermarks-synthid-text-system",
-      "summary": "Anthropic has clarified how it's planning to apply invisible watermarks to Claude-generated text in order to comply with Europe's AI transparency rules. On Friday, Anthropic announced that Claude's text marking system is...",
-      "tags": [
-        "Claude"
-      ]
-    },
-    {
-      "title": "OpenAI reportedly disbanded its preparedness team",
-      "source": "The Verge AI",
-      "date": "2026-08-17",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/980817/openai-disbands-preparedness-team",
-      "summary": "According to the Financial Times, OpenAI disbanded its preparedness team at the end of last month. The job of the preparedness team was to assess if models posed serious risks and develop ways to mitigate those risks. (Y...",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "GitHub Copilot app for Beginners: Managing your work",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-managing-your-work/",
+          "date": "2026-08-19"
+        },
+        {
+          "title": "GitHub Copilot app for Beginners: Write your first prompt",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/write-your-first-prompt-with-the-github-copilot-app/",
+          "date": "2026-08-12"
+        },
+        {
+          "title": "Using the GitHub Copilot SDK for Java",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/engineering/using-the-github-copilot-sdk-for-java/",
+          "date": "2026-08-10"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Google Gemini is getting a dedicated student hub",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/982425/google-gemini-student-hub",
+          "date": "2026-08-19"
+        },
+        {
+          "title": "Google&#8217;s Pet Memory forgot who my cats are",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/981269/google-home-gemini-pet-memory-nest-camera-review",
+          "date": "2026-08-18"
+        },
+        {
+          "title": "Get closer to the game with Gemini and Pixel",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/products-and-platforms/products/gemini/google-gemini-pixel-football-club-partnerships/",
+          "date": "2026-08-17"
+        }
+      ]
+    },
     {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
@@ -242,31 +295,6 @@
       ]
     },
     {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Google&#8217;s Pet Memory forgot who my cats are",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/981269/google-home-gemini-pet-memory-nest-camera-review",
-          "date": "2026-08-18"
-        },
-        {
-          "title": "Get closer to the game with Gemini and Pixel",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/products-and-platforms/products/gemini/google-gemini-pixel-football-club-partnerships/",
-          "date": "2026-08-17"
-        },
-        {
-          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
-          "date": "2026-07-28"
-        }
-      ]
-    },
-    {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
@@ -288,31 +316,6 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/products/ads-commerce/google-ads-analytics-ai-updates/",
           "date": "2026-08-10"
-        }
-      ]
-    },
-    {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "GitHub Copilot app for Beginners: Write your first prompt",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/write-your-first-prompt-with-the-github-copilot-app/",
-          "date": "2026-08-12"
-        },
-        {
-          "title": "Using the GitHub Copilot SDK for Java",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/engineering/using-the-github-copilot-sdk-for-java/",
-          "date": "2026-08-10"
-        },
-        {
-          "title": "A guide to slash commands in the GitHub Copilot app",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/a-guide-to-slash-commands-in-the-github-copilot-app/",
-          "date": "2026-08-06"
         }
       ]
     },

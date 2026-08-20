@@ -1,6 +1,56 @@
 {
-  "generatedAt": "2026-08-19T08:31:08.124Z",
+  "generatedAt": "2026-08-20T08:31:52.163Z",
   "candidates": [
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "GitHub Copilot app for Beginners: Managing your work",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-managing-your-work/",
+          "date": "2026-08-19"
+        },
+        {
+          "title": "GitHub Copilot app for Beginners: Write your first prompt",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/write-your-first-prompt-with-the-github-copilot-app/",
+          "date": "2026-08-12"
+        },
+        {
+          "title": "Using the GitHub Copilot SDK for Java",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/engineering/using-the-github-copilot-sdk-for-java/",
+          "date": "2026-08-10"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Google Gemini is getting a dedicated student hub",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/982425/google-gemini-student-hub",
+          "date": "2026-08-19"
+        },
+        {
+          "title": "Google&#8217;s Pet Memory forgot who my cats are",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/981269/google-home-gemini-pet-memory-nest-camera-review",
+          "date": "2026-08-18"
+        },
+        {
+          "title": "Get closer to the game with Gemini and Pixel",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/products-and-platforms/products/gemini/google-gemini-pixel-football-club-partnerships/",
+          "date": "2026-08-17"
+        }
+      ]
+    },
     {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
@@ -27,31 +77,6 @@
       ]
     },
     {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Google&#8217;s Pet Memory forgot who my cats are",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/981269/google-home-gemini-pet-memory-nest-camera-review",
-          "date": "2026-08-18"
-        },
-        {
-          "title": "Get closer to the game with Gemini and Pixel",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/products-and-platforms/products/gemini/google-gemini-pixel-football-club-partnerships/",
-          "date": "2026-08-17"
-        },
-        {
-          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
-          "date": "2026-07-28"
-        }
-      ]
-    },
-    {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
@@ -73,31 +98,6 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/products/ads-commerce/google-ads-analytics-ai-updates/",
           "date": "2026-08-10"
-        }
-      ]
-    },
-    {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "GitHub Copilot app for Beginners: Write your first prompt",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/write-your-first-prompt-with-the-github-copilot-app/",
-          "date": "2026-08-12"
-        },
-        {
-          "title": "Using the GitHub Copilot SDK for Java",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/engineering/using-the-github-copilot-sdk-for-java/",
-          "date": "2026-08-10"
-        },
-        {
-          "title": "A guide to slash commands in the GitHub Copilot app",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/a-guide-to-slash-commands-in-the-github-copilot-app/",
-          "date": "2026-08-06"
         }
       ]
     },
