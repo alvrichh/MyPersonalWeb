@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-08-21
+# Daily AI maintenance report — 2026-08-22
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -8,11 +8,15 @@ This file is generated automatically by the daily maintenance workflow. It updat
 - Anthropic News: unavailable (HTTP 404)
 - Google AI Blog: OK (8 relevant items)
 - GitHub AI & ML Blog: OK (8 relevant items)
-- Microsoft AI Blog: unavailable (HTTP 410)
+- Microsoft AI Blog: unavailable (HTTP 403)
 - The Verge AI: OK (8 relevant items)
 
 ## Relevant AI updates
 
+- **Over 1 million people have clicked LinkedIn’s AI slop button** — The Verge AI · 2026-08-21
+  https://www.theverge.com/ai-artificial-intelligence/983502/linkedin-ai-slop-button-one-million-people-message
+- **Major YouTube creators are facing backlash for accepting AI money** — The Verge AI · 2026-08-21
+  https://www.theverge.com/ai-artificial-intelligence/983181/matti-haapoja-sam-kold-kolder-higgsfield-seedance-backlash
 - **Introducing AI Futures** — OpenAI News · 2026-08-20
   https://openai.com/index/introducing-ai-futures
 - **Stampli cuts launch hours by 68% using ChatGPT Work** — OpenAI News · 2026-08-20
@@ -35,10 +39,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/ai-artificial-intelligence/982425/google-gemini-student-hub
 - **OpenAI hit the brakes. Now what?** — The Verge AI · 2026-08-19
   https://www.theverge.com/ai-artificial-intelligence/982323/openai-hit-brakes-voluntary-pacing-ai
-- **Meta AI is getting a Mac app** — The Verge AI · 2026-08-19
-  https://www.theverge.com/tech/982270/meta-ai-mac-app
-- **Nvidia’s new financial strategy does not compute** — The Verge AI · 2026-08-19
-  https://www.theverge.com/ai-artificial-intelligence/981668/nvidias-goldman-blackrock-gpu-compute-asset
 - **ChatGPT Ads expands across Europe** — OpenAI News · 2026-08-18
   https://openai.com/index/chatgpt-ads-expands-across-europe
 - **Strengthening democratic oversight in national security** — OpenAI News · 2026-08-18

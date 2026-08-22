@@ -1,11 +1,31 @@
 {
-  "generatedAt": "2026-08-21T08:34:38.184Z",
-  "date": "2026-08-21",
+  "generatedAt": "2026-08-22T08:23:13.020Z",
+  "date": "2026-08-22",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Over 1 million people have clicked LinkedIn’s AI slop button",
+      "source": "The Verge AI",
+      "date": "2026-08-21",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/983502/linkedin-ai-slop-button-one-million-people-message",
+      "summary": "LinkedIn actually announced a \"Seems like AI slop\" button on July 30th, and the company says that a lot of people have already used it. According to a Thursday post from chief product officer Hari Srinivasan, \"over a mil...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Major YouTube creators are facing backlash for accepting AI money",
+      "source": "The Verge AI",
+      "date": "2026-08-21",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/983181/matti-haapoja-sam-kold-kolder-higgsfield-seedance-backlash",
+      "summary": "Over the past few days, a number of prominent filmmaking content creators including Matti Haapoja and Sam \"Kold\" Kolder have posted videos of themselves demonstrating what's possible with AI platform Higgsfield. The vide...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
     {
       "title": "Introducing AI Futures",
       "source": "OpenAI News",
@@ -195,28 +215,6 @@
       "summary": "ChatGPT for Teens helps teens learn, think critically, and use AI with confidence, with stronger built-in protections, healthy-use features, and additional controls for parents.",
       "tags": [
         "ChatGPT"
-      ]
-    },
-    {
-      "title": "How NVIDIA scales expertise with ChatGPT Work",
-      "source": "OpenAI News",
-      "date": "2026-08-18",
-      "url": "https://openai.com/index/nvidia/chatgpt-work",
-      "summary": "NVIDIA teams use ChatGPT Work to reduce manual tasks, connect fast-moving signals, and scale successful workflows globally.",
-      "tags": [
-        "ChatGPT",
-        "Automation"
-      ]
-    },
-    {
-      "title": "Asana cleared 5 years of engineering work in 2 weeks with Codex",
-      "source": "OpenAI News",
-      "date": "2026-08-18",
-      "url": "https://openai.com/index/asana",
-      "summary": "Asana used OpenAI Codex to replace an outdated testing system in two weeks, completing work expected to take five years for about $12K.",
-      "tags": [
-        "ChatGPT",
-        "Dev Tools"
       ]
     }
   ],
