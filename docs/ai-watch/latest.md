@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-08-23
+# Daily AI maintenance report — 2026-08-24
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -8,7 +8,7 @@ This file is generated automatically by the daily maintenance workflow. It updat
 - Anthropic News: unavailable (HTTP 404)
 - Google AI Blog: OK (8 relevant items)
 - GitHub AI & ML Blog: OK (8 relevant items)
-- Microsoft AI Blog: unavailable (HTTP 403)
+- Microsoft AI Blog: unavailable (HTTP 410)
 - The Verge AI: OK (8 relevant items)
 
 ## Relevant AI updates
