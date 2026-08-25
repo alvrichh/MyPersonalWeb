@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-08-24
+# Daily AI maintenance report — 2026-08-25
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Advancing price-performance for developers with GPT‑5.6 in Kiro** — OpenAI News · 2026-08-24
+  https://openai.com/index/gpt-5-6-in-kiro
 - **Over 1 million people have clicked LinkedIn’s AI slop button** — The Verge AI · 2026-08-21
   https://www.theverge.com/ai-artificial-intelligence/983502/linkedin-ai-slop-button-one-million-people-message
 - **Major YouTube creators are facing backlash for accepting AI money** — The Verge AI · 2026-08-21
@@ -47,8 +49,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/partnering-with-codeai
 - **Pacing model development in an era of cyber-critical capabilities** — OpenAI News · 2026-08-18
   https://openai.com/index/pacing-model-development-cyber-capabilities
-- **Introducing ChatGPT for Teens: Built for learning, backed by protections** — OpenAI News · 2026-08-18
-  https://openai.com/index/chatgpt-for-teens
 - **How canvases make agentic workflows visible, steerable, and cost-efficient** — GitHub AI & ML Blog · 2026-08-17
   https://github.blog/ai-and-ml/github-copilot/how-canvases-make-agentic-workflows-visible-steerable-and-cost-efficient/
 - **Get closer to the game with Gemini and Pixel** — Google AI Blog · 2026-08-17
@@ -80,12 +80,12 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
+- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
 
