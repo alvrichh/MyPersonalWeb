@@ -1,11 +1,22 @@
 {
-  "generatedAt": "2026-08-24T08:41:50.984Z",
-  "date": "2026-08-24",
+  "generatedAt": "2026-08-25T08:36:21.418Z",
+  "date": "2026-08-25",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Advancing price-performance for developers with GPT‑5.6 in Kiro",
+      "source": "OpenAI News",
+      "date": "2026-08-24",
+      "url": "https://openai.com/index/gpt-5-6-in-kiro",
+      "summary": "GPT‑5.6 is now available in Kiro, helping developers plan, build, review, and test software with better price-performance.",
+      "tags": [
+        "ChatGPT",
+        "Dev Tools"
+      ]
+    },
     {
       "title": "Over 1 million people have clicked LinkedIn’s AI slop button",
       "source": "The Verge AI",
@@ -206,19 +217,34 @@
         "ChatGPT",
         "Models"
       ]
-    },
-    {
-      "title": "Introducing ChatGPT for Teens: Built for learning, backed by protections",
-      "source": "OpenAI News",
-      "date": "2026-08-18",
-      "url": "https://openai.com/index/chatgpt-for-teens",
-      "summary": "ChatGPT for Teens helps teens learn, think critically, and use AI with confidence, with stronger built-in protections, healthy-use features, and additional controls for parents.",
-      "tags": [
-        "ChatGPT"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Advancing price-performance for developers with GPT‑5.6 in Kiro",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/gpt-5-6-in-kiro",
+          "date": "2026-08-24"
+        },
+        {
+          "title": "Using the GitHub Copilot SDK for Java",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/engineering/using-the-github-copilot-sdk-for-java/",
+          "date": "2026-08-10"
+        },
+        {
+          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
+          "date": "2026-07-28"
+        }
+      ]
+    },
     {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
@@ -234,12 +260,6 @@
           "title": "ChatGPT Ads expands across Europe",
           "source": "OpenAI News",
           "link": "https://openai.com/index/chatgpt-ads-expands-across-europe",
-          "date": "2026-08-18"
-        },
-        {
-          "title": "Introducing ChatGPT for Teens: Built for learning, backed by protections",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/chatgpt-for-teens",
           "date": "2026-08-18"
         }
       ]
@@ -329,25 +349,6 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/products-and-platforms/products/gemini/google-gemini-pixel-football-club-partnerships/",
           "date": "2026-08-17"
-        },
-        {
-          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
-          "date": "2026-07-28"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Using the GitHub Copilot SDK for Java",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/engineering/using-the-github-copilot-sdk-for-java/",
-          "date": "2026-08-10"
         },
         {
           "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
