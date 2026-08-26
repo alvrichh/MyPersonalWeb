@@ -1,6 +1,50 @@
 {
-  "generatedAt": "2026-08-25T08:36:21.418Z",
+  "generatedAt": "2026-08-26T08:37:13.602Z",
   "candidates": [
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Introducing the Admin plugin for ChatGPT Work and Codex",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/introducing-admin-plugin",
+          "date": "2026-08-25"
+        },
+        {
+          "title": "Stampli cuts launch hours by 68% using ChatGPT Work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/stampli",
+          "date": "2026-08-20"
+        }
+      ]
+    },
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "OpenAI subpoenaed by Alabama AG over Hugging Face hack",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/984239/alabama-attorney-general-subpoena-openai-hugging-face-hack",
+          "date": "2026-08-25"
+        },
+        {
+          "title": "Slack is launching collaborative vibe-coding channels",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/982628/slack-code-vibe-coding-channels-launch",
+          "date": "2026-08-20"
+        },
+        {
+          "title": "How canvases make agentic workflows visible, steerable, and cost-efficient",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-canvases-make-agentic-workflows-visible-steerable-and-cost-efficient/",
+          "date": "2026-08-17"
+        }
+      ]
+    },
     {
       "label": "AI developer tooling",
       "status": "safe-data-candidate",
@@ -23,50 +67,6 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
           "date": "2026-07-28"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Stampli cuts launch hours by 68% using ChatGPT Work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/stampli",
-          "date": "2026-08-20"
-        },
-        {
-          "title": "ChatGPT Ads expands across Europe",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/chatgpt-ads-expands-across-europe",
-          "date": "2026-08-18"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Slack is launching collaborative vibe-coding channels",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/982628/slack-code-vibe-coding-channels-launch",
-          "date": "2026-08-20"
-        },
-        {
-          "title": "How canvases make agentic workflows visible, steerable, and cost-efficient",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/how-canvases-make-agentic-workflows-visible-steerable-and-cost-efficient/",
-          "date": "2026-08-17"
-        },
-        {
-          "title": "How to bring your software delivery workflow into GitHub with agent apps",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/how-to-bring-your-software-delivery-workflow-into-github-with-agent-apps/",
-          "date": "2026-08-14"
         }
       ]
     },
@@ -119,12 +119,6 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
-        {
-          "title": "Google Gemini is getting a dedicated student hub",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/982425/google-gemini-student-hub",
-          "date": "2026-08-19"
-        },
         {
           "title": "Get closer to the game with Gemini and Pixel",
           "source": "Google AI Blog",
