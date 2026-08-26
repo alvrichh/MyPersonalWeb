@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-08-25
+# Daily AI maintenance report — 2026-08-26
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,22 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **How to evaluate LLMs before production** — GitHub AI & ML Blog · 2026-08-25
+  https://github.blog/ai-and-ml/llms/how-to-evaluate-llms-before-production/
+- **5 ways to upgrade your home decor with Google Search** — Google AI Blog · 2026-08-25
+  https://blog.google/products-and-platforms/products/search/home-decor-tips/
+- **The full stack behind abundant intelligence** — OpenAI News · 2026-08-25
+  https://openai.com/index/the-full-stack-behind-abundant-intelligence
+- **Jalapeño’s first results show industry-leading speed and efficiency in AI inference** — OpenAI News · 2026-08-25
+  https://openai.com/index/jalapeno-first-results
+- **Disrupting a new covert influence campaign from Russia** — OpenAI News · 2026-08-25
+  https://openai.com/index/disrupting-malicious-uses-of-ai-influence-campaign-russia
+- **Introducing the Admin plugin for ChatGPT Work and Codex** — OpenAI News · 2026-08-25
+  https://openai.com/index/introducing-admin-plugin
+- **OpenAI says its Jalapeño chip can power faster AI responses than the competition** — The Verge AI · 2026-08-25
+  https://www.theverge.com/ai-artificial-intelligence/984290/openai-jalapeno-ai-chip-benchmarks
+- **OpenAI subpoenaed by Alabama AG over Hugging Face hack** — The Verge AI · 2026-08-25
+  https://www.theverge.com/ai-artificial-intelligence/984239/alabama-attorney-general-subpoena-openai-hugging-face-hack
 - **Advancing price-performance for developers with GPT‑5.6 in Kiro** — OpenAI News · 2026-08-24
   https://openai.com/index/gpt-5-6-in-kiro
 - **Over 1 million people have clicked LinkedIn’s AI slop button** — The Verge AI · 2026-08-21
@@ -37,18 +53,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blog.google/products-and-platforms/products/search/back-to-school-study-tools/
 - **Offering Zero Data Retention for frontier models** — OpenAI News · 2026-08-19
   https://openai.com/index/offering-zero-data-retention-for-frontier-models
-- **Google Gemini is getting a dedicated student hub** — The Verge AI · 2026-08-19
-  https://www.theverge.com/ai-artificial-intelligence/982425/google-gemini-student-hub
-- **OpenAI hit the brakes. Now what?** — The Verge AI · 2026-08-19
-  https://www.theverge.com/ai-artificial-intelligence/982323/openai-hit-brakes-voluntary-pacing-ai
-- **ChatGPT Ads expands across Europe** — OpenAI News · 2026-08-18
-  https://openai.com/index/chatgpt-ads-expands-across-europe
-- **Strengthening democratic oversight in national security** — OpenAI News · 2026-08-18
-  https://openai.com/index/strengthening-democratic-oversight-in-national-security
-- **Partnering with CodeAI to prepare the first AI generation** — OpenAI News · 2026-08-18
-  https://openai.com/index/partnering-with-codeai
-- **Pacing model development in an era of cyber-critical capabilities** — OpenAI News · 2026-08-18
-  https://openai.com/index/pacing-model-development-cyber-capabilities
 - **How canvases make agentic workflows visible, steerable, and cost-efficient** — GitHub AI & ML Blog · 2026-08-17
   https://github.blog/ai-and-ml/github-copilot/how-canvases-make-agentic-workflows-visible-steerable-and-cost-efficient/
 - **Get closer to the game with Gemini and Pixel** — Google AI Blog · 2026-08-17
@@ -71,18 +75,14 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-july-2026/
 - **Inside our 353,000-person vibe coding course** — Google AI Blog · 2026-08-03
   https://blog.google/innovation-and-ai/technology/developers-tools/ai-agents-intensive-recap-2026/
-- **Stacked sessions and pull requests in the GitHub Copilot app** — GitHub AI & ML Blog · 2026-07-30
-  https://github.blog/ai-and-ml/github-copilot/stacked-sessions-and-pull-requests-in-the-github-copilot-app/
 - **Gemini API Managed Agents: 3.6 Flash, hooks, and more** — Google AI Blog · 2026-07-28
   https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/
-- **5 ways AI Mode in Search helps you enjoy the real world** — Google AI Blog · 2026-07-28
-  https://blog.google/products-and-platforms/products/search/ai-mode-real-world-tips/
 
 ## Portfolio candidates
 
-- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
