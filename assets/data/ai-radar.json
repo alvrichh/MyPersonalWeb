@@ -1,11 +1,137 @@
 {
-  "generatedAt": "2026-08-26T08:37:13.602Z",
-  "date": "2026-08-26",
+  "generatedAt": "2026-08-27T18:46:07.663Z",
+  "date": "2026-08-27",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "3 new ways to plan and book travel in Search",
+      "source": "Google AI Blog",
+      "date": "2026-08-27",
+      "url": "https://blog.google/products-and-platforms/products/search/book-travel-ai-mode/",
+      "summary": "Book hotels and track airfares, plus view miles and rewards with AI Mode in Google Search.",
+      "tags": [
+        "Gemini"
+      ]
+    },
+    {
+      "title": "Better answers, broader thinking: What students gain from ChatGPT and critical-thinking training",
+      "source": "OpenAI News",
+      "date": "2026-08-27",
+      "url": "https://openai.com/index/what-students-gain-from-chatgpt-critical-thinking-training",
+      "summary": "A randomized study of more than 1,000 students examines ChatGPT, critical thinking, originality, and student performance on a real-world university assignment.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Expanding OpenAI’s presence in Brazil",
+      "source": "OpenAI News",
+      "date": "2026-08-27",
+      "url": "https://openai.com/index/expanding-our-presence-in-brazil",
+      "summary": "OpenAI is expanding its presence in Brazil, deepening engagement with developers, businesses, and communities to support AI adoption across the country.",
+      "tags": [
+        "ChatGPT",
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "Jensen Huang says Nvidia achieved AGI, again — not that it matters",
+      "source": "The Verge AI",
+      "date": "2026-08-27",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/985597/jensen-huang-says-nvidia-achieved-senseless-agi",
+      "summary": "On Nvidia's earnings call Wednesday, CEO Jensen Huang casually announced the company had \"achieved AGI,\" one of the tech industry's ultimate goals some of its biggest players have spent years chasing. Almost immediately,...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "OpenAI&#8217;s executive exodus has one big winner",
+      "source": "The Verge AI",
+      "date": "2026-08-27",
+      "url": "https://www.theverge.com/podcast/985332/openai-greg-brockman-sam-altman-leader-executive-exodus",
+      "summary": "Today on Decoder, I’m talking to Verge senior AI reporter Hayden Field about some pure Decoder bait: the seemingly-endless org chart changes at OpenAI, and how all of them seem to consolidate power under cofounder Greg B...",
+      "tags": [
+        "ChatGPT",
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "Hugging Face’s new robot is an adorable rollerskating duck",
+      "source": "The Verge AI",
+      "date": "2026-08-27",
+      "url": "https://www.theverge.com/gadgets/985549/hugging-face-microduck-robot",
+      "summary": "Hugging Face's Pollen Robotics has launched its second cute AI robot, the Microduck, a one-eyed biped standing just under 10 inches tall. It's available to preorder now for $399 in cream, graphite, lavender, and sky blue...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "Plaud is launching AI earbuds",
+      "source": "The Verge AI",
+      "date": "2026-08-27",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/985500/plaud-one-earbuds-ai-recorder-price-availability",
+      "summary": "Plaud has introduced a new AI wearable that's designed to record, transcribe, and summarize your conversations, only this time it looks like earbuds instead of a pin. The Plaud One Explorer Edition can be worn like tradi...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Adobe is adding more AI to Photoshop",
+      "source": "The Verge AI",
+      "date": "2026-08-27",
+      "url": "https://www.theverge.com/tech/985491/adobe-photoshop-ai-assisted-editor-markup",
+      "summary": "Adobe is rolling out an AI-heavy update for Photoshop that includes a new \"optional\" interface dedicated to its AI tools. Launching in beta, the \"AI Assisted Editor\" view will show all of Photoshop's AI features in a sin...",
+      "tags": [
+        "Agents",
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "OpenAI’s rogue AI model incident was worse than we thought",
+      "source": "The Verge AI",
+      "date": "2026-08-27",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/985385/openais-rogue-ai-model-hugging-face-cybersecurity-incident-reports-metr",
+      "summary": "In July, an unreleased OpenAI model broke out of a restricted environment, figured out how to get access to the internet, allowed AI agents to talk to each other using a secret \"message board,\" and hacked into the intern...",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Models"
+      ]
+    },
+    {
+      "title": "GitHub Copilot app for Beginners: Automate Dependabot pull request triage",
+      "source": "GitHub AI & ML Blog",
+      "date": "2026-08-26",
+      "url": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-automate-dependabot-pull-request-triage/",
+      "summary": "Managing library updates can be tedious at times. Learn how the GitHub Copilot app can handle this type of repetitive task. The post GitHub Copilot app for Beginners: Automate Dependabot pull request triage appeared firs...",
+      "tags": [
+        "Copilot"
+      ]
+    },
+    {
+      "title": "Bringing ChatGPT for Teachers to more U.S. school districts",
+      "source": "OpenAI News",
+      "date": "2026-08-26",
+      "url": "https://openai.com/index/bringing-chatgpt-for-teachers-to-more-us-school-districts",
+      "summary": "ChatGPT for Teachers is expanding to 55 U.S. school systems, bringing secure AI tools, training, and support to over 100,000 more educators and staff.",
+      "tags": [
+        "Agents",
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Learning never stops: How AI makes learning continuous",
+      "source": "OpenAI News",
+      "date": "2026-08-26",
+      "url": "https://openai.com/index/learning-never-stops",
+      "summary": "OpenAI’s new report explores how students and educators use ChatGPT to make learning more continuous, with support that extends beyond the classroom.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
     {
       "title": "How to evaluate LLMs before production",
       "source": "GitHub AI & ML Blog",
@@ -90,133 +216,6 @@
         "Agents",
         "ChatGPT"
       ]
-    },
-    {
-      "title": "Advancing price-performance for developers with GPT‑5.6 in Kiro",
-      "source": "OpenAI News",
-      "date": "2026-08-24",
-      "url": "https://openai.com/index/gpt-5-6-in-kiro",
-      "summary": "GPT‑5.6 is now available in Kiro, helping developers plan, build, review, and test software with better price-performance.",
-      "tags": [
-        "ChatGPT",
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "Over 1 million people have clicked LinkedIn’s AI slop button",
-      "source": "The Verge AI",
-      "date": "2026-08-21",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/983502/linkedin-ai-slop-button-one-million-people-message",
-      "summary": "LinkedIn actually announced a \"Seems like AI slop\" button on July 30th, and the company says that a lot of people have already used it. According to a Thursday post from chief product officer Hari Srinivasan, \"over a mil...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Major YouTube creators are facing backlash for accepting AI money",
-      "source": "The Verge AI",
-      "date": "2026-08-21",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/983181/matti-haapoja-sam-kold-kolder-higgsfield-seedance-backlash",
-      "summary": "Over the past few days, a number of prominent filmmaking content creators including Matti Haapoja and Sam \"Kold\" Kolder have posted videos of themselves demonstrating what's possible with AI platform Higgsfield. The vide...",
-      "tags": [
-        "Multimodal"
-      ]
-    },
-    {
-      "title": "Introducing AI Futures",
-      "source": "OpenAI News",
-      "date": "2026-08-20",
-      "url": "https://openai.com/index/introducing-ai-futures",
-      "summary": "Introducing AI Futures, a new OpenAI blog exploring how transformative AI could reshape power, governance, the economy, and individual freedom.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Stampli cuts launch hours by 68% using ChatGPT Work",
-      "source": "OpenAI News",
-      "date": "2026-08-20",
-      "url": "https://openai.com/index/stampli",
-      "summary": "With a fixed deadline and design resources committed elsewhere, Stampli used Codex and ChatGPT Work to compress weeks of launch production into days.",
-      "tags": [
-        "ChatGPT",
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "Google Discover is getting an AI chatbot-tuned feed",
-      "source": "The Verge AI",
-      "date": "2026-08-20",
-      "url": "https://www.theverge.com/tech/983088/google-discover-ai-chatbot-feed",
-      "summary": "Google will soon allow you to customize your Discover feed by describing what you want to see. The new feature, rolling out to the Google app in the \"coming days,\" will use AI to automatically tweak your feed and \"rememb...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "It’s Greg Brockman’s OpenAI now",
-      "source": "The Verge AI",
-      "date": "2026-08-20",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/982774/greg-brockman-openai-role-expansion",
-      "summary": "OpenAI has had a hell of a year. The company spent months battling former cofounder Elon Musk in a sensational jury trial, was hit with a high-profile trade secrets lawsuit from Apple, and faced widespread scrutiny after...",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "Welcome to the AI crisis in math",
-      "source": "The Verge AI",
-      "date": "2026-08-20",
-      "url": "https://www.theverge.com/podcast/982434/ai-math-openai-astra-existential-crisis",
-      "summary": "Today on Decoder, I’m talking with Robert Hart, The Verge’s London-based AI reporter, about what AI is doing to the field of mathematics and the existential crisis many lead mathematicians are having about it. OpenAI jus...",
-      "tags": [
-        "ChatGPT",
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "Slack is launching collaborative vibe-coding channels",
-      "source": "The Verge AI",
-      "date": "2026-08-20",
-      "url": "https://www.theverge.com/tech/982628/slack-code-vibe-coding-channels-launch",
-      "summary": "Slack is introducing dedicated channels where teams can vibe-code together with AI agents instead of jumping between different tools and conversations. The Slack Code launch includes open, project-specific code channels ...",
-      "tags": [
-        "Agents",
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "GitHub Copilot app for Beginners: Managing your work",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-08-19",
-      "url": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-managing-your-work/",
-      "summary": "If you’re juggling multiple Copilot sessions, use the My work pane to track what's in flight, what's done, and what's next. The post GitHub Copilot app for Beginners: Managing your work appeared first on The GitHub Blog.",
-      "tags": [
-        "Copilot"
-      ]
-    },
-    {
-      "title": "5 new ways to level up your learning with Search",
-      "source": "Google AI Blog",
-      "date": "2026-08-19",
-      "url": "https://blog.google/products-and-platforms/products/search/back-to-school-study-tools/",
-      "summary": "Here’s how you can use Google Search tools to study for classes and standardized tests.",
-      "tags": [
-        "Agents",
-        "Gemini"
-      ]
-    },
-    {
-      "title": "Offering Zero Data Retention for frontier models",
-      "source": "OpenAI News",
-      "date": "2026-08-19",
-      "url": "https://openai.com/index/offering-zero-data-retention-for-frontier-models",
-      "summary": "OpenAI reaffirms Zero Data Retention for eligible API customers and previews Private Safety Processing for advanced AI safety without compromising data privacy.",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
     }
   ],
   "candidates": [
@@ -226,41 +225,22 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Introducing the Admin plugin for ChatGPT Work and Codex",
+          "title": "Better answers, broader thinking: What students gain from ChatGPT and critical-thinking training",
           "source": "OpenAI News",
-          "link": "https://openai.com/index/introducing-admin-plugin",
-          "date": "2026-08-25"
+          "link": "https://openai.com/index/what-students-gain-from-chatgpt-critical-thinking-training",
+          "date": "2026-08-27"
         },
         {
-          "title": "Stampli cuts launch hours by 68% using ChatGPT Work",
+          "title": "Bringing ChatGPT for Teachers to more U.S. school districts",
           "source": "OpenAI News",
-          "link": "https://openai.com/index/stampli",
-          "date": "2026-08-20"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "OpenAI subpoenaed by Alabama AG over Hugging Face hack",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/984239/alabama-attorney-general-subpoena-openai-hugging-face-hack",
-          "date": "2026-08-25"
+          "link": "https://openai.com/index/bringing-chatgpt-for-teachers-to-more-us-school-districts",
+          "date": "2026-08-26"
         },
         {
-          "title": "Slack is launching collaborative vibe-coding channels",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/982628/slack-code-vibe-coding-channels-launch",
-          "date": "2026-08-20"
-        },
-        {
-          "title": "How canvases make agentic workflows visible, steerable, and cost-efficient",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/how-canvases-make-agentic-workflows-visible-steerable-and-cost-efficient/",
-          "date": "2026-08-17"
+          "title": "Learning never stops: How AI makes learning continuous",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/learning-never-stops",
+          "date": "2026-08-26"
         }
       ]
     },
@@ -270,41 +250,41 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Advancing price-performance for developers with GPT‑5.6 in Kiro",
+          "title": "Expanding OpenAI’s presence in Brazil",
           "source": "OpenAI News",
-          "link": "https://openai.com/index/gpt-5-6-in-kiro",
-          "date": "2026-08-24"
+          "link": "https://openai.com/index/expanding-our-presence-in-brazil",
+          "date": "2026-08-27"
         },
         {
           "title": "Using the GitHub Copilot SDK for Java",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/engineering/using-the-github-copilot-sdk-for-java/",
           "date": "2026-08-10"
-        },
-        {
-          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
-          "date": "2026-07-28"
         }
       ]
     },
     {
-      "label": "AI coding assistant workflows",
+      "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Slack is launching collaborative vibe-coding channels",
+          "title": "OpenAI’s rogue AI model incident was worse than we thought",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/982628/slack-code-vibe-coding-channels-launch",
-          "date": "2026-08-20"
+          "link": "https://www.theverge.com/ai-artificial-intelligence/985385/openais-rogue-ai-model-hugging-face-cybersecurity-incident-reports-metr",
+          "date": "2026-08-27"
         },
         {
-          "title": "Inside our 353,000-person vibe coding course",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/ai-agents-intensive-recap-2026/",
-          "date": "2026-08-03"
+          "title": "How canvases make agentic workflows visible, steerable, and cost-efficient",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-canvases-make-agentic-workflows-visible-steerable-and-cost-efficient/",
+          "date": "2026-08-17"
+        },
+        {
+          "title": "How to bring your software delivery workflow into GitHub with agent apps",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-to-bring-your-software-delivery-workflow-into-github-with-agent-apps/",
+          "date": "2026-08-14"
         }
       ]
     },
@@ -313,6 +293,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "GitHub Copilot app for Beginners: Automate Dependabot pull request triage",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-automate-dependabot-pull-request-triage/",
+          "date": "2026-08-26"
+        },
         {
           "title": "GitHub Copilot app for Beginners: Managing your work",
           "source": "GitHub AI & ML Blog",
@@ -324,12 +310,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/write-your-first-prompt-with-the-github-copilot-app/",
           "date": "2026-08-12"
-        },
-        {
-          "title": "Using the GitHub Copilot SDK for Java",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/engineering/using-the-github-copilot-sdk-for-java/",
-          "date": "2026-08-10"
         }
       ]
     },
@@ -339,16 +319,29 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "Google’s new AI transcription edits out your &#8216;ums&#8217; and &#8216;ahs&#8217;",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/985186/google-gemini-3-5-transcribe-audio-ai",
+          "date": "2026-08-26"
+        },
+        {
           "title": "Get closer to the game with Gemini and Pixel",
           "source": "Google AI Blog",
           "link": "https://blog.google/products-and-platforms/products/gemini/google-gemini-pixel-football-club-partnerships/",
           "date": "2026-08-17"
-        },
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
         {
-          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
+          "title": "Inside our 353,000-person vibe coding course",
           "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
-          "date": "2026-07-28"
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/ai-agents-intensive-recap-2026/",
+          "date": "2026-08-03"
         }
       ]
     }
