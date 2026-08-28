@@ -1,11 +1,61 @@
 {
-  "generatedAt": "2026-08-27T18:46:07.663Z",
-  "date": "2026-08-27",
+  "generatedAt": "2026-08-28T19:50:55.100Z",
+  "date": "2026-08-28",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Supporting Thailand’s next generation of AI startups",
+      "source": "OpenAI News",
+      "date": "2026-08-28",
+      "url": "https://openai.com/index/supporting-next-generation-ai-startups-thailand",
+      "summary": "OpenAI and Thailand’s MHESI launch an eight-week accelerator helping 10 health, wellness, and education startups turn AI prototypes into trusted products.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Trump’s EPA wants to let data centers hide their air pollution",
+      "source": "The Verge AI",
+      "date": "2026-08-28",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/986176/data-center-pollution-epa-rule-change-air-permit",
+      "summary": "Just as new data centers face growing backlash from neighboring communities, the US Environmental Protection Agency (EPA) is about to make it harder for people to weigh in on any pollution those centers create. The EPA p...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Anthropic was illegally blacklisted by the Trump administration, court rules",
+      "source": "The Verge AI",
+      "date": "2026-08-28",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/985947/anthropic-supply-chain-risk-lawsuit-judge-ruling",
+      "summary": "On Thursday, a judge ruled that the Pentagon's blacklisting of Anthropic earlier this year was unconstitutional, delivering the AI lab a win in a monthslong rollercoaster of a battle with the Trump administration. The la...",
+      "tags": [
+        "Claude"
+      ]
+    },
+    {
+      "title": "Google’s AI note-taking app now allows you to interact with books",
+      "source": "The Verge AI",
+      "date": "2026-08-28",
+      "url": "https://www.theverge.com/tech/985567/google-gemini-notebook-expert-sources-books",
+      "summary": "Google's AI note-taking app, Gemini Notebook, can now pull information from the books you've purchased. The new \"Expert Intelligence\" feature allows you to bring titles from Google Play Books directly into Gemini Noteboo...",
+      "tags": [
+        "Gemini"
+      ]
+    },
+    {
+      "title": "Plaud is launching AI earbuds",
+      "source": "The Verge AI",
+      "date": "2026-08-28",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/985500/plaud-one-earbuds-ai-recorder-price-availability",
+      "summary": "Plaud has introduced a new AI wearable that's designed to record, transcribe, and summarize your conversations, only this time it looks like earbuds instead of a pin. The Plaud One Explorer Edition can be worn like tradi...",
+      "tags": [
+        "AI"
+      ]
+    },
     {
       "title": "3 new ways to plan and book travel in Search",
       "source": "Google AI Blog",
@@ -66,16 +116,6 @@
       "summary": "Hugging Face's Pollen Robotics has launched its second cute AI robot, the Microduck, a one-eyed biped standing just under 10 inches tall. It's available to preorder now for $399 in cream, graphite, lavender, and sky blue...",
       "tags": [
         "Multimodal"
-      ]
-    },
-    {
-      "title": "Plaud is launching AI earbuds",
-      "source": "The Verge AI",
-      "date": "2026-08-27",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/985500/plaud-one-earbuds-ai-recorder-price-availability",
-      "summary": "Plaud has introduced a new AI wearable that's designed to record, transcribe, and summarize your conversations, only this time it looks like earbuds instead of a pin. The Plaud One Explorer Edition can be worn like tradi...",
-      "tags": [
-        "AI"
       ]
     },
     {
@@ -174,51 +214,28 @@
         "ChatGPT",
         "Models"
       ]
-    },
-    {
-      "title": "Disrupting a new covert influence campaign from Russia",
-      "source": "OpenAI News",
-      "date": "2026-08-25",
-      "url": "https://openai.com/index/disrupting-malicious-uses-of-ai-influence-campaign-russia",
-      "summary": "OpenAI banned Russia-origin accounts using AI to promote a fake Israel-based think tank and a “sovereignty” index praising Russia and criticizing the West.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Introducing the Admin plugin for ChatGPT Work and Codex",
-      "source": "OpenAI News",
-      "date": "2026-08-25",
-      "url": "https://openai.com/index/introducing-admin-plugin",
-      "summary": "Use the Admin plugin for ChatGPT Work and Codex to analyze workspace usage, manage members and permissions, adjust limits, and act on admin requests.",
-      "tags": [
-        "ChatGPT",
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "OpenAI says its Jalapeño chip can power faster AI responses than the competition",
-      "source": "The Verge AI",
-      "date": "2026-08-25",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/984290/openai-jalapeno-ai-chip-benchmarks",
-      "summary": "OpenAI says its new AI chip, Jalape&#241;o, completes tasks more efficiently and returns responses faster than other AI systems, according to a blog post published on Tuesday. During a briefing with reporters, OpenAI har...",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "OpenAI subpoenaed by Alabama AG over Hugging Face hack",
-      "source": "The Verge AI",
-      "date": "2026-08-25",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/984239/alabama-attorney-general-subpoena-openai-hugging-face-hack",
-      "summary": "Alabama's attorney general issued a subpoena to OpenAI on Monday as part of an investigation into how one of its AI agents escaped a supposedly secure testing environment and autonomously hacked another company last mont...",
-      "tags": [
-        "Agents",
-        "ChatGPT"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Google’s AI note-taking app now allows you to interact with books",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/985567/google-gemini-notebook-expert-sources-books",
+          "date": "2026-08-28"
+        },
+        {
+          "title": "Get closer to the game with Gemini and Pixel",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/products-and-platforms/products/gemini/google-gemini-pixel-football-club-partnerships/",
+          "date": "2026-08-17"
+        }
+      ]
+    },
     {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
@@ -264,31 +281,6 @@
       ]
     },
     {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "OpenAI’s rogue AI model incident was worse than we thought",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/985385/openais-rogue-ai-model-hugging-face-cybersecurity-incident-reports-metr",
-          "date": "2026-08-27"
-        },
-        {
-          "title": "How canvases make agentic workflows visible, steerable, and cost-efficient",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/how-canvases-make-agentic-workflows-visible-steerable-and-cost-efficient/",
-          "date": "2026-08-17"
-        },
-        {
-          "title": "How to bring your software delivery workflow into GitHub with agent apps",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/how-to-bring-your-software-delivery-workflow-into-github-with-agent-apps/",
-          "date": "2026-08-14"
-        }
-      ]
-    },
-    {
       "label": "GitHub Copilot developer loop",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
@@ -314,21 +306,27 @@
       ]
     },
     {
-      "label": "Gemini multimodal exploration",
+      "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Google’s new AI transcription edits out your &#8216;ums&#8217; and &#8216;ahs&#8217;",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/985186/google-gemini-3-5-transcribe-audio-ai",
-          "date": "2026-08-26"
+          "title": "How canvases make agentic workflows visible, steerable, and cost-efficient",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-canvases-make-agentic-workflows-visible-steerable-and-cost-efficient/",
+          "date": "2026-08-17"
         },
         {
-          "title": "Get closer to the game with Gemini and Pixel",
+          "title": "How to bring your software delivery workflow into GitHub with agent apps",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-to-bring-your-software-delivery-workflow-into-github-with-agent-apps/",
+          "date": "2026-08-14"
+        },
+        {
+          "title": "Evolve your marketing with new AI tools",
           "source": "Google AI Blog",
-          "link": "https://blog.google/products-and-platforms/products/gemini/google-gemini-pixel-football-club-partnerships/",
-          "date": "2026-08-17"
+          "link": "https://blog.google/products/ads-commerce/google-ads-analytics-ai-updates/",
+          "date": "2026-08-10"
         }
       ]
     },
