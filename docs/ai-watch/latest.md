@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-08-27
+# Daily AI maintenance report — 2026-08-28
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,16 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Supporting Thailand’s next generation of AI startups** — OpenAI News · 2026-08-28
+  https://openai.com/index/supporting-next-generation-ai-startups-thailand
+- **Trump’s EPA wants to let data centers hide their air pollution** — The Verge AI · 2026-08-28
+  https://www.theverge.com/ai-artificial-intelligence/986176/data-center-pollution-epa-rule-change-air-permit
+- **Anthropic was illegally blacklisted by the Trump administration, court rules** — The Verge AI · 2026-08-28
+  https://www.theverge.com/ai-artificial-intelligence/985947/anthropic-supply-chain-risk-lawsuit-judge-ruling
+- **Google’s AI note-taking app now allows you to interact with books** — The Verge AI · 2026-08-28
+  https://www.theverge.com/tech/985567/google-gemini-notebook-expert-sources-books
+- **Plaud is launching AI earbuds** — The Verge AI · 2026-08-28
+  https://www.theverge.com/ai-artificial-intelligence/985500/plaud-one-earbuds-ai-recorder-price-availability
 - **3 new ways to plan and book travel in Search** — Google AI Blog · 2026-08-27
   https://blog.google/products-and-platforms/products/search/book-travel-ai-mode/
 - **Better answers, broader thinking: What students gain from ChatGPT and critical-thinking training** — OpenAI News · 2026-08-27
@@ -25,12 +35,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/podcast/985332/openai-greg-brockman-sam-altman-leader-executive-exodus
 - **Hugging Face’s new robot is an adorable rollerskating duck** — The Verge AI · 2026-08-27
   https://www.theverge.com/gadgets/985549/hugging-face-microduck-robot
-- **Plaud is launching AI earbuds** — The Verge AI · 2026-08-27
-  https://www.theverge.com/ai-artificial-intelligence/985500/plaud-one-earbuds-ai-recorder-price-availability
 - **Adobe is adding more AI to Photoshop** — The Verge AI · 2026-08-27
   https://www.theverge.com/tech/985491/adobe-photoshop-ai-assisted-editor-markup
-- **OpenAI’s rogue AI model incident was worse than we thought** — The Verge AI · 2026-08-27
-  https://www.theverge.com/ai-artificial-intelligence/985385/openais-rogue-ai-model-hugging-face-cybersecurity-incident-reports-metr
 - **GitHub Copilot app for Beginners: Automate Dependabot pull request triage** — GitHub AI & ML Blog · 2026-08-26
   https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-automate-dependabot-pull-request-triage/
 - **Bringing ChatGPT for Teachers to more U.S. school districts** — OpenAI News · 2026-08-26
@@ -41,18 +47,12 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/hugging-face-incident-and-the-road-ahead
 - **How loveholidays is making everyone a builder with Codex** — OpenAI News · 2026-08-26
   https://openai.com/index/loveholidays
-- **Nvidia is about to be a hundred-billion-dollar-a-quarter company** — The Verge AI · 2026-08-26
-  https://www.theverge.com/tech/985387/nvidia-hundred-billion-dollar-quarterly-revenue
-- **Google’s new AI transcription edits out your &#8216;ums&#8217; and &#8216;ahs&#8217;** — The Verge AI · 2026-08-26
-  https://www.theverge.com/tech/985186/google-gemini-3-5-transcribe-audio-ai
 - **How to evaluate LLMs before production** — GitHub AI & ML Blog · 2026-08-25
   https://github.blog/ai-and-ml/llms/how-to-evaluate-llms-before-production/
 - **5 ways to upgrade your home decor with Google Search** — Google AI Blog · 2026-08-25
   https://blog.google/products-and-platforms/products/search/home-decor-tips/
 - **The full stack behind abundant intelligence** — OpenAI News · 2026-08-25
   https://openai.com/index/the-full-stack-behind-abundant-intelligence
-- **Jalapeño’s first results show industry-leading speed and efficiency in AI inference** — OpenAI News · 2026-08-25
-  https://openai.com/index/jalapeno-first-results
 - **GitHub Copilot app for Beginners: Managing your work** — GitHub AI & ML Blog · 2026-08-19
   https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-managing-your-work/
 - **5 new ways to level up your learning with Search** — Google AI Blog · 2026-08-19
@@ -80,11 +80,11 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
+- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment

@@ -1,6 +1,25 @@
 {
-  "generatedAt": "2026-08-27T18:46:07.663Z",
+  "generatedAt": "2026-08-28T19:50:55.100Z",
   "candidates": [
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Google’s AI note-taking app now allows you to interact with books",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/985567/google-gemini-notebook-expert-sources-books",
+          "date": "2026-08-28"
+        },
+        {
+          "title": "Get closer to the game with Gemini and Pixel",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/products-and-platforms/products/gemini/google-gemini-pixel-football-club-partnerships/",
+          "date": "2026-08-17"
+        }
+      ]
+    },
     {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
@@ -46,31 +65,6 @@
       ]
     },
     {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "OpenAI’s rogue AI model incident was worse than we thought",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/985385/openais-rogue-ai-model-hugging-face-cybersecurity-incident-reports-metr",
-          "date": "2026-08-27"
-        },
-        {
-          "title": "How canvases make agentic workflows visible, steerable, and cost-efficient",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/how-canvases-make-agentic-workflows-visible-steerable-and-cost-efficient/",
-          "date": "2026-08-17"
-        },
-        {
-          "title": "How to bring your software delivery workflow into GitHub with agent apps",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/how-to-bring-your-software-delivery-workflow-into-github-with-agent-apps/",
-          "date": "2026-08-14"
-        }
-      ]
-    },
-    {
       "label": "GitHub Copilot developer loop",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
@@ -96,21 +90,27 @@
       ]
     },
     {
-      "label": "Gemini multimodal exploration",
+      "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Google’s new AI transcription edits out your &#8216;ums&#8217; and &#8216;ahs&#8217;",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/985186/google-gemini-3-5-transcribe-audio-ai",
-          "date": "2026-08-26"
+          "title": "How canvases make agentic workflows visible, steerable, and cost-efficient",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-canvases-make-agentic-workflows-visible-steerable-and-cost-efficient/",
+          "date": "2026-08-17"
         },
         {
-          "title": "Get closer to the game with Gemini and Pixel",
+          "title": "How to bring your software delivery workflow into GitHub with agent apps",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-to-bring-your-software-delivery-workflow-into-github-with-agent-apps/",
+          "date": "2026-08-14"
+        },
+        {
+          "title": "Evolve your marketing with new AI tools",
           "source": "Google AI Blog",
-          "link": "https://blog.google/products-and-platforms/products/gemini/google-gemini-pixel-football-club-partnerships/",
-          "date": "2026-08-17"
+          "link": "https://blog.google/products/ads-commerce/google-ads-analytics-ai-updates/",
+          "date": "2026-08-10"
         }
       ]
     },
