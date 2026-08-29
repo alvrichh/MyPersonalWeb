@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-08-28
+# Daily AI maintenance report — 2026-08-29
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,8 +13,12 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Our decision on Cursor following its acquisition by SpaceX** — OpenAI News · 2026-08-28
+  https://openai.com/index/our-decision-on-cursor-following-its-acquisition-by-spacex
 - **Supporting Thailand’s next generation of AI startups** — OpenAI News · 2026-08-28
   https://openai.com/index/supporting-next-generation-ai-startups-thailand
+- **Musicians-turned-detectives are hunting for AI grifters** — The Verge AI · 2026-08-28
+  https://www.theverge.com/entertainment/985866/h4rris-nihil-young-edm-suno-ai
 - **Trump’s EPA wants to let data centers hide their air pollution** — The Verge AI · 2026-08-28
   https://www.theverge.com/ai-artificial-intelligence/986176/data-center-pollution-epa-rule-change-air-permit
 - **Anthropic was illegally blacklisted by the Trump administration, court rules** — The Verge AI · 2026-08-28
@@ -35,14 +39,12 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/podcast/985332/openai-greg-brockman-sam-altman-leader-executive-exodus
 - **Hugging Face’s new robot is an adorable rollerskating duck** — The Verge AI · 2026-08-27
   https://www.theverge.com/gadgets/985549/hugging-face-microduck-robot
-- **Adobe is adding more AI to Photoshop** — The Verge AI · 2026-08-27
-  https://www.theverge.com/tech/985491/adobe-photoshop-ai-assisted-editor-markup
 - **GitHub Copilot app for Beginners: Automate Dependabot pull request triage** — GitHub AI & ML Blog · 2026-08-26
   https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-automate-dependabot-pull-request-triage/
-- **Bringing ChatGPT for Teachers to more U.S. school districts** — OpenAI News · 2026-08-26
-  https://openai.com/index/bringing-chatgpt-for-teachers-to-more-us-school-districts
 - **Learning never stops: How AI makes learning continuous** — OpenAI News · 2026-08-26
   https://openai.com/index/learning-never-stops
+- **Bringing ChatGPT for Teachers to more U.S. school districts** — OpenAI News · 2026-08-26
+  https://openai.com/index/bringing-chatgpt-for-teachers-to-more-us-school-districts
 - **The Hugging Face incident and the road ahead** — OpenAI News · 2026-08-26
   https://openai.com/index/hugging-face-incident-and-the-road-ahead
 - **How loveholidays is making everyone a builder with Codex** — OpenAI News · 2026-08-26
@@ -51,8 +53,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://github.blog/ai-and-ml/llms/how-to-evaluate-llms-before-production/
 - **5 ways to upgrade your home decor with Google Search** — Google AI Blog · 2026-08-25
   https://blog.google/products-and-platforms/products/search/home-decor-tips/
-- **The full stack behind abundant intelligence** — OpenAI News · 2026-08-25
-  https://openai.com/index/the-full-stack-behind-abundant-intelligence
 - **GitHub Copilot app for Beginners: Managing your work** — GitHub AI & ML Blog · 2026-08-19
   https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-managing-your-work/
 - **5 new ways to level up your learning with Search** — Google AI Blog · 2026-08-19
