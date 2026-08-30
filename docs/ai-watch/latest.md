@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-08-29
+# Daily AI maintenance report — 2026-08-30
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Sony Music Publishing and Warner Chappell are suing Anthropic** — The Verge AI · 2026-08-30
+  https://www.theverge.com/ai-artificial-intelligence/986438/sony-music-warner-chappell-anthropic-lawsuit-copyright
 - **Our decision on Cursor following its acquisition by SpaceX** — OpenAI News · 2026-08-28
   https://openai.com/index/our-decision-on-cursor-following-its-acquisition-by-spacex
 - **Supporting Thailand’s next generation of AI startups** — OpenAI News · 2026-08-28
@@ -25,8 +27,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/ai-artificial-intelligence/985947/anthropic-supply-chain-risk-lawsuit-judge-ruling
 - **Google’s AI note-taking app now allows you to interact with books** — The Verge AI · 2026-08-28
   https://www.theverge.com/tech/985567/google-gemini-notebook-expert-sources-books
-- **Plaud is launching AI earbuds** — The Verge AI · 2026-08-28
-  https://www.theverge.com/ai-artificial-intelligence/985500/plaud-one-earbuds-ai-recorder-price-availability
 - **3 new ways to plan and book travel in Search** — Google AI Blog · 2026-08-27
   https://blog.google/products-and-platforms/products/search/book-travel-ai-mode/
 - **Better answers, broader thinking: What students gain from ChatGPT and critical-thinking training** — OpenAI News · 2026-08-27
