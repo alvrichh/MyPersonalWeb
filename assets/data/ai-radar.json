@@ -1,11 +1,21 @@
 {
-  "generatedAt": "2026-08-29T13:33:50.814Z",
-  "date": "2026-08-29",
+  "generatedAt": "2026-08-30T13:29:07.003Z",
+  "date": "2026-08-30",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Sony Music Publishing and Warner Chappell are suing Anthropic",
+      "source": "The Verge AI",
+      "date": "2026-08-30",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/986438/sony-music-warner-chappell-anthropic-lawsuit-copyright",
+      "summary": "Sony Music Publishing and Warner Chappell have filed suit against Anthropic in the US District Court for the Northern District of California seeking damages for \"tens of thousands\" copyrighted works. The companies are as...",
+      "tags": [
+        "Claude"
+      ]
+    },
     {
       "title": "Our decision on Cursor following its acquisition by SpaceX",
       "source": "OpenAI News",
@@ -69,16 +79,6 @@
       ]
     },
     {
-      "title": "Plaud is launching AI earbuds",
-      "source": "The Verge AI",
-      "date": "2026-08-28",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/985500/plaud-one-earbuds-ai-recorder-price-availability",
-      "summary": "Plaud has introduced a new AI wearable that's designed to record, transcribe, and summarize your conversations, only this time it looks like earbuds instead of a pin. The Plaud One Explorer Edition can be worn like tradi...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
       "title": "3 new ways to plan and book travel in Search",
       "source": "Google AI Blog",
       "date": "2026-08-27",
@@ -128,6 +128,16 @@
       "tags": [
         "ChatGPT",
         "Dev Tools"
+      ]
+    },
+    {
+      "title": "Plaud is launching AI earbuds",
+      "source": "The Verge AI",
+      "date": "2026-08-28",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/985500/plaud-one-earbuds-ai-recorder-price-availability",
+      "summary": "Plaud has introduced a new AI wearable that's designed to record, transcribe, and summarize your conversations, only this time it looks like earbuds instead of a pin. The Plaud One Explorer Edition can be worn like tradi...",
+      "tags": [
+        "AI"
       ]
     },
     {
@@ -202,17 +212,6 @@
       "summary": "These are the lessons we learned evaluating LLMs for real-world secret scanning. The post How to evaluate LLMs before production appeared first on The GitHub Blog.",
       "tags": [
         "Models"
-      ]
-    },
-    {
-      "title": "5 ways to upgrade your home decor with Google Search",
-      "source": "Google AI Blog",
-      "date": "2026-08-25",
-      "url": "https://blog.google/products-and-platforms/products/search/home-decor-tips/",
-      "summary": "Learn how to use Google Search tools to find home decor inspiration, shop for furniture, and tackle DIY projects.",
-      "tags": [
-        "Agents",
-        "Gemini"
       ]
     }
   ],
