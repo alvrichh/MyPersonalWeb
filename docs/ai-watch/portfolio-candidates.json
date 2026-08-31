@@ -1,47 +1,28 @@
 {
-  "generatedAt": "2026-08-30T13:29:07.003Z",
+  "generatedAt": "2026-08-31T15:46:41.116Z",
   "candidates": [
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Google’s AI note-taking app now allows you to interact with books",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/985567/google-gemini-notebook-expert-sources-books",
-          "date": "2026-08-28"
-        },
-        {
-          "title": "Get closer to the game with Gemini and Pixel",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/products-and-platforms/products/gemini/google-gemini-pixel-football-club-partnerships/",
-          "date": "2026-08-17"
-        }
-      ]
-    },
     {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "A milestone in expanding access to AI",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/expanding-access-to-ai-with-chatgpt-ads",
+          "date": "2026-08-31"
+        },
+        {
+          "title": "ChatGPT to face tougher regulation in the EU",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/986682/openai-chatgpt-eu-dsa",
+          "date": "2026-08-31"
+        },
+        {
           "title": "Better answers, broader thinking: What students gain from ChatGPT and critical-thinking training",
           "source": "OpenAI News",
           "link": "https://openai.com/index/what-students-gain-from-chatgpt-critical-thinking-training",
           "date": "2026-08-27"
-        },
-        {
-          "title": "Learning never stops: How AI makes learning continuous",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/learning-never-stops",
-          "date": "2026-08-26"
-        },
-        {
-          "title": "Bringing ChatGPT for Teachers to more U.S. school districts",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/bringing-chatgpt-for-teachers-to-more-us-school-districts",
-          "date": "2026-08-26"
         }
       ]
     },
@@ -111,6 +92,19 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/products/ads-commerce/google-ads-analytics-ai-updates/",
           "date": "2026-08-10"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Get closer to the game with Gemini and Pixel",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/products-and-platforms/products/gemini/google-gemini-pixel-football-club-partnerships/",
+          "date": "2026-08-17"
         }
       ]
     },
