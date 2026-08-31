@@ -1,15 +1,65 @@
 {
-  "generatedAt": "2026-08-30T13:29:07.003Z",
-  "date": "2026-08-30",
+  "generatedAt": "2026-08-31T15:46:41.116Z",
+  "date": "2026-08-31",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
     {
+      "title": "A milestone in expanding access to AI",
+      "source": "OpenAI News",
+      "date": "2026-08-31",
+      "url": "https://openai.com/index/expanding-access-to-ai-with-chatgpt-ads",
+      "summary": "ChatGPT Ads reaches $1 billion in annualized revenue run rate and expands globally, supporting broader access to AI through free and affordable options.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "New York Governor Kathy Hochul thinks AI should be ‘less evil’",
+      "source": "The Verge AI",
+      "date": "2026-08-31",
+      "url": "https://www.theverge.com/podcast/986661/ny-gov-kathy-hochul-ai-data-centers-ban-3d-printed-guns-flock-cameras",
+      "summary": "Today, I’m talking with New York Governor Kathy Hochul, and I’ll just warn you — this episode moves really fast. It’s an election year, after all, with a shocking amount of tech policy at stake, and Governor Hochul has t...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "ChatGPT to face tougher regulation in the EU",
+      "source": "The Verge AI",
+      "date": "2026-08-31",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/986682/openai-chatgpt-eu-dsa",
+      "summary": "OpenAI will soon be held accountable for mitigating risks related to ChatGPT's impact on minors, user mental health, and the spread of illegal content in the European Union. That's because ChatGPT is now considered a Ver...",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Instagram cracks down on AI accounts pretending to be human",
+      "source": "The Verge AI",
+      "date": "2026-08-31",
+      "url": "https://www.theverge.com/tech/986593/instagram-addresses-fake-ai-profile-slop",
+      "summary": "Instagram is finally taking steps to address the rise of fake AI-influencer accounts that have gotten harder to spot. It's also renaming the \"AI creator\" label to \"AI-generated profile\" to make it clear when a profile fe...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Texas Governor Abbott blocks funding for more Flock cameras",
+      "source": "The Verge AI",
+      "date": "2026-08-31",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/986541/texas-governor-abbott-flock-cameras",
+      "summary": "As backlash grows over Flock's AI surveillance cameras, Texas Governor Greg Abbott has frozen state spending on them. The move came just ahead of the publication of a Texas Tribune investigation that revealed the state s...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
       "title": "Sony Music Publishing and Warner Chappell are suing Anthropic",
       "source": "The Verge AI",
-      "date": "2026-08-30",
+      "date": "2026-08-31",
       "url": "https://www.theverge.com/ai-artificial-intelligence/986438/sony-music-warner-chappell-anthropic-lawsuit-copyright",
       "summary": "Sony Music Publishing and Warner Chappell have filed suit against Anthropic in the US District Court for the Northern District of California seeking damages for \"tens of thousands\" copyrighted works. The companies are as...",
       "tags": [
@@ -69,21 +119,21 @@
       ]
     },
     {
-      "title": "Google’s AI note-taking app now allows you to interact with books",
-      "source": "The Verge AI",
-      "date": "2026-08-28",
-      "url": "https://www.theverge.com/tech/985567/google-gemini-notebook-expert-sources-books",
-      "summary": "Google's AI note-taking app, Gemini Notebook, can now pull information from the books you've purchased. The new \"Expert Intelligence\" feature allows you to bring titles from Google Play Books directly into Gemini Noteboo...",
-      "tags": [
-        "Gemini"
-      ]
-    },
-    {
       "title": "3 new ways to plan and book travel in Search",
       "source": "Google AI Blog",
       "date": "2026-08-27",
       "url": "https://blog.google/products-and-platforms/products/search/book-travel-ai-mode/",
       "summary": "Book hotels and track airfares, plus view miles and rewards with AI Mode in Google Search.",
+      "tags": [
+        "Gemini"
+      ]
+    },
+    {
+      "title": "Google’s AI note-taking app now allows you to interact with books",
+      "source": "The Verge AI",
+      "date": "2026-08-28",
+      "url": "https://www.theverge.com/tech/985567/google-gemini-notebook-expert-sources-books",
+      "summary": "Google's AI note-taking app, Gemini Notebook, can now pull information from the books you've purchased. The new \"Expert Intelligence\" feature allows you to bring titles from Google Play Books directly into Gemini Noteboo...",
       "tags": [
         "Gemini"
       ]
@@ -160,103 +210,31 @@
         "Agents",
         "Multimodal"
       ]
-    },
-    {
-      "title": "OpenAI’s rogue AI model incident was worse than we thought",
-      "source": "The Verge AI",
-      "date": "2026-08-27",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/985385/openais-rogue-ai-model-hugging-face-cybersecurity-incident-reports-metr",
-      "summary": "In July, an unreleased OpenAI model broke out of a restricted environment, figured out how to get access to the internet, allowed AI agents to talk to each other using a secret \"message board,\" and hacked into the intern...",
-      "tags": [
-        "Agents",
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "GitHub Copilot app for Beginners: Automate Dependabot pull request triage",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-08-26",
-      "url": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-automate-dependabot-pull-request-triage/",
-      "summary": "Managing library updates can be tedious at times. Learn how the GitHub Copilot app can handle this type of repetitive task. The post GitHub Copilot app for Beginners: Automate Dependabot pull request triage appeared firs...",
-      "tags": [
-        "Copilot"
-      ]
-    },
-    {
-      "title": "Bringing ChatGPT for Teachers to more U.S. school districts",
-      "source": "OpenAI News",
-      "date": "2026-08-26",
-      "url": "https://openai.com/index/bringing-chatgpt-for-teachers-to-more-us-school-districts",
-      "summary": "ChatGPT for Teachers is expanding to 55 U.S. school systems, bringing secure AI tools, training, and support to over 100,000 more educators and staff.",
-      "tags": [
-        "Agents",
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Learning never stops: How AI makes learning continuous",
-      "source": "OpenAI News",
-      "date": "2026-08-26",
-      "url": "https://openai.com/index/learning-never-stops",
-      "summary": "OpenAI’s new report explores how students and educators use ChatGPT to make learning more continuous, with support that extends beyond the classroom.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "How to evaluate LLMs before production",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-08-25",
-      "url": "https://github.blog/ai-and-ml/llms/how-to-evaluate-llms-before-production/",
-      "summary": "These are the lessons we learned evaluating LLMs for real-world secret scanning. The post How to evaluate LLMs before production appeared first on The GitHub Blog.",
-      "tags": [
-        "Models"
-      ]
     }
   ],
   "candidates": [
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Google’s AI note-taking app now allows you to interact with books",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/985567/google-gemini-notebook-expert-sources-books",
-          "date": "2026-08-28"
-        },
-        {
-          "title": "Get closer to the game with Gemini and Pixel",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/products-and-platforms/products/gemini/google-gemini-pixel-football-club-partnerships/",
-          "date": "2026-08-17"
-        }
-      ]
-    },
     {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "A milestone in expanding access to AI",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/expanding-access-to-ai-with-chatgpt-ads",
+          "date": "2026-08-31"
+        },
+        {
+          "title": "ChatGPT to face tougher regulation in the EU",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/986682/openai-chatgpt-eu-dsa",
+          "date": "2026-08-31"
+        },
+        {
           "title": "Better answers, broader thinking: What students gain from ChatGPT and critical-thinking training",
           "source": "OpenAI News",
           "link": "https://openai.com/index/what-students-gain-from-chatgpt-critical-thinking-training",
           "date": "2026-08-27"
-        },
-        {
-          "title": "Learning never stops: How AI makes learning continuous",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/learning-never-stops",
-          "date": "2026-08-26"
-        },
-        {
-          "title": "Bringing ChatGPT for Teachers to more U.S. school districts",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/bringing-chatgpt-for-teachers-to-more-us-school-districts",
-          "date": "2026-08-26"
         }
       ]
     },
@@ -326,6 +304,19 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/products/ads-commerce/google-ads-analytics-ai-updates/",
           "date": "2026-08-10"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Get closer to the game with Gemini and Pixel",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/products-and-platforms/products/gemini/google-gemini-pixel-football-club-partnerships/",
+          "date": "2026-08-17"
         }
       ]
     },
