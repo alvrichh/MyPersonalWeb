@@ -1,11 +1,33 @@
 {
-  "generatedAt": "2026-08-31T15:46:41.116Z",
-  "date": "2026-08-31",
+  "generatedAt": "2026-09-01T13:00:10.320Z",
+  "date": "2026-09-01",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "OpenAI supports California’s bill to advance youth AI safety",
+      "source": "OpenAI News",
+      "date": "2026-08-31",
+      "url": "https://openai.com/index/supporting-california-bill-advance-ai-youth-safety",
+      "summary": "OpenAI supports California SB 1119, advancing strong, age-appropriate AI safeguards for teens while preserving opportunities to learn, create, and explore.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Polimill builds Japan's next-generation public AI infrastructure",
+      "source": "OpenAI News",
+      "date": "2026-08-31",
+      "url": "https://openai.com/index/polimill",
+      "summary": "Polimill uses OpenAI GPT models and Codex to help municipalities search and use administrative knowledge while accelerating development.",
+      "tags": [
+        "ChatGPT",
+        "Dev Tools",
+        "Models"
+      ]
+    },
     {
       "title": "A milestone in expanding access to AI",
       "source": "OpenAI News",
@@ -14,6 +36,17 @@
       "summary": "ChatGPT Ads reaches $1 billion in annualized revenue run rate and expands globally, supporting broader access to AI through free and affordable options.",
       "tags": [
         "ChatGPT"
+      ]
+    },
+    {
+      "title": "Debian won&#8217;t ban AI code from its Linux distribution",
+      "source": "The Verge AI",
+      "date": "2026-08-31",
+      "url": "https://www.theverge.com/tech/986789/linux-debian-generative-ai-policy",
+      "summary": "Debian voted to allow developers to use AI tools in their contributions to the Linux distribution's \"development, maintenance, [and] documentation.\" The new policy on AI acknowledges that \"responsible\" use of AI can impr...",
+      "tags": [
+        "Agents",
+        "Dev Tools"
       ]
     },
     {
@@ -179,37 +212,6 @@
         "ChatGPT",
         "Dev Tools"
       ]
-    },
-    {
-      "title": "Plaud is launching AI earbuds",
-      "source": "The Verge AI",
-      "date": "2026-08-28",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/985500/plaud-one-earbuds-ai-recorder-price-availability",
-      "summary": "Plaud has introduced a new AI wearable that's designed to record, transcribe, and summarize your conversations, only this time it looks like earbuds instead of a pin. The Plaud One Explorer Edition can be worn like tradi...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Hugging Face’s new robot is an adorable rollerskating duck",
-      "source": "The Verge AI",
-      "date": "2026-08-27",
-      "url": "https://www.theverge.com/gadgets/985549/hugging-face-microduck-robot",
-      "summary": "Hugging Face's Pollen Robotics has launched its second cute AI robot, the Microduck, a one-eyed biped standing just under 10 inches tall. It's available to preorder now for $399 in cream, graphite, lavender, and sky blue...",
-      "tags": [
-        "Multimodal"
-      ]
-    },
-    {
-      "title": "Adobe is adding more AI to Photoshop",
-      "source": "The Verge AI",
-      "date": "2026-08-27",
-      "url": "https://www.theverge.com/tech/985491/adobe-photoshop-ai-assisted-editor-markup",
-      "summary": "Adobe is rolling out an AI-heavy update for Photoshop that includes a new \"optional\" interface dedicated to its AI tools. Launching in beta, the \"AI Assisted Editor\" view will show all of Photoshop's AI features in a sin...",
-      "tags": [
-        "Agents",
-        "Multimodal"
-      ]
     }
   ],
   "candidates": [
@@ -243,6 +245,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Debian won&#8217;t ban AI code from its Linux distribution",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/986789/linux-debian-generative-ai-policy",
+          "date": "2026-08-31"
+        },
         {
           "title": "Expanding OpenAI’s presence in Brazil",
           "source": "OpenAI News",

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-31T15:46:41.116Z",
+  "generatedAt": "2026-09-01T13:00:10.320Z",
   "candidates": [
     {
       "label": "ChatGPT workflow design",
@@ -31,6 +31,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Debian won&#8217;t ban AI code from its Linux distribution",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/986789/linux-debian-generative-ai-policy",
+          "date": "2026-08-31"
+        },
         {
           "title": "Expanding OpenAI’s presence in Brazil",
           "source": "OpenAI News",
