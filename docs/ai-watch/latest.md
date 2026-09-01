@@ -1,11 +1,11 @@
-# Daily AI maintenance report — 2026-08-31
+# Daily AI maintenance report — 2026-09-01
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
 ## Source status
 
 - OpenAI News: OK (8 relevant items)
-- Anthropic News: unavailable (fetch failed)
+- Anthropic News: unavailable (HTTP 404)
 - Google AI Blog: OK (8 relevant items)
 - GitHub AI & ML Blog: OK (8 relevant items)
 - Microsoft AI Blog: unavailable (HTTP 410)
@@ -13,8 +13,14 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **OpenAI supports California’s bill to advance youth AI safety** — OpenAI News · 2026-08-31
+  https://openai.com/index/supporting-california-bill-advance-ai-youth-safety
+- **Polimill builds Japan's next-generation public AI infrastructure** — OpenAI News · 2026-08-31
+  https://openai.com/index/polimill
 - **A milestone in expanding access to AI** — OpenAI News · 2026-08-31
   https://openai.com/index/expanding-access-to-ai-with-chatgpt-ads
+- **Debian won&#8217;t ban AI code from its Linux distribution** — The Verge AI · 2026-08-31
+  https://www.theverge.com/tech/986789/linux-debian-generative-ai-policy
 - **New York Governor Kathy Hochul thinks AI should be ‘less evil’** — The Verge AI · 2026-08-31
   https://www.theverge.com/podcast/986661/ny-gov-kathy-hochul-ai-data-centers-ban-3d-printed-guns-flock-cameras
 - **ChatGPT to face tougher regulation in the EU** — The Verge AI · 2026-08-31
@@ -33,8 +39,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/entertainment/985866/h4rris-nihil-young-edm-suno-ai
 - **Trump’s EPA wants to let data centers hide their air pollution** — The Verge AI · 2026-08-28
   https://www.theverge.com/ai-artificial-intelligence/986176/data-center-pollution-epa-rule-change-air-permit
-- **Anthropic was illegally blacklisted by the Trump administration, court rules** — The Verge AI · 2026-08-28
-  https://www.theverge.com/ai-artificial-intelligence/985947/anthropic-supply-chain-risk-lawsuit-judge-ruling
 - **3 new ways to plan and book travel in Search** — Google AI Blog · 2026-08-27
   https://blog.google/products-and-platforms/products/search/book-travel-ai-mode/
 - **Better answers, broader thinking: What students gain from ChatGPT and critical-thinking training** — OpenAI News · 2026-08-27
@@ -43,12 +47,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/expanding-our-presence-in-brazil
 - **GitHub Copilot app for Beginners: Automate Dependabot pull request triage** — GitHub AI & ML Blog · 2026-08-26
   https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-automate-dependabot-pull-request-triage/
-- **Learning never stops: How AI makes learning continuous** — OpenAI News · 2026-08-26
-  https://openai.com/index/learning-never-stops
 - **Bringing ChatGPT for Teachers to more U.S. school districts** — OpenAI News · 2026-08-26
   https://openai.com/index/bringing-chatgpt-for-teachers-to-more-us-school-districts
-- **The Hugging Face incident and the road ahead** — OpenAI News · 2026-08-26
-  https://openai.com/index/hugging-face-incident-and-the-road-ahead
 - **How to evaluate LLMs before production** — GitHub AI & ML Blog · 2026-08-25
   https://github.blog/ai-and-ml/llms/how-to-evaluate-llms-before-production/
 - **5 ways to upgrade your home decor with Google Search** — Google AI Blog · 2026-08-25
