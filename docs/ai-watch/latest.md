@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-09-01
+# Daily AI maintenance report — 2026-09-02
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,42 +13,46 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **The latest AI news we announced in August 2026** — Google AI Blog · 2026-09-01
+  https://blog.google/innovation-and-ai/technology/google-ai-updates-august-2026/
+- **Try Google Pics: Easy image creation and editing in Google Workspace** — Google AI Blog · 2026-09-01
+  https://blog.google/products-and-platforms/products/workspace/google-pics/
+- **How AI-native companies turn workflows into operating capability** — OpenAI News · 2026-09-01
+  https://openai.com/index/ai-native-company-workflows
+- **Path to Astra: critical capabilities and frontier safeguards** — OpenAI News · 2026-09-01
+  https://openai.com/index/path-to-astra
+- **Healthcare organizations can now connect EHR and additional industry data to ChatGPT** — OpenAI News · 2026-09-01
+  https://openai.com/index/chatgpt-connects-health-records-and-healthcare-sources
+- **How law firm Gilbert + Tobin governs and scales AI with OpenAI** — OpenAI News · 2026-09-01
+  https://openai.com/index/gilbert-tobin
+- **Google needs Hollywood more than the studios need AI** — The Verge AI · 2026-09-01
+  https://www.theverge.com/tech/987429/google-needs-hollywood-more-than-the-studios-need-ai
+- **Anthropic launches Claude Fable 5.1 and says it&#8217;s up to 45 percent cheaper for agentic work** — The Verge AI · 2026-09-01
+  https://www.theverge.com/ai-artificial-intelligence/987830/anthropic-claude-fable-mythos-5-1
+- **OpenAI delayed its new model’s development after the Hugging Face hack** — The Verge AI · 2026-09-01
+  https://www.theverge.com/ai-artificial-intelligence/987695/openai-astra-unreleased-model-cybersecurity-delay
+- **The rise of AI &#8216;civilizations&#8217; and the fall of corporate responsibility** — The Verge AI · 2026-09-01
+  https://www.theverge.com/ai-artificial-intelligence/987566/ai-civilizations-opeai-hugging-face-hack
+- **Apple accuses OpenAI of destroying evidence** — The Verge AI · 2026-09-01
+  https://www.theverge.com/tech/987575/apple-openai-destroying-evidence-trade-secrets-lawsuit
+- **John Deere launched an AI chatbot for farmers** — The Verge AI · 2026-09-01
+  https://www.theverge.com/ai-artificial-intelligence/987486/john-deere-jd-ai-chatbot
+- **Google Pics is like Canva, but with even more AI** — The Verge AI · 2026-09-01
+  https://www.theverge.com/tech/987423/google-pics-ai-image-editor-generator
+- **Nvidia&#8217;s controversial DLSS 5 arrives September 3rd and requires serious GPU horsepower** — The Verge AI · 2026-09-01
+  https://www.theverge.com/tech/986378/nvidia-dlss-5-launch-nba-2k27
 - **OpenAI supports California’s bill to advance youth AI safety** — OpenAI News · 2026-08-31
   https://openai.com/index/supporting-california-bill-advance-ai-youth-safety
 - **Polimill builds Japan's next-generation public AI infrastructure** — OpenAI News · 2026-08-31
   https://openai.com/index/polimill
 - **A milestone in expanding access to AI** — OpenAI News · 2026-08-31
   https://openai.com/index/expanding-access-to-ai-with-chatgpt-ads
-- **Debian won&#8217;t ban AI code from its Linux distribution** — The Verge AI · 2026-08-31
-  https://www.theverge.com/tech/986789/linux-debian-generative-ai-policy
-- **New York Governor Kathy Hochul thinks AI should be ‘less evil’** — The Verge AI · 2026-08-31
-  https://www.theverge.com/podcast/986661/ny-gov-kathy-hochul-ai-data-centers-ban-3d-printed-guns-flock-cameras
-- **ChatGPT to face tougher regulation in the EU** — The Verge AI · 2026-08-31
-  https://www.theverge.com/ai-artificial-intelligence/986682/openai-chatgpt-eu-dsa
-- **Instagram cracks down on AI accounts pretending to be human** — The Verge AI · 2026-08-31
-  https://www.theverge.com/tech/986593/instagram-addresses-fake-ai-profile-slop
-- **Texas Governor Abbott blocks funding for more Flock cameras** — The Verge AI · 2026-08-31
-  https://www.theverge.com/ai-artificial-intelligence/986541/texas-governor-abbott-flock-cameras
-- **Sony Music Publishing and Warner Chappell are suing Anthropic** — The Verge AI · 2026-08-31
-  https://www.theverge.com/ai-artificial-intelligence/986438/sony-music-warner-chappell-anthropic-lawsuit-copyright
 - **Our decision on Cursor following its acquisition by SpaceX** — OpenAI News · 2026-08-28
   https://openai.com/index/our-decision-on-cursor-following-its-acquisition-by-spacex
-- **Supporting Thailand’s next generation of AI startups** — OpenAI News · 2026-08-28
-  https://openai.com/index/supporting-next-generation-ai-startups-thailand
-- **Musicians-turned-detectives are hunting for AI grifters** — The Verge AI · 2026-08-28
-  https://www.theverge.com/entertainment/985866/h4rris-nihil-young-edm-suno-ai
-- **Trump’s EPA wants to let data centers hide their air pollution** — The Verge AI · 2026-08-28
-  https://www.theverge.com/ai-artificial-intelligence/986176/data-center-pollution-epa-rule-change-air-permit
 - **3 new ways to plan and book travel in Search** — Google AI Blog · 2026-08-27
   https://blog.google/products-and-platforms/products/search/book-travel-ai-mode/
-- **Better answers, broader thinking: What students gain from ChatGPT and critical-thinking training** — OpenAI News · 2026-08-27
-  https://openai.com/index/what-students-gain-from-chatgpt-critical-thinking-training
-- **Expanding OpenAI’s presence in Brazil** — OpenAI News · 2026-08-27
-  https://openai.com/index/expanding-our-presence-in-brazil
 - **GitHub Copilot app for Beginners: Automate Dependabot pull request triage** — GitHub AI & ML Blog · 2026-08-26
   https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-automate-dependabot-pull-request-triage/
-- **Bringing ChatGPT for Teachers to more U.S. school districts** — OpenAI News · 2026-08-26
-  https://openai.com/index/bringing-chatgpt-for-teachers-to-more-us-school-districts
 - **How to evaluate LLMs before production** — GitHub AI & ML Blog · 2026-08-25
   https://github.blog/ai-and-ml/llms/how-to-evaluate-llms-before-production/
 - **5 ways to upgrade your home decor with Google Search** — Google AI Blog · 2026-08-25
@@ -73,19 +77,15 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blog.google/products/ads-commerce/google-ads-analytics-ai-updates/
 - **A guide to slash commands in the GitHub Copilot app** — GitHub AI & ML Blog · 2026-08-06
   https://github.blog/ai-and-ml/github-copilot/a-guide-to-slash-commands-in-the-github-copilot-app/
-- **The latest AI news we announced in July 2026** — Google AI Blog · 2026-08-04
-  https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-july-2026/
-- **Inside our 353,000-person vibe coding course** — Google AI Blog · 2026-08-03
-  https://blog.google/innovation-and-ai/technology/developers-tools/ai-agents-intensive-recap-2026/
 
 ## Portfolio candidates
 
-- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
 
