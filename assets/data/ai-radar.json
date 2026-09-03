@@ -1,11 +1,142 @@
 {
-  "generatedAt": "2026-09-02T12:28:49.162Z",
-  "date": "2026-09-02",
+  "generatedAt": "2026-09-03T12:31:22.080Z",
+  "date": "2026-09-03",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Nvidia is buying Hugging Face for almost $13 billion",
+      "source": "The Verge AI",
+      "date": "2026-09-03",
+      "url": "https://www.theverge.com/tech/985474/nvidia-buying-hugging-face-deal",
+      "summary": "Nvidia has agreed to buy Hugging Face for $12.93 billion, bringing one of the most popular hosting platforms for open-source AI models, datasets, and tools under the ownership of the world's biggest AI chipmaker. Hugging...",
+      "tags": [
+        "Agents",
+        "Dev Tools",
+        "Models"
+      ]
+    },
+    {
+      "title": "Decoding the new AI lingo: Loops, harnesses, squads, hill climbing&#8230; oh my!",
+      "source": "GitHub AI & ML Blog",
+      "date": "2026-09-02",
+      "url": "https://github.blog/ai-and-ml/decoding-the-new-ai-lingo-loops-harnesses-squads-hill-climbing-oh-my/",
+      "summary": "From loop engineering to harnesses, squads, and open weights, the GitHub Podcast breaks down the AI terms showing up in developer conversations. The post Decoding the new AI lingo: Loops, harnesses, squads, hill climbing...",
+      "tags": [
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "How we make AI coding more cost efficient without sacrificing task quality",
+      "source": "GitHub AI & ML Blog",
+      "date": "2026-09-02",
+      "url": "https://github.blog/ai-and-ml/github-copilot/how-we-make-ai-coding-more-cost-efficient-without-sacrificing-task-quality/",
+      "summary": "Why shorter outputs can cost more, and how GitHub Copilot reduces wasted work across the complete coding task. The post How we make AI coding more cost efficient without sacrificing task quality appeared first on The Git...",
+      "tags": [
+        "Copilot",
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "ATV Big Air Tour turned 3 days of work into 3 hours with ChatGPT",
+      "source": "OpenAI News",
+      "date": "2026-09-02",
+      "url": "https://openai.com/index/atv-big-air-tour",
+      "summary": "ATV Big Air Tour uses ChatGPT Work to speed up marketing, merchandising, and more. It even turned merchandise photos into an inventory website in 15 minutes.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Google says its new Gemini 3.8 Flash model ‘works harder’ but might cost more",
+      "source": "The Verge AI",
+      "date": "2026-09-02",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/988742/google-gemini-3-8-flash",
+      "summary": "Google launched Gemini 3.8 Flash, arriving just a few weeks after its predecessor. The company claims the new model \"works harder\" than Gemini 3.7 Flash by performing more reasoning steps on complex tasks and \"calling to...",
+      "tags": [
+        "Agents",
+        "Gemini",
+        "Models"
+      ]
+    },
+    {
+      "title": "Amazon’s AI assistant can now spot fake emails from the company",
+      "source": "The Verge AI",
+      "date": "2026-09-02",
+      "url": "https://www.theverge.com/tech/988518/amazon-alexa-for-shopping-verify-emails",
+      "summary": "Amazon is trying to combat impersonation scams with a new feature that allows you to use its AI assistant to determine whether an email, text message, or phone call actually came from the company. With the update, you ca...",
+      "tags": [
+        "Agents"
+      ]
+    },
+    {
+      "title": "Researchers fear safety disaster ahead of OpenAI&#8217;s Astra release",
+      "source": "The Verge AI",
+      "date": "2026-09-02",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/988334/openai-astra-ai-monitoring-safety",
+      "summary": "OpenAI is on the cusp of releasing its most powerful AI model yet, Astra, following weeks of delays to shore up safety protocols after its agents attacked real targets during testing. As details about the model trickle o...",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Models"
+      ]
+    },
+    {
+      "title": "The Trump administration is supporting OpenAI in the NYT copyright lawsuit",
+      "source": "The Verge AI",
+      "date": "2026-09-02",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/988344/trump-administration-new-york-times-openai-lawsuit",
+      "summary": "The Trump administration has intervened in The New York Times' copyright lawsuit against OpenAI, making an argument in favor of the AI lab. The landmark lawsuit, filed in December 2023, alleging that OpenAI unlawfully tr...",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Google is sending MrBeast into the wilderness, armed with AI",
+      "source": "The Verge AI",
+      "date": "2026-09-02",
+      "url": "https://www.theverge.com/tech/988355/mrbeast-google-partnership-gemini-fitbit",
+      "summary": "MrBeast will feature Gemini, Google Health, and the Fitbit Air in upcoming videos as part of a multi-year partnership with Google. The deal will kick off with a video featuring Jimmy \"MrBeast\" Donaldson turning to Gemini...",
+      "tags": [
+        "Gemini",
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "OpenAI accused of ‘aiding and abetting’ Tumbler Ridge mass shooting in dozens of new lawsuits",
+      "source": "The Verge AI",
+      "date": "2026-09-02",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/988261/openai-tumbler-ridge-shooting-lawsuit-aiding-abetting",
+      "summary": "OpenAI and its CEO Sam Altman are facing 30 new lawsuits that accuse them of providing \"substantial assistance and encouragement\" to the suspect in Canada's Tumbler Ridge school shooting, as reported earlier by TechCrunc...",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "NYC bans AI use for students until they reach high school",
+      "source": "The Verge AI",
+      "date": "2026-09-02",
+      "url": "https://www.theverge.com/policy/988228/nyc-ai-restrictions-in-schools-chatbot-ban",
+      "summary": "New York City Mayor Zohran Mamdani has announced a new policy today that will ban younger schoolchildren from using AI in classrooms. The one-year moratorium, effective in the 2026-2027 school year, will impact about 600...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "How AI-native companies turn workflows into operating capability",
+      "source": "OpenAI News",
+      "date": "2026-09-01",
+      "url": "https://openai.com/index/ai-native-company-workflows",
+      "summary": "Basis, Clay, and Exa Labs use AI agents to improve onboarding, account management, and developer integrations. See what enterprise leaders can apply.",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Dev Tools",
+        "Automation"
+      ]
+    },
     {
       "title": "The latest AI news we announced in August 2026",
       "source": "Google AI Blog",
@@ -26,19 +157,6 @@
         "Gemini",
         "Multimodal",
         "Models"
-      ]
-    },
-    {
-      "title": "How AI-native companies turn workflows into operating capability",
-      "source": "OpenAI News",
-      "date": "2026-09-01",
-      "url": "https://openai.com/index/ai-native-company-workflows",
-      "summary": "Basis, Clay, and Exa Labs use AI agents to improve onboarding, account management, and developer integrations. See what enterprise leaders can apply.",
-      "tags": [
-        "Agents",
-        "ChatGPT",
-        "Dev Tools",
-        "Automation"
       ]
     },
     {
@@ -105,228 +223,50 @@
         "ChatGPT",
         "Models"
       ]
-    },
-    {
-      "title": "The rise of AI &#8216;civilizations&#8217; and the fall of corporate responsibility",
-      "source": "The Verge AI",
-      "date": "2026-09-01",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/987566/ai-civilizations-opeai-hugging-face-hack",
-      "summary": "Depending on who you ask, developer platform Hugging Face was recently attacked by OpenAI - after it lost control of its own AI tools - or by a succession of AI \"civilizations.\" Welcome to the linguistic battlefield of A...",
-      "tags": [
-        "Agents",
-        "ChatGPT",
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "Apple accuses OpenAI of destroying evidence",
-      "source": "The Verge AI",
-      "date": "2026-09-01",
-      "url": "https://www.theverge.com/tech/987575/apple-openai-destroying-evidence-trade-secrets-lawsuit",
-      "summary": "Apple is pushing for \"expedited discovery\" in its legal battle against OpenAI over concerns the company is actively destroying evidence, as reported earlier by Bloomberg. In a filing on Monday, Apple alleges OpenAI only ...",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "John Deere launched an AI chatbot for farmers",
-      "source": "The Verge AI",
-      "date": "2026-09-01",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/987486/john-deere-jd-ai-chatbot",
-      "summary": "John Deere is testing a new \"JD\" AI assistant that it says can help farmers make more money, with answers about best practices and historical trends that are based on their own data. It uses their \"field, machine and ope...",
-      "tags": [
-        "Agents"
-      ]
-    },
-    {
-      "title": "OpenAI supports California’s bill to advance youth AI safety",
-      "source": "OpenAI News",
-      "date": "2026-08-31",
-      "url": "https://openai.com/index/supporting-california-bill-advance-ai-youth-safety",
-      "summary": "OpenAI supports California SB 1119, advancing strong, age-appropriate AI safeguards for teens while preserving opportunities to learn, create, and explore.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Polimill builds Japan's next-generation public AI infrastructure",
-      "source": "OpenAI News",
-      "date": "2026-08-31",
-      "url": "https://openai.com/index/polimill",
-      "summary": "Polimill uses OpenAI GPT models and Codex to help municipalities search and use administrative knowledge while accelerating development.",
-      "tags": [
-        "ChatGPT",
-        "Dev Tools",
-        "Models"
-      ]
-    },
-    {
-      "title": "A milestone in expanding access to AI",
-      "source": "OpenAI News",
-      "date": "2026-08-31",
-      "url": "https://openai.com/index/expanding-access-to-ai-with-chatgpt-ads",
-      "summary": "ChatGPT Ads reaches $1 billion in annualized revenue run rate and expands globally, supporting broader access to AI through free and affordable options.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Debian won&#8217;t ban AI code from its Linux distribution",
-      "source": "The Verge AI",
-      "date": "2026-08-31",
-      "url": "https://www.theverge.com/tech/986789/linux-debian-generative-ai-policy",
-      "summary": "Debian voted to allow developers to use AI tools in their contributions to the Linux distribution's \"development, maintenance, [and] documentation.\" The new policy on AI acknowledges that \"responsible\" use of AI can impr...",
-      "tags": [
-        "Agents",
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "New York Governor Kathy Hochul thinks AI should be ‘less evil’",
-      "source": "The Verge AI",
-      "date": "2026-08-31",
-      "url": "https://www.theverge.com/podcast/986661/ny-gov-kathy-hochul-ai-data-centers-ban-3d-printed-guns-flock-cameras",
-      "summary": "Today, I’m talking with New York Governor Kathy Hochul, and I’ll just warn you — this episode moves really fast. It’s an election year, after all, with a shocking amount of tech policy at stake, and Governor Hochul has t...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "ChatGPT to face tougher regulation in the EU",
-      "source": "The Verge AI",
-      "date": "2026-08-31",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/986682/openai-chatgpt-eu-dsa",
-      "summary": "OpenAI will soon be held accountable for mitigating risks related to ChatGPT's impact on minors, user mental health, and the spread of illegal content in the European Union. That's because ChatGPT is now considered a Ver...",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Instagram cracks down on AI accounts pretending to be human",
-      "source": "The Verge AI",
-      "date": "2026-08-31",
-      "url": "https://www.theverge.com/tech/986593/instagram-addresses-fake-ai-profile-slop",
-      "summary": "Instagram is finally taking steps to address the rise of fake AI-influencer accounts that have gotten harder to spot. It's also renaming the \"AI creator\" label to \"AI-generated profile\" to make it clear when a profile fe...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Texas Governor Abbott blocks funding for more Flock cameras",
-      "source": "The Verge AI",
-      "date": "2026-08-31",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/986541/texas-governor-abbott-flock-cameras",
-      "summary": "As backlash grows over Flock's AI surveillance cameras, Texas Governor Greg Abbott has frozen state spending on them. The move came just ahead of the publication of a Texas Tribune investigation that revealed the state s...",
-      "tags": [
-        "AI"
-      ]
     }
   ],
   "candidates": [
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "How AI-native companies turn workflows into operating capability",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/ai-native-company-workflows",
-          "date": "2026-09-01"
-        },
-        {
-          "title": "Anthropic launches Claude Fable 5.1 and says it&#8217;s up to 45 percent cheaper for agentic work",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/987830/anthropic-claude-fable-mythos-5-1",
-          "date": "2026-09-01"
-        },
-        {
-          "title": "How canvases make agentic workflows visible, steerable, and cost-efficient",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/how-canvases-make-agentic-workflows-visible-steerable-and-cost-efficient/",
-          "date": "2026-08-17"
-        }
-      ]
-    },
     {
       "label": "AI developer tooling",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "Nvidia is buying Hugging Face for almost $13 billion",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/985474/nvidia-buying-hugging-face-deal",
+          "date": "2026-09-03"
+        },
+        {
+          "title": "Decoding the new AI lingo: Loops, harnesses, squads, hill climbing&#8230; oh my!",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/decoding-the-new-ai-lingo-loops-harnesses-squads-hill-climbing-oh-my/",
+          "date": "2026-09-02"
+        },
+        {
           "title": "How AI-native companies turn workflows into operating capability",
           "source": "OpenAI News",
           "link": "https://openai.com/index/ai-native-company-workflows",
           "date": "2026-09-01"
-        },
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
         {
-          "title": "The rise of AI &#8216;civilizations&#8217; and the fall of corporate responsibility",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/987566/ai-civilizations-opeai-hugging-face-hack",
-          "date": "2026-09-01"
-        },
-        {
-          "title": "Using the GitHub Copilot SDK for Java",
+          "title": "Decoding the new AI lingo: Loops, harnesses, squads, hill climbing&#8230; oh my!",
           "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/engineering/using-the-github-copilot-sdk-for-java/",
-          "date": "2026-08-10"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Healthcare organizations can now connect EHR and additional industry data to ChatGPT",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/chatgpt-connects-health-records-and-healthcare-sources",
-          "date": "2026-09-01"
+          "link": "https://github.blog/ai-and-ml/decoding-the-new-ai-lingo-loops-harnesses-squads-hill-climbing-oh-my/",
+          "date": "2026-09-02"
         },
         {
-          "title": "How law firm Gilbert + Tobin governs and scales AI with OpenAI",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/gilbert-tobin",
-          "date": "2026-09-01"
-        },
-        {
-          "title": "A milestone in expanding access to AI",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/expanding-access-to-ai-with-chatgpt-ads",
-          "date": "2026-08-31"
-        }
-      ]
-    },
-    {
-      "label": "Claude research and documentation flow",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Anthropic launches Claude Fable 5.1 and says it&#8217;s up to 45 percent cheaper for agentic work",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/987830/anthropic-claude-fable-mythos-5-1",
-          "date": "2026-09-01"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Google Pics is like Canva, but with even more AI",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/987423/google-pics-ai-image-editor-generator",
-          "date": "2026-09-01"
-        },
-        {
-          "title": "Get closer to the game with Gemini and Pixel",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/products-and-platforms/products/gemini/google-gemini-pixel-football-club-partnerships/",
-          "date": "2026-08-17"
+          "title": "How we make AI coding more cost efficient without sacrificing task quality",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-we-make-ai-coding-more-cost-efficient-without-sacrificing-task-quality/",
+          "date": "2026-09-02"
         }
       ]
     },
@@ -335,6 +275,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "How we make AI coding more cost efficient without sacrificing task quality",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-we-make-ai-coding-more-cost-efficient-without-sacrificing-task-quality/",
+          "date": "2026-09-02"
+        },
         {
           "title": "GitHub Copilot app for Beginners: Automate Dependabot pull request triage",
           "source": "GitHub AI & ML Blog",
@@ -346,12 +292,75 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-managing-your-work/",
           "date": "2026-08-19"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "ATV Big Air Tour turned 3 days of work into 3 hours with ChatGPT",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/atv-big-air-tour",
+          "date": "2026-09-02"
         },
         {
-          "title": "GitHub Copilot app for Beginners: Write your first prompt",
+          "title": "Healthcare organizations can now connect EHR and additional industry data to ChatGPT",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/chatgpt-connects-health-records-and-healthcare-sources",
+          "date": "2026-09-01"
+        },
+        {
+          "title": "How law firm Gilbert + Tobin governs and scales AI with OpenAI",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/gilbert-tobin",
+          "date": "2026-09-01"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Google says its new Gemini 3.8 Flash model ‘works harder’ but might cost more",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/988742/google-gemini-3-8-flash",
+          "date": "2026-09-02"
+        },
+        {
+          "title": "Google is sending MrBeast into the wilderness, armed with AI",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/988355/mrbeast-google-partnership-gemini-fitbit",
+          "date": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Researchers fear safety disaster ahead of OpenAI&#8217;s Astra release",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/988334/openai-astra-ai-monitoring-safety",
+          "date": "2026-09-02"
+        },
+        {
+          "title": "How AI-native companies turn workflows into operating capability",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/ai-native-company-workflows",
+          "date": "2026-09-01"
+        },
+        {
+          "title": "How canvases make agentic workflows visible, steerable, and cost-efficient",
           "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/write-your-first-prompt-with-the-github-copilot-app/",
-          "date": "2026-08-12"
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-canvases-make-agentic-workflows-visible-steerable-and-cost-efficient/",
+          "date": "2026-08-17"
         }
       ]
     }
