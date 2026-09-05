@@ -1,6 +1,81 @@
 {
-  "generatedAt": "2026-09-04T12:27:20.460Z",
+  "generatedAt": "2026-09-05T11:33:53.160Z",
   "candidates": [
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "OpenAI admits to German wiki ‘incident’",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/990773/openai-german-wiki-incident",
+          "date": "2026-09-05"
+        },
+        {
+          "title": "Rogue OpenAI agents appear to have organized another attack using a German wiki",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/990149/openai-rogue-agents-german-wiki",
+          "date": "2026-09-04"
+        },
+        {
+          "title": "GitHub Copilot app for Beginners: Run several agents at once",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-run-several-agents-at-once/",
+          "date": "2026-09-03"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Project HydraFusion: Frontier quality via multi-model orchestration",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/",
+          "date": "2026-09-04"
+        },
+        {
+          "title": "GPT-6 Astra: A new generation of intelligence",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/gpt-6-astra",
+          "date": "2026-09-03"
+        },
+        {
+          "title": "Decoding the new AI lingo: Loops, harnesses, squads, hill climbing&#8230; oh my!",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/decoding-the-new-ai-lingo-loops-harnesses-squads-hill-climbing-oh-my/",
+          "date": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Project HydraFusion: Frontier quality via multi-model orchestration",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/",
+          "date": "2026-09-04"
+        },
+        {
+          "title": "Microsoft says virtually nobody was grabbing NYT articles through its chatbot",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/policy/990267/microsoft-openai-new-york-times-authors-lawsuit",
+          "date": "2026-09-04"
+        },
+        {
+          "title": "GitHub Copilot app for Beginners: Run several agents at once",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-run-several-agents-at-once/",
+          "date": "2026-09-03"
+        }
+      ]
+    },
     {
       "label": "AI developer tooling",
       "status": "safe-data-candidate",
@@ -27,94 +102,6 @@
       ]
     },
     {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "This NAS company wants to run your local smart home",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/990006/this-nas-company-wants-to-run-your-local-smart-home",
-          "date": "2026-09-04"
-        },
-        {
-          "title": "GitHub Copilot app for Beginners: Run several agents at once",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-run-several-agents-at-once/",
-          "date": "2026-09-03"
-        },
-        {
-          "title": "How AI-native companies turn workflows into operating capability",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/ai-native-company-workflows",
-          "date": "2026-09-01"
-        }
-      ]
-    },
-    {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "GitHub Copilot app for Beginners: Run several agents at once",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-run-several-agents-at-once/",
-          "date": "2026-09-03"
-        },
-        {
-          "title": "How we make AI coding more cost efficient without sacrificing task quality",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/how-we-make-ai-coding-more-cost-efficient-without-sacrificing-task-quality/",
-          "date": "2026-09-02"
-        },
-        {
-          "title": "GitHub Copilot app for Beginners: Automate Dependabot pull request triage",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-automate-dependabot-pull-request-triage/",
-          "date": "2026-08-26"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Google now lets you chat with Gmail, Docs, and Keep",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/989508/google-gmail-docs-keep-live-voice-modes-gemini",
-          "date": "2026-09-03"
-        },
-        {
-          "title": "Get closer to the game with Gemini and Pixel",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/products-and-platforms/products/gemini/google-gemini-pixel-football-club-partnerships/",
-          "date": "2026-08-17"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Decoding the new AI lingo: Loops, harnesses, squads, hill climbing&#8230; oh my!",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/decoding-the-new-ai-lingo-loops-harnesses-squads-hill-climbing-oh-my/",
-          "date": "2026-09-02"
-        },
-        {
-          "title": "How we make AI coding more cost efficient without sacrificing task quality",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/how-we-make-ai-coding-more-cost-efficient-without-sacrificing-task-quality/",
-          "date": "2026-09-02"
-        }
-      ]
-    },
-    {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
@@ -124,12 +111,19 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/atv-big-air-tour",
           "date": "2026-09-02"
-        },
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
         {
-          "title": "Healthcare organizations can now connect EHR and additional industry data to ChatGPT",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/chatgpt-connects-health-records-and-healthcare-sources",
-          "date": "2026-09-01"
+          "title": "Get closer to the game with Gemini and Pixel",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/products-and-platforms/products/gemini/google-gemini-pixel-football-club-partnerships/",
+          "date": "2026-08-17"
         }
       ]
     }

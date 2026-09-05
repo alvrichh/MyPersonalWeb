@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-09-04
+# Daily AI maintenance report — 2026-09-05
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,32 +13,36 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **OpenAI admits to German wiki ‘incident’** — The Verge AI · 2026-09-05
+  https://www.theverge.com/ai-artificial-intelligence/990773/openai-german-wiki-incident
+- **Project HydraFusion: Frontier quality via multi-model orchestration** — GitHub AI & ML Blog · 2026-09-04
+  https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/
+- **Roland is getting into generative AI music with Melody Flip** — The Verge AI · 2026-09-04
+  https://www.theverge.com/ai-artificial-intelligence/990197/roland-ai-music-melody-flip
+- **Microsoft says virtually nobody was grabbing NYT articles through its chatbot** — The Verge AI · 2026-09-04
+  https://www.theverge.com/policy/990267/microsoft-openai-new-york-times-authors-lawsuit
+- **Rogue OpenAI agents appear to have organized another attack using a German wiki** — The Verge AI · 2026-09-04
+  https://www.theverge.com/ai-artificial-intelligence/990149/openai-rogue-agents-german-wiki
 - **Microsoft’s Project Zenith is a ‘distraction-free Windows experience’ for developers** — The Verge AI · 2026-09-04
   https://www.theverge.com/news/990051/microsoft-project-zenith-windows-developers
 - **Sam Altman apologizes for &#8216;messy&#8217; GPT-6 Astra rollout that’s locked out paying users** — The Verge AI · 2026-09-04
   https://www.theverge.com/ai-artificial-intelligence/990060/altman-apologizes-messy-astra-rollout
-- **This NAS company wants to run your local smart home** — The Verge AI · 2026-09-04
-  https://www.theverge.com/tech/990006/this-nas-company-wants-to-run-your-local-smart-home
-- **OpenAI’s next big AI model has ‘entered the AGI era’** — The Verge AI · 2026-09-04
-  https://www.theverge.com/ai-artificial-intelligence/989601/openai-gpt-6-astra-release
 - **GitHub Copilot app for Beginners: Run several agents at once** — GitHub AI & ML Blog · 2026-09-03
   https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-run-several-agents-at-once/
 - **Daybreak for Frontline Defenders: $1B to protect essential services** — OpenAI News · 2026-09-03
   https://openai.com/index/daybreak-for-frontline-defenders
-- **Legora reviewed 41 documents in minutes with GPT-6 Astra** — OpenAI News · 2026-09-03
-  https://openai.com/index/legora-financial-statement-review-with-astra
 - **Playco cut manual fixes 50% prototyping games with GPT-6 Astra** — OpenAI News · 2026-09-03
   https://openai.com/index/playco-game-prototyping-with-astra
+- **Legora reviewed 41 documents in minutes with GPT-6 Astra** — OpenAI News · 2026-09-03
+  https://openai.com/index/legora-financial-statement-review-with-astra
+- **GPT-6 Astra: A new generation of intelligence** — OpenAI News · 2026-09-03
+  https://openai.com/index/gpt-6-astra
 - **Safety overview: GPT-6 Astra** — OpenAI News · 2026-09-03
   https://openai.com/index/safety-overview-gpt-6-astra
 - **Instagram’s AI detection is a mess (again)** — The Verge AI · 2026-09-03
   https://www.theverge.com/ai-artificial-intelligence/989617/instagram-ai-content-label-confusion
 - **Why AI food looks like that** — The Verge AI · 2026-09-03
   https://www.theverge.com/ai-artificial-intelligence/989376/ai-generated-food-why-does-it-look-like-that
-- **Nvidia launches free tool that links idle computers into a personal AI data center** — The Verge AI · 2026-09-03
-  https://www.theverge.com/ai-artificial-intelligence/989435/nvidia-pair-personal-ai-router-home-local-llm-compute-tool-rtx-macbook
-- **Google now lets you chat with Gmail, Docs, and Keep** — The Verge AI · 2026-09-03
-  https://www.theverge.com/tech/989508/google-gmail-docs-keep-live-voice-modes-gemini
 - **Decoding the new AI lingo: Loops, harnesses, squads, hill climbing&#8230; oh my!** — GitHub AI & ML Blog · 2026-09-02
   https://github.blog/ai-and-ml/decoding-the-new-ai-lingo-loops-harnesses-squads-hill-climbing-oh-my/
 - **How we make AI coding more cost efficient without sacrificing task quality** — GitHub AI & ML Blog · 2026-09-02
@@ -55,8 +59,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/ai-native-company-workflows
 - **Path to Astra: critical capabilities and frontier safeguards** — OpenAI News · 2026-09-01
   https://openai.com/index/path-to-astra
-- **Healthcare organizations can now connect EHR and additional industry data to ChatGPT** — OpenAI News · 2026-09-01
-  https://openai.com/index/chatgpt-connects-health-records-and-healthcare-sources
 - **3 new ways to plan and book travel in Search** — Google AI Blog · 2026-08-27
   https://blog.google/products-and-platforms/products/search/book-travel-ai-mode/
 - **GitHub Copilot app for Beginners: Automate Dependabot pull request triage** — GitHub AI & ML Blog · 2026-08-26
@@ -73,19 +75,17 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://github.blog/ai-and-ml/github-copilot/how-canvases-make-agentic-workflows-visible-steerable-and-cost-efficient/
 - **Get closer to the game with Gemini and Pixel** — Google AI Blog · 2026-08-17
   https://blog.google/products-and-platforms/products/gemini/google-gemini-pixel-football-club-partnerships/
-- **How to bring your software delivery workflow into GitHub with agent apps** — GitHub AI & ML Blog · 2026-08-14
-  https://github.blog/ai-and-ml/github-copilot/how-to-bring-your-software-delivery-workflow-into-github-with-agent-apps/
 - **AMIE, our research medical AI system, demonstrates real-time clinical video consultation capabilities in a first-of-its-kind study.** — Google AI Blog · 2026-08-11
   https://blog.google/innovation-and-ai/models-and-research/google-research/amie-video-consultations/
 
 ## Portfolio candidates
 
-- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
 
