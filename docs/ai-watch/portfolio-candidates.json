@@ -1,11 +1,17 @@
 {
-  "generatedAt": "2026-09-06T11:54:00.752Z",
+  "generatedAt": "2026-09-07T13:54:29.214Z",
   "candidates": [
     {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Research acceleration: The view inside OpenAI",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/research-acceleration-view-inside-openai",
+          "date": "2026-09-06"
+        },
         {
           "title": "OpenAI admits to German wiki ‘incident’",
           "source": "The Verge AI",
@@ -17,12 +23,6 @@
           "source": "The Verge AI",
           "link": "https://www.theverge.com/ai-artificial-intelligence/990149/openai-rogue-agents-german-wiki",
           "date": "2026-09-04"
-        },
-        {
-          "title": "GitHub Copilot app for Beginners: Run several agents at once",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-run-several-agents-at-once/",
-          "date": "2026-09-03"
         }
       ]
     },
@@ -31,6 +31,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Research acceleration: The view inside OpenAI",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/research-acceleration-view-inside-openai",
+          "date": "2026-09-06"
+        },
         {
           "title": "Project HydraFusion: Frontier quality via multi-model orchestration",
           "source": "GitHub AI & ML Blog",
@@ -42,12 +48,6 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/gpt-6-astra",
           "date": "2026-09-03"
-        },
-        {
-          "title": "Decoding the new AI lingo: Loops, harnesses, squads, hill climbing&#8230; oh my!",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/decoding-the-new-ai-lingo-loops-harnesses-squads-hill-climbing-oh-my/",
-          "date": "2026-09-02"
         }
       ]
     },
@@ -91,25 +91,6 @@
           "title": "Decoding the new AI lingo: Loops, harnesses, squads, hill climbing&#8230; oh my!",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/decoding-the-new-ai-lingo-loops-harnesses-squads-hill-climbing-oh-my/",
-          "date": "2026-09-02"
-        },
-        {
-          "title": "How AI-native companies turn workflows into operating capability",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/ai-native-company-workflows",
-          "date": "2026-09-01"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "ATV Big Air Tour turned 3 days of work into 3 hours with ChatGPT",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/atv-big-air-tour",
           "date": "2026-09-02"
         }
       ]
