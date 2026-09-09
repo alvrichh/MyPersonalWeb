@@ -1,11 +1,136 @@
 {
-  "generatedAt": "2026-09-08T12:34:41.820Z",
-  "date": "2026-09-08",
+  "generatedAt": "2026-09-09T12:40:16.083Z",
+  "date": "2026-09-09",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Worried Anthropic researchers warn that AI &#8216;could kill all humans&#8217;",
+      "source": "The Verge AI",
+      "date": "2026-09-09",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/991927/anthropic-ai-kill-all-humans",
+      "summary": "A senior Anthropic safety researcher has said there is more than a 10 percent chance artificial intelligence \"could kill all humans\" by the end of the decade, just hours after a colleague resigned over fears the AI lab a...",
+      "tags": [
+        "Claude"
+      ]
+    },
+    {
+      "title": "Drama swirls around OpenAI’s legendary mathematical milestone",
+      "source": "The Verge AI",
+      "date": "2026-09-09",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/991710/openai-navier-stokes-solution",
+      "summary": "OpenAI says it found a solution to a major math problem that has remained unsolved for around 90 years, as reported earlier by The New York Times and Wired. In a blog post on Tuesday, OpenAI announced that it discovered ...",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "The Work Now Within Reach",
+      "source": "OpenAI News",
+      "date": "2026-09-08",
+      "url": "https://openai.com/index/the-work-now-within-reach",
+      "summary": "Explore how more capable, affordable AI can expand the work people and businesses can accomplish—and make growth more economical.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Introducing ChatGPT Images 2.5",
+      "source": "OpenAI News",
+      "date": "2026-09-08",
+      "url": "https://openai.com/index/introducing-chatgpt-images-2-5",
+      "summary": "ChatGPT Images 2.5 helps turn your ideas, sketches, and reference photos into more personalized, polished images that better reflect your ideas.",
+      "tags": [
+        "ChatGPT",
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "On the Navier–Stokes Millennium Prize Problem",
+      "source": "OpenAI News",
+      "date": "2026-09-08",
+      "url": "https://openai.com/index/navier-stokes-solution",
+      "summary": "We’re sharing an AI-generated solution to the Navier–Stokes Millennium Prize Problem, including a writeup and a formal proof in Lean.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Funding grants for new research into AI and teen development",
+      "source": "OpenAI News",
+      "date": "2026-09-08",
+      "url": "https://openai.com/index/teen-development-research-grants",
+      "summary": "Apply now for OpenAI’s $5 million grant program supporting independent research on how generative AI affects teen development, well-being, and safety.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "OpenAI expands initiatives to support journalism from classrooms to newsrooms",
+      "source": "OpenAI News",
+      "date": "2026-09-08",
+      "url": "https://openai.com/index/supporting-journalism-from-classrooms-to-newsrooms",
+      "summary": "OpenAI is expanding support for journalism with tools, training, and partnerships for students, educators, journalists, and news organizations.",
+      "tags": [
+        "Agents",
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "1Password increases engineering productivity 21% with Codex",
+      "source": "OpenAI News",
+      "date": "2026-09-08",
+      "url": "https://openai.com/index/1password",
+      "summary": "Engineers at 1Password use Codex to rapidly build new features and internal tools, reaching production-readiness while maintaining rigorous security policies.",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "ChatGPT Sketch turns your bad drawings into detailed AI images",
+      "source": "The Verge AI",
+      "date": "2026-09-08",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/991727/openai-chatgpt-images-2-5-sketch",
+      "summary": "OpenAI announced ChatGPT Images 2.5 on Tuesday and is adding a new way to tell ChatGPT what you want it to make an image of: by drawing a doodle. With a new feature called Sketch, you can just draw something right inside...",
+      "tags": [
+        "ChatGPT",
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "Meta bets on AI agent Muse to catch up in AI race",
+      "source": "The Verge AI",
+      "date": "2026-09-08",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/991216/meta-bets-on-ai-agent-muse-to-catch-up-in-ai-race",
+      "summary": "Meta is making another push to bring artificial intelligence to the masses with Muse, a personal assistant it says can put AI in the hands of virtually anyone. The product is the latest step in a multi-billion-dollar str...",
+      "tags": [
+        "Agents"
+      ]
+    },
+    {
+      "title": "AI power users claim Anthropic duped them with subscriptions, and they’re taking it to court",
+      "source": "The Verge AI",
+      "date": "2026-09-08",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/990313/anthropic-class-action-lawsuit-pricing-subscription-plans",
+      "summary": "Anthropic says power users are key to its business - it's prioritized them even when it means cutting off other popular applications, like OpenClaw. But some of these same customers say Anthropic misled them into believi...",
+      "tags": [
+        "Claude"
+      ]
+    },
+    {
+      "title": "Google’s Atlas of the human genome could pave the way for new treatments",
+      "source": "The Verge AI",
+      "date": "2026-09-08",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/991180/google-launches-alpha-genome-atlas",
+      "summary": "Google DeepMind has unveiled an AI tool that its scientists claim could help unravel the mysteries of the human genome and transform our understanding of biology, accelerating scientific research and ultimately paving th...",
+      "tags": [
+        "AI"
+      ]
+    },
     {
       "title": "Supporting independent journalism in Ukraine",
       "source": "OpenAI News",
@@ -93,161 +218,50 @@
       "tags": [
         "Copilot"
       ]
-    },
-    {
-      "title": "Rogue OpenAI agents appear to have organized another attack using a German wiki",
-      "source": "The Verge AI",
-      "date": "2026-09-04",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/990149/openai-rogue-agents-german-wiki",
-      "summary": "A swarm of rogue AI agents from OpenAI reportedly commandeered a German website and transformed it into a messaging board for other agents, with officials staying quiet about the incident for weeks as the company prepare...",
-      "tags": [
-        "Agents",
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "Microsoft’s Project Zenith is a ‘distraction-free Windows experience’ for developers",
-      "source": "The Verge AI",
-      "date": "2026-09-04",
-      "url": "https://www.theverge.com/news/990051/microsoft-project-zenith-windows-developers",
-      "summary": "Microsoft is giving its developer-optimized Windows experience a name: Project Zenith. While the software maker originally announced a similar developer-optimized Windows effort at Build earlier this year, Project Zenith...",
-      "tags": [
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "GitHub Copilot app for Beginners: Run several agents at once",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-09-03",
-      "url": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-run-several-agents-at-once/",
-      "summary": "Learn how to run parallel agents in the GitHub Copilot app, and experience the moment it stops feeling scary and starts feeling powerful. The post GitHub Copilot app for Beginners: Run several agents at once appeared fir...",
-      "tags": [
-        "Agents",
-        "Copilot"
-      ]
-    },
-    {
-      "title": "Daybreak for Frontline Defenders: $1B to protect essential services",
-      "source": "OpenAI News",
-      "date": "2026-09-03",
-      "url": "https://openai.com/index/daybreak-for-frontline-defenders",
-      "summary": "OpenAI introduces Daybreak for Frontline Defenders. A $1 billion commitment expands access to frontier cyber AI, training, and support for essential services.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Sam Altman apologizes for &#8216;messy&#8217; GPT-6 Astra rollout that’s locked out paying users",
-      "source": "The Verge AI",
-      "date": "2026-09-04",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/990060/altman-apologizes-messy-astra-rollout",
-      "summary": "Just hours after OpenAI launched GPT-6 Astra, CEO Sam Altman was already apologizing for what he describes as a \"messy rollout\" after paying users expecting access to the new frontier model were left waiting. The company...",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "Playco cut manual fixes 50% prototyping games with GPT-6 Astra",
-      "source": "OpenAI News",
-      "date": "2026-09-03",
-      "url": "https://openai.com/index/playco-game-prototyping-with-astra",
-      "summary": "Using GPT-6 Astra, Playco built three themed game prototypes from one grey box foundation and reported 50% fewer manual fixes than with the previous model.",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "Legora reviewed 41 documents in minutes with GPT-6 Astra",
-      "source": "OpenAI News",
-      "date": "2026-09-03",
-      "url": "https://openai.com/index/legora-financial-statement-review-with-astra",
-      "summary": "Legora used GPT-6 Astra to review 41 documents in minutes, find all four planted errors, and improve performance by nearly 40% in this financial-review workflow.",
-      "tags": [
-        "ChatGPT",
-        "Automation"
-      ]
-    },
-    {
-      "title": "GPT-6 Astra: A new generation of intelligence",
-      "source": "OpenAI News",
-      "date": "2026-09-03",
-      "url": "https://openai.com/index/gpt-6-astra",
-      "summary": "Introducing GPT-6 Astra, our most intelligent and aligned model yet, with state-of-the-art capabilities across computer use, coding, cybersecurity, and science.",
-      "tags": [
-        "ChatGPT",
-        "Dev Tools",
-        "Models"
-      ]
-    },
-    {
-      "title": "This NAS company wants to run your local smart home",
-      "source": "The Verge AI",
-      "date": "2026-09-04",
-      "url": "https://www.theverge.com/tech/990006/this-nas-company-wants-to-run-your-local-smart-home",
-      "summary": "Ugreen, known for its phone power banks, chargers, and NAS storage solutions, is moving into the smart home - in a big way. This week at the IFA tech show, the company launched its HomeAgent smart home platform that comb...",
-      "tags": [
-        "Agents"
-      ]
-    },
-    {
-      "title": "OpenAI’s next big AI model has ‘entered the AGI era’",
-      "source": "The Verge AI",
-      "date": "2026-09-04",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/989601/openai-gpt-6-astra-release",
-      "summary": "OpenAI's next big model is here: GPT-6 Astra. The company calls it a \"generational leap in capability\" for areas like cybersecurity, professional work, software engineering, science, and computer use. As OpenAI announced...",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "Safety overview: GPT-6 Astra",
-      "source": "OpenAI News",
-      "date": "2026-09-03",
-      "url": "https://openai.com/index/safety-overview-gpt-6-astra",
-      "summary": "GPT-6 Astra is our most capable broadly deployed model and our first to reach the Critical level of cybersecurity capability under our Preparedness Framework.",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "Instagram’s AI detection is a mess (again)",
-      "source": "The Verge AI",
-      "date": "2026-09-03",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/989617/instagram-ai-content-label-confusion",
-      "summary": "Instagram's visible AI labels are supposed to help people quickly spot synthetically generated content at a glance. Over the last few weeks, however, users have been reporting that the system has gone haywire. They say M...",
-      "tags": [
-        "Multimodal"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Introducing ChatGPT Images 2.5",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/introducing-chatgpt-images-2-5",
+          "date": "2026-09-08"
+        },
+        {
+          "title": "ChatGPT Sketch turns your bad drawings into detailed AI images",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/991727/openai-chatgpt-images-2-5-sketch",
+          "date": "2026-09-08"
+        }
+      ]
+    },
     {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Research acceleration: The view inside OpenAI",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/research-acceleration-view-inside-openai",
-          "date": "2026-09-06"
+          "title": "Meta bets on AI agent Muse to catch up in AI race",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/991216/meta-bets-on-ai-agent-muse-to-catch-up-in-ai-race",
+          "date": "2026-09-08"
         },
         {
-          "title": "OpenAI admits to German wiki ‘incident’",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/990773/openai-german-wiki-incident",
-          "date": "2026-09-05"
+          "title": "GitHub Copilot app for Beginners: Run several agents at once",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-run-several-agents-at-once/",
+          "date": "2026-09-03"
         },
         {
-          "title": "Rogue OpenAI agents appear to have organized another attack using a German wiki",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/990149/openai-rogue-agents-german-wiki",
-          "date": "2026-09-04"
+          "title": "How canvases make agentic workflows visible, steerable, and cost-efficient",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-canvases-make-agentic-workflows-visible-steerable-and-cost-efficient/",
+          "date": "2026-08-17"
         }
       ]
     },
@@ -257,22 +271,22 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Research acceleration: The view inside OpenAI",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/research-acceleration-view-inside-openai",
-          "date": "2026-09-06"
-        },
-        {
           "title": "Project HydraFusion: Frontier quality via multi-model orchestration",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/",
           "date": "2026-09-04"
         },
         {
-          "title": "GPT-6 Astra: A new generation of intelligence",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/gpt-6-astra",
-          "date": "2026-09-03"
+          "title": "Decoding the new AI lingo: Loops, harnesses, squads, hill climbing&#8230; oh my!",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/decoding-the-new-ai-lingo-loops-harnesses-squads-hill-climbing-oh-my/",
+          "date": "2026-09-02"
+        },
+        {
+          "title": "How we make AI coding more cost efficient without sacrificing task quality",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-we-make-ai-coding-more-cost-efficient-without-sacrificing-task-quality/",
+          "date": "2026-09-02"
         }
       ]
     },
@@ -288,16 +302,16 @@
           "date": "2026-09-04"
         },
         {
-          "title": "Microsoft says virtually nobody was grabbing NYT articles through its chatbot",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/policy/990267/microsoft-openai-new-york-times-authors-lawsuit",
-          "date": "2026-09-04"
-        },
-        {
           "title": "GitHub Copilot app for Beginners: Run several agents at once",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-run-several-agents-at-once/",
           "date": "2026-09-03"
+        },
+        {
+          "title": "How we make AI coding more cost efficient without sacrificing task quality",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-we-make-ai-coding-more-cost-efficient-without-sacrificing-task-quality/",
+          "date": "2026-09-02"
         }
       ]
     },
@@ -306,12 +320,6 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
-        {
-          "title": "Microsoft’s Project Zenith is a ‘distraction-free Windows experience’ for developers",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/news/990051/microsoft-project-zenith-windows-developers",
-          "date": "2026-09-04"
-        },
         {
           "title": "Decoding the new AI lingo: Loops, harnesses, squads, hill climbing&#8230; oh my!",
           "source": "GitHub AI & ML Blog",

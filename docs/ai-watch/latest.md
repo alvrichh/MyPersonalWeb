@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-09-08
+# Daily AI maintenance report — 2026-09-09
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,42 +13,42 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Worried Anthropic researchers warn that AI &#8216;could kill all humans&#8217;** — The Verge AI · 2026-09-09
+  https://www.theverge.com/ai-artificial-intelligence/991927/anthropic-ai-kill-all-humans
+- **Drama swirls around OpenAI’s legendary mathematical milestone** — The Verge AI · 2026-09-09
+  https://www.theverge.com/ai-artificial-intelligence/991710/openai-navier-stokes-solution
+- **The Work Now Within Reach** — OpenAI News · 2026-09-08
+  https://openai.com/index/the-work-now-within-reach
+- **Introducing ChatGPT Images 2.5** — OpenAI News · 2026-09-08
+  https://openai.com/index/introducing-chatgpt-images-2-5
+- **On the Navier–Stokes Millennium Prize Problem** — OpenAI News · 2026-09-08
+  https://openai.com/index/navier-stokes-solution
+- **Funding grants for new research into AI and teen development** — OpenAI News · 2026-09-08
+  https://openai.com/index/teen-development-research-grants
+- **OpenAI expands initiatives to support journalism from classrooms to newsrooms** — OpenAI News · 2026-09-08
+  https://openai.com/index/supporting-journalism-from-classrooms-to-newsrooms
+- **1Password increases engineering productivity 21% with Codex** — OpenAI News · 2026-09-08
+  https://openai.com/index/1password
+- **ChatGPT Sketch turns your bad drawings into detailed AI images** — The Verge AI · 2026-09-08
+  https://www.theverge.com/ai-artificial-intelligence/991727/openai-chatgpt-images-2-5-sketch
+- **Meta bets on AI agent Muse to catch up in AI race** — The Verge AI · 2026-09-08
+  https://www.theverge.com/ai-artificial-intelligence/991216/meta-bets-on-ai-agent-muse-to-catch-up-in-ai-race
+- **AI power users claim Anthropic duped them with subscriptions, and they’re taking it to court** — The Verge AI · 2026-09-08
+  https://www.theverge.com/ai-artificial-intelligence/990313/anthropic-class-action-lawsuit-pricing-subscription-plans
+- **Google’s Atlas of the human genome could pave the way for new treatments** — The Verge AI · 2026-09-08
+  https://www.theverge.com/ai-artificial-intelligence/991180/google-launches-alpha-genome-atlas
+- **Adobe is trying to make its AI generators idiot-proof in Premiere** — The Verge AI · 2026-09-08
+  https://www.theverge.com/tech/991133/adobe-is-trying-to-make-its-ai-generators-idiot-proof-in-premiere
 - **Supporting independent journalism in Ukraine** — OpenAI News · 2026-09-07
   https://openai.com/index/supporting-independent-journalism-in-ukraine
 - **An Alien Mind** — OpenAI News · 2026-09-06
   https://openai.com/index/an-alien-mind
-- **Research acceleration: The view inside OpenAI** — OpenAI News · 2026-09-06
-  https://openai.com/index/research-acceleration-view-inside-openai
 - **Seattle Times and Newsday sue OpenAI and Microsoft for infringement** — The Verge AI · 2026-09-06
   https://www.theverge.com/ai-artificial-intelligence/990932/seattle-times-newsday-lawsuit-openai-microsoft
-- **OpenAI admits to German wiki ‘incident’** — The Verge AI · 2026-09-05
-  https://www.theverge.com/ai-artificial-intelligence/990773/openai-german-wiki-incident
 - **Project HydraFusion: Frontier quality via multi-model orchestration** — GitHub AI & ML Blog · 2026-09-04
   https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/
-- **Roland is getting into generative AI music with Melody Flip** — The Verge AI · 2026-09-04
-  https://www.theverge.com/ai-artificial-intelligence/990197/roland-ai-music-melody-flip
-- **Microsoft says virtually nobody was grabbing NYT articles through its chatbot** — The Verge AI · 2026-09-04
-  https://www.theverge.com/policy/990267/microsoft-openai-new-york-times-authors-lawsuit
-- **Rogue OpenAI agents appear to have organized another attack using a German wiki** — The Verge AI · 2026-09-04
-  https://www.theverge.com/ai-artificial-intelligence/990149/openai-rogue-agents-german-wiki
-- **Microsoft’s Project Zenith is a ‘distraction-free Windows experience’ for developers** — The Verge AI · 2026-09-04
-  https://www.theverge.com/news/990051/microsoft-project-zenith-windows-developers
 - **GitHub Copilot app for Beginners: Run several agents at once** — GitHub AI & ML Blog · 2026-09-03
   https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-run-several-agents-at-once/
-- **Daybreak for Frontline Defenders: $1B to protect essential services** — OpenAI News · 2026-09-03
-  https://openai.com/index/daybreak-for-frontline-defenders
-- **Legora reviewed 41 documents in minutes with GPT-6 Astra** — OpenAI News · 2026-09-03
-  https://openai.com/index/legora-financial-statement-review-with-astra
-- **Playco cut manual fixes 50% prototyping games with GPT-6 Astra** — OpenAI News · 2026-09-03
-  https://openai.com/index/playco-game-prototyping-with-astra
-- **GPT-6 Astra: A new generation of intelligence** — OpenAI News · 2026-09-03
-  https://openai.com/index/gpt-6-astra
-- **Safety overview: GPT-6 Astra** — OpenAI News · 2026-09-03
-  https://openai.com/index/safety-overview-gpt-6-astra
-- **Instagram’s AI detection is a mess (again)** — The Verge AI · 2026-09-03
-  https://www.theverge.com/ai-artificial-intelligence/989617/instagram-ai-content-label-confusion
-- **Why AI food looks like that** — The Verge AI · 2026-09-03
-  https://www.theverge.com/ai-artificial-intelligence/989376/ai-generated-food-why-does-it-look-like-that
 - **Decoding the new AI lingo: Loops, harnesses, squads, hill climbing&#8230; oh my!** — GitHub AI & ML Blog · 2026-09-02
   https://github.blog/ai-and-ml/decoding-the-new-ai-lingo-loops-harnesses-squads-hill-climbing-oh-my/
 - **How we make AI coding more cost efficient without sacrificing task quality** — GitHub AI & ML Blog · 2026-09-02
@@ -80,6 +80,7 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
+- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
