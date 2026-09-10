@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-09-09
+# Daily AI maintenance report — 2026-09-10
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,10 +13,32 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
-- **Worried Anthropic researchers warn that AI &#8216;could kill all humans&#8217;** — The Verge AI · 2026-09-09
-  https://www.theverge.com/ai-artificial-intelligence/991927/anthropic-ai-kill-all-humans
-- **Drama swirls around OpenAI’s legendary mathematical milestone** — The Verge AI · 2026-09-09
-  https://www.theverge.com/ai-artificial-intelligence/991710/openai-navier-stokes-solution
+- **Mathematicians want proof OpenAI didn’t use their work** — The Verge AI · 2026-09-10
+  https://www.theverge.com/ai-artificial-intelligence/993263/where-does-openai-get-mathematics-training-data
+- **Get ready for the game with new football features in Search** — Google AI Blog · 2026-09-09
+  https://blog.google/products-and-platforms/products/search/football-features-google-search/
+- **Recreating a 70-year love story frame by frame** — Google AI Blog · 2026-09-09
+  https://blog.google/innovation-and-ai/technology/ai/love-rendered-film/
+- **The AI policy window is open. We need to act.** — OpenAI News · 2026-09-09
+  https://openai.com/index/ai-policy-window
+- **GPT-6 Astra: The next generation in intelligence for work** — OpenAI News · 2026-09-09
+  https://openai.com/index/gpt-6-astra-next-generation-work
+- **Paul Christiano joins OpenAI Foundation Board** — OpenAI News · 2026-09-09
+  https://openai.com/index/paul-christiano-joins-openai-foundation-board
+- **Suno releases its first AI music model made with record industry help** — The Verge AI · 2026-09-09
+  https://www.theverge.com/ai-artificial-intelligence/991977/suno-releases-its-first-ai-music-model-made-with-record-industry-help
+- **OpenAI’s sly mathematical breakthrough sends a chill through academia** — The Verge AI · 2026-09-09
+  https://www.theverge.com/ai-artificial-intelligence/992953/openai-math-millennium-prize-navier-stokes
+- **Read the Apple document explaining how new listening features still protect your privacy** — The Verge AI · 2026-09-09
+  https://www.theverge.com/tech/992919/apple-siri-ai-audio-intelligence-privacy
+- **Apple’s new iPhone camera mode promises to prove your photo isn’t AI** — The Verge AI · 2026-09-09
+  https://www.theverge.com/tech/992766/apple-iphone-18-pro-reference-image
+- **Microsoft has new AI privacy rules for schools** — The Verge AI · 2026-09-09
+  https://www.theverge.com/policy/992359/microsoft-aft-schools-ai-privacy
+- **Amazon Prime Video’s new AI tech matches lips to dubbed audio** — The Verge AI · 2026-09-09
+  https://www.theverge.com/tech/991809/amazon-prime-video-ai-lip-sync-dubbing
+- **Students who use AI generally score worse at school** — The Verge AI · 2026-09-09
+  https://www.theverge.com/ai-artificial-intelligence/991956/student-ai-use-scores-oecd-pisa
 - **The Work Now Within Reach** — OpenAI News · 2026-09-08
   https://openai.com/index/the-work-now-within-reach
 - **Introducing ChatGPT Images 2.5** — OpenAI News · 2026-09-08
@@ -27,24 +49,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/teen-development-research-grants
 - **OpenAI expands initiatives to support journalism from classrooms to newsrooms** — OpenAI News · 2026-09-08
   https://openai.com/index/supporting-journalism-from-classrooms-to-newsrooms
-- **1Password increases engineering productivity 21% with Codex** — OpenAI News · 2026-09-08
-  https://openai.com/index/1password
-- **ChatGPT Sketch turns your bad drawings into detailed AI images** — The Verge AI · 2026-09-08
-  https://www.theverge.com/ai-artificial-intelligence/991727/openai-chatgpt-images-2-5-sketch
-- **Meta bets on AI agent Muse to catch up in AI race** — The Verge AI · 2026-09-08
-  https://www.theverge.com/ai-artificial-intelligence/991216/meta-bets-on-ai-agent-muse-to-catch-up-in-ai-race
-- **AI power users claim Anthropic duped them with subscriptions, and they’re taking it to court** — The Verge AI · 2026-09-08
-  https://www.theverge.com/ai-artificial-intelligence/990313/anthropic-class-action-lawsuit-pricing-subscription-plans
-- **Google’s Atlas of the human genome could pave the way for new treatments** — The Verge AI · 2026-09-08
-  https://www.theverge.com/ai-artificial-intelligence/991180/google-launches-alpha-genome-atlas
-- **Adobe is trying to make its AI generators idiot-proof in Premiere** — The Verge AI · 2026-09-08
-  https://www.theverge.com/tech/991133/adobe-is-trying-to-make-its-ai-generators-idiot-proof-in-premiere
-- **Supporting independent journalism in Ukraine** — OpenAI News · 2026-09-07
-  https://openai.com/index/supporting-independent-journalism-in-ukraine
-- **An Alien Mind** — OpenAI News · 2026-09-06
-  https://openai.com/index/an-alien-mind
-- **Seattle Times and Newsday sue OpenAI and Microsoft for infringement** — The Verge AI · 2026-09-06
-  https://www.theverge.com/ai-artificial-intelligence/990932/seattle-times-newsday-lawsuit-openai-microsoft
 - **Project HydraFusion: Frontier quality via multi-model orchestration** — GitHub AI & ML Blog · 2026-09-04
   https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/
 - **GitHub Copilot app for Beginners: Run several agents at once** — GitHub AI & ML Blog · 2026-09-03
@@ -73,19 +77,14 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blog.google/products-and-platforms/products/search/back-to-school-study-tools/
 - **How canvases make agentic workflows visible, steerable, and cost-efficient** — GitHub AI & ML Blog · 2026-08-17
   https://github.blog/ai-and-ml/github-copilot/how-canvases-make-agentic-workflows-visible-steerable-and-cost-efficient/
-- **Get closer to the game with Gemini and Pixel** — Google AI Blog · 2026-08-17
-  https://blog.google/products-and-platforms/products/gemini/google-gemini-pixel-football-club-partnerships/
-- **AMIE, our research medical AI system, demonstrates real-time clinical video consultation capabilities in a first-of-its-kind study.** — Google AI Blog · 2026-08-11
-  https://blog.google/innovation-and-ai/models-and-research/google-research/amie-video-consultations/
 
 ## Portfolio candidates
 
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
 

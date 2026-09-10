@@ -1,11 +1,133 @@
 {
-  "generatedAt": "2026-09-09T12:40:16.083Z",
-  "date": "2026-09-09",
+  "generatedAt": "2026-09-10T12:39:18.597Z",
+  "date": "2026-09-10",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Mathematicians want proof OpenAI didn’t use their work",
+      "source": "The Verge AI",
+      "date": "2026-09-10",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/993263/where-does-openai-get-mathematics-training-data",
+      "summary": "Another researcher is challenging OpenAI about the data driving its increasingly impressive array of mathematical discoveries. Just days after a bitter row erupted over whether the company's models benefited from unpubli...",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ]
+    },
+    {
+      "title": "Get ready for the game with new football features in Search",
+      "source": "Google AI Blog",
+      "date": "2026-09-09",
+      "url": "https://blog.google/products-and-platforms/products/search/football-features-google-search/",
+      "summary": "Track live game feeds, explore detailed stats, and get custom fantasy recommendations directly in Search this season.",
+      "tags": [
+        "Gemini"
+      ]
+    },
+    {
+      "title": "Recreating a 70-year love story frame by frame",
+      "source": "Google AI Blog",
+      "date": "2026-09-09",
+      "url": "https://blog.google/innovation-and-ai/technology/ai/love-rendered-film/",
+      "summary": "Discover how filmmakers and Google DeepMind used AI to recreate a couple's unrecorded past in the short film \"Love, Rendered.\"",
+      "tags": [
+        "Gemini"
+      ]
+    },
+    {
+      "title": "The AI policy window is open. We need to act.",
+      "source": "OpenAI News",
+      "date": "2026-09-09",
+      "url": "https://openai.com/index/ai-policy-window",
+      "summary": "Chris Lehane argues that stronger AI capabilities require stronger safety evidence, shared standards, and durable policy action while the policy window remains open.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "GPT-6 Astra: The next generation in intelligence for work",
+      "source": "OpenAI News",
+      "date": "2026-09-09",
+      "url": "https://openai.com/index/gpt-6-astra-next-generation-work",
+      "summary": "Meet GPT-6 Astra, OpenAI’s most capable model for business, with advanced reasoning, computer use, and stronger writing and design judgment.",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ]
+    },
+    {
+      "title": "Paul Christiano joins OpenAI Foundation Board",
+      "source": "OpenAI News",
+      "date": "2026-09-09",
+      "url": "https://openai.com/index/paul-christiano-joins-openai-foundation-board",
+      "summary": "Paul Christiano joins the OpenAI Foundation Board and its Safety and Security Committee, bringing experience in AI alignment, safety, and standards.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Suno releases its first AI music model made with record industry help",
+      "source": "The Verge AI",
+      "date": "2026-09-09",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/991977/suno-releases-its-first-ai-music-model-made-with-record-industry-help",
+      "summary": "Suno's new v6 AI music model is its first made with support from the record industry. Suno's Jack Brody told The Verge that v6 was \"trained from the ground up, with a new set of data that does not include the same data t...",
+      "tags": [
+        "Models"
+      ]
+    },
+    {
+      "title": "OpenAI’s sly mathematical breakthrough sends a chill through academia",
+      "source": "The Verge AI",
+      "date": "2026-09-09",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/992953/openai-math-millennium-prize-navier-stokes",
+      "summary": "OpenAI's announcement Tuesday that it has solved one of mathematics' legendary Millennium Prize problems should have been a moment of triumph. The result is both an undeniable achievement and a striking demonstration of ...",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Read the Apple document explaining how new listening features still protect your privacy",
+      "source": "The Verge AI",
+      "date": "2026-09-09",
+      "url": "https://www.theverge.com/tech/992919/apple-siri-ai-audio-intelligence-privacy",
+      "summary": "At Wednesday's iPhone Duo launch event, Apple announced a handful of new Siri AI Audio Intelligence features, including Siri Recap, Live Rewind, Sound Recognition, and Music Recognition. Alongside its announcement, Apple...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "Apple’s new iPhone camera mode promises to prove your photo isn’t AI",
+      "source": "The Verge AI",
+      "date": "2026-09-09",
+      "url": "https://www.theverge.com/tech/992766/apple-iphone-18-pro-reference-image",
+      "summary": "Apple is launching a new way to prove that the picture you took isn't manipulated by AI. A new feature, called \"Reference Image,\" will arrive with the iPhone 18 Pro lineup later this month and is supposed to use the devi...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "Microsoft has new AI privacy rules for schools",
+      "source": "The Verge AI",
+      "date": "2026-09-09",
+      "url": "https://www.theverge.com/policy/992359/microsoft-aft-schools-ai-privacy",
+      "summary": "Microsoft agreed to a set of safety and privacy principles for AI in schools a week after two major school systems announced a ban on student-facing AI. In a new agreement with the American Federation of Teachers (AFT), ...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Amazon Prime Video’s new AI tech matches lips to dubbed audio",
+      "source": "The Verge AI",
+      "date": "2026-09-09",
+      "url": "https://www.theverge.com/tech/991809/amazon-prime-video-ai-lip-sync-dubbing",
+      "summary": "Amazon's Prime Video is launching a new AI-powered feature that lines up an actor's mouth with \"human-dubbed\" audio. The feature is only available with the English dub of the German series Maxton Hall for now, but Prime ...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
     {
       "title": "Worried Anthropic researchers warn that AI &#8216;could kill all humans&#8217;",
       "source": "The Verge AI",
@@ -89,135 +211,6 @@
         "ChatGPT",
         "Dev Tools"
       ]
-    },
-    {
-      "title": "ChatGPT Sketch turns your bad drawings into detailed AI images",
-      "source": "The Verge AI",
-      "date": "2026-09-08",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/991727/openai-chatgpt-images-2-5-sketch",
-      "summary": "OpenAI announced ChatGPT Images 2.5 on Tuesday and is adding a new way to tell ChatGPT what you want it to make an image of: by drawing a doodle. With a new feature called Sketch, you can just draw something right inside...",
-      "tags": [
-        "ChatGPT",
-        "Multimodal"
-      ]
-    },
-    {
-      "title": "Meta bets on AI agent Muse to catch up in AI race",
-      "source": "The Verge AI",
-      "date": "2026-09-08",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/991216/meta-bets-on-ai-agent-muse-to-catch-up-in-ai-race",
-      "summary": "Meta is making another push to bring artificial intelligence to the masses with Muse, a personal assistant it says can put AI in the hands of virtually anyone. The product is the latest step in a multi-billion-dollar str...",
-      "tags": [
-        "Agents"
-      ]
-    },
-    {
-      "title": "AI power users claim Anthropic duped them with subscriptions, and they’re taking it to court",
-      "source": "The Verge AI",
-      "date": "2026-09-08",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/990313/anthropic-class-action-lawsuit-pricing-subscription-plans",
-      "summary": "Anthropic says power users are key to its business - it's prioritized them even when it means cutting off other popular applications, like OpenClaw. But some of these same customers say Anthropic misled them into believi...",
-      "tags": [
-        "Claude"
-      ]
-    },
-    {
-      "title": "Google’s Atlas of the human genome could pave the way for new treatments",
-      "source": "The Verge AI",
-      "date": "2026-09-08",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/991180/google-launches-alpha-genome-atlas",
-      "summary": "Google DeepMind has unveiled an AI tool that its scientists claim could help unravel the mysteries of the human genome and transform our understanding of biology, accelerating scientific research and ultimately paving th...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Supporting independent journalism in Ukraine",
-      "source": "OpenAI News",
-      "date": "2026-09-07",
-      "url": "https://openai.com/index/supporting-independent-journalism-in-ukraine",
-      "summary": "OpenAI, AIRPPU and WAN-IFRA launch an AI program to help Ukrainian news organizations strengthen innovation, resilience, and independent journalism.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "An Alien Mind",
-      "source": "OpenAI News",
-      "date": "2026-09-06",
-      "url": "https://openai.com/index/an-alien-mind",
-      "summary": "Jakub Pachocki reflects on increasingly capable AI and the challenge of keeping it aligned. He calls for stronger safeguards and international coordination.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Research acceleration: The view inside OpenAI",
-      "source": "OpenAI News",
-      "date": "2026-09-06",
-      "url": "https://openai.com/index/research-acceleration-view-inside-openai",
-      "summary": "Inside OpenAI, coding agents are reshaping AI research. Explore early data on agent usage, experiment velocity, task complexity, and research acceleration.",
-      "tags": [
-        "Agents",
-        "ChatGPT",
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "Seattle Times and Newsday sue OpenAI and Microsoft for infringement",
-      "source": "The Verge AI",
-      "date": "2026-09-06",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/990932/seattle-times-newsday-lawsuit-openai-microsoft",
-      "summary": "The Seattle Times and Newsday are just the latest plaintiffs to take OpenAI to court, alleging copyright infringement. The two outlets say the company used their journalism as training data for its AI models without perm...",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "OpenAI admits to German wiki ‘incident’",
-      "source": "The Verge AI",
-      "date": "2026-09-05",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/990773/openai-german-wiki-incident",
-      "summary": "OpenAI says it needs to overhaul how and when it reports instances of AI models attacking real-world targets. The acknowledgement comes as the company manages the fallout from reports that a swarm of its out-of-control a...",
-      "tags": [
-        "Agents",
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "Project HydraFusion: Frontier quality via multi-model orchestration",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-09-04",
-      "url": "https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/",
-      "summary": "In controlled offline evaluations, HydraFusion’s selective coding workflows matched or exceeded the evaluated Opus 5 baseline while reducing estimated workflow cost. Now available as a research preview in GitHub Copilot....",
-      "tags": [
-        "Copilot",
-        "Dev Tools",
-        "Automation",
-        "Models"
-      ]
-    },
-    {
-      "title": "Roland is getting into generative AI music with Melody Flip",
-      "source": "The Verge AI",
-      "date": "2026-09-04",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/990197/roland-ai-music-melody-flip",
-      "summary": "It's not quite the \"push button; get song\" of Suno, but Roland's new Melody Flip tool marks the company's foray into generative AI music. Available as a plug-in for your digital audio workstation (DAW), Melody Flip offer...",
-      "tags": [
-        "Multimodal"
-      ]
-    },
-    {
-      "title": "Microsoft says virtually nobody was grabbing NYT articles through its chatbot",
-      "source": "The Verge AI",
-      "date": "2026-09-04",
-      "url": "https://www.theverge.com/policy/990267/microsoft-openai-new-york-times-authors-lawsuit",
-      "summary": "Microsoft's Copilot rarely reproduces even full sentences from news articles and books, let alone substantive chunks that could substitute for the original, the company says in new legal filings as it fights copyright cl...",
-      "tags": [
-        "Copilot"
-      ]
     }
   ],
   "candidates": [
@@ -231,37 +224,6 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/introducing-chatgpt-images-2-5",
           "date": "2026-09-08"
-        },
-        {
-          "title": "ChatGPT Sketch turns your bad drawings into detailed AI images",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/991727/openai-chatgpt-images-2-5-sketch",
-          "date": "2026-09-08"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Meta bets on AI agent Muse to catch up in AI race",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/991216/meta-bets-on-ai-agent-muse-to-catch-up-in-ai-race",
-          "date": "2026-09-08"
-        },
-        {
-          "title": "GitHub Copilot app for Beginners: Run several agents at once",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-run-several-agents-at-once/",
-          "date": "2026-09-03"
-        },
-        {
-          "title": "How canvases make agentic workflows visible, steerable, and cost-efficient",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/how-canvases-make-agentic-workflows-visible-steerable-and-cost-efficient/",
-          "date": "2026-08-17"
         }
       ]
     },
@@ -316,6 +278,25 @@
       ]
     },
     {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "GitHub Copilot app for Beginners: Run several agents at once",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-run-several-agents-at-once/",
+          "date": "2026-09-03"
+        },
+        {
+          "title": "How canvases make agentic workflows visible, steerable, and cost-efficient",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-canvases-make-agentic-workflows-visible-steerable-and-cost-efficient/",
+          "date": "2026-08-17"
+        }
+      ]
+    },
+    {
       "label": "AI developer tooling",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
@@ -325,19 +306,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/decoding-the-new-ai-lingo-loops-harnesses-squads-hill-climbing-oh-my/",
           "date": "2026-09-02"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Get closer to the game with Gemini and Pixel",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/products-and-platforms/products/gemini/google-gemini-pixel-football-club-partnerships/",
-          "date": "2026-08-17"
         }
       ]
     }
