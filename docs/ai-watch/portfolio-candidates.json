@@ -1,16 +1,78 @@
 {
-  "generatedAt": "2026-09-10T12:39:18.597Z",
+  "generatedAt": "2026-09-11T12:31:54.326Z",
   "candidates": [
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Meta’s Muse AI works and creeps me out",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/993391/meta-muse-ai-hands-on",
+          "date": "2026-09-11"
+        },
+        {
+          "title": "GitHub Copilot app for Beginners: Using the diff, terminal, and browser",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-using-the-diff-terminal-and-browser/",
+          "date": "2026-09-10"
+        },
+        {
+          "title": "Now everyone can put data to work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/put-data-to-work",
+          "date": "2026-09-10"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "GitHub Copilot app for Beginners: Using the diff, terminal, and browser",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-using-the-diff-terminal-and-browser/",
+          "date": "2026-09-10"
+        },
+        {
+          "title": "Project HydraFusion: Frontier quality via multi-model orchestration",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/",
+          "date": "2026-09-04"
+        },
+        {
+          "title": "GitHub Copilot app for Beginners: Run several agents at once",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-run-several-agents-at-once/",
+          "date": "2026-09-03"
+        }
+      ]
+    },
     {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Introducing ChatGPT Images 2.5",
+          "title": "How a researcher uses Codex and ChatGPT to search for new antimicrobial molecules",
           "source": "OpenAI News",
-          "link": "https://openai.com/index/introducing-chatgpt-images-2-5",
-          "date": "2026-09-08"
+          "link": "https://openai.com/index/using-codex-chatgpt-to-search-for-new-antimicrobials",
+          "date": "2026-09-10"
+        },
+        {
+          "title": "Now everyone can put data to work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/put-data-to-work",
+          "date": "2026-09-10"
+        },
+        {
+          "title": "Introducing ChatGPT for Financial Services",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/introducing-chatgpt-financial-services",
+          "date": "2026-09-10"
         }
       ]
     },
@@ -36,50 +98,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/how-we-make-ai-coding-more-cost-efficient-without-sacrificing-task-quality/",
           "date": "2026-09-02"
-        }
-      ]
-    },
-    {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Project HydraFusion: Frontier quality via multi-model orchestration",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/",
-          "date": "2026-09-04"
-        },
-        {
-          "title": "GitHub Copilot app for Beginners: Run several agents at once",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-run-several-agents-at-once/",
-          "date": "2026-09-03"
-        },
-        {
-          "title": "How we make AI coding more cost efficient without sacrificing task quality",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/how-we-make-ai-coding-more-cost-efficient-without-sacrificing-task-quality/",
-          "date": "2026-09-02"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "GitHub Copilot app for Beginners: Run several agents at once",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-run-several-agents-at-once/",
-          "date": "2026-09-03"
-        },
-        {
-          "title": "How canvases make agentic workflows visible, steerable, and cost-efficient",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/how-canvases-make-agentic-workflows-visible-steerable-and-cost-efficient/",
-          "date": "2026-08-17"
         }
       ]
     },

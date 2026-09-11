@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-09-10
+# Daily AI maintenance report — 2026-09-11
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,8 +13,32 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Meta’s Muse AI works and creeps me out** — The Verge AI · 2026-09-11
+  https://www.theverge.com/tech/993391/meta-muse-ai-hands-on
+- **GitHub Copilot app for Beginners: Using the diff, terminal, and browser** — GitHub AI & ML Blog · 2026-09-10
+  https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-using-the-diff-terminal-and-browser/
+- **3 ways to prep for your next big race with Search** — Google AI Blog · 2026-09-10
+  https://blog.google/products-and-platforms/products/search/running-race-training-tips/
+- **How a researcher uses Codex and ChatGPT to search for new antimicrobial molecules** — OpenAI News · 2026-09-10
+  https://openai.com/index/using-codex-chatgpt-to-search-for-new-antimicrobials
+- **Now everyone can put data to work** — OpenAI News · 2026-09-10
+  https://openai.com/index/put-data-to-work
+- **Introducing ChatGPT for Financial Services** — OpenAI News · 2026-09-10
+  https://openai.com/index/introducing-chatgpt-financial-services
+- **Expanding AI access and cyber defense for federal, state, local, and tribal governments** — OpenAI News · 2026-09-10
+  https://openai.com/index/expanding-ai-access-us-government
+- **Introducing the Agents API** — OpenAI News · 2026-09-10
+  https://openai.com/index/introducing-the-agents-api
+- **Slack can now vibe-code interactive charts and reports inside chats** — The Verge AI · 2026-09-10
+  https://www.theverge.com/tech/989853/slackforce-surfaces-launch
+- **Schools are catching on to Big Tech’s playbook** — The Verge AI · 2026-09-10
+  https://www.theverge.com/policy/993308/computer-science-ai-education-coding-kids
+- **Universal Music is launching an AI music platform with ElevenLabs** — The Verge AI · 2026-09-10
+  https://www.theverge.com/ai-artificial-intelligence/993465/universal-music-elevenlabs-ai
 - **Mathematicians want proof OpenAI didn’t use their work** — The Verge AI · 2026-09-10
   https://www.theverge.com/ai-artificial-intelligence/993263/where-does-openai-get-mathematics-training-data
+- **OpenAI’s sly mathematical breakthrough sends a chill through academia** — The Verge AI · 2026-09-10
+  https://www.theverge.com/ai-artificial-intelligence/992953/openai-math-millennium-prize-navier-stokes
 - **Get ready for the game with new football features in Search** — Google AI Blog · 2026-09-09
   https://blog.google/products-and-platforms/products/search/football-features-google-search/
 - **Recreating a 70-year love story frame by frame** — Google AI Blog · 2026-09-09
@@ -27,28 +51,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/paul-christiano-joins-openai-foundation-board
 - **Suno releases its first AI music model made with record industry help** — The Verge AI · 2026-09-09
   https://www.theverge.com/ai-artificial-intelligence/991977/suno-releases-its-first-ai-music-model-made-with-record-industry-help
-- **OpenAI’s sly mathematical breakthrough sends a chill through academia** — The Verge AI · 2026-09-09
-  https://www.theverge.com/ai-artificial-intelligence/992953/openai-math-millennium-prize-navier-stokes
 - **Read the Apple document explaining how new listening features still protect your privacy** — The Verge AI · 2026-09-09
   https://www.theverge.com/tech/992919/apple-siri-ai-audio-intelligence-privacy
-- **Apple’s new iPhone camera mode promises to prove your photo isn’t AI** — The Verge AI · 2026-09-09
-  https://www.theverge.com/tech/992766/apple-iphone-18-pro-reference-image
-- **Microsoft has new AI privacy rules for schools** — The Verge AI · 2026-09-09
-  https://www.theverge.com/policy/992359/microsoft-aft-schools-ai-privacy
-- **Amazon Prime Video’s new AI tech matches lips to dubbed audio** — The Verge AI · 2026-09-09
-  https://www.theverge.com/tech/991809/amazon-prime-video-ai-lip-sync-dubbing
-- **Students who use AI generally score worse at school** — The Verge AI · 2026-09-09
-  https://www.theverge.com/ai-artificial-intelligence/991956/student-ai-use-scores-oecd-pisa
-- **The Work Now Within Reach** — OpenAI News · 2026-09-08
-  https://openai.com/index/the-work-now-within-reach
-- **Introducing ChatGPT Images 2.5** — OpenAI News · 2026-09-08
-  https://openai.com/index/introducing-chatgpt-images-2-5
-- **On the Navier–Stokes Millennium Prize Problem** — OpenAI News · 2026-09-08
-  https://openai.com/index/navier-stokes-solution
-- **Funding grants for new research into AI and teen development** — OpenAI News · 2026-09-08
-  https://openai.com/index/teen-development-research-grants
-- **OpenAI expands initiatives to support journalism from classrooms to newsrooms** — OpenAI News · 2026-09-08
-  https://openai.com/index/supporting-journalism-from-classrooms-to-newsrooms
 - **Project HydraFusion: Frontier quality via multi-model orchestration** — GitHub AI & ML Blog · 2026-09-04
   https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/
 - **GitHub Copilot app for Beginners: Run several agents at once** — GitHub AI & ML Blog · 2026-09-03
@@ -73,17 +77,13 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blog.google/products-and-platforms/products/search/home-decor-tips/
 - **GitHub Copilot app for Beginners: Managing your work** — GitHub AI & ML Blog · 2026-08-19
   https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-managing-your-work/
-- **5 new ways to level up your learning with Search** — Google AI Blog · 2026-08-19
-  https://blog.google/products-and-platforms/products/search/back-to-school-study-tools/
-- **How canvases make agentic workflows visible, steerable, and cost-efficient** — GitHub AI & ML Blog · 2026-08-17
-  https://github.blog/ai-and-ml/github-copilot/how-canvases-make-agentic-workflows-visible-steerable-and-cost-efficient/
 
 ## Portfolio candidates
 
+- **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
