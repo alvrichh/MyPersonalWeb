@@ -1,11 +1,130 @@
 {
-  "generatedAt": "2026-09-10T12:39:18.597Z",
-  "date": "2026-09-10",
+  "generatedAt": "2026-09-11T12:31:54.326Z",
+  "date": "2026-09-11",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Meta’s Muse AI works and creeps me out",
+      "source": "The Verge AI",
+      "date": "2026-09-11",
+      "url": "https://www.theverge.com/tech/993391/meta-muse-ai-hands-on",
+      "summary": "Meta has launched its new Muse assistant, marking the company's first real foray into AI-powered productivity tools. The company says its AI agent can \"take the busywork off your plate\" by helping you with online shoppin...",
+      "tags": [
+        "Agents"
+      ]
+    },
+    {
+      "title": "GitHub Copilot app for Beginners: Using the diff, terminal, and browser",
+      "source": "GitHub AI & ML Blog",
+      "date": "2026-09-10",
+      "url": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-using-the-diff-terminal-and-browser/",
+      "summary": "Checking agent-generated code usually means hopping between tabs. Learn how to view diffs, run terminal commands, and preview web apps side by side in the GitHub Copilot app. The post GitHub Copilot app for Beginners: Us...",
+      "tags": [
+        "Agents",
+        "Copilot",
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "3 ways to prep for your next big race with Search",
+      "source": "Google AI Blog",
+      "date": "2026-09-10",
+      "url": "https://blog.google/products-and-platforms/products/search/running-race-training-tips/",
+      "summary": "Search can help runners get race-day ready with registration alerts, tailored training plans, and more.",
+      "tags": [
+        "Gemini"
+      ]
+    },
+    {
+      "title": "How a researcher uses Codex and ChatGPT to search for new antimicrobial molecules",
+      "source": "OpenAI News",
+      "date": "2026-09-10",
+      "url": "https://openai.com/index/using-codex-chatgpt-to-search-for-new-antimicrobials",
+      "summary": "César de la Fuente’s lab uses Codex and ChatGPT to search living and extinct genomes for antimicrobial candidates to fight drug-resistant infections.",
+      "tags": [
+        "ChatGPT",
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "Now everyone can put data to work",
+      "source": "OpenAI News",
+      "date": "2026-09-10",
+      "url": "https://openai.com/index/put-data-to-work",
+      "summary": "Meet the Data agent in ChatGPT Work. Connect company data, uncover insights, and build interactive dashboards with AI using natural language.",
+      "tags": [
+        "Agents",
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Introducing ChatGPT for Financial Services",
+      "source": "OpenAI News",
+      "date": "2026-09-10",
+      "url": "https://openai.com/index/introducing-chatgpt-financial-services",
+      "summary": "Introducing ChatGPT for Financial Services, combining built-in financial data and GPT-6 Astra for research, modeling, and client-ready materials.",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ]
+    },
+    {
+      "title": "Expanding AI access and cyber defense for federal, state, local, and tribal governments",
+      "source": "OpenAI News",
+      "date": "2026-09-10",
+      "url": "https://openai.com/index/expanding-ai-access-us-government",
+      "summary": "OpenAI and GSA will offer eligible federal, state, local, and tribal governments $0 license fees, 50% off usage, and expanded cyber defense support.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Introducing the Agents API",
+      "source": "OpenAI News",
+      "date": "2026-09-10",
+      "url": "https://openai.com/index/introducing-the-agents-api",
+      "summary": "Build and launch cloud agents with the Agents API, a managed service powered by the Codex harness for orchestration, long-running sessions, and tool use.",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Dev Tools",
+        "Automation"
+      ]
+    },
+    {
+      "title": "Slack can now vibe-code interactive charts and reports inside chats",
+      "source": "The Verge AI",
+      "date": "2026-09-10",
+      "url": "https://www.theverge.com/tech/989853/slackforce-surfaces-launch",
+      "summary": "A new feature coming to Slack will allow you to build interactive reports, polls, dashboards, presentations, microsites, and other tools directly inside a chat. With Slackforce Surfaces, you can describe to Slackbot what...",
+      "tags": [
+        "Agents",
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "Schools are catching on to Big Tech’s playbook",
+      "source": "The Verge AI",
+      "date": "2026-09-10",
+      "url": "https://www.theverge.com/policy/993308/computer-science-ai-education-coding-kids",
+      "summary": "It's the hot new thing in tech, and it's where all the jobs are. Students who don't learn to use it fall behind. And to help them catch up in time, its creators are graciously providing the resources and curriculum for l...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Universal Music is launching an AI music platform with ElevenLabs",
+      "source": "The Verge AI",
+      "date": "2026-09-10",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/993465/universal-music-elevenlabs-ai",
+      "summary": "Universal Music Group is launching a new AI-powered platform that will allow users to draw from its catalog of licensed music to create song remixes, mashups, and new takes on tracks, according to an announcement on Thur...",
+      "tags": [
+        "AI"
+      ]
+    },
     {
       "title": "Mathematicians want proof OpenAI didn’t use their work",
       "source": "The Verge AI",
@@ -97,133 +216,81 @@
       "tags": [
         "Multimodal"
       ]
-    },
-    {
-      "title": "Apple’s new iPhone camera mode promises to prove your photo isn’t AI",
-      "source": "The Verge AI",
-      "date": "2026-09-09",
-      "url": "https://www.theverge.com/tech/992766/apple-iphone-18-pro-reference-image",
-      "summary": "Apple is launching a new way to prove that the picture you took isn't manipulated by AI. A new feature, called \"Reference Image,\" will arrive with the iPhone 18 Pro lineup later this month and is supposed to use the devi...",
-      "tags": [
-        "Multimodal"
-      ]
-    },
-    {
-      "title": "Microsoft has new AI privacy rules for schools",
-      "source": "The Verge AI",
-      "date": "2026-09-09",
-      "url": "https://www.theverge.com/policy/992359/microsoft-aft-schools-ai-privacy",
-      "summary": "Microsoft agreed to a set of safety and privacy principles for AI in schools a week after two major school systems announced a ban on student-facing AI. In a new agreement with the American Federation of Teachers (AFT), ...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Amazon Prime Video’s new AI tech matches lips to dubbed audio",
-      "source": "The Verge AI",
-      "date": "2026-09-09",
-      "url": "https://www.theverge.com/tech/991809/amazon-prime-video-ai-lip-sync-dubbing",
-      "summary": "Amazon's Prime Video is launching a new AI-powered feature that lines up an actor's mouth with \"human-dubbed\" audio. The feature is only available with the English dub of the German series Maxton Hall for now, but Prime ...",
-      "tags": [
-        "Multimodal"
-      ]
-    },
-    {
-      "title": "Worried Anthropic researchers warn that AI &#8216;could kill all humans&#8217;",
-      "source": "The Verge AI",
-      "date": "2026-09-09",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/991927/anthropic-ai-kill-all-humans",
-      "summary": "A senior Anthropic safety researcher has said there is more than a 10 percent chance artificial intelligence \"could kill all humans\" by the end of the decade, just hours after a colleague resigned over fears the AI lab a...",
-      "tags": [
-        "Claude"
-      ]
-    },
-    {
-      "title": "Drama swirls around OpenAI’s legendary mathematical milestone",
-      "source": "The Verge AI",
-      "date": "2026-09-09",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/991710/openai-navier-stokes-solution",
-      "summary": "OpenAI says it found a solution to a major math problem that has remained unsolved for around 90 years, as reported earlier by The New York Times and Wired. In a blog post on Tuesday, OpenAI announced that it discovered ...",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "The Work Now Within Reach",
-      "source": "OpenAI News",
-      "date": "2026-09-08",
-      "url": "https://openai.com/index/the-work-now-within-reach",
-      "summary": "Explore how more capable, affordable AI can expand the work people and businesses can accomplish—and make growth more economical.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Introducing ChatGPT Images 2.5",
-      "source": "OpenAI News",
-      "date": "2026-09-08",
-      "url": "https://openai.com/index/introducing-chatgpt-images-2-5",
-      "summary": "ChatGPT Images 2.5 helps turn your ideas, sketches, and reference photos into more personalized, polished images that better reflect your ideas.",
-      "tags": [
-        "ChatGPT",
-        "Multimodal"
-      ]
-    },
-    {
-      "title": "On the Navier–Stokes Millennium Prize Problem",
-      "source": "OpenAI News",
-      "date": "2026-09-08",
-      "url": "https://openai.com/index/navier-stokes-solution",
-      "summary": "We’re sharing an AI-generated solution to the Navier–Stokes Millennium Prize Problem, including a writeup and a formal proof in Lean.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Funding grants for new research into AI and teen development",
-      "source": "OpenAI News",
-      "date": "2026-09-08",
-      "url": "https://openai.com/index/teen-development-research-grants",
-      "summary": "Apply now for OpenAI’s $5 million grant program supporting independent research on how generative AI affects teen development, well-being, and safety.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "OpenAI expands initiatives to support journalism from classrooms to newsrooms",
-      "source": "OpenAI News",
-      "date": "2026-09-08",
-      "url": "https://openai.com/index/supporting-journalism-from-classrooms-to-newsrooms",
-      "summary": "OpenAI is expanding support for journalism with tools, training, and partnerships for students, educators, journalists, and news organizations.",
-      "tags": [
-        "Agents",
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "1Password increases engineering productivity 21% with Codex",
-      "source": "OpenAI News",
-      "date": "2026-09-08",
-      "url": "https://openai.com/index/1password",
-      "summary": "Engineers at 1Password use Codex to rapidly build new features and internal tools, reaching production-readiness while maintaining rigorous security policies.",
-      "tags": [
-        "Agents",
-        "ChatGPT",
-        "Dev Tools"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Meta’s Muse AI works and creeps me out",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/993391/meta-muse-ai-hands-on",
+          "date": "2026-09-11"
+        },
+        {
+          "title": "GitHub Copilot app for Beginners: Using the diff, terminal, and browser",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-using-the-diff-terminal-and-browser/",
+          "date": "2026-09-10"
+        },
+        {
+          "title": "Now everyone can put data to work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/put-data-to-work",
+          "date": "2026-09-10"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "GitHub Copilot app for Beginners: Using the diff, terminal, and browser",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-using-the-diff-terminal-and-browser/",
+          "date": "2026-09-10"
+        },
+        {
+          "title": "Project HydraFusion: Frontier quality via multi-model orchestration",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/",
+          "date": "2026-09-04"
+        },
+        {
+          "title": "GitHub Copilot app for Beginners: Run several agents at once",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-run-several-agents-at-once/",
+          "date": "2026-09-03"
+        }
+      ]
+    },
     {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Introducing ChatGPT Images 2.5",
+          "title": "How a researcher uses Codex and ChatGPT to search for new antimicrobial molecules",
           "source": "OpenAI News",
-          "link": "https://openai.com/index/introducing-chatgpt-images-2-5",
-          "date": "2026-09-08"
+          "link": "https://openai.com/index/using-codex-chatgpt-to-search-for-new-antimicrobials",
+          "date": "2026-09-10"
+        },
+        {
+          "title": "Now everyone can put data to work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/put-data-to-work",
+          "date": "2026-09-10"
+        },
+        {
+          "title": "Introducing ChatGPT for Financial Services",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/introducing-chatgpt-financial-services",
+          "date": "2026-09-10"
         }
       ]
     },
@@ -249,50 +316,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/how-we-make-ai-coding-more-cost-efficient-without-sacrificing-task-quality/",
           "date": "2026-09-02"
-        }
-      ]
-    },
-    {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Project HydraFusion: Frontier quality via multi-model orchestration",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/",
-          "date": "2026-09-04"
-        },
-        {
-          "title": "GitHub Copilot app for Beginners: Run several agents at once",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-run-several-agents-at-once/",
-          "date": "2026-09-03"
-        },
-        {
-          "title": "How we make AI coding more cost efficient without sacrificing task quality",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/how-we-make-ai-coding-more-cost-efficient-without-sacrificing-task-quality/",
-          "date": "2026-09-02"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "GitHub Copilot app for Beginners: Run several agents at once",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-run-several-agents-at-once/",
-          "date": "2026-09-03"
-        },
-        {
-          "title": "How canvases make agentic workflows visible, steerable, and cost-efficient",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/how-canvases-make-agentic-workflows-visible-steerable-and-cost-efficient/",
-          "date": "2026-08-17"
         }
       ]
     },
