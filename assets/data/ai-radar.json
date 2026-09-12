@@ -1,11 +1,73 @@
 {
-  "generatedAt": "2026-09-11T12:31:54.326Z",
-  "date": "2026-09-11",
+  "generatedAt": "2026-09-12T11:55:53.810Z",
+  "date": "2026-09-12",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Perplexity trusts GPT-6 Astra with end-to-end systems",
+      "source": "OpenAI News",
+      "date": "2026-09-14",
+      "url": "https://openai.com/index/perplexity-improving-accuracy-with-astra",
+      "summary": "Perplexity uses Astra to write communications, change software, and monitor production systems, and checks in much less frequently than with earlier models.",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ]
+    },
+    {
+      "title": "Rapidly scaling online storage to serve over 1 billion ChatGPT users",
+      "source": "OpenAI News",
+      "date": "2026-09-11",
+      "url": "https://openai.com/index/scaling-storage-one-billion-users-part-one",
+      "summary": "Learn how OpenAI evolved Habitat from a Python library into a globally distributed storage platform serving 1 billion ChatGPT users and 22M requests per second.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "OpenAI just wants to win",
+      "source": "The Verge AI",
+      "date": "2026-09-11",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/994255/openai-millennium-prize-problem-tristan-buckmaster-competition",
+      "summary": "OpenAI has spent the last few years planting flags across the increasingly difficult terrain in mathematics. This week, it claimed one of its biggest prizes yet: a solution to a legendary Millennium Prize problem. In nor...",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Lawyer fined $5K over AI-hallucinated witnesses in a murder case",
+      "source": "The Verge AI",
+      "date": "2026-09-11",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/994207/chatgpt-new-mexico-lawyer-fined-murder-appeal",
+      "summary": "New Mexico's Supreme Court is punishing a lawyer for including AI-fabricated witnesses and fake police testimony in an appeal for his client's murder conviction, according to a report from Reuters. In a filing on Wednesd...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Anthropic spent this week in hot water over cybersecurity",
+      "source": "The Verge AI",
+      "date": "2026-09-11",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/994064/anthropic-spent-this-week-in-hot-water-over-cybersecurity",
+      "summary": "After admitting earlier this year that its AI models had hacked other companies' systems on a handful of occasions, Anthropic released a new report on Wednesday detailing the attacks. It reveals a string of incidents dis...",
+      "tags": [
+        "Claude",
+        "Models"
+      ]
+    },
+    {
+      "title": "Meta says it&#8217;s changing AI suggestions after posing invasive personal questions",
+      "source": "The Verge AI",
+      "date": "2026-09-11",
+      "url": "https://www.theverge.com/tech/993974/meta-ai-prompt-invasive-suggestions",
+      "summary": "Meta says it's making changes to the prompts suggested by its AI chatbot after a viral video showed it digging for personal information about a woman's young daughters, as reported earlier by Futurism. In a statement to ...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
     {
       "title": "Meta’s Muse AI works and creeps me out",
       "source": "The Verge AI",
@@ -155,70 +217,34 @@
       "tags": [
         "Gemini"
       ]
-    },
-    {
-      "title": "The AI policy window is open. We need to act.",
-      "source": "OpenAI News",
-      "date": "2026-09-09",
-      "url": "https://openai.com/index/ai-policy-window",
-      "summary": "Chris Lehane argues that stronger AI capabilities require stronger safety evidence, shared standards, and durable policy action while the policy window remains open.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "GPT-6 Astra: The next generation in intelligence for work",
-      "source": "OpenAI News",
-      "date": "2026-09-09",
-      "url": "https://openai.com/index/gpt-6-astra-next-generation-work",
-      "summary": "Meet GPT-6 Astra, OpenAI’s most capable model for business, with advanced reasoning, computer use, and stronger writing and design judgment.",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "Paul Christiano joins OpenAI Foundation Board",
-      "source": "OpenAI News",
-      "date": "2026-09-09",
-      "url": "https://openai.com/index/paul-christiano-joins-openai-foundation-board",
-      "summary": "Paul Christiano joins the OpenAI Foundation Board and its Safety and Security Committee, bringing experience in AI alignment, safety, and standards.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Suno releases its first AI music model made with record industry help",
-      "source": "The Verge AI",
-      "date": "2026-09-09",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/991977/suno-releases-its-first-ai-music-model-made-with-record-industry-help",
-      "summary": "Suno's new v6 AI music model is its first made with support from the record industry. Suno's Jack Brody told The Verge that v6 was \"trained from the ground up, with a new set of data that does not include the same data t...",
-      "tags": [
-        "Models"
-      ]
-    },
-    {
-      "title": "OpenAI’s sly mathematical breakthrough sends a chill through academia",
-      "source": "The Verge AI",
-      "date": "2026-09-09",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/992953/openai-math-millennium-prize-navier-stokes",
-      "summary": "OpenAI's announcement Tuesday that it has solved one of mathematics' legendary Millennium Prize problems should have been a moment of triumph. The result is both an undeniable achievement and a striking demonstration of ...",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Read the Apple document explaining how new listening features still protect your privacy",
-      "source": "The Verge AI",
-      "date": "2026-09-09",
-      "url": "https://www.theverge.com/tech/992919/apple-siri-ai-audio-intelligence-privacy",
-      "summary": "At Wednesday's iPhone Duo launch event, Apple announced a handful of new Siri AI Audio Intelligence features, including Siri Recap, Live Rewind, Sound Recognition, and Music Recognition. Alongside its announcement, Apple...",
-      "tags": [
-        "Multimodal"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Rapidly scaling online storage to serve over 1 billion ChatGPT users",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/scaling-storage-one-billion-users-part-one",
+          "date": "2026-09-11"
+        },
+        {
+          "title": "How a researcher uses Codex and ChatGPT to search for new antimicrobial molecules",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/using-codex-chatgpt-to-search-for-new-antimicrobials",
+          "date": "2026-09-10"
+        },
+        {
+          "title": "Now everyone can put data to work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/put-data-to-work",
+          "date": "2026-09-10"
+        }
+      ]
+    },
     {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
@@ -266,31 +292,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-run-several-agents-at-once/",
           "date": "2026-09-03"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "How a researcher uses Codex and ChatGPT to search for new antimicrobial molecules",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/using-codex-chatgpt-to-search-for-new-antimicrobials",
-          "date": "2026-09-10"
-        },
-        {
-          "title": "Now everyone can put data to work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/put-data-to-work",
-          "date": "2026-09-10"
-        },
-        {
-          "title": "Introducing ChatGPT for Financial Services",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/introducing-chatgpt-financial-services",
-          "date": "2026-09-10"
         }
       ]
     },
