@@ -1,6 +1,31 @@
 {
-  "generatedAt": "2026-09-11T12:31:54.326Z",
+  "generatedAt": "2026-09-12T11:55:53.810Z",
   "candidates": [
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Rapidly scaling online storage to serve over 1 billion ChatGPT users",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/scaling-storage-one-billion-users-part-one",
+          "date": "2026-09-11"
+        },
+        {
+          "title": "How a researcher uses Codex and ChatGPT to search for new antimicrobial molecules",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/using-codex-chatgpt-to-search-for-new-antimicrobials",
+          "date": "2026-09-10"
+        },
+        {
+          "title": "Now everyone can put data to work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/put-data-to-work",
+          "date": "2026-09-10"
+        }
+      ]
+    },
     {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
@@ -48,31 +73,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-run-several-agents-at-once/",
           "date": "2026-09-03"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "How a researcher uses Codex and ChatGPT to search for new antimicrobial molecules",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/using-codex-chatgpt-to-search-for-new-antimicrobials",
-          "date": "2026-09-10"
-        },
-        {
-          "title": "Now everyone can put data to work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/put-data-to-work",
-          "date": "2026-09-10"
-        },
-        {
-          "title": "Introducing ChatGPT for Financial Services",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/introducing-chatgpt-financial-services",
-          "date": "2026-09-10"
         }
       ]
     },

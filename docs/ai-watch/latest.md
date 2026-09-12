@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-09-11
+# Daily AI maintenance report — 2026-09-12
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,18 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Perplexity trusts GPT-6 Astra with end-to-end systems** — OpenAI News · 2026-09-14
+  https://openai.com/index/perplexity-improving-accuracy-with-astra
+- **Rapidly scaling online storage to serve over 1 billion ChatGPT users** — OpenAI News · 2026-09-11
+  https://openai.com/index/scaling-storage-one-billion-users-part-one
+- **OpenAI just wants to win** — The Verge AI · 2026-09-11
+  https://www.theverge.com/ai-artificial-intelligence/994255/openai-millennium-prize-problem-tristan-buckmaster-competition
+- **Lawyer fined $5K over AI-hallucinated witnesses in a murder case** — The Verge AI · 2026-09-11
+  https://www.theverge.com/ai-artificial-intelligence/994207/chatgpt-new-mexico-lawyer-fined-murder-appeal
+- **Anthropic spent this week in hot water over cybersecurity** — The Verge AI · 2026-09-11
+  https://www.theverge.com/ai-artificial-intelligence/994064/anthropic-spent-this-week-in-hot-water-over-cybersecurity
+- **Meta says it&#8217;s changing AI suggestions after posing invasive personal questions** — The Verge AI · 2026-09-11
+  https://www.theverge.com/tech/993974/meta-ai-prompt-invasive-suggestions
 - **Meta’s Muse AI works and creeps me out** — The Verge AI · 2026-09-11
   https://www.theverge.com/tech/993391/meta-muse-ai-hands-on
 - **GitHub Copilot app for Beginners: Using the diff, terminal, and browser** — GitHub AI & ML Blog · 2026-09-10
@@ -35,24 +47,12 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/policy/993308/computer-science-ai-education-coding-kids
 - **Universal Music is launching an AI music platform with ElevenLabs** — The Verge AI · 2026-09-10
   https://www.theverge.com/ai-artificial-intelligence/993465/universal-music-elevenlabs-ai
-- **Mathematicians want proof OpenAI didn’t use their work** — The Verge AI · 2026-09-10
-  https://www.theverge.com/ai-artificial-intelligence/993263/where-does-openai-get-mathematics-training-data
-- **OpenAI’s sly mathematical breakthrough sends a chill through academia** — The Verge AI · 2026-09-10
-  https://www.theverge.com/ai-artificial-intelligence/992953/openai-math-millennium-prize-navier-stokes
 - **Get ready for the game with new football features in Search** — Google AI Blog · 2026-09-09
   https://blog.google/products-and-platforms/products/search/football-features-google-search/
 - **Recreating a 70-year love story frame by frame** — Google AI Blog · 2026-09-09
   https://blog.google/innovation-and-ai/technology/ai/love-rendered-film/
 - **The AI policy window is open. We need to act.** — OpenAI News · 2026-09-09
   https://openai.com/index/ai-policy-window
-- **GPT-6 Astra: The next generation in intelligence for work** — OpenAI News · 2026-09-09
-  https://openai.com/index/gpt-6-astra-next-generation-work
-- **Paul Christiano joins OpenAI Foundation Board** — OpenAI News · 2026-09-09
-  https://openai.com/index/paul-christiano-joins-openai-foundation-board
-- **Suno releases its first AI music model made with record industry help** — The Verge AI · 2026-09-09
-  https://www.theverge.com/ai-artificial-intelligence/991977/suno-releases-its-first-ai-music-model-made-with-record-industry-help
-- **Read the Apple document explaining how new listening features still protect your privacy** — The Verge AI · 2026-09-09
-  https://www.theverge.com/tech/992919/apple-siri-ai-audio-intelligence-privacy
 - **Project HydraFusion: Frontier quality via multi-model orchestration** — GitHub AI & ML Blog · 2026-09-04
   https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/
 - **GitHub Copilot app for Beginners: Run several agents at once** — GitHub AI & ML Blog · 2026-09-03
@@ -80,9 +80,9 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
+- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
