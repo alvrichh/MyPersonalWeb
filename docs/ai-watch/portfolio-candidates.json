@@ -1,6 +1,31 @@
 {
-  "generatedAt": "2026-09-12T11:55:53.810Z",
+  "generatedAt": "2026-09-13T13:04:11.169Z",
   "candidates": [
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "OpenAI’s rogue AI tried to hack another company in May",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/994383/openais-rogue-ai-rubygems-hack",
+          "date": "2026-09-12"
+        },
+        {
+          "title": "GitHub Copilot app for Beginners: Using the diff, terminal, and browser",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-using-the-diff-terminal-and-browser/",
+          "date": "2026-09-10"
+        },
+        {
+          "title": "Now everyone can put data to work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/put-data-to-work",
+          "date": "2026-09-10"
+        }
+      ]
+    },
     {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
@@ -16,31 +41,6 @@
           "title": "How a researcher uses Codex and ChatGPT to search for new antimicrobial molecules",
           "source": "OpenAI News",
           "link": "https://openai.com/index/using-codex-chatgpt-to-search-for-new-antimicrobials",
-          "date": "2026-09-10"
-        },
-        {
-          "title": "Now everyone can put data to work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/put-data-to-work",
-          "date": "2026-09-10"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Meta’s Muse AI works and creeps me out",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/993391/meta-muse-ai-hands-on",
-          "date": "2026-09-11"
-        },
-        {
-          "title": "GitHub Copilot app for Beginners: Using the diff, terminal, and browser",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-using-the-diff-terminal-and-browser/",
           "date": "2026-09-10"
         },
         {

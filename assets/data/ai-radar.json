@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-12T11:55:53.810Z",
-  "date": "2026-09-12",
+  "generatedAt": "2026-09-13T13:04:11.169Z",
+  "date": "2026-09-13",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
@@ -15,6 +15,48 @@
       "tags": [
         "ChatGPT",
         "Models"
+      ]
+    },
+    {
+      "title": "OpenAI’s rogue AI tried to hack another company in May",
+      "source": "The Verge AI",
+      "date": "2026-09-12",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/994383/openais-rogue-ai-rubygems-hack",
+      "summary": "In May, hundreds of malicious and spam packages were uploaded to RubyGems, causing a serious disruption for the host. Now independent researchers have said that a swarm of OpenAI agents were responsible for the attack. N...",
+      "tags": [
+        "Agents",
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Sam Altman says OpenAI going public in 2026 would be ‘ill-advised’",
+      "source": "The Verge AI",
+      "date": "2026-09-12",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/994384/sam-altman-no-openai-ipo-ill-advised",
+      "summary": "OpenAI CEO Sam Altman confirmed that there would be no OpenAI IPO in 2026 during an interview with Fortune. Over the course of 45 minutes, Altman discussed a variety of subjects including the Hugging Face hacking inciden...",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Anthropic CEO says it’s time to pump the brakes on AI",
+      "source": "The Verge AI",
+      "date": "2026-09-12",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/994337/anthropic-ceo-slow-down-ai-development",
+      "summary": "Anthropic CEO Dario Amodei says the time has come to slow down AI development and will give third-party evaluators like METR access to its models to help ensure its \"adherence to safety practices and commitments.\" In a w...",
+      "tags": [
+        "Claude",
+        "Models"
+      ]
+    },
+    {
+      "title": "Trump is giving data centers a pass to pollute",
+      "source": "The Verge AI",
+      "date": "2026-09-12",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/994112/ai-data-center-pollution-health-epa",
+      "summary": "President Donald Trump is weakening environmental regulations in the name of speeding up the construction of AI data centers, raising health risks for Americans, a cadre of former EPA officials said this week in a briefi...",
+      "tags": [
+        "AI"
       ]
     },
     {
@@ -69,16 +111,6 @@
       ]
     },
     {
-      "title": "Meta’s Muse AI works and creeps me out",
-      "source": "The Verge AI",
-      "date": "2026-09-11",
-      "url": "https://www.theverge.com/tech/993391/meta-muse-ai-hands-on",
-      "summary": "Meta has launched its new Muse assistant, marking the company's first real foray into AI-powered productivity tools. The company says its AI agent can \"take the busywork off your plate\" by helping you with online shoppin...",
-      "tags": [
-        "Agents"
-      ]
-    },
-    {
       "title": "GitHub Copilot app for Beginners: Using the diff, terminal, and browser",
       "source": "GitHub AI & ML Blog",
       "date": "2026-09-10",
@@ -98,6 +130,16 @@
       "summary": "Search can help runners get race-day ready with registration alerts, tailored training plans, and more.",
       "tags": [
         "Gemini"
+      ]
+    },
+    {
+      "title": "Meta’s Muse AI works and creeps me out",
+      "source": "The Verge AI",
+      "date": "2026-09-11",
+      "url": "https://www.theverge.com/tech/993391/meta-muse-ai-hands-on",
+      "summary": "Meta has launched its new Muse assistant, marking the company's first real foray into AI-powered productivity tools. The company says its AI agent can \"take the busywork off your plate\" by helping you with online shoppin...",
+      "tags": [
+        "Agents"
       ]
     },
     {
@@ -176,50 +218,34 @@
       "tags": [
         "AI"
       ]
-    },
-    {
-      "title": "Universal Music is launching an AI music platform with ElevenLabs",
-      "source": "The Verge AI",
-      "date": "2026-09-10",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/993465/universal-music-elevenlabs-ai",
-      "summary": "Universal Music Group is launching a new AI-powered platform that will allow users to draw from its catalog of licensed music to create song remixes, mashups, and new takes on tracks, according to an announcement on Thur...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Mathematicians want proof OpenAI didn’t use their work",
-      "source": "The Verge AI",
-      "date": "2026-09-10",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/993263/where-does-openai-get-mathematics-training-data",
-      "summary": "Another researcher is challenging OpenAI about the data driving its increasingly impressive array of mathematical discoveries. Just days after a bitter row erupted over whether the company's models benefited from unpubli...",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "Get ready for the game with new football features in Search",
-      "source": "Google AI Blog",
-      "date": "2026-09-09",
-      "url": "https://blog.google/products-and-platforms/products/search/football-features-google-search/",
-      "summary": "Track live game feeds, explore detailed stats, and get custom fantasy recommendations directly in Search this season.",
-      "tags": [
-        "Gemini"
-      ]
-    },
-    {
-      "title": "Recreating a 70-year love story frame by frame",
-      "source": "Google AI Blog",
-      "date": "2026-09-09",
-      "url": "https://blog.google/innovation-and-ai/technology/ai/love-rendered-film/",
-      "summary": "Discover how filmmakers and Google DeepMind used AI to recreate a couple's unrecorded past in the short film \"Love, Rendered.\"",
-      "tags": [
-        "Gemini"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "OpenAI’s rogue AI tried to hack another company in May",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/994383/openais-rogue-ai-rubygems-hack",
+          "date": "2026-09-12"
+        },
+        {
+          "title": "GitHub Copilot app for Beginners: Using the diff, terminal, and browser",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-using-the-diff-terminal-and-browser/",
+          "date": "2026-09-10"
+        },
+        {
+          "title": "Now everyone can put data to work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/put-data-to-work",
+          "date": "2026-09-10"
+        }
+      ]
+    },
     {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
@@ -235,31 +261,6 @@
           "title": "How a researcher uses Codex and ChatGPT to search for new antimicrobial molecules",
           "source": "OpenAI News",
           "link": "https://openai.com/index/using-codex-chatgpt-to-search-for-new-antimicrobials",
-          "date": "2026-09-10"
-        },
-        {
-          "title": "Now everyone can put data to work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/put-data-to-work",
-          "date": "2026-09-10"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Meta’s Muse AI works and creeps me out",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/993391/meta-muse-ai-hands-on",
-          "date": "2026-09-11"
-        },
-        {
-          "title": "GitHub Copilot app for Beginners: Using the diff, terminal, and browser",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-using-the-diff-terminal-and-browser/",
           "date": "2026-09-10"
         },
         {
