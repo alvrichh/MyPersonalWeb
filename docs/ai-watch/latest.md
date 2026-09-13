@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-09-12
+# Daily AI maintenance report — 2026-09-13
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -15,6 +15,14 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 - **Perplexity trusts GPT-6 Astra with end-to-end systems** — OpenAI News · 2026-09-14
   https://openai.com/index/perplexity-improving-accuracy-with-astra
+- **OpenAI’s rogue AI tried to hack another company in May** — The Verge AI · 2026-09-12
+  https://www.theverge.com/ai-artificial-intelligence/994383/openais-rogue-ai-rubygems-hack
+- **Sam Altman says OpenAI going public in 2026 would be ‘ill-advised’** — The Verge AI · 2026-09-12
+  https://www.theverge.com/ai-artificial-intelligence/994384/sam-altman-no-openai-ipo-ill-advised
+- **Anthropic CEO says it’s time to pump the brakes on AI** — The Verge AI · 2026-09-12
+  https://www.theverge.com/ai-artificial-intelligence/994337/anthropic-ceo-slow-down-ai-development
+- **Trump is giving data centers a pass to pollute** — The Verge AI · 2026-09-12
+  https://www.theverge.com/ai-artificial-intelligence/994112/ai-data-center-pollution-health-epa
 - **Rapidly scaling online storage to serve over 1 billion ChatGPT users** — OpenAI News · 2026-09-11
   https://openai.com/index/scaling-storage-one-billion-users-part-one
 - **OpenAI just wants to win** — The Verge AI · 2026-09-11
@@ -25,8 +33,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/ai-artificial-intelligence/994064/anthropic-spent-this-week-in-hot-water-over-cybersecurity
 - **Meta says it&#8217;s changing AI suggestions after posing invasive personal questions** — The Verge AI · 2026-09-11
   https://www.theverge.com/tech/993974/meta-ai-prompt-invasive-suggestions
-- **Meta’s Muse AI works and creeps me out** — The Verge AI · 2026-09-11
-  https://www.theverge.com/tech/993391/meta-muse-ai-hands-on
 - **GitHub Copilot app for Beginners: Using the diff, terminal, and browser** — GitHub AI & ML Blog · 2026-09-10
   https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-using-the-diff-terminal-and-browser/
 - **3 ways to prep for your next big race with Search** — Google AI Blog · 2026-09-10
@@ -41,12 +47,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/expanding-ai-access-us-government
 - **Introducing the Agents API** — OpenAI News · 2026-09-10
   https://openai.com/index/introducing-the-agents-api
-- **Slack can now vibe-code interactive charts and reports inside chats** — The Verge AI · 2026-09-10
-  https://www.theverge.com/tech/989853/slackforce-surfaces-launch
-- **Schools are catching on to Big Tech’s playbook** — The Verge AI · 2026-09-10
-  https://www.theverge.com/policy/993308/computer-science-ai-education-coding-kids
-- **Universal Music is launching an AI music platform with ElevenLabs** — The Verge AI · 2026-09-10
-  https://www.theverge.com/ai-artificial-intelligence/993465/universal-music-elevenlabs-ai
 - **Get ready for the game with new football features in Search** — Google AI Blog · 2026-09-09
   https://blog.google/products-and-platforms/products/search/football-features-google-search/
 - **Recreating a 70-year love story frame by frame** — Google AI Blog · 2026-09-09
@@ -80,8 +80,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
-- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
