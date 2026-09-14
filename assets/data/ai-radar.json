@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-13T13:04:11.169Z",
-  "date": "2026-09-13",
+  "generatedAt": "2026-09-14T14:40:26.739Z",
+  "date": "2026-09-14",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
@@ -18,9 +18,32 @@
       ]
     },
     {
+      "title": "Microsoft says ‘people matter more than AI’ following safety concerns",
+      "source": "The Verge AI",
+      "date": "2026-09-14",
+      "url": "https://www.theverge.com/news/994566/microsoft-humanist-ai-code-of-conduct",
+      "summary": "Microsoft is publishing a 37-page \"humanist AI code of conduct\" today, amid growing safety concerns over AI model progress. Anthropic CEO Dario Amodei called for a coordinated slow down of AI development over the weekend...",
+      "tags": [
+        "Claude",
+        "Dev Tools",
+        "Models"
+      ]
+    },
+    {
+      "title": "Trump and Mike Johnson think the AI industry is overreacting",
+      "source": "The Verge AI",
+      "date": "2026-09-13",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/994441/trump-mike-johnson-ai-industry-overreacting",
+      "summary": "Yesterday, Anthropic CEO Dario Amodei published a lengthy open letter saying it was time to \"pace the frontier\" and slow down AI development. OpenAI's Sam Altman and Elon Musk both agreed, publicly voicing their support ...",
+      "tags": [
+        "ChatGPT",
+        "Claude"
+      ]
+    },
+    {
       "title": "OpenAI’s rogue AI tried to hack another company in May",
       "source": "The Verge AI",
-      "date": "2026-09-12",
+      "date": "2026-09-13",
       "url": "https://www.theverge.com/ai-artificial-intelligence/994383/openais-rogue-ai-rubygems-hack",
       "summary": "In May, hundreds of malicious and spam packages were uploaded to RubyGems, causing a serious disruption for the host. Now independent researchers have said that a swarm of OpenAI agents were responsible for the attack. N...",
       "tags": [
@@ -90,27 +113,6 @@
       ]
     },
     {
-      "title": "Anthropic spent this week in hot water over cybersecurity",
-      "source": "The Verge AI",
-      "date": "2026-09-11",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/994064/anthropic-spent-this-week-in-hot-water-over-cybersecurity",
-      "summary": "After admitting earlier this year that its AI models had hacked other companies' systems on a handful of occasions, Anthropic released a new report on Wednesday detailing the attacks. It reveals a string of incidents dis...",
-      "tags": [
-        "Claude",
-        "Models"
-      ]
-    },
-    {
-      "title": "Meta says it&#8217;s changing AI suggestions after posing invasive personal questions",
-      "source": "The Verge AI",
-      "date": "2026-09-11",
-      "url": "https://www.theverge.com/tech/993974/meta-ai-prompt-invasive-suggestions",
-      "summary": "Meta says it's making changes to the prompts suggested by its AI chatbot after a viral video showed it digging for personal information about a woman's young daughters, as reported earlier by Futurism. In a statement to ...",
-      "tags": [
-        "Multimodal"
-      ]
-    },
-    {
       "title": "GitHub Copilot app for Beginners: Using the diff, terminal, and browser",
       "source": "GitHub AI & ML Blog",
       "date": "2026-09-10",
@@ -130,6 +132,27 @@
       "summary": "Search can help runners get race-day ready with registration alerts, tailored training plans, and more.",
       "tags": [
         "Gemini"
+      ]
+    },
+    {
+      "title": "Anthropic spent this week in hot water over cybersecurity",
+      "source": "The Verge AI",
+      "date": "2026-09-11",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/994064/anthropic-spent-this-week-in-hot-water-over-cybersecurity",
+      "summary": "After admitting earlier this year that its AI models had hacked other companies' systems on a handful of occasions, Anthropic released a new report on Wednesday detailing the attacks. It reveals a string of incidents dis...",
+      "tags": [
+        "Claude",
+        "Models"
+      ]
+    },
+    {
+      "title": "Meta says it&#8217;s changing AI suggestions after posing invasive personal questions",
+      "source": "The Verge AI",
+      "date": "2026-09-11",
+      "url": "https://www.theverge.com/tech/993974/meta-ai-prompt-invasive-suggestions",
+      "summary": "Meta says it's making changes to the prompts suggested by its AI chatbot after a viral video showed it digging for personal information about a woman's young daughters, as reported earlier by Futurism. In a statement to ...",
+      "tags": [
+        "Multimodal"
       ]
     },
     {
@@ -197,27 +220,6 @@
         "Dev Tools",
         "Automation"
       ]
-    },
-    {
-      "title": "Slack can now vibe-code interactive charts and reports inside chats",
-      "source": "The Verge AI",
-      "date": "2026-09-10",
-      "url": "https://www.theverge.com/tech/989853/slackforce-surfaces-launch",
-      "summary": "A new feature coming to Slack will allow you to build interactive reports, polls, dashboards, presentations, microsites, and other tools directly inside a chat. With Slackforce Surfaces, you can describe to Slackbot what...",
-      "tags": [
-        "Agents",
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "Schools are catching on to Big Tech’s playbook",
-      "source": "The Verge AI",
-      "date": "2026-09-10",
-      "url": "https://www.theverge.com/policy/993308/computer-science-ai-education-coding-kids",
-      "summary": "It's the hot new thing in tech, and it's where all the jobs are. Students who don't learn to use it fall behind. And to help them catch up in time, its creators are graciously providing the resources and curriculum for l...",
-      "tags": [
-        "AI"
-      ]
     }
   ],
   "candidates": [
@@ -230,7 +232,7 @@
           "title": "OpenAI’s rogue AI tried to hack another company in May",
           "source": "The Verge AI",
           "link": "https://www.theverge.com/ai-artificial-intelligence/994383/openais-rogue-ai-rubygems-hack",
-          "date": "2026-09-12"
+          "date": "2026-09-13"
         },
         {
           "title": "GitHub Copilot app for Beginners: Using the diff, terminal, and browser",

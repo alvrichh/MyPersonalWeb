@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-09-13
+# Daily AI maintenance report — 2026-09-14
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -15,7 +15,11 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 - **Perplexity trusts GPT-6 Astra with end-to-end systems** — OpenAI News · 2026-09-14
   https://openai.com/index/perplexity-improving-accuracy-with-astra
-- **OpenAI’s rogue AI tried to hack another company in May** — The Verge AI · 2026-09-12
+- **Microsoft says ‘people matter more than AI’ following safety concerns** — The Verge AI · 2026-09-14
+  https://www.theverge.com/news/994566/microsoft-humanist-ai-code-of-conduct
+- **Trump and Mike Johnson think the AI industry is overreacting** — The Verge AI · 2026-09-13
+  https://www.theverge.com/ai-artificial-intelligence/994441/trump-mike-johnson-ai-industry-overreacting
+- **OpenAI’s rogue AI tried to hack another company in May** — The Verge AI · 2026-09-13
   https://www.theverge.com/ai-artificial-intelligence/994383/openais-rogue-ai-rubygems-hack
 - **Sam Altman says OpenAI going public in 2026 would be ‘ill-advised’** — The Verge AI · 2026-09-12
   https://www.theverge.com/ai-artificial-intelligence/994384/sam-altman-no-openai-ipo-ill-advised
@@ -29,10 +33,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/ai-artificial-intelligence/994255/openai-millennium-prize-problem-tristan-buckmaster-competition
 - **Lawyer fined $5K over AI-hallucinated witnesses in a murder case** — The Verge AI · 2026-09-11
   https://www.theverge.com/ai-artificial-intelligence/994207/chatgpt-new-mexico-lawyer-fined-murder-appeal
-- **Anthropic spent this week in hot water over cybersecurity** — The Verge AI · 2026-09-11
-  https://www.theverge.com/ai-artificial-intelligence/994064/anthropic-spent-this-week-in-hot-water-over-cybersecurity
-- **Meta says it&#8217;s changing AI suggestions after posing invasive personal questions** — The Verge AI · 2026-09-11
-  https://www.theverge.com/tech/993974/meta-ai-prompt-invasive-suggestions
 - **GitHub Copilot app for Beginners: Using the diff, terminal, and browser** — GitHub AI & ML Blog · 2026-09-10
   https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-using-the-diff-terminal-and-browser/
 - **3 ways to prep for your next big race with Search** — Google AI Blog · 2026-09-10
