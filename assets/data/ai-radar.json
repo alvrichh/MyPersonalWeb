@@ -1,11 +1,55 @@
 {
-  "generatedAt": "2026-09-14T14:40:26.739Z",
-  "date": "2026-09-14",
+  "generatedAt": "2026-09-15T13:05:08.226Z",
+  "date": "2026-09-15",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "New insights from Google’s AI & Economy ATLAS",
+      "source": "Google AI Blog",
+      "date": "2026-09-15",
+      "url": "https://blog.google/innovation-and-ai/technology/ai/ai-economy-atlas-september-2026/",
+      "summary": "We’ve translated ATLAS’s millions of global data points into an interactive, open-access experience.",
+      "tags": [
+        "Gemini"
+      ]
+    },
+    {
+      "title": "Is Big Tech’s AI slowdown a safety pact or a cartel?",
+      "source": "The Verge AI",
+      "date": "2026-09-15",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/995186/is-big-techs-ai-slowdown-a-safety-pact-or-a-cartel",
+      "summary": "When OpenAI CEO Sam Altman, Anthropic CEO Dario Amodei, Google DeepMind cofounder Demis Hassabis, and SpaceX head Elon Musk loosely agreed over the weekend to slow down AI development, skeptics spotted an ulterior motive...",
+      "tags": [
+        "ChatGPT",
+        "Claude"
+      ]
+    },
+    {
+      "title": "DevFest is back",
+      "source": "Google AI Blog",
+      "date": "2026-09-14",
+      "url": "https://blog.google/innovation-and-ai/technology/developers-tools/devfest2026/",
+      "summary": "DevFest 2026 is back and here’s how you can connect with one of the more than 800 global events to build, secure, and scale in the agentic AI era.",
+      "tags": [
+        "Agents",
+        "Gemini"
+      ]
+    },
+    {
+      "title": "How Fyxer built an AI executive assistant people trust",
+      "source": "OpenAI News",
+      "date": "2026-09-14",
+      "url": "https://openai.com/index/fyxer",
+      "summary": "Fyxer uses OpenAI models, fine-tuning, memory, and real user feedback to organize inboxes and draft emails in each user’s voice.",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Models"
+      ]
+    },
     {
       "title": "Perplexity trusts GPT-6 Astra with end-to-end systems",
       "source": "OpenAI News",
@@ -15,6 +59,16 @@
       "tags": [
         "ChatGPT",
         "Models"
+      ]
+    },
+    {
+      "title": "What execs and politicians are saying about slowing down AI development",
+      "source": "The Verge AI",
+      "date": "2026-09-14",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/995141/ai-executives-politicians-safety-regulation-anthropic-dario-amodei",
+      "summary": "Dario Amodei kicked off a flood of statements over the past few days about AI safety by publishing a long essay titled \"We Must Pace the Frontier\" detailing why AI development should be slowed down. Other AI leaders and ...",
+      "tags": [
+        "AI"
       ]
     },
     {
@@ -164,62 +218,6 @@
       "tags": [
         "Agents"
       ]
-    },
-    {
-      "title": "How a researcher uses Codex and ChatGPT to search for new antimicrobial molecules",
-      "source": "OpenAI News",
-      "date": "2026-09-10",
-      "url": "https://openai.com/index/using-codex-chatgpt-to-search-for-new-antimicrobials",
-      "summary": "César de la Fuente’s lab uses Codex and ChatGPT to search living and extinct genomes for antimicrobial candidates to fight drug-resistant infections.",
-      "tags": [
-        "ChatGPT",
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "Now everyone can put data to work",
-      "source": "OpenAI News",
-      "date": "2026-09-10",
-      "url": "https://openai.com/index/put-data-to-work",
-      "summary": "Meet the Data agent in ChatGPT Work. Connect company data, uncover insights, and build interactive dashboards with AI using natural language.",
-      "tags": [
-        "Agents",
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Introducing ChatGPT for Financial Services",
-      "source": "OpenAI News",
-      "date": "2026-09-10",
-      "url": "https://openai.com/index/introducing-chatgpt-financial-services",
-      "summary": "Introducing ChatGPT for Financial Services, combining built-in financial data and GPT-6 Astra for research, modeling, and client-ready materials.",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "Expanding AI access and cyber defense for federal, state, local, and tribal governments",
-      "source": "OpenAI News",
-      "date": "2026-09-10",
-      "url": "https://openai.com/index/expanding-ai-access-us-government",
-      "summary": "OpenAI and GSA will offer eligible federal, state, local, and tribal governments $0 license fees, 50% off usage, and expanded cyber defense support.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Introducing the Agents API",
-      "source": "OpenAI News",
-      "date": "2026-09-10",
-      "url": "https://openai.com/index/introducing-the-agents-api",
-      "summary": "Build and launch cloud agents with the Agents API, a managed service powered by the Codex harness for orchestration, long-running sessions, and tool use.",
-      "tags": [
-        "Agents",
-        "ChatGPT",
-        "Dev Tools",
-        "Automation"
-      ]
     }
   ],
   "candidates": [
@@ -228,6 +226,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "DevFest is back",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/devfest2026/",
+          "date": "2026-09-14"
+        },
         {
           "title": "OpenAI’s rogue AI tried to hack another company in May",
           "source": "The Verge AI",
@@ -238,12 +242,6 @@
           "title": "GitHub Copilot app for Beginners: Using the diff, terminal, and browser",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-using-the-diff-terminal-and-browser/",
-          "date": "2026-09-10"
-        },
-        {
-          "title": "Now everyone can put data to work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/put-data-to-work",
           "date": "2026-09-10"
         }
       ]
