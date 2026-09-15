@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-09-14
+# Daily AI maintenance report — 2026-09-15
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,8 +13,18 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **New insights from Google’s AI & Economy ATLAS** — Google AI Blog · 2026-09-15
+  https://blog.google/innovation-and-ai/technology/ai/ai-economy-atlas-september-2026/
+- **Is Big Tech’s AI slowdown a safety pact or a cartel?** — The Verge AI · 2026-09-15
+  https://www.theverge.com/ai-artificial-intelligence/995186/is-big-techs-ai-slowdown-a-safety-pact-or-a-cartel
+- **DevFest is back** — Google AI Blog · 2026-09-14
+  https://blog.google/innovation-and-ai/technology/developers-tools/devfest2026/
+- **How Fyxer built an AI executive assistant people trust** — OpenAI News · 2026-09-14
+  https://openai.com/index/fyxer
 - **Perplexity trusts GPT-6 Astra with end-to-end systems** — OpenAI News · 2026-09-14
   https://openai.com/index/perplexity-improving-accuracy-with-astra
+- **What execs and politicians are saying about slowing down AI development** — The Verge AI · 2026-09-14
+  https://www.theverge.com/ai-artificial-intelligence/995141/ai-executives-politicians-safety-regulation-anthropic-dario-amodei
 - **Microsoft says ‘people matter more than AI’ following safety concerns** — The Verge AI · 2026-09-14
   https://www.theverge.com/news/994566/microsoft-humanist-ai-code-of-conduct
 - **Trump and Mike Johnson think the AI industry is overreacting** — The Verge AI · 2026-09-13
@@ -29,10 +39,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/ai-artificial-intelligence/994112/ai-data-center-pollution-health-epa
 - **Rapidly scaling online storage to serve over 1 billion ChatGPT users** — OpenAI News · 2026-09-11
   https://openai.com/index/scaling-storage-one-billion-users-part-one
-- **OpenAI just wants to win** — The Verge AI · 2026-09-11
-  https://www.theverge.com/ai-artificial-intelligence/994255/openai-millennium-prize-problem-tristan-buckmaster-competition
-- **Lawyer fined $5K over AI-hallucinated witnesses in a murder case** — The Verge AI · 2026-09-11
-  https://www.theverge.com/ai-artificial-intelligence/994207/chatgpt-new-mexico-lawyer-fined-murder-appeal
 - **GitHub Copilot app for Beginners: Using the diff, terminal, and browser** — GitHub AI & ML Blog · 2026-09-10
   https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-using-the-diff-terminal-and-browser/
 - **3 ways to prep for your next big race with Search** — Google AI Blog · 2026-09-10
@@ -51,8 +57,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blog.google/products-and-platforms/products/search/football-features-google-search/
 - **Recreating a 70-year love story frame by frame** — Google AI Blog · 2026-09-09
   https://blog.google/innovation-and-ai/technology/ai/love-rendered-film/
-- **The AI policy window is open. We need to act.** — OpenAI News · 2026-09-09
-  https://openai.com/index/ai-policy-window
 - **Project HydraFusion: Frontier quality via multi-model orchestration** — GitHub AI & ML Blog · 2026-09-04
   https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/
 - **GitHub Copilot app for Beginners: Run several agents at once** — GitHub AI & ML Blog · 2026-09-03
@@ -67,14 +71,10 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blog.google/innovation-and-ai/technology/google-ai-updates-august-2026/
 - **Try Google Pics: Easy image creation and editing in Google Workspace** — Google AI Blog · 2026-09-01
   https://blog.google/products-and-platforms/products/workspace/google-pics/
-- **3 new ways to plan and book travel in Search** — Google AI Blog · 2026-08-27
-  https://blog.google/products-and-platforms/products/search/book-travel-ai-mode/
 - **GitHub Copilot app for Beginners: Automate Dependabot pull request triage** — GitHub AI & ML Blog · 2026-08-26
   https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-automate-dependabot-pull-request-triage/
 - **How to evaluate LLMs before production** — GitHub AI & ML Blog · 2026-08-25
   https://github.blog/ai-and-ml/llms/how-to-evaluate-llms-before-production/
-- **5 ways to upgrade your home decor with Google Search** — Google AI Blog · 2026-08-25
-  https://blog.google/products-and-platforms/products/search/home-decor-tips/
 - **GitHub Copilot app for Beginners: Managing your work** — GitHub AI & ML Blog · 2026-08-19
   https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-managing-your-work/
 

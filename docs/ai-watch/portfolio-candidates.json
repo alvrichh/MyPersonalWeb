@@ -1,11 +1,17 @@
 {
-  "generatedAt": "2026-09-14T14:40:26.739Z",
+  "generatedAt": "2026-09-15T13:05:08.226Z",
   "candidates": [
     {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "DevFest is back",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/devfest2026/",
+          "date": "2026-09-14"
+        },
         {
           "title": "OpenAI’s rogue AI tried to hack another company in May",
           "source": "The Verge AI",
@@ -16,12 +22,6 @@
           "title": "GitHub Copilot app for Beginners: Using the diff, terminal, and browser",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-using-the-diff-terminal-and-browser/",
-          "date": "2026-09-10"
-        },
-        {
-          "title": "Now everyone can put data to work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/put-data-to-work",
           "date": "2026-09-10"
         }
       ]
