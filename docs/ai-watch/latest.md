@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-09-15
+# Daily AI maintenance report — 2026-09-16
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,30 +13,36 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **A brief history of AI executives calling for regulation** — The Verge AI · 2026-09-16
+  https://www.theverge.com/policy/995534/a-brief-history-of-ai-executives-calling-for-regulation
+- **AI and data centers are incredibly unpopular in every poll** — The Verge AI · 2026-09-16
+  https://www.theverge.com/ai-artificial-intelligence/995917/data-center-nyt-midterm-poll-september
+- **Is Big Tech’s AI slowdown a safety pact or a cartel?** — The Verge AI · 2026-09-16
+  https://www.theverge.com/ai-artificial-intelligence/995186/is-big-techs-ai-slowdown-a-safety-pact-or-a-cartel
+- **AI for Societal Impact** — Google AI Blog · 2026-09-15
+  https://blog.google/innovation-and-ai/technology/ai/ai-for-societal-impact/
+- **Building AI to accelerate science and improve lives** — Google AI Blog · 2026-09-15
+  https://blog.google/innovation-and-ai/technology/ai/ai-applications-science-people/
+- **AI for everyone in every language** — Google AI Blog · 2026-09-15
+  https://blog.google/innovation-and-ai/technology/ai/ai-for-every-language/
 - **New insights from Google’s AI & Economy ATLAS** — Google AI Blog · 2026-09-15
   https://blog.google/innovation-and-ai/technology/ai/ai-economy-atlas-september-2026/
-- **Is Big Tech’s AI slowdown a safety pact or a cartel?** — The Verge AI · 2026-09-15
-  https://www.theverge.com/ai-artificial-intelligence/995186/is-big-techs-ai-slowdown-a-safety-pact-or-a-cartel
+- **Meta&#8217;s new One subscriptions put a price on social media and AI** — The Verge AI · 2026-09-15
+  https://www.theverge.com/tech/995453/meta-one-subscriptions-ai
+- **This doorbell camera lets a human security guard watch your front door** — The Verge AI · 2026-09-15
+  https://www.theverge.com/tech/995365/simplisafe-video-doorbell-series-2-virtual-guard-price-specs
+- **What execs and politicians are saying about slowing down AI development** — The Verge AI · 2026-09-15
+  https://www.theverge.com/ai-artificial-intelligence/995141/ai-executives-politicians-safety-regulation-anthropic-dario-amodei
 - **DevFest is back** — Google AI Blog · 2026-09-14
   https://blog.google/innovation-and-ai/technology/developers-tools/devfest2026/
 - **How Fyxer built an AI executive assistant people trust** — OpenAI News · 2026-09-14
   https://openai.com/index/fyxer
 - **Perplexity trusts GPT-6 Astra with end-to-end systems** — OpenAI News · 2026-09-14
   https://openai.com/index/perplexity-improving-accuracy-with-astra
-- **What execs and politicians are saying about slowing down AI development** — The Verge AI · 2026-09-14
-  https://www.theverge.com/ai-artificial-intelligence/995141/ai-executives-politicians-safety-regulation-anthropic-dario-amodei
 - **Microsoft says ‘people matter more than AI’ following safety concerns** — The Verge AI · 2026-09-14
   https://www.theverge.com/news/994566/microsoft-humanist-ai-code-of-conduct
 - **Trump and Mike Johnson think the AI industry is overreacting** — The Verge AI · 2026-09-13
   https://www.theverge.com/ai-artificial-intelligence/994441/trump-mike-johnson-ai-industry-overreacting
-- **OpenAI’s rogue AI tried to hack another company in May** — The Verge AI · 2026-09-13
-  https://www.theverge.com/ai-artificial-intelligence/994383/openais-rogue-ai-rubygems-hack
-- **Sam Altman says OpenAI going public in 2026 would be ‘ill-advised’** — The Verge AI · 2026-09-12
-  https://www.theverge.com/ai-artificial-intelligence/994384/sam-altman-no-openai-ipo-ill-advised
-- **Anthropic CEO says it’s time to pump the brakes on AI** — The Verge AI · 2026-09-12
-  https://www.theverge.com/ai-artificial-intelligence/994337/anthropic-ceo-slow-down-ai-development
-- **Trump is giving data centers a pass to pollute** — The Verge AI · 2026-09-12
-  https://www.theverge.com/ai-artificial-intelligence/994112/ai-data-center-pollution-health-epa
 - **Rapidly scaling online storage to serve over 1 billion ChatGPT users** — OpenAI News · 2026-09-11
   https://openai.com/index/scaling-storage-one-billion-users-part-one
 - **GitHub Copilot app for Beginners: Using the diff, terminal, and browser** — GitHub AI & ML Blog · 2026-09-10
@@ -65,12 +71,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://github.blog/ai-and-ml/decoding-the-new-ai-lingo-loops-harnesses-squads-hill-climbing-oh-my/
 - **How we make AI coding more cost efficient without sacrificing task quality** — GitHub AI & ML Blog · 2026-09-02
   https://github.blog/ai-and-ml/github-copilot/how-we-make-ai-coding-more-cost-efficient-without-sacrificing-task-quality/
-- **Proactive cyber defense for governments and enterprises** — Google AI Blog · 2026-09-02
-  https://blog.google/innovation-and-ai/technology/safety-security/fairwind-program/
-- **The latest AI news we announced in August 2026** — Google AI Blog · 2026-09-01
-  https://blog.google/innovation-and-ai/technology/google-ai-updates-august-2026/
-- **Try Google Pics: Easy image creation and editing in Google Workspace** — Google AI Blog · 2026-09-01
-  https://blog.google/products-and-platforms/products/workspace/google-pics/
 - **GitHub Copilot app for Beginners: Automate Dependabot pull request triage** — GitHub AI & ML Blog · 2026-08-26
   https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-automate-dependabot-pull-request-triage/
 - **How to evaluate LLMs before production** — GitHub AI & ML Blog · 2026-08-25

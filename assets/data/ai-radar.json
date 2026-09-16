@@ -1,11 +1,74 @@
 {
-  "generatedAt": "2026-09-15T13:05:08.226Z",
-  "date": "2026-09-15",
+  "generatedAt": "2026-09-16T13:02:26.294Z",
+  "date": "2026-09-16",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "A brief history of AI executives calling for regulation",
+      "source": "The Verge AI",
+      "date": "2026-09-16",
+      "url": "https://www.theverge.com/policy/995534/a-brief-history-of-ai-executives-calling-for-regulation",
+      "summary": "Over the past few days, a lot of people who stand to make a lot of money from AI all publicly agreed that it's time to make everyone slow down before we lose control - including OpenAI CEO Sam Altman, Anthropic CEO Dario...",
+      "tags": [
+        "ChatGPT",
+        "Claude"
+      ]
+    },
+    {
+      "title": "AI and data centers are incredibly unpopular in every poll",
+      "source": "The Verge AI",
+      "date": "2026-09-16",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/995917/data-center-nyt-midterm-poll-september",
+      "summary": "Poll data released Tuesday by The New York Times and Siena University confirms what we've already been seeing, and what politicians are responding to - AI and data centers are incredibly unpopular. Asked if they support ...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Is Big Tech’s AI slowdown a safety pact or a cartel?",
+      "source": "The Verge AI",
+      "date": "2026-09-16",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/995186/is-big-techs-ai-slowdown-a-safety-pact-or-a-cartel",
+      "summary": "When OpenAI CEO Sam Altman, Anthropic CEO Dario Amodei, Google DeepMind cofounder Demis Hassabis, and SpaceX head Elon Musk loosely agreed over the weekend to slow down AI development, skeptics spotted an ulterior motive...",
+      "tags": [
+        "ChatGPT",
+        "Claude"
+      ]
+    },
+    {
+      "title": "AI for Societal Impact",
+      "source": "Google AI Blog",
+      "date": "2026-09-15",
+      "url": "https://blog.google/innovation-and-ai/technology/ai/ai-for-societal-impact/",
+      "summary": "Explore this collection to see how experts and local leaders are using AI breakthroughs to ensure everyone can share the opportunity of AI.",
+      "tags": [
+        "Gemini"
+      ]
+    },
+    {
+      "title": "Building AI to accelerate science and improve lives",
+      "source": "Google AI Blog",
+      "date": "2026-09-15",
+      "url": "https://blog.google/innovation-and-ai/technology/ai/ai-applications-science-people/",
+      "summary": "The true measure of AI is who it helps. Here’s how it’s impacting lives today. We're focused on key areas where advanced technology can help make extraordinary progress …",
+      "tags": [
+        "Gemini"
+      ]
+    },
+    {
+      "title": "AI for everyone in every language",
+      "source": "Google AI Blog",
+      "date": "2026-09-15",
+      "url": "https://blog.google/innovation-and-ai/technology/ai/ai-for-every-language/",
+      "summary": "We’re moving beyond traditional text translation to build models that understand the world’s rich, living languages exactly as they are expressed.",
+      "tags": [
+        "Gemini",
+        "Models"
+      ]
+    },
     {
       "title": "New insights from Google’s AI & Economy ATLAS",
       "source": "Google AI Blog",
@@ -17,14 +80,34 @@
       ]
     },
     {
-      "title": "Is Big Tech’s AI slowdown a safety pact or a cartel?",
+      "title": "Meta&#8217;s new One subscriptions put a price on social media and AI",
       "source": "The Verge AI",
       "date": "2026-09-15",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/995186/is-big-techs-ai-slowdown-a-safety-pact-or-a-cartel",
-      "summary": "When OpenAI CEO Sam Altman, Anthropic CEO Dario Amodei, Google DeepMind cofounder Demis Hassabis, and SpaceX head Elon Musk loosely agreed over the weekend to slow down AI development, skeptics spotted an ulterior motive...",
+      "url": "https://www.theverge.com/tech/995453/meta-one-subscriptions-ai",
+      "summary": "Shortly after launching its new do-everything AI assistant Muse, Meta's launching subscription bundles that pair its standalone app subscriptions with extra AI usage. Some of the new Meta One bundles were in testing earl...",
       "tags": [
-        "ChatGPT",
-        "Claude"
+        "Agents"
+      ]
+    },
+    {
+      "title": "This doorbell camera lets a human security guard watch your front door",
+      "source": "The Verge AI",
+      "date": "2026-09-15",
+      "url": "https://www.theverge.com/tech/995365/simplisafe-video-doorbell-series-2-virtual-guard-price-specs",
+      "summary": "DIY home security company SimpliSafe is bringing its AI-powered proactive security feature to the front door. The new SimpliSafe Video Doorbell Series 2 launches today for $199.99 and works with the company's Active Guar...",
+      "tags": [
+        "Agents",
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "What execs and politicians are saying about slowing down AI development",
+      "source": "The Verge AI",
+      "date": "2026-09-15",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/995141/ai-executives-politicians-safety-regulation-anthropic-dario-amodei",
+      "summary": "Dario Amodei kicked off a flood of statements over the past few days about AI safety by publishing a long essay titled \"We Must Pace the Frontier\" detailing why AI development should be slowed down. Other AI leaders and ...",
+      "tags": [
+        "AI"
       ]
     },
     {
@@ -59,16 +142,6 @@
       "tags": [
         "ChatGPT",
         "Models"
-      ]
-    },
-    {
-      "title": "What execs and politicians are saying about slowing down AI development",
-      "source": "The Verge AI",
-      "date": "2026-09-14",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/995141/ai-executives-politicians-safety-regulation-anthropic-dario-amodei",
-      "summary": "Dario Amodei kicked off a flood of statements over the past few days about AI safety by publishing a long essay titled \"We Must Pace the Frontier\" detailing why AI development should be slowed down. Other AI leaders and ...",
-      "tags": [
-        "AI"
       ]
     },
     {
@@ -145,79 +218,6 @@
       "tags": [
         "ChatGPT"
       ]
-    },
-    {
-      "title": "OpenAI just wants to win",
-      "source": "The Verge AI",
-      "date": "2026-09-11",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/994255/openai-millennium-prize-problem-tristan-buckmaster-competition",
-      "summary": "OpenAI has spent the last few years planting flags across the increasingly difficult terrain in mathematics. This week, it claimed one of its biggest prizes yet: a solution to a legendary Millennium Prize problem. In nor...",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Lawyer fined $5K over AI-hallucinated witnesses in a murder case",
-      "source": "The Verge AI",
-      "date": "2026-09-11",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/994207/chatgpt-new-mexico-lawyer-fined-murder-appeal",
-      "summary": "New Mexico's Supreme Court is punishing a lawyer for including AI-fabricated witnesses and fake police testimony in an appeal for his client's murder conviction, according to a report from Reuters. In a filing on Wednesd...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "GitHub Copilot app for Beginners: Using the diff, terminal, and browser",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-09-10",
-      "url": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-using-the-diff-terminal-and-browser/",
-      "summary": "Checking agent-generated code usually means hopping between tabs. Learn how to view diffs, run terminal commands, and preview web apps side by side in the GitHub Copilot app. The post GitHub Copilot app for Beginners: Us...",
-      "tags": [
-        "Agents",
-        "Copilot",
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "3 ways to prep for your next big race with Search",
-      "source": "Google AI Blog",
-      "date": "2026-09-10",
-      "url": "https://blog.google/products-and-platforms/products/search/running-race-training-tips/",
-      "summary": "Search can help runners get race-day ready with registration alerts, tailored training plans, and more.",
-      "tags": [
-        "Gemini"
-      ]
-    },
-    {
-      "title": "Anthropic spent this week in hot water over cybersecurity",
-      "source": "The Verge AI",
-      "date": "2026-09-11",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/994064/anthropic-spent-this-week-in-hot-water-over-cybersecurity",
-      "summary": "After admitting earlier this year that its AI models had hacked other companies' systems on a handful of occasions, Anthropic released a new report on Wednesday detailing the attacks. It reveals a string of incidents dis...",
-      "tags": [
-        "Claude",
-        "Models"
-      ]
-    },
-    {
-      "title": "Meta says it&#8217;s changing AI suggestions after posing invasive personal questions",
-      "source": "The Verge AI",
-      "date": "2026-09-11",
-      "url": "https://www.theverge.com/tech/993974/meta-ai-prompt-invasive-suggestions",
-      "summary": "Meta says it's making changes to the prompts suggested by its AI chatbot after a viral video showed it digging for personal information about a woman's young daughters, as reported earlier by Futurism. In a statement to ...",
-      "tags": [
-        "Multimodal"
-      ]
-    },
-    {
-      "title": "Meta’s Muse AI works and creeps me out",
-      "source": "The Verge AI",
-      "date": "2026-09-11",
-      "url": "https://www.theverge.com/tech/993391/meta-muse-ai-hands-on",
-      "summary": "Meta has launched its new Muse assistant, marking the company's first real foray into AI-powered productivity tools. The company says its AI agent can \"take the busywork off your plate\" by helping you with online shoppin...",
-      "tags": [
-        "Agents"
-      ]
     }
   ],
   "candidates": [
@@ -227,16 +227,16 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "This doorbell camera lets a human security guard watch your front door",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/995365/simplisafe-video-doorbell-series-2-virtual-guard-price-specs",
+          "date": "2026-09-15"
+        },
+        {
           "title": "DevFest is back",
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/developers-tools/devfest2026/",
           "date": "2026-09-14"
-        },
-        {
-          "title": "OpenAI’s rogue AI tried to hack another company in May",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/994383/openais-rogue-ai-rubygems-hack",
-          "date": "2026-09-13"
         },
         {
           "title": "GitHub Copilot app for Beginners: Using the diff, terminal, and browser",
