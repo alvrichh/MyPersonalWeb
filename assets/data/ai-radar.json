@@ -1,11 +1,140 @@
 {
-  "generatedAt": "2026-09-16T13:02:26.294Z",
-  "date": "2026-09-16",
+  "generatedAt": "2026-09-17T12:59:56.779Z",
+  "date": "2026-09-17",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Migrating the GitHub Copilot runtime to Rust, using Copilot",
+      "source": "GitHub AI & ML Blog",
+      "date": "2026-09-17",
+      "url": "https://github.blog/ai-and-ml/generative-ai/migrating-the-github-copilot-runtime-to-rust-using-copilot/",
+      "summary": "A rewrite this size wasn't affordable before agents. Here's what porting the Copilot agent runtime to 800,000 lines of production Rust actually took. The post Migrating the GitHub Copilot runtime to Rust, using Copilot a...",
+      "tags": [
+        "Agents",
+        "Copilot"
+      ]
+    },
+    {
+      "title": "Inside the suddenly explosive world of AI safety",
+      "source": "The Verge AI",
+      "date": "2026-09-17",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/996563/ai-safety-research-metr-redwood-openai-anthropic",
+      "summary": "On a sunny July day in Berkeley, California, the country's top AI safety researchers gathered on an unmarked floor of an unmarked building. They had come together for a \"war room\" to dissect the high-profile cybersecurit...",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ]
+    },
+    {
+      "title": "Helping older adults use AI in everyday life",
+      "source": "OpenAI News",
+      "date": "2026-09-16",
+      "url": "https://openai.com/index/helping-older-adults-use-ai-in-everyday-life",
+      "summary": "OpenAI and AARP are bringing free, hands-on ChatGPT workshops to 1,000 older adults across 10 U.S. cities to build practical AI skills safely.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Reimagining advertising with AI",
+      "source": "OpenAI News",
+      "date": "2026-09-16",
+      "url": "https://openai.com/index/reimagining-advertising-with-ai",
+      "summary": "Explore new AI-powered advertising experiences from OpenAI, including Sponsored Agents, tools for marketers, and integrations with HubSpot and Shopify.",
+      "tags": [
+        "Agents",
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "How to connect AI usage to business value",
+      "source": "OpenAI News",
+      "date": "2026-09-16",
+      "url": "https://openai.com/index/how-to-connect-ai-usage-to-business-value",
+      "summary": "Learn how ChatGPT Work and Codex analytics help teams understand AI usage and spend, identify training needs, and connect adoption to business outcomes.",
+      "tags": [
+        "ChatGPT",
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "Our framework for reporting model misalignment",
+      "source": "OpenAI News",
+      "date": "2026-09-16",
+      "url": "https://openai.com/index/model-misalignment-reporting-framework",
+      "summary": "OpenAI shares a framework for tracking, investigating, and disclosing model misalignment, alongside six reports of unexpected or concerning model behavior.",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ]
+    },
+    {
+      "title": "How workers are unlocking new ways of working",
+      "source": "OpenAI News",
+      "date": "2026-09-16",
+      "url": "https://openai.com/index/unlocking-new-ways-of-working",
+      "summary": "New OpenAI Economic Research shows how workers use AI beyond traditional roles and which new activities become recurring parts of their work.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Snap is launching a new Specs AI tool, and it’s coming to iOS and Mac",
+      "source": "The Verge AI",
+      "date": "2026-09-16",
+      "url": "https://www.theverge.com/tech/996078/snap-specs-intelligence-ai-agent-ios-mac",
+      "summary": "Snap is introducing \"Specs Intelligence,\" a new AI assistant that can connect other digital accounts to help you with things like work tasks and keeping track of travel information. It seems similar to AI assistants like...",
+      "tags": [
+        "Agents",
+        "Gemini"
+      ]
+    },
+    {
+      "title": "The 2.5-hour AI-generated Odyssey movie is 2.5 hours too long",
+      "source": "The Verge AI",
+      "date": "2026-09-16",
+      "url": "https://www.theverge.com/entertainment/996499/ai-odyssey-movie-review",
+      "summary": "Christopher Nolan's engrossing take on The Odyssey dominated at the box office and spurred a newfound interest in classic literature among filmgoers. But a new retelling of the story made entirely with AI is so bad that ...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "The AI data center e-waste problem is huge — and getting bigger",
+      "source": "The Verge AI",
+      "date": "2026-09-16",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/996470/ai-data-center-e-waste-ban",
+      "summary": "E-waste from the AI boom has been vastly underestimated, a new report warns. By 2050, it could become enough trash to fill 23 million shipping containers - roughly enough 40-foot containers to circle the world six times ...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Apple might make servers again to cash in on the AI rush",
+      "source": "The Verge AI",
+      "date": "2026-09-16",
+      "url": "https://www.theverge.com/tech/996321/apple-servers-ai-nvidia",
+      "summary": "According to The Information, Apple is planning to get back into the server game and might just pair up with Nvidia to make it happen. Apple retired its Xserve line in 2011 and has largely left enterprise machines to oth...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Google will now let any AI agent run your smart home",
+      "source": "The Verge AI",
+      "date": "2026-09-16",
+      "url": "https://www.theverge.com/tech/996310/google-home-mcp-integration-agentic-ai-smart-home-price-release-date",
+      "summary": "Google is opening up its smart home to AI agents, letting tools like Claude and Open Claw access and control your connected devices and analyze your home's data using the standardized Model Context Protocol. Google Home ...",
+      "tags": [
+        "Agents",
+        "MCP",
+        "Claude",
+        "Models"
+      ]
+    },
     {
       "title": "A brief history of AI executives calling for regulation",
       "source": "The Verge AI",
@@ -88,136 +217,6 @@
       "tags": [
         "Agents"
       ]
-    },
-    {
-      "title": "This doorbell camera lets a human security guard watch your front door",
-      "source": "The Verge AI",
-      "date": "2026-09-15",
-      "url": "https://www.theverge.com/tech/995365/simplisafe-video-doorbell-series-2-virtual-guard-price-specs",
-      "summary": "DIY home security company SimpliSafe is bringing its AI-powered proactive security feature to the front door. The new SimpliSafe Video Doorbell Series 2 launches today for $199.99 and works with the company's Active Guar...",
-      "tags": [
-        "Agents",
-        "Multimodal"
-      ]
-    },
-    {
-      "title": "What execs and politicians are saying about slowing down AI development",
-      "source": "The Verge AI",
-      "date": "2026-09-15",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/995141/ai-executives-politicians-safety-regulation-anthropic-dario-amodei",
-      "summary": "Dario Amodei kicked off a flood of statements over the past few days about AI safety by publishing a long essay titled \"We Must Pace the Frontier\" detailing why AI development should be slowed down. Other AI leaders and ...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "DevFest is back",
-      "source": "Google AI Blog",
-      "date": "2026-09-14",
-      "url": "https://blog.google/innovation-and-ai/technology/developers-tools/devfest2026/",
-      "summary": "DevFest 2026 is back and here’s how you can connect with one of the more than 800 global events to build, secure, and scale in the agentic AI era.",
-      "tags": [
-        "Agents",
-        "Gemini"
-      ]
-    },
-    {
-      "title": "How Fyxer built an AI executive assistant people trust",
-      "source": "OpenAI News",
-      "date": "2026-09-14",
-      "url": "https://openai.com/index/fyxer",
-      "summary": "Fyxer uses OpenAI models, fine-tuning, memory, and real user feedback to organize inboxes and draft emails in each user’s voice.",
-      "tags": [
-        "Agents",
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "Perplexity trusts GPT-6 Astra with end-to-end systems",
-      "source": "OpenAI News",
-      "date": "2026-09-14",
-      "url": "https://openai.com/index/perplexity-improving-accuracy-with-astra",
-      "summary": "Perplexity uses Astra to write communications, change software, and monitor production systems, and checks in much less frequently than with earlier models.",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "Microsoft says ‘people matter more than AI’ following safety concerns",
-      "source": "The Verge AI",
-      "date": "2026-09-14",
-      "url": "https://www.theverge.com/news/994566/microsoft-humanist-ai-code-of-conduct",
-      "summary": "Microsoft is publishing a 37-page \"humanist AI code of conduct\" today, amid growing safety concerns over AI model progress. Anthropic CEO Dario Amodei called for a coordinated slow down of AI development over the weekend...",
-      "tags": [
-        "Claude",
-        "Dev Tools",
-        "Models"
-      ]
-    },
-    {
-      "title": "Trump and Mike Johnson think the AI industry is overreacting",
-      "source": "The Verge AI",
-      "date": "2026-09-13",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/994441/trump-mike-johnson-ai-industry-overreacting",
-      "summary": "Yesterday, Anthropic CEO Dario Amodei published a lengthy open letter saying it was time to \"pace the frontier\" and slow down AI development. OpenAI's Sam Altman and Elon Musk both agreed, publicly voicing their support ...",
-      "tags": [
-        "ChatGPT",
-        "Claude"
-      ]
-    },
-    {
-      "title": "OpenAI’s rogue AI tried to hack another company in May",
-      "source": "The Verge AI",
-      "date": "2026-09-13",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/994383/openais-rogue-ai-rubygems-hack",
-      "summary": "In May, hundreds of malicious and spam packages were uploaded to RubyGems, causing a serious disruption for the host. Now independent researchers have said that a swarm of OpenAI agents were responsible for the attack. N...",
-      "tags": [
-        "Agents",
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Sam Altman says OpenAI going public in 2026 would be ‘ill-advised’",
-      "source": "The Verge AI",
-      "date": "2026-09-12",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/994384/sam-altman-no-openai-ipo-ill-advised",
-      "summary": "OpenAI CEO Sam Altman confirmed that there would be no OpenAI IPO in 2026 during an interview with Fortune. Over the course of 45 minutes, Altman discussed a variety of subjects including the Hugging Face hacking inciden...",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Anthropic CEO says it’s time to pump the brakes on AI",
-      "source": "The Verge AI",
-      "date": "2026-09-12",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/994337/anthropic-ceo-slow-down-ai-development",
-      "summary": "Anthropic CEO Dario Amodei says the time has come to slow down AI development and will give third-party evaluators like METR access to its models to help ensure its \"adherence to safety practices and commitments.\" In a w...",
-      "tags": [
-        "Claude",
-        "Models"
-      ]
-    },
-    {
-      "title": "Trump is giving data centers a pass to pollute",
-      "source": "The Verge AI",
-      "date": "2026-09-12",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/994112/ai-data-center-pollution-health-epa",
-      "summary": "President Donald Trump is weakening environmental regulations in the name of speeding up the construction of AI data centers, raising health risks for Americans, a cadre of former EPA officials said this week in a briefi...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Rapidly scaling online storage to serve over 1 billion ChatGPT users",
-      "source": "OpenAI News",
-      "date": "2026-09-11",
-      "url": "https://openai.com/index/scaling-storage-one-billion-users-part-one",
-      "summary": "Learn how OpenAI evolved Habitat from a Python library into a globally distributed storage platform serving 1 billion ChatGPT users and 22M requests per second.",
-      "tags": [
-        "ChatGPT"
-      ]
     }
   ],
   "candidates": [
@@ -227,47 +226,22 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "This doorbell camera lets a human security guard watch your front door",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/995365/simplisafe-video-doorbell-series-2-virtual-guard-price-specs",
-          "date": "2026-09-15"
-        },
-        {
-          "title": "DevFest is back",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/devfest2026/",
-          "date": "2026-09-14"
-        },
-        {
-          "title": "GitHub Copilot app for Beginners: Using the diff, terminal, and browser",
+          "title": "Migrating the GitHub Copilot runtime to Rust, using Copilot",
           "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-using-the-diff-terminal-and-browser/",
-          "date": "2026-09-10"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Rapidly scaling online storage to serve over 1 billion ChatGPT users",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/scaling-storage-one-billion-users-part-one",
-          "date": "2026-09-11"
+          "link": "https://github.blog/ai-and-ml/generative-ai/migrating-the-github-copilot-runtime-to-rust-using-copilot/",
+          "date": "2026-09-17"
         },
         {
-          "title": "How a researcher uses Codex and ChatGPT to search for new antimicrobial molecules",
+          "title": "Reimagining advertising with AI",
           "source": "OpenAI News",
-          "link": "https://openai.com/index/using-codex-chatgpt-to-search-for-new-antimicrobials",
-          "date": "2026-09-10"
+          "link": "https://openai.com/index/reimagining-advertising-with-ai",
+          "date": "2026-09-16"
         },
         {
-          "title": "Now everyone can put data to work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/put-data-to-work",
-          "date": "2026-09-10"
+          "title": "Google will now let any AI agent run your smart home",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/996310/google-home-mcp-integration-agentic-ai-smart-home-price-release-date",
+          "date": "2026-09-16"
         }
       ]
     },
@@ -276,6 +250,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Migrating the GitHub Copilot runtime to Rust, using Copilot",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/generative-ai/migrating-the-github-copilot-runtime-to-rust-using-copilot/",
+          "date": "2026-09-17"
+        },
         {
           "title": "GitHub Copilot app for Beginners: Using the diff, terminal, and browser",
           "source": "GitHub AI & ML Blog",
@@ -287,12 +267,88 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/",
           "date": "2026-09-04"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Helping older adults use AI in everyday life",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/helping-older-adults-use-ai-in-everyday-life",
+          "date": "2026-09-16"
         },
         {
-          "title": "GitHub Copilot app for Beginners: Run several agents at once",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-run-several-agents-at-once/",
-          "date": "2026-09-03"
+          "title": "How to connect AI usage to business value",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/how-to-connect-ai-usage-to-business-value",
+          "date": "2026-09-16"
+        },
+        {
+          "title": "Rapidly scaling online storage to serve over 1 billion ChatGPT users",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/scaling-storage-one-billion-users-part-one",
+          "date": "2026-09-11"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Snap is launching a new Specs AI tool, and it’s coming to iOS and Mac",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/996078/snap-specs-intelligence-ai-agent-ios-mac",
+          "date": "2026-09-16"
+        },
+        {
+          "title": "Claude comes for Gemini with its own take on Docs and Slides",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/996234/anthropic-one-claude-cowork-docs-slides",
+          "date": "2026-09-16"
+        }
+      ]
+    },
+    {
+      "label": "MCP / tool-connected assistants",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Google will now let any AI agent run your smart home",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/996310/google-home-mcp-integration-agentic-ai-smart-home-price-release-date",
+          "date": "2026-09-16"
+        },
+        {
+          "title": "Google will now let any AI agent run your smart home",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/996310/google-home-mcp-integration-agentic-ai-smart-home-price-release-date",
+          "date": "2026-09-16"
+        }
+      ]
+    },
+    {
+      "label": "Claude research and documentation flow",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Google will now let any AI agent run your smart home",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/996310/google-home-mcp-integration-agentic-ai-smart-home-price-release-date",
+          "date": "2026-09-16"
+        },
+        {
+          "title": "Claude comes for Gemini with its own take on Docs and Slides",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/996234/anthropic-one-claude-cowork-docs-slides",
+          "date": "2026-09-16"
         }
       ]
     },
