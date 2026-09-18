@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-17T12:59:56.779Z",
+  "generatedAt": "2026-09-18T12:39:04.304Z",
   "candidates": [
     {
       "label": "AI agents / automation workflows",
@@ -13,16 +13,16 @@
           "date": "2026-09-17"
         },
         {
-          "title": "Reimagining advertising with AI",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/reimagining-advertising-with-ai",
-          "date": "2026-09-16"
+          "title": "The AI Superintelligence Slowdown",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/996923/ai-safety-slow-openai-anthropic",
+          "date": "2026-09-17"
         },
         {
-          "title": "Google will now let any AI agent run your smart home",
+          "title": "Claude Code relaunches Projects to manage multiple AI agents in the cloud",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/996310/google-home-mcp-integration-agentic-ai-smart-home-price-release-date",
-          "date": "2026-09-16"
+          "link": "https://www.theverge.com/ai-artificial-intelligence/997134/anthropic-claude-code-projects",
+          "date": "2026-09-17"
         }
       ]
     },
@@ -57,6 +57,12 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "How Cooley is accelerating IPO work with ChatGPT",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/cooley-gopublic",
+          "date": "2026-09-17"
+        },
+        {
           "title": "Helping older adults use AI in everyday life",
           "source": "OpenAI News",
           "link": "https://openai.com/index/helping-older-adults-use-ai-in-everyday-life",
@@ -67,12 +73,19 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/how-to-connect-ai-usage-to-business-value",
           "date": "2026-09-16"
-        },
+        }
+      ]
+    },
+    {
+      "label": "Claude research and documentation flow",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
         {
-          "title": "Rapidly scaling online storage to serve over 1 billion ChatGPT users",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/scaling-storage-one-billion-users-part-one",
-          "date": "2026-09-11"
+          "title": "Claude Code relaunches Projects to manage multiple AI agents in the cloud",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/997134/anthropic-claude-code-projects",
+          "date": "2026-09-17"
         }
       ]
     },
@@ -85,50 +98,6 @@
           "title": "Snap is launching a new Specs AI tool, and it’s coming to iOS and Mac",
           "source": "The Verge AI",
           "link": "https://www.theverge.com/tech/996078/snap-specs-intelligence-ai-agent-ios-mac",
-          "date": "2026-09-16"
-        },
-        {
-          "title": "Claude comes for Gemini with its own take on Docs and Slides",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/996234/anthropic-one-claude-cowork-docs-slides",
-          "date": "2026-09-16"
-        }
-      ]
-    },
-    {
-      "label": "MCP / tool-connected assistants",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Google will now let any AI agent run your smart home",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/996310/google-home-mcp-integration-agentic-ai-smart-home-price-release-date",
-          "date": "2026-09-16"
-        },
-        {
-          "title": "Google will now let any AI agent run your smart home",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/996310/google-home-mcp-integration-agentic-ai-smart-home-price-release-date",
-          "date": "2026-09-16"
-        }
-      ]
-    },
-    {
-      "label": "Claude research and documentation flow",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Google will now let any AI agent run your smart home",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/996310/google-home-mcp-integration-agentic-ai-smart-home-price-release-date",
-          "date": "2026-09-16"
-        },
-        {
-          "title": "Claude comes for Gemini with its own take on Docs and Slides",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/996234/anthropic-one-claude-cowork-docs-slides",
           "date": "2026-09-16"
         }
       ]
