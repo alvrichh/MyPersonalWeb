@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-17T12:59:56.779Z",
-  "date": "2026-09-17",
+  "generatedAt": "2026-09-18T12:39:04.304Z",
+  "date": "2026-09-18",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
@@ -15,6 +15,79 @@
       "tags": [
         "Agents",
         "Copilot"
+      ]
+    },
+    {
+      "title": "How Cooley is accelerating IPO work with ChatGPT",
+      "source": "OpenAI News",
+      "date": "2026-09-17",
+      "url": "https://openai.com/index/cooley-gopublic",
+      "summary": "Cooley built GO Public with ChatGPT Work to bring intelligence to the IPO process, helping lawyers surface issues earlier and focus judgment where it matters most.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Introducing Astra for Law",
+      "source": "OpenAI News",
+      "date": "2026-09-17",
+      "url": "https://openai.com/index/astra-for-law",
+      "summary": "OpenAI for Law brings frontier intelligence for law, custom firm workflows, connected legal data sources, and legal-grade controls for confidential client work.",
+      "tags": [
+        "ChatGPT",
+        "Automation"
+      ]
+    },
+    {
+      "title": "Flash floods can strike without warning — this new technology could change that",
+      "source": "The Verge AI",
+      "date": "2026-09-17",
+      "url": "https://www.theverge.com/science/997083/flash-flood-warning-tacls-satellite-machine-learning",
+      "summary": "On the morning of June 9th, Laura Lin was working from her home in Lanesville, a rural southern Indiana town about 15 miles from the Kentucky border. She was on a Zoom call, unaware that the heavy rain outside was beginn...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "The AI Superintelligence Slowdown",
+      "source": "The Verge AI",
+      "date": "2026-09-17",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/996923/ai-safety-slow-openai-anthropic",
+      "summary": "Remember when tech leaders would tell their employees to “move fast and break things”? It seemed that would be the way of AI too. But after a summer where rogue AI agents became reality, and researchers warned that AI co...",
+      "tags": [
+        "Agents"
+      ]
+    },
+    {
+      "title": "Claude Code relaunches Projects to manage multiple AI agents in the cloud",
+      "source": "The Verge AI",
+      "date": "2026-09-17",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/997134/anthropic-claude-code-projects",
+      "summary": "The revamped projects feature in Claude Code allows users to run multiple agents under the same roof, with a shared memory, goals, and library of files and artifacts. Similar to Grok Bot and other tools that manage group...",
+      "tags": [
+        "Agents",
+        "Claude",
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "Microsoft AI CEO says AI threats are real, and Anthropic is making it worse",
+      "source": "The Verge AI",
+      "date": "2026-09-17",
+      "url": "https://www.theverge.com/podcast/996412/microsoft-ai-ceo-mustafa-suleyman-regulation-safety-anthropic-claude",
+      "summary": "Today, I’m talking with Mustafa Suleyman, the CEO of Microsoft AI. As you’re no doubt aware, the biggest story in tech right now is the spiraling debate about AI safety and regulation.&#160; It should come as no surprise...",
+      "tags": [
+        "Claude"
+      ]
+    },
+    {
+      "title": "AI is feared globally as the destroyer of jobs",
+      "source": "The Verge AI",
+      "date": "2026-09-17",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/996775/ai-is-feared-globally-as-the-destroyer-of-jobs",
+      "summary": "Pew Research has published a new global survey that sheds light on how people view AI, including its impact on jobs, life in general, and income inequality. The survey questioned 42,151 people across 37 countries from Fe...",
+      "tags": [
+        "AI"
       ]
     },
     {
@@ -145,78 +218,6 @@
         "ChatGPT",
         "Claude"
       ]
-    },
-    {
-      "title": "AI and data centers are incredibly unpopular in every poll",
-      "source": "The Verge AI",
-      "date": "2026-09-16",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/995917/data-center-nyt-midterm-poll-september",
-      "summary": "Poll data released Tuesday by The New York Times and Siena University confirms what we've already been seeing, and what politicians are responding to - AI and data centers are incredibly unpopular. Asked if they support ...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Is Big Tech’s AI slowdown a safety pact or a cartel?",
-      "source": "The Verge AI",
-      "date": "2026-09-16",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/995186/is-big-techs-ai-slowdown-a-safety-pact-or-a-cartel",
-      "summary": "When OpenAI CEO Sam Altman, Anthropic CEO Dario Amodei, Google DeepMind cofounder Demis Hassabis, and SpaceX head Elon Musk loosely agreed over the weekend to slow down AI development, skeptics spotted an ulterior motive...",
-      "tags": [
-        "ChatGPT",
-        "Claude"
-      ]
-    },
-    {
-      "title": "AI for Societal Impact",
-      "source": "Google AI Blog",
-      "date": "2026-09-15",
-      "url": "https://blog.google/innovation-and-ai/technology/ai/ai-for-societal-impact/",
-      "summary": "Explore this collection to see how experts and local leaders are using AI breakthroughs to ensure everyone can share the opportunity of AI.",
-      "tags": [
-        "Gemini"
-      ]
-    },
-    {
-      "title": "Building AI to accelerate science and improve lives",
-      "source": "Google AI Blog",
-      "date": "2026-09-15",
-      "url": "https://blog.google/innovation-and-ai/technology/ai/ai-applications-science-people/",
-      "summary": "The true measure of AI is who it helps. Here’s how it’s impacting lives today. We're focused on key areas where advanced technology can help make extraordinary progress …",
-      "tags": [
-        "Gemini"
-      ]
-    },
-    {
-      "title": "AI for everyone in every language",
-      "source": "Google AI Blog",
-      "date": "2026-09-15",
-      "url": "https://blog.google/innovation-and-ai/technology/ai/ai-for-every-language/",
-      "summary": "We’re moving beyond traditional text translation to build models that understand the world’s rich, living languages exactly as they are expressed.",
-      "tags": [
-        "Gemini",
-        "Models"
-      ]
-    },
-    {
-      "title": "New insights from Google’s AI & Economy ATLAS",
-      "source": "Google AI Blog",
-      "date": "2026-09-15",
-      "url": "https://blog.google/innovation-and-ai/technology/ai/ai-economy-atlas-september-2026/",
-      "summary": "We’ve translated ATLAS’s millions of global data points into an interactive, open-access experience.",
-      "tags": [
-        "Gemini"
-      ]
-    },
-    {
-      "title": "Meta&#8217;s new One subscriptions put a price on social media and AI",
-      "source": "The Verge AI",
-      "date": "2026-09-15",
-      "url": "https://www.theverge.com/tech/995453/meta-one-subscriptions-ai",
-      "summary": "Shortly after launching its new do-everything AI assistant Muse, Meta's launching subscription bundles that pair its standalone app subscriptions with extra AI usage. Some of the new Meta One bundles were in testing earl...",
-      "tags": [
-        "Agents"
-      ]
     }
   ],
   "candidates": [
@@ -232,16 +233,16 @@
           "date": "2026-09-17"
         },
         {
-          "title": "Reimagining advertising with AI",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/reimagining-advertising-with-ai",
-          "date": "2026-09-16"
+          "title": "The AI Superintelligence Slowdown",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/996923/ai-safety-slow-openai-anthropic",
+          "date": "2026-09-17"
         },
         {
-          "title": "Google will now let any AI agent run your smart home",
+          "title": "Claude Code relaunches Projects to manage multiple AI agents in the cloud",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/996310/google-home-mcp-integration-agentic-ai-smart-home-price-release-date",
-          "date": "2026-09-16"
+          "link": "https://www.theverge.com/ai-artificial-intelligence/997134/anthropic-claude-code-projects",
+          "date": "2026-09-17"
         }
       ]
     },
@@ -276,6 +277,12 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "How Cooley is accelerating IPO work with ChatGPT",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/cooley-gopublic",
+          "date": "2026-09-17"
+        },
+        {
           "title": "Helping older adults use AI in everyday life",
           "source": "OpenAI News",
           "link": "https://openai.com/index/helping-older-adults-use-ai-in-everyday-life",
@@ -286,12 +293,19 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/how-to-connect-ai-usage-to-business-value",
           "date": "2026-09-16"
-        },
+        }
+      ]
+    },
+    {
+      "label": "Claude research and documentation flow",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
         {
-          "title": "Rapidly scaling online storage to serve over 1 billion ChatGPT users",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/scaling-storage-one-billion-users-part-one",
-          "date": "2026-09-11"
+          "title": "Claude Code relaunches Projects to manage multiple AI agents in the cloud",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/997134/anthropic-claude-code-projects",
+          "date": "2026-09-17"
         }
       ]
     },
@@ -304,50 +318,6 @@
           "title": "Snap is launching a new Specs AI tool, and it’s coming to iOS and Mac",
           "source": "The Verge AI",
           "link": "https://www.theverge.com/tech/996078/snap-specs-intelligence-ai-agent-ios-mac",
-          "date": "2026-09-16"
-        },
-        {
-          "title": "Claude comes for Gemini with its own take on Docs and Slides",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/996234/anthropic-one-claude-cowork-docs-slides",
-          "date": "2026-09-16"
-        }
-      ]
-    },
-    {
-      "label": "MCP / tool-connected assistants",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Google will now let any AI agent run your smart home",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/996310/google-home-mcp-integration-agentic-ai-smart-home-price-release-date",
-          "date": "2026-09-16"
-        },
-        {
-          "title": "Google will now let any AI agent run your smart home",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/996310/google-home-mcp-integration-agentic-ai-smart-home-price-release-date",
-          "date": "2026-09-16"
-        }
-      ]
-    },
-    {
-      "label": "Claude research and documentation flow",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Google will now let any AI agent run your smart home",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/996310/google-home-mcp-integration-agentic-ai-smart-home-price-release-date",
-          "date": "2026-09-16"
-        },
-        {
-          "title": "Claude comes for Gemini with its own take on Docs and Slides",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/996234/anthropic-one-claude-cowork-docs-slides",
           "date": "2026-09-16"
         }
       ]

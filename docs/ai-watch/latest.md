@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-09-17
+# Daily AI maintenance report — 2026-09-18
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -15,6 +15,20 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 - **Migrating the GitHub Copilot runtime to Rust, using Copilot** — GitHub AI & ML Blog · 2026-09-17
   https://github.blog/ai-and-ml/generative-ai/migrating-the-github-copilot-runtime-to-rust-using-copilot/
+- **How Cooley is accelerating IPO work with ChatGPT** — OpenAI News · 2026-09-17
+  https://openai.com/index/cooley-gopublic
+- **Introducing Astra for Law** — OpenAI News · 2026-09-17
+  https://openai.com/index/astra-for-law
+- **Flash floods can strike without warning — this new technology could change that** — The Verge AI · 2026-09-17
+  https://www.theverge.com/science/997083/flash-flood-warning-tacls-satellite-machine-learning
+- **The AI Superintelligence Slowdown** — The Verge AI · 2026-09-17
+  https://www.theverge.com/ai-artificial-intelligence/996923/ai-safety-slow-openai-anthropic
+- **Claude Code relaunches Projects to manage multiple AI agents in the cloud** — The Verge AI · 2026-09-17
+  https://www.theverge.com/ai-artificial-intelligence/997134/anthropic-claude-code-projects
+- **Microsoft AI CEO says AI threats are real, and Anthropic is making it worse** — The Verge AI · 2026-09-17
+  https://www.theverge.com/podcast/996412/microsoft-ai-ceo-mustafa-suleyman-regulation-safety-anthropic-claude
+- **AI is feared globally as the destroyer of jobs** — The Verge AI · 2026-09-17
+  https://www.theverge.com/ai-artificial-intelligence/996775/ai-is-feared-globally-as-the-destroyer-of-jobs
 - **Inside the suddenly explosive world of AI safety** — The Verge AI · 2026-09-17
   https://www.theverge.com/ai-artificial-intelligence/996563/ai-safety-research-metr-redwood-openai-anthropic
 - **Helping older adults use AI in everyday life** — OpenAI News · 2026-09-16
@@ -31,16 +45,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/tech/996078/snap-specs-intelligence-ai-agent-ios-mac
 - **The 2.5-hour AI-generated Odyssey movie is 2.5 hours too long** — The Verge AI · 2026-09-16
   https://www.theverge.com/entertainment/996499/ai-odyssey-movie-review
-- **The AI data center e-waste problem is huge — and getting bigger** — The Verge AI · 2026-09-16
-  https://www.theverge.com/ai-artificial-intelligence/996470/ai-data-center-e-waste-ban
-- **Apple might make servers again to cash in on the AI rush** — The Verge AI · 2026-09-16
-  https://www.theverge.com/tech/996321/apple-servers-ai-nvidia
-- **Google will now let any AI agent run your smart home** — The Verge AI · 2026-09-16
-  https://www.theverge.com/tech/996310/google-home-mcp-integration-agentic-ai-smart-home-price-release-date
-- **Claude comes for Gemini with its own take on Docs and Slides** — The Verge AI · 2026-09-16
-  https://www.theverge.com/ai-artificial-intelligence/996234/anthropic-one-claude-cowork-docs-slides
-- **The sexy AI-powered dating app scams are here** — The Verge AI · 2026-09-16
-  https://www.theverge.com/ai-artificial-intelligence/995348/ai-dating-app-scams
 - **AI for Societal Impact** — Google AI Blog · 2026-09-15
   https://blog.google/innovation-and-ai/technology/ai/ai-for-societal-impact/
 - **Building AI to accelerate science and improve lives** — Google AI Blog · 2026-09-15
@@ -53,10 +57,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blog.google/innovation-and-ai/technology/developers-tools/devfest2026/
 - **How Fyxer built an AI executive assistant people trust** — OpenAI News · 2026-09-14
   https://openai.com/index/fyxer
-- **Perplexity trusts GPT-6 Astra with end-to-end systems** — OpenAI News · 2026-09-14
-  https://openai.com/index/perplexity-improving-accuracy-with-astra
-- **Rapidly scaling online storage to serve over 1 billion ChatGPT users** — OpenAI News · 2026-09-11
-  https://openai.com/index/scaling-storage-one-billion-users-part-one
 - **GitHub Copilot app for Beginners: Using the diff, terminal, and browser** — GitHub AI & ML Blog · 2026-09-10
   https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-using-the-diff-terminal-and-browser/
 - **3 ways to prep for your next big race with Search** — Google AI Blog · 2026-09-10
@@ -83,9 +83,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **MCP / tool-connected assistants** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
