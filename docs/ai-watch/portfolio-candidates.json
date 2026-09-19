@@ -1,21 +1,53 @@
 {
-  "generatedAt": "2026-09-18T12:39:04.304Z",
+  "generatedAt": "2026-09-19T12:14:09.787Z",
   "candidates": [
+    {
+      "label": "MCP / tool-connected assistants",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Should you read the code, is RAG dead, and did Skills kill MCP?",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/should-you-read-the-code-is-rag-dead-and-did-skills-kill-mcp/",
+          "date": "2026-09-18"
+        }
+      ]
+    },
+    {
+      "label": "Claude research and documentation flow",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Security researchers used Claude to help them hack into OpenAI",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/997444/openai-hack-claude-heif-heist",
+          "date": "2026-09-18"
+        },
+        {
+          "title": "Claude Code relaunches Projects to manage multiple AI agents in the cloud",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/997134/anthropic-claude-code-projects",
+          "date": "2026-09-17"
+        }
+      ]
+    },
     {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Migrating the GitHub Copilot runtime to Rust, using Copilot",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/generative-ai/migrating-the-github-copilot-runtime-to-rust-using-copilot/",
-          "date": "2026-09-17"
-        },
-        {
           "title": "The AI Superintelligence Slowdown",
           "source": "The Verge AI",
           "link": "https://www.theverge.com/ai-artificial-intelligence/996923/ai-safety-slow-openai-anthropic",
+          "date": "2026-09-18"
+        },
+        {
+          "title": "Migrating the GitHub Copilot runtime to Rust, using Copilot",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/generative-ai/migrating-the-github-copilot-runtime-to-rust-using-copilot/",
           "date": "2026-09-17"
         },
         {
@@ -72,32 +104,6 @@
           "title": "How to connect AI usage to business value",
           "source": "OpenAI News",
           "link": "https://openai.com/index/how-to-connect-ai-usage-to-business-value",
-          "date": "2026-09-16"
-        }
-      ]
-    },
-    {
-      "label": "Claude research and documentation flow",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Claude Code relaunches Projects to manage multiple AI agents in the cloud",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/997134/anthropic-claude-code-projects",
-          "date": "2026-09-17"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Snap is launching a new Specs AI tool, and it’s coming to iOS and Mac",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/996078/snap-specs-intelligence-ai-agent-ios-mac",
           "date": "2026-09-16"
         }
       ]
