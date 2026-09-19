@@ -1,11 +1,115 @@
 {
-  "generatedAt": "2026-09-18T12:39:04.304Z",
-  "date": "2026-09-18",
+  "generatedAt": "2026-09-19T12:14:09.787Z",
+  "date": "2026-09-19",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Should you read the code, is RAG dead, and did Skills kill MCP?",
+      "source": "GitHub AI & ML Blog",
+      "date": "2026-09-18",
+      "url": "https://github.blog/ai-and-ml/should-you-read-the-code-is-rag-dead-and-did-skills-kill-mcp/",
+      "summary": "We dive into these questions and other AI hot takes on the latest episode of the GitHub Podcast. The post Should you read the code, is RAG dead, and did Skills kill MCP? appeared first on The GitHub Blog.",
+      "tags": [
+        "MCP",
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "New experts join Google’s AI & Economy team",
+      "source": "Google AI Blog",
+      "date": "2026-09-18",
+      "url": "https://blog.google/innovation-and-ai/technology/ai/expanding-ai-economy-research-bench/",
+      "summary": "We are expanding our AI & Economy team with world-class academic advisors, fellows, and core internal researchers.",
+      "tags": [
+        "Gemini"
+      ]
+    },
+    {
+      "title": "Co-creating the future of fashion with Google",
+      "source": "Google AI Blog",
+      "date": "2026-09-18",
+      "url": "https://blog.google/innovation-and-ai/technology/ai/google-flow-fashion-week/",
+      "summary": "Google worked side-by-side with designers Jane Wade and Sergio Hudson to custom-design Google Flow tools to prep for NYFW.",
+      "tags": [
+        "Agents",
+        "Gemini"
+      ]
+    },
+    {
+      "title": "Introducing the Australian Youth Safety Blueprint",
+      "source": "OpenAI News",
+      "date": "2026-09-18",
+      "url": "https://openai.com/index/australian-youth-safety-blueprint",
+      "summary": "OpenAI introduces the Australian Youth Safety Blueprint, a six-pillar roadmap for safer AI experiences that protect and empower young people.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "OpenAI and Microsoft knew they were starting a ‘doom loop’ for the web",
+      "source": "The Verge AI",
+      "date": "2026-09-18",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/997633/openai-microsoft-chatgpt-ai-new-york-times-doom-loop-theft-google-zero",
+      "summary": "Recently unsealed court documents in the New York Times' case against OpenAI and Microsoft are pretty damning. The companies' own documentation warned that it was starting a \"doom loop\" that would damage the web, charact...",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ]
+    },
+    {
+      "title": "Virginia governor creates an AI task force and moves to restrain data centers",
+      "source": "The Verge AI",
+      "date": "2026-09-18",
+      "url": "https://www.theverge.com/policy/997573/virginia-governor-spanberger-data-center-ai-task-force",
+      "summary": "Virginia Gov. Abigail Spanberger ordered the state government to take steps that could empower local communities to have a larger say in data center development and slow down approvals in a state that is already home to ...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Gavin Newsom is pushing for an AI kill switch",
+      "source": "The Verge AI",
+      "date": "2026-09-18",
+      "url": "https://www.theverge.com/policy/997516/california-governor-newsom-ai-kill-switch",
+      "summary": "California Gov. Gavin Newsom (D) is positioning the state to take the lead on AI oversight, including the potential to mandate a \"kill switch\" for frontier models, with a new executive order issued Friday. Newsom's order...",
+      "tags": [
+        "Models"
+      ]
+    },
+    {
+      "title": "What Hollywood thinks about existential AI warnings",
+      "source": "The Verge AI",
+      "date": "2026-09-18",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/997358/what-hollywood-thinks-about-existential-ai-warnings",
+      "summary": "As the tech sector sounds alarms about AI's potential to destroy humanity, entertainment labor groups are urging the public to stay focused on what's already happening. The Verge reached out to Disney, Netflix, Amazon, L...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Security researchers used Claude to help them hack into OpenAI",
+      "source": "The Verge AI",
+      "date": "2026-09-18",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/997444/openai-hack-claude-heif-heist",
+      "summary": "A team of three independent security researchers at Hacktron says it took less than 72 hours for them to hack into OpenAI employee accounts using Anthropic's Claude Opus 4.8 and 5, The Wall Street Journal reports. They w...",
+      "tags": [
+        "ChatGPT",
+        "Claude"
+      ]
+    },
+    {
+      "title": "The AI Superintelligence Slowdown",
+      "source": "The Verge AI",
+      "date": "2026-09-18",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/996923/ai-safety-slow-openai-anthropic",
+      "summary": "Remember when tech leaders would tell their employees to “move fast and break things”? It seemed that would be the way of AI too. But after a summer where rogue AI agents became reality, and researchers warned that AI co...",
+      "tags": [
+        "Agents"
+      ]
+    },
     {
       "title": "Migrating the GitHub Copilot runtime to Rust, using Copilot",
       "source": "GitHub AI & ML Blog",
@@ -46,16 +150,6 @@
       "summary": "On the morning of June 9th, Laura Lin was working from her home in Lanesville, a rural southern Indiana town about 15 miles from the Kentucky border. She was on a Zoom call, unaware that the heavy rain outside was beginn...",
       "tags": [
         "AI"
-      ]
-    },
-    {
-      "title": "The AI Superintelligence Slowdown",
-      "source": "The Verge AI",
-      "date": "2026-09-17",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/996923/ai-safety-slow-openai-anthropic",
-      "summary": "Remember when tech leaders would tell their employees to “move fast and break things”? It seemed that would be the way of AI too. But after a summer where rogue AI agents became reality, and researchers warned that AI co...",
-      "tags": [
-        "Agents"
       ]
     },
     {
@@ -121,121 +215,56 @@
         "Agents",
         "ChatGPT"
       ]
-    },
-    {
-      "title": "How to connect AI usage to business value",
-      "source": "OpenAI News",
-      "date": "2026-09-16",
-      "url": "https://openai.com/index/how-to-connect-ai-usage-to-business-value",
-      "summary": "Learn how ChatGPT Work and Codex analytics help teams understand AI usage and spend, identify training needs, and connect adoption to business outcomes.",
-      "tags": [
-        "ChatGPT",
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "Our framework for reporting model misalignment",
-      "source": "OpenAI News",
-      "date": "2026-09-16",
-      "url": "https://openai.com/index/model-misalignment-reporting-framework",
-      "summary": "OpenAI shares a framework for tracking, investigating, and disclosing model misalignment, alongside six reports of unexpected or concerning model behavior.",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "How workers are unlocking new ways of working",
-      "source": "OpenAI News",
-      "date": "2026-09-16",
-      "url": "https://openai.com/index/unlocking-new-ways-of-working",
-      "summary": "New OpenAI Economic Research shows how workers use AI beyond traditional roles and which new activities become recurring parts of their work.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Snap is launching a new Specs AI tool, and it’s coming to iOS and Mac",
-      "source": "The Verge AI",
-      "date": "2026-09-16",
-      "url": "https://www.theverge.com/tech/996078/snap-specs-intelligence-ai-agent-ios-mac",
-      "summary": "Snap is introducing \"Specs Intelligence,\" a new AI assistant that can connect other digital accounts to help you with things like work tasks and keeping track of travel information. It seems similar to AI assistants like...",
-      "tags": [
-        "Agents",
-        "Gemini"
-      ]
-    },
-    {
-      "title": "The 2.5-hour AI-generated Odyssey movie is 2.5 hours too long",
-      "source": "The Verge AI",
-      "date": "2026-09-16",
-      "url": "https://www.theverge.com/entertainment/996499/ai-odyssey-movie-review",
-      "summary": "Christopher Nolan's engrossing take on The Odyssey dominated at the box office and spurred a newfound interest in classic literature among filmgoers. But a new retelling of the story made entirely with AI is so bad that ...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "The AI data center e-waste problem is huge — and getting bigger",
-      "source": "The Verge AI",
-      "date": "2026-09-16",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/996470/ai-data-center-e-waste-ban",
-      "summary": "E-waste from the AI boom has been vastly underestimated, a new report warns. By 2050, it could become enough trash to fill 23 million shipping containers - roughly enough 40-foot containers to circle the world six times ...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Apple might make servers again to cash in on the AI rush",
-      "source": "The Verge AI",
-      "date": "2026-09-16",
-      "url": "https://www.theverge.com/tech/996321/apple-servers-ai-nvidia",
-      "summary": "According to The Information, Apple is planning to get back into the server game and might just pair up with Nvidia to make it happen. Apple retired its Xserve line in 2011 and has largely left enterprise machines to oth...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Google will now let any AI agent run your smart home",
-      "source": "The Verge AI",
-      "date": "2026-09-16",
-      "url": "https://www.theverge.com/tech/996310/google-home-mcp-integration-agentic-ai-smart-home-price-release-date",
-      "summary": "Google is opening up its smart home to AI agents, letting tools like Claude and Open Claw access and control your connected devices and analyze your home's data using the standardized Model Context Protocol. Google Home ...",
-      "tags": [
-        "Agents",
-        "MCP",
-        "Claude",
-        "Models"
-      ]
-    },
-    {
-      "title": "A brief history of AI executives calling for regulation",
-      "source": "The Verge AI",
-      "date": "2026-09-16",
-      "url": "https://www.theverge.com/policy/995534/a-brief-history-of-ai-executives-calling-for-regulation",
-      "summary": "Over the past few days, a lot of people who stand to make a lot of money from AI all publicly agreed that it's time to make everyone slow down before we lose control - including OpenAI CEO Sam Altman, Anthropic CEO Dario...",
-      "tags": [
-        "ChatGPT",
-        "Claude"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "MCP / tool-connected assistants",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Should you read the code, is RAG dead, and did Skills kill MCP?",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/should-you-read-the-code-is-rag-dead-and-did-skills-kill-mcp/",
+          "date": "2026-09-18"
+        }
+      ]
+    },
+    {
+      "label": "Claude research and documentation flow",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Security researchers used Claude to help them hack into OpenAI",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/997444/openai-hack-claude-heif-heist",
+          "date": "2026-09-18"
+        },
+        {
+          "title": "Claude Code relaunches Projects to manage multiple AI agents in the cloud",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/997134/anthropic-claude-code-projects",
+          "date": "2026-09-17"
+        }
+      ]
+    },
     {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Migrating the GitHub Copilot runtime to Rust, using Copilot",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/generative-ai/migrating-the-github-copilot-runtime-to-rust-using-copilot/",
-          "date": "2026-09-17"
-        },
-        {
           "title": "The AI Superintelligence Slowdown",
           "source": "The Verge AI",
           "link": "https://www.theverge.com/ai-artificial-intelligence/996923/ai-safety-slow-openai-anthropic",
+          "date": "2026-09-18"
+        },
+        {
+          "title": "Migrating the GitHub Copilot runtime to Rust, using Copilot",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/generative-ai/migrating-the-github-copilot-runtime-to-rust-using-copilot/",
           "date": "2026-09-17"
         },
         {
@@ -292,32 +321,6 @@
           "title": "How to connect AI usage to business value",
           "source": "OpenAI News",
           "link": "https://openai.com/index/how-to-connect-ai-usage-to-business-value",
-          "date": "2026-09-16"
-        }
-      ]
-    },
-    {
-      "label": "Claude research and documentation flow",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Claude Code relaunches Projects to manage multiple AI agents in the cloud",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/997134/anthropic-claude-code-projects",
-          "date": "2026-09-17"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Snap is launching a new Specs AI tool, and it’s coming to iOS and Mac",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/996078/snap-specs-intelligence-ai-agent-ios-mac",
           "date": "2026-09-16"
         }
       ]
