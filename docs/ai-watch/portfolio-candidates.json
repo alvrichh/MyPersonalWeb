@@ -1,6 +1,19 @@
 {
-  "generatedAt": "2026-09-19T12:14:09.787Z",
+  "generatedAt": "2026-09-20T12:49:11.258Z",
   "candidates": [
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Gemini went rogue, hacked three companies, and Google hid it",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/997795/google-gemini-rogue-ai-hack",
+          "date": "2026-09-19"
+        }
+      ]
+    },
     {
       "label": "MCP / tool-connected assistants",
       "status": "safe-data-candidate",
@@ -15,35 +28,10 @@
       ]
     },
     {
-      "label": "Claude research and documentation flow",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Security researchers used Claude to help them hack into OpenAI",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/997444/openai-hack-claude-heif-heist",
-          "date": "2026-09-18"
-        },
-        {
-          "title": "Claude Code relaunches Projects to manage multiple AI agents in the cloud",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/997134/anthropic-claude-code-projects",
-          "date": "2026-09-17"
-        }
-      ]
-    },
-    {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
-        {
-          "title": "The AI Superintelligence Slowdown",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/996923/ai-safety-slow-openai-anthropic",
-          "date": "2026-09-18"
-        },
         {
           "title": "Migrating the GitHub Copilot runtime to Rust, using Copilot",
           "source": "GitHub AI & ML Blog",
@@ -51,10 +39,16 @@
           "date": "2026-09-17"
         },
         {
-          "title": "Claude Code relaunches Projects to manage multiple AI agents in the cloud",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/997134/anthropic-claude-code-projects",
-          "date": "2026-09-17"
+          "title": "Reimagining advertising with AI",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/reimagining-advertising-with-ai",
+          "date": "2026-09-16"
+        },
+        {
+          "title": "Hex turns complex analysis into visual reports with GPT‑6 Astra",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/hex-gpt-6-astra",
+          "date": "2026-09-16"
         }
       ]
     },

@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-09-19
+# Daily AI maintenance report — 2026-09-20
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,14 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Humans, not rogue AI, are still the biggest cybersecurity risk to energy systems** — The Verge AI · 2026-09-19
+  https://www.theverge.com/science/997834/ai-cyberattack-energy-critical-infrastructure
+- **Meta’s Muse is creepy, but maybe not for the reasons you think** — The Verge AI · 2026-09-19
+  https://www.theverge.com/ai-artificial-intelligence/997833/meta-muse-creepy
+- **Gemini went rogue, hacked three companies, and Google hid it** — The Verge AI · 2026-09-19
+  https://www.theverge.com/ai-artificial-intelligence/997795/google-gemini-rogue-ai-hack
+- **OpenAI and Microsoft knew they were starting a ‘doom loop’ for the web** — The Verge AI · 2026-09-19
+  https://www.theverge.com/ai-artificial-intelligence/997633/openai-microsoft-chatgpt-ai-new-york-times-doom-loop-theft-google-zero
 - **Should you read the code, is RAG dead, and did Skills kill MCP?** — GitHub AI & ML Blog · 2026-09-18
   https://github.blog/ai-and-ml/should-you-read-the-code-is-rag-dead-and-did-skills-kill-mcp/
 - **New experts join Google’s AI & Economy team** — Google AI Blog · 2026-09-18
@@ -21,28 +29,20 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blog.google/innovation-and-ai/technology/ai/google-flow-fashion-week/
 - **Introducing the Australian Youth Safety Blueprint** — OpenAI News · 2026-09-18
   https://openai.com/index/australian-youth-safety-blueprint
-- **OpenAI and Microsoft knew they were starting a ‘doom loop’ for the web** — The Verge AI · 2026-09-18
-  https://www.theverge.com/ai-artificial-intelligence/997633/openai-microsoft-chatgpt-ai-new-york-times-doom-loop-theft-google-zero
+- **Does AI need an antitrust exemption so it doesn&#8217;t kill everyone????** — The Verge AI · 2026-09-18
+  https://www.theverge.com/podcast/997382/openai-microsoft-anthropic-elon-musk-cartel-ai-competition
+- **The AI regulation smackdown isn’t over** — The Verge AI · 2026-09-18
+  https://www.theverge.com/ai-artificial-intelligence/997706/the-ai-regulation-smackdown-isnt-over
 - **Virginia governor creates an AI task force and moves to restrain data centers** — The Verge AI · 2026-09-18
   https://www.theverge.com/policy/997573/virginia-governor-spanberger-data-center-ai-task-force
 - **Gavin Newsom is pushing for an AI kill switch** — The Verge AI · 2026-09-18
   https://www.theverge.com/policy/997516/california-governor-newsom-ai-kill-switch
-- **What Hollywood thinks about existential AI warnings** — The Verge AI · 2026-09-18
-  https://www.theverge.com/ai-artificial-intelligence/997358/what-hollywood-thinks-about-existential-ai-warnings
-- **Security researchers used Claude to help them hack into OpenAI** — The Verge AI · 2026-09-18
-  https://www.theverge.com/ai-artificial-intelligence/997444/openai-hack-claude-heif-heist
-- **The AI Superintelligence Slowdown** — The Verge AI · 2026-09-18
-  https://www.theverge.com/ai-artificial-intelligence/996923/ai-safety-slow-openai-anthropic
 - **Migrating the GitHub Copilot runtime to Rust, using Copilot** — GitHub AI & ML Blog · 2026-09-17
   https://github.blog/ai-and-ml/generative-ai/migrating-the-github-copilot-runtime-to-rust-using-copilot/
 - **How Cooley is accelerating IPO work with ChatGPT** — OpenAI News · 2026-09-17
   https://openai.com/index/cooley-gopublic
 - **Introducing Astra for Law** — OpenAI News · 2026-09-17
   https://openai.com/index/astra-for-law
-- **Flash floods can strike without warning — this new technology could change that** — The Verge AI · 2026-09-17
-  https://www.theverge.com/science/997083/flash-flood-warning-tacls-satellite-machine-learning
-- **Claude Code relaunches Projects to manage multiple AI agents in the cloud** — The Verge AI · 2026-09-17
-  https://www.theverge.com/ai-artificial-intelligence/997134/anthropic-claude-code-projects
 - **Helping older adults use AI in everyday life** — OpenAI News · 2026-09-16
   https://openai.com/index/helping-older-adults-use-ai-in-everyday-life
 - **Reimagining advertising with AI** — OpenAI News · 2026-09-16
@@ -80,8 +80,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
+- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **MCP / tool-connected assistants** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
