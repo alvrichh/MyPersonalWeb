@@ -1,11 +1,54 @@
 {
-  "generatedAt": "2026-09-19T12:14:09.787Z",
-  "date": "2026-09-19",
+  "generatedAt": "2026-09-20T12:49:11.258Z",
+  "date": "2026-09-20",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Humans, not rogue AI, are still the biggest cybersecurity risk to energy systems",
+      "source": "The Verge AI",
+      "date": "2026-09-19",
+      "url": "https://www.theverge.com/science/997834/ai-cyberattack-energy-critical-infrastructure",
+      "summary": "Before recent high-profile hacks raised the specter of AI possibly \"killing all humans,\" our energy systems were already disturbingly vulnerable to cyberattack - and the risk is growing. \"We were always prey. We were jus...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Meta’s Muse is creepy, but maybe not for the reasons you think",
+      "source": "The Verge AI",
+      "date": "2026-09-19",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/997833/meta-muse-creepy",
+      "summary": "Meta's Muse is apparently an effective AI assistant, but one that's a little creepy. Part of that is because of its new Mac app, which can access Messages, Calendar, and Notes. But for all its smarts, Muse doesn't actual...",
+      "tags": [
+        "Agents"
+      ]
+    },
+    {
+      "title": "Gemini went rogue, hacked three companies, and Google hid it",
+      "source": "The Verge AI",
+      "date": "2026-09-19",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/997795/google-gemini-rogue-ai-hack",
+      "summary": "In May, Gemini broke containment and hacked three different companies, but Google didn't disclose the incident until the Wall Street Journal approached the company. The hacks happened during a test of the model's cyberse...",
+      "tags": [
+        "ChatGPT",
+        "Gemini",
+        "Models"
+      ]
+    },
+    {
+      "title": "OpenAI and Microsoft knew they were starting a ‘doom loop’ for the web",
+      "source": "The Verge AI",
+      "date": "2026-09-19",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/997633/openai-microsoft-chatgpt-ai-new-york-times-doom-loop-theft-google-zero",
+      "summary": "Recently unsealed court documents in the New York Times' case against OpenAI and Microsoft are pretty damning. The companies' own documentation warned that it was starting a \"doom loop\" that would damage the web, charact...",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ]
+    },
     {
       "title": "Should you read the code, is RAG dead, and did Skills kill MCP?",
       "source": "GitHub AI & ML Blog",
@@ -49,14 +92,23 @@
       ]
     },
     {
-      "title": "OpenAI and Microsoft knew they were starting a ‘doom loop’ for the web",
+      "title": "Does AI need an antitrust exemption so it doesn&#8217;t kill everyone????",
       "source": "The Verge AI",
       "date": "2026-09-18",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/997633/openai-microsoft-chatgpt-ai-new-york-times-doom-loop-theft-google-zero",
-      "summary": "Recently unsealed court documents in the New York Times' case against OpenAI and Microsoft are pretty damning. The companies' own documentation warned that it was starting a \"doom loop\" that would damage the web, charact...",
+      "url": "https://www.theverge.com/podcast/997382/openai-microsoft-anthropic-elon-musk-cartel-ai-competition",
+      "summary": "Today on Decoder, we’ve got the first of a two-part series on the future of business, and I&#8217;m talking with Jonathan Kanter, the former antitrust chief for the US Department of Justice in the Biden administration. T...",
       "tags": [
-        "ChatGPT",
-        "Models"
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "The AI regulation smackdown isn’t over",
+      "source": "The Verge AI",
+      "date": "2026-09-18",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/997706/the-ai-regulation-smackdown-isnt-over",
+      "summary": "At the start of this week, the who's-who of AI seemed - at least tentatively - on the side of AI regulation. Over the weekend, Anthropic CEO Dario Amodei had proposed a three-step plan for slowing AI development, includi...",
+      "tags": [
+        "Claude"
       ]
     },
     {
@@ -163,61 +215,22 @@
         "Claude",
         "Dev Tools"
       ]
-    },
-    {
-      "title": "Microsoft AI CEO says AI threats are real, and Anthropic is making it worse",
-      "source": "The Verge AI",
-      "date": "2026-09-17",
-      "url": "https://www.theverge.com/podcast/996412/microsoft-ai-ceo-mustafa-suleyman-regulation-safety-anthropic-claude",
-      "summary": "Today, I’m talking with Mustafa Suleyman, the CEO of Microsoft AI. As you’re no doubt aware, the biggest story in tech right now is the spiraling debate about AI safety and regulation.&#160; It should come as no surprise...",
-      "tags": [
-        "Claude"
-      ]
-    },
-    {
-      "title": "AI is feared globally as the destroyer of jobs",
-      "source": "The Verge AI",
-      "date": "2026-09-17",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/996775/ai-is-feared-globally-as-the-destroyer-of-jobs",
-      "summary": "Pew Research has published a new global survey that sheds light on how people view AI, including its impact on jobs, life in general, and income inequality. The survey questioned 42,151 people across 37 countries from Fe...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Inside the suddenly explosive world of AI safety",
-      "source": "The Verge AI",
-      "date": "2026-09-17",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/996563/ai-safety-research-metr-redwood-openai-anthropic",
-      "summary": "On a sunny July day in Berkeley, California, the country's top AI safety researchers gathered on an unmarked floor of an unmarked building. They had come together for a \"war room\" to dissect the high-profile cybersecurit...",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "Helping older adults use AI in everyday life",
-      "source": "OpenAI News",
-      "date": "2026-09-16",
-      "url": "https://openai.com/index/helping-older-adults-use-ai-in-everyday-life",
-      "summary": "OpenAI and AARP are bringing free, hands-on ChatGPT workshops to 1,000 older adults across 10 U.S. cities to build practical AI skills safely.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Reimagining advertising with AI",
-      "source": "OpenAI News",
-      "date": "2026-09-16",
-      "url": "https://openai.com/index/reimagining-advertising-with-ai",
-      "summary": "Explore new AI-powered advertising experiences from OpenAI, including Sponsored Agents, tools for marketers, and integrations with HubSpot and Shopify.",
-      "tags": [
-        "Agents",
-        "ChatGPT"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Gemini went rogue, hacked three companies, and Google hid it",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/997795/google-gemini-rogue-ai-hack",
+          "date": "2026-09-19"
+        }
+      ]
+    },
     {
       "label": "MCP / tool-connected assistants",
       "status": "safe-data-candidate",
@@ -232,35 +245,10 @@
       ]
     },
     {
-      "label": "Claude research and documentation flow",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Security researchers used Claude to help them hack into OpenAI",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/997444/openai-hack-claude-heif-heist",
-          "date": "2026-09-18"
-        },
-        {
-          "title": "Claude Code relaunches Projects to manage multiple AI agents in the cloud",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/997134/anthropic-claude-code-projects",
-          "date": "2026-09-17"
-        }
-      ]
-    },
-    {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
-        {
-          "title": "The AI Superintelligence Slowdown",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/996923/ai-safety-slow-openai-anthropic",
-          "date": "2026-09-18"
-        },
         {
           "title": "Migrating the GitHub Copilot runtime to Rust, using Copilot",
           "source": "GitHub AI & ML Blog",
@@ -268,10 +256,16 @@
           "date": "2026-09-17"
         },
         {
-          "title": "Claude Code relaunches Projects to manage multiple AI agents in the cloud",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/997134/anthropic-claude-code-projects",
-          "date": "2026-09-17"
+          "title": "Reimagining advertising with AI",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/reimagining-advertising-with-ai",
+          "date": "2026-09-16"
+        },
+        {
+          "title": "Hex turns complex analysis into visual reports with GPT‑6 Astra",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/hex-gpt-6-astra",
+          "date": "2026-09-16"
         }
       ]
     },
