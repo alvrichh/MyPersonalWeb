@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-09-20
+# Daily AI maintenance report — 2026-09-21
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,14 +13,24 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **How V7 gives AI agents institutional memory** — OpenAI News · 2026-09-21
+  https://openai.com/index/v7
+- **Can John Ternus find Apple’s next big thing?** — The Verge AI · 2026-09-21
+  https://www.theverge.com/podcast/996874/apple-john-ternus-tim-cook-mark-gurman-future-ai-siri-iphone
+- **iPhone owners can now submit claims in Apple’s $250 million Siri AI settlement** — The Verge AI · 2026-09-21
+  https://www.theverge.com/tech/998191/apple-siri-ai-iphone-16-class-action-lawsuit-settlement
+- **UN says AI safeguards can’t wait for certainty** — The Verge AI · 2026-09-21
+  https://www.theverge.com/ai-artificial-intelligence/998090/un-ai-panel-hugging-face-hack-precautionary-principle
+- **Amazon blocks Meta’s Muse AI agent** — The Verge AI · 2026-09-21
+  https://www.theverge.com/tech/998078/amazon-blocks-meta-muse-ai-agent-shopping
+- **No one is surprised that Nvidia’s Jensen Huang thinks AI fears are overblown** — The Verge AI · 2026-09-21
+  https://www.theverge.com/ai-artificial-intelligence/997936/nvidia-jensen-huang-ai-fears-overblown
+- **Trump now says he wants to form an ‘AI Force’** — The Verge AI · 2026-09-20
+  https://www.theverge.com/ai-artificial-intelligence/997867/trump-ai-force-ai-czar
 - **Humans, not rogue AI, are still the biggest cybersecurity risk to energy systems** — The Verge AI · 2026-09-19
   https://www.theverge.com/science/997834/ai-cyberattack-energy-critical-infrastructure
 - **Meta’s Muse is creepy, but maybe not for the reasons you think** — The Verge AI · 2026-09-19
   https://www.theverge.com/ai-artificial-intelligence/997833/meta-muse-creepy
-- **Gemini went rogue, hacked three companies, and Google hid it** — The Verge AI · 2026-09-19
-  https://www.theverge.com/ai-artificial-intelligence/997795/google-gemini-rogue-ai-hack
-- **OpenAI and Microsoft knew they were starting a ‘doom loop’ for the web** — The Verge AI · 2026-09-19
-  https://www.theverge.com/ai-artificial-intelligence/997633/openai-microsoft-chatgpt-ai-new-york-times-doom-loop-theft-google-zero
 - **Should you read the code, is RAG dead, and did Skills kill MCP?** — GitHub AI & ML Blog · 2026-09-18
   https://github.blog/ai-and-ml/should-you-read-the-code-is-rag-dead-and-did-skills-kill-mcp/
 - **New experts join Google’s AI & Economy team** — Google AI Blog · 2026-09-18
@@ -29,14 +39,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blog.google/innovation-and-ai/technology/ai/google-flow-fashion-week/
 - **Introducing the Australian Youth Safety Blueprint** — OpenAI News · 2026-09-18
   https://openai.com/index/australian-youth-safety-blueprint
-- **Does AI need an antitrust exemption so it doesn&#8217;t kill everyone????** — The Verge AI · 2026-09-18
-  https://www.theverge.com/podcast/997382/openai-microsoft-anthropic-elon-musk-cartel-ai-competition
-- **The AI regulation smackdown isn’t over** — The Verge AI · 2026-09-18
-  https://www.theverge.com/ai-artificial-intelligence/997706/the-ai-regulation-smackdown-isnt-over
-- **Virginia governor creates an AI task force and moves to restrain data centers** — The Verge AI · 2026-09-18
-  https://www.theverge.com/policy/997573/virginia-governor-spanberger-data-center-ai-task-force
-- **Gavin Newsom is pushing for an AI kill switch** — The Verge AI · 2026-09-18
-  https://www.theverge.com/policy/997516/california-governor-newsom-ai-kill-switch
 - **Migrating the GitHub Copilot runtime to Rust, using Copilot** — GitHub AI & ML Blog · 2026-09-17
   https://github.blog/ai-and-ml/generative-ai/migrating-the-github-copilot-runtime-to-rust-using-copilot/
 - **How Cooley is accelerating IPO work with ChatGPT** — OpenAI News · 2026-09-17
@@ -51,8 +53,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/hex-gpt-6-astra
 - **How to connect AI usage to business value** — OpenAI News · 2026-09-16
   https://openai.com/index/how-to-connect-ai-usage-to-business-value
-- **Our framework for reporting model misalignment** — OpenAI News · 2026-09-16
-  https://openai.com/index/model-misalignment-reporting-framework
 - **AI for Societal Impact** — Google AI Blog · 2026-09-15
   https://blog.google/innovation-and-ai/technology/ai/ai-for-societal-impact/
 - **Building AI to accelerate science and improve lives** — Google AI Blog · 2026-09-15
@@ -80,9 +80,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
-- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **MCP / tool-connected assistants** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **MCP / tool-connected assistants** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.

@@ -1,16 +1,28 @@
 {
-  "generatedAt": "2026-09-20T12:49:11.258Z",
+  "generatedAt": "2026-09-21T14:47:32.887Z",
   "candidates": [
     {
-      "label": "Gemini multimodal exploration",
+      "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Gemini went rogue, hacked three companies, and Google hid it",
+          "title": "How V7 gives AI agents institutional memory",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/v7",
+          "date": "2026-09-21"
+        },
+        {
+          "title": "UN says AI safeguards can’t wait for certainty",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/997795/google-gemini-rogue-ai-hack",
-          "date": "2026-09-19"
+          "link": "https://www.theverge.com/ai-artificial-intelligence/998090/un-ai-panel-hugging-face-hack-precautionary-principle",
+          "date": "2026-09-21"
+        },
+        {
+          "title": "Amazon blocks Meta’s Muse AI agent",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/998078/amazon-blocks-meta-muse-ai-agent-shopping",
+          "date": "2026-09-21"
         }
       ]
     },
@@ -24,31 +36,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/should-you-read-the-code-is-rag-dead-and-did-skills-kill-mcp/",
           "date": "2026-09-18"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Migrating the GitHub Copilot runtime to Rust, using Copilot",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/generative-ai/migrating-the-github-copilot-runtime-to-rust-using-copilot/",
-          "date": "2026-09-17"
-        },
-        {
-          "title": "Reimagining advertising with AI",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/reimagining-advertising-with-ai",
-          "date": "2026-09-16"
-        },
-        {
-          "title": "Hex turns complex analysis into visual reports with GPT‑6 Astra",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/hex-gpt-6-astra",
-          "date": "2026-09-16"
         }
       ]
     },

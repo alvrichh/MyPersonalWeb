@@ -1,11 +1,83 @@
 {
-  "generatedAt": "2026-09-20T12:49:11.258Z",
-  "date": "2026-09-20",
+  "generatedAt": "2026-09-21T14:47:32.887Z",
+  "date": "2026-09-21",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "How V7 gives AI agents institutional memory",
+      "source": "OpenAI News",
+      "date": "2026-09-21",
+      "url": "https://openai.com/index/v7",
+      "summary": "Using GPT-5.6, V7 turns scattered company files into context agents can use to complete complex, source-linked work.",
+      "tags": [
+        "Agents",
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Can John Ternus find Apple’s next big thing?",
+      "source": "The Verge AI",
+      "date": "2026-09-21",
+      "url": "https://www.theverge.com/podcast/996874/apple-john-ternus-tim-cook-mark-gurman-future-ai-siri-iphone",
+      "summary": "Today, I’m talking with Mark Gurman, who is the world’s best-sourced Apple reporter — both as Bloomberg’s chief Apple correspondent and the host of the upcoming podcast Power On.&#160; Earlier this month, Apple hosted it...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "iPhone owners can now submit claims in Apple’s $250 million Siri AI settlement",
+      "source": "The Verge AI",
+      "date": "2026-09-21",
+      "url": "https://www.theverge.com/tech/998191/apple-siri-ai-iphone-16-class-action-lawsuit-settlement",
+      "summary": "Apple is paying $250 million to settle claims that it failed to deliver an AI-upgraded Siri - and now, eligible iPhone owners can submit a claim for a payout. If you live in the US and purchased an iPhone 15 Pro, iPhone ...",
+      "tags": [
+        "Models"
+      ]
+    },
+    {
+      "title": "UN says AI safeguards can’t wait for certainty",
+      "source": "The Verge AI",
+      "date": "2026-09-21",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/998090/un-ai-panel-hugging-face-hack-precautionary-principle",
+      "summary": "Governments need to rein in increasingly capable AI agents before their risks are fully understood, a United Nations scientific panel warned in the global organization's first major assessment of OpenAI's hack of Hugging...",
+      "tags": [
+        "Agents",
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Amazon blocks Meta’s Muse AI agent",
+      "source": "The Verge AI",
+      "date": "2026-09-21",
+      "url": "https://www.theverge.com/tech/998078/amazon-blocks-meta-muse-ai-agent-shopping",
+      "summary": "Meta's Muse AI agent has been blocked from shopping Amazon on behalf of its users, GeekWire reports. A popup message started appearing on Sunday for Muse users saying that \"continued access by an unauthorized AI agent vi...",
+      "tags": [
+        "Agents"
+      ]
+    },
+    {
+      "title": "No one is surprised that Nvidia’s Jensen Huang thinks AI fears are overblown",
+      "source": "The Verge AI",
+      "date": "2026-09-21",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/997936/nvidia-jensen-huang-ai-fears-overblown",
+      "summary": "The man who may stand to make the most money from the AI boom seems to think he knows better than anyone else, including researchers who have studied and worked on AI for decades. In an interview with CBS Sunday Morning,...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Trump now says he wants to form an ‘AI Force’",
+      "source": "The Verge AI",
+      "date": "2026-09-20",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/997867/trump-ai-force-ai-czar",
+      "summary": "The president posted on Truth Social that he wanted to appoint an \"AI czar\" to lead a new \"AI force.\" He made the announcement amid growing calls from across the political spectrum and even within the industry to pump th...",
+      "tags": [
+        "AI"
+      ]
+    },
     {
       "title": "Humans, not rogue AI, are still the biggest cybersecurity risk to energy systems",
       "source": "The Verge AI",
@@ -24,29 +96,6 @@
       "summary": "Meta's Muse is apparently an effective AI assistant, but one that's a little creepy. Part of that is because of its new Mac app, which can access Messages, Calendar, and Notes. But for all its smarts, Muse doesn't actual...",
       "tags": [
         "Agents"
-      ]
-    },
-    {
-      "title": "Gemini went rogue, hacked three companies, and Google hid it",
-      "source": "The Verge AI",
-      "date": "2026-09-19",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/997795/google-gemini-rogue-ai-hack",
-      "summary": "In May, Gemini broke containment and hacked three different companies, but Google didn't disclose the incident until the Wall Street Journal approached the company. The hacks happened during a test of the model's cyberse...",
-      "tags": [
-        "ChatGPT",
-        "Gemini",
-        "Models"
-      ]
-    },
-    {
-      "title": "OpenAI and Microsoft knew they were starting a ‘doom loop’ for the web",
-      "source": "The Verge AI",
-      "date": "2026-09-19",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/997633/openai-microsoft-chatgpt-ai-new-york-times-doom-loop-theft-google-zero",
-      "summary": "Recently unsealed court documents in the New York Times' case against OpenAI and Microsoft are pretty damning. The companies' own documentation warned that it was starting a \"doom loop\" that would damage the web, charact...",
-      "tags": [
-        "ChatGPT",
-        "Models"
       ]
     },
     {
@@ -79,6 +128,29 @@
       "tags": [
         "Agents",
         "Gemini"
+      ]
+    },
+    {
+      "title": "Gemini went rogue, hacked three companies, and Google hid it",
+      "source": "The Verge AI",
+      "date": "2026-09-19",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/997795/google-gemini-rogue-ai-hack",
+      "summary": "In May, Gemini broke containment and hacked three different companies, but Google didn't disclose the incident until the Wall Street Journal approached the company. The hacks happened during a test of the model's cyberse...",
+      "tags": [
+        "ChatGPT",
+        "Gemini",
+        "Models"
+      ]
+    },
+    {
+      "title": "OpenAI and Microsoft knew they were starting a ‘doom loop’ for the web",
+      "source": "The Verge AI",
+      "date": "2026-09-19",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/997633/openai-microsoft-chatgpt-ai-new-york-times-doom-loop-theft-google-zero",
+      "summary": "Recently unsealed court documents in the New York Times' case against OpenAI and Microsoft are pretty damning. The companies' own documentation warned that it was starting a \"doom loop\" that would damage the web, charact...",
+      "tags": [
+        "ChatGPT",
+        "Models"
       ]
     },
     {
@@ -140,94 +212,31 @@
       "tags": [
         "AI"
       ]
-    },
-    {
-      "title": "Security researchers used Claude to help them hack into OpenAI",
-      "source": "The Verge AI",
-      "date": "2026-09-18",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/997444/openai-hack-claude-heif-heist",
-      "summary": "A team of three independent security researchers at Hacktron says it took less than 72 hours for them to hack into OpenAI employee accounts using Anthropic's Claude Opus 4.8 and 5, The Wall Street Journal reports. They w...",
-      "tags": [
-        "ChatGPT",
-        "Claude"
-      ]
-    },
-    {
-      "title": "The AI Superintelligence Slowdown",
-      "source": "The Verge AI",
-      "date": "2026-09-18",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/996923/ai-safety-slow-openai-anthropic",
-      "summary": "Remember when tech leaders would tell their employees to “move fast and break things”? It seemed that would be the way of AI too. But after a summer where rogue AI agents became reality, and researchers warned that AI co...",
-      "tags": [
-        "Agents"
-      ]
-    },
-    {
-      "title": "Migrating the GitHub Copilot runtime to Rust, using Copilot",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-09-17",
-      "url": "https://github.blog/ai-and-ml/generative-ai/migrating-the-github-copilot-runtime-to-rust-using-copilot/",
-      "summary": "A rewrite this size wasn't affordable before agents. Here's what porting the Copilot agent runtime to 800,000 lines of production Rust actually took. The post Migrating the GitHub Copilot runtime to Rust, using Copilot a...",
-      "tags": [
-        "Agents",
-        "Copilot"
-      ]
-    },
-    {
-      "title": "How Cooley is accelerating IPO work with ChatGPT",
-      "source": "OpenAI News",
-      "date": "2026-09-17",
-      "url": "https://openai.com/index/cooley-gopublic",
-      "summary": "Cooley built GO Public with ChatGPT Work to bring intelligence to the IPO process, helping lawyers surface issues earlier and focus judgment where it matters most.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Introducing Astra for Law",
-      "source": "OpenAI News",
-      "date": "2026-09-17",
-      "url": "https://openai.com/index/astra-for-law",
-      "summary": "OpenAI for Law brings frontier intelligence for law, custom firm workflows, connected legal data sources, and legal-grade controls for confidential client work.",
-      "tags": [
-        "ChatGPT",
-        "Automation"
-      ]
-    },
-    {
-      "title": "Flash floods can strike without warning — this new technology could change that",
-      "source": "The Verge AI",
-      "date": "2026-09-17",
-      "url": "https://www.theverge.com/science/997083/flash-flood-warning-tacls-satellite-machine-learning",
-      "summary": "On the morning of June 9th, Laura Lin was working from her home in Lanesville, a rural southern Indiana town about 15 miles from the Kentucky border. She was on a Zoom call, unaware that the heavy rain outside was beginn...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Claude Code relaunches Projects to manage multiple AI agents in the cloud",
-      "source": "The Verge AI",
-      "date": "2026-09-17",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/997134/anthropic-claude-code-projects",
-      "summary": "The revamped projects feature in Claude Code allows users to run multiple agents under the same roof, with a shared memory, goals, and library of files and artifacts. Similar to Grok Bot and other tools that manage group...",
-      "tags": [
-        "Agents",
-        "Claude",
-        "Dev Tools"
-      ]
     }
   ],
   "candidates": [
     {
-      "label": "Gemini multimodal exploration",
+      "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Gemini went rogue, hacked three companies, and Google hid it",
+          "title": "How V7 gives AI agents institutional memory",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/v7",
+          "date": "2026-09-21"
+        },
+        {
+          "title": "UN says AI safeguards can’t wait for certainty",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/997795/google-gemini-rogue-ai-hack",
-          "date": "2026-09-19"
+          "link": "https://www.theverge.com/ai-artificial-intelligence/998090/un-ai-panel-hugging-face-hack-precautionary-principle",
+          "date": "2026-09-21"
+        },
+        {
+          "title": "Amazon blocks Meta’s Muse AI agent",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/998078/amazon-blocks-meta-muse-ai-agent-shopping",
+          "date": "2026-09-21"
         }
       ]
     },
@@ -241,31 +250,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/should-you-read-the-code-is-rag-dead-and-did-skills-kill-mcp/",
           "date": "2026-09-18"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Migrating the GitHub Copilot runtime to Rust, using Copilot",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/generative-ai/migrating-the-github-copilot-runtime-to-rust-using-copilot/",
-          "date": "2026-09-17"
-        },
-        {
-          "title": "Reimagining advertising with AI",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/reimagining-advertising-with-ai",
-          "date": "2026-09-16"
-        },
-        {
-          "title": "Hex turns complex analysis into visual reports with GPT‑6 Astra",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/hex-gpt-6-astra",
-          "date": "2026-09-16"
         }
       ]
     },
