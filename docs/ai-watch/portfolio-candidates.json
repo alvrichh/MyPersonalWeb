@@ -1,11 +1,17 @@
 {
-  "generatedAt": "2026-09-21T14:47:32.887Z",
+  "generatedAt": "2026-09-22T13:02:06.036Z",
   "candidates": [
     {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Meta patches Muse exploit that let attackers control the AI agent",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/998679/meta-muse-patch-zero-day-exploit-ai-agent",
+          "date": "2026-09-22"
+        },
         {
           "title": "How V7 gives AI agents institutional memory",
           "source": "OpenAI News",
@@ -17,12 +23,25 @@
           "source": "The Verge AI",
           "link": "https://www.theverge.com/ai-artificial-intelligence/998090/un-ai-panel-hugging-face-hack-precautionary-principle",
           "date": "2026-09-21"
+        }
+      ]
+    },
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Expanding OpenAI Academy with new learning paths",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/expanding-openai-academy-with-new-learning-paths",
+          "date": "2026-09-21"
         },
         {
-          "title": "Amazon blocks Meta’s Muse AI agent",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/998078/amazon-blocks-meta-muse-ai-agent-shopping",
-          "date": "2026-09-21"
+          "title": "Decoding the new AI lingo: Loops, harnesses, squads, hill climbing&#8230; oh my!",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/decoding-the-new-ai-lingo-loops-harnesses-squads-hill-climbing-oh-my/",
+          "date": "2026-09-02"
         }
       ]
     },
@@ -74,18 +93,6 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/cooley-gopublic",
           "date": "2026-09-17"
-        },
-        {
-          "title": "Helping older adults use AI in everyday life",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/helping-older-adults-use-ai-in-everyday-life",
-          "date": "2026-09-16"
-        },
-        {
-          "title": "How to connect AI usage to business value",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/how-to-connect-ai-usage-to-business-value",
-          "date": "2026-09-16"
         }
       ]
     },
@@ -110,19 +117,6 @@
           "title": "How we make AI coding more cost efficient without sacrificing task quality",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/how-we-make-ai-coding-more-cost-efficient-without-sacrificing-task-quality/",
-          "date": "2026-09-02"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Decoding the new AI lingo: Loops, harnesses, squads, hill climbing&#8230; oh my!",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/decoding-the-new-ai-lingo-loops-harnesses-squads-hill-climbing-oh-my/",
           "date": "2026-09-02"
         }
       ]

@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-09-21
+# Daily AI maintenance report — 2026-09-22
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,8 +13,20 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Meta patches Muse exploit that let attackers control the AI agent** — The Verge AI · 2026-09-22
+  https://www.theverge.com/tech/998679/meta-muse-patch-zero-day-exploit-ai-agent
+- **Advisory Group on Mathematics and Artificial Intelligence** — OpenAI News · 2026-09-21
+  https://openai.com/index/advisory-group-on-mathematics-and-ai
+- **Higgsfield AI ships new video features in a day with GPT-6 Astra** — OpenAI News · 2026-09-21
+  https://openai.com/index/higgsfield-from-prompt-to-production-with-astra
+- **Building standards for the next phase of AI** — OpenAI News · 2026-09-21
+  https://openai.com/index/building-standards-next-phase-ai
+- **Expanding OpenAI Academy with new learning paths** — OpenAI News · 2026-09-21
+  https://openai.com/index/expanding-openai-academy-with-new-learning-paths
 - **How V7 gives AI agents institutional memory** — OpenAI News · 2026-09-21
   https://openai.com/index/v7
+- **California tightens rules on AI data center energy and water use** — The Verge AI · 2026-09-21
+  https://www.theverge.com/ai-artificial-intelligence/998453/california-ai-data-center-bills
 - **Can John Ternus find Apple’s next big thing?** — The Verge AI · 2026-09-21
   https://www.theverge.com/podcast/996874/apple-john-ternus-tim-cook-mark-gurman-future-ai-siri-iphone
 - **iPhone owners can now submit claims in Apple’s $250 million Siri AI settlement** — The Verge AI · 2026-09-21
@@ -27,10 +39,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/ai-artificial-intelligence/997936/nvidia-jensen-huang-ai-fears-overblown
 - **Trump now says he wants to form an ‘AI Force’** — The Verge AI · 2026-09-20
   https://www.theverge.com/ai-artificial-intelligence/997867/trump-ai-force-ai-czar
-- **Humans, not rogue AI, are still the biggest cybersecurity risk to energy systems** — The Verge AI · 2026-09-19
-  https://www.theverge.com/science/997834/ai-cyberattack-energy-critical-infrastructure
-- **Meta’s Muse is creepy, but maybe not for the reasons you think** — The Verge AI · 2026-09-19
-  https://www.theverge.com/ai-artificial-intelligence/997833/meta-muse-creepy
 - **Should you read the code, is RAG dead, and did Skills kill MCP?** — GitHub AI & ML Blog · 2026-09-18
   https://github.blog/ai-and-ml/should-you-read-the-code-is-rag-dead-and-did-skills-kill-mcp/
 - **New experts join Google’s AI & Economy team** — Google AI Blog · 2026-09-18
@@ -45,14 +53,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/cooley-gopublic
 - **Introducing Astra for Law** — OpenAI News · 2026-09-17
   https://openai.com/index/astra-for-law
-- **Helping older adults use AI in everyday life** — OpenAI News · 2026-09-16
-  https://openai.com/index/helping-older-adults-use-ai-in-everyday-life
-- **Reimagining advertising with AI** — OpenAI News · 2026-09-16
-  https://openai.com/index/reimagining-advertising-with-ai
-- **Hex turns complex analysis into visual reports with GPT‑6 Astra** — OpenAI News · 2026-09-16
-  https://openai.com/index/hex-gpt-6-astra
-- **How to connect AI usage to business value** — OpenAI News · 2026-09-16
-  https://openai.com/index/how-to-connect-ai-usage-to-business-value
 - **AI for Societal Impact** — Google AI Blog · 2026-09-15
   https://blog.google/innovation-and-ai/technology/ai/ai-for-societal-impact/
 - **Building AI to accelerate science and improve lives** — Google AI Blog · 2026-09-15
@@ -81,11 +81,11 @@ This file is generated automatically by the daily maintenance workflow. It updat
 ## Portfolio candidates
 
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **MCP / tool-connected assistants** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
 

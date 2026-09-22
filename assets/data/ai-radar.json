@@ -1,11 +1,65 @@
 {
-  "generatedAt": "2026-09-21T14:47:32.887Z",
-  "date": "2026-09-21",
+  "generatedAt": "2026-09-22T13:02:06.036Z",
+  "date": "2026-09-22",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Meta patches Muse exploit that let attackers control the AI agent",
+      "source": "The Verge AI",
+      "date": "2026-09-22",
+      "url": "https://www.theverge.com/tech/998679/meta-muse-patch-zero-day-exploit-ai-agent",
+      "summary": "Meta has issued a patch for its Muse macOS app following the discovery of a zero-day vulnerability that could allow someone to take control of the AI agent. The bug found by security researcher Patrick Wardle utilized an...",
+      "tags": [
+        "Agents",
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "Advisory Group on Mathematics and Artificial Intelligence",
+      "source": "OpenAI News",
+      "date": "2026-09-21",
+      "url": "https://openai.com/index/advisory-group-on-mathematics-and-ai",
+      "summary": "OpenAI is working with an independent Advisory Group on Mathematics and Artificial Intelligence to guide the review and communication of emerging AI results.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Higgsfield AI ships new video features in a day with GPT-6 Astra",
+      "source": "OpenAI News",
+      "date": "2026-09-21",
+      "url": "https://openai.com/index/higgsfield-from-prompt-to-production-with-astra",
+      "summary": "With GPT-6 Astra, Higgsfield AI makes video ad creation easier for small businesses and brings new creative tools to market faster.",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "Building standards for the next phase of AI",
+      "source": "OpenAI News",
+      "date": "2026-09-21",
+      "url": "https://openai.com/index/building-standards-next-phase-ai",
+      "summary": "OpenAI outlines a path to shared global AI standards, calling for coordinated evaluation, reporting, and governance to improve safety.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Expanding OpenAI Academy with new learning paths",
+      "source": "OpenAI News",
+      "date": "2026-09-21",
+      "url": "https://openai.com/index/expanding-openai-academy-with-new-learning-paths",
+      "summary": "Explore new OpenAI Academy learning paths for employees, developers, leaders, educators, and students to build and demonstrate practical AI skills.",
+      "tags": [
+        "ChatGPT",
+        "Dev Tools"
+      ]
+    },
     {
       "title": "How V7 gives AI agents institutional memory",
       "source": "OpenAI News",
@@ -15,6 +69,16 @@
       "tags": [
         "Agents",
         "ChatGPT"
+      ]
+    },
+    {
+      "title": "California tightens rules on AI data center energy and water use",
+      "source": "The Verge AI",
+      "date": "2026-09-21",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/998453/california-ai-data-center-bills",
+      "summary": "California Gov. Gavin Newsom has signed seven bills designed to prevent AI data centers from passing utility costs onto residents, as reported earlier by the Los Angeles Times. The package of laws requires the California...",
+      "tags": [
+        "AI"
       ]
     },
     {
@@ -152,66 +216,6 @@
         "ChatGPT",
         "Models"
       ]
-    },
-    {
-      "title": "Introducing the Australian Youth Safety Blueprint",
-      "source": "OpenAI News",
-      "date": "2026-09-18",
-      "url": "https://openai.com/index/australian-youth-safety-blueprint",
-      "summary": "OpenAI introduces the Australian Youth Safety Blueprint, a six-pillar roadmap for safer AI experiences that protect and empower young people.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Does AI need an antitrust exemption so it doesn&#8217;t kill everyone????",
-      "source": "The Verge AI",
-      "date": "2026-09-18",
-      "url": "https://www.theverge.com/podcast/997382/openai-microsoft-anthropic-elon-musk-cartel-ai-competition",
-      "summary": "Today on Decoder, we’ve got the first of a two-part series on the future of business, and I&#8217;m talking with Jonathan Kanter, the former antitrust chief for the US Department of Justice in the Biden administration. T...",
-      "tags": [
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "The AI regulation smackdown isn’t over",
-      "source": "The Verge AI",
-      "date": "2026-09-18",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/997706/the-ai-regulation-smackdown-isnt-over",
-      "summary": "At the start of this week, the who's-who of AI seemed - at least tentatively - on the side of AI regulation. Over the weekend, Anthropic CEO Dario Amodei had proposed a three-step plan for slowing AI development, includi...",
-      "tags": [
-        "Claude"
-      ]
-    },
-    {
-      "title": "Virginia governor creates an AI task force and moves to restrain data centers",
-      "source": "The Verge AI",
-      "date": "2026-09-18",
-      "url": "https://www.theverge.com/policy/997573/virginia-governor-spanberger-data-center-ai-task-force",
-      "summary": "Virginia Gov. Abigail Spanberger ordered the state government to take steps that could empower local communities to have a larger say in data center development and slow down approvals in a state that is already home to ...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Gavin Newsom is pushing for an AI kill switch",
-      "source": "The Verge AI",
-      "date": "2026-09-18",
-      "url": "https://www.theverge.com/policy/997516/california-governor-newsom-ai-kill-switch",
-      "summary": "California Gov. Gavin Newsom (D) is positioning the state to take the lead on AI oversight, including the potential to mandate a \"kill switch\" for frontier models, with a new executive order issued Friday. Newsom's order...",
-      "tags": [
-        "Models"
-      ]
-    },
-    {
-      "title": "What Hollywood thinks about existential AI warnings",
-      "source": "The Verge AI",
-      "date": "2026-09-18",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/997358/what-hollywood-thinks-about-existential-ai-warnings",
-      "summary": "As the tech sector sounds alarms about AI's potential to destroy humanity, entertainment labor groups are urging the public to stay focused on what's already happening. The Verge reached out to Disney, Netflix, Amazon, L...",
-      "tags": [
-        "AI"
-      ]
     }
   ],
   "candidates": [
@@ -220,6 +224,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Meta patches Muse exploit that let attackers control the AI agent",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/998679/meta-muse-patch-zero-day-exploit-ai-agent",
+          "date": "2026-09-22"
+        },
         {
           "title": "How V7 gives AI agents institutional memory",
           "source": "OpenAI News",
@@ -231,12 +241,25 @@
           "source": "The Verge AI",
           "link": "https://www.theverge.com/ai-artificial-intelligence/998090/un-ai-panel-hugging-face-hack-precautionary-principle",
           "date": "2026-09-21"
+        }
+      ]
+    },
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Expanding OpenAI Academy with new learning paths",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/expanding-openai-academy-with-new-learning-paths",
+          "date": "2026-09-21"
         },
         {
-          "title": "Amazon blocks Meta’s Muse AI agent",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/998078/amazon-blocks-meta-muse-ai-agent-shopping",
-          "date": "2026-09-21"
+          "title": "Decoding the new AI lingo: Loops, harnesses, squads, hill climbing&#8230; oh my!",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/decoding-the-new-ai-lingo-loops-harnesses-squads-hill-climbing-oh-my/",
+          "date": "2026-09-02"
         }
       ]
     },
@@ -288,18 +311,6 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/cooley-gopublic",
           "date": "2026-09-17"
-        },
-        {
-          "title": "Helping older adults use AI in everyday life",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/helping-older-adults-use-ai-in-everyday-life",
-          "date": "2026-09-16"
-        },
-        {
-          "title": "How to connect AI usage to business value",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/how-to-connect-ai-usage-to-business-value",
-          "date": "2026-09-16"
         }
       ]
     },
@@ -324,19 +335,6 @@
           "title": "How we make AI coding more cost efficient without sacrificing task quality",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/how-we-make-ai-coding-more-cost-efficient-without-sacrificing-task-quality/",
-          "date": "2026-09-02"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Decoding the new AI lingo: Loops, harnesses, squads, hill climbing&#8230; oh my!",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/decoding-the-new-ai-lingo-loops-harnesses-squads-hill-climbing-oh-my/",
           "date": "2026-09-02"
         }
       ]
