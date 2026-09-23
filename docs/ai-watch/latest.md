@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-09-22
+# Daily AI maintenance report — 2026-09-23
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,46 +13,46 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **OpenAI extends cyber access to Ukraine for civilian defense** — OpenAI News · 2026-09-23
+  https://openai.com/index/openai-extends-cyber-access-to-ukraine-for-civilian-defense
+- **Grab and OpenAI bring practical AI skills to Southeast Asia** — OpenAI News · 2026-09-23
+  https://openai.com/index/grab-openai-ai-skills-southeast-asia
+- **OpenAI nabs key Patreon execs ahead of upcoming announcement** — The Verge AI · 2026-09-23
+  https://www.theverge.com/ai-artificial-intelligence/999249/openai-creators-patreon-execs-hire-sam-yam
+- **OpenAI wants to consult elite mathematicians about how to not fumble again** — The Verge AI · 2026-09-23
+  https://www.theverge.com/ai-artificial-intelligence/999167/openai-elite-mathematicians-panel
+- **Introducing GPT-6 Sol and Luna** — OpenAI News · 2026-09-22
+  https://openai.com/index/introducing-gpt-6-sol-and-luna
+- **Parallel cut research time and cost in half with GPT‑6 Astra** — OpenAI News · 2026-09-22
+  https://openai.com/index/parallel-cuts-time-and-cost-with-astra
+- **Priorities and principles for effective third party assessments** — OpenAI News · 2026-09-22
+  https://openai.com/index/priorities-principles-third-party-assessments
+- **Rabbit’s new AI agent doesn’t need an R1 to run** — The Verge AI · 2026-09-22
+  https://www.theverge.com/ai-artificial-intelligence/999094/rabbit-ai-agent-os3
+- **Andreessen Horowitz is launching an ‘academy’ with no homework and partnerships with Palantir, Google, and Meta** — The Verge AI · 2026-09-22
+  https://www.theverge.com/ai-artificial-intelligence/998813/andreessen-horowitz-ai-academy
+- **Anthropic launches Claude Opus 5.5 with stricter safeguards for cybersecurity** — The Verge AI · 2026-09-22
+  https://www.theverge.com/ai-artificial-intelligence/998868/anthropic-claude-opus-5-5-cybersecurity
+- **Trump says the US is officially renaming AI to ‘super intelligence’** — The Verge AI · 2026-09-22
+  https://www.theverge.com/ai-artificial-intelligence/998816/donald-trump-ai-super-intelligence
 - **Meta patches Muse exploit that let attackers control the AI agent** — The Verge AI · 2026-09-22
   https://www.theverge.com/tech/998679/meta-muse-patch-zero-day-exploit-ai-agent
-- **Advisory Group on Mathematics and Artificial Intelligence** — OpenAI News · 2026-09-21
-  https://openai.com/index/advisory-group-on-mathematics-and-ai
 - **Higgsfield AI ships new video features in a day with GPT-6 Astra** — OpenAI News · 2026-09-21
   https://openai.com/index/higgsfield-from-prompt-to-production-with-astra
+- **Advisory Group on Mathematics and Artificial Intelligence** — OpenAI News · 2026-09-21
+  https://openai.com/index/advisory-group-on-mathematics-and-ai
 - **Building standards for the next phase of AI** — OpenAI News · 2026-09-21
   https://openai.com/index/building-standards-next-phase-ai
-- **Expanding OpenAI Academy with new learning paths** — OpenAI News · 2026-09-21
-  https://openai.com/index/expanding-openai-academy-with-new-learning-paths
-- **How V7 gives AI agents institutional memory** — OpenAI News · 2026-09-21
-  https://openai.com/index/v7
 - **California tightens rules on AI data center energy and water use** — The Verge AI · 2026-09-21
   https://www.theverge.com/ai-artificial-intelligence/998453/california-ai-data-center-bills
-- **Can John Ternus find Apple’s next big thing?** — The Verge AI · 2026-09-21
-  https://www.theverge.com/podcast/996874/apple-john-ternus-tim-cook-mark-gurman-future-ai-siri-iphone
-- **iPhone owners can now submit claims in Apple’s $250 million Siri AI settlement** — The Verge AI · 2026-09-21
-  https://www.theverge.com/tech/998191/apple-siri-ai-iphone-16-class-action-lawsuit-settlement
-- **UN says AI safeguards can’t wait for certainty** — The Verge AI · 2026-09-21
-  https://www.theverge.com/ai-artificial-intelligence/998090/un-ai-panel-hugging-face-hack-precautionary-principle
-- **Amazon blocks Meta’s Muse AI agent** — The Verge AI · 2026-09-21
-  https://www.theverge.com/tech/998078/amazon-blocks-meta-muse-ai-agent-shopping
-- **No one is surprised that Nvidia’s Jensen Huang thinks AI fears are overblown** — The Verge AI · 2026-09-21
-  https://www.theverge.com/ai-artificial-intelligence/997936/nvidia-jensen-huang-ai-fears-overblown
-- **Trump now says he wants to form an ‘AI Force’** — The Verge AI · 2026-09-20
-  https://www.theverge.com/ai-artificial-intelligence/997867/trump-ai-force-ai-czar
 - **Should you read the code, is RAG dead, and did Skills kill MCP?** — GitHub AI & ML Blog · 2026-09-18
   https://github.blog/ai-and-ml/should-you-read-the-code-is-rag-dead-and-did-skills-kill-mcp/
 - **New experts join Google’s AI & Economy team** — Google AI Blog · 2026-09-18
   https://blog.google/innovation-and-ai/technology/ai/expanding-ai-economy-research-bench/
 - **Co-creating the future of fashion with Google** — Google AI Blog · 2026-09-18
   https://blog.google/innovation-and-ai/technology/ai/google-flow-fashion-week/
-- **Introducing the Australian Youth Safety Blueprint** — OpenAI News · 2026-09-18
-  https://openai.com/index/australian-youth-safety-blueprint
 - **Migrating the GitHub Copilot runtime to Rust, using Copilot** — GitHub AI & ML Blog · 2026-09-17
   https://github.blog/ai-and-ml/generative-ai/migrating-the-github-copilot-runtime-to-rust-using-copilot/
-- **How Cooley is accelerating IPO work with ChatGPT** — OpenAI News · 2026-09-17
-  https://openai.com/index/cooley-gopublic
-- **Introducing Astra for Law** — OpenAI News · 2026-09-17
-  https://openai.com/index/astra-for-law
 - **AI for Societal Impact** — Google AI Blog · 2026-09-15
   https://blog.google/innovation-and-ai/technology/ai/ai-for-societal-impact/
 - **Building AI to accelerate science and improve lives** — Google AI Blog · 2026-09-15
@@ -81,11 +81,11 @@ This file is generated automatically by the daily maintenance workflow. It updat
 ## Portfolio candidates
 
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **MCP / tool-connected assistants** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
 

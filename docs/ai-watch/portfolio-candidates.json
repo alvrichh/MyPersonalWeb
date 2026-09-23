@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-22T13:02:06.036Z",
+  "generatedAt": "2026-09-23T13:17:16.709Z",
   "candidates": [
     {
       "label": "AI agents / automation workflows",
@@ -7,41 +7,35 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "Parallel cut research time and cost in half with GPT‑6 Astra",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/parallel-cuts-time-and-cost-with-astra",
+          "date": "2026-09-22"
+        },
+        {
+          "title": "Rabbit’s new AI agent doesn’t need an R1 to run",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/999094/rabbit-ai-agent-os3",
+          "date": "2026-09-22"
+        },
+        {
           "title": "Meta patches Muse exploit that let attackers control the AI agent",
           "source": "The Verge AI",
           "link": "https://www.theverge.com/tech/998679/meta-muse-patch-zero-day-exploit-ai-agent",
           "date": "2026-09-22"
-        },
-        {
-          "title": "How V7 gives AI agents institutional memory",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/v7",
-          "date": "2026-09-21"
-        },
-        {
-          "title": "UN says AI safeguards can’t wait for certainty",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/998090/un-ai-panel-hugging-face-hack-precautionary-principle",
-          "date": "2026-09-21"
         }
       ]
     },
     {
-      "label": "AI developer tooling",
+      "label": "Claude research and documentation flow",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Expanding OpenAI Academy with new learning paths",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/expanding-openai-academy-with-new-learning-paths",
-          "date": "2026-09-21"
-        },
-        {
-          "title": "Decoding the new AI lingo: Loops, harnesses, squads, hill climbing&#8230; oh my!",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/decoding-the-new-ai-lingo-loops-harnesses-squads-hill-climbing-oh-my/",
-          "date": "2026-09-02"
+          "title": "Anthropic launches Claude Opus 5.5 with stricter safeguards for cybersecurity",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/998868/anthropic-claude-opus-5-5-cybersecurity",
+          "date": "2026-09-22"
         }
       ]
     },
@@ -84,19 +78,6 @@
       ]
     },
     {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "How Cooley is accelerating IPO work with ChatGPT",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/cooley-gopublic",
-          "date": "2026-09-17"
-        }
-      ]
-    },
-    {
       "label": "AI coding assistant workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
@@ -117,6 +98,19 @@
           "title": "How we make AI coding more cost efficient without sacrificing task quality",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/how-we-make-ai-coding-more-cost-efficient-without-sacrificing-task-quality/",
+          "date": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Decoding the new AI lingo: Loops, harnesses, squads, hill climbing&#8230; oh my!",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/decoding-the-new-ai-lingo-loops-harnesses-squads-hill-climbing-oh-my/",
           "date": "2026-09-02"
         }
       ]
