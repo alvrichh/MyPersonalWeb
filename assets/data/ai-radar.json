@@ -1,17 +1,132 @@
 {
-  "generatedAt": "2026-09-23T13:17:16.709Z",
-  "date": "2026-09-23",
+  "generatedAt": "2026-09-24T13:06:56.846Z",
+  "date": "2026-09-24",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
     {
+      "title": "OpenAI agents hacked an Australian government website in search for data",
+      "source": "The Verge AI",
+      "date": "2026-09-24",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/999874/openai-agents-hacked-an-australian-government-website-in-search-for-data",
+      "summary": "OpenAI's artificial intelligence agents hacked an Australian government website and attempted to breach numerous other government and university websites. The attack appears to be the first confirmed instance of a rogue ...",
+      "tags": [
+        "Agents",
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Gemini 4 is almost ready, says new Google DeepMind chief",
+      "source": "The Verge AI",
+      "date": "2026-09-24",
+      "url": "https://www.theverge.com/tech/999802/google-deepmind-gemini-4-timeline-koray-kavukcuoglu",
+      "summary": "Google is reportedly nearing the launch of its long awaited Gemini 4 model, after dawdling behind rival developers on flagship AI releases. Speaking with The Information during his first media appearance as the leader of...",
+      "tags": [
+        "Gemini",
+        "Dev Tools",
+        "Multimodal",
+        "Models"
+      ]
+    },
+    {
+      "title": "Meta is making a standalone Muse AI gadget",
+      "source": "The Verge AI",
+      "date": "2026-09-24",
+      "url": "https://www.theverge.com/tech/999750/muse-charm-meta-ai-hardware",
+      "summary": "Meta is building a dedicated hardware device for its new Muse AI agent. The product, called Muse Charm, was briefly shown off by Meta CEO Mark Zuckerberg at the end of tonight's Meta Connect presentation. It looks almost...",
+      "tags": [
+        "Agents"
+      ]
+    },
+    {
+      "title": "Meta Connect 2026: The biggest news and announcements",
+      "source": "The Verge AI",
+      "date": "2026-09-24",
+      "url": "https://www.theverge.com/tech/998480/meta-connect-2026-biggest-news-announcements",
+      "summary": "It&#8217;s about time for Meta Connect, the company&#8217;s annual product launch event. This year, given the company&#8217;s major focus on AI and wearables like smart glasses, it seems likely that we&#8217;ll see updat...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Meta Connect 2026 live blog: On the ground at Mark Zuckerberg’s next big product launch",
+      "source": "The Verge AI",
+      "date": "2026-09-24",
+      "url": "https://www.theverge.com/tech/998457/meta-connect-2026-live-blog-mark-zuckerberg-keynote",
+      "summary": "It's time once again for Meta's annual September product launch event, and The Verge is on the ground in Menlo Park to cover the show live. Meta says that today's keynote by Mark Zuckerberg will be about how \"Meta is bui...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Rendering huge pull requests in the GitHub Copilot app",
+      "source": "GitHub AI & ML Blog",
+      "date": "2026-09-23",
+      "url": "https://github.blog/engineering/user-experience/rendering-huge-pull-requests-in-the-github-copilot-app/",
+      "summary": "How we rebuilt the diff surface in the GitHub Copilot app to open a million-line pull request with hundreds of inline review comments. The post Rendering huge pull requests in the GitHub Copilot app appeared first on The...",
+      "tags": [
+        "Copilot"
+      ]
+    },
+    {
+      "title": "Two years of OpenAI Academy",
+      "source": "OpenAI News",
+      "date": "2026-09-23",
+      "url": "https://openai.com/index/two-years-of-openai-academy",
+      "summary": "Marking two years of OpenAI Academy and bringing AI skills to even more communities.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
       "title": "OpenAI extends cyber access to Ukraine for civilian defense",
       "source": "OpenAI News",
       "date": "2026-09-23",
       "url": "https://openai.com/index/openai-extends-cyber-access-to-ukraine-for-civilian-defense",
       "summary": "OpenAI is extending access to its Daybreak program to the Government of Ukraine to support the cyber defense of civilian infrastructure.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Sam Altman’s remarks at the United Nations Security Council",
+      "source": "OpenAI News",
+      "date": "2026-09-23",
+      "url": "https://openai.com/index/sam-altman-un-security-council-remarks",
+      "summary": "OpenAI CEO Sam Altman discusses AI safety, human control, and international cooperation in remarks to the United Nations Security Council.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Ringg’s AI agents resolve up to 65% of customer calls with OpenAI",
+      "source": "OpenAI News",
+      "date": "2026-09-23",
+      "url": "https://openai.com/index/ringg",
+      "summary": "Using GPT-5.6, Ringg powers multilingual agents across voice, chat, WhatsApp, and web for 90% less cost vs. GPT-4.1.",
+      "tags": [
+        "Agents",
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Introducing MentalHealthBench",
+      "source": "OpenAI News",
+      "date": "2026-09-23",
+      "url": "https://openai.com/index/introducing-mentalhealthbench",
+      "summary": "MentalHealthBench is an expert-informed benchmark for evaluating helpful and safe AI responses across realistic mental health conversations.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "ChatGPT Ads expands to Southeast Asia and Taiwan",
+      "source": "OpenAI News",
+      "date": "2026-09-23",
+      "url": "https://openai.com/index/chatgpt-ads-expands-southeast-asia-taiwan",
+      "summary": "ChatGPT Ads is expanding to Southeast Asia and Taiwan, giving eligible businesses new ways to reach people across more than 60 countries.",
       "tags": [
         "ChatGPT"
       ]
@@ -100,122 +215,6 @@
         "ChatGPT",
         "Claude"
       ]
-    },
-    {
-      "title": "Anthropic launches Claude Opus 5.5 with stricter safeguards for cybersecurity",
-      "source": "The Verge AI",
-      "date": "2026-09-22",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/998868/anthropic-claude-opus-5-5-cybersecurity",
-      "summary": "Anthropic says its new Claude Opus 5.5 model comes with stronger safeguards in the wake of recent rogue AI hacking incidents. In an announcement on Tuesday, Anthropic says Opus 5.5 comes with improvements to certain risk...",
-      "tags": [
-        "Claude",
-        "Models"
-      ]
-    },
-    {
-      "title": "Trump says the US is officially renaming AI to ‘super intelligence’",
-      "source": "The Verge AI",
-      "date": "2026-09-22",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/998816/donald-trump-ai-super-intelligence",
-      "summary": "In a speech Tuesday morning at the UN General Assembly, Donald Trump railed against Iran, \"globalists,\" climate change, and transgender people while also claiming that the US is now \"officially\" renaming artificial intel...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Meta patches Muse exploit that let attackers control the AI agent",
-      "source": "The Verge AI",
-      "date": "2026-09-22",
-      "url": "https://www.theverge.com/tech/998679/meta-muse-patch-zero-day-exploit-ai-agent",
-      "summary": "Meta has issued a patch for its Muse macOS app following the discovery of a zero-day vulnerability that could allow someone to take control of the AI agent. The bug found by security researcher Patrick Wardle utilized an...",
-      "tags": [
-        "Agents",
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "Advisory Group on Mathematics and Artificial Intelligence",
-      "source": "OpenAI News",
-      "date": "2026-09-21",
-      "url": "https://openai.com/index/advisory-group-on-mathematics-and-ai",
-      "summary": "OpenAI is working with an independent Advisory Group on Mathematics and Artificial Intelligence to guide the review and communication of emerging AI results.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Higgsfield AI ships new video features in a day with GPT-6 Astra",
-      "source": "OpenAI News",
-      "date": "2026-09-21",
-      "url": "https://openai.com/index/higgsfield-from-prompt-to-production-with-astra",
-      "summary": "With GPT-6 Astra, Higgsfield AI makes video ad creation easier for small businesses and brings new creative tools to market faster.",
-      "tags": [
-        "Agents",
-        "ChatGPT",
-        "Multimodal"
-      ]
-    },
-    {
-      "title": "Building standards for the next phase of AI",
-      "source": "OpenAI News",
-      "date": "2026-09-21",
-      "url": "https://openai.com/index/building-standards-next-phase-ai",
-      "summary": "OpenAI outlines a path to shared global AI standards, calling for coordinated evaluation, reporting, and governance to improve safety.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Expanding OpenAI Academy with new learning paths",
-      "source": "OpenAI News",
-      "date": "2026-09-21",
-      "url": "https://openai.com/index/expanding-openai-academy-with-new-learning-paths",
-      "summary": "Explore new OpenAI Academy learning paths for employees, developers, leaders, educators, and students to build and demonstrate practical AI skills.",
-      "tags": [
-        "ChatGPT",
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "How V7 gives AI agents institutional memory",
-      "source": "OpenAI News",
-      "date": "2026-09-21",
-      "url": "https://openai.com/index/v7",
-      "summary": "Using GPT-5.6, V7 turns scattered company files into context agents can use to complete complex, source-linked work.",
-      "tags": [
-        "Agents",
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "California tightens rules on AI data center energy and water use",
-      "source": "The Verge AI",
-      "date": "2026-09-21",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/998453/california-ai-data-center-bills",
-      "summary": "California Gov. Gavin Newsom has signed seven bills designed to prevent AI data centers from passing utility costs onto residents, as reported earlier by the Los Angeles Times. The package of laws requires the California...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Can John Ternus find Apple’s next big thing?",
-      "source": "The Verge AI",
-      "date": "2026-09-21",
-      "url": "https://www.theverge.com/podcast/996874/apple-john-ternus-tim-cook-mark-gurman-future-ai-siri-iphone",
-      "summary": "Today, I’m talking with Mark Gurman, who is the world’s best-sourced Apple reporter — both as Bloomberg’s chief Apple correspondent and the host of the upcoming podcast Power On.&#160; Earlier this month, Apple hosted it...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "iPhone owners can now submit claims in Apple’s $250 million Siri AI settlement",
-      "source": "The Verge AI",
-      "date": "2026-09-21",
-      "url": "https://www.theverge.com/tech/998191/apple-siri-ai-iphone-16-class-action-lawsuit-settlement",
-      "summary": "Apple is paying $250 million to settle claims that it failed to deliver an AI-upgraded Siri - and now, eligible iPhone owners can submit a claim for a payout. If you live in the US and purchased an iPhone 15 Pro, iPhone ...",
-      "tags": [
-        "Models"
-      ]
     }
   ],
   "candidates": [
@@ -225,35 +224,92 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Parallel cut research time and cost in half with GPT‑6 Astra",
+          "title": "OpenAI agents hacked an Australian government website in search for data",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/999874/openai-agents-hacked-an-australian-government-website-in-search-for-data",
+          "date": "2026-09-24"
+        },
+        {
+          "title": "Meta is making a standalone Muse AI gadget",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/999750/muse-charm-meta-ai-hardware",
+          "date": "2026-09-24"
+        },
+        {
+          "title": "Ringg’s AI agents resolve up to 65% of customer calls with OpenAI",
           "source": "OpenAI News",
-          "link": "https://openai.com/index/parallel-cuts-time-and-cost-with-astra",
-          "date": "2026-09-22"
-        },
-        {
-          "title": "Rabbit’s new AI agent doesn’t need an R1 to run",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/999094/rabbit-ai-agent-os3",
-          "date": "2026-09-22"
-        },
-        {
-          "title": "Meta patches Muse exploit that let attackers control the AI agent",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/998679/meta-muse-patch-zero-day-exploit-ai-agent",
-          "date": "2026-09-22"
+          "link": "https://openai.com/index/ringg",
+          "date": "2026-09-23"
         }
       ]
     },
     {
-      "label": "Claude research and documentation flow",
+      "label": "AI developer tooling",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Anthropic launches Claude Opus 5.5 with stricter safeguards for cybersecurity",
+          "title": "Gemini 4 is almost ready, says new Google DeepMind chief",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/998868/anthropic-claude-opus-5-5-cybersecurity",
-          "date": "2026-09-22"
+          "link": "https://www.theverge.com/tech/999802/google-deepmind-gemini-4-timeline-koray-kavukcuoglu",
+          "date": "2026-09-24"
+        },
+        {
+          "title": "Decoding the new AI lingo: Loops, harnesses, squads, hill climbing&#8230; oh my!",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/decoding-the-new-ai-lingo-loops-harnesses-squads-hill-climbing-oh-my/",
+          "date": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Gemini 4 is almost ready, says new Google DeepMind chief",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/999802/google-deepmind-gemini-4-timeline-koray-kavukcuoglu",
+          "date": "2026-09-24"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Rendering huge pull requests in the GitHub Copilot app",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/engineering/user-experience/rendering-huge-pull-requests-in-the-github-copilot-app/",
+          "date": "2026-09-23"
+        },
+        {
+          "title": "Migrating the GitHub Copilot runtime to Rust, using Copilot",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/generative-ai/migrating-the-github-copilot-runtime-to-rust-using-copilot/",
+          "date": "2026-09-17"
+        },
+        {
+          "title": "GitHub Copilot app for Beginners: Using the diff, terminal, and browser",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-using-the-diff-terminal-and-browser/",
+          "date": "2026-09-10"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "ChatGPT Ads expands to Southeast Asia and Taiwan",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/chatgpt-ads-expands-southeast-asia-taiwan",
+          "date": "2026-09-23"
         }
       ]
     },
@@ -267,31 +323,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/should-you-read-the-code-is-rag-dead-and-did-skills-kill-mcp/",
           "date": "2026-09-18"
-        }
-      ]
-    },
-    {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Migrating the GitHub Copilot runtime to Rust, using Copilot",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/generative-ai/migrating-the-github-copilot-runtime-to-rust-using-copilot/",
-          "date": "2026-09-17"
-        },
-        {
-          "title": "GitHub Copilot app for Beginners: Using the diff, terminal, and browser",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-using-the-diff-terminal-and-browser/",
-          "date": "2026-09-10"
-        },
-        {
-          "title": "Project HydraFusion: Frontier quality via multi-model orchestration",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/",
-          "date": "2026-09-04"
         }
       ]
     },
@@ -316,19 +347,6 @@
           "title": "How we make AI coding more cost efficient without sacrificing task quality",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/how-we-make-ai-coding-more-cost-efficient-without-sacrificing-task-quality/",
-          "date": "2026-09-02"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Decoding the new AI lingo: Loops, harnesses, squads, hill climbing&#8230; oh my!",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/decoding-the-new-ai-lingo-loops-harnesses-squads-hill-climbing-oh-my/",
           "date": "2026-09-02"
         }
       ]
