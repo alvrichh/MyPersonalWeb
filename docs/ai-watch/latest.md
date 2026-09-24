@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-09-23
+# Daily AI maintenance report — 2026-09-24
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,38 +13,40 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **OpenAI agents hacked an Australian government website in search for data** — The Verge AI · 2026-09-24
+  https://www.theverge.com/ai-artificial-intelligence/999874/openai-agents-hacked-an-australian-government-website-in-search-for-data
+- **Gemini 4 is almost ready, says new Google DeepMind chief** — The Verge AI · 2026-09-24
+  https://www.theverge.com/tech/999802/google-deepmind-gemini-4-timeline-koray-kavukcuoglu
+- **Meta is making a standalone Muse AI gadget** — The Verge AI · 2026-09-24
+  https://www.theverge.com/tech/999750/muse-charm-meta-ai-hardware
+- **Meta Connect 2026: The biggest news and announcements** — The Verge AI · 2026-09-24
+  https://www.theverge.com/tech/998480/meta-connect-2026-biggest-news-announcements
+- **Meta Connect 2026 live blog: On the ground at Mark Zuckerberg’s next big product launch** — The Verge AI · 2026-09-24
+  https://www.theverge.com/tech/998457/meta-connect-2026-live-blog-mark-zuckerberg-keynote
+- **Rendering huge pull requests in the GitHub Copilot app** — GitHub AI & ML Blog · 2026-09-23
+  https://github.blog/engineering/user-experience/rendering-huge-pull-requests-in-the-github-copilot-app/
+- **Two years of OpenAI Academy** — OpenAI News · 2026-09-23
+  https://openai.com/index/two-years-of-openai-academy
 - **OpenAI extends cyber access to Ukraine for civilian defense** — OpenAI News · 2026-09-23
   https://openai.com/index/openai-extends-cyber-access-to-ukraine-for-civilian-defense
+- **Sam Altman’s remarks at the United Nations Security Council** — OpenAI News · 2026-09-23
+  https://openai.com/index/sam-altman-un-security-council-remarks
+- **Ringg’s AI agents resolve up to 65% of customer calls with OpenAI** — OpenAI News · 2026-09-23
+  https://openai.com/index/ringg
+- **Introducing MentalHealthBench** — OpenAI News · 2026-09-23
+  https://openai.com/index/introducing-mentalhealthbench
+- **ChatGPT Ads expands to Southeast Asia and Taiwan** — OpenAI News · 2026-09-23
+  https://openai.com/index/chatgpt-ads-expands-southeast-asia-taiwan
+- **Airbnb widens access to GPT-6 Astra and OpenAI frontier models** — OpenAI News · 2026-09-23
+  https://openai.com/index/airbnb-gpt-6-astra
 - **Grab and OpenAI bring practical AI skills to Southeast Asia** — OpenAI News · 2026-09-23
   https://openai.com/index/grab-openai-ai-skills-southeast-asia
-- **OpenAI nabs key Patreon execs ahead of upcoming announcement** — The Verge AI · 2026-09-23
-  https://www.theverge.com/ai-artificial-intelligence/999249/openai-creators-patreon-execs-hire-sam-yam
-- **OpenAI wants to consult elite mathematicians about how to not fumble again** — The Verge AI · 2026-09-23
-  https://www.theverge.com/ai-artificial-intelligence/999167/openai-elite-mathematicians-panel
-- **Introducing GPT-6 Sol and Luna** — OpenAI News · 2026-09-22
-  https://openai.com/index/introducing-gpt-6-sol-and-luna
-- **Parallel cut research time and cost in half with GPT‑6 Astra** — OpenAI News · 2026-09-22
-  https://openai.com/index/parallel-cuts-time-and-cost-with-astra
-- **Priorities and principles for effective third party assessments** — OpenAI News · 2026-09-22
-  https://openai.com/index/priorities-principles-third-party-assessments
-- **Rabbit’s new AI agent doesn’t need an R1 to run** — The Verge AI · 2026-09-22
-  https://www.theverge.com/ai-artificial-intelligence/999094/rabbit-ai-agent-os3
-- **Andreessen Horowitz is launching an ‘academy’ with no homework and partnerships with Palantir, Google, and Meta** — The Verge AI · 2026-09-22
-  https://www.theverge.com/ai-artificial-intelligence/998813/andreessen-horowitz-ai-academy
-- **Anthropic launches Claude Opus 5.5 with stricter safeguards for cybersecurity** — The Verge AI · 2026-09-22
-  https://www.theverge.com/ai-artificial-intelligence/998868/anthropic-claude-opus-5-5-cybersecurity
-- **Trump says the US is officially renaming AI to ‘super intelligence’** — The Verge AI · 2026-09-22
-  https://www.theverge.com/ai-artificial-intelligence/998816/donald-trump-ai-super-intelligence
-- **Meta patches Muse exploit that let attackers control the AI agent** — The Verge AI · 2026-09-22
-  https://www.theverge.com/tech/998679/meta-muse-patch-zero-day-exploit-ai-agent
-- **Higgsfield AI ships new video features in a day with GPT-6 Astra** — OpenAI News · 2026-09-21
-  https://openai.com/index/higgsfield-from-prompt-to-production-with-astra
-- **Advisory Group on Mathematics and Artificial Intelligence** — OpenAI News · 2026-09-21
-  https://openai.com/index/advisory-group-on-mathematics-and-ai
-- **Building standards for the next phase of AI** — OpenAI News · 2026-09-21
-  https://openai.com/index/building-standards-next-phase-ai
-- **California tightens rules on AI data center energy and water use** — The Verge AI · 2026-09-21
-  https://www.theverge.com/ai-artificial-intelligence/998453/california-ai-data-center-bills
+- **Muse is coming to Meta smart glasses** — The Verge AI · 2026-09-23
+  https://www.theverge.com/tech/999673/meta-connect-2026-muse-glasses-features
+- **Meta ditches the camera on its newest smart glasses** — The Verge AI · 2026-09-23
+  https://www.theverge.com/tech/999281/ray-ban-meta-audio-glasses-meta-connect-2026
+- **Meta is making Muse more powerful and will let you video chat with it, too** — The Verge AI · 2026-09-23
+  https://www.theverge.com/tech/999454/meta-muse-ai-agent-video-chat-connect-2026
 - **Should you read the code, is RAG dead, and did Skills kill MCP?** — GitHub AI & ML Blog · 2026-09-18
   https://github.blog/ai-and-ml/should-you-read-the-code-is-rag-dead-and-did-skills-kill-mcp/
 - **New experts join Google’s AI & Economy team** — Google AI Blog · 2026-09-18
@@ -75,17 +77,16 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://github.blog/ai-and-ml/decoding-the-new-ai-lingo-loops-harnesses-squads-hill-climbing-oh-my/
 - **How we make AI coding more cost efficient without sacrificing task quality** — GitHub AI & ML Blog · 2026-09-02
   https://github.blog/ai-and-ml/github-copilot/how-we-make-ai-coding-more-cost-efficient-without-sacrificing-task-quality/
-- **GitHub Copilot app for Beginners: Automate Dependabot pull request triage** — GitHub AI & ML Blog · 2026-08-26
-  https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-automate-dependabot-pull-request-triage/
 
 ## Portfolio candidates
 
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **MCP / tool-connected assistants** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **MCP / tool-connected assistants** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
 
