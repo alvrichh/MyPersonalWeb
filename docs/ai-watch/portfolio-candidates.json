@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-24T13:06:56.846Z",
+  "generatedAt": "2026-09-25T13:12:40.168Z",
   "candidates": [
     {
       "label": "AI agents / automation workflows",
@@ -7,54 +7,41 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "OpenAI agents hacked an Australian government website in search for data",
+          "title": "Microsoft thinks its new Copilot ‘super app’ will be as influential as Office",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/999874/openai-agents-hacked-an-australian-government-website-in-search-for-data",
-          "date": "2026-09-24"
+          "link": "https://www.theverge.com/news/1000532/microsoft-copilot-super-app-chat-coding-autopilot",
+          "date": "2026-09-25"
         },
         {
-          "title": "Meta is making a standalone Muse AI gadget",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/999750/muse-charm-meta-ai-hardware",
-          "date": "2026-09-24"
-        },
-        {
-          "title": "Ringg’s AI agents resolve up to 65% of customer calls with OpenAI",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/ringg",
-          "date": "2026-09-23"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Gemini 4 is almost ready, says new Google DeepMind chief",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/999802/google-deepmind-gemini-4-timeline-koray-kavukcuoglu",
-          "date": "2026-09-24"
-        },
-        {
-          "title": "Decoding the new AI lingo: Loops, harnesses, squads, hill climbing&#8230; oh my!",
+          "title": "AI-powered fuzzing with the GitHub Security Lab Taskflow Agent",
           "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/decoding-the-new-ai-lingo-loops-harnesses-squads-hill-climbing-oh-my/",
-          "date": "2026-09-02"
+          "link": "https://github.blog/security/application-security/ai-powered-fuzzing-with-the-github-security-lab-taskflow-agent/",
+          "date": "2026-09-24"
+        },
+        {
+          "title": "Muse sure looks a lot like OpenClaw",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/report/1000180/muse-openclaw-instinct-lookalike",
+          "date": "2026-09-24"
         }
       ]
     },
     {
-      "label": "Gemini multimodal exploration",
+      "label": "AI coding assistant workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Gemini 4 is almost ready, says new Google DeepMind chief",
+          "title": "Microsoft thinks its new Copilot ‘super app’ will be as influential as Office",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/999802/google-deepmind-gemini-4-timeline-koray-kavukcuoglu",
-          "date": "2026-09-24"
+          "link": "https://www.theverge.com/news/1000532/microsoft-copilot-super-app-chat-coding-autopilot",
+          "date": "2026-09-25"
+        },
+        {
+          "title": "Project HydraFusion: Frontier quality via multi-model orchestration",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/",
+          "date": "2026-09-04"
         }
       ]
     },
@@ -63,6 +50,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Microsoft thinks its new Copilot ‘super app’ will be as influential as Office",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/news/1000532/microsoft-copilot-super-app-chat-coding-autopilot",
+          "date": "2026-09-25"
+        },
         {
           "title": "Rendering huge pull requests in the GitHub Copilot app",
           "source": "GitHub AI & ML Blog",
@@ -74,12 +67,38 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/generative-ai/migrating-the-github-copilot-runtime-to-rust-using-copilot/",
           "date": "2026-09-17"
+        }
+      ]
+    },
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "When chat is the wrong UI",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/when-chat-is-the-wrong-ui/",
+          "date": "2026-09-24"
         },
         {
-          "title": "GitHub Copilot app for Beginners: Using the diff, terminal, and browser",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-using-the-diff-terminal-and-browser/",
-          "date": "2026-09-10"
+          "title": "Muse will apparently let you download its entire filesystem",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1000222/meta-muse-ai-filesystem",
+          "date": "2026-09-24"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Gemini 3.8 Live with Live Avatar gives Google&#8217;s AI a face",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/1000328/google-gemini-ai-live-avatar-face",
+          "date": "2026-09-24"
         }
       ]
     },
@@ -106,31 +125,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/should-you-read-the-code-is-rag-dead-and-did-skills-kill-mcp/",
           "date": "2026-09-18"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Project HydraFusion: Frontier quality via multi-model orchestration",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/",
-          "date": "2026-09-04"
-        },
-        {
-          "title": "Decoding the new AI lingo: Loops, harnesses, squads, hill climbing&#8230; oh my!",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/decoding-the-new-ai-lingo-loops-harnesses-squads-hill-climbing-oh-my/",
-          "date": "2026-09-02"
-        },
-        {
-          "title": "How we make AI coding more cost efficient without sacrificing task quality",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/how-we-make-ai-coding-more-cost-efficient-without-sacrificing-task-quality/",
-          "date": "2026-09-02"
         }
       ]
     }
