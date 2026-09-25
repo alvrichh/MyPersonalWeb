@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-09-24
+# Daily AI maintenance report — 2026-09-25
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,16 +13,26 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
-- **OpenAI agents hacked an Australian government website in search for data** — The Verge AI · 2026-09-24
-  https://www.theverge.com/ai-artificial-intelligence/999874/openai-agents-hacked-an-australian-government-website-in-search-for-data
-- **Gemini 4 is almost ready, says new Google DeepMind chief** — The Verge AI · 2026-09-24
-  https://www.theverge.com/tech/999802/google-deepmind-gemini-4-timeline-koray-kavukcuoglu
-- **Meta is making a standalone Muse AI gadget** — The Verge AI · 2026-09-24
-  https://www.theverge.com/tech/999750/muse-charm-meta-ai-hardware
-- **Meta Connect 2026: The biggest news and announcements** — The Verge AI · 2026-09-24
-  https://www.theverge.com/tech/998480/meta-connect-2026-biggest-news-announcements
-- **Meta Connect 2026 live blog: On the ground at Mark Zuckerberg’s next big product launch** — The Verge AI · 2026-09-24
-  https://www.theverge.com/tech/998457/meta-connect-2026-live-blog-mark-zuckerberg-keynote
+- **Can Apple Home’s AI camera features outsmart Amazon’s and Google’s? I put them to the test** — The Verge AI · 2026-09-25
+  https://www.theverge.com/tech/1000321/apple-intelligence-home-security-camera-amazon-ring-alexa-google-nest-gemini-home-review
+- **Microsoft thinks its new Copilot ‘super app’ will be as influential as Office** — The Verge AI · 2026-09-25
+  https://www.theverge.com/news/1000532/microsoft-copilot-super-app-chat-coding-autopilot
+- **When chat is the wrong UI** — GitHub AI & ML Blog · 2026-09-24
+  https://github.blog/ai-and-ml/github-copilot/when-chat-is-the-wrong-ui/
+- **AI-powered fuzzing with the GitHub Security Lab Taskflow Agent** — GitHub AI & ML Blog · 2026-09-24
+  https://github.blog/security/application-security/ai-powered-fuzzing-with-the-github-security-lab-taskflow-agent/
+- **Gemini 3.8 Live with Live Avatar gives Google&#8217;s AI a face** — The Verge AI · 2026-09-24
+  https://www.theverge.com/tech/1000328/google-gemini-ai-live-avatar-face
+- **Jensen Huang talks about AI and climate change like a supervillain** — The Verge AI · 2026-09-24
+  https://www.theverge.com/tech/1000140/jensen-huang-nvidia-ai-energy-climate-change-supervillain
+- **Meta is going to let you build games with AI right on your phone** — The Verge AI · 2026-09-24
+  https://www.theverge.com/games/999972/meta-horizon-create-studio-ai-games
+- **Muse will apparently let you download its entire filesystem** — The Verge AI · 2026-09-24
+  https://www.theverge.com/ai-artificial-intelligence/1000222/meta-muse-ai-filesystem
+- **Muse sure looks a lot like OpenClaw** — The Verge AI · 2026-09-24
+  https://www.theverge.com/report/1000180/muse-openclaw-instinct-lookalike
+- **It’s sinister that Meta’s Muse AI mascot is so cute** — The Verge AI · 2026-09-24
+  https://www.theverge.com/column/999999/optimizer-meta-muse-ai-cute
 - **Rendering huge pull requests in the GitHub Copilot app** — GitHub AI & ML Blog · 2026-09-23
   https://github.blog/engineering/user-experience/rendering-huge-pull-requests-in-the-github-copilot-app/
 - **Two years of OpenAI Academy** — OpenAI News · 2026-09-23
@@ -41,12 +51,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/airbnb-gpt-6-astra
 - **Grab and OpenAI bring practical AI skills to Southeast Asia** — OpenAI News · 2026-09-23
   https://openai.com/index/grab-openai-ai-skills-southeast-asia
-- **Muse is coming to Meta smart glasses** — The Verge AI · 2026-09-23
-  https://www.theverge.com/tech/999673/meta-connect-2026-muse-glasses-features
-- **Meta ditches the camera on its newest smart glasses** — The Verge AI · 2026-09-23
-  https://www.theverge.com/tech/999281/ray-ban-meta-audio-glasses-meta-connect-2026
-- **Meta is making Muse more powerful and will let you video chat with it, too** — The Verge AI · 2026-09-23
-  https://www.theverge.com/tech/999454/meta-muse-ai-agent-video-chat-connect-2026
 - **Should you read the code, is RAG dead, and did Skills kill MCP?** — GitHub AI & ML Blog · 2026-09-18
   https://github.blog/ai-and-ml/should-you-read-the-code-is-rag-dead-and-did-skills-kill-mcp/
 - **New experts join Google’s AI & Economy team** — Google AI Blog · 2026-09-18
@@ -73,20 +77,16 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/
 - **GitHub Copilot app for Beginners: Run several agents at once** — GitHub AI & ML Blog · 2026-09-03
   https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-run-several-agents-at-once/
-- **Decoding the new AI lingo: Loops, harnesses, squads, hill climbing&#8230; oh my!** — GitHub AI & ML Blog · 2026-09-02
-  https://github.blog/ai-and-ml/decoding-the-new-ai-lingo-loops-harnesses-squads-hill-climbing-oh-my/
-- **How we make AI coding more cost efficient without sacrificing task quality** — GitHub AI & ML Blog · 2026-09-02
-  https://github.blog/ai-and-ml/github-copilot/how-we-make-ai-coding-more-cost-efficient-without-sacrificing-task-quality/
 
 ## Portfolio candidates
 
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **MCP / tool-connected assistants** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
 
