@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-09-25
+# Daily AI maintenance report — 2026-09-26
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,14 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **GitHub Copilot app for Beginners: How to build custom workflows with canvases** — GitHub AI & ML Blog · 2026-09-25
+  https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-build-custom-workflows-with-canvases/
+- **Meta makes the Muse filesystem even more accessible** — The Verge AI · 2026-09-25
+  https://www.theverge.com/ai-artificial-intelligence/1000784/meta-muse-filesystem
+- **Sony and UMG are suing Suno again** — The Verge AI · 2026-09-25
+  https://www.theverge.com/ai-artificial-intelligence/1000758/suno-sony-umg-lawsuit-ai-music
+- **One company is at the center of a wave of rogue AI attacks** — The Verge AI · 2026-09-25
+  https://www.theverge.com/ai-artificial-intelligence/1000644/irregular-rogue-ai-cyberattacks-hacking-openai-meta-anthropic-google
 - **Can Apple Home’s AI camera features outsmart Amazon’s and Google’s? I put them to the test** — The Verge AI · 2026-09-25
   https://www.theverge.com/tech/1000321/apple-intelligence-home-security-camera-amazon-ring-alexa-google-nest-gemini-home-review
 - **Microsoft thinks its new Copilot ‘super app’ will be as influential as Office** — The Verge AI · 2026-09-25
@@ -27,12 +35,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/tech/1000140/jensen-huang-nvidia-ai-energy-climate-change-supervillain
 - **Meta is going to let you build games with AI right on your phone** — The Verge AI · 2026-09-24
   https://www.theverge.com/games/999972/meta-horizon-create-studio-ai-games
-- **Muse will apparently let you download its entire filesystem** — The Verge AI · 2026-09-24
-  https://www.theverge.com/ai-artificial-intelligence/1000222/meta-muse-ai-filesystem
-- **Muse sure looks a lot like OpenClaw** — The Verge AI · 2026-09-24
-  https://www.theverge.com/report/1000180/muse-openclaw-instinct-lookalike
-- **It’s sinister that Meta’s Muse AI mascot is so cute** — The Verge AI · 2026-09-24
-  https://www.theverge.com/column/999999/optimizer-meta-muse-ai-cute
 - **Rendering huge pull requests in the GitHub Copilot app** — GitHub AI & ML Blog · 2026-09-23
   https://github.blog/engineering/user-experience/rendering-huge-pull-requests-in-the-github-copilot-app/
 - **Two years of OpenAI Academy** — OpenAI News · 2026-09-23
@@ -75,14 +77,12 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blog.google/products-and-platforms/products/search/running-race-training-tips/
 - **Project HydraFusion: Frontier quality via multi-model orchestration** — GitHub AI & ML Blog · 2026-09-04
   https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/
-- **GitHub Copilot app for Beginners: Run several agents at once** — GitHub AI & ML Blog · 2026-09-03
-  https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-run-several-agents-at-once/
 
 ## Portfolio candidates
 
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.

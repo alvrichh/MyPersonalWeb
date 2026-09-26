@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-25T13:12:40.168Z",
+  "generatedAt": "2026-09-26T12:38:01.571Z",
   "candidates": [
     {
       "label": "AI agents / automation workflows",
@@ -7,22 +7,47 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "GitHub Copilot app for Beginners: How to build custom workflows with canvases",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-build-custom-workflows-with-canvases/",
+          "date": "2026-09-25"
+        },
+        {
+          "title": "One company is at the center of a wave of rogue AI attacks",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1000644/irregular-rogue-ai-cyberattacks-hacking-openai-meta-anthropic-google",
+          "date": "2026-09-25"
+        },
+        {
+          "title": "Microsoft thinks its new Copilot ‘super app’ will be as influential as Office",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/news/1000532/microsoft-copilot-super-app-chat-coding-autopilot",
+          "date": "2026-09-25"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "GitHub Copilot app for Beginners: How to build custom workflows with canvases",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-build-custom-workflows-with-canvases/",
+          "date": "2026-09-25"
+        },
+        {
           "title": "Microsoft thinks its new Copilot ‘super app’ will be as influential as Office",
           "source": "The Verge AI",
           "link": "https://www.theverge.com/news/1000532/microsoft-copilot-super-app-chat-coding-autopilot",
           "date": "2026-09-25"
         },
         {
-          "title": "AI-powered fuzzing with the GitHub Security Lab Taskflow Agent",
+          "title": "Rendering huge pull requests in the GitHub Copilot app",
           "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/security/application-security/ai-powered-fuzzing-with-the-github-security-lab-taskflow-agent/",
-          "date": "2026-09-24"
-        },
-        {
-          "title": "Muse sure looks a lot like OpenClaw",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/report/1000180/muse-openclaw-instinct-lookalike",
-          "date": "2026-09-24"
+          "link": "https://github.blog/engineering/user-experience/rendering-huge-pull-requests-in-the-github-copilot-app/",
+          "date": "2026-09-23"
         }
       ]
     },
@@ -46,31 +71,6 @@
       ]
     },
     {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Microsoft thinks its new Copilot ‘super app’ will be as influential as Office",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/news/1000532/microsoft-copilot-super-app-chat-coding-autopilot",
-          "date": "2026-09-25"
-        },
-        {
-          "title": "Rendering huge pull requests in the GitHub Copilot app",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/engineering/user-experience/rendering-huge-pull-requests-in-the-github-copilot-app/",
-          "date": "2026-09-23"
-        },
-        {
-          "title": "Migrating the GitHub Copilot runtime to Rust, using Copilot",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/generative-ai/migrating-the-github-copilot-runtime-to-rust-using-copilot/",
-          "date": "2026-09-17"
-        }
-      ]
-    },
-    {
       "label": "AI developer tooling",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
@@ -79,12 +79,6 @@
           "title": "When chat is the wrong UI",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/when-chat-is-the-wrong-ui/",
-          "date": "2026-09-24"
-        },
-        {
-          "title": "Muse will apparently let you download its entire filesystem",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1000222/meta-muse-ai-filesystem",
           "date": "2026-09-24"
         }
       ]
