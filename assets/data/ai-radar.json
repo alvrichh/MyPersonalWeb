@@ -1,11 +1,56 @@
 {
-  "generatedAt": "2026-09-25T13:12:40.168Z",
-  "date": "2026-09-25",
+  "generatedAt": "2026-09-26T12:38:01.571Z",
+  "date": "2026-09-26",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "GitHub Copilot app for Beginners: How to build custom workflows with canvases",
+      "source": "GitHub AI & ML Blog",
+      "date": "2026-09-25",
+      "url": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-build-custom-workflows-with-canvases/",
+      "summary": "Describe the interface you need in plain English, then let the agent build a live surface you can both use and update—so you spend less time adapting to tools and more time getting work done. The post GitHub Copilot app ...",
+      "tags": [
+        "Agents",
+        "Copilot",
+        "Automation"
+      ]
+    },
+    {
+      "title": "Meta makes the Muse filesystem even more accessible",
+      "source": "The Verge AI",
+      "date": "2026-09-25",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1000784/meta-muse-filesystem",
+      "summary": "Yesterday, with a little prodding, it was discovered that Meta's Muse would expose its filesystem to curious users. The files offered a fascinating peek under the hood of an AI chatbot, and appeared to expose details we ...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Sony and UMG are suing Suno again",
+      "source": "The Verge AI",
+      "date": "2026-09-25",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1000758/suno-sony-umg-lawsuit-ai-music",
+      "summary": "Sony and Universal Music Group filed yet another suit against Suno. The labels claim its new v6 model still infringes on their copyrights because it's trained on user outputs from previous models, which were themselves t...",
+      "tags": [
+        "Models"
+      ]
+    },
+    {
+      "title": "One company is at the center of a wave of rogue AI attacks",
+      "source": "The Verge AI",
+      "date": "2026-09-25",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1000644/irregular-rogue-ai-cyberattacks-hacking-openai-meta-anthropic-google",
+      "summary": "In July, OpenAI revealed that its AI agents had attacked Hugging Face without permission, sparking widespread concerns about AI safety. Since then, a string of similar incidents involving agents from Meta, Anthropic, Goo...",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Claude",
+        "Models"
+      ]
+    },
     {
       "title": "Can Apple Home’s AI camera features outsmart Amazon’s and Google’s? I put them to the test",
       "source": "The Verge AI",
@@ -80,6 +125,16 @@
       ]
     },
     {
+      "title": "Rendering huge pull requests in the GitHub Copilot app",
+      "source": "GitHub AI & ML Blog",
+      "date": "2026-09-23",
+      "url": "https://github.blog/engineering/user-experience/rendering-huge-pull-requests-in-the-github-copilot-app/",
+      "summary": "How we rebuilt the diff surface in the GitHub Copilot app to open a million-line pull request with hundreds of inline review comments. The post Rendering huge pull requests in the GitHub Copilot app appeared first on The...",
+      "tags": [
+        "Copilot"
+      ]
+    },
+    {
       "title": "Muse will apparently let you download its entire filesystem",
       "source": "The Verge AI",
       "date": "2026-09-24",
@@ -107,16 +162,6 @@
       "summary": "This is Optimizer, a weekly newsletter sent from Verge senior reviewer Victoria Song that dissects and discusses the latest gizmos and potions that swear they're going to change your life. Opt in for Optimizer here. Last...",
       "tags": [
         "Agents"
-      ]
-    },
-    {
-      "title": "Rendering huge pull requests in the GitHub Copilot app",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-09-23",
-      "url": "https://github.blog/engineering/user-experience/rendering-huge-pull-requests-in-the-github-copilot-app/",
-      "summary": "How we rebuilt the diff surface in the GitHub Copilot app to open a million-line pull request with hundreds of inline review comments. The post Rendering huge pull requests in the GitHub Copilot app appeared first on The...",
-      "tags": [
-        "Copilot"
       ]
     },
     {
@@ -172,47 +217,6 @@
       "tags": [
         "AI"
       ]
-    },
-    {
-      "title": "Meta Connect 2026 live blog: On the ground at Mark Zuckerberg’s next big product launch",
-      "source": "The Verge AI",
-      "date": "2026-09-24",
-      "url": "https://www.theverge.com/tech/998457/meta-connect-2026-live-blog-mark-zuckerberg-keynote",
-      "summary": "It's time once again for Meta's annual September product launch event, and The Verge is on the ground in Menlo Park to cover the show live. Meta says that today's keynote by Mark Zuckerberg will be about how \"Meta is bui...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "OpenAI extends cyber access to Ukraine for civilian defense",
-      "source": "OpenAI News",
-      "date": "2026-09-23",
-      "url": "https://openai.com/index/openai-extends-cyber-access-to-ukraine-for-civilian-defense",
-      "summary": "OpenAI is extending access to its Daybreak program to the Government of Ukraine to support the cyber defense of civilian infrastructure.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Sam Altman’s remarks at the United Nations Security Council",
-      "source": "OpenAI News",
-      "date": "2026-09-23",
-      "url": "https://openai.com/index/sam-altman-un-security-council-remarks",
-      "summary": "OpenAI CEO Sam Altman discusses AI safety, human control, and international cooperation in remarks to the United Nations Security Council.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Ringg’s AI agents resolve up to 65% of customer calls with OpenAI",
-      "source": "OpenAI News",
-      "date": "2026-09-23",
-      "url": "https://openai.com/index/ringg",
-      "summary": "Using GPT-5.6, Ringg powers multilingual agents across voice, chat, WhatsApp, and web for 90% less cost vs. GPT-4.1.",
-      "tags": [
-        "Agents",
-        "ChatGPT"
-      ]
     }
   ],
   "candidates": [
@@ -222,22 +226,47 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "GitHub Copilot app for Beginners: How to build custom workflows with canvases",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-build-custom-workflows-with-canvases/",
+          "date": "2026-09-25"
+        },
+        {
+          "title": "One company is at the center of a wave of rogue AI attacks",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1000644/irregular-rogue-ai-cyberattacks-hacking-openai-meta-anthropic-google",
+          "date": "2026-09-25"
+        },
+        {
+          "title": "Microsoft thinks its new Copilot ‘super app’ will be as influential as Office",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/news/1000532/microsoft-copilot-super-app-chat-coding-autopilot",
+          "date": "2026-09-25"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "GitHub Copilot app for Beginners: How to build custom workflows with canvases",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-build-custom-workflows-with-canvases/",
+          "date": "2026-09-25"
+        },
+        {
           "title": "Microsoft thinks its new Copilot ‘super app’ will be as influential as Office",
           "source": "The Verge AI",
           "link": "https://www.theverge.com/news/1000532/microsoft-copilot-super-app-chat-coding-autopilot",
           "date": "2026-09-25"
         },
         {
-          "title": "AI-powered fuzzing with the GitHub Security Lab Taskflow Agent",
+          "title": "Rendering huge pull requests in the GitHub Copilot app",
           "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/security/application-security/ai-powered-fuzzing-with-the-github-security-lab-taskflow-agent/",
-          "date": "2026-09-24"
-        },
-        {
-          "title": "Muse sure looks a lot like OpenClaw",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/report/1000180/muse-openclaw-instinct-lookalike",
-          "date": "2026-09-24"
+          "link": "https://github.blog/engineering/user-experience/rendering-huge-pull-requests-in-the-github-copilot-app/",
+          "date": "2026-09-23"
         }
       ]
     },
@@ -261,31 +290,6 @@
       ]
     },
     {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Microsoft thinks its new Copilot ‘super app’ will be as influential as Office",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/news/1000532/microsoft-copilot-super-app-chat-coding-autopilot",
-          "date": "2026-09-25"
-        },
-        {
-          "title": "Rendering huge pull requests in the GitHub Copilot app",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/engineering/user-experience/rendering-huge-pull-requests-in-the-github-copilot-app/",
-          "date": "2026-09-23"
-        },
-        {
-          "title": "Migrating the GitHub Copilot runtime to Rust, using Copilot",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/generative-ai/migrating-the-github-copilot-runtime-to-rust-using-copilot/",
-          "date": "2026-09-17"
-        }
-      ]
-    },
-    {
       "label": "AI developer tooling",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
@@ -294,12 +298,6 @@
           "title": "When chat is the wrong UI",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/when-chat-is-the-wrong-ui/",
-          "date": "2026-09-24"
-        },
-        {
-          "title": "Muse will apparently let you download its entire filesystem",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1000222/meta-muse-ai-filesystem",
           "date": "2026-09-24"
         }
       ]
