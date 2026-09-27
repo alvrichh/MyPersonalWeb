@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-09-26
+# Daily AI maintenance report — 2026-09-27
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,8 +13,12 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **OpenAI pauses training of its ‘most capable models’** — The Verge AI · 2026-09-26
+  https://www.theverge.com/ai-artificial-intelligence/1001049/openai-training-pause
 - **GitHub Copilot app for Beginners: How to build custom workflows with canvases** — GitHub AI & ML Blog · 2026-09-25
   https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-build-custom-workflows-with-canvases/
+- **Can Cloudflare CEO Matthew Prince save the web from AI?** — The Verge AI · 2026-09-25
+  https://www.theverge.com/podcast/1000344/cloudflare-matthew-prince-google-zero-ai-web-advertising
 - **Meta makes the Muse filesystem even more accessible** — The Verge AI · 2026-09-25
   https://www.theverge.com/ai-artificial-intelligence/1000784/meta-muse-filesystem
 - **Sony and UMG are suing Suno again** — The Verge AI · 2026-09-25
@@ -31,10 +35,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://github.blog/security/application-security/ai-powered-fuzzing-with-the-github-security-lab-taskflow-agent/
 - **Gemini 3.8 Live with Live Avatar gives Google&#8217;s AI a face** — The Verge AI · 2026-09-24
   https://www.theverge.com/tech/1000328/google-gemini-ai-live-avatar-face
-- **Jensen Huang talks about AI and climate change like a supervillain** — The Verge AI · 2026-09-24
-  https://www.theverge.com/tech/1000140/jensen-huang-nvidia-ai-energy-climate-change-supervillain
-- **Meta is going to let you build games with AI right on your phone** — The Verge AI · 2026-09-24
-  https://www.theverge.com/games/999972/meta-horizon-create-studio-ai-games
 - **Rendering huge pull requests in the GitHub Copilot app** — GitHub AI & ML Blog · 2026-09-23
   https://github.blog/engineering/user-experience/rendering-huge-pull-requests-in-the-github-copilot-app/
 - **Two years of OpenAI Academy** — OpenAI News · 2026-09-23
