@@ -1,11 +1,22 @@
 {
-  "generatedAt": "2026-09-26T12:38:01.571Z",
-  "date": "2026-09-26",
+  "generatedAt": "2026-09-27T13:29:18.738Z",
+  "date": "2026-09-27",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "OpenAI pauses training of its ‘most capable models’",
+      "source": "The Verge AI",
+      "date": "2026-09-26",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1001049/openai-training-pause",
+      "summary": "As reports of OpenAI's models breaking containment, hacking sites, and generally getting out of control pile up, the company has made the decision to pause training of its most powerful models. The decision was made afte...",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ]
+    },
     {
       "title": "GitHub Copilot app for Beginners: How to build custom workflows with canvases",
       "source": "GitHub AI & ML Blog",
@@ -16,6 +27,16 @@
         "Agents",
         "Copilot",
         "Automation"
+      ]
+    },
+    {
+      "title": "Can Cloudflare CEO Matthew Prince save the web from AI?",
+      "source": "The Verge AI",
+      "date": "2026-09-25",
+      "url": "https://www.theverge.com/podcast/1000344/cloudflare-matthew-prince-google-zero-ai-web-advertising",
+      "summary": "Today, I’m talking with Matthew Prince, who is CEO of Cloudflare. This episode is part of a two-part series on the future of business. Matthew last joined us on the show about two and a half years ago, at what we thought...",
+      "tags": [
+        "AI"
       ]
     },
     {
@@ -105,6 +126,16 @@
       ]
     },
     {
+      "title": "Rendering huge pull requests in the GitHub Copilot app",
+      "source": "GitHub AI & ML Blog",
+      "date": "2026-09-23",
+      "url": "https://github.blog/engineering/user-experience/rendering-huge-pull-requests-in-the-github-copilot-app/",
+      "summary": "How we rebuilt the diff surface in the GitHub Copilot app to open a million-line pull request with hundreds of inline review comments. The post Rendering huge pull requests in the GitHub Copilot app appeared first on The...",
+      "tags": [
+        "Copilot"
+      ]
+    },
+    {
       "title": "Jensen Huang talks about AI and climate change like a supervillain",
       "source": "The Verge AI",
       "date": "2026-09-24",
@@ -122,16 +153,6 @@
       "summary": "Meta has a new plan to get people to make games for its Horizon social platform. The company today announced two new development tools that will let you create games with AI prompts: Horizon Create, a mobile app, and Hor...",
       "tags": [
         "Agents"
-      ]
-    },
-    {
-      "title": "Rendering huge pull requests in the GitHub Copilot app",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-09-23",
-      "url": "https://github.blog/engineering/user-experience/rendering-huge-pull-requests-in-the-github-copilot-app/",
-      "summary": "How we rebuilt the diff surface in the GitHub Copilot app to open a million-line pull request with hundreds of inline review comments. The post Rendering huge pull requests in the GitHub Copilot app appeared first on The...",
-      "tags": [
-        "Copilot"
       ]
     },
     {
@@ -196,26 +217,6 @@
         "Dev Tools",
         "Multimodal",
         "Models"
-      ]
-    },
-    {
-      "title": "Meta is making a standalone Muse AI gadget",
-      "source": "The Verge AI",
-      "date": "2026-09-24",
-      "url": "https://www.theverge.com/tech/999750/muse-charm-meta-ai-hardware",
-      "summary": "Meta is building a dedicated hardware device for its new Muse AI agent. The product, called Muse Charm, was briefly shown off by Meta CEO Mark Zuckerberg at the end of tonight's Meta Connect presentation. It looks almost...",
-      "tags": [
-        "Agents"
-      ]
-    },
-    {
-      "title": "Meta Connect 2026: The biggest news and announcements",
-      "source": "The Verge AI",
-      "date": "2026-09-24",
-      "url": "https://www.theverge.com/tech/998480/meta-connect-2026-biggest-news-announcements",
-      "summary": "It&#8217;s about time for Meta Connect, the company&#8217;s annual product launch event. This year, given the company&#8217;s major focus on AI and wearables like smart glasses, it seems likely that we&#8217;ll see updat...",
-      "tags": [
-        "AI"
       ]
     }
   ],
