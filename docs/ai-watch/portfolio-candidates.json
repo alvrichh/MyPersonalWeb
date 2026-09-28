@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-27T13:29:18.738Z",
+  "generatedAt": "2026-09-28T16:23:42.013Z",
   "candidates": [
     {
       "label": "AI agents / automation workflows",
@@ -7,21 +7,21 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "Nvidia says its new AI safety platform can contain rogue agents within ‘milliseconds’",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/1001287/nvidia-ai-safety-platform-rogue-agents",
+          "date": "2026-09-28"
+        },
+        {
+          "title": "OpenAI agents tried to ‘bruteforce’ a UN website",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1001178/openai-agents-bruteforce-un-website",
+          "date": "2026-09-28"
+        },
+        {
           "title": "GitHub Copilot app for Beginners: How to build custom workflows with canvases",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-build-custom-workflows-with-canvases/",
-          "date": "2026-09-25"
-        },
-        {
-          "title": "One company is at the center of a wave of rogue AI attacks",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1000644/irregular-rogue-ai-cyberattacks-hacking-openai-meta-anthropic-google",
-          "date": "2026-09-25"
-        },
-        {
-          "title": "Microsoft thinks its new Copilot ‘super app’ will be as influential as Office",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/news/1000532/microsoft-copilot-super-app-chat-coding-autopilot",
           "date": "2026-09-25"
         }
       ]
@@ -38,35 +38,16 @@
           "date": "2026-09-25"
         },
         {
-          "title": "Microsoft thinks its new Copilot ‘super app’ will be as influential as Office",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/news/1000532/microsoft-copilot-super-app-chat-coding-autopilot",
-          "date": "2026-09-25"
-        },
-        {
           "title": "Rendering huge pull requests in the GitHub Copilot app",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/engineering/user-experience/rendering-huge-pull-requests-in-the-github-copilot-app/",
           "date": "2026-09-23"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Microsoft thinks its new Copilot ‘super app’ will be as influential as Office",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/news/1000532/microsoft-copilot-super-app-chat-coding-autopilot",
-          "date": "2026-09-25"
         },
         {
-          "title": "Project HydraFusion: Frontier quality via multi-model orchestration",
+          "title": "Migrating the GitHub Copilot runtime to Rust, using Copilot",
           "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/",
-          "date": "2026-09-04"
+          "link": "https://github.blog/ai-and-ml/generative-ai/migrating-the-github-copilot-runtime-to-rust-using-copilot/",
+          "date": "2026-09-17"
         }
       ]
     },
@@ -79,19 +60,6 @@
           "title": "When chat is the wrong UI",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/when-chat-is-the-wrong-ui/",
-          "date": "2026-09-24"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Gemini 3.8 Live with Live Avatar gives Google&#8217;s AI a face",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/1000328/google-gemini-ai-live-avatar-face",
           "date": "2026-09-24"
         }
       ]
@@ -119,6 +87,19 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/should-you-read-the-code-is-rag-dead-and-did-skills-kill-mcp/",
           "date": "2026-09-18"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Project HydraFusion: Frontier quality via multi-model orchestration",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/",
+          "date": "2026-09-04"
         }
       ]
     }
