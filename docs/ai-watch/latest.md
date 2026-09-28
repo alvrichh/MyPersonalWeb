@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-09-27
+# Daily AI maintenance report — 2026-09-28
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,7 +13,15 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
-- **OpenAI pauses training of its ‘most capable models’** — The Verge AI · 2026-09-26
+- **The SaaSpocalypse that wasn&#8217;t, with Atlassian CEO Mike Cannon-Brookes** — The Verge AI · 2026-09-28
+  https://www.theverge.com/podcast/1000914/atlassian-ceo-mike-cannon-brookes-saaspocalypse-ai-enterprise-software-trello-jira
+- **Nvidia says its new AI safety platform can contain rogue agents within ‘milliseconds’** — The Verge AI · 2026-09-28
+  https://www.theverge.com/tech/1001287/nvidia-ai-safety-platform-rogue-agents
+- **Engram is a sampler that turns broken AI hallucinations into music** — The Verge AI · 2026-09-28
+  https://www.theverge.com/ai-artificial-intelligence/1001193/engram-sampler-ai-hallucinations-music
+- **OpenAI agents tried to ‘bruteforce’ a UN website** — The Verge AI · 2026-09-28
+  https://www.theverge.com/ai-artificial-intelligence/1001178/openai-agents-bruteforce-un-website
+- **OpenAI pauses training of its ‘most capable models’** — The Verge AI · 2026-09-28
   https://www.theverge.com/ai-artificial-intelligence/1001049/openai-training-pause
 - **GitHub Copilot app for Beginners: How to build custom workflows with canvases** — GitHub AI & ML Blog · 2026-09-25
   https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-build-custom-workflows-with-canvases/
@@ -23,18 +31,10 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/ai-artificial-intelligence/1000784/meta-muse-filesystem
 - **Sony and UMG are suing Suno again** — The Verge AI · 2026-09-25
   https://www.theverge.com/ai-artificial-intelligence/1000758/suno-sony-umg-lawsuit-ai-music
-- **One company is at the center of a wave of rogue AI attacks** — The Verge AI · 2026-09-25
-  https://www.theverge.com/ai-artificial-intelligence/1000644/irregular-rogue-ai-cyberattacks-hacking-openai-meta-anthropic-google
-- **Can Apple Home’s AI camera features outsmart Amazon’s and Google’s? I put them to the test** — The Verge AI · 2026-09-25
-  https://www.theverge.com/tech/1000321/apple-intelligence-home-security-camera-amazon-ring-alexa-google-nest-gemini-home-review
-- **Microsoft thinks its new Copilot ‘super app’ will be as influential as Office** — The Verge AI · 2026-09-25
-  https://www.theverge.com/news/1000532/microsoft-copilot-super-app-chat-coding-autopilot
 - **When chat is the wrong UI** — GitHub AI & ML Blog · 2026-09-24
   https://github.blog/ai-and-ml/github-copilot/when-chat-is-the-wrong-ui/
 - **AI-powered fuzzing with the GitHub Security Lab Taskflow Agent** — GitHub AI & ML Blog · 2026-09-24
   https://github.blog/security/application-security/ai-powered-fuzzing-with-the-github-security-lab-taskflow-agent/
-- **Gemini 3.8 Live with Live Avatar gives Google&#8217;s AI a face** — The Verge AI · 2026-09-24
-  https://www.theverge.com/tech/1000328/google-gemini-ai-live-avatar-face
 - **Rendering huge pull requests in the GitHub Copilot app** — GitHub AI & ML Blog · 2026-09-23
   https://github.blog/engineering/user-experience/rendering-huge-pull-requests-in-the-github-copilot-app/
 - **Two years of OpenAI Academy** — OpenAI News · 2026-09-23
@@ -82,11 +82,10 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **MCP / tool-connected assistants** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
 

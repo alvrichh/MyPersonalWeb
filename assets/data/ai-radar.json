@@ -1,15 +1,56 @@
 {
-  "generatedAt": "2026-09-27T13:29:18.738Z",
-  "date": "2026-09-27",
+  "generatedAt": "2026-09-28T16:23:42.013Z",
+  "date": "2026-09-28",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
     {
+      "title": "The SaaSpocalypse that wasn&#8217;t, with Atlassian CEO Mike Cannon-Brookes",
+      "source": "The Verge AI",
+      "date": "2026-09-28",
+      "url": "https://www.theverge.com/podcast/1000914/atlassian-ceo-mike-cannon-brookes-saaspocalypse-ai-enterprise-software-trello-jira",
+      "summary": "Today, I’m talking with Mike Cannon-Brookes, who is cofounder and CEO of Atlassian.&#160; Atlassian is one of those companies that every other company runs on — it makes important platform tools like Jira and Trello that...",
+      "tags": [
+        "Agents"
+      ]
+    },
+    {
+      "title": "Nvidia says its new AI safety platform can contain rogue agents within ‘milliseconds’",
+      "source": "The Verge AI",
+      "date": "2026-09-28",
+      "url": "https://www.theverge.com/tech/1001287/nvidia-ai-safety-platform-rogue-agents",
+      "summary": "Nvidia is launching a new safety platform designed to contain and monitor AI agents, a move that comes in response to a wave of rogue hacking incidents, as reported earlier by Reuters. In an announcement on Monday, Nvidi...",
+      "tags": [
+        "Agents"
+      ]
+    },
+    {
+      "title": "Engram is a sampler that turns broken AI hallucinations into music",
+      "source": "The Verge AI",
+      "date": "2026-09-28",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1001193/engram-sampler-ai-hallucinations-music",
+      "summary": "Music startup Thoughtful Things has just launched the Kickstarter campaign for its first instrument, Engram. It's a sampler and groovebox that uses AI to mangle incoming audio and even hallucinate completely new sounds. ...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "OpenAI agents tried to ‘bruteforce’ a UN website",
+      "source": "The Verge AI",
+      "date": "2026-09-28",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1001178/openai-agents-bruteforce-un-website",
+      "summary": "Security researcher Rowan Howard-Jones says that OpenAI agents scanned the UN Conference on Trade and Development's (UNCTAD) statistics site over 16,000 times between April and June. While the incident doesn't quite rise...",
+      "tags": [
+        "Agents",
+        "ChatGPT"
+      ]
+    },
+    {
       "title": "OpenAI pauses training of its ‘most capable models’",
       "source": "The Verge AI",
-      "date": "2026-09-26",
+      "date": "2026-09-28",
       "url": "https://www.theverge.com/ai-artificial-intelligence/1001049/openai-training-pause",
       "summary": "As reports of OpenAI's models breaking containment, hacking sites, and generally getting out of control pile up, the company has made the decision to pause training of its most powerful models. The decision was made afte...",
       "tags": [
@@ -60,6 +101,36 @@
       ]
     },
     {
+      "title": "When chat is the wrong UI",
+      "source": "GitHub AI & ML Blog",
+      "date": "2026-09-24",
+      "url": "https://github.blog/ai-and-ml/github-copilot/when-chat-is-the-wrong-ui/",
+      "summary": "What is a developer to do when they need something more tangible than a chat box? Enter canvases. The post When chat is the wrong UI appeared first on The GitHub Blog.",
+      "tags": [
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "AI-powered fuzzing with the GitHub Security Lab Taskflow Agent",
+      "source": "GitHub AI & ML Blog",
+      "date": "2026-09-24",
+      "url": "https://github.blog/security/application-security/ai-powered-fuzzing-with-the-github-security-lab-taskflow-agent/",
+      "summary": "In this blog post, I explain how to use the new fuzzing taskflow based on the GitHub Security Lab Taskflow Agent AI framework.  The post AI-powered fuzzing with the GitHub Security Lab Taskflow Agent appeared first on Th...",
+      "tags": [
+        "Agents"
+      ]
+    },
+    {
+      "title": "Rendering huge pull requests in the GitHub Copilot app",
+      "source": "GitHub AI & ML Blog",
+      "date": "2026-09-23",
+      "url": "https://github.blog/engineering/user-experience/rendering-huge-pull-requests-in-the-github-copilot-app/",
+      "summary": "How we rebuilt the diff surface in the GitHub Copilot app to open a million-line pull request with hundreds of inline review comments. The post Rendering huge pull requests in the GitHub Copilot app appeared first on The...",
+      "tags": [
+        "Copilot"
+      ]
+    },
+    {
       "title": "One company is at the center of a wave of rogue AI attacks",
       "source": "The Verge AI",
       "date": "2026-09-25",
@@ -95,26 +166,6 @@
       ]
     },
     {
-      "title": "When chat is the wrong UI",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-09-24",
-      "url": "https://github.blog/ai-and-ml/github-copilot/when-chat-is-the-wrong-ui/",
-      "summary": "What is a developer to do when they need something more tangible than a chat box? Enter canvases. The post When chat is the wrong UI appeared first on The GitHub Blog.",
-      "tags": [
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "AI-powered fuzzing with the GitHub Security Lab Taskflow Agent",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-09-24",
-      "url": "https://github.blog/security/application-security/ai-powered-fuzzing-with-the-github-security-lab-taskflow-agent/",
-      "summary": "In this blog post, I explain how to use the new fuzzing taskflow based on the GitHub Security Lab Taskflow Agent AI framework.  The post AI-powered fuzzing with the GitHub Security Lab Taskflow Agent appeared first on Th...",
-      "tags": [
-        "Agents"
-      ]
-    },
-    {
       "title": "Gemini 3.8 Live with Live Avatar gives Google&#8217;s AI a face",
       "source": "The Verge AI",
       "date": "2026-09-24",
@@ -123,16 +174,6 @@
       "tags": [
         "Gemini",
         "Models"
-      ]
-    },
-    {
-      "title": "Rendering huge pull requests in the GitHub Copilot app",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-09-23",
-      "url": "https://github.blog/engineering/user-experience/rendering-huge-pull-requests-in-the-github-copilot-app/",
-      "summary": "How we rebuilt the diff surface in the GitHub Copilot app to open a million-line pull request with hundreds of inline review comments. The post Rendering huge pull requests in the GitHub Copilot app appeared first on The...",
-      "tags": [
-        "Copilot"
       ]
     },
     {
@@ -174,50 +215,6 @@
       "tags": [
         "Agents"
       ]
-    },
-    {
-      "title": "It’s sinister that Meta’s Muse AI mascot is so cute",
-      "source": "The Verge AI",
-      "date": "2026-09-24",
-      "url": "https://www.theverge.com/column/999999/optimizer-meta-muse-ai-cute",
-      "summary": "This is Optimizer, a weekly newsletter sent from Verge senior reviewer Victoria Song that dissects and discusses the latest gizmos and potions that swear they're going to change your life. Opt in for Optimizer here. Last...",
-      "tags": [
-        "Agents"
-      ]
-    },
-    {
-      "title": "Two years of OpenAI Academy",
-      "source": "OpenAI News",
-      "date": "2026-09-23",
-      "url": "https://openai.com/index/two-years-of-openai-academy",
-      "summary": "Marking two years of OpenAI Academy and bringing AI skills to even more communities.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "OpenAI agents hacked an Australian government website in search for data",
-      "source": "The Verge AI",
-      "date": "2026-09-24",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/999874/openai-agents-hacked-an-australian-government-website-in-search-for-data",
-      "summary": "OpenAI's artificial intelligence agents hacked an Australian government website and attempted to breach numerous other government and university websites. The attack appears to be the first confirmed instance of a rogue ...",
-      "tags": [
-        "Agents",
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Gemini 4 is almost ready, says new Google DeepMind chief",
-      "source": "The Verge AI",
-      "date": "2026-09-24",
-      "url": "https://www.theverge.com/tech/999802/google-deepmind-gemini-4-timeline-koray-kavukcuoglu",
-      "summary": "Google is reportedly nearing the launch of its long awaited Gemini 4 model, after dawdling behind rival developers on flagship AI releases. Speaking with The Information during his first media appearance as the leader of...",
-      "tags": [
-        "Gemini",
-        "Dev Tools",
-        "Multimodal",
-        "Models"
-      ]
     }
   ],
   "candidates": [
@@ -227,21 +224,21 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "Nvidia says its new AI safety platform can contain rogue agents within ‘milliseconds’",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/1001287/nvidia-ai-safety-platform-rogue-agents",
+          "date": "2026-09-28"
+        },
+        {
+          "title": "OpenAI agents tried to ‘bruteforce’ a UN website",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1001178/openai-agents-bruteforce-un-website",
+          "date": "2026-09-28"
+        },
+        {
           "title": "GitHub Copilot app for Beginners: How to build custom workflows with canvases",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-build-custom-workflows-with-canvases/",
-          "date": "2026-09-25"
-        },
-        {
-          "title": "One company is at the center of a wave of rogue AI attacks",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1000644/irregular-rogue-ai-cyberattacks-hacking-openai-meta-anthropic-google",
-          "date": "2026-09-25"
-        },
-        {
-          "title": "Microsoft thinks its new Copilot ‘super app’ will be as influential as Office",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/news/1000532/microsoft-copilot-super-app-chat-coding-autopilot",
           "date": "2026-09-25"
         }
       ]
@@ -258,35 +255,16 @@
           "date": "2026-09-25"
         },
         {
-          "title": "Microsoft thinks its new Copilot ‘super app’ will be as influential as Office",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/news/1000532/microsoft-copilot-super-app-chat-coding-autopilot",
-          "date": "2026-09-25"
-        },
-        {
           "title": "Rendering huge pull requests in the GitHub Copilot app",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/engineering/user-experience/rendering-huge-pull-requests-in-the-github-copilot-app/",
           "date": "2026-09-23"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Microsoft thinks its new Copilot ‘super app’ will be as influential as Office",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/news/1000532/microsoft-copilot-super-app-chat-coding-autopilot",
-          "date": "2026-09-25"
         },
         {
-          "title": "Project HydraFusion: Frontier quality via multi-model orchestration",
+          "title": "Migrating the GitHub Copilot runtime to Rust, using Copilot",
           "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/",
-          "date": "2026-09-04"
+          "link": "https://github.blog/ai-and-ml/generative-ai/migrating-the-github-copilot-runtime-to-rust-using-copilot/",
+          "date": "2026-09-17"
         }
       ]
     },
@@ -299,19 +277,6 @@
           "title": "When chat is the wrong UI",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/when-chat-is-the-wrong-ui/",
-          "date": "2026-09-24"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Gemini 3.8 Live with Live Avatar gives Google&#8217;s AI a face",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/1000328/google-gemini-ai-live-avatar-face",
           "date": "2026-09-24"
         }
       ]
@@ -339,6 +304,19 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/should-you-read-the-code-is-rag-dead-and-did-skills-kill-mcp/",
           "date": "2026-09-18"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Project HydraFusion: Frontier quality via multi-model orchestration",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/",
+          "date": "2026-09-04"
         }
       ]
     }
