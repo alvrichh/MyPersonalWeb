@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-28T16:23:42.013Z",
+  "generatedAt": "2026-09-29T14:33:43.777Z",
   "candidates": [
     {
       "label": "AI agents / automation workflows",
@@ -7,15 +7,15 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Nvidia says its new AI safety platform can contain rogue agents within ‘milliseconds’",
+          "title": "Meta&#8217;s Muse AI sent a YouTuber’s address to a stranger",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/1001287/nvidia-ai-safety-platform-rogue-agents",
-          "date": "2026-09-28"
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1001886/meta-muse-ai-facebook-marketplace-security-concerns",
+          "date": "2026-09-29"
         },
         {
-          "title": "OpenAI agents tried to ‘bruteforce’ a UN website",
+          "title": "OpenAI’s AI agents need to catch up",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1001178/openai-agents-bruteforce-un-website",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1001590/openai-devday-2026-aeon-ai-agent",
           "date": "2026-09-28"
         },
         {
@@ -23,6 +23,19 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-build-custom-workflows-with-canvases/",
           "date": "2026-09-25"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Florida seeks a ban on ChatGPT acting like a person",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1001527/chatgpt-florida-ban-first-person-human-attributes-kids",
+          "date": "2026-09-28"
         }
       ]
     },
@@ -61,19 +74,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/when-chat-is-the-wrong-ui/",
           "date": "2026-09-24"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "ChatGPT Ads expands to Southeast Asia and Taiwan",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/chatgpt-ads-expands-southeast-asia-taiwan",
-          "date": "2026-09-23"
         }
       ]
     },
