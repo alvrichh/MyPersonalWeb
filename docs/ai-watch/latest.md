@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-09-29
+# Daily AI maintenance report — 2026-09-30
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,30 +13,36 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
-- **Meta&#8217;s Muse AI sent a YouTuber’s address to a stranger** — The Verge AI · 2026-09-29
-  https://www.theverge.com/ai-artificial-intelligence/1001886/meta-muse-ai-facebook-marketplace-security-concerns
-- **Will Chinese AI companies slow down? A top House Democrat wants answers** — The Verge AI · 2026-09-29
-  https://www.theverge.com/policy/1001767/khanna-ai-safety-china-treaty
-- **Anthropic warns of ‘catastrophic’ AI risks in its own IPO filing** — The Verge AI · 2026-09-29
-  https://www.theverge.com/ai-artificial-intelligence/1001838/anthropic-ipo-prospectus-ai-safety-threat
+- **Here’s how tech leaders will self-police AI safety under Trump’s deal** — The Verge AI · 2026-09-30
+  https://www.theverge.com/ai-artificial-intelligence/1002584/trump-us-ai-safety-deal-self-regulation-tech-execs
+- **Sam Altman says OpenAI won’t go public until its models are safe** — The Verge AI · 2026-09-30
+  https://www.theverge.com/ai-artificial-intelligence/1002505/sam-altman-openai-ipo-devday-ai-safety
+- **Elon Musk&#8217;s AI-powered Grokipedia is updating again** — The Verge AI · 2026-09-30
+  https://www.theverge.com/tech/1002448/elon-musk-grokipedia-ai-updating-again
+- **OpenAI DevDay 2026: The biggest news and announcements** — The Verge AI · 2026-09-30
+  https://www.theverge.com/ai-artificial-intelligence/1001681/openai-devday-2026-biggest-news-announcements
+- **Introducing GPT-6.1 Sol** — OpenAI News · 2026-09-29
+  https://openai.com/index/introducing-gpt-6-1-sol
+- **DevDay 2026 Recap** — OpenAI News · 2026-09-29
+  https://openai.com/index/devday-2026-recap
+- **Introducing dots** — OpenAI News · 2026-09-29
+  https://openai.com/index/introducing-dots
+- **Trump orders US government to call AI ‘Super Intelligence’** — The Verge AI · 2026-09-29
+  https://www.theverge.com/policy/1002468/trump-ai-superintelligence-executive-order-ai
+- **AI researchers put out videos saying superintelligence is ‘exactly as dangerous as it sounds’** — The Verge AI · 2026-09-29
+  https://www.theverge.com/ai-artificial-intelligence/1002238/openai-google-anthropic-ai-researchers-safety-interviews
+- **OpenAI launches Dots, its Muse competitor** — The Verge AI · 2026-09-29
+  https://www.theverge.com/ai-artificial-intelligence/1002033/openai-dots-launch-muse-competitor
+- **Protesters gather at OpenAI’s DevDay** — The Verge AI · 2026-09-29
+  https://www.theverge.com/ai-artificial-intelligence/1002201/openai-sam-altman-openai-devday-protests-ice-data-centers
 - **Watch the winning trailer from the Future Vision XPRIZE, The Gifted.** — Google AI Blog · 2026-09-28
   https://blog.google/innovation-and-ai/technology/ai/winner-future-vision-xprize/
-- **How we will do better for Australia** — OpenAI News · 2026-09-28
-  https://openai.com/index/how-we-will-do-better-for-australia
 - **Towards safety cases for frontier AI training** — OpenAI News · 2026-09-28
   https://openai.com/index/towards-safety-cases-for-frontier-ai-training
+- **How we will do better for Australia** — OpenAI News · 2026-09-28
+  https://openai.com/index/how-we-will-do-better-for-australia
 - **The Lenfest Institute grows landmark program with expanded OpenAI support** — OpenAI News · 2026-09-28
   https://openai.com/index/lenfest-ai-collaborative-expansion
-- **AMD is acquiring AI company World Labs in a deal worth more than $8 billion** — The Verge AI · 2026-09-28
-  https://www.theverge.com/tech/1001749/amd-world-labs-ai-acquisition-deal
-- **OpenAI’s AI agents need to catch up** — The Verge AI · 2026-09-28
-  https://www.theverge.com/ai-artificial-intelligence/1001590/openai-devday-2026-aeon-ai-agent
-- **AI is supercharging hacking, and your local hospitals and banks aren’t ready** — The Verge AI · 2026-09-28
-  https://www.theverge.com/ai-artificial-intelligence/1001427/ai-is-supercharging-hacking-and-your-local-hospitals-and-banks-arent-ready
-- **Florida seeks a ban on ChatGPT acting like a person** — The Verge AI · 2026-09-28
-  https://www.theverge.com/ai-artificial-intelligence/1001527/chatgpt-florida-ban-first-person-human-attributes-kids
-- **OpenAI keeps bulldozing mathematicians** — The Verge AI · 2026-09-28
-  https://www.theverge.com/ai-artificial-intelligence/1001477/openai-math-advisory-group
 - **GitHub Copilot app for Beginners: How to build custom workflows with canvases** — GitHub AI & ML Blog · 2026-09-25
   https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-build-custom-workflows-with-canvases/
 - **When chat is the wrong UI** — GitHub AI & ML Blog · 2026-09-24
@@ -49,12 +55,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/two-years-of-openai-academy
 - **OpenAI extends cyber access to Ukraine for civilian defense** — OpenAI News · 2026-09-23
   https://openai.com/index/openai-extends-cyber-access-to-ukraine-for-civilian-defense
-- **Ringg’s AI agents resolve up to 65% of customer calls with OpenAI** — OpenAI News · 2026-09-23
-  https://openai.com/index/ringg
-- **Sam Altman’s remarks at the United Nations Security Council** — OpenAI News · 2026-09-23
-  https://openai.com/index/sam-altman-un-security-council-remarks
-- **Introducing MentalHealthBench** — OpenAI News · 2026-09-23
-  https://openai.com/index/introducing-mentalhealthbench
 - **Should you read the code, is RAG dead, and did Skills kill MCP?** — GitHub AI & ML Blog · 2026-09-18
   https://github.blog/ai-and-ml/should-you-read-the-code-is-rag-dead-and-did-skills-kill-mcp/
 - **New experts join Google’s AI & Economy team** — Google AI Blog · 2026-09-18
@@ -81,11 +81,11 @@ This file is generated automatically by the daily maintenance workflow. It updat
 ## Portfolio candidates
 
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **MCP / tool-connected assistants** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
 

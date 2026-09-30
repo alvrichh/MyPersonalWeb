@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-29T14:33:43.777Z",
+  "generatedAt": "2026-09-30T14:32:11.035Z",
   "candidates": [
     {
       "label": "AI agents / automation workflows",
@@ -7,16 +7,16 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Meta&#8217;s Muse AI sent a YouTuber’s address to a stranger",
+          "title": "OpenAI DevDay 2026: The biggest news and announcements",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1001886/meta-muse-ai-facebook-marketplace-security-concerns",
-          "date": "2026-09-29"
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1001681/openai-devday-2026-biggest-news-announcements",
+          "date": "2026-09-30"
         },
         {
-          "title": "OpenAI’s AI agents need to catch up",
+          "title": "OpenAI launches Dots, its Muse competitor",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1001590/openai-devday-2026-aeon-ai-agent",
-          "date": "2026-09-28"
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1002033/openai-dots-launch-muse-competitor",
+          "date": "2026-09-29"
         },
         {
           "title": "GitHub Copilot app for Beginners: How to build custom workflows with canvases",
@@ -27,15 +27,34 @@
       ]
     },
     {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Introducing GPT-6.1 Sol",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/introducing-gpt-6-1-sol",
+          "date": "2026-09-29"
+        },
+        {
+          "title": "Project HydraFusion: Frontier quality via multi-model orchestration",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/",
+          "date": "2026-09-04"
+        }
+      ]
+    },
+    {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Florida seeks a ban on ChatGPT acting like a person",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1001527/chatgpt-florida-ban-first-person-human-attributes-kids",
-          "date": "2026-09-28"
+          "title": "DevDay 2026 Recap",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/devday-2026-recap",
+          "date": "2026-09-29"
         }
       ]
     },
@@ -87,19 +106,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/should-you-read-the-code-is-rag-dead-and-did-skills-kill-mcp/",
           "date": "2026-09-18"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Project HydraFusion: Frontier quality via multi-model orchestration",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/",
-          "date": "2026-09-04"
         }
       ]
     }
