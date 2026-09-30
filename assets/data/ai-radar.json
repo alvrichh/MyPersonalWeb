@@ -1,11 +1,142 @@
 {
-  "generatedAt": "2026-09-29T14:33:43.777Z",
-  "date": "2026-09-29",
+  "generatedAt": "2026-09-30T14:32:11.035Z",
+  "date": "2026-09-30",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Here’s how tech leaders will self-police AI safety under Trump’s deal",
+      "source": "The Verge AI",
+      "date": "2026-09-30",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1002584/trump-us-ai-safety-deal-self-regulation-tech-execs",
+      "summary": "We now have the full details of the \"morally binding\" AI safety deal announced by President Trump yesterday, in which top executives agreed to self-regulate their artificial intelligence technology. The accord, officiall...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Sam Altman says OpenAI won’t go public until its models are safe",
+      "source": "The Verge AI",
+      "date": "2026-09-30",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1002505/sam-altman-openai-ipo-devday-ai-safety",
+      "summary": "For months, people have wondered when OpenAI will go public. CEO Sam Altman says it won't happen until the company can make better promises about model safety, with no firm timeline in sight. \"We intend to continue with ...",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ]
+    },
+    {
+      "title": "Elon Musk&#8217;s AI-powered Grokipedia is updating again",
+      "source": "The Verge AI",
+      "date": "2026-09-30",
+      "url": "https://www.theverge.com/tech/1002448/elon-musk-grokipedia-ai-updating-again",
+      "summary": "Grokipedia, the AI-powered online encyclopedia from SpaceXAI, appears to be updating articles once again after a months-long pause. In August, Lawfare reported that articles on Grokipedia hadn't reviewed edits since Apri...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "OpenAI DevDay 2026: The biggest news and announcements",
+      "source": "The Verge AI",
+      "date": "2026-09-30",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1001681/openai-devday-2026-biggest-news-announcements",
+      "summary": "It&#8217;s OpenAI’s turn in the fall tech events calendar. The company is hosting its annual DevDay on September 29th in San Francisco, and during a live keynote featuring CEO Sam Altman, it revealed several notable upda...",
+      "tags": [
+        "Agents",
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Introducing GPT-6.1 Sol",
+      "source": "OpenAI News",
+      "date": "2026-09-29",
+      "url": "https://openai.com/index/introducing-gpt-6-1-sol",
+      "summary": "Meet GPT-6.1 Sol: near-Astra intelligence for coding, computer use, and professional work at one-fifth of Astra’s standard API input and output token prices.",
+      "tags": [
+        "ChatGPT",
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "DevDay 2026 Recap",
+      "source": "OpenAI News",
+      "date": "2026-09-29",
+      "url": "https://openai.com/index/devday-2026-recap",
+      "summary": "Explore more than 20 announcements from OpenAI DevDay 2026, including GPT-6 Astra, ChatGPT, Codex, APIs, security, and new tools for builders.",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "Introducing dots",
+      "source": "OpenAI News",
+      "date": "2026-09-29",
+      "url": "https://openai.com/index/introducing-dots",
+      "summary": "Dots by OpenAI are proactive assistants that can keep working across complex projects and everyday tasks. Learn how dots help you stay in control while work moves forward.",
+      "tags": [
+        "Agents",
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Trump orders US government to call AI ‘Super Intelligence’",
+      "source": "The Verge AI",
+      "date": "2026-09-29",
+      "url": "https://www.theverge.com/policy/1002468/trump-ai-superintelligence-executive-order-ai",
+      "summary": "The US executive branch is no longer acknowledging the existence of \"artificial intelligence.\" Going forward, official policy websites, policy documents, and press releases will refer only to \"Super Intelligence,\" thanks...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "AI researchers put out videos saying superintelligence is ‘exactly as dangerous as it sounds’",
+      "source": "The Verge AI",
+      "date": "2026-09-29",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1002238/openai-google-anthropic-ai-researchers-safety-interviews",
+      "summary": "\"The chance of human extinction is about a coin flip, in my view,\" Geoffrey Irving, a former OpenAI and Google DeepMind employee, said in a new interview. It's one of a dozen interviews with AI researchers, including cur...",
+      "tags": [
+        "ChatGPT",
+        "Claude",
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "OpenAI launches Dots, its Muse competitor",
+      "source": "The Verge AI",
+      "date": "2026-09-29",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1002033/openai-dots-launch-muse-competitor",
+      "summary": "OpenAI is responding to Meta's buzzy Muse AI with agentic helpers of its own: Dots. During its DevDay keynote on Tuesday, OpenAI announced that Dots will serve as always-on AI assistants that can \"do nearly anything\" acr...",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Models"
+      ]
+    },
+    {
+      "title": "Protesters gather at OpenAI’s DevDay",
+      "source": "The Verge AI",
+      "date": "2026-09-29",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1002201/openai-sam-altman-openai-devday-protests-ice-data-centers",
+      "summary": "On Tuesday, OpenAI's annual DevDay event began with protests, flyers, and chants. \"Sam Altman, get off it, put people over profit,\" said a group of protesters marching in a circle in front of a series of signs that spell...",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Watch the winning trailer from the Future Vision XPRIZE, The Gifted.",
+      "source": "Google AI Blog",
+      "date": "2026-09-28",
+      "url": "https://blog.google/innovation-and-ai/technology/ai/winner-future-vision-xprize/",
+      "summary": "Watch the winning trailer from the Future Vision XPRIZE, The Gifted.",
+      "tags": [
+        "Gemini",
+        "Multimodal"
+      ]
+    },
     {
       "title": "Meta&#8217;s Muse AI sent a YouTuber’s address to a stranger",
       "source": "The Verge AI",
@@ -35,17 +166,6 @@
       "tags": [
         "Claude",
         "Models"
-      ]
-    },
-    {
-      "title": "Watch the winning trailer from the Future Vision XPRIZE, The Gifted.",
-      "source": "Google AI Blog",
-      "date": "2026-09-28",
-      "url": "https://blog.google/innovation-and-ai/technology/ai/winner-future-vision-xprize/",
-      "summary": "Watch the winning trailer from the Future Vision XPRIZE, The Gifted.",
-      "tags": [
-        "Gemini",
-        "Multimodal"
       ]
     },
     {
@@ -98,120 +218,6 @@
         "Agents",
         "ChatGPT"
       ]
-    },
-    {
-      "title": "AI is supercharging hacking, and your local hospitals and banks aren’t ready",
-      "source": "The Verge AI",
-      "date": "2026-09-28",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1001427/ai-is-supercharging-hacking-and-your-local-hospitals-and-banks-arent-ready",
-      "summary": "In March, Janice Malone began getting calls about suspicious activity from her nonprofit organization, Vivian's Door. Vivian's Door, headquartered in Alabama, typically provided training, resources, and community to unde...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Florida seeks a ban on ChatGPT acting like a person",
-      "source": "The Verge AI",
-      "date": "2026-09-28",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1001527/chatgpt-florida-ban-first-person-human-attributes-kids",
-      "summary": "Florida Attorney General James Uthmeier is calling for a judge to block OpenAI from \"giving ChatGPT false human attributes,\" a few months after Florida sued the AI company over safety concerns. According to Uthmeier, use...",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "OpenAI keeps bulldozing mathematicians",
-      "source": "The Verge AI",
-      "date": "2026-09-28",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1001477/openai-math-advisory-group",
-      "summary": "In a chaotic few months, OpenAI has demonstrated it can do two things with remarkable consistency: make impressive breakthroughs in mathematics, then colossally screw up announcing them. OpenAI is now trying to do better...",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "The SaaSpocalypse that wasn&#8217;t, with Atlassian CEO Mike Cannon-Brookes",
-      "source": "The Verge AI",
-      "date": "2026-09-28",
-      "url": "https://www.theverge.com/podcast/1000914/atlassian-ceo-mike-cannon-brookes-saaspocalypse-ai-enterprise-software-trello-jira",
-      "summary": "Today, I’m talking with Mike Cannon-Brookes, who is cofounder and CEO of Atlassian.&#160; Atlassian is one of those companies that every other company runs on — it makes important platform tools like Jira and Trello that...",
-      "tags": [
-        "Agents"
-      ]
-    },
-    {
-      "title": "Nvidia says its new AI safety platform can contain rogue agents within ‘milliseconds’",
-      "source": "The Verge AI",
-      "date": "2026-09-28",
-      "url": "https://www.theverge.com/tech/1001287/nvidia-ai-safety-platform-rogue-agents",
-      "summary": "Nvidia is launching a new safety platform designed to contain and monitor AI agents, a move that comes in response to a wave of rogue hacking incidents, as reported earlier by Reuters. In an announcement on Monday, Nvidi...",
-      "tags": [
-        "Agents"
-      ]
-    },
-    {
-      "title": "Engram is a sampler that turns broken AI hallucinations into music",
-      "source": "The Verge AI",
-      "date": "2026-09-28",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1001193/engram-sampler-ai-hallucinations-music",
-      "summary": "Music startup Thoughtful Things has just launched the Kickstarter campaign for its first instrument, Engram. It's a sampler and groovebox that uses AI to mangle incoming audio and even hallucinate completely new sounds. ...",
-      "tags": [
-        "Multimodal"
-      ]
-    },
-    {
-      "title": "OpenAI agents tried to ‘bruteforce’ a UN website",
-      "source": "The Verge AI",
-      "date": "2026-09-28",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1001178/openai-agents-bruteforce-un-website",
-      "summary": "Security researcher Rowan Howard-Jones says that OpenAI agents scanned the UN Conference on Trade and Development's (UNCTAD) statistics site over 16,000 times between April and June. While the incident doesn't quite rise...",
-      "tags": [
-        "Agents",
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "OpenAI pauses training of its ‘most capable models’",
-      "source": "The Verge AI",
-      "date": "2026-09-28",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1001049/openai-training-pause",
-      "summary": "As reports of OpenAI's models breaking containment, hacking sites, and generally getting out of control pile up, the company has made the decision to pause training of its most powerful models. The decision was made afte...",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "GitHub Copilot app for Beginners: How to build custom workflows with canvases",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-09-25",
-      "url": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-build-custom-workflows-with-canvases/",
-      "summary": "Describe the interface you need in plain English, then let the agent build a live surface you can both use and update—so you spend less time adapting to tools and more time getting work done. The post GitHub Copilot app ...",
-      "tags": [
-        "Agents",
-        "Copilot",
-        "Automation"
-      ]
-    },
-    {
-      "title": "Can Cloudflare CEO Matthew Prince save the web from AI?",
-      "source": "The Verge AI",
-      "date": "2026-09-25",
-      "url": "https://www.theverge.com/podcast/1000344/cloudflare-matthew-prince-google-zero-ai-web-advertising",
-      "summary": "Today, I’m talking with Matthew Prince, who is CEO of Cloudflare. This episode is part of a two-part series on the future of business. Matthew last joined us on the show about two and a half years ago, at what we thought...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Meta makes the Muse filesystem even more accessible",
-      "source": "The Verge AI",
-      "date": "2026-09-25",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1000784/meta-muse-filesystem",
-      "summary": "Yesterday, with a little prodding, it was discovered that Meta's Muse would expose its filesystem to curious users. The files offered a fascinating peek under the hood of an AI chatbot, and appeared to expose details we ...",
-      "tags": [
-        "AI"
-      ]
     }
   ],
   "candidates": [
@@ -221,16 +227,16 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Meta&#8217;s Muse AI sent a YouTuber’s address to a stranger",
+          "title": "OpenAI DevDay 2026: The biggest news and announcements",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1001886/meta-muse-ai-facebook-marketplace-security-concerns",
-          "date": "2026-09-29"
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1001681/openai-devday-2026-biggest-news-announcements",
+          "date": "2026-09-30"
         },
         {
-          "title": "OpenAI’s AI agents need to catch up",
+          "title": "OpenAI launches Dots, its Muse competitor",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1001590/openai-devday-2026-aeon-ai-agent",
-          "date": "2026-09-28"
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1002033/openai-dots-launch-muse-competitor",
+          "date": "2026-09-29"
         },
         {
           "title": "GitHub Copilot app for Beginners: How to build custom workflows with canvases",
@@ -241,15 +247,34 @@
       ]
     },
     {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Introducing GPT-6.1 Sol",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/introducing-gpt-6-1-sol",
+          "date": "2026-09-29"
+        },
+        {
+          "title": "Project HydraFusion: Frontier quality via multi-model orchestration",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/",
+          "date": "2026-09-04"
+        }
+      ]
+    },
+    {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Florida seeks a ban on ChatGPT acting like a person",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1001527/chatgpt-florida-ban-first-person-human-attributes-kids",
-          "date": "2026-09-28"
+          "title": "DevDay 2026 Recap",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/devday-2026-recap",
+          "date": "2026-09-29"
         }
       ]
     },
@@ -301,19 +326,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/should-you-read-the-code-is-rag-dead-and-did-skills-kill-mcp/",
           "date": "2026-09-18"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Project HydraFusion: Frontier quality via multi-model orchestration",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/",
-          "date": "2026-09-04"
         }
       ]
     }
