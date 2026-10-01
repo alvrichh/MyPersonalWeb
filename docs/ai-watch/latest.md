@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-09-30
+# Daily AI maintenance report — 2026-10-01
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,34 +13,38 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
-- **Here’s how tech leaders will self-police AI safety under Trump’s deal** — The Verge AI · 2026-09-30
-  https://www.theverge.com/ai-artificial-intelligence/1002584/trump-us-ai-safety-deal-self-regulation-tech-execs
-- **Sam Altman says OpenAI won’t go public until its models are safe** — The Verge AI · 2026-09-30
-  https://www.theverge.com/ai-artificial-intelligence/1002505/sam-altman-openai-ipo-devday-ai-safety
-- **Elon Musk&#8217;s AI-powered Grokipedia is updating again** — The Verge AI · 2026-09-30
-  https://www.theverge.com/tech/1002448/elon-musk-grokipedia-ai-updating-again
-- **OpenAI DevDay 2026: The biggest news and announcements** — The Verge AI · 2026-09-30
-  https://www.theverge.com/ai-artificial-intelligence/1001681/openai-devday-2026-biggest-news-announcements
+- **OpenAI’s new agent is a shot at Meta — but can it compete with free?** — The Verge AI · 2026-10-01
+  https://www.theverge.com/ai-artificial-intelligence/1003399/meta-openai-ai-agents-muse-dots-battle
+- **Inside our months-long investigation into Kevin O’Leary’s Utah data center debacle** — The Verge AI · 2026-10-01
+  https://www.theverge.com/podcast/1002851/utah-ai-data-center-stratos-kevin-oleary-investigation-backlash
+- **Elon Musk’s Grokipedia has a ‘newly refreshed’ design** — The Verge AI · 2026-10-01
+  https://www.theverge.com/tech/1003068/elon-musk-grokipedia-v-0-3-spacexai
+- **Disrupting a coordinated model-distillation campaign** — OpenAI News · 2026-09-30
+  https://openai.com/index/disrupting-a-coordinated-model-distillation-campaign
+- **Helping small businesses put AI to work** — OpenAI News · 2026-09-30
+  https://openai.com/index/helping-small-businesses-put-ai-to-work
+- **Google announces Gemini 4 and says it&#8217;s so capable that only &#8216;trusted cyber defenders&#8217; can have it right now** — The Verge AI · 2026-09-30
+  https://www.theverge.com/tech/1002980/google-gemini-4-argon
+- **The AI Tamagotchis are coming** — The Verge AI · 2026-09-30
+  https://www.theverge.com/ai-artificial-intelligence/1002779/openai-dots-meta-muse-ai-agents-hardware-devices
+- **Here&#8217;s what AI leaders are saying about Trump’s new safety plan** — The Verge AI · 2026-09-30
+  https://www.theverge.com/ai-artificial-intelligence/1002636/ai-execs-trump-self-policing-deal-comments
+- **All the latest news on Meta’s cute, creepy Muse AI agent** — The Verge AI · 2026-09-30
+  https://www.theverge.com/ai-artificial-intelligence/1002671/meta-muse-ai
+- **Google reportedly tests paying publishers for AI search results** — The Verge AI · 2026-09-30
+  https://www.theverge.com/tech/1002665/google-paying-publishers-ai-search-features
 - **Introducing GPT-6.1 Sol** — OpenAI News · 2026-09-29
   https://openai.com/index/introducing-gpt-6-1-sol
 - **DevDay 2026 Recap** — OpenAI News · 2026-09-29
   https://openai.com/index/devday-2026-recap
 - **Introducing dots** — OpenAI News · 2026-09-29
   https://openai.com/index/introducing-dots
-- **Trump orders US government to call AI ‘Super Intelligence’** — The Verge AI · 2026-09-29
-  https://www.theverge.com/policy/1002468/trump-ai-superintelligence-executive-order-ai
-- **AI researchers put out videos saying superintelligence is ‘exactly as dangerous as it sounds’** — The Verge AI · 2026-09-29
-  https://www.theverge.com/ai-artificial-intelligence/1002238/openai-google-anthropic-ai-researchers-safety-interviews
-- **OpenAI launches Dots, its Muse competitor** — The Verge AI · 2026-09-29
-  https://www.theverge.com/ai-artificial-intelligence/1002033/openai-dots-launch-muse-competitor
-- **Protesters gather at OpenAI’s DevDay** — The Verge AI · 2026-09-29
-  https://www.theverge.com/ai-artificial-intelligence/1002201/openai-sam-altman-openai-devday-protests-ice-data-centers
 - **Watch the winning trailer from the Future Vision XPRIZE, The Gifted.** — Google AI Blog · 2026-09-28
   https://blog.google/innovation-and-ai/technology/ai/winner-future-vision-xprize/
-- **Towards safety cases for frontier AI training** — OpenAI News · 2026-09-28
-  https://openai.com/index/towards-safety-cases-for-frontier-ai-training
 - **How we will do better for Australia** — OpenAI News · 2026-09-28
   https://openai.com/index/how-we-will-do-better-for-australia
+- **Towards safety cases for frontier AI training** — OpenAI News · 2026-09-28
+  https://openai.com/index/towards-safety-cases-for-frontier-ai-training
 - **The Lenfest Institute grows landmark program with expanded OpenAI support** — OpenAI News · 2026-09-28
   https://openai.com/index/lenfest-ai-collaborative-expansion
 - **GitHub Copilot app for Beginners: How to build custom workflows with canvases** — GitHub AI & ML Blog · 2026-09-25
@@ -51,10 +55,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://github.blog/security/application-security/ai-powered-fuzzing-with-the-github-security-lab-taskflow-agent/
 - **Rendering huge pull requests in the GitHub Copilot app** — GitHub AI & ML Blog · 2026-09-23
   https://github.blog/engineering/user-experience/rendering-huge-pull-requests-in-the-github-copilot-app/
-- **Two years of OpenAI Academy** — OpenAI News · 2026-09-23
-  https://openai.com/index/two-years-of-openai-academy
-- **OpenAI extends cyber access to Ukraine for civilian defense** — OpenAI News · 2026-09-23
-  https://openai.com/index/openai-extends-cyber-access-to-ukraine-for-civilian-defense
 - **Should you read the code, is RAG dead, and did Skills kill MCP?** — GitHub AI & ML Blog · 2026-09-18
   https://github.blog/ai-and-ml/should-you-read-the-code-is-rag-dead-and-did-skills-kill-mcp/
 - **New experts join Google’s AI & Economy team** — Google AI Blog · 2026-09-18
@@ -81,6 +81,7 @@ This file is generated automatically by the daily maintenance workflow. It updat
 ## Portfolio candidates
 
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.

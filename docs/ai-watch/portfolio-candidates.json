@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-30T14:32:11.035Z",
+  "generatedAt": "2026-10-01T15:02:15.630Z",
   "candidates": [
     {
       "label": "AI agents / automation workflows",
@@ -7,22 +7,35 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "OpenAI DevDay 2026: The biggest news and announcements",
+          "title": "OpenAI’s new agent is a shot at Meta — but can it compete with free?",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1001681/openai-devday-2026-biggest-news-announcements",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1003399/meta-openai-ai-agents-muse-dots-battle",
+          "date": "2026-10-01"
+        },
+        {
+          "title": "The AI Tamagotchis are coming",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1002779/openai-dots-meta-muse-ai-agents-hardware-devices",
           "date": "2026-09-30"
         },
         {
-          "title": "OpenAI launches Dots, its Muse competitor",
+          "title": "All the latest news on Meta’s cute, creepy Muse AI agent",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1002033/openai-dots-launch-muse-competitor",
-          "date": "2026-09-29"
-        },
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1002671/meta-muse-ai",
+          "date": "2026-09-30"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
         {
-          "title": "GitHub Copilot app for Beginners: How to build custom workflows with canvases",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-build-custom-workflows-with-canvases/",
-          "date": "2026-09-25"
+          "title": "Google announces Gemini 4 and says it&#8217;s so capable that only &#8216;trusted cyber defenders&#8217; can have it right now",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/1002980/google-gemini-4-argon",
+          "date": "2026-09-30"
         }
       ]
     },
