@@ -1,6 +1,44 @@
 {
-  "generatedAt": "2026-10-01T15:02:15.630Z",
+  "generatedAt": "2026-10-02T14:24:10.231Z",
   "candidates": [
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "How Albertsons Companies is reimagining retail from the inside out",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/albertsons-reimagining-retail",
+          "date": "2026-10-01"
+        },
+        {
+          "title": "The Den frees up 10-15 hours a week to grow with ChatGPT Work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/the-den-family-social",
+          "date": "2026-10-01"
+        },
+        {
+          "title": "DevDay 2026 Recap",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/devday-2026-recap",
+          "date": "2026-09-29"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Google’s new Guided Vision feature can help you read the fine print",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1003756/google-gemini-live-guided-vision",
+          "date": "2026-10-01"
+        }
+      ]
+    },
     {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
@@ -13,29 +51,16 @@
           "date": "2026-10-01"
         },
         {
-          "title": "The AI Tamagotchis are coming",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1002779/openai-dots-meta-muse-ai-agents-hardware-devices",
-          "date": "2026-09-30"
+          "title": "GitHub Copilot app for Beginners: How to build custom workflows with canvases",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-build-custom-workflows-with-canvases/",
+          "date": "2026-09-25"
         },
         {
-          "title": "All the latest news on Meta’s cute, creepy Muse AI agent",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1002671/meta-muse-ai",
-          "date": "2026-09-30"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Google announces Gemini 4 and says it&#8217;s so capable that only &#8216;trusted cyber defenders&#8217; can have it right now",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/1002980/google-gemini-4-argon",
-          "date": "2026-09-30"
+          "title": "AI-powered fuzzing with the GitHub Security Lab Taskflow Agent",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/security/application-security/ai-powered-fuzzing-with-the-github-security-lab-taskflow-agent/",
+          "date": "2026-09-24"
         }
       ]
     },
@@ -55,19 +80,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/",
           "date": "2026-09-04"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "DevDay 2026 Recap",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/devday-2026-recap",
-          "date": "2026-09-29"
         }
       ]
     },
