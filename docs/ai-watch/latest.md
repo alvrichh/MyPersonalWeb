@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-10-01
+# Daily AI maintenance report — 2026-10-02
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,26 +13,32 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Amazon writes scary blog warning communities not to block data centers** — The Verge AI · 2026-10-02
+  https://www.theverge.com/tech/1003929/amazon-ai-data-center-blog-warning
+- **AI music maker Suno now generates spoken words** — The Verge AI · 2026-10-02
+  https://www.theverge.com/ai-artificial-intelligence/1003925/suno-speech-ai-voice-feature-beta-availability
+- **The eternal complement** — OpenAI News · 2026-10-01
+  https://openai.com/index/the-eternal-complement
+- **How Albertsons Companies is reimagining retail from the inside out** — OpenAI News · 2026-10-01
+  https://openai.com/index/albertsons-reimagining-retail
+- **The Den frees up 10-15 hours a week to grow with ChatGPT Work** — OpenAI News · 2026-10-01
+  https://openai.com/index/the-den-family-social
+- **If a data center is camouflaged in the woods, will anyone hate it?** — The Verge AI · 2026-10-01
+  https://www.theverge.com/tech/1003681/microsoft-data-centers-ai-environment-biomimicry
+- **Google’s new Guided Vision feature can help you read the fine print** — The Verge AI · 2026-10-01
+  https://www.theverge.com/ai-artificial-intelligence/1003756/google-gemini-live-guided-vision
+- **Judge dismisses antitrust lawsuits over Google’s AI Overviews** — The Verge AI · 2026-10-01
+  https://www.theverge.com/tech/1003589/google-ai-overviews-chegg-penske-lawsuits-dismissed
 - **OpenAI’s new agent is a shot at Meta — but can it compete with free?** — The Verge AI · 2026-10-01
   https://www.theverge.com/ai-artificial-intelligence/1003399/meta-openai-ai-agents-muse-dots-battle
 - **Inside our months-long investigation into Kevin O’Leary’s Utah data center debacle** — The Verge AI · 2026-10-01
   https://www.theverge.com/podcast/1002851/utah-ai-data-center-stratos-kevin-oleary-investigation-backlash
-- **Elon Musk’s Grokipedia has a ‘newly refreshed’ design** — The Verge AI · 2026-10-01
-  https://www.theverge.com/tech/1003068/elon-musk-grokipedia-v-0-3-spacexai
 - **Disrupting a coordinated model-distillation campaign** — OpenAI News · 2026-09-30
   https://openai.com/index/disrupting-a-coordinated-model-distillation-campaign
 - **Helping small businesses put AI to work** — OpenAI News · 2026-09-30
   https://openai.com/index/helping-small-businesses-put-ai-to-work
-- **Google announces Gemini 4 and says it&#8217;s so capable that only &#8216;trusted cyber defenders&#8217; can have it right now** — The Verge AI · 2026-09-30
-  https://www.theverge.com/tech/1002980/google-gemini-4-argon
-- **The AI Tamagotchis are coming** — The Verge AI · 2026-09-30
-  https://www.theverge.com/ai-artificial-intelligence/1002779/openai-dots-meta-muse-ai-agents-hardware-devices
-- **Here&#8217;s what AI leaders are saying about Trump’s new safety plan** — The Verge AI · 2026-09-30
-  https://www.theverge.com/ai-artificial-intelligence/1002636/ai-execs-trump-self-policing-deal-comments
-- **All the latest news on Meta’s cute, creepy Muse AI agent** — The Verge AI · 2026-09-30
-  https://www.theverge.com/ai-artificial-intelligence/1002671/meta-muse-ai
-- **Google reportedly tests paying publishers for AI search results** — The Verge AI · 2026-09-30
-  https://www.theverge.com/tech/1002665/google-paying-publishers-ai-search-features
+- **AI hallucinations are making entitled customers even worse** — The Verge AI · 2026-09-30
+  https://www.theverge.com/report/1002963/ai-hallucinations-customer-service-jobs-agents
 - **Introducing GPT-6.1 Sol** — OpenAI News · 2026-09-29
   https://openai.com/index/introducing-gpt-6-1-sol
 - **DevDay 2026 Recap** — OpenAI News · 2026-09-29
@@ -41,12 +47,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/introducing-dots
 - **Watch the winning trailer from the Future Vision XPRIZE, The Gifted.** — Google AI Blog · 2026-09-28
   https://blog.google/innovation-and-ai/technology/ai/winner-future-vision-xprize/
-- **How we will do better for Australia** — OpenAI News · 2026-09-28
-  https://openai.com/index/how-we-will-do-better-for-australia
-- **Towards safety cases for frontier AI training** — OpenAI News · 2026-09-28
-  https://openai.com/index/towards-safety-cases-for-frontier-ai-training
-- **The Lenfest Institute grows landmark program with expanded OpenAI support** — OpenAI News · 2026-09-28
-  https://openai.com/index/lenfest-ai-collaborative-expansion
 - **GitHub Copilot app for Beginners: How to build custom workflows with canvases** — GitHub AI & ML Blog · 2026-09-25
   https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-build-custom-workflows-with-canvases/
 - **When chat is the wrong UI** — GitHub AI & ML Blog · 2026-09-24
@@ -80,10 +80,10 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
-- **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **MCP / tool-connected assistants** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
