@@ -1,6 +1,50 @@
 {
-  "generatedAt": "2026-10-02T14:24:10.231Z",
+  "generatedAt": "2026-10-03T12:59:19.534Z",
   "candidates": [
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "AI is changing developer work. Here are three skills to strengthen.",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/ai-is-rewriting-the-developer-career-ladder-heres-how-to-stand-out/",
+          "date": "2026-10-02"
+        },
+        {
+          "title": "Meta open sources code to let you make Muse AI gadgets",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/1004330/meta-muse-ai-gadgets-home-link",
+          "date": "2026-10-02"
+        },
+        {
+          "title": "Apple will limit Mac disk access as AI agents ‘substantially’ increase risk",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/1004295/apple-limit-mac-disk-access-ai-agents",
+          "date": "2026-10-02"
+        }
+      ]
+    },
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "AI is changing developer work. Here are three skills to strengthen.",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/ai-is-rewriting-the-developer-career-ladder-heres-how-to-stand-out/",
+          "date": "2026-10-02"
+        },
+        {
+          "title": "When chat is the wrong UI",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/when-chat-is-the-wrong-ui/",
+          "date": "2026-09-24"
+        }
+      ]
+    },
     {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
@@ -40,50 +84,6 @@
       ]
     },
     {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "OpenAI’s new agent is a shot at Meta — but can it compete with free?",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1003399/meta-openai-ai-agents-muse-dots-battle",
-          "date": "2026-10-01"
-        },
-        {
-          "title": "GitHub Copilot app for Beginners: How to build custom workflows with canvases",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-build-custom-workflows-with-canvases/",
-          "date": "2026-09-25"
-        },
-        {
-          "title": "AI-powered fuzzing with the GitHub Security Lab Taskflow Agent",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/security/application-security/ai-powered-fuzzing-with-the-github-security-lab-taskflow-agent/",
-          "date": "2026-09-24"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Introducing GPT-6.1 Sol",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/introducing-gpt-6-1-sol",
-          "date": "2026-09-29"
-        },
-        {
-          "title": "Project HydraFusion: Frontier quality via multi-model orchestration",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/",
-          "date": "2026-09-04"
-        }
-      ]
-    },
-    {
       "label": "GitHub Copilot developer loop",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
@@ -105,19 +105,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/generative-ai/migrating-the-github-copilot-runtime-to-rust-using-copilot/",
           "date": "2026-09-17"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "When chat is the wrong UI",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/when-chat-is-the-wrong-ui/",
-          "date": "2026-09-24"
         }
       ]
     },

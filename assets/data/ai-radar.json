@@ -1,11 +1,100 @@
 {
-  "generatedAt": "2026-10-02T14:24:10.231Z",
-  "date": "2026-10-02",
+  "generatedAt": "2026-10-03T12:59:19.534Z",
+  "date": "2026-10-03",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "AI is changing developer work. Here are three skills to strengthen.",
+      "source": "GitHub AI & ML Blog",
+      "date": "2026-10-02",
+      "url": "https://github.blog/ai-and-ml/ai-is-rewriting-the-developer-career-ladder-heres-how-to-stand-out/",
+      "summary": "Learn to direct AI agents, critically review their output, and keep technical judgment at the center of your workflow. The post AI is changing developer work. Here are three skills to strengthen. appeared first on The Gi...",
+      "tags": [
+        "Agents",
+        "Dev Tools",
+        "Automation"
+      ]
+    },
+    {
+      "title": "The latest AI news we announced in September 2026",
+      "source": "Google AI Blog",
+      "date": "2026-10-02",
+      "url": "https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-september-2026/",
+      "summary": "Here are Google’s latest AI updates from September 2026",
+      "tags": [
+        "Gemini"
+      ]
+    },
+    {
+      "title": "A model guide for the GPT-6 family",
+      "source": "OpenAI News",
+      "date": "2026-10-02",
+      "url": "https://openai.com/index/practical-guide-building-gpt-6",
+      "summary": "Learn how startups can choose GPT-6 models, tune reasoning effort, improve prompts and skills, coordinate tools, and prepare workflows for production.",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Automation",
+        "Models"
+      ]
+    },
+    {
+      "title": "Chatham scales its capital markets expertise with OpenAI",
+      "source": "OpenAI News",
+      "date": "2026-10-02",
+      "url": "https://openai.com/index/chatham-financial",
+      "summary": "Chatham Financial uses Codex and GPT-5.6 to build technology and redesign workflows, cutting trade validation from 30 minutes to under 4.",
+      "tags": [
+        "ChatGPT",
+        "Dev Tools",
+        "Automation"
+      ]
+    },
+    {
+      "title": "Meta open sources code to let you make Muse AI gadgets",
+      "source": "The Verge AI",
+      "date": "2026-10-02",
+      "url": "https://www.theverge.com/tech/1004330/meta-muse-ai-gadgets-home-link",
+      "summary": "Meta now lets you make your own Muse gadgets that feature the company's new AI agent with code that the company open sourced. The company suggests projects like loading Muse on a color E Ink display to show reminders, ad...",
+      "tags": [
+        "Agents",
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "Apple will limit Mac disk access as AI agents ‘substantially’ increase risk",
+      "source": "The Verge AI",
+      "date": "2026-10-02",
+      "url": "https://www.theverge.com/tech/1004295/apple-limit-mac-disk-access-ai-agents",
+      "summary": "Apple will add new limits for \"full disk access\" on Mac in response to risks posed by AI agents, as reported earlier by TechCrunch. In an update on Friday, Apple says it's rolling out new controls to \"ensure that users w...",
+      "tags": [
+        "Agents"
+      ]
+    },
+    {
+      "title": "OpenAI’s Dot agent is enterprise software that can also order your dinner",
+      "source": "The Verge AI",
+      "date": "2026-10-02",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1004096/openai-chatgpt-dots-hands-on-agent",
+      "summary": "It's a tale as old as last week: OpenAI's new agent platform, called Dots, is full of cute little guys who can do your bidding. But unlike the ultra-approachable Meta Muse, Dots feel very much like using workplace softwa...",
+      "tags": [
+        "Agents",
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "If a data center is camouflaged in the woods, will anyone hate it?",
+      "source": "The Verge AI",
+      "date": "2026-10-02",
+      "url": "https://www.theverge.com/tech/1003681/microsoft-data-centers-ai-environment-biomimicry",
+      "summary": "San Antonio City Councilmember Ric Galvan remembers when data centers first arrived in his city in the 2000s, looking like relatively unassuming office buildings. But that's changed in recent years, as data centers have ...",
+      "tags": [
+        "AI"
+      ]
+    },
     {
       "title": "Amazon writes scary blog warning communities not to block data centers",
       "source": "The Verge AI",
@@ -54,16 +143,6 @@
       "summary": "As it opens a new location, the social club prepares grant applications in 2 hours instead of 3 days and liquor-license materials in 3 hours instead of 4 days.",
       "tags": [
         "ChatGPT"
-      ]
-    },
-    {
-      "title": "If a data center is camouflaged in the woods, will anyone hate it?",
-      "source": "The Verge AI",
-      "date": "2026-10-01",
-      "url": "https://www.theverge.com/tech/1003681/microsoft-data-centers-ai-environment-biomimicry",
-      "summary": "San Antonio City Councilmember Ric Galvan remembers when data centers first arrived in his city in the 2000s, looking like relatively unassuming office buildings. But that's changed in recent years, as data centers have ...",
-      "tags": [
-        "AI"
       ]
     },
     {
@@ -138,85 +217,53 @@
       "tags": [
         "AI"
       ]
-    },
-    {
-      "title": "Google announces Gemini 4 and says it&#8217;s so capable that only &#8216;trusted cyber defenders&#8217; can have it right now",
-      "source": "The Verge AI",
-      "date": "2026-09-30",
-      "url": "https://www.theverge.com/tech/1002980/google-gemini-4-argon",
-      "summary": "Google today revealed its next AI frontier model, which it's calling Gemini 4 Argon. The new model delivers \"frontier performance in complex workflows across real-world software engineering, enterprise knowledge work lik...",
-      "tags": [
-        "Gemini",
-        "Automation",
-        "Models"
-      ]
-    },
-    {
-      "title": "The AI Tamagotchis are coming",
-      "source": "The Verge AI",
-      "date": "2026-09-30",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1002779/openai-dots-meta-muse-ai-agents-hardware-devices",
-      "summary": "While AI has made plenty of inroads on people's phones and computers, it's largely failed in dedicated devices. But over the next year, two major AI companies, Meta and OpenAI, will attempt to change that. And they're ap...",
-      "tags": [
-        "Agents",
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Here&#8217;s what AI leaders are saying about Trump’s new safety plan",
-      "source": "The Verge AI",
-      "date": "2026-09-30",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1002636/ai-execs-trump-self-policing-deal-comments",
-      "summary": "After hosting a meal with Big Tech leaders on Tuesday, President Donald Trump responded to journalist questions about his artificial intelligence announcements in typical fashion. He said his previous claims regarding fe...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "All the latest news on Meta’s cute, creepy Muse AI agent",
-      "source": "The Verge AI",
-      "date": "2026-09-30",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1002671/meta-muse-ai",
-      "summary": "Meta launched a new Muse AI agent it claims can help you with everything from firing off emails to buying stuff online. Muse can be surprisingly effective at delivering on those promises — if you’re willing to trust Meta...",
-      "tags": [
-        "Agents"
-      ]
-    },
-    {
-      "title": "Google reportedly tests paying publishers for AI search results",
-      "source": "The Verge AI",
-      "date": "2026-09-30",
-      "url": "https://www.theverge.com/tech/1002665/google-paying-publishers-ai-search-features",
-      "summary": "Google has launched a pilot program that pays publishers for their contributions to its AI-powered search features, according to a report from The Information. The pilot program reportedly includes around 100 publishers ...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Introducing GPT-6.1 Sol",
-      "source": "OpenAI News",
-      "date": "2026-09-29",
-      "url": "https://openai.com/index/introducing-gpt-6-1-sol",
-      "summary": "Meet GPT-6.1 Sol: near-Astra intelligence for coding, computer use, and professional work at one-fifth of Astra’s standard API input and output token prices.",
-      "tags": [
-        "ChatGPT",
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "DevDay 2026 Recap",
-      "source": "OpenAI News",
-      "date": "2026-09-29",
-      "url": "https://openai.com/index/devday-2026-recap",
-      "summary": "Explore more than 20 announcements from OpenAI DevDay 2026, including GPT-6 Astra, ChatGPT, Codex, APIs, security, and new tools for builders.",
-      "tags": [
-        "Agents",
-        "ChatGPT",
-        "Dev Tools"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "AI is changing developer work. Here are three skills to strengthen.",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/ai-is-rewriting-the-developer-career-ladder-heres-how-to-stand-out/",
+          "date": "2026-10-02"
+        },
+        {
+          "title": "Meta open sources code to let you make Muse AI gadgets",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/1004330/meta-muse-ai-gadgets-home-link",
+          "date": "2026-10-02"
+        },
+        {
+          "title": "Apple will limit Mac disk access as AI agents ‘substantially’ increase risk",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/1004295/apple-limit-mac-disk-access-ai-agents",
+          "date": "2026-10-02"
+        }
+      ]
+    },
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "AI is changing developer work. Here are three skills to strengthen.",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/ai-is-rewriting-the-developer-career-ladder-heres-how-to-stand-out/",
+          "date": "2026-10-02"
+        },
+        {
+          "title": "When chat is the wrong UI",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/when-chat-is-the-wrong-ui/",
+          "date": "2026-09-24"
+        }
+      ]
+    },
     {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
@@ -256,50 +303,6 @@
       ]
     },
     {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "OpenAI’s new agent is a shot at Meta — but can it compete with free?",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1003399/meta-openai-ai-agents-muse-dots-battle",
-          "date": "2026-10-01"
-        },
-        {
-          "title": "GitHub Copilot app for Beginners: How to build custom workflows with canvases",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-build-custom-workflows-with-canvases/",
-          "date": "2026-09-25"
-        },
-        {
-          "title": "AI-powered fuzzing with the GitHub Security Lab Taskflow Agent",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/security/application-security/ai-powered-fuzzing-with-the-github-security-lab-taskflow-agent/",
-          "date": "2026-09-24"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Introducing GPT-6.1 Sol",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/introducing-gpt-6-1-sol",
-          "date": "2026-09-29"
-        },
-        {
-          "title": "Project HydraFusion: Frontier quality via multi-model orchestration",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/",
-          "date": "2026-09-04"
-        }
-      ]
-    },
-    {
       "label": "GitHub Copilot developer loop",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
@@ -321,19 +324,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/generative-ai/migrating-the-github-copilot-runtime-to-rust-using-copilot/",
           "date": "2026-09-17"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "When chat is the wrong UI",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/when-chat-is-the-wrong-ui/",
-          "date": "2026-09-24"
         }
       ]
     },
