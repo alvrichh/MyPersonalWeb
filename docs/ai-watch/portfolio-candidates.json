@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-03T12:59:19.534Z",
+  "generatedAt": "2026-10-04T13:38:08.756Z",
   "candidates": [
     {
       "label": "AI agents / automation workflows",
@@ -67,19 +67,6 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/devday-2026-recap",
           "date": "2026-09-29"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Google’s new Guided Vision feature can help you read the fine print",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1003756/google-gemini-live-guided-vision",
-          "date": "2026-10-01"
         }
       ]
     },
