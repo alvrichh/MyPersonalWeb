@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-10-05
+# Daily AI maintenance report — 2026-10-06
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,26 +13,28 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Google is about to remove free access to Gemini Flash and Pro** — The Verge AI · 2026-10-06
+  https://www.theverge.com/ai-artificial-intelligence/1005451/google-gemini-free-flash-lite-only
 - **ReviewBench: An open benchmark for AI code review** — GitHub AI & ML Blog · 2026-10-05
   https://github.blog/ai-and-ml/github-copilot/reviewbench-an-open-benchmark-for-ai-code-review/
 - **Our approach to EU text provenance rules** — OpenAI News · 2026-10-05
   https://openai.com/index/eu-text-provenance
 - **Building advertising for the way people use AI** — OpenAI News · 2026-10-05
   https://openai.com/index/new-chatgpt-ads-format-and-measurement
-- **Sen. Adam Schiff on AI regulation, free speech, and impeaching Trump one more time** — The Verge AI · 2026-10-05
-  https://www.theverge.com/podcast/1004286/senator-adam-schiff-ai-trump-regulation-corruption
-- **An open-source tool lets you delete 12GB of Apple Intelligence data on macOS** — The Verge AI · 2026-10-05
-  https://www.theverge.com/ai-artificial-intelligence/1004672/mac-delete-apple-intelligence-ai-tool
-- **OpenAI is sticking more ads in ChatGPT** — The Verge AI · 2026-10-05
-  https://www.theverge.com/ai-artificial-intelligence/1004655/openai-chatgpt-visual-ads
-- **Our minds aren’t equipped to handle AI** — The Verge AI · 2026-10-05
-  https://www.theverge.com/ai-artificial-intelligence/1003794/ai-education-computational-model-thought
-- **NJ’s former Lt Gov is using AI to say he’s innocent of sexual harassment** — The Verge AI · 2026-10-04
-  https://www.theverge.com/ai-artificial-intelligence/1004549/well-if-ai-said-it-it-must-be-true
-- **An AI couldn’t beat humans at StarCraft, so it decided to cheat** — The Verge AI · 2026-10-04
-  https://www.theverge.com/ai-artificial-intelligence/1004543/openai-gpt-cheat-starcraft
-- **Capcom is preparing for a ‘future where we create games together with AI’** — The Verge AI · 2026-10-03
-  https://www.theverge.com/games/1004418/capcom-ai-game-development
+- **Gemini Call for Me might tell your mom you&#8217;re running late** — The Verge AI · 2026-10-05
+  https://www.theverge.com/ai-artificial-intelligence/1005177/google-gemini-call-for-me-expansion-rumors
+- **This startup is issuing AI-generated acne prescriptions** — The Verge AI · 2026-10-05
+  https://www.theverge.com/ai-artificial-intelligence/1005075/nolla-health-acne-ai-prescriptions
+- **All the drama around AI&#8217;s takeover of mathematics** — The Verge AI · 2026-10-05
+  https://www.theverge.com/ai-artificial-intelligence/1004933/ai-math-openai-breakthrough-solution
+- **Wikipedia operator says OpenAI&#8217;s &#8216;rogue&#8217; bots may be linked to a May outage** — The Verge AI · 2026-10-05
+  https://www.theverge.com/news/1004929/wikipedia-openai-rogue-bots-wikimedia-foundation-outage
+- **OpenAI is adding text watermarking in ChatGPT and Codex** — The Verge AI · 2026-10-05
+  https://www.theverge.com/ai-artificial-intelligence/1004880/openai-chatgpt-text-watermarks-eu-ai-act
+- **OpenAI PR tells journalist to ‘move on’ while asking Sam Altman about a ChatGPT user&#8217;s suicide** — The Verge AI · 2026-10-05
+  https://www.theverge.com/ai-artificial-intelligence/1004827/openai-sam-altman-vanity-fair-interview-pr
+- **Sam Altman says ‘some bad things&#8217; will happen, but AI is totally worth it** — The Verge AI · 2026-10-05
+  https://www.theverge.com/ai-artificial-intelligence/1004811/openai-altman-bad-things-ai-tradeoff
 - **AI is changing developer work. Here are three skills to strengthen.** — GitHub AI & ML Blog · 2026-10-02
   https://github.blog/ai-and-ml/ai-is-rewriting-the-developer-career-ladder-heres-how-to-stand-out/
 - **The latest AI news we announced in September 2026** — Google AI Blog · 2026-10-02
@@ -41,8 +43,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/practical-guide-building-gpt-6
 - **Chatham scales its capital markets expertise with OpenAI** — OpenAI News · 2026-10-02
   https://openai.com/index/chatham-financial
-- **Splice CEO Kakul Srivastava thinks AI emails are killing conversations** — The Verge AI · 2026-10-02
-  https://www.theverge.com/entertainment/1004162/splice-ceo-kakul-srivastava-ai-interview
 - **The eternal complement** — OpenAI News · 2026-10-01
   https://openai.com/index/the-eternal-complement
 - **How Albertsons Companies is reimagining retail from the inside out** — OpenAI News · 2026-10-01
@@ -80,9 +80,9 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
+- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **MCP / tool-connected assistants** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
