@@ -1,6 +1,25 @@
 {
-  "generatedAt": "2026-10-05T16:44:08.504Z",
+  "generatedAt": "2026-10-06T14:41:09.896Z",
   "candidates": [
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Google is about to remove free access to Gemini Flash and Pro",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1005451/google-gemini-free-flash-lite-only",
+          "date": "2026-10-06"
+        },
+        {
+          "title": "Gemini Call for Me might tell your mom you&#8217;re running late",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1005177/google-gemini-call-for-me-expansion-rumors",
+          "date": "2026-10-05"
+        }
+      ]
+    },
     {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
@@ -13,16 +32,16 @@
           "date": "2026-10-05"
         },
         {
+          "title": "Wikipedia operator says OpenAI&#8217;s &#8216;rogue&#8217; bots may be linked to a May outage",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/news/1004929/wikipedia-openai-rogue-bots-wikimedia-foundation-outage",
+          "date": "2026-10-05"
+        },
+        {
           "title": "AI is changing developer work. Here are three skills to strengthen.",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/ai-is-rewriting-the-developer-career-ladder-heres-how-to-stand-out/",
           "date": "2026-10-02"
-        },
-        {
-          "title": "GitHub Copilot app for Beginners: How to build custom workflows with canvases",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-build-custom-workflows-with-canvases/",
-          "date": "2026-09-25"
         }
       ]
     },
@@ -38,29 +57,16 @@
           "date": "2026-10-05"
         },
         {
-          "title": "OpenAI is sticking more ads in ChatGPT",
+          "title": "OpenAI is adding text watermarking in ChatGPT and Codex",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1004655/openai-chatgpt-visual-ads",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1004880/openai-chatgpt-text-watermarks-eu-ai-act",
           "date": "2026-10-05"
         },
         {
-          "title": "How Albertsons Companies is reimagining retail from the inside out",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/albertsons-reimagining-retail",
-          "date": "2026-10-01"
-        }
-      ]
-    },
-    {
-      "label": "Claude research and documentation flow",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "An AI couldn’t beat humans at StarCraft, so it decided to cheat",
+          "title": "OpenAI PR tells journalist to ‘move on’ while asking Sam Altman about a ChatGPT user&#8217;s suicide",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1004543/openai-gpt-cheat-starcraft",
-          "date": "2026-10-04"
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1004827/openai-sam-altman-vanity-fair-interview-pr",
+          "date": "2026-10-05"
         }
       ]
     },
