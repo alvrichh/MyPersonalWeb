@@ -1,6 +1,56 @@
 {
-  "generatedAt": "2026-10-06T14:41:09.896Z",
+  "generatedAt": "2026-10-07T15:01:00.201Z",
   "candidates": [
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "ChatGPT for Teens is an ‘unacceptable risk,’ says Common Sense Media",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1006355/openai-chatgpt-for-teens-common-sense-media",
+          "date": "2026-10-07"
+        },
+        {
+          "title": "How Jump Trading is scaling quant research with ChatGPT",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/jump-trading",
+          "date": "2026-10-06"
+        },
+        {
+          "title": "Building advertising for the way people use AI",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/new-chatgpt-ads-format-and-measurement",
+          "date": "2026-10-05"
+        }
+      ]
+    },
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Advancing computer use with Ironclad",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/advancing-computer-use-with-ironclad",
+          "date": "2026-10-06"
+        },
+        {
+          "title": "ReviewBench: An open benchmark for AI code review",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/reviewbench-an-open-benchmark-for-ai-code-review/",
+          "date": "2026-10-05"
+        },
+        {
+          "title": "AI is changing developer work. Here are three skills to strengthen.",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/ai-is-rewriting-the-developer-career-ladder-heres-how-to-stand-out/",
+          "date": "2026-10-02"
+        }
+      ]
+    },
     {
       "label": "Gemini multimodal exploration",
       "status": "safe-data-candidate",
@@ -16,56 +66,6 @@
           "title": "Gemini Call for Me might tell your mom you&#8217;re running late",
           "source": "The Verge AI",
           "link": "https://www.theverge.com/ai-artificial-intelligence/1005177/google-gemini-call-for-me-expansion-rumors",
-          "date": "2026-10-05"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "ReviewBench: An open benchmark for AI code review",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/reviewbench-an-open-benchmark-for-ai-code-review/",
-          "date": "2026-10-05"
-        },
-        {
-          "title": "Wikipedia operator says OpenAI&#8217;s &#8216;rogue&#8217; bots may be linked to a May outage",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/news/1004929/wikipedia-openai-rogue-bots-wikimedia-foundation-outage",
-          "date": "2026-10-05"
-        },
-        {
-          "title": "AI is changing developer work. Here are three skills to strengthen.",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/ai-is-rewriting-the-developer-career-ladder-heres-how-to-stand-out/",
-          "date": "2026-10-02"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Building advertising for the way people use AI",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/new-chatgpt-ads-format-and-measurement",
-          "date": "2026-10-05"
-        },
-        {
-          "title": "OpenAI is adding text watermarking in ChatGPT and Codex",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1004880/openai-chatgpt-text-watermarks-eu-ai-act",
-          "date": "2026-10-05"
-        },
-        {
-          "title": "OpenAI PR tells journalist to ‘move on’ while asking Sam Altman about a ChatGPT user&#8217;s suicide",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1004827/openai-sam-altman-vanity-fair-interview-pr",
           "date": "2026-10-05"
         }
       ]

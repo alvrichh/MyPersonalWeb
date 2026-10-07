@@ -1,11 +1,107 @@
 {
-  "generatedAt": "2026-10-06T14:41:09.896Z",
-  "date": "2026-10-06",
+  "generatedAt": "2026-10-07T15:01:00.201Z",
+  "date": "2026-10-07",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Google invests millions in Mark Zuckerberg’s efforts to create a ‘virtual cell’",
+      "source": "The Verge AI",
+      "date": "2026-10-07",
+      "url": "https://www.theverge.com/tech/1006766/google-meta-biohub-investment-virtual-cell",
+      "summary": "Google DeepMind, Meta, and AI drug discovery startup Isomorphic Labs are jointly investing $300 million into Biohub, the nonprofit biomedical research organization founded by Mark Zuckerberg and his wife, Priscilla Chan,...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "ChatGPT for Teens is an ‘unacceptable risk,’ says Common Sense Media",
+      "source": "The Verge AI",
+      "date": "2026-10-07",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1006355/openai-chatgpt-for-teens-common-sense-media",
+      "summary": "Common Sense Media, a nonprofit that offers reviews of apps, services, and entertainment with a focus on youth safety, today said that OpenAI's ChatGPT for Teens is an \"unacceptable risk.\" ChatGPT for Teens, introduced i...",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "How Jump Trading is scaling quant research with ChatGPT",
+      "source": "OpenAI News",
+      "date": "2026-10-06",
+      "url": "https://openai.com/index/jump-trading",
+      "summary": "Jump Trading uses OpenAI to expand quantitative research. See how longer-running AI workflows combine multiple data sources with human review.",
+      "tags": [
+        "ChatGPT",
+        "Automation"
+      ]
+    },
+    {
+      "title": "Sharing AI progress in mathematics",
+      "source": "OpenAI News",
+      "date": "2026-10-06",
+      "url": "https://openai.com/index/sharing-ai-progress-in-mathematics",
+      "summary": "OpenAI publishes new results on open problems in mathematics from an internal frontier model and shares Lean proof formalizations and research details on GitHub.",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ]
+    },
+    {
+      "title": "Advancing computer use with Ironclad",
+      "source": "OpenAI News",
+      "date": "2026-10-06",
+      "url": "https://openai.com/index/advancing-computer-use-with-ironclad",
+      "summary": "Learn how OpenAI and Ironclad are training and evaluating AI agents on complex contracting workflows to advance computer use for professional work.",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Automation"
+      ]
+    },
+    {
+      "title": "Atlassian and OpenAI expand partnership to turn enterprise knowledge into action",
+      "source": "OpenAI News",
+      "date": "2026-10-06",
+      "url": "https://openai.com/index/atlassian-partnership",
+      "summary": "Atlassian and OpenAI are expanding their partnership to connect frontier models with enterprise knowledge and help teams plan, build, and deliver work.",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ]
+    },
+    {
+      "title": "AI could upend food delivery",
+      "source": "The Verge AI",
+      "date": "2026-10-06",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1005726/doordash-ai-agentic-food-delivery-bites",
+      "summary": "DoorDash, the leading food delivery app, processed 970 million orders in its second quarter this year and generated $4.5 billion in revenue. A 10-person startup called Bites is a blip in comparison: It has just around 30...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "OpenAI drops another batch of mathematical breakthroughs",
+      "source": "The Verge AI",
+      "date": "2026-10-06",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1005004/openai-math-release-github",
+      "summary": "OpenAI has revealed solutions to a number of long-standing mathematics problems produced by an unreleased frontier model in a batch of 722 manuscripts, covering 372 result families that group related papers. It extends a...",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ]
+    },
+    {
+      "title": "We can’t just change the definition of ‘recording’",
+      "source": "The Verge AI",
+      "date": "2026-10-06",
+      "url": "https://www.theverge.com/column/1005697/we-cant-just-change-the-definition-of-recording",
+      "summary": "With AI hardware, tech companies are pushing the definition of what does and doesn't constitute a recording. For most of gadget history, it'd be reasonable to assume that a device with a microphone or camera is either re...",
+      "tags": [
+        "AI"
+      ]
+    },
     {
       "title": "Google is about to remove free access to Gemini Flash and Pro",
       "source": "The Verge AI",
@@ -122,103 +218,59 @@
       "tags": [
         "ChatGPT"
       ]
-    },
-    {
-      "title": "AI is changing developer work. Here are three skills to strengthen.",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-10-02",
-      "url": "https://github.blog/ai-and-ml/ai-is-rewriting-the-developer-career-ladder-heres-how-to-stand-out/",
-      "summary": "Learn to direct AI agents, critically review their output, and keep technical judgment at the center of your workflow. The post AI is changing developer work. Here are three skills to strengthen. appeared first on The Gi...",
-      "tags": [
-        "Agents",
-        "Dev Tools",
-        "Automation"
-      ]
-    },
-    {
-      "title": "Sen. Adam Schiff on AI regulation, free speech, and impeaching Trump one more time",
-      "source": "The Verge AI",
-      "date": "2026-10-05",
-      "url": "https://www.theverge.com/podcast/1004286/senator-adam-schiff-ai-trump-regulation-corruption",
-      "summary": "Today, I’m talking with Sen. Adam Schiff, a Democrat from California. Schiff sits on a number of committees with oversight into tech and AI: intellectual property, antitrust, privacy and technology — it’s all there. I re...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "An open-source tool lets you delete 12GB of Apple Intelligence data on macOS",
-      "source": "The Verge AI",
-      "date": "2026-10-05",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1004672/mac-delete-apple-intelligence-ai-tool",
-      "summary": "Getting some extra storage space on your Mac could be as easy as deleting Apple's AI features with a new open-source command line tool called RemoveMacAI. There used to be a single Settings toggle for disabling Apple Int...",
-      "tags": [
-        "Models"
-      ]
-    },
-    {
-      "title": "OpenAI is sticking more ads in ChatGPT",
-      "source": "The Verge AI",
-      "date": "2026-10-05",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1004655/openai-chatgpt-visual-ads",
-      "summary": "OpenAI's latest ad format will put images of sponsored products and services on your screen. The ads, which OpenAI will begin testing in the US later this month, will \"initially\" appear when you generate images with Chat...",
-      "tags": [
-        "ChatGPT",
-        "Multimodal"
-      ]
-    },
-    {
-      "title": "Our minds aren’t equipped to handle AI",
-      "source": "The Verge AI",
-      "date": "2026-10-05",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1003794/ai-education-computational-model-thought",
-      "summary": "Norbert Wiener, godfather of cybernetics, once said, \"The thought of every age is reflected in its technique.\" For the past century, our thought has been reflected in our computers, including by those in the AI industry....",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "NJ’s former Lt Gov is using AI to say he’s innocent of sexual harassment",
-      "source": "The Verge AI",
-      "date": "2026-10-04",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1004549/well-if-ai-said-it-it-must-be-true",
-      "summary": "New Jersey's lieutenant governor Dale Caldwell was forced to resign on September 25th after an investigation found he had sexually harassed a staffer and repeatedly violated ethics rules. The now-former Lt. governor has ...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "An AI couldn’t beat humans at StarCraft, so it decided to cheat",
-      "source": "The Verge AI",
-      "date": "2026-10-04",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1004543/openai-gpt-cheat-starcraft",
-      "summary": "StarSkirmish pits AI-made StarCraft-playing bots against one another, as well as against human-made bots. OpenAI's GPT-6 Astra and Claude Opus 5.5 were essentially tied as the best-performing AI-made bots, but they could...",
-      "tags": [
-        "ChatGPT",
-        "Claude"
-      ]
-    },
-    {
-      "title": "Capcom is preparing for a ‘future where we create games together with AI’",
-      "source": "The Verge AI",
-      "date": "2026-10-03",
-      "url": "https://www.theverge.com/games/1004418/capcom-ai-game-development",
-      "summary": "Capcom's Pragmata might be all about the horrors of AI, but in practice the studio doesn't seem so down on the tech. During the Capcom Open Conference RE: 2026 programmer Satoshi Ishida gave a presentation with the mouth...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "The latest AI news we announced in September 2026",
-      "source": "Google AI Blog",
-      "date": "2026-10-02",
-      "url": "https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-september-2026/",
-      "summary": "Here are Google’s latest AI updates from September 2026",
-      "tags": [
-        "Gemini"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "ChatGPT for Teens is an ‘unacceptable risk,’ says Common Sense Media",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1006355/openai-chatgpt-for-teens-common-sense-media",
+          "date": "2026-10-07"
+        },
+        {
+          "title": "How Jump Trading is scaling quant research with ChatGPT",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/jump-trading",
+          "date": "2026-10-06"
+        },
+        {
+          "title": "Building advertising for the way people use AI",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/new-chatgpt-ads-format-and-measurement",
+          "date": "2026-10-05"
+        }
+      ]
+    },
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Advancing computer use with Ironclad",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/advancing-computer-use-with-ironclad",
+          "date": "2026-10-06"
+        },
+        {
+          "title": "ReviewBench: An open benchmark for AI code review",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/reviewbench-an-open-benchmark-for-ai-code-review/",
+          "date": "2026-10-05"
+        },
+        {
+          "title": "AI is changing developer work. Here are three skills to strengthen.",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/ai-is-rewriting-the-developer-career-ladder-heres-how-to-stand-out/",
+          "date": "2026-10-02"
+        }
+      ]
+    },
     {
       "label": "Gemini multimodal exploration",
       "status": "safe-data-candidate",
@@ -234,56 +286,6 @@
           "title": "Gemini Call for Me might tell your mom you&#8217;re running late",
           "source": "The Verge AI",
           "link": "https://www.theverge.com/ai-artificial-intelligence/1005177/google-gemini-call-for-me-expansion-rumors",
-          "date": "2026-10-05"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "ReviewBench: An open benchmark for AI code review",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/reviewbench-an-open-benchmark-for-ai-code-review/",
-          "date": "2026-10-05"
-        },
-        {
-          "title": "Wikipedia operator says OpenAI&#8217;s &#8216;rogue&#8217; bots may be linked to a May outage",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/news/1004929/wikipedia-openai-rogue-bots-wikimedia-foundation-outage",
-          "date": "2026-10-05"
-        },
-        {
-          "title": "AI is changing developer work. Here are three skills to strengthen.",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/ai-is-rewriting-the-developer-career-ladder-heres-how-to-stand-out/",
-          "date": "2026-10-02"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Building advertising for the way people use AI",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/new-chatgpt-ads-format-and-measurement",
-          "date": "2026-10-05"
-        },
-        {
-          "title": "OpenAI is adding text watermarking in ChatGPT and Codex",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1004880/openai-chatgpt-text-watermarks-eu-ai-act",
-          "date": "2026-10-05"
-        },
-        {
-          "title": "OpenAI PR tells journalist to ‘move on’ while asking Sam Altman about a ChatGPT user&#8217;s suicide",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1004827/openai-sam-altman-vanity-fair-interview-pr",
           "date": "2026-10-05"
         }
       ]
