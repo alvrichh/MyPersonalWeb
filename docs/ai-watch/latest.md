@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-10-06
+# Daily AI maintenance report — 2026-10-07
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,24 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Google invests millions in Mark Zuckerberg’s efforts to create a ‘virtual cell’** — The Verge AI · 2026-10-07
+  https://www.theverge.com/tech/1006766/google-meta-biohub-investment-virtual-cell
+- **ChatGPT for Teens is an ‘unacceptable risk,’ says Common Sense Media** — The Verge AI · 2026-10-07
+  https://www.theverge.com/ai-artificial-intelligence/1006355/openai-chatgpt-for-teens-common-sense-media
+- **How Jump Trading is scaling quant research with ChatGPT** — OpenAI News · 2026-10-06
+  https://openai.com/index/jump-trading
+- **Sharing AI progress in mathematics** — OpenAI News · 2026-10-06
+  https://openai.com/index/sharing-ai-progress-in-mathematics
+- **Advancing computer use with Ironclad** — OpenAI News · 2026-10-06
+  https://openai.com/index/advancing-computer-use-with-ironclad
+- **Atlassian and OpenAI expand partnership to turn enterprise knowledge into action** — OpenAI News · 2026-10-06
+  https://openai.com/index/atlassian-partnership
+- **AI could upend food delivery** — The Verge AI · 2026-10-06
+  https://www.theverge.com/ai-artificial-intelligence/1005726/doordash-ai-agentic-food-delivery-bites
+- **OpenAI drops another batch of mathematical breakthroughs** — The Verge AI · 2026-10-06
+  https://www.theverge.com/ai-artificial-intelligence/1005004/openai-math-release-github
+- **We can’t just change the definition of ‘recording’** — The Verge AI · 2026-10-06
+  https://www.theverge.com/column/1005697/we-cant-just-change-the-definition-of-recording
 - **Google is about to remove free access to Gemini Flash and Pro** — The Verge AI · 2026-10-06
   https://www.theverge.com/ai-artificial-intelligence/1005451/google-gemini-free-flash-lite-only
 - **ReviewBench: An open benchmark for AI code review** — GitHub AI & ML Blog · 2026-10-05
@@ -25,16 +43,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/ai-artificial-intelligence/1005177/google-gemini-call-for-me-expansion-rumors
 - **This startup is issuing AI-generated acne prescriptions** — The Verge AI · 2026-10-05
   https://www.theverge.com/ai-artificial-intelligence/1005075/nolla-health-acne-ai-prescriptions
-- **All the drama around AI&#8217;s takeover of mathematics** — The Verge AI · 2026-10-05
-  https://www.theverge.com/ai-artificial-intelligence/1004933/ai-math-openai-breakthrough-solution
-- **Wikipedia operator says OpenAI&#8217;s &#8216;rogue&#8217; bots may be linked to a May outage** — The Verge AI · 2026-10-05
-  https://www.theverge.com/news/1004929/wikipedia-openai-rogue-bots-wikimedia-foundation-outage
-- **OpenAI is adding text watermarking in ChatGPT and Codex** — The Verge AI · 2026-10-05
-  https://www.theverge.com/ai-artificial-intelligence/1004880/openai-chatgpt-text-watermarks-eu-ai-act
-- **OpenAI PR tells journalist to ‘move on’ while asking Sam Altman about a ChatGPT user&#8217;s suicide** — The Verge AI · 2026-10-05
-  https://www.theverge.com/ai-artificial-intelligence/1004827/openai-sam-altman-vanity-fair-interview-pr
-- **Sam Altman says ‘some bad things&#8217; will happen, but AI is totally worth it** — The Verge AI · 2026-10-05
-  https://www.theverge.com/ai-artificial-intelligence/1004811/openai-altman-bad-things-ai-tradeoff
 - **AI is changing developer work. Here are three skills to strengthen.** — GitHub AI & ML Blog · 2026-10-02
   https://github.blog/ai-and-ml/ai-is-rewriting-the-developer-career-ladder-heres-how-to-stand-out/
 - **The latest AI news we announced in September 2026** — Google AI Blog · 2026-10-02
@@ -43,14 +51,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/practical-guide-building-gpt-6
 - **Chatham scales its capital markets expertise with OpenAI** — OpenAI News · 2026-10-02
   https://openai.com/index/chatham-financial
-- **The eternal complement** — OpenAI News · 2026-10-01
-  https://openai.com/index/the-eternal-complement
-- **How Albertsons Companies is reimagining retail from the inside out** — OpenAI News · 2026-10-01
-  https://openai.com/index/albertsons-reimagining-retail
-- **The Den frees up 10-15 hours a week to grow with ChatGPT Work** — OpenAI News · 2026-10-01
-  https://openai.com/index/the-den-family-social
-- **Disrupting a coordinated model-distillation campaign** — OpenAI News · 2026-09-30
-  https://openai.com/index/disrupting-a-coordinated-model-distillation-campaign
 - **Watch the winning trailer from the Future Vision XPRIZE, The Gifted.** — Google AI Blog · 2026-09-28
   https://blog.google/innovation-and-ai/technology/ai/winner-future-vision-xprize/
 - **GitHub Copilot app for Beginners: How to build custom workflows with canvases** — GitHub AI & ML Blog · 2026-09-25
@@ -80,9 +80,9 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
-- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **MCP / tool-connected assistants** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
