@@ -1,11 +1,136 @@
 {
-  "generatedAt": "2026-10-07T15:01:00.201Z",
-  "date": "2026-10-07",
+  "generatedAt": "2026-10-08T15:09:22.858Z",
+  "date": "2026-10-08",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Google is launching a one-stop Gemini agent for your work tasks",
+      "source": "The Verge AI",
+      "date": "2026-10-08",
+      "url": "https://www.theverge.com/tech/1007904/google-gemini-ai-agent-enterprise",
+      "summary": "Google is launching a \"universal\" Gemini AI agent that can work across apps and devices in the background. The tool, announced as part of the Gemini at Work event on Thursday, will be available within the Gemini Enterpri...",
+      "tags": [
+        "Agents",
+        "Gemini"
+      ]
+    },
+    {
+      "title": "Can you trust Meta’s Muse or OpenAI’s Dots to run your life?",
+      "source": "The Verge AI",
+      "date": "2026-10-08",
+      "url": "https://www.theverge.com/podcast/1007408/meta-muse-openai-dots-ai-agent-race-privacy-free",
+      "summary": "My Decoder guest today is Hayden Field, The Verge’s senior AI reporter, and we’re discussing the new wave of consumer-friendly AI agents. If you’ve been paying attention to this space, you know AI enthusiasts have been u...",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "Artificial is a wicked satire that also sticks to the facts",
+      "source": "The Verge AI",
+      "date": "2026-10-08",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1007786/artificial-is-a-wicked-satire-that-also-sticks-to-the-facts",
+      "summary": "At the New York Film Festival premiere of Artificial, Luca Guadagnino's satirical Sam Altman biopic, the director said onstage that \"[when] someone wants to play God, that's very interesting to me.\" The idea of playing G...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "It appears .agent and .agi are about to be the hot new domains",
+      "source": "The Verge AI",
+      "date": "2026-10-08",
+      "url": "https://www.theverge.com/tech/1007132/icann-domains-2026-ai-agi",
+      "summary": "For the first time in years, the Internet Corporation for Assigned Names and Numbers - better known as ICANN - is accepting applications for new top-level domains. These are the suffixes at the end of all URLs, and you m...",
+      "tags": [
+        "Agents"
+      ]
+    },
+    {
+      "title": "Secret protection must scale with software",
+      "source": "GitHub AI & ML Blog",
+      "date": "2026-10-07",
+      "url": "https://github.blog/ai-and-ml/github-copilot/secret-protection-must-scale-with-software/",
+      "summary": "Developers aren’t becoming more careless; they’re being outpaced. The tools that let developers create more software should also take on more of the work of protecting it. The post Secret protection must scale with softw...",
+      "tags": [
+        "Agents",
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "Helping teens learn, plan, and shape the future of AI",
+      "source": "OpenAI News",
+      "date": "2026-10-07",
+      "url": "https://openai.com/index/teens-learn-and-plan",
+      "summary": "College Planner is coming to ChatGPT for Teens to help students manage college applications, alongside new flashcards, quizzes, and a teen AI council.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Radisson Hotel Group brings hotel discovery into ChatGPT",
+      "source": "OpenAI News",
+      "date": "2026-10-07",
+      "url": "https://openai.com/index/radisson",
+      "summary": "Radisson partnered with Accenture to build a ChatGPT plugin using OpenAI technology, helping travelers find, compare, and book hotels while planning their trips.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "GPT-6 and Intelligent UI for everyone",
+      "source": "OpenAI News",
+      "date": "2026-10-07",
+      "url": "https://openai.com/index/gpt-6-for-everyone",
+      "summary": "GPT‑6 is rolling out globally in ChatGPT with Intelligent UI, delivering faster responses with visuals and interactive experiences you can explore and use directly.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "ChatGPT&#8217;s &#8216;Intelligent UI&#8217; update fills its responses with pictures, charts, and buttons",
+      "source": "The Verge AI",
+      "date": "2026-10-07",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1007276/openai-chatgpt-intelligent-ui-gpt-6",
+      "summary": "OpenAI is launching a new Intelligent UI feature in ChatGPT that allows the chatbot to answer your questions with interactive visuals. The update, which is rolling out to all users alongside GPT-6, gives ChatGPT the abil...",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Everything announced at Microsoft&#8217;s Surface Laptop Ultra event",
+      "source": "The Verge AI",
+      "date": "2026-10-07",
+      "url": "https://www.theverge.com/tech/1007147/microsoft-surface-laptop-ultra-windows-event-everything-announced",
+      "summary": "Microsoft just wrapped up a big Windows and Surface-focused keynote in San Francisco. The biggest announcement was arguably the release details about the Surface Laptop Ultra, its new laptop that&#8217;s powered by Nvidi...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Microsoft is giving Copilot more control over Windows and your files",
+      "source": "The Verge AI",
+      "date": "2026-10-07",
+      "url": "https://www.theverge.com/tech/1007113/microsoft-windows-copilot-ai-control-search-hybrid-intelligence",
+      "summary": "At today's Windows and Surface event, Microsoft showed off an upgrade to its Copilot AI system that will give it access to local files on your PC and the ability to take actions across the OS. It's part of an idea Micros...",
+      "tags": [
+        "Agents",
+        "Copilot"
+      ]
+    },
+    {
+      "title": "Surface RTX Spark Dev Box is available for preorder for $5,999",
+      "source": "The Verge AI",
+      "date": "2026-10-07",
+      "url": "https://www.theverge.com/tech/1006915/microsoft-surface-rtx-spark-dev-box-preorder",
+      "summary": "Microsoft's Nvidia-powered Surface RTX Spark Dev Box is available for preorder now and is slated to ship in November for just about $6,000. It's pricier than the DGX Spark mini PC Nvidia launched last year, but PC prices...",
+      "tags": [
+        "AI"
+      ]
+    },
     {
       "title": "Google invests millions in Mark Zuckerberg’s efforts to create a ‘virtual cell’",
       "source": "The Verge AI",
@@ -91,183 +216,31 @@
         "ChatGPT",
         "Models"
       ]
-    },
-    {
-      "title": "We can’t just change the definition of ‘recording’",
-      "source": "The Verge AI",
-      "date": "2026-10-06",
-      "url": "https://www.theverge.com/column/1005697/we-cant-just-change-the-definition-of-recording",
-      "summary": "With AI hardware, tech companies are pushing the definition of what does and doesn't constitute a recording. For most of gadget history, it'd be reasonable to assume that a device with a microphone or camera is either re...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Google is about to remove free access to Gemini Flash and Pro",
-      "source": "The Verge AI",
-      "date": "2026-10-06",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1005451/google-gemini-free-flash-lite-only",
-      "summary": "Starting on October 9th, anyone using Google Gemini on a free plan will be limited to the Flash Lite model. Free users can currently choose from Gemini Flash Lite, Flash, and Pro, but now you'll need a $4.99/month Google...",
-      "tags": [
-        "Gemini",
-        "Models"
-      ]
-    },
-    {
-      "title": "ReviewBench: An open benchmark for AI code review",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-10-05",
-      "url": "https://github.blog/ai-and-ml/github-copilot/reviewbench-an-open-benchmark-for-ai-code-review/",
-      "summary": "We’re launching ReviewBench, a benchmark for code review agents built on representative GitHub pull requests, multi-source ground truth, calibrated evaluation, and production-aligned metrics. The post ReviewBench: An ope...",
-      "tags": [
-        "Agents",
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "Our approach to EU text provenance rules",
-      "source": "OpenAI News",
-      "date": "2026-10-05",
-      "url": "https://openai.com/index/eu-text-provenance",
-      "summary": "How OpenAI is approaching text watermarking under EU rules. Learn where watermarks apply, how detection works, and why access starts with researchers.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Building advertising for the way people use AI",
-      "source": "OpenAI News",
-      "date": "2026-10-05",
-      "url": "https://openai.com/index/new-chatgpt-ads-format-and-measurement",
-      "summary": "OpenAI introduces a new visual ad format in ChatGPT and expands measurement tools, attribution partnerships, and brand suitability for advertisers.",
-      "tags": [
-        "Agents",
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Gemini Call for Me might tell your mom you&#8217;re running late",
-      "source": "The Verge AI",
-      "date": "2026-10-05",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1005177/google-gemini-call-for-me-expansion-rumors",
-      "summary": "Google may be expanding its \"Call for Me\" AI feature beyond business calls so you can use it to send messages to friends and family. Android Authority reports finding a \"Gemini Calling\" introductory screen in an APK tear...",
-      "tags": [
-        "Gemini"
-      ]
-    },
-    {
-      "title": "This startup is issuing AI-generated acne prescriptions",
-      "source": "The Verge AI",
-      "date": "2026-10-05",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1005075/nolla-health-acne-ai-prescriptions",
-      "summary": "People in Utah can now use AI to get a prescription for acne treatment. On Monday, healthcare startup Nolla Health announced that users in the state can scan their faces using its app, allowing its AI system to analyze a...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "All the drama around AI&#8217;s takeover of mathematics",
-      "source": "The Verge AI",
-      "date": "2026-10-05",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1004933/ai-math-openai-breakthrough-solution",
-      "summary": "This past year, OpenAI, Anthropic, and other labs have announced breakthroughs on numerous long-standing mathematical problems, in some cases pushing well beyond what researchers expected current systems to be capable of...",
-      "tags": [
-        "ChatGPT",
-        "Claude"
-      ]
-    },
-    {
-      "title": "Wikipedia operator says OpenAI&#8217;s &#8216;rogue&#8217; bots may be linked to a May outage",
-      "source": "The Verge AI",
-      "date": "2026-10-05",
-      "url": "https://www.theverge.com/news/1004929/wikipedia-openai-rogue-bots-wikimedia-foundation-outage",
-      "summary": "Following many recent disclosures about AI agents accessing third-party websites and services, the Wikimedia Foundation, which hosts Wikipedia, says that it \"can confirm that we have discovered some activity\" by \"rogue\" ...",
-      "tags": [
-        "Agents",
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "OpenAI is adding text watermarking in ChatGPT and Codex",
-      "source": "The Verge AI",
-      "date": "2026-10-05",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1004880/openai-chatgpt-text-watermarks-eu-ai-act",
-      "summary": "An invisible, machine-readable watermark in text output is rolling out to ChatGPT and Codex, but only for users in the European Union at first. OpenAI says its textGrain watermarking \"matched or exceeded\" other approache...",
-      "tags": [
-        "ChatGPT",
-        "Claude",
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "OpenAI PR tells journalist to ‘move on’ while asking Sam Altman about a ChatGPT user&#8217;s suicide",
-      "source": "The Verge AI",
-      "date": "2026-10-05",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1004827/openai-sam-altman-vanity-fair-interview-pr",
-      "summary": "An OpenAI publicist tried to change the topic of CEO Sam Altman's interview with Vanity Fair's Mark Guiducci after the editor brought up a ChatGPT user's suicide. When Guiducci confronted Altman about the incident, the p...",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Sam Altman says ‘some bad things&#8217; will happen, but AI is totally worth it",
-      "source": "The Verge AI",
-      "date": "2026-10-05",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1004811/openai-altman-bad-things-ai-tradeoff",
-      "summary": "Sam Altman thinks that the benefits of AI will be so great that \"the world should accept some bad things happening\" along the way. The OpenAI CEO pointed to hacks, scams, and \"other bad things\" as costs society should ex...",
-      "tags": [
-        "ChatGPT"
-      ]
     }
   ],
   "candidates": [
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "ChatGPT for Teens is an ‘unacceptable risk,’ says Common Sense Media",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1006355/openai-chatgpt-for-teens-common-sense-media",
-          "date": "2026-10-07"
-        },
-        {
-          "title": "How Jump Trading is scaling quant research with ChatGPT",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/jump-trading",
-          "date": "2026-10-06"
-        },
-        {
-          "title": "Building advertising for the way people use AI",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/new-chatgpt-ads-format-and-measurement",
-          "date": "2026-10-05"
-        }
-      ]
-    },
     {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Advancing computer use with Ironclad",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/advancing-computer-use-with-ironclad",
-          "date": "2026-10-06"
+          "title": "Google is launching a one-stop Gemini agent for your work tasks",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/1007904/google-gemini-ai-agent-enterprise",
+          "date": "2026-10-08"
         },
         {
-          "title": "ReviewBench: An open benchmark for AI code review",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/reviewbench-an-open-benchmark-for-ai-code-review/",
-          "date": "2026-10-05"
+          "title": "Can you trust Meta’s Muse or OpenAI’s Dots to run your life?",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/podcast/1007408/meta-muse-openai-dots-ai-agent-race-privacy-free",
+          "date": "2026-10-08"
         },
         {
-          "title": "AI is changing developer work. Here are three skills to strengthen.",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/ai-is-rewriting-the-developer-career-ladder-heres-how-to-stand-out/",
-          "date": "2026-10-02"
+          "title": "It appears .agent and .agi are about to be the hot new domains",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/1007132/icann-domains-2026-ai-agi",
+          "date": "2026-10-08"
         }
       ]
     },
@@ -277,16 +250,10 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Google is about to remove free access to Gemini Flash and Pro",
+          "title": "Google is launching a one-stop Gemini agent for your work tasks",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1005451/google-gemini-free-flash-lite-only",
-          "date": "2026-10-06"
-        },
-        {
-          "title": "Gemini Call for Me might tell your mom you&#8217;re running late",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1005177/google-gemini-call-for-me-expansion-rumors",
-          "date": "2026-10-05"
+          "link": "https://www.theverge.com/tech/1007904/google-gemini-ai-agent-enterprise",
+          "date": "2026-10-08"
         }
       ]
     },
@@ -295,6 +262,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Secret protection must scale with software",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/secret-protection-must-scale-with-software/",
+          "date": "2026-10-07"
+        },
         {
           "title": "AI is changing developer work. Here are three skills to strengthen.",
           "source": "GitHub AI & ML Blog",
@@ -310,10 +283,41 @@
       ]
     },
     {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Helping teens learn, plan, and shape the future of AI",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/teens-learn-and-plan",
+          "date": "2026-10-07"
+        },
+        {
+          "title": "Radisson Hotel Group brings hotel discovery into ChatGPT",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/radisson",
+          "date": "2026-10-07"
+        },
+        {
+          "title": "GPT-6 and Intelligent UI for everyone",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/gpt-6-for-everyone",
+          "date": "2026-10-07"
+        }
+      ]
+    },
+    {
       "label": "GitHub Copilot developer loop",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Microsoft is giving Copilot more control over Windows and your files",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/1007113/microsoft-windows-copilot-ai-control-search-hybrid-intelligence",
+          "date": "2026-10-07"
+        },
         {
           "title": "GitHub Copilot app for Beginners: How to build custom workflows with canvases",
           "source": "GitHub AI & ML Blog",
@@ -325,12 +329,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/engineering/user-experience/rendering-huge-pull-requests-in-the-github-copilot-app/",
           "date": "2026-09-23"
-        },
-        {
-          "title": "Migrating the GitHub Copilot runtime to Rust, using Copilot",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/generative-ai/migrating-the-github-copilot-runtime-to-rust-using-copilot/",
-          "date": "2026-09-17"
         }
       ]
     },

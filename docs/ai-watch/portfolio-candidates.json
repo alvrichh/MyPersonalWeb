@@ -1,53 +1,28 @@
 {
-  "generatedAt": "2026-10-07T15:01:00.201Z",
+  "generatedAt": "2026-10-08T15:09:22.858Z",
   "candidates": [
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "ChatGPT for Teens is an ‘unacceptable risk,’ says Common Sense Media",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1006355/openai-chatgpt-for-teens-common-sense-media",
-          "date": "2026-10-07"
-        },
-        {
-          "title": "How Jump Trading is scaling quant research with ChatGPT",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/jump-trading",
-          "date": "2026-10-06"
-        },
-        {
-          "title": "Building advertising for the way people use AI",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/new-chatgpt-ads-format-and-measurement",
-          "date": "2026-10-05"
-        }
-      ]
-    },
     {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Advancing computer use with Ironclad",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/advancing-computer-use-with-ironclad",
-          "date": "2026-10-06"
+          "title": "Google is launching a one-stop Gemini agent for your work tasks",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/1007904/google-gemini-ai-agent-enterprise",
+          "date": "2026-10-08"
         },
         {
-          "title": "ReviewBench: An open benchmark for AI code review",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/reviewbench-an-open-benchmark-for-ai-code-review/",
-          "date": "2026-10-05"
+          "title": "Can you trust Meta’s Muse or OpenAI’s Dots to run your life?",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/podcast/1007408/meta-muse-openai-dots-ai-agent-race-privacy-free",
+          "date": "2026-10-08"
         },
         {
-          "title": "AI is changing developer work. Here are three skills to strengthen.",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/ai-is-rewriting-the-developer-career-ladder-heres-how-to-stand-out/",
-          "date": "2026-10-02"
+          "title": "It appears .agent and .agi are about to be the hot new domains",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/1007132/icann-domains-2026-ai-agi",
+          "date": "2026-10-08"
         }
       ]
     },
@@ -57,16 +32,10 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Google is about to remove free access to Gemini Flash and Pro",
+          "title": "Google is launching a one-stop Gemini agent for your work tasks",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1005451/google-gemini-free-flash-lite-only",
-          "date": "2026-10-06"
-        },
-        {
-          "title": "Gemini Call for Me might tell your mom you&#8217;re running late",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1005177/google-gemini-call-for-me-expansion-rumors",
-          "date": "2026-10-05"
+          "link": "https://www.theverge.com/tech/1007904/google-gemini-ai-agent-enterprise",
+          "date": "2026-10-08"
         }
       ]
     },
@@ -75,6 +44,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Secret protection must scale with software",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/secret-protection-must-scale-with-software/",
+          "date": "2026-10-07"
+        },
         {
           "title": "AI is changing developer work. Here are three skills to strengthen.",
           "source": "GitHub AI & ML Blog",
@@ -90,10 +65,41 @@
       ]
     },
     {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Helping teens learn, plan, and shape the future of AI",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/teens-learn-and-plan",
+          "date": "2026-10-07"
+        },
+        {
+          "title": "Radisson Hotel Group brings hotel discovery into ChatGPT",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/radisson",
+          "date": "2026-10-07"
+        },
+        {
+          "title": "GPT-6 and Intelligent UI for everyone",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/gpt-6-for-everyone",
+          "date": "2026-10-07"
+        }
+      ]
+    },
+    {
       "label": "GitHub Copilot developer loop",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Microsoft is giving Copilot more control over Windows and your files",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/1007113/microsoft-windows-copilot-ai-control-search-hybrid-intelligence",
+          "date": "2026-10-07"
+        },
         {
           "title": "GitHub Copilot app for Beginners: How to build custom workflows with canvases",
           "source": "GitHub AI & ML Blog",
@@ -105,12 +111,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/engineering/user-experience/rendering-huge-pull-requests-in-the-github-copilot-app/",
           "date": "2026-09-23"
-        },
-        {
-          "title": "Migrating the GitHub Copilot runtime to Rust, using Copilot",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/generative-ai/migrating-the-github-copilot-runtime-to-rust-using-copilot/",
-          "date": "2026-09-17"
         }
       ]
     },
