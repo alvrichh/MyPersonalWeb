@@ -1,11 +1,137 @@
 {
-  "generatedAt": "2026-10-08T15:09:22.858Z",
-  "date": "2026-10-08",
+  "generatedAt": "2026-10-09T14:54:45.175Z",
+  "date": "2026-10-09",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Sophos cuts threat investigation time by 96% with OpenAI Daybreak",
+      "source": "OpenAI News",
+      "date": "2026-10-09",
+      "url": "https://openai.com/index/sophos",
+      "summary": "Discover how Sophos uses OpenAI’s Daybreak to cut cyber-threat investigation time by 96% and automate 52% of MDR cases while preserving human oversight.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Trump’s attempt to rename AI is looking awfully artificial",
+      "source": "The Verge AI",
+      "date": "2026-10-09",
+      "url": "https://www.theverge.com/policy/1008677/trump-super-intelligence-ai-rebranding",
+      "summary": "President Donald Trump has a knack for turning words against his enemies. His first successful presidential run was built on monikers like \"Little Marco\" and \"Crooked Hillary\"; he changed \"fake news\" from a phrase descri...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "OpenAI doubles down on decision to fire three AI safety researchers",
+      "source": "The Verge AI",
+      "date": "2026-10-09",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1008604/openai-defends-decision-fire-safety-researchers",
+      "summary": "OpenAI is standing firm on its decision to fire three safety researchers after an investigation found they committed \"a significant breach of trust.\" In a post on X on Friday, the company said Jasmine Wang, Tomek Korbak ...",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "How Oracle turns days of work into minutes with ChatGPT and Codex",
+      "source": "OpenAI News",
+      "date": "2026-10-08",
+      "url": "https://openai.com/index/oracle",
+      "summary": "Across recruiting, engineering, and operations, Oracle turns specialist knowledge into fast, repeatable workflows with ChatGPT Work and Codex.",
+      "tags": [
+        "ChatGPT",
+        "Dev Tools",
+        "Automation"
+      ]
+    },
+    {
+      "title": "Pollo AI turns creative ideas into campaigns with OpenAI",
+      "source": "OpenAI News",
+      "date": "2026-10-08",
+      "url": "https://openai.com/index/pollo-ai",
+      "summary": "With GPT-5.6, GPT-6 Astra, and GPT‑Image‑2.5, Pollo AI helps creators turn bold ideas into detailed images and cinematic video ads.",
+      "tags": [
+        "ChatGPT",
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "LegalOn halves Codex costs while maintaining development speed",
+      "source": "OpenAI News",
+      "date": "2026-10-08",
+      "url": "https://openai.com/index/legalon-halves-codex-costs",
+      "summary": "LegalOn cut estimated daily Codex costs by 65% while maintaining development speed. It matched Astra, Sol, and Luna to tasks and managed budgets strategically.",
+      "tags": [
+        "ChatGPT",
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "Disrupting AI-enabled “false front” operations",
+      "source": "OpenAI News",
+      "date": "2026-10-08",
+      "url": "https://openai.com/index/disrupting-ai-enabled-false-front-operations",
+      "summary": "OpenAI disrupted two AI-enabled influence operations that used false-front journalists and a think tank to spread geopolitical messaging.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Instinct was the buzziest AI agent around — can it survive Muse?",
+      "source": "The Verge AI",
+      "date": "2026-10-08",
+      "url": "https://www.theverge.com/tech/1008254/instinct-agent-ai-hands-on-muse-dots",
+      "summary": "Before there were cute little guys, there was Instinct. In August, the startup got its AI agent to market with an unusual playbook: invite-only, no marketing, and barely so much as a website. And yet, Instinct quickly be...",
+      "tags": [
+        "Agents"
+      ]
+    },
+    {
+      "title": "Anthropic launches free AI security scans for open-source projects",
+      "source": "The Verge AI",
+      "date": "2026-10-08",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1008521/anthropic-open-source-oss-scanner",
+      "summary": "Anthropic's offering to help open-source projects track down security vulnerabilities with a new service called OSS Scanner. It says open-source projects that opt-in will get \"thorough, periodic security scans by our str...",
+      "tags": [
+        "Claude",
+        "Models"
+      ]
+    },
+    {
+      "title": "California is trying to shut down robot vs. human cage matches",
+      "source": "The Verge AI",
+      "date": "2026-10-08",
+      "url": "https://www.theverge.com/tech/1008401/california-shut-down-rek-fighting-robot-company-human",
+      "summary": "The California State Athletic Commission sent a cease-and-desist letter to a startup that hosted a match between a human and a robot last month, as reported by The New York Times. The fight, which took place on September...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "USA Today becomes the latest publisher to sue OpenAI",
+      "source": "The Verge AI",
+      "date": "2026-10-08",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1008198/usa-today-openai-copyright-lawsuit",
+      "summary": "USA Today Co., along with the several local newspapers it owns, is suing OpenAI over claims that the company copied \"hundreds of thousands\" of articles to train its AI models, as reported earlier by Reuters. In a filing ...",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ]
+    },
+    {
+      "title": "SpaceXAI backs Omarchy, the controversial Linux distro, with $1.5 million in compute",
+      "source": "The Verge AI",
+      "date": "2026-10-08",
+      "url": "https://www.theverge.com/tech/1008148/spacexai-omarchy-grok-david-heinemeier-hansson",
+      "summary": "If Elon Musk and SpaceXAI were going to back any Linux distro, it seems obvious they'd back Omarchy. Today it was announced that SpaceXAI would be joining the Omacom Foundation, which oversees Omarchy, as a Founding Corp...",
+      "tags": [
+        "AI"
+      ]
+    },
     {
       "title": "Google is launching a one-stop Gemini agent for your work tasks",
       "source": "The Verge AI",
@@ -89,170 +215,68 @@
       "tags": [
         "ChatGPT"
       ]
-    },
-    {
-      "title": "ChatGPT&#8217;s &#8216;Intelligent UI&#8217; update fills its responses with pictures, charts, and buttons",
-      "source": "The Verge AI",
-      "date": "2026-10-07",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1007276/openai-chatgpt-intelligent-ui-gpt-6",
-      "summary": "OpenAI is launching a new Intelligent UI feature in ChatGPT that allows the chatbot to answer your questions with interactive visuals. The update, which is rolling out to all users alongside GPT-6, gives ChatGPT the abil...",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Everything announced at Microsoft&#8217;s Surface Laptop Ultra event",
-      "source": "The Verge AI",
-      "date": "2026-10-07",
-      "url": "https://www.theverge.com/tech/1007147/microsoft-surface-laptop-ultra-windows-event-everything-announced",
-      "summary": "Microsoft just wrapped up a big Windows and Surface-focused keynote in San Francisco. The biggest announcement was arguably the release details about the Surface Laptop Ultra, its new laptop that&#8217;s powered by Nvidi...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Microsoft is giving Copilot more control over Windows and your files",
-      "source": "The Verge AI",
-      "date": "2026-10-07",
-      "url": "https://www.theverge.com/tech/1007113/microsoft-windows-copilot-ai-control-search-hybrid-intelligence",
-      "summary": "At today's Windows and Surface event, Microsoft showed off an upgrade to its Copilot AI system that will give it access to local files on your PC and the ability to take actions across the OS. It's part of an idea Micros...",
-      "tags": [
-        "Agents",
-        "Copilot"
-      ]
-    },
-    {
-      "title": "Surface RTX Spark Dev Box is available for preorder for $5,999",
-      "source": "The Verge AI",
-      "date": "2026-10-07",
-      "url": "https://www.theverge.com/tech/1006915/microsoft-surface-rtx-spark-dev-box-preorder",
-      "summary": "Microsoft's Nvidia-powered Surface RTX Spark Dev Box is available for preorder now and is slated to ship in November for just about $6,000. It's pricier than the DGX Spark mini PC Nvidia launched last year, but PC prices...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Google invests millions in Mark Zuckerberg’s efforts to create a ‘virtual cell’",
-      "source": "The Verge AI",
-      "date": "2026-10-07",
-      "url": "https://www.theverge.com/tech/1006766/google-meta-biohub-investment-virtual-cell",
-      "summary": "Google DeepMind, Meta, and AI drug discovery startup Isomorphic Labs are jointly investing $300 million into Biohub, the nonprofit biomedical research organization founded by Mark Zuckerberg and his wife, Priscilla Chan,...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "ChatGPT for Teens is an ‘unacceptable risk,’ says Common Sense Media",
-      "source": "The Verge AI",
-      "date": "2026-10-07",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1006355/openai-chatgpt-for-teens-common-sense-media",
-      "summary": "Common Sense Media, a nonprofit that offers reviews of apps, services, and entertainment with a focus on youth safety, today said that OpenAI's ChatGPT for Teens is an \"unacceptable risk.\" ChatGPT for Teens, introduced i...",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "How Jump Trading is scaling quant research with ChatGPT",
-      "source": "OpenAI News",
-      "date": "2026-10-06",
-      "url": "https://openai.com/index/jump-trading",
-      "summary": "Jump Trading uses OpenAI to expand quantitative research. See how longer-running AI workflows combine multiple data sources with human review.",
-      "tags": [
-        "ChatGPT",
-        "Automation"
-      ]
-    },
-    {
-      "title": "Sharing AI progress in mathematics",
-      "source": "OpenAI News",
-      "date": "2026-10-06",
-      "url": "https://openai.com/index/sharing-ai-progress-in-mathematics",
-      "summary": "OpenAI publishes new results on open problems in mathematics from an internal frontier model and shares Lean proof formalizations and research details on GitHub.",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "Advancing computer use with Ironclad",
-      "source": "OpenAI News",
-      "date": "2026-10-06",
-      "url": "https://openai.com/index/advancing-computer-use-with-ironclad",
-      "summary": "Learn how OpenAI and Ironclad are training and evaluating AI agents on complex contracting workflows to advance computer use for professional work.",
-      "tags": [
-        "Agents",
-        "ChatGPT",
-        "Automation"
-      ]
-    },
-    {
-      "title": "Atlassian and OpenAI expand partnership to turn enterprise knowledge into action",
-      "source": "OpenAI News",
-      "date": "2026-10-06",
-      "url": "https://openai.com/index/atlassian-partnership",
-      "summary": "Atlassian and OpenAI are expanding their partnership to connect frontier models with enterprise knowledge and help teams plan, build, and deliver work.",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "AI could upend food delivery",
-      "source": "The Verge AI",
-      "date": "2026-10-06",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1005726/doordash-ai-agentic-food-delivery-bites",
-      "summary": "DoorDash, the leading food delivery app, processed 970 million orders in its second quarter this year and generated $4.5 billion in revenue. A 10-person startup called Bites is a blip in comparison: It has just around 30...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "OpenAI drops another batch of mathematical breakthroughs",
-      "source": "The Verge AI",
-      "date": "2026-10-06",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1005004/openai-math-release-github",
-      "summary": "OpenAI has revealed solutions to a number of long-standing mathematics problems produced by an unreleased frontier model in a batch of 722 manuscripts, covering 372 result families that group related papers. It extends a...",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "How Oracle turns days of work into minutes with ChatGPT and Codex",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/oracle",
+          "date": "2026-10-08"
+        },
+        {
+          "title": "Helping teens learn, plan, and shape the future of AI",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/teens-learn-and-plan",
+          "date": "2026-10-07"
+        },
+        {
+          "title": "Radisson Hotel Group brings hotel discovery into ChatGPT",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/radisson",
+          "date": "2026-10-07"
+        }
+      ]
+    },
     {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Google is launching a one-stop Gemini agent for your work tasks",
+          "title": "Instinct was the buzziest AI agent around — can it survive Muse?",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/1007904/google-gemini-ai-agent-enterprise",
+          "link": "https://www.theverge.com/tech/1008254/instinct-agent-ai-hands-on-muse-dots",
           "date": "2026-10-08"
         },
         {
-          "title": "Can you trust Meta’s Muse or OpenAI’s Dots to run your life?",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/podcast/1007408/meta-muse-openai-dots-ai-agent-race-privacy-free",
-          "date": "2026-10-08"
+          "title": "ReviewBench: An open benchmark for AI code review",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/reviewbench-an-open-benchmark-for-ai-code-review/",
+          "date": "2026-10-05"
         },
         {
-          "title": "It appears .agent and .agi are about to be the hot new domains",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/1007132/icann-domains-2026-ai-agi",
-          "date": "2026-10-08"
+          "title": "AI is changing developer work. Here are three skills to strengthen.",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/ai-is-rewriting-the-developer-career-ladder-heres-how-to-stand-out/",
+          "date": "2026-10-02"
         }
       ]
     },
     {
-      "label": "Gemini multimodal exploration",
+      "label": "Claude research and documentation flow",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Google is launching a one-stop Gemini agent for your work tasks",
+          "title": "Anthropic bans ‘abusive or cruel behavior’ toward Claude",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/1007904/google-gemini-ai-agent-enterprise",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1008100/anthropic-new-usage-policy-abuse-claude",
           "date": "2026-10-08"
         }
       ]
@@ -283,41 +307,10 @@
       ]
     },
     {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Helping teens learn, plan, and shape the future of AI",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/teens-learn-and-plan",
-          "date": "2026-10-07"
-        },
-        {
-          "title": "Radisson Hotel Group brings hotel discovery into ChatGPT",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/radisson",
-          "date": "2026-10-07"
-        },
-        {
-          "title": "GPT-6 and Intelligent UI for everyone",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/gpt-6-for-everyone",
-          "date": "2026-10-07"
-        }
-      ]
-    },
-    {
       "label": "GitHub Copilot developer loop",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
-        {
-          "title": "Microsoft is giving Copilot more control over Windows and your files",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/1007113/microsoft-windows-copilot-ai-control-search-hybrid-intelligence",
-          "date": "2026-10-07"
-        },
         {
           "title": "GitHub Copilot app for Beginners: How to build custom workflows with canvases",
           "source": "GitHub AI & ML Blog",

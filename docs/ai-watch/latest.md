@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-10-08
+# Daily AI maintenance report — 2026-10-09
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,14 +13,32 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
-- **Google is launching a one-stop Gemini agent for your work tasks** — The Verge AI · 2026-10-08
-  https://www.theverge.com/tech/1007904/google-gemini-ai-agent-enterprise
-- **Can you trust Meta’s Muse or OpenAI’s Dots to run your life?** — The Verge AI · 2026-10-08
-  https://www.theverge.com/podcast/1007408/meta-muse-openai-dots-ai-agent-race-privacy-free
-- **Artificial is a wicked satire that also sticks to the facts** — The Verge AI · 2026-10-08
-  https://www.theverge.com/ai-artificial-intelligence/1007786/artificial-is-a-wicked-satire-that-also-sticks-to-the-facts
-- **It appears .agent and .agi are about to be the hot new domains** — The Verge AI · 2026-10-08
-  https://www.theverge.com/tech/1007132/icann-domains-2026-ai-agi
+- **Sophos cuts threat investigation time by 96% with OpenAI Daybreak** — OpenAI News · 2026-10-09
+  https://openai.com/index/sophos
+- **Trump’s attempt to rename AI is looking awfully artificial** — The Verge AI · 2026-10-09
+  https://www.theverge.com/policy/1008677/trump-super-intelligence-ai-rebranding
+- **OpenAI doubles down on decision to fire three AI safety researchers** — The Verge AI · 2026-10-09
+  https://www.theverge.com/ai-artificial-intelligence/1008604/openai-defends-decision-fire-safety-researchers
+- **How Oracle turns days of work into minutes with ChatGPT and Codex** — OpenAI News · 2026-10-08
+  https://openai.com/index/oracle
+- **Pollo AI turns creative ideas into campaigns with OpenAI** — OpenAI News · 2026-10-08
+  https://openai.com/index/pollo-ai
+- **LegalOn halves Codex costs while maintaining development speed** — OpenAI News · 2026-10-08
+  https://openai.com/index/legalon-halves-codex-costs
+- **Disrupting AI-enabled “false front” operations** — OpenAI News · 2026-10-08
+  https://openai.com/index/disrupting-ai-enabled-false-front-operations
+- **Instinct was the buzziest AI agent around — can it survive Muse?** — The Verge AI · 2026-10-08
+  https://www.theverge.com/tech/1008254/instinct-agent-ai-hands-on-muse-dots
+- **Anthropic launches free AI security scans for open-source projects** — The Verge AI · 2026-10-08
+  https://www.theverge.com/ai-artificial-intelligence/1008521/anthropic-open-source-oss-scanner
+- **California is trying to shut down robot vs. human cage matches** — The Verge AI · 2026-10-08
+  https://www.theverge.com/tech/1008401/california-shut-down-rek-fighting-robot-company-human
+- **USA Today becomes the latest publisher to sue OpenAI** — The Verge AI · 2026-10-08
+  https://www.theverge.com/ai-artificial-intelligence/1008198/usa-today-openai-copyright-lawsuit
+- **SpaceXAI backs Omarchy, the controversial Linux distro, with $1.5 million in compute** — The Verge AI · 2026-10-08
+  https://www.theverge.com/tech/1008148/spacexai-omarchy-grok-david-heinemeier-hansson
+- **Anthropic bans ‘abusive or cruel behavior’ toward Claude** — The Verge AI · 2026-10-08
+  https://www.theverge.com/ai-artificial-intelligence/1008100/anthropic-new-usage-policy-abuse-claude
 - **Secret protection must scale with software** — GitHub AI & ML Blog · 2026-10-07
   https://github.blog/ai-and-ml/github-copilot/secret-protection-must-scale-with-software/
 - **Helping teens learn, plan, and shape the future of AI** — OpenAI News · 2026-10-07
@@ -29,26 +47,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/radisson
 - **GPT-6 and Intelligent UI for everyone** — OpenAI News · 2026-10-07
   https://openai.com/index/gpt-6-for-everyone
-- **ChatGPT&#8217;s &#8216;Intelligent UI&#8217; update fills its responses with pictures, charts, and buttons** — The Verge AI · 2026-10-07
-  https://www.theverge.com/ai-artificial-intelligence/1007276/openai-chatgpt-intelligent-ui-gpt-6
-- **Everything announced at Microsoft&#8217;s Surface Laptop Ultra event** — The Verge AI · 2026-10-07
-  https://www.theverge.com/tech/1007147/microsoft-surface-laptop-ultra-windows-event-everything-announced
-- **Microsoft is giving Copilot more control over Windows and your files** — The Verge AI · 2026-10-07
-  https://www.theverge.com/tech/1007113/microsoft-windows-copilot-ai-control-search-hybrid-intelligence
-- **Surface RTX Spark Dev Box is available for preorder for $5,999** — The Verge AI · 2026-10-07
-  https://www.theverge.com/tech/1006915/microsoft-surface-rtx-spark-dev-box-preorder
-- **How Jump Trading is scaling quant research with ChatGPT** — OpenAI News · 2026-10-06
-  https://openai.com/index/jump-trading
-- **Sharing AI progress in mathematics** — OpenAI News · 2026-10-06
-  https://openai.com/index/sharing-ai-progress-in-mathematics
-- **Advancing computer use with Ironclad** — OpenAI News · 2026-10-06
-  https://openai.com/index/advancing-computer-use-with-ironclad
-- **Atlassian and OpenAI expand partnership to turn enterprise knowledge into action** — OpenAI News · 2026-10-06
-  https://openai.com/index/atlassian-partnership
 - **ReviewBench: An open benchmark for AI code review** — GitHub AI & ML Blog · 2026-10-05
   https://github.blog/ai-and-ml/github-copilot/reviewbench-an-open-benchmark-for-ai-code-review/
-- **Our approach to EU text provenance rules** — OpenAI News · 2026-10-05
-  https://openai.com/index/eu-text-provenance
 - **AI is changing developer work. Here are three skills to strengthen.** — GitHub AI & ML Blog · 2026-10-02
   https://github.blog/ai-and-ml/ai-is-rewriting-the-developer-career-ladder-heres-how-to-stand-out/
 - **The latest AI news we announced in September 2026** — Google AI Blog · 2026-10-02
@@ -80,10 +80,10 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
-- **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **MCP / tool-connected assistants** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
