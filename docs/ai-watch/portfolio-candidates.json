@@ -1,6 +1,31 @@
 {
-  "generatedAt": "2026-10-09T14:54:45.175Z",
+  "generatedAt": "2026-10-10T14:10:30.722Z",
   "candidates": [
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Asana cuts model costs 76x in browser tests with GPT-6.1 Sol",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/asana-browser-agent",
+          "date": "2026-10-09"
+        },
+        {
+          "title": "AI agent makers are promising privacy — will they deliver?",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1009051/privacy-ai-agent-promises-openai-meta-muse-dots",
+          "date": "2026-10-09"
+        },
+        {
+          "title": "Instinct was the buzziest AI agent around — can it survive Muse?",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/1008254/instinct-agent-ai-hands-on-muse-dots",
+          "date": "2026-10-08"
+        }
+      ]
+    },
     {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
@@ -23,44 +48,6 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/radisson",
           "date": "2026-10-07"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Instinct was the buzziest AI agent around — can it survive Muse?",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/1008254/instinct-agent-ai-hands-on-muse-dots",
-          "date": "2026-10-08"
-        },
-        {
-          "title": "ReviewBench: An open benchmark for AI code review",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/reviewbench-an-open-benchmark-for-ai-code-review/",
-          "date": "2026-10-05"
-        },
-        {
-          "title": "AI is changing developer work. Here are three skills to strengthen.",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/ai-is-rewriting-the-developer-career-ladder-heres-how-to-stand-out/",
-          "date": "2026-10-02"
-        }
-      ]
-    },
-    {
-      "label": "Claude research and documentation flow",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Anthropic bans ‘abusive or cruel behavior’ toward Claude",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1008100/anthropic-new-usage-policy-abuse-claude",
-          "date": "2026-10-08"
         }
       ]
     },

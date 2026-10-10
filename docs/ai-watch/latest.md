@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-10-09
+# Daily AI maintenance report — 2026-10-10
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -15,6 +15,16 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 - **Sophos cuts threat investigation time by 96% with OpenAI Daybreak** — OpenAI News · 2026-10-09
   https://openai.com/index/sophos
+- **Asana cuts model costs 76x in browser tests with GPT-6.1 Sol** — OpenAI News · 2026-10-09
+  https://openai.com/index/asana-browser-agent
+- **AI agent makers are promising privacy — will they deliver?** — The Verge AI · 2026-10-09
+  https://www.theverge.com/ai-artificial-intelligence/1009051/privacy-ai-agent-promises-openai-meta-muse-dots
+- **Anthropic’s AI gave Philadelphia police a fake tip about an unsolved homicide** — The Verge AI · 2026-10-09
+  https://www.theverge.com/ai-artificial-intelligence/1009090/anthropic-fake-homicide-information-philadelphia-pd-tip
+- **&#8216;Pure insanity&#8217;: Mathematicians will need years to make sense of OpenAI&#8217;s latest drop** — The Verge AI · 2026-10-09
+  https://www.theverge.com/ai-artificial-intelligence/1008726/openai-mathematics-solutions-chaos
+- **Nikon microscopic video competition winner disqualified for using generative AI** — The Verge AI · 2026-10-09
+  https://www.theverge.com/ai-artificial-intelligence/1008930/nikon-small-world-in-motion-winner-ai
 - **Trump’s attempt to rename AI is looking awfully artificial** — The Verge AI · 2026-10-09
   https://www.theverge.com/policy/1008677/trump-super-intelligence-ai-rebranding
 - **OpenAI doubles down on decision to fire three AI safety researchers** — The Verge AI · 2026-10-09
@@ -31,22 +41,12 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/tech/1008254/instinct-agent-ai-hands-on-muse-dots
 - **Anthropic launches free AI security scans for open-source projects** — The Verge AI · 2026-10-08
   https://www.theverge.com/ai-artificial-intelligence/1008521/anthropic-open-source-oss-scanner
-- **California is trying to shut down robot vs. human cage matches** — The Verge AI · 2026-10-08
-  https://www.theverge.com/tech/1008401/california-shut-down-rek-fighting-robot-company-human
-- **USA Today becomes the latest publisher to sue OpenAI** — The Verge AI · 2026-10-08
-  https://www.theverge.com/ai-artificial-intelligence/1008198/usa-today-openai-copyright-lawsuit
-- **SpaceXAI backs Omarchy, the controversial Linux distro, with $1.5 million in compute** — The Verge AI · 2026-10-08
-  https://www.theverge.com/tech/1008148/spacexai-omarchy-grok-david-heinemeier-hansson
-- **Anthropic bans ‘abusive or cruel behavior’ toward Claude** — The Verge AI · 2026-10-08
-  https://www.theverge.com/ai-artificial-intelligence/1008100/anthropic-new-usage-policy-abuse-claude
 - **Secret protection must scale with software** — GitHub AI & ML Blog · 2026-10-07
   https://github.blog/ai-and-ml/github-copilot/secret-protection-must-scale-with-software/
 - **Helping teens learn, plan, and shape the future of AI** — OpenAI News · 2026-10-07
   https://openai.com/index/teens-learn-and-plan
 - **Radisson Hotel Group brings hotel discovery into ChatGPT** — OpenAI News · 2026-10-07
   https://openai.com/index/radisson
-- **GPT-6 and Intelligent UI for everyone** — OpenAI News · 2026-10-07
-  https://openai.com/index/gpt-6-for-everyone
 - **ReviewBench: An open benchmark for AI code review** — GitHub AI & ML Blog · 2026-10-05
   https://github.blog/ai-and-ml/github-copilot/reviewbench-an-open-benchmark-for-ai-code-review/
 - **AI is changing developer work. Here are three skills to strengthen.** — GitHub AI & ML Blog · 2026-10-02
@@ -80,9 +80,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
-- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **MCP / tool-connected assistants** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.

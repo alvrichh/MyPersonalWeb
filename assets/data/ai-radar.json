@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-09T14:54:45.175Z",
-  "date": "2026-10-09",
+  "generatedAt": "2026-10-10T14:10:30.722Z",
+  "date": "2026-10-10",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
@@ -14,6 +14,61 @@
       "summary": "Discover how Sophos uses OpenAI’s Daybreak to cut cyber-threat investigation time by 96% and automate 52% of MDR cases while preserving human oversight.",
       "tags": [
         "ChatGPT"
+      ]
+    },
+    {
+      "title": "Asana cuts model costs 76x in browser tests with GPT-6.1 Sol",
+      "source": "OpenAI News",
+      "date": "2026-10-09",
+      "url": "https://openai.com/index/asana-browser-agent",
+      "summary": "Using GPT-6 Astra in Codex, Asana made its browser agent 76x cheaper and 5x faster in tests to offer customers more capable models.",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Dev Tools",
+        "Models"
+      ]
+    },
+    {
+      "title": "AI agent makers are promising privacy — will they deliver?",
+      "source": "The Verge AI",
+      "date": "2026-10-09",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1009051/privacy-ai-agent-promises-openai-meta-muse-dots",
+      "summary": "At this year's OpenAI DevDay, CEO Sam Altman unveiled the company's new AI agent Dots - and told the crowd that the company wants to \"set a new standard for privacy in frontier AI.\" OpenAI would spend the day taking veil...",
+      "tags": [
+        "Agents",
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Anthropic’s AI gave Philadelphia police a fake tip about an unsolved homicide",
+      "source": "The Verge AI",
+      "date": "2026-10-09",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1009090/anthropic-fake-homicide-information-philadelphia-pd-tip",
+      "summary": "An Anthropic AI model provided false information about an unsolved homicide to a Philadelphia Police Department (PPD) tipline, according to a report from 6abc. In a statement released on Friday, the PPD said the AI model...",
+      "tags": [
+        "Claude",
+        "Models"
+      ]
+    },
+    {
+      "title": "&#8216;Pure insanity&#8217;: Mathematicians will need years to make sense of OpenAI&#8217;s latest drop",
+      "source": "The Verge AI",
+      "date": "2026-10-09",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1008726/openai-mathematics-solutions-chaos",
+      "summary": "\"Staggering.\" \"Overwhelming.\" \"Unprecedented.\" \"Surreal.\" \"Pure insanity.\" Those were among the descriptions more than three dozen mathematicians reached for in conversations with The Verge as they tried to make sense of...",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Nikon microscopic video competition winner disqualified for using generative AI",
+      "source": "The Verge AI",
+      "date": "2026-10-09",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1008930/nikon-small-world-in-motion-winner-ai",
+      "summary": "Nikon says the video that originally won first place in its Small World in Motion contest \"did not comply with the competition rules regarding generative AI.\" BBC reports that the original first place video from Dr. Ning...",
+      "tags": [
+        "Multimodal"
       ]
     },
     {
@@ -164,60 +219,34 @@
       "tags": [
         "AI"
       ]
-    },
-    {
-      "title": "It appears .agent and .agi are about to be the hot new domains",
-      "source": "The Verge AI",
-      "date": "2026-10-08",
-      "url": "https://www.theverge.com/tech/1007132/icann-domains-2026-ai-agi",
-      "summary": "For the first time in years, the Internet Corporation for Assigned Names and Numbers - better known as ICANN - is accepting applications for new top-level domains. These are the suffixes at the end of all URLs, and you m...",
-      "tags": [
-        "Agents"
-      ]
-    },
-    {
-      "title": "Secret protection must scale with software",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-10-07",
-      "url": "https://github.blog/ai-and-ml/github-copilot/secret-protection-must-scale-with-software/",
-      "summary": "Developers aren’t becoming more careless; they’re being outpaced. The tools that let developers create more software should also take on more of the work of protecting it. The post Secret protection must scale with softw...",
-      "tags": [
-        "Agents",
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "Helping teens learn, plan, and shape the future of AI",
-      "source": "OpenAI News",
-      "date": "2026-10-07",
-      "url": "https://openai.com/index/teens-learn-and-plan",
-      "summary": "College Planner is coming to ChatGPT for Teens to help students manage college applications, alongside new flashcards, quizzes, and a teen AI council.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Radisson Hotel Group brings hotel discovery into ChatGPT",
-      "source": "OpenAI News",
-      "date": "2026-10-07",
-      "url": "https://openai.com/index/radisson",
-      "summary": "Radisson partnered with Accenture to build a ChatGPT plugin using OpenAI technology, helping travelers find, compare, and book hotels while planning their trips.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "GPT-6 and Intelligent UI for everyone",
-      "source": "OpenAI News",
-      "date": "2026-10-07",
-      "url": "https://openai.com/index/gpt-6-for-everyone",
-      "summary": "GPT‑6 is rolling out globally in ChatGPT with Intelligent UI, delivering faster responses with visuals and interactive experiences you can explore and use directly.",
-      "tags": [
-        "ChatGPT"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Asana cuts model costs 76x in browser tests with GPT-6.1 Sol",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/asana-browser-agent",
+          "date": "2026-10-09"
+        },
+        {
+          "title": "AI agent makers are promising privacy — will they deliver?",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1009051/privacy-ai-agent-promises-openai-meta-muse-dots",
+          "date": "2026-10-09"
+        },
+        {
+          "title": "Instinct was the buzziest AI agent around — can it survive Muse?",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/1008254/instinct-agent-ai-hands-on-muse-dots",
+          "date": "2026-10-08"
+        }
+      ]
+    },
     {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
@@ -240,44 +269,6 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/radisson",
           "date": "2026-10-07"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Instinct was the buzziest AI agent around — can it survive Muse?",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/1008254/instinct-agent-ai-hands-on-muse-dots",
-          "date": "2026-10-08"
-        },
-        {
-          "title": "ReviewBench: An open benchmark for AI code review",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/reviewbench-an-open-benchmark-for-ai-code-review/",
-          "date": "2026-10-05"
-        },
-        {
-          "title": "AI is changing developer work. Here are three skills to strengthen.",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/ai-is-rewriting-the-developer-career-ladder-heres-how-to-stand-out/",
-          "date": "2026-10-02"
-        }
-      ]
-    },
-    {
-      "label": "Claude research and documentation flow",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Anthropic bans ‘abusive or cruel behavior’ toward Claude",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1008100/anthropic-new-usage-policy-abuse-claude",
-          "date": "2026-10-08"
         }
       ]
     },
