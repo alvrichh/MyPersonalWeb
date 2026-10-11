@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-10-10
+# Daily AI maintenance report — 2026-10-11
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,14 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Learning to use local AI is exciting, overwhelming, and frustrating** — The Verge AI · 2026-10-11
+  https://www.theverge.com/ai-artificial-intelligence/1008484/learning-local-ai-hermes-qwen-model-mac-studio-testing-diary-progress
+- **Satya Nadella says we should assume all AI models are ‘compromised’** — The Verge AI · 2026-10-10
+  https://www.theverge.com/ai-artificial-intelligence/1009337/satya-nadella-says-we-should-assume-all-ai-models-are-compromised
+- **DistroKid has been quietly taking down songs in response to UMG lawsuit** — The Verge AI · 2026-10-10
+  https://www.theverge.com/entertainment/1009309/distrokid-take-down-songs-umg-lawsuit
+- **Anthropic is cutting off its internal evaluations from the internet** — The Verge AI · 2026-10-10
+  https://www.theverge.com/ai-artificial-intelligence/1009286/anthropic-is-cutting-off-its-internal-evaluations-from-the-internet
 - **Sophos cuts threat investigation time by 96% with OpenAI Daybreak** — OpenAI News · 2026-10-09
   https://openai.com/index/sophos
 - **Asana cuts model costs 76x in browser tests with GPT-6.1 Sol** — OpenAI News · 2026-10-09
@@ -25,10 +33,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/ai-artificial-intelligence/1008726/openai-mathematics-solutions-chaos
 - **Nikon microscopic video competition winner disqualified for using generative AI** — The Verge AI · 2026-10-09
   https://www.theverge.com/ai-artificial-intelligence/1008930/nikon-small-world-in-motion-winner-ai
-- **Trump’s attempt to rename AI is looking awfully artificial** — The Verge AI · 2026-10-09
-  https://www.theverge.com/policy/1008677/trump-super-intelligence-ai-rebranding
-- **OpenAI doubles down on decision to fire three AI safety researchers** — The Verge AI · 2026-10-09
-  https://www.theverge.com/ai-artificial-intelligence/1008604/openai-defends-decision-fire-safety-researchers
 - **How Oracle turns days of work into minutes with ChatGPT and Codex** — OpenAI News · 2026-10-08
   https://openai.com/index/oracle
 - **Pollo AI turns creative ideas into campaigns with OpenAI** — OpenAI News · 2026-10-08
@@ -37,10 +41,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/legalon-halves-codex-costs
 - **Disrupting AI-enabled “false front” operations** — OpenAI News · 2026-10-08
   https://openai.com/index/disrupting-ai-enabled-false-front-operations
-- **Instinct was the buzziest AI agent around — can it survive Muse?** — The Verge AI · 2026-10-08
-  https://www.theverge.com/tech/1008254/instinct-agent-ai-hands-on-muse-dots
-- **Anthropic launches free AI security scans for open-source projects** — The Verge AI · 2026-10-08
-  https://www.theverge.com/ai-artificial-intelligence/1008521/anthropic-open-source-oss-scanner
 - **Secret protection must scale with software** — GitHub AI & ML Blog · 2026-10-07
   https://github.blog/ai-and-ml/github-copilot/secret-protection-must-scale-with-software/
 - **Helping teens learn, plan, and shape the future of AI** — OpenAI News · 2026-10-07
