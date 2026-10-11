@@ -1,11 +1,53 @@
 {
-  "generatedAt": "2026-10-10T14:10:30.722Z",
-  "date": "2026-10-10",
+  "generatedAt": "2026-10-11T14:35:03.749Z",
+  "date": "2026-10-11",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Learning to use local AI is exciting, overwhelming, and frustrating",
+      "source": "The Verge AI",
+      "date": "2026-10-11",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1008484/learning-local-ai-hermes-qwen-model-mac-studio-testing-diary-progress",
+      "summary": "I'm embarking on a journey I've so far been hesitant to go on: actually using AI on the regular. Giving my most personal data to cloud services has been a major hold up for me, but it's increasingly possible to run power...",
+      "tags": [
+        "Models"
+      ]
+    },
+    {
+      "title": "Satya Nadella says we should assume all AI models are ‘compromised’",
+      "source": "The Verge AI",
+      "date": "2026-10-10",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1009337/satya-nadella-says-we-should-assume-all-ai-models-are-compromised",
+      "summary": "In a lengthy post on X, Microsoft's CEO laid out his views on the dangers posed by highly advanced AI models and how to confront those risks. Nadella says we can no longer accept a world where AI is treated as a \"set of ...",
+      "tags": [
+        "Models"
+      ]
+    },
+    {
+      "title": "DistroKid has been quietly taking down songs in response to UMG lawsuit",
+      "source": "The Verge AI",
+      "date": "2026-10-10",
+      "url": "https://www.theverge.com/entertainment/1009309/distrokid-take-down-songs-umg-lawsuit",
+      "summary": "Artists are taking to social media to complain that DistroKid has unceremoniously removed their work without notice. Now DistroKid has confirmed to The Verge that the takedowns are a direct response to claims made by UMG...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Anthropic is cutting off its internal evaluations from the internet",
+      "source": "The Verge AI",
+      "date": "2026-10-10",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1009286/anthropic-is-cutting-off-its-internal-evaluations-from-the-internet",
+      "summary": "After a recent spate of high-profile incidents in which AI agents escaped containment, Anthropic is cutting off internet access for all internal evaluations. In a report Friday, the company detailed \"unintended model act...",
+      "tags": [
+        "Agents",
+        "Claude",
+        "Models"
+      ]
+    },
     {
       "title": "Sophos cuts threat investigation time by 96% with OpenAI Daybreak",
       "source": "OpenAI News",
@@ -72,26 +114,6 @@
       ]
     },
     {
-      "title": "Trump’s attempt to rename AI is looking awfully artificial",
-      "source": "The Verge AI",
-      "date": "2026-10-09",
-      "url": "https://www.theverge.com/policy/1008677/trump-super-intelligence-ai-rebranding",
-      "summary": "President Donald Trump has a knack for turning words against his enemies. His first successful presidential run was built on monikers like \"Little Marco\" and \"Crooked Hillary\"; he changed \"fake news\" from a phrase descri...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "OpenAI doubles down on decision to fire three AI safety researchers",
-      "source": "The Verge AI",
-      "date": "2026-10-09",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1008604/openai-defends-decision-fire-safety-researchers",
-      "summary": "OpenAI is standing firm on its decision to fire three safety researchers after an investigation found they committed \"a significant breach of trust.\" In a post on X on Friday, the company said Jasmine Wang, Tomek Korbak ...",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
       "title": "How Oracle turns days of work into minutes with ChatGPT and Codex",
       "source": "OpenAI News",
       "date": "2026-10-08",
@@ -112,6 +134,26 @@
       "tags": [
         "ChatGPT",
         "Multimodal"
+      ]
+    },
+    {
+      "title": "Trump’s attempt to rename AI is looking awfully artificial",
+      "source": "The Verge AI",
+      "date": "2026-10-09",
+      "url": "https://www.theverge.com/policy/1008677/trump-super-intelligence-ai-rebranding",
+      "summary": "President Donald Trump has a knack for turning words against his enemies. His first successful presidential run was built on monikers like \"Little Marco\" and \"Crooked Hillary\"; he changed \"fake news\" from a phrase descri...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "OpenAI doubles down on decision to fire three AI safety researchers",
+      "source": "The Verge AI",
+      "date": "2026-10-09",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1008604/openai-defends-decision-fire-safety-researchers",
+      "summary": "OpenAI is standing firm on its decision to fire three safety researchers after an investigation found they committed \"a significant breach of trust.\" In a post on X on Friday, the company said Jasmine Wang, Tomek Korbak ...",
+      "tags": [
+        "ChatGPT"
       ]
     },
     {
@@ -176,49 +218,6 @@
         "ChatGPT",
         "Models"
       ]
-    },
-    {
-      "title": "SpaceXAI backs Omarchy, the controversial Linux distro, with $1.5 million in compute",
-      "source": "The Verge AI",
-      "date": "2026-10-08",
-      "url": "https://www.theverge.com/tech/1008148/spacexai-omarchy-grok-david-heinemeier-hansson",
-      "summary": "If Elon Musk and SpaceXAI were going to back any Linux distro, it seems obvious they'd back Omarchy. Today it was announced that SpaceXAI would be joining the Omacom Foundation, which oversees Omarchy, as a Founding Corp...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Google is launching a one-stop Gemini agent for your work tasks",
-      "source": "The Verge AI",
-      "date": "2026-10-08",
-      "url": "https://www.theverge.com/tech/1007904/google-gemini-ai-agent-enterprise",
-      "summary": "Google is launching a \"universal\" Gemini AI agent that can work across apps and devices in the background. The tool, announced as part of the Gemini at Work event on Thursday, will be available within the Gemini Enterpri...",
-      "tags": [
-        "Agents",
-        "Gemini"
-      ]
-    },
-    {
-      "title": "Can you trust Meta’s Muse or OpenAI’s Dots to run your life?",
-      "source": "The Verge AI",
-      "date": "2026-10-08",
-      "url": "https://www.theverge.com/podcast/1007408/meta-muse-openai-dots-ai-agent-race-privacy-free",
-      "summary": "My Decoder guest today is Hayden Field, The Verge’s senior AI reporter, and we’re discussing the new wave of consumer-friendly AI agents. If you’ve been paying attention to this space, you know AI enthusiasts have been u...",
-      "tags": [
-        "Agents",
-        "ChatGPT",
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "Artificial is a wicked satire that also sticks to the facts",
-      "source": "The Verge AI",
-      "date": "2026-10-08",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1007786/artificial-is-a-wicked-satire-that-also-sticks-to-the-facts",
-      "summary": "At the New York Film Festival premiere of Artificial, Luca Guadagnino's satirical Sam Altman biopic, the director said onstage that \"[when] someone wants to play God, that's very interesting to me.\" The idea of playing G...",
-      "tags": [
-        "AI"
-      ]
     }
   ],
   "candidates": [
@@ -227,6 +226,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Anthropic is cutting off its internal evaluations from the internet",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1009286/anthropic-is-cutting-off-its-internal-evaluations-from-the-internet",
+          "date": "2026-10-10"
+        },
         {
           "title": "Asana cuts model costs 76x in browser tests with GPT-6.1 Sol",
           "source": "OpenAI News",
@@ -238,12 +243,6 @@
           "source": "The Verge AI",
           "link": "https://www.theverge.com/ai-artificial-intelligence/1009051/privacy-ai-agent-promises-openai-meta-muse-dots",
           "date": "2026-10-09"
-        },
-        {
-          "title": "Instinct was the buzziest AI agent around — can it survive Muse?",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/1008254/instinct-agent-ai-hands-on-muse-dots",
-          "date": "2026-10-08"
         }
       ]
     },
