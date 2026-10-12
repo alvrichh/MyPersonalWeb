@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-10-11
+# Daily AI maintenance report — 2026-10-12
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,12 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Meta has some Wonder Full new AI models** — The Verge AI · 2026-10-12
+  https://www.theverge.com/ai-artificial-intelligence/1009479/meta-muse-wonder-full-ai-model
+- **Microsoft’s new AI chip makes it less reliant on Nvidia’s GPUs** — The Verge AI · 2026-10-12
+  https://www.theverge.com/news/1009465/microsoft-maia-300-chip-improvements-rollout
+- **Silicon Valley is falling in line with Trump’s attempt to rename AI** — The Verge AI · 2026-10-11
+  https://www.theverge.com/ai-artificial-intelligence/1009406/silicon-valley-is-falling-in-line-with-trumps-attempt-to-rename-ai
 - **Learning to use local AI is exciting, overwhelming, and frustrating** — The Verge AI · 2026-10-11
   https://www.theverge.com/ai-artificial-intelligence/1008484/learning-local-ai-hermes-qwen-model-mac-studio-testing-diary-progress
 - **Satya Nadella says we should assume all AI models are ‘compromised’** — The Verge AI · 2026-10-10
@@ -27,12 +33,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/asana-browser-agent
 - **AI agent makers are promising privacy — will they deliver?** — The Verge AI · 2026-10-09
   https://www.theverge.com/ai-artificial-intelligence/1009051/privacy-ai-agent-promises-openai-meta-muse-dots
-- **Anthropic’s AI gave Philadelphia police a fake tip about an unsolved homicide** — The Verge AI · 2026-10-09
-  https://www.theverge.com/ai-artificial-intelligence/1009090/anthropic-fake-homicide-information-philadelphia-pd-tip
-- **&#8216;Pure insanity&#8217;: Mathematicians will need years to make sense of OpenAI&#8217;s latest drop** — The Verge AI · 2026-10-09
-  https://www.theverge.com/ai-artificial-intelligence/1008726/openai-mathematics-solutions-chaos
-- **Nikon microscopic video competition winner disqualified for using generative AI** — The Verge AI · 2026-10-09
-  https://www.theverge.com/ai-artificial-intelligence/1008930/nikon-small-world-in-motion-winner-ai
 - **How Oracle turns days of work into minutes with ChatGPT and Codex** — OpenAI News · 2026-10-08
   https://openai.com/index/oracle
 - **Pollo AI turns creative ideas into campaigns with OpenAI** — OpenAI News · 2026-10-08
