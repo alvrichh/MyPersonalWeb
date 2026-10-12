@@ -1,11 +1,44 @@
 {
-  "generatedAt": "2026-10-11T14:35:03.749Z",
-  "date": "2026-10-11",
+  "generatedAt": "2026-10-12T17:17:10.406Z",
+  "date": "2026-10-12",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Meta has some Wonder Full new AI models",
+      "source": "The Verge AI",
+      "date": "2026-10-12",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1009479/meta-muse-wonder-full-ai-model",
+      "summary": "Meta is making up for lost time in the AI race. After launching Muse Spark, the first model from its revamped Superintelligence Labs division, and buzzy AI agent Muse, it's now launching two new models it claims can go t...",
+      "tags": [
+        "Agents",
+        "Multimodal",
+        "Models"
+      ]
+    },
+    {
+      "title": "Microsoft’s new AI chip makes it less reliant on Nvidia’s GPUs",
+      "source": "The Verge AI",
+      "date": "2026-10-12",
+      "url": "https://www.theverge.com/news/1009465/microsoft-maia-300-chip-improvements-rollout",
+      "summary": "Microsoft is announcing its third-generation Maia in-house AI chip today, designed to be the \"primary AI inference system\" for Microsoft's products and services. Maia 300 not only improves the cost and efficiency of runn...",
+      "tags": [
+        "Agents",
+        "Models"
+      ]
+    },
+    {
+      "title": "Silicon Valley is falling in line with Trump’s attempt to rename AI",
+      "source": "The Verge AI",
+      "date": "2026-10-11",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1009406/silicon-valley-is-falling-in-line-with-trumps-attempt-to-rename-ai",
+      "summary": "When President Donald Trump announced his plans to rebrand artificial intelligence as \"super intelligence,\" you'd be forgiven for being skeptical that it would catch on. While most of the broader population is sticking w...",
+      "tags": [
+        "AI"
+      ]
+    },
     {
       "title": "Learning to use local AI is exciting, overwhelming, and frustrating",
       "source": "The Verge AI",
@@ -83,6 +116,29 @@
       ]
     },
     {
+      "title": "How Oracle turns days of work into minutes with ChatGPT and Codex",
+      "source": "OpenAI News",
+      "date": "2026-10-08",
+      "url": "https://openai.com/index/oracle",
+      "summary": "Across recruiting, engineering, and operations, Oracle turns specialist knowledge into fast, repeatable workflows with ChatGPT Work and Codex.",
+      "tags": [
+        "ChatGPT",
+        "Dev Tools",
+        "Automation"
+      ]
+    },
+    {
+      "title": "Pollo AI turns creative ideas into campaigns with OpenAI",
+      "source": "OpenAI News",
+      "date": "2026-10-08",
+      "url": "https://openai.com/index/pollo-ai",
+      "summary": "With GPT-5.6, GPT-6 Astra, and GPT‑Image‑2.5, Pollo AI helps creators turn bold ideas into detailed images and cinematic video ads.",
+      "tags": [
+        "ChatGPT",
+        "Multimodal"
+      ]
+    },
+    {
       "title": "Anthropic’s AI gave Philadelphia police a fake tip about an unsolved homicide",
       "source": "The Verge AI",
       "date": "2026-10-09",
@@ -110,29 +166,6 @@
       "url": "https://www.theverge.com/ai-artificial-intelligence/1008930/nikon-small-world-in-motion-winner-ai",
       "summary": "Nikon says the video that originally won first place in its Small World in Motion contest \"did not comply with the competition rules regarding generative AI.\" BBC reports that the original first place video from Dr. Ning...",
       "tags": [
-        "Multimodal"
-      ]
-    },
-    {
-      "title": "How Oracle turns days of work into minutes with ChatGPT and Codex",
-      "source": "OpenAI News",
-      "date": "2026-10-08",
-      "url": "https://openai.com/index/oracle",
-      "summary": "Across recruiting, engineering, and operations, Oracle turns specialist knowledge into fast, repeatable workflows with ChatGPT Work and Codex.",
-      "tags": [
-        "ChatGPT",
-        "Dev Tools",
-        "Automation"
-      ]
-    },
-    {
-      "title": "Pollo AI turns creative ideas into campaigns with OpenAI",
-      "source": "OpenAI News",
-      "date": "2026-10-08",
-      "url": "https://openai.com/index/pollo-ai",
-      "summary": "With GPT-5.6, GPT-6 Astra, and GPT‑Image‑2.5, Pollo AI helps creators turn bold ideas into detailed images and cinematic video ads.",
-      "tags": [
-        "ChatGPT",
         "Multimodal"
       ]
     },
@@ -186,38 +219,6 @@
       "tags": [
         "Agents"
       ]
-    },
-    {
-      "title": "Anthropic launches free AI security scans for open-source projects",
-      "source": "The Verge AI",
-      "date": "2026-10-08",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1008521/anthropic-open-source-oss-scanner",
-      "summary": "Anthropic's offering to help open-source projects track down security vulnerabilities with a new service called OSS Scanner. It says open-source projects that opt-in will get \"thorough, periodic security scans by our str...",
-      "tags": [
-        "Claude",
-        "Models"
-      ]
-    },
-    {
-      "title": "California is trying to shut down robot vs. human cage matches",
-      "source": "The Verge AI",
-      "date": "2026-10-08",
-      "url": "https://www.theverge.com/tech/1008401/california-shut-down-rek-fighting-robot-company-human",
-      "summary": "The California State Athletic Commission sent a cease-and-desist letter to a startup that hosted a match between a human and a robot last month, as reported by The New York Times. The fight, which took place on September...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "USA Today becomes the latest publisher to sue OpenAI",
-      "source": "The Verge AI",
-      "date": "2026-10-08",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1008198/usa-today-openai-copyright-lawsuit",
-      "summary": "USA Today Co., along with the several local newspapers it owns, is suing OpenAI over claims that the company copied \"hundreds of thousands\" of articles to train its AI models, as reported earlier by Reuters. In a filing ...",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
     }
   ],
   "candidates": [
@@ -227,22 +228,22 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "Meta has some Wonder Full new AI models",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1009479/meta-muse-wonder-full-ai-model",
+          "date": "2026-10-12"
+        },
+        {
+          "title": "Microsoft’s new AI chip makes it less reliant on Nvidia’s GPUs",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/news/1009465/microsoft-maia-300-chip-improvements-rollout",
+          "date": "2026-10-12"
+        },
+        {
           "title": "Anthropic is cutting off its internal evaluations from the internet",
           "source": "The Verge AI",
           "link": "https://www.theverge.com/ai-artificial-intelligence/1009286/anthropic-is-cutting-off-its-internal-evaluations-from-the-internet",
           "date": "2026-10-10"
-        },
-        {
-          "title": "Asana cuts model costs 76x in browser tests with GPT-6.1 Sol",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/asana-browser-agent",
-          "date": "2026-10-09"
-        },
-        {
-          "title": "AI agent makers are promising privacy — will they deliver?",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1009051/privacy-ai-agent-promises-openai-meta-muse-dots",
-          "date": "2026-10-09"
         }
       ]
     },
