@@ -1,8 +1,11 @@
-import './gym-view-focus.js';
 import './gym-monthly-plan.js';
 import './gym-pro-max-ui.js';
 
 'use strict';
+
+const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({
+  '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+}[c]));
 
 const GYM_STORAGE_KEYS = ['alvrichGymMayAutoV2', 'alvrichGymMayAutoV1'];
 
@@ -52,6 +55,8 @@ const monthMap = {
 };
 
 const getVisibleCalendarYearMonth = () => {
+  // gym.html exposes the month it is showing; the title parsing is a fallback.
+  if (typeof window.gymCalendarMonth === 'function') return window.gymCalendarMonth();
   const title = document.getElementById('calendarTitle')?.textContent?.trim().toLowerCase() || '';
   const match = title.match(/^([a-záéíóúüñ]+)\s+de\s+(\d{4})$/i);
 
@@ -374,7 +379,7 @@ const openGymModal = (date) => {
   title.textContent = log.weight ? normaliseWeight(log.weight) : 'Sin peso guardado';
 
   const notesList = exerciseNotes.length
-    ? `<ul class="gym-modal-notes-list">${exerciseNotes.map((note) => `<li>${note}</li>`).join('')}</ul>`
+    ? `<ul class="gym-modal-notes-list">${exerciseNotes.map((note) => `<li>${esc(note)}</li>`).join('')}</ul>`
     : '';
 
   body.innerHTML = `
@@ -386,8 +391,8 @@ const openGymModal = (date) => {
       <span>Ejercicios marcados</span>
       <strong>${exerciseCount}</strong>
     </div>
-    ${log.feeling ? `<div class="gym-modal-note"><span>Sensación</span><p>${log.feeling}</p></div>` : ''}
-    ${log.notes ? `<div class="gym-modal-note"><span>Nota del día</span><p>${log.notes}</p></div>` : ''}
+    ${log.feeling ? `<div class="gym-modal-note"><span>Sensación</span><p>${esc(log.feeling)}</p></div>` : ''}
+    ${log.notes ? `<div class="gym-modal-note"><span>Nota del día</span><p>${esc(log.notes)}</p></div>` : ''}
     ${notesList ? `<div class="gym-modal-note"><span>Notas de ejercicios</span>${notesList}</div>` : ''}
     ${!log.weight && !log.notes && !log.feeling && exerciseCount === 0 && !exerciseNotes.length ? '<div class="gym-modal-empty"><p>No hay datos guardados para este día todavía.</p></div>' : ''}
   `;
