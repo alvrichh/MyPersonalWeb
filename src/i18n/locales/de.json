@@ -123,7 +123,7 @@
   "work.planning": "Mein eigener Planer: Tagesfokus, Wochenansicht, Eisenhower-Matrix und ein Archiv für Entscheidungen. Jede To-do-App, die ich probiert habe, war zu viel oder zu wenig.",
   "work.private": "Privat · frag mich gern",
   "work.radar": "Jeden Morgen liest eine GitHub Action offizielle Feeds zu KI und Entwickler-Tools und speichert eine JSON-Datei. Diese Seite zeigt sie an. Der Bot ändert Daten, nie das Layout.",
-  "work.site": "React und TypeScript mit SCSS, gebaut mit Vite und vorgerendert, damit die Seite auch ohne JavaScript lesbar ist. Zehn Sprachen, helles und dunkles Theme, acht Akzentfarben, bei jedem Push automatisch von GitHub Actions gebaut.",
+  "work.site": "Angular und TypeScript mit SCSS, mit Signals statt zone.js, und vorgerendert, damit die Seite auch ohne JavaScript lesbar ist. Zehn Sprachen, helles und dunkles Theme, acht Akzentfarben, bei jedem Push automatisch von GitHub Actions gebaut.",
   "work.sync.p1": "Unternehmens-Login mit Microsoft Entra ID, zusätzlicher JWT-Schicht und rollenbasierten Ansichten, mit automatischen E-Mails, sobald jemand Zugriff auf einen Bereich erhält.",
   "work.sync.p2": "Transaktionen, die Tickets über eine API in interne Datenbanken übernehmen, um die Support-Arbeit jeder Person zu überwachen und auszuwerten, dazu ein Feedback-System.",
   "work.sync.p3": "Jobs, die fehlende Daten in Snowflake direkt über die SAP-S/4HANA-API ergänzen, inklusive Berichtserstellung.",

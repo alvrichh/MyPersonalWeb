@@ -123,7 +123,7 @@
   "work.planning": "Mo phleanálaí féin: fócas laethúil, radharc seachtainiúil, maitrís Eisenhower agus cartlann cinntí. Thóg mé é mar go raibh gach aip tascanna ró-mhór nó ró-bheag.",
   "work.private": "Príobháideach · fiafraigh díom",
   "work.radar": "Dúisíonn GitHub Action gach maidin, léann sí fothaí oifigiúla IS agus uirlisí forbróirí, agus sábhálann sí comhad JSON. Taispeánann an leathanach seo é. Ní bhaineann an bot leis an dearadh riamh.",
-  "work.site": "React agus TypeScript le SCSS, tógtha le Vite agus réamh-rindreáilte ionas gur féidir é a léamh gan JavaScript. Deich dteanga, téama geal agus dorcha, ocht ndath aiceanta, agus tógtha go huathoibríoch le GitHub Actions ar gach push.",
+  "work.site": "Angular agus TypeScript le SCSS, le signals in ionad zone.js, agus réamh-rindreáilte ionas gur féidir é a léamh gan JavaScript. Deich dteanga, téama geal agus dorcha, ocht ndath aiceanta, agus tógtha go huathoibríoch le GitHub Actions ar gach push.",
   "work.sync.p1": "Logáil isteach chorparáideach le Microsoft Entra ID, sraith bhreise JWT agus radhairc de réir róil, le ríomhphoist uathoibríocha nuair a thugtar rochtain ar rannóg do dhuine.",
   "work.sync.p2": "Idirbhearta a tharraingíonn ticéid ó API isteach i mbunachair shonraí inmheánacha chun obair tacaíochta gach duine a mhonatóireacht agus a anailísiú, chomh maith le córas aiseolais.",
   "work.sync.p3": "Jabanna a líonann sonraí atá in easnamh in Snowflake go díreach ó API SAP S/4HANA, le giniúint tuarascálacha.",

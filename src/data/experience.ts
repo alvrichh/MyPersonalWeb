@@ -1,4 +1,4 @@
-import type { MessageKey } from '../i18n/I18nContext';
+import type { MessageKey } from '../i18n/i18n';
 
 // Work history, newest first. Text that changes with the language is a
 // message key; names, titles and technologies stay as written.

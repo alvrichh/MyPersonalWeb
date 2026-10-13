@@ -1,4 +1,4 @@
-import type { MessageKey } from '../i18n/I18nContext';
+import type { MessageKey } from '../i18n/i18n';
 
 // Selected work, in the order it appears on the home page.
 
@@ -63,7 +63,7 @@ export const PROJECTS: Project[] = [
     href: 'https://github.com/alvrichh/MyPersonalWeb',
     external: true,
     summary: 'work.site',
-    stack: 'React · TypeScript · SCSS · Vite · GitHub Actions · Vercel',
+    stack: 'Angular · TypeScript · SCSS · GitHub Actions · Vercel',
     year: '2024 –',
     status: 'work.open',
   },

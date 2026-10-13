@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Injectable, afterNextRender, signal } from '@angular/core';
 
 // The AI radar data the daily bot writes to /data. Fetched in the browser,
 // never at build time, so the page always shows the latest run.
@@ -57,37 +57,41 @@ const getJson = async (path: string) => {
   return response.json();
 };
 
-/** Today's radar: undefined while loading, null if it failed. */
-export function useRadar() {
-  const [data, setData] = useState<RadarData | null | undefined>(undefined);
+const usable = (item: RadarItem) => Boolean(item?.title) && isSafeUrl(item.url);
 
-  useEffect(() => {
-    getJson('./data/ai-radar.json')
-      .then((json) => setData({
-        date: json.date ?? null,
-        insight: json.insight ? decodeEntities(json.insight) : '',
-        items: (Array.isArray(json.items) ? json.items : []).filter((item: RadarItem) => item?.title && isSafeUrl(item.url)),
-      }))
-      .catch(() => setData(null));
-  }, []);
+@Injectable({ providedIn: 'root' })
+export class Radar {
+  /** Today's radar: undefined while loading, null if it failed. */
+  readonly latest = signal<RadarData | null | undefined>(undefined);
 
-  return data;
+  load() {
+    afterNextRender(() => {
+      getJson('./data/ai-radar.json')
+        .then((json) => this.latest.set({
+          date: json.date ?? null,
+          insight: json.insight ? decodeEntities(json.insight) : '',
+          items: (Array.isArray(json.items) ? json.items : []).filter(usable),
+        }))
+        .catch(() => this.latest.set(null));
+    });
+  }
 }
 
-/** Every story since the radar started; empty until it loads. */
-export function useRadarArchive() {
-  const [items, setItems] = useState<ArchiveItem[]>([]);
+@Injectable({ providedIn: 'root' })
+export class RadarArchive {
+  /** Every story since the radar started; empty until it loads. */
+  readonly items = signal<ArchiveItem[]>([]);
 
-  useEffect(() => {
-    getJson('./data/ai-radar-archive.json')
-      .then((json) => setItems((Array.isArray(json.items) ? json.items : [])
-        .filter((item: RadarItem) => item?.title && isSafeUrl(item.url))
-        .map((item: RadarItem) => {
-          const displayTitle = decodeEntities(item.title);
-          return { ...item, displayTitle, searchText: `${displayTitle} ${item.source}`.toLowerCase() };
-        })))
-      .catch(() => setItems([]));
-  }, []);
-
-  return items;
+  load() {
+    afterNextRender(() => {
+      getJson('./data/ai-radar-archive.json')
+        .then((json) => this.items.set((Array.isArray(json.items) ? json.items : [])
+          .filter(usable)
+          .map((item: RadarItem) => {
+            const displayTitle = decodeEntities(item.title);
+            return { ...item, displayTitle, searchText: `${displayTitle} ${item.source}`.toLowerCase() };
+          })))
+        .catch(() => this.items.set([]));
+    });
+  }
 }

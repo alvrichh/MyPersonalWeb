@@ -123,7 +123,7 @@
   "work.planning": "Mi propio planificaó: foco diario, vihta zemaná, matrí d’Eisenhower y un archivo de dezizione. Lo hize porque toa la app de tarea que probé ze pazaban o ze quedaban cortâ.",
   "work.private": "Privao · pregúntame",
   "work.radar": "Una GitHub Action ze dehpierta tó lo día, lee fuente ofiziale d’IA y herramienta pa developer y guarda un JSON. Ehta página lo pinta. Er bot toca dato, nunca er dizeño.",
-  "work.site": "React y TypeScript con SCSS, compilao con Vite y prerenderizao pa que ze lea zin JavaScript. Dié idioma, tema claro y ohcuro, ocho colore de acento, y compilao zolo con GitHub Actions en cá push.",
+  "work.site": "Angular y TypeScript con SCSS, con signals en vez de zone.js, y prerenderizao pa que ze lea zin JavaScript. Dié idioma, tema claro y ohcuro, ocho colore de acento, y compilao zolo con GitHub Actions en cá push.",
   "work.sync.p1": "Login corporativo con Microsoft Entra ID, una capa ehtra de JWT y vihta zegún er rol, con correo automático cuando a arguien le dan azzezo a una zezzión.",
   "work.sync.p2": "Tranzazzione que pillan ticket dehde una API y lo meten en baze de dato interna pa vigilá y analizá er curro de zoporte de cá uno, ademá d’un zihtema de feedback.",
   "work.sync.p3": "Prozezo que rellenan lo dato que farten en Snowflake tirando direhtamente de la API de SAP S/4HANA, con informe.",
