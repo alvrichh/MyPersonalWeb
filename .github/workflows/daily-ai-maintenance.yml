@@ -35,9 +35,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Verify production build before maintenance
-        run: npm run build
-
       - name: Generate AI maintenance report and radar data
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -46,7 +43,7 @@ jobs:
           OPENAI_MODEL: ${{ vars.OPENAI_MODEL || 'gpt-4o-mini' }}
         run: npm run ai:radar
 
-      - name: Verify production build after maintenance
+      - name: Verify production build
         run: npm run build
 
       - name: Write safe daily streak heartbeat
@@ -57,13 +54,13 @@ jobs:
             echo
             echo "Last successful maintenance build: $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
             echo
-            echo "This file is intentionally updated by the safe daily AI maintenance workflow after both production builds pass."
+            echo "This file is intentionally updated by the safe daily AI maintenance workflow after the production build passes."
           } > docs/ai-watch/streak.md
 
       - name: Check safe generated changes
         id: changes
         run: |
-          git add docs/ai-watch assets/data/ai-radar.json assets/data/ai-radar-archive.json
+          git add docs/ai-watch static/data/ai-radar.json static/data/ai-radar-archive.json
           if git diff --cached --quiet; then
             echo "has_changes=false" >> "$GITHUB_OUTPUT"
           else
@@ -73,7 +70,7 @@ jobs:
       - name: Report ignored unsafe working tree changes
         if: steps.changes.outputs.has_changes == 'true'
         run: |
-          UNSAFE_CHANGES=$(git status --porcelain | grep -v ' docs/ai-watch/' | grep -v ' assets/data/ai-radar.json$' | grep -v ' assets/data/ai-radar-archive.json$' || true)
+          UNSAFE_CHANGES=$(git status --porcelain | grep -v ' docs/ai-watch/' | grep -v ' static/data/ai-radar.json$' | grep -v ' static/data/ai-radar-archive.json$' || true)
           if [ -n "$UNSAFE_CHANGES" ]; then
             echo "Ignoring non-safe generated changes. They will not be committed:"
             echo "$UNSAFE_CHANGES"

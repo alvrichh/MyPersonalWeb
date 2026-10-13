@@ -1,6 +1,6 @@
 # Rediseño del portfolio (octubre 2026)
 
-Estado: **publicado** (commits en `main`). Este documento recoge qué ha cambiado, por qué y cómo revisarlo antes de publicar.
+> Histórico: describe el rediseño de octubre de 2026 cuando la web aún era HTML/CSS/JS con webpack. La versión actual está en React; ver el README.
 
 ## Cómo verlo en local
 

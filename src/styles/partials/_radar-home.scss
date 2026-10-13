@@ -1,0 +1,32 @@
+/* AI radar */
+
+.radar-list {
+  border-top: 1px solid var(--ink);
+}
+
+.radar-list li {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr) auto;
+  column-gap: 24px;
+  align-items: baseline;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.radar-list a {
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.radar-list a:hover {
+  text-decoration: underline;
+}
+
+.radar-source {
+  text-align: right;
+}
+
+.radar-list .radar-empty {
+  display: block;
+  color: var(--muted);
+}

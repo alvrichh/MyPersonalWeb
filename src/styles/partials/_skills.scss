@@ -1,0 +1,21 @@
+/* Skills — a definition list, not a chip cloud */
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 48px;
+  border-top: 1px solid var(--ink);
+}
+
+.skills-grid > div {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr);
+  column-gap: 24px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.skills-grid dt {
+  padding-top: 0.3em;
+  text-transform: uppercase;
+}

@@ -1,36 +1,34 @@
 {
   "name": "MyPersonalWeb",
   "version": "1.0.0",
-  "description": "Implementacion de Bootstrap a mi web",
-  "main": "index.js",
+  "description": "Álvaro Rodríguez Molina's portfolio: React, TypeScript and SCSS built with Vite",
   "engines": {
     "node": "24.x"
   },
   "scripts": {
-    "start": "webpack serve",
-    "build": "node scripts/build.mjs",
-    "ai:maintenance": "node scripts/daily-ai-maintenance.mjs",
-    "ai:radar": "node scripts/daily-ai-maintenance.mjs",
+    "start": "vite",
+    "dev": "vite",
+    "preview": "vite preview",
+    "typecheck": "tsc -p tsconfig.json",
+    "build": "node scripts/build/build.mjs",
+    "ai:maintenance": "node scripts/radar/daily-ai-maintenance.mjs",
+    "ai:radar": "node scripts/radar/daily-ai-maintenance.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "Alvaro Rodriguez Molina",
   "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.17.57",
+    "@types/react": "^19.1.6",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.5.2",
+    "sass": "^1.89.2",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5"
+  },
   "dependencies": {
-    "@popperjs/core": "^2.11.8",
-    "autoprefixer": "^10.4.17",
-    "bootstrap": "^5.3.2",
-    "bootstrap-icons": "^1.11.3",
-    "copy-webpack-plugin": "^12.0.2",
-    "css-loader": "^6.11.0",
-    "html-webpack-plugin": "^5.6.0",
-    "mini-css-extract-plugin": "^2.9.0",
-    "postcss-loader": "^8.1.0",
-    "sass": "^1.70.0",
-    "sass-loader": "^14.1.0",
-    "style-loader": "^3.3.4",
-    "webpack": "^5.93.0",
-    "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^4.15.2"
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   }
 }
