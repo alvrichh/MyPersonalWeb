@@ -50,6 +50,29 @@ Se recupera el comportamiento móvil del sitio anterior (`mobile-vcard-drawer.js
 - **Barra de progreso horizontal arriba**, con un punto por sección y una burbuja con el nombre de la sección mientras haces scroll. En escritorio sigue siendo el riel vertical.
 - **Botones del hero:** dos por fila y "Download CV" a todo el ancho. En pantallas de menos de 370 px van en una sola columna.
 
+### 1c. AI Radar: adelanto en la home y página propia
+
+- **Home:** la sección "What I'm reading" enseña los **5 titulares** más recientes y un enlace **"See the full radar →"**.
+- **`ai-radar.html`:** página rehecha con el diseño nuevo (misma barra, menú móvil, 10 idiomas, acentos y temas; comparte `main.js` y `main.css` con la home). Tiene cabecera con fecha y número de noticias, el resumen del día que genera el bot, **filtros por tema** y **todas las noticias en tarjetas** con imagen, fuente, fecha, resumen, etiquetas y enlace al artículo. La más reciente va destacada a lo ancho.
+- **Bot diario (`scripts/daily-ai-maintenance.mjs`):** ahora guarda la **imagen** de cada noticia en el JSON (campo `image`). La saca del feed (`media:content`, `enclosure` o la primera `<img>`) y, si no viene, de la `og:image` del artículo (4 a la vez, máximo 8 s cada una). Si una imagen falla, la tarjeta muestra un panel con el color de acento y el nombre de la fuente.
+- **Archivo histórico (`assets/data/ai-radar-archive.json`):** todas las noticias recogidas desde abril de 2026 (931 al crearlo). Se rellenó una vez desde los informes diarios de `docs/ai-watch/history/` con `node scripts/backfill-radar-archive.mjs`. Desde entonces **el bot lo amplía cada día**, sin duplicados y sin borrar nada, y el workflow `daily-ai-maintenance.yml` lo commitea junto a `ai-radar.json`. Las reglas de etiquetas están en `scripts/radar-tags.mjs`, compartidas por el bot y el script de relleno.
+- **En la página**, debajo de las tarjetas ("Latest"), la sección **"Archive"**: lista compacta agrupada por meses, con **buscador** (titular y fuente), los mismos **filtros por tema** y carga de 50 en 50 ("Load more"). Cada fila lleva una **miniatura**.
+- **Imágenes y resúmenes del histórico:** se recuperaron con `node scripts/enrich-radar-archive.mjs`, que visita cada artículo y lee su `og:image` y `og:description`. Resultado: 925 de 931 noticias con imagen y resumen; 6 de OpenAI devolvieron 403. El script se puede volver a ejecutar y solo procesa las que falten.
+- **Peso de las imágenes:** las de The Verge, GitHub y Microsoft se piden reducidas con `?w=` (160 px en miniaturas, 800 en tarjetas, 1200 en la destacada). Por ejemplo, una miniatura de GitHub pasa de 876 KB a 5,5 KB.
+- **Build:** `ai-radar.html` se genera desde `templates/ai-radar.html` con el bundle `main`. Se eliminan del webpack las entradas antiguas que solo usaba la página vieja; queda `gymPolish` para `gym.html`.
+
+### 1d. AI Radar: fuentes y filtro
+
+- **14 fuentes** (`scripts/radar-sources.mjs`): OpenAI, **Anthropic** (sin RSS: se lee la página anthropic.com/news y, para el histórico, su sitemap), Google AI, Google DeepMind, Hugging Face, Simon Willison, GitHub AI & ML, GitHub Changelog, Azure Blog, AWS Machine Learning, NVIDIA Developer, Ars Technica AI, MIT Technology Review AI y The Verge AI. Se quita Microsoft AI Blog porque su feed ya no existe (410).
+- **Filtro de relevancia** (`scripts/radar-tags.mjs`):
+  - Solo entra lo relacionado con tu perfil: agentes, LLMs, modelos, código, APIs, MCP, RAG, cloud (Azure, AWS), automatización, datos, SAP, GitHub o seguridad.
+  - Las fuentes generalistas tienen que tratar además de IA de forma explícita.
+  - Fuera siempre, por el titular: inversión, rondas, cifras de dinero, adquisiciones, despidos, juicios, política, entretenimiento, videojuegos, redes sociales y publicidad.
+  - En el resumen solo se descartan los temas claramente financieros o judiciales.
+  - Lo usan igual el bot diario y los scripts de relleno.
+- **"Latest" equilibrado:** como mucho 4 noticias por fuente entre las 20.
+- **Histórico re-filtrado y ampliado** con `node scripts/backfill-radar-sources.mjs`: quita lo que ya no pasa el filtro, añade todo lo relevante desde abril de las 14 fuentes y completa imagen y resumen.
+
 ### 2. Colores: los 8 acentos de antes
 
 Vuelve el selector **Accent** con azul (por defecto, como antes), verde, rojo, naranja, amarillo, rosa, blanco y negro.
