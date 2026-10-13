@@ -1,0 +1,23 @@
+// Styles for the portfolio, split by section. Order matters: later partials
+// override earlier ones exactly as the old single main.css did.
+
+@use 'partials/tokens';
+@use 'partials/base';
+@use 'partials/header';
+@use 'partials/hero';
+@use 'partials/sections';
+@use 'partials/work';
+@use 'partials/experience';
+@use 'partials/skills';
+@use 'partials/radar-home';
+@use 'partials/off';
+@use 'partials/progress';
+@use 'partials/contact';
+@use 'partials/motion';
+@use 'partials/responsive';
+@use 'partials/links';
+@use 'partials/mobile';
+@use 'partials/bubble';
+@use 'partials/radar-filters';
+@use 'partials/radar-page';
+@use 'partials/credentials';

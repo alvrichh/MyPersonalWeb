@@ -1,0 +1,207 @@
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+
+/* Tabs drop to their own scrollable row, like the old topbar did. */
+@media (max-width: 1080px) {
+  .topbar {
+    flex-wrap: wrap;
+    row-gap: 10px;
+  }
+
+  .topbar-controls {
+    margin-inline-start: auto;
+  }
+
+  .section-nav {
+    order: 3;
+    flex-basis: 100%;
+    margin-inline-start: 0;
+  }
+
+  html {
+    scroll-padding-top: 150px;
+  }
+}
+
+@media (max-width: 960px) {
+  .edu {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 16px;
+  }
+
+  .edu-list {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .work-item {
+    grid-template-columns: 56px minmax(0, 1fr);
+  }
+
+  .work-meta {
+    grid-column: 2;
+    flex-direction: row;
+    gap: 16px;
+    margin-top: 14px;
+    padding-top: 0;
+    text-align: left;
+  }
+
+  .section-head {
+    grid-template-columns: 56px minmax(0, 1fr);
+  }
+
+  .off-body,
+  .off-cards {
+    margin-left: 0;
+  }
+
+
+  .skills-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 760px) {
+  .brand-copy small {
+    display: none;
+  }
+
+  .picker-trigger {
+    gap: 6px;
+    padding: 0 8px 0 4px;
+  }
+
+  .picker-trigger .picker-chevron {
+    display: none;
+  }
+
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero-figure {
+    grid-row: 1;
+    justify-self: center;
+    width: min(56%, 240px);
+    margin-bottom: 24px;
+  }
+
+  /* Sits right under the centred photo, so centre it too. */
+  .status-pill {
+    display: flex;
+    width: fit-content;
+    margin-inline: auto;
+  }
+
+  .hero-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hero-facts > div {
+    padding: 16px 12px 16px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .hero-facts > div + div {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .hero-facts > div:nth-child(even) {
+    padding-left: 16px;
+    border-left: 1px solid var(--rule);
+  }
+
+  .section-head {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .section-index {
+    padding-top: 0;
+    margin-bottom: 10px;
+  }
+
+  .section-intro {
+    grid-column: 1;
+  }
+
+  .work-item {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .work-num {
+    padding-top: 0;
+    margin-bottom: 6px;
+  }
+
+  .work-meta {
+    grid-column: 1;
+  }
+
+  .edu,
+  .skills-grid > div {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .xp-item {
+    grid-template-columns: 44px minmax(0, 1fr);
+    column-gap: 14px;
+  }
+
+  .xp-logo {
+    width: 44px;
+    height: 44px;
+  }
+
+  .xp-rail::after {
+    top: 52px;
+  }
+
+  .xp-role {
+    font-size: 1.08rem;
+  }
+
+  .xp-roles {
+    padding-inline-start: 16px;
+  }
+
+  .xp-roles > li::before {
+    inset-inline-start: -21px;
+  }
+
+  .edu-title {
+    margin-bottom: 14px;
+  }
+
+  .edu-list {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .skills-grid dt {
+    margin-bottom: 4px;
+  }
+
+  .radar-list li {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 4px;
+  }
+
+  .radar-source {
+    text-align: left;
+  }
+
+  .off-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .off-cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .off-photo img {
+    aspect-ratio: 16 / 10;
+  }
+}
