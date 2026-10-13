@@ -1,5 +1,7 @@
 /* --------------------------------------------------------------------------
    Sections
+   The index sits above the title and everything starts from the same left
+   edge, so each section reads top to bottom like a cascade.
    -------------------------------------------------------------------------- */
 
 .section {
@@ -8,13 +10,12 @@
 
 .section-head {
   display: grid;
-  grid-template-columns: 80px minmax(0, 1fr);
-  column-gap: 24px;
+  grid-template-columns: minmax(0, 1fr);
   margin-bottom: clamp(24px, 4vw, 40px);
 }
 
 .section-index {
-  padding-top: 0.9em;
+  margin-bottom: 10px;
 }
 
 .section-head h2 {
@@ -26,7 +27,6 @@
 }
 
 .section-intro {
-  grid-column: 2;
   max-width: 38em;
   margin-top: 14px;
   color: var(--muted);
