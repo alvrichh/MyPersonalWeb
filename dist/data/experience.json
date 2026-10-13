@@ -1,0 +1,251 @@
+{
+  "_note": "Career, education, volunteering and certificates shared by the calendar and the home. Dates are YYYY-MM or YYYY-MM-DD; end null = ongoing.",
+  "work": [
+    {
+      "id": "synovia",
+      "org": "Synovia Digital",
+      "role": "Fusion Analyst",
+      "start": "2026-01",
+      "end": null,
+      "place": "Ireland · Remote",
+      "logo": "./images/logos/synovia-digital.png",
+      "url": "https://synoviadigital.com/"
+    },
+    {
+      "id": "mercor",
+      "org": "Mercor",
+      "role": "AI Visual QA Specialist",
+      "start": "2026-07",
+      "end": "2026-08",
+      "place": "United States · Remote",
+      "logo": "./images/logos/mercor.png",
+      "url": "https://www.mercor.com/"
+    },
+    {
+      "id": "outlier",
+      "org": "Outlier",
+      "role": "Multimodal AI Training Specialist",
+      "start": "2025-11",
+      "end": "2026-02",
+      "place": "United States · Remote",
+      "logo": "./images/logos/outlier.svg",
+      "url": "https://outlier.ai/"
+    },
+    {
+      "id": "primeline",
+      "org": "Primeline Group",
+      "role": "SAP Administrator · System Admin · General Operative",
+      "start": "2024-09",
+      "end": "2026-02",
+      "place": "Ireland",
+      "logo": "./images/logos/primeline-group.png",
+      "url": "https://primeline.ie/"
+    },
+    {
+      "id": "getronics",
+      "org": "Getronics",
+      "role": "Software Developer",
+      "start": "2024-04",
+      "end": "2024-07",
+      "place": "Seville, Spain · Hybrid",
+      "logo": "./images/logos/getronics.png",
+      "url": "https://www.getronics.com/"
+    },
+    {
+      "id": "stratton",
+      "org": "Stratton Global",
+      "role": "Energy Advisor & Business Consultant",
+      "start": "2023-01",
+      "end": "2024-04",
+      "place": "Seville, Spain",
+      "logo": "./images/logos/stratton-global.png",
+      "url": null
+    },
+    {
+      "id": "tortillon",
+      "org": "El Tortillón",
+      "role": "Store Clerk & Digital Manager",
+      "start": "2018-08",
+      "end": "2020-12",
+      "place": "Seville, Spain",
+      "logo": "./images/logos/el-tortillon.png",
+      "url": "https://eltortillon.com/"
+    }
+  ],
+  "education": [
+    {
+      "id": "us",
+      "org": "Universidad de Sevilla",
+      "role": "Computer Engineering",
+      "start": "2019-09",
+      "end": "2024-06",
+      "place": "Seville, Spain",
+      "logo": "./images/logos/universidad-sevilla.png",
+      "url": "https://www.us.es/"
+    },
+    {
+      "id": "alixar",
+      "org": "IES Alixar",
+      "role": "Web Application Development (CFGS DAW)",
+      "start": "2022-09",
+      "end": "2024-06",
+      "place": "Seville, Spain",
+      "logo": "./images/logos/ies-alixar.png",
+      "url": "https://iesalixar.org/"
+    },
+    {
+      "id": "portaceli",
+      "org": "Portaceli",
+      "role": "Technological Baccalaureate",
+      "start": "2017-09",
+      "end": "2019-06",
+      "place": "Seville, Spain",
+      "logo": "./images/logos/portaceli.png",
+      "url": "https://portaceli.com/"
+    }
+  ],
+  "volunteering": [
+    {
+      "id": "tumundo",
+      "org": "Tu mundo Portaceli",
+      "role": "Voluntario · Infancia",
+      "start": "2017-09",
+      "end": "2018-09",
+      "place": "Colegio Blanca Paloma, Los Pájaros · Sevilla",
+      "logo": "./images/logos/portaceli.png",
+      "url": null
+    }
+  ],
+  "certificates": [
+    {
+      "title": "React",
+      "issuer": "OpenWebinars",
+      "date": "2024-07",
+      "logo": "./images/logos/openwebinars.png",
+      "url": "https://openwebinars.net/@QVN2PXMV/"
+    },
+    {
+      "title": "Aplicaciones Web con Django",
+      "issuer": "OpenWebinars",
+      "date": "2024-04-24",
+      "logo": "./images/logos/openwebinars.png",
+      "url": "https://openwebinars.net/certificacion/82jiToOg",
+      "image": "./images/certs/django.jpg"
+    },
+    {
+      "title": "Creando un CRUD con PHP, MySQL, HTML, CSS y JavaScript",
+      "issuer": "OpenWebinars",
+      "date": "2024-04-24",
+      "logo": "./images/logos/openwebinars.png",
+      "url": "https://openwebinars.net/certificacion/PF1oAvra",
+      "image": "./images/certs/crud-php.jpg"
+    },
+    {
+      "title": "Desarrollo full-stack práctico: configuración profesional de proyectos",
+      "issuer": "LinkedIn",
+      "date": "2024-04",
+      "logo": "./images/logos/linkedin.svg",
+      "url": "https://www.linkedin.com/in/alvrich/details/certifications/",
+      "skills": [
+        "Front end",
+        "Back end"
+      ]
+    },
+    {
+      "title": "Fundamentos del desarrollo web: Full Stack o Front-end",
+      "issuer": "LinkedIn",
+      "date": "2024-04",
+      "logo": "./images/logos/linkedin.svg",
+      "url": "https://www.linkedin.com/in/alvrich/details/certifications/",
+      "skills": [
+        "Full Stack"
+      ]
+    },
+    {
+      "title": "Python",
+      "issuer": "OpenWebinars",
+      "date": "2024-01",
+      "logo": "./images/logos/openwebinars.png",
+      "url": "https://openwebinars.net/@QVN2PXMV/",
+      "skills": [
+        "PyCharm",
+        "Python"
+      ]
+    },
+    {
+      "title": "Despliega con Docker Compose tu app compuesta por Spring Boot, Angular y PostgreSQL",
+      "issuer": "OpenWebinars",
+      "date": "2023-11-13",
+      "logo": "./images/logos/openwebinars.png",
+      "url": "https://openwebinars.net/certificacion/hC6opJDr",
+      "image": "./images/certs/docker-compose.jpg"
+    },
+    {
+      "title": "Desarrolla una app con Spring Boot y Angular",
+      "issuer": "OpenWebinars",
+      "date": "2023-11-13",
+      "logo": "./images/logos/openwebinars.png",
+      "url": "https://openwebinars.net/certificacion/dD9Iojy0",
+      "image": "./images/certs/spring-angular.jpg"
+    },
+    {
+      "title": "Cómo montar tu WebApp de Angular en Docker",
+      "issuer": "OpenWebinars",
+      "date": "2023-11-13",
+      "logo": "./images/logos/openwebinars.png",
+      "url": "https://openwebinars.net/certificacion/jxyRv3kC",
+      "image": "./images/certs/angular-docker.jpg"
+    },
+    {
+      "title": "Desplegar app Spring Boot con Docker",
+      "issuer": "OpenWebinars",
+      "date": "2023-11-12",
+      "logo": "./images/logos/openwebinars.png",
+      "url": "https://openwebinars.net/certificacion/LYRVi7Q5",
+      "image": "./images/certs/spring-docker.jpg"
+    },
+    {
+      "title": "Curso de Introducción a Docker",
+      "issuer": "OpenWebinars",
+      "date": "2023-11-08",
+      "logo": "./images/logos/openwebinars.png",
+      "url": "https://openwebinars.net/certificacion/iOsDZht0",
+      "skills": [
+        "Docker"
+      ],
+      "image": "./images/certs/docker-intro.jpg"
+    },
+    {
+      "title": "Node.js",
+      "issuer": "OpenWebinars",
+      "date": "2023-11",
+      "logo": "./images/logos/openwebinars.png",
+      "url": "https://openwebinars.net/@QVN2PXMV/"
+    },
+    {
+      "title": "Java",
+      "issuer": "OpenWebinars",
+      "date": "2023-11",
+      "logo": "./images/logos/openwebinars.png",
+      "url": "https://openwebinars.net/@QVN2PXMV/",
+      "skills": [
+        "Java"
+      ]
+    },
+    {
+      "title": "Fundamentos de JavaScript",
+      "issuer": "OpenWebinars",
+      "date": "2023-10-23",
+      "logo": "./images/logos/openwebinars.png",
+      "url": "https://openwebinars.net/certificacion/je7AeIlW",
+      "image": "./images/certs/javascript.jpg"
+    },
+    {
+      "title": "MySQL",
+      "issuer": "OpenWebinars",
+      "date": "2023-10",
+      "logo": "./images/logos/openwebinars.png",
+      "url": "https://openwebinars.net/@QVN2PXMV/"
+    }
+  ]
+}
