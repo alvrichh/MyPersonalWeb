@@ -22,10 +22,10 @@ Keep the UI premium, modern and memorable:
 
 ## Current architecture and features
 
-- React 19 + TypeScript + SCSS, built with Vite (`vite.config.mts`).
-- `index.html` (home) and `ai-radar.html` are React pages: code in `src/`, prerendered at build time by `scripts/build/prerender.mjs` and hydrated in the browser.
-- `src/sections/` holds the page sections, `src/components/` shared UI, `src/data/` experience and projects, `src/i18n/locales/` one JSON per language (10 languages), `src/styles/partials/` the SCSS.
-- `gym.html`, `planning.html` and `calendar.html` are older standalone tools; their code lives in `src/legacy/`.
+- Angular 22 (standalone components, signals, zoneless) + TypeScript + SCSS (`angular.json`).
+- The home page and the AI radar page are prerendered at build time (`src/main.server.ts`) and hydrated in the browser. `/ai-radar.html` is kept as a copy of `/ai-radar` for old links.
+- `src/pages/` holds the pages and layout, `src/sections/` the page sections, `src/components/` shared UI, `src/data/` experience and projects, `src/i18n/` the I18n service and one JSON per language (10 languages), `src/styles/partials/` the SCSS.
+- `gym.html`, `planning.html` and `calendar.html` are older standalone tools in `static/`, with their code in `static/legacy/`.
 - Static files (images, CV, radar data) live in `static/` and keep their URLs (`./images`, `./cv`, `./data`).
 - The AI Radar reads `static/data/ai-radar.json` (latest) and `static/data/ai-radar-archive.json` (everything collected).
 - Daily AI maintenance (`scripts/radar/`) updates only safe data/docs paths:
