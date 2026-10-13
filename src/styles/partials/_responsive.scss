@@ -48,10 +48,6 @@
     text-align: left;
   }
 
-  .section-head {
-    grid-template-columns: 56px minmax(0, 1fr);
-  }
-
   .off-body,
   .off-cards {
     margin-left: 0;
@@ -112,19 +108,6 @@
   .hero-facts > div:nth-child(even) {
     padding-left: 16px;
     border-left: 1px solid var(--rule);
-  }
-
-  .section-head {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .section-index {
-    padding-top: 0;
-    margin-bottom: 10px;
-  }
-
-  .section-intro {
-    grid-column: 1;
   }
 
   .work-item {
