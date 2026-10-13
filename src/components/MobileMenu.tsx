@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { ACCENTS, LANGUAGES, useI18n, type Accent, type MessageKey } from '../i18n/I18nContext';
-import { CloseIcon, MoonIcon, SunIcon } from './icons';
+import { CloseIcon, DownloadIcon, MoonIcon, SunIcon } from './icons';
 import { NAV } from './Header';
 
 type Props = {
@@ -98,6 +98,14 @@ export function MobileMenu({ home, current, accent, setAccent, theme, toggleThem
             {/* The "Life" tab from the old site, pointing to the gym page. */}
             <a href="./gym.html">Life</a>
           </nav>
+
+          {/* The one thing a recruiter on a phone is most likely after. */}
+          <div className="mobile-menu-cta">
+            <a className="button button-primary" href="./cv/alvaro-molina-cv.pdf" download data-menu-close>
+              <DownloadIcon />
+              <span>{t('hero.cv')}</span>
+            </a>
+          </div>
 
           <div className="mobile-menu-controls">
             <div className={`mobile-control${control === 'language' ? ' is-open' : ''}`}>

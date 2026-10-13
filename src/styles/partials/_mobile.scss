@@ -255,6 +255,23 @@
     color: var(--accent-ink);
   }
 
+  .mobile-menu-cta {
+    margin: 0 14px 14px;
+  }
+
+  .mobile-menu-cta .button {
+    justify-content: center;
+    width: 100%;
+    min-height: 56px;
+    font-size: 1.05rem;
+    font-weight: 600;
+  }
+
+  .mobile-menu-cta svg {
+    width: 20px;
+    height: 20px;
+  }
+
   .mobile-menu-controls {
     display: grid;
     gap: 8px;
