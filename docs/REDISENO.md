@@ -1,6 +1,6 @@
 # Rediseño del portfolio (octubre 2026)
 
-Estado: **solo en local, sin commit ni push.** Este documento recoge qué ha cambiado, por qué y cómo revisarlo antes de publicar.
+Estado: **publicado** (commits en `main`). Este documento recoge qué ha cambiado, por qué y cómo revisarlo antes de publicar.
 
 ## Cómo verlo en local
 
@@ -110,7 +110,7 @@ Datos sacados del **CV de 2026**:
 
 | Archivo | Cambio |
 | --- | --- |
-| `index.html` | Reescrito. Iconos SVG en línea, ya no se carga Ionicons desde unpkg. |
+| `templates/index.html` | La home rediseñada (el build la convierte en `dist/index.html`; el `index.html` de la raíz solo redirige a `dist/`). Iconos SVG en línea, ya no se carga Ionicons desde unpkg. |
 | `assets/css/main.css` | **Nuevo.** Todo el estilo de la home (unos 26 KB). |
 | `assets/js/main.js` | **Nuevo.** Desplegables, idioma, acento, tema, pestañas, animaciones y AI Radar (unos 11 KB). |
 | `assets/js/i18n-experience.js` | **Nuevo.** Traducciones de la experiencia y de las etiquetas de fechas, tipo y modalidad. Se mezcla en `i18n.js`. |
