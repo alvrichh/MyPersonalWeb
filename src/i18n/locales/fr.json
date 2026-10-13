@@ -123,7 +123,7 @@
   "work.planning": "Mon propre planificateur : focus du jour, vue de la semaine, matrice d’Eisenhower et archive de décisions. Parce que chaque appli de tâches testée en faisait trop ou pas assez.",
   "work.private": "Privé · parlons-en",
   "work.radar": "Chaque matin, une GitHub Action lit les flux officiels sur l’IA et les outils de développement, puis enregistre un fichier JSON. Cette page l’affiche. Le bot touche aux données, jamais à la mise en page.",
-  "work.site": "React et TypeScript avec SCSS, compilés avec Vite et pré-rendus pour être lisibles sans JavaScript. Dix langues, thème clair et sombre, huit couleurs d’accent, et compilés automatiquement par GitHub Actions à chaque push.",
+  "work.site": "Angular et TypeScript avec SCSS, avec des signals au lieu de zone.js, et pré-rendus pour être lisibles sans JavaScript. Dix langues, thème clair et sombre, huit couleurs d’accent, et compilés automatiquement par GitHub Actions à chaque push.",
   "work.sync.p1": "Connexion d’entreprise avec Microsoft Entra ID, une couche JWT supplémentaire et des vues par rôle, avec des e-mails automatiques quand quelqu’un obtient l’accès à une section.",
   "work.sync.p2": "Des transactions qui récupèrent les tickets depuis une API vers des bases internes pour suivre et analyser le travail de support de chacun, plus un système de feedback intégré.",
   "work.sync.p3": "Des traitements qui complètent les données manquantes dans Snowflake directement depuis l’API SAP S/4HANA, avec génération de rapports.",

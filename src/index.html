@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" data-accent="blue">
+
+<head>
+  <meta charset="UTF-8">
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="description"
+    content="Álvaro Rodríguez Molina, software engineer working across full-stack development, integrations, automation, SAP and AI. Seville-born, based in Ireland."
+  >
+  <title>Álvaro Rodríguez Molina · Software Engineer</title>
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Álvaro Rodríguez Molina · Software Engineer">
+  <meta property="og:description" content="Full stack, integration & automation. I build the software between an operational problem and the people living with it.">
+  <meta property="og:image" content="./images/author-portrait.jpg">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="./images/favicon-192.png">
+  <link rel="apple-touch-icon" href="./images/apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..600&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  >
+
+  <script>
+    // Apply the saved theme before first paint to avoid a flash.
+    try {
+      var savedTheme = localStorage.getItem('theme');
+      if (savedTheme) document.documentElement.dataset.theme = savedTheme;
+      document.documentElement.dataset.accent = localStorage.getItem('accent') || 'blue';
+    } catch (e) {
+      document.documentElement.dataset.accent = 'blue';
+    }
+  </script>
+</head>
+
+<body>
+  <!-- Prerendered at build time, then hydrated by Angular. -->
+  <app-root></app-root>
+</body>
+
+</html>

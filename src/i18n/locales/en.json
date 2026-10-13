@@ -123,7 +123,7 @@
   "work.planning": "My own planner: daily focus, a weekly view, an Eisenhower matrix and a vault for decisions. Built because every to-do app I tried was either too much or too little.",
   "work.private": "Private · ask me about it",
   "work.radar": "A GitHub Action wakes up every morning, reads official AI and dev-tooling feeds, and commits a JSON file. This page renders it. The bot touches data, never the layout.",
-  "work.site": "React and TypeScript with SCSS, built with Vite and prerendered so it reads without JavaScript. Ten languages, light and dark themes, eight accent colours, and built automatically by GitHub Actions on every push.",
+  "work.site": "Angular and TypeScript with SCSS, with signals instead of zone.js, and prerendered so it reads without JavaScript. Ten languages, light and dark themes, eight accent colours, and built automatically by GitHub Actions on every push.",
   "work.sync.p1": "Corporate sign-in with Microsoft Entra ID, an extra JWT layer and role-based views, with automated emails when someone is granted access to a section.",
   "work.sync.p2": "Transactions that pull tickets from an API into internal databases to monitor and analyse each person's support work, plus a built-in feedback system.",
   "work.sync.p3": "Jobs that fill missing Snowflake data straight from the SAP S/4HANA API, with report generation.",

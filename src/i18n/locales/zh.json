@@ -123,7 +123,7 @@
   "work.planning": "我自己的计划工具：每日专注、周视图、艾森豪威尔矩阵和决策存档。因为我试过的待办应用不是太复杂就是太简单。",
   "work.private": "保密项目 · 欢迎来问",
   "work.radar": "每天早上，一个 GitHub Action 读取 AI 和开发工具的官方资讯源，并保存为 JSON 文件，由本页面展示。机器人只改数据，从不改版面。",
-  "work.site": "React 和 TypeScript 搭配 SCSS，使用 Vite 构建并预渲染，即使没有 JavaScript 也能阅读。支持十种语言、深浅色主题和八种强调色，每次 push 后由 GitHub Actions 自动构建。",
+  "work.site": "Angular 和 TypeScript 搭配 SCSS，使用 signals 代替 zone.js，并预渲染，即使没有 JavaScript 也能阅读。支持十种语言、深浅色主题和八种强调色，每次 push 后由 GitHub Actions 自动构建。",
   "work.sync.p1": "使用 Microsoft Entra ID 企业登录，额外的 JWT 安全层和基于角色的视图；用户获得某个模块的访问权限时会自动收到邮件。",
   "work.sync.p2": "通过 API 抓取工单并写入多个内部数据库，用于监控和分析每个人的支持工作，并内置反馈系统。",
   "work.sync.p3": "直接对接 SAP S/4HANA API，补全 Snowflake 中缺失的数据，并可生成报表。",

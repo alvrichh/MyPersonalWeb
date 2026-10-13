@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { DOCUMENT, Injectable, afterNextRender, computed, effect, inject, signal } from '@angular/core';
 import meta from './languages.json';
 import bubble from './bubble.json';
 import en from './locales/en.json';
@@ -29,16 +29,8 @@ export const LANGUAGES = meta.languages as Language[];
 export const ACCENTS = meta.accents as Accent[];
 export const BUBBLE_LINES = bubble as Record<string, string[]>;
 
-const LOCALES: Record<string, Partial<Record<MessageKey, string>>> = { en, es, ga, fr, de, ru, pl, zh, ar, and };
-
-type I18n = {
-  lang: Language;
-  setLang: (code: string) => void;
-  /** Text for a key in the current language, falling back to English. */
-  t: (key: MessageKey, values?: Record<string, string | number>) => string;
-};
-
-const I18nContext = createContext<I18n | null>(null);
+const LOCALES: Record<string, Partial<Record<string, string>>> = { en, es, ga, fr, de, ru, pl, zh, ar, and };
+const ENGLISH = en as Record<string, string>;
 
 // First visit: the browser's language if we have it; afterwards, the saved one.
 const detectLanguage = () => {
@@ -48,42 +40,36 @@ const detectLanguage = () => {
   return LOCALES[browser] ? browser : 'en';
 };
 
-export function I18nProvider({ children }: { children: ReactNode }) {
+@Injectable({ providedIn: 'root' })
+export class I18n {
   // Always render English first (that is what the prerendered HTML holds),
   // then switch after hydration so server and client markup match.
-  const [code, setCode] = useState('en');
+  private readonly code = signal('en');
 
-  useEffect(() => {
-    setCode(detectLanguage());
-  }, []);
+  readonly lang = computed(() => LANGUAGES.find((item) => item.code === this.code()) ?? LANGUAGES[0]);
 
-  const lang = LANGUAGES.find((item) => item.code === code) ?? LANGUAGES[0];
+  constructor() {
+    const document = inject(DOCUMENT);
+    afterNextRender(() => this.code.set(detectLanguage()));
+    effect(() => {
+      const lang = this.lang();
+      document.documentElement.lang = lang.htmlLang;
+      document.documentElement.dir = lang.dir ?? 'ltr';
+    });
+  }
 
-  useEffect(() => {
-    document.documentElement.lang = lang.htmlLang;
-    document.documentElement.dir = lang.dir ?? 'ltr';
-  }, [lang]);
+  setLang(code: string) {
+    if (!LOCALES[code]) return;
+    this.code.set(code);
+    storage.set('lang', code);
+  }
 
-  const setLang = useCallback((next: string) => {
-    if (!LOCALES[next]) return;
-    setCode(next);
-    storage.set('lang', next);
-  }, []);
-
-  const t = useCallback<I18n['t']>((key, values) => {
-    let text = LOCALES[code]?.[key] ?? en[key] ?? key;
+  /** Text for a key in the current language, falling back to English. */
+  t(key: MessageKey | (string & {}), values?: Record<string, string | number>) {
+    let text = LOCALES[this.code()]?.[key] ?? ENGLISH[key] ?? key;
     if (values) {
       for (const [name, value] of Object.entries(values)) text = text.replace(`{${name}}`, String(value));
     }
     return text;
-  }, [code]);
-
-  const value = useMemo(() => ({ lang, setLang, t }), [lang, setLang, t]);
-  return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
+  }
 }
-
-export const useI18n = () => {
-  const context = useContext(I18nContext);
-  if (!context) throw new Error('useI18n must be used inside <I18nProvider>');
-  return context;
-};
