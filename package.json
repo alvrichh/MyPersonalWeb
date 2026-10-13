@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Implementacion de Bootstrap a mi web",
   "main": "index.js",
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
     "start": "webpack serve",
     "build": "node scripts/build.mjs",
