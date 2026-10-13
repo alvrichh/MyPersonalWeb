@@ -8,7 +8,7 @@ const ROOT = process.cwd();
 const TODAY = new Date().toISOString().slice(0, 10);
 const AI_WATCH_DIR = path.join(ROOT, 'docs', 'ai-watch');
 const HISTORY_DIR = path.join(AI_WATCH_DIR, 'history');
-const DATA_DIR = path.join(ROOT, 'assets', 'data');
+const DATA_DIR = path.join(ROOT, 'static', 'data');
 const LATEST_PATH = path.join(AI_WATCH_DIR, 'latest.md');
 const HISTORY_PATH = path.join(HISTORY_DIR, `${TODAY}.md`);
 const IDEAS_PATH = path.join(AI_WATCH_DIR, 'portfolio-candidates.json');
@@ -231,7 +231,7 @@ const buildReport = (results, items, candidates, enrichmentMeta) => {
     ? candidates.map((candidate) => `- **${candidate.label}** — ${candidate.reason}`).join('\n')
     : '- No new portfolio candidates generated today.';
 
-  return `# Daily AI maintenance report — ${TODAY}\n\nThis file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.\n\n## Source status\n\n${sourceRows}\n\n## Relevant AI updates\n\n${itemRows}\n\n## Portfolio candidates\n\n${candidateRows}\n\n## AI enrichment\n\n- **Provider:** ${enrichmentMeta.provider}\n- **Headline:** ${enrichmentMeta.enrichment.headline}\n- **Insight:** ${enrichmentMeta.enrichment.insight}\n- **Portfolio angle:** ${enrichmentMeta.enrichment.portfolioAngle}\n\n## Safety policy\n\n- Do not edit live HTML/CSS layout automatically.\n- Only update docs/ai-watch and assets/data/ai-radar.json.\n- Do not claim certifications or experience that has not been manually confirmed.\n- Production build must pass before commit/push.\n`;
+  return `# Daily AI maintenance report — ${TODAY}\n\nThis file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.\n\n## Source status\n\n${sourceRows}\n\n## Relevant AI updates\n\n${itemRows}\n\n## Portfolio candidates\n\n${candidateRows}\n\n## AI enrichment\n\n- **Provider:** ${enrichmentMeta.provider}\n- **Headline:** ${enrichmentMeta.enrichment.headline}\n- **Insight:** ${enrichmentMeta.enrichment.insight}\n- **Portfolio angle:** ${enrichmentMeta.enrichment.portfolioAngle}\n\n## Safety policy\n\n- Do not edit live HTML/CSS layout automatically.\n- Only update docs/ai-watch and the radar data in static/data.\n- Do not claim certifications or experience that has not been manually confirmed.\n- Production build must pass before commit/push.\n`;
 };
 
 const readExisting = async (filePath) => existsSync(filePath) ? readFile(filePath, 'utf8') : '';

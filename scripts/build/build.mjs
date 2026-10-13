@@ -8,7 +8,7 @@ console.log(`Build Node.js version: ${process.version}`);
 const isWindows = process.platform === 'win32';
 const binName = isWindows ? 'vite.cmd' : 'vite';
 const npmBin = isWindows ? 'npm.cmd' : 'npm';
-const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const viteBin = join(rootDir, 'node_modules', '.bin', binName);
 const distDir = join(rootDir, 'dist');
 const ssrDir = join(rootDir, 'dist-ssr');
@@ -53,7 +53,7 @@ if (!existsSync(viteBin)) {
 // Client bundle, then the server renderer, then fill the pages with real HTML.
 run(viteBin, ['build']);
 run(viteBin, ['build', '--ssr', 'src/server.tsx']);
-run(process.execPath, [join(rootDir, 'scripts', 'prerender.mjs')]);
+run(process.execPath, [join(rootDir, 'scripts', 'build', 'prerender.mjs')]);
 rmSync(ssrDir, { recursive: true, force: true });
 
 if (!existsSync(distDir)) {

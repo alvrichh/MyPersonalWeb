@@ -3,14 +3,14 @@
 // story the sources still list since OLDEST_DATE (Anthropic via its sitemap),
 // then fills in pictures and summaries. Safe to re-run.
 //
-//   node scripts/backfill-radar-sources.mjs
+//   node scripts/radar/one-off/backfill-radar-sources.mjs
 
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { mergeIntoArchive } from './radar-tags.mjs';
-import { SOURCES, addMissingMeta, fetchPageMeta, isRelevantForSource, readSource } from './radar-sources.mjs';
+import { mergeIntoArchive } from '../radar-tags.mjs';
+import { SOURCES, addMissingMeta, fetchPageMeta, isRelevantForSource, readSource } from '../radar-sources.mjs';
 
-const ARCHIVE_PATH = path.join(process.cwd(), 'assets', 'data', 'ai-radar-archive.json');
+const ARCHIVE_PATH = path.join(process.cwd(), 'static', 'data', 'ai-radar-archive.json');
 const OLDEST_DATE = '2026-04-01';
 const TODAY = new Date().toISOString().slice(0, 10);
 
