@@ -2,39 +2,42 @@
 
 Personal site of Álvaro Rodríguez Molina: [alvrich.vercel.app](https://alvrich.vercel.app).
 
-React 19, TypeScript and SCSS, built with Vite. The pages are prerendered at
-build time, so they read fine without JavaScript, and React takes over in the
-browser. Ten languages, light and dark themes and eight accent colours.
+Angular 22 (standalone components and signals, no zone.js), TypeScript and
+SCSS. The pages are prerendered at build time, so they read fine without
+JavaScript, and Angular hydrates them in the browser. Ten languages, light and
+dark themes and eight accent colours.
 
 ## Run it
 
+Angular 22 needs Node 22.22+ or 24 (Vercel uses 24).
+
 ```bash
 npm install
-npm run dev        # http://localhost:5173 with hot reload
+npm run dev        # ng serve: http://localhost:4200 with hot reload
 npm run build      # production build into dist/ (and a copy in public/ for Vercel)
 npm run preview    # serve that build
-npm run typecheck
+npm run typecheck  # TypeScript and template checks
 ```
 
 ## Layout
 
 ```
-index.html, ai-radar.html     React pages (the HTML shell; content comes from src/)
-gym.html, planning.html,      older standalone tools
-calendar.html
+angular.json                  build config (prerenders "/" and "/ai-radar")
 src/
-  client.tsx, server.tsx      browser entry (hydrate) and build-time renderer
-  pages.tsx                   page layouts
+  index.html                  the HTML shell
+  main.ts, main.server.ts     browser entry and build-time renderer
+  app.ts                      routes and app config
+  pages/                      home and AI radar pages, shared layout
   sections/                   page sections (hero, work, experience, radar…)
-  components/                 header, menus, pickers, icons
+  components/                 header, mobile menu, pickers, icons
   data/                       experience, projects and skills
-  i18n/locales/               one JSON per language; en.json is the reference
+  i18n/                       I18n service; locales/ has one JSON per language
   lib/                        storage, preferences, dates, radar data
   styles/                     SCSS, one partial per area
-  legacy/                     code for gym and calendar
-static/                       copied as-is: images/, cv/, data/
+static/                       copied as-is: images/, cv/, data/, and the older
+                              standalone tools (gym, planning, calendar + legacy/)
 scripts/
-  build/                      Vite build + prerender
+  build/                      ng build, plus ai-radar.html for the old URL
   radar/                      daily AI radar bot (one-off/ holds backfill scripts)
 docs/ai-watch/                daily radar reports written by the bot
 ```
