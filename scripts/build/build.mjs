@@ -1,4 +1,4 @@
-import { cpSync, existsSync, rmSync } from 'node:fs';
+import { copyFileSync, cpSync, existsSync, rmSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
@@ -6,12 +6,11 @@ import { fileURLToPath } from 'node:url';
 console.log(`Build Node.js version: ${process.version}`);
 
 const isWindows = process.platform === 'win32';
-const binName = isWindows ? 'vite.cmd' : 'vite';
+const binName = isWindows ? 'ng.cmd' : 'ng';
 const npmBin = isWindows ? 'npm.cmd' : 'npm';
 const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
-const viteBin = join(rootDir, 'node_modules', '.bin', binName);
+const ngBin = join(rootDir, 'node_modules', '.bin', binName);
 const distDir = join(rootDir, 'dist');
-const ssrDir = join(rootDir, 'dist-ssr');
 const publicDir = join(rootDir, 'public');
 const requiredOutputFiles = [
   'index.html',
@@ -45,16 +44,17 @@ const run = (command, args) => {
   }
 };
 
-if (!existsSync(viteBin)) {
-  console.log('vite not found; installing dependencies with npm ci');
+if (!existsSync(ngBin)) {
+  console.log('Angular CLI not found; installing dependencies with npm ci');
   run(npmBin, ['ci']);
 }
 
-// Client bundle, then the server renderer, then fill the pages with real HTML.
-run(viteBin, ['build']);
-run(viteBin, ['build', '--ssr', 'src/server.tsx']);
-run(process.execPath, [join(rootDir, 'scripts', 'build', 'prerender.mjs')]);
-rmSync(ssrDir, { recursive: true, force: true });
+// Angular prerenders "/" to index.html and "/ai-radar" to ai-radar/index.html.
+// The radar page has always lived at /ai-radar.html, so publish it there too.
+run(ngBin, ['build']);
+if (existsSync(join(distDir, 'ai-radar', 'index.html'))) {
+  copyFileSync(join(distDir, 'ai-radar', 'index.html'), join(distDir, 'ai-radar.html'));
+}
 
 if (!existsSync(distDir)) {
   console.error(`Build finished but the expected output directory was not created: ${distDir}`);
@@ -71,7 +71,7 @@ if (missingFiles.length > 0) {
 // Vercel's static builder treats `public` as the canonical output directory for
 // projects using the "Other" framework preset. Keep `dist` as the canonical
 // local/CI build output, but publish an exact copy from a clean directory so
-// Vercel never has to infer or relocate the Vite output.
+// Vercel never has to infer or relocate the Angular output.
 rmSync(publicDir, { recursive: true, force: true });
 cpSync(distDir, publicDir, { recursive: true });
 
