@@ -22,36 +22,29 @@ Keep the UI premium, modern and memorable:
 
 ## Current architecture and features
 
-- Main portfolio lives in `index.html`.
-- `gym.html` and `planning.html` are extra pages/tools.
-- Portfolio project cards are partly static and partly injected by JS.
-- Dynamic cards include Planning OS, Fusion Flow BKD, AI capability cards, React/JS/Azure/Python/Docker cards.
-- AI Radar is now a separate section directly below Portfolio, not inside the Portfolio grid and not in the nav.
-- AI Radar reads from `assets/data/ai-radar.json`.
-- Daily AI maintenance updates only safe data/docs paths:
+- React 19 + TypeScript + SCSS, built with Vite (`vite.config.mts`).
+- `index.html` (home) and `ai-radar.html` are React pages: code in `src/`, prerendered at build time by `scripts/build/prerender.mjs` and hydrated in the browser.
+- `src/sections/` holds the page sections, `src/components/` shared UI, `src/data/` experience and projects, `src/i18n/locales/` one JSON per language (10 languages), `src/styles/partials/` the SCSS.
+- `gym.html`, `planning.html` and `calendar.html` are older standalone tools; their code lives in `src/legacy/`.
+- Static files (images, CV, radar data) live in `static/` and keep their URLs (`./images`, `./cv`, `./data`).
+- The AI Radar reads `static/data/ai-radar.json` (latest) and `static/data/ai-radar-archive.json` (everything collected).
+- Daily AI maintenance (`scripts/radar/`) updates only safe data/docs paths:
   - `docs/ai-watch/**`
-  - `assets/data/ai-radar.json`
+  - `static/data/ai-radar.json`
+  - `static/data/ai-radar-archive.json`
 - Daily streak heartbeat lives in `docs/ai-watch/streak.md`.
+- `dist/` is not committed; Vercel runs `npm run build` on each deploy.
 
-## Portfolio filters
+## AI Radar filters
 
-Portfolio filters should stay consistent and working for static and dynamic cards:
-
-- `all`
-- `ui`
-- `systems`
-- `automation`
-- `ai`
-- `quality`
-
-The filters must work on mobile and desktop. Dynamic cards injected after initial page load must still be categorized and filtered correctly.
+The radar page filters by tag (counted over the whole archive) and has a search box that covers every story. Both must work on mobile and desktop.
 
 ## Review priorities
 
 When reviewing changes, focus on:
 
 1. Mobile layout regressions and broken buttons.
-2. Portfolio filters and category consistency.
+2. Hydration: prerendered HTML must match the first client render (no browser-only values in the first render).
 3. AI Radar separation, filters, show more/show less, and source links.
 4. Accessibility: focus states, keyboard controls, semantic buttons/links, aria states.
 5. Performance and maintainability: avoid duplicate logic, fragile selectors, unnecessary DOM rewrites.
