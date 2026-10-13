@@ -56,8 +56,8 @@
 
         <nav class="section-nav" aria-label="Main sections" data-i18n="nav.aria" data-i18n-attr="aria-label">
           <a class="nav-tab" href="#about" data-i18n="nav.about">About</a>
-          <a class="nav-tab" href="#work" data-i18n="nav.work">Work</a>
           <a class="nav-tab" href="#experience" data-i18n="nav.experience">Experience</a>
+          <a class="nav-tab" href="#work" data-i18n="nav.work">Work</a>
           <a class="nav-tab" href="#skills" data-i18n="nav.skills">Skills</a>
           <a class="nav-tab" href="#contact" data-i18n="nav.contact">Contact</a>
         </nav>
@@ -203,125 +203,10 @@
       </dl>
     </section>
 
-    <!-- Selected work -->
-    <section class="section wrap" id="work" aria-labelledby="work-title">
-      <header class="section-head">
-        <p class="section-index">01</p>
-        <h2 id="work-title" data-i18n="work.title">Selected work</h2>
-        <p class="section-intro" data-i18n="work.intro">
-          A mix of client work I can talk about and things I built for myself because I wanted them to exist.
-        </p>
-      </header>
-
-      <ol class="work-list">
-        <li class="work-item">
-          <span class="work-num">01</span>
-          <div class="work-main">
-            <h3 data-i18n="work.flow.title">Customs Operations Platform</h3>
-            <p data-i18n="work.bkd">
-              A customs platform for a private logistics client that handles GB–NI movements end to end through the API of HMRC's Trader Support Service (TSS): safety and security filings (ENS), simplified frontier and supplementary declarations, and full frontier declarations. Data comes in three ways (shipment emails read through Microsoft Graph, Excel uploads or manual entry in the portal) and is extracted, validated and pre-filled, so the team only reviews. Flask on Azure SQL, deployed with Docker.
-            </p>
-            <p class="work-stack">Flask · Azure SQL · Microsoft Graph · TSS API · Docker · Render</p>
-          </div>
-          <div class="work-meta">
-            <span class="work-year">2026</span>
-            <span class="work-private" data-i18n="work.private">Private · ask me about it</span>
-          </div>
-        </li>
-
-        <li class="work-item">
-          <span class="work-num">02</span>
-          <div class="work-main">
-            <h3 data-i18n="work.sync.title">Support &amp; Operations Platform</h3>
-            <p data-i18n="work.sync.summary">
-              An internal platform for the company's support and operations teams: secure access, ticket analytics,
-              SAP-to-Snowflake data repair and an in-house AI assistant.
-            </p>
-            <ul class="work-points">
-              <li data-i18n="work.sync.p1">Corporate sign-in with Microsoft Entra ID, an extra JWT layer and role-based views, with automated emails when someone is granted access to a section.</li>
-              <li data-i18n="work.sync.p2">Transactions that pull tickets from an API into internal databases to monitor and analyse each person's support work, plus a built-in feedback system.</li>
-              <li data-i18n="work.sync.p3">Jobs that fill missing Snowflake data straight from the SAP S/4HANA API, with report generation.</li>
-              <li data-i18n="work.sync.p4">File search through SMTP logs and interface movements.</li>
-              <li data-i18n="work.sync.p5">In-house AI assistant (beta): built for the company, runs without paid API tokens and resolves administrative support questions.</li>
-            </ul>
-            <p class="work-stack">Microsoft Entra ID · JWT · RBAC · SAP S/4HANA API · Snowflake · SMTP · In-house AI</p>
-          </div>
-          <div class="work-meta">
-            <span class="work-year">2026</span>
-            <span class="work-private" data-i18n="work.private">Private · ask me about it</span>
-          </div>
-        </li>
-
-        <li class="work-item">
-          <span class="work-num">03</span>
-          <div class="work-main">
-            <h3><a href="./ai-radar.html">Live AI Radar <span class="arrow" aria-hidden="true">↗</span></a></h3>
-            <p data-i18n="work.radar">
-              A GitHub Action wakes up every morning, reads official AI and dev-tooling feeds, and commits
-              a JSON file. This page renders it. The bot touches data, never the layout.
-            </p>
-            <p class="work-stack">Node.js · GitHub Actions · RSS · JSON</p>
-          </div>
-          <div class="work-meta">
-            <span class="work-year">2026</span>
-            <span data-i18n="work.live">Running daily</span>
-          </div>
-        </li>
-
-        <li class="work-item">
-          <span class="work-num">04</span>
-          <div class="work-main">
-            <h3><a href="./planning.html">Bubble Planning OS <span class="arrow" aria-hidden="true">↗</span></a></h3>
-            <p data-i18n="work.planning">
-              My own planner: daily focus, a weekly view, an Eisenhower matrix and a vault for decisions.
-              Built because every to-do app I tried was either too much or too little.
-            </p>
-            <p class="work-stack">HTML · CSS · JavaScript · localStorage</p>
-          </div>
-          <div class="work-meta">
-            <span class="work-year">2026</span>
-            <span data-i18n="work.personal">Personal tool</span>
-          </div>
-        </li>
-
-        <li class="work-item">
-          <span class="work-num">05</span>
-          <div class="work-main">
-            <h3><a href="./gym.html">alvrich gym <span class="arrow" aria-hidden="true">↗</span></a></h3>
-            <p data-i18n="work.gym">
-              A monthly training plan, daily weight log and progress view. Small, fast and exactly as
-              opinionated as I am about leg day.
-            </p>
-            <p class="work-stack">HTML · CSS · JavaScript</p>
-          </div>
-          <div class="work-meta">
-            <span class="work-year">2026</span>
-            <span data-i18n="work.personal">Personal tool</span>
-          </div>
-        </li>
-
-        <li class="work-item">
-          <span class="work-num">06</span>
-          <div class="work-main">
-            <h3><a href="https://github.com/alvrichh/MyPersonalWeb" target="_blank" rel="noreferrer">This site <span class="arrow" aria-hidden="true">↗</span></a></h3>
-            <p data-i18n="work.site">
-              Vanilla HTML, CSS and JavaScript bundled with Webpack, in ten languages, with light and dark themes and eight accent colours,
-              and built automatically by GitHub Actions on every push.
-            </p>
-            <p class="work-stack">Webpack · JavaScript · GitHub Actions · Vercel</p>
-          </div>
-          <div class="work-meta">
-            <span class="work-year">2024 –</span>
-            <span data-i18n="work.open">Open source</span>
-          </div>
-        </li>
-      </ol>
-    </section>
-
     <!-- Experience -->
     <section class="section wrap" id="experience" aria-labelledby="exp-title">
       <header class="section-head">
-        <p class="section-index">02</p>
+        <p class="section-index">01</p>
         <h2 id="exp-title" data-i18n="exp.title">Experience</h2>
         <p class="section-intro" data-i18n="exp.intro">
           I didn't take the straight road into software, and I think it shows in a good way: I've been
@@ -694,6 +579,121 @@
           </li>
         </ul>
       </div>
+    </section>
+
+    <!-- Selected work -->
+    <section class="section wrap" id="work" aria-labelledby="work-title">
+      <header class="section-head">
+        <p class="section-index">02</p>
+        <h2 id="work-title" data-i18n="work.title">Selected work</h2>
+        <p class="section-intro" data-i18n="work.intro">
+          A mix of client work I can talk about and things I built for myself because I wanted them to exist.
+        </p>
+      </header>
+
+      <ol class="work-list">
+        <li class="work-item">
+          <span class="work-num">01</span>
+          <div class="work-main">
+            <h3 data-i18n="work.flow.title">Customs Operations Platform</h3>
+            <p data-i18n="work.bkd">
+              A customs platform for a private logistics client that handles GB–NI movements end to end through the API of HMRC's Trader Support Service (TSS): safety and security filings (ENS), simplified frontier and supplementary declarations, and full frontier declarations. Data comes in three ways (shipment emails read through Microsoft Graph, Excel uploads or manual entry in the portal) and is extracted, validated and pre-filled, so the team only reviews. Flask on Azure SQL, deployed with Docker.
+            </p>
+            <p class="work-stack">Flask · Azure SQL · Microsoft Graph · TSS API · Docker · Render</p>
+          </div>
+          <div class="work-meta">
+            <span class="work-year">2026</span>
+            <span class="work-private" data-i18n="work.private">Private · ask me about it</span>
+          </div>
+        </li>
+
+        <li class="work-item">
+          <span class="work-num">02</span>
+          <div class="work-main">
+            <h3 data-i18n="work.sync.title">Support &amp; Operations Platform</h3>
+            <p data-i18n="work.sync.summary">
+              An internal platform for the company's support and operations teams: secure access, ticket analytics,
+              SAP-to-Snowflake data repair and an in-house AI assistant.
+            </p>
+            <ul class="work-points">
+              <li data-i18n="work.sync.p1">Corporate sign-in with Microsoft Entra ID, an extra JWT layer and role-based views, with automated emails when someone is granted access to a section.</li>
+              <li data-i18n="work.sync.p2">Transactions that pull tickets from an API into internal databases to monitor and analyse each person's support work, plus a built-in feedback system.</li>
+              <li data-i18n="work.sync.p3">Jobs that fill missing Snowflake data straight from the SAP S/4HANA API, with report generation.</li>
+              <li data-i18n="work.sync.p4">File search through SMTP logs and interface movements.</li>
+              <li data-i18n="work.sync.p5">In-house AI assistant (beta): built for the company, runs without paid API tokens and resolves administrative support questions.</li>
+            </ul>
+            <p class="work-stack">Microsoft Entra ID · JWT · RBAC · SAP S/4HANA API · Snowflake · SMTP · In-house AI</p>
+          </div>
+          <div class="work-meta">
+            <span class="work-year">2026</span>
+            <span class="work-private" data-i18n="work.private">Private · ask me about it</span>
+          </div>
+        </li>
+
+        <li class="work-item">
+          <span class="work-num">03</span>
+          <div class="work-main">
+            <h3><a href="./ai-radar.html">Live AI Radar <span class="arrow" aria-hidden="true">↗</span></a></h3>
+            <p data-i18n="work.radar">
+              A GitHub Action wakes up every morning, reads official AI and dev-tooling feeds, and commits
+              a JSON file. This page renders it. The bot touches data, never the layout.
+            </p>
+            <p class="work-stack">Node.js · GitHub Actions · RSS · JSON</p>
+          </div>
+          <div class="work-meta">
+            <span class="work-year">2026</span>
+            <span data-i18n="work.live">Running daily</span>
+          </div>
+        </li>
+
+        <li class="work-item">
+          <span class="work-num">04</span>
+          <div class="work-main">
+            <h3><a href="./planning.html">Bubble Planning OS <span class="arrow" aria-hidden="true">↗</span></a></h3>
+            <p data-i18n="work.planning">
+              My own planner: daily focus, a weekly view, an Eisenhower matrix and a vault for decisions.
+              Built because every to-do app I tried was either too much or too little.
+            </p>
+            <p class="work-stack">HTML · CSS · JavaScript · localStorage</p>
+          </div>
+          <div class="work-meta">
+            <span class="work-year">2026</span>
+            <span data-i18n="work.personal">Personal tool</span>
+          </div>
+        </li>
+
+        <li class="work-item">
+          <span class="work-num">05</span>
+          <div class="work-main">
+            <h3><a href="./gym.html">alvrich gym <span class="arrow" aria-hidden="true">↗</span></a></h3>
+            <p data-i18n="work.gym">
+              A monthly training plan, daily weight log and progress view. Small, fast and exactly as
+              opinionated as I am about leg day.
+            </p>
+            <p class="work-stack">HTML · CSS · JavaScript</p>
+          </div>
+          <div class="work-meta">
+            <span class="work-year">2026</span>
+            <span data-i18n="work.personal">Personal tool</span>
+          </div>
+        </li>
+
+        <li class="work-item">
+          <span class="work-num">06</span>
+          <div class="work-main">
+            <h3><a href="https://github.com/alvrichh/MyPersonalWeb" target="_blank" rel="noreferrer">This site <span class="arrow" aria-hidden="true">↗</span></a></h3>
+            <p data-i18n="work.site">
+              Vanilla HTML, CSS and JavaScript bundled with Webpack, in ten languages, with light and dark themes and eight accent colours,
+              and built automatically by GitHub Actions on every push.
+            </p>
+            <p class="work-stack">Webpack · JavaScript · GitHub Actions · Vercel</p>
+          </div>
+          <div class="work-meta">
+            <span class="work-year">2024 –</span>
+            <span data-i18n="work.open">Open source</span>
+          </div>
+        </li>
+      </ol>
     </section>
 
     <!-- Skills -->
