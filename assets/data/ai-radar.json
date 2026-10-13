@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-13T15:31:18.081Z",
+  "generatedAt": "2026-10-13T20:42:46.199Z",
   "date": "2026-10-13",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
@@ -7,222 +7,236 @@
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
     {
-      "title": "Epic shifts to &#8216;AI-accelerated development&#8217; for upcoming Disney game",
-      "source": "The Verge AI",
+      "title": "Gemini 4 Argon begins rolling out in Gemini app and Antigravity, but only if you pay",
+      "source": "Ars Technica AI",
       "date": "2026-10-13",
-      "url": "https://www.theverge.com/games/1010097/epic-games-disney-project-ai-coding-art",
-      "summary": "Epic Games plans to use AI to generate code and art for an unannounced Disney game, which is now delayed from its original March release window, according to a report from Bloomberg. The project's developers have been gi...",
+      "url": "https://arstechnica.com/ai/2026/10/gemini-4-argon-begins-rolling-out-in-gemini-app-and-antigravity-but-only-if-you-pay/",
+      "summary": "Developers will get 50 percent discounted API rates through November.",
       "tags": [
-        "Agents",
-        "Claude",
+        "Gemini",
         "Dev Tools"
-      ]
+      ],
+      "image": "https://cdn.arstechnica.net/wp-content/uploads/2026/10/Gemini-4-Argon-1152x648.jpg"
     },
     {
-      "title": "DLSS 5 gets toned down for its Hogwarts Legacy debut next month",
-      "source": "The Verge AI",
+      "title": "Building agents that transact with Anchor Browser and AgentCore payments",
+      "source": "AWS Machine Learning",
       "date": "2026-10-13",
-      "url": "https://www.theverge.com/news/1009904/dlss-5-hogwarts-legacy-changes-improvements",
-      "summary": "When Nvidia originally showed off DLSS 5 earlier this year, the technology immediately got branded as gen AI for video games. To gamers, Nvidia had lost the plot. I personally couldn't get over how faces were transformed...",
+      "url": "https://aws.amazon.com/blogs/machine-learning/building-agents-that-transact-with-anchor-browser-and-agentcore-payments/",
+      "summary": "Learn how the AWS Generative AI Innovation Center Partner Agent Factory and Anchor Browser built AI agents that autonomously pay for x402-protected web resources and APIs. Amazon Bedrock AgentCore payments checks budgets...",
       "tags": [
-        "Multimodal"
-      ]
+        "Agents"
+      ],
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/10/08/ML-21771-1-1.png"
     },
     {
-      "title": "Character.AI files for bankruptcy",
-      "source": "The Verge AI",
+      "title": "Manage private pricing offers for Amazon Bedrock with managed entitlements",
+      "source": "AWS Machine Learning",
       "date": "2026-10-13",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1009802/character-ai-files-for-bankruptcy-disney",
-      "summary": "Character.AI, one of the first breakout startups of the generative AI boom, has filed for bankruptcy and is selling some of its assets to Disney. The company, which builds various online bots for users to chat or rolepla...",
+      "url": "https://aws.amazon.com/blogs/machine-learning/manage-private-pricing-offers-for-amazon-bedrock-with-managed-entitlements/",
+      "summary": "Managing AI model access across dozens or hundreds of AWS accounts creates friction when each account must accept AWS Marketplace Private Pricing Offers individually. This post shows two ways to activate MPPO entitlement...",
       "tags": [
-        "AI"
-      ]
+        "Automation",
+        "Models"
+      ],
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/10/08/21638-1.png"
     },
     {
-      "title": "GitHub Copilot app for Beginners: How to teach Copilot about your codebase",
+      "title": "Natural language security queries at Orca Security using Amazon Bedrock",
+      "source": "AWS Machine Learning",
+      "date": "2026-10-13",
+      "url": "https://aws.amazon.com/blogs/machine-learning/natural-language-security-queries-at-orca-security-using-amazon-bedrock/",
+      "summary": "Orca Security built Discovery AI, a natural language query agent on Amazon Bedrock that converts plain-English questions into Sonar queries. The post shares the multi-stage architecture and the results: 90% lower query c...",
+      "tags": [
+        "Agents"
+      ],
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/10/05/ML-21130-1.png"
+    },
+    {
+      "title": "How ShipStation Global built an AI IT help desk on Amazon Bedrock AgentCore",
+      "source": "AWS Machine Learning",
+      "date": "2026-10-13",
+      "url": "https://aws.amazon.com/blogs/machine-learning/how-shipstation-global-built-an-ai-it-help-desk-on-amazon-bedrock-agentcore/",
+      "summary": "ShipStation Global's engineering team built Deckhand, an AI IT help desk agent for Slack on Amazon Bedrock AgentCore. It answers routine IT questions from a curated knowledge base, reads error-message screenshots, and fi...",
+      "tags": [
+        "Agents"
+      ],
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/10/08/ML-21795-1.png"
+    },
+    {
+      "title": "GitHub’s model for secret detection: Finding more secrets with less noise",
       "source": "GitHub AI & ML Blog",
-      "date": "2026-10-12",
-      "url": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-teach-copilot-about-your-codebase/",
-      "summary": "Learn how to add custom instructions and skills to your repository, use custom agents, and connect MCP servers like Playwright. The post GitHub Copilot app for Beginners: How to teach Copilot about your codebase appeared...",
+      "date": "2026-10-13",
+      "url": "https://github.blog/ai-and-ml/githubs-model-for-secret-detection-finding-more-secrets-with-less-noise/",
+      "summary": "GitHub’s context-aware secret classifier improves detection quality, raises weighted acceptance by 11.5%, and reduces median scan execution time by 86%. The post GitHub’s model for secret detection: Finding more secrets ...",
+      "tags": [
+        "Models"
+      ],
+      "image": "https://github.blog/wp-content/uploads/2026/01/generic-github-security-logo.png"
+    },
+    {
+      "title": "Gemini 4 Argon in GitHub Copilot",
+      "source": "GitHub Changelog",
+      "date": "2026-10-13",
+      "url": "https://github.blog/changelog/2026-10-13-gemini-4-argon-in-github-copilot",
+      "summary": "Gemini 4 Argon, Google’s newest frontier model, is now generally available in GitHub Copilot. It is designed for complex coding, agentic, and reasoning tasks. In early testing, Gemini 4 Argon… The post Gemini 4 Argon in ...",
       "tags": [
         "Agents",
-        "MCP",
         "Copilot",
+        "Gemini",
         "Dev Tools"
-      ]
+      ],
+      "image": "https://github.blog/wp-content/uploads/2026/10/669843404-1a20c331-b765-4da1-985b-47ce30aaa064.png"
     },
     {
-      "title": "Meta has some Wonder Full new AI models",
-      "source": "The Verge AI",
-      "date": "2026-10-12",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1009479/meta-muse-wonder-full-ai-model",
-      "summary": "Meta is making up for lost time in the AI race. After launching Muse Spark, the first model from its revamped Superintelligence Labs division, and buzzy AI agent Muse, it's now launching two new models it claims can go t...",
+      "title": "Enterprise managed settings enforcement updates",
+      "source": "GitHub Changelog",
+      "date": "2026-10-13",
+      "url": "https://github.blog/changelog/2026-10-13-enterprise-managed-settings-enforcement-updates",
+      "summary": "Enterprise administrators can now require supported GitHub Copilot clients to retrieve current server-managed settings at startup instead of relying on a cached policy. We are also adding minimum client version… The post...",
       "tags": [
-        "Agents",
-        "Multimodal",
-        "Models"
-      ]
+        "Copilot"
+      ],
+      "image": "https://github.blog/wp-content/themes/github-2021-child/dist/img/social-v3-improvements.jpg"
     },
     {
-      "title": "Microsoft’s new AI chip makes it less reliant on Nvidia’s GPUs",
-      "source": "The Verge AI",
-      "date": "2026-10-12",
-      "url": "https://www.theverge.com/news/1009465/microsoft-maia-300-chip-improvements-rollout",
-      "summary": "Microsoft is announcing its third-generation Maia in-house AI chip today, designed to be the \"primary AI inference system\" for Microsoft's products and services. Maia 300 not only improves the cost and efficiency of runn...",
+      "title": "Code scanning AI Scan metrics in security overview",
+      "source": "GitHub Changelog",
+      "date": "2026-10-13",
+      "url": "https://github.blog/changelog/2026-10-13-code-scanning-ai-scan-metrics-in-security-overview",
+      "summary": "Organization and enterprise administrators can now observe the impact of AI Scan for pull requests in security overview. New metrics show how many AI Scan findings were generated, resolved, the… The post Code scanning AI...",
       "tags": [
-        "Agents",
-        "Models"
-      ]
+        "Dev Tools"
+      ],
+      "image": "https://github.blog/wp-content/uploads/2026/10/667782846-ef515640-70b9-4fef-bea7-51e018eeef7f.jpeg"
     },
     {
-      "title": "Silicon Valley is falling in line with Trump’s attempt to rename AI",
-      "source": "The Verge AI",
-      "date": "2026-10-11",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1009406/silicon-valley-is-falling-in-line-with-trumps-attempt-to-rename-ai",
-      "summary": "When President Donald Trump announced his plans to rebrand artificial intelligence as \"super intelligence,\" you'd be forgiven for being skeptical that it would catch on. While most of the broader population is sticking w...",
+      "title": "Gemini 4 Argon: Built to solve your hardest problems",
+      "source": "Google AI Blog",
+      "date": "2026-10-13",
+      "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-argon/",
+      "summary": "We’re giving developers, enterprises, scientists, and consumers access to Gemini 4 Argon, our latest frontier model.",
       "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Learning to use local AI is exciting, overwhelming, and frustrating",
-      "source": "The Verge AI",
-      "date": "2026-10-11",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1008484/learning-local-ai-hermes-qwen-model-mac-studio-testing-diary-progress",
-      "summary": "I'm embarking on a journey I've so far been hesitant to go on: actually using AI on the regular. Giving my most personal data to cloud services has been a major hold up for me, but it's increasingly possible to run power...",
-      "tags": [
-        "Models"
-      ]
-    },
-    {
-      "title": "Satya Nadella says we should assume all AI models are ‘compromised’",
-      "source": "The Verge AI",
-      "date": "2026-10-10",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1009337/satya-nadella-says-we-should-assume-all-ai-models-are-compromised",
-      "summary": "In a lengthy post on X, Microsoft's CEO laid out his views on the dangers posed by highly advanced AI models and how to confront those risks. Nadella says we can no longer accept a world where AI is treated as a \"set of ...",
-      "tags": [
-        "Models"
-      ]
-    },
-    {
-      "title": "Sophos cuts threat investigation time by 96% with OpenAI Daybreak",
-      "source": "OpenAI News",
-      "date": "2026-10-09",
-      "url": "https://openai.com/index/sophos",
-      "summary": "Discover how Sophos uses OpenAI’s Daybreak to cut cyber-threat investigation time by 96% and automate 52% of MDR cases while preserving human oversight.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Asana cuts model costs 76x in browser tests with GPT-6.1 Sol",
-      "source": "OpenAI News",
-      "date": "2026-10-09",
-      "url": "https://openai.com/index/asana-browser-agent",
-      "summary": "Using GPT-6 Astra in Codex, Asana made its browser agent 76x cheaper and 5x faster in tests to offer customers more capable models.",
-      "tags": [
-        "Agents",
-        "ChatGPT",
+        "Gemini",
         "Dev Tools",
         "Models"
-      ]
+      ],
+      "image": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/gemini-4-argon__blog-header__27.max-600x600.format-webp.webp"
     },
     {
-      "title": "How Oracle turns days of work into minutes with ChatGPT and Codex",
-      "source": "OpenAI News",
-      "date": "2026-10-08",
-      "url": "https://openai.com/index/oracle",
-      "summary": "Across recruiting, engineering, and operations, Oracle turns specialist knowledge into fast, repeatable workflows with ChatGPT Work and Codex.",
+      "title": "Developing Gemini 4 Argon responsibly and safely",
+      "source": "Google DeepMind",
+      "date": "2026-10-13",
+      "url": "https://deepmind.google/blog/developing-gemini-4-argon-responsibly-and-safely/",
+      "summary": "AI update detected from an official or high-signal source.",
       "tags": [
-        "ChatGPT",
-        "Dev Tools",
-        "Automation"
-      ]
+        "Gemini"
+      ],
+      "image": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/gemini-4-argon_key-art_4_lockup_light_16-9.width-1300.png"
     },
     {
-      "title": "DistroKid has been quietly taking down songs in response to UMG lawsuit",
-      "source": "The Verge AI",
-      "date": "2026-10-10",
-      "url": "https://www.theverge.com/entertainment/1009309/distrokid-take-down-songs-umg-lawsuit",
-      "summary": "Artists are taking to social media to complain that DistroKid has unceremoniously removed their work without notice. Now DistroKid has confirmed to The Verge that the takedowns are a direct response to claims made by UMG...",
+      "title": "Gemini 4 Argon for Robotics",
+      "source": "Google DeepMind",
+      "date": "2026-10-13",
+      "url": "https://deepmind.google/blog/gemini-4-argon-for-robotics/",
+      "summary": "AI update detected from an official or high-signal source.",
       "tags": [
-        "AI"
-      ]
+        "Gemini"
+      ],
+      "image": "https://storage.googleapis.com/gweb-developer-goog-blog-assets/images/argon__robotics__hero.2e16d0ba.fill-1200x600.png"
     },
     {
-      "title": "Anthropic is cutting off its internal evaluations from the internet",
-      "source": "The Verge AI",
-      "date": "2026-10-10",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1009286/anthropic-is-cutting-off-its-internal-evaluations-from-the-internet",
-      "summary": "After a recent spate of high-profile incidents in which AI agents escaped containment, Anthropic is cutting off internet access for all internal evaluations. In a report Friday, the company detailed \"unintended model act...",
+      "title": "Gemini 4 Argon: Built to solve your hardest problems",
+      "source": "Google DeepMind",
+      "date": "2026-10-13",
+      "url": "https://deepmind.google/blog/introducing-gemini-4-argon/",
+      "summary": "AI update detected from an official or high-signal source.",
       "tags": [
-        "Agents",
-        "Claude",
-        "Models"
-      ]
+        "Gemini"
+      ],
+      "image": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/gemini-4-argon__blog-header__2784x1566.width-1300.png"
     },
     {
-      "title": "AI agent makers are promising privacy — will they deliver?",
-      "source": "The Verge AI",
-      "date": "2026-10-09",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1009051/privacy-ai-agent-promises-openai-meta-muse-dots",
-      "summary": "At this year's OpenAI DevDay, CEO Sam Altman unveiled the company's new AI agent Dots - and told the crowd that the company wants to \"set a new standard for privacy in frontier AI.\" OpenAI would spend the day taking veil...",
+      "title": "Run fast, private agents on-device with LFM2.5-24B-A2B",
+      "source": "Hugging Face",
+      "date": "2026-10-13",
+      "url": "https://huggingface.co/blog/LiquidAI/lfm25-24b-a2b",
+      "summary": "AI update detected from an official or high-signal source.",
       "tags": [
-        "Agents",
-        "ChatGPT"
-      ]
+        "Agents"
+      ],
+      "image": "https://cdn-uploads.huggingface.co/production/uploads/644249b08443bce4c9890a0f/YxGx9U6yV6_mumklCyMsE.png"
     },
     {
-      "title": "Pollo AI turns creative ideas into campaigns with OpenAI",
-      "source": "OpenAI News",
-      "date": "2026-10-08",
-      "url": "https://openai.com/index/pollo-ai",
-      "summary": "With GPT-5.6, GPT-6 Astra, and GPT‑Image‑2.5, Pollo AI helps creators turn bold ideas into detailed images and cinematic video ads.",
-      "tags": [
-        "ChatGPT",
-        "Multimodal"
-      ]
-    },
-    {
-      "title": "Anthropic’s AI gave Philadelphia police a fake tip about an unsolved homicide",
-      "source": "The Verge AI",
-      "date": "2026-10-09",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1009090/anthropic-fake-homicide-information-philadelphia-pd-tip",
-      "summary": "An Anthropic AI model provided false information about an unsolved homicide to a Philadelphia Police Department (PPD) tipline, according to a report from 6abc. In a statement released on Friday, the PPD said the AI model...",
+      "title": "Open models have real benefits. Do they outweigh the risks?",
+      "source": "MIT Technology Review AI",
+      "date": "2026-10-13",
+      "url": "https://www.technologyreview.com/2026/10/13/1146366/open-models-have-real-benefits-do-they-outweigh-the-risks/",
+      "summary": "MIT Technology Review Explains: Let our writers untangle the complex, messy world of science and technology to help you understand what’s coming next. You can read more from the series here. Late last month, Anthropic re...",
       "tags": [
         "Claude",
         "Models"
-      ]
+      ],
+      "image": "https://wp.technologyreview.com/wp-content/uploads/2026/09/260915_openaimodels.jpg?resize=1200,600"
     },
     {
-      "title": "&#8216;Pure insanity&#8217;: Mathematicians will need years to make sense of OpenAI&#8217;s latest drop",
-      "source": "The Verge AI",
-      "date": "2026-10-09",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1008726/openai-mathematics-solutions-chaos",
-      "summary": "\"Staggering.\" \"Overwhelming.\" \"Unprecedented.\" \"Surreal.\" \"Pure insanity.\" Those were among the descriptions more than three dozen mathematicians reached for in conversations with The Verge as they tried to make sense of...",
+      "title": "AI labs are buying data from dead startups to train their models",
+      "source": "MIT Technology Review AI",
+      "date": "2026-10-13",
+      "url": "https://www.technologyreview.com/2026/10/13/1145755/ai-labs-buying-data-from-dead-startups-to-train-models/",
+      "summary": "When Keelan Miskell began winding down his crypto startup this year, he didn’t think its data was worth much: the users were anonymous, the company just a few years old. But he’s since turned the firm’s digital archives ...",
       "tags": [
-        "ChatGPT"
-      ]
+        "Dev Tools",
+        "Models"
+      ],
+      "image": "https://wp.technologyreview.com/wp-content/uploads/2026/10/AI-Death_Redamonti_MIT-thumb.jpg?resize=1200,600"
     },
     {
-      "title": "Nikon microscopic video competition winner disqualified for using generative AI",
-      "source": "The Verge AI",
-      "date": "2026-10-09",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1008930/nikon-small-world-in-motion-winner-ai",
-      "summary": "Nikon says the video that originally won first place in its Small World in Motion contest \"did not comply with the competition rules regarding generative AI.\" BBC reports that the original first place video from Dr. Ning...",
+      "title": "NVIDIA Run:ai Is Now Open Source as Part of NVIDIA DSX AI Factory Platform",
+      "source": "NVIDIA Developer",
+      "date": "2026-10-13",
+      "url": "https://developer.nvidia.com/blog/nvidia-runai-is-now-open-source-as-part-of-nvidia-dsx-ai-factory-platform/",
+      "summary": "Today, NVIDIA is making the full NVIDIA Run:ai platform available as open source software, giving customers, developers, and ecosystem partners access to...",
       "tags": [
+        "Dev Tools"
+      ],
+      "image": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/01/run-ai-768x432.jpg"
+    },
+    {
+      "title": "Higgsfield takes AI video from 1 minute to over 10",
+      "source": "OpenAI News",
+      "date": "2026-10-13",
+      "url": "https://openai.com/index/higgsfield-longer-videos-voice",
+      "summary": "Higgsfield brings creators longer videos with GPT-6 Astra, precise visuals with GPT-Image-2.5, and a path to voice filmmaking with GPT-Live.",
+      "tags": [
+        "ChatGPT",
         "Multimodal"
-      ]
+      ],
+      "image": "https://images.ctfassets.net/kftzwdyauwt9/6QmB7YuFllKCVKPoWn7vnJ/6f3ac19d1e10d2a864481a174813c7f7/higgsfield-longer-videos-voice-seo-open-graph-1920x1080.png?w=1600&h=900&fit=fill"
     },
     {
-      "title": "Trump’s attempt to rename AI is looking awfully artificial",
-      "source": "The Verge AI",
-      "date": "2026-10-09",
-      "url": "https://www.theverge.com/policy/1008677/trump-super-intelligence-ai-rebranding",
-      "summary": "President Donald Trump has a knack for turning words against his enemies. His first successful presidential run was built on monikers like \"Little Marco\" and \"Crooked Hillary\"; he changed \"fake news\" from a phrase descri...",
+      "title": "Quoting Geoffrey Huntley",
+      "source": "Simon Willison",
+      "date": "2026-10-13",
+      "url": "https://simonwillison.net/2026/Oct/13/geoffrey-huntley/",
+      "summary": "If the agent isn't using my diagnostics library, I could introspect and update AGENTS.md, but there's still a delta, and it'll drift. Instead, I write a pre-commit hook that checks the git diff for direct calls to observ...",
       "tags": [
-        "AI"
-      ]
+        "Agents",
+        "Dev Tools",
+        "Models"
+      ],
+      "image": "https://simonwillison.net/2026/Oct/13/geoffrey-huntley/"
+    },
+    {
+      "title": "Shopify opens its catalog up to more AI agents",
+      "source": "The Verge AI",
+      "date": "2026-10-13",
+      "url": "https://www.theverge.com/news/1010365/shopify-opens-its-catalog-up-to-more-ai-agents",
+      "summary": "More AI agents will soon be able to browse and purchase from Shopify listings, marking an expansion of the company's agentic commerce ambitions. Shopify announced Tuesday it will let shoppers configure their AI agents to...",
+      "tags": [
+        "Agents"
+      ],
+      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/10/gettyimages-2225304503.jpg?quality=90&strip=all&crop=0,0,100,100"
     }
   ],
   "candidates": [
@@ -232,34 +246,46 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Epic shifts to &#8216;AI-accelerated development&#8217; for upcoming Disney game",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/games/1010097/epic-games-disney-project-ai-coding-art",
+          "title": "Gemini 4 Argon begins rolling out in Gemini app and Antigravity, but only if you pay",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/ai/2026/10/gemini-4-argon-begins-rolling-out-in-gemini-app-and-antigravity-but-only-if-you-pay/",
           "date": "2026-10-13"
         },
         {
-          "title": "Secret protection must scale with software",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/secret-protection-must-scale-with-software/",
-          "date": "2026-10-07"
+          "title": "Gemini 4 Argon: Built to solve your hardest problems",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-argon/",
+          "date": "2026-10-13"
         },
         {
-          "title": "AI is changing developer work. Here are three skills to strengthen.",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/ai-is-rewriting-the-developer-career-ladder-heres-how-to-stand-out/",
-          "date": "2026-10-02"
+          "title": "NVIDIA Run:ai Is Now Open Source as Part of NVIDIA DSX AI Factory Platform",
+          "source": "NVIDIA Developer",
+          "link": "https://developer.nvidia.com/blog/nvidia-runai-is-now-open-source-as-part-of-nvidia-dsx-ai-factory-platform/",
+          "date": "2026-10-13"
         }
       ]
     },
     {
-      "label": "Claude research and documentation flow",
+      "label": "Gemini multimodal exploration",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Epic shifts to &#8216;AI-accelerated development&#8217; for upcoming Disney game",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/games/1010097/epic-games-disney-project-ai-coding-art",
+          "title": "Gemini 4 Argon begins rolling out in Gemini app and Antigravity, but only if you pay",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/ai/2026/10/gemini-4-argon-begins-rolling-out-in-gemini-app-and-antigravity-but-only-if-you-pay/",
+          "date": "2026-10-13"
+        },
+        {
+          "title": "Gemini 4 Argon in GitHub Copilot",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-10-13-gemini-4-argon-in-github-copilot",
+          "date": "2026-10-13"
+        },
+        {
+          "title": "Gemini 4 Argon: Built to solve your hardest problems",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-argon/",
           "date": "2026-10-13"
         }
       ]
@@ -270,22 +296,104 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "Building agents that transact with Anchor Browser and AgentCore payments",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/building-agents-that-transact-with-anchor-browser-and-agentcore-payments/",
+          "date": "2026-10-13"
+        },
+        {
+          "title": "Natural language security queries at Orca Security using Amazon Bedrock",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/natural-language-security-queries-at-orca-security-using-amazon-bedrock/",
+          "date": "2026-10-13"
+        },
+        {
+          "title": "How ShipStation Global built an AI IT help desk on Amazon Bedrock AgentCore",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/how-shipstation-global-built-an-ai-it-help-desk-on-amazon-bedrock-agentcore/",
+          "date": "2026-10-13"
+        }
+      ]
+    },
+    {
+      "label": "AI automation and workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Manage private pricing offers for Amazon Bedrock with managed entitlements",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/manage-private-pricing-offers-for-amazon-bedrock-with-managed-entitlements/",
+          "date": "2026-10-13"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Gemini 4 Argon in GitHub Copilot",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-10-13-gemini-4-argon-in-github-copilot",
+          "date": "2026-10-13"
+        },
+        {
+          "title": "Quoting Geoffrey Huntley",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/13/geoffrey-huntley/",
+          "date": "2026-10-13"
+        },
+        {
+          "title": "ReplaySSM: Rethinking State Storage for Faster Hybrid-Model Decoding",
+          "source": "NVIDIA Developer",
+          "link": "https://developer.nvidia.com/blog/replayssm-rethinking-state-storage-for-faster-hybrid-model-decoding/",
+          "date": "2026-10-12"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Gemini 4 Argon in GitHub Copilot",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-10-13-gemini-4-argon-in-github-copilot",
+          "date": "2026-10-13"
+        },
+        {
+          "title": "Enterprise managed settings enforcement updates",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-10-13-enterprise-managed-settings-enforcement-updates",
+          "date": "2026-10-13"
+        },
+        {
           "title": "GitHub Copilot app for Beginners: How to teach Copilot about your codebase",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-teach-copilot-about-your-codebase/",
           "date": "2026-10-12"
-        },
+        }
+      ]
+    },
+    {
+      "label": "Claude research and documentation flow",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
         {
-          "title": "Meta has some Wonder Full new AI models",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1009479/meta-muse-wonder-full-ai-model",
+          "title": "Anthropic's Claude AI submitted false murder tip to Philadelphia police",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/tech-policy/2026/10/anthropics-claude-ai-submitted-false-murder-tip-to-philadelphia-police/",
           "date": "2026-10-12"
         },
         {
-          "title": "Microsoft’s new AI chip makes it less reliant on Nvidia’s GPUs",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/news/1009465/microsoft-maia-300-chip-improvements-rollout",
-          "date": "2026-10-12"
+          "title": "Barclays scales Claude to upgrade operations and improve client experience",
+          "source": "Anthropic News",
+          "link": "https://www.anthropic.com/news/barclays-scales-claude",
+          "date": "2026-10-01"
         }
       ]
     },
@@ -299,56 +407,12 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-teach-copilot-about-your-codebase/",
           "date": "2026-10-12"
-        }
-      ]
-    },
-    {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "GitHub Copilot app for Beginners: How to teach Copilot about your codebase",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-teach-copilot-about-your-codebase/",
-          "date": "2026-10-12"
         },
         {
-          "title": "GitHub Copilot app for Beginners: How to build custom workflows with canvases",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-build-custom-workflows-with-canvases/",
-          "date": "2026-09-25"
-        },
-        {
-          "title": "Rendering huge pull requests in the GitHub Copilot app",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/engineering/user-experience/rendering-huge-pull-requests-in-the-github-copilot-app/",
-          "date": "2026-09-23"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "How Oracle turns days of work into minutes with ChatGPT and Codex",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/oracle",
-          "date": "2026-10-08"
-        },
-        {
-          "title": "Helping teens learn, plan, and shape the future of AI",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/teens-learn-and-plan",
-          "date": "2026-10-07"
-        },
-        {
-          "title": "Radisson Hotel Group brings hotel discovery into ChatGPT",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/radisson",
-          "date": "2026-10-07"
+          "title": "Getting the Source Right, Not Just the Fact: Source-Aware Verification for MCP Agents",
+          "source": "Hugging Face",
+          "link": "https://huggingface.co/blog/MultiverseComputingCAI/getting-the-source-right-not-just-the-fact-source",
+          "date": "2026-09-29"
         }
       ]
     }
