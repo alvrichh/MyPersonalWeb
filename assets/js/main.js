@@ -9,6 +9,10 @@
 
 import { ACCENTS, EN_EXTRA, LANGUAGES, TRANSLATIONS } from './i18n.js';
 import { BUBBLE_LINES } from './i18n-bubble.js';
+import { RADAR_EN, RADAR_TRANSLATIONS } from './i18n-radar.js';
+
+Object.assign(EN_EXTRA, RADAR_EN);
+Object.entries(RADAR_TRANSLATIONS).forEach(([code, entries]) => Object.assign(TRANSLATIONS[code], entries));
 
 const root = document.documentElement;
 root.classList.add('js');
@@ -145,6 +149,7 @@ function applyLanguage(code) {
 
   syncThemeLabel();
   renderRadarMeta();
+  renderArchive();
   renderExperienceMeta();
   storage.set('lang', currentLang);
 }
@@ -269,8 +274,12 @@ window.addEventListener('scroll', onScroll, { passive: true });
 onScroll();
 
 const navLinks = Array.from(document.querySelectorAll('.section-nav a'));
+// Only same-page anchors map to sections; on other pages the tabs point back
+// to ./index.html#… and simply navigate.
 const sections = navLinks
-  .map((link) => document.querySelector(link.getAttribute('href')))
+  .map((link) => link.getAttribute('href'))
+  .filter((href) => href.startsWith('#'))
+  .map((href) => document.querySelector(href))
   .filter(Boolean);
 
 const setCurrentTab = (id) => {
@@ -555,9 +564,32 @@ if ('IntersectionObserver' in window) {
 
 /* ---------------------------------------------------------------- AI radar */
 
+// The home shows a short preview list; ai-radar.html shows every item the
+// daily bot collected as cards with picture, summary and tags, plus filters.
+const RADAR_PREVIEW = 5;
+const RADAR_MAX_FILTERS = 8;
+
 const radarList = document.querySelector('[data-radar-list]');
-const radarUpdated = document.querySelector('[data-radar-updated]');
+const radarGrid = document.querySelector('[data-radar-grid]');
+const radarFilters = document.querySelector('[data-radar-filters]');
+const radarCount = document.querySelector('[data-radar-count]');
+const radarInsight = document.querySelector('[data-radar-insight]');
+const radarUpdatedNodes = document.querySelectorAll('[data-radar-updated]');
 let radarDate = null;
+let radarItems = [];
+let radarTag = 'all';
+
+// Archive (ai-radar.html): every story since the radar started, as a list
+// grouped by month, searchable, loaded 50 at a time.
+const ARCHIVE_PAGE = 50;
+const archiveSection = document.querySelector('[data-archive]');
+const archiveList = document.querySelector('[data-archive-list]');
+const archiveMore = document.querySelector('[data-archive-more]');
+const archiveSearch = document.querySelector('[data-archive-search]');
+const archiveCount = document.querySelector('[data-archive-count]');
+let archiveItems = [];
+let archiveQuery = '';
+let archiveShown = ARCHIVE_PAGE;
 
 const formatDate = (value) => {
   const date = new Date(`${value}T12:00:00`);
@@ -565,16 +597,7 @@ const formatDate = (value) => {
   return date.toLocaleDateString(currentLocale(), { day: 'numeric', month: 'short', year: 'numeric' });
 };
 
-function renderRadarMeta() {
-  if (radarUpdated && radarDate) radarUpdated.textContent = `${t('radar.updated')} ${formatDate(radarDate)}`;
-  document.querySelectorAll('[data-radar-item-date]').forEach((node) => {
-    node.textContent = formatDate(node.dataset.radarItemDate);
-  });
-  const empty = radarList?.querySelector('[data-radar-empty]');
-  if (empty) empty.textContent = t('radar.empty');
-}
-
-// Feed titles sometimes arrive with HTML entities (&#8217;). Decode them as inert text.
+// Feed text sometimes arrives with HTML entities (&#8217;). Decode them as inert text.
 const decodeEntities = (value) =>
   new DOMParser().parseFromString(String(value), 'text/html').documentElement.textContent;
 
@@ -586,18 +609,57 @@ const isSafeUrl = (value) => {
   }
 };
 
-const renderRadar = (items) => {
-  if (!radarList) return;
-  radarList.replaceChildren();
-
-  if (!items.length) {
-    const li = document.createElement('li');
-    li.className = 'radar-empty';
-    li.dataset.radarEmpty = '';
-    radarList.append(li);
-    renderRadarMeta();
-    return;
+// WordPress image CDNs (The Verge, GitHub blog…) resize on request with ?w=.
+// Without it a 64px thumbnail would download the full original.
+const RESIZABLE_IMAGE_HOSTS = ['platform.theverge.com', 'github.blog', 'blogs.microsoft.com'];
+const sizedImage = (url, width) => {
+  try {
+    const parsed = new URL(url);
+    const resizable = RESIZABLE_IMAGE_HOSTS.includes(parsed.hostname) || parsed.hostname.endsWith('.wp.com');
+    if (!resizable) return url;
+    parsed.searchParams.set('w', String(width));
+    return parsed.href;
+  } catch (e) {
+    return url;
   }
+};
+
+const visibleRadarItems = () => (radarTag === 'all'
+  ? radarItems
+  : radarItems.filter((item) => (item.tags || []).includes(radarTag)));
+
+function renderRadarMeta() {
+  radarUpdatedNodes.forEach((node) => {
+    if (radarDate) node.textContent = `${t('radar.updated')} ${formatDate(radarDate)}`;
+  });
+  document.querySelectorAll('[data-radar-item-date]').forEach((node) => {
+    node.textContent = formatDate(node.dataset.radarItemDate);
+  });
+  document.querySelectorAll('[data-radar-read]').forEach((node) => {
+    node.textContent = t('radar.read').replace('{source}', node.dataset.radarRead);
+  });
+  document.querySelectorAll('[data-radar-empty]').forEach((node) => {
+    node.textContent = t('radar.empty');
+  });
+  if (radarCount && radarItems.length) {
+    radarCount.textContent = t('radar.count').replace('{n}', visibleRadarItems().length);
+  }
+  const allChip = radarFilters?.querySelector('[data-radar-tag="all"] span');
+  if (allChip) allChip.textContent = t('radar.all');
+}
+
+const emptyRow = (tag) => {
+  const node = document.createElement(tag);
+  node.className = 'radar-empty';
+  node.dataset.radarEmpty = '';
+  return node;
+};
+
+// Home: date · title · source rows.
+const renderRadarList = () => {
+  radarList.replaceChildren();
+  const items = radarItems.slice(0, RADAR_PREVIEW);
+  if (!items.length) radarList.append(emptyRow('li'));
 
   items.forEach((item) => {
     const li = document.createElement('li');
@@ -619,20 +681,271 @@ const renderRadar = (items) => {
     li.append(date, link, source);
     radarList.append(li);
   });
+};
 
+// Radar page: a card per story. Pictures come from third-party sites, so a
+// broken one falls back to a tinted panel with the source name.
+const radarFallback = (source) => {
+  const fallback = document.createElement('span');
+  fallback.className = 'radar-card-fallback';
+  fallback.textContent = source;
+  return fallback;
+};
+
+const renderRadarGrid = () => {
+  radarGrid.replaceChildren();
+  const items = visibleRadarItems();
+  if (!items.length) radarGrid.append(emptyRow('li'));
+
+  items.forEach((item, index) => {
+    const li = document.createElement('li');
+    li.className = 'radar-card' + (index === 0 && radarTag === 'all' ? ' is-featured' : '');
+
+    const link = document.createElement('a');
+    link.className = 'radar-card-link';
+    link.href = item.url;
+    link.target = '_blank';
+    link.rel = 'noreferrer';
+
+    const media = document.createElement('span');
+    media.className = 'radar-card-media';
+    if (item.image && isSafeUrl(item.image)) {
+      const img = document.createElement('img');
+      img.src = sizedImage(item.image, index === 0 && radarTag === 'all' ? 1200 : 800);
+      img.alt = '';
+      img.loading = index < 3 ? 'eager' : 'lazy';
+      img.decoding = 'async';
+      img.referrerPolicy = 'no-referrer';
+      img.addEventListener('error', () => img.replaceWith(radarFallback(item.source)), { once: true });
+      media.append(img);
+    } else {
+      media.append(radarFallback(item.source));
+    }
+
+    const body = document.createElement('span');
+    body.className = 'radar-card-body';
+
+    const meta = document.createElement('span');
+    meta.className = 'radar-card-meta';
+    const source = document.createElement('span');
+    source.textContent = item.source;
+    const date = document.createElement('span');
+    date.dataset.radarItemDate = item.date;
+    meta.append(source, date);
+
+    const title = document.createElement('span');
+    title.className = 'radar-card-title';
+    title.textContent = decodeEntities(item.title);
+
+    body.append(meta, title);
+
+    // WordPress feeds append "The post <title> appeared first on <site>"; drop it,
+    // even when the bot has already cut it short with "...".
+    const summaryText = decodeEntities(item.summary || '').replace(/\s+The post\s[\s\S]*$/, '').trim();
+    if (summaryText && summaryText !== title.textContent) {
+      const summary = document.createElement('span');
+      summary.className = 'radar-card-summary';
+      summary.textContent = summaryText;
+      body.append(summary);
+    }
+
+    if ((item.tags || []).length) {
+      const tags = document.createElement('span');
+      tags.className = 'radar-card-tags';
+      item.tags.forEach((tag) => {
+        const chip = document.createElement('span');
+        chip.textContent = tag;
+        tags.append(chip);
+      });
+      body.append(tags);
+    }
+
+    const cta = document.createElement('span');
+    cta.className = 'radar-card-cta';
+    cta.dataset.radarRead = item.source;
+    body.append(cta);
+
+    link.append(media, body);
+    li.append(link);
+    radarGrid.append(li);
+  });
+};
+
+const matchesArchive = (item) => {
+  if (radarTag !== 'all' && !(item.tags || []).includes(radarTag)) return false;
+  return !archiveQuery || item.searchText.includes(archiveQuery);
+};
+
+function renderArchive() {
+  if (!archiveList || !archiveItems.length) return;
+
+  const matching = archiveItems.filter(matchesArchive);
+  const shown = matching.slice(0, archiveShown);
+  archiveList.replaceChildren();
+
+  if (!shown.length) {
+    const empty = document.createElement('li');
+    empty.className = 'radar-empty';
+    empty.textContent = t('radar.noResults');
+    archiveList.append(empty);
+  }
+
+  let monthList = null;
+  let monthKey = '';
+  shown.forEach((item) => {
+    const key = String(item.date).slice(0, 7);
+    if (key !== monthKey) {
+      monthKey = key;
+      const month = document.createElement('li');
+      month.className = 'radar-archive-month';
+      const heading = document.createElement('h3');
+      const [year, monthNumber] = key.split('-').map(Number);
+      heading.textContent = new Date(year, monthNumber - 1, 1)
+        .toLocaleDateString(currentLocale(), { month: 'long', year: 'numeric' });
+      monthList = document.createElement('ul');
+      month.append(heading, monthList);
+      archiveList.append(month);
+    }
+
+    const row = document.createElement('li');
+
+    // Small picture when the story has one; an empty tinted square otherwise,
+    // so titles stay aligned.
+    const thumb = document.createElement('span');
+    thumb.className = 'radar-archive-thumb';
+    thumb.setAttribute('aria-hidden', 'true');
+    if (item.image && isSafeUrl(item.image)) {
+      const img = document.createElement('img');
+      img.src = sizedImage(item.image, 160);
+      img.alt = '';
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      img.referrerPolicy = 'no-referrer';
+      img.addEventListener('error', () => img.remove(), { once: true });
+      thumb.append(img);
+    }
+
+    const day = document.createElement('span');
+    day.className = 'radar-date';
+    day.textContent = new Date(`${item.date}T12:00:00`)
+      .toLocaleDateString(currentLocale(), { day: 'numeric', month: 'short' });
+    const link = document.createElement('a');
+    link.href = item.url;
+    link.target = '_blank';
+    link.rel = 'noreferrer';
+    link.textContent = item.displayTitle;
+    const source = document.createElement('span');
+    source.className = 'radar-source';
+    source.textContent = item.source;
+    row.append(thumb, day, link, source);
+    monthList.append(row);
+  });
+
+  if (archiveCount) archiveCount.textContent = t('radar.count').replace('{n}', matching.length);
+  if (archiveMore) {
+    const remaining = matching.length - shown.length;
+    archiveMore.hidden = remaining <= 0;
+    archiveMore.textContent = `${t('radar.loadMore')} (${remaining})`;
+  }
+}
+
+archiveMore?.addEventListener('click', () => {
+  archiveShown += ARCHIVE_PAGE;
+  renderArchive();
+});
+
+let archiveSearchTimer;
+archiveSearch?.addEventListener('input', () => {
+  clearTimeout(archiveSearchTimer);
+  archiveSearchTimer = setTimeout(() => {
+    archiveQuery = archiveSearch.value.trim().toLowerCase();
+    archiveShown = ARCHIVE_PAGE;
+    // While searching, the results replace the "Latest" cards right under the filters.
+    document.querySelector('[data-radar-latest]')?.toggleAttribute('hidden', Boolean(archiveQuery));
+    renderArchive();
+  }, 150);
+});
+
+const renderRadarFilters = () => {
+  if (!radarFilters) return;
+
+  const pool = archiveItems.length ? archiveItems : radarItems;
+  const counts = new Map();
+  pool.forEach((item) => (item.tags || []).forEach((tag) => counts.set(tag, (counts.get(tag) || 0) + 1)));
+  const tags = [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, RADAR_MAX_FILTERS);
+  if (!tags.length) return;
+
+  const chip = (value, label, count) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'radar-chip';
+    button.dataset.radarTag = value;
+    button.setAttribute('aria-pressed', String(value === radarTag));
+    button.innerHTML = '<span></span><small></small>';
+    button.querySelector('span').textContent = label;
+    button.querySelector('small').textContent = count;
+    button.addEventListener('click', () => {
+      radarTag = value;
+      archiveShown = ARCHIVE_PAGE;
+      radarFilters.querySelectorAll('[data-radar-tag]').forEach((node) => {
+        node.setAttribute('aria-pressed', String(node.dataset.radarTag === radarTag));
+      });
+      renderRadar();
+    });
+    return button;
+  };
+
+  radarFilters.replaceChildren(
+    chip('all', t('radar.all'), pool.length),
+    ...tags.map(([tag, count]) => chip(tag, tag, count)),
+  );
+  radarFilters.hidden = false;
+};
+
+const renderRadar = () => {
+  if (radarList) renderRadarList();
+  if (radarGrid) renderRadarGrid();
+  renderArchive();
   renderRadarMeta();
 };
 
-fetch('./data/ai-radar.json', { cache: 'no-cache' })
-  .then((response) => (response.ok ? response.json() : Promise.reject(response.status)))
-  .then((data) => {
-    radarDate = data.date || null;
-    const items = (Array.isArray(data.items) ? data.items : [])
-      .filter((item) => item && item.title && isSafeUrl(item.url))
-      .slice(0, 6);
-    renderRadar(items);
-  })
-  .catch(() => renderRadar([]));
+if (radarList || radarGrid) {
+  fetch('./data/ai-radar.json', { cache: 'no-cache' })
+    .then((response) => (response.ok ? response.json() : Promise.reject(response.status)))
+    .then((data) => {
+      radarDate = data.date || null;
+      radarItems = (Array.isArray(data.items) ? data.items : [])
+        .filter((item) => item && item.title && isSafeUrl(item.url));
+      if (radarInsight && data.insight) {
+        radarInsight.querySelector('[data-radar-insight-text]').textContent = decodeEntities(data.insight);
+        radarInsight.hidden = false;
+      }
+      renderRadarFilters();
+      renderRadar();
+    })
+    .catch(() => {
+      radarItems = [];
+      renderRadar();
+    });
+}
+
+if (archiveList) {
+  fetch('./data/ai-radar-archive.json', { cache: 'no-cache' })
+    .then((response) => (response.ok ? response.json() : Promise.reject(response.status)))
+    .then((data) => {
+      archiveItems = (Array.isArray(data.items) ? data.items : [])
+        .filter((item) => item && item.title && isSafeUrl(item.url))
+        .map((item) => {
+          const displayTitle = decodeEntities(item.title);
+          return { ...item, displayTitle, searchText: `${displayTitle} ${item.source}`.toLowerCase() };
+        });
+      if (!archiveItems.length) return;
+      archiveSection.hidden = false;
+      renderRadarFilters();
+      renderArchive();
+    })
+    .catch(() => {});
+}
 
 /* -------------------------------------------------------------------- Init */
 
