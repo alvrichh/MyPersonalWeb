@@ -2,12 +2,12 @@
 // from each article's own og:image / og:description tags. Saves progress as it
 // goes, so it can be stopped and re-run; stories already enriched are skipped.
 //
-//   node scripts/enrich-radar-archive.mjs
+//   node scripts/radar/one-off/enrich-radar-archive.mjs
 
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
-const ARCHIVE_PATH = path.join(process.cwd(), 'assets', 'data', 'ai-radar-archive.json');
+const ARCHIVE_PATH = path.join(process.cwd(), 'static', 'data', 'ai-radar-archive.json');
 const CONCURRENCY = 6;
 const TIMEOUT_MS = 10000;
 const SAVE_EVERY = 60;

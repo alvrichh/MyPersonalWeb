@@ -1,17 +1,17 @@
-// One-off: rebuild assets/data/ai-radar-archive.json from the daily reports in
+// One-off: rebuild static/data/ai-radar-archive.json from the daily reports in
 // docs/ai-watch/history plus today's radar. Safe to re-run; the daily bot keeps
 // the archive up to date afterwards.
 //
-//   node scripts/backfill-radar-archive.mjs
+//   node scripts/radar/one-off/backfill-radar-archive.mjs
 
 import { readdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { getRadarTags, mergeIntoArchive } from './radar-tags.mjs';
+import { getRadarTags, mergeIntoArchive } from '../radar-tags.mjs';
 
 const ROOT = process.cwd();
 const HISTORY_DIR = path.join(ROOT, 'docs', 'ai-watch', 'history');
-const RADAR_PATH = path.join(ROOT, 'assets', 'data', 'ai-radar.json');
-const ARCHIVE_PATH = path.join(ROOT, 'assets', 'data', 'ai-radar-archive.json');
+const RADAR_PATH = path.join(ROOT, 'static', 'data', 'ai-radar.json');
+const ARCHIVE_PATH = path.join(ROOT, 'static', 'data', 'ai-radar-archive.json');
 
 // The radar started in May 2026; a few feeds resurfaced years-old posts.
 const OLDEST_DATE = '2026-04-01';
