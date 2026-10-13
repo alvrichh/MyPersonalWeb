@@ -475,9 +475,12 @@ const renderRadarList = (section) => {
   }
 };
 
+const getAiRadarMount = () => document.querySelector('[data-ai-radar-mount]');
+
 const createAiRadarSection = () => {
+  const mount = getAiRadarMount();
   const workSection = document.getElementById('work');
-  if (!workSection || getAiRadarSection()) return getAiRadarSection();
+  if ((!mount && !workSection) || getAiRadarSection()) return getAiRadarSection();
 
   document.querySelectorAll('[data-ai-radar-card]').forEach((node) => node.remove());
 
@@ -485,6 +488,9 @@ const createAiRadarSection = () => {
   const section = document.createElement('section');
   section.id = 'ai-radar';
   section.className = 'panel card ai-radar-section premium-reveal';
+  if (mount) {
+    section.classList.add('is-active', 'is-visible');
+  }
   section.setAttribute('data-ai-radar-section', 'true');
   section.setAttribute('data-scroll-section', 'true');
   section.innerHTML = `
@@ -519,7 +525,12 @@ const createAiRadarSection = () => {
     </div>
   `;
 
-  workSection.insertAdjacentElement('afterend', section);
+  if (mount) {
+    mount.appendChild(section);
+  } else {
+    workSection.insertAdjacentElement('afterend', section);
+  }
+
   return section;
 };
 

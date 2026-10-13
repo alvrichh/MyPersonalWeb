@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-05-25
+# Daily AI maintenance report — 2026-10-13
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -8,92 +8,84 @@ This file is generated automatically by the daily maintenance workflow. It updat
 - Anthropic News: unavailable (HTTP 404)
 - Google AI Blog: OK (8 relevant items)
 - GitHub AI & ML Blog: OK (8 relevant items)
-- Microsoft AI Blog: OK (8 relevant items)
+- Microsoft AI Blog: unavailable (HTTP 410)
 - The Verge AI: OK (8 relevant items)
 
 ## Relevant AI updates
 
-- **GitHub recognized as a Leader in the Gartner® Magic Quadrant™ for Enterprise AI Coding Agents for the third year in a row** — GitHub AI & ML Blog · 2026-05-22
-  https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/
-- **Catch up on the Dialogues stage at Google I/O 2026.** — Google AI Blog · 2026-05-22
-  https://blog.google/innovation-and-ai/technology/ai/io-2026-dialogues-recap/
-- **OpenAI named a Leader in enterprise coding agents by Gartner** — OpenAI News · 2026-05-22
-  https://openai.com/index/gartner-2026-agentic-coding-leader
-- **Google’s new anything-to-anything AI model is wild** — The Verge AI · 2026-05-22
-  https://www.theverge.com/tech/936507/gemini-omni-hands-on-deepfake-ai-video
-- **Google&#8217;s AI search is so broken it can &#8216;disregard&#8217; what you&#8217;re looking for** — The Verge AI · 2026-05-22
-  https://www.theverge.com/tech/936176/google-ai-overviews-search-disregard
-- **Elon, stop trying to make Grok happen** — The Verge AI · 2026-05-22
-  https://www.theverge.com/ai-artificial-intelligence/936219/elon-stop-trying-to-make-grok-happen
-- **The literary world isn’t prepared for AI** — The Verge AI · 2026-05-22
-  https://www.theverge.com/tech/936073/ai-writing-granta-commonwealth-prize
-- **Spotify says its AI remix tool is for superfans, but I&#8217;m not convinced** — The Verge AI · 2026-05-22
-  https://www.theverge.com/ai-artificial-intelligence/936072/spotify-umg-ai-music-remix-cover-superfan
-- **Samsung&#8217;s memory chip employees negotiated $340,000 bonuses this year** — The Verge AI · 2026-05-22
-  https://www.theverge.com/tech/936002/samsung-memory-chip-employees-deal-strike-bonus
-- **AdventHealth advances whole-person care with OpenAI** — OpenAI News · 2026-05-21
-  https://openai.com/index/adventhealth
-- **Hackers are learning to exploit chatbot &#8216;personalities&#8217;** — The Verge AI · 2026-05-21
-  https://www.theverge.com/column/935545/hackers-ai-chatbots
-- **All of the updates from Elon Musk and Sam Altman’s battle over OpenAI** — The Verge AI · 2026-05-21
-  https://www.theverge.com/tech/917225/sam-altman-elon-musk-openai-lawsuit
-- **100 things we announced at I/O 2026** — Google AI Blog · 2026-05-20
-  https://blog.google/innovation-and-ai/technology/ai/google-io-2026-all-our-announcements/
-- **An OpenAI model has disproved a central conjecture in discrete geometry** — OpenAI News · 2026-05-20
-  https://openai.com/index/model-disproves-discrete-geometry-conjecture
-- **The next phase of OpenAI’s Education for Countries** — OpenAI News · 2026-05-20
-  https://openai.com/index/the-next-phase-of-education-for-countries
-- **I/O 2026** — Google AI Blog · 2026-05-19
-  https://blog.google/innovation-and-ai/technology/developers-tools/google-io-2026-collection/
-- **How AI Mode is changing the way people search in the U.S.** — Google AI Blog · 2026-05-19
-  https://blog.google/products-and-platforms/products/search/ai-mode-us-insights/
-- **New ways to create and get things done in Google Workspace** — Google AI Blog · 2026-05-19
-  https://blog.google/products-and-platforms/products/workspace/workspace-updates/
-- **I/O 2026: Welcome to the agentic Gemini era** — Google AI Blog · 2026-05-19
-  https://blog.google/innovation-and-ai/sundar-pichai-io-2026/
-- **Gemini 3.5: frontier intelligence with action** — Google AI Blog · 2026-05-19
-  https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-5/
-- **A new era for AI Search** — Google AI Blog · 2026-05-19
-  https://blog.google/products-and-platforms/products/search/search-io-2026/
-- **Introducing OpenAI for Singapore** — OpenAI News · 2026-05-19
-  https://openai.com/index/introducing-openai-for-singapore
-- **Advancing content provenance for a safer, more transparent AI ecosystem** — OpenAI News · 2026-05-19
-  https://openai.com/index/advancing-content-provenance
-- **Take your local GitHub sessions anywhere** — GitHub AI & ML Blog · 2026-05-18
-  https://github.blog/news-insights/product-news/take-your-local-github-sessions-anywhere/
-- **OpenAI and Dell partner to bring Codex to hybrid and on-premise enterprise environments** — OpenAI News · 2026-05-18
-  https://openai.com/index/dell-codex-enterprise-partnership
-- **OpenAI and Malta partner to bring ChatGPT Plus to all citizens** — OpenAI News · 2026-05-16
-  https://openai.com/index/malta-chatgpt-plus-partnership
-- **Building a general-purpose accessibility agent—and what we learned in the process** — GitHub AI & ML Blog · 2026-05-15
-  https://github.blog/ai-and-ml/github-copilot/building-a-general-purpose-accessibility-agent-and-what-we-learned-in-the-process/
-- **Dungeons &#038; Desktops: Building a procedurally generated roguelike with GitHub Copilot CLI** — GitHub AI & ML Blog · 2026-05-12
-  https://github.blog/ai-and-ml/github-copilot/dungeons-desktops-building-a-procedurally-generated-roguelike-with-github-copilot-cli/
-- **Improving token efficiency in GitHub Agentic Workflows** — GitHub AI & ML Blog · 2026-05-07
-  https://github.blog/ai-and-ml/github-copilot/improving-token-efficiency-in-github-agentic-workflows/
-- **Agent pull requests are everywhere. Here&#8217;s how to review them.** — GitHub AI & ML Blog · 2026-05-07
-  https://github.blog/ai-and-ml/generative-ai/agent-pull-requests-are-everywhere-heres-how-to-review-them/
-- **Validating agentic behavior when “correct” isn’t deterministic** — GitHub AI & ML Blog · 2026-05-06
-  https://github.blog/ai-and-ml/generative-ai/validating-agentic-behavior-when-correct-isnt-deterministic/
-- **GitHub Copilot CLI for Beginners: Interactive v. non-interactive mode** — GitHub AI & ML Blog · 2026-04-30
-  https://github.blog/ai-and-ml/github-copilot/github-copilot-cli-for-beginners-interactive-v-non-interactive-mode/
-- **A conversation with Kevin Scott: What’s next in AI** — Microsoft AI Blog · 2022-12-06
-  https://blogs.microsoft.com/ai/a-conversation-with-kevin-scott-whats-next-in-ai/
-- **From Hot Wheels to handling content: How brands are using Microsoft AI to be more productive and imaginative** — Microsoft AI Blog · 2022-10-12
-  https://blogs.microsoft.com/ai/from-hot-wheels-to-handling-content-how-brands-are-using-microsoft-ai-to-be-more-productive-and-imaginative/
-- **Microsoft open sources its ‘farm of the future’ toolkit** — Microsoft AI Blog · 2022-10-06
-  https://blogs.microsoft.com/ai/microsoft-open-sources-its-farm-of-the-future-toolkit/
-- **How data and AI will transform contact centres for financial services** — Microsoft AI Blog · 2022-07-25
-  https://cloudblogs.microsoft.com/industry-blog/en-gb/financial-services/2022/07/25/how-data-and-ai-will-transform-contact-centres-for-financial-services/
+- **Epic shifts to &#8216;AI-accelerated development&#8217; for upcoming Disney game** — The Verge AI · 2026-10-13
+  https://www.theverge.com/games/1010097/epic-games-disney-project-ai-coding-art
+- **DLSS 5 gets toned down for its Hogwarts Legacy debut next month** — The Verge AI · 2026-10-13
+  https://www.theverge.com/news/1009904/dlss-5-hogwarts-legacy-changes-improvements
+- **Character.AI files for bankruptcy** — The Verge AI · 2026-10-13
+  https://www.theverge.com/ai-artificial-intelligence/1009802/character-ai-files-for-bankruptcy-disney
+- **GitHub Copilot app for Beginners: How to teach Copilot about your codebase** — GitHub AI & ML Blog · 2026-10-12
+  https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-teach-copilot-about-your-codebase/
+- **Meta has some Wonder Full new AI models** — The Verge AI · 2026-10-12
+  https://www.theverge.com/ai-artificial-intelligence/1009479/meta-muse-wonder-full-ai-model
+- **Microsoft’s new AI chip makes it less reliant on Nvidia’s GPUs** — The Verge AI · 2026-10-12
+  https://www.theverge.com/news/1009465/microsoft-maia-300-chip-improvements-rollout
+- **Silicon Valley is falling in line with Trump’s attempt to rename AI** — The Verge AI · 2026-10-11
+  https://www.theverge.com/ai-artificial-intelligence/1009406/silicon-valley-is-falling-in-line-with-trumps-attempt-to-rename-ai
+- **Learning to use local AI is exciting, overwhelming, and frustrating** — The Verge AI · 2026-10-11
+  https://www.theverge.com/ai-artificial-intelligence/1008484/learning-local-ai-hermes-qwen-model-mac-studio-testing-diary-progress
+- **Satya Nadella says we should assume all AI models are ‘compromised’** — The Verge AI · 2026-10-10
+  https://www.theverge.com/ai-artificial-intelligence/1009337/satya-nadella-says-we-should-assume-all-ai-models-are-compromised
+- **Sophos cuts threat investigation time by 96% with OpenAI Daybreak** — OpenAI News · 2026-10-09
+  https://openai.com/index/sophos
+- **Asana cuts model costs 76x in browser tests with GPT-6.1 Sol** — OpenAI News · 2026-10-09
+  https://openai.com/index/asana-browser-agent
+- **How Oracle turns days of work into minutes with ChatGPT and Codex** — OpenAI News · 2026-10-08
+  https://openai.com/index/oracle
+- **Pollo AI turns creative ideas into campaigns with OpenAI** — OpenAI News · 2026-10-08
+  https://openai.com/index/pollo-ai
+- **LegalOn halves Codex costs while maintaining development speed** — OpenAI News · 2026-10-08
+  https://openai.com/index/legalon-halves-codex-costs
+- **Disrupting AI-enabled “false front” operations** — OpenAI News · 2026-10-08
+  https://openai.com/index/disrupting-ai-enabled-false-front-operations
+- **Secret protection must scale with software** — GitHub AI & ML Blog · 2026-10-07
+  https://github.blog/ai-and-ml/github-copilot/secret-protection-must-scale-with-software/
+- **Helping teens learn, plan, and shape the future of AI** — OpenAI News · 2026-10-07
+  https://openai.com/index/teens-learn-and-plan
+- **Radisson Hotel Group brings hotel discovery into ChatGPT** — OpenAI News · 2026-10-07
+  https://openai.com/index/radisson
+- **ReviewBench: An open benchmark for AI code review** — GitHub AI & ML Blog · 2026-10-05
+  https://github.blog/ai-and-ml/github-copilot/reviewbench-an-open-benchmark-for-ai-code-review/
+- **AI is changing developer work. Here are three skills to strengthen.** — GitHub AI & ML Blog · 2026-10-02
+  https://github.blog/ai-and-ml/ai-is-rewriting-the-developer-career-ladder-heres-how-to-stand-out/
+- **The latest AI news we announced in September 2026** — Google AI Blog · 2026-10-02
+  https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-september-2026/
+- **Watch the winning trailer from the Future Vision XPRIZE, The Gifted.** — Google AI Blog · 2026-09-28
+  https://blog.google/innovation-and-ai/technology/ai/winner-future-vision-xprize/
+- **GitHub Copilot app for Beginners: How to build custom workflows with canvases** — GitHub AI & ML Blog · 2026-09-25
+  https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-build-custom-workflows-with-canvases/
+- **When chat is the wrong UI** — GitHub AI & ML Blog · 2026-09-24
+  https://github.blog/ai-and-ml/github-copilot/when-chat-is-the-wrong-ui/
+- **AI-powered fuzzing with the GitHub Security Lab Taskflow Agent** — GitHub AI & ML Blog · 2026-09-24
+  https://github.blog/security/application-security/ai-powered-fuzzing-with-the-github-security-lab-taskflow-agent/
+- **Rendering huge pull requests in the GitHub Copilot app** — GitHub AI & ML Blog · 2026-09-23
+  https://github.blog/engineering/user-experience/rendering-huge-pull-requests-in-the-github-copilot-app/
+- **New experts join Google’s AI & Economy team** — Google AI Blog · 2026-09-18
+  https://blog.google/innovation-and-ai/technology/ai/expanding-ai-economy-research-bench/
+- **Co-creating the future of fashion with Google** — Google AI Blog · 2026-09-18
+  https://blog.google/innovation-and-ai/technology/ai/google-flow-fashion-week/
+- **AI for Societal Impact** — Google AI Blog · 2026-09-15
+  https://blog.google/innovation-and-ai/technology/ai/ai-for-societal-impact/
+- **Building AI to accelerate science and improve lives** — Google AI Blog · 2026-09-15
+  https://blog.google/innovation-and-ai/technology/ai/ai-applications-science-people/
+- **AI for everyone in every language** — Google AI Blog · 2026-09-15
+  https://blog.google/innovation-and-ai/technology/ai/ai-for-every-language/
+- **New insights from Google’s AI & Economy ATLAS** — Google AI Blog · 2026-09-15
+  https://blog.google/innovation-and-ai/technology/ai/ai-economy-atlas-september-2026/
 
 ## Portfolio candidates
 
-- **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **MCP / tool-connected assistants** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
 

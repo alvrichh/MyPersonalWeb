@@ -388,6 +388,29 @@ const createGymProMaxStyles = () => {
         padding-top: 10px;
       }
 
+      body.gym-pro-max .tabs {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      body.gym-pro-max .tab,
+      body.gym-pro-max .quickBtn,
+      body.gym-pro-max .stat,
+      .gym-command-card {
+        min-width: 0;
+      }
+
+      body.gym-pro-max .tab,
+      body.gym-pro-max .quickBtn {
+        line-height: 1.12;
+        overflow-wrap: anywhere;
+        white-space: normal;
+      }
+
+      body.gym-pro-max .quickBtn {
+        padding-inline: .68rem;
+        font-size: .94rem;
+      }
+
       .gym-command-strip {
         grid-template-columns: 1fr;
         gap: .52rem;
@@ -404,15 +427,31 @@ const createGymProMaxStyles = () => {
       .gym-command-card strong {
         margin-top: 0;
         text-align: right;
-        max-width: 48%;
+        max-width: 54%;
+        white-space: normal;
+        overflow-wrap: anywhere;
       }
 
       body.gym-pro-max .quickActions {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       body.gym-pro-max .stats {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 400px) {
+      body.gym-pro-max .quickActions {
+        grid-template-columns: 1fr;
+      }
+
+      body.gym-pro-max .tabs {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      body.gym-pro-max .tab {
+        min-height: 2.65rem;
       }
     }
 
