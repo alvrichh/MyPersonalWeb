@@ -1,240 +1,266 @@
 {
-  "generatedAt": "2026-08-06T10:34:01.264Z",
-  "date": "2026-08-06",
+  "generatedAt": "2026-10-13T15:31:18.081Z",
+  "date": "2026-10-13",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
     {
-      "title": "OpenAI says Apple’s trade secrets lawsuit is ‘rotten to its core’",
+      "title": "Epic shifts to &#8216;AI-accelerated development&#8217; for upcoming Disney game",
       "source": "The Verge AI",
-      "date": "2026-08-06",
-      "url": "https://www.theverge.com/tech/976042/openai-apple-trade-secrets-lawsuit-dismissal-request",
-      "summary": "OpenAI has asked a federal judge to toss out Apple's landmark lawsuit accusing the ChatGPT maker of stealing trade secrets, describing the allegations as \"meritless.\" In a motion filed yesterday to dismiss the complaint,...",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Elon Musk&#8217;s attempt at an AI Wikipedia hasn&#8217;t been updated in months",
-      "source": "The Verge AI",
-      "date": "2026-08-06",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/976004/elon-musk-grokipedia-ai-wikipedia-not-updating-dead",
-      "summary": "xAI's Grokipedia, an online encyclopedia with AI-generated articles that Elon Musk once promised would be a \"massive improvement\" over Wikipedia, apparently hasn't been updated since April 24th, according to a report fro...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Sure seems like Fenix Flexin used AI music generator Treblo",
-      "source": "The Verge AI",
-      "date": "2026-08-05",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/975528/fenix-flexin-ai-music-generator-treblo",
-      "summary": "We were pretty sure that Fenix Flexin's \"Rubberz\" was made using AI, but musician Medasin was confident that it was made using Treblo specifically. Now the company and a new detection tool seem to confirm it. On Monday, ...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Google just announced a major shakeup of its top AI leadership",
-      "source": "The Verge AI",
-      "date": "2026-08-05",
-      "url": "https://www.theverge.com/tech/975677/google-deepmind-ai-demis-hassabis-shakeup",
-      "summary": "Google is making some significant AI leadership changes, including a major shift for Google DeepMind leader Demis Hassabis. Hassabis will become the chair of Google DeepMind and the chief scientist at Alphabet, CEO Sunda...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "SpaceX is barely Space and mostly X",
-      "source": "The Verge AI",
-      "date": "2026-08-05",
-      "url": "https://www.theverge.com/science/975545/spacex-x-earnings-ai-data-centers-compute-space",
-      "summary": "Once, I had some questions about why SpaceX, Elon Musk's healthiest company, acquired xAI, his sickliest one. Now I have some questions about why we're calling the whole thing SpaceX. Look, what we have here, by revenue,...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Reddit is introducing a new moderator: AI",
-      "source": "The Verge AI",
-      "date": "2026-08-05",
-      "url": "https://www.theverge.com/tech/975398/reddit-ai-rules-hub-moderator-old-reddit-developer-platform",
-      "summary": "Reddit is enlisting AI to help moderate new subreddits - and eventually the rest of site. The company is introducing automated moderation tools that rely on LLMs to help mods manage their communities, and it's expanding ...",
+      "date": "2026-10-13",
+      "url": "https://www.theverge.com/games/1010097/epic-games-disney-project-ai-coding-art",
+      "summary": "Epic Games plans to use AI to generate code and art for an unannounced Disney game, which is now delayed from its original March release window, according to a report from Bloomberg. The project's developers have been gi...",
       "tags": [
         "Agents",
-        "Models"
-      ]
-    },
-    {
-      "title": "Rogue AI agents created fake online identities in another hacking attempt",
-      "source": "The Verge AI",
-      "date": "2026-08-05",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/975577/aisi-openai-anthropic-agent-hacking",
-      "summary": "Yet more rogue AI agents from OpenAI and Anthropic have been caught attempting to hack real targets online without permission. The discoveries add to a growing list of previously unknown incidents that have alarmed AI sa...",
-      "tags": [
-        "Agents",
-        "ChatGPT",
-        "Claude"
-      ]
-    },
-    {
-      "title": "Google Assistant will disappear from your phone next month",
-      "source": "The Verge AI",
-      "date": "2026-08-05",
-      "url": "https://www.theverge.com/tech/975516/google-assistant-android-phones-tablets-shutdown",
-      "summary": "Google Assistant's days have been numbered ever since Gemini arrived on the scene, and its time is now up. Google has announced that it will be removing access to Assistant on Android phones and tablets, along with paire...",
-      "tags": [
-        "Agents",
-        "Gemini"
-      ]
-    },
-    {
-      "title": "How the GitHub legal team used Copilot CLI to streamline their workflows",
-      "source": "GitHub AI & ML Blog",
-      "date": "2026-08-04",
-      "url": "https://github.blog/ai-and-ml/github-copilot/how-the-github-legal-team-used-copilot-cli-to-streamline-their-workflows/",
-      "summary": "Learn how to build tools to simplify how you work—without writing a single line of code. The post How the GitHub legal team used Copilot CLI to streamline their workflows appeared first on The GitHub Blog.",
-      "tags": [
-        "Agents",
-        "Copilot",
-        "Dev Tools",
-        "Automation"
-      ]
-    },
-    {
-      "title": "The latest AI news we announced in July 2026",
-      "source": "Google AI Blog",
-      "date": "2026-08-04",
-      "url": "https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-july-2026/",
-      "summary": "Here are Google’s latest AI updates from July 2026",
-      "tags": [
-        "Gemini"
-      ]
-    },
-    {
-      "title": "Third-party cyber evaluations involving OpenAI models",
-      "source": "OpenAI News",
-      "date": "2026-08-04",
-      "url": "https://openai.com/index/third-party-cyber-evaluations-involving-openai-models",
-      "summary": "OpenAI explains recent third-party cybersecurity evaluation incidents and outlines new safeguards to strengthen AI model testing and evaluation.",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ]
-    },
-    {
-      "title": "New ways to learn and teach with ChatGPT Work and Codex",
-      "source": "OpenAI News",
-      "date": "2026-08-04",
-      "url": "https://openai.com/index/learn-teach-chatgpt-work-codex",
-      "summary": "Explore new education plugins for ChatGPT Work and Codex that help K–12 teachers, college educators, and students learn, teach, research, and build.",
-      "tags": [
-        "ChatGPT",
+        "Claude",
         "Dev Tools"
       ]
     },
     {
-      "title": "AMD&#8217;s data center business is booming while gaming takes a backseat",
+      "title": "DLSS 5 gets toned down for its Hogwarts Legacy debut next month",
       "source": "The Verge AI",
-      "date": "2026-08-04",
-      "url": "https://www.theverge.com/tech/975381/amd-q2-2026-earnings-ai-gaming-ryzen",
-      "summary": "Driven by demand for AI capacity, AMD's data center revenue more than doubled year-over-year in its latest earnings report, reaching $6.7 billion. That's up from $5.8 billion in Q1, and jumping 107 percent from the $3.2 ...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "SpaceX made more revenue as an AI company than a space company",
-      "source": "The Verge AI",
-      "date": "2026-08-04",
-      "url": "https://www.theverge.com/science/975335/spacex-made-more-money-as-a-neocloud",
-      "summary": "SpaceX's AI revenue grew more than three times to $2.6 billion from the year before, mostly because of deals that the company made to provide compute to other AI companies, according to SpaceX's quarterly earnings. The A...",
+      "date": "2026-10-13",
+      "url": "https://www.theverge.com/news/1009904/dlss-5-hogwarts-legacy-changes-improvements",
+      "summary": "When Nvidia originally showed off DLSS 5 earlier this year, the technology immediately got branded as gen AI for video games. To gamers, Nvidia had lost the plot. I personally couldn't get over how faces were transformed...",
       "tags": [
         "Multimodal"
       ]
     },
     {
-      "title": "How an OpenAI influencer trip backfired",
+      "title": "Character.AI files for bankruptcy",
       "source": "The Verge AI",
-      "date": "2026-08-04",
-      "url": "https://www.theverge.com/tech/975173/openai-influencers-brand-trip-ai-backlash-marketing",
-      "summary": "The brand trip is a right of passage for influencers. It's a mark of legitimacy that a sponsor wants to invite them on an all-expenses-paid vacation, often with luxurious freebies and activities. Trips can also spur hard...",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "‘Not healthy’ LLM use is more common than you think",
-      "source": "The Verge AI",
-      "date": "2026-08-04",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/975180/llm-ai-chatbot-use-not-healthy",
-      "summary": "Hank Green, a popular YouTuber and science communicator, said he is stepping back from production amid intense criticism over his use of AI. Green described his AI usage as \"not healthy,\" but stressed that he used it for...",
-      "tags": [
-        "Models"
-      ]
-    },
-    {
-      "title": "OpenAI drags Apple’s lawsuit into the court of public opinion",
-      "source": "The Verge AI",
-      "date": "2026-08-04",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/974914/openai-blog-response-apple-lawsuit-messages",
-      "summary": "Apple's legal battle against OpenAI just got messier now that the ChatGPT-maker has publicly aired receipts to counter Apple's version of events. In a blog post published overnight titled \"Apple is getting this wrong,\" O...",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Can Reddit fend off a new wave of AI SEO spam?",
-      "source": "The Verge AI",
-      "date": "2026-08-04",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/973098/reddit-ai-search-seo-marketing-brands-spam",
-      "summary": "Earlier this year, a Reddit user had asked members of a skincare-focused subreddit if anyone had tried a specific hypochlorous acid spray, a product often used for acne. There were dozens of responses; one from a user na...",
+      "date": "2026-10-13",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1009802/character-ai-files-for-bankruptcy-disney",
+      "summary": "Character.AI, one of the first breakout startups of the generative AI boom, has filed for bankruptcy and is selling some of its assets to Disney. The company, which builds various online bots for users to chat or rolepla...",
       "tags": [
         "AI"
       ]
     },
     {
-      "title": "Europe’s AI labeling and transparency rules are now in effect",
+      "title": "GitHub Copilot app for Beginners: How to teach Copilot about your codebase",
+      "source": "GitHub AI & ML Blog",
+      "date": "2026-10-12",
+      "url": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-teach-copilot-about-your-codebase/",
+      "summary": "Learn how to add custom instructions and skills to your repository, use custom agents, and connect MCP servers like Playwright. The post GitHub Copilot app for Beginners: How to teach Copilot about your codebase appeared...",
+      "tags": [
+        "Agents",
+        "MCP",
+        "Copilot",
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "Meta has some Wonder Full new AI models",
       "source": "The Verge AI",
-      "date": "2026-08-04",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/974571/eu-ai-act-transparency-labels-rules-deepfakes",
-      "summary": "The European Union has ushered in some additional rules that aim to make it easier for people to identify chatbots and AI deepfakes online. The new transparency obligations under the bloc's landmark AI Act came into effe...",
+      "date": "2026-10-12",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1009479/meta-muse-wonder-full-ai-model",
+      "summary": "Meta is making up for lost time in the AI race. After launching Muse Spark, the first model from its revamped Superintelligence Labs division, and buzzy AI agent Muse, it's now launching two new models it claims can go t...",
+      "tags": [
+        "Agents",
+        "Multimodal",
+        "Models"
+      ]
+    },
+    {
+      "title": "Microsoft’s new AI chip makes it less reliant on Nvidia’s GPUs",
+      "source": "The Verge AI",
+      "date": "2026-10-12",
+      "url": "https://www.theverge.com/news/1009465/microsoft-maia-300-chip-improvements-rollout",
+      "summary": "Microsoft is announcing its third-generation Maia in-house AI chip today, designed to be the \"primary AI inference system\" for Microsoft's products and services. Maia 300 not only improves the cost and efficiency of runn...",
+      "tags": [
+        "Agents",
+        "Models"
+      ]
+    },
+    {
+      "title": "Silicon Valley is falling in line with Trump’s attempt to rename AI",
+      "source": "The Verge AI",
+      "date": "2026-10-11",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1009406/silicon-valley-is-falling-in-line-with-trumps-attempt-to-rename-ai",
+      "summary": "When President Donald Trump announced his plans to rebrand artificial intelligence as \"super intelligence,\" you'd be forgiven for being skeptical that it would catch on. While most of the broader population is sticking w...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Learning to use local AI is exciting, overwhelming, and frustrating",
+      "source": "The Verge AI",
+      "date": "2026-10-11",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1008484/learning-local-ai-hermes-qwen-model-mac-studio-testing-diary-progress",
+      "summary": "I'm embarking on a journey I've so far been hesitant to go on: actually using AI on the regular. Giving my most personal data to cloud services has been a major hold up for me, but it's increasingly possible to run power...",
       "tags": [
         "Models"
       ]
     },
     {
-      "title": "Inside our 353,000-person vibe coding course",
-      "source": "Google AI Blog",
-      "date": "2026-08-03",
-      "url": "https://blog.google/innovation-and-ai/technology/developers-tools/ai-agents-intensive-recap-2026/",
-      "summary": "Kaggle’s AI Agents Intensive with Google brought learners together in a no-cost course to build and deploy the next frontier of AI.",
+      "title": "Satya Nadella says we should assume all AI models are ‘compromised’",
+      "source": "The Verge AI",
+      "date": "2026-10-10",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1009337/satya-nadella-says-we-should-assume-all-ai-models-are-compromised",
+      "summary": "In a lengthy post on X, Microsoft's CEO laid out his views on the dangers posed by highly advanced AI models and how to confront those risks. Nadella says we can no longer accept a world where AI is treated as a \"set of ...",
+      "tags": [
+        "Models"
+      ]
+    },
+    {
+      "title": "Sophos cuts threat investigation time by 96% with OpenAI Daybreak",
+      "source": "OpenAI News",
+      "date": "2026-10-09",
+      "url": "https://openai.com/index/sophos",
+      "summary": "Discover how Sophos uses OpenAI’s Daybreak to cut cyber-threat investigation time by 96% and automate 52% of MDR cases while preserving human oversight.",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Asana cuts model costs 76x in browser tests with GPT-6.1 Sol",
+      "source": "OpenAI News",
+      "date": "2026-10-09",
+      "url": "https://openai.com/index/asana-browser-agent",
+      "summary": "Using GPT-6 Astra in Codex, Asana made its browser agent 76x cheaper and 5x faster in tests to offer customers more capable models.",
       "tags": [
         "Agents",
-        "Gemini",
-        "Dev Tools"
+        "ChatGPT",
+        "Dev Tools",
+        "Models"
+      ]
+    },
+    {
+      "title": "How Oracle turns days of work into minutes with ChatGPT and Codex",
+      "source": "OpenAI News",
+      "date": "2026-10-08",
+      "url": "https://openai.com/index/oracle",
+      "summary": "Across recruiting, engineering, and operations, Oracle turns specialist knowledge into fast, repeatable workflows with ChatGPT Work and Codex.",
+      "tags": [
+        "ChatGPT",
+        "Dev Tools",
+        "Automation"
+      ]
+    },
+    {
+      "title": "DistroKid has been quietly taking down songs in response to UMG lawsuit",
+      "source": "The Verge AI",
+      "date": "2026-10-10",
+      "url": "https://www.theverge.com/entertainment/1009309/distrokid-take-down-songs-umg-lawsuit",
+      "summary": "Artists are taking to social media to complain that DistroKid has unceremoniously removed their work without notice. Now DistroKid has confirmed to The Verge that the takedowns are a direct response to claims made by UMG...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Anthropic is cutting off its internal evaluations from the internet",
+      "source": "The Verge AI",
+      "date": "2026-10-10",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1009286/anthropic-is-cutting-off-its-internal-evaluations-from-the-internet",
+      "summary": "After a recent spate of high-profile incidents in which AI agents escaped containment, Anthropic is cutting off internet access for all internal evaluations. In a report Friday, the company detailed \"unintended model act...",
+      "tags": [
+        "Agents",
+        "Claude",
+        "Models"
+      ]
+    },
+    {
+      "title": "AI agent makers are promising privacy — will they deliver?",
+      "source": "The Verge AI",
+      "date": "2026-10-09",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1009051/privacy-ai-agent-promises-openai-meta-muse-dots",
+      "summary": "At this year's OpenAI DevDay, CEO Sam Altman unveiled the company's new AI agent Dots - and told the crowd that the company wants to \"set a new standard for privacy in frontier AI.\" OpenAI would spend the day taking veil...",
+      "tags": [
+        "Agents",
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Pollo AI turns creative ideas into campaigns with OpenAI",
+      "source": "OpenAI News",
+      "date": "2026-10-08",
+      "url": "https://openai.com/index/pollo-ai",
+      "summary": "With GPT-5.6, GPT-6 Astra, and GPT‑Image‑2.5, Pollo AI helps creators turn bold ideas into detailed images and cinematic video ads.",
+      "tags": [
+        "ChatGPT",
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "Anthropic’s AI gave Philadelphia police a fake tip about an unsolved homicide",
+      "source": "The Verge AI",
+      "date": "2026-10-09",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1009090/anthropic-fake-homicide-information-philadelphia-pd-tip",
+      "summary": "An Anthropic AI model provided false information about an unsolved homicide to a Philadelphia Police Department (PPD) tipline, according to a report from 6abc. In a statement released on Friday, the PPD said the AI model...",
+      "tags": [
+        "Claude",
+        "Models"
+      ]
+    },
+    {
+      "title": "&#8216;Pure insanity&#8217;: Mathematicians will need years to make sense of OpenAI&#8217;s latest drop",
+      "source": "The Verge AI",
+      "date": "2026-10-09",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1008726/openai-mathematics-solutions-chaos",
+      "summary": "\"Staggering.\" \"Overwhelming.\" \"Unprecedented.\" \"Surreal.\" \"Pure insanity.\" Those were among the descriptions more than three dozen mathematicians reached for in conversations with The Verge as they tried to make sense of...",
+      "tags": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "title": "Nikon microscopic video competition winner disqualified for using generative AI",
+      "source": "The Verge AI",
+      "date": "2026-10-09",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1008930/nikon-small-world-in-motion-winner-ai",
+      "summary": "Nikon says the video that originally won first place in its Small World in Motion contest \"did not comply with the competition rules regarding generative AI.\" BBC reports that the original first place video from Dr. Ning...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "Trump’s attempt to rename AI is looking awfully artificial",
+      "source": "The Verge AI",
+      "date": "2026-10-09",
+      "url": "https://www.theverge.com/policy/1008677/trump-super-intelligence-ai-rebranding",
+      "summary": "President Donald Trump has a knack for turning words against his enemies. His first successful presidential run was built on monikers like \"Little Marco\" and \"Crooked Hillary\"; he changed \"fake news\" from a phrase descri...",
+      "tags": [
+        "AI"
       ]
     }
   ],
   "candidates": [
     {
-      "label": "ChatGPT workflow design",
+      "label": "AI developer tooling",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "OpenAI says Apple’s trade secrets lawsuit is ‘rotten to its core’",
+          "title": "Epic shifts to &#8216;AI-accelerated development&#8217; for upcoming Disney game",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/976042/openai-apple-trade-secrets-lawsuit-dismissal-request",
-          "date": "2026-08-06"
+          "link": "https://www.theverge.com/games/1010097/epic-games-disney-project-ai-coding-art",
+          "date": "2026-10-13"
         },
         {
-          "title": "New ways to learn and teach with ChatGPT Work and Codex",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/learn-teach-chatgpt-work-codex",
-          "date": "2026-08-04"
+          "title": "Secret protection must scale with software",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/secret-protection-must-scale-with-software/",
+          "date": "2026-10-07"
+        },
+        {
+          "title": "AI is changing developer work. Here are three skills to strengthen.",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/ai-is-rewriting-the-developer-career-ladder-heres-how-to-stand-out/",
+          "date": "2026-10-02"
+        }
+      ]
+    },
+    {
+      "label": "Claude research and documentation flow",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Epic shifts to &#8216;AI-accelerated development&#8217; for upcoming Disney game",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/games/1010097/epic-games-disney-project-ai-coding-art",
+          "date": "2026-10-13"
         }
       ]
     },
@@ -244,110 +270,22 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Rogue AI agents created fake online identities in another hacking attempt",
+          "title": "GitHub Copilot app for Beginners: How to teach Copilot about your codebase",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-teach-copilot-about-your-codebase/",
+          "date": "2026-10-12"
+        },
+        {
+          "title": "Meta has some Wonder Full new AI models",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/975577/aisi-openai-anthropic-agent-hacking",
-          "date": "2026-08-05"
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1009479/meta-muse-wonder-full-ai-model",
+          "date": "2026-10-12"
         },
         {
-          "title": "Inside our 353,000-person vibe coding course",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/ai-agents-intensive-recap-2026/",
-          "date": "2026-08-03"
-        },
-        {
-          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
-          "date": "2026-07-28"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Google Assistant will disappear from your phone next month",
+          "title": "Microsoft’s new AI chip makes it less reliant on Nvidia’s GPUs",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/975516/google-assistant-android-phones-tablets-shutdown",
-          "date": "2026-08-05"
-        },
-        {
-          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
-          "date": "2026-07-28"
-        },
-        {
-          "title": "Create, edit and star in videos with two Google Vids updates",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/products-and-platforms/products/workspace/gemini-omni-personal-avatars/",
-          "date": "2026-07-16"
-        }
-      ]
-    },
-    {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "How the GitHub legal team used Copilot CLI to streamline their workflows",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/how-the-github-legal-team-used-copilot-cli-to-streamline-their-workflows/",
-          "date": "2026-08-04"
-        },
-        {
-          "title": "Stacked sessions and pull requests in the GitHub Copilot app",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/stacked-sessions-and-pull-requests-in-the-github-copilot-app/",
-          "date": "2026-07-30"
-        },
-        {
-          "title": "The harness is all you need (mostly)",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/the-harness-is-all-you-need-mostly/",
-          "date": "2026-07-27"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Inside our 353,000-person vibe coding course",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/ai-agents-intensive-recap-2026/",
-          "date": "2026-08-03"
-        },
-        {
-          "title": "Copilot vs. raw API access: What are you actually paying for?",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/copilot-vs-raw-api-access-what-are-you-actually-paying-for/",
-          "date": "2026-07-22"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Gemini API Managed Agents: 3.6 Flash, hooks, and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks/",
-          "date": "2026-07-28"
-        },
-        {
-          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
-          "date": "2026-07-07"
+          "link": "https://www.theverge.com/news/1009465/microsoft-maia-300-chip-improvements-rollout",
+          "date": "2026-10-12"
         }
       ]
     },
@@ -357,10 +295,60 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Expanding Managed Agents in Gemini API: background tasks, remote MCP and more",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/",
-          "date": "2026-07-07"
+          "title": "GitHub Copilot app for Beginners: How to teach Copilot about your codebase",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-teach-copilot-about-your-codebase/",
+          "date": "2026-10-12"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "GitHub Copilot app for Beginners: How to teach Copilot about your codebase",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-teach-copilot-about-your-codebase/",
+          "date": "2026-10-12"
+        },
+        {
+          "title": "GitHub Copilot app for Beginners: How to build custom workflows with canvases",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-build-custom-workflows-with-canvases/",
+          "date": "2026-09-25"
+        },
+        {
+          "title": "Rendering huge pull requests in the GitHub Copilot app",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/engineering/user-experience/rendering-huge-pull-requests-in-the-github-copilot-app/",
+          "date": "2026-09-23"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "How Oracle turns days of work into minutes with ChatGPT and Codex",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/oracle",
+          "date": "2026-10-08"
+        },
+        {
+          "title": "Helping teens learn, plan, and shape the future of AI",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/teens-learn-and-plan",
+          "date": "2026-10-07"
+        },
+        {
+          "title": "Radisson Hotel Group brings hotel discovery into ChatGPT",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/radisson",
+          "date": "2026-10-07"
         }
       ]
     }
