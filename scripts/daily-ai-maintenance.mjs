@@ -1,6 +1,8 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
+import { getRadarTags, mergeIntoArchive } from './radar-tags.mjs';
+import { SOURCES, addMissingMeta, fetchSource, isRelevantForSource } from './radar-sources.mjs';
 
 const ROOT = process.cwd();
 const TODAY = new Date().toISOString().slice(0, 10);
@@ -11,35 +13,8 @@ const LATEST_PATH = path.join(AI_WATCH_DIR, 'latest.md');
 const HISTORY_PATH = path.join(HISTORY_DIR, `${TODAY}.md`);
 const IDEAS_PATH = path.join(AI_WATCH_DIR, 'portfolio-candidates.json');
 const RADAR_PATH = path.join(DATA_DIR, 'ai-radar.json');
-
-const SOURCES = [
-  { name: 'OpenAI News', url: 'https://openai.com/news/rss.xml', homepage: 'https://openai.com/news/' },
-  { name: 'Anthropic News', url: 'https://www.anthropic.com/news/rss.xml', homepage: 'https://www.anthropic.com/news' },
-  { name: 'Google AI Blog', url: 'https://blog.google/technology/ai/rss/', homepage: 'https://blog.google/technology/ai/' },
-  { name: 'GitHub AI & ML Blog', url: 'https://github.blog/ai-and-ml/feed/', homepage: 'https://github.blog/ai-and-ml/' },
-  { name: 'Microsoft AI Blog', url: 'https://blogs.microsoft.com/ai/feed/', homepage: 'https://blogs.microsoft.com/ai/' },
-  { name: 'The Verge AI', url: 'https://www.theverge.com/rss/ai-artificial-intelligence/index.xml', homepage: 'https://www.theverge.com/ai-artificial-intelligence' },
-];
-
-const KEYWORDS = [
-  'ai', 'agent', 'agents', 'agentic', 'mcp', 'model context protocol', 'tool use',
-  'chatgpt', 'claude', 'copilot', 'gemini', 'openai', 'anthropic', 'multimodal',
-  'coding', 'developer', 'automation', 'workflow', 'reasoning', 'assistant', 'tools',
-  'llm', 'model', 'developer tools',
-];
-
-const RADAR_TAG_RULES = [
-  ['Agents', ['agent', 'agents', 'agentic', 'assistant', 'tool use', 'tools']],
-  ['MCP', ['mcp', 'model context protocol']],
-  ['ChatGPT', ['chatgpt', 'openai', 'gpt']],
-  ['Claude', ['claude', 'anthropic']],
-  ['Copilot', ['copilot', 'github copilot']],
-  ['Gemini', ['gemini', 'google ai']],
-  ['Dev Tools', ['developer', 'coding', 'code', 'dev tool', 'developer tools']],
-  ['Automation', ['automation', 'workflow', 'workflows', 'orchestration']],
-  ['Multimodal', ['multimodal', 'image', 'vision', 'audio', 'video']],
-  ['Models', ['model', 'llm', 'reasoning']],
-];
+// Every story ever collected, for the archive on ai-radar.html.
+const ARCHIVE_PATH = path.join(DATA_DIR, 'ai-radar-archive.json');
 
 const PORTFOLIO_SIGNALS = [
   ['agent', 'AI agents / automation workflows'],
@@ -55,93 +30,13 @@ const PORTFOLIO_SIGNALS = [
   ['automation', 'AI automation and workflow design'],
 ];
 
+// How many of the 20 latest stories one source may take.
+const LATEST_PER_SOURCE = 4;
+
 const DEFAULT_FALLBACK = {
   headline: 'AI radar update',
   insight: 'Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.',
   portfolioAngle: 'Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.',
-};
-
-const decodeEntities = (value = '') => value
-  .replaceAll('<![CDATA[', '')
-  .replaceAll(']]>', '')
-  .replaceAll('&amp;', '&')
-  .replaceAll('&quot;', '"')
-  .replaceAll('&#39;', "'")
-  .replaceAll('&apos;', "'")
-  .replaceAll('&lt;', '<')
-  .replaceAll('&gt;', '>')
-  .replace(/<[^>]+>/g, '')
-  .trim();
-
-const strip = (value = '') => decodeEntities(String(value).replace(/\s+/g, ' '));
-
-const getTag = (item, tag) => {
-  const match = item.match(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, 'i'));
-  return match ? strip(match[1]) : '';
-};
-
-const getRadarTags = (item) => {
-  const haystack = `${item.title || ''} ${item.description || ''} ${item.summary || ''} ${item.source || ''}`.toLowerCase();
-  const tags = RADAR_TAG_RULES
-    .filter(([, keywords]) => keywords.some((keyword) => haystack.includes(keyword)))
-    .map(([tag]) => tag);
-
-  return tags.length ? [...new Set(tags)].slice(0, 4) : ['AI'];
-};
-
-const parseItems = (xml, source) => {
-  const rssItems = [...xml.matchAll(/<item[\s\S]*?<\/item>/gi)].map((match) => match[0]);
-  const atomItems = [...xml.matchAll(/<entry[\s\S]*?<\/entry>/gi)].map((match) => match[0]);
-  const items = rssItems.length ? rssItems : atomItems;
-
-  return items.map((raw) => {
-    const title = getTag(raw, 'title');
-    const description = getTag(raw, 'description') || getTag(raw, 'summary') || getTag(raw, 'content');
-    const pubDate = getTag(raw, 'pubDate') || getTag(raw, 'updated') || getTag(raw, 'published');
-    const guid = getTag(raw, 'guid');
-    const rssLink = getTag(raw, 'link');
-    const atomLink = raw.match(/<link[^>]+href=["']([^"']+)["'][^>]*>/i)?.[1] || '';
-    const link = rssLink || atomLink || guid || source.homepage;
-
-    return {
-      source: source.name,
-      title,
-      description,
-      date: pubDate ? new Date(pubDate).toISOString().slice(0, 10) : TODAY,
-      url: link,
-      link,
-    };
-  }).filter((item) => item.title);
-};
-
-const isRelevant = (item) => {
-  const haystack = `${item.title} ${item.description}`.toLowerCase();
-  return KEYWORDS.some((keyword) => haystack.includes(keyword));
-};
-
-const fetchSource = async (source) => {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 15000);
-
-  try {
-    const response = await fetch(source.url, {
-      signal: controller.signal,
-      headers: {
-        'user-agent': 'alvrich-maintenance-bot/1.0 (+https://alvrich.vercel.app)',
-        accept: 'application/rss+xml, application/atom+xml, application/xml, text/xml, */*',
-      },
-    });
-
-    if (!response.ok) return { source, ok: false, error: `HTTP ${response.status}` };
-
-    const xml = await response.text();
-    const items = parseItems(xml, source).filter(isRelevant).slice(0, 8);
-    return { source, ok: true, items };
-  } catch (error) {
-    return { source, ok: false, error: error.name === 'AbortError' ? 'Timeout' : error.message };
-  } finally {
-    clearTimeout(timeout);
-  }
 };
 
 const buildPortfolioCandidates = (items) => {
@@ -169,7 +64,7 @@ const buildPortfolioCandidates = (items) => {
   return [...signals.values()].slice(0, 8);
 };
 
-const buildRadarItems = (items) => items.slice(0, 12).map((item) => {
+const buildRadarItems = (items) => items.slice(0, 60).map((item) => {
   const summary = item.description ? `${item.description.slice(0, 220)}${item.description.length > 220 ? '...' : ''}` : 'AI update detected from an official or high-signal source.';
   const normalized = {
     title: item.title,
@@ -177,6 +72,7 @@ const buildRadarItems = (items) => items.slice(0, 12).map((item) => {
     date: item.date || TODAY,
     url: item.url || item.link,
     summary,
+    image: item.image || '',
   };
 
   return {
@@ -199,10 +95,16 @@ const mergeRadarItems = (freshItems, existingRadar) => {
   const seen = new Set();
   const merged = [];
 
+  const perSource = new Map();
+
   for (const item of [...freshItems, ...existingItems]) {
     const url = item.url || item.link || item.title;
     if (!url || seen.has(url)) continue;
+    if (!isRelevantForSource(item)) continue;
+    const count = perSource.get(item.source) || 0;
+    if (count >= LATEST_PER_SOURCE) continue;
     seen.add(url);
+    perSource.set(item.source, count + 1);
     const normalized = {
       title: item.title,
       source: item.source || 'AI Radar',
@@ -210,6 +112,7 @@ const mergeRadarItems = (freshItems, existingRadar) => {
       url,
       summary: item.aiSummary || item.summary || item.description || item.title,
       tags: Array.isArray(item.tags) && item.tags.length ? item.tags : getRadarTags(item),
+      image: item.image || '',
     };
     merged.push(normalized);
     if (merged.length >= 20) break;
@@ -343,15 +246,15 @@ const writeIfChanged = async (filePath, content) => {
 await mkdir(HISTORY_DIR, { recursive: true });
 await mkdir(DATA_DIR, { recursive: true });
 
-const results = await Promise.all(SOURCES.map(fetchSource));
+const results = await Promise.all(SOURCES.map((source) => fetchSource(source, TODAY)));
 const items = results
   .flatMap((result) => result.ok ? result.items : [])
   .sort((a, b) => String(b.date).localeCompare(String(a.date)) || a.source.localeCompare(b.source))
-  .slice(0, 36);
+  .slice(0, 80);
 const candidates = buildPortfolioCandidates(items);
 const freshRadarItems = buildRadarItems(items);
 const existingRadar = await readExistingJson(RADAR_PATH, { items: [] });
-const mergedRadarItems = mergeRadarItems(freshRadarItems, existingRadar);
+const mergedRadarItems = await addMissingMeta(mergeRadarItems(freshRadarItems, existingRadar));
 const enriched = await enrichRadar(freshRadarItems, candidates);
 const report = buildReport(results, items, candidates, enriched);
 
@@ -367,6 +270,12 @@ const radarPayload = {
 };
 
 const candidatePayload = `${JSON.stringify({ generatedAt: radarPayload.generatedAt, candidates }, null, 2)}\n`;
+const existingArchive = await readExistingJson(ARCHIVE_PATH, { items: [] });
+const archiveItems = mergeIntoArchive(
+  Array.isArray(existingArchive.items) ? existingArchive.items : [],
+  mergedRadarItems,
+);
+const archiveJson = `${JSON.stringify({ generatedAt: radarPayload.generatedAt, items: archiveItems })}\n`;
 const radarJson = `${JSON.stringify(radarPayload, null, 2)}\n`;
 
 const changed = [
@@ -374,6 +283,7 @@ const changed = [
   await writeIfChanged(HISTORY_PATH, report),
   await writeIfChanged(IDEAS_PATH, candidatePayload),
   await writeIfChanged(RADAR_PATH, radarJson),
+  await writeIfChanged(ARCHIVE_PATH, archiveJson),
 ].some(Boolean);
 
 console.log(changed ? 'AI maintenance report and radar updated.' : 'AI maintenance files already up to date.');
