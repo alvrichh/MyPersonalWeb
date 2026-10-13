@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-10-12
+# Daily AI maintenance report — 2026-10-13
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -13,6 +13,14 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Epic shifts to &#8216;AI-accelerated development&#8217; for upcoming Disney game** — The Verge AI · 2026-10-13
+  https://www.theverge.com/games/1010097/epic-games-disney-project-ai-coding-art
+- **DLSS 5 gets toned down for its Hogwarts Legacy debut next month** — The Verge AI · 2026-10-13
+  https://www.theverge.com/news/1009904/dlss-5-hogwarts-legacy-changes-improvements
+- **Character.AI files for bankruptcy** — The Verge AI · 2026-10-13
+  https://www.theverge.com/ai-artificial-intelligence/1009802/character-ai-files-for-bankruptcy-disney
+- **GitHub Copilot app for Beginners: How to teach Copilot about your codebase** — GitHub AI & ML Blog · 2026-10-12
+  https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-teach-copilot-about-your-codebase/
 - **Meta has some Wonder Full new AI models** — The Verge AI · 2026-10-12
   https://www.theverge.com/ai-artificial-intelligence/1009479/meta-muse-wonder-full-ai-model
 - **Microsoft’s new AI chip makes it less reliant on Nvidia’s GPUs** — The Verge AI · 2026-10-12
@@ -23,16 +31,10 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/ai-artificial-intelligence/1008484/learning-local-ai-hermes-qwen-model-mac-studio-testing-diary-progress
 - **Satya Nadella says we should assume all AI models are ‘compromised’** — The Verge AI · 2026-10-10
   https://www.theverge.com/ai-artificial-intelligence/1009337/satya-nadella-says-we-should-assume-all-ai-models-are-compromised
-- **DistroKid has been quietly taking down songs in response to UMG lawsuit** — The Verge AI · 2026-10-10
-  https://www.theverge.com/entertainment/1009309/distrokid-take-down-songs-umg-lawsuit
-- **Anthropic is cutting off its internal evaluations from the internet** — The Verge AI · 2026-10-10
-  https://www.theverge.com/ai-artificial-intelligence/1009286/anthropic-is-cutting-off-its-internal-evaluations-from-the-internet
 - **Sophos cuts threat investigation time by 96% with OpenAI Daybreak** — OpenAI News · 2026-10-09
   https://openai.com/index/sophos
 - **Asana cuts model costs 76x in browser tests with GPT-6.1 Sol** — OpenAI News · 2026-10-09
   https://openai.com/index/asana-browser-agent
-- **AI agent makers are promising privacy — will they deliver?** — The Verge AI · 2026-10-09
-  https://www.theverge.com/ai-artificial-intelligence/1009051/privacy-ai-agent-promises-openai-meta-muse-dots
 - **How Oracle turns days of work into minutes with ChatGPT and Codex** — OpenAI News · 2026-10-08
   https://openai.com/index/oracle
 - **Pollo AI turns creative ideas into campaigns with OpenAI** — OpenAI News · 2026-10-08
@@ -63,8 +65,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://github.blog/security/application-security/ai-powered-fuzzing-with-the-github-security-lab-taskflow-agent/
 - **Rendering huge pull requests in the GitHub Copilot app** — GitHub AI & ML Blog · 2026-09-23
   https://github.blog/engineering/user-experience/rendering-huge-pull-requests-in-the-github-copilot-app/
-- **Should you read the code, is RAG dead, and did Skills kill MCP?** — GitHub AI & ML Blog · 2026-09-18
-  https://github.blog/ai-and-ml/should-you-read-the-code-is-rag-dead-and-did-skills-kill-mcp/
 - **New experts join Google’s AI & Economy team** — Google AI Blog · 2026-09-18
   https://blog.google/innovation-and-ai/technology/ai/expanding-ai-economy-research-bench/
 - **Co-creating the future of fashion with Google** — Google AI Blog · 2026-09-18
@@ -80,11 +80,12 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Portfolio candidates
 
-- **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **MCP / tool-connected assistants** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
 
