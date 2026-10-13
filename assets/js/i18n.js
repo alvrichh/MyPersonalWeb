@@ -84,6 +84,8 @@ export const TRANSLATIONS = {
     'exp.beforeTitle': 'Antes del software',
     'exp.before': 'Asesor energético en Stratton Global, ayudando a más de diez empresas a reducir su factura, y responsable digital en El Tortillón, donde subí la interacción en redes un 25% en seis meses. Ahí aprendí a escuchar al cliente antes de aprender a programar para él.',
     'exp.eduTitle': 'Formación', 'exp.eduOne': 'Ingeniería Informática', 'exp.eduTwo': 'Desarrollo de Aplicaciones Web (CFGS DAW)',
+    'exp.volTitle': 'Voluntariado', 'exp.volRole': 'Voluntario · Infancia', 'exp.certsTitle': 'Certificados',
+    'exp.volText': 'Voluntariado con niños en el Colegio Blanca Paloma, en Los Pájaros (Sevilla). Una gran experiencia llena de emociones.',
 
     'skills.title': 'Con qué trabajo',
     'skills.intro': 'No es la lista de todo lo que he tocado alguna vez, sino lo que usaría con soltura en tu proyecto la semana que viene.',
@@ -180,6 +182,8 @@ export const TRANSLATIONS = {
     'exp.beforeTitle': 'Roimh na bogearraí',
     'exp.before': 'Comhairleoir fuinnimh ag Stratton Global, ag cabhrú le níos mó ná deich ngnó a gcostais fuinnimh a laghdú, agus bainisteoir digiteach ag El Tortillón, áit ar ardaigh mé rannpháirtíocht shóisialta 25% i sé mhí. Ansin a d’fhoghlaim mé éisteacht le cliaint sular fhoghlaim mé códú dóibh.',
     'exp.eduTitle': 'Oideachas', 'exp.eduOne': 'Innealtóireacht Ríomhaireachta', 'exp.eduTwo': 'Forbairt Feidhmchlár Gréasáin (CFGS DAW)',
+    'exp.volTitle': 'Obair dheonach', 'exp.volRole': 'Oibrí deonach · Leanaí', 'exp.certsTitle': 'Teastais',
+    'exp.volText': 'Obair dheonach le leanaí i gColáiste Blanca Paloma, i Los Pájaros (Sevilla). Taithí iontach lán de mhothúcháin.',
 
     'skills.title': 'Na huirlisí a úsáidim',
     'skills.intro': 'Ní liosta de gach rud a bhain mé leis uair amháin é, ach na rudaí a d’úsáidfinn go compordach ar do thionscadal an tseachtain seo chugainn.',
@@ -276,6 +280,8 @@ export const TRANSLATIONS = {
     'exp.beforeTitle': 'Avant le logiciel',
     'exp.before': 'Conseiller en énergie chez Stratton Global, où j’ai aidé plus de dix entreprises à réduire leurs coûts, et responsable digital chez El Tortillón, où j’ai augmenté l’engagement social de 25 % en six mois. C’est là que j’ai appris à écouter les clients avant d’apprendre à coder pour eux.',
     'exp.eduTitle': 'Formation', 'exp.eduOne': 'Ingénierie informatique', 'exp.eduTwo': 'Développement d’applications web (CFGS DAW)',
+    'exp.volTitle': 'Bénévolat', 'exp.volRole': 'Bénévole · Enfance', 'exp.certsTitle': 'Certificats',
+    'exp.volText': 'Bénévolat auprès d’enfants au Colegio Blanca Paloma, à Los Pájaros (Séville). Une belle expérience, pleine d’émotions.',
 
     'skills.title': 'Mes outils',
     'skills.intro': 'Pas la liste de tout ce que j’ai touché une fois, mais ce que j’utiliserais sereinement sur votre projet la semaine prochaine.',
@@ -372,6 +378,8 @@ export const TRANSLATIONS = {
     'exp.beforeTitle': 'Vor der Software',
     'exp.before': 'Energieberater bei Stratton Global, wo ich über zehn Unternehmen half, ihre Energiekosten zu senken, und Digital Manager bei El Tortillón, wo ich die Social-Media-Interaktion in sechs Monaten um 25 % steigerte. Dort habe ich gelernt, Kunden zuzuhören, bevor ich gelernt habe, für sie zu programmieren.',
     'exp.eduTitle': 'Ausbildung', 'exp.eduOne': 'Informatik (Ingenieurwesen)', 'exp.eduTwo': 'Webanwendungsentwicklung (CFGS DAW)',
+    'exp.volTitle': 'Ehrenamt', 'exp.volRole': 'Ehrenamtlicher · Kinder', 'exp.certsTitle': 'Zertifikate',
+    'exp.volText': 'Ehrenamtliche Arbeit mit Kindern am Colegio Blanca Paloma in Los Pájaros (Sevilla). Eine großartige Erfahrung voller Emotionen.',
 
     'skills.title': 'Womit ich arbeite',
     'skills.intro': 'Keine Liste von allem, was ich einmal angefasst habe, sondern das, was ich nächste Woche sicher in deinem Projekt einsetzen würde.',
@@ -468,6 +476,8 @@ export const TRANSLATIONS = {
     'exp.beforeTitle': 'До разработки',
     'exp.before': 'Энергоконсультант в Stratton Global, где помог более чем десяти компаниям снизить расходы на энергию, и digital-менеджер в El Tortillón, где за полгода поднял вовлечённость в соцсетях на 25%. Там я научился слушать клиентов, прежде чем научился писать для них код.',
     'exp.eduTitle': 'Образование', 'exp.eduOne': 'Компьютерная инженерия', 'exp.eduTwo': 'Разработка веб-приложений (CFGS DAW)',
+    'exp.volTitle': 'Волонтёрство', 'exp.volRole': 'Волонтёр · Дети', 'exp.certsTitle': 'Сертификаты',
+    'exp.volText': 'Волонтёрская работа с детьми в школе Colegio Blanca Paloma в районе Лос-Пахарос (Севилья). Прекрасный опыт, полный эмоций.',
 
     'skills.title': 'С чем я работаю',
     'skills.intro': 'Не список всего, что я когда-то трогал, а то, чем я уверенно воспользуюсь в вашем проекте уже на следующей неделе.',
@@ -564,6 +574,8 @@ export const TRANSLATIONS = {
     'exp.beforeTitle': 'Przed programowaniem',
     'exp.before': 'Doradca energetyczny w Stratton Global, gdzie pomogłem ponad dziesięciu firmom obniżyć koszty energii, i digital manager w El Tortillón, gdzie w pół roku zwiększyłem zaangażowanie w social media o 25%. Tam nauczyłem się słuchać klientów, zanim nauczyłem się dla nich programować.',
     'exp.eduTitle': 'Wykształcenie', 'exp.eduOne': 'Inżynieria komputerowa', 'exp.eduTwo': 'Tworzenie aplikacji webowych (CFGS DAW)',
+    'exp.volTitle': 'Wolontariat', 'exp.volRole': 'Wolontariusz · Dzieci', 'exp.certsTitle': 'Certyfikaty',
+    'exp.volText': 'Wolontariat z dziećmi w Colegio Blanca Paloma w Los Pájaros (Sewilla). Wspaniałe doświadczenie pełne emocji.',
 
     'skills.title': 'Z czym pracuję',
     'skills.intro': 'To nie lista wszystkiego, czego kiedyś dotknąłem, tylko to, czego swobodnie użyłbym w twoim projekcie w przyszłym tygodniu.',
@@ -660,6 +672,8 @@ export const TRANSLATIONS = {
     'exp.beforeTitle': '转行之前',
     'exp.before': '在 Stratton Global 担任能源顾问，帮助十多家企业降低能源成本；在 El Tortillón 担任数字运营，半年内将社交媒体互动提升 25%。在那里，我先学会了倾听客户，然后才学会为他们写代码。',
     'exp.eduTitle': '教育背景', 'exp.eduOne': '计算机工程', 'exp.eduTwo': 'Web 应用开发（CFGS DAW）',
+    'exp.volTitle': '志愿服务', 'exp.volRole': '志愿者 · 儿童', 'exp.certsTitle': '证书',
+    'exp.volText': '在塞维利亚 Los Pájaros 的 Blanca Paloma 学校为儿童提供志愿服务，一段充满感动的宝贵经历。',
 
     'skills.title': '我的技术栈',
     'skills.intro': '这不是我碰过的所有技术清单，而是下周就能放心用在你项目上的那些。',
@@ -756,6 +770,8 @@ export const TRANSLATIONS = {
     'exp.beforeTitle': 'قبل البرمجيات',
     'exp.before': 'مستشار طاقة في Stratton Global، ساعدت فيها أكثر من عشر شركات على خفض تكاليف الطاقة، ومدير رقمي في El Tortillón، حيث رفعت التفاعل على وسائل التواصل بنسبة 25% خلال ستة أشهر. هناك تعلمت الإصغاء للعملاء قبل أن أتعلم البرمجة لهم.',
     'exp.eduTitle': 'التعليم', 'exp.eduOne': 'هندسة الحاسوب', 'exp.eduTwo': 'تطوير تطبيقات الويب (CFGS DAW)',
+    'exp.volTitle': 'العمل التطوعي', 'exp.volRole': 'متطوع · الأطفال', 'exp.certsTitle': 'الشهادات',
+    'exp.volText': 'عمل تطوعي مع الأطفال في مدرسة Blanca Paloma في حي Los Pájaros (إشبيلية). تجربة رائعة مليئة بالمشاعر.',
 
     'skills.title': 'ما أعمل به',
     'skills.intro': 'ليست قائمة بكل ما لمسته يوماً، بل ما سأستخدمه بثقة في مشروعك الأسبوع القادم.',
@@ -852,6 +868,8 @@ export const TRANSLATIONS = {
     'exp.beforeTitle': 'Antê der zoftware',
     'exp.before': 'Azezó enerhético en Stratton Global, ayudando a má de dié empreza a bahá la factura, y rehponzable dihitá en El Tortillón, onde zubí la interazión en rede un 25% en zei mezê. Ahí aprendí a ehcuxá ar cliente antê d’aprendé a programá pa é.',
     'exp.eduTitle': 'Formazión', 'exp.eduOne': 'Ingeniería Informática', 'exp.eduTwo': 'Dezarroyo d’Aplicazione Web (CFGS DAW)',
+    'exp.volTitle': 'Voluntariao', 'exp.volRole': 'Voluntario · Infanzia', 'exp.certsTitle': 'Zertificao',
+    'exp.volText': 'Voluntariao con chiquillo en er Colegio Blanca Paloma, en Lo Páharo (Zevilla). Una experienzia mu grande y llena d’emozione.',
 
     'skills.title': 'Con qué curro',
     'skills.intro': 'No e la lihta de tó lo que he tocao arguna vé, zino lo que uzaría zin miedo en tu proyêtto la zemana que viene.',
