@@ -92,6 +92,10 @@ const cardioRules = [
   'Sábado: cardio largo 40-60 min a ritmo constante.',
 ];
 
+const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({
+  '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+}[c]));
+
 const readJson = (key, fallback) => {
   try {
     return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback));
@@ -173,19 +177,19 @@ const renderTodayEnhanced = () => {
     </section>
     <section class="actualLogCard">
       <h3>Lo que he hecho hoy</h3>
-      <label>Título real del entreno<input id="actualWorkoutTitle" class="input" placeholder="Ej: Espalda fuerte + cardio" value="${actual.title || ''}"></label>
-      <label style="margin-top:10px">Descripción real<textarea id="actualWorkoutDescription" placeholder="Ej: hice jalón, remo, curl y 25 min de cinta. Me faltó una serie de bíceps.">${actual.description || ''}</textarea></label>
+      <label>Título real del entreno<input id="actualWorkoutTitle" class="input" placeholder="Ej: Espalda fuerte + cardio" value="${esc(actual.title || '')}"></label>
+      <label style="margin-top:10px">Descripción real<textarea id="actualWorkoutDescription" placeholder="Ej: hice jalón, remo, curl y 25 min de cinta. Me faltó una serie de bíceps.">${esc(actual.description || '')}</textarea></label>
       <button class="save" id="saveActualWorkout">Guardar descripción</button>
       <p class="small" id="actualSavedMsg"></p>
     </section>
-    <article class="day"><div class="dayHead"><h2>${plan.title}</h2><p>${currentDayName} · ${today}</p></div><div class="content" style="display:block"><h3 class="sectionTitle">Ejercicios recomendados</h3>${plan.exercises.map((e,i)=>{const key=exerciseKey(today,i);return `<div class="exercise"><div class="exerciseTop"><input class="check" type="checkbox" data-check="${key}" ${store.checks&&store.checks[key]?'checked':''}><div class="exMain"><b>${e[0]}</b><span>${e[1]}</span><textarea class="miniNote" data-note="${key}" placeholder="Opcional: peso usado, reps reales, si faltó algo...">${store.exerciseNotes&&store.exerciseNotes[key]||''}</textarea></div></div></div>`}).join('')}<h3 class="sectionTitle">Añadir ejercicios extra</h3><div class="extraExerciseGrid" id="extraExerciseList">${extra.map((item,index)=>renderExtraRow(today,item,index,store)).join('')}</div><label style="margin-top:10px">Nuevo ejercicio<input id="extraExerciseName" class="input" placeholder="Ej: Abdominales, press, bici..."></label><label style="margin-top:8px">Series / detalle<input id="extraExerciseDetail" class="input" placeholder="Ej: 3 x 12 o 20 min"></label><button class="ghost" id="addExtraExercise">Añadir ejercicio</button><h3 class="sectionTitle">Cardio / nota recomendada</h3><p class="small">${plan.cardio}</p></div></article>`;
+    <article class="day"><div class="dayHead"><h2>${plan.title}</h2><p>${currentDayName} · ${today}</p></div><div class="content" style="display:block"><h3 class="sectionTitle">Ejercicios recomendados</h3>${plan.exercises.map((e,i)=>{const key=exerciseKey(today,i);return `<div class="exercise"><div class="exerciseTop"><input class="check" type="checkbox" data-check="${key}" ${store.checks&&store.checks[key]?'checked':''}><div class="exMain"><b>${e[0]}</b><span>${e[1]}</span><textarea class="miniNote" data-note="${key}" placeholder="Opcional: peso usado, reps reales, si faltó algo...">${esc(store.exerciseNotes&&store.exerciseNotes[key]||'')}</textarea></div></div></div>`}).join('')}<h3 class="sectionTitle">Añadir ejercicios extra</h3><div class="extraExerciseGrid" id="extraExerciseList">${extra.map((item,index)=>renderExtraRow(today,item,index,store)).join('')}</div><label style="margin-top:10px">Nuevo ejercicio<input id="extraExerciseName" class="input" placeholder="Ej: Abdominales, press, bici..."></label><label style="margin-top:8px">Series / detalle<input id="extraExerciseDetail" class="input" placeholder="Ej: 3 x 12 o 20 min"></label><button class="ghost" id="addExtraExercise">Añadir ejercicio</button><h3 class="sectionTitle">Cardio / nota recomendada</h3><p class="small">${plan.cardio}</p></div></article>`;
 
   bindTodayEnhanced();
 };
 
 const renderExtraRow = (date, item, index, store) => {
   const key = extraKey(date, index);
-  return `<div class="exercise"><div class="exerciseTop"><input class="check" type="checkbox" data-check="${key}" ${store.checks&&store.checks[key]?'checked':''}><div class="exMain"><b>${item.name}</b><span>${item.detail || 'Extra personalizado'}</span><textarea class="miniNote" data-note="${key}" placeholder="Nota del extra...">${store.exerciseNotes&&store.exerciseNotes[key]||''}</textarea><div class="extraExerciseRow"><span class="small">Ejercicio añadido por ti</span><button type="button" data-remove-extra="${index}">Quitar</button></div></div></div></div>`;
+  return `<div class="exercise"><div class="exerciseTop"><input class="check" type="checkbox" data-check="${key}" ${store.checks&&store.checks[key]?'checked':''}><div class="exMain"><b>${esc(item.name)}</b><span>${esc(item.detail || 'Extra personalizado')}</span><textarea class="miniNote" data-note="${key}" placeholder="Nota del extra...">${esc(store.exerciseNotes&&store.exerciseNotes[key]||'')}</textarea><div class="extraExerciseRow"><span class="small">Ejercicio añadido por ti</span><button type="button" data-remove-extra="${index}">Quitar</button></div></div></div></div>`;
 };
 
 const bindTodayEnhanced = () => {
@@ -194,6 +198,7 @@ const bindTodayEnhanced = () => {
     data.checks = data.checks || {};
     data.checks[el.dataset.check] = el.checked;
     writeGymStore(data);
+    window.renderStats?.();
     window.renderCalendar?.();
   }));
 
@@ -228,8 +233,23 @@ const bindTodayEnhanced = () => {
 
   document.querySelectorAll('[data-remove-extra]').forEach((button) => button.addEventListener('click', () => {
     const index = Number(button.dataset.removeExtra);
-    const extra = getExtra(today).filter((_, itemIndex) => itemIndex !== index);
-    setExtra(today, extra);
+    const extra = getExtra(today);
+    // Checks and notes are keyed by position, so the ones after the removed
+    // extra move down a slot instead of being inherited by the wrong row.
+    const data = readGymStore();
+    ['checks', 'exerciseNotes'].forEach((field) => {
+      const map = data[field] || {};
+      for (let i = index; i < extra.length; i += 1) {
+        const next = map[extraKey(today, i + 1)];
+        if (next === undefined) delete map[extraKey(today, i)];
+        else map[extraKey(today, i)] = next;
+      }
+      delete map[extraKey(today, extra.length - 1)];
+      data[field] = map;
+    });
+    writeGymStore(data);
+    setExtra(today, extra.filter((_, itemIndex) => itemIndex !== index));
+    window.renderStats?.();
     renderTodayEnhanced();
     window.renderCalendar?.();
   }));
@@ -243,8 +263,10 @@ const decorateCalendarWithPlan = () => {
   const monthMap = { enero:0, febrero:1, marzo:2, abril:3, mayo:4, junio:5, julio:6, agosto:7, septiembre:8, setiembre:8, octubre:9, noviembre:10, diciembre:11 };
   const match = title.match(/^([a-záéíóúüñ]+)\s+de\s+(\d{4})$/i);
   const now = new Date();
-  const year = match ? Number(match[2]) : now.getFullYear();
-  const month = match ? (monthMap[match[1]] ?? now.getMonth()) : now.getMonth();
+  // gym.html exposes the month it is showing; the title parsing is a fallback.
+  const visible = typeof window.gymCalendarMonth === 'function' ? window.gymCalendarMonth() : null;
+  const year = visible ? visible.year : match ? Number(match[2]) : now.getFullYear();
+  const month = visible ? visible.month : match ? (monthMap[match[1]] ?? now.getMonth()) : now.getMonth();
 
   grid.querySelectorAll('.calDay:not(.empty)').forEach((cell) => {
     const day = cell.querySelector('.dayNum')?.textContent?.trim();
@@ -272,9 +294,9 @@ const enhanceCalendarModal = (date) => {
   panel.setAttribute('data-modal-plan-extra', 'true');
   panel.innerHTML = `
     <span>Rutina / tareas del día</span>
-    <p><strong>${actual.title || plan.title}</strong></p>
-    ${actual.description ? `<p>${actual.description}</p>` : `<p class="small">Rutina recomendada para ${dayName(date)}. Puedes editar lo real desde Hoy.</p>`}
-    <ul>${plan.exercises.map(([name, detail]) => `<li>${name} · ${detail}</li>`).join('')}${extra.map((item) => `<li>${item.name} · ${item.detail || 'Extra'}</li>`).join('')}</ul>
+    <p><strong>${esc(actual.title || plan.title)}</strong></p>
+    ${actual.description ? `<p>${esc(actual.description)}</p>` : `<p class="small">Rutina recomendada para ${dayName(date)}. Puedes editar lo real desde Hoy.</p>`}
+    <ul>${plan.exercises.map(([name, detail]) => `<li>${name} · ${detail}</li>`).join('')}${extra.map((item) => `<li>${esc(item.name)} · ${esc(item.detail || 'Extra')}</li>`).join('')}</ul>
     <p class="small" style="margin-top:8px"><strong>Cardio:</strong> ${plan.cardio}</p>
   `;
   body.prepend(panel);
