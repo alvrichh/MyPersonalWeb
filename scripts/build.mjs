@@ -3,6 +3,8 @@ import { dirname, join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
+console.log(`Build Node.js version: ${process.version}`);
+
 const isWindows = process.platform === 'win32';
 const binName = isWindows ? 'webpack.cmd' : 'webpack';
 const npmBin = isWindows ? 'npm.cmd' : 'npm';
