@@ -12,7 +12,8 @@ const createMobilePolish = () => {
       }
 
       .portfolio-shell {
-        width: min(100% - 1.6rem, 540px);
+        width: min(540px, calc(100vw - 1.6rem));
+        max-width: calc(100vw - 1.6rem);
         padding: 1.15rem 0 2.8rem;
         gap: 1.2rem;
       }
@@ -297,7 +298,8 @@ const createMobilePolish = () => {
 
     @media (max-width: 430px) {
       .portfolio-shell {
-        width: min(100% - 1.1rem, 420px);
+        width: min(420px, calc(100vw - 1.1rem));
+        max-width: calc(100vw - 1.1rem);
       }
 
       .sidebar,

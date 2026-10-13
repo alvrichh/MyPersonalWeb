@@ -349,6 +349,7 @@ const ensureTechCardStyles = () => {
     .portfolio-tech-media.has-photo {
       display: block;
       min-height: 0;
+      aspect-ratio: 16 / 10;
       background: linear-gradient(145deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
     }
 
