@@ -1,0 +1,84 @@
+/* Contact */
+
+.contact {
+  padding-top: var(--section-gap);
+  padding-bottom: clamp(64px, 10vw, 120px);
+}
+
+.contact .section-index {
+  padding-top: 0;
+  margin-bottom: 20px;
+}
+
+.contact-title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.1rem, 4.8vw, 3.8rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.contact-title span,
+.contact-title em {
+  display: block;
+}
+
+.contact-title em {
+  color: var(--accent);
+}
+
+.contact-lead {
+  max-width: 34em;
+  margin-top: 28px;
+  color: var(--ink-soft);
+}
+
+.contact-mail {
+  display: inline-block;
+  margin-top: 36px;
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+  font-weight: 400;
+  font-size: clamp(1.4rem, 3.4vw, 2.3rem);
+  line-height: 1.1;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+  text-decoration-color: var(--accent);
+  overflow-wrap: anywhere;
+}
+
+.contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 28px;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--rule);
+}
+
+.contact-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+/* Footer */
+
+.site-footer {
+  border-top: 1px solid var(--rule);
+}
+
+.footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 24px;
+  padding-block: 28px;
+  font-size: 0.88rem;
+  color: var(--muted);
+}

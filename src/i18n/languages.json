@@ -1,0 +1,85 @@
+{
+  "languages": [
+    {
+      "code": "en",
+      "label": "English",
+      "flag": "uk",
+      "htmlLang": "en",
+      "locale": "en-IE"
+    },
+    {
+      "code": "es",
+      "label": "Español",
+      "flag": "spain",
+      "htmlLang": "es",
+      "locale": "es-ES"
+    },
+    {
+      "code": "ga",
+      "label": "Gaeilge",
+      "flag": "ireland",
+      "htmlLang": "ga",
+      "locale": "ga-IE"
+    },
+    {
+      "code": "fr",
+      "label": "Français",
+      "flag": "france",
+      "htmlLang": "fr",
+      "locale": "fr-FR"
+    },
+    {
+      "code": "de",
+      "label": "Deutsch",
+      "flag": "germany",
+      "htmlLang": "de",
+      "locale": "de-DE"
+    },
+    {
+      "code": "ru",
+      "label": "Русский",
+      "flag": "russia",
+      "htmlLang": "ru",
+      "locale": "ru-RU"
+    },
+    {
+      "code": "pl",
+      "label": "Polski",
+      "flag": "poland",
+      "htmlLang": "pl",
+      "locale": "pl-PL"
+    },
+    {
+      "code": "zh",
+      "label": "中文",
+      "flag": "china",
+      "htmlLang": "zh",
+      "locale": "zh-CN"
+    },
+    {
+      "code": "ar",
+      "label": "العربية",
+      "flag": "saudi",
+      "htmlLang": "ar",
+      "locale": "ar",
+      "dir": "rtl"
+    },
+    {
+      "code": "and",
+      "label": "Andalûh",
+      "flag": "andalusia",
+      "htmlLang": "es",
+      "locale": "es-ES"
+    }
+  ],
+  "accents": [
+    "blue",
+    "green",
+    "red",
+    "orange",
+    "yellow",
+    "pink",
+    "white",
+    "black"
+  ]
+}

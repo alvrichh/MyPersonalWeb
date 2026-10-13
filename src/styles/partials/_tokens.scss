@@ -1,0 +1,104 @@
+/* ==========================================================================
+   alvrich — editorial portfolio
+   Tokens first, then layout, then sections. One accent, lots of paper.
+   ========================================================================== */
+
+/* Accent palettes: one tone for light mode (AA on paper) and the original
+   tones from the previous site for dark mode. Picked with the Accent menu. */
+:root,
+:root[data-accent="blue"] {
+  --a-light: #2f5bd3; --a2-light: #1f7fa8;
+  --a-dark: #6c98ff;  --a2-dark: #7ad8ff; --a-ink-dark: #0b1221;
+}
+:root[data-accent="green"] {
+  --a-light: #1a7448; --a2-light: #13756a;
+  --a-dark: #67dfa0;  --a2-dark: #7de0c7; --a-ink-dark: #07180f;
+}
+:root[data-accent="red"] {
+  --a-light: #b83232; --a2-light: #b4561e;
+  --a-dark: #ff6f79;  --a2-dark: #ffad7b; --a-ink-dark: #23070a;
+}
+:root[data-accent="orange"] {
+  --a-light: #a0510c; --a2-light: #a8650a;
+  --a-dark: #ff9e4c;  --a2-dark: #ffb86f; --a-ink-dark: #271204;
+}
+:root[data-accent="yellow"] {
+  --a-light: #7d6000; --a2-light: #8c5a00;
+  --a-dark: #ffd45f;  --a2-dark: #ffbf68; --a-ink-dark: #211704;
+}
+:root[data-accent="pink"] {
+  --a-light: #c2416f; --a2-light: #b0563a;
+  --a-dark: #ff79c9;  --a2-dark: #ffc58f; --a-ink-dark: #250916;
+}
+:root[data-accent="white"] {
+  --a-light: #4a5160; --a2-light: #6b7280;
+  --a-dark: #edf2fb;  --a2-dark: #ffffff; --a-ink-dark: #0d131d;
+}
+:root[data-accent="black"] {
+  --a-light: #1a1a1a; --a2-light: #3f3f46;
+  --a-dark: #a0adbe;  --a2-dark: #5d6777; --a-ink-dark: #090c11;
+}
+
+:root {
+  --paper-base: #f4efe6;
+  --paper: color-mix(in srgb, var(--accent) 4%, var(--paper-base));
+  --paper-raised: color-mix(in srgb, var(--accent) 3%, #fbf8f2);
+  --ink: #1a1714;
+  --ink-soft: #3a342e;
+  --muted: #5e574f;
+  --rule: #d9d1c3;
+  --accent: var(--a-light);
+  --accent-2: var(--a2-light);
+  --accent-ink: #ffffff;
+  --accent-wash: color-mix(in srgb, var(--accent) 8%, transparent);
+  --status: #2f8f5b;
+  --shadow: 0 10px 30px rgba(26, 23, 20, 0.08);
+
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+
+  --wrap: 1120px;
+  --gutter: clamp(16px, 4vw, 40px);
+  --section-gap: clamp(56px, 8vw, 96px);
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper-base: #121110;
+    --paper: color-mix(in srgb, var(--accent) 6%, var(--paper-base));
+    --paper-raised: color-mix(in srgb, var(--accent) 7%, #1b1917);
+    --ink: #ede6da;
+    --ink-soft: #d4ccbf;
+    --muted: #a69d90;
+    --rule: color-mix(in srgb, var(--accent) 10%, #34302a);
+    --accent: var(--a-dark);
+    --accent-2: var(--a2-dark);
+    --accent-ink: var(--a-ink-dark);
+    --accent-wash: color-mix(in srgb, var(--accent) 10%, transparent);
+    --status: #5fcf8f;
+    --shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper-base: #121110;
+  --paper: color-mix(in srgb, var(--accent) 6%, var(--paper-base));
+  --paper-raised: color-mix(in srgb, var(--accent) 7%, #1b1917);
+  --ink: #ede6da;
+  --ink-soft: #d4ccbf;
+  --muted: #a69d90;
+  --rule: color-mix(in srgb, var(--accent) 10%, #34302a);
+  --accent: var(--a-dark);
+  --accent-2: var(--a2-dark);
+  --accent-ink: var(--a-ink-dark);
+  --accent-wash: color-mix(in srgb, var(--accent) 10%, transparent);
+  --status: #5fcf8f;
+  --shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+  color-scheme: dark;
+}

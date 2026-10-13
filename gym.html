@@ -50,6 +50,6 @@
     document.addEventListener('visibilitychange',()=>{if(!document.hidden&&isoToday()!==today)location.reload()});
     document.querySelectorAll('[data-anchor-view]').forEach(link=>link.addEventListener('click',event=>{event.preventDefault();scrollToGymAnchor(link.dataset.anchorView);history.replaceState(null,'','#'+link.dataset.anchorView)}));saveDay.addEventListener('click',saveToday);clearToday.addEventListener('click',clearDay);prevMonth.addEventListener('click',()=>{calendarCursor.setMonth(calendarCursor.getMonth()-1);renderCalendar()});nextMonth.addEventListener('click',()=>{calendarCursor.setMonth(calendarCursor.getMonth()+1);renderCalendar()});loadTodayLog();renderStats();renderHistory();renderCalendar();
   </script>
-  <script src="./gymPolish.js" defer></script>
+  <script type="module" src="/src/legacy/gym/gym-polish.js"></script>
 </body>
 </html>
