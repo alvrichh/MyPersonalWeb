@@ -17,6 +17,7 @@ const requiredOutputFiles = [
   'ai-radar.html',
   'gym.html',
   'planning.html',
+  'calendar.html',
 ];
 
 const quoteWindowsArg = (value) => `"${String(value).replaceAll('"', '\\"')}"`;

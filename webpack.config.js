@@ -21,7 +21,7 @@ module.exports = {
   mode: 'development',
   entry: { 
     // The redesigned home: one script and one stylesheet.
-    main: ['./assets/js/main.js', './assets/css/main.css'],
+    main: ['./assets/js/main.js', './assets/css/main.css', './assets/css/credentials.css'],
     script: ['./assets/js/script.js', './assets/js/header-controls-align.js', './assets/js/mobile-controls-cleanup.js', './assets/js/irish-language-option.js', './assets/js/planning-link-section.js', './assets/js/portfolio-flow-bkd-card.js', './assets/js/portfolio-tech-cards.js', './assets/js/portfolio-card-visual-upgrade.js', './assets/js/portfolio-filter-system.js', './assets/js/personal-portfolio-highlights.js', ...portfolioStyles],
     aiRadar: ['./assets/js/portfolio-ai-radar-card.js', './assets/js/ai-radar-link-polish.js'],
     gymLink: './assets/js/gym-link.js',
@@ -30,6 +30,8 @@ module.exports = {
     giraldaFix: './assets/js/giralda-fix.js',
     glassBackgroundPolish: './assets/js/glass-background-polish.js',
     gymPolish: './assets/js/gym-polish.js',
+    // Personal calendar: events, career, Bubble tasks and gym in one view.
+    calendar: ['./assets/js/calendar.js', './assets/css/calendar.css'],
     gymViewFocus: './assets/js/gym-view-focus.js',
     cvDownloadSection: './assets/js/cv-download-section.js',
     scrollExperience: './assets/js/scroll-experience.js',
@@ -52,6 +54,7 @@ module.exports = {
     new HtmlWebpackPlugin({filename:'ai-radar.html', template: './templates/ai-radar.html', inject: false}),
     new HtmlWebpackPlugin({filename:'gym.html', template: './gym.html', inject: false}),
     new HtmlWebpackPlugin({filename:'planning.html', template: './planning.html', inject: false}),
+    new HtmlWebpackPlugin({filename:'calendar.html', template: './templates/calendar.html', chunks: ['calendar']}),
     
     new miniCssExtractPlugin(),
     new CopyWebpackPlugin({
