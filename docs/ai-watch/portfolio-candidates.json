@@ -1,11 +1,55 @@
 {
-  "generatedAt": "2026-10-12T17:17:10.406Z",
+  "generatedAt": "2026-10-13T15:31:18.081Z",
   "candidates": [
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Epic shifts to &#8216;AI-accelerated development&#8217; for upcoming Disney game",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/games/1010097/epic-games-disney-project-ai-coding-art",
+          "date": "2026-10-13"
+        },
+        {
+          "title": "Secret protection must scale with software",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/secret-protection-must-scale-with-software/",
+          "date": "2026-10-07"
+        },
+        {
+          "title": "AI is changing developer work. Here are three skills to strengthen.",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/ai-is-rewriting-the-developer-career-ladder-heres-how-to-stand-out/",
+          "date": "2026-10-02"
+        }
+      ]
+    },
+    {
+      "label": "Claude research and documentation flow",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Epic shifts to &#8216;AI-accelerated development&#8217; for upcoming Disney game",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/games/1010097/epic-games-disney-project-ai-coding-art",
+          "date": "2026-10-13"
+        }
+      ]
+    },
     {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "GitHub Copilot app for Beginners: How to teach Copilot about your codebase",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-teach-copilot-about-your-codebase/",
+          "date": "2026-10-12"
+        },
         {
           "title": "Meta has some Wonder Full new AI models",
           "source": "The Verge AI",
@@ -17,12 +61,44 @@
           "source": "The Verge AI",
           "link": "https://www.theverge.com/news/1009465/microsoft-maia-300-chip-improvements-rollout",
           "date": "2026-10-12"
+        }
+      ]
+    },
+    {
+      "label": "MCP / tool-connected assistants",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "GitHub Copilot app for Beginners: How to teach Copilot about your codebase",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-teach-copilot-about-your-codebase/",
+          "date": "2026-10-12"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "GitHub Copilot app for Beginners: How to teach Copilot about your codebase",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-teach-copilot-about-your-codebase/",
+          "date": "2026-10-12"
         },
         {
-          "title": "Anthropic is cutting off its internal evaluations from the internet",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1009286/anthropic-is-cutting-off-its-internal-evaluations-from-the-internet",
-          "date": "2026-10-10"
+          "title": "GitHub Copilot app for Beginners: How to build custom workflows with canvases",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-build-custom-workflows-with-canvases/",
+          "date": "2026-09-25"
+        },
+        {
+          "title": "Rendering huge pull requests in the GitHub Copilot app",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/engineering/user-experience/rendering-huge-pull-requests-in-the-github-copilot-app/",
+          "date": "2026-09-23"
         }
       ]
     },
@@ -48,63 +124,6 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/radisson",
           "date": "2026-10-07"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Secret protection must scale with software",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/secret-protection-must-scale-with-software/",
-          "date": "2026-10-07"
-        },
-        {
-          "title": "AI is changing developer work. Here are three skills to strengthen.",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/ai-is-rewriting-the-developer-career-ladder-heres-how-to-stand-out/",
-          "date": "2026-10-02"
-        },
-        {
-          "title": "When chat is the wrong UI",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/when-chat-is-the-wrong-ui/",
-          "date": "2026-09-24"
-        }
-      ]
-    },
-    {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "GitHub Copilot app for Beginners: How to build custom workflows with canvases",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-build-custom-workflows-with-canvases/",
-          "date": "2026-09-25"
-        },
-        {
-          "title": "Rendering huge pull requests in the GitHub Copilot app",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/engineering/user-experience/rendering-huge-pull-requests-in-the-github-copilot-app/",
-          "date": "2026-09-23"
-        }
-      ]
-    },
-    {
-      "label": "MCP / tool-connected assistants",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Should you read the code, is RAG dead, and did Skills kill MCP?",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/should-you-read-the-code-is-rag-dead-and-did-skills-kill-mcp/",
-          "date": "2026-09-18"
         }
       ]
     }

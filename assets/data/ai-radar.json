@@ -1,11 +1,56 @@
 {
-  "generatedAt": "2026-10-12T17:17:10.406Z",
-  "date": "2026-10-12",
+  "generatedAt": "2026-10-13T15:31:18.081Z",
+  "date": "2026-10-13",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Epic shifts to &#8216;AI-accelerated development&#8217; for upcoming Disney game",
+      "source": "The Verge AI",
+      "date": "2026-10-13",
+      "url": "https://www.theverge.com/games/1010097/epic-games-disney-project-ai-coding-art",
+      "summary": "Epic Games plans to use AI to generate code and art for an unannounced Disney game, which is now delayed from its original March release window, according to a report from Bloomberg. The project's developers have been gi...",
+      "tags": [
+        "Agents",
+        "Claude",
+        "Dev Tools"
+      ]
+    },
+    {
+      "title": "DLSS 5 gets toned down for its Hogwarts Legacy debut next month",
+      "source": "The Verge AI",
+      "date": "2026-10-13",
+      "url": "https://www.theverge.com/news/1009904/dlss-5-hogwarts-legacy-changes-improvements",
+      "summary": "When Nvidia originally showed off DLSS 5 earlier this year, the technology immediately got branded as gen AI for video games. To gamers, Nvidia had lost the plot. I personally couldn't get over how faces were transformed...",
+      "tags": [
+        "Multimodal"
+      ]
+    },
+    {
+      "title": "Character.AI files for bankruptcy",
+      "source": "The Verge AI",
+      "date": "2026-10-13",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1009802/character-ai-files-for-bankruptcy-disney",
+      "summary": "Character.AI, one of the first breakout startups of the generative AI boom, has filed for bankruptcy and is selling some of its assets to Disney. The company, which builds various online bots for users to chat or rolepla...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "GitHub Copilot app for Beginners: How to teach Copilot about your codebase",
+      "source": "GitHub AI & ML Blog",
+      "date": "2026-10-12",
+      "url": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-teach-copilot-about-your-codebase/",
+      "summary": "Learn how to add custom instructions and skills to your repository, use custom agents, and connect MCP servers like Playwright. The post GitHub Copilot app for Beginners: How to teach Copilot about your codebase appeared...",
+      "tags": [
+        "Agents",
+        "MCP",
+        "Copilot",
+        "Dev Tools"
+      ]
+    },
     {
       "title": "Meta has some Wonder Full new AI models",
       "source": "The Verge AI",
@@ -60,28 +105,6 @@
       ]
     },
     {
-      "title": "DistroKid has been quietly taking down songs in response to UMG lawsuit",
-      "source": "The Verge AI",
-      "date": "2026-10-10",
-      "url": "https://www.theverge.com/entertainment/1009309/distrokid-take-down-songs-umg-lawsuit",
-      "summary": "Artists are taking to social media to complain that DistroKid has unceremoniously removed their work without notice. Now DistroKid has confirmed to The Verge that the takedowns are a direct response to claims made by UMG...",
-      "tags": [
-        "AI"
-      ]
-    },
-    {
-      "title": "Anthropic is cutting off its internal evaluations from the internet",
-      "source": "The Verge AI",
-      "date": "2026-10-10",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1009286/anthropic-is-cutting-off-its-internal-evaluations-from-the-internet",
-      "summary": "After a recent spate of high-profile incidents in which AI agents escaped containment, Anthropic is cutting off internet access for all internal evaluations. In a report Friday, the company detailed \"unintended model act...",
-      "tags": [
-        "Agents",
-        "Claude",
-        "Models"
-      ]
-    },
-    {
       "title": "Sophos cuts threat investigation time by 96% with OpenAI Daybreak",
       "source": "OpenAI News",
       "date": "2026-10-09",
@@ -105,17 +128,6 @@
       ]
     },
     {
-      "title": "AI agent makers are promising privacy — will they deliver?",
-      "source": "The Verge AI",
-      "date": "2026-10-09",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1009051/privacy-ai-agent-promises-openai-meta-muse-dots",
-      "summary": "At this year's OpenAI DevDay, CEO Sam Altman unveiled the company's new AI agent Dots - and told the crowd that the company wants to \"set a new standard for privacy in frontier AI.\" OpenAI would spend the day taking veil...",
-      "tags": [
-        "Agents",
-        "ChatGPT"
-      ]
-    },
-    {
       "title": "How Oracle turns days of work into minutes with ChatGPT and Codex",
       "source": "OpenAI News",
       "date": "2026-10-08",
@@ -125,6 +137,39 @@
         "ChatGPT",
         "Dev Tools",
         "Automation"
+      ]
+    },
+    {
+      "title": "DistroKid has been quietly taking down songs in response to UMG lawsuit",
+      "source": "The Verge AI",
+      "date": "2026-10-10",
+      "url": "https://www.theverge.com/entertainment/1009309/distrokid-take-down-songs-umg-lawsuit",
+      "summary": "Artists are taking to social media to complain that DistroKid has unceremoniously removed their work without notice. Now DistroKid has confirmed to The Verge that the takedowns are a direct response to claims made by UMG...",
+      "tags": [
+        "AI"
+      ]
+    },
+    {
+      "title": "Anthropic is cutting off its internal evaluations from the internet",
+      "source": "The Verge AI",
+      "date": "2026-10-10",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1009286/anthropic-is-cutting-off-its-internal-evaluations-from-the-internet",
+      "summary": "After a recent spate of high-profile incidents in which AI agents escaped containment, Anthropic is cutting off internet access for all internal evaluations. In a report Friday, the company detailed \"unintended model act...",
+      "tags": [
+        "Agents",
+        "Claude",
+        "Models"
+      ]
+    },
+    {
+      "title": "AI agent makers are promising privacy — will they deliver?",
+      "source": "The Verge AI",
+      "date": "2026-10-09",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1009051/privacy-ai-agent-promises-openai-meta-muse-dots",
+      "summary": "At this year's OpenAI DevDay, CEO Sam Altman unveiled the company's new AI agent Dots - and told the crowd that the company wants to \"set a new standard for privacy in frontier AI.\" OpenAI would spend the day taking veil...",
+      "tags": [
+        "Agents",
+        "ChatGPT"
       ]
     },
     {
@@ -178,55 +223,58 @@
       "tags": [
         "AI"
       ]
-    },
-    {
-      "title": "OpenAI doubles down on decision to fire three AI safety researchers",
-      "source": "The Verge AI",
-      "date": "2026-10-09",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1008604/openai-defends-decision-fire-safety-researchers",
-      "summary": "OpenAI is standing firm on its decision to fire three safety researchers after an investigation found they committed \"a significant breach of trust.\" In a post on X on Friday, the company said Jasmine Wang, Tomek Korbak ...",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "LegalOn halves Codex costs while maintaining development speed",
-      "source": "OpenAI News",
-      "date": "2026-10-08",
-      "url": "https://openai.com/index/legalon-halves-codex-costs",
-      "summary": "LegalOn cut estimated daily Codex costs by 65% while maintaining development speed. It matched Astra, Sol, and Luna to tasks and managed budgets strategically.",
-      "tags": [
-        "ChatGPT",
-        "Dev Tools"
-      ]
-    },
-    {
-      "title": "Disrupting AI-enabled “false front” operations",
-      "source": "OpenAI News",
-      "date": "2026-10-08",
-      "url": "https://openai.com/index/disrupting-ai-enabled-false-front-operations",
-      "summary": "OpenAI disrupted two AI-enabled influence operations that used false-front journalists and a think tank to spread geopolitical messaging.",
-      "tags": [
-        "ChatGPT"
-      ]
-    },
-    {
-      "title": "Instinct was the buzziest AI agent around — can it survive Muse?",
-      "source": "The Verge AI",
-      "date": "2026-10-08",
-      "url": "https://www.theverge.com/tech/1008254/instinct-agent-ai-hands-on-muse-dots",
-      "summary": "Before there were cute little guys, there was Instinct. In August, the startup got its AI agent to market with an unusual playbook: invite-only, no marketing, and barely so much as a website. And yet, Instinct quickly be...",
-      "tags": [
-        "Agents"
-      ]
     }
   ],
   "candidates": [
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Epic shifts to &#8216;AI-accelerated development&#8217; for upcoming Disney game",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/games/1010097/epic-games-disney-project-ai-coding-art",
+          "date": "2026-10-13"
+        },
+        {
+          "title": "Secret protection must scale with software",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/secret-protection-must-scale-with-software/",
+          "date": "2026-10-07"
+        },
+        {
+          "title": "AI is changing developer work. Here are three skills to strengthen.",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/ai-is-rewriting-the-developer-career-ladder-heres-how-to-stand-out/",
+          "date": "2026-10-02"
+        }
+      ]
+    },
+    {
+      "label": "Claude research and documentation flow",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Epic shifts to &#8216;AI-accelerated development&#8217; for upcoming Disney game",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/games/1010097/epic-games-disney-project-ai-coding-art",
+          "date": "2026-10-13"
+        }
+      ]
+    },
     {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "GitHub Copilot app for Beginners: How to teach Copilot about your codebase",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-teach-copilot-about-your-codebase/",
+          "date": "2026-10-12"
+        },
         {
           "title": "Meta has some Wonder Full new AI models",
           "source": "The Verge AI",
@@ -238,12 +286,44 @@
           "source": "The Verge AI",
           "link": "https://www.theverge.com/news/1009465/microsoft-maia-300-chip-improvements-rollout",
           "date": "2026-10-12"
+        }
+      ]
+    },
+    {
+      "label": "MCP / tool-connected assistants",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "GitHub Copilot app for Beginners: How to teach Copilot about your codebase",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-teach-copilot-about-your-codebase/",
+          "date": "2026-10-12"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "GitHub Copilot app for Beginners: How to teach Copilot about your codebase",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-teach-copilot-about-your-codebase/",
+          "date": "2026-10-12"
         },
         {
-          "title": "Anthropic is cutting off its internal evaluations from the internet",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1009286/anthropic-is-cutting-off-its-internal-evaluations-from-the-internet",
-          "date": "2026-10-10"
+          "title": "GitHub Copilot app for Beginners: How to build custom workflows with canvases",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-build-custom-workflows-with-canvases/",
+          "date": "2026-09-25"
+        },
+        {
+          "title": "Rendering huge pull requests in the GitHub Copilot app",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/engineering/user-experience/rendering-huge-pull-requests-in-the-github-copilot-app/",
+          "date": "2026-09-23"
         }
       ]
     },
@@ -269,63 +349,6 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/radisson",
           "date": "2026-10-07"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Secret protection must scale with software",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/secret-protection-must-scale-with-software/",
-          "date": "2026-10-07"
-        },
-        {
-          "title": "AI is changing developer work. Here are three skills to strengthen.",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/ai-is-rewriting-the-developer-career-ladder-heres-how-to-stand-out/",
-          "date": "2026-10-02"
-        },
-        {
-          "title": "When chat is the wrong UI",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/when-chat-is-the-wrong-ui/",
-          "date": "2026-09-24"
-        }
-      ]
-    },
-    {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "GitHub Copilot app for Beginners: How to build custom workflows with canvases",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-build-custom-workflows-with-canvases/",
-          "date": "2026-09-25"
-        },
-        {
-          "title": "Rendering huge pull requests in the GitHub Copilot app",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/engineering/user-experience/rendering-huge-pull-requests-in-the-github-copilot-app/",
-          "date": "2026-09-23"
-        }
-      ]
-    },
-    {
-      "label": "MCP / tool-connected assistants",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Should you read the code, is RAG dead, and did Skills kill MCP?",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/should-you-read-the-code-is-rag-dead-and-did-skills-kill-mcp/",
-          "date": "2026-09-18"
         }
       ]
     }
