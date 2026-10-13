@@ -6,11 +6,12 @@ import { fileURLToPath } from 'node:url';
 console.log(`Build Node.js version: ${process.version}`);
 
 const isWindows = process.platform === 'win32';
-const binName = isWindows ? 'webpack.cmd' : 'webpack';
+const binName = isWindows ? 'vite.cmd' : 'vite';
 const npmBin = isWindows ? 'npm.cmd' : 'npm';
 const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const webpackBin = join(rootDir, 'node_modules', '.bin', binName);
+const viteBin = join(rootDir, 'node_modules', '.bin', binName);
 const distDir = join(rootDir, 'dist');
+const ssrDir = join(rootDir, 'dist-ssr');
 const publicDir = join(rootDir, 'public');
 const requiredOutputFiles = [
   'index.html',
@@ -44,12 +45,16 @@ const run = (command, args) => {
   }
 };
 
-if (!existsSync(webpackBin)) {
-  console.log('webpack not found; installing dependencies with npm ci');
+if (!existsSync(viteBin)) {
+  console.log('vite not found; installing dependencies with npm ci');
   run(npmBin, ['ci']);
 }
 
-run(webpackBin, ['build', '--mode=production']);
+// Client bundle, then the server renderer, then fill the pages with real HTML.
+run(viteBin, ['build']);
+run(viteBin, ['build', '--ssr', 'src/server.tsx']);
+run(process.execPath, [join(rootDir, 'scripts', 'prerender.mjs')]);
+rmSync(ssrDir, { recursive: true, force: true });
 
 if (!existsSync(distDir)) {
   console.error(`Build finished but the expected output directory was not created: ${distDir}`);
@@ -66,7 +71,7 @@ if (missingFiles.length > 0) {
 // Vercel's static builder treats `public` as the canonical output directory for
 // projects using the "Other" framework preset. Keep `dist` as the canonical
 // local/CI build output, but publish an exact copy from a clean directory so
-// Vercel never has to infer or relocate the webpack output.
+// Vercel never has to infer or relocate the Vite output.
 rmSync(publicDir, { recursive: true, force: true });
 cpSync(distDir, publicDir, { recursive: true });
 
