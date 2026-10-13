@@ -1,0 +1,278 @@
+/* --------------------------------------------------------------------------
+   Hero
+   -------------------------------------------------------------------------- */
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+  column-gap: clamp(24px, 5vw, 72px);
+  align-items: center;
+  padding-top: clamp(48px, 9vw, 112px);
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+  padding: 8px 16px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--paper-raised);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.status-dot {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--status);
+  flex: none;
+}
+
+.status-dot::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid var(--status);
+  opacity: 0;
+  animation: pulse 2.6s var(--ease-out) infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.6); opacity: 0.8; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+.hero-name {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.5rem, 5.2vw, 4.25rem);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+}
+
+/* Accented words (the surname, highlighted phrases) use Fraunces' italic. */
+.hero-name em,
+.about-title em,
+.contact-title em {
+  font-style: italic;
+}
+
+.hero-name span,
+.hero-name em {
+  display: block;
+}
+
+.hero-name em {
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: var(--accent);
+  -webkit-text-fill-color: transparent;
+  /* The gradient is clipped to the line box; with a tight line-height that box
+     stops above descenders (the tail of the g), so give it room and take it back. */
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+
+.hero-role {
+  margin-top: 24px;
+  font-size: clamp(1.15rem, 1.8vw, 1.45rem);
+  font-weight: 500;
+  color: var(--ink-soft);
+}
+
+.hero-location {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.hero-location svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+
+/* About — the statement that used to open the page */
+
+.about-title {
+  max-width: 18em;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.8rem, 3.6vw, 2.9rem);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+.about-title em {
+  color: var(--accent);
+}
+
+.about-lead {
+  max-width: 38em;
+  margin-top: 28px;
+  font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+  color: var(--ink-soft);
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 36px;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 22px;
+  border-radius: 999px;
+  font-size: 0.98rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.3s var(--ease-out);
+}
+
+.button:active {
+  transform: scale(0.97);
+}
+
+.button-primary {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.button-primary:hover {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.button-ghost {
+  border: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+}
+
+.button-ghost:hover {
+  border-color: var(--accent);
+}
+
+.hero-actions .button-ghost {
+  font-family: var(--font-body);
+  font-size: 0.98rem;
+}
+
+.hero-figure {
+  position: relative;
+  justify-self: center;
+  align-self: center;
+  width: min(100%, 380px);
+  isolation: isolate;
+}
+
+/* Circular portrait with a rotating gradient ring and a soft breathing glow. */
+@property --ring-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.hero-portrait {
+  position: relative;
+  aspect-ratio: 1;
+  padding: 7px;
+  border-radius: 50%;
+  background: conic-gradient(from var(--ring-angle), var(--accent), var(--accent-2), color-mix(in srgb, var(--accent) 55%, #a855f7), var(--accent));
+  box-shadow:
+    0 0 24px color-mix(in srgb, var(--accent) 55%, transparent),
+    0 0 72px color-mix(in srgb, var(--accent-2) 30%, transparent);
+  animation: ring-spin 8s linear infinite;
+}
+
+.hero-portrait::before {
+  content: "";
+  position: absolute;
+  inset: -16%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--accent) 50%, transparent) 60%, transparent);
+  filter: blur(28px);
+  animation: ring-glow 4s ease-in-out infinite alternate;
+}
+
+.hero-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 5px solid var(--paper);
+  transition: transform 0.6s var(--ease-out);
+}
+
+.hero-figure:hover .hero-portrait img {
+  transform: scale(1.03);
+}
+
+@keyframes ring-spin {
+  to { --ring-angle: 360deg; }
+}
+
+@keyframes ring-glow {
+  from { opacity: 0.55; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1.04); }
+}
+
+.hero-facts {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: clamp(40px, 6vw, 72px);
+  border-top: 1px solid var(--ink);
+}
+
+.hero-facts > div {
+  padding: 18px 20px 0 0;
+}
+
+.hero-facts > div + div {
+  padding-left: 20px;
+  border-left: 1px solid var(--rule);
+}
+
+.hero-facts dt,
+.section-index,
+.work-num,
+.work-meta,
+.work-stack,
+.skills-grid dt,
+.radar-date,
+.radar-source,
+.edu-org,
+.radar-updated {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
+
+.hero-facts dt {
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.hero-facts dd {
+  font-size: 0.98rem;
+}
