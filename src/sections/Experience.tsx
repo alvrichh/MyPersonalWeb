@@ -75,7 +75,7 @@ export function Experience() {
   const { t } = useI18n();
   return (
     <section className="section wrap" id="experience" aria-labelledby="exp-title">
-      <SectionHead index="02" id="exp-title" title="exp.title" intro="exp.intro" />
+      <SectionHead index="01" id="exp-title" title="exp.title" intro="exp.intro" />
 
       <ol className="xp-list">
         {JOBS.map((job) => {

@@ -32,8 +32,8 @@ function HomeContent() {
     <Layout>
       <Hero />
       <About />
-      <Work />
       <Experience />
+      <Work />
       <Skills />
       <RadarPreview />
       <OffTheClock />
