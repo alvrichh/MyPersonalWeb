@@ -80,7 +80,8 @@ export const JOBS: Job[] = [
         title: 'SAP Administrator',
         period: { start: '2025-05', end: '2026-02' },
         summary: 'xp.sap.summary',
-        tags: ['SAP S/4HANA', 'SAP EWM', 'System administration'],
+        points: ['xp.sap.p1', 'xp.sap.p2', 'xp.sap.p3', 'xp.sap.p4', 'xp.sap.p5', 'xp.sap.p6', 'xp.sap.p7'],
+        tags: ['SAP S/4HANA', 'SAP EWM', 'Power BI', 'SQL', 'Excel', 'SharePoint', 'Microsoft Teams', 'UAT', 'SOPs'],
       },
       {
         title: 'System Admin',
