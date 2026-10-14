@@ -350,3 +350,52 @@
     line-height: 1.5;
   }
 }
+
+/* "More details": points and tags of each school, folded by default. */
+.edu-more {
+  margin-top: 16px;
+
+  summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--accent);
+    cursor: pointer;
+    list-style: none;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &::after {
+      content: "";
+      width: 7px;
+      height: 7px;
+      margin-top: -3px;
+      border-right: 1.5px solid currentColor;
+      border-bottom: 1.5px solid currentColor;
+      transform: rotate(45deg);
+      transition: transform 0.25s var(--ease-out);
+    }
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &[open] summary::after {
+    margin-top: 3px;
+    transform: rotate(-135deg);
+  }
+
+  .edu-more-close,
+  &[open] .edu-more-open {
+    display: none;
+  }
+
+  &[open] .edu-more-close {
+    display: inline;
+  }
+}

@@ -192,15 +192,24 @@ export function Education() {
             <p className="xp-meta">{[school.years, school.place && t(`xp.place.${school.place}` as MessageKey)].filter(Boolean).join(' · ')}</p>
             {school.summary && <p className="edu-col-summary">{t(school.summary)}</p>}
             {school.bio && <p className="edu-col-bio">{t(school.bio)}</p>}
-            {school.points && (
-              <ul className="xp-points edu-col-points">
-                {school.points.map((point) => <li key={point}>{t(point)}</li>)}
-              </ul>
-            )}
-            {school.tags && (
-              <ul className="xp-tags" aria-label={school.tagsLabel ?? 'Technologies'}>
-                {school.tags.map((tag) => <li key={tag}>{tag}</li>)}
-              </ul>
+            {(school.points || school.tags) && (
+              // Everything past the note stays folded until someone asks for it.
+              <details className="edu-more">
+                <summary>
+                  <span className="edu-more-open">{t('edu.more')}</span>
+                  <span className="edu-more-close">{t('edu.less')}</span>
+                </summary>
+                {school.points && (
+                  <ul className="xp-points edu-col-points">
+                    {school.points.map((point) => <li key={point}>{t(point)}</li>)}
+                  </ul>
+                )}
+                {school.tags && (
+                  <ul className="xp-tags" aria-label={school.tagsLabel ?? 'Technologies'}>
+                    {school.tags.map((tag) => <li key={tag}>{tag}</li>)}
+                  </ul>
+                )}
+              </details>
             )}
           </li>
         ))}
