@@ -80,13 +80,19 @@
     display: none;
   }
 
-  .topbar-controls .picker-menu {
-    width: min(320px, calc(100vw - 32px));
+  /* Menus hang from the whole row, not from their half-width trigger,
+     so they never run off the edge of the screen. */
+  .topbar-controls {
+    position: relative;
   }
 
-  [data-picker="language"] .picker-menu {
-    inset-inline-start: 0;
-    inset-inline-end: auto;
+  .topbar-controls .picker {
+    position: static;
+  }
+
+  .topbar-controls .picker-menu {
+    inset-inline: 0;
+    min-width: 0;
   }
 
   /* Floating menu button */
