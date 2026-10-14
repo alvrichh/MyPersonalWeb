@@ -147,7 +147,7 @@
   "work.devoo": "Landing y frontend de tienda online para DEVOO Imports, un cliente griego con enormes olivares en el sur de Grecia que me presentó un amigo de Texas. Animaciones GSAP ligadas al scroll, y el contenido y el catálogo cargados desde JSON.",
   "work.flow.title": "Plataforma de operaciones aduaneras",
   "work.gym": "Plan de entrenamiento mensual, registro de peso diario y vista de progreso. Pequeña, rápida y tan opinada como yo con el día de pierna.",
-  "work.intro": "Una mezcla de trabajo para clientes del que puedo hablar y cosas que construí para mí porque quería que existieran.",
+  "work.intro": "Una mezcla de trabajo para empresas y particulares, y cosas que hice para aprender y mostrar lo que sé hacer como programador.",
   "work.live": "Funcionando a diario",
   "work.liveSite": "Web publicada",
   "work.monster": "Un bot de trading de criptomonedas con panel web3: paper trading con datos de mercado de Binance en vivo, señales revisadas por Claude, saldos on-chain, cuentas con JWT e inicio de sesión en un clic, y un radar diario de noticias cripto. El trading real está desconectado a propósito.",
