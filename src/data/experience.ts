@@ -182,6 +182,7 @@ export const EDUCATION: School[] = [
   {
     name: 'exp.eduTwo', org: 'IES Alixar', url: 'https://iesalixar.org/', years: '2022 — 2024', logo: 'ies-alixar.png', fill: true,
     place: 'seville', summary: 'edu.daw.summary', bio: 'edu.daw.bio',
+    points: ['edu.daw.p1', 'edu.daw.p2', 'edu.daw.p3'],
     tags: ['Java', 'JavaScript', 'Python', 'HTML5', 'CSS', 'Spring Boot', 'Angular', 'React', 'Node.js', 'Django', 'Docker', 'AWS', 'SQL', 'JSP', 'JPA', 'Thymeleaf', 'Maven', 'Servlets'],
     tagsLabel: 'Technologies',
   },
