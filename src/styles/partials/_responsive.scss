@@ -37,6 +37,10 @@
     border-bottom: 1px solid var(--rule);
   }
 
+  .edu-col:last-child {
+    border-bottom: 0;
+  }
+
   .edu {
     grid-template-columns: minmax(0, 1fr);
     row-gap: 16px;
