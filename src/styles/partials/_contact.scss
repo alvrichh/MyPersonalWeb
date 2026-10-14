@@ -82,3 +82,10 @@
   font-size: 0.88rem;
   color: var(--muted);
 }
+
+/* Booking a call: its own line under the email, as the other quick way in. */
+.contact-call {
+  display: flex;
+  width: fit-content;
+  margin-top: 24px;
+}
