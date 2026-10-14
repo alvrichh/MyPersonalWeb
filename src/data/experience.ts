@@ -179,8 +179,8 @@ export const EDUCATION: School[] = [
   },
   {
     name: 'exp.eduThree', org: 'Inmaculado Corazón de María Portaceli', url: 'https://fundacionloyola.com/portaceli/', years: '2017 — 2019', logo: 'portaceli.png',
-    place: 'seville', summary: 'edu.bach.summary',
-    tags: ['Mathematics', 'Physics', 'Technical Drawing', 'Industrial Technology', 'ICT'],
+    place: 'seville', summary: 'edu.bach.summary', bio: 'edu.bach.bio',
+    tags: ['Mathematics', 'Physics and Chemistry', 'Physics', 'Technical Drawing', 'Industrial Technology', 'ICT', 'Spanish Language and Literature', 'English', 'Philosophy', 'History of Philosophy', 'History of Spain'],
     tagsLabel: 'Core subjects',
   },
 ];
