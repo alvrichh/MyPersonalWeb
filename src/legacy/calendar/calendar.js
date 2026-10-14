@@ -1,12 +1,12 @@
 'use strict';
 
 /*
- * Mi calendario — one month/year view over four layers:
+ * My calendar — one month/year view over three layers:
  *   events  (own store + fixed yearly ones like my birthday)
- *   career  (milestones built from assets/data/experience.json)
- *   tasks   (read-only from the Bubble planner)
- *   gym     (read-only from the gym tracker)
- * Gym and Bubble keep owning their data; this page only reads it.
+ *   career  (milestones built from data/experience.json)
+ *   tasks   (read-only from the Bubble planner, which keeps owning its data)
+ * The copy follows the language picked on the portfolio: Spanish for es/and,
+ * English for everything else.
  */
 
 const root = document.documentElement;
@@ -32,18 +32,91 @@ const storage = {
 const KEYS = {
   events: 'alvrichCalendarV1',
   layers: 'alvrichCalendarLayers',
-  gym: ['alvrichGymMayAutoV2', 'alvrichGymMayAutoV1'],
-  gymPlan: ['alvrichGymMonthlyPlanV1'],
   tasks: ['alvrichBubblePlanningV1', 'alvrichOrbitPlanningV1', 'alvrichPlanningAgendaV2'],
 };
 
+/* -------------------------------------------------------------------- Copy */
+
+const LANG = ['es', 'and'].includes(storage.get('lang')) ? 'es' : 'en';
+const LOCALE = LANG === 'es' ? 'es-ES' : 'en-IE';
+
+const COPY = {
+  es: {
+    pageTitle: 'Mi calendario · Álvaro Rodríguez Molina',
+    pageDescription: 'Mi calendario personal: eventos, trayectoria profesional y tareas en un solo sitio.',
+    brandSub: 'mi calendario', backToPortfolio: 'Volver al portfolio', tools: 'Mis herramientas',
+    toggleTheme: 'Cambiar tema', calendar: 'Calendario', view: 'Vista', year: 'Año', month: 'Mes',
+    today: 'Hoy', previous: 'Anterior', next: 'Siguiente', layers: 'Capas', events: 'Eventos',
+    career: 'Trayectoria', tasks: 'Tareas', summary: 'Resumen', upcoming: 'Próximo', rightNow: 'Ahora mismo',
+    close: 'Cerrar', addEvent: 'Añadir evento', eventTitle: 'Título del evento', titleLabel: 'Título',
+    repeatYearly: 'Repetir cada año', saveEvent: 'Guardar evento',
+    birthday: 'Mi cumpleaños', weekdays: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
+    yearUnit: ['año', 'años'], monthUnit: ['mes', 'meses'], itemUnit: ['elemento', 'elementos'],
+    and: ' y ', lessThanMonth: 'menos de un mes',
+    startWork: (i) => `Empiezo en ${i.org}`, endWork: (i) => `Último mes en ${i.org}`,
+    startEducation: (i) => `Empiezo ${i.role}`, endEducation: (i) => `Termino ${i.role}`,
+    startVolunteering: (i) => `Empiezo el voluntariado en ${i.org}`,
+    endVolunteering: (i) => `Termino el voluntariado en ${i.org}`,
+    anniversary: (years, i) => `${years} en ${i.org}`,
+    certificate: 'Certificado', certificates: 'Certificados', task: 'Tarea',
+    careerIn: (y) => `Trayectoria en ${y}`, present: 'hoy',
+    whenToday: 'hoy', whenTomorrow: 'mañana', whenIn: (n) => `en ${n} días`,
+    nothingAhead: 'Nada a la vista. Disfruta.', since: 'desde', betweenStages: 'Entre etapas.',
+    dayToday: 'Hoy', dayTomorrow: 'Mañana', dayYesterday: 'Ayer',
+    dayIn: (n) => `Dentro de ${n} días`, dayAgo: (n) => `Hace ${n} días`,
+    everyYear: 'Cada año', remove: 'Quitar', openInBubble: 'Abrir en Bubble →', viewLink: 'Ver ↗',
+    freeDay: 'Día libre. Nada apuntado.',
+  },
+  en: {
+    pageTitle: 'My calendar · Álvaro Rodríguez Molina',
+    pageDescription: 'My personal calendar: events, career milestones and tasks in one place.',
+    brandSub: 'my calendar', backToPortfolio: 'Back to the portfolio', tools: 'My tools',
+    toggleTheme: 'Toggle theme', calendar: 'Calendar', view: 'View', year: 'Year', month: 'Month',
+    today: 'Today', previous: 'Previous', next: 'Next', layers: 'Layers', events: 'Events',
+    career: 'Career', tasks: 'Tasks', summary: 'Summary', upcoming: 'Coming up', rightNow: 'Right now',
+    close: 'Close', addEvent: 'Add an event', eventTitle: 'Event title', titleLabel: 'Title',
+    repeatYearly: 'Repeat every year', saveEvent: 'Save event',
+    birthday: 'My birthday', weekdays: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    yearUnit: ['year', 'years'], monthUnit: ['month', 'months'], itemUnit: ['item', 'items'],
+    and: ' and ', lessThanMonth: 'less than a month',
+    startWork: (i) => `Start at ${i.org}`, endWork: (i) => `Last month at ${i.org}`,
+    startEducation: (i) => `Start ${i.role}`, endEducation: (i) => `Finish ${i.role}`,
+    startVolunteering: (i) => `Start volunteering at ${i.org}`,
+    endVolunteering: (i) => `Finish volunteering at ${i.org}`,
+    anniversary: (years, i) => `${years} at ${i.org}`,
+    certificate: 'Certificate', certificates: 'Certificates', task: 'Task',
+    careerIn: (y) => `Career in ${y}`, present: 'today',
+    whenToday: 'today', whenTomorrow: 'tomorrow', whenIn: (n) => `in ${n} days`,
+    nothingAhead: 'Nothing coming up. Enjoy.', since: 'since', betweenStages: 'Between chapters.',
+    dayToday: 'Today', dayTomorrow: 'Tomorrow', dayYesterday: 'Yesterday',
+    dayIn: (n) => `In ${n} days`, dayAgo: (n) => `${n} days ago`,
+    everyYear: 'Every year', remove: 'Remove', openInBubble: 'Open in Bubble →', viewLink: 'View ↗',
+    freeDay: 'A free day. Nothing planned.',
+  },
+};
+const T = COPY[LANG];
+
+// Static text in calendar.html: data-t="key" sets the text,
+// data-t-attr="attr:key;attr:key" sets attributes.
+function applyStaticCopy() {
+  root.lang = LANG;
+  document.title = T.pageTitle;
+  document.querySelector('meta[name="description"]')?.setAttribute('content', T.pageDescription);
+  document.querySelectorAll('[data-t]').forEach((node) => { node.textContent = T[node.dataset.t]; });
+  document.querySelectorAll('[data-t-attr]').forEach((node) => {
+    node.dataset.tAttr.split(';').forEach((pair) => {
+      const [attr, key] = pair.split(':');
+      node.setAttribute(attr, T[key]);
+    });
+  });
+}
+
 // Fixed yearly events that live in code, not in the browser.
 const FIXED_EVENTS = [
-  { id: 'birthday', emoji: '🎂', title: 'Mi cumpleaños', md: '02-22', yearly: true, fixed: true },
+  { id: 'birthday', emoji: '🎂', title: T.birthday, md: '02-22', yearly: true, fixed: true },
 ];
 
-const LOCALE = 'es-ES';
-const LAYERS = ['events', 'career', 'tasks', 'gym'];
+const LAYERS = ['events', 'career', 'tasks'];
 const MAX_CHIPS = 3;
 
 /* ----------------------------------------------------------------- Helpers */
@@ -78,7 +151,7 @@ const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
 const duration = (months) => {
   const years = Math.floor(months / 12);
   const rest = months % 12;
-  return [years && plural(years, 'año', 'años'), rest && plural(rest, 'mes', 'meses')].filter(Boolean).join(' y ') || 'menos de un mes';
+  return [years && plural(years, ...T.yearUnit), rest && plural(rest, ...T.monthUnit)].filter(Boolean).join(T.and) || T.lessThanMonth;
 };
 
 /* -------------------------------------------------------------------- Data */
@@ -126,16 +199,10 @@ function collect(fromIso, toIso) {
   if (state.layers.has('career')) {
     const now = currentYm();
     const add = (item, kind) => {
-      const verbStart = {
-        education: `Empiezo ${item.role}`,
-        volunteering: `Empiezo el voluntariado en ${item.org}`,
-      }[kind] || `Empiezo en ${item.org}`;
-      const verbEnd = {
-        education: `Termino ${item.role}`,
-        volunteering: `Termino el voluntariado en ${item.org}`,
-      }[kind] || `Último mes en ${item.org}`;
-      push(`${item.start}-01`, { layer: 'career', kind, item, title: verbStart, tag: 'inicio' });
-      if (item.end) push(lastDayOfMonth(item.end), { layer: 'career', kind, item, title: verbEnd, tag: 'fin' });
+      const verbStart = { education: T.startEducation, volunteering: T.startVolunteering }[kind] || T.startWork;
+      const verbEnd = { education: T.endEducation, volunteering: T.endVolunteering }[kind] || T.endWork;
+      push(`${item.start}-01`, { layer: 'career', kind, item, title: verbStart(item), tag: 'start' });
+      if (item.end) push(lastDayOfMonth(item.end), { layer: 'career', kind, item, title: verbEnd(item), tag: 'end' });
 
       // Work anniversaries, while I'm still there.
       if (kind === 'work') {
@@ -144,7 +211,7 @@ function collect(fromIso, toIso) {
         for (let y = sy + 1; y <= toYear; y += 1) {
           const ym = `${y}-${pad(sm)}`;
           if (ym > until) break;
-          push(`${ym}-01`, { layer: 'career', kind, item, title: `${plural(y - sy, 'año', 'años')} en ${item.org}`, tag: 'aniversario' });
+          push(`${ym}-01`, { layer: 'career', kind, item, title: T.anniversary(plural(y - sy, ...T.yearUnit), item), tag: 'anniversary' });
         }
       }
     };
@@ -160,7 +227,7 @@ function collect(fromIso, toIso) {
         title: `🎓 ${cert.title}`,
         url: cert.url,
         image: cert.image,
-        item: { logo: cert.logo, role: cert.issuer, place: (cert.skills || []).join(', ') || 'Certificado' },
+        item: { logo: cert.logo, role: cert.issuer, place: (cert.skills || []).join(', ') || T.certificate },
       });
     });
   }
@@ -169,28 +236,11 @@ function collect(fromIso, toIso) {
     const tasks = storage.json(...KEYS.tasks)?.tasks;
     if (Array.isArray(tasks)) {
       tasks.forEach((task) => {
-        if (task?.date) push(task.date, { layer: 'tasks', title: task.title || 'Tarea', done: !!task.done, task });
+        if (task?.date) push(task.date, { layer: 'tasks', title: task.title || T.task, done: !!task.done, task });
       });
     }
   }
 
-  if (state.layers.has('gym')) {
-    const gym = storage.json(...KEYS.gym) || {};
-    const plan = storage.json(...KEYS.gymPlan) || {};
-    const dates = new Set([
-      ...Object.keys(gym.logs || {}),
-      ...Object.keys(gym.checks || {}).filter((k) => gym.checks[k]).map((k) => k.split('|')[0]),
-      ...Object.keys(plan.actual || {}),
-    ]);
-    dates.forEach((date) => {
-      const log = gym.logs?.[date] || {};
-      const ticks = Object.keys(gym.checks || {}).filter((k) => k.startsWith(`${date}|`) && gym.checks[k]).length;
-      const workout = plan.actual?.[date]?.title || '';
-      const weight = log.weight ? String(log.weight).replace('.', ',') : '';
-      const title = workout || (ticks ? 'Entreno' : weight ? `${weight} kg` : 'Registro');
-      push(date, { layer: 'gym', title, weight, ticks, workout, feeling: log.feeling || '', notes: log.notes || '' });
-    });
-  }
 
   return byDate;
 }
@@ -202,7 +252,6 @@ const titleNode = document.querySelector('[data-cal-title]');
 
 const chipLabel = (entry) => {
   if (entry.layer === 'events') return `${entry.emoji || '•'} ${entry.title}`;
-  if (entry.layer === 'gym') return `💪 ${entry.title}`;
   if (entry.layer === 'tasks') return `${entry.done ? '✓' : '○'} ${entry.title}`;
   return entry.title;
 };
@@ -221,7 +270,7 @@ function renderMonth() {
   const today = todayIso();
   titleNode.innerHTML = `${monthName(year, month)} <em>${year}</em>`;
 
-  const weekdays = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom']
+  const weekdays = T.weekdays
     .map((d) => `<span>${d}</span>`).join('');
 
   let html = `<div class="cal-weekdays" aria-hidden="true">${weekdays}</div><div class="cal-grid">`;
@@ -235,7 +284,7 @@ function renderMonth() {
     const chips = entries.slice(0, MAX_CHIPS).map((e) =>
       `<span class="chip chip-${e.layer}${e.done ? ' is-done' : ''}">${escapeHtml(chipLabel(e))}</span>`).join('');
     const more = entries.length > MAX_CHIPS ? `<span class="chip-more">+${entries.length - MAX_CHIPS}</span>` : '';
-    const label = `${longDate(date)}${entries.length ? `, ${plural(entries.length, 'elemento', 'elementos')}` : ''}`;
+    const label = `${longDate(date)}${entries.length ? `, ${plural(entries.length, ...T.itemUnit)}` : ''}`;
 
     html += `<button type="button" class="cal-cell${outside ? ' is-outside' : ''}${date === today ? ' is-today' : ''}${isBirthday ? ' is-birthday' : ''}" data-date="${date}" aria-label="${escapeHtml(label)}">
       <span class="cal-num">${day.getDate()}</span>
@@ -275,13 +324,13 @@ function renderYear() {
       byMonth.set(m, [...(byMonth.get(m) || []), c]);
     });
     const certRow = certs.length ? `<div class="cal-band-row">
-        <span class="cal-band-label"><span class="cal-cert-icon" aria-hidden="true">🎓</span>Certificados</span>
+        <span class="cal-band-label"><span class="cal-cert-icon" aria-hidden="true">🎓</span>${T.certificates}</span>
         <span class="cal-band-track">${[...byMonth].map(([m, list]) => `<button type="button" class="cal-cert" data-date="${firstOf(m).length === 10 ? firstOf(m) : `${firstOf(m)}-01`}" style="grid-column:${m};grid-row:1" title="${escapeHtml(list.map((c) => c.title).join(' · '))}">${list.length}</button>`).join('')}</span>
       </div>` : '';
 
     if (rows.length || certRow) {
       const months = Array.from({ length: 12 }, (_, m) => `<span>${monthName(year, m).slice(0, 3)}</span>`).join('');
-      bands = `<section class="cal-bands" aria-label="Trayectoria en ${year}">
+      bands = `<section class="cal-bands" aria-label="${escapeHtml(T.careerIn(year))}">
         <div class="cal-bands-head" aria-hidden="true"><span></span><span class="cal-bands-months">${months}</span></div>
         ${rows.map((row) => {
           const startM = row.start < `${year}-01` ? 1 : Number(row.start.slice(5));
@@ -291,7 +340,7 @@ function renderYear() {
           return `<div class="cal-band-row">
             <span class="cal-band-label"><img src="${escapeHtml(row.logo)}" alt="" width="24" height="24">${escapeHtml(row.org)}</span>
             <span class="cal-band-track">
-              <span class="cal-band cal-band-${row.kind}${ongoing ? ' is-ongoing' : ''}" style="grid-column:${startM} / ${endM + 1}" title="${escapeHtml(`${row.role} · ${shortYm(row.start)} – ${row.end ? shortYm(row.end) : 'hoy'}`)}">${escapeHtml(row.role)}</span>
+              <span class="cal-band cal-band-${row.kind}${ongoing ? ' is-ongoing' : ''}" style="grid-column:${startM} / ${endM + 1}" title="${escapeHtml(`${row.role} · ${shortYm(row.start)} – ${row.end ? shortYm(row.end) : T.present}`)}">${escapeHtml(row.role)}</span>
             </span>
           </div>`;
         }).join('')}
@@ -338,7 +387,7 @@ function renderSide() {
   const items = [];
   [...upcoming.keys()].sort().forEach((date) => {
     upcoming.get(date).forEach((entry) => {
-      if (entry.layer === 'gym' || (entry.layer === 'tasks' && entry.done)) return;
+      if (entry.layer === 'tasks' && entry.done) return;
       items.push({ date, entry });
     });
   });
@@ -346,9 +395,9 @@ function renderSide() {
   const daysUntil = (date) => Math.round((parse(date) - parse(today)) / 86400000);
   const when = (date) => {
     const n = daysUntil(date);
-    if (n === 0) return 'hoy';
-    if (n === 1) return 'mañana';
-    return `en ${n} días`;
+    if (n === 0) return T.whenToday;
+    if (n === 1) return T.whenTomorrow;
+    return T.whenIn(n);
   };
 
   nextNode.innerHTML = items.length
@@ -358,7 +407,7 @@ function renderSide() {
           <span class="cal-next-when">${escapeHtml(capitalise(parse(date).toLocaleDateString(LOCALE, { day: 'numeric', month: 'short' })))} · ${when(date)}</span>
         </button>
       </li>`).join('')
-    : '<li class="cal-empty">Nada a la vista. Disfruta.</li>';
+    : `<li class="cal-empty">${T.nothingAhead}</li>`;
 
   const now = currentYm();
   const active = [
@@ -372,10 +421,10 @@ function renderSide() {
         <img src="${escapeHtml(i.logo)}" alt="" width="36" height="36">
         <span>
           <strong>${escapeHtml(i.role)}</strong>
-          <span>${escapeHtml(i.org)} · desde ${escapeHtml(shortYm(i.start))} · ${duration(monthsBetween(i.start, now))}</span>
+          <span>${escapeHtml(i.org)} · ${T.since} ${escapeHtml(shortYm(i.start))} · ${duration(monthsBetween(i.start, now))}</span>
         </span>
       </li>`).join('')
-    : '<li class="cal-empty">Entre etapas.</li>';
+    : `<li class="cal-empty">${T.betweenStages}</li>`;
 }
 
 function render() {
@@ -399,49 +448,40 @@ const addForm = document.querySelector('[data-cal-add]');
 function openDay(date) {
   state.selected = date;
   const entries = collect(date, date).get(date) || [];
-  const groups = { events: [], career: [], tasks: [], gym: [] };
-  entries.forEach((e) => groups[e.layer].push(e));
+  const groups = { events: [], career: [], tasks: [] };
+  entries.forEach((e) => groups[e.layer]?.push(e));
   const daysAway = Math.round((parse(date) - parse(todayIso())) / 86400000);
 
   document.querySelector('[data-cal-day-kicker]').textContent =
-    daysAway === 0 ? 'Hoy' : daysAway === 1 ? 'Mañana' : daysAway === -1 ? 'Ayer'
-      : daysAway > 0 ? `Dentro de ${daysAway} días` : `Hace ${-daysAway} días`;
+    daysAway === 0 ? T.dayToday : daysAway === 1 ? T.dayTomorrow : daysAway === -1 ? T.dayYesterday
+      : daysAway > 0 ? T.dayIn(daysAway) : T.dayAgo(-daysAway);
   document.querySelector('[data-cal-day-title]').textContent = longDate(date);
 
   const section = (title, layer, body) => body ? `<section class="cal-day-group group-${layer}"><h3>${title}</h3>${body}</section>` : '';
 
   const events = groups.events.map((e) => `<div class="cal-day-item">
       <span class="cal-day-emoji">${escapeHtml(e.emoji || '•')}</span>
-      <span class="cal-day-text"><strong>${escapeHtml(e.title)}</strong>${e.yearly ? '<small>Cada año</small>' : ''}</span>
-      ${e.fixed ? '' : `<button type="button" class="cal-link-btn" data-delete-event="${escapeHtml(e.id)}">Quitar</button>`}
+      <span class="cal-day-text"><strong>${escapeHtml(e.title)}</strong>${e.yearly ? `<small>${T.everyYear}</small>` : ''}</span>
+      ${e.fixed ? '' : `<button type="button" class="cal-link-btn" data-delete-event="${escapeHtml(e.id)}">${T.remove}</button>`}
     </div>`).join('');
 
   const career = groups.career.map((e) => `<div class="cal-day-item">
       <img src="${escapeHtml(e.item.logo)}" alt="" width="36" height="36" class="cal-day-logo">
       <span class="cal-day-text"><strong>${escapeHtml(e.title)}</strong><small>${escapeHtml(e.item.role)} · ${escapeHtml(e.item.place)}</small></span>
-      ${e.url ? `<a class="cal-link-btn" href="${escapeHtml(e.url)}" target="_blank" rel="noreferrer">Ver ↗</a>` : ''}
-    </div>${e.image ? `<a class="cal-day-cert" href="${escapeHtml(e.url)}" target="_blank" rel="noreferrer"><img src="${escapeHtml(e.image)}" alt="Certificado: ${escapeHtml(e.title.replace('🎓 ', ''))}" loading="lazy"></a>` : ''}`).join('');
+      ${e.url ? `<a class="cal-link-btn" href="${escapeHtml(e.url)}" target="_blank" rel="noreferrer">${T.viewLink}</a>` : ''}
+    </div>${e.image ? `<a class="cal-day-cert" href="${escapeHtml(e.url)}" target="_blank" rel="noreferrer"><img src="${escapeHtml(e.image)}" alt="${T.certificate}: ${escapeHtml(e.title.replace('🎓 ', ''))}" loading="lazy"></a>` : ''}`).join('');
 
   const tasks = groups.tasks.map((e) => `<div class="cal-day-item${e.done ? ' is-done' : ''}">
       <span class="cal-day-emoji">${e.done ? '✓' : '○'}</span>
       <span class="cal-day-text"><strong>${escapeHtml(e.title)}</strong>${e.task.note ? `<small>${escapeHtml(e.task.note)}</small>` : ''}</span>
     </div>`).join('');
 
-  const gym = groups.gym.map((e) => `<div class="cal-day-item">
-      <span class="cal-day-emoji">💪</span>
-      <span class="cal-day-text">
-        <strong>${escapeHtml(e.workout || (e.ticks ? 'Entreno' : 'Registro del día'))}</strong>
-        <small>${[e.weight && `${escapeHtml(e.weight)} kg`, e.ticks && plural(e.ticks, 'ejercicio hecho', 'ejercicios hechos'), e.feeling && escapeHtml(e.feeling)].filter(Boolean).join(' · ')}</small>
-        ${e.notes ? `<small>${escapeHtml(e.notes)}</small>` : ''}
-      </span>
-    </div>`).join('');
 
   dayBody.innerHTML = [
-    section('Eventos', 'events', events),
-    section('Trayectoria', 'career', career),
-    section('Tareas', 'tasks', tasks && `${tasks}<a class="cal-link-btn" href="./planning.html">Abrir en Bubble →</a>`),
-    section('Gym', 'gym', gym && `${gym}<a class="cal-link-btn" href="./gym.html">Abrir el gym →</a>`),
-  ].join('') || '<p class="cal-empty">Día libre. Nada apuntado.</p>';
+    section(T.events, 'events', events),
+    section(T.career, 'career', career),
+    section(T.tasks, 'tasks', tasks && `${tasks}<a class="cal-link-btn" href="./planning.html">${T.openInBubble}</a>`),
+  ].join('') || `<p class="cal-empty">${T.freeDay}</p>`;
 
   addForm.reset();
   if (!dialog.open) dialog.showModal();
@@ -605,7 +645,7 @@ document.querySelector('[data-theme-toggle]').addEventListener('click', () => {
   storage.set('theme', next);
 });
 
-// Other tabs (portfolio, gym, Bubble) may change data, theme or accent.
+// Other tabs (portfolio, Bubble) may change data, theme or accent.
 window.addEventListener('storage', (event) => {
   if (event.key === 'theme' && event.newValue) root.dataset.theme = event.newValue;
   if (event.key === 'accent' && event.newValue) root.dataset.accent = event.newValue;
@@ -631,6 +671,7 @@ function applyHash() {
 
 window.addEventListener('hashchange', applyHash);
 
+applyStaticCopy();
 render();
 
 fetch('./data/experience.json')
