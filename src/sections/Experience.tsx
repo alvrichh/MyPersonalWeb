@@ -192,6 +192,11 @@ export function Education() {
             <p className="xp-meta">{[school.years, school.place && t(`xp.place.${school.place}` as MessageKey)].filter(Boolean).join(' · ')}</p>
             {school.summary && <p className="edu-col-summary">{t(school.summary)}</p>}
             {school.bio && <p className="edu-col-bio">{t(school.bio)}</p>}
+            {school.points && (
+              <ul className="xp-points edu-col-points">
+                {school.points.map((point) => <li key={point}>{t(point)}</li>)}
+              </ul>
+            )}
             {school.tags && (
               <ul className="xp-tags" aria-label={school.tagsLabel ?? 'Technologies'}>
                 {school.tags.map((tag) => <li key={tag}>{tag}</li>)}
