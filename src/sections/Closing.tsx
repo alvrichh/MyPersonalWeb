@@ -1,7 +1,8 @@
 import { useI18n, type MessageKey } from '../i18n/I18nContext';
 import { decodeEntities, useRadar } from '../lib/radar';
 import { formatDay } from '../lib/format';
-import { OffIcon, type OFF_ICONS } from '../components/icons';
+import { CalendarIcon, OffIcon, type OFF_ICONS } from '../components/icons';
+import { CALENDLY } from '../data/contact';
 import { SectionHead } from './Work';
 
 const RADAR_PREVIEW = 5;
@@ -119,6 +120,12 @@ export function Contact() {
       <p className="contact-lead">{t('contact.lead')}</p>
 
       <a className="contact-mail" href="mailto:alvrodmol@gmail.com">alvrodmol@gmail.com</a>
+
+      <a className="button button-primary contact-call" href={CALENDLY} target="_blank" rel="noreferrer">
+        <CalendarIcon />
+        <span>{t('contact.call')}</span>
+        <span aria-hidden="true">↗</span>
+      </a>
 
       <ul className="contact-links">
         <li><a href="https://www.linkedin.com/in/alvrich/" target="_blank" rel="noreferrer">LinkedIn <span aria-hidden="true">↗</span></a></li>
