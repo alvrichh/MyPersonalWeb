@@ -27,7 +27,7 @@ function Layout({ home, children }: { home?: string; children: ReactNode }) {
 }
 
 function HomeContent() {
-  useReveal('.section-head, .work-item, .xp-item, .edu, .skills-grid > div, .off-body, .off-card, .contact > *');
+  useReveal('.section-head, .work-item, .xp-item, .edu, .edu-col, .skills-grid > div, .off-body, .off-card, .contact > *');
   return (
     <Layout>
       <Hero />

@@ -25,6 +25,18 @@
 }
 
 @media (max-width: 960px) {
+  /* Education: the three columns stack, each school ruled off below. */
+  .edu-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .edu-col,
+  .edu-col + .edu-col {
+    padding: 24px 0;
+    border-left: 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
   .edu {
     grid-template-columns: minmax(0, 1fr);
     row-gap: 16px;
