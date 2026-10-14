@@ -1,7 +1,6 @@
 import type { MessageKey } from '../i18n/I18nContext';
 
-// Selected work, from the most substantial project to the smallest; this is
-// also the order on the home page.
+// Selected work, in the order it appears on the home page.
 
 export type Project = {
   /** A literal name, or a message key when the name is translated. */
@@ -21,6 +20,35 @@ export type Project = {
 
 export const PROJECTS: Project[] = [
   {
+    title: 'MonsterBroker',
+    href: 'https://github.com/alvrichh/MonsterBroker',
+    external: true,
+    summary: 'work.monster',
+    stack: 'Python · FastAPI · React · Vite · JWT · Docker · Claude API',
+    year: '2023 –',
+    status: 'work.open',
+    image: './images/projects/monsterbroker.jpg',
+  },
+  {
+    title: 'Stratton.app',
+    href: 'https://github.com/alvrichh/Stratton.app-FCT-DAW',
+    external: true,
+    summary: 'work.strattonApp',
+    stack: 'Java · Spring Boot · Spring Security · Angular',
+    year: '2024',
+    status: 'work.degree',
+    image: './images/projects/stratton-app.jpg',
+  },
+  {
+    title: 'Live AI Radar',
+    href: './ai-radar.html',
+    summary: 'work.radar',
+    stack: 'Node.js · GitHub Actions · RSS · JSON',
+    year: '2026',
+    status: 'work.live',
+    image: './images/projects/radar.jpg',
+  },
+  {
     title: { key: 'work.flow.title' },
     summary: 'work.bkd',
     stack: 'Flask · Azure SQL · Microsoft Graph · TSS API · Docker · Render',
@@ -38,16 +66,6 @@ export const PROJECTS: Project[] = [
     private: true,
   },
   {
-    title: 'MonsterBroker',
-    href: 'https://github.com/alvrichh/MonsterBroker',
-    external: true,
-    summary: 'work.monster',
-    stack: 'Python · FastAPI · React · Vite · JWT · Docker · Claude API',
-    year: '2023 –',
-    status: 'work.open',
-    image: './images/projects/monsterbroker.jpg',
-  },
-  {
     title: 'Butakeando',
     href: 'https://buta-keando.vercel.app',
     external: true,
@@ -58,15 +76,6 @@ export const PROJECTS: Project[] = [
     image: './images/projects/butakeando.jpg',
   },
   {
-    title: 'Live AI Radar',
-    href: './ai-radar.html',
-    summary: 'work.radar',
-    stack: 'Node.js · GitHub Actions · RSS · JSON',
-    year: '2026',
-    status: 'work.live',
-    image: './images/projects/radar.jpg',
-  },
-  {
     title: 'This site',
     href: 'https://github.com/alvrichh/MyPersonalWeb',
     external: true,
@@ -75,16 +84,6 @@ export const PROJECTS: Project[] = [
     year: '2024 –',
     status: 'work.open',
     image: './images/projects/portfolio.jpg',
-  },
-  {
-    title: 'Stratton.app',
-    href: 'https://github.com/alvrichh/Stratton.app-FCT-DAW',
-    external: true,
-    summary: 'work.strattonApp',
-    stack: 'Java · Spring Boot · Spring Security · Angular',
-    year: '2024',
-    status: 'work.degree',
-    image: './images/projects/stratton-app.jpg',
   },
   {
     title: 'Spain Motorcars',
