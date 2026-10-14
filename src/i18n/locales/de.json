@@ -114,6 +114,7 @@
   "theme.white": "Weiß",
   "theme.yellow": "Gelb",
   "work.bkd": "Eine Zollplattform für einen privaten Logistikkunden, die Warenbewegungen zwischen Großbritannien und Nordirland durchgängig über die API des Trader Support Service (TSS) des HMRC abwickelt: Sicherheitsanmeldungen (ENS), vereinfachte Grenz- und ergänzende Zollanmeldungen sowie vollständige Grenzanmeldungen. Daten kommen auf drei Wegen herein (Versand-E-Mails über Microsoft Graph, Excel-Uploads oder manuelle Erfassung im Portal) und werden extrahiert, validiert und vorausgefüllt, sodass das Team nur noch prüft. Flask auf Azure SQL, deployt mit Docker.",
+  "work.calendar": "Mein eigener Kalender, in dem alles andere auf dieser Seite zusammenkommt: Meilensteine, Zertifikate und Geburtstage, dazu Bubble-Aufgaben und Trainings, nach Monat oder Jahr. Wischen oder seitlich scrollen, um durch die Zeit zu blättern.",
   "work.flow.title": "Zollabwicklungsplattform",
   "work.gym": "Ein monatlicher Trainingsplan, tägliches Gewichtsprotokoll und Fortschrittsansicht. Klein, schnell und so meinungsstark wie ich beim Beintag.",
   "work.intro": "Eine Mischung aus Kundenprojekten, über die ich sprechen darf, und Dingen, die ich für mich gebaut habe, weil ich wollte, dass es sie gibt.",

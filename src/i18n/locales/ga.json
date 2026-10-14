@@ -114,6 +114,7 @@
   "theme.white": "Bán",
   "theme.yellow": "Buí",
   "work.bkd": "Ardán custaim do chliant lóistíochta príobháideach a láimhseálann gluaiseachtaí idir an Bhreatain Mhór agus Tuaisceart Éireann ó thús go deireadh trí API an Trader Support Service (TSS) de chuid HMRC: dearbhuithe slándála (ENS), dearbhuithe simplithe teorann agus forlíontacha, agus dearbhuithe iomlána teorann. Tagann sonraí isteach ar thrí bhealach (ríomhphoist lastais trí Microsoft Graph, uaslódáil Excel nó iontráil láimhe sa tairseach) agus baintear amach, bailíochtaítear agus réamhlíontar iad, mar sin ní dhéanann an fhoireann ach athbhreithniú. Flask ar Azure SQL, imlonnaithe le Docker.",
+  "work.calendar": "Mo fhéilire féin, áit a dtagann gach rud eile ar an leathanach seo le chéile: cloch mhíle gairme, teastais agus breithlaethanta, chomh maith le tascanna Bubble agus logaí an tseomra aclaíochta, de réir míosa nó bliana. Svaidhpeáil nó scrollaigh go cliathánach chun bogadh tríd an am.",
   "work.flow.title": "Ardán oibríochtaí custaim",
   "work.gym": "Plean traenála míosúil, logáil meáchain laethúil agus radharc dul chun cinn. Beag, tapa, agus chomh ceanndána liomsa faoi lá na gcos.",
   "work.intro": "Meascán d’obair do chliaint ar féidir liom labhairt fúithi agus rudaí a thóg mé dom féin mar theastaigh uaim go mbeidís ann.",

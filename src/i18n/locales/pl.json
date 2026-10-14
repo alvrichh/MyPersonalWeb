@@ -114,6 +114,7 @@
   "theme.white": "Biały",
   "theme.yellow": "Żółty",
   "work.bkd": "Platforma celna dla prywatnego klienta logistycznego, która obsługuje od początku do końca przewozy między Wielką Brytanią a Irlandią Północną przez API Trader Support Service (TSS) od HMRC: deklaracje bezpieczeństwa (ENS), uproszczone zgłoszenia graniczne i uzupełniające oraz pełne zgłoszenia graniczne. Dane trafiają na trzy sposoby (e-maile o przesyłkach przez Microsoft Graph, import plików Excel lub ręczne wprowadzanie w portalu), są wyodrębniane, walidowane i wstępnie uzupełniane, więc zespół tylko je sprawdza. Flask na Azure SQL, wdrożony w Dockerze.",
+  "work.calendar": "Mój własny kalendarz, w którym spotyka się wszystko inne z tej strony: kamienie milowe kariery, certyfikaty i urodziny, a do tego zadania z Bubble i treningi — w widoku miesiąca lub roku. Przesuń lub przewiń w bok, by poruszać się w czasie.",
   "work.flow.title": "Platforma operacji celnych",
   "work.gym": "Miesięczny plan treningowy, dzienny dziennik wagi i widok postępów. Mały, szybki i tak samo bezkompromisowy jak ja w dzień nóg.",
   "work.intro": "Mieszanka projektów dla klientów, o których mogę mówić, i rzeczy, które zbudowałem dla siebie, bo chciałem, żeby istniały.",
