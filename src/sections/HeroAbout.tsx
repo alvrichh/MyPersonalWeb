@@ -1,5 +1,5 @@
 import { useI18n, type MessageKey } from '../i18n/I18nContext';
-import { CalendarIcon, DownloadIcon, GitHubIcon, MailIcon, PinIcon } from '../components/icons';
+import { CalendarIcon, DownloadIcon, GitHubIcon, PinIcon } from '../components/icons';
 import { CALENDLY } from '../data/contact';
 
 export function Hero() {
@@ -27,17 +27,13 @@ export function Hero() {
         </p>
 
         <div className="hero-actions">
-          <a className="button button-primary" href="https://github.com/alvrichh" target="_blank" rel="noreferrer">
-            <GitHubIcon />
-            <span>GitHub</span>
-          </a>
-          <a className="button button-ghost" href={CALENDLY} target="_blank" rel="noreferrer">
+          <a className="button button-primary" href={CALENDLY} target="_blank" rel="noreferrer">
             <CalendarIcon />
             <span>{t('hero.call')}</span>
           </a>
-          <a className="button button-ghost" href="#contact">
-            <MailIcon />
-            <span>{t('hero.contact')}</span>
+          <a className="button button-ghost" href="https://github.com/alvrichh" target="_blank" rel="noreferrer">
+            <GitHubIcon />
+            <span>GitHub</span>
           </a>
           <a className="button button-ghost" href="./cv/alvaro-molina-cv.pdf" download>
             <DownloadIcon />
