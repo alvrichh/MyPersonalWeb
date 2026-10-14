@@ -5,7 +5,7 @@ import { Header } from './components/Header';
 import { ScrollProgress, useReveal } from './components/PageEffects';
 import { About, Hero } from './sections/HeroAbout';
 import { Skills, Work } from './sections/Work';
-import { Experience } from './sections/Experience';
+import { Education, Experience } from './sections/Experience';
 import { Contact, Footer, OffTheClock, RadarPreview } from './sections/Closing';
 import { RadarPage } from './sections/RadarPage';
 
@@ -33,6 +33,7 @@ function HomeContent() {
       <Hero />
       <About />
       <Experience />
+      <Education />
       <Work />
       <Skills />
       <RadarPreview />

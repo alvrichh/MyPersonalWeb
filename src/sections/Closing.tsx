@@ -15,7 +15,7 @@ export function RadarPreview() {
   return (
     <section className="section wrap" id="radar" aria-labelledby="radar-title">
       <header className="section-head">
-        <p className="section-index">04</p>
+        <p className="section-index">05</p>
         <h2 id="radar-title">{t('radar.title')}</h2>
         <p className="section-intro">
           <span>{t('radar.intro')}</span>{' '}
@@ -68,7 +68,7 @@ export function OffTheClock() {
 
   return (
     <section className="section wrap off" id="off" aria-labelledby="off-title">
-      <SectionHead index="05" id="off-title" title="off.title" />
+      <SectionHead index="06" id="off-title" title="off.title" />
 
       <div className="off-body">
         <figure className="off-photo">
@@ -111,7 +111,7 @@ export function Contact() {
   const { t } = useI18n();
   return (
     <section className="contact wrap" id="contact" aria-labelledby="contact-title">
-      <p className="section-index">06</p>
+      <p className="section-index">07</p>
       <h2 id="contact-title" className="contact-title">
         <span>{t('contact.titleOne')}</span>
         <em>{t('contact.titleTwo')}</em>

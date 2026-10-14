@@ -18,7 +18,7 @@ export function Work() {
   const { t } = useI18n();
   return (
     <section className="section wrap" id="work" aria-labelledby="work-title">
-      <SectionHead index="02" id="work-title" title="work.title" intro="work.intro" />
+      <SectionHead index="03" id="work-title" title="work.title" intro="work.intro" />
 
       <ol className="work-list">
         {PROJECTS.map((project, index) => {
@@ -61,7 +61,7 @@ export function Skills() {
   const { t } = useI18n();
   return (
     <section className="section wrap" id="skills" aria-labelledby="skills-title">
-      <SectionHead index="03" id="skills-title" title="skills.title" intro="skills.intro" />
+      <SectionHead index="04" id="skills-title" title="skills.title" intro="skills.intro" />
       <dl className="skills-grid">
         {SKILLS.map((skill) => (
           <div key={skill.label}>

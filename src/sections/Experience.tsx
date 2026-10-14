@@ -145,7 +145,6 @@ export function Experience() {
         })}
       </ol>
 
-      <SchoolList title="exp.eduTitle" schools={EDUCATION} />
       <SchoolList title="exp.volTitle" schools={VOLUNTEERING} />
 
       <div className="edu certs">
@@ -171,6 +170,41 @@ export function Experience() {
       </div>
 
       <GithubActivity />
+    </section>
+  );
+}
+
+/** Education as its own section, each school laid out like a job. */
+export function Education() {
+  const { t } = useI18n();
+  return (
+    <section className="section wrap" id="education" aria-labelledby="edu-title">
+      <SectionHead index="02" id="edu-title" title="exp.eduTitle" intro="edu.intro" />
+
+      <ol className="xp-list">
+        {EDUCATION.map((school) => (
+          <li className="xp-item" key={school.name}>
+            <div className="xp-rail" aria-hidden="true">
+              <span className={`xp-logo${school.fill ? ' xp-logo-fill' : ''}`}>
+                <img src={`./images/logos/${school.logo}`} alt="" width={48} height={48} loading="lazy" />
+              </span>
+            </div>
+            <div className="xp-body">
+              <h3 className="xp-role">
+                {t(school.name)}{' '}
+                <span className="xp-company">· {school.url ? <External href={school.url}>{school.org}</External> : school.org}</span>
+              </h3>
+              <p className="xp-meta">{[school.years, school.place && t(`xp.place.${school.place}` as MessageKey)].filter(Boolean).join(' · ')}</p>
+              {school.summary && <p className="xp-summary">{t(school.summary)}</p>}
+              {school.points && (
+                <ul className="xp-points">
+                  {school.points.map((point) => <li key={point}>{t(point)}</li>)}
+                </ul>
+              )}
+            </div>
+          </li>
+        ))}
+      </ol>
     </section>
   );
 }
