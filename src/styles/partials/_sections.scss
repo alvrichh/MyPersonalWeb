@@ -8,6 +8,22 @@
   padding-top: var(--section-gap);
 }
 
+/* A block without its own heading (GitHub, certificates…): half the gap,
+   and its first rule sits right at the top. */
+.section-sub {
+  padding-top: calc(var(--section-gap) * 0.5);
+}
+
+.section-sub > .edu:first-child {
+  margin-top: 0;
+}
+
+/* The project list already ends on a rule; don't draw a second one. */
+#work + .section-sub > .edu:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
 .section-head {
   display: grid;
   grid-template-columns: minmax(0, 1fr);

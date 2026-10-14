@@ -35,10 +35,14 @@ function HomeContent() {
       <About />
       <Experience />
       <Education />
-      <GithubActivity />
+      <section className="section wrap section-sub">
+        <GithubActivity />
+      </section>
       <Work />
-      <Certificates />
-      <Volunteering />
+      <section className="section wrap section-sub">
+        <Certificates />
+        <Volunteering />
+      </section>
       <Skills />
       <RadarPreview />
       <OffTheClock />
