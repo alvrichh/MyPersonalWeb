@@ -13,6 +13,8 @@
   "edu.daw.bio": "Two years of hands-on practice with architecture, design patterns, databases, APIs and containers. Documenting every project made me sharper at solving problems.",
   "edu.daw.summary": "Advanced full-stack web development: designing, building and deploying modern applications from both the frontend and the backend.",
   "edu.intro": "Five years of engineering for the foundations, two of web development for the craft, studied at the same time as I worked.",
+  "edu.less": "Fewer details",
+  "edu.more": "More details",
   "edu.us.bio": "Studying maths, electronics and programming taught me that web development was my thing: how to structure data, and how the hardware underneath fits together.",
   "edu.us.p1": "First year: programming, digital electronic circuits, physics of computing, discrete maths, calculus, linear algebra, statistics, business administration and computer structure.",
   "edu.us.p2": "Second year: design and analysis of data and algorithms, introduction to software engineering and information systems, computer logic, networks, operating systems, computer architecture and software architecture and integration.",
