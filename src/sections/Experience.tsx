@@ -201,6 +201,11 @@ export function Education() {
                   {school.points.map((point) => <li key={point}>{t(point)}</li>)}
                 </ul>
               )}
+              {school.tags && (
+                <ul className="xp-tags" aria-label={school.tagsLabel ?? 'Technologies'}>
+                  {school.tags.map((tag) => <li key={tag}>{tag}</li>)}
+                </ul>
+              )}
             </div>
           </li>
         ))}
