@@ -21,7 +21,7 @@ export type Project = {
 export const PROJECTS: Project[] = [
   {
     title: 'MonsterBroker',
-    href: 'https://github.com/alvrichh/MonsterBroker',
+    href: 'https://monsterbroker.onrender.com',
     external: true,
     summary: 'work.monster',
     stack: 'Python · FastAPI · React · Vite · JWT · Docker · Claude API',
@@ -31,7 +31,7 @@ export const PROJECTS: Project[] = [
   },
   {
     title: 'Stratton.app',
-    href: 'https://github.com/alvrichh/Stratton.app-FCT-DAW',
+    href: 'https://strattonapp-front.onrender.com',
     external: true,
     summary: 'work.strattonApp',
     stack: 'Java · Spring Boot · Spring Security · Angular',
