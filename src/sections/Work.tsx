@@ -18,7 +18,18 @@ export function Work() {
   const { t } = useI18n();
   return (
     <section className="section wrap" id="work" aria-labelledby="work-title">
-      <SectionHead index="02" id="work-title" title="work.title" intro="work.intro" />
+      <SectionHead
+        index="02"
+        id="work-title"
+        title="work.title"
+        intro="work.intro"
+        action={(
+          <a className="section-action" href="./ai-radar.html">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h11a2 2 0 0 1 2 2v12a2 2 0 0 0 2 2H7a2 2 0 0 1-2-2zM18 9h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2M8 9h7M8 13h7M8 17h4" /></svg>
+            News <span aria-hidden="true">↗</span>
+          </a>
+        )}
+      />
 
       <ol className="work-list">
         {PROJECTS.map((project, index) => {
