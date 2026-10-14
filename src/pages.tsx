@@ -5,7 +5,8 @@ import { Header } from './components/Header';
 import { ScrollProgress, useReveal } from './components/PageEffects';
 import { About, Hero } from './sections/HeroAbout';
 import { Skills, Work } from './sections/Work';
-import { Education, Experience } from './sections/Experience';
+import { Certificates, Education, Experience, Volunteering } from './sections/Experience';
+import { GithubActivity } from './sections/GithubActivity';
 import { Contact, Footer, OffTheClock, RadarPreview } from './sections/Closing';
 import { RadarPage } from './sections/RadarPage';
 
@@ -34,7 +35,10 @@ function HomeContent() {
       <About />
       <Experience />
       <Education />
+      <GithubActivity />
       <Work />
+      <Certificates />
+      <Volunteering />
       <Skills />
       <RadarPreview />
       <OffTheClock />

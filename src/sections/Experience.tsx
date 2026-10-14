@@ -145,31 +145,7 @@ export function Experience() {
         })}
       </ol>
 
-      <SchoolList title="exp.volTitle" schools={VOLUNTEERING} />
 
-      <div className="edu certs">
-        <h3 className="edu-title">{t('exp.certsTitle')}</h3>
-        <ul className="cert-list">
-          {CERTIFICATES.map((cert) => (
-            <li key={cert.name}>
-              <a className={`cert${cert.thumb ? ' has-thumb' : ''}`} href={cert.url} target="_blank" rel="noreferrer">
-                {cert.thumb ? (
-                  <img className="cert-thumb" src={`./images/certs/${cert.thumb}`} alt={`Certificado: ${cert.name}`} width={72} height={51} loading="lazy" />
-                ) : (
-                  <img src={`./images/logos/${cert.issuer === 'LinkedIn' ? 'linkedin.svg' : 'openwebinars.png'}`} alt="" width={28} height={28} loading="lazy" />
-                )}
-                <span className="cert-copy">
-                  <span className="cert-name">{cert.name}</span>
-                  <span className="cert-meta">{cert.issuer} · {cert.year}</span>
-                </span>
-                <span className="xp-ext" aria-hidden="true">↗</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <GithubActivity />
     </section>
   );
 }
@@ -215,5 +191,43 @@ export function Education() {
         ))}
       </ol>
     </section>
+  );
+}
+
+
+/** Volunteering: listed like schools. */
+function Volunteering() {
+  const { t } = useI18n();
+  return <SchoolList title="exp.volTitle" schools={VOLUNTEERING} />;
+}
+
+export { Volunteering };
+
+
+/** Certificates and credentials. */
+export function Certificates() {
+  const { t } = useI18n();
+  return (
+    <div className="edu certs">
+      <h3 className="edu-title">{t('exp.certsTitle')}</h3>
+      <ul className="cert-list">
+        {CERTIFICATES.map((cert) => (
+          <li key={cert.name}>
+            <a className={`cert${cert.thumb ? ' has-thumb' : ''}`} href={cert.url} target="_blank" rel="noreferrer">
+              {cert.thumb ? (
+                <img className="cert-thumb" src={`./images/certs/${cert.thumb}`} alt={`Certificado: ${cert.name}`} width={72} height={51} loading="lazy" />
+              ) : (
+                <img src={`./images/logos/${cert.issuer === 'LinkedIn' ? 'linkedin.svg' : 'openwebinars.png'}`} alt="" width={28} height={28} loading="lazy" />
+              )}
+              <span className="cert-copy">
+                <span className="cert-name">{cert.name}</span>
+                <span className="cert-meta">{cert.issuer} · {cert.year}</span>
+              </span>
+              <span className="xp-ext" aria-hidden="true">↗</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
