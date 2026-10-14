@@ -174,39 +174,28 @@ export function Experience() {
   );
 }
 
-/** Education as its own section, each school laid out like a job. */
+/** Education as its own section: one column per school, side by side. */
 export function Education() {
   const { t } = useI18n();
   return (
     <section className="section wrap" id="education" aria-labelledby="edu-title">
       <SectionHead index="02" id="edu-title" title="exp.eduTitle" intro="edu.intro" />
 
-      <ol className="xp-list">
+      <ol className="edu-columns">
         {EDUCATION.map((school) => (
-          <li className="xp-item" key={school.name}>
-            <div className="xp-rail" aria-hidden="true">
-              <span className={`xp-logo${school.fill ? ' xp-logo-fill' : ''}`}>
-                <img src={`./images/logos/${school.logo}`} alt="" width={48} height={48} loading="lazy" />
-              </span>
-            </div>
-            <div className="xp-body">
-              <h3 className="xp-role">
-                {t(school.name)}{' '}
-                <span className="xp-company">· {school.url ? <External href={school.url}>{school.org}</External> : school.org}</span>
-              </h3>
-              <p className="xp-meta">{[school.years, school.place && t(`xp.place.${school.place}` as MessageKey)].filter(Boolean).join(' · ')}</p>
-              {school.summary && <p className="xp-summary">{t(school.summary)}</p>}
-              {school.points && (
-                <ul className="xp-points">
-                  {school.points.map((point) => <li key={point}>{t(point)}</li>)}
-                </ul>
-              )}
-              {school.tags && (
-                <ul className="xp-tags" aria-label={school.tagsLabel ?? 'Technologies'}>
-                  {school.tags.map((tag) => <li key={tag}>{tag}</li>)}
-                </ul>
-              )}
-            </div>
+          <li className="edu-col" key={school.name}>
+            <span className={`xp-logo${school.fill ? ' xp-logo-fill' : ''}`}>
+              <img src={`./images/logos/${school.logo}`} alt="" width={48} height={48} loading="lazy" />
+            </span>
+            <h3 className="edu-col-name">{t(school.name)}</h3>
+            <p className="edu-col-org">{school.url ? <External href={school.url}>{school.org}</External> : school.org}</p>
+            <p className="xp-meta">{[school.years, school.place && t(`xp.place.${school.place}` as MessageKey)].filter(Boolean).join(' · ')}</p>
+            {school.summary && <p className="edu-col-summary">{t(school.summary)}</p>}
+            {school.tags && (
+              <ul className="xp-tags" aria-label={school.tagsLabel ?? 'Technologies'}>
+                {school.tags.map((tag) => <li key={tag}>{tag}</li>)}
+              </ul>
+            )}
           </li>
         ))}
       </ol>

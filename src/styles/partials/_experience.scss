@@ -284,3 +284,52 @@
   font-weight: 500;
   line-height: 1.35;
 }
+
+/* Education: one column per school, ruled like the facts row in About. */
+.edu-columns {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid var(--ink);
+}
+
+.edu-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 28px 28px 8px 0;
+}
+
+.edu-col + .edu-col {
+  padding-left: 28px;
+  border-left: 1px solid var(--rule);
+}
+
+.edu-col-name {
+  margin-top: 18px;
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 1.8vw, 1.35rem);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.edu-col-org {
+  margin-top: 6px;
+  font-weight: 500;
+  /* Long school names break evenly, so the ↗ never sits alone on a line. */
+  text-wrap: balance;
+}
+
+.edu-col .xp-meta {
+  margin-top: 4px;
+}
+
+.edu-col-summary {
+  margin-top: 14px;
+  color: var(--ink-soft);
+}
+
+.edu-col .xp-tags {
+  margin-top: auto;
+  padding-top: 18px;
+}

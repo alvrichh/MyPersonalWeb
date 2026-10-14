@@ -154,9 +154,8 @@ export type School = {
   /** Round logos already trimmed to their circle fill it edge to edge. */
   fill?: boolean;
   note?: MessageKey;
-  /** Used by the Education section, which shows schools like jobs. */
+  /** Shown in the Education section's columns. */
   summary?: MessageKey;
-  points?: MessageKey[];
   place?: 'seville';
   /** What I learned or worked with, shown as chips like a job's tags. */
   tags?: string[];
@@ -166,17 +165,22 @@ export type School = {
 export const EDUCATION: School[] = [
   {
     name: 'exp.eduOne', org: 'Universidad de Sevilla · ETSII', url: 'https://www.us.es/', years: '2019 — 2024', logo: 'universidad-sevilla.png', fill: true,
-    place: 'seville', summary: 'edu.us.summary', points: ['edu.us.p1', 'edu.us.p2', 'edu.us.p3', 'edu.us.p4'],
-    tags: ['Programming', 'Statistics', 'Discrete Mathematics', 'Calculus', 'Algebra', 'Electronic Circuits', 'Verilog', 'HDL', 'RSA', 'Linux'],
+    place: 'seville', summary: 'edu.us.summary',
+    tags: ['Programming', 'Discrete Mathematics', 'Calculus', 'Statistics', 'Electronic Circuits', 'Verilog'],
     tagsLabel: 'Core subjects',
   },
   {
     name: 'exp.eduTwo', org: 'IES Alixar', url: 'https://iesalixar.org/', years: '2022 — 2024', logo: 'ies-alixar.png', fill: true,
-    place: 'seville', summary: 'edu.daw.summary', points: ['edu.daw.p1', 'edu.daw.p2', 'edu.daw.p3', 'edu.daw.p4'],
-    tags: ['Java', 'JavaScript', 'Python', 'HTML5', 'CSS', 'Spring Boot', 'Angular', 'React', 'Node.js', 'Django', 'Docker', 'AWS', 'SQL', 'JSP', 'JPA', 'Thymeleaf', 'Maven', 'Servlets'],
+    place: 'seville', summary: 'edu.daw.summary',
+    tags: ['Java', 'Spring Boot', 'Angular', 'React', 'Docker', 'SQL'],
     tagsLabel: 'Technologies',
   },
-  { name: 'exp.eduThree', org: 'Inmaculado Corazón de María Portaceli', url: 'https://portaceli.com/', years: '2017 — 2019', logo: 'portaceli.png', place: 'seville' },
+  {
+    name: 'exp.eduThree', org: 'Inmaculado Corazón de María Portaceli', url: 'https://fundacionloyola.com/portaceli/', years: '2017 — 2019', logo: 'portaceli.png',
+    place: 'seville', summary: 'edu.bach.summary',
+    tags: ['Mathematics', 'Physics', 'Technical Drawing', 'Industrial Technology', 'ICT'],
+    tagsLabel: 'Core subjects',
+  },
 ];
 
 export const VOLUNTEERING: School[] = [
