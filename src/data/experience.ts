@@ -171,7 +171,12 @@ export const EDUCATION: School[] = [
     name: 'exp.eduOne', org: 'Universidad de Sevilla · ETSII', url: 'https://www.us.es/', years: '2019 — 2024', logo: 'universidad-sevilla.png', fill: true,
     place: 'seville', summary: 'edu.us.summary', bio: 'edu.us.bio',
     points: ['edu.us.p1', 'edu.us.p2', 'edu.us.p3', 'edu.us.p4'],
-    tags: ['Programming', 'Statistics', 'Discrete Mathematics', 'Calculus', 'Algebra', 'Electronic Circuits', 'Verilog', 'HDL', 'RSA', 'Linux'],
+    tags: [
+      'Programming', 'Statistics', 'Discrete Mathematics', 'Calculus', 'Linear Algebra', 'Digital Electronic Circuits', 'Verilog', 'HDL', 'RSA', 'Linux',
+      'Data & Algorithms', 'Computer Logic', 'Operating Systems', 'Computer Networks', 'Computer Architecture', 'Software Architecture',
+      'Requirements Engineering', 'Design & Testing', 'Software Process', 'Project Management', 'Configuration Management',
+      'Artificial Intelligence', 'Numerical Modelling', 'Graphical Modelling',
+    ],
     tagsLabel: 'Core subjects',
   },
   {
