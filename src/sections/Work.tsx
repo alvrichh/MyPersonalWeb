@@ -1,12 +1,14 @@
+import type { ReactNode } from 'react';
 import { useI18n, type MessageKey } from '../i18n/I18nContext';
 import { PROJECTS, SKILLS } from '../data/work';
 
-export function SectionHead({ index, id, title, intro }: { index: string; id: string; title: MessageKey; intro?: MessageKey }) {
+export function SectionHead({ index, id, title, intro, action }: { index: string; id: string; title: MessageKey; intro?: MessageKey; action?: ReactNode }) {
   const { t } = useI18n();
   return (
-    <header className="section-head">
+    <header className={`section-head${action ? ' has-action' : ''}`}>
       <p className="section-index">{index}</p>
       <h2 id={id}>{t(title)}</h2>
+      {action}
       {intro && <p className="section-intro">{t(intro)}</p>}
     </header>
   );

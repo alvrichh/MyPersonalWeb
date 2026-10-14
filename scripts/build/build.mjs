@@ -50,6 +50,9 @@ if (!existsSync(viteBin)) {
   run(npmBin, ['ci']);
 }
 
+// Fresh GitHub contributions for the activity graph (keeps the saved copy if offline).
+run(process.execPath, [join(rootDir, 'scripts', 'build', 'github-contributions.mjs')]);
+
 // Client bundle, then the server renderer, then fill the pages with real HTML.
 run(viteBin, ['build']);
 run(viteBin, ['build', '--ssr', 'src/server.tsx']);

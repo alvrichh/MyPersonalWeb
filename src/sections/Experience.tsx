@@ -3,6 +3,7 @@ import { CERTIFICATES, EDUCATION, JOBS, VOLUNTEERING, type Period, type Role, ty
 import { formatDuration, formatMonth, monthIndex, thisMonth } from '../lib/format';
 import { InstagramIcon } from '../components/icons';
 import { SectionHead } from './Work';
+import { GithubActivity } from './GithubActivity';
 
 /** "Jan 2026 – Present · 10 months · Full-time · Ireland · Remote" */
 function PeriodLine({ period }: { period: Period }) {
@@ -75,7 +76,18 @@ export function Experience() {
   const { t } = useI18n();
   return (
     <section className="section wrap" id="experience" aria-labelledby="exp-title">
-      <SectionHead index="01" id="exp-title" title="exp.title" intro="exp.intro" />
+      <SectionHead
+        index="01"
+        id="exp-title"
+        title="exp.title"
+        intro="exp.intro"
+        action={(
+          <a className="section-action" href="./calendar.html">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zM16 3v4M8 3v4M4 11h16" /></svg>
+            {t('exp.calendarLink')} <span aria-hidden="true">↗</span>
+          </a>
+        )}
+      />
 
       <ol className="xp-list">
         {JOBS.map((job) => {
@@ -157,6 +169,8 @@ export function Experience() {
           ))}
         </ul>
       </div>
+
+      <GithubActivity />
     </section>
   );
 }
