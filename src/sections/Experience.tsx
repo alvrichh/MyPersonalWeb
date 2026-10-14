@@ -152,7 +152,7 @@ export function Education() {
   const { t } = useI18n();
   return (
     <section className="section wrap" id="education" aria-labelledby="edu-title">
-      <SectionHead index="02" id="edu-title" title="exp.eduTitle" intro="edu.intro" />
+      <SectionHead index="04" id="edu-title" title="exp.eduTitle" intro="edu.intro" />
 
       <ol className="edu-columns">
         {EDUCATION.map((school) => (
