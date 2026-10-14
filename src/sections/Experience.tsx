@@ -3,7 +3,6 @@ import { CERTIFICATES, EDUCATION, JOBS, VOLUNTEERING, type Period, type Role, ty
 import { formatDuration, formatMonth, monthIndex, thisMonth } from '../lib/format';
 import { InstagramIcon } from '../components/icons';
 import { SectionHead } from './Work';
-import { GithubActivity } from './GithubActivity';
 
 /** "Jan 2026 – Present · 10 months · Full-time · Ireland · Remote" */
 function PeriodLine({ period }: { period: Period }) {
@@ -197,7 +196,6 @@ export function Education() {
 
 /** Volunteering: listed like schools. */
 function Volunteering() {
-  const { t } = useI18n();
   return <SchoolList title="exp.volTitle" schools={VOLUNTEERING} />;
 }
 
