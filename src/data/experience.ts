@@ -154,12 +154,22 @@ export type School = {
   /** Round logos already trimmed to their circle fill it edge to edge. */
   fill?: boolean;
   note?: MessageKey;
+  /** Used by the Education section, which shows schools like jobs. */
+  summary?: MessageKey;
+  points?: MessageKey[];
+  place?: 'seville';
 };
 
 export const EDUCATION: School[] = [
-  { name: 'exp.eduOne', org: 'Universidad de Sevilla', url: 'https://www.us.es/', years: '2019 — 2024', logo: 'universidad-sevilla.png', fill: true },
-  { name: 'exp.eduTwo', org: 'IES Alixar', url: 'https://iesalixar.org/', years: '2022 — 2024', logo: 'ies-alixar.png', fill: true },
-  { name: 'exp.eduThree', org: 'Inmaculado Corazón de María Portaceli', url: 'https://portaceli.com/', years: '2017 — 2019', logo: 'portaceli.png' },
+  {
+    name: 'exp.eduOne', org: 'Universidad de Sevilla · ETSII', url: 'https://www.us.es/', years: '2019 — 2024', logo: 'universidad-sevilla.png', fill: true,
+    place: 'seville', summary: 'edu.us.summary', points: ['edu.us.p1', 'edu.us.p2', 'edu.us.p3', 'edu.us.p4'],
+  },
+  {
+    name: 'exp.eduTwo', org: 'IES Alixar', url: 'https://iesalixar.org/', years: '2022 — 2024', logo: 'ies-alixar.png', fill: true,
+    place: 'seville', summary: 'edu.daw.summary', points: ['edu.daw.p1', 'edu.daw.p2', 'edu.daw.p3', 'edu.daw.p4'],
+  },
+  { name: 'exp.eduThree', org: 'Inmaculado Corazón de María Portaceli', url: 'https://portaceli.com/', years: '2017 — 2019', logo: 'portaceli.png', place: 'seville' },
 ];
 
 export const VOLUNTEERING: School[] = [
