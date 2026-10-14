@@ -1,79 +1,116 @@
 {
-  "generatedAt": "2026-10-13T15:31:18.081Z",
+  "generatedAt": "2026-10-14T13:16:40.237Z",
   "candidates": [
-    {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Epic shifts to &#8216;AI-accelerated development&#8217; for upcoming Disney game",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/games/1010097/epic-games-disney-project-ai-coding-art",
-          "date": "2026-10-13"
-        },
-        {
-          "title": "Secret protection must scale with software",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/secret-protection-must-scale-with-software/",
-          "date": "2026-10-07"
-        },
-        {
-          "title": "AI is changing developer work. Here are three skills to strengthen.",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/ai-is-rewriting-the-developer-career-ladder-heres-how-to-stand-out/",
-          "date": "2026-10-02"
-        }
-      ]
-    },
-    {
-      "label": "Claude research and documentation flow",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Epic shifts to &#8216;AI-accelerated development&#8217; for upcoming Disney game",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/games/1010097/epic-games-disney-project-ai-coding-art",
-          "date": "2026-10-13"
-        }
-      ]
-    },
     {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "GitHub Copilot app for Beginners: How to teach Copilot about your codebase",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-teach-copilot-about-your-codebase/",
-          "date": "2026-10-12"
+          "title": "The EU’s next chapter in AI is agentic",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/the-eus-next-chapter-in-ai-is-agentic",
+          "date": "2026-10-14"
         },
         {
-          "title": "Meta has some Wonder Full new AI models",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1009479/meta-muse-wonder-full-ai-model",
-          "date": "2026-10-12"
+          "title": "Building agents that transact with Anchor Browser and AgentCore payments",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/building-agents-that-transact-with-anchor-browser-and-agentcore-payments/",
+          "date": "2026-10-13"
         },
         {
-          "title": "Microsoft’s new AI chip makes it less reliant on Nvidia’s GPUs",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/news/1009465/microsoft-maia-300-chip-improvements-rollout",
-          "date": "2026-10-12"
+          "title": "Natural language security queries at Orca Security using Amazon Bedrock",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/natural-language-security-queries-at-orca-security-using-amazon-bedrock/",
+          "date": "2026-10-13"
         }
       ]
     },
     {
-      "label": "MCP / tool-connected assistants",
+      "label": "AI developer tooling",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "GitHub Copilot app for Beginners: How to teach Copilot about your codebase",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-teach-copilot-about-your-codebase/",
-          "date": "2026-10-12"
+          "title": "Gemini 4 Argon begins rolling out in Gemini app and Antigravity, but only if you pay",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/ai/2026/10/gemini-4-argon-begins-rolling-out-in-gemini-app-and-antigravity-but-only-if-you-pay/",
+          "date": "2026-10-13"
+        },
+        {
+          "title": "Gemini 4 Argon: Built to solve your hardest problems",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-argon/",
+          "date": "2026-10-13"
+        },
+        {
+          "title": "NVIDIA Run:ai Is Now Open Source as Part of NVIDIA DSX AI Factory Platform",
+          "source": "NVIDIA Developer",
+          "link": "https://developer.nvidia.com/blog/nvidia-runai-is-now-open-source-as-part-of-nvidia-dsx-ai-factory-platform/",
+          "date": "2026-10-13"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Gemini 4 Argon begins rolling out in Gemini app and Antigravity, but only if you pay",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/ai/2026/10/gemini-4-argon-begins-rolling-out-in-gemini-app-and-antigravity-but-only-if-you-pay/",
+          "date": "2026-10-13"
+        },
+        {
+          "title": "Gemini 4 Argon in GitHub Copilot",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-10-13-gemini-4-argon-in-github-copilot",
+          "date": "2026-10-13"
+        },
+        {
+          "title": "Gemini 4 Argon: Built to solve your hardest problems",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-argon/",
+          "date": "2026-10-13"
+        }
+      ]
+    },
+    {
+      "label": "AI automation and workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Manage private pricing offers for Amazon Bedrock with managed entitlements",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/manage-private-pricing-offers-for-amazon-bedrock-with-managed-entitlements/",
+          "date": "2026-10-13"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Gemini 4 Argon in GitHub Copilot",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-10-13-gemini-4-argon-in-github-copilot",
+          "date": "2026-10-13"
+        },
+        {
+          "title": "Redesigning source control at Anthropic",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/13/redesigning-source-control-at-anthropic/",
+          "date": "2026-10-13"
+        },
+        {
+          "title": "Quoting Geoffrey Huntley",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/13/geoffrey-huntley/",
+          "date": "2026-10-13"
         }
       ]
     },
@@ -83,22 +120,47 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "Gemini 4 Argon in GitHub Copilot",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-10-13-gemini-4-argon-in-github-copilot",
+          "date": "2026-10-13"
+        },
+        {
+          "title": "Enterprise managed settings enforcement updates",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-10-13-enterprise-managed-settings-enforcement-updates",
+          "date": "2026-10-13"
+        },
+        {
           "title": "GitHub Copilot app for Beginners: How to teach Copilot about your codebase",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-teach-copilot-about-your-codebase/",
           "date": "2026-10-12"
+        }
+      ]
+    },
+    {
+      "label": "Claude research and documentation flow",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Redesigning source control at Anthropic",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/13/redesigning-source-control-at-anthropic/",
+          "date": "2026-10-13"
         },
         {
-          "title": "GitHub Copilot app for Beginners: How to build custom workflows with canvases",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-build-custom-workflows-with-canvases/",
-          "date": "2026-09-25"
+          "title": "llm-gemini 0.35",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/13/llm-gemini/",
+          "date": "2026-10-13"
         },
         {
-          "title": "Rendering huge pull requests in the GitHub Copilot app",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/engineering/user-experience/rendering-huge-pull-requests-in-the-github-copilot-app/",
-          "date": "2026-09-23"
+          "title": "web-edit 0.1a1",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/13/web-edit/",
+          "date": "2026-10-13"
         }
       ]
     },
@@ -107,6 +169,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "llm-gemini 0.35",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/13/llm-gemini/",
+          "date": "2026-10-13"
+        },
         {
           "title": "How Oracle turns days of work into minutes with ChatGPT and Codex",
           "source": "OpenAI News",
@@ -117,12 +185,6 @@
           "title": "Helping teens learn, plan, and shape the future of AI",
           "source": "OpenAI News",
           "link": "https://openai.com/index/teens-learn-and-plan",
-          "date": "2026-10-07"
-        },
-        {
-          "title": "Radisson Hotel Group brings hotel discovery into ChatGPT",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/radisson",
           "date": "2026-10-07"
         }
       ]
