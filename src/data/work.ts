@@ -1,6 +1,7 @@
 import type { MessageKey } from '../i18n/I18nContext';
 
-// Selected work, in the order it appears on the home page.
+// Selected work, from the most substantial project to the smallest; this is
+// also the order on the home page.
 
 export type Project = {
   /** A literal name, or a message key when the name is translated. */
@@ -42,7 +43,7 @@ export const PROJECTS: Project[] = [
     external: true,
     summary: 'work.monster',
     stack: 'Python · FastAPI · React · Vite · JWT · Docker · Claude API',
-    year: '2026',
+    year: '2023 –',
     status: 'work.open',
     image: './images/projects/monsterbroker.jpg',
   },
@@ -55,6 +56,35 @@ export const PROJECTS: Project[] = [
     year: '2026',
     status: 'work.liveSite',
     image: './images/projects/butakeando.jpg',
+  },
+  {
+    title: 'Live AI Radar',
+    href: './ai-radar.html',
+    summary: 'work.radar',
+    stack: 'Node.js · GitHub Actions · RSS · JSON',
+    year: '2026',
+    status: 'work.live',
+    image: './images/projects/radar.jpg',
+  },
+  {
+    title: 'This site',
+    href: 'https://github.com/alvrichh/MyPersonalWeb',
+    external: true,
+    summary: 'work.site',
+    stack: 'React · TypeScript · SCSS · Vite · GitHub Actions · Vercel',
+    year: '2024 –',
+    status: 'work.open',
+    image: './images/projects/portfolio.jpg',
+  },
+  {
+    title: 'Stratton.app',
+    href: 'https://github.com/alvrichh/Stratton.app-FCT-DAW',
+    external: true,
+    summary: 'work.strattonApp',
+    stack: 'Java · Spring Boot · Spring Security · Angular',
+    year: '2024',
+    status: 'work.degree',
+    image: './images/projects/stratton-app.jpg',
   },
   {
     title: 'Spain Motorcars',
@@ -75,15 +105,6 @@ export const PROJECTS: Project[] = [
     year: '2026',
     status: 'work.liveSite',
     image: './images/projects/devoo.jpg',
-  },
-  {
-    title: 'Live AI Radar',
-    href: './ai-radar.html',
-    summary: 'work.radar',
-    stack: 'Node.js · GitHub Actions · RSS · JSON',
-    year: '2026',
-    status: 'work.live',
-    image: './images/projects/radar.jpg',
   },
   {
     title: { key: 'off.calTitle' },
@@ -111,26 +132,6 @@ export const PROJECTS: Project[] = [
     year: '2026',
     status: 'work.personal',
     image: './images/projects/gym.jpg',
-  },
-  {
-    title: 'This site',
-    href: 'https://github.com/alvrichh/MyPersonalWeb',
-    external: true,
-    summary: 'work.site',
-    stack: 'React · TypeScript · SCSS · Vite · GitHub Actions · Vercel',
-    year: '2024 –',
-    status: 'work.open',
-    image: './images/projects/portfolio.jpg',
-  },
-  {
-    title: 'Stratton.app',
-    href: 'https://github.com/alvrichh/Stratton.app-FCT-DAW',
-    external: true,
-    summary: 'work.strattonApp',
-    stack: 'Java · Spring Boot · Spring Security · Angular',
-    year: '2024',
-    status: 'work.degree',
-    image: './images/projects/stratton-app.jpg',
   },
 ];
 
