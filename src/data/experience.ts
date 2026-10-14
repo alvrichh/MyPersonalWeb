@@ -157,6 +157,8 @@ export type School = {
   /** Shown in the Education section's columns. */
   summary?: MessageKey;
   place?: 'seville';
+  /** A short paragraph about the years, shown under the summary. */
+  bio?: MessageKey;
   /** What I learned or worked with, shown as chips like a job's tags. */
   tags?: string[];
   tagsLabel?: string;
@@ -165,14 +167,14 @@ export type School = {
 export const EDUCATION: School[] = [
   {
     name: 'exp.eduOne', org: 'Universidad de Sevilla · ETSII', url: 'https://www.us.es/', years: '2019 — 2024', logo: 'universidad-sevilla.png', fill: true,
-    place: 'seville', summary: 'edu.us.summary',
-    tags: ['Programming', 'Discrete Mathematics', 'Calculus', 'Statistics', 'Electronic Circuits', 'Verilog'],
+    place: 'seville', summary: 'edu.us.summary', bio: 'edu.us.bio',
+    tags: ['Programming', 'Statistics', 'Discrete Mathematics', 'Calculus', 'Algebra', 'Electronic Circuits', 'Verilog', 'HDL', 'RSA', 'Linux'],
     tagsLabel: 'Core subjects',
   },
   {
     name: 'exp.eduTwo', org: 'IES Alixar', url: 'https://iesalixar.org/', years: '2022 — 2024', logo: 'ies-alixar.png', fill: true,
-    place: 'seville', summary: 'edu.daw.summary',
-    tags: ['Java', 'Spring Boot', 'Angular', 'React', 'Docker', 'SQL'],
+    place: 'seville', summary: 'edu.daw.summary', bio: 'edu.daw.bio',
+    tags: ['Java', 'JavaScript', 'Python', 'HTML5', 'CSS', 'Spring Boot', 'Angular', 'React', 'Node.js', 'Django', 'Docker', 'AWS', 'SQL', 'JSP', 'JPA', 'Thymeleaf', 'Maven', 'Servlets'],
     tagsLabel: 'Technologies',
   },
   {
