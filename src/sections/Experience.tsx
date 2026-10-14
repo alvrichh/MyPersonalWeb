@@ -191,6 +191,7 @@ export function Education() {
             <p className="edu-col-org">{school.url ? <External href={school.url}>{school.org}</External> : school.org}</p>
             <p className="xp-meta">{[school.years, school.place && t(`xp.place.${school.place}` as MessageKey)].filter(Boolean).join(' · ')}</p>
             {school.summary && <p className="edu-col-summary">{t(school.summary)}</p>}
+            {school.bio && <p className="edu-col-bio">{t(school.bio)}</p>}
             {school.tags && (
               <ul className="xp-tags" aria-label={school.tagsLabel ?? 'Technologies'}>
                 {school.tags.map((tag) => <li key={tag}>{tag}</li>)}
