@@ -170,6 +170,7 @@ export const EDUCATION: School[] = [
   {
     name: 'exp.eduOne', org: 'Universidad de Sevilla · ETSII', url: 'https://www.us.es/', years: '2019 — 2024', logo: 'universidad-sevilla.png', fill: true,
     place: 'seville', summary: 'edu.us.summary', bio: 'edu.us.bio',
+    points: ['edu.us.p1', 'edu.us.p2', 'edu.us.p3', 'edu.us.p4'],
     tags: ['Programming', 'Statistics', 'Discrete Mathematics', 'Calculus', 'Algebra', 'Electronic Circuits', 'Verilog', 'HDL', 'RSA', 'Linux'],
     tagsLabel: 'Core subjects',
   },
