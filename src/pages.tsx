@@ -34,16 +34,16 @@ function HomeContent() {
       <Hero />
       <About />
       <Experience />
-      <Education />
+      <Work />
       <section className="section wrap section-sub">
         <GithubActivity />
       </section>
-      <Work />
+      <Skills />
+      <Education />
       <section className="section wrap section-sub">
         <Certificates />
         <Volunteering />
       </section>
-      <Skills />
       <RadarPreview />
       <OffTheClock />
       <Contact />

@@ -7,9 +7,9 @@ import { MobileMenu } from './MobileMenu';
 export const NAV: { id: string; label: MessageKey }[] = [
   { id: 'about', label: 'nav.about' },
   { id: 'experience', label: 'nav.experience' },
-  { id: 'education', label: 'nav.education' },
   { id: 'work', label: 'nav.work' },
   { id: 'skills', label: 'nav.skills' },
+  { id: 'education', label: 'nav.education' },
   { id: 'contact', label: 'nav.contact' },
 ];
 

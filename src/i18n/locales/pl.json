@@ -144,7 +144,7 @@
   "work.butakeando": "Sklep internetowy full stack z fotelami i sofami: Stripe Checkout z podpisanymi webhookami, zamówienia zapisywane dopiero po potwierdzeniu płatności, PostgreSQL i powiadomienia e-mail, całość jako jedna aplikacja w Dockerze.",
   "work.calendar": "Mój własny kalendarz, w którym spotyka się wszystko inne z tej strony: kamienie milowe kariery, certyfikaty i urodziny, a do tego zadania z Bubble — w widoku miesiąca lub roku. Przesuń lub przewiń w bok, by poruszać się w czasie.",
   "work.degree": "Projekt dyplomowy",
-  "work.devoo": "Landing page i frontend sklepu dla DEVOO Imports, importera premium śródziemnomorskiej oliwy z oliwek, z animacjami GSAP sterowanymi przewijaniem oraz treścią i katalogiem ładowanymi z JSON.",
+  "work.devoo": "Landing page i frontend sklepu dla DEVOO Imports, greckiego klienta z ogromnymi gajami oliwnymi na południu Grecji, którego przedstawił mi znajomy z Teksasu. Animacje GSAP sterowane przewijaniem, treść i katalog ładowane z JSON.",
   "work.flow.title": "Platforma operacji celnych",
   "work.gym": "Miesięczny plan treningowy, dzienny dziennik wagi i widok postępów. Mały, szybki i tak samo bezkompromisowy jak ja w dzień nóg.",
   "work.intro": "Mieszanka projektów dla klientów, o których mogę mówić, i rzeczy, które zbudowałem dla siebie, bo chciałem, żeby istniały.",
