@@ -6,10 +6,12 @@ export function Hero() {
   return (
     <section className="hero wrap" id="top">
       <div className="hero-copy">
+        {/* Hidden for now; uncomment to show "Open to new opportunities" again.
         <p className="status-pill">
           <span className="status-dot" aria-hidden="true" />
           <span>{t('hero.status')}</span>
         </p>
+        */}
 
         <h1 className="hero-name">
           <span>Álvaro</span>
