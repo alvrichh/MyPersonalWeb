@@ -84,6 +84,20 @@
   text-align: right;
 }
 
+.work-thumb {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 0 0 1px var(--rule), var(--shadow);
+  transition: transform 0.4s var(--ease-out);
+}
+
+.work-item:hover .work-thumb {
+  transform: translateY(-3px) rotate(-1deg);
+}
+
 .work-year {
   color: var(--ink);
 }

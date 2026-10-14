@@ -14,6 +14,8 @@ export type Project = {
   status: MessageKey;
   /** Private client work: the status is shown in the accent colour. */
   private?: boolean;
+  /** Screenshot or cover, 960×600, under static/images/projects/. */
+  image?: string;
 };
 
 export const PROJECTS: Project[] = [
@@ -35,12 +37,53 @@ export const PROJECTS: Project[] = [
     private: true,
   },
   {
+    title: 'MonsterBroker',
+    href: 'https://github.com/alvrichh/MonsterBroker',
+    external: true,
+    summary: 'work.monster',
+    stack: 'Python · FastAPI · React · Vite · JWT · Docker · Claude API',
+    year: '2026',
+    status: 'work.open',
+    image: './images/projects/monsterbroker.jpg',
+  },
+  {
+    title: 'Butakeando',
+    href: 'https://buta-keando.vercel.app',
+    external: true,
+    summary: 'work.butakeando',
+    stack: 'React · FastAPI · PostgreSQL · Stripe · Docker · Render',
+    year: '2026',
+    status: 'work.liveSite',
+    image: './images/projects/butakeando.jpg',
+  },
+  {
+    title: 'Spain Motorcars',
+    href: 'https://spainmotorcars.vercel.app',
+    external: true,
+    summary: 'work.smc',
+    stack: 'HTML · SCSS · JavaScript · Webpack · Vercel',
+    year: '2026',
+    status: 'work.liveSite',
+    image: './images/projects/spainmotorcars.jpg',
+  },
+  {
+    title: 'DEVOO Imports',
+    href: 'https://devooimports.vercel.app',
+    external: true,
+    summary: 'work.devoo',
+    stack: 'Vite · SCSS · JavaScript · GSAP',
+    year: '2026',
+    status: 'work.liveSite',
+    image: './images/projects/devoo.jpg',
+  },
+  {
     title: 'Live AI Radar',
     href: './ai-radar.html',
     summary: 'work.radar',
     stack: 'Node.js · GitHub Actions · RSS · JSON',
     year: '2026',
     status: 'work.live',
+    image: './images/projects/radar.jpg',
   },
   {
     title: { key: 'off.calTitle' },
@@ -49,6 +92,7 @@ export const PROJECTS: Project[] = [
     stack: 'JavaScript · CSS · JSON · localStorage',
     year: '2026',
     status: 'work.personal',
+    image: './images/projects/calendar.jpg',
   },
   {
     title: 'Bubble Planning OS',
@@ -57,6 +101,7 @@ export const PROJECTS: Project[] = [
     stack: 'HTML · CSS · JavaScript · localStorage',
     year: '2026',
     status: 'work.personal',
+    image: './images/projects/bubble.jpg',
   },
   {
     title: 'alvrich gym',
@@ -65,6 +110,7 @@ export const PROJECTS: Project[] = [
     stack: 'HTML · CSS · JavaScript',
     year: '2026',
     status: 'work.personal',
+    image: './images/projects/gym.jpg',
   },
   {
     title: 'This site',
@@ -74,6 +120,17 @@ export const PROJECTS: Project[] = [
     stack: 'React · TypeScript · SCSS · Vite · GitHub Actions · Vercel',
     year: '2024 –',
     status: 'work.open',
+    image: './images/projects/portfolio.jpg',
+  },
+  {
+    title: 'Stratton.app',
+    href: 'https://github.com/alvrichh/Stratton.app-FCT-DAW',
+    external: true,
+    summary: 'work.strattonApp',
+    stack: 'Java · Spring Boot · Spring Security · Angular',
+    year: '2024',
+    status: 'work.degree',
+    image: './images/projects/stratton-app.jpg',
   },
 ];
 

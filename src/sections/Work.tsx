@@ -41,6 +41,9 @@ export function Work() {
                 <p className="work-stack">{project.stack}</p>
               </div>
               <div className="work-meta">
+                {project.image && (
+                  <img className="work-thumb" src={project.image} alt="" width={960} height={600} loading="lazy" decoding="async" />
+                )}
                 <span className="work-year">{project.year}</span>
                 <span className={project.private ? 'work-private' : undefined}>{t(project.status)}</span>
               </div>

@@ -42,10 +42,18 @@
   .work-meta {
     grid-column: 2;
     flex-direction: row;
+    flex-wrap: wrap;
     gap: 16px;
     margin-top: 14px;
     padding-top: 0;
     text-align: left;
+  }
+
+  /* Below the text, the screenshot gets its own line. */
+  .work-thumb {
+    flex: 0 0 100%;
+    max-width: 420px;
+    margin-bottom: 0;
   }
 
   .off-body,
