@@ -1,0 +1,261 @@
+/* GitHub contributions graph at the end of Experience, in the accent colour.
+   Squares fill the width (weeks are equal columns, each day is square), so
+   the graph never scrolls and a sideways swipe is free to change the year. */
+
+.gh {
+  touch-action: pan-y;
+}
+
+.gh-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 16px;
+}
+
+.gh-link {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--accent);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.gh-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+
+  span {
+    min-width: 7.5em;
+    text-align: center;
+  }
+
+  button {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    font-size: 1.1rem;
+    line-height: 1;
+    color: inherit;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+
+    &:hover:not(:disabled) {
+      background: color-mix(in srgb, var(--accent) 14%, transparent);
+      color: var(--accent);
+    }
+
+    &:disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+  }
+}
+
+.gh-graph {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  column-gap: 6px;
+  row-gap: 6px;
+}
+
+.gh-graph.slide-older {
+  animation: gh-from-left 0.38s var(--ease-out);
+}
+
+.gh-graph.slide-newer {
+  animation: gh-from-right 0.38s var(--ease-out);
+}
+
+@keyframes gh-from-left {
+  from { opacity: 0.2; transform: translateX(-24px); }
+}
+
+@keyframes gh-from-right {
+  from { opacity: 0.2; transform: translateX(24px); }
+}
+
+.gh-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+}
+
+.gh-weeks {
+  align-self: start;
+}
+
+.gh-months,
+.gh-weeks {
+  display: grid;
+  grid-template-columns: repeat(var(--weeks), minmax(0, 1fr));
+  gap: 3px;
+}
+
+.gh-months span {
+  overflow: visible;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  white-space: nowrap;
+  color: var(--muted);
+}
+
+.gh-weekdays {
+  display: grid;
+  grid-template-rows: repeat(7, minmax(0, 1fr));
+  align-self: stretch;
+  gap: 3px;
+  line-height: 1;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--muted);
+
+  span {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.gh-week {
+  display: grid;
+  grid-template-rows: repeat(7, auto);
+  gap: 3px;
+}
+
+.gh-day {
+  aspect-ratio: 1;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--ink) 7%, transparent);
+  transition: transform 0.15s ease;
+
+  &.level-1 { background: color-mix(in srgb, var(--accent) 30%, transparent); }
+  &.level-2 { background: color-mix(in srgb, var(--accent) 52%, transparent); }
+  &.level-3 { background: color-mix(in srgb, var(--accent) 76%, transparent); }
+  &.level-4 { background: var(--accent); }
+  &.is-pad { background: transparent; }
+
+  &:not(.is-pad):hover {
+    transform: scale(1.35);
+    box-shadow: 0 0 0 1px var(--paper);
+  }
+}
+
+.gh-legend {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 0;
+  gap: 3px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--muted);
+
+  .gh-day {
+    width: 11px;
+  }
+
+  > span:first-child {
+    margin-right: 4px;
+  }
+
+  > span:last-child {
+    margin-left: 4px;
+  }
+}
+
+/* Section heads with a link on the right (Experience → calendar). */
+.section-head.has-action {
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 24px;
+
+  .section-index,
+  .section-intro {
+    grid-column: 1 / -1;
+  }
+
+  h2 {
+    grid-column: 1;
+  }
+}
+
+.section-action {
+  grid-column: 2;
+  grid-row: 2;
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: border-color 0.2s ease, color 0.2s ease;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  &:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+}
+
+@media (max-width: 560px) {
+  /* Phones: smaller gaps so 53 weeks fit the width. */
+  .gh-graph {
+    grid-template-columns: 26px minmax(0, 1fr);
+    column-gap: 4px;
+  }
+
+  .gh-months,
+  .gh-weeks,
+  .gh-week,
+  .gh-weekdays {
+    gap: 1.5px;
+  }
+
+  .gh-months span,
+  .gh-weekdays {
+    font-size: 0.58rem;
+  }
+
+  .gh-day {
+    border-radius: 1.5px;
+  }
+
+  .section-head.has-action {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .section-action {
+    grid-column: 1;
+    grid-row: auto;
+    justify-self: start;
+    margin-top: 14px;
+  }
+}
