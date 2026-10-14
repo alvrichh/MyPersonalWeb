@@ -1,5 +1,6 @@
 import { useI18n, type MessageKey } from '../i18n/I18nContext';
-import { DownloadIcon, LinkedInIcon, MailIcon, PinIcon } from '../components/icons';
+import { CalendarIcon, DownloadIcon, LinkedInIcon, MailIcon, PinIcon } from '../components/icons';
+import { CALENDLY } from '../data/contact';
 
 export function Hero() {
   const { t } = useI18n();
@@ -29,6 +30,10 @@ export function Hero() {
           <a className="button button-primary" href="https://www.linkedin.com/in/alvrich/" target="_blank" rel="noreferrer">
             <LinkedInIcon />
             <span>LinkedIn</span>
+          </a>
+          <a className="button button-ghost" href={CALENDLY} target="_blank" rel="noreferrer">
+            <CalendarIcon />
+            <span>{t('hero.call')}</span>
           </a>
           <a className="button button-ghost" href="#contact">
             <MailIcon />
