@@ -159,6 +159,8 @@ export type School = {
   place?: 'seville';
   /** A short paragraph about the years, shown under the summary. */
   bio?: MessageKey;
+  /** One line per year or topic, shown as a list under the note. */
+  points?: MessageKey[];
   /** What I learned or worked with, shown as chips like a job's tags. */
   tags?: string[];
   tagsLabel?: string;
