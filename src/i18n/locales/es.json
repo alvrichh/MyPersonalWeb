@@ -114,6 +114,7 @@
   "theme.white": "Blanco",
   "theme.yellow": "Amarillo",
   "work.bkd": "Plataforma aduanera para un cliente logístico privado que gestiona de principio a fin los movimientos entre Gran Bretaña e Irlanda del Norte a través de la API del Trader Support Service (TSS) de HMRC: declaraciones de seguridad (ENS), declaraciones simplificadas en frontera y suplementarias, y declaraciones completas en frontera. Los datos entran por tres vías (correos de envío leídos con Microsoft Graph, subida de Excel o alta manual en el portal) y se extraen, se validan y se prerrellenan, así que el equipo solo revisa. Flask sobre Azure SQL, desplegado con Docker.",
+  "work.calendar": "Mi propio calendario, donde se junta todo lo demás de esta página: hitos de trayectoria, certificados y cumpleaños, más las tareas de Bubble y los entrenos del gym, por meses o por años. Desliza o haz scroll lateral para moverte en el tiempo.",
   "work.flow.title": "Plataforma de operaciones aduaneras",
   "work.gym": "Plan de entrenamiento mensual, registro de peso diario y vista de progreso. Pequeña, rápida y tan opinada como yo con el día de pierna.",
   "work.intro": "Una mezcla de trabajo para clientes del que puedo hablar y cosas que construí para mí porque quería que existieran.",

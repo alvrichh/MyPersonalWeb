@@ -114,6 +114,7 @@
   "theme.white": "Blanco",
   "theme.yellow": "Amariyo",
   "work.bkd": "Plataforma aduanera pa un cliente lohíhtico privao que lleva de principio a fin lo movimiento entre Gran Bretaña e Irlanda der Norte por la API der Trader Support Service (TSS) de HMRC: declarazione de zeguridá (ENS), declarazione zimplificá en frontera y zuplementaria, y declarazione completa en frontera. Lo dato entran por tre vía (correo d’envío leío con Microsoft Graph, zubía d’Excel o arta a mano en er portá) y ze zacan, ze validan y ze prerrellenan, azí que er equipo namá revisa. Flask zobre Azure SQL, dehplegao con Docker.",
+  "work.calendar": "Mi propio calendario, ande ze junta tó lo demá d’ehta página: hito de trayehtoria, zertificao y cumpleaño, má la tarea de Bubble y lo entreno der gym, por mese o por año. Dehlíza o haz scroll de lao pa moverte en er tiempo.",
   "work.flow.title": "Plataforma d’operazione aduanera",
   "work.gym": "Plan d’entreno menzuá, rehihtro de pezo diario y vihta de progrezo. Xiquitita, rápida y tan cabezona como yo con er día de pierna.",
   "work.intro": "Una mehcla de curro pa cliente der que puedo hablá y cozita que me monté pa mí porque quería que ehihtieran.",

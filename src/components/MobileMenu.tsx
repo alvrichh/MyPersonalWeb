@@ -95,8 +95,8 @@ export function MobileMenu({ home, current, accent, setAccent, theme, toggleThem
                 {t(item.label)}
               </a>
             ))}
-            {/* The "Life" tab from the old site, pointing to the gym page. */}
-            <a href="./gym.html">Life</a>
+            {/* The "Life" tab from the old site; the calendar links on to Bubble and the gym. */}
+            <a href="./calendar.html">Life</a>
           </nav>
 
           {/* The one thing a recruiter on a phone is most likely after. */}

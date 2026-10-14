@@ -43,6 +43,14 @@ export const PROJECTS: Project[] = [
     status: 'work.live',
   },
   {
+    title: { key: 'off.calTitle' },
+    href: './calendar.html',
+    summary: 'work.calendar',
+    stack: 'JavaScript · CSS · JSON · localStorage',
+    year: '2026',
+    status: 'work.personal',
+  },
+  {
     title: 'Bubble Planning OS',
     href: './planning.html',
     summary: 'work.planning',

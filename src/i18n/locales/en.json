@@ -114,6 +114,7 @@
   "theme.white": "White",
   "theme.yellow": "Yellow",
   "work.bkd": "A customs platform for a private logistics client that handles GB–NI movements end to end through the API of HMRC's Trader Support Service (TSS): safety and security filings (ENS), simplified frontier and supplementary declarations, and full frontier declarations. Data comes in three ways (shipment emails read through Microsoft Graph, Excel uploads or manual entry in the portal) and is extracted, validated and pre-filled, so the team only reviews. Flask on Azure SQL, deployed with Docker.",
+  "work.calendar": "My own calendar, where everything else on this page meets: career milestones, certificates and birthdays, plus the Bubble tasks and gym logs, by month or by year. Swipe or scroll sideways to move through time.",
   "work.flow.title": "Customs Operations Platform",
   "work.gym": "A monthly training plan, daily weight log and progress view. Small, fast and exactly as opinionated as I am about leg day.",
   "work.intro": "A mix of client work I can talk about and things I built for myself because I wanted them to exist.",
