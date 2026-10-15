@@ -74,14 +74,14 @@ export const JOBS: Job[] = [
   },
   {
     company: 'Primeline Group',
-    title: 'IT Business Consultant SAP Analyst',
+    title: 'IT Business Consultant & SAP Analyst',
     url: 'https://primeline.ie/',
     logo: 'primeline-group.png',
-    period: { start: '2024-09', end: '2026-02', type: 'fulltime', place: 'ireland', hideDates: true },
+    period: { start: '2024-09', end: '2026-01', type: 'fulltime', place: 'ireland', hideDates: true },
     roles: [
       {
         title: 'SAP Administrator',
-        period: { start: '2025-05', end: '2026-02' },
+        period: { start: '2025-05', end: '2026-01' },
         summary: 'xp.sap.summary',
         points: ['xp.sap.p1', 'xp.sap.p2', 'xp.sap.p3', 'xp.sap.p4', 'xp.sap.p5', 'xp.sap.p6', 'xp.sap.p7'],
         tags: ['SAP S/4HANA', 'SAP EWM', 'Power BI', 'SQL', 'Excel', 'SharePoint', 'Microsoft Teams', 'UAT', 'SOPs'],
