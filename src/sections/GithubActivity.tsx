@@ -148,7 +148,7 @@ export function GithubActivity() {
         </div>
         <div className="gh-weeks">
           {weeks.map((items, i) => (
-            <div className="gh-week" key={i}>
+            <div className="gh-week" key={i} style={{ ['--week' as string]: i }}>
               {items.map((day, row) => day ? (
                 <span
                   key={day.date}
@@ -165,7 +165,7 @@ export function GithubActivity() {
         <a className="gh-link" href={PROFILE} target="_blank" rel="noreferrer">{t('gh.profile')} <span aria-hidden="true">↗</span></a>
         <p className="gh-legend" aria-hidden="true">
           <span>{t('gh.less')}</span>
-          {[0, 1, 2, 3, 4].map((level) => <span key={level} className={`gh-day level-${level}`} />)}
+          {[0, 1, 2, 3, 4].map((level) => <span key={level} className={`gh-day level-${level}`} style={{ ['--week' as string]: level * 10 }} />)}
           <span>{t('gh.more')}</span>
         </p>
       </div>

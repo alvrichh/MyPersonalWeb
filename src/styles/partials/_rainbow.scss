@@ -1,0 +1,61 @@
+/* --------------------------------------------------------------------------
+   Rainbow accent extras. The accent itself cycles round the colour wheel
+   (_tokens.scss); on top of that, the highlighted words get every colour at
+   once, sliding along the letters, and the GitHub graph paints each week a
+   different hue so the year reads as a moving rainbow.
+   -------------------------------------------------------------------------- */
+
+:root[data-accent="rainbow"] {
+  --rb-l: 0.55;
+  --rb-c: 0.18;
+}
+
+:root[data-accent="rainbow"][data-theme="dark"] {
+  --rb-l: 0.8;
+  --rb-c: 0.14;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-accent="rainbow"]:not([data-theme="light"]) {
+    --rb-l: 0.8;
+    --rb-c: 0.14;
+  }
+}
+
+/* "longer hue" from a colour to itself sweeps the whole wheel. Browsers that
+   don't know it ignore the rule and keep the normal accent gradient. */
+:root[data-accent="rainbow"] .hero-name em,
+:root[data-accent="rainbow"] .about-title em,
+:root[data-accent="rainbow"] .contact-title em {
+  background-image: linear-gradient(90deg in oklch longer hue, oklch(var(--rb-l) var(--rb-c) 20), oklch(var(--rb-l) var(--rb-c) 20));
+  background-size: 12em 100%;
+  background-repeat: repeat-x;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: rainbow-slide 6s linear infinite;
+}
+
+@keyframes rainbow-slide {
+  from { background-position-x: 0; }
+  to { background-position-x: 12em; }
+}
+
+/* One hue per week (about 7° apart, so a year is one full turn), moving with
+   the accent cycle. The level still sets how strong the square is. */
+:root[data-accent="rainbow"] .gh-day {
+  --cell: oklch(var(--rb-l) var(--rb-c) calc(var(--hue) + var(--week, 0) * 7));
+
+  &.level-1 { background: color-mix(in srgb, var(--cell) 30%, transparent); }
+  &.level-2 { background: color-mix(in srgb, var(--cell) 52%, transparent); }
+  &.level-3 { background: color-mix(in srgb, var(--cell) 76%, transparent); }
+  &.level-4 { background: var(--cell); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root[data-accent="rainbow"] .hero-name em,
+  :root[data-accent="rainbow"] .about-title em,
+  :root[data-accent="rainbow"] .contact-title em {
+    animation: none;
+  }
+}
