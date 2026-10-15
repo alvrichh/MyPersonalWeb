@@ -132,7 +132,7 @@ export const JOBS: Job[] = [
     logo: 'el-tortillon.png',
     roles: [{
       title: 'Store Clerk & Digital Manager',
-      period: { start: '2018-07', end: '2022-09', place: 'seville' },
+      period: { start: '2019-07', end: '2022-09', place: 'seville' },
       summary: 'xp.tortillon.summary',
       tags: ['Social media', 'Branding', 'Web design', 'Teamwork'],
       tagsLabel: 'Skills',
