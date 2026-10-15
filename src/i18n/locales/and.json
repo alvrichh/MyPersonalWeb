@@ -142,7 +142,7 @@
   "theme.red": "Rojo",
   "theme.white": "Blanco",
   "theme.yellow": "Amariyo",
-  "work.bkd": "Plataforma aduanera pa un cliente lohíhtico privao que lleva de principio a fin lo movimiento entre Gran Bretaña e Irlanda der Norte por la API der Trader Support Service (TSS) de HMRC: declarazione de zeguridá (ENS), declarazione zimplificá en frontera y zuplementaria, y declarazione completa en frontera. Lo dato entran por tre vía (correo d’envío leío con Microsoft Graph, zubía d’Excel o arta a mano en er portá) y ze zacan, ze validan y ze prerrellenan, azí que er equipo namá revisa. Flask zobre Azure SQL, dehplegao con Docker.",
+  "work.bkd": "Plataforma aduanera pa varioh clienteh lohíhticoh privaoh, que lleva de principio a fin lo movimiento entre Gran Bretaña e Irlanda der Norte por la API der Trader Support Service (TSS) de HMRC: declarazione de zeguridá (ENS), declarazione zimplificá en frontera y zuplementaria, y declarazione completa en frontera. Lo dato entran por tre vía (correo d’envío leío con Microsoft Graph, zubía d’Excel o arta a mano en er portá) y ze zacan, ze validan y ze prerrellenan, azí que er equipo namá revisa. Flask zobre Azure SQL, dehplegao con Docker.",
   "work.butakeando": "Una tienda online full stack de butaca y zofá: Stripe Checkout con webhook firmao, pedío que namá ze guardan cuando er pago ze confirma, PostgreSQL y avizo por email, tó zervío como una zola app en Docker.",
   "work.calendar": "Mi propio calendario, ande ze junta tó lo demá d’ehta página: hito de trayehtoria, zertificao y cumpleaño, má la tarea de Bubble, por mese o por año. Dehlíza o haz scroll de lao pa moverte en er tiempo.",
   "work.degree": "Proyêtto finá de grao",

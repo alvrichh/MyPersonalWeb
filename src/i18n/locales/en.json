@@ -142,7 +142,7 @@
   "theme.red": "Red",
   "theme.white": "White",
   "theme.yellow": "Yellow",
-  "work.bkd": "A customs platform for a private logistics client that handles GB–NI movements end to end through the API of HMRC's Trader Support Service (TSS): safety and security filings (ENS), simplified frontier and supplementary declarations, and full frontier declarations. Data comes in three ways (shipment emails read through Microsoft Graph, Excel uploads or manual entry in the portal) and is extracted, validated and pre-filled, so the team only reviews. Flask on Azure SQL, deployed with Docker.",
+  "work.bkd": "A customs platform for several private logistics clients, handling GB–NI movements end to end through the API of HMRC's Trader Support Service (TSS): safety and security filings (ENS), simplified frontier and supplementary declarations, and full frontier declarations. Data comes in three ways (shipment emails read through Microsoft Graph, Excel uploads or manual entry in the portal) and is extracted, validated and pre-filled, so the team only reviews. Flask on Azure SQL, deployed with Docker.",
   "work.butakeando": "A full-stack furniture storefront for armchairs and sofas: Stripe Checkout with signed webhooks, orders that only persist once payment is confirmed, PostgreSQL and email notifications, all served as a single Docker app.",
   "work.calendar": "My own calendar, where everything else on this page meets: career milestones, certificates and birthdays, plus the tasks from Bubble, by month or by year. Swipe or scroll sideways to move through time.",
   "work.degree": "Final degree project",
