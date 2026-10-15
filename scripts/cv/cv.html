@@ -57,6 +57,8 @@
   .entry li::before { content: ""; position: absolute; left: 28pt; top: 17pt; width: 9pt; height: 9pt; border-radius: 50%; background: var(--ink); }
   .entry + .entry::before { content: ""; display: block; height: 2pt; margin: 7.5pt 0 9pt; background: repeating-linear-gradient(90deg, var(--dash) 0 4pt, transparent 4pt 6pt); }
   h2 + .entry { margin-top: 7pt; }
+  .entry .subrole { margin-top: 10pt; font: 600 32pt/42pt "Open Sans"; color: var(--navy); }
+  .entry .subrole span { margin-left: 10pt; font: 500 28pt "Open Sans"; letter-spacing: -0.03em; color: var(--ink); }
 
   /* Right column */
   .summary { margin-top: 26.5pt; font: 500 28pt/33pt "Open Sans"; }
@@ -146,18 +148,15 @@
       <ul>
         <li>SAP S/4HANA EWM support and warehouse process management; trained 3 end-users, boosting adoption.</li>
         <li>Built automated weekly Power BI dashboards that cut management’s reporting time by 30%.</li>
-        <li>Documented UAT for the SAP S/4HANA bonded-stock logistics system before go-live.</li>
+        <li>Documented UAT for SAP S/4HANA bonded stock before go-live.</li>
         <li>Wrote Standard Operating Procedures (SOPs) for improved warehouse flows, and worked with Finance to validate client billing in SAP S/4HANA.</li>
+        <li>Tracked risks, stock discrepancies and losses, contributing to successful internal and external audits.</li>
+        <li>Traced the root cause of client queries, validating reports and dashboards against source data with SQL and advanced Excel.</li>
       </ul>
-    </div>
-
-    <div class="entry">
-      <h3>System Admin</h3>
-      <p class="org">Primeline Group</p>
-      <p class="meta"><img class="cal" src="assets/calendar.png" alt="">11/2024 - 05/2025<img class="flag" src="assets/flag.png" alt="">Ashbourne, Ireland</p>
+      <!-- Same company, earlier role: listed under the current one. -->
+      <h4 class="subrole">System Admin <span>11/2024 - 05/2025</span></h4>
       <ul>
         <li>Managed order distribution, system updates, and shipment coordination to ensure timely deliveries and KPIs (Gaina Software).</li>
-        <li>Conducted data analysis and reporting using Excel.</li>
       </ul>
     </div>
   </div>
