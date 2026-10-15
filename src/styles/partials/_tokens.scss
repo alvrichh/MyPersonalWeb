@@ -34,9 +34,27 @@
   --a-light: #4a5160; --a2-light: #6b7280;
   --a-dark: #edf2fb;  --a2-dark: #ffffff; --a-ink-dark: #0d131d;
 }
-:root[data-accent="black"] {
-  --a-light: #1a1a1a; --a2-light: #3f3f46;
-  --a-dark: #a0adbe;  --a2-dark: #5d6777; --a-ink-dark: #090c11;
+/* Rainbow: the accent walks round the whole colour wheel. oklch keeps the
+   same lightness on every hue, so contrast stays the same all the way round.
+   Stepped (1° at a time) so the page restyles a few times a second, not every
+   frame; frozen for people who ask for reduced motion. */
+@property --hue {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 250;
+}
+:root[data-accent="rainbow"] {
+  --a-light: oklch(0.5 0.16 var(--hue));  --a2-light: oklch(0.5 0.16 calc(var(--hue) + 50));
+  --a-dark: oklch(0.8 0.14 var(--hue));   --a2-dark: oklch(0.82 0.13 calc(var(--hue) + 50));
+  --a-ink-dark: oklch(0.2 0.03 var(--hue));
+  animation: accent-rainbow 72s steps(360) infinite;
+}
+@keyframes accent-rainbow {
+  from { --hue: 0; }
+  to { --hue: 360; }
+}
+@media (prefers-reduced-motion: reduce) {
+  :root[data-accent="rainbow"] { animation: none; }
 }
 
 :root {
