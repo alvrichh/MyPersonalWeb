@@ -206,7 +206,9 @@
 .swatch-dot[data-accent="yellow"] { background: linear-gradient(135deg, #ffd45f, #ffbf68); }
 .swatch-dot[data-accent="pink"] { background: linear-gradient(135deg, #ff79c9, #ffc58f); }
 .swatch-dot[data-accent="white"] { background: linear-gradient(135deg, #edf2fb, #ffffff); }
-.swatch-dot[data-accent="rainbow"] { background: conic-gradient(from 200deg, #ff6f79, #ffb86f, #ffd45f, #67dfa0, #7ad8ff, #6c98ff, #b47cff, #ff79c9, #ff6f79); }
+.swatch-dot[data-accent="rainbow"],
+/* The current-accent dot in the header keeps the rainbow wheel instead of cycling. */
+:root[data-accent="rainbow"] .swatch-dot:not([data-accent]) { background: conic-gradient(from 200deg, #ff6f79, #ffb86f, #ffd45f, #67dfa0, #7ad8ff, #6c98ff, #b47cff, #ff79c9, #ff6f79); }
 
 .picker-option .swatch-dot {
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 18%, transparent);
