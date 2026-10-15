@@ -97,16 +97,8 @@ function useCurrentSection(enabled: boolean) {
 
 export function Header({ home = '', accent, setAccent, theme, toggleTheme }: HeaderProps) {
   const { t } = useI18n();
-  const [scrolled, setScrolled] = useState(false);
   const current = useCurrentSection(home === '');
   const navRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
 
   // Keep the active tab visible when the tab row scrolls on small screens.
   useEffect(() => {
@@ -116,7 +108,7 @@ export function Header({ home = '', accent, setAccent, theme, toggleTheme }: Hea
 
   return (
     <>
-      <header className={`site-header${scrolled ? ' is-scrolled' : ''}`}>
+      <header className="site-header">
         <div className="wrap">
           <div className="topbar">
             <Brand href={home ? home : '#top'} />
