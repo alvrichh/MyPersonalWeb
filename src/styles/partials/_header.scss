@@ -206,7 +206,7 @@
 .swatch-dot[data-accent="yellow"] { background: linear-gradient(135deg, #ffd45f, #ffbf68); }
 .swatch-dot[data-accent="pink"] { background: linear-gradient(135deg, #ff79c9, #ffc58f); }
 .swatch-dot[data-accent="white"] { background: linear-gradient(135deg, #edf2fb, #ffffff); }
-.swatch-dot[data-accent="black"] { background: linear-gradient(135deg, #2a2f39, #a0adbe); }
+.swatch-dot[data-accent="rainbow"] { background: conic-gradient(from 200deg, #ff6f79, #ffb86f, #ffd45f, #67dfa0, #7ad8ff, #6c98ff, #b47cff, #ff79c9, #ff6f79); }
 
 .picker-option .swatch-dot {
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 18%, transparent);
