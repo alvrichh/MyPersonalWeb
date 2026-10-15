@@ -26,6 +26,8 @@ export type Role = {
 
 export type Job = {
   company: string;
+  /** Headline shown before the company on a job that groups several roles. */
+  title?: string;
   url?: string;
   logo: string;
   /** A company with several roles is listed once, LinkedIn-style. */
@@ -72,12 +74,13 @@ export const JOBS: Job[] = [
   },
   {
     company: 'Primeline Group',
+    title: 'IT Business Consultant SAP Analyst',
     url: 'https://primeline.ie/',
     logo: 'primeline-group.png',
     period: { start: '2024-09', end: '2026-02', type: 'fulltime', place: 'ireland', hideDates: true },
     roles: [
       {
-        title: 'IT Business Consultant SAP Analyst',
+        title: 'SAP Administrator',
         period: { start: '2025-05', end: '2026-02' },
         summary: 'xp.sap.summary',
         points: ['xp.sap.p1', 'xp.sap.p2', 'xp.sap.p3', 'xp.sap.p4', 'xp.sap.p5', 'xp.sap.p6', 'xp.sap.p7'],
