@@ -103,7 +103,7 @@ export const JOBS: Job[] = [
     url: 'https://www.getronics.com/',
     logo: 'getronics.png',
     roles: [{
-      title: 'Software Developer',
+      title: 'Junior Programmer Intern',
       period: { start: '2024-04', end: '2024-07', type: 'internship', place: 'seville', mode: 'hybrid' },
       summary: 'xp.getronics.summary',
       tags: ['Java', 'Spring Boot', 'JUnit', 'Mockito'],
