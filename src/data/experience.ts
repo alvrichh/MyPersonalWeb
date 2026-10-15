@@ -111,7 +111,7 @@ export const JOBS: Job[] = [
   },
   {
     company: 'Stratton Global',
-    title: 'Sales Team Coordinator',
+    title: 'Sales Team Lead',
     logo: 'stratton-global.png',
     period: { start: '2023-01', end: '2024-04', place: 'seville', hideDates: true },
     roles: [
