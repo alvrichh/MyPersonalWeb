@@ -77,7 +77,7 @@ export const JOBS: Job[] = [
     period: { start: '2024-09', end: '2026-02', type: 'fulltime', place: 'ireland', hideDates: true },
     roles: [
       {
-        title: 'SAP Administrator',
+        title: 'IT Business Consultant SAP Analyst',
         period: { start: '2025-05', end: '2026-02' },
         summary: 'xp.sap.summary',
         points: ['xp.sap.p1', 'xp.sap.p2', 'xp.sap.p3', 'xp.sap.p4', 'xp.sap.p5', 'xp.sap.p6', 'xp.sap.p7'],

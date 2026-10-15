@@ -101,7 +101,7 @@ export function Experience() {
               <div className="xp-body">
                 {grouped ? (
                   <>
-                    <h3 className="xp-role">{company}</h3>
+                    <h3 className="xp-role"><span className="xp-company">{company}</span></h3>
                     {job.period && <PeriodLine period={job.period} />}
                     <ol className="xp-roles">
                       {job.roles.map((item) => (
