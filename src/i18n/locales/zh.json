@@ -142,7 +142,7 @@
   "theme.red": "红色",
   "theme.white": "白色",
   "theme.yellow": "黄色",
-  "work.bkd": "为一家私营物流客户打造的报关平台，通过 HMRC 的 Trader Support Service（TSS）API 端到端处理英国本土与北爱尔兰之间的货物运输：安全申报（ENS）、简化边境申报与补充申报，以及完整边境申报。数据有三种来源（经 Microsoft Graph 读取的发货邮件、Excel 上传或在门户中手动创建），系统自动提取、校验并预填，团队只需审核。基于 Azure SQL 的 Flask 应用，使用 Docker 部署。",
+  "work.bkd": "为多家私营物流客户打造的报关平台，通过 HMRC 的 Trader Support Service（TSS）API 端到端处理英国本土与北爱尔兰之间的货物运输：安全申报（ENS）、简化边境申报与补充申报，以及完整边境申报。数据有三种来源（经 Microsoft Graph 读取的发货邮件、Excel 上传或在门户中手动创建），系统自动提取、校验并预填，团队只需审核。基于 Azure SQL 的 Flask 应用，使用 Docker 部署。",
   "work.butakeando": "一个全栈家具网店，主营扶手椅和沙发：带签名 webhook 的 Stripe Checkout、仅在付款确认后才保存的订单、PostgreSQL 与邮件通知，全部作为一个 Docker 应用运行。",
   "work.calendar": "我自己的日历，汇集了本页其他所有内容：职业里程碑、证书和生日，以及 Bubble 中的任务，可按月或按年查看。左右滑动或横向滚动即可穿梭时间。",
   "work.degree": "毕业项目",
