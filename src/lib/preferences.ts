@@ -13,7 +13,14 @@ export function useAccent() {
 
   useEffect(() => {
     const current = root().dataset.accent as Accent | undefined;
-    if (current && ACCENTS.includes(current)) setAccentState(current);
+    if (current && ACCENTS.includes(current)) {
+      setAccentState(current);
+    } else {
+      // A saved accent that no longer exists (e.g. the old "black"): go back
+      // to the default and forget it, so the page and the picker agree.
+      root().dataset.accent = 'blue';
+      storage.set('accent', 'blue');
+    }
   }, []);
 
   const setAccent = useCallback((next: Accent) => {
