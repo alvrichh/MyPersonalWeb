@@ -68,12 +68,27 @@
   &.level-4 { background: var(--cell); }
 }
 
-/* Buttons, on hover only: the rainbow slides across them. Darker tones under
-   white text in light mode, lighter tones under dark text in dark mode, so
-   the label stays readable all the way round. */
-:root[data-accent="rainbow"] .button:hover {
+/* Buttons, on hover only. The call to action (Book a call) fills with the
+   sliding rainbow: darker tones under white text in light mode, lighter tones
+   under dark text in dark mode, so the label stays readable all the way round. */
+:root[data-accent="rainbow"] .button {
   --rb-btn-l: 0.5;
   --rb-btn-ink: #ffffff;
+}
+
+:root[data-accent="rainbow"][data-theme="dark"] .button {
+  --rb-btn-l: 0.8;
+  --rb-btn-ink: #121110;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-accent="rainbow"]:not([data-theme="light"]) .button {
+    --rb-btn-l: 0.8;
+    --rb-btn-ink: #121110;
+  }
+}
+
+:root[data-accent="rainbow"] .button-primary:hover {
   border-color: transparent;
   background-image: linear-gradient(90deg in oklch longer hue, oklch(var(--rb-btn-l) 0.16 20), oklch(var(--rb-btn-l) 0.16 20));
   background-size: 12em 100%;
@@ -82,20 +97,28 @@
   animation: rainbow-slide 3s linear infinite;
 }
 
-:root[data-accent="rainbow"][data-theme="dark"] .button:hover {
-  --rb-btn-l: 0.8;
-  --rb-btn-ink: #121110;
+/* The outlined buttons (GitHub, Download CV) only light up their border: a
+   paper-coloured fill on the padding box over the rainbow on the border box. */
+:root[data-accent="rainbow"] .button-ghost:hover {
+  border-color: transparent;
+  background-image:
+    linear-gradient(var(--paper), var(--paper)),
+    linear-gradient(90deg in oklch longer hue, oklch(var(--rb-l) var(--rb-c) 20), oklch(var(--rb-l) var(--rb-c) 20));
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  background-size: 100% 100%, 12em 100%;
+  background-repeat: no-repeat, repeat-x;
+  animation: rainbow-border-slide 3s linear infinite;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root[data-accent="rainbow"]:not([data-theme="light"]) .button:hover {
-    --rb-btn-l: 0.8;
-    --rb-btn-ink: #121110;
-  }
+@keyframes rainbow-border-slide {
+  from { background-position: 0 0, 0 0; }
+  to { background-position: 0 0, 12em 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  :root[data-accent="rainbow"] .button:hover,
+  :root[data-accent="rainbow"] .button-primary:hover,
+  :root[data-accent="rainbow"] .button-ghost:hover,
   :root[data-accent="rainbow"] .hero-name em,
   :root[data-accent="rainbow"] .about-title em,
   :root[data-accent="rainbow"] .contact-title em {
