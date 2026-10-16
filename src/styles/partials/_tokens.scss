@@ -43,9 +43,17 @@
   inherits: true;
   initial-value: 250;
 }
+/* The second tone, 50° on. Registered so it computes to a plain number: some
+   browsers (Safari) don't resolve calc() inside oklch(). */
+@property --hue2 {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 300;
+}
 :root[data-accent="rainbow"] {
-  --a-light: oklch(0.5 0.16 var(--hue));  --a2-light: oklch(0.5 0.16 calc(var(--hue) + 50));
-  --a-dark: oklch(0.8 0.14 var(--hue));   --a2-dark: oklch(0.82 0.13 calc(var(--hue) + 50));
+  --hue2: calc(var(--hue) + 50);
+  --a-light: oklch(0.5 0.16 var(--hue));  --a2-light: oklch(0.5 0.16 var(--hue2));
+  --a-dark: oklch(0.8 0.14 var(--hue));   --a2-dark: oklch(0.82 0.13 var(--hue2));
   --a-ink-dark: oklch(0.2 0.03 var(--hue));
   animation: accent-rainbow 20s steps(200) infinite;
 }
