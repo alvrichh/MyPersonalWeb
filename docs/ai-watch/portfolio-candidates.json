@@ -1,103 +1,28 @@
 {
-  "generatedAt": "2026-10-15T13:01:36.482Z",
+  "generatedAt": "2026-10-16T12:58:14.703Z",
   "candidates": [
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Google launches its ‘universal’ online shopping cart ahead of the holidays",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/1011797/google-ai-universal-cart-shopping-tool-launch",
-          "date": "2026-10-15"
-        },
-        {
-          "title": "Gemini 4 Argon begins rolling out in Gemini app and Antigravity, but only if you pay",
-          "source": "Ars Technica AI",
-          "link": "https://arstechnica.com/ai/2026/10/gemini-4-argon-begins-rolling-out-in-gemini-app-and-antigravity-but-only-if-you-pay/",
-          "date": "2026-10-13"
-        },
-        {
-          "title": "Gemini 4 Argon in GitHub Copilot",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-10-13-gemini-4-argon-in-github-copilot",
-          "date": "2026-10-13"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Build self-improving document processing using Amazon Bedrock AgentCore",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/build-self-improving-document-processing-using-amazon-bedrock-agentcore/",
-          "date": "2026-10-14"
-        },
-        {
-          "title": "Generate presentations with Amazon Bedrock AgentCore",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/generate-presentations-with-amazon-bedrock-agentcore/",
-          "date": "2026-10-14"
-        },
-        {
-          "title": "How Tamnoon built AI-powered cloud security remediation with Amazon Bedrock",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/how-tamnoon-built-ai-powered-cloud-security-remediation-with-amazon-bedrock/",
-          "date": "2026-10-14"
-        }
-      ]
-    },
     {
       "label": "GitHub Copilot developer loop",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "Multi-repo support and other improvements for GitHub Copilot in Slack and Microsoft Teams",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-10-15-copilot-in-slack-and-teams-adds-model-and-repository-updates",
+          "date": "2026-10-16"
+        },
+        {
+          "title": "Upcoming deprecation of selected GitHub Copilot models in mid-November",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-10-15-upcoming-deprecation-of-selected-github-copilot-models-in-mid-november",
+          "date": "2026-10-15"
+        },
+        {
           "title": "HydraFusion updates and new Max option",
           "source": "GitHub Changelog",
           "link": "https://github.blog/changelog/2026-10-14-hydrafusion-updates-and-new-max-option",
           "date": "2026-10-14"
-        },
-        {
-          "title": "Gemini 4 Argon in GitHub Copilot",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-10-13-gemini-4-argon-in-github-copilot",
-          "date": "2026-10-13"
-        },
-        {
-          "title": "Enterprise managed settings enforcement updates",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-10-13-enterprise-managed-settings-enforcement-updates",
-          "date": "2026-10-13"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Amp puts AI agents to work beyond code with OpenAI models",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/amp-beyond-coding",
-          "date": "2026-10-14"
-        },
-        {
-          "title": "llm-gemini 0.35",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/13/llm-gemini/",
-          "date": "2026-10-13"
-        },
-        {
-          "title": "How Oracle turns days of work into minutes with ChatGPT and Codex",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/oracle",
-          "date": "2026-10-08"
         }
       ]
     },
@@ -107,47 +32,47 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "Meta’s Muse Spark Open now available in Amazon SageMaker JumpStart",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/metas-muse-spark-open-now-available-in-amazon-sagemaker-jumpstart/",
+          "date": "2026-10-15"
+        },
+        {
+          "title": "Scale Agentic Coding Workflows with Meta’s Muse Spark Open on NVIDIA GB300 NVL72",
+          "source": "NVIDIA Developer",
+          "link": "https://developer.nvidia.com/blog/scale-agentic-coding-workflows-with-metas-muse-spark-open-on-nvidia-gb300-nvl72/",
+          "date": "2026-10-15"
+        },
+        {
           "title": "Tree Appreciator",
           "source": "Simon Willison",
           "link": "https://simonwillison.net/2026/Oct/14/tree-appreciator/",
           "date": "2026-10-14"
-        },
-        {
-          "title": "Gemini 4 Argon in GitHub Copilot",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-10-13-gemini-4-argon-in-github-copilot",
-          "date": "2026-10-13"
-        },
-        {
-          "title": "Redesigning source control at Anthropic",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/13/redesigning-source-control-at-anthropic/",
-          "date": "2026-10-13"
         }
       ]
     },
     {
-      "label": "Claude research and documentation flow",
+      "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Tree Appreciator",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/14/tree-appreciator/",
-          "date": "2026-10-14"
+          "title": "Trust in Depth: Giving agents more autonomy without losing control",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/trust-in-depth-giving-agents-more-autonomy-without-losing-control/",
+          "date": "2026-10-15"
         },
         {
-          "title": "Redesigning source control at Anthropic",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/13/redesigning-source-control-at-anthropic/",
-          "date": "2026-10-13"
+          "title": "Upcoming deprecation of selected GitHub Copilot models in mid-November",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-10-15-upcoming-deprecation-of-selected-github-copilot-models-in-mid-november",
+          "date": "2026-10-15"
         },
         {
-          "title": "llm-gemini 0.35",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/13/llm-gemini/",
-          "date": "2026-10-13"
+          "title": "Agentic autofix for code scanning alerts general availability",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-10-15-agentic-autofix-for-code-scanning-alerts-general-availability",
+          "date": "2026-10-15"
         }
       ]
     },
@@ -156,6 +81,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Agentic autofix for code scanning alerts general availability",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-10-15-agentic-autofix-for-code-scanning-alerts-general-availability",
+          "date": "2026-10-15"
+        },
         {
           "title": "Gemini 4 Argon begins rolling out in Gemini app and Antigravity, but only if you pay",
           "source": "Ars Technica AI",
@@ -167,24 +98,105 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-argon/",
           "date": "2026-10-13"
+        }
+      ]
+    },
+    {
+      "label": "Multimodal AI product workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Welcome Muse Spark Open: open-weight frontier multimodal mixture-of-experts model from Meta",
+          "source": "Hugging Face",
+          "link": "https://huggingface.co/blog/meta-muse-spark-open",
+          "date": "2026-10-15"
         },
         {
-          "title": "NVIDIA Run:ai Is Now Open Source as Part of NVIDIA DSX AI Factory Platform",
+          "title": "NVIDIA Nemotron 3.5 Super VL Powers Specialized Agents with Multimodal Reasoning",
           "source": "NVIDIA Developer",
-          "link": "https://developer.nvidia.com/blog/nvidia-runai-is-now-open-source-as-part-of-nvidia-dsx-ai-factory-platform/",
+          "link": "https://developer.nvidia.com/blog/nvidia-nemotron-3-5-super-vl-powers-specialized-agents-with-multimodal-reasoning/",
+          "date": "2026-10-15"
+        },
+        {
+          "title": "EmbeddingGemma 2: an open, lightweight multimodal embedding model",
+          "source": "Google DeepMind",
+          "link": "https://deepmind.google/blog/embeddinggemma-2-an-open-lightweight-multimodal-embedding-model/",
+          "date": "2026-10-06"
+        }
+      ]
+    },
+    {
+      "label": "Claude research and documentation flow",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Chirp Pong",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/15/chirp-pong/",
+          "date": "2026-10-15"
+        },
+        {
+          "title": "Tree Appreciator",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/14/tree-appreciator/",
+          "date": "2026-10-14"
+        },
+        {
+          "title": "Redesigning source control at Anthropic",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/13/redesigning-source-control-at-anthropic/",
           "date": "2026-10-13"
         }
       ]
     },
     {
-      "label": "AI automation and workflow design",
+      "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Manage private pricing offers for Amazon Bedrock with managed entitlements",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/manage-private-pricing-offers-for-amazon-bedrock-with-managed-entitlements/",
+          "title": "ChatGPT can peek at your Chrome tabs now",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1012510/openai-chatgpt-google-chrome-tabs",
+          "date": "2026-10-15"
+        },
+        {
+          "title": "Amp puts AI agents to work beyond code with OpenAI models",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/amp-beyond-coding",
+          "date": "2026-10-14"
+        },
+        {
+          "title": "llm-gemini 0.35",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/13/llm-gemini/",
+          "date": "2026-10-13"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Gemini 4 Argon begins rolling out in Gemini app and Antigravity, but only if you pay",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/ai/2026/10/gemini-4-argon-begins-rolling-out-in-gemini-app-and-antigravity-but-only-if-you-pay/",
+          "date": "2026-10-13"
+        },
+        {
+          "title": "Gemini 4 Argon in GitHub Copilot",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-10-13-gemini-4-argon-in-github-copilot",
+          "date": "2026-10-13"
+        },
+        {
+          "title": "Gemini 4 Argon: Built to solve your hardest problems",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-argon/",
           "date": "2026-10-13"
         }
       ]
