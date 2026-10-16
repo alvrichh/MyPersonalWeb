@@ -8,17 +8,25 @@
 :root[data-accent="rainbow"] {
   --rb-l: 0.55;
   --rb-c: 0.18;
+  /* Paper and rules don't take a tint from the moving accent: plain colours,
+     so borders and backgrounds can't break (or repaint) as it cycles. */
+  --paper: var(--paper-base);
+  --paper-raised: #fbf8f2;
 }
 
 :root[data-accent="rainbow"][data-theme="dark"] {
   --rb-l: 0.8;
   --rb-c: 0.14;
+  --paper-raised: #1b1917;
+  --rule: #34302a;
 }
 
 @media (prefers-color-scheme: dark) {
   :root[data-accent="rainbow"]:not([data-theme="light"]) {
     --rb-l: 0.8;
     --rb-c: 0.14;
+    --paper-raised: #1b1917;
+    --rule: #34302a;
   }
 }
 
