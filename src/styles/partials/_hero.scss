@@ -150,14 +150,17 @@
   transform: scale(0.97);
 }
 
+/* Plain colours (not --paper, which mixes in the accent) so the label stays
+   readable even where a browser can't resolve an animated accent; the hover
+   falls back to the normal look for the same reason. */
 .button-primary {
   background: var(--ink);
-  color: var(--paper);
+  color: var(--paper-base);
 }
 
 .button-primary:hover {
-  background: var(--accent);
-  color: var(--accent-ink);
+  background: var(--accent, var(--ink));
+  color: var(--accent-ink, var(--paper-base));
 }
 
 .button-ghost {
