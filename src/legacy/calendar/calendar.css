@@ -52,7 +52,7 @@
   --hue2: calc(var(--hue) + 50);
   --a-light: oklch(0.5 0.16 var(--hue));  --a2-light: oklch(0.5 0.16 var(--hue2));
   --a-dark: oklch(0.8 0.14 var(--hue));   --a2-dark: oklch(0.82 0.13 var(--hue2));
-  --a-ink-dark: oklch(0.2 0.03 var(--hue));
+  --a-ink-dark: #121110; /* fixed: text on the accent must never depend on the animation */
   animation: accent-rainbow 20s steps(200) infinite;
 }
 @keyframes accent-rainbow {
