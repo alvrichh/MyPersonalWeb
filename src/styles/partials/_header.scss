@@ -108,7 +108,9 @@
 
 .nav-tab:hover,
 .nav-tab.is-current {
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  /* Solid accent first, so the tab still has a background if a browser drops the gradient. */
+  background: var(--accent);
+  background-image: linear-gradient(135deg, var(--accent), var(--accent-2));
   border-color: transparent;
   color: var(--accent-ink);
 }
