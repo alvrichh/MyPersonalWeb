@@ -248,7 +248,7 @@
   to { transform: perspective(1000px) rotateY(360deg); }
 }
 
-/* Confetti from the same easter egg: thrown out from the ring, then falling.
+/* Confetti from the same easter egg: spreads out from the ring and fades.
    Three colour slots from the accent; Disco gives each piece its own hue. */
 .hero-confetti {
   position: absolute;
@@ -267,7 +267,9 @@
   border-radius: 1.5px;
   background: var(--accent);
   opacity: 0;
-  animation: confetti-burst 1.7s linear var(--delay) forwards;
+  animation:
+    confetti-burst 1.6s cubic-bezier(0.2, 0.7, 0.3, 1) var(--delay) forwards,
+    confetti-fade 1.6s linear var(--delay) forwards;
 
   &:nth-child(3n + 1) { background: var(--accent-2); }
   &:nth-child(3n + 2) { background: color-mix(in srgb, var(--accent) 55%, var(--paper-base)); }
@@ -278,12 +280,15 @@
   background: oklch(var(--rb-l) var(--rb-c) var(--piece-hue));
 }
 
-/* A soft pop outwards, then a slow drift down while it fades. */
+/* No gravity: each piece glides out, slows to a stop and fades where it is. */
 @keyframes confetti-burst {
-  0% { opacity: 1; transform: translate(0, 0) rotate(0deg) scale(0.6); animation-timing-function: cubic-bezier(0.25, 0.5, 0.45, 1); }
-  40% { opacity: 1; transform: translate(var(--dx), var(--dy)) rotate(calc(var(--turn) * 0.45)) scale(1); animation-timing-function: cubic-bezier(0.45, 0, 0.7, 1); }
-  70% { opacity: 1; }
-  100% { opacity: 0; transform: translate(calc(var(--dx) * 1.1), calc(var(--dy) + 110px)) rotate(var(--turn)) scale(0.9); }
+  from { transform: translate(0, 0) rotate(0deg) scale(0.6); }
+  to { transform: translate(calc(var(--dx) * 1.1), calc(var(--dy) * 1.1)) rotate(var(--turn)) scale(0.9); }
+}
+
+@keyframes confetti-fade {
+  0%, 45% { opacity: 1; }
+  100% { opacity: 0; }
 }
 
 @keyframes ring-spin {
