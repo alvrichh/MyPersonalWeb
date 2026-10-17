@@ -1,21 +1,46 @@
 {
-  "generatedAt": "2026-10-16T12:58:14.703Z",
-  "date": "2026-10-16",
+  "generatedAt": "2026-10-17T11:56:28.567Z",
+  "date": "2026-10-17",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
     {
-      "title": "Multi-repo support and other improvements for GitHub Copilot in Slack and Microsoft Teams",
-      "source": "GitHub Changelog",
+      "title": "OpenAI models hacked a crypto wallet and breached more websites",
+      "source": "Ars Technica AI",
       "date": "2026-10-16",
-      "url": "https://github.blog/changelog/2026-10-15-copilot-in-slack-and-teams-adds-model-and-repository-updates",
-      "summary": "Multi-repo support in Slack and Microsoft Teams GitHub Copilot in Slack and Microsoft Teams now supports working across multiple repositories in a single conversation. Whether you’re tracking pull requests, investigating...",
+      "url": "https://arstechnica.com/security/2026/10/openai-models-hacked-a-crypto-wallet-and-breached-more-websites/",
+      "summary": "The actions could have resulted in criminal charges had humans been behind the keyboard.",
       "tags": [
-        "Copilot"
+        "ChatGPT",
+        "Models"
       ],
-      "image": "https://github.blog/wp-content/themes/github-2021-child/dist/img/social-v3-improvements.jpg"
+      "image": "https://cdn.arstechnica.net/wp-content/uploads/2026/10/ai-agents-1152x648.jpg"
+    },
+    {
+      "title": "Building trust in AI agents: A production-ready evaluation framework with Amazon Bedrock AgentCore",
+      "source": "AWS Machine Learning",
+      "date": "2026-10-16",
+      "url": "https://aws.amazon.com/blogs/machine-learning/building-trust-in-ai-agents-a-production-ready-evaluation-framework-with-amazon-bedrock-agentcore/",
+      "summary": "Autonomous AI agents fail softly: latency stays flat while answer quality quietly erodes. This post shares a nine-stage evaluation framework, built on Amazon Bedrock AgentCore, that catches silent quality regressions acr...",
+      "tags": [
+        "Agents"
+      ],
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/10/16/AgentCore-Evaluation-Journey.png"
+    },
+    {
+      "title": "Introducing Reflection Beam: an open-weight model for agentic coding on AWS",
+      "source": "AWS Machine Learning",
+      "date": "2026-10-16",
+      "url": "https://aws.amazon.com/blogs/machine-learning/introducing-reflection-beam-an-open-weight-model-for-agentic-coding-on-aws/",
+      "summary": "Reflection AI's Beam is an open-weight model for agentic coding and long-horizon tasks. This post shows how to deploy Beam on AWS: start with an Amazon SageMaker JumpStart real-time endpoint, or use Amazon SageMaker Hype...",
+      "tags": [
+        "Agents",
+        "Dev Tools",
+        "Models"
+      ],
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/10/15/ML-22133-1-1.png"
     },
     {
       "title": "Scaling Indic Pretraining: 2.8 Trillion Tokens and an Open Data Generation Pipeline",
@@ -27,6 +52,67 @@
         "AI"
       ],
       "image": "https://cdn-uploads.huggingface.co/production/uploads/68d2fec8856b85d927e44d32/x0aObe_0mduBjWFuKBGoV.png"
+    },
+    {
+      "title": "Welcome Beam: a 501B open model you can own, customize, and scale",
+      "source": "Hugging Face",
+      "date": "2026-10-16",
+      "url": "https://huggingface.co/blog/reflection-beam",
+      "summary": "AI update detected from an official or high-signal source.",
+      "tags": [
+        "Models"
+      ],
+      "image": "https://huggingface.co/blog/assets/reflection-beam/thumbnail.jpg"
+    },
+    {
+      "title": "Roundtables: A Conversation With the Creator of AI-Designed Viruses",
+      "source": "MIT Technology Review AI",
+      "date": "2026-10-16",
+      "url": "https://www.technologyreview.com/2026/10/16/1146224/roundtables-a-conversation-with-the-creator-of-ai-designed-viruses/",
+      "summary": "Listen to the session or watch below Can AI design new life forms? In 2025, Stanford University PhD student Samuel King came up with a preliminary answer when he used a generative AI model to propose genetic blueprints f...",
+      "tags": [
+        "Models"
+      ],
+      "image": "https://wp.technologyreview.com/wp-content/uploads/2024/01/MIT-TR-Roundtables_Oct-2-Thumbnail.png?resize=1200,600"
+    },
+    {
+      "title": "Code, Test, and Deploy on One Machine with NVIDIA RTX Spark",
+      "source": "NVIDIA Developer",
+      "date": "2026-10-16",
+      "url": "https://developer.nvidia.com/blog/code-test-and-deploy-on-one-machine-with-nvidia-rtx-spark/",
+      "summary": "AI agents are changing how software gets built. Developers have gone from writing every line of code by hand to directing agents that write most of the code. As...",
+      "tags": [
+        "Agents",
+        "Dev Tools"
+      ],
+      "image": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/10/image2-7-768x432.png"
+    },
+    {
+      "title": "Stack Overflow for Agents triples signups with ChatGPT plugin",
+      "source": "OpenAI News",
+      "date": "2026-10-16",
+      "url": "https://openai.com/index/stack-overflow-chatgpt-plugin",
+      "summary": "Two engineers shipped Stack Overflow for Agents in a few weeks with Codex, and its ChatGPT plugin helped drive up to 10× growth in agent creation.",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Dev Tools"
+      ],
+      "image": ""
+    },
+    {
+      "title": "Quoting Addy Osmani, Morgan Westlee Lunt, and Qing Wang",
+      "source": "Simon Willison",
+      "date": "2026-10-16",
+      "url": "https://simonwillison.net/2026/Oct/16/code-review/",
+      "summary": "We think \"did a human read the code?\" is an imprecise proxy for \"what could go wrong with this change, and which check—automated or human—is the right one to catch it?\" Asking that question also changed when review happe...",
+      "tags": [
+        "Agents",
+        "Claude",
+        "Dev Tools",
+        "Models"
+      ],
+      "image": "https://simonwillison.net/2026/Oct/16/code-review/"
     },
     {
       "title": "Meta’s Muse Spark Open now available in Amazon SageMaker JumpStart",
@@ -164,110 +250,31 @@
         "Multimodal"
       ],
       "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/10/Screenshot-2026-10-15-at-6.35.44-PM.png?quality=90&strip=all&crop=0,0,100,100"
-    },
-    {
-      "title": "Meta and Apple team up to make Muse AI models run better on Macs",
-      "source": "The Verge AI",
-      "date": "2026-10-15",
-      "url": "https://www.theverge.com/news/1012293/meta-apple-muse-spark-open-ai-model-mlx",
-      "summary": "Meta announced the Muse Spark Open AI model today, claiming that it's the \"most capable US open-weight model to date.\" But the company also says that it's the \"the first model in its class\" that can \"run on your desktop ...",
-      "tags": [
-        "Models"
-      ],
-      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/09/268742_Mac_Studio_AKrales_0025.jpg?quality=90&strip=all&crop=0,0,100,100"
-    },
-    {
-      "title": "Friends don’t let friends feed their data to AI agents",
-      "source": "The Verge AI",
-      "date": "2026-10-15",
-      "url": "https://www.theverge.com/tech/1011938/muse-ai-data-friends-consent",
-      "summary": "There's a growing trend in the consumer tech world: gadgets designed to spy on everything and everyone around you, regardless of whether or not anyone else actually consented to it. Now, with the advent of \"AI personal a...",
-      "tags": [
-        "Agents"
-      ],
-      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/10/268808_None_of_Your_Friends_Consented_To_an_AI_Agent_CVirginia2.jpg?quality=90&strip=all&crop=0,0,100,100"
-    },
-    {
-      "title": "Anthropic warns small AI models could self-replicate through IoT devices",
-      "source": "Ars Technica AI",
-      "date": "2026-10-14",
-      "url": "https://arstechnica.com/security/2026/10/anthropic-warns-small-ai-models-could-self-replicate-through-iot-devices/",
-      "summary": "\"Small weight-based replicators\" could usher in a new generation of computer worms.",
-      "tags": [
-        "Claude",
-        "Models"
-      ],
-      "image": "https://cdn.arstechnica.net/wp-content/uploads/2026/10/ai-caution-threat-1152x648.jpg"
-    },
-    {
-      "title": "OpenAI, Google pushing new AI models easily tricked into making nudes, researchers say",
-      "source": "Ars Technica AI",
-      "date": "2026-10-14",
-      "url": "https://arstechnica.com/tech-policy/2026/10/openai-google-pushing-new-ai-models-easily-tricked-into-making-nudes-researchers-say/",
-      "summary": "Attack method exposes flaws in OpenAI, Google safeguards against AI nudes.",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ],
-      "image": "https://cdn.arstechnica.net/wp-content/uploads/2026/10/white-circle-red-team-1152x648.jpg"
-    },
-    {
-      "title": "Build self-improving document processing using Amazon Bedrock AgentCore",
-      "source": "AWS Machine Learning",
-      "date": "2026-10-14",
-      "url": "https://aws.amazon.com/blogs/machine-learning/build-self-improving-document-processing-using-amazon-bedrock-agentcore/",
-      "summary": "Learn how to build an agentic intelligent document processing (IDP) system using Amazon Bedrock AgentCore that classifies, extracts, validates, and learns from business documents with minimal human intervention, automati...",
-      "tags": [
-        "Agents"
-      ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/10/14/Architecture-2.png"
-    },
-    {
-      "title": "Generate presentations with Amazon Bedrock AgentCore",
-      "source": "AWS Machine Learning",
-      "date": "2026-10-14",
-      "url": "https://aws.amazon.com/blogs/machine-learning/generate-presentations-with-amazon-bedrock-agentcore/",
-      "summary": "This post walks you through building an AI agent system with Amazon Bedrock AgentCore that automates PowerPoint presentation creation from enterprise documents. A supervisor agent, Retrieval Augmented Generation, and Ama...",
-      "tags": [
-        "Agents"
-      ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/10/09/ML-19250-1.png"
-    },
-    {
-      "title": "Google DeepMind and Singapore Government collaborate to build fine-tuned AI model for scam detection",
-      "source": "Google DeepMind",
-      "date": "2026-10-14",
-      "url": "https://deepmind.google/blog/on-device-ai-scam-detection-mddi/",
-      "summary": "Learn how Google DeepMind and GovTech Singapore uses lightweight on-device Gemma models to intercept conversational scams in private chats with zero cloud data egress.",
-      "tags": [
-        "Models"
-      ],
-      "image": "https://lh3.googleusercontent.com/5PC4h7MzjC0ojOxiK-nPcRz0b6kUybKnCBjLL3nsb9T9qt7-2ciORJPnrObeFaYbAMqPxIhH4Wq9HD-U73lCivpFBcK8gABvhXXDo2lzUUSk9olsZQ=w528-h297-n-nu-rw-lo"
     }
   ],
   "candidates": [
     {
-      "label": "GitHub Copilot developer loop",
+      "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Multi-repo support and other improvements for GitHub Copilot in Slack and Microsoft Teams",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-10-15-copilot-in-slack-and-teams-adds-model-and-repository-updates",
+          "title": "Building trust in AI agents: A production-ready evaluation framework with Amazon Bedrock AgentCore",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/building-trust-in-ai-agents-a-production-ready-evaluation-framework-with-amazon-bedrock-agentcore/",
           "date": "2026-10-16"
         },
         {
-          "title": "Upcoming deprecation of selected GitHub Copilot models in mid-November",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-10-15-upcoming-deprecation-of-selected-github-copilot-models-in-mid-november",
-          "date": "2026-10-15"
+          "title": "Introducing Reflection Beam: an open-weight model for agentic coding on AWS",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/introducing-reflection-beam-an-open-weight-model-for-agentic-coding-on-aws/",
+          "date": "2026-10-16"
         },
         {
-          "title": "HydraFusion updates and new Max option",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-10-14-hydrafusion-updates-and-new-max-option",
-          "date": "2026-10-14"
+          "title": "Code, Test, and Deploy on One Machine with NVIDIA RTX Spark",
+          "source": "NVIDIA Developer",
+          "link": "https://developer.nvidia.com/blog/code-test-and-deploy-on-one-machine-with-nvidia-rtx-spark/",
+          "date": "2026-10-16"
         }
       ]
     },
@@ -277,46 +284,21 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "Introducing Reflection Beam: an open-weight model for agentic coding on AWS",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/introducing-reflection-beam-an-open-weight-model-for-agentic-coding-on-aws/",
+          "date": "2026-10-16"
+        },
+        {
+          "title": "Quoting Addy Osmani, Morgan Westlee Lunt, and Qing Wang",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/16/code-review/",
+          "date": "2026-10-16"
+        },
+        {
           "title": "Meta’s Muse Spark Open now available in Amazon SageMaker JumpStart",
           "source": "AWS Machine Learning",
           "link": "https://aws.amazon.com/blogs/machine-learning/metas-muse-spark-open-now-available-in-amazon-sagemaker-jumpstart/",
-          "date": "2026-10-15"
-        },
-        {
-          "title": "Scale Agentic Coding Workflows with Meta’s Muse Spark Open on NVIDIA GB300 NVL72",
-          "source": "NVIDIA Developer",
-          "link": "https://developer.nvidia.com/blog/scale-agentic-coding-workflows-with-metas-muse-spark-open-on-nvidia-gb300-nvl72/",
-          "date": "2026-10-15"
-        },
-        {
-          "title": "Tree Appreciator",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/14/tree-appreciator/",
-          "date": "2026-10-14"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Trust in Depth: Giving agents more autonomy without losing control",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/trust-in-depth-giving-agents-more-autonomy-without-losing-control/",
-          "date": "2026-10-15"
-        },
-        {
-          "title": "Upcoming deprecation of selected GitHub Copilot models in mid-November",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-10-15-upcoming-deprecation-of-selected-github-copilot-models-in-mid-november",
-          "date": "2026-10-15"
-        },
-        {
-          "title": "Agentic autofix for code scanning alerts general availability",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-10-15-agentic-autofix-for-code-scanning-alerts-general-availability",
           "date": "2026-10-15"
         }
       ]
@@ -326,6 +308,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Code, Test, and Deploy on One Machine with NVIDIA RTX Spark",
+          "source": "NVIDIA Developer",
+          "link": "https://developer.nvidia.com/blog/code-test-and-deploy-on-one-machine-with-nvidia-rtx-spark/",
+          "date": "2026-10-16"
+        },
         {
           "title": "Agentic autofix for code scanning alerts general availability",
           "source": "GitHub Changelog",
@@ -337,12 +325,81 @@
           "source": "Ars Technica AI",
           "link": "https://arstechnica.com/ai/2026/10/gemini-4-argon-begins-rolling-out-in-gemini-app-and-antigravity-but-only-if-you-pay/",
           "date": "2026-10-13"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Stack Overflow for Agents triples signups with ChatGPT plugin",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/stack-overflow-chatgpt-plugin",
+          "date": "2026-10-16"
         },
         {
-          "title": "Gemini 4 Argon: Built to solve your hardest problems",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-argon/",
-          "date": "2026-10-13"
+          "title": "ChatGPT can peek at your Chrome tabs now",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1012510/openai-chatgpt-google-chrome-tabs",
+          "date": "2026-10-15"
+        },
+        {
+          "title": "Amp puts AI agents to work beyond code with OpenAI models",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/amp-beyond-coding",
+          "date": "2026-10-14"
+        }
+      ]
+    },
+    {
+      "label": "Claude research and documentation flow",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Quoting Addy Osmani, Morgan Westlee Lunt, and Qing Wang",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/16/code-review/",
+          "date": "2026-10-16"
+        },
+        {
+          "title": "Chirp Pong",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/15/chirp-pong/",
+          "date": "2026-10-15"
+        },
+        {
+          "title": "LaTeX renderer",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/15/latex/",
+          "date": "2026-10-15"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Upcoming deprecation of selected GitHub Copilot models in mid-November",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-10-15-upcoming-deprecation-of-selected-github-copilot-models-in-mid-november",
+          "date": "2026-10-15"
+        },
+        {
+          "title": "HydraFusion updates and new Max option",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-10-14-hydrafusion-updates-and-new-max-option",
+          "date": "2026-10-14"
+        },
+        {
+          "title": "GitHub Copilot app for Beginners: How to teach Copilot about your codebase",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-teach-copilot-about-your-codebase/",
+          "date": "2026-10-12"
         }
       ]
     },
@@ -372,56 +429,6 @@
       ]
     },
     {
-      "label": "Claude research and documentation flow",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Chirp Pong",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/15/chirp-pong/",
-          "date": "2026-10-15"
-        },
-        {
-          "title": "Tree Appreciator",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/14/tree-appreciator/",
-          "date": "2026-10-14"
-        },
-        {
-          "title": "Redesigning source control at Anthropic",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/13/redesigning-source-control-at-anthropic/",
-          "date": "2026-10-13"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "ChatGPT can peek at your Chrome tabs now",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1012510/openai-chatgpt-google-chrome-tabs",
-          "date": "2026-10-15"
-        },
-        {
-          "title": "Amp puts AI agents to work beyond code with OpenAI models",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/amp-beyond-coding",
-          "date": "2026-10-14"
-        },
-        {
-          "title": "llm-gemini 0.35",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/13/llm-gemini/",
-          "date": "2026-10-13"
-        }
-      ]
-    },
-    {
       "label": "Gemini multimodal exploration",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
@@ -433,15 +440,15 @@
           "date": "2026-10-13"
         },
         {
-          "title": "Gemini 4 Argon in GitHub Copilot",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-10-13-gemini-4-argon-in-github-copilot",
-          "date": "2026-10-13"
-        },
-        {
           "title": "Gemini 4 Argon: Built to solve your hardest problems",
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-argon/",
+          "date": "2026-10-13"
+        },
+        {
+          "title": "Developing Gemini 4 Argon responsibly and safely",
+          "source": "Google DeepMind",
+          "link": "https://deepmind.google/blog/developing-gemini-4-argon-responsibly-and-safely/",
           "date": "2026-10-13"
         }
       ]

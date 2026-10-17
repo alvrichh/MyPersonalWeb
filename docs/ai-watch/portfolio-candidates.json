@@ -1,28 +1,28 @@
 {
-  "generatedAt": "2026-10-16T12:58:14.703Z",
+  "generatedAt": "2026-10-17T11:56:28.567Z",
   "candidates": [
     {
-      "label": "GitHub Copilot developer loop",
+      "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Multi-repo support and other improvements for GitHub Copilot in Slack and Microsoft Teams",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-10-15-copilot-in-slack-and-teams-adds-model-and-repository-updates",
+          "title": "Building trust in AI agents: A production-ready evaluation framework with Amazon Bedrock AgentCore",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/building-trust-in-ai-agents-a-production-ready-evaluation-framework-with-amazon-bedrock-agentcore/",
           "date": "2026-10-16"
         },
         {
-          "title": "Upcoming deprecation of selected GitHub Copilot models in mid-November",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-10-15-upcoming-deprecation-of-selected-github-copilot-models-in-mid-november",
-          "date": "2026-10-15"
+          "title": "Introducing Reflection Beam: an open-weight model for agentic coding on AWS",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/introducing-reflection-beam-an-open-weight-model-for-agentic-coding-on-aws/",
+          "date": "2026-10-16"
         },
         {
-          "title": "HydraFusion updates and new Max option",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-10-14-hydrafusion-updates-and-new-max-option",
-          "date": "2026-10-14"
+          "title": "Code, Test, and Deploy on One Machine with NVIDIA RTX Spark",
+          "source": "NVIDIA Developer",
+          "link": "https://developer.nvidia.com/blog/code-test-and-deploy-on-one-machine-with-nvidia-rtx-spark/",
+          "date": "2026-10-16"
         }
       ]
     },
@@ -32,46 +32,21 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "Introducing Reflection Beam: an open-weight model for agentic coding on AWS",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/introducing-reflection-beam-an-open-weight-model-for-agentic-coding-on-aws/",
+          "date": "2026-10-16"
+        },
+        {
+          "title": "Quoting Addy Osmani, Morgan Westlee Lunt, and Qing Wang",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/16/code-review/",
+          "date": "2026-10-16"
+        },
+        {
           "title": "Meta’s Muse Spark Open now available in Amazon SageMaker JumpStart",
           "source": "AWS Machine Learning",
           "link": "https://aws.amazon.com/blogs/machine-learning/metas-muse-spark-open-now-available-in-amazon-sagemaker-jumpstart/",
-          "date": "2026-10-15"
-        },
-        {
-          "title": "Scale Agentic Coding Workflows with Meta’s Muse Spark Open on NVIDIA GB300 NVL72",
-          "source": "NVIDIA Developer",
-          "link": "https://developer.nvidia.com/blog/scale-agentic-coding-workflows-with-metas-muse-spark-open-on-nvidia-gb300-nvl72/",
-          "date": "2026-10-15"
-        },
-        {
-          "title": "Tree Appreciator",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/14/tree-appreciator/",
-          "date": "2026-10-14"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Trust in Depth: Giving agents more autonomy without losing control",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/trust-in-depth-giving-agents-more-autonomy-without-losing-control/",
-          "date": "2026-10-15"
-        },
-        {
-          "title": "Upcoming deprecation of selected GitHub Copilot models in mid-November",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-10-15-upcoming-deprecation-of-selected-github-copilot-models-in-mid-november",
-          "date": "2026-10-15"
-        },
-        {
-          "title": "Agentic autofix for code scanning alerts general availability",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-10-15-agentic-autofix-for-code-scanning-alerts-general-availability",
           "date": "2026-10-15"
         }
       ]
@@ -81,6 +56,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Code, Test, and Deploy on One Machine with NVIDIA RTX Spark",
+          "source": "NVIDIA Developer",
+          "link": "https://developer.nvidia.com/blog/code-test-and-deploy-on-one-machine-with-nvidia-rtx-spark/",
+          "date": "2026-10-16"
+        },
         {
           "title": "Agentic autofix for code scanning alerts general availability",
           "source": "GitHub Changelog",
@@ -92,12 +73,81 @@
           "source": "Ars Technica AI",
           "link": "https://arstechnica.com/ai/2026/10/gemini-4-argon-begins-rolling-out-in-gemini-app-and-antigravity-but-only-if-you-pay/",
           "date": "2026-10-13"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Stack Overflow for Agents triples signups with ChatGPT plugin",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/stack-overflow-chatgpt-plugin",
+          "date": "2026-10-16"
         },
         {
-          "title": "Gemini 4 Argon: Built to solve your hardest problems",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-argon/",
-          "date": "2026-10-13"
+          "title": "ChatGPT can peek at your Chrome tabs now",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1012510/openai-chatgpt-google-chrome-tabs",
+          "date": "2026-10-15"
+        },
+        {
+          "title": "Amp puts AI agents to work beyond code with OpenAI models",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/amp-beyond-coding",
+          "date": "2026-10-14"
+        }
+      ]
+    },
+    {
+      "label": "Claude research and documentation flow",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Quoting Addy Osmani, Morgan Westlee Lunt, and Qing Wang",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/16/code-review/",
+          "date": "2026-10-16"
+        },
+        {
+          "title": "Chirp Pong",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/15/chirp-pong/",
+          "date": "2026-10-15"
+        },
+        {
+          "title": "LaTeX renderer",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/15/latex/",
+          "date": "2026-10-15"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Upcoming deprecation of selected GitHub Copilot models in mid-November",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-10-15-upcoming-deprecation-of-selected-github-copilot-models-in-mid-november",
+          "date": "2026-10-15"
+        },
+        {
+          "title": "HydraFusion updates and new Max option",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-10-14-hydrafusion-updates-and-new-max-option",
+          "date": "2026-10-14"
+        },
+        {
+          "title": "GitHub Copilot app for Beginners: How to teach Copilot about your codebase",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-teach-copilot-about-your-codebase/",
+          "date": "2026-10-12"
         }
       ]
     },
@@ -127,56 +177,6 @@
       ]
     },
     {
-      "label": "Claude research and documentation flow",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Chirp Pong",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/15/chirp-pong/",
-          "date": "2026-10-15"
-        },
-        {
-          "title": "Tree Appreciator",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/14/tree-appreciator/",
-          "date": "2026-10-14"
-        },
-        {
-          "title": "Redesigning source control at Anthropic",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/13/redesigning-source-control-at-anthropic/",
-          "date": "2026-10-13"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "ChatGPT can peek at your Chrome tabs now",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1012510/openai-chatgpt-google-chrome-tabs",
-          "date": "2026-10-15"
-        },
-        {
-          "title": "Amp puts AI agents to work beyond code with OpenAI models",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/amp-beyond-coding",
-          "date": "2026-10-14"
-        },
-        {
-          "title": "llm-gemini 0.35",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/13/llm-gemini/",
-          "date": "2026-10-13"
-        }
-      ]
-    },
-    {
       "label": "Gemini multimodal exploration",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
@@ -188,15 +188,15 @@
           "date": "2026-10-13"
         },
         {
-          "title": "Gemini 4 Argon in GitHub Copilot",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-10-13-gemini-4-argon-in-github-copilot",
-          "date": "2026-10-13"
-        },
-        {
           "title": "Gemini 4 Argon: Built to solve your hardest problems",
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-argon/",
+          "date": "2026-10-13"
+        },
+        {
+          "title": "Developing Gemini 4 Argon responsibly and safely",
+          "source": "Google DeepMind",
+          "link": "https://deepmind.google/blog/developing-gemini-4-argon-responsibly-and-safely/",
           "date": "2026-10-13"
         }
       ]
