@@ -155,8 +155,8 @@
   100% { opacity: 0; }
 }
 
-/* Red: the ring catches fire. Flames rise straight up from all round it,
-   flickering, and burn out. */
+/* Red: the ring catches fire. Flames lick out round its sides and top from
+   behind the portrait, burn there for a moment, then rise and burn out. */
 .hero-fx > .fx-flame {
   --shape: #{shape("%3Cpath d='M12 2c.6 3.6 4.4 5.8 5.6 9.4 1.6 4.7-1.4 9.6-5.6 10.6-4.2-1-7.2-5.9-5.6-10.6.6-1.8 1.7-3 2.6-4.2.2 1.8.9 3 2 3.6C11 7.9 11.9 5.2 12 2z'/%3E")};
   --w: 20px;
@@ -164,7 +164,7 @@
   --fx-tint: color-mix(in srgb, var(--accent) 50%, #ff9a1f);
   transform-origin: 50% 100%;
   animation:
-    fx-rise var(--dur) cubic-bezier(0.35, 0.3, 0.6, 1) var(--delay) forwards,
+    fx-rise var(--dur) linear var(--delay) forwards,
     fx-flicker var(--dur) linear var(--delay) forwards,
     fx-flame-fade var(--dur) linear var(--delay) forwards;
 
@@ -172,23 +172,26 @@
 }
 
 @keyframes fx-rise {
-  from { translate: 0 0; }
-  to { translate: var(--dx) var(--dy); }
+  0% { translate: 0 0; animation-timing-function: cubic-bezier(0.2, 0.6, 0.4, 1); }
+  30% { translate: var(--ox) var(--oy); animation-timing-function: cubic-bezier(0.5, 0, 0.6, 1); }
+  100% { translate: var(--dx) var(--dy); }
 }
 
 @keyframes fx-flicker {
   0% { scale: 0.4; }
-  15% { scale: 1.1 1.2; }
-  30% { scale: 0.85 1; }
-  45% { scale: 1 1.15; }
-  60% { scale: 0.8 0.95; }
-  80% { scale: 0.7 0.85; }
+  10% { scale: 1.1 1.2; }
+  20% { scale: 0.9 1; }
+  30% { scale: 1.05 1.2; }
+  40% { scale: 0.85 1; }
+  50% { scale: 1 1.15; }
+  65% { scale: 0.8 0.95; }
+  82% { scale: 0.65 0.8; }
   100% { scale: 0.25; }
 }
 
 @keyframes fx-flame-fade {
   0% { opacity: 0; }
-  10%, 55% { opacity: 1; }
+  8%, 62% { opacity: 1; }
   100% { opacity: 0; }
 }
 

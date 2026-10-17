@@ -8,7 +8,7 @@ import type { CSSProperties } from 'react';
  *
  *   blue     ripple    rings spread out like water round a dropped stone
  *   green    leaf      a gust of wind blows leaves off to the left
- *   red      flame     the ring catches fire and flames rise straight up
+ *   red      flame     flames lick out round the sides, burn, then rise
  *   orange   spark     sparkler sparks shoot out fast, then arc down
  *   yellow   bolt      a storm: bolts flicker in place round the ring + a flash
  *   white    ghost     ghosts slip out round the sides, linger, then drift up
@@ -35,7 +35,7 @@ const LIFE: Partial<Record<FxKind, number>> = {
   confetti: 1700,
   ripple: 2300,
   leaf: 3100,
-  flame: 1600,
+  flame: 2200,
   spark: 1100,
   bolt: 1500,
   ghost: 3900,
@@ -114,19 +114,28 @@ export function makeBurst(kind: FxKind, burst: number, combo: number, figure: DO
       });
     }
 
-    case 'flame':
-      return Array.from({ length: count(20) }, () => {
-        const angle = Math.random() * Math.PI * 2;
+    case 'flame': {
+      // Like the ghosts: flames lick out round the sides and the top from
+      // behind the photo, burn there for a moment, then rise and die down.
+      const total = count(22);
+      return Array.from({ length: total }, (_, i) => {
+        const angle = -Math.PI - 0.4 + ((i + between(0.1, 0.9)) / total) * (Math.PI + 0.8);
+        const x0 = Math.cos(angle) * radius * 0.9;
+        const ox = fitX(x0, Math.cos(angle) * between(20, 55) * (wide ? 1.3 : 1));
+        const oy = Math.sin(angle) * between(15, 40);
         return piece('flame', {
-          '--x0': px(Math.cos(angle) * radius * 0.98),
-          '--y0': px(Math.sin(angle) * radius * 0.98),
-          '--dx': px(between(-16, 16)),
-          '--dy': px(-between(80, 190) * comboReach * (wide ? 1.3 : 1)),
+          '--x0': px(x0),
+          '--y0': px(Math.sin(angle) * radius * 0.9),
+          '--ox': px(ox),
+          '--oy': px(oy),
+          '--dx': px(ox + between(-14, 14)),
+          '--dy': px(oy - between(80, 180) * comboReach * (wide ? 1.3 : 1)),
           '--size': between(0.7, 1.3).toFixed(2),
-          '--dur': ms(between(1000, 1400)),
-          '--delay': ms(between(0, 200)),
+          '--dur': ms(between(1400, 1900)),
+          '--delay': ms(between(0, 250)),
         });
       });
+    }
 
     case 'spark': {
       const total = count(34);
