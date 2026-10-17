@@ -41,6 +41,12 @@
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  /* The clip stops at the line box, which cuts descenders (the tail of the g)
+     and the italic overhang; give it room and take it back, as in the hero. */
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+  padding-inline-end: 0.08em;
+  margin-inline-end: -0.08em;
   animation: rainbow-slide 6s linear infinite;
 }
 
