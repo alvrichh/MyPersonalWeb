@@ -11,7 +11,7 @@ import type { CSSProperties } from 'react';
  *   red      flame     the ring catches fire and flames rise straight up
  *   orange   spark     sparkler sparks shoot out fast, then arc down
  *   yellow   bolt      a storm: bolts flicker in place round the ring + a flash
- *   white    ghost     ghosts slip out from behind and drift up, weaving
+ *   white    ghost     ghosts slip out round the sides, linger, then drift up
  *   pink     heart     hearts orbit the portrait as they spiral away
  *   rainbow  confetti  (Disco) confetti bursts out in every colour
  */
@@ -38,7 +38,7 @@ const LIFE: Partial<Record<FxKind, number>> = {
   flame: 1600,
   spark: 1100,
   bolt: 1500,
-  ghost: 3500,
+  ghost: 3900,
   heart: 2600,
 };
 
@@ -165,23 +165,30 @@ export function makeBurst(kind: FxKind, burst: number, combo: number, figure: DO
       return [piece('flash', { '--delay': '0ms' }), ...bolts];
     }
 
-    case 'ghost':
-      return Array.from({ length: count(6) }, () => {
-        // Mostly from the top half, so they rise away from behind the photo.
-        const angle = -Math.PI / 2 + between(-0.6, 0.6) * Math.PI;
+    case 'ghost': {
+      // Spread round the sides and the top: each one slips out sideways from
+      // behind the photo, hangs about for a moment, then drifts up and away.
+      const total = count(7);
+      return Array.from({ length: total }, (_, i) => {
+        const angle = -Math.PI - 0.35 + ((i + between(0.2, 0.8)) / total) * (Math.PI + 0.7);
         const x0 = Math.cos(angle) * ring * 0.8;
+        const ox = fitX(x0, Math.cos(angle) * between(50, 100) * (wide ? 1.3 : 1));
+        const oy = Math.sin(angle) * between(30, 60);
         return piece('ghost', {
           '--x0': px(x0),
           '--y0': px(Math.sin(angle) * ring * 0.8),
-          '--dx': px(fitX(x0, Math.cos(angle) * between(60, 150) * screen)),
-          '--dy': px(-between(150, 280) * comboReach * (wide ? 1.2 : 1)),
-          '--wave': px(between(18, 32)),
+          '--ox': px(ox),
+          '--oy': px(oy),
+          '--dx': px(fitX(x0, ox + between(-30, 30) * screen)),
+          '--dy': px(oy - between(140, 260) * comboReach * (wide ? 1.2 : 1)),
+          '--wave': px(between(14, 26)),
           '--tilt': `${Math.round(between(-12, 12))}deg`,
           '--size': between(0.85, 1.2).toFixed(2),
-          '--dur': ms(between(2600, 3200)),
-          '--delay': ms(between(0, 260)),
+          '--dur': ms(between(3000, 3600)),
+          '--delay': ms(between(0, 300)),
         });
       });
+    }
 
     case 'heart': {
       const total = Math.min(count(12), 48);
