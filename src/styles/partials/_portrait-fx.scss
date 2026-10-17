@@ -195,8 +195,8 @@
   100% { opacity: 0; }
 }
 
-/* Orange: a sparkler. Thin glowing streaks shoot out very fast, then lose
-   speed and arc down as they burn out. */
+/* Orange: fireworks. Thin glowing streaks shoot out very fast; as they lose
+   speed each one shrinks to a dot of light that falls, twinkling, and goes out. */
 .hero-fx > .fx-spark {
   --w: 2.5px;
   --h: 13px;
@@ -207,24 +207,33 @@
   box-shadow: 0 0 6px 1px color-mix(in srgb, currentColor 70%, transparent);
   rotate: calc(var(--angle) + 90deg);
   animation:
-    fx-arc 0.95s linear var(--delay) forwards,
-    fx-shrink 0.95s ease-in var(--delay) forwards,
-    fx-spark-fade 0.95s linear var(--delay) forwards;
+    fx-arc 1.5s linear var(--delay) forwards,
+    fx-ember 1.5s linear var(--delay) forwards,
+    fx-twinkle 1.5s linear var(--delay) forwards;
 }
 
 @keyframes fx-arc {
   0% { translate: 0 0; animation-timing-function: cubic-bezier(0.1, 0.8, 0.3, 1); }
-  35% { translate: var(--dx) var(--dy); animation-timing-function: cubic-bezier(0.5, 0, 0.9, 0.6); }
-  100% { translate: calc(var(--dx) * 1.15) calc(var(--dy) + var(--fall)); }
+  25% { translate: var(--dx) var(--dy); animation-timing-function: cubic-bezier(0.45, 0, 0.75, 0.7); }
+  100% { translate: calc(var(--dx) * 1.12) calc(var(--dy) + var(--fall)); }
 }
 
-@keyframes fx-shrink {
-  from { scale: 1; }
-  to { scale: 0.2; }
+/* Streak to dot: the long side collapses (and the short one grows a little)
+   just as the spark stops shooting out and starts to fall. */
+@keyframes fx-ember {
+  0%, 18% { scale: 1 1; }
+  32% { scale: 2 0.38; }
+  100% { scale: 1.5 0.29; }
 }
 
-@keyframes fx-spark-fade {
-  0%, 40% { opacity: 1; }
+@keyframes fx-twinkle {
+  0%, 30% { opacity: 1; }
+  40% { opacity: 0.45; }
+  48% { opacity: 1; }
+  58% { opacity: 0.35; }
+  66% { opacity: 0.95; }
+  76% { opacity: 0.3; }
+  84% { opacity: 0.7; }
   100% { opacity: 0; }
 }
 
