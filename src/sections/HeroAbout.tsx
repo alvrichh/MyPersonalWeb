@@ -1,16 +1,56 @@
-import { useState } from 'react';
+import { useRef, useState, type CSSProperties, type MouseEvent } from 'react';
 import { useI18n, type MessageKey } from '../i18n/I18nContext';
 import { CalendarIcon, DownloadIcon, GitHubIcon, PinIcon } from '../components/icons';
 import { CALENDLY } from '../data/contact';
 
+type Confetti = { id: number; style: CSSProperties };
+
+const CONFETTI_COUNT = 28;
+
+// One burst: pieces leave the ring in every direction, each with its own
+// distance, spin, shape and colour slot (or hue, under the Disco accent).
+// Sideways travel stops short of the screen edges, so phones never scroll.
+const makeConfetti = (burst: number, figure: DOMRect): Confetti[] => {
+  const ring = figure.width * 0.44;
+  const centre = figure.left + figure.width / 2;
+  const room = Math.min(centre, window.innerWidth - centre) - 12;
+  return Array.from({ length: CONFETTI_COUNT }, (_, i) => {
+    const angle = ((i + Math.random() * 0.6) / CONFETTI_COUNT) * Math.PI * 2;
+    const distance = 130 + Math.random() * 120;
+    const x0 = Math.cos(angle) * ring;
+    const maxDx = Math.max(0, room / 1.1 - Math.abs(x0));
+    const dx = Math.max(-maxDx, Math.min(maxDx, Math.cos(angle) * distance));
+    return {
+      id: burst * CONFETTI_COUNT + i,
+      style: {
+        ['--x0' as string]: `${x0}px`,
+        ['--y0' as string]: `${Math.sin(angle) * ring}px`,
+        ['--dx' as string]: `${dx}px`,
+        ['--dy' as string]: `${Math.sin(angle) * distance}px`,
+        ['--turn' as string]: `${(Math.random() - 0.5) * 900}deg`,
+        ['--piece-hue' as string]: Math.round(Math.random() * 360),
+        ['--delay' as string]: `${Math.random() * 60}ms`,
+      },
+    };
+  });
+};
+
 export function Hero() {
   const { t } = useI18n();
-  // Hidden easter egg: a click spins the portrait like a tossed coin. No
-  // pointer cursor or button role on purpose, so it stays a surprise.
+  // Hidden easter egg: a click spins the portrait like a tossed coin and
+  // throws accent-coloured confetti off the ring. No pointer cursor or button
+  // role on purpose, so it stays a surprise.
   const [spinning, setSpinning] = useState(false);
-  const spin = () => {
+  const [confetti, setConfetti] = useState<Confetti[]>([]);
+  const bursts = useRef(0);
+  const spin = (event: MouseEvent<HTMLElement>) => {
     if (spinning || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     setSpinning(true);
+    const burst = ++bursts.current;
+    setConfetti(makeConfetti(burst, event.currentTarget.getBoundingClientRect()));
+    window.setTimeout(() => {
+      if (bursts.current === burst) setConfetti([]);
+    }, 1400);
   };
 
   return (
@@ -66,6 +106,9 @@ export function Hero() {
             height={640}
           />
         </div>
+        <span className="hero-confetti" aria-hidden="true">
+          {confetti.map((piece) => <i key={piece.id} style={piece.style} />)}
+        </span>
       </figure>
     </section>
   );
