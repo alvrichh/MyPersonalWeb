@@ -16,7 +16,7 @@ const makeConfetti = (burst: number, figure: DOMRect): Confetti[] => {
   const room = Math.min(centre, window.innerWidth - centre) - 12;
   return Array.from({ length: CONFETTI_COUNT }, (_, i) => {
     const angle = ((i + Math.random() * 0.6) / CONFETTI_COUNT) * Math.PI * 2;
-    const distance = 130 + Math.random() * 120;
+    const distance = 80 + Math.random() * 100;
     const x0 = Math.cos(angle) * ring;
     const maxDx = Math.max(0, room / 1.1 - Math.abs(x0));
     const dx = Math.max(-maxDx, Math.min(maxDx, Math.cos(angle) * distance));
@@ -50,7 +50,7 @@ export function Hero() {
     setConfetti(makeConfetti(burst, event.currentTarget.getBoundingClientRect()));
     window.setTimeout(() => {
       if (bursts.current === burst) setConfetti([]);
-    }, 1400);
+    }, 2100);
   };
 
   return (
