@@ -3,13 +3,13 @@
 Guide for any AI agent (Claude Code, Codex, Cursor, Gemini CLI…) working in this repo from scratch. Read it first, then the files it points to. This repo is **public**: never add private or job-search data here (that lives in a separate private repo).
 
 ## What this is
-Álvaro Rodríguez Molina's portfolio, deployed at https://alvrich.vercel.app. React + TypeScript + SCSS, built with Vite and **prerendered** so pages read without JavaScript. Ten UI languages, light/dark themes, eight accent colours.
+Álvaro Rodríguez Molina's portfolio, deployed at https://alvrich.vercel.app. React + TypeScript + SCSS, built with Vite and **prerendered** so pages read without JavaScript. Eleven UI languages, light/dark themes, eight accent colours.
 
 ## Layout
 - `src/components/` — header, mobile menu, pickers, icons.
 - `src/sections/` — page sections (Hero, Experience, Education, Work, Skills, Contact, GitHub activity, Radar).
 - `src/data/` — **content**: `experience.ts` (jobs and roles), `work.ts` (projects), `contact.ts`.
-- `src/i18n/locales/*.json` — ten translation files. Any user-visible text must be added to **all ten** (`en` is the reference).
+- `src/i18n/locales/*.json` — eleven translation files. Any user-visible text must be added to **all eleven** (`en` is the reference).
 - `src/styles/partials/` — SCSS by section. `_mobile.scss` and `_responsive.scss` hold the phone layout (≤760px).
 - `static/data/experience.json` — a second copy of the experience data used by the legacy calendar page (`src/legacy/calendar`). **Keep it in sync** with `src/data/experience.ts`.
 - `static/cv/alvaro-molina-cv.pdf` — the CV served by the "Download CV" button. Generated from `scripts/cv/cv.html` (see below).

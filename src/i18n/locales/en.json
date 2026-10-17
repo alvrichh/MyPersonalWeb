@@ -158,7 +158,7 @@
   "work.planning": "My own planner: daily focus, a weekly view, an Eisenhower matrix and a vault for decisions. Built because every to-do app I tried was either too much or too little.",
   "work.private": "Private · ask me about it",
   "work.radar": "A GitHub Action wakes up every morning, reads official AI and dev-tooling feeds, and commits a JSON file. This page renders it. The bot touches data, never the layout.",
-  "work.site": "React and TypeScript with SCSS, built with Vite and prerendered so it reads without JavaScript. Ten languages, light and dark themes, eight accent colours, and built automatically by GitHub Actions on every push.",
+  "work.site": "React and TypeScript with SCSS, built with Vite and prerendered so it reads without JavaScript. Eleven languages, light and dark themes, eight accent colours, and built automatically by GitHub Actions on every push.",
   "work.smc": "The website of Spain Motorcars, a dealer that hand-picks premium everyday cars and the odd classic: a fast single-page site with the inventory, services and buying process, in two languages and with a dark mode.",
   "work.strattonApp": "My final degree project (Web Application Development): a client-management app for an energy advisory firm, with a REST API secured with Spring Security and an Angular frontend, plus the analysis behind it: use cases, data model and prototypes.",
   "work.sync.p1": "Corporate sign-in with Microsoft Entra ID, an extra JWT layer and role-based views, with automated emails when someone is granted access to a section.",

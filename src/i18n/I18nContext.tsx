@@ -7,6 +7,7 @@ import ga from './locales/ga.json';
 import fr from './locales/fr.json';
 import de from './locales/de.json';
 import ru from './locales/ru.json';
+import ro from './locales/ro.json';
 import pl from './locales/pl.json';
 import zh from './locales/zh.json';
 import ar from './locales/ar.json';
@@ -29,7 +30,7 @@ export const LANGUAGES = meta.languages as Language[];
 export const ACCENTS = meta.accents as Accent[];
 export const BUBBLE_LINES = bubble as Record<string, string[]>;
 
-const LOCALES: Record<string, Partial<Record<MessageKey, string>>> = { en, es, ga, fr, de, ru, pl, zh, ar, and };
+const LOCALES: Record<string, Partial<Record<MessageKey, string>>> = { en, es, ga, fr, de, ru, ro, pl, zh, ar, and };
 
 type I18n = {
   lang: Language;
