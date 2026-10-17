@@ -229,6 +229,25 @@
   transform: scale(1.03);
 }
 
+/* Easter egg (HeroAbout.tsx): a click spins the whole portrait once round its
+   vertical axis, like a coin. The figure is already its own stacking context,
+   so the glow stays behind the ring while it turns. */
+.hero-figure {
+  cursor: default;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hero-figure.is-spinning {
+  animation: coin-spin 1s cubic-bezier(0.3, 0.1, 0.2, 1);
+}
+
+@keyframes coin-spin {
+  from { transform: perspective(1200px) rotateY(0deg); }
+  50% { transform: perspective(1200px) rotateY(180deg) scale(1.04); }
+  to { transform: perspective(1200px) rotateY(360deg); }
+}
+
 @keyframes ring-spin {
   to { --ring-angle: 360deg; }
 }
