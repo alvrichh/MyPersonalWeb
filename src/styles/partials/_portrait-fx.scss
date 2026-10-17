@@ -120,7 +120,7 @@
   to { scale: var(--scale); opacity: 0; }
 }
 
-/* Green: a gust of wind. Every leaf blows the same way, fluttering up and
+/* Green: a gust of wind. Every leaf blows to the left, fluttering up and
    down and tumbling over as it goes. */
 .hero-fx > .fx-leaf {
   --shape: #{shape("%3Cpath d='M4 20C4 9 10 4 21 3c-1 11-6 17-17 17z'/%3E%3Cpath d='M3 21l6-6' stroke='black' stroke-width='1.8' stroke-linecap='round'/%3E")};
