@@ -79,7 +79,7 @@ export function makeBurst(kind: FxKind, burst: number, combo: number, figure: DO
   // pieces don't stack up in a line at the edge).
   const fitX = (x0: number, dx: number) => {
     if (wide) return dx;
-    const room = Math.max(1, (dx < 0 ? roomLeft + x0 : roomRight - x0) - 8);
+    const room = Math.max(1, (dx < 0 ? roomLeft + x0 : roomRight - x0) - 24);
     return Math.sign(dx) * room * Math.tanh(Math.abs(dx) / room);
   };
 
@@ -151,7 +151,7 @@ export function makeBurst(kind: FxKind, burst: number, combo: number, figure: DO
       const bolts = Array.from({ length: total }, (_, i) => {
         const angle = ((i + between(0.2, 0.8)) / total) * Math.PI * 2;
         const distance = radius * between(1.12, 1.4) * Math.min(comboReach, 1.4);
-        const reachX = wide ? Infinity : (Math.cos(angle) < 0 ? roomLeft : roomRight) - 18;
+        const reachX = wide ? Infinity : (Math.cos(angle) < 0 ? roomLeft : roomRight) - 30;
         const x0 = Math.sign(Math.cos(angle)) * Math.min(Math.abs(Math.cos(angle) * distance), reachX);
         return piece('bolt', {
           '--x0': px(x0),
