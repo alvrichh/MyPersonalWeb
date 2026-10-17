@@ -267,14 +267,14 @@
   100% { opacity: 0; }
 }
 
-/* White: ghosts slip out from behind the portrait and drift slowly up,
-   weaving from side to side, before fading away. */
+/* White: ghosts slip out sideways from behind the portrait, hang about
+   round it for a moment, then drift slowly up, weaving, and fade away. */
 .hero-fx > .fx-ghost {
   --shape: #{shape("%3Cpath fill-rule='evenodd' d='M12 2a8 8 0 0 0-8 8v12l2.7-2 2.6 2 2.7-2 2.7 2 2.6-2 2.7 2V10a8 8 0 0 0-8-8zM9 8.4a1.6 1.6 0 1 0 0 3.2a1.6 1.6 0 1 0 0-3.2zM15 8.4a1.6 1.6 0 1 0 0 3.2a1.6 1.6 0 1 0 0-3.2z'/%3E")};
   --w: 42px;
   --h: 44px;
   animation:
-    fx-float var(--dur) cubic-bezier(0.35, 0.25, 0.5, 1) var(--delay) forwards,
+    fx-float var(--dur) linear var(--delay) forwards,
     fx-weave 0.9s ease-in-out var(--delay) infinite alternate,
     fx-ghost-grow var(--dur) ease-out var(--delay) forwards,
     fx-ghost-fade var(--dur) linear var(--delay) forwards;
@@ -283,8 +283,9 @@
 .hero-fx > .fx-ghost:nth-child(n) { color: var(--accent); }
 
 @keyframes fx-float {
-  from { translate: 0 0; }
-  to { translate: var(--dx) var(--dy); }
+  0% { translate: 0 0; animation-timing-function: cubic-bezier(0.2, 0.6, 0.4, 1); }
+  35% { translate: var(--ox) var(--oy); animation-timing-function: cubic-bezier(0.45, 0, 0.6, 1); }
+  100% { translate: var(--dx) var(--dy); }
 }
 
 @keyframes fx-weave {
@@ -299,7 +300,7 @@
 
 @keyframes fx-ghost-fade {
   0% { opacity: 0; }
-  18%, 65% { opacity: 0.85; }
+  15%, 72% { opacity: 0.85; }
   100% { opacity: 0; }
 }
 
