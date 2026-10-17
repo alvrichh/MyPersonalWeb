@@ -65,16 +65,6 @@ export function Hero() {
             width={640}
             height={640}
           />
-          {/* The other side of the coin, only seen mid-spin. */}
-          <img
-            className="hero-portrait-back"
-            src="./images/author-portrait-back.jpg"
-            alt=""
-            aria-hidden="true"
-            width={384}
-            height={384}
-            decoding="async"
-          />
         </div>
       </figure>
     </section>
