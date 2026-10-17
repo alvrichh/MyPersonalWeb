@@ -9,18 +9,21 @@ type Confetti = { id: number; burst: number; style: CSSProperties };
 // more pieces, further, up to a cap so a frantic clicker can't flood the page.
 const COMBO_WINDOW = 1200;
 const MAX_COMBO = 8;
-const MAX_PIECES = 360;
+const MAX_PIECES = { wide: 500, phone: 360 };
 const CONFETTI_LIFE = 2100;
 
 let nextPiece = 0;
 
 // One burst: pieces leave the ring in every direction, each with its own
 // distance, spin, shape and colour slot (or hue, under the Disco accent).
-// Sideways travel eases off before the screen edge on each side (a soft
-// limit, so pieces don't stack up in a line there) and phones never scroll.
+// On wide screens there are more pieces and they fly further (both up to
+// twice as many/far) and may leave the window; on phones, sideways travel eases off before the screen edge on each
+// side (a soft limit, so pieces don't stack up in a line) so they never scroll.
 const makeConfetti = (burst: number, combo: number, figure: DOMRect): Confetti[] => {
-  const count = 28 + (combo - 1) * 10;
-  const reach = 1 + (combo - 1) * 0.12;
+  const wide = window.innerWidth > 760;
+  const screen = wide ? Math.min(2, window.innerWidth / 640) : 1;
+  const count = Math.round((28 + (combo - 1) * 10) * screen);
+  const reach = (1 + (combo - 1) * 0.12) * screen;
   const ring = figure.width * 0.44;
   const centre = figure.left + figure.width / 2;
   return Array.from({ length: count }, (_, i) => {
@@ -29,7 +32,9 @@ const makeConfetti = (burst: number, combo: number, figure: DOMRect): Confetti[]
     const x0 = Math.cos(angle) * ring;
     const room = (x0 < 0 ? centre : window.innerWidth - centre) - 12;
     const maxDx = Math.max(1, room / 1.1 - Math.abs(x0));
-    const dx = Math.sign(x0) * maxDx * Math.tanh(Math.abs(Math.cos(angle) * distance) / maxDx);
+    const dx = wide
+      ? Math.cos(angle) * distance
+      : Math.sign(x0) * maxDx * Math.tanh(Math.abs(Math.cos(angle) * distance) / maxDx);
     return {
       id: nextPiece++,
       burst,
@@ -66,7 +71,7 @@ export function Hero() {
 
     const burst = ++bursts.current;
     const pieces = makeConfetti(burst, streak, event.currentTarget.getBoundingClientRect());
-    setConfetti((current) => [...current, ...pieces].slice(-MAX_PIECES));
+    setConfetti((current) => [...current, ...pieces].slice(-(window.innerWidth > 760 ? MAX_PIECES.wide : MAX_PIECES.phone)));
     window.setTimeout(() => {
       setConfetti((current) => current.filter((piece) => piece.burst !== burst));
     }, CONFETTI_LIFE);
