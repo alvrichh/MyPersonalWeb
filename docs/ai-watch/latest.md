@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-10-16
+# Daily AI maintenance report — 2026-10-17
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -11,7 +11,7 @@ This file is generated automatically by the daily maintenance workflow. It updat
 - Hugging Face: OK (8 relevant items)
 - Simon Willison: OK (8 relevant items)
 - GitHub AI & ML Blog: OK (8 relevant items)
-- GitHub Changelog: OK (6 relevant items)
+- GitHub Changelog: OK (4 relevant items)
 - Azure Blog: OK (4 relevant items)
 - AWS Machine Learning: OK (8 relevant items)
 - NVIDIA Developer: OK (8 relevant items)
@@ -21,10 +21,24 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
-- **Multi-repo support and other improvements for GitHub Copilot in Slack and Microsoft Teams** — GitHub Changelog · 2026-10-16
-  https://github.blog/changelog/2026-10-15-copilot-in-slack-and-teams-adds-model-and-repository-updates
+- **OpenAI models hacked a crypto wallet and breached more websites** — Ars Technica AI · 2026-10-16
+  https://arstechnica.com/security/2026/10/openai-models-hacked-a-crypto-wallet-and-breached-more-websites/
+- **Building trust in AI agents: A production-ready evaluation framework with Amazon Bedrock AgentCore** — AWS Machine Learning · 2026-10-16
+  https://aws.amazon.com/blogs/machine-learning/building-trust-in-ai-agents-a-production-ready-evaluation-framework-with-amazon-bedrock-agentcore/
+- **Introducing Reflection Beam: an open-weight model for agentic coding on AWS** — AWS Machine Learning · 2026-10-16
+  https://aws.amazon.com/blogs/machine-learning/introducing-reflection-beam-an-open-weight-model-for-agentic-coding-on-aws/
 - **Scaling Indic Pretraining: 2.8 Trillion Tokens and an Open Data Generation Pipeline** — Hugging Face · 2026-10-16
   https://huggingface.co/blog/nvidia/scaling-indic-pretraining
+- **Welcome Beam: a 501B open model you can own, customize, and scale** — Hugging Face · 2026-10-16
+  https://huggingface.co/blog/reflection-beam
+- **Roundtables: A Conversation With the Creator of AI-Designed Viruses** — MIT Technology Review AI · 2026-10-16
+  https://www.technologyreview.com/2026/10/16/1146224/roundtables-a-conversation-with-the-creator-of-ai-designed-viruses/
+- **Code, Test, and Deploy on One Machine with NVIDIA RTX Spark** — NVIDIA Developer · 2026-10-16
+  https://developer.nvidia.com/blog/code-test-and-deploy-on-one-machine-with-nvidia-rtx-spark/
+- **Stack Overflow for Agents triples signups with ChatGPT plugin** — OpenAI News · 2026-10-16
+  https://openai.com/index/stack-overflow-chatgpt-plugin
+- **Quoting Addy Osmani, Morgan Westlee Lunt, and Qing Wang** — Simon Willison · 2026-10-16
+  https://simonwillison.net/2026/Oct/16/code-review/
 - **Meta’s Muse Spark Open now available in Amazon SageMaker JumpStart** — AWS Machine Learning · 2026-10-15
   https://aws.amazon.com/blogs/machine-learning/metas-muse-spark-open-now-available-in-amazon-sagemaker-jumpstart/
 - **Trust in Depth: Giving agents more autonomy without losing control** — AWS Machine Learning · 2026-10-15
@@ -45,6 +59,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://developer.nvidia.com/blog/scale-agentic-coding-workflows-with-metas-muse-spark-open-on-nvidia-gb300-nvl72/
 - **Chirp Pong** — Simon Willison · 2026-10-15
   https://simonwillison.net/2026/Oct/15/chirp-pong/
+- **LaTeX renderer** — Simon Willison · 2026-10-15
+  https://simonwillison.net/2026/Oct/15/latex/
 - **ChatGPT can peek at your Chrome tabs now** — The Verge AI · 2026-10-15
   https://www.theverge.com/ai-artificial-intelligence/1012510/openai-chatgpt-google-chrome-tabs
 - **Meta and Apple team up to make Muse AI models run better on Macs** — The Verge AI · 2026-10-15
@@ -81,16 +97,10 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://simonwillison.net/2026/Oct/14/tree-appreciator/
 - **Gemini 4 Argon begins rolling out in Gemini app and Antigravity, but only if you pay** — Ars Technica AI · 2026-10-13
   https://arstechnica.com/ai/2026/10/gemini-4-argon-begins-rolling-out-in-gemini-app-and-antigravity-but-only-if-you-pay/
-- **Building agents that transact with Anchor Browser and AgentCore payments** — AWS Machine Learning · 2026-10-13
-  https://aws.amazon.com/blogs/machine-learning/building-agents-that-transact-with-anchor-browser-and-agentcore-payments/
-- **Manage private pricing offers for Amazon Bedrock with managed entitlements** — AWS Machine Learning · 2026-10-13
-  https://aws.amazon.com/blogs/machine-learning/manage-private-pricing-offers-for-amazon-bedrock-with-managed-entitlements/
 - **Infrastructure for the frontier era: Scaling intelligence through open industry collaboration** — Azure Blog · 2026-10-13
   https://azure.microsoft.com/en-us/blog/infrastructure-for-the-frontier-era-scaling-intelligence-through-open-industry-collaboration/
 - **GitHub’s model for secret detection: Finding more secrets with less noise** — GitHub AI & ML Blog · 2026-10-13
   https://github.blog/ai-and-ml/githubs-model-for-secret-detection-finding-more-secrets-with-less-noise/
-- **Gemini 4 Argon in GitHub Copilot** — GitHub Changelog · 2026-10-13
-  https://github.blog/changelog/2026-10-13-gemini-4-argon-in-github-copilot
 - **Gemini 4 Argon: Built to solve your hardest problems** — Google AI Blog · 2026-10-13
   https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-argon/
 - **Developing Gemini 4 Argon responsibly and safely** — Google DeepMind · 2026-10-13
@@ -127,20 +137,12 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-teach-copilot-about-your-codebase/
 - **ReplaySSM: Rethinking State Storage for Faster Hybrid-Model Decoding** — NVIDIA Developer · 2026-10-12
   https://developer.nvidia.com/blog/replayssm-rethinking-state-storage-for-faster-hybrid-model-decoding/
-- **llm-meta-ai 0.2** — Simon Willison · 2026-10-12
-  https://simonwillison.net/2026/Oct/12/llm-meta-ai/
-- **Hello Python 3.15, goodbye 3.10, and now I can use 3.11** — Simon Willison · 2026-10-12
-  https://simonwillison.net/2026/Oct/12/python-3-15/
 - **Ukraine’s drones knock out AI data center belonging to "Russia’s Google"** — Ars Technica AI · 2026-10-09
   https://arstechnica.com/gadgets/2026/10/ukraines-drones-knock-out-ai-data-center-belonging-to-russias-google/
-- **AI coding agents generate more code, but not more software** — Ars Technica AI · 2026-10-09
-  https://arstechnica.com/ai/2026/10/ai-coding-agents-generate-more-code-but-not-more-software/
-- **Roundtables: A Conversation With the Creator of AI-Designed Viruses** — MIT Technology Review AI · 2026-10-09
-  https://www.technologyreview.com/2026/10/08/1146224/roundtables-a-conversation-with-the-creator-of-ai-designed-viruses/
-- **Asana cuts model costs 76x in browser tests with GPT-6.1 Sol** — OpenAI News · 2026-10-09
-  https://openai.com/index/asana-browser-agent
 - **Sophos cuts threat investigation time by 96% with OpenAI Daybreak** — OpenAI News · 2026-10-09
   https://openai.com/index/sophos
+- **Asana cuts model costs 76x in browser tests with GPT-6.1 Sol** — OpenAI News · 2026-10-09
+  https://openai.com/index/asana-browser-agent
 - **Introducing the Anthropic Cyber Mission** — Anthropic News · 2026-10-08
   https://www.anthropic.com/news/anthropic-cyber-mission
 - **The model that didn't exist, so you made it yourself** — Hugging Face · 2026-10-08
@@ -149,10 +151,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.technologyreview.com/2026/10/08/1144020/building-a-safer-path-to-autonomous-industrial-ai/
 - **5 Steps to Create SimReady Assets for Robotics with Frontier AI Models** — NVIDIA Developer · 2026-10-08
   https://developer.nvidia.com/blog/5-steps-to-create-simready-assets-for-robotics-with-frontier-ai-models/
-- **Building Reliable Data Analytics Agents: Lessons from the KDD Cup** — NVIDIA Developer · 2026-10-08
-  https://developer.nvidia.com/blog/building-reliable-data-analytics-agents-lessons-from-the-kdd-cup/
-- **How Oracle turns days of work into minutes with ChatGPT and Codex** — OpenAI News · 2026-10-08
-  https://openai.com/index/oracle
 - **AI transformation across the infrastructure lifecycle: From supply chain to fleet operations** — Azure Blog · 2026-10-07
   https://azure.microsoft.com/en-us/blog/ai-transformation-across-the-infrastructure-lifecycle-from-supply-chain-to-fleet-operations/
 - **Secret protection must scale with software** — GitHub AI & ML Blog · 2026-10-07
@@ -179,18 +177,20 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.anthropic.com/news/barclays-scales-claude
 - **Gemini 4 Argon: our next era of frontier intelligence** — Google DeepMind · 2026-09-30
   https://deepmind.google/blog/gemini-4-argon-our-next-era-of-frontier-intelligence/
-- **Open TTS Leaderboard: Scalable Evaluation for Multilingual Text-to-Speech and Voice Cloning** — Hugging Face · 2026-09-30
-  https://huggingface.co/blog/open-tts-leaderboard
+- **FabCon and SQLCon 2026 in Barcelona: Building the data foundation for Microsoft Copilot and agents** — Azure Blog · 2026-09-29
+  https://azure.microsoft.com/en-us/blog/fabcon-and-sqlcon-2026-in-barcelona-building-the-data-foundation-for-microsoft-copilot-and-agents/
+- **GitHub Copilot app for Beginners: How to build custom workflows with canvases** — GitHub AI & ML Blog · 2026-09-25
+  https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-build-custom-workflows-with-canvases/
 
 ## Portfolio candidates
 
-- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Multimodal AI product workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **Multimodal AI product workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment
