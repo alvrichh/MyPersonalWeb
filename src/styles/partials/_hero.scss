@@ -232,20 +232,46 @@
 }
 
 /* Easter egg (HeroAbout.tsx): a click spins the portrait (photo and ring)
-   once round its vertical axis, like a coin. Only that layer moves. */
+   once round its vertical axis, like a coin, with a second photo on its back.
+   Only that layer moves. */
 .hero-figure {
   cursor: default;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
 
-.hero-figure.is-spinning .hero-portrait {
-  animation: ring-spin 8s linear infinite, coin-spin 0.6s cubic-bezier(0.25, 0.6, 0.3, 1);
+.hero-portrait {
+  transform-style: preserve-3d;
 }
 
+.hero-portrait img {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.hero-portrait .hero-portrait-back {
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  width: calc(100% - 14px);
+  height: calc(100% - 14px);
+  transform: rotateY(180deg);
+}
+
+.hero-figure:hover .hero-portrait .hero-portrait-back {
+  transform: rotateY(180deg) scale(1.03);
+}
+
+.hero-figure.is-spinning .hero-portrait {
+  animation: ring-spin 8s linear infinite, coin-spin 0.8s linear;
+}
+
+/* Quick flip to the back, a short drift so it can be seen, quick flip home. */
 @keyframes coin-spin {
-  from { transform: perspective(1000px) rotateY(0deg); }
-  to { transform: perspective(1000px) rotateY(360deg); }
+  0% { transform: perspective(1000px) rotateY(0deg); animation-timing-function: cubic-bezier(0.3, 0.5, 0.6, 1); }
+  28% { transform: perspective(1000px) rotateY(165deg); animation-timing-function: linear; }
+  62% { transform: perspective(1000px) rotateY(195deg); animation-timing-function: cubic-bezier(0.4, 0, 0.3, 1); }
+  100% { transform: perspective(1000px) rotateY(360deg); }
 }
 
 @keyframes ring-spin {
