@@ -158,7 +158,7 @@
   "work.planning": "Mon propre planificateur : focus du jour, vue de la semaine, matrice d’Eisenhower et archive de décisions. Parce que chaque appli de tâches testée en faisait trop ou pas assez.",
   "work.private": "Privé · parlons-en",
   "work.radar": "Chaque matin, une GitHub Action lit les flux officiels sur l’IA et les outils de développement, puis enregistre un fichier JSON. Cette page l’affiche. Le bot touche aux données, jamais à la mise en page.",
-  "work.site": "React et TypeScript avec SCSS, compilés avec Vite et pré-rendus pour être lisibles sans JavaScript. Dix langues, thème clair et sombre, huit couleurs d’accent, et compilés automatiquement par GitHub Actions à chaque push.",
+  "work.site": "React et TypeScript avec SCSS, compilés avec Vite et pré-rendus pour être lisibles sans JavaScript. Onze langues, thème clair et sombre, huit couleurs d’accent, et compilés automatiquement par GitHub Actions à chaque push.",
   "work.smc": "Le site de Spain Motorcars, un concessionnaire qui sélectionne une à une des voitures premium du quotidien et quelques classiques : un site d’une seule page, rapide, avec l’inventaire, les services et le parcours d’achat, en deux langues et avec un mode sombre.",
   "work.strattonApp": "Mon projet de fin d’études (développement d’applications web) : une application de gestion de clients pour un cabinet de conseil en énergie, avec une API REST sécurisée par Spring Security et un frontend Angular, plus l’analyse derrière : cas d’utilisation, modèle de données et prototypes.",
   "work.sync.p1": "Connexion d’entreprise avec Microsoft Entra ID, une couche JWT supplémentaire et des vues par rôle, avec des e-mails automatiques quand quelqu’un obtient l’accès à une section.",

@@ -158,7 +158,7 @@
   "work.planning": "Mo phleanálaí féin: fócas laethúil, radharc seachtainiúil, maitrís Eisenhower agus cartlann cinntí. Thóg mé é mar go raibh gach aip tascanna ró-mhór nó ró-bheag.",
   "work.private": "Príobháideach · fiafraigh díom",
   "work.radar": "Dúisíonn GitHub Action gach maidin, léann sí fothaí oifigiúla IS agus uirlisí forbróirí, agus sábhálann sí comhad JSON. Taispeánann an leathanach seo é. Ní bhaineann an bot leis an dearadh riamh.",
-  "work.site": "React agus TypeScript le SCSS, tógtha le Vite agus réamh-rindreáilte ionas gur féidir é a léamh gan JavaScript. Deich dteanga, téama geal agus dorcha, ocht ndath aiceanta, agus tógtha go huathoibríoch le GitHub Actions ar gach push.",
+  "work.site": "React agus TypeScript le SCSS, tógtha le Vite agus réamh-rindreáilte ionas gur féidir é a léamh gan JavaScript. Aon teanga déag, téama geal agus dorcha, ocht ndath aiceanta, agus tógtha go huathoibríoch le GitHub Actions ar gach push.",
   "work.smc": "Suíomh Spain Motorcars, díoltóir a roghnaíonn carranna préimhe laethúla agus corrcharr clasaiceach ceann ar cheann: suíomh tapa aon leathanaigh leis an stoc, na seirbhísí agus an próiseas ceannaigh, i dhá theanga agus le mód dorcha.",
   "work.strattonApp": "Mo thionscadal deiridh céime (Forbairt Feidhmchlár Gréasáin): aip bhainistíochta cliant do chomhairleoireacht fuinnimh, le REST API slán le Spring Security agus frontend Angular, chomh maith leis an anailís taobh thiar de: cásanna úsáide, samhail sonraí agus fréamhshamhlacha.",
   "work.sync.p1": "Logáil isteach chorparáideach le Microsoft Entra ID, sraith bhreise JWT agus radhairc de réir róil, le ríomhphoist uathoibríocha nuair a thugtar rochtain ar rannóg do dhuine.",

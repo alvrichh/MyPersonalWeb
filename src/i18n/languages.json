@@ -43,6 +43,13 @@
       "locale": "ru-RU"
     },
     {
+      "code": "ro",
+      "label": "Română",
+      "flag": "romania",
+      "htmlLang": "ro",
+      "locale": "ro-RO"
+    },
+    {
       "code": "pl",
       "label": "Polski",
       "flag": "poland",

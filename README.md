@@ -4,7 +4,7 @@ Personal site of Álvaro Rodríguez Molina: [alvrich.vercel.app](https://alvrich
 
 React 19, TypeScript and SCSS, built with Vite. The pages are prerendered at
 build time, so they read fine without JavaScript, and React takes over in the
-browser. Ten languages, light and dark themes and eight accent colours.
+browser. Eleven languages, light and dark themes and eight accent colours.
 
 ## Run it
 

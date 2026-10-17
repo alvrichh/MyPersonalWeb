@@ -24,7 +24,7 @@ Keep the UI premium, modern and memorable:
 
 - React 19 + TypeScript + SCSS, built with Vite (`vite.config.mts`).
 - `index.html` (home) and `ai-radar.html` are React pages: code in `src/`, prerendered at build time by `scripts/build/prerender.mjs` and hydrated in the browser.
-- `src/sections/` holds the page sections, `src/components/` shared UI, `src/data/` experience and projects, `src/i18n/locales/` one JSON per language (10 languages), `src/styles/partials/` the SCSS.
+- `src/sections/` holds the page sections, `src/components/` shared UI, `src/data/` experience and projects, `src/i18n/locales/` one JSON per language (11 languages), `src/styles/partials/` the SCSS.
 - `gym.html`, `planning.html` and `calendar.html` are older standalone tools; their code lives in `src/legacy/`.
 - Static files (images, CV, radar data) live in `static/` and keep their URLs (`./images`, `./cv`, `./data`).
 - The AI Radar reads `static/data/ai-radar.json` (latest) and `static/data/ai-radar-archive.json` (everything collected).
