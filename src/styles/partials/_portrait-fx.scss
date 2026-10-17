@@ -1,0 +1,266 @@
+/* --------------------------------------------------------------------------
+   Portrait easter egg (HeroAbout.tsx + components/portraitFx.ts): a click on
+   the portrait sets off the accent's element. Blue water ripples, green
+   leaves, red fire, orange sparks, yellow lightning, white ghosts, pink
+   hearts, and confetti under Disco. Pieces start on the ring (--x0/--y0) and
+   travel by --dx/--dy; the individual translate/rotate/scale properties let
+   each effect mix separate animations for travel, spin and size.
+   -------------------------------------------------------------------------- */
+
+@function shape($body) {
+  @return url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E#{$body}%3C/svg%3E");
+}
+
+.hero-fx {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.hero-fx > i {
+  position: absolute;
+  top: calc(50% + var(--y0, 0px));
+  left: calc(50% + var(--x0, 0px));
+  width: calc(var(--w, 14px) * var(--size, 1));
+  height: calc(var(--h, 14px) * var(--size, 1));
+  margin: calc(var(--h, 14px) * var(--size, 1) / -2) 0 0 calc(var(--w, 14px) * var(--size, 1) / -2);
+  color: var(--accent);
+  opacity: 0;
+
+  /* Three colour slots: the accent, its second tone and a tint per element. */
+  &:nth-child(3n + 1) { color: var(--accent-2); }
+  &:nth-child(3n + 2) { color: var(--fx-tint, var(--accent)); }
+}
+
+/* Shaped pieces draw an SVG silhouette, filled with the piece's colour. */
+.hero-fx > .fx-leaf,
+.hero-fx > .fx-flame,
+.hero-fx > .fx-bolt,
+.hero-fx > .fx-ghost,
+.hero-fx > .fx-heart {
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: currentColor;
+    -webkit-mask: var(--shape) center / contain no-repeat;
+    mask: var(--shape) center / contain no-repeat;
+  }
+}
+
+/* Shared motion: glide out and slow to a stop, spin, grow, fade. */
+@keyframes fx-out {
+  from { translate: 0 0; }
+  to { translate: calc(var(--dx) * 1.1) calc(var(--dy) * 1.1); }
+}
+
+@keyframes fx-spin {
+  from { rotate: 0deg; }
+  to { rotate: var(--turn); }
+}
+
+@keyframes fx-grow {
+  from { scale: 0.6; }
+  to { scale: 0.9; }
+}
+
+@keyframes fx-fade {
+  0%, 45% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Disco: confetti, every piece its own hue. */
+.hero-fx > .fx-confetti {
+  --w: 7px;
+  --h: 11px;
+  --size: 1;
+  --fx-tint: color-mix(in srgb, var(--accent) 55%, var(--paper-base));
+  border-radius: 1.5px;
+  background: currentColor;
+  animation:
+    fx-out 1.6s cubic-bezier(0.2, 0.7, 0.3, 1) var(--delay) forwards,
+    fx-spin 1.6s cubic-bezier(0.2, 0.7, 0.3, 1) var(--delay) forwards,
+    fx-grow 1.6s cubic-bezier(0.2, 0.7, 0.3, 1) var(--delay) forwards,
+    fx-fade 1.6s linear var(--delay) forwards;
+
+  &:nth-child(4n) { --w: 8px; --h: 8px; border-radius: 50%; }
+}
+
+:root[data-accent="rainbow"] .hero-fx > .fx-confetti {
+  color: oklch(var(--rb-l) var(--rb-c) var(--piece-hue));
+}
+
+/* Blue: water. Rings the size of the portrait spread out like ripples from a
+   dropped stone, each a little later and wider than the last. */
+.hero-fx > .fx-ripple {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+  box-shadow: 0 0 14px color-mix(in srgb, currentColor 35%, transparent);
+  animation: fx-ripple 1.8s cubic-bezier(0.2, 0.6, 0.35, 1) var(--delay) forwards;
+}
+
+.hero-fx > .fx-ripple:nth-child(n) { color: var(--accent); }
+.hero-fx > .fx-ripple:nth-child(3n + 2) { color: var(--accent-2); }
+
+@keyframes fx-ripple {
+  from { scale: 1; opacity: 0.85; }
+  to { scale: var(--scale); opacity: 0; }
+}
+
+/* Green: leaves that drift out, rocking side to side. */
+.hero-fx > .fx-leaf {
+  --shape: #{shape("%3Cpath d='M4 20C4 9 10 4 21 3c-1 11-6 17-17 17z'/%3E%3Cpath d='M3 21l6-6' stroke='black' stroke-width='1.8' stroke-linecap='round'/%3E")};
+  --w: 22px;
+  --h: 22px;
+  --fx-tint: color-mix(in srgb, var(--accent) 65%, #b8cf3a);
+  animation:
+    fx-out 2.2s cubic-bezier(0.2, 0.6, 0.3, 1) var(--delay) forwards,
+    fx-sway 0.55s ease-in-out var(--delay) infinite alternate,
+    fx-grow 2.2s ease-out var(--delay) forwards,
+    fx-fade 2.2s linear var(--delay) forwards;
+}
+
+@keyframes fx-sway {
+  from { rotate: calc(var(--tilt) - 35deg); }
+  to { rotate: calc(var(--tilt) + 35deg); }
+}
+
+/* Red: flames that lick outwards, rise, flicker and burn out. */
+.hero-fx > .fx-flame {
+  --shape: #{shape("%3Cpath d='M12 2c.6 3.6 4.4 5.8 5.6 9.4 1.6 4.7-1.4 9.6-5.6 10.6-4.2-1-7.2-5.9-5.6-10.6.6-1.8 1.7-3 2.6-4.2.2 1.8.9 3 2 3.6C11 7.9 11.9 5.2 12 2z'/%3E")};
+  --w: 20px;
+  --h: 26px;
+  --fx-tint: color-mix(in srgb, var(--accent) 50%, #ff9a1f);
+  rotate: var(--tilt);
+  animation:
+    fx-rise 1.3s cubic-bezier(0.25, 0.6, 0.4, 1) var(--delay) forwards,
+    fx-flicker 1.3s linear var(--delay) forwards,
+    fx-fade 1.3s linear var(--delay) forwards;
+
+  &:nth-child(3n + 1) { color: color-mix(in srgb, var(--accent) 45%, #ffd166); }
+}
+
+@keyframes fx-rise {
+  from { translate: 0 0; }
+  to { translate: var(--dx) calc(var(--dy) - 70px); }
+}
+
+@keyframes fx-flicker {
+  0% { scale: 0.5; }
+  20% { scale: 1.1; }
+  40% { scale: 0.85; }
+  60% { scale: 1; }
+  80% { scale: 0.75; }
+  100% { scale: 0.35; }
+}
+
+/* Orange: sparks, thin glowing streaks shot straight out, quickly gone. */
+.hero-fx > .fx-spark {
+  --w: 2.5px;
+  --h: 13px;
+  --size: 1;
+  --fx-tint: color-mix(in srgb, var(--accent) 50%, #ffd27a);
+  border-radius: 2px;
+  background: currentColor;
+  box-shadow: 0 0 6px 1px color-mix(in srgb, currentColor 70%, transparent);
+  rotate: calc(var(--angle) + 90deg);
+  animation:
+    fx-out 0.8s cubic-bezier(0.1, 0.8, 0.3, 1) var(--delay) forwards,
+    fx-shrink 0.8s ease-in var(--delay) forwards,
+    fx-spark-fade 0.8s linear var(--delay) forwards;
+}
+
+@keyframes fx-shrink {
+  from { scale: 1; }
+  to { scale: 0.2; }
+}
+
+@keyframes fx-spark-fade {
+  0%, 30% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Yellow: lightning bolts that crack out from the ring and flash. */
+.hero-fx > .fx-bolt {
+  --shape: #{shape("%3Cpath d='M14 1L4 14h7l-2 9 11-14h-7l1-8z'/%3E")};
+  --w: 24px;
+  --h: 36px;
+  --fx-tint: color-mix(in srgb, var(--accent) 50%, #fff3a0);
+  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--accent) 60%, transparent));
+  rotate: calc(var(--angle) + 90deg);
+  animation:
+    fx-zap 0.6s cubic-bezier(0.1, 0.8, 0.3, 1) var(--delay) forwards,
+    fx-bolt-grow 0.6s ease-out var(--delay) forwards,
+    fx-flash 0.6s linear var(--delay) forwards;
+}
+
+@keyframes fx-zap {
+  from { translate: 0 0; }
+  to { translate: calc(var(--dx) * 0.6) calc(var(--dy) * 0.6); }
+}
+
+@keyframes fx-bolt-grow {
+  from { scale: 0.7; }
+  to { scale: 1.2; }
+}
+
+@keyframes fx-flash {
+  0% { opacity: 0; }
+  8% { opacity: 1; }
+  20% { opacity: 0.25; }
+  32%, 55% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* White: little ghosts that float out, wobbling, and fade away. */
+.hero-fx > .fx-ghost {
+  --shape: #{shape("%3Cpath fill-rule='evenodd' d='M12 2a8 8 0 0 0-8 8v12l2.7-2 2.6 2 2.7-2 2.7 2 2.6-2 2.7 2V10a8 8 0 0 0-8-8zM9 8.4a1.6 1.6 0 1 0 0 3.2a1.6 1.6 0 1 0 0-3.2zM15 8.4a1.6 1.6 0 1 0 0 3.2a1.6 1.6 0 1 0 0-3.2z'/%3E")};
+  --w: 32px;
+  --h: 34px;
+  animation:
+    fx-out 2.4s cubic-bezier(0.2, 0.6, 0.3, 1) var(--delay) forwards,
+    fx-wobble 0.7s ease-in-out var(--delay) infinite alternate,
+    fx-grow 2.4s ease-out var(--delay) forwards,
+    fx-ghost-fade 2.4s linear var(--delay) forwards;
+}
+
+.hero-fx > .fx-ghost:nth-child(n) { color: var(--accent); }
+
+@keyframes fx-wobble {
+  from { rotate: calc(var(--tilt) * 0.5 - 12deg); }
+  to { rotate: calc(var(--tilt) * 0.5 + 12deg); }
+}
+
+@keyframes fx-ghost-fade {
+  0% { opacity: 0; }
+  15%, 60% { opacity: 0.9; }
+  100% { opacity: 0; }
+}
+
+/* Pink: hearts that pop out beating. */
+.hero-fx > .fx-heart {
+  --shape: #{shape("%3Cpath d='M12 21s-7.5-4.6-9.6-9.4C.8 7.8 3.1 4 6.8 4c2.1 0 3.7 1.2 5.2 3.1C13.5 5.2 15.1 4 17.2 4c3.7 0 6 3.8 4.4 7.6C19.5 16.4 12 21 12 21z'/%3E")};
+  --w: 22px;
+  --h: 22px;
+  --fx-tint: color-mix(in srgb, var(--accent) 60%, #ff8fb8);
+  rotate: var(--tilt);
+  animation:
+    fx-out 1.8s cubic-bezier(0.2, 0.7, 0.3, 1) var(--delay) forwards,
+    fx-beat 1.8s ease-out var(--delay) forwards,
+    fx-fade 1.8s linear var(--delay) forwards;
+}
+
+@keyframes fx-beat {
+  0% { scale: 0.4; }
+  18% { scale: 1.15; }
+  32% { scale: 0.9; }
+  46% { scale: 1.1; }
+  60% { scale: 1; }
+  100% { scale: 0.85; }
+}
