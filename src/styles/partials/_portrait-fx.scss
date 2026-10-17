@@ -155,6 +155,31 @@
   100% { opacity: 0; }
 }
 
+/* Leaf detail: the blade is lit from one corner and shaded towards the other,
+   with lighter veins (midrib and side veins) drawn on top. */
+.hero-fx > .fx-leaf::before {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, currentColor 60%, #fff) 0%,
+    currentColor 50%,
+    color-mix(in srgb, currentColor 70%, #000) 100%
+  );
+}
+
+.hero-fx > .fx-leaf::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, currentColor 35%, #fff);
+  opacity: 0.6;
+  -webkit-mask: var(--veins) center / contain no-repeat;
+  mask: var(--veins) center / contain no-repeat;
+}
+
+.hero-fx > .fx-leaf {
+  --veins: #{shape("%3Cpath d='M5.5 18.5L19.5 4.5M9 15l-.6-3.6M9 15l3.6.6M12.2 11.8l-.4-3.6M12.2 11.8l3.6.4M15.3 8.7l-.1-2.8M15.3 8.7l2.8.1' fill='none' stroke='black' stroke-width='.9' stroke-linecap='round'/%3E")};
+}
+
 /* Red: the ring catches fire. Flames lick out round its sides and top from
    behind the portrait, burn there for a moment, then rise and burn out. */
 .hero-fx > .fx-flame {
@@ -193,6 +218,28 @@
   0% { opacity: 0; }
   8%, 62% { opacity: 1; }
   100% { opacity: 0; }
+}
+
+/* Flame detail: hot and pale at the base, the accent in the body, darker at
+   the tip, with a bright inner core (a smaller flame) low in the middle. */
+.hero-fx > .fx-flame::before {
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, currentColor 45%, #ffe9a8) 0%,
+    color-mix(in srgb, currentColor 75%, #ffb347) 35%,
+    currentColor 70%,
+    color-mix(in srgb, currentColor 80%, #000) 100%
+  );
+}
+
+.hero-fx > .fx-flame::after {
+  content: "";
+  position: absolute;
+  inset: 38% 26% 4%;
+  background: linear-gradient(to top, #fffbea 0%, color-mix(in srgb, #ffd166 75%, currentColor) 100%);
+  opacity: 0.9;
+  -webkit-mask: var(--shape) center / contain no-repeat;
+  mask: var(--shape) center / contain no-repeat;
 }
 
 /* Orange: fireworks. Thin glowing streaks shoot out very fast; as they lose
