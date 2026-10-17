@@ -1,10 +1,10 @@
 /* --------------------------------------------------------------------------
    Portrait easter egg (HeroAbout.tsx + components/portraitFx.ts): a click on
-   the portrait sets off the accent's element. Blue water ripples, green
-   leaves, red fire, orange sparks, yellow lightning, white ghosts, pink
-   hearts, and confetti under Disco. Pieces start on the ring (--x0/--y0) and
-   travel by --dx/--dy; the individual translate/rotate/scale properties let
-   each effect mix separate animations for travel, spin and size.
+   the portrait sets off the accent's element, each with its own motion (the
+   list is in portraitFx.ts). Pieces sit relative to the portrait's centre
+   (--x0/--y0) and travel by --dx/--dy; the individual translate, rotate and
+   scale properties (plus transform for a wobble) let one piece run separate
+   animations for travel, spin, size and sway at once.
    -------------------------------------------------------------------------- */
 
 @function shape($body) {
@@ -14,8 +14,15 @@
 .hero-fx {
   position: absolute;
   inset: 0;
-  z-index: 1;
   pointer-events: none;
+}
+
+/* Fire, ghosts and the storm's flash sit behind the portrait (still above its
+   glow): the ring burns, ghosts slip out from behind, the flash lights it up. */
+.hero-fx > .fx-flame,
+.hero-fx > .fx-ghost,
+.hero-fx > .fx-flash {
+  z-index: -1;
 }
 
 .hero-fx > i {
@@ -49,7 +56,7 @@
   }
 }
 
-/* Shared motion: glide out and slow to a stop, spin, grow, fade. */
+/* Disco's motion: glide out and slow to a stop, spin, grow, fade. */
 @keyframes fx-out {
   from { translate: 0 0; }
   to { translate: calc(var(--dx) * 1.1) calc(var(--dy) * 1.1); }
@@ -113,54 +120,80 @@
   to { scale: var(--scale); opacity: 0; }
 }
 
-/* Green: leaves that drift out, rocking side to side. */
+/* Green: a gust of wind. Every leaf blows the same way, fluttering up and
+   down and tumbling over as it goes. */
 .hero-fx > .fx-leaf {
   --shape: #{shape("%3Cpath d='M4 20C4 9 10 4 21 3c-1 11-6 17-17 17z'/%3E%3Cpath d='M3 21l6-6' stroke='black' stroke-width='1.8' stroke-linecap='round'/%3E")};
   --w: 22px;
   --h: 22px;
   --fx-tint: color-mix(in srgb, var(--accent) 65%, #b8cf3a);
   animation:
-    fx-out 2.2s cubic-bezier(0.2, 0.6, 0.3, 1) var(--delay) forwards,
-    fx-sway 0.55s ease-in-out var(--delay) infinite alternate,
-    fx-grow 2.2s ease-out var(--delay) forwards,
-    fx-fade 2.2s linear var(--delay) forwards;
+    fx-gust var(--dur) cubic-bezier(0.3, 0.45, 0.45, 1) var(--delay) forwards,
+    fx-tumble var(--dur) ease-out var(--delay) forwards,
+    fx-flutter 0.6s ease-in-out var(--delay) infinite alternate,
+    fx-leaf-fade var(--dur) linear var(--delay) forwards;
 }
 
-@keyframes fx-sway {
-  from { rotate: calc(var(--tilt) - 35deg); }
-  to { rotate: calc(var(--tilt) + 35deg); }
+@keyframes fx-gust {
+  from { translate: 0 0; }
+  to { translate: var(--dx) var(--dy); }
 }
 
-/* Red: flames that lick outwards, rise, flicker and burn out. */
+@keyframes fx-tumble {
+  from { rotate: 0deg; }
+  to { rotate: var(--turn); }
+}
+
+@keyframes fx-flutter {
+  from { transform: translateY(calc(var(--wave) * -1)); }
+  to { transform: translateY(var(--wave)); }
+}
+
+@keyframes fx-leaf-fade {
+  0% { opacity: 0; }
+  8%, 70% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Red: the ring catches fire. Flames rise straight up from all round it,
+   flickering, and burn out. */
 .hero-fx > .fx-flame {
   --shape: #{shape("%3Cpath d='M12 2c.6 3.6 4.4 5.8 5.6 9.4 1.6 4.7-1.4 9.6-5.6 10.6-4.2-1-7.2-5.9-5.6-10.6.6-1.8 1.7-3 2.6-4.2.2 1.8.9 3 2 3.6C11 7.9 11.9 5.2 12 2z'/%3E")};
   --w: 20px;
   --h: 26px;
   --fx-tint: color-mix(in srgb, var(--accent) 50%, #ff9a1f);
-  rotate: var(--tilt);
+  transform-origin: 50% 100%;
   animation:
-    fx-rise 1.3s cubic-bezier(0.25, 0.6, 0.4, 1) var(--delay) forwards,
-    fx-flicker 1.3s linear var(--delay) forwards,
-    fx-fade 1.3s linear var(--delay) forwards;
+    fx-rise var(--dur) cubic-bezier(0.35, 0.3, 0.6, 1) var(--delay) forwards,
+    fx-flicker var(--dur) linear var(--delay) forwards,
+    fx-flame-fade var(--dur) linear var(--delay) forwards;
 
   &:nth-child(3n + 1) { color: color-mix(in srgb, var(--accent) 45%, #ffd166); }
 }
 
 @keyframes fx-rise {
   from { translate: 0 0; }
-  to { translate: var(--dx) calc(var(--dy) - 70px); }
+  to { translate: var(--dx) var(--dy); }
 }
 
 @keyframes fx-flicker {
-  0% { scale: 0.5; }
-  20% { scale: 1.1; }
-  40% { scale: 0.85; }
-  60% { scale: 1; }
-  80% { scale: 0.75; }
-  100% { scale: 0.35; }
+  0% { scale: 0.4; }
+  15% { scale: 1.1 1.2; }
+  30% { scale: 0.85 1; }
+  45% { scale: 1 1.15; }
+  60% { scale: 0.8 0.95; }
+  80% { scale: 0.7 0.85; }
+  100% { scale: 0.25; }
 }
 
-/* Orange: sparks, thin glowing streaks shot straight out, quickly gone. */
+@keyframes fx-flame-fade {
+  0% { opacity: 0; }
+  10%, 55% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Orange: a sparkler. Thin glowing streaks shoot out very fast, then lose
+   speed and arc down as they burn out. */
 .hero-fx > .fx-spark {
   --w: 2.5px;
   --h: 13px;
@@ -171,9 +204,15 @@
   box-shadow: 0 0 6px 1px color-mix(in srgb, currentColor 70%, transparent);
   rotate: calc(var(--angle) + 90deg);
   animation:
-    fx-out 0.8s cubic-bezier(0.1, 0.8, 0.3, 1) var(--delay) forwards,
-    fx-shrink 0.8s ease-in var(--delay) forwards,
-    fx-spark-fade 0.8s linear var(--delay) forwards;
+    fx-arc 0.95s linear var(--delay) forwards,
+    fx-shrink 0.95s ease-in var(--delay) forwards,
+    fx-spark-fade 0.95s linear var(--delay) forwards;
+}
+
+@keyframes fx-arc {
+  0% { translate: 0 0; animation-timing-function: cubic-bezier(0.1, 0.8, 0.3, 1); }
+  35% { translate: var(--dx) var(--dy); animation-timing-function: cubic-bezier(0.5, 0, 0.9, 0.6); }
+  100% { translate: calc(var(--dx) * 1.15) calc(var(--dy) + var(--fall)); }
 }
 
 @keyframes fx-shrink {
@@ -182,85 +221,125 @@
 }
 
 @keyframes fx-spark-fade {
-  0%, 30% { opacity: 1; }
+  0%, 40% { opacity: 1; }
   100% { opacity: 0; }
 }
 
-/* Yellow: lightning bolts that crack out from the ring and flash. */
+/* Yellow: a storm. Big bolts appear in place round the portrait and flicker
+   on and off, while a flash lights up the whole ring. */
 .hero-fx > .fx-bolt {
   --shape: #{shape("%3Cpath d='M14 1L4 14h7l-2 9 11-14h-7l1-8z'/%3E")};
-  --w: 24px;
-  --h: 36px;
+  --w: 30px;
+  --h: 46px;
   --fx-tint: color-mix(in srgb, var(--accent) 50%, #fff3a0);
-  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--accent) 60%, transparent));
-  rotate: calc(var(--angle) + 90deg);
-  animation:
-    fx-zap 0.6s cubic-bezier(0.1, 0.8, 0.3, 1) var(--delay) forwards,
-    fx-bolt-grow 0.6s ease-out var(--delay) forwards,
-    fx-flash 0.6s linear var(--delay) forwards;
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--accent) 70%, transparent));
+  rotate: calc(var(--angle) - 90deg);
+  animation: fx-strike var(--dur) linear var(--delay) forwards;
 }
 
-@keyframes fx-zap {
-  from { translate: 0 0; }
-  to { translate: calc(var(--dx) * 0.6) calc(var(--dy) * 0.6); }
+@keyframes fx-strike {
+  0% { opacity: 0; scale: 0.6; }
+  6% { opacity: 1; scale: 1.05; }
+  14% { opacity: 0.1; }
+  22% { opacity: 1; scale: 1; }
+  30% { opacity: 0.25; }
+  40%, 65% { opacity: 1; scale: 1; }
+  100% { opacity: 0; scale: 0.9; }
 }
 
-@keyframes fx-bolt-grow {
-  from { scale: 0.7; }
-  to { scale: 1.2; }
+.hero-fx > .fx-flash {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--accent) 45%, #fff) 55%, transparent);
+  scale: 1.7;
+  animation: fx-flash-burst 0.7s linear var(--delay) forwards;
 }
 
-@keyframes fx-flash {
+@keyframes fx-flash-burst {
   0% { opacity: 0; }
-  8% { opacity: 1; }
-  20% { opacity: 0.25; }
-  32%, 55% { opacity: 1; }
+  8% { opacity: 0.75; }
+  20% { opacity: 0.1; }
+  34% { opacity: 0.55; }
   100% { opacity: 0; }
 }
 
-/* White: little ghosts that float out, wobbling, and fade away. */
+/* White: ghosts slip out from behind the portrait and drift slowly up,
+   weaving from side to side, before fading away. */
 .hero-fx > .fx-ghost {
   --shape: #{shape("%3Cpath fill-rule='evenodd' d='M12 2a8 8 0 0 0-8 8v12l2.7-2 2.6 2 2.7-2 2.7 2 2.6-2 2.7 2V10a8 8 0 0 0-8-8zM9 8.4a1.6 1.6 0 1 0 0 3.2a1.6 1.6 0 1 0 0-3.2zM15 8.4a1.6 1.6 0 1 0 0 3.2a1.6 1.6 0 1 0 0-3.2z'/%3E")};
-  --w: 32px;
-  --h: 34px;
+  --w: 42px;
+  --h: 44px;
   animation:
-    fx-out 2.4s cubic-bezier(0.2, 0.6, 0.3, 1) var(--delay) forwards,
-    fx-wobble 0.7s ease-in-out var(--delay) infinite alternate,
-    fx-grow 2.4s ease-out var(--delay) forwards,
-    fx-ghost-fade 2.4s linear var(--delay) forwards;
+    fx-float var(--dur) cubic-bezier(0.35, 0.25, 0.5, 1) var(--delay) forwards,
+    fx-weave 0.9s ease-in-out var(--delay) infinite alternate,
+    fx-ghost-grow var(--dur) ease-out var(--delay) forwards,
+    fx-ghost-fade var(--dur) linear var(--delay) forwards;
 }
 
 .hero-fx > .fx-ghost:nth-child(n) { color: var(--accent); }
 
-@keyframes fx-wobble {
-  from { rotate: calc(var(--tilt) * 0.5 - 12deg); }
-  to { rotate: calc(var(--tilt) * 0.5 + 12deg); }
+@keyframes fx-float {
+  from { translate: 0 0; }
+  to { translate: var(--dx) var(--dy); }
+}
+
+@keyframes fx-weave {
+  from { transform: translateX(calc(var(--wave) * -1)) rotate(calc(var(--tilt) - 8deg)); }
+  to { transform: translateX(var(--wave)) rotate(calc(var(--tilt) + 8deg)); }
+}
+
+@keyframes fx-ghost-grow {
+  0% { scale: 0.4; }
+  25%, 100% { scale: 1; }
 }
 
 @keyframes fx-ghost-fade {
   0% { opacity: 0; }
-  15%, 60% { opacity: 0.9; }
+  18%, 65% { opacity: 0.85; }
   100% { opacity: 0; }
 }
 
-/* Pink: hearts that pop out beating. */
+/* Pink: hearts orbit the portrait, spiralling out as they go round, each one
+   beating. The orbit angle and radius are registered so they animate. */
+@property --orbit {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@property --orbit-r {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
 .hero-fx > .fx-heart {
   --shape: #{shape("%3Cpath d='M12 21s-7.5-4.6-9.6-9.4C.8 7.8 3.1 4 6.8 4c2.1 0 3.7 1.2 5.2 3.1C13.5 5.2 15.1 4 17.2 4c3.7 0 6 3.8 4.4 7.6C19.5 16.4 12 21 12 21z'/%3E")};
   --w: 22px;
   --h: 22px;
   --fx-tint: color-mix(in srgb, var(--accent) 60%, #ff8fb8);
-  rotate: var(--tilt);
+  transform: rotate(var(--orbit)) translateX(var(--orbit-r)) rotate(calc(var(--orbit) * -1));
   animation:
-    fx-out 1.8s cubic-bezier(0.2, 0.7, 0.3, 1) var(--delay) forwards,
-    fx-beat 1.8s ease-out var(--delay) forwards,
-    fx-fade 1.8s linear var(--delay) forwards;
+    fx-orbit var(--dur) cubic-bezier(0.45, 0.1, 0.55, 0.95) var(--delay) forwards,
+    fx-fade var(--dur) linear var(--delay) forwards;
+
+  /* The beat goes on the shape, so it doesn't change the orbit's radius. */
+  &::before { animation: fx-beat 0.7s ease-out var(--delay) infinite; }
+}
+
+@keyframes fx-orbit {
+  from { --orbit: var(--a0); --orbit-r: var(--r0); }
+  to { --orbit: calc(var(--a0) + var(--sweep)); --orbit-r: var(--r1); }
 }
 
 @keyframes fx-beat {
-  0% { scale: 0.4; }
-  18% { scale: 1.15; }
-  32% { scale: 0.9; }
-  46% { scale: 1.1; }
-  60% { scale: 1; }
-  100% { scale: 0.85; }
+  0% { scale: 0.7; }
+  20% { scale: 1.2; }
+  40% { scale: 0.9; }
+  60% { scale: 1.1; }
+  100% { scale: 0.95; }
 }
