@@ -1,9 +1,18 @@
+import { useState } from 'react';
 import { useI18n, type MessageKey } from '../i18n/I18nContext';
 import { CalendarIcon, DownloadIcon, GitHubIcon, PinIcon } from '../components/icons';
 import { CALENDLY } from '../data/contact';
 
 export function Hero() {
   const { t } = useI18n();
+  // Hidden easter egg: a click spins the portrait like a tossed coin. No
+  // pointer cursor or button role on purpose, so it stays a surprise.
+  const [spinning, setSpinning] = useState(false);
+  const spin = () => {
+    if (spinning || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    setSpinning(true);
+  };
+
   return (
     <section className="hero wrap" id="top">
       <div className="hero-copy">
@@ -42,7 +51,13 @@ export function Hero() {
         </div>
       </div>
 
-      <figure className="hero-figure">
+      <figure
+        className={spinning ? 'hero-figure is-spinning' : 'hero-figure'}
+        onClick={spin}
+        onAnimationEnd={(event) => {
+          if (event.animationName === 'coin-spin') setSpinning(false);
+        }}
+      >
         <div className="hero-portrait">
           <img
             src="./images/author-portrait.jpg"
