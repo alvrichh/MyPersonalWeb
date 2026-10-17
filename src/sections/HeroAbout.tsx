@@ -3,25 +3,36 @@ import { useI18n, type MessageKey } from '../i18n/I18nContext';
 import { CalendarIcon, DownloadIcon, GitHubIcon, PinIcon } from '../components/icons';
 import { CALENDLY } from '../data/contact';
 
-type Confetti = { id: number; style: CSSProperties };
+type Confetti = { id: number; burst: number; style: CSSProperties };
 
-const CONFETTI_COUNT = 28;
+// Clicks closer together than this build a combo: each burst in a row throws
+// more pieces, further, up to a cap so a frantic clicker can't flood the page.
+const COMBO_WINDOW = 1200;
+const MAX_COMBO = 8;
+const MAX_PIECES = 360;
+const CONFETTI_LIFE = 2100;
+
+let nextPiece = 0;
 
 // One burst: pieces leave the ring in every direction, each with its own
 // distance, spin, shape and colour slot (or hue, under the Disco accent).
-// Sideways travel stops short of the screen edges, so phones never scroll.
-const makeConfetti = (burst: number, figure: DOMRect): Confetti[] => {
+// Sideways travel eases off before the screen edge on each side (a soft
+// limit, so pieces don't stack up in a line there) and phones never scroll.
+const makeConfetti = (burst: number, combo: number, figure: DOMRect): Confetti[] => {
+  const count = 28 + (combo - 1) * 10;
+  const reach = 1 + (combo - 1) * 0.12;
   const ring = figure.width * 0.44;
   const centre = figure.left + figure.width / 2;
-  const room = Math.min(centre, window.innerWidth - centre) - 12;
-  return Array.from({ length: CONFETTI_COUNT }, (_, i) => {
-    const angle = ((i + Math.random() * 0.6) / CONFETTI_COUNT) * Math.PI * 2;
-    const distance = 80 + Math.random() * 100;
+  return Array.from({ length: count }, (_, i) => {
+    const angle = ((i + Math.random() * 0.6) / count) * Math.PI * 2;
+    const distance = (80 + Math.random() * 100) * reach;
     const x0 = Math.cos(angle) * ring;
-    const maxDx = Math.max(0, room / 1.1 - Math.abs(x0));
-    const dx = Math.max(-maxDx, Math.min(maxDx, Math.cos(angle) * distance));
+    const room = (x0 < 0 ? centre : window.innerWidth - centre) - 12;
+    const maxDx = Math.max(1, room / 1.1 - Math.abs(x0));
+    const dx = Math.sign(x0) * maxDx * Math.tanh(Math.abs(Math.cos(angle) * distance) / maxDx);
     return {
-      id: burst * CONFETTI_COUNT + i,
+      id: nextPiece++,
+      burst,
       style: {
         ['--x0' as string]: `${x0}px`,
         ['--y0' as string]: `${Math.sin(angle) * ring}px`,
@@ -38,19 +49,27 @@ const makeConfetti = (burst: number, figure: DOMRect): Confetti[] => {
 export function Hero() {
   const { t } = useI18n();
   // Hidden easter egg: a click spins the portrait like a tossed coin and
-  // throws accent-coloured confetti off the ring. No pointer cursor or button
-  // role on purpose, so it stays a surprise.
+  // throws accent-coloured confetti off the ring; quick repeat clicks pile on
+  // bigger bursts. No pointer cursor or button role on purpose, so it stays a
+  // surprise.
   const [spinning, setSpinning] = useState(false);
   const [confetti, setConfetti] = useState<Confetti[]>([]);
   const bursts = useRef(0);
+  const combo = useRef({ count: 0, last: 0 });
   const spin = (event: MouseEvent<HTMLElement>) => {
-    if (spinning || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    setSpinning(true);
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!spinning) setSpinning(true);
+
+    const now = performance.now();
+    const streak = now - combo.current.last < COMBO_WINDOW ? Math.min(combo.current.count + 1, MAX_COMBO) : 1;
+    combo.current = { count: streak, last: now };
+
     const burst = ++bursts.current;
-    setConfetti(makeConfetti(burst, event.currentTarget.getBoundingClientRect()));
+    const pieces = makeConfetti(burst, streak, event.currentTarget.getBoundingClientRect());
+    setConfetti((current) => [...current, ...pieces].slice(-MAX_PIECES));
     window.setTimeout(() => {
-      if (bursts.current === burst) setConfetti([]);
-    }, 2100);
+      setConfetti((current) => current.filter((piece) => piece.burst !== burst));
+    }, CONFETTI_LIFE);
   };
 
   return (
