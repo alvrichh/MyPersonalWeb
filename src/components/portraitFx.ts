@@ -7,7 +7,7 @@ import type { CSSProperties } from 'react';
  * in _portrait-fx.scss, keyed by the `fx-<kind>` class.
  *
  *   blue     ripple    rings spread out like water round a dropped stone
- *   green    leaf      a gust of wind blows leaves off to one side
+ *   green    leaf      a gust of wind blows leaves off to the left
  *   red      flame     the ring catches fire and flames rise straight up
  *   orange   spark     sparkler sparks shoot out fast, then arc down
  *   yellow   bolt      a storm: bolts flicker in place round the ring + a flash
@@ -95,8 +95,8 @@ export function makeBurst(kind: FxKind, burst: number, combo: number, figure: DO
     }
 
     case 'leaf': {
-      // One gust, all leaves the same way: towards the side with more room.
-      const way = roomLeft >= roomRight ? -1 : 1;
+      // One gust, all leaves the same way: to the left.
+      const way = -1;
       return Array.from({ length: count(14) }, () => {
         const angle = Math.random() * Math.PI * 2;
         const x0 = Math.cos(angle) * ring;
