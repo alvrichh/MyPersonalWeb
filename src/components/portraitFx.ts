@@ -9,7 +9,7 @@ import type { CSSProperties } from 'react';
  *   blue     ripple    rings spread out like water round a dropped stone
  *   green    leaf      a gust of wind blows leaves off to the left
  *   red      flame     flames lick out round the sides, burn, then rise
- *   orange   spark     sparkler sparks shoot out fast, then arc down
+ *   orange   spark     fireworks: streaks shoot out, then fall as twinkling dots
  *   yellow   bolt      a storm: bolts flicker in place round the ring + a flash
  *   white    ghost     ghosts slip out round the sides, linger, then drift up
  *   pink     heart     hearts orbit the portrait as they spiral away
@@ -36,7 +36,7 @@ const LIFE: Partial<Record<FxKind, number>> = {
   ripple: 2300,
   leaf: 3100,
   flame: 2200,
-  spark: 1100,
+  spark: 1600,
   bolt: 1500,
   ghost: 3900,
   heart: 2600,
@@ -148,7 +148,7 @@ export function makeBurst(kind: FxKind, burst: number, combo: number, figure: DO
           '--y0': px(Math.sin(angle) * ring),
           '--dx': px(fitX(x0, Math.cos(angle) * distance * 1.15) / 1.15),
           '--dy': px(Math.sin(angle) * distance),
-          '--fall': px(between(60, 140)),
+          '--fall': px(between(90, 190)),
           '--angle': `${((angle * 180) / Math.PI).toFixed(1)}deg`,
           '--delay': ms(between(0, 60)),
         });
