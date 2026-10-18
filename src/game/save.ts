@@ -6,8 +6,13 @@ import type { ItemId, Slot } from './shop';
 export type EnemyStyle = 'world' | 'original' | 'demon' | 'viking' | 'jungle' | 'greek' | 'robot' | 'nightmare' | 'random';
 export const STYLES: EnemyStyle[] = ['world', 'original', 'demon', 'viking', 'jungle', 'greek', 'robot', 'nightmare', 'random'];
 
+export type HeroSkin = 'boy' | 'robot';
+export const SKINS: HeroSkin[] = ['boy', 'robot'];
+
 export type Save = {
   coins: number;
+  /** Which figure the hero is drawn as. */
+  skin: HeroSkin;
   owned: ItemId[];
   equipped: Partial<Record<Slot, ItemId>>;
   style: EnemyStyle;
@@ -31,6 +36,7 @@ const KEY = 'bugHunter';
 
 const fresh = (): Save => ({
   coins: 0,
+  skin: 'boy',
   owned: [],
   equipped: {},
   style: 'world',
@@ -51,6 +57,7 @@ export function loadSave(): Save {
     const data = JSON.parse(storage.get(KEY) || '{}') as Partial<Save>;
     const save = { ...base, ...data, equipped: { ...data.equipped }, best: { ...base.best, ...data.best }, bestByWorld: { ...data.bestByWorld } };
     if (!STYLES.includes(save.style)) save.style = 'world';
+    if (!SKINS.includes(save.skin)) save.skin = 'boy';
     if (!data.styleV2) { save.style = 'world'; save.styleV2 = true; }
     save.unlocked = Math.max(1, save.unlocked || 1);
     save.world = Math.min(Math.max(1, save.world || 1), save.unlocked);

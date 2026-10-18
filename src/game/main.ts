@@ -2,7 +2,7 @@ import './game.css';
 import { storage } from '../lib/storage';
 import { audio, type Sfx } from './audio';
 import { draw, type Palette, type View } from './draw';
-import { loadSave, profileLevel, writeSave, STYLES, type EnemyStyle } from './save';
+import { loadSave, profileLevel, writeSave, STYLES, SKINS, type EnemyStyle, type HeroSkin } from './save';
 import { ITEMS, SLOTS, buildLoadout, itemById, type ItemId, type Slot } from './shop';
 import { Scene } from './scene';
 import { makeT, pickLang, type Key } from './strings';
@@ -71,6 +71,7 @@ const save = loadSave();
 const persist = () => writeSave(save);
 audio.setVolumes(save.music, save.sfx);
 palette.hat = save.equipped.head;
+palette.skin = save.skin;
 
 const clock = (seconds: number) => `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, '0')}`;
 const bestLine = (world = save.world) => {
@@ -442,14 +443,23 @@ function shopScreen(note = '') {
     ${backButton('menu')}`, true);
 }
 
+const HAT_SET: Record<string, string> = { wizardHat: 'wizard', gladHelm: 'helm', bandana: 'bandana' };
 function stylesScreen() {
+  const skins = SKINS.map((skin) => `
+    <button class="style skin${save.skin === skin ? ' is-on' : ''}" data-skin="${skin}">
+      <span class="icon" aria-hidden="true"><img class="skin-pic" src="./images/game/hero/${skin}-${HAT_SET[save.equipped.head ?? ''] ?? 'base'}-idle.webp" alt=""></span>
+      <b>${t(`skin${cap(skin)}Name` as Key)}</b>
+      <span>${t(`skin${cap(skin)}Text` as Key)}</span>
+    </button>`).join('');
   const cards = STYLES.map((style) => `
     <button class="style${save.style === style ? ' is-on' : ''}" data-style="${style}">
       <span class="icon" aria-hidden="true">${STYLE_ICON[style]}</span>
       <b>${t(`style${cap(style)}Name` as Key)}</b>
       <span>${t(`style${cap(style)}Text` as Key)}</span>
     </button>`).join('');
-  show(`<button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button><h2>${t('styles')}</h2><p>${t('stylePick')}</p><div class="styles">${cards}</div>${backButton('menu')}`, true);
+  show(`<button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button><h2>${t('styles')}</h2>
+    <p>${t('skinPick')}</p><div class="styles">${skins}</div>
+    <p>${t('stylePick')}</p><div class="styles">${cards}</div>${backButton('menu')}`, true);
 }
 
 function startRun(world = save.world) {
@@ -547,8 +557,13 @@ screen.addEventListener('click', (event) => {
     save.style = target.dataset.style as EnemyStyle;
     persist();
     stylesScreen();
+  } else if (target.dataset.skin) {
+    save.skin = target.dataset.skin as HeroSkin;
+    persist();
+    stylesScreen();
   }
   palette.hat = save.equipped.head;
+  palette.skin = save.skin;
 });
 
 screen.addEventListener('input', (event) => {
