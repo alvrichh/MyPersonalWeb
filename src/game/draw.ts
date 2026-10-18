@@ -1,4 +1,4 @@
-import { BLADE_ORBIT, H, W, WALL, WORLDS, frostReach, isBossRoom, type Enemy, type Game, type Look } from './world';
+import { BLADE_ORBIT, H, W, WALL, WHEEL_X, WORLDS, frostReach, isBossRoom, type Enemy, type Game, type Look, type Statue } from './world';
 import type { ItemId } from './shop';
 
 /* Bug Hunter's renderer: everything is drawn in room units (360 × 600) and
@@ -96,6 +96,29 @@ function drawRoom(ctx: CanvasRenderingContext2D, g: Game, accent: string, now: n
     for (let i = 0; i < 4; i++) ctx.fillRect(W / 2 - 26 + i * 15, 5, 7, 6);
   }
 
+  // The mysterious door: a purple gap with a question mark, once per run.
+  if (g.wheelDoor) {
+    const pulse = 0.6 + Math.sin(now * 4) * 0.25;
+    ctx.fillStyle = theme.floor;
+    ctx.fillRect(WHEEL_X - 32, 0, 64, WALL);
+    const grad = ctx.createLinearGradient(0, 0, 0, WALL + 44);
+    grad.addColorStop(0, '#c084fc');
+    grad.addColorStop(1, 'transparent');
+    ctx.globalAlpha = pulse;
+    ctx.fillStyle = grad;
+    ctx.fillRect(WHEEL_X - 32, 0, 64, WALL + 44);
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = '#f5f3ff';
+    ctx.font = '700 22px Fredoka, system-ui, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('?', WHEEL_X, WALL + 22 + Math.sin(now * 3) * 2);
+    ctx.textAlign = 'start';
+    ctx.textBaseline = 'alphabetic';
+  }
+
+  if (g.statue) drawStatue(ctx, g.statue, theme.door || accent, now);
+
   // Server racks, with blinking lights.
   for (const o of g.obstacles) {
     ctx.fillStyle = 'rgba(0,0,0,0.35)';
@@ -115,6 +138,64 @@ function drawRoom(ctx: CanvasRenderingContext2D, g: Game, accent: string, now: n
       ctx.fillStyle = on ? (i % 2 ? '#67dfa0' : accent) : 'rgba(255,255,255,0.12)';
       ctx.fillRect(o.x + 6 + i * 12, o.y + 6, 4, 3);
     }
+  }
+}
+
+/* The healing statue: a stone pedestal with a crystal that glows until used. */
+function drawStatue(ctx: CanvasRenderingContext2D, st: Statue, glow: string, now: number) {
+  const { x, y } = st;
+  ctx.fillStyle = 'rgba(0,0,0,0.4)';
+  ctx.beginPath();
+  ctx.ellipse(x, y + 20, 22, 7, 0, 0, Math.PI * 2);
+  ctx.fill();
+  if (!st.used) {
+    const halo = ctx.createRadialGradient(x, y - 6, 4, x, y - 6, 46);
+    halo.addColorStop(0, glow + 'aa');
+    halo.addColorStop(1, 'transparent');
+    ctx.globalAlpha = 0.5 + Math.sin(now * 3) * 0.2;
+    ctx.fillStyle = halo;
+    ctx.fillRect(x - 46, y - 52, 92, 92);
+    ctx.globalAlpha = 1;
+  }
+  // Pedestal: two stone steps.
+  ctx.fillStyle = '#3b465c';
+  roundRect(ctx, x - 20, y + 6, 40, 14, 4);
+  ctx.fill();
+  ctx.fillStyle = '#4d5a73';
+  roundRect(ctx, x - 13, y - 4, 26, 12, 3);
+  ctx.fill();
+  ctx.fillStyle = 'rgba(255,255,255,0.12)';
+  ctx.fillRect(x - 18, y + 7, 36, 2);
+  // Crystal: bright while it still has a heal in it, dull afterwards.
+  const bob = st.used ? 0 : Math.sin(now * 2.5) * 2;
+  const top = y - 30 + bob;
+  const crystal = ctx.createLinearGradient(x - 10, top, x + 10, top + 28);
+  crystal.addColorStop(0, st.used ? '#6b7280' : '#ffffff');
+  crystal.addColorStop(0.5, st.used ? '#4b5563' : glow);
+  crystal.addColorStop(1, st.used ? '#374151' : '#1e293b');
+  ctx.fillStyle = crystal;
+  ctx.beginPath();
+  ctx.moveTo(x, top);
+  ctx.lineTo(x + 10, top + 14);
+  ctx.lineTo(x, top + 28);
+  ctx.lineTo(x - 10, top + 14);
+  ctx.closePath();
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(x, top);
+  ctx.lineTo(x, top + 28);
+  ctx.stroke();
+  if (!st.used) {
+    // A heart floating above, so it reads as "heal" at a glance.
+    ctx.fillStyle = '#ff6b8a';
+    const hy = top - 12 + Math.sin(now * 2.5 + 1) * 2;
+    ctx.beginPath();
+    ctx.moveTo(x, hy + 6);
+    ctx.bezierCurveTo(x - 9, hy - 2, x - 5, hy - 9, x, hy - 3);
+    ctx.bezierCurveTo(x + 5, hy - 9, x + 9, hy - 2, x, hy + 6);
+    ctx.fill();
   }
 }
 
