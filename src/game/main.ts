@@ -138,6 +138,7 @@ const EMOJI: Record<SkillId | 'bow', string> = {
   sword: '🗡️', blades: '🌀', hammer: '🔨', storm: '🌩️', fireball: '☄️', frost: '❄️', spirits: '👻', laser: '🔦', knives: '🔪', boomerang: '🪃',
   fire: '🔥', water: '💧', leaf: '🍃', bolt: '⚡', spark: '✨', ghost: '🫥', double: '🏹', speed: '⏩', power: '💥', heart: '💗', bow: '🏹',
   shoes: '👟', bracer: '🦾', drink: '🥤',
+  brick: '🧱', molotov: '🍾', durian: '🌵', mines: '💣', drill: '🔩', rocket: '🚀', ball: '⚽',
 };
 /* The painted medallion, with the emoji beside it for the retro look (CSS shows one or the other). */
 const skillIcon = (id: SkillId | 'bow', size = 40, file: string = id === 'bow' ? 'double' : id) => `<img class="skill-icon" src="./images/game/skills/${file}.webp" width="${size}" height="${size}" alt=""><span class="skill-emoji">${EMOJI[id]}</span>`;

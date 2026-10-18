@@ -1,4 +1,4 @@
-import { H, W, WALL, WHEEL_X, WORLDS, frostReach, isBossRoom, type Enemy, type Game, type Look, type Statue, type Rect, type Vec, arrowLook, bladeCount, bladeElement, bladeOrbit, bladeScale, type BladeElement } from './world';
+import { H, W, WALL, WHEEL_X, WORLDS, frostReach, isBossRoom, type Enemy, type Game, type Shot, type Look, type Statue, type Rect, type Vec, arrowLook, bladeCount, bladeElement, bladeOrbit, bladeScale, type BladeElement } from './world';
 import { SPIRIT_COLOR, type ItemId, type SpiritSkin } from './shop';
 import { heroKey, type HeroSkin } from './save';
 
@@ -54,6 +54,7 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   drawHearts(ctx, g, now);
   if (g.skills.frost) drawFrost(ctx, g, now);
   drawEmbers(ctx, g, now);
+  drawMines(ctx, g, now);
   drawRunes(ctx, g, now);
   drawFx(ctx, g, accent, 'under');
   for (const e of g.enemies) if (onScreen(e, 80)) drawEnemy(ctx, e, now);
@@ -502,6 +503,7 @@ function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accen
   ctx.lineCap = 'round';
   for (const a of g.shots) {
     const len = Math.hypot(a.vx, a.vy) || 1;
+    if (drawNewShot(ctx, g, a)) continue;
     if (a.kind === 'orb') {
       // The spirits' orb with a short trail: purple in retro, the water ghost's blue otherwise.
       const tint = retroLook ? ['rgba(192,132,252,0.45)', '#f5f3ff', '#c084fc', 'rgba(168,85,247,0)'] : [...SPIRIT_COLOR[a.elem ?? 'water'], 'rgba(0,0,0,0)'];
@@ -656,6 +658,218 @@ function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accen
     ctx.fill();
     ctx.shadowBlur = 0;
   }
+}
+
+/* The weapons from the rest of Survivor.io's list, drawn in code until
+   their pictures come: brick (an anvil when evolved), bottle (a barrel),
+   durian, drill, rocket and ball. True if it drew the shot. */
+function drawNewShot(ctx: CanvasRenderingContext2D, g: Game, a: Shot) {
+  const t = g.time;
+  if (a.kind === 'brick') {
+    ctx.save();
+    ctx.translate(a.x, a.y);
+    ctx.rotate(a.spin);
+    if (g.evolved.brick) {
+      // The 1-ton weight: a dark iron block with "1T" on it.
+      ctx.fillStyle = '#374151';
+      ctx.beginPath();
+      ctx.moveTo(-16, 12); ctx.lineTo(16, 12); ctx.lineTo(11, -12); ctx.lineTo(-11, -12);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = '#9ca3af';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.fillStyle = '#e5e7eb';
+      ctx.font = '700 10px ui-monospace, monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('1T', 0, 1);
+    } else {
+      ctx.fillStyle = '#b4532a';
+      ctx.fillRect(-9, -5, 18, 10);
+      ctx.fillStyle = '#d9774a';
+      ctx.fillRect(-9, -5, 18, 3);
+      ctx.strokeStyle = 'rgba(60,20,10,0.6)';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(-9, -5, 18, 10);
+      ctx.beginPath(); ctx.moveTo(0, -5); ctx.lineTo(0, 5); ctx.stroke();
+    }
+    ctx.restore();
+    return true;
+  }
+  if (a.kind === 'molotov') {
+    ctx.save();
+    ctx.translate(a.x, a.y);
+    ctx.rotate(a.spin);
+    if (g.evolved.molotov) {
+      ctx.fillStyle = '#b91c1c';
+      ctx.fillRect(-7, -9, 14, 18);
+      ctx.fillStyle = '#fca5a5';
+      ctx.fillRect(-7, -4, 14, 2);
+      ctx.fillRect(-7, 3, 14, 2);
+    } else {
+      ctx.fillStyle = 'rgba(132,204,22,0.9)';
+      ctx.beginPath();
+      ctx.ellipse(0, 2, 5, 7, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillRect(-2, -9, 4, 6);
+    }
+    // The lit rag.
+    ctx.fillStyle = Math.floor(t * 20) % 2 ? '#fde047' : '#fb923c';
+    ctx.beginPath();
+    ctx.arc(0, -11, 3.2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+    return true;
+  }
+  if (a.kind === 'durian') {
+    const r = (a.size ?? 14) * 0.85;
+    ctx.save();
+    ctx.translate(a.x, a.y);
+    ctx.rotate(a.spin * 0.3);
+    ctx.fillStyle = g.evolved.durian ? '#4d7c0f' : '#65a30d';
+    ctx.beginPath();
+    for (let i = 0; i < 24; i++) {
+      const k = i % 2 ? r : r * 1.32;
+      const ang = (i / 24) * Math.PI * 2;
+      if (i) ctx.lineTo(Math.cos(ang) * k, Math.sin(ang) * k); else ctx.moveTo(k, 0);
+    }
+    ctx.closePath();
+    ctx.fill();
+    const shine = ctx.createRadialGradient(-r * 0.3, -r * 0.3, 1, 0, 0, r);
+    shine.addColorStop(0, '#d9f99d');
+    shine.addColorStop(1, 'rgba(101,163,13,0)');
+    ctx.fillStyle = shine;
+    ctx.beginPath();
+    ctx.arc(0, 0, r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+    return true;
+  }
+  if (a.kind === 'drill') {
+    const k = (a.size ?? 7) / 7;
+    ctx.save();
+    ctx.translate(a.x, a.y);
+    ctx.rotate(Math.atan2(a.vy, a.vx));
+    ctx.scale(k, k);
+    if (g.evolved.drill) {
+      ctx.fillStyle = 'rgba(103,232,249,0.35)';
+      ctx.beginPath();
+      ctx.ellipse(-6, 0, 16, 8, 0, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    const grad = ctx.createLinearGradient(0, -6, 0, 6);
+    grad.addColorStop(0, '#e5e7eb');
+    grad.addColorStop(1, '#6b7280');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.moveTo(13, 0); ctx.lineTo(-6, -6); ctx.lineTo(-6, 6);
+    ctx.closePath();
+    ctx.fill();
+    // The thread, turning.
+    ctx.strokeStyle = '#374151';
+    ctx.lineWidth = 1.2;
+    for (let i = 0; i < 3; i++) {
+      const x = -4 + ((i * 5 + a.spin * 3) % 15);
+      const h = 6 * (1 - (x + 6) / 19);
+      ctx.beginPath(); ctx.moveTo(x, -h); ctx.lineTo(x + 2, h); ctx.stroke();
+    }
+    ctx.fillStyle = '#f59e0b';
+    ctx.fillRect(-10, -4, 4, 8);
+    ctx.restore();
+    return true;
+  }
+  if (a.kind === 'rocket') {
+    ctx.save();
+    ctx.translate(a.x, a.y);
+    ctx.rotate(Math.atan2(a.vy, a.vx));
+    if (g.evolved.rocket) ctx.scale(1.2, 1.2);
+    // Flame, body, nose, fins.
+    ctx.fillStyle = Math.floor(t * 24) % 2 ? '#fde047' : '#fb923c';
+    ctx.beginPath();
+    ctx.moveTo(-8, -3); ctx.lineTo(-16 - Math.random() * 4, 0); ctx.lineTo(-8, 3);
+    ctx.closePath();
+    ctx.fill();
+    ctx.fillStyle = g.evolved.rocket ? '#1e3a8a' : '#e5e7eb';
+    ctx.fillRect(-8, -3.5, 13, 7);
+    ctx.fillStyle = '#ef4444';
+    ctx.beginPath();
+    ctx.moveTo(5, -3.5); ctx.lineTo(10, 0); ctx.lineTo(5, 3.5);
+    ctx.closePath();
+    ctx.fill();
+    ctx.fillRect(-8, -6, 4, 2.5);
+    ctx.fillRect(-8, 3.5, 4, 2.5);
+    if (g.evolved.rocket) {
+      // Sharkmaw: teeth on the nose.
+      ctx.fillStyle = '#fff';
+      for (const y of [-2, 0, 2]) { ctx.beginPath(); ctx.moveTo(3, y - 1); ctx.lineTo(5, y); ctx.lineTo(3, y + 1); ctx.fill(); }
+    }
+    ctx.restore();
+    return true;
+  }
+  if (a.kind === 'ball') {
+    const r = (a.size ?? 8) * 0.95;
+    ctx.save();
+    ctx.translate(a.x, a.y);
+    ctx.rotate(a.spin);
+    ctx.fillStyle = g.evolved.ball ? '#c4b5fd' : '#f8fafc';
+    ctx.beginPath();
+    ctx.arc(0, 0, r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#111827';
+    ctx.beginPath();
+    ctx.arc(0, 0, r * 0.32, 0, Math.PI * 2);
+    ctx.fill();
+    for (let i = 0; i < 5; i++) {
+      const ang = (i / 5) * Math.PI * 2;
+      ctx.beginPath();
+      ctx.arc(Math.cos(ang) * r * 0.78, Math.sin(ang) * r * 0.78, r * 0.2, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    if (g.evolved.ball) {
+      ctx.strokeStyle = 'rgba(167,139,250,0.7)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(0, 0, r + 3, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    ctx.restore();
+    return true;
+  }
+  return false;
+}
+
+/* Mines on the floor (a red light blinks once armed, blue when they carry
+   lightning) and the evolved durian's caltrops. */
+function drawMines(ctx: CanvasRenderingContext2D, g: Game, now: number) {
+  for (const m of g.mines) {
+    ctx.fillStyle = '#1f2937';
+    ctx.beginPath();
+    ctx.arc(m.x, m.y, 8, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = '#6b7280';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    const on = m.arm <= 0 && Math.floor(now * 3 + m.x) % 2 === 0;
+    ctx.fillStyle = m.arm > 0 ? '#9ca3af' : g.evolved.mines ? (on ? '#7dd3fc' : '#0369a1') : on ? '#f87171' : '#7f1d1d';
+    ctx.beginPath();
+    ctx.arc(m.x, m.y, 3, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.fillStyle = '#9ca3af';
+  for (const c of g.spikes) {
+    ctx.globalAlpha = Math.min(1, c.life);
+    for (let i = 0; i < 3; i++) {
+      const ang = i * 2.1 + c.x;
+      const x = c.x + Math.cos(ang) * 4;
+      const y = c.y + Math.sin(ang) * 4;
+      ctx.beginPath();
+      ctx.moveTo(x, y - 3.5); ctx.lineTo(x + 3, y + 2); ctx.lineTo(x - 3, y + 2);
+      ctx.closePath();
+      ctx.fill();
+    }
+  }
+  ctx.globalAlpha = 1;
 }
 
 /* A boss's chest: the owner's painted chest, bobbing in a gold glow. */
