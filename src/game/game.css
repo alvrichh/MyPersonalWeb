@@ -2664,3 +2664,43 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 }
 .mode-opt.is-on { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #07090f; }
 .mode-text { font-size: 0.72rem; line-height: 1.3; color: var(--muted); }
+
+/* ------------------------------------------------------- wide-screen HUD */
+/* On a landscape screen with room to spare the HUD stands down the left
+   edge (back, where you are, health, XP, coins), the pause goes to the top
+   right over the weapon column, and the room takes the whole height
+   (main.ts reads --hud-side). Phones and the retro look keep the top HUD. */
+@media (min-width: 900px) and (orientation: landscape) {
+  :root:not([data-retro]) { --hud-side: 1; }
+  :root:not([data-retro]) .hud {
+    left: max(10px, env(safe-area-inset-left));
+    top: max(10px, env(safe-area-inset-top));
+    width: 250px;
+    min-height: 0;
+    translate: none; /* a transform would pin the fixed pause button to this box */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 18px;
+    background: linear-gradient(to bottom, rgba(4, 9, 20, 0.7), rgba(4, 9, 20, 0.35));
+  }
+  :root:not([data-retro]) .hud-back { align-self: flex-start; }
+  :root:not([data-retro]) .hud-room { width: 100%; padding: 13px 10px 13px 23%; font-size: 0.86rem; }
+  :root:not([data-retro]) .hud-coins { width: 100%; height: 40px; justify-content: center; font-size: 0.95rem; }
+  :root:not([data-retro]) .hud-hp,
+  :root:not([data-retro]) .hud-xp { width: 100%; }
+  :root:not([data-retro]) .hud-pause {
+    position: fixed;
+    top: max(10px, env(safe-area-inset-top));
+    right: max(10px, env(safe-area-inset-right));
+    width: 44px;
+    height: 44px;
+  }
+  :root:not([data-retro]) .gear { top: calc(max(10px, env(safe-area-inset-top)) + 58px); right: max(12px, env(safe-area-inset-right)); }
+  :root:not([data-retro]) .gear span { padding: 3px 5px 3px 3px; }
+  :root:not([data-retro]) .gear .skill-icon { width: 30px; height: 30px; }
+  /* The boss bar lines up under the panel, so the room doesn't shrink when a boss shows up. */
+  :root:not([data-retro]) .boss { left: max(10px, env(safe-area-inset-left)); top: calc(max(10px, env(safe-area-inset-top)) + 264px); width: 250px; translate: none; }
+}

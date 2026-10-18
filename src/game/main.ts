@@ -911,7 +911,9 @@ function resize() {
   const hudH = hud.hidden ? 96 : hud.getBoundingClientRect().height;
   document.documentElement.style.setProperty('--hud-h', `${hudH}px`);
   const bossH = !save.retro && !bossBar.hidden ? bossBar.getBoundingClientRect().height - 8 : 0;
-  const top = save.retro ? 86 : Math.max(96, hud.hidden ? 96 : hud.getBoundingClientRect().height + 2) + bossH;
+  // Wide screens park the HUD down the left side (game.css sets --hud-side), so the room gets the whole height.
+  const side = getComputedStyle(document.documentElement).getPropertyValue('--hud-side').trim() === '1';
+  const top = side ? 8 : save.retro ? 86 : Math.max(96, hud.hidden ? 96 : hud.getBoundingClientRect().height + 2) + bossH;
   // Keep the game room below the skinned HUD and the weapons row on notched phones.
   const scale = Math.min(width / W, (height - top - 8) / H);
   view.scale = scale;
