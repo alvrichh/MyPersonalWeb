@@ -540,14 +540,19 @@ body {
   justify-items: center;
   gap: 12px;
   width: min(100%, 380px);
-  padding: 28px 22px 22px;
-  border: 1px solid var(--line);
-  border-radius: 24px;
-  background:
-    radial-gradient(120% 70% at 50% 0%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 70%),
-    var(--panel);
+  padding: 58px 22px 34px;
+  /* The stone-and-neon frame from the UI sheets, stretched to the content;
+     its centre is the panel colour. */
+  border-style: solid;
+  border-width: 22px;
+  border-image: url('/images/game/ui/panel_tall.webp') 60 fill / 22px stretch;
+  background: none;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
   text-align: center;
+}
+
+.panel-wide {
+  border-image-source: url('/images/game/ui/panel_wide.webp');
 }
 
 .panel-wide {
@@ -555,6 +560,34 @@ body {
   max-height: 100%;
   overflow: auto;
   overscroll-behavior: contain;
+}
+
+/* Headers: the ornament picture with its words set inside the stone plate. */
+.ui-head {
+  position: relative;
+  width: min(80%, 300px);
+  margin: -58px auto -30px;
+}
+
+.ui-head img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.ui-head span {
+  position: absolute;
+  left: 16%;
+  right: 16%;
+  top: 62%;
+  bottom: 10%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: clamp(0.95rem, 4vw, 1.2rem);
+  font-weight: 800;
+  line-height: 1.05;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
 }
 
 .panel .title {
@@ -823,6 +856,29 @@ body {
   color: var(--text);
 }
 
+/* Dialog buttons: the chamfered bars from the UI sheets. The sides keep their
+   bevels and the middle stretches to any width. */
+.panel .primary,
+.panel .ghost {
+  min-height: 56px;
+  border-width: 0 26px;
+  border-style: solid;
+  border-radius: 0;
+  border-image: url('/images/game/ui/btn_blue.webp') 0 70 fill / 0 26px stretch;
+  background: none;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.45);
+}
+
+.panel .primary {
+  color: #fff;
+}
+
+.panel .ghost {
+  border-image-source: url('/images/game/ui/btn_gray.webp');
+  color: #0b1220;
+  text-shadow: none;
+}
+
 .link {
   color: var(--muted);
   font-size: 0.9rem;
@@ -861,6 +917,27 @@ body {
   border-color: var(--accent);
   background: color-mix(in srgb, var(--accent) 12%, transparent);
   transform: translateY(-2px);
+}
+
+/* Upgrade cards: the coloured frames from the UI sheets, one per category. */
+.panel .skill {
+  padding: 0 2px;
+  border-style: solid;
+  border-width: 14px;
+  border-image: url('/images/game/ui/card_blue.webp') 50 fill / 14px stretch;
+  background: none;
+}
+
+.panel .skill-melee { border-image-source: url('/images/game/ui/card_red.webp'); }
+.panel .skill-magic { border-image-source: url('/images/game/ui/card_purple.webp'); }
+.panel .skill-ranged { border-image-source: url('/images/game/ui/card_blue.webp'); }
+.panel .skill-upgrade { border-image-source: url('/images/game/ui/card_orange.webp'); }
+
+.panel .skill:hover,
+.panel .skill:focus-visible {
+  background: none;
+  border-color: transparent;
+  filter: brightness(1.18);
 }
 
 .skill .icon {
