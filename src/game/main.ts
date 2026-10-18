@@ -607,11 +607,17 @@ function optionsScreen() {
 
 /** Which shop sections are unfolded (kept while the shop re-renders after a purchase). */
 const shopOpen = new Set<string>();
-/** A foldable shop section: its title bar with a count, and its cards only when open. */
+/** A foldable shop section: one of the owner's ring-and-plate rows (orange while open) with its icon and a count, and its cards only when open. */
+const SHOP_SEC_ICON: Record<string, [string, string]> = {
+  forge: ['⚒️', 'forge/might.webp'], arsenal: ['🚀', 'skills/rocket.webp'],
+  head: ['🎩', 'slots/head.webp'], body: ['🦺', 'slots/body.webp'], boots: ['👢', 'slots/boots.webp'],
+  magic: ['🔮', 'slots/magic.webp'], melee: ['🗡️', 'slots/melee.webp'], ranged: ['🏹', 'slots/ranged.webp'],
+};
 function shopSection(key: string, title: string, count: string, body: string) {
   const open = shopOpen.has(key);
-  return `<button type="button" class="shop-sec${open ? ' is-open' : ''}" data-shop-sec="${key}" aria-expanded="${open}">
-      <span>${title}</span><small>${count}</small><i aria-hidden="true">▾</i>
+  const [emoji, pic] = SHOP_SEC_ICON[key] ?? ['🛒', ''];
+  return `<button type="button" class="gear-row shop-sec${open ? ' is-on' : ''}" data-shop-sec="${key}" aria-expanded="${open}">
+      <span class="icon" aria-hidden="true">${picIcon(emoji, pic || undefined)}</span><b>${title}</b><em>${count} ${open ? '▴' : '▾'}</em>
     </button>${open ? body : ''}`;
 }
 
