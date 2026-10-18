@@ -597,9 +597,20 @@ function optionsScreen() {
     ${backButton(optionsFrom === 'pause' ? 'pause' : 'menu', optionsFrom === 'pause' ? 'resume' : 'menu')}`);
 }
 
+/** Which shop sections are unfolded (kept while the shop re-renders after a purchase). */
+const shopOpen = new Set<string>();
+/** A foldable shop section: its title bar with a count, and its cards only when open. */
+function shopSection(key: string, title: string, count: string, body: string) {
+  const open = shopOpen.has(key);
+  return `<button type="button" class="shop-sec${open ? ' is-open' : ''}" data-shop-sec="${key}" aria-expanded="${open}">
+      <span>${title}</span><small>${count}</small><i aria-hidden="true">▾</i>
+    </button>${open ? body : ''}`;
+}
+
 function shopScreen(note = '') {
   const groups = SLOTS.map((slot) => {
-    const cards = ITEMS.filter((item) => item.slot === slot)
+    const all = ITEMS.filter((item) => item.slot === slot);
+    const cards = all
       .map((item) => {
         const owned = save.owned.includes(item.id);
         const worn = save.equipped[slot] === item.id;
@@ -617,7 +628,7 @@ function shopScreen(note = '') {
         </div>`;
       })
       .join('');
-    return `<h3 class="slot">${t(SLOT_LABEL[slot])}</h3><div class="items">${cards}</div>`;
+    return shopSection(slot, t(SLOT_LABEL[slot]), `${all.filter((i) => save.owned.includes(i.id)).length}/${all.length}`, `<div class="items">${cards}</div>`);
   }).join('');
   // The forge: permanent, levelled upgrades.
   const forge = UPGRADES.map((u) => {
@@ -655,8 +666,8 @@ function shopScreen(note = '') {
     <button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
     <div class="shop-head"><h2>${t('shop')}</h2><p class="wallet">${coinsLine()}</p></div>
     ${note ? `<p class="note">${note}</p>` : `<p class="how">${t('earnHint')}</p>`}
-    <h3 class="slot">${t('forge')}</h3><p class="how">${t('forgeHint')}</p><div class="items">${forge}</div>
-    <h3 class="slot">${t('arsenal')}</h3><p class="how">${t('arsenalHint')}</p><div class="items">${arsenal}</div>
+    ${shopSection('forge', t('forge'), `${UPGRADES.reduce((n, u) => n + (save.upgrades[u.id] ?? 0), 0)}/${UPGRADES.reduce((n, u) => n + u.max, 0)}`, `<p class="how">${t('forgeHint')}</p><div class="items">${forge}</div>`)}
+    ${shopSection('arsenal', t('arsenal'), `${save.arsenal.length}/${ARSENAL.length}`, `<p class="how">${t('arsenalHint')}</p><div class="items">${arsenal}</div>`)}
     ${groups}
     ${backButton('menu')}`, true, false, 'keep-scroll');
 }
@@ -876,6 +887,11 @@ screen.addEventListener('click', (event) => {
     save.equipped[item.slot] = item.id;
     persist();
     audio.play('coin');
+    shopScreen();
+  } else if (target.dataset.shopSec) {
+    const key = target.dataset.shopSec;
+    if (shopOpen.has(key)) shopOpen.delete(key); else shopOpen.add(key);
+    audio.play('click');
     shopScreen();
   } else if (target.dataset.arsenal) {
     const w = ARSENAL.find((a) => a.id === target.dataset.arsenal);
