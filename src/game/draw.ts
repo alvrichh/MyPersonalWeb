@@ -1140,6 +1140,8 @@ function sawImage(el: BladeElement) {
   if (!img) { img = new Image(); img.src = `./images/game/blades/${el}.webp`; sawImages.set(el, img); }
   return img;
 }
+/** When the blades' angle last changed, so their motion trail shows only while they turn. */
+const bladeSeen = { angle: NaN, at: 0 };
 function drawBlades(ctx: CanvasRenderingContext2D, g: Game, accent: string) {
   const el = bladeElement(g);
   const img = sawImage(el);
@@ -1151,11 +1153,14 @@ function drawBlades(ctx: CanvasRenderingContext2D, g: Game, accent: string) {
   const glow = BLADE_LOOK[el][3];
   const size = 24 * bladeScale(lv);
   const streak = glow || 'rgba(226,232,240,0.6)';
-  // Motion that grows with the level: a streak along the circle from level
-  // 2, longer each level, and fading copies of the blade behind it from 3.
-  // None of it while the blades stand still in a cleared room.
-  const on = g.gear.bladesOn;
-  const tail = on && lv >= 2 ? 0.28 + 0.12 * (lv - 2) : 0;
+  // Motion that grows with the level: a streak along the circle, longer
+  // each level, and fading copies of the blade behind it from level 3. It
+  // shows only while the blades really turn: not in a cleared room, nor
+  // while the run waits on a level up or the pause.
+  const now = performance.now();
+  if (g.gear.bladeAngle !== bladeSeen.angle) { bladeSeen.angle = g.gear.bladeAngle; bladeSeen.at = now; }
+  const on = now - bladeSeen.at < 120;
+  const tail = on ? 0.42 + 0.1 * (lv - 1) : 0;
   const echoes = on ? Math.max(0, lv - 2) : 0;
   // Each saw turns on itself with the orbit, so it stops when the orbit does.
   const spin = g.gear.bladeAngle * 4;
