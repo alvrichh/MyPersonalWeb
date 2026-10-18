@@ -169,16 +169,26 @@ function fitPanel() {
   panel.classList.toggle('is-tall', best.kind === 'tall');
   panel.style.height = `${h}px`;
   panel.style.padding = `${f.t * h}px ${f.r * w}px ${f.b * h}px ${f.l * w}px`;
+  if (inner.dataset.scroll) inner.scrollTop = Number(inner.dataset.scroll);
 }
 window.addEventListener('resize', fitPanel);
 
 function show(html: string, wide = false, menu = false, extra = '') {
-  screen.innerHTML = `<div class="panel${wide ? ' panel-wide' : ''}"><div class="panel-in">${html}</div></div>`;
+  // A dialog that re-renders itself (the shop after a purchase) keeps its scroll.
+  const keepScroll = extra === 'keep-scroll' ? screen.querySelector('.panel-in')?.scrollTop ?? 0 : 0;
+  // The close button is pulled out of the scrolling box so it stays put.
+  const close = html.match(/<button class="ui-close"[^>]*><\/button>/)?.[0] ?? '';
+  if (close) html = html.replace(close, '');
+  screen.innerHTML = `<div class="panel${wide ? ' panel-wide' : ''}">${close}<div class="panel-in">${html}</div></div>`;
+
   screen.classList.toggle('is-menu', menu);
   screen.classList.toggle('is-map', extra === 'is-map');
   screen.classList.toggle('is-levelup', extra === 'is-levelup');
   screen.hidden = false;
   screen.scrollTop = 0;
+  // fitPanel() may run again later (fonts, pictures); each run restores this.
+  const inner = screen.querySelector<HTMLElement>('.panel-in');
+  if (inner && keepScroll) inner.dataset.scroll = String(keepScroll);
   fitPanel();
   // Fonts and pictures may still be arriving: fit once more when they are in.
   if ('fonts' in document) document.fonts.ready.then(fitPanel);
@@ -481,7 +491,7 @@ function shopScreen(note = '') {
     ${note ? `<p class="note">${note}</p>` : `<p class="how">${t('earnHint')}</p>`}
     <h3 class="slot">${t('forge')}</h3><p class="how">${t('forgeHint')}</p><div class="items">${forge}</div>
     ${groups}
-    ${backButton('menu')}`, true);
+    ${backButton('menu')}`, true, false, 'keep-scroll');
 }
 
 const HAT_SET: Record<string, string> = { wizardHat: 'wizard', gladHelm: 'helm', bandana: 'bandana' };
