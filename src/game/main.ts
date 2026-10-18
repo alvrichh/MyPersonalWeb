@@ -384,7 +384,9 @@ function choiceScreen(g: Game) {
     .map((id) => {
       const el = id === 'blades' ? bladeElement(g) : 'steel';
       const name = el === 'steel' ? t(`${id}Name` as Key) : t(`blades${el[0].toUpperCase()}${el.slice(1)}Name` as Key);
-      const text = el !== 'steel' ? t(`blades${cap(el)}Text` as Key) : id === 'blades' ? `${t('bladesText')} ${t('bladesHint')}` : t(`${id}Text` as Key);
+      const next = g.skills[id] + 1;
+      const text = id === 'blades' && next >= 4 ? t(next >= 5 ? 'bladesGrow5' : 'bladesGrow4')
+        : el !== 'steel' ? t(`blades${cap(el)}Text` as Key) : id === 'blades' ? `${t('bladesText')} ${t('bladesHint')}` : t(`${id}Text` as Key);
 
       const cat = CATEGORY[id];
       const fresh = cat !== 'upgrade' && g.skills[id] === 0;

@@ -1,4 +1,4 @@
-import { BLADE_ORBIT, H, W, WALL, WHEEL_X, WORLDS, frostReach, isBossRoom, type Enemy, type Game, type Look, type Statue, type Rect, type Vec, bladeElement, type BladeElement } from './world';
+import { H, W, WALL, WHEEL_X, WORLDS, frostReach, isBossRoom, type Enemy, type Game, type Look, type Statue, type Rect, type Vec, bladeCount, bladeElement, bladeOrbit, bladeScale, type BladeElement } from './world';
 import { SPIRIT_COLOR, type ItemId, type SpiritSkin } from './shop';
 import type { HeroSkin } from './save';
 
@@ -670,13 +670,15 @@ function drawBlades(ctx: CanvasRenderingContext2D, g: Game, accent: string, now:
   const img = sawImage(el);
   if (retroLook || !img.complete || !img.naturalWidth) { drawBladesRetro(ctx, g, accent); return; }
   const p = g.player;
-  const n = g.skills.blades + 1;
+  const lv = g.skills.blades;
+  const n = bladeCount(lv);
+  const orbit = bladeOrbit(lv);
   const glow = BLADE_LOOK[el][3];
-  const size = 24;
+  const size = 24 * bladeScale(lv);
   for (let i = 0; i < n; i++) {
     const a = g.gear.bladeAngle + (i / n) * Math.PI * 2;
     ctx.save();
-    ctx.translate(p.x + Math.cos(a) * BLADE_ORBIT, p.y + Math.sin(a) * BLADE_ORBIT);
+    ctx.translate(p.x + Math.cos(a) * orbit, p.y + Math.sin(a) * orbit);
     if (glow) {
       const halo = ctx.createRadialGradient(0, 0, size * 0.3, 0, 0, size * 0.85);
       halo.addColorStop(0, glow);
@@ -694,13 +696,16 @@ function drawBlades(ctx: CanvasRenderingContext2D, g: Game, accent: string, now:
 
 function drawBladesRetro(ctx: CanvasRenderingContext2D, g: Game, accent: string) {
   const p = g.player;
-  const n = g.skills.blades + 1;
+  const lv = g.skills.blades;
+  const n = bladeCount(lv);
+  const orbit = bladeOrbit(lv);
   const [edge, base, hilt, glow] = BLADE_LOOK[bladeElement(g)];
   for (let i = 0; i < n; i++) {
     const a = g.gear.bladeAngle + (i / n) * Math.PI * 2;
     ctx.save();
-    ctx.translate(p.x + Math.cos(a) * BLADE_ORBIT, p.y + Math.sin(a) * BLADE_ORBIT);
+    ctx.translate(p.x + Math.cos(a) * orbit, p.y + Math.sin(a) * orbit);
     ctx.rotate(a + Math.PI / 2);
+    ctx.scale(bladeScale(lv), bladeScale(lv));
     if (glow) {
       const halo = ctx.createRadialGradient(0, -3, 1, 0, -3, 14);
       halo.addColorStop(0, glow);
