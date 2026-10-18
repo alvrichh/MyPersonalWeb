@@ -2892,3 +2892,50 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .panel .primary[data-act='mastery-do'] { --bar: url('/images/game/ui/btn2_gold.webp'); color: #2a1a00; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35); }
 :root[data-retro] .panel .primary.mastery-btn,
 :root[data-retro] .panel .primary[data-act='mastery-do'] { background: linear-gradient(135deg, #fde047, #f59e0b); color: #2a1a00; }
+
+/* ------------------------------------------------------- the new wheel */
+/* The owner's wheel in two pieces: the disc (`wheel_disc`) spins under the
+   still frame with its pointer (`wheel_frame`, the disc's hole cut out).
+   The disc's centre sits at 51.25% / 54.95% of the frame picture and it is
+   68.55% of its width, measured on the art. */
+:root:not([data-retro]) .wheel {
+  width: min(100%, 300px);
+  aspect-ratio: 1116 / 1070;
+  margin: 2px auto 0;
+}
+:root:not([data-retro]) .wheel-disc {
+  inset: auto;
+  left: calc(51.25% - 34.275%);
+  top: calc(54.95% - 34.275% * 1116 / 1070);
+  width: 68.55%;
+  aspect-ratio: 1;
+  height: auto;
+  background-image: url('/images/game/ui/wheel_disc.webp');
+  filter: none;
+  container-type: inline-size;
+}
+:root:not([data-retro]) .wheel-pin {
+  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  translate: none;
+  background: url('/images/game/ui/wheel_frame.webp') center / 100% 100% no-repeat;
+  pointer-events: none;
+}
+/* Prize icons ride on the wedges (the disc's own width, so they follow its size). */
+:root:not([data-retro]) .wheel-slice {
+  width: 15cqw;
+  height: 15cqw;
+  margin: -7.5cqw;
+  font-size: 8.5cqw;
+  background: rgba(8, 14, 28, 0.35);
+  box-shadow: none;
+  transform: rotate(calc(var(--i) * 45deg)) translateY(-33cqw) rotate(calc(var(--i) * -45deg - var(--turn, 0deg)));
+  transition: transform 3.4s cubic-bezier(0.12, 0.75, 0.1, 1);
+}
+:root:not([data-retro]) .wheel-slice.is-good,
+:root:not([data-retro]) .wheel-slice.is-bad { box-shadow: none; background: rgba(8, 14, 28, 0.35); }
+:root:not([data-retro]) .wheel-slice.is-bad { filter: saturate(0.6); }
