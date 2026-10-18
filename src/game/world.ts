@@ -915,10 +915,35 @@ function slamHammer(g: Game) {
 }
 
 export const BLADE_ORBIT = 46;
+const BLADE_SPARK: Record<BladeElement, string> = { steel: '#e5e7eb', fire: '#ffb347', ice: '#bae6fd', volt: '#fde047', shade: '#e879f9' };
 
 /** Melee hits heal you a little: the reward for fighting up close. */
 function heal(g: Game, amount: number) {
   g.player.hp = Math.min(g.player.maxHp, g.player.hp + amount);
+}
+
+/*
+ * The blades take an element from what else you carry: fire (fire arrows or
+ * the fireball) sets bugs alight, ice (frost or water arrows) slows them,
+ * volt (lightning arrows, sparks or the storm) arcs to one more bug, shade
+ * (ghost arrows or spirits) cuts deeper. The one you have most levels in
+ * wins; with none of them they stay plain steel.
+ */
+export type BladeElement = 'steel' | 'fire' | 'ice' | 'volt' | 'shade';
+const BLADE_FROM: Record<Exclude<BladeElement, 'steel'>, SkillId[]> = {
+  fire: ['fire', 'fireball'],
+  ice: ['frost', 'water'],
+  volt: ['bolt', 'spark', 'storm'],
+  shade: ['ghost', 'spirits'],
+};
+export function bladeElement(g: Game): BladeElement {
+  let best: BladeElement = 'steel';
+  let most = 0;
+  for (const [el, from] of Object.entries(BLADE_FROM) as [Exclude<BladeElement, 'steel'>, SkillId[]][]) {
+    const n = from.reduce((sum, s) => sum + g.skills[s], 0);
+    if (n > most) { most = n; best = el; }
+  }
+  return best;
 }
 
 function spinBlades(g: Game, dt: number) {
@@ -931,6 +956,8 @@ function spinBlades(g: Game, dt: number) {
     else gear.bladeHits.set(id, t - dt);
   }
   const n = lv + 1;
+  const el = bladeElement(g);
+  const dmg = (14 + 5 * (lv - 1)) * power(g, 'melee') * (el === 'shade' ? 1.3 : 1);
   for (let i = 0; i < n; i++) {
     const a = gear.bladeAngle + (i / n) * Math.PI * 2;
     const bx = p.x + Math.cos(a) * BLADE_ORBIT;
@@ -938,9 +965,12 @@ function spinBlades(g: Game, dt: number) {
     for (const e of live(g)) {
       if (gear.bladeHits.has(e.id) || Math.hypot(e.x - bx, e.y - by) > e.r + 10) continue;
       gear.bladeHits.set(e.id, 0.4);
-      hurt(g, e, (14 + 5 * (lv - 1)) * power(g, 'melee'), away(p, e, 90));
+      hurt(g, e, dmg, away(p, e, 90));
+      if (el === 'fire') { e.burn = 2; e.burnDps = Math.max(e.burnDps, 6); }
+      else if (el === 'ice') { e.slow = 1.2; e.slowBy = Math.max(e.slowBy, 0.35); }
+      else if (el === 'volt') chain(g, e, 1, dmg * 0.5);
       heal(g, 0.5);
-      burst(g, bx, by, '#e5e7eb', 3, 80, 1.6);
+      burst(g, bx, by, BLADE_SPARK[el], 3, 80, 1.6);
     }
   }
 }
