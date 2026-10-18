@@ -167,7 +167,11 @@ export type Gem = { x: number; y: number; value: number; pull: boolean };
 export type Fx = { kind: 'slash' | 'ring' | 'boom' | 'strike'; x: number; y: number; r: number; a: number; life: number; max: number };
 export type Fireball = { x: number; y: number; vx: number; vy: number; life: number };
 /** A companion ghost: floats beside the hero (`slot` sets where) and shoots when you do. */
-export type Spirit = { x: number; y: number; vx: number; vy: number; life: number; slot: number; cd: number };
+export type Spirit = {
+  x: number; y: number; vx: number; vy: number; life: number; slot: number; cd: number;
+  /** Seconds left of the throwing pose, and which way it threw (1 right, -1 left). */
+  cast: number; dir: number;
+};
 
 export type Player = {
   x: number;
@@ -874,13 +878,13 @@ function chill(g: Game, dt: number) {
 /* Spirits: one companion ghost per level floats at the hero's side (left,
    right, then behind) and each one keeps shooting a purple orb at the
    nearest bug, even while you move. They never leave you. */
-const SPIRIT_SLOTS = [{ x: -30, y: -8 }, { x: 30, y: -8 }, { x: 0, y: -34 }];
+const SPIRIT_SLOTS = [{ x: -30, y: -8 }, { x: 30, y: -8 }, { x: 0, y: -58 }];
 function moveSpirits(g: Game, dt: number) {
   const lv = g.skills.spirits;
   const p = g.player;
   while (g.spirits.length < lv && g.spirits.length < SPIRIT_SLOTS.length) {
     const slot = g.spirits.length;
-    g.spirits.push({ x: p.x + SPIRIT_SLOTS[slot].x, y: p.y + SPIRIT_SLOTS[slot].y, vx: 0, vy: 0, life: 0, slot, cd: 0.4 * slot });
+    g.spirits.push({ x: p.x + SPIRIT_SLOTS[slot].x, y: p.y + SPIRIT_SLOTS[slot].y, vx: 0, vy: 0, life: 0, slot, cd: 0.4 * slot, cast: 0, dir: 1 });
   }
   const fighting = live(g).length > 0;
   for (const s of g.spirits) {
@@ -892,12 +896,15 @@ function moveSpirits(g: Game, dt: number) {
     s.x += (tx - s.x) * Math.min(1, dt * 8);
     s.y += (ty - s.y) * Math.min(1, dt * 8);
     s.cd = Math.max(0, s.cd - dt);
+    s.cast = Math.max(0, s.cast - dt);
     if (fighting && s.cd === 0) {
       const target = nearest(g, s, true);
       if (target) {
         const a = Math.atan2(target.y - s.y, target.x - s.x);
         g.shots.push(shot('orb', s, a, 320, (14 + 6 * (lv - 1)) * power(g, 'magic'), { life: 1.4 }));
         s.cd = 1.1 / haste(g);
+        s.cast = 0.3;
+        s.dir = Math.cos(a) < 0 ? -1 : 1;
         g.events.push('orb');
       }
     }

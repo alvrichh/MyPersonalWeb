@@ -444,17 +444,18 @@ function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accen
   for (const a of g.shots) {
     const len = Math.hypot(a.vx, a.vy) || 1;
     if (a.kind === 'orb') {
-      // The spirits' purple orb with a short trail.
-      ctx.strokeStyle = 'rgba(192,132,252,0.45)';
+      // The spirits' orb with a short trail: purple in retro, the water ghost's blue otherwise.
+      const tint = retroLook ? ['rgba(192,132,252,0.45)', '#f5f3ff', '#c084fc', 'rgba(168,85,247,0)'] : ['rgba(125,211,252,0.5)', '#f0f9ff', '#38bdf8', 'rgba(14,165,233,0)'];
+      ctx.strokeStyle = tint[0];
       ctx.lineWidth = 3;
       ctx.beginPath();
       ctx.moveTo(a.x - (a.vx / len) * 10, a.y - (a.vy / len) * 10);
       ctx.lineTo(a.x, a.y);
       ctx.stroke();
       const glow = ctx.createRadialGradient(a.x, a.y, 0, a.x, a.y, 7);
-      glow.addColorStop(0, '#f5f3ff');
-      glow.addColorStop(0.45, '#c084fc');
-      glow.addColorStop(1, 'rgba(168,85,247,0)');
+      glow.addColorStop(0, tint[1]);
+      glow.addColorStop(0.45, tint[2]);
+      glow.addColorStop(1, tint[3]);
       ctx.fillStyle = glow;
       ctx.beginPath();
       ctx.arc(a.x, a.y, 7, 0, Math.PI * 2);
@@ -630,7 +631,34 @@ function drawFireballs(ctx: CanvasRenderingContext2D, g: Game) {
   }
 }
 
+/* The spirit companion: the owner's painted ghost, five floating frames and a
+   throwing pose each way (static/images/game/spirits/<skin>-*.webp). Only the
+   water skin exists so far; `SPIRIT_SKIN` is where an element's own ghost
+   would plug in. The pictures are the whole square canvas, body near the
+   middle, so they are drawn centred on the spirit. */
+const SPIRIT_SKIN = 'water';
+const spiritFrames = new Map<string, HTMLImageElement>();
+function spiritImage(name: string) {
+  let img = spiritFrames.get(name);
+  if (!img) { img = new Image(); img.src = `./images/game/spirits/${SPIRIT_SKIN}-${name}.webp`; spiritFrames.set(name, img); }
+  return img;
+}
+
 function drawSpirits(ctx: CanvasRenderingContext2D, g: Game, now: number) {
+  if (retroLook) { drawSpiritsRetro(ctx, g, now); return; }
+  for (const s of g.spirits) {
+    const name = s.cast > 0 ? (s.dir < 0 ? 'shoot-l' : 'shoot-r') : `float-${Math.floor(now * 8 + s.slot * 2) % 5}`;
+    const img = spiritImage(name);
+    if (!img.complete || !img.naturalWidth) continue;
+    const size = 44;
+    ctx.save();
+    ctx.globalAlpha = Math.min(1, s.life * 2);
+    ctx.drawImage(img, s.x - size / 2, s.y - size / 2, size, size);
+    ctx.restore();
+  }
+}
+
+function drawSpiritsRetro(ctx: CanvasRenderingContext2D, g: Game, now: number) {
   for (const s of g.spirits) {
     ctx.save();
     ctx.translate(s.x, s.y);
