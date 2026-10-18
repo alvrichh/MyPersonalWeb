@@ -2392,25 +2392,37 @@ body {
 }
 
 /* ------------------------------------------------------------ customise */
-/* The hero in the middle, armour slots down the left, weapon slots down the
-   right. Each slot is one of the owner's rings (grey when empty, blue when
-   something is worn, lit orange while its list is open); the item lists use
-   the ring-and-plate rows (`row2_*`: ring centre at 20.3%, plate 38–91%). */
+/* After the owner's mock-up: the title in the gem plate, the hero on the
+   glowing pad (`glow_pad`, floor ring at 75% of its height), three slot
+   cards down each side (one of the owner's rings sitting on a chamfered
+   plate: grey when empty, blue when something is worn, lit orange while its
+   list is open) and three round buttons under it. The lists use the
+   ring-and-plate rows (`row2_*`: ring centre at 20.3%, plate 38–91%). */
+.dress-title {
+  display: grid;
+  place-items: center;
+  width: min(100%, 360px);
+  aspect-ratio: 1312 / 450;
+  padding: 9% 9% 3%;
+  background: url('/images/game/ui/title_plate.webp') center / 100% 100% no-repeat;
+}
+.panel .dress-title h2 { font-size: clamp(1.5rem, 7vw, 2rem); }
+.dress-title + .wallet { margin-top: -6px; }
 .dress {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-columns: minmax(84px, 112px) minmax(0, 1fr) minmax(84px, 112px);
   align-items: center;
   justify-items: center;
-  gap: 8px 10px;
+  gap: 8px 6px;
   width: 100%;
-  max-width: 440px;
+  max-width: 480px;
 }
-.dress-col { display: grid; gap: 8px; }
+.dress-col { display: grid; gap: 10px; width: 100%; }
 .dslot {
+  position: relative;
   display: grid;
   justify-items: center;
-  gap: 2px;
-  width: 84px;
+  width: 100%;
   padding: 0;
   border: 0;
   background: none;
@@ -2419,41 +2431,84 @@ body {
   cursor: pointer;
 }
 .dslot .ring {
+  position: relative;
+  z-index: 1;
   display: grid;
   place-items: center;
-  width: 72px;
-  height: 72px;
+  width: 64px;
+  height: 64px;
   background: url('/images/game/ui/ring_grey.webp') center / contain no-repeat;
   transition: transform 0.2s ease;
 }
 .dslot.is-worn .ring { background-image: url('/images/game/ui/ring_blue.webp'); }
-.dslot.is-open .ring { background-image: url('/images/game/ui/ring_orange_on.webp'); transform: scale(1.06); }
-.dslot .icon { font-size: 1.6rem; line-height: 1; filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.6)); }
+.dslot.is-open .ring { background-image: url('/images/game/ui/ring_orange_on.webp'); transform: scale(1.08); }
+.dslot .icon { font-size: 1.45rem; line-height: 1; filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.6)); }
 .dslot .icon.is-empty { opacity: 0.35; filter: grayscale(1); }
-.dslot small {
-  font: 700 0.62rem/1.1 ui-monospace, monospace;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+.dslot .plate {
+  display: grid;
+  gap: 1px;
+  width: 100%;
+  min-height: 60px;
+  margin-top: -22px;
+  padding: 26px 6px 8px;
+  background: #0c1526;
+  box-shadow: inset 0 0 0 2px #2b5a8e, inset 0 0 16px rgba(56, 189, 248, 0.18);
+  clip-path: polygon(12% 0, 88% 0, 100% 10%, 100% 90%, 88% 100%, 12% 100%, 0 90%, 0 10%);
   text-align: center;
 }
-.dslot.is-worn small { color: var(--text); }
+.dslot.is-worn .plate { box-shadow: inset 0 0 0 2px #3b82c4, inset 0 0 18px rgba(56, 189, 248, 0.3); }
+.dslot.is-open .plate { box-shadow: inset 0 0 0 2px #f59e0b, inset 0 0 18px rgba(245, 158, 11, 0.3); }
+.dslot small {
+  font: 700 0.56rem/1.1 ui-monospace, monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.dslot b { font-size: 0.7rem; line-height: 1.15; color: #e5edf7; overflow-wrap: anywhere; }
 .dslot.is-open small { color: #fcd34d; }
 .dress-hero {
+  position: relative;
   display: grid;
   justify-items: center;
-  gap: 6px;
+  align-self: stretch;
+  align-content: end;
+  gap: 2px;
   width: 100%;
   min-width: 0;
+  padding-bottom: 6px;
+}
+.dress-hero .pad {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  z-index: 0;
+  width: 190%;
+  max-width: 260px;
+  aspect-ratio: 320 / 210;
+  transform: translateX(-50%);
+  background: url('/images/game/ui/glow_pad.webp') center / 100% 100% no-repeat;
+  pointer-events: none;
 }
 .dress-hero .hero-fig {
+  position: relative;
+  z-index: 1;
   display: block;
   width: auto;
-  height: 180px;
+  height: 150px;
   max-width: 100%;
+  margin-bottom: 14%; /* feet on the pad's floor ring */
   filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.55));
 }
-canvas.hero-fig { height: 160px; width: 144px; filter: none; }
-.dress-hero b { font-size: 0.95rem; color: #fff; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); }
+canvas.hero-fig { height: 150px; width: 135px; filter: none; }
+.dress-hero b { position: relative; z-index: 1; font-size: 0.9rem; color: #fff; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); }
+
+.dress-nav { display: flex; justify-content: center; gap: 22px; margin-top: 4px; }
+.dnav { display: grid; justify-items: center; gap: 2px; width: 84px; padding: 0; border: 0; background: none; color: var(--muted); font: inherit; cursor: pointer; }
+.dnav .ring { display: grid; place-items: center; width: 58px; height: 58px; font-size: 1.45rem; line-height: 1; background: url('/images/game/ui/ring_blue.webp') center / contain no-repeat; filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.5)); }
+.dnav.is-back .ring { background-image: url('/images/game/ui/btn_prev.webp'); }
+.dnav.is-open .ring { background-image: url('/images/game/ui/ring_orange_on.webp'); }
+.dnav small { max-width: 100%; overflow: hidden; font: 700 0.58rem/1 ui-monospace, monospace; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
+.dnav.is-open small { color: #fcd34d; }
+.dnav:hover .ring, .dnav:focus-visible .ring { filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.5)) brightness(1.15); }
 
 .gear-list { display: grid; gap: 8px; width: 100%; max-width: 440px; justify-items: center; }
 .gear-row {
@@ -2485,6 +2540,7 @@ canvas.hero-fig { height: 160px; width: 144px; filter: none; }
   line-height: 1;
   filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.6));
 }
+.gear-row .skin-pic { display: block; height: 58px; width: auto; }
 .gear-row.is-locked .icon { opacity: 0.6; filter: grayscale(0.6); }
 .gear-row b { font-size: 0.92rem; color: #fff; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); }
 .gear-row > span:not(.icon) { font-size: 0.72rem; line-height: 1.25; }
@@ -2496,22 +2552,35 @@ canvas.hero-fig { height: 160px; width: 144px; filter: none; }
 .panel .ghost.small { min-height: 0; padding: 8px 16px; font-size: 0.8rem; }
 
 @media (max-width: 400px) {
-  .dress { gap: 6px 4px; }
-  .dslot { width: 72px; }
-  .dslot .ring { width: 62px; height: 62px; }
-  .dslot .icon { font-size: 1.4rem; }
-  .dslot small { font-size: 0.56rem; }
-  .dress-hero .hero-fig { height: 150px; }
-  canvas.hero-fig { width: 120px; height: 134px; }
+  .dress { grid-template-columns: minmax(78px, 96px) minmax(0, 1fr) minmax(78px, 96px); gap: 6px 4px; }
+  .dslot .ring { width: 56px; height: 56px; }
+  .dslot .icon { font-size: 1.3rem; }
+  .dslot .plate { margin-top: -18px; padding-top: 22px; min-height: 54px; }
+  .dslot small { font-size: 0.52rem; }
+  .dslot b { font-size: 0.64rem; }
+  .dress-hero .hero-fig { height: 132px; }
+  canvas.hero-fig { width: 118px; height: 132px; }
+  .dress-nav { gap: 10px; }
+  .dnav { width: 76px; }
   .gear-row b { font-size: 0.82rem; }
   .gear-row > span:not(.icon) { font-size: 0.64rem; }
 }
 
-/* Retro: plain circles and bordered rows. */
-:root[data-retro] .dslot .ring { border: 2px solid var(--line); border-radius: 50%; background: rgba(255, 255, 255, 0.05); }
+/* Retro: plain circles, bordered plates and rows, no pad picture. */
+:root[data-retro] .dress-title { aspect-ratio: auto; padding: 0; background: none; }
+:root[data-retro] .dslot .ring,
+:root[data-retro] .dnav .ring { border: 2px solid var(--line); border-radius: 50%; background: rgba(255, 255, 255, 0.05); filter: none; }
 :root[data-retro] .dslot.is-worn .ring { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, transparent); }
-:root[data-retro] .dslot.is-open .ring { border-color: #fcd34d; background: color-mix(in srgb, #fcd34d 16%, transparent); }
-:root[data-retro] .dslot.is-open small { color: var(--accent); }
+:root[data-retro] .dslot.is-open .ring,
+:root[data-retro] .dnav.is-open .ring { border-color: #fcd34d; background: color-mix(in srgb, #fcd34d 16%, transparent); }
+:root[data-retro] .dnav.is-back .ring::before { content: '←'; color: var(--text); }
+:root[data-retro] .dslot .plate { background: rgba(255, 255, 255, 0.05); box-shadow: none; border: 1px solid var(--line); border-radius: 14px; clip-path: none; }
+:root[data-retro] .dslot.is-worn .plate { border-color: var(--accent); }
+:root[data-retro] .dslot.is-open .plate { border-color: #fcd34d; }
+:root[data-retro] .dslot b { color: var(--text); }
+:root[data-retro] .dslot.is-open small,
+:root[data-retro] .dnav.is-open small { color: var(--accent); }
+:root[data-retro] .dress-hero .pad { background: radial-gradient(ellipse at 50% 78%, color-mix(in srgb, var(--accent) 35%, transparent), transparent 55%); }
 :root[data-retro] .dress-hero b { color: var(--text); text-shadow: none; }
 :root[data-retro] .gear-row {
   aspect-ratio: auto;
@@ -2526,6 +2595,7 @@ canvas.hero-fig { height: 160px; width: 144px; filter: none; }
   color: var(--muted);
 }
 :root[data-retro] .gear-row .icon { position: static; transform: none; grid-row: 1 / span 2; justify-self: center; font-size: 1.7rem; filter: none; }
+:root[data-retro] .gear-row .skin-pic { height: 48px; }
 :root[data-retro] .gear-row b { grid-column: 2; color: var(--text); text-shadow: none; }
 :root[data-retro] .gear-row > span:not(.icon) { grid-column: 2; font-size: 0.74rem; }
 :root[data-retro] .gear-row em { grid-column: 3; grid-row: 1 / span 2; margin: 0; color: var(--accent); }

@@ -508,61 +508,61 @@ function dressPalette() {
   palette.boots = save.equipped.boots;
 }
 const heroPic = () => `./images/game/hero/${save.skin}-${HAT_SET[save.equipped.head ?? ''] ?? 'base'}-idle.webp`;
-/** The slot whose items are listed (none until one is tapped). */
-let dressSlot: Slot | null = null;
+/** What the list under the hero shows: a slot's items, the skins or the enemy looks. */
+let dressSlot: Slot | 'skin' | 'foes' | null = null;
 function stylesScreen(note = '') {
   const slotButton = (slot: Slot) => {
     const id = save.equipped[slot];
     const item = id ? itemById(id) : null;
     const open = dressSlot === slot;
-    return `<button class="dslot${item ? ' is-worn' : ''}${open ? ' is-open' : ''}" data-slot="${slot}" aria-pressed="${open}" aria-label="${t(SLOT_LABEL[slot])}: ${item ? t(`${item.id}Name` as Key) : t('dressEmpty')}">
+    return `<button class="dslot${item ? ' is-worn' : ''}${open ? ' is-open' : ''}" data-slot="${slot}" aria-pressed="${open}">
       <span class="ring" aria-hidden="true"><span class="icon${item ? '' : ' is-empty'}">${item ? item.icon : SLOT_ICON[slot]}</span></span>
-      <small>${t(SLOT_LABEL[slot])}</small>
+      <span class="plate"><small>${t(SLOT_LABEL[slot])}</small><b>${item ? t(`${item.id}Name` as Key) : '—'}</b></span>
     </button>`;
   };
   const hero = save.retro
     ? `<canvas class="hero-fig" width="180" height="200" aria-hidden="true"></canvas>`
     : `<img class="hero-fig" src="${heroPic()}" alt="" width="128" height="160">`;
-  const picks = dressSlot
-    ? `<h3 class="slot">${t('dressPick', { slot: t(SLOT_LABEL[dressSlot]) })}</h3>
-       ${note ? `<p class="note">${note}</p>` : ''}
-       <div class="gear-list">${ITEMS.filter((item) => item.slot === dressSlot).map((item) => {
-         const owned = save.owned.includes(item.id);
-         const worn = save.equipped[item.slot] === item.id;
-         const can = save.coins >= item.price;
-         const state = worn ? `✓ ${t('worn')}` : owned ? t('equip') : `🪙 ${item.price}`;
-         return `<button class="gear-row${worn ? ' is-on' : ''}${!owned && !can ? ' is-locked' : ''}" data-dress="${item.id}" aria-pressed="${worn}">
-           <span class="icon" aria-hidden="true">${item.icon}</span>
-           <b>${t(`${item.id}Name` as Key)}</b>
-           <span>${t(`${item.id}Text` as Key)}</span>
-           <em>${state}</em>
-         </button>`;
-       }).join('')}
-       ${save.equipped[dressSlot] ? `<button class="ghost small" data-undress="${dressSlot}">${t('dressNone')}</button>` : ''}
-       </div>`
-    : `<p class="how">${t('dressHint')}</p>`;
-  const skins = SKINS.map((skin) => `
-    <button class="style skin${save.skin === skin ? ' is-on' : ''}" data-skin="${skin}">
-      <span class="icon" aria-hidden="true"><img class="skin-pic" src="./images/game/hero/${skin}-${HAT_SET[save.equipped.head ?? ''] ?? 'base'}-idle.webp" alt=""></span>
-      <b>${t(`skin${cap(skin)}Name` as Key)}</b>
-      <span>${t(`skin${cap(skin)}Text` as Key)}</span>
-    </button>`).join('');
-  const cards = STYLES.map((style) => `
-    <button class="style${save.style === style ? ' is-on' : ''}" data-style="${style}">
-      <span class="icon" aria-hidden="true">${STYLE_ICON[style]}</span>
-      <b>${t(`style${cap(style)}Name` as Key)}</b>
-      <span>${t(`style${cap(style)}Text` as Key)}</span>
-    </button>`).join('');
-  show(`<button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button><h2>${t('styles')}</h2>
+  const row = (attr: string, on: boolean, locked: boolean, icon: string, name: string, text: string, state: string) =>
+    `<button class="gear-row${on ? ' is-on' : ''}${locked ? ' is-locked' : ''}" ${attr} aria-pressed="${on}">
+      <span class="icon" aria-hidden="true">${icon}</span><b>${name}</b><span>${text}</span>${state ? `<em>${state}</em>` : ''}
+    </button>`;
+  let picks = `<p class="how">${t('dressHint')}</p>`;
+  if (dressSlot === 'skin') {
+    picks = `<h3 class="slot">${t('skinPick')}</h3><div class="gear-list">${SKINS.map((skin) =>
+      row(`data-skin="${skin}"`, save.skin === skin, false, `<img class="skin-pic" src="./images/game/hero/${skin}-${HAT_SET[save.equipped.head ?? ''] ?? 'base'}-idle.webp" alt="">`, t(`skin${cap(skin)}Name` as Key), t(`skin${cap(skin)}Text` as Key), save.skin === skin ? `✓ ${t('worn')}` : '')).join('')}</div>`;
+  } else if (dressSlot === 'foes') {
+    picks = `<h3 class="slot">${t('stylePick')}</h3><div class="gear-list">${STYLES.map((style) =>
+      row(`data-style="${style}"`, save.style === style, false, STYLE_ICON[style], t(`style${cap(style)}Name` as Key), t(`style${cap(style)}Text` as Key), save.style === style ? '✓' : '')).join('')}</div>`;
+  } else if (dressSlot) {
+    const slot = dressSlot;
+    picks = `<h3 class="slot">${t('dressPick', { slot: t(SLOT_LABEL[slot]) })}</h3>
+      ${note ? `<p class="note">${note}</p>` : ''}
+      <div class="gear-list">${ITEMS.filter((item) => item.slot === slot).map((item) => {
+        const owned = save.owned.includes(item.id);
+        const worn = save.equipped[slot] === item.id;
+        const can = save.coins >= item.price;
+        return row(`data-dress="${item.id}"`, worn, !owned && !can, item.icon, t(`${item.id}Name` as Key), t(`${item.id}Text` as Key), worn ? `✓ ${t('worn')}` : owned ? t('equip') : `🪙 ${item.price}`);
+      }).join('')}
+      ${save.equipped[slot] ? `<button class="ghost small" data-undress="${slot}">${t('dressNone')}</button>` : ''}
+      </div>`;
+  }
+  const nav = (key: 'skin' | 'foes', icon: string, label: Key) =>
+    `<button class="dnav${dressSlot === key ? ' is-open' : ''}" data-dress-list="${key}" aria-pressed="${dressSlot === key}"><span class="ring" aria-hidden="true">${icon}</span><small>${t(label)}</small></button>`;
+  show(`<button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
+    <div class="dress-title"><h2>${t('styles')}</h2></div>
     <p class="wallet">${coinsLine()}</p>
     <div class="dress">
       <div class="dress-col">${ARMOUR_SLOTS.map(slotButton).join('')}</div>
-      <div class="dress-hero">${hero}<b>${t(`skin${cap(save.skin)}Name` as Key)}</b></div>
+      <div class="dress-hero"><span class="pad" aria-hidden="true"></span>${hero}<b>${t(`skin${cap(save.skin)}Name` as Key)}</b></div>
       <div class="dress-col">${WEAPON_SLOTS.map(slotButton).join('')}</div>
     </div>
-    ${picks}
-    <h3 class="slot">${t('skinPick')}</h3><div class="styles">${skins}</div>
-    <h3 class="slot">${t('enemies')}</h3><p class="how">${t('stylePick')}</p><div class="styles">${cards}</div>${backButton('menu')}`, true, false, 'keep-scroll');
+    <div class="dress-nav">
+      <button class="dnav is-back" data-act="menu"><span class="ring" aria-hidden="true"></span><small>${t('backShort')}</small></button>
+      ${nav('skin', '👕', 'skinBtn')}
+      ${nav('foes', '👾', 'enemies')}
+    </div>
+    ${picks}`, true, false, 'keep-scroll');
   const fig = screen.querySelector<HTMLCanvasElement>('canvas.hero-fig');
   if (fig) {
     const ctx = fig.getContext('2d');
@@ -708,6 +708,10 @@ screen.addEventListener('click', (event) => {
   } else if (target.dataset.slot) {
     const slot = target.dataset.slot as Slot;
     dressSlot = dressSlot === slot ? null : slot;
+    stylesScreen();
+  } else if (target.dataset.dressList) {
+    const key = target.dataset.dressList as 'skin' | 'foes';
+    dressSlot = dressSlot === key ? null : key;
     stylesScreen();
   } else if (target.dataset.dress) {
     const item = itemById(target.dataset.dress as ItemId);
