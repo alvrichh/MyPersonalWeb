@@ -39,7 +39,7 @@ const LIFE: Partial<Record<FxKind, number>> = {
   spark: 1600,
   bolt: 1500,
   ghost: 3900,
-  heart: 2600,
+  heart: 4100,
 };
 
 export const effectFor = (accent: string | undefined): FxKind => EFFECT_BY_ACCENT[accent ?? ''] ?? 'confetti';
@@ -206,12 +206,12 @@ export function makeBurst(kind: FxKind, burst: number, combo: number, figure: DO
       return Array.from({ length: total }, (_, i) =>
         piece('heart', {
           '--a0': `${Math.round((i / total) * 360 + between(-10, 10))}deg`,
-          '--sweep': `${Math.round(way * between(300, 400))}deg`,
+          '--sweep': `${Math.round(way * between(240, 320))}deg`,
           '--r0': px(radius * 1.02),
           '--r1': px(Math.min(maxRadius, radius * between(1.25, 1.55) * comboReach)),
           '--size': between(0.8, 1.25).toFixed(2),
-          '--dur': ms(between(2000, 2400)),
-          '--delay': ms(between(0, 120)),
+          '--dur': ms(between(3400, 3900)),
+          '--delay': ms(between(0, 150)),
         }),
       );
     }
