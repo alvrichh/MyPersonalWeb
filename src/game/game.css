@@ -178,14 +178,17 @@ body {
   top: 34%;
   left: 50%;
   margin: 0;
-  padding: 10px 16px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: var(--panel);
+  padding: 12px 26px;
+  border: 0 solid transparent;
+  border-width: 0 30px;
+  border-image: url('/images/game/ui/toast.webp') 0 90 fill / 0 30px stretch;
+  border-radius: 0;
+  background: none;
   translate: -50% 0;
   font-weight: 700;
   white-space: nowrap;
   pointer-events: none;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.6);
 }
 
 .toast.is-on {
@@ -546,19 +549,19 @@ body {
   justify-items: center;
   gap: 12px;
   width: min(100%, 380px);
-  padding: 58px 22px 34px;
+  padding: 54px 18px 34px;
   /* The stone-and-neon frame from the UI sheets, stretched to the content;
-     its centre is the panel colour. */
+     its centre is the panel colour. The picture's frame is ~80px of 584. */
   border-style: solid;
-  border-width: 22px;
-  border-image: url('/images/game/ui/panel_tall.webp') 60 fill / 22px stretch;
+  border-width: 30px;
+  border-image: url('/images/game/ui/panel_tall.webp') 90 fill / 30px stretch;
   background: none;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
   text-align: center;
 }
 
 .panel-wide {
-  border-image-source: url('/images/game/ui/panel_wide.webp');
+  border-image: url('/images/game/ui/panel_short.webp') 70 fill / 30px stretch;
 }
 
 .panel-wide {
@@ -588,6 +591,21 @@ body {
 }
 
 .ui-head.is-levelup { width: min(58%, 210px); }
+
+/* The winged ring: its words sit inside the ring, not underneath. */
+.ui-head.is-wings { width: min(66%, 240px); margin-bottom: 4px; }
+.ui-head.is-wings span {
+  position: absolute;
+  left: 30%;
+  right: 30%;
+  top: 22%;
+  bottom: 24%;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  font-size: clamp(0.8rem, 3.4vw, 1rem);
+}
+.ui-head.is-wings + p { margin-top: 0; }
 
 /* After a kicker line the crest must not climb over it. */
 .panel .kicker + .ui-head { margin-top: 0; }
@@ -939,9 +957,8 @@ body {
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  border: 6px solid #0f172a;
-  box-shadow: 0 0 0 3px rgba(103, 232, 249, 0.6), 0 0 28px rgba(103, 232, 249, 0.35), inset 0 0 30px rgba(0, 0, 0, 0.5);
-  background: repeating-conic-gradient(from -22.5deg, #1e3a5f 0 45deg, #172554 45deg 90deg);
+  background: url('/images/game/ui/wheel_disc.webp') center / 100% 100% no-repeat;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.5));
   transition: transform 3.4s cubic-bezier(0.12, 0.75, 0.1, 1);
 }
 
@@ -958,23 +975,22 @@ body {
   font-size: 1.35rem;
   line-height: 1;
   /* Each slice sits on its radius, a bit in from the rim. */
-  transform: rotate(calc(var(--i) * 45deg)) translateY(-37cqw) rotate(calc(var(--i) * -45deg));
+  transform: rotate(calc(var(--i) * 45deg)) translateY(-32cqw) rotate(calc(var(--i) * -45deg));
 }
 
 .wheel { container-type: inline-size; }
-.wheel-slice.is-good { background: rgba(74, 222, 128, 0.18); box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.45); }
-.wheel-slice.is-bad { background: rgba(248, 113, 113, 0.18); box-shadow: 0 0 0 2px rgba(248, 113, 113, 0.45); }
+.wheel-slice.is-good { background: rgba(74, 222, 128, 0.22); box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.6); }
+.wheel-slice.is-bad { background: rgba(248, 113, 113, 0.22); box-shadow: 0 0 0 2px rgba(248, 113, 113, 0.6); }
+.wheel-slice { background: rgba(10, 20, 40, 0.55); }
 
 .wheel-pin {
   position: absolute;
-  top: -10px;
+  top: -7%;
   left: 50%;
-  width: 0;
-  height: 0;
-  margin-left: -11px;
-  border-left: 11px solid transparent;
-  border-right: 11px solid transparent;
-  border-top: 22px solid #fde68a;
+  width: 20%;
+  aspect-ratio: 120 / 73;
+  translate: -50% 0;
+  background: url('/images/game/ui/wheel_pin.webp') center / contain no-repeat;
   filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.6));
 }
 
