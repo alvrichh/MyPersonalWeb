@@ -1,10 +1,11 @@
 import { BLADE_ORBIT, H, W, WALL, WHEEL_X, WORLDS, frostReach, isBossRoom, type Enemy, type Game, type Look, type Statue } from './world';
 import type { ItemId } from './shop';
+import type { HeroSkin } from './save';
 
 /* Bug Hunter's renderer: everything is drawn in room units (360 × 600) and
    scaled to fit the screen. The accent colours are the player's. */
 
-export type Palette = { accent: string; accent2: string; ink: string; rainbow: boolean; hat?: ItemId };
+export type Palette = { accent: string; accent2: string; ink: string; rainbow: boolean; hat?: ItemId; skin?: HeroSkin };
 
 export type View = { scale: number; ox: number; oy: number; dpr: number };
 
@@ -36,8 +37,7 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   drawFireballs(ctx, g);
   drawSpirits(ctx, g, now);
   drawZaps(ctx, g);
-  drawPlayer(ctx, g, accent, accent2, now);
-  if (pal.hat) drawHat(ctx, g, pal.hat, accent);
+  drawPlayer(ctx, g, pal, now);
   if (g.skills.blades) drawBlades(ctx, g, accent);
   drawFx(ctx, g, accent, 'over');
   drawStrikes(ctx, g, now);
@@ -171,17 +171,28 @@ function drawStatue(ctx: CanvasRenderingContext2D, st: Statue, glow: string, now
   }
 }
 
-/* The hero: the owner's painted figure, one picture per pose. Feet on the
-   shadow, flipped to face left; one walking frame alternates with the idle
-   one for a step cycle. The circle in world.ts is still what collides. */
+/* The hero: the owner's painted figure, one picture per pose, in two skins
+   (boy, robot) each with the head item worn: the hats are painted on, so
+   nothing is drawn over the sprite. Feet on the shadow, flipped to face
+   left; one walking frame alternates with the idle one for a step cycle.
+   The circle in world.ts is still what collides. */
 type Pose = 'idle' | 'walk' | 'back' | 'shoot' | 'cheer';
-const HERO: Record<Pose, HTMLImageElement> = Object.fromEntries(
-  (['idle', 'walk', 'back', 'shoot', 'cheer'] as Pose[]).map((pose) => {
-    const img = new Image();
-    img.src = `./images/game/hero/${pose}.webp`;
-    return [pose, img];
-  }),
-) as Record<Pose, HTMLImageElement>;
+const POSES: Pose[] = ['idle', 'walk', 'back', 'shoot', 'cheer'];
+const HAT_SET: Partial<Record<ItemId, string>> = { wizardHat: 'wizard', gladHelm: 'helm', bandana: 'bandana' };
+const heroSets = new Map<string, Record<Pose, HTMLImageElement>>();
+function heroSet(skin: HeroSkin, hat?: ItemId) {
+  const key = `${skin}-${(hat && HAT_SET[hat]) || 'base'}`;
+  let set = heroSets.get(key);
+  if (!set) {
+    set = Object.fromEntries(POSES.map((pose) => {
+      const img = new Image();
+      img.src = `./images/game/hero/${key}-${pose}.webp`;
+      return [pose, img];
+    })) as Record<Pose, HTMLImageElement>;
+    heroSets.set(key, set);
+  }
+  return set;
+}
 
 function heroPose(g: Game, now: number): Pose {
   const p = g.player;
@@ -194,7 +205,8 @@ function heroPose(g: Game, now: number): Pose {
   return 'idle';
 }
 
-function drawPlayer(ctx: CanvasRenderingContext2D, g: Game, accent: string, accent2: string, now: number) {
+function drawPlayer(ctx: CanvasRenderingContext2D, g: Game, pal: Palette, now: number) {
+  const { accent, accent2 } = pal;
   const p = g.player;
   if (p.inv > 0 && Math.floor(now * 20) % 2 === 0) return;
   ctx.fillStyle = 'rgba(0,0,0,0.4)';
@@ -202,7 +214,9 @@ function drawPlayer(ctx: CanvasRenderingContext2D, g: Game, accent: string, acce
   ctx.ellipse(p.x, p.y + p.r * 0.9, p.r * 0.9, p.r * 0.35, 0, 0, Math.PI * 2);
   ctx.fill();
   const pose = heroPose(g, now);
-  const img = HERO[pose];
+  const img = heroSet(pal.skin ?? 'boy', pal.hat)[pose];
+  // Health bar height: above the picture's top (hats make it taller).
+  let barTop = p.y - p.r * 2.5;
   if (img.complete && img.naturalWidth) {
     const h = p.r * (pose === 'cheer' ? 3.1 : 2.7);
     const w = (h * img.naturalWidth) / img.naturalHeight;
@@ -213,6 +227,7 @@ function drawPlayer(ctx: CanvasRenderingContext2D, g: Game, accent: string, acce
     if (left) ctx.scale(-1, 1);
     ctx.drawImage(img, -w / 2, -h, w, h);
     ctx.restore();
+    barTop = p.y + p.r * 0.9 - h - 9;
   } else {
     // Until the picture is in: the ring as before.
     const ring = ctx.createLinearGradient(p.x - p.r, p.y - p.r, p.x + p.r, p.y + p.r);
@@ -232,7 +247,7 @@ function drawPlayer(ctx: CanvasRenderingContext2D, g: Game, accent: string, acce
   ctx.fill();
   // Health bar above the head.
   const w = 34;
-  const top = p.y - p.r * 2.5;
+  const top = barTop;
   ctx.fillStyle = 'rgba(0,0,0,0.55)';
   roundRect(ctx, p.x - w / 2, top, w, 5, 2.5);
   ctx.fill();
@@ -1753,72 +1768,6 @@ const LOOKS: Record<Look, Record<Enemy['kind'], Drawer>> = {
   nightmare: { bug: nightmareZombie, ticket: nightmareSkeleton, legacy: nightmareTombstone, boss: nightmareLich },
 };
 
-/* ------------------------------------------------------------- the player's hat */
-
-function drawHat(ctx: CanvasRenderingContext2D, g: Game, hat: ItemId, accent: string) {
-  const p = g.player;
-  if (p.inv > 0 && Math.floor(performance.now() / 50) % 2 === 0) return;
-  const r = p.r;
-  ctx.save();
-  ctx.translate(p.x, p.y - r * 1.45);
-  if (hat === 'wizardHat') {
-    ctx.fillStyle = '#4c1d95';
-    ctx.beginPath();
-    ctx.ellipse(0, 0, r * 1.15, r * 0.3, 0, 0, Math.PI * 2);
-    ctx.fill();
-    const cone = ctx.createLinearGradient(-r, 0, r, 0);
-    cone.addColorStop(0, '#7c3aed');
-    cone.addColorStop(1, '#4c1d95');
-    ctx.fillStyle = cone;
-    ctx.beginPath();
-    ctx.moveTo(-r * 0.75, 0);
-    ctx.quadraticCurveTo(0, -r * 0.6, r * 0.45, -r * 1.9);
-    ctx.quadraticCurveTo(r * 0.3, -r * 0.7, r * 0.75, 0);
-    ctx.closePath();
-    ctx.fill();
-    ctx.fillStyle = '#facc15';
-    ctx.beginPath();
-    for (let i = 0; i < 10; i++) {
-      const a = -Math.PI / 2 + (i * Math.PI) / 5;
-      const rr = i % 2 ? r * 0.12 : r * 0.26;
-      ctx.lineTo(Math.cos(a) * rr, -r * 0.55 + Math.sin(a) * rr);
-    }
-    ctx.closePath();
-    ctx.fill();
-  } else if (hat === 'gladHelm') {
-    ctx.fillStyle = '#dc2626';
-    ctx.beginPath();
-    ctx.moveTo(-r * 0.25, -r * 0.2);
-    ctx.quadraticCurveTo(0, -r * 1.5, r * 0.25, -r * 0.2);
-    ctx.closePath();
-    ctx.fill();
-    const bronze = ctx.createLinearGradient(-r, 0, r, 0);
-    bronze.addColorStop(0, '#f1c27d');
-    bronze.addColorStop(1, '#92400e');
-    ctx.fillStyle = bronze;
-    ctx.beginPath();
-    ctx.arc(0, 0, r * 0.95, Math.PI, 0);
-    ctx.lineTo(r * 0.95, r * 0.15);
-    ctx.lineTo(-r * 0.95, r * 0.15);
-    ctx.closePath();
-    ctx.fill();
-  } else if (hat === 'bandana') {
-    ctx.fillStyle = '#dc2626';
-    roundRect(ctx, -r * 0.95, -r * 0.15, r * 1.9, r * 0.32, 3);
-    ctx.fill();
-    ctx.strokeStyle = '#dc2626';
-    ctx.lineWidth = 3;
-    ctx.lineCap = 'round';
-    ctx.beginPath();
-    ctx.moveTo(r * 0.9, 0);
-    ctx.quadraticCurveTo(r * 1.5, r * 0.2, r * 1.6, r * 0.8);
-    ctx.moveTo(r * 0.9, 0.05 * r);
-    ctx.quadraticCurveTo(r * 1.6, 0, r * 1.9, r * 0.5);
-    ctx.stroke();
-  }
-  void accent;
-  ctx.restore();
-}
 
 /* ------------------------------------------------------------- the worlds */
 
