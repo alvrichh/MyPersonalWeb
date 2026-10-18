@@ -1126,9 +1126,22 @@ body {
    The two masks keep the left icon medallion and the right card body. */
 @media (max-width: 480px) {
   .panel .skills {
-    gap: 3px;
+    /* The row sprites have invisible breathing room of their own.
+       Actual overlap is intentional: these should read as one compact stack. */
+    gap: 0;
     margin-top: 0;
   }
+
+  .panel .skills > .skill + .skill {
+    margin-block-start: clamp(-64px, -16vw, -50px);
+  }
+
+  /* Stack like physical cards. Keep the upper card and its level text
+     above the next card's decorative top edge. */
+  .panel .skills > .skill:nth-child(1) { z-index: 3; }
+  .panel .skills > .skill:nth-child(2) { z-index: 2; }
+  .panel .skills > .skill:nth-child(3) { z-index: 1; }
+  .panel .skills > .skill:focus-visible { z-index: 4; }
 
   .panel .skill {
     --card: url('/images/game/ui/row_blue.webp');
