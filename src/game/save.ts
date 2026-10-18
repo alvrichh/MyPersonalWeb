@@ -39,6 +39,10 @@ export type Save = {
   /** On call keeps its own world progress: worlds you may enter there, and the one picked. */
   hordeUnlocked: number;
   hordeWorld: number;
+  /** Masteries earned per mode (clear all eight worlds, then reset for a small permanent boost). */
+  mastery: { sprints: number; horde: number };
+  /** The colour of the mastery stars by the player's name. */
+  starColor: StarColor;
   /** Best on-call shift per world: how long you held out, bugs squashed, whether the last boss fell. */
   hordeBest: Record<number, { time: number; kills: number; won: boolean }>;
   runs: number;
@@ -48,6 +52,8 @@ export type Save = {
 
 const KEY = 'bugHunter';
 
+export const STAR_COLORS = { gold: '#fcd34d', cyan: '#67e8f9', pink: '#f472b6', green: '#4ade80', purple: '#c084fc', red: '#f87171', white: '#f8fafc' } as const;
+export type StarColor = keyof typeof STAR_COLORS;
 export const DEFAULT_NAME = 'alvrich';
 export const NAME_MAX = 14;
 /** A name as typed, made safe to keep: trimmed, single spaces, no control characters, at most NAME_MAX long. */
@@ -72,6 +78,8 @@ const fresh = (): Save => ({
   mode: 'sprints',
   hordeUnlocked: 1,
   hordeWorld: 1,
+  mastery: { sprints: 0, horde: 0 },
+  starColor: 'gold',
   hordeBest: {},
   runs: 0,
   xp: 0,
@@ -90,6 +98,8 @@ export function loadSave(): Save {
     }
     save.hordeUnlocked = Math.min(Math.max(1, save.hordeUnlocked || 1), 8);
     save.hordeWorld = Math.min(Math.max(1, save.hordeWorld || 1), save.hordeUnlocked);
+    save.mastery = { sprints: Math.max(0, data.mastery?.sprints ?? 0), horde: Math.max(0, data.mastery?.horde ?? 0) };
+    if (!(save.starColor in STAR_COLORS)) save.starColor = 'gold';
     save.name = cleanName(typeof save.name === 'string' ? save.name : '') || DEFAULT_NAME;
     // Items are re-seated by their current slot (older saves had `charm` and `relic`).
     save.owned = (data.owned ?? []).filter((id) => ITEMS.some((item) => item.id === id));
@@ -131,6 +141,12 @@ export function profileLevel(xp: number) {
     need = Math.round(need * 1.15);
   }
   return { level, progress: left / need };
+}
+
+/** Back to a fresh start: progress, coins, gear and level go; name, settings, masteries and star colour stay. */
+export function wipeProgress(save: Save) {
+  const keep = { name: save.name, skin: save.skin, retro: save.retro, style: save.style, music: save.music, sfx: save.sfx, mode: save.mode, mastery: { ...save.mastery }, starColor: save.starColor };
+  Object.assign(save, fresh(), keep);
 }
 
 export function writeSave(save: Save) {
