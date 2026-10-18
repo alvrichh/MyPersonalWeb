@@ -1,9 +1,10 @@
-import { BLADE_ORBIT, H, W, WALL, frostReach, isBossRoom, type Enemy, type Game } from './world';
+import { BLADE_ORBIT, H, W, WALL, frostReach, isBossRoom, type Enemy, type Game, type Look } from './world';
+import type { ItemId } from './shop';
 
 /* Bug Hunter's renderer: everything is drawn in room units (360 × 600) and
    scaled to fit the screen. The accent colours are the player's. */
 
-export type Palette = { accent: string; accent2: string; ink: string; rainbow: boolean };
+export type Palette = { accent: string; accent2: string; ink: string; rainbow: boolean; hat?: ItemId };
 
 export type View = { scale: number; ox: number; oy: number; dpr: number };
 
@@ -37,6 +38,7 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   drawSpirits(ctx, g, now);
   drawZaps(ctx, g);
   drawPlayer(ctx, g, accent, accent2, now);
+  if (pal.hat) drawHat(ctx, g, pal.hat, accent);
   if (g.skills.blades) drawBlades(ctx, g, accent);
   drawFx(ctx, g, accent, 'over');
   for (const q of g.particles) {
@@ -436,10 +438,16 @@ function drawEnemy(ctx: CanvasRenderingContext2D, e: Enemy, now: number) {
 
   ctx.save();
   ctx.translate(e.x, e.y);
-  if (e.kind === 'bug') drawBug(ctx, e, now);
-  else if (e.kind === 'ticket') drawTicket(ctx, e);
-  else if (e.kind === 'legacy') drawLegacy(ctx, e);
-  else drawBoss(ctx, e, now);
+  if (e.kind === 'boss' && e.aim > 0) {
+    // Telegraph the charge, whatever the boss looks like.
+    ctx.strokeStyle = `rgba(255,107,107,${0.35 + Math.sin(now * 30) * 0.2})`;
+    ctx.lineWidth = e.r * 1.4;
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(e.dir.x * 260, e.dir.y * 260);
+    ctx.stroke();
+  }
+  LOOKS[e.look][e.kind](ctx, e, now);
   // Status: white flash on hit, blue tint when slowed, little flames when burning.
   if (e.hit > 0) {
     ctx.globalAlpha = 0.6;
@@ -551,15 +559,6 @@ function drawLegacy(ctx: CanvasRenderingContext2D, e: Enemy) {
 
 function drawBoss(ctx: CanvasRenderingContext2D, e: Enemy, now: number) {
   const r = e.r;
-  if (e.aim > 0) {
-    // Telegraph the charge.
-    ctx.strokeStyle = `rgba(255,107,107,${0.35 + Math.sin(now * 30) * 0.2})`;
-    ctx.lineWidth = r * 1.4;
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(e.dir.x * 260, e.dir.y * 260);
-    ctx.stroke();
-  }
   const glow = ctx.createRadialGradient(0, 0, r * 0.5, 0, 0, r * 1.6);
   glow.addColorStop(0, 'rgba(192,132,252,0.35)');
   glow.addColorStop(1, 'transparent');
@@ -585,4 +584,597 @@ function drawBoss(ctx: CanvasRenderingContext2D, e: Enemy, now: number) {
   }
   ctx.fillStyle = 'rgba(192,132,252,0.5)';
   for (let i = 0; i < 4; i++) ctx.fillRect(-r * 0.5, r * 0.05 + i * r * 0.22, r, 3);
+}
+
+/* ------------------------------------------------------------ enemy looks */
+
+type Drawer = (ctx: CanvasRenderingContext2D, e: Enemy, now: number) => void;
+
+/** Red glowing eyes, used by several looks. */
+function eyes(ctx: CanvasRenderingContext2D, x: number, y: number, r: number, color = '#ff4d4d') {
+  ctx.fillStyle = color;
+  ctx.shadowColor = color;
+  ctx.shadowBlur = 6;
+  for (const side of [-1, 1]) {
+    ctx.beginPath();
+    ctx.arc(side * x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.shadowBlur = 0;
+}
+
+function horns(ctx: CanvasRenderingContext2D, r: number, color: string, spread = 0.55, length = 0.9) {
+  ctx.fillStyle = color;
+  for (const side of [-1, 1]) {
+    ctx.beginPath();
+    ctx.moveTo(side * r * (spread - 0.2), -r * 0.6);
+    ctx.quadraticCurveTo(side * r * (spread + 0.5), -r * 1.1, side * r * spread, -r * (0.6 + length));
+    ctx.lineTo(side * r * (spread + 0.2), -r * 0.55);
+    ctx.closePath();
+    ctx.fill();
+  }
+}
+
+/* Demon: imps, flaming skulls, gargoyles and an overlord. */
+const demonImp: Drawer = (ctx, e, now) => {
+  const r = e.r;
+  const flap = Math.sin(now * 14 + e.id) * 0.4;
+  ctx.fillStyle = '#4a0f1a';
+  for (const side of [-1, 1]) {
+    ctx.beginPath();
+    ctx.moveTo(side * r * 0.5, -r * 0.1);
+    ctx.lineTo(side * r * (1.5 + flap * 0.4), -r * (0.9 + flap));
+    ctx.lineTo(side * r * 1.6, r * 0.2);
+    ctx.closePath();
+    ctx.fill();
+  }
+  // Tail with a spade tip.
+  ctx.strokeStyle = '#7f1d1d';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(0, r * 0.7);
+  ctx.quadraticCurveTo(r * 0.9, r * 1.3, r * 1.4 + flap * 3, r * 0.8);
+  ctx.stroke();
+  const body = ctx.createRadialGradient(-r * 0.3, -r * 0.3, 1, 0, 0, r);
+  body.addColorStop(0, '#b91c1c');
+  body.addColorStop(1, '#4a0f1a');
+  ctx.fillStyle = body;
+  ctx.beginPath();
+  ctx.arc(0, 0, r, 0, Math.PI * 2);
+  ctx.fill();
+  horns(ctx, r, '#2b0a10', 0.45, 0.7);
+  eyes(ctx, r * 0.35, -r * 0.15, r * 0.17, '#fde047');
+  ctx.strokeStyle = '#fde047';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.arc(0, r * 0.3, r * 0.4, 0.15 * Math.PI, 0.85 * Math.PI);
+  ctx.stroke();
+};
+
+const demonSkull: Drawer = (ctx, e, now) => {
+  const r = e.r;
+  // Flames on top.
+  for (let i = -1; i <= 1; i++) {
+    const h = r * (1.1 + 0.3 * Math.sin(now * 12 + i * 2 + e.id));
+    const grad = ctx.createLinearGradient(0, -r * 0.6, 0, -r * 0.6 - h);
+    grad.addColorStop(0, '#fb923c');
+    grad.addColorStop(1, 'rgba(239,68,68,0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.moveTo(i * r * 0.45 - r * 0.3, -r * 0.5);
+    ctx.quadraticCurveTo(i * r * 0.45 + Math.sin(now * 9 + i) * 3, -r * 0.6 - h, i * r * 0.45 + r * 0.3, -r * 0.5);
+    ctx.closePath();
+    ctx.fill();
+  }
+  ctx.fillStyle = '#e7e5e4';
+  ctx.beginPath();
+  ctx.arc(0, -r * 0.1, r * 0.85, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillRect(-r * 0.5, r * 0.4, r, r * 0.45);
+  ctx.fillStyle = '#1c1917';
+  for (const side of [-1, 1]) {
+    ctx.beginPath();
+    ctx.ellipse(side * r * 0.35, -r * 0.15, r * 0.24, r * 0.3, 0, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  eyes(ctx, r * 0.35, -r * 0.15, r * 0.09);
+  ctx.fillStyle = '#1c1917';
+  for (let i = -1; i <= 1; i++) ctx.fillRect(i * r * 0.28 - 1, r * 0.45, 2, r * 0.35);
+};
+
+const demonGargoyle: Drawer = (ctx, e, now) => {
+  const r = e.r;
+  const grad = ctx.createLinearGradient(0, -r, 0, r);
+  grad.addColorStop(0, '#3f3f46');
+  grad.addColorStop(1, '#18181b');
+  ctx.fillStyle = grad;
+  roundRect(ctx, -r, -r, r * 2, r * 2, 5);
+  ctx.fill();
+  horns(ctx, r, '#27272a', 0.6, 0.6);
+  // Cracks that glow with the fire inside.
+  ctx.strokeStyle = `rgba(249,115,22,${0.6 + Math.sin(now * 6) * 0.3})`;
+  ctx.lineWidth = 1.6;
+  ctx.beginPath();
+  ctx.moveTo(-r * 0.6, r * 0.9);
+  ctx.lineTo(-r * 0.3, r * 0.2);
+  ctx.lineTo(-r * 0.5, -r * 0.3);
+  ctx.moveTo(r * 0.7, r * 0.6);
+  ctx.lineTo(r * 0.3, 0);
+  ctx.lineTo(r * 0.5, -r * 0.7);
+  ctx.stroke();
+  eyes(ctx, r * 0.35, -r * 0.25, r * 0.13, '#fb923c');
+  ctx.fillStyle = '#09090b';
+  ctx.fillRect(-r * 0.5, r * 0.3, r, r * 0.2);
+};
+
+const demonOverlord: Drawer = (ctx, e, now) => {
+  const r = e.r;
+  const glow = ctx.createRadialGradient(0, 0, r * 0.4, 0, 0, r * 1.7);
+  glow.addColorStop(0, 'rgba(239,68,68,0.35)');
+  glow.addColorStop(1, 'transparent');
+  ctx.fillStyle = glow;
+  ctx.beginPath();
+  ctx.arc(0, 0, r * 1.7, 0, Math.PI * 2);
+  ctx.fill();
+  const flap = Math.sin(now * 5) * 0.2;
+  ctx.fillStyle = '#2b0a10';
+  for (const side of [-1, 1]) {
+    ctx.beginPath();
+    ctx.moveTo(side * r * 0.6, -r * 0.3);
+    ctx.lineTo(side * r * 1.9, -r * (1.3 + flap));
+    ctx.lineTo(side * r * 2.0, -r * 0.2);
+    ctx.lineTo(side * r * 1.6, r * 0.3);
+    ctx.closePath();
+    ctx.fill();
+  }
+  const body = ctx.createLinearGradient(0, -r, 0, r);
+  body.addColorStop(0, '#7f1d1d');
+  body.addColorStop(1, '#3b0a12');
+  ctx.fillStyle = body;
+  roundRect(ctx, -r * 0.85, -r * 1.05, r * 1.7, r * 2.15, 14);
+  ctx.fill();
+  horns(ctx, r * 1.1, '#1c0509', 0.5, 1.1);
+  eyes(ctx, r * 0.32, -r * 0.45, r * 0.13, e.dash > 0 || e.aim > 0 ? '#fde047' : '#ff4d4d');
+  // Grin.
+  ctx.fillStyle = '#09090b';
+  roundRect(ctx, -r * 0.5, r * 0.05, r, r * 0.3, 4);
+  ctx.fill();
+  ctx.fillStyle = '#f5f5f4';
+  for (let i = 0; i < 6; i++) {
+    ctx.beginPath();
+    ctx.moveTo(-r * 0.45 + i * r * 0.18, r * 0.05);
+    ctx.lineTo(-r * 0.36 + i * r * 0.18, r * 0.25);
+    ctx.lineTo(-r * 0.27 + i * r * 0.18, r * 0.05);
+    ctx.fill();
+  }
+};
+
+/* Greek: gladiators, javelin throwers, a shield wall and a minotaur. */
+function helmet(ctx: CanvasRenderingContext2D, r: number, crest: string) {
+  ctx.fillStyle = crest;
+  ctx.beginPath();
+  ctx.moveTo(-r * 0.2, -r * 0.9);
+  ctx.quadraticCurveTo(0, -r * 1.9, r * 0.2, -r * 0.9);
+  ctx.closePath();
+  ctx.fill();
+  const bronze = ctx.createLinearGradient(-r, 0, r, 0);
+  bronze.addColorStop(0, '#f1c27d');
+  bronze.addColorStop(0.5, '#b7791f');
+  bronze.addColorStop(1, '#7c4a03');
+  ctx.fillStyle = bronze;
+  ctx.beginPath();
+  ctx.arc(0, -r * 0.3, r * 0.75, Math.PI, 0);
+  ctx.lineTo(r * 0.75, r * 0.4);
+  ctx.lineTo(-r * 0.75, r * 0.4);
+  ctx.closePath();
+  ctx.fill();
+  // The T-shaped face opening.
+  ctx.fillStyle = '#1c1917';
+  ctx.fillRect(-r * 0.4, -r * 0.35, r * 0.8, r * 0.22);
+  ctx.fillRect(-r * 0.1, -r * 0.35, r * 0.2, r * 0.7);
+}
+
+const greekGladiator: Drawer = (ctx, e, now) => {
+  const r = e.r;
+  const step = Math.sin(now * 12 + e.id) * 2;
+  // Round shield on the left, short sword on the right.
+  ctx.fillStyle = '#92400e';
+  ctx.beginPath();
+  ctx.arc(-r * 0.9, r * 0.2 + step, r * 0.6, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = '#f1c27d';
+  ctx.lineWidth = 1.6;
+  ctx.stroke();
+  ctx.fillStyle = '#f1c27d';
+  ctx.beginPath();
+  ctx.arc(-r * 0.9, r * 0.2 + step, r * 0.15, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = '#e5e7eb';
+  ctx.lineWidth = 2.2;
+  ctx.beginPath();
+  ctx.moveTo(r * 0.8, r * 0.3 - step);
+  ctx.lineTo(r * 1.5, -r * 0.6 - step);
+  ctx.stroke();
+  ctx.fillStyle = '#b45309';
+  roundRect(ctx, -r * 0.6, r * 0.1, r * 1.2, r * 0.9, 3);
+  ctx.fill();
+  helmet(ctx, r, '#dc2626');
+};
+
+const greekHoplite: Drawer = (ctx, e, now) => {
+  const r = e.r;
+  const arm = Math.sin(e.wobble * 0.5) * 0.2;
+  // Long spear, raised to throw.
+  ctx.save();
+  ctx.rotate(-0.6 + arm);
+  ctx.strokeStyle = '#a16207';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(-r * 1.4, r * 0.3);
+  ctx.lineTo(r * 1.6, r * 0.3);
+  ctx.stroke();
+  ctx.fillStyle = '#e5e7eb';
+  ctx.beginPath();
+  ctx.moveTo(r * 1.6, r * 0.3);
+  ctx.lineTo(r * 2.1, r * 0.3);
+  ctx.lineTo(r * 1.6, r * 0.05);
+  ctx.lineTo(r * 1.6, r * 0.55);
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+  ctx.fillStyle = '#1e3a8a';
+  roundRect(ctx, -r * 0.6, r * 0.1, r * 1.2, r * 0.9, 3);
+  ctx.fill();
+  helmet(ctx, r, '#1d4ed8');
+  void now;
+};
+
+const greekShieldWall: Drawer = (ctx, e, now) => {
+  const r = e.r;
+  const bronze = ctx.createRadialGradient(-r * 0.3, -r * 0.3, 2, 0, 0, r);
+  bronze.addColorStop(0, '#fcd9a0');
+  bronze.addColorStop(0.6, '#b7791f');
+  bronze.addColorStop(1, '#6b3f06');
+  ctx.fillStyle = bronze;
+  ctx.beginPath();
+  ctx.arc(0, 0, r, 0, Math.PI * 2);
+  ctx.fill();
+  // Greek key ring.
+  ctx.strokeStyle = '#3f2a0a';
+  ctx.lineWidth = 1.6;
+  ctx.beginPath();
+  ctx.arc(0, 0, r * 0.72, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.setLineDash([3, 3]);
+  ctx.beginPath();
+  ctx.arc(0, 0, r * 0.6, now * 0.5, now * 0.5 + Math.PI * 2);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = '#3f2a0a';
+  ctx.beginPath();
+  ctx.arc(0, 0, r * 0.28, 0, Math.PI * 2);
+  ctx.fill();
+  // Spear tips peeking over the top.
+  ctx.fillStyle = '#e5e7eb';
+  for (let i = -1; i <= 1; i++) {
+    ctx.beginPath();
+    ctx.moveTo(i * r * 0.5, -r * 1.35);
+    ctx.lineTo(i * r * 0.5 - 3, -r * 0.95);
+    ctx.lineTo(i * r * 0.5 + 3, -r * 0.95);
+    ctx.closePath();
+    ctx.fill();
+  }
+};
+
+const greekMinotaur: Drawer = (ctx, e, now) => {
+  const r = e.r;
+  const glow = ctx.createRadialGradient(0, 0, r * 0.4, 0, 0, r * 1.6);
+  glow.addColorStop(0, 'rgba(234,88,12,0.3)');
+  glow.addColorStop(1, 'transparent');
+  ctx.fillStyle = glow;
+  ctx.beginPath();
+  ctx.arc(0, 0, r * 1.6, 0, Math.PI * 2);
+  ctx.fill();
+  // Big shoulders and chest.
+  const hide = ctx.createLinearGradient(0, -r, 0, r);
+  hide.addColorStop(0, '#78350f');
+  hide.addColorStop(1, '#3f1d0a');
+  ctx.fillStyle = hide;
+  roundRect(ctx, -r * 1.0, -r * 0.5, r * 2, r * 1.6, 16);
+  ctx.fill();
+  // Bull head.
+  ctx.fillStyle = '#5b2a0b';
+  ctx.beginPath();
+  ctx.ellipse(0, -r * 0.55, r * 0.6, r * 0.7, 0, 0, Math.PI * 2);
+  ctx.fill();
+  // Horns, long and curved.
+  ctx.strokeStyle = '#f5f5f4';
+  ctx.lineWidth = r * 0.16;
+  ctx.lineCap = 'round';
+  for (const side of [-1, 1]) {
+    ctx.beginPath();
+    ctx.moveTo(side * r * 0.45, -r * 0.9);
+    ctx.quadraticCurveTo(side * r * 1.3, -r * 1.2, side * r * 1.1, -r * 1.9);
+    ctx.stroke();
+  }
+  eyes(ctx, r * 0.25, -r * 0.7, r * 0.1, e.dash > 0 || e.aim > 0 ? '#fde047' : '#ff4d4d');
+  // Snout with a ring.
+  ctx.fillStyle = '#3f1d0a';
+  ctx.beginPath();
+  ctx.ellipse(0, -r * 0.2, r * 0.38, r * 0.25, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = '#f1c27d';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.arc(0, -r * 0.02, r * 0.14, 0, Math.PI);
+  ctx.stroke();
+  // Steam from the nostrils when charging.
+  if (e.aim > 0) {
+    ctx.fillStyle = `rgba(255,255,255,${0.3 + Math.sin(now * 20) * 0.2})`;
+    for (const side of [-1, 1]) {
+      ctx.beginPath();
+      ctx.arc(side * r * 0.2, -r * 0.1 + Math.sin(now * 15) * 2, r * 0.12, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+};
+
+/* Nightmare: zombies, skeletons, tombstones and a lich. */
+const nightmareZombie: Drawer = (ctx, e, now) => {
+  const r = e.r;
+  const sway = Math.sin(now * 4 + e.id) * 0.1;
+  ctx.rotate(sway);
+  // Arms held out in front.
+  ctx.strokeStyle = '#4d7c0f';
+  ctx.lineWidth = 3.5;
+  ctx.lineCap = 'round';
+  for (const side of [-1, 1]) {
+    ctx.beginPath();
+    ctx.moveTo(side * r * 0.5, r * 0.2);
+    ctx.lineTo(side * r * 0.7, r * 1.4 + Math.sin(now * 6 + side) * 2);
+    ctx.stroke();
+  }
+  ctx.fillStyle = '#365314';
+  roundRect(ctx, -r * 0.65, r * 0.1, r * 1.3, r * 0.9, 3);
+  ctx.fill();
+  const skin = ctx.createRadialGradient(-r * 0.3, -r * 0.5, 1, 0, -r * 0.2, r);
+  skin.addColorStop(0, '#a3e635');
+  skin.addColorStop(1, '#4d7c0f');
+  ctx.fillStyle = skin;
+  ctx.beginPath();
+  ctx.arc(0, -r * 0.25, r * 0.75, 0, Math.PI * 2);
+  ctx.fill();
+  // One eye wide, one squinting; a stitched mouth.
+  ctx.fillStyle = '#f7fee7';
+  ctx.beginPath();
+  ctx.arc(-r * 0.3, -r * 0.35, r * 0.2, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#1a2e05';
+  ctx.beginPath();
+  ctx.arc(-r * 0.28, -r * 0.33, r * 0.09, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillRect(r * 0.1, -r * 0.4, r * 0.35, r * 0.1);
+  ctx.strokeStyle = '#1a2e05';
+  ctx.lineWidth = 1.4;
+  ctx.beginPath();
+  ctx.moveTo(-r * 0.35, r * 0.1);
+  ctx.lineTo(r * 0.35, r * 0.05);
+  for (let i = -2; i <= 2; i++) { ctx.moveTo(i * r * 0.15, -r * 0.02); ctx.lineTo(i * r * 0.15, r * 0.18); }
+  ctx.stroke();
+};
+
+const nightmareSkeleton: Drawer = (ctx, e, now) => {
+  const r = e.r;
+  ctx.strokeStyle = '#e7e5e4';
+  ctx.lineWidth = 2;
+  // Ribs.
+  for (let i = 0; i < 3; i++) {
+    ctx.beginPath();
+    ctx.arc(0, r * 0.25 + i * r * 0.25, r * 0.45, Math.PI * 1.15, Math.PI * 1.85);
+    ctx.stroke();
+  }
+  ctx.beginPath();
+  ctx.moveTo(0, r * 0.1);
+  ctx.lineTo(0, r);
+  ctx.stroke();
+  // Throwing arm with a bone.
+  const arm = Math.sin(e.wobble * 0.6) * 0.5;
+  ctx.save();
+  ctx.translate(r * 0.6, r * 0.3);
+  ctx.rotate(-0.8 + arm);
+  ctx.beginPath();
+  ctx.moveTo(0, 0);
+  ctx.lineTo(r * 0.9, -r * 0.2);
+  ctx.stroke();
+  ctx.fillStyle = '#e7e5e4';
+  ctx.beginPath();
+  ctx.arc(r * 0.9, -r * 0.25, 2.2, 0, Math.PI * 2);
+  ctx.arc(r * 0.95, -r * 0.1, 2.2, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+  // Skull.
+  ctx.fillStyle = '#f5f5f4';
+  ctx.beginPath();
+  ctx.arc(0, -r * 0.35, r * 0.6, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillRect(-r * 0.35, -r * 0.05, r * 0.7, r * 0.3);
+  ctx.fillStyle = '#1c1917';
+  for (const side of [-1, 1]) {
+    ctx.beginPath();
+    ctx.arc(side * r * 0.25, -r * 0.4, r * 0.17, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  eyes(ctx, r * 0.25, -r * 0.4, r * 0.06, '#67e8f9');
+  for (let i = -1; i <= 1; i++) ctx.fillRect(i * r * 0.2 - 1, r * 0.02, 2, r * 0.22);
+  void now;
+};
+
+const nightmareTombstone: Drawer = (ctx, e, now) => {
+  const r = e.r;
+  // Grave mound and a wisp.
+  ctx.fillStyle = '#1c1917';
+  ctx.beginPath();
+  ctx.ellipse(0, r * 0.85, r * 1.1, r * 0.3, 0, 0, Math.PI * 2);
+  ctx.fill();
+  const stone = ctx.createLinearGradient(0, -r, 0, r);
+  stone.addColorStop(0, '#6b7280');
+  stone.addColorStop(1, '#374151');
+  ctx.fillStyle = stone;
+  ctx.beginPath();
+  ctx.arc(0, -r * 0.35, r * 0.75, Math.PI, 0);
+  ctx.lineTo(r * 0.75, r * 0.9);
+  ctx.lineTo(-r * 0.75, r * 0.9);
+  ctx.closePath();
+  ctx.fill();
+  ctx.fillStyle = '#111827';
+  ctx.fillRect(-r * 0.08, -r * 0.6, r * 0.16, r * 0.8);
+  ctx.fillRect(-r * 0.32, -r * 0.35, r * 0.64, r * 0.14);
+  ctx.strokeStyle = 'rgba(0,0,0,0.35)';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(-r * 0.5, r * 0.6);
+  ctx.lineTo(-r * 0.2, r * 0.3);
+  ctx.lineTo(-r * 0.35, 0);
+  ctx.stroke();
+  const wisp = Math.sin(now * 3 + e.id);
+  ctx.fillStyle = `rgba(167,243,208,${0.35 + wisp * 0.2})`;
+  ctx.beginPath();
+  ctx.arc(r * 0.7, -r * 0.9 + wisp * 4, r * 0.22, 0, Math.PI * 2);
+  ctx.fill();
+};
+
+const nightmareLich: Drawer = (ctx, e, now) => {
+  const r = e.r;
+  const glow = ctx.createRadialGradient(0, 0, r * 0.4, 0, 0, r * 1.7);
+  glow.addColorStop(0, 'rgba(34,211,238,0.3)');
+  glow.addColorStop(1, 'transparent');
+  ctx.fillStyle = glow;
+  ctx.beginPath();
+  ctx.arc(0, 0, r * 1.7, 0, Math.PI * 2);
+  ctx.fill();
+  // Tattered robe.
+  const robe = ctx.createLinearGradient(0, -r, 0, r);
+  robe.addColorStop(0, '#312e81');
+  robe.addColorStop(1, '#0f0a2e');
+  ctx.fillStyle = robe;
+  ctx.beginPath();
+  ctx.moveTo(-r * 0.6, -r * 0.3);
+  ctx.lineTo(r * 0.6, -r * 0.3);
+  ctx.lineTo(r * 1.0, r * 1.1);
+  for (let i = 4; i >= -4; i--) ctx.lineTo(i * r * 0.22, r * (1.1 - (Math.abs(i) % 2) * 0.2 + Math.sin(now * 4 + i) * 0.04));
+  ctx.lineTo(-r * 1.0, r * 1.1);
+  ctx.closePath();
+  ctx.fill();
+  // Skull with a crown.
+  ctx.fillStyle = '#e7e5e4';
+  ctx.beginPath();
+  ctx.arc(0, -r * 0.55, r * 0.55, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillRect(-r * 0.32, -r * 0.25, r * 0.64, r * 0.3);
+  ctx.fillStyle = '#facc15';
+  ctx.beginPath();
+  ctx.moveTo(-r * 0.55, -r * 0.9);
+  for (let i = 0; i < 5; i++) {
+    ctx.lineTo(-r * 0.55 + i * r * 0.275, -r * (1.4 + (i % 2) * 0.2));
+    ctx.lineTo(-r * 0.4125 + i * r * 0.275, -r * 1.05);
+  }
+  ctx.lineTo(r * 0.55, -r * 0.9);
+  ctx.closePath();
+  ctx.fill();
+  ctx.fillStyle = '#0f0a2e';
+  for (const side of [-1, 1]) {
+    ctx.beginPath();
+    ctx.arc(side * r * 0.22, -r * 0.6, r * 0.15, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  eyes(ctx, r * 0.22, -r * 0.6, r * 0.07, e.dash > 0 || e.aim > 0 ? '#f472b6' : '#22d3ee');
+  for (let i = -1; i <= 1; i++) ctx.fillRect(i * r * 0.15 - 1, -r * 0.22, 2, r * 0.2);
+  // Staff with a floating gem.
+  ctx.strokeStyle = '#78350f';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(r * 0.95, r * 0.9);
+  ctx.lineTo(r * 0.95, -r * 1.2);
+  ctx.stroke();
+  ctx.fillStyle = '#22d3ee';
+  ctx.shadowColor = '#22d3ee';
+  ctx.shadowBlur = 10;
+  ctx.beginPath();
+  ctx.arc(r * 0.95, -r * 1.4 + Math.sin(now * 3) * 3, r * 0.14, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.shadowBlur = 0;
+};
+
+const LOOKS: Record<Look, Record<Enemy['kind'], Drawer>> = {
+  original: { bug: drawBug, ticket: (ctx, e) => drawTicket(ctx, e), legacy: (ctx, e) => drawLegacy(ctx, e), boss: drawBoss },
+  demon: { bug: demonImp, ticket: demonSkull, legacy: demonGargoyle, boss: demonOverlord },
+  greek: { bug: greekGladiator, ticket: greekHoplite, legacy: greekShieldWall, boss: greekMinotaur },
+  nightmare: { bug: nightmareZombie, ticket: nightmareSkeleton, legacy: nightmareTombstone, boss: nightmareLich },
+};
+
+/* ------------------------------------------------------------- the player's hat */
+
+function drawHat(ctx: CanvasRenderingContext2D, g: Game, hat: ItemId, accent: string) {
+  const p = g.player;
+  if (p.inv > 0 && Math.floor(performance.now() / 50) % 2 === 0) return;
+  const r = p.r;
+  ctx.save();
+  ctx.translate(p.x, p.y - r * 0.55);
+  if (hat === 'wizardHat') {
+    ctx.fillStyle = '#4c1d95';
+    ctx.beginPath();
+    ctx.ellipse(0, 0, r * 1.15, r * 0.3, 0, 0, Math.PI * 2);
+    ctx.fill();
+    const cone = ctx.createLinearGradient(-r, 0, r, 0);
+    cone.addColorStop(0, '#7c3aed');
+    cone.addColorStop(1, '#4c1d95');
+    ctx.fillStyle = cone;
+    ctx.beginPath();
+    ctx.moveTo(-r * 0.75, 0);
+    ctx.quadraticCurveTo(0, -r * 0.6, r * 0.45, -r * 1.9);
+    ctx.quadraticCurveTo(r * 0.3, -r * 0.7, r * 0.75, 0);
+    ctx.closePath();
+    ctx.fill();
+    ctx.fillStyle = '#facc15';
+    ctx.beginPath();
+    for (let i = 0; i < 10; i++) {
+      const a = -Math.PI / 2 + (i * Math.PI) / 5;
+      const rr = i % 2 ? r * 0.12 : r * 0.26;
+      ctx.lineTo(Math.cos(a) * rr, -r * 0.55 + Math.sin(a) * rr);
+    }
+    ctx.closePath();
+    ctx.fill();
+  } else if (hat === 'gladHelm') {
+    ctx.fillStyle = '#dc2626';
+    ctx.beginPath();
+    ctx.moveTo(-r * 0.25, -r * 0.2);
+    ctx.quadraticCurveTo(0, -r * 1.5, r * 0.25, -r * 0.2);
+    ctx.closePath();
+    ctx.fill();
+    const bronze = ctx.createLinearGradient(-r, 0, r, 0);
+    bronze.addColorStop(0, '#f1c27d');
+    bronze.addColorStop(1, '#92400e');
+    ctx.fillStyle = bronze;
+    ctx.beginPath();
+    ctx.arc(0, 0, r * 0.95, Math.PI, 0);
+    ctx.lineTo(r * 0.95, r * 0.15);
+    ctx.lineTo(-r * 0.95, r * 0.15);
+    ctx.closePath();
+    ctx.fill();
+  } else if (hat === 'bandana') {
+    ctx.fillStyle = '#dc2626';
+    roundRect(ctx, -r * 0.95, -r * 0.15, r * 1.9, r * 0.32, 3);
+    ctx.fill();
+    ctx.strokeStyle = '#dc2626';
+    ctx.lineWidth = 3;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(r * 0.9, 0);
+    ctx.quadraticCurveTo(r * 1.5, r * 0.2, r * 1.6, r * 0.8);
+    ctx.moveTo(r * 0.9, 0.05 * r);
+    ctx.quadraticCurveTo(r * 1.6, 0, r * 1.9, r * 0.5);
+    ctx.stroke();
+  }
+  void accent;
+  ctx.restore();
 }

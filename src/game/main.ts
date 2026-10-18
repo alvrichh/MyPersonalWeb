@@ -1,11 +1,18 @@
 import './game.css';
 import { storage } from '../lib/storage';
+import { audio, type Sfx } from './audio';
 import { draw, type Palette, type View } from './draw';
+import { loadSave, writeSave, STYLES, type EnemyStyle } from './save';
+import { ITEMS, SLOTS, buildLoadout, itemById, type ItemId, type Slot } from './shop';
 import { makeT, pickLang, type Key } from './strings';
-import { CATEGORY, H, W, chooseSkill, isBossRoom, newGame, ownedWeapons, update, type Category, type Game, type Input, type SkillId } from './world';
+import {
+  CATEGORY, H, W, chooseSkill, isBossRoom, newGame, ownedWeapons, update,
+  type Category, type Game, type GameEvent, type Input, type Look, type SkillId,
+} from './world';
 
-/* Bug Hunter's page: screens, input (touch joystick or keyboard) and the
-   frame loop. The rules are in world.ts, the drawing in draw.ts. */
+/* Bug Hunter's page: the menus (play, shop, enemy looks, options), input
+   (touch joystick or keyboard), sound hooks and the frame loop. The rules are
+   in world.ts, the drawing in draw.ts, the music in audio.ts. */
 
 const lang = pickLang();
 const t = makeT(lang);
@@ -34,42 +41,46 @@ const canvas = $<HTMLCanvasElement>('stage');
 const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
 const screen = $<HTMLElement>('screen');
 const toast = $<HTMLElement>('toast');
+const hud = $<HTMLElement>('hud');
 const hudRoom = $<HTMLElement>('hudRoom');
 const hudLevel = $<HTMLElement>('hudLevel');
 const hudXp = $<HTMLElement>('hudXp');
 const hudGear = $<HTMLElement>('hudGear');
+const hudCoins = $<HTMLElement>('hudCoins');
 const bossBar = $<HTMLElement>('bossBar');
+const bossName = $<HTMLElement>('bossName');
 const bossHp = $<HTMLElement>('bossHp');
 const pauseBtn = $<HTMLButtonElement>('pauseBtn');
-$<HTMLElement>('bossName').textContent = t('boss');
 $<HTMLAnchorElement>('backLink').setAttribute('aria-label', t('back'));
 pauseBtn.setAttribute('aria-label', t('pause'));
 
 const touch = window.matchMedia('(hover: none)').matches;
 const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-/* ------------------------------------------------------------------ records */
+/* ----------------------------------------------------------------- the save */
 
-type Best = { room: number; time?: number };
-const readBest = (): Best => {
-  try {
-    return JSON.parse(storage.get('bugHunterBest') || '') as Best;
-  } catch {
-    return { room: 0 };
-  }
-};
-const saveBest = (g: Game) => {
-  const best = readBest();
-  const won = g.phase === 'won';
-  const better = won ? best.time === undefined || g.time < best.time : best.time === undefined && g.room > (best.room || 0);
-  if (better) storage.set('bugHunterBest', JSON.stringify(won ? { room: 10, time: g.time } : { room: g.room }));
-};
+const save = loadSave();
+const persist = () => writeSave(save);
+audio.setVolumes(save.music, save.sfx);
+palette.hat = save.equipped.head;
+
 const clock = (seconds: number) => `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, '0')}`;
 const bestLine = () => {
-  const best = readBest();
+  const best = save.best;
   if (best.time !== undefined) return t('bestWin', { time: clock(best.time) });
   return best.room ? t('best', { room: best.room }) : '';
 };
+const coinsLine = (n = save.coins) => `<span class="coin">🪙</span> ${Math.floor(n)}`;
+
+function bankRun(g: Game) {
+  const won = g.phase === 'won';
+  const best = save.best;
+  const better = won ? best.time === undefined || g.time < best.time : best.time === undefined && g.room > (best.room || 0);
+  if (better) save.best = won ? { room: 10, time: g.time } : { room: g.room };
+  save.coins += Math.floor(g.coins);
+  save.runs += 1;
+  persist();
+}
 
 /* ------------------------------------------------------------------ screens */
 
@@ -81,41 +92,67 @@ const ICONS: Record<SkillId, string> = {
   power: '💥', heart: '💗',
 };
 const CATEGORY_LABEL: Record<Category, Key> = { melee: 'catMelee', magic: 'catMagic', ranged: 'catRanged', upgrade: 'catUpgrade' };
+const SLOT_LABEL: Record<Slot, Key> = { head: 'slotHead', charm: 'slotCharm', relic: 'slotRelic' };
+const STYLE_ICON: Record<EnemyStyle, string> = { original: '🐞', demon: '😈', greek: '🏛️', nightmare: '💀', random: '🎲' };
+const BOSS_NAME: Record<Look, Key> = { original: 'bossOriginal', demon: 'bossDemon', greek: 'bossGreek', nightmare: 'bossNightmare' };
 
 let game: Game | null = null;
 let paused = false;
 let shownChoices = '';
+/** Where the Options screen goes back to. */
+let optionsFrom: 'menu' | 'pause' = 'menu';
 
 function show(html: string, wide = false) {
   screen.innerHTML = `<div class="panel${wide ? ' panel-wide' : ''}">${html}</div>`;
   screen.hidden = false;
+  screen.scrollTop = 0;
 }
 function hide() {
   screen.hidden = true;
   screen.innerHTML = '';
 }
+const backButton = (act: string, label: Key = 'menu') => `<button class="ghost" data-act="${act}">← ${t(label)}</button>`;
 
-function startScreen() {
+function menuScreen() {
+  game = null;
+  hud.hidden = true;
+  hudGear.hidden = true;
+  bossBar.hidden = true;
+  audio.setIntensity(0);
   show(`
     <p class="kicker">alvrich</p>
-    <h1>${t('title')}</h1>
+    <h1 class="title">${t('title')}</h1>
     <p>${t('tagline')}</p>
     <p class="how">${t(touch ? 'howTouch' : 'howKeys')}</p>
-    <button class="primary" data-act="play">${t('play')}</button>
+    <button class="primary big" data-act="play">▶ ${t('playNow')}</button>
+    <div class="menu-grid">
+      <button class="ghost" data-act="shop"><span class="icon">🛒</span>${t('shop')}<small>${coinsLine()}</small></button>
+      <button class="ghost" data-act="styles"><span class="icon">${STYLE_ICON[save.style]}</span>${t('styles')}<small>${t(`style${cap(save.style)}Name` as Key)}</small></button>
+      <button class="ghost" data-act="options"><span class="icon">${save.music === 0 && save.sfx === 0 ? '🔇' : '🔊'}</span>${t('options')}</button>
+    </div>
     <p class="best">${bestLine()}</p>
     <a class="link" href="./index.html">← ${t('back')}</a>`);
 }
 
+const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
+
 function endScreen(g: Game) {
   const won = g.phase === 'won';
-  saveBest(g);
+  const earned = Math.floor(g.coins);
+  bankRun(g);
+  audio.play(won ? 'win' : 'over');
+  audio.setIntensity(0);
   show(`
     <p class="kicker">${t('sprint', { room: g.room })}</p>
     <h1>${t(won ? 'won' : 'over')}</h1>
     <p>${t(won ? 'wonText' : 'overText', { room: g.room, kills: g.kills, time: clock(g.time) })}</p>
+    <p class="earned">${coinsLine(earned)} <small>${t('coinsRun', { coins: earned })}</small></p>
     <button class="primary" data-act="play">${t('again')}</button>
-    <p class="best">${bestLine()}</p>
-    <a class="link" href="./index.html">← ${t('back')}</a>`);
+    <div class="row">
+      <button class="ghost" data-act="shop">🛒 ${t('shop')}</button>
+      <button class="ghost" data-act="menu">${t('menu')}</button>
+    </div>
+    <p class="best">${bestLine()}</p>`);
 }
 
 function choiceScreen(g: Game) {
@@ -133,31 +170,147 @@ function choiceScreen(g: Game) {
 }
 
 function pauseScreen() {
-  show(`<h2>${t('paused')}</h2><button class="primary" data-act="resume">${t('resume')}</button><button class="ghost" data-act="quit">${t('quit')}</button>`);
+  show(`<h2>${t('paused')}</h2>
+    <button class="primary" data-act="resume">${t('resume')}</button>
+    <button class="ghost" data-act="options-pause">⚙ ${t('options')}</button>
+    <button class="ghost" data-act="quit">${t('quit')}</button>`);
+}
+
+function optionsScreen() {
+  const muted = save.music === 0 && save.sfx === 0;
+  show(`
+    <h2>${t('options')}</h2>
+    <label class="slider"><span>🎵 ${t('music')}</span><input type="range" min="0" max="100" value="${Math.round(save.music * 100)}" data-vol="music"><b>${Math.round(save.music * 100)}%</b></label>
+    <label class="slider"><span>🔔 ${t('sfx')}</span><input type="range" min="0" max="100" value="${Math.round(save.sfx * 100)}" data-vol="sfx"><b>${Math.round(save.sfx * 100)}%</b></label>
+    <p class="how">${t('musicNote')}</p>
+    <button class="ghost" data-act="mute">${muted ? '🔊 ' + t('unmute') : '🔇 ' + t('mute')}</button>
+    ${backButton(optionsFrom === 'pause' ? 'pause' : 'menu', optionsFrom === 'pause' ? 'resume' : 'menu')}`);
+}
+
+function shopScreen(note = '') {
+  const groups = SLOTS.map((slot) => {
+    const cards = ITEMS.filter((item) => item.slot === slot)
+      .map((item) => {
+        const owned = save.owned.includes(item.id);
+        const worn = save.equipped[slot] === item.id;
+        const can = save.coins >= item.price;
+        const action = !owned
+          ? `<button class="buy${can ? '' : ' is-poor'}" data-buy="${item.id}">${t('buy')} · 🪙 ${item.price}</button>`
+          : worn
+            ? `<button class="buy is-worn" data-unequip="${item.id}">✓ ${t('worn')} · ${t('unequip')}</button>`
+            : `<button class="buy" data-equip="${item.id}">${t('equip')}</button>`;
+        return `<div class="item${worn ? ' is-on' : ''}${owned ? ' is-owned' : ''}">
+          <span class="icon" aria-hidden="true">${item.icon}</span>
+          <b>${t(`${item.id}Name` as Key)}</b>
+          <span>${t(`${item.id}Text` as Key)}</span>
+          ${action}
+        </div>`;
+      })
+      .join('');
+    return `<h3 class="slot">${t(SLOT_LABEL[slot])}</h3><div class="items">${cards}</div>`;
+  }).join('');
+  show(`
+    <div class="shop-head"><h2>${t('shop')}</h2><p class="wallet">${coinsLine()}</p></div>
+    ${note ? `<p class="note">${note}</p>` : `<p class="how">${t('earnHint')}</p>`}
+    ${groups}
+    ${backButton('menu')}`, true);
+}
+
+function stylesScreen() {
+  const cards = STYLES.map((style) => `
+    <button class="style${save.style === style ? ' is-on' : ''}" data-style="${style}">
+      <span class="icon" aria-hidden="true">${STYLE_ICON[style]}</span>
+      <b>${t(`style${cap(style)}Name` as Key)}</b>
+      <span>${t(`style${cap(style)}Text` as Key)}</span>
+    </button>`).join('');
+  show(`<h2>${t('styles')}</h2><p>${t('stylePick')}</p><div class="styles">${cards}</div>${backButton('menu')}`, true);
+}
+
+function startRun() {
+  game = newGame(buildLoadout(save.equipped), save.style);
+  paused = false;
+  shownChoices = '';
+  hud.hidden = false;
+  hudGear.hidden = false;
+  hide();
+  flash(t('sprint', { room: 1 }));
+  audio.start();
+  audio.setIntensity(0.2);
 }
 
 screen.addEventListener('click', (event) => {
-  const target = (event.target as HTMLElement).closest<HTMLElement>('[data-act], [data-skill]');
+  const target = (event.target as HTMLElement).closest<HTMLElement>('button, [data-act]');
   if (!target) return;
+  audio.unlock();
   const act = target.dataset.act;
-  if (act === 'play') {
-    game = newGame();
+  if (act !== 'mute') audio.play('click');
+  if (act === 'play') startRun();
+  else if (act === 'resume') { paused = false; hide(); }
+  else if (act === 'pause') pauseScreen();
+  else if (act === 'quit') {
+    if (game) bankRun(game);
     paused = false;
-    shownChoices = '';
-    hide();
-    flash(t('sprint', { room: 1 }));
-  } else if (act === 'resume') {
-    paused = false;
-    hide();
-  } else if (act === 'quit') {
-    paused = false;
-    game = null;
-    startScreen();
+    menuScreen();
+  } else if (act === 'menu') menuScreen();
+  else if (act === 'shop') shopScreen();
+  else if (act === 'styles') stylesScreen();
+  else if (act === 'options') { optionsFrom = 'menu'; optionsScreen(); }
+  else if (act === 'options-pause') { optionsFrom = 'pause'; optionsScreen(); }
+  else if (act === 'mute') {
+    const muted = save.music === 0 && save.sfx === 0;
+    save.music = muted ? 0.6 : 0;
+    save.sfx = muted ? 0.8 : 0;
+    audio.setVolumes(save.music, save.sfx);
+    persist();
+    optionsScreen();
   } else if (target.dataset.skill && game) {
     chooseSkill(game, target.dataset.skill as SkillId);
+    audio.play('pick');
     shownChoices = '';
     hide();
+  } else if (target.dataset.buy) {
+    const item = itemById(target.dataset.buy as ItemId);
+    if (save.coins < item.price) { shopScreen(t('notEnough')); return; }
+    save.coins -= item.price;
+    save.owned.push(item.id);
+    save.equipped[item.slot] = item.id;
+    persist();
+    audio.play('coin');
+    shopScreen();
+  } else if (target.dataset.equip) {
+    const item = itemById(target.dataset.equip as ItemId);
+    save.equipped[item.slot] = item.id;
+    persist();
+    shopScreen();
+  } else if (target.dataset.unequip) {
+    const item = itemById(target.dataset.unequip as ItemId);
+    delete save.equipped[item.slot];
+    persist();
+    shopScreen();
+  } else if (target.dataset.style) {
+    save.style = target.dataset.style as EnemyStyle;
+    persist();
+    stylesScreen();
   }
+  palette.hat = save.equipped.head;
+});
+
+screen.addEventListener('input', (event) => {
+  const input = event.target as HTMLInputElement;
+  if (!input.dataset.vol) return;
+  audio.unlock();
+  const value = Number(input.value) / 100;
+  if (input.dataset.vol === 'music') save.music = value;
+  else save.sfx = value;
+  audio.setVolumes(save.music, save.sfx);
+  (input.nextElementSibling as HTMLElement).textContent = `${input.value}%`;
+  persist();
+  // Hear the music in the menu while adjusting it.
+  if (input.dataset.vol === 'music' && value > 0) audio.start();
+});
+screen.addEventListener('change', (event) => {
+  const input = event.target as HTMLInputElement;
+  if (input.dataset.vol === 'sfx') audio.play('levelup');
 });
 
 pauseBtn.addEventListener('click', () => togglePause());
@@ -168,7 +321,12 @@ function togglePause(force?: boolean) {
   else hide();
 }
 document.addEventListener('visibilitychange', () => {
-  if (document.hidden) togglePause(true);
+  if (document.hidden) {
+    togglePause(true);
+    audio.stop();
+  } else if (game && !document.hidden) {
+    audio.start();
+  }
 });
 
 let toastTimer: number | undefined;
@@ -180,6 +338,23 @@ function flash(text: string) {
   toast.classList.add('is-on');
   window.clearTimeout(toastTimer);
   toastTimer = window.setTimeout(() => { toast.hidden = true; }, 1800);
+}
+
+/* -------------------------------------------------------------------- sound */
+
+const SFX_FOR: Partial<Record<GameEvent, Sfx>> = {
+  shoot: 'shoot', knife: 'knife', boomerang: 'boomerang', hit: 'hit', kill: 'kill', gem: 'gem', hurt: 'hurt',
+  levelup: 'levelup', slash: 'slash', slam: 'slam', strike: 'strike', boom: 'boom', revive: 'revive', clear: 'door', boss: 'boss',
+};
+// Hits and gems happen many times a frame; one sound per kind per frame is plenty.
+function playEvents(events: GameEvent[]) {
+  const seen = new Set<GameEvent>();
+  for (const event of events) {
+    if (seen.has(event)) continue;
+    seen.add(event);
+    const name = SFX_FOR[event];
+    if (name) audio.play(name);
+  }
 }
 
 /* -------------------------------------------------------------------- input */
@@ -253,6 +428,24 @@ function resize() {
 window.addEventListener('resize', resize);
 resize();
 
+// The menu's backdrop: a slow drift of the accent colours.
+function drawMenuBackdrop(now: number) {
+  ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
+  const w = canvas.clientWidth;
+  const h = canvas.clientHeight;
+  ctx.fillStyle = '#07090f';
+  ctx.fillRect(0, 0, w, h);
+  for (const [i, color] of [accent, accent2].entries()) {
+    const x = w * (0.3 + 0.4 * i) + Math.sin(now * 0.3 + i * 2) * w * 0.15;
+    const y = h * (0.35 + 0.3 * i) + Math.cos(now * 0.25 + i) * h * 0.12;
+    const grad = ctx.createRadialGradient(x, y, 0, x, y, Math.max(w, h) * 0.45);
+    grad.addColorStop(0, color + '33');
+    grad.addColorStop(1, 'transparent');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, w, h);
+  }
+}
+
 let last = performance.now();
 function frame(now: number) {
   const dt = Math.min(0.033, (now - last) / 1000);
@@ -261,10 +454,16 @@ function frame(now: number) {
   if (g && !paused && g.phase === 'play') {
     update(g, dt, readInput());
     if (calm) g.shake = 0;
+    playEvents(g.events);
     for (const event of g.events) {
       if (event === 'clear') flash(t('doorOpen'));
-      if (event === 'room') flash(t('sprint', { room: g.room }));
-      if (event === 'boss') flash(`${t('sprint', { room: g.room })} · ${t('boss')}`);
+      if (event === 'room') { flash(t('sprint', { room: g.room })); audio.setIntensity(0.2 + g.room * 0.05); }
+      if (event === 'boss') {
+        const boss = g.enemies.find((e) => e.kind === 'boss');
+        flash(`${t('sprint', { room: g.room })} · ${t(BOSS_NAME[boss?.look ?? 'original'])}`);
+        audio.setIntensity(1);
+      }
+      if (event === 'revive') flash(t('revived'));
     }
     // update() may have moved the game on (TypeScript still thinks it's 'play').
     const phase = g.phase as Game['phase'];
@@ -282,6 +481,7 @@ function frame(now: number) {
     hudRoom.textContent = t('sprint', { room: g.room });
     hudLevel.textContent = t('level', { level: g.level });
     hudXp.style.width = `${(g.xp / g.xpNext) * 100}%`;
+    hudCoins.textContent = String(Math.floor(g.coins));
     const gear = ['🏹1', ...ownedWeapons(g).map((id) => `${ICONS[id]}${g.skills[id]}`)].join(' ');
     if (hudGear.dataset.gear !== gear) {
       hudGear.dataset.gear = gear;
@@ -289,11 +489,12 @@ function frame(now: number) {
     }
     const boss = isBossRoom(g.room) ? g.enemies.find((e) => e.kind === 'boss' && e.spawn <= 0) : undefined;
     bossBar.hidden = !boss;
-    if (boss) bossHp.style.width = `${(Math.max(0, boss.hp) / boss.maxHp) * 100}%`;
+    if (boss) {
+      bossName.textContent = t(BOSS_NAME[boss.look]);
+      bossHp.style.width = `${(Math.max(0, boss.hp) / boss.maxHp) * 100}%`;
+    }
   } else {
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.fillStyle = '#07090f';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    drawMenuBackdrop(now / 1000);
   }
 
   // Joystick, drawn in screen pixels.
@@ -323,5 +524,5 @@ function frame(now: number) {
   requestAnimationFrame(frame);
 }
 
-startScreen();
+menuScreen();
 requestAnimationFrame(frame);
