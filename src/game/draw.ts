@@ -64,7 +64,7 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   drawZaps(ctx, g);
   if (pal.retro) drawPlayerRetro(ctx, g, pal, now);
   else drawPlayer(ctx, g, pal, now);
-  if (g.skills.blades) drawBlades(ctx, g, accent, now);
+  if (g.skills.blades) drawBlades(ctx, g, accent);
   drawFx(ctx, g, accent, 'over');
   drawBeams(ctx, g);
   drawStrikes(ctx, g, now);
@@ -926,7 +926,7 @@ function sawImage(el: BladeElement) {
   if (!img) { img = new Image(); img.src = `./images/game/blades/${el}.webp`; sawImages.set(el, img); }
   return img;
 }
-function drawBlades(ctx: CanvasRenderingContext2D, g: Game, accent: string, now: number) {
+function drawBlades(ctx: CanvasRenderingContext2D, g: Game, accent: string) {
   const el = bladeElement(g);
   const img = sawImage(el);
   if (retroLook || !img.complete || !img.naturalWidth) { drawBladesRetro(ctx, g, accent); return; }
@@ -939,8 +939,12 @@ function drawBlades(ctx: CanvasRenderingContext2D, g: Game, accent: string, now:
   const streak = glow || 'rgba(226,232,240,0.6)';
   // Motion that grows with the level: a streak along the circle from level
   // 2, longer each level, and fading copies of the blade behind it from 3.
-  const tail = lv >= 2 ? 0.28 + 0.12 * (lv - 2) : 0;
-  const echoes = Math.max(0, lv - 2);
+  // None of it while the blades stand still in a cleared room.
+  const on = g.gear.bladesOn;
+  const tail = on && lv >= 2 ? 0.28 + 0.12 * (lv - 2) : 0;
+  const echoes = on ? Math.max(0, lv - 2) : 0;
+  // Each saw turns on itself with the orbit, so it stops when the orbit does.
+  const spin = g.gear.bladeAngle * 4;
   for (let i = 0; i < n; i++) {
     const a = g.gear.bladeAngle + (i / n) * Math.PI * 2;
     if (tail) {
@@ -962,7 +966,7 @@ function drawBlades(ctx: CanvasRenderingContext2D, g: Game, accent: string, now:
       ctx.save();
       ctx.globalAlpha = 0.32 / k;
       ctx.translate(p.x + Math.cos(b) * orbit, p.y + Math.sin(b) * orbit);
-      ctx.rotate(now * 14 + i - k * 0.5);
+      ctx.rotate(spin + i - k * 0.5);
       ctx.drawImage(img, -size / 2, -size / 2, size, size);
       ctx.restore();
     }
@@ -977,7 +981,7 @@ function drawBlades(ctx: CanvasRenderingContext2D, g: Game, accent: string, now:
       ctx.arc(0, 0, size * 0.85, 0, Math.PI * 2);
       ctx.fill();
     }
-    ctx.rotate(now * 14 + i);
+    ctx.rotate(spin + i);
     ctx.drawImage(img, -size / 2, -size / 2, size, size);
     ctx.restore();
   }
