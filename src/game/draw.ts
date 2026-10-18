@@ -65,7 +65,7 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   else drawPlayer(ctx, g, pal, now);
   if (g.skills.blades) drawBlades(ctx, g, accent, now);
   drawFx(ctx, g, accent, 'over');
-  drawBeams(ctx, g, now);
+  drawBeams(ctx, g);
   drawStrikes(ctx, g, now);
   for (const q of g.particles) {
     ctx.globalAlpha = Math.max(0, q.life / q.max);
@@ -688,38 +688,43 @@ function drawChest(ctx: CanvasRenderingContext2D, at: Vec, now: number) {
 /** Beam colours (outer glow, body) as r,g,b: yellow at level 1, red from 2, purple once evolved. */
 const LASER_TONE = { yellow: ['250,204,21', '253,224,71'], red: ['220,38,38', '248,80,80'], purple: ['168,85,247', '216,180,254'] } as const;
 const laserTone = (g: Game) => LASER_TONE[g.evolved.laser ? 'purple' : g.skills.laser >= 2 ? 'red' : 'yellow'];
-function beam(ctx: CanvasRenderingContext2D, x: number, y: number, a: number, len: number, half: number, k: number, tone: readonly [string, string]) {
-  ctx.save();
-  ctx.translate(x, y);
-  ctx.rotate(a);
-  ctx.lineCap = 'round';
-  for (const [w, col] of [[half * 2.6, `rgba(${tone[0]},${0.28 * k})`], [half * 1.4, `rgba(${tone[1]},${0.65 * k})`], [half * 0.5, `rgba(255,255,255,${0.95 * k})`]] as const) {
-    ctx.strokeStyle = col;
-    ctx.lineWidth = w;
-    ctx.beginPath();
-    ctx.moveTo(8, 0);
-    ctx.lineTo(len, 0);
-    ctx.stroke();
-  }
-  ctx.fillStyle = `rgba(255,255,255,${0.9 * k})`;
-  ctx.beginPath();
-  ctx.arc(10, 0, half * 0.9, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.restore();
-}
-function drawBeams(ctx: CanvasRenderingContext2D, g: Game, now: number) {
+function drawBeams(ctx: CanvasRenderingContext2D, g: Game) {
   const tone = laserTone(g);
   for (const f of g.fx) {
     if (f.kind !== 'beam' || (f.delay ?? 0) > 0) continue;
     const k = f.life / f.max;
-    beam(ctx, g.player.x, g.player.y, f.a, f.r * (0.6 + 0.4 * Math.min(1, (1 - k) * 4)), (f.w ?? 9) * (0.6 + 0.4 * k), k, tone);
+    const t = 1 - k;
+    const half = (f.w ?? 10) * (t < 0.15 ? t / 0.15 : 0.55 + 0.45 * k);
+    // The column from the sky: a soft glow, a bright body and a white core, top to bottom.
+    for (const [w, col] of [[half * 4.2, `rgba(${tone[0]},${0.28 * k})`], [half * 2.2, `rgba(${tone[1]},${0.7 * k})`], [half * 0.7, `rgba(255,255,255,${0.95 * k})`]] as const) {
+      const grad = ctx.createLinearGradient(f.x - w / 2, 0, f.x + w / 2, 0);
+      grad.addColorStop(0, 'rgba(0,0,0,0)');
+      grad.addColorStop(0.5, col);
+      grad.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(f.x - w / 2, f.y, w, f.r);
+    }
+    // Where it strikes: a flat flash on the floor.
+    const foot = f.foot ?? f.y + f.r;
+    const flash = ctx.createRadialGradient(f.x, foot, 0, f.x, foot, half * 3.2);
+    flash.addColorStop(0, `rgba(255,255,255,${0.85 * k})`);
+    flash.addColorStop(0.4, `rgba(${tone[1]},${0.55 * k})`);
+    flash.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.save();
+    ctx.translate(f.x, foot);
+    ctx.scale(1, 0.45);
+    ctx.translate(-f.x, -foot);
+    ctx.fillStyle = flash;
+    ctx.beginPath();
+    ctx.arc(f.x, foot, half * 3.2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
   }
-  if (g.gear.laserSweep > 0) beam(ctx, g.player.x, g.player.y, g.gear.laserAngle, 330, 12 + Math.sin(now * 40) * 1.5, Math.min(1, g.gear.laserSweep * 4), tone);
 }
 
 /* A purple magic circle on the ground: two rings, a six-pointed star and
-   runes round the rim, turning. The Death Ray draws a big one under the hero
-   while it sweeps, and a small one wherever it cuts. */
+   runes round the rim, turning. The Death Ray leaves a big one at each
+   column's foot and a small one under every bug it cuts. */
 function rune(ctx: CanvasRenderingContext2D, x: number, y: number, r: number, turn: number, k: number) {
   ctx.save();
   ctx.translate(x, y);
@@ -770,7 +775,6 @@ function rune(ctx: CanvasRenderingContext2D, x: number, y: number, r: number, tu
 }
 function drawRunes(ctx: CanvasRenderingContext2D, g: Game, now: number) {
   for (const f of g.fx) if (f.kind === 'rune') rune(ctx, f.x, f.y, f.r * (0.7 + 0.3 * (1 - f.life / f.max)), f.a + now * 1.5, f.life / f.max);
-  if (g.gear.laserSweep > 0) rune(ctx, g.player.x, g.player.y + g.player.r * 0.6, 62, now * 2, Math.min(1, g.gear.laserSweep * 3));
 }
 
 /* Burning ground from the evolved fireball: an orange pool with embers. */
