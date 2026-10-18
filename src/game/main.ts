@@ -408,7 +408,7 @@ function leaveScreen(to: 'site' | 'menu') {
 /* A header from the UI sheets: the ornament is the picture, the words sit in its plate. */
 /* Crest picture sizes, so the dialog can be measured before they load. */
 const HEAD_SIZE: Record<string, [number, number]> = {
-  pause: [480, 450], levelup: [480, 452], shrine: [450, 480], victory: [431, 480], defeat: [474, 472], boss: [480, 422], wings: [480, 304],
+  pause: [480, 450], levelup: [480, 452], shrine: [450, 480], victory: [431, 480], defeat: [481, 472], boss: [480, 422], wings: [480, 304],
 };
 const head = (kind: 'pause' | 'levelup' | 'victory' | 'defeat' | 'shrine' | 'wings', text: string) =>
   `<div class="ui-head is-${kind}"><img src="./images/game/ui/header_${kind}.webp" width="${HEAD_SIZE[kind][0]}" height="${HEAD_SIZE[kind][1]}" alt=""><span>${text}</span></div>`;
