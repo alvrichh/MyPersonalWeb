@@ -674,7 +674,7 @@ function drawEnemy(ctx: CanvasRenderingContext2D, e: Enemy, now: number) {
     ctx.lineTo(e.dir.x * 260, e.dir.y * 260);
     ctx.stroke();
   }
-  LOOKS[e.look][e.kind](ctx, e, now);
+  if (!retroLook && drawEnemySprite(ctx, e, now)) { /* painted */ } else LOOKS[e.look][e.kind](ctx, e, now);
   // Status: white flash on hit, blue tint when slowed, little flames when burning.
   if (e.hit > 0) {
     ctx.globalAlpha = 0.6;
@@ -1871,6 +1871,42 @@ export function drawSprite(ctx: CanvasRenderingContext2D, e: Enemy, now: number)
     ctx.fill();
   }
   ctx.restore();
+}
+
+/* Painted enemies: four frames per kind for the looks that have a sheet
+   (static/images/game/enemies/<look>-<kind>-<frame>.webp). The frames cycle
+   with the enemy's own wobble so a crowd never steps in unison; the sprite
+   is sized to the collision circle (bosses a little bigger) with its feet on
+   the shadow. Looks without a sheet fall back to the hand-drawn figures. */
+const SPRITE_LOOKS: Look[] = ['original', 'demon', 'greek'];
+const enemySprites = new Map<string, HTMLImageElement[]>();
+function enemyFrames(look: Look, kind: Enemy['kind']) {
+  const key = `${look}-${kind}`;
+  let frames = enemySprites.get(key);
+  if (!frames) {
+    frames = [0, 1, 2, 3].map((i) => {
+      const img = new Image();
+      img.src = `./images/game/enemies/${key}-${i}.webp`;
+      return img;
+    });
+    enemySprites.set(key, frames);
+  }
+  return frames;
+}
+function drawEnemySprite(ctx: CanvasRenderingContext2D, e: Enemy, now: number) {
+  if (!SPRITE_LOOKS.includes(e.look)) return false;
+  const frames = enemyFrames(e.look, e.kind);
+  const img = frames[Math.floor(now * 6 + e.wobble) % 4];
+  if (!img.complete || !img.naturalWidth) return false;
+  const size = e.r * (e.kind === 'boss' ? 2.6 : 2.5);
+  const ratio = img.naturalWidth / img.naturalHeight;
+  const w = ratio >= 1 ? size : size * ratio;
+  const h = ratio >= 1 ? size / ratio : size;
+  const bob = Math.sin(now * 8 + e.wobble) * 1.2;
+  // Face the way it moves, when it moves sideways.
+  if (e.dir && e.dir.x < -0.3) ctx.scale(-1, 1);
+  ctx.drawImage(img, -w / 2, e.r * 0.85 - h + bob, w, h);
+  return true;
 }
 
 const LOOKS: Record<Look, Record<Enemy['kind'], Drawer>> = {
