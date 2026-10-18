@@ -10,7 +10,8 @@ const COMBO_WINDOW = 1200;
 const MAX_COMBO = 8;
 const MAX_PIECES = { wide: 500, phone: 360 };
 // Phones get no bubble hint (there's no hover), so the portrait wiggles once
-// this long after load if nobody has tapped it yet.
+// this long after load, and again after every accent change (a new element to
+// find), if nobody has tapped it since.
 const NUDGE_AFTER = 4000;
 
 export function Hero() {
@@ -31,12 +32,25 @@ export function Hero() {
   useEffect(() => {
     if (!window.matchMedia('(hover: none)').matches) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const timer = window.setTimeout(() => {
-      const box = figure.current?.getBoundingClientRect();
-      const onScreen = box && box.bottom > 0 && box.top < window.innerHeight;
-      if (!tapped.current && onScreen) setNudging(true);
-    }, NUDGE_AFTER);
-    return () => window.clearTimeout(timer);
+    let timer: number | undefined;
+    const arm = () => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        const box = figure.current?.getBoundingClientRect();
+        const onScreen = box && box.bottom > 0 && box.top < window.innerHeight;
+        if (!tapped.current && onScreen) setNudging(true);
+      }, NUDGE_AFTER);
+    };
+    arm();
+    const accentWatch = new MutationObserver(() => {
+      tapped.current = false;
+      arm();
+    });
+    accentWatch.observe(document.documentElement, { attributes: true, attributeFilter: ['data-accent'] });
+    return () => {
+      window.clearTimeout(timer);
+      accentWatch.disconnect();
+    };
   }, []);
 
   const spin = (event: MouseEvent<HTMLElement>) => {
