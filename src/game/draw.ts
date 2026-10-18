@@ -1,4 +1,4 @@
-import { BLADE_ORBIT, H, W, WALL, frostReach, isBossRoom, type Enemy, type Game, type Look } from './world';
+import { BLADE_ORBIT, H, W, WALL, WORLDS, frostReach, isBossRoom, type Enemy, type Game, type Look } from './world';
 import type { ItemId } from './shop';
 
 /* Bug Hunter's renderer: everything is drawn in room units (360 × 600) and
@@ -28,6 +28,7 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   ctx.setTransform(dpr * scale, 0, 0, dpr * scale, dpr * (ox + sx), dpr * (oy + sy));
 
   drawRoom(ctx, g, accent, now);
+  drawHazards(ctx, g, now);
   drawGems(ctx, g, now);
   if (g.skills.frost) drawFrost(ctx, g, now);
   drawFx(ctx, g, accent, 'under');
@@ -41,6 +42,7 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   if (pal.hat) drawHat(ctx, g, pal.hat, accent);
   if (g.skills.blades) drawBlades(ctx, g, accent);
   drawFx(ctx, g, accent, 'over');
+  drawStrikes(ctx, g, now);
   for (const q of g.particles) {
     ctx.globalAlpha = Math.max(0, q.life / q.max);
     ctx.fillStyle = q.color;
@@ -49,6 +51,7 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
     ctx.fill();
   }
   ctx.globalAlpha = 1;
+  if (g.hazard === 'fog') drawFog(ctx, g);
 }
 
 function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
@@ -57,16 +60,17 @@ function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: numbe
 }
 
 function drawRoom(ctx: CanvasRenderingContext2D, g: Game, accent: string, now: number) {
-  // Floor tiles.
-  ctx.fillStyle = isBossRoom(g.room) ? '#140f1c' : '#0f141d';
+  const theme = WORLDS[g.world - 1];
+  // Floor tiles, in the world's colours.
+  ctx.fillStyle = isBossRoom(g.room) && g.world === 1 ? '#140f1c' : theme.floor;
   ctx.fillRect(0, 0, W, H);
-  ctx.strokeStyle = 'rgba(255,255,255,0.035)';
+  ctx.strokeStyle = theme.grid;
   ctx.lineWidth = 1;
   for (let x = WALL; x < W; x += 36) { ctx.beginPath(); ctx.moveTo(x, WALL); ctx.lineTo(x, H - WALL); ctx.stroke(); }
   for (let y = WALL; y < H; y += 36) { ctx.beginPath(); ctx.moveTo(WALL, y); ctx.lineTo(W - WALL, y); ctx.stroke(); }
 
   // Walls, with the door gap at the top.
-  ctx.fillStyle = '#1d2533';
+  ctx.fillStyle = theme.wall;
   ctx.fillRect(0, 0, W / 2 - 32, WALL);
   ctx.fillRect(W / 2 + 32, 0, W / 2 - 32, WALL);
   ctx.fillRect(0, H - WALL, W, WALL);
@@ -79,7 +83,7 @@ function drawRoom(ctx: CanvasRenderingContext2D, g: Game, accent: string, now: n
   if (g.door) {
     const pulse = 0.55 + Math.sin(now * 5) * 0.25;
     const grad = ctx.createLinearGradient(0, 0, 0, WALL + 40);
-    grad.addColorStop(0, accent);
+    grad.addColorStop(0, theme.door || accent);
     grad.addColorStop(1, 'transparent');
     ctx.globalAlpha = pulse;
     ctx.fillStyle = grad;
@@ -438,6 +442,16 @@ function drawEnemy(ctx: CanvasRenderingContext2D, e: Enemy, now: number) {
 
   ctx.save();
   ctx.translate(e.x, e.y);
+  // Later worlds: an aura in the world's element colour.
+  if (e.tint) {
+    const aura = ctx.createRadialGradient(0, 0, e.r * 0.5, 0, 0, e.r * 1.5);
+    aura.addColorStop(0, e.tint + '55');
+    aura.addColorStop(1, 'transparent');
+    ctx.fillStyle = aura;
+    ctx.beginPath();
+    ctx.arc(0, 0, e.r * 1.5, 0, Math.PI * 2);
+    ctx.fill();
+  }
   if (e.kind === 'boss' && e.aim > 0) {
     // Telegraph the charge, whatever the boss looks like.
     ctx.strokeStyle = `rgba(255,107,107,${0.35 + Math.sin(now * 30) * 0.2})`;
@@ -1177,4 +1191,95 @@ function drawHat(ctx: CanvasRenderingContext2D, g: Game, hat: ItemId, accent: st
   }
   void accent;
   ctx.restore();
+}
+
+/* ------------------------------------------------------------- the worlds */
+
+function drawHazards(ctx: CanvasRenderingContext2D, g: Game, now: number) {
+  for (const h of g.hazards) {
+    if (h.kind === 'lava') {
+      const grad = ctx.createRadialGradient(h.x, h.y, h.r * 0.2, h.x, h.y, h.r);
+      grad.addColorStop(0, '#fde68a');
+      grad.addColorStop(0.45, '#f97316');
+      grad.addColorStop(1, '#7c2d12');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(h.x, h.y, h.r, 0, Math.PI * 2);
+      ctx.fill();
+      // Slow bubbles.
+      ctx.fillStyle = 'rgba(254,243,199,0.6)';
+      for (let i = 0; i < 3; i++) {
+        const t = (now * 0.7 + i * 0.37 + h.x * 0.01) % 1;
+        ctx.globalAlpha = 1 - t;
+        ctx.beginPath();
+        ctx.arc(h.x + Math.cos(i * 2.1) * h.r * 0.5, h.y + Math.sin(i * 2.1) * h.r * 0.5, 2 + t * 5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      ctx.strokeStyle = 'rgba(0,0,0,0.5)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    } else if (h.kind === 'puddle') {
+      const grad = ctx.createRadialGradient(h.x, h.y, 0, h.x, h.y, h.r);
+      grad.addColorStop(0, 'rgba(56,189,248,0.35)');
+      grad.addColorStop(1, 'rgba(14,116,144,0.55)');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.ellipse(h.x, h.y, h.r, h.r * 0.8, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(186,230,253,0.5)';
+      ctx.lineWidth = 1.2;
+      for (let i = 0; i < 2; i++) {
+        const t = (now * 0.5 + i * 0.5) % 1;
+        ctx.globalAlpha = 1 - t;
+        ctx.beginPath();
+        ctx.ellipse(h.x, h.y, h.r * (0.2 + t * 0.7), h.r * (0.16 + t * 0.56), 0, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+    } else {
+      // Thorns: a dark bush with pale spikes.
+      ctx.fillStyle = '#14532d';
+      ctx.beginPath();
+      ctx.arc(h.x, h.y, h.r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#86efac';
+      ctx.lineWidth = 1.5;
+      ctx.lineCap = 'round';
+      for (let i = 0; i < 10; i++) {
+        const a = (i / 10) * Math.PI * 2 + h.x;
+        ctx.beginPath();
+        ctx.moveTo(h.x + Math.cos(a) * h.r * 0.5, h.y + Math.sin(a) * h.r * 0.5);
+        ctx.lineTo(h.x + Math.cos(a) * (h.r + 5), h.y + Math.sin(a) * (h.r + 5));
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+function drawStrikes(ctx: CanvasRenderingContext2D, g: Game, now: number) {
+  for (const st of g.strikes) {
+    const t = 1 - st.t / 0.9;
+    ctx.strokeStyle = `rgba(250,204,21,${0.4 + t * 0.5})`;
+    ctx.lineWidth = 2;
+    ctx.setLineDash([5, 5]);
+    ctx.beginPath();
+    ctx.arc(st.x, st.y, 34, now * 3, now * 3 + Math.PI * 2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = `rgba(250,204,21,${0.08 + t * 0.25})`;
+    ctx.beginPath();
+    ctx.arc(st.x, st.y, 34 * t, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+function drawFog(ctx: CanvasRenderingContext2D, g: Game) {
+  const p = g.player;
+  const grad = ctx.createRadialGradient(p.x, p.y, 70, p.x, p.y, 200);
+  grad.addColorStop(0, 'rgba(8,9,15,0)');
+  grad.addColorStop(0.6, 'rgba(8,9,15,0.6)');
+  grad.addColorStop(1, 'rgba(8,9,15,0.86)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
 }

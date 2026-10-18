@@ -20,6 +20,31 @@ export const WALL = 16;
 export const ROOMS = 10;
 const DOOR_HALF = 32;
 
+/* ------------------------------------------------------------------ worlds */
+
+/** Each world is ten sprints with its own element: colours, a hazard and
+ *  tougher bugs. World 1 is the plain backlog. */
+export type Element = 'original' | 'fire' | 'water' | 'leaf' | 'bolt' | 'spark' | 'ghost' | 'heart';
+export type HazardKind = 'none' | 'lava' | 'puddle' | 'thorns' | 'strike' | 'bouncy' | 'fog' | 'mixed';
+export type WorldDef = { element: Element; hazard: HazardKind; tint: string; floor: string; grid: string; wall: string; door: string };
+
+export const WORLDS: WorldDef[] = [
+  { element: 'original', hazard: 'none', tint: '', floor: '#0f141d', grid: 'rgba(255,255,255,0.035)', wall: '#1d2533', door: '' },
+  { element: 'fire', hazard: 'lava', tint: '#ff7a1a', floor: '#1a0c0a', grid: 'rgba(255,122,26,0.08)', wall: '#3a1510', door: '#ff9e4c' },
+  { element: 'water', hazard: 'puddle', tint: '#38bdf8', floor: '#081520', grid: 'rgba(56,189,248,0.08)', wall: '#0f2a3d', door: '#7ad8ff' },
+  { element: 'leaf', hazard: 'thorns', tint: '#4ade80', floor: '#0a160f', grid: 'rgba(74,222,128,0.07)', wall: '#15321f', door: '#67dfa0' },
+  { element: 'bolt', hazard: 'strike', tint: '#facc15', floor: '#15140a', grid: 'rgba(250,204,21,0.07)', wall: '#2e2a10', door: '#ffd45f' },
+  { element: 'spark', hazard: 'bouncy', tint: '#fb923c', floor: '#160f09', grid: 'rgba(251,146,60,0.08)', wall: '#3b2412', door: '#ffb86f' },
+  { element: 'ghost', hazard: 'fog', tint: '#c7d2fe', floor: '#0c0d14', grid: 'rgba(199,210,254,0.05)', wall: '#1f2130', door: '#edf2fb' },
+  { element: 'heart', hazard: 'mixed', tint: '#f472b6', floor: '#170a12', grid: 'rgba(244,114,182,0.07)', wall: '#3a1430', door: '#ff79c9' },
+];
+export const WORLD_COUNT = WORLDS.length;
+
+/** Lava and thorns hurt, puddles slow you down. */
+export type Hazard = { kind: 'lava' | 'puddle' | 'thorns'; x: number; y: number; r: number };
+/** A lightning strike on its way: a warning circle, then the hit. */
+export type Strike = { x: number; y: number; t: number };
+
 export type Vec = { x: number; y: number };
 export type Rect = { x: number; y: number; w: number; h: number };
 
@@ -63,6 +88,8 @@ export type Enemy = {
   id: number;
   kind: EnemyKind;
   look: Look;
+  /** Element colour of the world it lives in ('' in world 1). */
+  tint: string;
   x: number;
   y: number;
   r: number;
@@ -116,7 +143,7 @@ export type Shot = {
   spin: number;
 };
 
-export type Orb = { x: number; y: number; vx: number; vy: number; r: number; dmg: number; life: number };
+export type Orb = { x: number; y: number; vx: number; vy: number; r: number; dmg: number; life: number; bounce: number };
 export type Particle = { x: number; y: number; vx: number; vy: number; life: number; max: number; size: number; color: string };
 export type Zap = { pts: Vec[]; life: number };
 export type Gem = { x: number; y: number; value: number; pull: boolean };
@@ -154,8 +181,15 @@ type Gear = {
 };
 
 export type Game = {
+  world: number;
   room: number;
   phase: 'play' | 'levelup' | 'over' | 'won';
+  hazards: Hazard[];
+  strikes: Strike[];
+  /** Seconds until the next lightning strike (storm worlds). */
+  strikeIn: number;
+  /** What this room's hazard is (mixed worlds pick one per room). */
+  hazard: HazardKind;
   player: Player;
   enemies: Enemy[];
   shots: Shot[];
@@ -269,10 +303,10 @@ const LAYOUT_FOR_ROOM = [0, 1, 2, 3, -1, 4, 1, 3, 2, -1];
 
 export const isBossRoom = (room: number) => room === 5 || room === 10;
 
-function wave(room: number): EnemyKind[] {
+function wave(room: number, world: number): EnemyKind[] {
   if (isBossRoom(room)) return ['boss'];
   const kinds: EnemyKind[] = [];
-  const bugs = 2 + Math.floor(room * 0.7);
+  const bugs = 2 + Math.floor(room * 0.7) + (world - 1);
   const tickets = Math.floor(room / 2);
   const legacy = room >= 3 ? Math.floor((room - 1) / 3) : 0;
   for (let i = 0; i < bugs; i++) kinds.push('bug');
@@ -283,25 +317,27 @@ function wave(room: number): EnemyKind[] {
 
 function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7): Enemy {
   const look: Look = g.style === 'random' ? LOOKS[Math.floor(Math.random() * LOOKS.length)] : g.style;
-  const tough = 1 + (room - 1) * 0.08;
+  const worldUp = 1 + (g.world - 1) * 0.25;
+  const tough = (1 + (room - 1) * 0.08) * worldUp;
   const base = {
     bug: { r: 12, hp: 40, speed: 72, dmg: 10, xp: 6 },
     ticket: { r: 14, hp: 60, speed: 46, dmg: 12, xp: 8 },
     legacy: { r: 20, hp: 170, speed: 34, dmg: 20, xp: 14 },
     boss: { r: 40, hp: room === 10 ? 2000 : 900, speed: 40, dmg: 22, xp: 70 },
   }[kind];
-  const hp = Math.round(base.hp * (kind === 'boss' ? 1 : tough));
+  const hp = Math.round(base.hp * (kind === 'boss' ? worldUp : tough));
   return {
     id: nextId++,
     kind,
     look,
+    tint: WORLDS[g.world - 1].tint,
     x: at.x,
     y: at.y,
     r: base.r,
     hp,
     maxHp: hp,
-    speed: base.speed,
-    dmg: base.dmg,
+    speed: base.speed * (1 + (g.world - 1) * 0.03),
+    dmg: Math.round(base.dmg * (1 + (g.world - 1) * 0.1)),
     xp: base.xp,
     spawn,
     hit: 0,
@@ -336,6 +372,39 @@ function freeSpot(g: Game, r: number): Vec {
   return { x: W / 2, y: H * 0.3 };
 }
 
+/** Hazard circles that don't sit on racks, on the door path or on the player. */
+function placeHazards(g: Game, kind: Hazard['kind'], count: number, rMin: number, rMax: number) {
+  for (let i = 0; i < count; i++) {
+    for (let tries = 0; tries < 40; tries++) {
+      const r = rand(rMin, rMax);
+      const h = { kind, x: rand(WALL + r, W - WALL - r), y: rand(WALL + r + 50, H - WALL - r - 90), r };
+      if (g.obstacles.some((o) => inRect(h, o, r))) continue;
+      if (g.hazards.some((o) => dist(h, o) < o.r + r + 10)) continue;
+      if (Math.abs(h.x - W / 2) < r + 30 && h.y < 140) continue; // keep the door reachable
+      g.hazards.push(h);
+      break;
+    }
+  }
+}
+
+function setHazard(g: Game, room: number) {
+  const def = WORLDS[g.world - 1];
+  let kind = def.hazard;
+  if (kind === 'mixed') {
+    const pool: HazardKind[] = ['lava', 'puddle', 'thorns', 'strike', 'bouncy', 'fog'];
+    kind = pool[Math.floor(Math.random() * pool.length)];
+  }
+  g.hazard = kind;
+  g.hazards = [];
+  g.strikes = [];
+  g.strikeIn = 2;
+  const boss = isBossRoom(room);
+  const n = boss ? 2 : 2 + Math.floor(room / 4);
+  if (kind === 'lava') placeHazards(g, 'lava', n, 22, 38);
+  if (kind === 'puddle') placeHazards(g, 'puddle', n + 1, 30, 48);
+  if (kind === 'thorns') placeHazards(g, 'thorns', n + 1, 14, 20);
+}
+
 function enterRoom(g: Game, room: number) {
   // Gems still on the floor are banked on the way out.
   for (const gem of g.gems) gainXp(g, gem.value);
@@ -343,6 +412,7 @@ function enterRoom(g: Game, room: number) {
   g.door = false;
   const layout = LAYOUT_FOR_ROOM[room - 1];
   g.obstacles = layout >= 0 ? LAYOUTS[layout] : [];
+  setHazard(g, room);
   g.shots = [];
   g.orbs = [];
   g.zaps = [];
@@ -353,7 +423,7 @@ function enterRoom(g: Game, room: number) {
   g.enemies = [];
   g.player.x = W / 2;
   g.player.y = H - 70;
-  for (const kind of wave(room)) {
+  for (const kind of wave(room, g.world)) {
     const at = kind === 'boss' ? { x: W / 2, y: H * 0.3 } : freeSpot(g, kind === 'legacy' ? 20 : 14);
     g.enemies.push(makeEnemy(g, kind, room, at, kind === 'boss' ? 1.2 : rand(0.5, 1.1)));
   }
@@ -362,10 +432,15 @@ function enterRoom(g: Game, room: number) {
   g.events.push(isBossRoom(room) ? 'boss' : 'room');
 }
 
-export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'original'): Game {
+export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'original', world = 1): Game {
   const g: Game = {
+    world: clamp(world, 1, WORLD_COUNT),
     room: 1,
     phase: 'play',
+    hazards: [],
+    strikes: [],
+    strikeIn: 2,
+    hazard: 'none',
     player: { x: W / 2, y: H - 70, r: 15, hp: loadout.maxHp, maxHp: loadout.maxHp, speed: 150 * loadout.speedMult, inv: 0, moving: false, face: -Math.PI / 2 },
     enemies: [],
     shots: [],
@@ -473,12 +548,14 @@ function burst(g: Game, x: number, y: number, color: string, count: number, spee
 const ENEMY_COLOR: Record<EnemyKind, string> = { bug: '#ff6b6b', ticket: '#ffd166', legacy: '#9aa3b2', boss: '#c084fc' };
 
 const COINS: Record<EnemyKind, number> = { bug: 1, ticket: 2, legacy: 3, boss: 25 };
+/** Later worlds pay better. */
+const worldPay = (g: Game) => g.loadout.coinMult * (1 + (g.world - 1) * 0.5);
 
 function kill(g: Game, e: Enemy) {
   if (e.dead) return;
   e.dead = true;
   g.kills += 1;
-  g.coins += COINS[e.kind] * g.loadout.coinMult;
+  g.coins += COINS[e.kind] * worldPay(g);
   g.events.push('kill');
   burst(g, e.x, e.y, ENEMY_COLOR[e.kind], e.kind === 'boss' ? 60 : 14, e.kind === 'boss' ? 260 : 140, e.kind === 'boss' ? 5 : 3);
   // XP drops as gems to collect; the boss scatters a handful.
@@ -869,7 +946,7 @@ function updateEnemy(g: Game, e: Enemy, dt: number) {
     e.cd -= dt;
     if (e.cd <= 0) {
       e.cd = rand(1.8, 2.6);
-      g.orbs.push({ x: e.x, y: e.y, vx: ux * 150, vy: uy * 150, r: 6, dmg: e.dmg, life: 4 });
+      g.orbs.push({ x: e.x, y: e.y, vx: ux * 150, vy: uy * 150, r: 6, dmg: e.dmg, life: 4, bounce: g.hazard === 'bouncy' ? 1 : 0 });
     }
   } else if (e.kind === 'boss') {
     updateBoss(g, e, dt, ux, uy);
@@ -913,7 +990,7 @@ function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
     const turn = rand(0, Math.PI * 2);
     for (let i = 0; i < n; i++) {
       const a = turn + (i / n) * Math.PI * 2;
-      g.orbs.push({ x: e.x, y: e.y, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, r: 7, dmg: 14, life: 5 });
+      g.orbs.push({ x: e.x, y: e.y, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, r: 7, dmg: 14, life: 5, bounce: g.hazard === 'bouncy' ? 1 : 0 });
     }
   }
   // Charge: stop and aim for a moment, then dash at where you were.
@@ -1006,6 +1083,35 @@ function updateShot(g: Game, s: Shot, dt: number): boolean {
   return true;
 }
 
+function updateHazards(g: Game, dt: number) {
+  const p = g.player;
+  for (const h of g.hazards) {
+    if (h.kind === 'puddle' || dist(h, p) > h.r + p.r * 0.4) continue;
+    hurtPlayer(g, h.kind === 'lava' ? 8 : 10);
+    if (h.kind === 'lava' && Math.random() < 0.5) burst(g, p.x, p.y + p.r * 0.6, '#ff9a1f', 2, 60, 2.5);
+  }
+  if (g.hazard !== 'strike') return;
+  // The storm: a bolt aims near you, warns for a moment, then hits anything
+  // in the circle, bugs included.
+  g.strikeIn -= dt;
+  if (g.strikeIn <= 0) {
+    g.strikeIn = Math.max(1.4, 3 - g.room * 0.12);
+    const a = rand(0, Math.PI * 2);
+    const d = rand(0, 110);
+    g.strikes.push({ x: clamp(p.x + Math.cos(a) * d, WALL + 30, W - WALL - 30), y: clamp(p.y + Math.sin(a) * d, WALL + 30, H - WALL - 30), t: 0.9 });
+  }
+  g.strikes = g.strikes.filter((st) => {
+    st.t -= dt;
+    if (st.t > 0) return true;
+    g.fx.push({ kind: 'strike', x: st.x, y: st.y, r: 34, a: 0, life: 0.3, max: 0.3 });
+    g.zaps.push({ pts: zigzag({ x: st.x + rand(-20, 20), y: st.y - 240 }, st, 14), life: 0.22 });
+    g.events.push('strike');
+    if (dist(st, p) < 34 + p.r * 0.5) hurtPlayer(g, 14);
+    for (const e of live(g)) if (dist(st, e) < 34 + e.r) hurt(g, e, 40);
+    return false;
+  });
+}
+
 export type Input = { x: number; y: number };
 
 export function update(g: Game, dt: number, input: Input) {
@@ -1015,19 +1121,21 @@ export function update(g: Game, dt: number, input: Input) {
   g.shake = Math.max(0, g.shake - dt);
   const p = g.player;
 
-  // Move, or stand still and shoot.
+  // Move, or stand still and shoot. Puddles slow you down.
   const len = Math.hypot(input.x, input.y);
   p.moving = len > 0.15;
+  const wading = g.hazards.some((h) => h.kind === 'puddle' && dist(h, p) < h.r);
   if (p.moving) {
-    const k = Math.min(1, len);
+    const k = Math.min(1, len) * (wading ? 0.55 : 1);
     p.x += (input.x / len) * k * p.speed * dt;
     p.y += (input.y / len) * k * p.speed * dt;
     p.face = Math.atan2(input.y, input.x);
   }
+  updateHazards(g, dt);
   const atDoor = g.door && Math.abs(p.x - W / 2) < DOOR_HALF - 4 && p.y - p.r < WALL + 6;
   if (atDoor) {
     if (g.room === ROOMS) {
-      g.coins += 50 * g.loadout.coinMult;
+      g.coins += 50 * worldPay(g);
       g.phase = 'won';
       return;
     }
@@ -1070,6 +1178,13 @@ export function update(g: Game, dt: number, input: Input) {
     o.x += o.vx * dt;
     o.y += o.vy * dt;
     o.life -= dt;
+    if (o.bounce > 0 && (o.x < WALL || o.x > W - WALL || o.y < WALL || o.y > H - WALL)) {
+      // Spark worlds: tickets ricochet off the walls once.
+      o.bounce -= 1;
+      if (o.x < WALL || o.x > W - WALL) { o.vx = -o.vx; o.x = clamp(o.x, WALL, W - WALL); }
+      if (o.y < WALL || o.y > H - WALL) { o.vy = -o.vy; o.y = clamp(o.y, WALL, H - WALL); }
+      burst(g, o.x, o.y, '#ffd27a', 3, 80, 2);
+    }
     if (o.life <= 0 || o.x < WALL || o.x > W - WALL || o.y < WALL || o.y > H - WALL) return false;
     if (g.obstacles.some((r) => inRect(o, r))) return false;
     if (Math.hypot(o.x - p.x, o.y - p.y) < o.r + p.r - 3) {
@@ -1111,7 +1226,7 @@ export function update(g: Game, dt: number, input: Input) {
     g.door = true;
     g.orbs = [];
     g.fireballs = [];
-    g.coins += 5 * g.loadout.coinMult;
+    g.coins += 5 * worldPay(g);
     g.events.push('clear');
   }
   if (g.pendingLevels > 0 && g.phase === 'play') offerChoices(g);
