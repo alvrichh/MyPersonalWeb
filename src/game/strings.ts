@@ -168,6 +168,9 @@ const en = {
   landingTagline: 'Catch, squash and master the bugs of every world.',
   lvShort: 'Lv. {level}',
   worldsChip: 'worlds',
+  lockedUntil: 'Locked until you ship world {n}',
+  lockedBtn: 'Locked',
+  completed: 'Completed',
 };
 
 export type Key = keyof typeof en;
@@ -337,6 +340,9 @@ const es: Record<Key, string> = {
   landingTagline: 'Atrapa, elimina y domina los bugs de cada mundo.',
   lvShort: 'Nv. {level}',
   worldsChip: 'mundos',
+  lockedUntil: 'Bloqueado hasta completar el mundo {n}',
+  lockedBtn: 'Bloqueado',
+  completed: 'Completado',
 };
 
 export type Lang = 'en' | 'es';
