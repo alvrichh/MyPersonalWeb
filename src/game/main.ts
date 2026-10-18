@@ -152,7 +152,11 @@ function fitPanel() {
   };
   // Pictures still loading change the content's height: fit again when they land.
   for (const img of panel.querySelectorAll('img')) if (!img.complete) img.addEventListener('load', fitPanel, { once: true });
-  const best = [pick('short'), pick('tall')].sort((a, b) => a.off - b.off)[0];
+  // On phones the three complete horizontal skill cards need the tall frame.
+  // Automatic frame selection can choose the narrower short-frame content area.
+  const best = screen.classList.contains('is-levelup') && window.matchMedia('(max-width: 480px)').matches
+    ? pick('tall')
+    : [pick('short'), pick('tall')].sort((a, b) => a.off - b.off)[0];
   const { f, h: wanted } = pick(best.kind);
   // Never taller than the screen: a long dialog scrolls inside its frame.
   const h = Math.min(wanted, screen.clientHeight - 32);
