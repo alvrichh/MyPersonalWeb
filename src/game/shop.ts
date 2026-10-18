@@ -96,6 +96,8 @@ export type Loadout = {
   armor: number;
   /** Which spirit companion comes with the Spirits skill. */
   spirit: SpiritSkin;
+  /** On call weapons unlocked in the shop's arsenal: only these can come up in level ups. */
+  arsenal: SkillId[];
 };
 
 export const BASE_LOADOUT: Loadout = {
@@ -111,6 +113,7 @@ export const BASE_LOADOUT: Loadout = {
   magnet: 0,
   armor: 0,
   spirit: 'water',
+  arsenal: [],
 };
 
 export const ITEMS: Item[] = [
@@ -159,8 +162,15 @@ export const itemById = (id: ItemId) => ITEMS.find((item) => item.id === id) as 
 /** What each mastery (either mode) adds for good: damage, health, coins and XP. */
 export const MASTERY_STEP = { damage: 0.05, hp: 10, coins: 0.05, xp: 0.05 } as const;
 
-export function buildLoadout(equipped: Partial<Record<Slot, ItemId>>, upgrades: Upgrades = {}, masteries = 0): Loadout {
-  const out: Loadout = { ...BASE_LOADOUT, mult: { ...BASE_LOADOUT.mult }, startSkills: [] };
+/* The arsenal: On call's extra weapons are bought once, and from then on
+   they can come up in that mode's level ups. Dearer the stronger they are,
+   and always under a skin's price. */
+export const ARSENAL: { id: SkillId; price: number }[] = [
+  { id: 'brick', price: 900 }, { id: 'molotov', price: 900 }, { id: 'durian', price: 1100 }, { id: 'mines', price: 1100 },
+  { id: 'drill', price: 1300 }, { id: 'ball', price: 1300 }, { id: 'rocket', price: 1500 },
+];
+export function buildLoadout(equipped: Partial<Record<Slot, ItemId>>, upgrades: Upgrades = {}, masteries = 0, arsenal: SkillId[] = []): Loadout {
+  const out: Loadout = { ...BASE_LOADOUT, mult: { ...BASE_LOADOUT.mult }, startSkills: [], arsenal: [...arsenal] };
   out.maxHp += MASTERY_STEP.hp * masteries;
   for (const k of Object.keys(out.mult) as Category[]) out.mult[k] *= 1 + MASTERY_STEP.damage * masteries;
   out.coinMult *= 1 + MASTERY_STEP.coins * masteries;

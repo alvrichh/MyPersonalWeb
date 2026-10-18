@@ -4,7 +4,7 @@ import { audio, type Sfx } from './audio';
 import { draw, drawRetroFigure, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, type StarColor, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, heroKey } from './save';
 import type { Mode } from './world';
-import { ARMOUR_SLOTS, ITEMS, type SpiritSkin, SLOTS, UPGRADES, WEAPON_SLOTS, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
+import { ARMOUR_SLOTS, ARSENAL, ITEMS, type SpiritSkin, SLOTS, UPGRADES, WEAPON_SLOTS, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
 import { Scene } from './scene';
 import { makeT, pickLang, type Key } from './strings';
 import {
@@ -637,11 +637,26 @@ function shopScreen(note = '') {
       ${action}
     </div>`;
   }).join('');
+  // The arsenal: On call weapons, bought once, then they can come up in that mode's level ups.
+  const arsenal = ARSENAL.map(({ id, price }) => {
+    const owned = save.arsenal.includes(id);
+    const can = save.coins >= price;
+    const action = owned
+      ? `<button class="buy is-worn" disabled>✓ ${t('arsenalOwned')}</button>`
+      : `<button class="buy${can ? '' : ' is-poor'}" data-arsenal="${id}">${t('buy')} · 🪙 ${price}</button>`;
+    return `<div class="item${owned ? ' is-on is-owned' : ''}${!owned && !can ? ' is-locked' : ''}">
+      <span class="icon" aria-hidden="true">${picIcon(EMOJI[id], `skills/${id}.webp`)}</span>
+      <b>${t(`${id}Name` as Key)}</b>
+      <span>${t(`${id}Text` as Key)}</span>
+      ${action}
+    </div>`;
+  }).join('');
   show(`
     <button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
     <div class="shop-head"><h2>${t('shop')}</h2><p class="wallet">${coinsLine()}</p></div>
     ${note ? `<p class="note">${note}</p>` : `<p class="how">${t('earnHint')}</p>`}
     <h3 class="slot">${t('forge')}</h3><p class="how">${t('forgeHint')}</p><div class="items">${forge}</div>
+    <h3 class="slot">${t('arsenal')}</h3><p class="how">${t('arsenalHint')}</p><div class="items">${arsenal}</div>
     ${groups}
     ${backButton('menu')}`, true, false, 'keep-scroll');
 }
@@ -725,7 +740,7 @@ function stylesScreen(note = '') {
 }
 
 function startRun(world = worldIn(), mode = save.mode) {
-  game = newGame(buildLoadout(save.equipped, save.upgrades, masteries()), save.style, world, mode);
+  game = newGame(buildLoadout(save.equipped, save.upgrades, masteries(), save.arsenal), save.style, world, mode);
   preloadFx();
   paused = false;
   shownChoices = '';
@@ -859,6 +874,15 @@ screen.addEventListener('click', (event) => {
     save.coins -= item.price;
     save.owned.push(item.id);
     save.equipped[item.slot] = item.id;
+    persist();
+    audio.play('coin');
+    shopScreen();
+  } else if (target.dataset.arsenal) {
+    const w = ARSENAL.find((a) => a.id === target.dataset.arsenal);
+    if (!w || save.arsenal.includes(w.id)) return;
+    if (save.coins < w.price) { shopScreen(t('notEnough')); return; }
+    save.coins -= w.price;
+    save.arsenal.push(w.id);
     persist();
     audio.play('coin');
     shopScreen();
