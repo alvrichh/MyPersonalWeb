@@ -1083,8 +1083,10 @@ if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) {
 /* The title screen is one big picture, so the HTML shows a bar until the
    pictures the menu and the map need are in (weighted by size); then the bar
    fades and the menu opens. Nothing waits longer than a few seconds. */
+/** Wide landscape screens get the owner's desktop cover (game.css switches at the same query). */
+const WIDE_COVER = window.matchMedia('(min-width: 900px) and (orientation: landscape)').matches;
 const PRELOAD: [string, number][] = [
-  ['./images/game/cover.jpg', 10],
+  [WIDE_COVER ? './images/game/cover-wide.jpg' : './images/game/cover.jpg', 10],
   ['./images/game/landing-bg.jpg', 1],
   ['./images/favicon-192.png', 1],
   ['./images/game/map/bg.jpg', 1],

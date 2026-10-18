@@ -334,6 +334,8 @@ body {
 .screen.is-menu .panel {
   display: contents;
 }
+/* The panel's stone frame must not peek out round the cover. */
+.screen.is-menu .panel::before { display: none; }
 
 .cover {
   position: relative;
@@ -2703,4 +2705,60 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   :root:not([data-retro]) .gear .skill-icon { width: 30px; height: 30px; }
   /* The boss bar lines up under the panel, so the room doesn't shrink when a boss shows up. */
   :root:not([data-retro]) .boss { left: max(10px, env(safe-area-inset-left)); top: calc(max(10px, env(safe-area-inset-top)) + 264px); width: 250px; translate: none; }
+}
+
+/* ------------------------------------------------------- desktop cover */
+/* Wide landscape screens get the owner's desktop cover (cover-wide.jpg,
+   words wiped off the same way), as big as the window allows, with every
+   control re-placed in percentages of that picture. There is no painted
+   exit or menu dot, so the exit is a small drawn button in the corner. */
+@media (min-width: 900px) and (orientation: landscape) {
+  .screen.is-menu { display: grid !important; place-items: center; background-image: url('/images/game/landing-bg-wide.jpg'); }
+  .screen.is-menu[hidden] { display: none !important; }
+  .cover {
+    width: min(100vw, calc(100dvh * 1672 / 941));
+    aspect-ratio: 1672 / 941;
+    background-image: url('/images/game/cover-wide.jpg');
+  }
+  .cover-x {
+    left: 1.2%; top: 3.6%; width: 3.4%; height: 6%;
+    display: grid !important; place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    border-radius: 50% !important;
+    background: rgba(5, 10, 20, 0.7) !important;
+    font-size: 1.3cqw !important; color: #e2e8f0 !important; text-decoration: none;
+  }
+  .cover-x::before { content: '✕'; }
+  .cover-more { display: none !important; }
+  .cover-gear { left: 91.5%; top: 3.2%; width: 3.4%; height: 5.7%; border-radius: 1cqw; }
+  .cover-profile { left: 5.7%; top: 3%; width: 17.2%; height: 8.7%; }
+  .cover-profile-copy { left: 12%; top: 4.1%; width: 10.3%; gap: 0.25cqw; }
+  .cover-profile-copy small { font-size: 0.85cqw; }
+  .cover-profile-copy b { font-size: 1.25cqw; }
+  .cover-profile-copy i { height: 0.85cqw; margin-top: 0.25cqw; width: 97%; }
+  .cover-coins { left: 70.75%; top: 3.2%; width: 9.3%; height: 5.7%; }
+  .cover-worlds { left: 81.1%; top: 3.2%; width: 9.2%; height: 5.7%; }
+  .cover-num { top: 4.3%; height: 3.5%; font-size: 1.3cqw; }
+  .cover-num.is-coins { left: 73.6%; width: 4%; }
+  .cover-num.is-worlds { left: 83.9%; width: 3.2%; }
+  .cover-tagline { left: 39.5%; top: 27.1%; width: 21%; height: 5.4%; font-size: 1.15cqw; }
+  .cover-play { left: 32.3%; top: 61.4%; width: 35.3%; height: 10.8%; border-radius: 1.5cqw; }
+  .cover-play-copy { left: 44.9%; top: 63.4%; width: 21%; height: 7.4%; gap: 0.35cqw; }
+  .cover-play-copy b { font-size: 2.2cqw; }
+  .cover-play-copy small { font-size: 0.9cqw; }
+  .cover-card { width: 21.7%; height: 11.2%; border-radius: 1.2cqw; }
+  .cover-card.is-map { left: 27.6%; top: 73.3%; }
+  .cover-card.is-shop { left: 50.7%; top: 73.3%; }
+  .cover-card.is-styles { left: 27.6%; top: 85.3%; }
+  .cover-card.is-options { left: 50.7%; top: 85.3%; }
+  .cover-card-copy { gap: 0.4cqw; justify-items: start; text-align: left; }
+  .cover-profile-copy { justify-items: start; text-align: left; }
+  .cover-card-copy b { font-size: 1.2cqw; }
+  .cover-card-copy small { font-size: 0.95cqw; }
+  .cover-card-copy.is-map { left: 35.4%; top: 77%; width: 11.5%; height: 6.4%; }
+  .cover-card-copy.is-shop { left: 58.4%; top: 77%; width: 10.5%; height: 6.4%; }
+  .cover-card-copy.is-styles { left: 36.6%; top: 89.2%; width: 11%; height: 5.6%; }
+  .cover-card-copy.is-options { left: 59.5%; top: 89.6%; width: 11%; height: 4.2%; }
+  .cover-best { left: 27.6%; top: 97.1%; width: 44.8%; font-size: 0.8cqw; }
+  .cover-mode { left: 42.5%; top: 70.4%; width: 15%; height: 2.6%; font-size: 0.85cqw; }
 }
