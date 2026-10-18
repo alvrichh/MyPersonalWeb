@@ -105,13 +105,8 @@ function bankRun(g: Game): number | null {
 
 /* ------------------------------------------------------------------ screens */
 
-const ICONS: Record<SkillId, string> = {
-  sword: '🗡️', blades: '🌀', hammer: '🔨',
-  storm: '🌩️', fireball: '☄️', frost: '❄️', spirits: '👻',
-  knives: '🔪', boomerang: '🪃',
-  fire: '🔥', water: '💧', leaf: '🍃', bolt: '⚡', spark: '✨', ghost: '🫥', double: '🏹', speed: '⏩',
-  power: '💥', heart: '💗',
-};
+/** The painted medallion of a skill (static/images/game/skills/, one per skill id). */
+const skillIcon = (id: SkillId | 'bow', size = 40) => `<img class="skill-icon" src="./images/game/skills/${id === 'bow' ? 'double' : id}.webp" width="${size}" height="${size}" alt="">`;
 const CATEGORY_LABEL: Record<Category, Key> = { melee: 'catMelee', magic: 'catMagic', ranged: 'catRanged', upgrade: 'catUpgrade' };
 const SLOT_LABEL: Record<Slot, Key> = { head: 'slotHead', charm: 'slotCharm', relic: 'slotRelic' };
 const STYLE_ICON: Record<EnemyStyle, string> = { world: '🌍', original: '🐞', demon: '😈', viking: '🪓', jungle: '🕷️', greek: '🏛️', robot: '🤖', nightmare: '💀', random: '🎲' };
@@ -330,7 +325,7 @@ function choiceScreen(g: Game) {
       const cat = CATEGORY[id];
       const fresh = cat !== 'upgrade' && g.skills[id] === 0;
       const level = id === 'heart' ? '' : `<span class="lvl">${fresh ? t('newWeapon') : t('skillLevel', { level: g.skills[id] + 1 })}</span>`;
-      return `<button class="skill skill-${cat}" data-skill="${id}"><span class="icon" aria-hidden="true">${ICONS[id]}</span><span class="cat">${t(CATEGORY_LABEL[cat])}</span><b>${name}</b><span>${text}</span>${level}</button>`;
+      return `<button class="skill skill-${cat}" data-skill="${id}"><span class="icon" aria-hidden="true">${skillIcon(id, 56)}</span><span class="cat">${t(CATEGORY_LABEL[cat])}</span><b>${name}</b><span>${text}</span>${level}</button>`;
     })
     .join('');
   show(`${head('levelup', t('levelUp'))}<p class="kicker">${t('level', { level: g.level })}</p><p>${t('choose')}</p><div class="skills">${cards}</div>`, true, false, 'is-levelup');
@@ -779,10 +774,11 @@ function step(now: number) {
     hudXp.style.width = `${(g.xp / g.xpNext) * 100}%`;
     hudHp.style.width = `${(Math.max(0, g.player.hp) / g.player.maxHp) * 100}%`;
     hudCoins.textContent = String(Math.floor(g.coins));
-    const gear = ['🏹1', ...ownedWeapons(g).map((id) => `${ICONS[id]}${g.skills[id]}`)].join(' ');
-    if (hudGear.dataset.gear !== gear) {
-      hudGear.dataset.gear = gear;
-      hudGear.innerHTML = gear.split(' ').map((item) => `<span>${item.slice(0, -1)}<sub>${item.slice(-1)}</sub></span>`).join('');
+    const gear = [['bow', 1] as const, ...ownedWeapons(g).map((id) => [id, g.skills[id]] as const)];
+    const gearKey = gear.map(([id, lvl]) => `${id}${lvl}`).join(' ');
+    if (hudGear.dataset.gear !== gearKey) {
+      hudGear.dataset.gear = gearKey;
+      hudGear.innerHTML = gear.map(([id, lvl]) => `<span>${skillIcon(id, 22)}<sub>${lvl}</sub></span>`).join('');
     }
     const boss = isBossRoom(g.room) ? g.enemies.find((e) => e.kind === 'boss' && e.spawn <= 0) : undefined;
     bossBar.hidden = !boss;
