@@ -384,16 +384,22 @@
   --fx-tint: color-mix(in srgb, var(--accent) 60%, #ff8fb8);
   transform: rotate(var(--orbit)) translateX(var(--orbit-r)) rotate(calc(var(--orbit) * -1));
   animation:
-    fx-orbit var(--dur) cubic-bezier(0.45, 0.1, 0.55, 0.95) var(--delay) forwards,
-    fx-fade var(--dur) linear var(--delay) forwards;
+    fx-orbit var(--dur) cubic-bezier(0.4, 0.15, 0.55, 0.9) var(--delay) forwards,
+    fx-heart-fade var(--dur) linear var(--delay) forwards;
 
   /* The beat goes on the shape, so it doesn't change the orbit's radius. */
-  &::before { animation: fx-beat 0.7s ease-out var(--delay) infinite; }
+  &::before { animation: fx-beat 0.9s ease-out var(--delay) infinite; }
 }
 
 @keyframes fx-orbit {
   from { --orbit: var(--a0); --orbit-r: var(--r0); }
   to { --orbit: calc(var(--a0) + var(--sweep)); --orbit-r: var(--r1); }
+}
+
+@keyframes fx-heart-fade {
+  0% { opacity: 0; }
+  6%, 65% { opacity: 1; }
+  100% { opacity: 0; }
 }
 
 @keyframes fx-beat {
