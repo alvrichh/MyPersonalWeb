@@ -52,7 +52,13 @@ const bossBar = $<HTMLElement>('bossBar');
 const bossName = $<HTMLElement>('bossName');
 const bossHp = $<HTMLElement>('bossHp');
 const pauseBtn = $<HTMLButtonElement>('pauseBtn');
-$<HTMLAnchorElement>('backLink').setAttribute('aria-label', t('back'));
+const backLink = $<HTMLAnchorElement>('backLink');
+backLink.setAttribute('aria-label', t('back'));
+backLink.addEventListener('click', (event) => {
+  if (!game || game.phase !== 'play') return;
+  event.preventDefault();
+  leaveScreen('site');
+});
 pauseBtn.setAttribute('aria-label', t('pause'));
 
 const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -278,11 +284,20 @@ function choiceScreen(g: Game) {
   show(`<p class="kicker">${t('level', { level: g.level })}</p><h2>${t('levelUp')}</h2><p>${t('choose')}</p><div class="skills">${cards}</div>`, true);
 }
 
+/* Both ways out of a run (the HUD arrow and Quit in the pause menu) ask
+   first; a mid-run tap on the arrow is an easy slip on a phone. */
+function leaveScreen(to: 'site' | 'menu') {
+  paused = true;
+  show(`<h2>${t('leaveTitle')}</h2><p>${t('leaveText')}</p>
+    <button class="primary" data-act="resume">${t('keepPlaying')}</button>
+    <button class="ghost" data-act="${to === 'site' ? 'leave-site' : 'quit'}">${t(to === 'site' ? 'leaveSite' : 'leaveMenu')}</button>`);
+}
+
 function pauseScreen() {
   show(`<h2>${t('paused')}</h2>
     <button class="primary" data-act="resume">${t('resume')}</button>
     <button class="ghost" data-act="options-pause">⚙ ${t('options')}</button>
-    <button class="ghost" data-act="quit">${t('quit')}</button>`);
+    <button class="ghost" data-act="confirm-quit">${t('quit')}</button>`);
 }
 
 function optionsScreen() {
@@ -365,10 +380,14 @@ screen.addEventListener('click', (event) => {
   }
   else if (act === 'resume') { paused = false; hide(); }
   else if (act === 'pause') pauseScreen();
+  else if (act === 'confirm-quit') leaveScreen('menu');
   else if (act === 'quit') {
     if (game) bankRun(game);
     paused = false;
     menuScreen();
+  } else if (act === 'leave-site') {
+    if (game) { bankRun(game); persist(); }
+    location.href = './index.html';
   } else if (act === 'menu') menuScreen();
   else if (act === 'shop') shopScreen();
   else if (act === 'styles') stylesScreen();
