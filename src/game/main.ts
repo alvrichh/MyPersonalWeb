@@ -568,7 +568,16 @@ function drawMenuBackdrop(now: number) {
 }
 
 let last = performance.now();
+/* One bad frame must never stop the game: the next one is always booked. */
 function frame(now: number) {
+  try {
+    step(now);
+  } catch (error) {
+    console.error(error);
+  }
+  requestAnimationFrame(frame);
+}
+function step(now: number) {
   const dt = Math.min(0.033, (now - last) / 1000);
   last = now;
   fitIfMoved();
@@ -643,7 +652,6 @@ function frame(now: number) {
     ctx.fill();
     ctx.globalAlpha = 1;
   }
-  requestAnimationFrame(frame);
 }
 
 /* --------------------------------------------------------------- loading */
