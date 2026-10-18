@@ -47,6 +47,7 @@ const hudRoom = $<HTMLElement>('hudRoom');
 const hudLevel = $<HTMLElement>('hudLevel');
 const hudXp = $<HTMLElement>('hudXp');
 const hudHp = $<HTMLElement>('hudHp');
+hudHp.parentElement?.setAttribute('aria-label', lang === 'es' ? 'Vida' : 'Health');
 const hudGear = $<HTMLElement>('hudGear');
 const hudCoins = $<HTMLElement>('hudCoins');
 const bossBar = $<HTMLElement>('bossBar');
@@ -175,6 +176,9 @@ function menuScreen() {
 const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
 
 function endScreen(g: Game) {
+  hud.hidden = true;
+  hudGear.hidden = true;
+  bossBar.hidden = true;
   const won = g.phase === 'won';
   const earned = Math.floor(g.coins);
   const unlocked = bankRun(g);
@@ -412,6 +416,7 @@ function startRun(world = save.world) {
   hud.hidden = false;
   hudGear.hidden = false;
   hide();
+  resize(); // Reserve the live HUD + weapons row, including the iOS safe area.
   flash(`${worldName(game.world)} · ${t('sprint', { room: 1 })}`);
   audio.start();
   audio.setIntensity(0.2);
@@ -635,7 +640,8 @@ function resize() {
   fitted = { width, height, dpr };
   canvas.width = Math.round(width * dpr);
   canvas.height = Math.round(height * dpr);
-  const top = 86; // room for the HUD and the weapons row
+  const top = Math.max(108, hud.hidden ? 108 : hud.getBoundingClientRect().height + 30);
+  // Keep the game room below the skinned HUD and the weapons row on notched phones.
   const scale = Math.min(width / W, (height - top - 8) / H);
   view.scale = scale;
   view.dpr = dpr;
