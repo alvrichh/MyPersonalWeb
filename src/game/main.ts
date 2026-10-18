@@ -754,7 +754,10 @@ function resize() {
   fitted = { width, height, dpr };
   canvas.width = Math.round(width * dpr);
   canvas.height = Math.round(height * dpr);
-  const top = save.retro ? 86 : Math.max(108, hud.hidden ? 108 : hud.getBoundingClientRect().height + 30);
+  // The room starts under the HUD and the weapons row; during a boss fight,
+  // under the boss bar too, so it never covers the playfield.
+  const bossH = !save.retro && !bossBar.hidden ? bossBar.getBoundingClientRect().height + 4 : 0;
+  const top = save.retro ? 86 : Math.max(108, hud.hidden ? 108 : hud.getBoundingClientRect().height + 30) + bossH;
   // Keep the game room below the skinned HUD and the weapons row on notched phones.
   const scale = Math.min(width / W, (height - top - 8) / H);
   view.scale = scale;
@@ -852,7 +855,10 @@ function step(now: number) {
       hudGear.innerHTML = gear.map(([id, lvl]) => `<span>${skillIcon(id, 22)}<sub>${lvl}</sub></span>`).join('');
     }
     const boss = isBossRoom(g.room) ? g.enemies.find((e) => e.kind === 'boss' && e.spawn <= 0) : undefined;
-    bossBar.hidden = !boss;
+    if (bossBar.hidden !== !boss) {
+      bossBar.hidden = !boss;
+      requestAnimationFrame(resize); // the room makes room for the bar (after layout)
+    }
     if (boss) {
       bossName.textContent = t(BOSS_NAME[boss.look]);
       setMeter(bossHp, Math.max(0, boss.hp) / boss.maxHp);

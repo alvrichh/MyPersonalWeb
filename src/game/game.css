@@ -2157,47 +2157,93 @@ body {
   .hud-room { padding-inline: 5px; }
 }
 
-/* Painted meters (owner's layered bars): the frame keeps its shape, the
-   fill sits at the coordinates from the pack's layout.json and is clipped
-   to --p (set by setMeter in main.ts), never resized. */
+/* Painted meters (owner's HUD sheet): the frame keeps its shape, the fill
+   sits on the track measured on each picture (percentages below) and is
+   clipped to --p (setMeter in main.ts), never resized. The health picture
+   carries its own heart, so the text heart is hidden here. */
+/* Equal halves, so the health and XP bars are the same width and mirror each other. */
+:root:not([data-retro]) .hud { grid-template-columns: 40px minmax(0, 1fr) minmax(0, 1fr) 40px; grid-template-rows: 40px 40px; }
+:root:not([data-retro]) .hud-coins { justify-self: end; }
+:root:not([data-retro]) .hud-hp { grid-column: 1 / 3; }
+:root:not([data-retro]) .hud-xp { grid-column: 3 / 5; }
+:root:not([data-retro]) .hud-hp,
+:root:not([data-retro]) .hud-xp { display: flex; align-items: center; gap: 6px; min-width: 0; }
+:root:not([data-retro]) .hud-hp > span { display: none; }
+:root:not([data-retro]) .hud-xp > span { flex: none; }
 :root:not([data-retro]) .hud-hp i,
 :root:not([data-retro]) .hud-xp i,
 :root:not([data-retro]) .boss-meter {
-  flex: none;
+  position: relative;
+  flex: 1;
   width: auto;
-  height: 34px;
-  aspect-ratio: 2172 / 480;
+  height: auto;
+  min-width: 0;
+  aspect-ratio: 493 / 102;
   overflow: visible;
-  background: url('/images/game/ui/meter_hp_frame.webp') center / 100% 100% no-repeat;
+  background: url('/images/game/ui/meter2_hp_frame.webp') center / 100% 100% no-repeat;
   filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.5));
 }
-:root:not([data-retro]) .hud-xp i { background-image: url('/images/game/ui/meter_xp_frame.webp'); }
+:root:not([data-retro]) .hud-xp i { aspect-ratio: 532 / 56; background-image: url('/images/game/ui/meter2_xp_frame.webp'); }
 :root:not([data-retro]) .hud-hp i b,
 :root:not([data-retro]) .hud-xp i b,
 :root:not([data-retro]) .boss-meter b {
+  position: absolute;
   inset: auto;
-  left: 12.8913%;
-  top: 34.7917%;
-  width: 74.5856% !important;
-  height: 31.6667%;
-  background: url('/images/game/ui/meter_hp_fill.webp') center / 100% 100% no-repeat;
+  left: 21.298%;
+  top: 40.196%;
+  width: 77.282% !important;
+  height: 28.431%;
+  background: url('/images/game/ui/meter2_hp_fill.webp') center / 100% 100% no-repeat;
   clip-path: inset(0 calc(100% - var(--p, 0%)) 0 0);
   transition: clip-path 0.18s ease-out;
   filter: none;
 }
 :root:not([data-retro]) .hud-xp i b {
-  left: 12.2928%;
-  top: 33.9583%;
-  width: 76.7035% !important;
-  height: 30.4167%;
-  background-image: url('/images/game/ui/meter_xp_fill.webp');
+  left: 4.699%;
+  top: 19.643%;
+  width: 91.917% !important;
+  height: 57.143%;
+  background-image: url('/images/game/ui/meter2_xp_fill.webp');
 }
-:root:not([data-retro]) .hud { grid-template-rows: 40px 34px; }
-:root:not([data-retro]) .hud-hp,
-:root:not([data-retro]) .hud-xp { justify-content: flex-start; }
-:root:not([data-retro]) .hud-hp > span,
-:root:not([data-retro]) .hud-xp > span { flex: none; }
-:root:not([data-retro]) .boss-meter { width: min(100%, 250px); height: auto; justify-self: center; }
+
+/* Boss: no crest in play, so the bar stays a thin band under the HUD. The
+   name sits in the horned plate, the health in the spiked red bar. */
+:root:not([data-retro]) .boss {
+  top: calc(max(8px, env(safe-area-inset-top)) + 118px);
+  width: min(270px, 74vw);
+  gap: 0;
+}
+:root:not([data-retro]) .boss-title {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: min(160px, 58%);
+  aspect-ratio: 383 / 111;
+  margin: 0 auto -7px;
+  background: url('/images/game/ui/boss_plate.webp') center / 100% 100% no-repeat;
+}
+:root:not([data-retro]) .boss-title img { display: none; }
+:root:not([data-retro]) .boss-title span {
+  margin: 0;
+  padding: 0 16% 4%;
+  font: 700 clamp(0.72rem, 3.2vw, 0.9rem)/1.05 var(--font);
+  color: #fff;
+  text-shadow: 0 2px 4px #0d0822;
+}
+:root:not([data-retro]) .boss-meter {
+  flex: none;
+  width: 100%;
+  aspect-ratio: 661 / 138;
+  background-image: url('/images/game/ui/meter2_boss_frame.webp');
+}
+:root:not([data-retro]) .boss-meter b {
+  left: 8.169%;
+  top: 33.333%;
+  width: 83.661% !important;
+  height: 31.884%;
+  background-image: url('/images/game/ui/meter2_boss_fill.webp');
+}
 
 /* Keep equipped-weapon badges below the two-row HUD on notched phones. */
 .gear { top: calc(max(8px, env(safe-area-inset-top)) + 74px); }
