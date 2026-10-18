@@ -32,7 +32,7 @@ export type ItemId =
   | 'wizardHat' | 'gladHelm' | 'bandana' | 'crown'
   | 'potion' | 'phoenix' | 'pompom' | 'plate'
   | 'windBoots' | 'ironBoots' | 'magnetBoots'
-  | 'orb' | 'hourglass' | 'spellbook' | 'lantern'
+  | 'orb' | 'hourglass' | 'spellbook' | 'lantern' | 'seniorTome'
   | 'spiritFire' | 'spiritTide' | 'spiritThorn' | 'spiritVolt' | 'spiritShade'
   | 'keySword' | 'chainBlades' | 'warHammer'
   | 'quiver' | 'knifeSet' | 'huntBoomerang';
@@ -71,6 +71,8 @@ export type Item = {
   pic?: string;
   /** What wearing it does to a fresh run. */
   effect: Partial<Loadout>;
+  /** A legendary item: absurdly strong and absurdly dear (still under a skin's price). */
+  legendary?: boolean;
 };
 
 /** The bonuses a run starts with, from the items worn. */
@@ -82,6 +84,8 @@ export type Loadout = {
   /** Extra lives: get back up once with half your health. */
   revives: number;
   startSkills: SkillId[];
+  /** This many random weapons start at their top level, with the upgrade that evolves them. */
+  startMaxed: number;
   maxHp: number;
   speedMult: number;
   /** Weapons fire this much faster. */
@@ -100,6 +104,7 @@ export const BASE_LOADOUT: Loadout = {
   coinMult: 1,
   revives: 0,
   startSkills: [],
+  startMaxed: 0,
   maxHp: 100,
   speedMult: 1,
   hasteMult: 1,
@@ -127,6 +132,7 @@ export const ITEMS: Item[] = [
   { id: 'orb', slot: 'magic', price: 150, icon: '🔮', pic: 'items/orb.webp', effect: { xpMult: 1.25 } },
   { id: 'hourglass', slot: 'magic', price: 200, icon: '⏳', pic: 'items/hourglass.webp', effect: { hasteMult: 1.15 } },
   { id: 'spellbook', slot: 'magic', price: 260, icon: '📖', pic: 'items/spellbook.webp', effect: { startSkills: ['fireball'] } },
+  { id: 'seniorTome', slot: 'magic', price: 4500, icon: '📜', pic: 'items/seniorTome.webp', legendary: true, effect: { startMaxed: 2 } },
   { id: 'lantern', slot: 'magic', price: 300, icon: '👻', pic: 'spirits/water-float-0.webp', effect: { startSkills: ['spirits'], spirit: 'water' } },
   { id: 'spiritFire', slot: 'magic', price: 420, icon: '👻', pic: 'spirits/fire-float-0.webp', effect: { startSkills: ['spirits'], spirit: 'fire' } },
   { id: 'spiritTide', slot: 'magic', price: 420, icon: '👻', pic: 'spirits/tide-float-0.webp', effect: { startSkills: ['spirits'], spirit: 'tide' } },
@@ -176,6 +182,7 @@ export function buildLoadout(equipped: Partial<Record<Slot, ItemId>>, upgrades: 
     if (effect.coinMult) out.coinMult *= effect.coinMult;
     if (effect.revives) out.revives += effect.revives;
     if (effect.startSkills) out.startSkills.push(...effect.startSkills);
+    if (effect.startMaxed) out.startMaxed += effect.startMaxed;
     if (effect.maxHp) out.maxHp += effect.maxHp - BASE_LOADOUT.maxHp;
     if (effect.speedMult) out.speedMult *= effect.speedMult;
     if (effect.hasteMult) out.hasteMult *= effect.hasteMult;

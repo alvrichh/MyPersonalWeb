@@ -620,6 +620,14 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     events: [],
   };
   for (const s of loadout.startSkills) g.skills[s] = Math.max(g.skills[s], 1);
+  // The Senior's Tome: random weapons at their top level, each with its partner, so the first level up offers to evolve them.
+  const ready = (Object.keys(EVO_PARTNER) as SkillId[]).filter((w) => !g.skills[w]);
+  for (let i = 0; i < loadout.startMaxed && ready.length; i++) {
+    const w = ready.splice(Math.floor(Math.random() * ready.length), 1)[0];
+    g.skills[w] = maxLevel(w);
+    const partner = EVO_PARTNER[w]!;
+    g.skills[partner] = Math.max(g.skills[partner], 1);
+  }
   if (mode === 'horde') {
     // It also starts at a higher bar: level 4 or so after the first minute, not 8.
     g.xpNext = 45;
