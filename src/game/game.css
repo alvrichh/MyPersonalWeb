@@ -1133,7 +1133,7 @@ body {
   }
 
   .panel .skills > .skill + .skill {
-    margin-block-start: clamp(-42px, -10vw, -30px);
+    margin-block-start: clamp(-64px, -16vw, -50px);
   }
 
   /* Stack like physical cards. Keep the upper card and its level text
