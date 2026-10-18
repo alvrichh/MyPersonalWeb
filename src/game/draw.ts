@@ -638,20 +638,22 @@ function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accen
     }
     if (a.kind === 'arrow' && element) {
       const arrow = arrowImage(element);
+      // The lightning arrow carries its own crackle along the shaft: no separate trail, a little longer.
+      const whole = element === 'bolt';
       const trail = arrowImage(`${element}-trail`);
       if (arrow.complete && arrow.naturalWidth) {
         // The tip sits on the shot's point; the picture points right.
         ctx.save();
         ctx.translate(a.x, a.y);
         ctx.rotate(Math.atan2(a.vy, a.vx));
-        if (trail.complete && trail.naturalWidth) {
+        if (!whole && trail.complete && trail.naturalWidth) {
           const tw = 58;
           const th = (tw * trail.naturalHeight) / trail.naturalWidth;
           ctx.globalAlpha = 0.85;
           ctx.drawImage(trail, -tw, -th / 2, tw, th);
           ctx.globalAlpha = 1;
         }
-        const w = 36;
+        const w = whole ? 42 : 36;
         const h = (w * arrow.naturalHeight) / arrow.naturalWidth;
         ctx.drawImage(arrow, -w, -h / 2, w, h);
         ctx.restore();
