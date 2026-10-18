@@ -8,8 +8,6 @@ export type Palette = { accent: string; accent2: string; ink: string; rainbow: b
 
 export type View = { scale: number; ox: number; oy: number; dpr: number };
 
-const avatar = new Image();
-avatar.src = './images/favicon-192.png';
 
 const hue = (t: number, l = 70, s = 85) => `hsl(${Math.round((t * 60) % 360)} ${s}% ${l}%)`;
 
@@ -173,29 +171,58 @@ function drawStatue(ctx: CanvasRenderingContext2D, st: Statue, glow: string, now
   }
 }
 
+/* The hero: the owner's painted figure, one picture per pose. Feet on the
+   shadow, flipped to face left; one walking frame alternates with the idle
+   one for a step cycle. The circle in world.ts is still what collides. */
+type Pose = 'idle' | 'walk' | 'back' | 'shoot' | 'cheer';
+const HERO: Record<Pose, HTMLImageElement> = Object.fromEntries(
+  (['idle', 'walk', 'back', 'shoot', 'cheer'] as Pose[]).map((pose) => {
+    const img = new Image();
+    img.src = `./images/game/hero/${pose}.webp`;
+    return [pose, img];
+  }),
+) as Record<Pose, HTMLImageElement>;
+
+function heroPose(g: Game, now: number): Pose {
+  const p = g.player;
+  if (p.moving) {
+    if (Math.sin(p.face) < -0.75) return 'back';
+    return Math.floor(now * 7) % 2 ? 'walk' : 'idle';
+  }
+  if (g.enemies.length === 0 && g.door) return 'cheer';
+  if (g.enemies.some((e) => e.spawn <= 0)) return 'shoot';
+  return 'idle';
+}
+
 function drawPlayer(ctx: CanvasRenderingContext2D, g: Game, accent: string, accent2: string, now: number) {
   const p = g.player;
   if (p.inv > 0 && Math.floor(now * 20) % 2 === 0) return;
-  // Shadow, ring and the portfolio's little figure.
   ctx.fillStyle = 'rgba(0,0,0,0.4)';
   ctx.beginPath();
   ctx.ellipse(p.x, p.y + p.r * 0.9, p.r * 0.9, p.r * 0.35, 0, 0, Math.PI * 2);
   ctx.fill();
-  const ring = ctx.createLinearGradient(p.x - p.r, p.y - p.r, p.x + p.r, p.y + p.r);
-  ring.addColorStop(0, accent);
-  ring.addColorStop(1, accent2);
-  ctx.fillStyle = ring;
-  ctx.beginPath();
-  ctx.arc(p.x, p.y, p.r + 2.5, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.save();
-  ctx.beginPath();
-  ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-  ctx.clip();
-  ctx.fillStyle = '#e9edf5';
-  ctx.fillRect(p.x - p.r, p.y - p.r, p.r * 2, p.r * 2);
-  if (avatar.complete && avatar.naturalWidth) ctx.drawImage(avatar, p.x - p.r, p.y - p.r, p.r * 2, p.r * 2);
-  ctx.restore();
+  const pose = heroPose(g, now);
+  const img = HERO[pose];
+  if (img.complete && img.naturalWidth) {
+    const h = p.r * (pose === 'cheer' ? 3.1 : 2.7);
+    const w = (h * img.naturalWidth) / img.naturalHeight;
+    const bob = p.moving ? Math.abs(Math.sin(now * 14)) * 2 : pose === 'cheer' ? Math.abs(Math.sin(now * 6)) * 3 : 0;
+    const left = Math.cos(p.face) < -0.2 && pose !== 'back' && pose !== 'cheer';
+    ctx.save();
+    ctx.translate(p.x, p.y + p.r * 0.9 - bob);
+    if (left) ctx.scale(-1, 1);
+    ctx.drawImage(img, -w / 2, -h, w, h);
+    ctx.restore();
+  } else {
+    // Until the picture is in: the ring as before.
+    const ring = ctx.createLinearGradient(p.x - p.r, p.y - p.r, p.x + p.r, p.y + p.r);
+    ring.addColorStop(0, accent);
+    ring.addColorStop(1, accent2);
+    ctx.fillStyle = ring;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r + 2.5, 0, Math.PI * 2);
+    ctx.fill();
+  }
   // Aim marker.
   ctx.fillStyle = accent;
   ctx.beginPath();
@@ -205,11 +232,12 @@ function drawPlayer(ctx: CanvasRenderingContext2D, g: Game, accent: string, acce
   ctx.fill();
   // Health bar above the head.
   const w = 34;
+  const top = p.y - p.r * 2.5;
   ctx.fillStyle = 'rgba(0,0,0,0.55)';
-  roundRect(ctx, p.x - w / 2, p.y - p.r - 14, w, 5, 2.5);
+  roundRect(ctx, p.x - w / 2, top, w, 5, 2.5);
   ctx.fill();
   ctx.fillStyle = p.hp / p.maxHp > 0.3 ? '#67dfa0' : '#ff6b6b';
-  roundRect(ctx, p.x - w / 2, p.y - p.r - 14, (w * p.hp) / p.maxHp, 5, 2.5);
+  roundRect(ctx, p.x - w / 2, top, (w * p.hp) / p.maxHp, 5, 2.5);
   ctx.fill();
 }
 
@@ -1732,7 +1760,7 @@ function drawHat(ctx: CanvasRenderingContext2D, g: Game, hat: ItemId, accent: st
   if (p.inv > 0 && Math.floor(performance.now() / 50) % 2 === 0) return;
   const r = p.r;
   ctx.save();
-  ctx.translate(p.x, p.y - r * 0.55);
+  ctx.translate(p.x, p.y - r * 1.45);
   if (hat === 'wizardHat') {
     ctx.fillStyle = '#4c1d95';
     ctx.beginPath();
