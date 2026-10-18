@@ -2359,3 +2359,34 @@ body {
 
 /* Level-up: the level line sits close to the "choose" line. */
 .screen.is-levelup .panel-in > .kicker { margin-bottom: -8px; }
+
+/* Wide screens: the level-up picks on the owner's tall cards (ring, title
+   plate, body, bottom plate measured on the picture), big enough that the
+   longest descriptions fit without clipping. Phones keep the plain rows. */
+@media (min-width: 481px) {
+  :root:not([data-retro]) .screen.is-levelup .panel-wide { width: min(100%, 960px); }
+  :root:not([data-retro]) .screen.is-levelup .skills { grid-template-columns: repeat(3, minmax(0, 210px)); justify-content: center; gap: 16px; width: 100%; max-width: none; }
+  :root:not([data-retro]) .panel .skill {
+    --card: url('/images/game/ui/tall_blue.webp');
+    grid-template-rows: 31.5% 15.7% minmax(0, 1fr) 19.1%;
+    align-content: stretch;
+    gap: 0;
+    aspect-ratio: 275 / 409;
+    padding: 0 12% 11%;
+    border: 0;
+    border-radius: 0;
+    background: var(--card) center / 100% 100% no-repeat;
+    container-type: inline-size;
+  }
+  :root:not([data-retro]) .panel .skill-melee { --card: url('/images/game/ui/tall_orange.webp'); }
+  :root:not([data-retro]) .panel .skill-magic { --card: url('/images/game/ui/tall_purple.webp'); }
+  :root:not([data-retro]) .panel .skill-upgrade { --card: url('/images/game/ui/tall_green.webp'); }
+  :root:not([data-retro]) .panel .skill .icon { grid-row: 1; align-self: center; }
+  :root:not([data-retro]) .panel .skill .icon .skill-icon { width: 36cqw; height: 36cqw; margin-top: 3cqw; }
+  :root:not([data-retro]) .panel .skill .cat { display: none; }
+  :root:not([data-retro]) .panel .skill b { grid-row: 2; align-self: center; font-size: 8.4cqw; line-height: 1.05; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); }
+  :root:not([data-retro]) .panel .skill > span:not(.icon):not(.cat):not(.lvl) { grid-row: 3; align-self: center; font-size: 7.2cqw; line-height: 1.22; }
+  :root:not([data-retro]) .panel .skill .lvl { grid-row: 4; align-self: center; font-size: 6.8cqw; color: #fff; }
+  :root:not([data-retro]) .panel .skill:hover,
+  :root:not([data-retro]) .panel .skill:focus-visible { background: var(--card) center / 100% 100% no-repeat; filter: brightness(1.15); }
+}
