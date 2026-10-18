@@ -104,7 +104,7 @@ export const CATEGORY: Record<SkillId, Category> = {
 export const SKILLS = Object.keys(CATEGORY) as SkillId[];
 const WEAPONS = SKILLS.filter((s) => CATEGORY[s] !== 'upgrade');
 const MAX_WEAPONS = 4;
-const maxLevel = (s: SkillId) => (s === 'heart' ? 99 : s === 'double' ? 2 : 3);
+export const maxLevel = (s: SkillId) => (s === 'heart' ? 99 : s === 'double' ? 2 : s === 'blades' ? 5 : 3);
 
 /* ---------------------------------------------------------------- the cast */
 
@@ -915,6 +915,12 @@ function slamHammer(g: Game) {
 }
 
 export const BLADE_ORBIT = 46;
+/* Blades by level: one more blade each level up to four, then they grow
+   (a third bigger at 4, with a wider orbit; at 5 bigger still, and a fifth
+   blade). The hit reach grows with the picture. */
+export const bladeCount = (lv: number) => [0, 2, 3, 4, 4, 5][Math.min(lv, 5)];
+export const bladeScale = (lv: number) => (lv >= 5 ? 1.7 : lv >= 4 ? 1.35 : 1);
+export const bladeOrbit = (lv: number) => BLADE_ORBIT * (lv >= 5 ? 1.3 : lv >= 4 ? 1.15 : 1);
 const BLADE_SPARK: Record<BladeElement, string> = { steel: '#e5e7eb', fire: '#ffb347', ice: '#bae6fd', volt: '#fde047', shade: '#e879f9' };
 
 /** Melee hits heal you a little: the reward for fighting up close. */
@@ -955,15 +961,17 @@ function spinBlades(g: Game, dt: number) {
     if (t - dt <= 0) gear.bladeHits.delete(id);
     else gear.bladeHits.set(id, t - dt);
   }
-  const n = lv + 1;
+  const n = bladeCount(lv);
+  const orbit = bladeOrbit(lv);
+  const reach = 10 * bladeScale(lv);
   const el = bladeElement(g);
   const dmg = (14 + 5 * (lv - 1)) * power(g, 'melee') * (el === 'shade' ? 1.3 : 1);
   for (let i = 0; i < n; i++) {
     const a = gear.bladeAngle + (i / n) * Math.PI * 2;
-    const bx = p.x + Math.cos(a) * BLADE_ORBIT;
-    const by = p.y + Math.sin(a) * BLADE_ORBIT;
+    const bx = p.x + Math.cos(a) * orbit;
+    const by = p.y + Math.sin(a) * orbit;
     for (const e of live(g)) {
-      if (gear.bladeHits.has(e.id) || Math.hypot(e.x - bx, e.y - by) > e.r + 10) continue;
+      if (gear.bladeHits.has(e.id) || Math.hypot(e.x - bx, e.y - by) > e.r + reach) continue;
       gear.bladeHits.set(e.id, 0.4);
       hurt(g, e, dmg, away(p, e, 90));
       if (el === 'fire') { e.burn = 2; e.burnDps = Math.max(e.burnDps, 6); }
