@@ -67,6 +67,7 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   else drawPlayer(ctx, g, pal, now);
   if (g.skills.blades) drawBlades(ctx, g, accent);
   drawFx(ctx, g, accent, 'over');
+  drawPicFx(ctx, g, true);
   drawBeams(ctx, g);
   drawStrikes(ctx, g, now);
   for (const q of g.particles) {
@@ -503,7 +504,20 @@ function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accen
   const fusion = fusionOf(g);
   ctx.lineCap = 'round';
   for (const a of g.shots) {
-    // A fused arrow carries a glow in its fusion's colour.
+    // A fused arrow: the owner's arrow for that fusion (it carries its own trail), else a glow in its colour.
+    if (fusion && a.bow && a.kind === 'arrow' && !retroLook) {
+      const pic = arrowImage(`fusion-${fusion}`);
+      if (ready(pic)) {
+        const w = 32;
+        const h = (w * pic.naturalHeight) / pic.naturalWidth;
+        ctx.save();
+        ctx.translate(a.x, a.y);
+        ctx.rotate(Math.atan2(a.vy, a.vx));
+        ctx.drawImage(pic, -w, -h / 2, w, h);
+        ctx.restore();
+        continue;
+      }
+    }
     if (fusion && a.bow && a.kind === 'arrow') {
       const glow = ctx.createRadialGradient(a.x, a.y, 1, a.x, a.y, 13);
       glow.addColorStop(0, `rgba(${FUSION_COLOR[fusion]},0.8)`);
@@ -879,13 +893,22 @@ function drawNewShot(ctx: CanvasRenderingContext2D, g: Game, a: Shot) {
 
 /* Mines on the floor (a red light blinks once armed, blue when they carry
    lightning) and the evolved durian's caltrops. */
-function drawMines(ctx: CanvasRenderingContext2D, g: Game, now: number) {
-  // Effect pictures laid on the floor: the thunder mine's burst, the 1-ton weight's impact.
+/* Effect pictures (`'pic'` fx): on the floor (the thunder mine's burst, the
+   1-ton weight's impact) or, with `top`, over the bugs (the fusions' bursts,
+   rings, ice and bolts). Retro, or until a picture loads: a fading ring. */
+function drawPicFx(ctx: CanvasRenderingContext2D, g: Game, top: boolean) {
   for (const f of g.fx) {
-    if (f.kind !== 'pic' || !f.pic || retroLook) continue;
-    const pic = fxImage(f.pic);
-    if (!ready(pic)) continue;
+    if (f.kind !== 'pic' || !f.pic || !!f.top !== top || (f.delay ?? 0) > 0) continue;
     const k = f.life / f.max;
+    const pic = fxImage(f.pic);
+    if (retroLook || !ready(pic)) {
+      ctx.strokeStyle = `rgba(255,255,255,${0.6 * k})`;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(f.x, f.y, f.r * (1 - 0.4 * k), 0, Math.PI * 2);
+      ctx.stroke();
+      continue;
+    }
     const w = f.r * 2 * (0.7 + 0.3 * (1 - k));
     const h = (w * pic.naturalHeight) / pic.naturalWidth;
     ctx.globalAlpha = Math.min(1, k * 1.6);
@@ -896,6 +919,9 @@ function drawMines(ctx: CanvasRenderingContext2D, g: Game, now: number) {
     ctx.restore();
   }
   ctx.globalAlpha = 1;
+}
+function drawMines(ctx: CanvasRenderingContext2D, g: Game, now: number) {
+  drawPicFx(ctx, g, false);
   const minePics = !retroLook && ready(fxImage('mine'));
   for (const m of g.mines) {
     if (minePics) {
@@ -1094,6 +1120,16 @@ function drawEmbers(ctx: CanvasRenderingContext2D, g: Game, now: number) {
     if (em.kind === 'steam' || em.kind === 'wisp') {
       // Steam: a pale cloud swelling as it fades. Will-o'-wisp: a small blue-green flame.
       const steam = em.kind === 'steam';
+      const pic = fxImage(steam ? 'steam-cloud' : 'wisp-flame');
+      if (!retroLook && ready(pic)) {
+        const w = steam ? em.r * 2.2 * (1.15 - 0.25 * k) : em.r * 1.9 * (0.6 + 0.4 * k);
+        const h = (w * pic.naturalHeight) / pic.naturalWidth;
+        ctx.globalAlpha = Math.min(1, k * 1.8) * (steam ? 0.8 : 1);
+        // the flame stands on its spot; the cloud sits round it
+        ctx.drawImage(pic, em.x - w / 2, steam ? em.y - h / 2 : em.y - h * 0.8, w, h);
+        ctx.globalAlpha = 1;
+        continue;
+      }
       const r = steam ? em.r * (1.2 - 0.3 * k) : em.r * (0.6 + 0.4 * k);
       const grad = ctx.createRadialGradient(em.x, em.y, 1, em.x, em.y, r);
       grad.addColorStop(0, steam ? `rgba(248,250,252,${0.55 * k})` : `rgba(204,251,241,${0.8 * k})`);
@@ -1388,7 +1424,8 @@ const ready = (img: HTMLImageElement) => img.complete && img.naturalWidth > 0;
 export function preloadFx() {
   for (const n of ['fireball', 'boom-small', 'boom-big', 'knife', 'boomerang', 'slash', 'chest', 'slam', 'crystals', 'icering', 'gem', 'gem-big', 'bolt-1', 'bolt-2', 'bolt-3', 'bolt-4', 'bolt-5', 'bolt-6',
     'brick', 'iron', 'molotov', 'barrel', 'durian', 'durian-big', 'drill', 'drill-evo', 'rocket', 'rocket-shark', 'ball', 'ball-evo',
-    'fire-pool', 'fire-pool-big', 'caltrops', 'mine', 'mine-on', 'mine-volt', 'volt-burst', 'impact', 'heart', 'rune', 'crescent']) fxImage(n);
+    'fire-pool', 'fire-pool-big', 'caltrops', 'mine', 'mine-on', 'mine-volt', 'volt-burst', 'impact', 'heart', 'rune', 'crescent',
+    'steam-cloud', 'plasma-burst', 'wisp-flame', 'shock-ring', 'ice-block', 'spectral-bolt']) fxImage(n);
 }
 
 function drawFireballs(ctx: CanvasRenderingContext2D, g: Game) {
