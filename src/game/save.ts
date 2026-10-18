@@ -10,7 +10,7 @@ export const STYLES: EnemyStyle[] = ['world', 'original', 'demon', 'viking', 'ju
 export type HeroSkin = 'boy' | 'robot' | 'kitty';
 export const SKINS: HeroSkin[] = ['boy', 'robot', 'kitty'];
 /** What each figure costs in coins; Alvrich comes free. The owner's rule: skins are always the dearest thing in the game (items, forge levels, the revive), so raise these if anything else goes past them. */
-export const SKIN_PRICE: Record<HeroSkin, number> = { boy: 0, robot: 5000, kitty: 5000 };
+export const SKIN_PRICE: Record<HeroSkin, number> = { boy: 0, robot: 10000, kitty: 10000 };
 /** The hats are painted on the hero's pictures; a skin listed here has no hat versions and always shows its base set. */
 const HATLESS: HeroSkin[] = ['kitty'];
 const HAT_SET: Record<string, string> = { wizardHat: 'wizard', gladHelm: 'helm', bandana: 'bandana' };
