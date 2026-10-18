@@ -150,8 +150,15 @@ export const WEAPON_SLOTS: Slot[] = ['magic', 'melee', 'ranged'];
 export const itemById = (id: ItemId) => ITEMS.find((item) => item.id === id) as Item;
 
 /** Combine the worn items and the forge's levels into one loadout. */
-export function buildLoadout(equipped: Partial<Record<Slot, ItemId>>, upgrades: Upgrades = {}): Loadout {
+/** What each mastery (either mode) adds for good: damage, health, coins and XP. */
+export const MASTERY_STEP = { damage: 0.05, hp: 10, coins: 0.05, xp: 0.05 } as const;
+
+export function buildLoadout(equipped: Partial<Record<Slot, ItemId>>, upgrades: Upgrades = {}, masteries = 0): Loadout {
   const out: Loadout = { ...BASE_LOADOUT, mult: { ...BASE_LOADOUT.mult }, startSkills: [] };
+  out.maxHp += MASTERY_STEP.hp * masteries;
+  for (const k of Object.keys(out.mult) as Category[]) out.mult[k] *= 1 + MASTERY_STEP.damage * masteries;
+  out.coinMult *= 1 + MASTERY_STEP.coins * masteries;
+  out.xpMult *= 1 + MASTERY_STEP.xp * masteries;
   const lv = (id: UpgradeId) => Math.min(upgradeById(id).max, upgrades[id] ?? 0);
   out.maxHp += UPGRADE_STEP.vitality * lv('vitality');
   for (const k of Object.keys(out.mult) as Category[]) out.mult[k] *= 1 + UPGRADE_STEP.might * lv('might');

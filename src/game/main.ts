@@ -2,7 +2,7 @@ import './game.css';
 import { storage } from '../lib/storage';
 import { audio, type Sfx } from './audio';
 import { draw, drawRetroFigure, preloadFx, type Palette, type View } from './draw';
-import { DEFAULT_NAME, NAME_MAX, cleanName, loadSave, profileLevel, writeSave, STYLES, SKINS, type EnemyStyle, type HeroSkin } from './save';
+import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, type StarColor, loadSave, profileLevel, writeSave, STYLES, SKINS, type EnemyStyle, type HeroSkin } from './save';
 import type { Mode } from './world';
 import { ARMOUR_SLOTS, ITEMS, type SpiritSkin, SLOTS, UPGRADES, WEAPON_SLOTS, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
 import { Scene } from './scene';
@@ -249,7 +249,7 @@ function menuScreen() {
       <button class="hot cover-more" data-act="options" aria-label="${t('options')}"></button>
       <button class="hot cover-gear" data-act="options" aria-label="${t('options')}"></button>
       <button class="hot cover-profile" data-act="profile" aria-label="${t('profile')}: ${esc(save.name)} · ${t('lvShort', { level })}"></button>
-      <span class="cover-profile-copy"><small>${esc(save.name)}</small><b>${t('lvShort', { level })}</b><i><b style="width:${Math.round(progress * 100)}%"></b></i></span>
+      <span class="cover-profile-copy"><small>${esc(save.name)}${masteries() ? ` <i class="mstar" style="color:${starColor()}">★</i>` : ''}</small><b>${t('lvShort', { level })}</b><i><b style="width:${Math.round(progress * 100)}%"></b></i></span>
       <button class="hot cover-coins" data-act="shop" aria-label="${t('coins')}: ${Math.floor(save.coins)}"></button>
       <span class="cover-num is-coins">${Math.floor(save.coins)}</span>
       <button class="hot cover-worlds" data-act="map" aria-label="${t('map')}: ${unlockedIn()}/${WORLD_COUNT}"></button>
@@ -274,6 +274,33 @@ const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
 /** The player's name goes into HTML: escape it. */
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 
+/* Masteries: clear all eight worlds of a mode and the map offers that mode's
+   mastery. Taking it wipes the progress (`wipeProgress`) for a small
+   permanent boost (`MASTERY_STEP`, folded in by `buildLoadout`) and a star by
+   the name, whose colour the profile picks. */
+const masteries = () => save.mastery.sprints + save.mastery.horde;
+const clearedIn = (mode: Mode) =>
+  Array.from({ length: WORLD_COUNT }, (_, i) => i + 1).filter((w) => (mode === 'horde' ? save.hordeBest[w]?.won : save.bestByWorld[w]?.time !== undefined)).length;
+const worldsLeft = (mode: Mode) => WORLD_COUNT - clearedIn(mode);
+const starColor = () => STAR_COLORS[save.starColor];
+/** The stars by the name: one per mastery, in the chosen colour. */
+const stars = () => (masteries() ? `<span class="mstars" style="--star:${starColor()}" aria-label="${t('profileStars')}: ${masteries()}">${'★'.repeat(Math.min(masteries(), 5))}${masteries() > 5 ? `×${masteries()}` : ''}</span>` : '');
+const modeShort = (mode: Mode) => t(mode === 'horde' ? 'modeHordeShort' : 'modeSprintsShort');
+function resetScreen() {
+  show(`<h2>${t('resetTitle')}</h2>
+    <p class="note">${t('resetLeft', { sprints: worldsLeft('sprints'), horde: worldsLeft('horde') })}</p>
+    <p>${t('resetText')}</p>
+    <button class="ghost is-danger" data-act="reset-do">${t('resetDo')}</button>
+    <button class="primary" data-act="profile">${t('cancel')}</button>`);
+}
+function masteryScreen(mode: Mode) {
+  show(`<h2>★ ${t('masteryTitle', { mode: modeShort(mode) })}</h2>
+    <p>${t('masteryText')}</p>
+    <p class="how">${t('masteryHave', { n: masteries() })}</p>
+    <button class="primary" data-act="mastery-do" data-mode-m="${mode}">${t('masteryDo')}</button>
+    <button class="ghost" data-act="map">${t('cancel')}</button>`);
+}
+
 /* The profile: the player's name (shown on the cover), their level and a few
    totals. The name is kept in the save, cleaned by `cleanName`. */
 function profileScreen(note = '') {
@@ -284,7 +311,7 @@ function profileScreen(note = '') {
     <h2>${t('profile')}</h2>
     <div class="profile-card">
       <img class="profile-pic${save.retro ? ' is-round' : ''}" src="${pic}" alt="" width="96" height="120">
-      <div class="profile-who"><b>${esc(save.name)}</b><span>${t('lvShort', { level })}</span><i class="profile-xp" title="${t('profileXp')}"><b style="width:${Math.round(progress * 100)}%"></b></i></div>
+      <div class="profile-who"><b>${esc(save.name)} ${stars()}</b><span>${t('lvShort', { level })}</span><i class="profile-xp" title="${t('profileXp')}"><b style="width:${Math.round(progress * 100)}%"></b></i></div>
     </div>
     <form class="profile-form" data-form="name" novalidate>
       <label for="profileName">${t('profileName')}</label>
@@ -299,6 +326,12 @@ function profileScreen(note = '') {
       ${stat('profileWorlds', `${unlockedIn()}/${WORLD_COUNT}`)}
       ${stat('profileCoins', `🪙 ${Math.floor(save.coins)}`)}
     </div>
+    <h3 class="slot">${t('profileStars')}</h3>
+    ${masteries()
+      ? `<p class="mastery-line"><span style="color:${starColor()}">★</span> ${modeShort('sprints')} ${save.mastery.sprints} · ${modeShort('horde')} ${save.mastery.horde}</p>
+         <div class="star-pick" role="group" aria-label="${t('profileStarColor')}">${(Object.keys(STAR_COLORS) as StarColor[]).map((c) => `<button type="button" class="star-chip${c === save.starColor ? ' is-on' : ''}" data-star="${c}" style="--star:${STAR_COLORS[c]}" aria-pressed="${c === save.starColor}" aria-label="${c}">★</button>`).join('')}</div>`
+      : `<p class="how">${t('masteryNone')}</p>`}
+    <button class="ghost is-danger small" data-act="reset-ask">${t('resetBtn')}</button>
     ${backButton('menu')}`);
 }
 function setName(raw: string) {
@@ -400,6 +433,9 @@ function mapScreen() {
   const status = pickedOpen
     ? `<small class="map-record">▮▮▮ ${bestLine(picked) || t('bestNone')}</small>`
     : `<small class="map-locked">🔒 ${t('lockedUntil', { n: picked - 1 })}</small>`;
+  const mastery = worldsLeft(save.mode) === 0
+    ? `<button class="primary mastery-btn" data-act="mastery-ask">${t('masteryBtn', { mode: modeShort(save.mode) })}</button>`
+    : '';
   const action = pickedOpen
     ? `<button class="play" data-act="play-picked"><span class="play-tri" aria-hidden="true"></span><span class="play-copy">${t('playWorld', { n: picked })}</span></button>`
     : `<button class="play is-locked" disabled><span class="play-lock" aria-hidden="true">🔒</span><span class="play-copy">${t('lockedBtn')}</span></button>`;
@@ -421,6 +457,7 @@ function mapScreen() {
         </div>
       </div>
       ${action}
+      ${mastery}
       <button class="ghost hexghost" data-act="menu">← ${t('menu')}</button>
     </div>`, true, false, 'is-map');
 }
@@ -658,7 +695,7 @@ function stylesScreen(note = '') {
 }
 
 function startRun(world = worldIn(), mode = save.mode) {
-  game = newGame(buildLoadout(save.equipped, save.upgrades), save.style, world, mode);
+  game = newGame(buildLoadout(save.equipped, save.upgrades, masteries()), save.style, world, mode);
   preloadFx();
   paused = false;
   shownChoices = '';
@@ -735,6 +772,21 @@ screen.addEventListener('click', (event) => {
   } else if (act === 'menu') menuScreen();
   else if (act === 'shop') shopScreen();
   else if (act === 'profile') profileScreen();
+  else if (act === 'reset-ask') resetScreen();
+  else if (act === 'reset-do') { wipeProgress(save); persist(); dressPalette(); mapPick = 0; profileScreen(t('resetDone')); }
+  else if (act === 'mastery-ask') masteryScreen(save.mode);
+  else if (act === 'mastery-do') {
+    const mode = (target.dataset.modeM as Mode) ?? save.mode;
+    if (worldsLeft(mode) === 0) {
+      save.mastery[mode] += 1;
+      wipeProgress(save);
+      persist();
+      dressPalette();
+      mapPick = 0;
+      audio.play('win');
+      profileScreen(t('masteryDone'));
+    }
+  } else if (target.dataset.star) { save.starColor = target.dataset.star as StarColor; persist(); profileScreen(); }
   else if (act === 'name-reset') setName(DEFAULT_NAME);
   else if (act === 'styles') { dressSlot = null; stylesScreen(); }
   else if (act === 'options') { optionsFrom = 'menu'; optionsScreen(); }
