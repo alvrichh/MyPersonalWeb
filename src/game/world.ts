@@ -82,11 +82,11 @@ export type Rect = { x: number; y: number; w: number; h: number };
 
 export type SkillId =
   // Melee: hits whatever comes close, all the time.
-  | 'sword' | 'blades' | 'hammer'
+  | 'sword' | 'blades' | 'hammer' | 'durian' | 'mines'
   // Magic: goes off by itself every few seconds.
-  | 'storm' | 'fireball' | 'frost' | 'spirits' | 'laser'
+  | 'storm' | 'fireball' | 'frost' | 'spirits' | 'laser' | 'brick' | 'molotov'
   // Ranged: fires while you stand still.
-  | 'knives' | 'boomerang'
+  | 'knives' | 'boomerang' | 'drill' | 'rocket' | 'ball'
   // Bow upgrades (the bow is the weapon you start with).
   | 'fire' | 'water' | 'leaf' | 'bolt' | 'spark' | 'ghost' | 'double' | 'speed'
   // For everything.
@@ -97,9 +97,9 @@ export type SkillId =
 export type Category = 'melee' | 'magic' | 'ranged' | 'upgrade';
 
 export const CATEGORY: Record<SkillId, Category> = {
-  sword: 'melee', blades: 'melee', hammer: 'melee',
-  storm: 'magic', fireball: 'magic', frost: 'magic', spirits: 'magic', laser: 'magic',
-  knives: 'ranged', boomerang: 'ranged',
+  sword: 'melee', blades: 'melee', hammer: 'melee', durian: 'melee', mines: 'melee',
+  storm: 'magic', fireball: 'magic', frost: 'magic', spirits: 'magic', laser: 'magic', brick: 'magic', molotov: 'magic',
+  knives: 'ranged', boomerang: 'ranged', drill: 'ranged', rocket: 'ranged', ball: 'ranged',
   fire: 'upgrade', water: 'upgrade', leaf: 'upgrade', bolt: 'upgrade', spark: 'upgrade', ghost: 'upgrade',
   double: 'upgrade', speed: 'upgrade', power: 'upgrade', heart: 'upgrade',
   shoes: 'upgrade', bracer: 'upgrade', drink: 'upgrade',
@@ -115,6 +115,8 @@ const WEAPONS = SKILLS.filter((s) => CATEGORY[s] !== 'upgrade');
 export const EVO_PARTNER: Partial<Record<SkillId, SkillId>> = {
   sword: 'power', blades: 'spark', hammer: 'heart', storm: 'bolt', fireball: 'fire', laser: 'speed',
   frost: 'water', spirits: 'ghost', knives: 'double', boomerang: 'leaf',
+  // The rest of Survivor.io's actives, paired with the nearest of our upgrades.
+  brick: 'power', drill: 'speed', durian: 'bracer', mines: 'bolt', rocket: 'fire', ball: 'shoes', molotov: 'drink',
 };
 /** A level-up card: a skill, or a weapon's evolution. */
 export type Choice = SkillId | `evo:${SkillId}`;
@@ -171,7 +173,7 @@ export type Enemy = {
 };
 
 export type Shot = {
-  kind: 'arrow' | 'knife' | 'boomerang' | 'orb' | 'crescent';
+  kind: 'arrow' | 'knife' | 'boomerang' | 'orb' | 'crescent' | 'brick' | 'drill' | 'durian' | 'rocket' | 'ball' | 'molotov';
   x: number;
   y: number;
   vx: number;
@@ -189,7 +191,19 @@ export type Shot = {
   /** Boomerang: seconds until it turns back. */
   out: number;
   spin: number;
+  /** Bricks fall: downward pull, in room units a second squared. */
+  grav?: number;
+  /** Hit radius beyond the bug's own (4 for most shots). */
+  size?: number;
+  /** Ignores walls and racks (bricks, bottles, and the shots that bounce off the edge of the view). */
+  free?: boolean;
+  /** Seconds until the shot may hit the same bugs again (drill, durian, ball). */
+  tick?: number;
 };
+/** A mine left on the floor: it arms, then goes off when a bug steps on it. */
+export type Mine = { x: number; y: number; arm: number; life: number };
+/** Caltrops dropped by the evolved durian. */
+export type Spike = { x: number; y: number; life: number; tick: number };
 
 export type Orb = { x: number; y: number; vx: number; vy: number; r: number; dmg: number; life: number; bounce: number };
 export type Particle = { x: number; y: number; vx: number; vy: number; life: number; max: number; size: number; color: string };
@@ -198,7 +212,7 @@ export type Gem = { x: number; y: number; value: number; pull: boolean };
 /** On call: a heart dropped by a tougher bug; touch it for a little health. It fades after a while. */
 export type Heart = { x: number; y: number; life: number; pull: boolean };
 /** Short-lived shapes the renderer draws: sword arcs, hammer rings, explosions, lightning strikes. */
-export type Ember = { x: number; y: number; r: number; life: number; max: number };
+export type Ember = { x: number; y: number; r: number; life: number; max: number; /** Burn per second (molotov pools; 12 when unset). */ dps?: number };
 export type Fx = {
   kind: 'slash' | 'ring' | 'boom' | 'strike' | 'halo' | 'beam' | 'rune'; x: number; y: number; r: number; a: number; life: number; max: number;
   /** Seconds before it starts (the evolved sword's three cuts follow one another). */
@@ -244,6 +258,14 @@ type Gear = {
   spirits: number;
   frost: number;
   laser: number;
+  brick: number;
+  molotov: number;
+  mines: number;
+  drill: number;
+  rocket: number;
+  ball: number;
+  /** Seconds to the evolved durian's next caltrop. */
+  spikes: number;
   bladeAngle: number;
   /** The blades are turning (there are bugs to cut); stopped in a cleared room. */
   bladesOn: boolean;
@@ -300,8 +322,10 @@ export type Game = {
   skills: Record<SkillId, number>;
   /** Weapons that have evolved (see EVO_PARTNER). */
   evolved: Partial<Record<SkillId, true>>;
-  /** Burning ground left by the evolved fireball. */
+  /** Burning ground left by the evolved fireball and by molotovs. */
   embers: Ember[];
+  mines: Mine[];
+  spikes: Spike[];
   gear: Gear;
   loadout: Loadout;
   /** The blades' element the player picked in the skills list (null: the strongest one, automatically). */
@@ -544,6 +568,8 @@ function enterRoom(g: Game, room: number) {
   g.fireballs = [];
   g.spirits = [];
   g.embers = [];
+  g.mines = [];
+  g.spikes = [];
   g.enemies = [];
   g.player.x = W / 2;
   g.player.y = H - 70;
@@ -598,6 +624,8 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     skills: Object.fromEntries(SKILLS.map((s) => [s, 0])) as Record<SkillId, number>,
     evolved: {},
     embers: [],
+    mines: [],
+    spikes: [],
     loadout,
     bladePick: null,
     arrowPick: null,
@@ -606,6 +634,7 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     revives: loadout.revives,
     gear: {
       bow: 0.4, knives: 0.6, boomerang: 0.8, sword: 0.5, hammer: 1, storm: 1, fireball: 1, spirits: 0.5, frost: 0, laser: 1.2,
+      brick: 1, molotov: 1.4, mines: 0.6, drill: 0.9, rocket: 1.2, ball: 1, spikes: 0,
       bladeAngle: 0, bladesOn: false, bladeHits: new Map(),
     },
     level: 1,
@@ -1293,11 +1322,192 @@ function moveSpirits(g: Game, dt: number) {
   }
 }
 
+/* ------------------------------------- the rest of Survivor.io's actives */
+
+/** What the bouncing shots see as walls: the room's, or the edge of what the page shows of the open field. */
+function bounds(g: Game): Rect {
+  if (g.mode === 'sprints') return { x: WALL, y: WALL, w: W - 2 * WALL, h: H - 2 * WALL };
+  const p = g.player;
+  const v = g.viewHalf;
+  return { x: p.x - v.x, y: p.y - v.y, w: v.x * 2, h: v.y * 2 };
+}
+/** Keep a shot inside a rectangle, turning it back off the side it crossed. True if it bounced. */
+function bounceIn(s: Shot, b: Rect) {
+  let hit = false;
+  if (s.x < b.x) { s.x = b.x; s.vx = Math.abs(s.vx); hit = true; }
+  else if (s.x > b.x + b.w) { s.x = b.x + b.w; s.vx = -Math.abs(s.vx); hit = true; }
+  if (s.y < b.y) { s.y = b.y; s.vy = Math.abs(s.vy); hit = true; }
+  else if (s.y > b.y + b.h) { s.y = b.y + b.h; s.vy = -Math.abs(s.vy); hit = true; }
+  return hit;
+}
+/** An explosion that hurts every bug in reach (rockets, mines). */
+function blast(g: Game, at: Vec, reach: number, dmg: number, color: string) {
+  g.fx.push({ kind: 'boom', x: at.x, y: at.y, r: reach, a: 0, life: 0.35, max: 0.35 });
+  g.events.push('boom');
+  burst(g, at.x, at.y, color, 12, 160, 3);
+  for (const e of live(g)) if (dist(at, e) <= reach + e.r) hurt(g, e, dmg, away(at, e, 140));
+}
+
+/* Brick (magic): thrown up into the air, it falls back through the bugs
+   round you, hitting every one on the way. Evolved (1-ton Iron): two huge
+   weights that hit twice as hard and stop the bugs they land on. */
+function throwBricks(g: Game) {
+  const lv = g.skills.brick;
+  const evolved = !!g.evolved.brick;
+  const dmg = (34 + 14 * (lv - 1)) * power(g, 'magic') * (evolved ? 2.2 : 1);
+  for (let i = 0; i < (evolved ? 2 : lv); i++) {
+    g.shots.push(shot('brick', g.player, -Math.PI / 2 + rand(-0.55, 0.55), rand(470, 560), dmg, {
+      pierce: 1e9, ghost: true, free: true, grav: 900, life: 1.3, size: evolved ? 20 : 9, spin: rand(0, 6),
+    }));
+  }
+}
+
+/* Molotov (magic): bottles thrown at the bugs near you burst into a pool of
+   fire that burns whatever stands in it. Evolved (Fuel Barrel): three
+   barrels, wider pools that burn longer and hotter. */
+function throwMolotov(g: Game) {
+  const p = g.player;
+  const lv = g.skills.molotov;
+  const evolved = !!g.evolved.molotov;
+  const pool = live(g).sort((a, b) => dist(a, p) - dist(b, p)).slice(0, 6);
+  const flight = 0.55;
+  for (let i = 0; i < (evolved ? 3 : lv >= 3 ? 2 : 1) && pool.length; i++) {
+    const t = pool.splice(Math.floor(Math.random() * pool.length), 1)[0];
+    g.shots.push(shot('molotov', p, 0, 0, 0, { vx: (t.x - p.x) / flight, vy: (t.y - p.y) / flight, life: flight, free: true, ghost: true, spin: rand(0, 6) }));
+  }
+}
+function landMolotov(g: Game, at: Vec) {
+  const lv = g.skills.molotov;
+  const evolved = !!g.evolved.molotov;
+  const life = evolved ? 4.5 : 3;
+  g.embers.push({ x: at.x, y: at.y, r: (32 + 6 * (lv - 1)) * (evolved ? 1.6 : 1), life, max: life, dps: (14 + 6 * (lv - 1)) * power(g, 'magic') * (evolved ? 1.5 : 1) });
+  burst(g, at.x, at.y, '#fb923c', 10, 140, 3);
+  g.events.push('boom');
+}
+
+/* Mines (melee): one dropped at your feet every so often; armed after half
+   a second, it goes off when a bug steps on it. Evolved (Thunderbolt Bomb):
+   a wider blast whose lightning jumps on to three more bugs. */
+function dropMine(g: Game) {
+  const max = 3 + 2 * g.skills.mines;
+  if (g.mines.length >= max) g.mines.shift();
+  g.mines.push({ x: g.player.x, y: g.player.y + 6, arm: 0.5, life: 25 });
+}
+function updateMines(g: Game, dt: number) {
+  const lv = g.skills.mines;
+  const evolved = !!g.evolved.mines;
+  g.mines = g.mines.filter((m) => {
+    m.life -= dt;
+    m.arm -= dt;
+    if (m.life <= 0) return false;
+    if (m.arm > 0) return true;
+    const foe = live(g).find((e) => dist(m, e) < e.r + 12);
+    if (!foe) return true;
+    const dmg = (40 + 15 * (lv - 1)) * power(g, 'melee') * (evolved ? 1.3 : 1);
+    blast(g, m, (52 + 8 * (lv - 1)) * (evolved ? 1.3 : 1), dmg, '#fca5a5');
+    if (evolved) {
+      g.fx.push({ kind: 'strike', x: m.x, y: m.y, r: 30, a: 0, life: 0.3, max: 0.3 });
+      g.zaps.push({ pts: zigzag({ x: m.x + rand(-20, 20), y: m.y - 220 }, m, 14), life: 0.22 });
+      chain(g, foe, 3, dmg * 0.6);
+    }
+    return false;
+  });
+}
+
+/* Durian (melee): a spiky ball that bounces round you for good, cutting
+   every bug it rolls over (each one again a little later). One, two from
+   level 3. Evolved (Caltrops): a third, bigger, and they scatter caltrops
+   that hurt the bugs walking over them. */
+function keepDurians(g: Game, dt: number) {
+  const lv = g.skills.durian;
+  const evolved = !!g.evolved.durian;
+  const want = (lv >= 3 ? 2 : 1) + (evolved ? 1 : 0);
+  const mine = g.shots.filter((s) => s.kind === 'durian');
+  for (let n = mine.length; n < want; n++) {
+    const d = shot('durian', g.player, rand(0, Math.PI * 2), 170 + 15 * lv, 0, { pierce: 1e9, ghost: true, free: true, life: 1e9, tick: 0 });
+    g.shots.push(d);
+    mine.push(d);
+  }
+  // Level ups make the ones already rolling stronger and bigger too.
+  for (const d of mine) {
+    d.dmg = (16 + 7 * (lv - 1)) * power(g, 'melee') * (evolved ? 1.4 : 1);
+    d.size = 12 + 3 * lv + (evolved ? 6 : 0);
+  }
+  if (!evolved) return;
+  g.gear.spikes -= dt;
+  if (g.gear.spikes > 0) return;
+  g.gear.spikes = 0.35;
+  for (const d of mine) g.spikes.push({ x: d.x, y: d.y, life: 4, tick: 0 });
+  if (g.spikes.length > 36) g.spikes.splice(0, g.spikes.length - 36);
+}
+function updateSpikes(g: Game, dt: number) {
+  const dmg = 10 * power(g, 'melee');
+  g.spikes = g.spikes.filter((c) => {
+    c.life -= dt;
+    c.tick -= dt;
+    if (c.tick <= 0) {
+      c.tick = 0.5;
+      for (const e of live(g)) if (dist(c, e) < e.r + 9) hurt(g, e, dmg);
+    }
+    return c.life > 0;
+  });
+}
+
+/* Drill (ranged): bores through every bug in a line and bounces off the
+   walls (or the edge of the view on the open field) a few times. Evolved
+   (Whistling Arrow): two, faster, bigger, bouncing for longer. */
+function fireDrill(g: Game, target: Enemy) {
+  const p = g.player;
+  const lv = g.skills.drill;
+  const evolved = !!g.evolved.drill;
+  const angle = Math.atan2(target.y - p.y, target.x - p.x);
+  const n = evolved ? 2 : 1;
+  for (let i = 0; i < n; i++) {
+    g.shots.push(shot('drill', p, angle + (i - (n - 1) / 2) * 0.3, evolved ? 420 : 330, (22 + 8 * (lv - 1)) * power(g, 'ranged') * (evolved ? 1.5 : 1), {
+      pierce: 1e9, ghost: true, free: true, bounce: 2 + lv + (evolved ? 4 : 0), life: evolved ? 5 : 3, size: evolved ? 11 : 7, tick: 0,
+    }));
+  }
+}
+
+/* Rocket (ranged): speeds up as it flies and blows up on the first bug or
+   wall, hurting everything round it. Two from level 3. Evolved (Sharkmaw
+   Gun): three at a time, more often, steering after the bugs. */
+function fireRocket(g: Game, target: Enemy) {
+  const p = g.player;
+  const lv = g.skills.rocket;
+  const evolved = !!g.evolved.rocket;
+  const angle = Math.atan2(target.y - p.y, target.x - p.x);
+  const n = evolved ? 3 : lv >= 3 ? 2 : 1;
+  for (let i = 0; i < n; i++) {
+    g.shots.push(shot('rocket', p, angle + (i - (n - 1) / 2) * 0.22, 240, (40 + 15 * (lv - 1)) * power(g, 'ranged') * (evolved ? 1.2 : 1), { life: 1.8, size: 6 }));
+  }
+}
+function rocketBoom(g: Game, s: Shot) {
+  const reach = (44 + 6 * (g.skills.rocket - 1)) * (g.evolved.rocket ? 1.3 : 1);
+  blast(g, s, reach, s.dmg, '#fdba74');
+}
+
+/* Ball (ranged): kicked at the nearest bug, it ricochets from bug to bug
+   and off the walls, a few more times each level. Evolved (Quantum Ball):
+   three balls that keep bouncing until they fade. */
+function kickBall(g: Game, target: Enemy) {
+  const p = g.player;
+  const lv = g.skills.ball;
+  const evolved = !!g.evolved.ball;
+  const angle = Math.atan2(target.y - p.y, target.x - p.x);
+  const n = evolved ? 3 : 1;
+  for (let i = 0; i < n; i++) {
+    g.shots.push(shot('ball', p, angle + (i - (n - 1) / 2) * 0.5, 320, (20 + 8 * (lv - 1)) * power(g, 'ranged') * (evolved ? 1.5 : 1), {
+      pierce: 1e9, ghost: true, free: true, bounce: evolved ? 1e9 : 3 + 2 * lv, life: evolved ? 5 : 3, size: evolved ? 11 : 8, tick: 0,
+    }));
+  }
+}
+
 function useWeapons(g: Game, dt: number) {
   const p = g.player;
   const gear = g.gear;
   const sk = g.skills;
-  for (const k of ['bow', 'knives', 'boomerang', 'sword', 'hammer', 'storm', 'fireball', 'laser'] as const) gear[k] = Math.max(0, gear[k] - dt);
+  for (const k of ['bow', 'knives', 'boomerang', 'sword', 'hammer', 'storm', 'fireball', 'laser', 'brick', 'molotov', 'mines', 'drill', 'rocket', 'ball'] as const) gear[k] = Math.max(0, gear[k] - dt);
   const fighting = live(g).length > 0;
   gear.bladesOn = fighting;
   if (!fighting) return;
@@ -1313,6 +1523,9 @@ function useWeapons(g: Game, dt: number) {
       if (gear.bow === 0) { fireBow(g, target); gear.bow = slow / (2 * haste(g)); g.events.push('shoot'); }
       if (sk.knives && gear.knives === 0) { fireKnives(g, target); gear.knives = (slow * (1.2 - 0.15 * (sk.knives - 1))) / haste(g); g.events.push('knife'); }
       if (sk.boomerang && gear.boomerang === 0) { fireBoomerang(g, target); gear.boomerang = (slow * (2 - 0.25 * (sk.boomerang - 1))) / haste(g); g.events.push('boomerang'); }
+      if (sk.drill && gear.drill === 0) { fireDrill(g, target); gear.drill = (slow * (2.6 - 0.3 * (sk.drill - 1))) / haste(g); g.events.push('knife'); }
+      if (sk.rocket && gear.rocket === 0) { fireRocket(g, target); gear.rocket = (slow * (g.evolved.rocket ? 1.6 : 2.8 - 0.35 * (sk.rocket - 1))) / haste(g); g.events.push('boomerang'); }
+      if (sk.ball && gear.ball === 0) { kickBall(g, target); gear.ball = (slow * (2.2 - 0.25 * (sk.ball - 1))) / haste(g); g.events.push('boomerang'); }
     }
   }
   // Melee and magic: always.
@@ -1323,6 +1536,10 @@ function useWeapons(g: Game, dt: number) {
   if (sk.fireball && gear.fireball === 0) { throwFireball(g); gear.fireball = 2.4 - 0.3 * (sk.fireball - 1); }
   if (sk.frost) chill(g, dt);
   if (sk.laser && gear.laser === 0) { fireLaser(g); gear.laser = g.evolved.laser ? 1.8 : 2.6 - 0.3 * (sk.laser - 1); }
+  if (sk.brick && gear.brick === 0) { throwBricks(g); gear.brick = g.evolved.brick ? 2 : 2.2 - 0.3 * (sk.brick - 1); }
+  if (sk.molotov && gear.molotov === 0) { throwMolotov(g); gear.molotov = 2.6 - 0.3 * (sk.molotov - 1); }
+  if (sk.mines && gear.mines === 0) { dropMine(g); gear.mines = 1.6 - 0.2 * (sk.mines - 1); }
+  if (sk.durian) keepDurians(g, dt);
 }
 
 function hurtPlayer(g: Game, amount: number) {
@@ -1491,7 +1708,35 @@ function updateShot(g: Game, s: Shot, dt: number): boolean {
   const px = s.x;
   const py = s.y;
   s.life -= dt;
-  if (s.life <= 0) return false;
+  if (s.life <= 0) {
+    if (s.kind === 'rocket') rocketBoom(g, s);
+    else if (s.kind === 'molotov') landMolotov(g, s);
+    return false;
+  }
+  // Shots that may hit the same bugs again after a moment.
+  if (s.tick !== undefined) {
+    s.tick -= dt;
+    if (s.tick <= 0) { s.tick = 0.4; s.hits.clear(); }
+  }
+  if (s.grav) s.vy += s.grav * dt;
+  if (s.kind === 'brick' || s.kind === 'molotov' || s.kind === 'ball') s.spin += dt * 9;
+  if (s.kind === 'durian' || s.kind === 'drill') s.spin += dt * 14;
+  if (s.kind === 'rocket') {
+    // Rockets speed up; the evolved ones steer after the nearest bug.
+    const speed = Math.min(620, Math.hypot(s.vx, s.vy) * (1 + dt * 1.6));
+    let a = Math.atan2(s.vy, s.vx);
+    if (g.evolved.rocket) {
+      const t = nearest(g, s);
+      if (t) {
+        const want = Math.atan2(t.y - s.y, t.x - s.x);
+        const turn = ((want - a + Math.PI * 3) % (Math.PI * 2)) - Math.PI;
+        a += clamp(turn, -3 * dt, 3 * dt);
+      }
+    }
+    s.vx = Math.cos(a) * speed;
+    s.vy = Math.sin(a) * speed;
+    if (Math.random() < 0.7) g.particles.push({ x: s.x, y: s.y, vx: -s.vx * 0.1 + rand(-20, 20), vy: -s.vy * 0.1 + rand(-20, 20), life: 0.35, max: 0.35, size: 2.5, color: '#fdba74' });
+  }
   if (s.kind === 'boomerang') {
     s.spin += dt * 16;
     s.out -= dt;
@@ -1506,11 +1751,22 @@ function updateShot(g: Game, s: Shot, dt: number): boolean {
   }
   s.x += s.vx * dt;
   s.y += s.vy * dt;
+  // A bottle in flight touches nothing; it bursts where it lands.
+  if (s.kind === 'molotov') return true;
+  // Rockets blow up on walls and racks.
+  if (s.kind === 'rocket' && (outside(g, s) || g.obstacles.some((o) => inRect(s, o)))) { rocketBoom(g, s); return false; }
+  // Drill, durian and ball bounce off the walls, or the edge of the view on the open field.
+  if (s.kind === 'drill' || s.kind === 'durian' || s.kind === 'ball') {
+    if (bounceIn(s, bounds(g)) && s.kind === 'drill') {
+      s.bounce -= 1;
+      if (s.bounce < 0) return false;
+    }
+  }
 
   // Walls and racks: bounce (sparks), pass (ghost, boomerang) or stop.
   const hitWallX = g.mode === 'sprints' && (s.x < WALL || s.x > W - WALL);
   const hitWallY = g.mode === 'sprints' && (s.y < WALL || s.y > H - WALL);
-  if (hitWallX || hitWallY) {
+  if ((hitWallX || hitWallY) && !s.free) {
     if (s.kind === 'boomerang') {
       s.x = clamp(s.x, WALL, W - WALL);
       s.y = clamp(s.y, WALL, H - WALL);
@@ -1543,9 +1799,22 @@ function updateShot(g: Game, s: Shot, dt: number): boolean {
   }
   for (const e of g.enemies) {
     if (e.dead || e.spawn > 0 || s.hits.has(e.id)) continue;
-    if (Math.hypot(s.x - e.x, s.y - e.y) > e.r + (s.kind === 'boomerang' ? 9 : 4)) continue;
+    if (Math.hypot(s.x - e.x, s.y - e.y) > e.r + (s.size ?? (s.kind === 'boomerang' ? 9 : 4))) continue;
     s.hits.add(e.id);
+    if (s.kind === 'rocket') { rocketBoom(g, s); return false; }
     hitWithShot(g, e, s);
+    // The 1-ton weight stops the bugs it lands on.
+    if (s.kind === 'brick' && g.evolved.brick) { e.slow = Math.max(e.slow, 0.6); e.slowBy = 1; g.shake = Math.max(g.shake, 0.08); }
+    // The ball flies off the bug it hit, a little to one side, until its bounces run out.
+    if (s.kind === 'ball') {
+      s.bounce -= 1;
+      if (s.bounce < 0) return false;
+      const speed = Math.hypot(s.vx, s.vy);
+      const a = Math.atan2(s.y - e.y, s.x - e.x) + rand(-0.7, 0.7);
+      s.vx = Math.cos(a) * speed;
+      s.vy = Math.sin(a) * speed;
+      return true;
+    }
     if (s.pierce > 0) { s.pierce -= 1; continue; }
     // Ricochet: the arrow turns towards the nearest bug it hasn't hit yet.
     if (s.bounce > 0 && s.kind === 'arrow') {
@@ -1833,9 +2102,12 @@ export function update(g: Game, dt: number, input: Input) {
   g.embers = g.embers.filter((em) => {
     em.life -= dt;
     if (em.life <= 0) return false;
-    for (const e of live(g)) if (dist(em, e) < em.r + e.r * 0.5) { e.burn = Math.max(e.burn, 0.6); e.burnDps = Math.max(e.burnDps, 12); }
+    for (const e of live(g)) if (dist(em, e) < em.r + e.r * 0.5) { e.burn = Math.max(e.burn, 0.6); e.burnDps = Math.max(e.burnDps, em.dps ?? 12); }
     return true;
   });
+
+  updateMines(g, dt);
+  updateSpikes(g, dt);
 
   // Hearts: drawn in when close, heal on touch, fade after a while.
   g.hearts = g.hearts.filter((h) => {
