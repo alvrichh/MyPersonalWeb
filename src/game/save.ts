@@ -1,5 +1,5 @@
 import { storage } from '../lib/storage';
-import type { ItemId, Slot, Upgrades } from './shop';
+import { ITEMS, type ItemId, type Slot, type Upgrades } from './shop';
 
 /* Everything Bug Hunter remembers between runs, in one localStorage key. */
 
@@ -61,7 +61,13 @@ export function loadSave(): Save {
   const base = fresh();
   try {
     const data = JSON.parse(storage.get(KEY) || '{}') as Partial<Save>;
-    const save = { ...base, ...data, equipped: { ...data.equipped }, upgrades: { ...data.upgrades }, best: { ...base.best, ...data.best }, bestByWorld: { ...data.bestByWorld } };
+    const save: Save = { ...base, ...data, equipped: {}, upgrades: { ...data.upgrades }, best: { ...base.best, ...data.best }, bestByWorld: { ...data.bestByWorld } };
+    // Items are re-seated by their current slot (older saves had `charm` and `relic`).
+    save.owned = (data.owned ?? []).filter((id) => ITEMS.some((item) => item.id === id));
+    for (const id of Object.values(data.equipped ?? {})) {
+      const item = ITEMS.find((it) => it.id === id);
+      if (item && save.owned.includes(item.id)) save.equipped[item.slot] = item.id;
+    }
     if (!STYLES.includes(save.style)) save.style = 'world';
     if (!SKINS.includes(save.skin)) save.skin = 'boy';
     if (!data.styleV2) { save.style = 'world'; save.styleV2 = true; }
