@@ -1051,18 +1051,17 @@ function drawHearts(ctx: CanvasRenderingContext2D, g: Game, now: number) {
 }
 
 function drawGems(ctx: CanvasRenderingContext2D, g: Game, now: number) {
-  const pic = fxImage('gem');
   for (const gem of g.gems) {
-    const big = gem.value > 10;
+    const big = gem.value >= 10; // the boss's (70 XP in seven) and legacy code's
     const s = big ? 6 : 4.5;
     const bob = Math.sin(now * 5 + gem.x) * 1.5;
+    // The owner's green gem; the boss's big ones a size up, in a purple copy
+    // of the picture (Safari has no canvas filter to tint it on the fly).
+    const pic = fxImage(big ? 'gem-big' : 'gem');
     if (!retroLook && ready(pic)) {
-      // The owner's green gem; the boss's big ones a size up and purple.
       const h = big ? 19 : 13;
       const w = (h * pic.naturalWidth) / pic.naturalHeight;
-      if (big) ctx.filter = 'hue-rotate(150deg) saturate(1.2)';
       ctx.drawImage(pic, gem.x - w / 2, gem.y - h / 2 + bob, w, h);
-      if (big) ctx.filter = 'none';
       continue;
     }
     ctx.save();
@@ -1256,7 +1255,7 @@ function fxImage(name: string) {
 const ready = (img: HTMLImageElement) => img.complete && img.naturalWidth > 0;
 /** Warm the effect pictures up when a run starts, so the first swing and strike are already painted. */
 export function preloadFx() {
-  for (const n of ['fireball', 'boom-small', 'boom-big', 'knife', 'boomerang', 'slash', 'chest', 'slam', 'crystals', 'icering', 'gem', 'bolt-1', 'bolt-2', 'bolt-3', 'bolt-4', 'bolt-5', 'bolt-6']) fxImage(n);
+  for (const n of ['fireball', 'boom-small', 'boom-big', 'knife', 'boomerang', 'slash', 'chest', 'slam', 'crystals', 'icering', 'gem', 'gem-big', 'bolt-1', 'bolt-2', 'bolt-3', 'bolt-4', 'bolt-5', 'bolt-6']) fxImage(n);
 }
 
 function drawFireballs(ctx: CanvasRenderingContext2D, g: Game) {
