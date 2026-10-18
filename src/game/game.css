@@ -2887,3 +2887,8 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 }
 :root[data-retro] .panel .ghost.is-danger { border: 0; border-image: none; background: linear-gradient(135deg, #ef4444, #b91c1c); color: #fff; text-shadow: none; filter: none; }
 .mastery-btn { margin-top: 8px; }
+/* Mastery buttons: a gold copy of the owner's orange bar, dark text. */
+.panel .primary.mastery-btn,
+.panel .primary[data-act='mastery-do'] { --bar: url('/images/game/ui/btn2_gold.webp'); color: #2a1a00; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35); }
+:root[data-retro] .panel .primary.mastery-btn,
+:root[data-retro] .panel .primary[data-act='mastery-do'] { background: linear-gradient(135deg, #fde047, #f59e0b); color: #2a1a00; }
