@@ -1,9 +1,9 @@
 import './game.css';
 import { storage } from '../lib/storage';
 import { audio, type Sfx } from './audio';
-import { draw, type Palette, type View } from './draw';
+import { draw, drawRetroFigure, type Palette, type View } from './draw';
 import { loadSave, profileLevel, writeSave, STYLES, SKINS, type EnemyStyle, type HeroSkin } from './save';
-import { ITEMS, SLOTS, UPGRADES, buildLoadout, itemById, upgradeById, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
+import { ARMOUR_SLOTS, ITEMS, SLOTS, UPGRADES, WEAPON_SLOTS, buildLoadout, itemById, upgradeById, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
 import { Scene } from './scene';
 import { makeT, pickLang, type Key } from './strings';
 import {
@@ -70,8 +70,7 @@ const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const save = loadSave();
 const persist = () => writeSave(save);
 audio.setVolumes(save.music, save.sfx);
-palette.hat = save.equipped.head;
-palette.skin = save.skin;
+dressPalette();
 palette.retro = save.retro;
 document.documentElement.toggleAttribute('data-retro', save.retro);
 
@@ -116,7 +115,8 @@ const EMOJI: Record<SkillId | 'bow', string> = {
 /* The painted medallion, with the emoji beside it for the retro look (CSS shows one or the other). */
 const skillIcon = (id: SkillId | 'bow', size = 40) => `<img class="skill-icon" src="./images/game/skills/${id === 'bow' ? 'double' : id}.webp" width="${size}" height="${size}" alt=""><span class="skill-emoji">${EMOJI[id]}</span>`;
 const CATEGORY_LABEL: Record<Category, Key> = { melee: 'catMelee', magic: 'catMagic', ranged: 'catRanged', upgrade: 'catUpgrade' };
-const SLOT_LABEL: Record<Slot, Key> = { head: 'slotHead', charm: 'slotCharm', relic: 'slotRelic' };
+const SLOT_LABEL: Record<Slot, Key> = { head: 'slotHead', body: 'slotBody', boots: 'slotBoots', magic: 'slotMagic', melee: 'slotMelee', ranged: 'slotRanged' };
+const SLOT_ICON: Record<Slot, string> = { head: '🪖', body: '🦺', boots: '🥾', magic: '🔮', melee: '⚔️', ranged: '🏹' };
 const STYLE_ICON: Record<EnemyStyle, string> = { world: '🌍', original: '🐞', demon: '😈', viking: '🪓', jungle: '🕷️', greek: '🏛️', robot: '🤖', nightmare: '💀', random: '🎲' };
 const BOSS_NAME: Record<Look, Key> = { original: 'bossOriginal', demon: 'bossDemon', viking: 'bossViking', jungle: 'bossJungle', greek: 'bossGreek', robot: 'bossRobot', nightmare: 'bossNightmare' };
 
@@ -227,7 +227,7 @@ function menuScreen() {
       <button class="hot cover-card is-shop" data-act="shop" aria-label="${t('shop')}"></button>
       ${copy('is-shop', t('shop'), `🪙 ${Math.floor(save.coins)}`)}
       <button class="hot cover-card is-styles" data-act="styles" aria-label="${t('styles')}"></button>
-      ${copy('is-styles', t('styles'), t(`style${cap(save.style)}Name` as Key))}
+      ${copy('is-styles', t('styles'), t(`skin${cap(save.skin)}Name` as Key))}
       <button class="hot cover-card is-options" data-act="options" aria-label="${t('options')}"></button>
       ${copy('is-options', t('options'), '')}
       <p class="cover-best">${bestLine()}</p>
@@ -494,8 +494,53 @@ function shopScreen(note = '') {
     ${backButton('menu')}`, true, false, 'keep-scroll');
 }
 
+/* The customise screen: the hero in the middle, three armour slots down the
+   left (head, body, boots) and three weapon slots down the right (magic,
+   melee, ranged). Tapping a slot lists what fits there; owned items are worn
+   with a tap, the rest are bought (and worn) with one. Below it, the skin
+   and the enemy look as before. */
 const HAT_SET: Record<string, string> = { wizardHat: 'wizard', gladHelm: 'helm', bandana: 'bandana' };
-function stylesScreen() {
+/** What the hero wears, for the canvas: the painted sprite only knows the hat. */
+function dressPalette() {
+  palette.hat = save.equipped.head;
+  palette.body = save.equipped.body;
+  palette.skin = save.skin;
+  palette.boots = save.equipped.boots;
+}
+const heroPic = () => `./images/game/hero/${save.skin}-${HAT_SET[save.equipped.head ?? ''] ?? 'base'}-idle.webp`;
+/** The slot whose items are listed (none until one is tapped). */
+let dressSlot: Slot | null = null;
+function stylesScreen(note = '') {
+  const slotButton = (slot: Slot) => {
+    const id = save.equipped[slot];
+    const item = id ? itemById(id) : null;
+    const open = dressSlot === slot;
+    return `<button class="dslot${item ? ' is-worn' : ''}${open ? ' is-open' : ''}" data-slot="${slot}" aria-pressed="${open}" aria-label="${t(SLOT_LABEL[slot])}: ${item ? t(`${item.id}Name` as Key) : t('dressEmpty')}">
+      <span class="ring" aria-hidden="true"><span class="icon${item ? '' : ' is-empty'}">${item ? item.icon : SLOT_ICON[slot]}</span></span>
+      <small>${t(SLOT_LABEL[slot])}</small>
+    </button>`;
+  };
+  const hero = save.retro
+    ? `<canvas class="hero-fig" width="180" height="200" aria-hidden="true"></canvas>`
+    : `<img class="hero-fig" src="${heroPic()}" alt="" width="128" height="160">`;
+  const picks = dressSlot
+    ? `<h3 class="slot">${t('dressPick', { slot: t(SLOT_LABEL[dressSlot]) })}</h3>
+       ${note ? `<p class="note">${note}</p>` : ''}
+       <div class="gear-list">${ITEMS.filter((item) => item.slot === dressSlot).map((item) => {
+         const owned = save.owned.includes(item.id);
+         const worn = save.equipped[item.slot] === item.id;
+         const can = save.coins >= item.price;
+         const state = worn ? `✓ ${t('worn')}` : owned ? t('equip') : `🪙 ${item.price}`;
+         return `<button class="gear-row${worn ? ' is-on' : ''}${!owned && !can ? ' is-locked' : ''}" data-dress="${item.id}" aria-pressed="${worn}">
+           <span class="icon" aria-hidden="true">${item.icon}</span>
+           <b>${t(`${item.id}Name` as Key)}</b>
+           <span>${t(`${item.id}Text` as Key)}</span>
+           <em>${state}</em>
+         </button>`;
+       }).join('')}
+       ${save.equipped[dressSlot] ? `<button class="ghost small" data-undress="${dressSlot}">${t('dressNone')}</button>` : ''}
+       </div>`
+    : `<p class="how">${t('dressHint')}</p>`;
   const skins = SKINS.map((skin) => `
     <button class="style skin${save.skin === skin ? ' is-on' : ''}" data-skin="${skin}">
       <span class="icon" aria-hidden="true"><img class="skin-pic" src="./images/game/hero/${skin}-${HAT_SET[save.equipped.head ?? ''] ?? 'base'}-idle.webp" alt=""></span>
@@ -509,8 +554,20 @@ function stylesScreen() {
       <span>${t(`style${cap(style)}Text` as Key)}</span>
     </button>`).join('');
   show(`<button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button><h2>${t('styles')}</h2>
-    <p>${t('skinPick')}</p><div class="styles">${skins}</div>
-    <p>${t('stylePick')}</p><div class="styles">${cards}</div>${backButton('menu')}`, true);
+    <p class="wallet">${coinsLine()}</p>
+    <div class="dress">
+      <div class="dress-col">${ARMOUR_SLOTS.map(slotButton).join('')}</div>
+      <div class="dress-hero">${hero}<b>${t(`skin${cap(save.skin)}Name` as Key)}</b></div>
+      <div class="dress-col">${WEAPON_SLOTS.map(slotButton).join('')}</div>
+    </div>
+    ${picks}
+    <h3 class="slot">${t('skinPick')}</h3><div class="styles">${skins}</div>
+    <h3 class="slot">${t('enemies')}</h3><p class="how">${t('stylePick')}</p><div class="styles">${cards}</div>${backButton('menu')}`, true, false, 'keep-scroll');
+  const fig = screen.querySelector<HTMLCanvasElement>('canvas.hero-fig');
+  if (fig) {
+    const ctx = fig.getContext('2d');
+    if (ctx) drawRetroFigure(ctx, fig.width / 2, fig.height * 0.52, 46, palette);
+  }
 }
 
 function startRun(world = save.world) {
@@ -587,7 +644,7 @@ screen.addEventListener('click', (event) => {
     location.href = './index.html';
   } else if (act === 'menu') menuScreen();
   else if (act === 'shop') shopScreen();
-  else if (act === 'styles') stylesScreen();
+  else if (act === 'styles') { dressSlot = null; stylesScreen(); }
   else if (act === 'options') { optionsFrom = 'menu'; optionsScreen(); }
   else if (act === 'options-pause') { optionsFrom = 'pause'; optionsScreen(); }
   else if (act === 'retro') {
@@ -646,10 +703,34 @@ screen.addEventListener('click', (event) => {
   } else if (target.dataset.skin) {
     save.skin = target.dataset.skin as HeroSkin;
     persist();
+    dressPalette();
+    stylesScreen();
+  } else if (target.dataset.slot) {
+    const slot = target.dataset.slot as Slot;
+    dressSlot = dressSlot === slot ? null : slot;
+    stylesScreen();
+  } else if (target.dataset.dress) {
+    const item = itemById(target.dataset.dress as ItemId);
+    const worn = save.equipped[item.slot] === item.id;
+    if (worn) delete save.equipped[item.slot];
+    else if (save.owned.includes(item.id)) save.equipped[item.slot] = item.id;
+    else if (save.coins < item.price) { stylesScreen(t('notEnough')); return; }
+    else {
+      save.coins -= item.price;
+      save.owned.push(item.id);
+      save.equipped[item.slot] = item.id;
+      audio.play('coin');
+    }
+    persist();
+    dressPalette();
+    stylesScreen();
+  } else if (target.dataset.undress) {
+    delete save.equipped[target.dataset.undress as Slot];
+    persist();
+    dressPalette();
     stylesScreen();
   }
-  palette.hat = save.equipped.head;
-  palette.skin = save.skin;
+  dressPalette();
 });
 
 screen.addEventListener('input', (event) => {

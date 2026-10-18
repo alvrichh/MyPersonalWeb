@@ -6,11 +6,20 @@ import type { Category, SkillId } from './world';
  * real name. One item per slot can be worn; everything owned stays owned.
  */
 
-export type Slot = 'head' | 'charm' | 'relic';
+/*
+ * Six slots, dressed on the customise screen: three armour pieces down the
+ * left of the hero (head, body, boots) and three weapon slots down the right
+ * (magic, melee, ranged). Older saves had `charm` and `relic`; loadSave()
+ * re-seats those items by their new slot.
+ */
+export type Slot = 'head' | 'body' | 'boots' | 'magic' | 'melee' | 'ranged';
 export type ItemId =
   | 'wizardHat' | 'gladHelm' | 'bandana' | 'crown'
-  | 'phoenix' | 'orb' | 'pompom' | 'potion' | 'hourglass'
-  | 'keySword' | 'chainBlades' | 'quiver' | 'spellbook';
+  | 'potion' | 'phoenix' | 'pompom' | 'plate'
+  | 'windBoots' | 'ironBoots' | 'magnetBoots'
+  | 'orb' | 'hourglass' | 'spellbook' | 'lantern'
+  | 'keySword' | 'chainBlades' | 'warHammer'
+  | 'quiver' | 'knifeSet' | 'huntBoomerang';
 
 /*
  * The forge: permanent upgrades bought level by level. They always apply,
@@ -76,22 +85,39 @@ export const BASE_LOADOUT: Loadout = {
 };
 
 export const ITEMS: Item[] = [
+  // Head
   { id: 'wizardHat', slot: 'head', price: 120, icon: '🧙', effect: { mult: { melee: 1, magic: 1.3, ranged: 1, upgrade: 1 } } },
   { id: 'gladHelm', slot: 'head', price: 120, icon: '🪖', effect: { mult: { melee: 1.3, magic: 1, ranged: 1, upgrade: 1 } } },
   { id: 'bandana', slot: 'head', price: 90, icon: '🎀', effect: { speedMult: 1.12 } },
   { id: 'crown', slot: 'head', price: 320, icon: '👑', effect: { xpMult: 1.15, coinMult: 1.15 } },
-  { id: 'potion', slot: 'charm', price: 80, icon: '🧪', effect: { maxHp: 130 } },
-  { id: 'orb', slot: 'charm', price: 150, icon: '🔮', effect: { xpMult: 1.25 } },
-  { id: 'pompom', slot: 'charm', price: 150, icon: '🧸', effect: { coinMult: 1.4 } },
-  { id: 'phoenix', slot: 'charm', price: 220, icon: '🪶', effect: { revives: 1 } },
-  { id: 'hourglass', slot: 'charm', price: 200, icon: '⏳', effect: { hasteMult: 1.15 } },
-  { id: 'quiver', slot: 'relic', price: 140, icon: '🏹', effect: { mult: { melee: 1, magic: 1, ranged: 1.3, upgrade: 1 } } },
-  { id: 'keySword', slot: 'relic', price: 260, icon: '🗝️', effect: { startSkills: ['sword'] } },
-  { id: 'chainBlades', slot: 'relic', price: 260, icon: '⛓️', effect: { startSkills: ['blades'] } },
-  { id: 'spellbook', slot: 'relic', price: 260, icon: '📖', effect: { startSkills: ['fireball'] } },
+  // Body
+  { id: 'potion', slot: 'body', price: 80, icon: '🦺', effect: { maxHp: 130 } },
+  { id: 'pompom', slot: 'body', price: 150, icon: '🧸', effect: { coinMult: 1.4 } },
+  { id: 'plate', slot: 'body', price: 180, icon: '🛡️', effect: { armor: 0.1 } },
+  { id: 'phoenix', slot: 'body', price: 220, icon: '🪶', effect: { revives: 1 } },
+  // Boots
+  { id: 'windBoots', slot: 'boots', price: 110, icon: '👟', effect: { speedMult: 1.15 } },
+  { id: 'magnetBoots', slot: 'boots', price: 120, icon: '🧲', effect: { magnet: 70 } },
+  { id: 'ironBoots', slot: 'boots', price: 140, icon: '🥾', effect: { armor: 0.08, maxHp: 115 } },
+  // Magic (the spirit companion lives here)
+  { id: 'orb', slot: 'magic', price: 150, icon: '🔮', effect: { xpMult: 1.25 } },
+  { id: 'hourglass', slot: 'magic', price: 200, icon: '⏳', effect: { hasteMult: 1.15 } },
+  { id: 'spellbook', slot: 'magic', price: 260, icon: '📖', effect: { startSkills: ['fireball'] } },
+  { id: 'lantern', slot: 'magic', price: 300, icon: '🏮', effect: { startSkills: ['spirits'] } },
+  // Melee
+  { id: 'keySword', slot: 'melee', price: 260, icon: '🗝️', effect: { startSkills: ['sword'] } },
+  { id: 'chainBlades', slot: 'melee', price: 260, icon: '⛓️', effect: { startSkills: ['blades'] } },
+  { id: 'warHammer', slot: 'melee', price: 300, icon: '🔨', effect: { startSkills: ['hammer'] } },
+  // Ranged
+  { id: 'quiver', slot: 'ranged', price: 140, icon: '🏹', effect: { mult: { melee: 1, magic: 1, ranged: 1.3, upgrade: 1 } } },
+  { id: 'knifeSet', slot: 'ranged', price: 260, icon: '🔪', effect: { startSkills: ['knives'] } },
+  { id: 'huntBoomerang', slot: 'ranged', price: 260, icon: '🪃', effect: { startSkills: ['boomerang'] } },
 ];
 
-export const SLOTS: Slot[] = ['head', 'charm', 'relic'];
+export const SLOTS: Slot[] = ['head', 'body', 'boots', 'magic', 'melee', 'ranged'];
+/** The customise screen: armour down the left of the hero, weapons down the right. */
+export const ARMOUR_SLOTS: Slot[] = ['head', 'body', 'boots'];
+export const WEAPON_SLOTS: Slot[] = ['magic', 'melee', 'ranged'];
 export const itemById = (id: ItemId) => ITEMS.find((item) => item.id === id) as Item;
 
 /** Combine the worn items and the forge's levels into one loadout. */
@@ -117,6 +143,8 @@ export function buildLoadout(equipped: Partial<Record<Slot, ItemId>>, upgrades: 
     if (effect.maxHp) out.maxHp += effect.maxHp - BASE_LOADOUT.maxHp;
     if (effect.speedMult) out.speedMult *= effect.speedMult;
     if (effect.hasteMult) out.hasteMult *= effect.hasteMult;
+    if (effect.magnet) out.magnet += effect.magnet;
+    if (effect.armor) out.armor = Math.min(0.6, out.armor + effect.armor);
   }
   return out;
 }
