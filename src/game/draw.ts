@@ -23,6 +23,7 @@ function floorImage(world: number) {
 }
 export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Palette, now: number) {
   retroLook = !!pal.retro;
+  ctx.shadowBlur = 0;
   const accent = pal.rainbow ? hue(now) : pal.accent;
   const accent2 = pal.rainbow ? hue(now + 1.5) : pal.accent2;
   const { scale, ox, oy, dpr } = view;
@@ -1272,6 +1273,8 @@ function drawZaps(ctx: CanvasRenderingContext2D, g: Game) {
     }
   }
   ctx.globalAlpha = 1;
+  // Without this the yellow glow leaks onto everything drawn after (walls, bugs, the hero).
+  ctx.shadowBlur = 0;
 }
 
 function drawEnemy(ctx: CanvasRenderingContext2D, e: Enemy, now: number) {
