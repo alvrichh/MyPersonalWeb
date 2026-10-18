@@ -90,7 +90,9 @@ export type SkillId =
   // Bow upgrades (the bow is the weapon you start with).
   | 'fire' | 'water' | 'leaf' | 'bolt' | 'spark' | 'ghost' | 'double' | 'speed'
   // For everything.
-  | 'power' | 'heart';
+  | 'power' | 'heart'
+  // Passives (after Survivor.io): sports shoes, an exo-bracer, an energy drink.
+  | 'shoes' | 'bracer' | 'drink';
 
 export type Category = 'melee' | 'magic' | 'ranged' | 'upgrade';
 
@@ -100,6 +102,7 @@ export const CATEGORY: Record<SkillId, Category> = {
   knives: 'ranged', boomerang: 'ranged',
   fire: 'upgrade', water: 'upgrade', leaf: 'upgrade', bolt: 'upgrade', spark: 'upgrade', ghost: 'upgrade',
   double: 'upgrade', speed: 'upgrade', power: 'upgrade', heart: 'upgrade',
+  shoes: 'upgrade', bracer: 'upgrade', drink: 'upgrade',
 };
 export const SKILLS = Object.keys(CATEGORY) as SkillId[];
 const WEAPONS = SKILLS.filter((s) => CATEGORY[s] !== 'upgrade');
@@ -248,6 +251,10 @@ export type Game = {
   viewHalf: Vec;
   phase: 'play' | 'levelup' | 'wheel' | 'shrine' | 'over' | 'won';
   statue: Statue | null;
+  /** A boss's chest: touching it spins the lucky wheel (good slices only). */
+  chest: Vec | null;
+  /** The wheel being spun is the chest's lucky one (no room change after it). */
+  luckyWheel: boolean;
   /** The second, mysterious door is open in this room. */
   wheelDoor: boolean;
   /** The wheel is a once-per-run thing. */
@@ -306,7 +313,7 @@ export type Game = {
 
 export type GameEvent =
   | 'clear' | 'boss' | 'hurt' | 'levelup' | 'room' | 'revive' | 'heal' | 'wheel' | 'shrine'
-  | 'shoot' | 'knife' | 'boomerang' | 'orb' | 'hit' | 'kill' | 'gem' | 'heart' | 'slash' | 'slam' | 'strike' | 'boom' | 'minute';
+  | 'shoot' | 'knife' | 'boomerang' | 'orb' | 'hit' | 'kill' | 'gem' | 'heart' | 'chest' | 'slash' | 'slam' | 'strike' | 'boom' | 'minute';
 
 /* ------------------------------------------------------------------ helpers */
 
@@ -509,6 +516,7 @@ function enterRoom(g: Game, room: number) {
   g.room = room;
   g.door = false;
   g.statue = null;
+  g.chest = null;
   g.wheelDoor = false;
   const layout = isShrineRoom(room) ? -1 : LAYOUT_FOR_STAGE[stageOf(room) - 1];
   g.obstacles = layout >= 0 ? LAYOUTS[layout] : [];
@@ -549,6 +557,8 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     viewHalf: { x: W / 2, y: H / 2 },
     phase: 'play',
     statue: null,
+    chest: null,
+    luckyWheel: false,
     wheelDoor: false,
     wheelUsed: false,
     bossHpMult: 1,
@@ -798,7 +808,12 @@ function kill(g: Game, e: Enemy) {
     const r = drops > 1 ? rand(10, 40) : 0;
     g.gems.push({ x: e.x + Math.cos(a) * r, y: e.y + Math.sin(a) * r, value: e.xp / drops, pull: false });
   }
-  if (e.kind === 'boss') g.shake = 0.6;
+  if (e.kind === 'boss') {
+    g.shake = 0.6;
+    // The chest: not for the boss whose death ends the run.
+    const last = g.mode === 'horde' ? g.hordeBoss >= HORDE_BOSS_AT.length : g.room === ROOMS;
+    if (!last) { g.chest = { x: e.x, y: e.y }; g.events.push('chest'); }
+  }
   // On call: tougher bugs may leave a heart behind (bosses always leave three).
   if (g.mode === 'horde') {
     const hearts = e.kind === 'boss' ? 3 : Math.random() < (HEART_CHANCE[e.kind] ?? 0) ? 1 : 0;
@@ -1245,7 +1260,8 @@ function useWeapons(g: Game, dt: number) {
 function hurtPlayer(g: Game, amount: number) {
   const p = g.player;
   if (p.inv > 0 || g.phase !== 'play') return;
-  p.hp -= Math.max(1, Math.round(amount * (1 - g.loadout.armor)));
+  // The exo-bracer stacks on the worn armour.
+  p.hp -= Math.max(1, Math.round(amount * (1 - Math.min(0.7, g.loadout.armor + 0.07 * g.skills.bracer))));
   p.inv = 0.7;
   g.shake = Math.max(g.shake, 0.25);
   g.events.push('hurt');
@@ -1543,10 +1559,12 @@ export function shrinePick(g: Game, pick: ShrinePick): { skill?: SkillId } {
 
 /* ------------------------------------------------------------------- wheel */
 
-export type WheelOutcome = 'newSkill' | 'skillUp' | 'heal' | 'coins' | 'loseLevel' | 'hurt' | 'loseCoins' | 'bossBuff' | 'nothing';
+export type WheelOutcome = 'newSkill' | 'skillUp' | 'heal' | 'coins' | 'loseLevel' | 'hurt' | 'loseCoins' | 'bossBuff' | 'nothing' | 'evolve';
 /** The slices in order round the wheel: good and bad alternate. */
 export const WHEEL: WheelOutcome[] = ['newSkill', 'hurt', 'heal', 'loseLevel', 'skillUp', 'nothing', 'coins', 'bossBuff'];
-export const WHEEL_GOOD: WheelOutcome[] = ['newSkill', 'heal', 'skillUp', 'coins'];
+export const WHEEL_GOOD: WheelOutcome[] = ['newSkill', 'heal', 'skillUp', 'coins', 'evolve'];
+/** The boss chest's wheel: every slice helps, and one evolves a weapon that is ready. */
+export const WHEEL_LUCKY: WheelOutcome[] = ['newSkill', 'coins', 'skillUp', 'evolve', 'heal', 'skillUp', 'coins', 'newSkill'];
 export const WHEEL_COINS = 40;
 
 /**
@@ -1576,6 +1594,13 @@ export function applyWheel(g: Game, outcome: WheelOutcome): { outcome: WheelOutc
     case 'heal':
       p.hp = p.maxHp;
       return { outcome };
+    case 'evolve': {
+      const ready = WEAPONS.filter((w) => canEvolve(g, w));
+      if (!ready.length) return applyWheel(g, 'skillUp');
+      const skill = any(ready);
+      g.evolved[skill] = true;
+      return { outcome, skill };
+    }
     case 'coins':
       g.coins += WHEEL_COINS * worldPay(g);
       return { outcome };
@@ -1604,6 +1629,8 @@ export function applyWheel(g: Game, outcome: WheelOutcome): { outcome: WheelOutc
 export function leaveWheel(g: Game) {
   if (g.phase !== 'wheel') return;
   g.phase = 'play';
+  // The chest's wheel: back to the same room (or field).
+  if (g.luckyWheel) { g.luckyWheel = false; return; }
   enterRoom(g, g.room + 1);
 }
 
@@ -1622,11 +1649,20 @@ export function update(g: Game, dt: number, input: Input) {
   const wading = g.hazards.some((h) => h.kind === 'puddle' && dist(h, p) < h.r);
   if (p.moving) {
     const k = Math.min(1, len) * (wading ? 0.55 : 1);
-    p.x += (input.x / len) * k * p.speed * dt;
-    p.y += (input.y / len) * k * p.speed * dt;
+    const shoes = 1 + 0.1 * g.skills.shoes;
+    p.x += (input.x / len) * k * p.speed * shoes * dt;
+    p.y += (input.y / len) * k * p.speed * shoes * dt;
     p.face = Math.atan2(input.y, input.x);
   }
   updateHazards(g, dt);
+  // Touching a boss's chest spins the lucky wheel.
+  if (g.chest && dist(p, g.chest) < p.r + 20) {
+    g.chest = null;
+    g.luckyWheel = true;
+    g.phase = 'wheel';
+    g.events.push('wheel');
+    return;
+  }
   // Touching the statue opens its offer: health or a skill.
   if (g.statue && !g.statue.used && dist(p, g.statue) < p.r + 24) {
     g.phase = 'shrine';
@@ -1662,6 +1698,8 @@ export function update(g: Game, dt: number, input: Input) {
   p.inv = Math.max(0, p.inv - dt);
 
   useWeapons(g, dt);
+  // The energy drink: a little health back every second.
+  if (g.skills.drink) heal(g, 0.6 * g.skills.drink * dt);
   moveSpirits(g, dt);
 
   for (const e of g.enemies) if (!e.dead) updateEnemy(g, e, dt);
