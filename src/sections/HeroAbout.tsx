@@ -1,4 +1,4 @@
-import { useRef, useState, type MouseEvent } from 'react';
+import { useEffect, useRef, useState, type MouseEvent } from 'react';
 import { useI18n, type MessageKey } from '../i18n/I18nContext';
 import { CalendarIcon, DownloadIcon, GitHubIcon, PinIcon } from '../components/icons';
 import { CALENDLY } from '../data/contact';
@@ -9,6 +9,9 @@ import { effectFor, effectLife, makeBurst, type FxPiece } from '../components/po
 const COMBO_WINDOW = 1200;
 const MAX_COMBO = 8;
 const MAX_PIECES = { wide: 500, phone: 360 };
+// Phones get no bubble hint (there's no hover), so the portrait wiggles once
+// this long after load if nobody has tapped it yet.
+const NUDGE_AFTER = 4000;
 
 export function Hero() {
   const { t } = useI18n();
@@ -18,11 +21,28 @@ export function Hero() {
   // bigger bursts. No pointer cursor or button role on purpose, so it stays a
   // surprise.
   const [spinning, setSpinning] = useState(false);
+  const [nudging, setNudging] = useState(false);
   const [fx, setFx] = useState<FxPiece[]>([]);
+  const figure = useRef<HTMLElement>(null);
+  const tapped = useRef(false);
   const bursts = useRef(0);
   const combo = useRef({ count: 0, last: 0 });
-  const spin = (event: MouseEvent<HTMLElement>) => {
+
+  useEffect(() => {
+    if (!window.matchMedia('(hover: none)').matches) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const timer = window.setTimeout(() => {
+      const box = figure.current?.getBoundingClientRect();
+      const onScreen = box && box.bottom > 0 && box.top < window.innerHeight;
+      if (!tapped.current && onScreen) setNudging(true);
+    }, NUDGE_AFTER);
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  const spin = (event: MouseEvent<HTMLElement>) => {
+    tapped.current = true;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    setNudging(false);
     if (!spinning) setSpinning(true);
 
     const now = performance.now();
@@ -77,10 +97,12 @@ export function Hero() {
       </div>
 
       <figure
-        className={spinning ? 'hero-figure is-spinning' : 'hero-figure'}
+        ref={figure}
+        className={`hero-figure${spinning ? ' is-spinning' : ''}${nudging ? ' is-nudging' : ''}`}
         onClick={spin}
         onAnimationEnd={(event) => {
           if (event.animationName === 'coin-spin') setSpinning(false);
+          if (event.animationName === 'portrait-nudge') setNudging(false);
         }}
       >
         <div className="hero-portrait">
