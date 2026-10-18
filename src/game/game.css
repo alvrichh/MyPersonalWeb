@@ -237,7 +237,9 @@ body {
 }
 
 .screen[hidden] {
-  display: none;
+  /* Must beat `.screen.is-menu { display: block }`, or the title backdrop
+     stays over the canvas when a run starts. */
+  display: none !important;
 }
 
 /* The title screen: the owner's cover art, with the words wiped off the
