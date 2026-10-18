@@ -1,5 +1,5 @@
 import { storage } from '../lib/storage';
-import type { ItemId, Slot } from './shop';
+import type { ItemId, Slot, Upgrades } from './shop';
 
 /* Everything Bug Hunter remembers between runs, in one localStorage key. */
 
@@ -17,6 +17,8 @@ export type Save = {
   retro: boolean;
   owned: ItemId[];
   equipped: Partial<Record<Slot, ItemId>>;
+  /** The forge: permanent upgrade levels. */
+  upgrades: Upgrades;
   style: EnemyStyle;
   /** Saves from before worlds had their own cast default to 'world' once. */
   styleV2: boolean;
@@ -42,6 +44,7 @@ const fresh = (): Save => ({
   retro: false,
   owned: [],
   equipped: {},
+  upgrades: {},
   style: 'world',
   styleV2: true,
   music: 0.6,
@@ -58,7 +61,7 @@ export function loadSave(): Save {
   const base = fresh();
   try {
     const data = JSON.parse(storage.get(KEY) || '{}') as Partial<Save>;
-    const save = { ...base, ...data, equipped: { ...data.equipped }, best: { ...base.best, ...data.best }, bestByWorld: { ...data.bestByWorld } };
+    const save = { ...base, ...data, equipped: { ...data.equipped }, upgrades: { ...data.upgrades }, best: { ...base.best, ...data.best }, bestByWorld: { ...data.bestByWorld } };
     if (!STYLES.includes(save.style)) save.style = 'world';
     if (!SKINS.includes(save.skin)) save.skin = 'boy';
     if (!data.styleV2) { save.style = 'world'; save.styleV2 = true; }

@@ -3,7 +3,7 @@ import { storage } from '../lib/storage';
 import { audio, type Sfx } from './audio';
 import { draw, type Palette, type View } from './draw';
 import { loadSave, profileLevel, writeSave, STYLES, SKINS, type EnemyStyle, type HeroSkin } from './save';
-import { ITEMS, SLOTS, buildLoadout, itemById, type ItemId, type Slot } from './shop';
+import { ITEMS, SLOTS, UPGRADES, buildLoadout, itemById, upgradeById, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
 import { Scene } from './scene';
 import { makeT, pickLang, type Key } from './strings';
 import {
@@ -457,10 +457,29 @@ function shopScreen(note = '') {
       .join('');
     return `<h3 class="slot">${t(SLOT_LABEL[slot])}</h3><div class="items">${cards}</div>`;
   }).join('');
+  // The forge: permanent, levelled upgrades.
+  const forge = UPGRADES.map((u) => {
+    const level = save.upgrades[u.id] ?? 0;
+    const maxed = level >= u.max;
+    const price = upgradePrice(u, level);
+    const can = save.coins >= price;
+    const pips = Array.from({ length: u.max }, (_, i) => `<i class="${i < level ? 'is-on' : ''}"></i>`).join('');
+    const action = maxed
+      ? `<button class="buy is-worn" disabled>✓ ${t('upgradeMax')}</button>`
+      : `<button class="buy${can ? '' : ' is-poor'}" data-upgrade="${u.id}">${t('upgradeBtn', { price })}</button>`;
+    return `<div class="item forge-item${maxed ? ' is-on' : ''}${!maxed && !can ? ' is-locked' : ''}">
+      <span class="icon" aria-hidden="true">${u.icon}</span>
+      <b>${t(`${u.id}Name` as Key)}</b>
+      <span>${t(`${u.id}Text` as Key)}</span>
+      <span class="pips" aria-label="${t('upgradeLevel', { level, max: u.max })}">${pips}</span>
+      ${action}
+    </div>`;
+  }).join('');
   show(`
     <button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
     <div class="shop-head"><h2>${t('shop')}</h2><p class="wallet">${coinsLine()}</p></div>
     ${note ? `<p class="note">${note}</p>` : `<p class="how">${t('earnHint')}</p>`}
+    <h3 class="slot">${t('forge')}</h3><p class="how">${t('forgeHint')}</p><div class="items">${forge}</div>
     ${groups}
     ${backButton('menu')}`, true);
 }
@@ -485,7 +504,7 @@ function stylesScreen() {
 }
 
 function startRun(world = save.world) {
-  game = newGame(buildLoadout(save.equipped), save.style, world);
+  game = newGame(buildLoadout(save.equipped, save.upgrades), save.style, world);
   paused = false;
   shownChoices = '';
   wheelShown = false;
@@ -586,6 +605,17 @@ screen.addEventListener('click', (event) => {
     save.coins -= item.price;
     save.owned.push(item.id);
     save.equipped[item.slot] = item.id;
+    persist();
+    audio.play('coin');
+    shopScreen();
+  } else if (target.dataset.upgrade) {
+    const u = upgradeById(target.dataset.upgrade as UpgradeId);
+    const level = save.upgrades[u.id] ?? 0;
+    const price = upgradePrice(u, level);
+    if (level >= u.max) return;
+    if (save.coins < price) { shopScreen(t('notEnough')); return; }
+    save.coins -= price;
+    save.upgrades[u.id] = level + 1;
     persist();
     audio.play('coin');
     shopScreen();
