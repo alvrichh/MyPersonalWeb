@@ -1195,10 +1195,11 @@ function drawZaps(ctx: CanvasRenderingContext2D, g: Game) {
     const last = z.pts[z.pts.length - 1];
     if (!retroLook && Math.hypot(last.x - first.x, last.y - first.y) > 150 && ready(fxImage('bolt-6'))) continue;
     ctx.globalAlpha = Math.min(1, z.life / 0.12);
-    // Blue, like the owner's painted bolts.
-    ctx.shadowColor = '#38bdf8';
+    // Bolts falling from the sky are blue, like the owner's painted ones; chain lightning between bugs is yellow.
+    const sky = Math.hypot(last.x - first.x, last.y - first.y) > 150;
+    ctx.shadowColor = sky ? '#38bdf8' : '#facc15';
     ctx.shadowBlur = retroLook ? 0 : 10;
-    for (const [width, color] of [[6, 'rgba(56,189,248,0.45)'], [2.2, '#e0f2fe']] as const) {
+    for (const [width, color] of (sky ? [[6, 'rgba(56,189,248,0.45)'], [2.2, '#e0f2fe']] : [[6, 'rgba(250,204,21,0.45)'], [2.2, '#fef9c3']]) as [number, string][]) {
       ctx.strokeStyle = color;
       ctx.lineWidth = width;
       ctx.beginPath();
