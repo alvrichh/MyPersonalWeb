@@ -165,6 +165,9 @@ const en = {
   bossViking: 'The Jarl',
   bossJungle: 'The Ancient Treant',
   bossRobot: 'The Mainframe',
+  landingTagline: 'Catch, squash and master the bugs of every world.',
+  lvShort: 'Lv. {level}',
+  worldsChip: 'worlds',
 };
 
 export type Key = keyof typeof en;
@@ -331,6 +334,9 @@ const es: Record<Key, string> = {
   bossViking: 'El Jarl',
   bossJungle: 'El Árbol Ancestral',
   bossRobot: 'El Mainframe',
+  landingTagline: 'Atrapa, elimina y domina los bugs de cada mundo.',
+  lvShort: 'Nv. {level}',
+  worldsChip: 'mundos',
 };
 
 export type Lang = 'en' | 'es';

@@ -2,7 +2,7 @@ import './game.css';
 import { storage } from '../lib/storage';
 import { audio, type Sfx } from './audio';
 import { draw, type Palette, type View } from './draw';
-import { loadSave, writeSave, STYLES, type EnemyStyle } from './save';
+import { loadSave, profileLevel, writeSave, STYLES, type EnemyStyle } from './save';
 import { ITEMS, SLOTS, buildLoadout, itemById, type ItemId, type Slot } from './shop';
 import { Scene } from './scene';
 import { makeT, pickLang, type Key } from './strings';
@@ -55,7 +55,6 @@ const pauseBtn = $<HTMLButtonElement>('pauseBtn');
 $<HTMLAnchorElement>('backLink').setAttribute('aria-label', t('back'));
 pauseBtn.setAttribute('aria-label', t('pause'));
 
-const touch = window.matchMedia('(hover: none)').matches;
 const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ----------------------------------------------------------------- the save */
@@ -85,6 +84,7 @@ function bankRun(g: Game): number | null {
   if (g.world === 1) save.best = save.bestByWorld[1];
   save.coins += Math.floor(g.coins);
   save.runs += 1;
+  save.xp += Math.round(g.xpEarned);
   let unlocked: number | null = null;
   if (won && g.world < WORLD_COUNT && save.unlocked < g.world + 1) {
     save.unlocked = g.world + 1;
@@ -133,20 +133,38 @@ function menuScreen() {
   hudGear.hidden = true;
   bossBar.hidden = true;
   audio.setIntensity(0);
+  const { level, progress } = profileLevel(save.xp);
+  const card = (act: string, cls: string, icon: string, title: string, sub: string) => `
+    <button class="card card-${cls}" data-act="${act}">
+      <span class="card-icon" aria-hidden="true">${icon}</span>
+      <span class="card-copy"><b>${title}</b>${sub ? `<small>${sub}</small>` : ''}</span>
+      <span class="card-go" aria-hidden="true">›</span>
+    </button>`;
   show(`
-    <p class="kicker">alvrich</p>
-    <h1 class="title">${t('title')}</h1>
-    <p>${t('tagline')}</p>
-    <p class="how">${t(touch ? 'howTouch' : 'howKeys')}</p>
-    <button class="primary big" data-act="play">▶ ${t('playNow')}<small>${WORLD_ICON[save.world - 1]} ${worldName(save.world)}</small></button>
-    <div class="menu-grid">
-      <button class="ghost" data-act="map"><span class="icon">🗺️</span>${t('map')}<small>${save.unlocked}/${WORLD_COUNT}</small></button>
-      <button class="ghost" data-act="shop"><span class="icon">🛒</span>${t('shop')}<small>${coinsLine()}</small></button>
-      <button class="ghost" data-act="styles"><span class="icon">${STYLE_ICON[save.style]}</span>${t('styles')}<small>${t(`style${cap(save.style)}Name` as Key)}</small></button>
-      <button class="ghost" data-act="options"><span class="icon">${save.music === 0 && save.sfx === 0 ? '🔇' : '🔊'}</span>${t('options')}</button>
-    </div>
-    <p class="best">${bestLine()}</p>
-    <a class="link" href="./index.html">← ${t('back')}</a>`, false, true);
+    <div class="landing">
+      <header class="landing-top">
+        <a class="round" href="./index.html" aria-label="${t('back')}">✕</a>
+        <div class="profile">
+          <img src="./images/favicon-192.png" alt="" width="40" height="40">
+          <span class="profile-copy"><small>alvrich</small><b>${t('lvShort', { level })}</b><i><b style="width:${Math.round(progress * 100)}%"></b></i></span>
+        </div>
+        <button class="chip chip-coins" data-act="shop"><span class="coin">🪙</span> ${Math.floor(save.coins)} <em>+</em></button>
+        <button class="chip chip-worlds" data-act="map">🌍 ${save.unlocked}<small>/${WORLD_COUNT}</small></button>
+        <button class="round" data-act="options" aria-label="${t('options')}">⚙</button>
+      </header>
+      <div class="landing-art">
+        <img src="./images/game/landing.jpg" alt="" width="936" height="871">
+        <p class="landing-tagline">${t('landingTagline')}</p>
+      </div>
+      <button class="play" data-act="play"><span class="play-tri" aria-hidden="true"></span><span class="play-copy">${t('playNow')}<small>${WORLD_ICON[save.world - 1]} ${worldName(save.world)}</small></span></button>
+      <div class="cards">
+        ${card('map', 'map', '🌍', t('map'), `${save.unlocked} / ${WORLD_COUNT}`)}
+        ${card('shop', 'shop', '🏪', t('shop'), `🪙 ${Math.floor(save.coins)}`)}
+        ${card('styles', 'styles', '👾', t('styles'), t(`style${cap(save.style)}Name` as Key))}
+        ${card('options', 'options', '⚙️', t('options'), '')}
+      </div>
+      <p class="best landing-best">${bestLine()}</p>
+    </div>`, false, true);
 }
 
 const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
@@ -624,7 +642,7 @@ function frame(now: number) {
       bossName.textContent = t(BOSS_NAME[boss.look]);
       bossHp.style.width = `${(Math.max(0, boss.hp) / boss.maxHp) * 100}%`;
     }
-  } else {
+  } else if (!screen.classList.contains('is-menu')) {
     drawMenuBackdrop(now / 1000);
   }
 

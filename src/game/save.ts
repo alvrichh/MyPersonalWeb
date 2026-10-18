@@ -23,6 +23,8 @@ export type Save = {
   /** The world picked on the map. */
   world: number;
   runs: number;
+  /** All the XP ever picked up: the profile level on the title screen. */
+  xp: number;
 };
 
 const KEY = 'bugHunter';
@@ -40,6 +42,7 @@ const fresh = (): Save => ({
   unlocked: 1,
   world: 1,
   runs: 0,
+  xp: 0,
 });
 
 export function loadSave(): Save {
@@ -67,6 +70,19 @@ export function loadSave(): Save {
   } catch {
     return base;
   }
+}
+
+/** Profile level from lifetime XP: 200 for the first, a little more each time. */
+export function profileLevel(xp: number) {
+  let level = 1;
+  let need = 200;
+  let left = xp;
+  while (left >= need) {
+    left -= need;
+    level += 1;
+    need = Math.round(need * 1.15);
+  }
+  return { level, progress: left / need };
 }
 
 export function writeSave(save: Save) {
