@@ -138,8 +138,8 @@ let optionsFrom: 'menu' | 'pause' = 'menu';
  * sliced, and the content sits inside the centre.
  */
 const FRAMES = {
-  short: { l: 0.166, r: 0.166, t: 0.105, b: 0.115, ratio: 602 / 446 },
-  tall: { l: 0.122, r: 0.122, t: 0.073, b: 0.095, ratio: 1248 / 605 },
+  short: { l: 0.13, r: 0.13, t: 0.11, b: 0.1, ratio: 720 / 600 },
+  tall: { l: 0.13, r: 0.13, t: 0.075, b: 0.07, ratio: 1105 / 620 },
 };
 function fitPanel() {
   const panel = screen.querySelector<HTMLElement>('.panel');
