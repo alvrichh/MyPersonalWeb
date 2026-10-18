@@ -135,6 +135,11 @@ export function Contact() {
         <li><a href="https://openwebinars.net/@QVN2PXMV/" target="_blank" rel="noreferrer"><span>{t('contact.certs')}</span> <span aria-hidden="true">↗</span></a></li>
         <li><a href="./cv/alvaro-molina-cv.pdf" download><span>{t('hero.cv')}</span> <span aria-hidden="true">↓</span></a></li>
       </ul>
+
+      <p className="contact-game">
+        <span aria-hidden="true">🎮</span>
+        <a href="./game.html">{t('contact.game')} <span aria-hidden="true">↗</span></a>
+      </p>
     </section>
   );
 }
