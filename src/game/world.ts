@@ -210,6 +210,8 @@ export type Game = {
   wheelUsed: boolean;
   /** 1 normally; the wheel can make the next boss tougher. */
   bossHpMult: number;
+  /** The coin revive has been used this run. */
+  paidRevive: boolean;
   hazards: Hazard[];
   strikes: Strike[];
   /** Seconds until the next lightning strike (storm worlds). */
@@ -483,6 +485,7 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     wheelDoor: false,
     wheelUsed: false,
     bossHpMult: 1,
+    paidRevive: false,
     hazards: [],
     strikes: [],
     strikeIn: 2,
@@ -935,22 +938,40 @@ function hurtPlayer(g: Game, amount: number) {
     if (g.revives > 0) {
       // The phoenix feather: back on your feet with half your health.
       g.revives -= 1;
-      p.hp = Math.round(p.maxHp * 0.5);
-      p.inv = 2;
-      g.orbs = [];
-      for (const e of live(g)) {
-        const push = away(p, e, 420);
-        e.kx += push.x;
-        e.ky += push.y;
-      }
-      burst(g, p.x, p.y, '#ffb347', 40, 220, 4);
-      g.shake = 0.5;
-      g.events.push('revive');
+      standUp(g);
       return;
     }
     p.hp = 0;
     g.phase = 'over';
   }
+}
+
+/** Back on your feet with half your health, the bugs shoved away. */
+function standUp(g: Game) {
+  const p = g.player;
+  p.hp = Math.round(p.maxHp * 0.5);
+  p.inv = 2;
+  g.orbs = [];
+  for (const e of live(g)) {
+    const push = away(p, e, 420);
+    e.kx += push.x;
+    e.ky += push.y;
+  }
+  burst(g, p.x, p.y, '#ffb347', 40, 220, 4);
+  g.shake = 0.5;
+  g.events.push('revive');
+}
+
+/** The price of getting up again after a death, in coins. Once per run. */
+export const REVIVE_PRICE = 1000;
+
+/** Buy your way back from a game over: the page checks and takes the coins. */
+export function paidRevive(g: Game) {
+  if (g.phase !== 'over' || g.paidRevive) return false;
+  g.paidRevive = true;
+  g.phase = 'play';
+  standUp(g);
+  return true;
 }
 
 /* -------------------------------------------------------------------- update */
