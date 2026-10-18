@@ -915,12 +915,13 @@ function slamHammer(g: Game) {
 }
 
 export const BLADE_ORBIT = 46;
-/* Blades by level: one more blade each level up to four, then they grow
-   (a third bigger at 4, with a wider orbit; at 5 bigger still, and a fifth
-   blade). The hit reach grows with the picture. */
+/* Blades by level: one more blade each level up to four, a wider circle
+   every level, and from level 3 bigger blades (much bigger at 4 and 5, with
+   a fifth blade at 5). The hit reach is the picture's own radius, so a
+   bigger saw really cuts further. */
 export const bladeCount = (lv: number) => [0, 2, 3, 4, 4, 5][Math.min(lv, 5)];
-export const bladeScale = (lv: number) => (lv >= 5 ? 1.7 : lv >= 4 ? 1.35 : 1);
-export const bladeOrbit = (lv: number) => BLADE_ORBIT * (lv >= 5 ? 1.3 : lv >= 4 ? 1.15 : 1);
+export const bladeScale = (lv: number) => [1, 1, 1, 1.15, 1.5, 1.9][Math.min(lv, 5)];
+export const bladeOrbit = (lv: number) => BLADE_ORBIT * [1, 1, 1.12, 1.25, 1.5, 1.8][Math.min(lv, 5)];
 const BLADE_SPARK: Record<BladeElement, string> = { steel: '#e5e7eb', fire: '#ffb347', ice: '#bae6fd', volt: '#fde047', shade: '#e879f9' };
 
 /** Melee hits heal you a little: the reward for fighting up close. */
@@ -964,7 +965,7 @@ function spinBlades(g: Game, dt: number) {
   }
   const n = bladeCount(lv);
   const orbit = bladeOrbit(lv);
-  const reach = 10 * bladeScale(lv);
+  const reach = 12 * bladeScale(lv);
   const el = bladeElement(g);
   const dmg = (14 + 5 * (lv - 1)) * power(g, 'melee') * (el === 'shade' ? 1.3 : 1);
   for (let i = 0; i < n; i++) {
