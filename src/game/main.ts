@@ -6,7 +6,7 @@ import { loadSave, writeSave, STYLES, type EnemyStyle } from './save';
 import { ITEMS, SLOTS, buildLoadout, itemById, type ItemId, type Slot } from './shop';
 import { makeT, pickLang, type Key } from './strings';
 import {
-  CATEGORY, H, W, chooseSkill, isBossRoom, newGame, ownedWeapons, update,
+  CATEGORY, H, W, WORLDS, WORLD_COUNT, chooseSkill, isBossRoom, newGame, ownedWeapons, update,
   type Category, type Game, type GameEvent, type Input, type Look, type SkillId,
 } from './world';
 
@@ -65,21 +65,33 @@ audio.setVolumes(save.music, save.sfx);
 palette.hat = save.equipped.head;
 
 const clock = (seconds: number) => `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, '0')}`;
-const bestLine = () => {
-  const best = save.best;
+const bestLine = (world = save.world) => {
+  const best = save.bestByWorld[world];
+  if (!best) return '';
   if (best.time !== undefined) return t('bestWin', { time: clock(best.time) });
   return best.room ? t('best', { room: best.room }) : '';
 };
+const worldName = (n: number) => t(`world${n}Name` as Key);
+const WORLD_ICON = ['🐞', '🔥', '💧', '🍃', '⚡', '✨', '👻', '💗'];
 const coinsLine = (n = save.coins) => `<span class="coin">🪙</span> ${Math.floor(n)}`;
 
-function bankRun(g: Game) {
+/** Banks the coins and the record; returns the world unlocked by this run, if any. */
+function bankRun(g: Game): number | null {
   const won = g.phase === 'won';
-  const best = save.best;
+  const best = save.bestByWorld[g.world] ?? { room: 0 };
   const better = won ? best.time === undefined || g.time < best.time : best.time === undefined && g.room > (best.room || 0);
-  if (better) save.best = won ? { room: 10, time: g.time } : { room: g.room };
+  if (better) save.bestByWorld[g.world] = won ? { room: 10, time: g.time } : { room: g.room };
+  if (g.world === 1) save.best = save.bestByWorld[1];
   save.coins += Math.floor(g.coins);
   save.runs += 1;
+  let unlocked: number | null = null;
+  if (won && g.world < WORLD_COUNT && save.unlocked < g.world + 1) {
+    save.unlocked = g.world + 1;
+    save.world = g.world + 1;
+    unlocked = g.world + 1;
+  }
   persist();
+  return unlocked;
 }
 
 /* ------------------------------------------------------------------ screens */
@@ -124,8 +136,9 @@ function menuScreen() {
     <h1 class="title">${t('title')}</h1>
     <p>${t('tagline')}</p>
     <p class="how">${t(touch ? 'howTouch' : 'howKeys')}</p>
-    <button class="primary big" data-act="play">▶ ${t('playNow')}</button>
+    <button class="primary big" data-act="play">▶ ${t('playNow')}<small>${WORLD_ICON[save.world - 1]} ${worldName(save.world)}</small></button>
     <div class="menu-grid">
+      <button class="ghost" data-act="map"><span class="icon">🗺️</span>${t('map')}<small>${save.unlocked}/${WORLD_COUNT}</small></button>
       <button class="ghost" data-act="shop"><span class="icon">🛒</span>${t('shop')}<small>${coinsLine()}</small></button>
       <button class="ghost" data-act="styles"><span class="icon">${STYLE_ICON[save.style]}</span>${t('styles')}<small>${t(`style${cap(save.style)}Name` as Key)}</small></button>
       <button class="ghost" data-act="options"><span class="icon">${save.music === 0 && save.sfx === 0 ? '🔇' : '🔊'}</span>${t('options')}</button>
@@ -139,20 +152,61 @@ const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
 function endScreen(g: Game) {
   const won = g.phase === 'won';
   const earned = Math.floor(g.coins);
-  bankRun(g);
+  const unlocked = bankRun(g);
   audio.play(won ? 'win' : 'over');
   audio.setIntensity(0);
+  const next = unlocked
+    ? `<p class="unlocked">${WORLD_ICON[unlocked - 1]} ${t('unlockedWorld', { n: unlocked })}<small>${worldName(unlocked)}</small></p>
+       <button class="primary" data-act="map">🗺️ ${t('toMap')}</button>
+       <button class="ghost" data-act="play-same">${t('again')}</button>`
+    : `<button class="primary" data-act="play-same">${t('again')}</button>`;
   show(`
-    <p class="kicker">${t('sprint', { room: g.room })}</p>
+    <p class="kicker">${worldName(g.world)} · ${t('sprint', { room: g.room })}</p>
     <h1>${t(won ? 'won' : 'over')}</h1>
     <p>${t(won ? 'wonText' : 'overText', { room: g.room, kills: g.kills, time: clock(g.time) })}</p>
     <p class="earned">${coinsLine(earned)} <small>${t('coinsRun', { coins: earned })}</small></p>
-    <button class="primary" data-act="play">${t('again')}</button>
+    ${next}
     <div class="row">
       <button class="ghost" data-act="shop">🛒 ${t('shop')}</button>
       <button class="ghost" data-act="menu">${t('menu')}</button>
     </div>
-    <p class="best">${bestLine()}</p>`);
+    <p class="best">${bestLine(g.world)}</p>`);
+}
+
+/** The world map: a winding path with one stop per world and you on the picked one. */
+function mapScreen() {
+  const stops = WORLDS.map((def, i) => {
+    const n = i + 1;
+    const open = n <= save.unlocked;
+    // Zigzag: alternate left and right, going up.
+    const x = 18 + (i % 2 ? 56 : 8) + (i % 4 >= 2 ? 10 : 0);
+    const y = 92 - i * 12;
+    return { n, open, x, y, color: def.tint || '#6c98ff' };
+  });
+  const path = stops.map((st, i) => `${i ? 'L' : 'M'} ${st.x + 6} ${st.y + 2}`).join(' ');
+  const svgStops = stops.map((st) => `
+    <g class="stop${st.open ? ' is-open' : ''}${st.n === save.world ? ' is-here' : ''}" data-world="${st.n}" style="--c:${st.color}">
+      <circle cx="${st.x + 6}" cy="${st.y + 2}" r="5.2"></circle>
+      <text x="${st.x + 6}" y="${st.y + 3.6}">${st.open ? WORLD_ICON[st.n - 1] : '🔒'}</text>
+      ${st.n === save.world ? `<image href="./images/favicon-192.png" x="${st.x + 1}" y="${st.y - 11}" width="10" height="10"></image>` : ''}
+    </g>`).join('');
+  const picked = save.world;
+  const info = `<div class="map-info">
+      <b>${WORLD_ICON[picked - 1]} ${t('worldN', { n: picked })} · ${worldName(picked)}</b>
+      <span>${t(`world${picked}Text` as Key)}</span>
+      <small>${bestLine(picked) || t('bestNone')}</small>
+    </div>`;
+  show(`
+    <h2>${t('map')}</h2>
+    <div class="map">
+      <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${t('map')}">
+        <path class="trail" d="${path}"></path>
+        ${svgStops}
+      </svg>
+    </div>
+    ${info}
+    <button class="primary" data-act="play">▶ ${t('playWorld', { n: picked })}</button>
+    ${backButton('menu')}`, true);
 }
 
 function choiceScreen(g: Game) {
@@ -226,25 +280,32 @@ function stylesScreen() {
   show(`<h2>${t('styles')}</h2><p>${t('stylePick')}</p><div class="styles">${cards}</div>${backButton('menu')}`, true);
 }
 
-function startRun() {
-  game = newGame(buildLoadout(save.equipped), save.style);
+function startRun(world = save.world) {
+  game = newGame(buildLoadout(save.equipped), save.style, world);
   paused = false;
   shownChoices = '';
   hud.hidden = false;
   hudGear.hidden = false;
   hide();
-  flash(t('sprint', { room: 1 }));
+  flash(`${worldName(game.world)} · ${t('sprint', { room: 1 })}`);
   audio.start();
   audio.setIntensity(0.2);
 }
 
 screen.addEventListener('click', (event) => {
-  const target = (event.target as HTMLElement).closest<HTMLElement>('button, [data-act]');
+  const target = (event.target as HTMLElement).closest<HTMLElement>('button, [data-act], [data-world]');
   if (!target) return;
   audio.unlock();
   const act = target.dataset.act;
   if (act !== 'mute') audio.play('click');
   if (act === 'play') startRun();
+  else if (act === 'play-same') startRun(game?.world ?? save.world);
+  else if (act === 'map') mapScreen();
+  else if (target.dataset.world) {
+    const n = Number(target.dataset.world);
+    if (n <= save.unlocked) { save.world = n; persist(); mapScreen(); }
+    else flash(t('lockedHint', { n: n - 1 }));
+  }
   else if (act === 'resume') { paused = false; hide(); }
   else if (act === 'pause') pauseScreen();
   else if (act === 'quit') {
@@ -457,7 +518,7 @@ function frame(now: number) {
     playEvents(g.events);
     for (const event of g.events) {
       if (event === 'clear') flash(t('doorOpen'));
-      if (event === 'room') { flash(t('sprint', { room: g.room })); audio.setIntensity(0.2 + g.room * 0.05); }
+      if (event === 'room') { flash(t('sprint', { room: g.room })); audio.setIntensity(Math.min(0.8, 0.2 + g.room * 0.05 + (g.world - 1) * 0.05)); }
       if (event === 'boss') {
         const boss = g.enemies.find((e) => e.kind === 'boss');
         flash(`${t('sprint', { room: g.room })} · ${t(BOSS_NAME[boss?.look ?? 'original'])}`);
@@ -478,7 +539,7 @@ function frame(now: number) {
 
   if (g) {
     draw(ctx, g, view, palette, now / 1000);
-    hudRoom.textContent = t('sprint', { room: g.room });
+    hudRoom.textContent = `${t('worldShort', { n: g.world })} · ${t('sprint', { room: g.room })}`;
     hudLevel.textContent = t('level', { level: g.level });
     hudXp.style.width = `${(g.xp / g.xpNext) * 100}%`;
     hudCoins.textContent = String(Math.floor(g.coins));

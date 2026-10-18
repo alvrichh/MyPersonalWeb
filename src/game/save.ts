@@ -14,6 +14,12 @@ export type Save = {
   music: number;
   sfx: number;
   best: { room: number; time?: number };
+  /** Best run per world (world 1 is also `best`, kept for older saves). */
+  bestByWorld: Record<number, { room: number; time?: number }>;
+  /** Worlds you may enter: 1 to `unlocked`. */
+  unlocked: number;
+  /** The world picked on the map. */
+  world: number;
   runs: number;
 };
 
@@ -27,6 +33,9 @@ const fresh = (): Save => ({
   music: 0.6,
   sfx: 0.8,
   best: { room: 0 },
+  bestByWorld: {},
+  unlocked: 1,
+  world: 1,
   runs: 0,
 });
 
@@ -34,8 +43,10 @@ export function loadSave(): Save {
   const base = fresh();
   try {
     const data = JSON.parse(storage.get(KEY) || '{}') as Partial<Save>;
-    const save = { ...base, ...data, equipped: { ...data.equipped }, best: { ...base.best, ...data.best } };
+    const save = { ...base, ...data, equipped: { ...data.equipped }, best: { ...base.best, ...data.best }, bestByWorld: { ...data.bestByWorld } };
     if (!STYLES.includes(save.style)) save.style = 'original';
+    save.unlocked = Math.max(1, save.unlocked || 1);
+    save.world = Math.min(Math.max(1, save.world || 1), save.unlocked);
     // The old best-run key from the first version, if any.
     if (!save.best.room) {
       try {
@@ -45,6 +56,9 @@ export function loadSave(): Save {
         /* nothing saved */
       }
     }
+    if (!save.bestByWorld[1] && save.best.room) save.bestByWorld[1] = save.best;
+    // A finished world 1 from before the map unlocks world 2.
+    if (save.best.time !== undefined && save.unlocked < 2) save.unlocked = 2;
     return save;
   } catch {
     return base;
