@@ -13,6 +13,13 @@ export type View = { scale: number; ox: number; oy: number; dpr: number };
 const hue = (t: number, l = 70, s = 85) => `hsl(${Math.round((t * 60) % 360)} ${s}% ${l}%)`;
 
 let retroLook = false;
+/* The painted floors, one per world (static/images/game/floors/worldN.webp). */
+const floors = new Map<number, HTMLImageElement>();
+function floorImage(world: number) {
+  let img = floors.get(world);
+  if (!img) { img = new Image(); img.src = `./images/game/floors/world${world}.webp`; floors.set(world, img); }
+  return img;
+}
 export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Palette, now: number) {
   retroLook = !!pal.retro;
   const accent = pal.rainbow ? hue(now) : pal.accent;
@@ -62,13 +69,19 @@ function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: numbe
 
 function drawRoom(ctx: CanvasRenderingContext2D, g: Game, accent: string, now: number) {
   const theme = WORLDS[g.world - 1];
-  // Floor tiles, in the world's colours.
-  ctx.fillStyle = isBossRoom(g.room) && g.world === 1 ? '#140f1c' : theme.floor;
-  ctx.fillRect(0, 0, W, H);
-  ctx.strokeStyle = theme.grid;
-  ctx.lineWidth = 1;
-  for (let x = WALL; x < W; x += 36) { ctx.beginPath(); ctx.moveTo(x, WALL); ctx.lineTo(x, H - WALL); ctx.stroke(); }
-  for (let y = WALL; y < H; y += 36) { ctx.beginPath(); ctx.moveTo(WALL, y); ctx.lineTo(W - WALL, y); ctx.stroke(); }
+  // Floor: the world's painted arena, or flat tiles in its colours (retro, or while it loads).
+  const floor = retroLook ? undefined : floorImage(g.world);
+  if (floor && floor.complete && floor.naturalWidth) {
+    ctx.drawImage(floor, 0, 0, W, H);
+    if (isBossRoom(g.room)) { ctx.fillStyle = 'rgba(20,10,30,0.25)'; ctx.fillRect(0, 0, W, H); }
+  } else {
+    ctx.fillStyle = isBossRoom(g.room) && g.world === 1 ? '#140f1c' : theme.floor;
+    ctx.fillRect(0, 0, W, H);
+    ctx.strokeStyle = theme.grid;
+    ctx.lineWidth = 1;
+    for (let x = WALL; x < W; x += 36) { ctx.beginPath(); ctx.moveTo(x, WALL); ctx.lineTo(x, H - WALL); ctx.stroke(); }
+    for (let y = WALL; y < H; y += 36) { ctx.beginPath(); ctx.moveTo(WALL, y); ctx.lineTo(W - WALL, y); ctx.stroke(); }
+  }
 
   // Walls, with the door gap at the top.
   ctx.fillStyle = theme.wall;
