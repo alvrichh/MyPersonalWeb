@@ -13,6 +13,8 @@ export type Save = {
   coins: number;
   /** Which figure the hero is drawn as. */
   skin: HeroSkin;
+  /** Retro look: no painted textures, the plain panels and the ring hero from before. */
+  retro: boolean;
   owned: ItemId[];
   equipped: Partial<Record<Slot, ItemId>>;
   style: EnemyStyle;
@@ -37,6 +39,7 @@ const KEY = 'bugHunter';
 const fresh = (): Save => ({
   coins: 0,
   skin: 'boy',
+  retro: false,
   owned: [],
   equipped: {},
   style: 'world',
