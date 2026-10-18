@@ -8,7 +8,7 @@ import { ARMOUR_SLOTS, ITEMS, SLOTS, UPGRADES, WEAPON_SLOTS, buildLoadout, itemB
 import { Scene } from './scene';
 import { makeT, pickLang, type Key } from './strings';
 import {
-  CATEGORY, H, REVIVE_PRICE, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
+  CATEGORY, H, REVIVE_PRICE, bladeElement, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
   type Category, type Game, type GameEvent, type Input, type Look, type SkillId, type WheelOutcome,
 } from './world';
 
@@ -130,7 +130,13 @@ const EMOJI: Record<SkillId | 'bow', string> = {
   fire: '🔥', water: '💧', leaf: '🍃', bolt: '⚡', spark: '✨', ghost: '🫥', double: '🏹', speed: '⏩', power: '💥', heart: '💗', bow: '🏹',
 };
 /* The painted medallion, with the emoji beside it for the retro look (CSS shows one or the other). */
-const skillIcon = (id: SkillId | 'bow', size = 40) => `<img class="skill-icon" src="./images/game/skills/${id === 'bow' ? 'double' : id}.webp" width="${size}" height="${size}" alt=""><span class="skill-emoji">${EMOJI[id]}</span>`;
+const skillIcon = (id: SkillId | 'bow', size = 40, file: string = id === 'bow' ? 'double' : id) => `<img class="skill-icon" src="./images/game/skills/${file}.webp" width="${size}" height="${size}" alt=""><span class="skill-emoji">${EMOJI[id]}</span>`;
+/** The blades show their element's medallion once they have one. */
+const iconFile = (g: Game, id: SkillId | 'bow') => {
+  if (id !== 'blades') return id === 'bow' ? 'double' : id;
+  const el = bladeElement(g);
+  return el === 'steel' ? 'blades' : `blades-${el}`;
+};
 const CATEGORY_LABEL: Record<Category, Key> = { melee: 'catMelee', magic: 'catMagic', ranged: 'catRanged', upgrade: 'catUpgrade' };
 const SLOT_LABEL: Record<Slot, Key> = { head: 'slotHead', body: 'slotBody', boots: 'slotBoots', magic: 'slotMagic', melee: 'slotMelee', ranged: 'slotRanged' };
 const SLOT_ICON: Record<Slot, string> = { head: '🪖', body: '🦺', boots: '🥾', magic: '🔮', melee: '⚔️', ranged: '🏹' };
@@ -376,12 +382,14 @@ function mapScreen() {
 function choiceScreen(g: Game) {
   const cards = g.choices
     .map((id) => {
-      const name = t(`${id}Name` as Key);
-      const text = t(`${id}Text` as Key);
+      const el = id === 'blades' ? bladeElement(g) : 'steel';
+      const name = el === 'steel' ? t(`${id}Name` as Key) : t(`blades${el[0].toUpperCase()}${el.slice(1)}Name` as Key);
+      const text = el !== 'steel' ? t(`blades${cap(el)}Text` as Key) : id === 'blades' ? `${t('bladesText')} ${t('bladesHint')}` : t(`${id}Text` as Key);
+
       const cat = CATEGORY[id];
       const fresh = cat !== 'upgrade' && g.skills[id] === 0;
       const level = id === 'heart' ? '' : `<span class="lvl">${fresh ? t('newWeapon') : t('skillLevel', { level: g.skills[id] + 1 })}</span>`;
-      return `<button class="skill skill-${cat}" data-skill="${id}"><span class="icon" aria-hidden="true">${skillIcon(id, 56)}</span><span class="cat">${t(CATEGORY_LABEL[cat])}</span><b>${name}</b><span>${text}</span>${level}</button>`;
+      return `<button class="skill skill-${cat}" data-skill="${id}"><span class="icon" aria-hidden="true">${skillIcon(id, 56, iconFile(g, id))}</span><span class="cat">${t(CATEGORY_LABEL[cat])}</span><b>${name}</b><span>${text}</span>${level}</button>`;
     })
     .join('');
   show(`${head('levelup', t('levelUp'))}<p class="kicker">${t('level', { level: g.level })}</p><p>${t('choose')}</p><div class="skills">${cards}</div>`, true, false, 'is-levelup');
@@ -1015,10 +1023,10 @@ function step(now: number) {
     setMeter(hudHp, Math.max(0, g.player.hp) / g.player.maxHp);
     hudCoins.textContent = String(Math.floor(g.coins));
     const gear = [['bow', 1] as const, ...ownedWeapons(g).map((id) => [id, g.skills[id]] as const)];
-    const gearKey = gear.map(([id, lvl]) => `${id}${lvl}`).join(' ');
+    const gearKey = gear.map(([id, lvl]) => `${iconFile(g, id)}${lvl}`).join(' ');
     if (hudGear.dataset.gear !== gearKey) {
       hudGear.dataset.gear = gearKey;
-      hudGear.innerHTML = gear.map(([id, lvl]) => `<span>${skillIcon(id, 22)}<sub>${lvl}</sub></span>`).join('');
+      hudGear.innerHTML = gear.map(([id, lvl]) => `<span>${skillIcon(id, 22, iconFile(g, id))}<sub>${lvl}</sub></span>`).join('');
     }
     const boss = g.mode === 'horde' || isBossRoom(g.room) ? g.enemies.find((e) => e.kind === 'boss' && e.spawn <= 0) : undefined;
     if (bossBar.hidden !== !boss) {
