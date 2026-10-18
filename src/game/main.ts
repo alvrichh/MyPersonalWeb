@@ -142,9 +142,13 @@ const EMOJI: Record<SkillId | 'bow', string> = {
 };
 /* The painted medallion, with the emoji beside it for the retro look (CSS shows one or the other). */
 const skillIcon = (id: SkillId | 'bow', size = 40, file: string = id === 'bow' ? 'double' : id) => `<img class="skill-icon" src="./images/game/skills/${file}.webp" width="${size}" height="${size}" alt=""><span class="skill-emoji">${EMOJI[id]}</span>`;
-/** The blades show their element's medallion once they have one; the laser its colour (yellow, red from level 2, purple evolved). */
+/** Weapons with their own evolved medallion (`skills/<id>-evo.webp`). */
+const EVO_ICON: SkillId[] = ['laser', 'brick', 'molotov', 'durian', 'mines', 'drill', 'rocket', 'ball'];
+const evoIcon = (id: SkillId) => (EVO_ICON.includes(id) ? `${id}-evo` : id);
+/** The blades show their element's medallion once they have one; the laser its colour (yellow, red from level 2, purple evolved); evolved weapons their evolution's. */
 const iconFile = (g: Game, id: SkillId | 'bow') => {
-  if (id === 'laser') return g.evolved.laser ? 'laser-evo' : g.skills.laser >= 2 ? 'laser-red' : 'laser';
+  if (id !== 'bow' && g.evolved[id] && EVO_ICON.includes(id)) return evoIcon(id);
+  if (id === 'laser') return g.skills.laser >= 2 ? 'laser-red' : 'laser';
   if (id !== 'blades') return id === 'bow' ? 'double' : id;
   const el = bladeElement(g);
   return el === 'steel' ? 'blades' : `blades-${el}`;
@@ -471,7 +475,7 @@ function choiceScreen(g: Game) {
       const evo = evoOf(choice);
       if (evo) {
         // The gold card: the weapon's evolution.
-        return `<button class="skill skill-${CATEGORY[evo]} is-evo" data-skill="${choice}"><span class="icon" aria-hidden="true">${skillIcon(evo, 56, evo === 'laser' ? 'laser-evo' : iconFile(g, evo))}</span><span class="cat">★ ${t('evoCat')}</span><b>${t(`evo${cap(evo)}Name` as Key)}</b><span>${t(`evo${cap(evo)}Text` as Key)}</span><span class="lvl">${t('evoLabel')}</span></button>`;
+        return `<button class="skill skill-${CATEGORY[evo]} is-evo" data-skill="${choice}"><span class="icon" aria-hidden="true">${skillIcon(evo, 56, EVO_ICON.includes(evo) ? evoIcon(evo) : iconFile(g, evo))}</span><span class="cat">★ ${t('evoCat')}</span><b>${t(`evo${cap(evo)}Name` as Key)}</b><span>${t(`evo${cap(evo)}Text` as Key)}</span><span class="lvl">${t('evoLabel')}</span></button>`;
       }
       const id = choice as SkillId;
       const el = id === 'blades' ? bladeElement(g) : 'steel';
