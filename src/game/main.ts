@@ -3,7 +3,7 @@ import { storage } from '../lib/storage';
 import { audio, type Sfx } from './audio';
 import { draw, drawRetroFigure, type Palette, type View } from './draw';
 import { loadSave, profileLevel, writeSave, STYLES, SKINS, type EnemyStyle, type HeroSkin } from './save';
-import { ARMOUR_SLOTS, ITEMS, SLOTS, UPGRADES, WEAPON_SLOTS, buildLoadout, itemById, upgradeById, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
+import { ARMOUR_SLOTS, ITEMS, SLOTS, UPGRADES, WEAPON_SLOTS, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
 import { Scene } from './scene';
 import { makeT, pickLang, type Key } from './strings';
 import {
@@ -117,6 +117,8 @@ const skillIcon = (id: SkillId | 'bow', size = 40) => `<img class="skill-icon" s
 const CATEGORY_LABEL: Record<Category, Key> = { melee: 'catMelee', magic: 'catMagic', ranged: 'catRanged', upgrade: 'catUpgrade' };
 const SLOT_LABEL: Record<Slot, Key> = { head: 'slotHead', body: 'slotBody', boots: 'slotBoots', magic: 'slotMagic', melee: 'slotMelee', ranged: 'slotRanged' };
 const SLOT_ICON: Record<Slot, string> = { head: '🪖', body: '🦺', boots: '🥾', magic: '🔮', melee: '⚔️', ranged: '🏹' };
+/** A painted icon with its emoji behind it for retro (the same switch as `skillIcon`). */
+const picIcon = (emoji: string, pic?: string) => pic ? `<img class="item-pic" src="./images/game/${pic}" alt=""><span class="skill-emoji">${emoji}</span>` : emoji;
 const STYLE_ICON: Record<EnemyStyle, string> = { world: '🌍', original: '🐞', demon: '😈', viking: '🪓', jungle: '🕷️', greek: '🏛️', robot: '🤖', nightmare: '💀', random: '🎲' };
 const BOSS_NAME: Record<Look, Key> = { original: 'bossOriginal', demon: 'bossDemon', viking: 'bossViking', jungle: 'bossJungle', greek: 'bossGreek', robot: 'bossRobot', nightmare: 'bossNightmare' };
 
@@ -458,7 +460,7 @@ function shopScreen(note = '') {
             ? `<button class="buy is-worn" data-unequip="${item.id}">✓ ${t('worn')} · ${t('unequip')}</button>`
             : `<button class="buy" data-equip="${item.id}">${t('equip')}</button>`;
         return `<div class="item${worn ? ' is-on' : ''}${owned ? ' is-owned' : ''}${!owned && !can ? ' is-locked' : ''}">
-          <span class="icon" aria-hidden="true">${item.icon}</span>
+          <span class="icon" aria-hidden="true">${picIcon(item.icon, item.pic)}</span>
           <b>${t(`${item.id}Name` as Key)}</b>
           <span>${t(`${item.id}Text` as Key)}</span>
           ${action}
@@ -478,7 +480,7 @@ function shopScreen(note = '') {
       ? `<button class="buy is-worn" disabled>✓ ${t('upgradeMax')}</button>`
       : `<button class="buy${can ? '' : ' is-poor'}" data-upgrade="${u.id}">${t('upgradeBtn', { price })}</button>`;
     return `<div class="item forge-item${maxed ? ' is-on' : ''}${!maxed && !can ? ' is-locked' : ''}">
-      <span class="icon" aria-hidden="true">${u.icon}</span>
+      <span class="icon" aria-hidden="true">${picIcon(u.icon, upgradePic(u.id))}</span>
       <b>${t(`${u.id}Name` as Key)}</b>
       <span>${t(`${u.id}Text` as Key)}</span>
       <span class="pips" aria-label="${t('upgradeLevel', { level, max: u.max })}">${pips}</span>
@@ -516,7 +518,7 @@ function stylesScreen(note = '') {
     const item = id ? itemById(id) : null;
     const open = dressSlot === slot;
     return `<button class="dslot${item ? ' is-worn' : ''}${open ? ' is-open' : ''}" data-slot="${slot}" aria-pressed="${open}">
-      <span class="ring" aria-hidden="true"><span class="icon${item ? '' : ' is-empty'}">${item ? item.icon : SLOT_ICON[slot]}</span></span>
+      <span class="ring" aria-hidden="true"><span class="icon${item ? '' : ' is-empty'}">${item ? picIcon(item.icon, item.pic) : picIcon(SLOT_ICON[slot], `slots/${slot}.webp`)}</span></span>
       <span class="plate"><small>${t(SLOT_LABEL[slot])}</small><b>${item ? t(`${item.id}Name` as Key) : '—'}</b></span>
     </button>`;
   };
@@ -542,7 +544,7 @@ function stylesScreen(note = '') {
         const owned = save.owned.includes(item.id);
         const worn = save.equipped[slot] === item.id;
         const can = save.coins >= item.price;
-        return row(`data-dress="${item.id}"`, worn, !owned && !can, item.icon, t(`${item.id}Name` as Key), t(`${item.id}Text` as Key), worn ? `✓ ${t('worn')}` : owned ? t('equip') : `🪙 ${item.price}`);
+        return row(`data-dress="${item.id}"`, worn, !owned && !can, picIcon(item.icon, item.pic), t(`${item.id}Name` as Key), t(`${item.id}Text` as Key), worn ? `✓ ${t('worn')}` : owned ? t('equip') : `🪙 ${item.price}`);
       }).join('')}
       ${save.equipped[slot] ? `<button class="ghost small" data-undress="${slot}">${t('dressNone')}</button>` : ''}
       </div>`;

@@ -28,7 +28,6 @@ export const SPIRIT_COLOR: Record<SpiritSkin, [string, string, string]> = {
   volt: ['rgba(250,204,21,0.55)', '#fefce8', '#eab308'],
   shade: ['rgba(168,85,247,0.55)', '#f5f3ff', '#7e22ce'],
 };
-const spiritPic = (skin: SpiritSkin) => `<img class="item-pic" src="./images/game/spirits/${skin}-float-0.webp" alt="">`;
 export type ItemId =
   | 'wizardHat' | 'gladHelm' | 'bandana' | 'crown'
   | 'potion' | 'phoenix' | 'pompom' | 'plate'
@@ -44,6 +43,8 @@ export type ItemId =
  */
 export type UpgradeId = 'vitality' | 'might' | 'swiftness' | 'fortune' | 'wisdom' | 'magnet' | 'armor';
 export type Upgrade = { id: UpgradeId; icon: string; max: number; /** price of level 1 */ base: number };
+/** Forge icons: the owner's painted medallions (emoji in retro). */
+export const upgradePic = (id: UpgradeId) => `forge/${id}.webp`;
 export const UPGRADES: Upgrade[] = [
   { id: 'vitality', icon: '❤️', max: 5, base: 100 },
   { id: 'might', icon: '💪', max: 5, base: 150 },
@@ -64,7 +65,10 @@ export type Item = {
   id: ItemId;
   slot: Slot;
   price: number;
+  /** Emoji, shown in retro. */
   icon: string;
+  /** Painted icon, relative to images/game/ (the item's own, or the weapon it starts you with). */
+  pic?: string;
   /** What wearing it does to a fresh run. */
   effect: Partial<Loadout>;
 };
@@ -106,37 +110,37 @@ export const BASE_LOADOUT: Loadout = {
 
 export const ITEMS: Item[] = [
   // Head
-  { id: 'wizardHat', slot: 'head', price: 120, icon: '🧙', effect: { mult: { melee: 1, magic: 1.3, ranged: 1, upgrade: 1 } } },
-  { id: 'gladHelm', slot: 'head', price: 120, icon: '🪖', effect: { mult: { melee: 1.3, magic: 1, ranged: 1, upgrade: 1 } } },
-  { id: 'bandana', slot: 'head', price: 90, icon: '🎀', effect: { speedMult: 1.12 } },
-  { id: 'crown', slot: 'head', price: 320, icon: '👑', effect: { xpMult: 1.15, coinMult: 1.15 } },
+  { id: 'wizardHat', slot: 'head', price: 120, icon: '🧙', pic: 'items/wizardHat.webp', effect: { mult: { melee: 1, magic: 1.3, ranged: 1, upgrade: 1 } } },
+  { id: 'gladHelm', slot: 'head', price: 120, icon: '🪖', pic: 'items/gladHelm.webp', effect: { mult: { melee: 1.3, magic: 1, ranged: 1, upgrade: 1 } } },
+  { id: 'bandana', slot: 'head', price: 90, icon: '🎀', pic: 'items/bandana.webp', effect: { speedMult: 1.12 } },
+  { id: 'crown', slot: 'head', price: 320, icon: '👑', pic: 'items/crown.webp', effect: { xpMult: 1.15, coinMult: 1.15 } },
   // Body
-  { id: 'potion', slot: 'body', price: 80, icon: '🦺', effect: { maxHp: 130 } },
-  { id: 'pompom', slot: 'body', price: 150, icon: '🧸', effect: { coinMult: 1.4 } },
-  { id: 'plate', slot: 'body', price: 180, icon: '🛡️', effect: { armor: 0.1 } },
-  { id: 'phoenix', slot: 'body', price: 220, icon: '🪶', effect: { revives: 1 } },
+  { id: 'potion', slot: 'body', price: 80, icon: '🦺', pic: 'items/potion.webp', effect: { maxHp: 130 } },
+  { id: 'pompom', slot: 'body', price: 150, icon: '🧸', pic: 'items/pompom.webp', effect: { coinMult: 1.4 } },
+  { id: 'plate', slot: 'body', price: 180, icon: '🛡️', pic: 'items/plate.webp', effect: { armor: 0.1 } },
+  { id: 'phoenix', slot: 'body', price: 220, icon: '🪶', pic: 'items/phoenix.webp', effect: { revives: 1 } },
   // Boots
-  { id: 'windBoots', slot: 'boots', price: 110, icon: '👟', effect: { speedMult: 1.15 } },
+  { id: 'windBoots', slot: 'boots', price: 110, icon: '👟', pic: 'items/windBoots.webp', effect: { speedMult: 1.15 } },
   { id: 'magnetBoots', slot: 'boots', price: 120, icon: '🧲', effect: { magnet: 70 } },
-  { id: 'ironBoots', slot: 'boots', price: 140, icon: '🥾', effect: { armor: 0.08, maxHp: 115 } },
+  { id: 'ironBoots', slot: 'boots', price: 140, icon: '🥾', pic: 'items/ironBoots.webp', effect: { armor: 0.08, maxHp: 115 } },
   // Magic (the spirit companion lives here)
-  { id: 'orb', slot: 'magic', price: 150, icon: '🔮', effect: { xpMult: 1.25 } },
-  { id: 'hourglass', slot: 'magic', price: 200, icon: '⏳', effect: { hasteMult: 1.15 } },
-  { id: 'spellbook', slot: 'magic', price: 260, icon: '📖', effect: { startSkills: ['fireball'] } },
-  { id: 'lantern', slot: 'magic', price: 300, icon: spiritPic('water'), effect: { startSkills: ['spirits'], spirit: 'water' } },
-  { id: 'spiritFire', slot: 'magic', price: 420, icon: spiritPic('fire'), effect: { startSkills: ['spirits'], spirit: 'fire' } },
-  { id: 'spiritTide', slot: 'magic', price: 420, icon: spiritPic('tide'), effect: { startSkills: ['spirits'], spirit: 'tide' } },
-  { id: 'spiritThorn', slot: 'magic', price: 420, icon: spiritPic('thorn'), effect: { startSkills: ['spirits'], spirit: 'thorn' } },
-  { id: 'spiritVolt', slot: 'magic', price: 480, icon: spiritPic('volt'), effect: { startSkills: ['spirits'], spirit: 'volt' } },
-  { id: 'spiritShade', slot: 'magic', price: 480, icon: spiritPic('shade'), effect: { startSkills: ['spirits'], spirit: 'shade' } },
+  { id: 'orb', slot: 'magic', price: 150, icon: '🔮', pic: 'items/orb.webp', effect: { xpMult: 1.25 } },
+  { id: 'hourglass', slot: 'magic', price: 200, icon: '⏳', pic: 'items/hourglass.webp', effect: { hasteMult: 1.15 } },
+  { id: 'spellbook', slot: 'magic', price: 260, icon: '📖', pic: 'items/spellbook.webp', effect: { startSkills: ['fireball'] } },
+  { id: 'lantern', slot: 'magic', price: 300, icon: '👻', pic: 'spirits/water-float-0.webp', effect: { startSkills: ['spirits'], spirit: 'water' } },
+  { id: 'spiritFire', slot: 'magic', price: 420, icon: '👻', pic: 'spirits/fire-float-0.webp', effect: { startSkills: ['spirits'], spirit: 'fire' } },
+  { id: 'spiritTide', slot: 'magic', price: 420, icon: '👻', pic: 'spirits/tide-float-0.webp', effect: { startSkills: ['spirits'], spirit: 'tide' } },
+  { id: 'spiritThorn', slot: 'magic', price: 420, icon: '👻', pic: 'spirits/thorn-float-0.webp', effect: { startSkills: ['spirits'], spirit: 'thorn' } },
+  { id: 'spiritVolt', slot: 'magic', price: 480, icon: '👻', pic: 'spirits/volt-float-0.webp', effect: { startSkills: ['spirits'], spirit: 'volt' } },
+  { id: 'spiritShade', slot: 'magic', price: 480, icon: '👻', pic: 'spirits/shade-float-0.webp', effect: { startSkills: ['spirits'], spirit: 'shade' } },
   // Melee
-  { id: 'keySword', slot: 'melee', price: 260, icon: '🗝️', effect: { startSkills: ['sword'] } },
-  { id: 'chainBlades', slot: 'melee', price: 260, icon: '⛓️', effect: { startSkills: ['blades'] } },
-  { id: 'warHammer', slot: 'melee', price: 300, icon: '🔨', effect: { startSkills: ['hammer'] } },
+  { id: 'keySword', slot: 'melee', price: 260, icon: '🗝️', pic: 'skills/sword.webp', effect: { startSkills: ['sword'] } },
+  { id: 'chainBlades', slot: 'melee', price: 260, icon: '⛓️', pic: 'skills/blades.webp', effect: { startSkills: ['blades'] } },
+  { id: 'warHammer', slot: 'melee', price: 300, icon: '🔨', pic: 'skills/hammer.webp', effect: { startSkills: ['hammer'] } },
   // Ranged
-  { id: 'quiver', slot: 'ranged', price: 140, icon: '🏹', effect: { mult: { melee: 1, magic: 1, ranged: 1.3, upgrade: 1 } } },
-  { id: 'knifeSet', slot: 'ranged', price: 260, icon: '🔪', effect: { startSkills: ['knives'] } },
-  { id: 'huntBoomerang', slot: 'ranged', price: 260, icon: '🪃', effect: { startSkills: ['boomerang'] } },
+  { id: 'quiver', slot: 'ranged', price: 140, icon: '🏹', pic: 'items/quiver.webp', effect: { mult: { melee: 1, magic: 1, ranged: 1.3, upgrade: 1 } } },
+  { id: 'knifeSet', slot: 'ranged', price: 260, icon: '🔪', pic: 'skills/knives.webp', effect: { startSkills: ['knives'] } },
+  { id: 'huntBoomerang', slot: 'ranged', price: 260, icon: '🪃', pic: 'skills/boomerang.webp', effect: { startSkills: ['boomerang'] } },
 ];
 
 export const SLOTS: Slot[] = ['head', 'body', 'boots', 'magic', 'melee', 'ranged'];
