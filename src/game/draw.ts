@@ -1917,7 +1917,8 @@ function enemyFrames(look: Look, kind: Enemy['kind'], count: number) {
 /** Which frame an enemy shows right now: hit, attacking, or its walk cycle. */
 function enemyFrame(e: Enemy, count: number, now: number) {
   if (count === 4) return Math.floor(now * 6 + e.wobble) % 4;
-  if (e.hit > 0) return 5;
+  // The Jarl's hit frame on the sheet is painted under the previous frame's axe arc, so it falls back to its base pose.
+  if (e.hit > 0) return e.look === 'viking' && e.kind === 'boss' ? 0 : 5;
   // Attacks: a boss winding up (aim) or charging (dash); a ticket just after it threw (its cooldown was reset high).
   if (e.kind === 'boss' && e.aim > 0) return 3;
   if (e.kind === 'boss' && e.dash > 0) return 4;
