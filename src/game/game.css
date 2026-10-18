@@ -284,8 +284,11 @@ body {
 .screen {
   position: absolute;
   inset: 0;
-  display: grid;
-  place-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: auto;
+  overscroll-behavior: contain;
   padding: 16px;
   background: rgba(4, 6, 10, 0.55);
   backdrop-filter: blur(6px);
@@ -545,37 +548,59 @@ body {
 }
 
 .panel {
-  display: grid;
-  justify-items: center;
-  gap: 12px;
+  position: relative;
+  flex: none;
   width: min(100%, 380px);
-  padding: 54px 18px 34px;
-  /* The stone-and-neon frame from the UI sheets, stretched to the content;
-     its centre is the panel colour. The picture's frame is ~80px of 584. */
-  border-style: solid;
-  border-width: 30px;
-  border-image: url('/images/game/ui/panel_tall.webp') 90 fill / 30px stretch;
+  margin: auto;
+  /* The owner's frame, drawn whole (never sliced). Two pictures, a squat one
+     and a tall one; `fitPanel()` in main.ts measures the content, picks the
+     picture whose shape is closer, and sets the height and padding so the
+     content sits in the picture's plain centre (the bands are measured on
+     each picture: FRAMES in main.ts). */
+  --frame: url('/images/game/ui/panel_short.webp');
+  padding: 70px 62px 60px;
+  border: 0;
   background: none;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+  filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.55));
   text-align: center;
 }
 
-.panel-wide {
-  border-image: url('/images/game/ui/panel_short.webp') 70 fill / 30px stretch;
+/* The frame is a layer behind the content, so a long dialog can scroll its
+   content inside the plain centre while the frame stays put. */
+.panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--frame) center / 100% 100% no-repeat;
 }
+
+.panel.is-tall {
+  --frame: url('/images/game/ui/panel_tall.webp');
+}
+
+.panel-in {
+  display: grid;
+  align-content: safe center;
+  justify-items: center;
+  gap: 12px;
+  height: 100%;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+
+.panel-in::-webkit-scrollbar { display: none; }
 
 .panel-wide {
   width: min(100%, 600px);
-  max-height: 100%;
-  overflow: auto;
-  overscroll-behavior: contain;
 }
 
 /* Headers: the ornament picture with its words set inside the stone plate. */
 .ui-head {
   position: relative;
   width: min(80%, 300px);
-  margin: -58px auto -12px;
+  margin: 0 auto -12px;
 }
 
 .ui-head img {
@@ -607,8 +632,6 @@ body {
 }
 .ui-head.is-wings + p { margin-top: 0; }
 
-/* After a kicker line the crest must not climb over it. */
-.panel .kicker + .ui-head { margin-top: 0; }
 
 .ui-head span {
   display: block;
@@ -718,6 +741,7 @@ body {
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  padding-inline: 6px;
 }
 
 .wallet {
@@ -865,6 +889,13 @@ body {
 
 .panel h2 {
   font-size: clamp(1.6rem, 7vw, 2rem);
+}
+
+/* Titles at the top of a framed dialog clear the gem in the frame's crown. */
+.panel-in > h2:first-child,
+.panel-in > .ui-close + h2,
+.panel-in > .ui-close + .shop-head {
+  margin-top: 14px;
 }
 
 .panel p {
@@ -1168,11 +1199,22 @@ body {
   background: #070b10 url('/images/game/map/bg.jpg') center / cover no-repeat;
 }
 
+.screen.is-map .panel::before { display: none; }
+
 .screen.is-map .panel {
+  padding: 16px !important;
+  height: auto !important;
+  border-radius: 24px;
   background: rgba(7, 11, 16, 0.42);
-  border-color: rgba(103, 232, 249, 0.18);
+  border: 1px solid rgba(103, 232, 249, 0.18);
+  filter: none;
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
+}
+
+.screen.is-map .panel-in {
+  display: block;
+  overflow: visible;
 }
 
 .mapscreen {

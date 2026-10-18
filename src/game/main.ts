@@ -125,12 +125,52 @@ let wheelShown = false;
 /** Where the Options screen goes back to. */
 let optionsFrom: 'menu' | 'pause' = 'menu';
 
+/*
+ * The dialog frames: the plain centre of each picture, as fractions of its
+ * size (left, right, top, bottom), and its height/width. fitPanel() measures
+ * the dialog's content and picks the picture whose shape is closer, then
+ * sizes the padding from these bands so the frame is drawn whole, never
+ * sliced, and the content sits inside the centre.
+ */
+const FRAMES = {
+  short: { l: 0.167, r: 0.158, t: 0.105, b: 0.115, ratio: 1.36 },
+  tall: { l: 0.094, r: 0.116, t: 0.073, b: 0.06, ratio: 2.14 },
+};
+function fitPanel() {
+  const panel = screen.querySelector<HTMLElement>('.panel');
+  const inner = panel?.querySelector<HTMLElement>('.panel-in');
+  if (!panel || !inner || screen.hidden || screen.classList.contains('is-menu') || screen.classList.contains('is-map')) return;
+  const w = panel.getBoundingClientRect().width;
+  const pick = (kind: keyof typeof FRAMES) => {
+    const f = FRAMES[kind];
+    panel.style.padding = `0 ${f.r * w}px 0 ${f.l * w}px`;
+    panel.style.height = 'auto';
+    const content = inner.offsetHeight;
+    // Height such that the bands, scaled with the height, leave room for the content.
+    const h = content / (1 - f.t - f.b);
+    return { kind, f, h, off: Math.abs(Math.log(h / w / f.ratio)) };
+  };
+  // Pictures still loading change the content's height: fit again when they land.
+  for (const img of panel.querySelectorAll('img')) if (!img.complete) img.addEventListener('load', fitPanel, { once: true });
+  const best = [pick('short'), pick('tall')].sort((a, b) => a.off - b.off)[0];
+  const { f, h: wanted } = pick(best.kind);
+  // Never taller than the screen: a long dialog scrolls inside its frame.
+  const h = Math.min(wanted, screen.clientHeight - 32);
+  panel.classList.toggle('is-tall', best.kind === 'tall');
+  panel.style.height = `${h}px`;
+  panel.style.padding = `${f.t * h}px ${f.r * w}px ${f.b * h}px ${f.l * w}px`;
+}
+window.addEventListener('resize', fitPanel);
+
 function show(html: string, wide = false, menu = false, extra = '') {
-  screen.innerHTML = `<div class="panel${wide ? ' panel-wide' : ''}">${html}</div>`;
+  screen.innerHTML = `<div class="panel${wide ? ' panel-wide' : ''}"><div class="panel-in">${html}</div></div>`;
   screen.classList.toggle('is-menu', menu);
   screen.classList.toggle('is-map', extra === 'is-map');
   screen.hidden = false;
   screen.scrollTop = 0;
+  fitPanel();
+  // Fonts and pictures may still be arriving: fit once more when they are in.
+  if ('fonts' in document) document.fonts.ready.then(fitPanel);
 }
 function hide() {
   screen.hidden = true;
@@ -345,8 +385,12 @@ function leaveScreen(to: 'site' | 'menu') {
 }
 
 /* A header from the UI sheets: the ornament is the picture, the words sit in its plate. */
+/* Crest picture sizes, so the dialog can be measured before they load. */
+const HEAD_SIZE: Record<string, [number, number]> = {
+  pause: [480, 450], levelup: [480, 452], shrine: [450, 480], victory: [431, 480], defeat: [474, 472], boss: [480, 422], wings: [480, 304],
+};
 const head = (kind: 'pause' | 'levelup' | 'victory' | 'defeat' | 'shrine' | 'wings', text: string) =>
-  `<div class="ui-head is-${kind}"><img src="./images/game/ui/header_${kind}.webp" alt=""><span>${text}</span></div>`;
+  `<div class="ui-head is-${kind}"><img src="./images/game/ui/header_${kind}.webp" width="${HEAD_SIZE[kind][0]}" height="${HEAD_SIZE[kind][1]}" alt=""><span>${text}</span></div>`;
 
 function pauseScreen() {
   show(`<button class="ui-close" type="button" data-act="resume" aria-label="${t('resume')}"></button>
