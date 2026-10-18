@@ -170,6 +170,7 @@ const en = {
   worldsChip: 'worlds',
   lockedUntil: 'Locked until you ship world {n}',
   lockedBtn: 'Locked',
+  loading: 'Loading…',
   completed: 'Completed',
 };
 
@@ -342,6 +343,7 @@ const es: Record<Key, string> = {
   worldsChip: 'mundos',
   lockedUntil: 'Bloqueado hasta completar el mundo {n}',
   lockedBtn: 'Bloqueado',
+  loading: 'Cargando…',
   completed: 'Completado',
 };
 

@@ -646,5 +646,43 @@ function frame(now: number) {
   requestAnimationFrame(frame);
 }
 
-menuScreen();
+/* --------------------------------------------------------------- loading */
+
+/* The title screen is one big picture, so the HTML shows a bar until the
+   pictures the menu and the map need are in (weighted by size); then the bar
+   fades and the menu opens. Nothing waits longer than a few seconds. */
+const PRELOAD: [string, number][] = [
+  ['./images/game/cover.jpg', 10],
+  ['./images/game/landing-bg.jpg', 1],
+  ['./images/favicon-192.png', 1],
+  ['./images/game/map/bg.jpg', 1],
+  ...['original', 'infierno', 'vikingos', 'jungla', 'rayo', 'robots', 'demonios', 'nucleo'].map((name): [string, number] => [`./images/game/map/${name}.webp`, 1]),
+];
+const loading = $<HTMLElement>('loading');
+const loadingFill = $<HTMLElement>('loadingFill');
+$<HTMLElement>('loadingText').textContent = t('loading');
+let loadedWeight = 0;
+const totalWeight = PRELOAD.reduce((sum, [, weight]) => sum + weight, 0);
+const loadOne = ([src, weight]: [string, number]) =>
+  new Promise<void>((resolve) => {
+    const img = new Image();
+    const done = () => {
+      loadedWeight += weight;
+      loadingFill.style.width = `${Math.max(4, (loadedWeight / totalWeight) * 100)}%`;
+      resolve();
+    };
+    img.onload = done;
+    img.onerror = done;
+    img.src = src;
+  });
+const fontsReady = 'fonts' in document ? document.fonts.ready.then(() => undefined) : Promise.resolve();
+Promise.race([
+  Promise.all([...PRELOAD.map(loadOne), fontsReady]),
+  new Promise<void>((resolve) => setTimeout(resolve, 6000)),
+]).then(() => {
+  loadingFill.style.width = '100%';
+  menuScreen();
+  loading.classList.add('is-done');
+  setTimeout(() => loading.remove(), 400);
+});
 requestAnimationFrame(frame);

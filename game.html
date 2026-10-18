@@ -34,6 +34,11 @@
     <div class="boss" id="bossBar" hidden><span id="bossName"></span><i><b id="bossHp"></b></i></div>
     <p class="toast" id="toast" role="status" hidden></p>
     <section class="screen" id="screen" hidden></section>
+    <div class="loading" id="loading" role="status" aria-live="polite">
+      <b class="loading-title">Bug Hunter</b>
+      <i class="loading-bar"><b id="loadingFill"></b></i>
+      <small id="loadingText">Loading…</small>
+    </div>
   </main>
   <noscript><p style="padding:24px;color:#f3f6fb">Bug Hunter needs JavaScript to run.</p></noscript>
   <script type="module" src="/src/game/main.ts"></script>
