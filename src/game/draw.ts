@@ -1896,13 +1896,16 @@ export function drawSprite(ctx: CanvasRenderingContext2D, e: Enemy, now: number)
    with the enemy's own wobble so a crowd never steps in unison; the sprite
    is sized to the collision circle (bosses a little bigger) with its feet on
    the shadow. Looks without a sheet fall back to the hand-drawn figures. */
-const SPRITE_LOOKS: Look[] = ['original', 'demon', 'greek'];
+/* Frames per look: the first three sheets have four walking frames; the
+   later ones six: three walking, two attacking (wind-up, strike) and one
+   taking a hit. */
+const SPRITE_FRAMES: Partial<Record<Look, number>> = { original: 4, demon: 4, greek: 4, viking: 6, jungle: 6, robot: 6, nightmare: 6 };
 const enemySprites = new Map<string, HTMLImageElement[]>();
-function enemyFrames(look: Look, kind: Enemy['kind']) {
+function enemyFrames(look: Look, kind: Enemy['kind'], count: number) {
   const key = `${look}-${kind}`;
   let frames = enemySprites.get(key);
   if (!frames) {
-    frames = [0, 1, 2, 3].map((i) => {
+    frames = Array.from({ length: count }, (_, i) => {
       const img = new Image();
       img.src = `./images/game/enemies/${key}-${i}.webp`;
       return img;
@@ -1911,10 +1914,21 @@ function enemyFrames(look: Look, kind: Enemy['kind']) {
   }
   return frames;
 }
+/** Which frame an enemy shows right now: hit, attacking, or its walk cycle. */
+function enemyFrame(e: Enemy, count: number, now: number) {
+  if (count === 4) return Math.floor(now * 6 + e.wobble) % 4;
+  if (e.hit > 0) return 5;
+  // Attacks: a boss winding up (aim) or charging (dash); a ticket just after it threw (its cooldown was reset high).
+  if (e.kind === 'boss' && e.aim > 0) return 3;
+  if (e.kind === 'boss' && e.dash > 0) return 4;
+  if (e.kind === 'ticket' && e.cd > 1.5) return e.cd > 1.75 ? 3 : 4;
+  return Math.floor(now * 6 + e.wobble) % 3;
+}
 function drawEnemySprite(ctx: CanvasRenderingContext2D, e: Enemy, now: number) {
-  if (!SPRITE_LOOKS.includes(e.look)) return false;
-  const frames = enemyFrames(e.look, e.kind);
-  const img = frames[Math.floor(now * 6 + e.wobble) % 4];
+  const count = SPRITE_FRAMES[e.look];
+  if (!count) return false;
+  const frames = enemyFrames(e.look, e.kind, count);
+  const img = frames[enemyFrame(e, count, now)] ?? frames[0];
   if (!img.complete || !img.naturalWidth) return false;
   const size = e.r * (e.kind === 'boss' ? 2.6 : 2.5);
   const ratio = img.naturalWidth / img.naturalHeight;
