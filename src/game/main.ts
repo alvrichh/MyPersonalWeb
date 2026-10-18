@@ -3,6 +3,7 @@ import { storage } from '../lib/storage';
 import { audio, type Sfx } from './audio';
 import { draw, drawRetroFigure, type Palette, type View } from './draw';
 import { loadSave, profileLevel, writeSave, STYLES, SKINS, type EnemyStyle, type HeroSkin } from './save';
+import type { Mode } from './world';
 import { ARMOUR_SLOTS, ITEMS, SLOTS, UPGRADES, WEAPON_SLOTS, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
 import { Scene } from './scene';
 import { makeT, pickLang, type Key } from './strings';
@@ -75,12 +76,21 @@ palette.retro = save.retro;
 document.documentElement.toggleAttribute('data-retro', save.retro);
 
 const clock = (seconds: number) => `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, '0')}`;
-const bestLine = (world = save.world) => {
+const bestLine = (world = save.world, mode: Mode = save.mode) => {
+  if (mode === 'horde') {
+    const best = save.hordeBest[world];
+    if (!best) return '';
+    return best.won ? t('hordeBestWon', { kills: best.kills }) : t('hordeBest', { time: clock(best.time), kills: best.kills });
+  }
   const best = save.bestByWorld[world];
   if (!best) return '';
   if (best.time !== undefined) return t('bestWin', { time: clock(best.time) });
   return best.room ? t('best', { room: best.room }) : '';
 };
+const modeName = (mode: Mode = save.mode) => t(mode === 'horde' ? 'modeHorde' : 'modeSprints');
+const MODE_ICON: Record<Mode, string> = { sprints: '⚔️', horde: '🛡️' };
+/** Where the run is: the sprint, or the shift's clock. */
+const whereLine = (g: Game) => (g.mode === 'horde' ? `${MODE_ICON.horde} ${clock(g.time)}` : t('sprint', { room: g.room }));
 const worldName = (n: number) => t(`world${n}Name` as Key);
 const WORLD_ICON = ['🐞', '🔥', '💧', '🍃', '🛡️', '✨', '👻', '💗'];
 const coinsLine = (n = save.coins) => `<span class="coin">🪙</span> ${Math.floor(n)}`;
@@ -88,10 +98,17 @@ const coinsLine = (n = save.coins) => `<span class="coin">🪙</span> ${Math.flo
 /** Banks the coins and the record; returns the world unlocked by this run, if any. */
 function bankRun(g: Game): number | null {
   const won = g.phase === 'won';
-  const best = save.bestByWorld[g.world] ?? { room: 0 };
-  const better = won ? best.time === undefined || g.time < best.time : best.time === undefined && g.room > (best.room || 0);
-  if (better) save.bestByWorld[g.world] = won ? { room: ROOMS, time: g.time } : { room: g.room };
-  if (g.world === 1) save.best = save.bestByWorld[1];
+  if (g.mode === 'horde') {
+    // On call: the longest shift counts, a cleared one above all.
+    const best = save.hordeBest[g.world];
+    const better = !best || (won && !best.won) || (won === best.won && g.time > best.time);
+    if (better) save.hordeBest[g.world] = { time: g.time, kills: g.kills, won };
+  } else {
+    const best = save.bestByWorld[g.world] ?? { room: 0 };
+    const better = won ? best.time === undefined || g.time < best.time : best.time === undefined && g.room > (best.room || 0);
+    if (better) save.bestByWorld[g.world] = won ? { room: ROOMS, time: g.time } : { room: g.room };
+    if (g.world === 1) save.best = save.bestByWorld[1];
+  }
   save.coins += Math.floor(g.coins);
   save.runs += 1;
   save.xp += Math.round(g.xpEarned);
@@ -224,6 +241,7 @@ function menuScreen() {
       <p class="cover-tagline">${t('landingTagline')}</p>
       <button class="hot cover-play" data-act="play" aria-label="${t('playNow')} · ${worldName(save.world)}"></button>
       <span class="cover-play-copy"><b>${t('playNow')}</b><small>${WORLD_ICON[save.world - 1]} ${worldName(save.world)}</small></span>
+      <button class="cover-mode" type="button" data-act="mode" aria-label="${t('modePick')}: ${modeName()}"><span class="${save.mode === 'sprints' ? 'is-on' : ''}">${MODE_ICON.sprints} ${t('modeSprints')}</span><span class="${save.mode === 'horde' ? 'is-on' : ''}">${MODE_ICON.horde} ${t('modeHorde')}</span></button>
       <button class="hot cover-card is-map" data-act="map" aria-label="${t('map')}"></button>
       ${copy('is-map', t('map'), `🌍 ${save.unlocked} / ${WORLD_COUNT}`)}
       <button class="hot cover-card is-shop" data-act="shop" aria-label="${t('shop')}"></button>
@@ -262,17 +280,18 @@ function endScreen(g: Game) {
        <button class="primary" data-act="map">🗺️ ${t('toMap')}</button>
        <button class="ghost" data-act="play-same">${t('again')}</button>`
     : `<button class="primary" data-act="play-same">${t('again')}</button>`;
+  const horde = g.mode === 'horde';
   show(`
-    <p class="kicker">${worldName(g.world)} · ${t('sprint', { room: g.room })}</p>
-    ${head(won ? 'victory' : 'defeat', t(won ? 'won' : 'over'))}
-    <p>${t(won ? 'wonText' : 'overText', { room: g.room, kills: g.kills, time: clock(g.time) })}</p>
+    <p class="kicker">${worldName(g.world)} · ${horde ? `${MODE_ICON.horde} ${modeName('horde')}` : t('sprint', { room: g.room })}</p>
+    ${head(won ? 'victory' : 'defeat', t(horde ? (won ? 'hordeWon' : 'over') : won ? 'won' : 'over'))}
+    <p>${t(horde ? (won ? 'hordeWonText' : 'hordeOverText') : won ? 'wonText' : 'overText', { room: g.room, kills: g.kills, time: clock(g.time) })}</p>
     <p class="earned">${coinsLine(earned)} <small>${t('coinsRun', { coins: earned })}</small></p>
     ${next}
     <div class="row">
       <button class="ghost" data-act="shop">🛒 ${t('shop')}</button>
       <button class="ghost" data-act="menu">${t('menu')}</button>
     </div>
-    <p class="best">${bestLine(g.world)}</p>`);
+    <p class="best">${bestLine(g.world, g.mode)}</p>`);
 }
 
 /* The world map: floating islands (the owner's artwork, one per world) laid
@@ -324,6 +343,8 @@ function mapScreen() {
         ${under ? `<span class="isle-under${done ? ' is-done' : ''}${st.open ? '' : ' is-lock'}">${under}</span>` : ''}
       </button>`;
   }).join('');
+  const modes = (['sprints', 'horde'] as Mode[]).map((m) =>
+    `<button class="mode-opt${save.mode === m ? ' is-on' : ''}" data-mode="${m}" aria-pressed="${save.mode === m}" title="${t(m === 'horde' ? 'modeHordeText' : 'modeSprintsText')}">${MODE_ICON[m]} ${modeName(m)}</button>`).join('');
   const status = pickedOpen
     ? `<small class="map-record">▮▮▮ ${bestLine(picked) || t('bestNone')}</small>`
     : `<small class="map-locked">🔒 ${t('lockedUntil', { n: picked - 1 })}</small>`;
@@ -343,6 +364,8 @@ function mapScreen() {
           <b><span class="map-ico">${WORLD_ICON[picked - 1]}</span> ${t('worldN', { n: picked })} · ${worldName(picked)}</b>
           <span>${t(`world${picked}Text` as Key)}</span>
           ${status}
+          <div class="mode-pick" role="group" aria-label="${t('modePick')}">${modes}</div>
+          <small class="mode-text">${t(save.mode === 'horde' ? 'modeHordeText' : 'modeSprintsText')}</small>
         </div>
       </div>
       ${action}
@@ -572,8 +595,8 @@ function stylesScreen(note = '') {
   }
 }
 
-function startRun(world = save.world) {
-  game = newGame(buildLoadout(save.equipped, save.upgrades), save.style, world);
+function startRun(world = save.world, mode = save.mode) {
+  game = newGame(buildLoadout(save.equipped, save.upgrades), save.style, world, mode);
   paused = false;
   shownChoices = '';
   wheelShown = false;
@@ -583,7 +606,7 @@ function startRun(world = save.world) {
   hide();
   hudRoom.style.setProperty('--icon', JSON.stringify(WORLD_ICON[game.world - 1]));
   resize(); // Reserve the live HUD + weapons row, including the iOS safe area.
-  flash(`${worldName(game.world)} · ${t('sprint', { room: 1 })}`);
+  flash(game.mode === 'horde' ? t('hordeStart') : `${worldName(game.world)} · ${t('sprint', { room: 1 })}`);
   audio.start();
   audio.setIntensity(0.2);
 }
@@ -595,7 +618,9 @@ screen.addEventListener('click', (event) => {
   const act = target.dataset.act;
   if (act !== 'mute') audio.play('click');
   if (act === 'play') startRun();
-  else if (act === 'play-same') startRun(game?.world ?? save.world);
+  else if (act === 'play-same') startRun(game?.world ?? save.world, game?.mode ?? save.mode);
+  else if (act === 'mode') { save.mode = save.mode === 'horde' ? 'sprints' : 'horde'; persist(); menuScreen(); }
+  else if (target.dataset.mode) { save.mode = target.dataset.mode as Mode; persist(); mapScreen(); }
   else if (act === 'map') { mapPick = save.world; mapScreen(); }
   else if (act === 'play-picked') { save.world = mapPick; persist(); startRun(mapPick); }
   else if (target.dataset.world) {
@@ -870,7 +895,7 @@ function setMeter(fill: HTMLElement, frac: number) {
 
 /* --------------------------------------------------------------- the frame */
 
-const view: View = { scale: 1, ox: 0, oy: 0, dpr: 1 };
+const view: View = { scale: 1, ox: 0, oy: 0, dpr: 1, cx: 0, cy: 0, w: 0, h: 0 };
 /** The canvas size the bitmap was last made for, in CSS pixels. */
 let fitted = { width: 0, height: 0, dpr: 0 };
 function resize() {
@@ -894,6 +919,11 @@ function resize() {
   view.ox = (width - W * scale) / 2;
   // Spare height goes mostly below the room, so it hugs the HUD.
   view.oy = top + (height - top - 8 - H * scale) * 0.15;
+  // On call the camera sits in the middle of the free area under the HUD.
+  view.w = width;
+  view.h = height;
+  view.cx = width / 2;
+  view.cy = top + (height - top) / 2;
 }
 /* Phones (iOS above all) can change the canvas box without a resize event:
    the address bar folds, the first layout settles late, the page zooms. So
@@ -938,10 +968,12 @@ function step(now: number) {
       if (event === 'clear') flash(g.room === WHEEL_ROOM && g.wheelDoor ? t('wheelHint') : t('doorOpen'));
       if (event === 'shrine') { flash(t('shrineHint')); audio.setIntensity(0.1); }
       if (event === 'heal') flash(t('statueHeal'));
-      if (event === 'room') { flash(t('sprint', { room: g.room })); audio.setIntensity(Math.min(0.8, 0.2 + g.room * 0.05 + (g.world - 1) * 0.05)); }
+      if (event === 'room' && g.mode === 'sprints') { flash(t('sprint', { room: g.room })); audio.setIntensity(Math.min(0.8, 0.2 + g.room * 0.05 + (g.world - 1) * 0.05)); }
+      if (event === 'minute') { flash(t('minuteN', { n: Math.floor(g.time / 60) })); audio.setIntensity(Math.min(0.85, 0.25 + (g.time / 60) * 0.06)); }
       if (event === 'boss') {
         const boss = g.enemies.find((e) => e.kind === 'boss');
-        flash(`${t('sprint', { room: g.room })} · ${t(BOSS_NAME[boss?.look ?? 'original'])}`);
+        const name = t(BOSS_NAME[boss?.look ?? 'original']);
+        flash(g.mode === 'horde' ? t(g.hordeBoss >= 2 ? 'hordeFinal' : 'hordeBossIn', { name }) : `${t('sprint', { room: g.room })} · ${name}`);
         audio.setIntensity(1);
       }
       if (event === 'revive') flash(t('revived'));
@@ -972,8 +1004,10 @@ function step(now: number) {
   }
 
   if (g) {
+    // On call: the field is whatever the canvas shows, so bugs spawn just past its edge.
+    g.viewHalf = { x: Math.max(W / 2, view.cx / view.scale), y: Math.max(H / 2, (view.h - view.cy) / view.scale, view.cy / view.scale) };
     draw(ctx, g, view, palette, now / 1000);
-    hudRoom.textContent = `${t('worldShort', { n: g.world })} · ${t('sprint', { room: g.room })}`;
+    hudRoom.textContent = `${t('worldShort', { n: g.world })} · ${whereLine(g)}`;
     hudLevel.textContent = t('level', { level: g.level });
     setMeter(hudXp, g.xp / g.xpNext);
     setMeter(hudHp, Math.max(0, g.player.hp) / g.player.maxHp);
@@ -984,7 +1018,7 @@ function step(now: number) {
       hudGear.dataset.gear = gearKey;
       hudGear.innerHTML = gear.map(([id, lvl]) => `<span>${skillIcon(id, 22)}<sub>${lvl}</sub></span>`).join('');
     }
-    const boss = isBossRoom(g.room) ? g.enemies.find((e) => e.kind === 'boss' && e.spawn <= 0) : undefined;
+    const boss = g.mode === 'horde' || isBossRoom(g.room) ? g.enemies.find((e) => e.kind === 'boss' && e.spawn <= 0) : undefined;
     if (bossBar.hidden !== !boss) {
       bossBar.hidden = !boss;
       requestAnimationFrame(resize); // the room makes room for the bar (after layout)
