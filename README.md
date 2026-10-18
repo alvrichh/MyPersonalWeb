@@ -22,6 +22,7 @@ npm run typecheck
 index.html, ai-radar.html     React pages (the HTML shell; content comes from src/)
 gym.html, planning.html,      older standalone tools
 calendar.html
+game.html                     Bug Hunter, an Archero-style game (code in src/game/)
 src/
   client.tsx, server.tsx      browser entry (hydrate) and build-time renderer
   pages.tsx                   page layouts
@@ -32,6 +33,7 @@ src/
   lib/                        storage, preferences, dates, radar data
   styles/                     SCSS, one partial per area
   legacy/                     code for gym and calendar
+  game/                       Bug Hunter: rules (world.ts), drawing, screens
 static/                       copied as-is: images/, cv/, data/
 scripts/
   build/                      Vite build + prerender

@@ -11,6 +11,7 @@ Guide for any AI agent (Claude Code, Codex, Cursor, Gemini CLI…) working in th
 - `src/data/` — **content**: `experience.ts` (jobs and roles), `work.ts` (projects), `contact.ts`.
 - `src/i18n/locales/*.json` — eleven translation files. Any user-visible text must be added to **all eleven** (`en` is the reference).
 - `src/styles/partials/` — SCSS by section. `_mobile.scss` and `_responsive.scss` hold the phone layout (≤760px).
+- `game.html` + `src/game/` — **Bug Hunter**, an Archero-style canvas game (move to dodge, stand still to auto-shoot; ten rooms, bosses in rooms 5 and 10, skills named after the accent elements). Rules in `world.ts` (no DOM, so it can be simulated in Node), drawing in `draw.ts`, screens and input in `main.ts`, text in `strings.ts` (English and Spanish only). It reads the site's saved `lang` and `accent`.
 - `static/data/experience.json` — a second copy of the experience data used by the legacy calendar page (`src/legacy/calendar`). **Keep it in sync** with `src/data/experience.ts`.
 - `static/cv/alvaro-molina-cv.pdf` — the CV served by the "Download CV" button. Generated from `scripts/cv/cv.html` (see below).
 - `scripts/build/` — build pipeline (prerender, GitHub contributions, sitemaps).
