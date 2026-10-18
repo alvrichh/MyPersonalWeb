@@ -46,6 +46,7 @@ const hud = $<HTMLElement>('hud');
 const hudRoom = $<HTMLElement>('hudRoom');
 const hudLevel = $<HTMLElement>('hudLevel');
 const hudXp = $<HTMLElement>('hudXp');
+const hudHp = $<HTMLElement>('hudHp');
 const hudGear = $<HTMLElement>('hudGear');
 const hudCoins = $<HTMLElement>('hudCoins');
 const bossBar = $<HTMLElement>('bossBar');
@@ -298,7 +299,8 @@ const head = (kind: 'pause' | 'levelup' | 'victory' | 'defeat', text: string) =>
   `<div class="ui-head is-${kind}"><img src="./images/game/ui/header_${kind}.webp" alt=""><span>${text}</span></div>`;
 
 function pauseScreen() {
-  show(`${head('pause', t('paused'))}
+  show(`<button class="ui-close" type="button" data-act="resume" aria-label="${t('resume')}"></button>
+    ${head('pause', t('paused'))}
     <button class="primary" data-act="resume">${t('resume')}</button>
     <button class="ghost" data-act="options-pause">⚙ ${t('options')}</button>
     <button class="ghost" data-act="confirm-quit">${t('quit')}</button>`);
@@ -307,11 +309,12 @@ function pauseScreen() {
 function optionsScreen() {
   const muted = save.music === 0 && save.sfx === 0;
   show(`
+    <button class="ui-close" type="button" data-act="${optionsFrom === 'pause' ? 'pause' : 'menu'}" aria-label="${t('back')}"></button>
     <h2>${t('options')}</h2>
-    <label class="slider"><span>🎵 ${t('music')}</span><input type="range" min="0" max="100" value="${Math.round(save.music * 100)}" data-vol="music"><b>${Math.round(save.music * 100)}%</b></label>
-    <label class="slider"><span>🔔 ${t('sfx')}</span><input type="range" min="0" max="100" value="${Math.round(save.sfx * 100)}" data-vol="sfx"><b>${Math.round(save.sfx * 100)}%</b></label>
+    <label class="slider"><span>🎵 ${t('music')}</span><b>${Math.round(save.music * 100)}%</b><input type="range" min="0" max="100" value="${Math.round(save.music * 100)}" style="--fill:${Math.round(save.music * 100)}%" data-vol="music"></label>
+    <label class="slider"><span>🔔 ${t('sfx')}</span><b>${Math.round(save.sfx * 100)}%</b><input type="range" min="0" max="100" value="${Math.round(save.sfx * 100)}" style="--fill:${Math.round(save.sfx * 100)}%" data-vol="sfx"></label>
     <p class="how">${t('musicNote')}</p>
-    <button class="ghost" data-act="mute">${muted ? '🔊 ' + t('unmute') : '🔇 ' + t('mute')}</button>
+    <button class="mute-toggle" type="button" data-act="mute" aria-pressed="${muted}"><span class="toggle-art${muted ? ' is-off' : ''}" aria-hidden="true"></span><span>${muted ? t('unmute') : t('mute')}</span></button>
     ${backButton(optionsFrom === 'pause' ? 'pause' : 'menu', optionsFrom === 'pause' ? 'resume' : 'menu')}`);
 }
 
@@ -327,7 +330,7 @@ function shopScreen(note = '') {
           : worn
             ? `<button class="buy is-worn" data-unequip="${item.id}">✓ ${t('worn')} · ${t('unequip')}</button>`
             : `<button class="buy" data-equip="${item.id}">${t('equip')}</button>`;
-        return `<div class="item${worn ? ' is-on' : ''}${owned ? ' is-owned' : ''}">
+        return `<div class="item${worn ? ' is-on' : ''}${owned ? ' is-owned' : ''}${!owned && !can ? ' is-locked' : ''}">
           <span class="icon" aria-hidden="true">${item.icon}</span>
           <b>${t(`${item.id}Name` as Key)}</b>
           <span>${t(`${item.id}Text` as Key)}</span>
@@ -338,6 +341,7 @@ function shopScreen(note = '') {
     return `<h3 class="slot">${t(SLOT_LABEL[slot])}</h3><div class="items">${cards}</div>`;
   }).join('');
   show(`
+    <button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
     <div class="shop-head"><h2>${t('shop')}</h2><p class="wallet">${coinsLine()}</p></div>
     ${note ? `<p class="note">${note}</p>` : `<p class="how">${t('earnHint')}</p>`}
     ${groups}
@@ -351,7 +355,7 @@ function stylesScreen() {
       <b>${t(`style${cap(style)}Name` as Key)}</b>
       <span>${t(`style${cap(style)}Text` as Key)}</span>
     </button>`).join('');
-  show(`<h2>${t('styles')}</h2><p>${t('stylePick')}</p><div class="styles">${cards}</div>${backButton('menu')}`, true);
+  show(`<button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button><h2>${t('styles')}</h2><p>${t('stylePick')}</p><div class="styles">${cards}</div>${backButton('menu')}`, true);
 }
 
 function startRun(world = save.world) {
@@ -444,7 +448,9 @@ screen.addEventListener('input', (event) => {
   if (input.dataset.vol === 'music') save.music = value;
   else save.sfx = value;
   audio.setVolumes(save.music, save.sfx);
-  (input.nextElementSibling as HTMLElement).textContent = `${input.value}%`;
+  input.style.setProperty('--fill', `${input.value}%`);
+  const valueLabel = input.closest('.slider')?.querySelector('b');
+  if (valueLabel) valueLabel.textContent = `${input.value}%`;
   persist();
   // Hear the music in the menu while adjusting it.
   if (input.dataset.vol === 'music' && value > 0) audio.start();
@@ -515,6 +521,10 @@ window.addEventListener('blur', () => keys.clear());
 // Floating joystick: wherever the finger lands is the centre.
 const stick = { on: false, id: -1, ox: 0, oy: 0, x: 0, y: 0 };
 const STICK = 46;
+const stickRingImage = new Image();
+stickRingImage.src = './images/game/ui/stick_ring.webp';
+const stickKnobImage = new Image();
+stickKnobImage.src = './images/game/ui/stick_knob.webp';
 canvas.addEventListener('pointerdown', (event) => {
   if (stick.on) return;
   stick.on = true;
@@ -635,6 +645,7 @@ function step(now: number) {
     hudRoom.textContent = `${t('worldShort', { n: g.world })} · ${t('sprint', { room: g.room })}`;
     hudLevel.textContent = t('level', { level: g.level });
     hudXp.style.width = `${(g.xp / g.xpNext) * 100}%`;
+    hudHp.style.width = `${(Math.max(0, g.player.hp) / g.player.maxHp) * 100}%`;
     hudCoins.textContent = String(Math.floor(g.coins));
     const gear = ['🏹1', ...ownedWeapons(g).map((id) => `${ICONS[id]}${g.skills[id]}`)].join(' ');
     if (hudGear.dataset.gear !== gear) {
@@ -661,19 +672,32 @@ function step(now: number) {
     const dy = stick.y - stick.oy;
     const len = Math.hypot(dx, dy) || 1;
     const k = Math.min(len, STICK) / len;
-    ctx.fillStyle = 'rgba(255,255,255,0.08)';
-    ctx.strokeStyle = 'rgba(255,255,255,0.25)';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.arc(cx, cy, STICK, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.stroke();
-    ctx.fillStyle = accent;
-    ctx.globalAlpha = 0.85;
-    ctx.beginPath();
-    ctx.arc(cx + dx * k, cy + dy * k, 18, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.globalAlpha = 1;
+    if (stickRingImage.complete && stickRingImage.naturalWidth) {
+      const size = STICK * 2.6;
+      ctx.globalAlpha = 0.8;
+      ctx.drawImage(stickRingImage, cx - size / 2, cy - size / 2, size, size);
+      ctx.globalAlpha = 1;
+    } else {
+      ctx.fillStyle = 'rgba(255,255,255,0.08)';
+      ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(cx, cy, STICK, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+    }
+    const knobX = cx + dx * k;
+    const knobY = cy + dy * k;
+    if (stickKnobImage.complete && stickKnobImage.naturalWidth) {
+      ctx.drawImage(stickKnobImage, knobX - 25, knobY - 25, 50, 50);
+    } else {
+      ctx.fillStyle = accent;
+      ctx.globalAlpha = 0.85;
+      ctx.beginPath();
+      ctx.arc(knobX, knobY, 18, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    }
   }
 }
 
