@@ -141,7 +141,7 @@ export type Enemy = {
 };
 
 export type Shot = {
-  kind: 'arrow' | 'knife' | 'boomerang';
+  kind: 'arrow' | 'knife' | 'boomerang' | 'orb';
   x: number;
   y: number;
   vx: number;
@@ -166,7 +166,8 @@ export type Gem = { x: number; y: number; value: number; pull: boolean };
 /** Short-lived shapes the renderer draws: sword arcs, hammer rings, explosions, lightning strikes. */
 export type Fx = { kind: 'slash' | 'ring' | 'boom' | 'strike'; x: number; y: number; r: number; a: number; life: number; max: number };
 export type Fireball = { x: number; y: number; vx: number; vy: number; life: number };
-export type Spirit = { x: number; y: number; vx: number; vy: number; life: number };
+/** A companion ghost: floats beside the hero (`slot` sets where) and shoots when you do. */
+export type Spirit = { x: number; y: number; vx: number; vy: number; life: number; slot: number; cd: number };
 
 export type Player = {
   x: number;
@@ -253,7 +254,7 @@ export type Game = {
 
 export type GameEvent =
   | 'clear' | 'boss' | 'hurt' | 'levelup' | 'room' | 'revive' | 'heal' | 'wheel' | 'shrine'
-  | 'shoot' | 'knife' | 'boomerang' | 'hit' | 'kill' | 'gem' | 'slash' | 'slam' | 'strike' | 'boom';
+  | 'shoot' | 'knife' | 'boomerang' | 'orb' | 'hit' | 'kill' | 'gem' | 'slash' | 'slam' | 'strike' | 'boom';
 
 /* ------------------------------------------------------------------ helpers */
 
@@ -870,34 +871,37 @@ function chill(g: Game, dt: number) {
   }
 }
 
+/* Spirits: one companion ghost per level floats at the hero's side (left,
+   right, then behind) and, while you stand still, each one shoots a purple
+   orb at the nearest bug. They never leave you. */
+const SPIRIT_SLOTS = [{ x: -30, y: -8 }, { x: 30, y: -8 }, { x: 0, y: -34 }];
 function moveSpirits(g: Game, dt: number) {
   const lv = g.skills.spirits;
-  g.gear.spirits -= dt;
-  if (lv && g.gear.spirits <= 0 && g.spirits.length < lv + 1) {
-    g.gear.spirits = 2.5;
-    const a = rand(0, Math.PI * 2);
-    g.spirits.push({ x: g.player.x, y: g.player.y, vx: Math.cos(a) * 80, vy: Math.sin(a) * 80, life: 4 });
+  const p = g.player;
+  while (g.spirits.length < lv && g.spirits.length < SPIRIT_SLOTS.length) {
+    const slot = g.spirits.length;
+    g.spirits.push({ x: p.x + SPIRIT_SLOTS[slot].x, y: p.y + SPIRIT_SLOTS[slot].y, vx: 0, vy: 0, life: 0, slot, cd: 0.4 * slot });
   }
-  g.spirits = g.spirits.filter((s) => {
-    s.life -= dt;
-    if (s.life <= 0) return false;
-    const target = nearest(g, s);
-    if (target) {
-      const d = dist(s, target) || 1;
-      s.vx += ((target.x - s.x) / d) * 600 * dt;
-      s.vy += ((target.y - s.y) / d) * 600 * dt;
-      const v = Math.hypot(s.vx, s.vy);
-      if (v > 170) { s.vx *= 170 / v; s.vy *= 170 / v; }
-      if (d < target.r + 6) {
-        hurt(g, target, (22 + 8 * (lv - 1)) * power(g, 'magic'));
-        burst(g, s.x, s.y, '#e9ecf5', 8, 90, 2.2);
-        return false;
+  const fighting = live(g).length > 0;
+  for (const s of g.spirits) {
+    s.life += dt;
+    // Glide to the slot, bobbing a little.
+    const home = SPIRIT_SLOTS[s.slot];
+    const tx = p.x + home.x;
+    const ty = p.y + home.y + Math.sin(s.life * 3 + s.slot) * 3;
+    s.x += (tx - s.x) * Math.min(1, dt * 8);
+    s.y += (ty - s.y) * Math.min(1, dt * 8);
+    s.cd = Math.max(0, s.cd - dt);
+    if (fighting && !p.moving && s.cd === 0) {
+      const target = nearest(g, s, true);
+      if (target) {
+        const a = Math.atan2(target.y - s.y, target.x - s.x);
+        g.shots.push(shot('orb', s, a, 320, (14 + 6 * (lv - 1)) * power(g, 'magic'), { life: 1.4 }));
+        s.cd = 1.1 / haste(g);
+        g.events.push('orb');
       }
     }
-    s.x += s.vx * dt;
-    s.y += s.vy * dt;
-    return true;
-  });
+  }
 }
 
 function useWeapons(g: Game, dt: number) {
