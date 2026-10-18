@@ -2,7 +2,7 @@ import './game.css';
 import { storage } from '../lib/storage';
 import { draw, type Palette, type View } from './draw';
 import { makeT, pickLang, type Key } from './strings';
-import { H, W, chooseSkill, isBossRoom, newGame, update, type Game, type Input, type SkillId } from './world';
+import { CATEGORY, H, W, chooseSkill, isBossRoom, newGame, ownedWeapons, update, type Category, type Game, type Input, type SkillId } from './world';
 
 /* Bug Hunter's page: screens, input (touch joystick or keyboard) and the
    frame loop. The rules are in world.ts, the drawing in draw.ts. */
@@ -37,6 +37,7 @@ const toast = $<HTMLElement>('toast');
 const hudRoom = $<HTMLElement>('hudRoom');
 const hudLevel = $<HTMLElement>('hudLevel');
 const hudXp = $<HTMLElement>('hudXp');
+const hudGear = $<HTMLElement>('hudGear');
 const bossBar = $<HTMLElement>('bossBar');
 const bossHp = $<HTMLElement>('bossHp');
 const pauseBtn = $<HTMLButtonElement>('pauseBtn');
@@ -73,8 +74,13 @@ const bestLine = () => {
 /* ------------------------------------------------------------------ screens */
 
 const ICONS: Record<SkillId, string> = {
-  fire: '🔥', water: '💧', leaf: '🍃', bolt: '⚡', spark: '✨', ghost: '👻', heart: '💗', speed: '⏩', power: '💥', double: '🏹',
+  sword: '🗡️', blades: '🌀', hammer: '🔨',
+  storm: '🌩️', fireball: '☄️', frost: '❄️', spirits: '👻',
+  knives: '🔪', boomerang: '🪃',
+  fire: '🔥', water: '💧', leaf: '🍃', bolt: '⚡', spark: '✨', ghost: '🫥', double: '🏹', speed: '⏩',
+  power: '💥', heart: '💗',
 };
+const CATEGORY_LABEL: Record<Category, Key> = { melee: 'catMelee', magic: 'catMagic', ranged: 'catRanged', upgrade: 'catUpgrade' };
 
 let game: Game | null = null;
 let paused = false;
@@ -117,8 +123,10 @@ function choiceScreen(g: Game) {
     .map((id) => {
       const name = t(`${id}Name` as Key);
       const text = t(`${id}Text` as Key);
-      const level = id === 'heart' ? '' : `<span class="lvl">${t('skillLevel', { level: g.skills[id] + 1 })}</span>`;
-      return `<button class="skill" data-skill="${id}"><span class="icon" aria-hidden="true">${ICONS[id]}</span><b>${name}</b><span>${text}</span>${level}</button>`;
+      const cat = CATEGORY[id];
+      const fresh = cat !== 'upgrade' && g.skills[id] === 0;
+      const level = id === 'heart' ? '' : `<span class="lvl">${fresh ? t('newWeapon') : t('skillLevel', { level: g.skills[id] + 1 })}</span>`;
+      return `<button class="skill skill-${cat}" data-skill="${id}"><span class="icon" aria-hidden="true">${ICONS[id]}</span><span class="cat">${t(CATEGORY_LABEL[cat])}</span><b>${name}</b><span>${text}</span>${level}</button>`;
     })
     .join('');
   show(`<p class="kicker">${t('level', { level: g.level })}</p><h2>${t('levelUp')}</h2><p>${t('choose')}</p><div class="skills">${cards}</div>`, true);
@@ -235,7 +243,7 @@ function resize() {
   const height = canvas.clientHeight;
   canvas.width = Math.round(width * dpr);
   canvas.height = Math.round(height * dpr);
-  const top = 56; // room for the HUD
+  const top = 86; // room for the HUD and the weapons row
   const scale = Math.min(width / W, (height - top - 8) / H);
   view.scale = scale;
   view.dpr = dpr;
@@ -274,6 +282,11 @@ function frame(now: number) {
     hudRoom.textContent = t('sprint', { room: g.room });
     hudLevel.textContent = t('level', { level: g.level });
     hudXp.style.width = `${(g.xp / g.xpNext) * 100}%`;
+    const gear = ['🏹1', ...ownedWeapons(g).map((id) => `${ICONS[id]}${g.skills[id]}`)].join(' ');
+    if (hudGear.dataset.gear !== gear) {
+      hudGear.dataset.gear = gear;
+      hudGear.innerHTML = gear.split(' ').map((item) => `<span>${item.slice(0, -1)}<sub>${item.slice(-1)}</sub></span>`).join('');
+    }
     const boss = isBossRoom(g.room) ? g.enemies.find((e) => e.kind === 'boss' && e.spawn <= 0) : undefined;
     bossBar.hidden = !boss;
     if (boss) bossHp.style.width = `${(Math.max(0, boss.hp) / boss.maxHp) * 100}%`;

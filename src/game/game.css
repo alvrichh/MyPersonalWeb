@@ -130,7 +130,7 @@ body {
 
 .boss {
   position: absolute;
-  top: 62px;
+  top: 92px;
   left: 50%;
   display: grid;
   gap: 5px;
@@ -180,6 +180,34 @@ body {
   0% { opacity: 0; scale: 0.9; }
   12%, 80% { opacity: 1; scale: 1; }
   100% { opacity: 0; }
+}
+
+/* Weapons you carry, with their level. */
+.gear {
+  position: absolute;
+  top: 56px;
+  left: 50%;
+  display: flex;
+  gap: 6px;
+  translate: -50% 0;
+  pointer-events: none;
+}
+
+.gear span {
+  display: inline-flex;
+  align-items: flex-end;
+  padding: 3px 6px 2px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(10, 13, 20, 0.7);
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.gear sub {
+  margin-left: 2px;
+  font: 700 0.6rem/1 ui-monospace, monospace;
+  color: var(--accent);
 }
 
 /* Screens */
@@ -333,6 +361,17 @@ body {
   line-height: 1.35;
 }
 
+.skill .cat {
+  font: 700 0.62rem/1 ui-monospace, monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.skill-melee .cat { color: #fca5a5; }
+.skill-magic .cat { color: #c4b5fd; }
+.skill-ranged .cat { color: #7dd3fc; }
+
 .skill .lvl {
   font: 600 0.7rem/1 ui-monospace, monospace;
   color: var(--accent);
@@ -352,7 +391,7 @@ body {
   }
 
   .skill .icon {
-    grid-row: span 3;
+    grid-row: span 4;
     align-self: center;
   }
 }
