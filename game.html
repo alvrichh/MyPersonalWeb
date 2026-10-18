@@ -23,13 +23,14 @@
 <body>
   <main class="game">
     <canvas id="stage" aria-label="Bug Hunter"></canvas>
-    <header class="hud">
+    <header class="hud" id="hud" hidden>
       <a class="hud-back" id="backLink" href="./index.html" aria-label="Back to portfolio">←</a>
       <span class="hud-room" id="hudRoom"></span>
+      <span class="hud-coins">🪙 <b id="hudCoins">0</b></span>
       <span class="hud-xp"><span id="hudLevel"></span><i><b id="hudXp"></b></i></span>
       <button class="hud-pause" id="pauseBtn" type="button" aria-label="Pause">II</button>
     </header>
-    <div class="gear" id="hudGear" aria-hidden="true"></div>
+    <div class="gear" id="hudGear" aria-hidden="true" hidden></div>
     <div class="boss" id="bossBar" hidden><span id="bossName"></span><i><b id="bossHp"></b></i></div>
     <p class="toast" id="toast" role="status" hidden></p>
     <section class="screen" id="screen" hidden></section>

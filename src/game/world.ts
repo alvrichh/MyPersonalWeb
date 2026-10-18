@@ -10,6 +10,10 @@
  * Everything lives in a fixed 360 × 600 room; the renderer scales it to fit.
  */
 
+import type { Loadout } from './shop';
+import { BASE_LOADOUT } from './shop';
+import type { EnemyStyle } from './save';
+
 export const W = 360;
 export const H = 600;
 export const WALL = 16;
@@ -51,9 +55,14 @@ const maxLevel = (s: SkillId) => (s === 'heart' ? 99 : s === 'double' ? 2 : 3);
 
 export type EnemyKind = 'bug' | 'ticket' | 'legacy' | 'boss';
 
+/** How an enemy is drawn (the save's style, or one per enemy under random). */
+export type Look = Exclude<EnemyStyle, 'random'>;
+export const LOOKS: Look[] = ['original', 'demon', 'greek', 'nightmare'];
+
 export type Enemy = {
   id: number;
   kind: EnemyKind;
+  look: Look;
   x: number;
   y: number;
   r: number;
@@ -161,6 +170,11 @@ export type Game = {
   door: boolean;
   skills: Record<SkillId, number>;
   gear: Gear;
+  loadout: Loadout;
+  style: EnemyStyle;
+  /** Coins earned this run (banked by the page when the run ends). */
+  coins: number;
+  revives: number;
   level: number;
   xp: number;
   xpNext: number;
@@ -170,8 +184,12 @@ export type Game = {
   time: number;
   shake: number;
   /** Things the page may want to react to this frame (banners, sounds). */
-  events: ('clear' | 'boss' | 'hurt' | 'levelup' | 'room')[];
+  events: GameEvent[];
 };
+
+export type GameEvent =
+  | 'clear' | 'boss' | 'hurt' | 'levelup' | 'room' | 'revive'
+  | 'shoot' | 'knife' | 'boomerang' | 'hit' | 'kill' | 'gem' | 'slash' | 'slam' | 'strike' | 'boom';
 
 /* ------------------------------------------------------------------ helpers */
 
@@ -263,7 +281,8 @@ function wave(room: number): EnemyKind[] {
   return kinds;
 }
 
-function makeEnemy(kind: EnemyKind, room: number, at: Vec, spawn = 0.7): Enemy {
+function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7): Enemy {
+  const look: Look = g.style === 'random' ? LOOKS[Math.floor(Math.random() * LOOKS.length)] : g.style;
   const tough = 1 + (room - 1) * 0.08;
   const base = {
     bug: { r: 12, hp: 40, speed: 72, dmg: 10, xp: 6 },
@@ -275,6 +294,7 @@ function makeEnemy(kind: EnemyKind, room: number, at: Vec, spawn = 0.7): Enemy {
   return {
     id: nextId++,
     kind,
+    look,
     x: at.x,
     y: at.y,
     r: base.r,
@@ -335,18 +355,18 @@ function enterRoom(g: Game, room: number) {
   g.player.y = H - 70;
   for (const kind of wave(room)) {
     const at = kind === 'boss' ? { x: W / 2, y: H * 0.3 } : freeSpot(g, kind === 'legacy' ? 20 : 14);
-    g.enemies.push(makeEnemy(kind, room, at, kind === 'boss' ? 1.2 : rand(0.5, 1.1)));
+    g.enemies.push(makeEnemy(g, kind, room, at, kind === 'boss' ? 1.2 : rand(0.5, 1.1)));
   }
   // A breather before each boss.
   if (isBossRoom(room)) g.player.hp = Math.min(g.player.maxHp, g.player.hp + Math.round(g.player.maxHp * 0.3));
   g.events.push(isBossRoom(room) ? 'boss' : 'room');
 }
 
-export function newGame(): Game {
+export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'original'): Game {
   const g: Game = {
     room: 1,
     phase: 'play',
-    player: { x: W / 2, y: H - 70, r: 15, hp: 100, maxHp: 100, speed: 150, inv: 0, moving: false, face: -Math.PI / 2 },
+    player: { x: W / 2, y: H - 70, r: 15, hp: loadout.maxHp, maxHp: loadout.maxHp, speed: 150 * loadout.speedMult, inv: 0, moving: false, face: -Math.PI / 2 },
     enemies: [],
     shots: [],
     orbs: [],
@@ -359,6 +379,10 @@ export function newGame(): Game {
     obstacles: [],
     door: false,
     skills: Object.fromEntries(SKILLS.map((s) => [s, 0])) as Record<SkillId, number>,
+    loadout,
+    style,
+    coins: 0,
+    revives: loadout.revives,
     gear: {
       bow: 0.4, knives: 0.6, boomerang: 0.8, sword: 0.5, hammer: 1, storm: 1, fireball: 1, spirits: 0.5, frost: 0,
       bladeAngle: 0, bladeHits: new Map(),
@@ -373,6 +397,7 @@ export function newGame(): Game {
     shake: 0,
     events: [],
   };
+  for (const s of loadout.startSkills) g.skills[s] = Math.max(g.skills[s], 1);
   enterRoom(g, 1);
   g.events = [];
   return g;
@@ -419,12 +444,12 @@ export function chooseSkill(g: Game, skill: SkillId) {
   else g.phase = 'play';
 }
 
-const power = (g: Game) => 1 + 0.25 * g.skills.power;
+const power = (g: Game, cat: Category) => (1 + 0.25 * g.skills.power) * g.loadout.mult[cat];
 /** Ranged weapons fire faster with the Hotfix upgrade. */
 const haste = (g: Game) => 1 + 0.28 * g.skills.speed;
 
 function gainXp(g: Game, amount: number) {
-  g.xp += amount;
+  g.xp += amount * g.loadout.xpMult;
   while (g.xp >= g.xpNext) {
     g.xp -= g.xpNext;
     g.level += 1;
@@ -447,10 +472,14 @@ function burst(g: Game, x: number, y: number, color: string, count: number, spee
 
 const ENEMY_COLOR: Record<EnemyKind, string> = { bug: '#ff6b6b', ticket: '#ffd166', legacy: '#9aa3b2', boss: '#c084fc' };
 
+const COINS: Record<EnemyKind, number> = { bug: 1, ticket: 2, legacy: 3, boss: 25 };
+
 function kill(g: Game, e: Enemy) {
   if (e.dead) return;
   e.dead = true;
   g.kills += 1;
+  g.coins += COINS[e.kind] * g.loadout.coinMult;
+  g.events.push('kill');
   burst(g, e.x, e.y, ENEMY_COLOR[e.kind], e.kind === 'boss' ? 60 : 14, e.kind === 'boss' ? 260 : 140, e.kind === 'boss' ? 5 : 3);
   // XP drops as gems to collect; the boss scatters a handful.
   const drops = e.kind === 'boss' ? 7 : 1;
@@ -463,7 +492,7 @@ function kill(g: Game, e: Enemy) {
   // Legacy code never dies quietly: it splits into two bugs.
   if (e.kind === 'legacy') {
     for (const side of [-1, 1]) {
-      const bug = makeEnemy('bug', g.room, { x: e.x + side * 14, y: e.y }, 0.15);
+      const bug = makeEnemy(g, 'bug', g.room, { x: e.x + side * 14, y: e.y }, 0.15);
       bug.hp = bug.maxHp = Math.round(bug.maxHp * 0.6);
       bug.xp = 3;
       g.enemies.push(bug);
@@ -490,6 +519,7 @@ const away = (from: Vec, e: Vec, strength: number) => {
 function hitWithShot(g: Game, e: Enemy, s: Shot) {
   hurt(g, e, s.dmg, s.kind === 'boomerang' ? undefined : { x: s.vx * 0.06, y: s.vy * 0.06 });
   burst(g, s.x, s.y, '#ffffff', 4, 90, 2);
+  g.events.push('hit');
   if (!s.bow) return;
   if (g.skills.fire) {
     e.burn = 2;
@@ -566,7 +596,7 @@ function fireBow(g: Game, target: Enemy) {
   const angles = [angle];
   for (let i = 1; i <= g.skills.leaf; i++) angles.push(angle - i * 0.26, angle + i * 0.26);
   const side = g.skills.double ? [-6, 6] : [0];
-  const dmg = 20 * power(g) * (g.skills.double === 2 ? 0.85 : 1);
+  const dmg = 20 * power(g, 'ranged') * (g.skills.double === 2 ? 0.85 : 1);
   for (const a of angles) {
     for (const offset of side) {
       const from = { x: p.x + Math.cos(a + Math.PI / 2) * offset, y: p.y + Math.sin(a + Math.PI / 2) * offset };
@@ -584,7 +614,7 @@ function fireKnives(g: Game, target: Enemy) {
   const n = 2 + lv;
   for (let i = 0; i < n; i++) {
     const a = angle + (i - (n - 1) / 2) * 0.17;
-    g.shots.push(shot('knife', p, a, 480, (14 + 5 * (lv - 1)) * power(g), { life: 0.9, spin: a }));
+    g.shots.push(shot('knife', p, a, 480, (14 + 5 * (lv - 1)) * power(g, 'ranged'), { life: 0.9, spin: a }));
   }
 }
 
@@ -594,7 +624,7 @@ function fireBoomerang(g: Game, target: Enemy) {
   const angle = Math.atan2(target.y - p.y, target.x - p.x);
   for (let i = 0; i < lv; i++) {
     const a = angle + (i - (lv - 1) / 2) * 0.45;
-    g.shots.push(shot('boomerang', p, a, 330, (24 + 8 * (lv - 1)) * power(g), { pierce: 99, ghost: true, life: 3, out: 0.5 }));
+    g.shots.push(shot('boomerang', p, a, 330, (24 + 8 * (lv - 1)) * power(g, 'ranged'), { pierce: 99, ghost: true, life: 3, out: 0.5 }));
   }
 }
 
@@ -606,10 +636,11 @@ function swingSword(g: Game) {
   const close = nearest(g, p);
   const a = close && dist(p, close) < reach + close.r + 20 ? Math.atan2(close.y - p.y, close.x - p.x) : p.face;
   g.fx.push({ kind: 'slash', x: p.x, y: p.y, r: reach, a, life: 0.22, max: 0.22 });
+  g.events.push('slash');
   for (const e of live(g)) {
     if (dist(p, e) > reach + e.r) continue;
     if (angleDiff(Math.atan2(e.y - p.y, e.x - p.x), a) > 1.15) continue;
-    hurt(g, e, (32 + 14 * (lv - 1)) * power(g), away(p, e, 140));
+    hurt(g, e, (32 + 14 * (lv - 1)) * power(g, 'melee'), away(p, e, 140));
     heal(g, 1);
   }
 }
@@ -620,9 +651,10 @@ function slamHammer(g: Game) {
   const reach = 72 + 10 * (lv - 1);
   g.fx.push({ kind: 'ring', x: p.x, y: p.y, r: reach, a: 0, life: 0.35, max: 0.35 });
   g.shake = Math.max(g.shake, 0.12);
+  g.events.push('slam');
   for (const e of live(g)) {
     if (dist(p, e) > reach + e.r) continue;
-    hurt(g, e, (40 + 16 * (lv - 1)) * power(g), away(p, e, 260));
+    hurt(g, e, (40 + 16 * (lv - 1)) * power(g, 'melee'), away(p, e, 260));
     heal(g, 1);
   }
 }
@@ -651,7 +683,7 @@ function spinBlades(g: Game, dt: number) {
     for (const e of live(g)) {
       if (gear.bladeHits.has(e.id) || Math.hypot(e.x - bx, e.y - by) > e.r + 10) continue;
       gear.bladeHits.set(e.id, 0.4);
-      hurt(g, e, (14 + 5 * (lv - 1)) * power(g), away(p, e, 90));
+      hurt(g, e, (14 + 5 * (lv - 1)) * power(g, 'melee'), away(p, e, 90));
       heal(g, 0.5);
       burst(g, bx, by, '#e5e7eb', 3, 80, 1.6);
     }
@@ -664,8 +696,9 @@ function callStorm(g: Game) {
   for (let i = 0; i < lv && pool.length; i++) {
     const e = pool.splice(Math.floor(Math.random() * pool.length), 1)[0];
     g.fx.push({ kind: 'strike', x: e.x, y: e.y, r: 26, a: 0, life: 0.3, max: 0.3 });
+    g.events.push('strike');
     g.zaps.push({ pts: zigzag({ x: e.x + rand(-20, 20), y: e.y - 220 }, e, 14), life: 0.22 });
-    for (const o of live(g)) if (dist(o, e) < 26 + o.r) hurt(g, o, (38 + 10 * (lv - 1)) * power(g));
+    for (const o of live(g)) if (dist(o, e) < 26 + o.r) hurt(g, o, (38 + 10 * (lv - 1)) * power(g, 'magic'));
   }
 }
 
@@ -684,10 +717,11 @@ function explode(g: Game, at: Vec) {
   const lv = g.skills.fireball;
   const reach = 46 + 6 * (lv - 1);
   g.fx.push({ kind: 'boom', x: at.x, y: at.y, r: reach, a: 0, life: 0.35, max: 0.35 });
+  g.events.push('boom');
   burst(g, at.x, at.y, '#ffb347', 12, 160, 3);
   for (const e of live(g)) {
     if (dist(at, e) > reach + e.r) continue;
-    hurt(g, e, (30 + 12 * (lv - 1)) * power(g), away(at, e, 120));
+    hurt(g, e, (30 + 12 * (lv - 1)) * power(g, 'magic'), away(at, e, 120));
     e.burn = 2;
     e.burnDps = Math.max(e.burnDps, 8);
   }
@@ -704,7 +738,7 @@ function chill(g: Game, dt: number) {
     if (dist(g.player, e) > frostReach(g) + e.r) continue;
     e.slow = Math.max(e.slow, 0.3);
     e.slowBy = Math.max(e.slowBy, 0.3 + 0.1 * lv);
-    if (tick) hurt(g, e, (8 + 5 * (lv - 1)) * 0.25 * power(g));
+    if (tick) hurt(g, e, (8 + 5 * (lv - 1)) * 0.25 * power(g, 'magic'));
   }
 }
 
@@ -727,7 +761,7 @@ function moveSpirits(g: Game, dt: number) {
       const v = Math.hypot(s.vx, s.vy);
       if (v > 170) { s.vx *= 170 / v; s.vy *= 170 / v; }
       if (d < target.r + 6) {
-        hurt(g, target, (22 + 8 * (lv - 1)) * power(g));
+        hurt(g, target, (22 + 8 * (lv - 1)) * power(g, 'magic'));
         burst(g, s.x, s.y, '#e9ecf5', 8, 90, 2.2);
         return false;
       }
@@ -750,9 +784,9 @@ function useWeapons(g: Game, dt: number) {
   if (!p.moving) {
     const target = nearest(g, p, true);
     if (target) {
-      if (gear.bow === 0) { fireBow(g, target); gear.bow = 1 / (2 * haste(g)); }
-      if (sk.knives && gear.knives === 0) { fireKnives(g, target); gear.knives = (1.2 - 0.15 * (sk.knives - 1)) / haste(g); }
-      if (sk.boomerang && gear.boomerang === 0) { fireBoomerang(g, target); gear.boomerang = (2 - 0.25 * (sk.boomerang - 1)) / haste(g); }
+      if (gear.bow === 0) { fireBow(g, target); gear.bow = 1 / (2 * haste(g)); g.events.push('shoot'); }
+      if (sk.knives && gear.knives === 0) { fireKnives(g, target); gear.knives = (1.2 - 0.15 * (sk.knives - 1)) / haste(g); g.events.push('knife'); }
+      if (sk.boomerang && gear.boomerang === 0) { fireBoomerang(g, target); gear.boomerang = (2 - 0.25 * (sk.boomerang - 1)) / haste(g); g.events.push('boomerang'); }
     }
   }
   // Melee and magic: always.
@@ -773,6 +807,22 @@ function hurtPlayer(g: Game, amount: number) {
   g.events.push('hurt');
   burst(g, p.x, p.y, '#ff8080', 10, 120, 3);
   if (p.hp <= 0) {
+    if (g.revives > 0) {
+      // The phoenix feather: back on your feet with half your health.
+      g.revives -= 1;
+      p.hp = Math.round(p.maxHp * 0.5);
+      p.inv = 2;
+      g.orbs = [];
+      for (const e of live(g)) {
+        const push = away(p, e, 420);
+        e.kx += push.x;
+        e.ky += push.y;
+      }
+      burst(g, p.x, p.y, '#ffb347', 40, 220, 4);
+      g.shake = 0.5;
+      g.events.push('revive');
+      return;
+    }
     p.hp = 0;
     g.phase = 'over';
   }
@@ -885,7 +935,7 @@ function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
   if (e.cd3 <= 0) {
     e.cd3 = final ? 6 : 10;
     for (const side of [-1, 1]) {
-      g.enemies.push(makeEnemy('bug', g.room, { x: clamp(e.x + side * 60, 40, W - 40), y: e.y + 30 }, 0.6));
+      g.enemies.push(makeEnemy(g, 'bug', g.room, { x: clamp(e.x + side * 60, 40, W - 40), y: e.y + 30 }, 0.6));
     }
   }
 }
@@ -977,6 +1027,7 @@ export function update(g: Game, dt: number, input: Input) {
   const atDoor = g.door && Math.abs(p.x - W / 2) < DOOR_HALF - 4 && p.y - p.r < WALL + 6;
   if (atDoor) {
     if (g.room === ROOMS) {
+      g.coins += 50 * g.loadout.coinMult;
       g.phase = 'won';
       return;
     }
@@ -1039,6 +1090,7 @@ export function update(g: Game, dt: number, input: Input) {
     }
     if (d < p.r + 6) {
       gainXp(g, gem.value);
+      g.events.push('gem');
       return false;
     }
     return true;
@@ -1059,6 +1111,7 @@ export function update(g: Game, dt: number, input: Input) {
     g.door = true;
     g.orbs = [];
     g.fireballs = [];
+    g.coins += 5 * g.loadout.coinMult;
     g.events.push('clear');
   }
   if (g.pendingLevels > 0 && g.phase === 'play') offerChoices(g);
