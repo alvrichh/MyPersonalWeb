@@ -59,7 +59,7 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   drawZaps(ctx, g);
   if (pal.retro) drawPlayerRetro(ctx, g, pal, now);
   else drawPlayer(ctx, g, pal, now);
-  if (g.skills.blades) drawBlades(ctx, g, accent);
+  if (g.skills.blades) drawBlades(ctx, g, accent, now);
   drawFx(ctx, g, accent, 'over');
   drawStrikes(ctx, g, now);
   for (const q of g.particles) {
@@ -655,7 +655,44 @@ const BLADE_LOOK: Record<BladeElement, [string, string, string, string]> = {
   volt: ['#fefce8', '#93c5fd', '#facc15', 'rgba(250,204,21,0.55)'],
   shade: ['#fdf4ff', '#c084fc', '#a21caf', 'rgba(192,132,252,0.6)'],
 };
-function drawBlades(ctx: CanvasRenderingContext2D, g: Game, accent: string) {
+/* The owner's saw blade (static/images/game/blades/<element>.webp: the steel
+   one, and its red parts recoloured per element), spinning on its own axis
+   as it orbits, with the element's glow behind; retro keeps the drawn
+   blades. */
+const sawImages = new Map<BladeElement, HTMLImageElement>();
+function sawImage(el: BladeElement) {
+  let img = sawImages.get(el);
+  if (!img) { img = new Image(); img.src = `./images/game/blades/${el}.webp`; sawImages.set(el, img); }
+  return img;
+}
+function drawBlades(ctx: CanvasRenderingContext2D, g: Game, accent: string, now: number) {
+  const el = bladeElement(g);
+  const img = sawImage(el);
+  if (retroLook || !img.complete || !img.naturalWidth) { drawBladesRetro(ctx, g, accent); return; }
+  const p = g.player;
+  const n = g.skills.blades + 1;
+  const glow = BLADE_LOOK[el][3];
+  const size = 24;
+  for (let i = 0; i < n; i++) {
+    const a = g.gear.bladeAngle + (i / n) * Math.PI * 2;
+    ctx.save();
+    ctx.translate(p.x + Math.cos(a) * BLADE_ORBIT, p.y + Math.sin(a) * BLADE_ORBIT);
+    if (glow) {
+      const halo = ctx.createRadialGradient(0, 0, size * 0.3, 0, 0, size * 0.85);
+      halo.addColorStop(0, glow);
+      halo.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = halo;
+      ctx.beginPath();
+      ctx.arc(0, 0, size * 0.85, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.rotate(now * 14 + i);
+    ctx.drawImage(img, -size / 2, -size / 2, size, size);
+    ctx.restore();
+  }
+}
+
+function drawBladesRetro(ctx: CanvasRenderingContext2D, g: Game, accent: string) {
   const p = g.player;
   const n = g.skills.blades + 1;
   const [edge, base, hilt, glow] = BLADE_LOOK[bladeElement(g)];
