@@ -568,7 +568,7 @@ body {
 .ui-head {
   position: relative;
   width: min(80%, 300px);
-  margin: -58px auto -30px;
+  margin: -58px auto -12px;
 }
 
 .ui-head img {
@@ -890,6 +890,66 @@ body {
 .link:hover {
   color: var(--text);
 }
+
+/* The wheel of fate. */
+.wheel {
+  position: relative;
+  width: min(72vw, 260px);
+  aspect-ratio: 1;
+  margin: 6px auto 2px;
+}
+
+.wheel-disc {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 6px solid #0f172a;
+  box-shadow: 0 0 0 3px rgba(103, 232, 249, 0.6), 0 0 28px rgba(103, 232, 249, 0.35), inset 0 0 30px rgba(0, 0, 0, 0.5);
+  background: repeating-conic-gradient(from -22.5deg, #1e3a5f 0 45deg, #172554 45deg 90deg);
+  transition: transform 3.4s cubic-bezier(0.12, 0.75, 0.1, 1);
+}
+
+.wheel-slice {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  margin: -21px;
+  border-radius: 50%;
+  font-size: 1.35rem;
+  line-height: 1;
+  /* Each slice sits on its radius, a bit in from the rim. */
+  transform: rotate(calc(var(--i) * 45deg)) translateY(-37cqw) rotate(calc(var(--i) * -45deg));
+}
+
+.wheel { container-type: inline-size; }
+.wheel-slice.is-good { background: rgba(74, 222, 128, 0.18); box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.45); }
+.wheel-slice.is-bad { background: rgba(248, 113, 113, 0.18); box-shadow: 0 0 0 2px rgba(248, 113, 113, 0.45); }
+
+.wheel-pin {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 0;
+  height: 0;
+  margin-left: -11px;
+  border-left: 11px solid transparent;
+  border-right: 11px solid transparent;
+  border-top: 22px solid #fde68a;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.6));
+}
+
+.wheel-result {
+  min-height: 1.5em;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.wheel-result.is-good { color: #86efac; }
+.wheel-result.is-bad { color: #fca5a5; }
 
 .skills {
   display: grid;
