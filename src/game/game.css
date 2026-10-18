@@ -529,7 +529,26 @@ body {
 }
 
 .mapscreen .play {
-  filter: drop-shadow(0 0 16px rgba(74, 222, 128, 0.5));
+  width: calc(100% - 24px);
+  min-height: 66px;
+  padding: 0 10px;
+  border-width: 0 44px;
+  border-style: solid;
+  border-image: url('/images/game/ui/btn2_green.webp') 0 140 fill / 0 44px stretch;
+  background: none;
+  clip-path: none;
+  color: #fff;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
+  filter: drop-shadow(0 0 16px rgba(74, 222, 128, 0.45));
+}
+.mapscreen .play::before,
+.mapscreen .play::after { display: none; }
+.mapscreen .play.is-locked {
+  border-image-source: url('/images/game/ui/btn_gray.webp');
+  border-image-slice: 0 70 fill;
+  border-width: 0 26px;
+  color: #0b1220;
+  text-shadow: none;
 }
 
 .mapscreen .play-copy {
@@ -706,6 +725,11 @@ body {
 
 .row .ghost {
   margin: 0;
+}
+
+/* Two bevelled bars side by side leave no room for words on a phone: stack them. */
+@media (max-width: 480px) {
+  .panel .row { flex-direction: column; gap: 10px; }
 }
 
 .coin {
@@ -905,6 +929,7 @@ body {
 }
 
 /* Titles at the top of a framed dialog clear the gem in the frame's crown. */
+.panel-in > .kicker:first-child,
 .panel-in > h2:first-child,
 .panel-in > .ui-close + h2,
 .panel-in > .ui-close + .shop-head {
@@ -956,27 +981,44 @@ body {
   color: var(--text);
 }
 
-/* Dialog buttons: the chamfered bars from the UI sheets. The sides keep their
-   bevels and the middle stretches to any width. */
+/* Dialog buttons: the owner's chamfered bars (btn2_*: 884×~200, flat centre
+   from x≈130). The ends keep their bevels and leaves, the middle stretches
+   to any width; the picture's height sets the bar's height via the slice. */
 .panel .primary,
-.panel .ghost {
-  min-height: 56px;
-  border-width: 0 26px;
+.panel .ghost,
+.panel .buy,
+.panel .play {
+  --bar: url('/images/game/ui/btn2_blue.webp');
+  min-height: 58px;
+  border-width: 0 40px;
   border-style: solid;
   border-radius: 0;
-  border-image: url('/images/game/ui/btn_blue.webp') 0 70 fill / 0 26px stretch;
+  border-image: var(--bar) 0 140 fill / 0 40px stretch;
   background: none;
-  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.45);
+  color: #fff;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.35));
 }
 
-.panel .primary {
-  color: #fff;
-}
+.panel .primary:active,
+.panel .buy:active,
+.panel .play:active { filter: brightness(0.85) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.35)); }
+
+/* Orange for anything that costs coins. */
+.panel .primary[data-act='revive-pay'] { --bar: url('/images/game/ui/btn2_orange.webp'); }
+/* Green to go and play. */
+.panel .primary[data-act='play-same'],
+.panel .primary[data-act='play'],
+.panel .play { --bar: url('/images/game/ui/btn2_green.webp'); }
 
 .panel .ghost {
-  border-image-source: url('/images/game/ui/btn_gray.webp');
+  --bar: url('/images/game/ui/btn_gray.webp');
+  border-width: 0 26px;
+  border-image: var(--bar) 0 70 fill / 0 26px stretch;
+  min-height: 56px;
   color: #0b1220;
   text-shadow: none;
+  filter: none;
 }
 
 .link {
@@ -1994,27 +2036,24 @@ body {
 }
 
 .panel .buy {
-  min-height: 42px;
+  --bar: url('/images/game/ui/btn2_orange.webp');
+  min-height: 44px;
   padding: 7px 1px;
-  border: solid transparent;
-  border-width: 0 18px;
-  border-radius: 0;
-  border-image: url('/images/game/ui/btn_green.webp') 0 65 fill / 0 18px stretch;
-  background: none;
-  color: #082218;
-  font: 700 0.78rem/1.15 var(--font);
+  border-width: 0 30px;
+  border-image: var(--bar) 0 140 fill / 0 30px stretch;
+  font: 700 0.8rem/1.15 var(--font);
 }
 
+/* Equip: green; worn: blue; can't afford: grey. */
+.panel .buy[data-equip] { --bar: url('/images/game/ui/btn2_green.webp'); }
+.panel .buy.is-worn { --bar: url('/images/game/ui/btn2_blue.webp'); }
 .panel .buy.is-poor {
-  border-image-source: url('/images/game/ui/btn_gray.webp');
-  background: none;
+  --bar: url('/images/game/ui/btn_gray.webp');
+  border-width: 0 18px;
+  border-image: var(--bar) 0 65 fill / 0 18px stretch;
   color: #152234;
-}
-
-.panel .buy.is-worn {
-  border-image-source: url('/images/game/ui/btn_blue.webp');
-  background: none;
-  color: #062238;
+  text-shadow: none;
+  filter: none;
 }
 
 /* Native ranges stay interactive, with the sliced slider artwork behind them. */
@@ -2159,12 +2198,23 @@ body {
 /* Buttons: the flat gradient and ghost bars. */
 :root[data-retro] .panel .primary,
 :root[data-retro] .panel .ghost,
-:root[data-retro] .panel .buy {
+:root[data-retro] .panel .buy,
+:root[data-retro] .mapscreen .play {
   border: 0;
   border-image: none;
   border-radius: 16px;
   text-shadow: none;
+  filter: none;
 }
+:root[data-retro] .mapscreen .play {
+  width: calc(100% - 56px);
+  padding: 0 26px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.35), transparent 40%), linear-gradient(180deg, #8dff78 0%, #22d35e 55%, #16a34a 100%);
+  clip-path: polygon(18px 0, calc(100% - 18px) 0, 100% 50%, calc(100% - 18px) 100%, 18px 100%, 0 50%);
+  color: #04120a;
+}
+:root[data-retro] .mapscreen .play::before,
+:root[data-retro] .mapscreen .play::after { display: block; }
 :root[data-retro] .panel .primary { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #07090f; }
 :root[data-retro] .panel .ghost { border: 1px solid var(--line); background: rgba(255, 255, 255, 0.06); color: var(--text); }
 :root[data-retro] .panel .buy { min-height: 40px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #07090f; }
