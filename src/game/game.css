@@ -2246,7 +2246,18 @@ body {
 }
 
 /* Keep equipped-weapon badges below the two-row HUD on notched phones. */
-.gear { top: calc(max(8px, env(safe-area-inset-top)) + 74px); }
+/* Weapons as a column down the right edge, over the playfield, so the room
+   can start right under the bars. */
+.gear {
+  top: calc(max(8px, env(safe-area-inset-top)) + 104px);
+  left: auto;
+  right: max(6px, env(safe-area-inset-right));
+  translate: 0 0;
+  flex-direction: column;
+  gap: 5px;
+}
+.gear span { padding: 2px 4px 2px 2px; background: rgba(10, 13, 20, 0.6); }
+:root:not([data-retro]) .gear .skill-emoji { display: none; }
 
 /* ------------------------------------------------------------- retro look
    `data-retro` on <html> (Options → Retro look, kept in the save) turns the
