@@ -67,6 +67,27 @@
   text-decoration: none;
 }
 
+/* A nudge towards the game, under the links. */
+.contact-game {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 28px 0 0;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+.contact-game a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.contact-game a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
 /* Footer */
 
 .site-footer {
