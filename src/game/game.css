@@ -648,7 +648,7 @@ body {
   margin-bottom: -2px;
 }
 
-.ui-head.is-levelup { width: min(58%, 210px); }
+.ui-head.is-levelup { width: min(72%, 270px); }
 
 /* The winged ring: its words sit inside the ring, not underneath. */
 .ui-head.is-wings { width: min(66%, 240px); margin-bottom: 4px; }
