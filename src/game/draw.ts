@@ -64,6 +64,7 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   else drawPlayer(ctx, g, pal, now);
   if (g.skills.blades) drawBlades(ctx, g, accent, now);
   drawFx(ctx, g, accent, 'over');
+  drawBeams(ctx, g, now);
   drawStrikes(ctx, g, now);
   for (const q of g.particles) {
     ctx.globalAlpha = Math.max(0, q.life / q.max);
@@ -553,6 +554,27 @@ function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accen
       ctx.restore();
       continue;
     }
+    if (a.kind === 'crescent') {
+      // The Lunar Halo's flying cut: the painted crescent, bulge forward, fading as it flies.
+      const pic = fxImage('slash');
+      ctx.save();
+      ctx.translate(a.x, a.y);
+      ctx.rotate(Math.atan2(a.vy, a.vx));
+      ctx.globalAlpha = Math.min(1, a.life / 0.3);
+      if (!retroLook && ready(pic)) {
+        const w = 40;
+        const h = (w * pic.naturalHeight) / pic.naturalWidth;
+        ctx.drawImage(pic, -w * 0.7, -h / 2, w, h);
+      } else {
+        ctx.strokeStyle = '#fde68a';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.arc(-6, 0, 12, -1, 1);
+        ctx.stroke();
+      }
+      ctx.restore();
+      continue;
+    }
     if (a.kind === 'boomerang') {
       ctx.save();
       ctx.translate(a.x, a.y);
@@ -660,6 +682,36 @@ function drawChest(ctx: CanvasRenderingContext2D, at: Vec, now: number) {
   }
 }
 
+/* The laser: a cyan beam with a white core, from the hero along its angle;
+   the evolved one is drawn from the gear's sweep, every frame it lasts. */
+function beam(ctx: CanvasRenderingContext2D, x: number, y: number, a: number, len: number, half: number, k: number) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(a);
+  ctx.lineCap = 'round';
+  for (const [w, col] of [[half * 2.6, `rgba(34,211,238,${0.25 * k})`], [half * 1.4, `rgba(103,232,249,${0.6 * k})`], [half * 0.5, `rgba(255,255,255,${0.95 * k})`]] as const) {
+    ctx.strokeStyle = col;
+    ctx.lineWidth = w;
+    ctx.beginPath();
+    ctx.moveTo(8, 0);
+    ctx.lineTo(len, 0);
+    ctx.stroke();
+  }
+  ctx.fillStyle = `rgba(224,251,255,${0.9 * k})`;
+  ctx.beginPath();
+  ctx.arc(10, 0, half * 0.9, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+}
+function drawBeams(ctx: CanvasRenderingContext2D, g: Game, now: number) {
+  for (const f of g.fx) {
+    if (f.kind !== 'beam' || (f.delay ?? 0) > 0) continue;
+    const k = f.life / f.max;
+    beam(ctx, g.player.x, g.player.y, f.a, f.r * (0.6 + 0.4 * Math.min(1, (1 - k) * 4)), (f.w ?? 9) * (0.6 + 0.4 * k), k);
+  }
+  if (g.gear.laserSweep > 0) beam(ctx, g.player.x, g.player.y, g.gear.laserAngle, 330, 12 + Math.sin(now * 40) * 1.5, Math.min(1, g.gear.laserSweep * 4));
+}
+
 /* Burning ground from the evolved fireball: an orange pool with embers. */
 function drawEmbers(ctx: CanvasRenderingContext2D, g: Game, now: number) {
   for (const em of g.embers) {
@@ -720,10 +772,20 @@ function drawHearts(ctx: CanvasRenderingContext2D, g: Game, now: number) {
 }
 
 function drawGems(ctx: CanvasRenderingContext2D, g: Game, now: number) {
+  const pic = fxImage('gem');
   for (const gem of g.gems) {
     const big = gem.value > 10;
     const s = big ? 6 : 4.5;
     const bob = Math.sin(now * 5 + gem.x) * 1.5;
+    if (!retroLook && ready(pic)) {
+      // The owner's green gem; the boss's big ones a size up and purple.
+      const h = big ? 19 : 13;
+      const w = (h * pic.naturalWidth) / pic.naturalHeight;
+      if (big) ctx.filter = 'hue-rotate(150deg) saturate(1.2)';
+      ctx.drawImage(pic, gem.x - w / 2, gem.y - h / 2 + bob, w, h);
+      if (big) ctx.filter = 'none';
+      continue;
+    }
     ctx.save();
     ctx.translate(gem.x, gem.y + bob);
     const grad = ctx.createLinearGradient(0, -s, 0, s);
@@ -746,6 +808,16 @@ function drawGems(ctx: CanvasRenderingContext2D, g: Game, now: number) {
 function drawFrost(ctx: CanvasRenderingContext2D, g: Game, now: number) {
   const p = g.player;
   const r = frostReach(g);
+  const ring = fxImage('icering');
+  if (!retroLook && ready(ring)) {
+    // The owner's ice ring lying round the hero, breathing a little.
+    const w = r * 2.25 * (1 + Math.sin(now * 2) * 0.02);
+    const h = (w * ring.naturalHeight) / ring.naturalWidth;
+    ctx.globalAlpha = 0.85;
+    ctx.drawImage(ring, p.x - w / 2, p.y - h / 2 + 4, w, h);
+    ctx.globalAlpha = 1;
+    return;
+  }
   const grad = ctx.createRadialGradient(p.x, p.y, r * 0.3, p.x, p.y, r);
   grad.addColorStop(0, 'rgba(122,216,255,0)');
   grad.addColorStop(0.8, 'rgba(122,216,255,0.12)');
@@ -896,7 +968,7 @@ function fxImage(name: string) {
 const ready = (img: HTMLImageElement) => img.complete && img.naturalWidth > 0;
 /** Warm the effect pictures up when a run starts, so the first swing and strike are already painted. */
 export function preloadFx() {
-  for (const n of ['fireball', 'boom-small', 'boom-big', 'knife', 'boomerang', 'slash', 'chest', 'bolt-1', 'bolt-2', 'bolt-3', 'bolt-4', 'bolt-5', 'bolt-6']) fxImage(n);
+  for (const n of ['fireball', 'boom-small', 'boom-big', 'knife', 'boomerang', 'slash', 'chest', 'slam', 'crystals', 'icering', 'gem', 'bolt-1', 'bolt-2', 'bolt-3', 'bolt-4', 'bolt-5', 'bolt-6']) fxImage(n);
 }
 
 function drawFireballs(ctx: CanvasRenderingContext2D, g: Game) {
@@ -986,6 +1058,7 @@ function drawSpiritsRetro(ctx: CanvasRenderingContext2D, g: Game, now: number) {
     ctx.restore();
   }
   ctx.globalAlpha = 1;
+  ctx.shadowBlur = 0;
 }
 
 function drawFx(ctx: CanvasRenderingContext2D, g: Game, accent: string, layer: 'under' | 'over') {
@@ -994,7 +1067,13 @@ function drawFx(ctx: CanvasRenderingContext2D, g: Game, accent: string, layer: '
     const fade = Math.max(0, f.life / f.max);
     if (layer === 'under' && (f.kind === 'ring' || f.kind === 'strike')) {
       ctx.globalAlpha = fade;
-      if (f.kind === 'ring') {
+      if (f.kind === 'ring' && !retroLook && ready(fxImage('slam'))) {
+        // The owner's slam: the cracked ring spreading out (the crystal burst for the evolved hammer).
+        const pic = fxImage(f.big ? 'crystals' : 'slam');
+        const w = f.r * 2.3 * (0.55 + 0.45 * Math.min(1, t * 2));
+        const h = (w * pic.naturalHeight) / pic.naturalWidth;
+        ctx.drawImage(pic, f.x - w / 2, f.y - h * 0.62, w, h);
+      } else if (f.kind === 'ring') {
         ctx.strokeStyle = accent;
         ctx.lineWidth = 4 * fade + 1;
         ctx.beginPath();
@@ -1041,7 +1120,9 @@ function drawFx(ctx: CanvasRenderingContext2D, g: Game, accent: string, layer: '
     }
     if (layer === 'over' && (f.kind === 'slash' || f.kind === 'boom')) {
       ctx.globalAlpha = fade;
-      if (f.kind === 'slash' && !retroLook && ready(fxImage('slash'))) {
+      if (f.kind === 'slash' && (f.delay ?? 0) > 0) {
+        // Not yet: the evolved sword's later cuts wait their turn.
+      } else if (f.kind === 'slash' && !retroLook && ready(fxImage('slash'))) {
         // The painted crescent, turned to the swing: it sweeps out from 80% to full size as it fades.
         const pic = fxImage('slash');
         // The bulge is on the picture's right: put that at the reach, the tail behind the hero.
@@ -1049,7 +1130,7 @@ function drawFx(ctx: CanvasRenderingContext2D, g: Game, accent: string, layer: '
         const h = (w * pic.naturalHeight) / pic.naturalWidth;
         ctx.save();
         ctx.translate(f.x, f.y);
-        ctx.rotate(f.a);
+        ctx.rotate(f.a + (f.spin ?? 0) * t);
         ctx.globalAlpha = fade;
         ctx.drawImage(pic, f.r * 1.1 - w, -h / 2, w, h);
         ctx.restore();
@@ -1114,7 +1195,10 @@ function drawZaps(ctx: CanvasRenderingContext2D, g: Game) {
     const last = z.pts[z.pts.length - 1];
     if (!retroLook && Math.hypot(last.x - first.x, last.y - first.y) > 150 && ready(fxImage('bolt-6'))) continue;
     ctx.globalAlpha = Math.min(1, z.life / 0.12);
-    for (const [width, color] of [[5, 'rgba(255,212,95,0.35)'], [2, '#fffbe0']] as const) {
+    // Blue, like the owner's painted bolts.
+    ctx.shadowColor = '#38bdf8';
+    ctx.shadowBlur = retroLook ? 0 : 10;
+    for (const [width, color] of [[6, 'rgba(56,189,248,0.45)'], [2.2, '#e0f2fe']] as const) {
       ctx.strokeStyle = color;
       ctx.lineWidth = width;
       ctx.beginPath();
