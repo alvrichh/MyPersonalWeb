@@ -1120,28 +1120,111 @@ body {
   transform: translateY(-3px);
 }
 
-/* On phones the cards stack as rows: the ring on the left, the words beside it. */
+/* Compact, aligned level-up cards on phones. The source WebPs include a
+   rectangular dark matte outside the illustrated frame; only mask the art
+   layer (not the clickable button or its text) to hide that stray rectangle.
+   The two masks keep the left icon medallion and the right card body. */
 @media (max-width: 480px) {
+  .panel .skills {
+    gap: 3px;
+    margin-top: 0;
+  }
+
   .panel .skill {
     --card: url('/images/game/ui/row_blue.webp');
-    /* The ring spans 5–29% of the row picture; the body 29–91%. */
+    position: relative;
+    isolation: isolate;
     grid-template-columns: 34% minmax(0, 1fr);
-    grid-template-rows: auto auto auto auto;
-    aspect-ratio: auto;
-    min-height: 118px;
-    padding: 8% 12% 8% 0;
-    text-align: center;
+    grid-template-rows: repeat(4, min-content);
+    align-content: center;
     justify-items: center;
+    gap: 1px 0;
+    aspect-ratio: 266 / 107;
+    min-height: 108px;
+    padding: 5px 10px 5px 2px;
+    border: 0;
+    background: none;
+    overflow: visible;
+    text-align: center;
+    touch-action: manipulation;
   }
+
+  .panel .skill::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: var(--card) center / 100% 100% no-repeat;
+    /* Circle at left + long body at right, excluding the matte corners. */
+    -webkit-mask-image:
+      radial-gradient(ellipse 20% 52% at 19% 50%, #000 84%, transparent 100%),
+      linear-gradient(#000 0 0);
+    mask-image:
+      radial-gradient(ellipse 20% 52% at 19% 50%, #000 84%, transparent 100%),
+      linear-gradient(#000 0 0);
+    -webkit-mask-size: 100% 100%, 72% 78%;
+    mask-size: 100% 100%, 72% 78%;
+    -webkit-mask-position: center, right center;
+    mask-position: center, right center;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-composite: source-over;
+    mask-composite: add;
+  }
+
+  .panel .skill > * {
+    position: relative;
+    z-index: 1;
+    min-width: 0;
+  }
+
   .panel .skill-melee { --card: url('/images/game/ui/row_orange.webp'); }
   .panel .skill-magic { --card: url('/images/game/ui/row_purple.webp'); }
   .panel .skill-ranged { --card: url('/images/game/ui/row_blue.webp'); }
   .panel .skill-upgrade { --card: url('/images/game/ui/row_green.webp'); }
-  .panel .skill .icon { grid-column: 1; grid-row: 1 / span 4; justify-self: center; font-size: 1.7rem; }
-  .panel .skill .cat { display: block; grid-column: 2; grid-row: 1; }
-  .panel .skill b { grid-column: 2; grid-row: 2; font-size: 0.95rem; }
-  .panel .skill > span:not(.icon):not(.cat):not(.lvl) { grid-column: 2; grid-row: 3; padding: 2px 0 0; font-size: 0.78rem; }
-  .panel .skill .lvl { grid-column: 2; grid-row: 4; font-size: 0.7rem; }
+
+  .panel .skill .icon {
+    grid-column: 1;
+    grid-row: 1 / span 4;
+    justify-self: center;
+    align-self: center;
+    font-size: 1.65rem;
+    line-height: 1;
+  }
+
+  .panel .skill .cat {
+    display: block;
+    grid-column: 2;
+    grid-row: 1;
+    font-size: 0.56rem;
+    line-height: 1;
+  }
+
+  .panel .skill b {
+    grid-column: 2;
+    grid-row: 2;
+    font-size: clamp(0.82rem, 3.7vw, 0.95rem);
+    line-height: 1.08;
+  }
+
+  .panel .skill > span:not(.icon):not(.cat):not(.lvl) {
+    grid-column: 2;
+    grid-row: 3;
+    align-self: center;
+    padding: 1px 0;
+    font-size: clamp(0.68rem, 3.05vw, 0.77rem);
+    line-height: 1.18;
+    -webkit-line-clamp: 4;
+    overflow-wrap: anywhere;
+  }
+
+  .panel .skill .lvl {
+    grid-column: 2;
+    grid-row: 4;
+    font-size: 0.69rem;
+    line-height: 1.1;
+  }
 }
 
 .skill .icon {
