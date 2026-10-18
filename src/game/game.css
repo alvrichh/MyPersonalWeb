@@ -2609,3 +2609,11 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 /* Item pictures (the spirit companions) where items otherwise show an emoji. */
 .item-pic { display: block; width: 1.9em; height: 1.9em; object-fit: contain; filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.5)); }
 .gear-row .icon .item-pic { width: 2.6em; height: 2.6em; }
+.dslot .icon .item-pic { width: 1.85em; height: 1.85em; filter: none; }
+.dslot .icon.is-empty:has(.item-pic) { opacity: 1; filter: none; }
+/* An empty slot shows its own painted medallion in place of the grey ring. */
+.dslot:not(.is-worn):not(.is-open) .ring { background-image: none; }
+.dslot:not(.is-worn):not(.is-open) .icon.is-empty .item-pic { width: 64px; height: 64px; }
+@media (max-width: 400px) { .dslot:not(.is-worn):not(.is-open) .icon.is-empty .item-pic { width: 56px; height: 56px; } }
+:root[data-retro] .dslot .ring { background-image: none; }
+:root[data-retro] .item-pic { display: none; }
