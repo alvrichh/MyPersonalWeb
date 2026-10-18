@@ -135,7 +135,7 @@ function bankRun(g: Game): number | null {
 
 /** The painted medallion of a skill (static/images/game/skills/, one per skill id). */
 const EMOJI: Record<SkillId | 'bow', string> = {
-  sword: '🗡️', blades: '🌀', hammer: '🔨', storm: '🌩️', fireball: '☄️', frost: '❄️', spirits: '👻', knives: '🔪', boomerang: '🪃',
+  sword: '🗡️', blades: '🌀', hammer: '🔨', storm: '🌩️', fireball: '☄️', frost: '❄️', spirits: '👻', laser: '🔦', knives: '🔪', boomerang: '🪃',
   fire: '🔥', water: '💧', leaf: '🍃', bolt: '⚡', spark: '✨', ghost: '🫥', double: '🏹', speed: '⏩', power: '💥', heart: '💗', bow: '🏹',
   shoes: '👟', bracer: '🦾', drink: '🥤',
 };

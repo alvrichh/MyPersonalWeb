@@ -84,7 +84,7 @@ export type SkillId =
   // Melee: hits whatever comes close, all the time.
   | 'sword' | 'blades' | 'hammer'
   // Magic: goes off by itself every few seconds.
-  | 'storm' | 'fireball' | 'frost' | 'spirits'
+  | 'storm' | 'fireball' | 'frost' | 'spirits' | 'laser'
   // Ranged: fires while you stand still.
   | 'knives' | 'boomerang'
   // Bow upgrades (the bow is the weapon you start with).
@@ -98,7 +98,7 @@ export type Category = 'melee' | 'magic' | 'ranged' | 'upgrade';
 
 export const CATEGORY: Record<SkillId, Category> = {
   sword: 'melee', blades: 'melee', hammer: 'melee',
-  storm: 'magic', fireball: 'magic', frost: 'magic', spirits: 'magic',
+  storm: 'magic', fireball: 'magic', frost: 'magic', spirits: 'magic', laser: 'magic',
   knives: 'ranged', boomerang: 'ranged',
   fire: 'upgrade', water: 'upgrade', leaf: 'upgrade', bolt: 'upgrade', spark: 'upgrade', ghost: 'upgrade',
   double: 'upgrade', speed: 'upgrade', power: 'upgrade', heart: 'upgrade',
@@ -113,7 +113,7 @@ const WEAPONS = SKILLS.filter((s) => CATEGORY[s] !== 'upgrade');
  * the next level up. The weapon's effect reads `g.evolved[weapon]`.
  */
 export const EVO_PARTNER: Partial<Record<SkillId, SkillId>> = {
-  sword: 'power', blades: 'spark', hammer: 'heart', storm: 'bolt', fireball: 'fire',
+  sword: 'power', blades: 'spark', hammer: 'heart', storm: 'bolt', fireball: 'fire', laser: 'speed',
   frost: 'water', spirits: 'ghost', knives: 'double', boomerang: 'leaf',
 };
 /** A level-up card: a skill, or a weapon's evolution. */
@@ -171,7 +171,7 @@ export type Enemy = {
 };
 
 export type Shot = {
-  kind: 'arrow' | 'knife' | 'boomerang' | 'orb';
+  kind: 'arrow' | 'knife' | 'boomerang' | 'orb' | 'crescent';
   x: number;
   y: number;
   vx: number;
@@ -199,7 +199,17 @@ export type Gem = { x: number; y: number; value: number; pull: boolean };
 export type Heart = { x: number; y: number; life: number; pull: boolean };
 /** Short-lived shapes the renderer draws: sword arcs, hammer rings, explosions, lightning strikes. */
 export type Ember = { x: number; y: number; r: number; life: number; max: number };
-export type Fx = { kind: 'slash' | 'ring' | 'boom' | 'strike' | 'halo'; x: number; y: number; r: number; a: number; life: number; max: number };
+export type Fx = {
+  kind: 'slash' | 'ring' | 'boom' | 'strike' | 'halo' | 'beam'; x: number; y: number; r: number; a: number; life: number; max: number;
+  /** Seconds before it starts (the evolved sword's three cuts follow one another). */
+  delay?: number;
+  /** Turn over its life, in radians (those cuts sweep round). */
+  spin?: number;
+  /** A beam's half width. */
+  w?: number;
+  /** The ring is the evolved hammer's. */
+  big?: boolean;
+};
 export type Fireball = { x: number; y: number; vx: number; vy: number; life: number };
 /** A companion ghost: floats beside the hero (`slot` sets where) and shoots when you do. */
 export type Spirit = {
@@ -231,6 +241,11 @@ type Gear = {
   fireball: number;
   spirits: number;
   frost: number;
+  laser: number;
+  /** The evolved laser's sweep: seconds left, where it points, who it hit lately. */
+  laserSweep: number;
+  laserAngle: number;
+  laserHits: Map<number, number>;
   bladeAngle: number;
   /** Per-bug cooldown so a spinning blade doesn't hit the same bug every frame. */
   bladeHits: Map<number, number>;
@@ -590,7 +605,7 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     coins: 0,
     revives: loadout.revives,
     gear: {
-      bow: 0.4, knives: 0.6, boomerang: 0.8, sword: 0.5, hammer: 1, storm: 1, fireball: 1, spirits: 0.5, frost: 0,
+      bow: 0.4, knives: 0.6, boomerang: 0.8, sword: 0.5, hammer: 1, storm: 1, fireball: 1, spirits: 0.5, frost: 0, laser: 1.2, laserSweep: 0, laserAngle: 0, laserHits: new Map(),
       bladeAngle: 0, bladeHits: new Map(),
     },
     level: 1,
@@ -991,7 +1006,14 @@ function swingSword(g: Game) {
   // Swing towards the nearest bug if one is close, else the way you face.
   const close = nearest(g, p);
   const a = close && dist(p, close) < reach + close.r + 20 ? Math.atan2(close.y - p.y, close.x - p.x) : p.face;
-  g.fx.push({ kind: evolved ? 'halo' : 'slash', x: p.x, y: p.y, r: reach, a, life: evolved ? 0.3 : 0.22, max: evolved ? 0.3 : 0.22 });
+  if (evolved) {
+    // Lunar Halo: three cuts in a row sweeping round you, each throwing a crescent that flies on.
+    for (let k = 0; k < 3; k++) {
+      const ak = a + (k * Math.PI * 2) / 3;
+      g.fx.push({ kind: 'slash', x: p.x, y: p.y, r: reach, a: ak, life: 0.22, max: 0.22, delay: k * 0.09, spin: 1.4 });
+      g.shots.push(shot('crescent', p, ak, 260, (32 + 14 * (lv - 1)) * power(g, 'melee') * 0.7, { pierce: 99, ghost: true, life: 0.55 }));
+    }
+  } else g.fx.push({ kind: 'slash', x: p.x, y: p.y, r: reach, a, life: 0.22, max: 0.22 });
   g.events.push('slash');
   for (const e of live(g)) {
     if (dist(p, e) > reach + e.r) continue;
@@ -1007,7 +1029,7 @@ function slamHammer(g: Game) {
   const evolved = !!g.evolved.hammer;
   // Evolved (Seismic Hammer): a far wider wave that stops every bug it hits for a moment.
   const reach = (72 + 10 * (lv - 1)) * (evolved ? 1.5 : 1);
-  g.fx.push({ kind: 'ring', x: p.x, y: p.y, r: reach, a: 0, life: 0.35, max: 0.35 });
+  g.fx.push({ kind: 'ring', x: p.x, y: p.y, r: reach, a: 0, life: 0.35, max: 0.35, big: evolved });
   g.shake = Math.max(g.shake, evolved ? 0.25 : 0.12);
   g.events.push('slam');
   for (const e of live(g)) {
@@ -1129,11 +1151,58 @@ function spinBlades(g: Game, dt: number) {
   }
 }
 
+/* The laser: a straight beam at the nearest bug that cuts through every
+   bug on its line. Evolved (Death Ray), it sweeps a full turn round you. */
+const LASER_LENGTH = 330;
+const laserWidth = (g: Game) => 9 + 3 * (g.skills.laser - 1);
+const laserDamage = (g: Game) => (30 + 12 * (g.skills.laser - 1)) * power(g, 'magic');
+function onBeam(from: Vec, a: number, e: Enemy, half: number) {
+  const dx = e.x - from.x;
+  const dy = e.y - from.y;
+  const along = dx * Math.cos(a) + dy * Math.sin(a);
+  const across = Math.abs(-dx * Math.sin(a) + dy * Math.cos(a));
+  return along > 0 && along < LASER_LENGTH && across < half + e.r;
+}
+function fireLaser(g: Game) {
+  const p = g.player;
+  const target = nearest(g, p);
+  if (!target) return;
+  const a = Math.atan2(target.y - p.y, target.x - p.x);
+  if (g.evolved.laser) {
+    g.gear.laserSweep = 1;
+    g.gear.laserAngle = a;
+    g.gear.laserHits.clear();
+    g.events.push('boom');
+    return;
+  }
+  const half = laserWidth(g);
+  g.fx.push({ kind: 'beam', x: p.x, y: p.y, r: LASER_LENGTH, a, w: half, life: 0.28, max: 0.28 });
+  g.events.push('strike');
+  for (const e of live(g)) if (onBeam(p, a, e, half)) hurt(g, e, laserDamage(g));
+}
+function sweepLaser(g: Game, dt: number) {
+  const gear = g.gear;
+  gear.laserSweep -= dt;
+  gear.laserAngle += Math.PI * 2 * dt;
+  for (const [id, t] of gear.laserHits) {
+    if (t - dt <= 0) gear.laserHits.delete(id);
+    else gear.laserHits.set(id, t - dt);
+  }
+  const half = laserWidth(g) * 1.4;
+  for (const e of live(g)) {
+    if (gear.laserHits.has(e.id) || !onBeam(g.player, gear.laserAngle, e, half)) continue;
+    gear.laserHits.set(e.id, 0.25);
+    hurt(g, e, laserDamage(g) * 1.2);
+  }
+}
+
 function callStorm(g: Game) {
   const lv = g.skills.storm;
   const evolved = !!g.evolved.storm;
   // Evolved (Supercell): twice the bolts, wider, and each one arcs on to two more bugs.
-  const pool = live(g);
+  // The nearest bugs first (a few of them, picked at random), so the bolts come to your aid.
+  const p0 = g.player;
+  const pool = live(g).sort((a, b) => dist(a, p0) - dist(b, p0)).slice(0, Math.max(4, lv * (evolved ? 4 : 2)));
   const r = evolved ? 36 : 26;
   const dmg = (38 + 10 * (lv - 1)) * power(g, 'magic');
   for (let i = 0; i < lv * (evolved ? 2 : 1) && pool.length; i++) {
@@ -1235,7 +1304,7 @@ function useWeapons(g: Game, dt: number) {
   const p = g.player;
   const gear = g.gear;
   const sk = g.skills;
-  for (const k of ['bow', 'knives', 'boomerang', 'sword', 'hammer', 'storm', 'fireball'] as const) gear[k] = Math.max(0, gear[k] - dt);
+  for (const k of ['bow', 'knives', 'boomerang', 'sword', 'hammer', 'storm', 'fireball', 'laser'] as const) gear[k] = Math.max(0, gear[k] - dt);
   const fighting = live(g).length > 0;
   if (!fighting) return;
 
@@ -1259,6 +1328,8 @@ function useWeapons(g: Game, dt: number) {
   if (sk.storm && gear.storm === 0) { callStorm(g); gear.storm = (1.8 - 0.25 * (sk.storm - 1)) * (g.evolved.storm ? 0.6 : 1); }
   if (sk.fireball && gear.fireball === 0) { throwFireball(g); gear.fireball = 2.4 - 0.3 * (sk.fireball - 1); }
   if (sk.frost) chill(g, dt);
+  if (sk.laser && gear.laser === 0 && gear.laserSweep <= 0) { fireLaser(g); gear.laser = g.evolved.laser ? 3 : 2.6 - 0.3 * (sk.laser - 1); }
+  if (gear.laserSweep > 0) sweepLaser(g, dt);
 }
 
 function hurtPlayer(g: Game, amount: number) {
@@ -1799,7 +1870,7 @@ export function update(g: Game, dt: number, input: Input) {
     return q.life > 0;
   });
   g.zaps = g.zaps.filter((z) => (z.life -= dt) > 0);
-  g.fx = g.fx.filter((f) => (f.life -= dt) > 0);
+  g.fx = g.fx.filter((f) => (f.delay && f.delay > 0 ? ((f.delay -= dt), true) : (f.life -= dt) > 0));
 
   if (g.mode === 'horde') {
     // The last boss down: the shift is over.
