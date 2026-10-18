@@ -34,6 +34,12 @@ Guide for any AI agent (Claude Code, Codex, Cursor, Gemini CLI…) working in th
 - Keep the CV and the website in agreement: same titles, same dates, same company names. The website's `src/data/experience.ts` is the reference for the public record; after changing it, update the CV too.
 - Check the result visually: two pages, A4, no text overflowing a column, bottom margin roughly even on both pages.
 
+## Portrait easter egg
+- A click on the hero portrait spins it like a coin and sets off the current accent's element: blue water ripples, green leaves blown left, red flames round the ring, orange fireworks (streaks that fall as dots), yellow lightning, white ghosts, pink hearts orbiting, and confetti under Disco. Quick repeat clicks build a combo (more pieces, further).
+- Code: `src/sections/HeroAbout.tsx` (click, combo, piece lifetime), `src/components/portraitFx.ts` (which effect per accent, where each piece starts and goes) and `src/styles/partials/_portrait-fx.scss` (shapes and animations). Keep the durations in `portraitFx.ts` (`LIFE`) in step with the SCSS.
+- It is hidden on purpose: default cursor, no button role. The hints are one line in `src/i18n/bubble.json` (desktop, after the CV line) and a single wiggle of the portrait on touch screens if nobody taps it within a few seconds.
+- Rules it must keep: nothing runs with `prefers-reduced-motion`; on phones (≤760px) no piece may leave the screen sideways (check `document.documentElement.scrollWidth` while it plays); every piece is removed after its burst.
+
 ## Things that caused bugs before
 - Menus and pickers on phones must fit inside the screen (they were once offset to the right).
 - Background decoration in the CV must not overlap text; the bottom decoration is mirrored on purpose.
