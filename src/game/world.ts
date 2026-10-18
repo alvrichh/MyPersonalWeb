@@ -200,7 +200,7 @@ export type Heart = { x: number; y: number; life: number; pull: boolean };
 /** Short-lived shapes the renderer draws: sword arcs, hammer rings, explosions, lightning strikes. */
 export type Ember = { x: number; y: number; r: number; life: number; max: number };
 export type Fx = {
-  kind: 'slash' | 'ring' | 'boom' | 'strike' | 'halo' | 'beam'; x: number; y: number; r: number; a: number; life: number; max: number;
+  kind: 'slash' | 'ring' | 'boom' | 'strike' | 'halo' | 'beam' | 'rune'; x: number; y: number; r: number; a: number; life: number; max: number;
   /** Seconds before it starts (the evolved sword's three cuts follow one another). */
   delay?: number;
   /** Turn over its life, in radians (those cuts sweep round). */
@@ -1193,6 +1193,8 @@ function sweepLaser(g: Game, dt: number) {
     if (gear.laserHits.has(e.id) || !onBeam(g.player, gear.laserAngle, e, half)) continue;
     gear.laserHits.set(e.id, 0.25);
     hurt(g, e, laserDamage(g) * 1.2);
+    // The Death Ray brands the ground where it cuts: a purple rune that fades.
+    if (g.fx.filter((f) => f.kind === 'rune').length < 14) g.fx.push({ kind: 'rune', x: e.x, y: e.y, r: 16 + e.r, a: Math.random() * Math.PI, life: 0.9, max: 0.9 });
   }
 }
 
