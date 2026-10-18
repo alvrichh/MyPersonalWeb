@@ -1,6 +1,6 @@
 import { storage } from '../lib/storage';
-import { ITEMS, type ItemId, type Slot, type Upgrades } from './shop';
-import type { Mode } from './world';
+import { ARSENAL, ITEMS, type ItemId, type Slot, type Upgrades } from './shop';
+import type { Mode, SkillId } from './world';
 
 /* Everything Bug Hunter remembers between runs, in one localStorage key. */
 
@@ -29,6 +29,8 @@ export type Save = {
   /** Retro look: no painted textures, the plain panels and the ring hero from before. */
   retro: boolean;
   owned: ItemId[];
+  /** On call weapons bought in the shop's arsenal. */
+  arsenal: SkillId[];
   equipped: Partial<Record<Slot, ItemId>>;
   /** The forge: permanent upgrade levels. */
   upgrades: Upgrades;
@@ -76,6 +78,7 @@ const fresh = (): Save => ({
   skins: ['boy'],
   retro: false,
   owned: [],
+  arsenal: [],
   equipped: {},
   upgrades: {},
   style: 'world',
@@ -112,6 +115,7 @@ export function loadSave(): Save {
     save.mastery = { sprints: Math.max(0, data.mastery?.sprints ?? 0), horde: Math.max(0, data.mastery?.horde ?? 0) };
     if (!(save.starColor in STAR_COLORS)) save.starColor = 'gold';
     save.name = cleanName(typeof save.name === 'string' ? save.name : '') || DEFAULT_NAME;
+    save.arsenal = (data.arsenal ?? []).filter((id) => ARSENAL.some((w) => w.id === id));
     // Items are re-seated by their current slot (older saves had `charm` and `relic`).
     save.owned = (data.owned ?? []).filter((id) => ITEMS.some((item) => item.id === id));
     for (const id of Object.values(data.equipped ?? {})) {

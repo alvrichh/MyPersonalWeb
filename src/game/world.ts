@@ -151,7 +151,8 @@ export function fusionWith(g: Game, s: SkillId): Fusion | null {
 const MAX_WEAPONS = 4;
 /** The weapons from the rest of Survivor.io's list are On call only: sprints keep their tuned rooms and arsenal. */
 export const HORDE_ONLY: SkillId[] = ['brick', 'molotov', 'durian', 'mines', 'drill', 'rocket', 'ball'];
-const allowedIn = (g: Game, s: SkillId) => g.mode === 'horde' || !HORDE_ONLY.includes(s);
+/** …and only once bought in the shop's arsenal (`loadout.arsenal`). */
+const allowedIn = (g: Game, s: SkillId) => !HORDE_ONLY.includes(s) || (g.mode === 'horde' && g.loadout.arsenal.includes(s));
 export const maxLevel = (s: SkillId) => (s === 'heart' ? 99 : s === 'double' ? 2 : s === 'blades' ? 5 : 3);
 
 /* ---------------------------------------------------------------- the cast */
@@ -227,6 +228,8 @@ export type Shot = {
   tick?: number;
   /** Will-o'-wisp arrows: seconds to the next flame dropped behind. */
   trail?: number;
+  /** Rockets: the bug they are after (they fly over the others). */
+  aim?: number;
 };
 /** A mine left on the floor: it arms, then goes off when a bug steps on it. */
 export type Mine = { x: number; y: number; arm: number; life: number };
@@ -1428,12 +1431,12 @@ function bounceIn(s: Shot, b: Rect) {
   else if (s.y > b.y + b.h) { s.y = b.y + b.h; s.vy = -Math.abs(s.vy); hit = true; }
   return hit;
 }
-/** An explosion that hurts every bug in reach (rockets, mines). */
-function blast(g: Game, at: Vec, reach: number, dmg: number, color: string) {
+/** An explosion that hurts every bug in reach (rockets, mines); `push` is how hard it throws them back. */
+function blast(g: Game, at: Vec, reach: number, dmg: number, color: string, push = 140) {
   g.fx.push({ kind: 'boom', x: at.x, y: at.y, r: reach, a: 0, life: 0.35, max: 0.35 });
   g.events.push('boom');
   burst(g, at.x, at.y, color, 12, 160, 3);
-  for (const e of live(g)) if (dist(at, e) <= reach + e.r) hurt(g, e, dmg, away(at, e, 140));
+  for (const e of live(g)) if (dist(at, e) <= reach + e.r) hurt(g, e, dmg, away(at, e, push));
 }
 
 /* Brick (magic): thrown up into the air, it falls back through the bugs
@@ -1558,22 +1561,37 @@ function fireDrill(g: Game, target: Enemy) {
   }
 }
 
-/* Rocket (ranged): speeds up as it flies and blows up on the first bug or
-   wall, hurting everything round it. Two from level 3. Evolved (Sharkmaw
-   Gun): three at a time, more often, steering after the bugs. */
+/* Rocket (ranged): the weapon for the big ones, where the fireball is for
+   crowds. It goes after the bug with the most health in view, flies over
+   the small fry, and hits hard, throwing everything round it back. Two from
+   level 3, each after a different big bug. Evolved (Sharkmaw Gun): a volley
+   of five small homing missiles, one for each of the five toughest bugs. */
+const toughest = (g: Game, n: number) => {
+  const b = bounds(g);
+  return live(g).filter((e) => inRect(e, b, 40)).sort((x, y) => y.hp - x.hp).slice(0, n);
+};
 function fireRocket(g: Game, target: Enemy) {
   const p = g.player;
   const lv = g.skills.rocket;
   const evolved = !!g.evolved.rocket;
-  const angle = Math.atan2(target.y - p.y, target.x - p.x);
-  const n = evolved ? 3 : lv >= 3 ? 2 : 1;
+  const n = evolved ? 5 : lv >= 3 ? 2 : 1;
+  const aims = toughest(g, n);
+  if (!aims.length) aims.push(target);
   for (let i = 0; i < n; i++) {
-    g.shots.push(shot('rocket', p, angle + (i - (n - 1) / 2) * 0.22, 240, (40 + 15 * (lv - 1)) * power(g, 'ranged') * (evolved ? 1.2 : 1), { life: 1.8, size: 6 }));
+    const t = aims[i % aims.length];
+    const spread = evolved ? (i - (n - 1) / 2) * 0.35 : 0;
+    const angle = Math.atan2(t.y - p.y, t.x - p.x) + spread;
+    const dmg = (70 + 30 * (lv - 1)) * power(g, 'ranged') * (evolved ? 0.6 : 1);
+    g.shots.push(shot('rocket', p, angle, evolved ? 300 : 240, dmg, { life: 2.2, size: evolved ? 5 : 7, aim: t.id }));
   }
 }
 function rocketBoom(g: Game, s: Shot) {
-  const reach = (44 + 6 * (g.skills.rocket - 1)) * (g.evolved.rocket ? 1.3 : 1);
-  blast(g, s, reach, s.dmg, '#fdba74');
+  const evolved = !!g.evolved.rocket;
+  const reach = evolved ? 34 : 40 + 6 * (g.skills.rocket - 1);
+  // Its own bug takes the full hit; the ones round it half, and they're thrown back.
+  const own = g.enemies.find((e) => e.id === s.aim && !e.dead && dist(e, s) <= reach + e.r);
+  blast(g, s, reach, s.dmg * 0.5, '#fdba74', evolved ? 200 : 320);
+  if (own) hurt(g, own, s.dmg * 0.5);
 }
 
 /* Ball (ranged): kicked at the nearest bug, it ricochets from bug to bug
@@ -1612,7 +1630,7 @@ function useWeapons(g: Game, dt: number) {
       if (sk.knives && gear.knives === 0) { fireKnives(g, target); gear.knives = (slow * (1.2 - 0.15 * (sk.knives - 1))) / haste(g); g.events.push('knife'); }
       if (sk.boomerang && gear.boomerang === 0) { fireBoomerang(g, target); gear.boomerang = (slow * (2 - 0.25 * (sk.boomerang - 1))) / haste(g); g.events.push('boomerang'); }
       if (sk.drill && gear.drill === 0) { fireDrill(g, target); gear.drill = (slow * (2.6 - 0.3 * (sk.drill - 1))) / haste(g); g.events.push('knife'); }
-      if (sk.rocket && gear.rocket === 0) { fireRocket(g, target); gear.rocket = (slow * (g.evolved.rocket ? 1.6 : 2.8 - 0.35 * (sk.rocket - 1))) / haste(g); g.events.push('boomerang'); }
+      if (sk.rocket && gear.rocket === 0) { fireRocket(g, target); gear.rocket = (slow * (g.evolved.rocket ? 2.2 : 3.2 - 0.4 * (sk.rocket - 1))) / haste(g); g.events.push('boomerang'); }
       if (sk.ball && gear.ball === 0) { kickBall(g, target); gear.ball = (slow * (2.2 - 0.25 * (sk.ball - 1))) / haste(g); g.events.push('boomerang'); }
     }
   }
@@ -1810,16 +1828,15 @@ function updateShot(g: Game, s: Shot, dt: number): boolean {
   if (s.kind === 'brick' || s.kind === 'molotov' || s.kind === 'ball') s.spin += dt * 9;
   if (s.kind === 'durian' || s.kind === 'drill') s.spin += dt * 14;
   if (s.kind === 'rocket') {
-    // Rockets speed up; the evolved ones steer after the nearest bug.
+    // Rockets speed up and steer after their own bug (the evolved missiles turn harder).
     const speed = Math.min(620, Math.hypot(s.vx, s.vy) * (1 + dt * 1.6));
     let a = Math.atan2(s.vy, s.vx);
-    if (g.evolved.rocket) {
-      const t = nearest(g, s);
-      if (t) {
-        const want = Math.atan2(t.y - s.y, t.x - s.x);
-        const turn = ((want - a + Math.PI * 3) % (Math.PI * 2)) - Math.PI;
-        a += clamp(turn, -3 * dt, 3 * dt);
-      }
+    const t = g.enemies.find((e) => e.id === s.aim && !e.dead) ?? (g.evolved.rocket ? nearest(g, s) : undefined);
+    if (t) {
+      const want = Math.atan2(t.y - s.y, t.x - s.x);
+      const turn = ((want - a + Math.PI * 3) % (Math.PI * 2)) - Math.PI;
+      const rate = g.evolved.rocket ? 4 : 2;
+      a += clamp(turn, -rate * dt, rate * dt);
     }
     s.vx = Math.cos(a) * speed;
     s.vy = Math.sin(a) * speed;
@@ -1897,7 +1914,12 @@ function updateShot(g: Game, s: Shot, dt: number): boolean {
     if (e.dead || e.spawn > 0 || s.hits.has(e.id)) continue;
     if (Math.hypot(s.x - e.x, s.y - e.y) > e.r + (s.size ?? (s.kind === 'boomerang' ? 9 : 4))) continue;
     s.hits.add(e.id);
-    if (s.kind === 'rocket') { rocketBoom(g, s); return false; }
+    if (s.kind === 'rocket') {
+      // It flies over the small fry while its own bug is still standing.
+      if (s.aim !== undefined && e.id !== s.aim && g.enemies.some((o) => o.id === s.aim && !o.dead)) { s.hits.delete(e.id); continue; }
+      rocketBoom(g, s);
+      return false;
+    }
     hitWithShot(g, e, s);
     // The 1-ton weight stops the bugs it lands on.
     if (s.kind === 'brick' && g.evolved.brick) {
