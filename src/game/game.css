@@ -215,13 +215,25 @@ body {
 .gear span {
   display: inline-flex;
   align-items: flex-end;
-  padding: 3px 6px 2px;
+  padding: 2px 5px 2px 2px;
   border: 1px solid var(--line);
   border-radius: 10px;
   background: rgba(10, 13, 20, 0.7);
   font-size: 0.95rem;
   line-height: 1;
 }
+
+/* Skill medallions: a picture where an emoji used to be. */
+.skill-icon {
+  display: block;
+  width: 1em;
+  height: 1em;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.5));
+}
+
+.gear .skill-icon { width: 22px; height: 22px; }
+.skill .icon .skill-icon { width: 1em; height: 1em; }
 
 .gear sub {
   margin-left: 2px;
