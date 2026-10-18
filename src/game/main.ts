@@ -306,7 +306,7 @@ function shrineScreen() {
 }
 function wheelScreen() {
   const slices = WHEEL.map((o, i) => `<span class="wheel-slice${WHEEL_GOOD.includes(o) ? ' is-good' : o === 'nothing' ? '' : ' is-bad'}" style="--i:${i}">${WHEEL_ICON[o]}</span>`).join('');
-  show(`${head('levelup', t('wheelTitle'))}<p>${t('wheelText')}</p>
+  show(`${head('wings', t('wheelTitle'))}<p>${t('wheelText')}</p>
     <div class="wheel"><div class="wheel-disc" id="wheelDisc">${slices}</div><span class="wheel-pin" aria-hidden="true"></span></div>
     <p class="wheel-result" id="wheelResult"></p>
     <button class="primary" data-act="wheel-spin">${t('wheelSpin')}</button>`);
@@ -345,7 +345,7 @@ function leaveScreen(to: 'site' | 'menu') {
 }
 
 /* A header from the UI sheets: the ornament is the picture, the words sit in its plate. */
-const head = (kind: 'pause' | 'levelup' | 'victory' | 'defeat' | 'shrine', text: string) =>
+const head = (kind: 'pause' | 'levelup' | 'victory' | 'defeat' | 'shrine' | 'wings', text: string) =>
   `<div class="ui-head is-${kind}"><img src="./images/game/ui/header_${kind}.webp" alt=""><span>${text}</span></div>`;
 
 function pauseScreen() {
