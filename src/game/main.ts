@@ -786,7 +786,9 @@ function resize() {
   canvas.height = Math.round(height * dpr);
   // The room starts under the HUD and the weapons row; during a boss fight,
   // under the boss bar too, so it never covers the playfield.
-  const bossH = !save.retro && !bossBar.hidden ? bossBar.getBoundingClientRect().height + 4 : 0;
+  const hudH = hud.hidden ? 96 : hud.getBoundingClientRect().height;
+  document.documentElement.style.setProperty('--hud-h', `${hudH}px`);
+  const bossH = !save.retro && !bossBar.hidden ? bossBar.getBoundingClientRect().height - 8 : 0;
   const top = save.retro ? 86 : Math.max(96, hud.hidden ? 96 : hud.getBoundingClientRect().height + 2) + bossH;
   // Keep the game room below the skinned HUD and the weapons row on notched phones.
   const scale = Math.min(width / W, (height - top - 8) / H);
@@ -794,7 +796,7 @@ function resize() {
   view.dpr = dpr;
   view.ox = (width - W * scale) / 2;
   // Spare height goes mostly below the room, so it hugs the HUD.
-  view.oy = top + (height - top - 8 - H * scale) * 0.25;
+  view.oy = top + (height - top - 8 - H * scale) * 0.15;
 }
 /* Phones (iOS above all) can change the canvas box without a resize event:
    the address bar folds, the first layout settles late, the page zooms. So

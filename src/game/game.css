@@ -2209,8 +2209,9 @@ body {
 /* Boss: no crest in play, so the bar stays a thin band under the HUD. The
    name sits in the horned plate, the health in the spiked red bar. */
 :root:not([data-retro]) .boss {
-  top: calc(max(8px, env(safe-area-inset-top)) + 118px);
-  width: min(270px, 74vw);
+  /* Right under the HUD (its height is set by main.ts as --hud-h). */
+  top: calc(var(--hud-h, 100px) - 6px);
+  width: min(250px, 70vw);
   gap: 0;
 }
 :root:not([data-retro]) .boss-title {
@@ -2218,16 +2219,16 @@ body {
   z-index: 1;
   display: grid;
   place-items: center;
-  width: min(160px, 58%);
+  width: min(130px, 52%);
   aspect-ratio: 383 / 111;
-  margin: 0 auto -7px;
+  margin: 0 auto -6px;
   background: url('/images/game/ui/boss_plate.webp') center / 100% 100% no-repeat;
 }
 :root:not([data-retro]) .boss-title img { display: none; }
 :root:not([data-retro]) .boss-title span {
   margin: 0;
   padding: 0 16% 4%;
-  font: 700 clamp(0.72rem, 3.2vw, 0.9rem)/1.05 var(--font);
+  font: 700 clamp(0.62rem, 2.8vw, 0.8rem)/1.05 var(--font);
   color: #fff;
   text-shadow: 0 2px 4px #0d0822;
 }
