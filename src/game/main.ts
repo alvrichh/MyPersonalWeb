@@ -4,11 +4,11 @@ import { audio, type Sfx } from './audio';
 import { draw, drawRetroFigure, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, cleanName, loadSave, profileLevel, writeSave, STYLES, SKINS, type EnemyStyle, type HeroSkin } from './save';
 import type { Mode } from './world';
-import { ARMOUR_SLOTS, ITEMS, SLOTS, UPGRADES, WEAPON_SLOTS, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
+import { ARMOUR_SLOTS, ITEMS, type SpiritSkin, SLOTS, UPGRADES, WEAPON_SLOTS, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
 import { Scene } from './scene';
 import { makeT, pickLang, type Key } from './strings';
 import {
-  CATEGORY, H, REVIVE_PRICE, SKILLS, bladeElement, maxLevel, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
+  CATEGORY, H, REVIVE_PRICE, SKILLS, bladeElement, bladeOptions, maxLevel, pickBlade, pickSpirit, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
   type Category, type Game, type GameEvent, type Input, type Look, type SkillId, type WheelOutcome,
 } from './world';
 
@@ -858,24 +858,44 @@ function skillText(g: Game, id: SkillId | 'bow') {
   }
   return t(`${id}Text` as Key);
 }
+/* Mid-run swaps, under their rows: the blades' element (plain steel and each
+   element you carry a skill for) and the spirit (the water ghost and every
+   spirit you own). Run-only: what you wear in Customise stays as it is. */
+const SPIRIT_ITEM: Record<SpiritSkin, ItemId> = { water: 'lantern', fire: 'spiritFire', tide: 'spiritTide', thorn: 'spiritThorn', volt: 'spiritVolt', shade: 'spiritShade' };
+const ownedSpirits = (): SpiritSkin[] => ['water', ...(Object.keys(SPIRIT_ITEM) as SpiritSkin[]).filter((s) => s !== 'water' && save.owned.includes(SPIRIT_ITEM[s]))];
+const bladeName = (el: string) => t(el === 'steel' ? 'bladesName' : (`blades${cap(el)}Name` as Key));
+function bladeChips(g: Game) {
+  const opts = bladeOptions(g);
+  if (opts.length < 2) return '';
+  const now = bladeElement(g);
+  return `<div class="gp-chips" role="group" aria-label="${t('gearBladePick')}">${opts.map((el) => `<button type="button" class="gp-chip${el === now ? ' is-on' : ''}" data-blade="${el}" aria-pressed="${el === now}" title="${bladeName(el)}"><img src="./images/game/blades/${el}.webp" alt="${bladeName(el)}" width="28" height="28"></button>`).join('')}</div>`;
+}
+function spiritChips(g: Game) {
+  const opts = ownedSpirits();
+  if (opts.length < 2) return '';
+  const now = g.loadout.spirit;
+  return `<div class="gp-chips" role="group" aria-label="${t('gearSpiritPick')}">${opts.map((sk) => `<button type="button" class="gp-chip${sk === now ? ' is-on' : ''}" data-spirit="${sk}" aria-pressed="${sk === now}" title="${t(`${SPIRIT_ITEM[sk]}Name` as Key)}"><img src="./images/game/spirits/${sk}-float-0.webp" alt="${t(`${SPIRIT_ITEM[sk]}Name` as Key)}" width="28" height="28"></button>`).join('')}</div>`;
+}
+gearPanel.addEventListener('click', (event) => {
+  const target = (event.target as HTMLElement).closest<HTMLElement>('button');
+  if (!target || !game) return;
+  if (target.classList.contains('gp-close')) { closeGearPanel(); return; }
+  if (target.dataset.blade) pickBlade(game, target.dataset.blade as Parameters<typeof pickBlade>[1]);
+  else if (target.dataset.spirit) pickSpirit(game, target.dataset.spirit as SpiritSkin);
+  else return;
+  audio.play('pick');
+  const scroll = gearPanel.scrollTop;
+  renderGearPanel(game);
+  gearPanel.scrollTop = scroll;
+});
+
 function openGearPanel() {
   const g = game;
   if (!g || g.phase !== 'play' || paused) return;
   paused = true;
   stick.on = false;
   keys.clear();
-  const row = (id: SkillId | 'bow') => {
-    const lv = id === 'bow' ? 0 : g.skills[id];
-    const max = id === 'bow' ? 0 : maxLevel(id);
-    const level = id === 'bow' ? '' : max > 50 ? t('gearLevelOnly', { level: lv }) : t('gearLevel', { level: lv, max });
-    return `<li><span class="gp-icon">${skillIcon(id, 34, iconFile(g, id))}</span><span class="gp-copy"><b>${skillName(g, id)}</b><small>${skillText(g, id)}</small></span>${level ? `<em>${level}</em>` : ''}</li>`;
-  };
-  const weapons = ['bow' as const, ...ownedWeapons(g)];
-  const upgrades = SKILLS.filter((s) => CATEGORY[s] === 'upgrade' && g.skills[s] > 0);
-  gearPanel.innerHTML = `<header><b>${t('gearTitle')}</b><button type="button" class="gp-close" aria-label="${t('resume')}">✕</button></header>
-    <h4>${t('gearWeapons')}</h4><ul>${weapons.map(row).join('')}</ul>
-    ${upgrades.length ? `<h4>${t('gearUpgrades')}</h4><ul>${upgrades.map(row).join('')}</ul>` : ''}
-    <p class="gp-hint">${t('gearHint')}</p>`;
+  renderGearPanel(g);
   // Open beside the column, its top level with the column's.
   const box = hudGear.getBoundingClientRect();
   gearPanel.style.top = `${Math.round(box.top)}px`;
@@ -883,6 +903,20 @@ function openGearPanel() {
   gearPanel.hidden = false;
   document.documentElement.classList.add('gear-open');
   audio.play('click');
+}
+function renderGearPanel(g: Game) {
+  const row = (id: SkillId | 'bow') => {
+    const lv = id === 'bow' ? 0 : g.skills[id];
+    const max = id === 'bow' ? 0 : maxLevel(id);
+    const level = id === 'bow' ? '' : max > 50 ? t('gearLevelOnly', { level: lv }) : t('gearLevel', { level: lv, max });
+    return `<li><span class="gp-icon">${skillIcon(id, 34, iconFile(g, id))}</span><span class="gp-copy"><b>${skillName(g, id)}</b><small>${skillText(g, id)}</small></span>${level ? `<em>${level}</em>` : ''}${id === 'blades' ? bladeChips(g) : id === 'spirits' ? spiritChips(g) : ''}</li>`;
+  };
+  const weapons = ['bow' as const, ...ownedWeapons(g)];
+  const upgrades = SKILLS.filter((s) => CATEGORY[s] === 'upgrade' && g.skills[s] > 0);
+  gearPanel.innerHTML = `<header><b>${t('gearTitle')}</b><button type="button" class="gp-close" aria-label="${t('resume')}">✕</button></header>
+    <h4>${t('gearWeapons')}</h4><ul>${weapons.map(row).join('')}</ul>
+    ${upgrades.length ? `<h4>${t('gearUpgrades')}</h4><ul>${upgrades.map(row).join('')}</ul>` : ''}
+    <p class="gp-hint">${t('gearHint')}</p>`;
 }
 function closeGearPanel() {
   if (gearPanel.hidden) return;
@@ -899,9 +933,9 @@ hudGear.addEventListener('click', (event) => {
 hudGear.addEventListener('keydown', (event) => {
   if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); hudGear.click(); }
 });
-// Any tap while it is open closes it (the panel itself included).
+// A tap outside it closes it (inside, the swaps and the ✕ work as buttons).
 window.addEventListener('pointerdown', (event) => {
-  if (gearPanel.hidden || (event.target as HTMLElement).closest('#hudGear')) return;
+  if (gearPanel.hidden || (event.target as HTMLElement).closest('#hudGear, #gearPanel')) return;
   event.preventDefault();
   closeGearPanel();
 }, { capture: true });

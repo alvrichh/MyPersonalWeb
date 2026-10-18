@@ -2846,3 +2846,9 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 :root[data-retro] .gear-panel { border-color: var(--line); background: rgba(10, 13, 20, 0.96); box-shadow: none; }
 :root[data-retro] .gear-panel h4 { color: var(--accent); }
 :root[data-retro] .gp-icon .skill-emoji { font-size: 1.5rem; }
+
+.gp-chips { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px; padding: 2px 0 2px 46px; }
+.gp-chip { display: grid; place-items: center; width: 38px; height: 38px; padding: 0; border: 2px solid transparent; border-radius: 50%; background: rgba(255, 255, 255, 0.08); cursor: pointer; }
+.gp-chip img { width: 28px; height: 28px; object-fit: contain; }
+.gp-chip.is-on { border-color: #fcd34d; background: rgba(252, 211, 77, 0.16); box-shadow: 0 0 8px rgba(252, 211, 77, 0.45); }
+.gp-chip:focus-visible { outline: 2px solid #67e8f9; outline-offset: 2px; }
