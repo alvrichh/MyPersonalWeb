@@ -7,7 +7,7 @@ import { ITEMS, SLOTS, buildLoadout, itemById, type ItemId, type Slot } from './
 import { Scene } from './scene';
 import { makeT, pickLang, type Key } from './strings';
 import {
-  CATEGORY, H, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, shrinePick, update,
+  CATEGORY, H, REVIVE_PRICE, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
   type Category, type Game, type GameEvent, type Input, type Look, type SkillId, type WheelOutcome,
 } from './world';
 
@@ -125,6 +125,8 @@ let paused = false;
 let shownChoices = '';
 /** The wheel screen is up (so the frame loop opens it only once). */
 let wheelShown = false;
+/** The coin-revive offer is on screen (so the frame loop doesn't open the game-over yet). */
+let reviveOffered = false;
 /** Where the Options screen goes back to. */
 let optionsFrom: 'menu' | 'pause' = 'menu';
 
@@ -223,6 +225,16 @@ function menuScreen() {
 }
 
 const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
+
+/* Death with a full purse: once per run, 1000 coins (banked plus this run's)
+   put you back on your feet before the game-over screen. */
+const canPayRevive = (g: Game) => !g.paidRevive && save.coins + Math.floor(g.coins) >= REVIVE_PRICE;
+function reviveScreen(g: Game) {
+  show(`${head('defeat', t('reviveTitle'))}<p>${t('reviveText', { coins: REVIVE_PRICE })}</p>
+    <p class="earned">${coinsLine(save.coins + Math.floor(g.coins))}</p>
+    <button class="primary" data-act="revive-pay">${t('reviveBtn', { coins: REVIVE_PRICE })}</button>
+    <button class="ghost" data-act="revive-no">${t('reviveNo')}</button>`);
+}
 
 function endScreen(g: Game) {
   hud.hidden = true;
@@ -477,6 +489,7 @@ function startRun(world = save.world) {
   paused = false;
   shownChoices = '';
   wheelShown = false;
+  reviveOffered = false;
   hud.hidden = false;
   hudGear.hidden = false;
   hide();
@@ -509,6 +522,22 @@ screen.addEventListener('click', (event) => {
     wheelShown = false;
     hide();
     if (got.skill) flash(t('wNewSkill', { name: t(`${got.skill}Name` as Key) }));
+  }
+  else if (act === 'revive-pay' && game) {
+    const g = game;
+    // The run's coins go first, the bank covers the rest.
+    const fromRun = Math.min(Math.floor(g.coins), REVIVE_PRICE);
+    g.coins -= fromRun;
+    save.coins -= REVIVE_PRICE - fromRun;
+    persist();
+    paidRevive(g);
+    reviveOffered = false;
+    hide();
+    flash(t('revived'));
+  } else if (act === 'revive-no' && game) {
+    game.paidRevive = true; // no second offer
+    reviveOffered = false;
+    endScreen(game);
   }
   else if (act === 'wheel-spin' && game) spinWheel(game);
   else if (act === 'wheel-go' && game) {
@@ -796,7 +825,9 @@ function step(now: number) {
       keys.clear();
       wheelScreen();
     }
-    if (phase === 'over' || phase === 'won') endScreen(g);
+    if (phase === 'over' && canPayRevive(g)) {
+      if (!reviveOffered) { reviveOffered = true; stick.on = false; keys.clear(); audio.play('over'); reviveScreen(g); }
+    } else if (phase === 'over' || phase === 'won') endScreen(g);
   }
 
   if (g) {
