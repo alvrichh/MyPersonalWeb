@@ -581,32 +581,20 @@ body {
   height: auto;
 }
 
-/* The level-up and pause crests have no plate: their words go underneath. */
-.ui-head.is-levelup {
-  width: min(58%, 210px);
-  margin-bottom: -4px;
+/* The crests have no plate for words: the title goes underneath them. */
+.ui-head {
+  width: min(52%, 190px);
+  margin-bottom: -2px;
 }
 
-.ui-head.is-pause {
-  width: min(70%, 260px);
-  margin-bottom: -4px;
-}
+.ui-head.is-levelup { width: min(58%, 210px); }
 
-.ui-head.is-levelup span,
-.ui-head.is-pause span {
-  position: static;
-  display: block;
-  margin-top: -10px;
-}
+/* After a kicker line the crest must not climb over it. */
+.panel .kicker + .ui-head { margin-top: 0; }
 
 .ui-head span {
-  position: absolute;
-  left: 16%;
-  right: 16%;
-  top: 62%;
-  bottom: 10%;
-  display: grid;
-  place-items: center;
+  display: block;
+  margin-top: -8px;
   color: #fff;
   font-size: clamp(0.95rem, 4vw, 1.2rem);
   font-weight: 800;
@@ -819,6 +807,32 @@ body {
   transform: translateY(-2px);
 }
 
+/* Enemy looks as rows from the UI sheets: the icon sits in the ring. */
+.panel .style {
+  --card: url('/images/game/ui/row_blue.webp');
+  display: grid;
+  grid-template-columns: 34% minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  align-content: center;
+  justify-items: start;
+  gap: 2px 0;
+  min-height: 96px;
+  padding: 8% 10% 8% 0;
+  border: 0;
+  border-radius: 0;
+  background: var(--card) center / 100% 100% no-repeat;
+  text-align: start;
+}
+
+.panel .style.is-on { --card: url('/images/game/ui/row_orange.webp'); background-color: transparent; }
+.panel .style .icon { grid-column: 1; grid-row: 1 / span 2; justify-self: center; font-size: 1.7rem; }
+.panel .style b { grid-column: 2; color: #fff; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); }
+.panel .style > span:not(.icon) { grid-column: 2; font-size: 0.76rem; line-height: 1.3; color: #d6dde9; }
+.panel .style:hover,
+.panel .style:focus-visible { border-color: transparent; filter: brightness(1.15); }
+
+.panel .styles { grid-template-columns: 1fr; max-width: 420px; }
+
 .panel h1,
 .panel h2 {
   margin: 0;
@@ -1003,39 +1017,67 @@ body {
   transform: translateY(-2px);
 }
 
-/* Upgrade cards: the coloured frames from the UI sheets, one per category. */
+/* Upgrade cards: the tall cards from the UI sheets. The picture has a ring
+   on top for the icon, a title plate, a body and a bottom plate, so the card
+   keeps the picture's proportions and lays its content on those spots:
+   rows are ring 28%, plate 13%, body, plate 12%, then the picture's foot. */
 .panel .skill {
-  padding: 0 2px;
-  border-style: solid;
-  border-width: 14px;
-  border-image: url('/images/game/ui/card_blue.webp') 50 fill / 14px stretch;
-  background: none;
+  --card: url('/images/game/ui/tall_blue.webp');
+  display: grid;
+  /* Measured on the picture: ring 0–28%, title plate 28–42%, bottom plate 72–89%. */
+  grid-template-rows: 31.5% 15.7% minmax(0, 1fr) 19.1%;
+  align-items: center;
+  justify-items: center;
+  gap: 0;
+  aspect-ratio: 275 / 409;
+  padding: 0 11% 11%;
+  border: 0;
+  border-radius: 0;
+  background: var(--card) center / 100% 100% no-repeat;
+  text-align: center;
 }
 
-.panel .skill-melee { border-image-source: url('/images/game/ui/card_red.webp'); }
-.panel .skill-magic { border-image-source: url('/images/game/ui/card_purple.webp'); }
-.panel .skill-ranged { border-image-source: url('/images/game/ui/card_blue.webp'); }
-.panel .skill-upgrade { border-image-source: url('/images/game/ui/card_orange.webp'); }
+.panel .skill-melee { --card: url('/images/game/ui/tall_orange.webp'); }
+.panel .skill-magic { --card: url('/images/game/ui/tall_purple.webp'); }
+.panel .skill-ranged { --card: url('/images/game/ui/tall_blue.webp'); }
+.panel .skill-upgrade { --card: url('/images/game/ui/tall_green.webp'); }
+
+.panel .skill .icon { grid-row: 1; font-size: clamp(1.4rem, 3.2vw, 2rem); }
+.panel .skill b { grid-row: 2; font-size: clamp(0.66rem, 1.5vw, 0.84rem); line-height: 1.05; color: #fff; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); }
+.panel .skill .cat { display: none; }
+.panel .skill > span:not(.icon):not(.cat):not(.lvl) { grid-row: 3; align-self: start; padding-top: 6%; font-size: clamp(0.62rem, 1.6vw, 0.78rem); line-height: 1.3; color: #d6dde9; }
+.panel .skill .lvl { grid-row: 4; font-size: clamp(0.6rem, 1.5vw, 0.72rem); color: #fff; }
 
 .panel .skill:hover,
 .panel .skill:focus-visible {
-  background: none;
+  background-color: transparent;
   border-color: transparent;
-  filter: brightness(1.18);
+  filter: brightness(1.2);
+  transform: translateY(-3px);
 }
 
-/* One card per row on phones: the frame only, so the plate painted inside
-   the picture doesn't run across the text. */
+/* On phones the cards stack as rows: the ring on the left, the words beside it. */
 @media (max-width: 480px) {
   .panel .skill {
-    border-image-slice: 50;
-    border-image-width: 14px;
-    background: rgba(10, 14, 24, 0.85);
+    --card: url('/images/game/ui/row_blue.webp');
+    /* The ring spans 5–29% of the row picture; the body 29–91%. */
+    grid-template-columns: 34% minmax(0, 1fr);
+    grid-template-rows: auto auto auto auto;
+    aspect-ratio: auto;
+    min-height: 118px;
+    padding: 8% 10% 8% 0;
+    text-align: start;
+    justify-items: start;
   }
-  .panel .skill-melee { border-image: url('/images/game/ui/card_red.webp') 50 / 14px stretch; background: #2a0f12; }
-  .panel .skill-magic { border-image: url('/images/game/ui/card_purple.webp') 50 / 14px stretch; background: #1d1033; }
-  .panel .skill-ranged { border-image: url('/images/game/ui/card_blue.webp') 50 / 14px stretch; background: #0b1b33; }
-  .panel .skill-upgrade { border-image: url('/images/game/ui/card_orange.webp') 50 / 14px stretch; background: #2a1409; }
+  .panel .skill-melee { --card: url('/images/game/ui/row_orange.webp'); }
+  .panel .skill-magic { --card: url('/images/game/ui/row_purple.webp'); }
+  .panel .skill-ranged { --card: url('/images/game/ui/row_blue.webp'); }
+  .panel .skill-upgrade { --card: url('/images/game/ui/row_green.webp'); }
+  .panel .skill .icon { grid-column: 1; grid-row: 1 / span 4; justify-self: center; font-size: 1.7rem; }
+  .panel .skill .cat { display: block; grid-column: 2; grid-row: 1; }
+  .panel .skill b { grid-column: 2; grid-row: 2; font-size: 0.95rem; }
+  .panel .skill > span:not(.icon):not(.cat):not(.lvl) { grid-column: 2; grid-row: 3; padding: 2px 0 0; font-size: 0.78rem; }
+  .panel .skill .lvl { grid-column: 2; grid-row: 4; font-size: 0.7rem; }
 }
 
 .skill .icon {
@@ -1074,18 +1116,6 @@ body {
     grid-template-columns: 1fr;
   }
 
-  .skill {
-    grid-template-columns: auto 1fr;
-    justify-items: start;
-    text-align: start;
-    column-gap: 12px;
-    padding: 12px 14px;
-  }
-
-  .skill .icon {
-    grid-row: span 4;
-    align-self: center;
-  }
 }
 
 /* Disco: the HUD walks round the colour wheel like the portfolio does. */
@@ -1647,9 +1677,9 @@ body {
 
 .boss-title {
   position: relative;
-  width: min(180px, 56%);
+  width: min(120px, 36%);
   justify-self: center;
-  margin-bottom: -3px;
+  margin-bottom: 2px;
 }
 
 .boss-title img {
@@ -1659,14 +1689,9 @@ body {
 }
 
 .boss-title span {
-  position: absolute;
-  left: 18%;
-  right: 18%;
-  top: 62%;
-  bottom: 8%;
-  display: grid;
-  place-items: center;
-  font: 700 clamp(0.65rem, 3vw, 0.85rem)/1.1 var(--font);
+  display: block;
+  margin-top: -6px;
+  font: 700 clamp(0.75rem, 3.4vw, 0.95rem)/1.1 var(--font);
   color: #fff;
   text-shadow: 0 2px 4px #0d0822;
 }

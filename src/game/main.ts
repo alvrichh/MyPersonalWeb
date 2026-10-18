@@ -300,7 +300,7 @@ const WHEEL_TEXT: Record<WheelOutcome, Key> = {
   newSkill: 'wNewSkill', skillUp: 'wSkillUp', heal: 'wHeal', coins: 'wCoins', loseLevel: 'wLoseLevel', hurt: 'wHurt', loseCoins: 'wLoseCoins', bossBuff: 'wBossBuff', nothing: 'wNothing',
 };
 function shrineScreen() {
-  show(`${head('levelup', t('shrineTitle'))}<p>${t('shrineText')}</p>
+  show(`${head('shrine', t('shrineTitle'))}<p>${t('shrineText')}</p>
     <button class="primary" data-act="shrine-heal">${t('shrineHeal')}</button>
     <button class="ghost" data-act="shrine-skill">${t('shrineSkill')}</button>`);
 }
@@ -345,7 +345,7 @@ function leaveScreen(to: 'site' | 'menu') {
 }
 
 /* A header from the UI sheets: the ornament is the picture, the words sit in its plate. */
-const head = (kind: 'pause' | 'levelup' | 'victory' | 'defeat', text: string) =>
+const head = (kind: 'pause' | 'levelup' | 'victory' | 'defeat' | 'shrine', text: string) =>
   `<div class="ui-head is-${kind}"><img src="./images/game/ui/header_${kind}.webp" alt=""><span>${text}</span></div>`;
 
 function pauseScreen() {
