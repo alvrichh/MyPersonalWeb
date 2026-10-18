@@ -870,7 +870,7 @@ function fxImage(name: string) {
 const ready = (img: HTMLImageElement) => img.complete && img.naturalWidth > 0;
 /** Warm the effect pictures up when a run starts, so the first swing and strike are already painted. */
 export function preloadFx() {
-  for (const n of ['fireball', 'boom-small', 'boom-big', 'knife', 'boomerang', 'slash-1', 'slash-2', 'bolt-1', 'bolt-2', 'bolt-3', 'bolt-4', 'bolt-5', 'bolt-6']) fxImage(n);
+  for (const n of ['fireball', 'boom-small', 'boom-big', 'knife', 'boomerang', 'slash', 'bolt-1', 'bolt-2', 'bolt-3', 'bolt-4', 'bolt-5', 'bolt-6']) fxImage(n);
 }
 
 function drawFireballs(ctx: CanvasRenderingContext2D, g: Game) {
@@ -1015,11 +1015,11 @@ function drawFx(ctx: CanvasRenderingContext2D, g: Game, accent: string, layer: '
     }
     if (layer === 'over' && (f.kind === 'slash' || f.kind === 'boom')) {
       ctx.globalAlpha = fade;
-      if (f.kind === 'slash' && !retroLook && ready(fxImage('slash-2'))) {
-        // The painted crescent: two frames, growing and fading, turned to the swing's direction.
-        const pic = fxImage(t < 0.5 ? 'slash-1' : 'slash-2');
-        // The crescent's bulge is on the picture's right: put that at the reach, the tail just past the hero.
-        const w = f.r * 1.45;
+      if (f.kind === 'slash' && !retroLook && ready(fxImage('slash'))) {
+        // The painted crescent, turned to the swing: it sweeps out from 80% to full size as it fades.
+        const pic = fxImage('slash');
+        // The bulge is on the picture's right: put that at the reach, the tail behind the hero.
+        const w = f.r * 1.6 * (0.8 + 0.2 * Math.min(1, t * 2));
         const h = (w * pic.naturalHeight) / pic.naturalWidth;
         ctx.save();
         ctx.translate(f.x, f.y);

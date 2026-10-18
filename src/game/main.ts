@@ -77,7 +77,7 @@ palette.retro = save.retro;
 document.documentElement.toggleAttribute('data-retro', save.retro);
 
 const clock = (seconds: number) => `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, '0')}`;
-const bestLine = (world = save.world, mode: Mode = save.mode) => {
+const bestLine = (world = worldIn(), mode: Mode = save.mode) => {
   if (mode === 'horde') {
     const best = save.hordeBest[world];
     if (!best) return '';
@@ -88,6 +88,13 @@ const bestLine = (world = save.world, mode: Mode = save.mode) => {
   if (best.time !== undefined) return t('bestWin', { time: clock(best.time) });
   return best.room ? t('best', { room: best.room }) : '';
 };
+/* Each mode has its own world progress: sprints keep `unlocked`/`world`, on call `hordeUnlocked`/`hordeWorld`. */
+const unlockedIn = (mode: Mode = save.mode) => (mode === 'horde' ? save.hordeUnlocked : save.unlocked);
+const worldIn = (mode: Mode = save.mode) => (mode === 'horde' ? save.hordeWorld : save.world);
+function setWorld(n: number, mode: Mode = save.mode) {
+  if (mode === 'horde') save.hordeWorld = n;
+  else save.world = n;
+}
 const modeName = (mode: Mode = save.mode) => t(mode === 'horde' ? 'modeHorde' : 'modeSprints');
 const MODE_ICON: Record<Mode, string> = { sprints: '⚔️', horde: '🛡️' };
 /** Where the run is: the sprint, or the shift's clock. */
@@ -114,9 +121,10 @@ function bankRun(g: Game): number | null {
   save.runs += 1;
   save.xp += Math.round(g.xpEarned);
   let unlocked: number | null = null;
-  if (won && g.world < WORLD_COUNT && save.unlocked < g.world + 1) {
-    save.unlocked = g.world + 1;
-    save.world = g.world + 1;
+  if (won && g.world < WORLD_COUNT && unlockedIn(g.mode) < g.world + 1) {
+    if (g.mode === 'horde') save.hordeUnlocked = g.world + 1;
+    else save.unlocked = g.world + 1;
+    setWorld(g.world + 1, g.mode);
     unlocked = g.world + 1;
   }
   persist();
@@ -244,14 +252,14 @@ function menuScreen() {
       <span class="cover-profile-copy"><small>${esc(save.name)}</small><b>${t('lvShort', { level })}</b><i><b style="width:${Math.round(progress * 100)}%"></b></i></span>
       <button class="hot cover-coins" data-act="shop" aria-label="${t('coins')}: ${Math.floor(save.coins)}"></button>
       <span class="cover-num is-coins">${Math.floor(save.coins)}</span>
-      <button class="hot cover-worlds" data-act="map" aria-label="${t('map')}: ${save.unlocked}/${WORLD_COUNT}"></button>
-      <span class="cover-num is-worlds">${save.unlocked}/${WORLD_COUNT}</span>
+      <button class="hot cover-worlds" data-act="map" aria-label="${t('map')}: ${unlockedIn()}/${WORLD_COUNT}"></button>
+      <span class="cover-num is-worlds">${unlockedIn()}/${WORLD_COUNT}</span>
       <p class="cover-tagline">${t('landingTagline')}</p>
-      <button class="hot cover-play" data-act="play" aria-label="${t('playNow')} · ${worldName(save.world)}"></button>
-      <span class="cover-play-copy"><b>${t('playNow')}</b><small>${WORLD_ICON[save.world - 1]} ${worldName(save.world)}</small></span>
+      <button class="hot cover-play" data-act="play" aria-label="${t('playNow')} · ${worldName(worldIn())}"></button>
+      <span class="cover-play-copy"><b>${t('playNow')}</b><small>${WORLD_ICON[worldIn() - 1]} ${worldName(worldIn())}</small></span>
       <button class="cover-mode" type="button" data-act="mode" aria-label="${t('modePick')}: ${modeName()}"><span class="${save.mode === 'sprints' ? 'is-on' : ''}">${MODE_ICON.sprints} ${t('modeSprints')}</span><span class="${save.mode === 'horde' ? 'is-on' : ''}">${MODE_ICON.horde} ${t('modeHorde')}</span></button>
       <button class="hot cover-card is-map" data-act="map" aria-label="${t('map')}"></button>
-      ${copy('is-map', t('map'), `🌍 ${save.unlocked} / ${WORLD_COUNT}`)}
+      ${copy('is-map', t('map'), `🌍 ${unlockedIn()} / ${WORLD_COUNT}`)}
       <button class="hot cover-card is-shop" data-act="shop" aria-label="${t('shop')}"></button>
       ${copy('is-shop', t('shop'), `🪙 ${Math.floor(save.coins)}`)}
       <button class="hot cover-card is-styles" data-act="styles" aria-label="${t('styles')}"></button>
@@ -288,7 +296,7 @@ function profileScreen(note = '') {
     </form>
     <div class="pstats">
       ${stat('profileRuns', String(save.runs))}
-      ${stat('profileWorlds', `${save.unlocked}/${WORLD_COUNT}`)}
+      ${stat('profileWorlds', `${unlockedIn()}/${WORLD_COUNT}`)}
       ${stat('profileCoins', `🪙 ${Math.floor(save.coins)}`)}
     </div>
     ${backButton('menu')}`);
@@ -353,9 +361,9 @@ const ISLAND_META: Record<string, { w: number; h: number; ring: number[]; plate:
 let mapPick = 0;
 
 function mapScreen() {
-  if (!mapPick) mapPick = save.world;
+  if (!mapPick || mapPick > unlockedIn() + 1) mapPick = worldIn();
   const picked = mapPick;
-  const pickedOpen = picked <= save.unlocked;
+  const pickedOpen = picked <= unlockedIn();
   const islandW = 0.47 * MAP_W;
   const stops = WORLDS.map((_, i) => {
     const n = i + 1;
@@ -366,7 +374,7 @@ function mapScreen() {
     const cy = 0.11 * MAP_H + Math.floor(i / 2) * 0.255 * MAP_H;
     const left = cx - (m.ring[0] / 100) * w;
     const top = cy - (m.ring[1] / 100) * h;
-    return { n, m, w, h, left, top, cx, cy, open: n <= save.unlocked };
+    return { n, m, w, h, left, top, cx, cy, open: n <= unlockedIn() };
   });
   const trail = stops.slice(0, -1).map((a, i) => {
     const b = stops[i + 1];
@@ -649,7 +657,7 @@ function stylesScreen(note = '') {
   }
 }
 
-function startRun(world = save.world, mode = save.mode) {
+function startRun(world = worldIn(), mode = save.mode) {
   game = newGame(buildLoadout(save.equipped, save.upgrades), save.style, world, mode);
   preloadFx();
   paused = false;
@@ -673,15 +681,15 @@ screen.addEventListener('click', (event) => {
   const act = target.dataset.act;
   if (act !== 'mute') audio.play('click');
   if (act === 'play') startRun();
-  else if (act === 'play-same') startRun(game?.world ?? save.world, game?.mode ?? save.mode);
+  else if (act === 'play-same') startRun(game?.world ?? worldIn(), game?.mode ?? save.mode);
   else if (act === 'mode') { save.mode = save.mode === 'horde' ? 'sprints' : 'horde'; persist(); menuScreen(); }
-  else if (target.dataset.mode) { save.mode = target.dataset.mode as Mode; persist(); mapScreen(); }
-  else if (act === 'map') { mapPick = save.world; mapScreen(); }
-  else if (act === 'play-picked') { save.world = mapPick; persist(); startRun(mapPick); }
+  else if (target.dataset.mode) { save.mode = target.dataset.mode as Mode; mapPick = worldIn(); persist(); mapScreen(); }
+  else if (act === 'map') { mapPick = worldIn(); mapScreen(); }
+  else if (act === 'play-picked') { setWorld(mapPick); persist(); startRun(mapPick); }
   else if (target.dataset.world) {
     const n = Number(target.dataset.world);
     mapPick = n;
-    if (n <= save.unlocked) { save.world = n; persist(); }
+    if (n <= unlockedIn()) { setWorld(n); persist(); }
     mapScreen();
   }
   else if (act === 'resume') { paused = false; hide(); }
