@@ -7,8 +7,14 @@ import type { Mode } from './world';
 export type EnemyStyle = 'world' | 'original' | 'demon' | 'viking' | 'jungle' | 'greek' | 'robot' | 'nightmare' | 'random';
 export const STYLES: EnemyStyle[] = ['world', 'original', 'demon', 'viking', 'jungle', 'greek', 'robot', 'nightmare', 'random'];
 
-export type HeroSkin = 'boy' | 'robot';
-export const SKINS: HeroSkin[] = ['boy', 'robot'];
+export type HeroSkin = 'boy' | 'robot' | 'kitty';
+export const SKINS: HeroSkin[] = ['boy', 'robot', 'kitty'];
+/** The hats are painted on the hero's pictures; a skin listed here has no hat versions and always shows its base set. */
+const HATLESS: HeroSkin[] = ['kitty'];
+const HAT_SET: Record<string, string> = { wizardHat: 'wizard', gladHelm: 'helm', bandana: 'bandana' };
+/** The picture set for a skin with a head item: `hero/<key>-<pose>.webp`. */
+export const heroKey = (skin: HeroSkin, head?: string) =>
+  `${skin}-${(!HATLESS.includes(skin) && head && HAT_SET[head]) || 'base'}`;
 
 export type Save = {
   /** The player's name, shown on the cover and the profile (the hero is alvrich by default). */

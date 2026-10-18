@@ -2,7 +2,7 @@ import './game.css';
 import { storage } from '../lib/storage';
 import { audio, type Sfx } from './audio';
 import { draw, drawRetroFigure, preloadFx, type Palette, type View } from './draw';
-import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, type StarColor, loadSave, profileLevel, writeSave, STYLES, SKINS, type EnemyStyle, type HeroSkin } from './save';
+import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, type StarColor, loadSave, profileLevel, writeSave, STYLES, SKINS, type EnemyStyle, type HeroSkin, heroKey } from './save';
 import type { Mode } from './world';
 import { ARMOUR_SLOTS, ITEMS, type SpiritSkin, SLOTS, UPGRADES, WEAPON_SLOTS, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
 import { Scene } from './scene';
@@ -141,8 +141,9 @@ const EMOJI: Record<SkillId | 'bow', string> = {
 };
 /* The painted medallion, with the emoji beside it for the retro look (CSS shows one or the other). */
 const skillIcon = (id: SkillId | 'bow', size = 40, file: string = id === 'bow' ? 'double' : id) => `<img class="skill-icon" src="./images/game/skills/${file}.webp" width="${size}" height="${size}" alt=""><span class="skill-emoji">${EMOJI[id]}</span>`;
-/** The blades show their element's medallion once they have one. */
+/** The blades show their element's medallion once they have one; the laser its colour (yellow, red from level 2, purple evolved). */
 const iconFile = (g: Game, id: SkillId | 'bow') => {
+  if (id === 'laser') return g.evolved.laser ? 'laser-evo' : g.skills.laser >= 2 ? 'laser-red' : 'laser';
   if (id !== 'blades') return id === 'bow' ? 'double' : id;
   const el = bladeElement(g);
   return el === 'steel' ? 'blades' : `blades-${el}`;
@@ -469,7 +470,7 @@ function choiceScreen(g: Game) {
       const evo = evoOf(choice);
       if (evo) {
         // The gold card: the weapon's evolution.
-        return `<button class="skill skill-${CATEGORY[evo]} is-evo" data-skill="${choice}"><span class="icon" aria-hidden="true">${skillIcon(evo, 56, iconFile(g, evo))}</span><span class="cat">★ ${t('evoCat')}</span><b>${t(`evo${cap(evo)}Name` as Key)}</b><span>${t(`evo${cap(evo)}Text` as Key)}</span><span class="lvl">${t('evoLabel')}</span></button>`;
+        return `<button class="skill skill-${CATEGORY[evo]} is-evo" data-skill="${choice}"><span class="icon" aria-hidden="true">${skillIcon(evo, 56, evo === 'laser' ? 'laser-evo' : iconFile(g, evo))}</span><span class="cat">★ ${t('evoCat')}</span><b>${t(`evo${cap(evo)}Name` as Key)}</b><span>${t(`evo${cap(evo)}Text` as Key)}</span><span class="lvl">${t('evoLabel')}</span></button>`;
       }
       const id = choice as SkillId;
       const el = id === 'blades' ? bladeElement(g) : 'steel';
@@ -629,7 +630,6 @@ function shopScreen(note = '') {
    melee, ranged). Tapping a slot lists what fits there; owned items are worn
    with a tap, the rest are bought (and worn) with one. Below it, the skin
    and the enemy look as before. */
-const HAT_SET: Record<string, string> = { wizardHat: 'wizard', gladHelm: 'helm', bandana: 'bandana' };
 /** What the hero wears, for the canvas: the painted sprite only knows the hat. */
 function dressPalette() {
   palette.hat = save.equipped.head;
@@ -637,7 +637,7 @@ function dressPalette() {
   palette.skin = save.skin;
   palette.boots = save.equipped.boots;
 }
-const heroPic = () => `./images/game/hero/${save.skin}-${HAT_SET[save.equipped.head ?? ''] ?? 'base'}-idle.webp`;
+const heroPic = () => `./images/game/hero/${heroKey(save.skin, save.equipped.head)}-idle.webp`;
 /** What the list under the hero shows: a slot's items, the skins or the enemy looks. */
 let dressSlot: Slot | 'skin' | 'foes' | null = null;
 function stylesScreen(note = '') {
@@ -660,7 +660,7 @@ function stylesScreen(note = '') {
   let picks = `<p class="how">${t('dressHint')}</p>`;
   if (dressSlot === 'skin') {
     picks = `<h3 class="slot">${t('skinPick')}</h3><div class="gear-list">${SKINS.map((skin) =>
-      row(`data-skin="${skin}"`, save.skin === skin, false, `<img class="skin-pic" src="./images/game/hero/${skin}-${HAT_SET[save.equipped.head ?? ''] ?? 'base'}-idle.webp" alt="">`, t(`skin${cap(skin)}Name` as Key), t(`skin${cap(skin)}Text` as Key), save.skin === skin ? `✓ ${t('worn')}` : '')).join('')}</div>`;
+      row(`data-skin="${skin}"`, save.skin === skin, false, `<img class="skin-pic" src="./images/game/hero/${heroKey(skin, save.equipped.head)}-idle.webp" alt="">`, t(`skin${cap(skin)}Name` as Key), t(`skin${cap(skin)}Text` as Key), save.skin === skin ? `✓ ${t('worn')}` : '')).join('')}</div>`;
   } else if (dressSlot === 'foes') {
     picks = `<h3 class="slot">${t('stylePick')}</h3><div class="gear-list">${STYLES.map((style) =>
       row(`data-style="${style}"`, save.style === style, false, STYLE_ICON[style], t(`style${cap(style)}Name` as Key), t(`style${cap(style)}Text` as Key), save.style === style ? '✓' : '')).join('')}</div>`;
