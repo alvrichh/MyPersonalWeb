@@ -1001,14 +1001,40 @@ function drawChest(ctx: CanvasRenderingContext2D, at: Vec, now: number) {
    the evolved one is drawn from the gear's sweep, every frame it lasts. */
 /** Beam colours (outer glow, body) as r,g,b: yellow at level 1, red from 2, purple once evolved. */
 const LASER_TONE = { yellow: ['250,204,21', '253,224,71'], red: ['220,38,38', '248,80,80'], purple: ['168,85,247', '216,180,254'] } as const;
-const laserTone = (g: Game) => LASER_TONE[g.evolved.laser ? 'purple' : g.skills.laser >= 2 ? 'red' : 'yellow'];
+const laserToneName = (g: Game) => (g.evolved.laser ? 'purple' : g.skills.laser >= 2 ? 'red' : 'yellow');
+const laserTone = (g: Game) => LASER_TONE[laserToneName(g)];
+/* The owner's beams: where, in each picture, the column's middle sits, where
+   the beam strikes the floor and how wide the column is (shares of the
+   picture). The column is stretched from the sky down to the bug; the
+   strike below it keeps its own size. */
+const LASER_PIC = { yellow: [0.525, 0.883, 0.337], red: [0.489, 0.884, 0.302], purple: [0.514, 0.872, 0.275] } as const;
+const LASER_SPLIT = 0.7;
 function drawBeams(ctx: CanvasRenderingContext2D, g: Game) {
   const tone = laserTone(g);
+  const name = laserToneName(g);
+  const pic = fxImage(`laser-${name}`);
   for (const f of g.fx) {
     if (f.kind !== 'beam' || (f.delay ?? 0) > 0) continue;
     const k = f.life / f.max;
     const t = 1 - k;
     const half = (f.w ?? 10) * (t < 0.15 ? t / 0.15 : 0.55 + 0.45 * k);
+    if (!retroLook && ready(pic)) {
+      const [cx, footY, colW] = LASER_PIC[name];
+      const dw = (half * 2.8) / colW;
+      const dh = (dw * pic.naturalHeight) / pic.naturalWidth;
+      const foot = f.foot ?? f.y + f.r;
+      const left = f.x - dw * cx;
+      const sw = pic.naturalWidth;
+      const split = pic.naturalHeight * LASER_SPLIT;
+      // the strike, at its own size, its floor point on the bug
+      const strikeTop = foot - dh * (footY - LASER_SPLIT);
+      ctx.globalAlpha = Math.min(1, k * 1.5);
+      ctx.drawImage(pic, 0, split, sw, pic.naturalHeight - split, left, strikeTop, dw, dh * (1 - LASER_SPLIT));
+      // the column, stretched from the sky to the top of the strike
+      if (strikeTop > f.y) ctx.drawImage(pic, 0, 0, sw, split, left, f.y, dw, strikeTop - f.y + 1);
+      ctx.globalAlpha = 1;
+      continue;
+    }
     // The column from the sky: a soft glow, a bright body and a white core, top to bottom.
     for (const [w, col] of [[half * 4.2, `rgba(${tone[0]},${0.28 * k})`], [half * 2.2, `rgba(${tone[1]},${0.7 * k})`], [half * 0.7, `rgba(255,255,255,${0.95 * k})`]] as const) {
       const grad = ctx.createLinearGradient(f.x - w / 2, 0, f.x + w / 2, 0);
@@ -1462,7 +1488,7 @@ export function preloadFx() {
   for (const n of ['fireball', 'boom-small', 'boom-big', 'knife', 'boomerang', 'slash', 'chest', 'slam', 'crystals', 'gem', 'gem-big', 'bolt-1', 'bolt-2', 'bolt-3', 'bolt-4', 'bolt-5', 'bolt-6',
     'brick', 'iron', 'molotov', 'barrel', 'durian', 'durian-big', 'drill', 'drill-evo', 'rocket', 'rocket-shark', 'ball', 'ball-evo',
     'fire-pool', 'fire-pool-big', 'caltrops', 'mine', 'mine-on', 'mine-volt', 'volt-burst', 'impact', 'heart', 'rune', 'crescent',
-    'steam-cloud', 'plasma-burst', 'wisp-flame', 'shock-ring', 'ice-block', 'spectral-bolt']) fxImage(n);
+    'steam-cloud', 'plasma-burst', 'wisp-flame', 'shock-ring', 'ice-block', 'spectral-bolt', 'laser-yellow', 'laser-red', 'laser-purple']) fxImage(n);
 }
 
 function drawFireballs(ctx: CanvasRenderingContext2D, g: Game) {
