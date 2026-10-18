@@ -166,6 +166,7 @@ function show(html: string, wide = false, menu = false, extra = '') {
   screen.innerHTML = `<div class="panel${wide ? ' panel-wide' : ''}"><div class="panel-in">${html}</div></div>`;
   screen.classList.toggle('is-menu', menu);
   screen.classList.toggle('is-map', extra === 'is-map');
+  screen.classList.toggle('is-levelup', extra === 'is-levelup');
   screen.hidden = false;
   screen.scrollTop = 0;
   fitPanel();
@@ -174,7 +175,7 @@ function show(html: string, wide = false, menu = false, extra = '') {
 }
 function hide() {
   screen.hidden = true;
-  screen.classList.remove('is-menu', 'is-map');
+  screen.classList.remove('is-menu', 'is-map', 'is-levelup');
   screen.innerHTML = '';
 }
 const backButton = (act: string, label: Key = 'menu') => `<button class="ghost" data-act="${act}">← ${t(label)}</button>`;
@@ -328,7 +329,7 @@ function choiceScreen(g: Game) {
       return `<button class="skill skill-${cat}" data-skill="${id}"><span class="icon" aria-hidden="true">${ICONS[id]}</span><span class="cat">${t(CATEGORY_LABEL[cat])}</span><b>${name}</b><span>${text}</span>${level}</button>`;
     })
     .join('');
-  show(`<p class="kicker">${t('level', { level: g.level })}</p>${head('levelup', t('levelUp'))}<p>${t('choose')}</p><div class="skills">${cards}</div>`, true);
+  show(`${head('levelup', t('levelUp'))}<p class="kicker">${t('level', { level: g.level })}</p><p>${t('choose')}</p><div class="skills">${cards}</div>`, true, false, 'is-levelup');
 }
 
 /* The wheel of fate: eight slices, good and bad alternating. The wheel is
