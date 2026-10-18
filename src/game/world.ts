@@ -1150,17 +1150,13 @@ function spinBlades(g: Game, dt: number) {
 }
 
 /* The laser comes from the sky: columns of light fall on the nearest bugs
-   (one per level) and cut every bug in the column, top of the field to the
-   bottom. Evolved (Death Ray), five purple columns fall, faster, and brand
+   (one per level), from the top of the field down to the bug, and burn the
+   bug it lands on and any bug right beside it. Evolved (Death Ray), five purple columns fall, faster, and brand
    magic circles on the floor where they cut. */
 const laserWidth = (g: Game) => 10 + 3 * (g.skills.laser - 1) + (g.evolved.laser ? 6 : 0);
 const laserDamage = (g: Game) => (30 + 12 * (g.skills.laser - 1)) * power(g, 'magic') * (g.evolved.laser ? 1.3 : 1);
-/** The column's top and bottom: the room, or what the page shows of the open field. */
-function laserSpan(g: Game): [number, number] {
-  if (g.mode === 'sprints') return [0, H];
-  const h = g.viewHalf.y + 60;
-  return [g.player.y - h, g.player.y + h];
-}
+/** Where the column starts: the room's top, or just above what the page shows of the open field. */
+const laserTop = (g: Game) => (g.mode === 'sprints' ? 0 : g.player.y - g.viewHalf.y - 60);
 function fireLaser(g: Game) {
   const p = g.player;
   const evolved = !!g.evolved.laser;
@@ -1168,12 +1164,12 @@ function fireLaser(g: Game) {
   const targets = live(g).sort((a, b) => dist(a, p) - dist(b, p)).slice(0, n);
   if (!targets.length) return;
   const half = laserWidth(g);
-  const [top, bottom] = laserSpan(g);
+  const top = laserTop(g);
   const hit = new Set<number>();
   for (const [k, t] of targets.entries()) {
-    g.fx.push({ kind: 'beam', x: t.x, y: top, r: bottom - top, a: Math.PI / 2, w: half, foot: t.y, life: 0.34, max: 0.34, delay: k * 0.06 });
+    g.fx.push({ kind: 'beam', x: t.x, y: top, r: t.y - top, a: Math.PI / 2, w: half, foot: t.y, life: 0.34, max: 0.34, delay: k * 0.06 });
     for (const e of live(g)) {
-      if (hit.has(e.id) || Math.abs(e.x - t.x) > half + e.r) continue;
+      if (hit.has(e.id) || dist(e, t) > half * 2.2 + e.r) continue;
       hit.add(e.id);
       hurt(g, e, laserDamage(g));
       if (evolved && g.fx.filter((f) => f.kind === 'rune').length < 16) g.fx.push({ kind: 'rune', x: e.x, y: e.y, r: 16 + e.r, a: Math.random() * Math.PI, life: 1, max: 1 });
