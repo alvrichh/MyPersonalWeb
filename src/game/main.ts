@@ -4,7 +4,7 @@ import { audio, type Sfx } from './audio';
 import { draw, drawRetroFigure, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, type StarColor, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, heroKey } from './save';
 import type { Mode } from './world';
-import { ARMOUR_SLOTS, ARSENAL, ITEMS, type SpiritSkin, SLOTS, UPGRADES, WEAPON_SLOTS, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
+import { ARMOUR_SLOTS, ARSENAL, ITEMS, type SpiritSkin, UPGRADES, WEAPON_SLOTS, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
 import { Scene } from './scene';
 import { makeT, pickLang, type Key } from './strings';
 import {
@@ -610,8 +610,7 @@ const shopOpen = new Set<string>();
 /** A foldable shop section: one of the owner's ring-and-plate rows (orange while open) with its icon and a count, and its cards only when open. */
 const SHOP_SEC_ICON: Record<string, [string, string]> = {
   forge: ['⚒️', 'forge/might.webp'], arsenal: ['🚀', 'skills/rocket.webp'],
-  armour: ['🛡️', 'slots/body.webp'],
-  magic: ['🔮', 'slots/magic.webp'], melee: ['🗡️', 'slots/melee.webp'], ranged: ['🏹', 'slots/ranged.webp'],
+  armour: ['🛡️', 'slots/body.webp'], weapons: ['🗡️', 'slots/melee.webp'], spirits: ['👻', 'spirits/water-float-0.webp'],
 };
 function shopSection(key: string, title: string, count: string, body: string) {
   const open = shopOpen.has(key);
@@ -622,8 +621,10 @@ function shopSection(key: string, title: string, count: string, body: string) {
 }
 
 function shopScreen(note = '') {
-  const groups = SLOTS.map((slot) => {
-    const all = ITEMS.filter((item) => item.slot === slot);
+  // One sub-group per slot; spirit companions (magic-slot items that bring a spirit) get their own section.
+  const isSpirit = (id: ItemId) => !!itemById(id).effect.spirit;
+  const group = (slot: Slot, keep: (id: ItemId) => boolean) => {
+    const all = ITEMS.filter((item) => item.slot === slot && keep(item.id));
     const cards = all
       .map((item) => {
         const owned = save.owned.includes(item.id);
@@ -643,13 +644,16 @@ function shopScreen(note = '') {
       })
       .join('');
     return { slot, owned: all.filter((i) => save.owned.includes(i.id)).length, total: all.length, cards };
-  });
-  // Head, body and boots share one Armour section, a sub-heading each; the weapon slots keep their own.
-  const armour = groups.filter((x) => ARMOUR_SLOTS.includes(x.slot));
-  const armourSec = shopSection('armour', t('shopArmour'), `${armour.reduce((n, x) => n + x.owned, 0)}/${armour.reduce((n, x) => n + x.total, 0)}`,
-    armour.map((x) => `<h3 class="slot">${t(SLOT_LABEL[x.slot])}</h3><div class="items">${x.cards}</div>`).join(''));
-  const weaponSecs = groups.filter((x) => !ARMOUR_SLOTS.includes(x.slot))
-    .map((x) => shopSection(x.slot, t(SLOT_LABEL[x.slot]), `${x.owned}/${x.total}`, `<div class="items">${x.cards}</div>`)).join('');
+  };
+  type Group = ReturnType<typeof group>;
+  /** A section holding several sub-groups, each under its own heading (or none, for a single group). */
+  const merged = (key: string, title: string, parts: Group[], headed = true) => shopSection(key, title,
+    `${parts.reduce((n, x) => n + x.owned, 0)}/${parts.reduce((n, x) => n + x.total, 0)}`,
+    parts.filter((x) => x.total).map((x) => `${headed ? `<h3 class="slot">${t(SLOT_LABEL[x.slot])}</h3>` : ''}<div class="items">${x.cards}</div>`).join(''));
+  // Armour (head, body, boots), Weapons (magic, melee, ranged) and the Spirits on their own.
+  const armourSec = merged('armour', t('shopArmour'), ARMOUR_SLOTS.map((slot) => group(slot, () => true)));
+  const weaponSecs = merged('weapons', t('shopWeapons'), WEAPON_SLOTS.map((slot) => group(slot, (id) => !isSpirit(id))))
+    + merged('spirits', t('shopSpirits'), [group('magic', isSpirit)], false);
   // The forge: permanent, levelled upgrades.
   const forge = UPGRADES.map((u) => {
     const level = save.upgrades[u.id] ?? 0;
