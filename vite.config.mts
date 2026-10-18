@@ -19,6 +19,7 @@ export default defineConfig(({ isSsrBuild }) => ({
           'ai-radar': 'ai-radar.html',
           calendar: 'calendar.html',
           gym: 'gym.html',
+          game: 'game.html',
           planning: 'planning.html',
         },
       },

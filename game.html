@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#07090f">
+  <title>Bug Hunter · alvrich</title>
+  <meta name="description" content="Bug Hunter: a small Archero-style game by Álvaro Rodríguez Molina. Ten sprints of bugs; stand still to shoot.">
+  <link rel="icon" href="./images/favicon-32.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="./images/apple-touch-icon.png">
+  <script>
+    // Vercel Web Analytics: page views only, no cookies. The script is served by
+    // Vercel itself, so it is skipped on localhost (it would only 404 there).
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    if (!/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) {
+      var insights = document.createElement('script');
+      insights.defer = true;
+      insights.src = '/_vercel/insights/script.js';
+      document.head.appendChild(insights);
+    }
+  </script>
+</head>
+<body>
+  <main class="game">
+    <canvas id="stage" aria-label="Bug Hunter"></canvas>
+    <header class="hud">
+      <a class="hud-back" id="backLink" href="./index.html" aria-label="Back to portfolio">←</a>
+      <span class="hud-room" id="hudRoom"></span>
+      <span class="hud-xp"><span id="hudLevel"></span><i><b id="hudXp"></b></i></span>
+      <button class="hud-pause" id="pauseBtn" type="button" aria-label="Pause">II</button>
+    </header>
+    <div class="boss" id="bossBar" hidden><span id="bossName"></span><i><b id="bossHp"></b></i></div>
+    <p class="toast" id="toast" role="status" hidden></p>
+    <section class="screen" id="screen" hidden></section>
+  </main>
+  <noscript><p style="padding:24px;color:#f3f6fb">Bug Hunter needs JavaScript to run.</p></noscript>
+  <script type="module" src="/src/game/main.ts"></script>
+</body>
+</html>

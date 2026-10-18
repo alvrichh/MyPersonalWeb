@@ -19,6 +19,7 @@ const requiredOutputFiles = [
   'gym.html',
   'planning.html',
   'calendar.html',
+  'game.html',
 ];
 
 const quoteWindowsArg = (value) => `"${String(value).replaceAll('"', '\\"')}"`;
