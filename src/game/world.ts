@@ -261,8 +261,9 @@ export type Fx = {
   foot?: number;
   /** The ring is the evolved hammer's. */
   big?: boolean;
-  /** A 'pic' fx: the effect picture laid on the floor (fx/<pic>.webp). */
+  /** A 'pic' fx: the effect picture laid on the floor (fx/<pic>.webp), or over the bugs with `top`. */
   pic?: string;
+  top?: boolean;
 };
 export type Fireball = { x: number; y: number; vx: number; vy: number; life: number };
 /** A companion ghost: floats beside the hero (`slot` sets where) and shoots when you do. */
@@ -911,7 +912,7 @@ function kill(g: Game, e: Enemy) {
   g.kills += 1;
   // Plasma (fire + lightning arrows): a burning bug blows up when it dies, setting its neighbours alight.
   if (e.burn > 0 && fusionOf(g) === 'plasma') {
-    g.fx.push({ kind: 'boom', x: e.x, y: e.y, r: 40, a: 0, life: 0.3, max: 0.3 });
+    g.fx.push({ kind: 'pic', pic: 'plasma-burst', top: true, x: e.x, y: e.y, r: 40, a: rand(0, 6), life: 0.35, max: 0.35 });
     for (const o of live(g)) {
       if (o === e || dist(o, e) > 40 + o.r) continue;
       o.burn = Math.max(o.burn, 2);
@@ -1004,13 +1005,16 @@ function fuse(g: Game, e: Enemy, s: Shot, fusion: Fusion) {
     }
   } else if (fusion === 'frostbite') {
     // Spectral frost: every bug the arrow goes through freezes for a moment (bosses only slow).
+    if (e.slow < 0.2 && g.fx.filter((f) => f.pic === 'ice-block').length < 10) {
+      g.fx.push({ kind: 'pic', pic: 'ice-block', top: true, x: e.x, y: e.y, r: e.r + 6, a: 0, life: 0.5, max: 0.5 });
+    }
     e.slow = Math.max(e.slow, 0.5);
     e.slowBy = e.kind === 'boss' ? Math.max(e.slowBy, 0.6) : 1;
   } else if (fusion === 'spectral') {
     // Spectral storm: each bug the arrow goes through calls a bolt from the sky (the first two).
     if (s.hits.size <= 2) {
-      g.fx.push({ kind: 'strike', x: e.x, y: e.y, r: 22, a: 0, life: 0.25, max: 0.25 });
-      g.zaps.push({ pts: zigzag({ x: e.x + rand(-16, 16), y: e.y - 200 }, e, 12), life: 0.2 });
+      // The owner's violet bolt, standing on the bug (its foot is low in the picture).
+      g.fx.push({ kind: 'pic', pic: 'spectral-bolt', top: true, x: e.x, y: e.y - 22, r: 28, a: 0, life: 0.3, max: 0.3 });
       for (const o of live(g)) if (dist(o, e) < 22 + o.r) hurt(g, o, s.dmg * 0.35);
     }
   }
@@ -1032,7 +1036,10 @@ function chain(g: Game, from: Enemy, jumps: number, amount: number) {
     if (!next) break;
     touched.add(next.id);
     g.zaps.push({ pts: zigzag(at, next), life: 0.18 });
-    hurt(g, next, shock && next.slow > 0 ? amount * 2 : amount);
+    if (shock && next.slow > 0) {
+      if (g.fx.filter((f) => f.pic === 'shock-ring').length < 8) g.fx.push({ kind: 'pic', pic: 'shock-ring', top: true, x: next.x, y: next.y, r: next.r + 10, a: rand(0, 6), life: 0.3, max: 0.3 });
+      hurt(g, next, amount * 2);
+    } else hurt(g, next, amount);
     at = next;
   }
 }
