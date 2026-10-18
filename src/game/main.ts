@@ -1,15 +1,15 @@
 import './game.css';
 import { storage } from '../lib/storage';
 import { audio, type Sfx } from './audio';
-import { draw, drawRetroFigure, type Palette, type View } from './draw';
+import { draw, drawRetroFigure, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, cleanName, loadSave, profileLevel, writeSave, STYLES, SKINS, type EnemyStyle, type HeroSkin } from './save';
 import type { Mode } from './world';
 import { ARMOUR_SLOTS, ITEMS, type SpiritSkin, SLOTS, UPGRADES, WEAPON_SLOTS, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
 import { Scene } from './scene';
 import { makeT, pickLang, type Key } from './strings';
 import {
-  CATEGORY, EVO_PARTNER, H, REVIVE_PRICE, SKILLS, bladeElement, bladeOptions, canEvolve, evoOf, maxLevel, pickBlade, pickSpirit, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
-  type Category, type Choice, type Game, type GameEvent, type Input, type Look, type SkillId, type WheelOutcome,
+  CATEGORY, EVO_PARTNER, H, REVIVE_PRICE, SKILLS, arrowLook, arrowOptions, bladeElement, bladeOptions, canEvolve, evoOf, maxLevel, pickArrow, pickBlade, pickSpirit, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
+  type ArrowLook, type Category, type Choice, type Game, type GameEvent, type Input, type Look, type SkillId, type WheelOutcome,
 } from './world';
 
 /* Bug Hunter's page: the menus (play, shop, enemy looks, options), input
@@ -651,6 +651,7 @@ function stylesScreen(note = '') {
 
 function startRun(world = save.world, mode = save.mode) {
   game = newGame(buildLoadout(save.equipped, save.upgrades), save.style, world, mode);
+  preloadFx();
   paused = false;
   shownChoices = '';
   wheelShown = false;
@@ -881,6 +882,12 @@ function bladeChips(g: Game) {
   const now = bladeElement(g);
   return `<div class="gp-chips" role="group" aria-label="${t('gearBladePick')}">${opts.map((el) => `<button type="button" class="gp-chip${el === now ? ' is-on' : ''}" data-blade="${el}" aria-pressed="${el === now}" title="${bladeName(el)}"><img src="./images/game/blades/${el}.webp" alt="${bladeName(el)}" width="28" height="28"></button>`).join('')}</div>`;
 }
+function arrowChips(g: Game) {
+  const opts = arrowOptions(g);
+  if (opts.length < 2) return '';
+  const now = arrowLook(g);
+  return `<div class="gp-chips" role="group" aria-label="${t('gearArrowPick')}">${opts.map((el) => `<button type="button" class="gp-chip${el === now ? ' is-on' : ''}" data-arrow="${el}" aria-pressed="${el === now}" title="${t(`${el}Name` as Key)}"><img src="./images/game/skills/${el}.webp" alt="${t(`${el}Name` as Key)}" width="28" height="28"></button>`).join('')}</div>`;
+}
 function spiritChips(g: Game) {
   const opts = ownedSpirits();
   if (opts.length < 2) return '';
@@ -892,6 +899,7 @@ gearPanel.addEventListener('click', (event) => {
   if (!target || !game) return;
   if (target.classList.contains('gp-close')) { closeGearPanel(); return; }
   if (target.dataset.blade) pickBlade(game, target.dataset.blade as Parameters<typeof pickBlade>[1]);
+  else if (target.dataset.arrow) pickArrow(game, target.dataset.arrow as ArrowLook);
   else if (target.dataset.spirit) pickSpirit(game, target.dataset.spirit as SpiritSkin);
   else return;
   audio.play('pick');
@@ -923,7 +931,7 @@ function renderGearPanel(g: Game) {
     const level = id === 'bow' ? '' : evolved ? `★ ${t('evoLabel')}` : max > 50 ? t('gearLevelOnly', { level: lv }) : t('gearLevel', { level: lv, max });
     const partner = id !== 'bow' && !evolved ? EVO_PARTNER[id] : undefined;
     const hint = partner ? `<small class="gp-evo${canEvolve(g, id as SkillId) ? ' is-ready' : ''}">★ ${t('evoWith', { skill: t(`${partner}Name` as Key) })}</small>` : '';
-    return `<li${evolved ? ' class="is-evo"' : ''}><span class="gp-icon">${skillIcon(id, 34, iconFile(g, id))}</span><span class="gp-copy"><b>${skillName(g, id)}</b><small>${skillText(g, id)}</small>${hint}</span>${level ? `<em>${level}</em>` : ''}${id === 'blades' ? bladeChips(g) : id === 'spirits' ? spiritChips(g) : ''}</li>`;
+    return `<li${evolved ? ' class="is-evo"' : ''}><span class="gp-icon">${skillIcon(id, 34, iconFile(g, id))}</span><span class="gp-copy"><b>${skillName(g, id)}</b><small>${skillText(g, id)}</small>${hint}</span>${level ? `<em>${level}</em>` : ''}${id === 'blades' ? bladeChips(g) : id === 'spirits' ? spiritChips(g) : id === 'bow' ? arrowChips(g) : ''}</li>`;
   };
   const weapons = ['bow' as const, ...ownedWeapons(g)];
   const upgrades = SKILLS.filter((s) => CATEGORY[s] === 'upgrade' && g.skills[s] > 0);
