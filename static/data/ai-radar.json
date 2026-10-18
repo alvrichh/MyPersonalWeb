@@ -1,11 +1,23 @@
 {
-  "generatedAt": "2026-10-17T11:56:28.567Z",
-  "date": "2026-10-17",
+  "generatedAt": "2026-10-18T12:24:17.849Z",
+  "date": "2026-10-18",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
   "portfolioAngle": "Use these signals to decide whether new AI/agent capabilities deserve a future portfolio card.",
   "items": [
+    {
+      "title": "Websites are closing their doors to AI agents",
+      "source": "The Verge AI",
+      "date": "2026-10-17",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1013195/ai-agents-blocked-web",
+      "summary": "Autonomous agents are the hottest thing in AI. OpenAI, Meta, Google, Instinct, and others promise their agents can scour the internet on your behalf, doing anything from booking a dinner reservation and cleaning out your...",
+      "tags": [
+        "Agents",
+        "ChatGPT"
+      ],
+      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2025/03/STK414_AI_CVIRGINIA_C.jpg?quality=90&strip=all&crop=0,0,100,100"
+    },
     {
       "title": "OpenAI models hacked a crypto wallet and breached more websites",
       "source": "Ars Technica AI",
@@ -238,18 +250,6 @@
         "Models"
       ],
       "image": "https://simonwillison.net/2026/Oct/15/chirp-pong/"
-    },
-    {
-      "title": "ChatGPT can peek at your Chrome tabs now",
-      "source": "The Verge AI",
-      "date": "2026-10-15",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1012510/openai-chatgpt-google-chrome-tabs",
-      "summary": "OpenAI's ChatGPT Atlas browser is gone, but now ChatGPT's Google Chrome extension is getting some upgrades that allow it to use the browser tabs you already have open. With the extension installed, OpenAI says ChatGPT ca...",
-      "tags": [
-        "ChatGPT",
-        "Multimodal"
-      ],
-      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/10/Screenshot-2026-10-15-at-6.35.44-PM.png?quality=90&strip=all&crop=0,0,100,100"
     }
   ],
   "candidates": [
@@ -258,6 +258,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Websites are closing their doors to AI agents",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1013195/ai-agents-blocked-web",
+          "date": "2026-10-17"
+        },
         {
           "title": "Building trust in AI agents: A production-ready evaluation framework with Amazon Bedrock AgentCore",
           "source": "AWS Machine Learning",
@@ -268,12 +274,6 @@
           "title": "Introducing Reflection Beam: an open-weight model for agentic coding on AWS",
           "source": "AWS Machine Learning",
           "link": "https://aws.amazon.com/blogs/machine-learning/introducing-reflection-beam-an-open-weight-model-for-agentic-coding-on-aws/",
-          "date": "2026-10-16"
-        },
-        {
-          "title": "Code, Test, and Deploy on One Machine with NVIDIA RTX Spark",
-          "source": "NVIDIA Developer",
-          "link": "https://developer.nvidia.com/blog/code-test-and-deploy-on-one-machine-with-nvidia-rtx-spark/",
           "date": "2026-10-16"
         }
       ]
