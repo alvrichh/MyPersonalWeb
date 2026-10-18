@@ -416,6 +416,7 @@ function startRun(world = save.world) {
   hud.hidden = false;
   hudGear.hidden = false;
   hide();
+  hudRoom.style.setProperty('--icon', JSON.stringify(WORLD_ICON[game.world - 1]));
   resize(); // Reserve the live HUD + weapons row, including the iOS safe area.
   flash(`${worldName(game.world)} · ${t('sprint', { room: 1 })}`);
   audio.start();
