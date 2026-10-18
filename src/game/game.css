@@ -674,13 +674,35 @@ body {
   overflow: visible;
 }
 
-.map .trail {
+.map .leg {
   fill: none;
-  stroke: rgba(255, 255, 255, 0.18);
-  stroke-width: 1.6;
-  stroke-dasharray: 2 2;
+  stroke-width: 1.7;
   stroke-linecap: round;
   stroke-linejoin: round;
+  opacity: 0.85;
+}
+
+.map .leg.is-locked {
+  stroke: rgba(255, 255, 255, 0.16) !important;
+  stroke-dasharray: 1 2.2;
+}
+
+.map .glow {
+  opacity: 0.16;
+  filter: blur(4px);
+}
+
+.map .glow.is-locked {
+  opacity: 0.04;
+}
+
+.map .deco {
+  pointer-events: none;
+}
+
+.map .is-locked .deco {
+  opacity: 0.22;
+  filter: grayscale(1);
 }
 
 .map .stop {
