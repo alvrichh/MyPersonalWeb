@@ -1,6 +1,6 @@
 import { H, W, WALL, WHEEL_X, WORLDS, frostReach, isBossRoom, type Enemy, type Game, type Look, type Statue, type Rect, type Vec, arrowLook, bladeCount, bladeElement, bladeOrbit, bladeScale, type BladeElement } from './world';
 import { SPIRIT_COLOR, type ItemId, type SpiritSkin } from './shop';
-import type { HeroSkin } from './save';
+import { heroKey, type HeroSkin } from './save';
 
 /* Bug Hunter's renderer: everything is drawn in room units (360 × 600) and
    scaled to fit the screen. The accent colours are the player's. */
@@ -248,16 +248,15 @@ function drawStatue(ctx: CanvasRenderingContext2D, st: Statue, glow: string, now
 }
 
 /* The hero: the owner's painted figure, one picture per pose, in two skins
-   (boy, robot) each with the head item worn: the hats are painted on, so
-   nothing is drawn over the sprite. Feet on the shadow, flipped to face
+   (boy, robot, kitty) each with the head item worn: the hats are painted
+   on, so nothing is drawn over the sprite (Kitty has no hat versions). Feet on the shadow, flipped to face
    left; one walking frame alternates with the idle one for a step cycle.
    The circle in world.ts is still what collides. */
 type Pose = 'idle' | 'walk' | 'back' | 'shoot' | 'cheer';
 const POSES: Pose[] = ['idle', 'walk', 'back', 'shoot', 'cheer'];
-const HAT_SET: Partial<Record<ItemId, string>> = { wizardHat: 'wizard', gladHelm: 'helm', bandana: 'bandana' };
 const heroSets = new Map<string, Record<Pose, HTMLImageElement>>();
 function heroSet(skin: HeroSkin, hat?: ItemId) {
-  const key = `${skin}-${(hat && HAT_SET[hat]) || 'base'}`;
+  const key = heroKey(skin, hat);
   let set = heroSets.get(key);
   if (!set) {
     set = Object.fromEntries(POSES.map((pose) => {
