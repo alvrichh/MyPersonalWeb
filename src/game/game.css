@@ -577,13 +577,19 @@ body {
   height: auto;
 }
 
-/* The level-up crest has no plate: its words go underneath. */
+/* The level-up and pause crests have no plate: their words go underneath. */
 .ui-head.is-levelup {
   width: min(58%, 210px);
   margin-bottom: -4px;
 }
 
-.ui-head.is-levelup span {
+.ui-head.is-pause {
+  width: min(70%, 260px);
+  margin-bottom: -4px;
+}
+
+.ui-head.is-levelup span,
+.ui-head.is-pause span {
   position: static;
   display: block;
   margin-top: -10px;
