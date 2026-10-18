@@ -1,4 +1,4 @@
-import { BLADE_ORBIT, H, W, WALL, WHEEL_X, WORLDS, frostReach, isBossRoom, type Enemy, type Game, type Look, type Statue } from './world';
+import { BLADE_ORBIT, H, W, WALL, WHEEL_X, WORLDS, frostReach, isBossRoom, type Enemy, type Game, type Look, type Statue, type Rect, type Vec } from './world';
 import { SPIRIT_COLOR, type ItemId, type SpiritSkin } from './shop';
 import type { HeroSkin } from './save';
 
@@ -7,7 +7,8 @@ import type { HeroSkin } from './save';
 
 export type Palette = { accent: string; accent2: string; ink: string; rainbow: boolean; hat?: ItemId; body?: ItemId; boots?: ItemId; skin?: HeroSkin; retro?: boolean };
 
-export type View = { scale: number; ox: number; oy: number; dpr: number };
+/** How room units map to the canvas; `cx`/`cy` is the middle of the playfield (the camera's seat on call) and `w`/`h` the canvas size, in CSS pixels. */
+export type View = { scale: number; ox: number; oy: number; dpr: number; cx: number; cy: number; w: number; h: number };
 
 
 const hue = (t: number, l = 70, s = 85) => `hsl(${Math.round((t * 60) % 360)} ${s}% ${l}%)`;
@@ -25,6 +26,7 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   const accent = pal.rainbow ? hue(now) : pal.accent;
   const accent2 = pal.rainbow ? hue(now + 1.5) : pal.accent2;
   const { scale, ox, oy, dpr } = view;
+  const horde = g.mode === 'horde';
 
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx.fillStyle = '#07090f';
@@ -33,14 +35,23 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   const shake = g.shake > 0 ? g.shake * 10 : 0;
   const sx = shake ? (Math.random() - 0.5) * shake : 0;
   const sy = shake ? (Math.random() - 0.5) * shake : 0;
-  ctx.setTransform(dpr * scale, 0, 0, dpr * scale, dpr * (ox + sx), dpr * (oy + sy));
+  // On call the camera rides on the hero; the room sits where resize() put it.
+  const p = g.player;
+  if (horde) ctx.setTransform(dpr * scale, 0, 0, dpr * scale, dpr * (view.cx - p.x * scale + sx), dpr * (view.cy - p.y * scale + sy));
+  else ctx.setTransform(dpr * scale, 0, 0, dpr * scale, dpr * (ox + sx), dpr * (oy + sy));
+  // What the canvas shows, in room units (the whole room when it isn't scrolling).
+  const vis: Rect = horde
+    ? { x: p.x - view.cx / scale, y: p.y - view.cy / scale, w: view.w / scale, h: view.h / scale }
+    : { x: 0, y: 0, w: W, h: H };
+  const onScreen = (o: Vec, pad: number) => o.x > vis.x - pad && o.x < vis.x + vis.w + pad && o.y > vis.y - pad && o.y < vis.y + vis.h + pad;
 
-  drawRoom(ctx, g, accent, now);
+  if (horde) drawField(ctx, g, vis, now);
+  else drawRoom(ctx, g, accent, now);
   drawHazards(ctx, g, now);
   drawGems(ctx, g, now);
   if (g.skills.frost) drawFrost(ctx, g, now);
   drawFx(ctx, g, accent, 'under');
-  for (const e of g.enemies) drawEnemy(ctx, e, now);
+  for (const e of g.enemies) if (onScreen(e, 80)) drawEnemy(ctx, e, now);
   drawOrbs(ctx, g);
   drawShots(ctx, g, accent, accent2);
   drawFireballs(ctx, g);
@@ -59,7 +70,51 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
     ctx.fill();
   }
   ctx.globalAlpha = 1;
-  if (g.hazard === 'fog') drawFog(ctx, g);
+  if (g.hazard === 'fog') drawFog(ctx, g, vis);
+}
+
+/* On call: the open field. The world's arena floor has painted walls round
+   it, so only its plain middle is tiled, mirrored tile by tile so the seams
+   join; flat tiles in retro. The field has no edge: whatever the canvas
+   shows gets floor. */
+const FLOOR_CROP = { x: 0.21, y: 0.16, w: 0.58, h: 0.68 };
+function drawField(ctx: CanvasRenderingContext2D, g: Game, vis: Rect, now: number) {
+  const theme = WORLDS[g.world - 1];
+  const floor = retroLook ? undefined : floorImage(g.world);
+  const tw = W * FLOOR_CROP.w;
+  const th = H * FLOOR_CROP.h;
+  ctx.fillStyle = theme.floor;
+  ctx.fillRect(vis.x, vis.y, vis.w, vis.h);
+  if (floor && floor.complete && floor.naturalWidth) {
+    const sx = floor.naturalWidth * FLOOR_CROP.x;
+    const sy = floor.naturalHeight * FLOOR_CROP.y;
+    const sw = floor.naturalWidth * FLOOR_CROP.w;
+    const sh = floor.naturalHeight * FLOOR_CROP.h;
+    const i0 = Math.floor(vis.x / tw);
+    const j0 = Math.floor(vis.y / th);
+    for (let i = i0; i * tw < vis.x + vis.w; i++) {
+      for (let j = j0; j * th < vis.y + vis.h; j++) {
+        ctx.save();
+        ctx.translate(i * tw + tw / 2, j * th + th / 2);
+        ctx.scale(i & 1 ? -1 : 1, j & 1 ? -1 : 1);
+        ctx.drawImage(floor, sx, sy, sw, sh, -tw / 2, -th / 2, tw + 0.5, th + 0.5);
+        ctx.restore();
+      }
+    }
+  } else {
+    ctx.strokeStyle = theme.grid;
+    ctx.lineWidth = 1;
+    const step = 36;
+    for (let x = Math.floor(vis.x / step) * step; x < vis.x + vis.w; x += step) { ctx.beginPath(); ctx.moveTo(x, vis.y); ctx.lineTo(x, vis.y + vis.h); ctx.stroke(); }
+    for (let y = Math.floor(vis.y / step) * step; y < vis.y + vis.h; y += step) { ctx.beginPath(); ctx.moveTo(vis.x, y); ctx.lineTo(vis.x + vis.w, y); ctx.stroke(); }
+  }
+  // A faint pulse round the hero marks where the bugs are drawn to.
+  const pulse = 0.05 + Math.sin(now * 2) * 0.02;
+  const ring = ctx.createRadialGradient(g.player.x, g.player.y, 40, g.player.x, g.player.y, 160);
+  ring.addColorStop(0, `rgba(255,255,255,${pulse})`);
+  ring.addColorStop(1, 'rgba(255,255,255,0)');
+  ctx.fillStyle = ring;
+  ctx.fillRect(g.player.x - 160, g.player.y - 160, 320, 320);
 }
 
 function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
@@ -2161,12 +2216,12 @@ function drawStrikes(ctx: CanvasRenderingContext2D, g: Game, now: number) {
   }
 }
 
-function drawFog(ctx: CanvasRenderingContext2D, g: Game) {
+function drawFog(ctx: CanvasRenderingContext2D, g: Game, vis: Rect) {
   const p = g.player;
   const grad = ctx.createRadialGradient(p.x, p.y, 70, p.x, p.y, 200);
   grad.addColorStop(0, 'rgba(8,9,15,0)');
   grad.addColorStop(0.6, 'rgba(8,9,15,0.6)');
   grad.addColorStop(1, 'rgba(8,9,15,0.86)');
   ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, W, H);
+  ctx.fillRect(vis.x, vis.y, vis.w, vis.h);
 }

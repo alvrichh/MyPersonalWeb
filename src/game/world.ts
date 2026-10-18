@@ -18,6 +18,16 @@ export const W = 360;
 export const H = 600;
 export const WALL = 16;
 export const ROOMS = 12;
+
+/*
+ * Two ways to play. Sprints is the room-by-room game above. On call
+ * ("Guardia") is the Survivor.io take: an open field that scrolls with you,
+ * bugs pouring in from every side for ten minutes, a boss at minute five and
+ * the final one at minute ten; kill it to win. Same weapons, same level-ups.
+ */
+export type Mode = 'sprints' | 'horde';
+export const HORDE_LENGTH = 600;
+export const HORDE_BOSS_AT = [300, HORDE_LENGTH];
 const DOOR_HALF = 32;
 /** Shrine rooms: no enemies, a statue that offers health or a skill. */
 export const SHRINE_ROOMS = [5, 11];
@@ -208,7 +218,14 @@ export type Statue = { x: number; y: number; used: boolean };
 
 export type Game = {
   world: number;
+  mode: Mode;
   room: number;
+  /** On call: seconds to the next spawn, bosses summoned so far, seconds to the next hazard patch. */
+  hordeSpawn: number;
+  hordeBoss: number;
+  hordeHazard: number;
+  /** On call: half the visible field, in room units, set by the page so bugs spawn just out of sight. */
+  viewHalf: Vec;
   phase: 'play' | 'levelup' | 'wheel' | 'shrine' | 'over' | 'won';
   statue: Statue | null;
   /** The second, mysterious door is open in this room. */
@@ -260,7 +277,7 @@ export type Game = {
 
 export type GameEvent =
   | 'clear' | 'boss' | 'hurt' | 'levelup' | 'room' | 'revive' | 'heal' | 'wheel' | 'shrine'
-  | 'shoot' | 'knife' | 'boomerang' | 'orb' | 'hit' | 'kill' | 'gem' | 'slash' | 'slam' | 'strike' | 'boom';
+  | 'shoot' | 'knife' | 'boomerang' | 'orb' | 'hit' | 'kill' | 'gem' | 'slash' | 'slam' | 'strike' | 'boom' | 'minute';
 
 /* ------------------------------------------------------------------ helpers */
 
@@ -308,11 +325,15 @@ export function blocked(a: Vec, b: Vec, obstacles: Rect[], pad = 0) {
   return false;
 }
 
-function keepInRoom(c: { x: number; y: number; r: number }, obstacles: Rect[]) {
-  c.x = clamp(c.x, WALL + c.r, W - WALL - c.r);
-  c.y = clamp(c.y, WALL + c.r, H - WALL - c.r);
-  for (const o of obstacles) pushOut(c, o);
+function keepInRoom(g: Game, c: { x: number; y: number; r: number }) {
+  if (g.mode === 'sprints') {
+    c.x = clamp(c.x, WALL + c.r, W - WALL - c.r);
+    c.y = clamp(c.y, WALL + c.r, H - WALL - c.r);
+  }
+  for (const o of g.obstacles) pushOut(c, o);
 }
+/** Inside the room's walls; the open field has none. */
+const outside = (g: Game, v: Vec) => g.mode === 'sprints' && (v.x < WALL || v.x > W - WALL || v.y < WALL || v.y > H - WALL);
 
 const live = (g: Game) => g.enemies.filter((e) => !e.dead && e.spawn <= 0);
 
@@ -361,12 +382,15 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
   const wanted = g.style === 'world' ? WORLDS[g.world - 1].look : g.style;
   const look: Look = wanted === 'random' ? randomLook() : wanted;
   const worldUp = 1 + (g.world - 1) * 0.25;
-  const tough = (1 + (stageOf(room) - 1) * 0.095) * worldUp;
+  const horde = g.mode === 'horde';
+  // On call: bugs harden with the clock instead of the room.
+  const tough = (horde ? 1 + (g.time / 60) * 0.2 : 1 + (stageOf(room) - 1) * 0.095) * worldUp;
+  const bossHp = horde ? (g.hordeBoss >= 2 ? 4200 : 1800) * (1 + (g.time / 60) * 0.08) : room === ROOMS ? 2200 : 1000;
   const base = {
     bug: { r: 12, hp: 40, speed: 72, dmg: 10, xp: 6 },
     ticket: { r: 14, hp: 60, speed: 46, dmg: 12, xp: 8 },
     legacy: { r: 20, hp: 170, speed: 34, dmg: 20, xp: 14 },
-    boss: { r: 40, hp: room === ROOMS ? 2200 : 1000, speed: 40, dmg: 22, xp: 70 },
+    boss: { r: 40, hp: bossHp, speed: 40, dmg: 22, xp: 70 },
   }[kind];
   const hp = Math.round(base.hp * (kind === 'boss' ? worldUp * g.bossHpMult : tough));
   return {
@@ -379,7 +403,7 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
     r: base.r,
     hp,
     maxHp: hp,
-    speed: base.speed * (1 + (g.world - 1) * 0.03),
+    speed: base.speed * (1 + (g.world - 1) * 0.03) * (horde && kind !== 'boss' ? 1 + (g.time / 60) * 0.02 : 1),
     dmg: Math.round(base.dmg * (1 + (g.world - 1) * 0.1)),
     xp: base.xp,
     spawn,
@@ -483,10 +507,15 @@ function enterRoom(g: Game, room: number) {
   }
 }
 
-export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'world', world = 1): Game {
+export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'world', world = 1, mode: Mode = 'sprints'): Game {
   const g: Game = {
     world: clamp(world, 1, WORLD_COUNT),
+    mode,
     room: 1,
+    hordeSpawn: 1.5,
+    hordeBoss: 0,
+    hordeHazard: 6,
+    viewHalf: { x: W / 2, y: H / 2 },
     phase: 'play',
     statue: null,
     wheelDoor: false,
@@ -530,9 +559,95 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     events: [],
   };
   for (const s of loadout.startSkills) g.skills[s] = Math.max(g.skills[s], 1);
-  enterRoom(g, 1);
+  if (mode === 'horde') startField(g);
+  else enterRoom(g, 1);
   g.events = [];
   return g;
+}
+
+/* ------------------------------------------------------------------ on call */
+
+/** The open field: the hero in the middle of nowhere, the world's weather, and the first bugs on their way. */
+function startField(g: Game) {
+  g.obstacles = [];
+  g.player.x = 0;
+  g.player.y = 0;
+  const def = WORLDS[g.world - 1];
+  g.hazard = def.hazard === 'mixed' ? 'lava' : def.hazard;
+  g.hazards = [];
+  g.strikes = [];
+  g.strikeIn = 3;
+  for (let i = 0; i < 4; i++) g.enemies.push(makeEnemy(g, 'bug', 1, ringSpot(g, 0.75), rand(0.6, 1.4)));
+  g.events.push('room');
+}
+
+/** A point on a ring round the hero, just past the edge of what the page shows (`k` scales it). */
+function ringSpot(g: Game, k = 1): Vec {
+  const p = g.player;
+  const a = rand(0, Math.PI * 2);
+  const r = (Math.hypot(g.viewHalf.x, g.viewHalf.y) + 40) * k;
+  return { x: p.x + Math.cos(a) * r, y: p.y + Math.sin(a) * r };
+}
+
+/** Ten minutes of bugs: the spawns speed up, the kinds widen, bosses come at 5:00 and 10:00. */
+function updateHorde(g: Game, dt: number) {
+  const minute = g.time / 60;
+  const before = Math.floor((g.time - dt) / 60);
+  if (Math.floor(minute) > before && g.time < HORDE_LENGTH) {
+    g.coins += 5 * worldPay(g);
+    g.events.push('minute');
+  }
+  // Bosses: summoned once each when their minute comes.
+  if (g.hordeBoss < HORDE_BOSS_AT.length && g.time >= HORDE_BOSS_AT[g.hordeBoss]) {
+    g.hordeBoss += 1;
+    const boss = makeEnemy(g, 'boss', 1, ringSpot(g, 0.6), 1.5);
+    g.enemies.push(boss);
+    g.events.push('boss');
+  }
+  const bossOut = g.enemies.some((e) => e.kind === 'boss' && !e.dead);
+  // Regular spawns, lighter while a boss is about.
+  g.hordeSpawn -= dt;
+  const alive = g.enemies.length;
+  const cap = Math.min(64, 30 + Math.floor(minute * 4));
+  if (g.hordeSpawn <= 0) {
+    g.hordeSpawn = Math.max(0.5, 1.7 - minute * 0.12) * (bossOut ? 1.8 : 1);
+    const group = 1 + Math.floor(minute / 2) + (Math.random() < 0.4 ? 1 : 0);
+    // Tickets are the dangerous ones (they keep away and throw), so only a few at a time.
+    let tickets = g.enemies.filter((e) => e.kind === 'ticket').length;
+    const ticketCap = 3 + Math.floor(minute);
+    for (let i = 0; i < group && alive + i < cap; i++) {
+      const roll = Math.random();
+      let kind: EnemyKind = minute >= 2.5 && roll < 0.1 ? 'legacy' : minute >= 1.5 && roll < 0.28 ? 'ticket' : 'bug';
+      if (kind === 'ticket' && tickets >= ticketCap) kind = 'bug';
+      if (kind === 'ticket') tickets += 1;
+      g.enemies.push(makeEnemy(g, kind, 1, ringSpot(g), rand(0.5, 1.1)));
+    }
+  }
+  // Stragglers left far behind are brought round to the front, so the horde stays with you.
+  const far = Math.hypot(g.viewHalf.x, g.viewHalf.y) * 2.2;
+  for (const e of g.enemies) {
+    if (e.kind !== 'boss' && dist(e, g.player) > far) {
+      const at = ringSpot(g);
+      e.x = at.x;
+      e.y = at.y;
+    }
+  }
+  // The world's weather follows you: a fresh patch now and then, old ones far away forgotten.
+  if (g.hazard === 'lava' || g.hazard === 'puddle' || g.hazard === 'thorns') {
+    g.hordeHazard -= dt;
+    if (g.hordeHazard <= 0) {
+      g.hordeHazard = rand(4, 7);
+      const r = g.hazard === 'thorns' ? rand(14, 20) : g.hazard === 'puddle' ? rand(30, 48) : rand(22, 38);
+      const at = ringSpot(g, rand(0.45, 0.9));
+      g.hazards.push({ kind: g.hazard, x: at.x, y: at.y, r });
+    }
+    g.hazards = g.hazards.filter((h) => dist(h, g.player) < far);
+  }
+  // Gems nobody will go back for are banked, so the field doesn't fill up.
+  if (g.gems.length > 160) {
+    g.gems.sort((a, b) => dist(a, g.player) - dist(b, g.player));
+    for (const gem of g.gems.splice(120)) gainXp(g, gem.value);
+  }
 }
 
 /* ------------------------------------------------------------------- level up */
@@ -586,7 +701,8 @@ function gainXp(g: Game, amount: number) {
   while (g.xp >= g.xpNext) {
     g.xp -= g.xpNext;
     g.level += 1;
-    g.xpNext += 15;
+    // On call rains XP, so its levels climb geometrically (about twenty in a full shift).
+    g.xpNext = g.mode === 'horde' ? Math.round(g.xpNext * 1.22) : g.xpNext + 15;
     g.pendingLevels += 1;
     g.events.push('levelup');
   }
@@ -929,12 +1045,16 @@ function useWeapons(g: Game, dt: number) {
   if (!fighting) return;
 
   // Ranged: only while standing still, at the nearest bug in plain sight.
-  if (!p.moving) {
+  // On call never lets you stand for long, so there they fire on the move
+  // too, at a little over half the rate: stopping is still worth it.
+  const onTheMove = p.moving && g.mode === 'horde';
+  if (!p.moving || onTheMove) {
+    const slow = onTheMove ? 1.8 : 1;
     const target = nearest(g, p, true);
     if (target) {
-      if (gear.bow === 0) { fireBow(g, target); gear.bow = 1 / (2 * haste(g)); g.events.push('shoot'); }
-      if (sk.knives && gear.knives === 0) { fireKnives(g, target); gear.knives = (1.2 - 0.15 * (sk.knives - 1)) / haste(g); g.events.push('knife'); }
-      if (sk.boomerang && gear.boomerang === 0) { fireBoomerang(g, target); gear.boomerang = (2 - 0.25 * (sk.boomerang - 1)) / haste(g); g.events.push('boomerang'); }
+      if (gear.bow === 0) { fireBow(g, target); gear.bow = slow / (2 * haste(g)); g.events.push('shoot'); }
+      if (sk.knives && gear.knives === 0) { fireKnives(g, target); gear.knives = (slow * (1.2 - 0.15 * (sk.knives - 1))) / haste(g); g.events.push('knife'); }
+      if (sk.boomerang && gear.boomerang === 0) { fireBoomerang(g, target); gear.boomerang = (slow * (2 - 0.25 * (sk.boomerang - 1))) / haste(g); g.events.push('boomerang'); }
     }
   }
   // Melee and magic: always.
@@ -1057,7 +1177,7 @@ function updateEnemy(g: Game, e: Enemy, dt: number) {
   e.y += my * e.speed * slowFactor * dt + e.ky * dt;
   e.kx *= Math.pow(0.002, dt);
   e.ky *= Math.pow(0.002, dt);
-  keepInRoom(e, g.obstacles);
+  keepInRoom(g, e);
   // Barely moved although it wanted to: a rack (or a wall, mid-detour) is in
   // the way. Go round it, trying the other side each time it gets stuck.
   if (e.kind !== 'boss' && want > 0.2 && Math.hypot(e.x - fromX, e.y - fromY) < want * 0.35) {
@@ -1069,7 +1189,7 @@ function updateEnemy(g: Game, e: Enemy, dt: number) {
 }
 
 function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
-  const final = g.room === ROOMS;
+  const final = g.mode === 'horde' ? g.hordeBoss >= 2 : g.room === ROOMS;
   // Radial burst of orbs, turning a little every time.
   e.cd -= dt;
   if (e.cd <= 0) {
@@ -1096,12 +1216,12 @@ function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
       e.dir = { x: ux, y: uy };
     }
   }
-  // Calls for backup.
+  // Calls for backup (on call, only while the field has room).
   e.cd3 -= dt;
-  if (e.cd3 <= 0) {
+  if (e.cd3 <= 0 && (g.mode === 'sprints' || g.enemies.length < 56)) {
     e.cd3 = final ? 6 : 10;
     for (const side of [-1, 1]) {
-      g.enemies.push(makeEnemy(g, 'bug', g.room, { x: clamp(e.x + side * 60, 40, W - 40), y: e.y + 30 }, 0.6));
+      g.enemies.push(makeEnemy(g, 'bug', g.room, { x: g.mode === 'horde' ? e.x + side * 60 : clamp(e.x + side * 60, 40, W - 40), y: e.y + 30 }, 0.6));
     }
   }
 }
@@ -1128,8 +1248,8 @@ function updateShot(g: Game, s: Shot, dt: number): boolean {
   s.y += s.vy * dt;
 
   // Walls and racks: bounce (sparks), pass (ghost, boomerang) or stop.
-  const hitWallX = s.x < WALL || s.x > W - WALL;
-  const hitWallY = s.y < WALL || s.y > H - WALL;
+  const hitWallX = g.mode === 'sprints' && (s.x < WALL || s.x > W - WALL);
+  const hitWallY = g.mode === 'sprints' && (s.y < WALL || s.y > H - WALL);
   if (hitWallX || hitWallY) {
     if (s.kind === 'boomerang') {
       s.x = clamp(s.x, WALL, W - WALL);
@@ -1184,10 +1304,12 @@ function updateHazards(g: Game, dt: number) {
   // in the circle, bugs included.
   g.strikeIn -= dt;
   if (g.strikeIn <= 0) {
-    g.strikeIn = Math.max(1.4, 3 - g.room * 0.12);
+    g.strikeIn = g.mode === 'horde' ? Math.max(2.2, 4.5 - (g.time / 60) * 0.25) : Math.max(1.4, 3 - g.room * 0.12);
     const a = rand(0, Math.PI * 2);
     const d = rand(0, 110);
-    g.strikes.push({ x: clamp(p.x + Math.cos(a) * d, WALL + 30, W - WALL - 30), y: clamp(p.y + Math.sin(a) * d, WALL + 30, H - WALL - 30), t: 0.9 });
+    const at = { x: p.x + Math.cos(a) * d, y: p.y + Math.sin(a) * d };
+    if (g.mode === 'sprints') { at.x = clamp(at.x, WALL + 30, W - WALL - 30); at.y = clamp(at.y, WALL + 30, H - WALL - 30); }
+    g.strikes.push({ x: at.x, y: at.y, t: 0.9 });
   }
   g.strikes = g.strikes.filter((st) => {
     st.t -= dt;
@@ -1313,7 +1435,7 @@ export function update(g: Game, dt: number, input: Input) {
     g.phase = 'shrine';
     return;
   }
-  const atWheel = g.wheelDoor && Math.abs(p.x - WHEEL_X) < DOOR_HALF - 4 && p.y - p.r < WALL + 6;
+  const atWheel = g.mode === 'sprints' && g.wheelDoor && Math.abs(p.x - WHEEL_X) < DOOR_HALF - 4 && p.y - p.r < WALL + 6;
   if (atWheel) {
     g.wheelDoor = false;
     g.wheelUsed = true;
@@ -1321,7 +1443,7 @@ export function update(g: Game, dt: number, input: Input) {
     g.events.push('wheel');
     return;
   }
-  const atDoor = g.door && Math.abs(p.x - W / 2) < DOOR_HALF - 4 && p.y - p.r < WALL + 6;
+  const atDoor = g.mode === 'sprints' && g.door && Math.abs(p.x - W / 2) < DOOR_HALF - 4 && p.y - p.r < WALL + 6;
   if (atDoor) {
     if (g.room === ROOMS) {
       g.coins += 50 * worldPay(g);
@@ -1332,13 +1454,14 @@ export function update(g: Game, dt: number, input: Input) {
     return;
   }
   // An open door lets you step into its wall gap.
-  if ((g.door && Math.abs(p.x - W / 2) < DOOR_HALF - 4) || (g.wheelDoor && Math.abs(p.x - WHEEL_X) < DOOR_HALF - 4)) {
+  if (g.mode === 'sprints' && ((g.door && Math.abs(p.x - W / 2) < DOOR_HALF - 4) || (g.wheelDoor && Math.abs(p.x - WHEEL_X) < DOOR_HALF - 4))) {
     p.x = clamp(p.x, WALL + p.r, W - WALL - p.r);
     p.y = clamp(p.y, p.r, H - WALL - p.r);
     for (const o of g.obstacles) pushOut(p, o);
   } else {
-    keepInRoom(p, g.obstacles);
+    keepInRoom(g, p);
   }
+  if (g.mode === 'horde') updateHorde(g, dt);
   p.inv = Math.max(0, p.inv - dt);
 
   useWeapons(g, dt);
@@ -1354,7 +1477,7 @@ export function update(g: Game, dt: number, input: Input) {
     f.y += f.vy * dt;
     f.life -= dt;
     const hitBug = live(g).some((e) => dist(f, e) < e.r + 6);
-    const hitWall = f.x < WALL || f.x > W - WALL || f.y < WALL || f.y > H - WALL || g.obstacles.some((o) => inRect(f, o));
+    const hitWall = outside(g, f) || g.obstacles.some((o) => inRect(f, o));
     if (hitBug || hitWall || f.life <= 0) {
       explode(g, f);
       return false;
@@ -1367,14 +1490,14 @@ export function update(g: Game, dt: number, input: Input) {
     o.x += o.vx * dt;
     o.y += o.vy * dt;
     o.life -= dt;
-    if (o.bounce > 0 && (o.x < WALL || o.x > W - WALL || o.y < WALL || o.y > H - WALL)) {
+    if (o.bounce > 0 && outside(g, o)) {
       // Spark worlds: tickets ricochet off the walls once.
       o.bounce -= 1;
       if (o.x < WALL || o.x > W - WALL) { o.vx = -o.vx; o.x = clamp(o.x, WALL, W - WALL); }
       if (o.y < WALL || o.y > H - WALL) { o.vy = -o.vy; o.y = clamp(o.y, WALL, H - WALL); }
       burst(g, o.x, o.y, '#ffd27a', 3, 80, 2);
     }
-    if (o.life <= 0 || o.x < WALL || o.x > W - WALL || o.y < WALL || o.y > H - WALL) return false;
+    if (o.life <= 0 || outside(g, o)) return false;
     if (g.obstacles.some((r) => inRect(o, r))) return false;
     if (Math.hypot(o.x - p.x, o.y - p.y) < o.r + p.r - 3) {
       hurtPlayer(g, o.dmg);
@@ -1411,7 +1534,14 @@ export function update(g: Game, dt: number, input: Input) {
   g.zaps = g.zaps.filter((z) => (z.life -= dt) > 0);
   g.fx = g.fx.filter((f) => (f.life -= dt) > 0);
 
-  if (!g.door && g.enemies.length === 0) {
+  if (g.mode === 'horde') {
+    // The last boss down: the shift is over.
+    if (g.hordeBoss >= HORDE_BOSS_AT.length && !g.enemies.some((e) => e.kind === 'boss')) {
+      g.coins += 50 * worldPay(g);
+      g.phase = 'won';
+      return;
+    }
+  } else if (!g.door && g.enemies.length === 0) {
     g.door = true;
     g.orbs = [];
     g.fireballs = [];
