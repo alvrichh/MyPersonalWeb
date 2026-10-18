@@ -1105,21 +1105,24 @@ body {
 .panel .skill .icon { grid-row: 1; display: grid; place-items: center; width: 100%; height: 100%; }
 /* The ring is ~46% of the picture's width; the icon fills it. */
 .panel .skill .icon .skill-icon { width: 56%; height: auto; aspect-ratio: 1; margin-top: 2%; }
-.panel .skill b { grid-row: 2; font-size: clamp(0.66rem, 1.5vw, 0.84rem); line-height: 1.05; color: #fff; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); }
+.panel .skill b { grid-row: 2; font-size: clamp(0.7rem, 1vw, 0.9rem); line-height: 1.05; color: #fff; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); }
 .panel .skill .cat { display: none; }
 .panel .skill > span:not(.icon):not(.cat):not(.lvl) {
   grid-row: 3;
   align-self: start;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 4;
-  overflow: hidden;
-  padding-top: 6%;
-  font-size: clamp(0.6rem, 1.5vw, 0.76rem);
+  padding-top: 5%;
+  font-size: clamp(0.66rem, 0.95vw, 0.82rem);
   line-height: 1.25;
   color: #d6dde9;
 }
-.panel .skill .lvl { grid-row: 4; font-size: clamp(0.6rem, 1.5vw, 0.72rem); color: #fff; }
+.panel .skill .lvl { grid-row: 4; font-size: clamp(0.62rem, 0.9vw, 0.74rem); color: #fff; }
+
+/* Wide screens: the level-up dialog is wider than the other dialogs, so the
+   three cards are big enough for their words without clipping. */
+@media (min-width: 481px) {
+  .screen.is-levelup .panel-wide { width: min(100%, 820px); }
+  .screen.is-levelup .skills { gap: 16px; max-width: 600px; }
+}
 
 .panel .skill:hover,
 .panel .skill:focus-visible {
@@ -1147,7 +1150,7 @@ body {
     gap: 1px 0;
     aspect-ratio: 266 / 107;
     min-height: 108px;
-    padding: 5px 10px 5px 2px;
+    padding: 5px 16px 5px 2px;
     border: 0;
     background: var(--card) center / 100% 100% no-repeat;
     text-align: center;
@@ -2112,3 +2115,153 @@ body {
 
 /* Keep equipped-weapon badges below the two-row HUD on notched phones. */
 .gear { top: calc(max(8px, env(safe-area-inset-top)) + 74px); }
+
+/* ------------------------------------------------------------- retro look
+   `data-retro` on <html> (Options → Retro look, kept in the save) turns the
+   painted textures off and brings back the plain panels, flat buttons and
+   emoji icons the game had before the UI sheets. The canvas side (ring
+   hero, hand-drawn statue) is in draw.ts. */
+:root[data-retro] .panel {
+  padding: 28px 22px 22px !important;
+  height: auto !important;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background:
+    radial-gradient(120% 70% at 50% 0%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 70%),
+    var(--panel);
+  filter: none;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+}
+:root[data-retro] .panel::before { display: none; }
+:root[data-retro] .panel-in { overflow: visible; }
+:root[data-retro] .panel-wide { max-height: 100%; overflow: auto; }
+:root[data-retro] .screen.is-levelup .panel-wide { width: min(100%, 600px); }
+
+/* Crests: the title alone, in the gradient type. */
+:root[data-retro] .ui-head { width: auto; margin: 0; }
+:root[data-retro] .ui-head img { display: none; }
+:root[data-retro] .ui-head span,
+:root[data-retro] .ui-head.is-wings span {
+  position: static;
+  display: block;
+  margin: 0;
+  font-size: clamp(1.6rem, 7vw, 2rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none;
+}
+:root[data-retro] .panel .ui-close { display: none; }
+
+/* Buttons: the flat gradient and ghost bars. */
+:root[data-retro] .panel .primary,
+:root[data-retro] .panel .ghost,
+:root[data-retro] .panel .buy {
+  border: 0;
+  border-image: none;
+  border-radius: 16px;
+  text-shadow: none;
+}
+:root[data-retro] .panel .primary { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #07090f; }
+:root[data-retro] .panel .ghost { border: 1px solid var(--line); background: rgba(255, 255, 255, 0.06); color: var(--text); }
+:root[data-retro] .panel .buy { min-height: 40px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #07090f; }
+:root[data-retro] .panel .buy.is-poor { background: rgba(255, 255, 255, 0.08); color: var(--muted); }
+:root[data-retro] .panel .buy.is-worn { background: rgba(255, 255, 255, 0.1); color: var(--text); }
+
+/* Cards and rows: the bordered tiles. */
+:root[data-retro] .panel .skill,
+:root[data-retro] .panel .style,
+:root[data-retro] .panel .item {
+  /* Flex, so the grid placement of the textured cards is simply ignored. */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  aspect-ratio: auto;
+  min-height: 0;
+  padding: 16px 10px 14px;
+  border: 1px solid var(--line);
+  border-image: none;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.05);
+  text-align: center;
+}
+:root[data-retro] .panel .skill > *,
+:root[data-retro] .panel .style > * { width: auto; height: auto; padding: 0; margin: 0; }
+:root[data-retro] .panel .skill .icon,
+:root[data-retro] .panel .style .icon { display: block; width: auto; height: auto; }
+:root[data-retro] .panel .skill .cat { display: block; }
+:root[data-retro] .panel .skill b,
+:root[data-retro] .panel .style b { font-size: 0.98rem; color: var(--text); text-shadow: none; }
+:root[data-retro] .panel .skill > span:not(.icon):not(.cat):not(.lvl),
+:root[data-retro] .panel .style > span:not(.icon) { font-size: 0.8rem; line-height: 1.35; color: var(--muted); }
+:root[data-retro] .panel .skill .lvl { font: 600 0.7rem/1 ui-monospace, monospace; color: var(--accent); }
+:root[data-retro] .panel .skill:hover,
+:root[data-retro] .panel .skill:focus-visible,
+:root[data-retro] .panel .style:hover,
+:root[data-retro] .panel .style:focus-visible { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); filter: none; transform: translateY(-2px); }
+:root[data-retro] .panel .style.is-on,
+:root[data-retro] .panel .item.is-on { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, transparent); filter: none; }
+:root[data-retro] .panel .item.is-locked { background: rgba(255, 255, 255, 0.03); }
+:root[data-retro] .panel .styles { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); max-width: none; }
+:root[data-retro] .panel .style .skin-pic { height: 48px; }
+
+/* Icons: emoji instead of the medallions. */
+.skill-emoji { display: none; }
+:root[data-retro] .skill-icon { display: none; }
+:root[data-retro] .skill-emoji { display: inline-block; font-size: 2rem; line-height: 1; }
+:root[data-retro] .gear .skill-emoji { font-size: 0.95rem; }
+:root[data-retro] .gear span { padding: 3px 6px 2px; }
+
+/* Options controls. */
+:root[data-retro] .panel .slider input[type='range'] { height: 24px; background: none; appearance: auto; -webkit-appearance: auto; accent-color: var(--accent); }
+:root[data-retro] .panel .mute-toggle { background: rgba(255, 255, 255, 0.06); border: 1px solid var(--line); border-radius: 16px; }
+:root[data-retro] .panel .toggle-art { width: 44px; height: 24px; border-radius: 999px; background: #67dfa0; position: relative; }
+:root[data-retro] .panel .toggle-art.is-off { background: rgba(255, 255, 255, 0.18); }
+:root[data-retro] .panel .toggle-art::after { content: ''; position: absolute; top: 3px; left: 23px; width: 18px; height: 18px; border-radius: 50%; background: #fff; }
+:root[data-retro] .panel .toggle-art.is-off::after { left: 3px; }
+
+/* Wheel, toast, loading. */
+:root[data-retro] .wheel-disc {
+  border: 6px solid #0f172a;
+  box-shadow: 0 0 0 3px rgba(103, 232, 249, 0.6), 0 0 28px rgba(103, 232, 249, 0.35), inset 0 0 30px rgba(0, 0, 0, 0.5);
+  background: repeating-conic-gradient(from -22.5deg, #1e3a5f 0 45deg, #172554 45deg 90deg);
+  filter: none;
+}
+:root[data-retro] .wheel-pin { width: 0; aspect-ratio: auto; height: 0; top: -10px; border-left: 11px solid transparent; border-right: 11px solid transparent; border-top: 22px solid #fde68a; background: none; translate: -50% 0; }
+:root[data-retro] .toast { padding: 10px 16px; border: 1px solid var(--line); border-image: none; border-radius: 999px; background: var(--panel); text-shadow: none; }
+:root[data-retro] .loading-logo { display: none; }
+:root[data-retro] .loading-bar { height: 8px; border-radius: 999px; background: rgba(168, 85, 247, 0.18); box-shadow: inset 0 0 0 1px rgba(168, 85, 247, 0.25); }
+:root[data-retro] .loading-bar b { border-radius: inherit; background: linear-gradient(90deg, #7c3aed, #a855f7 60%, #d8b4fe); }
+
+/* HUD: one flat row, as before. */
+:root[data-retro] .hud {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 56px;
+  min-height: 0;
+  padding: 0 12px;
+  background: linear-gradient(to bottom, rgba(4, 6, 10, 0.85), transparent);
+}
+:root[data-retro] .hud-back,
+:root[data-retro] .hud-pause { width: 38px; height: 38px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255, 255, 255, 0.06); font-size: 1rem; text-shadow: none; }
+:root[data-retro] .hud-room { padding: 0; background: none; font: 600 0.9rem/1 ui-monospace, "JetBrains Mono", monospace; text-shadow: none; }
+:root[data-retro] .hud-room::before { display: none; }
+:root[data-retro] .hud-coins { min-width: 0; height: auto; padding: 0; background: none; font: 600 0.85rem/1 ui-monospace, "JetBrains Mono", monospace; color: #fcd34d; text-shadow: none; }
+:root[data-retro] .hud-coin-orb { width: auto; height: auto; background: none; }
+:root[data-retro] .hud-hp { display: none; }
+:root[data-retro] .hud-xp { flex: 1; font: 600 0.8rem/1 ui-monospace, "JetBrains Mono", monospace; color: var(--muted); }
+:root[data-retro] .hud-xp i { height: 6px; border-radius: 999px; background: rgba(255, 255, 255, 0.1); }
+:root[data-retro] .hud-xp i b { border-radius: inherit; background: linear-gradient(90deg, var(--accent), var(--accent-2)); filter: none; }
+:root[data-retro] .gear { top: 56px; }
+:root[data-retro] .boss { top: 92px; width: min(300px, 80vw); font: 700 0.78rem/1 ui-monospace, monospace; letter-spacing: 0.08em; text-transform: uppercase; }
+:root[data-retro] .boss-title { width: auto; }
+:root[data-retro] .boss-title img { display: none; }
+:root[data-retro] .boss-title span { font: inherit; color: #e9d5ff; text-shadow: none; }
+:root[data-retro] .boss-meter { height: 8px; border-radius: 999px; background: rgba(255, 255, 255, 0.1); }
+:root[data-retro] .boss-meter b { border-radius: inherit; background: linear-gradient(90deg, #c084fc, #f472b6); filter: none; }

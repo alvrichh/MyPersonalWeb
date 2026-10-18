@@ -72,6 +72,8 @@ const persist = () => writeSave(save);
 audio.setVolumes(save.music, save.sfx);
 palette.hat = save.equipped.head;
 palette.skin = save.skin;
+palette.retro = save.retro;
+document.documentElement.toggleAttribute('data-retro', save.retro);
 
 const clock = (seconds: number) => `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, '0')}`;
 const bestLine = (world = save.world) => {
@@ -107,7 +109,12 @@ function bankRun(g: Game): number | null {
 /* ------------------------------------------------------------------ screens */
 
 /** The painted medallion of a skill (static/images/game/skills/, one per skill id). */
-const skillIcon = (id: SkillId | 'bow', size = 40) => `<img class="skill-icon" src="./images/game/skills/${id === 'bow' ? 'double' : id}.webp" width="${size}" height="${size}" alt="">`;
+const EMOJI: Record<SkillId | 'bow', string> = {
+  sword: '🗡️', blades: '🌀', hammer: '🔨', storm: '🌩️', fireball: '☄️', frost: '❄️', spirits: '👻', knives: '🔪', boomerang: '🪃',
+  fire: '🔥', water: '💧', leaf: '🍃', bolt: '⚡', spark: '✨', ghost: '🫥', double: '🏹', speed: '⏩', power: '💥', heart: '💗', bow: '🏹',
+};
+/* The painted medallion, with the emoji beside it for the retro look (CSS shows one or the other). */
+const skillIcon = (id: SkillId | 'bow', size = 40) => `<img class="skill-icon" src="./images/game/skills/${id === 'bow' ? 'double' : id}.webp" width="${size}" height="${size}" alt=""><span class="skill-emoji">${EMOJI[id]}</span>`;
 const CATEGORY_LABEL: Record<Category, Key> = { melee: 'catMelee', magic: 'catMagic', ranged: 'catRanged', upgrade: 'catUpgrade' };
 const SLOT_LABEL: Record<Slot, Key> = { head: 'slotHead', charm: 'slotCharm', relic: 'slotRelic' };
 const STYLE_ICON: Record<EnemyStyle, string> = { world: '🌍', original: '🐞', demon: '😈', viking: '🪓', jungle: '🕷️', greek: '🏛️', robot: '🤖', nightmare: '💀', random: '🎲' };
@@ -136,6 +143,7 @@ function fitPanel() {
   const panel = screen.querySelector<HTMLElement>('.panel');
   const inner = panel?.querySelector<HTMLElement>('.panel-in');
   if (!panel || !inner || screen.hidden || screen.classList.contains('is-menu') || screen.classList.contains('is-map')) return;
+  if (save.retro) { panel.classList.remove('is-tall'); panel.style.height = ''; panel.style.padding = ''; return; }
   const w = panel.getBoundingClientRect().width;
   const pick = (kind: keyof typeof FRAMES) => {
     const f = FRAMES[kind];
@@ -410,6 +418,8 @@ function optionsScreen() {
     <label class="slider"><span>🔔 ${t('sfx')}</span><b>${Math.round(save.sfx * 100)}%</b><input type="range" min="0" max="100" value="${Math.round(save.sfx * 100)}" style="--fill:${Math.round(save.sfx * 100)}%" data-vol="sfx"></label>
     <p class="how">${t('musicNote')}</p>
     <button class="mute-toggle" type="button" data-act="mute" aria-pressed="${muted}"><span class="toggle-art${muted ? ' is-off' : ''}" aria-hidden="true"></span><span>${muted ? t('unmute') : t('mute')}</span></button>
+    <button class="mute-toggle" type="button" data-act="retro" aria-pressed="${save.retro}"><span class="toggle-art${save.retro ? '' : ' is-off'}" aria-hidden="true"></span><span>${t('retro')}</span></button>
+    <p class="how">${t('retroNote')}</p>
     ${backButton(optionsFrom === 'pause' ? 'pause' : 'menu', optionsFrom === 'pause' ? 'resume' : 'menu')}`);
 }
 
@@ -522,7 +532,14 @@ screen.addEventListener('click', (event) => {
   else if (act === 'styles') stylesScreen();
   else if (act === 'options') { optionsFrom = 'menu'; optionsScreen(); }
   else if (act === 'options-pause') { optionsFrom = 'pause'; optionsScreen(); }
-  else if (act === 'mute') {
+  else if (act === 'retro') {
+    save.retro = !save.retro;
+    palette.retro = save.retro;
+    document.documentElement.toggleAttribute('data-retro', save.retro);
+    persist();
+    resize();
+    optionsScreen();
+  } else if (act === 'mute') {
     const muted = save.music === 0 && save.sfx === 0;
     save.music = muted ? 0.6 : 0;
     save.sfx = muted ? 0.8 : 0;
@@ -700,7 +717,7 @@ function resize() {
   fitted = { width, height, dpr };
   canvas.width = Math.round(width * dpr);
   canvas.height = Math.round(height * dpr);
-  const top = Math.max(108, hud.hidden ? 108 : hud.getBoundingClientRect().height + 30);
+  const top = save.retro ? 86 : Math.max(108, hud.hidden ? 108 : hud.getBoundingClientRect().height + 30);
   // Keep the game room below the skinned HUD and the weapons row on notched phones.
   const scale = Math.min(width / W, (height - top - 8) / H);
   view.scale = scale;

@@ -5,14 +5,16 @@ import type { HeroSkin } from './save';
 /* Bug Hunter's renderer: everything is drawn in room units (360 × 600) and
    scaled to fit the screen. The accent colours are the player's. */
 
-export type Palette = { accent: string; accent2: string; ink: string; rainbow: boolean; hat?: ItemId; skin?: HeroSkin };
+export type Palette = { accent: string; accent2: string; ink: string; rainbow: boolean; hat?: ItemId; skin?: HeroSkin; retro?: boolean };
 
 export type View = { scale: number; ox: number; oy: number; dpr: number };
 
 
 const hue = (t: number, l = 70, s = 85) => `hsl(${Math.round((t * 60) % 360)} ${s}% ${l}%)`;
 
+let retroLook = false;
 export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Palette, now: number) {
+  retroLook = !!pal.retro;
   const accent = pal.rainbow ? hue(now) : pal.accent;
   const accent2 = pal.rainbow ? hue(now + 1.5) : pal.accent2;
   const { scale, ox, oy, dpr } = view;
@@ -37,7 +39,8 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   drawFireballs(ctx, g);
   drawSpirits(ctx, g, now);
   drawZaps(ctx, g);
-  drawPlayer(ctx, g, pal, now);
+  if (pal.retro) drawPlayerRetro(ctx, g, pal, now);
+  else drawPlayer(ctx, g, pal, now);
   if (g.skills.blades) drawBlades(ctx, g, accent);
   drawFx(ctx, g, accent, 'over');
   drawStrikes(ctx, g, now);
@@ -115,7 +118,7 @@ function drawRoom(ctx: CanvasRenderingContext2D, g: Game, accent: string, now: n
     ctx.textBaseline = 'alphabetic';
   }
 
-  if (g.statue) drawStatue(ctx, g.statue, theme.door || accent, now);
+  if (g.statue) (retroLook ? drawStatueRetro : drawStatue)(ctx, g.statue, theme.door || accent, now);
 
   // Server racks, with blinking lights.
   for (const o of g.obstacles) {
@@ -192,6 +195,118 @@ function heroSet(skin: HeroSkin, hat?: ItemId) {
     heroSets.set(key, set);
   }
   return set;
+}
+
+/* Retro: the ring with the portfolio's avatar and a hand-drawn hat, as the
+   game first looked. */
+const avatar = new Image();
+avatar.src = './images/favicon-192.png';
+function drawPlayerRetro(ctx: CanvasRenderingContext2D, g: Game, pal: Palette, now: number) {
+  const { accent, accent2 } = pal;
+  const p = g.player;
+  if (p.inv > 0 && Math.floor(now * 20) % 2 === 0) return;
+  ctx.fillStyle = 'rgba(0,0,0,0.4)';
+  ctx.beginPath();
+  ctx.ellipse(p.x, p.y + p.r * 0.9, p.r * 0.9, p.r * 0.35, 0, 0, Math.PI * 2);
+  ctx.fill();
+  const ring = ctx.createLinearGradient(p.x - p.r, p.y - p.r, p.x + p.r, p.y + p.r);
+  ring.addColorStop(0, accent);
+  ring.addColorStop(1, accent2);
+  ctx.fillStyle = ring;
+  ctx.beginPath();
+  ctx.arc(p.x, p.y, p.r + 2.5, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+  ctx.clip();
+  ctx.fillStyle = '#e9edf5';
+  ctx.fillRect(p.x - p.r, p.y - p.r, p.r * 2, p.r * 2);
+  if (avatar.complete && avatar.naturalWidth) ctx.drawImage(avatar, p.x - p.r, p.y - p.r, p.r * 2, p.r * 2);
+  ctx.restore();
+  if (pal.hat) {
+    const r = p.r;
+    ctx.save();
+    ctx.translate(p.x, p.y - r * 0.55);
+    if (pal.hat === 'wizardHat') {
+      ctx.fillStyle = '#4c1d95';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, r * 1.15, r * 0.3, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#6d28d9';
+      ctx.beginPath();
+      ctx.moveTo(-r * 0.75, 0);
+      ctx.quadraticCurveTo(0, -r * 0.6, r * 0.45, -r * 1.9);
+      ctx.quadraticCurveTo(r * 0.3, -r * 0.7, r * 0.75, 0);
+      ctx.closePath();
+      ctx.fill();
+    } else if (pal.hat === 'gladHelm') {
+      ctx.fillStyle = '#dc2626';
+      ctx.beginPath();
+      ctx.moveTo(-r * 0.25, -r * 0.2);
+      ctx.quadraticCurveTo(0, -r * 1.5, r * 0.25, -r * 0.2);
+      ctx.closePath();
+      ctx.fill();
+      ctx.fillStyle = '#b7791f';
+      ctx.beginPath();
+      ctx.arc(0, 0, r * 0.95, Math.PI, 0);
+      ctx.closePath();
+      ctx.fill();
+    } else if (pal.hat === 'bandana') {
+      ctx.fillStyle = '#dc2626';
+      ctx.fillRect(-r * 0.95, -r * 0.15, r * 1.9, r * 0.32);
+    }
+    ctx.restore();
+  }
+  ctx.fillStyle = accent;
+  ctx.beginPath();
+  ctx.arc(p.x + Math.cos(p.face) * (p.r + 8), p.y + Math.sin(p.face) * (p.r + 8), 2.5, 0, Math.PI * 2);
+  ctx.fill();
+  const w = 34;
+  ctx.fillStyle = 'rgba(0,0,0,0.55)';
+  roundRect(ctx, p.x - w / 2, p.y - p.r - 14, w, 5, 2.5);
+  ctx.fill();
+  ctx.fillStyle = p.hp / p.maxHp > 0.3 ? '#67dfa0' : '#ff6b6b';
+  roundRect(ctx, p.x - w / 2, p.y - p.r - 14, (w * p.hp) / p.maxHp, 5, 2.5);
+  ctx.fill();
+}
+
+/* Retro statue: a stone pedestal and a crystal, drawn by hand. */
+function drawStatueRetro(ctx: CanvasRenderingContext2D, st: Statue, glow: string, now: number) {
+  const { x, y } = st;
+  ctx.fillStyle = 'rgba(0,0,0,0.4)';
+  ctx.beginPath();
+  ctx.ellipse(x, y + 20, 22, 7, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#3b465c';
+  roundRect(ctx, x - 20, y + 6, 40, 14, 4);
+  ctx.fill();
+  ctx.fillStyle = '#4d5a73';
+  roundRect(ctx, x - 13, y - 4, 26, 12, 3);
+  ctx.fill();
+  const bob = st.used ? 0 : Math.sin(now * 2.5) * 2;
+  const top = y - 30 + bob;
+  const crystal = ctx.createLinearGradient(x - 10, top, x + 10, top + 28);
+  crystal.addColorStop(0, st.used ? '#6b7280' : '#ffffff');
+  crystal.addColorStop(0.5, st.used ? '#4b5563' : glow);
+  crystal.addColorStop(1, st.used ? '#374151' : '#1e293b');
+  ctx.fillStyle = crystal;
+  ctx.beginPath();
+  ctx.moveTo(x, top);
+  ctx.lineTo(x + 10, top + 14);
+  ctx.lineTo(x, top + 28);
+  ctx.lineTo(x - 10, top + 14);
+  ctx.closePath();
+  ctx.fill();
+  if (!st.used) {
+    ctx.fillStyle = '#ff6b8a';
+    const hy = top - 12 + Math.sin(now * 2.5 + 1) * 2;
+    ctx.beginPath();
+    ctx.moveTo(x, hy + 6);
+    ctx.bezierCurveTo(x - 9, hy - 2, x - 5, hy - 9, x, hy - 3);
+    ctx.bezierCurveTo(x + 5, hy - 9, x + 9, hy - 2, x, hy + 6);
+    ctx.fill();
+  }
 }
 
 function heroPose(g: Game, now: number): Pose {
