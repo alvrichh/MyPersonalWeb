@@ -103,6 +103,23 @@ export const CATEGORY: Record<SkillId, Category> = {
 };
 export const SKILLS = Object.keys(CATEGORY) as SkillId[];
 const WEAPONS = SKILLS.filter((s) => CATEGORY[s] !== 'upgrade');
+
+/*
+ * Evolutions (after Survivor.io's EVO): a weapon at its top level plus one
+ * particular upgrade unlocks a far stronger form, offered as a gold card at
+ * the next level up. The weapon's effect reads `g.evolved[weapon]`.
+ */
+export const EVO_PARTNER: Partial<Record<SkillId, SkillId>> = {
+  sword: 'power', blades: 'spark', hammer: 'heart', storm: 'bolt', fireball: 'fire',
+  frost: 'water', spirits: 'ghost', knives: 'double', boomerang: 'leaf',
+};
+/** A level-up card: a skill, or a weapon's evolution. */
+export type Choice = SkillId | `evo:${SkillId}`;
+export const evoOf = (c: Choice): SkillId | null => (c.startsWith('evo:') ? (c.slice(4) as SkillId) : null);
+export const canEvolve = (g: Game, w: SkillId) => {
+  const partner = EVO_PARTNER[w];
+  return !!partner && !g.evolved[w] && g.skills[w] >= maxLevel(w) && g.skills[partner] >= 1;
+};
 const MAX_WEAPONS = 4;
 export const maxLevel = (s: SkillId) => (s === 'heart' ? 99 : s === 'double' ? 2 : s === 'blades' ? 5 : 3);
 
@@ -178,7 +195,8 @@ export type Gem = { x: number; y: number; value: number; pull: boolean };
 /** On call: a heart dropped by a tougher bug; touch it for a little health. It fades after a while. */
 export type Heart = { x: number; y: number; life: number; pull: boolean };
 /** Short-lived shapes the renderer draws: sword arcs, hammer rings, explosions, lightning strikes. */
-export type Fx = { kind: 'slash' | 'ring' | 'boom' | 'strike'; x: number; y: number; r: number; a: number; life: number; max: number };
+export type Ember = { x: number; y: number; r: number; life: number; max: number };
+export type Fx = { kind: 'slash' | 'ring' | 'boom' | 'strike' | 'halo'; x: number; y: number; r: number; a: number; life: number; max: number };
 export type Fireball = { x: number; y: number; vx: number; vy: number; life: number };
 /** A companion ghost: floats beside the hero (`slot` sets where) and shoots when you do. */
 export type Spirit = {
@@ -258,6 +276,10 @@ export type Game = {
   obstacles: Rect[];
   door: boolean;
   skills: Record<SkillId, number>;
+  /** Weapons that have evolved (see EVO_PARTNER). */
+  evolved: Partial<Record<SkillId, true>>;
+  /** Burning ground left by the evolved fireball. */
+  embers: Ember[];
   gear: Gear;
   loadout: Loadout;
   /** The blades' element the player picked in the skills list (null: the strongest one, automatically). */
@@ -270,7 +292,7 @@ export type Game = {
   xp: number;
   xpNext: number;
   pendingLevels: number;
-  choices: SkillId[];
+  choices: Choice[];
   kills: number;
   /** XP picked up this run, in all; the page banks it for the profile level. */
   xpEarned: number;
@@ -495,6 +517,7 @@ function enterRoom(g: Game, room: number) {
   g.fx = [];
   g.fireballs = [];
   g.spirits = [];
+  g.embers = [];
   g.enemies = [];
   g.player.x = W / 2;
   g.player.y = H - 70;
@@ -545,6 +568,8 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     obstacles: [],
     door: false,
     skills: Object.fromEntries(SKILLS.map((s) => [s, 0])) as Record<SkillId, number>,
+    evolved: {},
+    embers: [],
     loadout,
     bladePick: null,
     style,
@@ -673,8 +698,13 @@ function offerChoices(g: Game) {
   const pickFrom = (pool: SkillId[]) => pool.filter((s) => canPick(g, s) && !g.choices.includes(s));
   const any = <T>(list: T[]) => list[Math.floor(Math.random() * list.length)];
   g.choices = [];
+  // An evolution ready? It takes its weapon's slot, as a gold card.
+  const evos = WEAPONS.filter((w) => canEvolve(g, w));
+  const evo = evos.length ? any(evos) : null;
+  if (evo) g.choices.push(`evo:${evo}`);
   // One of each kind when it can: melee, magic, then ranged or a bow upgrade.
   for (const kinds of [['melee'], ['magic'], ['ranged', 'upgrade']] as Category[][]) {
+    if (evo && kinds.includes(CATEGORY[evo])) continue;
     const pool = pickFrom(SKILLS.filter((s) => kinds.includes(CATEGORY[s])));
     if (pool.length) g.choices.push(any(pool));
   }
@@ -686,7 +716,18 @@ function offerChoices(g: Game) {
   g.phase = 'levelup';
 }
 
-export function chooseSkill(g: Game, skill: SkillId) {
+export function chooseSkill(g: Game, choice: Choice) {
+  const evo = evoOf(choice);
+  if (evo) {
+    g.evolved[evo] = true;
+    burst(g, g.player.x, g.player.y, '#fcd34d', 40, 240, 4);
+    g.pendingLevels -= 1;
+    g.choices = [];
+    if (g.pendingLevels > 0) offerChoices(g);
+    else g.phase = 'play';
+    return;
+  }
+  const skill = choice as SkillId;
   g.skills[skill] += 1;
   if (skill === 'heart') {
     g.player.maxHp += 25;
@@ -887,6 +928,15 @@ function fireKnives(g: Game, target: Enemy) {
   const p = g.player;
   const lv = g.skills.knives;
   const angle = Math.atan2(target.y - p.y, target.x - p.x);
+  if (g.evolved.knives) {
+    // Evolved (Knife Rain): a ring of knives all round you, each through one bug.
+    const n = 8 + lv;
+    for (let i = 0; i < n; i++) {
+      const a = angle + (i / n) * Math.PI * 2;
+      g.shots.push(shot('knife', p, a, 480, (14 + 5 * (lv - 1)) * power(g, 'ranged'), { life: 0.9, spin: a, pierce: 1 }));
+    }
+    return;
+  }
   const n = 2 + lv;
   for (let i = 0; i < n; i++) {
     const a = angle + (i - (n - 1) / 2) * 0.17;
@@ -898,25 +948,30 @@ function fireBoomerang(g: Game, target: Enemy) {
   const p = g.player;
   const lv = g.skills.boomerang;
   const angle = Math.atan2(target.y - p.y, target.x - p.x);
-  for (let i = 0; i < lv; i++) {
-    const a = angle + (i - (lv - 1) / 2) * 0.45;
-    g.shots.push(shot('boomerang', p, a, 330, (24 + 8 * (lv - 1)) * power(g, 'ranged'), { pierce: 99, ghost: true, life: 3, out: 0.5 }));
+  // Evolved (Quantum Boomerang): two more, faster and further.
+  const evolved = !!g.evolved.boomerang;
+  const n = lv + (evolved ? 2 : 0);
+  for (let i = 0; i < n; i++) {
+    const a = angle + (i - (n - 1) / 2) * 0.45;
+    g.shots.push(shot('boomerang', p, a, evolved ? 400 : 330, (24 + 8 * (lv - 1)) * power(g, 'ranged') * (evolved ? 1.4 : 1), { pierce: 99, ghost: true, life: 3, out: evolved ? 0.7 : 0.5 }));
   }
 }
 
 function swingSword(g: Game) {
   const p = g.player;
   const lv = g.skills.sword;
-  const reach = 58 + 6 * (lv - 1);
+  const evolved = !!g.evolved.sword;
+  // Evolved (Lunar Halo): a full circle, wider, half again as strong.
+  const reach = (58 + 6 * (lv - 1)) * (evolved ? 1.4 : 1);
   // Swing towards the nearest bug if one is close, else the way you face.
   const close = nearest(g, p);
   const a = close && dist(p, close) < reach + close.r + 20 ? Math.atan2(close.y - p.y, close.x - p.x) : p.face;
-  g.fx.push({ kind: 'slash', x: p.x, y: p.y, r: reach, a, life: 0.22, max: 0.22 });
+  g.fx.push({ kind: evolved ? 'halo' : 'slash', x: p.x, y: p.y, r: reach, a, life: evolved ? 0.3 : 0.22, max: evolved ? 0.3 : 0.22 });
   g.events.push('slash');
   for (const e of live(g)) {
     if (dist(p, e) > reach + e.r) continue;
-    if (angleDiff(Math.atan2(e.y - p.y, e.x - p.x), a) > 1.15) continue;
-    hurt(g, e, (32 + 14 * (lv - 1)) * power(g, 'melee'), away(p, e, 140));
+    if (!evolved && angleDiff(Math.atan2(e.y - p.y, e.x - p.x), a) > 1.15) continue;
+    hurt(g, e, (32 + 14 * (lv - 1)) * power(g, 'melee') * (evolved ? 1.5 : 1), away(p, e, 140));
     heal(g, 1);
   }
 }
@@ -924,13 +979,16 @@ function swingSword(g: Game) {
 function slamHammer(g: Game) {
   const p = g.player;
   const lv = g.skills.hammer;
-  const reach = 72 + 10 * (lv - 1);
+  const evolved = !!g.evolved.hammer;
+  // Evolved (Seismic Hammer): a far wider wave that stops every bug it hits for a moment.
+  const reach = (72 + 10 * (lv - 1)) * (evolved ? 1.5 : 1);
   g.fx.push({ kind: 'ring', x: p.x, y: p.y, r: reach, a: 0, life: 0.35, max: 0.35 });
-  g.shake = Math.max(g.shake, 0.12);
+  g.shake = Math.max(g.shake, evolved ? 0.25 : 0.12);
   g.events.push('slam');
   for (const e of live(g)) {
     if (dist(p, e) > reach + e.r) continue;
-    hurt(g, e, (40 + 16 * (lv - 1)) * power(g, 'melee'), away(p, e, 260));
+    hurt(g, e, (40 + 16 * (lv - 1)) * power(g, 'melee') * (evolved ? 1.4 : 1), away(p, e, 260));
+    if (evolved) { e.slow = Math.max(e.slow, 1.2); e.slowBy = 1; }
     heal(g, 1);
   }
 }
@@ -1009,11 +1067,12 @@ function spinBlades(g: Game, dt: number) {
     if (t - dt <= 0) gear.bladeHits.delete(id);
     else gear.bladeHits.set(id, t - dt);
   }
-  const n = bladeCount(lv);
+  // Evolved (Orbital Saw): two more saws, cutting half again as deep.
+  const n = bladeCount(lv) + (g.evolved.blades ? 2 : 0);
   const orbit = bladeOrbit(lv);
   const reach = 12 * bladeScale(lv);
   const el = bladeElement(g);
-  const dmg = (14 + 5 * (lv - 1)) * power(g, 'melee') * (el === 'shade' ? 1.3 : 1);
+  const dmg = (14 + 5 * (lv - 1)) * power(g, 'melee') * (el === 'shade' ? 1.3 : 1) * (g.evolved.blades ? 1.5 : 1);
   for (let i = 0; i < n; i++) {
     const a = gear.bladeAngle + (i / n) * Math.PI * 2;
     const bx = p.x + Math.cos(a) * orbit;
@@ -1033,13 +1092,18 @@ function spinBlades(g: Game, dt: number) {
 
 function callStorm(g: Game) {
   const lv = g.skills.storm;
+  const evolved = !!g.evolved.storm;
+  // Evolved (Supercell): twice the bolts, wider, and each one arcs on to two more bugs.
   const pool = live(g);
-  for (let i = 0; i < lv && pool.length; i++) {
+  const r = evolved ? 36 : 26;
+  const dmg = (38 + 10 * (lv - 1)) * power(g, 'magic');
+  for (let i = 0; i < lv * (evolved ? 2 : 1) && pool.length; i++) {
     const e = pool.splice(Math.floor(Math.random() * pool.length), 1)[0];
-    g.fx.push({ kind: 'strike', x: e.x, y: e.y, r: 26, a: 0, life: 0.3, max: 0.3 });
+    g.fx.push({ kind: 'strike', x: e.x, y: e.y, r, a: 0, life: 0.3, max: 0.3 });
     g.events.push('strike');
     g.zaps.push({ pts: zigzag({ x: e.x + rand(-20, 20), y: e.y - 220 }, e, 14), life: 0.22 });
-    for (const o of live(g)) if (dist(o, e) < 26 + o.r) hurt(g, o, (38 + 10 * (lv - 1)) * power(g, 'magic'));
+    for (const o of live(g)) if (dist(o, e) < r + o.r) hurt(g, o, dmg);
+    if (evolved) chain(g, e, 2, dmg * 0.5);
   }
 }
 
@@ -1047,7 +1111,7 @@ function throwFireball(g: Game) {
   const p = g.player;
   const lv = g.skills.fireball;
   const pool = live(g);
-  for (let i = 0; i < (lv === 3 ? 2 : 1) && pool.length; i++) {
+  for (let i = 0; i < (g.evolved.fireball ? 3 : lv === 3 ? 2 : 1) && pool.length; i++) {
     const e = pool[Math.floor(Math.random() * pool.length)];
     const a = Math.atan2(e.y - p.y, e.x - p.x);
     g.fireballs.push({ x: p.x, y: p.y, vx: Math.cos(a) * 240, vy: Math.sin(a) * 240, life: 1.4 });
@@ -1056,7 +1120,10 @@ function throwFireball(g: Game) {
 
 function explode(g: Game, at: Vec) {
   const lv = g.skills.fireball;
-  const reach = 46 + 6 * (lv - 1);
+  const evolved = !!g.evolved.fireball;
+  // Evolved (Inferno Bomb): a wider blast that leaves burning ground behind.
+  const reach = (46 + 6 * (lv - 1)) * (evolved ? 1.5 : 1);
+  if (evolved) g.embers.push({ x: at.x, y: at.y, r: reach * 0.8, life: 3, max: 3 });
   g.fx.push({ kind: 'boom', x: at.x, y: at.y, r: reach, a: 0, life: 0.35, max: 0.35 });
   g.events.push('boom');
   burst(g, at.x, at.y, '#ffb347', 12, 160, 3);
@@ -1068,7 +1135,7 @@ function explode(g: Game, at: Vec) {
   }
 }
 
-export const frostReach = (g: Game) => 62 + 12 * (g.skills.frost - 1);
+export const frostReach = (g: Game) => (62 + 12 * (g.skills.frost - 1)) * (g.evolved.frost ? 1.5 : 1);
 
 function chill(g: Game, dt: number) {
   const lv = g.skills.frost;
@@ -1077,20 +1144,23 @@ function chill(g: Game, dt: number) {
   if (tick) g.gear.frost = 0.25;
   for (const e of live(g)) {
     if (dist(g.player, e) > frostReach(g) + e.r) continue;
+    // Evolved (Blizzard): all but frozen, and it bites twice as hard.
     e.slow = Math.max(e.slow, 0.3);
-    e.slowBy = Math.max(e.slowBy, 0.3 + 0.1 * lv);
-    if (tick) hurt(g, e, (8 + 5 * (lv - 1)) * 0.25 * power(g, 'magic'));
+    e.slowBy = Math.max(e.slowBy, g.evolved.frost ? 0.85 : 0.3 + 0.1 * lv);
+    if (tick) hurt(g, e, (8 + 5 * (lv - 1)) * 0.25 * power(g, 'magic') * (g.evolved.frost ? 2 : 1));
   }
 }
 
 /* Spirits: one companion ghost per level floats at the hero's side (left,
    right, then behind) and each one keeps shooting a purple orb at the
    nearest bug, even while you move. They never leave you. */
-const SPIRIT_SLOTS = [{ x: -26, y: -10 }, { x: 26, y: -10 }, { x: 0, y: -52 }];
+const SPIRIT_SLOTS = [{ x: -26, y: -10 }, { x: 26, y: -10 }, { x: 0, y: -52 }, { x: -44, y: -40 }, { x: 44, y: -40 }];
 function moveSpirits(g: Game, dt: number) {
   const lv = g.skills.spirits;
   const p = g.player;
-  while (g.spirits.length < lv && g.spirits.length < SPIRIT_SLOTS.length) {
+  // Evolved (Spectral Legion): two more spirits, shooting faster, orbs through one more bug.
+  const evolved = !!g.evolved.spirits;
+  while (g.spirits.length < lv + (evolved ? 2 : 0) && g.spirits.length < SPIRIT_SLOTS.length) {
     const slot = g.spirits.length;
     g.spirits.push({ x: p.x + SPIRIT_SLOTS[slot].x, y: p.y + SPIRIT_SLOTS[slot].y, vx: 0, vy: 0, life: 0, slot, cd: 0.4 * slot, cast: 0, dir: 1 });
   }
@@ -1111,9 +1181,9 @@ function moveSpirits(g: Game, dt: number) {
         const a = Math.atan2(target.y - s.y, target.x - s.x);
         const elem = g.loadout.spirit;
         // Thorn orbs go through one bug, shade orbs through all of them.
-        const pierce = elem === 'thorn' ? 1 : elem === 'shade' ? 99 : 0;
+        const pierce = (elem === 'thorn' ? 1 : elem === 'shade' ? 99 : 0) + (evolved ? 1 : 0);
         g.shots.push(shot('orb', s, a, 320, (14 + 6 * (lv - 1)) * power(g, 'magic'), { life: 1.4, elem, pierce, ghost: elem === 'shade' }));
-        s.cd = 1.1 / haste(g);
+        s.cd = (evolved ? 0.7 : 1.1) / haste(g);
         s.cast = 0.3;
         s.dir = Math.cos(a) < 0 ? -1 : 1;
         g.events.push('orb');
@@ -1147,7 +1217,7 @@ function useWeapons(g: Game, dt: number) {
   if (sk.sword && gear.sword === 0) { swingSword(g); gear.sword = 0.95 - 0.12 * (sk.sword - 1); }
   if (sk.hammer && gear.hammer === 0) { slamHammer(g); gear.hammer = 2.8 - 0.35 * (sk.hammer - 1); }
   if (sk.blades) spinBlades(g, dt);
-  if (sk.storm && gear.storm === 0) { callStorm(g); gear.storm = 1.8 - 0.25 * (sk.storm - 1); }
+  if (sk.storm && gear.storm === 0) { callStorm(g); gear.storm = (1.8 - 0.25 * (sk.storm - 1)) * (g.evolved.storm ? 0.6 : 1); }
   if (sk.fireball && gear.fireball === 0) { throwFireball(g); gear.fireball = 2.4 - 0.3 * (sk.fireball - 1); }
   if (sk.frost) chill(g, dt);
 }
@@ -1606,6 +1676,14 @@ export function update(g: Game, dt: number, input: Input) {
       g.events.push('gem');
       return false;
     }
+    return true;
+  });
+
+  // Burning ground: bugs standing in it keep burning.
+  g.embers = g.embers.filter((em) => {
+    em.life -= dt;
+    if (em.life <= 0) return false;
+    for (const e of live(g)) if (dist(em, e) < em.r + e.r * 0.5) { e.burn = Math.max(e.burn, 0.6); e.burnDps = Math.max(e.burnDps, 12); }
     return true;
   });
 

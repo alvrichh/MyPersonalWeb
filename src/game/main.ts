@@ -8,8 +8,8 @@ import { ARMOUR_SLOTS, ITEMS, type SpiritSkin, SLOTS, UPGRADES, WEAPON_SLOTS, bu
 import { Scene } from './scene';
 import { makeT, pickLang, type Key } from './strings';
 import {
-  CATEGORY, H, REVIVE_PRICE, SKILLS, bladeElement, bladeOptions, maxLevel, pickBlade, pickSpirit, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
-  type Category, type Game, type GameEvent, type Input, type Look, type SkillId, type WheelOutcome,
+  CATEGORY, EVO_PARTNER, H, REVIVE_PRICE, SKILLS, bladeElement, bladeOptions, canEvolve, evoOf, maxLevel, pickBlade, pickSpirit, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
+  type Category, type Choice, type Game, type GameEvent, type Input, type Look, type SkillId, type WheelOutcome,
 } from './world';
 
 /* Bug Hunter's page: the menus (play, shop, enemy looks, options), input
@@ -419,7 +419,13 @@ function mapScreen() {
 
 function choiceScreen(g: Game) {
   const cards = g.choices
-    .map((id) => {
+    .map((choice) => {
+      const evo = evoOf(choice);
+      if (evo) {
+        // The gold card: the weapon's evolution.
+        return `<button class="skill skill-${CATEGORY[evo]} is-evo" data-skill="${choice}"><span class="icon" aria-hidden="true">${skillIcon(evo, 56, iconFile(g, evo))}</span><span class="cat">★ ${t('evoCat')}</span><b>${t(`evo${cap(evo)}Name` as Key)}</b><span>${t(`evo${cap(evo)}Text` as Key)}</span><span class="lvl">${t('evoLabel')}</span></button>`;
+      }
+      const id = choice as SkillId;
       const el = id === 'blades' ? bladeElement(g) : 'steel';
       const name = el === 'steel' ? t(`${id}Name` as Key) : t(`blades${el[0].toUpperCase()}${el.slice(1)}Name` as Key);
       const next = g.skills[id] + 1;
@@ -739,8 +745,11 @@ screen.addEventListener('click', (event) => {
     persist();
     optionsScreen();
   } else if (target.dataset.skill && game) {
-    chooseSkill(game, target.dataset.skill as SkillId);
-    audio.play('pick');
+    const choice = target.dataset.skill as Choice;
+    chooseSkill(game, choice);
+    const evo = evoOf(choice);
+    if (evo) { audio.play('win'); flash(`${t('evoReady')} ${t(`evo${cap(evo)}Name` as Key)}`); }
+    else audio.play('pick');
     shownChoices = '';
     hide();
   } else if (target.dataset.buy) {
@@ -845,6 +854,7 @@ pauseBtn.addEventListener('click', () => togglePause());
    have right now: the bow and your weapons with their level, then the
    upgrades. Any tap (or Esc) closes it and the run goes on. */
 function skillName(g: Game, id: SkillId | 'bow') {
+  if (id !== 'bow' && g.evolved[id]) return t(`evo${cap(id)}Name` as Key);
   if (id === 'blades') {
     const el = bladeElement(g);
     if (el !== 'steel') return t(`blades${cap(el)}Name` as Key);
@@ -852,6 +862,7 @@ function skillName(g: Game, id: SkillId | 'bow') {
   return t(`${id}Name` as Key);
 }
 function skillText(g: Game, id: SkillId | 'bow') {
+  if (id !== 'bow' && g.evolved[id]) return t(`evo${cap(id)}Text` as Key);
   if (id === 'blades') {
     const el = bladeElement(g);
     if (el !== 'steel') return t(`blades${cap(el)}Text` as Key);
@@ -908,8 +919,11 @@ function renderGearPanel(g: Game) {
   const row = (id: SkillId | 'bow') => {
     const lv = id === 'bow' ? 0 : g.skills[id];
     const max = id === 'bow' ? 0 : maxLevel(id);
-    const level = id === 'bow' ? '' : max > 50 ? t('gearLevelOnly', { level: lv }) : t('gearLevel', { level: lv, max });
-    return `<li><span class="gp-icon">${skillIcon(id, 34, iconFile(g, id))}</span><span class="gp-copy"><b>${skillName(g, id)}</b><small>${skillText(g, id)}</small></span>${level ? `<em>${level}</em>` : ''}${id === 'blades' ? bladeChips(g) : id === 'spirits' ? spiritChips(g) : ''}</li>`;
+    const evolved = id !== 'bow' && !!g.evolved[id];
+    const level = id === 'bow' ? '' : evolved ? `★ ${t('evoLabel')}` : max > 50 ? t('gearLevelOnly', { level: lv }) : t('gearLevel', { level: lv, max });
+    const partner = id !== 'bow' && !evolved ? EVO_PARTNER[id] : undefined;
+    const hint = partner ? `<small class="gp-evo${canEvolve(g, id as SkillId) ? ' is-ready' : ''}">★ ${t('evoWith', { skill: t(`${partner}Name` as Key) })}</small>` : '';
+    return `<li${evolved ? ' class="is-evo"' : ''}><span class="gp-icon">${skillIcon(id, 34, iconFile(g, id))}</span><span class="gp-copy"><b>${skillName(g, id)}</b><small>${skillText(g, id)}</small>${hint}</span>${level ? `<em>${level}</em>` : ''}${id === 'blades' ? bladeChips(g) : id === 'spirits' ? spiritChips(g) : ''}</li>`;
   };
   const weapons = ['bow' as const, ...ownedWeapons(g)];
   const upgrades = SKILLS.filter((s) => CATEGORY[s] === 'upgrade' && g.skills[s] > 0);
@@ -1177,10 +1191,11 @@ function step(now: number) {
     setMeter(hudHp, Math.max(0, g.player.hp) / g.player.maxHp);
     hudCoins.textContent = String(Math.floor(g.coins));
     const gear = [['bow', 1] as const, ...ownedWeapons(g).map((id) => [id, g.skills[id]] as const)];
-    const gearKey = gear.map(([id, lvl]) => `${iconFile(g, id)}${lvl}`).join(' ');
+    const isEvo = (id: SkillId | 'bow') => id !== 'bow' && !!g.evolved[id];
+    const gearKey = gear.map(([id, lvl]) => `${iconFile(g, id)}${lvl}${isEvo(id) ? 'E' : ''}`).join(' ');
     if (hudGear.dataset.gear !== gearKey) {
       hudGear.dataset.gear = gearKey;
-      hudGear.innerHTML = gear.map(([id, lvl]) => `<span>${skillIcon(id, 22, iconFile(g, id))}<sub>${lvl}</sub></span>`).join('');
+      hudGear.innerHTML = gear.map(([id, lvl]) => `<span${isEvo(id) ? ' class="is-evo"' : ''}>${skillIcon(id, 22, iconFile(g, id))}<sub>${isEvo(id) ? '★' : lvl}</sub></span>`).join('');
     }
     const boss = g.mode === 'horde' || isBossRoom(g.room) ? g.enemies.find((e) => e.kind === 'boss' && e.spawn <= 0) : undefined;
     if (bossBar.hidden !== !boss) {

@@ -2852,3 +2852,19 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .gp-chip img { width: 28px; height: 28px; object-fit: contain; }
 .gp-chip.is-on { border-color: #fcd34d; background: rgba(252, 211, 77, 0.16); box-shadow: 0 0 8px rgba(252, 211, 77, 0.45); }
 .gp-chip:focus-visible { outline: 2px solid #67e8f9; outline-offset: 2px; }
+
+/* ------------------------------------------------------------ evolutions */
+/* The gold card at level up, the gold ring in the HUD column and the list. */
+.panel .skill.is-evo { --tone: 252, 211, 77; }
+.panel .skill.is-evo .skill-icon,
+.gear span.is-evo .skill-icon,
+.gear-panel li.is-evo .skill-icon { border-radius: 50%; box-shadow: 0 0 0 2px #fcd34d, 0 0 12px rgba(252, 211, 77, 0.7); }
+.panel .skill.is-evo .lvl { color: #fcd34d; }
+.gear span.is-evo { border-color: #fcd34d; }
+.gear span.is-evo sub { color: #fcd34d; }
+.gp-evo { color: var(--muted); font-size: 0.64rem; }
+.gp-evo.is-ready { color: #fcd34d; font-weight: 700; }
+:root:not([data-retro]) .panel .skill.is-evo { filter: drop-shadow(0 0 10px rgba(252, 211, 77, 0.45)); }
+@media (min-width: 481px) {
+  :root:not([data-retro]) .panel .skill.is-evo { --card: url('/images/game/ui/tall_orange.webp'); }
+}

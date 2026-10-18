@@ -51,6 +51,7 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   drawGems(ctx, g, now);
   drawHearts(ctx, g, now);
   if (g.skills.frost) drawFrost(ctx, g, now);
+  drawEmbers(ctx, g, now);
   drawFx(ctx, g, accent, 'under');
   for (const e of g.enemies) if (onScreen(e, 80)) drawEnemy(ctx, e, now);
   drawOrbs(ctx, g);
@@ -601,6 +602,29 @@ function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accen
   }
 }
 
+/* Burning ground from the evolved fireball: an orange pool with embers. */
+function drawEmbers(ctx: CanvasRenderingContext2D, g: Game, now: number) {
+  for (const em of g.embers) {
+    const k = em.life / em.max;
+    const grad = ctx.createRadialGradient(em.x, em.y, 2, em.x, em.y, em.r);
+    grad.addColorStop(0, `rgba(254,215,170,${0.55 * k})`);
+    grad.addColorStop(0.5, `rgba(249,115,22,${0.45 * k})`);
+    grad.addColorStop(1, 'rgba(124,45,18,0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(em.x, em.y, em.r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = `rgba(254,243,199,${0.8 * k})`;
+    for (let i = 0; i < 5; i++) {
+      const a = now * 1.5 + i * 1.3 + em.x;
+      const rr = em.r * (0.25 + 0.55 * ((now * 0.7 + i * 0.2) % 1));
+      ctx.beginPath();
+      ctx.arc(em.x + Math.cos(a) * rr, em.y + Math.sin(a) * rr - ((now * 20 + i * 7) % 12), 1.6, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+}
+
 /* On call's health hearts: a red heart with a soft glow, bobbing, blinking
    in its last few seconds. */
 function drawHearts(ctx: CanvasRenderingContext2D, g: Game, now: number) {
@@ -713,7 +737,7 @@ function drawBlades(ctx: CanvasRenderingContext2D, g: Game, accent: string, now:
   if (retroLook || !img.complete || !img.naturalWidth) { drawBladesRetro(ctx, g, accent); return; }
   const p = g.player;
   const lv = g.skills.blades;
-  const n = bladeCount(lv);
+  const n = bladeCount(lv) + (g.evolved.blades ? 2 : 0);
   const orbit = bladeOrbit(lv);
   const glow = BLADE_LOOK[el][3];
   const size = 24 * bladeScale(lv);
@@ -767,7 +791,7 @@ function drawBlades(ctx: CanvasRenderingContext2D, g: Game, accent: string, now:
 function drawBladesRetro(ctx: CanvasRenderingContext2D, g: Game, accent: string) {
   const p = g.player;
   const lv = g.skills.blades;
-  const n = bladeCount(lv);
+  const n = bladeCount(lv) + (g.evolved.blades ? 2 : 0);
   const orbit = bladeOrbit(lv);
   const [edge, base, hilt, glow] = BLADE_LOOK[bladeElement(g)];
   for (let i = 0; i < n; i++) {
@@ -902,6 +926,26 @@ function drawFx(ctx: CanvasRenderingContext2D, g: Game, accent: string, layer: '
         ctx.arc(f.x, f.y, f.r * 1.4, 0, Math.PI * 2);
         ctx.fill();
       }
+    }
+    if (layer === 'over' && f.kind === 'halo') {
+      // The evolved sword: a full bright ring sweeping out.
+      const r = f.r * (0.7 + 0.3 * t);
+      ctx.globalAlpha = (1 - t) * 0.9;
+      const grad = ctx.createRadialGradient(f.x, f.y, r * 0.55, f.x, f.y, r);
+      grad.addColorStop(0, 'rgba(255,255,255,0)');
+      grad.addColorStop(0.7, 'rgba(253,230,138,0.55)');
+      grad.addColorStop(1, 'rgba(252,211,77,0)');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(f.x, f.y, r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#fff7d6';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.arc(f.x, f.y, r * 0.92, f.a + t * 2, f.a + t * 2 + Math.PI * 2 * (1 - t * 0.3));
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+      continue;
     }
     if (layer === 'over' && (f.kind === 'slash' || f.kind === 'boom')) {
       ctx.globalAlpha = fade;
