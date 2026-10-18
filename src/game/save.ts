@@ -36,6 +36,9 @@ export type Save = {
   world: number;
   /** Sprints (rooms) or on call (the ten-minute horde). */
   mode: Mode;
+  /** On call keeps its own world progress: worlds you may enter there, and the one picked. */
+  hordeUnlocked: number;
+  hordeWorld: number;
   /** Best on-call shift per world: how long you held out, bugs squashed, whether the last boss fell. */
   hordeBest: Record<number, { time: number; kills: number; won: boolean }>;
   runs: number;
@@ -67,6 +70,8 @@ const fresh = (): Save => ({
   unlocked: 1,
   world: 1,
   mode: 'sprints',
+  hordeUnlocked: 1,
+  hordeWorld: 1,
   hordeBest: {},
   runs: 0,
   xp: 0,
@@ -78,6 +83,13 @@ export function loadSave(): Save {
     const data = JSON.parse(storage.get(KEY) || '{}') as Partial<Save>;
     const save: Save = { ...base, ...data, equipped: {}, upgrades: { ...data.upgrades }, best: { ...base.best, ...data.best }, bestByWorld: { ...data.bestByWorld }, hordeBest: { ...data.hordeBest } };
     if (save.mode !== 'sprints' && save.mode !== 'horde') save.mode = 'sprints';
+    // Saves from before the split: on call opens the worlds after any shift it already cleared.
+    if (!data.hordeUnlocked) {
+      const cleared = Object.entries(save.hordeBest).filter(([, b]) => b.won).map(([w]) => Number(w));
+      save.hordeUnlocked = Math.max(1, ...cleared.map((w) => w + 1));
+    }
+    save.hordeUnlocked = Math.min(Math.max(1, save.hordeUnlocked || 1), 8);
+    save.hordeWorld = Math.min(Math.max(1, save.hordeWorld || 1), save.hordeUnlocked);
     save.name = cleanName(typeof save.name === 'string' ? save.name : '') || DEFAULT_NAME;
     // Items are re-seated by their current slot (older saves had `charm` and `relic`).
     save.owned = (data.owned ?? []).filter((id) => ITEMS.some((item) => item.id === id));

@@ -413,7 +413,8 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
   const worldUp = 1 + (g.world - 1) * 0.25;
   const horde = g.mode === 'horde';
   // On call: bugs harden with the clock instead of the room.
-  const tough = (horde ? 1 + (g.time / 60) * 0.2 : 1 + (stageOf(room) - 1) * 0.095) * worldUp;
+  // On call hardens faster per world: the field never runs out of bugs to farm.
+  const tough = horde ? (1 + (g.time / 60) * 0.2) * (1 + (g.world - 1) * 0.45) : (1 + (stageOf(room) - 1) * 0.095) * worldUp;
   const bossHp = horde ? (g.hordeBoss >= 2 ? 4200 : 1800) * (1 + (g.time / 60) * 0.08) : room === ROOMS ? 2200 : 1000;
   const base = {
     bug: { r: 12, hp: 40, speed: 72, dmg: 10, xp: 6 },
@@ -643,10 +644,12 @@ function updateHorde(g: Game, dt: number) {
   // Regular spawns, lighter while a boss is about.
   g.hordeSpawn -= dt;
   const alive = g.enemies.length;
-  const cap = Math.min(64, 30 + Math.floor(minute * 4));
+  // Later worlds pour faster, in bigger groups and with a higher cap (on top of tougher bugs).
+  const wk = g.world - 1;
+  const cap = Math.min(64 + 4 * wk, 30 + Math.floor(minute * 4) + 4 * wk);
   if (g.hordeSpawn <= 0) {
-    g.hordeSpawn = Math.max(0.5, 1.7 - minute * 0.12) * (bossOut ? 1.8 : 1);
-    const group = 1 + Math.floor(minute / 2) + (Math.random() < 0.4 ? 1 : 0);
+    g.hordeSpawn = Math.max(0.4, (1.7 - minute * 0.12) * (1 - 0.07 * wk)) * (bossOut ? 1.8 : 1);
+    const group = 1 + Math.floor(minute / 2) + Math.floor(wk / 2) + (Math.random() < 0.4 + 0.05 * wk ? 1 : 0);
     // Tickets are the dangerous ones (they keep away and throw), so only a few at a time.
     let tickets = g.enemies.filter((e) => e.kind === 'ticket').length;
     const ticketCap = 3 + Math.floor(minute);
@@ -671,7 +674,7 @@ function updateHorde(g: Game, dt: number) {
   if (g.hazard === 'lava' || g.hazard === 'puddle' || g.hazard === 'thorns') {
     g.hordeHazard -= dt;
     if (g.hordeHazard <= 0) {
-      g.hordeHazard = rand(4, 7);
+      g.hordeHazard = rand(4, 7) * (1 - 0.06 * wk);
       const r = g.hazard === 'thorns' ? rand(14, 20) : g.hazard === 'puddle' ? rand(30, 48) : rand(22, 38);
       const at = ringSpot(g, rand(0.45, 0.9));
       g.hazards.push({ kind: g.hazard, x: at.x, y: at.y, r });
@@ -1459,8 +1462,29 @@ function updateShot(g: Game, s: Shot, dt: number): boolean {
     if (Math.hypot(s.x - e.x, s.y - e.y) > e.r + (s.kind === 'boomerang' ? 9 : 4)) continue;
     s.hits.add(e.id);
     hitWithShot(g, e, s);
-    if (s.pierce > 0) s.pierce -= 1;
-    else return false;
+    if (s.pierce > 0) { s.pierce -= 1; continue; }
+    // Ricochet: the arrow turns towards the nearest bug it hasn't hit yet.
+    if (s.bounce > 0 && s.kind === 'arrow') {
+      let next: Enemy | undefined;
+      let best = 170;
+      for (const o of live(g)) {
+        if (s.hits.has(o.id)) continue;
+        const d = dist(s, o);
+        if (d < best) { best = d; next = o; }
+      }
+      if (next) {
+        s.bounce -= 1;
+        s.dmg *= 0.65; // each bounce hits softer
+        const speed = Math.hypot(s.vx, s.vy);
+        const a = Math.atan2(next.y - s.y, next.x - s.x);
+        s.vx = Math.cos(a) * speed;
+        s.vy = Math.sin(a) * speed;
+        s.life = Math.max(s.life, 0.8);
+        burst(g, s.x, s.y, '#ffd27a', 4, 90, 2);
+        return true;
+      }
+    }
+    return false;
   }
   return true;
 }
