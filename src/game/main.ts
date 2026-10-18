@@ -2,7 +2,7 @@ import './game.css';
 import { storage } from '../lib/storage';
 import { audio, type Sfx } from './audio';
 import { draw, drawRetroFigure, type Palette, type View } from './draw';
-import { loadSave, profileLevel, writeSave, STYLES, SKINS, type EnemyStyle, type HeroSkin } from './save';
+import { DEFAULT_NAME, NAME_MAX, cleanName, loadSave, profileLevel, writeSave, STYLES, SKINS, type EnemyStyle, type HeroSkin } from './save';
 import type { Mode } from './world';
 import { ARMOUR_SLOTS, ITEMS, SLOTS, UPGRADES, WEAPON_SLOTS, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
 import { Scene } from './scene';
@@ -238,8 +238,8 @@ function menuScreen() {
       <a class="hot cover-x" href="./index.html" aria-label="${t('back')}"></a>
       <button class="hot cover-more" data-act="options" aria-label="${t('options')}"></button>
       <button class="hot cover-gear" data-act="options" aria-label="${t('options')}"></button>
-      <button class="hot cover-profile" data-act="map" aria-label="alvrich · ${t('lvShort', { level })}"></button>
-      <span class="cover-profile-copy"><small>ALVRICH</small><b>${t('lvShort', { level })}</b><i><b style="width:${Math.round(progress * 100)}%"></b></i></span>
+      <button class="hot cover-profile" data-act="profile" aria-label="${t('profile')}: ${esc(save.name)} · ${t('lvShort', { level })}"></button>
+      <span class="cover-profile-copy"><small>${esc(save.name)}</small><b>${t('lvShort', { level })}</b><i><b style="width:${Math.round(progress * 100)}%"></b></i></span>
       <button class="hot cover-coins" data-act="shop" aria-label="${t('coins')}: ${Math.floor(save.coins)}"></button>
       <span class="cover-num is-coins">${Math.floor(save.coins)}</span>
       <button class="hot cover-worlds" data-act="map" aria-label="${t('map')}: ${save.unlocked}/${WORLD_COUNT}"></button>
@@ -261,6 +261,41 @@ function menuScreen() {
 }
 
 const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
+/** The player's name goes into HTML: escape it. */
+const esc = (s: string) => s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
+
+/* The profile: the player's name (shown on the cover), their level and a few
+   totals. The name is kept in the save, cleaned by `cleanName`. */
+function profileScreen(note = '') {
+  const { level, progress } = profileLevel(save.xp);
+  const pic = save.retro ? './images/favicon-192.png' : heroPic();
+  const stat = (label: Key, value: string) => `<div class="pstat"><small>${t(label)}</small><b>${value}</b></div>`;
+  show(`<button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
+    <h2>${t('profile')}</h2>
+    <div class="profile-card">
+      <img class="profile-pic${save.retro ? ' is-round' : ''}" src="${pic}" alt="" width="96" height="120">
+      <div class="profile-who"><b>${esc(save.name)}</b><span>${t('lvShort', { level })}</span><i class="profile-xp" title="${t('profileXp')}"><b style="width:${Math.round(progress * 100)}%"></b></i></div>
+    </div>
+    <form class="profile-form" data-form="name" novalidate>
+      <label for="profileName">${t('profileName')}</label>
+      <input id="profileName" name="name" type="text" value="${esc(save.name)}" maxlength="${NAME_MAX}" autocomplete="nickname" spellcheck="false" enterkeyhint="done">
+      <small class="how">${t('profileNameHint')}</small>
+      ${note ? `<p class="saved" role="status">✓ ${note}</p>` : ''}
+      <button class="primary" type="submit">${t('profileSave')}</button>
+      ${save.name !== DEFAULT_NAME ? `<button class="ghost small" type="button" data-act="name-reset">${t('profileReset')}</button>` : ''}
+    </form>
+    <div class="pstats">
+      ${stat('profileRuns', String(save.runs))}
+      ${stat('profileWorlds', `${save.unlocked}/${WORLD_COUNT}`)}
+      ${stat('profileCoins', `🪙 ${Math.floor(save.coins)}`)}
+    </div>
+    ${backButton('menu')}`);
+}
+function setName(raw: string) {
+  save.name = cleanName(raw) || DEFAULT_NAME;
+  persist();
+  profileScreen(t('profileSaved'));
+}
 
 /* Death with a full purse: once per run, 1000 coins (banked plus this run's)
    put you back on your feet before the game-over screen. */
@@ -589,7 +624,7 @@ function stylesScreen(note = '') {
     <p class="wallet">${coinsLine()}</p>
     <div class="dress">
       <div class="dress-col">${ARMOUR_SLOTS.map(slotButton).join('')}</div>
-      <div class="dress-hero"><span class="pad" aria-hidden="true"></span>${hero}<b>${t(`skin${cap(save.skin)}Name` as Key)}</b></div>
+      <div class="dress-hero"><span class="pad" aria-hidden="true"></span>${hero}<b>${esc(save.name)}</b></div>
       <div class="dress-col">${WEAPON_SLOTS.map(slotButton).join('')}</div>
     </div>
     <div class="dress-nav">
@@ -681,6 +716,8 @@ screen.addEventListener('click', (event) => {
     location.href = './index.html';
   } else if (act === 'menu') menuScreen();
   else if (act === 'shop') shopScreen();
+  else if (act === 'profile') profileScreen();
+  else if (act === 'name-reset') setName(DEFAULT_NAME);
   else if (act === 'styles') { dressSlot = null; stylesScreen(); }
   else if (act === 'options') { optionsFrom = 'menu'; optionsScreen(); }
   else if (act === 'options-pause') { optionsFrom = 'pause'; optionsScreen(); }
@@ -789,6 +826,12 @@ screen.addEventListener('input', (event) => {
   // Hear the music in the menu while adjusting it.
   if (input.dataset.vol === 'music' && value > 0) audio.start();
 });
+screen.addEventListener('submit', (event) => {
+  const form = event.target as HTMLFormElement;
+  if (form.dataset.form !== 'name') return;
+  event.preventDefault();
+  setName(String(new FormData(form).get('name') ?? ''));
+});
 screen.addEventListener('change', (event) => {
   const input = event.target as HTMLInputElement;
   if (input.dataset.vol === 'sfx') audio.play('levelup');
@@ -843,6 +886,8 @@ function playEvents(events: GameEvent[]) {
 
 const keys = new Set<string>();
 window.addEventListener('keydown', (event) => {
+  // Typing in a field (the profile name) is not steering the hero.
+  if ((event.target as HTMLElement).closest?.('input, textarea')) return;
   const key = event.key.toLowerCase();
   if (key === 'escape' || key === 'p') { togglePause(); return; }
   if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'w', 'a', 's', 'd'].includes(key)) {

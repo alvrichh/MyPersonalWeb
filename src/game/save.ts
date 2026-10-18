@@ -11,6 +11,8 @@ export type HeroSkin = 'boy' | 'robot';
 export const SKINS: HeroSkin[] = ['boy', 'robot'];
 
 export type Save = {
+  /** The player's name, shown on the cover and the profile (the hero is alvrich by default). */
+  name: string;
   coins: number;
   /** Which figure the hero is drawn as. */
   skin: HeroSkin;
@@ -43,7 +45,13 @@ export type Save = {
 
 const KEY = 'bugHunter';
 
+export const DEFAULT_NAME = 'alvrich';
+export const NAME_MAX = 14;
+/** A name as typed, made safe to keep: trimmed, single spaces, no control characters, at most NAME_MAX long. */
+export const cleanName = (raw: string) => raw.replace(/[\u0000-\u001f\u007f<>]/g, '').replace(/\s+/g, ' ').trim().slice(0, NAME_MAX);
+
 const fresh = (): Save => ({
+  name: DEFAULT_NAME,
   coins: 0,
   skin: 'boy',
   retro: false,
@@ -70,6 +78,7 @@ export function loadSave(): Save {
     const data = JSON.parse(storage.get(KEY) || '{}') as Partial<Save>;
     const save: Save = { ...base, ...data, equipped: {}, upgrades: { ...data.upgrades }, best: { ...base.best, ...data.best }, bestByWorld: { ...data.bestByWorld }, hordeBest: { ...data.hordeBest } };
     if (save.mode !== 'sprints' && save.mode !== 'horde') save.mode = 'sprints';
+    save.name = cleanName(typeof save.name === 'string' ? save.name : '') || DEFAULT_NAME;
     // Items are re-seated by their current slot (older saves had `charm` and `relic`).
     save.owned = (data.owned ?? []).filter((id) => ITEMS.some((item) => item.id === id));
     for (const id of Object.values(data.equipped ?? {})) {
