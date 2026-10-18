@@ -207,6 +207,8 @@ export type Fx = {
   spin?: number;
   /** A beam's half width. */
   w?: number;
+  /** A sky laser's foot: where its column strikes the floor. */
+  foot?: number;
   /** The ring is the evolved hammer's. */
   big?: boolean;
 };
@@ -242,10 +244,6 @@ type Gear = {
   spirits: number;
   frost: number;
   laser: number;
-  /** The evolved laser's sweep: seconds left, where it points, who it hit lately. */
-  laserSweep: number;
-  laserAngle: number;
-  laserHits: Map<number, number>;
   bladeAngle: number;
   /** Per-bug cooldown so a spinning blade doesn't hit the same bug every frame. */
   bladeHits: Map<number, number>;
@@ -605,7 +603,7 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     coins: 0,
     revives: loadout.revives,
     gear: {
-      bow: 0.4, knives: 0.6, boomerang: 0.8, sword: 0.5, hammer: 1, storm: 1, fireball: 1, spirits: 0.5, frost: 0, laser: 1.2, laserSweep: 0, laserAngle: 0, laserHits: new Map(),
+      bow: 0.4, knives: 0.6, boomerang: 0.8, sword: 0.5, hammer: 1, storm: 1, fireball: 1, spirits: 0.5, frost: 0, laser: 1.2,
       bladeAngle: 0, bladeHits: new Map(),
     },
     level: 1,
@@ -1151,51 +1149,38 @@ function spinBlades(g: Game, dt: number) {
   }
 }
 
-/* The laser: a straight beam at the nearest bug that cuts through every
-   bug on its line. Evolved (Death Ray), it sweeps a full turn round you. */
-const LASER_LENGTH = 330;
-const laserWidth = (g: Game) => 9 + 3 * (g.skills.laser - 1);
-const laserDamage = (g: Game) => (30 + 12 * (g.skills.laser - 1)) * power(g, 'magic');
-function onBeam(from: Vec, a: number, e: Enemy, half: number) {
-  const dx = e.x - from.x;
-  const dy = e.y - from.y;
-  const along = dx * Math.cos(a) + dy * Math.sin(a);
-  const across = Math.abs(-dx * Math.sin(a) + dy * Math.cos(a));
-  return along > 0 && along < LASER_LENGTH && across < half + e.r;
+/* The laser comes from the sky: columns of light fall on the nearest bugs
+   (one per level) and cut every bug in the column, top of the field to the
+   bottom. Evolved (Death Ray), five purple columns fall, faster, and brand
+   magic circles on the floor where they cut. */
+const laserWidth = (g: Game) => 10 + 3 * (g.skills.laser - 1) + (g.evolved.laser ? 6 : 0);
+const laserDamage = (g: Game) => (30 + 12 * (g.skills.laser - 1)) * power(g, 'magic') * (g.evolved.laser ? 1.3 : 1);
+/** The column's top and bottom: the room, or what the page shows of the open field. */
+function laserSpan(g: Game): [number, number] {
+  if (g.mode === 'sprints') return [0, H];
+  const h = g.viewHalf.y + 60;
+  return [g.player.y - h, g.player.y + h];
 }
 function fireLaser(g: Game) {
   const p = g.player;
-  const target = nearest(g, p);
-  if (!target) return;
-  const a = Math.atan2(target.y - p.y, target.x - p.x);
-  if (g.evolved.laser) {
-    g.gear.laserSweep = 1;
-    g.gear.laserAngle = a;
-    g.gear.laserHits.clear();
-    g.events.push('boom');
-    return;
-  }
+  const evolved = !!g.evolved.laser;
+  const n = evolved ? 5 : g.skills.laser;
+  const targets = live(g).sort((a, b) => dist(a, p) - dist(b, p)).slice(0, n);
+  if (!targets.length) return;
   const half = laserWidth(g);
-  g.fx.push({ kind: 'beam', x: p.x, y: p.y, r: LASER_LENGTH, a, w: half, life: 0.28, max: 0.28 });
+  const [top, bottom] = laserSpan(g);
+  const hit = new Set<number>();
+  for (const [k, t] of targets.entries()) {
+    g.fx.push({ kind: 'beam', x: t.x, y: top, r: bottom - top, a: Math.PI / 2, w: half, foot: t.y, life: 0.34, max: 0.34, delay: k * 0.06 });
+    for (const e of live(g)) {
+      if (hit.has(e.id) || Math.abs(e.x - t.x) > half + e.r) continue;
+      hit.add(e.id);
+      hurt(g, e, laserDamage(g));
+      if (evolved && g.fx.filter((f) => f.kind === 'rune').length < 16) g.fx.push({ kind: 'rune', x: e.x, y: e.y, r: 16 + e.r, a: Math.random() * Math.PI, life: 1, max: 1 });
+    }
+    if (evolved) g.fx.push({ kind: 'rune', x: t.x, y: t.y, r: 34, a: 0, life: 1.1, max: 1.1 });
+  }
   g.events.push('strike');
-  for (const e of live(g)) if (onBeam(p, a, e, half)) hurt(g, e, laserDamage(g));
-}
-function sweepLaser(g: Game, dt: number) {
-  const gear = g.gear;
-  gear.laserSweep -= dt;
-  gear.laserAngle += Math.PI * 2 * dt;
-  for (const [id, t] of gear.laserHits) {
-    if (t - dt <= 0) gear.laserHits.delete(id);
-    else gear.laserHits.set(id, t - dt);
-  }
-  const half = laserWidth(g) * 1.4;
-  for (const e of live(g)) {
-    if (gear.laserHits.has(e.id) || !onBeam(g.player, gear.laserAngle, e, half)) continue;
-    gear.laserHits.set(e.id, 0.25);
-    hurt(g, e, laserDamage(g) * 1.2);
-    // The Death Ray brands the ground where it cuts: a purple rune that fades.
-    if (g.fx.filter((f) => f.kind === 'rune').length < 14) g.fx.push({ kind: 'rune', x: e.x, y: e.y, r: 16 + e.r, a: Math.random() * Math.PI, life: 0.9, max: 0.9 });
-  }
 }
 
 function callStorm(g: Game) {
@@ -1330,8 +1315,7 @@ function useWeapons(g: Game, dt: number) {
   if (sk.storm && gear.storm === 0) { callStorm(g); gear.storm = (1.8 - 0.25 * (sk.storm - 1)) * (g.evolved.storm ? 0.6 : 1); }
   if (sk.fireball && gear.fireball === 0) { throwFireball(g); gear.fireball = 2.4 - 0.3 * (sk.fireball - 1); }
   if (sk.frost) chill(g, dt);
-  if (sk.laser && gear.laser === 0 && gear.laserSweep <= 0) { fireLaser(g); gear.laser = g.evolved.laser ? 3 : 2.6 - 0.3 * (sk.laser - 1); }
-  if (gear.laserSweep > 0) sweepLaser(g, dt);
+  if (sk.laser && gear.laser === 0) { fireLaser(g); gear.laser = g.evolved.laser ? 1.8 : 2.6 - 0.3 * (sk.laser - 1); }
 }
 
 function hurtPlayer(g: Game, amount: number) {
