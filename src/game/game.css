@@ -2939,3 +2939,18 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 :root:not([data-retro]) .wheel-slice.is-good,
 :root:not([data-retro]) .wheel-slice.is-bad { box-shadow: none; background: rgba(8, 14, 28, 0.35); }
 :root:not([data-retro]) .wheel-slice.is-bad { filter: saturate(0.6); }
+
+/* Legendary items: a gold tag over the name, and a gold glow on the shop card. */
+.legend {
+  display: block;
+  font-size: 0.68em;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fde047;
+  text-shadow: 0 0 6px rgba(250, 204, 21, 0.7);
+}
+.items .item.is-legendary {
+  box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.75), 0 0 18px rgba(250, 204, 21, 0.35);
+}
+.legend-name { color: #fde047; text-shadow: 0 0 6px rgba(250, 204, 21, 0.6); }

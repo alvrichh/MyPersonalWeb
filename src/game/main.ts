@@ -588,9 +588,9 @@ function shopScreen(note = '') {
           : worn
             ? `<button class="buy is-worn" data-unequip="${item.id}">✓ ${t('worn')} · ${t('unequip')}</button>`
             : `<button class="buy" data-equip="${item.id}">${t('equip')}</button>`;
-        return `<div class="item${worn ? ' is-on' : ''}${owned ? ' is-owned' : ''}${!owned && !can ? ' is-locked' : ''}">
+        return `<div class="item${worn ? ' is-on' : ''}${owned ? ' is-owned' : ''}${!owned && !can ? ' is-locked' : ''}${item.legendary ? ' is-legendary' : ''}">
           <span class="icon" aria-hidden="true">${picIcon(item.icon, item.pic)}</span>
-          <b>${t(`${item.id}Name` as Key)}</b>
+          <b>${item.legendary ? `<small class="legend">★ ${t('legendary')}</small>` : ''}${t(`${item.id}Name` as Key)}</b>
           <span>${t(`${item.id}Text` as Key)}</span>
           ${action}
         </div>`;
@@ -675,7 +675,7 @@ function stylesScreen(note = '') {
         const owned = save.owned.includes(item.id);
         const worn = save.equipped[slot] === item.id;
         const can = save.coins >= item.price;
-        return row(`data-dress="${item.id}"`, worn, !owned && !can, picIcon(item.icon, item.pic), t(`${item.id}Name` as Key), t(`${item.id}Text` as Key), worn ? `✓ ${t('worn')}` : owned ? t('equip') : `🪙 ${item.price}`);
+        return row(`data-dress="${item.id}"`, worn, !owned && !can, picIcon(item.icon, item.pic), item.legendary ? `<span class="legend-name">${t(`${item.id}Name` as Key)}</span>` : t(`${item.id}Name` as Key), t(`${item.id}Text` as Key), worn ? `✓ ${t('worn')}` : owned ? t('equip') : `${item.legendary ? '★ ' : ''}🪙 ${item.price}`);
       }).join('')}
       ${save.equipped[slot] ? `<button class="ghost small" data-undress="${slot}">${t('dressNone')}</button>` : ''}
       </div>`;
