@@ -844,6 +844,8 @@ function burst(g: Game, x: number, y: number, color: string, count: number, spee
 const ENEMY_COLOR: Record<EnemyKind, string> = { bug: '#ff6b6b', ticket: '#ffd166', legacy: '#9aa3b2', boss: '#c084fc' };
 
 const COINS: Record<EnemyKind, number> = { bug: 1, ticket: 2, legacy: 3, boss: 25 };
+/** On call kills pour in (a shift ends with well over a thousand), so each pays 40% of a sprint kill: a won shift in world 1 is about 1400 coins, not 3500. */
+const HORDE_PAY = 0.4;
 /** Later worlds pay better. */
 const worldPay = (g: Game) => g.loadout.coinMult * (1 + (g.world - 1) * 0.5);
 
@@ -856,7 +858,7 @@ function kill(g: Game, e: Enemy) {
   if (e.dead) return;
   e.dead = true;
   g.kills += 1;
-  g.coins += COINS[e.kind] * worldPay(g);
+  g.coins += COINS[e.kind] * worldPay(g) * (g.mode === 'horde' ? HORDE_PAY : 1);
   g.events.push('kill');
   burst(g, e.x, e.y, ENEMY_COLOR[e.kind], e.kind === 'boss' ? 60 : 14, e.kind === 'boss' ? 260 : 140, e.kind === 'boss' ? 5 : 3);
   // XP drops as gems to collect; the boss scatters a handful.
