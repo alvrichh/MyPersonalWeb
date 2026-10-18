@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-10-17
+# Daily AI maintenance report — 2026-10-18
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -21,6 +21,12 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
+- **Inline rendering with document​.currentScript** — Simon Willison · 2026-10-17
+  https://simonwillison.net/2026/Oct/17/document-currentscript/
+- **web-edit 0.1a2** — Simon Willison · 2026-10-17
+  https://simonwillison.net/2026/Oct/17/web-edit/
+- **Websites are closing their doors to AI agents** — The Verge AI · 2026-10-17
+  https://www.theverge.com/ai-artificial-intelligence/1013195/ai-agents-blocked-web
 - **OpenAI models hacked a crypto wallet and breached more websites** — Ars Technica AI · 2026-10-16
   https://arstechnica.com/security/2026/10/openai-models-hacked-a-crypto-wallet-and-breached-more-websites/
 - **Building trust in AI agents: A production-ready evaluation framework with Amazon Bedrock AgentCore** — AWS Machine Learning · 2026-10-16
@@ -65,8 +71,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/ai-artificial-intelligence/1012510/openai-chatgpt-google-chrome-tabs
 - **Meta and Apple team up to make Muse AI models run better on Macs** — The Verge AI · 2026-10-15
   https://www.theverge.com/news/1012293/meta-apple-muse-spark-open-ai-model-mlx
-- **Friends don’t let friends feed their data to AI agents** — The Verge AI · 2026-10-15
-  https://www.theverge.com/tech/1011938/muse-ai-data-friends-consent
 - **Anthropic warns small AI models could self-replicate through IoT devices** — Ars Technica AI · 2026-10-14
   https://arstechnica.com/security/2026/10/anthropic-warns-small-ai-models-could-self-replicate-through-iot-devices/
 - **OpenAI, Google pushing new AI models easily tricked into making nudes, researchers say** — Ars Technica AI · 2026-10-14
@@ -125,10 +129,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://simonwillison.net/2026/Oct/13/redesigning-source-control-at-anthropic/
 - **llm-gemini 0.35** — Simon Willison · 2026-10-13
   https://simonwillison.net/2026/Oct/13/llm-gemini/
-- **Quoting Geoffrey Huntley** — Simon Willison · 2026-10-13
-  https://simonwillison.net/2026/Oct/13/geoffrey-huntley/
-- **web-edit 0.1a1** — Simon Willison · 2026-10-13
-  https://simonwillison.net/2026/Oct/13/web-edit/
 - **Anthropic's Claude AI submitted false murder tip to Philadelphia police** — Ars Technica AI · 2026-10-12
   https://arstechnica.com/tech-policy/2026/10/anthropics-claude-ai-submitted-false-murder-tip-to-philadelphia-police/
 - **Deep dive into Azure Maia 300 architecture** — Azure Blog · 2026-10-12
@@ -139,10 +139,10 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://developer.nvidia.com/blog/replayssm-rethinking-state-storage-for-faster-hybrid-model-decoding/
 - **Ukraine’s drones knock out AI data center belonging to "Russia’s Google"** — Ars Technica AI · 2026-10-09
   https://arstechnica.com/gadgets/2026/10/ukraines-drones-knock-out-ai-data-center-belonging-to-russias-google/
-- **Sophos cuts threat investigation time by 96% with OpenAI Daybreak** — OpenAI News · 2026-10-09
-  https://openai.com/index/sophos
 - **Asana cuts model costs 76x in browser tests with GPT-6.1 Sol** — OpenAI News · 2026-10-09
   https://openai.com/index/asana-browser-agent
+- **Sophos cuts threat investigation time by 96% with OpenAI Daybreak** — OpenAI News · 2026-10-09
+  https://openai.com/index/sophos
 - **Introducing the Anthropic Cyber Mission** — Anthropic News · 2026-10-08
   https://www.anthropic.com/news/anthropic-cyber-mission
 - **The model that didn't exist, so you made it yourself** — Hugging Face · 2026-10-08
