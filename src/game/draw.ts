@@ -1,5 +1,5 @@
 import { BLADE_ORBIT, H, W, WALL, WHEEL_X, WORLDS, frostReach, isBossRoom, type Enemy, type Game, type Look, type Statue } from './world';
-import type { ItemId } from './shop';
+import { SPIRIT_COLOR, type ItemId, type SpiritSkin } from './shop';
 import type { HeroSkin } from './save';
 
 /* Bug Hunter's renderer: everything is drawn in room units (360 × 600) and
@@ -445,7 +445,7 @@ function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accen
     const len = Math.hypot(a.vx, a.vy) || 1;
     if (a.kind === 'orb') {
       // The spirits' orb with a short trail: purple in retro, the water ghost's blue otherwise.
-      const tint = retroLook ? ['rgba(192,132,252,0.45)', '#f5f3ff', '#c084fc', 'rgba(168,85,247,0)'] : ['rgba(125,211,252,0.5)', '#f0f9ff', '#38bdf8', 'rgba(14,165,233,0)'];
+      const tint = retroLook ? ['rgba(192,132,252,0.45)', '#f5f3ff', '#c084fc', 'rgba(168,85,247,0)'] : [...SPIRIT_COLOR[a.elem ?? 'water'], 'rgba(0,0,0,0)'];
       ctx.strokeStyle = tint[0];
       ctx.lineWidth = 3;
       ctx.beginPath();
@@ -631,29 +631,41 @@ function drawFireballs(ctx: CanvasRenderingContext2D, g: Game) {
   }
 }
 
-/* The spirit companion: the owner's painted ghost, five floating frames and a
-   throwing pose each way (static/images/game/spirits/<skin>-*.webp). Only the
-   water skin exists so far; `SPIRIT_SKIN` is where an element's own ghost
-   would plug in. The pictures are the whole square canvas, body near the
-   middle, so they are drawn centred on the spirit. */
-const SPIRIT_SKIN = 'water';
+/* The spirit companion: the owner's painted ghosts (static/images/game/spirits).
+   The friendly water ghost has five floating frames and a throw each way;
+   the element spirits bought in the shop have one picture each, so they bob
+   and lean toward their target in code. All are square canvases with the
+   body near the middle, the same size, drawn centred on the spirit. */
+const SPIRIT_FRAMES: Partial<Record<SpiritSkin, number>> = { water: 5 };
 const spiritFrames = new Map<string, HTMLImageElement>();
 function spiritImage(name: string) {
   let img = spiritFrames.get(name);
-  if (!img) { img = new Image(); img.src = `./images/game/spirits/${SPIRIT_SKIN}-${name}.webp`; spiritFrames.set(name, img); }
+  if (!img) { img = new Image(); img.src = `./images/game/spirits/${name}.webp`; spiritFrames.set(name, img); }
   return img;
 }
 
 function drawSpirits(ctx: CanvasRenderingContext2D, g: Game, now: number) {
   if (retroLook) { drawSpiritsRetro(ctx, g, now); return; }
+  const skin = g.loadout.spirit;
+  const frames = SPIRIT_FRAMES[skin];
   for (const s of g.spirits) {
-    const name = s.cast > 0 ? (s.dir < 0 ? 'shoot-l' : 'shoot-r') : `float-${Math.floor(now * 8 + s.slot * 2) % 5}`;
+    const name = frames
+      ? s.cast > 0 ? `${skin}-shoot-${s.dir < 0 ? 'l' : 'r'}` : `${skin}-float-${Math.floor(now * 8 + s.slot * 2) % frames}`
+      : `${skin}-float-0`;
     const img = spiritImage(name);
     if (!img.complete || !img.naturalWidth) continue;
     const size = 44;
     ctx.save();
     ctx.globalAlpha = Math.min(1, s.life * 2);
-    ctx.drawImage(img, s.x - size / 2, s.y - size / 2, size, size);
+    ctx.translate(s.x, s.y);
+    if (!frames) {
+      // One picture: a slow breath, and a lean toward the throw.
+      const lean = s.cast > 0 ? s.dir * (s.cast / 0.3) * 0.25 : Math.sin(now * 2 + s.slot) * 0.06;
+      ctx.rotate(lean);
+      const breath = 1 + Math.sin(now * 3 + s.slot * 2) * 0.04;
+      ctx.scale(s.dir < 0 ? -breath : breath, breath);
+    }
+    ctx.drawImage(img, -size / 2, -size / 2, size, size);
     ctx.restore();
   }
 }

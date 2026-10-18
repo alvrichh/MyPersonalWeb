@@ -13,11 +13,28 @@ import type { Category, SkillId } from './world';
  * re-seats those items by their new slot.
  */
 export type Slot = 'head' | 'body' | 'boots' | 'magic' | 'melee' | 'ranged';
+/**
+ * The spirit companion's look and element. `water` is the friendly ghost you
+ * get by default; the rest are bought for the magic slot and each gives the
+ * spirit's orb its own effect (see `hitWithShot` in world.ts).
+ */
+export type SpiritSkin = 'water' | 'fire' | 'tide' | 'thorn' | 'volt' | 'shade';
+export const SPIRIT_COLOR: Record<SpiritSkin, [string, string, string]> = {
+  // trail, core, glow
+  water: ['rgba(125,211,252,0.5)', '#f0f9ff', '#38bdf8'],
+  fire: ['rgba(251,146,60,0.55)', '#fff7ed', '#f97316'],
+  tide: ['rgba(56,189,248,0.55)', '#e0f2fe', '#0284c7'],
+  thorn: ['rgba(132,204,22,0.55)', '#f7fee7', '#65a30d'],
+  volt: ['rgba(250,204,21,0.55)', '#fefce8', '#eab308'],
+  shade: ['rgba(168,85,247,0.55)', '#f5f3ff', '#7e22ce'],
+};
+const spiritPic = (skin: SpiritSkin) => `<img class="item-pic" src="./images/game/spirits/${skin}-float-0.webp" alt="">`;
 export type ItemId =
   | 'wizardHat' | 'gladHelm' | 'bandana' | 'crown'
   | 'potion' | 'phoenix' | 'pompom' | 'plate'
   | 'windBoots' | 'ironBoots' | 'magnetBoots'
   | 'orb' | 'hourglass' | 'spellbook' | 'lantern'
+  | 'spiritFire' | 'spiritTide' | 'spiritThorn' | 'spiritVolt' | 'spiritShade'
   | 'keySword' | 'chainBlades' | 'warHammer'
   | 'quiver' | 'knifeSet' | 'huntBoomerang';
 
@@ -69,6 +86,8 @@ export type Loadout = {
   magnet: number;
   /** Fraction of damage taken that armour absorbs. */
   armor: number;
+  /** Which spirit companion comes with the Spirits skill. */
+  spirit: SpiritSkin;
 };
 
 export const BASE_LOADOUT: Loadout = {
@@ -82,6 +101,7 @@ export const BASE_LOADOUT: Loadout = {
   hasteMult: 1,
   magnet: 0,
   armor: 0,
+  spirit: 'water',
 };
 
 export const ITEMS: Item[] = [
@@ -103,7 +123,12 @@ export const ITEMS: Item[] = [
   { id: 'orb', slot: 'magic', price: 150, icon: '🔮', effect: { xpMult: 1.25 } },
   { id: 'hourglass', slot: 'magic', price: 200, icon: '⏳', effect: { hasteMult: 1.15 } },
   { id: 'spellbook', slot: 'magic', price: 260, icon: '📖', effect: { startSkills: ['fireball'] } },
-  { id: 'lantern', slot: 'magic', price: 300, icon: '🏮', effect: { startSkills: ['spirits'] } },
+  { id: 'lantern', slot: 'magic', price: 300, icon: spiritPic('water'), effect: { startSkills: ['spirits'], spirit: 'water' } },
+  { id: 'spiritFire', slot: 'magic', price: 420, icon: spiritPic('fire'), effect: { startSkills: ['spirits'], spirit: 'fire' } },
+  { id: 'spiritTide', slot: 'magic', price: 420, icon: spiritPic('tide'), effect: { startSkills: ['spirits'], spirit: 'tide' } },
+  { id: 'spiritThorn', slot: 'magic', price: 420, icon: spiritPic('thorn'), effect: { startSkills: ['spirits'], spirit: 'thorn' } },
+  { id: 'spiritVolt', slot: 'magic', price: 480, icon: spiritPic('volt'), effect: { startSkills: ['spirits'], spirit: 'volt' } },
+  { id: 'spiritShade', slot: 'magic', price: 480, icon: spiritPic('shade'), effect: { startSkills: ['spirits'], spirit: 'shade' } },
   // Melee
   { id: 'keySword', slot: 'melee', price: 260, icon: '🗝️', effect: { startSkills: ['sword'] } },
   { id: 'chainBlades', slot: 'melee', price: 260, icon: '⛓️', effect: { startSkills: ['blades'] } },
@@ -145,6 +170,7 @@ export function buildLoadout(equipped: Partial<Record<Slot, ItemId>>, upgrades: 
     if (effect.hasteMult) out.hasteMult *= effect.hasteMult;
     if (effect.magnet) out.magnet += effect.magnet;
     if (effect.armor) out.armor = Math.min(0.6, out.armor + effect.armor);
+    if (effect.spirit) out.spirit = effect.spirit;
   }
   return out;
 }

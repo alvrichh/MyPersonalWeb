@@ -10,7 +10,7 @@
  * Everything lives in a fixed 360 × 600 room; the renderer scales it to fit.
  */
 
-import type { Loadout } from './shop';
+import type { Loadout, SpiritSkin } from './shop';
 import { BASE_LOADOUT } from './shop';
 import type { EnemyStyle } from './save';
 
@@ -154,6 +154,8 @@ export type Shot = {
   bow: boolean;
   hits: Set<number>;
   life: number;
+  /** Spirit orbs: the companion's element, which sets the orb's effect. */
+  elem?: SpiritSkin;
   /** Boomerang: seconds until it turns back. */
   out: number;
   spin: number;
@@ -653,6 +655,10 @@ function hitWithShot(g: Game, e: Enemy, s: Shot) {
   hurt(g, e, s.dmg, s.kind === 'boomerang' ? undefined : { x: s.vx * 0.06, y: s.vy * 0.06 });
   burst(g, s.x, s.y, '#ffffff', 4, 90, 2);
   g.events.push('hit');
+  // The spirit's element: fire burns, tide slows, volt arcs to one more bug.
+  if (s.elem === 'fire') { e.burn = 2; e.burnDps = Math.max(e.burnDps, 7); }
+  else if (s.elem === 'tide') { e.slow = 1.5; e.slowBy = Math.max(e.slowBy, 0.35); }
+  else if (s.elem === 'volt') chain(g, e, 1, s.dmg * 0.6);
   if (!s.bow) return;
   if (g.skills.fire) {
     e.burn = 2;
@@ -901,7 +907,10 @@ function moveSpirits(g: Game, dt: number) {
       const target = nearest(g, s, true);
       if (target) {
         const a = Math.atan2(target.y - s.y, target.x - s.x);
-        g.shots.push(shot('orb', s, a, 320, (14 + 6 * (lv - 1)) * power(g, 'magic'), { life: 1.4 }));
+        const elem = g.loadout.spirit;
+        // Thorn orbs go through one bug, shade orbs through all of them.
+        const pierce = elem === 'thorn' ? 1 : elem === 'shade' ? 99 : 0;
+        g.shots.push(shot('orb', s, a, 320, (14 + 6 * (lv - 1)) * power(g, 'magic'), { life: 1.4, elem, pierce, ghost: elem === 'shade' }));
         s.cd = 1.1 / haste(g);
         s.cast = 0.3;
         s.dir = Math.cos(a) < 0 ? -1 : 1;
