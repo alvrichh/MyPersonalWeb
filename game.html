@@ -27,18 +27,22 @@
   <main class="game">
     <canvas id="stage" aria-label="Bug Hunter"></canvas>
     <header class="hud" id="hud" hidden>
-      <a class="hud-back" id="backLink" href="./index.html" aria-label="Back to portfolio">←</a>
+      <a class="hud-back" id="backLink" href="./index.html" aria-label="Back to portfolio"><span aria-hidden="true">←</span></a>
       <span class="hud-room" id="hudRoom"></span>
-      <span class="hud-coins">🪙 <b id="hudCoins">0</b></span>
+      <span class="hud-coins"><span class="hud-coin-orb" aria-hidden="true">🪙</span><b id="hudCoins">0</b></span>
+      <span class="hud-hp" aria-label="Health"><span aria-hidden="true">♥</span><i><b id="hudHp"></b></i></span>
       <span class="hud-xp"><span id="hudLevel"></span><i><b id="hudXp"></b></i></span>
-      <button class="hud-pause" id="pauseBtn" type="button" aria-label="Pause">II</button>
+      <button class="hud-pause" id="pauseBtn" type="button" aria-label="Pause"><span aria-hidden="true">Ⅱ</span></button>
     </header>
     <div class="gear" id="hudGear" aria-hidden="true" hidden></div>
-    <div class="boss" id="bossBar" hidden><span id="bossName"></span><i><b id="bossHp"></b></i></div>
+    <div class="boss" id="bossBar" hidden>
+      <div class="boss-title"><img src="./images/game/ui/header_boss.webp" alt=""><span id="bossName"></span></div>
+      <i class="boss-meter"><b id="bossHp"></b></i>
+    </div>
     <p class="toast" id="toast" role="status" hidden></p>
     <section class="screen" id="screen" hidden></section>
     <div class="loading" id="loading" role="status" aria-live="polite">
-      <b class="loading-title">Bug Hunter</b>
+      <img class="loading-logo" src="./images/game/ui/logo.webp" alt="Bug Hunter">
       <i class="loading-bar"><b id="loadingFill"></b></i>
       <small id="loadingText">Loading…</small>
     </div>
