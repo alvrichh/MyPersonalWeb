@@ -610,7 +610,7 @@ const shopOpen = new Set<string>();
 /** A foldable shop section: one of the owner's ring-and-plate rows (orange while open) with its icon and a count, and its cards only when open. */
 const SHOP_SEC_ICON: Record<string, [string, string]> = {
   forge: ['⚒️', 'forge/might.webp'], arsenal: ['🚀', 'skills/rocket.webp'],
-  head: ['🎩', 'slots/head.webp'], body: ['🦺', 'slots/body.webp'], boots: ['👢', 'slots/boots.webp'],
+  armour: ['🛡️', 'slots/body.webp'],
   magic: ['🔮', 'slots/magic.webp'], melee: ['🗡️', 'slots/melee.webp'], ranged: ['🏹', 'slots/ranged.webp'],
 };
 function shopSection(key: string, title: string, count: string, body: string) {
@@ -642,8 +642,14 @@ function shopScreen(note = '') {
         </div>`;
       })
       .join('');
-    return shopSection(slot, t(SLOT_LABEL[slot]), `${all.filter((i) => save.owned.includes(i.id)).length}/${all.length}`, `<div class="items">${cards}</div>`);
-  }).join('');
+    return { slot, owned: all.filter((i) => save.owned.includes(i.id)).length, total: all.length, cards };
+  });
+  // Head, body and boots share one Armour section, a sub-heading each; the weapon slots keep their own.
+  const armour = groups.filter((x) => ARMOUR_SLOTS.includes(x.slot));
+  const armourSec = shopSection('armour', t('shopArmour'), `${armour.reduce((n, x) => n + x.owned, 0)}/${armour.reduce((n, x) => n + x.total, 0)}`,
+    armour.map((x) => `<h3 class="slot">${t(SLOT_LABEL[x.slot])}</h3><div class="items">${x.cards}</div>`).join(''));
+  const weaponSecs = groups.filter((x) => !ARMOUR_SLOTS.includes(x.slot))
+    .map((x) => shopSection(x.slot, t(SLOT_LABEL[x.slot]), `${x.owned}/${x.total}`, `<div class="items">${x.cards}</div>`)).join('');
   // The forge: permanent, levelled upgrades.
   const forge = UPGRADES.map((u) => {
     const level = save.upgrades[u.id] ?? 0;
@@ -682,7 +688,7 @@ function shopScreen(note = '') {
     ${note ? `<p class="note">${note}</p>` : `<p class="how">${t('earnHint')}</p>`}
     ${shopSection('forge', t('forge'), `${UPGRADES.reduce((n, u) => n + (save.upgrades[u.id] ?? 0), 0)}/${UPGRADES.reduce((n, u) => n + u.max, 0)}`, `<p class="how">${t('forgeHint')}</p><div class="items">${forge}</div>`)}
     ${shopSection('arsenal', t('arsenal'), `${save.arsenal.length}/${ARSENAL.length}`, `<p class="how">${t('arsenalHint')}</p><div class="items">${arsenal}</div>`)}
-    ${groups}
+    ${armourSec}${weaponSecs}
     ${backButton('menu')}`, true, false, 'keep-scroll');
 }
 
