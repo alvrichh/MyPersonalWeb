@@ -530,10 +530,14 @@ function readInput(): Input {
 /* --------------------------------------------------------------- the frame */
 
 const view: View = { scale: 1, ox: 0, oy: 0, dpr: 1 };
+/** The canvas size the bitmap was last made for, in CSS pixels. */
+let fitted = { width: 0, height: 0, dpr: 0 };
 function resize() {
   const dpr = Math.min(2, window.devicePixelRatio || 1);
   const width = canvas.clientWidth;
   const height = canvas.clientHeight;
+  if (!width || !height) return;
+  fitted = { width, height, dpr };
   canvas.width = Math.round(width * dpr);
   canvas.height = Math.round(height * dpr);
   const top = 86; // room for the HUD and the weapons row
@@ -543,7 +547,16 @@ function resize() {
   view.ox = (width - W * scale) / 2;
   view.oy = top + (height - top - 8 - H * scale) / 2;
 }
+/* Phones (iOS above all) can change the canvas box without a resize event:
+   the address bar folds, the first layout settles late, the page zooms. So
+   the frame loop checks the real size every time and refits when it moved,
+   or the picture is drawn squashed into a bitmap of the wrong shape. */
+function fitIfMoved() {
+  if (canvas.clientWidth !== fitted.width || canvas.clientHeight !== fitted.height || Math.min(2, window.devicePixelRatio || 1) !== fitted.dpr) resize();
+}
 window.addEventListener('resize', resize);
+window.visualViewport?.addEventListener('resize', resize);
+if ('ResizeObserver' in window) new ResizeObserver(resize).observe(canvas);
 resize();
 
 // The menu's backdrop: the title-screen parade (scene.ts).
@@ -558,6 +571,7 @@ let last = performance.now();
 function frame(now: number) {
   const dt = Math.min(0.033, (now - last) / 1000);
   last = now;
+  fitIfMoved();
   const g = game;
   if (g && !paused && g.phase === 'play') {
     update(g, dt, readInput());
