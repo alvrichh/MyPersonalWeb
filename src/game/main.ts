@@ -517,7 +517,10 @@ function spinWheel(g: Game) {
   const wheel = g.luckyWheel ? WHEEL_LUCKY : WHEEL;
   const index = Math.floor(Math.random() * wheel.length);
   // Five full turns, then land the chosen slice (centred at index × 45°) under the pin at the top.
-  disc.style.transform = `rotate(${5 * 360 - index * (360 / wheel.length)}deg)`;
+  const turn = 5 * 360 - index * (360 / wheel.length);
+  disc.style.transform = `rotate(${turn}deg)`;
+  // The prize icons turn back by as much, so they stay upright as the disc spins.
+  disc.style.setProperty('--turn', `${turn}deg`);
   disc.classList.add('is-spinning');
   audio.play('boomerang');
   window.setTimeout(() => {
