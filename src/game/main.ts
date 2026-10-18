@@ -733,6 +733,14 @@ function readInput(): Input {
   return { x, y };
 }
 
+/* A meter's fill: the width for the flat retro bars, and --p on the meter
+   for the painted ones, whose fill is clipped rather than resized. */
+function setMeter(fill: HTMLElement, frac: number) {
+  const pct = `${Math.max(0, Math.min(1, frac)) * 100}%`;
+  fill.style.width = pct;
+  fill.parentElement?.style.setProperty('--p', pct);
+}
+
 /* --------------------------------------------------------------- the frame */
 
 const view: View = { scale: 1, ox: 0, oy: 0, dpr: 1 };
@@ -834,8 +842,8 @@ function step(now: number) {
     draw(ctx, g, view, palette, now / 1000);
     hudRoom.textContent = `${t('worldShort', { n: g.world })} · ${t('sprint', { room: g.room })}`;
     hudLevel.textContent = t('level', { level: g.level });
-    hudXp.style.width = `${(g.xp / g.xpNext) * 100}%`;
-    hudHp.style.width = `${(Math.max(0, g.player.hp) / g.player.maxHp) * 100}%`;
+    setMeter(hudXp, g.xp / g.xpNext);
+    setMeter(hudHp, Math.max(0, g.player.hp) / g.player.maxHp);
     hudCoins.textContent = String(Math.floor(g.coins));
     const gear = [['bow', 1] as const, ...ownedWeapons(g).map((id) => [id, g.skills[id]] as const)];
     const gearKey = gear.map(([id, lvl]) => `${id}${lvl}`).join(' ');
@@ -847,7 +855,7 @@ function step(now: number) {
     bossBar.hidden = !boss;
     if (boss) {
       bossName.textContent = t(BOSS_NAME[boss.look]);
-      bossHp.style.width = `${(Math.max(0, boss.hp) / boss.maxHp) * 100}%`;
+      setMeter(bossHp, Math.max(0, boss.hp) / boss.maxHp);
     }
   } else if (!screen.classList.contains('is-menu')) {
     drawMenuBackdrop(now / 1000);

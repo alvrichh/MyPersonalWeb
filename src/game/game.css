@@ -2152,6 +2152,48 @@ body {
   .hud-room { padding-inline: 5px; }
 }
 
+/* Painted meters (owner's layered bars): the frame keeps its shape, the
+   fill sits at the coordinates from the pack's layout.json and is clipped
+   to --p (set by setMeter in main.ts), never resized. */
+:root:not([data-retro]) .hud-hp i,
+:root:not([data-retro]) .hud-xp i,
+:root:not([data-retro]) .boss-meter {
+  flex: none;
+  width: auto;
+  height: 34px;
+  aspect-ratio: 2172 / 480;
+  overflow: visible;
+  background: url('/images/game/ui/meter_hp_frame.webp') center / 100% 100% no-repeat;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.5));
+}
+:root:not([data-retro]) .hud-xp i { background-image: url('/images/game/ui/meter_xp_frame.webp'); }
+:root:not([data-retro]) .hud-hp i b,
+:root:not([data-retro]) .hud-xp i b,
+:root:not([data-retro]) .boss-meter b {
+  inset: auto;
+  left: 12.8913%;
+  top: 34.7917%;
+  width: 74.5856% !important;
+  height: 31.6667%;
+  background: url('/images/game/ui/meter_hp_fill.webp') center / 100% 100% no-repeat;
+  clip-path: inset(0 calc(100% - var(--p, 0%)) 0 0);
+  transition: clip-path 0.18s ease-out;
+  filter: none;
+}
+:root:not([data-retro]) .hud-xp i b {
+  left: 12.2928%;
+  top: 33.9583%;
+  width: 76.7035% !important;
+  height: 30.4167%;
+  background-image: url('/images/game/ui/meter_xp_fill.webp');
+}
+:root:not([data-retro]) .hud { grid-template-rows: 40px 34px; }
+:root:not([data-retro]) .hud-hp,
+:root:not([data-retro]) .hud-xp { justify-content: flex-start; }
+:root:not([data-retro]) .hud-hp > span,
+:root:not([data-retro]) .hud-xp > span { flex: none; }
+:root:not([data-retro]) .boss-meter { width: min(100%, 250px); height: auto; justify-self: center; }
+
 /* Keep equipped-weapon badges below the two-row HUD on notched phones. */
 .gear { top: calc(max(8px, env(safe-area-inset-top)) + 74px); }
 
