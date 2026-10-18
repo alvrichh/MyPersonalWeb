@@ -126,6 +126,9 @@ export const canEvolve = (g: Game, w: SkillId) => {
   return !!partner && !g.evolved[w] && g.skills[w] >= maxLevel(w) && g.skills[partner] >= 1;
 };
 const MAX_WEAPONS = 4;
+/** The weapons from the rest of Survivor.io's list are On call only: sprints keep their tuned rooms and arsenal. */
+export const HORDE_ONLY: SkillId[] = ['brick', 'molotov', 'durian', 'mines', 'drill', 'rocket', 'ball'];
+const allowedIn = (g: Game, s: SkillId) => g.mode === 'horde' || !HORDE_ONLY.includes(s);
 export const maxLevel = (s: SkillId) => (s === 'heart' ? 99 : s === 'double' ? 2 : s === 'blades' ? 5 : 3);
 
 /* ---------------------------------------------------------------- the cast */
@@ -648,7 +651,7 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
   };
   for (const s of loadout.startSkills) g.skills[s] = Math.max(g.skills[s], 1);
   // The Senior's Tome: random weapons at their top level, each with its partner, so the first level up offers to evolve them.
-  const ready = (Object.keys(EVO_PARTNER) as SkillId[]).filter((w) => !g.skills[w]);
+  const ready = (Object.keys(EVO_PARTNER) as SkillId[]).filter((w) => !g.skills[w] && allowedIn(g, w));
   for (let i = 0; i < loadout.startMaxed && ready.length; i++) {
     const w = ready.splice(Math.floor(Math.random() * ready.length), 1)[0];
     g.skills[w] = maxLevel(w);
@@ -758,6 +761,7 @@ function updateHorde(g: Game, dt: number) {
 export const ownedWeapons = (g: Game) => WEAPONS.filter((s) => g.skills[s] > 0);
 
 function canPick(g: Game, s: SkillId) {
+  if (!allowedIn(g, s)) return false;
   if (g.skills[s] >= maxLevel(s)) return false;
   // A new weapon only while there's a free slot.
   if (CATEGORY[s] !== 'upgrade' && g.skills[s] === 0 && ownedWeapons(g).length >= MAX_WEAPONS) return false;
