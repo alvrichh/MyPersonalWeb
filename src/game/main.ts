@@ -514,6 +514,8 @@ function choiceScreen(g: Game) {
 const WHEEL_ICON: Record<WheelOutcome, string> = {
   newSkill: '✨', skillUp: '⬆️', heal: '❤️', coins: '🪙', loseLevel: '⬇️', hurt: '💔', loseCoins: '💸', bossBuff: '👹', nothing: '😐', evolve: '★',
 };
+/** Painted prizes where the owner's art already has one (the rest wait for their own icons and show the emoji). */
+const WHEEL_PIC: Partial<Record<WheelOutcome, string>> = { heal: 'fx/heart.webp', evolve: 'ui/icon_star.webp', newSkill: 'fx/gem-big.webp' };
 const WHEEL_TEXT: Record<WheelOutcome, Key> = {
   newSkill: 'wNewSkill', skillUp: 'wSkillUp', heal: 'wHeal', coins: 'wCoins', loseLevel: 'wLoseLevel', hurt: 'wHurt', loseCoins: 'wLoseCoins', bossBuff: 'wBossBuff', nothing: 'wNothing', evolve: 'wEvolve',
 };
@@ -524,7 +526,7 @@ function shrineScreen() {
 }
 function wheelScreen() {
   const lucky = !!game?.luckyWheel;
-  const slices = (lucky ? WHEEL_LUCKY : WHEEL).map((o, i) => `<span class="wheel-slice${WHEEL_GOOD.includes(o) ? ' is-good' : o === 'nothing' ? '' : ' is-bad'}" style="--i:${i}">${WHEEL_ICON[o]}</span>`).join('');
+  const slices = (lucky ? WHEEL_LUCKY : WHEEL).map((o, i) => `<span class="wheel-slice${WHEEL_GOOD.includes(o) ? ' is-good' : o === 'nothing' ? '' : ' is-bad'}" style="--i:${i}">${picIcon(WHEEL_ICON[o], WHEEL_PIC[o])}</span>`).join('');
   show(`${head('wings', t(lucky ? 'chestTitle' : 'wheelTitle'))}<p>${t(lucky ? 'chestText' : 'wheelText')}</p>
     <div class="wheel"><div class="wheel-disc" id="wheelDisc">${slices}</div><span class="wheel-pin" aria-hidden="true"></span></div>
     <p class="wheel-result" id="wheelResult"></p>
