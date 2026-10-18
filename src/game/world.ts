@@ -245,6 +245,8 @@ type Gear = {
   frost: number;
   laser: number;
   bladeAngle: number;
+  /** The blades are turning (there are bugs to cut); stopped in a cleared room. */
+  bladesOn: boolean;
   /** Per-bug cooldown so a spinning blade doesn't hit the same bug every frame. */
   bladeHits: Map<number, number>;
 };
@@ -604,7 +606,7 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     revives: loadout.revives,
     gear: {
       bow: 0.4, knives: 0.6, boomerang: 0.8, sword: 0.5, hammer: 1, storm: 1, fireball: 1, spirits: 0.5, frost: 0, laser: 1.2,
-      bladeAngle: 0, bladeHits: new Map(),
+      bladeAngle: 0, bladesOn: false, bladeHits: new Map(),
     },
     level: 1,
     xp: 0,
@@ -1289,6 +1291,7 @@ function useWeapons(g: Game, dt: number) {
   const sk = g.skills;
   for (const k of ['bow', 'knives', 'boomerang', 'sword', 'hammer', 'storm', 'fireball', 'laser'] as const) gear[k] = Math.max(0, gear[k] - dt);
   const fighting = live(g).length > 0;
+  gear.bladesOn = fighting;
   if (!fighting) return;
 
   // Ranged: only while standing still, at the nearest bug in plain sight.
