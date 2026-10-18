@@ -1622,7 +1622,7 @@ body {
 
 /* Boss crest sits above the boss-health frame. */
 .boss {
-  top: calc(max(8px, env(safe-area-inset-top)) + 83px);
+  top: calc(max(8px, env(safe-area-inset-top)) + 105px);
   width: min(330px, 82vw);
   gap: 0;
   font-family: var(--font);
@@ -1863,3 +1863,6 @@ body {
   .hud-coin-orb { width: 21px; height: 21px; }
   .hud-room { padding-inline: 5px; }
 }
+
+/* Keep equipped-weapon badges below the two-row HUD on notched phones. */
+.gear { top: calc(max(8px, env(safe-area-inset-top)) + 74px); }
