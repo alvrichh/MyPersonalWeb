@@ -75,7 +75,8 @@ export class Scene {
       const x = w * (0.3 + 0.4 * i) + Math.sin(now * 0.3 + i * 2) * w * 0.15;
       const y = h * (0.3 + 0.25 * i) + Math.cos(now * 0.25 + i) * h * 0.12;
       const grad = ctx.createRadialGradient(x, y, 0, x, y, Math.max(w, h) * 0.45);
-      grad.addColorStop(0, color + '2e');
+      // Hex accents take an alpha suffix; Disco's hsl() walk needs the slash form.
+      grad.addColorStop(0, color.startsWith('#') ? color + '2e' : color.replace(')', ' / 0.18)'));
       grad.addColorStop(1, 'transparent');
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, w, h);
