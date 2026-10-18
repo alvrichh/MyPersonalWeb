@@ -19,6 +19,14 @@ export const H = 600;
 export const WALL = 16;
 export const ROOMS = 10;
 const DOOR_HALF = 32;
+/** Rooms whose clear puts a healing statue down (the one before each boss). */
+export const STATUE_ROOMS = [4, 9];
+/** How much of your health the statue gives back. */
+export const STATUE_HEAL = 0.5;
+/** The room whose clear also opens the mysterious door, once per run. */
+export const WHEEL_ROOM = 7;
+/** Where the mysterious door sits in the top wall. */
+export const WHEEL_X = W / 2 + 92;
 
 /* ------------------------------------------------------------------ worlds */
 
@@ -180,10 +188,20 @@ type Gear = {
   bladeHits: Map<number, number>;
 };
 
+/** The healing statue that appears when the room before a boss is cleared. */
+export type Statue = { x: number; y: number; used: boolean };
+
 export type Game = {
   world: number;
   room: number;
-  phase: 'play' | 'levelup' | 'over' | 'won';
+  phase: 'play' | 'levelup' | 'wheel' | 'over' | 'won';
+  statue: Statue | null;
+  /** The second, mysterious door is open in this room. */
+  wheelDoor: boolean;
+  /** The wheel is a once-per-run thing. */
+  wheelUsed: boolean;
+  /** 1 normally; the wheel can make the next boss tougher. */
+  bossHpMult: number;
   hazards: Hazard[];
   strikes: Strike[];
   /** Seconds until the next lightning strike (storm worlds). */
@@ -224,7 +242,7 @@ export type Game = {
 };
 
 export type GameEvent =
-  | 'clear' | 'boss' | 'hurt' | 'levelup' | 'room' | 'revive'
+  | 'clear' | 'boss' | 'hurt' | 'levelup' | 'room' | 'revive' | 'heal' | 'wheel'
   | 'shoot' | 'knife' | 'boomerang' | 'hit' | 'kill' | 'gem' | 'slash' | 'slam' | 'strike' | 'boom';
 
 /* ------------------------------------------------------------------ helpers */
@@ -330,7 +348,7 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
     legacy: { r: 20, hp: 170, speed: 34, dmg: 20, xp: 14 },
     boss: { r: 40, hp: room === 10 ? 2000 : 900, speed: 40, dmg: 22, xp: 70 },
   }[kind];
-  const hp = Math.round(base.hp * (kind === 'boss' ? worldUp : tough));
+  const hp = Math.round(base.hp * (kind === 'boss' ? worldUp * g.bossHpMult : tough));
   return {
     id: nextId++,
     kind,
@@ -415,6 +433,8 @@ function enterRoom(g: Game, room: number) {
   for (const gem of g.gems) gainXp(g, gem.value);
   g.room = room;
   g.door = false;
+  g.statue = null;
+  g.wheelDoor = false;
   const layout = LAYOUT_FOR_ROOM[room - 1];
   g.obstacles = layout >= 0 ? LAYOUTS[layout] : [];
   setHazard(g, room);
@@ -432,8 +452,6 @@ function enterRoom(g: Game, room: number) {
     const at = kind === 'boss' ? { x: W / 2, y: H * 0.3 } : freeSpot(g, kind === 'legacy' ? 20 : 14);
     g.enemies.push(makeEnemy(g, kind, room, at, kind === 'boss' ? 1.2 : rand(0.5, 1.1)));
   }
-  // A breather before each boss.
-  if (isBossRoom(room)) g.player.hp = Math.min(g.player.maxHp, g.player.hp + Math.round(g.player.maxHp * 0.3));
   g.events.push(isBossRoom(room) ? 'boss' : 'room');
 }
 
@@ -442,6 +460,10 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     world: clamp(world, 1, WORLD_COUNT),
     room: 1,
     phase: 'play',
+    statue: null,
+    wheelDoor: false,
+    wheelUsed: false,
+    bossHpMult: 1,
     hazards: [],
     strikes: [],
     strikeIn: 2,
@@ -1119,6 +1141,78 @@ function updateHazards(g: Game, dt: number) {
   });
 }
 
+/** A spot for the statue on the way to the door, off the racks. */
+function statueSpot(g: Game): Vec {
+  const spots = [{ x: W / 2, y: 150 }, { x: W / 2 - 80, y: 150 }, { x: W / 2 + 80, y: 150 }, { x: W / 2, y: 230 }];
+  return spots.find((s) => !g.obstacles.some((o) => inRect(s, o, 26))) ?? spots[0];
+}
+
+/* ------------------------------------------------------------------- wheel */
+
+export type WheelOutcome = 'newSkill' | 'skillUp' | 'heal' | 'coins' | 'loseLevel' | 'hurt' | 'loseCoins' | 'bossBuff' | 'nothing';
+/** The slices in order round the wheel: good and bad alternate. */
+export const WHEEL: WheelOutcome[] = ['newSkill', 'hurt', 'heal', 'loseLevel', 'skillUp', 'nothing', 'coins', 'bossBuff'];
+export const WHEEL_GOOD: WheelOutcome[] = ['newSkill', 'heal', 'skillUp', 'coins'];
+export const WHEEL_COINS = 40;
+
+/**
+ * Apply a wheel result. Returns what really happened (a result that can't
+ * apply falls back to a kinder one) and the skill it touched, if any.
+ */
+export function applyWheel(g: Game, outcome: WheelOutcome): { outcome: WheelOutcome; skill?: SkillId } {
+  const any = <T>(list: T[]) => list[Math.floor(Math.random() * list.length)];
+  const owned = SKILLS.filter((s) => g.skills[s] > 0);
+  const p = g.player;
+  switch (outcome) {
+    case 'newSkill': {
+      const pool = WEAPONS.filter((s) => g.skills[s] === 0 && canPick(g, s));
+      if (!pool.length) return applyWheel(g, 'skillUp');
+      const skill = any(pool);
+      g.skills[skill] = 1;
+      return { outcome, skill };
+    }
+    case 'skillUp': {
+      const pool = owned.filter((s) => canPick(g, s));
+      if (!pool.length) return applyWheel(g, 'heal');
+      const skill = any(pool);
+      g.skills[skill] += 1;
+      if (skill === 'heart') { p.maxHp += 25; p.hp = Math.min(p.maxHp, p.hp + 25); }
+      return { outcome, skill };
+    }
+    case 'heal':
+      p.hp = p.maxHp;
+      return { outcome };
+    case 'coins':
+      g.coins += WHEEL_COINS * worldPay(g);
+      return { outcome };
+    case 'loseLevel': {
+      if (!owned.length) return applyWheel(g, 'hurt');
+      const skill = any(owned);
+      g.skills[skill] -= 1;
+      if (skill === 'heart') { p.maxHp = Math.max(50, p.maxHp - 25); p.hp = Math.min(p.hp, p.maxHp); }
+      return { outcome, skill };
+    }
+    case 'hurt':
+      p.hp = Math.max(1, p.hp - Math.round(p.maxHp * 0.3));
+      return { outcome };
+    case 'loseCoins':
+      g.coins = Math.floor(g.coins / 2);
+      return { outcome };
+    case 'bossBuff':
+      g.bossHpMult = 1.25;
+      return { outcome };
+    default:
+      return { outcome: 'nothing' };
+  }
+}
+
+/** Walk on from the wheel room into the next one. */
+export function leaveWheel(g: Game) {
+  if (g.phase !== 'wheel') return;
+  g.phase = 'play';
+  enterRoom(g, g.room + 1);
+}
+
 export type Input = { x: number; y: number };
 
 export function update(g: Game, dt: number, input: Input) {
@@ -1139,6 +1233,20 @@ export function update(g: Game, dt: number, input: Input) {
     p.face = Math.atan2(input.y, input.x);
   }
   updateHazards(g, dt);
+  // The statue heals once, the moment you touch it.
+  if (g.statue && !g.statue.used && dist(p, g.statue) < p.r + 24) {
+    g.statue.used = true;
+    heal(g, Math.round(p.maxHp * STATUE_HEAL));
+    g.events.push('heal');
+  }
+  const atWheel = g.wheelDoor && Math.abs(p.x - WHEEL_X) < DOOR_HALF - 4 && p.y - p.r < WALL + 6;
+  if (atWheel) {
+    g.wheelDoor = false;
+    g.wheelUsed = true;
+    g.phase = 'wheel';
+    g.events.push('wheel');
+    return;
+  }
   const atDoor = g.door && Math.abs(p.x - W / 2) < DOOR_HALF - 4 && p.y - p.r < WALL + 6;
   if (atDoor) {
     if (g.room === ROOMS) {
@@ -1149,8 +1257,8 @@ export function update(g: Game, dt: number, input: Input) {
     enterRoom(g, g.room + 1);
     return;
   }
-  // The open door lets you step into the wall gap.
-  if (g.door && Math.abs(p.x - W / 2) < DOOR_HALF - 4) {
+  // An open door lets you step into its wall gap.
+  if ((g.door && Math.abs(p.x - W / 2) < DOOR_HALF - 4) || (g.wheelDoor && Math.abs(p.x - WHEEL_X) < DOOR_HALF - 4)) {
     p.x = clamp(p.x, WALL + p.r, W - WALL - p.r);
     p.y = clamp(p.y, p.r, H - WALL - p.r);
     for (const o of g.obstacles) pushOut(p, o);
@@ -1234,6 +1342,8 @@ export function update(g: Game, dt: number, input: Input) {
     g.orbs = [];
     g.fireballs = [];
     g.coins += 5 * worldPay(g);
+    if (STATUE_ROOMS.includes(g.room)) g.statue = { ...statueSpot(g), used: false };
+    if (g.room === WHEEL_ROOM && !g.wheelUsed) g.wheelDoor = true;
     g.events.push('clear');
   }
   if (g.pendingLevels > 0 && g.phase === 'play') offerChoices(g);

@@ -7,8 +7,8 @@ import { ITEMS, SLOTS, buildLoadout, itemById, type ItemId, type Slot } from './
 import { Scene } from './scene';
 import { makeT, pickLang, type Key } from './strings';
 import {
-  CATEGORY, H, W, WORLDS, WORLD_COUNT, chooseSkill, isBossRoom, newGame, ownedWeapons, update,
-  type Category, type Game, type GameEvent, type Input, type Look, type SkillId,
+  CATEGORY, H, STATUE_ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, update,
+  type Category, type Game, type GameEvent, type Input, type Look, type SkillId, type WheelOutcome,
 } from './world';
 
 /* Bug Hunter's page: the menus (play, shop, enemy looks, options), input
@@ -118,6 +118,8 @@ const BOSS_NAME: Record<Look, Key> = { original: 'bossOriginal', demon: 'bossDem
 let game: Game | null = null;
 let paused = false;
 let shownChoices = '';
+/** The wheel screen is up (so the frame loop opens it only once). */
+let wheelShown = false;
 /** Where the Options screen goes back to. */
 let optionsFrom: 'menu' | 'pause' = 'menu';
 
@@ -284,6 +286,45 @@ function choiceScreen(g: Game) {
   show(`<p class="kicker">${t('level', { level: g.level })}</p>${head('levelup', t('levelUp'))}<p>${t('choose')}</p><div class="skills">${cards}</div>`, true);
 }
 
+/* The wheel of fate: eight slices, good and bad alternating. The wheel is
+   picked before it spins; the spin is only the show. */
+const WHEEL_ICON: Record<WheelOutcome, string> = {
+  newSkill: '✨', skillUp: '⬆️', heal: '❤️', coins: '🪙', loseLevel: '⬇️', hurt: '💔', loseCoins: '💸', bossBuff: '👹', nothing: '😐',
+};
+const WHEEL_TEXT: Record<WheelOutcome, Key> = {
+  newSkill: 'wNewSkill', skillUp: 'wSkillUp', heal: 'wHeal', coins: 'wCoins', loseLevel: 'wLoseLevel', hurt: 'wHurt', loseCoins: 'wLoseCoins', bossBuff: 'wBossBuff', nothing: 'wNothing',
+};
+function wheelScreen() {
+  const slices = WHEEL.map((o, i) => `<span class="wheel-slice${WHEEL_GOOD.includes(o) ? ' is-good' : o === 'nothing' ? '' : ' is-bad'}" style="--i:${i}">${WHEEL_ICON[o]}</span>`).join('');
+  show(`${head('levelup', t('wheelTitle'))}<p>${t('wheelText')}</p>
+    <div class="wheel"><div class="wheel-disc" id="wheelDisc">${slices}</div><span class="wheel-pin" aria-hidden="true"></span></div>
+    <p class="wheel-result" id="wheelResult"></p>
+    <button class="primary" data-act="wheel-spin">${t('wheelSpin')}</button>`);
+}
+function spinWheel(g: Game) {
+  const spinBtn = screen.querySelector<HTMLButtonElement>('[data-act="wheel-spin"]');
+  const disc = screen.querySelector<HTMLElement>('#wheelDisc');
+  const result = screen.querySelector<HTMLElement>('#wheelResult');
+  if (!spinBtn || !disc || !result || spinBtn.disabled) return;
+  spinBtn.disabled = true;
+  const index = Math.floor(Math.random() * WHEEL.length);
+  // Five full turns, then land the chosen slice (centred at index × 45°) under the pin at the top.
+  disc.style.transform = `rotate(${5 * 360 - index * (360 / WHEEL.length)}deg)`;
+  disc.classList.add('is-spinning');
+  audio.play('boomerang');
+  window.setTimeout(() => {
+    const got = applyWheel(g, WHEEL[index]);
+    const name = got.skill ? t(`${got.skill}Name` as Key) : '';
+    const good = WHEEL_GOOD.includes(got.outcome);
+    result.textContent = `${WHEEL_ICON[got.outcome]} ${t(WHEEL_TEXT[got.outcome], { name, coins: Math.round(WHEEL_COINS * (1 + (g.world - 1) * 0.5)) })}`;
+    result.className = `wheel-result ${good ? 'is-good' : got.outcome === 'nothing' ? '' : 'is-bad'}`;
+    audio.play(good ? 'levelup' : got.outcome === 'nothing' ? 'gem' : 'hurt');
+    spinBtn.textContent = t('wheelGo');
+    spinBtn.dataset.act = 'wheel-go';
+    spinBtn.disabled = false;
+  }, 3600);
+}
+
 /* Both ways out of a run (the HUD arrow and Quit in the pause menu) ask
    first; a mid-run tap on the arrow is an easy slip on a phone. */
 function leaveScreen(to: 'site' | 'menu') {
@@ -358,6 +399,7 @@ function startRun(world = save.world) {
   game = newGame(buildLoadout(save.equipped), save.style, world);
   paused = false;
   shownChoices = '';
+  wheelShown = false;
   hud.hidden = false;
   hudGear.hidden = false;
   hide();
@@ -383,6 +425,14 @@ screen.addEventListener('click', (event) => {
     mapScreen();
   }
   else if (act === 'resume') { paused = false; hide(); }
+  else if (act === 'wheel-spin' && game) spinWheel(game);
+  else if (act === 'wheel-go' && game) {
+    const g = game;
+    leaveWheel(g);
+    wheelShown = false;
+    hide();
+    flash(`${worldName(g.world)} · ${t('sprint', { room: g.room })}`);
+  }
   else if (act === 'pause') pauseScreen();
   else if (act === 'confirm-quit') leaveScreen('menu');
   else if (act === 'quit') {
@@ -486,6 +536,7 @@ function flash(text: string) {
 const SFX_FOR: Partial<Record<GameEvent, Sfx>> = {
   shoot: 'shoot', knife: 'knife', boomerang: 'boomerang', hit: 'hit', kill: 'kill', gem: 'gem', hurt: 'hurt',
   levelup: 'levelup', slash: 'slash', slam: 'slam', strike: 'strike', boom: 'boom', revive: 'revive', clear: 'door', boss: 'boss',
+  heal: 'revive', wheel: 'door',
 };
 // Hits and gems happen many times a frame; one sound per kind per frame is plenty.
 function playEvents(events: GameEvent[]) {
@@ -610,7 +661,8 @@ function step(now: number) {
     if (calm) g.shake = 0;
     playEvents(g.events);
     for (const event of g.events) {
-      if (event === 'clear') flash(t('doorOpen'));
+      if (event === 'clear') flash(STATUE_ROOMS.includes(g.room) ? t('statueHint') : g.room === WHEEL_ROOM && g.wheelDoor ? t('wheelHint') : t('doorOpen'));
+      if (event === 'heal') flash(t('statueHeal'));
       if (event === 'room') { flash(t('sprint', { room: g.room })); audio.setIntensity(Math.min(0.8, 0.2 + g.room * 0.05 + (g.world - 1) * 0.05)); }
       if (event === 'boss') {
         const boss = g.enemies.find((e) => e.kind === 'boss');
@@ -626,6 +678,12 @@ function step(now: number) {
       stick.on = false;
       keys.clear();
       choiceScreen(g);
+    }
+    if (phase === 'wheel' && !wheelShown) {
+      wheelShown = true;
+      stick.on = false;
+      keys.clear();
+      wheelScreen();
     }
     if (phase === 'over' || phase === 'won') endScreen(g);
   }
@@ -675,6 +733,12 @@ function step(now: number) {
     ctx.fill();
     ctx.globalAlpha = 1;
   }
+}
+
+// On localhost only: a handle on the running game, so the screens that need
+// a long run to reach (the statue, the wheel) can be checked by a script.
+if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) {
+  Object.defineProperty(window, 'bugHunter', { get: () => game });
 }
 
 /* --------------------------------------------------------------- loading */
