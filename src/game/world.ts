@@ -605,7 +605,11 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     events: [],
   };
   for (const s of loadout.startSkills) g.skills[s] = Math.max(g.skills[s], 1);
-  if (mode === 'horde') startField(g);
+  if (mode === 'horde') {
+    // It also starts at a higher bar: level 4 or so after the first minute, not 8.
+    g.xpNext = 45;
+    startField(g);
+  }
   else enterRoom(g, 1);
   g.events = [];
   return g;
@@ -766,7 +770,7 @@ function gainXp(g: Game, amount: number) {
     g.xp -= g.xpNext;
     g.level += 1;
     // On call rains XP, so its levels climb geometrically (about twenty in a full shift).
-    g.xpNext = g.mode === 'horde' ? Math.round(g.xpNext * 1.22) : g.xpNext + 15;
+    g.xpNext = g.mode === 'horde' ? Math.round(g.xpNext * 1.2) + 12 : g.xpNext + 15;
     g.pendingLevels += 1;
     g.events.push('levelup');
   }
