@@ -2962,30 +2962,9 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .panel .reroll { display: block; width: min(100%, 300px); margin: 10px auto 0; }
 .panel .reroll:disabled { opacity: 0.45; cursor: default; }
 
-/* The shop's foldable sections: a title bar with how much of it you own, unfolding its cards. */
-.panel .shop-sec {
-  display: grid;
-  grid-template-columns: 1fr auto auto;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  margin: 6px 0 0;
-  padding: 11px 14px;
-  border: 1px solid rgba(125, 211, 252, 0.35);
-  border-image: none;
-  border-radius: 12px;
-  background: linear-gradient(180deg, rgba(30, 58, 95, 0.75), rgba(15, 30, 55, 0.75));
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  color: #e2e8f0;
-  font: 700 0.95rem/1.2 var(--font);
-  text-align: left;
-  text-shadow: none;
-  cursor: pointer;
-}
-.panel .shop-sec small { font: 700 0.75rem/1 ui-monospace, monospace; color: #fcd34d; }
-.panel .shop-sec i { font-style: normal; color: #7dd3fc; transition: transform 0.2s; }
-.panel .shop-sec.is-open { border-color: rgba(252, 211, 77, 0.6); }
-.panel .shop-sec.is-open i { transform: rotate(180deg); }
+/* The shop's foldable sections are Customise's painted rows (see .gear-row): a little shorter, centred, with a gap below. */
+.panel .shop-sec { width: min(100%, 340px); justify-self: center; margin: 2px auto 0; }
+.panel .shop-sec .icon .item-pic { width: 2.3em; height: 2.3em; }
 .panel .shop-sec + .items, .panel .shop-sec + .how { margin-top: 8px; }
 .wheel-slice .item-pic { width: 84%; height: 84%; }
 .wheel-result .wheel-res-icon { display: inline-block; vertical-align: middle; }
