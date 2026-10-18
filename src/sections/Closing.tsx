@@ -60,6 +60,7 @@ const OFF_CARDS: OffCard[] = [
   { icon: 'calendar', title: 'off.planTitle', text: 'off.planText', chips: ['off.planC1', 'off.planC2', 'Eisenhower'], href: './planning.html', link: 'off.planLink', arrow: '↗' },
   { icon: 'sparkles', title: 'off.aiTitle', text: 'off.aiText', chips: ['off.aiC1', 'LLMs', 'Dev tools'], href: '#radar', link: 'off.aiLink', arrow: '↘' },
   { icon: 'calendarMonth', title: 'off.calTitle', text: 'off.calText', chips: ['off.calC1', 'off.calC2', 'off.calC3', 'off.calC4'], href: './calendar.html', link: 'off.calLink', arrow: '↗', wide: true },
+  { icon: 'gamepad', title: 'off.gameTitle', text: 'off.gameText', chips: ['off.gameC1', 'off.gameC2', 'TypeScript', 'Canvas'], href: './game.html', link: 'off.gameLink', arrow: '↗', wide: true },
 ];
 
 export function OffTheClock() {
