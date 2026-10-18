@@ -2408,3 +2408,21 @@ body {
 :root[data-retro] .boss-title span { font: inherit; color: #e9d5ff; text-shadow: none; }
 :root[data-retro] .boss-meter { height: 8px; border-radius: 999px; background: rgba(255, 255, 255, 0.1); }
 :root[data-retro] .boss-meter b { border-radius: inherit; background: linear-gradient(90deg, #c084fc, #f472b6); filter: none; }
+
+/* The forge's level pips. */
+.pips {
+  display: inline-flex;
+  gap: 4px;
+  margin: 2px 0 4px;
+}
+.pips i {
+  width: 12px;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.14);
+}
+.pips i.is-on {
+  background: linear-gradient(90deg, #fbbf24, #f59e0b);
+  box-shadow: 0 0 6px rgba(251, 191, 36, 0.6);
+}
+.panel .buy[disabled] { cursor: default; opacity: 0.9; }

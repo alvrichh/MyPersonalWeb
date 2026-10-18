@@ -572,7 +572,7 @@ export function chooseSkill(g: Game, skill: SkillId) {
 
 const power = (g: Game, cat: Category) => (1 + 0.25 * g.skills.power) * g.loadout.mult[cat];
 /** Ranged weapons fire faster with the Hotfix upgrade. */
-const haste = (g: Game) => 1 + 0.28 * g.skills.speed;
+const haste = (g: Game) => (1 + 0.28 * g.skills.speed) * g.loadout.hasteMult;
 
 function gainXp(g: Game, amount: number) {
   g.xp += amount * g.loadout.xpMult;
@@ -933,7 +933,7 @@ function useWeapons(g: Game, dt: number) {
 function hurtPlayer(g: Game, amount: number) {
   const p = g.player;
   if (p.inv > 0 || g.phase !== 'play') return;
-  p.hp -= amount;
+  p.hp -= Math.max(1, Math.round(amount * (1 - g.loadout.armor)));
   p.inv = 0.7;
   g.shake = Math.max(g.shake, 0.25);
   g.events.push('hurt');
@@ -1370,7 +1370,7 @@ export function update(g: Game, dt: number, input: Input) {
   // XP gems: drawn in when you come near, or all at once when the room is clear.
   g.gems = g.gems.filter((gem) => {
     const d = dist(gem, p) || 1;
-    if (d < 95 || g.door) gem.pull = true;
+    if (d < 95 + g.loadout.magnet || g.door) gem.pull = true;
     if (gem.pull) {
       const speed = 340 * dt;
       gem.x += ((p.x - gem.x) / d) * Math.min(speed, d);
