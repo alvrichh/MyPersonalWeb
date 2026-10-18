@@ -83,7 +83,7 @@ const bestLine = (world = save.world) => {
   return best.room ? t('best', { room: best.room }) : '';
 };
 const worldName = (n: number) => t(`world${n}Name` as Key);
-const WORLD_ICON = ['🐞', '🔥', '💧', '🍃', '⚡', '✨', '👻', '💗'];
+const WORLD_ICON = ['🐞', '🔥', '💧', '🍃', '🛡️', '✨', '👻', '💗'];
 const coinsLine = (n = save.coins) => `<span class="coin">🪙</span> ${Math.floor(n)}`;
 
 /** Banks the coins and the record; returns the world unlocked by this run, if any. */
