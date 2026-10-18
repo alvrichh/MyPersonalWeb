@@ -139,7 +139,7 @@ let optionsFrom: 'menu' | 'pause' = 'menu';
  */
 const FRAMES = {
   short: { l: 0.166, r: 0.166, t: 0.105, b: 0.115, ratio: 602 / 446 },
-  tall: { l: 0.122, r: 0.122, t: 0.073, b: 0.06, ratio: 1248 / 605 },
+  tall: { l: 0.122, r: 0.122, t: 0.073, b: 0.095, ratio: 1248 / 605 },
 };
 function fitPanel() {
   const panel = screen.querySelector<HTMLElement>('.panel');
