@@ -508,7 +508,8 @@ function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accen
     if (fusion && a.bow && a.kind === 'arrow' && !retroLook) {
       const pic = arrowImage(`fusion-${fusion}`);
       if (ready(pic)) {
-        const w = 32;
+        // As thick as a plain arrow: the longer pictures are drawn a little longer.
+        const w = Math.min(50, (6.6 * pic.naturalWidth) / pic.naturalHeight);
         const h = (w * pic.naturalHeight) / pic.naturalWidth;
         ctx.save();
         ctx.translate(a.x, a.y);
