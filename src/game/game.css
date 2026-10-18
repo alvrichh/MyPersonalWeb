@@ -1126,22 +1126,10 @@ body {
    The two masks keep the left icon medallion and the right card body. */
 @media (max-width: 480px) {
   .panel .skills {
-    /* The row sprites have invisible breathing room of their own.
-       Actual overlap is intentional: these should read as one compact stack. */
-    gap: 0;
+    /* No overlap: all three choices must be fully visible and individually tappable. */
+    gap: 4px;
     margin-top: 0;
   }
-
-  .panel .skills > .skill + .skill {
-    margin-block-start: clamp(-64px, -16vw, -50px);
-  }
-
-  /* Stack like physical cards. Keep the upper card and its level text
-     above the next card's decorative top edge. */
-  .panel .skills > .skill:nth-child(1) { z-index: 3; }
-  .panel .skills > .skill:nth-child(2) { z-index: 2; }
-  .panel .skills > .skill:nth-child(3) { z-index: 1; }
-  .panel .skills > .skill:focus-visible { z-index: 4; }
 
   .panel .skill {
     --card: url('/images/game/ui/row_blue.webp');
@@ -1273,9 +1261,75 @@ body {
 
 @media (max-width: 480px) {
   .skills {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
+}
+
+
+/* Level-up only: three COMPLETE compact rows, without horizontal scrolling.
+   Keep these rules scoped so shop/roulette/other overlay layouts do not change. */
+@media (max-width: 480px) {
+  .screen.is-levelup {
+    overflow-x: hidden;
+    overflow-y: auto;
+    touch-action: pan-y;
+    padding: 8px max(8px, env(safe-area-inset-right)) 8px max(8px, env(safe-area-inset-left));
+  }
+
+  .screen.is-levelup .panel {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .screen.is-levelup .panel-in {
+    width: 100%;
+    min-width: 0;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 6px;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .screen.is-levelup .ui-head.is-levelup {
+    width: min(56%, 172px);
+    margin: 0 auto 2px;
+  }
+
+  .screen.is-levelup .panel .skills {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+    margin: 2px 0 0;
+  }
+
+  .screen.is-levelup .panel .skills > .skill {
+    width: 100%;
+    min-width: 0;
+    min-height: 108px;
+    margin: 0;
+    padding: 5px 10px 5px 2px;
+    z-index: auto;
+  }
+
+  .screen.is-levelup .panel .skill .cat {
+    font-size: 0.56rem;
+    line-height: 1;
+  }
+
+  .screen.is-levelup .panel .skill > span:not(.icon):not(.cat):not(.lvl) {
+    font-size: clamp(0.66rem, 3vw, 0.77rem);
+    line-height: 1.16;
+  }
+}
+
+@media (max-width: 480px) and (max-height: 740px) {
+  .screen.is-levelup .panel-in { gap: 3px; }
+  .screen.is-levelup .ui-head.is-levelup { width: min(45%, 145px); }
+  .screen.is-levelup .panel .skills { gap: 2px; }
+  .screen.is-levelup .panel .skills > .skill { min-height: 104px; }
 }
 
 /* Disco: the HUD walks round the colour wheel like the portfolio does. */
