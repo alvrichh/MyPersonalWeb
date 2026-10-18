@@ -933,8 +933,7 @@ body {
 /* Titles at the top of a framed dialog clear the gem in the frame's crown. */
 .panel-in > .kicker:first-child,
 .panel-in > h2:first-child,
-.panel-in > .ui-close + h2,
-.panel-in > .ui-close + .shop-head {
+.panel-in > .shop-head:first-child {
   margin-top: 30px;
 }
 
@@ -1994,11 +1993,11 @@ body {
 
 .panel .ui-close {
   position: absolute;
-  top: 1px;
-  right: 1px;
-  z-index: 2;
-  width: 45px;
-  height: 45px;
+  top: 2%;
+  right: 4%;
+  z-index: 3;
+  width: 44px;
+  height: 44px;
   border: 0;
   padding: 0;
   border-radius: 50%;
