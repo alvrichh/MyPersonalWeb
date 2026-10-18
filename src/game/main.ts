@@ -135,36 +135,30 @@ function menuScreen() {
   bossBar.hidden = true;
   audio.setIntensity(0);
   const { level, progress } = profileLevel(save.xp);
-  const card = (act: string, cls: string, icon: string, title: string, sub: string) => `
-    <button class="card card-${cls}" data-act="${act}">
-      <span class="card-icon" aria-hidden="true">${icon}</span>
-      <span class="card-copy"><b>${title}</b>${sub ? `<small>${sub}</small>` : ''}</span>
-      <span class="card-go" aria-hidden="true">›</span>
-    </button>`;
+  const copy = (cls: string, title: string, sub: string) => `<span class="cover-card-copy ${cls}"><b>${title}</b>${sub ? `<small>${sub}</small>` : ''}</span>`;
   show(`
-    <div class="landing">
-      <header class="landing-top">
-        <a class="round" href="./index.html" aria-label="${t('back')}">✕</a>
-        <div class="profile">
-          <img src="./images/favicon-192.png" alt="" width="40" height="40">
-          <span class="profile-copy"><small>alvrich</small><b>${t('lvShort', { level })}</b><i><b style="width:${Math.round(progress * 100)}%"></b></i></span>
-        </div>
-        <button class="chip chip-coins" data-act="shop"><span class="coin">🪙</span> ${Math.floor(save.coins)} <em>+</em></button>
-        <button class="chip chip-worlds" data-act="map">🌍 ${save.unlocked}<small>/${WORLD_COUNT}</small></button>
-        <button class="round" data-act="options" aria-label="${t('options')}">⚙</button>
-      </header>
-      <div class="landing-art">
-        <img src="./images/game/landing.jpg" alt="" width="936" height="871">
-        <p class="landing-tagline">${t('landingTagline')}</p>
-      </div>
-      <button class="play" data-act="play"><span class="play-tri" aria-hidden="true"></span><span class="play-copy">${t('playNow')}<small>${WORLD_ICON[save.world - 1]} ${worldName(save.world)}</small></span></button>
-      <div class="cards">
-        ${card('map', 'map', '🌍', t('map'), `${save.unlocked} / ${WORLD_COUNT}`)}
-        ${card('shop', 'shop', '🏪', t('shop'), `🪙 ${Math.floor(save.coins)}`)}
-        ${card('styles', 'styles', '👾', t('styles'), t(`style${cap(save.style)}Name` as Key))}
-        ${card('options', 'options', '⚙️', t('options'), '')}
-      </div>
-      <p class="best landing-best">${bestLine()}</p>
+    <div class="cover">
+      <a class="hot cover-x" href="./index.html" aria-label="${t('back')}"></a>
+      <button class="hot cover-more" data-act="options" aria-label="${t('options')}"></button>
+      <button class="hot cover-gear" data-act="options" aria-label="${t('options')}"></button>
+      <button class="hot cover-profile" data-act="map" aria-label="alvrich · ${t('lvShort', { level })}"></button>
+      <span class="cover-profile-copy"><small>ALVRICH</small><b>${t('lvShort', { level })}</b><i><b style="width:${Math.round(progress * 100)}%"></b></i></span>
+      <button class="hot cover-coins" data-act="shop" aria-label="${t('coins')}: ${Math.floor(save.coins)}"></button>
+      <span class="cover-num is-coins">${Math.floor(save.coins)}</span>
+      <button class="hot cover-worlds" data-act="map" aria-label="${t('map')}: ${save.unlocked}/${WORLD_COUNT}"></button>
+      <span class="cover-num is-worlds">${save.unlocked}/${WORLD_COUNT}</span>
+      <p class="cover-tagline">${t('landingTagline')}</p>
+      <button class="hot cover-play" data-act="play" aria-label="${t('playNow')} · ${worldName(save.world)}"></button>
+      <span class="cover-play-copy"><b>${t('playNow')}</b><small>${WORLD_ICON[save.world - 1]} ${worldName(save.world)}</small></span>
+      <button class="hot cover-card is-map" data-act="map" aria-label="${t('map')}"></button>
+      ${copy('is-map', t('map'), `🌍 ${save.unlocked} / ${WORLD_COUNT}`)}
+      <button class="hot cover-card is-shop" data-act="shop" aria-label="${t('shop')}"></button>
+      ${copy('is-shop', t('shop'), `🪙 ${Math.floor(save.coins)}`)}
+      <button class="hot cover-card is-styles" data-act="styles" aria-label="${t('styles')}"></button>
+      ${copy('is-styles', t('styles'), t(`style${cap(save.style)}Name` as Key))}
+      <button class="hot cover-card is-options" data-act="options" aria-label="${t('options')}"></button>
+      ${copy('is-options', t('options'), '')}
+      <p class="cover-best">${bestLine()}</p>
     </div>`, false, true);
 }
 
