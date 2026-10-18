@@ -247,7 +247,7 @@ export type Ember = {
   slow?: number;
 };
 export type Fx = {
-  kind: 'slash' | 'ring' | 'boom' | 'strike' | 'halo' | 'beam' | 'rune'; x: number; y: number; r: number; a: number; life: number; max: number;
+  kind: 'slash' | 'ring' | 'boom' | 'strike' | 'halo' | 'beam' | 'rune' | 'pic'; x: number; y: number; r: number; a: number; life: number; max: number;
   /** Seconds before it starts (the evolved sword's three cuts follow one another). */
   delay?: number;
   /** Turn over its life, in radians (those cuts sweep round). */
@@ -258,6 +258,8 @@ export type Fx = {
   foot?: number;
   /** The ring is the evolved hammer's. */
   big?: boolean;
+  /** A 'pic' fx: the effect picture laid on the floor (fx/<pic>.webp). */
+  pic?: string;
 };
 export type Fireball = { x: number; y: number; vx: number; vy: number; life: number };
 /** A companion ghost: floats beside the hero (`slot` sets where) and shoots when you do. */
@@ -1492,6 +1494,7 @@ function updateMines(g: Game, dt: number) {
     const dmg = (40 + 15 * (lv - 1)) * power(g, 'melee') * (evolved ? 1.3 : 1);
     blast(g, m, (52 + 8 * (lv - 1)) * (evolved ? 1.3 : 1), dmg, '#fca5a5');
     if (evolved) {
+      g.fx.push({ kind: 'pic', pic: 'volt-burst', x: m.x, y: m.y, r: 46, a: rand(0, 6), life: 0.4, max: 0.4 });
       g.fx.push({ kind: 'strike', x: m.x, y: m.y, r: 30, a: 0, life: 0.3, max: 0.3 });
       g.zaps.push({ pts: zigzag({ x: m.x + rand(-20, 20), y: m.y - 220 }, m, 14), life: 0.22 });
       chain(g, foe, 3, dmg * 0.6);
@@ -1897,7 +1900,12 @@ function updateShot(g: Game, s: Shot, dt: number): boolean {
     if (s.kind === 'rocket') { rocketBoom(g, s); return false; }
     hitWithShot(g, e, s);
     // The 1-ton weight stops the bugs it lands on.
-    if (s.kind === 'brick' && g.evolved.brick) { e.slow = Math.max(e.slow, 0.6); e.slowBy = 1; g.shake = Math.max(g.shake, 0.08); }
+    if (s.kind === 'brick' && g.evolved.brick) {
+      e.slow = Math.max(e.slow, 0.6);
+      e.slowBy = 1;
+      g.shake = Math.max(g.shake, 0.08);
+      if (s.hits.size === 1) g.fx.push({ kind: 'pic', pic: 'impact', x: e.x, y: e.y + e.r * 0.5, r: 24, a: rand(0, 6), life: 0.6, max: 0.6 });
+    }
     // The ball flies off the bug it hit, a little to one side, until its bounces run out.
     if (s.kind === 'ball') {
       s.bounce -= 1;

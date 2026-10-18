@@ -126,7 +126,7 @@ export const ITEMS: Item[] = [
   { id: 'phoenix', slot: 'body', price: 220, icon: '🪶', pic: 'items/phoenix.webp', effect: { revives: 1 } },
   // Boots
   { id: 'windBoots', slot: 'boots', price: 110, icon: '👟', pic: 'items/windBoots.webp', effect: { speedMult: 1.15 } },
-  { id: 'magnetBoots', slot: 'boots', price: 120, icon: '🧲', effect: { magnet: 70 } },
+  { id: 'magnetBoots', slot: 'boots', price: 120, icon: '🧲', pic: 'items/magnetBoots.webp', effect: { magnet: 70 } },
   { id: 'ironBoots', slot: 'boots', price: 140, icon: '🥾', pic: 'items/ironBoots.webp', effect: { armor: 0.08, maxHp: 115 } },
   // Magic (the spirit companion lives here)
   { id: 'orb', slot: 'magic', price: 150, icon: '🔮', pic: 'items/orb.webp', effect: { xpMult: 1.25 } },

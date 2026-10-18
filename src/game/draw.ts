@@ -489,7 +489,7 @@ function drawPlayer(ctx: CanvasRenderingContext2D, g: Game, pal: Palette, now: n
 
 /* The bow's painted arrows, one per element (static/images/game/arrows): the
    first element owned decides the look, with its trail drawn behind the tip. */
-const ARROW_PICTURES = ['fire', 'water', 'leaf', 'ghost'];
+const ARROW_PICTURES = ['fire', 'water', 'leaf', 'ghost', 'bolt', 'spark'];
 const arrows = new Map<string, HTMLImageElement>();
 function arrowImage(name: string) {
   let img = arrows.get(name);
@@ -569,14 +569,15 @@ function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accen
       continue;
     }
     if (a.kind === 'crescent') {
-      // The Lunar Halo's flying cut: the painted crescent, bulge forward, fading as it flies.
-      const pic = fxImage('slash');
+      // The Lunar Halo's flying cut: the owner's crescent, bulge forward, fading as it flies.
+      const own = fxImage('crescent');
+      const pic = ready(own) ? own : fxImage('slash');
       ctx.save();
       ctx.translate(a.x, a.y);
       ctx.rotate(Math.atan2(a.vy, a.vx));
       ctx.globalAlpha = Math.min(1, a.life / 0.3);
       if (!retroLook && ready(pic)) {
-        const w = 40;
+        const w = pic === own ? 46 : 40;
         const h = (w * pic.naturalHeight) / pic.naturalWidth;
         ctx.drawImage(pic, -w * 0.7, -h / 2, w, h);
       } else {
@@ -674,8 +675,34 @@ function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accen
 /* The weapons from the rest of Survivor.io's list, drawn in code until
    their pictures come: brick (an anvil when evolved), bottle (a barrel),
    durian, drill, rocket and ball. True if it drew the shot. */
+/* The owner's pictures for those weapons, all turned to point right (their
+   trail behind): [picture, width in room units, how far behind the shot the
+   picture starts (share of its width), turn with the flight?]. */
+const SHOT_PIC: Partial<Record<Shot['kind'], (g: Game, a: Shot) => [string, number, number, boolean]>> = {
+  brick: (g) => (g.evolved.brick ? ['iron', 44, 0.5, false] : ['brick', 26, 0.6, true]),
+  molotov: (g) => (g.evolved.molotov ? ['barrel', 34, 0.6, true] : ['molotov', 30, 0.6, true]),
+  durian: (g, a) => [g.evolved.durian ? 'durian-big' : 'durian', (a.size ?? 14) * 2.5, 0.62, true],
+  drill: (g, a) => [g.evolved.drill ? 'drill-evo' : 'drill', 30 * ((a.size ?? 7) / 7), 0.75, true],
+  rocket: (g) => (g.evolved.rocket ? ['rocket-shark', 38, 0.75, true] : ['rocket', 32, 0.75, true]),
+  ball: (g, a) => [g.evolved.ball ? 'ball-evo' : 'ball', (a.size ?? 8) * 2.9, 0.62, true],
+};
 function drawNewShot(ctx: CanvasRenderingContext2D, g: Game, a: Shot) {
   const t = g.time;
+  const painted = SHOT_PIC[a.kind];
+  if (painted && !retroLook) {
+    const [name, w, back, turn] = painted(g, a);
+    const pic = fxImage(name);
+    if (ready(pic)) {
+      const h = (w * pic.naturalHeight) / pic.naturalWidth;
+      ctx.save();
+      ctx.translate(a.x, a.y);
+      if (turn) ctx.rotate(Math.atan2(a.vy, a.vx));
+      else ctx.rotate(Math.sin(t * 6 + a.x) * 0.15);
+      ctx.drawImage(pic, -w * back, -h / 2, w, h);
+      ctx.restore();
+      return true;
+    }
+  }
   if (a.kind === 'brick') {
     ctx.save();
     ctx.translate(a.x, a.y);
@@ -853,7 +880,32 @@ function drawNewShot(ctx: CanvasRenderingContext2D, g: Game, a: Shot) {
 /* Mines on the floor (a red light blinks once armed, blue when they carry
    lightning) and the evolved durian's caltrops. */
 function drawMines(ctx: CanvasRenderingContext2D, g: Game, now: number) {
+  // Effect pictures laid on the floor: the thunder mine's burst, the 1-ton weight's impact.
+  for (const f of g.fx) {
+    if (f.kind !== 'pic' || !f.pic || retroLook) continue;
+    const pic = fxImage(f.pic);
+    if (!ready(pic)) continue;
+    const k = f.life / f.max;
+    const w = f.r * 2 * (0.7 + 0.3 * (1 - k));
+    const h = (w * pic.naturalHeight) / pic.naturalWidth;
+    ctx.globalAlpha = Math.min(1, k * 1.6);
+    ctx.save();
+    ctx.translate(f.x, f.y);
+    ctx.rotate(f.a);
+    ctx.drawImage(pic, -w / 2, -h / 2, w, h);
+    ctx.restore();
+  }
+  ctx.globalAlpha = 1;
+  const minePics = !retroLook && ready(fxImage('mine'));
   for (const m of g.mines) {
+    if (minePics) {
+      const on = m.arm <= 0 && Math.floor(now * 3 + m.x) % 2 === 0;
+      const pic = fxImage(m.arm > 0 ? 'mine' : g.evolved.mines ? 'mine-volt' : on ? 'mine-on' : 'mine');
+      const w = g.evolved.mines && m.arm <= 0 ? 23 : 19;
+      const h = (w * pic.naturalHeight) / pic.naturalWidth;
+      ctx.drawImage(pic, m.x - w / 2, m.y - h / 2, w, h);
+      continue;
+    }
     ctx.fillStyle = '#1f2937';
     ctx.beginPath();
     ctx.arc(m.x, m.y, 8, 0, Math.PI * 2);
@@ -866,6 +918,17 @@ function drawMines(ctx: CanvasRenderingContext2D, g: Game, now: number) {
     ctx.beginPath();
     ctx.arc(m.x, m.y, 3, 0, Math.PI * 2);
     ctx.fill();
+  }
+  const spikes = fxImage('caltrops');
+  if (!retroLook && ready(spikes)) {
+    const w = 15;
+    const h = (w * spikes.naturalHeight) / spikes.naturalWidth;
+    for (const c of g.spikes) {
+      ctx.globalAlpha = Math.min(1, c.life);
+      ctx.drawImage(spikes, c.x - w / 2, c.y - h / 2, w, h);
+    }
+    ctx.globalAlpha = 1;
+    return;
   }
   ctx.fillStyle = '#9ca3af';
   for (const c of g.spikes) {
@@ -999,7 +1062,25 @@ function rune(ctx: CanvasRenderingContext2D, x: number, y: number, r: number, tu
   ctx.restore();
 }
 function drawRunes(ctx: CanvasRenderingContext2D, g: Game, now: number) {
-  for (const f of g.fx) if (f.kind === 'rune') rune(ctx, f.x, f.y, f.r * (0.7 + 0.3 * (1 - f.life / f.max)), f.a + now * 1.5, f.life / f.max);
+  const pic = fxImage('rune');
+  for (const f of g.fx) {
+    if (f.kind !== 'rune') continue;
+    const k = f.life / f.max;
+    const r = f.r * (0.7 + 0.3 * (1 - k));
+    if (!retroLook && ready(pic)) {
+      // The owner's magic circle, lying on the floor and turning.
+      const w = r * 2.3;
+      const h = (w * pic.naturalHeight) / pic.naturalWidth;
+      ctx.globalAlpha = Math.min(1, k * 1.5);
+      ctx.save();
+      ctx.translate(f.x, f.y);
+      ctx.scale(1, 0.55);
+      ctx.rotate(f.a + now * 1.5);
+      ctx.drawImage(pic, -w / 2, -h / 2, w, h);
+      ctx.restore();
+      ctx.globalAlpha = 1;
+    } else rune(ctx, f.x, f.y, r, f.a + now * 1.5, k);
+  }
 }
 
 /* Burning ground from the evolved fireball: an orange pool with embers. */
@@ -1022,6 +1103,20 @@ function drawEmbers(ctx: CanvasRenderingContext2D, g: Game, now: number) {
       ctx.beginPath();
       ctx.arc(em.x, em.y - (steam ? 0 : (1 - k) * 6), r, 0, Math.PI * 2);
       ctx.fill();
+      continue;
+    }
+    const pool = fxImage(em.r > 40 ? 'fire-pool-big' : 'fire-pool');
+    if (!retroLook && ready(pool)) {
+      // The owner's fire pool, turning slowly, fading in its last half second.
+      const w = em.r * 2.1;
+      const h = (w * pool.naturalHeight) / pool.naturalWidth;
+      ctx.globalAlpha = Math.min(1, em.life * 2) * 0.72;
+      ctx.save();
+      ctx.translate(em.x, em.y);
+      ctx.rotate(now * 0.4 + em.x);
+      ctx.drawImage(pool, -w / 2, -h / 2, w, h);
+      ctx.restore();
+      ctx.globalAlpha = 1;
       continue;
     }
     const grad = ctx.createRadialGradient(em.x, em.y, 2, em.x, em.y, em.r);
@@ -1050,6 +1145,13 @@ function drawHearts(ctx: CanvasRenderingContext2D, g: Game, now: number) {
     if (h.life < 4 && Math.floor(now * 8) % 2 === 0) continue;
     const bob = Math.sin(now * 4 + h.x) * 2;
     const s = 8 + Math.sin(now * 6 + h.y) * 0.6;
+    const pic = fxImage('heart');
+    if (!retroLook && ready(pic)) {
+      const w = s * 3.2;
+      const hh = (w * pic.naturalHeight) / pic.naturalWidth;
+      ctx.drawImage(pic, h.x - w / 2, h.y + bob - hh / 2, w, hh);
+      continue;
+    }
     ctx.save();
     ctx.translate(h.x, h.y + bob);
     const glow = ctx.createRadialGradient(0, 0, 2, 0, 0, s * 2.2);
@@ -1284,7 +1386,9 @@ function fxImage(name: string) {
 const ready = (img: HTMLImageElement) => img.complete && img.naturalWidth > 0;
 /** Warm the effect pictures up when a run starts, so the first swing and strike are already painted. */
 export function preloadFx() {
-  for (const n of ['fireball', 'boom-small', 'boom-big', 'knife', 'boomerang', 'slash', 'chest', 'slam', 'crystals', 'icering', 'gem', 'gem-big', 'bolt-1', 'bolt-2', 'bolt-3', 'bolt-4', 'bolt-5', 'bolt-6']) fxImage(n);
+  for (const n of ['fireball', 'boom-small', 'boom-big', 'knife', 'boomerang', 'slash', 'chest', 'slam', 'crystals', 'icering', 'gem', 'gem-big', 'bolt-1', 'bolt-2', 'bolt-3', 'bolt-4', 'bolt-5', 'bolt-6',
+    'brick', 'iron', 'molotov', 'barrel', 'durian', 'durian-big', 'drill', 'drill-evo', 'rocket', 'rocket-shark', 'ball', 'ball-evo',
+    'fire-pool', 'fire-pool-big', 'caltrops', 'mine', 'mine-on', 'mine-volt', 'volt-burst', 'impact', 'heart', 'rune', 'crescent']) fxImage(n);
 }
 
 function drawFireballs(ctx: CanvasRenderingContext2D, g: Game) {
