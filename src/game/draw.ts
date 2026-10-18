@@ -1,4 +1,4 @@
-import { H, W, WALL, isBossRoom, type Enemy, type Game } from './world';
+import { BLADE_ORBIT, H, W, WALL, frostReach, isBossRoom, type Enemy, type Game } from './world';
 
 /* Bug Hunter's renderer: everything is drawn in room units (360 × 600) and
    scaled to fit the screen. The accent colours are the player's. */
@@ -27,11 +27,18 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   ctx.setTransform(dpr * scale, 0, 0, dpr * scale, dpr * (ox + sx), dpr * (oy + sy));
 
   drawRoom(ctx, g, accent, now);
+  drawGems(ctx, g, now);
+  if (g.skills.frost) drawFrost(ctx, g, now);
+  drawFx(ctx, g, accent, 'under');
   for (const e of g.enemies) drawEnemy(ctx, e, now);
   drawOrbs(ctx, g);
-  drawArrows(ctx, g, accent, accent2);
+  drawShots(ctx, g, accent, accent2);
+  drawFireballs(ctx, g);
+  drawSpirits(ctx, g, now);
   drawZaps(ctx, g);
   drawPlayer(ctx, g, accent, accent2, now);
+  if (g.skills.blades) drawBlades(ctx, g, accent);
+  drawFx(ctx, g, accent, 'over');
   for (const q of g.particles) {
     ctx.globalAlpha = Math.max(0, q.life / q.max);
     ctx.fillStyle = q.color;
@@ -145,12 +152,44 @@ function drawPlayer(ctx: CanvasRenderingContext2D, g: Game, accent: string, acce
   ctx.fill();
 }
 
-function drawArrows(ctx: CanvasRenderingContext2D, g: Game, accent: string, accent2: string) {
+function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accent2: string) {
   const fire = g.skills.fire > 0;
   const water = g.skills.water > 0;
   ctx.lineCap = 'round';
-  for (const a of g.arrows) {
+  for (const a of g.shots) {
     const len = Math.hypot(a.vx, a.vy) || 1;
+    if (a.kind === 'knife') {
+      ctx.save();
+      ctx.translate(a.x, a.y);
+      ctx.rotate(Math.atan2(a.vy, a.vx));
+      ctx.fillStyle = '#e5e7eb';
+      ctx.beginPath();
+      ctx.moveTo(7, 0);
+      ctx.lineTo(-3, -2.4);
+      ctx.lineTo(-3, 2.4);
+      ctx.closePath();
+      ctx.fill();
+      ctx.fillStyle = accent;
+      ctx.fillRect(-7, -1.5, 4, 3);
+      ctx.restore();
+      continue;
+    }
+    if (a.kind === 'boomerang') {
+      ctx.save();
+      ctx.translate(a.x, a.y);
+      ctx.rotate(a.spin);
+      ctx.strokeStyle = accent;
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(-9, 6);
+      ctx.quadraticCurveTo(0, -10, 9, 6);
+      ctx.stroke();
+      ctx.strokeStyle = 'rgba(255,255,255,0.7)';
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+      ctx.restore();
+      continue;
+    }
     const tx = a.x - (a.vx / len) * 14;
     const ty = a.y - (a.vy / len) * 14;
     const tail = ctx.createLinearGradient(tx, ty, a.x, a.y);
@@ -173,6 +212,181 @@ function drawArrows(ctx: CanvasRenderingContext2D, g: Game, accent: string, acce
     ctx.arc(a.x, a.y, 1.8, 0, Math.PI * 2);
     ctx.fill();
   }
+}
+
+function drawGems(ctx: CanvasRenderingContext2D, g: Game, now: number) {
+  for (const gem of g.gems) {
+    const big = gem.value > 10;
+    const s = big ? 6 : 4.5;
+    const bob = Math.sin(now * 5 + gem.x) * 1.5;
+    ctx.save();
+    ctx.translate(gem.x, gem.y + bob);
+    const grad = ctx.createLinearGradient(0, -s, 0, s);
+    grad.addColorStop(0, big ? '#f5d0fe' : '#bbf7d0');
+    grad.addColorStop(1, big ? '#c084fc' : '#22c55e');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.moveTo(0, -s * 1.3);
+    ctx.lineTo(s, 0);
+    ctx.lineTo(0, s * 1.3);
+    ctx.lineTo(-s, 0);
+    ctx.closePath();
+    ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    ctx.fillRect(-s * 0.35, -s * 0.6, s * 0.3, s * 0.3);
+    ctx.restore();
+  }
+}
+
+function drawFrost(ctx: CanvasRenderingContext2D, g: Game, now: number) {
+  const p = g.player;
+  const r = frostReach(g);
+  const grad = ctx.createRadialGradient(p.x, p.y, r * 0.3, p.x, p.y, r);
+  grad.addColorStop(0, 'rgba(122,216,255,0)');
+  grad.addColorStop(0.8, 'rgba(122,216,255,0.12)');
+  grad.addColorStop(1, 'rgba(122,216,255,0.28)');
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(186,230,253,0.5)';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([3, 6]);
+  ctx.beginPath();
+  ctx.arc(p.x, p.y, r, now * 0.4, now * 0.4 + Math.PI * 2);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  // A few flakes drifting round.
+  ctx.fillStyle = 'rgba(224,242,254,0.8)';
+  for (let i = 0; i < 6; i++) {
+    const a = now * 0.8 + i * 1.05;
+    ctx.beginPath();
+    ctx.arc(p.x + Math.cos(a) * r * 0.75, p.y + Math.sin(a) * r * 0.75, 1.6, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+function drawBlades(ctx: CanvasRenderingContext2D, g: Game, accent: string) {
+  const p = g.player;
+  const n = g.skills.blades + 1;
+  for (let i = 0; i < n; i++) {
+    const a = g.gear.bladeAngle + (i / n) * Math.PI * 2;
+    ctx.save();
+    ctx.translate(p.x + Math.cos(a) * BLADE_ORBIT, p.y + Math.sin(a) * BLADE_ORBIT);
+    ctx.rotate(a + Math.PI / 2);
+    const grad = ctx.createLinearGradient(0, -11, 0, 6);
+    grad.addColorStop(0, '#ffffff');
+    grad.addColorStop(1, '#9ca3af');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.moveTo(0, -12);
+    ctx.lineTo(4, 3);
+    ctx.lineTo(-4, 3);
+    ctx.closePath();
+    ctx.fill();
+    ctx.fillStyle = accent;
+    ctx.fillRect(-5, 3, 10, 2.5);
+    ctx.fillRect(-1.2, 5.5, 2.4, 4);
+    ctx.restore();
+  }
+}
+
+function drawFireballs(ctx: CanvasRenderingContext2D, g: Game) {
+  for (const f of g.fireballs) {
+    const grad = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, 11);
+    grad.addColorStop(0, '#fffbea');
+    grad.addColorStop(0.35, '#ffd166');
+    grad.addColorStop(0.7, '#ff7a1a');
+    grad.addColorStop(1, 'transparent');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(f.x, f.y, 11, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+function drawSpirits(ctx: CanvasRenderingContext2D, g: Game, now: number) {
+  for (const s of g.spirits) {
+    ctx.save();
+    ctx.translate(s.x, s.y);
+    ctx.globalAlpha = Math.min(1, s.life * 2) * 0.9;
+    const w = Math.sin(now * 10 + s.x) * 1.5;
+    ctx.fillStyle = '#eef2ff';
+    ctx.beginPath();
+    ctx.arc(0, -2, 7, Math.PI, 0);
+    ctx.lineTo(7, 7);
+    ctx.lineTo(3.5, 5 + w);
+    ctx.lineTo(0, 7);
+    ctx.lineTo(-3.5, 5 - w);
+    ctx.lineTo(-7, 7);
+    ctx.closePath();
+    ctx.fill();
+    ctx.fillStyle = '#1e1b4b';
+    ctx.fillRect(-3.5, -3.5, 2.2, 3);
+    ctx.fillRect(1.3, -3.5, 2.2, 3);
+    ctx.restore();
+  }
+  ctx.globalAlpha = 1;
+}
+
+function drawFx(ctx: CanvasRenderingContext2D, g: Game, accent: string, layer: 'under' | 'over') {
+  for (const f of g.fx) {
+    const t = 1 - f.life / f.max;
+    const fade = Math.max(0, f.life / f.max);
+    if (layer === 'under' && (f.kind === 'ring' || f.kind === 'strike')) {
+      ctx.globalAlpha = fade;
+      if (f.kind === 'ring') {
+        ctx.strokeStyle = accent;
+        ctx.lineWidth = 4 * fade + 1;
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.r * (0.35 + 0.65 * t), 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.fillStyle = 'rgba(255,255,255,0.08)';
+        ctx.fill();
+      } else {
+        const grad = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.r * 1.4);
+        grad.addColorStop(0, 'rgba(255,251,224,0.9)');
+        grad.addColorStop(1, 'transparent');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.r * 1.4, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    if (layer === 'over' && (f.kind === 'slash' || f.kind === 'boom')) {
+      ctx.globalAlpha = fade;
+      if (f.kind === 'slash') {
+        // A crescent sweeping across the swing.
+        const sweep = -1.15 + 2.3 * Math.min(1, t * 1.6);
+        const grad = ctx.createRadialGradient(f.x, f.y, f.r * 0.45, f.x, f.y, f.r);
+        grad.addColorStop(0, 'transparent');
+        grad.addColorStop(0.7, 'rgba(255,255,255,0.35)');
+        grad.addColorStop(1, '#ffffff');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.moveTo(f.x, f.y);
+        ctx.arc(f.x, f.y, f.r, f.a - 1.15, f.a + sweep);
+        ctx.closePath();
+        ctx.fill();
+        ctx.strokeStyle = accent;
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.r, f.a - 1.15, f.a + sweep);
+        ctx.stroke();
+      } else {
+        const r = f.r * (0.4 + 0.6 * t);
+        const grad = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, r);
+        grad.addColorStop(0, 'rgba(255,251,234,0.95)');
+        grad.addColorStop(0.4, 'rgba(255,179,71,0.8)');
+        grad.addColorStop(1, 'rgba(255,90,40,0)');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+  }
+  ctx.globalAlpha = 1;
 }
 
 function drawOrbs(ctx: CanvasRenderingContext2D, g: Game) {
