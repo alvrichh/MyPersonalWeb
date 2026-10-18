@@ -675,8 +675,36 @@ function drawBlades(ctx: CanvasRenderingContext2D, g: Game, accent: string, now:
   const orbit = bladeOrbit(lv);
   const glow = BLADE_LOOK[el][3];
   const size = 24 * bladeScale(lv);
+  const streak = glow || 'rgba(226,232,240,0.6)';
+  // Motion that grows with the level: a streak along the circle from level
+  // 2, longer each level, and fading copies of the blade behind it from 3.
+  const tail = lv >= 2 ? 0.28 + 0.12 * (lv - 2) : 0;
+  const echoes = Math.max(0, lv - 2);
   for (let i = 0; i < n; i++) {
     const a = g.gear.bladeAngle + (i / n) * Math.PI * 2;
+    if (tail) {
+      ctx.save();
+      ctx.strokeStyle = streak;
+      ctx.lineCap = 'round';
+      const steps = 6;
+      for (let k = 0; k < steps; k++) {
+        ctx.globalAlpha = (1 - k / steps) * 0.85;
+        ctx.lineWidth = size * 0.45 * (1 - k / steps);
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, orbit, a - (tail * (k + 1)) / steps, a - (tail * k) / steps);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+    for (let k = echoes; k >= 1; k--) {
+      const b = a - k * 0.16;
+      ctx.save();
+      ctx.globalAlpha = 0.32 / k;
+      ctx.translate(p.x + Math.cos(b) * orbit, p.y + Math.sin(b) * orbit);
+      ctx.rotate(now * 14 + i - k * 0.5);
+      ctx.drawImage(img, -size / 2, -size / 2, size, size);
+      ctx.restore();
+    }
     ctx.save();
     ctx.translate(p.x + Math.cos(a) * orbit, p.y + Math.sin(a) * orbit);
     if (glow) {

@@ -956,7 +956,8 @@ function spinBlades(g: Game, dt: number) {
   const p = g.player;
   const lv = g.skills.blades;
   const gear = g.gear;
-  gear.bladeAngle += dt * 3.4;
+  // A little faster each level, so the upgrades feel quicker too.
+  gear.bladeAngle += dt * 3.4 * (1 + 0.08 * (lv - 1));
   for (const [id, t] of gear.bladeHits) {
     if (t - dt <= 0) gear.bladeHits.delete(id);
     else gear.bladeHits.set(id, t - dt);
