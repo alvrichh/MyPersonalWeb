@@ -2,7 +2,7 @@ import './game.css';
 import { storage } from '../lib/storage';
 import { audio, type Sfx } from './audio';
 import { draw, drawRetroFigure, preloadFx, type Palette, type View } from './draw';
-import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, type StarColor, loadSave, profileLevel, writeSave, STYLES, SKINS, type EnemyStyle, type HeroSkin, heroKey } from './save';
+import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, type StarColor, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, heroKey } from './save';
 import type { Mode } from './world';
 import { ARMOUR_SLOTS, ITEMS, type SpiritSkin, SLOTS, UPGRADES, WEAPON_SLOTS, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
 import { Scene } from './scene';
@@ -659,8 +659,11 @@ function stylesScreen(note = '') {
     </button>`;
   let picks = `<p class="how">${t('dressHint')}</p>`;
   if (dressSlot === 'skin') {
-    picks = `<h3 class="slot">${t('skinPick')}</h3><div class="gear-list">${SKINS.map((skin) =>
-      row(`data-skin="${skin}"`, save.skin === skin, false, `<img class="skin-pic" src="./images/game/hero/${heroKey(skin, save.equipped.head)}-idle.webp" alt="">`, t(`skin${cap(skin)}Name` as Key), t(`skin${cap(skin)}Text` as Key), save.skin === skin ? `✓ ${t('worn')}` : '')).join('')}</div>`;
+    picks = `<h3 class="slot">${t('skinPick')}</h3>${note ? `<p class="note">${note}</p>` : ''}<div class="gear-list">${SKINS.map((skin) => {
+      const owned = save.skins.includes(skin);
+      const worn = save.skin === skin;
+      return row(`data-skin="${skin}"`, worn, !owned && save.coins < SKIN_PRICE[skin], `<img class="skin-pic" src="./images/game/hero/${heroKey(skin, save.equipped.head)}-idle.webp" alt="">`, t(`skin${cap(skin)}Name` as Key), t(`skin${cap(skin)}Text` as Key), worn ? `✓ ${t('worn')}` : owned ? t('equip') : `🪙 ${SKIN_PRICE[skin]}`);
+    }).join('')}</div>`;
   } else if (dressSlot === 'foes') {
     picks = `<h3 class="slot">${t('stylePick')}</h3><div class="gear-list">${STYLES.map((style) =>
       row(`data-style="${style}"`, save.style === style, false, STYLE_ICON[style], t(`style${cap(style)}Name` as Key), t(`style${cap(style)}Text` as Key), save.style === style ? '✓' : '')).join('')}</div>`;
@@ -855,7 +858,15 @@ screen.addEventListener('click', (event) => {
     persist();
     stylesScreen();
   } else if (target.dataset.skin) {
-    save.skin = target.dataset.skin as HeroSkin;
+    // Skins are bought once with coins, then worn with a tap.
+    const skin = target.dataset.skin as HeroSkin;
+    if (!save.skins.includes(skin)) {
+      if (save.coins < SKIN_PRICE[skin]) { stylesScreen(t('notEnough')); return; }
+      save.coins -= SKIN_PRICE[skin];
+      save.skins.push(skin);
+      audio.play('coin');
+    }
+    save.skin = skin;
     persist();
     dressPalette();
     stylesScreen();

@@ -9,6 +9,8 @@ export const STYLES: EnemyStyle[] = ['world', 'original', 'demon', 'viking', 'ju
 
 export type HeroSkin = 'boy' | 'robot' | 'kitty';
 export const SKINS: HeroSkin[] = ['boy', 'robot', 'kitty'];
+/** What each figure costs in coins; Alvrich comes free. */
+export const SKIN_PRICE: Record<HeroSkin, number> = { boy: 0, robot: 600, kitty: 900 };
 /** The hats are painted on the hero's pictures; a skin listed here has no hat versions and always shows its base set. */
 const HATLESS: HeroSkin[] = ['kitty'];
 const HAT_SET: Record<string, string> = { wizardHat: 'wizard', gladHelm: 'helm', bandana: 'bandana' };
@@ -22,6 +24,8 @@ export type Save = {
   coins: number;
   /** Which figure the hero is drawn as. */
   skin: HeroSkin;
+  /** The figures bought (Alvrich is always there). */
+  skins: HeroSkin[];
   /** Retro look: no painted textures, the plain panels and the ring hero from before. */
   retro: boolean;
   owned: ItemId[];
@@ -69,6 +73,7 @@ const fresh = (): Save => ({
   name: DEFAULT_NAME,
   coins: 0,
   skin: 'boy',
+  skins: ['boy'],
   retro: false,
   owned: [],
   equipped: {},
@@ -115,6 +120,8 @@ export function loadSave(): Save {
     }
     if (!STYLES.includes(save.style)) save.style = 'world';
     if (!SKINS.includes(save.skin)) save.skin = 'boy';
+    // Skins cost coins now: the free one, plus whichever an older save already wore.
+    save.skins = [...new Set<HeroSkin>(['boy', save.skin, ...(data.skins ?? [])])].filter((s) => SKINS.includes(s));
     if (!data.styleV2) { save.style = 'world'; save.styleV2 = true; }
     save.unlocked = Math.max(1, save.unlocked || 1);
     save.world = Math.min(Math.max(1, save.world || 1), save.unlocked);
@@ -149,9 +156,9 @@ export function profileLevel(xp: number) {
   return { level, progress: left / need };
 }
 
-/** Back to a fresh start: progress, coins, gear and level go; name, settings, masteries and star colour stay. */
+/** Back to a fresh start: progress, coins, gear and level go; name, skins bought, settings, masteries and star colour stay. */
 export function wipeProgress(save: Save) {
-  const keep = { name: save.name, skin: save.skin, retro: save.retro, style: save.style, music: save.music, sfx: save.sfx, mode: save.mode, mastery: { ...save.mastery }, starColor: save.starColor };
+  const keep = { name: save.name, skin: save.skin, skins: [...save.skins], retro: save.retro, style: save.style, music: save.music, sfx: save.sfx, mode: save.mode, mastery: { ...save.mastery }, starColor: save.starColor };
   Object.assign(save, fresh(), keep);
 }
 
