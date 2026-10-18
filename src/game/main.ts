@@ -331,7 +331,7 @@ function profileScreen(note = '') {
       ? `<p class="mastery-line"><span style="color:${starColor()}">★</span> ${modeShort('sprints')} ${save.mastery.sprints} · ${modeShort('horde')} ${save.mastery.horde}</p>
          <div class="star-pick" role="group" aria-label="${t('profileStarColor')}">${(Object.keys(STAR_COLORS) as StarColor[]).map((c) => `<button type="button" class="star-chip${c === save.starColor ? ' is-on' : ''}" data-star="${c}" style="--star:${STAR_COLORS[c]}" aria-pressed="${c === save.starColor}" aria-label="${c}">★</button>`).join('')}</div>`
       : `<p class="how">${t('masteryNone')}</p>`}
-    <button class="ghost is-danger small" data-act="reset-ask">${t('resetBtn')}</button>
+    <button class="ghost is-danger" data-act="reset-ask">${t('resetBtn')}</button>
     ${backButton('menu')}`);
 }
 function setName(raw: string) {
