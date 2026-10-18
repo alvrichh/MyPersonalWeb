@@ -662,7 +662,7 @@ function flash(text: string) {
 /* -------------------------------------------------------------------- sound */
 
 const SFX_FOR: Partial<Record<GameEvent, Sfx>> = {
-  shoot: 'shoot', knife: 'knife', boomerang: 'boomerang', hit: 'hit', kill: 'kill', gem: 'gem', hurt: 'hurt',
+  shoot: 'shoot', knife: 'knife', boomerang: 'boomerang', orb: 'shoot', hit: 'hit', kill: 'kill', gem: 'gem', hurt: 'hurt',
   levelup: 'levelup', slash: 'slash', slam: 'slam', strike: 'strike', boom: 'boom', revive: 'revive', clear: 'door', boss: 'boss',
   heal: 'revive', wheel: 'door', shrine: 'door',
 };

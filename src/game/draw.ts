@@ -377,6 +377,24 @@ function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accen
   ctx.lineCap = 'round';
   for (const a of g.shots) {
     const len = Math.hypot(a.vx, a.vy) || 1;
+    if (a.kind === 'orb') {
+      // The spirits' purple orb with a short trail.
+      ctx.strokeStyle = 'rgba(192,132,252,0.45)';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(a.x - (a.vx / len) * 10, a.y - (a.vy / len) * 10);
+      ctx.lineTo(a.x, a.y);
+      ctx.stroke();
+      const glow = ctx.createRadialGradient(a.x, a.y, 0, a.x, a.y, 7);
+      glow.addColorStop(0, '#f5f3ff');
+      glow.addColorStop(0.45, '#c084fc');
+      glow.addColorStop(1, 'rgba(168,85,247,0)');
+      ctx.fillStyle = glow;
+      ctx.beginPath();
+      ctx.arc(a.x, a.y, 7, 0, Math.PI * 2);
+      ctx.fill();
+      continue;
+    }
     if (a.kind === 'knife') {
       ctx.save();
       ctx.translate(a.x, a.y);
@@ -529,7 +547,7 @@ function drawSpirits(ctx: CanvasRenderingContext2D, g: Game, now: number) {
     ctx.save();
     ctx.translate(s.x, s.y);
     ctx.globalAlpha = Math.min(1, s.life * 2) * 0.9;
-    const w = Math.sin(now * 10 + s.x) * 1.5;
+    const w = Math.sin(now * 10 + s.slot) * 1.5;
     ctx.fillStyle = '#eef2ff';
     ctx.beginPath();
     ctx.arc(0, -2, 7, Math.PI, 0);
