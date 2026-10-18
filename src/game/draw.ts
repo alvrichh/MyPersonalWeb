@@ -1,4 +1,4 @@
-import { H, W, WALL, WHEEL_X, WORLDS, frostReach, isBossRoom, type Enemy, type Game, type Look, type Statue, type Rect, type Vec, bladeCount, bladeElement, bladeOrbit, bladeScale, type BladeElement } from './world';
+import { H, W, WALL, WHEEL_X, WORLDS, frostReach, isBossRoom, type Enemy, type Game, type Look, type Statue, type Rect, type Vec, arrowLook, bladeCount, bladeElement, bladeOrbit, bladeScale, type BladeElement } from './world';
 import { SPIRIT_COLOR, type ItemId, type SpiritSkin } from './shop';
 import type { HeroSkin } from './save';
 
@@ -485,7 +485,7 @@ function drawPlayer(ctx: CanvasRenderingContext2D, g: Game, pal: Palette, now: n
 
 /* The bow's painted arrows, one per element (static/images/game/arrows): the
    first element owned decides the look, with its trail drawn behind the tip. */
-const ARROW_ELEMENTS = ['fire', 'water', 'leaf', 'ghost'] as const;
+const ARROW_PICTURES = ['fire', 'water', 'leaf', 'ghost'];
 const arrows = new Map<string, HTMLImageElement>();
 function arrowImage(name: string) {
   let img = arrows.get(name);
@@ -494,9 +494,8 @@ function arrowImage(name: string) {
 }
 
 function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accent2: string) {
-  const fire = g.skills.fire > 0;
-  const water = g.skills.water > 0;
-  const element = ARROW_ELEMENTS.find((e) => g.skills[e] > 0);
+  const look = arrowLook(g);
+  const element = look && ARROW_PICTURES.includes(look) ? look : null;
   ctx.lineCap = 'round';
   for (const a of g.shots) {
     const len = Math.hypot(a.vx, a.vy) || 1;
@@ -610,10 +609,10 @@ function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accen
     const ty = a.y - (a.vy / len) * 14;
     const tail = ctx.createLinearGradient(tx, ty, a.x, a.y);
     tail.addColorStop(0, 'transparent');
-    // Bow upgrades without a painted arrow yet tint the drawn one: lightning yellow, sparks orange.
-    const bolt = g.skills.bolt > 0;
-    const spark = g.skills.spark > 0;
-    tail.addColorStop(1, fire ? '#ffb347' : water ? '#7ad8ff' : bolt ? '#fde047' : spark ? '#fb923c' : accent2);
+    // Looks without a painted arrow (lightning, sparks) tint the drawn one; so does retro.
+    const bolt = look === 'bolt';
+    const spark = look === 'spark';
+    tail.addColorStop(1, look === 'fire' ? '#ffb347' : look === 'water' ? '#7ad8ff' : look === 'leaf' ? '#86efac' : bolt ? '#fde047' : spark ? '#fb923c' : accent2);
     if (bolt || spark) { ctx.shadowColor = bolt ? '#facc15' : '#fb923c'; ctx.shadowBlur = 8; }
     ctx.strokeStyle = tail;
     ctx.lineWidth = 4;
@@ -869,6 +868,10 @@ function fxImage(name: string) {
   return img;
 }
 const ready = (img: HTMLImageElement) => img.complete && img.naturalWidth > 0;
+/** Warm the effect pictures up when a run starts, so the first swing and strike are already painted. */
+export function preloadFx() {
+  for (const n of ['fireball', 'boom-small', 'boom-big', 'knife', 'boomerang', 'slash-1', 'slash-2', 'bolt-1', 'bolt-2', 'bolt-3', 'bolt-4', 'bolt-5', 'bolt-6']) fxImage(n);
+}
 
 function drawFireballs(ctx: CanvasRenderingContext2D, g: Game) {
   const pic = fxImage('fireball');
@@ -973,6 +976,13 @@ function drawFx(ctx: CanvasRenderingContext2D, g: Game, accent: string, layer: '
         ctx.stroke();
         ctx.fillStyle = 'rgba(255,255,255,0.08)';
         ctx.fill();
+      } else if (!retroLook && ready(fxImage('bolt-6'))) {
+        // The painted strike: a bolt frame for the first part, then the ground burst.
+        const frame = t < 0.6 ? 1 + Math.floor(t * 8) % 5 : 6;
+        const pic = fxImage(`bolt-${frame}`);
+        const h = f.r * (frame === 6 ? 3.2 : 7.5);
+        const w = (h * pic.naturalWidth) / pic.naturalHeight;
+        ctx.drawImage(pic, f.x - w / 2, f.y - h + f.r * (frame === 6 ? 1.2 : 0.9), w, h);
       } else {
         const grad = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.r * 1.4);
         grad.addColorStop(0, 'rgba(255,251,224,0.9)');
@@ -1005,7 +1015,19 @@ function drawFx(ctx: CanvasRenderingContext2D, g: Game, accent: string, layer: '
     }
     if (layer === 'over' && (f.kind === 'slash' || f.kind === 'boom')) {
       ctx.globalAlpha = fade;
-      if (f.kind === 'slash') {
+      if (f.kind === 'slash' && !retroLook && ready(fxImage('slash-2'))) {
+        // The painted crescent: two frames, growing and fading, turned to the swing's direction.
+        const pic = fxImage(t < 0.5 ? 'slash-1' : 'slash-2');
+        // The crescent's bulge is on the picture's right: put that at the reach, the tail just past the hero.
+        const w = f.r * 1.45;
+        const h = (w * pic.naturalHeight) / pic.naturalWidth;
+        ctx.save();
+        ctx.translate(f.x, f.y);
+        ctx.rotate(f.a);
+        ctx.globalAlpha = fade;
+        ctx.drawImage(pic, f.r * 1.1 - w, -h / 2, w, h);
+        ctx.restore();
+      } else if (f.kind === 'slash') {
         // A crescent sweeping across the swing.
         const sweep = -1.15 + 2.3 * Math.min(1, t * 1.6);
         const grad = ctx.createRadialGradient(f.x, f.y, f.r * 0.45, f.x, f.y, f.r);
@@ -1061,6 +1083,10 @@ function drawOrbs(ctx: CanvasRenderingContext2D, g: Game) {
 function drawZaps(ctx: CanvasRenderingContext2D, g: Game) {
   ctx.lineJoin = 'round';
   for (const z of g.zaps) {
+    // Storm bolts from the sky are the painted strike now; the short arcs between bugs still draw.
+    const first = z.pts[0];
+    const last = z.pts[z.pts.length - 1];
+    if (!retroLook && Math.hypot(last.x - first.x, last.y - first.y) > 150 && ready(fxImage('bolt-6'))) continue;
     ctx.globalAlpha = Math.min(1, z.life / 0.12);
     for (const [width, color] of [[5, 'rgba(255,212,95,0.35)'], [2, '#fffbe0']] as const) {
       ctx.strokeStyle = color;

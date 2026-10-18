@@ -284,6 +284,8 @@ export type Game = {
   loadout: Loadout;
   /** The blades' element the player picked in the skills list (null: the strongest one, automatically). */
   bladePick: BladeElement | null;
+  /** The arrow look the player picked in the skills list (null: the first bow upgrade owned). */
+  arrowPick: ArrowLook | null;
   style: EnemyStyle;
   /** Coins earned this run (banked by the page when the run ends). */
   coins: number;
@@ -572,6 +574,7 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     embers: [],
     loadout,
     bladePick: null,
+    arrowPick: null,
     style,
     coins: 0,
     revives: loadout.revives,
@@ -1048,6 +1051,20 @@ export function bladeElement(g: Game): BladeElement {
     if (src[el] > most) { most = src[el]; best = el; }
   }
   return best;
+}
+/* The arrows' look: each bow upgrade paints the arrow its own way (every
+   upgrade's effect still applies whatever the look). The player may pick
+   any look they own; otherwise the first owned wins. */
+export type ArrowLook = 'fire' | 'water' | 'leaf' | 'ghost' | 'bolt' | 'spark';
+const ARROW_LOOKS: ArrowLook[] = ['fire', 'water', 'leaf', 'ghost', 'bolt', 'spark'];
+export const arrowOptions = (g: Game): ArrowLook[] => ARROW_LOOKS.filter((s) => g.skills[s] > 0);
+export function arrowLook(g: Game): ArrowLook | null {
+  const opts = arrowOptions(g);
+  if (g.arrowPick && opts.includes(g.arrowPick)) return g.arrowPick;
+  return opts[0] ?? null;
+}
+export function pickArrow(g: Game, look: ArrowLook) {
+  if (arrowOptions(g).includes(look)) g.arrowPick = look;
 }
 /** Mid-run choices from the skills list: the blades' element, and which owned spirit follows you. */
 export function pickBlade(g: Game, el: BladeElement) {
