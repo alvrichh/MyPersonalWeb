@@ -2605,3 +2605,7 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 :root[data-retro] .gear-row.is-locked em { color: var(--muted); }
 :root[data-retro] .gear-row:hover,
 :root[data-retro] .gear-row:focus-visible { filter: none; border-color: var(--accent); }
+
+/* Item pictures (the spirit companions) where items otherwise show an emoji. */
+.item-pic { display: block; width: 1.9em; height: 1.9em; object-fit: contain; filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.5)); }
+.gear-row .icon .item-pic { width: 2.6em; height: 2.6em; }
