@@ -1617,11 +1617,14 @@ export function shrinePick(g: Game, pick: ShrinePick): { skill?: SkillId } {
 /* ------------------------------------------------------------------- wheel */
 
 export type WheelOutcome = 'newSkill' | 'skillUp' | 'heal' | 'coins' | 'loseLevel' | 'hurt' | 'loseCoins' | 'bossBuff' | 'nothing' | 'evolve';
-/** The slices in order round the wheel: good and bad alternate. */
-export const WHEEL: WheelOutcome[] = ['newSkill', 'hurt', 'heal', 'loseLevel', 'skillUp', 'nothing', 'coins', 'bossBuff'];
+/** The slices clockwise from the top, one per wedge of the owner's painted disc
+    (gold, red, green, gold, purple, gold, red, green, purple, blue), each prize
+    on the colour that means it: gold coins, green health, purple skills and
+    levels, blue a skill up, red harm. */
+export const WHEEL: WheelOutcome[] = ['coins', 'hurt', 'heal', 'loseCoins', 'newSkill', 'nothing', 'bossBuff', 'heal', 'loseLevel', 'skillUp'];
 export const WHEEL_GOOD: WheelOutcome[] = ['newSkill', 'heal', 'skillUp', 'coins', 'evolve'];
-/** The boss chest's wheel: every slice helps, and one evolves a weapon that is ready. */
-export const WHEEL_LUCKY: WheelOutcome[] = ['newSkill', 'coins', 'skillUp', 'evolve', 'heal', 'skillUp', 'coins', 'newSkill'];
+/** The boss chest's wheel, on the same disc: every slice helps, and the red ones evolve a weapon that is ready. */
+export const WHEEL_LUCKY: WheelOutcome[] = ['coins', 'evolve', 'heal', 'coins', 'newSkill', 'coins', 'evolve', 'heal', 'newSkill', 'skillUp'];
 export const WHEEL_COINS = 40;
 
 /**

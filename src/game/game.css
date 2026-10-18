@@ -1064,7 +1064,7 @@ body {
   font-size: 1.35rem;
   line-height: 1;
   /* Each slice sits on its radius, a bit in from the rim. */
-  transform: rotate(calc(var(--i) * 45deg)) translateY(-32cqw) rotate(calc(var(--i) * -45deg));
+  transform: rotate(calc(var(--i) * 36deg)) translateY(-32cqw) rotate(calc(var(--i) * -36deg));
 }
 
 .wheel { container-type: inline-size; }
@@ -2304,7 +2304,7 @@ body {
 :root[data-retro] .wheel-disc {
   border: 6px solid #0f172a;
   box-shadow: 0 0 0 3px rgba(103, 232, 249, 0.6), 0 0 28px rgba(103, 232, 249, 0.35), inset 0 0 30px rgba(0, 0, 0, 0.5);
-  background: repeating-conic-gradient(from -22.5deg, #1e3a5f 0 45deg, #172554 45deg 90deg);
+  background: repeating-conic-gradient(from -18deg, #1e3a5f 0 36deg, #172554 36deg 72deg);
   filter: none;
 }
 :root[data-retro] .wheel-pin { width: 0; aspect-ratio: auto; height: 0; top: -10px; border-left: 11px solid transparent; border-right: 11px solid transparent; border-top: 22px solid #fde68a; background: none; translate: -50% 0; }
@@ -2933,7 +2933,7 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   font-size: 8.5cqw;
   background: rgba(8, 14, 28, 0.35);
   box-shadow: none;
-  transform: rotate(calc(var(--i) * 45deg)) translateY(-33cqw) rotate(calc(var(--i) * -45deg - var(--turn, 0deg)));
+  transform: rotate(calc(var(--i) * 36deg)) translateY(-33cqw) rotate(calc(var(--i) * -36deg - var(--turn, 0deg)));
   transition: transform 3.4s cubic-bezier(0.12, 0.75, 0.1, 1);
 }
 :root:not([data-retro]) .wheel-slice.is-good,

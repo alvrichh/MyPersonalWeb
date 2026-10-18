@@ -488,7 +488,7 @@ function choiceScreen(g: Game) {
   show(`${head('levelup', t('levelUp'))}<p class="kicker">${t('level', { level: g.level })}</p><p>${t('choose')}</p><div class="skills">${cards}</div>`, true, false, 'is-levelup');
 }
 
-/* The wheel of fate: eight slices, good and bad alternating. The wheel is
+/* The wheel of fate: ten slices, one per wedge of the painted disc. The wheel is
    picked before it spins; the spin is only the show. */
 const WHEEL_ICON: Record<WheelOutcome, string> = {
   newSkill: '✨', skillUp: '⬆️', heal: '❤️', coins: '🪙', loseLevel: '⬇️', hurt: '💔', loseCoins: '💸', bossBuff: '👹', nothing: '😐', evolve: '★',
@@ -517,7 +517,7 @@ function spinWheel(g: Game) {
   spinBtn.disabled = true;
   const wheel = g.luckyWheel ? WHEEL_LUCKY : WHEEL;
   const index = Math.floor(Math.random() * wheel.length);
-  // Five full turns, then land the chosen slice (centred at index × 45°) under the pin at the top.
+  // Five full turns, then land the chosen slice (centred at index × 36°) under the pin at the top.
   const turn = 5 * 360 - index * (360 / wheel.length);
   disc.style.transform = `rotate(${turn}deg)`;
   // The prize icons turn back by as much, so they stay upright as the disc spins.
