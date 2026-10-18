@@ -959,13 +959,16 @@ const BLADE_FROM: Record<Exclude<BladeElement, 'steel'>, SkillId[]> = {
   fire: ['fire', 'fireball'],
   ice: ['frost', 'water'],
   volt: ['bolt', 'spark', 'storm'],
-  shade: ['ghost', 'spirits'],
+  shade: ['ghost'],
 };
+/** The Spirits skill counts for the element of the spirit you wear (the leaf one has no blade of its own). */
+const SPIRIT_BLADE: Record<SpiritSkin, BladeElement> = { water: 'ice', tide: 'ice', fire: 'fire', volt: 'volt', shade: 'shade', thorn: 'steel' };
 export function bladeElement(g: Game): BladeElement {
   let best: BladeElement = 'steel';
   let most = 0;
+  const fromSpirit = SPIRIT_BLADE[g.loadout.spirit];
   for (const [el, from] of Object.entries(BLADE_FROM) as [Exclude<BladeElement, 'steel'>, SkillId[]][]) {
-    const n = from.reduce((sum, s) => sum + g.skills[s], 0);
+    const n = from.reduce((sum, s) => sum + g.skills[s], 0) + (fromSpirit === el ? g.skills.spirits : 0);
     if (n > most) { most = n; best = el; }
   }
   return best;
