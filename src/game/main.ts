@@ -184,7 +184,7 @@ function endScreen(g: Game) {
     : `<button class="primary" data-act="play-same">${t('again')}</button>`;
   show(`
     <p class="kicker">${worldName(g.world)} · ${t('sprint', { room: g.room })}</p>
-    <h1>${t(won ? 'won' : 'over')}</h1>
+    ${head(won ? 'victory' : 'defeat', t(won ? 'won' : 'over'))}
     <p>${t(won ? 'wonText' : 'overText', { room: g.room, kills: g.kills, time: clock(g.time) })}</p>
     <p class="earned">${coinsLine(earned)} <small>${t('coinsRun', { coins: earned })}</small></p>
     ${next}
@@ -281,7 +281,7 @@ function choiceScreen(g: Game) {
       return `<button class="skill skill-${cat}" data-skill="${id}"><span class="icon" aria-hidden="true">${ICONS[id]}</span><span class="cat">${t(CATEGORY_LABEL[cat])}</span><b>${name}</b><span>${text}</span>${level}</button>`;
     })
     .join('');
-  show(`<p class="kicker">${t('level', { level: g.level })}</p><h2>${t('levelUp')}</h2><p>${t('choose')}</p><div class="skills">${cards}</div>`, true);
+  show(`<p class="kicker">${t('level', { level: g.level })}</p>${head('levelup', t('levelUp'))}<p>${t('choose')}</p><div class="skills">${cards}</div>`, true);
 }
 
 /* Both ways out of a run (the HUD arrow and Quit in the pause menu) ask
@@ -293,8 +293,12 @@ function leaveScreen(to: 'site' | 'menu') {
     <button class="ghost" data-act="${to === 'site' ? 'leave-site' : 'quit'}">${t(to === 'site' ? 'leaveSite' : 'leaveMenu')}</button>`);
 }
 
+/* A header from the UI sheets: the ornament is the picture, the words sit in its plate. */
+const head = (kind: 'pause' | 'levelup' | 'victory' | 'defeat', text: string) =>
+  `<div class="ui-head is-${kind}"><img src="./images/game/ui/header_${kind}.webp" alt=""><span>${text}</span></div>`;
+
 function pauseScreen() {
-  show(`<h2>${t('paused')}</h2>
+  show(`${head('pause', t('paused'))}
     <button class="primary" data-act="resume">${t('resume')}</button>
     <button class="ghost" data-act="options-pause">⚙ ${t('options')}</button>
     <button class="ghost" data-act="confirm-quit">${t('quit')}</button>`);
