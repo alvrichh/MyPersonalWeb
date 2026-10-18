@@ -884,7 +884,7 @@ function chill(g: Game, dt: number) {
 /* Spirits: one companion ghost per level floats at the hero's side (left,
    right, then behind) and each one keeps shooting a purple orb at the
    nearest bug, even while you move. They never leave you. */
-const SPIRIT_SLOTS = [{ x: -30, y: -8 }, { x: 30, y: -8 }, { x: 0, y: -58 }];
+const SPIRIT_SLOTS = [{ x: -26, y: -10 }, { x: 26, y: -10 }, { x: 0, y: -52 }];
 function moveSpirits(g: Game, dt: number) {
   const lv = g.skills.spirits;
   const p = g.player;

@@ -654,7 +654,7 @@ function drawSpirits(ctx: CanvasRenderingContext2D, g: Game, now: number) {
       : `${skin}-float-0`;
     const img = spiritImage(name);
     if (!img.complete || !img.naturalWidth) continue;
-    const size = 44;
+    const size = 30;
     ctx.save();
     ctx.globalAlpha = Math.min(1, s.life * 2);
     ctx.translate(s.x, s.y);
