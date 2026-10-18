@@ -260,6 +260,8 @@ export type Game = {
   skills: Record<SkillId, number>;
   gear: Gear;
   loadout: Loadout;
+  /** The blades' element the player picked in the skills list (null: the strongest one, automatically). */
+  bladePick: BladeElement | null;
   style: EnemyStyle;
   /** Coins earned this run (banked by the page when the run ends). */
   coins: number;
@@ -544,6 +546,7 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     door: false,
     skills: Object.fromEntries(SKILLS.map((s) => [s, 0])) as Record<SkillId, number>,
     loadout,
+    bladePick: null,
     style,
     coins: 0,
     revives: loadout.revives,
@@ -963,15 +966,37 @@ const BLADE_FROM: Record<Exclude<BladeElement, 'steel'>, SkillId[]> = {
 };
 /** The Spirits skill counts for the element of the spirit you wear (the leaf one has no blade of its own). */
 const SPIRIT_BLADE: Record<SpiritSkin, BladeElement> = { water: 'ice', tide: 'ice', fire: 'fire', volt: 'volt', shade: 'shade', thorn: 'steel' };
+/** How many levels of each element's skills you carry. */
+function bladeSources(g: Game): Record<Exclude<BladeElement, 'steel'>, number> {
+  const fromSpirit = SPIRIT_BLADE[g.loadout.spirit];
+  const out = { fire: 0, ice: 0, volt: 0, shade: 0 };
+  for (const [el, from] of Object.entries(BLADE_FROM) as [Exclude<BladeElement, 'steel'>, SkillId[]][]) {
+    out[el] = from.reduce((sum, s) => sum + g.skills[s], 0) + (fromSpirit === el ? g.skills.spirits : 0);
+  }
+  return out;
+}
+/** The elements the blades may take right now: plain steel, and each one you carry a skill for. */
+export function bladeOptions(g: Game): BladeElement[] {
+  const src = bladeSources(g);
+  return ['steel', ...(Object.keys(src) as Exclude<BladeElement, 'steel'>[]).filter((el) => src[el] > 0)];
+}
 export function bladeElement(g: Game): BladeElement {
+  // The player's pick wins while it is still available (the wheel can take a skill away).
+  if (g.bladePick && bladeOptions(g).includes(g.bladePick)) return g.bladePick;
   let best: BladeElement = 'steel';
   let most = 0;
-  const fromSpirit = SPIRIT_BLADE[g.loadout.spirit];
-  for (const [el, from] of Object.entries(BLADE_FROM) as [Exclude<BladeElement, 'steel'>, SkillId[]][]) {
-    const n = from.reduce((sum, s) => sum + g.skills[s], 0) + (fromSpirit === el ? g.skills.spirits : 0);
-    if (n > most) { most = n; best = el; }
+  const src = bladeSources(g);
+  for (const el of Object.keys(src) as Exclude<BladeElement, 'steel'>[]) {
+    if (src[el] > most) { most = src[el]; best = el; }
   }
   return best;
+}
+/** Mid-run choices from the skills list: the blades' element, and which owned spirit follows you. */
+export function pickBlade(g: Game, el: BladeElement) {
+  if (bladeOptions(g).includes(el)) g.bladePick = el;
+}
+export function pickSpirit(g: Game, skin: SpiritSkin) {
+  g.loadout.spirit = skin;
 }
 
 function spinBlades(g: Game, dt: number) {

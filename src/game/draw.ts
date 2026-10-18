@@ -576,7 +576,11 @@ function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accen
     const ty = a.y - (a.vy / len) * 14;
     const tail = ctx.createLinearGradient(tx, ty, a.x, a.y);
     tail.addColorStop(0, 'transparent');
-    tail.addColorStop(1, fire ? '#ffb347' : water ? '#7ad8ff' : accent2);
+    // Bow upgrades without a painted arrow yet tint the drawn one: lightning yellow, sparks orange.
+    const bolt = g.skills.bolt > 0;
+    const spark = g.skills.spark > 0;
+    tail.addColorStop(1, fire ? '#ffb347' : water ? '#7ad8ff' : bolt ? '#fde047' : spark ? '#fb923c' : accent2);
+    if (bolt || spark) { ctx.shadowColor = bolt ? '#facc15' : '#fb923c'; ctx.shadowBlur = 8; }
     ctx.strokeStyle = tail;
     ctx.lineWidth = 4;
     ctx.beginPath();
@@ -593,6 +597,7 @@ function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accen
     ctx.beginPath();
     ctx.arc(a.x, a.y, 1.8, 0, Math.PI * 2);
     ctx.fill();
+    ctx.shadowBlur = 0;
   }
 }
 
