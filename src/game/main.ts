@@ -115,9 +115,10 @@ let shownChoices = '';
 /** Where the Options screen goes back to. */
 let optionsFrom: 'menu' | 'pause' = 'menu';
 
-function show(html: string, wide = false, menu = false) {
+function show(html: string, wide = false, menu = false, extra = '') {
   screen.innerHTML = `<div class="panel${wide ? ' panel-wide' : ''}">${html}</div>`;
   screen.classList.toggle('is-menu', menu);
+  screen.classList.toggle('is-map', extra === 'is-map');
   screen.hidden = false;
   screen.scrollTop = 0;
 }
@@ -193,118 +194,79 @@ function endScreen(g: Game) {
     <p class="best">${bestLine(g.world)}</p>`);
 }
 
-/* The world map: a winding road through eight stops, each dressed in its
-   world's element. The road itself changes colour and texture as it nears
-   the next world. */
+/* The world map: floating islands (the owner's artwork, one per world) laid
+   out two to a row down the screen, joined by a dashed light trail. Each
+   island is a button; its ring, name plate and badges are drawn over the art
+   so they can be translated and show the real lock state. */
 
-type Stop = { n: number; open: boolean; x: number; y: number; color: string };
+const MAP_W = 941;
+const MAP_H = 1240;
+const ISLAND_ART = ["original", "infierno", "vikingos", "jungla", "rayo", "robots", "demonios", "nucleo"];
+/** Per island art: its size and where the ring, plate and lower badge sit (percent of the art). */
+const ISLAND_META: Record<string, { w: number; h: number; ring: number[]; plate: number[]; badge: number[] }> = {"original": {"w": 380, "h": 290, "ring": [52.1, 46.6], "plate": [28.4, 62.8, 47.9, 13.1], "badge": [52.1, 83.4]}, "infierno": {"w": 405, "h": 295, "ring": [46.2, 39.0], "plate": [18.5, 58.3, 55.6, 12.9], "badge": [46.2, 78.6]}, "vikingos": {"w": 425, "h": 285, "ring": [53.6, 45.6], "plate": [32.9, 60.0, 44.2, 13.3], "badge": [54.1, 81.8]}, "jungla": {"w": 445, "h": 330, "ring": [50.1, 45.5], "plate": [28.1, 62.1, 48.3, 11.5], "badge": [50.6, 80.6]}, "rayo": {"w": 405, "h": 295, "ring": [46.2, 39.0], "plate": [18.5, 58.3, 55.6, 12.9], "badge": [46.2, 78.6]}, "robots": {"w": 420, "h": 300, "ring": [53.1, 45.0], "plate": [32.1, 62.7, 42.9, 12.7], "badge": [53.1, 83.3]}, "demonios": {"w": 420, "h": 280, "ring": [47.6, 42.9], "plate": [26.2, 59.6, 44.0, 13.6], "badge": [48.1, 81.4]}, "nucleo": {"w": 420, "h": 280, "ring": [47.6, 42.9], "plate": [26.2, 59.6, 44.0, 13.6], "badge": [48.1, 81.4]}};
 
-/** Smooth curve through the stops (Catmull-Rom turned into cubic Béziers), one path per leg. */
-function legs(stops: Stop[]) {
-  const pt = (i: number) => stops[Math.max(0, Math.min(stops.length - 1, i))];
-  return stops.slice(0, -1).map((a, i) => {
-    const p0 = pt(i - 1);
-    const p1 = a;
-    const p2 = pt(i + 1);
-    const p3 = pt(i + 2);
-    const c1 = { x: p1.x + (p2.x - p0.x) / 6, y: p1.y + (p2.y - p0.y) / 6 };
-    const c2 = { x: p2.x - (p3.x - p1.x) / 6, y: p2.y - (p3.y - p1.y) / 6 };
-    return { from: p1, to: p2, d: `M ${p1.x} ${p1.y} C ${c1.x} ${c1.y} ${c2.x} ${c2.y} ${p2.x} ${p2.y}` };
-  });
-}
-
-/** How the road looks on its way into each world. */
-const ROAD_DASH: Record<string, string> = {
-  original: '2 2', fire: '1.2 1.8', water: '3 1.4', leaf: '0.7 1.3', bolt: '2.2 0.7 0.6 0.7', spark: '0.5 1.1', ghost: '2 2.4', heart: '1.4 1.4',
-};
-
-/** Little props around a stop, drawn with the world's element. */
-function dressing(element: string, x: number, y: number, color: string): string {
-  const g = (body: string) => `<g class="deco" transform="translate(${x} ${y})" style="--c:${color}">${body}</g>`;
-  switch (element) {
-    case 'fire':
-      return g(`<ellipse cx="-9" cy="6" rx="4" ry="1.6" fill="${color}" opacity=".55"/>
-        <path d="M-9 4.5c-1.6-2 0-3.4.4-4.6.9 1.2 2.4 2 1.8 4.2-.3 1-1.6 1.1-2.2.4z" fill="#fde68a"/>
-        <path d="M8 -6c-1.4-1.8 0-3 .4-4 .8 1 2 1.8 1.5 3.7-.3.9-1.4 1-1.9.3z" fill="${color}"/>
-        <path d="M6 7l1.6-3 1.6 3z" fill="#7c2d12"/><path d="M10 8l1.3-2.4 1.3 2.4z" fill="#7c2d12"/>`);
-    case 'water':
-      return g(`<path d="M-13 6q2-2 4 0t4 0t4 0" fill="none" stroke="${color}" stroke-width=".8" stroke-linecap="round"/>
-        <path d="M2 9q2-2 4 0t4 0" fill="none" stroke="${color}" stroke-width=".8" stroke-linecap="round" opacity=".7"/>
-        <path d="M9 -7c0 1.6-1 2.6-1.8 2.6S5.4-5.4 5.4-7c0-1.2 1.8-3.4 1.8-3.4S9 -8.2 9 -7z" fill="${color}" opacity=".9"/>
-        <ellipse cx="-9" cy="-5" rx="3.2" ry="1.3" fill="${color}" opacity=".35"/>`);
-    case 'leaf':
-      return g(`<path d="M-9 -2l3.5-6 3.5 6z" fill="${color}" opacity=".9"/><rect x="-6.2" y="-2" width="1.4" height="2.6" fill="#78350f"/>
-        <path d="M-10 5l2.6-4.4 2.6 4.4z" fill="${color}" opacity=".7"/><rect x="-7.9" y="5" width="1" height="2" fill="#78350f"/>
-        <ellipse cx="8" cy="-6" rx="2.6" ry="1.2" transform="rotate(-35 8 -6)" fill="${color}"/>
-        <ellipse cx="10" cy="6" rx="2.2" ry="1" transform="rotate(25 10 6)" fill="${color}" opacity=".8"/>
-        <ellipse cx="-3" cy="9" rx="2" ry=".9" transform="rotate(-15 -3 9)" fill="${color}" opacity=".7"/>`);
-    case 'bolt':
-      return g(`<g fill="#cbd5e1" opacity=".55"><circle cx="-8" cy="-8" r="2.4"/><circle cx="-5" cy="-9" r="3"/><circle cx="-2" cy="-8" r="2.2"/><rect x="-10.4" y="-8" width="10.6" height="2.4"/></g>
-        <path d="M-5 -5.6l-1.6 3h1.4l-1.2 2.8 2.6-3.6h-1.4z" fill="${color}"/>
-        <g fill="#cbd5e1" opacity=".4"><circle cx="8" cy="5" r="2"/><circle cx="10.5" cy="4.2" r="2.5"/><circle cx="13" cy="5" r="1.8"/><rect x="6" y="5" width="9" height="2"/></g>
-        <path d="M10.5 7.2l-1.3 2.4h1.1l-1 2.4 2.2-3h-1.2z" fill="${color}" opacity=".9"/>`);
-    case 'spark': {
-      const teeth = Array.from({ length: 8 }, (_, k) => { const a = (k / 8) * Math.PI * 2; return `<rect x="-0.7" y="-4.6" width="1.4" height="1.6" transform="rotate(${(a * 180) / Math.PI})"/>`; }).join('');
-      return g(`<g transform="translate(-9 -5)" fill="#9ca3af"><circle r="3.4"/>${teeth}<circle r="1.3" fill="#1f2937"/></g>
-        <g transform="translate(8 6) scale(.7)" fill="#9ca3af"><circle r="3.4"/>${teeth}<circle r="1.3" fill="#1f2937"/></g>
-        <g fill="${color}"><path d="M9 -7l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/><path d="M-4 8l.5 1.2 1.2.5-1.2.5-.5 1.2-.5-1.2-1.2-.5 1.2-.5z" opacity=".8"/></g>`);
-    }
-    case 'ghost':
-      return g(`<ellipse cx="0" cy="8" rx="15" ry="3" fill="${color}" opacity=".12"/>
-        <path d="M-11 6v-5.5a2.5 2.5 0 0 1 5 0V6z" fill="#4b5563"/><rect x="-9" y="1" width="1" height="3" fill="#1f2937"/><rect x="-10" y="2" width="3" height="1" fill="#1f2937"/>
-        <path d="M7 7v-4.5a2 2 0 0 1 4 0V7z" fill="#4b5563" opacity=".85"/>
-        <circle cx="9" cy="-7" r="1.6" fill="${color}" opacity=".7"/><circle cx="-7" cy="-9" r="1.1" fill="${color}" opacity=".5"/>`);
-    case 'heart': {
-      const heart = (hx: number, hy: number, sc: number, op: number) => `<path transform="translate(${hx} ${hy}) scale(${sc})" d="M0 2.6s-3-1.8-3.8-3.7C-4.4-2.6-3.5-4-2.1-4c.9 0 1.6.5 2.1 1.3C.5-3.5 1.2-4 2.1-4c1.4 0 2.3 1.4 1.7 2.9C3 .8 0 2.6 0 2.6z" fill="${color}" opacity="${op}"/>`;
-      return g(heart(-9, -6, .9, .95) + heart(9, -4, .7, .8) + heart(-7, 7, .6, .7) + heart(10, 7, .55, .6));
-    }
-    default:
-      return g(`<g fill="#2c3648" stroke="#475569" stroke-width=".4"><rect x="-13" y="-2" width="6" height="7" rx=".8"/><rect x="7" y="3" width="6" height="6" rx=".8"/></g>
-        <g fill="${color}"><rect x="-12" y="-1" width="1" height=".8"/><rect x="-10.5" y="-1" width="1" height=".8"/><rect x="8" y="4" width="1" height=".8"/></g>
-        <g fill="#ff6b6b"><ellipse cx="9" cy="-6" rx="1.3" ry="1.6"/><ellipse cx="-8" cy="9" rx="1" ry="1.3" opacity=".8"/></g>`);
-  }
-}
+/** The world the map is showing (locked ones can be looked at, not played). */
+let mapPick = 0;
 
 function mapScreen() {
-  const stops: Stop[] = WORLDS.map((def, i) => {
+  if (!mapPick) mapPick = save.world;
+  const picked = mapPick;
+  const pickedOpen = picked <= save.unlocked;
+  const islandW = 0.47 * MAP_W;
+  const stops = WORLDS.map((_, i) => {
     const n = i + 1;
-    // A gentle S up the screen: side to side, with a little drift.
-    const t = i / (WORLDS.length - 1);
-    const x = 50 + Math.sin(i * 1.25 + 0.4) * 30 + (i % 3 === 1 ? 6 : -3);
-    const y = 90 - t * 78;
-    return { n, open: n <= save.unlocked, x, y, color: def.tint || '#6c98ff' };
+    const m = ISLAND_META[ISLAND_ART[i]];
+    const w = islandW;
+    const h = (w * m.h) / m.w;
+    const cx = (i % 2 ? 0.715 : 0.285) * MAP_W;
+    const cy = 0.11 * MAP_H + Math.floor(i / 2) * 0.255 * MAP_H;
+    const left = cx - (m.ring[0] / 100) * w;
+    const top = cy - (m.ring[1] / 100) * h;
+    return { n, m, w, h, left, top, cx, cy, open: n <= save.unlocked };
   });
-  const road = legs(stops).map((leg, i) => {
-    const next = WORLDS[i + 1];
-    const open = stops[i + 1].open;
-    return `<defs><linearGradient id="leg${i}" gradientUnits="userSpaceOnUse" x1="${leg.from.x}" y1="${leg.from.y}" x2="${leg.to.x}" y2="${leg.to.y}">
-        <stop offset="0" stop-color="${stops[i].color}"/><stop offset="1" stop-color="${stops[i + 1].color}"/></linearGradient></defs>
-      <path class="leg${open ? '' : ' is-locked'}" d="${leg.d}" stroke="url(#leg${i})" stroke-dasharray="${ROAD_DASH[next.element]}"/>`;
+  const trail = stops.slice(0, -1).map((a, i) => {
+    const b = stops[i + 1];
+    const mx = (a.cx + b.cx) / 2;
+    return `<path class="trail${b.open ? '' : ' is-locked'}" d="M ${a.cx} ${a.cy} Q ${mx} ${a.cy + (b.cy - a.cy) * 0.15} ${b.cx} ${b.cy}"/>`;
   }).join('');
-  const glows = stops.map((st) => `<circle class="glow${st.open ? '' : ' is-locked'}" cx="${st.x}" cy="${st.y}" r="16" fill="${st.color}"/>`).join('');
-  const decos = stops.map((st, i) => `<g class="${st.open ? '' : 'is-locked'}">${dressing(WORLDS[i].element, st.x, st.y, st.color)}</g>`).join('');
-  const nodes = stops.map((st) => `
-    <g class="stop${st.open ? ' is-open' : ''}${st.n === save.world ? ' is-here' : ''}" data-world="${st.n}" style="--c:${st.color}">
-      <circle cx="${st.x}" cy="${st.y}" r="5.2"></circle>
-      <text x="${st.x}" y="${st.y + 1.6}">${st.open ? WORLD_ICON[st.n - 1] : '🔒'}</text>
-      ${st.n === save.world ? `<image href="./images/favicon-192.png" x="${st.x - 5}" y="${st.y - 13}" width="10" height="10"></image>` : ''}
-    </g>`).join('');
-  const picked = save.world;
-  const info = `<div class="map-info">
-      <b>${WORLD_ICON[picked - 1]} ${t('worldN', { n: picked })} · ${worldName(picked)}</b>
-      <span>${t(`world${picked}Text` as Key)}</span>
-      <small>${bestLine(picked) || t('bestNone')}</small>
-    </div>`;
+  const islands = stops.map((st) => {
+    const best = save.bestByWorld[st.n];
+    const done = best?.time !== undefined;
+    const under = !st.open ? '🔒' : done ? '✓' : best?.room ? `${best.room}/10` : '';
+    const style = `left:${(st.left / MAP_W) * 100}%;top:${(st.top / MAP_H) * 100}%;width:${(st.w / MAP_W) * 100}%;--rx:${st.m.ring[0]}%;--ry:${st.m.ring[1]}%;--px:${st.m.plate[0]}%;--py:${st.m.plate[1]}%;--pw:${st.m.plate[2]}%;--ph:${st.m.plate[3]}%;--bx:${st.m.badge[0]}%;--by:${st.m.badge[1]}%;--c:${WORLDS[st.n - 1].tint || '#38bdf8'}`;
+    return `
+      <button class="isle${st.open ? ' is-open' : ' is-locked'}${st.n === picked ? ' is-picked' : ''}" data-world="${st.n}" style="${style}" aria-label="${t('worldN', { n: st.n })} · ${worldName(st.n)}">
+        <img src="./images/game/map/${ISLAND_ART[st.n - 1]}.webp" alt="" width="${st.m.w}" height="${st.m.h}">
+        <span class="isle-ring"><span>${WORLD_ICON[st.n - 1]}</span></span>
+        ${st.n === picked ? '<img class="isle-hero" src="./images/favicon-192.png" alt="" width="32" height="32">' : ''}
+        <span class="isle-plate">${worldName(st.n)}</span>
+        ${under ? `<span class="isle-under${done ? ' is-done' : ''}${st.open ? '' : ' is-lock'}">${under}</span>` : ''}
+      </button>`;
+  }).join('');
+  const status = pickedOpen
+    ? `<small class="map-record">▮▮▮ ${bestLine(picked) || t('bestNone')}</small>`
+    : `<small class="map-locked">🔒 ${t('lockedUntil', { n: picked - 1 })}</small>`;
+  const action = pickedOpen
+    ? `<button class="play" data-act="play-picked"><span class="play-tri" aria-hidden="true"></span><span class="play-copy">${t('playWorld', { n: picked })}</span></button>`
+    : `<button class="play is-locked" disabled><span class="play-lock" aria-hidden="true">🔒</span><span class="play-copy">${t('lockedBtn')}</span></button>`;
   show(`
-    <h2>${t('map')}</h2>
-    <div class="map">
-      <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${t('map')}">
-        ${glows}${road}${decos}${nodes}
-      </svg>
-    </div>
-    ${info}
-    <button class="primary" data-act="play">▶ ${t('playWorld', { n: picked })}</button>
-    ${backButton('menu')}`, true);
+    <div class="mapscreen">
+      <h2 class="map-title"><span>${t('map')}</span></h2>
+      <div class="map" style="aspect-ratio:${MAP_W}/${MAP_H}">
+        <svg viewBox="0 0 ${MAP_W} ${MAP_H}" preserveAspectRatio="none" aria-hidden="true">${trail}</svg>
+        ${islands}
+      </div>
+      <div class="map-info">
+        <img class="map-thumb" src="./images/game/map/pv-${ISLAND_ART[picked - 1]}.jpg" alt="" width="400" height="250">
+        <div class="map-copy">
+          <b><span class="map-ico">${WORLD_ICON[picked - 1]}</span> ${t('worldN', { n: picked })} · ${worldName(picked)}</b>
+          <span>${t(`world${picked}Text` as Key)}</span>
+          ${status}
+        </div>
+      </div>
+      ${action}
+      <button class="ghost hexghost" data-act="menu">← ${t('menu')}</button>
+    </div>`, true, false, 'is-map');
 }
 
 function choiceScreen(g: Game) {
@@ -398,11 +360,13 @@ screen.addEventListener('click', (event) => {
   if (act !== 'mute') audio.play('click');
   if (act === 'play') startRun();
   else if (act === 'play-same') startRun(game?.world ?? save.world);
-  else if (act === 'map') mapScreen();
+  else if (act === 'map') { mapPick = save.world; mapScreen(); }
+  else if (act === 'play-picked') { save.world = mapPick; persist(); startRun(mapPick); }
   else if (target.dataset.world) {
     const n = Number(target.dataset.world);
-    if (n <= save.unlocked) { save.world = n; persist(); mapScreen(); }
-    else flash(t('lockedHint', { n: n - 1 }));
+    mapPick = n;
+    if (n <= save.unlocked) { save.world = n; persist(); }
+    mapScreen();
   }
   else if (act === 'resume') { paused = false; hide(); }
   else if (act === 'pause') pauseScreen();
