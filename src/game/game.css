@@ -2987,3 +2987,4 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .panel .shop-sec.is-open { border-color: rgba(252, 211, 77, 0.6); }
 .panel .shop-sec.is-open i { transform: rotate(180deg); }
 .panel .shop-sec + .items, .panel .shop-sec + .how { margin-top: 8px; }
+.wheel-slice .item-pic { width: 84%; height: 84%; }
