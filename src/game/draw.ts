@@ -705,11 +705,11 @@ function drawFireballs(ctx: CanvasRenderingContext2D, g: Game) {
 }
 
 /* The spirit companion: the owner's painted ghosts (static/images/game/spirits).
-   The friendly water ghost has five floating frames and a throw each way;
-   the element spirits bought in the shop have one picture each, so they bob
-   and lean toward their target in code. All are square canvases with the
-   body near the middle, the same size, drawn centred on the spirit. */
-const SPIRIT_FRAMES: Partial<Record<SpiritSkin, number>> = { water: 5 };
+   Every one, the friendly water ghost and the five element spirits, has five
+   floating frames and a throw each way. All are square canvases with the body
+   near the middle, the same size, drawn centred on the spirit. A skin left
+   out of SPIRIT_FRAMES falls back to one picture that bobs and leans in code. */
+const SPIRIT_FRAMES: Partial<Record<SpiritSkin, number>> = { water: 5, fire: 5, tide: 5, thorn: 5, volt: 5, shade: 5 };
 const spiritFrames = new Map<string, HTMLImageElement>();
 function spiritImage(name: string) {
   let img = spiritFrames.get(name);
