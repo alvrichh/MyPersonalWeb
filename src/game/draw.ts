@@ -1250,42 +1250,79 @@ function drawGems(ctx: CanvasRenderingContext2D, g: Game, now: number) {
   }
 }
 
+/* The frost aura: an icy circle round the hero and snowflakes spiralling
+   in towards it, turning as they go, so it reads as cold closing in. More
+   flakes each level; the Blizzard (evolved) is wider, colder and thick with
+   them. */
+function snowflake(ctx: CanvasRenderingContext2D, x: number, y: number, size: number, turn: number) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(turn);
+  ctx.beginPath();
+  for (let i = 0; i < 3; i++) {
+    const a = (i * Math.PI) / 3;
+    const c = Math.cos(a) * size;
+    const d = Math.sin(a) * size;
+    ctx.moveTo(-c, -d);
+    ctx.lineTo(c, d);
+    // the little branches near each tip
+    for (const k of [1, -1]) {
+      const tx = c * 0.62 * k;
+      const ty = d * 0.62 * k;
+      ctx.moveTo(tx, ty);
+      ctx.lineTo(tx + Math.cos(a + 0.7 * k) * size * 0.32 * k, ty + Math.sin(a + 0.7 * k) * size * 0.32 * k);
+      ctx.moveTo(tx, ty);
+      ctx.lineTo(tx + Math.cos(a - 0.7 * k) * size * 0.32 * k, ty + Math.sin(a - 0.7 * k) * size * 0.32 * k);
+    }
+  }
+  ctx.stroke();
+  ctx.restore();
+}
 function drawFrost(ctx: CanvasRenderingContext2D, g: Game, now: number) {
   const p = g.player;
   const r = frostReach(g);
-  const ring = fxImage('icering');
-  if (!retroLook && ready(ring)) {
-    // The owner's ice ring lying round the hero, breathing a little.
-    const w = r * 2.25 * (1 + Math.sin(now * 2) * 0.02);
-    const h = (w * ring.naturalHeight) / ring.naturalWidth;
-    ctx.globalAlpha = 0.85;
-    ctx.drawImage(ring, p.x - w / 2, p.y - h / 2 + 4, w, h);
-    ctx.globalAlpha = 1;
-    return;
-  }
-  const grad = ctx.createRadialGradient(p.x, p.y, r * 0.3, p.x, p.y, r);
-  grad.addColorStop(0, 'rgba(122,216,255,0)');
-  grad.addColorStop(0.8, 'rgba(122,216,255,0.12)');
-  grad.addColorStop(1, 'rgba(122,216,255,0.28)');
+  const evolved = !!g.evolved.frost;
+  const breathe = 1 + Math.sin(now * 2) * 0.015;
+  // The cold disc: clear in the middle, frosting up towards the rim.
+  const grad = ctx.createRadialGradient(p.x, p.y, r * 0.15, p.x, p.y, r);
+  grad.addColorStop(0, 'rgba(186,230,253,0)');
+  grad.addColorStop(0.7, `rgba(125,211,252,${evolved ? 0.14 : 0.09})`);
+  grad.addColorStop(1, `rgba(186,230,253,${evolved ? 0.32 : 0.22})`);
   ctx.fillStyle = grad;
   ctx.beginPath();
-  ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+  ctx.arc(p.x, p.y, r * breathe, 0, Math.PI * 2);
   ctx.fill();
-  ctx.strokeStyle = 'rgba(186,230,253,0.5)';
-  ctx.lineWidth = 1;
-  ctx.setLineDash([3, 6]);
+  // The rim: a bright frosty line and a slower dashed ring turning inside it.
+  ctx.strokeStyle = `rgba(224,242,254,${evolved ? 0.75 : 0.55})`;
+  ctx.lineWidth = evolved ? 2.2 : 1.6;
+  if (!retroLook) { ctx.shadowColor = '#7dd3fc'; ctx.shadowBlur = 8; }
   ctx.beginPath();
-  ctx.arc(p.x, p.y, r, now * 0.4, now * 0.4 + Math.PI * 2);
+  ctx.arc(p.x, p.y, r * breathe, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+  ctx.strokeStyle = 'rgba(186,230,253,0.4)';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([4, 7]);
+  ctx.beginPath();
+  ctx.arc(p.x, p.y, r * 0.86, now * 0.35, now * 0.35 + Math.PI * 2);
   ctx.stroke();
   ctx.setLineDash([]);
-  // A few flakes drifting round.
-  ctx.fillStyle = 'rgba(224,242,254,0.8)';
-  for (let i = 0; i < 6; i++) {
-    const a = now * 0.8 + i * 1.05;
-    ctx.beginPath();
-    ctx.arc(p.x + Math.cos(a) * r * 0.75, p.y + Math.sin(a) * r * 0.75, 1.6, 0, Math.PI * 2);
-    ctx.fill();
+  // Snowflakes spiralling in: each one starts at the rim, drifts round and
+  // inwards, shrinking and fading as it reaches the hero, then starts again.
+  const n = (evolved ? 22 : 8) + 3 * g.skills.frost;
+  ctx.strokeStyle = 'rgba(240,249,255,0.9)';
+  ctx.lineWidth = 1.1;
+  ctx.lineCap = 'round';
+  for (let i = 0; i < n; i++) {
+    const seed = i * 2.399;
+    const t = (now * (0.22 + (i % 5) * 0.03) + i / n) % 1;
+    const rad = r * (0.98 - 0.78 * t);
+    const a = seed + t * 2.2 + now * 0.15;
+    const size = (evolved ? 5.6 : 4.8) * (1 - 0.5 * t) * (0.8 + (i % 3) * 0.15);
+    ctx.globalAlpha = Math.min(1, t * 6) * (1 - t * 0.85);
+    snowflake(ctx, p.x + Math.cos(a) * rad, p.y + Math.sin(a) * rad, size, now * (i % 2 ? 1.2 : -1.2) + seed);
   }
+  ctx.globalAlpha = 1;
 }
 
 /* Blade colours per element (see `bladeElement`): edge, base, hilt and glow. */
@@ -1422,7 +1459,7 @@ function fxImage(name: string) {
 const ready = (img: HTMLImageElement) => img.complete && img.naturalWidth > 0;
 /** Warm the effect pictures up when a run starts, so the first swing and strike are already painted. */
 export function preloadFx() {
-  for (const n of ['fireball', 'boom-small', 'boom-big', 'knife', 'boomerang', 'slash', 'chest', 'slam', 'crystals', 'icering', 'gem', 'gem-big', 'bolt-1', 'bolt-2', 'bolt-3', 'bolt-4', 'bolt-5', 'bolt-6',
+  for (const n of ['fireball', 'boom-small', 'boom-big', 'knife', 'boomerang', 'slash', 'chest', 'slam', 'crystals', 'gem', 'gem-big', 'bolt-1', 'bolt-2', 'bolt-3', 'bolt-4', 'bolt-5', 'bolt-6',
     'brick', 'iron', 'molotov', 'barrel', 'durian', 'durian-big', 'drill', 'drill-evo', 'rocket', 'rocket-shark', 'ball', 'ball-evo',
     'fire-pool', 'fire-pool-big', 'caltrops', 'mine', 'mine-on', 'mine-volt', 'volt-burst', 'impact', 'heart', 'rune', 'crescent',
     'steam-cloud', 'plasma-burst', 'wisp-flame', 'shock-ring', 'ice-block', 'spectral-bolt']) fxImage(n);
