@@ -8,7 +8,7 @@ import { ARMOUR_SLOTS, ARSENAL, ITEMS, type SpiritSkin, SLOTS, UPGRADES, WEAPON_
 import { Scene } from './scene';
 import { makeT, pickLang, type Key } from './strings';
 import {
-  CATEGORY, EVO_PARTNER, H, REVIVE_PRICE, SKILLS, arrowLook, arrowOptions, bladeElement, bladeOptions, canEvolve, evoOf, fusionOf, fusionWith, arrowElements, rerollChoices, maxLevel, pickArrow, pickBlade, pickSpirit, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_LUCKY, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
+  CATEGORY, EVO_PARTNER, H, revivePrice, SKILLS, arrowLook, arrowOptions, bladeElement, bladeOptions, canEvolve, evoOf, fusionOf, fusionWith, arrowElements, rerollChoices, maxLevel, pickArrow, pickBlade, pickSpirit, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_LUCKY, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
   type ArrowLook, type Category, type Choice, type Fusion, type Game, type GameEvent, type Input, type Look, type SkillId, type WheelOutcome,
 } from './world';
 
@@ -347,13 +347,19 @@ function setName(raw: string) {
   profileScreen(t('profileSaved'));
 }
 
-/* Death with a full purse: once per run, 1000 coins (banked plus this run's)
-   put you back on your feet before the game-over screen. */
-const canPayRevive = (g: Game) => !g.paidRevive && save.coins + Math.floor(g.coins) >= REVIVE_PRICE;
+/* Death with a full purse: coins (banked plus this run's) put you back on
+   your feet before the game-over screen, 500 the first time and 1000 the
+   second, twice a run at most. */
+const canPayRevive = (g: Game) => {
+  const price = revivePrice(g);
+  return price !== null && save.coins + Math.floor(g.coins) >= price;
+};
 function reviveScreen(g: Game) {
-  show(`${head('defeat', t('reviveTitle'))}<p>${t('reviveText', { coins: REVIVE_PRICE })}</p>
+  const price = revivePrice(g) ?? 0;
+  const last = g.paidRevives >= 1;
+  show(`${head('defeat', t('reviveTitle'))}<p>${t(last ? 'reviveTextLast' : 'reviveText', { coins: price })}</p>
     <p class="earned">${coinsLine(save.coins + Math.floor(g.coins))}</p>
-    <button class="primary" data-act="revive-pay">${t('reviveBtn', { coins: REVIVE_PRICE })}</button>
+    <button class="primary" data-act="revive-pay">${t('reviveBtn', { coins: price })}</button>
     <button class="ghost" data-act="revive-no">${t('reviveNo')}</button>`);
 }
 
@@ -797,16 +803,18 @@ screen.addEventListener('click', (event) => {
   else if (act === 'revive-pay' && game) {
     const g = game;
     // The run's coins go first, the bank covers the rest.
-    const fromRun = Math.min(Math.floor(g.coins), REVIVE_PRICE);
+    const price = revivePrice(g);
+    if (price === null) return;
+    const fromRun = Math.min(Math.floor(g.coins), price);
     g.coins -= fromRun;
-    save.coins -= REVIVE_PRICE - fromRun;
+    save.coins -= price - fromRun;
     persist();
     paidRevive(g);
     reviveOffered = false;
     hide();
     flash(t('revived'));
   } else if (act === 'revive-no' && game) {
-    game.paidRevive = true; // no second offer
+    game.reviveDeclined = true; // no more offers this run
     reviveOffered = false;
     endScreen(game);
   }

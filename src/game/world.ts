@@ -335,8 +335,10 @@ export type Game = {
   wheelUsed: boolean;
   /** 1 normally; the wheel can make the next boss tougher. */
   bossHpMult: number;
-  /** The coin revive has been used this run. */
-  paidRevive: boolean;
+  /** Coin revives bought this run (each dearer than the last, `REVIVE_PRICES`). */
+  paidRevives: number;
+  /** The player turned the coin revive down: no more offers this run. */
+  reviveDeclined: boolean;
   hazards: Hazard[];
   strikes: Strike[];
   /** Seconds until the next lightning strike (storm worlds). */
@@ -642,7 +644,8 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     wheelDoor: false,
     wheelUsed: false,
     bossHpMult: 1,
-    paidRevive: false,
+    paidRevives: 0,
+    reviveDeclined: false,
     hazards: [],
     strikes: [],
     strikeIn: 2,
@@ -1693,13 +1696,15 @@ function standUp(g: Game) {
   g.events.push('revive');
 }
 
-/** The price of getting up again after a death, in coins. Once per run. */
-export const REVIVE_PRICE = 1000;
+/** What getting up again after a death costs, in coins: cheap the first time, dearer the second, and no more after that. */
+export const REVIVE_PRICES = [500, 1000];
+/** The next coin revive's price, or null when none is left this run. */
+export const revivePrice = (g: Game): number | null => (g.reviveDeclined ? null : REVIVE_PRICES[g.paidRevives] ?? null);
 
 /** Buy your way back from a game over: the page checks and takes the coins. */
 export function paidRevive(g: Game) {
-  if (g.phase !== 'over' || g.paidRevive) return false;
-  g.paidRevive = true;
+  if (g.phase !== 'over' || revivePrice(g) === null) return false;
+  g.paidRevives += 1;
   g.phase = 'play';
   standUp(g);
   return true;
