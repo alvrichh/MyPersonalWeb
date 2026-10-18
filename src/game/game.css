@@ -2356,3 +2356,6 @@ body {
   box-shadow: 0 0 6px rgba(251, 191, 36, 0.6);
 }
 .panel .buy[disabled] { cursor: default; opacity: 0.9; }
+
+/* Level-up: the level line sits close to the "choose" line. */
+.screen.is-levelup .panel-in > .kicker { margin-bottom: -8px; }
