@@ -8,7 +8,7 @@ import { ARMOUR_SLOTS, ITEMS, SLOTS, UPGRADES, WEAPON_SLOTS, buildLoadout, itemB
 import { Scene } from './scene';
 import { makeT, pickLang, type Key } from './strings';
 import {
-  CATEGORY, H, REVIVE_PRICE, bladeElement, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
+  CATEGORY, H, REVIVE_PRICE, SKILLS, bladeElement, maxLevel, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
   type Category, type Game, type GameEvent, type Input, type Look, type SkillId, type WheelOutcome,
 } from './world';
 
@@ -50,6 +50,7 @@ const hudXp = $<HTMLElement>('hudXp');
 const hudHp = $<HTMLElement>('hudHp');
 hudHp.parentElement?.setAttribute('aria-label', lang === 'es' ? 'Vida' : 'Health');
 const hudGear = $<HTMLElement>('hudGear');
+const gearPanel = $<HTMLElement>('gearPanel');
 const hudCoins = $<HTMLElement>('hudCoins');
 const bossBar = $<HTMLElement>('bossBar');
 const bossName = $<HTMLElement>('bossName');
@@ -229,6 +230,7 @@ function menuScreen() {
   game = null;
   hud.hidden = true;
   hudGear.hidden = true;
+  closeGearPanel();
   bossBar.hidden = true;
   audio.setIntensity(0);
   const { level, progress } = profileLevel(save.xp);
@@ -310,6 +312,7 @@ function reviveScreen(g: Game) {
 function endScreen(g: Game) {
   hud.hidden = true;
   hudGear.hidden = true;
+  closeGearPanel();
   bossBar.hidden = true;
   const won = g.phase === 'won';
   const earned = Math.floor(g.coins);
@@ -838,7 +841,77 @@ screen.addEventListener('change', (event) => {
 });
 
 pauseBtn.addEventListener('click', () => togglePause());
+/* Tapping the weapon column pauses and opens, to its left, every skill you
+   have right now: the bow and your weapons with their level, then the
+   upgrades. Any tap (or Esc) closes it and the run goes on. */
+function skillName(g: Game, id: SkillId | 'bow') {
+  if (id === 'blades') {
+    const el = bladeElement(g);
+    if (el !== 'steel') return t(`blades${cap(el)}Name` as Key);
+  }
+  return t(`${id}Name` as Key);
+}
+function skillText(g: Game, id: SkillId | 'bow') {
+  if (id === 'blades') {
+    const el = bladeElement(g);
+    if (el !== 'steel') return t(`blades${cap(el)}Text` as Key);
+  }
+  return t(`${id}Text` as Key);
+}
+function openGearPanel() {
+  const g = game;
+  if (!g || g.phase !== 'play' || paused) return;
+  paused = true;
+  stick.on = false;
+  keys.clear();
+  const row = (id: SkillId | 'bow') => {
+    const lv = id === 'bow' ? 0 : g.skills[id];
+    const max = id === 'bow' ? 0 : maxLevel(id);
+    const level = id === 'bow' ? '' : max > 50 ? t('gearLevelOnly', { level: lv }) : t('gearLevel', { level: lv, max });
+    return `<li><span class="gp-icon">${skillIcon(id, 34, iconFile(g, id))}</span><span class="gp-copy"><b>${skillName(g, id)}</b><small>${skillText(g, id)}</small></span>${level ? `<em>${level}</em>` : ''}</li>`;
+  };
+  const weapons = ['bow' as const, ...ownedWeapons(g)];
+  const upgrades = SKILLS.filter((s) => CATEGORY[s] === 'upgrade' && g.skills[s] > 0);
+  gearPanel.innerHTML = `<header><b>${t('gearTitle')}</b><button type="button" class="gp-close" aria-label="${t('resume')}">✕</button></header>
+    <h4>${t('gearWeapons')}</h4><ul>${weapons.map(row).join('')}</ul>
+    ${upgrades.length ? `<h4>${t('gearUpgrades')}</h4><ul>${upgrades.map(row).join('')}</ul>` : ''}
+    <p class="gp-hint">${t('gearHint')}</p>`;
+  // Open beside the column, its top level with the column's.
+  const box = hudGear.getBoundingClientRect();
+  gearPanel.style.top = `${Math.round(box.top)}px`;
+  gearPanel.style.right = `${Math.round(window.innerWidth - box.left + 8)}px`;
+  gearPanel.hidden = false;
+  document.documentElement.classList.add('gear-open');
+  audio.play('click');
+}
+function closeGearPanel() {
+  if (gearPanel.hidden) return;
+  gearPanel.hidden = true;
+  document.documentElement.classList.remove('gear-open');
+  paused = false;
+}
+hudGear.setAttribute('aria-label', t('gearOpen'));
+hudGear.addEventListener('click', (event) => {
+  event.stopPropagation();
+  if (gearPanel.hidden) openGearPanel();
+  else closeGearPanel();
+});
+hudGear.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); hudGear.click(); }
+});
+// Any tap while it is open closes it (the panel itself included).
+window.addEventListener('pointerdown', (event) => {
+  if (gearPanel.hidden || (event.target as HTMLElement).closest('#hudGear')) return;
+  event.preventDefault();
+  closeGearPanel();
+}, { capture: true });
+
 function togglePause(force?: boolean) {
+  if (!gearPanel.hidden) {
+    // Esc / P close the skills list; hiding the tab keeps it paused.
+    if (force !== true) closeGearPanel();
+    return;
+  }
   if (!game || game.phase !== 'play') return;
   paused = force ?? !paused;
   if (paused) pauseScreen();

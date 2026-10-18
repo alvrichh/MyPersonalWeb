@@ -34,7 +34,8 @@
       <span class="hud-xp"><span id="hudLevel"></span><i><b id="hudXp"></b></i></span>
       <button class="hud-pause" id="pauseBtn" type="button" aria-label="Pause"><span aria-hidden="true">Ⅱ</span></button>
     </header>
-    <div class="gear" id="hudGear" aria-hidden="true" hidden></div>
+    <div class="gear" id="hudGear" role="button" tabindex="0" hidden></div>
+    <aside class="gear-panel" id="gearPanel" aria-live="polite" hidden></aside>
     <div class="boss" id="bossBar" hidden>
       <div class="boss-title"><img src="./images/game/ui/header_boss.webp" alt=""><span id="bossName"></span></div>
       <i class="boss-meter"><b id="bossHp"></b></i>

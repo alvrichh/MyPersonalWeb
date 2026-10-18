@@ -2794,3 +2794,55 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .cover-profile-copy small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-transform: uppercase; }
 :root[data-retro] .profile-form input { border-color: var(--line); background: rgba(255, 255, 255, 0.06); color: var(--text); }
 :root[data-retro] .profile-who > b { color: var(--text); }
+
+/* ------------------------------------------------- skills list (paused) */
+/* The weapon column is a button: tapping it pauses and opens this list to
+   its left (main.ts places it beside the column). */
+.gear { pointer-events: auto; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.gear:focus-visible { outline: 2px solid #67e8f9; outline-offset: 3px; border-radius: 10px; }
+.gear-open .gear span { border-color: #67e8f9; box-shadow: 0 0 10px rgba(103, 232, 249, 0.45); }
+.gear-panel {
+  position: fixed;
+  z-index: 4;
+  display: grid;
+  gap: 6px;
+  width: min(300px, calc(100vw - 80px));
+  max-height: calc(100dvh - 140px);
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 10px 12px 12px;
+  border: 1px solid rgba(103, 232, 249, 0.45);
+  border-radius: 16px;
+  background: linear-gradient(to bottom, rgba(8, 16, 32, 0.96), rgba(5, 10, 20, 0.94));
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), inset 0 0 18px rgba(56, 189, 248, 0.12);
+  color: #e2e8f0;
+  font-family: var(--font);
+  animation: gear-in 0.18s ease-out;
+}
+.gear-panel[hidden] { display: none; }
+@keyframes gear-in { from { opacity: 0; translate: 12px 0; } }
+@media (prefers-reduced-motion: reduce) { .gear-panel { animation: none; } }
+.gear-panel header { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.gear-panel header b { font-size: 1.05rem; color: #fff; }
+.gp-close { width: 30px; height: 30px; padding: 0; border: 1px solid var(--line); border-radius: 50%; background: rgba(255, 255, 255, 0.06); color: #e2e8f0; font: 700 0.85rem/1 var(--font); cursor: pointer; }
+.gear-panel h4 { margin: 4px 0 0; font: 700 0.62rem/1 ui-monospace, monospace; letter-spacing: 0.12em; text-transform: uppercase; color: #67e8f9; }
+.gear-panel ul { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.gear-panel li {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px 6px 6px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+}
+.gp-icon { display: grid; place-items: center; }
+.gp-icon .skill-icon { width: 34px; height: 34px; }
+.gp-copy { display: grid; gap: 2px; min-width: 0; }
+.gp-copy b { font-size: 0.85rem; color: #fff; }
+.gp-copy small { font-size: 0.68rem; line-height: 1.25; color: #b6c2d4; }
+.gear-panel em { font: 700 0.68rem/1 ui-monospace, monospace; font-style: normal; color: #fcd34d; white-space: nowrap; }
+.gp-hint { margin: 2px 0 0; font-size: 0.68rem; color: var(--muted); text-align: center; }
+:root[data-retro] .gear-panel { border-color: var(--line); background: rgba(10, 13, 20, 0.96); box-shadow: none; }
+:root[data-retro] .gear-panel h4 { color: var(--accent); }
+:root[data-retro] .gp-icon .skill-emoji { font-size: 1.5rem; }
