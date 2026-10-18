@@ -523,6 +523,24 @@ function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accen
       ctx.save();
       ctx.translate(a.x, a.y);
       ctx.rotate(Math.atan2(a.vy, a.vx));
+      const pic = fxImage('knife');
+      if (!retroLook && ready(pic)) {
+        const w = 26;
+        const h = (w * pic.naturalHeight) / pic.naturalWidth;
+        // A short streak behind it in the accent colour, then the knife, tip on the shot.
+        ctx.strokeStyle = accent;
+        ctx.globalAlpha = 0.5;
+        ctx.lineWidth = 3;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(-w - 10, 0);
+        ctx.lineTo(-w * 0.6, 0);
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+        ctx.drawImage(pic, -w, -h / 2, w, h);
+        ctx.restore();
+        continue;
+      }
       ctx.fillStyle = '#e5e7eb';
       ctx.beginPath();
       ctx.moveTo(7, 0);
@@ -539,6 +557,21 @@ function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accen
       ctx.save();
       ctx.translate(a.x, a.y);
       ctx.rotate(a.spin);
+      const pic = fxImage('boomerang');
+      if (!retroLook && ready(pic)) {
+        const h = 22;
+        const w = (h * pic.naturalWidth) / pic.naturalHeight;
+        const halo = ctx.createRadialGradient(0, 0, 2, 0, 0, 16);
+        halo.addColorStop(0, 'rgba(251,146,60,0.45)');
+        halo.addColorStop(1, 'rgba(251,146,60,0)');
+        ctx.fillStyle = halo;
+        ctx.beginPath();
+        ctx.arc(0, 0, 16, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.drawImage(pic, -w / 2, -h / 2, w, h);
+        ctx.restore();
+        continue;
+      }
       ctx.strokeStyle = accent;
       ctx.lineWidth = 4;
       ctx.beginPath();
@@ -826,8 +859,31 @@ function drawBladesRetro(ctx: CanvasRenderingContext2D, g: Game, accent: string)
   }
 }
 
+/* Painted effects cut from the owner's sheet (static/images/game/fx): the
+   fireball and its two blast frames, the throwing knife and the boomerang.
+   All point right; retro keeps the drawn shapes. */
+const fxImages = new Map<string, HTMLImageElement>();
+function fxImage(name: string) {
+  let img = fxImages.get(name);
+  if (!img) { img = new Image(); img.src = `./images/game/fx/${name}.webp`; fxImages.set(name, img); }
+  return img;
+}
+const ready = (img: HTMLImageElement) => img.complete && img.naturalWidth > 0;
+
 function drawFireballs(ctx: CanvasRenderingContext2D, g: Game) {
+  const pic = fxImage('fireball');
   for (const f of g.fireballs) {
+    if (!retroLook && ready(pic)) {
+      // The ball sits at the picture's right end, the flames trail behind it.
+      const w = 52;
+      const h = (w * pic.naturalHeight) / pic.naturalWidth;
+      ctx.save();
+      ctx.translate(f.x, f.y);
+      ctx.rotate(Math.atan2(f.vy, f.vx));
+      ctx.drawImage(pic, -w * 0.78, -h / 2, w, h);
+      ctx.restore();
+      continue;
+    }
     const grad = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, 11);
     grad.addColorStop(0, '#fffbea');
     grad.addColorStop(0.35, '#ffd166');
@@ -967,6 +1023,12 @@ function drawFx(ctx: CanvasRenderingContext2D, g: Game, accent: string, layer: '
         ctx.beginPath();
         ctx.arc(f.x, f.y, f.r, f.a - 1.15, f.a + sweep);
         ctx.stroke();
+      } else if (!retroLook && ready(fxImage('boom-big'))) {
+        // The blast: the small frame bursting into the big one.
+        const pic = fxImage(t < 0.45 ? 'boom-small' : 'boom-big');
+        const w = f.r * (t < 0.45 ? 2.2 + t * 1.2 : 2.8 + t * 0.6);
+        const h = (w * pic.naturalHeight) / pic.naturalWidth;
+        ctx.drawImage(pic, f.x - w / 2, f.y - h / 2, w, h);
       } else {
         const r = f.r * (0.4 + 0.6 * t);
         const grad = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, r);
