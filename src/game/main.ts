@@ -8,7 +8,7 @@ import { ARMOUR_SLOTS, ITEMS, type SpiritSkin, SLOTS, UPGRADES, WEAPON_SLOTS, bu
 import { Scene } from './scene';
 import { makeT, pickLang, type Key } from './strings';
 import {
-  CATEGORY, EVO_PARTNER, H, REVIVE_PRICE, SKILLS, arrowLook, arrowOptions, bladeElement, bladeOptions, canEvolve, evoOf, maxLevel, pickArrow, pickBlade, pickSpirit, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
+  CATEGORY, EVO_PARTNER, H, REVIVE_PRICE, SKILLS, arrowLook, arrowOptions, bladeElement, bladeOptions, canEvolve, evoOf, maxLevel, pickArrow, pickBlade, pickSpirit, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_LUCKY, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
   type ArrowLook, type Category, type Choice, type Game, type GameEvent, type Input, type Look, type SkillId, type WheelOutcome,
 } from './world';
 
@@ -137,6 +137,7 @@ function bankRun(g: Game): number | null {
 const EMOJI: Record<SkillId | 'bow', string> = {
   sword: '🗡️', blades: '🌀', hammer: '🔨', storm: '🌩️', fireball: '☄️', frost: '❄️', spirits: '👻', knives: '🔪', boomerang: '🪃',
   fire: '🔥', water: '💧', leaf: '🍃', bolt: '⚡', spark: '✨', ghost: '🫥', double: '🏹', speed: '⏩', power: '💥', heart: '💗', bow: '🏹',
+  shoes: '👟', bracer: '🦾', drink: '🥤',
 };
 /* The painted medallion, with the emoji beside it for the retro look (CSS shows one or the other). */
 const skillIcon = (id: SkillId | 'bow', size = 40, file: string = id === 'bow' ? 'double' : id) => `<img class="skill-icon" src="./images/game/skills/${file}.webp" width="${size}" height="${size}" alt=""><span class="skill-emoji">${EMOJI[id]}</span>`;
@@ -489,10 +490,10 @@ function choiceScreen(g: Game) {
 /* The wheel of fate: eight slices, good and bad alternating. The wheel is
    picked before it spins; the spin is only the show. */
 const WHEEL_ICON: Record<WheelOutcome, string> = {
-  newSkill: '✨', skillUp: '⬆️', heal: '❤️', coins: '🪙', loseLevel: '⬇️', hurt: '💔', loseCoins: '💸', bossBuff: '👹', nothing: '😐',
+  newSkill: '✨', skillUp: '⬆️', heal: '❤️', coins: '🪙', loseLevel: '⬇️', hurt: '💔', loseCoins: '💸', bossBuff: '👹', nothing: '😐', evolve: '★',
 };
 const WHEEL_TEXT: Record<WheelOutcome, Key> = {
-  newSkill: 'wNewSkill', skillUp: 'wSkillUp', heal: 'wHeal', coins: 'wCoins', loseLevel: 'wLoseLevel', hurt: 'wHurt', loseCoins: 'wLoseCoins', bossBuff: 'wBossBuff', nothing: 'wNothing',
+  newSkill: 'wNewSkill', skillUp: 'wSkillUp', heal: 'wHeal', coins: 'wCoins', loseLevel: 'wLoseLevel', hurt: 'wHurt', loseCoins: 'wLoseCoins', bossBuff: 'wBossBuff', nothing: 'wNothing', evolve: 'wEvolve',
 };
 function shrineScreen() {
   show(`${head('shrine', t('shrineTitle'))}<p>${t('shrineText')}</p>
@@ -500,8 +501,9 @@ function shrineScreen() {
     <button class="ghost" data-act="shrine-skill">${t('shrineSkill')}</button>`);
 }
 function wheelScreen() {
-  const slices = WHEEL.map((o, i) => `<span class="wheel-slice${WHEEL_GOOD.includes(o) ? ' is-good' : o === 'nothing' ? '' : ' is-bad'}" style="--i:${i}">${WHEEL_ICON[o]}</span>`).join('');
-  show(`${head('wings', t('wheelTitle'))}<p>${t('wheelText')}</p>
+  const lucky = !!game?.luckyWheel;
+  const slices = (lucky ? WHEEL_LUCKY : WHEEL).map((o, i) => `<span class="wheel-slice${WHEEL_GOOD.includes(o) ? ' is-good' : o === 'nothing' ? '' : ' is-bad'}" style="--i:${i}">${WHEEL_ICON[o]}</span>`).join('');
+  show(`${head('wings', t(lucky ? 'chestTitle' : 'wheelTitle'))}<p>${t(lucky ? 'chestText' : 'wheelText')}</p>
     <div class="wheel"><div class="wheel-disc" id="wheelDisc">${slices}</div><span class="wheel-pin" aria-hidden="true"></span></div>
     <p class="wheel-result" id="wheelResult"></p>
     <button class="primary" data-act="wheel-spin">${t('wheelSpin')}</button>`);
@@ -512,14 +514,15 @@ function spinWheel(g: Game) {
   const result = screen.querySelector<HTMLElement>('#wheelResult');
   if (!spinBtn || !disc || !result || spinBtn.disabled) return;
   spinBtn.disabled = true;
-  const index = Math.floor(Math.random() * WHEEL.length);
+  const wheel = g.luckyWheel ? WHEEL_LUCKY : WHEEL;
+  const index = Math.floor(Math.random() * wheel.length);
   // Five full turns, then land the chosen slice (centred at index × 45°) under the pin at the top.
-  disc.style.transform = `rotate(${5 * 360 - index * (360 / WHEEL.length)}deg)`;
+  disc.style.transform = `rotate(${5 * 360 - index * (360 / wheel.length)}deg)`;
   disc.classList.add('is-spinning');
   audio.play('boomerang');
   window.setTimeout(() => {
-    const got = applyWheel(g, WHEEL[index]);
-    const name = got.skill ? t(`${got.skill}Name` as Key) : '';
+    const got = applyWheel(g, wheel[index]);
+    const name = got.skill ? t(got.outcome === 'evolve' ? (`evo${cap(got.skill)}Name` as Key) : (`${got.skill}Name` as Key)) : '';
     const good = WHEEL_GOOD.includes(got.outcome);
     result.textContent = `${WHEEL_ICON[got.outcome]} ${t(WHEEL_TEXT[got.outcome], { name, coins: Math.round(WHEEL_COINS * (1 + (g.world - 1) * 0.5)) })}`;
     result.className = `wheel-result ${good ? 'is-good' : got.outcome === 'nothing' ? '' : 'is-bad'}`;
@@ -755,10 +758,11 @@ screen.addEventListener('click', (event) => {
   else if (act === 'wheel-spin' && game) spinWheel(game);
   else if (act === 'wheel-go' && game) {
     const g = game;
+    const fromChest = g.luckyWheel;
     leaveWheel(g);
     wheelShown = false;
     hide();
-    flash(`${worldName(g.world)} · ${t('sprint', { room: g.room })}`);
+    if (!fromChest) flash(`${worldName(g.world)} · ${t('sprint', { room: g.room })}`);
   }
   else if (act === 'pause') pauseScreen();
   else if (act === 'confirm-quit') leaveScreen('menu');
@@ -1058,7 +1062,7 @@ function flash(text: string) {
 const SFX_FOR: Partial<Record<GameEvent, Sfx>> = {
   shoot: 'shoot', knife: 'knife', boomerang: 'boomerang', orb: 'shoot', hit: 'hit', kill: 'kill', gem: 'gem', hurt: 'hurt',
   levelup: 'levelup', slash: 'slash', slam: 'slam', strike: 'strike', boom: 'boom', revive: 'revive', clear: 'door', boss: 'boss',
-  heal: 'revive', heart: 'gem', wheel: 'door', shrine: 'door',
+  heal: 'revive', heart: 'gem', chest: 'levelup', wheel: 'door', shrine: 'door',
 };
 // Hits and gems happen many times a frame; one sound per kind per frame is plenty.
 function playEvents(events: GameEvent[]) {
@@ -1223,6 +1227,7 @@ function step(now: number) {
         audio.setIntensity(1);
       }
       if (event === 'revive') flash(t('revived'));
+      if (event === 'chest') flash(t('chestHint'));
     }
     // update() may have moved the game on (TypeScript still thinks it's 'play').
     const phase = g.phase as Game['phase'];

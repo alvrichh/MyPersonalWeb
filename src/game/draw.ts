@@ -49,6 +49,7 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   else drawRoom(ctx, g, accent, now);
   drawHazards(ctx, g, now);
   drawGems(ctx, g, now);
+  if (g.chest) drawChest(ctx, g.chest, now);
   drawHearts(ctx, g, now);
   if (g.skills.frost) drawFrost(ctx, g, now);
   drawEmbers(ctx, g, now);
@@ -634,6 +635,31 @@ function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accen
   }
 }
 
+/* A boss's chest: the owner's painted chest, bobbing in a gold glow. */
+function drawChest(ctx: CanvasRenderingContext2D, at: Vec, now: number) {
+  const pic = fxImage('chest');
+  const bob = Math.sin(now * 3) * 2;
+  const glow = ctx.createRadialGradient(at.x, at.y, 4, at.x, at.y, 34);
+  glow.addColorStop(0, `rgba(252,211,77,${0.45 + Math.sin(now * 4) * 0.12})`);
+  glow.addColorStop(1, 'rgba(252,211,77,0)');
+  ctx.fillStyle = glow;
+  ctx.beginPath();
+  ctx.arc(at.x, at.y, 34, 0, Math.PI * 2);
+  ctx.fill();
+  if (!retroLook && ready(pic)) {
+    const w = 38;
+    const h = (w * pic.naturalHeight) / pic.naturalWidth;
+    ctx.drawImage(pic, at.x - w / 2, at.y - h / 2 + bob, w, h);
+  } else {
+    ctx.font = '26px system-ui, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('🎁', at.x, at.y + bob);
+    ctx.textAlign = 'start';
+    ctx.textBaseline = 'alphabetic';
+  }
+}
+
 /* Burning ground from the evolved fireball: an orange pool with embers. */
 function drawEmbers(ctx: CanvasRenderingContext2D, g: Game, now: number) {
   for (const em of g.embers) {
@@ -870,7 +896,7 @@ function fxImage(name: string) {
 const ready = (img: HTMLImageElement) => img.complete && img.naturalWidth > 0;
 /** Warm the effect pictures up when a run starts, so the first swing and strike are already painted. */
 export function preloadFx() {
-  for (const n of ['fireball', 'boom-small', 'boom-big', 'knife', 'boomerang', 'slash', 'bolt-1', 'bolt-2', 'bolt-3', 'bolt-4', 'bolt-5', 'bolt-6']) fxImage(n);
+  for (const n of ['fireball', 'boom-small', 'boom-big', 'knife', 'boomerang', 'slash', 'chest', 'bolt-1', 'bolt-2', 'bolt-3', 'bolt-4', 'bolt-5', 'bolt-6']) fxImage(n);
 }
 
 function drawFireballs(ctx: CanvasRenderingContext2D, g: Game) {
