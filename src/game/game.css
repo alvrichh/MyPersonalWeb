@@ -2762,3 +2762,35 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   .cover-best { left: 27.6%; top: 97.1%; width: 44.8%; font-size: 0.8cqw; }
   .cover-mode { left: 42.5%; top: 70.4%; width: 15%; height: 2.6%; font-size: 0.85cqw; }
 }
+
+/* ------------------------------------------------------------- profile */
+.profile-card { display: flex; align-items: center; gap: 14px; width: 100%; max-width: 360px; }
+.profile-pic { width: 84px; height: auto; flex: none; filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.55)); }
+.profile-pic.is-round { width: 72px; height: 72px; border: 3px solid var(--accent); border-radius: 50%; background: #e9edf5; }
+.profile-who { display: grid; gap: 4px; min-width: 0; flex: 1; text-align: left; }
+.profile-who > b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 1.35rem; color: #fff; }
+.profile-who > span { font: 700 0.9rem/1 var(--font); color: #fcd34d; }
+.profile-xp { display: block; height: 8px; overflow: hidden; border-radius: 999px; background: rgba(255, 255, 255, 0.12); }
+.profile-xp b { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #22d3ee, #67e8f9); }
+.profile-form { display: grid; gap: 8px; width: 100%; max-width: 360px; justify-items: center; }
+.profile-form label { justify-self: start; font: 700 0.72rem/1 ui-monospace, monospace; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.profile-form input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid rgba(103, 232, 249, 0.45);
+  border-radius: 12px;
+  background: rgba(5, 10, 20, 0.75);
+  color: #fff;
+  font: 700 1.05rem/1.2 var(--font);
+  outline: none;
+}
+.profile-form input:focus-visible { border-color: #67e8f9; box-shadow: 0 0 0 3px rgba(103, 232, 249, 0.25); }
+.profile-form .how { justify-self: start; text-align: left; font-size: 0.74rem; }
+.profile-form .saved { margin: 0; color: #86efac; font-weight: 700; }
+.pstats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; width: 100%; max-width: 360px; }
+.pstat { display: grid; gap: 4px; padding: 10px 6px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255, 255, 255, 0.05); text-align: center; }
+.pstat small { font: 700 0.6rem/1.15 ui-monospace, monospace; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); }
+.pstat b { font: 700 1rem/1 var(--font); color: #fff; }
+.cover-profile-copy small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-transform: uppercase; }
+:root[data-retro] .profile-form input { border-color: var(--line); background: rgba(255, 255, 255, 0.06); color: var(--text); }
+:root[data-retro] .profile-who > b { color: var(--text); }
