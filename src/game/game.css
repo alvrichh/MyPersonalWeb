@@ -21,6 +21,8 @@
   --line: rgba(255, 255, 255, 0.12);
   --text: #f3f6fb;
   --muted: #9aa6b8;
+  /* Fredoka, loaded by game.html, matches the rounded UI sheets. */
+  --font: "Fredoka", "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   color-scheme: dark;
 }
 
@@ -35,7 +37,7 @@ body {
   overflow: hidden;
   background: var(--bg);
   color: var(--text);
-  font-family: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: var(--font);
   -webkit-font-smoothing: antialiased;
   overscroll-behavior: none;
 }
@@ -319,7 +321,7 @@ body {
   background: #04070b url('/images/game/cover.jpg') center / 100% 100% no-repeat;
   box-shadow: 0 0 80px rgba(0, 0, 0, 0.6);
   container-type: inline-size;
-  font-family: "Instrument Sans", system-ui, sans-serif;
+  font-family: var(--font);
   color: #fff;
 }
 
@@ -840,8 +842,8 @@ body {
   border: 0;
   border-radius: 16px;
   font-family: inherit;
-  font-size: 1.05rem;
-  font-weight: 700;
+  font-size: 1.1rem;
+  font-weight: 600;
   cursor: pointer;
 }
 
