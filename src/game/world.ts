@@ -26,17 +26,21 @@ const DOOR_HALF = 32;
  *  tougher bugs. World 1 is the plain backlog. */
 export type Element = 'original' | 'fire' | 'water' | 'leaf' | 'bolt' | 'spark' | 'ghost' | 'heart';
 export type HazardKind = 'none' | 'lava' | 'puddle' | 'thorns' | 'strike' | 'bouncy' | 'fog' | 'mixed';
-export type WorldDef = { element: Element; hazard: HazardKind; tint: string; floor: string; grid: string; wall: string; door: string };
+export type WorldDef = { element: Element; hazard: HazardKind; look: Look | 'random'; tint: string; floor: string; grid: string; wall: string; door: string };
+
+/** How an enemy is drawn: the world's cast, or whatever the picker forces. */
+export type Look = 'original' | 'demon' | 'viking' | 'jungle' | 'greek' | 'robot' | 'nightmare';
+export const LOOKS: Look[] = ['original', 'demon', 'viking', 'jungle', 'greek', 'robot', 'nightmare'];
 
 export const WORLDS: WorldDef[] = [
-  { element: 'original', hazard: 'none', tint: '', floor: '#0f141d', grid: 'rgba(255,255,255,0.035)', wall: '#1d2533', door: '' },
-  { element: 'fire', hazard: 'lava', tint: '#ff7a1a', floor: '#1a0c0a', grid: 'rgba(255,122,26,0.08)', wall: '#3a1510', door: '#ff9e4c' },
-  { element: 'water', hazard: 'puddle', tint: '#38bdf8', floor: '#081520', grid: 'rgba(56,189,248,0.08)', wall: '#0f2a3d', door: '#7ad8ff' },
-  { element: 'leaf', hazard: 'thorns', tint: '#4ade80', floor: '#0a160f', grid: 'rgba(74,222,128,0.07)', wall: '#15321f', door: '#67dfa0' },
-  { element: 'bolt', hazard: 'strike', tint: '#facc15', floor: '#15140a', grid: 'rgba(250,204,21,0.07)', wall: '#2e2a10', door: '#ffd45f' },
-  { element: 'spark', hazard: 'bouncy', tint: '#fb923c', floor: '#160f09', grid: 'rgba(251,146,60,0.08)', wall: '#3b2412', door: '#ffb86f' },
-  { element: 'ghost', hazard: 'fog', tint: '#c7d2fe', floor: '#0c0d14', grid: 'rgba(199,210,254,0.05)', wall: '#1f2130', door: '#edf2fb' },
-  { element: 'heart', hazard: 'mixed', tint: '#f472b6', floor: '#170a12', grid: 'rgba(244,114,182,0.07)', wall: '#3a1430', door: '#ff79c9' },
+  { element: 'original', hazard: 'none', look: 'original', tint: '', floor: '#0f141d', grid: 'rgba(255,255,255,0.035)', wall: '#1d2533', door: '' },
+  { element: 'fire', hazard: 'lava', look: 'demon', tint: '#ff7a1a', floor: '#1a0c0a', grid: 'rgba(255,122,26,0.08)', wall: '#3a1510', door: '#ff9e4c' },
+  { element: 'water', hazard: 'puddle', look: 'viking', tint: '#38bdf8', floor: '#081520', grid: 'rgba(56,189,248,0.08)', wall: '#0f2a3d', door: '#7ad8ff' },
+  { element: 'leaf', hazard: 'thorns', look: 'jungle', tint: '#4ade80', floor: '#0a160f', grid: 'rgba(74,222,128,0.07)', wall: '#15321f', door: '#67dfa0' },
+  { element: 'bolt', hazard: 'strike', look: 'greek', tint: '#facc15', floor: '#15140a', grid: 'rgba(250,204,21,0.07)', wall: '#2e2a10', door: '#ffd45f' },
+  { element: 'spark', hazard: 'bouncy', look: 'robot', tint: '#fb923c', floor: '#160f09', grid: 'rgba(251,146,60,0.08)', wall: '#3b2412', door: '#ffb86f' },
+  { element: 'ghost', hazard: 'fog', look: 'nightmare', tint: '#c7d2fe', floor: '#0c0d14', grid: 'rgba(199,210,254,0.05)', wall: '#1f2130', door: '#edf2fb' },
+  { element: 'heart', hazard: 'mixed', look: 'random', tint: '#f472b6', floor: '#170a12', grid: 'rgba(244,114,182,0.07)', wall: '#3a1430', door: '#ff79c9' },
 ];
 export const WORLD_COUNT = WORLDS.length;
 
@@ -79,10 +83,6 @@ const maxLevel = (s: SkillId) => (s === 'heart' ? 99 : s === 'double' ? 2 : 3);
 /* ---------------------------------------------------------------- the cast */
 
 export type EnemyKind = 'bug' | 'ticket' | 'legacy' | 'boss';
-
-/** How an enemy is drawn (the save's style, or one per enemy under random). */
-export type Look = Exclude<EnemyStyle, 'random'>;
-export const LOOKS: Look[] = ['original', 'demon', 'greek', 'nightmare'];
 
 export type Enemy = {
   id: number;
@@ -315,8 +315,11 @@ function wave(room: number, world: number): EnemyKind[] {
   return kinds;
 }
 
+const randomLook = () => LOOKS[Math.floor(Math.random() * LOOKS.length)];
+
 function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7): Enemy {
-  const look: Look = g.style === 'random' ? LOOKS[Math.floor(Math.random() * LOOKS.length)] : g.style;
+  const wanted = g.style === 'world' ? WORLDS[g.world - 1].look : g.style;
+  const look: Look = wanted === 'random' ? randomLook() : wanted;
   const worldUp = 1 + (g.world - 1) * 0.25;
   const tough = (1 + (room - 1) * 0.08) * worldUp;
   const base = {
@@ -432,7 +435,7 @@ function enterRoom(g: Game, room: number) {
   g.events.push(isBossRoom(room) ? 'boss' : 'room');
 }
 
-export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'original', world = 1): Game {
+export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'world', world = 1): Game {
   const g: Game = {
     world: clamp(world, 1, WORLD_COUNT),
     room: 1,

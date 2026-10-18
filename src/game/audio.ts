@@ -2,9 +2,12 @@
  * Bug Hunter's sound, all made with the Web Audio API: no files to download.
  *
  * The music is drum and bass at 174 BPM, played "back to back": two DJs take
- * turns every eight bars. DJ A is liquid (soft pads, a rolling two-step, a
- * clean sub) and DJ B is neuro (a growling reese bass with a wobbling filter,
- * busier drums). Boss rooms push the filter open and add a stab.
+ * turns in eight-bar blocks over a 64-bar set (about a minute and a half).
+ * DJ A is liquid (soft pads, a rolling two-step, a clean sub) and DJ B is
+ * neuro (a growling reese bass with a wobbling filter, busier drums). Halfway
+ * through, the drums drop out for a trance breakdown (supersaw chords, a
+ * gated arpeggio, a riser), then both DJs come back in together over a
+ * lifted chord progression. Boss rooms push the filter open and add a stab.
  *
  * Nothing plays until the page gets a user gesture (browsers require it), so
  * `unlock()` is called from the first menu click.
@@ -27,6 +30,19 @@ const CHORDS: number[][] = [
   [-2, 2, 5, 10],  // Eb
 ];
 const BASS_ROOTS = [0, -4, 3, -2];
+// The second half lifts: Fm – Bbm – Ab – C, the C a dominant that pulls home.
+const CHORDS_B: number[][] = [
+  [0, 3, 7, 10],
+  [5, 8, 12, 15],  // Bbm
+  [3, 7, 10, 14],  // Ab
+  [7, 11, 14, 19], // C
+];
+const BASS_ROOTS_B = [0, 5, 3, 7];
+
+/* The set, in eight-bar blocks: the two DJs take turns, the drums drop out
+   for a trance breakdown, then both come back in together. */
+type Block = 'liquid' | 'neuro' | 'breakdown' | 'trance' | 'both';
+const SET: Block[] = ['liquid', 'neuro', 'liquid', 'neuro', 'breakdown', 'trance', 'both', 'neuro'];
 
 const semi = (base: number, n: number) => base * Math.pow(2, n / 12);
 
@@ -43,6 +59,8 @@ class Engine {
   private step = 0;
   private timer: number | undefined;
   private noise!: AudioBuffer;
+  /** Pads and leads go through here so the kick can duck them (sidechain). */
+  private padBus!: GainNode;
   private volumes = { music: 0.6, sfx: 0.8 };
 
   unlock() {
@@ -64,6 +82,8 @@ class Engine {
     this.filter.frequency.value = 2200;
     this.filter.Q.value = 0.7;
     this.musicBus.connect(this.filter).connect(this.master);
+    this.padBus = this.ctx.createGain();
+    this.padBus.connect(this.musicBus);
     this.sfxBus.connect(this.master);
     // Two seconds of white noise for drums and hits.
     this.noise = this.ctx.createBuffer(1, this.ctx.sampleRate * 2, this.ctx.sampleRate);
@@ -114,32 +134,64 @@ class Engine {
   private schedule(step: number, at: number) {
     const bar = Math.floor(step / 16);
     const inBar = step % 16;
-    const dj = Math.floor(bar / 8) % 2; // 0 = liquid, 1 = neuro
-    const chord = CHORDS[Math.floor(bar / 2) % 4];
-    const bassRoot = BASS_ROOTS[Math.floor(bar / 2) % 4];
-    const last = bar % 8 === 7; // final bar before the swap: a little fill
+    const setBar = bar % (SET.length * 8);
+    const block = SET[Math.floor(setBar / 8)];
+    const blockBar = setBar % 8;
+    const second = setBar >= 32; // the second half uses the lifted progression
+    const chord = (second ? CHORDS_B : CHORDS)[Math.floor(bar / 2) % 4];
+    const bassRoot = (second ? BASS_ROOTS_B : BASS_ROOTS)[Math.floor(bar / 2) % 4];
+    const last = blockBar === 7; // final bar of a block: a little fill
+    const liquid = block === 'liquid' || block === 'both';
+    const neuro = block === 'neuro' || block === 'both';
+    const drums = block !== 'breakdown';
 
-    // Two-step drums. Kick on 1 and the "and" of 3, snares on 2 and 4.
-    if (inBar === 0 || inBar === 10 || (dj === 1 && inBar === 7)) this.kick(at);
-    if (inBar === 4 || inBar === 12) this.snare(at, 1);
-    if (dj === 1 && (inBar === 7 || inBar === 15)) this.snare(at, 0.35);
-    if (last && inBar >= 12) this.snare(at, 0.5 + (inBar - 12) * 0.15);
-    if (inBar % 2 === 0) this.hat(at, inBar % 4 === 2 ? 0.5 : 0.3, inBar % 8 === 6);
-    if (dj === 1 && inBar % 2 === 1) this.hat(at, 0.14, false);
+    // A crash on the first beat of every block but the very first.
+    if (inBar === 0 && blockBar === 0 && setBar !== 0) this.crash(at);
 
-    // Bass: liquid holds the root; neuro growls a syncopated line.
-    if (dj === 0) {
-      if (inBar === 0 || inBar === 10) this.sub(at, semi(ROOT, bassRoot), inBar === 0 ? STEP * 8 : STEP * 5);
+    if (drums) {
+      // Two-step drums. Kick on 1 and the "and" of 3, snares on 2 and 4.
+      if (inBar === 0 || inBar === 10 || (neuro && inBar === 7)) this.kick(at);
+      if (inBar === 4 || inBar === 12) this.snare(at, 1);
+      if (neuro && (inBar === 7 || inBar === 15)) this.snare(at, 0.35);
+      if (last && inBar >= 12) this.snare(at, 0.5 + (inBar - 12) * 0.15);
+      if (last && block === 'neuro' && inBar >= 8 && inBar < 12 && inBar % 2 === 0) this.snare(at, 0.3);
+      if (inBar % 2 === 0) this.hat(at, inBar % 4 === 2 ? 0.5 : 0.3, inBar % 8 === 6);
+      if (neuro && inBar % 2 === 1) this.hat(at, 0.14, false);
+      if (block === 'trance' && inBar % 2 === 1) this.hat(at, 0.22, false); // offbeat trance hats
     } else {
-      const hits = [0, 3, 6, 10, 11, 14];
-      if (hits.includes(inBar)) this.reese(at, semi(ROOT, bassRoot + (inBar === 14 ? 12 : inBar === 6 ? 3 : 0)), STEP * (inBar === 10 ? 1 : 2.5));
+      // Breakdown: a soft hat on the offbeats, and a riser into the drop.
+      if (inBar % 4 === 2) this.hat(at, 0.18, false);
+      if (blockBar === 6 && inBar === 0) this.riser(at, BAR * 2);
+      if (blockBar === 7 && inBar >= 8) this.snare(at, 0.25 + (inBar - 8) * 0.09);
     }
 
-    // Pads on every chord change (liquid), stabs on the offbeat (neuro / boss).
-    if (inBar === 0 && bar % 2 === 0 && dj === 0) this.pad(at, chord, BAR * 2);
-    if ((dj === 1 || this.intensity > 0.6) && (inBar === 6 || inBar === 14) && bar % 2 === 1) this.stab(at, chord);
-    // A sparkle of arpeggio on top in the quieter half.
-    if (dj === 0 && inBar % 4 === 2 && Math.random() < 0.6) this.pluck(at, semi(ROOT * 8, chord[(step >> 2) % chord.length]));
+    // Bass: liquid holds the root; neuro growls a syncopated line; trance
+    // bounces on the offbeats; the breakdown keeps one long sub.
+    if (block === 'trance') {
+      if (inBar % 2 === 1) this.sub(at, semi(ROOT * 2, bassRoot), STEP * 0.9);
+      if (inBar === 0) this.sub(at, semi(ROOT, bassRoot), STEP * 3);
+    } else if (block === 'breakdown') {
+      if (inBar === 0 && bar % 2 === 0) this.sub(at, semi(ROOT, bassRoot), BAR * 1.6);
+    } else {
+      if (liquid && (inBar === 0 || inBar === 10)) this.sub(at, semi(ROOT, bassRoot), inBar === 0 ? STEP * 8 : STEP * 5);
+      if (neuro) {
+        const hits = [0, 3, 6, 10, 11, 14];
+        if (hits.includes(inBar)) this.reese(at, semi(ROOT, bassRoot + (inBar === 14 ? 12 : inBar === 6 ? 3 : 0)), STEP * (inBar === 10 ? 1 : 2.5));
+      }
+    }
+
+    // Pads on every chord change (liquid, breakdown), stabs on the offbeat (neuro / boss).
+    if (inBar === 0 && bar % 2 === 0 && (liquid || block === 'breakdown')) this.pad(at, chord, BAR * 2);
+    if ((neuro || this.intensity > 0.6) && block !== 'breakdown' && (inBar === 6 || inBar === 14) && bar % 2 === 1) this.stab(at, chord);
+    // Trance: supersaw chords on the offbeat eighths and a gated 16th arpeggio;
+    // the arpeggio also creeps into the breakdown, growing bar by bar.
+    if (block === 'trance' || block === 'both') {
+      if (inBar % 4 === 2) this.supersaw(at, chord, STEP * 1.6);
+      if (block === 'trance') this.arp(at, semi(ROOT * 8, chord[step % chord.length]), inBar % 4 === 0 ? 0.16 : 0.1);
+    }
+    if (block === 'breakdown' && blockBar >= 2) this.arp(at, semi(ROOT * 8, chord[step % chord.length]), 0.07 + blockBar * 0.012);
+    // A sparkle of plucks on top in the quieter half.
+    if (block === 'liquid' && inBar % 4 === 2 && Math.random() < 0.6) this.pluck(at, semi(ROOT * 8, chord[(step >> 2) % chord.length]));
   }
 
   private env(gain: GainNode, at: number, peak: number, attack: number, decay: number, sustain = 0, release = 0.01) {
@@ -152,6 +204,12 @@ class Engine {
   }
 
   private kick(at: number) {
+    // Duck the pads for a moment: the pumping sidechain.
+    const duck = this.padBus.gain;
+    duck.cancelScheduledValues(at);
+    duck.setValueAtTime(1, at);
+    duck.linearRampToValueAtTime(0.35, at + 0.01);
+    duck.linearRampToValueAtTime(1, at + 0.22);
     const o = this.ctx.createOscillator();
     const g = this.ctx.createGain();
     o.frequency.setValueAtTime(150, at);
@@ -253,7 +311,77 @@ class Engine {
         o.stop(at + length + 0.5);
       }
     }
-    lp.connect(g).connect(this.musicBus);
+    lp.connect(g).connect(this.padBus);
+  }
+
+  /** Trance chord: five detuned saws per note, bright and wide, gated short. */
+  private supersaw(at: number, chord: number[], length: number) {
+    const g = this.ctx.createGain();
+    const lp = this.ctx.createBiquadFilter();
+    lp.type = 'lowpass';
+    lp.frequency.setValueAtTime(4500, at);
+    lp.frequency.exponentialRampToValueAtTime(1600, at + length);
+    this.env(g, at, 0.1, 0.01, length * 0.7, 0.4, length * 0.3);
+    for (const n of chord) {
+      for (const detune of [-18, -9, 0, 9, 18]) {
+        const o = this.ctx.createOscillator();
+        o.type = 'sawtooth';
+        o.frequency.value = semi(ROOT * 4, n);
+        o.detune.value = detune;
+        o.connect(lp);
+        o.start(at);
+        o.stop(at + length + 0.4);
+      }
+    }
+    lp.connect(g).connect(this.padBus);
+  }
+
+  /** One gated arpeggio note: a square with a quick, bright envelope. */
+  private arp(at: number, freq: number, vol: number) {
+    const o = this.ctx.createOscillator();
+    o.type = 'square';
+    o.frequency.value = freq;
+    const lp = this.ctx.createBiquadFilter();
+    lp.type = 'lowpass';
+    lp.frequency.setValueAtTime(3200, at);
+    lp.frequency.exponentialRampToValueAtTime(900, at + 0.12);
+    const g = this.ctx.createGain();
+    this.env(g, at, vol, 0.003, 0.11);
+    o.connect(lp).connect(g).connect(this.padBus);
+    o.start(at);
+    o.stop(at + 0.16);
+  }
+
+  /** White noise sweeping up into the drop. */
+  private riser(at: number, length: number) {
+    const n = this.ctx.createBufferSource();
+    n.buffer = this.noise;
+    n.loop = true;
+    const bp = this.ctx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.Q.value = 1.2;
+    bp.frequency.setValueAtTime(300, at);
+    bp.frequency.exponentialRampToValueAtTime(6000, at + length);
+    const g = this.ctx.createGain();
+    g.gain.setValueAtTime(0.0001, at);
+    g.gain.exponentialRampToValueAtTime(0.28, at + length);
+    g.gain.exponentialRampToValueAtTime(0.0001, at + length + 0.05);
+    n.connect(bp).connect(g).connect(this.musicBus);
+    n.start(at);
+    n.stop(at + length + 0.1);
+  }
+
+  private crash(at: number) {
+    const n = this.ctx.createBufferSource();
+    n.buffer = this.noise;
+    const hp = this.ctx.createBiquadFilter();
+    hp.type = 'highpass';
+    hp.frequency.value = 5000;
+    const g = this.ctx.createGain();
+    this.env(g, at, 0.3, 0.002, 1.2);
+    n.connect(hp).connect(g).connect(this.musicBus);
+    n.start(at, Math.random());
+    n.stop(at + 1.4);
   }
 
   private stab(at: number, chord: number[]) {

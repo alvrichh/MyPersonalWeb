@@ -240,6 +240,31 @@ body {
   display: none;
 }
 
+/* The main menu sits over the title-screen parade: no dimming, panel up top
+   so the ground stays in view. */
+.screen.is-menu {
+  align-items: start;
+  padding-top: max(20px, env(safe-area-inset-top));
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.screen.is-menu .panel {
+  background:
+    radial-gradient(120% 70% at 50% 0%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 70%),
+    rgba(14, 18, 27, 0.86);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+@media (min-height: 760px) {
+  .screen.is-menu {
+    align-items: center;
+    padding-bottom: 150px;
+  }
+}
+
 .panel {
   display: grid;
   justify-items: center;

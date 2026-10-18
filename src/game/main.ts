@@ -4,6 +4,7 @@ import { audio, type Sfx } from './audio';
 import { draw, type Palette, type View } from './draw';
 import { loadSave, writeSave, STYLES, type EnemyStyle } from './save';
 import { ITEMS, SLOTS, buildLoadout, itemById, type ItemId, type Slot } from './shop';
+import { Scene } from './scene';
 import { makeT, pickLang, type Key } from './strings';
 import {
   CATEGORY, H, W, WORLDS, WORLD_COUNT, chooseSkill, isBossRoom, newGame, ownedWeapons, update,
@@ -105,8 +106,8 @@ const ICONS: Record<SkillId, string> = {
 };
 const CATEGORY_LABEL: Record<Category, Key> = { melee: 'catMelee', magic: 'catMagic', ranged: 'catRanged', upgrade: 'catUpgrade' };
 const SLOT_LABEL: Record<Slot, Key> = { head: 'slotHead', charm: 'slotCharm', relic: 'slotRelic' };
-const STYLE_ICON: Record<EnemyStyle, string> = { original: '🐞', demon: '😈', greek: '🏛️', nightmare: '💀', random: '🎲' };
-const BOSS_NAME: Record<Look, Key> = { original: 'bossOriginal', demon: 'bossDemon', greek: 'bossGreek', nightmare: 'bossNightmare' };
+const STYLE_ICON: Record<EnemyStyle, string> = { world: '🌍', original: '🐞', demon: '😈', viking: '🪓', jungle: '🕷️', greek: '🏛️', robot: '🤖', nightmare: '💀', random: '🎲' };
+const BOSS_NAME: Record<Look, Key> = { original: 'bossOriginal', demon: 'bossDemon', viking: 'bossViking', jungle: 'bossJungle', greek: 'bossGreek', robot: 'bossRobot', nightmare: 'bossNightmare' };
 
 let game: Game | null = null;
 let paused = false;
@@ -114,8 +115,9 @@ let shownChoices = '';
 /** Where the Options screen goes back to. */
 let optionsFrom: 'menu' | 'pause' = 'menu';
 
-function show(html: string, wide = false) {
+function show(html: string, wide = false, menu = false) {
   screen.innerHTML = `<div class="panel${wide ? ' panel-wide' : ''}">${html}</div>`;
+  screen.classList.toggle('is-menu', menu);
   screen.hidden = false;
   screen.scrollTop = 0;
 }
@@ -144,7 +146,7 @@ function menuScreen() {
       <button class="ghost" data-act="options"><span class="icon">${save.music === 0 && save.sfx === 0 ? '🔇' : '🔊'}</span>${t('options')}</button>
     </div>
     <p class="best">${bestLine()}</p>
-    <a class="link" href="./index.html">← ${t('back')}</a>`);
+    <a class="link" href="./index.html">← ${t('back')}</a>`, false, true);
 }
 
 const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
@@ -489,22 +491,12 @@ function resize() {
 window.addEventListener('resize', resize);
 resize();
 
-// The menu's backdrop: a slow drift of the accent colours.
+// The menu's backdrop: the title-screen parade (scene.ts).
+const scene = new Scene();
 function drawMenuBackdrop(now: number) {
   ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
-  const w = canvas.clientWidth;
-  const h = canvas.clientHeight;
-  ctx.fillStyle = '#07090f';
-  ctx.fillRect(0, 0, w, h);
-  for (const [i, color] of [accent, accent2].entries()) {
-    const x = w * (0.3 + 0.4 * i) + Math.sin(now * 0.3 + i * 2) * w * 0.15;
-    const y = h * (0.35 + 0.3 * i) + Math.cos(now * 0.25 + i) * h * 0.12;
-    const grad = ctx.createRadialGradient(x, y, 0, x, y, Math.max(w, h) * 0.45);
-    grad.addColorStop(0, color + '33');
-    grad.addColorStop(1, 'transparent');
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, w, h);
-  }
+  const rb = palette.rainbow ? `hsl(${Math.round((now * 60) % 360)} 85% 70%)` : accent;
+  scene.draw(ctx, canvas.clientWidth, canvas.clientHeight, now, rb, palette.rainbow ? `hsl(${Math.round((now * 60 + 90) % 360)} 85% 70%)` : accent2, save.equipped.head);
 }
 
 let last = performance.now();

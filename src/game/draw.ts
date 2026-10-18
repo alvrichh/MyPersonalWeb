@@ -1119,7 +1119,551 @@ const nightmareLich: Drawer = (ctx, e, now) => {
   ctx.shadowBlur = 0;
 };
 
+/* Vikings: raiders from the sea, axe throwers, a shield wall and the Jarl. */
+function hornedHelm(ctx: CanvasRenderingContext2D, r: number, y: number) {
+  ctx.fillStyle = '#e7e5e4';
+  for (const side of [-1, 1]) {
+    ctx.beginPath();
+    ctx.moveTo(side * r * 0.55, y - r * 0.1);
+    ctx.quadraticCurveTo(side * r * 1.05, y - r * 0.4, side * r * 0.85, y - r * 1.05);
+    ctx.lineTo(side * r * 0.6, y - r * 0.5);
+    ctx.closePath();
+    ctx.fill();
+  }
+  const iron = ctx.createLinearGradient(-r, 0, r, 0);
+  iron.addColorStop(0, '#9ca3af');
+  iron.addColorStop(1, '#4b5563');
+  ctx.fillStyle = iron;
+  ctx.beginPath();
+  ctx.arc(0, y, r * 0.65, Math.PI, 0);
+  ctx.lineTo(r * 0.65, y + r * 0.1);
+  ctx.lineTo(-r * 0.65, y + r * 0.1);
+  ctx.closePath();
+  ctx.fill();
+  ctx.fillStyle = '#374151';
+  ctx.fillRect(-r * 0.08, y - r * 0.1, r * 0.16, r * 0.45);
+}
+
+function beard(ctx: CanvasRenderingContext2D, r: number, y: number, color: string) {
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.moveTo(-r * 0.5, y);
+  ctx.quadraticCurveTo(0, y + r * 1.0, r * 0.5, y);
+  ctx.closePath();
+  ctx.fill();
+}
+
+const vikingRaider: Drawer = (ctx, e, now) => {
+  const r = e.r;
+  const step = Math.sin(now * 12 + e.id) * 2;
+  // Axe raised on the right, round shield on the left.
+  ctx.save();
+  ctx.translate(r * 0.9, -r * 0.2 - step);
+  ctx.rotate(-0.5 + Math.sin(now * 6) * 0.2);
+  ctx.strokeStyle = '#78350f';
+  ctx.lineWidth = 2.2;
+  ctx.beginPath();
+  ctx.moveTo(0, r * 0.8);
+  ctx.lineTo(0, -r * 0.6);
+  ctx.stroke();
+  ctx.fillStyle = '#cbd5e1';
+  ctx.beginPath();
+  ctx.moveTo(0, -r * 0.7);
+  ctx.quadraticCurveTo(r * 0.7, -r * 0.6, r * 0.5, 0);
+  ctx.lineTo(0, -r * 0.2);
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+  ctx.fillStyle = '#b45309';
+  ctx.beginPath();
+  ctx.arc(-r * 0.9, r * 0.2 + step, r * 0.58, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = '#fbbf24';
+  ctx.lineWidth = 1.5;
+  for (let i = 0; i < 4; i++) {
+    ctx.beginPath();
+    ctx.moveTo(-r * 0.9, r * 0.2 + step);
+    ctx.lineTo(-r * 0.9 + Math.cos(i * Math.PI / 2) * r * 0.58, r * 0.2 + step + Math.sin(i * Math.PI / 2) * r * 0.58);
+    ctx.stroke();
+  }
+  ctx.fillStyle = '#1e3a8a';
+  roundRect(ctx, -r * 0.6, r * 0.05, r * 1.2, r * 0.95, 3);
+  ctx.fill();
+  ctx.fillStyle = '#92400e';
+  ctx.fillRect(-r * 0.6, r * 0.5, r * 1.2, r * 0.12);
+  ctx.fillStyle = '#f5d0b0';
+  ctx.beginPath();
+  ctx.arc(0, -r * 0.3, r * 0.55, 0, Math.PI * 2);
+  ctx.fill();
+  beard(ctx, r, -r * 0.05, '#d97706');
+  hornedHelm(ctx, r, -r * 0.45);
+  ctx.fillStyle = '#1c1917';
+  ctx.fillRect(-r * 0.3, -r * 0.4, r * 0.16, r * 0.16);
+  ctx.fillRect(r * 0.14, -r * 0.4, r * 0.16, r * 0.16);
+};
+
+const vikingThrower: Drawer = (ctx, e) => {
+  const r = e.r;
+  const arm = Math.sin(e.wobble * 0.6) * 0.5;
+  // A hand axe about to fly.
+  ctx.save();
+  ctx.translate(r * 0.8, -r * 0.1);
+  ctx.rotate(-1.2 + arm);
+  ctx.strokeStyle = '#78350f';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(0, r * 0.6);
+  ctx.lineTo(0, -r * 0.5);
+  ctx.stroke();
+  ctx.fillStyle = '#cbd5e1';
+  ctx.beginPath();
+  ctx.moveTo(-r * 0.05, -r * 0.55);
+  ctx.quadraticCurveTo(r * 0.55, -r * 0.5, r * 0.4, -r * 0.05);
+  ctx.lineTo(-r * 0.05, -r * 0.15);
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+  ctx.fillStyle = '#365314';
+  roundRect(ctx, -r * 0.6, r * 0.05, r * 1.2, r * 0.95, 3);
+  ctx.fill();
+  ctx.fillStyle = '#f5d0b0';
+  ctx.beginPath();
+  ctx.arc(0, -r * 0.3, r * 0.55, 0, Math.PI * 2);
+  ctx.fill();
+  beard(ctx, r, -r * 0.05, '#7c2d12');
+  // Braids instead of a helmet.
+  ctx.strokeStyle = '#7c2d12';
+  ctx.lineWidth = 3;
+  ctx.lineCap = 'round';
+  for (const side of [-1, 1]) {
+    ctx.beginPath();
+    ctx.moveTo(side * r * 0.4, -r * 0.6);
+    ctx.lineTo(side * r * 0.65, r * 0.2);
+    ctx.stroke();
+  }
+  ctx.fillStyle = '#7c2d12';
+  ctx.beginPath();
+  ctx.arc(0, -r * 0.5, r * 0.55, Math.PI, 0);
+  ctx.fill();
+  ctx.fillStyle = '#1c1917';
+  ctx.fillRect(-r * 0.3, -r * 0.4, r * 0.16, r * 0.16);
+  ctx.fillRect(r * 0.14, -r * 0.4, r * 0.16, r * 0.16);
+};
+
+const vikingShieldWall: Drawer = (ctx, e, now) => {
+  const r = e.r;
+  // Three overlapping painted round shields.
+  const colors = ['#b91c1c', '#1d4ed8', '#ca8a04'];
+  for (let i = -1; i <= 1; i++) {
+    const cx = i * r * 0.55;
+    const cy = Math.abs(i) * r * 0.15;
+    ctx.fillStyle = colors[i + 1];
+    ctx.beginPath();
+    ctx.arc(cx, cy, r * 0.7, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = '#78350f';
+    ctx.lineWidth = 2.5;
+    ctx.stroke();
+    ctx.strokeStyle = 'rgba(255,255,255,0.55)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(cx - r * 0.7, cy);
+    ctx.lineTo(cx + r * 0.7, cy);
+    ctx.moveTo(cx, cy - r * 0.7);
+    ctx.lineTo(cx, cy + r * 0.7);
+    ctx.stroke();
+    ctx.fillStyle = '#9ca3af';
+    ctx.beginPath();
+    ctx.arc(cx, cy, r * 0.16, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  // Spear tips and horns over the top.
+  ctx.fillStyle = '#e7e5e4';
+  for (let i = -1; i <= 1; i++) {
+    ctx.beginPath();
+    ctx.moveTo(i * r * 0.55, -r * 1.25 + Math.sin(now * 3 + i) * 2);
+    ctx.lineTo(i * r * 0.55 - 3, -r * 0.8);
+    ctx.lineTo(i * r * 0.55 + 3, -r * 0.8);
+    ctx.closePath();
+    ctx.fill();
+  }
+};
+
+const vikingJarl: Drawer = (ctx, e, now) => {
+  const r = e.r;
+  const glow = ctx.createRadialGradient(0, 0, r * 0.4, 0, 0, r * 1.6);
+  glow.addColorStop(0, 'rgba(56,189,248,0.3)');
+  glow.addColorStop(1, 'transparent');
+  ctx.fillStyle = glow;
+  ctx.beginPath();
+  ctx.arc(0, 0, r * 1.6, 0, Math.PI * 2);
+  ctx.fill();
+  // Fur cloak, chainmail, a great two-handed axe.
+  ctx.fillStyle = '#44403c';
+  ctx.beginPath();
+  ctx.moveTo(-r * 1.1, -r * 0.4);
+  ctx.lineTo(r * 1.1, -r * 0.4);
+  ctx.lineTo(r * 0.9, r * 1.1);
+  ctx.lineTo(-r * 0.9, r * 1.1);
+  ctx.closePath();
+  ctx.fill();
+  const mail = ctx.createLinearGradient(0, -r, 0, r);
+  mail.addColorStop(0, '#9ca3af');
+  mail.addColorStop(1, '#374151');
+  ctx.fillStyle = mail;
+  roundRect(ctx, -r * 0.7, -r * 0.3, r * 1.4, r * 1.4, 10);
+  ctx.fill();
+  ctx.fillStyle = 'rgba(0,0,0,0.25)';
+  for (let y = -r * 0.2; y < r; y += r * 0.18) for (let x = -r * 0.6; x < r * 0.6; x += r * 0.18) { ctx.beginPath(); ctx.arc(x, y, 1.2, 0, Math.PI * 2); ctx.fill(); }
+  ctx.save();
+  ctx.translate(r * 1.0, -r * 0.2);
+  ctx.rotate(-0.35 + Math.sin(now * 2) * 0.08);
+  ctx.strokeStyle = '#78350f';
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  ctx.moveTo(0, r * 1.3);
+  ctx.lineTo(0, -r * 1.3);
+  ctx.stroke();
+  ctx.fillStyle = '#cbd5e1';
+  for (const side of [-1, 1]) {
+    ctx.beginPath();
+    ctx.moveTo(0, -r * 1.3);
+    ctx.quadraticCurveTo(side * r * 0.9, -r * 1.1, side * r * 0.7, -r * 0.3);
+    ctx.lineTo(0, -r * 0.6);
+    ctx.closePath();
+    ctx.fill();
+  }
+  ctx.restore();
+  ctx.fillStyle = '#f5d0b0';
+  ctx.beginPath();
+  ctx.arc(0, -r * 0.65, r * 0.5, 0, Math.PI * 2);
+  ctx.fill();
+  beard(ctx, r * 1.1, -r * 0.4, '#e5e7eb');
+  hornedHelm(ctx, r * 1.05, -r * 0.8);
+  eyes(ctx, r * 0.2, -r * 0.7, r * 0.08, e.dash > 0 || e.aim > 0 ? '#fde047' : '#38bdf8');
+};
+
+/* Jungle: spiders, snapping plants, old stumps and the Ancient Treant. */
+const jungleSpider: Drawer = (ctx, e, now) => {
+  const r = e.r;
+  ctx.strokeStyle = '#1c1917';
+  ctx.lineWidth = 1.8;
+  ctx.lineCap = 'round';
+  for (const side of [-1, 1]) {
+    for (let i = 0; i < 4; i++) {
+      const lift = Math.sin(now * 16 + i * 1.5 + side) * 2;
+      ctx.beginPath();
+      ctx.moveTo(side * r * 0.4, -r * 0.3 + i * r * 0.25);
+      ctx.lineTo(side * r * 1.1, -r * 0.7 + i * r * 0.3 + lift);
+      ctx.lineTo(side * r * 1.5, r * 0.1 + i * r * 0.25 + lift);
+      ctx.stroke();
+    }
+  }
+  const body = ctx.createRadialGradient(-r * 0.2, -r * 0.2, 1, 0, 0, r * 0.9);
+  body.addColorStop(0, '#57534e');
+  body.addColorStop(1, '#1c1917');
+  ctx.fillStyle = body;
+  ctx.beginPath();
+  ctx.ellipse(0, r * 0.15, r * 0.75, r * 0.9, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#dc2626';
+  ctx.beginPath();
+  ctx.moveTo(0, -r * 0.3);
+  ctx.lineTo(r * 0.25, r * 0.2);
+  ctx.lineTo(0, r * 0.7);
+  ctx.lineTo(-r * 0.25, r * 0.2);
+  ctx.closePath();
+  ctx.fill();
+  ctx.fillStyle = '#292524';
+  ctx.beginPath();
+  ctx.arc(0, -r * 0.8, r * 0.4, 0, Math.PI * 2);
+  ctx.fill();
+  eyes(ctx, r * 0.15, -r * 0.9, r * 0.08, '#86efac');
+  eyes(ctx, r * 0.3, -r * 0.75, r * 0.06, '#86efac');
+};
+
+const junglePlant: Drawer = (ctx, e, now) => {
+  const r = e.r;
+  const open = 0.5 + Math.sin(e.wobble * 0.8) * 0.3;
+  ctx.strokeStyle = '#15803d';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(0, r);
+  ctx.quadraticCurveTo(r * 0.3, r * 0.3, 0, -r * 0.1);
+  ctx.stroke();
+  // Leaves at the base.
+  ctx.fillStyle = '#16a34a';
+  for (const side of [-1, 1]) {
+    ctx.beginPath();
+    ctx.moveTo(0, r * 0.9);
+    ctx.quadraticCurveTo(side * r * 0.9, r * 0.8, side * r * 1.1, r * 0.2);
+    ctx.quadraticCurveTo(side * r * 0.5, r * 0.5, 0, r * 0.9);
+    ctx.fill();
+  }
+  // Two jaws with teeth.
+  for (const [dir, color] of [[-1, '#dc2626'], [1, '#b91c1c']] as const) {
+    ctx.save();
+    ctx.translate(0, -r * 0.3);
+    ctx.rotate(dir * open);
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.ellipse(0, dir * -r * 0.3, r * 0.7, r * 0.35, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#fef3c7';
+    for (let i = -2; i <= 2; i++) {
+      ctx.beginPath();
+      ctx.moveTo(i * r * 0.25 - 2, dir * -r * 0.02);
+      ctx.lineTo(i * r * 0.25, dir * -r * 0.25);
+      ctx.lineTo(i * r * 0.25 + 2, dir * -r * 0.02);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+  void now;
+};
+
+const jungleStump: Drawer = (ctx, e, now) => {
+  const r = e.r;
+  const bark = ctx.createLinearGradient(-r, 0, r, 0);
+  bark.addColorStop(0, '#78350f');
+  bark.addColorStop(0.5, '#a16207');
+  bark.addColorStop(1, '#451a03');
+  ctx.fillStyle = bark;
+  roundRect(ctx, -r * 0.85, -r * 0.5, r * 1.7, r * 1.5, 6);
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(0,0,0,0.3)';
+  ctx.lineWidth = 1.5;
+  for (let i = -2; i <= 2; i++) { ctx.beginPath(); ctx.moveTo(i * r * 0.3, -r * 0.4); ctx.lineTo(i * r * 0.3 + 2, r * 0.9); ctx.stroke(); }
+  // Rings on top.
+  ctx.fillStyle = '#d6a96a';
+  ctx.beginPath();
+  ctx.ellipse(0, -r * 0.5, r * 0.85, r * 0.35, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = '#92400e';
+  ctx.lineWidth = 1;
+  for (let i = 1; i <= 3; i++) { ctx.beginPath(); ctx.ellipse(0, -r * 0.5, r * 0.25 * i, r * 0.1 * i, 0, 0, Math.PI * 2); ctx.stroke(); }
+  // A face in the bark, and a sprout.
+  eyes(ctx, r * 0.3, r * 0.05, r * 0.1, '#a3e635');
+  ctx.fillStyle = '#1c1917';
+  roundRect(ctx, -r * 0.35, r * 0.4, r * 0.7, r * 0.15, 2);
+  ctx.fill();
+  ctx.fillStyle = '#4ade80';
+  ctx.beginPath();
+  ctx.ellipse(r * 0.4, -r * 0.95 + Math.sin(now * 3) * 1.5, r * 0.2, r * 0.32, -0.6, 0, Math.PI * 2);
+  ctx.fill();
+};
+
+const jungleTreant: Drawer = (ctx, e, now) => {
+  const r = e.r;
+  const glow = ctx.createRadialGradient(0, 0, r * 0.4, 0, 0, r * 1.7);
+  glow.addColorStop(0, 'rgba(74,222,128,0.25)');
+  glow.addColorStop(1, 'transparent');
+  ctx.fillStyle = glow;
+  ctx.beginPath();
+  ctx.arc(0, 0, r * 1.7, 0, Math.PI * 2);
+  ctx.fill();
+  // Canopy.
+  const sway = Math.sin(now * 1.5) * 3;
+  for (const [dx, dy, rr, c] of [[-r * 0.7, -r * 1.1, r * 0.6, '#166534'], [r * 0.6, -r * 1.2, r * 0.65, '#15803d'], [0, -r * 1.45, r * 0.7, '#22c55e']] as const) {
+    ctx.fillStyle = c;
+    ctx.beginPath();
+    ctx.arc(dx + sway * 0.5, dy, rr, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  // Trunk with a face, roots as legs.
+  const bark = ctx.createLinearGradient(-r, 0, r, 0);
+  bark.addColorStop(0, '#78350f');
+  bark.addColorStop(0.5, '#92400e');
+  bark.addColorStop(1, '#3b1a08');
+  ctx.fillStyle = bark;
+  roundRect(ctx, -r * 0.75, -r * 0.7, r * 1.5, r * 1.7, 12);
+  ctx.fill();
+  ctx.strokeStyle = '#3b1a08';
+  ctx.lineWidth = 5;
+  ctx.lineCap = 'round';
+  for (const side of [-1, 1]) {
+    ctx.beginPath();
+    ctx.moveTo(side * r * 0.4, r * 0.9);
+    ctx.lineTo(side * r * 0.8, r * 1.25);
+    ctx.moveTo(side * r * 0.75, -r * 0.2);
+    ctx.lineTo(side * r * 1.4, -r * 0.5 + Math.sin(now * 2 + side) * 4);
+    ctx.stroke();
+  }
+  eyes(ctx, r * 0.3, -r * 0.2, r * 0.12, e.dash > 0 || e.aim > 0 ? '#fde047' : '#a3e635');
+  ctx.fillStyle = '#1c1917';
+  roundRect(ctx, -r * 0.4, r * 0.3, r * 0.8, r * 0.2, 3);
+  ctx.fill();
+};
+
+/* Robots: drones, turrets, armoured crates and the Mainframe. */
+const robotDrone: Drawer = (ctx, e, now) => {
+  const r = e.r;
+  // Spinning rotors.
+  ctx.strokeStyle = 'rgba(203,213,225,0.7)';
+  ctx.lineWidth = 2;
+  for (const side of [-1, 1]) {
+    const spin = now * 40 + side;
+    ctx.beginPath();
+    ctx.moveTo(side * r * 0.9 - Math.cos(spin) * r * 0.6, -r * 0.6 - Math.sin(spin) * r * 0.15);
+    ctx.lineTo(side * r * 0.9 + Math.cos(spin) * r * 0.6, -r * 0.6 + Math.sin(spin) * r * 0.15);
+    ctx.stroke();
+    ctx.strokeStyle = '#64748b';
+    ctx.beginPath();
+    ctx.moveTo(side * r * 0.4, -r * 0.1);
+    ctx.lineTo(side * r * 0.9, -r * 0.6);
+    ctx.stroke();
+    ctx.strokeStyle = 'rgba(203,213,225,0.7)';
+  }
+  const shell = ctx.createLinearGradient(0, -r, 0, r);
+  shell.addColorStop(0, '#94a3b8');
+  shell.addColorStop(1, '#334155');
+  ctx.fillStyle = shell;
+  roundRect(ctx, -r * 0.7, -r * 0.3, r * 1.4, r * 1.0, 6);
+  ctx.fill();
+  // One big lens.
+  ctx.fillStyle = '#0f172a';
+  ctx.beginPath();
+  ctx.arc(0, r * 0.2, r * 0.35, 0, Math.PI * 2);
+  ctx.fill();
+  eyes(ctx, 0, r * 0.2, r * 0.16, '#fb923c');
+  ctx.fillStyle = '#fb923c';
+  ctx.fillRect(-r * 0.5, r * 0.8, r * 0.3, 2);
+  ctx.fillRect(r * 0.2, r * 0.8, r * 0.3, 2);
+};
+
+const robotTurret: Drawer = (ctx, e) => {
+  const r = e.r;
+  // Base plate, barrel aiming the way it wobbles.
+  ctx.fillStyle = '#1e293b';
+  ctx.beginPath();
+  ctx.ellipse(0, r * 0.6, r * 0.9, r * 0.35, 0, 0, Math.PI * 2);
+  ctx.fill();
+  const tower = ctx.createLinearGradient(-r, 0, r, 0);
+  tower.addColorStop(0, '#64748b');
+  tower.addColorStop(1, '#334155');
+  ctx.fillStyle = tower;
+  roundRect(ctx, -r * 0.55, -r * 0.4, r * 1.1, r * 1.0, 5);
+  ctx.fill();
+  ctx.save();
+  ctx.translate(0, -r * 0.1);
+  ctx.rotate(Math.sin(e.wobble * 0.5) * 0.4 - Math.PI / 2);
+  ctx.fillStyle = '#0f172a';
+  ctx.fillRect(0, -r * 0.14, r * 1.2, r * 0.28);
+  ctx.fillStyle = '#fb923c';
+  ctx.fillRect(r * 1.05, -r * 0.1, r * 0.15, r * 0.2);
+  ctx.restore();
+  ctx.fillStyle = '#fb923c';
+  ctx.fillRect(-r * 0.35, r * 0.3, r * 0.2, r * 0.12);
+  ctx.fillStyle = '#4ade80';
+  ctx.fillRect(r * 0.1, r * 0.3, r * 0.2, r * 0.12);
+};
+
+const robotCrate: Drawer = (ctx, e, now) => {
+  const r = e.r;
+  const steel = ctx.createLinearGradient(-r, -r, r, r);
+  steel.addColorStop(0, '#94a3b8');
+  steel.addColorStop(1, '#1e293b');
+  ctx.fillStyle = steel;
+  roundRect(ctx, -r, -r, r * 2, r * 2, 4);
+  ctx.fill();
+  ctx.strokeStyle = '#0f172a';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(-r * 0.75, -r * 0.75, r * 1.5, r * 1.5);
+  // Rivets and a warning stripe.
+  ctx.fillStyle = '#cbd5e1';
+  for (const x of [-0.85, 0.85]) for (const y of [-0.85, 0.85]) { ctx.beginPath(); ctx.arc(x * r, y * r, 1.6, 0, Math.PI * 2); ctx.fill(); }
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(-r * 0.75, r * 0.3, r * 1.5, r * 0.3);
+  ctx.clip();
+  for (let i = -4; i < 5; i++) {
+    ctx.fillStyle = i % 2 ? '#fbbf24' : '#1c1917';
+    ctx.beginPath();
+    ctx.moveTo(i * r * 0.3, r * 0.3);
+    ctx.lineTo(i * r * 0.3 + r * 0.3, r * 0.3);
+    ctx.lineTo(i * r * 0.3, r * 0.6);
+    ctx.lineTo(i * r * 0.3 - r * 0.3, r * 0.6);
+    ctx.fill();
+  }
+  ctx.restore();
+  // A blinking status light.
+  ctx.fillStyle = Math.sin(now * 6 + e.id) > 0 ? '#ef4444' : '#7f1d1d';
+  ctx.beginPath();
+  ctx.arc(0, -r * 0.3, r * 0.14, 0, Math.PI * 2);
+  ctx.fill();
+};
+
+const robotMainframe: Drawer = (ctx, e, now) => {
+  const r = e.r;
+  const glow = ctx.createRadialGradient(0, 0, r * 0.4, 0, 0, r * 1.7);
+  glow.addColorStop(0, 'rgba(251,146,60,0.3)');
+  glow.addColorStop(1, 'transparent');
+  ctx.fillStyle = glow;
+  ctx.beginPath();
+  ctx.arc(0, 0, r * 1.7, 0, Math.PI * 2);
+  ctx.fill();
+  // Treads, then the cabinet.
+  ctx.fillStyle = '#0f172a';
+  roundRect(ctx, -r * 1.1, r * 0.7, r * 2.2, r * 0.5, 8);
+  ctx.fill();
+  ctx.fillStyle = '#475569';
+  for (let i = -3; i <= 3; i++) ctx.fillRect(i * r * 0.3 - 2 + ((now * 40) % (r * 0.3)), r * 0.78, 4, r * 0.34);
+  const body = ctx.createLinearGradient(0, -r, 0, r);
+  body.addColorStop(0, '#64748b');
+  body.addColorStop(1, '#1e293b');
+  ctx.fillStyle = body;
+  roundRect(ctx, -r * 0.9, -r * 1.1, r * 1.8, r * 1.9, 8);
+  ctx.fill();
+  // Blinking server lights and a screen face.
+  for (let i = 0; i < 4; i++) {
+    for (let j = 0; j < 3; j++) {
+      const on = Math.sin(now * 5 + i * 1.3 + j * 2.1) > 0.2;
+      ctx.fillStyle = on ? (j === 1 ? '#4ade80' : '#fb923c') : 'rgba(255,255,255,0.1)';
+      ctx.fillRect(-r * 0.7 + j * r * 0.25, -r * 0.95 + i * r * 0.14, r * 0.15, r * 0.07);
+    }
+  }
+  ctx.fillStyle = '#020617';
+  roundRect(ctx, -r * 0.7, -r * 0.3, r * 1.4, r * 0.8, 4);
+  ctx.fill();
+  const mad = e.dash > 0 || e.aim > 0;
+  ctx.fillStyle = mad ? '#ef4444' : '#fb923c';
+  ctx.shadowColor = ctx.fillStyle;
+  ctx.shadowBlur = 8;
+  for (const side of [-1, 1]) ctx.fillRect(side * r * 0.3 - r * 0.12, -r * 0.15, r * 0.24, mad ? r * 0.1 : r * 0.22);
+  ctx.fillRect(-r * 0.3, r * 0.2, r * 0.6, r * 0.08);
+  ctx.shadowBlur = 0;
+  // Claw arms.
+  ctx.strokeStyle = '#334155';
+  ctx.lineWidth = 4;
+  ctx.lineCap = 'round';
+  for (const side of [-1, 1]) {
+    ctx.beginPath();
+    ctx.moveTo(side * r * 0.9, -r * 0.4);
+    ctx.lineTo(side * r * 1.5, -r * 0.1 + Math.sin(now * 3 + side) * 5);
+    ctx.lineTo(side * r * 1.4, r * 0.4);
+    ctx.stroke();
+  }
+};
+
+/** One enemy at its own position, for the title screen. */
+export function drawSprite(ctx: CanvasRenderingContext2D, e: Enemy, now: number) {
+  ctx.save();
+  ctx.translate(e.x, e.y);
+  LOOKS[e.look][e.kind](ctx, e, now);
+  if (e.hit > 0) {
+    ctx.globalAlpha = 0.6;
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.arc(0, 0, e.r, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.restore();
+}
+
 const LOOKS: Record<Look, Record<Enemy['kind'], Drawer>> = {
+  viking: { bug: vikingRaider, ticket: vikingThrower, legacy: vikingShieldWall, boss: vikingJarl },
+  jungle: { bug: jungleSpider, ticket: junglePlant, legacy: jungleStump, boss: jungleTreant },
+  robot: { bug: robotDrone, ticket: robotTurret, legacy: robotCrate, boss: robotMainframe },
   original: { bug: drawBug, ticket: (ctx, e) => drawTicket(ctx, e), legacy: (ctx, e) => drawLegacy(ctx, e), boss: drawBoss },
   demon: { bug: demonImp, ticket: demonSkull, legacy: demonGargoyle, boss: demonOverlord },
   greek: { bug: greekGladiator, ticket: greekHoplite, legacy: greekShieldWall, boss: greekMinotaur },
