@@ -426,9 +426,20 @@ function drawPlayer(ctx: CanvasRenderingContext2D, g: Game, pal: Palette, now: n
   ctx.fill();
 }
 
+/* The bow's painted arrows, one per element (static/images/game/arrows): the
+   first element owned decides the look, with its trail drawn behind the tip. */
+const ARROW_ELEMENTS = ['fire', 'water', 'leaf', 'ghost'] as const;
+const arrows = new Map<string, HTMLImageElement>();
+function arrowImage(name: string) {
+  let img = arrows.get(name);
+  if (!img) { img = new Image(); img.src = `./images/game/arrows/${name}.webp`; arrows.set(name, img); }
+  return img;
+}
+
 function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accent2: string) {
   const fire = g.skills.fire > 0;
   const water = g.skills.water > 0;
+  const element = ARROW_ELEMENTS.find((e) => g.skills[e] > 0);
   ctx.lineCap = 'round';
   for (const a of g.shots) {
     const len = Math.hypot(a.vx, a.vy) || 1;
@@ -481,6 +492,28 @@ function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accen
       ctx.stroke();
       ctx.restore();
       continue;
+    }
+    if (a.kind === 'arrow' && element) {
+      const arrow = arrowImage(element);
+      const trail = arrowImage(`${element}-trail`);
+      if (arrow.complete && arrow.naturalWidth) {
+        // The tip sits on the shot's point; the picture points right.
+        ctx.save();
+        ctx.translate(a.x, a.y);
+        ctx.rotate(Math.atan2(a.vy, a.vx));
+        if (trail.complete && trail.naturalWidth) {
+          const tw = 58;
+          const th = (tw * trail.naturalHeight) / trail.naturalWidth;
+          ctx.globalAlpha = 0.85;
+          ctx.drawImage(trail, -tw, -th / 2, tw, th);
+          ctx.globalAlpha = 1;
+        }
+        const w = 36;
+        const h = (w * arrow.naturalHeight) / arrow.naturalWidth;
+        ctx.drawImage(arrow, -w, -h / 2, w, h);
+        ctx.restore();
+        continue;
+      }
     }
     const tx = a.x - (a.vx / len) * 14;
     const ty = a.y - (a.vy / len) * 14;
