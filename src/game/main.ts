@@ -832,7 +832,7 @@ function step(now: number) {
     const dy = stick.y - stick.oy;
     const len = Math.hypot(dx, dy) || 1;
     const k = Math.min(len, STICK) / len;
-    if (stickRingImage.complete && stickRingImage.naturalWidth) {
+    if (!save.retro && stickRingImage.complete && stickRingImage.naturalWidth) {
       const size = STICK * 2.6;
       ctx.globalAlpha = 0.8;
       ctx.drawImage(stickRingImage, cx - size / 2, cy - size / 2, size, size);
@@ -848,7 +848,7 @@ function step(now: number) {
     }
     const knobX = cx + dx * k;
     const knobY = cy + dy * k;
-    if (stickKnobImage.complete && stickKnobImage.naturalWidth) {
+    if (!save.retro && stickKnobImage.complete && stickKnobImage.naturalWidth) {
       ctx.drawImage(stickKnobImage, knobX - 25, knobY - 25, 50, 50);
     } else {
       ctx.fillStyle = accent;
