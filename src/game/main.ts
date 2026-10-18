@@ -7,7 +7,7 @@ import { ITEMS, SLOTS, buildLoadout, itemById, type ItemId, type Slot } from './
 import { Scene } from './scene';
 import { makeT, pickLang, type Key } from './strings';
 import {
-  CATEGORY, H, STATUE_ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, update,
+  CATEGORY, H, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, shrinePick, update,
   type Category, type Game, type GameEvent, type Input, type Look, type SkillId, type WheelOutcome,
 } from './world';
 
@@ -86,7 +86,7 @@ function bankRun(g: Game): number | null {
   const won = g.phase === 'won';
   const best = save.bestByWorld[g.world] ?? { room: 0 };
   const better = won ? best.time === undefined || g.time < best.time : best.time === undefined && g.room > (best.room || 0);
-  if (better) save.bestByWorld[g.world] = won ? { room: 10, time: g.time } : { room: g.room };
+  if (better) save.bestByWorld[g.world] = won ? { room: ROOMS, time: g.time } : { room: g.room };
   if (g.world === 1) save.best = save.bestByWorld[1];
   save.coins += Math.floor(g.coins);
   save.runs += 1;
@@ -235,7 +235,7 @@ function mapScreen() {
   const islands = stops.map((st) => {
     const best = save.bestByWorld[st.n];
     const done = best?.time !== undefined;
-    const under = !st.open ? '🔒' : done ? '✓' : best?.room ? `${best.room}/10` : '';
+    const under = !st.open ? '🔒' : done ? '✓' : best?.room ? `${best.room}/${ROOMS}` : '';
     const style = `left:${(st.left / MAP_W) * 100}%;top:${(st.top / MAP_H) * 100}%;width:${(st.w / MAP_W) * 100}%;--rx:${st.m.ring[0]}%;--ry:${st.m.ring[1]}%;--px:${st.m.plate[0]}%;--py:${st.m.plate[1]}%;--pw:${st.m.plate[2]}%;--ph:${st.m.plate[3]}%;--bx:${st.m.badge[0]}%;--by:${st.m.badge[1]}%;--c:${WORLDS[st.n - 1].tint || '#38bdf8'}`;
     return `
       <button class="isle${st.open ? ' is-open' : ' is-locked'}${st.n === picked ? ' is-picked' : ''}" data-world="${st.n}" style="${style}" aria-label="${t('worldN', { n: st.n })} · ${worldName(st.n)}">
@@ -294,6 +294,11 @@ const WHEEL_ICON: Record<WheelOutcome, string> = {
 const WHEEL_TEXT: Record<WheelOutcome, Key> = {
   newSkill: 'wNewSkill', skillUp: 'wSkillUp', heal: 'wHeal', coins: 'wCoins', loseLevel: 'wLoseLevel', hurt: 'wHurt', loseCoins: 'wLoseCoins', bossBuff: 'wBossBuff', nothing: 'wNothing',
 };
+function shrineScreen() {
+  show(`${head('levelup', t('shrineTitle'))}<p>${t('shrineText')}</p>
+    <button class="primary" data-act="shrine-heal">${t('shrineHeal')}</button>
+    <button class="ghost" data-act="shrine-skill">${t('shrineSkill')}</button>`);
+}
 function wheelScreen() {
   const slices = WHEEL.map((o, i) => `<span class="wheel-slice${WHEEL_GOOD.includes(o) ? ' is-good' : o === 'nothing' ? '' : ' is-bad'}" style="--i:${i}">${WHEEL_ICON[o]}</span>`).join('');
   show(`${head('levelup', t('wheelTitle'))}<p>${t('wheelText')}</p>
@@ -425,6 +430,12 @@ screen.addEventListener('click', (event) => {
     mapScreen();
   }
   else if (act === 'resume') { paused = false; hide(); }
+  else if ((act === 'shrine-heal' || act === 'shrine-skill') && game) {
+    const got = shrinePick(game, act === 'shrine-heal' ? 'heal' : 'skill');
+    wheelShown = false;
+    hide();
+    if (got.skill) flash(t('wNewSkill', { name: t(`${got.skill}Name` as Key) }));
+  }
   else if (act === 'wheel-spin' && game) spinWheel(game);
   else if (act === 'wheel-go' && game) {
     const g = game;
@@ -536,7 +547,7 @@ function flash(text: string) {
 const SFX_FOR: Partial<Record<GameEvent, Sfx>> = {
   shoot: 'shoot', knife: 'knife', boomerang: 'boomerang', hit: 'hit', kill: 'kill', gem: 'gem', hurt: 'hurt',
   levelup: 'levelup', slash: 'slash', slam: 'slam', strike: 'strike', boom: 'boom', revive: 'revive', clear: 'door', boss: 'boss',
-  heal: 'revive', wheel: 'door',
+  heal: 'revive', wheel: 'door', shrine: 'door',
 };
 // Hits and gems happen many times a frame; one sound per kind per frame is plenty.
 function playEvents(events: GameEvent[]) {
@@ -661,7 +672,8 @@ function step(now: number) {
     if (calm) g.shake = 0;
     playEvents(g.events);
     for (const event of g.events) {
-      if (event === 'clear') flash(STATUE_ROOMS.includes(g.room) ? t('statueHint') : g.room === WHEEL_ROOM && g.wheelDoor ? t('wheelHint') : t('doorOpen'));
+      if (event === 'clear') flash(g.room === WHEEL_ROOM && g.wheelDoor ? t('wheelHint') : t('doorOpen'));
+      if (event === 'shrine') { flash(t('shrineHint')); audio.setIntensity(0.1); }
       if (event === 'heal') flash(t('statueHeal'));
       if (event === 'room') { flash(t('sprint', { room: g.room })); audio.setIntensity(Math.min(0.8, 0.2 + g.room * 0.05 + (g.world - 1) * 0.05)); }
       if (event === 'boss') {
@@ -678,6 +690,12 @@ function step(now: number) {
       stick.on = false;
       keys.clear();
       choiceScreen(g);
+    }
+    if (phase === 'shrine' && !wheelShown) {
+      wheelShown = true;
+      stick.on = false;
+      keys.clear();
+      shrineScreen();
     }
     if (phase === 'wheel' && !wheelShown) {
       wheelShown = true;
