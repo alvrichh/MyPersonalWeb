@@ -124,6 +124,7 @@ function show(html: string, wide = false, menu = false, extra = '') {
 }
 function hide() {
   screen.hidden = true;
+  screen.classList.remove('is-menu', 'is-map');
   screen.innerHTML = '';
 }
 const backButton = (act: string, label: Key = 'menu') => `<button class="ghost" data-act="${act}">← ${t(label)}</button>`;
