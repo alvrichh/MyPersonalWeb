@@ -3,14 +3,16 @@ import type { ItemId, Slot } from './shop';
 
 /* Everything Bug Hunter remembers between runs, in one localStorage key. */
 
-export type EnemyStyle = 'original' | 'demon' | 'greek' | 'nightmare' | 'random';
-export const STYLES: EnemyStyle[] = ['original', 'demon', 'greek', 'nightmare', 'random'];
+export type EnemyStyle = 'world' | 'original' | 'demon' | 'viking' | 'jungle' | 'greek' | 'robot' | 'nightmare' | 'random';
+export const STYLES: EnemyStyle[] = ['world', 'original', 'demon', 'viking', 'jungle', 'greek', 'robot', 'nightmare', 'random'];
 
 export type Save = {
   coins: number;
   owned: ItemId[];
   equipped: Partial<Record<Slot, ItemId>>;
   style: EnemyStyle;
+  /** Saves from before worlds had their own cast default to 'world' once. */
+  styleV2: boolean;
   music: number;
   sfx: number;
   best: { room: number; time?: number };
@@ -29,7 +31,8 @@ const fresh = (): Save => ({
   coins: 0,
   owned: [],
   equipped: {},
-  style: 'original',
+  style: 'world',
+  styleV2: true,
   music: 0.6,
   sfx: 0.8,
   best: { room: 0 },
@@ -44,7 +47,8 @@ export function loadSave(): Save {
   try {
     const data = JSON.parse(storage.get(KEY) || '{}') as Partial<Save>;
     const save = { ...base, ...data, equipped: { ...data.equipped }, best: { ...base.best, ...data.best }, bestByWorld: { ...data.bestByWorld } };
-    if (!STYLES.includes(save.style)) save.style = 'original';
+    if (!STYLES.includes(save.style)) save.style = 'world';
+    if (!data.styleV2) { save.style = 'world'; save.styleV2 = true; }
     save.unlocked = Math.max(1, save.unlocked || 1);
     save.world = Math.min(Math.max(1, save.world || 1), save.unlocked);
     // The old best-run key from the first version, if any.
