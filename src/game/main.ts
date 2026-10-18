@@ -8,8 +8,8 @@ import { ARMOUR_SLOTS, ITEMS, type SpiritSkin, SLOTS, UPGRADES, WEAPON_SLOTS, bu
 import { Scene } from './scene';
 import { makeT, pickLang, type Key } from './strings';
 import {
-  CATEGORY, EVO_PARTNER, H, REVIVE_PRICE, SKILLS, arrowLook, arrowOptions, bladeElement, bladeOptions, canEvolve, evoOf, maxLevel, pickArrow, pickBlade, pickSpirit, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_LUCKY, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
-  type ArrowLook, type Category, type Choice, type Game, type GameEvent, type Input, type Look, type SkillId, type WheelOutcome,
+  CATEGORY, EVO_PARTNER, H, REVIVE_PRICE, SKILLS, arrowLook, arrowOptions, bladeElement, bladeOptions, canEvolve, evoOf, fusionOf, fusionWith, arrowElements, rerollChoices, maxLevel, pickArrow, pickBlade, pickSpirit, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_LUCKY, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
+  type ArrowLook, type Category, type Choice, type Fusion, type Game, type GameEvent, type Input, type Look, type SkillId, type WheelOutcome,
 } from './world';
 
 /* Bug Hunter's page: the menus (play, shop, enemy looks, options), input
@@ -469,6 +469,15 @@ function mapScreen() {
     </div>`, true, false, 'is-map');
 }
 
+/** The four arrow elements' marks, for the fusion lines. */
+const ELEMENT_MARK: Partial<Record<SkillId, string>> = { fire: '🔥', water: '💧', bolt: '⚡', ghost: '👻' };
+const fusionKey = (f: Fusion) => `fusion${cap(f)}` as const;
+/** "🔥 + ⚡ = Plasma" for the pair of elements you carry (or would carry with `adding`). */
+function fusionLine(g: Game, f: Fusion, adding?: SkillId) {
+  const els = [...arrowElements(g), ...(adding ? [adding] : [])].slice(0, 2);
+  return `${els.map((e) => ELEMENT_MARK[e]).join(' + ')} = ${t(`${fusionKey(f)}Name` as Key)}`;
+}
+
 function choiceScreen(g: Game) {
   const cards = g.choices
     .map((choice) => {
@@ -487,10 +496,17 @@ function choiceScreen(g: Game) {
       const cat = CATEGORY[id];
       const fresh = cat !== 'upgrade' && g.skills[id] === 0;
       const level = id === 'heart' ? '' : `<span class="lvl">${fresh ? t('newWeapon') : t('skillLevel', { level: g.skills[id] + 1 })}</span>`;
-      return `<button class="skill skill-${cat}" data-skill="${id}"><span class="icon" aria-hidden="true">${skillIcon(id, 56, iconFile(g, id))}</span><span class="cat">${t(CATEGORY_LABEL[cat])}</span><b>${name}</b><span>${text}</span>${level}</button>`;
+      // A second arrow element says which fusion it makes (and that the other two stop coming).
+      const fz = fusionWith(g, id);
+      const fuse = fz ? `<em class="fuse">${t('fusionCard', { fusion: fusionLine(g, fz, id) })}</em>` : '';
+      return `<button class="skill skill-${cat}" data-skill="${id}"><span class="icon" aria-hidden="true">${skillIcon(id, 56, iconFile(g, id))}</span><span class="cat">${t(CATEGORY_LABEL[cat])}</span><b>${name}</b><span>${text}${fuse}</span>${level}</button>`;
     })
     .join('');
-  show(`${head('levelup', t('levelUp'))}<p class="kicker">${t('level', { level: g.level })}</p><p>${t('choose')}</p><div class="skills">${cards}</div>`, true, false, 'is-levelup');
+  // On call: two rerolls a shift.
+  const reroll = g.mode === 'horde'
+    ? `<button class="ghost small reroll" data-act="reroll"${g.rerolls > 0 ? '' : ' disabled'}>🎲 ${t('reroll', { n: g.rerolls })}</button>`
+    : '';
+  show(`${head('levelup', t('levelUp'))}<p class="kicker">${t('level', { level: g.level })}</p><p>${t('choose')}</p><div class="skills">${cards}</div>${reroll}`, true, false, 'is-levelup');
 }
 
 /* The wheel of fate: ten slices, one per wedge of the painted disc. The wheel is
@@ -820,11 +836,20 @@ screen.addEventListener('click', (event) => {
     audio.setVolumes(save.music, save.sfx);
     persist();
     optionsScreen();
+  } else if (act === 'reroll' && game) {
+    if (rerollChoices(game)) {
+      audio.play('click');
+      shownChoices = game.choices.join();
+      choiceScreen(game);
+    }
   } else if (target.dataset.skill && game) {
     const choice = target.dataset.skill as Choice;
+    const fusedBefore = fusionOf(game);
     chooseSkill(game, choice);
     const evo = evoOf(choice);
+    const fused = !fusedBefore && fusionOf(game);
     if (evo) { audio.play('win'); flash(`${t('evoReady')} ${t(`evo${cap(evo)}Name` as Key)}`); }
+    else if (fused) { audio.play('win'); flash(`${t('fusionMade')} ${fusionLine(game, fused)}`); }
     else audio.play('pick');
     shownChoices = '';
     hide();
@@ -1018,8 +1043,12 @@ function renderGearPanel(g: Game) {
   };
   const weapons = ['bow' as const, ...ownedWeapons(g)];
   const upgrades = SKILLS.filter((s) => CATEGORY[s] === 'upgrade' && g.skills[s] > 0);
+  const fusion = fusionOf(g);
+  const fusionRow = fusion
+    ? `<h4>${t('gearFusion')}</h4><ul><li class="is-fusion"><span class="gp-icon gp-fuse" aria-hidden="true">${arrowElements(g).slice(0, 2).map((e) => ELEMENT_MARK[e]).join('')}</span><span class="gp-copy"><b>${fusionLine(g, fusion)}</b><small>${t(`${fusionKey(fusion)}Text` as Key)}</small></span></li></ul>`
+    : arrowElements(g).length === 1 ? `<p class="gp-hint">${t('fusionHint')}</p>` : '';
   gearPanel.innerHTML = `<header><b>${t('gearTitle')}</b><button type="button" class="gp-close" aria-label="${t('resume')}">✕</button></header>
-    <h4>${t('gearWeapons')}</h4><ul>${weapons.map(row).join('')}</ul>
+    <h4>${t('gearWeapons')}</h4><ul>${weapons.map(row).join('')}</ul>${fusionRow}
     ${upgrades.length ? `<h4>${t('gearUpgrades')}</h4><ul>${upgrades.map(row).join('')}</ul>` : ''}
     <p class="gp-hint">${t('gearHint')}</p>`;
 }

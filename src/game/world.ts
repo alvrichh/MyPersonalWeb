@@ -125,6 +125,29 @@ export const canEvolve = (g: Game, w: SkillId) => {
   const partner = EVO_PARTNER[w];
   return !!partner && !g.evolved[w] && g.skills[w] >= maxLevel(w) && g.skills[partner] >= 1;
 };
+/*
+ * Arrow elements and fusions: the bow carries at most two of the four
+ * elements a run, and the pair you pick fuses into an effect of its own.
+ * The shape upgrades (leaf fan, double, ricochet, hotfix) still stack freely.
+ */
+export const ARROW_ELEMENTS: SkillId[] = ['fire', 'water', 'bolt', 'ghost'];
+export type Fusion = 'steam' | 'plasma' | 'wisp' | 'shock' | 'frostbite' | 'spectral';
+const FUSIONS: Record<string, Fusion> = {
+  'fire+water': 'steam', 'fire+bolt': 'plasma', 'fire+ghost': 'wisp',
+  'water+bolt': 'shock', 'water+ghost': 'frostbite', 'bolt+ghost': 'spectral',
+};
+const pairKey = (a: SkillId, b: SkillId) => [a, b].sort((x, y) => ARROW_ELEMENTS.indexOf(x) - ARROW_ELEMENTS.indexOf(y)).join('+');
+export const arrowElements = (g: Game) => ARROW_ELEMENTS.filter((s) => g.skills[s] > 0);
+export function fusionOf(g: Game): Fusion | null {
+  const els = arrowElements(g);
+  return els.length >= 2 ? FUSIONS[pairKey(els[0], els[1])] : null;
+}
+/** The fusion an element card would make: picking it gives you your second element. */
+export function fusionWith(g: Game, s: SkillId): Fusion | null {
+  if (!ARROW_ELEMENTS.includes(s) || g.skills[s] > 0) return null;
+  const els = arrowElements(g);
+  return els.length === 1 ? FUSIONS[pairKey(els[0], s)] : null;
+}
 const MAX_WEAPONS = 4;
 /** The weapons from the rest of Survivor.io's list are On call only: sprints keep their tuned rooms and arsenal. */
 export const HORDE_ONLY: SkillId[] = ['brick', 'molotov', 'durian', 'mines', 'drill', 'rocket', 'ball'];
@@ -202,6 +225,8 @@ export type Shot = {
   free?: boolean;
   /** Seconds until the shot may hit the same bugs again (drill, durian, ball). */
   tick?: number;
+  /** Will-o'-wisp arrows: seconds to the next flame dropped behind. */
+  trail?: number;
 };
 /** A mine left on the floor: it arms, then goes off when a bug steps on it. */
 export type Mine = { x: number; y: number; arm: number; life: number };
@@ -215,7 +240,12 @@ export type Gem = { x: number; y: number; value: number; pull: boolean };
 /** On call: a heart dropped by a tougher bug; touch it for a little health. It fades after a while. */
 export type Heart = { x: number; y: number; life: number; pull: boolean };
 /** Short-lived shapes the renderer draws: sword arcs, hammer rings, explosions, lightning strikes. */
-export type Ember = { x: number; y: number; r: number; life: number; max: number; /** Burn per second (molotov pools; 12 when unset). */ dps?: number };
+export type Ember = {
+  x: number; y: number; r: number; life: number; max: number;
+  /** Burn per second (molotov pools; 12 when unset). */ dps?: number;
+  /** Fusion clouds: steam slows as it burns, will-o'-wisp fire is drawn blue-green. */ kind?: 'steam' | 'wisp';
+  slow?: number;
+};
 export type Fx = {
   kind: 'slash' | 'ring' | 'boom' | 'strike' | 'halo' | 'beam' | 'rune'; x: number; y: number; r: number; a: number; life: number; max: number;
   /** Seconds before it starts (the evolved sword's three cuts follow one another). */
@@ -333,6 +363,8 @@ export type Game = {
   bladePick: BladeElement | null;
   /** The arrow look the player picked in the skills list (null: the first bow upgrade owned). */
   arrowPick: ArrowLook | null;
+  /** On call: level-up rerolls left (two a shift). */
+  rerolls: number;
   style: EnemyStyle;
   /** Coins earned this run (banked by the page when the run ends). */
   coins: number;
@@ -352,7 +384,7 @@ export type Game = {
 };
 
 export type GameEvent =
-  | 'clear' | 'boss' | 'hurt' | 'levelup' | 'room' | 'revive' | 'heal' | 'wheel' | 'shrine'
+  | 'fusion' | 'clear' | 'boss' | 'hurt' | 'levelup' | 'room' | 'revive' | 'heal' | 'wheel' | 'shrine'
   | 'shoot' | 'knife' | 'boomerang' | 'orb' | 'hit' | 'kill' | 'gem' | 'heart' | 'chest' | 'slash' | 'slam' | 'strike' | 'boom' | 'minute';
 
 /* ------------------------------------------------------------------ helpers */
@@ -630,6 +662,7 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     loadout,
     bladePick: null,
     arrowPick: null,
+    rerolls: mode === 'horde' ? 2 : 0,
     style,
     coins: 0,
     revives: loadout.revives,
@@ -762,19 +795,21 @@ export const ownedWeapons = (g: Game) => WEAPONS.filter((s) => g.skills[s] > 0);
 
 function canPick(g: Game, s: SkillId) {
   if (!allowedIn(g, s)) return false;
+  // Two arrow elements a run: once you have a pair, the other two stop coming.
+  if (ARROW_ELEMENTS.includes(s) && g.skills[s] === 0 && arrowElements(g).length >= 2) return false;
   if (g.skills[s] >= maxLevel(s)) return false;
   // A new weapon only while there's a free slot.
   if (CATEGORY[s] !== 'upgrade' && g.skills[s] === 0 && ownedWeapons(g).length >= MAX_WEAPONS) return false;
   return true;
 }
 
-function offerChoices(g: Game) {
-  const pickFrom = (pool: SkillId[]) => pool.filter((s) => canPick(g, s) && !g.choices.includes(s));
+function offerChoices(g: Game, keepEvo?: SkillId | null, avoid: Choice[] = []) {
+  const pickFrom = (pool: SkillId[]) => pool.filter((s) => canPick(g, s) && !g.choices.includes(s) && !avoid.includes(s));
   const any = <T>(list: T[]) => list[Math.floor(Math.random() * list.length)];
   g.choices = [];
-  // An evolution ready? It takes its weapon's slot, as a gold card.
+  // An evolution ready? It takes its weapon's slot, as a gold card (a reroll keeps the one shown).
   const evos = WEAPONS.filter((w) => canEvolve(g, w));
-  const evo = evos.length ? any(evos) : null;
+  const evo = keepEvo !== undefined ? keepEvo : evos.length ? any(evos) : null;
   if (evo) g.choices.push(`evo:${evo}`);
   // One of each kind when it can: melee, magic, then ranged or a bow upgrade.
   for (const kinds of [['melee'], ['magic'], ['ranged', 'upgrade']] as Category[][]) {
@@ -787,7 +822,18 @@ function offerChoices(g: Game) {
     if (!pool.length) break;
     g.choices.push(any(pool));
   }
+  // A reroll with too little left to avoid the old cards: allow them back rather than show fewer.
+  if (avoid.length && g.choices.length < Math.min(3, avoid.length)) return offerChoices(g, keepEvo);
   g.phase = 'levelup';
+}
+
+/** On call: swap the level-up cards for three others (twice a shift); an evolution card stays put. */
+export function rerollChoices(g: Game) {
+  if (g.phase !== 'levelup' || g.rerolls <= 0) return false;
+  g.rerolls -= 1;
+  const evoCard = g.choices.map(evoOf).find((e) => e) ?? null;
+  offerChoices(g, evoCard, g.choices);
+  return true;
 }
 
 export function chooseSkill(g: Game, choice: Choice) {
@@ -858,6 +904,16 @@ function kill(g: Game, e: Enemy) {
   if (e.dead) return;
   e.dead = true;
   g.kills += 1;
+  // Plasma (fire + lightning arrows): a burning bug blows up when it dies, setting its neighbours alight.
+  if (e.burn > 0 && fusionOf(g) === 'plasma') {
+    g.fx.push({ kind: 'boom', x: e.x, y: e.y, r: 40, a: 0, life: 0.3, max: 0.3 });
+    for (const o of live(g)) {
+      if (o === e || dist(o, e) > 40 + o.r) continue;
+      o.burn = Math.max(o.burn, 2);
+      o.burnDps = Math.max(o.burnDps, 10);
+      hurt(g, o, 14 * power(g, 'ranged'));
+    }
+  }
   g.coins += COINS[e.kind] * worldPay(g) * (g.mode === 'horde' ? HORDE_PAY : 1);
   g.events.push('kill');
   burst(g, e.x, e.y, ENEMY_COLOR[e.kind], e.kind === 'boss' ? 60 : 14, e.kind === 'boss' ? 260 : 140, e.kind === 'boss' ? 5 : 3);
@@ -929,14 +985,40 @@ function hitWithShot(g: Game, e: Enemy, s: Shot) {
   }
   // Lightning: the hit arcs on to the nearest bugs it hasn't touched yet.
   if (g.skills.bolt) chain(g, e, g.skills.bolt, s.dmg * 0.6);
+  const fusion = fusionOf(g);
+  if (fusion) fuse(g, e, s, fusion);
+}
+
+/* What each fusion adds to a bow hit (plasma works on kills, will-o'-wisp
+   on the arrow's flight, shock in `chain`). */
+function fuse(g: Game, e: Enemy, s: Shot, fusion: Fusion) {
+  if (fusion === 'steam') {
+    // Steam: a cloud that scalds and slows the bugs inside.
+    if (g.embers.filter((k) => k.kind === 'steam').length < 10) {
+      g.embers.push({ x: e.x, y: e.y, r: 26, life: 1.3, max: 1.3, dps: 7 * power(g, 'ranged'), kind: 'steam', slow: 0.4 });
+    }
+  } else if (fusion === 'frostbite') {
+    // Spectral frost: every bug the arrow goes through freezes for a moment (bosses only slow).
+    e.slow = Math.max(e.slow, 0.5);
+    e.slowBy = e.kind === 'boss' ? Math.max(e.slowBy, 0.6) : 1;
+  } else if (fusion === 'spectral') {
+    // Spectral storm: each bug the arrow goes through calls a bolt from the sky (the first two).
+    if (s.hits.size <= 2) {
+      g.fx.push({ kind: 'strike', x: e.x, y: e.y, r: 22, a: 0, life: 0.25, max: 0.25 });
+      g.zaps.push({ pts: zigzag({ x: e.x + rand(-16, 16), y: e.y - 200 }, e, 12), life: 0.2 });
+      for (const o of live(g)) if (dist(o, e) < 22 + o.r) hurt(g, o, s.dmg * 0.35);
+    }
+  }
 }
 
 function chain(g: Game, from: Enemy, jumps: number, amount: number) {
   let at: Vec = from;
   const touched = new Set([from.id]);
+  // Shock (water + lightning arrows): the arc reaches further and hits slowed bugs twice as hard.
+  const shock = fusionOf(g) === 'shock';
   for (let i = 0; i < jumps; i++) {
     let next: Enemy | undefined;
-    let best = 130;
+    let best = shock ? 190 : 130;
     for (const o of live(g)) {
       if (touched.has(o.id)) continue;
       const d = dist(at, o);
@@ -945,7 +1027,7 @@ function chain(g: Game, from: Enemy, jumps: number, amount: number) {
     if (!next) break;
     touched.add(next.id);
     g.zaps.push({ pts: zigzag(at, next), life: 0.18 });
-    hurt(g, next, amount);
+    hurt(g, next, shock && next.slow > 0 ? amount * 2 : amount);
     at = next;
   }
 }
@@ -1754,6 +1836,14 @@ function updateShot(g: Game, s: Shot, dt: number): boolean {
   }
   s.x += s.vx * dt;
   s.y += s.vy * dt;
+  // Will-o'-wisp (fire + ghost arrows): the arrow leaves a trail of blue-green flame.
+  if (s.bow && s.kind === 'arrow' && fusionOf(g) === 'wisp') {
+    s.trail = (s.trail ?? 0) - dt;
+    if (s.trail <= 0 && g.embers.length < 70) {
+      s.trail = 0.07;
+      g.embers.push({ x: s.x, y: s.y, r: 11, life: 1, max: 1, dps: 9 * power(g, 'ranged'), kind: 'wisp' });
+    }
+  }
   // A bottle in flight touches nothing; it bursts where it lands.
   if (s.kind === 'molotov') return true;
   // Rockets blow up on walls and racks.
@@ -2105,7 +2195,12 @@ export function update(g: Game, dt: number, input: Input) {
   g.embers = g.embers.filter((em) => {
     em.life -= dt;
     if (em.life <= 0) return false;
-    for (const e of live(g)) if (dist(em, e) < em.r + e.r * 0.5) { e.burn = Math.max(e.burn, 0.6); e.burnDps = Math.max(e.burnDps, em.dps ?? 12); }
+    for (const e of live(g)) {
+      if (dist(em, e) >= em.r + e.r * 0.5) continue;
+      e.burn = Math.max(e.burn, 0.6);
+      e.burnDps = Math.max(e.burnDps, em.dps ?? 12);
+      if (em.slow) { e.slow = Math.max(e.slow, 0.3); e.slowBy = Math.max(e.slowBy, em.slow); }
+    }
     return true;
   });
 

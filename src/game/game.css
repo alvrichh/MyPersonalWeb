@@ -2954,3 +2954,10 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.75), 0 0 18px rgba(250, 204, 21, 0.35);
 }
 .legend-name { color: #fde047; text-shadow: 0 0 6px rgba(250, 204, 21, 0.6); }
+
+/* Arrow fusions: the line on a second element's card, the row in the skills list, and the reroll. */
+.panel .skill .fuse { display: block; margin-top: 3px; font-style: normal; font-weight: 600; color: #f0abfc; }
+.gp-fuse { font-size: 1.05rem; letter-spacing: -2px; }
+#gearPanel li.is-fusion b { color: #f0abfc; }
+.panel .reroll { display: block; width: min(100%, 300px); margin: 10px auto 0; }
+.panel .reroll:disabled { opacity: 0.45; cursor: default; }

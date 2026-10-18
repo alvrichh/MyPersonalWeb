@@ -1,4 +1,4 @@
-import { H, W, WALL, WHEEL_X, WORLDS, frostReach, isBossRoom, type Enemy, type Game, type Shot, type Look, type Statue, type Rect, type Vec, arrowLook, bladeCount, bladeElement, bladeOrbit, bladeScale, type BladeElement } from './world';
+import { H, W, WALL, WHEEL_X, WORLDS, frostReach, isBossRoom, type Enemy, type Game, type Shot, type Look, type Statue, type Rect, type Vec, type Fusion, arrowLook, fusionOf, bladeCount, bladeElement, bladeOrbit, bladeScale, type BladeElement } from './world';
 import { SPIRIT_COLOR, type ItemId, type SpiritSkin } from './shop';
 import { heroKey, type HeroSkin } from './save';
 
@@ -500,8 +500,19 @@ function arrowImage(name: string) {
 function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accent2: string) {
   const look = arrowLook(g);
   const element = look && ARROW_PICTURES.includes(look) ? look : null;
+  const fusion = fusionOf(g);
   ctx.lineCap = 'round';
   for (const a of g.shots) {
+    // A fused arrow carries a glow in its fusion's colour.
+    if (fusion && a.bow && a.kind === 'arrow') {
+      const glow = ctx.createRadialGradient(a.x, a.y, 1, a.x, a.y, 13);
+      glow.addColorStop(0, `rgba(${FUSION_COLOR[fusion]},0.8)`);
+      glow.addColorStop(1, `rgba(${FUSION_COLOR[fusion]},0)`);
+      ctx.fillStyle = glow;
+      ctx.beginPath();
+      ctx.arc(a.x, a.y, 13, 0, Math.PI * 2);
+      ctx.fill();
+    }
     const len = Math.hypot(a.vx, a.vy) || 1;
     if (drawNewShot(ctx, g, a)) continue;
     if (a.kind === 'orb') {
@@ -992,9 +1003,27 @@ function drawRunes(ctx: CanvasRenderingContext2D, g: Game, now: number) {
 }
 
 /* Burning ground from the evolved fireball: an orange pool with embers. */
+/** Each arrow fusion's glow colour (the arrow and the skills list). */
+export const FUSION_COLOR: Record<Fusion, string> = {
+  steam: '226,232,240', plasma: '240,171,252', wisp: '94,234,212', shock: '125,211,252', frostbite: '186,230,253', spectral: '196,181,253',
+};
 function drawEmbers(ctx: CanvasRenderingContext2D, g: Game, now: number) {
   for (const em of g.embers) {
     const k = em.life / em.max;
+    if (em.kind === 'steam' || em.kind === 'wisp') {
+      // Steam: a pale cloud swelling as it fades. Will-o'-wisp: a small blue-green flame.
+      const steam = em.kind === 'steam';
+      const r = steam ? em.r * (1.2 - 0.3 * k) : em.r * (0.6 + 0.4 * k);
+      const grad = ctx.createRadialGradient(em.x, em.y, 1, em.x, em.y, r);
+      grad.addColorStop(0, steam ? `rgba(248,250,252,${0.55 * k})` : `rgba(204,251,241,${0.8 * k})`);
+      grad.addColorStop(0.55, steam ? `rgba(203,213,225,${0.35 * k})` : `rgba(45,212,191,${0.55 * k})`);
+      grad.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(em.x, em.y - (steam ? 0 : (1 - k) * 6), r, 0, Math.PI * 2);
+      ctx.fill();
+      continue;
+    }
     const grad = ctx.createRadialGradient(em.x, em.y, 2, em.x, em.y, em.r);
     grad.addColorStop(0, `rgba(254,215,170,${0.55 * k})`);
     grad.addColorStop(0.5, `rgba(249,115,22,${0.45 * k})`);
