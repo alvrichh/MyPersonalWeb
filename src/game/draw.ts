@@ -49,6 +49,7 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   else drawRoom(ctx, g, accent, now);
   drawHazards(ctx, g, now);
   drawGems(ctx, g, now);
+  drawHearts(ctx, g, now);
   if (g.skills.frost) drawFrost(ctx, g, now);
   drawFx(ctx, g, accent, 'under');
   for (const e of g.enemies) if (onScreen(e, 80)) drawEnemy(ctx, e, now);
@@ -592,6 +593,42 @@ function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accen
     ctx.beginPath();
     ctx.arc(a.x, a.y, 1.8, 0, Math.PI * 2);
     ctx.fill();
+  }
+}
+
+/* On call's health hearts: a red heart with a soft glow, bobbing, blinking
+   in its last few seconds. */
+function drawHearts(ctx: CanvasRenderingContext2D, g: Game, now: number) {
+  for (const h of g.hearts) {
+    if (h.life < 4 && Math.floor(now * 8) % 2 === 0) continue;
+    const bob = Math.sin(now * 4 + h.x) * 2;
+    const s = 8 + Math.sin(now * 6 + h.y) * 0.6;
+    ctx.save();
+    ctx.translate(h.x, h.y + bob);
+    const glow = ctx.createRadialGradient(0, 0, 2, 0, 0, s * 2.2);
+    glow.addColorStop(0, 'rgba(255,99,132,0.55)');
+    glow.addColorStop(1, 'rgba(255,99,132,0)');
+    ctx.fillStyle = glow;
+    ctx.beginPath();
+    ctx.arc(0, 0, s * 2.2, 0, Math.PI * 2);
+    ctx.fill();
+    const fill = ctx.createLinearGradient(0, -s, 0, s);
+    fill.addColorStop(0, '#ff8fa3');
+    fill.addColorStop(1, '#e11d48');
+    ctx.fillStyle = fill;
+    ctx.beginPath();
+    ctx.moveTo(0, s * 0.9);
+    ctx.bezierCurveTo(-s * 1.4, -s * 0.1, -s * 0.6, -s * 1.15, 0, -s * 0.4);
+    ctx.bezierCurveTo(s * 0.6, -s * 1.15, s * 1.4, -s * 0.1, 0, s * 0.9);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,0.85)';
+    ctx.lineWidth = 1.4;
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(255,255,255,0.75)';
+    ctx.beginPath();
+    ctx.ellipse(-s * 0.42, -s * 0.38, s * 0.2, s * 0.12, -0.6, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
   }
 }
 

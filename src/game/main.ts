@@ -869,7 +869,7 @@ function flash(text: string) {
 const SFX_FOR: Partial<Record<GameEvent, Sfx>> = {
   shoot: 'shoot', knife: 'knife', boomerang: 'boomerang', orb: 'shoot', hit: 'hit', kill: 'kill', gem: 'gem', hurt: 'hurt',
   levelup: 'levelup', slash: 'slash', slam: 'slam', strike: 'strike', boom: 'boom', revive: 'revive', clear: 'door', boss: 'boss',
-  heal: 'revive', wheel: 'door', shrine: 'door',
+  heal: 'revive', heart: 'gem', wheel: 'door', shrine: 'door',
 };
 // Hits and gems happen many times a frame; one sound per kind per frame is plenty.
 function playEvents(events: GameEvent[]) {
