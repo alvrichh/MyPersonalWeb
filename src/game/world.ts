@@ -1204,8 +1204,9 @@ const BLADE_FROM: Record<Exclude<BladeElement, 'steel'>, SkillId[]> = {
   volt: ['bolt', 'spark', 'storm'],
   shade: ['ghost'],
 };
-/** The Spirits skill counts for the element of the spirit you wear (the leaf one has no blade of its own). */
-const SPIRIT_BLADE: Record<SpiritSkin, BladeElement> = { water: 'ice', tide: 'ice', fire: 'fire', volt: 'volt', shade: 'shade', thorn: 'steel' };
+/** The Spirits skill counts for the element of the spirit you wear: the default ghost is a ghost, so shade
+    (its medallion is the purple ghost); the leaf one has no blade of its own. */
+const SPIRIT_BLADE: Record<SpiritSkin, BladeElement> = { water: 'shade', tide: 'ice', fire: 'fire', volt: 'volt', shade: 'shade', thorn: 'steel' };
 /** How many levels of each element's skills you carry. */
 function bladeSources(g: Game): Record<Exclude<BladeElement, 'steel'>, number> {
   const fromSpirit = SPIRIT_BLADE[g.loadout.spirit];
