@@ -403,3 +403,91 @@
   60% { scale: 1.1; }
   100% { scale: 0.95; }
 }
+
+/* --------------------------------------------------------------------------
+   Detail on top of the silhouettes, so each piece reads as a small drawing
+   rather than a flat icon. Colours still come from the piece's accent slot.
+   -------------------------------------------------------------------------- */
+
+/* Water: light catches one side of each ring, a fainter second ring follows
+   inside it and the water just within the ring is tinted. */
+.hero-fx > .fx-ripple {
+  border-color:
+    color-mix(in srgb, currentColor 55%, #fff)
+    currentColor
+    color-mix(in srgb, currentColor 80%, #000)
+    color-mix(in srgb, currentColor 55%, #fff);
+  background: radial-gradient(closest-side, transparent 82%, color-mix(in srgb, currentColor 12%, transparent));
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    opacity: 0.4;
+  }
+}
+
+/* Sparks: a white-hot head (the end that leads) with a coloured tail. */
+.hero-fx > .fx-spark {
+  background: linear-gradient(
+    to bottom,
+    #fffbe8 0%,
+    color-mix(in srgb, currentColor 60%, #fff3c4) 30%,
+    currentColor 60%,
+    color-mix(in srgb, currentColor 35%, transparent) 100%
+  );
+}
+
+/* Lightning: a bright white core inside each coloured bolt. */
+.hero-fx > .fx-bolt::before {
+  background: linear-gradient(160deg, color-mix(in srgb, currentColor 60%, #fff), currentColor 55%);
+}
+
+.hero-fx > .fx-bolt::after {
+  content: "";
+  position: absolute;
+  inset: 24% 30%;
+  background: color-mix(in srgb, #fff 85%, currentColor);
+  -webkit-mask: var(--shape) center / contain no-repeat;
+  mask: var(--shape) center / contain no-repeat;
+}
+
+/* Ghosts: a solid, softly shaded body with a face drawn on it (dark on the
+   pale dark-mode ghost, light on the darker light-mode one). */
+.hero-fx > .fx-ghost {
+  --shape: #{shape("%3Cpath d='M12 2a8 8 0 0 0-8 8v12l2.7-2 2.6 2 2.7-2 2.7 2 2.6-2 2.7 2V10a8 8 0 0 0-8-8z'/%3E")};
+  --face: #{shape("%3Cellipse cx='9' cy='10' rx='1.4' ry='1.9'/%3E%3Cellipse cx='15' cy='10' rx='1.4' ry='1.9'/%3E%3Cellipse cx='12' cy='14.4' rx='1.1' ry='1.4'/%3E")};
+
+  &::before {
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, currentColor 75%, #fff) 0%,
+      currentColor 55%,
+      color-mix(in srgb, currentColor 82%, #000) 100%
+    );
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: color-mix(in srgb, var(--paper-base) 85%, currentColor);
+    -webkit-mask: var(--face) center / contain no-repeat;
+    mask: var(--face) center / contain no-repeat;
+  }
+}
+
+/* Hearts: lit from the top left, with a glossy highlight on the left lobe. */
+.hero-fx > .fx-heart::before {
+  background:
+    radial-gradient(ellipse 20% 12% at 31% 30%, rgb(255 255 255 / 0.85), transparent),
+    radial-gradient(circle at 32% 28%, color-mix(in srgb, currentColor 55%, #fff) 0%, currentColor 48%, color-mix(in srgb, currentColor 75%, #000) 100%);
+}
+
+/* Pink's second tone leans orange, which reads as a brown heart: use a red
+   pink for that colour slot instead. */
+.hero-fx > .fx-heart:nth-child(3n + 1) {
+  color: color-mix(in srgb, var(--accent) 65%, #ff3d6e);
+}
