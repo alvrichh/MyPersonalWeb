@@ -175,6 +175,8 @@ export type Orb = { x: number; y: number; vx: number; vy: number; r: number; dmg
 export type Particle = { x: number; y: number; vx: number; vy: number; life: number; max: number; size: number; color: string };
 export type Zap = { pts: Vec[]; life: number };
 export type Gem = { x: number; y: number; value: number; pull: boolean };
+/** On call: a heart dropped by a tougher bug; touch it for a little health. It fades after a while. */
+export type Heart = { x: number; y: number; life: number; pull: boolean };
 /** Short-lived shapes the renderer draws: sword arcs, hammer rings, explosions, lightning strikes. */
 export type Fx = { kind: 'slash' | 'ring' | 'boom' | 'strike'; x: number; y: number; r: number; a: number; life: number; max: number };
 export type Fireball = { x: number; y: number; vx: number; vy: number; life: number };
@@ -249,6 +251,7 @@ export type Game = {
   particles: Particle[];
   zaps: Zap[];
   gems: Gem[];
+  hearts: Heart[];
   fx: Fx[];
   fireballs: Fireball[];
   spirits: Spirit[];
@@ -277,7 +280,7 @@ export type Game = {
 
 export type GameEvent =
   | 'clear' | 'boss' | 'hurt' | 'levelup' | 'room' | 'revive' | 'heal' | 'wheel' | 'shrine'
-  | 'shoot' | 'knife' | 'boomerang' | 'orb' | 'hit' | 'kill' | 'gem' | 'slash' | 'slam' | 'strike' | 'boom' | 'minute';
+  | 'shoot' | 'knife' | 'boomerang' | 'orb' | 'hit' | 'kill' | 'gem' | 'heart' | 'slash' | 'slam' | 'strike' | 'boom' | 'minute';
 
 /* ------------------------------------------------------------------ helpers */
 
@@ -533,6 +536,7 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     particles: [],
     zaps: [],
     gems: [],
+    hearts: [],
     fx: [],
     fireballs: [],
     spirits: [],
@@ -725,6 +729,11 @@ const COINS: Record<EnemyKind, number> = { bug: 1, ticket: 2, legacy: 3, boss: 2
 /** Later worlds pay better. */
 const worldPay = (g: Game) => g.loadout.coinMult * (1 + (g.world - 1) * 0.5);
 
+/** On call: how often each kind drops a heart, how long one lasts, and how much it heals (share of max health). */
+const HEART_CHANCE: Partial<Record<EnemyKind, number>> = { ticket: 0.06, legacy: 0.35 };
+export const HEART_LIFE = 18;
+const HEART_HEAL = 0.12;
+
 function kill(g: Game, e: Enemy) {
   if (e.dead) return;
   e.dead = true;
@@ -740,6 +749,15 @@ function kill(g: Game, e: Enemy) {
     g.gems.push({ x: e.x + Math.cos(a) * r, y: e.y + Math.sin(a) * r, value: e.xp / drops, pull: false });
   }
   if (e.kind === 'boss') g.shake = 0.6;
+  // On call: tougher bugs may leave a heart behind (bosses always leave three).
+  if (g.mode === 'horde') {
+    const hearts = e.kind === 'boss' ? 3 : Math.random() < (HEART_CHANCE[e.kind] ?? 0) ? 1 : 0;
+    for (let i = 0; i < hearts; i++) {
+      const a = rand(0, Math.PI * 2);
+      const r = hearts > 1 ? rand(14, 34) : 0;
+      g.hearts.push({ x: e.x + Math.cos(a) * r, y: e.y + Math.sin(a) * r, life: HEART_LIFE, pull: false });
+    }
+  }
   // Legacy code never dies quietly: it splits into two bugs.
   if (e.kind === 'legacy') {
     for (const side of [-1, 1]) {
@@ -1558,6 +1576,26 @@ export function update(g: Game, dt: number, input: Input) {
     if (d < p.r + 6) {
       gainXp(g, gem.value);
       g.events.push('gem');
+      return false;
+    }
+    return true;
+  });
+
+  // Hearts: drawn in when close, heal on touch, fade after a while.
+  g.hearts = g.hearts.filter((h) => {
+    h.life -= dt;
+    if (h.life <= 0) return false;
+    const d = dist(h, p) || 1;
+    if (d < 60) h.pull = true;
+    if (h.pull) {
+      const speed = 260 * dt;
+      h.x += ((p.x - h.x) / d) * Math.min(speed, d);
+      h.y += ((p.y - h.y) / d) * Math.min(speed, d);
+    }
+    if (d < p.r + 8) {
+      heal(g, Math.round(p.maxHp * HEART_HEAL));
+      burst(g, p.x, p.y - 4, '#ff6b8b', 10, 110, 2.6);
+      g.events.push('heart');
       return false;
     }
     return true;
