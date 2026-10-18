@@ -152,7 +152,11 @@ function fitPanel() {
   };
   // Pictures still loading change the content's height: fit again when they land.
   for (const img of panel.querySelectorAll('img')) if (!img.complete) img.addEventListener('load', fitPanel, { once: true });
-  const best = [pick('short'), pick('tall')].sort((a, b) => a.off - b.off)[0];
+  // On phones the three complete horizontal skill cards need the tall frame.
+  // Automatic frame selection can choose the narrower short-frame content area.
+  const best = screen.classList.contains('is-levelup') && window.matchMedia('(max-width: 480px)').matches
+    ? pick('tall')
+    : [pick('short'), pick('tall')].sort((a, b) => a.off - b.off)[0];
   const { f, h: wanted } = pick(best.kind);
   // Never taller than the screen: a long dialog scrolls inside its frame.
   const h = Math.min(wanted, screen.clientHeight - 32);
@@ -166,6 +170,7 @@ function show(html: string, wide = false, menu = false, extra = '') {
   screen.innerHTML = `<div class="panel${wide ? ' panel-wide' : ''}"><div class="panel-in">${html}</div></div>`;
   screen.classList.toggle('is-menu', menu);
   screen.classList.toggle('is-map', extra === 'is-map');
+  screen.classList.toggle('is-levelup', extra === 'is-levelup');
   screen.hidden = false;
   screen.scrollTop = 0;
   fitPanel();
@@ -174,7 +179,7 @@ function show(html: string, wide = false, menu = false, extra = '') {
 }
 function hide() {
   screen.hidden = true;
-  screen.classList.remove('is-menu', 'is-map');
+  screen.classList.remove('is-menu', 'is-map', 'is-levelup');
   screen.innerHTML = '';
 }
 const backButton = (act: string, label: Key = 'menu') => `<button class="ghost" data-act="${act}">← ${t(label)}</button>`;
@@ -328,7 +333,7 @@ function choiceScreen(g: Game) {
       return `<button class="skill skill-${cat}" data-skill="${id}"><span class="icon" aria-hidden="true">${ICONS[id]}</span><span class="cat">${t(CATEGORY_LABEL[cat])}</span><b>${name}</b><span>${text}</span>${level}</button>`;
     })
     .join('');
-  show(`<p class="kicker">${t('level', { level: g.level })}</p>${head('levelup', t('levelUp'))}<p>${t('choose')}</p><div class="skills">${cards}</div>`, true);
+  show(`${head('levelup', t('levelUp'))}<p class="kicker">${t('level', { level: g.level })}</p><p>${t('choose')}</p><div class="skills">${cards}</div>`, true, false, 'is-levelup');
 }
 
 /* The wheel of fate: eight slices, good and bad alternating. The wheel is
