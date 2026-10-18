@@ -2988,3 +2988,5 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .panel .shop-sec.is-open i { transform: rotate(180deg); }
 .panel .shop-sec + .items, .panel .shop-sec + .how { margin-top: 8px; }
 .wheel-slice .item-pic { width: 84%; height: 84%; }
+.wheel-result .wheel-res-icon { display: inline-block; vertical-align: middle; }
+.wheel-result .wheel-res-icon .item-pic { width: 1.6em; height: 1.6em; }

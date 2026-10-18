@@ -514,8 +514,8 @@ function choiceScreen(g: Game) {
 const WHEEL_ICON: Record<WheelOutcome, string> = {
   newSkill: '✨', skillUp: '⬆️', heal: '❤️', coins: '🪙', loseLevel: '⬇️', hurt: '💔', loseCoins: '💸', bossBuff: '👹', nothing: '😐', evolve: '★',
 };
-/** Painted prizes where the owner's art already has one (the rest wait for their own icons and show the emoji). */
-const WHEEL_PIC: Partial<Record<WheelOutcome, string>> = { heal: 'fx/heart.webp', evolve: 'ui/icon_star.webp', newSkill: 'fx/gem-big.webp' };
+/** The owner's painted prize icons (`ui/wheel/<outcome>.webp`); the emoji stays for retro. */
+const WHEEL_PIC = (o: WheelOutcome) => `ui/wheel/${o}.webp`;
 const WHEEL_TEXT: Record<WheelOutcome, Key> = {
   newSkill: 'wNewSkill', skillUp: 'wSkillUp', heal: 'wHeal', coins: 'wCoins', loseLevel: 'wLoseLevel', hurt: 'wHurt', loseCoins: 'wLoseCoins', bossBuff: 'wBossBuff', nothing: 'wNothing', evolve: 'wEvolve',
 };
@@ -526,7 +526,7 @@ function shrineScreen() {
 }
 function wheelScreen() {
   const lucky = !!game?.luckyWheel;
-  const slices = (lucky ? WHEEL_LUCKY : WHEEL).map((o, i) => `<span class="wheel-slice${WHEEL_GOOD.includes(o) ? ' is-good' : o === 'nothing' ? '' : ' is-bad'}" style="--i:${i}">${picIcon(WHEEL_ICON[o], WHEEL_PIC[o])}</span>`).join('');
+  const slices = (lucky ? WHEEL_LUCKY : WHEEL).map((o, i) => `<span class="wheel-slice${WHEEL_GOOD.includes(o) ? ' is-good' : o === 'nothing' ? '' : ' is-bad'}" style="--i:${i}">${picIcon(WHEEL_ICON[o], WHEEL_PIC(o))}</span>`).join('');
   show(`${head('wings', t(lucky ? 'chestTitle' : 'wheelTitle'))}<p>${t(lucky ? 'chestText' : 'wheelText')}</p>
     <div class="wheel"><div class="wheel-disc" id="wheelDisc">${slices}</div><span class="wheel-pin" aria-hidden="true"></span></div>
     <p class="wheel-result" id="wheelResult"></p>
@@ -551,7 +551,7 @@ function spinWheel(g: Game) {
     const got = applyWheel(g, wheel[index]);
     const name = got.skill ? t(got.outcome === 'evolve' ? (`evo${cap(got.skill)}Name` as Key) : (`${got.skill}Name` as Key)) : '';
     const good = WHEEL_GOOD.includes(got.outcome);
-    result.textContent = `${WHEEL_ICON[got.outcome]} ${t(WHEEL_TEXT[got.outcome], { name, coins: Math.round(WHEEL_COINS * (1 + (g.world - 1) * 0.5)) })}`;
+    result.innerHTML = `<span class="wheel-res-icon" aria-hidden="true">${picIcon(WHEEL_ICON[got.outcome], WHEEL_PIC(got.outcome))}</span> ${esc(t(WHEEL_TEXT[got.outcome], { name, coins: Math.round(WHEEL_COINS * (1 + (g.world - 1) * 0.5)) }))}`;
     result.className = `wheel-result ${good ? 'is-good' : got.outcome === 'nothing' ? '' : 'is-bad'}`;
     audio.play(good ? 'levelup' : got.outcome === 'nothing' ? 'gem' : 'hurt');
     spinBtn.textContent = t('wheelGo');
