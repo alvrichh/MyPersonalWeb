@@ -240,28 +240,339 @@ body {
   display: none;
 }
 
-/* The main menu sits over the title-screen parade: no dimming, panel up top
-   so the ground stays in view. */
+/* The title screen: the cover art with the menu built over it. */
 .screen.is-menu {
-  align-items: start;
-  padding-top: max(20px, env(safe-area-inset-top));
-  background: transparent;
+  display: block;
+  padding: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  background: #070b10 url('/images/game/landing-bg.jpg') center / cover no-repeat;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
 
 .screen.is-menu .panel {
-  background:
-    radial-gradient(120% 70% at 50% 0%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 70%),
-    rgba(14, 18, 27, 0.86);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  display: contents;
 }
 
-@media (min-height: 760px) {
-  .screen.is-menu {
-    align-items: center;
-    padding-bottom: 150px;
+.landing {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  width: min(100%, 480px);
+  min-height: 100%;
+  margin: 0 auto;
+  padding: 0 0 max(18px, env(safe-area-inset-bottom));
+  background: #070b10;
+  box-shadow: 0 0 80px rgba(0, 0, 0, 0.6);
+  font-family: "Instrument Sans", system-ui, sans-serif;
+}
+
+/* Grid cells must not grow to the art's natural width. */
+.landing > * {
+  min-width: 0;
+}
+
+.landing-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: max(12px, env(safe-area-inset-top)) 12px 0;
+  background: linear-gradient(to bottom, #070b10 70%, transparent);
+}
+
+.round {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 50%;
+  background: rgba(10, 14, 20, 0.7);
+  color: #fff;
+  font-size: 1.05rem;
+  text-decoration: none;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 4px 10px 4px 4px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 14px;
+  background: rgba(10, 14, 20, 0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.profile img {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  background: #e9edf5;
+}
+
+.profile-copy {
+  display: grid;
+  gap: 2px;
+  line-height: 1;
+}
+
+.profile-copy small {
+  font: 700 0.6rem/1 ui-monospace, monospace;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #cbd5e1;
+}
+
+.profile-copy > b {
+  font-size: 0.82rem;
+  color: #fcd34d;
+}
+
+.profile-copy i {
+  display: block;
+  width: 84px;
+  height: 5px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.profile-copy i b {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: auto;
+  padding: 0 6px 0 8px;
+  height: 36px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 12px;
+  background: rgba(10, 14, 20, 0.72);
+  color: #fff;
+  font: 700 0.85rem/1 ui-monospace, monospace;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.chip + .chip {
+  margin-left: 0;
+}
+
+.chip small {
+  font-size: 0.65rem;
+  color: #94a3b8;
+}
+
+.chip em {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #07090f;
+  font-style: normal;
+  font-size: 0.9rem;
+}
+
+.landing-art {
+  position: relative;
+  margin-top: -6px;
+  aspect-ratio: 936 / 871;
+}
+
+.landing-art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.landing-art::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 22%;
+  background: linear-gradient(to bottom, transparent, #070b10);
+}
+
+/* The tagline sits where the art has its own words, so it can be translated. */
+.landing-tagline {
+  position: absolute;
+  top: 34%;
+  left: 50%;
+  width: 84%;
+  margin: 0;
+  translate: -50% 0;
+  color: #e5f6ff;
+  font-size: clamp(0.78rem, 3.4vw, 0.95rem);
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+/* The play button: a glowing green slab with arrow-shaped ends. */
+.play {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: calc(100% - 48px);
+  min-height: 72px;
+  margin: -34px auto 0;
+  border: 2px solid #b9ffb0;
+  border-radius: 22px;
+  background: linear-gradient(180deg, #8dff78 0%, #22d35e 60%, #16a34a 100%);
+  box-shadow: 0 0 0 4px rgba(34, 211, 94, 0.25), 0 0 34px rgba(74, 222, 128, 0.55), inset 0 2px 0 rgba(255, 255, 255, 0.5);
+  color: #04120a;
+  font-family: inherit;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.play:hover {
+  transform: translateY(-2px);
+}
+
+.play::before,
+.play::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 14px;
+  height: 32px;
+  translate: 0 -50%;
+  background: #22d35e;
+  clip-path: polygon(100% 0, 0 50%, 100% 100%, 65% 50%);
+  filter: drop-shadow(0 0 6px rgba(74, 222, 128, 0.8));
+}
+
+.play::before {
+  left: -22px;
+}
+
+.play::after {
+  right: -22px;
+  transform: scaleX(-1);
+}
+
+.play-tri {
+  width: 0;
+  height: 0;
+  border-top: 13px solid transparent;
+  border-bottom: 13px solid transparent;
+  border-left: 22px solid #04120a;
+}
+
+.play-copy {
+  display: grid;
+  gap: 2px;
+  text-align: start;
+  font-size: clamp(1.5rem, 7vw, 1.9rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.play-copy small {
+  font: 700 0.72rem/1 ui-monospace, monospace;
+  color: #0b3a1c;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+  padding: 20px 18px 0;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 10px;
+  min-height: 92px;
+  padding: 12px 10px 12px 12px;
+  border: 2px solid var(--c);
+  border-radius: 18px;
+  background:
+    radial-gradient(90% 80% at 0% 100%, color-mix(in srgb, var(--c) 45%, transparent), transparent 70%),
+    linear-gradient(160deg, color-mix(in srgb, var(--c) 35%, #0b1420), #0b1420);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-family: inherit;
+  text-align: start;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.card-map { --c: #38bdf8; }
+.card-shop { --c: #f59e0b; }
+.card-styles { --c: #c026d3; }
+.card-options { --c: #22d3ee; }
+
+.card-icon {
+  flex: none;
+  font-size: 2.4rem;
+  line-height: 1;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.6));
+}
+
+.card-copy {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.card-copy b {
+  font-size: 1rem;
+  line-height: 1.1;
+}
+
+.card-copy small {
+  font: 700 0.72rem/1 ui-monospace, monospace;
+  color: #cbd5e1;
+}
+
+.card-go {
+  margin-left: auto;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.landing-best {
+  margin: 14px 0 0;
+  text-align: center;
+}
+
+@media (max-width: 360px) {
+  .chip-worlds {
+    display: none;
   }
 }
 

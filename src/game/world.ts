@@ -215,6 +215,8 @@ export type Game = {
   pendingLevels: number;
   choices: SkillId[];
   kills: number;
+  /** XP picked up this run, in all; the page banks it for the profile level. */
+  xpEarned: number;
   time: number;
   shake: number;
   /** Things the page may want to react to this frame (banners, sounds). */
@@ -471,6 +473,7 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     pendingLevels: 0,
     choices: [],
     kills: 0,
+    xpEarned: 0,
     time: 0,
     shake: 0,
     events: [],
@@ -528,6 +531,7 @@ const haste = (g: Game) => 1 + 0.28 * g.skills.speed;
 
 function gainXp(g: Game, amount: number) {
   g.xp += amount * g.loadout.xpMult;
+  g.xpEarned += amount * g.loadout.xpMult;
   while (g.xp >= g.xpNext) {
     g.xp -= g.xpNext;
     g.level += 1;
