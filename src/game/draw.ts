@@ -1852,17 +1852,28 @@ function drawPhoenixWings(ctx: CanvasRenderingContext2D, x: number, y: number, s
    the join between the wings at the same point (`WINGS_JOIN` of the height), flapping slowly; the drawn
    wings stand in until they load. */
 const WINGS_JOIN = 0.5733;
-const WING_FLAP = [1, 1, 2, 1, 0, 0];
+/* One flap: spread, raised, spread, half open; each pose fades into the next, so it flows rather than steps. */
+const WING_FLAP = [1, 2, 1, 0];
+const FLAPS_PER_SECOND = 1.6;
 function drawWornWings(ctx: CanvasRenderingContext2D, x: number, y: number, r: number, now: number) {
   if (retroLook) return;
-  const pic = fxImage(`wings-${WING_FLAP[Math.floor(now * 5) % WING_FLAP.length]}`);
-  if (!ready(pic)) { drawPhoenixWings(ctx, x, y, r * 1.7, now, 0.55); return; }
+  const pics = [0, 1, 2].map((i) => fxImage(`wings-${i}`));
+  if (!pics.every(ready)) { drawPhoenixWings(ctx, x, y, r * 1.7, now, 0.55); return; }
+  const t = now * FLAPS_PER_SECOND * WING_FLAP.length;
+  const i = Math.floor(t) % WING_FLAP.length;
+  const k = t - Math.floor(t);
+  const blend = k * k * (3 - 2 * k);
   const w = r * 5.2;
-  const h = (w * pic.naturalHeight) / pic.naturalWidth;
-  ctx.save();
-  ctx.globalAlpha = 0.92;
-  ctx.drawImage(pic, x - w / 2, y - h * WINGS_JOIN + Math.sin(now * 3) * 0.8, w, h);
-  ctx.restore();
+  // The body lifts a little on each downstroke.
+  const lift = Math.sin(now * FLAPS_PER_SECOND * Math.PI * 2) * 1.2;
+  for (const [pose, alpha] of [[WING_FLAP[i], 1 - blend], [WING_FLAP[(i + 1) % WING_FLAP.length], blend]]) {
+    if (alpha <= 0.01) continue;
+    const pic = pics[pose];
+    const h = (w * pic.naturalHeight) / pic.naturalWidth;
+    ctx.globalAlpha = 0.92 * alpha;
+    ctx.drawImage(pic, x - w / 2, y - h * WINGS_JOIN + lift, w, h);
+  }
+  ctx.globalAlpha = 1;
 }
 function drawPhoenixRise(ctx: CanvasRenderingContext2D, f: Fx, now: number, layer: 'under' | 'over') {
   const t = 1 - f.life / f.max;
@@ -1953,6 +1964,9 @@ function drawPhoenixRise(ctx: CanvasRenderingContext2D, f: Fx, now: number, laye
 function drawFx(ctx: CanvasRenderingContext2D, g: Game, accent: string, layer: 'under' | 'over') {
   for (const f of g.fx) {
     if (f.kind === 'phoenix') {
+      // The firebird rises with you, wherever you run.
+      f.x = g.player.x;
+      f.y = g.player.y;
       if (!retroLook) drawPhoenixRise(ctx, f, g.time, layer);
       continue;
     }
