@@ -1199,6 +1199,24 @@ function drawPicFx(ctx: CanvasRenderingContext2D, g: Game, top: boolean) {
       ctx.stroke();
       continue;
     }
+    if (f.vine) {
+      // A vine row: its whole length along the line, growing out from the boss's end, fading at the last.
+      // The picture is laid end to end at the row's thickness (about its thorns' reach), not stretched.
+      const w = f.r * 2;
+      const h = 46;
+      const tile = (h * pic.naturalWidth) / pic.naturalHeight;
+      const grow = Math.min(1, (f.max - f.life) / 0.25);
+      ctx.globalAlpha = Math.min(1, f.life / 0.4);
+      ctx.save();
+      ctx.translate(f.x, f.y);
+      ctx.rotate(f.a);
+      ctx.beginPath();
+      ctx.rect(-w / 2, -h, w * grow, h * 2);
+      ctx.clip();
+      for (let x = -w / 2; x < w / 2; x += tile * 0.92) ctx.drawImage(pic, x, -h * 0.6, tile, h);
+      ctx.restore();
+      continue;
+    }
     const w = f.r * 2 * (0.7 + 0.3 * (1 - k));
     const h = (w * pic.naturalHeight) / pic.naturalWidth;
     ctx.globalAlpha = Math.min(1, k * 1.6);
@@ -1904,7 +1922,7 @@ export function preloadFx() {
   for (const n of ['fireball', 'boom-small', 'boom-big', 'knife', 'boomerang', 'slash', 'chest', 'slam', 'crystals', 'gem', 'gem-big', 'bolt-1', 'bolt-2', 'bolt-3', 'bolt-4', 'bolt-5', 'bolt-6', 'bolt-y-1', 'bolt-y-2', 'bolt-y-3', 'bolt-y-4', 'bolt-y-5', 'bolt-y-6',
     'brick', 'iron', 'molotov', 'barrel', 'durian', 'durian-big', 'drill', 'drill-evo', 'rocket', 'rocket-shark', 'ball', 'ball-evo', 'phoenix-0', 'phoenix-1', 'phoenix-2', 'phoenix-3', 'wings-0', 'wings-1', 'wings-2', 'angle-front', 'angle-side', 'angle-quarter',
     'fire-pool', 'fire-pool-big', 'caltrops', 'mine', 'mine-on', 'mine-volt', 'volt-burst', 'impact', 'heart', 'rune', 'crescent',
-    'steam-cloud', 'plasma-burst', 'wisp-flame', 'shock-ring', 'ice-block', 'spectral-bolt', 'laser-yellow', 'laser-orange', 'laser-red', 'laser-purple', 'drakkar-wreck', ...Array.from({ length: 7 }, (_, i) => `tornado-${i}`), 'vortex-0', 'vortex-1', ...Array.from({ length: 7 }, (_, i) => `lava-${i}`)]) fxImage(n);
+    'steam-cloud', 'plasma-burst', 'wisp-flame', 'shock-ring', 'ice-block', 'spectral-bolt', 'laser-yellow', 'laser-orange', 'laser-red', 'laser-purple', 'drakkar-wreck', 'vine-row-0', 'vine-row-1', ...Array.from({ length: 7 }, (_, i) => `tornado-${i}`), 'vortex-0', 'vortex-1', ...Array.from({ length: 7 }, (_, i) => `lava-${i}`)]) fxImage(n);
 }
 
 function drawFireballs(ctx: CanvasRenderingContext2D, g: Game) {
@@ -4055,6 +4073,7 @@ function jungleImage(name: string) {
 
 function drawHazards(ctx: CanvasRenderingContext2D, g: Game, now: number) {
   for (const h of g.hazards) {
+    if (h.hidden && !retroLook) continue;
     // The owner's bubbling lava pool: seven frames looping, each pool on its own beat (the disc is 91% of its picture).
     const lava = h.kind === 'lava' && !retroLook ? fxImage(`lava-${((Math.floor(now * 7 + h.x * 0.05 + h.y * 0.03) % 7) + 7) % 7}`) : null;
     if (lava && ready(lava)) {
