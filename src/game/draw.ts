@@ -1,4 +1,4 @@
-import { H, W, WALL, WHEEL_X, ICICLE_R, WORLDS, frostReach, waveAt, type Threat, type OrbPic, isBossRoom, type Enemy, type Game, type Shot, type Look, type Statue, type Rect, type Vec, type Fusion, arrowLook, fusionOf, bladeCount, bladeElement, sawOrbit, sawScale, type BladeElement, type Fx } from './world';
+import { H, W, WALL, WHEEL_X, ICICLE_R, ICICLE_STAY, WORLDS, frostReach, waveAt, type Threat, type OrbPic, isBossRoom, type Enemy, type Game, type Shot, type Look, type Statue, type Rect, type Vec, type Fusion, arrowLook, fusionOf, bladeCount, bladeElement, sawOrbit, sawScale, type BladeElement, type Fx } from './world';
 import { SPIRIT_COLOR, type ItemId, type SpiritSkin } from './shop';
 import { FULL_HERO_SETS, heroKey, type HeroSkin } from './save';
 
@@ -4250,7 +4250,7 @@ function drawHazards(ctx: CanvasRenderingContext2D, g: Game, now: number) {
 function drawStrikes(ctx: CanvasRenderingContext2D, g: Game, now: number) {
   for (const st of g.strikes) {
     const t = 1 - st.t / 0.9;
-    if (st.ice) { drawIcicle(ctx, st, t, now); continue; }
+    if (st.ice) { drawIcicle(ctx, st, now); continue; }
     ctx.strokeStyle = `rgba(250,204,21,${0.4 + t * 0.5})`;
     ctx.lineWidth = 2;
     ctx.setLineDash([5, 5]);
@@ -4265,55 +4265,74 @@ function drawStrikes(ctx: CanvasRenderingContext2D, g: Game, now: number) {
   }
 }
 
-/** An icicle on its way down: an icy ring on the floor and a growing shadow while it warns, then the icicle
-   falling out of the top over the last part, tip first, onto the middle of the ring. */
-function drawIcicle(ctx: CanvasRenderingContext2D, st: { x: number; y: number }, t: number, now: number) {
+/** Ice spikes: while they warn, an icy ring with the floor cracking open more and more inside it; then a
+   cluster of spikes bursts up out of it, stays a moment and crumbles back down. */
+function drawIcicle(ctx: CanvasRenderingContext2D, st: { x: number; y: number; t: number; hit?: boolean }, now: number) {
   const r = ICICLE_R;
-  ctx.strokeStyle = `rgba(186,230,253,${0.45 + t * 0.5})`;
-  ctx.lineWidth = 2;
-  ctx.setLineDash([5, 5]);
+  if (st.t > 0) {
+    const t = 1 - st.t / 0.9;
+    ctx.strokeStyle = `rgba(186,230,253,${0.45 + t * 0.5})`;
+    ctx.lineWidth = 2;
+    ctx.setLineDash([5, 5]);
+    ctx.beginPath();
+    ctx.arc(st.x, st.y, r, now * 2, now * 2 + Math.PI * 2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = `rgba(56,189,248,${0.08 + t * 0.22})`;
+    ctx.beginPath();
+    ctx.arc(st.x, st.y, r * t, 0, Math.PI * 2);
+    ctx.fill();
+    // Cracks running out from the middle.
+    ctx.strokeStyle = `rgba(224,242,254,${0.4 + t * 0.6})`;
+    ctx.lineWidth = 1.5;
+    for (let i = 0; i < 6; i++) {
+      const a = i * 1.05 + st.x * 0.13;
+      const l = r * 0.9 * t;
+      ctx.beginPath();
+      ctx.moveTo(st.x, st.y);
+      ctx.lineTo(st.x + Math.cos(a) * l * 0.5 + Math.sin(a) * 3, st.y + Math.sin(a) * l * 0.5 * 0.6 - Math.cos(a) * 2);
+      ctx.lineTo(st.x + Math.cos(a) * l, st.y + Math.sin(a) * l * 0.6);
+      ctx.stroke();
+    }
+    return;
+  }
+  // Up in a tenth of a second, down over the last third of its stay.
+  const age = -st.t;
+  const up = Math.min(1, age / 0.1) * Math.min(1, (ICICLE_STAY - age) / (ICICLE_STAY * 0.35));
+  if (up <= 0) return;
+  ctx.fillStyle = 'rgba(8,20,35,0.35)';
   ctx.beginPath();
-  ctx.arc(st.x, st.y, r, now * 2, now * 2 + Math.PI * 2);
-  ctx.stroke();
-  ctx.setLineDash([]);
-  ctx.fillStyle = `rgba(56,189,248,${0.08 + t * 0.22})`;
-  ctx.beginPath();
-  ctx.arc(st.x, st.y, r * t, 0, Math.PI * 2);
+  ctx.ellipse(st.x, st.y + 4, r * 0.95, r * 0.45, 0, 0, Math.PI * 2);
   ctx.fill();
-  ctx.fillStyle = `rgba(8,20,35,${0.15 + t * 0.3})`;
-  ctx.beginPath();
-  ctx.ellipse(st.x, st.y, 4 + 9 * t, 2 + 4 * t, 0, 0, Math.PI * 2);
-  ctx.fill();
-  const k = (t - 0.5) / 0.5;
-  if (k <= 0) return;
-  const drop = (1 - k) * (1 - k) * 280;
-  const tip = st.y - drop;
-  const len = 46; const half = 8;
-  ctx.save();
-  ctx.globalAlpha = Math.min(1, k * 3);
-  const grad = ctx.createLinearGradient(st.x - half, 0, st.x + half, 0);
-  grad.addColorStop(0, '#e0f2fe');
-  grad.addColorStop(0.45, '#ffffff');
-  grad.addColorStop(1, '#7dd3fc');
-  ctx.fillStyle = grad;
-  ctx.strokeStyle = 'rgba(14,116,144,0.9)';
-  ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  ctx.moveTo(st.x, tip);
-  ctx.lineTo(st.x + half, tip - len);
-  ctx.lineTo(st.x + half * 0.4, tip - len - 6);
-  ctx.lineTo(st.x - half * 0.5, tip - len - 3);
-  ctx.lineTo(st.x - half, tip - len);
-  ctx.closePath();
-  ctx.fill();
-  ctx.stroke();
-  ctx.strokeStyle = 'rgba(255,255,255,0.8)';
-  ctx.beginPath();
-  ctx.moveTo(st.x - 2, tip - 8);
-  ctx.lineTo(st.x - half * 0.45, tip - len + 4);
-  ctx.stroke();
-  ctx.restore();
+  // Back ones first, so the front ones stand over them.
+  for (const [dx, dy, h, w] of ICE_SPIKES) {
+    const bx = st.x + dx * r; const by = st.y + dy * r * 0.5;
+    const tall = h * up; const half = w;
+    const grad = ctx.createLinearGradient(bx - half, 0, bx + half, 0);
+    grad.addColorStop(0, '#bae6fd');
+    grad.addColorStop(0.45, '#ffffff');
+    grad.addColorStop(1, '#38bdf8');
+    ctx.fillStyle = grad;
+    ctx.strokeStyle = 'rgba(14,116,144,0.9)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(bx - half, by);
+    ctx.lineTo(bx - half * 0.2, by - tall);
+    ctx.lineTo(bx + half, by);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    ctx.strokeStyle = 'rgba(255,255,255,0.85)';
+    ctx.beginPath();
+    ctx.moveTo(bx - half * 0.45, by - 2);
+    ctx.lineTo(bx - half * 0.25, by - tall + 6);
+    ctx.stroke();
+  }
 }
+/** The spikes of one cluster: where each stands (share of the ring), how tall and how wide; back to front. */
+const ICE_SPIKES: [number, number, number, number][] = [
+  [-0.45, -0.5, 26, 7], [0.4, -0.55, 30, 8], [0.05, -0.35, 44, 10], [-0.65, 0.15, 22, 7], [0.7, 0.1, 24, 7], [-0.25, 0.35, 34, 9], [0.3, 0.4, 30, 8],
+];
 
 function drawFog(ctx: CanvasRenderingContext2D, g: Game, vis: Rect) {
   const p = g.player;
