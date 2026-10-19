@@ -551,10 +551,12 @@ function endScreen(g: Game) {
    so they can be translated and show the real lock state. */
 
 const MAP_W = 941;
-const MAP_H = 1240;
+/** Two islands a row, a row every `MAP_ROW`, the map as tall as its rows (it was drawn for four, 1240 tall). */
+const MAP_ROW = 316;
+const MAP_H = Math.round(136 + (Math.ceil(WORLDS.length / 2) - 1) * MAP_ROW + 155);
 const ISLAND_ART = ["original", "infierno", "vikingos", "lodo", "jungla", "rayo", "robots", "demonios", "nucleo"];
 /** Per island art: its size and where the ring, plate and lower badge sit (percent of the art). */
-const ISLAND_META: Record<string, { w: number; h: number; ring: number[]; plate: number[]; badge: number[] }> = {"original": {"w": 380, "h": 290, "ring": [52.1, 46.6], "plate": [28.4, 62.8, 47.9, 13.1], "badge": [52.1, 83.4]}, "infierno": {"w": 405, "h": 295, "ring": [46.2, 39.0], "plate": [18.5, 58.3, 55.6, 12.9], "badge": [46.2, 78.6]}, "vikingos": {"w": 425, "h": 285, "ring": [53.6, 45.6], "plate": [32.9, 60.0, 44.2, 13.3], "badge": [54.1, 81.8]}, "jungla": {"w": 445, "h": 330, "ring": [50.1, 45.5], "plate": [28.1, 62.1, 48.3, 11.5], "badge": [50.6, 80.6]}, "lodo": {"w": 445, "h": 318, "ring": [50.0, 34.2], "plate": [30.7, 50.0, 38.7, 12.3], "badge": [50.0, 68.6]}, "rayo": {"w": 405, "h": 295, "ring": [46.2, 39.0], "plate": [18.5, 58.3, 55.6, 12.9], "badge": [46.2, 78.6]}, "robots": {"w": 420, "h": 300, "ring": [53.1, 45.0], "plate": [32.1, 62.7, 42.9, 12.7], "badge": [53.1, 83.3]}, "demonios": {"w": 420, "h": 280, "ring": [47.6, 42.9], "plate": [26.2, 59.6, 44.0, 13.6], "badge": [48.1, 81.4]}, "nucleo": {"w": 420, "h": 280, "ring": [47.6, 42.9], "plate": [26.2, 59.6, 44.0, 13.6], "badge": [48.1, 81.4]}};
+const ISLAND_META: Record<string, { w: number; h: number; ring: number[]; plate: number[]; badge: number[] }> = {"original": {"w": 484, "h": 309, "ring": [49.3, 52.3], "plate": [28.9, 66.7, 39.9, 8.7], "badge": [48.9, 85.7]}, "infierno": {"w": 476, "h": 310, "ring": [49.8, 52.6], "plate": [29.4, 68.7, 40.8, 7.1], "badge": [49.8, 87.7]}, "vikingos": {"w": 477, "h": 313, "ring": [49.9, 50.8], "plate": [30.4, 66.1, 38.6, 7.0], "badge": [49.7, 85.1]}, "lodo": {"w": 445, "h": 318, "ring": [50.0, 34.2], "plate": [30.7, 50.0, 38.7, 12.3], "badge": [50.0, 69.0]}, "jungla": {"w": 490, "h": 333, "ring": [50.6, 49.5], "plate": [30.4, 63.1, 40.4, 7.5], "badge": [50.6, 82.1]}, "rayo": {"w": 504, "h": 335, "ring": [48.3, 43.4], "plate": [29.0, 59.7, 38.7, 8.1], "badge": [48.3, 78.7]}, "robots": {"w": 490, "h": 376, "ring": [51.0, 41.8], "plate": [31.0, 54.0, 40.4, 5.9], "badge": [51.2, 73.0]}, "demonios": {"w": 485, "h": 372, "ring": [50.0, 44.8], "plate": [30.1, 56.7, 40.8, 6.5], "badge": [50.5, 75.7]}, "nucleo": {"w": 502, "h": 378, "ring": [49.5, 42.5], "plate": [30.5, 54.5, 38.0, 6.3], "badge": [49.5, 73.5]}};
 
 /** The world the map is showing (locked ones can be looked at, not played). */
 let mapPick = 0;
@@ -570,7 +572,7 @@ function mapScreen() {
     const w = islandW;
     const h = (w * m.h) / m.w;
     const cx = (i % 2 ? 0.715 : 0.285) * MAP_W;
-    const cy = 0.11 * MAP_H + Math.floor(i / 2) * 0.255 * MAP_H;
+    const cy = 136 + Math.floor(i / 2) * MAP_ROW;
     const left = cx - (m.ring[0] / 100) * w;
     const top = cy - (m.ring[1] / 100) * h;
     return { n, m, w, h, left, top, cx, cy, open: n <= unlockedIn() };
