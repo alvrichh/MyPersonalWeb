@@ -420,6 +420,27 @@ body {
 
 /* Profile card: name, level and the XP bar. */
 .cover-profile { left: 3.2%; top: 3.5%; width: 33.6%; height: 5.6%; }
+/* The worn hero's head and shoulders over the painted robot in the profile card's square. */
+.cover-avatar {
+  left: 4.9%; top: 3.95%; width: 8.9%; height: 4.75%;
+  overflow: hidden;
+  pointer-events: none;
+  border: 1px solid rgba(103, 232, 249, 0.35);
+  border-radius: 1.8cqw;
+  background: radial-gradient(circle at 50% 35%, #1f4a63, #0b1824 75%);
+  box-shadow: inset 0 0 1.5cqw rgba(34, 211, 238, 0.25);
+}
+.cover-avatar img {
+  position: absolute;
+  left: 50%;
+  top: 6%;
+  /* Sized by height, so the top three quarters of any figure (a tall hat included) shows: head and shoulders. */
+  height: 132%;
+  width: auto;
+  max-width: none;
+  translate: -50% 0;
+}
+:root[data-retro] .cover-avatar { display: none; }
 
 .cover-profile-copy {
   position: absolute;
@@ -2829,6 +2850,7 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   .cover-gear { left: 91.5%; top: 3.2%; width: 3.4%; height: 5.7%; border-radius: 1cqw; }
   .cover-profile { left: 5.7%; top: 3%; width: 17.2%; height: 8.7%; }
   .cover-profile-copy { left: 12%; top: 4.1%; width: 10.3%; gap: 0.25cqw; }
+  .cover-avatar { left: 6.4%; top: 3.8%; width: 4.75%; height: 7.1%; border-radius: 0.9cqw; }
   .cover-profile-copy small { font-size: 0.85cqw; }
   .cover-profile-copy b { font-size: 1.25cqw; }
   .cover-profile-copy i { height: 0.85cqw; margin-top: 0.25cqw; width: 97%; }

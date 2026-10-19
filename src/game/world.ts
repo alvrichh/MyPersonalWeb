@@ -265,7 +265,7 @@ export type Orb = {
   /** A boss shot drawn with one of the weapon pictures (see `ORB_PIC` in draw.ts) instead of a plain orb. */
   pic?: OrbPic;
 };
-export type OrbPic = 'fireball' | 'rocket' | 'leaf' | 'water' | 'ghost' | 'bolt' | 'spark';
+export type OrbPic = 'fireball' | 'rocket' | 'leaf' | 'acid' | 'water' | 'ghost' | 'bolt' | 'spark';
 /** What a boss's attack looks like: its element. */
 export type ThreatEl = 'fire' | 'water' | 'leaf' | 'bolt' | 'laser' | 'shadow' | 'glitch';
 /**
@@ -2070,7 +2070,7 @@ function worldMove(g: Game, e: Enemy, move: Move) {
       for (let i = 0; i < 5; i++) {
         const a = aim + (i / 4 - 0.5) * 0.7;
         const speed = 115 + (i % 2) * 30;
-        g.orbs.push({ x: e.x, y: e.y, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, r: 8, dmg, life: 4, bounce: 0, tone: '#a3e635', pic: 'leaf' });
+        g.orbs.push({ x: e.x, y: e.y, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, r: 9, dmg, life: 4, bounce: 0, tone: '#d9f99d', pic: 'acid' });
       }
       break;
     case 'leap':
