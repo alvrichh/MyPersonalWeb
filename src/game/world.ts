@@ -1627,6 +1627,11 @@ function blast(g: Game, at: Vec, reach: number, dmg: number, color: string, push
 /* Brick (magic): thrown up into the air, it falls back through the bugs
    round you, hitting every one on the way. Evolved (1-ton Iron): two huge
    weights that hit twice as hard and stop the bugs they land on. */
+/* The arsenal was tuned for On call, where a crowd keeps pouring in; a sprint room holds a handful of bugs,
+   so the weapons that live on crowds (pools, bouncing balls and drills, mines) hit harder there. */
+export const SPRINT_BOOST: Partial<Record<SkillId, number>> = { molotov: 2.2, durian: 2.8, drill: 2.3, ball: 2.3, mines: 1.5 };
+const boost = (g: Game, s: SkillId) => (g.mode === 'sprints' ? SPRINT_BOOST[s] ?? 1 : 1);
+
 function throwBricks(g: Game) {
   const lv = g.skills.brick;
   const evolved = !!g.evolved.brick;
@@ -1657,18 +1662,23 @@ function landMolotov(g: Game, at: Vec) {
   const lv = g.skills.molotov;
   const evolved = !!g.evolved.molotov;
   const life = evolved ? 4.5 : 3;
-  g.embers.push({ x: at.x, y: at.y, r: (32 + 6 * (lv - 1)) * (evolved ? 1.6 : 1), life, max: life, dps: (14 + 6 * (lv - 1)) * power(g, 'magic') * (evolved ? 1.5 : 1) });
+  g.embers.push({ x: at.x, y: at.y, r: (32 + 6 * (lv - 1)) * (evolved ? 1.6 : 1), life, max: life, dps: (14 + 6 * (lv - 1)) * power(g, 'magic') * (evolved ? 1.5 : 1) * boost(g, 'molotov') });
   burst(g, at.x, at.y, '#fb923c', 10, 140, 3);
   g.events.push('boom');
 }
 
-/* Mines (melee): one dropped at your feet every so often; armed after half
-   a second, it goes off when a bug steps on it. Evolved (Thunderbolt Bomb):
-   a wider blast whose lightning jumps on to three more bugs. */
+/* Mines (melee): one tossed every so often at the feet of the nearest bug
+   within reach (at your own feet when none is), so the ones that keep their
+   distance step on them too; armed after half a second, it goes off when a
+   bug steps on it. Evolved (Thunderbolt Bomb): a wider blast whose
+   lightning jumps on to three more bugs. */
+const MINE_TOSS = 140;
 function dropMine(g: Game) {
+  const p = g.player;
   const max = 3 + 2 * g.skills.mines;
   if (g.mines.length >= max) g.mines.shift();
-  g.mines.push({ x: g.player.x, y: g.player.y + 6, arm: 0.5, life: 25 });
+  const near = live(g).filter((e) => dist(e, p) < MINE_TOSS + e.r).sort((a, b) => dist(a, p) - dist(b, p))[0];
+  g.mines.push(near ? { x: near.x, y: near.y + 4, arm: 0.5, life: 25 } : { x: p.x, y: p.y + 6, arm: 0.5, life: 25 });
 }
 function updateMines(g: Game, dt: number) {
   const lv = g.skills.mines;
@@ -1680,7 +1690,7 @@ function updateMines(g: Game, dt: number) {
     if (m.arm > 0) return true;
     const foe = live(g).find((e) => dist(m, e) < e.r + 12);
     if (!foe) return true;
-    const dmg = (40 + 15 * (lv - 1)) * power(g, 'melee') * (evolved ? 1.3 : 1);
+    const dmg = (40 + 15 * (lv - 1)) * power(g, 'melee') * (evolved ? 1.3 : 1) * boost(g, 'mines');
     blast(g, m, (52 + 8 * (lv - 1)) * (evolved ? 1.3 : 1), dmg, '#fca5a5');
     if (evolved) {
       g.fx.push({ kind: 'pic', pic: 'volt-burst', x: m.x, y: m.y, r: 46, a: rand(0, 6), life: 0.4, max: 0.4 });
@@ -1708,7 +1718,7 @@ function keepDurians(g: Game, dt: number) {
   }
   // Level ups make the ones already rolling stronger and bigger too.
   for (const d of mine) {
-    d.dmg = (16 + 7 * (lv - 1)) * power(g, 'melee') * (evolved ? 1.4 : 1);
+    d.dmg = (16 + 7 * (lv - 1)) * power(g, 'melee') * (evolved ? 1.4 : 1) * boost(g, 'durian');
     d.size = 12 + 3 * lv + (evolved ? 6 : 0);
   }
   if (!evolved) return;
@@ -1741,7 +1751,7 @@ function fireDrill(g: Game, target: Enemy) {
   const angle = Math.atan2(target.y - p.y, target.x - p.x);
   const n = evolved ? 2 : 1;
   for (let i = 0; i < n; i++) {
-    g.shots.push(shot('drill', p, angle + (i - (n - 1) / 2) * 0.3, evolved ? 420 : 330, (22 + 8 * (lv - 1)) * power(g, 'ranged') * (evolved ? 1.5 : 1), {
+    g.shots.push(shot('drill', p, angle + (i - (n - 1) / 2) * 0.3, evolved ? 420 : 330, (22 + 8 * (lv - 1)) * power(g, 'ranged') * (evolved ? 1.5 : 1) * boost(g, 'drill'), {
       pierce: 1e9, ghost: true, free: true, bounce: 2 + lv + (evolved ? 4 : 0), life: evolved ? 5 : 3, size: evolved ? 11 : 7, tick: 0,
     }));
   }
@@ -1790,7 +1800,7 @@ function kickBall(g: Game, target: Enemy) {
   const angle = Math.atan2(target.y - p.y, target.x - p.x);
   const n = evolved ? 3 : 1;
   for (let i = 0; i < n; i++) {
-    g.shots.push(shot('ball', p, angle + (i - (n - 1) / 2) * 0.5, 320, (20 + 8 * (lv - 1)) * power(g, 'ranged') * (evolved ? 1.5 : 1), {
+    g.shots.push(shot('ball', p, angle + (i - (n - 1) / 2) * 0.5, 320, (20 + 8 * (lv - 1)) * power(g, 'ranged') * (evolved ? 1.5 : 1) * boost(g, 'ball'), {
       pierce: 1e9, ghost: true, free: true, bounce: evolved ? 1e9 : 3 + 2 * lv, life: evolved ? 5 : 3, size: evolved ? 11 : 8, tick: 0,
     }));
   }
