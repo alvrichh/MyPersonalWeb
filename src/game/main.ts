@@ -369,24 +369,31 @@ function masteryScreen(mode: Mode) {
 
 /* The profile: the player's name (shown on the cover), their level and a few
    totals. The name is kept in the save, cleaned by `cleanName`. */
+/* The name shows once, by the hero, with a green pencil; the pencil turns it into a field with ✓ and ✕. */
+let editingName = false;
+const PENCIL = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4z" fill="currentColor"/><path d="M14 6l4 4" stroke="#14532d" stroke-width="1.6"/></svg>';
+const TICK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const CROSS = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>';
 function profileScreen(note = '') {
   const { level, progress } = profileLevel(save.xp);
+  // While editing, the field takes the whole row under the hero.
+  const name = editingName
+    ? `<form class="profile-name is-editing" data-form="name" novalidate>
+        <input id="profileName" name="name" type="text" value="${esc(save.name)}" maxlength="${NAME_MAX}" autocomplete="nickname" spellcheck="false" enterkeyhint="done" aria-label="${t('profileName')}">
+        <button class="name-btn is-ok" type="submit" aria-label="${t('profileSave')}">${TICK}</button>
+        <button class="name-btn is-cancel" type="button" data-act="name-cancel" aria-label="${t('profileCancel')}">${CROSS}</button>
+      </form>`
+    : `<div class="profile-name"><b>${esc(save.name)} ${stars()}</b><button class="name-btn is-edit" type="button" data-act="name-edit" aria-label="${t('profileEdit')}">${PENCIL}</button></div>`;
   const pic = save.retro ? './images/favicon-192.png' : heroPic();
   const stat = (label: Key, value: string) => `<div class="pstat"><small>${t(label)}</small><b>${value}</b></div>`;
   show(`<button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
     <h2>${t('profile')}</h2>
     <div class="profile-card">
       <img class="profile-pic${save.retro ? ' is-round' : ''}" src="${pic}" alt="" width="96" height="120">
-      <div class="profile-who"><b>${esc(save.name)} ${stars()}</b><span>${t('lvShort', { level })}</span><i class="profile-xp" title="${t('profileXp')}"><b style="width:${Math.round(progress * 100)}%"></b></i></div>
+      <div class="profile-who">${editingName ? '' : name}<span>${t('lvShort', { level })}</span><i class="profile-xp" title="${t('profileXp')}"><b style="width:${Math.round(progress * 100)}%"></b></i></div>
     </div>
-    <form class="profile-form" data-form="name" novalidate>
-      <label for="profileName">${t('profileName')}</label>
-      <input id="profileName" name="name" type="text" value="${esc(save.name)}" maxlength="${NAME_MAX}" autocomplete="nickname" spellcheck="false" enterkeyhint="done">
-      <small class="how">${t('profileNameHint')}</small>
-      ${note ? `<p class="saved" role="status">✓ ${note}</p>` : ''}
-      <button class="primary" type="submit">${t('profileSave')}</button>
-      ${save.name !== DEFAULT_NAME ? `<button class="ghost small" type="button" data-act="name-reset">${t('profileReset')}</button>` : ''}
-    </form>
+    ${editingName ? `<div class="profile-form">${name}<small class="how">${t('profileNameHint')}</small>${save.name !== DEFAULT_NAME ? `<button class="ghost small" type="button" data-act="name-reset">${t('profileReset')}</button>` : ''}</div>` : ''}
+    ${note ? `<p class="saved" role="status">✓ ${note}</p>` : ''}
     <div class="pstats">
       ${stat('profileRuns', String(save.runs))}
       ${stat('profileWorlds', `${unlockedIn()}/${WORLD_COUNT}`)}
@@ -399,8 +406,14 @@ function profileScreen(note = '') {
       : `<p class="how">${t('masteryNone')}</p>`}
     <button class="ghost is-danger" data-act="reset-ask">${t('resetBtn')}</button>
     ${backButton('menu')}`);
+  if (editingName) {
+    const input = screen.querySelector<HTMLInputElement>('#profileName');
+    input?.focus();
+    input?.select();
+  }
 }
 function setName(raw: string) {
+  editingName = false;
   save.name = cleanName(raw) || DEFAULT_NAME;
   persist();
   profileScreen(t('profileSaved'));
@@ -1088,7 +1101,7 @@ screen.addEventListener('click', (event) => {
     location.href = './index.html';
   } else if (act === 'menu') menuScreen();
   else if (act === 'shop') shopScreen();
-  else if (act === 'profile') profileScreen();
+  else if (act === 'profile') { editingName = false; profileScreen(); }
   else if (act === 'reset-ask') resetScreen();
   else if (act === 'reset-do') { wipeProgress(save); persist(); dressPalette(); mapPick = 0; profileScreen(t('resetDone')); }
   else if (act === 'mastery-ask') masteryScreen(save.mode);
@@ -1105,6 +1118,8 @@ screen.addEventListener('click', (event) => {
     }
   } else if (target.dataset.star) { save.starColor = target.dataset.star as StarColor; persist(); profileScreen(); }
   else if (act === 'name-reset') setName(DEFAULT_NAME);
+  else if (act === 'name-edit') { editingName = true; profileScreen(); }
+  else if (act === 'name-cancel') { editingName = false; profileScreen(); }
   else if (act === 'styles') { dressSlot = null; stylesScreen(); }
   else if (act === 'options') { optionsFrom = 'menu'; optionsScreen(); }
   else if (act === 'options-pause') { optionsFrom = 'pause'; optionsScreen(); }
