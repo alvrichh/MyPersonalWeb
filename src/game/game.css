@@ -3448,10 +3448,8 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 :root:not([data-retro]) .hud-coins { position: relative; padding: 0 6px 0 2px; min-width: 92px; justify-content: center; }
 :root:not([data-retro]) .hud-coin-orb { position: absolute; left: -31px; top: 50%; translate: 0 -50%; }
 
-/* Four round buttons under the Customise hero fit a 360px phone. */
-@media (max-width: 380px) {
-  .dress-nav { gap: 0; }
-  .dress-nav .dnav { width: 60px; }
-  .dress-nav .dnav .ring { width: 46px; height: 46px; font-size: 1.15rem; }
-  .dress-nav .dnav small { font-size: 0.52rem; letter-spacing: 0.02em; }
-}
+/* The round buttons under the Customise hero share the row's width, so they never run past the frame. */
+.dress-nav { gap: 0; width: 100%; max-width: 100%; box-sizing: border-box; }
+.dress-nav .dnav { flex: 1 1 0; min-width: 0; width: auto; max-width: 84px; }
+.dress-nav .dnav .ring { width: min(58px, 100%); height: auto; aspect-ratio: 1; }
+.dress-nav .dnav small { font-size: clamp(0.5rem, 2.6vw, 0.58rem); letter-spacing: 0; text-overflow: clip; }
