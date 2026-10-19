@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-18T12:24:17.849Z",
+  "generatedAt": "2026-10-19T15:13:35.930Z",
   "candidates": [
     {
       "label": "AI agents / automation workflows",
@@ -7,22 +7,47 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "AI researchers stranded Claude on a virtual desert island. It started to “play.”",
+          "source": "MIT Technology Review AI",
+          "link": "https://www.technologyreview.com/2026/10/19/1147095/ai-stranded-claude-virtual-desert-island-play/",
+          "date": "2026-10-19"
+        },
+        {
+          "title": "A hacker broke into John Deere and SharkNinja with an army of AI agents",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1013643/ai-agents-hack-john-deere-shark-ninja-cummins",
+          "date": "2026-10-19"
+        },
+        {
           "title": "Websites are closing their doors to AI agents",
           "source": "The Verge AI",
           "link": "https://www.theverge.com/ai-artificial-intelligence/1013195/ai-agents-blocked-web",
           "date": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "label": "Claude research and documentation flow",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "AI researchers stranded Claude on a virtual desert island. It started to “play.”",
+          "source": "MIT Technology Review AI",
+          "link": "https://www.technologyreview.com/2026/10/19/1147095/ai-stranded-claude-virtual-desert-island-play/",
+          "date": "2026-10-19"
         },
         {
-          "title": "Building trust in AI agents: A production-ready evaluation framework with Amazon Bedrock AgentCore",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/building-trust-in-ai-agents-a-production-ready-evaluation-framework-with-amazon-bedrock-agentcore/",
+          "title": "Quoting Addy Osmani, Morgan Westlee Lunt, and Qing Wang",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/16/code-review/",
           "date": "2026-10-16"
         },
         {
-          "title": "Introducing Reflection Beam: an open-weight model for agentic coding on AWS",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/introducing-reflection-beam-an-open-weight-model-for-agentic-coding-on-aws/",
-          "date": "2026-10-16"
+          "title": "Chirp Pong",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/15/chirp-pong/",
+          "date": "2026-10-15"
         }
       ]
     },
@@ -102,31 +127,6 @@
       ]
     },
     {
-      "label": "Claude research and documentation flow",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Quoting Addy Osmani, Morgan Westlee Lunt, and Qing Wang",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/16/code-review/",
-          "date": "2026-10-16"
-        },
-        {
-          "title": "Chirp Pong",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/15/chirp-pong/",
-          "date": "2026-10-15"
-        },
-        {
-          "title": "LaTeX renderer",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/15/latex/",
-          "date": "2026-10-15"
-        }
-      ]
-    },
-    {
       "label": "GitHub Copilot developer loop",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
@@ -138,16 +138,16 @@
           "date": "2026-10-15"
         },
         {
-          "title": "HydraFusion updates and new Max option",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-10-14-hydrafusion-updates-and-new-max-option",
-          "date": "2026-10-14"
-        },
-        {
           "title": "GitHub Copilot app for Beginners: How to teach Copilot about your codebase",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-teach-copilot-about-your-codebase/",
           "date": "2026-10-12"
+        },
+        {
+          "title": "FabCon and SQLCon 2026 in Barcelona: Building the data foundation for Microsoft Copilot and agents",
+          "source": "Azure Blog",
+          "link": "https://azure.microsoft.com/en-us/blog/fabcon-and-sqlcon-2026-in-barcelona-building-the-data-foundation-for-microsoft-copilot-and-agents/",
+          "date": "2026-09-29"
         }
       ]
     },
