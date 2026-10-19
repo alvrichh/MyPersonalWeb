@@ -546,6 +546,8 @@ function drawPlayer(ctx: CanvasRenderingContext2D, g: Game, pal: Palette, now: n
     ctx.arc(p.x, p.y, p.r + 2.5, 0, Math.PI * 2);
     ctx.fill();
   }
+  // Down on the floor: no aim marker and no empty health bar over the fallen hero.
+  if (g.phase === 'over') return;
   // Aim marker.
   ctx.fillStyle = accent;
   ctx.beginPath();
