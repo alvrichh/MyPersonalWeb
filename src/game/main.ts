@@ -3,7 +3,7 @@ import { storage } from '../lib/storage';
 import { audio, type Sfx } from './audio';
 import { draw, drawRetroFigure, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, type StarColor, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, heroStill } from './save';
-import type { Mode } from './world';
+import type { Enemy, Mode } from './world';
 import { ARMOUR_SLOTS, ARSENAL, ITEMS, type SpiritSkin, UPGRADES, WEAPON_SLOTS, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
 import { Scene } from './scene';
 import { makeT, pickLang, type Key } from './strings';
@@ -160,6 +160,8 @@ const SLOT_ICON: Record<Slot, string> = { head: '🪖', body: '🦺', boots: '�
 /** A painted icon with its emoji behind it for retro (the same switch as `skillIcon`). */
 const picIcon = (emoji: string, pic?: string) => pic ? `<img class="item-pic" src="./images/game/${pic}" alt=""><span class="skill-emoji">${emoji}</span>` : emoji;
 const STYLE_ICON: Record<EnemyStyle, string> = { world: '🌍', original: '🐞', demon: '😈', viking: '🪓', jungle: '🕷️', greek: '🏛️', robot: '🤖', nightmare: '💀', random: '🎲' };
+/** A boss's name: the cast's boss in room 6, the world's own final boss in room 12. */
+const bossTitle = (e: Enemy) => t(e.final ? (`final${cap(e.bossId)}` as Key) : BOSS_NAME[e.look]);
 const BOSS_NAME: Record<Look, Key> = { original: 'bossOriginal', demon: 'bossDemon', viking: 'bossViking', jungle: 'bossJungle', greek: 'bossGreek', robot: 'bossRobot', nightmare: 'bossNightmare' };
 
 let game: Game | null = null;
@@ -1352,8 +1354,8 @@ function step(now: number) {
       if (event === 'room' && g.mode === 'sprints') { flash(t('sprint', { room: g.room })); audio.setIntensity(Math.min(0.8, 0.2 + g.room * 0.05 + (g.world - 1) * 0.05)); }
       if (event === 'minute') { flash(t('minuteN', { n: Math.floor(g.time / 60) })); audio.setIntensity(Math.min(0.85, 0.25 + (g.time / 60) * 0.06)); }
       if (event === 'boss') {
-        const boss = g.enemies.find((e) => e.kind === 'boss');
-        const name = t(BOSS_NAME[boss?.look ?? 'original']);
+        const boss = g.enemies.find((e) => e.kind === 'boss' && !e.clone);
+        const name = boss ? bossTitle(boss) : t('bossOriginal');
         flash(g.mode === 'horde' ? t(g.hordeBoss >= 2 ? 'hordeFinal' : 'hordeBossIn', { name }) : `${t('sprint', { room: g.room })} · ${name}`);
         audio.setIntensity(1);
       }
@@ -1401,13 +1403,13 @@ function step(now: number) {
       hudGear.dataset.gear = gearKey;
       hudGear.innerHTML = gear.map(([id, lvl]) => `<span${isEvo(id) ? ' class="is-evo"' : ''}>${skillIcon(id, 22, iconFile(g, id))}<sub>${isEvo(id) ? '★' : lvl}</sub></span>`).join('');
     }
-    const boss = g.mode === 'horde' || isBossRoom(g.room) ? g.enemies.find((e) => e.kind === 'boss' && e.spawn <= 0) : undefined;
+    const boss = g.mode === 'horde' || isBossRoom(g.room) ? g.enemies.find((e) => e.kind === 'boss' && !e.clone && (e.spawn <= 0 || e.vanish)) : undefined;
     if (bossBar.hidden !== !boss) {
       bossBar.hidden = !boss;
       requestAnimationFrame(resize); // the room makes room for the bar (after layout)
     }
     if (boss) {
-      bossName.textContent = t(BOSS_NAME[boss.look]);
+      bossName.textContent = bossTitle(boss);
       setMeter(bossHp, Math.max(0, boss.hp) / boss.maxHp);
     }
   } else if (!screen.classList.contains('is-menu')) {
