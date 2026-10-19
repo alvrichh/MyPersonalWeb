@@ -70,8 +70,8 @@ export const WORLDS: WorldDef[] = [
 ];
 export const WORLD_COUNT = WORLDS.length;
 
-/** Lava and thorns hurt, puddles slow you down. */
-export type Hazard = { kind: 'lava' | 'puddle' | 'thorns'; x: number; y: number; r: number };
+/** Lava and thorns hurt, puddles slow you down. A boss's meteor or roots leave some that fade (`ttl`, seconds). */
+export type Hazard = { kind: 'lava' | 'puddle' | 'thorns'; x: number; y: number; r: number; ttl?: number };
 /** A lightning strike on its way: a warning circle, then the hit. */
 export type Strike = { x: number; y: number; t: number };
 
@@ -197,6 +197,23 @@ export type Enemy = {
   side: number;
   detour: number;
   dead: boolean;
+  /** Bosses: which one ('' for the rest), the final one of the world (room 12, or the second on call), and a
+      shadow clone of the nightmare world's final boss (weak, gone after `ttl` seconds). */
+  bossId: string;
+  final: boolean;
+  clone: boolean;
+  ttl: number;
+  /** A boss off the floor (a leap, a blink): its spawn circle warns where it lands, and `land` says what it does then. */
+  vanish: boolean;
+  land: '' | 'slam' | 'blink';
+  /** Seconds left of its special pose, of a channelled attack (the spiral, the laser), and that attack's tick. */
+  pose: number;
+  chan: number;
+  chanTick: number;
+  /** Cooldowns of the world's special attack and of the final boss's signature, and signatures used (the chimera cycles). */
+  cd4: number;
+  cd5: number;
+  sigs: number;
 };
 
 export type Shot = {
@@ -236,7 +253,42 @@ export type Mine = { x: number; y: number; arm: number; life: number };
 /** Caltrops dropped by the evolved durian. */
 export type Spike = { x: number; y: number; life: number; tick: number };
 
-export type Orb = { x: number; y: number; vx: number; vy: number; r: number; dmg: number; life: number; bounce: number };
+export type Orb = {
+  x: number; y: number; vx: number; vy: number; r: number; dmg: number; life: number; bounce: number;
+  /** A boss's colour for it ('' or unset: the usual red), and seconds it keeps turning towards you (the robots' missiles). */
+  tone?: string;
+  home?: number;
+};
+/** What a boss's attack looks like: its element. */
+export type ThreatEl = 'fire' | 'water' | 'leaf' | 'bolt' | 'laser' | 'shadow' | 'glitch';
+/**
+ * A boss attack on its way: an area shown as a warning while `warn` runs down, then harmful for `life` seconds.
+ * A circle (meteors, geysers, roots), a line (javelins, the lightning grid), a beam turning round its boss
+ * (the mech's laser) or a wave crossing the room with a gap to slip through (the serpent's tide).
+ */
+export type Threat = {
+  kind: 'circle' | 'line' | 'beam' | 'wave';
+  /** Centre (circle), start (line, beam), the middle of the wave's starting edge (wave). */
+  x: number; y: number;
+  /** Radius, or half the width of the line, beam or wave. */
+  r: number;
+  /** Direction (line, beam; the way a wave travels). */
+  a: number;
+  /** Length (line, beam), half the wave's length. */
+  len: number;
+  warn: number; max: number; life: number; dmg: number;
+  el: ThreatEl;
+  /** Beam: radians a second it turns, and the boss it follows. */
+  spin?: number;
+  owner?: number;
+  /** Wave: speed, how far it has come, and the safe gap (its centre along the wave, half its width). */
+  speed?: number;
+  done?: number;
+  gap?: number;
+  gapW?: number;
+  /** Left on the floor when it hits. */
+  after?: 'lava' | 'thorns';
+};
 export type Particle = { x: number; y: number; vx: number; vy: number; life: number; max: number; size: number; color: string };
 export type Zap = { pts: Vec[]; life: number };
 export type Gem = { x: number; y: number; value: number; pull: boolean };
@@ -353,6 +405,7 @@ export type Game = {
   enemies: Enemy[];
   shots: Shot[];
   orbs: Orb[];
+  threats: Threat[];
   particles: Particle[];
   zaps: Zap[];
   gems: Gem[];
@@ -513,6 +566,8 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
     legacy: { r: 20, hp: 170, speed: 34, dmg: 20, xp: 14 },
     boss: { r: 40, hp: bossHp, speed: 40, dmg: 22, xp: 70 },
   }[kind];
+  // The world's final boss (room 12, or the second one on call) is bigger and has its own kit.
+  const final = kind === 'boss' && (horde ? g.hordeBoss >= 2 : room === ROOMS);
   const hp = Math.round(base.hp * (kind === 'boss' ? worldUp * g.bossHpMult : tough));
   return {
     id: nextId++,
@@ -521,7 +576,7 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
     tint: WORLDS[g.world - 1].tint,
     x: at.x,
     y: at.y,
-    r: base.r,
+    r: final ? 52 : base.r,
     hp,
     maxHp: hp,
     speed: base.speed * (1 + (g.world - 1) * 0.03) * (horde && kind !== 'boss' ? 1 + (g.time / 60) * 0.02 : 1),
@@ -546,6 +601,18 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
     side: Math.random() < 0.5 ? -1 : 1,
     detour: 0,
     dead: false,
+    bossId: kind !== 'boss' ? '' : final ? FINAL_BOSS[g.world - 1] : look,
+    final,
+    clone: false,
+    ttl: 0,
+    vanish: false,
+    land: '',
+    pose: 0,
+    chan: 0,
+    chanTick: 0,
+    cd4: 3,
+    cd5: 4.5,
+    sigs: 0,
   };
 }
 
@@ -585,6 +652,7 @@ function setHazard(g: Game, room: number) {
   g.hazard = kind;
   g.hazards = [];
   g.strikes = [];
+  g.threats = [];
   g.strikeIn = 2;
   if (isShrineRoom(room)) { g.hazard = 'none'; return; }
   const boss = isBossRoom(room);
@@ -658,6 +726,7 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     enemies: [],
     shots: [],
     orbs: [],
+    threats: [],
     particles: [],
     zaps: [],
     gems: [],
@@ -725,6 +794,7 @@ function startField(g: Game) {
   g.hazard = def.hazard === 'mixed' ? 'lava' : def.hazard;
   g.hazards = [];
   g.strikes = [];
+  g.threats = [];
   g.strikeIn = 3;
   for (let i = 0; i < 4; i++) g.enemies.push(makeEnemy(g, 'bug', 1, ringSpot(g, 0.75), rand(0.6, 1.4)));
   g.events.push('room');
@@ -918,6 +988,16 @@ function kill(g: Game, e: Enemy) {
   if (e.dead) return;
   e.dead = true;
   g.kills += 1;
+  // A shadow clone only bursts into smoke.
+  if (e.clone) {
+    burst(g, e.x, e.y, '#a78bfa', 22, 160, 3);
+    return;
+  }
+  // The real boss down: its clones go with it.
+  if (e.kind === 'boss') {
+    for (const c of g.enemies) if (c.clone && !c.dead) { c.dead = true; burst(g, c.x, c.y, '#a78bfa', 18, 120, 3); }
+    g.threats = g.threats.filter((t) => t.owner !== e.id);
+  }
   // Plasma (fire + lightning arrows): a burning bug blows up when it dies, setting its neighbours alight.
   if (e.burn > 0 && fusionOf(g) === 'plasma') {
     g.fx.push({ kind: 'pic', pic: 'plasma-burst', top: true, x: e.x, y: e.y, r: 40, a: rand(0, 6), life: 0.35, max: 0.35 });
@@ -1729,6 +1809,13 @@ function updateEnemy(g: Game, e: Enemy, dt: number) {
   const p = g.player;
   if (e.spawn > 0) {
     e.spawn -= dt;
+    if (e.spawn <= 0 && e.land) bossLands(g, e);
+    return;
+  }
+  // Shadow clones fade after a while.
+  if (e.clone && (e.ttl -= dt) <= 0) {
+    e.dead = true;
+    burst(g, e.x, e.y, '#a78bfa', 18, 120, 3);
     return;
   }
   e.hit = Math.max(0, e.hit - dt);
@@ -1768,7 +1855,7 @@ function updateEnemy(g: Game, e: Enemy, dt: number) {
     }
   } else if (e.kind === 'boss') {
     updateBoss(g, e, dt, ux, uy);
-    if (e.dash > 0) { mx = e.dir.x * 9; my = e.dir.y * 9; } else if (e.aim > 0) { mx = 0; my = 0; } else { mx = ux * 0.6; my = uy * 0.6; }
+    if (e.dash > 0) { mx = e.dir.x * 9; my = e.dir.y * 9; } else if (e.aim > 0 || e.chan > 0) { mx = 0; my = 0; } else { mx = ux * 0.6; my = uy * 0.6; }
   }
 
   // Walking round a rack: sidestep, still edging closer, until the player is
@@ -1797,19 +1884,60 @@ function updateEnemy(g: Game, e: Enemy, dt: number) {
   if (Math.hypot(p.x - e.x, p.y - e.y) < p.r + e.r - 2) hurtPlayer(g, e.dmg);
 }
 
+/* ------------------------------------------------------------------ bosses */
+
+/**
+ * Two bosses a world. The one in room 6 (the first on call) is the world's cast boss with the usual kit
+ * (a ring of orbs, a charge, bugs for backup) plus one move of its world (`MID_MOVE`). The final one in
+ * room 12 (the second on call) is a boss of its own (`FINAL_BOSS`), bigger, faster at all of that, with its
+ * world's move too, its signature attack (`SIGNATURE`) and a fury under half health that speeds it all up.
+ * Moves go by world, not by the cast the picker forces, so the robots' world always has the laser.
+ */
+export const FINAL_BOSS = ['kernel', 'archdemon', 'serpent', 'queen', 'titan', 'mech', 'wraith', 'chimera'] as const;
+export type FinalBoss = (typeof FINAL_BOSS)[number];
+type Move = 'volley' | 'breath' | 'geysers' | 'leap' | 'javelins' | 'missiles' | 'blink';
+type Signature = 'spiral' | 'meteors' | 'tide' | 'roots' | 'grid' | 'laser' | 'clones';
+const MID_MOVE: Move[] = ['volley', 'breath', 'geysers', 'leap', 'javelins', 'missiles', 'blink'];
+const SIGNATURE: Signature[] = ['spiral', 'meteors', 'tide', 'roots', 'grid', 'laser', 'clones'];
+/** World 8 mixes them: a random move each time, and the signatures of worlds 2–7 in turn. */
+const moveOf = (g: Game): Move => (g.world <= 7 ? MID_MOVE[g.world - 1] : MID_MOVE[Math.floor(Math.random() * 7)]);
+const signatureOf = (g: Game, e: Enemy): Signature => (g.world <= 7 ? SIGNATURE[g.world - 1] : SIGNATURE[1 + (e.sigs % 6)]);
+const TONE: Record<ThreatEl, string> = { fire: '#fb923c', water: '#38bdf8', leaf: '#4ade80', bolt: '#facc15', laser: '#f87171', shadow: '#a78bfa', glitch: '#c084fc' };
+
+/** A spot inside the room (or the visible field), `m` from its edges. */
+function inside(g: Game, v: Vec, m: number): Vec {
+  const b = bounds(g);
+  return { x: clamp(v.x, b.x + m, b.x + b.w - m), y: clamp(v.y, b.y + m, b.y + b.h - m) };
+}
+const ring = (g: Game, e: Enemy, n: number, speed: number, tone = '', turn = rand(0, Math.PI * 2)) => {
+  for (let i = 0; i < n; i++) {
+    const a = turn + (i / n) * Math.PI * 2;
+    g.orbs.push({ x: e.x, y: e.y, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, r: 7, dmg: Math.round(e.dmg * 0.64), life: 5, bounce: g.hazard === 'bouncy' ? 1 : 0, tone });
+  }
+};
+const circle = (g: Game, at: Vec, r: number, warn: number, dmg: number, el: ThreatEl, after?: 'lava' | 'thorns') =>
+  g.threats.push({ kind: 'circle', x: at.x, y: at.y, r, a: 0, len: 0, warn, max: warn, life: 0.2, dmg, el, after });
+
 function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
-  const final = g.mode === 'horde' ? g.hordeBoss >= 2 : g.room === ROOMS;
+  const final = e.final;
+  // Clones only throw rings now and then.
+  if (e.clone) {
+    e.cd -= dt;
+    if (e.cd <= 0) { e.cd = rand(3.2, 4); ring(g, e, 7, 95, TONE.shadow); }
+    return;
+  }
+  // The final boss's fury: under half health everything comes a quarter sooner.
+  const fury = final && e.hp < e.maxHp / 2 ? 0.75 : 1;
+  e.pose = Math.max(0, e.pose - dt);
+  if (e.chan > 0) {
+    channel(g, e, dt);
+    return;
+  }
   // Radial burst of orbs, turning a little every time.
   e.cd -= dt;
   if (e.cd <= 0) {
-    e.cd = final ? 2.2 : 3.1;
-    const n = final ? 16 : 10;
-    const speed = final ? 120 : 105;
-    const turn = rand(0, Math.PI * 2);
-    for (let i = 0; i < n; i++) {
-      const a = turn + (i / n) * Math.PI * 2;
-      g.orbs.push({ x: e.x, y: e.y, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, r: 7, dmg: 14, life: 5, bounce: g.hazard === 'bouncy' ? 1 : 0 });
-    }
+    e.cd = (final ? 2.4 : 3.1) * fury;
+    ring(g, e, final ? 14 : 10, final ? 120 : 105);
   }
   // Charge: stop and aim for a moment, then dash at where you were.
   if (e.dash > 0) {
@@ -1820,7 +1948,7 @@ function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
   } else {
     e.cd2 -= dt;
     if (e.cd2 <= 0) {
-      e.cd2 = final ? 4.5 : 6;
+      e.cd2 = (final ? 5 : 6) * fury;
       e.aim = 0.7;
       e.dir = { x: ux, y: uy };
     }
@@ -1828,10 +1956,281 @@ function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
   // Calls for backup (on call, only while the field has room).
   e.cd3 -= dt;
   if (e.cd3 <= 0 && (g.mode === 'sprints' || g.enemies.length < 56)) {
-    e.cd3 = final ? 6 : 10;
+    e.cd3 = (final ? 8 : 10) * fury;
     for (const side of [-1, 1]) {
       g.enemies.push(makeEnemy(g, 'bug', g.room, { x: g.mode === 'horde' ? e.x + side * 60 : clamp(e.x + side * 60, 40, W - 40), y: e.y + 30 }, 0.6));
     }
+  }
+  if (e.dash > 0 || e.aim > 0) return;
+  // The world's move.
+  e.cd4 -= dt;
+  if (e.cd4 <= 0) {
+    e.cd4 = (final ? 6.5 : 5.5) * fury;
+    worldMove(g, e, moveOf(g));
+    if (e.spawn > 0 || e.chan > 0) return;
+  }
+  // The final boss's signature.
+  if (final) {
+    e.cd5 -= dt;
+    if (e.cd5 <= 0) {
+      e.cd5 = 8 * fury;
+      signature(g, e, signatureOf(g, e));
+      e.sigs += 1;
+    }
+  }
+}
+
+function worldMove(g: Game, e: Enemy, move: Move) {
+  const p = g.player;
+  const aim = Math.atan2(p.y - e.y, p.x - e.x);
+  const dmg = Math.round(e.dmg * 0.6);
+  e.pose = 0.5;
+  switch (move) {
+    case 'volley':
+      // A stream of bug reports: three fans of three, each a little faster.
+      for (const [k, speed] of [150, 185, 220].entries()) {
+        for (const off of [-0.18, 0, 0.18]) {
+          const a = aim + off + (k - 1) * 0.04;
+          g.orbs.push({ x: e.x, y: e.y, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, r: 6, dmg, life: 5, bounce: 0, tone: TONE.glitch });
+        }
+      }
+      break;
+    case 'breath':
+      // Fire breath: a cone of flames at you.
+      for (let i = 0; i < 9; i++) {
+        const a = aim + (i / 8 - 0.5) * 1.05;
+        const speed = i % 2 ? 165 : 135;
+        g.orbs.push({ x: e.x, y: e.y, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, r: 7, dmg, life: 3, bounce: 0, tone: TONE.fire });
+      }
+      break;
+    case 'geysers': {
+      // Geysers burst under you, then along the way you were going.
+      const step = p.moving ? { x: Math.cos(p.heading) * 55, y: Math.sin(p.heading) * 55 } : { x: 0, y: 0 };
+      for (let i = 0; i < 3; i++) circle(g, inside(g, { x: p.x + step.x * i, y: p.y + step.y * i }, 30), 30, 0.9 + i * 0.3, dmg, 'water');
+      break;
+    }
+    case 'leap':
+      // Leaps off the floor and comes down where you stand; its shadow warns where.
+      Object.assign(e, inside(g, p, e.r + 8));
+      e.spawn = 1.1;
+      e.vanish = true;
+      e.land = 'slam';
+      break;
+    case 'javelins':
+      // Three javelins of lightning, shown before they fly.
+      for (const off of [-0.25, 0, 0.25]) g.threats.push({ kind: 'line', x: e.x, y: e.y, r: 9, a: aim + off, len: 720, warn: 0.75, max: 0.75, life: 0.18, dmg, el: 'bolt' });
+      break;
+    case 'missiles':
+      // Three missiles that turn after you for a couple of seconds.
+      for (const off of [-0.9, 0, 0.9]) {
+        const a = aim + off;
+        g.orbs.push({ x: e.x, y: e.y, vx: Math.cos(a) * 125, vy: Math.sin(a) * 125, r: 6, dmg, life: 5, bounce: 0, tone: '#fb923c', home: 2.4 });
+      }
+      break;
+    case 'blink': {
+      // Fades into the shadows and comes back somewhere round you.
+      const a = rand(0, Math.PI * 2);
+      Object.assign(e, inside(g, { x: p.x + Math.cos(a) * 130, y: p.y + Math.sin(a) * 130 }, e.r + 8));
+      e.spawn = 0.8;
+      e.vanish = true;
+      e.land = 'blink';
+      break;
+    }
+  }
+}
+
+function signature(g: Game, e: Enemy, sig: Signature) {
+  const p = g.player;
+  const b = bounds(g);
+  const dmg = Math.round(e.dmg * 0.7);
+  e.pose = 0.8;
+  switch (sig) {
+    case 'spiral':
+      // Stack overflow: a double spiral of glitches for three seconds, standing still.
+      e.chan = 3;
+      e.chanTick = 0;
+      e.dir = { x: 0, y: 1 };
+      break;
+    case 'meteors':
+      // Meteor rain: two on you, the rest round the room; each one leaves lava for a while.
+      for (let i = 0; i < 7; i++) {
+        const at = i < 2 ? { x: p.x + rand(-30, 30) * i, y: p.y + rand(-30, 30) * i } : { x: rand(b.x, b.x + b.w), y: rand(b.y, b.y + b.h) };
+        circle(g, inside(g, at, 34), 34, 1.2 + i * 0.12, dmg, 'fire', 'lava');
+      }
+      break;
+    case 'tide': {
+      // A tidal wave across the room with one gap in it; under fury a second one follows from the side.
+      const down = p.y > e.y;
+      const gap = rand(-b.w / 2 + 50, b.w / 2 - 50);
+      g.threats.push({ kind: 'wave', x: b.x + b.w / 2, y: down ? b.y : b.y + b.h, r: 16, a: down ? Math.PI / 2 : -Math.PI / 2, len: b.w / 2, warn: 1, max: 1, life: 99, dmg, el: 'water', speed: 170, done: 0, gap, gapW: 38 });
+      if (e.hp < e.maxHp / 2) {
+        const right = p.x > e.x;
+        g.threats.push({ kind: 'wave', x: right ? b.x : b.x + b.w, y: b.y + b.h / 2, r: 16, a: right ? 0 : Math.PI, len: b.h / 2, warn: 2.4, max: 2.4, life: 99, dmg, el: 'water', speed: 150, done: 0, gap: rand(-b.h / 2 + 60, b.h / 2 - 60), gapW: 42 });
+      }
+      break;
+    }
+    case 'roots': {
+      // Roots burst out of the floor in three rows towards you, leaving thorns behind.
+      const aim = Math.atan2(p.y - e.y, p.x - e.x);
+      for (const off of [-0.4, 0, 0.4]) {
+        for (let k = 1; k <= 7; k++) {
+          const at = { x: e.x + Math.cos(aim + off) * k * 40, y: e.y + Math.sin(aim + off) * k * 40 };
+          circle(g, inside(g, at, 18), 20, 0.55 + k * 0.11, Math.round(dmg * 0.8), 'leaf', k % 2 ? 'thorns' : undefined);
+        }
+      }
+      break;
+    }
+    case 'grid': {
+      // The storm grid: three bolts across the room, then three down it.
+      for (const [i, dy] of [-110, 0, 110].entries()) {
+        const y = clamp(p.y + dy, b.y + 14, b.y + b.h - 14);
+        g.threats.push({ kind: 'line', x: b.x, y, r: 12, a: 0, len: b.w, warn: 1 + i * 0.05, max: 1, life: 0.2, dmg, el: 'bolt' });
+      }
+      for (const [i, dx] of [-95, 0, 95].entries()) {
+        const x = clamp(p.x + dx, b.x + 14, b.x + b.w - 14);
+        g.threats.push({ kind: 'line', x, y: b.y, r: 12, a: Math.PI / 2, len: b.h, warn: 2 + i * 0.05, max: 2, life: 0.2, dmg, el: 'bolt' });
+      }
+      break;
+    }
+    case 'laser': {
+      // Two lasers from the chest, aimed at you, then sweeping round while it stands.
+      const aim = Math.atan2(p.y - e.y, p.x - e.x);
+      const spin = (Math.random() < 0.5 ? -1 : 1) * 0.95;
+      for (const off of [0, Math.PI]) g.threats.push({ kind: 'beam', x: e.x, y: e.y, r: 9, a: aim + off, len: 760, warn: 1, max: 1, life: 3.4, dmg, el: 'laser', spin, owner: e.id });
+      e.chan = 4.4;
+      break;
+    }
+    case 'clones': {
+      // Splits into the shadows: it and three clones come back round you, and only one is real.
+      const turn = rand(0, Math.PI * 2);
+      const spots = [0, 1, 2, 3].map((i) => {
+        const a = (i / 4) * Math.PI * 2 + turn;
+        return inside(g, { x: p.x + Math.cos(a) * 135, y: p.y + Math.sin(a) * 135 }, e.r + 8);
+      });
+      const real = Math.floor(Math.random() * 4);
+      spots.forEach((at, i) => {
+        if (i === real) {
+          Object.assign(e, at);
+          e.spawn = 0.9;
+          e.vanish = true;
+          e.land = 'blink';
+          return;
+        }
+        const c = makeEnemy(g, 'boss', g.room, at, 0.9);
+        Object.assign(c, { look: e.look, bossId: e.bossId, final: true, clone: true, ttl: 7, r: e.r, hp: Math.max(40, Math.round(e.maxHp * 0.05)), cd: rand(1.2, 2.2), vanish: true, land: 'blink' as const });
+        c.maxHp = c.hp;
+        c.dmg = Math.round(e.dmg * 0.6);
+        g.enemies.push(c);
+      });
+      break;
+    }
+  }
+}
+
+/** A channelled attack: the boss stands still while it lasts. */
+function channel(g: Game, e: Enemy, dt: number) {
+  e.chan -= dt;
+  e.pose = Math.max(e.pose, 0.2);
+  if (signatureOf(g, e) === 'spiral' && g.world === 1) {
+    e.chanTick -= dt;
+    if (e.chanTick <= 0) {
+      e.chanTick = 0.11;
+      const a = e.chan * 2.3;
+      for (const off of [0, Math.PI]) {
+        g.orbs.push({ x: e.x, y: e.y, vx: Math.cos(a + off) * 135, vy: Math.sin(a + off) * 135, r: 6, dmg: Math.round(e.dmg * 0.55), life: 4.5, bounce: 0, tone: TONE.glitch });
+      }
+    }
+  }
+}
+
+/** A boss comes back down: a slam with a ring of shockwave orbs, or out of the shadows with a ring of its own. */
+function bossLands(g: Game, e: Enemy) {
+  const what = e.land;
+  e.land = '';
+  e.vanish = false;
+  if (what === 'slam') {
+    circle(g, e, 66, 0, Math.round(e.dmg * 0.9), 'leaf');
+    g.fx.push({ kind: 'ring', x: e.x, y: e.y, r: 70, a: 0, life: 0.4, max: 0.4, big: true });
+    g.shake = Math.max(g.shake, 0.35);
+    ring(g, e, 8, 120, TONE.leaf);
+  } else if (!e.clone) {
+    ring(g, e, 12, 100, TONE.shadow);
+  }
+  burst(g, e.x, e.y, what === 'slam' ? '#86efac' : '#a78bfa', 20, 150, 3);
+}
+
+/** Distance from a point to the segment from (x, y) along angle a for len. */
+function toSegment(v: Vec, x: number, y: number, a: number, len: number) {
+  const dx = Math.cos(a);
+  const dy = Math.sin(a);
+  const t = clamp((v.x - x) * dx + (v.y - y) * dy, 0, len);
+  return Math.hypot(v.x - (x + dx * t), v.y - (y + dy * t));
+}
+
+function updateThreats(g: Game, dt: number) {
+  if (!g.threats.length) return;
+  const p = g.player;
+  g.threats = g.threats.filter((t) => {
+    if (t.kind === 'beam' && t.owner !== undefined) {
+      const boss = g.enemies.find((e) => e.id === t.owner && !e.dead);
+      if (!boss) return false;
+      t.x = boss.x;
+      t.y = boss.y;
+    }
+    if (t.warn > 0) {
+      t.warn -= dt;
+      if (t.warn <= 0) threatHits(g, t);
+      return true;
+    }
+    if (t.kind === 'beam') t.a += (t.spin ?? 0) * dt;
+    if (t.kind === 'wave') {
+      t.done = (t.done ?? 0) + (t.speed ?? 0) * dt;
+      // Gone once it has crossed the room.
+      const across = Math.abs(Math.cos(t.a)) > 0.5 ? bounds(g).w : bounds(g).h;
+      if (t.done > across + t.r) return false;
+      if (Math.random() < 0.8) {
+        const s = rand(-t.len, t.len);
+        if (Math.abs(s - (t.gap ?? 0)) > (t.gapW ?? 0)) {
+          const at = waveAt(t, s);
+          g.particles.push({ x: at.x, y: at.y, vx: Math.cos(t.a) * 60 + rand(-30, 30), vy: Math.sin(t.a) * 60 + rand(-30, 30), life: 0.4, max: 0.4, size: 2.6, color: '#e0f2fe' });
+        }
+      }
+    }
+    if (touches(t, p, p.r * 0.6)) hurtPlayer(g, t.dmg);
+    t.life -= dt;
+    return t.life > 0;
+  });
+}
+
+/** The point `s` along a wave's front (from its middle). */
+export function waveAt(t: Threat, s: number): Vec {
+  const fx = t.x + Math.cos(t.a) * (t.done ?? 0);
+  const fy = t.y + Math.sin(t.a) * (t.done ?? 0);
+  return { x: fx - Math.sin(t.a) * s, y: fy + Math.cos(t.a) * s };
+}
+
+function touches(t: Threat, v: Vec, r: number) {
+  if (t.kind === 'circle') return dist(t, v) < t.r + r;
+  if (t.kind === 'line' || t.kind === 'beam') return toSegment(v, t.x, t.y, t.a, t.len) < t.r + r;
+  // The wave: how far along its path the point is, and where along the front.
+  const dx = v.x - t.x;
+  const dy = v.y - t.y;
+  const along = dx * Math.cos(t.a) + dy * Math.sin(t.a);
+  const side = -dx * Math.sin(t.a) + dy * Math.cos(t.a);
+  return Math.abs(along - (t.done ?? 0)) < t.r + r && Math.abs(side) < t.len && Math.abs(side - (t.gap ?? 0)) > (t.gapW ?? 0);
+}
+
+/** The moment a warning runs out: the flash, and what it leaves behind. */
+function threatHits(g: Game, t: Threat) {
+  if (t.kind === 'circle') {
+    if (t.el === 'fire') g.fx.push({ kind: 'boom', x: t.x, y: t.y, r: t.r, a: 0, life: 0.35, max: 0.35 });
+    else burst(g, t.x, t.y, TONE[t.el], 12, 140, 3);
+    if (t.after) g.hazards.push({ kind: t.after, x: t.x, y: t.y, r: t.after === 'lava' ? 26 : 16, ttl: t.after === 'lava' ? 4 : 2.5 });
+    if (t.el === 'fire') g.events.push('boom');
+  } else if (t.kind === 'line' && t.el === 'bolt') {
+    const end = { x: t.x + Math.cos(t.a) * t.len, y: t.y + Math.sin(t.a) * t.len };
+    g.zaps.push({ pts: zigzag(t, end, 10), life: 0.22 });
+    g.events.push('strike');
   }
 }
 
@@ -1993,6 +2392,9 @@ function updateShot(g: Game, s: Shot, dt: number): boolean {
 
 function updateHazards(g: Game, dt: number) {
   const p = g.player;
+  // What a boss left on the floor fades.
+  if (g.hazards.some((h) => h.ttl !== undefined)) g.hazards = g.hazards.filter((h) => h.ttl === undefined || (h.ttl -= dt) > 0);
+  updateThreats(g, dt);
   for (const h of g.hazards) {
     if (h.kind === 'puddle' || dist(h, p) > h.r + p.r * 0.4) continue;
     hurtPlayer(g, h.kind === 'lava' ? 8 : 10);
@@ -2215,6 +2617,17 @@ export function update(g: Game, dt: number, input: Input) {
   });
 
   g.orbs = g.orbs.filter((o) => {
+    if (o.home && o.home > 0) {
+      // The robots' missiles turn towards you for a while.
+      o.home -= dt;
+      const speed = Math.hypot(o.vx, o.vy);
+      let a = Math.atan2(o.vy, o.vx);
+      const turn = ((Math.atan2(p.y - o.y, p.x - o.x) - a + Math.PI * 3) % (Math.PI * 2)) - Math.PI;
+      a += clamp(turn, -2.4 * dt, 2.4 * dt);
+      o.vx = Math.cos(a) * speed;
+      o.vy = Math.sin(a) * speed;
+      if (Math.random() < 0.5) g.particles.push({ x: o.x, y: o.y, vx: -o.vx * 0.15, vy: -o.vy * 0.15, life: 0.3, max: 0.3, size: 2.2, color: '#fdba74' });
+    }
     o.x += o.vx * dt;
     o.y += o.vy * dt;
     o.life -= dt;
@@ -2308,6 +2721,7 @@ export function update(g: Game, dt: number, input: Input) {
   } else if (!g.door && g.enemies.length === 0) {
     g.door = true;
     g.orbs = [];
+    g.threats = [];
     g.fireballs = [];
     g.coins += 5 * worldPay(g);
     if (g.room === WHEEL_ROOM && !g.wheelUsed) g.wheelDoor = true;

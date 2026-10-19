@@ -1,4 +1,4 @@
-import { H, W, WALL, WHEEL_X, WORLDS, frostReach, isBossRoom, type Enemy, type Game, type Shot, type Look, type Statue, type Rect, type Vec, type Fusion, arrowLook, fusionOf, bladeCount, bladeElement, bladeOrbit, bladeScale, type BladeElement } from './world';
+import { H, W, WALL, WHEEL_X, WORLDS, frostReach, waveAt, type Threat, isBossRoom, type Enemy, type Game, type Shot, type Look, type Statue, type Rect, type Vec, type Fusion, arrowLook, fusionOf, bladeCount, bladeElement, bladeOrbit, bladeScale, type BladeElement } from './world';
 import { SPIRIT_COLOR, type ItemId, type SpiritSkin } from './shop';
 import { FULL_HERO_SETS, heroKey, type HeroSkin } from './save';
 
@@ -57,7 +57,9 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   drawMines(ctx, g, now);
   drawRunes(ctx, g, now);
   drawFx(ctx, g, accent, 'under');
+  drawThreats(ctx, g, now, false);
   for (const e of g.enemies) if (onScreen(e, 80)) drawEnemy(ctx, e, now);
+  drawThreats(ctx, g, now, true);
   drawOrbs(ctx, g);
   drawShots(ctx, g, accent, accent2);
   drawFireballs(ctx, g);
@@ -1852,7 +1854,7 @@ function drawOrbs(ctx: CanvasRenderingContext2D, g: Game) {
   for (const o of g.orbs) {
     const grad = ctx.createRadialGradient(o.x, o.y, 0, o.x, o.y, o.r * 1.8);
     grad.addColorStop(0, '#fff3c4');
-    grad.addColorStop(0.45, '#ff6b6b');
+    grad.addColorStop(0.45, o.tone || '#ff6b6b');
     grad.addColorStop(1, 'transparent');
     ctx.fillStyle = grad;
     ctx.beginPath();
@@ -1886,7 +1888,152 @@ function drawZaps(ctx: CanvasRenderingContext2D, g: Game) {
   ctx.shadowBlur = 0;
 }
 
+/* Boss attacks (see `Threat` in world.ts): while warning, a faint area that fills up as the hit comes; then
+   the hit itself. Circles and lines are drawn under the bugs, live beams and waves over them. */
+const THREAT_TONE: Record<Threat['el'], [string, string]> = {
+  fire: ['249,115,22', '254,215,170'], water: ['56,189,248', '224,242,254'], leaf: ['74,222,128', '220,252,231'],
+  bolt: ['250,204,21', '254,249,195'], laser: ['239,68,68', '254,226,226'], shadow: ['167,139,250', '237,233,254'], glitch: ['192,132,252', '243,232,255'],
+};
+function drawThreats(ctx: CanvasRenderingContext2D, g: Game, now: number, top: boolean) {
+  for (const t of g.threats) {
+    const live = t.warn <= 0;
+    if (top !== (live && (t.kind === 'beam' || t.kind === 'wave'))) continue;
+    const [c, light] = THREAT_TONE[t.el];
+    const k = live ? 1 : 1 - t.warn / (t.max || 1);
+    ctx.save();
+    if (t.kind === 'circle') {
+      if (!live) {
+        ctx.fillStyle = `rgba(${c},0.12)`;
+        ctx.beginPath();
+        ctx.arc(t.x, t.y, t.r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = `rgba(${c},0.3)`;
+        ctx.beginPath();
+        ctx.arc(t.x, t.y, t.r * k, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = `rgba(${c},${0.55 + Math.sin(now * 18) * 0.25})`;
+        ctx.lineWidth = 2;
+        ctx.setLineDash([5, 4]);
+        ctx.beginPath();
+        ctx.arc(t.x, t.y, t.r, 0, Math.PI * 2);
+        ctx.stroke();
+      } else {
+        ctx.globalAlpha = Math.min(1, t.life / 0.2);
+        const grad = ctx.createRadialGradient(t.x, t.y, 0, t.x, t.y, t.r);
+        grad.addColorStop(0, `rgba(${light},0.95)`);
+        grad.addColorStop(0.6, `rgba(${c},0.75)`);
+        grad.addColorStop(1, `rgba(${c},0)`);
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(t.x, t.y, t.r * 1.15, 0, Math.PI * 2);
+        ctx.fill();
+        if (t.el === 'leaf') {
+          // Roots: thorny spikes out of the floor.
+          ctx.fillStyle = '#166534';
+          for (let i = 0; i < 5; i++) {
+            const a = i * 1.26 + t.x * 0.1;
+            const bx = t.x + Math.cos(a) * t.r * 0.4;
+            const by = t.y + Math.sin(a) * t.r * 0.3;
+            ctx.beginPath();
+            ctx.moveTo(bx - 4, by + 4);
+            ctx.lineTo(bx, by - t.r * 0.9);
+            ctx.lineTo(bx + 4, by + 4);
+            ctx.fill();
+          }
+        }
+      }
+    } else if (t.kind === 'line' || t.kind === 'beam') {
+      ctx.translate(t.x, t.y);
+      ctx.rotate(t.a);
+      if (!live) {
+        ctx.fillStyle = `rgba(${c},${0.1 + k * 0.15})`;
+        ctx.fillRect(0, -t.r, t.len, t.r * 2);
+        ctx.strokeStyle = `rgba(${c},${0.5 + Math.sin(now * 20) * 0.25})`;
+        ctx.lineWidth = t.kind === 'beam' ? 1.5 : 2;
+        ctx.setLineDash([8, 6]);
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(t.len, 0);
+        ctx.stroke();
+      } else {
+        const flick = t.kind === 'beam' ? 0.85 + Math.sin(now * 40) * 0.15 : Math.min(1, t.life / 0.18);
+        if (!retroLook) { ctx.shadowColor = `rgb(${c})`; ctx.shadowBlur = 16; }
+        ctx.fillStyle = `rgba(${c},${0.7 * flick})`;
+        ctx.fillRect(0, -t.r * 1.3, t.len, t.r * 2.6);
+        ctx.fillStyle = `rgba(${light},${flick})`;
+        ctx.fillRect(0, -t.r * 0.45, t.len, t.r * 0.9);
+        if (t.kind === 'beam') {
+          ctx.fillStyle = `rgba(${light},0.9)`;
+          ctx.beginPath();
+          ctx.arc(0, 0, t.r * 2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    } else if (t.kind === 'wave') {
+      const gap = t.gap ?? 0;
+      const gapW = t.gapW ?? 0;
+      if (!live) {
+        // The edge it comes from, with the gap marked.
+        ctx.strokeStyle = `rgba(${c},${0.5 + Math.sin(now * 16) * 0.3})`;
+        ctx.lineWidth = 5;
+        for (const [from, to] of [[-t.len, gap - gapW], [gap + gapW, t.len]]) {
+          const a = waveAt(t, from);
+          const b = waveAt(t, to);
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      } else {
+        // The wall of water: a band with a white crest, split where the gap is.
+        for (const [from, to] of [[-t.len, gap - gapW], [gap + gapW, t.len]]) {
+          if (to <= from) continue;
+          const a = waveAt(t, from);
+          const b = waveAt(t, to);
+          const nx = Math.cos(t.a) * t.r;
+          const ny = Math.sin(t.a) * t.r;
+          const grad = ctx.createLinearGradient(a.x - nx, a.y - ny, a.x + nx, a.y + ny);
+          grad.addColorStop(0, `rgba(${c},0.15)`);
+          grad.addColorStop(0.6, `rgba(${c},0.85)`);
+          grad.addColorStop(1, `rgba(${light},0.95)`);
+          ctx.fillStyle = grad;
+          ctx.beginPath();
+          ctx.moveTo(a.x - nx * 1.6, a.y - ny * 1.6);
+          ctx.lineTo(b.x - nx * 1.6, b.y - ny * 1.6);
+          ctx.lineTo(b.x + nx, b.y + ny);
+          ctx.lineTo(a.x + nx, a.y + ny);
+          ctx.closePath();
+          ctx.fill();
+        }
+      }
+    }
+    ctx.restore();
+  }
+}
+
 function drawEnemy(ctx: CanvasRenderingContext2D, e: Enemy, now: number) {
+  // A boss off the floor: its shadow grows where it will land.
+  if (e.spawn > 0 && e.vanish) {
+    const slam = e.land === 'slam';
+    const k = 1 - Math.min(1, e.spawn / (slam ? 1.1 : 0.9));
+    const tone = slam ? '134,239,172' : '167,139,250';
+    ctx.fillStyle = `rgba(0,0,0,${0.15 + k * 0.35})`;
+    ctx.beginPath();
+    ctx.ellipse(e.x, e.y + e.r * 0.6, e.r * (0.5 + k * 0.5), e.r * (0.18 + k * 0.17), 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = `rgba(${tone},${0.5 + Math.sin(now * 20) * 0.2})`;
+    ctx.lineWidth = 2;
+    ctx.setLineDash([6, 5]);
+    ctx.beginPath();
+    ctx.arc(e.x, e.y, slam ? 66 : e.r, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = `rgba(${tone},0.18)`;
+    ctx.beginPath();
+    ctx.arc(e.x, e.y, (slam ? 66 : e.r) * k, 0, Math.PI * 2);
+    ctx.fill();
+    return;
+  }
   // Warning circle while it spawns.
   if (e.spawn > 0) {
     ctx.strokeStyle = 'rgba(255,107,107,0.7)';
@@ -1915,6 +2062,31 @@ function drawEnemy(ctx: CanvasRenderingContext2D, e: Enemy, now: number) {
     ctx.arc(0, 0, e.r * 1.5, 0, Math.PI * 2);
     ctx.fill();
   }
+  // The world's final boss: a crown of light turning round it (its clones wear it too, to fool you).
+  if (e.final) {
+    const tone = e.tint || '#fcd34d';
+    ctx.save();
+    ctx.rotate(now * 0.8);
+    ctx.strokeStyle = tone;
+    ctx.globalAlpha = 0.55 + Math.sin(now * 3) * 0.15;
+    ctx.lineWidth = 2.5;
+    if (!retroLook) { ctx.shadowColor = tone; ctx.shadowBlur = 12; }
+    ctx.setLineDash([10, 8]);
+    ctx.beginPath();
+    ctx.arc(0, 0, e.r * 1.25, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    for (let i = 0; i < 6; i++) {
+      const a = (i / 6) * Math.PI * 2;
+      ctx.beginPath();
+      ctx.moveTo(Math.cos(a) * e.r * 1.25, Math.sin(a) * e.r * 1.25);
+      ctx.lineTo(Math.cos(a) * e.r * 1.45, Math.sin(a) * e.r * 1.45);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+  // Clones flicker now and then, very slightly.
+  if (e.clone && Math.sin(now * 13 + e.id) > 0.93) ctx.globalAlpha = 0.6;
   if (e.kind === 'boss' && e.aim > 0) {
     // Telegraph the charge, whatever the boss looks like.
     ctx.strokeStyle = `rgba(255,107,107,${0.35 + Math.sin(now * 30) * 0.2})`;
@@ -3156,11 +3328,34 @@ function enemyFrame(e: Enemy, count: number, now: number) {
   if (e.kind === 'ticket' && e.cd > 1.5) return e.cd > 1.75 ? 3 : 4;
   return Math.floor(now * 6 + e.wobble) % 3;
 }
+/* Bosses with a seven-pose sheet of their own (static/images/game/bosses/<id>-<frame>.webp: three walking,
+   wind-up, strike, hit and the special move), by `bossId`: a final boss's name, or the cast for a room-6
+   boss. Add an id here once its pictures are in; until then a final boss wears its cast's boss, bigger. */
+const BOSS_ART = new Set<string>([]);
+const finalSprites = new Map<string, HTMLImageElement[]>();
+function finalFrame(e: Enemy, now: number) {
+  if (e.hit > 0) return 5;
+  if (e.pose > 0 || e.chan > 0) return 6;
+  if (e.aim > 0) return 3;
+  if (e.dash > 0) return 4;
+  return Math.floor(now * 6 + e.wobble) % 3;
+}
 function drawEnemySprite(ctx: CanvasRenderingContext2D, e: Enemy, now: number) {
-  const count = SPRITE_FRAMES[e.look];
+  let count = SPRITE_FRAMES[e.look];
+  let frames: HTMLImageElement[] | undefined;
+  let img: HTMLImageElement | undefined;
+  if (e.kind === 'boss' && BOSS_ART.has(e.bossId)) {
+    frames = finalSprites.get(e.bossId);
+    if (!frames) {
+      frames = Array.from({ length: 7 }, (_, i) => Object.assign(new Image(), { src: `./images/game/bosses/${e.bossId}-${i}.webp` }));
+      finalSprites.set(e.bossId, frames);
+    }
+    img = frames[finalFrame(e, now)];
+    count = 7;
+  }
   if (!count) return false;
-  const frames = enemyFrames(e.look, e.kind, count);
-  const img = frames[enemyFrame(e, count, now)] ?? frames[0];
+  frames ??= enemyFrames(e.look, e.kind, count);
+  img ??= frames[enemyFrame(e, count, now)] ?? frames[0];
   if (!img.complete || !img.naturalWidth) return false;
   const size = e.r * (e.kind === 'boss' ? 2.6 : 2.5);
   const ratio = img.naturalWidth / img.naturalHeight;
