@@ -304,11 +304,13 @@ function drawRoom(ctx: CanvasRenderingContext2D, g: Game, accent: string, now: n
 
   if (g.statue) (retroLook ? drawStatueRetro : drawStatue)(ctx, g.statue, theme.door || accent, now);
 
-  // The jungle world: the owner's mossy stone blocks instead of racks, the piece whose shape is closest.
-  const jungle = !retroLook && WORLDS[g.world - 1].look === 'jungle';
-  for (const o of jungle ? g.obstacles : []) {
+  // The jungle and viking worlds: the owner's stone blocks instead of racks (mossy, or wet with lily pads),
+  // the piece whose shape is closest.
+  const look = WORLDS[g.world - 1].look;
+  const stones = !retroLook && (look === 'jungle' || look === 'viking') ? look : null;
+  for (const o of stones ? g.obstacles : []) {
     const ratio = o.w / o.h;
-    const pic = jungleImage(ratio > 3.2 ? 'stone-long-1' : ratio > 1.7 ? 'stone-long-0' : (o.x + o.y) % 2 ? 'stone-0' : 'stone-1');
+    const pic = setImage(stones!, ratio > 3.2 ? 'stone-long-1' : ratio > 1.7 ? 'stone-long-0' : (o.x + o.y) % 2 ? 'stone-0' : 'stone-1');
     if (!ready(pic)) continue;
     // As wide as the block and a little more, its own shape kept, standing on the block's bottom edge.
     const w = o.w * 1.12;
@@ -320,7 +322,7 @@ function drawRoom(ctx: CanvasRenderingContext2D, g: Game, accent: string, now: n
     ctx.drawImage(pic, o.x + o.w / 2 - w / 2, o.y + o.h + 4 - h, w, h);
   }
   // Server racks, with blinking lights.
-  for (const o of jungle && ready(jungleImage('stone-0')) ? [] : g.obstacles) {
+  for (const o of stones && ready(setImage(stones, 'stone-0')) ? [] : g.obstacles) {
     ctx.fillStyle = 'rgba(0,0,0,0.35)';
     roundRect(ctx, o.x + 3, o.y + 5, o.w, o.h, 5);
     ctx.fill();
@@ -4063,13 +4065,16 @@ const LOOKS: Record<Look, Record<Enemy['kind'], Drawer>> = {
 
 /* ------------------------------------------------------------- the worlds */
 
-/** The jungle world's pieces (`static/images/game/jungle/`): mossy stone blocks and thorny vines. */
-const jungleImages = new Map<string, HTMLImageElement>();
-function jungleImage(name: string) {
-  let img = jungleImages.get(name);
-  if (!img) { img = new Image(); img.src = `./images/game/jungle/${name}.webp`; jungleImages.set(name, img); }
+/** A world's own pieces (`static/images/game/<set>/`): the jungle's mossy blocks and thorny vines, the
+    vikings' wet blocks and water pools. */
+const setImages = new Map<string, HTMLImageElement>();
+function setImage(set: 'jungle' | 'viking', name: string) {
+  const key = `${set}/${name}`;
+  let img = setImages.get(key);
+  if (!img) { img = new Image(); img.src = `./images/game/${key}.webp`; setImages.set(key, img); }
   return img;
 }
+const jungleImage = (name: string) => setImage('jungle', name);
 
 function drawHazards(ctx: CanvasRenderingContext2D, g: Game, now: number) {
   for (const h of g.hazards) {
@@ -4103,6 +4108,16 @@ function drawHazards(ctx: CanvasRenderingContext2D, g: Game, now: number) {
       ctx.strokeStyle = 'rgba(0,0,0,0.5)';
       ctx.lineWidth = 2;
       ctx.stroke();
+    } else if (h.kind === 'puddle' && !retroLook && ready(setImage('viking', 'pool-2'))) {
+      // The owner's rippling pool: the bigger the puddle the bigger picture, its rings turning slowly.
+      const pic = setImage('viking', `pool-${Math.min(4, Math.max(0, Math.round((h.r - 24) / 7)))}`);
+      const w = h.r * 2.3;
+      const ht = (w * pic.naturalHeight) / pic.naturalWidth;
+      ctx.save();
+      ctx.translate(h.x, h.y);
+      ctx.scale(1 + Math.sin(now * 2 + h.x) * 0.02, 1 + Math.cos(now * 2 + h.y) * 0.02);
+      ctx.drawImage(pic, -w / 2, -ht / 2, w, ht);
+      ctx.restore();
     } else if (h.kind === 'puddle') {
       const grad = ctx.createRadialGradient(h.x, h.y, 0, h.x, h.y, h.r);
       grad.addColorStop(0, 'rgba(56,189,248,0.35)');
