@@ -631,7 +631,9 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
   }[kind];
   // The world's final boss (room 12, or the second one on call) is bigger and has its own kit.
   const final = kind === 'boss' && (horde ? finalBossNow(g) : room === ROOMS);
-  const hp = Math.round(base.hp * (kind === 'boss' ? worldUp * g.bossHpMult : tough));
+  // The Core's Chimera, the last of all: twice the health of the other final bosses' formula.
+  const chimera = final && g.world === WORLD_COUNT ? 2 : 1;
+  const hp = Math.round(base.hp * (kind === 'boss' ? worldUp * g.bossHpMult * chimera : tough));
   return {
     id: nextId++,
     kind,
