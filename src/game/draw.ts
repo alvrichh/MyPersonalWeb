@@ -204,9 +204,12 @@ function fieldPattern(ctx: CanvasRenderingContext2D, floor: HTMLImageElement, tw
   return pat;
 }
 
+/** The world whose floor and blocks are drawn: the run's own, or the one picked in Customise. */
+const sceneOf = (g: Game) => g.scene || g.world;
+
 function drawField(ctx: CanvasRenderingContext2D, g: Game, vis: Rect, now: number) {
-  const theme = WORLDS[g.world - 1];
-  const floor = retroLook ? undefined : floorImage(g.world);
+  const theme = WORLDS[sceneOf(g) - 1];
+  const floor = retroLook ? undefined : floorImage(sceneOf(g));
   const tw = W * FLOOR_CROP.w;
   const th = H * FLOOR_CROP.h;
   ctx.fillStyle = theme.floor;
@@ -239,9 +242,9 @@ function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: numbe
 }
 
 function drawRoom(ctx: CanvasRenderingContext2D, g: Game, accent: string, now: number) {
-  const theme = WORLDS[g.world - 1];
+  const theme = WORLDS[sceneOf(g) - 1];
   // Floor: the world's painted arena, or flat tiles in its colours (retro, or while it loads).
-  const floor = retroLook ? undefined : floorImage(g.world);
+  const floor = retroLook ? undefined : floorImage(sceneOf(g));
   if (floor && floor.complete && floor.naturalWidth) {
     ctx.drawImage(floor, 0, 0, W, H);
     if (isBossRoom(g.room)) { ctx.fillStyle = 'rgba(20,10,30,0.25)'; ctx.fillRect(0, 0, W, H); }
@@ -316,7 +319,7 @@ const LAYOUT_SET: Record<string, string> = { viking: 'ice-', greek: 'arena-', de
 
 function drawObstacles(ctx: CanvasRenderingContext2D, g: Game, accent: string, now: number) {
   // The jungle world: the owner's mossy stone blocks instead of racks, the piece whose shape is closest.
-  const look = WORLDS[g.world - 1].look;
+  const look = WORLDS[sceneOf(g) - 1].look;
   const stones = !retroLook && look !== 'random' ? look : null;
   for (const o of stones ? g.obstacles : []) {
     const ratio = o.w / o.h;

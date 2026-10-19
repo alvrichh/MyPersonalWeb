@@ -57,6 +57,8 @@ export type Save = {
   style: EnemyStyle;
   /** Saves from before worlds had their own cast default to 'world' once. */
   styleV2: boolean;
+  /** The world whose floor and blocks every run draws (0: each world its own), to try them out. */
+  scene: number;
   music: number;
   sfx: number;
   best: { room: number; time?: number };
@@ -109,6 +111,7 @@ const fresh = (): Save => ({
   upgrades: {},
   style: 'world',
   styleV2: true,
+  scene: 0,
   music: 0.6,
   sfx: 0.8,
   best: { room: 0 },
@@ -157,6 +160,7 @@ export function loadSave(): Save {
       if (item && save.owned.includes(item.id)) save.equipped[item.slot] = item.id;
     }
     if (!STYLES.includes(save.style)) save.style = 'world';
+    if (!(Number.isInteger(save.scene) && save.scene >= 0 && save.scene <= 8)) save.scene = 0;
     if (!SKINS.includes(save.skin)) save.skin = 'boy';
     // Skins cost coins now: the free one, plus whichever an older save already wore.
     save.skins = [...new Set<HeroSkin>(['boy', save.skin, ...(data.skins ?? [])])].filter((s) => SKINS.includes(s));
@@ -206,7 +210,7 @@ export const worldWon = (save: Save, n: number) => save.bestByWorld[n]?.time !==
 
 /** Back to a fresh start: progress, coins, gear and level go; name, skins bought, settings, masteries and star colour stay. */
 export function wipeProgress(save: Save) {
-  const keep = { name: save.name, skin: save.skin, skins: [...save.skins], retro: save.retro, style: save.style, music: save.music, sfx: save.sfx, mode: save.mode, mastery: { ...save.mastery }, starColor: save.starColor, dailyAt: save.dailyAt, purchases: [...save.purchases] };
+  const keep = { name: save.name, skin: save.skin, skins: [...save.skins], retro: save.retro, style: save.style, scene: save.scene, music: save.music, sfx: save.sfx, mode: save.mode, mastery: { ...save.mastery }, starColor: save.starColor, dailyAt: save.dailyAt, purchases: [...save.purchases] };
   Object.assign(save, fresh(), keep);
 }
 

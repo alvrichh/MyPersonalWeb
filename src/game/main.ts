@@ -1075,7 +1075,7 @@ function dressPalette() {
 }
 const heroPic = () => `./images/game/hero/${heroStill(save.skin, save.equipped.head)}.webp`;
 /** What the list under the hero shows: a slot's items, the skins or the enemy looks. */
-let dressSlot: Slot | 'skin' | 'foes' | null = null;
+let dressSlot: Slot | 'skin' | 'foes' | 'scene' | null = null;
 function stylesScreen(note = '') {
   const slotButton = (slot: Slot) => {
     const id = save.equipped[slot];
@@ -1103,6 +1103,10 @@ function stylesScreen(note = '') {
   } else if (dressSlot === 'foes') {
     picks = `<h3 class="slot">${t('stylePick')}</h3><div class="gear-list">${STYLES.map((style) =>
       row(`data-style="${style}"`, save.style === style, false, STYLE_ICON[style], t(`style${cap(style)}Name` as Key), t(`style${cap(style)}Text` as Key), save.style === style ? '✓' : '')).join('')}</div>`;
+  } else if (dressSlot === 'scene') {
+    picks = `<h3 class="slot">${t('scenePick')}</h3><div class="gear-list">${[0, 1, 2, 3, 4, 5, 6, 7, 8].map((n) =>
+      row(`data-scene="${n}"`, save.scene === n, false, n ? `<img class="scene-pic" src="./images/game/floors/world${n}.webp" alt="">` : '🌍',
+        n ? t(`world${n}Name` as Key) : t('sceneOwn'), n ? t('sceneText', { n }) : t('sceneOwnText'), save.scene === n ? '✓' : '')).join('')}</div>`;
   } else if (dressSlot) {
     const slot = dressSlot;
     picks = `<h3 class="slot">${t('dressPick', { slot: t(SLOT_LABEL[slot]) })}</h3>
@@ -1119,7 +1123,7 @@ function stylesScreen(note = '') {
       ${save.equipped[slot] ? `<button class="ghost small" data-undress="${slot}">${t('dressNone')}</button>` : ''}
       </div>`;
   }
-  const nav = (key: 'skin' | 'foes', icon: string, label: Key) =>
+  const nav = (key: 'skin' | 'foes' | 'scene', icon: string, label: Key) =>
     `<button class="dnav${dressSlot === key ? ' is-open' : ''}" data-dress-list="${key}" aria-pressed="${dressSlot === key}"><span class="ring" aria-hidden="true">${icon}</span><small>${t(label)}</small></button>`;
   show(`<button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
     <div class="dress-title"><h2>${t('styles')}</h2></div>
@@ -1133,6 +1137,7 @@ function stylesScreen(note = '') {
       <button class="dnav is-back" data-act="menu"><span class="ring" aria-hidden="true"></span><small>${t('backShort')}</small></button>
       ${nav('skin', '👕', 'skinBtn')}
       ${nav('foes', '👾', 'enemies')}
+      ${nav('scene', '🗺️', 'sceneBtn')}
     </div>
     ${picks}`, true, false, 'keep-scroll');
   const fig = screen.querySelector<HTMLCanvasElement>('canvas.hero-fig');
@@ -1156,6 +1161,7 @@ function showPicks() {
 
 function startRun(world = worldIn(), mode = save.mode, endless = false) {
   game = newGame({ ...buildLoadout(save.equipped, save.upgrades, masteries(), save.arsenal, save.itemLevels), sprintMastery: save.mastery.sprints }, save.style, world, mode, endless);
+  game.scene = save.scene;
   preloadFx();
   paused = false;
   shownChoices = '';
@@ -1401,6 +1407,10 @@ screen.addEventListener('click', (event) => {
     delete save.equipped[item.slot];
     persist();
     shopScreen();
+  } else if (target.dataset.scene !== undefined) {
+    save.scene = Number(target.dataset.scene);
+    persist();
+    stylesScreen();
   } else if (target.dataset.style) {
     save.style = target.dataset.style as EnemyStyle;
     persist();
@@ -1424,7 +1434,7 @@ screen.addEventListener('click', (event) => {
     stylesScreen();
     showPicks();
   } else if (target.dataset.dressList) {
-    const key = target.dataset.dressList as 'skin' | 'foes';
+    const key = target.dataset.dressList as 'skin' | 'foes' | 'scene';
     dressSlot = dressSlot === key ? null : key;
     stylesScreen();
     showPicks();
