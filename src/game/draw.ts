@@ -312,19 +312,22 @@ function drawRoom(ctx: CanvasRenderingContext2D, g: Game, accent: string, now: n
 /** Every block of every layout (`LAYOUTS` in world.ts), by size and place: the pieces drawn for the viking and Greek worlds. */
 const LAYOUT_PIECES = new Set(['64x26-0', '64x26-1', '40x40-0', '40x40-1', '50x50-0', '100x24-0', '100x24-1', '60x24-0', '36x36-0', '36x36-1', '36x36-2', '36x36-3']);
 
+/** Each world's pieces drawn for every layout block, by its file prefix (none for the jungle, which picks by shape). */
+const LAYOUT_SET: Record<string, string> = { viking: 'ice-', greek: 'arena-', demon: 'lava-', jungle: '' };
+
 function drawObstacles(ctx: CanvasRenderingContext2D, g: Game, accent: string, now: number) {
   // The jungle world: the owner's mossy stone blocks instead of racks, the piece whose shape is closest.
   const look = WORLDS[g.world - 1].look;
-  const stones = !retroLook && (look === 'jungle' || look === 'viking' || look === 'greek') ? look : null;
+  const stones = !retroLook && (look === 'jungle' || look === 'viking' || look === 'greek' || look === 'demon') ? look : null;
   for (const o of stones ? g.obstacles : []) {
     const ratio = o.w / o.h;
-    // The viking and Greek worlds: the owner drew one piece for each block of each layout (icy, or marble
-    // and gold), named by its size and its place among the blocks of that size (left to right, top to bottom).
+    // The viking, Greek and fire worlds: the owner drew one piece for each block of each layout (icy, marble
+    // and gold, or volcanic stone with lava crystals), named by its size and its place among the blocks of that size (left to right, top to bottom).
     const size = `${o.w}x${o.h}`;
     const slot = `${size}-${g.obstacles.filter((b) => `${b.w}x${b.h}` === size).indexOf(o)}`;
-    const own = stones === 'viking' ? `ice-${slot}` : stones === 'greek' ? `arena-${slot}` : '';
-    const pic = setImage(stones!, LAYOUT_PIECES.has(slot) && own ? own : stones === 'greek'
-      ? (ratio > 3.2 ? 'arena-100x24-0' : ratio > 1.7 ? 'arena-64x26-0' : 'arena-36x36-0')
+    const own = stones && LAYOUT_SET[stones] ? LAYOUT_SET[stones] + slot : '';
+    const pic = setImage(stones!, LAYOUT_PIECES.has(slot) && own ? own : stones === 'greek' || stones === 'demon'
+      ? LAYOUT_SET[stones] + (ratio > 3.2 ? '100x24-0' : ratio > 1.7 ? '64x26-0' : '36x36-0')
       : ratio > 3.2 ? 'stone-long-1' : ratio > 1.7 ? 'stone-long-0' : (o.x + o.y) % 2 ? 'stone-0' : 'stone-1');
     if (!ready(pic)) continue;
     // As wide as the block and a little more, its own shape kept, standing on the block's bottom edge
@@ -338,7 +341,7 @@ function drawObstacles(ctx: CanvasRenderingContext2D, g: Game, accent: string, n
     ctx.drawImage(pic, o.x + o.w / 2 - w / 2, o.y + o.h + 4 - h, w, h);
   }
   // Server racks, with blinking lights.
-  for (const o of stones && ready(setImage(stones, stones === 'greek' ? 'arena-36x36-0' : 'stone-0')) ? [] : g.obstacles) {
+  for (const o of stones && ready(setImage(stones, stones === 'greek' || stones === 'demon' ? `${LAYOUT_SET[stones]}36x36-0` : 'stone-0')) ? [] : g.obstacles) {
     ctx.fillStyle = 'rgba(0,0,0,0.35)';
     roundRect(ctx, o.x + 3, o.y + 5, o.w, o.h, 5);
     ctx.fill();
@@ -4157,7 +4160,7 @@ const LOOKS: Record<Look, Record<Enemy['kind'], Drawer>> = {
 /** A world's own pieces (`static/images/game/<set>/`): the jungle's mossy blocks and thorny vines, the
     vikings' wet blocks and water pools. */
 const setImages = new Map<string, HTMLImageElement>();
-function setImage(set: 'jungle' | 'viking' | 'greek', name: string) {
+function setImage(set: 'jungle' | 'viking' | 'greek' | 'demon', name: string) {
   const key = `${set}/${name}`;
   let img = setImages.get(key);
   if (!img) { img = new Image(); img.src = `./images/game/${key}.webp`; setImages.set(key, img); }
