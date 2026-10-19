@@ -779,7 +779,8 @@ const SHOT_PIC: Partial<Record<Shot['kind'], (g: Game, a: Shot) => [string, numb
   durian: (g, a) => [g.evolved.durian ? 'durian-big' : 'durian', (a.size ?? 14) * 2.5, 0.62, true],
   drill: (g, a) => [g.evolved.drill ? 'drill-evo' : 'drill', 30 * ((a.size ?? 7) / 7), 0.75, true],
   rocket: (g) => (g.evolved.rocket ? ['rocket-shark', 38, 0.75, true] : ['rocket', 32, 0.75, true]),
-  ball: (g, a) => [g.evolved.ball ? 'ball-evo' : 'ball', (a.size ?? 8) * 2.9, 0.62, true],
+  // The quantum ball's picture is mostly glow (the ball itself is under half its width): drawn wider to match its hit.
+  ball: (g, a) => (g.evolved.ball ? ['ball-evo', (a.size ?? 14) * 4.2, 0.55, true] : ['ball', (a.size ?? 8) * 2.9, 0.62, true]),
 };
 function drawNewShot(ctx: CanvasRenderingContext2D, g: Game, a: Shot) {
   const t = g.time;

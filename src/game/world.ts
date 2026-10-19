@@ -1807,7 +1807,7 @@ function kickBall(g: Game, target: Enemy) {
   const n = evolved ? 3 : 1;
   for (let i = 0; i < n; i++) {
     g.shots.push(shot('ball', p, angle + (i - (n - 1) / 2) * 0.5, 320, (20 + 8 * (lv - 1)) * power(g, 'ranged') * (evolved ? 1.5 : 1) * boost(g, 'ball'), {
-      pierce: 1e9, ghost: true, free: true, bounce: evolved ? 1e9 : 3 + 2 * lv, life: evolved ? 5 : 3, size: evolved ? 11 : 8, tick: 0,
+      pierce: 1e9, ghost: true, free: true, bounce: evolved ? 1e9 : 3 + 2 * lv, life: evolved ? 5 : 3, size: evolved ? 14 : 8, tick: 0,
     }));
   }
 }
