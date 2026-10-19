@@ -1,5 +1,6 @@
 import './game.css';
 import { storage } from '../lib/storage';
+import { ads, configureAds, type AdSpot, type PlayAd } from './ads';
 import { audio, type Sfx } from './audio';
 import { draw, drawRetroFigure, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, worldWon, type StarColor, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, heroStill } from './save';
@@ -8,7 +9,7 @@ import { ARMOUR_SLOTS, ARSENAL, ITEMS, type SpiritSkin, UPGRADES, WEAPON_SLOTS, 
 import { Scene } from './scene';
 import { makeT, pickLang, type Key } from './strings';
 import {
-  CATEGORY, EVO_PARTNER, H, revivePrice, SKILLS, arrowLook, arrowOptions, bladeElement, bladeOptions, canEvolve, evoOf, fusionOf, fusionWith, pairFusion, arrowElements, rerollChoices, maxLevel, pickArrow, pickBlade, pickSpirit, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_LUCKY, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
+  CATEGORY, EVO_PARTNER, H, revivePrice, SKILLS, arrowLook, arrowOptions, bladeElement, bladeOptions, canEvolve, evoOf, fusionOf, fusionWith, pairFusion, arrowElements, rerollChoices, adReroll, adRevive, canAdReroll, canAdRevive, maxLevel, pickArrow, pickBlade, pickSpirit, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_LUCKY, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
   type ArrowLook, type Category, type Choice, type Fusion, type Game, type GameEvent, type Input, type Look, type SkillId, type WheelOutcome,
 } from './world';
 
@@ -20,6 +21,7 @@ const lang = pickLang();
 const t = makeT(lang);
 document.documentElement.lang = lang;
 document.title = `${t('title')} · alvrich`;
+configureAds({ pause: () => audio.duck(true), resume: () => audio.duck(false), text: { title: t('adDevTitle'), skip: t('adDevSkip') } });
 
 // The player wears the portfolio's accent (dark-mode tones: the arena is dark).
 const PALETTES: Record<string, [string, string]> = {
@@ -256,6 +258,42 @@ function hide() {
   screen.classList.remove('is-menu', 'is-map', 'is-levelup');
   screen.innerHTML = '';
 }
+/* Rewarded ads (ads.ts). A screen with an ad spot leaves an empty
+   `data-ad-slot` and calls offerAd(); its button only appears once an ad is
+   ready, so with no provider (or no ad) nothing shows at all. */
+const adPlays = new Map<AdSpot, PlayAd>();
+function offerAd(spot: AdSpot, button: string) {
+  if (!ads.enabled) return;
+  const fill = (play: PlayAd | null) => {
+    const slot = screen.querySelector<HTMLElement>(`[data-ad-slot="${spot}"]`);
+    if (!play || !slot) return;
+    adPlays.set(spot, play);
+    slot.innerHTML = save.retro ? button : button.replaceAll('🪙', COIN_PIC);
+    fitPanel();
+  };
+  const ready = adPlays.get(spot);
+  if (ready) fill(ready);
+  else void ads.prepare(spot).then(fill);
+}
+/** Plays the ad a spot was given; true once it was watched to the end. */
+function watchAd(spot: AdSpot) {
+  const play = adPlays.get(spot);
+  adPlays.delete(spot);
+  return play ? play() : Promise.resolve(false);
+}
+/** 3 h 20 min, 4 h, 35 min. */
+const waitText = (ms: number) => {
+  const mins = Math.ceil(ms / 60e3);
+  const h = Math.floor(mins / 60);
+  const m = mins % 60;
+  return h ? `${h} h${m ? ` ${m} min` : ''}` : `${m} min`;
+};
+/** The shop's gift: some coins for an ad, once every few hours. */
+const AD_GIFT_COINS = 300;
+const AD_GIFT_EVERY = 4 * 3600 * 1000;
+/** The coins the last end screen showed, for doubling them. */
+let adEarned = 0;
+
 const backButton = (act: string, label: Key = 'menu') => `<button class="ghost" data-act="${act}">← ${t(label)}</button>`;
 
 function menuScreen() {
@@ -373,13 +411,29 @@ const canPayRevive = (g: Game) => {
   const price = revivePrice(g);
   return price !== null && save.coins + Math.floor(g.coins) >= price;
 };
-function reviveScreen(g: Game) {
+function reviveScreen(g: Game, note = '') {
   const price = revivePrice(g) ?? 0;
   const last = g.paidRevives >= 1;
-  show(`${head('defeat', t('reviveTitle'))}<p>${t(last ? 'reviveTextLast' : 'reviveText', { coins: price })}</p>
-    <p class="earned">${coinsLine(save.coins + Math.floor(g.coins))}</p>
-    <button class="primary" data-act="revive-pay">${t('reviveBtn', { coins: price })}</button>
+  const pay = canPayRevive(g);
+  const ad = canAdRevive(g) && ads.enabled;
+  show(`${head('defeat', t('reviveTitle'))}<p>${pay ? t(last ? 'reviveTextLast' : 'reviveText', { coins: price }) : t('reviveAdText')}</p>
+    ${note ? `<p class="note">${note}</p>` : ''}
+    ${pay ? `<p class="earned">${coinsLine(save.coins + Math.floor(g.coins))}</p>` : ''}
+    ${ad ? '<div class="ad-slot" data-ad-slot="revive"></div>' : ''}
+    ${pay ? `<button class="primary" data-act="revive-pay">${t('reviveBtn', { coins: price })}</button>` : ''}
     <button class="ghost" data-act="revive-no">${t('reviveNo')}</button>`);
+  if (ad) offerAd('revive', `<button class="primary ad-btn" data-act="ad-revive">📺 ${t('adRevive')}</button>`);
+}
+/* At a game over: the revive screen when coins can pay for one; when only an
+   ad could, it waits for one to be ready and goes to the end screen if none is. */
+function offerRevive(g: Game) {
+  if (canPayRevive(g)) { reviveScreen(g); return; }
+  void ads.prepare('revive').then((play) => {
+    if (game !== g || g.phase !== 'over') return;
+    if (!play) { reviveOffered = false; endScreen(g); return; }
+    adPlays.set('revive', play);
+    reviveScreen(g);
+  });
 }
 
 function endScreen(g: Game) {
@@ -403,6 +457,7 @@ function endScreen(g: Game) {
     ${head(won ? 'victory' : 'defeat', t(horde ? (won ? 'hordeWon' : 'over') : won ? 'won' : 'over'))}
     <p>${t(horde ? (won ? 'hordeWonText' : 'hordeOverText') : won ? 'wonText' : 'overText', { room: g.room, kills: g.kills, time: clock(g.time) })}</p>
     <p class="earned">${coinsLine(earned)} <small>${t('coinsRun', { coins: earned })}</small></p>
+    ${earned > 0 && ads.enabled ? '<div class="ad-slot" data-ad-slot="doubleCoins"></div>' : ''}
     ${itemOpened ? `<p class="unlocked">${picIcon(itemById(itemOpened).icon, itemById(itemOpened).pic)} ${t('itemNew', { name: t(`${itemOpened}Name` as Key) })}</p>` : ''}
     ${arsenalOpened ? `<p class="unlocked">${picIcon(EMOJI[arsenalOpened], `skills/${arsenalOpened}.webp`)} ${t('arsenalNew', { name: t(`${arsenalOpened}Name` as Key) })}</p>` : ''}
     ${next}
@@ -411,6 +466,8 @@ function endScreen(g: Game) {
       <button class="ghost" data-act="menu">${t('menu')}</button>
     </div>
     <p class="best">${bestLine(g.world, g.mode)}</p>`);
+  adEarned = earned;
+  if (earned > 0) offerAd('doubleCoins', `<button class="primary ad-btn" data-act="ad-double">📺 ${t('adDouble', { coins: earned })}</button>`);
 }
 
 /* The world map: floating islands (the owner's artwork, one per world) laid
@@ -548,7 +605,10 @@ function choiceScreen(g: Game) {
   const reroll = g.mode === 'horde'
     ? `<button class="ghost small reroll" data-act="reroll"${g.rerolls > 0 ? '' : ' disabled'}>🎲 ${t('reroll', { n: g.rerolls })}</button>`
     : '';
-  show(`${head('levelup', t('levelUp'))}<p class="kicker">${t('level', { level: g.level })}</p><p>${t('choose')}</p><div class="skills">${cards}</div>${reroll}`, true, false, 'is-levelup');
+  // …and, once they are spent, one more for an ad.
+  const adSlot = canAdReroll(g) && ads.enabled ? '<div class="ad-slot" data-ad-slot="reroll"></div>' : '';
+  show(`${head('levelup', t('levelUp'))}<p class="kicker">${t('level', { level: g.level })}</p><p>${t('choose')}</p><div class="skills">${cards}</div>${reroll}${adSlot}`, true, false, 'is-levelup');
+  if (adSlot) offerAd('reroll', `<button class="ghost small reroll ad-btn" data-act="ad-reroll">📺 ${t('adReroll')}</button>`);
 }
 
 /* The wheel of fate: ten slices, one per wedge of the painted disc. The wheel is
@@ -665,6 +725,11 @@ function shopSection(key: string, title: string, count: string, body: string) {
 }
 
 function shopScreen(note = '') {
+  // The ad gift: some coins once every few hours, or how long until the next.
+  const giftWait = save.adGiftAt + AD_GIFT_EVERY - Date.now();
+  const giftLine = !ads.enabled ? '' : giftWait > 0
+    ? `<p class="how">${t('adGiftWait', { time: waitText(giftWait) })}</p>`
+    : '<div class="ad-slot" data-ad-slot="gift"></div>';
   // One sub-group per slot; spirit companions (magic-slot items that bring a spirit) get their own section.
   const isSpirit = (id: ItemId) => !!itemById(id).effect.spirit;
   const group = (slot: Slot, keep: (id: ItemId) => boolean) => {
@@ -741,10 +806,12 @@ function shopScreen(note = '') {
     <button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
     <div class="shop-head"><h2>${t('shop')}</h2><p class="wallet">${coinsLine()}</p></div>
     ${note ? `<p class="note">${note}</p>` : `<p class="how">${t('earnHint')}</p>`}
+    ${giftLine}
     ${shopSection('forge', t('forge'), `${UPGRADES.reduce((n, u) => n + (save.upgrades[u.id] ?? 0), 0)}/${UPGRADES.reduce((n, u) => n + u.max, 0)}`, `<p class="how">${t('forgeHint')}</p><div class="items">${forge}</div>`)}
     ${shopSection('arsenal', t('arsenal'), `${save.arsenal.length}/${ARSENAL.length}`, `<p class="how">${t('arsenalHint')}</p><div class="items">${arsenal}</div>`)}
     ${armourSec}${weaponSecs}
     ${backButton('menu')}`, true, false, 'keep-scroll');
+  if (ads.enabled && giftWait <= 0) offerAd('gift', `<button class="primary ad-btn" data-act="ad-gift">📺 ${t('adGift', { coins: AD_GIFT_COINS })}</button>`);
 }
 
 /* The customise screen: the hero in the middle, three armour slots down the
@@ -893,6 +960,43 @@ screen.addEventListener('click', (event) => {
     reviveOffered = false;
     hide();
     flash(t('revived'));
+  } else if (act === 'ad-revive' && game) {
+    const g = game;
+    void watchAd('revive').then((watched) => {
+      if (game !== g) return;
+      if (watched && adRevive(g)) { reviveOffered = false; hide(); flash(t('revived')); }
+      else if (canPayRevive(g)) reviveScreen(g, t('adNone'));
+      else { g.reviveDeclined = true; reviveOffered = false; endScreen(g); }
+    });
+  } else if (act === 'ad-double') {
+    const coins = adEarned;
+    void watchAd('doubleCoins').then((watched) => {
+      const slot = screen.querySelector<HTMLElement>('[data-ad-slot="doubleCoins"]');
+      if (watched && coins > 0) {
+        adEarned = 0;
+        save.coins += coins;
+        persist();
+        audio.play('coin');
+      }
+      if (slot) slot.innerHTML = `<p class="note">${watched ? `✓ ${t('adDoubled', { coins })}` : t('adNone')}</p>`;
+    });
+  } else if (act === 'ad-reroll' && game) {
+    const g = game;
+    void watchAd('reroll').then((watched) => {
+      if (game !== g || !watched || !adReroll(g)) return;
+      shownChoices = g.choices.join();
+      choiceScreen(g);
+    });
+  } else if (act === 'ad-gift') {
+    void watchAd('gift').then((watched) => {
+      if (watched) {
+        save.coins += AD_GIFT_COINS;
+        save.adGiftAt = Date.now();
+        persist();
+        audio.play('coin');
+      }
+      if (screen.querySelector('[data-ad-slot="gift"]')) shopScreen(watched ? t('adGiftGot', { coins: AD_GIFT_COINS }) : t('adNone'));
+    });
   } else if (act === 'revive-no' && game) {
     game.reviveDeclined = true; // no more offers this run
     reviveOffered = false;
@@ -1444,8 +1548,8 @@ function step(now: number) {
       keys.clear();
       wheelScreen();
     }
-    if (phase === 'over' && canPayRevive(g)) {
-      if (!reviveOffered) { reviveOffered = true; stick.on = false; keys.clear(); audio.play('over'); reviveScreen(g); }
+    if (phase === 'over' && (canPayRevive(g) || (ads.enabled && canAdRevive(g)))) {
+      if (!reviveOffered) { reviveOffered = true; stick.on = false; keys.clear(); audio.play('over'); offerRevive(g); }
     } else if (phase === 'over' || phase === 'won') endScreen(g);
   }
 

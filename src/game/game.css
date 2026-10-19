@@ -3152,3 +3152,35 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .wheel-slice .item-pic { width: 84%; height: 84%; }
 .wheel-result .wheel-res-icon { display: inline-block; vertical-align: middle; }
 .wheel-result .wheel-res-icon .item-pic { width: 1.6em; height: 1.6em; }
+
+/* Rewarded ads (ads.ts): the spot a screen leaves for its ad button, empty until an ad is ready… */
+.panel .ad-slot:empty { display: none; }
+.panel .ad-slot { display: grid; justify-items: center; }
+.panel .ad-slot .note { margin: 0.4rem 0; }
+/* An ad button's line is longer than "Play again": a size smaller, so it stays on one line on a phone. */
+.panel .ad-btn { font-size: 0.86em; white-space: nowrap; }
+/* …and the stand-in ad that plays on localhost. */
+.ad-dev {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 1rem;
+  background: rgba(3, 6, 14, 0.94);
+  color: #e2e8f0;
+  font-family: var(--font, system-ui);
+  text-align: center;
+}
+.ad-dev-title { font-size: 1.1rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.8; margin: 0; }
+.ad-dev-count { font-size: 4rem; font-weight: 700; margin: 0; }
+.ad-dev-skip {
+  border: 1px solid rgba(226, 232, 240, 0.4);
+  background: transparent;
+  color: inherit;
+  border-radius: 999px;
+  padding: 0.5rem 1.2rem;
+  font: inherit;
+  cursor: pointer;
+}

@@ -93,6 +93,12 @@ class Engine {
     this.setVolumes(this.volumes.music, this.volumes.sfx);
   }
 
+  /** Silence everything while an ad plays (`ads.ts`), and back. */
+  duck(on: boolean) {
+    if (!this.ready) return;
+    this.master.gain.setTargetAtTime(on ? 0 : 1, this.ctx.currentTime, 0.05);
+  }
+
   setVolumes(music: number, sfx: number) {
     this.volumes = { music, sfx };
     if (!this.ready) return;
