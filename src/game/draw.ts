@@ -313,16 +313,16 @@ function drawRoom(ctx: CanvasRenderingContext2D, g: Game, accent: string, now: n
 const LAYOUT_PIECES = new Set(['64x26-0', '64x26-1', '40x40-0', '40x40-1', '50x50-0', '100x24-0', '100x24-1', '60x24-0', '36x36-0', '36x36-1', '36x36-2', '36x36-3']);
 
 /** Each world's pieces drawn for every layout block, by its file prefix (none for the jungle, which picks by shape). */
-const LAYOUT_SET: Record<string, string> = { viking: 'ice-', greek: 'arena-', demon: 'lava-', original: 'server-', robot: 'forge-', jungle: '' };
+const LAYOUT_SET: Record<string, string> = { viking: 'ice-', greek: 'arena-', demon: 'lava-', original: 'server-', robot: 'forge-', nightmare: 'grave-', jungle: '' };
 
 function drawObstacles(ctx: CanvasRenderingContext2D, g: Game, accent: string, now: number) {
   // The jungle world: the owner's mossy stone blocks instead of racks, the piece whose shape is closest.
   const look = WORLDS[g.world - 1].look;
-  const stones = !retroLook && look !== 'random' && look !== 'nightmare' ? look : null;
+  const stones = !retroLook && look !== 'random' ? look : null;
   for (const o of stones ? g.obstacles : []) {
     const ratio = o.w / o.h;
     // Every world but the jungle: the owner drew one piece for each block of each layout (servers, volcanic
-    // stone, ice, marble and gold, furnace crates), named by its size and its place among the blocks of that size (left to right, top to bottom).
+    // stone, ice, marble and gold, furnace crates, graves), named by its size and its place among the blocks of that size (left to right, top to bottom).
     const size = `${o.w}x${o.h}`;
     const slot = `${size}-${g.obstacles.filter((b) => `${b.w}x${b.h}` === size).indexOf(o)}`;
     const own = stones && LAYOUT_SET[stones] ? LAYOUT_SET[stones] + slot : '';
@@ -4160,7 +4160,7 @@ const LOOKS: Record<Look, Record<Enemy['kind'], Drawer>> = {
 /** A world's own pieces (`static/images/game/<set>/`): the jungle's mossy blocks and thorny vines, the
     vikings' wet blocks and water pools. */
 const setImages = new Map<string, HTMLImageElement>();
-function setImage(set: 'jungle' | 'viking' | 'greek' | 'demon' | 'original' | 'robot', name: string) {
+function setImage(set: Look, name: string) {
   const key = `${set}/${name}`;
   let img = setImages.get(key);
   if (!img) { img = new Image(); img.src = `./images/game/${key}.webp`; setImages.set(key, img); }
