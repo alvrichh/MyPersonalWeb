@@ -1854,7 +1854,7 @@ function drawPhoenixWings(ctx: CanvasRenderingContext2D, x: number, y: number, s
 const WINGS_JOIN = 0.5733;
 /* One flap: spread, raised, spread, half open; each pose fades into the next, so it flows rather than steps. */
 const WING_FLAP = [1, 2, 1, 0];
-const FLAPS_PER_SECOND = 1.6;
+const FLAPS_PER_SECOND = 2.2;
 function drawWornWings(ctx: CanvasRenderingContext2D, x: number, y: number, r: number, now: number) {
   if (retroLook) return;
   const pics = [0, 1, 2].map((i) => fxImage(`wings-${i}`));
@@ -1864,16 +1864,20 @@ function drawWornWings(ctx: CanvasRenderingContext2D, x: number, y: number, r: n
   const k = t - Math.floor(t);
   const blend = k * k * (3 - 2 * k);
   const w = r * 5.2;
-  // The body lifts a little on each downstroke.
-  const lift = Math.sin(now * FLAPS_PER_SECOND * Math.PI * 2) * 1.2;
+  // Between the poses the wings also sweep open and shut without a break, and the body lifts on each downstroke.
+  const beat = Math.sin(now * FLAPS_PER_SECOND * Math.PI * 2);
+  const lift = beat * 1.4;
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.scale(0.86 + 0.14 * (beat * 0.5 + 0.5), 1);
   for (const [pose, alpha] of [[WING_FLAP[i], 1 - blend], [WING_FLAP[(i + 1) % WING_FLAP.length], blend]]) {
     if (alpha <= 0.01) continue;
     const pic = pics[pose];
     const h = (w * pic.naturalHeight) / pic.naturalWidth;
     ctx.globalAlpha = 0.92 * alpha;
-    ctx.drawImage(pic, x - w / 2, y - h * WINGS_JOIN + lift, w, h);
+    ctx.drawImage(pic, -w / 2, -h * WINGS_JOIN + lift, w, h);
   }
-  ctx.globalAlpha = 1;
+  ctx.restore();
 }
 function drawPhoenixRise(ctx: CanvasRenderingContext2D, f: Fx, now: number, layer: 'under' | 'over') {
   const t = 1 - f.life / f.max;
