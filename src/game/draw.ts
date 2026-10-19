@@ -341,7 +341,8 @@ const BOOTS: Partial<Record<ItemId, string>> = { windBoots: '#38bdf8', magnetBoo
 function drawPlayerRetro(ctx: CanvasRenderingContext2D, g: Game, pal: Palette, now: number) {
   const { accent } = pal;
   const p = g.player;
-  if (p.inv > 0 && Math.floor(now * 20) % 2 === 0) return;
+  // Blinking while invulnerable, but never once the run is over (inv stops running down there).
+  if (p.inv > 0 && g.phase === 'play' && Math.floor(now * 20) % 2 === 0) return;
   drawRetroFigure(ctx, p.x, p.y, p.r, pal);
   ctx.fillStyle = accent;
   ctx.beginPath();
@@ -486,6 +487,7 @@ function drawStatueRetro(ctx: CanvasRenderingContext2D, st: Statue, glow: string
 function heroPose(g: Game, now: number, full: boolean): Pose {
   const p = g.player;
   if (g.phase === 'over') return 'down';
+  if (g.phase === 'won') return 'cheer';
   if (p.ouch > 0) return 'hurt';
   if (p.moving) {
     const step = Math.floor(now * 7) % 2;
@@ -504,7 +506,8 @@ function heroPose(g: Game, now: number, full: boolean): Pose {
 function drawPlayer(ctx: CanvasRenderingContext2D, g: Game, pal: Palette, now: number) {
   const { accent, accent2 } = pal;
   const p = g.player;
-  if (p.inv > 0 && Math.floor(now * 20) % 2 === 0) return;
+  // Blinking while invulnerable, but never once the run is over (inv stops running down there).
+  if (p.inv > 0 && g.phase === 'play' && Math.floor(now * 20) % 2 === 0) return;
   ctx.fillStyle = 'rgba(0,0,0,0.4)';
   ctx.beginPath();
   ctx.ellipse(p.x, p.y + p.r * 0.9, p.r * 0.9, p.r * 0.35, 0, 0, Math.PI * 2);

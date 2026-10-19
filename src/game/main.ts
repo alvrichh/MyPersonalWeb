@@ -207,7 +207,8 @@ function fitPanel() {
   const inner = panel?.querySelector<HTMLElement>('.panel-in');
   if (!panel || !inner || screen.hidden || screen.classList.contains('is-menu') || screen.classList.contains('is-map')) return;
   if (save.retro) { panel.classList.remove('is-tall'); panel.style.height = ''; panel.style.padding = ''; return; }
-  const w = panel.getBoundingClientRect().width;
+  // offsetWidth, not the bounding box: the pop-up zoom must not shrink the measure.
+  const w = panel.offsetWidth;
   const pick = (kind: keyof typeof FRAMES) => {
     const f = FRAMES[kind];
     panel.style.padding = `0 ${f.r * w}px 0 ${f.l * w}px`;
@@ -236,14 +237,18 @@ window.addEventListener('resize', fitPanel);
 
 /** The coin emoji is silver on iPhones: outside retro every 🪙 in a dialog becomes the painted gold coins. */
 const COIN_PIC = '<i class="coin-ic" aria-hidden="true"></i>';
+/** How long the run's last moment stays on the field before its dialog. */
+const END_PAUSE = 1100;
 function show(html: string, wide = false, menu = false, extra = '') {
+  // A dialog that opens (not one re-rendering itself) pops up with a zoom.
+  const opening = screen.hidden;
   if (!save.retro) html = html.replaceAll('🪙', COIN_PIC);
   // A dialog that re-renders itself (the shop after a purchase) keeps its scroll.
   const keepScroll = extra === 'keep-scroll' ? screen.querySelector('.panel-in')?.scrollTop ?? 0 : 0;
   // The corner buttons (close, options) are pulled out of the scrolling box so they stay put.
   const close = (html.match(/<button class="ui-(?:close|opts)"[^>]*>(?:<span[^<]*<\/span>)?<\/button>/g) ?? []).join('');
   for (const b of html.match(/<button class="ui-(?:close|opts)"[^>]*>(?:<span[^<]*<\/span>)?<\/button>/g) ?? []) html = html.replace(b, '');
-  screen.innerHTML = `<div class="panel${wide ? ' panel-wide' : ''}">${close}<div class="panel-in">${html}</div></div>`;
+  screen.innerHTML = `<div class="panel${wide ? ' panel-wide' : ''}${opening && !menu && extra !== 'is-map' ? ' is-pop' : ''}">${close}<div class="panel-in">${html}</div></div>`;
 
   screen.classList.toggle('is-menu', menu);
   screen.classList.toggle('is-map', extra === 'is-map');
@@ -1716,9 +1721,17 @@ function step(now: number) {
       keys.clear();
       wheelScreen();
     }
-    if (phase === 'over' && (canPayRevive(g) || (ads.enabled && canAdRevive(g)))) {
-      if (!reviveOffered) { reviveOffered = true; stick.on = false; keys.clear(); audio.play('over'); offerRevive(g); }
-    } else if (phase === 'over' || phase === 'won') endScreen(g);
+    // The run ends on the field first: the hero down on the floor (or cheering) for a moment, then the dialog pops up.
+    if (phase === 'over' || phase === 'won') {
+      stick.on = false;
+      keys.clear();
+      window.setTimeout(() => {
+        if (game !== g || g.phase !== phase) return;
+        if (phase === 'over' && (canPayRevive(g) || (ads.enabled && canAdRevive(g)))) {
+          if (!reviveOffered) { reviveOffered = true; audio.play('over'); offerRevive(g); }
+        } else endScreen(g);
+      }, END_PAUSE);
+    }
   }
 
   if (g) {
