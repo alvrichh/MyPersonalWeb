@@ -99,6 +99,8 @@ export type Loadout = {
   startSkills: SkillId[];
   /** This many random weapons start at their top level, with the upgrade that evolves them. */
   startMaxed: number;
+  /** Sprint masteries taken: from one on, the final bosses of sprints call smaller bosses to their side. */
+  sprintMastery: number;
   maxHp: number;
   speedMult: number;
   /** Weapons fire this much faster. */
@@ -122,6 +124,7 @@ export const BASE_LOADOUT: Loadout = {
   wings: false,
   startSkills: [],
   startMaxed: 0,
+  sprintMastery: 0,
   maxHp: 100,
   speedMult: 1,
   hasteMult: 1,

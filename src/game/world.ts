@@ -219,6 +219,8 @@ export type Enemy = {
   bossId: string;
   final: boolean;
   clone: boolean;
+  /** A smaller boss a sprint final boss calls once a sprint mastery is taken (`MINION`). */
+  minion: boolean;
   ttl: number;
   /** A boss off the floor (a leap, a blink): its spawn circle warns where it lands, and `land` says what it does then. */
   vanish: boolean;
@@ -519,7 +521,7 @@ export type Game = {
 
 export type GameEvent =
   | 'fusion' | 'clear' | 'boss' | 'hurt' | 'levelup' | 'room' | 'revive' | 'heal' | 'wheel' | 'shrine'
-  | 'shoot' | 'knife' | 'boomerang' | 'orb' | 'hit' | 'kill' | 'gem' | 'heart' | 'chest' | 'slash' | 'slam' | 'strike' | 'boom' | 'minute' | 'rage' | 'phase' | 'laser' | BossStatus;
+  | 'shoot' | 'knife' | 'boomerang' | 'orb' | 'hit' | 'kill' | 'gem' | 'heart' | 'chest' | 'slash' | 'slam' | 'strike' | 'boom' | 'minute' | 'rage' | 'phase' | 'minion' | 'laser' | BossStatus;
 
 /* ------------------------------------------------------------------ helpers */
 
@@ -676,7 +678,8 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
     bossId: kind !== 'boss' ? '' : final ? FINAL_BOSS[g.world - 1] : look,
     final,
     clone: false,
-    ttl: 0,
+    minion: false,
+    ttl: final && g.mode === 'sprints' ? 8 : 0,
     vanish: false,
     land: '',
     pose: 0,
@@ -1101,9 +1104,9 @@ function kill(g: Game, e: Enemy) {
     burst(g, e.x, e.y, '#a78bfa', 22, 160, 3);
     return;
   }
-  // The real boss down: its clones go with it.
-  if (e.kind === 'boss') {
-    for (const c of g.enemies) if (c.clone && !c.dead) { c.dead = true; burst(g, c.x, c.y, '#a78bfa', 18, 120, 3); }
+  // The real boss down: its clones and the bosses it called go with it.
+  if (e.kind === 'boss' && !e.minion) {
+    for (const c of g.enemies) if ((c.clone || c.minion) && !c.dead) { c.dead = true; burst(g, c.x, c.y, '#a78bfa', 18, 120, 3); }
     g.threats = g.threats.filter((t) => t.owner !== e.id);
   }
   // Plasma (fire + lightning arrows): a burning bug blows up when it dies, setting its neighbours alight.
@@ -2214,6 +2217,9 @@ const ring = (g: Game, e: Enemy, n: number, speed: number, tone = '', turn = ran
 const circle = (g: Game, at: Vec, r: number, warn: number, dmg: number, el: ThreatEl, after?: 'lava' | 'thorns') =>
   g.threats.push({ kind: 'circle', x: at.x, y: at.y, r, a: 0, len: 0, warn, max: warn, life: 0.2, dmg, el, after });
 
+/** The smaller bosses: one more with each sprint mastery up to `most`, every `every` seconds, a share of the final boss's health. */
+const MINION = { most: 2, every: 14, r: 26, hp: 0.15 };
+
 function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
   const final = e.final;
   e.pose = Math.max(0, e.pose - dt);
@@ -2256,9 +2262,24 @@ function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
       e.dir = { x: ux, y: uy };
     }
   }
-  // Calls for backup (on call, only while the field has room).
+  // With a sprint mastery, a sprint's final boss calls smaller bosses of its world's cast to its side.
+  if (final && g.mode === 'sprints' && g.loadout.sprintMastery > 0) {
+    e.ttl -= dt;
+    const out = g.enemies.filter((m) => m.minion && !m.dead).length;
+    if (e.ttl <= 0 && out < Math.min(MINION.most, g.loadout.sprintMastery)) {
+      e.ttl = MINION.every * fury;
+      const side = Math.random() < 0.5 ? -1 : 1;
+      const m = makeEnemy(g, 'boss', g.room, { x: clamp(e.x + side * 90, WALL + 30, W - WALL - 30), y: clamp(e.y + 40, WALL + 30, H - WALL - 30) }, 0.9);
+      Object.assign(m, { final: false, minion: true, bossId: e.look, r: MINION.r, cd: rand(1.5, 2.5), cd4: rand(3, 5) });
+      m.hp = m.maxHp = Math.round(e.maxHp * MINION.hp);
+      m.dmg = Math.round(e.dmg * 0.7);
+      g.enemies.push(m);
+      g.events.push('minion');
+    }
+  }
+  // Calls for backup (on call, only while the field has room; never a called boss).
   e.cd3 -= dt;
-  if (e.cd3 <= 0 && (g.mode === 'sprints' || g.enemies.length < 56)) {
+  if (!e.minion && e.cd3 <= 0 && (g.mode === 'sprints' || g.enemies.length < 56)) {
     e.cd3 = (final ? 8 : 10) * fury;
     for (const side of [-1, 1]) {
       g.enemies.push(makeEnemy(g, 'bug', g.room, { x: g.mode === 'horde' ? e.x + side * 60 : clamp(e.x + side * 60, 40, W - 40), y: e.y + 30 }, 0.6));
