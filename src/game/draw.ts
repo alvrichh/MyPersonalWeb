@@ -3335,7 +3335,11 @@ function enemyFrame(e: Enemy, count: number, now: number) {
 /* Final bosses with a sheet of their own (static/images/game/bosses/<id>-<frame>.webp, nine poses, the same
    order as the prompts: three walking, wind-up and charge, the ring of orbs, the world's move, the signature
    and a hit). Add an id here once its pictures are in; until then a final boss wears its cast's boss, bigger. */
-const BOSS_ART = new Set<string>([]);
+const BOSS_ART = new Set<string>(['kernel']);
+/* Each final sheet is cut on one canvas for its nine poses (body centred, its lowest point on the baseline):
+   how many times the body's width the canvas is drawn, and how much of the canvas lies under the feet
+   (dust, a dash's trail, the volley's orbs). */
+const BOSS_CANVAS: Record<string, { k: number; feet: number }> = { kernel: { k: 2.155, feet: 0.1766 } };
 const finalSprites = new Map<string, HTMLImageElement[]>();
 function finalFrame(e: Enemy, now: number) {
   if (e.hit > 0) return 8;
@@ -3362,14 +3366,16 @@ function drawEnemySprite(ctx: CanvasRenderingContext2D, e: Enemy, now: number) {
   frames ??= enemyFrames(e.look, e.kind, count);
   img ??= frames[enemyFrame(e, count, now)] ?? frames[0];
   if (!img.complete || !img.naturalWidth) return false;
-  const size = e.r * (e.kind === 'boss' ? 2.6 : 2.5) * (count === 9 ? 1 : SPRITE_CANVAS[`${e.look}-${e.kind}`] ?? 1);
+  const fit = count === 9 ? BOSS_CANVAS[e.bossId] : undefined;
+  const size = e.r * (e.kind === 'boss' ? 2.6 : 2.5) * (fit ? fit.k : SPRITE_CANVAS[`${e.look}-${e.kind}`] ?? 1);
   const ratio = img.naturalWidth / img.naturalHeight;
   const w = ratio >= 1 ? size : size * ratio;
   const h = ratio >= 1 ? size / ratio : size;
+  const under = fit ? h * fit.feet : 0;
   const bob = Math.sin(now * 8 + e.wobble) * 1.2;
   // Face the way it moves, when it moves sideways.
   if (e.dir && e.dir.x < -0.3) ctx.scale(-1, 1);
-  ctx.drawImage(img, -w / 2, e.r * 0.85 - h + bob, w, h);
+  ctx.drawImage(img, -w / 2, e.r * 0.85 - h + under + bob, w, h);
   return true;
 }
 
