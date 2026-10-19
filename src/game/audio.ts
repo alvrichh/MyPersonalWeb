@@ -177,6 +177,8 @@ class Engine {
     if (inBar === 0 && bar % 4 === 0 && this.final !== this.finalWanted) {
       this.final = this.finalWanted;
       this.finalFrom = bar;
+      // The final boss arrives: two siren calls, "biii-u, biii-u", over the first bar.
+      if (this.final) { this.siren(at); this.siren(at + BAR / 2); }
     }
     const setBar = bar % (SET.length * 8);
     const block = SET[Math.floor(setBar / 8)];
@@ -258,6 +260,37 @@ class Engine {
     const rise = Math.floor((bar - this.finalFrom) / 4) % 4;
     this.tick16(at, semi(ROOT * 16, chord[0] + rise), inBar % 4 === 0 ? 0.05 : 0.028);
     if (inBar === 0 && bar % 2 === 0) this.bell(at, semi(ROOT * 4, chord[0]));
+  }
+
+  /** One siren call: a held high note that drops at the end ("biii-u"), two detuned saws with a fast wobble. */
+  private siren(at: number) {
+    const hold = BAR * 0.32;
+    const fall = BAR * 0.14;
+    const g = this.ctx.createGain();
+    this.env(g, at, 0.12, 0.02, hold + fall, 0.9, 0.05);
+    const lp = this.ctx.createBiquadFilter();
+    lp.type = 'lowpass';
+    lp.frequency.value = 3200;
+    const lfo = this.ctx.createOscillator();
+    lfo.frequency.value = 9;
+    const depth = this.ctx.createGain();
+    depth.gain.value = 18;
+    lfo.connect(depth);
+    for (const detune of [-8, 8]) {
+      const o = this.ctx.createOscillator();
+      o.type = 'sawtooth';
+      o.detune.value = detune;
+      o.frequency.setValueAtTime(1050, at);
+      o.frequency.setValueAtTime(1050, at + hold);
+      o.frequency.exponentialRampToValueAtTime(420, at + hold + fall);
+      depth.connect(o.frequency);
+      o.connect(lp);
+      o.start(at);
+      o.stop(at + hold + fall + 0.1);
+    }
+    lfo.start(at);
+    lfo.stop(at + hold + fall + 0.1);
+    lp.connect(g).connect(this.musicBus);
   }
 
   /** One pedal tick: a thin, short square, high-passed so it sits above everything. */
