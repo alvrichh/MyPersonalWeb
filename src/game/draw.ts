@@ -74,7 +74,7 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   drawOrbs(ctx, g);
   if (pal.retro) drawPlayerRetro(ctx, g, pal, now);
   else {
-    if (g.revives > 0) drawPhoenixWings(ctx, g.player.x, g.player.y - g.player.r * 0.75, g.player.r * 1.7, now, 0.55);
+    if (g.revives > 0) drawWornWings(ctx, g.player.x, g.player.y - g.player.r * 0.75, g.player.r, now);
     drawPlayer(ctx, g, pal, now);
   }
   drawFx(ctx, g, accent, 'over');
@@ -1697,7 +1697,7 @@ const ready = (img: HTMLImageElement) => img.complete && img.naturalWidth > 0;
 /** Warm the effect pictures up when a run starts, so the first swing and strike are already painted. */
 export function preloadFx() {
   for (const n of ['fireball', 'boom-small', 'boom-big', 'knife', 'boomerang', 'slash', 'chest', 'slam', 'crystals', 'gem', 'gem-big', 'bolt-1', 'bolt-2', 'bolt-3', 'bolt-4', 'bolt-5', 'bolt-6',
-    'brick', 'iron', 'molotov', 'barrel', 'durian', 'durian-big', 'drill', 'drill-evo', 'rocket', 'rocket-shark', 'ball', 'ball-evo', 'phoenix-0', 'phoenix-1', 'phoenix-2', 'phoenix-3',
+    'brick', 'iron', 'molotov', 'barrel', 'durian', 'durian-big', 'drill', 'drill-evo', 'rocket', 'rocket-shark', 'ball', 'ball-evo', 'phoenix-0', 'phoenix-1', 'phoenix-2', 'phoenix-3', 'wings-0', 'wings-1', 'wings-2',
     'fire-pool', 'fire-pool-big', 'caltrops', 'mine', 'mine-on', 'mine-volt', 'volt-burst', 'impact', 'heart', 'rune', 'crescent',
     'steam-cloud', 'plasma-burst', 'wisp-flame', 'shock-ring', 'ice-block', 'spectral-bolt', 'laser-yellow', 'laser-orange', 'laser-red', 'laser-purple', 'drakkar-wreck', ...Array.from({ length: 7 }, (_, i) => `lava-${i}`)]) fxImage(n);
 }
@@ -1846,6 +1846,22 @@ function drawPhoenixWings(ctx: CanvasRenderingContext2D, x: number, y: number, s
     ctx.arc(side * span * (0.35 + ((i * 0.37) % 0.6)), -span * (0.3 + k * 0.9), 1.6 + (1 - k) * 1.4, 0, Math.PI * 2);
     ctx.fill();
   }
+  ctx.restore();
+}
+/* The owner's wings of fire behind the shoulders, three poses (half open, spread, raised) on one canvas with
+   the join between the wings at the same point (`WINGS_JOIN` of the height), flapping slowly; the drawn
+   wings stand in until they load. */
+const WINGS_JOIN = 0.5733;
+const WING_FLAP = [1, 1, 2, 1, 0, 0];
+function drawWornWings(ctx: CanvasRenderingContext2D, x: number, y: number, r: number, now: number) {
+  if (retroLook) return;
+  const pic = fxImage(`wings-${WING_FLAP[Math.floor(now * 5) % WING_FLAP.length]}`);
+  if (!ready(pic)) { drawPhoenixWings(ctx, x, y, r * 1.7, now, 0.55); return; }
+  const w = r * 5.2;
+  const h = (w * pic.naturalHeight) / pic.naturalWidth;
+  ctx.save();
+  ctx.globalAlpha = 0.92;
+  ctx.drawImage(pic, x - w / 2, y - h * WINGS_JOIN + Math.sin(now * 3) * 0.8, w, h);
   ctx.restore();
 }
 function drawPhoenixRise(ctx: CanvasRenderingContext2D, f: Fx, now: number, layer: 'under' | 'over') {
