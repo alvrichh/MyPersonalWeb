@@ -283,11 +283,17 @@ export type Orb = {
   /** A boss's colour for it ('' or unset: the usual red), and seconds it keeps turning towards you (the robots' missiles). */
   tone?: string;
   home?: number;
-  /** The boss that fired it (its `bossId`), for what its hit leaves on you. */
+  /** The boss that fired it (its `bossId`), for what its hit leaves on you; a boss's shot leaves a track. */
   from?: string;
+  /** Seconds to the next dab of its track. */
+  trail?: number;
   /** A boss shot drawn with one of the weapon pictures (see `ORB_PIC` in draw.ts) instead of a plain orb. */
   pic?: OrbPic;
 };
+/** A dab of a boss shot's track (see `BOSS_TRAIL`). */
+export type BossTrail = { x: number; y: number; r: number; life: number; max: number; dmg: number; tone: string; from?: string };
+/** Every boss shot leaves a track: a dab every `every` seconds that lasts `life` and hurts for `share` of the shot. */
+const BOSS_TRAIL = { every: 0.05, life: 0.55, share: 0.4, cap: 360 };
 export type OrbPic = 'fireball' | 'rocket' | 'leaf' | 'acid' | 'water' | 'ghost' | 'bolt' | 'spark';
 /** What a boss's attack looks like: its element. */
 export type ThreatEl = 'fire' | 'water' | 'leaf' | 'bolt' | 'laser' | 'shadow' | 'glitch';
@@ -458,6 +464,8 @@ export type Game = {
   enemies: Enemy[];
   shots: Shot[];
   orbs: Orb[];
+  /** What a boss's shots leave along their path: a burning track that fades and hurts to touch. */
+  bossTrail: BossTrail[];
   threats: Threat[];
   particles: Particle[];
   zaps: Zap[];
@@ -735,6 +743,7 @@ function enterRoom(g: Game, room: number) {
   setHazard(g, room);
   g.shots = [];
   g.orbs = [];
+  g.bossTrail = [];
   g.zaps = [];
   g.gems = [];
   g.fx = [];
@@ -790,6 +799,7 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     enemies: [],
     shots: [],
     orbs: [],
+    bossTrail: [],
     threats: [],
     particles: [],
     zaps: [],
@@ -1942,6 +1952,7 @@ function standUp(g: Game, share = 0.5) {
   p.hp = Math.round(p.maxHp * share);
   p.inv = 2;
   g.orbs = [];
+  g.bossTrail = [];
   for (const e of live(g)) {
     const push = away(p, e, 420);
     e.kx += push.x;
@@ -1990,6 +2001,7 @@ export function settleEffects(g: Game, dt: number) {
   if (g.phase === 'over' || g.phase === 'won') {
     g.shots = [];
     g.orbs = [];
+    g.bossTrail = [];
   }
   g.particles = g.particles.filter((q) => {
     q.x += q.vx * dt;
@@ -2936,7 +2948,21 @@ export function update(g: Game, dt: number, input: Input) {
     return true;
   });
 
+  // Boss shots' tracks: they fade, and touching one hurts (with what that boss's hit leaves).
+  g.bossTrail = g.bossTrail.filter((d) => {
+    d.life -= dt;
+    if (d.life <= 0) return false;
+    if (d.life > 0.08 && Math.hypot(d.x - p.x, d.y - p.y) < d.r * (0.5 + 0.5 * d.life / d.max) + p.r * 0.5) hurtPlayer(g, d.dmg, d.from);
+    return true;
+  });
   g.orbs = g.orbs.filter((o) => {
+    if (o.from) {
+      o.trail = (o.trail ?? 0) - dt;
+      if (o.trail <= 0 && g.bossTrail.length < BOSS_TRAIL.cap) {
+        o.trail = BOSS_TRAIL.every;
+        g.bossTrail.push({ x: o.x, y: o.y, r: o.r * 1.3, life: BOSS_TRAIL.life, max: BOSS_TRAIL.life, dmg: Math.max(1, Math.round(o.dmg * BOSS_TRAIL.share)), tone: o.tone || '#ff6b6b', from: o.from });
+      }
+    }
     if (o.home && o.home > 0) {
       // The robots' missiles turn towards you for a while.
       o.home -= dt;
@@ -3032,6 +3058,7 @@ export function update(g: Game, dt: number, input: Input) {
   } else if (!g.door && g.enemies.length === 0) {
     g.door = true;
     g.orbs = [];
+    g.bossTrail = [];
     g.threats = [];
     g.fireballs = [];
     g.coins += 5 * worldPay(g);
