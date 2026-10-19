@@ -109,7 +109,7 @@ const NIGHTMARE_ICON = '☠️';
 /** Where the run is: the sprint, or the shift's clock. */
 const whereLine = (g: Game) => (g.mode === 'horde' ? `${g.endless ? NIGHTMARE_ICON : MODE_ICON.horde} ${clock(g.time)}` : t('sprint', { room: g.room }));
 const worldName = (n: number) => t(`world${n}Name` as Key);
-const WORLD_ICON = ['🐞', '🔥', '❄️', '🍃', '🛡️', '✨', '👻', '💗'];
+const WORLD_ICON = ['🐞', '🔥', '❄️', '🐸', '🍃', '🛡️', '✨', '👻', '💗'];
 const coinsLine = (n = save.coins) => `<span class="coin">🪙</span> ${Math.floor(n)}`;
 
 /** The arsenal weapon the last banked run put on sale (its world won for the first time), for the end screen. */
@@ -194,10 +194,10 @@ const SLOT_LABEL: Record<Slot, Key> = { head: 'slotHead', body: 'slotBody', boot
 const SLOT_ICON: Record<Slot, string> = { head: '🪖', body: '🦺', boots: '🥾', magic: '🔮', melee: '⚔️', ranged: '🏹' };
 /** A painted icon with its emoji behind it for retro (the same switch as `skillIcon`). */
 const picIcon = (emoji: string, pic?: string) => pic ? `<img class="item-pic" src="./images/game/${pic}" alt=""><span class="skill-emoji">${emoji}</span>` : emoji;
-const STYLE_ICON: Record<EnemyStyle, string> = { world: '🌍', original: '🐞', demon: '😈', viking: '🪓', jungle: '🕷️', greek: '🏛️', robot: '🤖', nightmare: '💀', random: '🎲' };
+const STYLE_ICON: Record<EnemyStyle, string> = { world: '🌍', original: '🐞', demon: '😈', viking: '🪓', mud: '🐸', jungle: '🕷️', greek: '🏛️', robot: '🤖', nightmare: '💀', random: '🎲' };
 /** A boss's name: the cast's boss in room 6, the world's own final boss in room 12. */
 const bossTitle = (e: Enemy) => t(e.final ? (`final${cap(e.bossId)}` as Key) : BOSS_NAME[e.look]);
-const BOSS_NAME: Record<Look, Key> = { original: 'bossOriginal', demon: 'bossDemon', viking: 'bossViking', jungle: 'bossJungle', greek: 'bossGreek', robot: 'bossRobot', nightmare: 'bossNightmare' };
+const BOSS_NAME: Record<Look, Key> = { original: 'bossOriginal', demon: 'bossDemon', viking: 'bossViking', mud: 'bossMud', jungle: 'bossJungle', greek: 'bossGreek', robot: 'bossRobot', nightmare: 'bossNightmare' };
 
 let game: Game | null = null;
 let paused = false;
@@ -552,9 +552,9 @@ function endScreen(g: Game) {
 
 const MAP_W = 941;
 const MAP_H = 1240;
-const ISLAND_ART = ["original", "infierno", "vikingos", "jungla", "rayo", "robots", "demonios", "nucleo"];
+const ISLAND_ART = ["original", "infierno", "vikingos", "lodo", "jungla", "rayo", "robots", "demonios", "nucleo"];
 /** Per island art: its size and where the ring, plate and lower badge sit (percent of the art). */
-const ISLAND_META: Record<string, { w: number; h: number; ring: number[]; plate: number[]; badge: number[] }> = {"original": {"w": 380, "h": 290, "ring": [52.1, 46.6], "plate": [28.4, 62.8, 47.9, 13.1], "badge": [52.1, 83.4]}, "infierno": {"w": 405, "h": 295, "ring": [46.2, 39.0], "plate": [18.5, 58.3, 55.6, 12.9], "badge": [46.2, 78.6]}, "vikingos": {"w": 425, "h": 285, "ring": [53.6, 45.6], "plate": [32.9, 60.0, 44.2, 13.3], "badge": [54.1, 81.8]}, "jungla": {"w": 445, "h": 330, "ring": [50.1, 45.5], "plate": [28.1, 62.1, 48.3, 11.5], "badge": [50.6, 80.6]}, "rayo": {"w": 405, "h": 295, "ring": [46.2, 39.0], "plate": [18.5, 58.3, 55.6, 12.9], "badge": [46.2, 78.6]}, "robots": {"w": 420, "h": 300, "ring": [53.1, 45.0], "plate": [32.1, 62.7, 42.9, 12.7], "badge": [53.1, 83.3]}, "demonios": {"w": 420, "h": 280, "ring": [47.6, 42.9], "plate": [26.2, 59.6, 44.0, 13.6], "badge": [48.1, 81.4]}, "nucleo": {"w": 420, "h": 280, "ring": [47.6, 42.9], "plate": [26.2, 59.6, 44.0, 13.6], "badge": [48.1, 81.4]}};
+const ISLAND_META: Record<string, { w: number; h: number; ring: number[]; plate: number[]; badge: number[] }> = {"original": {"w": 380, "h": 290, "ring": [52.1, 46.6], "plate": [28.4, 62.8, 47.9, 13.1], "badge": [52.1, 83.4]}, "infierno": {"w": 405, "h": 295, "ring": [46.2, 39.0], "plate": [18.5, 58.3, 55.6, 12.9], "badge": [46.2, 78.6]}, "vikingos": {"w": 425, "h": 285, "ring": [53.6, 45.6], "plate": [32.9, 60.0, 44.2, 13.3], "badge": [54.1, 81.8]}, "jungla": {"w": 445, "h": 330, "ring": [50.1, 45.5], "plate": [28.1, 62.1, 48.3, 11.5], "badge": [50.6, 80.6]}, "lodo": {"w": 445, "h": 330, "ring": [50.1, 45.5], "plate": [28.1, 62.1, 48.3, 11.5], "badge": [50.6, 80.6]}, "rayo": {"w": 405, "h": 295, "ring": [46.2, 39.0], "plate": [18.5, 58.3, 55.6, 12.9], "badge": [46.2, 78.6]}, "robots": {"w": 420, "h": 300, "ring": [53.1, 45.0], "plate": [32.1, 62.7, 42.9, 12.7], "badge": [53.1, 83.3]}, "demonios": {"w": 420, "h": 280, "ring": [47.6, 42.9], "plate": [26.2, 59.6, 44.0, 13.6], "badge": [48.1, 81.4]}, "nucleo": {"w": 420, "h": 280, "ring": [47.6, 42.9], "plate": [26.2, 59.6, 44.0, 13.6], "badge": [48.1, 81.4]}};
 
 /** The world the map is showing (locked ones can be looked at, not played). */
 let mapPick = 0;
@@ -1108,6 +1108,8 @@ function dressPalette() {
 const heroPic = () => `./images/game/hero/${heroStill(save.skin, save.equipped.head)}.webp`;
 /** What the list under the hero shows: a slot's items, the skins or the enemy looks. */
 let dressSlot: Slot | 'skin' | 'foes' | 'scene' | 'song' | null = null;
+/** The world each world song (`w1`–`w8`) was written for: the mud world, put in at 4, came later and has none yet. */
+const SONG_WORLD = [1, 2, 3, 5, 6, 7, 8, 9];
 /** Customise's music list plays what it lists: the music starts (and comes up from silence) the moment it is opened or a song is picked. */
 function playMusicNow() {
   audio.unlock();
@@ -1147,16 +1149,17 @@ function stylesScreen(note = '') {
     picks = `<h3 class="slot">${t('songPick')}</h3><div class="gear-list">${(['auto', 'b2b', 'doom'] as const).map((id) =>
       songRow(id, id === 'auto' ? '🎚️' : id === 'b2b' ? '🎧' : '🔥', t(`song${cap(id)}Name` as Key), t(`song${cap(id)}Text` as Key))).join('')}</div>
       <h3 class="slot">${t('songWorlds')}</h3><div class="gear-list">${([1, 2, 3, 4, 5, 6, 7, 8] as const).map((n) => {
+        const world = SONG_WORLD[n - 1];
         // A world's song has two versions: picking the row plays the one last picked (v1 at first) and opens a switch between them.
         const on = save.song === `w${n}` || save.song === `w${n}v2`;
         const v2 = save.song === `w${n}v2`;
         const ver = (id: typeof save.song, label: string) => `<button class="mode-opt${save.song === id ? ' is-on' : ''}" data-song="${id}" aria-pressed="${save.song === id}">${label}</button>`;
-        return row(`data-song="${on ? save.song : `w${n}`}"`, on, false, `<img class="scene-pic" src="./images/game/floors/world${n}.webp" alt="">`, t(`songW${n}Name` as Key),
-          v2 ? t(`songW${n}V2` as Key) : t('songWorldText', { world: t(`world${n}Name` as Key) }), on ? `✓ ${v2 ? 'v2' : 'v1'}` : '')
+        return row(`data-song="${on ? save.song : `w${n}`}"`, on, false, `<img class="scene-pic" src="./images/game/floors/world${world}.webp" alt="">`, t(`songW${n}Name` as Key),
+          v2 ? t(`songW${n}V2` as Key) : t('songWorldText', { world: t(`world${world}Name` as Key) }), on ? `✓ ${v2 ? 'v2' : 'v1'}` : '')
           + (on ? `<div class="mode-pick song-ver" role="group" aria-label="${t('songVersion')}">${ver(`w${n}`, 'v1')}${ver(`w${n}v2`, 'v2')}</div>` : '');
       }).join('')}</div>`;
   } else if (dressSlot === 'scene') {
-    picks = `<h3 class="slot">${t('scenePick')}</h3><div class="gear-list">${[0, 1, 2, 3, 4, 5, 6, 7, 8].map((n) =>
+    picks = `<h3 class="slot">${t('scenePick')}</h3><div class="gear-list">${Array.from({ length: WORLD_COUNT + 1 }, (_, n) => n).map((n) =>
       row(`data-scene="${n}"`, save.scene === n, false, n ? `<img class="scene-pic" src="./images/game/floors/world${n}.webp" alt="">` : '🌍',
         n ? t(`world${n}Name` as Key) : t('sceneOwn'), n ? t('sceneText', { n }) : t('sceneOwnText'), save.scene === n ? '✓' : '')).join('')}</div>`;
   } else if (dressSlot) {
@@ -1906,7 +1909,7 @@ function step(now: number) {
         audio.setIntensity(1);
       }
       if (event === 'revive') flash(t('revived'));
-      if (event === 'poison' || event === 'stun' || event === 'chill' || event === 'dark') flash(t(`status${cap(event)}` as Key));
+      if (event === 'poison' || event === 'stun' || event === 'chill' || event === 'dark' || event === 'stone' || event === 'mired') flash(t(`status${cap(event)}` as Key));
       if (event === 'chest') flash(t('chestHint'));
     }
     // update() may have moved the game on (TypeScript still thinks it's 'play').

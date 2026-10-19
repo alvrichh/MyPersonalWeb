@@ -153,7 +153,7 @@ export const ITEMS: Item[] = [
   { id: 'orb', slot: 'magic', price: 600, icon: '🔮', pic: 'items/orb.webp', effect: { xpMult: 1.25 } },
   { id: 'hourglass', slot: 'magic', price: 450, icon: '⏳', pic: 'items/hourglass.webp', effect: { hasteMult: 1.15 } },
   { id: 'spellbook', slot: 'magic', price: 450, icon: '📖', pic: 'items/spellbook.webp', effect: { startSkills: ['fireball'] } },
-  { id: 'seniorTome', slot: 'magic', price: 8000, icon: '📜', pic: 'items/seniorTome.webp', legendary: true, world: 8, effect: { startMaxed: 2 } },
+  { id: 'seniorTome', slot: 'magic', price: 8000, icon: '📜', pic: 'items/seniorTome.webp', legendary: true, world: 9, effect: { startMaxed: 2 } },
   { id: 'lantern', slot: 'magic', price: 500, icon: '👻', pic: 'spirits/water-float-0.webp', effect: { startSkills: ['spirits'], spirit: 'water' } },
   { id: 'spiritFire', slot: 'magic', price: 700, icon: '👻', pic: 'spirits/fire-float-0.webp', effect: { startSkills: ['spirits'], spirit: 'fire' } },
   { id: 'spiritTide', slot: 'magic', price: 700, icon: '👻', pic: 'spirits/tide-float-0.webp', effect: { startSkills: ['spirits'], spirit: 'tide' } },
@@ -187,8 +187,8 @@ export const MASTERY_STEP = { damage: 0.05, hp: 10, coins: 0.05, xp: 0.05 } as c
    once bought it can come up in the level ups of both modes. */
 export const ARSENAL: { id: SkillId; price: number; world: number }[] = [
   { id: 'brick', price: 900, world: 1 }, { id: 'molotov', price: 900, world: 2 }, { id: 'mines', price: 1100, world: 3 },
-  { id: 'durian', price: 1100, world: 4 }, { id: 'ball', price: 1300, world: 5 }, { id: 'drill', price: 1300, world: 6 },
-  { id: 'rocket', price: 1500, world: 7 },
+  { id: 'durian', price: 1100, world: 5 }, { id: 'ball', price: 1300, world: 6 }, { id: 'drill', price: 1300, world: 7 },
+  { id: 'rocket', price: 1500, world: 8 },
 ];
 export function buildLoadout(equipped: Partial<Record<Slot, ItemId>>, upgrades: Upgrades = {}, masteries = 0, arsenal: SkillId[] = [], levels: ItemLevels = {}): Loadout {
   const out: Loadout = { ...BASE_LOADOUT, mult: { ...BASE_LOADOUT.mult }, startSkills: [], arsenal: [...arsenal] };

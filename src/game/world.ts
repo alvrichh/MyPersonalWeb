@@ -29,7 +29,7 @@ export type Mode = 'sprints' | 'horde';
 export const HORDE_LENGTH = 600;
 export const HORDE_BOSS_AT = [300, HORDE_LENGTH];
 /** Nightmare (On call in the last world, no clock): a boss every five minutes, the cast's and the world's in turn. */
-export const NIGHTMARE_WORLD = 8;
+export const NIGHTMARE_WORLD = 9;
 export const NIGHTMARE_BOSS_EVERY = 300;
 /** When the next boss comes, or Infinity once a shift has had both. */
 const nextBossAt = (g: Game) => (g.endless ? (g.hordeBoss + 1) * NIGHTMARE_BOSS_EVERY : HORDE_BOSS_AT[g.hordeBoss] ?? Infinity);
@@ -57,18 +57,20 @@ export const WHEEL_X = W / 2 + 92;
 
 /** Each world is ten sprints with its own element: colours, a hazard and
  *  tougher bugs. World 1 is the plain backlog. */
-export type Element = 'original' | 'fire' | 'water' | 'leaf' | 'bolt' | 'spark' | 'ghost' | 'heart';
+export type Element = 'original' | 'fire' | 'water' | 'mud' | 'leaf' | 'bolt' | 'spark' | 'ghost' | 'heart';
 export type HazardKind = 'none' | 'lava' | 'puddle' | 'thorns' | 'strike' | 'ice' | 'bouncy' | 'mixed';
 export type WorldDef = { element: Element; hazard: HazardKind; look: Look | 'random'; tint: string; floor: string; grid: string; wall: string; door: string };
 
 /** How an enemy is drawn: the world's cast, or whatever the picker forces. */
-export type Look = 'original' | 'demon' | 'viking' | 'jungle' | 'greek' | 'robot' | 'nightmare';
-export const LOOKS: Look[] = ['original', 'demon', 'viking', 'jungle', 'greek', 'robot', 'nightmare'];
+export type Look = 'original' | 'demon' | 'viking' | 'mud' | 'jungle' | 'greek' | 'robot' | 'nightmare';
+export const LOOKS: Look[] = ['original', 'demon', 'viking', 'mud', 'jungle', 'greek', 'robot', 'nightmare'];
 
 export const WORLDS: WorldDef[] = [
   { element: 'original', hazard: 'none', look: 'original', tint: '', floor: '#0f141d', grid: 'rgba(255,255,255,0.035)', wall: '#1d2533', door: '' },
   { element: 'fire', hazard: 'lava', look: 'demon', tint: '#ff7a1a', floor: '#1a0c0a', grid: 'rgba(255,122,26,0.08)', wall: '#3a1510', door: '#ff9e4c' },
   { element: 'water', hazard: 'ice', look: 'viking', tint: '#38bdf8', floor: '#081520', grid: 'rgba(56,189,248,0.08)', wall: '#0f2a3d', door: '#7ad8ff' },
+  // The mud world, put in between the vikings and the jungle: frogs, bats and mud blobs in the swamp, its puddles slowing you down.
+  { element: 'mud', hazard: 'puddle', look: 'mud', tint: '#a16207', floor: '#17120a', grid: 'rgba(161,98,7,0.08)', wall: '#33270f', door: '#d6a75c' },
   { element: 'leaf', hazard: 'thorns', look: 'jungle', tint: '#4ade80', floor: '#0a160f', grid: 'rgba(74,222,128,0.07)', wall: '#15321f', door: '#67dfa0' },
   { element: 'bolt', hazard: 'strike', look: 'greek', tint: '#facc15', floor: '#15140a', grid: 'rgba(250,204,21,0.07)', wall: '#2e2a10', door: '#ffd45f' },
   { element: 'spark', hazard: 'bouncy', look: 'robot', tint: '#fb923c', floor: '#160f09', grid: 'rgba(251,146,60,0.08)', wall: '#3b2412', door: '#ffb86f' },
@@ -309,9 +311,9 @@ export type Orb = {
 export type BossTrail = { x: number; y: number; r: number; life: number; max: number; dmg: number; tone: string; from?: string };
 /** Every boss shot leaves a track: a dab every `every` seconds that lasts `life` and hurts for `share` of the shot. */
 const BOSS_TRAIL = { every: 0.05, life: 0.55, share: 0.4, cap: 360 };
-export type OrbPic = 'tornado' | 'fireball' | 'rocket' | 'leaf' | 'acid' | 'water' | 'ghost' | 'bolt' | 'spark';
+export type OrbPic = 'medusa' | 'mudball' | 'venom' | 'tornado' | 'fireball' | 'rocket' | 'leaf' | 'acid' | 'water' | 'ghost' | 'bolt' | 'spark';
 /** What a boss's attack looks like: its element. */
-export type ThreatEl = 'fire' | 'water' | 'leaf' | 'bolt' | 'laser' | 'shadow' | 'glitch';
+export type ThreatEl = 'fire' | 'water' | 'mud' | 'arcane' | 'leaf' | 'bolt' | 'laser' | 'shadow' | 'glitch';
 /**
  * A boss attack on its way: an area shown as a warning while `warn` runs down, then harmful for `life` seconds.
  * A circle (meteors, geysers, roots), a line (javelins, the lightning grid), a beam turning round its boss
@@ -346,7 +348,7 @@ export type Threat = {
   /** Wave: how far it crosses in all, so it can be drawn calm, cresting or breaking by where it is. */
   span?: number;
   /** Left on the floor when it hits. */
-  after?: 'lava' | 'thorns';
+  after?: 'lava' | 'thorns' | 'puddle';
   /** A javelin: when the warning runs out a bolt flies along the line instead of the whole line striking. */
   shot?: OrbPic;
 };
@@ -416,6 +418,8 @@ export type Player = {
   stun: number;
   chill: number;
   dark: number;
+  stone: number;
+  mired: number;
 };
 
 /** Cooldowns and state for every weapon. */
@@ -834,7 +838,7 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     strikes: [],
     strikeIn: 2,
     hazard: 'none',
-    player: { x: W / 2, y: H - 70, r: 15, hp: loadout.maxHp, maxHp: loadout.maxHp, speed: 150 * loadout.speedMult, inv: 0, ouch: 0, moving: false, face: -Math.PI / 2, heading: -Math.PI / 2, poison: 0, stun: 0, chill: 0, dark: 0 },
+    player: { x: W / 2, y: H - 70, r: 15, hp: loadout.maxHp, maxHp: loadout.maxHp, speed: 150 * loadout.speedMult, inv: 0, ouch: 0, moving: false, face: -Math.PI / 2, heading: -Math.PI / 2, poison: 0, stun: 0, chill: 0, dark: 0, stone: 0, mired: 0 },
     enemies: [],
     shots: [],
     orbs: [],
@@ -1957,10 +1961,11 @@ function useWeapons(g: Game, dt: number) {
 
 /* What some final bosses' hits leave on you, for a moment: the Carnivorous Queen poisons (a little damage
    over half a second, never the last point), Zeus stuns (you can't move), the Drakkar and Valdur chill (you
-   walk slower) and the Shadow Wraith puts you in the dark (the view closes in round you). */
-export type BossStatus = 'poison' | 'stun' | 'chill' | 'dark';
+   walk slower) and the Shadow Wraith puts you in the dark (the view closes in round you); the Medusa turns you to
+   stone (you can't move, like the stun) and the Mud Monster sticks you in the mud (you walk slower, like the chill). */
+export type BossStatus = 'poison' | 'stun' | 'chill' | 'dark' | 'stone' | 'mired';
 const BOSS_STATUS: Record<string, [BossStatus, number]> = {
-  queen: ['poison', 0.5], zeus: ['stun', 0.5], drakkar: ['chill', 1.5], valdur: ['chill', 1.5], wraith: ['dark', 1.2], nightmare: ['dark', 1.2],
+  queen: ['poison', 0.5], zeus: ['stun', 0.5], medusa: ['stone', 0.6], mud: ['mired', 1.2], drakkar: ['chill', 1.5], valdur: ['chill', 1.5], wraith: ['dark', 1.2], nightmare: ['dark', 1.2],
 };
 /** Poison: health lost over its half second. */
 const POISON_DMG = 8;
@@ -2121,7 +2126,9 @@ function updateEnemy(g: Game, e: Enemy, dt: number) {
     e.cd -= dt;
     if (e.cd <= 0) {
       e.cd = rand(1.8, 2.6);
-      g.orbs.push({ x: e.x, y: e.y, vx: ux * 150, vy: uy * 150, r: 6, dmg: e.dmg, life: 4, bounce: g.hazard === 'bouncy' ? 1 : 0 });
+      // The mud world's bats spit a ball of venom.
+      const bat = e.look === 'mud';
+      g.orbs.push({ x: e.x, y: e.y, vx: ux * 150, vy: uy * 150, r: 6, dmg: e.dmg, life: 4, bounce: g.hazard === 'bouncy' ? 1 : 0, ...(bat ? { tone: '#a3e635', pic: 'venom' as const } : {}) });
     }
   } else if (e.kind === 'boss') {
     // Everything the boss fires or casts this frame is marked as its own.
@@ -2176,23 +2183,23 @@ function updateEnemy(g: Game, e: Enemy, dt: number) {
  * world's move too, its signature attack (`SIGNATURE`) and a fury under half health that speeds it all up.
  * Moves go by world, not by the cast the picker forces, so the robots' world always has the laser.
  */
-export const FINAL_BOSS = ['kernel', 'archdemon', 'drakkar', 'queen', 'zeus', 'mech', 'wraith', 'chimera'] as const;
+export const FINAL_BOSS = ['kernel', 'archdemon', 'drakkar', 'medusa', 'queen', 'zeus', 'mech', 'wraith', 'chimera'] as const;
 /** The water world's final boss is a Viking longship with its captain at the helm; at half health the ship
     breaks up and the captain, Valdur, fights on alone: smaller, much faster, leaping and charging in a frenzy. */
 export type FinalBoss = (typeof FINAL_BOSS)[number] | 'valdur';
-type Move = 'volley' | 'breath' | 'geysers' | 'leap' | 'javelins' | 'missiles' | 'blink' | 'acid';
-type Signature = 'tornado' | 'spiral' | 'meteors' | 'tide' | 'roots' | 'grid' | 'laser' | 'clones' | 'frenzy';
-const MID_MOVE: Move[] = ['volley', 'breath', 'geysers', 'leap', 'javelins', 'missiles', 'blink'];
-const SIGNATURE: Signature[] = ['spiral', 'meteors', 'tide', 'roots', 'grid', 'laser', 'clones'];
-/** World 8 mixes them: a random move each time, and the signatures of worlds 2–7 in turn. */
+type Move = 'volley' | 'breath' | 'geysers' | 'mudball' | 'leap' | 'javelins' | 'missiles' | 'blink' | 'acid';
+type Signature = 'tornado' | 'spiral' | 'meteors' | 'tide' | 'sigils' | 'roots' | 'grid' | 'laser' | 'clones' | 'frenzy';
+const MID_MOVE: Move[] = ['volley', 'breath', 'geysers', 'mudball', 'leap', 'javelins', 'missiles', 'blink'];
+const SIGNATURE: Signature[] = ['spiral', 'meteors', 'tide', 'sigils', 'roots', 'grid', 'laser', 'clones'];
+/** The last world mixes them: a random move each time, and the signatures of the worlds before it (but the first) in turn. */
 const moveOf = (g: Game, e: Enemy): Move =>
-  e.bossId === 'valdur' ? 'leap' : e.bossId === 'queen' ? 'acid' : g.world <= 7 ? MID_MOVE[g.world - 1]
+  e.bossId === 'valdur' ? 'leap' : e.bossId === 'queen' ? 'acid' : g.world < WORLD_COUNT ? MID_MOVE[g.world - 1]
   // Nocthrax: the Treant's vanishing leap half the time (the owner's favourite), any other move otherwise.
-  : e.bossId === 'chimera' && !e.clone && Math.random() < 0.5 ? 'leap' : MID_MOVE[Math.floor(Math.random() * 7)];
+  : e.bossId === 'chimera' && !e.clone && Math.random() < 0.5 ? 'leap' : MID_MOVE[Math.floor(Math.random() * MID_MOVE.length)];
 const signatureOf = (g: Game, e: Enemy): Signature =>
-  e.bossId === 'valdur' ? 'frenzy' : g.world <= 7 ? SIGNATURE[g.world - 1]
+  e.bossId === 'valdur' ? 'frenzy' : g.world < WORLD_COUNT ? SIGNATURE[g.world - 1]
   // Nocthrax: its own dark tornadoes every other time, the other worlds' signatures in between.
-  : e.bossId === 'chimera' && !e.clone && e.sigs % 2 === 0 ? 'tornado' : SIGNATURE[1 + (Math.floor(e.sigs / 2) % 6)];
+  : e.bossId === 'chimera' && !e.clone && e.sigs % 2 === 0 ? 'tornado' : SIGNATURE[1 + (Math.floor(e.sigs / 2) % (SIGNATURE.length - 1))];
 
 /** The longship breaks up at half health: wreckage, water on the floor, and Valdur leaps out of it. */
 /** Below this share of its health the final boss goes into its last stand. */
@@ -2246,7 +2253,7 @@ function breakShip(g: Game, e: Enemy) {
   e.land = 'slam';
   g.events.push('boss');
 }
-const TONE: Record<ThreatEl, string> = { fire: '#fb923c', water: '#38bdf8', leaf: '#4ade80', bolt: '#facc15', laser: '#f87171', shadow: '#a78bfa', glitch: '#c084fc' };
+const TONE: Record<ThreatEl, string> = { fire: '#fb923c', water: '#38bdf8', mud: '#a16207', arcane: '#c026d3', leaf: '#4ade80', bolt: '#facc15', laser: '#f87171', shadow: '#a78bfa', glitch: '#c084fc' };
 
 /** A spot inside the room (or the visible field), `m` from its edges. */
 function inside(g: Game, v: Vec, m: number): Vec {
@@ -2254,14 +2261,14 @@ function inside(g: Game, v: Vec, m: number): Vec {
   return { x: clamp(v.x, b.x + m, b.x + b.w - m), y: clamp(v.y, b.y + m, b.y + b.h - m) };
 }
 /** The final bosses' rings fly as their element's weapon pictures (the cast bosses keep the plain orbs). */
-const RING_PIC: Partial<Record<string, OrbPic>> = { archdemon: 'fireball', drakkar: 'water', valdur: 'water', queen: 'leaf', zeus: 'bolt', mech: 'spark', wraith: 'ghost' };
+const RING_PIC: Partial<Record<string, OrbPic>> = { mud: 'mudball', medusa: 'medusa', archdemon: 'fireball', drakkar: 'water', valdur: 'water', queen: 'leaf', zeus: 'bolt', mech: 'spark', wraith: 'ghost' };
 const ring = (g: Game, e: Enemy, n: number, speed: number, tone = '', turn = rand(0, Math.PI * 2), pic?: OrbPic) => {
   for (let i = 0; i < n; i++) {
     const a = turn + (i / n) * Math.PI * 2;
     g.orbs.push({ x: e.x, y: e.y, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, r: 7, dmg: Math.round(e.dmg * 0.64), life: 5, bounce: g.hazard === 'bouncy' ? 1 : 0, tone, pic });
   }
 };
-const circle = (g: Game, at: Vec, r: number, warn: number, dmg: number, el: ThreatEl, after?: 'lava' | 'thorns') =>
+const circle = (g: Game, at: Vec, r: number, warn: number, dmg: number, el: ThreatEl, after?: Threat['after']) =>
   g.threats.push({ kind: 'circle', x: at.x, y: at.y, r, a: 0, len: 0, warn, max: warn, life: 0.2, dmg, el, after });
 
 /** The smaller bosses: one more with each sprint mastery up to `most`, every `every` seconds, a share of the final boss's health. */
@@ -2290,7 +2297,7 @@ function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
   e.cd -= dt;
   if (e.cd <= 0) {
     e.cd = (final ? 2.4 : 3.1) * fury;
-    ring(g, e, final ? 14 : 10, final ? 120 : 105, '', undefined, final ? RING_PIC[e.bossId] : undefined);
+    ring(g, e, final ? 14 : 10, final ? 120 : 105, '', undefined, RING_PIC[e.bossId]);
     e.pose = 0.35;
     e.act = 'burst';
   }
@@ -2410,6 +2417,14 @@ function worldMove(g: Game, e: Enemy, move: Move) {
       for (let i = 0; i < 3; i++) circle(g, inside(g, { x: p.x + step.x * i, y: p.y + step.y * i }, 30), 30, 0.9 + i * 0.3, dmg, 'water');
       break;
     }
+    case 'mudball':
+      // Mud balls lobbed onto you and round you: each one splashes where it lands and leaves a puddle a while.
+      for (let i = 0; i < 3; i++) {
+        const a = rand(0, Math.PI * 2);
+        const at = i === 0 ? p : { x: p.x + Math.cos(a) * rand(50, 90), y: p.y + Math.sin(a) * rand(50, 90) };
+        circle(g, inside(g, at, 30), 30, 0.9 + i * 0.2, dmg, 'mud', 'puddle');
+      }
+      break;
     case 'acid':
       // The Carnivorous Queen spits a gush of acid: big, slow blobs in a fan.
       for (let i = 0; i < 5; i++) {
@@ -2490,6 +2505,17 @@ function signature(g: Game, e: Enemy, sig: Signature) {
       if (e.hp < e.maxHp / 2) {
         const right = p.x > e.x;
         g.threats.push({ kind: 'wave', x: right ? b.x : b.x + b.w, y: b.y + b.h / 2, r: 16, a: right ? 0 : Math.PI, len: b.h / 2, warn: 2.4, max: 2.4, life: 99, dmg, el: 'water', speed: 150, done: 0, gap: rand(-b.h / 2 + 60, b.h / 2 - 60), gapW: 42, span: b.w });
+      }
+      break;
+    }
+    case 'sigils': {
+      // The Medusa's gaze: magic circles open on you and round you, then burst; caught in one, you are turned to stone a moment.
+      const n = e.hp < e.maxHp / 2 ? 6 : 5;
+      const turn = rand(0, Math.PI * 2);
+      for (let i = 0; i < n; i++) {
+        const a = turn + (i / (n - 1)) * Math.PI * 2;
+        const at = i === 0 ? p : { x: p.x + Math.cos(a) * 105, y: p.y + Math.sin(a) * 105 };
+        circle(g, inside(g, at, 34), 34, 1.1 + i * 0.08, dmg, 'arcane');
       }
       break;
     }
@@ -2669,7 +2695,10 @@ function threatHits(g: Game, t: Threat) {
     // Geysers burst as the steam cloud; roots leave the caltrops' spikes.
     if (t.el === 'water' && t.r < 40) g.fx.push({ kind: 'pic', pic: 'steam-cloud', top: true, x: t.x, y: t.y, r: t.r * 1.6, a: rand(0, 6), life: 0.5, max: 0.5 });
     if (t.el === 'leaf' && t.after) g.fx.push({ kind: 'pic', pic: 'caltrops', x: t.x, y: t.y, r: t.r * 1.2, a: rand(0, 6), life: 2.5, max: 2.5 });
-    if (t.after) g.hazards.push({ kind: t.after, x: t.x, y: t.y, r: t.after === 'lava' ? 26 : 16, ttl: t.after === 'lava' ? 4 : 2.5 });
+    // Mud balls splash and leave a puddle; the Medusa's sigils burst in purple.
+    if (t.el === 'mud') g.fx.push({ kind: 'pic', pic: 'mud-splat', x: t.x, y: t.y, r: t.r * 1.5, a: 0, life: 0.6, max: 0.6 });
+    if (t.el === 'arcane') g.fx.push({ kind: 'pic', pic: 'medusa-burst', top: true, x: t.x, y: t.y, r: t.r * 1.6, a: 0, life: 0.45, max: 0.45 });
+    if (t.after) g.hazards.push({ kind: t.after, x: t.x, y: t.y, r: t.after === 'lava' ? 26 : t.after === 'puddle' ? 30 : 16, ttl: t.after === 'lava' ? 4 : t.after === 'puddle' ? 5 : 2.5 });
     if (t.el === 'fire') g.events.push('boom');
   } else if (t.shot) {
     // A javelin: the bolt itself flies down the line it warned.
@@ -3032,10 +3061,12 @@ export function update(g: Game, dt: number, input: Input) {
   p.stun = Math.max(0, p.stun - dt);
   p.chill = Math.max(0, p.chill - dt);
   p.dark = Math.max(0, p.dark - dt);
+  p.stone = Math.max(0, p.stone - dt);
+  p.mired = Math.max(0, p.mired - dt);
   if (p.poison > 0) p.hp = Math.max(1, p.hp - (POISON_DMG / 0.5) * dt);
-  if (p.stun > 0) p.moving = false;
+  if (p.stun > 0 || p.stone > 0) p.moving = false;
   if (p.moving) {
-    const k = Math.min(1, len) * (wading ? 0.55 : 1) * (p.chill > 0 ? 1 - CHILL_SLOW : 1);
+    const k = Math.min(1, len) * (wading ? 0.55 : 1) * (p.chill > 0 || p.mired > 0 ? 1 - CHILL_SLOW : 1);
     const shoes = 1 + 0.1 * g.skills.shoes;
     p.x += (input.x / len) * k * p.speed * shoes * dt;
     p.y += (input.y / len) * k * p.speed * shoes * dt;
