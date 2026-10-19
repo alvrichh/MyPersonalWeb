@@ -1465,7 +1465,10 @@ function arrowChips(g: Game) {
   const opts = arrowOptions(g);
   if (opts.length < 2) return '';
   const now = arrowLook(g);
-  return `<div class="gp-chips" role="group" aria-label="${t('gearArrowPick')}">${opts.map((el) => `<button type="button" class="gp-chip${el === now ? ' is-on' : ''}" data-arrow="${el}" aria-pressed="${el === now}" title="${t(`${el}Name` as Key)}"><img src="./images/game/skills/${el}.webp" alt="${t(`${el}Name` as Key)}" width="28" height="28"></button>`).join('')}</div>`;
+  const fusion = fusionOf(g);
+  const name = (el: ArrowLook) => t(el === 'fusion' && fusion ? (`${fusionKey(fusion)}Name` as Key) : (`${el}Name` as Key));
+  const pic = (el: ArrowLook) => (el === 'fusion' && fusion ? `fusion-${fusion}` : el);
+  return `<div class="gp-chips" role="group" aria-label="${t('gearArrowPick')}">${opts.map((el) => `<button type="button" class="gp-chip${el === now ? ' is-on' : ''}" data-arrow="${el}" aria-pressed="${el === now}" title="${name(el)}"><img src="./images/game/skills/${pic(el)}.webp" alt="${name(el)}" width="28" height="28"></button>`).join('')}</div>`;
 }
 function spiritChips(g: Game) {
   const opts = ownedSpirits();

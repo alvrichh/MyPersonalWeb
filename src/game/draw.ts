@@ -586,7 +586,8 @@ function arrowImage(name: string) {
 function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accent2: string) {
   const look = arrowLook(g);
   const element = look && ARROW_PICTURES.includes(look) ? look : null;
-  const fusion = fusionOf(g);
+  // The fused arrow only while that look is worn (the fusion's effects apply whatever the look).
+  const fusion = look === 'fusion' ? fusionOf(g) : null;
   ctx.lineCap = 'round';
   for (const a of g.shots) {
     // A fused arrow: the owner's arrow for that fusion (it carries its own trail), else a glow in its colour.
