@@ -13,7 +13,7 @@ export const COIN_PACKS: CoinPack[] = [
   { id: 'coins-4', price: 999, coins: 13000, pic: 4 },
   { id: 'coins-5', price: 1999, coins: 28000, pic: 5 },
   { id: 'coins-6', price: 4999, coins: 75000, pic: 6, tag: 'best' },
-  { id: 'coins-7', price: 9999, coins: 160000, pic: 7, tag: 'ultra' },
+  { id: 'coins-7', price: 9999, coins: 250000, pic: 7, tag: 'ultra' },
 ];
 /** How many more coins a pack gives than the smallest one at the same price, in percent. */
 export const packBonus = (p: CoinPack) => Math.round((p.coins / ((p.price / COIN_PACKS[0].price) * COIN_PACKS[0].coins) - 1) * 100);
