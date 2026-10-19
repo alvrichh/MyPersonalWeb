@@ -178,7 +178,8 @@ body {
   top: 34%;
   left: 50%;
   margin: 0;
-  padding: 12px 26px;
+  /* The plate's body is the upper 40% of the picture (the point hangs below it), so the text sits higher. */
+  padding: 7px 26px 17px;
   border: 0 solid transparent;
   border-width: 0 30px;
   border-image: url('/images/game/ui/toast.webp') 0 90 fill / 0 30px stretch;
