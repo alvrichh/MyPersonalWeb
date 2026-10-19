@@ -283,6 +283,8 @@ export type Orb = {
   /** A boss's colour for it ('' or unset: the usual red), and seconds it keeps turning towards you (the robots' missiles). */
   tone?: string;
   home?: number;
+  /** The boss that fired it (its `bossId`), for what its hit leaves on you. */
+  from?: string;
   /** A boss shot drawn with one of the weapon pictures (see `ORB_PIC` in draw.ts) instead of a plain orb. */
   pic?: OrbPic;
 };
@@ -309,6 +311,8 @@ export type Threat = {
   /** Beam: radians a second it turns, and the boss it follows. */
   spin?: number;
   owner?: number;
+  /** The boss that cast it (its `bossId`). */
+  from?: string;
   /** Zeus's lightning is blue; everyone else's yellow. */
   blue?: boolean;
   /** Wave: speed, how far it has come, and the safe gap (its centre along the wave, half its width). */
@@ -378,6 +382,11 @@ export type Player = {
   face: number;
   /** Where the hero is walking (face turns to the target when a shot goes off). */
   heading: number;
+  /** Seconds left of what a final boss's hit leaves (see `BOSS_STATUS`): poisoned, stunned, chilled, in the dark. */
+  poison: number;
+  stun: number;
+  chill: number;
+  dark: number;
 };
 
 /** Cooldowns and state for every weapon. */
@@ -496,7 +505,7 @@ export type Game = {
 
 export type GameEvent =
   | 'fusion' | 'clear' | 'boss' | 'hurt' | 'levelup' | 'room' | 'revive' | 'heal' | 'wheel' | 'shrine'
-  | 'shoot' | 'knife' | 'boomerang' | 'orb' | 'hit' | 'kill' | 'gem' | 'heart' | 'chest' | 'slash' | 'slam' | 'strike' | 'boom' | 'minute' | 'rage' | 'laser';
+  | 'shoot' | 'knife' | 'boomerang' | 'orb' | 'hit' | 'kill' | 'gem' | 'heart' | 'chest' | 'slash' | 'slam' | 'strike' | 'boom' | 'minute' | 'rage' | 'laser' | BossStatus;
 
 /* ------------------------------------------------------------------ helpers */
 
@@ -777,7 +786,7 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     strikes: [],
     strikeIn: 2,
     hazard: 'none',
-    player: { x: W / 2, y: H - 70, r: 15, hp: loadout.maxHp, maxHp: loadout.maxHp, speed: 150 * loadout.speedMult, inv: 0, ouch: 0, moving: false, face: -Math.PI / 2, heading: -Math.PI / 2 },
+    player: { x: W / 2, y: H - 70, r: 15, hp: loadout.maxHp, maxHp: loadout.maxHp, speed: 150 * loadout.speedMult, inv: 0, ouch: 0, moving: false, face: -Math.PI / 2, heading: -Math.PI / 2, poison: 0, stun: 0, chill: 0, dark: 0 },
     enemies: [],
     shots: [],
     orbs: [],
@@ -1886,9 +1895,26 @@ function useWeapons(g: Game, dt: number) {
   if (sk.durian) keepDurians(g, dt);
 }
 
-function hurtPlayer(g: Game, amount: number) {
+/* What some final bosses' hits leave on you, for a moment: the Carnivorous Queen poisons (a little damage
+   over half a second, never the last point), Zeus stuns (you can't move), the Drakkar and Valdur chill (you
+   walk slower) and the Shadow Wraith puts you in the dark (the view closes in round you). */
+export type BossStatus = 'poison' | 'stun' | 'chill' | 'dark';
+const BOSS_STATUS: Record<string, [BossStatus, number]> = {
+  queen: ['poison', 0.5], zeus: ['stun', 0.5], drakkar: ['chill', 1.5], valdur: ['chill', 1.5], wraith: ['dark', 1.5],
+};
+/** Poison: health lost over its half second. */
+const POISON_DMG = 8;
+/** Chill: how much slower you walk. */
+const CHILL_SLOW = 0.35;
+
+function hurtPlayer(g: Game, amount: number, from?: string) {
   const p = g.player;
   if (p.inv > 0 || g.phase !== 'play') return;
+  const status = from ? BOSS_STATUS[from] : undefined;
+  if (status) {
+    p[status[0]] = Math.max(p[status[0]], status[1]);
+    g.events.push(status[0]);
+  }
   // The exo-bracer stacks on the worn armour.
   p.hp -= Math.max(1, Math.round(amount * (1 - Math.min(0.7, g.loadout.armor + 0.07 * g.skills.bracer))));
   p.inv = 0.7;
@@ -2027,7 +2053,12 @@ function updateEnemy(g: Game, e: Enemy, dt: number) {
       g.orbs.push({ x: e.x, y: e.y, vx: ux * 150, vy: uy * 150, r: 6, dmg: e.dmg, life: 4, bounce: g.hazard === 'bouncy' ? 1 : 0 });
     }
   } else if (e.kind === 'boss') {
+    // Everything the boss fires or casts this frame is marked as its own.
+    const orbs0 = g.orbs.length;
+    const threats0 = g.threats.length;
     updateBoss(g, e, dt, ux, uy);
+    for (let i = orbs0; i < g.orbs.length; i++) g.orbs[i].from ??= e.bossId;
+    for (let i = threats0; i < g.threats.length; i++) g.threats[i].from ??= e.bossId;
     const walk = e.rage ? Math.min(RAGE_WALK, RAGE_TOP / e.speed) : 0.6;
     const run = e.rage ? 12 : 9;
     if (e.dash > 0) { mx = e.dir.x * run; my = e.dir.y * run; } else if (e.aim > 0 || e.chan > 0) { mx = 0; my = 0; } else { mx = ux * walk; my = uy * walk; }
@@ -2062,7 +2093,7 @@ function updateEnemy(g: Game, e: Enemy, dt: number) {
     else if (blocked(e, p, g.obstacles)) e.detour = 2.5;
   }
 
-  if (Math.hypot(p.x - e.x, p.y - e.y) < p.r + e.r - 2) hurtPlayer(g, e.dmg);
+  if (Math.hypot(p.x - e.x, p.y - e.y) < p.r + e.r - 2) hurtPlayer(g, e.dmg, e.kind === 'boss' ? e.bossId : undefined);
 }
 
 /* ------------------------------------------------------------------ bosses */
@@ -2460,7 +2491,7 @@ function updateThreats(g: Game, dt: number) {
         }
       }
     }
-    if (t.dmg > 0 && touches(t, p, p.r * 0.6)) hurtPlayer(g, t.dmg);
+    if (t.dmg > 0 && touches(t, p, p.r * 0.6)) hurtPlayer(g, t.dmg, t.from);
     t.life -= dt;
     return t.life > 0;
   });
@@ -2496,7 +2527,7 @@ function threatHits(g: Game, t: Threat) {
     if (t.el === 'fire') g.events.push('boom');
   } else if (t.shot) {
     // A javelin: the bolt itself flies down the line it warned.
-    g.orbs.push({ x: t.x, y: t.y, vx: Math.cos(t.a) * 430, vy: Math.sin(t.a) * 430, r: 7, dmg: t.dmg, life: 2, bounce: 0, tone: TONE.bolt, pic: t.shot });
+    g.orbs.push({ x: t.x, y: t.y, vx: Math.cos(t.a) * 430, vy: Math.sin(t.a) * 430, r: 7, dmg: t.dmg, life: 2, bounce: 0, tone: TONE.bolt, pic: t.shot, from: t.from });
     t.life = 0;
     t.dmg = 0;
   } else if (t.kind === 'line' && t.el === 'bolt') {
@@ -2821,8 +2852,15 @@ export function update(g: Game, dt: number, input: Input) {
   const len = Math.hypot(input.x, input.y);
   p.moving = len > 0.15;
   const wading = g.hazards.some((h) => h.kind === 'puddle' && dist(h, p) < h.r);
+  // A boss's hit: stunned you stand, chilled you walk slower, poisoned you lose a little health (never the last point).
+  p.poison = Math.max(0, p.poison - dt);
+  p.stun = Math.max(0, p.stun - dt);
+  p.chill = Math.max(0, p.chill - dt);
+  p.dark = Math.max(0, p.dark - dt);
+  if (p.poison > 0) p.hp = Math.max(1, p.hp - (POISON_DMG / 0.5) * dt);
+  if (p.stun > 0) p.moving = false;
   if (p.moving) {
-    const k = Math.min(1, len) * (wading ? 0.55 : 1);
+    const k = Math.min(1, len) * (wading ? 0.55 : 1) * (p.chill > 0 ? 1 - CHILL_SLOW : 1);
     const shoes = 1 + 0.1 * g.skills.shoes;
     p.x += (input.x / len) * k * p.speed * shoes * dt;
     p.y += (input.y / len) * k * p.speed * shoes * dt;
@@ -2922,7 +2960,7 @@ export function update(g: Game, dt: number, input: Input) {
     if (o.life <= 0 || outside(g, o)) return false;
     if (g.obstacles.some((r) => inRect(o, r))) return false;
     if (Math.hypot(o.x - p.x, o.y - p.y) < o.r + p.r - 3) {
-      hurtPlayer(g, o.dmg);
+      hurtPlayer(g, o.dmg, o.from);
       return false;
     }
     return true;
