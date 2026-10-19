@@ -18,7 +18,7 @@ const HAT_SET: Record<string, string> = { wizardHat: 'wizard', gladHelm: 'helm',
 export const heroKey = (skin: HeroSkin, head?: string) =>
   `${skin}-${(!HATLESS.includes(skin) && head && HAT_SET[head]) || 'base'}`;
 /** Picture sets with the owner's full nine poses (front, second step, hurt, knocked out). */
-export const FULL_HERO_SETS = ['boy-base', 'boy-wizard', 'boy-helm'];
+export const FULL_HERO_SETS = ['boy-base', 'boy-wizard', 'boy-helm', 'boy-bandana'];
 /** The still picture for menus: facing the camera where the set has it, else the side idle. */
 export const heroStill = (skin: HeroSkin, head?: string) => {
   const key = heroKey(skin, head);
