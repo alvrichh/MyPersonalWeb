@@ -1315,6 +1315,9 @@ export const BLADE_ORBIT = 46;
 export const bladeCount = (lv: number) => [0, 2, 3, 4, 5, 6][Math.min(lv, 5)];
 export const bladeScale = (lv: number) => [1, 1, 1, 1.15, 1.5, 1.9][Math.min(lv, 5)];
 export const bladeOrbit = (lv: number) => BLADE_ORBIT * [1, 1, 1.12, 1.25, 1.5, 1.8][Math.min(lv, 5)];
+/** The Orbital Saw (evolved blades) is a size up: saws 1.4× bigger on a circle 1.2× wider. */
+export const sawScale = (g: Game) => bladeScale(g.skills.blades) * (g.evolved.blades ? 1.4 : 1);
+export const sawOrbit = (g: Game) => bladeOrbit(g.skills.blades) * (g.evolved.blades ? 1.2 : 1);
 const BLADE_SPARK: Record<BladeElement, string> = { steel: '#e5e7eb', fire: '#ffb347', ice: '#bae6fd', volt: '#fde047', shade: '#e879f9' };
 
 /** Melee hits heal you a little: the reward for fighting up close. */
@@ -1405,8 +1408,8 @@ function spinBlades(g: Game, dt: number) {
   }
   // Evolved (Orbital Saw): two more saws, cutting half again as deep.
   const n = bladeCount(lv) + (g.evolved.blades ? 2 : 0);
-  const orbit = bladeOrbit(lv);
-  const reach = 12 * bladeScale(lv);
+  const orbit = sawOrbit(g);
+  const reach = 12 * sawScale(g);
   const el = bladeElement(g);
   const dmg = (14 + 5 * (lv - 1)) * power(g, 'melee') * (el === 'shade' ? 1.3 : 1) * (g.evolved.blades ? 1.5 : 1);
   for (let i = 0; i < n; i++) {

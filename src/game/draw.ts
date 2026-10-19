@@ -1,4 +1,4 @@
-import { H, W, WALL, WHEEL_X, WORLDS, frostReach, waveAt, type Threat, type OrbPic, isBossRoom, type Enemy, type Game, type Shot, type Look, type Statue, type Rect, type Vec, type Fusion, arrowLook, fusionOf, bladeCount, bladeElement, bladeOrbit, bladeScale, type BladeElement } from './world';
+import { H, W, WALL, WHEEL_X, WORLDS, frostReach, waveAt, type Threat, type OrbPic, isBossRoom, type Enemy, type Game, type Shot, type Look, type Statue, type Rect, type Vec, type Fusion, arrowLook, fusionOf, bladeCount, bladeElement, sawOrbit, sawScale, type BladeElement } from './world';
 import { SPIRIT_COLOR, type ItemId, type SpiritSkin } from './shop';
 import { FULL_HERO_SETS, heroKey, type HeroSkin } from './save';
 
@@ -1556,9 +1556,9 @@ function drawBlades(ctx: CanvasRenderingContext2D, g: Game, accent: string) {
   const p = g.player;
   const lv = g.skills.blades;
   const n = bladeCount(lv) + (g.evolved.blades ? 2 : 0);
-  const orbit = bladeOrbit(lv);
+  const orbit = sawOrbit(g);
   const glow = BLADE_LOOK[el][3];
-  const size = 24 * bladeScale(lv);
+  const size = 24 * sawScale(g);
   const streak = glow || 'rgba(226,232,240,0.6)';
   // Motion that grows with the level: a streak along the circle, longer
   // each level, and fading copies of the blade behind it from level 3. It
@@ -1617,14 +1617,14 @@ function drawBladesRetro(ctx: CanvasRenderingContext2D, g: Game, accent: string)
   const p = g.player;
   const lv = g.skills.blades;
   const n = bladeCount(lv) + (g.evolved.blades ? 2 : 0);
-  const orbit = bladeOrbit(lv);
+  const orbit = sawOrbit(g);
   const [edge, base, hilt, glow] = BLADE_LOOK[bladeElement(g)];
   for (let i = 0; i < n; i++) {
     const a = g.gear.bladeAngle + (i / n) * Math.PI * 2;
     ctx.save();
     ctx.translate(p.x + Math.cos(a) * orbit, p.y + Math.sin(a) * orbit);
     ctx.rotate(a + Math.PI / 2);
-    ctx.scale(bladeScale(lv), bladeScale(lv));
+    ctx.scale(sawScale(g), sawScale(g));
     if (glow) {
       const halo = ctx.createRadialGradient(0, -3, 1, 0, -3, 14);
       halo.addColorStop(0, glow);
