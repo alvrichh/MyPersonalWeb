@@ -538,15 +538,20 @@ function mapScreen() {
     const tried = horde ? shift ? clock(shift.time) : '' : best?.room ? `${best.room}/${ROOMS}` : '';
     const under = !st.open ? '🔒' : done ? '✓' : tried || '▶';
     const style = `left:${(st.left / MAP_W) * 100}%;top:${(st.top / MAP_H) * 100}%;width:${(st.w / MAP_W) * 100}%;--rx:${st.m.ring[0]}%;--ry:${st.m.ring[1]}%;--px:${st.m.plate[0]}%;--py:${st.m.plate[1]}%;--pw:${st.m.plate[2]}%;--ph:${st.m.plate[3]}%;--bx:${st.m.badge[0]}%;--by:${st.m.badge[1]}%;--c:${WORLDS[st.n - 1].tint || '#38bdf8'}`;
-    return `
-      <button class="isle${st.open ? ' is-open' : ' is-locked'}${st.n === picked ? ' is-picked' : ''}" data-world="${st.n}" style="${style}" aria-label="${t('worldN', { n: st.n })} · ${worldName(st.n)}">
+    const cls = `${st.open ? ' is-open' : ' is-locked'}${st.n === picked ? ' is-picked' : ''}`;
+    // The art overlaps its neighbours, so the ring, plate and badges sit in a layer of their own over every island.
+    return [`
+      <button class="isle${cls}" data-world="${st.n}" style="${style}" aria-label="${t('worldN', { n: st.n })} · ${worldName(st.n)}">
         <img src="./images/game/map/${ISLAND_ART[st.n - 1]}.webp" alt="" width="${st.m.w}" height="${st.m.h}">
+      </button>`, `
+      <span class="isle isle-labels${cls}" style="${style};aspect-ratio:${st.m.w}/${st.m.h}" aria-hidden="true">
         <span class="isle-ring"><span>${WORLD_ICON[st.n - 1]}</span></span>
-        ${st.n === picked ? `<span class="isle-hero" aria-hidden="true"><img src="${heroPic()}" alt=""></span>` : ''}
-        <span class="isle-plate">${worldName(st.n)}</span>
+        ${st.n === picked ? `<span class="isle-hero"><img src="${heroPic()}" alt=""></span>` : ''}
+        <span class="isle-plate${worldName(st.n).length > 16 ? ' is-long' : ''}">${worldName(st.n)}</span>
         ${under ? `<span class="isle-under${done ? ' is-done' : ''}${st.open ? '' : ' is-lock'}">${under}</span>` : ''}
-      </button>`;
-  }).join('');
+      </span>`];
+  });
+  const islandArt = islands.map((x) => x[0]).join('') + islands.map((x) => x[1]).join('');
   const modes = (['sprints', 'horde'] as Mode[]).map((m) =>
     `<button class="mode-opt${save.mode === m ? ' is-on' : ''}" data-mode="${m}" aria-pressed="${save.mode === m}" title="${t(m === 'horde' ? 'modeHordeText' : 'modeSprintsText')}">${MODE_ICON[m]} ${modeName(m)}</button>`).join('');
   const status = pickedOpen
@@ -563,19 +568,19 @@ function mapScreen() {
       <h2 class="map-title"><span>${t('map')}</span></h2>
       <div class="map" style="aspect-ratio:${MAP_W}/${MAP_H}">
         <svg viewBox="0 0 ${MAP_W} ${MAP_H}" preserveAspectRatio="none" aria-hidden="true">${trail}</svg>
-        ${islands}
+        ${islandArt}
       </div>
       <div class="map-info">
         <img class="map-thumb" src="./images/game/map/pv-${ISLAND_ART[picked - 1]}.jpg" alt="" width="400" height="250">
         <div class="map-copy">
-          <b><span class="map-ico">${WORLD_ICON[picked - 1]}</span> ${t('worldN', { n: picked })} · ${worldName(picked)}</b>
+          <div class="map-head"><span class="map-ico">${WORLD_ICON[picked - 1]}</span><div><small>${t('worldN', { n: picked })}</small><b>${worldName(picked)}</b></div></div>
           <span>${t(`world${picked}Text` as Key)}</span>
           ${status}
           <div class="mode-pick" role="group" aria-label="${t('modePick')}">${modes}</div>
           <small class="mode-text">${t(save.mode === 'horde' ? 'modeHordeText' : 'modeSprintsText')}</small>
         </div>
       </div>
-      ${action}
+      <div class="map-dock">${action}</div>
       ${mastery}
       <button class="ghost hexghost" data-act="menu">← ${t('menu')}</button>
     </div>`, true, false, 'is-map');

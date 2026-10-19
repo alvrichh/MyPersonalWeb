@@ -644,10 +644,17 @@ body {
   color: #fff;
   text-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
   filter: drop-shadow(0 0 16px rgba(74, 222, 128, 0.45));
-  /* The map is taller than a phone: the play button stays on screen at the bottom while you scroll. */
+}
+/* The map scrolls; the play button stays docked at the bottom of the screen, on a fade so the islands
+   scrolling under it never show through its edges. */
+.map-dock {
   position: sticky;
-  bottom: max(10px, env(safe-area-inset-bottom));
+  bottom: -16px;
   z-index: 3;
+  width: calc(100% + 32px);
+  margin: 0 -16px;
+  padding: 26px 16px max(14px, env(safe-area-inset-bottom));
+  background: linear-gradient(180deg, transparent, rgba(5, 9, 14, 0.92) 42%);
 }
 .mapscreen .play::before,
 .mapscreen .play::after { display: none; }
@@ -1544,11 +1551,15 @@ body {
   height: auto;
 }
 
-.isle:hover,
 .isle.is-picked {
   transform: translateY(-3px) scale(1.03);
   z-index: 2;
 }
+/* Hover only brightens: a lift would part the art from its labels, which sit in their own layer. */
+.isle:not(.isle-labels):hover { filter: brightness(1.12); }
+/* The labels' layer: above every island's picture, never in the way of a tap. */
+.isle.isle-labels { z-index: 4; pointer-events: none; cursor: default; }
+.isle.isle-labels.is-picked { z-index: 5; }
 
 .isle.is-locked > img:first-child {
   filter: saturate(0.45) brightness(0.75);
@@ -1619,7 +1630,8 @@ body {
   width: max-content;
   min-width: var(--pw);
   max-width: 98%;
-  height: var(--ph);
+  /* At least a line and a half of its text: on a phone the art's plate is shorter than the words. */
+  height: max(var(--ph), 1.55em);
   padding: 0 8px;
   translate: -50% 0;
   border: 2px solid #22d3ee;
@@ -1628,7 +1640,9 @@ body {
   box-shadow: 0 0 10px rgba(34, 211, 238, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.1);
   font-size: clamp(0.6rem, 2.7vw, 0.9rem);
   font-weight: 700;
-  line-height: 1;
+  /* Room for the descenders (g, y): with line-height 1 they were cut off by the plate. */
+  line-height: 1.3;
+  padding-bottom: 1px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1638,6 +1652,8 @@ body {
 @media (min-width: 600px) {
   .isle-plate { font-size: 0.78rem; }
 }
+/* A long name (Servidores encantados) a size smaller, so it fits its plate. */
+.isle-plate.is-long { font-size: clamp(0.52rem, 2.3vw, 0.72rem); letter-spacing: -0.01em; }
 
 .isle.is-locked .isle-plate {
   border-color: #64748b;
@@ -1707,6 +1723,9 @@ body {
   min-width: 0;
 }
 
+.map-head { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.map-head > div { display: grid; min-width: 0; }
+.map-head small { font: 700 0.7rem/1.1 ui-monospace, monospace; letter-spacing: 0.08em; text-transform: uppercase; color: #67e8f9; }
 .map-copy b {
   font-size: clamp(0.95rem, 4vw, 1.1rem);
   line-height: 1.2;
@@ -1714,10 +1733,10 @@ body {
 
 .map-ico {
   display: inline-grid;
+  flex: none;
   place-items: center;
-  width: 26px;
-  height: 26px;
-  margin-right: 2px;
+  width: 30px;
+  height: 30px;
   border: 1px solid rgba(103, 232, 249, 0.5);
   border-radius: 8px;
   background: #0b1a22;
@@ -1733,7 +1752,7 @@ body {
 
 .map-record,
 .map-locked {
-  font: 700 0.75rem/1.3 ui-monospace, monospace;
+  font: 700 0.8rem/1.3 var(--font);
 }
 
 .map-record {
