@@ -308,17 +308,26 @@ function drawRoom(ctx: CanvasRenderingContext2D, g: Game, accent: string, now: n
 }
 
 /** The blocks in a room (racks, or the world's stone blocks), drawn after the hazards so a pool never lies over a wall. */
+const GREEK_SQUARE = ['square-0', 'square-1', 'square-2', 'square-3', 'square-4', 'square-5', 'pillar-0', 'pillar-1', 'pillar-2', 'pillar-3', 'pillar-4'];
+const GREEK_WIDE = ['wide-0', 'wide-1'];
+const GREEK_LONG = ['long-0', 'long-1', 'long-2'];
+
 function drawObstacles(ctx: CanvasRenderingContext2D, g: Game, accent: string, now: number) {
   // The jungle and viking worlds: the owner's stone blocks instead of racks (mossy, or wet with lily pads),
   // the piece whose shape is closest.
   const look = WORLDS[g.world - 1].look;
-  const stones = !retroLook && (look === 'jungle' || look === 'viking') ? look : null;
+  // The Greek arena: the owner's sandstone walls (banners, the eagle gate, the brazier, spear racks, pillars).
+  const stones = !retroLook && (look === 'jungle' || look === 'viking' || look === 'greek') ? look : null;
   for (const o of stones ? g.obstacles : []) {
     const ratio = o.w / o.h;
-    const pic = setImage(stones!, ratio > 3.2 ? 'stone-long-1' : ratio > 1.7 ? 'stone-long-0' : (o.x + o.y) % 2 ? 'stone-0' : 'stone-1');
+    const pick = (list: string[]) => list[Math.floor(o.x * 7 + o.y * 3) % list.length];
+    const pic = setImage(stones!, stones === 'greek'
+      ? pick(ratio > 3.2 ? GREEK_LONG : ratio > 1.7 ? GREEK_WIDE : GREEK_SQUARE)
+      : ratio > 3.2 ? 'stone-long-1' : ratio > 1.7 ? 'stone-long-0' : (o.x + o.y) % 2 ? 'stone-0' : 'stone-1');
     if (!ready(pic)) continue;
-    // As wide as the block and a little more, its own shape kept, standing on the block's bottom edge.
-    const w = o.w * 1.12;
+    // As wide as the block and a little more, its own shape kept, standing on the block's bottom edge
+    // (a pillar a little narrower, since it stands twice as tall as it is wide).
+    const w = o.w * (pic.naturalHeight > pic.naturalWidth * 1.5 ? 0.9 : 1.12);
     const h = (w * pic.naturalHeight) / pic.naturalWidth;
     ctx.fillStyle = 'rgba(0,0,0,0.3)';
     ctx.beginPath();
@@ -327,7 +336,7 @@ function drawObstacles(ctx: CanvasRenderingContext2D, g: Game, accent: string, n
     ctx.drawImage(pic, o.x + o.w / 2 - w / 2, o.y + o.h + 4 - h, w, h);
   }
   // Server racks, with blinking lights.
-  for (const o of stones && ready(setImage(stones, 'stone-0')) ? [] : g.obstacles) {
+  for (const o of stones && ready(setImage(stones, stones === 'greek' ? 'square-0' : 'stone-0')) ? [] : g.obstacles) {
     ctx.fillStyle = 'rgba(0,0,0,0.35)';
     roundRect(ctx, o.x + 3, o.y + 5, o.w, o.h, 5);
     ctx.fill();
@@ -4142,7 +4151,7 @@ const LOOKS: Record<Look, Record<Enemy['kind'], Drawer>> = {
 /** A world's own pieces (`static/images/game/<set>/`): the jungle's mossy blocks and thorny vines, the
     vikings' wet blocks and water pools. */
 const setImages = new Map<string, HTMLImageElement>();
-function setImage(set: 'jungle' | 'viking', name: string) {
+function setImage(set: 'jungle' | 'viking' | 'greek', name: string) {
   const key = `${set}/${name}`;
   let img = setImages.get(key);
   if (!img) { img = new Image(); img.src = `./images/game/${key}.webp`; setImages.set(key, img); }
