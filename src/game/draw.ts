@@ -65,7 +65,8 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   for (const e of g.enemies) if (rank(e) === 0 && onScreen(e, 120)) drawEnemy(ctx, e, now);
   drawShots(ctx, g, accent, accent2);
   drawFireballs(ctx, g);
-  drawSpirits(ctx, g, now);
+  // With the Phoenix wings on, the spirits go over them (drawn after the hero below).
+  if (!g.loadout.wings || pal.retro) drawSpirits(ctx, g, now);
   drawZaps(ctx, g);
   if (g.skills.blades) drawBlades(ctx, g, accent);
   if (g.skills.frost) drawFrostTop(ctx, g, now);
@@ -76,7 +77,10 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   else {
     if (g.loadout.wings) drawHeroWings(ctx, g, pal, now, false);
     drawPlayer(ctx, g, pal, now);
-    if (g.loadout.wings) drawHeroWings(ctx, g, pal, now, true);
+    if (g.loadout.wings) {
+      drawHeroWings(ctx, g, pal, now, true);
+      drawSpirits(ctx, g, now);
+    }
   }
   drawFx(ctx, g, accent, 'over');
   drawPicFx(ctx, g, true);
@@ -1946,9 +1950,9 @@ function drawPhoenixRise(ctx: CanvasRenderingContext2D, f: Fx, now: number, laye
   const frame = t < 0.18 ? 0 : t < 0.36 ? 1 : t < 0.72 ? 2 : 3;
   const pic = fxImage(`phoenix-${frame}`);
   if (ready(pic)) {
-    const h = f.r * 2.7;
+    const h = f.r * 1.75;
     const w = (h * pic.naturalWidth) / pic.naturalHeight;
-    const lift = Math.max(0, t - 0.3) * 120;
+    const lift = Math.max(0, t - 0.3) * 80;
     ctx.save();
     ctx.globalAlpha = fade;
     ctx.drawImage(pic, f.x - w / 2, f.y + 18 - h - lift, w, h);

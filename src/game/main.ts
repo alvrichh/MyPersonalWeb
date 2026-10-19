@@ -161,11 +161,16 @@ const EMOJI: Record<SkillId | 'bow', string> = {
 const skillIcon = (id: SkillId | 'bow', size = 40, file: string = id === 'bow' ? 'double' : id) => `<img class="skill-icon" src="./images/game/skills/${file}.webp" width="${size}" height="${size}" alt=""><span class="skill-emoji">${EMOJI[id]}</span>`;
 /** Weapons with their own evolved medallion (`skills/<id>-evo.webp`). */
 const EVO_ICON: SkillId[] = ['laser', 'brick', 'molotov', 'durian', 'mines', 'drill', 'rocket', 'ball', 'sword', 'blades', 'hammer', 'fireball', 'frost', 'spirits', 'boomerang', 'knives', 'storm'];
-const evoIcon = (id: SkillId) => (EVO_ICON.includes(id) ? `${id}-evo` : id);
+const evoIcon = (id: SkillId, g?: Game) => {
+  if (!EVO_ICON.includes(id)) return id;
+  // The Orbital Saw's medallion takes the colour of the blades' element.
+  const el = id === 'blades' && g ? bladeElement(g) : 'steel';
+  return el === 'steel' ? `${id}-evo` : `${id}-evo-${el}`;
+};
 /** The blades show their element's medallion once they have one; the laser its colour (yellow, red from level 2, purple evolved); evolved weapons their evolution's. */
 /** The medallion for a skill at `lv` (its current level unless a level-up card shows the next one). */
 const iconFile = (g: Game, id: SkillId | 'bow', lv = id === 'bow' ? 0 : g.skills[id]) => {
-  if (id !== 'bow' && g.evolved[id] && EVO_ICON.includes(id)) return evoIcon(id);
+  if (id !== 'bow' && g.evolved[id] && EVO_ICON.includes(id)) return evoIcon(id, g);
   if (id === 'laser') return lv >= 3 ? 'laser-red' : lv >= 2 ? 'laser-orange' : 'laser';
   if (id !== 'blades') return id === 'bow' ? 'double' : id;
   const el = bladeElement(g);
@@ -627,7 +632,7 @@ function choiceScreen(g: Game) {
       const evo = evoOf(choice);
       if (evo) {
         // The gold card: the weapon's evolution.
-        return `<button class="skill skill-${CATEGORY[evo]} is-evo" data-skill="${choice}"><span class="icon" aria-hidden="true">${skillIcon(evo, 56, EVO_ICON.includes(evo) ? evoIcon(evo) : iconFile(g, evo))}</span><span class="cat">★ ${t('evoCat')}</span><b>${t(`evo${cap(evo)}Name` as Key)}</b><span>${t(`evo${cap(evo)}Text` as Key)}</span><span class="lvl">${t('evoLabel')}</span></button>`;
+        return `<button class="skill skill-${CATEGORY[evo]} is-evo" data-skill="${choice}"><span class="icon" aria-hidden="true">${skillIcon(evo, 56, EVO_ICON.includes(evo) ? evoIcon(evo, g) : iconFile(g, evo))}</span><span class="cat">★ ${t('evoCat')}</span><b>${t(`evo${cap(evo)}Name` as Key)}</b><span>${t(`evo${cap(evo)}Text` as Key)}</span><span class="lvl">${t('evoLabel')}</span></button>`;
       }
       const id = choice as SkillId;
       const el = id === 'blades' ? bladeElement(g) : 'steel';
@@ -906,19 +911,18 @@ function shopSection(key: string, title: string, count: string, body: string) {
     </button>${open ? body : ''}`;
 }
 
-/* Items with levels (the Phoenix cloak): a row of stars, what each level gives, and once owned the
-   upgrade to the next level for its price. */
+/* Items with levels (the Phoenix cloak): pips and an upgrade button like the forge's. What each
+   level gives is not shown: it is a surprise. */
 function levelBlock(item: { id: ItemId; levels?: number[] }) {
-  const owned = save.owned.includes(item.id);
-  const lv = owned ? itemLevel(save.itemLevels, item.id) : 0;
+  if (!save.owned.includes(item.id)) return '';
+  const lv = itemLevel(save.itemLevels, item.id);
   const max = 1 + (item.levels?.length ?? 0);
-  const stars = Array.from({ length: max }, (_, i) => `<i class="${i < lv ? 'is-on' : ''}">★</i>`).join('');
-  const lines = Array.from({ length: max }, (_, i) => `<li class="${i < lv ? 'is-on' : ''}">★${i + 1} ${t(`${item.id}Lv${i + 1}` as Key)}</li>`).join('');
-  const next = owned && lv < max ? item.levels![lv - 1] : 0;
-  const up = next
-    ? `<button class="buy is-upgrade${save.coins >= next ? '' : ' is-poor'}" data-item-up="${item.id}">${t('itemUpgrade', { n: lv + 1 })} · 🪙 ${next}</button>`
-    : owned && lv >= max ? `<button class="buy is-upgrade is-max" disabled>★ ${t('itemMax')}</button>` : '';
-  return `<span class="item-stars" aria-label="${t('upgradeLevel', { level: lv, max })}">${stars}</span><ul class="item-levels">${lines}</ul>${up}`;
+  const pips = Array.from({ length: max }, (_, i) => `<i class="${i < lv ? 'is-on' : ''}"></i>`).join('');
+  const price = lv < max ? item.levels![lv - 1] : 0;
+  const up = price
+    ? `<button class="buy${save.coins >= price ? '' : ' is-poor'}" data-item-up="${item.id}">${t('upgradeBtn', { price })}</button>`
+    : `<button class="buy is-worn" disabled>✓ ${t('upgradeMax')}</button>`;
+  return `<span class="pips" aria-label="${t('upgradeLevel', { level: lv, max })}">${pips}</span>${up}`;
 }
 
 function shopScreen(note = '') {
@@ -1301,7 +1305,7 @@ screen.addEventListener('click', (event) => {
     save.itemLevels[item.id] = lv + 1;
     persist();
     audio.play('levelup');
-    shopScreen(t('itemUpgraded', { name: t(`${item.id}Name` as Key), n: lv + 1 }));
+    shopScreen(t('itemUpgraded', { name: t(`${item.id}Name` as Key) }));
   } else if (target.dataset.buy) {
     const item = itemById(target.dataset.buy as ItemId);
     if (!itemOpen(item)) return;
