@@ -2611,8 +2611,8 @@ function drawThreats(ctx: CanvasRenderingContext2D, g: Game, now: number, top: b
         // Each strip comes in over the one before, which stays whole underneath until it is covered,
         // so the water never turns see-through halfway between two.
         const layers: [number, number][] = [[0, m1 < 1 ? 1 : 0], [1, m2 < 1 ? m1 : 0], [2, m2]];
-        const k = (t.r * 5.5) / 160;
-        const top = -t.r * 6; const bottom = t.r * 4 + 2; const q = 2;
+        const k = (t.r * 3.1) / 160;
+        const top = -t.r * 3; const bottom = t.r * 2.4; const q = 2;
         for (const [from, to] of [[-t.len, gap - gapW], [gap + gapW, t.len]]) {
           if (to <= from) continue;
           // Each side is built on its own canvas so its back and its ends can fade instead of stopping in a straight edge.
@@ -2628,8 +2628,9 @@ function drawThreats(ctx: CanvasRenderingContext2D, g: Game, now: number, top: b
             const pic = fxImage(`wave-strip-${n}`);
             if (!ready(pic)) continue;
             const w = pic.naturalWidth * k; const h = pic.naturalHeight * k;
-            // The foot sits a fixed way behind the front, so the crest grows forward as the strips change.
-            const foot = t.r * 4 + Math.sin(now * 3 + n) * 1.5;
+            // The foot sits a fixed way behind the front, so the crest grows forward as the strips change,
+            // and the cresting strip's foam lies on the band that hurts (the front ± r).
+            const foot = t.r * 2.1 + Math.sin(now * 3 + n);
             // Both sides cut from the same stretch of the strip, so the wave reads as one across the gap.
             const drift = Math.max(0, w - t.len * 2) * (0.5 + 0.5 * Math.sin(now * 0.25 + n * 2));
             w2.globalAlpha = alpha;
@@ -2637,7 +2638,7 @@ function drawThreats(ctx: CanvasRenderingContext2D, g: Game, now: number, top: b
           }
           w2.globalAlpha = 1;
           w2.globalCompositeOperation = 'destination-in';
-          const back = w2.createLinearGradient(0, bottom, 0, bottom - t.r * 1.8);
+          const back = w2.createLinearGradient(0, bottom, 0, bottom - t.r * 1.2);
           back.addColorStop(0, 'rgba(0,0,0,0)');
           back.addColorStop(1, 'rgba(0,0,0,1)');
           w2.fillStyle = back;
