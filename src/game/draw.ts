@@ -4089,8 +4089,10 @@ const BOSS_ART = new Set<string>(['kernel', 'archdemon', 'drakkar', 'valdur', 'z
 const BOSS_CANVAS: Record<string, { k: number; feet: number }> = {
   kernel: { k: 2.155, feet: 0.1766 }, archdemon: { k: 1.69, feet: 0.1232 },
   drakkar: { k: 1.081, feet: 0.12 }, valdur: { k: 1.538, feet: 0.1954 }, zeus: { k: 1.782, feet: 0.2063 }, queen: { k: 1.348, feet: 0.1484 },
-  wraith: { k: 1.295, feet: 0.1974 }, mech: { k: 1.412, feet: 0.0878 }, chimera: { k: 1.712, feet: 0.1553 }, chimera2: { k: 1.749, feet: 0.2262 }, chimera3: { k: 1.706, feet: 0.2686 },
+  wraith: { k: 1.295, feet: 0.1974 }, valkyrie: { k: 2.6, feet: 0.1691 }, mech: { k: 1.412, feet: 0.0878 }, chimera: { k: 1.712, feet: 0.1553 }, chimera2: { k: 1.749, feet: 0.2262 }, chimera3: { k: 1.706, feet: 0.2686 },
 };
+/** Room-6 bosses with a nine-pose sheet of their own, in the final bosses' order: the vikings' Valkyrie. */
+const MID_ART: Partial<Record<Look, string>> = { viking: 'valkyrie' };
 const finalSprites = new Map<string, HTMLImageElement[]>();
 function finalFrame(e: Enemy) {
   if (e.pain > 0) return 8;
@@ -4107,8 +4109,10 @@ function drawEnemySprite(ctx: CanvasRenderingContext2D, e: Enemy) {
   let frames: HTMLImageElement[] | undefined;
   let img: HTMLImageElement | undefined;
   // A boss with phases has a sheet per phase (`chimera2` for Nocthrax in the air).
-  const sheet = e.phase > 1 ? `${e.bossId}${e.phase}` : e.bossId;
-  if (e.final && BOSS_ART.has(e.bossId)) {
+  // A cast's room-6 boss can have a nine-pose sheet too (`MID_ART`); the bosses a final boss calls keep the cast's own.
+  const mid = e.kind === 'boss' && !e.final && !e.minion ? MID_ART[e.look] : undefined;
+  const sheet = mid ?? (e.phase > 1 ? `${e.bossId}${e.phase}` : e.bossId);
+  if ((e.final && BOSS_ART.has(e.bossId)) || mid) {
     frames = finalSprites.get(sheet);
     if (!frames) {
       frames = Array.from({ length: 9 }, (_, i) => Object.assign(new Image(), { src: `./images/game/bosses/${sheet}-${i}.webp` }));
