@@ -1146,8 +1146,15 @@ function stylesScreen(note = '') {
     const songRow = (id: typeof save.song, icon: string, name: string, text: string) => row(`data-song="${id}"`, save.song === id, false, icon, name, text, save.song === id ? '✓' : '');
     picks = `<h3 class="slot">${t('songPick')}</h3><div class="gear-list">${(['auto', 'b2b', 'doom'] as const).map((id) =>
       songRow(id, id === 'auto' ? '🎚️' : id === 'b2b' ? '🎧' : '🔥', t(`song${cap(id)}Name` as Key), t(`song${cap(id)}Text` as Key))).join('')}</div>
-      <h3 class="slot">${t('songWorlds')}</h3><div class="gear-list">${([1, 2, 3, 4, 5, 6, 7, 8] as const).map((n) =>
-      songRow(`w${n}`, `<img class="scene-pic" src="./images/game/floors/world${n}.webp" alt="">`, t(`songW${n}Name` as Key), t('songWorldText', { world: t(`world${n}Name` as Key) }))).join('')}</div>`;
+      <h3 class="slot">${t('songWorlds')}</h3><div class="gear-list">${([1, 2, 3, 4, 5, 6, 7, 8] as const).map((n) => {
+        // A world's song has two versions: picking the row plays the one last picked (v1 at first) and opens a switch between them.
+        const on = save.song === `w${n}` || save.song === `w${n}v2`;
+        const v2 = save.song === `w${n}v2`;
+        const ver = (id: typeof save.song, label: string) => `<button class="mode-opt${save.song === id ? ' is-on' : ''}" data-song="${id}" aria-pressed="${save.song === id}">${label}</button>`;
+        return row(`data-song="${on ? save.song : `w${n}`}"`, on, false, `<img class="scene-pic" src="./images/game/floors/world${n}.webp" alt="">`, t(`songW${n}Name` as Key),
+          v2 ? t(`songW${n}V2` as Key) : t('songWorldText', { world: t(`world${n}Name` as Key) }), on ? `✓ ${v2 ? 'v2' : 'v1'}` : '')
+          + (on ? `<div class="mode-pick song-ver" role="group" aria-label="${t('songVersion')}">${ver(`w${n}`, 'v1')}${ver(`w${n}v2`, 'v2')}</div>` : '');
+      }).join('')}</div>`;
   } else if (dressSlot === 'scene') {
     picks = `<h3 class="slot">${t('scenePick')}</h3><div class="gear-list">${[0, 1, 2, 3, 4, 5, 6, 7, 8].map((n) =>
       row(`data-scene="${n}"`, save.scene === n, false, n ? `<img class="scene-pic" src="./images/game/floors/world${n}.webp" alt="">` : '🌍',

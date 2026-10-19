@@ -50,7 +50,7 @@ const SET: Block[] = ['liquid', 'neuro', 'liquid', 'neuro', 'breakdown', 'trance
    `b2b` is the original; `doom` is the final boss's: D minor with a harmonic-minor A that pulls home,
    neuro first and the growl singing its own melody from the start. */
 export type SongId = 'b2b' | 'doom' | 'w1' | 'w2' | 'w3' | 'w4' | 'w5' | 'w6' | 'w7' | 'w8';
-export type SongPick = 'auto' | SongId;
+export type SongPick = 'auto' | SongId | V2Id;
 type Song = { root: number; chords: number[][]; roots: number[]; chordsB: number[][]; rootsB: number[]; set: Block[]; reese?: number[][]; pluck?: OscillatorType };
 const SONGS: Record<SongId, Song> = {
   b2b: { root: ROOT, chords: CHORDS, roots: BASS_ROOTS, chordsB: CHORDS_B, rootsB: BASS_ROOTS_B, set: SET },
@@ -128,6 +128,128 @@ const SONGS: Record<SongId, Song> = {
   },
 };
 
+/* The world songs' second versions (`w1v2`…`w8v2`): still drum and bass at 174, but each one built from its world's own
+   sounds instead of the B2B set: its own drums (a two-step, the Amen break, half-time, techstep or a chopped jungle break),
+   its own bass and lead voices, and its world's noises laid on the grid (typing and mail dings, fire, wind and ice, birds,
+   taikos and a crowd, anvils and steam, a music box and whispers, a dragon and its heart), in a form of their own:
+   eight-bar sections, the intro and the break without the main drums, the peak with everything. */
+type Sec = 'intro' | 'drop' | 'roll' | 'break' | 'peak';
+type Groove = 'twostep' | 'amen' | 'halftime' | 'techstep' | 'jungle';
+type BassVoice = 'chip' | 'dist' | 'sub' | 'slide' | 'reese' | 'fm' | 'wobble';
+type LeadVoice = 'chip' | 'fire' | 'horn' | 'marimba' | 'brass' | 'robot' | 'musicbox' | 'crystal';
+/** A step of a bass line or a melody: a note (semitones), null to hold the one before, 'r' for silence. */
+type Note = number | null | 'r';
+/** The kit: how much the kick is driven, the snare's pitch and length, and how much of the snare goes to the reverb. */
+type Kit = { drive: number; snare: number; decay: number; wet: number };
+type V2 = {
+  theme: number; root: number; chords: number[][]; roots: number[]; chordsB: number[][]; rootsB: number[];
+  form: Sec[]; grooves: Partial<Record<Sec, Groove>>; kit: Kit;
+  /** Two bars of sixteenths over the chord's root. */
+  bass: BassVoice; line: Note[];
+  /** Four bars of eighths over the song's root, in the lead's own octave (`leadOct` times the root). */
+  lead: LeadVoice; leadOct: number; melody: Note[][];
+};
+export type V2Id = 'w1v2' | 'w2v2' | 'w3v2' | 'w4v2' | 'w5v2' | 'w6v2' | 'w7v2' | 'w8v2';
+const V2S: Record<V2Id, V2> = {
+  w1v2: { // The Backlog: a bright C major chiptune roller on the Amen break; keyboards typing, mail dings, a dial-up modem.
+    theme: 1, root: 32.7,
+    chords: [[5, 9, 12, 16], [7, 11, 14, 17], [4, 7, 11, 16], [9, 12, 16, 19]], roots: [5, 7, 4, 9],
+    chordsB: [[0, 4, 7, 11], [9, 12, 16, 19], [5, 9, 12, 16], [7, 11, 14, 19]], rootsB: [0, 9, 5, 7],
+    form: ['intro', 'drop', 'roll', 'drop', 'break', 'peak', 'roll', 'peak'],
+    grooves: { drop: 'amen', roll: 'amen', peak: 'amen' }, kit: { drive: 0, snare: 2600, decay: 0.1, wet: 0 },
+    bass: 'chip', line: [0, null, 12, null, 0, null, 12, 0, 'r', 0, 12, null, 0, null, 7, 12, 0, null, 12, null, 0, null, 12, 0, 'r', 0, 12, null, 3, null, 5, 7],
+    lead: 'chip', leadOct: 8,
+    melody: [[12, null, 16, 19, 17, 16, 14, 12], [14, null, null, 11, 12, 14, 16, null], [16, 19, 21, 19, 16, 14, 12, null], [9, null, 12, 14, 12, 11, 12, 'r']],
+  },
+  w2v2: { // Hotfix Inferno: E Phrygian dominant, half-time and heavy; crackling fire, flame sweeps, an alarm, tribal toms, a driven bass.
+    theme: 2, root: 41.2,
+    chords: [[0, 4, 7, 12], [1, 5, 8, 13], [0, 4, 7, 12], [-2, 1, 5, 10]], roots: [0, 1, 0, -2],
+    chordsB: [[5, 8, 12, 17], [1, 5, 8, 13], [-2, 1, 5, 10], [0, 4, 7, 12]], rootsB: [5, 1, -2, 0],
+    form: ['intro', 'drop', 'drop', 'roll', 'break', 'peak', 'peak', 'roll'],
+    grooves: { drop: 'halftime', roll: 'techstep', peak: 'twostep' }, kit: { drive: 1, snare: 1500, decay: 0.2, wet: 0.15 },
+    bass: 'dist', line: [0, null, null, null, 'r', null, 0, null, 0, 1, null, 'r', 0, null, null, -2, 0, null, null, null, 'r', null, 12, null, 13, 12, 'r', 0, null, 1, null, 0],
+    lead: 'fire', leadOct: 8,
+    melody: [[12, null, 13, null, 16, null, 13, 12], [10, null, 12, null, 8, null, null, 'r'], [12, 13, 16, 17, 19, 17, 16, 13], [12, null, null, null, 8, 7, 8, null]],
+  },
+  w3v2: { // Code Freeze: D minor, glacial and wide; wind, ice tinkling, a celesta, a choir, war drums and a Viking horn.
+    theme: 3, root: 36.71,
+    chords: [[0, 3, 7, 12], [-2, 2, 5, 10], [-4, 0, 3, 8], [-2, 2, 5, 10]], roots: [0, -2, -4, -2],
+    chordsB: [[0, 3, 7, 12], [3, 7, 10, 15], [-2, 2, 5, 10], [0, 3, 7, 12]], rootsB: [0, 3, -2, 0],
+    form: ['intro', 'break', 'drop', 'roll', 'break', 'peak', 'drop', 'peak'],
+    grooves: { drop: 'twostep', roll: 'halftime', peak: 'twostep' }, kit: { drive: 0, snare: 2000, decay: 0.24, wet: 0.5 },
+    bass: 'sub', line: [0, null, null, null, null, null, null, null, null, null, 0, null, null, null, 7, null, 0, null, null, null, null, null, null, null, null, null, -2, null, null, null, -5, null],
+    lead: 'horn', leadOct: 4,
+    melody: [[0, null, null, null, 7, null, null, null], [5, null, 3, null, 2, null, null, null], [0, null, null, 3, 7, null, 10, null], [12, null, null, null, 10, null, 7, null]],
+  },
+  w4v2: { // Legacy Jungle: real ragga jungle in G minor; a chopped Amen, sliding sub, reggae skanks, log drums, birds and insects.
+    theme: 4, root: 49,
+    chords: [[0, 3, 7, 10], [-4, 0, 3, 7], [-2, 2, 5, 9], [0, 3, 7, 10]], roots: [0, -4, -2, 0],
+    chordsB: [[5, 8, 12, 15], [-2, 2, 5, 9], [-4, 0, 3, 7], [-5, -1, 2, 5]], rootsB: [5, -2, -4, -5],
+    form: ['intro', 'drop', 'roll', 'drop', 'break', 'roll', 'peak', 'peak'],
+    grooves: { drop: 'jungle', roll: 'jungle', peak: 'jungle' }, kit: { drive: 0, snare: 2400, decay: 0.12, wet: 0.1 },
+    bass: 'slide', line: [0, null, null, 'r', null, null, 0, null, null, null, 7, null, 5, null, 3, null, 0, null, null, 'r', null, null, 0, null, null, null, -2, null, 0, null, null, null],
+    lead: 'marimba', leadOct: 8,
+    melody: [[12, 10, 7, null, 10, 12, 15, null], [12, null, 10, 7, 5, null, 3, null], [7, null, 10, 12, 15, 17, 15, 12], [10, null, 7, 5, 7, null, null, 'r']],
+  },
+  w5v2: { // The Arena: A harmonic minor, epic; taikos, brass fanfares and stabs, swords clashing, a crowd roaring on every drop.
+    theme: 5, root: 55,
+    chords: [[0, 3, 7, 12], [-4, 0, 3, 8], [-2, 2, 5, 10], [-5, -1, 2, 7]], roots: [0, -4, -2, -5],
+    chordsB: [[5, 8, 12, 17], [0, 3, 7, 12], [7, 11, 14, 19], [7, 11, 14, 19]], rootsB: [5, 0, 7, 7],
+    form: ['intro', 'drop', 'roll', 'peak', 'break', 'peak', 'roll', 'peak'],
+    grooves: { drop: 'twostep', roll: 'amen', peak: 'twostep' }, kit: { drive: 0.3, snare: 1800, decay: 0.2, wet: 0.4 },
+    bass: 'reese', line: [0, null, null, 0, null, null, 12, null, null, null, 0, 10, null, null, 7, null, 0, null, null, 0, null, null, 12, null, null, null, 3, 5, null, null, 7, null],
+    lead: 'brass', leadOct: 4,
+    melody: [[12, null, 'r', 12, 19, null, 24, null], [22, null, 20, 19, 17, null, 19, null], [12, null, 'r', 12, 19, null, 24, null], [27, 26, 24, 23, 24, null, null, null]],
+  },
+  w6v2: { // The Forge: F# minor techstep; anvils on the offbeat, clanking machines, steam, servos, a metallic FM bass and a robot lead.
+    theme: 6, root: 46.25,
+    chords: [[0, 3, 7, 12], [0, 3, 7, 12], [-4, 0, 3, 8], [-2, 2, 5, 10]], roots: [0, 0, -4, -2],
+    chordsB: [[0, 3, 7, 12], [1, 5, 8, 13], [0, 3, 7, 12], [1, 4, 8, 13]], rootsB: [0, 1, 0, 1],
+    form: ['drop', 'roll', 'drop', 'roll', 'break', 'peak', 'roll', 'peak'],
+    grooves: { drop: 'techstep', roll: 'techstep', peak: 'techstep' }, kit: { drive: 1, snare: 1200, decay: 0.16, wet: 0.1 },
+    bass: 'fm', line: [0, 'r', 0, 'r', 12, 'r', 0, 0, 'r', 0, 'r', 12, 0, 'r', 1, 'r', 0, 'r', 0, 'r', 12, 'r', 0, 0, 'r', 12, 'r', 0, 13, 'r', 12, 'r'],
+    lead: 'robot', leadOct: 8,
+    melody: [[0, null, 0, null, 3, null, 0, null], [7, null, 6, null, 3, null, 'r', null], [0, 0, 12, null, 10, null, 7, null], [6, null, 3, null, 1, null, 0, null]],
+  },
+  w7v2: { // Haunted Servers: B minor darkstep with tritones; a broken music box, a theremin, whispers, creaking doors, a heartbeat, a bell.
+    theme: 7, root: 30.87,
+    chords: [[0, 3, 7, 12], [-4, 0, 3, 8], [5, 8, 12, 17], [7, 11, 14, 19]], roots: [0, -4, 5, 7],
+    chordsB: [[0, 3, 7, 12], [1, 5, 8, 13], [0, 3, 7, 12], [6, 9, 13, 18]], rootsB: [0, 1, 0, 6],
+    form: ['intro', 'break', 'drop', 'roll', 'break', 'peak', 'drop', 'roll'],
+    grooves: { drop: 'halftime', roll: 'amen', peak: 'halftime' }, kit: { drive: 0.4, snare: 1600, decay: 0.22, wet: 0.45 },
+    bass: 'reese', line: [0, null, null, null, null, null, null, null, 'r', null, 1, null, 0, null, null, null, 0, null, null, null, null, null, 6, null, null, null, 5, null, null, null, 1, null],
+    lead: 'musicbox', leadOct: 16,
+    melody: [[7, null, 5, 3, 5, null, 7, null], [10, null, 7, null, 3, null, 'r', null], [7, null, 5, 3, 2, null, 3, null], [0, null, null, null, 6, null, null, 'r']],
+  },
+  w8v2: { // The Core: E minor, cosmic and massive; the dragon's roar, its heartbeat, magma, laser zaps, crystal bells, a choir, a wobbling bass.
+    theme: 8, root: 41.2,
+    chords: [[0, 3, 7, 12], [-4, 0, 3, 8], [5, 8, 12, 17], [7, 11, 14, 19]], roots: [0, -4, 5, 7],
+    chordsB: [[-4, 0, 3, 8], [-2, 2, 5, 10], [7, 11, 14, 19], [7, 11, 14, 19]], rootsB: [-4, -2, 7, 7],
+    form: ['intro', 'peak', 'roll', 'drop', 'break', 'peak', 'roll', 'peak'],
+    grooves: { drop: 'techstep', roll: 'amen', peak: 'twostep' }, kit: { drive: 0.8, snare: 2000, decay: 0.18, wet: 0.3 },
+    bass: 'wobble', line: [0, null, null, null, null, null, 0, null, null, null, 12, null, null, null, 0, null, 0, null, null, null, null, null, 0, null, null, null, 15, null, 12, null, 7, null],
+    lead: 'crystal', leadOct: 16,
+    melody: [[0, 3, 7, 12, 7, 3, 0, 3], [-4, 0, 3, 8, 3, 0, -4, 0], [5, 8, 12, 17, 12, 8, 5, 8], [7, 11, 14, 19, 14, 11, 7, 11]],
+  },
+};
+
+/** The drum patterns, a bar of sixteenths each (kick, snare, ghost snare, hats); the Amen and the jungle chop take two bars. */
+const GROOVES: Record<Groove, { k: string; s: string; g: string; h: string }[]> = {
+  twostep: [{ k: 'x.........x.....', s: '....x.......x...', g: '.......x......x.', h: 'x.x.x.x.x.x.x.x.' }],
+  amen: [
+    { k: 'x.x.......x.....', s: '....x.......x...', g: '.......x.x....x.', h: 'x.x.x.x.x.x.x.x.' },
+    { k: 'x.x.......xx....', s: '....x.......x...', g: '.......x.x.x...x', h: 'x.x.x.x.x.x.x.x.' },
+  ],
+  halftime: [{ k: 'x.....x...x.....', s: '........x.......', g: '.............x..', h: 'x.x.x.x.x.x.x.x.' }],
+  techstep: [{ k: 'x......x..x.....', s: '....x.......x...', g: '...x......x...x.', h: 'xxxxxxxxxxxxxxxx' }],
+  jungle: [
+    { k: 'x.x.......x.....', s: '....x.......x...', g: '.......x.x....x.', h: 'x.x.x.x.x.x.x.x.' },
+    { k: 'x.x.......xx....', s: '....x.......x...', g: '.......x.x.x...x', h: 'x.x.x.x.x.x.x.x.' },
+  ],
+};
+/** How the jungle groove chops its break, bar by bar: which beat of the break each beat plays. */
+const CHOPS = [[0, 1, 2, 3], [0, 1, 0, 3], [0, 3, 2, 1], [2, 1, 0, 3]];
+
 /** The growl's line in boss fights, one note per hit (steps 0, 3, 6, 10, 11, 14), over two bars. */
 const BOSS_REESE = [
   [0, 7, 3, 10, 7, 12],
@@ -159,6 +281,8 @@ class Engine {
   private noise!: AudioBuffer;
   /** Pads and leads go through here so the kick can duck them (sidechain). */
   private padBus!: GainNode;
+  /** The reverb's input (the v2 songs send to it). */
+  private verbIn!: GainNode;
   private volumes = { music: 0.6, sfx: 0.8 };
 
   unlock() {
@@ -182,6 +306,18 @@ class Engine {
     this.musicBus.connect(this.filter).connect(this.master);
     this.padBus = this.ctx.createGain();
     this.padBus.connect(this.musicBus);
+    // A plate of reverb for the v2 songs' cold, haunted and epic sounds: two and a half seconds of decaying noise.
+    const sr = this.ctx.sampleRate;
+    const ir = this.ctx.createBuffer(2, Math.floor(sr * 2.5), sr);
+    for (let ch = 0; ch < 2; ch++) {
+      const d = ir.getChannelData(ch);
+      for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / d.length, 3);
+    }
+    const verb = this.ctx.createConvolver();
+    verb.buffer = ir;
+    this.verbIn = this.ctx.createGain();
+    this.verbIn.gain.value = 0.5;
+    this.verbIn.connect(verb).connect(this.musicBus);
     this.sfxBus.connect(this.master);
     // Two seconds of white noise for drums and hits.
     this.noise = this.ctx.createBuffer(1, this.ctx.sampleRate * 2, this.ctx.sampleRate);
@@ -228,7 +364,7 @@ class Engine {
 
   /** Which song plays (picked in Customise): 'auto' is the original with the final boss's own song for that fight. */
   private pick: SongPick = 'auto';
-  private songId: SongId = 'b2b';
+  private songId: SongId | V2Id = 'b2b';
   private songNow = false;
   private root = ROOT;
   setSong(pick: SongPick) {
@@ -276,7 +412,9 @@ class Engine {
     // The song changes only where a phrase begins (or on the next bar, when picked by hand).
     const wanted = this.pick === 'auto' ? (this.finalWanted ? 'doom' : 'b2b') : this.pick;
     if (inBar === 0 && wanted !== this.songId && (bar % 4 === 0 || this.songNow)) { this.songId = wanted; this.songNow = false; }
-    const song = SONGS[this.songId];
+    const v2 = V2S[this.songId as V2Id];
+    if (v2) { this.root = v2.root; this.scheduleV2(step, at, v2); return; }
+    const song = SONGS[this.songId as SongId];
     this.root = song.root;
     const setBar = bar % (song.set.length * 8);
     const block = song.set[Math.floor(setBar / 8)];
@@ -640,6 +778,620 @@ class Engine {
     o.connect(g).connect(this.musicBus);
     o.start(at);
     o.stop(at + 0.3);
+  }
+
+  /* ------------------------------------------------------- v2 world songs */
+
+  /** A world song's second version, one sixteenth: its section, drums, bass, lead, pads and its world's own sounds. */
+  private scheduleV2(step: number, at: number, v: V2) {
+    const bar = Math.floor(step / 16);
+    const inBar = step % 16;
+    const setBar = bar % (v.form.length * 8);
+    const sec = v.form[Math.floor(setBar / 8)];
+    const blockBar = setBar % 8;
+    const second = setBar >= 32;
+    const chord = (second ? v.chordsB : v.chords)[Math.floor(bar / 2) % 4];
+    const bassRoot = (second ? v.rootsB : v.roots)[Math.floor(bar / 2) % 4];
+    if (this.final) this.tension(bar, inBar, at, chord);
+    const calm = sec === 'intro' || sec === 'break';
+    if (inBar === 0 && blockBar === 0 && setBar !== 0) this.crash(at);
+
+    // Drums, in the section's groove; the calm sections keep only a soft hat, a riser and a snare roll into the next one.
+    const groove = v.grooves[sec];
+    if (groove) this.drumsV2(at, groove, bar, inBar, v.kit, sec === 'roll' && blockBar === 7);
+    else {
+      if (blockBar >= 4 && inBar % 4 === 2) this.hat(at, 0.16, false);
+      if (blockBar === 6 && inBar === 0) this.riser(at, BAR * 2);
+      if (blockBar === 7 && inBar >= 8) this.snareV2(at, 0.25 + (inBar - 8) * 0.09, v.kit);
+    }
+
+    // Bass: the line in the drop, the roll and the peak; the calm sections hold one long sub per chord.
+    if (calm) {
+      if (inBar === 0 && bar % 2 === 0) this.sub(at, semi(this.root, bassRoot), BAR * 1.8);
+    } else {
+      const i = (bar % 2) * 16 + inBar;
+      const n = v.line[i];
+      if (typeof n === 'number') {
+        let len = 1;
+        while (len < 16 && v.line[(i + len) % 32] === null) len++;
+        this.bassV2(at, semi(this.root, bassRoot + n), STEP * len, v.bass);
+      }
+    }
+
+    // Pads on each chord change (the choir in the cold, haunted and cosmic worlds), stabs in the drops.
+    if (inBar === 0 && bar % 2 === 0 && (calm || sec === 'peak')) {
+      if (v.theme === 3 || v.theme === 7 || v.theme === 8) this.choir(at, chord, BAR * 2);
+      else this.pad(at, chord, BAR * 2);
+    }
+    if (sec === 'drop' && (inBar === 6 || inBar === 14) && bar % 2 === 1 && v.theme !== 4 && v.theme !== 5) this.stab(at, chord);
+
+    // The lead sings its four bars in the break and the peak.
+    if ((sec === 'break' || sec === 'peak') && inBar % 2 === 0) {
+      const line = v.melody[bar % 4];
+      const n = line[inBar / 2];
+      if (typeof n === 'number') {
+        let len = 1;
+        while (len < 4 && inBar / 2 + len < 8 && line[inBar / 2 + len] === null) len++;
+        this.leadV2(at, semi(this.root * v.leadOct, n), STEP * 2 * len, v.lead);
+      }
+    }
+
+    this.colour(v, { at, step, bar, inBar, blockBar, sec, chord, calm });
+  }
+
+  private drumsV2(at: number, groove: Groove, bar: number, inBar: number, kit: Kit, roll: boolean) {
+    const bars = GROOVES[groove];
+    let pat = bars[bar % bars.length];
+    let s = inBar;
+    // The jungle groove chops its break into beats and plays them back in another order every bar.
+    if (groove === 'jungle') {
+      pat = bars[(bar >> 1) % 2];
+      s = CHOPS[bar % 4][inBar >> 2] * 4 + (inBar % 4);
+    }
+    if (pat.k[s] === 'x') this.kickV2(at, kit.drive);
+    if (pat.s[s] === 'x') this.snareV2(at, 1, kit);
+    if (pat.g[s] === 'x') this.snareV2(at, 0.3, kit);
+    if (pat.h[s] === 'x') this.hat(at, groove === 'techstep' ? (s % 2 ? 0.14 : 0.3) : s % 4 === 2 ? 0.45 : 0.28, s % 8 === 6);
+    // The roll's last bar, and every fourth bar of the jungle: the snare rolls in.
+    if ((roll || (groove === 'jungle' && bar % 4 === 3)) && inBar >= 12) {
+      this.snareV2(at, 0.4 + (inBar - 12) * 0.15, kit);
+      if (groove === 'jungle') this.snareV2(at + STEP / 2, 0.3 + (inBar - 12) * 0.1, kit);
+    }
+  }
+
+  private kickV2(at: number, drive: number) {
+    const duck = this.padBus.gain;
+    duck.cancelScheduledValues(at);
+    duck.setValueAtTime(1, at);
+    duck.linearRampToValueAtTime(0.35, at + 0.01);
+    duck.linearRampToValueAtTime(1, at + 0.22);
+    const o = this.ctx.createOscillator();
+    const g = this.ctx.createGain();
+    o.frequency.setValueAtTime(drive ? 190 : 150, at);
+    o.frequency.exponentialRampToValueAtTime(40, at + 0.12);
+    this.env(g, at, 1, 0.002, 0.24);
+    if (drive) {
+      const ws = this.shaper(10 + drive * 30);
+      const post = this.ctx.createGain();
+      post.gain.value = 0.7;
+      o.connect(g).connect(ws).connect(post).connect(this.musicBus);
+    } else o.connect(g).connect(this.musicBus);
+    o.start(at);
+    o.stop(at + 0.32);
+  }
+
+  private snareV2(at: number, vol: number, kit: Kit) {
+    const n = this.noiseAt(at, kit.decay + 0.08);
+    const bp = this.filt('bandpass', kit.snare, 0.9);
+    const g = this.ctx.createGain();
+    this.env(g, at, 0.75 * vol, 0.001, kit.decay);
+    n.connect(bp).connect(g);
+    this.out(g, kit.wet);
+    const o = this.ctx.createOscillator();
+    const og = this.ctx.createGain();
+    o.frequency.setValueAtTime(kit.snare / 8, at);
+    o.frequency.exponentialRampToValueAtTime(kit.snare / 12, at + 0.05);
+    this.env(og, at, 0.4 * vol, 0.001, 0.07);
+    o.connect(og).connect(this.musicBus);
+    o.start(at);
+    o.stop(at + 0.1);
+  }
+
+  private bassV2(at: number, freq: number, length: number, voice: BassVoice) {
+    const from = this.lastBass || freq;
+    this.lastBass = freq;
+    if (voice === 'reese') { this.reese(at, freq, length); return; }
+    if (voice === 'sub') { this.sub(at, freq, length); return; }
+    const g = this.ctx.createGain();
+    const end = at + length + 0.1;
+    if (voice === 'chip') {
+      // A chiptune bass: a square, lightly filtered, cut short.
+      const o = this.osc('square', freq * 2, at, end);
+      const lp = this.filt('lowpass', 1600, 1);
+      this.env(g, at, 0.5, 0.003, length * 0.6, 0.5, length * 0.3);
+      this.sub(at, freq, length);
+      o.connect(lp).connect(g).connect(this.musicBus);
+    } else if (voice === 'dist') {
+      // A driven saw, its filter snapping open and shut, with a clean sub underneath.
+      const o = this.osc('sawtooth', freq, at, end);
+      const ws = this.shaper(45);
+      const lp = this.filt('lowpass', 300, 4);
+      lp.frequency.setValueAtTime(300, at);
+      lp.frequency.linearRampToValueAtTime(1500 + this.intensity * 800, at + 0.04);
+      lp.frequency.exponentialRampToValueAtTime(260, at + length);
+      this.env(g, at, 0.3, 0.005, length * 0.5, 0.6, length * 0.4);
+      o.connect(ws).connect(lp).connect(g).connect(this.musicBus);
+      this.sub(at, freq / 2, length);
+    } else if (voice === 'slide') {
+      // A dub sub that slides from the note before, with a soft octave on top.
+      const o = this.osc('sine', from, at, end);
+      o.frequency.setValueAtTime(from, at);
+      o.frequency.exponentialRampToValueAtTime(freq, at + 0.07);
+      const o2 = this.osc('triangle', from * 2, at, end);
+      o2.frequency.setValueAtTime(from * 2, at);
+      o2.frequency.exponentialRampToValueAtTime(freq * 2, at + 0.07);
+      const g2 = this.ctx.createGain();
+      g2.gain.value = 0.18;
+      this.env(g, at, 0.85, 0.01, length * 0.4, 0.75, length * 0.5);
+      o.connect(g);
+      o2.connect(g2).connect(g);
+      g.connect(this.musicBus);
+    } else if (voice === 'fm') {
+      // Metal: a sine whose pitch is shaken by another at an unharmonic ratio, the shaking dying away.
+      const car = this.osc('sine', freq * 2, at, end);
+      const mod = this.osc('sine', freq * 2 * 1.41, at, end);
+      const depth = this.ctx.createGain();
+      depth.gain.setValueAtTime(freq * 9, at);
+      depth.gain.exponentialRampToValueAtTime(freq * 0.5, at + length);
+      mod.connect(depth).connect(car.frequency);
+      const lp = this.filt('lowpass', 2400, 1);
+      this.env(g, at, 0.38, 0.003, length * 0.5, 0.5, length * 0.3);
+      car.connect(lp).connect(g).connect(this.musicBus);
+      this.sub(at, freq / 2, length);
+    } else {
+      // Wobble: two saws through a low-pass that an eighth-note LFO swings open and shut.
+      const lp = this.filt('lowpass', 700, 7);
+      const lfo = this.osc('sine', (BPM / 60) * 2, at, end);
+      const depth = this.ctx.createGain();
+      depth.gain.value = 600 + this.intensity * 400;
+      lfo.connect(depth).connect(lp.frequency);
+      for (const detune of [-14, 14]) {
+        const o = this.osc('sawtooth', freq, at, end);
+        o.detune.value = detune;
+        o.connect(lp);
+      }
+      this.env(g, at, 0.42, 0.01, length * 0.5, 0.7, length * 0.4);
+      lp.connect(g).connect(this.musicBus);
+      this.sub(at, freq / 2, length);
+    }
+  }
+  private lastBass = 0;
+
+  private leadV2(at: number, freq: number, length: number, voice: LeadVoice) {
+    const g = this.ctx.createGain();
+    const end = at + length + 1.2;
+    if (voice === 'chip') {
+      // A Game Boy lead: a square with a quick vibrato coming in late.
+      const o = this.osc('square', freq, at, end);
+      const vib = this.osc('sine', 6, at, end);
+      const vd = this.ctx.createGain();
+      vd.gain.setValueAtTime(0, at);
+      vd.gain.linearRampToValueAtTime(freq * 0.012, at + length);
+      vib.connect(vd).connect(o.frequency);
+      this.env(g, at, 0.09, 0.003, length * 0.8, 0.6, 0.05);
+      o.connect(g).connect(this.padBus);
+    } else if (voice === 'fire') {
+      // A burning lead: a saw through a hard drive and a band that rises with the note.
+      const o = this.osc('sawtooth', freq, at, end);
+      const ws = this.shaper(25);
+      const bp = this.filt('bandpass', 1200, 1.5);
+      bp.frequency.setValueAtTime(900, at);
+      bp.frequency.linearRampToValueAtTime(2600, at + length);
+      this.env(g, at, 0.1, 0.01, length * 0.8, 0.6, 0.08);
+      o.connect(ws).connect(bp).connect(g);
+      this.out(g, 0.2, this.padBus);
+    } else if (voice === 'horn') {
+      // A Viking war horn: three low saws opening slowly, ringing out into the cold.
+      const lp = this.filt('lowpass', 300, 2);
+      lp.frequency.setValueAtTime(300, at);
+      lp.frequency.linearRampToValueAtTime(1800, at + Math.min(0.4, length));
+      lp.frequency.linearRampToValueAtTime(700, at + length);
+      for (const detune of [-10, 0, 10]) this.osc('sawtooth', freq, at, end, detune).connect(lp);
+      this.env(g, at, 0.16, 0.14, length, 0.7, 0.3);
+      lp.connect(g);
+      this.out(g, 0.6, this.padBus);
+    } else if (voice === 'marimba') {
+      // Wood: a sine with its bright fourth partial, both dying fast.
+      this.osc('sine', freq, at, end).connect(g);
+      const p = this.ctx.createGain();
+      p.gain.value = 0.25;
+      this.osc('sine', freq * 4, at, end).connect(p).connect(g);
+      this.env(g, at, 0.2, 0.002, 0.35);
+      this.out(g, 0.15, this.padBus);
+    } else if (voice === 'brass') {
+      // A brass section: saws whose filter blares open and settles.
+      const lp = this.filt('lowpass', 500, 1.5);
+      lp.frequency.setValueAtTime(500, at);
+      lp.frequency.linearRampToValueAtTime(3200, at + 0.06);
+      lp.frequency.linearRampToValueAtTime(1300, at + length);
+      for (const detune of [-8, 8]) {
+        this.osc('sawtooth', freq, at, end, detune).connect(lp);
+        this.osc('sawtooth', freq * 2, at, end, detune).connect(lp);
+      }
+      this.env(g, at, 0.08, 0.04, length, 0.75, 0.15);
+      lp.connect(g);
+      this.out(g, 0.45, this.padBus);
+    } else if (voice === 'robot') {
+      // A robot singing: a square through a narrow band that sweeps like a vowel.
+      const o = this.osc('square', freq, at, end);
+      const bp = this.filt('bandpass', 700, 6);
+      bp.frequency.setValueAtTime(600, at);
+      bp.frequency.exponentialRampToValueAtTime(2200, at + length * 0.6);
+      bp.frequency.exponentialRampToValueAtTime(800, at + length);
+      this.env(g, at, 0.3, 0.005, length * 0.8, 0.5, 0.04);
+      o.connect(bp).connect(g).connect(this.padBus);
+    } else if (voice === 'musicbox') {
+      // A broken music box: bright tines a little out of tune, ringing on.
+      const off = (Math.random() - 0.5) * 30;
+      for (const [ratio, vol] of [[1, 1], [3, 0.3], [5.4, 0.12]]) {
+        const pg = this.ctx.createGain();
+        pg.gain.value = vol;
+        this.osc('sine', freq * ratio, at, end, off).connect(pg).connect(g);
+      }
+      this.env(g, at, 0.12, 0.002, 0.9);
+      this.out(g, 0.55, this.padBus);
+    } else {
+      // Crystal: a glassy bell, inharmonic and short.
+      for (const [ratio, vol] of [[1, 1], [2.4, 0.4], [6.8, 0.15]]) {
+        const pg = this.ctx.createGain();
+        pg.gain.value = vol;
+        this.osc('sine', freq * ratio, at, end).connect(pg).connect(g);
+      }
+      this.env(g, at, 0.08, 0.002, 0.5);
+      this.out(g, 0.5, this.padBus);
+    }
+  }
+
+  /** Each world's own sounds, laid on the grid. */
+  private colour(v: V2, c: { at: number; step: number; bar: number; inBar: number; blockBar: number; sec: Sec; chord: number[]; calm: boolean }) {
+    const { at, step, bar, inBar, blockBar, sec, chord, calm } = c;
+    const r = Math.random();
+    const loud = sec === 'drop' || sec === 'peak';
+    switch (v.theme) {
+      case 1: // The Backlog: someone typing, mail dings, a modem, a chip arpeggio, an error beep.
+        if (r < (calm ? 0.55 : 0.3)) this.typing(at + Math.random() * STEP * 0.4);
+        if (inBar === 0 && bar % 4 === 0) this.ding(at, semi(this.root * 32, chord[2]));
+        if (loud && blockBar === 7 && inBar === 8) this.modem(at);
+        if (sec === 'roll' && blockBar === 7 && inBar === 12) { this.beep(at, 880); this.beep(at + STEP, 440); }
+        if (sec === 'break' || sec === 'peak') this.arp(at, semi(this.root * 16, chord[step % 4]), 0.05);
+        break;
+      case 2: // Hotfix Inferno: the fire crackles, flames sweep, the alarm goes off, toms fill.
+        if (r < (calm ? 0.5 : 0.25)) this.crackle(at + Math.random() * STEP);
+        if (loud && blockBar % 4 === 0 && inBar === 0) this.whoosh(at, BAR);
+        if (sec === 'intro' && blockBar === 7 && (inBar === 0 || inBar === 8)) this.alarm(at);
+        if (sec === 'roll' && bar % 2 === 1 && inBar >= 12) this.tom(at, 180 - (inBar - 12) * 30, 0.1);
+        if (sec === 'peak' && (inBar === 3 || inBar === 11)) this.tom(at, 90, 0.1);
+        break;
+      case 3: // Code Freeze: the wind, ice tinkling, a celesta, war drums, the ice cracking.
+        if (inBar === 0 && bar % 2 === 0) this.wind(at, BAR * 2, calm ? 0.09 : 0.05);
+        if ((calm || sec === 'peak') && r < 0.18) this.tinkle(at, semi(this.root * 32, chord[Math.floor(Math.random() * 4)] + 12));
+        if (calm && inBar % 2 === 0) this.celesta(at, semi(this.root * 16, chord[(step >> 1) % 4]));
+        if ((sec === 'roll' || sec === 'peak') && (inBar === 0 || inBar === 6 || inBar === 8)) this.tom(at, inBar === 8 ? 70 : 55, 0.5);
+        if (inBar === 0 && blockBar === 0 && bar > 0) this.crack(at);
+        break;
+      case 4: // Legacy Jungle: birds, crickets, reggae skanks, log drums.
+        if (calm && ((inBar === 2 && bar % 2 === 0) || (inBar === 11 && bar % 3 === 0))) this.bird(at);
+        if (inBar === 0 && (calm || bar % 2 === 0)) this.cricket(at);
+        if (loud && (inBar === 4 || inBar === 12)) this.skank(at, chord);
+        if ((sec === 'roll' || sec === 'peak') && [0, 3, 6, 8, 11, 14].includes(inBar)) this.logdrum(at, semi(this.root * 4, chord[inBar % 3]));
+        break;
+      case 5: // The Arena: taikos, brass stabs, the crowd, swords, a horn call to open.
+        if (!calm && bar % 2 === 0 && (inBar === 0 || inBar === 3 || inBar === 8)) this.taiko(at);
+        if (sec === 'intro' && blockBar >= 4 && inBar % 4 === 0) this.taiko(at);
+        if (loud && (inBar === 6 || inBar === 14) && bar % 2 === 1) this.leadV2(at, semi(this.root * 4, chord[0] + 12), STEP * 1.5, 'brass');
+        if (loud && blockBar === 0 && inBar === 0) this.crowd(at, BAR * 2, 0.16);
+        if (sec === 'intro' && inBar === 0 && bar % 2 === 0) this.crowd(at, BAR * 2, 0.05);
+        if (loud && bar % 4 === 3 && inBar === 12) this.clang(at, 420);
+        if (sec === 'intro' && (blockBar === 0 || blockBar === 4) && inBar === 0) this.leadV2(at, this.root * 4, BAR * 1.5, 'brass');
+        break;
+      case 6: // The Forge: anvils, clanking machines, steam, servos.
+        if (!calm && (inBar === 2 || inBar === 10)) this.clang(at, 1100);
+        if (sec === 'intro' && (inBar === 0 || inBar === 8)) this.clang(at, 900);
+        if (loud && r < 0.45) this.clank(at);
+        if ((blockBar === 3 || blockBar === 7) && inBar === 12) this.steam(at, BAR / 4);
+        if (sec === 'roll' && bar % 2 === 1 && inBar === 8) this.servo(at);
+        break;
+      case 7: // Haunted Servers: whispers, creaking doors, a heartbeat, a bell, a theremin.
+        if (calm && inBar === 0 && bar % 2 === 0) this.whisper(at, BAR * 1.5);
+        if (inBar === 8 && bar % 4 === 1) this.creak(at);
+        if ((sec === 'break' || (sec === 'intro' && blockBar >= 4)) && (inBar === 0 || inBar === 8)) this.heartbeat(at, 0.7);
+        if (loud && blockBar === 0 && inBar === 0) this.bell(at, semi(this.root * 4, chord[0]));
+        if (sec === 'peak' && inBar === 0 && bar % 2 === 0) this.theremin(at, semi(this.root * 16, chord[1]), BAR * 1.9);
+        break;
+      default: // The Core: its heart, magma, the dragon, laser zaps, crystal bells.
+        if (calm && (inBar === 0 || inBar === 8)) this.heartbeat(at, 1);
+        if (!calm && inBar === 0) this.heartbeat(at, 0.5);
+        if (calm && inBar === 0 && bar % 2 === 0) this.magma(at, BAR * 2);
+        if (loud && blockBar === 0 && inBar === 0) this.dragon(at);
+        if (sec === 'peak' && (inBar === 7 || inBar === 15) && r < 0.6) this.zap(at);
+        if ((sec === 'break' || sec === 'peak') && inBar % 2 === 1) this.leadV2(at, semi(this.root * 32, chord[(step >> 1) % 4]), STEP, 'crystal');
+    }
+  }
+
+  /* The v2 songs' building blocks. */
+  private osc(type: OscillatorType, freq: number, at: number, end: number, detune = 0) {
+    const o = this.ctx.createOscillator();
+    o.type = type;
+    o.frequency.value = freq;
+    o.detune.value = detune;
+    o.start(at);
+    o.stop(end);
+    return o;
+  }
+  private filt(type: BiquadFilterType, freq: number, q: number) {
+    const f = this.ctx.createBiquadFilter();
+    f.type = type;
+    f.frequency.value = freq;
+    f.Q.value = q;
+    return f;
+  }
+  private noiseAt(at: number, length: number) {
+    const n = this.ctx.createBufferSource();
+    n.buffer = this.noise;
+    n.loop = true;
+    n.start(at, Math.random() * 1.5);
+    n.stop(at + length);
+    return n;
+  }
+  /** Out to the music, with some of it sent to the reverb. */
+  private out(node: AudioNode, wet = 0, bus: AudioNode = this.musicBus) {
+    node.connect(bus);
+    if (wet > 0) {
+      const s = this.ctx.createGain();
+      s.gain.value = wet;
+      node.connect(s).connect(this.verbIn);
+    }
+  }
+  /** A soft-clipping drive, its curves kept by amount. */
+  private curves = new Map<number, Float32Array<ArrayBuffer>>();
+  private shaper(amount: number) {
+    const ws = this.ctx.createWaveShaper();
+    let curve = this.curves.get(amount);
+    if (!curve) {
+      const n = 1024;
+      curve = new Float32Array(new ArrayBuffer(n * 4));
+      for (let i = 0; i < n; i++) curve[i] = Math.tanh(((i / (n - 1)) * 2 - 1) * (amount / 10));
+      this.curves.set(amount, curve);
+    }
+    ws.curve = curve;
+    return ws;
+  }
+  /** A short burst of filtered noise: the shared shape of clicks, crackles and hisses. */
+  private burst(at: number, length: number, type: BiquadFilterType, freq: number, q: number, vol: number, wet = 0, attack = 0.001) {
+    const n = this.noiseAt(at, length + 0.05);
+    const f = this.filt(type, freq, q);
+    const g = this.ctx.createGain();
+    this.env(g, at, vol, attack, length);
+    n.connect(f).connect(g);
+    this.out(g, wet);
+    return f;
+  }
+  private typing(at: number) { this.burst(at, 0.012, 'bandpass', 2500 + Math.random() * 3000, 3, 0.18); }
+  private ding(at: number, freq: number) {
+    const g = this.ctx.createGain();
+    this.env(g, at, 0.07, 0.002, 0.7);
+    this.osc('sine', freq, at, at + 0.8).connect(g);
+    this.osc('sine', freq * 1.5, at + 0.09, at + 0.8).connect(g);
+    this.out(g, 0.3);
+  }
+  private modem(at: number) {
+    const o = this.osc('square', 1200, at, at + BAR / 2);
+    for (let i = 0; i < 8; i++) o.frequency.setValueAtTime(600 + Math.random() * 2400, at + i * (BAR / 16));
+    const g = this.ctx.createGain();
+    this.env(g, at, 0.035, 0.005, BAR / 2 - 0.01);
+    o.connect(g).connect(this.musicBus);
+  }
+  private beep(at: number, freq: number) {
+    const g = this.ctx.createGain();
+    this.env(g, at, 0.06, 0.002, STEP * 0.8);
+    this.osc('square', freq, at, at + STEP).connect(g).connect(this.musicBus);
+  }
+  private crackle(at: number) { this.burst(at, 0.004 + Math.random() * 0.01, 'highpass', 1500 + Math.random() * 3000, 0.7, 0.1 + Math.random() * 0.25); }
+  private whoosh(at: number, length: number) {
+    const f = this.burst(at, length, 'bandpass', 300, 1.2, 0.2, 0.2, length * 0.4);
+    f.frequency.setValueAtTime(250, at);
+    f.frequency.exponentialRampToValueAtTime(3500, at + length * 0.6);
+    f.frequency.exponentialRampToValueAtTime(600, at + length);
+  }
+  private alarm(at: number) {
+    const o = this.osc('square', 880, at, at + BAR / 2);
+    for (let i = 0; i < 4; i++) o.frequency.setValueAtTime(i % 2 ? 660 : 880, at + i * (BAR / 8));
+    const lp = this.filt('lowpass', 2500, 1);
+    const g = this.ctx.createGain();
+    this.env(g, at, 0.05, 0.01, BAR / 2 - 0.02, 0.8);
+    o.connect(lp).connect(g).connect(this.musicBus);
+  }
+  private tom(at: number, freq: number, wet: number) {
+    const o = this.osc('sine', freq * 1.6, at, at + 0.5);
+    o.frequency.setValueAtTime(freq * 1.6, at);
+    o.frequency.exponentialRampToValueAtTime(freq, at + 0.08);
+    const g = this.ctx.createGain();
+    this.env(g, at, 0.55, 0.002, 0.35);
+    o.connect(g);
+    this.out(g, wet);
+  }
+  private wind(at: number, length: number, vol: number) {
+    const f = this.burst(at, length, 'bandpass', 700, 5, vol, 0.3, length * 0.4);
+    f.frequency.setValueAtTime(500 + Math.random() * 300, at);
+    f.frequency.linearRampToValueAtTime(1200 + Math.random() * 800, at + length * 0.5);
+    f.frequency.linearRampToValueAtTime(600, at + length);
+  }
+  private tinkle(at: number, freq: number) {
+    const g = this.ctx.createGain();
+    this.env(g, at, 0.035, 0.001, 0.3);
+    this.osc('sine', freq, at, at + 0.4).connect(g);
+    this.out(g, 0.7);
+  }
+  private celesta(at: number, freq: number) {
+    const g = this.ctx.createGain();
+    this.env(g, at, 0.05, 0.002, 0.5);
+    this.osc('sine', freq, at, at + 0.6).connect(g);
+    const p = this.ctx.createGain();
+    p.gain.value = 0.3;
+    this.osc('sine', freq * 4, at, at + 0.6).connect(p).connect(g);
+    this.out(g, 0.6, this.padBus);
+  }
+  private crack(at: number) {
+    this.burst(at, 0.09, 'highpass', 2500, 0.8, 0.35, 0.6);
+    const o = this.osc('sine', 1800, at, at + 0.2);
+    o.frequency.exponentialRampToValueAtTime(200, at + 0.15);
+    const g = this.ctx.createGain();
+    this.env(g, at, 0.1, 0.001, 0.15);
+    o.connect(g);
+    this.out(g, 0.5);
+  }
+  /** A choir: saws per note through two vowel bands ("ah"), slow to swell. */
+  private choir(at: number, chord: number[], length: number) {
+    const g = this.ctx.createGain();
+    const f1 = this.filt('bandpass', 750, 4);
+    const f2 = this.filt('bandpass', 1150, 5);
+    for (const n of chord) for (const detune of [-9, 9]) {
+      const o = this.osc('sawtooth', semi(this.root * 4, n), at, at + length + 0.6, detune);
+      o.connect(f1);
+      o.connect(f2);
+    }
+    f1.connect(g);
+    f2.connect(g);
+    this.env(g, at, 0.22, 0.7, length * 0.4, 0.7, length * 0.4);
+    this.out(g, 0.6, this.padBus);
+  }
+  private bird(at: number) {
+    for (let i = 0; i < 3; i++) {
+      const t = at + i * 0.07;
+      const base = 2200 + Math.random() * 1500;
+      const o = this.osc('sine', base, t, t + 0.07);
+      o.frequency.setValueAtTime(base, t);
+      o.frequency.exponentialRampToValueAtTime(base * 1.6, t + 0.03);
+      o.frequency.exponentialRampToValueAtTime(base * 0.9, t + 0.06);
+      const g = this.ctx.createGain();
+      this.env(g, t, 0.05, 0.003, 0.05);
+      o.connect(g);
+      this.out(g, 0.4);
+    }
+  }
+  private cricket(at: number) {
+    for (let i = 0; i < 6; i++) {
+      const t = at + i * 0.022;
+      const g = this.ctx.createGain();
+      this.env(g, t, 0.025, 0.001, 0.012);
+      this.osc('square', 4300, t, t + 0.02).connect(g).connect(this.musicBus);
+    }
+  }
+  /** The reggae skank: a short, bright chord on the offbeat. */
+  private skank(at: number, chord: number[]) {
+    const g = this.ctx.createGain();
+    const hp = this.filt('highpass', 600, 0.7);
+    for (const n of chord) this.osc('triangle', semi(this.root * 8, n), at, at + 0.15).connect(hp);
+    this.env(g, at, 0.1, 0.002, 0.08);
+    hp.connect(g);
+    this.out(g, 0.25, this.padBus);
+  }
+  private logdrum(at: number, freq: number) {
+    const o = this.osc('sine', freq * 1.5, at, at + 0.3);
+    o.frequency.setValueAtTime(freq * 1.5, at);
+    o.frequency.exponentialRampToValueAtTime(freq, at + 0.03);
+    const g = this.ctx.createGain();
+    this.env(g, at, 0.22, 0.002, 0.2);
+    o.connect(g);
+    this.out(g, 0.15);
+  }
+  private taiko(at: number) {
+    this.tom(at, 52, 0.6);
+    this.burst(at, 0.12, 'lowpass', 500, 0.7, 0.4, 0.5);
+  }
+  private crowd(at: number, length: number, vol: number) {
+    for (const f of [900, 2300]) this.burst(at, length, 'bandpass', f, 0.6, vol, 0.4, length * 0.35);
+  }
+  /** Metal struck: square partials at unharmonic ratios, for swords and anvils. */
+  private clang(at: number, freq: number) {
+    const g = this.ctx.createGain();
+    const hp = this.filt('highpass', freq * 0.8, 0.7);
+    for (const ratio of [1, 1.48, 2.17, 2.9, 3.6]) this.osc('square', freq * ratio, at, at + 0.6).connect(hp);
+    this.env(g, at, 0.05, 0.001, 0.4);
+    hp.connect(g);
+    this.out(g, 0.4);
+  }
+  private clank(at: number) { this.burst(at, 0.02, 'bandpass', 3000 + Math.random() * 2000, 8, 0.2); }
+  private steam(at: number, length: number) { this.burst(at, length, 'highpass', 4000, 0.7, 0.16, 0.2, 0.01); }
+  private servo(at: number) {
+    const o = this.osc('sawtooth', 200, at, at + 0.3);
+    o.frequency.linearRampToValueAtTime(800, at + 0.12);
+    o.frequency.linearRampToValueAtTime(500, at + 0.25);
+    const bp = this.filt('bandpass', 1200, 2);
+    const g = this.ctx.createGain();
+    this.env(g, at, 0.05, 0.01, 0.24);
+    o.connect(bp).connect(g).connect(this.musicBus);
+  }
+  private whisper(at: number, length: number) {
+    const f = this.burst(at, length, 'bandpass', 2600, 4, 0.06, 0.8, length * 0.3);
+    for (let i = 0; i < 6; i++) f.frequency.setValueAtTime(1800 + Math.random() * 2400, at + (i * length) / 6);
+  }
+  private creak(at: number) {
+    const o = this.osc('sawtooth', 70, at, at + 0.7);
+    for (let i = 0; i < 6; i++) o.frequency.setValueAtTime(55 + Math.random() * 60, at + i * 0.1);
+    const bp = this.filt('bandpass', 700, 9);
+    const g = this.ctx.createGain();
+    this.env(g, at, 0.12, 0.05, 0.55);
+    o.connect(bp).connect(g);
+    this.out(g, 0.5);
+  }
+  private heartbeat(at: number, vol: number) {
+    for (const [dt, v] of [[0, 1], [0.17, 0.7]]) {
+      const t = at + dt;
+      const o = this.osc('sine', 75, t, t + 0.2);
+      o.frequency.exponentialRampToValueAtTime(42, t + 0.12);
+      const g = this.ctx.createGain();
+      this.env(g, t, 0.6 * v * vol, 0.004, 0.15);
+      o.connect(g).connect(this.musicBus);
+    }
+  }
+  private theremin(at: number, freq: number, length: number) {
+    const o = this.osc('sine', freq, at, at + length + 0.3);
+    o.frequency.setValueAtTime(freq * 0.94, at);
+    o.frequency.exponentialRampToValueAtTime(freq, at + 0.25);
+    const vib = this.osc('sine', 5.5, at, at + length + 0.3);
+    const vd = this.ctx.createGain();
+    vd.gain.value = freq * 0.012;
+    vib.connect(vd).connect(o.frequency);
+    const g = this.ctx.createGain();
+    this.env(g, at, 0.07, 0.3, length * 0.5, 0.7, length * 0.3);
+    o.connect(g);
+    this.out(g, 0.6, this.padBus);
+  }
+  private magma(at: number, length: number) { this.burst(at, length, 'lowpass', 160, 1, 0.5, 0.2, length * 0.3); }
+  /** The dragon: a falling, driven growl with a rush of breath. */
+  private dragon(at: number) {
+    const o = this.osc('sawtooth', 110, at, at + 1.6);
+    o.frequency.setValueAtTime(110, at);
+    o.frequency.exponentialRampToValueAtTime(38, at + 1.4);
+    const ws = this.shaper(40);
+    const lp = this.filt('lowpass', 500, 3);
+    lp.frequency.setValueAtTime(400, at);
+    lp.frequency.linearRampToValueAtTime(1600, at + 0.3);
+    lp.frequency.exponentialRampToValueAtTime(200, at + 1.4);
+    const g = this.ctx.createGain();
+    this.env(g, at, 0.22, 0.08, 1.1, 0.4, 0.3);
+    o.connect(ws).connect(lp).connect(g);
+    this.out(g, 0.4);
+    this.burst(at, 1.2, 'bandpass', 900, 0.6, 0.18, 0.4, 0.15);
+  }
+  private zap(at: number) {
+    const o = this.osc('sine', 2400, at, at + 0.2);
+    o.frequency.exponentialRampToValueAtTime(90, at + 0.16);
+    const g = this.ctx.createGain();
+    this.env(g, at, 0.08, 0.001, 0.16);
+    o.connect(g);
+    this.out(g, 0.4);
   }
 
   /* ------------------------------------------------------------------ sfx */
