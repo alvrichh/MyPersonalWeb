@@ -1030,8 +1030,9 @@ const ENEMY_COLOR: Record<EnemyKind, string> = { bug: '#ff6b6b', ticket: '#ffd16
 const COINS: Record<EnemyKind, number> = { bug: 1, ticket: 2, legacy: 3, boss: 25 };
 /** On call kills pour in (a shift ends with well over a thousand), so each pays 40% of a sprint kill: a won shift in world 1 is about 1400 coins, not 3500. */
 const HORDE_PAY = 0.4;
-/** Later worlds pay better. */
-const worldPay = (g: Game) => g.loadout.coinMult * (1 + (g.world - 1) * 0.5);
+/** Later worlds pay better: +50% a world in sprints, +25% on call, where later worlds also pour in far more bugs
+    (a world-7 shift paid about 10000 coins at +50%, more than a skin; now about 6400). */
+const worldPay = (g: Game) => g.loadout.coinMult * (1 + (g.world - 1) * (g.mode === 'horde' ? 0.25 : 0.5));
 
 /** On call: how often each kind drops a heart, how long one lasts, and how much it heals (share of max health). */
 const HEART_CHANCE: Partial<Record<EnemyKind, number>> = { ticket: 0.06, legacy: 0.35 };
