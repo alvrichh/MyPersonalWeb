@@ -254,7 +254,7 @@ function menuScreen() {
   const { level, progress } = profileLevel(save.xp);
   const copy = (cls: string, title: string, sub: string) => `<span class="cover-card-copy ${cls}"><b>${title}</b>${sub ? `<small>${sub}</small>` : ''}</span>`;
   show(`
-    <div class="cover">
+    <div class="cover"><div class="cover-in">
       <a class="hot cover-x" href="./index.html" aria-label="${t('back')}"></a>
       <button class="hot cover-more" data-act="options" aria-label="${t('options')}"></button>
       <button class="hot cover-gear" data-act="options" aria-label="${t('options')}"></button>
@@ -277,7 +277,7 @@ function menuScreen() {
       <button class="hot cover-card is-options" data-act="options" aria-label="${t('options')}"></button>
       ${copy('is-options', t('options'), '')}
       <p class="cover-best">${bestLine()}</p>
-    </div>`, false, true);
+    </div></div>`, false, true);
 }
 
 const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
@@ -607,8 +607,8 @@ function optionsScreen() {
   show(`
     <button class="ui-close" type="button" data-act="${optionsFrom === 'pause' ? 'pause' : 'menu'}" aria-label="${t('back')}"></button>
     <h2>${t('options')}</h2>
-    <label class="slider"><span>🎵 ${t('music')}</span><b>${Math.round(save.music * 100)}%</b><input type="range" min="0" max="100" value="${Math.round(save.music * 100)}" style="--fill:${Math.round(save.music * 100)}%" data-vol="music"></label>
-    <label class="slider"><span>🔔 ${t('sfx')}</span><b>${Math.round(save.sfx * 100)}%</b><input type="range" min="0" max="100" value="${Math.round(save.sfx * 100)}" style="--fill:${Math.round(save.sfx * 100)}%" data-vol="sfx"></label>
+    <label class="slider"><span>🎵 ${t('music')}</span><b>${Math.round(save.music * 100)}%</b><input type="range" min="0" max="100" value="${Math.round(save.music * 100)}" style="--p:${save.music}" data-vol="music"></label>
+    <label class="slider"><span>🔔 ${t('sfx')}</span><b>${Math.round(save.sfx * 100)}%</b><input type="range" min="0" max="100" value="${Math.round(save.sfx * 100)}" style="--p:${save.sfx}" data-vol="sfx"></label>
     <p class="how">${t('musicNote')}</p>
     <button class="mute-toggle" type="button" data-act="mute" aria-pressed="${muted}"><span class="toggle-art${muted ? ' is-off' : ''}" aria-hidden="true"></span><span>${muted ? t('unmute') : t('mute')}</span></button>
     <button class="mute-toggle" type="button" data-act="retro" aria-pressed="${save.retro}"><span class="toggle-art${save.retro ? '' : ' is-off'}" aria-hidden="true"></span><span>${t('retro')}</span></button>
@@ -1025,7 +1025,7 @@ screen.addEventListener('input', (event) => {
   if (input.dataset.vol === 'music') save.music = value;
   else save.sfx = value;
   audio.setVolumes(save.music, save.sfx);
-  input.style.setProperty('--fill', `${input.value}%`);
+  input.style.setProperty('--p', String(Number(input.value) / 100));
   const valueLabel = input.closest('.slider')?.querySelector('b');
   if (valueLabel) valueLabel.textContent = `${input.value}%`;
   persist();
@@ -1469,7 +1469,7 @@ if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) {
 /** Wide landscape screens get the owner's desktop cover (game.css switches at the same query). */
 const WIDE_COVER = window.matchMedia('(min-width: 900px) and (orientation: landscape)').matches;
 const PRELOAD: [string, number][] = [
-  [WIDE_COVER ? './images/game/cover-wide.jpg' : './images/game/cover.jpg', 10],
+  [WIDE_COVER ? './images/game/cover-wide.jpg' : './images/game/cover-tall.jpg', 10],
   ['./images/game/landing-bg.jpg', 1],
   ['./images/favicon-192.png', 1],
   ['./images/game/map/bg.jpg', 1],

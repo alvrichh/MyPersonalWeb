@@ -335,28 +335,38 @@ body {
 .screen.is-menu .panel {
   display: contents;
 }
-/* Phones taller than the picture: it sits in the middle, and the strips above and below carry on the
-   picture's own top and bottom bars (#111 and black) instead of showing the blurred backdrop. Wider
-   screens keep the blur, which also fills their sides. */
-@media (max-width: 520px) {
-  .screen.is-menu { background: linear-gradient(#111 50%, #000 50%); }
-}
+/* A plain block, so the cover's min-height: 100% is the screen's (a grid row would shrink it to the picture). */
+.screen.is-menu .panel-in { display: block; }
+
 /* The panel's stone frame must not peek out round the cover. */
 .screen.is-menu .panel::before { display: none; }
 
 .cover {
   position: relative;
+  /* As tall as the screen: the picture (cover-tall.jpg, the owner's cover with its fake status bar painted
+     out and the scene carried on above and below) is centred, and the controls sit in `.cover-in`, the
+     original picture's own box, centred the same way, so their percentages still line up. */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   width: min(100%, 480px);
-  aspect-ratio: 1170 / 2153;
+  min-height: 100%;
   margin: 0 auto;
-  background: #04070b url('/images/game/cover.jpg') center / 100% 100% no-repeat;
+  background: #04070b url('/images/game/cover-tall.jpg') center / 100% auto no-repeat;
   box-shadow: 0 0 80px rgba(0, 0, 0, 0.6);
   container-type: inline-size;
   font-family: var(--font);
   color: #fff;
 }
 
-.cover > * {
+.cover-in {
+  position: relative;
+  flex: none;
+  width: 100%;
+  aspect-ratio: 1170 / 2153;
+}
+
+.cover-in > * {
   position: absolute;
 }
 
@@ -2026,8 +2036,10 @@ body {
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
+  /* The glowing bar alone (cut out of the fill picture, which ended short of its own frame) runs from the
+     track's inner edge to the middle of the knob: the knob's centre is 14.5px + value × (width − 29px). */
   background:
-    url('/images/game/ui/slider_fill.webp') left center / var(--fill, 50%) 100% no-repeat,
+    url('/images/game/ui/slider_bar.webp') 12px center / calc((100% - 29px) * var(--p, 0.5) + 4px) 64% no-repeat,
     url('/images/game/ui/slider_track.webp') center / 100% 100% no-repeat;
 }
 
@@ -2744,8 +2756,13 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   .cover {
     width: min(100vw, calc(100dvh * 1672 / 941));
     aspect-ratio: 1672 / 941;
+    min-height: 0;
+    display: block;
     background-image: url('/images/game/cover-wide.jpg');
+    background-size: 100% 100%;
   }
+  .cover-in { position: absolute; inset: 0; aspect-ratio: auto; }
+  .screen.is-menu .panel-in { display: grid; }
   .cover-x {
     left: 1.2%; top: 3.6%; width: 3.4%; height: 6%;
     display: grid !important; place-items: center;
