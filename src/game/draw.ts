@@ -58,19 +58,22 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   drawRunes(ctx, g, now);
   drawFx(ctx, g, accent, 'under');
   drawThreats(ctx, g, now, false);
-  // Bosses last, over the crowd, so a swarm never hides them (the real one over its clones; the final boss on top).
+  // Bosses come after the crowd and the hero's own weapons (saws, the frost's
+  // ice), so neither a swarm nor the orbit hides them (the real one over its
+  // clones; the final boss on top); their warnings and shots, and the hero, go over them.
   const rank = (e: Enemy) => (e.kind !== 'boss' ? 0 : e.clone ? 1 : e.final ? 3 : 2);
-  for (const r of [0, 1, 2, 3]) for (const e of g.enemies) if (rank(e) === r && onScreen(e, 120)) drawEnemy(ctx, e, now);
-  drawThreats(ctx, g, now, true);
-  drawOrbs(ctx, g);
+  for (const e of g.enemies) if (rank(e) === 0 && onScreen(e, 120)) drawEnemy(ctx, e, now);
   drawShots(ctx, g, accent, accent2);
   drawFireballs(ctx, g);
   drawSpirits(ctx, g, now);
   drawZaps(ctx, g);
-  if (pal.retro) drawPlayerRetro(ctx, g, pal, now);
-  else drawPlayer(ctx, g, pal, now);
   if (g.skills.blades) drawBlades(ctx, g, accent);
   if (g.skills.frost) drawFrostTop(ctx, g, now);
+  for (const r of [1, 2, 3]) for (const e of g.enemies) if (rank(e) === r && onScreen(e, 120)) drawEnemy(ctx, e, now);
+  drawThreats(ctx, g, now, true);
+  drawOrbs(ctx, g);
+  if (pal.retro) drawPlayerRetro(ctx, g, pal, now);
+  else drawPlayer(ctx, g, pal, now);
   drawFx(ctx, g, accent, 'over');
   drawPicFx(ctx, g, true);
   drawBeams(ctx, g);
@@ -1484,7 +1487,7 @@ function drawFrostTop(ctx: CanvasRenderingContext2D, g: Game, now: number) {
   ctx.lineCap = 'round';
   for (const e of g.enemies) {
     if (e.dead || e.spawn > 0 || Math.hypot(e.x - p.x, e.y - p.y) > r + e.r) continue;
-    if (evolved) {
+    if (evolved && e.kind !== 'boss') {
       ctx.globalAlpha = 0.35;
       ctx.fillStyle = '#bae6fd';
       ctx.beginPath();
