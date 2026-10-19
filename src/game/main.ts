@@ -1,6 +1,7 @@
 import './game.css';
 import { storage } from '../lib/storage';
 import { ads, configureAds, type AdSpot, type PlayAd } from './ads';
+import { DAILY_ODDS, DAILY_WHEEL, dailyReady, openDaily, untilTomorrow, type DailyPrize, type DailyResult } from './daily';
 import { audio, type Sfx } from './audio';
 import { draw, drawRetroFigure, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, worldWon, type StarColor, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, heroStill } from './save';
@@ -319,6 +320,7 @@ function menuScreen() {
       <button class="hot cover-worlds" data-act="map" aria-label="${t('map')}: ${unlockedIn()}/${WORLD_COUNT}"></button>
       <span class="cover-num is-worlds">${unlockedIn()}/${WORLD_COUNT}</span>
       <p class="cover-tagline">${t('landingTagline')}</p>
+      <button class="cover-chest${dailyReady(save) ? ' is-ready' : ''}" type="button" data-act="daily" aria-label="${t('dailyTitle')}"><img src="./images/game/fx/chest.webp" width="165" height="140" alt=""><i>${dailyReady(save) ? t('dailyReady') : waitText(untilTomorrow())}</i></button>
       <button class="hot cover-play" data-act="play" aria-label="${t('playNow')} · ${worldName(worldIn())}"></button>
       <span class="cover-play-copy"><b>${t('playNow')}</b><small>${WORLD_ICON[worldIn() - 1]} ${worldName(worldIn())}</small></span>
       <button class="cover-mode" type="button" data-act="mode" aria-label="${t('modePick')}: ${modeName()}"><span class="${save.mode === 'sprints' ? 'is-on' : ''}">${MODE_ICON.sprints} ${t('modeSprints')}</span><span class="${save.mode === 'horde' ? 'is-on' : ''}">${MODE_ICON.horde} ${t('modeHorde')}</span></button>
@@ -659,6 +661,60 @@ function spinWheel(g: Game) {
     spinBtn.textContent = t('wheelGo');
     spinBtn.dataset.act = 'wheel-go';
     spinBtn.disabled = false;
+  }, 3600);
+}
+
+/* The daily chest (daily.ts): a free spin a day on the same painted wheel,
+   for coins, an arsenal weapon, an outfit, an accessory or, very rarely, a
+   skin. The prize is drawn first; the spin lands on one of its slices. */
+const DAILY_ICON: Record<DailyPrize, string> = { coins: '🪙', coinsBig: '💰', jackpot: '💎', weapon: '🗡️', outfit: '🥋', accessory: '🎩', skin: '⭐' };
+const DAILY_PIC: Record<DailyPrize, string> = {
+  coins: 'ui/wheel/coins.webp', coinsBig: 'ui/wheel/coins.webp', jackpot: 'ui/wheel/coins.webp', weapon: 'ui/wheel/newSkill.webp',
+  outfit: 'slots/body.webp', accessory: 'slots/head.webp', skin: `hero/${heroStill('robot')}.webp`,
+};
+function dailyScreen() {
+  const ready = dailyReady(save);
+  const slices = DAILY_WHEEL.map((p, i) => `<span class="wheel-slice is-good${p === 'skin' || p === 'jackpot' ? ' is-rare' : ''}" style="--i:${i}">${picIcon(DAILY_ICON[p], DAILY_PIC[p])}</span>`).join('');
+  const coinOdds = DAILY_ODDS.coins + DAILY_ODDS.coinsBig + DAILY_ODDS.jackpot;
+  show(`<button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
+    ${head('wings', t('dailyTitle'))}<p>${t('dailyText')}</p>
+    <div class="wheel"><div class="wheel-disc" id="wheelDisc">${slices}</div><span class="wheel-pin" aria-hidden="true"></span></div>
+    <p class="wheel-result" id="wheelResult"></p>
+    ${ready ? `<button class="primary" data-act="daily-spin">${t('dailySpin')}</button>` : `<button class="primary" disabled>${t('dailyNext', { time: waitText(untilTomorrow()) })}</button>`}
+    <p class="how daily-odds">${t('dailyOdds', { coins: coinOdds, weapon: DAILY_ODDS.weapon, outfit: DAILY_ODDS.outfit, accessory: DAILY_ODDS.accessory, skin: DAILY_ODDS.skin })}</p>`);
+}
+function dailyLine(got: DailyResult): [string, string] {
+  if (got.weapon) return [skillIcon(got.weapon, 28), t('dailyWeapon', { name: t(`${got.weapon}Name` as Key) })];
+  if (got.item) { const item = itemById(got.item); return [picIcon(item.icon, item.pic), t('dailyItem', { name: t(`${got.item}Name` as Key) })]; }
+  if (got.skin) return [`<img class="item-pic" src="./images/game/hero/${heroStill(got.skin)}.webp" alt="">`, t('dailySkin', { name: t(`skin${cap(got.skin)}Name` as Key) })];
+  return [picIcon('🪙', DAILY_PIC.coins), t('dailyCoins', { coins: got.coins ?? 0 })];
+}
+function spinDaily() {
+  const spinBtn = screen.querySelector<HTMLButtonElement>('[data-act="daily-spin"]');
+  const disc = screen.querySelector<HTMLElement>('#wheelDisc');
+  const result = screen.querySelector<HTMLElement>('#wheelResult');
+  if (!spinBtn || !disc || !result || spinBtn.disabled || !dailyReady(save)) return;
+  spinBtn.disabled = true;
+  screen.querySelector('.ui-close')?.remove();
+  const got = openDaily(save);
+  persist();
+  const spots = DAILY_WHEEL.map((p, i) => (p === got.prize ? i : -1)).filter((i) => i >= 0);
+  const index = spots[Math.floor(Math.random() * spots.length)];
+  const turn = 5 * 360 - index * (360 / DAILY_WHEEL.length);
+  disc.style.transform = `rotate(${turn}deg)`;
+  disc.style.setProperty('--turn', `${turn}deg`);
+  disc.classList.add('is-spinning');
+  audio.play('boomerang');
+  window.setTimeout(() => {
+    const [icon, line] = dailyLine(got);
+    result.innerHTML = `<span class="wheel-res-icon" aria-hidden="true">${icon}</span> ${esc(line)}`;
+    if (!save.retro) result.innerHTML = result.innerHTML.replaceAll('🪙', COIN_PIC);
+    result.className = `wheel-result is-good${got.skin || got.prize === 'jackpot' ? ' is-rare' : ''}`;
+    audio.play(got.skin || got.prize === 'jackpot' ? 'win' : 'levelup');
+    spinBtn.textContent = t('dailyCollect');
+    spinBtn.dataset.act = 'menu';
+    spinBtn.disabled = false;
+    fitPanel();
   }, 3600);
 }
 
@@ -1003,6 +1059,8 @@ screen.addEventListener('click', (event) => {
     endScreen(game);
   }
   else if (act === 'wheel-spin' && game) spinWheel(game);
+  else if (act === 'daily') dailyScreen();
+  else if (act === 'daily-spin') spinDaily();
   else if (act === 'wheel-go' && game) {
     const g = game;
     const fromChest = g.luckyWheel;
