@@ -1907,13 +1907,13 @@ export const FINAL_BOSS = ['kernel', 'archdemon', 'drakkar', 'queen', 'zeus', 'm
 /** The water world's final boss is a Viking longship with its captain at the helm; at half health the ship
     breaks up and the captain, Valdur, fights on alone: smaller, much faster, leaping and charging in a frenzy. */
 export type FinalBoss = (typeof FINAL_BOSS)[number] | 'valdur';
-type Move = 'volley' | 'breath' | 'geysers' | 'leap' | 'javelins' | 'missiles' | 'blink';
+type Move = 'volley' | 'breath' | 'geysers' | 'leap' | 'javelins' | 'missiles' | 'blink' | 'acid';
 type Signature = 'spiral' | 'meteors' | 'tide' | 'roots' | 'grid' | 'laser' | 'clones' | 'frenzy';
 const MID_MOVE: Move[] = ['volley', 'breath', 'geysers', 'leap', 'javelins', 'missiles', 'blink'];
 const SIGNATURE: Signature[] = ['spiral', 'meteors', 'tide', 'roots', 'grid', 'laser', 'clones'];
 /** World 8 mixes them: a random move each time, and the signatures of worlds 2–7 in turn. */
 const moveOf = (g: Game, e: Enemy): Move =>
-  e.bossId === 'valdur' ? 'leap' : g.world <= 7 ? MID_MOVE[g.world - 1] : MID_MOVE[Math.floor(Math.random() * 7)];
+  e.bossId === 'valdur' ? 'leap' : e.bossId === 'queen' ? 'acid' : g.world <= 7 ? MID_MOVE[g.world - 1] : MID_MOVE[Math.floor(Math.random() * 7)];
 const signatureOf = (g: Game, e: Enemy): Signature =>
   e.bossId === 'valdur' ? 'frenzy' : g.world <= 7 ? SIGNATURE[g.world - 1] : SIGNATURE[1 + (e.sigs % 6)];
 
@@ -2056,8 +2056,17 @@ function worldMove(g: Game, e: Enemy, move: Move) {
       for (let i = 0; i < 3; i++) circle(g, inside(g, { x: p.x + step.x * i, y: p.y + step.y * i }, 30), 30, 0.9 + i * 0.3, dmg, 'water');
       break;
     }
+    case 'acid':
+      // The Carnivorous Queen spits a gush of acid: big, slow blobs in a fan.
+      for (let i = 0; i < 5; i++) {
+        const a = aim + (i / 4 - 0.5) * 0.7;
+        const speed = 115 + (i % 2) * 30;
+        g.orbs.push({ x: e.x, y: e.y, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, r: 9, dmg, life: 4, bounce: 0, tone: '#a3e635' });
+      }
+      break;
     case 'leap':
-      // Leaps off the floor and comes down where you stand; its shadow warns where.
+      // Leaps off the floor and comes down where you stand; its shadow warns where (no pose: it is in the air).
+      e.pose = 0;
       Object.assign(e, inside(g, p, e.r + 8));
       e.spawn = 1.1;
       e.vanish = true;
@@ -2076,6 +2085,7 @@ function worldMove(g: Game, e: Enemy, move: Move) {
       break;
     case 'blink': {
       // Fades into the shadows and comes back somewhere round you.
+      e.pose = 0;
       const a = rand(0, Math.PI * 2);
       Object.assign(e, inside(g, { x: p.x + Math.cos(a) * 130, y: p.y + Math.sin(a) * 130 }, e.r + 8));
       e.spawn = 0.8;
