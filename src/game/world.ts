@@ -328,7 +328,7 @@ export type Threat = {
 export type Particle = {
   x: number; y: number; vx: number; vy: number; life: number; max: number; size: number; color: string;
   /** How it is drawn: a dot (unset), a puff that swells as it fades, a streak along its flight, a snowflake or a rising wisp. */
-  kind?: 'puff' | 'spark' | 'flake' | 'wisp' | 'glow' | 'crackle' | 'leaf';
+  kind?: 'puff' | 'spark' | 'flake' | 'wisp' | 'glow' | 'crackle';
 };
 /** Lightning is yellow; blue only for evolved weapons and Zeus. */
 export type Zap = { pts: Vec[]; life: number; blue?: boolean };
@@ -1177,27 +1177,18 @@ function hitWithShot(g: Game, e: Enemy, s: Shot) {
   if (fusion) fuse(g, e, s, fusion);
 }
 
-/* Every bow arrow leaves a track behind it in flight, only to be seen (will-o'-wisp's flames are real fire),
-   that lingers along its path back to the bow and fades: the fusion's once fused (whatever look is worn),
-   else the worn look's. Steam puffs, pink plasma beads, blue crackles of electrocution, snowflakes of
-   spectral frost, violet wisps of the spectral storm; embers, droplets, leaves, ghostly wisps, yellow
-   crackles and orange sparks for the plain elements, a faint glow for a plain arrow. */
-type TrailKey = Fusion | Exclude<ArrowLook, 'fusion'> | 'plain';
-const TRAIL: Partial<Record<TrailKey, { every: number; kind: Particle['kind']; colors: string[]; size: [number, number]; life: number; spread: number }>> = {
+/* The mark of a fused arrow: a track along its path that lingers back to the bow and fades, only to be seen
+   (will-o'-wisp's flames are real fire), whatever look is worn. Plain arrows leave none. Steam puffs, pink
+   plasma beads, blue crackles of electrocution, snowflakes of spectral frost and violet wisps of the
+   spectral storm. */
+const TRAIL: Partial<Record<Fusion, { every: number; kind: Particle['kind']; colors: string[]; size: [number, number]; life: number; spread: number }>> = {
   steam: { every: 0.03, kind: 'puff', colors: ['#f1f5f9', '#e2e8f0', '#cbd5e1'], size: [4.5, 7], life: 0.7, spread: 22 },
   plasma: { every: 0.01, kind: 'glow', colors: ['#f0abfc', '#e879f9', '#fde68a', '#ff5fd2'], size: [2.5, 4.5], life: 0.65, spread: 24 },
   shock: { every: 0.012, kind: 'crackle', colors: ['#7dd3fc', '#e0f2fe', '#38bdf8'], size: [6, 10], life: 0.5, spread: 14 },
-  fire: { every: 0.012, kind: 'glow', colors: ['#fdba74', '#fb923c', '#fde68a', '#f97316'], size: [2.2, 4], life: 0.6, spread: 22 },
-  water: { every: 0.016, kind: 'glow', colors: ['#7dd3fc', '#38bdf8', '#e0f2fe'], size: [1.8, 3.2], life: 0.6, spread: 18 },
-  leaf: { every: 0.03, kind: 'leaf', colors: ['#86efac', '#4ade80', '#bef264'], size: [3.5, 5], life: 0.75, spread: 26 },
-  ghost: { every: 0.022, kind: 'wisp', colors: ['#e0f2fe', '#cbd5e1', '#f8fafc'], size: [3, 5], life: 0.6, spread: 18 },
-  bolt: { every: 0.014, kind: 'crackle', colors: ['#fde047', '#fef9c3', '#facc15'], size: [5, 8], life: 0.45, spread: 12 },
-  spark: { every: 0.012, kind: 'glow', colors: ['#fdba74', '#fed7aa', '#fb923c'], size: [1.8, 3], life: 0.5, spread: 34 },
-  plain: { every: 0.02, kind: 'glow', colors: ['#e2e8f0', '#cbd5e1'], size: [1.5, 2.4], life: 0.4, spread: 10 },
   frostbite: { every: 0.035, kind: 'flake', colors: ['#f0f9ff', '#bae6fd'], size: [4, 5.5], life: 0.7, spread: 26 },
   spectral: { every: 0.025, kind: 'wisp', colors: ['#c4b5fd', '#a78bfa', '#ddd6fe'], size: [3.5, 5.5], life: 0.6, spread: 20 },
 };
-function arrowTrail(g: Game, s: Shot, dt: number, key: TrailKey) {
+function arrowTrail(g: Game, s: Shot, dt: number, key: Fusion) {
   const t = TRAIL[key];
   if (!t || g.particles.length > 420) return;
   s.trail = (s.trail ?? 0) - dt;
@@ -2606,10 +2597,7 @@ function updateShot(g: Game, s: Shot, dt: number): boolean {
       s.trail = 0.07;
       g.embers.push({ x: s.x, y: s.y, r: 11, life: 1, max: 1, dps: 9 * power(g, 'ranged'), kind: 'wisp' });
     }
-  } else if (s.bow && s.kind === 'arrow') {
-    const look = arrowLook(g);
-    arrowTrail(g, s, dt, fusionOf(g) ?? (look && look !== 'fusion' ? look : 'plain'));
-  }
+  } else if (s.bow && s.kind === 'arrow' && fusionOf(g)) arrowTrail(g, s, dt, fusionOf(g) as Fusion);
   // A bottle in flight touches nothing; it bursts where it lands.
   if (s.kind === 'molotov') return true;
   // Rockets blow up on walls and racks.
