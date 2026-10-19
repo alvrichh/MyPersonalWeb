@@ -469,9 +469,13 @@ function drawPlayer(ctx: CanvasRenderingContext2D, g: Game, pal: Palette, now: n
     const w = (h * img.naturalWidth) / img.naturalHeight;
     const bob = p.moving ? Math.abs(Math.sin(now * 14)) * 2 : pose === 'cheer' ? Math.abs(Math.sin(now * 6)) * 3 : 0;
     const left = Math.cos(p.face) < -0.2 && pose !== 'back' && pose !== 'cheer' && pose !== 'front';
+    // Walking up or down there is one picture: mirror it every step and rock it a little, so it walks rather than glides.
+    const vertical = p.moving && (pose === 'front' || pose === 'back');
+    const step = Math.floor(now * 7) % 2;
     ctx.save();
     ctx.translate(p.x, p.y + p.r * 0.9 - bob);
-    if (left) ctx.scale(-1, 1);
+    if (left || (vertical && step)) ctx.scale(-1, 1);
+    if (vertical) ctx.rotate(0.06 * Math.sin(now * 7 * Math.PI));
     ctx.drawImage(img, -w / 2, -h, w, h);
     ctx.restore();
     barTop = p.y + p.r * 0.9 - h - 9;
