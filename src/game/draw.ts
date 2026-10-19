@@ -105,9 +105,49 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
     } else if (q.kind === 'flake') {
       ctx.lineWidth = 1.3;
       snowflake(ctx, q.x, q.y, q.size, q.life * 4);
+    } else if (q.kind === 'glow') {
+      // Plasma: a hot bead of light that shrinks as it cools.
+      const r = q.size * (0.5 + 0.5 * k);
+      ctx.globalCompositeOperation = 'lighter';
+      const grad = ctx.createRadialGradient(q.x, q.y, 0, q.x, q.y, r * 2.2);
+      grad.addColorStop(0, '#fff');
+      grad.addColorStop(0.3, q.color);
+      grad.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(q.x, q.y, r * 2.2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.globalCompositeOperation = 'source-over';
+    } else if (q.kind === 'crackle') {
+      // Electrocution: a tiny zigzag of current, a new shape each frame.
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.lineWidth = 1.6;
+      ctx.lineJoin = 'round';
+      ctx.beginPath();
+      const a = Math.random() * Math.PI * 2;
+      let x = q.x - Math.cos(a) * q.size;
+      let y = q.y - Math.sin(a) * q.size;
+      ctx.moveTo(x, y);
+      for (let i = 1; i <= 3; i++) {
+        x += Math.cos(a) * (q.size * 2) / 3 + (Math.random() - 0.5) * q.size * 0.9;
+        y += Math.sin(a) * (q.size * 2) / 3 + (Math.random() - 0.5) * q.size * 0.9;
+        ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      ctx.globalCompositeOperation = 'source-over';
+    } else if (q.kind === 'puff') {
+      // Steam: a soft cloud that swells as it fades.
+      const r = q.size * (1 + (1 - k) * 1.6);
+      const grad = ctx.createRadialGradient(q.x, q.y, 0, q.x, q.y, r);
+      grad.addColorStop(0, q.color);
+      grad.addColorStop(1, 'rgba(226,232,240,0)');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(q.x, q.y, r, 0, Math.PI * 2);
+      ctx.fill();
     } else {
-      // Puffs swell as they fade; wisps shrink as they rise.
-      const r = q.kind === 'puff' ? q.size * (1 + (1 - k) * 1.6) : q.kind === 'wisp' ? q.size * (0.4 + 0.6 * k) : q.size;
+      // Wisps shrink as they rise.
+      const r = q.kind === 'wisp' ? q.size * (0.4 + 0.6 * k) : q.size;
       ctx.beginPath();
       ctx.arc(q.x, q.y, r, 0, Math.PI * 2);
       ctx.fill();
@@ -602,11 +642,11 @@ function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accen
         ctx.rotate(Math.atan2(a.vy, a.vx));
         ctx.globalCompositeOperation = 'lighter';
         const glow = ctx.createRadialGradient(-w * 0.3, 0, 1, -w * 0.3, 0, w * 0.55);
-        glow.addColorStop(0, `rgba(${FUSION_COLOR[fusion]},0.45)`);
+        glow.addColorStop(0, `rgba(${FUSION_COLOR[fusion]},0.3)`);
         glow.addColorStop(1, `rgba(${FUSION_COLOR[fusion]},0)`);
         ctx.fillStyle = glow;
         ctx.beginPath();
-        ctx.ellipse(-w * 0.3, 0, w * 0.6, h * 1.6, 0, 0, Math.PI * 2);
+        ctx.ellipse(-w * 0.3, 0, w * 0.6, h * 1.1, 0, 0, Math.PI * 2);
         ctx.fill();
         ctx.globalCompositeOperation = 'source-over';
         ctx.drawImage(pic, -w, -h / 2, w, h);
