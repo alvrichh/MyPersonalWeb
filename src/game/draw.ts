@@ -715,6 +715,22 @@ const animWorn = (g: Game) => {
   return !!f && !!FUSION_ANIM[f] && !retroLook && ready(arrowImage(`fusion-${f}-0`));
 };
 
+/* An arrow's picture (and its trail) reaches back only as far as the arrow has flown, so a fresh shot grows
+   out of the bow instead of starting with its whole trail laid over the hero. */
+const flown = new WeakMap<Shot, { x: number; y: number; d: number }>();
+function clipFlown(ctx: CanvasRenderingContext2D, a: Shot) {
+  let f = flown.get(a);
+  if (!f) { f = { x: a.x, y: a.y, d: 0 }; flown.set(a, f); }
+  f.d += Math.hypot(a.x - f.x, a.y - f.y);
+  f.x = a.x;
+  f.y = a.y;
+  const back = f.d + 12;
+  if (back > 400) return;
+  ctx.beginPath();
+  ctx.rect(-back, -60, back + 8, 120);
+  ctx.clip();
+}
+
 function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accent2: string) {
   const look = arrowLook(g);
   const element = look && ARROW_PICTURES.includes(look) ? look : null;
@@ -732,6 +748,7 @@ function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accen
         ctx.save();
         ctx.translate(a.x, a.y);
         ctx.rotate(Math.atan2(a.vy, a.vx));
+        clipFlown(ctx, a);
         ctx.drawImage(pic, -w, -h / 2, w, h);
         ctx.restore();
         continue;
@@ -747,6 +764,7 @@ function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accen
         ctx.save();
         ctx.translate(a.x, a.y);
         ctx.rotate(Math.atan2(a.vy, a.vx));
+        clipFlown(ctx, a);
         ctx.globalCompositeOperation = 'lighter';
         const glow = ctx.createRadialGradient(-w * 0.3, 0, 1, -w * 0.3, 0, w * 0.55);
         glow.addColorStop(0, `rgba(${FUSION_COLOR[fusion]},0.3)`);
@@ -890,6 +908,7 @@ function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accen
         ctx.save();
         ctx.translate(a.x, a.y);
         ctx.rotate(Math.atan2(a.vy, a.vx));
+        clipFlown(ctx, a);
         if (ownTrail && trail.complete && trail.naturalWidth) {
           const tw = 58;
           const th = (tw * trail.naturalHeight) / trail.naturalWidth;
