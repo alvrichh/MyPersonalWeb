@@ -12,7 +12,7 @@ import { ARMOUR_SLOTS, ARSENAL, ITEMS, itemLevel, type SpiritSkin, UPGRADES, WEA
 import { Scene } from './scene';
 import { makeT, pickLang, type Key } from './strings';
 import {
-  CATEGORY, EVO_PARTNER, H, NIGHTMARE_WORLD, revivePrice, SKILLS, arrowLook, arrowOptions, bladeElement, bladeOptions, canEvolve, evoOf, fusionOf, fusionWith, pairFusion, arrowElements, settleEffects, rerollChoices, adReroll, adRevive, canAdReroll, canAdRevive, maxLevel, pickArrow, pickBlade, pickSpirit, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_LUCKY, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
+  CATEGORY, EVO_PARTNER, H, NIGHTMARE_WORLD, canFuse, revivePrice, SKILLS, arrowLook, arrowOptions, bladeElement, bladeOptions, canEvolve, evoOf, fusionOf, fusionWith, pairFusion, arrowElements, settleEffects, rerollChoices, adReroll, adRevive, canAdReroll, canAdRevive, maxLevel, pickArrow, pickBlade, pickSpirit, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_LUCKY, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
   type ArrowLook, type Category, type Choice, type Fusion, type Game, type GameEvent, type Input, type Look, type SkillId, type WheelOutcome,
 } from './world';
 
@@ -1533,7 +1533,8 @@ function renderGearPanel(g: Game) {
   const fusion = fusionOf(g);
   const fusionRow = fusion
     ? `<h4>${t('gearFusion')}</h4><ul><li class="is-fusion"><span class="gp-icon" aria-hidden="true">${fusionIcon(g, fusion, 34)}</span><span class="gp-copy"><b>${fusionLine(g, fusion)}</b><small>${t(`${fusionKey(fusion)}Text` as Key)}</small></span></li></ul>`
-    : pairFusion(g) ? `<p class="gp-hint">${t('fusionPending', { fusion: fusionLine(g, pairFusion(g) as Fusion) })}</p>`
+    : canFuse(g) ? `<p class="gp-hint">${t('fusionPending', { fusion: fusionLine(g, pairFusion(g) as Fusion) })}</p>`
+    : pairFusion(g) ? `<p class="gp-hint">${t('fusionNeedMax', { fusion: fusionLine(g, pairFusion(g) as Fusion), max: 3 })}</p>`
     : arrowElements(g).length === 1 ? `<p class="gp-hint">${t('fusionHint')}</p>` : '';
   gearPanel.innerHTML = `<header><b>${t('gearTitle')}</b><button type="button" class="gp-close" aria-label="${t('resume')}">✕</button></header>
     <h4>${t('gearWeapons')}</h4><ul>${weapons.map(row).join('')}</ul>${fusionRow}
