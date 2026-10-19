@@ -591,12 +591,21 @@ function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accen
     if (fusion && a.bow && a.kind === 'arrow' && !retroLook) {
       const pic = arrowImage(`fusion-${fusion}`);
       if (ready(pic)) {
-        // As thick as a plain arrow: the longer pictures are drawn a little longer.
-        const w = Math.min(50, (6.6 * pic.naturalWidth) / pic.naturalHeight);
+        // About as long as a plain arrow with its trail, over a glow in the fusion's colour.
+        const w = Math.min(64, (10 * pic.naturalWidth) / pic.naturalHeight);
         const h = (w * pic.naturalHeight) / pic.naturalWidth;
         ctx.save();
         ctx.translate(a.x, a.y);
         ctx.rotate(Math.atan2(a.vy, a.vx));
+        ctx.globalCompositeOperation = 'lighter';
+        const glow = ctx.createRadialGradient(-w * 0.3, 0, 1, -w * 0.3, 0, w * 0.55);
+        glow.addColorStop(0, `rgba(${FUSION_COLOR[fusion]},0.45)`);
+        glow.addColorStop(1, `rgba(${FUSION_COLOR[fusion]},0)`);
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.ellipse(-w * 0.3, 0, w * 0.6, h * 1.6, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalCompositeOperation = 'source-over';
         ctx.drawImage(pic, -w, -h / 2, w, h);
         ctx.restore();
         continue;

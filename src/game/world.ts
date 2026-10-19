@@ -1055,7 +1055,7 @@ function kill(g: Game, e: Enemy) {
   }
   // Plasma (fire + lightning arrows): a burning bug blows up when it dies, setting its neighbours alight.
   if (e.burn > 0 && fusionOf(g) === 'plasma') {
-    g.fx.push({ kind: 'pic', pic: 'plasma-burst', top: true, x: e.x, y: e.y, r: 40, a: rand(0, 6), life: 0.35, max: 0.35 });
+    g.fx.push({ kind: 'pic', pic: 'plasma-burst', top: true, x: e.x, y: e.y, r: 58, a: rand(0, 6), life: 0.45, max: 0.45 });
     for (const o of live(g)) {
       if (o === e || dist(o, e) > 40 + o.r) continue;
       o.burn = Math.max(o.burn, 2);
@@ -1171,7 +1171,12 @@ function fusionTrail(g: Game, s: Shot, dt: number, f: Fusion) {
 /* What each fusion adds to a bow hit (plasma works on kills, will-o'-wisp
    on the arrow's flight, shock in `chain`). */
 function fuse(g: Game, e: Enemy, s: Shot, fusion: Fusion) {
-  if (fusion === 'steam') {
+  if (fusion === 'plasma') {
+    // Plasma: a small burst of the owner's plasma on every hit (only to be seen; the blast comes on the kill).
+    if (g.fx.filter((f) => f.pic === 'plasma-burst').length < 8) {
+      g.fx.push({ kind: 'pic', pic: 'plasma-burst', top: true, x: e.x, y: e.y, r: e.r + 10, a: rand(0, 6), life: 0.25, max: 0.25 });
+    }
+  } else if (fusion === 'steam') {
     // Steam: a cloud that scalds and slows the bugs inside.
     if (g.embers.filter((k) => k.kind === 'steam').length < 10) {
       g.embers.push({ x: e.x, y: e.y, r: 26, life: 1.3, max: 1.3, dps: 7 * power(g, 'ranged'), kind: 'steam', slow: 0.4 });
