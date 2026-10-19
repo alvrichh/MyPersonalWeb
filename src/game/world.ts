@@ -78,7 +78,7 @@ export const WORLDS: WorldDef[] = [
 export const WORLD_COUNT = WORLDS.length;
 
 /** Lava and thorns hurt, puddles slow you down. A boss's meteor or roots leave some that fade (`ttl`, seconds). */
-export type Hazard = { kind: 'lava' | 'puddle' | 'thorns'; x: number; y: number; r: number; ttl?: number };
+export type Hazard = { kind: 'lava' | 'puddle' | 'thorns'; x: number; y: number; r: number; ttl?: number; /** Drawn by something else (a vine row's picture). */ hidden?: boolean };
 /** A lightning strike on its way: a warning circle, then the hit. */
 export type Strike = { x: number; y: number; t: number };
 
@@ -332,6 +332,8 @@ export type Threat = {
   owner?: number;
   /** The boss that cast it (its `bossId`). */
   from?: string;
+  /** A row of thorny vine (which of the two pictures): it bursts along the line and stays as thorns. */
+  vine?: number;
   /** Zeus's lightning is blue; everyone else's yellow. */
   blue?: boolean;
   /** Wave: speed, how far it has come, and the safe gap (its centre along the wave, half its width). */
@@ -380,6 +382,8 @@ export type Fx = {
   /** A 'pic' fx: the effect picture laid on the floor (fx/<pic>.webp), or over the bugs with `top`. */
   pic?: string;
   top?: boolean;
+  /** A vine row: drawn along its length, growing out over its first moment. */
+  vine?: boolean;
 };
 export type Fireball = { x: number; y: number; vx: number; vy: number; life: number };
 /** A companion ghost: floats beside the hero (`slot` sets where) and shoots when you do. */
@@ -2460,13 +2464,11 @@ function signature(g: Game, e: Enemy, sig: Signature) {
       break;
     }
     case 'roots': {
-      // Roots burst out of the floor in three rows towards you, leaving thorns behind.
+      // Three rows of thorny vine burst out of the floor towards you (the owner's vine rows), warned as
+      // strips, and stay a moment as walls of thorns.
       const aim = Math.atan2(p.y - e.y, p.x - e.x);
-      for (const off of [-0.4, 0, 0.4]) {
-        for (let k = 1; k <= 7; k++) {
-          const at = { x: e.x + Math.cos(aim + off) * k * 40, y: e.y + Math.sin(aim + off) * k * 40 };
-          circle(g, inside(g, at, 18), 20, 0.55 + k * 0.11, Math.round(dmg * 0.8), 'leaf', k % 2 ? 'thorns' : undefined);
-        }
+      for (const [i, off] of [-0.4, 0, 0.4].entries()) {
+        g.threats.push({ kind: 'line', x: e.x + Math.cos(aim + off) * 30, y: e.y + Math.sin(aim + off) * 30, r: 16, a: aim + off, len: 280, warn: 0.9 + i * 0.08, max: 0.9 + i * 0.08, life: 0.25, dmg: Math.round(dmg * 0.8), el: 'leaf', vine: i % 2 });
       }
       break;
     }
@@ -2626,6 +2628,9 @@ function touches(t: Threat, v: Vec, r: number) {
   return Math.abs(along - (t.done ?? 0)) < t.r + r && Math.abs(side) < t.len && Math.abs(side - (t.gap ?? 0)) > (t.gapW ?? 0);
 }
 
+/** How long a vine row stays as a wall of thorns. */
+const VINE_LIFE = 2.5;
+
 /** The moment a warning runs out: the flash, and what it leaves behind. */
 function threatHits(g: Game, t: Threat) {
   if (t.kind === 'circle') {
@@ -2641,6 +2646,16 @@ function threatHits(g: Game, t: Threat) {
     g.orbs.push({ x: t.x, y: t.y, vx: Math.cos(t.a) * 430, vy: Math.sin(t.a) * 430, r: 7, dmg: t.dmg, life: 2, bounce: 0, tone: TONE.bolt, pic: t.shot, from: t.from });
     t.life = 0;
     t.dmg = 0;
+  } else if (t.kind === 'line' && t.vine !== undefined) {
+    // The vine grows along the line and stays a while as a wall of thorns (hidden hazards along it).
+    const cx = t.x + Math.cos(t.a) * t.len / 2;
+    const cy = t.y + Math.sin(t.a) * t.len / 2;
+    g.fx.push({ kind: 'pic', pic: `vine-row-${t.vine}`, x: cx, y: cy, r: t.len / 2, a: t.a, life: VINE_LIFE, max: VINE_LIFE, vine: true });
+    for (let d = 14; d < t.len; d += 26) {
+      const at = { x: t.x + Math.cos(t.a) * d, y: t.y + Math.sin(t.a) * d };
+      if (g.mode === 'sprints' && outside(g, at)) continue;
+      g.hazards.push({ kind: 'thorns', x: at.x, y: at.y, r: 13, ttl: VINE_LIFE, hidden: true });
+    }
   } else if (t.kind === 'line' && t.el === 'bolt') {
     const end = { x: t.x + Math.cos(t.a) * t.len, y: t.y + Math.sin(t.a) * t.len };
     g.zaps.push({ pts: zigzag(t, end, 10), life: 0.22, blue: t.blue });
