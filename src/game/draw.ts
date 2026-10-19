@@ -75,6 +75,8 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   drawOrbs(ctx, g);
   if (pal.retro) drawPlayerRetro(ctx, g, pal, now);
   else {
+    // The firebird rises from behind the hero.
+    for (const f of g.fx) if (f.kind === 'phoenix') drawPhoenixRise(ctx, f, g.time, 'over');
     if (g.loadout.wings) drawHeroWings(ctx, g, pal, now, false);
     drawPlayer(ctx, g, pal, now);
     if (g.loadout.wings) {
@@ -1710,7 +1712,7 @@ function fxImage(name: string) {
 const ready = (img: HTMLImageElement) => img.complete && img.naturalWidth > 0;
 /** Warm the effect pictures up when a run starts, so the first swing and strike are already painted. */
 export function preloadFx() {
-  for (const n of ['fireball', 'boom-small', 'boom-big', 'knife', 'boomerang', 'slash', 'chest', 'slam', 'crystals', 'gem', 'gem-big', 'bolt-1', 'bolt-2', 'bolt-3', 'bolt-4', 'bolt-5', 'bolt-6',
+  for (const n of ['fireball', 'boom-small', 'boom-big', 'knife', 'boomerang', 'slash', 'chest', 'slam', 'crystals', 'gem', 'gem-big', 'bolt-1', 'bolt-2', 'bolt-3', 'bolt-4', 'bolt-5', 'bolt-6', 'bolt-y-1', 'bolt-y-2', 'bolt-y-3', 'bolt-y-4', 'bolt-y-5', 'bolt-y-6',
     'brick', 'iron', 'molotov', 'barrel', 'durian', 'durian-big', 'drill', 'drill-evo', 'rocket', 'rocket-shark', 'ball', 'ball-evo', 'phoenix-0', 'phoenix-1', 'phoenix-2', 'phoenix-3', 'wings-0', 'wings-1', 'wings-2', 'angle-front', 'angle-side', 'angle-quarter',
     'fire-pool', 'fire-pool-big', 'caltrops', 'mine', 'mine-on', 'mine-volt', 'volt-burst', 'impact', 'heart', 'rune', 'crescent',
     'steam-cloud', 'plasma-burst', 'wisp-flame', 'shock-ring', 'ice-block', 'spectral-bolt', 'laser-yellow', 'laser-orange', 'laser-red', 'laser-purple', 'drakkar-wreck', ...Array.from({ length: 7 }, (_, i) => `lava-${i}`)]) fxImage(n);
@@ -2027,7 +2029,8 @@ function drawFx(ctx: CanvasRenderingContext2D, g: Game, accent: string, layer: '
       // The firebird rises with you, wherever you run.
       f.x = g.player.x;
       f.y = g.player.y;
-      if (!retroLook) drawPhoenixRise(ctx, f, g.time, layer);
+      // The ring goes on the floor; the bird itself is drawn just before the hero (drawPhoenixBirds).
+      if (!retroLook && layer === 'under') drawPhoenixRise(ctx, f, g.time, layer);
       continue;
     }
     const t = 1 - f.life / f.max;
@@ -2048,10 +2051,11 @@ function drawFx(ctx: CanvasRenderingContext2D, g: Game, accent: string, layer: '
         ctx.stroke();
         ctx.fillStyle = 'rgba(255,255,255,0.08)';
         ctx.fill();
-      } else if (!retroLook && ready(fxImage('bolt-6'))) {
-        // The painted strike: a bolt frame for the first part, then the ground burst.
+      } else if (!retroLook && ready(fxImage(f.blue ? 'bolt-6' : 'bolt-y-6'))) {
+        // The painted strike: a bolt frame for the first part, then the ground burst (the owner's blue
+        // for evolved weapons and Zeus, a yellow copy for the rest).
         const frame = t < 0.6 ? 1 + Math.floor(t * 8) % 5 : 6;
-        const pic = fxImage(`bolt-${frame}`);
+        const pic = fxImage(`${f.blue ? 'bolt' : 'bolt-y'}-${frame}`);
         const h = f.r * (frame === 6 ? 3.2 : 7.5);
         const w = (h * pic.naturalWidth) / pic.naturalHeight;
         ctx.drawImage(pic, f.x - w / 2, f.y - h + f.r * (frame === 6 ? 1.2 : 0.9), w, h);
@@ -2205,8 +2209,8 @@ function drawZaps(ctx: CanvasRenderingContext2D, g: Game) {
     const last = z.pts[z.pts.length - 1];
     if (!retroLook && Math.hypot(last.x - first.x, last.y - first.y) > 150 && ready(fxImage('bolt-6'))) continue;
     ctx.globalAlpha = Math.min(1, z.life / 0.12);
-    // Bolts falling from the sky are blue, like the owner's painted ones; chain lightning between bugs is yellow.
-    const sky = Math.hypot(last.x - first.x, last.y - first.y) > 150;
+    // Lightning is yellow; blue only for evolved weapons and Zeus.
+    const sky = !!z.blue;
     ctx.shadowColor = sky ? '#38bdf8' : '#facc15';
     ctx.shadowBlur = retroLook ? 0 : 10;
     for (const [width, color] of (sky ? [[6, 'rgba(56,189,248,0.45)'], [2.2, '#e0f2fe']] : [[6, 'rgba(250,204,21,0.45)'], [2.2, '#fef9c3']]) as [number, string][]) {
@@ -2232,7 +2236,7 @@ function drawThreats(ctx: CanvasRenderingContext2D, g: Game, now: number, top: b
   for (const t of g.threats) {
     const live = t.warn <= 0;
     if (top !== (live && (t.kind === 'beam' || t.kind === 'wave'))) continue;
-    const [c, light] = THREAT_TONE[t.el];
+    const [c, light] = t.blue ? THREAT_TONE.water : THREAT_TONE[t.el];
     const k = live ? 1 : 1 - t.warn / (t.max || 1);
     ctx.save();
     if (t.kind === 'circle') {
