@@ -322,6 +322,9 @@ function drawObstacles(ctx: CanvasRenderingContext2D, g: Game, accent: string, n
   const look = WORLDS[sceneOf(g) - 1].look;
   // World 8 mixes the casts, but its blocks are its own: the Core's obsidian and crystals.
   const stones = retroLook ? null : look === 'random' ? 'core' : look;
+  // The mud world stands on the vikings' old wet stones with lily pads, picked by shape like the jungle's.
+  const set = stones === 'mud' ? 'viking' : stones;
+  const byShape = stones === 'jungle' || stones === 'viking' || stones === 'mud';
   for (const o of stones ? g.obstacles : []) {
     const ratio = o.w / o.h;
     // Every world but the jungle: the owner drew one piece for each block of each layout (servers, volcanic
@@ -329,7 +332,7 @@ function drawObstacles(ctx: CanvasRenderingContext2D, g: Game, accent: string, n
     const size = `${o.w}x${o.h}`;
     const slot = `${size}-${g.obstacles.filter((b) => `${b.w}x${b.h}` === size).indexOf(o)}`;
     const own = stones && LAYOUT_SET[stones] ? LAYOUT_SET[stones] + slot : '';
-    const pic = setImage(stones!, LAYOUT_PIECES.has(slot) && own ? own : stones !== 'jungle' && stones !== 'viking'
+    const pic = setImage(set!, LAYOUT_PIECES.has(slot) && own ? own : !byShape
       ? LAYOUT_SET[stones!] + (ratio > 3.2 ? '100x24-0' : ratio > 1.7 ? '64x26-0' : '36x36-0')
       : ratio > 3.2 ? 'stone-long-1' : ratio > 1.7 ? 'stone-long-0' : (o.x + o.y) % 2 ? 'stone-0' : 'stone-1');
     if (!ready(pic)) continue;
@@ -344,7 +347,7 @@ function drawObstacles(ctx: CanvasRenderingContext2D, g: Game, accent: string, n
     ctx.drawImage(pic, o.x + o.w / 2 - w / 2, o.y + o.h + 4 - h, w, h);
   }
   // Server racks, with blinking lights.
-  for (const o of stones && ready(setImage(stones, stones !== 'jungle' && stones !== 'viking' ? `${LAYOUT_SET[stones]}36x36-0` : 'stone-0')) ? [] : g.obstacles) {
+  for (const o of stones && set && ready(setImage(set, !byShape ? `${LAYOUT_SET[stones]}36x36-0` : 'stone-0')) ? [] : g.obstacles) {
     ctx.fillStyle = 'rgba(0,0,0,0.35)';
     roundRect(ctx, o.x + 3, o.y + 5, o.w, o.h, 5);
     ctx.fill();
@@ -607,9 +610,11 @@ function heroPose(g: Game, now: number, full: boolean): Pose {
 let tintCanvas: HTMLCanvasElement | null = null;
 function heroTint(g: Game): [string, number] | null {
   const p = g.player;
+  if (p.stone > 0) return ['120,113,108', Math.min(1, p.stone / 0.15) * 1.8];
   if (p.stun > 0) return ['250,204,21', Math.min(1, p.stun / 0.15)];
   if (p.poison > 0) return ['74,222,128', Math.min(1, p.poison / 0.15)];
   if (p.chill > 0) return ['125,211,252', Math.min(1, p.chill / 0.3)];
+  if (p.mired > 0) return ['133,77,14', Math.min(1, p.mired / 0.3)];
   if (p.dark > 0) return ['167,139,250', Math.min(1, p.dark / 0.3)];
   return null;
 }
@@ -658,6 +663,28 @@ function drawStatus(ctx: CanvasRenderingContext2D, g: Game, now: number) {
       ctx.lineTo(x + 3, y + 5);
       ctx.stroke();
     }
+  }
+  if (p.stone > 0) {
+    // Turned to stone: grey chips crumbling off.
+    ctx.fillStyle = '#a8a29e';
+    for (let i = 0; i < 5; i++) {
+      const k = (now * 1.2 + i / 5) % 1;
+      ctx.globalAlpha = (1 - k) * 0.9;
+      ctx.fillRect(p.x + Math.sin(i * 2.4) * p.r * 0.9 - 2, p.y - p.r * 2.2 + k * p.r * 2.4, 4, 3);
+    }
+    ctx.globalAlpha = 1;
+  }
+  if (p.mired > 0) {
+    // Stuck in the mud: brown drops dripping off.
+    ctx.fillStyle = '#854d0e';
+    for (let i = 0; i < 4; i++) {
+      const k = (now * 1.4 + i / 4) % 1;
+      ctx.globalAlpha = (1 - k) * 0.9;
+      ctx.beginPath();
+      ctx.arc(p.x + Math.sin(i * 1.9) * p.r * 0.8, p.y - p.r * 0.5 + k * p.r * 1.2, 2.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
   }
   if (p.chill > 0) {
     ctx.strokeStyle = '#e0f2fe';
@@ -2380,6 +2407,10 @@ function drawFx(ctx: CanvasRenderingContext2D, g: Game, accent: string, layer: '
 /* Boss shots drawn with the weapons' pictures: which picture, how wide, and where along it the shot's
    point sits (1 = the right-hand tip; the fireball's ball is at 0.78). Arrows bring their trail. */
 const ORB_PIC: Record<OrbPic, { src: 'fx' | 'arrow'; name: string; w: number; at: number; trail?: string; glow?: number }> = {
+  // The mud world's: the Medusa's purple bolt, the Mud Monster's mud ball, the bats' venom.
+  medusa: { src: 'fx', name: 'medusa-bolt', w: 48, at: 0.95 },
+  mudball: { src: 'fx', name: 'mudball', w: 30, at: 0.72 },
+  venom: { src: 'fx', name: 'venom', w: 20, at: 0.75 },
   tornado: { src: 'fx', name: 'tornado-0', w: 0, at: 0 },
   fireball: { src: 'fx', name: 'fireball', w: 44, at: 0.78 },
   rocket: { src: 'fx', name: 'rocket', w: 30, at: 0.75 },
@@ -2502,7 +2533,7 @@ function drawZaps(ctx: CanvasRenderingContext2D, g: Game) {
 /* Boss attacks (see `Threat` in world.ts): while warning, a faint area that fills up as the hit comes; then
    the hit itself. Circles and lines are drawn under the bugs, live beams and waves over them. */
 const THREAT_TONE: Record<Threat['el'], [string, string]> = {
-  fire: ['249,115,22', '254,215,170'], water: ['56,189,248', '224,242,254'], leaf: ['74,222,128', '220,252,231'],
+  fire: ['249,115,22', '254,215,170'], water: ['56,189,248', '224,242,254'], mud: ['161,98,7', '253,230,138'], arcane: ['192,38,211', '245,208,254'], leaf: ['74,222,128', '220,252,231'],
   bolt: ['250,204,21', '254,249,195'], laser: ['239,68,68', '254,226,226'], shadow: ['167,139,250', '237,233,254'], glitch: ['192,132,252', '243,232,255'],
 };
 
@@ -2540,6 +2571,28 @@ function drawThreats(ctx: CanvasRenderingContext2D, g: Game, now: number, top: b
         ctx.arc(t.x, t.y, t.r, 0, Math.PI * 2);
         ctx.stroke();
         ctx.setLineDash([]);
+        // Mud balls: the painted ball lobbed down onto its circle; the Medusa's rune opening and turning in hers.
+        const mud = t.el === 'mud' && !retroLook ? fxImage('mudball') : null;
+        if (mud && ready(mud) && k > 0.3) {
+          const f = (k - 0.3) / 0.7;
+          const w = 34;
+          const h = (w * mud.naturalHeight) / mud.naturalWidth;
+          ctx.save();
+          ctx.translate(t.x, t.y - Math.sin(f * Math.PI) * 120 - (1 - f) * 40);
+          ctx.rotate(f * 6);
+          ctx.drawImage(mud, -w / 2, -h / 2, w, h);
+          ctx.restore();
+        }
+        const rune = t.el === 'arcane' && !retroLook ? fxImage('medusa-rune') : null;
+        if (rune && ready(rune)) {
+          const s = t.r * 2.3 * (0.5 + 0.5 * k);
+          ctx.save();
+          ctx.translate(t.x, t.y);
+          ctx.rotate(now * 2);
+          ctx.globalAlpha = 0.5 + 0.5 * k;
+          ctx.drawImage(rune, -s / 2, -s / 2, s, s);
+          ctx.restore();
+        }
         // Meteors: the painted fireball falling onto its circle, a little slanted.
         const ball = fxImage('fireball');
         if (t.after === 'lava' && !retroLook && ready(ball) && k > 0.35) {
@@ -3791,6 +3844,73 @@ const junglePlant: Drawer = (ctx, e, now) => {
   void now;
 };
 
+/* The mud world in the retro look: a frog, a bat, a blob of mud and the Mud Monster. */
+const mudFrog: Drawer = (ctx, e, now) => {
+  const r = e.r;
+  const hop = -Math.abs(Math.sin(e.step * Math.PI)) * r * 0.25;
+  ctx.fillStyle = '#22c55e';
+  ctx.beginPath();
+  ctx.ellipse(0, r * 0.2 + hop, r, r * 0.75, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#fef3c7';
+  ctx.beginPath();
+  ctx.ellipse(0, r * 0.45 + hop, r * 0.6, r * 0.35, 0, 0, Math.PI * 2);
+  ctx.fill();
+  for (const x of [-0.45, 0.45]) {
+    ctx.fillStyle = '#16a34a';
+    ctx.beginPath();
+    ctx.arc(x * r, -r * 0.45 + hop, r * 0.32, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  eyes(ctx, r * 0.45, -r * 0.45 + hop, r * 0.16, '#facc15');
+  void now;
+};
+const mudBat: Drawer = (ctx, e, now) => {
+  const r = e.r;
+  const flap = Math.sin(now * 14 + e.wobble) * 0.5;
+  ctx.fillStyle = '#db2777';
+  for (const side of [-1, 1]) {
+    ctx.beginPath();
+    ctx.moveTo(side * r * 0.4, -r * 0.1);
+    ctx.lineTo(side * r * 1.5, -r * (0.7 + flap));
+    ctx.lineTo(side * r * 1.2, r * 0.4);
+    ctx.closePath();
+    ctx.fill();
+  }
+  ctx.fillStyle = '#6d28d9';
+  ctx.beginPath();
+  ctx.arc(0, 0, r * 0.7, 0, Math.PI * 2);
+  ctx.fill();
+  eyes(ctx, r * 0.28, -r * 0.1, r * 0.13, '#facc15');
+};
+const mudBlob: Drawer = (ctx, e, now) => {
+  const r = e.r;
+  const squish = 1 + Math.sin(now * 4 + e.wobble) * 0.05;
+  const mud = ctx.createRadialGradient(-r * 0.3, -r * 0.3, r * 0.1, 0, 0, r * 1.1);
+  mud.addColorStop(0, '#a16207');
+  mud.addColorStop(1, '#422006');
+  ctx.fillStyle = mud;
+  ctx.beginPath();
+  ctx.ellipse(0, r * 0.1, r * squish, r * 0.9 / squish, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(0, -r * 0.85, r * 0.2, 0, Math.PI * 2);
+  ctx.fill();
+  eyes(ctx, r * 0.35, -r * 0.05, r * 0.15, '#fde047');
+};
+const mudMonster: Drawer = (ctx, e, now) => {
+  const r = e.r;
+  mudBlob(ctx, e, now);
+  ctx.fillStyle = '#713f12';
+  for (const side of [-1, 1]) {
+    ctx.beginPath();
+    ctx.ellipse(side * r * 1.05, r * 0.25, r * 0.28, r * 0.55, side * 0.4, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.fillStyle = '#1c1917';
+  roundRect(ctx, -r * 0.4, r * 0.35, r * 0.8, r * 0.25, 4);
+  ctx.fill();
+};
 const jungleStump: Drawer = (ctx, e, now) => {
   const r = e.r;
   const bark = ctx.createLinearGradient(-r, 0, r, 0);
@@ -4038,7 +4158,7 @@ export function drawSprite(ctx: CanvasRenderingContext2D, e: Enemy, now: number)
 /* Frames per look: the first three sheets have four walking frames; the
    later ones six: three walking, two attacking (wind-up, strike) and one
    taking a hit. */
-const SPRITE_FRAMES: Partial<Record<Look, number>> = { original: 4, demon: 4, greek: 4, viking: 6, jungle: 6, robot: 6, nightmare: 6 };
+const SPRITE_FRAMES: Partial<Record<Look, number>> = { original: 4, demon: 4, greek: 4, viking: 6, mud: 6, jungle: 6, robot: 6, nightmare: 6 };
 /* Every set is cut on one canvas for all its frames (each frame registered against the first by its head
    and torso, `scratchpad` `walkfix/fix.py`), so a stride or a swing never resizes or shifts the figure:
    how much larger than its first frame's own size to draw that canvas, so the body keeps its size, and how
@@ -4054,6 +4174,7 @@ const SPRITE_CANVAS: Record<string, { k: number; feet: number }> = {
   'robot-bug': { k: 1.431, feet: 0.0051 }, 'robot-ticket': { k: 1.4, feet: 0 }, 'robot-legacy': { k: 1.446, feet: 0.0299 },
   'robot-boss': { k: 1.127, feet: 0.0083 }, 'nightmare-bug': { k: 1.31, feet: 0.0165 }, 'nightmare-ticket': { k: 1.369, feet: 0 },
   'nightmare-legacy': { k: 1.098, feet: 0 }, 'nightmare-boss': { k: 1.137, feet: 0 },
+  'mud-bug': { k: 1.667, feet: 0.0959 }, 'mud-ticket': { k: 1.291, feet: 0.086 }, 'mud-legacy': { k: 1.097, feet: 0.06 },
 };
 /* The walk cycles: the four-frame sheets loop; the three walking frames of the others are a stride, the
    standing frame and the other stride (step, pass, step, pass), and the final bosses' are left foot,
@@ -4089,17 +4210,17 @@ function enemyFrame(e: Enemy, count: number) {
 /* Final bosses with a sheet of their own (static/images/game/bosses/<id>-<frame>.webp, nine poses, the same
    order as the prompts: three walking, wind-up and charge, the ring of orbs, the world's move, the signature
    and a hit). Add an id here once its pictures are in; until then a final boss wears its cast's boss, bigger. */
-const BOSS_ART = new Set<string>(['kernel', 'archdemon', 'drakkar', 'valdur', 'zeus', 'queen', 'mech', 'wraith', 'chimera']);
+const BOSS_ART = new Set<string>(['kernel', 'archdemon', 'drakkar', 'valdur', 'medusa', 'zeus', 'queen', 'mech', 'wraith', 'chimera']);
 /* Each final sheet is cut on one canvas for its nine poses (body centred, its lowest point on the baseline):
    how many times the body's width the canvas is drawn, and how much of the canvas lies under the feet
    (dust, a dash's trail, the volley's orbs). */
 const BOSS_CANVAS: Record<string, { k: number; feet: number }> = {
   kernel: { k: 2.155, feet: 0.1766 }, archdemon: { k: 1.69, feet: 0.1232 },
   drakkar: { k: 1.081, feet: 0.12 }, valdur: { k: 1.538, feet: 0.1954 }, zeus: { k: 1.782, feet: 0.2063 }, queen: { k: 1.348, feet: 0.1484 },
-  wraith: { k: 1.295, feet: 0.1974 }, valkyrie: { k: 2.6, feet: 0.1691 }, mech: { k: 1.412, feet: 0.0878 }, chimera: { k: 1.712, feet: 0.1553 }, chimera2: { k: 1.749, feet: 0.2262 }, chimera3: { k: 1.706, feet: 0.2686 },
+  wraith: { k: 1.295, feet: 0.1974 }, valkyrie: { k: 2.6, feet: 0.1691 }, medusa: { k: 1.164, feet: 0.0667 }, mudmonster: { k: 1.615, feet: 0.072 }, mech: { k: 1.412, feet: 0.0878 }, chimera: { k: 1.712, feet: 0.1553 }, chimera2: { k: 1.749, feet: 0.2262 }, chimera3: { k: 1.706, feet: 0.2686 },
 };
-/** Room-6 bosses with a nine-pose sheet of their own, in the final bosses' order: the vikings' Valkyrie. */
-const MID_ART: Partial<Record<Look, string>> = { viking: 'valkyrie' };
+/** Room-6 bosses with a nine-pose sheet of their own, in the final bosses' order: the vikings' Valkyrie, the Mud Monster. */
+const MID_ART: Partial<Record<Look, string>> = { viking: 'valkyrie', mud: 'mudmonster' };
 const finalSprites = new Map<string, HTMLImageElement[]>();
 function finalFrame(e: Enemy) {
   if (e.pain > 0) return 8;
@@ -4150,6 +4271,7 @@ function drawEnemySprite(ctx: CanvasRenderingContext2D, e: Enemy) {
 
 const LOOKS: Record<Look, Record<Enemy['kind'], Drawer>> = {
   viking: { bug: vikingRaider, ticket: vikingThrower, legacy: vikingShieldWall, boss: vikingJarl },
+  mud: { bug: mudFrog, ticket: mudBat, legacy: mudBlob, boss: mudMonster },
   jungle: { bug: jungleSpider, ticket: junglePlant, legacy: jungleStump, boss: jungleTreant },
   robot: { bug: robotDrone, ticket: robotTurret, legacy: robotCrate, boss: robotMainframe },
   original: { bug: drawBug, ticket: (ctx, e) => drawTicket(ctx, e), legacy: (ctx, e) => drawLegacy(ctx, e), boss: drawBoss },

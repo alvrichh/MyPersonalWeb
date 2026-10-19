@@ -1,11 +1,11 @@
 import { storage } from '../lib/storage';
 import { ARSENAL, ITEMS, type ItemId, type Slot, type Upgrades } from './shop';
-import type { Mode, SkillId } from './world';
+import { WORLD_COUNT, type Mode, type SkillId } from './world';
 
 /* Everything Bug Hunter remembers between runs, in one localStorage key. */
 
-export type EnemyStyle = 'world' | 'original' | 'demon' | 'viking' | 'jungle' | 'greek' | 'robot' | 'nightmare' | 'random';
-export const STYLES: EnemyStyle[] = ['world', 'original', 'demon', 'viking', 'jungle', 'greek', 'robot', 'nightmare', 'random'];
+export type EnemyStyle = 'world' | 'original' | 'demon' | 'viking' | 'mud' | 'jungle' | 'greek' | 'robot' | 'nightmare' | 'random';
+export const STYLES: EnemyStyle[] = ['world', 'original', 'demon', 'viking', 'mud', 'jungle', 'greek', 'robot', 'nightmare', 'random'];
 
 export type HeroSkin = 'boy' | 'robot' | 'kitty';
 export const SKINS: HeroSkin[] = ['boy', 'robot', 'kitty'];
@@ -57,6 +57,8 @@ export type Save = {
   style: EnemyStyle;
   /** Saves from before worlds had their own cast default to 'world' once. */
   styleV2: boolean;
+  /** Saves from before the mud world was put in as world 4: their records from world 4 on move up one, once. */
+  mudWorld: boolean;
   /** The world whose floor and blocks every run draws (0: each world its own), to try them out. */
   scene: number;
   /** Which song plays: 'auto' (the original, and the final boss's own song in that fight), or one song always. */
@@ -76,7 +78,7 @@ export type Save = {
   /** On call keeps its own world progress: worlds you may enter there, and the one picked. */
   hordeUnlocked: number;
   hordeWorld: number;
-  /** Masteries earned per mode (clear all eight worlds, then reset for a small permanent boost). */
+  /** Masteries earned per mode (clear all the worlds, then reset for a small permanent boost). */
   mastery: { sprints: number; horde: number };
   /** The colour of the mastery stars by the player's name. */
   starColor: StarColor;
@@ -114,6 +116,7 @@ const fresh = (): Save => ({
   upgrades: {},
   style: 'world',
   styleV2: true,
+  mudWorld: true,
   scene: 0,
   song: 'auto',
   music: 0.6,
@@ -139,12 +142,20 @@ export function loadSave(): Save {
     const data = JSON.parse(storage.get(KEY) || '{}') as Partial<Save>;
     const save: Save = { ...base, ...data, equipped: {}, upgrades: { ...data.upgrades }, itemLevels: { ...data.itemLevels }, best: { ...base.best, ...data.best }, bestByWorld: { ...data.bestByWorld }, hordeBest: { ...data.hordeBest } };
     if (save.mode !== 'sprints' && save.mode !== 'horde') save.mode = 'sprints';
+    // The mud world came in as world 4: what an older save kept for worlds 4–8 belongs to 5–9 now.
+    if (!data.mudWorld) {
+      const up = <T,>(rec: Record<number, T>) => Object.fromEntries(Object.entries(rec).map(([w, v]) => [Number(w) >= 4 ? Number(w) + 1 : Number(w), v])) as Record<number, T>;
+      save.bestByWorld = up(save.bestByWorld);
+      save.hordeBest = up(save.hordeBest);
+      for (const key of ['world', 'hordeWorld', 'scene', 'hordeUnlocked'] as const) if (save[key] >= 4) save[key] += 1;
+      save.mudWorld = true;
+    }
     // Saves from before the split: on call opens the worlds after any shift it already cleared.
     if (!data.hordeUnlocked) {
       const cleared = Object.entries(save.hordeBest).filter(([, b]) => b.won).map(([w]) => Number(w));
       save.hordeUnlocked = Math.max(1, ...cleared.map((w) => w + 1));
     }
-    save.hordeUnlocked = Math.min(Math.max(1, save.hordeUnlocked || 1), 8);
+    save.hordeUnlocked = Math.min(Math.max(1, save.hordeUnlocked || 1), WORLD_COUNT);
     save.hordeWorld = Math.min(Math.max(1, save.hordeWorld || 1), save.hordeUnlocked);
     save.mastery = { sprints: Math.max(0, data.mastery?.sprints ?? 0), horde: Math.max(0, data.mastery?.horde ?? 0) };
     if (!(save.starColor in STAR_COLORS)) save.starColor = 'gold';
@@ -165,7 +176,7 @@ export function loadSave(): Save {
     }
     if (!STYLES.includes(save.style)) save.style = 'world';
     if (!/^(auto|b2b|doom|w[1-8](v2)?)$/.test(save.song)) save.song = 'auto';
-    if (!(Number.isInteger(save.scene) && save.scene >= 0 && save.scene <= 8)) save.scene = 0;
+    if (!(Number.isInteger(save.scene) && save.scene >= 0 && save.scene <= WORLD_COUNT)) save.scene = 0;
     if (!SKINS.includes(save.skin)) save.skin = 'boy';
     // Skins cost coins now: the free one, plus whichever an older save already wore.
     save.skins = [...new Set<HeroSkin>(['boy', save.skin, ...(data.skins ?? [])])].filter((s) => SKINS.includes(s));
@@ -186,7 +197,7 @@ export function loadSave(): Save {
     if (save.best.time !== undefined && save.unlocked < 2) save.unlocked = 2;
     // Each mode's progress is what its own records show: a world is open once the one before it was won in
     // that mode. Before the split (and on a page cached from then) an on-call win also opened sprint worlds.
-    const nextAfter = (won: number[]) => Math.min(8, Math.max(1, ...won.map((w) => w + 1)));
+    const nextAfter = (won: number[]) => Math.min(WORLD_COUNT, Math.max(1, ...won.map((w) => w + 1)));
     save.unlocked = nextAfter(Object.entries(save.bestByWorld).filter(([, b]) => b?.time !== undefined).map(([w]) => Number(w)));
     save.hordeUnlocked = nextAfter(Object.entries(save.hordeBest).filter(([, b]) => b?.won).map(([w]) => Number(w)));
     save.world = Math.min(save.world, save.unlocked);
