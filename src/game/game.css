@@ -2978,32 +2978,52 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .profile-pic { width: 84px; height: auto; flex: none; filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.55)); }
 .profile-pic.is-round { width: 72px; height: 72px; border: 3px solid var(--accent); border-radius: 50%; background: #e9edf5; }
 .profile-who { display: grid; gap: 4px; min-width: 0; flex: 1; text-align: left; }
-.profile-who > b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 1.35rem; color: #fff; }
-.profile-who > span { font: 700 0.9rem/1 var(--font); color: #fcd34d; }
-.profile-xp { display: block; height: 8px; overflow: hidden; border-radius: 999px; background: rgba(255, 255, 255, 0.12); }
-.profile-xp b { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #22d3ee, #67e8f9); }
-.profile-form { display: grid; gap: 8px; width: 100%; max-width: 360px; justify-items: center; }
-.profile-form label { justify-self: start; font: 700 0.72rem/1 ui-monospace, monospace; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
-.profile-form input {
-  width: 100%;
-  padding: 12px 14px;
-  border: 1px solid rgba(103, 232, 249, 0.45);
-  border-radius: 12px;
+.profile-name { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.profile-name.is-editing { width: 100%; }
+.profile-name > b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 1.35rem; color: #fff; min-width: 0; }
+.profile-name input {
+  flex: 1;
+  min-width: 0;
+  padding: 7px 10px;
+  border: 1px solid rgba(103, 232, 249, 0.55);
+  border-radius: 10px;
   background: rgba(5, 10, 20, 0.75);
   color: #fff;
   font: 700 1.05rem/1.2 var(--font);
   outline: none;
 }
-.profile-form input:focus-visible { border-color: #67e8f9; box-shadow: 0 0 0 3px rgba(103, 232, 249, 0.25); }
+.profile-name input:focus-visible { border-color: #67e8f9; box-shadow: 0 0 0 3px rgba(103, 232, 249, 0.25); }
+/* The round name buttons: a green pencil to edit, a green tick to save, a grey cross to cancel. */
+.name-btn {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 2px solid #bbf7d0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #4ade80, #16a34a 70%);
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45), 0 0 10px rgba(74, 222, 128, 0.35);
+  cursor: pointer;
+}
+.name-btn svg { width: 18px; height: 18px; }
+.name-btn.is-cancel { border-color: #cbd5e1; background: radial-gradient(circle at 35% 30%, #94a3b8, #475569 70%); box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45); }
+.name-btn:active { transform: scale(0.94); }
+.profile-who > span { font: 700 0.9rem/1 var(--font); color: #fcd34d; }
+.profile-xp { display: block; height: 8px; overflow: hidden; border-radius: 999px; background: rgba(255, 255, 255, 0.12); }
+.profile-xp b { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #22d3ee, #67e8f9); }
+.profile-form { display: grid; gap: 8px; width: 100%; max-width: 360px; justify-items: center; }
 .profile-form .how { justify-self: start; text-align: left; font-size: 0.74rem; }
-.profile-form .saved { margin: 0; color: #86efac; font-weight: 700; }
+.profile-form .saved, .panel .saved { margin: 0; color: #86efac; font-weight: 700; }
 .pstats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; width: 100%; max-width: 360px; }
 .pstat { display: grid; gap: 4px; padding: 10px 6px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255, 255, 255, 0.05); text-align: center; }
 .pstat small { font: 700 0.6rem/1.15 ui-monospace, monospace; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); }
 .pstat b { font: 700 1rem/1 var(--font); color: #fff; }
 .cover-profile-copy small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-transform: uppercase; }
-:root[data-retro] .profile-form input { border-color: var(--line); background: rgba(255, 255, 255, 0.06); color: var(--text); }
-:root[data-retro] .profile-who > b { color: var(--text); }
+:root[data-retro] :root[data-retro] .profile-name > b { color: var(--text); }
+:root[data-retro] .profile-name input { border-color: var(--line); background: rgba(255, 255, 255, 0.06); color: var(--text); }
 
 /* ------------------------------------------------- skills list (paused) */
 /* The weapon column is a button: tapping it pauses and opens this list to
