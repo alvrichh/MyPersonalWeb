@@ -693,7 +693,7 @@ function dailyScreen() {
     ${head('wings', t('dailyTitle'))}<p>${t('dailyText')}</p>
     <div class="wheel"><div class="wheel-disc" id="wheelDisc">${slices}</div><span class="wheel-pin" aria-hidden="true"></span></div>
     <p class="wheel-result" id="wheelResult"></p>
-    ${ready ? `<button class="primary" data-act="daily-spin">${t('dailySpin')}</button>` : `<button class="primary daily-wait" disabled aria-label="${t('dailyNext', { time: dailyClock() })}">⏳ <span data-daily-clock>${dailyClock()}</span></button>`}
+    ${ready ? `<button class="primary" data-act="daily-spin">${t('dailySpin')}</button>` : `<p class="daily-label">${t('dailyNextLabel')}</p><button class="primary daily-wait" disabled aria-label="${t('dailyNext', { time: dailyClock() })}">⏳ <span data-daily-clock>${dailyClock()}</span></button>`}
     <p class="how daily-odds">${t('dailyOdds', { coins: coinOdds, weapon: DAILY_ODDS.weapon, outfit: DAILY_ODDS.outfit, accessory: DAILY_ODDS.accessory, skin: DAILY_ODDS.skin })}</p>`);
 }
 /** The time to the next chest, 23:59:59, ticking every second wherever it shows (`data-daily-clock`). */

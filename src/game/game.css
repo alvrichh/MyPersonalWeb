@@ -409,6 +409,7 @@ body {
 .panel .daily-odds { font-size: 0.78em; opacity: 0.75; }
 /* The countdown's digits keep their width, so the label does not jitter as it ticks. */
 [data-daily-clock] { font-variant-numeric: tabular-nums; }
+.panel .daily-label { margin-bottom: -6px; font: 700 0.72rem/1 ui-monospace, monospace; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
 .panel .daily-next { margin: 0.2rem 0 0.4rem; }
 .wheel-result.is-good.is-rare, .panel .wheel-result.is-rare { color: #fde68a; text-shadow: 0 0 12px rgba(252, 211, 77, 0.7); }
 
@@ -761,14 +762,18 @@ body {
 .ui-head.is-wings { width: min(66%, 240px); margin-bottom: 4px; }
 .ui-head.is-wings span {
   position: absolute;
-  left: 30%;
-  right: 30%;
+  left: 35%;
+  right: 35%;
   top: 22%;
   bottom: 24%;
-  display: grid;
-  place-items: center;
+  /* Flex, so a title wider than the ring wraps onto two lines instead of spilling over it. */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   margin: 0;
-  font-size: clamp(0.8rem, 3.4vw, 1rem);
+  font-size: clamp(0.72rem, 3vw, 0.9rem);
+  line-height: 1;
 }
 .ui-head.is-wings + p { margin-top: 0; }
 
