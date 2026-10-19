@@ -2555,7 +2555,7 @@ function updateShot(g: Game, s: Shot, dt: number): boolean {
       s.trail = 0.07;
       g.embers.push({ x: s.x, y: s.y, r: 11, life: 1, max: 1, dps: 9 * power(g, 'ranged'), kind: 'wisp' });
     }
-  } else if (s.bow && s.kind === 'arrow' && fusionOf(g) && arrowLook(g) === 'fusion') fusionTrail(g, s, dt, fusionOf(g) as Fusion);
+  } else if (s.bow && s.kind === 'arrow' && fusionOf(g)) fusionTrail(g, s, dt, fusionOf(g) as Fusion);
   // A bottle in flight touches nothing; it bursts where it lands.
   if (s.kind === 'molotov') return true;
   // Rockets blow up on walls and racks.
