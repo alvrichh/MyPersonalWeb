@@ -262,7 +262,10 @@ export type Orb = {
   /** A boss's colour for it ('' or unset: the usual red), and seconds it keeps turning towards you (the robots' missiles). */
   tone?: string;
   home?: number;
+  /** A boss shot drawn with one of the weapon pictures (see `ORB_PIC` in draw.ts) instead of a plain orb. */
+  pic?: OrbPic;
 };
+export type OrbPic = 'fireball' | 'rocket' | 'leaf' | 'water' | 'ghost' | 'bolt' | 'spark';
 /** What a boss's attack looks like: its element. */
 export type ThreatEl = 'fire' | 'water' | 'leaf' | 'bolt' | 'laser' | 'shadow' | 'glitch';
 /**
@@ -292,6 +295,8 @@ export type Threat = {
   gapW?: number;
   /** Left on the floor when it hits. */
   after?: 'lava' | 'thorns';
+  /** A javelin: when the warning runs out a bolt flies along the line instead of the whole line striking. */
+  shot?: OrbPic;
 };
 export type Particle = { x: number; y: number; vx: number; vy: number; life: number; max: number; size: number; color: string };
 export type Zap = { pts: Vec[]; life: number };
@@ -1950,10 +1955,12 @@ function inside(g: Game, v: Vec, m: number): Vec {
   const b = bounds(g);
   return { x: clamp(v.x, b.x + m, b.x + b.w - m), y: clamp(v.y, b.y + m, b.y + b.h - m) };
 }
-const ring = (g: Game, e: Enemy, n: number, speed: number, tone = '', turn = rand(0, Math.PI * 2)) => {
+/** The final bosses' rings fly as their element's weapon pictures (the cast bosses keep the plain orbs). */
+const RING_PIC: Partial<Record<string, OrbPic>> = { archdemon: 'fireball', drakkar: 'water', valdur: 'water', queen: 'leaf', zeus: 'bolt', mech: 'spark', wraith: 'ghost' };
+const ring = (g: Game, e: Enemy, n: number, speed: number, tone = '', turn = rand(0, Math.PI * 2), pic?: OrbPic) => {
   for (let i = 0; i < n; i++) {
     const a = turn + (i / n) * Math.PI * 2;
-    g.orbs.push({ x: e.x, y: e.y, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, r: 7, dmg: Math.round(e.dmg * 0.64), life: 5, bounce: g.hazard === 'bouncy' ? 1 : 0, tone });
+    g.orbs.push({ x: e.x, y: e.y, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, r: 7, dmg: Math.round(e.dmg * 0.64), life: 5, bounce: g.hazard === 'bouncy' ? 1 : 0, tone, pic });
   }
 };
 const circle = (g: Game, at: Vec, r: number, warn: number, dmg: number, el: ThreatEl, after?: 'lava' | 'thorns') =>
@@ -1965,7 +1972,7 @@ function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
   // Clones only throw rings now and then.
   if (e.clone) {
     e.cd -= dt;
-    if (e.cd <= 0) { e.cd = rand(3.2, 4); ring(g, e, 7, 95, TONE.shadow); }
+    if (e.cd <= 0) { e.cd = rand(3.2, 4); ring(g, e, 7, 95, TONE.shadow, undefined, 'ghost'); }
     return;
   }
   // The final boss's fury: under half health everything comes a quarter sooner.
@@ -1978,7 +1985,7 @@ function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
   e.cd -= dt;
   if (e.cd <= 0) {
     e.cd = (final ? 2.4 : 3.1) * fury;
-    ring(g, e, final ? 14 : 10, final ? 120 : 105);
+    ring(g, e, final ? 14 : 10, final ? 120 : 105, '', undefined, final ? RING_PIC[e.bossId] : undefined);
     e.pose = 0.35;
     e.act = 'burst';
   }
@@ -2049,7 +2056,7 @@ function worldMove(g: Game, e: Enemy, move: Move) {
       for (let i = 0; i < 9; i++) {
         const a = aim + (i / 8 - 0.5) * 1.05;
         const speed = i % 2 ? 165 : 135;
-        g.orbs.push({ x: e.x, y: e.y, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, r: 7, dmg, life: 3, bounce: 0, tone: TONE.fire });
+        g.orbs.push({ x: e.x, y: e.y, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, r: 7, dmg, life: 3, bounce: 0, tone: TONE.fire, pic: 'fireball' });
       }
       break;
     case 'geysers': {
@@ -2063,7 +2070,7 @@ function worldMove(g: Game, e: Enemy, move: Move) {
       for (let i = 0; i < 5; i++) {
         const a = aim + (i / 4 - 0.5) * 0.7;
         const speed = 115 + (i % 2) * 30;
-        g.orbs.push({ x: e.x, y: e.y, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, r: 9, dmg, life: 4, bounce: 0, tone: '#a3e635' });
+        g.orbs.push({ x: e.x, y: e.y, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, r: 8, dmg, life: 4, bounce: 0, tone: '#a3e635', pic: 'leaf' });
       }
       break;
     case 'leap':
@@ -2076,13 +2083,13 @@ function worldMove(g: Game, e: Enemy, move: Move) {
       break;
     case 'javelins':
       // Three javelins of lightning, shown before they fly.
-      for (const off of [-0.25, 0, 0.25]) g.threats.push({ kind: 'line', x: e.x, y: e.y, r: 9, a: aim + off, len: 720, warn: 0.75, max: 0.75, life: 0.18, dmg, el: 'bolt' });
+      for (const off of [-0.25, 0, 0.25]) g.threats.push({ kind: 'line', x: e.x, y: e.y, r: 9, a: aim + off, len: 720, warn: 0.75, max: 0.75, life: 0.18, dmg, el: 'bolt', shot: 'bolt' });
       break;
     case 'missiles':
       // Three missiles that turn after you for a couple of seconds.
       for (const off of [-0.9, 0, 0.9]) {
         const a = aim + off;
-        g.orbs.push({ x: e.x, y: e.y, vx: Math.cos(a) * 125, vy: Math.sin(a) * 125, r: 6, dmg, life: 5, bounce: 0, tone: '#fb923c', home: 2.4 });
+        g.orbs.push({ x: e.x, y: e.y, vx: Math.cos(a) * 125, vy: Math.sin(a) * 125, r: 6, dmg, life: 5, bounce: 0, tone: '#fb923c', home: 2.4, pic: 'rocket' });
       }
       break;
     case 'blink': {
@@ -2219,14 +2226,17 @@ function bossLands(g: Game, e: Enemy) {
     const el: ThreatEl = e.bossId === 'valdur' ? 'water' : 'leaf';
     circle(g, e, 66, 0, Math.round(e.dmg * 0.9), el);
     g.fx.push({ kind: 'ring', x: e.x, y: e.y, r: 70, a: 0, life: 0.4, max: 0.4, big: true });
+    // The hammer's painted slam under it (blue rings of water for Valdur).
+    g.fx.push({ kind: 'pic', pic: el === 'water' ? 'shock-ring' : 'slam', x: e.x, y: e.y + e.r * 0.5, r: 80, a: 0, life: 0.45, max: 0.45 });
     g.shake = Math.max(g.shake, 0.35);
-    ring(g, e, 8, 120, TONE[el]);
+    ring(g, e, 8, 120, TONE[el], undefined, el === 'water' ? 'water' : 'leaf');
     // Valdur roars as he lands.
     if (e.bossId === 'valdur') { e.pose = 0.6; e.act = 'move'; }
   } else {
     // Out of the shadows (the wraith and its clones alike rise out of them).
     if (e.bossId === 'wraith') { e.pose = 0.5; e.act = 'move'; }
-    if (!e.clone) ring(g, e, 12, 100, TONE.shadow);
+    if (!e.clone) ring(g, e, 12, 100, TONE.shadow, undefined, 'ghost');
+    g.fx.push({ kind: 'pic', pic: 'spectral-bolt', top: true, x: e.x, y: e.y - e.r * 0.3, r: e.r * 1.2, a: 0, life: 0.4, max: 0.4 });
   }
   burst(g, e.x, e.y, what !== 'slam' ? '#a78bfa' : e.bossId === 'valdur' ? '#7dd3fc' : '#86efac', 20, 150, 3);
 }
@@ -2268,7 +2278,7 @@ function updateThreats(g: Game, dt: number) {
         }
       }
     }
-    if (touches(t, p, p.r * 0.6)) hurtPlayer(g, t.dmg);
+    if (t.dmg > 0 && touches(t, p, p.r * 0.6)) hurtPlayer(g, t.dmg);
     t.life -= dt;
     return t.life > 0;
   });
@@ -2297,8 +2307,16 @@ function threatHits(g: Game, t: Threat) {
   if (t.kind === 'circle') {
     if (t.el === 'fire') g.fx.push({ kind: 'boom', x: t.x, y: t.y, r: t.r, a: 0, life: 0.35, max: 0.35 });
     else burst(g, t.x, t.y, TONE[t.el], 12, 140, 3);
+    // Geysers burst as the steam cloud; roots leave the caltrops' spikes.
+    if (t.el === 'water' && t.r < 40) g.fx.push({ kind: 'pic', pic: 'steam-cloud', top: true, x: t.x, y: t.y, r: t.r * 1.6, a: rand(0, 6), life: 0.5, max: 0.5 });
+    if (t.el === 'leaf' && t.after) g.fx.push({ kind: 'pic', pic: 'caltrops', x: t.x, y: t.y, r: t.r * 1.2, a: rand(0, 6), life: 2.5, max: 2.5 });
     if (t.after) g.hazards.push({ kind: t.after, x: t.x, y: t.y, r: t.after === 'lava' ? 26 : 16, ttl: t.after === 'lava' ? 4 : 2.5 });
     if (t.el === 'fire') g.events.push('boom');
+  } else if (t.shot) {
+    // A javelin: the bolt itself flies down the line it warned.
+    g.orbs.push({ x: t.x, y: t.y, vx: Math.cos(t.a) * 430, vy: Math.sin(t.a) * 430, r: 7, dmg: t.dmg, life: 2, bounce: 0, tone: TONE.bolt, pic: t.shot });
+    t.life = 0;
+    t.dmg = 0;
   } else if (t.kind === 'line' && t.el === 'bolt') {
     const end = { x: t.x + Math.cos(t.a) * t.len, y: t.y + Math.sin(t.a) * t.len };
     g.zaps.push({ pts: zigzag(t, end, 10), life: 0.22 });

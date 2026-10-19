@@ -1,4 +1,4 @@
-import { H, W, WALL, WHEEL_X, WORLDS, frostReach, waveAt, type Threat, isBossRoom, type Enemy, type Game, type Shot, type Look, type Statue, type Rect, type Vec, type Fusion, arrowLook, fusionOf, bladeCount, bladeElement, bladeOrbit, bladeScale, type BladeElement } from './world';
+import { H, W, WALL, WHEEL_X, WORLDS, frostReach, waveAt, type Threat, type OrbPic, isBossRoom, type Enemy, type Game, type Shot, type Look, type Statue, type Rect, type Vec, type Fusion, arrowLook, fusionOf, bladeCount, bladeElement, bladeOrbit, bladeScale, type BladeElement } from './world';
 import { SPIRIT_COLOR, type ItemId, type SpiritSkin } from './shop';
 import { FULL_HERO_SETS, heroKey, type HeroSkin } from './save';
 
@@ -1850,8 +1850,48 @@ function drawFx(ctx: CanvasRenderingContext2D, g: Game, accent: string, layer: '
   ctx.globalAlpha = 1;
 }
 
+/* Boss shots drawn with the weapons' pictures: which picture, how wide, and where along it the shot's
+   point sits (1 = the right-hand tip; the fireball's ball is at 0.78). Arrows bring their trail. */
+const ORB_PIC: Record<OrbPic, { src: 'fx' | 'arrow'; name: string; w: number; at: number; trail?: string }> = {
+  fireball: { src: 'fx', name: 'fireball', w: 44, at: 0.78 },
+  rocket: { src: 'fx', name: 'rocket', w: 30, at: 0.75 },
+  leaf: { src: 'arrow', name: 'leaf', w: 32, at: 1, trail: 'leaf-trail' },
+  water: { src: 'arrow', name: 'water', w: 32, at: 1, trail: 'water-trail' },
+  ghost: { src: 'arrow', name: 'ghost', w: 32, at: 1, trail: 'ghost-trail' },
+  spark: { src: 'arrow', name: 'spark', w: 32, at: 1, trail: 'spark-trail' },
+  bolt: { src: 'arrow', name: 'bolt', w: 40, at: 1 },
+};
 function drawOrbs(ctx: CanvasRenderingContext2D, g: Game) {
   for (const o of g.orbs) {
+    const look = o.pic && !retroLook ? ORB_PIC[o.pic] : undefined;
+    const pic = look && (look.src === 'fx' ? fxImage(look.name) : arrowImage(look.name));
+    if (look && pic && ready(pic)) {
+      ctx.save();
+      ctx.translate(o.x, o.y);
+      ctx.rotate(Math.atan2(o.vy, o.vx));
+      // A soft glow in the shot's colour so it still reads as dangerous.
+      const glow = ctx.createRadialGradient(0, 0, 0, 0, 0, o.r * 1.6);
+      glow.addColorStop(0, `${o.tone || '#ff6b6b'}88`);
+      glow.addColorStop(1, 'transparent');
+      ctx.fillStyle = glow;
+      ctx.beginPath();
+      ctx.arc(0, 0, o.r * 1.6, 0, Math.PI * 2);
+      ctx.fill();
+      if (look.trail) {
+        const trail = arrowImage(look.trail);
+        if (ready(trail)) {
+          const tw = 46;
+          const th = (tw * trail.naturalHeight) / trail.naturalWidth;
+          ctx.globalAlpha = 0.85;
+          ctx.drawImage(trail, -look.w * look.at - tw * 0.85, -th / 2, tw, th);
+          ctx.globalAlpha = 1;
+        }
+      }
+      const h = (look.w * pic.naturalHeight) / pic.naturalWidth;
+      ctx.drawImage(pic, -look.w * look.at, -h / 2, look.w, h);
+      ctx.restore();
+      continue;
+    }
     const grad = ctx.createRadialGradient(o.x, o.y, 0, o.x, o.y, o.r * 1.8);
     grad.addColorStop(0, '#fff3c4');
     grad.addColorStop(0.45, o.tone || '#ff6b6b');
@@ -1917,6 +1957,19 @@ function drawThreats(ctx: CanvasRenderingContext2D, g: Game, now: number, top: b
         ctx.beginPath();
         ctx.arc(t.x, t.y, t.r, 0, Math.PI * 2);
         ctx.stroke();
+        ctx.setLineDash([]);
+        // Meteors: the painted fireball falling onto its circle, a little slanted.
+        const ball = fxImage('fireball');
+        if (t.after === 'lava' && !retroLook && ready(ball) && k > 0.35) {
+          const f = (k - 0.35) / 0.65;
+          const w = 54 + t.r * 0.4;
+          const h = (w * ball.naturalHeight) / ball.naturalWidth;
+          ctx.save();
+          ctx.translate(t.x + (1 - f) * 70, t.y - (1 - f) * 260);
+          ctx.rotate(Math.atan2(260, -70));
+          ctx.drawImage(ball, -w * 0.78, -h / 2, w, h);
+          ctx.restore();
+        }
       } else {
         ctx.globalAlpha = Math.min(1, t.life / 0.2);
         const grad = ctx.createRadialGradient(t.x, t.y, 0, t.x, t.y, t.r);
