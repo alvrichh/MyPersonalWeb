@@ -60,7 +60,8 @@ export type Save = {
   /** The world whose floor and blocks every run draws (0: each world its own), to try them out. */
   scene: number;
   /** Which song plays: 'auto' (the original, and the final boss's own song in that fight), or one song always. */
-  song: 'auto' | 'b2b' | 'doom' | 'w1' | 'w2' | 'w3' | 'w4' | 'w5' | 'w6' | 'w7' | 'w8';
+  song: 'auto' | 'b2b' | 'doom' | 'w1' | 'w2' | 'w3' | 'w4' | 'w5' | 'w6' | 'w7' | 'w8'
+    | 'w1v2' | 'w2v2' | 'w3v2' | 'w4v2' | 'w5v2' | 'w6v2' | 'w7v2' | 'w8v2';
   music: number;
   sfx: number;
   best: { room: number; time?: number };
@@ -163,7 +164,7 @@ export function loadSave(): Save {
       if (item && save.owned.includes(item.id)) save.equipped[item.slot] = item.id;
     }
     if (!STYLES.includes(save.style)) save.style = 'world';
-    if (!['auto', 'b2b', 'doom', 'w1', 'w2', 'w3', 'w4', 'w5', 'w6', 'w7', 'w8'].includes(save.song)) save.song = 'auto';
+    if (!/^(auto|b2b|doom|w[1-8](v2)?)$/.test(save.song)) save.song = 'auto';
     if (!(Number.isInteger(save.scene) && save.scene >= 0 && save.scene <= 8)) save.scene = 0;
     if (!SKINS.includes(save.skin)) save.skin = 'boy';
     // Skins cost coins now: the free one, plus whichever an older save already wore.

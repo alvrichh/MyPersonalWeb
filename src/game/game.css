@@ -3457,3 +3457,6 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .dress-nav .dnav { flex: 1 1 0; min-width: 0; width: auto; max-width: 84px; }
 .dress-nav .dnav .ring { width: min(58px, 100%); height: auto; aspect-ratio: 1; }
 .dress-nav .dnav small { font-size: clamp(0.5rem, 2.6vw, 0.58rem); letter-spacing: 0; text-overflow: clip; }
+
+/* Customise's music list: the v1 / v2 switch under the world song that is playing. */
+.panel .gear-list .song-ver { max-width: 180px; margin: -2px auto 8px; }
