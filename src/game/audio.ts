@@ -62,9 +62,6 @@ class Engine {
   ready = false;
   playing = false;
   intensity = 0;
-  /** A final boss is out (wanted), and the chaos layer is playing (it only comes in or out on a phrase). */
-  private chaosWanted = false;
-  private chaos = false;
   private next = 0;
   private step = 0;
   private timer: number | undefined;
@@ -138,11 +135,6 @@ class Engine {
     if (this.ready) this.filter.frequency.setTargetAtTime(1800 + Math.max(0.5, level) * 6000, this.ctx.currentTime, 0.4);
   }
 
-  /** Final bosses: a chaotic layer over the music, coming in (or out) at the start of the next four-bar phrase. */
-  setChaos(on: boolean) {
-    this.chaosWanted = on;
-  }
-
   /** A boss is out: the growl plays its boss line (`BOSS_REESE`), from its next hit. */
   boss = false;
   setBoss(on: boolean) {
@@ -162,12 +154,6 @@ class Engine {
   private schedule(step: number, at: number) {
     const bar = Math.floor(step / 16);
     const inBar = step % 16;
-    // The chaos layer joins or leaves only where a phrase begins, so it grows out of the music.
-    if (inBar === 0 && bar % 4 === 0 && this.chaos !== this.chaosWanted) {
-      this.chaos = this.chaosWanted;
-      if (this.chaos) this.crash(at);
-    }
-    if (this.chaos) this.chaosLayer(bar, inBar, at);
     const setBar = bar % (SET.length * 8);
     const block = SET[Math.floor(setBar / 8)];
     const blockBar = setBar % 8;
@@ -230,54 +216,6 @@ class Engine {
     if (block === 'breakdown' && blockBar >= 2) this.arp(at, semi(ROOT * 8, chord[step % chord.length]), 0.07 + blockBar * 0.012);
     // A sparkle of plucks on top in the quieter half.
     if (block === 'liquid' && inBar % 4 === 2 && Math.random() < 0.6) this.pluck(at, semi(ROOT * 8, chord[(step >> 2) % chord.length]));
-  }
-
-  /* The final boss's layer: the drum and bass underneath is left exactly as it is (same beat, same B2B set);
-     only sound is added on its grid. The opening pad, an octave lower and driven through distortion, on every
-     chord change, and a short distorted stab of the chord on the beat-three kick of each bar. */
-  private chaosLayer(bar: number, inBar: number, at: number) {
-    const second = bar % (SET.length * 8) >= 32;
-    const chord = (second ? CHORDS_B : CHORDS)[Math.floor(bar / 2) % 4];
-    if (inBar === 0 && bar % 2 === 0) this.darkPad(at, chord, BAR * 2, 0.15);
-    if (inBar === 10) this.darkPad(at, chord, STEP * 3, 0.09);
-  }
-
-  /** A soft-clipping curve for the dark pad. */
-  private drive?: WaveShaperNode;
-  private driven() {
-    if (!this.drive) {
-      this.drive = this.ctx.createWaveShaper();
-      const n = 1024;
-      const curve = new Float32Array(n);
-      for (let i = 0; i < n; i++) { const x = (i / (n - 1)) * 2 - 1; curve[i] = Math.tanh(x * 4) / Math.tanh(4); }
-      this.drive.curve = curve;
-      const lp = this.ctx.createBiquadFilter();
-      lp.type = 'lowpass';
-      lp.frequency.value = 1500;
-      this.drive.connect(lp).connect(this.padBus);
-    }
-    return this.drive;
-  }
-
-  /** The opening pad's reedy saws an octave down, distorted: dark, a little gritty. */
-  private darkPad(at: number, chord: number[], length: number, vol: number) {
-    const g = this.ctx.createGain();
-    const lp = this.ctx.createBiquadFilter();
-    lp.type = 'lowpass';
-    lp.frequency.value = 700;
-    this.env(g, at, vol, length > BAR ? 0.4 : 0.01, length * 0.4, 0.7, length * 0.5);
-    for (const n of chord) {
-      for (const detune of [-9, 9]) {
-        const o = this.ctx.createOscillator();
-        o.type = 'sawtooth';
-        o.frequency.value = semi(ROOT * 2, n);
-        o.detune.value = detune;
-        o.connect(lp);
-        o.start(at);
-        o.stop(at + length + 0.5);
-      }
-    }
-    lp.connect(g).connect(this.driven());
   }
 
   private env(gain: GainNode, at: number, peak: number, attack: number, decay: number, sustain = 0, release = 0.01) {

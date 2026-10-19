@@ -330,7 +330,6 @@ function menuScreen() {
   bossBar.hidden = true;
   // The cover keeps the music as full as in a run (it used to be muffled here).
   audio.setIntensity(0.5);
-  audio.setChaos(false);
   audio.setBoss(false);
   const { level, progress } = profileLevel(save.xp);
   const copy = (cls: string, title: string, sub: string) => `<span class="cover-card-copy ${cls}"><b>${title}</b>${sub ? `<small>${sub}</small>` : ''}</span>`;
@@ -1890,8 +1889,6 @@ function step(now: number) {
       hudGear.innerHTML = gear.map(([id, lvl]) => `<span${isEvo(id) ? ' class="is-evo"' : ''}>${skillIcon(id, 22, iconFile(g, id))}<sub>${isEvo(id) ? '★' : lvl}</sub></span>`).join('');
     }
     const boss = g.mode === 'horde' || isBossRoom(g.room) ? g.enemies.find((e) => e.kind === 'boss' && !e.clone && !e.minion && (e.spawn <= 0 || e.vanish)) : undefined;
-    // A final boss out: the music's chaos layer (it joins on the next phrase).
-    audio.setChaos(g.phase !== 'over' && g.phase !== 'won' && g.enemies.some((e) => e.final && !e.clone && !e.dead));
     audio.setBoss(g.phase !== 'over' && g.phase !== 'won' && g.enemies.some((e) => e.kind === 'boss' && !e.clone && !e.minion && !e.dead));
     if (bossBar.hidden !== !boss) {
       bossBar.hidden = !boss;
