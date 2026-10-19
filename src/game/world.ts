@@ -327,7 +327,7 @@ export type Ember = {
   slow?: number;
 };
 export type Fx = {
-  kind: 'slash' | 'ring' | 'boom' | 'strike' | 'halo' | 'beam' | 'rune' | 'pic'; x: number; y: number; r: number; a: number; life: number; max: number;
+  kind: 'slash' | 'ring' | 'boom' | 'strike' | 'halo' | 'beam' | 'rune' | 'pic' | 'phoenix'; x: number; y: number; r: number; a: number; life: number; max: number;
   /** Seconds before it starts (the evolved sword's three cuts follow one another). */
   delay?: number;
   /** Turn over its life, in radians (those cuts sweep round). */
@@ -1862,8 +1862,9 @@ function hurtPlayer(g: Game, amount: number) {
   burst(g, p.x, p.y, '#ff8080', 10, 120, 3);
   if (p.hp <= 0) {
     if (g.revives > 0) {
-      // The phoenix feather: back on your feet with half your health.
+      // The phoenix feather: back on your feet with half your health, a firebird rising off you.
       g.revives -= 1;
+      g.fx.push({ kind: 'phoenix', x: p.x, y: p.y, r: 70, a: 0, life: 1.6, max: 1.6 });
       standUp(g);
       return;
     }
