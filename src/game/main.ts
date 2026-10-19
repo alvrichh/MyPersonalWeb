@@ -1792,11 +1792,12 @@ function step(now: number) {
       if (event === 'room' && g.mode === 'sprints') { flash(t('sprint', { room: g.room })); audio.setIntensity(Math.min(0.8, 0.2 + g.room * 0.05 + (g.world - 1) * 0.05)); }
       if (event === 'phase') {
         const boss = g.enemies.find((e) => e.phase > 1);
-        if (boss) flash(t('bossWing', { name: bossTitle(boss) }));
+        if (boss) flash(t(boss.phase > 2 ? 'bossFinalForm' : 'bossWing', { name: bossTitle(boss) }));
       }
       if (event === 'rage') {
         const boss = g.enemies.find((e) => e.rage);
-        if (boss) flash(t('bossRage', { name: bossTitle(boss) }));
+        // Nocthrax's final form says so instead.
+        if (boss && boss.phase < 3) flash(t('bossRage', { name: bossTitle(boss) }));
       }
       if (event === 'minute') { flash(t('minuteN', { n: Math.floor(g.time / 60) })); audio.setIntensity(Math.min(0.85, 0.25 + (g.time / 60) * 0.06)); }
       if (event === 'boss') {
