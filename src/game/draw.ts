@@ -1,4 +1,4 @@
-import { H, W, WALL, WHEEL_X, WORLDS, frostReach, waveAt, type Threat, type OrbPic, isBossRoom, type Enemy, type Game, type Shot, type Look, type Statue, type Rect, type Vec, type Fusion, arrowLook, fusionOf, bladeCount, bladeElement, sawOrbit, sawScale, type BladeElement } from './world';
+import { H, W, WALL, WHEEL_X, WORLDS, frostReach, waveAt, type Threat, type OrbPic, isBossRoom, type Enemy, type Game, type Shot, type Look, type Statue, type Rect, type Vec, type Fusion, arrowLook, fusionOf, bladeCount, bladeElement, sawOrbit, sawScale, type BladeElement, type Fx } from './world';
 import { SPIRIT_COLOR, type ItemId, type SpiritSkin } from './shop';
 import { FULL_HERO_SETS, heroKey, type HeroSkin } from './save';
 
@@ -73,7 +73,10 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   drawThreats(ctx, g, now, true);
   drawOrbs(ctx, g);
   if (pal.retro) drawPlayerRetro(ctx, g, pal, now);
-  else drawPlayer(ctx, g, pal, now);
+  else {
+    if (g.revives > 0) drawPhoenixWings(ctx, g.player.x, g.player.y - g.player.r * 0.75, g.player.r * 1.7, now, 0.55);
+    drawPlayer(ctx, g, pal, now);
+  }
   drawFx(ctx, g, accent, 'over');
   drawPicFx(ctx, g, true);
   drawBeams(ctx, g);
@@ -1783,8 +1786,141 @@ function drawSpiritsRetro(ctx: CanvasRenderingContext2D, g: Game, now: number) {
   ctx.shadowBlur = 0;
 }
 
+/* The Phoenix plate: wings of fire. Worn and unused, faint wings spread
+   behind the hero (`g.revives`); when it saves you, a firebird rises off you
+   with its wings wide and a ring of flame runs out over the floor. Drawn in
+   code; retro shows neither. */
+/** A bird's wing in unit coordinates (side 1 points right): the leading edge sweeps up to the tip, and pointed feathers come back to the body. */
+const WING: [number, number][] = [[1.15, -0.95], [0.95, -0.55], [1.08, -0.42], [0.8, -0.22], [0.88, 0.0], [0.6, 0.02], [0.62, 0.28], [0.4, 0.14], [0.34, 0.4], [0.1, 0.14]];
+function flameWing(ctx: CanvasRenderingContext2D, side: number, span: number, flap: number) {
+  const px = (x: number) => side * span * x;
+  const py = (y: number, x: number) => span * y - flap * x;
+  ctx.beginPath();
+  ctx.moveTo(0, 0);
+  ctx.bezierCurveTo(px(0.25), py(-0.6, 0.25), px(0.75), py(-1.0, 0.75), px(WING[0][0]), py(WING[0][1], WING[0][0]));
+  for (let i = 1; i < WING.length; i++) {
+    const [x, y] = WING[i];
+    const [x0, y0] = WING[i - 1];
+    // Into each notch on a soft curve, out to each feather's point straight.
+    if (i % 2) ctx.quadraticCurveTo(px((x + x0) / 2 + 0.06), py((y + y0) / 2, x), px(x), py(y, x));
+    else ctx.lineTo(px(x), py(y, x));
+  }
+  ctx.closePath();
+}
+function drawPhoenixWings(ctx: CanvasRenderingContext2D, x: number, y: number, span: number, now: number, alpha: number) {
+  if (retroLook) return;
+  const flap = Math.sin(now * 5) * span * 0.1;
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.shadowColor = 'rgba(255,120,20,0.9)';
+  ctx.shadowBlur = span * 0.25;
+  for (const side of [-1, 1]) {
+    const grad = ctx.createLinearGradient(0, 0, side * span * 1.1, -span * 0.6);
+    grad.addColorStop(0, `rgba(255,236,150,${alpha})`);
+    grad.addColorStop(0.3, `rgba(255,170,30,${alpha})`);
+    grad.addColorStop(0.7, `rgba(240,80,20,${alpha * 0.9})`);
+    grad.addColorStop(1, `rgba(190,30,20,${alpha * 0.25})`);
+    ctx.fillStyle = grad;
+    flameWing(ctx, side, span, flap);
+    ctx.fill();
+    // The hot inner feathers.
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = `rgba(255,230,140,${alpha * 0.55})`;
+    flameWing(ctx, side, span * 0.55, flap * 0.55);
+    ctx.fill();
+    ctx.shadowBlur = span * 0.25;
+  }
+  ctx.shadowBlur = 0;
+  // Embers drifting up off the wings.
+  for (let i = 0; i < 6; i++) {
+    const k = (now * 0.6 + i / 6) % 1;
+    const side = i % 2 ? 1 : -1;
+    ctx.fillStyle = `rgba(255,190,70,${alpha * (1 - k)})`;
+    ctx.beginPath();
+    ctx.arc(side * span * (0.35 + ((i * 0.37) % 0.6)), -span * (0.3 + k * 0.9), 1.6 + (1 - k) * 1.4, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.restore();
+}
+function drawPhoenixRise(ctx: CanvasRenderingContext2D, f: Fx, now: number, layer: 'under' | 'over') {
+  const t = 1 - f.life / f.max;
+  const fade = t < 0.75 ? 1 : 1 - (t - 0.75) / 0.25;
+  if (layer === 'under') {
+    // The ring of flame running out over the floor.
+    const r = f.r * (0.4 + t * 2.2);
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.globalAlpha = (1 - t) * 0.9;
+    const ring = ctx.createRadialGradient(f.x, f.y + 10, r * 0.7, f.x, f.y + 10, r);
+    ring.addColorStop(0, 'rgba(255,170,40,0)');
+    ring.addColorStop(0.7, 'rgba(255,190,60,0.85)');
+    ring.addColorStop(1, 'rgba(239,68,68,0)');
+    ctx.fillStyle = ring;
+    ctx.beginPath();
+    ctx.ellipse(f.x, f.y + 10, r, r * 0.45, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+    return;
+  }
+  // The firebird: it opens its wings over you, then rises and fades.
+  const open = Math.min(1, t / 0.3);
+  const rise = Math.max(0, t - 0.25) * 140;
+  const y = f.y - 30 - rise;
+  ctx.save();
+  ctx.globalAlpha = fade;
+  // A column of light under it.
+  const col = ctx.createLinearGradient(0, f.y, 0, y - 40);
+  col.addColorStop(0, 'rgba(255,150,30,0.5)');
+  col.addColorStop(1, 'rgba(255,220,140,0)');
+  ctx.fillStyle = col;
+  ctx.fillRect(f.x - 14, y - 40, 28, f.y - y + 40);
+  drawPhoenixWings(ctx, f.x, y, f.r * (0.35 + 0.85 * open), now, 0.95);
+  ctx.shadowColor = 'rgba(255,120,20,0.9)';
+  ctx.shadowBlur = 14;
+  // Its body and long tail of fire.
+  const body = ctx.createLinearGradient(0, y - 20, 0, y + 56);
+  body.addColorStop(0, '#fff3b0');
+  body.addColorStop(0.35, '#ffa51f');
+  body.addColorStop(0.8, '#e5441a');
+  body.addColorStop(1, 'rgba(200,30,20,0)');
+  ctx.fillStyle = body;
+  ctx.beginPath();
+  ctx.moveTo(f.x, y - 18);
+  ctx.bezierCurveTo(f.x + 13, y - 6, f.x + 10, y + 18, f.x + Math.sin(now * 18) * 4, y + 56);
+  ctx.bezierCurveTo(f.x - 10, y + 18, f.x - 13, y - 6, f.x, y - 18);
+  ctx.fill();
+  // The head, with a beak and a crest of three flames.
+  ctx.fillStyle = '#ffd25a';
+  ctx.beginPath();
+  ctx.arc(f.x, y - 22, 8, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#ff7a1a';
+  ctx.beginPath();
+  ctx.moveTo(f.x + 6, y - 24);
+  ctx.lineTo(f.x + 15, y - 21);
+  ctx.lineTo(f.x + 6, y - 18);
+  ctx.fill();
+  ctx.fillStyle = '#ff9a2a';
+  for (const [dx, h] of [[-5, 12], [0, 16], [5, 11]]) {
+    ctx.beginPath();
+    ctx.moveTo(f.x + dx - 3, y - 27);
+    ctx.quadraticCurveTo(f.x + dx - 2, y - 27 - h * 0.6, f.x + dx + 1, y - 27 - h);
+    ctx.quadraticCurveTo(f.x + dx + 2, y - 27 - h * 0.5, f.x + dx + 3, y - 27);
+    ctx.fill();
+  }
+  ctx.fillStyle = '#3b1d00';
+  ctx.beginPath();
+  ctx.arc(f.x + 3, y - 23, 1.5, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+}
+
 function drawFx(ctx: CanvasRenderingContext2D, g: Game, accent: string, layer: 'under' | 'over') {
   for (const f of g.fx) {
+    if (f.kind === 'phoenix') {
+      if (!retroLook) drawPhoenixRise(ctx, f, g.time, layer);
+      continue;
+    }
     const t = 1 - f.life / f.max;
     const fade = Math.max(0, f.life / f.max);
     if (layer === 'under' && (f.kind === 'ring' || f.kind === 'strike')) {
