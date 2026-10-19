@@ -418,6 +418,9 @@ export type Game = {
   bossHpMult: number;
   /** Coin revives bought this run (each dearer than the last, `REVIVE_PRICES`). */
   paidRevives: number;
+  /** The one revive a run that watching an ad gives (`adRevive`), and the one extra reroll a shift (`adReroll`). */
+  adRevived: boolean;
+  adRerolled: boolean;
   /** The player turned the coin revive down: no more offers this run. */
   reviveDeclined: boolean;
   hazards: Hazard[];
@@ -749,6 +752,8 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     wheelUsed: false,
     bossHpMult: 1,
     paidRevives: 0,
+    adRevived: false,
+    adRerolled: false,
     reviveDeclined: false,
     hazards: [],
     strikes: [],
@@ -1894,6 +1899,24 @@ export function paidRevive(g: Game) {
   g.phase = 'play';
   standUp(g);
   return true;
+}
+
+/** Watching an ad gets you up once a run, before any coin revive, and does not count as one. */
+export const canAdRevive = (g: Game) => g.phase === 'over' && !g.adRevived && !g.reviveDeclined;
+export function adRevive(g: Game) {
+  if (!canAdRevive(g)) return false;
+  g.adRevived = true;
+  g.phase = 'play';
+  standUp(g);
+  return true;
+}
+/** On call: once a shift, an ad buys one more reroll when the two are spent. */
+export const canAdReroll = (g: Game) => g.mode === 'horde' && g.phase === 'levelup' && g.rerolls <= 0 && !g.adRerolled;
+export function adReroll(g: Game) {
+  if (!canAdReroll(g)) return false;
+  g.adRerolled = true;
+  g.rerolls += 1;
+  return rerollChoices(g);
 }
 
 /* -------------------------------------------------------------------- update */

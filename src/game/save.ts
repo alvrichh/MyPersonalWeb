@@ -41,8 +41,10 @@ export type Save = {
   /** Retro look: no painted textures, the plain panels and the ring hero from before. */
   retro: boolean;
   owned: ItemId[];
-  /** On call weapons bought in the shop's arsenal. */
+  /** Arsenal weapons bought in the shop. */
   arsenal: SkillId[];
+  /** When the shop's ad gift was last taken (ms since 1970; one every `AD_GIFT_EVERY`). */
+  adGiftAt: number;
   equipped: Partial<Record<Slot, ItemId>>;
   /** The forge: permanent upgrade levels. */
   upgrades: Upgrades;
@@ -91,6 +93,7 @@ const fresh = (): Save => ({
   retro: false,
   owned: [],
   arsenal: [],
+  adGiftAt: 0,
   equipped: {},
   upgrades: {},
   style: 'world',
