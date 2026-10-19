@@ -641,7 +641,11 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
   // On call: bugs harden with the clock instead of the room.
   // On call hardens faster per world: the field never runs out of bugs to farm.
   const tough = horde ? (1 + (g.time / 60) * 0.2) * (1 + (g.world - 1) * 0.3) : (1 + (stageOf(room) - 1) * 0.095) * worldUp;
-  const bossHp = horde ? (finalBossNow(g) ? 4200 : 1800) * (1 + (g.time / 60) * 0.08) : room === ROOMS ? 2200 : 1000;
+  // On call bosses have a set health (what the clock used to give at 5:00 and 10:00); only Nightmare's,
+  // which keep coming without end, grow 8% for every minute gone.
+  const bossHp = horde
+    ? g.endless ? (finalBossNow(g) ? 4200 : 1800) * (1 + (g.time / 60) * 0.08) : finalBossNow(g) ? 7560 : 2520
+    : room === ROOMS ? 2200 : 1000;
   const base = {
     bug: { r: 12, hp: 40, speed: 72, dmg: 10, xp: 6 },
     ticket: { r: 14, hp: 60, speed: 46, dmg: 12, xp: 8 },
