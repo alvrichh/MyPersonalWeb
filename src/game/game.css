@@ -797,6 +797,15 @@ body {
 .coin {
   filter: drop-shadow(0 0 4px rgba(252, 211, 77, 0.6));
 }
+/* The painted gold coins in place of the 🪙 emoji (silver on iPhones). */
+.coin-ic {
+  display: inline-block;
+  width: 1.15em;
+  height: 1.15em;
+  vertical-align: -0.22em;
+  background: url('/images/game/ui/wheel/coins.webp') center / contain no-repeat;
+  filter: drop-shadow(0 0 3px rgba(252, 211, 77, 0.5));
+}
 
 .earned {
   font: 700 1.1rem/1.2 ui-monospace, monospace;
@@ -1867,8 +1876,10 @@ body {
   width: 24px;
   height: 24px;
   flex: none;
-  background: url('/images/game/ui/orb.webp') center / contain no-repeat;
-  font-size: 0.88rem;
+  /* The painted gold coins (the 🪙 emoji, kept for retro, is silver on iPhones). */
+  background: url('/images/game/ui/wheel/coins.webp') center / contain no-repeat;
+  filter: drop-shadow(0 0 3px rgba(252, 211, 77, 0.45));
+  font-size: 0;
 }
 
 .hud-hp {
@@ -2451,7 +2462,7 @@ body {
 :root[data-retro] .hud-room { padding: 0; background: none; font: 600 0.9rem/1 ui-monospace, "JetBrains Mono", monospace; text-shadow: none; }
 :root[data-retro] .hud-room::before { display: none; }
 :root[data-retro] .hud-coins { min-width: 0; height: auto; padding: 0; background: none; font: 600 0.85rem/1 ui-monospace, "JetBrains Mono", monospace; color: #fcd34d; text-shadow: none; }
-:root[data-retro] .hud-coin-orb { width: auto; height: auto; background: none; }
+:root[data-retro] .hud-coin-orb { width: auto; height: auto; background: none; filter: none; font-size: 0.88rem; }
 :root[data-retro] .hud-hp { display: none; }
 :root[data-retro] .hud-xp { flex: 1; font: 600 0.8rem/1 ui-monospace, "JetBrains Mono", monospace; color: var(--muted); }
 :root[data-retro] .hud-xp i { height: 6px; border-radius: 999px; background: rgba(255, 255, 255, 0.1); }
@@ -2536,13 +2547,25 @@ body {
 .dress {
   display: grid;
   grid-template-columns: minmax(84px, 112px) minmax(0, 1fr) minmax(84px, 112px);
+  /* Three shared rows: a two-line item name on one side no longer pushes that column out of line. */
+  grid-template-rows: repeat(3, auto);
   align-items: center;
   justify-items: center;
   gap: 8px 6px;
   width: 100%;
   max-width: 480px;
 }
-.dress-col { display: grid; gap: 10px; width: 100%; }
+.dress-col {
+  position: relative;
+  z-index: 2; /* over the hero's pad, which is wider than the middle column */
+  display: grid;
+  grid-row: 1 / 4;
+  grid-template-rows: subgrid;
+  gap: 10px;
+  width: 100%;
+}
+.dress-col > .dslot { align-self: stretch; }
+.dress-col > .dslot .plate { height: 100%; align-content: center; }
 .dslot {
   position: relative;
   display: grid;
@@ -2594,6 +2617,8 @@ body {
   position: relative;
   display: grid;
   justify-items: center;
+  grid-column: 2;
+  grid-row: 1 / 4;
   align-self: stretch;
   align-content: end;
   gap: 2px;
@@ -2606,8 +2631,8 @@ body {
   bottom: 0;
   left: 50%;
   z-index: 0;
-  width: 190%;
-  max-width: 260px;
+  width: 150%;
+  max-width: 220px;
   aspect-ratio: 320 / 210;
   transform: translateX(-50%);
   background: url('/images/game/ui/glow_pad.webp') center / 100% 100% no-repeat;

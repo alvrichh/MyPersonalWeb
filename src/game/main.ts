@@ -217,7 +217,10 @@ function fitPanel() {
 }
 window.addEventListener('resize', fitPanel);
 
+/** The coin emoji is silver on iPhones: outside retro every 🪙 in a dialog becomes the painted gold coins. */
+const COIN_PIC = '<i class="coin-ic" aria-hidden="true"></i>';
 function show(html: string, wide = false, menu = false, extra = '') {
+  if (!save.retro) html = html.replaceAll('🪙', COIN_PIC);
   // A dialog that re-renders itself (the shop after a purchase) keeps its scroll.
   const keepScroll = extra === 'keep-scroll' ? screen.querySelector('.panel-in')?.scrollTop ?? 0 : 0;
   // The corner buttons (close, options) are pulled out of the scrolling box so they stay put.
@@ -787,6 +790,18 @@ function stylesScreen(note = '') {
   }
 }
 
+/** The list a slot or a button opens sits under the fold on a phone: bring its heading up into view. */
+function showPicks() {
+  const inner = screen.querySelector<HTMLElement>('.panel-in');
+  const headTop = screen.querySelector<HTMLElement>('.panel-in > h3.slot');
+  if (!inner || !headTop || !dressSlot) return;
+  const want = headTop.offsetTop - 12;
+  if (want > inner.scrollTop + inner.clientHeight * 0.55 || want < inner.scrollTop) {
+    inner.dataset.scroll = String(want);
+    inner.scrollTo({ top: want, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  }
+}
+
 function startRun(world = worldIn(), mode = save.mode) {
   game = newGame(buildLoadout(save.equipped, save.upgrades, masteries(), save.arsenal), save.style, world, mode);
   preloadFx();
@@ -991,10 +1006,12 @@ screen.addEventListener('click', (event) => {
     const slot = target.dataset.slot as Slot;
     dressSlot = dressSlot === slot ? null : slot;
     stylesScreen();
+    showPicks();
   } else if (target.dataset.dressList) {
     const key = target.dataset.dressList as 'skin' | 'foes';
     dressSlot = dressSlot === key ? null : key;
     stylesScreen();
+    showPicks();
   } else if (target.dataset.dress) {
     const item = itemById(target.dataset.dress as ItemId);
     const worn = save.equipped[item.slot] === item.id;
