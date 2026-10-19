@@ -3328,14 +3328,15 @@ function enemyFrame(e: Enemy, count: number, now: number) {
   if (e.kind === 'ticket' && e.cd > 1.5) return e.cd > 1.75 ? 3 : 4;
   return Math.floor(now * 6 + e.wobble) % 3;
 }
-/* Bosses with a seven-pose sheet of their own (static/images/game/bosses/<id>-<frame>.webp: three walking,
-   wind-up, strike, hit and the special move), by `bossId`: a final boss's name, or the cast for a room-6
-   boss. Add an id here once its pictures are in; until then a final boss wears its cast's boss, bigger. */
+/* Final bosses with a sheet of their own (static/images/game/bosses/<id>-<frame>.webp, nine poses, the same
+   order as the prompts: three walking, wind-up and charge, the ring of orbs, the world's move, the signature
+   and a hit). Add an id here once its pictures are in; until then a final boss wears its cast's boss, bigger. */
 const BOSS_ART = new Set<string>([]);
 const finalSprites = new Map<string, HTMLImageElement[]>();
 function finalFrame(e: Enemy, now: number) {
-  if (e.hit > 0) return 5;
-  if (e.pose > 0 || e.chan > 0) return 6;
+  if (e.hit > 0) return 8;
+  if (e.chan > 0) return 7;
+  if (e.pose > 0) return e.act === 'sig' ? 7 : e.act === 'move' ? 6 : 5;
   if (e.aim > 0) return 3;
   if (e.dash > 0) return 4;
   return Math.floor(now * 6 + e.wobble) % 3;
@@ -3344,14 +3345,14 @@ function drawEnemySprite(ctx: CanvasRenderingContext2D, e: Enemy, now: number) {
   let count = SPRITE_FRAMES[e.look];
   let frames: HTMLImageElement[] | undefined;
   let img: HTMLImageElement | undefined;
-  if (e.kind === 'boss' && BOSS_ART.has(e.bossId)) {
+  if (e.final && BOSS_ART.has(e.bossId)) {
     frames = finalSprites.get(e.bossId);
     if (!frames) {
-      frames = Array.from({ length: 7 }, (_, i) => Object.assign(new Image(), { src: `./images/game/bosses/${e.bossId}-${i}.webp` }));
+      frames = Array.from({ length: 9 }, (_, i) => Object.assign(new Image(), { src: `./images/game/bosses/${e.bossId}-${i}.webp` }));
       finalSprites.set(e.bossId, frames);
     }
     img = frames[finalFrame(e, now)];
-    count = 7;
+    count = 9;
   }
   if (!count) return false;
   frames ??= enemyFrames(e.look, e.kind, count);

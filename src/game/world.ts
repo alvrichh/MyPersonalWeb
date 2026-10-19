@@ -208,6 +208,8 @@ export type Enemy = {
   land: '' | 'slam' | 'blink';
   /** Seconds left of its special pose, of a channelled attack (the spiral, the laser), and that attack's tick. */
   pose: number;
+  /** Which pose that is: the ring of orbs, the world's move or the signature. */
+  act: '' | 'burst' | 'move' | 'sig';
   chan: number;
   chanTick: number;
   /** Cooldowns of the world's special attack and of the final boss's signature, and signatures used (the chimera cycles). */
@@ -608,6 +610,7 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
     vanish: false,
     land: '',
     pose: 0,
+    act: '',
     chan: 0,
     chanTick: 0,
     cd4: 3,
@@ -1938,6 +1941,8 @@ function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
   if (e.cd <= 0) {
     e.cd = (final ? 2.4 : 3.1) * fury;
     ring(g, e, final ? 14 : 10, final ? 120 : 105);
+    e.pose = 0.35;
+    e.act = 'burst';
   }
   // Charge: stop and aim for a moment, then dash at where you were.
   if (e.dash > 0) {
@@ -1985,6 +1990,7 @@ function worldMove(g: Game, e: Enemy, move: Move) {
   const aim = Math.atan2(p.y - e.y, p.x - e.x);
   const dmg = Math.round(e.dmg * 0.6);
   e.pose = 0.5;
+  e.act = 'move';
   switch (move) {
     case 'volley':
       // A stream of bug reports: three fans of three, each a little faster.
@@ -2044,6 +2050,7 @@ function signature(g: Game, e: Enemy, sig: Signature) {
   const b = bounds(g);
   const dmg = Math.round(e.dmg * 0.7);
   e.pose = 0.8;
+  e.act = 'sig';
   switch (sig) {
     case 'spiral':
       // Stack overflow: a double spiral of glitches for three seconds, standing still.
