@@ -1921,6 +1921,25 @@ export function adReroll(g: Game) {
   return rerollChoices(g);
 }
 
+/** Sparks, bolts and effects run on and fade: every frame of play, and after the run ends (the page calls it
+    then), so the last hit's sparks don't hang frozen on the fallen hero. Shots and orbs in the air go at once. */
+export function settleEffects(g: Game, dt: number) {
+  if (g.phase === 'over' || g.phase === 'won') {
+    g.shots = [];
+    g.orbs = [];
+  }
+  g.particles = g.particles.filter((q) => {
+    q.x += q.vx * dt;
+    q.y += q.vy * dt;
+    q.vx *= 0.92;
+    q.vy *= 0.92;
+    q.life -= dt;
+    return q.life > 0;
+  });
+  g.zaps = g.zaps.filter((z) => (z.life -= dt) > 0);
+  g.fx = g.fx.filter((f) => (f.delay && f.delay > 0 ? ((f.delay -= dt), true) : (f.life -= dt) > 0));
+}
+
 /* -------------------------------------------------------------------- update */
 
 function updateEnemy(g: Game, e: Enemy, dt: number) {
@@ -2917,16 +2936,7 @@ export function update(g: Game, dt: number, input: Input) {
     return true;
   });
 
-  g.particles = g.particles.filter((q) => {
-    q.x += q.vx * dt;
-    q.y += q.vy * dt;
-    q.vx *= 0.92;
-    q.vy *= 0.92;
-    q.life -= dt;
-    return q.life > 0;
-  });
-  g.zaps = g.zaps.filter((z) => (z.life -= dt) > 0);
-  g.fx = g.fx.filter((f) => (f.delay && f.delay > 0 ? ((f.delay -= dt), true) : (f.life -= dt) > 0));
+  settleEffects(g, dt);
 
   if (g.mode === 'horde') {
     // The last boss down: the shift is over.
