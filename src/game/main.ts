@@ -1862,7 +1862,8 @@ function step(now: number) {
     hudLevel.textContent = t('level', { level: g.level });
     setMeter(hudXp, g.xp / g.xpNext);
     setMeter(hudHp, Math.max(0, g.player.hp) / g.player.maxHp);
-    hudCoins.textContent = String(Math.floor(g.coins));
+    // The wallet: what is banked plus what this run has picked up so far (banked when the run ends).
+    hudCoins.textContent = String(Math.floor(save.coins + g.coins));
     const bowLook = arrowLook(g);
     const gear = [['bow', bowLook && bowLook !== 'fusion' ? g.skills[bowLook] : 1] as const, ...ownedWeapons(g).map((id) => [id, g.skills[id]] as const)];
     const isEvo = (id: SkillId | 'bow') => id !== 'bow' && !!g.evolved[id];
