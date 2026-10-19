@@ -3335,12 +3335,12 @@ function enemyFrame(e: Enemy, count: number, now: number) {
 /* Final bosses with a sheet of their own (static/images/game/bosses/<id>-<frame>.webp, nine poses, the same
    order as the prompts: three walking, wind-up and charge, the ring of orbs, the world's move, the signature
    and a hit). Add an id here once its pictures are in; until then a final boss wears its cast's boss, bigger. */
-const BOSS_ART = new Set<string>(['kernel', 'zeus', 'queen']);
+const BOSS_ART = new Set<string>(['kernel', 'archdemon', 'zeus', 'queen']);
 /* Each final sheet is cut on one canvas for its nine poses (body centred, its lowest point on the baseline):
    how many times the body's width the canvas is drawn, and how much of the canvas lies under the feet
    (dust, a dash's trail, the volley's orbs). */
 const BOSS_CANVAS: Record<string, { k: number; feet: number }> = {
-  kernel: { k: 2.155, feet: 0.1766 }, zeus: { k: 1.782, feet: 0.2063 }, queen: { k: 1.348, feet: 0.1484 },
+  kernel: { k: 2.155, feet: 0.1766 }, archdemon: { k: 1.69, feet: 0.1232 }, zeus: { k: 1.782, feet: 0.2063 }, queen: { k: 1.348, feet: 0.1484 },
 };
 const finalSprites = new Map<string, HTMLImageElement[]>();
 function finalFrame(e: Enemy, now: number) {
