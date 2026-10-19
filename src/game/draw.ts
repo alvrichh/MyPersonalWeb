@@ -3932,7 +3932,7 @@ const BOSS_ART = new Set<string>(['kernel', 'archdemon', 'drakkar', 'valdur', 'z
 const BOSS_CANVAS: Record<string, { k: number; feet: number }> = {
   kernel: { k: 2.155, feet: 0.1766 }, archdemon: { k: 1.69, feet: 0.1232 },
   drakkar: { k: 1.081, feet: 0.12 }, valdur: { k: 1.538, feet: 0.1954 }, zeus: { k: 1.782, feet: 0.2063 }, queen: { k: 1.348, feet: 0.1484 },
-  wraith: { k: 1.295, feet: 0.1974 }, mech: { k: 1.412, feet: 0.0878 }, chimera: { k: 1.721, feet: 0.0576 },
+  wraith: { k: 1.295, feet: 0.1974 }, mech: { k: 1.412, feet: 0.0878 }, chimera: { k: 1.721, feet: 0.0576 }, chimera2: { k: 1.838, feet: 0.2461 },
 };
 const finalSprites = new Map<string, HTMLImageElement[]>();
 function finalFrame(e: Enemy) {
@@ -3941,17 +3941,23 @@ function finalFrame(e: Enemy) {
   if (e.pose > 0) return e.act === 'sig' ? 7 : e.act === 'move' ? 6 : 5;
   if (e.aim > 0) return 3;
   if (e.dash > 0) return 4;
+  // In the air (Nocthrax's phase 2) the three first poses are a wing beat, flapping whether it moves or not.
+  if (e.phase > 1) return [0, 1, 2, 1][Math.floor(performance.now() / 120) % 4];
   return walkFrame(e, WALK_FINAL);
 }
 function drawEnemySprite(ctx: CanvasRenderingContext2D, e: Enemy) {
   let count = SPRITE_FRAMES[e.look];
   let frames: HTMLImageElement[] | undefined;
   let img: HTMLImageElement | undefined;
+  // A boss with phases has a sheet per phase (`chimera2` for Nocthrax in the air).
+  const sheet = e.phase > 1 ? `${e.bossId}${e.phase}` : e.bossId;
   if (e.final && BOSS_ART.has(e.bossId)) {
-    frames = finalSprites.get(e.bossId);
+    frames = finalSprites.get(sheet);
     if (!frames) {
-      frames = Array.from({ length: 9 }, (_, i) => Object.assign(new Image(), { src: `./images/game/bosses/${e.bossId}-${i}.webp` }));
-      finalSprites.set(e.bossId, frames);
+      frames = Array.from({ length: 9 }, (_, i) => Object.assign(new Image(), { src: `./images/game/bosses/${sheet}-${i}.webp` }));
+      finalSprites.set(sheet, frames);
+      // The next phase's sheet loads now, so it is in when the boss changes.
+      if (e.bossId === 'chimera' && sheet === 'chimera') finalSprites.set('chimera2', Array.from({ length: 9 }, (_, i) => Object.assign(new Image(), { src: `./images/game/bosses/chimera2-${i}.webp` })));
     }
     img = frames[finalFrame(e)];
     count = 9;
@@ -3960,7 +3966,7 @@ function drawEnemySprite(ctx: CanvasRenderingContext2D, e: Enemy) {
   frames ??= enemyFrames(e.look, e.kind, count);
   img ??= frames[enemyFrame(e, count)] ?? frames[0];
   if (!img.complete || !img.naturalWidth) return false;
-  const fit = count === 9 ? BOSS_CANVAS[e.bossId] : SPRITE_CANVAS[`${e.look}-${e.kind}`];
+  const fit = count === 9 ? BOSS_CANVAS[sheet] : SPRITE_CANVAS[`${e.look}-${e.kind}`];
   const size = e.r * (e.kind === 'boss' ? 2.6 : 2.5) * (fit ? fit.k : 1);
   const ratio = img.naturalWidth / img.naturalHeight;
   const w = ratio >= 1 ? size : size * ratio;
