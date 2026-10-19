@@ -582,7 +582,7 @@ function leaveScreen(to: 'site' | 'menu') {
   paused = true;
   show(`<h2>${t('leaveTitle')}</h2><p>${t('leaveText')}</p>
     <button class="primary" data-act="resume">${t('keepPlaying')}</button>
-    <button class="ghost" data-act="${to === 'site' ? 'leave-site' : 'quit'}">${t(to === 'site' ? 'leaveSite' : 'leaveMenu')}</button>`);
+    <button class="ghost is-danger" data-act="${to === 'site' ? 'leave-site' : 'quit'}">${t(to === 'site' ? 'leaveSite' : 'leaveMenu')}</button>`);
 }
 
 /* A header from the UI sheets: the ornament is the picture, the words sit in its plate. */
