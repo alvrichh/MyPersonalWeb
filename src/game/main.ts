@@ -8,7 +8,7 @@ import { ARMOUR_SLOTS, ARSENAL, ITEMS, type SpiritSkin, UPGRADES, WEAPON_SLOTS, 
 import { Scene } from './scene';
 import { makeT, pickLang, type Key } from './strings';
 import {
-  CATEGORY, EVO_PARTNER, H, revivePrice, SKILLS, arrowLook, arrowOptions, bladeElement, bladeOptions, canEvolve, evoOf, fusionOf, fusionWith, arrowElements, rerollChoices, maxLevel, pickArrow, pickBlade, pickSpirit, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_LUCKY, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
+  CATEGORY, EVO_PARTNER, H, revivePrice, SKILLS, arrowLook, arrowOptions, bladeElement, bladeOptions, canEvolve, evoOf, fusionOf, fusionWith, pairFusion, arrowElements, rerollChoices, maxLevel, pickArrow, pickBlade, pickSpirit, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_LUCKY, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
   type ArrowLook, type Category, type Choice, type Fusion, type Game, type GameEvent, type Input, type Look, type SkillId, type WheelOutcome,
 } from './world';
 
@@ -497,9 +497,19 @@ function fusionLine(g: Game, f: Fusion, adding?: SkillId) {
   return `${els.map((e) => ELEMENT_MARK[e]).join(' + ')} = ${t(`${fusionKey(f)}Name` as Key)}`;
 }
 
+/** A fusion's medallion (`skills/fusion-<id>.webp`), the two element marks behind it for retro. */
+const fusionIcon = (g: Game, f: Fusion, size = 56) =>
+  `<img class="skill-icon" src="./images/game/skills/fusion-${f}.webp" width="${size}" height="${size}" alt=""><span class="skill-emoji">${arrowElements(g).slice(0, 2).map((e) => ELEMENT_MARK[e]).join('')}</span>`;
+
 function choiceScreen(g: Game) {
   const cards = g.choices
     .map((choice) => {
+      if (choice === 'fuse') {
+        // The gold fusion card: taking it spends this level and fuses the two elements.
+        const f = pairFusion(g);
+        if (!f) return '';
+        return `<button class="skill skill-ranged is-evo is-fuse" data-skill="fuse"><span class="icon" aria-hidden="true">${fusionIcon(g, f)}</span><span class="cat">★ ${t('fusionCat')}</span><b>${fusionLine(g, f)}</b><span>${t(`${fusionKey(f)}Text` as Key)}</span><span class="lvl">${t('fusionLabel')}</span></button>`;
+      }
       const evo = evoOf(choice);
       if (evo) {
         // The gold card: the weapon's evolution.
@@ -1154,7 +1164,8 @@ function renderGearPanel(g: Game) {
   const upgrades = SKILLS.filter((s) => CATEGORY[s] === 'upgrade' && g.skills[s] > 0);
   const fusion = fusionOf(g);
   const fusionRow = fusion
-    ? `<h4>${t('gearFusion')}</h4><ul><li class="is-fusion"><span class="gp-icon gp-fuse" aria-hidden="true">${arrowElements(g).slice(0, 2).map((e) => ELEMENT_MARK[e]).join('')}</span><span class="gp-copy"><b>${fusionLine(g, fusion)}</b><small>${t(`${fusionKey(fusion)}Text` as Key)}</small></span></li></ul>`
+    ? `<h4>${t('gearFusion')}</h4><ul><li class="is-fusion"><span class="gp-icon" aria-hidden="true">${fusionIcon(g, fusion, 34)}</span><span class="gp-copy"><b>${fusionLine(g, fusion)}</b><small>${t(`${fusionKey(fusion)}Text` as Key)}</small></span></li></ul>`
+    : pairFusion(g) ? `<p class="gp-hint">${t('fusionPending', { fusion: fusionLine(g, pairFusion(g) as Fusion) })}</p>`
     : arrowElements(g).length === 1 ? `<p class="gp-hint">${t('fusionHint')}</p>` : '';
   gearPanel.innerHTML = `<header><b>${t('gearTitle')}</b><button type="button" class="gp-close" aria-label="${t('resume')}">✕</button></header>
     <h4>${t('gearWeapons')}</h4><ul>${weapons.map(row).join('')}</ul>${fusionRow}
