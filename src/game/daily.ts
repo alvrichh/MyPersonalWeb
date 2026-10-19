@@ -1,4 +1,4 @@
-/* The daily chest: once a day (by the player's own calendar) the cover's
+/* The daily chest: once every 24 hours from the last one opened, the cover's
    chest opens a wheel of free prizes: coins, an arsenal weapon, an outfit or
    an accessory from the shop, and very rarely a skin. The prize is drawn by
    its odds before the wheel spins; the spin only lands on a slice of it.
@@ -21,15 +21,11 @@ export const DAILY_ODDS: Record<DailyPrize, number> = {
 };
 export const DAILY_COINS = { coins: 150, coinsBig: 400, jackpot: 1500 };
 
-/** The player's own calendar day, YYYY-MM-DD. */
-export const today = (now = new Date()) =>
-  `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-export const dailyReady = (save: Save, now = new Date()) => save.dailyDay !== today(now);
-/** Milliseconds until midnight, when the next chest is ready. */
-export const untilTomorrow = (now = new Date()) => {
-  const next = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
-  return next.getTime() - now.getTime();
-};
+/** A chest every 24 hours, counted from the moment the last one was opened. */
+export const DAILY_EVERY = 24 * 3600 * 1000;
+/** Milliseconds until the next chest (0 when it is ready). */
+export const dailyLeft = (save: Save, now = Date.now()) => Math.max(0, save.dailyAt + DAILY_EVERY - now);
+export const dailyReady = (save: Save, now = Date.now()) => dailyLeft(save, now) === 0;
 
 export type DailyResult = { prize: DailyPrize; coins?: number; weapon?: SkillId; item?: ItemId; skin?: HeroSkin };
 
@@ -43,7 +39,7 @@ const pools = (save: Save) => ({
   skin: SKINS.filter((s) => s !== 'boy' && !save.skins.includes(s)),
 });
 
-/** Opens today's chest: draws the prize, gives it and marks the day. A prize with nothing left to win becomes coins. */
+/** Opens the chest: draws the prize, gives it and starts the next 24 hours. A prize with nothing left to win becomes coins. */
 export function openDaily(save: Save, rand = Math.random): DailyResult {
   const any = <T>(list: T[]) => list[Math.floor(rand() * list.length)];
   let roll = rand() * 100;
@@ -54,7 +50,7 @@ export function openDaily(save: Save, rand = Math.random): DailyResult {
   }
   const left = pools(save);
   if ((prize === 'weapon' || prize === 'outfit' || prize === 'accessory' || prize === 'skin') && !left[prize].length) prize = 'coinsBig';
-  save.dailyDay = today();
+  save.dailyAt = Date.now();
   switch (prize) {
     case 'weapon': {
       const weapon = any(left.weapon);
