@@ -15,7 +15,8 @@
 
 export type Sfx =
   | 'shoot' | 'knife' | 'boomerang' | 'hit' | 'kill' | 'gem' | 'hurt' | 'levelup' | 'pick'
-  | 'door' | 'boss' | 'slam' | 'slash' | 'strike' | 'boom' | 'revive' | 'win' | 'over' | 'coin' | 'click';
+  | 'door' | 'boss' | 'slam' | 'slash' | 'strike' | 'boom' | 'revive' | 'win' | 'over' | 'coin' | 'click'
+  | 'laser1' | 'laser2' | 'laser3' | 'laserEvo';
 
 const BPM = 174;
 const STEP = 60 / BPM / 4; // a sixteenth
@@ -445,6 +446,10 @@ class Engine {
       case 'win': return this.chime(at, [523, 659, 784, 1047, 1319, 1568], 0.14, 0.7);
       case 'over': return this.chime(at, [440, 415, 392, 349], 0.22, 0.5);
       case 'click': return this.blip(at, 1200, 1200, 0.02, 0.15, 'sine');
+      case 'laser1': return this.laser(at, 1);
+      case 'laser2': return this.laser(at, 2);
+      case 'laser3': return this.laser(at, 3);
+      case 'laserEvo': return this.laser(at, 4);
     }
   }
 
@@ -496,6 +501,58 @@ class Engine {
       o.start(at + i * gap);
       o.stop(at + i * gap + 0.35);
     });
+  }
+
+  /* The sky laser, a tier per beam colour: yellow a thin quick zap, orange two detuned voices, red a deeper
+     beam with a sub under it, and the evolved Death Ray a charge that rises before a heavy purple blast. */
+  private laser(at: number, tier: number) {
+    const evo = tier === 4;
+    const start = evo ? at + 0.16 : at;
+    if (evo) {
+      // The charge: a quick rising whine.
+      const c = this.ctx.createOscillator();
+      c.type = 'sine';
+      c.frequency.setValueAtTime(300, at);
+      c.frequency.exponentialRampToValueAtTime(2400, start);
+      const cg = this.ctx.createGain();
+      this.env(cg, at, 0.12, 0.08, 0.1);
+      c.connect(cg).connect(this.sfxBus);
+      c.start(at);
+      c.stop(start + 0.05);
+    }
+    const top = [0, 2600, 2000, 1500, 1200][tier];
+    const low = [0, 700, 420, 220, 90][tier];
+    const length = [0, 0.14, 0.2, 0.28, 0.45][tier];
+    const voices = tier === 1 ? [0] : tier === 2 ? [-12, 12] : [-10, 0, 10];
+    const lp = this.ctx.createBiquadFilter();
+    lp.type = 'lowpass';
+    lp.frequency.setValueAtTime(evo ? 5000 : 3800, start);
+    lp.frequency.exponentialRampToValueAtTime(600, start + length);
+    lp.connect(this.sfxBus);
+    for (const cents of voices) {
+      const o = this.ctx.createOscillator();
+      o.type = tier >= 3 ? 'sawtooth' : 'square';
+      o.detune.value = cents;
+      o.frequency.setValueAtTime(top, start);
+      o.frequency.exponentialRampToValueAtTime(low, start + length);
+      const g = this.ctx.createGain();
+      this.env(g, start, (evo ? 0.22 : 0.16) / voices.length + 0.05, 0.004, length);
+      o.connect(g).connect(lp);
+      o.start(start);
+      o.stop(start + length + 0.05);
+    }
+    // A sub under the red beam and the Death Ray, and its crackle.
+    if (tier >= 3) {
+      const s = this.ctx.createOscillator();
+      s.frequency.setValueAtTime(evo ? 110 : 160, start);
+      s.frequency.exponentialRampToValueAtTime(40, start + length);
+      const sg = this.ctx.createGain();
+      this.env(sg, start, evo ? 0.45 : 0.3, 0.005, length);
+      s.connect(sg).connect(this.sfxBus);
+      s.start(start);
+      s.stop(start + length + 0.05);
+      this.hiss(start, length * 0.8, evo ? 0.28 : 0.16, evo ? 2400 : 3200);
+    }
   }
 
   private roar(at: number) {

@@ -1533,12 +1533,14 @@ const SFX_FOR: Partial<Record<GameEvent, Sfx>> = {
   heal: 'revive', heart: 'gem', chest: 'levelup', wheel: 'door', shrine: 'door', rage: 'boss',
 };
 // Hits and gems happen many times a frame; one sound per kind per frame is plenty.
-function playEvents(events: GameEvent[]) {
+/** The laser's sound follows its beam colour: a tier a level, and the Death Ray's own. */
+const laserSfx = (g: Game): Sfx => (g.evolved.laser ? 'laserEvo' : g.skills.laser >= 3 ? 'laser3' : g.skills.laser === 2 ? 'laser2' : 'laser1');
+function playEvents(g: Game) {
   const seen = new Set<GameEvent>();
-  for (const event of events) {
+  for (const event of g.events) {
     if (seen.has(event)) continue;
     seen.add(event);
-    const name = SFX_FOR[event];
+    const name = event === 'laser' ? laserSfx(g) : SFX_FOR[event];
     if (name) audio.play(name);
   }
 }
@@ -1683,7 +1685,7 @@ function step(now: number) {
   if (g && !paused && g.phase === 'play') {
     update(g, dt, readInput());
     if (calm) g.shake = 0;
-    playEvents(g.events);
+    playEvents(g);
     for (const event of g.events) {
       if (event === 'clear') flash(g.room === WHEEL_ROOM && g.wheelDoor ? t('wheelHint') : t('doorOpen'));
       if (event === 'shrine') { flash(t('shrineHint')); audio.setIntensity(0.1); }
