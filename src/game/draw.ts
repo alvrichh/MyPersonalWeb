@@ -109,6 +109,35 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
    join; flat tiles in retro. The field has no edge: whatever the canvas
    shows gets floor. */
 const FLOOR_CROP = { x: 0.21, y: 0.16, w: 0.58, h: 0.68 };
+/** The field's floor as a repeating pattern: a 2×2 block of the floor's plain middle and its mirrors. */
+const fieldPatterns = new Map<HTMLImageElement, CanvasPattern>();
+function fieldPattern(ctx: CanvasRenderingContext2D, floor: HTMLImageElement, tw: number, th: number) {
+  let pat = fieldPatterns.get(floor);
+  if (!pat) {
+    const sx = floor.naturalWidth * FLOOR_CROP.x;
+    const sy = floor.naturalHeight * FLOOR_CROP.y;
+    const sw = Math.round(floor.naturalWidth * FLOOR_CROP.w);
+    const sh = Math.round(floor.naturalHeight * FLOOR_CROP.h);
+    const block = document.createElement('canvas');
+    block.width = sw * 2;
+    block.height = sh * 2;
+    const b = block.getContext('2d');
+    if (!b) return null;
+    for (const [i, j] of [[0, 0], [1, 0], [0, 1], [1, 1]]) {
+      b.save();
+      b.translate(i * sw + sw / 2, j * sh + sh / 2);
+      b.scale(i ? -1 : 1, j ? -1 : 1);
+      b.drawImage(floor, sx, sy, sw, sh, -sw / 2, -sh / 2, sw, sh);
+      b.restore();
+    }
+    pat = ctx.createPattern(block, 'repeat') ?? undefined;
+    if (!pat) return null;
+    pat.setTransform(new DOMMatrix().scale(tw / sw, th / sh));
+    fieldPatterns.set(floor, pat);
+  }
+  return pat;
+}
+
 function drawField(ctx: CanvasRenderingContext2D, g: Game, vis: Rect, now: number) {
   const theme = WORLDS[g.world - 1];
   const floor = retroLook ? undefined : floorImage(g.world);
@@ -116,22 +145,12 @@ function drawField(ctx: CanvasRenderingContext2D, g: Game, vis: Rect, now: numbe
   const th = H * FLOOR_CROP.h;
   ctx.fillStyle = theme.floor;
   ctx.fillRect(vis.x, vis.y, vis.w, vis.h);
-  if (floor && floor.complete && floor.naturalWidth) {
-    const sx = floor.naturalWidth * FLOOR_CROP.x;
-    const sy = floor.naturalHeight * FLOOR_CROP.y;
-    const sw = floor.naturalWidth * FLOOR_CROP.w;
-    const sh = floor.naturalHeight * FLOOR_CROP.h;
-    const i0 = Math.floor(vis.x / tw);
-    const j0 = Math.floor(vis.y / th);
-    for (let i = i0; i * tw < vis.x + vis.w; i++) {
-      for (let j = j0; j * th < vis.y + vis.h; j++) {
-        ctx.save();
-        ctx.translate(i * tw + tw / 2, j * th + th / 2);
-        ctx.scale(i & 1 ? -1 : 1, j & 1 ? -1 : 1);
-        ctx.drawImage(floor, sx, sy, sw, sh, -tw / 2, -th / 2, tw + 0.5, th + 0.5);
-        ctx.restore();
-      }
-    }
+  const pattern = floor && floor.complete && floor.naturalWidth ? fieldPattern(ctx, floor, tw, th) : null;
+  if (pattern) {
+    // One seamless pattern (the crop and its mirrors, baked once): tiles drawn one by one left hairline seams
+    // where the background showed through at fractional camera positions.
+    ctx.fillStyle = pattern;
+    ctx.fillRect(vis.x, vis.y, vis.w, vis.h);
   } else {
     ctx.strokeStyle = theme.grid;
     ctx.lineWidth = 1;
