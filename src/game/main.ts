@@ -178,7 +178,13 @@ const evoIcon = (id: SkillId, g?: Game) => {
 const iconFile = (g: Game, id: SkillId | 'bow', lv = id === 'bow' ? 0 : g.skills[id]) => {
   if (id !== 'bow' && g.evolved[id] && EVO_ICON.includes(id)) return evoIcon(id, g);
   if (id === 'laser') return lv >= 3 ? 'laser-red' : lv >= 2 ? 'laser-orange' : 'laser';
-  if (id !== 'blades') return id === 'bow' ? 'double' : id;
+  if (id === 'bow') {
+    // The bow wears the arrow you picked: its medallion (the fusion's once fused and worn).
+    const look = arrowLook(g);
+    const fusion = fusionOf(g);
+    return look === 'fusion' && fusion ? `fusion-${fusion}` : look ?? 'double';
+  }
+  if (id !== 'blades') return id;
   const el = bladeElement(g);
   return el === 'steel' ? 'blades' : `blades-${el}`;
 };
@@ -1550,10 +1556,12 @@ function openGearPanel() {
 }
 function renderGearPanel(g: Game) {
   const row = (id: SkillId | 'bow') => {
-    const lv = id === 'bow' ? 0 : g.skills[id];
-    const max = id === 'bow' ? 0 : maxLevel(id);
+    // The bow shows the level of the arrow it wears (the fusion's own label once fused).
+    const look = id === 'bow' ? arrowLook(g) : null;
+    const lv = id === 'bow' ? (look && look !== 'fusion' ? g.skills[look] : 0) : g.skills[id];
+    const max = id === 'bow' ? (look && look !== 'fusion' ? maxLevel(look) : 0) : maxLevel(id);
     const evolved = id !== 'bow' && !!g.evolved[id];
-    const level = id === 'bow' ? '' : evolved ? `★ ${t('evoLabel')}` : max > 50 ? t('gearLevelOnly', { level: lv }) : t('gearLevel', { level: lv, max });
+    const level = id === 'bow' ? (look === 'fusion' ? `★ ${t('fusionCat')}` : look ? t('gearLevel', { level: lv, max }) : '') : evolved ? `★ ${t('evoLabel')}` : max > 50 ? t('gearLevelOnly', { level: lv }) : t('gearLevel', { level: lv, max });
     const partner = id !== 'bow' && !evolved ? EVO_PARTNER[id] : undefined;
     const hint = partner ? `<small class="gp-evo${canEvolve(g, id as SkillId) ? ' is-ready' : ''}">★ ${t('evoWith', { skill: t(`${partner}Name` as Key) })}</small>` : '';
     return `<li${evolved ? ' class="is-evo"' : ''}><span class="gp-icon">${skillIcon(id, 34, iconFile(g, id))}</span><span class="gp-copy"><b>${skillName(g, id)}</b><small>${skillText(g, id)}</small>${hint}</span>${level ? `<em>${level}</em>` : ''}${id === 'blades' ? bladeChips(g) : id === 'spirits' ? spiritChips(g) : id === 'bow' ? arrowChips(g) : ''}</li>`;
@@ -1852,7 +1860,8 @@ function step(now: number) {
     setMeter(hudXp, g.xp / g.xpNext);
     setMeter(hudHp, Math.max(0, g.player.hp) / g.player.maxHp);
     hudCoins.textContent = String(Math.floor(g.coins));
-    const gear = [['bow', 1] as const, ...ownedWeapons(g).map((id) => [id, g.skills[id]] as const)];
+    const bowLook = arrowLook(g);
+    const gear = [['bow', bowLook && bowLook !== 'fusion' ? g.skills[bowLook] : 1] as const, ...ownedWeapons(g).map((id) => [id, g.skills[id]] as const)];
     const isEvo = (id: SkillId | 'bow') => id !== 'bow' && !!g.evolved[id];
     const gearKey = gear.map(([id, lvl]) => `${iconFile(g, id)}${lvl}${isEvo(id) ? 'E' : ''}`).join(' ');
     if (hudGear.dataset.gear !== gearKey) {
