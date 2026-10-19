@@ -1644,9 +1644,8 @@ function throwBricks(g: Game) {
   const dmg = (34 + 14 * (lv - 1)) * power(g, 'magic') * (evolved ? 2.2 : 1);
   for (let i = 0; i < (evolved ? 2 : lv); i++) {
     g.shots.push(shot('brick', g.player, -Math.PI / 2 + rand(-0.55, 0.55), rand(470, 560), dmg, {
-      // It falls back past you and on down until it leaves the room or the view (`updateShot`), through every bug,
-      // hitting with the whole brick (the old 1.3 s ran out just as it came back down among the bugs).
-      pierce: 1e9, ghost: true, free: true, grav: 900, life: 3, size: evolved ? 22 : 13, spin: rand(0, 6),
+      // It falls back down and breaks on the first bug it hits (`updateShot`), or leaves the room or the view.
+      ghost: true, free: true, grav: 900, life: 3, size: evolved ? 22 : 13, spin: rand(0, 6),
     }));
   }
 }
@@ -2588,12 +2587,16 @@ function updateShot(g: Game, s: Shot, dt: number): boolean {
       return false;
     }
     hitWithShot(g, e, s);
-    // The 1-ton weight stops the bugs it lands on.
-    if (s.kind === 'brick' && g.evolved.brick) {
-      e.slow = Math.max(e.slow, 0.6);
-      e.slowBy = 1;
-      g.shake = Math.max(g.shake, 0.08);
-      if (s.hits.size === 1) g.fx.push({ kind: 'pic', pic: 'impact', x: e.x, y: e.y + e.r * 0.5, r: 24, a: rand(0, 6), life: 0.6, max: 0.6 });
+    // A brick breaks on the bug it hits, with the impact burst; the 1-ton weight also stops that bug for a moment.
+    if (s.kind === 'brick') {
+      const iron = !!g.evolved.brick;
+      if (iron) {
+        e.slow = Math.max(e.slow, 0.6);
+        e.slowBy = 1;
+        g.shake = Math.max(g.shake, 0.08);
+      }
+      g.fx.push({ kind: 'pic', pic: 'impact', x: e.x, y: e.y + e.r * 0.3, r: iron ? 26 : 18, a: rand(0, 6), life: 0.45, max: 0.45, top: true });
+      return false;
     }
     // The ball flies off the bug it hit, a little to one side, until its bounces run out.
     if (s.kind === 'ball') {
