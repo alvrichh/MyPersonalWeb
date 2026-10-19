@@ -128,9 +128,11 @@ export const EVO_PARTNER: Partial<Record<SkillId, SkillId>> = {
 /** A level-up card: a skill, a weapon's evolution, or the arrows' fusion. */
 export type Choice = SkillId | `evo:${SkillId}` | 'fuse';
 export const evoOf = (c: Choice): SkillId | null => (c.startsWith('evo:') ? (c.slice(4) as SkillId) : null);
-/** Fusions are earned: with two elements on the bow a gold «Fusion» card turns up at the next level up, and
-    only taking it (spending that level) fuses them. Until then the two elements work on their own. */
-export const canFuse = (g: Game) => !g.fused && !!pairFusion(g);
+/** Fusions are earned, like evolutions: with two elements on the bow and one of them at its top level a gold
+    «Fusion» card turns up at the next level up, and only taking it (spending that level) fuses them. Until
+    then the two elements work on their own. */
+export const fusionReady = (g: Game) => !!pairFusion(g) && arrowElements(g).some((s) => g.skills[s] >= maxLevel(s));
+export const canFuse = (g: Game) => !g.fused && fusionReady(g);
 export const canEvolve = (g: Game, w: SkillId) => {
   const partner = EVO_PARTNER[w];
   return !!partner && !g.evolved[w] && g.skills[w] >= maxLevel(w) && g.skills[partner] >= 1;
@@ -961,7 +963,11 @@ function offerChoices(g: Game, keepEvo?: SkillId | null, avoid: Choice[] = []) {
   for (const [k, kinds] of groups.entries()) {
     if (taken[k]) continue;
     const pool = pickFrom(SKILLS.filter((s) => kinds.includes(CATEGORY[s])));
-    if (pool.length) g.choices.push(any(pool));
+    // With a pair of elements on the way to their fusion, the bow's slot offers one of the two half the time,
+    // or a run (sprints above all) would seldom see the card.
+    const toward = k === 2 && pairFusion(g) && !g.fused && !canFuse(g) ? pickFrom(arrowElements(g)) : [];
+    if (toward.length && Math.random() < 0.5) g.choices.push(any(toward));
+    else if (pool.length) g.choices.push(any(pool));
   }
   while (g.choices.length < 3) {
     const pool = pickFrom(SKILLS);
