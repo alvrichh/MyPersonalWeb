@@ -3952,7 +3952,7 @@ function enemyFrames(look: Look, kind: Enemy['kind'], count: number) {
 /** Which frame an enemy shows right now: hit, attacking, or its walk cycle. */
 function enemyFrame(e: Enemy, count: number) {
   if (count === 4) return walkFrame(e, WALK4);
-  if (e.hit > 0) return 5;
+  if (e.kind === 'boss' ? e.pain > 0 : e.hit > 0) return 5;
   // Attacks: a boss winding up (aim) or charging (dash); a ticket just after it threw (its cooldown was reset high).
   if (e.kind === 'boss' && e.aim > 0) return 3;
   if (e.kind === 'boss' && e.dash > 0) return 4;
@@ -3973,7 +3973,7 @@ const BOSS_CANVAS: Record<string, { k: number; feet: number }> = {
 };
 const finalSprites = new Map<string, HTMLImageElement[]>();
 function finalFrame(e: Enemy) {
-  if (e.hit > 0) return 8;
+  if (e.pain > 0) return 8;
   if (e.chan > 0) return 7;
   if (e.pose > 0) return e.act === 'sig' ? 7 : e.act === 'move' ? 6 : 5;
   if (e.aim > 0) return 3;

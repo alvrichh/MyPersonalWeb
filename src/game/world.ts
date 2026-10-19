@@ -191,6 +191,9 @@ export type Enemy = {
   /** Seconds until it joins the fight (it is shown as a warning circle). */
   spawn: number;
   hit: number;
+  /** Seconds of a boss's hurt pose: shown on every `BOSS_PAIN_EVERY`-th hit, not on each, so it doesn't flinch all the time. */
+  pain: number;
+  hits: number;
   burn: number;
   burnDps: number;
   burnTick: number;
@@ -657,6 +660,8 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
     xp: base.xp,
     spawn,
     hit: 0,
+    pain: 0,
+    hits: 0,
     burn: 0,
     burnDps: 0,
     burnTick: 0,
@@ -1155,10 +1160,14 @@ function kill(g: Game, e: Enemy) {
   }
 }
 
+/** A boss shows its hurt pose on the first hit and then every fourth. */
+const BOSS_PAIN_EVERY = 4;
+
 function hurt(g: Game, e: Enemy, amount: number, push?: Vec) {
   if (e.dead) return;
   e.hp -= amount;
   e.hit = 0.1;
+  if (e.kind === 'boss' && ++e.hits % BOSS_PAIN_EVERY === 1) e.pain = 0.18;
   if (e.bossId === 'drakkar' && e.hp <= e.maxHp / 2) {
     breakShip(g, e);
     return;
@@ -2044,6 +2053,7 @@ function updateEnemy(g: Game, e: Enemy, dt: number) {
     return;
   }
   e.hit = Math.max(0, e.hit - dt);
+  e.pain = Math.max(0, e.pain - dt);
   e.wobble += dt * 6;
   if (e.burn > 0) {
     e.burn -= dt;
