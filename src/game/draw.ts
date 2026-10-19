@@ -90,7 +90,7 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   drawStrikes(ctx, g, now);
   const beadsOff = animWorn(g);
   for (const q of g.particles) {
-    if (beadsOff && q.kind === 'glow') continue;
+    if (beadsOff && (q.kind === 'glow' || q.kind === 'crackle')) continue;
     const k = Math.max(0, q.life / q.max);
     ctx.globalAlpha = q.kind === 'puff' ? k * 0.55 : k;
     ctx.fillStyle = q.color;
@@ -708,7 +708,7 @@ function arrowImage(name: string) {
 }
 
 /** Fusions whose arrow is an animated sheet with its trail painted in (`arrows/fusion-<id>-<frame>.webp`), and how long it is drawn. */
-const FUSION_ANIM: Partial<Record<Fusion, { frames: number; len: number }>> = { plasma: { frames: 4, len: 100 } };
+const FUSION_ANIM: Partial<Record<Fusion, { frames: number; len: number }>> = { plasma: { frames: 4, len: 100 }, shock: { frames: 4, len: 100 } };
 /** Whether that sheet is worn and in, so the drawn trail beads can step aside. */
 const animWorn = (g: Game) => {
   const f = arrowLook(g) === 'fusion' ? fusionOf(g) : null;
