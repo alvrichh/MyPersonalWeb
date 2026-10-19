@@ -2734,7 +2734,7 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 /* The ✕ in the corner leaves; the back button stays only in retro, which hides the ✕. */
 :root:not([data-retro]) .dnav.is-back { display: none; }
 .dnav.is-open .ring { background-image: url('/images/game/ui/ring_orange_on.webp'); }
-.dnav small { max-width: 100%; overflow: hidden; font: 700 0.58rem/1 ui-monospace, monospace; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
+.dnav small { max-width: 100%; overflow: hidden; font: 700 0.58rem/1.3 ui-monospace, monospace; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
 .dnav.is-open small { color: #fcd34d; }
 .dnav:hover .ring, .dnav:focus-visible .ring { filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.5)) brightness(1.15); }
 
