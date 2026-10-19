@@ -216,44 +216,52 @@ class Engine {
     if (block === 'liquid' && inBar % 4 === 2 && Math.random() < 0.6) this.pluck(at, semi(ROOT * 8, chord[(step >> 2) % chord.length]));
   }
 
-  /* The final boss's chaos, all low and drum-led (no alarm-like beeps): extra kicks, a growl, low glitch
-     stutters, a tom fill falling every other bar and a low, dark stab a tritone off the root. */
+  /* The final boss's layer: the drum and bass underneath is left exactly as it is (same beat, same B2B set);
+     only sound is added on its grid. The opening pad, an octave lower and driven through distortion, on every
+     chord change, and a short distorted stab of the chord on the beat-three kick of each bar. */
   private chaosLayer(bar: number, inBar: number, at: number) {
-    const root = BASS_ROOTS[Math.floor(bar / 2) % 4];
-    if (inBar === 3 || inBar === 13) this.kick(at);
-    if ([1, 6, 11].includes(inBar)) this.reese(at, semi(ROOT, root + (inBar === 6 ? 1 : 0)), STEP * 1.5);
-    if (Math.random() < 0.18) this.glitch(at);
-    if (bar % 4 === 3 && inBar >= 8) this.snare(at, 0.25 + (inBar - 8) * 0.08);
-    if (bar % 2 === 1 && inBar >= 8 && inBar % 2 === 0) this.tom(at, 150 - (inBar - 8) * 18);
-    if (bar % 2 === 0 && (inBar === 7 || inBar === 15)) this.reese(at, semi(ROOT * 2, root + 6), STEP * 0.9);
+    const second = bar % (SET.length * 8) >= 32;
+    const chord = (second ? CHORDS_B : CHORDS)[Math.floor(bar / 2) % 4];
+    if (inBar === 0 && bar % 2 === 0) this.darkPad(at, chord, BAR * 2, 0.15);
+    if (inBar === 10) this.darkPad(at, chord, STEP * 3, 0.09);
   }
 
-  /** A stutter of filtered noise at a random pitch. */
-  private glitch(at: number) {
-    const n = this.ctx.createBufferSource();
-    n.buffer = this.noise;
-    const bp = this.ctx.createBiquadFilter();
-    bp.type = 'bandpass';
-    bp.frequency.value = 180 + Math.random() * 1400;
-    bp.Q.value = 8;
-    const g = this.ctx.createGain();
-    this.env(g, at, 0.35, 0.001, STEP * 0.6);
-    n.connect(bp).connect(g).connect(this.musicBus);
-    n.start(at, Math.random() * 1.5);
-    n.stop(at + STEP);
+  /** A soft-clipping curve for the dark pad. */
+  private drive?: WaveShaperNode;
+  private driven() {
+    if (!this.drive) {
+      this.drive = this.ctx.createWaveShaper();
+      const n = 1024;
+      const curve = new Float32Array(n);
+      for (let i = 0; i < n; i++) { const x = (i / (n - 1)) * 2 - 1; curve[i] = Math.tanh(x * 4) / Math.tanh(4); }
+      this.drive.curve = curve;
+      const lp = this.ctx.createBiquadFilter();
+      lp.type = 'lowpass';
+      lp.frequency.value = 1500;
+      this.drive.connect(lp).connect(this.padBus);
+    }
+    return this.drive;
   }
 
-  /** A tom: a sine falling in pitch with a little noise on its attack. */
-  private tom(at: number, freq: number) {
-    const o = this.ctx.createOscillator();
-    o.frequency.setValueAtTime(freq, at);
-    o.frequency.exponentialRampToValueAtTime(freq * 0.45, at + 0.25);
+  /** The opening pad's reedy saws an octave down, distorted: dark, a little gritty. */
+  private darkPad(at: number, chord: number[], length: number, vol: number) {
     const g = this.ctx.createGain();
-    this.env(g, at, 0.7, 0.002, 0.28);
-    o.connect(g).connect(this.musicBus);
-    o.start(at);
-    o.stop(at + 0.35);
-    this.snare(at, 0.12);
+    const lp = this.ctx.createBiquadFilter();
+    lp.type = 'lowpass';
+    lp.frequency.value = 700;
+    this.env(g, at, vol, length > BAR ? 0.4 : 0.01, length * 0.4, 0.7, length * 0.5);
+    for (const n of chord) {
+      for (const detune of [-9, 9]) {
+        const o = this.ctx.createOscillator();
+        o.type = 'sawtooth';
+        o.frequency.value = semi(ROOT * 2, n);
+        o.detune.value = detune;
+        o.connect(lp);
+        o.start(at);
+        o.stop(at + length + 0.5);
+      }
+    }
+    lp.connect(g).connect(this.driven());
   }
 
   private env(gain: GainNode, at: number, peak: number, attack: number, decay: number, sustain = 0, release = 0.01) {
