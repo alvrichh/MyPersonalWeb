@@ -1644,7 +1644,7 @@ export function preloadFx() {
   for (const n of ['fireball', 'boom-small', 'boom-big', 'knife', 'boomerang', 'slash', 'chest', 'slam', 'crystals', 'gem', 'gem-big', 'bolt-1', 'bolt-2', 'bolt-3', 'bolt-4', 'bolt-5', 'bolt-6',
     'brick', 'iron', 'molotov', 'barrel', 'durian', 'durian-big', 'drill', 'drill-evo', 'rocket', 'rocket-shark', 'ball', 'ball-evo',
     'fire-pool', 'fire-pool-big', 'caltrops', 'mine', 'mine-on', 'mine-volt', 'volt-burst', 'impact', 'heart', 'rune', 'crescent',
-    'steam-cloud', 'plasma-burst', 'wisp-flame', 'shock-ring', 'ice-block', 'spectral-bolt', 'laser-yellow', 'laser-orange', 'laser-red', 'laser-purple']) fxImage(n);
+    'steam-cloud', 'plasma-burst', 'wisp-flame', 'shock-ring', 'ice-block', 'spectral-bolt', 'laser-yellow', 'laser-orange', 'laser-red', 'laser-purple', ...Array.from({ length: 7 }, (_, i) => `lava-${i}`)]) fxImage(n);
 }
 
 function drawFireballs(ctx: CanvasRenderingContext2D, g: Game) {
@@ -3383,6 +3383,13 @@ const LOOKS: Record<Look, Record<Enemy['kind'], Drawer>> = {
 
 function drawHazards(ctx: CanvasRenderingContext2D, g: Game, now: number) {
   for (const h of g.hazards) {
+    // The owner's bubbling lava pool: seven frames looping, each pool on its own beat (the disc is 91% of its picture).
+    const lava = h.kind === 'lava' && !retroLook ? fxImage(`lava-${((Math.floor(now * 7 + h.x * 0.05 + h.y * 0.03) % 7) + 7) % 7}`) : null;
+    if (lava && ready(lava)) {
+      const size = (h.r * 2) / 0.91;
+      ctx.drawImage(lava, h.x - size / 2, h.y - size / 2, size, size);
+      continue;
+    }
     if (h.kind === 'lava') {
       const grad = ctx.createRadialGradient(h.x, h.y, h.r * 0.2, h.x, h.y, h.r);
       grad.addColorStop(0, '#fde68a');
