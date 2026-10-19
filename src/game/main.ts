@@ -266,7 +266,32 @@ function show(html: string, wide = false, menu = false, extra = '') {
   // The corner buttons (close, options) are pulled out of the scrolling box so they stay put.
   const close = (html.match(/<button class="ui-(?:close|opts)"[^>]*>(?:<span[^<]*<\/span>)?<\/button>/g) ?? []).join('');
   for (const b of html.match(/<button class="ui-(?:close|opts)"[^>]*>(?:<span[^<]*<\/span>)?<\/button>/g) ?? []) html = html.replace(b, '');
-  screen.innerHTML = `<div class="panel${wide ? ' panel-wide' : ''}${opening && !menu && extra !== 'is-map' ? ' is-pop' : ''}">${close}<div class="panel-in">${html}</div></div>`;
+  const cls = `panel${wide ? ' panel-wide' : ''}${opening && !menu && extra !== 'is-map' ? ' is-pop' : ''}`;
+  const old = opening ? null : screen.querySelector<HTMLElement>(':scope > .panel');
+  if (old) {
+    // A dialog re-rendering itself (a pick, a purchase, a colour) keeps its frame element and every picture
+    // it still shows, so nothing blinks while the browser decodes them again (Safari shows a new <img> blank
+    // for a frame even when it is cached).
+    const kept = new Map<string, HTMLImageElement[]>();
+    for (const img of old.querySelectorAll('img')) {
+      const list = kept.get(img.src) ?? [];
+      list.push(img);
+      kept.set(img.src, list);
+    }
+    old.className = cls;
+    old.removeAttribute('style');
+    old.innerHTML = `${close}<div class="panel-in">${html}</div>`;
+    for (const img of old.querySelectorAll('img')) {
+      const same = kept.get(img.src)?.shift();
+      if (!same) continue;
+      // Only what differs is touched: setting src again could start a reload.
+      for (const { name } of [...same.attributes]) if (!img.hasAttribute(name)) same.removeAttribute(name);
+      for (const { name, value } of [...img.attributes]) if (same.getAttribute(name) !== value) same.setAttribute(name, value);
+      img.replaceWith(same);
+    }
+  } else {
+    screen.innerHTML = `<div class="${cls}">${close}<div class="panel-in">${html}</div></div>`;
+  }
 
   screen.classList.toggle('is-menu', menu);
   screen.classList.toggle('is-map', extra === 'is-map');
