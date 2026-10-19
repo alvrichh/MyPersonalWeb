@@ -49,9 +49,9 @@ const SET: Block[] = ['liquid', 'neuro', 'liquid', 'neuro', 'breakdown', 'trance
    blocks); what changes is the key, the chords, the bass roots, the order of the blocks and the growl's line.
    `b2b` is the original; `doom` is the final boss's: D minor with a harmonic-minor A that pulls home,
    neuro first and the growl singing its own melody from the start. */
-export type SongId = 'b2b' | 'doom';
+export type SongId = 'b2b' | 'doom' | 'w1' | 'w2' | 'w3' | 'w4' | 'w5' | 'w6' | 'w7' | 'w8';
 export type SongPick = 'auto' | SongId;
-type Song = { root: number; chords: number[][]; roots: number[]; chordsB: number[][]; rootsB: number[]; set: Block[]; reese?: number[][] };
+type Song = { root: number; chords: number[][]; roots: number[]; chordsB: number[][]; rootsB: number[]; set: Block[]; reese?: number[][]; pluck?: OscillatorType };
 const SONGS: Record<SongId, Song> = {
   b2b: { root: ROOT, chords: CHORDS, roots: BASS_ROOTS, chordsB: CHORDS_B, rootsB: BASS_ROOTS_B, set: SET },
   doom: {
@@ -67,6 +67,64 @@ const SONGS: Record<SongId, Song> = {
       [0, 7, 12, 15, 17, 19],
       [15, 12, 10, 7, 5, 3],
     ],
+  },
+  /* One song per world, only to listen to in Customise for now: each in its own key and mode, with its own
+     chords, block order, growl line and pluck, on the same B2B beat. */
+  w1: { // The Backlog: C minor, i–VI–III–VII, a chiptune pluck.
+    root: 32.7,
+    chords: [[0, 3, 7, 12], [-4, 0, 3, 8], [3, 7, 10, 15], [-2, 2, 5, 10]], roots: [0, -4, 3, -2],
+    chordsB: [[-4, 0, 3, 8], [-2, 2, 5, 10], [0, 3, 7, 12], [7, 11, 14, 19]], rootsB: [-4, -2, 0, 7],
+    set: ['liquid', 'neuro', 'liquid', 'neuro', 'breakdown', 'trance', 'both', 'neuro'],
+    reese: [[0, 0, 7, 3, 0, 12], [0, 3, 5, 7, 5, 3]], pluck: 'square',
+  },
+  w2: { // Hotfix Hell: E Phrygian, the flat second for heat.
+    root: 41.2,
+    chords: [[0, 3, 7, 12], [1, 5, 8, 13], [3, 7, 10, 15], [1, 5, 8, 13]], roots: [0, 1, 3, 1],
+    chordsB: [[0, 3, 7, 12], [-4, 0, 3, 8], [-5, -1, 2, 7], [1, 5, 8, 13]], rootsB: [0, -4, -5, 1],
+    set: ['neuro', 'liquid', 'neuro', 'neuro', 'breakdown', 'trance', 'both', 'neuro'],
+    reese: [[0, 1, 0, 7, 8, 7], [0, 12, 13, 12, 7, 1]], pluck: 'sawtooth',
+  },
+  w3: { // Data Lake: A minor saga, Am–G–F–E, then Am–F–C–G.
+    root: 55,
+    chords: [[0, 3, 7, 12], [-2, 2, 5, 10], [-4, 0, 3, 8], [-5, -1, 2, 7]], roots: [0, -2, -4, -5],
+    chordsB: [[0, 3, 7, 12], [-4, 0, 3, 8], [3, 7, 10, 15], [-2, 2, 5, 10]], rootsB: [0, -4, 3, -2],
+    set: ['liquid', 'liquid', 'neuro', 'both', 'breakdown', 'trance', 'both', 'neuro'],
+    reese: [[0, 7, 12, 10, 7, 3], [0, -2, 0, 3, 5, 7], [0, 7, 12, 15, 12, 10], [7, 5, 3, 2, 0, -5]], pluck: 'triangle',
+  },
+  w4: { // Legacy Jungle: G minor with sevenths, a marimba-like sine.
+    root: 49,
+    chords: [[0, 3, 7, 10], [3, 7, 10, 14], [5, 8, 12, 15], [7, 10, 14, 17]], roots: [0, 3, 5, 7],
+    chordsB: [[-4, 0, 3, 7], [7, 10, 14, 17], [5, 8, 12, 15], [7, 11, 14, 17]], rootsB: [-4, 7, 5, 7],
+    set: ['liquid', 'neuro', 'liquid', 'both', 'breakdown', 'trance', 'liquid', 'neuro'],
+    reese: [[0, 3, 5, 7, 10, 7], [5, 3, 0, -2, 0, 3]], pluck: 'sine',
+  },
+  w5: { // The Arena: F# minor, heroic, with a C# major that pulls home.
+    root: 46.25,
+    chords: [[0, 3, 7, 12], [-4, 0, 3, 8], [-2, 2, 5, 10], [7, 11, 14, 19]], roots: [0, -4, -2, 7],
+    chordsB: [[5, 8, 12, 17], [0, 3, 7, 12], [-4, 0, 3, 8], [7, 11, 14, 19]], rootsB: [5, 0, -4, 7],
+    set: ['neuro', 'liquid', 'neuro', 'liquid', 'breakdown', 'trance', 'both', 'both'],
+    reese: [[0, 7, 0, 12, 11, 7], [5, 7, 8, 7, 5, 3], [0, 3, 7, 12, 14, 15], [12, 11, 7, 5, 3, 2]], pluck: 'triangle',
+  },
+  w6: { // Overclock: Eb minor, i–iv–v–i, mechanical square plucks.
+    root: 38.89,
+    chords: [[0, 3, 7, 12], [5, 8, 12, 17], [7, 10, 14, 19], [0, 3, 7, 12]], roots: [0, 5, 7, 0],
+    chordsB: [[-4, 0, 3, 8], [-2, 2, 5, 10], [0, 3, 7, 12], [7, 10, 14, 19]], rootsB: [-4, -2, 0, 7],
+    set: ['neuro', 'neuro', 'liquid', 'neuro', 'breakdown', 'trance', 'both', 'neuro'],
+    reese: [[0, 0, 12, 0, 0, 12], [7, 7, 10, 12, 10, 7]], pluck: 'square',
+  },
+  w7: { // Nightmare: C# minor, chromatic and eerie, a lullaby gone wrong.
+    root: 34.65,
+    chords: [[0, 3, 7, 12], [-4, -1, 3, 8], [1, 4, 8, 13], [-1, 3, 6, 11]], roots: [0, -4, 1, -1],
+    chordsB: [[0, 3, 7, 12], [1, 4, 8, 13], [-4, -1, 3, 8], [-5, -1, 2, 7]], rootsB: [0, 1, -4, -5],
+    set: ['liquid', 'neuro', 'breakdown', 'neuro', 'liquid', 'trance', 'both', 'neuro'],
+    reese: [[0, 1, 0, 6, 7, 6], [3, 4, 3, 1, 0, -1]], pluck: 'sine',
+  },
+  w8: { // The Core: Bb minor, i–iv–V–i, then VI–VII–V held: everything at once.
+    root: 58.27,
+    chords: [[0, 3, 7, 12], [5, 8, 12, 17], [7, 11, 14, 19], [0, 3, 7, 12]], roots: [0, 5, 7, 0],
+    chordsB: [[-4, 0, 3, 8], [-2, 2, 5, 10], [7, 11, 14, 19], [7, 11, 14, 19]], rootsB: [-4, -2, 7, 7],
+    set: ['both', 'neuro', 'liquid', 'both', 'breakdown', 'trance', 'both', 'both'],
+    reese: [[0, 12, 7, 15, 12, 19], [17, 15, 12, 11, 7, 5]], pluck: 'sawtooth',
   },
 };
 
@@ -290,7 +348,7 @@ class Engine {
     }
     if (block === 'breakdown' && blockBar >= 2) this.arp(at, semi(this.root * 8, chord[step % chord.length]), 0.07 + blockBar * 0.012);
     // A sparkle of plucks on top in the quieter half.
-    if (block === 'liquid' && inBar % 4 === 2 && Math.random() < 0.6) this.pluck(at, semi(this.root * 8, chord[(step >> 2) % chord.length]));
+    if (block === 'liquid' && inBar % 4 === 2 && Math.random() < 0.6) this.pluck(at, semi(this.root * 8, chord[(step >> 2) % chord.length]), song.pluck);
   }
 
   /* The final boss's tension, added on the music's own grid (nothing underneath changes): a thin high pedal
@@ -573,9 +631,9 @@ class Engine {
     lp.connect(g).connect(this.musicBus);
   }
 
-  private pluck(at: number, freq: number) {
+  private pluck(at: number, freq: number, wave: OscillatorType = 'triangle') {
     const o = this.ctx.createOscillator();
-    o.type = 'triangle';
+    o.type = wave;
     o.frequency.value = freq;
     const g = this.ctx.createGain();
     this.env(g, at, 0.12, 0.003, 0.25);
