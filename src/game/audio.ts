@@ -49,7 +49,7 @@ const SET: Block[] = ['liquid', 'neuro', 'liquid', 'neuro', 'breakdown', 'trance
    blocks); what changes is the key, the chords, the bass roots, the order of the blocks and the growl's line.
    `b2b` is the original; `doom` is the final boss's: D minor with a harmonic-minor A that pulls home,
    neuro first and the growl singing its own melody from the start. */
-export type SongId = 'b2b' | 'doom' | 'w1' | 'w2' | 'w3' | 'w4' | 'w5' | 'w6' | 'w7' | 'w8';
+export type SongId = 'b2b' | 'doom' | 'w1';
 export type SongPick = 'auto' | SongId | V2Id;
 type Song = { root: number; chords: number[][]; roots: number[]; chordsB: number[][]; rootsB: number[]; set: Block[]; reese?: number[][]; pluck?: OscillatorType };
 const SONGS: Record<SongId, Song> = {
@@ -68,63 +68,14 @@ const SONGS: Record<SongId, Song> = {
       [15, 12, 10, 7, 5, 3],
     ],
   },
-  /* One song per world, only to listen to in Customise for now: each in its own key and mode, with its own
-     chords, block order, growl line and pluck, on the same B2B beat. */
+  /* The first world's own song, on the same B2B beat in its own key, with its own chords, block order,
+     growl line and pluck (the other worlds kept only their second versions, `V2S`). */
   w1: { // The Backlog: C minor, i–VI–III–VII, a chiptune pluck.
     root: 32.7,
     chords: [[0, 3, 7, 12], [-4, 0, 3, 8], [3, 7, 10, 15], [-2, 2, 5, 10]], roots: [0, -4, 3, -2],
     chordsB: [[-4, 0, 3, 8], [-2, 2, 5, 10], [0, 3, 7, 12], [7, 11, 14, 19]], rootsB: [-4, -2, 0, 7],
     set: ['liquid', 'neuro', 'liquid', 'neuro', 'breakdown', 'trance', 'both', 'neuro'],
     reese: [[0, 0, 7, 3, 0, 12], [0, 3, 5, 7, 5, 3]], pluck: 'square',
-  },
-  w2: { // Hotfix Hell: E Phrygian, the flat second for heat.
-    root: 41.2,
-    chords: [[0, 3, 7, 12], [1, 5, 8, 13], [3, 7, 10, 15], [1, 5, 8, 13]], roots: [0, 1, 3, 1],
-    chordsB: [[0, 3, 7, 12], [-4, 0, 3, 8], [-5, -1, 2, 7], [1, 5, 8, 13]], rootsB: [0, -4, -5, 1],
-    set: ['neuro', 'liquid', 'neuro', 'neuro', 'breakdown', 'trance', 'both', 'neuro'],
-    reese: [[0, 1, 0, 7, 8, 7], [0, 12, 13, 12, 7, 1]], pluck: 'sawtooth',
-  },
-  w3: { // Code Freeze: A minor saga, Am–G–F–E, then Am–F–C–G.
-    root: 55,
-    chords: [[0, 3, 7, 12], [-2, 2, 5, 10], [-4, 0, 3, 8], [-5, -1, 2, 7]], roots: [0, -2, -4, -5],
-    chordsB: [[0, 3, 7, 12], [-4, 0, 3, 8], [3, 7, 10, 15], [-2, 2, 5, 10]], rootsB: [0, -4, 3, -2],
-    set: ['liquid', 'liquid', 'neuro', 'both', 'breakdown', 'trance', 'both', 'neuro'],
-    reese: [[0, 7, 12, 10, 7, 3], [0, -2, 0, 3, 5, 7], [0, 7, 12, 15, 12, 10], [7, 5, 3, 2, 0, -5]], pluck: 'triangle',
-  },
-  w4: { // Legacy Jungle: G minor with sevenths, a marimba-like sine.
-    root: 49,
-    chords: [[0, 3, 7, 10], [3, 7, 10, 14], [5, 8, 12, 15], [7, 10, 14, 17]], roots: [0, 3, 5, 7],
-    chordsB: [[-4, 0, 3, 7], [7, 10, 14, 17], [5, 8, 12, 15], [7, 11, 14, 17]], rootsB: [-4, 7, 5, 7],
-    set: ['liquid', 'neuro', 'liquid', 'both', 'breakdown', 'trance', 'liquid', 'neuro'],
-    reese: [[0, 3, 5, 7, 10, 7], [5, 3, 0, -2, 0, 3]], pluck: 'sine',
-  },
-  w5: { // The Arena: F# minor, heroic, with a C# major that pulls home.
-    root: 46.25,
-    chords: [[0, 3, 7, 12], [-4, 0, 3, 8], [-2, 2, 5, 10], [7, 11, 14, 19]], roots: [0, -4, -2, 7],
-    chordsB: [[5, 8, 12, 17], [0, 3, 7, 12], [-4, 0, 3, 8], [7, 11, 14, 19]], rootsB: [5, 0, -4, 7],
-    set: ['neuro', 'liquid', 'neuro', 'liquid', 'breakdown', 'trance', 'both', 'both'],
-    reese: [[0, 7, 0, 12, 11, 7], [5, 7, 8, 7, 5, 3], [0, 3, 7, 12, 14, 15], [12, 11, 7, 5, 3, 2]], pluck: 'triangle',
-  },
-  w6: { // Overclock: Eb minor, i–iv–v–i, mechanical square plucks.
-    root: 38.89,
-    chords: [[0, 3, 7, 12], [5, 8, 12, 17], [7, 10, 14, 19], [0, 3, 7, 12]], roots: [0, 5, 7, 0],
-    chordsB: [[-4, 0, 3, 8], [-2, 2, 5, 10], [0, 3, 7, 12], [7, 10, 14, 19]], rootsB: [-4, -2, 0, 7],
-    set: ['neuro', 'neuro', 'liquid', 'neuro', 'breakdown', 'trance', 'both', 'neuro'],
-    reese: [[0, 0, 12, 0, 0, 12], [7, 7, 10, 12, 10, 7]], pluck: 'square',
-  },
-  w7: { // Nightmare: C# minor, chromatic and eerie, a lullaby gone wrong.
-    root: 34.65,
-    chords: [[0, 3, 7, 12], [-4, -1, 3, 8], [1, 4, 8, 13], [-1, 3, 6, 11]], roots: [0, -4, 1, -1],
-    chordsB: [[0, 3, 7, 12], [1, 4, 8, 13], [-4, -1, 3, 8], [-5, -1, 2, 7]], rootsB: [0, 1, -4, -5],
-    set: ['liquid', 'neuro', 'breakdown', 'neuro', 'liquid', 'trance', 'both', 'neuro'],
-    reese: [[0, 1, 0, 6, 7, 6], [3, 4, 3, 1, 0, -1]], pluck: 'sine',
-  },
-  w8: { // The Core: Bb minor, i–iv–V–i, then VI–VII–V held: everything at once.
-    root: 58.27,
-    chords: [[0, 3, 7, 12], [5, 8, 12, 17], [7, 11, 14, 19], [0, 3, 7, 12]], roots: [0, 5, 7, 0],
-    chordsB: [[-4, 0, 3, 8], [-2, 2, 5, 10], [7, 11, 14, 19], [7, 11, 14, 19]], rootsB: [-4, -2, 7, 7],
-    set: ['both', 'neuro', 'liquid', 'both', 'breakdown', 'trance', 'both', 'both'],
-    reese: [[0, 12, 7, 15, 12, 19], [17, 15, 12, 11, 7, 5]], pluck: 'sawtooth',
   },
 };
 
@@ -135,8 +86,8 @@ const SONGS: Record<SongId, Song> = {
    eight-bar sections, the intro and the break without the main drums, the peak with everything. */
 type Sec = 'intro' | 'drop' | 'roll' | 'break' | 'peak';
 type Groove = 'twostep' | 'amen' | 'halftime' | 'techstep' | 'jungle';
-type BassVoice = 'chip' | 'dist' | 'sub' | 'slide' | 'reese' | 'fm' | 'wobble';
-type LeadVoice = 'chip' | 'fire' | 'horn' | 'marimba' | 'brass' | 'robot' | 'musicbox' | 'crystal';
+type BassVoice = 'chip' | 'dist' | 'sub' | 'slide' | 'reese' | 'fm' | 'wobble' | 'squelch';
+type LeadVoice = 'chip' | 'fire' | 'horn' | 'marimba' | 'brass' | 'robot' | 'musicbox' | 'crystal' | 'pungi';
 /** A step of a bass line or a melody: a note (semitones), null to hold the one before, 'r' for silence. */
 type Note = number | null | 'r';
 /** The kit: how much the kick is driven, the snare's pitch and length, and how much of the snare goes to the reverb. */
@@ -149,7 +100,7 @@ type V2 = {
   /** Four bars of eighths over the song's root, in the lead's own octave (`leadOct` times the root). */
   lead: LeadVoice; leadOct: number; melody: Note[][];
 };
-export type V2Id = 'w1v2' | 'w2v2' | 'w3v2' | 'w4v2' | 'w5v2' | 'w6v2' | 'w7v2' | 'w8v2';
+export type V2Id = 'w1v2' | 'w2v2' | 'w3v2' | 'mudv2' | 'w4v2' | 'w5v2' | 'w6v2' | 'w7v2' | 'w8v2';
 const V2S: Record<V2Id, V2> = {
   w1v2: { // The Backlog: a bright C major chiptune roller on the Amen break; keyboards typing, mail dings, a dial-up modem.
     theme: 1, root: 32.7,
@@ -180,6 +131,17 @@ const V2S: Record<V2Id, V2> = {
     bass: 'sub', line: [0, null, null, null, null, null, null, null, null, null, 0, null, null, null, 7, null, 0, null, null, null, null, null, null, null, null, null, -2, null, null, null, -5, null],
     lead: 'horn', leadOct: 4,
     melody: [[0, null, null, null, 7, null, null, null], [5, null, 3, null, 2, null, null, null], [0, null, null, 3, 7, null, 10, null], [12, null, null, null, 10, null, 7, null]],
+  },
+  mudv2: { // Big Ball of Mud: D double harmonic, a snake charmer's tune for the Medusa over a squelching bass;
+    // frogs croaking in turn, mud bubbling, drips into the swamp, a rattling hiss.
+    theme: 9, root: 36.71,
+    chords: [[0, 3, 7, 12], [1, 5, 8, 13], [0, 3, 7, 12], [-1, 2, 5, 11]], roots: [0, 1, 0, -1],
+    chordsB: [[5, 8, 12, 17], [1, 5, 8, 13], [3, 7, 10, 15], [0, 4, 7, 12]], rootsB: [5, 1, 3, 0],
+    form: ['intro', 'drop', 'roll', 'drop', 'break', 'peak', 'roll', 'peak'],
+    grooves: { drop: 'halftime', roll: 'amen', peak: 'twostep' }, kit: { drive: 0.5, snare: 1700, decay: 0.18, wet: 0.3 },
+    bass: 'squelch', line: [0, null, 'r', 0, 12, 'r', 0, null, 1, 'r', 0, null, 'r', 12, 0, 'r', 0, null, 'r', 0, 12, 'r', 0, null, 13, 12, 'r', 0, null, 1, 0, 'r'],
+    lead: 'pungi', leadOct: 8,
+    melody: [[12, 13, 12, 11, 12, null, 8, 7], [8, null, 7, 5, 4, null, 'r', null], [7, 8, 11, 12, 13, 12, 11, 8], [7, null, 5, 4, 1, null, 0, null]],
   },
   w4v2: { // Legacy Jungle: real ragga jungle in G minor; a chopped Amen, sliding sub, reggae skanks, log drums, birds and insects.
     theme: 4, root: 49,
@@ -948,6 +910,15 @@ class Engine {
       this.env(g, at, 0.38, 0.003, length * 0.5, 0.5, length * 0.3);
       car.connect(lp).connect(g).connect(this.musicBus);
       this.sub(at, freq / 2, length);
+    } else if (voice === 'squelch') {
+      // Mud: a saw through a sharp, resonant low-pass that snaps shut, squelching, with a sub under it.
+      const o = this.osc('sawtooth', freq, at, end);
+      const lp = this.filt('lowpass', 2600, 13);
+      lp.frequency.setValueAtTime(2600 + this.intensity * 1200, at);
+      lp.frequency.exponentialRampToValueAtTime(140, at + Math.min(0.22, length));
+      this.env(g, at, 0.42, 0.004, length * 0.6, 0.5, length * 0.3);
+      o.connect(lp).connect(g).connect(this.musicBus);
+      this.sub(at, freq / 2, length);
     } else {
       // Wobble: two saws through a low-pass that an eighth-note LFO swings open and shut.
       const lp = this.filt('lowpass', 700, 7);
@@ -1040,6 +1011,20 @@ class Engine {
       }
       this.env(g, at, 0.12, 0.002, 0.9);
       this.out(g, 0.55, this.padBus);
+    } else if (voice === 'pungi') {
+      // A snake charmer's pungi: a nasal reed (a square and a saw through a narrow band) with a wide vibrato.
+      const bp = this.filt('bandpass', freq * 2.2, 3.5);
+      const vib = this.osc('sine', 6.5, at, end);
+      const vd = this.ctx.createGain();
+      vd.gain.value = freq * 0.025;
+      for (const type of ['square', 'sawtooth'] as const) {
+        const o = this.osc(type, freq, at, end);
+        vib.connect(vd).connect(o.frequency);
+        o.connect(bp);
+      }
+      this.env(g, at, 0.13, 0.03, length * 0.85, 0.75, 0.06);
+      bp.connect(g);
+      this.out(g, 0.3, this.padBus);
     } else {
       // Crystal: a glassy bell, inharmonic and short.
       for (const [ratio, vol] of [[1, 1], [2.4, 0.4], [6.8, 0.15]]) {
@@ -1107,6 +1092,13 @@ class Engine {
         if ((sec === 'break' || (sec === 'intro' && blockBar >= 4)) && (inBar === 0 || inBar === 8)) this.heartbeat(at, 0.7);
         if (loud && blockBar === 0 && inBar === 0) this.bell(at, semi(this.root * 4, chord[0]));
         if (sec === 'peak' && inBar === 0 && bar % 2 === 0) this.theremin(at, semi(this.root * 16, chord[1]), BAR * 1.9);
+        break;
+      case 9: // Big Ball of Mud: frogs croaking in turn, mud bubbling, drips, crickets, a snake's rattling hiss.
+        if (calm ? inBar === 0 || inBar === 6 : (inBar === 3 || inBar === 11) && r < 0.45) this.croak(at, inBar % 8 < 4 ? 1 : 1.25);
+        if (r < (calm ? 0.22 : 0.1)) this.bloop(at + Math.random() * STEP);
+        if (calm && inBar % 4 === 2 && Math.random() < 0.35) this.drip(at);
+        if (calm && inBar === 8 && bar % 2 === 0) this.cricket(at);
+        if (sec === 'peak' && inBar === 14 && bar % 2 === 1) this.rattle(at);
         break;
       default: // The Core: its heart, magma, the dragon, laser zaps, crystal bells.
         if (calm && (inBar === 0 || inBar === 8)) this.heartbeat(at, 1);
@@ -1384,6 +1376,47 @@ class Engine {
     o.connect(ws).connect(lp).connect(g);
     this.out(g, 0.4);
     this.burst(at, 1.2, 'bandpass', 900, 0.6, 0.18, 0.4, 0.15);
+  }
+  /** A frog: two quick, throaty pulses dropping in pitch ("rib-bit"). */
+  private croak(at: number, pitch: number) {
+    for (const [dt, f] of [[0, 210], [0.09, 170]]) {
+      const t = at + dt;
+      const o = this.osc('square', f * pitch, t, t + 0.09);
+      o.frequency.exponentialRampToValueAtTime(f * pitch * 0.7, t + 0.07);
+      const am = this.osc('square', 45, t, t + 0.09);
+      const amg = this.ctx.createGain();
+      amg.gain.value = 0.5;
+      const bp = this.filt('bandpass', 700, 3);
+      const g = this.ctx.createGain();
+      this.env(g, t, 0.12, 0.004, 0.07);
+      am.connect(amg).connect(g.gain);
+      o.connect(bp).connect(g);
+      this.out(g, 0.2);
+    }
+  }
+  /** A bubble of mud popping: a sine rising fast. */
+  private bloop(at: number) {
+    const f = 140 + Math.random() * 120;
+    const o = this.osc('sine', f, at, at + 0.12);
+    o.frequency.exponentialRampToValueAtTime(f * 3.2, at + 0.08);
+    const g = this.ctx.createGain();
+    this.env(g, at, 0.16, 0.003, 0.09);
+    o.connect(g);
+    this.out(g, 0.25);
+  }
+  /** A drop falling into the swamp. */
+  private drip(at: number) {
+    const o = this.osc('sine', 1700, at, at + 0.2);
+    o.frequency.exponentialRampToValueAtTime(520, at + 0.06);
+    const g = this.ctx.createGain();
+    this.env(g, at, 0.06, 0.002, 0.12);
+    o.connect(g);
+    this.out(g, 0.7);
+  }
+  /** A snake's rattle and hiss: high noise shaken by a fast tremolo. */
+  private rattle(at: number) {
+    this.burst(at, 0.5, 'highpass', 5000, 0.8, 0.12, 0.3, 0.02);
+    for (let i = 0; i < 8; i++) this.burst(at + i * 0.05, 0.02, 'bandpass', 6500, 2, 0.1);
   }
   private zap(at: number) {
     const o = this.osc('sine', 2400, at, at + 0.2);

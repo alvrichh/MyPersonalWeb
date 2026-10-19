@@ -4,7 +4,7 @@ import { ads, configureAds, type AdSpot, type PlayAd } from './ads';
 import { configurePayments, payments } from './payments';
 import { COIN_PACKS, currentOffer, grant, packBonus, SKIN_OFFERS, type CoinPack, type SkinOffer } from './store';
 import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPrize, type DailyResult } from './daily';
-import { audio, type Sfx } from './audio';
+import { audio, type Sfx, type SongPick } from './audio';
 import { draw, drawRetroFigure, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, worldWon, type StarColor, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, heroStill } from './save';
 import type { Enemy, Mode } from './world';
@@ -1121,8 +1121,12 @@ function dressPalette() {
 const heroPic = () => `./images/game/hero/${heroStill(save.skin, save.equipped.head)}.webp`;
 /** What the list under the hero shows: a slot's items, the skins or the enemy looks. */
 let dressSlot: Slot | 'skin' | 'foes' | 'scene' | 'song' | null = null;
-/** The world each world song (`w1`–`w8`) was written for: the mud world, put in at 4, came later and has none yet. */
-const SONG_WORLD = [1, 2, 3, 5, 6, 7, 8, 9];
+/** The worlds' songs in Customise, in world order: the world, its versions (only the first world kept two) and
+    its strings' key (`<key>Name`, `<key>V2`). The ids stay as they were before the mud world came in as world 4. */
+const WORLD_SONGS: [number, readonly SongPick[], string][] = [
+  [1, ['w1', 'w1v2'], 'songW1'], [2, ['w2v2'], 'songW2'], [3, ['w3v2'], 'songW3'], [4, ['mudv2'], 'songMud'], [5, ['w4v2'], 'songW4'],
+  [6, ['w5v2'], 'songW5'], [7, ['w6v2'], 'songW6'], [8, ['w7v2'], 'songW7'], [9, ['w8v2'], 'songW8'],
+];
 /** Customise's music list plays what it lists: the music starts (and comes up from silence) the moment it is opened or a song is picked. */
 function playMusicNow() {
   audio.unlock();
@@ -1161,15 +1165,16 @@ function stylesScreen(note = '') {
     const songRow = (id: typeof save.song, icon: string, name: string, text: string) => row(`data-song="${id}"`, save.song === id, false, icon, name, text, save.song === id ? '✓' : '');
     picks = `<h3 class="slot">${t('songPick')}</h3><div class="gear-list">${(['auto', 'b2b', 'doom'] as const).map((id) =>
       songRow(id, id === 'auto' ? '🎚️' : id === 'b2b' ? '🎧' : '🔥', t(`song${cap(id)}Name` as Key), t(`song${cap(id)}Text` as Key))).join('')}</div>
-      <h3 class="slot">${t('songWorlds')}</h3><div class="gear-list">${([1, 2, 3, 4, 5, 6, 7, 8] as const).map((n) => {
-        const world = SONG_WORLD[n - 1];
-        // A world's song has two versions: picking the row plays the one last picked (v1 at first) and opens a switch between them.
-        const on = save.song === `w${n}` || save.song === `w${n}v2`;
-        const v2 = save.song === `w${n}v2`;
+      <h3 class="slot">${t('songWorlds')}</h3><div class="gear-list">${WORLD_SONGS.map(([world, ids, key]) => {
+        // The first world's song has two versions: picking the row plays the one last picked (v1 at first) and opens a switch between them.
+        const on = (ids as readonly string[]).includes(save.song);
+        const v2 = on && save.song.endsWith('v2');
+        const pic = `<img class="scene-pic" src="./images/game/floors/world${world}.webp" alt="">`;
+        if (ids.length === 1) return songRow(ids[0], pic, t(`${key}Name` as Key), t(`${key}V2` as Key));
         const ver = (id: typeof save.song, label: string) => `<button class="mode-opt${save.song === id ? ' is-on' : ''}" data-song="${id}" aria-pressed="${save.song === id}">${label}</button>`;
-        return row(`data-song="${on ? save.song : `w${n}`}"`, on, false, `<img class="scene-pic" src="./images/game/floors/world${world}.webp" alt="">`, t(`songW${n}Name` as Key),
-          v2 ? t(`songW${n}V2` as Key) : t('songWorldText', { world: t(`world${world}Name` as Key) }), on ? `✓ ${v2 ? 'v2' : 'v1'}` : '')
-          + (on ? `<div class="mode-pick song-ver" role="group" aria-label="${t('songVersion')}">${ver(`w${n}`, 'v1')}${ver(`w${n}v2`, 'v2')}</div>` : '');
+        return row(`data-song="${on ? save.song : ids[0]}"`, on, false, pic, t(`${key}Name` as Key),
+          v2 ? t(`${key}V2` as Key) : t('songWorldText', { world: t(`world${world}Name` as Key) }), on ? `✓ ${v2 ? 'v2' : 'v1'}` : '')
+          + (on ? `<div class="mode-pick song-ver" role="group" aria-label="${t('songVersion')}">${ver(ids[0], 'v1')}${ver(ids[1], 'v2')}</div>` : '');
       }).join('')}</div>`;
   } else if (dressSlot === 'scene') {
     picks = `<h3 class="slot">${t('scenePick')}</h3><div class="gear-list">${Array.from({ length: WORLD_COUNT + 1 }, (_, n) => n).map((n) =>
