@@ -1919,6 +1919,8 @@ const signatureOf = (g: Game, e: Enemy): Signature =>
 
 /** The longship breaks up at half health: wreckage, water on the floor, and Valdur leaps out of it. */
 function breakShip(g: Game, e: Enemy) {
+  // The burning wreck stays on the water for a moment while he leaps clear.
+  g.fx.push({ kind: 'pic', pic: 'drakkar-wreck', x: e.x, y: e.y - 25, r: 85, a: 0, life: 1.6, max: 1.6 });
   e.hp = e.maxHp / 2;
   e.bossId = 'valdur';
   e.r = 40;
@@ -2214,14 +2216,17 @@ function bossLands(g: Game, e: Enemy) {
   e.land = '';
   e.vanish = false;
   if (what === 'slam') {
-    circle(g, e, 66, 0, Math.round(e.dmg * 0.9), 'leaf');
+    const el: ThreatEl = e.bossId === 'valdur' ? 'water' : 'leaf';
+    circle(g, e, 66, 0, Math.round(e.dmg * 0.9), el);
     g.fx.push({ kind: 'ring', x: e.x, y: e.y, r: 70, a: 0, life: 0.4, max: 0.4, big: true });
     g.shake = Math.max(g.shake, 0.35);
-    ring(g, e, 8, 120, TONE.leaf);
+    ring(g, e, 8, 120, TONE[el]);
+    // Valdur roars as he lands.
+    if (e.bossId === 'valdur') { e.pose = 0.6; e.act = 'move'; }
   } else if (!e.clone) {
     ring(g, e, 12, 100, TONE.shadow);
   }
-  burst(g, e.x, e.y, what === 'slam' ? '#86efac' : '#a78bfa', 20, 150, 3);
+  burst(g, e.x, e.y, what !== 'slam' ? '#a78bfa' : e.bossId === 'valdur' ? '#7dd3fc' : '#86efac', 20, 150, 3);
 }
 
 /** Distance from a point to the segment from (x, y) along angle a for len. */

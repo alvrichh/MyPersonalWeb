@@ -1644,7 +1644,7 @@ export function preloadFx() {
   for (const n of ['fireball', 'boom-small', 'boom-big', 'knife', 'boomerang', 'slash', 'chest', 'slam', 'crystals', 'gem', 'gem-big', 'bolt-1', 'bolt-2', 'bolt-3', 'bolt-4', 'bolt-5', 'bolt-6',
     'brick', 'iron', 'molotov', 'barrel', 'durian', 'durian-big', 'drill', 'drill-evo', 'rocket', 'rocket-shark', 'ball', 'ball-evo',
     'fire-pool', 'fire-pool-big', 'caltrops', 'mine', 'mine-on', 'mine-volt', 'volt-burst', 'impact', 'heart', 'rune', 'crescent',
-    'steam-cloud', 'plasma-burst', 'wisp-flame', 'shock-ring', 'ice-block', 'spectral-bolt', 'laser-yellow', 'laser-orange', 'laser-red', 'laser-purple', ...Array.from({ length: 7 }, (_, i) => `lava-${i}`)]) fxImage(n);
+    'steam-cloud', 'plasma-burst', 'wisp-flame', 'shock-ring', 'ice-block', 'spectral-bolt', 'laser-yellow', 'laser-orange', 'laser-red', 'laser-purple', 'drakkar-wreck', ...Array.from({ length: 7 }, (_, i) => `lava-${i}`)]) fxImage(n);
 }
 
 function drawFireballs(ctx: CanvasRenderingContext2D, g: Game) {
@@ -3335,12 +3335,13 @@ function enemyFrame(e: Enemy, count: number, now: number) {
 /* Final bosses with a sheet of their own (static/images/game/bosses/<id>-<frame>.webp, nine poses, the same
    order as the prompts: three walking, wind-up and charge, the ring of orbs, the world's move, the signature
    and a hit). Add an id here once its pictures are in; until then a final boss wears its cast's boss, bigger. */
-const BOSS_ART = new Set<string>(['kernel', 'archdemon', 'zeus', 'queen']);
+const BOSS_ART = new Set<string>(['kernel', 'archdemon', 'drakkar', 'valdur', 'zeus', 'queen']);
 /* Each final sheet is cut on one canvas for its nine poses (body centred, its lowest point on the baseline):
    how many times the body's width the canvas is drawn, and how much of the canvas lies under the feet
    (dust, a dash's trail, the volley's orbs). */
 const BOSS_CANVAS: Record<string, { k: number; feet: number }> = {
-  kernel: { k: 2.155, feet: 0.1766 }, archdemon: { k: 1.69, feet: 0.1232 }, zeus: { k: 1.782, feet: 0.2063 }, queen: { k: 1.348, feet: 0.1484 },
+  kernel: { k: 2.155, feet: 0.1766 }, archdemon: { k: 1.69, feet: 0.1232 },
+  drakkar: { k: 1.081, feet: 0.12 }, valdur: { k: 1.538, feet: 0.1954 }, zeus: { k: 1.782, feet: 0.2063 }, queen: { k: 1.348, feet: 0.1484 },
 };
 const finalSprites = new Map<string, HTMLImageElement[]>();
 function finalFrame(e: Enemy, now: number) {
