@@ -335,6 +335,12 @@ body {
 .screen.is-menu .panel {
   display: contents;
 }
+/* Phones taller than the picture: it sits in the middle, and the strips above and below carry on the
+   picture's own top and bottom bars (#111 and black) instead of showing the blurred backdrop. Wider
+   screens keep the blur, which also fills their sides. */
+@media (max-width: 520px) {
+  .screen.is-menu { background: linear-gradient(#111 50%, #000 50%); }
+}
 /* The panel's stone frame must not peek out round the cover. */
 .screen.is-menu .panel::before { display: none; }
 
@@ -2733,7 +2739,7 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
    control re-placed in percentages of that picture. There is no painted
    exit or menu dot, so the exit is a small drawn button in the corner. */
 @media (min-width: 900px) and (orientation: landscape) {
-  .screen.is-menu { display: grid !important; place-items: center; background-image: url('/images/game/landing-bg-wide.jpg'); }
+  .screen.is-menu { display: grid !important; place-items: center; background: #070b10 url('/images/game/landing-bg-wide.jpg') center / cover no-repeat; }
   .screen.is-menu[hidden] { display: none !important; }
   .cover {
     width: min(100vw, calc(100dvh * 1672 / 941));
