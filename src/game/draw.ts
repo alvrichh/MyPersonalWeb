@@ -70,9 +70,12 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   drawZaps(ctx, g);
   if (g.skills.blades) drawBlades(ctx, g, accent);
   if (g.skills.frost) drawFrostTop(ctx, g, now);
-  for (const r of [1, 2, 3]) for (const e of g.enemies) if (rank(e) === r && onScreen(e, 120)) drawEnemy(ctx, e, now);
+  // The Core's dragon goes over its own attacks (its fire, its ring of orbs, their tracks); the others under theirs.
+  const overShots = (e: Enemy) => e.bossId === 'chimera' && !e.clone;
+  for (const r of [1, 2, 3]) for (const e of g.enemies) if (rank(e) === r && !overShots(e) && onScreen(e, 120)) drawEnemy(ctx, e, now);
   drawThreats(ctx, g, now, true);
   drawOrbs(ctx, g);
+  for (const e of g.enemies) if (overShots(e) && onScreen(e, 120)) drawEnemy(ctx, e, now);
   if (pal.retro) drawPlayerRetro(ctx, g, pal, now);
   else {
     // The firebird rises from behind the hero.
@@ -2647,7 +2650,23 @@ function drawEnemy(ctx: CanvasRenderingContext2D, e: Enemy, now: number) {
     ctx.lineTo(e.dir.x * 260, e.dir.y * 260);
     ctx.stroke();
   }
+  // The Core's dark dragon is nearly black on a dark floor: a violet backlight and a magenta rim round its
+  // silhouette (a shadow glow, which Safari draws too) keep it readable.
+  const rim = e.bossId === 'chimera' && !retroLook;
+  if (rim) {
+    const back = ctx.createRadialGradient(0, -e.r * 0.3, e.r * 0.2, 0, -e.r * 0.3, e.r * 2.2);
+    back.addColorStop(0, 'rgba(192,132,252,0.38)');
+    back.addColorStop(0.6, 'rgba(139,92,246,0.16)');
+    back.addColorStop(1, 'transparent');
+    ctx.fillStyle = back;
+    ctx.beginPath();
+    ctx.arc(0, -e.r * 0.3, e.r * 2.2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowColor = 'rgba(232,121,249,0.95)';
+    ctx.shadowBlur = Math.max(8, e.r * 0.3);
+  }
   if (!retroLook && drawEnemySprite(ctx, e)) { /* painted */ } else LOOKS[e.look][e.kind](ctx, e, now);
+  if (rim) ctx.shadowBlur = 0;
   // Status: white flash on hit, blue tint when slowed, little flames when burning.
   if (e.hit > 0) {
     ctx.globalAlpha = 0.6;
