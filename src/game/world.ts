@@ -339,6 +339,8 @@ export type Particle = {
   x: number; y: number; vx: number; vy: number; life: number; max: number; size: number; color: string;
   /** How it is drawn: a dot (unset), a puff that swells as it fades, a streak along its flight, a snowflake or a rising wisp. */
   kind?: 'puff' | 'spark' | 'flake' | 'wisp' | 'glow' | 'crackle';
+  /** Drawn under the shots (an arrow's track). */
+  low?: boolean;
 };
 /** Lightning is yellow; blue only for evolved weapons and Zeus. */
 export type Zap = { pts: Vec[]; life: number; blue?: boolean };
@@ -1219,7 +1221,7 @@ function arrowTrail(g: Game, s: Shot, dt: number, key: Fusion) {
     g.particles.push({
       x: s.x - s.vx * back, y: s.y - s.vy * back,
       vx: Math.cos(a) * sp - s.vx * 0.05, vy: Math.sin(a) * sp - s.vy * 0.05 - (t.kind === 'wisp' ? 30 : 0),
-      life: t.life, max: t.life, size: rand(t.size[0], t.size[1]), color: t.colors[Math.floor(Math.random() * t.colors.length)], kind: t.kind,
+      life: t.life, max: t.life, size: rand(t.size[0], t.size[1]), color: t.colors[Math.floor(Math.random() * t.colors.length)], kind: t.kind, low: true,
     });
   }
   if (s.trail <= 0) s.trail = t.every;

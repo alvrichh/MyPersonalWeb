@@ -485,7 +485,6 @@ function endScreen(g: Game) {
   const earned = Math.floor(g.coins);
   const unlocked = bankRun(g);
   audio.play(won ? 'win' : 'over');
-  audio.setIntensity(0);
   const next = unlocked
     ? `<p class="unlocked">${WORLD_ICON[unlocked - 1]} ${t('unlockedWorld', { n: unlocked })}<small>${worldName(unlocked)}</small></p>
        <button class="primary" data-act="map">🗺️ ${t('toMap')}</button>
@@ -1795,7 +1794,7 @@ function step(now: number) {
     playEvents(g);
     for (const event of g.events) {
       if (event === 'clear') flash(g.room === WHEEL_ROOM && g.wheelDoor ? t('wheelHint') : t('doorOpen'));
-      if (event === 'shrine') { flash(t('shrineHint')); audio.setIntensity(0.1); }
+      if (event === 'shrine') flash(t('shrineHint'));
       if (event === 'heal') flash(t('statueHeal'));
       if (event === 'room' && g.mode === 'sprints') { flash(t('sprint', { room: g.room })); audio.setIntensity(Math.min(0.8, 0.2 + g.room * 0.05 + (g.world - 1) * 0.05)); }
       if (event === 'phase') {
