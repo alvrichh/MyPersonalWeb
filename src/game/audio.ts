@@ -45,6 +45,12 @@ const BASS_ROOTS_B = [0, 5, 3, 7];
 type Block = 'liquid' | 'neuro' | 'breakdown' | 'trance' | 'both';
 const SET: Block[] = ['liquid', 'neuro', 'liquid', 'neuro', 'breakdown', 'trance', 'both', 'neuro'];
 
+/** The growl's line in boss fights, one note per hit (steps 0, 3, 6, 10, 11, 14), over two bars. */
+const BOSS_REESE = [
+  [0, 7, 3, 10, 7, 12],
+  [0, 3, 5, 3, 0, -5],
+];
+
 const semi = (base: number, n: number) => base * Math.pow(2, n / 12);
 
 class Engine {
@@ -137,6 +143,12 @@ class Engine {
     this.chaosWanted = on;
   }
 
+  /** A boss is out: the growl plays its boss line (`BOSS_REESE`), from its next hit. */
+  boss = false;
+  setBoss(on: boolean) {
+    this.boss = on;
+  }
+
   private tick = () => {
     if (!this.playing) return;
     while (this.next < this.ctx.currentTime + 0.12) {
@@ -198,7 +210,11 @@ class Engine {
       if (liquid && (inBar === 0 || inBar === 10)) this.sub(at, semi(ROOT, bassRoot), inBar === 0 ? STEP * 8 : STEP * 5);
       if (neuro) {
         const hits = [0, 3, 6, 10, 11, 14];
-        if (hits.includes(inBar)) this.reese(at, semi(ROOT, bassRoot + (inBar === 14 ? 12 : inBar === 6 ? 3 : 0)), STEP * (inBar === 10 ? 1 : 2.5));
+        const hit = hits.indexOf(inBar);
+        // In a boss fight the growl keeps its sound and its rhythm (the same six hits, the same B2B set) but
+        // plays another line over the chord: a two-bar call and answer that climbs and drops back.
+        const note = this.boss ? BOSS_REESE[bar % 2][hit] : inBar === 14 ? 12 : inBar === 6 ? 3 : 0;
+        if (hit >= 0) this.reese(at, semi(ROOT, bassRoot + note), STEP * (inBar === 10 ? 1 : 2.5));
       }
     }
 
