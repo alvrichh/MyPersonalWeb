@@ -2722,12 +2722,12 @@ body {
   height: 150px;
   max-width: 100%;
   /* Feet on the pad's floor ring, a quarter of its height above its bottom (the pad is min(150%, 220px)
-     wide at 320:210, and margins in % follow the column's width); the name lies over the pad's front. */
+     wide at 320:210, and margins in % follow the column's width); the name stands above the hero's head. */
   margin-bottom: calc(min(150%, 220px) * 0.164 - 6px);
   filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.55));
 }
 canvas.hero-fig { height: 150px; width: 135px; filter: none; }
-.dress-hero b { position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%); white-space: nowrap; z-index: 1; font-size: 0.9rem; color: #fff; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); }
+.dress-hero b { position: relative; order: -1; white-space: nowrap; margin-bottom: 2px; z-index: 1; font-size: 0.9rem; color: #fff; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); }
 
 .dress-nav { display: flex; justify-content: center; gap: 14px; margin-top: 4px; }
 .dnav { display: grid; justify-items: center; gap: 2px; width: 84px; padding: 0; border: 0; background: none; color: var(--muted); font: inherit; cursor: pointer; }
