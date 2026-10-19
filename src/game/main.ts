@@ -1799,6 +1799,10 @@ function step(now: number) {
       if (event === 'shrine') flash(t('shrineHint'));
       if (event === 'heal') flash(t('statueHeal'));
       if (event === 'room' && g.mode === 'sprints') { flash(t('sprint', { room: g.room })); audio.setIntensity(Math.min(0.8, 0.2 + g.room * 0.05 + (g.world - 1) * 0.05)); }
+      if (event === 'plants') {
+        const boss = g.enemies.find((e) => e.bossId === 'queen');
+        if (boss) flash(t('bossPlants', { name: bossTitle(boss) }));
+      }
       if (event === 'minion') {
         const boss = g.enemies.find((e) => e.final && !e.clone);
         if (boss) flash(t('bossMinion', { name: bossTitle(boss) }));
