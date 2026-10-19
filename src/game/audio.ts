@@ -56,6 +56,9 @@ class Engine {
   ready = false;
   playing = false;
   intensity = 0;
+  /** A final boss is out (wanted), and the chaos layer is playing (it only comes in or out on a phrase). */
+  private chaosWanted = false;
+  private chaos = false;
   private next = 0;
   private step = 0;
   private timer: number | undefined;
@@ -125,7 +128,13 @@ class Engine {
   /** 0 = menu / calm room, 1 = boss fight. */
   setIntensity(level: number) {
     this.intensity = level;
-    if (this.ready) this.filter.frequency.setTargetAtTime(1800 + level * 6000, this.ctx.currentTime, 0.4);
+    // Never below half open: the cover and a run's first rooms sound as full as the rest.
+    if (this.ready) this.filter.frequency.setTargetAtTime(1800 + Math.max(0.5, level) * 6000, this.ctx.currentTime, 0.4);
+  }
+
+  /** Final bosses: a chaotic layer over the music, coming in (or out) at the start of the next four-bar phrase. */
+  setChaos(on: boolean) {
+    this.chaosWanted = on;
   }
 
   private tick = () => {
@@ -141,6 +150,12 @@ class Engine {
   private schedule(step: number, at: number) {
     const bar = Math.floor(step / 16);
     const inBar = step % 16;
+    // The chaos layer joins or leaves only where a phrase begins, so it grows out of the music.
+    if (inBar === 0 && bar % 4 === 0 && this.chaos !== this.chaosWanted) {
+      this.chaos = this.chaosWanted;
+      if (this.chaos) this.crash(at);
+    }
+    if (this.chaos) this.chaosLayer(bar, inBar, step, at);
     const setBar = bar % (SET.length * 8);
     const block = SET[Math.floor(setBar / 8)];
     const blockBar = setBar % 8;
@@ -199,6 +214,50 @@ class Engine {
     if (block === 'breakdown' && blockBar >= 2) this.arp(at, semi(ROOT * 8, chord[step % chord.length]), 0.07 + blockBar * 0.012);
     // A sparkle of plucks on top in the quieter half.
     if (block === 'liquid' && inBar % 4 === 2 && Math.random() < 0.6) this.pluck(at, semi(ROOT * 8, chord[(step >> 2) % chord.length]));
+  }
+
+  /* The final boss's chaos: the drums never drop, a growl on every phrase, glitch stutters, a falling alarm
+     every two bars, and a dissonant bell line a tritone off the chord. */
+  private chaosLayer(bar: number, inBar: number, step: number, at: number) {
+    const chord = CHORDS[Math.floor(bar / 2) % 4];
+    const root = BASS_ROOTS[Math.floor(bar / 2) % 4];
+    if (inBar === 3 || inBar === 13) this.kick(at);
+    if ([1, 6, 11].includes(inBar)) this.reese(at, semi(ROOT, root + (inBar === 6 ? 1 : 0)), STEP * 1.5);
+    if (Math.random() < 0.18) this.glitch(at);
+    if (bar % 4 === 3 && inBar >= 8) this.snare(at, 0.25 + (inBar - 8) * 0.08);
+    if (bar % 2 === 1 && inBar === 0) this.siren(at);
+    if (inBar % 2 === 1 && Math.random() < 0.55) this.arp(at, semi(ROOT * 8, chord[(step * 3) % chord.length] + 6), 0.06);
+  }
+
+  /** A stutter of filtered noise at a random pitch. */
+  private glitch(at: number) {
+    const n = this.ctx.createBufferSource();
+    n.buffer = this.noise;
+    const bp = this.ctx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.value = 400 + Math.random() * 5000;
+    bp.Q.value = 8;
+    const g = this.ctx.createGain();
+    this.env(g, at, 0.35, 0.001, STEP * 0.6);
+    n.connect(bp).connect(g).connect(this.musicBus);
+    n.start(at, Math.random() * 1.5);
+    n.stop(at + STEP);
+  }
+
+  /** A square wave falling an octave over a bar: the alarm. */
+  private siren(at: number) {
+    const o = this.ctx.createOscillator();
+    o.type = 'square';
+    o.frequency.setValueAtTime(semi(ROOT * 16, 6), at);
+    o.frequency.exponentialRampToValueAtTime(semi(ROOT * 8, 6), at + BAR);
+    const lp = this.ctx.createBiquadFilter();
+    lp.type = 'lowpass';
+    lp.frequency.value = 2400;
+    const g = this.ctx.createGain();
+    this.env(g, at, 0.05, 0.05, BAR * 0.9, 0.4, 0.1);
+    o.connect(lp).connect(g).connect(this.musicBus);
+    o.start(at);
+    o.stop(at + BAR + 0.2);
   }
 
   private env(gain: GainNode, at: number, peak: number, attack: number, decay: number, sustain = 0, release = 0.01) {
