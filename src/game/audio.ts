@@ -51,6 +51,14 @@ const BOSS_REESE = [
   [0, 3, 5, 3, 0, -5],
 ];
 
+/** The final boss's growl melody over four bars (rising, peaking, then falling home), in semitones over the chord's root. */
+const FINAL_REESE = [
+  [0, 12, 10, 7, 3, 7],
+  [12, 15, 14, 12, 10, 7],
+  [0, 7, 12, 15, 17, 19],
+  [15, 12, 10, 7, 5, 3],
+];
+
 const semi = (base: number, n: number) => base * Math.pow(2, n / 12);
 
 class Engine {
@@ -211,16 +219,19 @@ class Engine {
       if (inBar === 0 && bar % 2 === 0) this.sub(at, semi(ROOT, bassRoot), BAR * 1.6);
     } else {
       if (liquid && (inBar === 0 || inBar === 10)) this.sub(at, semi(ROOT, bassRoot), inBar === 0 ? STEP * 8 : STEP * 5);
-      if (neuro) {
+      // With a final boss out the growl also plays in the liquid blocks, so it carries the fight throughout.
+      if (neuro || this.final) {
         const hits = [0, 3, 6, 10, 11, 14];
         const hit = hits.indexOf(inBar);
         // In a boss fight the growl keeps its sound and its rhythm (the same six hits, the same B2B set) but
-        // plays another line over the chord: a two-bar call and answer that climbs and drops back.
-        const note = this.boss ? BOSS_REESE[bar % 2][hit] : inBar === 14 ? 12 : inBar === 6 ? 3 : 0;
+        // plays another line over the chord: a two-bar call and answer for any boss, and for a final boss a
+        // four-bar melody that sings over a wider range.
+        const line = this.final ? FINAL_REESE[bar % 4] : BOSS_REESE[bar % 2];
+        const note = this.boss || this.final ? line[hit] : inBar === 14 ? 12 : inBar === 6 ? 3 : 0;
         if (hit >= 0) this.reese(at, semi(ROOT, bassRoot + note), STEP * (inBar === 10 ? 1 : 2.5));
         // A final boss in its last stand: the growl doubles some of its hits, the same note a sixteenth later.
         if (this.rage && (inBar === 4 || inBar === 12 || inBar === 15)) {
-          const prev = BOSS_REESE[bar % 2][hits.indexOf(inBar === 15 ? 14 : inBar - 1)];
+          const prev = line[hits.indexOf(inBar === 15 ? 14 : inBar - 1)];
           this.reese(at, semi(ROOT, bassRoot + prev), STEP * 0.9);
         }
       }
