@@ -1608,7 +1608,8 @@ function throwMolotov(g: Game) {
   const lv = g.skills.molotov;
   const evolved = !!g.evolved.molotov;
   const pool = live(g).sort((a, b) => dist(a, p) - dist(b, p)).slice(0, 6);
-  const flight = 0.55;
+  // A slow lob, the bottle tumbling end over end on its way (see updateShot).
+  const flight = 0.9;
   for (let i = 0; i < (evolved ? 3 : lv >= 3 ? 2 : 1) && pool.length; i++) {
     const t = pool.splice(Math.floor(Math.random() * pool.length), 1)[0];
     g.shots.push(shot('molotov', p, 0, 0, 0, { vx: (t.x - p.x) / flight, vy: (t.y - p.y) / flight, life: flight, free: true, ghost: true, spin: rand(0, 6) }));
@@ -2369,7 +2370,8 @@ function updateShot(g: Game, s: Shot, dt: number): boolean {
     if (s.tick <= 0) { s.tick = 0.4; s.hits.clear(); }
   }
   if (s.grav) s.vy += s.grav * dt;
-  if (s.kind === 'brick' || s.kind === 'molotov' || s.kind === 'ball') s.spin += dt * 9;
+  if (s.kind === 'brick' || s.kind === 'ball') s.spin += dt * 9;
+  if (s.kind === 'molotov') s.spin += dt * 4.5;
   if (s.kind === 'durian' || s.kind === 'drill') s.spin += dt * 14;
   if (s.kind === 'rocket') {
     // Rockets speed up and steer after their own bug (the evolved missiles turn harder).

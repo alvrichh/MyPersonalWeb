@@ -759,9 +759,12 @@ function drawNewShot(ctx: CanvasRenderingContext2D, g: Game, a: Shot) {
       const h = (w * pic.naturalHeight) / pic.naturalWidth;
       ctx.save();
       ctx.translate(a.x, a.y);
-      if (turn) ctx.rotate(Math.atan2(a.vy, a.vx));
+      // The molotov and the barrel tumble round their middle as they fly.
+      const tumble = a.kind === 'molotov';
+      if (tumble) ctx.rotate(a.spin);
+      else if (turn) ctx.rotate(Math.atan2(a.vy, a.vx));
       else ctx.rotate(Math.sin(t * 6 + a.x) * 0.15);
-      ctx.drawImage(pic, -w * back, -h / 2, w, h);
+      ctx.drawImage(pic, -w * (tumble ? 0.5 : back), -h / 2, w, h);
       ctx.restore();
       return true;
     }
