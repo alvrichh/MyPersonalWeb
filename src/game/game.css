@@ -3025,6 +3025,8 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 /* ------------------------------------------------------------ evolutions */
 /* The gold card at level up, the gold ring in the HUD column and the list. */
 .panel .skill.is-evo { --tone: 252, 211, 77; }
+/* The fusion card: gold like an evolution, with a violet glow round its medallion. */
+.panel .skill.is-fuse .skill-icon { box-shadow: 0 0 0 2px #fcd34d, 0 0 14px rgba(196, 181, 253, 0.85) !important; }
 .panel .skill.is-evo .skill-icon,
 .gear span.is-evo .skill-icon,
 .gear-panel li.is-evo .skill-icon { border-radius: 50%; box-shadow: 0 0 0 2px #fcd34d, 0 0 12px rgba(252, 211, 77, 0.7); }

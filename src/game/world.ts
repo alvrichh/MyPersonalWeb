@@ -118,9 +118,12 @@ export const EVO_PARTNER: Partial<Record<SkillId, SkillId>> = {
   // The rest of Survivor.io's actives, paired with the nearest of our upgrades.
   brick: 'power', drill: 'speed', durian: 'bracer', mines: 'bolt', rocket: 'fire', ball: 'shoes', molotov: 'drink',
 };
-/** A level-up card: a skill, or a weapon's evolution. */
-export type Choice = SkillId | `evo:${SkillId}`;
+/** A level-up card: a skill, a weapon's evolution, or the arrows' fusion. */
+export type Choice = SkillId | `evo:${SkillId}` | 'fuse';
 export const evoOf = (c: Choice): SkillId | null => (c.startsWith('evo:') ? (c.slice(4) as SkillId) : null);
+/** Fusions are earned: with two elements on the bow a gold «Fusion» card turns up at the next level up, and
+    only taking it (spending that level) fuses them. Until then the two elements work on their own. */
+export const canFuse = (g: Game) => !g.fused && !!pairFusion(g);
 export const canEvolve = (g: Game, w: SkillId) => {
   const partner = EVO_PARTNER[w];
   return !!partner && !g.evolved[w] && g.skills[w] >= maxLevel(w) && g.skills[partner] >= 1;
@@ -138,10 +141,13 @@ const FUSIONS: Record<string, Fusion> = {
 };
 const pairKey = (a: SkillId, b: SkillId) => [a, b].sort((x, y) => ARROW_ELEMENTS.indexOf(x) - ARROW_ELEMENTS.indexOf(y)).join('+');
 export const arrowElements = (g: Game) => ARROW_ELEMENTS.filter((s) => g.skills[s] > 0);
-export function fusionOf(g: Game): Fusion | null {
+/** The fusion the two elements you carry would make (whether you took the card or not). */
+export function pairFusion(g: Game): Fusion | null {
   const els = arrowElements(g);
   return els.length >= 2 ? FUSIONS[pairKey(els[0], els[1])] : null;
 }
+/** The fusion at work: only once its card was taken. */
+export const fusionOf = (g: Game): Fusion | null => (g.fused ? pairFusion(g) : null);
 /** The fusion an element card would make: picking it gives you your second element. */
 export function fusionWith(g: Game, s: SkillId): Fusion | null {
   if (!ARROW_ELEMENTS.includes(s) || g.skills[s] > 0) return null;
@@ -431,6 +437,8 @@ export type Game = {
   skills: Record<SkillId, number>;
   /** Weapons that have evolved (see EVO_PARTNER). */
   evolved: Partial<Record<SkillId, true>>;
+  /** The fusion card was taken (see `canFuse`). */
+  fused: boolean;
   /** Burning ground left by the evolved fireball and by molotovs. */
   embers: Ember[];
   mines: Mine[];
@@ -753,6 +761,7 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     door: false,
     skills: Object.fromEntries(SKILLS.map((s) => [s, 0])) as Record<SkillId, number>,
     evolved: {},
+    fused: false,
     embers: [],
     mines: [],
     spikes: [],
@@ -909,9 +918,16 @@ function offerChoices(g: Game, keepEvo?: SkillId | null, avoid: Choice[] = []) {
   const evos = WEAPONS.filter((w) => canEvolve(g, w));
   const evo = keepEvo !== undefined ? keepEvo : evos.length ? any(evos) : null;
   if (evo) g.choices.push(`evo:${evo}`);
+  const groups = [['melee'], ['magic'], ['ranged', 'upgrade']] as Category[][];
+  const taken = groups.map((kinds) => !!evo && kinds.includes(CATEGORY[evo]));
+  // The fusion card: the bow's slot, or the first one an evolution left free (it stays through a reroll).
+  if (canFuse(g)) {
+    const slot = !taken[2] ? 2 : taken.indexOf(false);
+    if (slot >= 0) { g.choices.push('fuse'); taken[slot] = true; }
+  }
   // One of each kind when it can: melee, magic, then ranged or a bow upgrade.
-  for (const kinds of [['melee'], ['magic'], ['ranged', 'upgrade']] as Category[][]) {
-    if (evo && kinds.includes(CATEGORY[evo])) continue;
+  for (const [k, kinds] of groups.entries()) {
+    if (taken[k]) continue;
     const pool = pickFrom(SKILLS.filter((s) => kinds.includes(CATEGORY[s])));
     if (pool.length) g.choices.push(any(pool));
   }
@@ -935,6 +951,15 @@ export function rerollChoices(g: Game) {
 }
 
 export function chooseSkill(g: Game, choice: Choice) {
+  if (choice === 'fuse') {
+    g.fused = true;
+    burst(g, g.player.x, g.player.y, '#c4b5fd', 40, 240, 4);
+    g.pendingLevels -= 1;
+    g.choices = [];
+    if (g.pendingLevels > 0) offerChoices(g);
+    else g.phase = 'play';
+    return;
+  }
   const evo = evoOf(choice);
   if (evo) {
     g.evolved[evo] = true;
