@@ -128,7 +128,7 @@ export const ITEMS: Item[] = [
   { id: 'potion', slot: 'body', price: 160, icon: '🦺', pic: 'items/potion.webp', effect: { maxHp: 130 } },
   { id: 'pompom', slot: 'body', price: 1200, icon: '🧸', pic: 'items/pompom.webp', effect: { coinMult: 1.4 } },
   { id: 'plate', slot: 'body', price: 350, icon: '🛡️', pic: 'items/plate.webp', effect: { armor: 0.1 } },
-  { id: 'phoenix', slot: 'body', price: 600, icon: '🪶', pic: 'items/phoenix.webp', effect: { revives: 1 } },
+  { id: 'phoenix', slot: 'body', price: 2000, icon: '🪶', pic: 'items/phoenix.webp', effect: { revives: 1 } },
   // Boots
   { id: 'windBoots', slot: 'boots', price: 220, icon: '👟', pic: 'items/windBoots.webp', effect: { speedMult: 1.15 } },
   { id: 'magnetBoots', slot: 'boots', price: 220, icon: '🧲', pic: 'items/magnetBoots.webp', effect: { magnet: 70 } },
