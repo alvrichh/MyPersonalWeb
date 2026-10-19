@@ -45,8 +45,8 @@ export type Save = {
   arsenal: SkillId[];
   /** When the shop's ad gift was last taken (ms since 1970; one every `AD_GIFT_EVERY`). */
   adGiftAt: number;
-  /** The calendar day the daily chest was last opened (YYYY-MM-DD, `daily.ts`). */
-  dailyDay: string;
+  /** When the daily chest was last opened (ms since 1970); the next is ready 24 hours later (`daily.ts`). */
+  dailyAt: number;
   equipped: Partial<Record<Slot, ItemId>>;
   /** The forge: permanent upgrade levels. */
   upgrades: Upgrades;
@@ -96,7 +96,7 @@ const fresh = (): Save => ({
   owned: [],
   arsenal: [],
   adGiftAt: 0,
-  dailyDay: '',
+  dailyAt: 0,
   equipped: {},
   upgrades: {},
   style: 'world',
@@ -132,6 +132,13 @@ export function loadSave(): Save {
     save.hordeWorld = Math.min(Math.max(1, save.hordeWorld || 1), save.hordeUnlocked);
     save.mastery = { sprints: Math.max(0, data.mastery?.sprints ?? 0), horde: Math.max(0, data.mastery?.horde ?? 0) };
     if (!(save.starColor in STAR_COLORS)) save.starColor = 'gold';
+    // The first daily chest counted calendar days: one opened on a day is ready again at the next midnight.
+    const oldDay = (data as { dailyDay?: string }).dailyDay;
+    delete (save as { dailyDay?: string }).dailyDay;
+    if (!save.dailyAt && oldDay) {
+      const [y, m, d] = oldDay.split('-').map(Number);
+      save.dailyAt = new Date(y, m - 1, d).getTime() || 0;
+    }
     save.name = cleanName(typeof save.name === 'string' ? save.name : '') || DEFAULT_NAME;
     save.arsenal = (data.arsenal ?? []).filter((id) => ARSENAL.some((w) => w.id === id));
     // Items are re-seated by their current slot (older saves had `charm` and `relic`).
@@ -190,7 +197,7 @@ export const worldWon = (save: Save, n: number) => save.bestByWorld[n]?.time !==
 
 /** Back to a fresh start: progress, coins, gear and level go; name, skins bought, settings, masteries and star colour stay. */
 export function wipeProgress(save: Save) {
-  const keep = { name: save.name, skin: save.skin, skins: [...save.skins], retro: save.retro, style: save.style, music: save.music, sfx: save.sfx, mode: save.mode, mastery: { ...save.mastery }, starColor: save.starColor, dailyDay: save.dailyDay };
+  const keep = { name: save.name, skin: save.skin, skins: [...save.skins], retro: save.retro, style: save.style, music: save.music, sfx: save.sfx, mode: save.mode, mastery: { ...save.mastery }, starColor: save.starColor, dailyAt: save.dailyAt };
   Object.assign(save, fresh(), keep);
 }
 

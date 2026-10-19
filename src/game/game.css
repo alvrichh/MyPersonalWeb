@@ -407,6 +407,9 @@ body {
 }
 @media (prefers-reduced-motion: reduce) { .cover-chest.is-ready img { animation: none; } }
 .panel .daily-odds { font-size: 0.78em; opacity: 0.75; }
+/* The countdown's digits keep their width, so the label does not jitter as it ticks. */
+[data-daily-clock] { font-variant-numeric: tabular-nums; }
+.panel .daily-next { margin: 0.2rem 0 0.4rem; }
 .wheel-result.is-good.is-rare, .panel .wheel-result.is-rare { color: #fde68a; text-shadow: 0 0 12px rgba(252, 211, 77, 0.7); }
 
 /* Invisible buttons over the painted ones. */
@@ -1217,11 +1220,13 @@ body {
 }
 
 .wheel-result {
-  min-height: 1.5em;
   font-weight: 600;
   color: var(--text);
 }
 
+/* Room kept for the result only while it is empty: a fixed minimum would let the grid squeeze a
+   two-line result down to one line when the dialog is taller than the screen. */
+.wheel-result:empty { min-height: 1.5em; }
 .wheel-result.is-good { color: #86efac; }
 .wheel-result.is-bad { color: #fca5a5; }
 
