@@ -216,6 +216,8 @@ export type Enemy = {
   cd4: number;
   cd5: number;
   sigs: number;
+  /** Charges still to chain (Valdur's frenzy). */
+  combo: number;
 };
 
 export type Shot = {
@@ -578,10 +580,10 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
     tint: WORLDS[g.world - 1].tint,
     x: at.x,
     y: at.y,
-    r: final ? 52 : base.r,
+    r: final ? (g.world === 3 ? 60 : 52) : base.r,
     hp,
     maxHp: hp,
-    speed: base.speed * (1 + (g.world - 1) * 0.03) * (horde && kind !== 'boss' ? 1 + (g.time / 60) * 0.02 : 1),
+    speed: base.speed * (final && g.world === 3 ? 0.8 : 1) * (1 + (g.world - 1) * 0.03) * (horde && kind !== 'boss' ? 1 + (g.time / 60) * 0.02 : 1),
     dmg: Math.round(base.dmg * (1 + (g.world - 1) * 0.1)),
     xp: base.xp,
     spawn,
@@ -616,6 +618,7 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
     cd4: 3,
     cd5: 4.5,
     sigs: 0,
+    combo: 0,
   };
 }
 
@@ -1051,6 +1054,10 @@ function hurt(g: Game, e: Enemy, amount: number, push?: Vec) {
   if (e.dead) return;
   e.hp -= amount;
   e.hit = 0.1;
+  if (e.bossId === 'drakkar' && e.hp <= e.maxHp / 2) {
+    breakShip(g, e);
+    return;
+  }
   if (push && e.kind !== 'boss') {
     e.kx += push.x;
     e.ky += push.y;
@@ -1896,15 +1903,44 @@ function updateEnemy(g: Game, e: Enemy, dt: number) {
  * world's move too, its signature attack (`SIGNATURE`) and a fury under half health that speeds it all up.
  * Moves go by world, not by the cast the picker forces, so the robots' world always has the laser.
  */
-export const FINAL_BOSS = ['kernel', 'archdemon', 'serpent', 'queen', 'titan', 'mech', 'wraith', 'chimera'] as const;
-export type FinalBoss = (typeof FINAL_BOSS)[number];
+export const FINAL_BOSS = ['kernel', 'archdemon', 'drakkar', 'queen', 'zeus', 'mech', 'wraith', 'chimera'] as const;
+/** The water world's final boss is a Viking longship with its captain at the helm; at half health the ship
+    breaks up and the captain, Valdur, fights on alone: smaller, much faster, leaping and charging in a frenzy. */
+export type FinalBoss = (typeof FINAL_BOSS)[number] | 'valdur';
 type Move = 'volley' | 'breath' | 'geysers' | 'leap' | 'javelins' | 'missiles' | 'blink';
-type Signature = 'spiral' | 'meteors' | 'tide' | 'roots' | 'grid' | 'laser' | 'clones';
+type Signature = 'spiral' | 'meteors' | 'tide' | 'roots' | 'grid' | 'laser' | 'clones' | 'frenzy';
 const MID_MOVE: Move[] = ['volley', 'breath', 'geysers', 'leap', 'javelins', 'missiles', 'blink'];
 const SIGNATURE: Signature[] = ['spiral', 'meteors', 'tide', 'roots', 'grid', 'laser', 'clones'];
 /** World 8 mixes them: a random move each time, and the signatures of worlds 2–7 in turn. */
-const moveOf = (g: Game): Move => (g.world <= 7 ? MID_MOVE[g.world - 1] : MID_MOVE[Math.floor(Math.random() * 7)]);
-const signatureOf = (g: Game, e: Enemy): Signature => (g.world <= 7 ? SIGNATURE[g.world - 1] : SIGNATURE[1 + (e.sigs % 6)]);
+const moveOf = (g: Game, e: Enemy): Move =>
+  e.bossId === 'valdur' ? 'leap' : g.world <= 7 ? MID_MOVE[g.world - 1] : MID_MOVE[Math.floor(Math.random() * 7)];
+const signatureOf = (g: Game, e: Enemy): Signature =>
+  e.bossId === 'valdur' ? 'frenzy' : g.world <= 7 ? SIGNATURE[g.world - 1] : SIGNATURE[1 + (e.sigs % 6)];
+
+/** The longship breaks up at half health: wreckage, water on the floor, and Valdur leaps out of it. */
+function breakShip(g: Game, e: Enemy) {
+  e.hp = e.maxHp / 2;
+  e.bossId = 'valdur';
+  e.r = 40;
+  e.speed *= 2.1;
+  e.chan = 0;
+  e.aim = 0;
+  e.dash = 0;
+  e.cd2 = 1.2;
+  e.cd4 = 3.5;
+  e.cd5 = 5;
+  burst(g, e.x, e.y, '#a16207', 50, 260, 4);
+  burst(g, e.x, e.y, '#e0f2fe', 30, 200, 3);
+  for (let i = 0; i < 3; i++) {
+    const a = (i / 3) * Math.PI * 2 + rand(0, 1);
+    g.hazards.push({ kind: 'puddle', ...inside(g, { x: e.x + Math.cos(a) * 45, y: e.y + Math.sin(a) * 45 }, 30), r: 30, ttl: 7 });
+  }
+  g.shake = 0.6;
+  e.spawn = 0.9;
+  e.vanish = true;
+  e.land = 'slam';
+  g.events.push('boss');
+}
 const TONE: Record<ThreatEl, string> = { fire: '#fb923c', water: '#38bdf8', leaf: '#4ade80', bolt: '#facc15', laser: '#f87171', shadow: '#a78bfa', glitch: '#c084fc' };
 
 /** A spot inside the room (or the visible field), `m` from its edges. */
@@ -1944,9 +1980,14 @@ function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
     e.pose = 0.35;
     e.act = 'burst';
   }
-  // Charge: stop and aim for a moment, then dash at where you were.
+  // Charge: stop and aim for a moment, then dash at where you were (Valdur's frenzy chains them).
   if (e.dash > 0) {
     e.dash -= dt;
+    if (e.dash <= 0 && e.combo > 0) {
+      e.combo -= 1;
+      e.aim = 0.35;
+      e.dir = { x: ux, y: uy };
+    }
   } else if (e.aim > 0) {
     e.aim -= dt;
     if (e.aim <= 0) e.dash = 0.55;
@@ -1971,7 +2012,7 @@ function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
   e.cd4 -= dt;
   if (e.cd4 <= 0) {
     e.cd4 = (final ? 6.5 : 5.5) * fury;
-    worldMove(g, e, moveOf(g));
+    worldMove(g, e, moveOf(g, e));
     if (e.spawn > 0 || e.chan > 0) return;
   }
   // The final boss's signature.
@@ -2107,6 +2148,13 @@ function signature(g: Game, e: Enemy, sig: Signature) {
       e.chan = 4.4;
       break;
     }
+    case 'frenzy':
+      // Berserker frenzy: four charges in a row, each aimed again.
+      e.combo = 3;
+      e.aim = 0.45;
+      e.dir = { x: Math.cos(Math.atan2(p.y - e.y, p.x - e.x)), y: Math.sin(Math.atan2(p.y - e.y, p.x - e.x)) };
+      g.fx.push({ kind: 'ring', x: e.x, y: e.y, r: 60, a: 0, life: 0.4, max: 0.4 });
+      break;
     case 'clones': {
       // Splits into the shadows: it and three clones come back round you, and only one is real.
       const turn = rand(0, Math.PI * 2);
