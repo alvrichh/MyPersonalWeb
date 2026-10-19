@@ -1975,19 +1975,30 @@ body {
 }
 
 .loading-bar {
-  width: min(300px, 80vw);
-  height: 24px;
-  overflow: hidden;
+  position: relative;
+  width: min(320px, 82vw);
+  height: auto;
+  /* The owner's frame at its own shape (it was squashed to 24px before). */
+  aspect-ratio: 694 / 124;
+  overflow: visible;
   border-radius: 0;
   background: url('/images/game/ui/bar_empty.webp') center / 100% 100% no-repeat;
   box-shadow: none;
 }
 
+/* The glowing bar alone (cut out of bar_fill.webp, which had a fixed amount of fill painted in) lies over
+   the frame's dark track and is clipped to the progress, `--p` from 0 to 1, so it never stretches. */
 .loading-bar b {
-  height: 100%;
+  position: absolute;
+  left: 9.4%;
+  top: 28%;
+  width: 81.4%;
+  height: 45%;
   border-radius: 0;
-  background: url('/images/game/ui/bar_fill.webp') left center / 100% 100% no-repeat;
+  background: url('/images/game/ui/bar_glow.webp') center / 100% 100% no-repeat;
   box-shadow: none;
+  clip-path: inset(0 calc((1 - var(--p, 0.04)) * 100%) 0 0);
+  transition: clip-path 0.25s ease-out;
 }
 
 /* Standalone X cutout on dialogs that can actually be dismissed. */
@@ -2422,8 +2433,8 @@ body {
 :root[data-retro] .wheel-pin { width: 0; aspect-ratio: auto; height: 0; top: -10px; border-left: 11px solid transparent; border-right: 11px solid transparent; border-top: 22px solid #fde68a; background: none; translate: -50% 0; }
 :root[data-retro] .toast { padding: 10px 16px; border: 1px solid var(--line); border-image: none; border-radius: 999px; background: var(--panel); text-shadow: none; }
 :root[data-retro] .loading-logo { display: none; }
-:root[data-retro] .loading-bar { height: 8px; border-radius: 999px; background: rgba(168, 85, 247, 0.18); box-shadow: inset 0 0 0 1px rgba(168, 85, 247, 0.25); }
-:root[data-retro] .loading-bar b { border-radius: inherit; background: linear-gradient(90deg, #7c3aed, #a855f7 60%, #d8b4fe); }
+:root[data-retro] .loading-bar { aspect-ratio: auto; overflow: hidden; height: 8px; border-radius: 999px; background: rgba(168, 85, 247, 0.18); box-shadow: inset 0 0 0 1px rgba(168, 85, 247, 0.25); }
+:root[data-retro] .loading-bar b { position: static; width: calc(var(--p, 0.04) * 100%); height: 100%; clip-path: none; border-radius: inherit; background: linear-gradient(90deg, #7c3aed, #a855f7 60%, #d8b4fe); }
 
 /* HUD: one flat row, as before. */
 :root[data-retro] .hud {

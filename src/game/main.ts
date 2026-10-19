@@ -1487,7 +1487,7 @@ const loadOne = ([src, weight]: [string, number]) =>
     const img = new Image();
     const done = () => {
       loadedWeight += weight;
-      loadingFill.style.width = `${Math.max(4, (loadedWeight / totalWeight) * 100)}%`;
+      loadingFill.style.setProperty('--p', String(Math.max(0.04, loadedWeight / totalWeight)));
       resolve();
     };
     img.onload = done;
@@ -1499,7 +1499,7 @@ Promise.race([
   Promise.all([...PRELOAD.map(loadOne), fontsReady]),
   new Promise<void>((resolve) => setTimeout(resolve, 6000)),
 ]).then(() => {
-  loadingFill.style.width = '100%';
+  loadingFill.style.setProperty('--p', '1');
   menuScreen();
   loading.classList.add('is-done');
   setTimeout(() => loading.remove(), 400);
