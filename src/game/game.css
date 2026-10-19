@@ -3421,3 +3421,21 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .panel .row-levels .buy { width: 100%; }
 /* …and its neighbour in a two-column row keeps its own height, or its button would float above its band. */
 .panel .items:has(.has-levels) { align-items: start; }
+
+/* The HUD's two plates (the world's and the coins') are the owner's slot picture, 674×200 with the ring at
+   its left end. Stretched whole they squashed or widened the ring, so the picture is drawn as a border
+   image instead: its ring end (200px) and right end (40px) keep their shape at the plate's 40px height and
+   only the plain middle stretches. Children are placed over the ring by hand (it is in the border). */
+:root:not([data-retro]) .hud-room,
+:root:not([data-retro]) .hud-coins {
+  box-sizing: border-box;
+  height: 40px;
+  border: solid transparent;
+  border-width: 0 8px 0 40px;
+  border-image: url('/images/game/ui/menu_slot.webp') 0 40 0 200 fill / 0 8px 0 40px stretch;
+  background: none;
+}
+:root:not([data-retro]) .hud-room { display: flex; align-items: center; justify-content: center; padding: 0 4px; overflow: visible; white-space: nowrap; }
+:root:not([data-retro]) .hud-room::before { left: -19px; }
+:root:not([data-retro]) .hud-coins { position: relative; padding: 0 6px 0 2px; min-width: 92px; justify-content: center; }
+:root:not([data-retro]) .hud-coin-orb { position: absolute; left: -31px; top: 50%; translate: 0 -50%; }
