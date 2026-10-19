@@ -923,18 +923,41 @@ function shopSection(key: string, title: string, count: string, body: string) {
     </button>${open ? body : ''}`;
 }
 
-/* Items with levels (the Phoenix cloak): pips and an upgrade button like the forge's. What each
-   level gives is not shown: it is a surprise. */
+/* Items with levels (the Phoenix cloak): pips and an upgrade button like the forge's, in the shop and in
+   Customise. What each level gives is not shown: it is a surprise. */
 function levelBlock(item: { id: ItemId; levels?: number[] }) {
-  if (!save.owned.includes(item.id)) return '';
+  if (!item.levels || !save.owned.includes(item.id)) return '';
   const lv = itemLevel(save.itemLevels, item.id);
-  const max = 1 + (item.levels?.length ?? 0);
+  const max = 1 + item.levels.length;
   const pips = Array.from({ length: max }, (_, i) => `<i class="${i < lv ? 'is-on' : ''}"></i>`).join('');
-  const price = lv < max ? item.levels![lv - 1] : 0;
+  const price = lv < max ? item.levels[lv - 1] : 0;
   const up = price
     ? `<button class="buy${save.coins >= price ? '' : ' is-poor'}" data-item-up="${item.id}">${t('upgradeBtn', { price })}</button>`
     : `<button class="buy is-worn" disabled>✓ ${t('upgradeMax')}</button>`;
   return `<span class="pips" aria-label="${t('upgradeLevel', { level: lv, max })}">${pips}</span>${up}`;
+}
+
+/* The shop card's frame has a lower band for its button (the owner's picture, drawn as a nine-slice). A card
+   with two buttons is made tall enough that the band holds only the last one and the rest sits above the
+   divider. The ratios are measured on `ui/shop_orange.webp` (266×322, slices of 45 drawn at 15px). */
+function bandCards() {
+  if (save.retro) return;
+  for (const card of screen.querySelectorAll<HTMLElement>('.panel .item.has-levels')) {
+    const btn = card.lastElementChild as HTMLElement | null;
+    const prev = btn?.previousElementSibling as HTMLElement | null;
+    if (!btn || !prev) continue;
+    card.style.height = '';
+    btn.style.margin = '';
+    const bodyEnd = prev.offsetTop + prev.offsetHeight + 15 + 8;
+    const bh = btn.offsetHeight;
+    // The divider's top is at 15 + 0.694·(H − 30); the band runs from 15 + 0.759·(H − 30) to H − 8.
+    const h = Math.ceil(Math.max((bodyEnd - 15) / 0.694 + 30, (bh + 14) / 0.241, card.offsetHeight));
+    const top = 15 + 0.759 * (h - 30);
+    const mid = (top + h - 8) / 2;
+    card.style.height = `${h}px`;
+    btn.style.marginTop = 'auto';
+    btn.style.marginBottom = `${Math.round(h - 24 - (mid + bh / 2))}px`;
+  }
 }
 
 function shopScreen(note = '') {
@@ -960,11 +983,11 @@ function shopScreen(note = '') {
           : worn
             ? `<button class="buy is-worn" data-unequip="${item.id}">✓ ${t('worn')} · ${t('unequip')}</button>`
             : `<button class="buy" data-equip="${item.id}">${t('equip')}</button>`;
-        return `<div class="item${worn ? ' is-on' : ''}${owned ? ' is-owned' : ''}${!owned && (!can || !open) ? ' is-locked' : ''}${item.legendary ? ' is-legendary' : ''}">
+        return `<div class="item${item.levels && owned ? ' has-levels' : ''}${worn ? ' is-on' : ''}${owned ? ' is-owned' : ''}${!owned && (!can || !open) ? ' is-locked' : ''}${item.legendary ? ' is-legendary' : ''}">
           <span class="icon" aria-hidden="true">${picIcon(item.icon, item.pic)}</span>
           <b>${item.legendary ? `<small class="legend">★ ${t('legendary')}</small>` : ''}${t(`${item.id}Name` as Key)}</b>
           <span>${t(`${item.id}Text` as Key)}</span>
-          ${item.levels ? levelBlock(item) : ''}
+          ${levelBlock(item)}
           ${action}
         </div>`;
       })
@@ -1025,6 +1048,7 @@ function shopScreen(note = '') {
     ${shopSection('arsenal', t('arsenal'), `${save.arsenal.length}/${ARSENAL.length}`, `<p class="how">${t('arsenalHint')}</p><div class="items">${arsenal}</div>`)}
     ${armourSec}${weaponSecs}
     ${backButton('menu')}`, true, false, 'keep-scroll');
+  bandCards();
   if (ads.enabled && giftWait <= 0) offerAd('gift', `<button class="primary ad-btn" data-act="ad-gift">📺 ${t('adGift', { coins: AD_GIFT_COINS })}</button>`);
 }
 
@@ -1079,7 +1103,9 @@ function stylesScreen(note = '') {
         const worn = save.equipped[slot] === item.id;
         const can = save.coins >= item.price;
         const open = itemOpen(item);
-        return row(`data-dress="${item.id}"`, worn, !owned && (!can || !open), picIcon(item.icon, item.pic), item.legendary ? `<span class="legend-name">${t(`${item.id}Name` as Key)}</span>` : t(`${item.id}Name` as Key), t(`${item.id}Text` as Key), worn ? `✓ ${t('worn')}` : owned ? t('equip') : !open ? `🔒 ${t('arsenalLocked', { n: item.world ?? 0 })}` : `${item.legendary ? '★ ' : ''}🪙 ${item.price}`);
+        const levels = levelBlock(item);
+        return row(`data-dress="${item.id}"`, worn, !owned && (!can || !open), picIcon(item.icon, item.pic), item.legendary ? `<span class="legend-name">${t(`${item.id}Name` as Key)}</span>` : t(`${item.id}Name` as Key), t(`${item.id}Text` as Key), worn ? `✓ ${t('worn')}` : owned ? t('equip') : !open ? `🔒 ${t('arsenalLocked', { n: item.world ?? 0 })}` : `${item.legendary ? '★ ' : ''}🪙 ${item.price}`)
+          + (levels ? `<div class="row-levels">${levels}</div>` : '');
       }).join('')}
       ${save.equipped[slot] ? `<button class="ghost small" data-undress="${slot}">${t('dressNone')}</button>` : ''}
       </div>`;
@@ -1313,12 +1339,14 @@ screen.addEventListener('click', (event) => {
     const lv = itemLevel(save.itemLevels, item.id);
     const price = item.levels?.[lv - 1];
     if (!price || !save.owned.includes(item.id)) return;
-    if (save.coins < price) { shopScreen(t('notEnough')); return; }
+    // Upgraded from the shop or from Customise: the same screen comes back with the note.
+    const again = screen.querySelector('.dress') ? stylesScreen : shopScreen;
+    if (save.coins < price) { again(t('notEnough')); return; }
     save.coins -= price;
     save.itemLevels[item.id] = lv + 1;
     persist();
     audio.play('levelup');
-    shopScreen(t('itemUpgraded', { name: t(`${item.id}Name` as Key) }));
+    again(t('itemUpgraded', { name: t(`${item.id}Name` as Key) }));
   } else if (target.dataset.buy) {
     const item = itemById(target.dataset.buy as ItemId);
     if (!itemOpen(item)) return;
