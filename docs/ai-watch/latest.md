@@ -1,26 +1,34 @@
-# Daily AI maintenance report — 2026-10-18
+# Daily AI maintenance report — 2026-10-19
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
 ## Source status
 
 - OpenAI News: OK (8 relevant items)
-- Anthropic News: OK (4 relevant items)
+- Anthropic News: OK (3 relevant items)
 - Google AI Blog: OK (5 relevant items)
 - Google DeepMind: OK (8 relevant items)
 - Hugging Face: OK (8 relevant items)
 - Simon Willison: OK (8 relevant items)
 - GitHub AI & ML Blog: OK (8 relevant items)
-- GitHub Changelog: OK (4 relevant items)
-- Azure Blog: OK (4 relevant items)
+- GitHub Changelog: OK (3 relevant items)
+- Azure Blog: OK (5 relevant items)
 - AWS Machine Learning: OK (8 relevant items)
 - NVIDIA Developer: OK (8 relevant items)
-- Ars Technica AI: OK (6 relevant items)
-- MIT Technology Review AI: OK (7 relevant items)
+- Ars Technica AI: OK (5 relevant items)
+- MIT Technology Review AI: OK (8 relevant items)
 - The Verge AI: OK (3 relevant items)
 
 ## Relevant AI updates
 
+- **AI researchers stranded Claude on a virtual desert island. It started to “play.”** — MIT Technology Review AI · 2026-10-19
+  https://www.technologyreview.com/2026/10/19/1147095/ai-stranded-claude-virtual-desert-island-play/
+- **A hacker broke into John Deere and SharkNinja with an army of AI agents** — The Verge AI · 2026-10-19
+  https://www.theverge.com/ai-artificial-intelligence/1013643/ai-agents-hack-john-deere-shark-ninja-cummins
+- **llm-tools-datasette 0.1.1** — Simon Willison · 2026-10-18
+  https://simonwillison.net/2026/Oct/18/llm-tools-datasette/
+- **llm-echo 0.5** — Simon Willison · 2026-10-18
+  https://simonwillison.net/2026/Oct/18/llm-echo/
 - **Inline rendering with document​.currentScript** — Simon Willison · 2026-10-17
   https://simonwillison.net/2026/Oct/17/document-currentscript/
 - **web-edit 0.1a2** — Simon Willison · 2026-10-17
@@ -49,6 +57,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://aws.amazon.com/blogs/machine-learning/metas-muse-spark-open-now-available-in-amazon-sagemaker-jumpstart/
 - **Trust in Depth: Giving agents more autonomy without losing control** — AWS Machine Learning · 2026-10-15
   https://aws.amazon.com/blogs/machine-learning/trust-in-depth-giving-agents-more-autonomy-without-losing-control/
+- **Evolving the cloud-native foundation for the next generation of AI** — Azure Blog · 2026-10-15
+  https://azure.microsoft.com/en-us/blog/evolving-the-cloud-native-foundation-for-the-next-generation-of-ai/
 - **Upcoming deprecation of selected GitHub Copilot models in mid-November** — GitHub Changelog · 2026-10-15
   https://github.blog/changelog/2026-10-15-upcoming-deprecation-of-selected-github-copilot-models-in-mid-november
 - **AI Scan for pull requests generally available** — GitHub Changelog · 2026-10-15
@@ -69,8 +79,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://simonwillison.net/2026/Oct/15/latex/
 - **ChatGPT can peek at your Chrome tabs now** — The Verge AI · 2026-10-15
   https://www.theverge.com/ai-artificial-intelligence/1012510/openai-chatgpt-google-chrome-tabs
-- **Meta and Apple team up to make Muse AI models run better on Macs** — The Verge AI · 2026-10-15
-  https://www.theverge.com/news/1012293/meta-apple-muse-spark-open-ai-model-mlx
 - **Anthropic warns small AI models could self-replicate through IoT devices** — Ars Technica AI · 2026-10-14
   https://arstechnica.com/security/2026/10/anthropic-warns-small-ai-models-could-self-replicate-through-iot-devices/
 - **OpenAI, Google pushing new AI models easily tricked into making nudes, researchers say** — Ars Technica AI · 2026-10-14
@@ -83,8 +91,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://aws.amazon.com/blogs/machine-learning/how-tamnoon-built-ai-powered-cloud-security-remediation-with-amazon-bedrock/
 - **Deploy and evaluate models with Amazon SageMaker JumpStart** — AWS Machine Learning · 2026-10-14
   https://aws.amazon.com/blogs/machine-learning/deploy-and-evaluate-models-with-amazon-sagemaker-jumpstart/
-- **HydraFusion updates and new Max option** — GitHub Changelog · 2026-10-14
-  https://github.blog/changelog/2026-10-14-hydrafusion-updates-and-new-max-option
 - **Google DeepMind and Singapore Government collaborate to build fine-tuned AI model for scam detection** — Google DeepMind · 2026-10-14
   https://deepmind.google/blog/on-device-ai-scam-detection-mddi/
 - **Optimizing Agent Reliability and Tool Calling Efficiency for Chip Design Using NVIDIA NeMo Gym** — NVIDIA Developer · 2026-10-14
@@ -125,10 +131,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://developer.nvidia.com/blog/nvidia-runai-is-now-open-source-as-part-of-nvidia-dsx-ai-factory-platform/
 - **Higgsfield takes AI video from 1 minute to over 10** — OpenAI News · 2026-10-13
   https://openai.com/index/higgsfield-longer-videos-voice
-- **Redesigning source control at Anthropic** — Simon Willison · 2026-10-13
-  https://simonwillison.net/2026/Oct/13/redesigning-source-control-at-anthropic/
-- **llm-gemini 0.35** — Simon Willison · 2026-10-13
-  https://simonwillison.net/2026/Oct/13/llm-gemini/
 - **Anthropic's Claude AI submitted false murder tip to Philadelphia police** — Ars Technica AI · 2026-10-12
   https://arstechnica.com/tech-policy/2026/10/anthropics-claude-ai-submitted-false-murder-tip-to-philadelphia-police/
 - **Deep dive into Azure Maia 300 architecture** — Azure Blog · 2026-10-12
@@ -137,8 +139,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-teach-copilot-about-your-codebase/
 - **ReplaySSM: Rethinking State Storage for Faster Hybrid-Model Decoding** — NVIDIA Developer · 2026-10-12
   https://developer.nvidia.com/blog/replayssm-rethinking-state-storage-for-faster-hybrid-model-decoding/
-- **Ukraine’s drones knock out AI data center belonging to "Russia’s Google"** — Ars Technica AI · 2026-10-09
-  https://arstechnica.com/gadgets/2026/10/ukraines-drones-knock-out-ai-data-center-belonging-to-russias-google/
 - **Asana cuts model costs 76x in browser tests with GPT-6.1 Sol** — OpenAI News · 2026-10-09
   https://openai.com/index/asana-browser-agent
 - **Sophos cuts threat investigation time by 96% with OpenAI Daybreak** — OpenAI News · 2026-10-09
@@ -185,10 +185,10 @@ This file is generated automatically by the daily maintenance workflow. It updat
 ## Portfolio candidates
 
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Multimodal AI product workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
