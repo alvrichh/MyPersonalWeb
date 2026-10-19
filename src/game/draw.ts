@@ -96,7 +96,6 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   drawStrikes(ctx, g, now);
   drawParticles(ctx, g, false);
   ctx.globalAlpha = 1;
-  if (g.hazard === 'fog') drawFog(ctx, g, vis);
   if (g.player.dark > 0 && g.phase === 'play') drawDark(ctx, g, vis);
 }
 
@@ -671,10 +670,11 @@ function drawStatus(ctx: CanvasRenderingContext2D, g: Game, now: number) {
 function drawDark(ctx: CanvasRenderingContext2D, g: Game, vis: Rect) {
   const p = g.player;
   const k = Math.min(1, p.dark / 0.4);
-  const grad = ctx.createRadialGradient(p.x, p.y, 40, p.x, p.y, 150);
+  // Softer than it was: a wide clear circle round you, and the rest dimmed rather than black.
+  const grad = ctx.createRadialGradient(p.x, p.y, 80, p.x, p.y, 230);
   grad.addColorStop(0, 'rgba(10,6,22,0)');
-  grad.addColorStop(0.55, `rgba(10,6,22,${0.7 * k})`);
-  grad.addColorStop(1, `rgba(10,6,22,${0.94 * k})`);
+  grad.addColorStop(0.55, `rgba(10,6,22,${0.4 * k})`);
+  grad.addColorStop(1, `rgba(10,6,22,${0.68 * k})`);
   ctx.fillStyle = grad;
   ctx.fillRect(vis.x, vis.y, vis.w, vis.h);
 }
@@ -4341,12 +4341,3 @@ const ICE_SPIKES: [number, number, number, number][] = [
   [-0.45, -0.5, 26, 7], [0.4, -0.55, 30, 8], [0.05, -0.35, 44, 10], [-0.65, 0.15, 22, 7], [0.7, 0.1, 24, 7], [-0.25, 0.35, 34, 9], [0.3, 0.4, 30, 8],
 ];
 
-function drawFog(ctx: CanvasRenderingContext2D, g: Game, vis: Rect) {
-  const p = g.player;
-  const grad = ctx.createRadialGradient(p.x, p.y, 70, p.x, p.y, 200);
-  grad.addColorStop(0, 'rgba(8,9,15,0)');
-  grad.addColorStop(0.6, 'rgba(8,9,15,0.6)');
-  grad.addColorStop(1, 'rgba(8,9,15,0.86)');
-  ctx.fillStyle = grad;
-  ctx.fillRect(vis.x, vis.y, vis.w, vis.h);
-}
