@@ -1,4 +1,4 @@
-import { H, W, WALL, WHEEL_X, WORLDS, frostReach, waveAt, type Threat, type OrbPic, isBossRoom, type Enemy, type Game, type Shot, type Look, type Statue, type Rect, type Vec, type Fusion, arrowLook, fusionOf, bladeCount, bladeElement, sawOrbit, sawScale, type BladeElement, type Fx } from './world';
+import { H, W, WALL, WHEEL_X, ICICLE_R, WORLDS, frostReach, waveAt, type Threat, type OrbPic, isBossRoom, type Enemy, type Game, type Shot, type Look, type Statue, type Rect, type Vec, type Fusion, arrowLook, fusionOf, bladeCount, bladeElement, sawOrbit, sawScale, type BladeElement, type Fx } from './world';
 import { SPIRIT_COLOR, type ItemId, type SpiritSkin } from './shop';
 import { FULL_HERO_SETS, heroKey, type HeroSkin } from './save';
 
@@ -4250,6 +4250,7 @@ function drawHazards(ctx: CanvasRenderingContext2D, g: Game, now: number) {
 function drawStrikes(ctx: CanvasRenderingContext2D, g: Game, now: number) {
   for (const st of g.strikes) {
     const t = 1 - st.t / 0.9;
+    if (st.ice) { drawIcicle(ctx, st, t, now); continue; }
     ctx.strokeStyle = `rgba(250,204,21,${0.4 + t * 0.5})`;
     ctx.lineWidth = 2;
     ctx.setLineDash([5, 5]);
@@ -4262,6 +4263,56 @@ function drawStrikes(ctx: CanvasRenderingContext2D, g: Game, now: number) {
     ctx.arc(st.x, st.y, 34 * t, 0, Math.PI * 2);
     ctx.fill();
   }
+}
+
+/** An icicle on its way down: an icy ring on the floor and a growing shadow while it warns, then the icicle
+   falling out of the top over the last part, tip first, onto the middle of the ring. */
+function drawIcicle(ctx: CanvasRenderingContext2D, st: { x: number; y: number }, t: number, now: number) {
+  const r = ICICLE_R;
+  ctx.strokeStyle = `rgba(186,230,253,${0.45 + t * 0.5})`;
+  ctx.lineWidth = 2;
+  ctx.setLineDash([5, 5]);
+  ctx.beginPath();
+  ctx.arc(st.x, st.y, r, now * 2, now * 2 + Math.PI * 2);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = `rgba(56,189,248,${0.08 + t * 0.22})`;
+  ctx.beginPath();
+  ctx.arc(st.x, st.y, r * t, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = `rgba(8,20,35,${0.15 + t * 0.3})`;
+  ctx.beginPath();
+  ctx.ellipse(st.x, st.y, 4 + 9 * t, 2 + 4 * t, 0, 0, Math.PI * 2);
+  ctx.fill();
+  const k = (t - 0.5) / 0.5;
+  if (k <= 0) return;
+  const drop = (1 - k) * (1 - k) * 280;
+  const tip = st.y - drop;
+  const len = 46; const half = 8;
+  ctx.save();
+  ctx.globalAlpha = Math.min(1, k * 3);
+  const grad = ctx.createLinearGradient(st.x - half, 0, st.x + half, 0);
+  grad.addColorStop(0, '#e0f2fe');
+  grad.addColorStop(0.45, '#ffffff');
+  grad.addColorStop(1, '#7dd3fc');
+  ctx.fillStyle = grad;
+  ctx.strokeStyle = 'rgba(14,116,144,0.9)';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(st.x, tip);
+  ctx.lineTo(st.x + half, tip - len);
+  ctx.lineTo(st.x + half * 0.4, tip - len - 6);
+  ctx.lineTo(st.x - half * 0.5, tip - len - 3);
+  ctx.lineTo(st.x - half, tip - len);
+  ctx.closePath();
+  ctx.fill();
+  ctx.stroke();
+  ctx.strokeStyle = 'rgba(255,255,255,0.8)';
+  ctx.beginPath();
+  ctx.moveTo(st.x - 2, tip - 8);
+  ctx.lineTo(st.x - half * 0.45, tip - len + 4);
+  ctx.stroke();
+  ctx.restore();
 }
 
 function drawFog(ctx: CanvasRenderingContext2D, g: Game, vis: Rect) {

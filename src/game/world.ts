@@ -80,7 +80,8 @@ export const WORLD_COUNT = WORLDS.length;
 /** Lava and thorns hurt, puddles slow you down. A boss's meteor or roots leave some that fade (`ttl`, seconds). */
 export type Hazard = { kind: 'lava' | 'puddle' | 'thorns'; x: number; y: number; r: number; ttl?: number; /** Drawn by something else (a vine row's picture). */ hidden?: boolean };
 /** A lightning strike on its way: a warning circle, then the hit. */
-export type Strike = { x: number; y: number; t: number };
+/** A bolt (or, in the viking world, an icicle) aimed at the floor: `t` seconds of warning left. */
+export type Strike = { x: number; y: number; t: number; ice?: boolean };
 
 export type Vec = { x: number; y: number };
 export type Rect = { x: number; y: number; w: number; h: number };
@@ -1960,6 +1961,10 @@ const BOSS_STATUS: Record<string, [BossStatus, number]> = {
 const POISON_DMG = 8;
 /** Chill: how much slower you walk. */
 const CHILL_SLOW = 0.35;
+/** The viking world's icicles: how much less often than the Greek bolts they fall, their reach, how long they chill. */
+export const ICICLE_EVERY = 1.25;
+export const ICICLE_R = 30;
+const ICICLE_CHILL = 1.2;
 
 function hurtPlayer(g: Game, amount: number, from?: string) {
   const p = g.player;
@@ -2849,21 +2854,37 @@ function updateHazards(g: Game, dt: number) {
     hurtPlayer(g, h.kind === 'lava' ? 8 : 10);
     if (h.kind === 'lava' && Math.random() < 0.5) burst(g, p.x, p.y + p.r * 0.6, '#ff9a1f', 2, 60, 2.5);
   }
-  if (g.hazard !== 'strike') return;
+  // The viking world: on top of its puddles, icicles fall from the frozen roof the same way, and chill you.
+  const icy = WORLDS[g.world - 1].hazard === 'puddle';
+  if (g.hazard !== 'strike' && !icy) return;
   // The storm: a bolt aims near you, warns for a moment, then hits anything
   // in the circle, bugs included.
   g.strikeIn -= dt;
   if (g.strikeIn <= 0) {
     g.strikeIn = g.mode === 'horde' ? Math.max(2.2, 4.5 - (g.time / 60) * 0.25) : Math.max(1.4, 3 - g.room * 0.12);
+    if (icy) g.strikeIn *= ICICLE_EVERY;
     const a = rand(0, Math.PI * 2);
     const d = rand(0, 110);
     const at = { x: p.x + Math.cos(a) * d, y: p.y + Math.sin(a) * d };
     if (g.mode === 'sprints') { at.x = clamp(at.x, WALL + 30, W - WALL - 30); at.y = clamp(at.y, WALL + 30, H - WALL - 30); }
-    g.strikes.push({ x: at.x, y: at.y, t: 0.9 });
+    g.strikes.push({ x: at.x, y: at.y, t: 0.9, ice: icy || undefined });
   }
   g.strikes = g.strikes.filter((st) => {
     st.t -= dt;
     if (st.t > 0) return true;
+    if (st.ice) {
+      // The icicle shatters: a spray of ice, and whoever it lands on is hurt and slowed for a moment.
+      burst(g, st.x, st.y, '#e0f2fe', 16, 150, 3);
+      burst(g, st.x, st.y, '#7dd3fc', 8, 90, 2.5);
+      g.events.push('strike');
+      if (dist(st, p) < ICICLE_R + p.r * 0.5 && p.inv <= 0 && g.phase === 'play') {
+        hurtPlayer(g, 12);
+        p.chill = Math.max(p.chill, ICICLE_CHILL);
+        g.events.push('chill');
+      }
+      for (const e of live(g)) if (dist(st, e) < ICICLE_R + e.r) hurt(g, e, 40);
+      return false;
+    }
     g.fx.push({ kind: 'strike', x: st.x, y: st.y, r: 34, a: 0, life: 0.3, max: 0.3 });
     g.zaps.push({ pts: zigzag({ x: st.x + rand(-20, 20), y: st.y - 240 }, st, 14), life: 0.22 });
     g.events.push('strike');
