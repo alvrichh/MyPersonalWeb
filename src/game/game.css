@@ -393,8 +393,29 @@ body {
   filter: brightness(1.15);
 }
 
-.cover-x { left: 3.8%; top: 0; width: 10.8%; height: 6.2%; border-radius: 50%; }
-.cover-more { left: 85.5%; top: 0; width: 10.8%; height: 6.2%; border-radius: 50%; }
+/* The X and ⋯ were painted into the picture's fake status bar; they are drawn here now (painted out of
+   cover-tall.jpg), children of `.cover` rather than of the picture box, so on tall screens they sit up
+   in the dark strip above it. */
+.cover > .cover-x,
+.cover > .cover-more {
+  position: absolute;
+  z-index: 2;
+  top: max(10px, env(safe-area-inset-top));
+  width: 10.8%;
+  aspect-ratio: 1;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  border-radius: 50%;
+  background: rgba(30, 31, 34, 0.9) center / 44% no-repeat !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+.cover > .cover-x {
+  left: 3.8%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 5l14 14M19 5L5 19' stroke='white' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E") !important;
+}
+.cover > .cover-more {
+  left: 85.5%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Ccircle cx='4' cy='12' r='2.4'/%3E%3Ccircle cx='12' cy='12' r='2.4'/%3E%3Ccircle cx='20' cy='12' r='2.4'/%3E%3C/svg%3E") !important;
+}
 .cover-gear { left: 89.8%; top: 3.8%; width: 8.2%; height: 4.4%; }
 
 /* Profile card: name, level and the XP bar. */
@@ -2792,16 +2813,16 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   }
   .cover-in { position: absolute; inset: 0; aspect-ratio: auto; }
   .screen.is-menu .panel-in { display: grid; }
-  .cover-x {
-    left: 1.2%; top: 3.6%; width: 3.4%; height: 6%;
+  .cover > .cover-x {
+    left: 1.2%; top: 3.6%; width: 3.4%; height: 6%; aspect-ratio: auto; box-shadow: none;
     display: grid !important; place-items: center;
     border: 1px solid rgba(255, 255, 255, 0.25) !important;
     border-radius: 50% !important;
-    background: rgba(5, 10, 20, 0.7) !important;
+    background: rgba(5, 10, 20, 0.7) none !important;
     font-size: 1.3cqw !important; color: #e2e8f0 !important; text-decoration: none;
   }
-  .cover-x::before { content: '✕'; }
-  .cover-more { display: none !important; }
+  .cover > .cover-x::before { content: '✕'; }
+  .cover > .cover-more { display: none !important; }
   .cover-gear { left: 91.5%; top: 3.2%; width: 3.4%; height: 5.7%; border-radius: 1cqw; }
   .cover-profile { left: 5.7%; top: 3%; width: 17.2%; height: 8.7%; }
   .cover-profile-copy { left: 12%; top: 4.1%; width: 10.3%; gap: 0.25cqw; }
