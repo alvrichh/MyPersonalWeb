@@ -563,13 +563,20 @@ function mapScreen() {
   const action = pickedOpen
     ? `<button class="play" data-act="play-picked"><span class="play-tri" aria-hidden="true"></span><span class="play-copy">${t('playWorld', { n: picked })}</span></button>`
     : `<button class="play is-locked" disabled><span class="play-lock" aria-hidden="true">🔒</span><span class="play-copy">${t('lockedBtn')}</span></button>`;
+  // Only the islands scroll; the title, the world's card and the play button stay put. Picking an island
+  // re-renders the screen, so the islands keep their scroll.
+  const kept = screen.querySelector<HTMLElement>('.map-scroll')?.scrollTop;
   show(`
+    <button class="ui-close" type="button" data-act="menu" aria-label="${t('menu')}"></button>
     <div class="mapscreen">
       <h2 class="map-title"><span>${t('map')}</span></h2>
-      <div class="map" style="aspect-ratio:${MAP_W}/${MAP_H}">
-        <svg viewBox="0 0 ${MAP_W} ${MAP_H}" preserveAspectRatio="none" aria-hidden="true">${trail}</svg>
-        ${islandArt}
+      <div class="map-scroll">
+        <div class="map" style="aspect-ratio:${MAP_W}/${MAP_H}">
+          <svg viewBox="0 0 ${MAP_W} ${MAP_H}" preserveAspectRatio="none" aria-hidden="true">${trail}</svg>
+          ${islandArt}
+        </div>
       </div>
+      <div class="map-foot">
       <div class="map-info">
         <img class="map-thumb" src="./images/game/map/pv-${ISLAND_ART[picked - 1]}.jpg" alt="" width="400" height="250">
         <div class="map-copy">
@@ -580,10 +587,19 @@ function mapScreen() {
           <small class="mode-text">${t(save.mode === 'horde' ? 'modeHordeText' : 'modeSprintsText')}</small>
         </div>
       </div>
-      <div class="map-dock">${action}</div>
+      ${action}
       ${mastery}
       <button class="ghost hexghost" data-act="menu">← ${t('menu')}</button>
+      </div>
     </div>`, true, false, 'is-map');
+  const scroller = screen.querySelector<HTMLElement>('.map-scroll');
+  if (!scroller) return;
+  if (kept !== undefined) scroller.scrollTop = kept;
+  else {
+    // Opening the map: the picked island in the middle of the view.
+    const isle = scroller.querySelector<HTMLElement>(`.isle[data-world="${picked}"]`);
+    if (isle) scroller.scrollTop = isle.offsetTop + isle.offsetHeight / 2 - scroller.clientHeight / 2;
+  }
 }
 
 /** The four arrow elements' marks, for the fusion lines. */
