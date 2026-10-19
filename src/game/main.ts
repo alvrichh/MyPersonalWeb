@@ -1230,7 +1230,7 @@ function flash(text: string) {
 const SFX_FOR: Partial<Record<GameEvent, Sfx>> = {
   shoot: 'shoot', knife: 'knife', boomerang: 'boomerang', orb: 'shoot', hit: 'hit', kill: 'kill', gem: 'gem', hurt: 'hurt',
   levelup: 'levelup', slash: 'slash', slam: 'slam', strike: 'strike', boom: 'boom', revive: 'revive', clear: 'door', boss: 'boss',
-  heal: 'revive', heart: 'gem', chest: 'levelup', wheel: 'door', shrine: 'door',
+  heal: 'revive', heart: 'gem', chest: 'levelup', wheel: 'door', shrine: 'door', rage: 'boss',
 };
 // Hits and gems happen many times a frame; one sound per kind per frame is plenty.
 function playEvents(events: GameEvent[]) {
@@ -1387,6 +1387,10 @@ function step(now: number) {
       if (event === 'shrine') { flash(t('shrineHint')); audio.setIntensity(0.1); }
       if (event === 'heal') flash(t('statueHeal'));
       if (event === 'room' && g.mode === 'sprints') { flash(t('sprint', { room: g.room })); audio.setIntensity(Math.min(0.8, 0.2 + g.room * 0.05 + (g.world - 1) * 0.05)); }
+      if (event === 'rage') {
+        const boss = g.enemies.find((e) => e.rage);
+        if (boss) flash(t('bossRage', { name: bossTitle(boss) }));
+      }
       if (event === 'minute') { flash(t('minuteN', { n: Math.floor(g.time / 60) })); audio.setIntensity(Math.min(0.85, 0.25 + (g.time / 60) * 0.06)); }
       if (event === 'boss') {
         const boss = g.enemies.find((e) => e.kind === 'boss' && !e.clone);

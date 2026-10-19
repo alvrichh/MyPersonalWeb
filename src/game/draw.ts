@@ -2164,11 +2164,23 @@ function drawEnemy(ctx: CanvasRenderingContext2D, e: Enemy, now: number) {
     ctx.arc(0, 0, e.r * 1.5, 0, Math.PI * 2);
     ctx.fill();
   }
-  // The world's final boss: a crown of light turning round it (its clones wear it too, to fool you).
+  // Its last stand (`rage`, from 20% health): a red glow pulsing fast behind it.
+  if (e.rage) {
+    const k = 0.5 + Math.sin(now * 12) * 0.5;
+    const glow = ctx.createRadialGradient(0, -e.r * 0.3, e.r * 0.3, 0, -e.r * 0.3, e.r * (1.9 + k * 0.3));
+    glow.addColorStop(0, `rgba(248,113,113,${0.35 + k * 0.2})`);
+    glow.addColorStop(0.6, 'rgba(220,38,38,0.22)');
+    glow.addColorStop(1, 'transparent');
+    ctx.fillStyle = glow;
+    ctx.beginPath();
+    ctx.arc(0, -e.r * 0.3, e.r * 2.2, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  // The world's final boss: a crown of light turning round it (its clones wear it too, to fool you); red and fast in its last stand.
   if (e.final) {
-    const tone = e.tint || '#fcd34d';
+    const tone = e.rage ? '#ef4444' : e.tint || '#fcd34d';
     ctx.save();
-    ctx.rotate(now * 0.8);
+    ctx.rotate(now * (e.rage ? 3 : 0.8));
     ctx.strokeStyle = tone;
     ctx.globalAlpha = 0.55 + Math.sin(now * 3) * 0.15;
     ctx.lineWidth = 2.5;

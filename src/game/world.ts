@@ -224,6 +224,8 @@ export type Enemy = {
   sigs: number;
   /** Charges still to chain (Valdur's frenzy). */
   combo: number;
+  /** The final boss's last stand, from 20% health: it runs and charges much faster (`RAGE_AT`). */
+  rage: boolean;
 };
 
 export type Shot = {
@@ -471,7 +473,7 @@ export type Game = {
 
 export type GameEvent =
   | 'fusion' | 'clear' | 'boss' | 'hurt' | 'levelup' | 'room' | 'revive' | 'heal' | 'wheel' | 'shrine'
-  | 'shoot' | 'knife' | 'boomerang' | 'orb' | 'hit' | 'kill' | 'gem' | 'heart' | 'chest' | 'slash' | 'slam' | 'strike' | 'boom' | 'minute';
+  | 'shoot' | 'knife' | 'boomerang' | 'orb' | 'hit' | 'kill' | 'gem' | 'heart' | 'chest' | 'slash' | 'slam' | 'strike' | 'boom' | 'minute' | 'rage';
 
 /* ------------------------------------------------------------------ helpers */
 
@@ -636,6 +638,7 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
     cd5: 4.5,
     sigs: 0,
     combo: 0,
+    rage: false,
   };
 }
 
@@ -1092,6 +1095,7 @@ function hurt(g: Game, e: Enemy, amount: number, push?: Vec) {
     breakShip(g, e);
     return;
   }
+  if (e.final && !e.clone && !e.rage && e.hp > 0 && e.hp <= e.maxHp * RAGE_AT) enrage(g, e);
   if (push && e.kind !== 'boss') {
     e.kx += push.x;
     e.ky += push.y;
@@ -1928,7 +1932,9 @@ function updateEnemy(g: Game, e: Enemy, dt: number) {
     }
   } else if (e.kind === 'boss') {
     updateBoss(g, e, dt, ux, uy);
-    if (e.dash > 0) { mx = e.dir.x * 9; my = e.dir.y * 9; } else if (e.aim > 0 || e.chan > 0) { mx = 0; my = 0; } else { mx = ux * 0.6; my = uy * 0.6; }
+    const walk = e.rage ? Math.min(RAGE_WALK, RAGE_TOP / e.speed) : 0.6;
+    const run = e.rage ? 12 : 9;
+    if (e.dash > 0) { mx = e.dir.x * run; my = e.dir.y * run; } else if (e.aim > 0 || e.chan > 0) { mx = 0; my = 0; } else { mx = ux * walk; my = uy * walk; }
   }
 
   // Walking round a rack: sidestep, still edging closer, until the player is
@@ -1981,6 +1987,21 @@ const signatureOf = (g: Game, e: Enemy): Signature =>
   e.bossId === 'valdur' ? 'frenzy' : g.world <= 7 ? SIGNATURE[g.world - 1] : SIGNATURE[1 + (e.sigs % 6)];
 
 /** The longship breaks up at half health: wreckage, water on the floor, and Valdur leaps out of it. */
+/** Below this share of its health the final boss goes into its last stand. */
+export const RAGE_AT = 0.2;
+/* Its walk goes from 0.6 to 1.8 of its speed, never faster than 120 (the hero runs at 150),
+   its charges are a third faster and it aims for less time. */
+const RAGE_WALK = 1.8;
+const RAGE_TOP = 120;
+function enrage(g: Game, e: Enemy) {
+  e.rage = true;
+  e.aim = Math.min(e.aim, 0.2);
+  e.cd2 = Math.min(e.cd2, 0.8);
+  g.shake = Math.max(g.shake, 0.6);
+  burst(g, e.x, e.y, '#ef4444', 26);
+  g.events.push('rage');
+}
+
 function breakShip(g: Game, e: Enemy) {
   // The burning wreck stays on the water for a moment while he leaps clear.
   g.fx.push({ kind: 'pic', pic: 'drakkar-wreck', x: e.x, y: e.y - 25, r: 85, a: 0, life: 1.6, max: 1.6 });
@@ -2061,8 +2082,8 @@ function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
   } else {
     e.cd2 -= dt;
     if (e.cd2 <= 0) {
-      e.cd2 = (final ? 5 : 6) * fury;
-      e.aim = 0.7;
+      e.cd2 = (final ? 5 : 6) * fury * (e.rage ? 0.6 : 1);
+      e.aim = e.rage ? 0.4 : 0.7;
       e.dir = { x: ux, y: uy };
     }
   }
