@@ -58,7 +58,7 @@ export const WHEEL_X = W / 2 + 92;
 /** Each world is ten sprints with its own element: colours, a hazard and
  *  tougher bugs. World 1 is the plain backlog. */
 export type Element = 'original' | 'fire' | 'water' | 'leaf' | 'bolt' | 'spark' | 'ghost' | 'heart';
-export type HazardKind = 'none' | 'lava' | 'puddle' | 'thorns' | 'strike' | 'bouncy' | 'fog' | 'mixed';
+export type HazardKind = 'none' | 'lava' | 'puddle' | 'thorns' | 'strike' | 'ice' | 'bouncy' | 'fog' | 'mixed';
 export type WorldDef = { element: Element; hazard: HazardKind; look: Look | 'random'; tint: string; floor: string; grid: string; wall: string; door: string };
 
 /** How an enemy is drawn: the world's cast, or whatever the picker forces. */
@@ -68,7 +68,7 @@ export const LOOKS: Look[] = ['original', 'demon', 'viking', 'jungle', 'greek', 
 export const WORLDS: WorldDef[] = [
   { element: 'original', hazard: 'none', look: 'original', tint: '', floor: '#0f141d', grid: 'rgba(255,255,255,0.035)', wall: '#1d2533', door: '' },
   { element: 'fire', hazard: 'lava', look: 'demon', tint: '#ff7a1a', floor: '#1a0c0a', grid: 'rgba(255,122,26,0.08)', wall: '#3a1510', door: '#ff9e4c' },
-  { element: 'water', hazard: 'puddle', look: 'viking', tint: '#38bdf8', floor: '#081520', grid: 'rgba(56,189,248,0.08)', wall: '#0f2a3d', door: '#7ad8ff' },
+  { element: 'water', hazard: 'ice', look: 'viking', tint: '#38bdf8', floor: '#081520', grid: 'rgba(56,189,248,0.08)', wall: '#0f2a3d', door: '#7ad8ff' },
   { element: 'leaf', hazard: 'thorns', look: 'jungle', tint: '#4ade80', floor: '#0a160f', grid: 'rgba(74,222,128,0.07)', wall: '#15321f', door: '#67dfa0' },
   { element: 'bolt', hazard: 'strike', look: 'greek', tint: '#facc15', floor: '#15140a', grid: 'rgba(250,204,21,0.07)', wall: '#2e2a10', door: '#ffd45f' },
   { element: 'spark', hazard: 'bouncy', look: 'robot', tint: '#fb923c', floor: '#160f09', grid: 'rgba(251,146,60,0.08)', wall: '#3b2412', door: '#ffb86f' },
@@ -749,7 +749,8 @@ function setHazard(g: Game, room: number) {
   const def = WORLDS[g.world - 1];
   let kind = def.hazard;
   if (kind === 'mixed') {
-    const pool: HazardKind[] = ['lava', 'puddle', 'thorns', 'strike', 'bouncy', 'fog'];
+    // Puddles are kept for a mud world to come; the viking world now brings its ice spikes.
+    const pool: HazardKind[] = ['lava', 'ice', 'thorns', 'strike', 'bouncy', 'fog'];
     kind = pool[Math.floor(Math.random() * pool.length)];
   }
   g.hazard = kind;
@@ -2857,8 +2858,8 @@ function updateHazards(g: Game, dt: number) {
     hurtPlayer(g, h.kind === 'lava' ? 8 : 10);
     if (h.kind === 'lava' && Math.random() < 0.5) burst(g, p.x, p.y + p.r * 0.6, '#ff9a1f', 2, 60, 2.5);
   }
-  // The viking world: on top of its puddles, ice spikes break out of the floor the same way, and chill you.
-  const icy = WORLDS[g.world - 1].hazard === 'puddle';
+  // The viking world: ice spikes break out of the floor the same way, and chill you.
+  const icy = g.hazard === 'ice';
   if (g.hazard !== 'strike' && !icy) return;
   // The storm: a bolt aims near you, warns for a moment, then hits anything
   // in the circle, bugs included.
