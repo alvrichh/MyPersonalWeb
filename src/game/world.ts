@@ -1644,7 +1644,9 @@ function throwBricks(g: Game) {
   const dmg = (34 + 14 * (lv - 1)) * power(g, 'magic') * (evolved ? 2.2 : 1);
   for (let i = 0; i < (evolved ? 2 : lv); i++) {
     g.shots.push(shot('brick', g.player, -Math.PI / 2 + rand(-0.55, 0.55), rand(470, 560), dmg, {
-      pierce: 1e9, ghost: true, free: true, grav: 900, life: 1.3, size: evolved ? 20 : 9, spin: rand(0, 6),
+      // It falls back past you and on down until it leaves the room or the view (`updateShot`), through every bug,
+      // hitting with the whole brick (the old 1.3 s ran out just as it came back down among the bugs).
+      pierce: 1e9, ghost: true, free: true, grav: 900, life: 3, size: evolved ? 22 : 13, spin: rand(0, 6),
     }));
   }
 }
@@ -2484,7 +2486,11 @@ function updateShot(g: Game, s: Shot, dt: number): boolean {
     s.tick -= dt;
     if (s.tick <= 0) { s.tick = 0.4; s.hits.clear(); }
   }
-  if (s.grav) s.vy += s.grav * dt;
+  if (s.grav) {
+    s.vy += s.grav * dt;
+    const b = bounds(g);
+    if (s.vy > 0 && s.y > b.y + b.h + 40) return false;
+  }
   if (s.kind === 'brick' || s.kind === 'ball') s.spin += dt * 9;
   if (s.kind === 'molotov') s.spin += dt * 4.5;
   if (s.kind === 'durian' || s.kind === 'drill') s.spin += dt * 14;
