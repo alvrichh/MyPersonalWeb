@@ -2767,6 +2767,8 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.6));
 }
 .gear-row .skin-pic { display: block; height: 58px; width: auto; }
+/* A world's floor as a round thumbnail, the middle of the arena showing in the ring. */
+.gear-row .scene-pic { display: block; width: 56px; height: 56px; border-radius: 50%; object-fit: cover; object-position: 50% 50%; }
 .gear-row.is-locked .icon { opacity: 0.6; filter: grayscale(0.6); }
 .gear-row b { font-size: 0.92rem; color: #fff; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); }
 .gear-row > span:not(.icon) { font-size: 0.72rem; line-height: 1.25; }

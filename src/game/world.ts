@@ -455,6 +455,8 @@ export type Game = {
   hordeBoss: number;
   /** Nightmare: On call with no clock, the bugs pouring in faster the longer you last. */
   endless: boolean;
+  /** Which world's floor and blocks are drawn (0: the run's own); only the look, picked in Customise to try them out. */
+  scene: number;
   hordeHazard: number;
   /** On call: half the visible field, in room units, set by the page so bugs spawn just out of sight. */
   viewHalf: Vec;
@@ -811,6 +813,7 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     world: nightmare ? NIGHTMARE_WORLD : clamp(world, 1, WORLD_COUNT),
     mode,
     endless: nightmare,
+    scene: 0,
     room: 1,
     hordeSpawn: 1.5,
     hordeBoss: 0,
