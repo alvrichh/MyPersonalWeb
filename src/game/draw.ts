@@ -262,7 +262,7 @@ const POSES: Pose[] = ['idle', 'walk', 'back', 'shoot', 'cheer', 'walk2', 'front
    second step, facing the camera, a flinch and a knock-out). The others
    still have five and fall back for the rest. */
 const FULL_SETS = new Set(FULL_HERO_SETS);
-/** The full sets' pixel scale: the base set's canvas is this tall; a hat makes its set's canvas taller at the same scale. */
+/** The full sets' pixel scale (the base set was cut 150px tall); each picture is trimmed to its feet, so it is drawn from its own height at that scale. */
 const FULL_BASE_H = 150;
 const FALLBACK: Partial<Record<Pose, Pose>> = { walk2: 'walk', front: 'idle', hurt: 'idle', down: 'idle' };
 const heroSets = new Map<string, Record<Pose, HTMLImageElement>>();
@@ -467,7 +467,8 @@ function drawPlayer(ctx: CanvasRenderingContext2D, g: Game, pal: Palette, now: n
     // The full sets share one canvas height (feet at the bottom); the older ones grow a little to cheer.
     const h = full ? p.r * 3.05 * (img.naturalHeight / FULL_BASE_H) : p.r * (pose === 'cheer' ? 3.1 : 2.7);
     const w = (h * img.naturalWidth) / img.naturalHeight;
-    const bob = p.moving ? Math.abs(Math.sin(now * 14)) * 2 : pose === 'cheer' ? Math.abs(Math.sin(now * 6)) * 3 : 0;
+    // Feet stay on the shadow: the full sets have their own step frames, so only a tiny bounce while walking.
+    const bob = p.moving ? Math.abs(Math.sin(now * 14)) * (full ? 0.6 : 2) : pose === 'cheer' ? Math.abs(Math.sin(now * 6)) * 3 : 0;
     const left = Math.cos(p.face) < -0.2 && pose !== 'back' && pose !== 'cheer' && pose !== 'front';
     // Walking up or down there is one picture: mirror it every step and rock it a little, so it walks rather than glides.
     const vertical = p.moving && (pose === 'front' || pose === 'back');
