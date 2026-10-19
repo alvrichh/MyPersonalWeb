@@ -74,8 +74,9 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   drawOrbs(ctx, g);
   if (pal.retro) drawPlayerRetro(ctx, g, pal, now);
   else {
-    if (g.revives > 0) drawWornWings(ctx, g.player.x, g.player.y - g.player.r * 0.75, g.player.r, now);
+    if (g.loadout.wings) drawHeroWings(ctx, g, pal, now, false);
     drawPlayer(ctx, g, pal, now);
+    if (g.loadout.wings) drawHeroWings(ctx, g, pal, now, true);
   }
   drawFx(ctx, g, accent, 'over');
   drawPicFx(ctx, g, true);
@@ -1697,7 +1698,7 @@ const ready = (img: HTMLImageElement) => img.complete && img.naturalWidth > 0;
 /** Warm the effect pictures up when a run starts, so the first swing and strike are already painted. */
 export function preloadFx() {
   for (const n of ['fireball', 'boom-small', 'boom-big', 'knife', 'boomerang', 'slash', 'chest', 'slam', 'crystals', 'gem', 'gem-big', 'bolt-1', 'bolt-2', 'bolt-3', 'bolt-4', 'bolt-5', 'bolt-6',
-    'brick', 'iron', 'molotov', 'barrel', 'durian', 'durian-big', 'drill', 'drill-evo', 'rocket', 'rocket-shark', 'ball', 'ball-evo', 'phoenix-0', 'phoenix-1', 'phoenix-2', 'phoenix-3', 'wings-0', 'wings-1', 'wings-2',
+    'brick', 'iron', 'molotov', 'barrel', 'durian', 'durian-big', 'drill', 'drill-evo', 'rocket', 'rocket-shark', 'ball', 'ball-evo', 'phoenix-0', 'phoenix-1', 'phoenix-2', 'phoenix-3', 'wings-0', 'wings-1', 'wings-2', 'angle-front', 'angle-side', 'angle-quarter',
     'fire-pool', 'fire-pool-big', 'caltrops', 'mine', 'mine-on', 'mine-volt', 'volt-burst', 'impact', 'heart', 'rune', 'crescent',
     'steam-cloud', 'plasma-burst', 'wisp-flame', 'shock-ring', 'ice-block', 'spectral-bolt', 'laser-yellow', 'laser-orange', 'laser-red', 'laser-purple', 'drakkar-wreck', ...Array.from({ length: 7 }, (_, i) => `lava-${i}`)]) fxImage(n);
 }
@@ -1852,6 +1853,48 @@ function drawPhoenixWings(ctx: CanvasRenderingContext2D, x: number, y: number, s
    the join between the wings at the same point (`WINGS_JOIN` of the height), flapping slowly; the drawn
    wings stand in until they load. */
 const WINGS_JOIN = 0.5733;
+/* The Phoenix cloak at ★3: the owner's wings of fire, at the angle the hero is seen from. Walking away
+   they are the full back view, in front of the hero; facing us they peek out behind both shoulders;
+   side on (standing, aiming, walking) the three-quarter view, or the side view while walking sideways,
+   mirrored to face left. Each picture's shoulder point is `anchor` (share of its width and height); all
+   were cut on one scale, the back view 400 px wide. */
+type WingAngle = 'front' | 'side' | 'quarter';
+const WING_ANGLE: Record<WingAngle, { anchor: [number, number] }> = {
+  front: { anchor: [0.5, 0.42] },
+  side: { anchor: [0.9, 0.5] },
+  quarter: { anchor: [0.82, 0.45] },
+};
+function drawHeroWings(ctx: CanvasRenderingContext2D, g: Game, pal: Palette, now: number, overHero: boolean) {
+  if (retroLook || g.phase === 'over') return;
+  const p = g.player;
+  if (p.inv > 0 && g.phase === 'play' && Math.floor(now * 20) % 2 === 0) return;
+  const full = FULL_SETS.has(heroKey(pal.skin ?? 'boy', pal.hat));
+  const pose = heroPose(g, now, full);
+  const back = pose === 'back';
+  if (back !== overHero) return;
+  const x = p.x;
+  const y = p.y - p.r * 0.75;
+  if (back) { drawWornWings(ctx, x, y, p.r, now); return; }
+  const facing = pose === 'front' || pose === 'fwalk' || pose === 'fwalk2' || pose === 'cheer';
+  const angle: WingAngle = facing ? 'front' : p.moving && (pose === 'walk' || pose === 'walk2') ? 'side' : 'quarter';
+  const pic = fxImage(`angle-${angle}`);
+  if (!ready(pic)) { drawWornWings(ctx, x, y, p.r, now); return; }
+  const turn = pose === 'wshoot' || pose === 'wshoot2' || !p.moving ? p.face : p.heading;
+  const left = !facing && Math.cos(turn) < -0.2;
+  const k = (p.r * 5.2) / 400;
+  const w = pic.naturalWidth * k;
+  const h = pic.naturalHeight * k;
+  const [ax, ay] = WING_ANGLE[angle].anchor;
+  const beat = Math.sin(now * FLAPS_PER_SECOND * Math.PI * 2);
+  ctx.save();
+  ctx.translate(x, y + beat * 1.4);
+  if (left) ctx.scale(-1, 1);
+  ctx.scale(0.84 + 0.16 * (beat * 0.5 + 0.5), 1);
+  ctx.globalAlpha = 0.95;
+  ctx.drawImage(pic, -w * ax, -h * ay, w, h);
+  ctx.restore();
+}
+
 /* One flap: spread, raised, spread, half open; each pose fades into the next, so it flows rather than steps. */
 const WING_FLAP = [1, 2, 1, 0];
 const FLAPS_PER_SECOND = 2.2;

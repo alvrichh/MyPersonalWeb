@@ -41,6 +41,8 @@ export type Save = {
   /** Retro look: no painted textures, the plain panels and the ring hero from before. */
   retro: boolean;
   owned: ItemId[];
+  /** Levels of the owned items that can be upgraded (the Phoenix cloak); missing means level 1. */
+  itemLevels: Partial<Record<ItemId, number>>;
   /** Arsenal weapons bought in the shop. */
   arsenal: SkillId[];
   /** When the shop's ad gift was last taken (ms since 1970; one every `AD_GIFT_EVERY`). */
@@ -96,6 +98,7 @@ const fresh = (): Save => ({
   skins: ['boy'],
   retro: false,
   owned: [],
+  itemLevels: {},
   arsenal: [],
   adGiftAt: 0,
   dailyAt: 0,
@@ -124,7 +127,7 @@ export function loadSave(): Save {
   const base = fresh();
   try {
     const data = JSON.parse(storage.get(KEY) || '{}') as Partial<Save>;
-    const save: Save = { ...base, ...data, equipped: {}, upgrades: { ...data.upgrades }, best: { ...base.best, ...data.best }, bestByWorld: { ...data.bestByWorld }, hordeBest: { ...data.hordeBest } };
+    const save: Save = { ...base, ...data, equipped: {}, upgrades: { ...data.upgrades }, itemLevels: { ...data.itemLevels }, best: { ...base.best, ...data.best }, bestByWorld: { ...data.bestByWorld }, hordeBest: { ...data.hordeBest } };
     if (save.mode !== 'sprints' && save.mode !== 'horde') save.mode = 'sprints';
     // Saves from before the split: on call opens the worlds after any shift it already cleared.
     if (!data.hordeUnlocked) {

@@ -8,7 +8,7 @@ import { audio, type Sfx } from './audio';
 import { draw, drawRetroFigure, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, worldWon, type StarColor, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, heroStill } from './save';
 import type { Enemy, Mode } from './world';
-import { ARMOUR_SLOTS, ARSENAL, ITEMS, type SpiritSkin, UPGRADES, WEAPON_SLOTS, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
+import { ARMOUR_SLOTS, ARSENAL, ITEMS, itemLevel, type SpiritSkin, UPGRADES, WEAPON_SLOTS, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
 import { Scene } from './scene';
 import { makeT, pickLang, type Key } from './strings';
 import {
@@ -906,6 +906,21 @@ function shopSection(key: string, title: string, count: string, body: string) {
     </button>${open ? body : ''}`;
 }
 
+/* Items with levels (the Phoenix cloak): a row of stars, what each level gives, and once owned the
+   upgrade to the next level for its price. */
+function levelBlock(item: { id: ItemId; levels?: number[] }) {
+  const owned = save.owned.includes(item.id);
+  const lv = owned ? itemLevel(save.itemLevels, item.id) : 0;
+  const max = 1 + (item.levels?.length ?? 0);
+  const stars = Array.from({ length: max }, (_, i) => `<i class="${i < lv ? 'is-on' : ''}">★</i>`).join('');
+  const lines = Array.from({ length: max }, (_, i) => `<li class="${i < lv ? 'is-on' : ''}">★${i + 1} ${t(`${item.id}Lv${i + 1}` as Key)}</li>`).join('');
+  const next = owned && lv < max ? item.levels![lv - 1] : 0;
+  const up = next
+    ? `<button class="buy is-upgrade${save.coins >= next ? '' : ' is-poor'}" data-item-up="${item.id}">${t('itemUpgrade', { n: lv + 1 })} · 🪙 ${next}</button>`
+    : owned && lv >= max ? `<button class="buy is-upgrade is-max" disabled>★ ${t('itemMax')}</button>` : '';
+  return `<span class="item-stars" aria-label="${t('upgradeLevel', { level: lv, max })}">${stars}</span><ul class="item-levels">${lines}</ul>${up}`;
+}
+
 function shopScreen(note = '') {
   // The ad gift: some coins once every few hours, or how long until the next.
   const giftWait = save.adGiftAt + AD_GIFT_EVERY - Date.now();
@@ -933,6 +948,7 @@ function shopScreen(note = '') {
           <span class="icon" aria-hidden="true">${picIcon(item.icon, item.pic)}</span>
           <b>${item.legendary ? `<small class="legend">★ ${t('legendary')}</small>` : ''}${t(`${item.id}Name` as Key)}</b>
           <span>${t(`${item.id}Text` as Key)}</span>
+          ${item.levels ? levelBlock(item) : ''}
           ${action}
         </div>`;
       })
@@ -1088,7 +1104,7 @@ function showPicks() {
 }
 
 function startRun(world = worldIn(), mode = save.mode) {
-  game = newGame(buildLoadout(save.equipped, save.upgrades, masteries(), save.arsenal), save.style, world, mode);
+  game = newGame(buildLoadout(save.equipped, save.upgrades, masteries(), save.arsenal, save.itemLevels), save.style, world, mode);
   preloadFx();
   paused = false;
   shownChoices = '';
@@ -1275,6 +1291,17 @@ screen.addEventListener('click', (event) => {
     else audio.play('pick');
     shownChoices = '';
     hide();
+  } else if (target.dataset.itemUp) {
+    const item = itemById(target.dataset.itemUp as ItemId);
+    const lv = itemLevel(save.itemLevels, item.id);
+    const price = item.levels?.[lv - 1];
+    if (!price || !save.owned.includes(item.id)) return;
+    if (save.coins < price) { shopScreen(t('notEnough')); return; }
+    save.coins -= price;
+    save.itemLevels[item.id] = lv + 1;
+    persist();
+    audio.play('levelup');
+    shopScreen(t('itemUpgraded', { name: t(`${item.id}Name` as Key), n: lv + 1 }));
   } else if (target.dataset.buy) {
     const item = itemById(target.dataset.buy as ItemId);
     if (!itemOpen(item)) return;

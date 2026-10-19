@@ -1866,7 +1866,7 @@ function hurtPlayer(g: Game, amount: number) {
       // The phoenix feather: back on your feet with half your health, a firebird rising off you.
       g.revives -= 1;
       g.fx.push({ kind: 'phoenix', x: p.x, y: p.y, r: 70, a: 0, life: 1.6, max: 1.6 });
-      standUp(g);
+      standUp(g, g.loadout.reviveHp);
       return;
     }
     p.hp = 0;
@@ -1875,9 +1875,9 @@ function hurtPlayer(g: Game, amount: number) {
 }
 
 /** Back on your feet with half your health, the bugs shoved away. */
-function standUp(g: Game) {
+function standUp(g: Game, share = 0.5) {
   const p = g.player;
-  p.hp = Math.round(p.maxHp * 0.5);
+  p.hp = Math.round(p.maxHp * share);
   p.inv = 2;
   g.orbs = [];
   for (const e of live(g)) {
