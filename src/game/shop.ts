@@ -165,9 +165,12 @@ export const MASTERY_STEP = { damage: 0.05, hp: 10, coins: 0.05, xp: 0.05 } as c
 /* The arsenal: On call's extra weapons are bought once, and from then on
    they can come up in that mode's level ups. Dearer the stronger they are,
    and always under a skin's price. */
-export const ARSENAL: { id: SkillId; price: number }[] = [
-  { id: 'brick', price: 900 }, { id: 'molotov', price: 900 }, { id: 'durian', price: 1100 }, { id: 'mines', price: 1100 },
-  { id: 'drill', price: 1300 }, { id: 'ball', price: 1300 }, { id: 'rocket', price: 1500 },
+/* The arsenal: one weapon per world from 1 to 7. Winning that world, in either mode, puts it on sale;
+   once bought it can come up in the level ups of both modes. */
+export const ARSENAL: { id: SkillId; price: number; world: number }[] = [
+  { id: 'brick', price: 900, world: 1 }, { id: 'molotov', price: 900, world: 2 }, { id: 'mines', price: 1100, world: 3 },
+  { id: 'durian', price: 1100, world: 4 }, { id: 'ball', price: 1300, world: 5 }, { id: 'drill', price: 1300, world: 6 },
+  { id: 'rocket', price: 1500, world: 7 },
 ];
 export function buildLoadout(equipped: Partial<Record<Slot, ItemId>>, upgrades: Upgrades = {}, masteries = 0, arsenal: SkillId[] = []): Loadout {
   const out: Loadout = { ...BASE_LOADOUT, mult: { ...BASE_LOADOUT.mult }, startSkills: [], arsenal: [...arsenal] };

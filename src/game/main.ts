@@ -2,7 +2,7 @@ import './game.css';
 import { storage } from '../lib/storage';
 import { audio, type Sfx } from './audio';
 import { draw, drawRetroFigure, preloadFx, type Palette, type View } from './draw';
-import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, type StarColor, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, heroStill } from './save';
+import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, worldWon, type StarColor, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, heroStill } from './save';
 import type { Enemy, Mode } from './world';
 import { ARMOUR_SLOTS, ARSENAL, ITEMS, type SpiritSkin, UPGRADES, WEAPON_SLOTS, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
 import { Scene } from './scene';
@@ -103,9 +103,12 @@ const worldName = (n: number) => t(`world${n}Name` as Key);
 const WORLD_ICON = ['🐞', '🔥', '💧', '🍃', '🛡️', '✨', '👻', '💗'];
 const coinsLine = (n = save.coins) => `<span class="coin">🪙</span> ${Math.floor(n)}`;
 
+/** The arsenal weapon the last banked run put on sale (its world won for the first time), for the end screen. */
+let arsenalOpened: SkillId | null = null;
 /** Banks the coins and the record; returns the world unlocked by this run, if any. */
 function bankRun(g: Game): number | null {
   const won = g.phase === 'won';
+  const wasWon = worldWon(save, g.world);
   if (g.mode === 'horde') {
     // On call: the longest shift counts, a cleared one above all.
     const best = save.hordeBest[g.world];
@@ -127,6 +130,8 @@ function bankRun(g: Game): number | null {
     setWorld(g.world + 1, g.mode);
     unlocked = g.world + 1;
   }
+  const weapon = ARSENAL.find((a) => a.world === g.world);
+  arsenalOpened = won && !wasWon && weapon && !save.arsenal.includes(weapon.id) ? weapon.id : null;
   persist();
   return unlocked;
 }
@@ -392,6 +397,7 @@ function endScreen(g: Game) {
     ${head(won ? 'victory' : 'defeat', t(horde ? (won ? 'hordeWon' : 'over') : won ? 'won' : 'over'))}
     <p>${t(horde ? (won ? 'hordeWonText' : 'hordeOverText') : won ? 'wonText' : 'overText', { room: g.room, kills: g.kills, time: clock(g.time) })}</p>
     <p class="earned">${coinsLine(earned)} <small>${t('coinsRun', { coins: earned })}</small></p>
+    ${arsenalOpened ? `<p class="unlocked">${picIcon(EMOJI[arsenalOpened], `skills/${arsenalOpened}.webp`)} ${t('arsenalNew', { name: t(`${arsenalOpened}Name` as Key) })}</p>` : ''}
     ${next}
     <div class="row">
       <button class="ghost is-warn" data-act="shop">🛒 ${t('shop')}</button>
@@ -703,14 +709,18 @@ function shopScreen(note = '') {
       ${action}
     </div>`;
   }).join('');
-  // The arsenal: On call weapons, bought once, then they can come up in that mode's level ups.
-  const arsenal = ARSENAL.map(({ id, price }) => {
+  // The arsenal: one weapon per world, on sale once that world is won in either mode, then bought once
+  // and from then on it can come up in the level ups of both modes.
+  const arsenal = ARSENAL.map(({ id, price, world }) => {
     const owned = save.arsenal.includes(id);
+    const open = worldWon(save, world);
     const can = save.coins >= price;
     const action = owned
       ? `<button class="buy is-worn" disabled>✓ ${t('arsenalOwned')}</button>`
-      : `<button class="buy${can ? '' : ' is-poor'}" data-arsenal="${id}">${t('buy')} · 🪙 ${price}</button>`;
-    return `<div class="item${owned ? ' is-on is-owned' : ''}${!owned && !can ? ' is-locked' : ''}">
+      : !open
+        ? `<button class="buy is-poor" disabled>🔒 ${t('arsenalLocked', { n: world })}</button>`
+        : `<button class="buy${can ? '' : ' is-poor'}" data-arsenal="${id}">${t('buy')} · 🪙 ${price}</button>`;
+    return `<div class="item${owned ? ' is-on is-owned' : ''}${!owned && (!can || !open) ? ' is-locked' : ''}">
       <span class="icon" aria-hidden="true">${picIcon(EMOJI[id], `skills/${id}.webp`)}</span>
       <b>${t(`${id}Name` as Key)}</b>
       <span>${t(`${id}Text` as Key)}</span>
@@ -972,7 +982,7 @@ screen.addEventListener('click', (event) => {
     shopScreen();
   } else if (target.dataset.arsenal) {
     const w = ARSENAL.find((a) => a.id === target.dataset.arsenal);
-    if (!w || save.arsenal.includes(w.id)) return;
+    if (!w || save.arsenal.includes(w.id) || !worldWon(save, w.world)) return;
     if (save.coins < w.price) { shopScreen(t('notEnough')); return; }
     save.coins -= w.price;
     save.arsenal.push(w.id);
