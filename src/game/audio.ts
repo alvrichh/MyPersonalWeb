@@ -155,7 +155,7 @@ class Engine {
       this.chaos = this.chaosWanted;
       if (this.chaos) this.crash(at);
     }
-    if (this.chaos) this.chaosLayer(bar, inBar, step, at);
+    if (this.chaos) this.chaosLayer(bar, inBar, at);
     const setBar = bar % (SET.length * 8);
     const block = SET[Math.floor(setBar / 8)];
     const blockBar = setBar % 8;
@@ -216,17 +216,16 @@ class Engine {
     if (block === 'liquid' && inBar % 4 === 2 && Math.random() < 0.6) this.pluck(at, semi(ROOT * 8, chord[(step >> 2) % chord.length]));
   }
 
-  /* The final boss's chaos: the drums never drop, a growl on every phrase, glitch stutters, a falling alarm
-     every two bars, and a dissonant bell line a tritone off the chord. */
-  private chaosLayer(bar: number, inBar: number, step: number, at: number) {
-    const chord = CHORDS[Math.floor(bar / 2) % 4];
+  /* The final boss's chaos, all low and drum-led (no alarm-like beeps): extra kicks, a growl, low glitch
+     stutters, a tom fill falling every other bar and a low, dark stab a tritone off the root. */
+  private chaosLayer(bar: number, inBar: number, at: number) {
     const root = BASS_ROOTS[Math.floor(bar / 2) % 4];
     if (inBar === 3 || inBar === 13) this.kick(at);
     if ([1, 6, 11].includes(inBar)) this.reese(at, semi(ROOT, root + (inBar === 6 ? 1 : 0)), STEP * 1.5);
     if (Math.random() < 0.18) this.glitch(at);
     if (bar % 4 === 3 && inBar >= 8) this.snare(at, 0.25 + (inBar - 8) * 0.08);
-    if (bar % 2 === 1 && inBar === 0) this.siren(at);
-    if (inBar % 2 === 1 && Math.random() < 0.55) this.arp(at, semi(ROOT * 8, chord[(step * 3) % chord.length] + 6), 0.06);
+    if (bar % 2 === 1 && inBar >= 8 && inBar % 2 === 0) this.tom(at, 150 - (inBar - 8) * 18);
+    if (bar % 2 === 0 && (inBar === 7 || inBar === 15)) this.reese(at, semi(ROOT * 2, root + 6), STEP * 0.9);
   }
 
   /** A stutter of filtered noise at a random pitch. */
@@ -235,7 +234,7 @@ class Engine {
     n.buffer = this.noise;
     const bp = this.ctx.createBiquadFilter();
     bp.type = 'bandpass';
-    bp.frequency.value = 400 + Math.random() * 5000;
+    bp.frequency.value = 180 + Math.random() * 1400;
     bp.Q.value = 8;
     const g = this.ctx.createGain();
     this.env(g, at, 0.35, 0.001, STEP * 0.6);
@@ -244,20 +243,17 @@ class Engine {
     n.stop(at + STEP);
   }
 
-  /** A square wave falling an octave over a bar: the alarm. */
-  private siren(at: number) {
+  /** A tom: a sine falling in pitch with a little noise on its attack. */
+  private tom(at: number, freq: number) {
     const o = this.ctx.createOscillator();
-    o.type = 'square';
-    o.frequency.setValueAtTime(semi(ROOT * 16, 6), at);
-    o.frequency.exponentialRampToValueAtTime(semi(ROOT * 8, 6), at + BAR);
-    const lp = this.ctx.createBiquadFilter();
-    lp.type = 'lowpass';
-    lp.frequency.value = 2400;
+    o.frequency.setValueAtTime(freq, at);
+    o.frequency.exponentialRampToValueAtTime(freq * 0.45, at + 0.25);
     const g = this.ctx.createGain();
-    this.env(g, at, 0.05, 0.05, BAR * 0.9, 0.4, 0.1);
-    o.connect(lp).connect(g).connect(this.musicBus);
+    this.env(g, at, 0.7, 0.002, 0.28);
+    o.connect(g).connect(this.musicBus);
     o.start(at);
-    o.stop(at + BAR + 0.2);
+    o.stop(at + 0.35);
+    this.snare(at, 0.12);
   }
 
   private env(gain: GainNode, at: number, peak: number, attack: number, decay: number, sustain = 0, release = 0.01) {
