@@ -12,7 +12,7 @@ import { ARMOUR_SLOTS, ARSENAL, ITEMS, itemLevel, type SpiritSkin, UPGRADES, WEA
 import { Scene } from './scene';
 import { makeT, pickLang, type Key } from './strings';
 import {
-  CATEGORY, EVO_PARTNER, H, revivePrice, SKILLS, arrowLook, arrowOptions, bladeElement, bladeOptions, canEvolve, evoOf, fusionOf, fusionWith, pairFusion, arrowElements, settleEffects, rerollChoices, adReroll, adRevive, canAdReroll, canAdRevive, maxLevel, pickArrow, pickBlade, pickSpirit, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_LUCKY, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
+  CATEGORY, EVO_PARTNER, H, NIGHTMARE_WORLD, revivePrice, SKILLS, arrowLook, arrowOptions, bladeElement, bladeOptions, canEvolve, evoOf, fusionOf, fusionWith, pairFusion, arrowElements, settleEffects, rerollChoices, adReroll, adRevive, canAdReroll, canAdRevive, maxLevel, pickArrow, pickBlade, pickSpirit, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_LUCKY, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
   type ArrowLook, type Category, type Choice, type Fusion, type Game, type GameEvent, type Input, type Look, type SkillId, type WheelOutcome,
 } from './world';
 
@@ -83,6 +83,7 @@ palette.retro = save.retro;
 document.documentElement.toggleAttribute('data-retro', save.retro);
 
 const clock = (seconds: number) => `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, '0')}`;
+const nightmareLine = () => (save.nightmareBest ? t('nightmareBest', { time: clock(save.nightmareBest.time), kills: save.nightmareBest.kills }) : t('bestNone'));
 const bestLine = (world = worldIn(), mode: Mode = save.mode) => {
   if (mode === 'horde') {
     const best = save.hordeBest[world];
@@ -103,8 +104,9 @@ function setWorld(n: number, mode: Mode = save.mode) {
 }
 const modeName = (mode: Mode = save.mode) => t(mode === 'horde' ? 'modeHorde' : 'modeSprints');
 const MODE_ICON: Record<Mode, string> = { sprints: '⚔️', horde: '🛡️' };
+const NIGHTMARE_ICON = '☠️';
 /** Where the run is: the sprint, or the shift's clock. */
-const whereLine = (g: Game) => (g.mode === 'horde' ? `${MODE_ICON.horde} ${clock(g.time)}` : t('sprint', { room: g.room }));
+const whereLine = (g: Game) => (g.mode === 'horde' ? `${g.endless ? NIGHTMARE_ICON : MODE_ICON.horde} ${clock(g.time)}` : t('sprint', { room: g.room }));
 const worldName = (n: number) => t(`world${n}Name` as Key);
 const WORLD_ICON = ['🐞', '🔥', '💧', '🍃', '🛡️', '✨', '👻', '💗'];
 const coinsLine = (n = save.coins) => `<span class="coin">🪙</span> ${Math.floor(n)}`;
@@ -119,7 +121,11 @@ const itemOpen = (item: { world?: number }) => !item.world || worldWon(save, ite
 function bankRun(g: Game): number | null {
   const won = g.phase === 'won';
   const wasWon = worldWon(save, g.world);
-  if (g.mode === 'horde') {
+  if (g.endless) {
+    // Nightmare: only the longest run counts, and it opens nothing.
+    const best = save.nightmareBest;
+    if (!best || g.time > best.time) save.nightmareBest = { time: g.time, kills: g.kills };
+  } else if (g.mode === 'horde') {
     // On call: the longest shift counts, a cleared one above all.
     const best = save.hordeBest[g.world];
     const better = !best || (won && !best.won) || (won === best.won && g.time > best.time);
@@ -480,10 +486,12 @@ function endScreen(g: Game) {
        <button class="ghost" data-act="play-same">${t('again')}</button>`
     : `<button class="primary" data-act="play-same">${t('again')}</button>`;
   const horde = g.mode === 'horde';
+  const record = g.endless && save.nightmareBest?.time === g.time;
   show(`
-    <p class="kicker">${worldName(g.world)} · ${horde ? `${MODE_ICON.horde} ${modeName('horde')}` : t('sprint', { room: g.room })}</p>
+    <p class="kicker">${worldName(g.world)} · ${g.endless ? `${NIGHTMARE_ICON} ${t('nightmare')}` : horde ? `${MODE_ICON.horde} ${modeName('horde')}` : t('sprint', { room: g.room })}</p>
     ${head(won ? 'victory' : 'defeat', t(horde ? (won ? 'hordeWon' : 'over') : won ? 'won' : 'over'))}
     <p>${t(horde ? (won ? 'hordeWonText' : 'hordeOverText') : won ? 'wonText' : 'overText', { room: g.room, kills: g.kills, time: clock(g.time) })}</p>
+    ${record ? `<p class="unlocked">${NIGHTMARE_ICON} ${t('nightmareRecord')}</p>` : ''}
     <p class="earned">${coinsLine(earned)} <small>${t('coinsRun', { coins: earned })}</small></p>
     ${earned > 0 && ads.enabled ? '<div class="ad-slot" data-ad-slot="doubleCoins"></div>' : ''}
     ${itemOpened ? `<p class="unlocked">${picIcon(itemById(itemOpened).icon, itemById(itemOpened).pic)} ${t('itemNew', { name: t(`${itemOpened}Name` as Key) })}</p>` : ''}
@@ -493,7 +501,7 @@ function endScreen(g: Game) {
       <button class="ghost is-warn" data-act="shop">🛒 ${t('shop')}</button>
       <button class="ghost" data-act="menu">${t('menu')}</button>
     </div>
-    <p class="best">${bestLine(g.world, g.mode)}</p>`);
+    <p class="best">${g.endless ? nightmareLine() : bestLine(g.world, g.mode)}</p>`);
   adEarned = earned;
   if (earned > 0) offerAd('doubleCoins', `<button class="primary ad-btn" data-act="ad-double">📺 ${t('adDouble', { coins: earned })}</button>`);
 }
@@ -565,8 +573,12 @@ function mapScreen() {
   const mastery = worldsLeft(save.mode) === 0
     ? `<button class="primary mastery-btn" data-act="mastery-ask">${t('masteryBtn', { mode: modeShort(save.mode) })}</button>`
     : '';
+  // Nightmare: On call in the last world with no clock, once that world is open there.
+  const nightmare = save.mode === 'horde' && picked === NIGHTMARE_WORLD && pickedOpen
+    ? `<button class="ghost is-danger nightmare-btn" data-act="play-nightmare">${NIGHTMARE_ICON} ${t('nightmare')} ∞</button><small class="map-record nightmare-rec">${t('nightmareText')} · ${nightmareLine()}</small>`
+    : '';
   const action = pickedOpen
-    ? `<button class="play" data-act="play-picked"><span class="play-tri" aria-hidden="true"></span><span class="play-copy">${t('playWorld', { n: picked })}</span></button>`
+    ? `<button class="play" data-act="play-picked"><span class="play-tri" aria-hidden="true"></span><span class="play-copy">${t('playWorld', { n: picked })}</span></button>${nightmare}`
     : `<button class="play is-locked" disabled><span class="play-lock" aria-hidden="true">🔒</span><span class="play-copy">${t('lockedBtn')}</span></button>`;
   // Only the islands scroll; the title, the world's card and the play button stay put. Picking an island
   // re-renders the screen, so the islands keep their scroll.
@@ -1107,8 +1119,8 @@ function showPicks() {
   }
 }
 
-function startRun(world = worldIn(), mode = save.mode) {
-  game = newGame(buildLoadout(save.equipped, save.upgrades, masteries(), save.arsenal, save.itemLevels), save.style, world, mode);
+function startRun(world = worldIn(), mode = save.mode, endless = false) {
+  game = newGame(buildLoadout(save.equipped, save.upgrades, masteries(), save.arsenal, save.itemLevels), save.style, world, mode, endless);
   preloadFx();
   paused = false;
   shownChoices = '';
@@ -1119,7 +1131,7 @@ function startRun(world = worldIn(), mode = save.mode) {
   hide();
   hudRoom.style.setProperty('--icon', JSON.stringify(WORLD_ICON[game.world - 1]));
   resize(); // Reserve the live HUD + weapons row, including the iOS safe area.
-  flash(game.mode === 'horde' ? t('hordeStart') : `${worldName(game.world)} · ${t('sprint', { room: 1 })}`);
+  flash(game.endless ? t('nightmareStart') : game.mode === 'horde' ? t('hordeStart') : `${worldName(game.world)} · ${t('sprint', { room: 1 })}`);
   audio.start();
   audio.setIntensity(0.2);
 }
@@ -1131,7 +1143,8 @@ screen.addEventListener('click', (event) => {
   const act = target.dataset.act;
   if (act !== 'mute') audio.play('click');
   if (act === 'play') startRun();
-  else if (act === 'play-same') startRun(game?.world ?? worldIn(), game?.mode ?? save.mode);
+  else if (act === 'play-same') startRun(game?.world ?? worldIn(), game?.mode ?? save.mode, game?.endless);
+  else if (act === 'play-nightmare') startRun(NIGHTMARE_WORLD, 'horde', true);
   else if (act === 'mode') { save.mode = save.mode === 'horde' ? 'sprints' : 'horde'; persist(); menuScreen(); }
   else if (target.dataset.mode) { save.mode = target.dataset.mode as Mode; mapPick = worldIn(); persist(); mapScreen(); }
   else if (act === 'map') { mapPick = worldIn(); mapScreen(); }
@@ -1228,10 +1241,10 @@ screen.addEventListener('click', (event) => {
   else if (act === 'confirm-restart') restartScreen();
   else if (act === 'restart' && game) {
     // Start the same world and mode again; what this run earned is kept.
-    const { world, mode } = game;
+    const { world, mode, endless } = game;
     bankRun(game);
     paused = false;
-    startRun(world, mode);
+    startRun(world, mode, endless);
   }
   else if (act === 'quit') {
     if (game) bankRun(game);
@@ -1754,7 +1767,7 @@ function step(now: number) {
       if (event === 'boss') {
         const boss = g.enemies.find((e) => e.kind === 'boss' && !e.clone);
         const name = boss ? bossTitle(boss) : t('bossOriginal');
-        flash(g.mode === 'horde' ? t(g.hordeBoss >= 2 ? 'hordeFinal' : 'hordeBossIn', { name }) : `${t('sprint', { room: g.room })} · ${name}`);
+        flash(g.mode === 'horde' ? t(!g.endless && g.hordeBoss >= 2 ? 'hordeFinal' : 'hordeBossIn', { name }) : `${t('sprint', { room: g.room })} · ${name}`);
         audio.setIntensity(1);
       }
       if (event === 'revive') flash(t('revived'));

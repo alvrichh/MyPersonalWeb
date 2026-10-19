@@ -77,6 +77,8 @@ export type Save = {
   starColor: StarColor;
   /** Best on-call shift per world: how long you held out, bugs squashed, whether the last boss fell. */
   hordeBest: Record<number, { time: number; kills: number; won: boolean }>;
+  /** Nightmare's longest run (no clock, so the time is the record). */
+  nightmareBest: { time: number; kills: number } | null;
   runs: number;
   /** All the XP ever picked up: the profile level on the title screen. */
   xp: number;
@@ -119,6 +121,7 @@ const fresh = (): Save => ({
   mastery: { sprints: 0, horde: 0 },
   starColor: 'gold',
   hordeBest: {},
+  nightmareBest: null,
   runs: 0,
   xp: 0,
 });
