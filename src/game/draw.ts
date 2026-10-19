@@ -49,6 +49,7 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   if (horde) drawField(ctx, g, vis, now);
   else drawRoom(ctx, g, accent, now);
   drawHazards(ctx, g, now);
+  if (!horde) drawObstacles(ctx, g, accent, now);
   drawGems(ctx, g, now);
   if (g.chest) drawChest(ctx, g.chest, now);
   drawHearts(ctx, g, now);
@@ -304,6 +305,10 @@ function drawRoom(ctx: CanvasRenderingContext2D, g: Game, accent: string, now: n
 
   if (g.statue) (retroLook ? drawStatueRetro : drawStatue)(ctx, g.statue, theme.door || accent, now);
 
+}
+
+/** The blocks in a room (racks, or the world's stone blocks), drawn after the hazards so a pool never lies over a wall. */
+function drawObstacles(ctx: CanvasRenderingContext2D, g: Game, accent: string, now: number) {
   // The jungle and viking worlds: the owner's stone blocks instead of racks (mossy, or wet with lily pads),
   // the piece whose shape is closest.
   const look = WORLDS[g.world - 1].look;
