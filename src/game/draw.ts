@@ -88,7 +88,9 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   drawPicFx(ctx, g, true);
   drawBeams(ctx, g);
   drawStrikes(ctx, g, now);
+  const beadsOff = animWorn(g);
   for (const q of g.particles) {
+    if (beadsOff && q.kind === 'glow') continue;
     const k = Math.max(0, q.life / q.max);
     ctx.globalAlpha = q.kind === 'puff' ? k * 0.55 : k;
     ctx.fillStyle = q.color;
@@ -705,13 +707,36 @@ function arrowImage(name: string) {
   return img;
 }
 
+/** Fusions whose arrow is an animated sheet with its trail painted in (`arrows/fusion-<id>-<frame>.webp`), and how long it is drawn. */
+const FUSION_ANIM: Partial<Record<Fusion, { frames: number; len: number }>> = { plasma: { frames: 4, len: 100 } };
+/** Whether that sheet is worn and in, so the drawn trail beads can step aside. */
+const animWorn = (g: Game) => {
+  const f = arrowLook(g) === 'fusion' ? fusionOf(g) : null;
+  return !!f && !!FUSION_ANIM[f] && !retroLook && ready(arrowImage(`fusion-${f}-0`));
+};
+
 function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accent2: string) {
   const look = arrowLook(g);
   const element = look && ARROW_PICTURES.includes(look) ? look : null;
   // The fused arrow only while that look is worn (the fusion's effects apply whatever the look).
   const fusion = look === 'fusion' ? fusionOf(g) : null;
   ctx.lineCap = 'round';
-  for (const a of g.shots) {
+  for (const [i, a] of g.shots.entries()) {
+    // A fused arrow with the owner's animated sheet (the arrow and its trail in one, looping): drawn long, tip on the shot.
+    const anim = fusion && FUSION_ANIM[fusion];
+    if (anim && a.bow && a.kind === 'arrow' && !retroLook) {
+      const pic = arrowImage(`fusion-${fusion}-${Math.floor(g.time * 12 + i) % anim.frames}`);
+      if (ready(pic)) {
+        const w = anim.len;
+        const h = (w * pic.naturalHeight) / pic.naturalWidth;
+        ctx.save();
+        ctx.translate(a.x, a.y);
+        ctx.rotate(Math.atan2(a.vy, a.vx));
+        ctx.drawImage(pic, -w, -h / 2, w, h);
+        ctx.restore();
+        continue;
+      }
+    }
     // A fused arrow: the owner's arrow for that fusion (it carries its own trail), else a glow in its colour.
     if (fusion && a.bow && a.kind === 'arrow' && !retroLook) {
       const pic = arrowImage(`fusion-${fusion}`);
