@@ -73,6 +73,8 @@ export type Item = {
   effect: Partial<Loadout>;
   /** A legendary item: absurdly strong and absurdly dear (still under a skin's price). */
   legendary?: boolean;
+  /** On sale only once this world is won, in either mode (`worldWon` in save.ts). */
+  world?: number;
 };
 
 /** The bonuses a run starts with, from the items worn. */
@@ -135,7 +137,7 @@ export const ITEMS: Item[] = [
   { id: 'orb', slot: 'magic', price: 150, icon: '🔮', pic: 'items/orb.webp', effect: { xpMult: 1.25 } },
   { id: 'hourglass', slot: 'magic', price: 200, icon: '⏳', pic: 'items/hourglass.webp', effect: { hasteMult: 1.15 } },
   { id: 'spellbook', slot: 'magic', price: 260, icon: '📖', pic: 'items/spellbook.webp', effect: { startSkills: ['fireball'] } },
-  { id: 'seniorTome', slot: 'magic', price: 4500, icon: '📜', pic: 'items/seniorTome.webp', legendary: true, effect: { startMaxed: 2 } },
+  { id: 'seniorTome', slot: 'magic', price: 4500, icon: '📜', pic: 'items/seniorTome.webp', legendary: true, world: 8, effect: { startMaxed: 2 } },
   { id: 'lantern', slot: 'magic', price: 300, icon: '👻', pic: 'spirits/water-float-0.webp', effect: { startSkills: ['spirits'], spirit: 'water' } },
   { id: 'spiritFire', slot: 'magic', price: 420, icon: '👻', pic: 'spirits/fire-float-0.webp', effect: { startSkills: ['spirits'], spirit: 'fire' } },
   { id: 'spiritTide', slot: 'magic', price: 420, icon: '👻', pic: 'spirits/tide-float-0.webp', effect: { startSkills: ['spirits'], spirit: 'tide' } },
