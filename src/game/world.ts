@@ -480,7 +480,7 @@ export type Game = {
 
 export type GameEvent =
   | 'fusion' | 'clear' | 'boss' | 'hurt' | 'levelup' | 'room' | 'revive' | 'heal' | 'wheel' | 'shrine'
-  | 'shoot' | 'knife' | 'boomerang' | 'orb' | 'hit' | 'kill' | 'gem' | 'heart' | 'chest' | 'slash' | 'slam' | 'strike' | 'boom' | 'minute' | 'rage';
+  | 'shoot' | 'knife' | 'boomerang' | 'orb' | 'hit' | 'kill' | 'gem' | 'heart' | 'chest' | 'slash' | 'slam' | 'strike' | 'boom' | 'minute' | 'rage' | 'laser';
 
 /* ------------------------------------------------------------------ helpers */
 
@@ -1497,7 +1497,7 @@ function fireLaser(g: Game) {
     }
     if (evolved) g.fx.push({ kind: 'rune', x: t.x, y: t.y, r: 34, a: 0, life: 1.1, max: 1.1 });
   }
-  g.events.push('strike');
+  g.events.push('laser');
 }
 
 function callStorm(g: Game) {
