@@ -199,6 +199,8 @@ export type Enemy = {
   dash: number;
   dir: Vec;
   wobble: number;
+  /** Walk cycle, in frames: it advances with the ground actually covered, so the sprite never walks on the spot. */
+  step: number;
   /** Walking round a rack that blocked the way: -1 or 1, for `detour` seconds. */
   side: number;
   detour: number;
@@ -623,6 +625,7 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
     dash: 0,
     dir: { x: 0, y: 1 },
     wobble: rand(0, Math.PI * 2),
+    step: rand(0, 4),
     side: Math.random() < 0.5 ? -1 : 1,
     detour: 0,
     dead: false,
@@ -1959,6 +1962,9 @@ function updateEnemy(g: Game, e: Enemy, dt: number) {
   e.kx *= Math.pow(0.002, dt);
   e.ky *= Math.pow(0.002, dt);
   keepInRoom(g, e);
+  // A step per frame, faster the faster it walks (small bugs scurry, legacy code plods); nothing when it stands.
+  const pace = Math.hypot(mx, my) * e.speed * slowFactor;
+  if (pace > 4) e.step += clamp(pace / (e.r * 0.7), 3.5, 9) * dt;
   // Barely moved although it wanted to: a rack (or a wall, mid-detour) is in
   // the way. Go round it, trying the other side each time it gets stuck.
   if (e.kind !== 'boss' && want > 0.2 && Math.hypot(e.x - fromX, e.y - fromY) < want * 0.35) {

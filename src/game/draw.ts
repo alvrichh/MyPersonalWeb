@@ -2221,7 +2221,7 @@ function drawEnemy(ctx: CanvasRenderingContext2D, e: Enemy, now: number) {
     ctx.lineTo(e.dir.x * 260, e.dir.y * 260);
     ctx.stroke();
   }
-  if (!retroLook && drawEnemySprite(ctx, e, now)) { /* painted */ } else LOOKS[e.look][e.kind](ctx, e, now);
+  if (!retroLook && drawEnemySprite(ctx, e)) { /* painted */ } else LOOKS[e.look][e.kind](ctx, e, now);
   // Status: white flash on hit, blue tint when slowed, little flames when burning.
   if (e.hit > 0) {
     ctx.globalAlpha = 0.6;
@@ -3422,17 +3422,37 @@ export function drawSprite(ctx: CanvasRenderingContext2D, e: Enemy, now: number)
 
 /* Painted enemies: four frames per kind for the looks that have a sheet
    (static/images/game/enemies/<look>-<kind>-<frame>.webp). The frames cycle
-   with the enemy's own wobble so a crowd never steps in unison; the sprite
+   with the ground the enemy covers (`Enemy.step`, which starts at a random
+   point so a crowd never steps in unison); the sprite
    is sized to the collision circle (bosses a little bigger) with its feet on
    the shadow. Looks without a sheet fall back to the hand-drawn figures. */
 /* Frames per look: the first three sheets have four walking frames; the
    later ones six: three walking, two attacking (wind-up, strike) and one
    taking a hit. */
 const SPRITE_FRAMES: Partial<Record<Look, number>> = { original: 4, demon: 4, greek: 4, viking: 6, jungle: 6, robot: 6, nightmare: 6 };
-/* Sets cut on one canvas for all their frames (feet on its bottom edge, body centred), so a pose with a
-   big swing doesn't shrink the figure: how much larger than usual to draw that canvas, so the body keeps
-   the size the old per-frame cuts had. */
-const SPRITE_CANVAS: Record<string, number> = { 'viking-boss': 1.265, 'jungle-boss': 1.276 };
+/* Every set is cut on one canvas for all its frames (each frame registered against the first by its head
+   and torso, `scratchpad` `walkfix/fix.py`), so a stride or a swing never resizes or shifts the figure:
+   how much larger than its first frame's own size to draw that canvas, so the body keeps its size, and how
+   much of the canvas lies under the first frame's feet (dust, a long stride). */
+const SPRITE_CANVAS: Record<string, { k: number; feet: number }> = {
+  'viking-boss': { k: 1.265, feet: 0 }, 'jungle-boss': { k: 1.276, feet: 0 },
+  'original-bug': { k: 1.018, feet: 0.0186 }, 'original-ticket': { k: 1.076, feet: 0.0283 }, 'original-legacy': { k: 1.113, feet: 0.0437 },
+  'original-boss': { k: 1.108, feet: 0.0533 }, 'demon-bug': { k: 1.05, feet: 0.1387 }, 'demon-ticket': { k: 1.062, feet: 0 },
+  'demon-legacy': { k: 1.148, feet: 0.0248 }, 'demon-boss': { k: 1.183, feet: 0.0549 }, 'greek-bug': { k: 1.059, feet: 0.0409 },
+  'greek-ticket': { k: 1.215, feet: 0 }, 'greek-legacy': { k: 1.134, feet: 0 }, 'greek-boss': { k: 1.125, feet: 0.0455 },
+  'viking-bug': { k: 1.067, feet: 0.0083 }, 'viking-ticket': { k: 1.091, feet: 0.0051 }, 'viking-legacy': { k: 1.166, feet: 0.023 },
+  'jungle-bug': { k: 1.43, feet: 0 }, 'jungle-ticket': { k: 1.193, feet: 0.0271 }, 'jungle-legacy': { k: 1.455, feet: 0 },
+  'robot-bug': { k: 1.431, feet: 0.0051 }, 'robot-ticket': { k: 1.4, feet: 0 }, 'robot-legacy': { k: 1.446, feet: 0.0299 },
+  'robot-boss': { k: 1.127, feet: 0.0083 }, 'nightmare-bug': { k: 1.31, feet: 0.0165 }, 'nightmare-ticket': { k: 1.369, feet: 0 },
+  'nightmare-legacy': { k: 1.098, feet: 0 }, 'nightmare-boss': { k: 1.137, feet: 0 },
+};
+/* The walk cycles: the four-frame sheets loop; the three walking frames of the others are a stride, the
+   standing frame and the other stride (step, pass, step, pass), and the final bosses' are left foot,
+   feet together, right foot. */
+const WALK4 = [0, 1, 2, 3];
+const WALK3 = [1, 0, 2, 0];
+const WALK_FINAL = [0, 1, 2, 1];
+const walkFrame = (e: Enemy, cycle: number[]) => cycle[((Math.floor(e.step) % cycle.length) + cycle.length) % cycle.length];
 const enemySprites = new Map<string, HTMLImageElement[]>();
 function enemyFrames(look: Look, kind: Enemy['kind'], count: number) {
   const key = `${look}-${kind}`;
@@ -3448,14 +3468,14 @@ function enemyFrames(look: Look, kind: Enemy['kind'], count: number) {
   return frames;
 }
 /** Which frame an enemy shows right now: hit, attacking, or its walk cycle. */
-function enemyFrame(e: Enemy, count: number, now: number) {
-  if (count === 4) return Math.floor(now * 6 + e.wobble) % 4;
+function enemyFrame(e: Enemy, count: number) {
+  if (count === 4) return walkFrame(e, WALK4);
   if (e.hit > 0) return 5;
   // Attacks: a boss winding up (aim) or charging (dash); a ticket just after it threw (its cooldown was reset high).
   if (e.kind === 'boss' && e.aim > 0) return 3;
   if (e.kind === 'boss' && e.dash > 0) return 4;
   if (e.kind === 'ticket' && e.cd > 1.5) return e.cd > 1.75 ? 3 : 4;
-  return Math.floor(now * 6 + e.wobble) % 3;
+  return walkFrame(e, WALK3);
 }
 /* Final bosses with a sheet of their own (static/images/game/bosses/<id>-<frame>.webp, nine poses, the same
    order as the prompts: three walking, wind-up and charge, the ring of orbs, the world's move, the signature
@@ -3470,15 +3490,15 @@ const BOSS_CANVAS: Record<string, { k: number; feet: number }> = {
   wraith: { k: 1.295, feet: 0.1974 }, mech: { k: 1.412, feet: 0.0878 }, chimera: { k: 1.379, feet: 0.119 },
 };
 const finalSprites = new Map<string, HTMLImageElement[]>();
-function finalFrame(e: Enemy, now: number) {
+function finalFrame(e: Enemy) {
   if (e.hit > 0) return 8;
   if (e.chan > 0) return 7;
   if (e.pose > 0) return e.act === 'sig' ? 7 : e.act === 'move' ? 6 : 5;
   if (e.aim > 0) return 3;
   if (e.dash > 0) return 4;
-  return Math.floor(now * 6 + e.wobble) % 3;
+  return walkFrame(e, WALK_FINAL);
 }
-function drawEnemySprite(ctx: CanvasRenderingContext2D, e: Enemy, now: number) {
+function drawEnemySprite(ctx: CanvasRenderingContext2D, e: Enemy) {
   let count = SPRITE_FRAMES[e.look];
   let frames: HTMLImageElement[] | undefined;
   let img: HTMLImageElement | undefined;
@@ -3488,20 +3508,21 @@ function drawEnemySprite(ctx: CanvasRenderingContext2D, e: Enemy, now: number) {
       frames = Array.from({ length: 9 }, (_, i) => Object.assign(new Image(), { src: `./images/game/bosses/${e.bossId}-${i}.webp` }));
       finalSprites.set(e.bossId, frames);
     }
-    img = frames[finalFrame(e, now)];
+    img = frames[finalFrame(e)];
     count = 9;
   }
   if (!count) return false;
   frames ??= enemyFrames(e.look, e.kind, count);
-  img ??= frames[enemyFrame(e, count, now)] ?? frames[0];
+  img ??= frames[enemyFrame(e, count)] ?? frames[0];
   if (!img.complete || !img.naturalWidth) return false;
-  const fit = count === 9 ? BOSS_CANVAS[e.bossId] : undefined;
-  const size = e.r * (e.kind === 'boss' ? 2.6 : 2.5) * (fit ? fit.k : SPRITE_CANVAS[`${e.look}-${e.kind}`] ?? 1);
+  const fit = count === 9 ? BOSS_CANVAS[e.bossId] : SPRITE_CANVAS[`${e.look}-${e.kind}`];
+  const size = e.r * (e.kind === 'boss' ? 2.6 : 2.5) * (fit ? fit.k : 1);
   const ratio = img.naturalWidth / img.naturalHeight;
   const w = ratio >= 1 ? size : size * ratio;
   const h = ratio >= 1 ? size / ratio : size;
   const under = fit ? h * fit.feet : 0;
-  const bob = Math.sin(now * 8 + e.wobble) * 1.2;
+  // A small lift on each stride (none while it stands).
+  const bob = -Math.abs(Math.sin(e.step * Math.PI)) * 1.4;
   // The painted sprites face right (or the viewer): mirrored when it faces left.
   if (e.face < 0) ctx.scale(-1, 1);
   ctx.drawImage(img, -w / 2, e.r * 0.85 - h + under + bob, w, h);
