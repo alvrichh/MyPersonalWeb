@@ -308,26 +308,23 @@ function drawRoom(ctx: CanvasRenderingContext2D, g: Game, accent: string, now: n
 }
 
 /** The blocks in a room (racks, or the world's stone blocks), drawn after the hazards so a pool never lies over a wall. */
-const GREEK_SQUARE = ['square-0', 'square-1', 'square-2', 'square-3', 'square-4', 'square-5', 'pillar-0', 'pillar-1', 'pillar-2', 'pillar-3', 'pillar-4'];
-const ICE_PIECES = new Set(['64x26-0', '64x26-1', '40x40-0', '40x40-1', '50x50-0', '100x24-0', '100x24-1', '60x24-0', '36x36-0', '36x36-1', '36x36-2', '36x36-3'].map((n) => `ice-${n}`));
-const GREEK_WIDE = ['wide-0', 'wide-1'];
-const GREEK_LONG = ['long-0', 'long-1', 'long-2'];
+
+/** Every block of every layout (`LAYOUTS` in world.ts), by size and place: the pieces drawn for the viking and Greek worlds. */
+const LAYOUT_PIECES = new Set(['64x26-0', '64x26-1', '40x40-0', '40x40-1', '50x50-0', '100x24-0', '100x24-1', '60x24-0', '36x36-0', '36x36-1', '36x36-2', '36x36-3']);
 
 function drawObstacles(ctx: CanvasRenderingContext2D, g: Game, accent: string, now: number) {
-  // The jungle and viking worlds: the owner's stone blocks instead of racks (mossy, or wet with lily pads),
-  // the piece whose shape is closest.
+  // The jungle world: the owner's mossy stone blocks instead of racks, the piece whose shape is closest.
   const look = WORLDS[g.world - 1].look;
-  // The Greek arena: the owner's sandstone walls (banners, the eagle gate, the brazier, spear racks, pillars).
   const stones = !retroLook && (look === 'jungle' || look === 'viking' || look === 'greek') ? look : null;
   for (const o of stones ? g.obstacles : []) {
     const ratio = o.w / o.h;
-    const pick = (list: string[]) => list[Math.floor(o.x * 7 + o.y * 3) % list.length];
-    // The viking world: the owner drew one icy piece for each block of each layout, named by its size and
-    // its place among the blocks of that size (left to right, top to bottom).
+    // The viking and Greek worlds: the owner drew one piece for each block of each layout (icy, or marble
+    // and gold), named by its size and its place among the blocks of that size (left to right, top to bottom).
     const size = `${o.w}x${o.h}`;
-    const iceName = `ice-${size}-${g.obstacles.filter((b) => `${b.w}x${b.h}` === size).indexOf(o)}`;
-    const pic = setImage(stones!, stones === 'viking' && ICE_PIECES.has(iceName) ? iceName : stones === 'greek'
-      ? pick(ratio > 3.2 ? GREEK_LONG : ratio > 1.7 ? GREEK_WIDE : GREEK_SQUARE)
+    const slot = `${size}-${g.obstacles.filter((b) => `${b.w}x${b.h}` === size).indexOf(o)}`;
+    const own = stones === 'viking' ? `ice-${slot}` : stones === 'greek' ? `arena-${slot}` : '';
+    const pic = setImage(stones!, LAYOUT_PIECES.has(slot) && own ? own : stones === 'greek'
+      ? (ratio > 3.2 ? 'arena-100x24-0' : ratio > 1.7 ? 'arena-64x26-0' : 'arena-36x36-0')
       : ratio > 3.2 ? 'stone-long-1' : ratio > 1.7 ? 'stone-long-0' : (o.x + o.y) % 2 ? 'stone-0' : 'stone-1');
     if (!ready(pic)) continue;
     // As wide as the block and a little more, its own shape kept, standing on the block's bottom edge
@@ -341,7 +338,7 @@ function drawObstacles(ctx: CanvasRenderingContext2D, g: Game, accent: string, n
     ctx.drawImage(pic, o.x + o.w / 2 - w / 2, o.y + o.h + 4 - h, w, h);
   }
   // Server racks, with blinking lights.
-  for (const o of stones && ready(setImage(stones, stones === 'greek' ? 'square-0' : 'stone-0')) ? [] : g.obstacles) {
+  for (const o of stones && ready(setImage(stones, stones === 'greek' ? 'arena-36x36-0' : 'stone-0')) ? [] : g.obstacles) {
     ctx.fillStyle = 'rgba(0,0,0,0.35)';
     roundRect(ctx, o.x + 3, o.y + 5, o.w, o.h, 5);
     ctx.fill();
