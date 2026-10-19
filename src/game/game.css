@@ -2731,6 +2731,8 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .dnav { display: grid; justify-items: center; gap: 2px; width: 84px; padding: 0; border: 0; background: none; color: var(--muted); font: inherit; cursor: pointer; }
 .dnav .ring { display: grid; place-items: center; width: 58px; height: 58px; font-size: 1.45rem; line-height: 1; background: url('/images/game/ui/ring_blue.webp') center / contain no-repeat; filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.5)); }
 .dnav.is-back .ring { background-image: url('/images/game/ui/btn_prev.webp'); }
+/* The ✕ in the corner leaves; the back button stays only in retro, which hides the ✕. */
+:root:not([data-retro]) .dnav.is-back { display: none; }
 .dnav.is-open .ring { background-image: url('/images/game/ui/ring_orange_on.webp'); }
 .dnav small { max-width: 100%; overflow: hidden; font: 700 0.58rem/1 ui-monospace, monospace; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
 .dnav.is-open small { color: #fcd34d; }
