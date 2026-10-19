@@ -298,7 +298,11 @@ export type Threat = {
   /** A javelin: when the warning runs out a bolt flies along the line instead of the whole line striking. */
   shot?: OrbPic;
 };
-export type Particle = { x: number; y: number; vx: number; vy: number; life: number; max: number; size: number; color: string };
+export type Particle = {
+  x: number; y: number; vx: number; vy: number; life: number; max: number; size: number; color: string;
+  /** How it is drawn: a dot (unset), a puff that swells as it fades, a streak along its flight, a snowflake or a rising wisp. */
+  kind?: 'puff' | 'spark' | 'flake' | 'wisp';
+};
 export type Zap = { pts: Vec[]; life: number };
 export type Gem = { x: number; y: number; value: number; pull: boolean };
 /** On call: a heart dropped by a tougher bug; touch it for a little health. It fades after a while. */
@@ -1096,6 +1100,31 @@ function hitWithShot(g: Game, e: Enemy, s: Shot) {
   if (g.skills.bolt) chain(g, e, g.skills.bolt, s.dmg * 0.6);
   const fusion = fusionOf(g);
   if (fusion) fuse(g, e, s, fusion);
+}
+
+/* The other fusions leave a trail in flight too, only to be seen (will-o'-wisp's flames are real fire):
+   steam puffs, pink plasma sparks, blue crackles of electrocution, snowflakes of spectral frost and violet
+   wisps of the spectral storm. */
+const TRAIL: Partial<Record<Fusion, { every: number; kind: Particle['kind']; colors: string[]; size: [number, number]; life: number; spread: number }>> = {
+  steam: { every: 0.03, kind: 'puff', colors: ['#f1f5f9', '#e2e8f0', '#cbd5e1'], size: [4.5, 7], life: 0.6, spread: 22 },
+  plasma: { every: 0.016, kind: 'spark', colors: ['#f0abfc', '#e879f9', '#fde68a'], size: [2, 3], life: 0.35, spread: 110 },
+  shock: { every: 0.016, kind: 'spark', colors: ['#7dd3fc', '#e0f2fe', '#38bdf8'], size: [1.8, 2.8], life: 0.28, spread: 170 },
+  frostbite: { every: 0.035, kind: 'flake', colors: ['#f0f9ff', '#bae6fd'], size: [4, 5.5], life: 0.7, spread: 26 },
+  spectral: { every: 0.025, kind: 'wisp', colors: ['#c4b5fd', '#a78bfa', '#ddd6fe'], size: [3.5, 5.5], life: 0.6, spread: 20 },
+};
+function fusionTrail(g: Game, s: Shot, dt: number, f: Fusion) {
+  const t = TRAIL[f];
+  if (!t || g.particles.length > 260) return;
+  s.trail = (s.trail ?? 0) - dt;
+  if (s.trail > 0) return;
+  s.trail = t.every;
+  const a = rand(0, Math.PI * 2);
+  const sp = rand(0.3, 1) * t.spread;
+  g.particles.push({
+    x: s.x - s.vx * 0.02, y: s.y - s.vy * 0.02,
+    vx: Math.cos(a) * sp - s.vx * 0.05, vy: Math.sin(a) * sp - s.vy * 0.05 - (t.kind === 'wisp' ? 30 : 0),
+    life: t.life, max: t.life, size: rand(t.size[0], t.size[1]), color: t.colors[Math.floor(Math.random() * t.colors.length)], kind: t.kind,
+  });
 }
 
 /* What each fusion adds to a bow hit (plasma works on kills, will-o'-wisp
@@ -2378,7 +2407,7 @@ function updateShot(g: Game, s: Shot, dt: number): boolean {
       s.trail = 0.07;
       g.embers.push({ x: s.x, y: s.y, r: 11, life: 1, max: 1, dps: 9 * power(g, 'ranged'), kind: 'wisp' });
     }
-  }
+  } else if (s.bow && s.kind === 'arrow' && fusionOf(g)) fusionTrail(g, s, dt, fusionOf(g) as Fusion);
   // A bottle in flight touches nothing; it bursts where it lands.
   if (s.kind === 'molotov') return true;
   // Rockets blow up on walls and racks.

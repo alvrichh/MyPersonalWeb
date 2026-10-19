@@ -74,11 +74,29 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   drawBeams(ctx, g);
   drawStrikes(ctx, g, now);
   for (const q of g.particles) {
-    ctx.globalAlpha = Math.max(0, q.life / q.max);
+    const k = Math.max(0, q.life / q.max);
+    ctx.globalAlpha = q.kind === 'puff' ? k * 0.55 : k;
     ctx.fillStyle = q.color;
-    ctx.beginPath();
-    ctx.arc(q.x, q.y, q.size, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.strokeStyle = q.color;
+    if (q.kind === 'spark') {
+      // A short streak along its flight.
+      const sp = Math.hypot(q.vx, q.vy) || 1;
+      ctx.lineWidth = q.size;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(q.x, q.y);
+      ctx.lineTo(q.x - (q.vx / sp) * 11, q.y - (q.vy / sp) * 11);
+      ctx.stroke();
+    } else if (q.kind === 'flake') {
+      ctx.lineWidth = 1.3;
+      snowflake(ctx, q.x, q.y, q.size, q.life * 4);
+    } else {
+      // Puffs swell as they fade; wisps shrink as they rise.
+      const r = q.kind === 'puff' ? q.size * (1 + (1 - k) * 1.6) : q.kind === 'wisp' ? q.size * (0.4 + 0.6 * k) : q.size;
+      ctx.beginPath();
+      ctx.arc(q.x, q.y, r, 0, Math.PI * 2);
+      ctx.fill();
+    }
   }
   ctx.globalAlpha = 1;
   if (g.hazard === 'fog') drawFog(ctx, g, vis);
