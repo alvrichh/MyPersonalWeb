@@ -1,6 +1,6 @@
 import { H, W, WALL, WHEEL_X, WORLDS, frostReach, isBossRoom, type Enemy, type Game, type Shot, type Look, type Statue, type Rect, type Vec, type Fusion, arrowLook, fusionOf, bladeCount, bladeElement, bladeOrbit, bladeScale, type BladeElement } from './world';
 import { SPIRIT_COLOR, type ItemId, type SpiritSkin } from './shop';
-import { heroKey, type HeroSkin } from './save';
+import { FULL_HERO_SETS, heroKey, type HeroSkin } from './save';
 
 /* Bug Hunter's renderer: everything is drawn in room units (360 × 600) and
    scaled to fit the screen. The accent colours are the player's. */
@@ -261,7 +261,7 @@ const POSES: Pose[] = ['idle', 'walk', 'back', 'shoot', 'cheer', 'walk2', 'front
    bottom of a canvas as tall as the tallest pose (Alvrich's new sheet: a
    second step, facing the camera, a flinch and a knock-out). The others
    still have five and fall back for the rest. */
-const FULL_SETS = new Set(['boy-base', 'boy-wizard']);
+const FULL_SETS = new Set(FULL_HERO_SETS);
 /** The full sets' pixel scale: the base set's canvas is this tall; a hat makes its set's canvas taller at the same scale. */
 const FULL_BASE_H = 150;
 const FALLBACK: Partial<Record<Pose, Pose>> = { walk2: 'walk', front: 'idle', hurt: 'idle', down: 'idle' };

@@ -2,7 +2,7 @@ import './game.css';
 import { storage } from '../lib/storage';
 import { audio, type Sfx } from './audio';
 import { draw, drawRetroFigure, preloadFx, type Palette, type View } from './draw';
-import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, type StarColor, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, heroKey } from './save';
+import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, type StarColor, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, heroStill } from './save';
 import type { Mode } from './world';
 import { ARMOUR_SLOTS, ARSENAL, ITEMS, type SpiritSkin, UPGRADES, WEAPON_SLOTS, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
 import { Scene } from './scene';
@@ -708,7 +708,7 @@ function dressPalette() {
   palette.skin = save.skin;
   palette.boots = save.equipped.boots;
 }
-const heroPic = () => `./images/game/hero/${heroKey(save.skin, save.equipped.head)}-idle.webp`;
+const heroPic = () => `./images/game/hero/${heroStill(save.skin, save.equipped.head)}.webp`;
 /** What the list under the hero shows: a slot's items, the skins or the enemy looks. */
 let dressSlot: Slot | 'skin' | 'foes' | null = null;
 function stylesScreen(note = '') {
@@ -733,7 +733,7 @@ function stylesScreen(note = '') {
     picks = `<h3 class="slot">${t('skinPick')}</h3>${note ? `<p class="note">${note}</p>` : ''}<div class="gear-list">${SKINS.map((skin) => {
       const owned = save.skins.includes(skin);
       const worn = save.skin === skin;
-      return row(`data-skin="${skin}"`, worn, !owned && save.coins < SKIN_PRICE[skin], `<img class="skin-pic" src="./images/game/hero/${heroKey(skin, save.equipped.head)}-idle.webp" alt="">`, t(`skin${cap(skin)}Name` as Key), t(`skin${cap(skin)}Text` as Key), worn ? `✓ ${t('worn')}` : owned ? t('equip') : `🪙 ${SKIN_PRICE[skin]}`);
+      return row(`data-skin="${skin}"`, worn, !owned && save.coins < SKIN_PRICE[skin], `<img class="skin-pic" src="./images/game/hero/${heroStill(skin, save.equipped.head)}.webp" alt="">`, t(`skin${cap(skin)}Name` as Key), t(`skin${cap(skin)}Text` as Key), worn ? `✓ ${t('worn')}` : owned ? t('equip') : `🪙 ${SKIN_PRICE[skin]}`);
     }).join('')}</div>`;
   } else if (dressSlot === 'foes') {
     picks = `<h3 class="slot">${t('stylePick')}</h3><div class="gear-list">${STYLES.map((style) =>
