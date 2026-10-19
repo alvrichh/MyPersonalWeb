@@ -640,7 +640,7 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
   const horde = g.mode === 'horde';
   // On call: bugs harden with the clock instead of the room.
   // On call hardens faster per world: the field never runs out of bugs to farm.
-  const tough = horde ? (1 + (g.time / 60) * 0.2) * (1 + (g.world - 1) * 0.45) : (1 + (stageOf(room) - 1) * 0.095) * worldUp;
+  const tough = horde ? (1 + (g.time / 60) * 0.2) * (1 + (g.world - 1) * 0.3) : (1 + (stageOf(room) - 1) * 0.095) * worldUp;
   const bossHp = horde ? (finalBossNow(g) ? 4200 : 1800) * (1 + (g.time / 60) * 0.08) : room === ROOMS ? 2200 : 1000;
   const base = {
     bug: { r: 12, hp: 40, speed: 72, dmg: 10, xp: 6 },
