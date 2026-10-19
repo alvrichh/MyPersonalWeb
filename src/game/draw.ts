@@ -1880,7 +1880,7 @@ export function preloadFx() {
   for (const n of ['fireball', 'boom-small', 'boom-big', 'knife', 'boomerang', 'slash', 'chest', 'slam', 'crystals', 'gem', 'gem-big', 'bolt-1', 'bolt-2', 'bolt-3', 'bolt-4', 'bolt-5', 'bolt-6', 'bolt-y-1', 'bolt-y-2', 'bolt-y-3', 'bolt-y-4', 'bolt-y-5', 'bolt-y-6',
     'brick', 'iron', 'molotov', 'barrel', 'durian', 'durian-big', 'drill', 'drill-evo', 'rocket', 'rocket-shark', 'ball', 'ball-evo', 'phoenix-0', 'phoenix-1', 'phoenix-2', 'phoenix-3', 'wings-0', 'wings-1', 'wings-2', 'angle-front', 'angle-side', 'angle-quarter',
     'fire-pool', 'fire-pool-big', 'caltrops', 'mine', 'mine-on', 'mine-volt', 'volt-burst', 'impact', 'heart', 'rune', 'crescent',
-    'steam-cloud', 'plasma-burst', 'wisp-flame', 'shock-ring', 'ice-block', 'spectral-bolt', 'laser-yellow', 'laser-orange', 'laser-red', 'laser-purple', 'drakkar-wreck', ...Array.from({ length: 7 }, (_, i) => `lava-${i}`)]) fxImage(n);
+    'steam-cloud', 'plasma-burst', 'wisp-flame', 'shock-ring', 'ice-block', 'spectral-bolt', 'laser-yellow', 'laser-orange', 'laser-red', 'laser-purple', 'drakkar-wreck', ...Array.from({ length: 7 }, (_, i) => `tornado-${i}`), 'vortex-0', 'vortex-1', ...Array.from({ length: 7 }, (_, i) => `lava-${i}`)]) fxImage(n);
 }
 
 function drawFireballs(ctx: CanvasRenderingContext2D, g: Game) {
@@ -2313,6 +2313,7 @@ function drawFx(ctx: CanvasRenderingContext2D, g: Game, accent: string, layer: '
 /* Boss shots drawn with the weapons' pictures: which picture, how wide, and where along it the shot's
    point sits (1 = the right-hand tip; the fireball's ball is at 0.78). Arrows bring their trail. */
 const ORB_PIC: Record<OrbPic, { src: 'fx' | 'arrow'; name: string; w: number; at: number; trail?: string; glow?: number }> = {
+  tornado: { src: 'fx', name: 'tornado-0', w: 0, at: 0 },
   fireball: { src: 'fx', name: 'fireball', w: 44, at: 0.78 },
   rocket: { src: 'fx', name: 'rocket', w: 30, at: 0.75 },
   leaf: { src: 'arrow', name: 'leaf', w: 32, at: 1, trail: 'leaf-trail' },
@@ -2340,6 +2341,31 @@ function drawOrbs(ctx: CanvasRenderingContext2D, g: Game) {
   }
   ctx.globalAlpha = 1;
   for (const o of g.orbs) {
+    // Nocthrax's tornadoes, the owner's pictures: a turning vortex on the floor while it forms, then the
+    // funnel standing on its spot, its seven shapes in a loop so it churns, swaying a little.
+    if (o.pic === 'tornado' && !retroLook) {
+      const forming = (o.wait ?? 0) > 0;
+      const pic = forming ? fxImage(`vortex-${o.x > o.y ? 0 : 1}`) : fxImage(`tornado-${Math.floor(g.time * 14 + o.x) % 7}`);
+      if (ready(pic)) {
+        ctx.save();
+        ctx.translate(o.x, o.y);
+        if (forming) {
+          const k = 1 - Math.min(1, (o.wait ?? 0) / 0.9);
+          ctx.globalAlpha = 0.5 + 0.5 * k;
+          ctx.scale(1, 0.5);
+          ctx.rotate(g.time * 5);
+          const s = o.r * (1.6 + 1.4 * k);
+          ctx.drawImage(pic, -s, -s, s * 2, s * 2);
+        } else {
+          ctx.rotate(Math.sin(g.time * 6 + o.y) * 0.06);
+          const h = o.r * 5.2;
+          const w = (h * pic.naturalWidth) / pic.naturalHeight;
+          ctx.drawImage(pic, -w / 2, o.r * 0.8 - h, w, h);
+        }
+        ctx.restore();
+        continue;
+      }
+    }
     const look = o.pic && !retroLook ? ORB_PIC[o.pic] : undefined;
     const pic = look && (look.src === 'fx' ? fxImage(look.name) : arrowImage(look.name));
     if (look && pic && ready(pic)) {

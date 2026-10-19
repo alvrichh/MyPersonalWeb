@@ -289,6 +289,8 @@ export type Orb = {
   from?: string;
   /** Seconds to the next dab of its track. */
   trail?: number;
+  /** Seconds before it starts (a tornado forming as a vortex on the floor). */
+  wait?: number;
   /** A boss shot drawn with one of the weapon pictures (see `ORB_PIC` in draw.ts) instead of a plain orb. */
   pic?: OrbPic;
 };
@@ -296,7 +298,7 @@ export type Orb = {
 export type BossTrail = { x: number; y: number; r: number; life: number; max: number; dmg: number; tone: string; from?: string };
 /** Every boss shot leaves a track: a dab every `every` seconds that lasts `life` and hurts for `share` of the shot. */
 const BOSS_TRAIL = { every: 0.05, life: 0.55, share: 0.4, cap: 360 };
-export type OrbPic = 'fireball' | 'rocket' | 'leaf' | 'acid' | 'water' | 'ghost' | 'bolt' | 'spark';
+export type OrbPic = 'tornado' | 'fireball' | 'rocket' | 'leaf' | 'acid' | 'water' | 'ghost' | 'bolt' | 'spark';
 /** What a boss's attack looks like: its element. */
 export type ThreatEl = 'fire' | 'water' | 'leaf' | 'bolt' | 'laser' | 'shadow' | 'glitch';
 /**
@@ -2129,14 +2131,16 @@ export const FINAL_BOSS = ['kernel', 'archdemon', 'drakkar', 'queen', 'zeus', 'm
     breaks up and the captain, Valdur, fights on alone: smaller, much faster, leaping and charging in a frenzy. */
 export type FinalBoss = (typeof FINAL_BOSS)[number] | 'valdur';
 type Move = 'volley' | 'breath' | 'geysers' | 'leap' | 'javelins' | 'missiles' | 'blink' | 'acid';
-type Signature = 'spiral' | 'meteors' | 'tide' | 'roots' | 'grid' | 'laser' | 'clones' | 'frenzy';
+type Signature = 'tornado' | 'spiral' | 'meteors' | 'tide' | 'roots' | 'grid' | 'laser' | 'clones' | 'frenzy';
 const MID_MOVE: Move[] = ['volley', 'breath', 'geysers', 'leap', 'javelins', 'missiles', 'blink'];
 const SIGNATURE: Signature[] = ['spiral', 'meteors', 'tide', 'roots', 'grid', 'laser', 'clones'];
 /** World 8 mixes them: a random move each time, and the signatures of worlds 2–7 in turn. */
 const moveOf = (g: Game, e: Enemy): Move =>
   e.bossId === 'valdur' ? 'leap' : e.bossId === 'queen' ? 'acid' : g.world <= 7 ? MID_MOVE[g.world - 1] : MID_MOVE[Math.floor(Math.random() * 7)];
 const signatureOf = (g: Game, e: Enemy): Signature =>
-  e.bossId === 'valdur' ? 'frenzy' : g.world <= 7 ? SIGNATURE[g.world - 1] : SIGNATURE[1 + (e.sigs % 6)];
+  e.bossId === 'valdur' ? 'frenzy' : g.world <= 7 ? SIGNATURE[g.world - 1]
+  // Nocthrax: its own dark tornadoes every other time, the other worlds' signatures in between.
+  : e.bossId === 'chimera' && !e.clone && e.sigs % 2 === 0 ? 'tornado' : SIGNATURE[1 + (Math.floor(e.sigs / 2) % 6)];
 
 /** The longship breaks up at half health: wreckage, water on the floor, and Valdur leaps out of it. */
 /** Below this share of its health the final boss goes into its last stand. */
@@ -2355,6 +2359,18 @@ function signature(g: Game, e: Enemy, sig: Signature) {
   e.pose = 0.8;
   e.act = 'sig';
   switch (sig) {
+    case 'tornado': {
+      // Dark tornadoes: vortices open round you, rise after a moment and chase you, slowly, for a while
+      // (two, three or four by its phase).
+      const n = 1 + e.phase;
+      for (let i = 0; i < n; i++) {
+        const a = rand(0, Math.PI * 2);
+        const at = inside(g, { x: p.x + Math.cos(a) * rand(130, 200), y: p.y + Math.sin(a) * rand(130, 200) }, 30);
+        const v = Math.atan2(p.y - at.y, p.x - at.x);
+        g.orbs.push({ x: at.x, y: at.y, vx: Math.cos(v) * 70, vy: Math.sin(v) * 70, r: 22, dmg, life: 6.5, bounce: 0, tone: '#e879f9', home: 6.5, pic: 'tornado', wait: 0.9 + i * 0.15, from: e.bossId });
+      }
+      break;
+    }
     case 'spiral':
       // Stack overflow: a double spiral of glitches for three seconds, standing still.
       e.chan = 3;
@@ -2974,7 +2990,9 @@ export function update(g: Game, dt: number, input: Input) {
     return true;
   });
   g.orbs = g.orbs.filter((o) => {
-    if (o.from) {
+    // A tornado still forming: a vortex on the floor, harmless, until it rises.
+    if (o.wait && o.wait > 0) { o.wait -= dt; return true; }
+    if (o.from && o.pic !== 'tornado') {
       o.trail = (o.trail ?? 0) - dt;
       if (o.trail <= 0 && g.bossTrail.length < BOSS_TRAIL.cap) {
         o.trail = BOSS_TRAIL.every;
