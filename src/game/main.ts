@@ -1153,7 +1153,7 @@ function showPicks() {
 }
 
 function startRun(world = worldIn(), mode = save.mode, endless = false) {
-  game = newGame(buildLoadout(save.equipped, save.upgrades, masteries(), save.arsenal, save.itemLevels), save.style, world, mode, endless);
+  game = newGame({ ...buildLoadout(save.equipped, save.upgrades, masteries(), save.arsenal, save.itemLevels), sprintMastery: save.mastery.sprints }, save.style, world, mode, endless);
   preloadFx();
   paused = false;
   shownChoices = '';
@@ -1797,6 +1797,10 @@ function step(now: number) {
       if (event === 'shrine') flash(t('shrineHint'));
       if (event === 'heal') flash(t('statueHeal'));
       if (event === 'room' && g.mode === 'sprints') { flash(t('sprint', { room: g.room })); audio.setIntensity(Math.min(0.8, 0.2 + g.room * 0.05 + (g.world - 1) * 0.05)); }
+      if (event === 'minion') {
+        const boss = g.enemies.find((e) => e.final && !e.clone);
+        if (boss) flash(t('bossMinion', { name: bossTitle(boss) }));
+      }
       if (event === 'phase') {
         const boss = g.enemies.find((e) => e.phase > 1);
         if (boss) flash(t(boss.phase > 2 ? 'bossFinalForm' : 'bossWing', { name: bossTitle(boss) }));
@@ -1867,7 +1871,7 @@ function step(now: number) {
       hudGear.dataset.gear = gearKey;
       hudGear.innerHTML = gear.map(([id, lvl]) => `<span${isEvo(id) ? ' class="is-evo"' : ''}>${skillIcon(id, 22, iconFile(g, id))}<sub>${isEvo(id) ? '★' : lvl}</sub></span>`).join('');
     }
-    const boss = g.mode === 'horde' || isBossRoom(g.room) ? g.enemies.find((e) => e.kind === 'boss' && !e.clone && (e.spawn <= 0 || e.vanish)) : undefined;
+    const boss = g.mode === 'horde' || isBossRoom(g.room) ? g.enemies.find((e) => e.kind === 'boss' && !e.clone && !e.minion && (e.spawn <= 0 || e.vanish)) : undefined;
     if (bossBar.hidden !== !boss) {
       bossBar.hidden = !boss;
       requestAnimationFrame(resize); // the room makes room for the bar (after layout)
