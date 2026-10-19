@@ -1697,7 +1697,7 @@ const ready = (img: HTMLImageElement) => img.complete && img.naturalWidth > 0;
 /** Warm the effect pictures up when a run starts, so the first swing and strike are already painted. */
 export function preloadFx() {
   for (const n of ['fireball', 'boom-small', 'boom-big', 'knife', 'boomerang', 'slash', 'chest', 'slam', 'crystals', 'gem', 'gem-big', 'bolt-1', 'bolt-2', 'bolt-3', 'bolt-4', 'bolt-5', 'bolt-6',
-    'brick', 'iron', 'molotov', 'barrel', 'durian', 'durian-big', 'drill', 'drill-evo', 'rocket', 'rocket-shark', 'ball', 'ball-evo',
+    'brick', 'iron', 'molotov', 'barrel', 'durian', 'durian-big', 'drill', 'drill-evo', 'rocket', 'rocket-shark', 'ball', 'ball-evo', 'phoenix-0', 'phoenix-1', 'phoenix-2', 'phoenix-3',
     'fire-pool', 'fire-pool-big', 'caltrops', 'mine', 'mine-on', 'mine-volt', 'volt-burst', 'impact', 'heart', 'rune', 'crescent',
     'steam-cloud', 'plasma-burst', 'wisp-flame', 'shock-ring', 'ice-block', 'spectral-bolt', 'laser-yellow', 'laser-orange', 'laser-red', 'laser-purple', 'drakkar-wreck', ...Array.from({ length: 7 }, (_, i) => `lava-${i}`)]) fxImage(n);
 }
@@ -1868,7 +1868,20 @@ function drawPhoenixRise(ctx: CanvasRenderingContext2D, f: Fx, now: number, laye
     ctx.restore();
     return;
   }
-  // The firebird: it opens its wings over you, then rises and fades.
+  // The owner's firebird, four frames: rising out of its flame, opening its wings, spread wide, breaking into sparks.
+  const frame = t < 0.18 ? 0 : t < 0.36 ? 1 : t < 0.72 ? 2 : 3;
+  const pic = fxImage(`phoenix-${frame}`);
+  if (ready(pic)) {
+    const h = f.r * 2.7;
+    const w = (h * pic.naturalWidth) / pic.naturalHeight;
+    const lift = Math.max(0, t - 0.3) * 120;
+    ctx.save();
+    ctx.globalAlpha = fade;
+    ctx.drawImage(pic, f.x - w / 2, f.y + 18 - h - lift, w, h);
+    ctx.restore();
+    return;
+  }
+  // Until the pictures are in: the firebird drawn in code opens its wings over you, then rises and fades.
   const open = Math.min(1, t / 0.3);
   const rise = Math.max(0, t - 0.25) * 140;
   const y = f.y - 30 - rise;
