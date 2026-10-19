@@ -300,6 +300,8 @@ export type Threat = {
   /** Beam: radians a second it turns, and the boss it follows. */
   spin?: number;
   owner?: number;
+  /** Zeus's lightning is blue; everyone else's yellow. */
+  blue?: boolean;
   /** Wave: speed, how far it has come, and the safe gap (its centre along the wave, half its width). */
   speed?: number;
   done?: number;
@@ -315,7 +317,8 @@ export type Particle = {
   /** How it is drawn: a dot (unset), a puff that swells as it fades, a streak along its flight, a snowflake or a rising wisp. */
   kind?: 'puff' | 'spark' | 'flake' | 'wisp';
 };
-export type Zap = { pts: Vec[]; life: number };
+/** Lightning is yellow; blue only for evolved weapons and Zeus. */
+export type Zap = { pts: Vec[]; life: number; blue?: boolean };
 export type Gem = { x: number; y: number; value: number; pull: boolean };
 /** On call: a heart dropped by a tougher bug; touch it for a little health. It fades after a while. */
 export type Heart = { x: number; y: number; life: number; pull: boolean };
@@ -330,6 +333,8 @@ export type Fx = {
   kind: 'slash' | 'ring' | 'boom' | 'strike' | 'halo' | 'beam' | 'rune' | 'pic' | 'phoenix'; x: number; y: number; r: number; a: number; life: number; max: number;
   /** Seconds before it starts (the evolved sword's three cuts follow one another). */
   delay?: number;
+  /** A strike in blue (evolved weapons, Zeus); yellow otherwise. */
+  blue?: boolean;
   /** Turn over its life, in radians (those cuts sweep round). */
   spin?: number;
   /** A beam's half width. */
@@ -1198,7 +1203,7 @@ function fuse(g: Game, e: Enemy, s: Shot, fusion: Fusion) {
   }
 }
 
-function chain(g: Game, from: Enemy, jumps: number, amount: number) {
+function chain(g: Game, from: Enemy, jumps: number, amount: number, blue = false) {
   let at: Vec = from;
   const touched = new Set([from.id]);
   // Shock (water + lightning arrows): the arc reaches further and hits slowed bugs twice as hard.
@@ -1213,7 +1218,7 @@ function chain(g: Game, from: Enemy, jumps: number, amount: number) {
     }
     if (!next) break;
     touched.add(next.id);
-    g.zaps.push({ pts: zigzag(at, next), life: 0.18 });
+    g.zaps.push({ pts: zigzag(at, next), life: 0.18, blue });
     if (shock && next.slow > 0) {
       if (g.fx.filter((f) => f.pic === 'shock-ring').length < 8) g.fx.push({ kind: 'pic', pic: 'shock-ring', top: true, x: next.x, y: next.y, r: next.r + 10, a: rand(0, 6), life: 0.3, max: 0.3 });
       hurt(g, next, amount * 2);
@@ -1516,11 +1521,11 @@ function callStorm(g: Game) {
   const dmg = (38 + 10 * (lv - 1)) * power(g, 'magic');
   for (let i = 0; i < lv * (evolved ? 2 : 1) && pool.length; i++) {
     const e = pool.splice(Math.floor(Math.random() * pool.length), 1)[0];
-    g.fx.push({ kind: 'strike', x: e.x, y: e.y, r, a: 0, life: 0.3, max: 0.3 });
+    g.fx.push({ kind: 'strike', x: e.x, y: e.y, r, a: 0, life: 0.3, max: 0.3, blue: evolved });
     g.events.push('strike');
-    g.zaps.push({ pts: zigzag({ x: e.x + rand(-20, 20), y: e.y - 220 }, e, 14), life: 0.22 });
+    g.zaps.push({ pts: zigzag({ x: e.x + rand(-20, 20), y: e.y - 220 }, e, 14), life: 0.22, blue: evolved });
     for (const o of live(g)) if (dist(o, e) < r + o.r) hurt(g, o, dmg);
-    if (evolved) chain(g, e, 2, dmg * 0.5);
+    if (evolved) chain(g, e, 2, dmg * 0.5, true);
   }
 }
 
@@ -1706,9 +1711,9 @@ function updateMines(g: Game, dt: number) {
     blast(g, m, (52 + 8 * (lv - 1)) * (evolved ? 1.3 : 1), dmg, '#fca5a5');
     if (evolved) {
       g.fx.push({ kind: 'pic', pic: 'volt-burst', x: m.x, y: m.y, r: 46, a: rand(0, 6), life: 0.4, max: 0.4 });
-      g.fx.push({ kind: 'strike', x: m.x, y: m.y, r: 30, a: 0, life: 0.3, max: 0.3 });
-      g.zaps.push({ pts: zigzag({ x: m.x + rand(-20, 20), y: m.y - 220 }, m, 14), life: 0.22 });
-      chain(g, foe, 3, dmg * 0.6);
+      g.fx.push({ kind: 'strike', x: m.x, y: m.y, r: 30, a: 0, life: 0.3, max: 0.3, blue: true });
+      g.zaps.push({ pts: zigzag({ x: m.x + rand(-20, 20), y: m.y - 220 }, m, 14), life: 0.22, blue: true });
+      chain(g, foe, 3, dmg * 0.6, true);
     }
     return false;
   });
@@ -2299,14 +2304,15 @@ function signature(g: Game, e: Enemy, sig: Signature) {
       break;
     }
     case 'grid': {
-      // The storm grid: three bolts across the room, then three down it.
+      // The storm grid: three bolts across the room, then three down it (blue when Zeus casts it).
+      const blue = e.bossId === 'zeus';
       for (const [i, dy] of [-110, 0, 110].entries()) {
         const y = clamp(p.y + dy, b.y + 14, b.y + b.h - 14);
-        g.threats.push({ kind: 'line', x: b.x, y, r: 12, a: 0, len: b.w, warn: 1 + i * 0.05, max: 1, life: 0.2, dmg, el: 'bolt' });
+        g.threats.push({ kind: 'line', x: b.x, y, r: 12, a: 0, len: b.w, warn: 1 + i * 0.05, max: 1, life: 0.2, dmg, el: 'bolt', blue });
       }
       for (const [i, dx] of [-95, 0, 95].entries()) {
         const x = clamp(p.x + dx, b.x + 14, b.x + b.w - 14);
-        g.threats.push({ kind: 'line', x, y: b.y, r: 12, a: Math.PI / 2, len: b.h, warn: 2 + i * 0.05, max: 2, life: 0.2, dmg, el: 'bolt' });
+        g.threats.push({ kind: 'line', x, y: b.y, r: 12, a: Math.PI / 2, len: b.h, warn: 2 + i * 0.05, max: 2, life: 0.2, dmg, el: 'bolt', blue });
       }
       break;
     }
@@ -2470,7 +2476,7 @@ function threatHits(g: Game, t: Threat) {
     t.dmg = 0;
   } else if (t.kind === 'line' && t.el === 'bolt') {
     const end = { x: t.x + Math.cos(t.a) * t.len, y: t.y + Math.sin(t.a) * t.len };
-    g.zaps.push({ pts: zigzag(t, end, 10), life: 0.22 });
+    g.zaps.push({ pts: zigzag(t, end, 10), life: 0.22, blue: t.blue });
     g.events.push('strike');
   }
 }
