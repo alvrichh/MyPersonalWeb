@@ -324,7 +324,7 @@ export type Threat = {
 export type Particle = {
   x: number; y: number; vx: number; vy: number; life: number; max: number; size: number; color: string;
   /** How it is drawn: a dot (unset), a puff that swells as it fades, a streak along its flight, a snowflake or a rising wisp. */
-  kind?: 'puff' | 'spark' | 'flake' | 'wisp';
+  kind?: 'puff' | 'spark' | 'flake' | 'wisp' | 'glow' | 'crackle';
 };
 /** Lightning is yellow; blue only for evolved weapons and Zeus. */
 export type Zap = { pts: Vec[]; life: number; blue?: boolean };
@@ -1173,8 +1173,8 @@ function hitWithShot(g: Game, e: Enemy, s: Shot) {
    wisps of the spectral storm. */
 const TRAIL: Partial<Record<Fusion, { every: number; kind: Particle['kind']; colors: string[]; size: [number, number]; life: number; spread: number }>> = {
   steam: { every: 0.03, kind: 'puff', colors: ['#f1f5f9', '#e2e8f0', '#cbd5e1'], size: [4.5, 7], life: 0.6, spread: 22 },
-  plasma: { every: 0.016, kind: 'spark', colors: ['#f0abfc', '#e879f9', '#fde68a'], size: [2, 3], life: 0.35, spread: 110 },
-  shock: { every: 0.016, kind: 'spark', colors: ['#7dd3fc', '#e0f2fe', '#38bdf8'], size: [1.8, 2.8], life: 0.28, spread: 170 },
+  plasma: { every: 0.007, kind: 'glow', colors: ['#f0abfc', '#e879f9', '#fde68a', '#ff5fd2'], size: [2.5, 4.5], life: 0.4, spread: 30 },
+  shock: { every: 0.008, kind: 'crackle', colors: ['#7dd3fc', '#e0f2fe', '#38bdf8'], size: [6, 10], life: 0.22, spread: 20 },
   frostbite: { every: 0.035, kind: 'flake', colors: ['#f0f9ff', '#bae6fd'], size: [4, 5.5], life: 0.7, spread: 26 },
   spectral: { every: 0.025, kind: 'wisp', colors: ['#c4b5fd', '#a78bfa', '#ddd6fe'], size: [3.5, 5.5], life: 0.6, spread: 20 },
 };
@@ -1182,15 +1182,19 @@ function fusionTrail(g: Game, s: Shot, dt: number, f: Fusion) {
   const t = TRAIL[f];
   if (!t || g.particles.length > 260) return;
   s.trail = (s.trail ?? 0) - dt;
-  if (s.trail > 0) return;
-  s.trail = t.every;
-  const a = rand(0, Math.PI * 2);
-  const sp = rand(0.3, 1) * t.spread;
-  g.particles.push({
-    x: s.x - s.vx * 0.02, y: s.y - s.vy * 0.02,
-    vx: Math.cos(a) * sp - s.vx * 0.05, vy: Math.sin(a) * sp - s.vy * 0.05 - (t.kind === 'wisp' ? 30 : 0),
-    life: t.life, max: t.life, size: rand(t.size[0], t.size[1]), color: t.colors[Math.floor(Math.random() * t.colors.length)], kind: t.kind,
-  });
+  // Faster than a frame: several a frame, spread back along the path the arrow just covered.
+  for (let n = 0; s.trail <= 0 && n < 4; n++) {
+    s.trail += t.every;
+    const a = rand(0, Math.PI * 2);
+    const sp = rand(0.3, 1) * t.spread;
+    const back = 0.02 + rand(0, dt);
+    g.particles.push({
+      x: s.x - s.vx * back, y: s.y - s.vy * back,
+      vx: Math.cos(a) * sp - s.vx * 0.05, vy: Math.sin(a) * sp - s.vy * 0.05 - (t.kind === 'wisp' ? 30 : 0),
+      life: t.life, max: t.life, size: rand(t.size[0], t.size[1]), color: t.colors[Math.floor(Math.random() * t.colors.length)], kind: t.kind,
+    });
+  }
+  if (s.trail <= 0) s.trail = t.every;
 }
 
 /* What each fusion adds to a bow hit (plasma works on kills, will-o'-wisp
