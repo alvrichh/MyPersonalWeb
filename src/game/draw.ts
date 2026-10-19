@@ -1853,10 +1853,12 @@ function drawFx(ctx: CanvasRenderingContext2D, g: Game, accent: string, layer: '
 
 /* Boss shots drawn with the weapons' pictures: which picture, how wide, and where along it the shot's
    point sits (1 = the right-hand tip; the fireball's ball is at 0.78). Arrows bring their trail. */
-const ORB_PIC: Record<OrbPic, { src: 'fx' | 'arrow'; name: string; w: number; at: number; trail?: string }> = {
+const ORB_PIC: Record<OrbPic, { src: 'fx' | 'arrow'; name: string; w: number; at: number; trail?: string; glow?: number }> = {
   fireball: { src: 'fx', name: 'fireball', w: 44, at: 0.78 },
   rocket: { src: 'fx', name: 'rocket', w: 30, at: 0.75 },
   leaf: { src: 'arrow', name: 'leaf', w: 32, at: 1, trail: 'leaf-trail' },
+  // The Queen's acid: a bigger leaf arrow in a wide, pale glow, so it stands out on the jungle floor.
+  acid: { src: 'arrow', name: 'leaf', w: 46, at: 1, trail: 'leaf-trail', glow: 2.6 },
   water: { src: 'arrow', name: 'water', w: 32, at: 1, trail: 'water-trail' },
   ghost: { src: 'arrow', name: 'ghost', w: 32, at: 1, trail: 'ghost-trail' },
   spark: { src: 'arrow', name: 'spark', w: 32, at: 1, trail: 'spark-trail' },
@@ -1871,12 +1873,13 @@ function drawOrbs(ctx: CanvasRenderingContext2D, g: Game) {
       ctx.translate(o.x, o.y);
       ctx.rotate(Math.atan2(o.vy, o.vx));
       // A soft glow in the shot's colour so it still reads as dangerous.
-      const glow = ctx.createRadialGradient(0, 0, 0, 0, 0, o.r * 1.6);
-      glow.addColorStop(0, `${o.tone || '#ff6b6b'}88`);
+      const gr = o.r * (look.glow ?? 1.6);
+      const glow = ctx.createRadialGradient(0, 0, 0, 0, 0, gr);
+      glow.addColorStop(0, `${o.tone || '#ff6b6b'}${look.glow ? 'cc' : '88'}`);
       glow.addColorStop(1, 'transparent');
       ctx.fillStyle = glow;
       ctx.beginPath();
-      ctx.arc(0, 0, o.r * 1.6, 0, Math.PI * 2);
+      ctx.arc(0, 0, gr, 0, Math.PI * 2);
       ctx.fill();
       if (look.trail) {
         const trail = arrowImage(look.trail);
