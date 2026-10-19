@@ -333,7 +333,7 @@ function menuScreen() {
       <button class="hot cover-gear" data-act="options" aria-label="${t('options')}"></button>
       <button class="hot cover-profile" data-act="profile" aria-label="${t('profile')}: ${esc(save.name)} · ${t('lvShort', { level })}"></button>
       <span class="cover-avatar" aria-hidden="true"><img src="${heroPic()}" alt=""></span>
-      <span class="cover-profile-copy"><small>${esc(save.name)}${masteries() ? ` <i class="mstar" style="color:${starColor()}">★</i>` : ''}</small><b>${t('lvShort', { level })}</b><i><b style="width:${Math.round(progress * 100)}%"></b></i></span>
+      <span class="cover-profile-copy"><small>${esc(save.name)}${masteries() ? ` ${stars()}` : ''}</small><b>${t('lvShort', { level })}</b><i><b style="width:${Math.round(progress * 100)}%"></b></i></span>
       <button class="hot cover-coins" data-act="coin-store" aria-label="${t('storeTitle')}: ${Math.floor(save.coins)}"></button>
       <span class="cover-num is-coins">${Math.floor(save.coins)}</span>
       <button class="hot cover-worlds" data-act="map" aria-label="${t('map')}: ${unlockedIn()}/${WORLD_COUNT}"></button>
@@ -402,14 +402,14 @@ function profileScreen(note = '') {
         <button class="name-btn is-ok" type="submit" aria-label="${t('profileSave')}">${TICK}</button>
         <button class="name-btn is-cancel" type="button" data-act="name-cancel" aria-label="${t('profileCancel')}">${CROSS}</button>
       </form>`
-    : `<div class="profile-name"><b>${esc(save.name)} ${stars()}</b><button class="name-btn is-edit" type="button" data-act="name-edit" aria-label="${t('profileEdit')}">${PENCIL}</button></div>`;
+    : `<div class="profile-name"><b>${esc(save.name)}</b><button class="name-btn is-edit" type="button" data-act="name-edit" aria-label="${t('profileEdit')}">${PENCIL}</button></div>`;
   const pic = save.retro ? './images/favicon-192.png' : heroPic();
   const stat = (label: Key, value: string) => `<div class="pstat"><small>${t(label)}</small><b>${value}</b></div>`;
   show(`<button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
     <h2>${t('profile')}</h2>
     <div class="profile-card">
       <img class="profile-pic${save.retro ? ' is-round' : ''}" src="${pic}" alt="" width="96" height="120">
-      <div class="profile-who">${editingName ? '' : name}<span>${t('lvShort', { level })}</span><i class="profile-xp" title="${t('profileXp')}"><b style="width:${Math.round(progress * 100)}%"></b></i></div>
+      <div class="profile-who">${editingName ? '' : name}${stars()}<span>${t('lvShort', { level })}</span><i class="profile-xp" title="${t('profileXp')}"><b style="width:${Math.round(progress * 100)}%"></b></i></div>
     </div>
     ${editingName ? `<div class="profile-form">${name}<small class="how">${t('profileNameHint')}</small>${save.name !== DEFAULT_NAME ? `<button class="ghost small" type="button" data-act="name-reset">${t('profileReset')}</button>` : ''}</div>` : ''}
     ${note ? `<p class="saved" role="status">✓ ${note}</p>` : ''}
@@ -424,7 +424,7 @@ function profileScreen(note = '') {
          <div class="star-pick" role="group" aria-label="${t('profileStarColor')}">${(Object.keys(STAR_COLORS) as StarColor[]).map((c) => `<button type="button" class="star-chip${c === save.starColor ? ' is-on' : ''}" data-star="${c}" style="--star:${STAR_COLORS[c]}" aria-pressed="${c === save.starColor}" aria-label="${c}">★</button>`).join('')}</div>`
       : `<p class="how">${t('masteryNone')}</p>`}
     <button class="ghost is-danger" data-act="reset-ask">${t('resetBtn')}</button>
-    ${backButton('menu')}`);
+    ${backButton('menu')}`, false, false, 'keep-scroll');
   if (editingName) {
     const input = screen.querySelector<HTMLInputElement>('#profileName');
     input?.focus();
