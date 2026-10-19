@@ -318,8 +318,7 @@ function menuScreen() {
       <button class="hot cover-profile" data-act="profile" aria-label="${t('profile')}: ${esc(save.name)} · ${t('lvShort', { level })}"></button>
       <span class="cover-avatar" aria-hidden="true"><img src="${heroPic()}" alt=""></span>
       <span class="cover-profile-copy"><small>${esc(save.name)}${masteries() ? ` <i class="mstar" style="color:${starColor()}">★</i>` : ''}</small><b>${t('lvShort', { level })}</b><i><b style="width:${Math.round(progress * 100)}%"></b></i></span>
-      <button class="hot cover-coins" data-act="shop" aria-label="${t('coins')}: ${Math.floor(save.coins)}"></button>
-      <button class="hot cover-coins-plus" data-act="coin-store" aria-label="${t('storeTitle')}"></button>
+      <button class="hot cover-coins" data-act="coin-store" aria-label="${t('storeTitle')}: ${Math.floor(save.coins)}"></button>
       <span class="cover-num is-coins">${Math.floor(save.coins)}</span>
       <button class="hot cover-worlds" data-act="map" aria-label="${t('map')}: ${unlockedIn()}/${WORLD_COUNT}"></button>
       <span class="cover-num is-worlds">${unlockedIn()}/${WORLD_COUNT}</span>
