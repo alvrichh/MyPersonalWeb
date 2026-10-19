@@ -146,9 +146,10 @@ const skillIcon = (id: SkillId | 'bow', size = 40, file: string = id === 'bow' ?
 const EVO_ICON: SkillId[] = ['laser', 'brick', 'molotov', 'durian', 'mines', 'drill', 'rocket', 'ball'];
 const evoIcon = (id: SkillId) => (EVO_ICON.includes(id) ? `${id}-evo` : id);
 /** The blades show their element's medallion once they have one; the laser its colour (yellow, red from level 2, purple evolved); evolved weapons their evolution's. */
-const iconFile = (g: Game, id: SkillId | 'bow') => {
+/** The medallion for a skill at `lv` (its current level unless a level-up card shows the next one). */
+const iconFile = (g: Game, id: SkillId | 'bow', lv = id === 'bow' ? 0 : g.skills[id]) => {
   if (id !== 'bow' && g.evolved[id] && EVO_ICON.includes(id)) return evoIcon(id);
-  if (id === 'laser') return g.skills.laser >= 3 ? 'laser-red' : g.skills.laser >= 2 ? 'laser-orange' : 'laser';
+  if (id === 'laser') return lv >= 3 ? 'laser-red' : lv >= 2 ? 'laser-orange' : 'laser';
   if (id !== 'blades') return id === 'bow' ? 'double' : id;
   const el = bladeElement(g);
   return el === 'steel' ? 'blades' : `blades-${el}`;
@@ -505,7 +506,7 @@ function choiceScreen(g: Game) {
       // A second arrow element says which fusion it makes (and that the other two stop coming).
       const fz = fusionWith(g, id);
       const fuse = fz ? `<em class="fuse">${t('fusionCard', { fusion: fusionLine(g, fz, id) })}</em>` : '';
-      return `<button class="skill skill-${cat}" data-skill="${id}"><span class="icon" aria-hidden="true">${skillIcon(id, 56, iconFile(g, id))}</span><span class="cat">${t(CATEGORY_LABEL[cat])}</span><b>${name}</b><span>${text}${fuse}</span>${level}</button>`;
+      return `<button class="skill skill-${cat}" data-skill="${id}"><span class="icon" aria-hidden="true">${skillIcon(id, 56, iconFile(g, id, next))}</span><span class="cat">${t(CATEGORY_LABEL[cat])}</span><b>${name}</b><span>${text}${fuse}</span>${level}</button>`;
     })
     .join('');
   // On call: two rerolls a shift.

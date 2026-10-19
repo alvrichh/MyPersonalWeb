@@ -862,6 +862,7 @@ export function chooseSkill(g: Game, choice: Choice) {
   }
   const skill = choice as SkillId;
   g.skills[skill] += 1;
+  followElement(g, skill);
   if (skill === 'heart') {
     g.player.maxHp += 25;
     g.player.hp = Math.min(g.player.maxHp, g.player.hp + Math.round(g.player.maxHp * 0.35));
@@ -1256,6 +1257,13 @@ export function pickArrow(g: Game, look: ArrowLook) {
 /** Mid-run choices from the skills list: the blades' element, and which owned spirit follows you. */
 export function pickBlade(g: Game, el: BladeElement) {
   if (bladeOptions(g).includes(el)) g.bladePick = el;
+}
+/** Taking an element skill (fire arrows, frost, the storm…) turns the blades to that element straight
+    away, over the automatic choice and any earlier pick; the chips can still change it back. */
+export function followElement(g: Game, skill: SkillId) {
+  const el = skill === 'spirits' ? SPIRIT_BLADE[g.loadout.spirit]
+    : (Object.keys(BLADE_FROM) as Exclude<BladeElement, 'steel'>[]).find((k) => BLADE_FROM[k].includes(skill));
+  if (el && el !== 'steel') g.bladePick = el;
 }
 export function pickSpirit(g: Game, skin: SpiritSkin) {
   g.loadout.spirit = skin;
@@ -2062,6 +2070,7 @@ export function applyWheel(g: Game, outcome: WheelOutcome): { outcome: WheelOutc
       if (!pool.length) return applyWheel(g, 'skillUp');
       const skill = any(pool);
       g.skills[skill] = 1;
+      followElement(g, skill);
       return { outcome, skill };
     }
     case 'skillUp': {
@@ -2069,6 +2078,7 @@ export function applyWheel(g: Game, outcome: WheelOutcome): { outcome: WheelOutc
       if (!pool.length) return applyWheel(g, 'heal');
       const skill = any(pool);
       g.skills[skill] += 1;
+      followElement(g, skill);
       if (skill === 'heart') { p.maxHp += 25; p.hp = Math.min(p.maxHp, p.hp + 25); }
       return { outcome, skill };
     }
