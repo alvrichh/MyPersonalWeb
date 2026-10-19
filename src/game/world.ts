@@ -1565,18 +1565,23 @@ const laserWidth = (g: Game) => 10 + 3 * (g.skills.laser - 1) + (g.evolved.laser
 const laserDamage = (g: Game) => (30 + 12 * (g.skills.laser - 1)) * power(g, 'magic') * (g.evolved.laser ? 1.3 : 1);
 /** Where the column starts: the room's top, or just above what the page shows of the open field. */
 const laserTop = (g: Game) => (g.mode === 'sprints' ? 0 : g.player.y - g.viewHalf.y - 60);
+/** Whether a bug is inside the visible field (always, in a sprint's room). */
+const inView = (g: Game, e: Vec) => g.mode !== 'horde' || (Math.abs(e.x - g.player.x) <= g.viewHalf.x && Math.abs(e.y - g.player.y) <= g.viewHalf.y);
+
 function fireLaser(g: Game) {
   const p = g.player;
   const evolved = !!g.evolved.laser;
   const n = evolved ? 5 : g.skills.laser;
-  const targets = live(g).sort((a, b) => dist(a, p) - dist(b, p)).slice(0, n);
+  // On call only what is on screen: the sky does not strike bugs you cannot see.
+  const seen = live(g).filter((e) => inView(g, e));
+  const targets = seen.sort((a, b) => dist(a, p) - dist(b, p)).slice(0, n);
   if (!targets.length) return;
   const half = laserWidth(g);
   const top = laserTop(g);
   const hit = new Set<number>();
   for (const [k, t] of targets.entries()) {
     g.fx.push({ kind: 'beam', x: t.x, y: top, r: t.y - top, a: Math.PI / 2, w: half, foot: t.y, life: 0.34, max: 0.34, delay: k * 0.06 });
-    for (const e of live(g)) {
+    for (const e of seen) {
       if (hit.has(e.id) || dist(e, t) > half * 2.2 + e.r) continue;
       hit.add(e.id);
       hurt(g, e, laserDamage(g));
