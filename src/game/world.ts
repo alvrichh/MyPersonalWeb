@@ -285,6 +285,8 @@ export type Player = {
   ouch: number;
   moving: boolean;
   face: number;
+  /** Where the hero is walking (face turns to the target when a shot goes off). */
+  heading: number;
 };
 
 /** Cooldowns and state for every weapon. */
@@ -652,7 +654,7 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     strikes: [],
     strikeIn: 2,
     hazard: 'none',
-    player: { x: W / 2, y: H - 70, r: 15, hp: loadout.maxHp, maxHp: loadout.maxHp, speed: 150 * loadout.speedMult, inv: 0, ouch: 0, moving: false, face: -Math.PI / 2 },
+    player: { x: W / 2, y: H - 70, r: 15, hp: loadout.maxHp, maxHp: loadout.maxHp, speed: 150 * loadout.speedMult, inv: 0, ouch: 0, moving: false, face: -Math.PI / 2, heading: -Math.PI / 2 },
     enemies: [],
     shots: [],
     orbs: [],
@@ -2132,6 +2134,7 @@ export function update(g: Game, dt: number, input: Input) {
     p.x += (input.x / len) * k * p.speed * shoes * dt;
     p.y += (input.y / len) * k * p.speed * shoes * dt;
     p.face = Math.atan2(input.y, input.x);
+    p.heading = p.face;
   }
   updateHazards(g, dt);
   // Touching a boss's chest spins the lucky wheel.
