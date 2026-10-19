@@ -45,6 +45,31 @@ const BASS_ROOTS_B = [0, 5, 3, 7];
 type Block = 'liquid' | 'neuro' | 'breakdown' | 'trance' | 'both';
 const SET: Block[] = ['liquid', 'neuro', 'liquid', 'neuro', 'breakdown', 'trance', 'both', 'neuro'];
 
+/* The songs. Each one keeps the same B2B set and drum patterns (the two DJs taking turns in eight-bar
+   blocks); what changes is the key, the chords, the bass roots, the order of the blocks and the growl's line.
+   `b2b` is the original; `doom` is the final boss's: D minor with a harmonic-minor A that pulls home,
+   neuro first and the growl singing its own melody from the start. */
+export type SongId = 'b2b' | 'doom';
+export type SongPick = 'auto' | SongId;
+type Song = { root: number; chords: number[][]; roots: number[]; chordsB: number[][]; rootsB: number[]; set: Block[]; reese?: number[][] };
+const SONGS: Record<SongId, Song> = {
+  b2b: { root: ROOT, chords: CHORDS, roots: BASS_ROOTS, chordsB: CHORDS_B, rootsB: BASS_ROOTS_B, set: SET },
+  doom: {
+    root: 36.71, // D1
+    chords: [[0, 3, 7, 12], [-4, 0, 3, 8], [5, 8, 12, 15], [7, 11, 14, 19]],    // Dm – Bb – Gm7 – A
+    roots: [0, -4, 5, 7],
+    chordsB: [[0, 3, 7, 12], [-2, 2, 5, 10], [-4, 0, 3, 8], [7, 11, 14, 19]],   // Dm – C – Bb – A, a falling lament
+    rootsB: [0, -2, -4, 7],
+    set: ['neuro', 'liquid', 'neuro', 'both', 'breakdown', 'trance', 'both', 'neuro'],
+    reese: [
+      [0, 12, 10, 7, 3, 7],
+      [12, 15, 14, 12, 10, 7],
+      [0, 7, 12, 15, 17, 19],
+      [15, 12, 10, 7, 5, 3],
+    ],
+  },
+};
+
 /** The growl's line in boss fights, one note per hit (steps 0, 3, 6, 10, 11, 14), over two bars. */
 const BOSS_REESE = [
   [0, 7, 3, 10, 7, 12],
@@ -143,6 +168,16 @@ class Engine {
     if (this.ready) this.filter.frequency.setTargetAtTime(1800 + Math.max(0.5, level) * 6000, this.ctx.currentTime, 0.4);
   }
 
+  /** Which song plays (picked in Customise): 'auto' is the original with the final boss's own song for that fight. */
+  private pick: SongPick = 'auto';
+  private songId: SongId = 'b2b';
+  private songNow = false;
+  private root = ROOT;
+  setSong(pick: SongPick) {
+    this.pick = pick;
+    this.songNow = true;
+  }
+
   /** A boss is out: the growl plays its boss line (`BOSS_REESE`), from its next hit. */
   boss = false;
   setBoss(on: boolean) {
@@ -180,12 +215,17 @@ class Engine {
       // The final boss arrives: two siren calls, "biii-u, biii-u", over the first bar.
       if (this.final) { this.siren(at); this.siren(at + BAR / 2); }
     }
-    const setBar = bar % (SET.length * 8);
-    const block = SET[Math.floor(setBar / 8)];
+    // The song changes only where a phrase begins (or on the next bar, when picked by hand).
+    const wanted = this.pick === 'auto' ? (this.finalWanted ? 'doom' : 'b2b') : this.pick;
+    if (inBar === 0 && wanted !== this.songId && (bar % 4 === 0 || this.songNow)) { this.songId = wanted; this.songNow = false; }
+    const song = SONGS[this.songId];
+    this.root = song.root;
+    const setBar = bar % (song.set.length * 8);
+    const block = song.set[Math.floor(setBar / 8)];
     const blockBar = setBar % 8;
     const second = setBar >= 32; // the second half uses the lifted progression
-    const chord = (second ? CHORDS_B : CHORDS)[Math.floor(bar / 2) % 4];
-    const bassRoot = (second ? BASS_ROOTS_B : BASS_ROOTS)[Math.floor(bar / 2) % 4];
+    const chord = (second ? song.chordsB : song.chords)[Math.floor(bar / 2) % 4];
+    const bassRoot = (second ? song.rootsB : song.roots)[Math.floor(bar / 2) % 4];
     if (this.final) this.tension(bar, inBar, at, chord);
     const last = blockBar === 7; // final bar of a block: a little fill
     const liquid = block === 'liquid' || block === 'both';
@@ -215,26 +255,26 @@ class Engine {
     // Bass: liquid holds the root; neuro growls a syncopated line; trance
     // bounces on the offbeats; the breakdown keeps one long sub.
     if (block === 'trance') {
-      if (inBar % 2 === 1) this.sub(at, semi(ROOT * 2, bassRoot), STEP * 0.9);
-      if (inBar === 0) this.sub(at, semi(ROOT, bassRoot), STEP * 3);
+      if (inBar % 2 === 1) this.sub(at, semi(this.root * 2, bassRoot), STEP * 0.9);
+      if (inBar === 0) this.sub(at, semi(this.root, bassRoot), STEP * 3);
     } else if (block === 'breakdown') {
-      if (inBar === 0 && bar % 2 === 0) this.sub(at, semi(ROOT, bassRoot), BAR * 1.6);
+      if (inBar === 0 && bar % 2 === 0) this.sub(at, semi(this.root, bassRoot), BAR * 1.6);
     } else {
-      if (liquid && (inBar === 0 || inBar === 10)) this.sub(at, semi(ROOT, bassRoot), inBar === 0 ? STEP * 8 : STEP * 5);
+      if (liquid && (inBar === 0 || inBar === 10)) this.sub(at, semi(this.root, bassRoot), inBar === 0 ? STEP * 8 : STEP * 5);
       // With a final boss out the growl also plays in the liquid blocks, so it carries the fight throughout.
-      if (neuro || this.final) {
+      if (neuro || this.final || this.songId === 'doom') {
         const hits = [0, 3, 6, 10, 11, 14];
         const hit = hits.indexOf(inBar);
         // In a boss fight the growl keeps its sound and its rhythm (the same six hits, the same B2B set) but
         // plays another line over the chord: a two-bar call and answer for any boss, and for a final boss a
         // four-bar melody that sings over a wider range.
-        const line = this.final ? FINAL_REESE[bar % 4] : BOSS_REESE[bar % 2];
-        const note = this.boss || this.final ? line[hit] : inBar === 14 ? 12 : inBar === 6 ? 3 : 0;
-        if (hit >= 0) this.reese(at, semi(ROOT, bassRoot + note), STEP * (inBar === 10 ? 1 : 2.5));
+        const line = song.reese ? song.reese[bar % song.reese.length] : this.final ? FINAL_REESE[bar % 4] : BOSS_REESE[bar % 2];
+        const note = song.reese || this.boss || this.final ? line[hit] : inBar === 14 ? 12 : inBar === 6 ? 3 : 0;
+        if (hit >= 0) this.reese(at, semi(this.root, bassRoot + note), STEP * (inBar === 10 ? 1 : 2.5));
         // A final boss in its last stand: the growl doubles some of its hits, the same note a sixteenth later.
         if (this.rage && (inBar === 4 || inBar === 12 || inBar === 15)) {
           const prev = line[hits.indexOf(inBar === 15 ? 14 : inBar - 1)];
-          this.reese(at, semi(ROOT, bassRoot + prev), STEP * 0.9);
+          this.reese(at, semi(this.root, bassRoot + prev), STEP * 0.9);
         }
       }
     }
@@ -246,11 +286,11 @@ class Engine {
     // the arpeggio also creeps into the breakdown, growing bar by bar.
     if (block === 'trance' || block === 'both') {
       if (inBar % 4 === 2) this.supersaw(at, chord, STEP * 1.6);
-      if (block === 'trance') this.arp(at, semi(ROOT * 8, chord[step % chord.length]), inBar % 4 === 0 ? 0.16 : 0.1);
+      if (block === 'trance') this.arp(at, semi(this.root * 8, chord[step % chord.length]), inBar % 4 === 0 ? 0.16 : 0.1);
     }
-    if (block === 'breakdown' && blockBar >= 2) this.arp(at, semi(ROOT * 8, chord[step % chord.length]), 0.07 + blockBar * 0.012);
+    if (block === 'breakdown' && blockBar >= 2) this.arp(at, semi(this.root * 8, chord[step % chord.length]), 0.07 + blockBar * 0.012);
     // A sparkle of plucks on top in the quieter half.
-    if (block === 'liquid' && inBar % 4 === 2 && Math.random() < 0.6) this.pluck(at, semi(ROOT * 8, chord[(step >> 2) % chord.length]));
+    if (block === 'liquid' && inBar % 4 === 2 && Math.random() < 0.6) this.pluck(at, semi(this.root * 8, chord[(step >> 2) % chord.length]));
   }
 
   /* The final boss's tension, added on the music's own grid (nothing underneath changes): a thin high pedal
@@ -258,8 +298,8 @@ class Engine {
      like a clock speeding up; and a low tower bell on every chord change. */
   private tension(bar: number, inBar: number, at: number, chord: number[]) {
     const rise = Math.floor((bar - this.finalFrom) / 4) % 4;
-    this.tick16(at, semi(ROOT * 16, chord[0] + rise), inBar % 4 === 0 ? 0.05 : 0.028);
-    if (inBar === 0 && bar % 2 === 0) this.bell(at, semi(ROOT * 4, chord[0]));
+    this.tick16(at, semi(this.root * 16, chord[0] + rise), inBar % 4 === 0 ? 0.05 : 0.028);
+    if (inBar === 0 && bar % 2 === 0) this.bell(at, semi(this.root * 4, chord[0]));
   }
 
   /** One siren call: a held high note that drops at the end ("biii-u"), two detuned saws with a fast wobble. */
@@ -435,7 +475,7 @@ class Engine {
       for (const detune of [-7, 7]) {
         const o = this.ctx.createOscillator();
         o.type = 'sawtooth';
-        o.frequency.value = semi(ROOT * 4, n);
+        o.frequency.value = semi(this.root * 4, n);
         o.detune.value = detune;
         o.connect(lp);
         o.start(at);
@@ -457,7 +497,7 @@ class Engine {
       for (const detune of [-18, -9, 0, 9, 18]) {
         const o = this.ctx.createOscillator();
         o.type = 'sawtooth';
-        o.frequency.value = semi(ROOT * 4, n);
+        o.frequency.value = semi(this.root * 4, n);
         o.detune.value = detune;
         o.connect(lp);
         o.start(at);
@@ -525,7 +565,7 @@ class Engine {
     for (const n of chord) {
       const o = this.ctx.createOscillator();
       o.type = 'square';
-      o.frequency.value = semi(ROOT * 4, n);
+      o.frequency.value = semi(this.root * 4, n);
       o.connect(lp);
       o.start(at);
       o.stop(at + 0.25);

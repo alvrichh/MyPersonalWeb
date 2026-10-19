@@ -2727,7 +2727,7 @@ body {
 canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .dress-hero b { position: relative; z-index: 1; font-size: 0.9rem; color: #fff; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); }
 
-.dress-nav { display: flex; justify-content: center; gap: 22px; margin-top: 4px; }
+.dress-nav { display: flex; justify-content: center; gap: 14px; margin-top: 4px; }
 .dnav { display: grid; justify-items: center; gap: 2px; width: 84px; padding: 0; border: 0; background: none; color: var(--muted); font: inherit; cursor: pointer; }
 .dnav .ring { display: grid; place-items: center; width: 58px; height: 58px; font-size: 1.45rem; line-height: 1; background: url('/images/game/ui/ring_blue.webp') center / contain no-repeat; filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.5)); }
 .dnav.is-back .ring { background-image: url('/images/game/ui/btn_prev.webp'); }
@@ -2790,8 +2790,9 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   .dslot b { font-size: 0.64rem; }
   .dress-hero .hero-fig { height: 132px; }
   canvas.hero-fig { width: 118px; height: 132px; }
-  .dress-nav { gap: 10px; }
-  .dnav { width: 76px; }
+  .dress-nav { gap: 2px; }
+  .dnav { width: 66px; }
+  .dnav .ring { width: 52px; height: 52px; font-size: 1.3rem; }
   .gear-row b { font-size: 0.82rem; }
   .gear-row > span:not(.icon) { font-size: 0.64rem; }
 }
@@ -3446,3 +3447,11 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 :root:not([data-retro]) .hud-room::before { left: -19px; }
 :root:not([data-retro]) .hud-coins { position: relative; padding: 0 6px 0 2px; min-width: 92px; justify-content: center; }
 :root:not([data-retro]) .hud-coin-orb { position: absolute; left: -31px; top: 50%; translate: 0 -50%; }
+
+/* Four round buttons under the Customise hero fit a 360px phone. */
+@media (max-width: 380px) {
+  .dress-nav { gap: 0; }
+  .dress-nav .dnav { width: 60px; }
+  .dress-nav .dnav .ring { width: 46px; height: 46px; font-size: 1.15rem; }
+  .dress-nav .dnav small { font-size: 0.52rem; letter-spacing: 0.02em; }
+}
