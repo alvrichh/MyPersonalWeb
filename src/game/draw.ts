@@ -1929,7 +1929,7 @@ export function preloadFx() {
   for (const n of ['fireball', 'boom-small', 'boom-big', 'knife', 'boomerang', 'slash', 'chest', 'slam', 'crystals', 'gem', 'gem-big', 'bolt-1', 'bolt-2', 'bolt-3', 'bolt-4', 'bolt-5', 'bolt-6', 'bolt-y-1', 'bolt-y-2', 'bolt-y-3', 'bolt-y-4', 'bolt-y-5', 'bolt-y-6',
     'brick', 'iron', 'molotov', 'barrel', 'durian', 'durian-big', 'drill', 'drill-evo', 'rocket', 'rocket-shark', 'ball', 'ball-evo', 'phoenix-0', 'phoenix-1', 'phoenix-2', 'phoenix-3', 'wings-0', 'wings-1', 'wings-2', 'angle-front', 'angle-side', 'angle-quarter',
     'fire-pool', 'fire-pool-big', 'caltrops', 'mine', 'mine-on', 'mine-volt', 'volt-burst', 'impact', 'heart', 'rune', 'crescent',
-    'steam-cloud', 'plasma-burst', 'wisp-flame', 'shock-ring', 'ice-block', 'spectral-bolt', 'laser-yellow', 'laser-orange', 'laser-red', 'laser-purple', 'drakkar-wreck', 'vine-row-0', 'vine-row-1', ...Array.from({ length: 7 }, (_, i) => `tornado-${i}`), 'vortex-0', 'vortex-1', ...Array.from({ length: 7 }, (_, i) => `lava-${i}`)]) fxImage(n);
+    'steam-cloud', 'plasma-burst', 'wisp-flame', 'shock-ring', 'ice-block', 'spectral-bolt', 'laser-yellow', 'laser-orange', 'laser-red', 'laser-purple', 'drakkar-wreck', 'vine-row-0', 'vine-row-1', ...Array.from({ length: 12 }, (_, i) => `wave-${i}`), ...Array.from({ length: 7 }, (_, i) => `tornado-${i}`), 'vortex-0', 'vortex-1', ...Array.from({ length: 7 }, (_, i) => `lava-${i}`)]) fxImage(n);
 }
 
 function drawFireballs(ctx: CanvasRenderingContext2D, g: Game) {
@@ -2589,6 +2589,27 @@ function drawThreats(ctx: CanvasRenderingContext2D, g: Game, now: number, top: b
           ctx.moveTo(a.x, a.y);
           ctx.lineTo(b.x, b.y);
           ctx.stroke();
+        }
+      } else if (!retroLook && ready(fxImage('wave-8'))) {
+        // The owner's wave: rising over its first stretch (frames 0–5), then rolling at its crest (6–11),
+        // laid end to end along each side of the gap, crest forward, foot behind.
+        const done = t.done ?? 0;
+        const frame = done < 60 ? Math.floor((done / 60) * 6) : 6 + (Math.floor(now * 10) % 6);
+        const pic = fxImage(`wave-${frame}`);
+        const h = t.r * 4;
+        const tile = (h * pic.naturalWidth) / pic.naturalHeight;
+        for (const [from, to] of [[-t.len, gap - gapW], [gap + gapW, t.len]]) {
+          if (to <= from) continue;
+          const o = waveAt(t, from);
+          ctx.save();
+          ctx.translate(o.x, o.y);
+          ctx.rotate(t.a + Math.PI / 2);
+          ctx.beginPath();
+          ctx.rect(0, -h, to - from, h * 2);
+          ctx.clip();
+          // Each segment starts on its own phase so the seams do not line up from side to side.
+          for (let x = -((from * 0.37) % tile) - tile; x < to - from; x += tile * 0.94) ctx.drawImage(pic, x, -h * 0.75, tile, h);
+          ctx.restore();
         }
       } else {
         // The wall of water: a band with a white crest, split where the gap is.
