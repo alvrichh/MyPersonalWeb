@@ -1103,6 +1103,13 @@ function dressPalette() {
 const heroPic = () => `./images/game/hero/${heroStill(save.skin, save.equipped.head)}.webp`;
 /** What the list under the hero shows: a slot's items, the skins or the enemy looks. */
 let dressSlot: Slot | 'skin' | 'foes' | 'scene' | 'song' | null = null;
+/** Customise's music list plays what it lists: the music starts (and comes up from silence) the moment it is opened or a song is picked. */
+function playMusicNow() {
+  audio.unlock();
+  if (save.music <= 0) { save.music = 0.6; audio.setVolumes(save.music, save.sfx); persist(); }
+  audio.start();
+}
+
 function stylesScreen(note = '') {
   const slotButton = (slot: Slot) => {
     const id = save.equipped[slot];
@@ -1131,8 +1138,11 @@ function stylesScreen(note = '') {
     picks = `<h3 class="slot">${t('stylePick')}</h3><div class="gear-list">${STYLES.map((style) =>
       row(`data-style="${style}"`, save.style === style, false, STYLE_ICON[style], t(`style${cap(style)}Name` as Key), t(`style${cap(style)}Text` as Key), save.style === style ? '✓' : '')).join('')}</div>`;
   } else if (dressSlot === 'song') {
+    const songRow = (id: typeof save.song, icon: string, name: string, text: string) => row(`data-song="${id}"`, save.song === id, false, icon, name, text, save.song === id ? '✓' : '');
     picks = `<h3 class="slot">${t('songPick')}</h3><div class="gear-list">${(['auto', 'b2b', 'doom'] as const).map((id) =>
-      row(`data-song="${id}"`, save.song === id, false, id === 'auto' ? '🎚️' : id === 'b2b' ? '🎧' : '🔥', t(`song${cap(id)}Name` as Key), t(`song${cap(id)}Text` as Key), save.song === id ? '✓' : '')).join('')}</div>`;
+      songRow(id, id === 'auto' ? '🎚️' : id === 'b2b' ? '🎧' : '🔥', t(`song${cap(id)}Name` as Key), t(`song${cap(id)}Text` as Key))).join('')}</div>
+      <h3 class="slot">${t('songWorlds')}</h3><div class="gear-list">${([1, 2, 3, 4, 5, 6, 7, 8] as const).map((n) =>
+      songRow(`w${n}`, `<img class="scene-pic" src="./images/game/floors/world${n}.webp" alt="">`, t(`songW${n}Name` as Key), t('songWorldText', { world: t(`world${n}Name` as Key) }))).join('')}</div>`;
   } else if (dressSlot === 'scene') {
     picks = `<h3 class="slot">${t('scenePick')}</h3><div class="gear-list">${[0, 1, 2, 3, 4, 5, 6, 7, 8].map((n) =>
       row(`data-scene="${n}"`, save.scene === n, false, n ? `<img class="scene-pic" src="./images/game/floors/world${n}.webp" alt="">` : '🌍',
@@ -1453,6 +1463,7 @@ screen.addEventListener('click', (event) => {
   } else if (target.dataset.song) {
     save.song = target.dataset.song as typeof save.song;
     audio.setSong(save.song);
+    playMusicNow();
     persist();
     stylesScreen();
   } else if (target.dataset.scene !== undefined) {
@@ -1483,6 +1494,7 @@ screen.addEventListener('click', (event) => {
     showPicks();
   } else if (target.dataset.dressList) {
     const key = target.dataset.dressList as 'skin' | 'foes' | 'scene' | 'song';
+    if (key === 'song') playMusicNow();
     dressSlot = dressSlot === key ? null : key;
     stylesScreen();
     showPicks();
