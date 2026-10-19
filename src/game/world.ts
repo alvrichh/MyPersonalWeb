@@ -155,10 +155,10 @@ export function fusionWith(g: Game, s: SkillId): Fusion | null {
   return els.length === 1 ? FUSIONS[pairKey(els[0], s)] : null;
 }
 const MAX_WEAPONS = 4;
-/** The weapons from the rest of Survivor.io's list are On call only: sprints keep their tuned rooms and arsenal. */
-export const HORDE_ONLY: SkillId[] = ['brick', 'molotov', 'durian', 'mines', 'drill', 'rocket', 'ball'];
-/** …and only once bought in the shop's arsenal (`loadout.arsenal`). */
-const allowedIn = (g: Game, s: SkillId) => !HORDE_ONLY.includes(s) || (g.mode === 'horde' && g.loadout.arsenal.includes(s));
+/** The weapons from the rest of Survivor.io's list belong to the shop's arsenal (one per world, `ARSENAL` in shop.ts)… */
+export const ARSENAL_SKILLS: SkillId[] = ['brick', 'molotov', 'durian', 'mines', 'drill', 'rocket', 'ball'];
+/** …which come up, in either mode, only once bought in the shop's arsenal (`loadout.arsenal`). */
+const allowedIn = (g: Game, s: SkillId) => !ARSENAL_SKILLS.includes(s) || g.loadout.arsenal.includes(s);
 export const maxLevel = (s: SkillId) => (s === 'heart' ? 99 : s === 'double' ? 2 : s === 'blades' ? 5 : 3);
 
 /* ---------------------------------------------------------------- the cast */

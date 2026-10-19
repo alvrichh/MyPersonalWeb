@@ -179,6 +179,9 @@ export function profileLevel(xp: number) {
   return { level, progress: left / need };
 }
 
+/** A world won in either mode: a sprint run cleared or an on-call shift completed. */
+export const worldWon = (save: Save, n: number) => save.bestByWorld[n]?.time !== undefined || !!save.hordeBest[n]?.won;
+
 /** Back to a fresh start: progress, coins, gear and level go; name, skins bought, settings, masteries and star colour stay. */
 export function wipeProgress(save: Save) {
   const keep = { name: save.name, skin: save.skin, skins: [...save.skins], retro: save.retro, style: save.style, music: save.music, sfx: save.sfx, mode: save.mode, mastery: { ...save.mastery }, starColor: save.starColor };
