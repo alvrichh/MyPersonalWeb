@@ -948,6 +948,8 @@ function bandCards() {
     if (!btn || !prev) continue;
     card.style.height = '';
     btn.style.margin = '';
+    // offsetTop is from the card's padding edge (the card is `position: relative`), so add its top border.
+    if (prev.offsetParent !== card) continue;
     const bodyEnd = prev.offsetTop + prev.offsetHeight + 15 + 8;
     const bh = btn.offsetHeight;
     // The divider's top is at 15 + 0.694·(H − 30); the band runs from 15 + 0.759·(H − 30) to H − 8.

@@ -3412,7 +3412,7 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .panel .nightmare-btn { margin-top: 6px; }
 .panel .nightmare-rec { display: block; text-align: center; margin: 2px 0 4px; }
 /* A shop card with two buttons (an item with levels): a column whose last button `bandCards()` drops into the frame's lower band. */
-.panel .item.has-levels { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.panel .item.has-levels { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; }
 .panel .item.has-levels > .buy { align-self: stretch; }
 /* Customise: an item's pips and upgrade under its row. */
 .panel .row-levels { display: grid; justify-items: center; gap: 4px; width: 100%; max-width: 340px; margin: -2px auto 6px; }
