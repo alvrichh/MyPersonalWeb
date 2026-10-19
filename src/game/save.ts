@@ -17,6 +17,13 @@ const HAT_SET: Record<string, string> = { wizardHat: 'wizard', gladHelm: 'helm',
 /** The picture set for a skin with a head item: `hero/<key>-<pose>.webp`. */
 export const heroKey = (skin: HeroSkin, head?: string) =>
   `${skin}-${(!HATLESS.includes(skin) && head && HAT_SET[head]) || 'base'}`;
+/** Picture sets with the owner's full nine poses (front, second step, hurt, knocked out). */
+export const FULL_HERO_SETS = ['boy-base', 'boy-wizard'];
+/** The still picture for menus: facing the camera where the set has it, else the side idle. */
+export const heroStill = (skin: HeroSkin, head?: string) => {
+  const key = heroKey(skin, head);
+  return `${key}-${FULL_HERO_SETS.includes(key) ? 'front' : 'idle'}`;
+};
 
 export type Save = {
   /** The player's name, shown on the cover and the profile (the hero is alvrich by default). */
