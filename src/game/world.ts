@@ -224,6 +224,10 @@ export type Enemy = {
   clone: boolean;
   /** A smaller boss a sprint final boss calls once a sprint mastery is taken (`MINION`). */
   minion: boolean;
+  /** Seconds to the Queen's next plants. */
+  grow: number;
+  /** A plant the Carnivorous Queen grows: it stays rooted where it came up and spits at you. */
+  rooted: boolean;
   ttl: number;
   /** A boss off the floor (a leap, a blink): its spawn circle warns where it lands, and `land` says what it does then. */
   vanish: boolean;
@@ -524,7 +528,7 @@ export type Game = {
 
 export type GameEvent =
   | 'fusion' | 'clear' | 'boss' | 'hurt' | 'levelup' | 'room' | 'revive' | 'heal' | 'wheel' | 'shrine'
-  | 'shoot' | 'knife' | 'boomerang' | 'orb' | 'hit' | 'kill' | 'gem' | 'heart' | 'chest' | 'slash' | 'slam' | 'strike' | 'boom' | 'minute' | 'rage' | 'phase' | 'minion' | 'laser' | BossStatus;
+  | 'shoot' | 'knife' | 'boomerang' | 'orb' | 'hit' | 'kill' | 'gem' | 'heart' | 'chest' | 'slash' | 'slam' | 'strike' | 'boom' | 'minute' | 'rage' | 'phase' | 'minion' | 'plants' | 'laser' | BossStatus;
 
 /* ------------------------------------------------------------------ helpers */
 
@@ -684,6 +688,8 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
     final,
     clone: false,
     minion: false,
+    rooted: false,
+    grow: 4,
     ttl: final && g.mode === 'sprints' ? 8 : 0,
     vanish: false,
     land: '',
@@ -1111,7 +1117,7 @@ function kill(g: Game, e: Enemy) {
   }
   // The real boss down: its clones and the bosses it called go with it.
   if (e.kind === 'boss' && !e.minion) {
-    for (const c of g.enemies) if ((c.clone || c.minion) && !c.dead) { c.dead = true; burst(g, c.x, c.y, '#a78bfa', 18, 120, 3); }
+    for (const c of g.enemies) if ((c.clone || c.minion || c.rooted) && !c.dead) { c.dead = true; burst(g, c.x, c.y, '#a78bfa', 18, 120, 3); }
     g.threats = g.threats.filter((t) => t.owner !== e.id);
   }
   // Plasma (fire + lightning arrows): a burning bug blows up when it dies, setting its neighbours alight.
@@ -2084,6 +2090,7 @@ function updateEnemy(g: Game, e: Enemy, dt: number) {
     // Keeps its distance and throws a ticket at you every couple of seconds.
     if (blocked(e, p, g.obstacles)) { mx = -uy * e.side; my = ux * e.side; } // step out for a clear shot
     else if (d < 150) { mx = -ux; my = -uy; } else if (d > 220) { mx = ux; my = uy; } else { mx = -uy * 0.6; my = ux * 0.6; }
+    if (e.rooted) { mx = 0; my = 0; }
     e.cd -= dt;
     if (e.cd <= 0) {
       e.cd = rand(1.8, 2.6);
@@ -2232,6 +2239,8 @@ const circle = (g: Game, at: Vec, r: number, warn: number, dmg: number, el: Thre
 
 /** The smaller bosses: one more with each sprint mastery up to `most`, every `every` seconds, a share of the final boss's health. */
 const MINION = { most: 2, every: 14, r: 26, hp: 0.15 };
+/** The Queen's plants: two at a time every `every` seconds (sooner in her fury), at most `most` up at once. */
+const PLANTS = { each: 2, every: 9, most: 4 };
 
 function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
   const final = e.final;
@@ -2273,6 +2282,25 @@ function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
       e.cd2 = (final ? 5 : 6) * fury * (e.rage ? 0.6 : 1);
       e.aim = e.rage ? 0.4 : 0.7;
       e.dir = { x: ux, y: uy };
+    }
+  }
+  // The Carnivorous Queen grows spitting plants round you (rooted tickets of the jungle cast), a few at a time.
+  if (e.bossId === 'queen') {
+    e.grow -= dt;
+    const plants = g.enemies.filter((m) => m.rooted && !m.dead).length;
+    if (e.grow <= 0 && plants < PLANTS.most) {
+      e.grow = PLANTS.every * fury;
+      const a0 = rand(0, Math.PI * 2);
+      for (let i = 0; i < PLANTS.each && plants + i < PLANTS.most; i++) {
+        // Spread round you, not in a clump.
+        const a = a0 + (i * Math.PI * 2) / PLANTS.each + rand(-0.4, 0.4);
+        const at = inside(g, { x: g.player.x + Math.cos(a) * rand(120, 180), y: g.player.y + Math.sin(a) * rand(120, 180) }, 30);
+        const m = makeEnemy(g, 'ticket', g.room, at, 0.8);
+        Object.assign(m, { look: 'jungle' as Look, rooted: true, cd: rand(1, 2) });
+        m.hp = m.maxHp = Math.round(m.maxHp * 0.8);
+        g.enemies.push(m);
+      }
+      if (plants === 0) g.events.push('plants');
     }
   }
   // With a sprint mastery, a sprint's final boss calls smaller bosses of its world's cast to its side.
