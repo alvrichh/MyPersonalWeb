@@ -1,6 +1,8 @@
 import './game.css';
 import { storage } from '../lib/storage';
 import { ads, configureAds, type AdSpot, type PlayAd } from './ads';
+import { configurePayments, payments } from './payments';
+import { COIN_PACKS, currentOffer, grant, packBonus, SKIN_OFFERS, type CoinPack, type SkinOffer } from './store';
 import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPrize, type DailyResult } from './daily';
 import { audio, type Sfx } from './audio';
 import { draw, drawRetroFigure, preloadFx, type Palette, type View } from './draw';
@@ -22,6 +24,7 @@ const lang = pickLang();
 const t = makeT(lang);
 document.documentElement.lang = lang;
 document.title = `${t('title')} · alvrich`;
+configurePayments({ title: t('payTestTitle'), note: t('payTestNote'), ok: t('payTestOk'), cancel: t('payTestCancel') });
 configureAds({ pause: () => audio.duck(true), resume: () => audio.duck(false), text: { title: t('adDevTitle'), skip: t('adDevSkip') } });
 
 // The player wears the portfolio's accent (dark-mode tones: the arena is dark).
@@ -316,6 +319,7 @@ function menuScreen() {
       <span class="cover-avatar" aria-hidden="true"><img src="${heroPic()}" alt=""></span>
       <span class="cover-profile-copy"><small>${esc(save.name)}${masteries() ? ` <i class="mstar" style="color:${starColor()}">★</i>` : ''}</small><b>${t('lvShort', { level })}</b><i><b style="width:${Math.round(progress * 100)}%"></b></i></span>
       <button class="hot cover-coins" data-act="shop" aria-label="${t('coins')}: ${Math.floor(save.coins)}"></button>
+      <button class="hot cover-coins-plus" data-act="coin-store" aria-label="${t('storeTitle')}"></button>
       <span class="cover-num is-coins">${Math.floor(save.coins)}</span>
       <button class="hot cover-worlds" data-act="map" aria-label="${t('map')}: ${unlockedIn()}/${WORLD_COUNT}"></button>
       <span class="cover-num is-worlds">${unlockedIn()}/${WORLD_COUNT}</span>
@@ -677,6 +681,65 @@ function spinWheel(g: Game) {
   }, 3600);
 }
 
+/* The coin store (store.ts, payments.ts): the + by the coins on the cover
+   and in the shop. Packs of coins, each a bigger heap, up to the ultra
+   pack, and a limited-time offer with a skin and its countdown. On the live
+   site it is a preview: nothing can be bought until payments are set up. */
+let storeFrom: 'menu' | 'shop' = 'menu';
+const money = (cents: number) => new Intl.NumberFormat(lang, { style: 'currency', currency: 'EUR' }).format(cents / 100);
+/** 6.000 or 6,000: grouped from a thousand up (Spanish would leave four digits ungrouped, next to 13.000). */
+const count = (n: number) => n.toLocaleString('en').replace(/,/g, lang === 'es' ? '.' : ',');
+/** 2d 14:03:22, or 14:03:22 under a day. */
+const untilText = (ms: number) => {
+  const s = Math.max(0, Math.ceil(ms / 1000));
+  const clock = [Math.floor((s % 86400) / 3600), Math.floor((s % 3600) / 60), s % 60].map((n) => String(n).padStart(2, '0')).join(':');
+  return s >= 86400 ? `${Math.floor(s / 86400)}d ${clock}` : clock;
+};
+function coinStoreScreen(note = '') {
+  const now = currentOffer(save);
+  const offer = now
+    ? `<div class="store-offer">
+        <span class="store-ribbon">${t('storeOffer')}</span>
+        <div class="store-offer-art"><img src="./images/game/hero/${heroStill(now.offer.skin)}.webp" alt=""><img class="store-offer-coins" src="./images/game/store/coins-3.webp" alt=""></div>
+        <div class="store-offer-copy">
+          <b>${t('storeOfferName', { skin: t(`skin${cap(now.offer.skin)}Name` as Key) })}</b>
+          <span>${t('storeOfferText', { skin: t(`skin${cap(now.offer.skin)}Name` as Key), coins: count(now.offer.coins) })}</span>
+          <small>⏳ ${t('storeEnds')} <span data-until="${now.ends}">${untilText(now.ends - Date.now())}</span></small>
+        </div>
+        <button class="buy is-money" data-offer="${now.offer.id}">${money(now.offer.price)}</button>
+      </div>`
+    : '';
+  const tagText = { popular: t('storePopular'), best: t('storeBest'), ultra: t('storeUltra') };
+  const packs = COIN_PACKS.map((p) => {
+    const bonus = packBonus(p);
+    return `<div class="store-pack${p.tag ? ` is-${p.tag}` : ''}">
+      ${p.tag ? `<span class="store-tag">${tagText[p.tag]}</span>` : ''}
+      ${bonus > 0 ? `<span class="store-bonus">+${bonus}%</span>` : ''}
+      <img src="./images/game/store/coins-${p.pic}.webp" width="320" height="240" alt="">
+      <b>🪙 ${count(p.coins)}</b>
+      <button class="buy is-money" data-pack="${p.id}">${money(p.price)}</button>
+    </div>`;
+  }).join('');
+  show(`<button class="ui-close" type="button" data-act="${storeFrom}" aria-label="${t('back')}"></button>
+    <div class="shop-head"><h2>${t('storeTitle')}</h2><p class="wallet">${coinsLine()}</p></div>
+    ${note ? `<p class="note">${note}</p>` : ''}
+    ${payments.enabled ? '' : `<p class="how store-preview">${t('storePreview')}</p>`}
+    ${offer}
+    <div class="store-packs">${packs}</div>
+    <p class="how">${t('storeSmall')}</p>
+    ${backButton(storeFrom, storeFrom === 'shop' ? 'shop' : 'menu')}`, true);
+}
+function buyStore(what: CoinPack | SkinOffer, name: string) {
+  if (!payments.enabled) { coinStoreScreen(t('storeSoon')); return; }
+  void payments.buy({ name, price: money(what.price) }).then((paid) => {
+    if (!paid) return;
+    grant(save, what);
+    persist();
+    audio.play('win');
+    coinStoreScreen(t('storeThanks', { coins: count(what.coins) }));
+  });
+}
+
 /* The daily chest (daily.ts): a free spin a day on the same painted wheel,
    for coins, an arsenal weapon, an outfit, an accessory or, very rarely, a
    skin. The prize is drawn first; the spin lands on one of its slices. */
@@ -702,6 +765,12 @@ const dailyClock = () => {
   return [Math.floor(s / 3600), Math.floor((s % 3600) / 60), s % 60].map((n) => String(n).padStart(2, '0')).join(':');
 };
 window.setInterval(() => {
+  // The store's offer: its countdown, and the next offer once it ends.
+  for (const el of screen.querySelectorAll<HTMLElement>('[data-until]')) {
+    const left = Number(el.dataset.until) - Date.now();
+    if (left <= 0) { coinStoreScreen(); break; }
+    el.textContent = untilText(left);
+  }
   const clocks = screen.querySelectorAll<HTMLElement>('[data-daily-clock]');
   if (!clocks.length) return;
   if (!dailyReady(save)) { for (const c of clocks) c.textContent = dailyClock(); return; }
@@ -892,7 +961,7 @@ function shopScreen(note = '') {
   }).join('');
   show(`
     <button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
-    <div class="shop-head"><h2>${t('shop')}</h2><p class="wallet">${coinsLine()}</p></div>
+    <div class="shop-head"><h2>${t('shop')}</h2><p class="wallet">${coinsLine()} <button class="wallet-plus" type="button" data-act="coin-store" aria-label="${t('storeTitle')}">+</button></p></div>
     ${note ? `<p class="note">${note}</p>` : `<p class="how">${t('earnHint')}</p>`}
     ${giftLine}
     ${shopSection('forge', t('forge'), `${UPGRADES.reduce((n, u) => n + (save.upgrades[u.id] ?? 0), 0)}/${UPGRADES.reduce((n, u) => n + u.max, 0)}`, `<p class="how">${t('forgeHint')}</p><div class="items">${forge}</div>`)}
@@ -1092,6 +1161,14 @@ screen.addEventListener('click', (event) => {
   }
   else if (act === 'wheel-spin' && game) spinWheel(game);
   else if (act === 'daily') dailyScreen();
+  else if (act === 'coin-store') { storeFrom = screen.querySelector('.shop-sec') ? 'shop' : 'menu'; coinStoreScreen(); }
+  else if (target.dataset.pack) {
+    const p = COIN_PACKS.find((x) => x.id === target.dataset.pack);
+    if (p) buyStore(p, `${count(p.coins)} ${t('coins').toLowerCase()}`);
+  } else if (target.dataset.offer) {
+    const o = SKIN_OFFERS.find((x) => x.id === target.dataset.offer);
+    if (o && currentOffer(save)?.offer.id === o.id) buyStore(o, t('storeOfferName', { skin: t(`skin${cap(o.skin)}Name` as Key) }));
+  }
   else if (act === 'daily-spin') spinDaily();
   else if (act === 'wheel-go' && game) {
     const g = game;
