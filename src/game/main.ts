@@ -217,9 +217,9 @@ window.addEventListener('resize', fitPanel);
 function show(html: string, wide = false, menu = false, extra = '') {
   // A dialog that re-renders itself (the shop after a purchase) keeps its scroll.
   const keepScroll = extra === 'keep-scroll' ? screen.querySelector('.panel-in')?.scrollTop ?? 0 : 0;
-  // The close button is pulled out of the scrolling box so it stays put.
-  const close = html.match(/<button class="ui-close"[^>]*><\/button>/)?.[0] ?? '';
-  if (close) html = html.replace(close, '');
+  // The corner buttons (close, options) are pulled out of the scrolling box so they stay put.
+  const close = (html.match(/<button class="ui-(?:close|opts)"[^>]*>(?:<span[^<]*<\/span>)?<\/button>/g) ?? []).join('');
+  for (const b of html.match(/<button class="ui-(?:close|opts)"[^>]*>(?:<span[^<]*<\/span>)?<\/button>/g) ?? []) html = html.replace(b, '');
   screen.innerHTML = `<div class="panel${wide ? ' panel-wide' : ''}">${close}<div class="panel-in">${html}</div></div>`;
 
   screen.classList.toggle('is-menu', menu);
@@ -568,6 +568,13 @@ function spinWheel(g: Game) {
 
 /* Both ways out of a run (the HUD arrow and Quit in the pause menu) ask
    first; a mid-run tap on the arrow is an easy slip on a phone. */
+function restartScreen() {
+  paused = true;
+  show(`<h2>${t('restartTitle')}</h2><p>${t('restartText')}</p>
+    <button class="primary" data-act="resume">${t('keepPlaying')}</button>
+    <button class="ghost is-warn" data-act="restart">${t('restart')}</button>`);
+}
+
 function leaveScreen(to: 'site' | 'menu') {
   paused = true;
   show(`<h2>${t('leaveTitle')}</h2><p>${t('leaveText')}</p>
@@ -586,9 +593,10 @@ const head = (kind: 'pause' | 'levelup' | 'victory' | 'defeat' | 'shrine' | 'win
 function pauseScreen() {
   show(`<button class="ui-close" type="button" data-act="resume" aria-label="${t('resume')}"></button>
     ${head('pause', t('paused'))}
+    <button class="ui-opts" type="button" data-act="options-pause" aria-label="${t('options')}"><span aria-hidden="true">⚙</span></button>
     <button class="primary" data-act="resume">${t('resume')}</button>
-    <button class="ghost" data-act="options-pause">⚙ ${t('options')}</button>
-    <button class="ghost" data-act="confirm-quit">${t('quit')}</button>`);
+    <button class="ghost is-warn" data-act="confirm-restart">${t('restart')}</button>
+    <button class="ghost is-danger" data-act="confirm-quit">${t('quit')}</button>`);
 }
 
 function optionsScreen() {
@@ -845,6 +853,14 @@ screen.addEventListener('click', (event) => {
   }
   else if (act === 'pause') pauseScreen();
   else if (act === 'confirm-quit') leaveScreen('menu');
+  else if (act === 'confirm-restart') restartScreen();
+  else if (act === 'restart' && game) {
+    // Start the same world and mode again; what this run earned is kept.
+    const { world, mode } = game;
+    bankRun(game);
+    paused = false;
+    startRun(world, mode);
+  }
   else if (act === 'quit') {
     if (game) bankRun(game);
     paused = false;
