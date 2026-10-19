@@ -63,6 +63,8 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   // clones; the final boss on top); their warnings and shots, and the hero, go over them.
   const rank = (e: Enemy) => (e.kind !== 'boss' ? 0 : e.clone ? 1 : e.final ? 3 : 2);
   for (const e of g.enemies) if (rank(e) === 0 && onScreen(e, 120)) drawEnemy(ctx, e, now);
+  // Fused arrows' tracks go under the arrows.
+  drawParticles(ctx, g, true);
   drawShots(ctx, g, accent, accent2);
   drawFireballs(ctx, g);
   // With the Phoenix wings on, the spirits go over them (drawn after the hero below).
@@ -91,7 +93,16 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   drawPicFx(ctx, g, true);
   drawBeams(ctx, g);
   drawStrikes(ctx, g, now);
+  drawParticles(ctx, g, false);
+  ctx.globalAlpha = 1;
+  if (g.hazard === 'fog') drawFog(ctx, g, vis);
+  if (g.player.dark > 0 && g.phase === 'play') drawDark(ctx, g, vis);
+}
+
+/** The particles: arrow tracks (`Particle.low`) in a pass under the shots, the rest over everything. */
+function drawParticles(ctx: CanvasRenderingContext2D, g: Game, low: boolean) {
   for (const q of g.particles) {
+    if (!!q.low !== low) continue;
     const k = Math.max(0, q.life / q.max);
     ctx.globalAlpha = q.kind === 'puff' ? k * 0.55 : k;
     ctx.fillStyle = q.color;
@@ -157,8 +168,6 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
     }
   }
   ctx.globalAlpha = 1;
-  if (g.hazard === 'fog') drawFog(ctx, g, vis);
-  if (g.player.dark > 0 && g.phase === 'play') drawDark(ctx, g, vis);
 }
 
 /* On call: the open field. The world's arena floor has painted walls round
