@@ -2152,7 +2152,9 @@ const MID_MOVE: Move[] = ['volley', 'breath', 'geysers', 'leap', 'javelins', 'mi
 const SIGNATURE: Signature[] = ['spiral', 'meteors', 'tide', 'roots', 'grid', 'laser', 'clones'];
 /** World 8 mixes them: a random move each time, and the signatures of worlds 2–7 in turn. */
 const moveOf = (g: Game, e: Enemy): Move =>
-  e.bossId === 'valdur' ? 'leap' : e.bossId === 'queen' ? 'acid' : g.world <= 7 ? MID_MOVE[g.world - 1] : MID_MOVE[Math.floor(Math.random() * 7)];
+  e.bossId === 'valdur' ? 'leap' : e.bossId === 'queen' ? 'acid' : g.world <= 7 ? MID_MOVE[g.world - 1]
+  // Nocthrax: the Treant's vanishing leap half the time (the owner's favourite), any other move otherwise.
+  : e.bossId === 'chimera' && !e.clone && Math.random() < 0.5 ? 'leap' : MID_MOVE[Math.floor(Math.random() * 7)];
 const signatureOf = (g: Game, e: Enemy): Signature =>
   e.bossId === 'valdur' ? 'frenzy' : g.world <= 7 ? SIGNATURE[g.world - 1]
   // Nocthrax: its own dark tornadoes every other time, the other worlds' signatures in between.
