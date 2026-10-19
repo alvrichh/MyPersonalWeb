@@ -387,7 +387,7 @@ function endScreen(g: Game) {
     <p class="earned">${coinsLine(earned)} <small>${t('coinsRun', { coins: earned })}</small></p>
     ${next}
     <div class="row">
-      <button class="ghost" data-act="shop">🛒 ${t('shop')}</button>
+      <button class="ghost is-warn" data-act="shop">🛒 ${t('shop')}</button>
       <button class="ghost" data-act="menu">${t('menu')}</button>
     </div>
     <p class="best">${bestLine(g.world, g.mode)}</p>`);
