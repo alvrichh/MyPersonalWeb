@@ -135,15 +135,6 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
       }
       ctx.stroke();
       ctx.globalCompositeOperation = 'source-over';
-    } else if (q.kind === 'leaf') {
-      // A little leaf turning as it drifts down.
-      ctx.save();
-      ctx.translate(q.x, q.y);
-      ctx.rotate(q.life * 9);
-      ctx.beginPath();
-      ctx.ellipse(0, 0, q.size, q.size * 0.45, 0, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
     } else if (q.kind === 'puff') {
       // Steam: a soft cloud that swells as it fades.
       const r = q.size * (1 + (1 - k) * 1.6);
