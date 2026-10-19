@@ -2292,9 +2292,10 @@ function worldMove(g: Game, e: Enemy, move: Move) {
       }
       break;
     case 'breath':
-      // Fire breath: a cone of flames at you.
-      for (let i = 0; i < 9; i++) {
-        const a = aim + (i / 8 - 0.5) * 1.05;
+      // Fire breath: a cone of flames at you, six of them with gaps wide enough to weave through
+      // (nine in a narrower cone left no way out once their tracks were added).
+      for (let i = 0; i < 6; i++) {
+        const a = aim + (i / 5 - 0.5) * 1.25;
         const speed = i % 2 ? 165 : 135;
         g.orbs.push({ x: e.x, y: e.y, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, r: 7, dmg, life: 3, bounce: 0, tone: TONE.fire, pic: 'fireball' });
       }
