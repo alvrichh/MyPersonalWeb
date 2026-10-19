@@ -2316,9 +2316,11 @@ body {
 :root:not([data-retro]) .boss-meter b {
   position: absolute;
   inset: auto;
+  /* The dark track inside the frame, measured on the picture: x 105–461, y 40–69 of 493×102 (the fill used
+     to run on to 486, over the frame's right end). */
   left: 21.298%;
-  top: 40.196%;
-  width: 77.282% !important;
+  top: 39.216%;
+  width: 72.211% !important;
   height: 28.431%;
   background: url('/images/game/ui/meter2_hp_fill.webp') center / 100% 100% no-repeat;
   clip-path: inset(0 calc(100% - var(--p, 0%)) 0 0);
@@ -2326,10 +2328,11 @@ body {
   filter: none;
 }
 :root:not([data-retro]) .hud-xp i b {
-  left: 4.699%;
-  top: 19.643%;
-  width: 91.917% !important;
-  height: 57.143%;
+  /* Its track: x 24–509, y 14–41 of 532×56. */
+  left: 4.511%;
+  top: 25%;
+  width: 91.165% !important;
+  height: 48.214%;
   background-image: url('/images/game/ui/meter2_xp_fill.webp');
 }
 
