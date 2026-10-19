@@ -14,13 +14,16 @@ export const SKIN_PRICE: Record<HeroSkin, number> = { boy: 0, robot: 10000, kitt
 /** The hats are painted on the hero's pictures; a skin listed here has no hat versions and always shows its base set. */
 const HATLESS: HeroSkin[] = ['kitty'];
 const HAT_SET: Record<string, string> = { wizardHat: 'wizard', gladHelm: 'helm', bandana: 'bandana', crown: 'crown' };
-/** Hats painted only for some skins (the robot has no crown picture yet: it shows its base set). */
-const HAT_SKINS: Record<string, HeroSkin[]> = { crown: ['boy'] };
+/** Hats painted only for some skins (Kitty wears none, see HATLESS). */
+const HAT_SKINS: Record<string, HeroSkin[]> = { crown: ['boy', 'robot'] };
 /** The picture set for a skin with a head item: `hero/<key>-<pose>.webp`. */
 export const heroKey = (skin: HeroSkin, head?: string) =>
   `${skin}-${(!HATLESS.includes(skin) && head && (HAT_SKINS[head]?.includes(skin) ?? true) && HAT_SET[head]) || 'base'}`;
 /** Picture sets with the owner's full nine poses (front, second step, hurt, knocked out). */
-export const FULL_HERO_SETS = ['boy-base', 'boy-wizard', 'boy-helm', 'boy-bandana', 'boy-crown'];
+export const FULL_HERO_SETS = [
+  'boy-base', 'boy-wizard', 'boy-helm', 'boy-bandana', 'boy-crown',
+  'robot-base', 'robot-wizard', 'robot-helm', 'robot-bandana', 'robot-crown', 'kitty-base',
+];
 /** The still picture for menus: facing the camera where the set has it, else the side idle. */
 export const heroStill = (skin: HeroSkin, head?: string) => {
   const key = heroKey(skin, head);
