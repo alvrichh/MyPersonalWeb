@@ -115,7 +115,7 @@ class Engine {
   start() {
     if (!this.ready || this.playing) return;
     this.playing = true;
-    this.step = 0;
+    // Picks up where it stopped (muting and unmuting must not restart the song); only the very first start is at 0.
     this.next = this.ctx.currentTime + 0.1;
     this.tick();
   }
