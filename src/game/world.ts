@@ -281,6 +281,8 @@ export type Player = {
   maxHp: number;
   speed: number;
   inv: number;
+  /** Seconds left of the flinch after a hit (the hero's hurt pose). */
+  ouch: number;
   moving: boolean;
   face: number;
 };
@@ -650,7 +652,7 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     strikes: [],
     strikeIn: 2,
     hazard: 'none',
-    player: { x: W / 2, y: H - 70, r: 15, hp: loadout.maxHp, maxHp: loadout.maxHp, speed: 150 * loadout.speedMult, inv: 0, moving: false, face: -Math.PI / 2 },
+    player: { x: W / 2, y: H - 70, r: 15, hp: loadout.maxHp, maxHp: loadout.maxHp, speed: 150 * loadout.speedMult, inv: 0, ouch: 0, moving: false, face: -Math.PI / 2 },
     enemies: [],
     shots: [],
     orbs: [],
@@ -1665,6 +1667,7 @@ function hurtPlayer(g: Game, amount: number) {
   // The exo-bracer stacks on the worn armour.
   p.hp -= Math.max(1, Math.round(amount * (1 - Math.min(0.7, g.loadout.armor + 0.07 * g.skills.bracer))));
   p.inv = 0.7;
+  p.ouch = 0.3;
   g.shake = Math.max(g.shake, 0.25);
   g.events.push('hurt');
   burst(g, p.x, p.y, '#ff8080', 10, 120, 3);
@@ -2172,6 +2175,7 @@ export function update(g: Game, dt: number, input: Input) {
   }
   if (g.mode === 'horde') updateHorde(g, dt);
   p.inv = Math.max(0, p.inv - dt);
+  p.ouch = Math.max(0, p.ouch - dt);
 
   useWeapons(g, dt);
   // The energy drink: a little health back every second.

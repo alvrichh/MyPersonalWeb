@@ -255,16 +255,23 @@ function drawStatue(ctx: CanvasRenderingContext2D, st: Statue, glow: string, now
    on, so nothing is drawn over the sprite (Kitty has no hat versions). Feet on the shadow, flipped to face
    left; one walking frame alternates with the idle one for a step cycle.
    The circle in world.ts is still what collides. */
-type Pose = 'idle' | 'walk' | 'back' | 'shoot' | 'cheer';
-const POSES: Pose[] = ['idle', 'walk', 'back', 'shoot', 'cheer'];
+type Pose = 'idle' | 'walk' | 'back' | 'shoot' | 'cheer' | 'walk2' | 'front' | 'hurt' | 'down';
+const POSES: Pose[] = ['idle', 'walk', 'back', 'shoot', 'cheer', 'walk2', 'front', 'hurt', 'down'];
+/* The sets with the full nine poses, all on one scale with the feet at the
+   bottom of a canvas as tall as the tallest pose (Alvrich's new sheet: a
+   second step, facing the camera, a flinch and a knock-out). The others
+   still have five and fall back for the rest. */
+const FULL_SETS = new Set(['boy-base']);
+const FALLBACK: Partial<Record<Pose, Pose>> = { walk2: 'walk', front: 'idle', hurt: 'idle', down: 'idle' };
 const heroSets = new Map<string, Record<Pose, HTMLImageElement>>();
 function heroSet(skin: HeroSkin, hat?: ItemId) {
   const key = heroKey(skin, hat);
   let set = heroSets.get(key);
   if (!set) {
+    const full = FULL_SETS.has(key);
     set = Object.fromEntries(POSES.map((pose) => {
       const img = new Image();
-      img.src = `./images/game/hero/${key}-${pose}.webp`;
+      img.src = `./images/game/hero/${key}-${full ? pose : FALLBACK[pose] ?? pose}.webp`;
       return [pose, img];
     })) as Record<Pose, HTMLImageElement>;
     heroSets.set(key, set);
@@ -426,15 +433,19 @@ function drawStatueRetro(ctx: CanvasRenderingContext2D, st: Statue, glow: string
   }
 }
 
-function heroPose(g: Game, now: number): Pose {
+function heroPose(g: Game, now: number, full: boolean): Pose {
   const p = g.player;
+  if (g.phase === 'over') return 'down';
+  if (p.ouch > 0) return 'hurt';
   if (p.moving) {
     if (Math.sin(p.face) < -0.75) return 'back';
-    return Math.floor(now * 7) % 2 ? 'walk' : 'idle';
+    if (Math.sin(p.face) > 0.75 && full) return 'front';
+    const step = Math.floor(now * 7) % 2;
+    return full ? (step ? 'walk' : 'walk2') : step ? 'walk' : 'idle';
   }
   if (g.enemies.length === 0 && g.door) return 'cheer';
   if (g.enemies.some((e) => e.spawn <= 0)) return 'shoot';
-  return 'idle';
+  return full && g.enemies.length === 0 ? 'front' : 'idle';
 }
 
 function drawPlayer(ctx: CanvasRenderingContext2D, g: Game, pal: Palette, now: number) {
@@ -445,15 +456,17 @@ function drawPlayer(ctx: CanvasRenderingContext2D, g: Game, pal: Palette, now: n
   ctx.beginPath();
   ctx.ellipse(p.x, p.y + p.r * 0.9, p.r * 0.9, p.r * 0.35, 0, 0, Math.PI * 2);
   ctx.fill();
-  const pose = heroPose(g, now);
+  const full = FULL_SETS.has(heroKey(pal.skin ?? 'boy', pal.hat));
+  const pose = heroPose(g, now, full);
   const img = heroSet(pal.skin ?? 'boy', pal.hat)[pose];
   // Health bar height: above the picture's top (hats make it taller).
   let barTop = p.y - p.r * 2.5;
   if (img.complete && img.naturalWidth) {
-    const h = p.r * (pose === 'cheer' ? 3.1 : 2.7);
+    // The full sets share one canvas height (feet at the bottom); the older ones grow a little to cheer.
+    const h = full ? p.r * 3.05 : p.r * (pose === 'cheer' ? 3.1 : 2.7);
     const w = (h * img.naturalWidth) / img.naturalHeight;
     const bob = p.moving ? Math.abs(Math.sin(now * 14)) * 2 : pose === 'cheer' ? Math.abs(Math.sin(now * 6)) * 3 : 0;
-    const left = Math.cos(p.face) < -0.2 && pose !== 'back' && pose !== 'cheer';
+    const left = Math.cos(p.face) < -0.2 && pose !== 'back' && pose !== 'cheer' && pose !== 'front';
     ctx.save();
     ctx.translate(p.x, p.y + p.r * 0.9 - bob);
     if (left) ctx.scale(-1, 1);
