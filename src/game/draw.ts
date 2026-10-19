@@ -88,9 +88,7 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   drawPicFx(ctx, g, true);
   drawBeams(ctx, g);
   drawStrikes(ctx, g, now);
-  const beadsOff = animWorn(g);
   for (const q of g.particles) {
-    if (beadsOff && (q.kind === 'glow' || q.kind === 'crackle' || q.kind === 'puff')) continue;
     const k = Math.max(0, q.life / q.max);
     ctx.globalAlpha = q.kind === 'puff' ? k * 0.55 : k;
     ctx.fillStyle = q.color;
@@ -137,6 +135,15 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
       }
       ctx.stroke();
       ctx.globalCompositeOperation = 'source-over';
+    } else if (q.kind === 'leaf') {
+      // A little leaf turning as it drifts down.
+      ctx.save();
+      ctx.translate(q.x, q.y);
+      ctx.rotate(q.life * 9);
+      ctx.beginPath();
+      ctx.ellipse(0, 0, q.size, q.size * 0.45, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
     } else if (q.kind === 'puff') {
       // Steam: a soft cloud that swells as it fades.
       const r = q.size * (1 + (1 - k) * 1.6);
@@ -709,11 +716,6 @@ function arrowImage(name: string) {
 
 /** Fusions whose arrow is an animated sheet with its trail painted in (`arrows/fusion-<id>-<frame>.webp`), and how long it is drawn. */
 const FUSION_ANIM: Partial<Record<Fusion, { frames: number; len: number }>> = { plasma: { frames: 4, len: 100 }, shock: { frames: 4, len: 100 }, steam: { frames: 4, len: 100 } };
-/** Whether that sheet is worn and in, so the drawn trail beads can step aside. */
-const animWorn = (g: Game) => {
-  const f = arrowLook(g) === 'fusion' ? fusionOf(g) : null;
-  return !!f && !!FUSION_ANIM[f] && !retroLook && ready(arrowImage(`fusion-${f}-0`));
-};
 
 /* An arrow's picture (and its trail) reaches back only as far as the arrow has flown, so a fresh shot grows
    out of the bow instead of starting with its whole trail laid over the hero. */
