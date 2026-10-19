@@ -3502,8 +3502,8 @@ function drawEnemySprite(ctx: CanvasRenderingContext2D, e: Enemy, now: number) {
   const h = ratio >= 1 ? size / ratio : size;
   const under = fit ? h * fit.feet : 0;
   const bob = Math.sin(now * 8 + e.wobble) * 1.2;
-  // Face the way it moves, when it moves sideways.
-  if (e.dir && e.dir.x < -0.3) ctx.scale(-1, 1);
+  // The painted sprites face right (or the viewer): mirrored when it faces left.
+  if (e.face < 0) ctx.scale(-1, 1);
   ctx.drawImage(img, -w / 2, e.r * 0.85 - h + under + bob, w, h);
   return true;
 }

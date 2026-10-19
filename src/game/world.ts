@@ -226,6 +226,8 @@ export type Enemy = {
   combo: number;
   /** The final boss's last stand, from 20% health: it runs and charges much faster (`RAGE_AT`). */
   rage: boolean;
+  /** Which way it faces, 1 right or -1 left: towards you, or the way it charges or steps round a rack (the sprites face right). */
+  face: number;
 };
 
 export type Shot = {
@@ -639,6 +641,7 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
     sigs: 0,
     combo: 0,
     rage: false,
+    face: at.x > g.player?.x ? -1 : 1,
   };
 }
 
@@ -1945,6 +1948,9 @@ function updateEnemy(g: Game, e: Enemy, dt: number) {
     mx = -uy * e.side + ux * 0.25;
     my = ux * e.side + uy * 0.25;
   }
+  // Turn only when clearly to one side, so it doesn't flicker while you stand right above or below it.
+  const side = e.dash > 0 ? e.dir.x : e.detour > 0 ? mx : ux;
+  if (Math.abs(side) > 0.15) e.face = side < 0 ? -1 : 1;
   const want = Math.hypot(mx, my) * e.speed * slowFactor * dt;
   const fromX = e.x;
   const fromY = e.y;
