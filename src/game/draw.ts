@@ -3958,7 +3958,7 @@ const BOSS_ART = new Set<string>(['kernel', 'archdemon', 'drakkar', 'valdur', 'z
 const BOSS_CANVAS: Record<string, { k: number; feet: number }> = {
   kernel: { k: 2.155, feet: 0.1766 }, archdemon: { k: 1.69, feet: 0.1232 },
   drakkar: { k: 1.081, feet: 0.12 }, valdur: { k: 1.538, feet: 0.1954 }, zeus: { k: 1.782, feet: 0.2063 }, queen: { k: 1.348, feet: 0.1484 },
-  wraith: { k: 1.295, feet: 0.1974 }, mech: { k: 1.412, feet: 0.0878 }, chimera: { k: 1.712, feet: 0.1553 }, chimera2: { k: 1.838, feet: 0.2461 }, chimera3: { k: 2.463, feet: 0.2324 },
+  wraith: { k: 1.295, feet: 0.1974 }, mech: { k: 1.412, feet: 0.0878 }, chimera: { k: 1.712, feet: 0.1553 }, chimera2: { k: 1.626, feet: 0.26 }, chimera3: { k: 2.463, feet: 0.2324 },
 };
 const finalSprites = new Map<string, HTMLImageElement[]>();
 function finalFrame(e: Enemy) {
