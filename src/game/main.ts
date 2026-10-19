@@ -553,10 +553,10 @@ function endScreen(g: Game) {
 const MAP_W = 941;
 /** Two islands a row, a row every `MAP_ROW`, the map as tall as its rows (it was drawn for four, 1240 tall). */
 const MAP_ROW = 316;
-const MAP_H = Math.round(136 + (Math.ceil(WORLDS.length / 2) - 1) * MAP_ROW + 155);
+const MAP_H = Math.round(136 + (Math.ceil((WORLDS.length + 1) / 2) - 1) * MAP_ROW + 155);
 const ISLAND_ART = ["original", "infierno", "vikingos", "lodo", "jungla", "rayo", "robots", "demonios", "nucleo"];
 /** Per island art: its size and where the ring, plate and lower badge sit (percent of the art). */
-const ISLAND_META: Record<string, { w: number; h: number; ring: number[]; plate: number[]; badge: number[] }> = {"original": {"w": 484, "h": 309, "ring": [49.3, 52.3], "plate": [28.9, 66.7, 39.9, 8.7], "badge": [48.9, 85.7]}, "infierno": {"w": 476, "h": 310, "ring": [49.8, 52.6], "plate": [29.4, 68.7, 40.8, 7.1], "badge": [49.8, 87.7]}, "vikingos": {"w": 477, "h": 313, "ring": [49.9, 50.8], "plate": [30.4, 66.1, 38.6, 7.0], "badge": [49.7, 85.1]}, "lodo": {"w": 445, "h": 318, "ring": [50.0, 34.2], "plate": [30.7, 50.0, 38.7, 12.3], "badge": [50.0, 69.0]}, "jungla": {"w": 490, "h": 333, "ring": [50.6, 49.5], "plate": [30.4, 63.1, 40.4, 7.5], "badge": [50.6, 82.1]}, "rayo": {"w": 504, "h": 335, "ring": [48.3, 43.4], "plate": [29.0, 59.7, 38.7, 8.1], "badge": [48.3, 78.7]}, "robots": {"w": 490, "h": 376, "ring": [51.0, 41.8], "plate": [31.0, 54.0, 40.4, 5.9], "badge": [51.2, 73.0]}, "demonios": {"w": 485, "h": 372, "ring": [50.0, 44.8], "plate": [30.1, 56.7, 40.8, 6.5], "badge": [50.5, 75.7]}, "nucleo": {"w": 502, "h": 378, "ring": [49.5, 42.5], "plate": [30.5, 54.5, 38.0, 6.3], "badge": [49.5, 73.5]}};
+const ISLAND_META: Record<string, { w: number; h: number; ring: number[]; plate: number[]; badge: number[] }> = {"original": {"w": 484, "h": 309, "ring": [49.3, 52.3], "plate": [28.9, 66.7, 39.9, 8.7], "badge": [48.9, 85.7]}, "infierno": {"w": 476, "h": 310, "ring": [49.8, 52.6], "plate": [29.4, 68.7, 40.8, 7.1], "badge": [49.8, 87.7]}, "vikingos": {"w": 477, "h": 313, "ring": [49.9, 50.8], "plate": [30.4, 66.1, 38.6, 7.0], "badge": [49.7, 85.1]}, "lodo": {"w": 445, "h": 318, "ring": [50.0, 34.2], "plate": [30.7, 50.0, 38.7, 12.3], "badge": [50.0, 69.0]}, "jungla": {"w": 490, "h": 333, "ring": [50.6, 49.5], "plate": [30.4, 63.1, 40.4, 7.5], "badge": [50.6, 82.1]}, "rayo": {"w": 504, "h": 335, "ring": [48.3, 43.4], "plate": [29.0, 59.7, 38.7, 8.1], "badge": [48.3, 78.7]}, "robots": {"w": 490, "h": 376, "ring": [51.0, 41.8], "plate": [31.0, 54.0, 40.4, 5.9], "badge": [51.2, 73.0]}, "demonios": {"w": 485, "h": 372, "ring": [50.0, 44.8], "plate": [30.1, 56.7, 40.8, 6.5], "badge": [50.5, 75.7]}, "soon": {"w": 600, "h": 400, "ring": [49.9, 37.6], "plate": [30.2, 53.0, 39.8, 8.2], "badge": [50.0, 72.3]}, "nucleo": {"w": 502, "h": 378, "ring": [49.5, 42.5], "plate": [30.5, 54.5, 38.0, 6.3], "badge": [49.5, 73.5]}};
 
 /** The world the map is showing (locked ones can be looked at, not played). */
 let mapPick = 0;
@@ -566,23 +566,34 @@ function mapScreen() {
   const picked = mapPick;
   const pickedOpen = picked <= unlockedIn();
   const islandW = 0.47 * MAP_W;
-  const stops = WORLDS.map((_, i) => {
+  // With an odd number of worlds a last island, «coming soon», fills the row so they go two by two.
+  const spots = WORLDS.length % 2 ? WORLDS.length + 1 : WORLDS.length;
+  const stops = Array.from({ length: spots }, (_, i) => {
     const n = i + 1;
-    const m = ISLAND_META[ISLAND_ART[i]];
+    const soon = n > WORLDS.length;
+    const m = ISLAND_META[soon ? 'soon' : ISLAND_ART[i]];
     const w = islandW;
     const h = (w * m.h) / m.w;
     const cx = (i % 2 ? 0.715 : 0.285) * MAP_W;
     const cy = 136 + Math.floor(i / 2) * MAP_ROW;
     const left = cx - (m.ring[0] / 100) * w;
     const top = cy - (m.ring[1] / 100) * h;
-    return { n, m, w, h, left, top, cx, cy, open: n <= unlockedIn() };
+    return { n, m, w, h, left, top, cx, cy, open: n <= unlockedIn(), soon };
   });
   const trail = stops.slice(0, -1).map((a, i) => {
     const b = stops[i + 1];
     const mx = (a.cx + b.cx) / 2;
-    return `<path class="trail${b.open ? '' : ' is-locked'}" d="M ${a.cx} ${a.cy} Q ${mx} ${a.cy + (b.cy - a.cy) * 0.15} ${b.cx} ${b.cy}"/>`;
+    return `<path class="trail${b.open ? '' : ' is-locked'}${b.soon ? ' is-soon' : ''}" d="M ${a.cx} ${a.cy} Q ${mx} ${a.cy + (b.cy - a.cy) * 0.15} ${b.cx} ${b.cy}"/>`;
   }).join('');
   const islands = stops.map((st) => {
+    if (st.soon) {
+      const style = `left:${(st.left / MAP_W) * 100}%;top:${(st.top / MAP_H) * 100}%;width:${(st.w / MAP_W) * 100}%;--px:${st.m.plate[0]}%;--py:${st.m.plate[1]}%;--pw:${st.m.plate[2]}%;--ph:${st.m.plate[3]}%`;
+      return [`
+      <span class="isle is-soon" style="${style}"><img src="./images/game/map/soon.webp" alt="" width="${st.m.w}" height="${st.m.h}"></span>`, `
+      <span class="isle isle-labels is-soon" style="${style};aspect-ratio:${st.m.w}/${st.m.h}" aria-hidden="true">
+        <span class="isle-plate">${t('comingSoon')}</span>
+      </span>`];
+    }
     // The badge always shows (the art has a padlock painted there): locked, cleared, how far you got
     // (the sprint, or the longest shift on call) or ▶ for a world not tried yet.
     const best = save.bestByWorld[st.n];
