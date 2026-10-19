@@ -1342,7 +1342,19 @@ screen.addEventListener('click', (event) => {
       audio.play('win');
       profileScreen(t('masteryDone'));
     }
-  } else if (target.dataset.star) { save.starColor = target.dataset.star as StarColor; persist(); profileScreen(); }
+  } else if (target.dataset.star) {
+    // Changed in place, no re-render: rebuilding the dialog made its painted frame and plates flash.
+    save.starColor = target.dataset.star as StarColor;
+    persist();
+    for (const chip of screen.querySelectorAll<HTMLElement>('[data-star]')) {
+      const on = chip.dataset.star === save.starColor;
+      chip.classList.toggle('is-on', on);
+      chip.setAttribute('aria-pressed', String(on));
+    }
+    for (const el of screen.querySelectorAll<HTMLElement>('.mstars')) el.style.setProperty('--star', starColor());
+    const mark = screen.querySelector<HTMLElement>('.mastery-line span');
+    if (mark) mark.style.color = starColor();
+  }
   else if (act === 'name-reset') setName(DEFAULT_NAME);
   else if (act === 'name-edit') { editingName = true; profileScreen(); }
   else if (act === 'name-cancel') { editingName = false; profileScreen(); }
