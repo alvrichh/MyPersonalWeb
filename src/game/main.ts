@@ -331,6 +331,7 @@ function menuScreen() {
   // The cover keeps the music as full as in a run (it used to be muffled here).
   audio.setIntensity(0.5);
   audio.setBoss(false);
+  audio.setFinal(false, false);
   const { level, progress } = profileLevel(save.xp);
   const copy = (cls: string, title: string, sub: string) => `<span class="cover-card-copy ${cls}"><b>${title}</b>${sub ? `<small>${sub}</small>` : ''}</span>`;
   show(`
@@ -1890,6 +1891,8 @@ function step(now: number) {
     }
     const boss = g.mode === 'horde' || isBossRoom(g.room) ? g.enemies.find((e) => e.kind === 'boss' && !e.clone && !e.minion && (e.spawn <= 0 || e.vanish)) : undefined;
     audio.setBoss(g.phase !== 'over' && g.phase !== 'won' && g.enemies.some((e) => e.kind === 'boss' && !e.clone && !e.minion && !e.dead));
+    const finalOut = g.phase !== 'over' && g.phase !== 'won' ? g.enemies.find((e) => e.final && !e.clone && !e.dead) : undefined;
+    audio.setFinal(!!finalOut, !!finalOut?.rage);
     if (bossBar.hidden !== !boss) {
       bossBar.hidden = !boss;
       requestAnimationFrame(resize); // the room makes room for the bar (after layout)
