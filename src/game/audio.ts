@@ -141,6 +141,17 @@ class Engine {
     this.boss = on;
   }
 
+  /** A final boss is out (wanted), its tension layer playing (it only comes in or out where a four-bar phrase
+      begins), the bar it came in on, and whether the boss is in its last stand. */
+  private finalWanted = false;
+  private final = false;
+  private finalFrom = 0;
+  private rage = false;
+  setFinal(on: boolean, rage: boolean) {
+    this.finalWanted = on;
+    this.rage = on && rage;
+  }
+
   private tick = () => {
     if (!this.playing) return;
     while (this.next < this.ctx.currentTime + 0.12) {
@@ -154,12 +165,18 @@ class Engine {
   private schedule(step: number, at: number) {
     const bar = Math.floor(step / 16);
     const inBar = step % 16;
+    // The final boss's tension layer joins or leaves only where a phrase begins, so it grows out of the music.
+    if (inBar === 0 && bar % 4 === 0 && this.final !== this.finalWanted) {
+      this.final = this.finalWanted;
+      this.finalFrom = bar;
+    }
     const setBar = bar % (SET.length * 8);
     const block = SET[Math.floor(setBar / 8)];
     const blockBar = setBar % 8;
     const second = setBar >= 32; // the second half uses the lifted progression
     const chord = (second ? CHORDS_B : CHORDS)[Math.floor(bar / 2) % 4];
     const bassRoot = (second ? BASS_ROOTS_B : BASS_ROOTS)[Math.floor(bar / 2) % 4];
+    if (this.final) this.tension(bar, inBar, at, chord);
     const last = blockBar === 7; // final bar of a block: a little fill
     const liquid = block === 'liquid' || block === 'both';
     const neuro = block === 'neuro' || block === 'both';
@@ -201,6 +218,11 @@ class Engine {
         // plays another line over the chord: a two-bar call and answer that climbs and drops back.
         const note = this.boss ? BOSS_REESE[bar % 2][hit] : inBar === 14 ? 12 : inBar === 6 ? 3 : 0;
         if (hit >= 0) this.reese(at, semi(ROOT, bassRoot + note), STEP * (inBar === 10 ? 1 : 2.5));
+        // A final boss in its last stand: the growl doubles some of its hits, the same note a sixteenth later.
+        if (this.rage && (inBar === 4 || inBar === 12 || inBar === 15)) {
+          const prev = BOSS_REESE[bar % 2][hits.indexOf(inBar === 15 ? 14 : inBar - 1)];
+          this.reese(at, semi(ROOT, bassRoot + prev), STEP * 0.9);
+        }
       }
     }
 
@@ -216,6 +238,47 @@ class Engine {
     if (block === 'breakdown' && blockBar >= 2) this.arp(at, semi(ROOT * 8, chord[step % chord.length]), 0.07 + blockBar * 0.012);
     // A sparkle of plucks on top in the quieter half.
     if (block === 'liquid' && inBar % 4 === 2 && Math.random() < 0.6) this.pluck(at, semi(ROOT * 8, chord[(step >> 2) % chord.length]));
+  }
+
+  /* The final boss's tension, added on the music's own grid (nothing underneath changes): a thin high pedal
+     ticking every sixteenth, a semitone higher every four bars it plays (back to the start after three),
+     like a clock speeding up; and a low tower bell on every chord change. */
+  private tension(bar: number, inBar: number, at: number, chord: number[]) {
+    const rise = Math.floor((bar - this.finalFrom) / 4) % 4;
+    this.tick16(at, semi(ROOT * 16, chord[0] + rise), inBar % 4 === 0 ? 0.05 : 0.028);
+    if (inBar === 0 && bar % 2 === 0) this.bell(at, semi(ROOT * 4, chord[0]));
+  }
+
+  /** One pedal tick: a thin, short square, high-passed so it sits above everything. */
+  private tick16(at: number, freq: number, vol: number) {
+    const o = this.ctx.createOscillator();
+    o.type = 'square';
+    o.frequency.value = freq;
+    const hp = this.ctx.createBiquadFilter();
+    hp.type = 'highpass';
+    hp.frequency.value = 1200;
+    const g = this.ctx.createGain();
+    this.env(g, at, vol, 0.002, 0.05);
+    o.connect(hp).connect(g).connect(this.padBus);
+    o.start(at);
+    o.stop(at + 0.08);
+  }
+
+  /** A tower bell: inharmonic sine partials, struck and left to ring. */
+  private bell(at: number, freq: number) {
+    const g = this.ctx.createGain();
+    this.env(g, at, 0.13, 0.004, 2.6);
+    g.connect(this.musicBus);
+    for (const [ratio, vol] of [[1, 1], [2.76, 0.5], [5.4, 0.25], [8.93, 0.12]]) {
+      const o = this.ctx.createOscillator();
+      o.type = 'sine';
+      o.frequency.value = freq * ratio;
+      const og = this.ctx.createGain();
+      og.gain.value = vol;
+      o.connect(og).connect(g);
+      o.start(at);
+      o.stop(at + 2.8);
+    }
   }
 
   private env(gain: GainNode, at: number, peak: number, attack: number, decay: number, sustain = 0, release = 0.01) {
