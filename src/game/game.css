@@ -3121,6 +3121,8 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 }
 
 /* ----------------------------------------------------- masteries, reset */
+.profile-who > .mstars { font-size: 1.1rem; line-height: 1; color: var(--star, #fcd34d); }
+.cover-profile-copy .mstars { font-size: 1.2em; letter-spacing: 0; }
 .mstars { color: var(--star, #fcd34d); font-size: 0.85em; letter-spacing: 0.05em; text-shadow: 0 0 8px var(--star, #fcd34d); }
 .cover-profile-copy .mstar { font-style: normal; text-shadow: 0 0 6px currentColor; }
 .mastery-line { margin: 0; font-weight: 700; }
