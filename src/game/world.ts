@@ -237,6 +237,8 @@ export type Enemy = {
   combo: number;
   /** The final boss's last stand, from 20% health: it runs and charges much faster (`RAGE_AT`). */
   rage: boolean;
+  /** Nocthrax's phase: 1 on the ground, 2 in the air from half health (30% bigger). */
+  phase: number;
   /** Which way it faces, 1 right or -1 left: towards you, or the way it charges or steps round a rack (the sprites face right). */
   face: number;
 };
@@ -513,7 +515,7 @@ export type Game = {
 
 export type GameEvent =
   | 'fusion' | 'clear' | 'boss' | 'hurt' | 'levelup' | 'room' | 'revive' | 'heal' | 'wheel' | 'shrine'
-  | 'shoot' | 'knife' | 'boomerang' | 'orb' | 'hit' | 'kill' | 'gem' | 'heart' | 'chest' | 'slash' | 'slam' | 'strike' | 'boom' | 'minute' | 'rage' | 'laser' | BossStatus;
+  | 'shoot' | 'knife' | 'boomerang' | 'orb' | 'hit' | 'kill' | 'gem' | 'heart' | 'chest' | 'slash' | 'slam' | 'strike' | 'boom' | 'minute' | 'rage' | 'phase' | 'laser' | BossStatus;
 
 /* ------------------------------------------------------------------ helpers */
 
@@ -682,6 +684,7 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
     sigs: 0,
     combo: 0,
     rage: false,
+    phase: 1,
     face: at.x > g.player?.x ? -1 : 1,
   };
 }
@@ -1153,6 +1156,7 @@ function hurt(g: Game, e: Enemy, amount: number, push?: Vec) {
     breakShip(g, e);
     return;
   }
+  if (e.bossId === 'chimera' && !e.clone && e.phase < 2 && e.hp > 0 && e.hp <= e.maxHp / 2) takeWing(g, e);
   if (e.final && !e.clone && !e.rage && e.hp > 0 && e.hp <= e.maxHp * RAGE_AT) enrage(g, e);
   if (push && e.kind !== 'boss') {
     e.kx += push.x;
@@ -2141,6 +2145,15 @@ export const RAGE_AT = 0.2;
    its charges are a third faster and it aims for less time. */
 const RAGE_WALK = 1.8;
 const RAGE_TOP = 120;
+/** Nocthrax at half health: it rises into the air, 30% bigger (its phase-2 sheet). */
+function takeWing(g: Game, e: Enemy) {
+  e.phase = 2;
+  e.r = Math.round(e.r * 1.3);
+  g.shake = Math.max(g.shake, 0.6);
+  burst(g, e.x, e.y, '#e879f9', 30, 200, 3.5);
+  g.events.push('phase');
+}
+
 function enrage(g: Game, e: Enemy) {
   e.rage = true;
   e.aim = Math.min(e.aim, 0.2);

@@ -1790,6 +1790,10 @@ function step(now: number) {
       if (event === 'shrine') { flash(t('shrineHint')); audio.setIntensity(0.1); }
       if (event === 'heal') flash(t('statueHeal'));
       if (event === 'room' && g.mode === 'sprints') { flash(t('sprint', { room: g.room })); audio.setIntensity(Math.min(0.8, 0.2 + g.room * 0.05 + (g.world - 1) * 0.05)); }
+      if (event === 'phase') {
+        const boss = g.enemies.find((e) => e.phase > 1);
+        if (boss) flash(t('bossWing', { name: bossTitle(boss) }));
+      }
       if (event === 'rage') {
         const boss = g.enemies.find((e) => e.rage);
         if (boss) flash(t('bossRage', { name: bossTitle(boss) }));
