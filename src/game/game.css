@@ -525,7 +525,7 @@ body {
 }
 
 /* Coin and world chips: the number sits where the picture's did. */
-.cover-coins { left: 49.8%; top: 3.8%; width: 12.8%; height: 4.4%; }
+.cover-coins { left: 49.8%; top: 3.8%; width: 18.4%; height: 4.4%; }
 .cover-worlds { left: 69.8%; top: 3.8%; width: 18.4%; height: 4.4%; }
 
 .cover-num {
@@ -2954,7 +2954,7 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   .cover-profile-copy small { font-size: 0.85cqw; }
   .cover-profile-copy b { font-size: 1.25cqw; }
   .cover-profile-copy i { height: 0.85cqw; margin-top: 0.25cqw; width: 97%; }
-  .cover-coins { left: 70.75%; top: 3.2%; width: 6.6%; height: 5.7%; }
+  .cover-coins { left: 70.75%; top: 3.2%; width: 9.3%; height: 5.7%; }
   .cover-worlds { left: 81.1%; top: 3.2%; width: 9.2%; height: 5.7%; }
   .cover-num { top: 4.3%; height: 3.5%; font-size: 1.3cqw; }
   .cover-num.is-coins { left: 73.6%; width: 4%; }
@@ -3256,8 +3256,7 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   cursor: pointer;
 }
 
-/* The coin store (store.ts): the + by the coins, the limited offer and the packs. */
-.cover-coins-plus { left: 62.6%; top: 3.8%; width: 5.6%; height: 4.4%; }
+/* The coin store (store.ts): the + by the shop's wallet, the limited offer and the packs. */
 .panel .wallet-plus {
   display: inline-grid;
   place-items: center;
@@ -3353,6 +3352,3 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .pay-dev-card button { padding: 10px; border: 0; border-radius: 10px; font: 700 1rem var(--font, system-ui); cursor: pointer; }
 .pay-dev-ok { background: #16a34a; color: #fff; }
 .pay-dev-cancel { background: #e2e8f0; color: #0f172a; }
-@media (min-width: 900px) and (orientation: landscape) {
-  .cover-coins-plus { left: 77.35%; top: 3.2%; width: 2.7%; height: 5.7%; }
-}
