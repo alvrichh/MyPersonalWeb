@@ -304,8 +304,23 @@ function drawRoom(ctx: CanvasRenderingContext2D, g: Game, accent: string, now: n
 
   if (g.statue) (retroLook ? drawStatueRetro : drawStatue)(ctx, g.statue, theme.door || accent, now);
 
+  // The jungle world: the owner's mossy stone blocks instead of racks, the piece whose shape is closest.
+  const jungle = !retroLook && WORLDS[g.world - 1].look === 'jungle';
+  for (const o of jungle ? g.obstacles : []) {
+    const ratio = o.w / o.h;
+    const pic = jungleImage(ratio > 3.2 ? 'stone-long-1' : ratio > 1.7 ? 'stone-long-0' : (o.x + o.y) % 2 ? 'stone-0' : 'stone-1');
+    if (!ready(pic)) continue;
+    // As wide as the block and a little more, its own shape kept, standing on the block's bottom edge.
+    const w = o.w * 1.12;
+    const h = (w * pic.naturalHeight) / pic.naturalWidth;
+    ctx.fillStyle = 'rgba(0,0,0,0.3)';
+    ctx.beginPath();
+    ctx.ellipse(o.x + o.w / 2, o.y + o.h, o.w * 0.55, 6, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.drawImage(pic, o.x + o.w / 2 - w / 2, o.y + o.h + 4 - h, w, h);
+  }
   // Server racks, with blinking lights.
-  for (const o of g.obstacles) {
+  for (const o of jungle && ready(jungleImage('stone-0')) ? [] : g.obstacles) {
     ctx.fillStyle = 'rgba(0,0,0,0.35)';
     roundRect(ctx, o.x + 3, o.y + 5, o.w, o.h, 5);
     ctx.fill();
@@ -4030,6 +4045,14 @@ const LOOKS: Record<Look, Record<Enemy['kind'], Drawer>> = {
 
 /* ------------------------------------------------------------- the worlds */
 
+/** The jungle world's pieces (`static/images/game/jungle/`): mossy stone blocks and thorny vines. */
+const jungleImages = new Map<string, HTMLImageElement>();
+function jungleImage(name: string) {
+  let img = jungleImages.get(name);
+  if (!img) { img = new Image(); img.src = `./images/game/jungle/${name}.webp`; jungleImages.set(name, img); }
+  return img;
+}
+
 function drawHazards(ctx: CanvasRenderingContext2D, g: Game, now: number) {
   for (const h of g.hazards) {
     // The owner's bubbling lava pool: seven frames looping, each pool on its own beat (the disc is 91% of its picture).
@@ -4079,6 +4102,12 @@ function drawHazards(ctx: CanvasRenderingContext2D, g: Game, now: number) {
         ctx.stroke();
       }
       ctx.globalAlpha = 1;
+    } else if (!retroLook && ready(jungleImage('vine-0'))) {
+      // Thorns: the owner's coiled thorny vine (two of them, picked by place), its spikes reaching past the circle.
+      const pic = jungleImage(Math.floor(h.x + h.y) % 2 ? 'vine-1' : 'vine-0');
+      const w = h.r * 3;
+      const ht = (w * pic.naturalHeight) / pic.naturalWidth;
+      ctx.drawImage(pic, h.x - w / 2, h.y - ht * 0.55, w, ht);
     } else {
       // Thorns: a dark bush with pale spikes.
       ctx.fillStyle = '#14532d';
