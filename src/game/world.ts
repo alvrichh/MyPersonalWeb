@@ -702,7 +702,7 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
     minion: false,
     rooted: false,
     grow: 4,
-    ttl: final && g.mode === 'sprints' ? 8 : 0,
+    ttl: final ? 8 : 0,
     vanish: false,
     land: '',
     pose: 0,
@@ -2263,6 +2263,8 @@ const circle = (g: Game, at: Vec, r: number, warn: number, dmg: number, el: Thre
 
 /** The smaller bosses: one more with each sprint mastery up to `most`, every `every` seconds, a share of the final boss's health. */
 const MINION = { most: 2, every: 14, r: 26, hp: 0.15 };
+/** The Jarls the Drakkar and Valdur call to their side (the viking cast's old boss, now that the room-6 boss is the Valkyrie). */
+const JARLS = { most: 2, every: 12, r: 22, hp: 0.08 };
 /** The Queen's plants: two at a time every `every` seconds (sooner in her fury), at most `most` up at once. */
 const PLANTS = { each: 2, every: 9, most: 4 };
 
@@ -2327,16 +2329,21 @@ function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
       if (plants === 0) g.events.push('plants');
     }
   }
-  // With a sprint mastery, a sprint's final boss calls smaller bosses of its world's cast to its side.
-  if (final && g.mode === 'sprints' && g.loadout.sprintMastery > 0) {
+  // With a sprint mastery, a sprint's final boss calls smaller bosses of its world's cast to its side; the
+  // Drakkar (and Valdur after it) always calls Jarls, in both modes, smaller still.
+  const jarls = e.bossId === 'drakkar' || e.bossId === 'valdur';
+  const most = jarls ? Math.max(JARLS.most, Math.min(MINION.most, g.loadout.sprintMastery)) : g.mode === 'sprints' ? Math.min(MINION.most, g.loadout.sprintMastery) : 0;
+  if (final && most > 0) {
     e.ttl -= dt;
     const out = g.enemies.filter((m) => m.minion && !m.dead).length;
-    if (e.ttl <= 0 && out < Math.min(MINION.most, g.loadout.sprintMastery)) {
-      e.ttl = MINION.every * fury;
+    if (e.ttl <= 0 && out < most) {
+      e.ttl = (jarls ? JARLS.every : MINION.every) * fury;
       const side = Math.random() < 0.5 ? -1 : 1;
-      const m = makeEnemy(g, 'boss', g.room, { x: clamp(e.x + side * 90, WALL + 30, W - WALL - 30), y: clamp(e.y + 40, WALL + 30, H - WALL - 30) }, 0.9);
-      Object.assign(m, { final: false, minion: true, bossId: e.look, r: MINION.r, cd: rand(1.5, 2.5), cd4: rand(3, 5) });
-      m.hp = m.maxHp = Math.round(e.maxHp * MINION.hp);
+      const near = { x: e.x + side * 90, y: e.y + 40 };
+      const at = g.mode === 'sprints' ? { x: clamp(near.x, WALL + 30, W - WALL - 30), y: clamp(near.y, WALL + 30, H - WALL - 30) } : near;
+      const m = makeEnemy(g, 'boss', g.room, at, 0.9);
+      Object.assign(m, { final: false, minion: true, bossId: e.look, r: jarls ? JARLS.r : MINION.r, cd: rand(1.5, 2.5), cd4: rand(3, 5) });
+      m.hp = m.maxHp = Math.round(e.maxHp * (jarls ? JARLS.hp : MINION.hp));
       m.dmg = Math.round(e.dmg * 0.7);
       g.enemies.push(m);
       g.events.push('minion');
