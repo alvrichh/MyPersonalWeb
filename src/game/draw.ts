@@ -444,10 +444,11 @@ function heroPose(g: Game, now: number, full: boolean): Pose {
   if (p.ouch > 0) return 'hurt';
   if (p.moving) {
     const step = Math.floor(now * 7) % 2;
-    // On call fires on the move: walk aiming the blaster while there are bugs about.
-    if (full && g.mode === 'horde' && g.enemies.some((e) => e.spawn <= 0)) return step ? 'wshoot' : 'wshoot2';
+    // Walking up or down shows the back or the front, in both modes (there are no aiming poses for those).
     if (Math.sin(p.heading) < -0.75) return 'back';
     if (Math.sin(p.heading) > 0.75 && full) return step ? 'fwalk' : 'fwalk2';
+    // On call fires on the move: sideways it walks aiming the blaster while there are bugs about.
+    if (full && g.mode === 'horde' && g.enemies.some((e) => e.spawn <= 0)) return step ? 'wshoot' : 'wshoot2';
     return full ? (step ? 'walk' : 'walk2') : step ? 'walk' : 'idle';
   }
   if (g.enemies.length === 0 && g.door) return 'cheer';

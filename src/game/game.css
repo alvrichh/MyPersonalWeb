@@ -2123,10 +2123,13 @@ body {
 }
 
 .panel .mute-toggle {
+  /* Switch and label start at the same place in every row, so the switches line up one under the other. */
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 12px;
+  justify-content: flex-start;
+  gap: 14px;
+  padding-left: clamp(16px, 20%, 90px) !important;
+  text-align: left;
   width: 100%;
   min-height: 58px;
   padding: 8px 12px;
