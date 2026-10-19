@@ -341,6 +341,8 @@ export type Threat = {
   done?: number;
   gap?: number;
   gapW?: number;
+  /** Wave: how far it crosses in all, so it can be drawn calm, cresting or breaking by where it is. */
+  span?: number;
   /** Left on the floor when it hits. */
   after?: 'lava' | 'thorns';
   /** A javelin: when the warning runs out a bolt flies along the line instead of the whole line striking. */
@@ -2465,10 +2467,10 @@ function signature(g: Game, e: Enemy, sig: Signature) {
       // A tidal wave across the room with one gap in it; under fury a second one follows from the side.
       const down = p.y > e.y;
       const gap = rand(-b.w / 2 + 50, b.w / 2 - 50);
-      g.threats.push({ kind: 'wave', x: b.x + b.w / 2, y: down ? b.y : b.y + b.h, r: 16, a: down ? Math.PI / 2 : -Math.PI / 2, len: b.w / 2, warn: 1, max: 1, life: 99, dmg, el: 'water', speed: 170, done: 0, gap, gapW: 38 });
+      g.threats.push({ kind: 'wave', x: b.x + b.w / 2, y: down ? b.y : b.y + b.h, r: 16, a: down ? Math.PI / 2 : -Math.PI / 2, len: b.w / 2, warn: 1, max: 1, life: 99, dmg, el: 'water', speed: 170, done: 0, gap, gapW: 38, span: b.h });
       if (e.hp < e.maxHp / 2) {
         const right = p.x > e.x;
-        g.threats.push({ kind: 'wave', x: right ? b.x : b.x + b.w, y: b.y + b.h / 2, r: 16, a: right ? 0 : Math.PI, len: b.h / 2, warn: 2.4, max: 2.4, life: 99, dmg, el: 'water', speed: 150, done: 0, gap: rand(-b.h / 2 + 60, b.h / 2 - 60), gapW: 42 });
+        g.threats.push({ kind: 'wave', x: right ? b.x : b.x + b.w, y: b.y + b.h / 2, r: 16, a: right ? 0 : Math.PI, len: b.h / 2, warn: 2.4, max: 2.4, life: 99, dmg, el: 'water', speed: 150, done: 0, gap: rand(-b.h / 2 + 60, b.h / 2 - 60), gapW: 42, span: b.w });
       }
       break;
     }

@@ -1929,7 +1929,7 @@ export function preloadFx() {
   for (const n of ['fireball', 'boom-small', 'boom-big', 'knife', 'boomerang', 'slash', 'chest', 'slam', 'crystals', 'gem', 'gem-big', 'bolt-1', 'bolt-2', 'bolt-3', 'bolt-4', 'bolt-5', 'bolt-6', 'bolt-y-1', 'bolt-y-2', 'bolt-y-3', 'bolt-y-4', 'bolt-y-5', 'bolt-y-6',
     'brick', 'iron', 'molotov', 'barrel', 'durian', 'durian-big', 'drill', 'drill-evo', 'rocket', 'rocket-shark', 'ball', 'ball-evo', 'phoenix-0', 'phoenix-1', 'phoenix-2', 'phoenix-3', 'wings-0', 'wings-1', 'wings-2', 'angle-front', 'angle-side', 'angle-quarter',
     'fire-pool', 'fire-pool-big', 'caltrops', 'mine', 'mine-on', 'mine-volt', 'volt-burst', 'impact', 'heart', 'rune', 'crescent',
-    'steam-cloud', 'plasma-burst', 'wisp-flame', 'shock-ring', 'ice-block', 'spectral-bolt', 'laser-yellow', 'laser-orange', 'laser-red', 'laser-purple', 'drakkar-wreck', 'vine-row-0', 'vine-row-1', ...Array.from({ length: 12 }, (_, i) => `wave-${i}`), ...Array.from({ length: 7 }, (_, i) => `tornado-${i}`), 'vortex-0', 'vortex-1', ...Array.from({ length: 7 }, (_, i) => `lava-${i}`)]) fxImage(n);
+    'steam-cloud', 'plasma-burst', 'wisp-flame', 'shock-ring', 'ice-block', 'spectral-bolt', 'laser-yellow', 'laser-orange', 'laser-red', 'laser-purple', 'drakkar-wreck', 'vine-row-0', 'vine-row-1', 'wave-strip-0', 'wave-strip-1', 'wave-strip-2', ...Array.from({ length: 7 }, (_, i) => `tornado-${i}`), 'vortex-0', 'vortex-1', ...Array.from({ length: 7 }, (_, i) => `lava-${i}`)]) fxImage(n);
 }
 
 function drawFireballs(ctx: CanvasRenderingContext2D, g: Game) {
@@ -2487,6 +2487,17 @@ const THREAT_TONE: Record<Threat['el'], [string, string]> = {
   fire: ['249,115,22', '254,215,170'], water: ['56,189,248', '224,242,254'], leaf: ['74,222,128', '220,252,231'],
   bolt: ['250,204,21', '254,249,195'], laser: ['239,68,68', '254,226,226'], shadow: ['167,139,250', '237,233,254'], glitch: ['192,132,252', '243,232,255'],
 };
+
+/** Scratch canvases for the wave's two sides, grown as needed and reused every frame. */
+const waveCanvases: HTMLCanvasElement[] = [];
+let waveTurn = 0;
+function waveCanvas(w: number, h: number): HTMLCanvasElement {
+  const c = (waveCanvases[waveTurn++ % 4] ??= document.createElement('canvas'));
+  if (c.width < w) c.width = w;
+  if (c.height < h) c.height = h;
+  return c;
+}
+
 function drawThreats(ctx: CanvasRenderingContext2D, g: Game, now: number, top: boolean) {
   for (const t of g.threats) {
     const live = t.warn <= 0;
@@ -2590,25 +2601,61 @@ function drawThreats(ctx: CanvasRenderingContext2D, g: Game, now: number, top: b
           ctx.lineTo(b.x, b.y);
           ctx.stroke();
         }
-      } else if (!retroLook && ready(fxImage('wave-8'))) {
-        // The owner's wave: rising over its first stretch (frames 0–5), then rolling at its crest (6–11),
-        // laid end to end along each side of the gap, crest forward, foot behind.
-        const done = t.done ?? 0;
-        const frame = done < 60 ? Math.floor((done / 60) * 6) : 6 + (Math.floor(now * 10) % 6);
-        const pic = fxImage(`wave-${frame}`);
-        const h = t.r * 4;
-        const tile = (h * pic.naturalWidth) / pic.naturalHeight;
+      } else if (!retroLook && ready(fxImage('wave-strip-1'))) {
+        // The owner's three strips by where the wave is in the room: calm swell over the first third,
+        // cresting foam in the middle, breaking surf at the end, fading from one into the next.
+        // Each strip is one long picture, wider than the room, so nothing repeats; it drifts sideways and bobs.
+        const p = Math.min(1, (t.done ?? 0) / (t.span ?? 600));
+        const mix = (a: number, b: number) => Math.min(1, Math.max(0, (p - a) / (b - a)));
+        const m1 = mix(0.25, 0.42); const m2 = mix(0.6, 0.77);
+        // Each strip comes in over the one before, which stays whole underneath until it is covered,
+        // so the water never turns see-through halfway between two.
+        const layers: [number, number][] = [[0, m1 < 1 ? 1 : 0], [1, m2 < 1 ? m1 : 0], [2, m2]];
+        const k = (t.r * 5.5) / 160;
+        const top = -t.r * 6; const bottom = t.r * 4 + 2; const q = 2;
         for (const [from, to] of [[-t.len, gap - gapW], [gap + gapW, t.len]]) {
           if (to <= from) continue;
+          // Each side is built on its own canvas so its back and its ends can fade instead of stopping in a straight edge.
+          const len = to - from;
+          const c = waveCanvas(Math.ceil(len * q), Math.ceil((bottom - top) * q));
+          const w2 = c.getContext('2d')!;
+          w2.setTransform(1, 0, 0, 1, 0, 0);
+          w2.clearRect(0, 0, c.width, c.height);
+          w2.setTransform(q, 0, 0, q, 0, -top * q);
+          w2.globalCompositeOperation = 'source-over';
+          for (const [n, alpha] of layers) {
+            if (alpha <= 0.01) continue;
+            const pic = fxImage(`wave-strip-${n}`);
+            if (!ready(pic)) continue;
+            const w = pic.naturalWidth * k; const h = pic.naturalHeight * k;
+            // The foot sits a fixed way behind the front, so the crest grows forward as the strips change.
+            const foot = t.r * 4 + Math.sin(now * 3 + n) * 1.5;
+            // Both sides cut from the same stretch of the strip, so the wave reads as one across the gap.
+            const drift = Math.max(0, w - t.len * 2) * (0.5 + 0.5 * Math.sin(now * 0.25 + n * 2));
+            w2.globalAlpha = alpha;
+            w2.drawImage(pic, -(from + t.len) - drift, foot - h, w, h);
+          }
+          w2.globalAlpha = 1;
+          w2.globalCompositeOperation = 'destination-in';
+          const back = w2.createLinearGradient(0, bottom, 0, bottom - t.r * 1.8);
+          back.addColorStop(0, 'rgba(0,0,0,0)');
+          back.addColorStop(1, 'rgba(0,0,0,1)');
+          w2.fillStyle = back;
+          w2.fillRect(0, top, len, bottom - top);
+          // The ends by the gap and the walls melt over 14px.
+          const ends = w2.createLinearGradient(0, 0, len, 0);
+          const e = Math.min(0.45, 14 / len);
+          ends.addColorStop(0, 'rgba(0,0,0,0)');
+          ends.addColorStop(e, 'rgba(0,0,0,1)');
+          ends.addColorStop(1 - e, 'rgba(0,0,0,1)');
+          ends.addColorStop(1, 'rgba(0,0,0,0)');
+          w2.fillStyle = ends;
+          w2.fillRect(0, top, len, bottom - top);
           const o = waveAt(t, from);
           ctx.save();
           ctx.translate(o.x, o.y);
           ctx.rotate(t.a + Math.PI / 2);
-          ctx.beginPath();
-          ctx.rect(0, -h, to - from, h * 2);
-          ctx.clip();
-          // Each segment starts on its own phase so the seams do not line up from side to side.
-          for (let x = -((from * 0.37) % tile) - tile; x < to - from; x += tile * 0.94) ctx.drawImage(pic, x, -h * 0.75, tile, h);
+          ctx.drawImage(c, 0, 0, Math.ceil(len * q), Math.ceil((bottom - top) * q), 0, top, len, bottom - top);
           ctx.restore();
         }
       } else {
