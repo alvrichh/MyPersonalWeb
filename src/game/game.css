@@ -370,6 +370,45 @@ body {
   position: absolute;
 }
 
+/* The daily chest, on the right above Play now: it bobs and glows while today's is still to open,
+   and says how long until the next one when it is not. */
+.cover-chest {
+  left: 76%;
+  top: 49.6%;
+  width: 19%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  display: grid;
+  justify-items: center;
+  color: #fff;
+  font: inherit;
+}
+.cover-chest img { width: 100%; height: auto; filter: drop-shadow(0 0.6cqw 0.8cqw rgba(0, 0, 0, 0.55)); }
+.cover-chest i {
+  margin-top: -1.6cqw;
+  padding: 0.3cqw 1.8cqw;
+  border-radius: 99px;
+  background: rgba(8, 12, 24, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  font-style: normal;
+  font-size: 2.6cqw;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.cover-chest:not(.is-ready) img { filter: saturate(0.55) brightness(0.8) drop-shadow(0 0.6cqw 0.8cqw rgba(0, 0, 0, 0.55)); }
+.cover-chest.is-ready img { animation: chest-bob 1.6s ease-in-out infinite; filter: drop-shadow(0 0 2.2cqw rgba(252, 211, 77, 0.85)); }
+.cover-chest.is-ready i { background: linear-gradient(#fbbf24, #d97706); color: #3b1d00; border-color: #fde68a; }
+@keyframes chest-bob {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  45% { transform: translateY(-1.4cqw) rotate(-4deg); }
+  60% { transform: translateY(-1.4cqw) rotate(4deg); }
+}
+@media (prefers-reduced-motion: reduce) { .cover-chest.is-ready img { animation: none; } }
+.panel .daily-odds { font-size: 0.78em; opacity: 0.75; }
+.wheel-result.is-good.is-rare, .panel .wheel-result.is-rare { color: #fde68a; text-shadow: 0 0 12px rgba(252, 211, 77, 0.7); }
+
 /* Invisible buttons over the painted ones. */
 .cover .hot {
   display: block;
@@ -2913,6 +2952,8 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   .cover-tagline { left: 39.5%; top: 27.1%; width: 21%; height: 5.4%; font-size: 1.15cqw; }
   .cover-play { left: 32.3%; top: 61.4%; width: 35.3%; height: 10.8%; border-radius: 1.5cqw; }
   .cover-play-copy { left: 44.9%; top: 63.4%; width: 21%; height: 7.4%; gap: 0.35cqw; }
+  .cover-chest { left: 69.5%; top: 59.5%; width: 8%; }
+  .cover-chest i { margin-top: -0.7cqw; padding: 0.15cqw 0.8cqw; font-size: 1.05cqw; }
   .cover-play-copy b { font-size: 2.2cqw; }
   .cover-play-copy small { font-size: 0.9cqw; }
   .cover-card { width: 21.7%; height: 11.2%; border-radius: 1.2cqw; }
