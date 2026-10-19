@@ -255,8 +255,8 @@ function drawStatue(ctx: CanvasRenderingContext2D, st: Statue, glow: string, now
    on, so nothing is drawn over the sprite (Kitty has no hat versions). Feet on the shadow, flipped to face
    left; one walking frame alternates with the idle one for a step cycle.
    The circle in world.ts is still what collides. */
-type Pose = 'idle' | 'walk' | 'back' | 'shoot' | 'cheer' | 'walk2' | 'front' | 'hurt' | 'down';
-const POSES: Pose[] = ['idle', 'walk', 'back', 'shoot', 'cheer', 'walk2', 'front', 'hurt', 'down'];
+type Pose = 'idle' | 'walk' | 'back' | 'shoot' | 'cheer' | 'walk2' | 'front' | 'hurt' | 'down' | 'wshoot' | 'wshoot2' | 'fwalk' | 'fwalk2';
+const POSES: Pose[] = ['idle', 'walk', 'back', 'shoot', 'cheer', 'walk2', 'front', 'hurt', 'down', 'wshoot', 'wshoot2', 'fwalk', 'fwalk2'];
 /* The sets with the full nine poses, all on one scale with the feet at the
    bottom of a canvas as tall as the tallest pose (Alvrich's new sheet: a
    second step, facing the camera, a flinch and a knock-out). The others
@@ -264,7 +264,7 @@ const POSES: Pose[] = ['idle', 'walk', 'back', 'shoot', 'cheer', 'walk2', 'front
 const FULL_SETS = new Set(FULL_HERO_SETS);
 /** The full sets' pixel scale (the base set was cut 150px tall); each picture is trimmed to its feet, so it is drawn from its own height at that scale. */
 const FULL_BASE_H = 150;
-const FALLBACK: Partial<Record<Pose, Pose>> = { walk2: 'walk', front: 'idle', hurt: 'idle', down: 'idle' };
+const FALLBACK: Partial<Record<Pose, Pose>> = { walk2: 'walk', front: 'idle', hurt: 'idle', down: 'idle', wshoot: 'walk', wshoot2: 'walk', fwalk: 'idle', fwalk2: 'walk' };
 const heroSets = new Map<string, Record<Pose, HTMLImageElement>>();
 function heroSet(skin: HeroSkin, hat?: ItemId) {
   const key = heroKey(skin, hat);
@@ -440,9 +440,11 @@ function heroPose(g: Game, now: number, full: boolean): Pose {
   if (g.phase === 'over') return 'down';
   if (p.ouch > 0) return 'hurt';
   if (p.moving) {
-    if (Math.sin(p.face) < -0.75) return 'back';
-    if (Math.sin(p.face) > 0.75 && full) return 'front';
     const step = Math.floor(now * 7) % 2;
+    // On call fires on the move: walk aiming the blaster while there are bugs about.
+    if (full && g.mode === 'horde' && g.enemies.some((e) => e.spawn <= 0)) return step ? 'wshoot' : 'wshoot2';
+    if (Math.sin(p.heading) < -0.75) return 'back';
+    if (Math.sin(p.heading) > 0.75 && full) return step ? 'fwalk' : 'fwalk2';
     return full ? (step ? 'walk' : 'walk2') : step ? 'walk' : 'idle';
   }
   if (g.enemies.length === 0 && g.door) return 'cheer';
@@ -469,8 +471,10 @@ function drawPlayer(ctx: CanvasRenderingContext2D, g: Game, pal: Palette, now: n
     const w = (h * img.naturalWidth) / img.naturalHeight;
     // Feet stay on the shadow: the full sets have their own step frames, so only a tiny bounce while walking.
     const bob = p.moving ? Math.abs(Math.sin(now * 14)) * (full ? 0.6 : 2) : pose === 'cheer' ? Math.abs(Math.sin(now * 6)) * 3 : 0;
-    const left = Math.cos(p.face) < -0.2 && pose !== 'back' && pose !== 'cheer' && pose !== 'front';
-    // Walking up or down there is one picture: mirror it every step and rock it a little, so it walks rather than glides.
+    // Shooting on the move faces the target; plain walking faces the way you go.
+    const turn = pose === 'wshoot' || pose === 'wshoot2' || !p.moving ? p.face : p.heading;
+    const left = Math.cos(turn) < -0.2 && pose !== 'back' && pose !== 'cheer' && pose !== 'front' && pose !== 'fwalk' && pose !== 'fwalk2';
+    // Walking up there is one picture (down has two steps): mirror it every step and rock it a little, so it walks rather than glides.
     const vertical = p.moving && (pose === 'front' || pose === 'back');
     const step = Math.floor(now * 7) % 2;
     ctx.save();
