@@ -75,7 +75,14 @@ export type Item = {
   legendary?: boolean;
   /** On sale only once this world is won, in either mode (`worldWon` in save.ts). */
   world?: number;
+  /** Prices of the upgrades past level 1 (level 2, level 3…), bought in the shop once it is owned. */
+  levels?: number[];
 };
+export type ItemLevels = Partial<Record<ItemId, number>>;
+/** An owned item's level: 1 unless upgraded. */
+export const itemLevel = (levels: ItemLevels, id: ItemId) => Math.max(1, levels[id] ?? 1);
+/** The Phoenix cloak: level 2 gets you up with all your health, level 3 adds the wings and their speed. */
+export const PHOENIX_WING_SPEED = 1.12;
 
 /** The bonuses a run starts with, from the items worn. */
 export type Loadout = {
@@ -83,8 +90,12 @@ export type Loadout = {
   mult: Record<Category, number>;
   xpMult: number;
   coinMult: number;
-  /** Extra lives: get back up once with half your health. */
+  /** Extra lives: get back up once with half your health (all of it from the Phoenix cloak's level 2). */
   revives: number;
+  /** Share of health a free revive gives back. */
+  reviveHp: number;
+  /** The Phoenix cloak at its top level: wings of fire on the hero, and faster. */
+  wings: boolean;
   startSkills: SkillId[];
   /** This many random weapons start at their top level, with the upgrade that evolves them. */
   startMaxed: number;
@@ -107,6 +118,8 @@ export const BASE_LOADOUT: Loadout = {
   xpMult: 1,
   coinMult: 1,
   revives: 0,
+  reviveHp: 0.5,
+  wings: false,
   startSkills: [],
   startMaxed: 0,
   maxHp: 100,
@@ -128,7 +141,7 @@ export const ITEMS: Item[] = [
   { id: 'potion', slot: 'body', price: 160, icon: '🦺', pic: 'items/potion.webp', effect: { maxHp: 130 } },
   { id: 'pompom', slot: 'body', price: 1200, icon: '🧸', pic: 'items/pompom.webp', effect: { coinMult: 1.4 } },
   { id: 'plate', slot: 'body', price: 350, icon: '🛡️', pic: 'items/plate.webp', effect: { armor: 0.1 } },
-  { id: 'phoenix', slot: 'body', price: 2000, icon: '🪶', pic: 'items/phoenix.webp', effect: { revives: 1 } },
+  { id: 'phoenix', slot: 'body', price: 2000, levels: [3000, 4500], icon: '🪶', pic: 'items/phoenix.webp', effect: { revives: 1 } },
   // Boots
   { id: 'windBoots', slot: 'boots', price: 220, icon: '👟', pic: 'items/windBoots.webp', effect: { speedMult: 1.15 } },
   { id: 'magnetBoots', slot: 'boots', price: 220, icon: '🧲', pic: 'items/magnetBoots.webp', effect: { magnet: 70 } },
@@ -174,7 +187,7 @@ export const ARSENAL: { id: SkillId; price: number; world: number }[] = [
   { id: 'durian', price: 1100, world: 4 }, { id: 'ball', price: 1300, world: 5 }, { id: 'drill', price: 1300, world: 6 },
   { id: 'rocket', price: 1500, world: 7 },
 ];
-export function buildLoadout(equipped: Partial<Record<Slot, ItemId>>, upgrades: Upgrades = {}, masteries = 0, arsenal: SkillId[] = []): Loadout {
+export function buildLoadout(equipped: Partial<Record<Slot, ItemId>>, upgrades: Upgrades = {}, masteries = 0, arsenal: SkillId[] = [], levels: ItemLevels = {}): Loadout {
   const out: Loadout = { ...BASE_LOADOUT, mult: { ...BASE_LOADOUT.mult }, startSkills: [], arsenal: [...arsenal] };
   out.maxHp += MASTERY_STEP.hp * masteries;
   for (const k of Object.keys(out.mult) as Category[]) out.mult[k] *= 1 + MASTERY_STEP.damage * masteries;
@@ -204,6 +217,11 @@ export function buildLoadout(equipped: Partial<Record<Slot, ItemId>>, upgrades: 
     if (effect.magnet) out.magnet += effect.magnet;
     if (effect.armor) out.armor = Math.min(0.6, out.armor + effect.armor);
     if (effect.spirit) out.spirit = effect.spirit;
+    if (id === 'phoenix') {
+      const lv = itemLevel(levels, id);
+      if (lv >= 2) out.reviveHp = 1;
+      if (lv >= 3) { out.wings = true; out.speedMult *= PHOENIX_WING_SPEED; }
+    }
   }
   return out;
 }

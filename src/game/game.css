@@ -3406,3 +3406,11 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   .map-foot .mode-text { display: none; }
 }
 .screen.is-map .map-title { width: min(calc(100% - 64px), 360px); }
+
+/* Items with levels (the Phoenix cloak): stars, what each level gives, and the upgrade button. */
+.panel .item .item-stars { display: flex; gap: 2px; justify-content: center; font-size: 1rem; color: rgba(255, 255, 255, 0.25); }
+.panel .item .item-stars .is-on { color: #fcd34d; text-shadow: 0 0 6px rgba(252, 211, 77, 0.7); }
+.panel .item .item-levels { list-style: none; margin: 0 0 2px; padding: 0; display: grid; gap: 1px; font-size: 0.72rem; line-height: 1.25; text-align: center; color: var(--muted); }
+.panel .item .item-levels .is-on { color: #fde68a; }
+.panel .buy.is-upgrade { --bar: url('/images/game/ui/btn2_gold.webp'); color: #2a1a00; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35); }
+.panel .buy.is-upgrade.is-max { opacity: 1; cursor: default; filter: saturate(0.85); }
