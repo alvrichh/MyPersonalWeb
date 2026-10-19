@@ -564,53 +564,77 @@ class Engine {
 
   /* The sky laser, a tier per beam colour: yellow a thin quick zap, orange two detuned voices, red a deeper
      beam with a sub under it, and the evolved Death Ray a charge that rises before a heavy purple blast. */
+  /* The laser: an electric buzz, not a whistle. Low detuned saws chopped by a fast square (the hum of a
+     live wire) through a band-pass that closes as the beam fades, a crack of noise at the start and
+     crackles over it; each tier lower, longer and with more voices, the Death Ray charging up first. */
   private laser(at: number, tier: number) {
     const evo = tier === 4;
-    const start = evo ? at + 0.16 : at;
+    const start = evo ? at + 0.18 : at;
+    const length = [0, 0.16, 0.22, 0.3, 0.5][tier];
+    const hum = [0, 110, 92, 73, 55][tier];
     if (evo) {
-      // The charge: a quick rising whine.
+      // The charge: a buzz rising to a crack.
       const c = this.ctx.createOscillator();
-      c.type = 'sine';
-      c.frequency.setValueAtTime(300, at);
-      c.frequency.exponentialRampToValueAtTime(2400, start);
+      c.type = 'sawtooth';
+      c.frequency.setValueAtTime(45, at);
+      c.frequency.exponentialRampToValueAtTime(220, start);
+      const cb = this.ctx.createBiquadFilter();
+      cb.type = 'bandpass';
+      cb.frequency.setValueAtTime(600, at);
+      cb.frequency.exponentialRampToValueAtTime(2600, start);
+      cb.Q.value = 2;
       const cg = this.ctx.createGain();
-      this.env(cg, at, 0.12, 0.08, 0.1);
-      c.connect(cg).connect(this.sfxBus);
+      this.env(cg, at, 0.16, 0.12, 0.08);
+      c.connect(cb).connect(cg).connect(this.sfxBus);
       c.start(at);
       c.stop(start + 0.05);
     }
-    const top = [0, 2600, 2000, 1500, 1200][tier];
-    const low = [0, 700, 420, 220, 90][tier];
-    const length = [0, 0.14, 0.2, 0.28, 0.45][tier];
-    const voices = tier === 1 ? [0] : tier === 2 ? [-12, 12] : [-10, 0, 10];
-    const lp = this.ctx.createBiquadFilter();
-    lp.type = 'lowpass';
-    lp.frequency.setValueAtTime(evo ? 5000 : 3800, start);
-    lp.frequency.exponentialRampToValueAtTime(600, start + length);
-    lp.connect(this.sfxBus);
+    // The crack of the strike.
+    this.hiss(start, 0.04, evo ? 0.4 : 0.22 + tier * 0.03, evo ? 3000 : 4200);
+    // The buzz: detuned saws, chopped at mains-like speed, through a closing band-pass.
+    const bp = this.ctx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.Q.value = 2.5;
+    bp.frequency.setValueAtTime(evo ? 2600 : 3200, start);
+    bp.frequency.exponentialRampToValueAtTime(500, start + length);
+    const chop = this.ctx.createGain();
+    chop.gain.value = 0.5;
+    const lfo = this.ctx.createOscillator();
+    lfo.type = 'square';
+    lfo.frequency.value = 38 + tier * 9;
+    const depth = this.ctx.createGain();
+    depth.gain.value = 0.5;
+    lfo.connect(depth).connect(chop.gain);
+    const g = this.ctx.createGain();
+    this.env(g, start, evo ? 0.34 : 0.2 + tier * 0.03, 0.004, length);
+    const voices = tier === 1 ? [-8, 8] : [-15, 0, 15];
     for (const cents of voices) {
-      const o = this.ctx.createOscillator();
-      o.type = tier >= 3 ? 'sawtooth' : 'square';
-      o.detune.value = cents;
-      o.frequency.setValueAtTime(top, start);
-      o.frequency.exponentialRampToValueAtTime(low, start + length);
-      const g = this.ctx.createGain();
-      this.env(g, start, (evo ? 0.22 : 0.16) / voices.length + 0.05, 0.004, length);
-      o.connect(g).connect(lp);
-      o.start(start);
-      o.stop(start + length + 0.05);
+      for (const mult of [1, 2]) {
+        const o = this.ctx.createOscillator();
+        o.type = 'sawtooth';
+        o.frequency.setValueAtTime(hum * mult, start);
+        o.frequency.exponentialRampToValueAtTime(hum * mult * 0.8, start + length);
+        o.detune.value = cents;
+        o.connect(bp);
+        o.start(start);
+        o.stop(start + length + 0.05);
+      }
     }
-    // A sub under the red beam and the Death Ray, and its crackle.
+    bp.connect(chop).connect(g).connect(this.sfxBus);
+    lfo.start(start);
+    lfo.stop(start + length + 0.05);
+    // Crackles over the buzz, more each tier.
+    for (let k = 0; k < tier + 1; k++) this.hiss(start + Math.random() * length * 0.8, 0.015, 0.12 + tier * 0.03, 2500 + Math.random() * 3500);
+    // A sub thump under the red beam and the Death Ray.
     if (tier >= 3) {
-      const s = this.ctx.createOscillator();
-      s.frequency.setValueAtTime(evo ? 110 : 160, start);
-      s.frequency.exponentialRampToValueAtTime(40, start + length);
+      const sub = this.ctx.createOscillator();
+      sub.frequency.setValueAtTime(evo ? 90 : 120, start);
+      sub.frequency.exponentialRampToValueAtTime(40, start + length);
       const sg = this.ctx.createGain();
       this.env(sg, start, evo ? 0.45 : 0.3, 0.005, length);
-      s.connect(sg).connect(this.sfxBus);
-      s.start(start);
-      s.stop(start + length + 0.05);
-      this.hiss(start, length * 0.8, evo ? 0.28 : 0.16, evo ? 2400 : 3200);
+      sub.connect(sg).connect(this.sfxBus);
+      sub.start(start);
+      sub.stop(start + length + 0.05);
     }
   }
 
