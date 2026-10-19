@@ -436,15 +436,20 @@ function mapScreen() {
     return `<path class="trail${b.open ? '' : ' is-locked'}" d="M ${a.cx} ${a.cy} Q ${mx} ${a.cy + (b.cy - a.cy) * 0.15} ${b.cx} ${b.cy}"/>`;
   }).join('');
   const islands = stops.map((st) => {
+    // The badge always shows (the art has a padlock painted there): locked, cleared, how far you got
+    // (the sprint, or the longest shift on call) or ▶ for a world not tried yet.
     const best = save.bestByWorld[st.n];
-    const done = best?.time !== undefined;
-    const under = !st.open ? '🔒' : done ? '✓' : best?.room ? `${best.room}/${ROOMS}` : '';
+    const shift = save.hordeBest[st.n];
+    const horde = save.mode === 'horde';
+    const done = horde ? !!shift?.won : best?.time !== undefined;
+    const tried = horde ? shift ? clock(shift.time) : '' : best?.room ? `${best.room}/${ROOMS}` : '';
+    const under = !st.open ? '🔒' : done ? '✓' : tried || '▶';
     const style = `left:${(st.left / MAP_W) * 100}%;top:${(st.top / MAP_H) * 100}%;width:${(st.w / MAP_W) * 100}%;--rx:${st.m.ring[0]}%;--ry:${st.m.ring[1]}%;--px:${st.m.plate[0]}%;--py:${st.m.plate[1]}%;--pw:${st.m.plate[2]}%;--ph:${st.m.plate[3]}%;--bx:${st.m.badge[0]}%;--by:${st.m.badge[1]}%;--c:${WORLDS[st.n - 1].tint || '#38bdf8'}`;
     return `
       <button class="isle${st.open ? ' is-open' : ' is-locked'}${st.n === picked ? ' is-picked' : ''}" data-world="${st.n}" style="${style}" aria-label="${t('worldN', { n: st.n })} · ${worldName(st.n)}">
         <img src="./images/game/map/${ISLAND_ART[st.n - 1]}.webp" alt="" width="${st.m.w}" height="${st.m.h}">
         <span class="isle-ring"><span>${WORLD_ICON[st.n - 1]}</span></span>
-        ${st.n === picked ? '<img class="isle-hero" src="./images/favicon-192.png" alt="" width="32" height="32">' : ''}
+        ${st.n === picked ? `<span class="isle-hero" aria-hidden="true"><img src="${heroPic()}" alt=""></span>` : ''}
         <span class="isle-plate">${worldName(st.n)}</span>
         ${under ? `<span class="isle-under${done ? ' is-done' : ''}${st.open ? '' : ' is-lock'}">${under}</span>` : ''}
       </button>`;

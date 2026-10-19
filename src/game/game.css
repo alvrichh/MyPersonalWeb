@@ -601,6 +601,10 @@ body {
   color: #fff;
   text-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
   filter: drop-shadow(0 0 16px rgba(74, 222, 128, 0.45));
+  /* The map is taller than a phone: the play button stays on screen at the bottom while you scroll. */
+  position: sticky;
+  bottom: max(10px, env(safe-area-inset-bottom));
+  z-index: 3;
 }
 .mapscreen .play::before,
 .mapscreen .play::after { display: none; }
@@ -1533,12 +1537,23 @@ body {
   left: calc(var(--rx) + 15%);
   top: calc(var(--ry) - 16%);
   width: 18%;
-  height: auto;
+  aspect-ratio: 1;
+  overflow: hidden;
   border-radius: 50%;
   border: 2px solid #86efac;
-  background: #e9edf5;
+  background: radial-gradient(circle at 50% 35%, #1f4a63, #0b1824 75%);
   box-shadow: 0 0 12px 2px rgba(134, 239, 172, 0.8);
   animation: isle-hero-bob 1.6s ease-in-out infinite;
+}
+
+.isle-hero img {
+  position: absolute;
+  left: 50%;
+  top: 6%;
+  height: 135%;
+  width: auto;
+  max-width: none;
+  translate: -50% 0;
 }
 
 @keyframes isle-hero-bob {
