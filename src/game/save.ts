@@ -153,6 +153,13 @@ export function loadSave(): Save {
     if (!save.bestByWorld[1] && save.best.room) save.bestByWorld[1] = save.best;
     // A finished world 1 from before the map unlocks world 2.
     if (save.best.time !== undefined && save.unlocked < 2) save.unlocked = 2;
+    // Each mode's progress is what its own records show: a world is open once the one before it was won in
+    // that mode. Before the split (and on a page cached from then) an on-call win also opened sprint worlds.
+    const nextAfter = (won: number[]) => Math.min(8, Math.max(1, ...won.map((w) => w + 1)));
+    save.unlocked = nextAfter(Object.entries(save.bestByWorld).filter(([, b]) => b?.time !== undefined).map(([w]) => Number(w)));
+    save.hordeUnlocked = nextAfter(Object.entries(save.hordeBest).filter(([, b]) => b?.won).map(([w]) => Number(w)));
+    save.world = Math.min(save.world, save.unlocked);
+    save.hordeWorld = Math.min(save.hordeWorld, save.hordeUnlocked);
     return save;
   } catch {
     return base;
