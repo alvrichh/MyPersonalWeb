@@ -47,6 +47,8 @@ export type Save = {
   adGiftAt: number;
   /** When the daily chest was last opened (ms since 1970); the next is ready 24 hours later (`daily.ts`). */
   dailyAt: number;
+  /** Coin-store purchases made (pack and offer ids, `store.ts`); an offer can be bought once. */
+  purchases: string[];
   equipped: Partial<Record<Slot, ItemId>>;
   /** The forge: permanent upgrade levels. */
   upgrades: Upgrades;
@@ -97,6 +99,7 @@ const fresh = (): Save => ({
   arsenal: [],
   adGiftAt: 0,
   dailyAt: 0,
+  purchases: [],
   equipped: {},
   upgrades: {},
   style: 'world',
@@ -197,7 +200,7 @@ export const worldWon = (save: Save, n: number) => save.bestByWorld[n]?.time !==
 
 /** Back to a fresh start: progress, coins, gear and level go; name, skins bought, settings, masteries and star colour stay. */
 export function wipeProgress(save: Save) {
-  const keep = { name: save.name, skin: save.skin, skins: [...save.skins], retro: save.retro, style: save.style, music: save.music, sfx: save.sfx, mode: save.mode, mastery: { ...save.mastery }, starColor: save.starColor, dailyAt: save.dailyAt };
+  const keep = { name: save.name, skin: save.skin, skins: [...save.skins], retro: save.retro, style: save.style, music: save.music, sfx: save.sfx, mode: save.mode, mastery: { ...save.mastery }, starColor: save.starColor, dailyAt: save.dailyAt, purchases: [...save.purchases] };
   Object.assign(save, fresh(), keep);
 }
 
