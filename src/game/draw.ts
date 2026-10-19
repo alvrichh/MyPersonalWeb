@@ -3304,6 +3304,10 @@ export function drawSprite(ctx: CanvasRenderingContext2D, e: Enemy, now: number)
    later ones six: three walking, two attacking (wind-up, strike) and one
    taking a hit. */
 const SPRITE_FRAMES: Partial<Record<Look, number>> = { original: 4, demon: 4, greek: 4, viking: 6, jungle: 6, robot: 6, nightmare: 6 };
+/* Sets cut on one canvas for all their frames (feet on its bottom edge, body centred), so a pose with a
+   big swing doesn't shrink the figure: how much larger than usual to draw that canvas, so the body keeps
+   the size the old per-frame cuts had. */
+const SPRITE_CANVAS: Record<string, number> = { 'viking-boss': 1.265, 'jungle-boss': 1.276 };
 const enemySprites = new Map<string, HTMLImageElement[]>();
 function enemyFrames(look: Look, kind: Enemy['kind'], count: number) {
   const key = `${look}-${kind}`;
@@ -3358,7 +3362,7 @@ function drawEnemySprite(ctx: CanvasRenderingContext2D, e: Enemy, now: number) {
   frames ??= enemyFrames(e.look, e.kind, count);
   img ??= frames[enemyFrame(e, count, now)] ?? frames[0];
   if (!img.complete || !img.naturalWidth) return false;
-  const size = e.r * (e.kind === 'boss' ? 2.6 : 2.5);
+  const size = e.r * (e.kind === 'boss' ? 2.6 : 2.5) * (count === 9 ? 1 : SPRITE_CANVAS[`${e.look}-${e.kind}`] ?? 1);
   const ratio = img.naturalWidth / img.naturalHeight;
   const w = ratio >= 1 ? size : size * ratio;
   const h = ratio >= 1 ? size / ratio : size;
