@@ -254,9 +254,10 @@ function menuScreen() {
   const { level, progress } = profileLevel(save.xp);
   const copy = (cls: string, title: string, sub: string) => `<span class="cover-card-copy ${cls}"><b>${title}</b>${sub ? `<small>${sub}</small>` : ''}</span>`;
   show(`
-    <div class="cover"><div class="cover-in">
+    <div class="cover">
       <a class="hot cover-x" href="./index.html" aria-label="${t('back')}"></a>
       <button class="hot cover-more" data-act="options" aria-label="${t('options')}"></button>
+      <div class="cover-in">
       <button class="hot cover-gear" data-act="options" aria-label="${t('options')}"></button>
       <button class="hot cover-profile" data-act="profile" aria-label="${t('profile')}: ${esc(save.name)} · ${t('lvShort', { level })}"></button>
       <span class="cover-profile-copy"><small>${esc(save.name)}${masteries() ? ` <i class="mstar" style="color:${starColor()}">★</i>` : ''}</small><b>${t('lvShort', { level })}</b><i><b style="width:${Math.round(progress * 100)}%"></b></i></span>
