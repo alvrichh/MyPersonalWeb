@@ -66,6 +66,7 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   if (pal.retro) drawPlayerRetro(ctx, g, pal, now);
   else drawPlayer(ctx, g, pal, now);
   if (g.skills.blades) drawBlades(ctx, g, accent);
+  if (g.skills.frost) drawFrostTop(ctx, g, now);
   drawFx(ctx, g, accent, 'over');
   drawPicFx(ctx, g, true);
   drawBeams(ctx, g);
@@ -1027,14 +1028,15 @@ function drawChest(ctx: CanvasRenderingContext2D, at: Vec, now: number) {
 /* The laser: a cyan beam with a white core, from the hero along its angle;
    the evolved one is drawn from the gear's sweep, every frame it lasts. */
 /** Beam colours (outer glow, body) as r,g,b: yellow at level 1, red from 2, purple once evolved. */
-const LASER_TONE = { yellow: ['250,204,21', '253,224,71'], red: ['220,38,38', '248,80,80'], purple: ['168,85,247', '216,180,254'] } as const;
-const laserToneName = (g: Game) => (g.evolved.laser ? 'purple' : g.skills.laser >= 2 ? 'red' : 'yellow');
+const LASER_TONE = { yellow: ['250,204,21', '253,224,71'], orange: ['249,115,22', '253,186,116'], red: ['220,38,38', '248,80,80'], purple: ['168,85,247', '216,180,254'] } as const;
+const laserToneName = (g: Game) =>
+  g.evolved.laser ? 'purple' : g.skills.laser >= 3 ? 'red' : g.skills.laser >= 2 ? 'orange' : 'yellow';
 const laserTone = (g: Game) => LASER_TONE[laserToneName(g)];
 /* The owner's beams: where, in each picture, the column's middle sits, where
    the beam strikes the floor and how wide the column is (shares of the
    picture). The column is stretched from the sky down to the bug; the
    strike below it keeps its own size. */
-const LASER_PIC = { yellow: [0.525, 0.883, 0.337], red: [0.489, 0.884, 0.302], purple: [0.514, 0.872, 0.275] } as const;
+const LASER_PIC = { yellow: [0.525, 0.883, 0.337], orange: [0.525, 0.883, 0.337], red: [0.489, 0.884, 0.302], purple: [0.514, 0.872, 0.275] } as const;
 const LASER_SPLIT = 0.7;
 function drawBeams(ctx: CanvasRenderingContext2D, g: Game) {
   const tone = laserTone(g);
@@ -1376,6 +1378,131 @@ function drawFrost(ctx: CanvasRenderingContext2D, g: Game, now: number) {
     snowflake(ctx, p.x + Math.cos(a) * rad, p.y + Math.sin(a) * rad, size, now * (i % 2 ? 1.2 : -1.2) + seed);
   }
   ctx.globalAlpha = 1;
+  if (evolved) drawBlizzardFloor(ctx, p.x, p.y, r, now);
+}
+
+/* The Blizzard's floor: a great frost sigil turning slowly under the storm,
+   a rim of ice crystals pointing inwards and gusts of wind whirling round. */
+function drawBlizzardFloor(ctx: CanvasRenderingContext2D, x: number, y: number, r: number, now: number) {
+  ctx.save();
+  ctx.lineCap = 'round';
+  if (!retroLook) { ctx.shadowColor = '#7dd3fc'; ctx.shadowBlur = 10; }
+  ctx.globalAlpha = 0.22 + Math.sin(now * 3) * 0.05;
+  ctx.strokeStyle = '#e0f2fe';
+  ctx.lineWidth = 2.4;
+  snowflake(ctx, x, y, r * 0.72, now * 0.25);
+  ctx.globalAlpha = 0.16;
+  ctx.lineWidth = 1.4;
+  snowflake(ctx, x, y, r * 0.42, -now * 0.4 + 0.5);
+  // Ice crystals along the rim, a little ragged so it reads as frozen.
+  const spikes = 28;
+  ctx.globalAlpha = 0.55;
+  ctx.fillStyle = 'rgba(186,230,253,0.55)';
+  ctx.strokeStyle = 'rgba(240,249,255,0.85)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  for (let i = 0; i < spikes; i++) {
+    const a = (i / spikes) * Math.PI * 2 + now * 0.05;
+    const len = r * (0.1 + 0.07 * ((i * 7) % 3)) * (1 + Math.sin(now * 2 + i) * 0.12);
+    const w = 0.07;
+    ctx.moveTo(x + Math.cos(a - w) * r, y + Math.sin(a - w) * r);
+    ctx.lineTo(x + Math.cos(a) * (r - len), y + Math.sin(a) * (r - len));
+    ctx.lineTo(x + Math.cos(a + w) * r, y + Math.sin(a + w) * r);
+  }
+  ctx.fill();
+  ctx.stroke();
+  // Gusts: white arcs whirling round fast, fading towards their tails.
+  for (let i = 0; i < 6; i++) {
+    const rad = r * (0.38 + 0.11 * i);
+    const head = now * (2.6 - i * 0.18) + i * 1.9;
+    const len = 0.9 + (i % 3) * 0.25;
+    for (let k = 0; k < 6; k++) {
+      ctx.globalAlpha = 0.5 * (1 - k / 6);
+      ctx.strokeStyle = '#f0f9ff';
+      ctx.lineWidth = 2.2 - k * 0.3;
+      ctx.beginPath();
+      ctx.arc(x, y, rad, head - (len * (k + 1)) / 6, head - (len * k) / 6);
+      ctx.stroke();
+    }
+  }
+  ctx.restore();
+}
+
+/* Over the bugs: frost on everything caught inside the aura (a snowflake
+   over each one; in the Blizzard an ice crust too), and in the Blizzard ice
+   shards circling the rim and snow blown round in streaks. */
+function drawFrostTop(ctx: CanvasRenderingContext2D, g: Game, now: number) {
+  const p = g.player;
+  const r = frostReach(g);
+  const evolved = !!g.evolved.frost;
+  ctx.save();
+  ctx.lineCap = 'round';
+  for (const e of g.enemies) {
+    if (e.dead || e.spawn > 0 || Math.hypot(e.x - p.x, e.y - p.y) > r + e.r) continue;
+    if (evolved) {
+      ctx.globalAlpha = 0.35;
+      ctx.fillStyle = '#bae6fd';
+      ctx.beginPath();
+      ctx.arc(e.x, e.y, e.r * 0.95, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.globalAlpha = 0.8;
+      ctx.strokeStyle = '#f0f9ff';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      for (let i = 0; i < 6; i++) {
+        const a = (i / 6) * Math.PI * 2 + e.id;
+        ctx.moveTo(e.x + Math.cos(a) * e.r * 0.4, e.y + Math.sin(a) * e.r * 0.4);
+        ctx.lineTo(e.x + Math.cos(a) * e.r * 1.05, e.y + Math.sin(a) * e.r * 1.05);
+      }
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 0.85;
+    ctx.strokeStyle = '#e0f2fe';
+    ctx.lineWidth = 1.2;
+    snowflake(ctx, e.x, e.y - e.r - 7 + Math.sin(now * 3 + e.id) * 1.5, evolved ? 4.5 : 3.5, now * 1.5 + e.id);
+  }
+  if (evolved) {
+    // Ice shards orbiting the rim, pointing the way they fly.
+    if (!retroLook) { ctx.shadowColor = '#7dd3fc'; ctx.shadowBlur = 8; }
+    for (let i = 0; i < 6; i++) {
+      const a = now * 1.6 + (i / 6) * Math.PI * 2;
+      const rad = r * (0.9 + Math.sin(now * 2 + i) * 0.05);
+      ctx.save();
+      ctx.translate(p.x + Math.cos(a) * rad, p.y + Math.sin(a) * rad);
+      ctx.rotate(a + Math.PI / 2);
+      ctx.globalAlpha = 0.95;
+      ctx.fillStyle = '#e0f2fe';
+      ctx.strokeStyle = '#38bdf8';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(10, 0);
+      ctx.lineTo(0, -3.5);
+      ctx.lineTo(-6, 0);
+      ctx.lineTo(0, 3.5);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+    }
+    ctx.shadowBlur = 0;
+    // Snow blown round in short streaks.
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 1.3;
+    for (let i = 0; i < 34; i++) {
+      const t = (now * (0.5 + (i % 4) * 0.12) + i * 0.137) % 1;
+      const rad = r * (0.25 + ((i * 0.618) % 1) * 0.75);
+      const a = i * 2.399 + now * (1.8 + (i % 3) * 0.4);
+      const sx = p.x + Math.cos(a) * rad;
+      const sy = p.y + Math.sin(a) * rad;
+      const tail = 0.12 + (i % 3) * 0.04;
+      ctx.globalAlpha = 0.7 * Math.sin(t * Math.PI);
+      ctx.beginPath();
+      ctx.moveTo(sx, sy);
+      ctx.lineTo(p.x + Math.cos(a - tail) * rad, p.y + Math.sin(a - tail) * rad);
+      ctx.stroke();
+    }
+  }
+  ctx.restore();
 }
 
 /* Blade colours per element (see `bladeElement`): edge, base, hilt and glow. */
@@ -1515,7 +1642,7 @@ export function preloadFx() {
   for (const n of ['fireball', 'boom-small', 'boom-big', 'knife', 'boomerang', 'slash', 'chest', 'slam', 'crystals', 'gem', 'gem-big', 'bolt-1', 'bolt-2', 'bolt-3', 'bolt-4', 'bolt-5', 'bolt-6',
     'brick', 'iron', 'molotov', 'barrel', 'durian', 'durian-big', 'drill', 'drill-evo', 'rocket', 'rocket-shark', 'ball', 'ball-evo',
     'fire-pool', 'fire-pool-big', 'caltrops', 'mine', 'mine-on', 'mine-volt', 'volt-burst', 'impact', 'heart', 'rune', 'crescent',
-    'steam-cloud', 'plasma-burst', 'wisp-flame', 'shock-ring', 'ice-block', 'spectral-bolt', 'laser-yellow', 'laser-red', 'laser-purple']) fxImage(n);
+    'steam-cloud', 'plasma-burst', 'wisp-flame', 'shock-ring', 'ice-block', 'spectral-bolt', 'laser-yellow', 'laser-orange', 'laser-red', 'laser-purple']) fxImage(n);
 }
 
 function drawFireballs(ctx: CanvasRenderingContext2D, g: Game) {

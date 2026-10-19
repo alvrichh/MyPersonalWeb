@@ -148,7 +148,7 @@ const evoIcon = (id: SkillId) => (EVO_ICON.includes(id) ? `${id}-evo` : id);
 /** The blades show their element's medallion once they have one; the laser its colour (yellow, red from level 2, purple evolved); evolved weapons their evolution's. */
 const iconFile = (g: Game, id: SkillId | 'bow') => {
   if (id !== 'bow' && g.evolved[id] && EVO_ICON.includes(id)) return evoIcon(id);
-  if (id === 'laser') return g.skills.laser >= 2 ? 'laser-red' : 'laser';
+  if (id === 'laser') return g.skills.laser >= 3 ? 'laser-red' : g.skills.laser >= 2 ? 'laser-orange' : 'laser';
   if (id !== 'blades') return id === 'bow' ? 'double' : id;
   const el = bladeElement(g);
   return el === 'steel' ? 'blades' : `blades-${el}`;
