@@ -84,7 +84,7 @@ const SONGS: Record<SongId, Song> = {
     set: ['neuro', 'liquid', 'neuro', 'neuro', 'breakdown', 'trance', 'both', 'neuro'],
     reese: [[0, 1, 0, 7, 8, 7], [0, 12, 13, 12, 7, 1]], pluck: 'sawtooth',
   },
-  w3: { // Data Lake: A minor saga, Am–G–F–E, then Am–F–C–G.
+  w3: { // Code Freeze: A minor saga, Am–G–F–E, then Am–F–C–G.
     root: 55,
     chords: [[0, 3, 7, 12], [-2, 2, 5, 10], [-4, 0, 3, 8], [-5, -1, 2, 7]], roots: [0, -2, -4, -5],
     chordsB: [[0, 3, 7, 12], [-4, 0, 3, 8], [3, 7, 10, 15], [-2, 2, 5, 10]], rootsB: [0, -4, 3, -2],
