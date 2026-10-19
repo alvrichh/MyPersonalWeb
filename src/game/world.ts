@@ -972,6 +972,7 @@ export function rerollChoices(g: Game) {
 export function chooseSkill(g: Game, choice: Choice) {
   if (choice === 'fuse') {
     g.fused = true;
+    g.arrowPick = 'fusion';
     burst(g, g.player.x, g.player.y, '#c4b5fd', 40, 240, 4);
     g.pendingLevels -= 1;
     g.choices = [];
@@ -1420,10 +1421,11 @@ export function bladeElement(g: Game): BladeElement {
 }
 /* The arrows' look: each bow upgrade paints the arrow its own way (every
    upgrade's effect still applies whatever the look). The player may pick
-   any look they own; otherwise the first owned wins. */
-export type ArrowLook = 'fire' | 'water' | 'leaf' | 'ghost' | 'bolt' | 'spark';
-const ARROW_LOOKS: ArrowLook[] = ['fire', 'water', 'leaf', 'ghost', 'bolt', 'spark'];
-export const arrowOptions = (g: Game): ArrowLook[] => ARROW_LOOKS.filter((s) => g.skills[s] > 0);
+   any look they own, the fused arrow ('fusion') among them once fused, and its
+   trail goes with the look; otherwise the fusion, or the first owned, wins. */
+export type ArrowLook = 'fusion' | 'fire' | 'water' | 'leaf' | 'ghost' | 'bolt' | 'spark';
+const ARROW_LOOKS: Exclude<ArrowLook, 'fusion'>[] = ['fire', 'water', 'leaf', 'ghost', 'bolt', 'spark'];
+export const arrowOptions = (g: Game): ArrowLook[] => [...(fusionOf(g) ? ['fusion' as const] : []), ...ARROW_LOOKS.filter((s) => g.skills[s] > 0)];
 export function arrowLook(g: Game): ArrowLook | null {
   const opts = arrowOptions(g);
   if (g.arrowPick && opts.includes(g.arrowPick)) return g.arrowPick;
@@ -2540,7 +2542,7 @@ function updateShot(g: Game, s: Shot, dt: number): boolean {
       s.trail = 0.07;
       g.embers.push({ x: s.x, y: s.y, r: 11, life: 1, max: 1, dps: 9 * power(g, 'ranged'), kind: 'wisp' });
     }
-  } else if (s.bow && s.kind === 'arrow' && fusionOf(g)) fusionTrail(g, s, dt, fusionOf(g) as Fusion);
+  } else if (s.bow && s.kind === 'arrow' && fusionOf(g) && arrowLook(g) === 'fusion') fusionTrail(g, s, dt, fusionOf(g) as Fusion);
   // A bottle in flight touches nothing; it bursts where it lands.
   if (s.kind === 'molotov') return true;
   // Rockets blow up on walls and racks.
