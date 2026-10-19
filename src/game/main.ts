@@ -160,7 +160,7 @@ const EMOJI: Record<SkillId | 'bow', string> = {
 /* The painted medallion, with the emoji beside it for the retro look (CSS shows one or the other). */
 const skillIcon = (id: SkillId | 'bow', size = 40, file: string = id === 'bow' ? 'double' : id) => `<img class="skill-icon" src="./images/game/skills/${file}.webp" width="${size}" height="${size}" alt=""><span class="skill-emoji">${EMOJI[id]}</span>`;
 /** Weapons with their own evolved medallion (`skills/<id>-evo.webp`). */
-const EVO_ICON: SkillId[] = ['laser', 'brick', 'molotov', 'durian', 'mines', 'drill', 'rocket', 'ball'];
+const EVO_ICON: SkillId[] = ['laser', 'brick', 'molotov', 'durian', 'mines', 'drill', 'rocket', 'ball', 'sword', 'blades', 'hammer', 'fireball', 'frost', 'spirits', 'boomerang'];
 const evoIcon = (id: SkillId) => (EVO_ICON.includes(id) ? `${id}-evo` : id);
 /** The blades show their element's medallion once they have one; the laser its colour (yellow, red from level 2, purple evolved); evolved weapons their evolution's. */
 /** The medallion for a skill at `lv` (its current level unless a level-up card shows the next one). */
