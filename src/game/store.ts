@@ -23,8 +23,8 @@ export const packBonus = (p: CoinPack) => Math.round((p.coins / ((p.price / COIN
    player, skipping a skin already owned; each can be bought once. */
 export type SkinOffer = { id: string; skin: HeroSkin; coins: number; price: number };
 export const SKIN_OFFERS: SkinOffer[] = [
-  { id: 'offer-robot', skin: 'robot', coins: 5000, price: 999 },
-  { id: 'offer-kitty', skin: 'kitty', coins: 5000, price: 999 },
+  { id: 'offer-robot', skin: 'robot', coins: 8000, price: 999 },
+  { id: 'offer-kitty', skin: 'kitty', coins: 8000, price: 999 },
 ];
 export const OFFER_WINDOW = 3 * 24 * 3600 * 1000;
 /** The offer on now and when it ends, or null when every offered skin is owned. */
