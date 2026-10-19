@@ -28,6 +28,13 @@ export const ROOMS = 12;
 export type Mode = 'sprints' | 'horde';
 export const HORDE_LENGTH = 600;
 export const HORDE_BOSS_AT = [300, HORDE_LENGTH];
+/** Nightmare (On call in the last world, no clock): a boss every five minutes, the cast's and the world's in turn. */
+export const NIGHTMARE_WORLD = 8;
+export const NIGHTMARE_BOSS_EVERY = 300;
+/** When the next boss comes, or Infinity once a shift has had both. */
+const nextBossAt = (g: Game) => (g.endless ? (g.hordeBoss + 1) * NIGHTMARE_BOSS_EVERY : HORDE_BOSS_AT[g.hordeBoss] ?? Infinity);
+/** Whether the boss now out is the world's final boss (the second on call; every other one in nightmare). */
+const finalBossNow = (g: Game) => (g.endless ? g.hordeBoss > 0 && g.hordeBoss % 2 === 0 : g.hordeBoss >= 2);
 const DOOR_HALF = 32;
 /** Shrine rooms: no enemies, a statue that offers health or a skill. */
 export const SHRINE_ROOMS = [5, 11];
@@ -406,6 +413,8 @@ export type Game = {
   /** On call: seconds to the next spawn, bosses summoned so far, seconds to the next hazard patch. */
   hordeSpawn: number;
   hordeBoss: number;
+  /** Nightmare: On call with no clock, the bugs pouring in faster the longer you last. */
+  endless: boolean;
   hordeHazard: number;
   /** On call: half the visible field, in room units, set by the page so bugs spawn just out of sight. */
   viewHalf: Vec;
@@ -594,7 +603,7 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
   // On call: bugs harden with the clock instead of the room.
   // On call hardens faster per world: the field never runs out of bugs to farm.
   const tough = horde ? (1 + (g.time / 60) * 0.2) * (1 + (g.world - 1) * 0.45) : (1 + (stageOf(room) - 1) * 0.095) * worldUp;
-  const bossHp = horde ? (g.hordeBoss >= 2 ? 4200 : 1800) * (1 + (g.time / 60) * 0.08) : room === ROOMS ? 2200 : 1000;
+  const bossHp = horde ? (finalBossNow(g) ? 4200 : 1800) * (1 + (g.time / 60) * 0.08) : room === ROOMS ? 2200 : 1000;
   const base = {
     bug: { r: 12, hp: 40, speed: 72, dmg: 10, xp: 6 },
     ticket: { r: 14, hp: 60, speed: 46, dmg: 12, xp: 8 },
@@ -602,7 +611,7 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
     boss: { r: 40, hp: bossHp, speed: 40, dmg: 22, xp: 70 },
   }[kind];
   // The world's final boss (room 12, or the second one on call) is bigger and has its own kit.
-  const final = kind === 'boss' && (horde ? g.hordeBoss >= 2 : room === ROOMS);
+  const final = kind === 'boss' && (horde ? finalBossNow(g) : room === ROOMS);
   const hp = Math.round(base.hp * (kind === 'boss' ? worldUp * g.bossHpMult : tough));
   return {
     id: nextId++,
@@ -740,10 +749,12 @@ function enterRoom(g: Game, room: number) {
   }
 }
 
-export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'world', world = 1, mode: Mode = 'sprints'): Game {
+export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'world', world = 1, mode: Mode = 'sprints', endless = false): Game {
+  const nightmare = endless && mode === 'horde';
   const g: Game = {
-    world: clamp(world, 1, WORLD_COUNT),
+    world: nightmare ? NIGHTMARE_WORLD : clamp(world, 1, WORLD_COUNT),
     mode,
+    endless: nightmare,
     room: 1,
     hordeSpawn: 1.5,
     hordeBoss: 0,
@@ -855,12 +866,12 @@ function ringSpot(g: Game, k = 1): Vec {
 function updateHorde(g: Game, dt: number) {
   const minute = g.time / 60;
   const before = Math.floor((g.time - dt) / 60);
-  if (Math.floor(minute) > before && g.time < HORDE_LENGTH) {
+  if (Math.floor(minute) > before && (g.endless || g.time < HORDE_LENGTH)) {
     g.coins += 5 * worldPay(g);
     g.events.push('minute');
   }
   // Bosses: summoned once each when their minute comes.
-  if (g.hordeBoss < HORDE_BOSS_AT.length && g.time >= HORDE_BOSS_AT[g.hordeBoss]) {
+  if (g.time >= nextBossAt(g)) {
     g.hordeBoss += 1;
     const boss = makeEnemy(g, 'boss', 1, ringSpot(g, 0.6), 1.5);
     g.enemies.push(boss);
@@ -872,9 +883,11 @@ function updateHorde(g: Game, dt: number) {
   const alive = g.enemies.length;
   // Later worlds pour faster, in bigger groups and with a higher cap (on top of tougher bugs).
   const wk = g.world - 1;
-  const cap = Math.min(64 + 4 * wk, 30 + Math.floor(minute * 4) + 4 * wk);
+  // Nightmare has no top: the cap keeps rising and the spawns keep quickening the longer you last.
+  const cap = g.endless ? Math.min(320, 30 + Math.floor(minute * 5) + 4 * wk) : Math.min(64 + 4 * wk, 30 + Math.floor(minute * 4) + 4 * wk);
+  const quickest = g.endless ? Math.max(0.12, 0.4 - Math.max(0, minute - 10) * 0.02) : 0.4;
   if (g.hordeSpawn <= 0) {
-    g.hordeSpawn = Math.max(0.4, (1.7 - minute * 0.12) * (1 - 0.07 * wk)) * (bossOut ? 1.8 : 1);
+    g.hordeSpawn = Math.max(quickest, (1.7 - minute * 0.12) * (1 - 0.07 * wk)) * (bossOut ? 1.8 : 1);
     const group = 1 + Math.floor(minute / 2) + Math.floor(wk / 2) + (Math.random() < 0.4 + 0.05 * wk ? 1 : 0);
     // Tickets are the dangerous ones (they keep away and throw), so only a few at a time.
     let tickets = g.enemies.filter((e) => e.kind === 'ticket').length;
@@ -1082,7 +1095,7 @@ function kill(g: Game, e: Enemy) {
   if (e.kind === 'boss') {
     g.shake = 0.6;
     // The chest: not for the boss whose death ends the run.
-    const last = g.mode === 'horde' ? g.hordeBoss >= HORDE_BOSS_AT.length : g.room === ROOMS;
+    const last = g.mode === 'horde' ? !g.endless && g.hordeBoss >= HORDE_BOSS_AT.length : g.room === ROOMS;
     if (!last) { g.chest = { x: e.x, y: e.y }; g.events.push('chest'); }
   }
   // On call: tougher bugs may leave a heart behind (bosses always leave three).
@@ -2962,7 +2975,7 @@ export function update(g: Game, dt: number, input: Input) {
 
   if (g.mode === 'horde') {
     // The last boss down: the shift is over.
-    if (g.hordeBoss >= HORDE_BOSS_AT.length && !g.enemies.some((e) => e.kind === 'boss')) {
+    if (!g.endless && g.hordeBoss >= HORDE_BOSS_AT.length && !g.enemies.some((e) => e.kind === 'boss')) {
       g.coins += 50 * worldPay(g);
       g.phase = 'won';
       return;
