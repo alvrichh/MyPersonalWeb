@@ -155,6 +155,7 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   }
   ctx.globalAlpha = 1;
   if (g.hazard === 'fog') drawFog(ctx, g, vis);
+  if (g.player.dark > 0 && g.phase === 'play') drawDark(ctx, g, vis);
 }
 
 /* On call: the open field. The world's arena floor has painted walls round
@@ -550,6 +551,86 @@ function heroPose(g: Game, now: number, full: boolean): Pose {
   return full && g.enemies.length === 0 ? 'front' : 'idle';
 }
 
+/* A boss's hit tints the hero for as long as it lasts: green poisoned, yellow stunned, icy blue chilled,
+   violet in the dark. Safari has no canvas filter, so the picture is tinted on a small canvas of its own. */
+let tintCanvas: HTMLCanvasElement | null = null;
+function heroTint(g: Game): [string, number] | null {
+  const p = g.player;
+  if (p.stun > 0) return ['250,204,21', Math.min(1, p.stun / 0.15)];
+  if (p.poison > 0) return ['74,222,128', Math.min(1, p.poison / 0.15)];
+  if (p.chill > 0) return ['125,211,252', Math.min(1, p.chill / 0.3)];
+  if (p.dark > 0) return ['167,139,250', Math.min(1, p.dark / 0.3)];
+  return null;
+}
+function drawTinted(ctx: CanvasRenderingContext2D, img: HTMLImageElement, x: number, y: number, w: number, h: number, tint: [string, number] | null) {
+  if (!tint) { ctx.drawImage(img, x, y, w, h); return; }
+  tintCanvas ??= document.createElement('canvas');
+  const c = tintCanvas;
+  c.width = img.naturalWidth;
+  c.height = img.naturalHeight;
+  const t = c.getContext('2d');
+  if (!t) { ctx.drawImage(img, x, y, w, h); return; }
+  t.drawImage(img, 0, 0);
+  t.globalCompositeOperation = 'source-atop';
+  t.fillStyle = `rgba(${tint[0]},${0.42 * tint[1]})`;
+  t.fillRect(0, 0, c.width, c.height);
+  ctx.drawImage(c, x, y, w, h);
+}
+/** What shows round the hero while a boss's hit lasts: bubbles of poison, sparks of the stun, frost. */
+function drawStatus(ctx: CanvasRenderingContext2D, g: Game, now: number) {
+  const p = g.player;
+  ctx.save();
+  if (p.poison > 0) {
+    for (let i = 0; i < 4; i++) {
+      const k = (now * 1.6 + i / 4) % 1;
+      ctx.globalAlpha = (1 - k) * 0.85;
+      ctx.fillStyle = i % 2 ? '#86efac' : '#22c55e';
+      ctx.beginPath();
+      ctx.arc(p.x + Math.sin(i * 2.1 + now * 3) * p.r * 0.8, p.y - p.r * (0.4 + k * 2.2), 2 + (i % 2), 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+  if (p.stun > 0) {
+    // Three little bolts circling the head.
+    ctx.strokeStyle = '#fde047';
+    ctx.lineWidth = 2;
+    ctx.shadowColor = '#facc15';
+    ctx.shadowBlur = 8;
+    for (let i = 0; i < 3; i++) {
+      const a = now * 7 + (i * Math.PI * 2) / 3;
+      const x = p.x + Math.cos(a) * p.r * 0.9;
+      const y = p.y - p.r * 2.6 + Math.sin(a) * p.r * 0.3;
+      ctx.beginPath();
+      ctx.moveTo(x - 3, y - 5);
+      ctx.lineTo(x + 1, y - 1);
+      ctx.lineTo(x - 2, y + 1);
+      ctx.lineTo(x + 3, y + 5);
+      ctx.stroke();
+    }
+  }
+  if (p.chill > 0) {
+    ctx.strokeStyle = '#e0f2fe';
+    ctx.lineWidth = 1.2;
+    ctx.globalAlpha = Math.min(1, p.chill / 0.3) * 0.9;
+    for (let i = 0; i < 3; i++) {
+      const a = now * 1.5 + (i * Math.PI * 2) / 3;
+      snowflake(ctx, p.x + Math.cos(a) * p.r * 1.1, p.y - p.r * 1.2 + Math.sin(a) * p.r * 0.5, 4, now * 2 + i);
+    }
+  }
+  ctx.restore();
+}
+/** The Shadow Wraith's hit: the view closes in round the hero for a moment. */
+function drawDark(ctx: CanvasRenderingContext2D, g: Game, vis: Rect) {
+  const p = g.player;
+  const k = Math.min(1, p.dark / 0.4);
+  const grad = ctx.createRadialGradient(p.x, p.y, 40, p.x, p.y, 150);
+  grad.addColorStop(0, 'rgba(10,6,22,0)');
+  grad.addColorStop(0.55, `rgba(10,6,22,${0.7 * k})`);
+  grad.addColorStop(1, `rgba(10,6,22,${0.94 * k})`);
+  ctx.fillStyle = grad;
+  ctx.fillRect(vis.x, vis.y, vis.w, vis.h);
+}
+
 function drawPlayer(ctx: CanvasRenderingContext2D, g: Game, pal: Palette, now: number) {
   const { accent, accent2 } = pal;
   const p = g.player;
@@ -580,9 +661,10 @@ function drawPlayer(ctx: CanvasRenderingContext2D, g: Game, pal: Palette, now: n
     ctx.translate(p.x, p.y + p.r * 0.9 - bob);
     if (left || (vertical && step)) ctx.scale(-1, 1);
     if (vertical) ctx.rotate(0.06 * Math.sin(now * 7 * Math.PI));
-    ctx.drawImage(img, -w / 2, -h, w, h);
+    drawTinted(ctx, img, -w / 2, -h, w, h, g.phase === 'play' ? heroTint(g) : null);
     ctx.restore();
     barTop = p.y + p.r * 0.9 - h - 9;
+    if (g.phase === 'play') drawStatus(ctx, g, now);
   } else {
     // Until the picture is in: the ring as before.
     const ring = ctx.createLinearGradient(p.x - p.r, p.y - p.r, p.x + p.r, p.y + p.r);

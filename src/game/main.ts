@@ -1800,6 +1800,7 @@ function step(now: number) {
         audio.setIntensity(1);
       }
       if (event === 'revive') flash(t('revived'));
+      if (event === 'poison' || event === 'stun' || event === 'chill' || event === 'dark') flash(t(`status${cap(event)}` as Key));
       if (event === 'chest') flash(t('chestHint'));
     }
     // update() may have moved the game on (TypeScript still thinks it's 'play').
