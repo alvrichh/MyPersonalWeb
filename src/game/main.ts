@@ -428,6 +428,11 @@ let editingName = false;
 const PENCIL = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4z" fill="currentColor"/><path d="M14 6l4 4" stroke="#14532d" stroke-width="1.6"/></svg>';
 const TICK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const CROSS = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>';
+/** A piece of news on the end screen (a world, a weapon or an item now open, a record): the painted ring-and-plate row,
+    lit, as in Customise and the shop. */
+const notice = (icon: string, title: string, sub = '') =>
+  `<div class="gear-row is-on is-notice"><span class="icon" aria-hidden="true">${icon}</span><b>${title}</b>${sub ? `<span>${sub}</span>` : ''}</div>`;
+
 function profileScreen(note = '') {
   const { level, progress } = profileLevel(save.xp);
   // While editing, the field takes the whole row under the hero.
@@ -515,7 +520,7 @@ function endScreen(g: Game) {
   const unlocked = bankRun(g);
   audio.play(won ? 'win' : 'over');
   const next = unlocked
-    ? `<p class="unlocked">${WORLD_ICON[unlocked - 1]} ${t('unlockedWorld', { n: unlocked })}<small>${worldName(unlocked)}</small></p>
+    ? `${notice(save.retro ? WORLD_ICON[unlocked - 1] : `<img class="scene-pic" src="./images/game/map/pv-${ISLAND_ART[unlocked - 1]}.jpg" alt="">`, t('unlockedWorld', { n: unlocked }), worldName(unlocked))}
        <button class="primary" data-act="map">🗺️ ${t('toMap')}</button>
        <button class="ghost" data-act="play-same">${t('again')}</button>`
     : `<button class="primary" data-act="play-same">${t('again')}</button>`;
@@ -525,11 +530,11 @@ function endScreen(g: Game) {
     <p class="kicker">${worldName(g.world)} · ${g.endless ? `${NIGHTMARE_ICON} ${t('nightmare')}` : horde ? `${MODE_ICON.horde} ${modeName('horde')}` : t('sprint', { room: g.room })}</p>
     ${head(won ? 'victory' : 'defeat', t(horde ? (won ? 'hordeWon' : 'over') : won ? 'won' : 'over'))}
     <p>${t(horde ? (won ? 'hordeWonText' : 'hordeOverText') : won ? 'wonText' : 'overText', { room: g.room, kills: g.kills, time: clock(g.time) })}</p>
-    ${record ? `<p class="unlocked">${NIGHTMARE_ICON} ${t('nightmareRecord')}</p>` : ''}
+    ${record ? notice(NIGHTMARE_ICON, t('nightmareRecord')) : ''}
     <p class="earned">${coinsLine(earned)} <small>${t('coinsRun', { coins: earned })}</small></p>
     ${earned > 0 && ads.enabled ? '<div class="ad-slot" data-ad-slot="doubleCoins"></div>' : ''}
-    ${itemOpened ? `<p class="unlocked">${picIcon(itemById(itemOpened).icon, itemById(itemOpened).pic)} ${t('itemNew', { name: t(`${itemOpened}Name` as Key) })}</p>` : ''}
-    ${arsenalOpened ? `<p class="unlocked">${picIcon(EMOJI[arsenalOpened], `skills/${arsenalOpened}.webp`)} ${t('arsenalNew', { name: t(`${arsenalOpened}Name` as Key) })}</p>` : ''}
+    ${itemOpened ? notice(picIcon(itemById(itemOpened).icon, itemById(itemOpened).pic), t('itemNew', { name: t(`${itemOpened}Name` as Key) })) : ''}
+    ${arsenalOpened ? notice(picIcon(EMOJI[arsenalOpened], `skills/${arsenalOpened}.webp`), t('arsenalNew', { name: t(`${arsenalOpened}Name` as Key) })) : ''}
     ${next}
     <div class="row">
       <button class="ghost is-warn" data-act="shop">🛒 ${t('shop')}</button>

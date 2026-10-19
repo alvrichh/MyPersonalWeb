@@ -1848,6 +1848,8 @@ body {
   font-weight: 700;
 }
 
+.gear-row.is-notice { width: 100%; cursor: default; text-align: left; }
+.gear-row.is-notice b { font-size: 0.86rem; }
 .unlocked small {
   font: 600 0.75rem/1 ui-monospace, monospace;
   color: var(--muted);
