@@ -2321,6 +2321,21 @@ const ORB_PIC: Record<OrbPic, { src: 'fx' | 'arrow'; name: string; w: number; at
   bolt: { src: 'arrow', name: 'bolt', w: 40, at: 1 },
 };
 function drawOrbs(ctx: CanvasRenderingContext2D, g: Game) {
+  // Boss shots' tracks first, under the shots: soft dabs in the shot's colour, shrinking as they fade.
+  for (const d of g.bossTrail) {
+    const k = d.life / d.max;
+    const r = d.r * (0.5 + 0.5 * k);
+    ctx.globalAlpha = 0.75 * k;
+    const grad = ctx.createRadialGradient(d.x, d.y, 0, d.x, d.y, r * 1.5);
+    grad.addColorStop(0, '#fff3c4');
+    grad.addColorStop(0.35, d.tone);
+    grad.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(d.x, d.y, r * 1.5, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
   for (const o of g.orbs) {
     const look = o.pic && !retroLook ? ORB_PIC[o.pic] : undefined;
     const pic = look && (look.src === 'fx' ? fxImage(look.name) : arrowImage(look.name));
