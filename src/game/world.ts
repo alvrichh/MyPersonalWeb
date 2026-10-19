@@ -1961,6 +1961,7 @@ const circle = (g: Game, at: Vec, r: number, warn: number, dmg: number, el: Thre
 
 function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
   const final = e.final;
+  e.pose = Math.max(0, e.pose - dt);
   // Clones only throw rings now and then.
   if (e.clone) {
     e.cd -= dt;
@@ -1969,7 +1970,6 @@ function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
   }
   // The final boss's fury: under half health everything comes a quarter sooner.
   const fury = final && e.hp < e.maxHp / 2 ? 0.75 : 1;
-  e.pose = Math.max(0, e.pose - dt);
   if (e.chan > 0) {
     channel(g, e, dt);
     return;
@@ -2223,8 +2223,10 @@ function bossLands(g: Game, e: Enemy) {
     ring(g, e, 8, 120, TONE[el]);
     // Valdur roars as he lands.
     if (e.bossId === 'valdur') { e.pose = 0.6; e.act = 'move'; }
-  } else if (!e.clone) {
-    ring(g, e, 12, 100, TONE.shadow);
+  } else {
+    // Out of the shadows (the wraith and its clones alike rise out of them).
+    if (e.bossId === 'wraith') { e.pose = 0.5; e.act = 'move'; }
+    if (!e.clone) ring(g, e, 12, 100, TONE.shadow);
   }
   burst(g, e.x, e.y, what !== 'slam' ? '#a78bfa' : e.bossId === 'valdur' ? '#7dd3fc' : '#86efac', 20, 150, 3);
 }
