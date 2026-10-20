@@ -71,7 +71,9 @@ function drawWall(ctx: CanvasRenderingContext2D, b: BoardGame, now: number, retr
   wallAt = now;
   const target = b.phase === 'fight' ? 0 : 1;
   const was = wallUp;
-  wallUp = target > wallUp ? Math.min(1, wallUp + dt / WALL.move) : Math.max(0, wallUp - dt / WALL.move);
+  // Towards the target, and still once there (a plain `>` sent it down a step every frame it stood up).
+  if (target > wallUp) wallUp = Math.min(1, wallUp + dt / WALL.move);
+  else if (target < wallUp) wallUp = Math.max(0, wallUp - dt / WALL.move);
   const pieces = boardWallPieces(b.world);
   if (retro || wallUp <= 0 || !pieces.every(ok)) return;
   // As many pieces as keep the wall `WALL.h` tall.
