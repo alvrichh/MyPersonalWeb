@@ -467,6 +467,7 @@ function menuScreen() {
       <button class="cover-book${save.bookSeen ? '' : ' is-first'}" type="button" data-act="book" aria-label="${t('bookOpen')}"><img src="./images/game/items/seniorTome.webp" alt=""></button>
       <button class="hot cover-profile" data-act="profile" aria-label="${t('profile')}: ${esc(save.name)} · ${t('lvShort', { level })}"></button>
       <span class="cover-avatar" aria-hidden="true"><img src="${heroPic()}" alt=""></span>
+      ${friend ? `<button class="hot cover-friend" type="button" data-act="link" aria-label="${t('onlinePlay')}: ${esc(friend.name)}"><span class="friend-pic"><img src="./images/game/hero/${friend.still}.webp" alt=""></span><b>${esc(friend.name)}</b><i class="friend-dot" aria-hidden="true"></i></button>` : ''}
       <span class="cover-profile-copy"><small>${esc(save.name)}${masteries() ? ` ${stars()}` : ''}</small><b>${t('lvShort', { level })}</b><i><b style="width:${Math.round(progress * 100)}%"></b></i></span>
       <button class="hot cover-coins" data-act="coin-store" aria-label="${t('storeTitle')}: ${Math.floor(save.coins)}"></button>
       <span class="cover-num is-coins">${Math.floor(save.coins)}</span>
@@ -1689,58 +1690,89 @@ function boardVariantScreen(world: number) {
     <h2>${MODE_ICON.board} ${t('modeBoard')}</h2>
     <p>${t('boardVariantPick')}</p>
     <div class="book-modes">${opt('fusion')}${opt('tactics')}</div>
-    <button class="ghost" type="button" data-act="online">👥 ${t('onlinePlay')}</button>`);
+    ${friend ? friendInvite() : `<button class="ghost" type="button" data-act="link">👥 ${t('onlinePlay')}</button>`}`);
+}
+/** With a friend linked: their portrait and name, and one button for each way to invite them to it. */
+function friendInvite() {
+  if (!friend) return '';
+  return `<div class="friend-card"><span class="friend-pic"><img src="./images/game/hero/${friend.still}.webp" alt=""></span><b>${esc(friend.name)}</b><i class="friend-dot" aria-hidden="true"></i></div>
+    <p class="how">${t('linkInvite', { name: esc(friend.name) })}</p>
+    <div class="book-modes">
+      <button class="primary book-mode is-sprints" type="button" data-act="invite" data-variant="fusion"><b>🧬 ${t('boardFusion')}</b></button>
+      <button class="primary book-mode is-gold" type="button" data-act="invite" data-variant="tactics"><b>⭐ ${t('boardTactics')}</b></button>
+    </div>`;
 }
 
-/* The board against a person (`net.ts`): one phone makes a game in either way and shows a code, the other types it
-   in. The host picks the world (its own board world) and the seed and sends them with its name; both then play the
-   board as usual, each with its own shop, and each round's fight starts once both have pressed «¡A luchar!». */
+/* The link with a friend (`net.ts`): made once from the board's screen, by a code one phone shows and the other
+   types in, and kept open while you play on: the cover shows the friend under your profile, the board's screen
+   offers to invite them, and in a game their own hero stands in the rival's corner. An invitation carries the
+   way, the world and the seed; whoever invites is side 0 of the shared fights. */
+type Friend = { name: string; key: string; still: string };
+let friend: Friend | null = null;
 let rivalReady: { round: number; army: Piece[] } | null = null;
 let sentArmy: Piece[] | null = null;
-let onlineVariant: Variant = 'fusion';
-let onlineHost = false;
-function onlineScreen(note = '') {
+/** The invitation you sent and wait on, and the one you were sent and have not answered. */
+let inviting: { variant: Variant; world: number; seed: number } | null = null;
+let invitedBy: { variant: Variant; world: number; seed: number } | null = null;
+const hello = (): NetMsg => ({ t: 'hello', name: save.name, key: heroKey(save.skin, save.equipped.head), still: heroStill(save.skin, save.equipped.head) });
+const onCover = () => !board && !game && !!document.querySelector('.screen.is-menu');
+function linkScreen(note = '') {
+  if (friend) {
+    show(`<button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
+      <h2>👥 ${t('onlinePlay')}</h2>
+      <div class="friend-card"><span class="friend-pic"><img src="./images/game/hero/${friend.still}.webp" alt=""></span><b>${esc(friend.name)}</b><i class="friend-dot" aria-hidden="true"></i></div>
+      <p class="how">${t('linkOn', { name: esc(friend.name) })}</p>
+      <button class="primary" type="button" data-act="board-pick">⚔️ ${t('modeBoard')}</button>
+      <button class="ghost is-danger" type="button" data-act="link-off">${t('linkOff')}</button>`);
+    return;
+  }
   netLeave();
   show(`<button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
     <h2>👥 ${t('onlinePlay')}</h2>
     <p>${t('onlineHow')}</p>
     ${note ? `<p class="how">${note}</p>` : ''}
-    <h3 class="slot">${t('onlineHost')}</h3>
-    <div class="book-modes">
-      <button class="primary book-mode is-sprints" type="button" data-act="online-host" data-variant="fusion"><b>🧬 ${t('boardFusion')}</b></button>
-      <button class="primary book-mode is-gold" type="button" data-act="online-host" data-variant="tactics"><b>⭐ ${t('boardTactics')}</b></button>
-    </div>
+    <button class="primary" type="button" data-act="link-host">${t('onlineHost')}</button>
     <h3 class="slot">${t('onlineJoin')}</h3>
-    <input class="name-field online-code" id="onlineCode" maxlength="4" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ABCD" aria-label="${t('onlineCodeLabel')}">
-    <button class="primary" type="button" data-act="online-join">${t('onlineJoinBtn')}</button>`);
+    <input class="online-code" id="onlineCode" maxlength="4" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ABCD" aria-label="${t('onlineCodeLabel')}">
+    <button class="primary" type="button" data-act="link-join">${t('onlineJoinBtn')}</button>`);
 }
 const netHandlers = (): NetHandlers => ({
-  code: (code) => show(`<button class="ui-close" type="button" data-act="online" aria-label="${t('back')}"></button>
+  code: (code) => show(`<button class="ui-close" type="button" data-act="link" aria-label="${t('back')}"></button>
       <h2>👥 ${t('onlineHost')}</h2>
       <p>${t('onlineGive')}</p>
       <p class="online-big">${code}</p>
       <p class="how">⏳ ${t('onlineWait')}</p>`),
-  open: () => { if (!onlineHost) netSend({ t: 'hello', name: save.name, skin: heroKey(save.skin, save.equipped.head) }); },
+  open: () => netSend(hello()),
   msg: onNetMsg,
-  close: rivalGone,
-  error: (why) => onlineScreen(`⚠ ${t(why === 'peer-unavailable' ? 'onlineNoGame' : 'onlineError')}`),
+  close: friendGone,
+  error: (why) => linkScreen(`⚠ ${t(why === 'peer-unavailable' ? 'onlineNoGame' : 'onlineError')}`),
 });
 function onNetMsg(m: NetMsg) {
   if (m.t === 'hello') {
-    if (onlineHost) {
-      // The guest has said hello: the host sends the game's world, way and seed, and both start.
-      const seed = Math.floor(Math.random() * 2 ** 31);
-      const world = worldIn('board');
-      netSend({ t: 'hello', name: save.name, skin: heroKey(save.skin, save.equipped.head), variant: onlineVariant, world, seed });
-      startBoard(world, { variant: onlineVariant, online: { me: 0, seed, rivalLives: 10, rivalName: m.name, rivalArmy: null, waiting: false } });
-    } else if (m.seed !== undefined && m.world && m.variant) {
-      startBoard(m.world, { variant: m.variant, online: { me: 1, seed: m.seed, rivalLives: 10, rivalName: m.name, rivalArmy: null, waiting: false } });
-    }
+    const first = !friend;
+    friend = { name: cleanName(m.name), key: String(m.key).replace(/[^a-z-]/g, ''), still: String(m.still).replace(/[^a-z-]/g, '') };
+    if (first) { flash(t('linkMade', { name: esc(friend.name) })); audio.play('door'); if (!board && !game) menuScreen(); }
+  } else if (m.t === 'invite') {
+    if (board || game || inviting) { netSend({ t: 'decline' }); return; }
+    invitedBy = { variant: m.variant === 'tactics' ? 'tactics' : 'fusion', world: Math.max(1, Math.min(WORLD_COUNT, Math.round(m.world) || 1)), seed: m.seed >>> 0 };
+    audio.play('levelup');
+    show(`${friend ? `<div class="friend-card"><span class="friend-pic"><img src="./images/game/hero/${friend.still}.webp" alt=""></span><b>${esc(friend.name)}</b></div>` : ''}
+      <h2>${t('linkInvited', { name: esc(friend?.name ?? '') })}</h2>
+      <p>${invitedBy.variant === 'tactics' ? '⭐' : '🧬'} ${t(invitedBy.variant === 'tactics' ? 'boardTactics' : 'boardFusion')} · ${t('worldShort', { n: invitedBy.world })}</p>
+      <button class="primary" type="button" data-act="invite-yes">${t('linkAccept')}</button>
+      <button class="ghost" type="button" data-act="invite-no">${t('linkDecline')}</button>`);
+  } else if (m.t === 'uninvite') {
+    if (invitedBy) { invitedBy = null; if (!board && !game) menuScreen(); }
+  } else if (m.t === 'accept') {
+    if (inviting && friend) { const v = inviting; inviting = null; startBoard(v.world, { variant: v.variant, online: { me: 0, seed: v.seed, rivalLives: 10, rivalName: friend.name, rivalArmy: null, waiting: false } }); }
+  } else if (m.t === 'decline') {
+    if (inviting) { inviting = null; flash(t('linkBusy', { name: esc(friend?.name ?? '') })); boardVariantScreen(worldIn('board')); }
   } else if (m.t === 'ready') {
     rivalReady = { round: m.round, army: m.army };
     if (board?.online && !board.online.waiting) flash(t('onlineRivalReady', { name: esc(board.online.rivalName) }));
     tryOnlineFight();
-  } else if (m.t === 'bye') rivalGone();
+  } else if (m.t === 'quit') rivalQuit();
+  else if (m.t === 'bye') friendGone();
 }
 /** Both armies are in: the fight starts on both phones from the same seed. */
 function tryOnlineFight() {
@@ -1754,13 +1786,25 @@ function tryOnlineFight() {
   sentArmy = null;
   renderBoardUi();
 }
-function rivalGone() {
+/** The friend left the game you were playing (the link stays). */
+function rivalQuit() {
   const b = board;
   if (!b?.online || b.phase === 'over' || b.phase === 'won') return;
-  netLeave();
+  b.online = undefined; // nothing more to send them about this game
   paused = true;
-  show(`<h2>👥 ${t('onlineGone', { name: esc(b.online.rivalName) })}</h2>
+  show(`<h2>👥 ${t('onlineGone', { name: esc(friend?.name ?? '') })}</h2>
     <button class="primary" data-act="board-leave">${t('menu')}</button>`);
+}
+/** The link is gone: the friend disconnected or the connection dropped. */
+function friendGone() {
+  const was = friend;
+  friend = null;
+  inviting = null;
+  invitedBy = null;
+  netLeave();
+  if (board?.online && board.phase !== 'over' && board.phase !== 'won') { rivalQuit(); return; }
+  if (was) flash(t('linkLost', { name: esc(was.name) }));
+  if (onCover()) menuScreen();
 }
 function startBoard(world: number, net?: { variant: Variant; online: Online }) {
   game = null;
@@ -1778,6 +1822,12 @@ function startBoard(world: number, net?: { variant: Variant; online: Online }) {
   const key = heroKey(save.skin, save.equipped.head);
   const pic = (pose: string) => Object.assign(new Image(), { src: `./images/game/hero/${key}-${pose}.webp` });
   heroPics = { front: pic('front'), shoot: pic('shoot'), hurt: pic('hurt'), cheer: pic('cheer'), down: pic('down'), pad: Object.assign(new Image(), { src: './images/game/ui/portal_pad.webp' }), padRed: Object.assign(new Image(), { src: './images/game/ui/portal_pad_red.webp' }) };
+  // Against a friend, their own hero in the rival's corner, from their set's poses.
+  if (net && friend) {
+    const fk = friend.key;
+    const fp = (pose: string) => Object.assign(new Image(), { src: `./images/game/hero/${fk}-${pose}.webp` });
+    heroPics.rival = { front: fp('front'), shoot: fp('shoot'), hurt: fp('hurt'), cheer: fp('cheer'), down: fp('down') };
+  }
   boardEnded = null;
   boardTime = 0;
   boardBanked = false;
@@ -1797,7 +1847,7 @@ function startBoard(world: number, net?: { variant: Variant; online: Online }) {
 /** Leaves the board for the menu or the map (nothing banked: the end screen already banked it, or the player quit). */
 function endBoard() {
   if (!board) return;
-  if (board.online) netLeave();
+  if (board.online && board.phase !== 'over' && board.phase !== 'won') netSend({ t: 'quit' });
   board = null;
   boardDrag = null;
   boardUi.hidden = true;
@@ -2058,11 +2108,10 @@ function boardResultScreen(b: BoardGame) {
     if (b.online) {
       const name = esc(b.online.rivalName);
       const draw = b.lives === b.online.rivalLives;
-      netLeave();
       show(`${head(won ? 'victory' : 'defeat', draw ? t('onlineDraw') : won ? t('onlineWon', { name }) : t('onlineLost', { name }))}
         <p>❤ ${b.lives} · ${name} ❤ ${b.online.rivalLives}</p>
         <p class="reward">+${coins} 🪙</p>
-        <button class="primary" data-act="online">👥 ${t('onlineAgain')}</button>
+        <button class="primary" data-act="board-pick">👥 ${t('onlineAgain')}</button>
         <button class="ghost" data-act="board-leave">← ${t('menu')}</button>`);
       return;
     }
@@ -2276,20 +2325,34 @@ screen.addEventListener('click', (event) => {
     persist();
     startBoard(Number(target.dataset.bworld) || worldIn('board'));
   }
-  else if (act === 'online') onlineScreen();
-  else if (act === 'online-host') {
-    onlineVariant = target.dataset.variant === 'tactics' ? 'tactics' : 'fusion';
-    onlineHost = true;
-    show(`<h2>👥 ${t('onlineHost')}</h2><p class="how">⏳ ${t('onlineMaking')}</p><button class="ghost" data-act="online">${t('cancel')}</button>`);
+  else if (act === 'link') linkScreen();
+  else if (act === 'link-off') { const was = friend?.name; friend = null; netLeave(); if (was) flash(t('linkLost', { name: esc(was) })); menuScreen(); }
+  else if (act === 'link-host') {
+    show(`<h2>👥 ${t('onlineHost')}</h2><p class="how">⏳ ${t('onlineMaking')}</p><button class="ghost" data-act="link">${t('cancel')}</button>`);
     hostGame(netHandlers());
   }
-  else if (act === 'online-join') {
+  else if (act === 'link-join') {
     const code = cleanCode((document.getElementById('onlineCode') as HTMLInputElement | null)?.value ?? '');
     if (code.length !== 4) { flash(t('onlineCodeLabel')); return; }
-    onlineHost = false;
-    show(`<h2>👥 ${t('onlineJoin')}</h2><p class="how">⏳ ${t('onlineJoining', { code })}</p><button class="ghost" data-act="online">${t('cancel')}</button>`);
+    show(`<h2>👥 ${t('onlineJoin')}</h2><p class="how">⏳ ${t('onlineJoining', { code })}</p><button class="ghost" data-act="link">${t('cancel')}</button>`);
     joinGame(code, netHandlers());
   }
+  else if (act === 'board-pick') { menuScreen(); boardVariantScreen(worldIn('board')); }
+  else if (act === 'invite' && friend) {
+    inviting = { variant: target.dataset.variant === 'tactics' ? 'tactics' : 'fusion', world: worldIn('board'), seed: Math.floor(Math.random() * 2 ** 31) };
+    netSend({ t: 'invite', ...inviting });
+    show(`<div class="friend-card"><span class="friend-pic"><img src="./images/game/hero/${friend.still}.webp" alt=""></span><b>${esc(friend.name)}</b></div>
+      <p class="how">⏳ ${t('linkWaitAnswer', { name: esc(friend.name) })}</p>
+      <button class="ghost" type="button" data-act="invite-cancel">${t('cancel')}</button>`);
+  }
+  else if (act === 'invite-cancel') { inviting = null; netSend({ t: 'uninvite' }); boardVariantScreen(worldIn('board')); }
+  else if (act === 'invite-yes' && invitedBy && friend) {
+    const v = invitedBy;
+    invitedBy = null;
+    netSend({ t: 'accept' });
+    startBoard(v.world, { variant: v.variant, online: { me: 1, seed: v.seed, rivalLives: 10, rivalName: friend.name, rivalArmy: null, waiting: false } });
+  }
+  else if (act === 'invite-no') { invitedBy = null; netSend({ t: 'decline' }); menuScreen(); }
   else if (act === 'board-quit-ask') boardQuitScreen();
   else if (act === 'board-leave' && board) { bankBoard(board); menuScreen(); }
   else if (act === 'secret') secretScreen();

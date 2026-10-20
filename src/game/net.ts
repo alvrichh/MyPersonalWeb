@@ -1,13 +1,18 @@
-/* The board against a person: two phones joined straight to each other by WebRTC (PeerJS). The host makes a game
-   and gets a short code; the guest types it in. PeerJS's free public server only introduces the two; after that
+/* The link with a friend: two phones joined straight to each other by WebRTC (PeerJS), once, from the cover: one
+   makes a code and the other types it in, and the link stays open while you play on (either can then invite the
+   other to a board game). PeerJS's free public server only introduces the two; after that
    the messages go from phone to phone (on the same Wi-Fi they never leave the house). What is sent is tiny: who you
    are, the game's world, way and seed, and each round your army as it stands when you press «¡A luchar!». Both
    phones then play the same fight from the same seed (`startOnlineFight` in `board.ts`). */
 import Peer, { type DataConnection } from 'peerjs';
 import type { Piece, Variant } from './board';
 
-export type NetHello = { t: 'hello'; name: string; skin: string; variant?: Variant; world?: number; seed?: number };
-export type NetMsg = NetHello | { t: 'ready'; round: number; army: Piece[] } | { t: 'bye' };
+/** Who you are: your name, your hero's set (for its poses) and its standing picture. */
+export type NetHello = { t: 'hello'; name: string; key: string; still: string };
+/** An invitation to a board game: its way, world and seed. */
+export type NetInvite = { t: 'invite'; variant: Variant; world: number; seed: number };
+export type NetMsg = NetHello | NetInvite | { t: 'accept' } | { t: 'decline' } | { t: 'uninvite' }
+  | { t: 'ready'; round: number; army: Piece[] } | { t: 'quit' } | { t: 'bye' };
 
 export type NetHandlers = {
   /** The host's code, once PeerJS has it. */
