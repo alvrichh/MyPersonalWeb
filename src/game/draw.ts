@@ -4514,7 +4514,7 @@ const SPRITE_CANVAS: Record<string, { k: number; feet: number }> = {
   'robot-bug': { k: 1.431, feet: 0.0051 }, 'robot-ticket': { k: 1.4, feet: 0 }, 'robot-legacy': { k: 1.446, feet: 0.0299 },
   'robot-boss': { k: 1.127, feet: 0.0083 }, 'nightmare-bug': { k: 1.31, feet: 0.0165 }, 'nightmare-ticket': { k: 1.369, feet: 0 },
   'nightmare-legacy': { k: 1.098, feet: 0 }, 'nightmare-boss': { k: 1.137, feet: 0 },
-  'core-bug': { k: 1.536, feet: 0.025 }, 'core-ticket': { k: 1.995, feet: 0.026 }, 'core-legacy': { k: 2.369, feet: 0.3004 }, 'core-boss': { k: 1.318, feet: 0.1103 },
+  'core-bug': { k: 2.05, feet: 0.025 }, 'core-ticket': { k: 2.2, feet: 0.026 }, 'core-legacy': { k: 2.369, feet: 0.1031 }, 'core-boss': { k: 1.318, feet: 0.1103 },
   'mud-bug': { k: 1.667, feet: 0.0959 }, 'mud-ticket': { k: 1.291, feet: 0.086 }, 'mud-legacy': { k: 1.097, feet: 0.06 },
 };
 /* The walk cycles: the four-frame sheets loop; the three walking frames of the others are a stride, the
