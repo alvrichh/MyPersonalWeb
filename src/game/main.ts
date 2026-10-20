@@ -8,7 +8,7 @@ import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPr
 import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
 import { draw, drawRetroFigure, preloadCast, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
-import { ROUNDS, SYNERGY, TACTICS, armyCap, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, updateBoard, type BoardGame } from './board';
+import { ROUNDS, SYNERGY, TACTICS, armyCap, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, updateBoard, type BoardGame } from './board';
 import { FIREBALL, boardMerged, drawBoard, drawBoardDrag, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
 import type { Enemy } from './world';
 import { ARMOUR_SLOTS, ARSENAL, ITEMS, itemLevel, type SpiritSkin, UPGRADES, WEAPON_SLOTS, EXTRA_SLOT_PRICE, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
@@ -1655,6 +1655,8 @@ const boardTop = $<HTMLElement>('boardTop');
 const boardShop = $<HTMLElement>('boardShop');
 /** The dragged unit's own canvas, over the top bar and the shop (cleared once after a drag ends). */
 let floatDrawn = false;
+/** The auto-merge whose lightning has crackled already. */
+let boardZapped = '';
 const boardFloat = $<HTMLCanvasElement>('boardFloat');
 const floatCtx = boardFloat.getContext('2d') as CanvasRenderingContext2D;
 let board: BoardGame | null = null;
@@ -1816,7 +1818,6 @@ boardUi.addEventListener('click', (event) => {
     else if (buyAutoMerge(b)) {
       audio.play('zip');
       flash(t('boardAutoBought'));
-      if (b.lastMerge) { const m = b.lastMerge; b.lastMerge = null; boardMerged(m.slot, m.id, performance.now() / 1000); }
     }
   }
   else if (act === 'summon') {
@@ -1825,14 +1826,8 @@ boardUi.addEventListener('click', (event) => {
     else if (r === 'full') flash(t('boardBenchFull'));
     else if (r === 'ok') {
       const now = performance.now() / 1000;
-      if (b.lastMerge) {
-        const m = b.lastMerge;
-        b.lastMerge = null;
-        boardMerged(m.slot, m.id, now);
-        audio.play('zip');
-        const name = boardTierName(pieceAt(b, m.slot)?.tier ?? 0);
-        flash(m.combo > 1 ? t('boardCombo', { n: m.combo, name }) : t('boardMerged', { name }));
-      } else if (b.lastSummon) {
+      // The merge, if any, comes a moment later with its lightning (`tickMerge`, in `boardStep`).
+      if (b.lastSummon) {
         // A puff where it lands, too, and its name.
         boardMerged(b.lastSummon.slot, b.lastSummon.id, now);
         audio.play('pick');
@@ -1914,6 +1909,23 @@ function boardStep(dt: number, now: number) {
       }
     }
   } else boardTime += b.phase === 'prep' ? dt : 0;
+  // Fusion's auto-merge plays out here: the lightning, then the merge with its smoke, its bloop and its name.
+  if (b.phase === 'prep' && !paused) {
+    // The lightning's crackle as it starts.
+    const pend = b.pending ? `${b.pending.a}>${b.pending.b}` : '';
+    if (pend && pend !== boardZapped) audio.play('strike');
+    boardZapped = pend;
+    tickMerge(b, dt);
+    if (b.lastMerge) {
+      const m = b.lastMerge;
+      b.lastMerge = null;
+      boardMerged(m.slot, m.id, now / 1000);
+      audio.play('zip');
+      const name = boardTierName(pieceAt(b, m.slot)?.tier ?? 0);
+      flash(m.combo > 1 ? t('boardCombo', { n: m.combo, name }) : t('boardMerged', { name }));
+      boardKey = '';
+    }
+  }
   const shown = `${b.phase}${b.round}${b.lives}`;
   if ((b.phase === 'result' || b.phase === 'over' || b.phase === 'won') && boardShown !== shown) {
     boardShown = shown;
