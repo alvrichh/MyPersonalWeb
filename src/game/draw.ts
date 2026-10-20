@@ -4444,7 +4444,61 @@ function drawStrikes(ctx: CanvasRenderingContext2D, g: Game, now: number) {
 
 /** Ice spikes: while they warn, an icy ring with the floor cracking open more and more inside it; then a
    cluster of spikes bursts up out of it, stays a moment and crumbles back down. */
+/* The owner's ice spikes, four variants of seven frames (`fx/icicle-<v>-<f>.webp`: the floor cracking, then the spikes
+   growing), each variant cut on one canvas so its frames share the floor point: where the crack's middle sits (`cx`, `cy`,
+   fractions of the picture) and how wide the crack is (`cw`), so it is drawn as wide as the warned ring. */
+const ICICLE_PIC = [
+  { cx: 0.494, cy: 0.824, cw: 0.629 },
+  { cx: 0.547, cy: 0.743, cw: 0.727 },
+  { cx: 0.502, cy: 0.783, cw: 0.658 },
+  { cx: 0.543, cy: 0.7, cw: 0.703 },
+];
+/** How long the spikes take to grow through their six frames once they strike. */
+const ICICLE_GROW = 0.18;
+function drawIcicleArt(ctx: CanvasRenderingContext2D, st: { x: number; y: number; t: number }, now: number) {
+  const v = Math.abs(Math.floor(st.x * 7 + st.y * 13)) % 4;
+  const warn = st.t > 0;
+  const age = -st.t;
+  const frame = warn ? 0 : Math.min(6, 1 + Math.floor((age / ICICLE_GROW) * 6));
+  // Every frame is asked for while the floor cracks, so the spikes are loaded by the time they strike.
+  if (warn) for (let f = 1; f < 7; f++) fxImage(`icicle-${v}-${f}`);
+  const pic = fxImage(`icicle-${v}-${frame}`);
+  if (!ready(pic) || !ready(fxImage(`icicle-${v}-6`))) return false;
+  const r = ICICLE_R;
+  const m = ICICLE_PIC[v];
+  // The ring still marks where it will strike while the floor cracks open inside it.
+  let alpha = 1;
+  let grow = 1;
+  if (warn) {
+    const t = 1 - st.t / 0.9;
+    // A soft dark pool and a deep blue ring, since the pale crack alone hardly shows on the frozen floor.
+    const pool = ctx.createRadialGradient(st.x, st.y, 0, st.x, st.y, r * 1.1);
+    pool.addColorStop(0, `rgba(3,37,76,${0.3 + t * 0.25})`);
+    pool.addColorStop(1, 'rgba(3,37,76,0)');
+    ctx.fillStyle = pool;
+    ctx.beginPath();
+    ctx.ellipse(st.x, st.y, r * 1.1, r * 0.75, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = `rgba(3,105,161,${0.55 + t * 0.45})`;
+    ctx.lineWidth = 2.5;
+    ctx.setLineDash([6, 5]);
+    ctx.beginPath();
+    ctx.arc(st.x, st.y, r, now * 2, now * 2 + Math.PI * 2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    alpha = 0.5 + 0.5 * t;
+    grow = 0.55 + 0.45 * t;
+  } else alpha = Math.min(1, (ICICLE_STAY - age) / (ICICLE_STAY * 0.35));
+  if (alpha <= 0) return true;
+  const w = ((r * 2.5) / m.cw) * grow;
+  const h = (w * pic.naturalHeight) / pic.naturalWidth;
+  ctx.globalAlpha = alpha;
+  ctx.drawImage(pic, st.x - w * m.cx, st.y - h * m.cy, w, h);
+  ctx.globalAlpha = 1;
+  return true;
+}
 function drawIcicle(ctx: CanvasRenderingContext2D, st: { x: number; y: number; t: number; hit?: boolean }, now: number) {
+  if (!retroLook && drawIcicleArt(ctx, st, now)) return;
   const r = ICICLE_R;
   if (st.t > 0) {
     const t = 1 - st.t / 0.9;
