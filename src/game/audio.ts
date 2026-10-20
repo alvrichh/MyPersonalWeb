@@ -1382,11 +1382,12 @@ class Engine {
       car.connect(lp).connect(g).connect(this.musicBus);
       this.sub(at, freq / 2, length);
     } else if (voice === 'squelch') {
-      // Mud: a saw through a sharp, resonant low-pass that snaps shut, squelching, with a sub under it.
+      // Mud: a saw through a low-pass that closes on each note, with a sub under it. It was sharper (resonance 13,
+      // snapping from 2600 to 140 Hz in 0.22 s), a short frog-like sweep on every note that the owner found too much.
       const o = this.osc('sawtooth', freq, at, end);
-      const lp = this.filt('lowpass', 2600, 13);
-      lp.frequency.setValueAtTime(2600 + this.intensity * 1200, at);
-      lp.frequency.exponentialRampToValueAtTime(140, at + Math.min(0.22, length));
+      const lp = this.filt('lowpass', 1500, 4);
+      lp.frequency.setValueAtTime(1500 + this.intensity * 500, at);
+      lp.frequency.exponentialRampToValueAtTime(320, at + Math.min(0.35, length));
       this.env(g, at, 0.42, 0.004, length * 0.6, 0.5, length * 0.3);
       o.connect(lp).connect(g).connect(this.musicBus);
       this.sub(at, freq / 2, length);
@@ -1572,8 +1573,8 @@ class Engine {
       case 9: // Big Ball of Mud: frogs croaking in turn, mud bubbling, drips, crickets, a snake's rattling hiss.
         // Fewer frogs and bubbles than before: the short rising sweeps came too often for the owner.
         if (calm ? inBar === 0 && bar % 2 === 0 : inBar === 11 && bar % 4 === 3 && r < 0.5) this.croak(at, bar % 4 < 2 ? 1 : 1.25);
-        // TEMPORARY, so the owner can tell which sound it is: a loud bloop on every beat. Put back to 0.05 / 0.015.
-        if (inBar % 4 === 0) this.bloop(at, true);
+        // The mud's bubbles, which the owner likes: a little more often and louder than they first were.
+        if (r < (calm ? 0.08 : 0.03)) this.bloop(at + Math.random() * STEP, true);
         if (calm && inBar % 4 === 2 && Math.random() < 0.35) this.drip(at);
         if (calm && inBar === 8 && bar % 2 === 0) this.cricket(at);
         if (sec === 'peak' && inBar === 14 && bar % 2 === 1) this.rattle(at);
@@ -1878,7 +1879,7 @@ class Engine {
     const o = this.osc('sine', f, at, at + 0.12);
     o.frequency.exponentialRampToValueAtTime(f * 3.2, at + 0.08);
     const g = this.ctx.createGain();
-    this.env(g, at, loud ? 0.6 : 0.1, 0.003, 0.09);
+    this.env(g, at, loud ? 0.2 : 0.1, 0.003, 0.09);
     o.connect(g);
     this.out(g, 0.18);
   }
