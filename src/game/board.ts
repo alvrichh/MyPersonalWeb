@@ -70,6 +70,13 @@ export function synergies(b: { army: { cast: number }[] }) {
   return Object.entries(count).map(([cast, n]) => ({ cast: Number(cast), n, lv: n >= SYNERGY.need[1] ? 2 : n >= SYNERGY.need[0] ? 1 : 0 })).sort((a, c) => c.n - a.n || a.cast - c.cast);
 }
 const synV = (f: { syn: number; synLv: number }, world: number) => (f.syn === world && f.synLv ? SYNERGY.v[world][f.synLv - 1] : 0);
+/** The room-6 boss's leap: after `wait` seconds of the fight it jumps over the front line to land beside the enemy's
+    ranged unit furthest back (or its furthest unit), in `time` seconds, its landing hitting all within `reach`. */
+export const LEAP = { wait: 0.8, time: 0.55, reach: 46, dmg: 0.6 };
+/** The final boss's charge: every `every` seconds (the first after `first`) it aims for `aim` seconds, then dashes
+    `speed` along the line for up to `dash` seconds, hitting each foe it runs through for `dmg` times its blow and
+    throwing it aside. */
+export const CHARGE = { first: 2.5, every: 8, aim: 0.6, dash: 0.45, speed: 420, dmg: 0.5, push: 26 };
 /** Your commander's fireball: it bursts on the thickest knot of enemies, its damage growing with the round. */
 export const STRIKE = { fly: 0.6, reach: 75, dmg: 140, perRound: 0.25 };
 
@@ -128,6 +135,17 @@ export type Fighter = {
   burnDps: number;
   slow: number;
   slowBy: number;
+  /** The room-6 boss's leap, once a fight: in the air (`t` running from 0 to `LEAP.time`) from where it stood to beside
+      the enemy's ranged units at the back; null on the ground. `leapCd` counts down to it. */
+  leap: { t: number; fx: number; fy: number; tx: number; ty: number } | null;
+  leapCd: number;
+  /** The final boss's charge: aiming (`aim` seconds left, along `dir`), then dashing (`dash` seconds left), hitting
+      each foe it runs through once (`hitIds`); `chargeCd` counts down to the next. */
+  aim: number;
+  dash: number;
+  dir: { x: number; y: number };
+  chargeCd: number;
+  hitIds: number[];
 };
 export type Shot = { x: number; y: number; vx: number; vy: number; side: 0 | 1; dmg: number; target: number; life: number; ring: boolean; syn: number; synLv: number };
 /** The special rounds, every third: gold rains in, everyone hits faster, everyone is tougher, or a win pays double. */
@@ -160,6 +178,8 @@ export type BoardGame = {
   skillUsed: boolean;
   strike: { x: number; y: number; t: number } | null;
   boom: { x: number; y: number; age: number } | null;
+  /** The bosses' impacts, only to be seen: a leap's landing (`slam`) and a charge's hits (`ring`). */
+  impacts: { x: number; y: number; age: number; kind: 'slam' | 'ring' }[];
   /** The last buy that merged by itself: where, into which unit, and how many merges in a row (in Tactics, the
       star it reached). */
   lastMerge: { slot: Slot; id: number; combo: number; star?: Star } | null;
@@ -203,7 +223,7 @@ export const saleOf = (p: Piece, variant: Variant = 'fusion') =>
 export function newBoard(world: number, casts: number, variant: Variant = 'fusion'): BoardGame {
   const b: BoardGame = {
     world, variant, casts: Math.max(1, casts), round: 1, lives: LIVES, gold: Math.round(8 * castPower(world)), phase: 'prep',
-    army: [], shop: [], wave: enemyWave(world, 1), fighters: [], shots: [], time: 0, last: null, wins: 0, kills: 0, events: [], event: null, skillUsed: false, strike: null, boom: null, lastMerge: null, lastSummon: null, autoMerge: false, autoBought: false, pending: null,
+    army: [], shop: [], wave: enemyWave(world, 1), fighters: [], shots: [], time: 0, last: null, wins: 0, kills: 0, events: [], event: null, skillUsed: false, strike: null, boom: null, impacts: [], lastMerge: null, lastSummon: null, autoMerge: false, autoBought: false, pending: null,
   };
   // You start with a bug of the latest cast on the board.
   b.army.push({ id: nextId++, tier: 0, cast: b.casts, slot: { c: 2, r: ROWS - 2 }, star: 1 });
@@ -438,6 +458,7 @@ function fighter(side: 0 | 1, tier: Tier, cast: number, x: number, y: number, mu
     id, side, tier, cast, star, x, y, hp, maxHp: hp, dmg: st.dmg * mult * (1 + synV(f, 9)), rate: st.rate * (1 + synV(f, 6)) * (event === 'frenzy' ? 1.3 : 1), range: st.range, speed: st.speed, r: st.r,
     splash: st.splash ?? 0, ranged: !!st.ranged, cd: rand(0.1, 0.6), ring: RING.every * 0.6, target: -1, retarget: 0, dead: false,
     face: side === 0 ? 1 : -1, step: Math.random() * 4, swing: 0, hit: 0, syn, synLv, burn: 0, burnDps: 0, slow: 0, slowBy: 0,
+    leap: null, leapCd: tier === 3 ? LEAP.wait : Infinity, aim: 0, dash: 0, dir: { x: 0, y: side === 0 ? -1 : 1 }, chargeCd: tier >= 4 ? CHARGE.first : Infinity, hitIds: [],
   };
 }
 
@@ -492,6 +513,7 @@ export function startFight(b: BoardGame) {
   b.skillUsed = false;
   b.strike = null;
   b.boom = null;
+  b.impacts = [];
   b.time = 0;
   b.phase = 'fight';
   b.events.push('fight');
@@ -558,6 +580,92 @@ export function commanderStrike(b: BoardGame) {
   return true;
 }
 
+/** The bosses' moves, which take over their turn while they run: the room-6 boss leaps once over the front line
+    onto the archers at the back; the final boss charges through a line of foes every few seconds. */
+function bossMoves(b: BoardGame, f: Fighter, dt: number) {
+  const foes = alive(b, f.side === 0 ? 1 : 0);
+  if (f.leap) {
+    f.leap.t += dt;
+    const k = Math.min(1, f.leap.t / LEAP.time);
+    f.x = f.leap.fx + (f.leap.tx - f.leap.fx) * k;
+    f.y = f.leap.fy + (f.leap.ty - f.leap.fy) * k;
+    if (k >= 1) {
+      for (const o of foes) if (Math.hypot(o.x - f.x, o.y - f.y) <= LEAP.reach + o.r) land(b, f, o, f.dmg * LEAP.dmg);
+      f.leap = null;
+      f.swing = 0.4;
+      b.impacts.push({ x: f.x, y: f.y, age: 0, kind: 'slam' });
+      f.retarget = 0;
+      b.events.push('land');
+    }
+    return true;
+  }
+  if (f.leapCd !== Infinity) {
+    f.leapCd -= dt;
+    if (f.leapCd <= 0) {
+      f.leapCd = Infinity;
+      // The ranged foe furthest back, or the furthest foe of all.
+      const back = (o: Fighter) => (f.side === 0 ? -o.y : o.y);
+      const pool = foes.some((o) => o.ranged) ? foes.filter((o) => o.ranged) : foes;
+      const t = pool.sort((p, q) => back(q) - back(p))[0];
+      if (t) {
+        const side = t.x < BOARD_W / 2 ? 1 : -1;
+        const tx = Math.max(f.r, Math.min(BOARD_W - f.r, t.x + side * (t.r + f.r) * 0.7));
+        const ty = Math.max(f.r, Math.min(BOARD_H - f.r, t.y + (f.side === 0 ? -1 : 1) * 6));
+        f.leap = { t: 0, fx: f.x, fy: f.y, tx, ty };
+        f.target = t.id;
+        f.face = tx > f.x ? 1 : -1;
+        b.events.push('leap');
+        return true;
+      }
+    }
+  }
+  if (f.dash > 0) {
+    f.dash -= dt;
+    const step = CHARGE.speed * dt;
+    f.x = Math.max(f.r, Math.min(BOARD_W - f.r, f.x + f.dir.x * step));
+    f.y = Math.max(f.r, Math.min(BOARD_H - f.r, f.y + f.dir.y * step));
+    for (const o of foes) {
+      if (f.hitIds.includes(o.id) || Math.hypot(o.x - f.x, o.y - f.y) > f.r + o.r) continue;
+      f.hitIds.push(o.id);
+      land(b, f, o, f.dmg * CHARGE.dmg);
+      b.impacts.push({ x: o.x, y: o.y, age: 0, kind: 'ring' });
+      // Thrown aside, off its line.
+      const side = (o.x - f.x) * f.dir.y - (o.y - f.y) * f.dir.x >= 0 ? 1 : -1;
+      o.x = Math.max(o.r, Math.min(BOARD_W - o.r, o.x - f.dir.y * side * CHARGE.push));
+      o.y = Math.max(o.r, Math.min(BOARD_H - o.r, o.y + f.dir.x * side * CHARGE.push));
+      b.events.push('slam');
+    }
+    if (f.dash <= 0) f.retarget = 0;
+    return true;
+  }
+  if (f.aim > 0) {
+    f.aim -= dt;
+    if (f.aim <= 0) { f.dash = CHARGE.dash; f.hitIds = []; b.events.push('charge'); }
+    return true;
+  }
+  if (f.chargeCd !== Infinity) {
+    f.chargeCd -= dt;
+    if (f.chargeCd <= 0 && foes.length) {
+      f.chargeCd = CHARGE.every;
+      // At the thickest knot of foes within reach of a dash.
+      let best: Fighter | undefined;
+      let most = -1;
+      for (const o of foes) {
+        const n = foes.filter((q) => Math.hypot(q.x - o.x, q.y - o.y) <= 60).length - Math.hypot(o.x - f.x, o.y - f.y) / 400;
+        if (n > most) { most = n; best = o; }
+      }
+      if (best) {
+        const dx = best.x - f.x, dy = best.y - f.y, d = Math.hypot(dx, dy) || 1;
+        f.dir = { x: dx / d, y: dy / d };
+        f.face = dx >= 0 ? 1 : -1;
+        f.aim = CHARGE.aim;
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
 /** One step of the fight: every unit goes for the nearest foe, walks up to it and strikes; it ends when one side
     is gone or the time is up. */
 export function updateBoard(b: BoardGame, dt: number) {
@@ -565,6 +673,8 @@ export function updateBoard(b: BoardGame, dt: number) {
   if (b.phase !== 'fight') return;
   b.time += dt;
   if (b.boom) { b.boom.age += dt; if (b.boom.age > 0.5) b.boom = null; }
+  for (const i of b.impacts) i.age += dt;
+  b.impacts = b.impacts.filter((i) => i.age < 0.5);
   if (b.strike) {
     b.strike.t -= dt;
     if (b.strike.t <= 0) {
@@ -586,6 +696,7 @@ export function updateBoard(b: BoardGame, dt: number) {
     if (synV(f, 5)) f.hp = Math.min(f.maxHp, f.hp + f.maxHp * synV(f, 5) * dt);
     // Slowed by ice: it walks and strikes 30% (45%) slower.
     const slowK = 1 - f.slowBy;
+    if (bossMoves(b, f, dt)) continue;
     f.cd -= dt * slowK;
     f.retarget -= dt;
     let t = byId(b, f.target);
@@ -627,7 +738,7 @@ export function updateBoard(b: BoardGame, dt: number) {
     }
   }
   // Units push one another apart and stay on the board.
-  const live = b.fighters.filter((f) => !f.dead);
+  const live = b.fighters.filter((f) => !f.dead && !f.leap);
   for (let i = 0; i < live.length; i++) for (let j = i + 1; j < live.length; j++) {
     const a = live[i], c = live[j];
     const dx = c.x - a.x, dy = c.y - a.y;

@@ -5011,7 +5011,7 @@ const ICE_SPIKES: [number, number, number, number][] = [
 /* ------------------------------------------------------- the board mode */
 
 /** What the board mode (`boardView.ts`) needs to draw one of its units with the cast's own pictures. */
-export type BoardFigure = { look: Look; kind: Enemy['kind']; final: boolean; bossId: string; face: number; step: number; swing: number; hit: number; r: number };
+export type BoardFigure = { look: Look; kind: Enemy['kind']; final: boolean; bossId: string; face: number; step: number; swing: number; hit: number; r: number; aim?: number; dash?: number; dir?: { x: number; y: number } };
 /** Draws a board unit at the origin (the caller translates to its feet's centre), its painted sprite or, in retro
     or until the pictures load, the cast's drawn figure. */
 export function drawBoardFigure(ctx: CanvasRenderingContext2D, f: BoardFigure, now: number, retro: boolean, outline: string | null = null) {
