@@ -2847,6 +2847,21 @@ function drawThreats(ctx: CanvasRenderingContext2D, g: Game, now: number, top: b
         ctx.stroke();
       } else {
         const flick = t.kind === 'beam' ? 0.85 + Math.sin(now * 40) * 0.15 : Math.min(1, t.life / 0.18);
+        // The storm grid's bolts and the Mech's sweeping lasers: the laser weapon's painted column laid along the
+        // line (blue for Zeus, yellow for anyone else's grid, red for the Mech's lasers).
+        const look = retroLook ? null : t.el === 'laser' ? 'red' : t.el === 'bolt' && t.kind === 'line' && !t.shot ? (t.blue ? 'blue' : 'yellow') : null;
+        const beam = look ? fxImage(`laser-${look}`) : null;
+        if (look && beam && ready(beam)) {
+          const [cx, , colW] = LASER_PIC[look === 'blue' ? 'yellow' : look];
+          const dw = (t.r * 3.2) / colW;
+          const split = beam.naturalHeight * LASER_SPLIT;
+          ctx.globalAlpha = flick;
+          ctx.rotate(-Math.PI / 2);
+          ctx.drawImage(beam, 0, 0, beam.naturalWidth, split, -dw * cx, 0, dw, t.len);
+          ctx.globalAlpha = 1;
+          ctx.restore();
+          continue;
+        }
         if (!retroLook) { ctx.shadowColor = `rgb(${c})`; ctx.shadowBlur = 16; }
         ctx.fillStyle = `rgba(${c},${0.7 * flick})`;
         ctx.fillRect(0, -t.r * 1.3, t.len, t.r * 2.6);
