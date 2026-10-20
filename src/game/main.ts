@@ -8,7 +8,7 @@ import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPr
 import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
 import { draw, drawRetroFigure, preloadCast, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
-import { ROUNDS, SYNERGY, armyCap, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, updateBoard, type BoardGame } from './board';
+import { ROUNDS, SYNERGY, armyCap, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, updateBoard, type BoardGame } from './board';
 import { FIREBALL, boardMerged, drawBoard, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
 import type { Enemy } from './world';
 import { ARMOUR_SLOTS, ARSENAL, ITEMS, itemLevel, type SpiritSkin, UPGRADES, WEAPON_SLOTS, EXTRA_SLOT_PRICE, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
@@ -1754,6 +1754,8 @@ function renderBoardUi() {
     <span class="hud-room">${t('worldShort', { n: b.world })} · ${t('boardRound', { n: b.round, total: ROUNDS })}</span>
     <span class="hud-coins" aria-label="${t('boardGoldLabel')}"><span class="hud-coin-orb" aria-hidden="true">🪙</span><b>${b.gold}</b></span>
     <button class="hud-pause" type="button" data-bact="pause" aria-label="${t('pause')}"><span aria-hidden="true">Ⅱ</span></button>`;
+  // Fusion has no cards: «Summon» drops a unit straight onto the board; the cards are Tactics' only.
+  const fusion = b.variant === 'fusion';
   const cards = b.shop.map((o, i) => o
     ? `<button class="board-card${b.variant === 'tactics' ? ` is-r${o.tier}` : ''}" type="button" data-bact="buy" data-i="${i}"${!prep || b.gold < o.price ? ' disabled' : ''}><i class="board-cast">${t('worldShort', { n: o.cast })}</i><img src="${boardPic(o.tier, o.cast)}" alt=""><b>${boardTierName(o.tier)}</b><span class="board-price">${coin} ${o.price}</span></button>`
     : '<span class="board-card is-sold"></span>').join('');
@@ -1763,9 +1765,11 @@ function renderBoardUi() {
       ${syns.filter((x) => x.n >= 2).map((x) => `<button class="board-syn is-lv${x.lv}" type="button" data-bact="syn" data-cast="${x.cast}" aria-label="${t(`boardSyn${x.cast}` as Key)}">${WORLD_ICON[x.cast - 1]} ${x.n}/${x.lv >= 1 ? SYNERGY.need[1] : SYNERGY.need[0]}</button>`).join('')}
       ${b.event ? `<span class="board-event">⭐ ${t(`boardEvent${cap(b.event)}` as Key)}</span>` : ''}
     </div>
-    <div class="board-cards">${cards}</div>
+    ${fusion ? '' : `<div class="board-cards">${cards}</div>`}
     <div class="board-acts">
-      <button class="ghost board-reroll" type="button" data-bact="reroll"${b.gold < 1 ? ' disabled' : ''}>🎲 ${t('boardReroll')} · ${coin} 1</button>
+      ${fusion
+        ? `<button class="ghost board-reroll board-summon" type="button" data-bact="summon"${b.gold < summonPrice(b) ? ' disabled' : ''}>✨ ${t('boardSummon')} · ${coin} ${summonPrice(b)}</button>`
+        : `<button class="ghost board-reroll" type="button" data-bact="reroll"${b.gold < 1 ? ' disabled' : ''}>🎲 ${t('boardReroll')} · ${coin} 1</button>`}
       <button class="primary board-go" type="button" data-bact="fight"${b.army.length ? '' : ' disabled'}>⚔️ ${t('boardFight')}</button>
     </div>` : `<div class="board-fight-row"><button class="board-skill" type="button" data-bact="skill"${b.skillUsed ? ' disabled' : ''} aria-label="${t('boardSkill')}">${save.retro ? '🔥' : '<img src="./images/game/skills/fireball.webp" alt="">'}</button><p class="board-fighting">${t('boardFighting')}</p>${speedUp ? `<button class="board-speed${boardFast ? ' is-on' : ''}" type="button" data-bact="speed" aria-pressed="${boardFast}" aria-label="${t('boardSpeed')}">${boardFast ? '×1' : '×2'}</button>` : ''}</div>`;
 }
@@ -1790,6 +1794,29 @@ boardUi.addEventListener('click', (event) => {
       flash(m.star ? t('boardStarUp', { name, star: '★'.repeat(m.star) }) : m.combo > 1 ? t('boardCombo', { n: m.combo, name }) : t('boardMerged', { name }));
     } else audio.play('pick');
   } else if (act === 'reroll') { if (boardReroll(b)) audio.play('click'); }
+  else if (act === 'summon') {
+    const r = boardSummon(b);
+    if (r === 'gold') flash(t('boardNoGold'));
+    else if (r === 'full') flash(t('boardBenchFull'));
+    else if (r === 'ok') {
+      const now = performance.now() / 1000;
+      if (b.lastMerge) {
+        const m = b.lastMerge;
+        b.lastMerge = null;
+        boardMerged(m.slot, m.id, now);
+        audio.play('levelup');
+        const name = boardTierName(pieceAt(b, m.slot)?.tier ?? 0);
+        flash(m.combo > 1 ? t('boardCombo', { n: m.combo, name }) : t('boardMerged', { name }));
+      } else if (b.lastSummon) {
+        // A puff where it lands, too, and its name.
+        boardMerged(b.lastSummon.slot, b.lastSummon.id, now);
+        audio.play('pick');
+        const p = pieceAt(b, b.lastSummon.slot);
+        if (p && p.tier > 0) flash(t('boardSummoned', { name: boardTierName(p.tier) }));
+      }
+      b.lastSummon = null;
+    }
+  }
   else if (act === 'speed') { boardFast = !boardFast; audio.play('click'); }
   else if (act === 'skill') { if (commanderStrike(b)) audio.play('shoot'); }
   else if (act === 'syn') { const c = Number(el.dataset.cast); flash(t('boardSynLine', { world: WORLD_ICON[c - 1], gift: t(`boardSyn${c}` as Key), need: SYNERGY.need[0], more: SYNERGY.need[1] })); }
