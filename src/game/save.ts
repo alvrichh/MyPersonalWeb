@@ -87,6 +87,8 @@ export type Save = {
   /** Nightmare's longest run (no clock, so the time is the record). */
   nightmareBest: { time: number; kills: number } | null;
   runs: number;
+  /** Seconds played in runs, all told; kept through a reset or a mastery. */
+  playTime: number;
   /** All the XP ever picked up: the profile level on the title screen. */
   xp: number;
 };
@@ -133,6 +135,7 @@ const fresh = (): Save => ({
   hordeBest: {},
   nightmareBest: null,
   runs: 0,
+  playTime: 0,
   xp: 0,
 });
 
@@ -228,7 +231,7 @@ export const worldWon = (save: Save, n: number) => save.bestByWorld[n]?.time !==
 
 /** Back to a fresh start: progress, coins, gear and level go; name, skins bought, settings, masteries and star colour stay. */
 export function wipeProgress(save: Save) {
-  const keep = { name: save.name, skin: save.skin, skins: [...save.skins], retro: save.retro, style: save.style, scene: save.scene, song: save.song, music: save.music, sfx: save.sfx, mode: save.mode, mastery: { ...save.mastery }, starColor: save.starColor, dailyAt: save.dailyAt, purchases: [...save.purchases] };
+  const keep = { name: save.name, skin: save.skin, skins: [...save.skins], retro: save.retro, style: save.style, scene: save.scene, song: save.song, music: save.music, sfx: save.sfx, mode: save.mode, mastery: { ...save.mastery }, starColor: save.starColor, playTime: save.playTime, dailyAt: save.dailyAt, purchases: [...save.purchases] };
   Object.assign(save, fresh(), keep);
 }
 

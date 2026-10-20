@@ -122,6 +122,12 @@ const itemOpen = (item: { world?: number; needs?: SkillId }) => (!item.world || 
 const lockText = (item: { world?: number; needs?: SkillId }) =>
   item.needs && !save.arsenal.includes(item.needs) ? t('arsenalNeeds', { name: t(`${item.needs}Name` as Key) }) : t('arsenalLocked', { n: item.world ?? 0 });
 /** Banks the coins and the record; returns the world unlocked by this run, if any. */
+/** Time played for the profile: minutes under an hour, hours and minutes after, whole hours past a hundred. */
+function playTimeText(seconds: number) {
+  const min = Math.floor(seconds / 60);
+  const h = Math.floor(min / 60);
+  return h >= 100 ? `${h} h` : h ? `${h} h ${min % 60} min` : `${min} min`;
+}
 function bankRun(g: Game): number | null {
   const won = g.phase === 'won';
   const wasWon = worldWon(save, g.world);
@@ -142,6 +148,7 @@ function bankRun(g: Game): number | null {
   }
   save.coins += Math.floor(g.coins);
   save.runs += 1;
+  save.playTime = (save.playTime || 0) + g.time;
   save.xp += Math.round(g.xpEarned);
   let unlocked: number | null = null;
   if (won && g.world < WORLD_COUNT && unlockedIn(g.mode) < g.world + 1) {
@@ -484,6 +491,7 @@ function profileScreen(note = '') {
     ${note ? `<p class="saved" role="status">✓ ${note}</p>` : ''}
     <div class="pstats">
       ${stat('profileRuns', String(save.runs))}
+      ${stat('profileTime', playTimeText(save.playTime || 0))}
       ${stat('profileWorlds', `${unlockedIn()}/${WORLD_COUNT}`)}
       ${stat('profileCoins', `🪙 ${Math.floor(save.coins)}`)}
     </div>
