@@ -11,10 +11,10 @@ import { boardFloor, boardFx, drawBoardFigure } from './draw';
 /** The units are drawn bigger than their hit circles, so they fill their cells. */
 const FIG = 1.4;
 /** Room above the board for the rival's hearts (yours float over your hero, inside the board). */
-const TOP = 28;
+const TOP = 16;
 const BOT = 4;
-/** Each commander's health as hearts: ten, in two rows of five. */
-const HEARTS = { n: 10, row: 5, size: 10, gap: 1.5 };
+/** The size of the heart over each commander. */
+const HEARTS = { size: 11 };
 /** How long the fireball flies, and how long its blast lasts, in seconds (main.ts waits for both). */
 export const FIREBALL = { fly: 0.75, blast: 0.45 };
 
@@ -175,32 +175,35 @@ function drawRival(ctx: CanvasRenderingContext2D, pad: HTMLImageElement, world: 
   ctx.restore();
 }
 
-/** A commander's hearts over its head: full ones in colour, the lost ones dark; the ones just lost (`pop`)
-    burst out when the fireball strikes. */
-function hearts(ctx: CanvasRenderingContext2D, cx: number, top: number, left: number, pop: number, popAt: number, retro: boolean) {
+/** A commander's health over its head: one heart and «×N». Until the fireball strikes it still counts the hearts
+    the round has just cost (`pop`); then the heart beats and the count drops. */
+function hearts(ctx: CanvasRenderingContext2D, cx: number, y: number, left: number, pop: number, popAt: number, retro: boolean) {
   const img = boardFx('heart');
-  const { n, row, size, gap } = HEARTS;
-  const w = row * size + (row - 1) * gap;
-  for (let i = 0; i < n; i++) {
-    const x = cx - w / 2 + (i % row) * (size + gap) + size / 2;
-    const y = top + Math.floor(i / row) * (size + gap) + size / 2;
-    const full = i < left;
-    const going = !full && i < left + pop;
-    ctx.save();
-    ctx.translate(x, y);
-    if (going) { const k = 1 + popAt * 0.8; ctx.scale(k, k); ctx.globalAlpha = 1 - popAt; }
-    else if (!full) ctx.globalAlpha = 0.22; // a lost heart, faint
-    if (!retro && ok(img)) {
-      ctx.drawImage(img, -size / 2, -size / 2, size, size);
-    } else {
-      ctx.fillStyle = full || going ? '#f472b6' : '#334155';
-      ctx.font = `${size + 2}px system-ui, sans-serif`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('❤', 0, 0.5);
-    }
-    ctx.restore();
-  }
+  const { size } = HEARTS;
+  const n = popAt > 0 ? left : left + pop;
+  const beat = pop && popAt > 0 ? 1 + Math.sin(Math.min(1, popAt) * Math.PI) * 0.6 : 1;
+  const label = `×${n}`;
+  ctx.save();
+  ctx.font = '800 11px system-ui, sans-serif';
+  const w = size + 2 + ctx.measureText(label).width;
+  const x = cx - w / 2;
+  // A dark pill behind, so it reads on any floor.
+  ctx.fillStyle = 'rgba(8,12,28,0.72)';
+  ctx.beginPath();
+  ctx.roundRect(x - 4, y - size / 2 - 2, w + 8, size + 4, (size + 4) / 2);
+  ctx.fill();
+  ctx.translate(x + size / 2, y);
+  ctx.scale(beat, beat);
+  if (!retro && ok(img)) ctx.drawImage(img, -size / 2, -size / 2, size, size);
+  else { ctx.fillStyle = '#f472b6'; ctx.font = `${size + 2}px system-ui, sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('❤', 0, 0.5); }
+  ctx.restore();
+  ctx.save();
+  ctx.font = '800 11px system-ui, sans-serif';
+  ctx.fillStyle = n <= 3 ? '#fca5a5' : '#f8fafc';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(label, x + size + 2, y + 0.5);
+  ctx.restore();
 }
 
 /** The rival's health: one for each round still to win. */
@@ -359,8 +362,8 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
   const popAt = ended === null ? 1 : Math.max(0, Math.min(1, (ended - FIREBALL.fly) / FIREBALL.blast));
   const rivalPop = won && ended !== null ? 1 : 0;
   const minePop = !won && ended !== null ? b.last?.lost ?? 0 : 0;
-  hearts(ctx, RIVAL.x + 6, -TOP + 1, rivalHp(b), rivalPop, done ? popAt : 0, retro);
-  hearts(ctx, MINE.x, MINE.y - 84, b.lives, minePop, done ? popAt : 0, retro);
+  hearts(ctx, RIVAL.x + 6, -TOP / 2, rivalHp(b), rivalPop, done ? popAt : 0, retro);
+  hearts(ctx, MINE.x, MINE.y - 72, b.lives, minePop, done ? popAt : 0, retro);
   if (drag) {
     const x = (drag.x - lay.ox) / lay.s;
     const y = (drag.y - lay.oy) / lay.s;
