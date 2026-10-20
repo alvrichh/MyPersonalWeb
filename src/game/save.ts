@@ -5,8 +5,8 @@ import type { SongPick } from './audio';
 
 /* Everything Bug Hunter remembers between runs, in one localStorage key. */
 
-export type EnemyStyle = 'world' | 'original' | 'demon' | 'viking' | 'mud' | 'jungle' | 'greek' | 'robot' | 'nightmare' | 'random';
-export const STYLES: EnemyStyle[] = ['world', 'original', 'demon', 'viking', 'mud', 'jungle', 'greek', 'robot', 'nightmare', 'random'];
+export type EnemyStyle = 'world' | 'original' | 'demon' | 'viking' | 'mud' | 'jungle' | 'greek' | 'robot' | 'nightmare' | 'core' | 'random';
+export const STYLES: EnemyStyle[] = ['world', 'original', 'demon', 'viking', 'mud', 'jungle', 'greek', 'robot', 'nightmare', 'core', 'random'];
 
 export type HeroSkin = 'boy' | 'robot' | 'kitty';
 export const SKINS: HeroSkin[] = ['boy', 'robot', 'kitty'];

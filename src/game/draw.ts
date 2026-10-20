@@ -4498,7 +4498,7 @@ export function drawSprite(ctx: CanvasRenderingContext2D, e: Enemy, now: number)
 /* Frames per look: the first three sheets have four walking frames; the
    later ones six: three walking, two attacking (wind-up, strike) and one
    taking a hit. */
-const SPRITE_FRAMES: Partial<Record<Look, number>> = { original: 4, demon: 4, greek: 4, viking: 6, mud: 6, jungle: 6, robot: 6, nightmare: 6 };
+const SPRITE_FRAMES: Partial<Record<Look, number>> = { original: 4, demon: 4, greek: 4, viking: 6, mud: 6, jungle: 6, robot: 6, nightmare: 6, core: 6 };
 /* Every set is cut on one canvas for all its frames (each frame registered against the first by its head
    and torso, `scratchpad` `walkfix/fix.py`), so a stride or a swing never resizes or shifts the figure:
    how much larger than its first frame's own size to draw that canvas, so the body keeps its size, and how
@@ -4514,6 +4514,7 @@ const SPRITE_CANVAS: Record<string, { k: number; feet: number }> = {
   'robot-bug': { k: 1.431, feet: 0.0051 }, 'robot-ticket': { k: 1.4, feet: 0 }, 'robot-legacy': { k: 1.446, feet: 0.0299 },
   'robot-boss': { k: 1.127, feet: 0.0083 }, 'nightmare-bug': { k: 1.31, feet: 0.0165 }, 'nightmare-ticket': { k: 1.369, feet: 0 },
   'nightmare-legacy': { k: 1.098, feet: 0 }, 'nightmare-boss': { k: 1.137, feet: 0 },
+  'core-bug': { k: 1.536, feet: 0.025 }, 'core-ticket': { k: 1.995, feet: 0.026 }, 'core-legacy': { k: 2.369, feet: 0.3004 }, 'core-boss': { k: 1.318, feet: 0.1103 },
   'mud-bug': { k: 1.667, feet: 0.0959 }, 'mud-ticket': { k: 1.291, feet: 0.086 }, 'mud-legacy': { k: 1.097, feet: 0.06 },
 };
 /* The walk cycles: the four-frame sheets loop; the three walking frames of the others are a stride, the
@@ -4560,11 +4561,11 @@ const BOSS_ART = new Set<string>(['kernel', 'archdemon', 'drakkar', 'valdur', 'm
 const BOSS_CANVAS: Record<string, { k: number; feet: number }> = {
   kernel: { k: 2.155, feet: 0.1766 }, archdemon: { k: 2.028, feet: 0.1232 },
   drakkar: { k: 1.081, feet: 0.12 }, valdur: { k: 1.538, feet: 0.1954 }, zeus: { k: 1.782, feet: 0.2063 }, queen: { k: 1.348, feet: 0.1484 },
-  wraith: { k: 1.295, feet: 0.1974 }, valkyrie: { k: 2.6, feet: 0.1691 }, medusa: { k: 2.116, feet: 0.012 }, medusa2: { k: 2.066, feet: 0.012 }, mudmonster: { k: 1.615, feet: 0.072 }, monolith: { k: 2.9, feet: 0.2121 }, minotaur: { k: 2.99, feet: 0.2765 }, mainframe: { k: 2.3, feet: 0.2248 }, overlord: { k: 3.186, feet: 0.2265 }, kratos: { k: 2.4, feet: 0.1892 }, kratos2: { k: 3.12, feet: 0.3172 }, mech: { k: 1.412, feet: 0.0878 }, chimera: { k: 2.226, feet: 0.1553 }, chimera2: { k: 1.749, feet: 0.1787 }, chimera3: { k: 1.706, feet: 0.2403 },
+  wraith: { k: 1.295, feet: 0.1974 }, valkyrie: { k: 2.6, feet: 0.1691 }, medusa: { k: 2.116, feet: 0.012 }, medusa2: { k: 2.066, feet: 0.012 }, mudmonster: { k: 1.615, feet: 0.072 }, monolith: { k: 2.9, feet: 0.2121 }, minotaur: { k: 2.99, feet: 0.2765 }, mainframe: { k: 2.3, feet: 0.2248 }, overlord: { k: 3.186, feet: 0.2265 }, kratos: { k: 2.4, feet: 0.1892 }, kratos2: { k: 3.12, feet: 0.3172 }, hydra: { k: 2.536, feet: 0.1103 }, mech: { k: 1.412, feet: 0.0878 }, chimera: { k: 2.226, feet: 0.1553 }, chimera2: { k: 1.749, feet: 0.1787 }, chimera3: { k: 1.706, feet: 0.2403 },
 };
 /** Room-6 bosses with a nine-pose sheet of their own, in the final bosses' order: the backlog's Monolith, the fire world's Overlord, the vikings'
     Valkyrie, the Mud Monster, the Arena's Minotaur, the Forge's Mainframe. */
-const MID_ART: Partial<Record<Look, string>> = { original: 'monolith', demon: 'overlord', viking: 'valkyrie', mud: 'mudmonster', greek: 'minotaur', robot: 'mainframe' };
+const MID_ART: Partial<Record<Look, string>> = { original: 'monolith', demon: 'overlord', viking: 'valkyrie', mud: 'mudmonster', greek: 'minotaur', robot: 'mainframe', core: 'hydra' };
 const finalSprites = new Map<string, HTMLImageElement[]>();
 /* Nine-pose bosses hold an action pose at least `POSE_HOLD` before it changes, unless something weightier comes
    (the signature over the move or ring, those over the charge, the charge over the wind-up, any of them over the
@@ -4672,6 +4673,8 @@ const LOOKS: Record<Look, Record<Enemy['kind'], Drawer>> = {
   demon: { bug: demonImp, ticket: demonSkull, legacy: demonGargoyle, boss: demonOverlord },
   greek: { bug: greekGladiator, ticket: greekHoplite, legacy: greekShieldWall, boss: greekMinotaur },
   nightmare: { bug: nightmareZombie, ticket: nightmareSkeleton, legacy: nightmareTombstone, boss: nightmareLich },
+  // The Core's cast has only the painted sprites; the retro look borrows the demons' figures.
+  core: { bug: demonImp, ticket: demonSkull, legacy: demonGargoyle, boss: demonOverlord },
 };
 
 
