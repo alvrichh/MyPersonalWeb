@@ -169,6 +169,15 @@ export function fusionWith(g: Game, s: SkillId): Fusion | null {
   return els.length === 1 ? FUSIONS[pairKey(els[0], s)] : null;
 }
 const MAX_WEAPONS = 4;
+/** An element that can no longer come this run: two others are already on the bow. */
+const elementShut = (g: Game, s: SkillId) => ARROW_ELEMENTS.includes(s) && g.skills[s] === 0 && arrowElements(g).length >= 2;
+/** The owned, unevolved weapons whose evolution an element card would shut out: taking it fills the pair,
+    so the other elements stop coming and the weapons paired with them stay at level 3 for good. */
+export function evoLostBy(g: Game, s: SkillId): SkillId[] {
+  if (!ARROW_ELEMENTS.includes(s) || g.skills[s] > 0 || arrowElements(g).length !== 1) return [];
+  const shut = ARROW_ELEMENTS.filter((e) => e !== s && g.skills[e] === 0);
+  return WEAPONS.filter((w) => g.skills[w] > 0 && !g.evolved[w] && shut.includes(EVO_PARTNER[w]!));
+}
 /** The weapons from the rest of Survivor.io's list belong to the shop's arsenal (one per world, `ARSENAL` in shop.ts)… */
 export const ARSENAL_SKILLS: SkillId[] = ['brick', 'molotov', 'durian', 'mines', 'drill', 'rocket', 'ball'];
 /** …which come up, in either mode, only once bought in the shop's arsenal (`loadout.arsenal`). */
@@ -916,9 +925,12 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
   };
   for (const s of loadout.startSkills) g.skills[s] = Math.max(g.skills[s], Math.min(maxLevel(s), loadout.startLevels?.[s] ?? 1));
   // The Senior's Tome: random weapons at their top level, each with its partner, so the first level up offers to evolve them.
+  // Only within the four weapon slots, and never past the bow's two elements.
   const ready = (Object.keys(EVO_PARTNER) as SkillId[]).filter((w) => !g.skills[w] && allowedIn(g, w));
-  for (let i = 0; i < loadout.startMaxed && ready.length; i++) {
-    const w = ready.splice(Math.floor(Math.random() * ready.length), 1)[0];
+  for (let i = 0; i < loadout.startMaxed && ownedWeapons(g).length < MAX_WEAPONS; i++) {
+    const fits = ready.filter((w) => !g.skills[w] && !elementShut(g, EVO_PARTNER[w]!));
+    if (!fits.length) break;
+    const w = fits[Math.floor(Math.random() * fits.length)];
     g.skills[w] = maxLevel(w);
     const partner = EVO_PARTNER[w]!;
     g.skills[partner] = Math.max(g.skills[partner], 1);
@@ -1097,7 +1109,9 @@ export const ownedWeapons = (g: Game) => WEAPONS.filter((s) => g.skills[s] > 0);
 function canPick(g: Game, s: SkillId) {
   if (!allowedIn(g, s)) return false;
   // Two arrow elements a run: once you have a pair, the other two stop coming.
-  if (ARROW_ELEMENTS.includes(s) && g.skills[s] === 0 && arrowElements(g).length >= 2) return false;
+  if (elementShut(g, s)) return false;
+  // …and a new weapon that evolves with one of those two would stay at level 3 for good, so it stops coming too.
+  if (g.skills[s] === 0 && CATEGORY[s] !== 'upgrade' && EVO_PARTNER[s] && elementShut(g, EVO_PARTNER[s]!)) return false;
   if (g.skills[s] >= maxLevel(s)) return false;
   // A new weapon only while there's a free slot.
   if (CATEGORY[s] !== 'upgrade' && g.skills[s] === 0 && ownedWeapons(g).length >= MAX_WEAPONS) return false;

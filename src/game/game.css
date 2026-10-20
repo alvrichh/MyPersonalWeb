@@ -3254,6 +3254,7 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 
 /* Arrow fusions: the line on a second element's card, the row in the skills list, and the reroll. */
 .panel .skill .fuse { display: block; margin-top: 3px; font-style: normal; font-weight: 600; color: #f0abfc; }
+.panel .skill .evo-lost { display: block; margin-top: 3px; font-style: normal; font-weight: 600; color: #fbbf24; }
 .gp-fuse { font-size: 1.05rem; letter-spacing: -2px; }
 #gearPanel li.is-fusion b { color: #f0abfc; }
 .panel .reroll { display: block; width: min(100%, 300px); margin: 10px auto 0; }
