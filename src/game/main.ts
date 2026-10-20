@@ -8,7 +8,7 @@ import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPr
 import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
 import { draw, drawRetroFigure, preloadCast, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
-import { CELL, HOME_ROW, ROUNDS, SYNERGY, TACTICS, armyCap, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, updateBoard, type BoardGame } from './board';
+import { CELL, HOME_ROW, ROUNDS, SYNERGY, TACTICS, armyCap, toggleAutoMerge, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, updateBoard, type BoardGame } from './board';
 import { FIREBALL, boardMerged, drawBoard, drawBoardDrag, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
 import type { Enemy } from './world';
 import { ARMOUR_SLOTS, ARSENAL, ITEMS, itemLevel, type SpiritSkin, UPGRADES, WEAPON_SLOTS, EXTRA_SLOT_PRICE, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
@@ -1786,7 +1786,7 @@ function renderBoardUi() {
   const prep = b.phase === 'prep';
   const speedUp = b.phase === 'fight' && b.time >= BOARD_FAST_AFTER;
   const syns = synergies(b);
-  const key = [b.phase, b.round, b.lives, b.gold, b.autoMerge, b.army.map((p) => `${p.tier}${p.cast}${p.star ?? 1}`).sort().join(','), b.shop.map((o) => (o ? `${o.tier}${o.cast}${o.price}` : '-')).join(''), b.army.length, speedUp, boardFast, b.skillUsed, syns.map((x) => `${x.cast}${x.n}`).join(''), b.event].join('|');
+  const key = [b.phase, b.round, b.lives, b.gold, b.autoMerge, b.autoBought, b.army.map((p) => `${p.tier}${p.cast}${p.star ?? 1}`).sort().join(','), b.shop.map((o) => (o ? `${o.tier}${o.cast}${o.price}` : '-')).join(''), b.army.length, speedUp, boardFast, b.skillUsed, syns.map((x) => `${x.cast}${x.n}`).join(''), b.event].join('|');
   if (key === boardKey) return;
   boardKey = key;
   // The game's own pieces: the painted coins, the shop's orange item frame for the
@@ -1820,7 +1820,7 @@ function renderBoardUi() {
       <b class="board-sell-price" aria-hidden="true"></b>
     </div>
     <div class="board-acts">
-      ${fusion ? `<button class="board-auto${b.autoMerge ? ' is-on' : ''}" type="button" data-bact="auto" aria-pressed="${b.autoMerge}"${!b.autoMerge && b.gold < autoMergePrice(b) ? ' aria-disabled="true"' : ''} aria-label="${t('boardAuto')}"><i aria-hidden="true"></i>${b.autoMerge ? '' : `<small>${coin} ${autoMergePrice(b)}</small>`}</button>` : ''}
+      ${fusion ? `<button class="board-auto${b.autoMerge ? ' is-on' : b.autoBought ? ' is-off' : ''}" type="button" data-bact="auto" aria-pressed="${b.autoMerge}"${!b.autoBought && b.gold < autoMergePrice(b) ? ' aria-disabled="true"' : ''} aria-label="${t('boardAuto')}"><i aria-hidden="true"></i>${b.autoBought ? '' : `<small>${coin} ${autoMergePrice(b)}</small>`}</button>` : ''}
       ${fusion
         ? `<button class="primary board-go" type="button" data-bact="fight"${b.army.length ? '' : ' disabled'}>⚔️ ${t('boardFight')}</button>
            <button class="ghost board-reroll board-summon" type="button" data-bact="summon"${b.gold < summonPrice(b) ? ' disabled' : ''}>✨ ${t('boardSummon')} · ${coin} ${summonPrice(b)}</button>`
@@ -1850,7 +1850,7 @@ boardUi.addEventListener('click', (event) => {
     } else audio.play('pick');
   } else if (act === 'reroll') { if (boardReroll(b)) audio.play('click'); }
   else if (act === 'auto') {
-    if (b.autoMerge) flash(t('boardAutoOn'));
+    if (b.autoBought) { toggleAutoMerge(b); audio.play('click'); flash(t(b.autoMerge ? 'boardAutoResumed' : 'boardAutoPaused')); }
     else if (b.gold < autoMergePrice(b)) flash(`${t('boardAuto')} · ${t('boardNoGold')}`);
     else if (buyAutoMerge(b)) {
       audio.play('zip');
