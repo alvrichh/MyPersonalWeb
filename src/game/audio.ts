@@ -1564,8 +1564,9 @@ class Engine {
         if (sec === 'peak' && inBar === 0 && bar % 2 === 0) this.theremin(at, semi(this.root * 16, chord[1]), BAR * 1.9);
         break;
       case 9: // Big Ball of Mud: frogs croaking in turn, mud bubbling, drips, crickets, a snake's rattling hiss.
-        if (calm ? inBar === 0 || inBar === 6 : (inBar === 3 || inBar === 11) && r < 0.45) this.croak(at, inBar % 8 < 4 ? 1 : 1.25);
-        if (r < (calm ? 0.22 : 0.1)) this.bloop(at + Math.random() * STEP);
+        // Fewer frogs and bubbles than before: the short rising sweeps came too often for the owner.
+        if (calm ? inBar === 0 && bar % 2 === 0 : inBar === 11 && bar % 4 === 3 && r < 0.5) this.croak(at, bar % 4 < 2 ? 1 : 1.25);
+        if (r < (calm ? 0.05 : 0.015)) this.bloop(at + Math.random() * STEP);
         if (calm && inBar % 4 === 2 && Math.random() < 0.35) this.drip(at);
         if (calm && inBar === 8 && bar % 2 === 0) this.cricket(at);
         if (sec === 'peak' && inBar === 14 && bar % 2 === 1) this.rattle(at);
@@ -1870,9 +1871,9 @@ class Engine {
     const o = this.osc('sine', f, at, at + 0.12);
     o.frequency.exponentialRampToValueAtTime(f * 3.2, at + 0.08);
     const g = this.ctx.createGain();
-    this.env(g, at, 0.16, 0.003, 0.09);
+    this.env(g, at, 0.1, 0.003, 0.09);
     o.connect(g);
-    this.out(g, 0.25);
+    this.out(g, 0.18);
   }
   /** A drop falling into the swamp. */
   private drip(at: number) {
