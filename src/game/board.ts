@@ -198,10 +198,27 @@ export type BoardGame = {
   /** Enemy units beaten, all told (for the profile's totals). */
   kills: number;
   events: string[];
+  /** Playing against a person (`net.ts`): which side of the shared fight is yours (the host's army is side 0,
+      the guest's side 1, on both phones), the round's seed, the rival's lives and army. */
+  online?: Online;
 };
 
+export type Online = { me: 0 | 1; seed: number; rivalLives: number; rivalName: string; rivalArmy: Piece[] | null; waiting: boolean; rivalLost?: number };
+
 let nextId = 1;
-const rand = (a: number, b: number) => a + Math.random() * (b - a);
+/** The fight's dice: `Math.random` alone, or seeded during an online fight so both phones roll the same. */
+let roll: () => number = Math.random;
+export function seeded(seed: number) {
+  let a = seed >>> 0;
+  return () => {
+    a = (a + 0x6d2b79f5) >>> 0;
+    let t = a;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+const rand = (a: number, b: number) => a + roll() * (b - a);
 const worldUp = (w: number) => 1 + (w - 1) * 0.25;
 
 export const pieceAt = (b: BoardGame, s: Slot) => b.army.find((p) => p.slot.c === s.c && p.slot.r === s.r);
@@ -466,7 +483,7 @@ function fighter(side: 0 | 1, tier: Tier, cast: number, x: number, y: number, mu
   return {
     id, side, tier, cast, star, x, y, hp, maxHp: hp, dmg: st.dmg * mult * (1 + synV(f, 9)), rate: st.rate * (1 + synV(f, 6)) * (event === 'frenzy' ? 1.3 : 1), range: st.range, speed: st.speed, r: st.r,
     splash: st.splash ?? 0, ranged: !!st.ranged, cd: rand(0.1, 0.6), ring: RING.every * 0.6, target: -1, retarget: 0, dead: false,
-    face: side === 0 ? 1 : -1, step: Math.random() * 4, swing: 0, hit: 0, syn, synLv, burn: 0, burnDps: 0, slow: 0, slowBy: 0,
+    face: side === 0 ? 1 : -1, step: roll() * 4, swing: 0, hit: 0, syn, synLv, burn: 0, burnDps: 0, slow: 0, slowBy: 0,
     leap: null, leapCd: tier === 3 ? LEAP.wait : Infinity, aim: 0, dash: 0, dir: { x: 0, y: side === 0 ? -1 : 1 }, chargeCd: tier >= 4 ? CHARGE.first : Infinity, hitIds: [],
   };
 }
@@ -529,16 +546,77 @@ export function startFight(b: BoardGame) {
   return true;
 }
 
+/** Starts a fight against a person: the host's army on side 0 in its own cells, the guest's on side 1 turned round
+    onto the upper half, in that order and with the same ids and the round's seeded dice on both phones, so the fight
+    plays out the same on each (the guest's screen draws it turned round, `mirrorFight` in `boardView.ts`). */
+export function startOnlineFight(b: BoardGame, rival: Piece[], mine: Piece[] = b.army) {
+  const o = b.online;
+  if (!o || b.phase !== 'prep' || !b.army.length) return false;
+  tickMerge(b, 0, true);
+  roll = seeded(o.seed + b.round * 7919);
+  const host = o.me === 0 ? mine : rival;
+  const guest = o.me === 0 ? rival : mine;
+  let id = 1;
+  const make = (side: 0 | 1, army: Piece[]) => {
+    const lv = Object.fromEntries(synergies({ army }).map((x) => [x.cast, x.lv]));
+    return army.map((p) => {
+      const at = cellCentre(side === 0 ? p.slot : { c: COLS - 1 - p.slot.c, r: ROWS - 1 - p.slot.r });
+      return fighter(side, p.tier, p.cast, at.x, at.y, castPower(p.cast), id++, lv[p.cast] ? p.cast : 0, lv[p.cast] ?? 0, b.event, starOf(p));
+    });
+  };
+  b.fighters = [...make(0, host), ...make(1, guest)];
+  o.rivalArmy = rival;
+  o.waiting = false;
+  b.shots = [];
+  b.skillUsed = true; // no commander's fireball between people: it could not be timed alike on both phones
+  b.strike = null;
+  b.boom = null;
+  b.impacts = [];
+  b.time = 0;
+  b.phase = 'fight';
+  b.events.push('fight');
+  return true;
+}
+
+/** The end of a fight against a person, from your side: the loser loses a life plus one for each two of the
+    winner's steps still standing (four at most); on time, the side with more health wins and the other loses one;
+    both gone at once, both lose one. The game ends when one runs out of lives, or after the last round on lives. */
+function endOnline(b: BoardGame, o: Online) {
+  roll = Math.random;
+  const me = o.me, them = (1 - me) as 0 | 1;
+  const mine = alive(b, me), theirs = alive(b, them);
+  const steps = (l: Fighter[]) => l.reduce((n, f) => n + f.tier + 1, 0);
+  const hp = (l: Fighter[]) => Math.round(l.reduce((n, f) => n + Math.max(0, f.hp), 0));
+  let result: 'win' | 'loss' | 'draw';
+  let lostMe = 0, lostThem = 0;
+  let timeout = false;
+  if (mine.length && theirs.length) {
+    timeout = true;
+    result = hp(mine) > hp(theirs) ? 'win' : hp(mine) < hp(theirs) ? 'loss' : 'draw';
+    if (result === 'win') lostThem = 1; else if (result === 'loss') lostMe = 1; else { lostMe = 1; lostThem = 1; }
+  } else if (!mine.length && !theirs.length) { result = 'draw'; lostMe = 1; lostThem = 1; }
+  else if (mine.length) { result = 'win'; lostThem = Math.min(4, 1 + Math.floor(steps(mine) / 2)); }
+  else { result = 'loss'; lostMe = Math.min(4, 1 + Math.floor(steps(theirs) / 2)); }
+  b.lives = Math.max(0, b.lives - lostMe);
+  o.rivalLives = Math.max(0, o.rivalLives - lostThem);
+  o.rivalLost = lostThem;
+  b.last = { result, lost: lostMe, ...(timeout ? { hp: [hp(mine), hp(theirs)] as [number, number], timeout } : { flawless: result === 'win' && b.fighters.every((f) => f.side !== me || !f.dead) }) };
+  if (result === 'win') b.wins += 1;
+  const over = b.lives <= 0 || o.rivalLives <= 0 || b.round >= ROUNDS;
+  b.phase = !over ? 'result' : b.lives > o.rivalLives ? 'won' : 'over';
+  b.events.push(b.phase === 'over' ? 'over' : b.phase === 'won' ? 'won' : result);
+}
+
 const alive = (b: BoardGame, side: 0 | 1) => b.fighters.filter((f) => !f.dead && f.side === side);
 const byId = (b: BoardGame, id: number) => b.fighters.find((f) => f.id === id && !f.dead);
 
 function damage(b: BoardGame, f: Fighter, dmg: number) {
   if (f.dead) return;
   // The haunted servers dodge; the mud takes less.
-  if (synV(f, 8) && Math.random() < synV(f, 8)) return;
+  if (synV(f, 8) && roll() < synV(f, 8)) return;
   f.hp -= dmg * (1 - synV(f, 4));
   f.hit = 0.15;
-  if (f.hp <= 0) { f.dead = true; if (f.side === 1) b.kills += 1; b.events.push(f.side === 0 ? 'fall' : 'kill'); }
+  if (f.hp <= 0) { f.dead = true; if (f.side !== (b.online?.me ?? 0)) b.kills += 1; b.events.push(f.side === 0 ? 'fall' : 'kill'); }
 }
 
 /** A blow landing, with the attacker's synergy: fire burns, ice slows, the Forge arcs to one more. */
@@ -773,6 +851,7 @@ export function updateBoard(b: BoardGame, dt: number) {
   const mine = alive(b, 0).length;
   const theirs = alive(b, 1).length;
   if (mine && theirs && b.time < FIGHT_TIME) return;
+  if (b.online) { endOnline(b, b.online); return; }
   // The round's result: a loss costs a life plus one for each two enemy steps still standing (four at most).
   const flawless = () => b.fighters.every((f) => f.side === 1 || !f.dead);
   if (!theirs && mine) { b.last = { result: 'win', lost: 0, flawless: flawless() }; b.wins += 1; }
@@ -816,13 +895,16 @@ export function nextRound(b: BoardGame) {
   if (b.round < ROUNDS) b.round += 1;
   b.gold += roundGold(b.world, won && !b.last?.timeout);
   // Every third round is a special one (never the last, which is the final boss's).
-  b.event = b.round % EVENT_EVERY === 0 && b.round < ROUNDS ? EVENTS[Math.floor(Math.random() * EVENTS.length)] : null;
+  // Against a person the event comes from the shared seed, so both get the same one.
+  const die = b.online ? seeded(b.online.seed + b.round * 104729)() : Math.random();
+  b.event = b.round % EVENT_EVERY === 0 && b.round < ROUNDS ? EVENTS[Math.floor(die * EVENTS.length)] : null;
   if (b.event === 'gold') b.gold += Math.round(6 * castPower(b.world));
   b.fighters = [];
   b.shots = [];
   b.phase = 'prep';
   b.summons = 0;
-  b.wave = enemyWave(b.world, b.round);
+  b.wave = b.online ? [] : enemyWave(b.world, b.round);
+  if (b.online) { b.online.rivalArmy = null; b.online.waiting = false; }
   rollShop(b);
 }
 

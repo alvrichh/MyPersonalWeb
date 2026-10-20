@@ -8,8 +8,9 @@ import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPr
 import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
 import { draw, drawRetroFigure, preloadCast, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
-import { CELL, HOME_ROW, ROUNDS, SYNERGY, TACTICS, armyCap, toggleAutoMerge, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, updateBoard, type BoardGame } from './board';
-import { FIREBALL, boardMerged, drawBoard, drawBoardDrag, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
+import { CELL, HOME_ROW, ROUNDS, SYNERGY, TACTICS, armyCap, toggleAutoMerge, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, startOnlineFight, updateBoard, type BoardGame, type Online, type Piece, type Variant } from './board';
+import { cleanCode, hostGame, joinGame, leave as netLeave, send as netSend, type NetHandlers, type NetMsg } from './net';
+import { FIREBALL, boardMerged, drawBoard, mirrorFight, drawBoardDrag, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
 import type { Enemy } from './world';
 import { ARMOUR_SLOTS, ARSENAL, ITEMS, itemLevel, type SpiritSkin, UPGRADES, WEAPON_SLOTS, EXTRA_SLOT_PRICE, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
 import { Scene } from './scene';
@@ -1674,6 +1675,9 @@ let heroPics: HeroPics | null = null;
     seconds of it (back to normal for the next fight). */
 const BOARD_FAST_AFTER = 15;
 let boardFast = false;
+/** The online fight's fixed step and what is left over from the frames (`boardStep`). */
+const ONLINE_STEP = 1 / 60;
+let boardAcc = 0;
 /** When the last fight ended (the frame clock, in seconds), for the fireball. */
 let boardEnded: number | null = null;
 
@@ -1684,9 +1688,81 @@ function boardVariantScreen(world: number) {
   show(`<button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
     <h2>${MODE_ICON.board} ${t('modeBoard')}</h2>
     <p>${t('boardVariantPick')}</p>
-    <div class="book-modes">${opt('fusion')}${opt('tactics')}</div>`);
+    <div class="book-modes">${opt('fusion')}${opt('tactics')}</div>
+    <button class="ghost" type="button" data-act="online">👥 ${t('onlinePlay')}</button>`);
 }
-function startBoard(world: number) {
+
+/* The board against a person (`net.ts`): one phone makes a game in either way and shows a code, the other types it
+   in. The host picks the world (its own board world) and the seed and sends them with its name; both then play the
+   board as usual, each with its own shop, and each round's fight starts once both have pressed «¡A luchar!». */
+let rivalReady: { round: number; army: Piece[] } | null = null;
+let sentArmy: Piece[] | null = null;
+let onlineVariant: Variant = 'fusion';
+let onlineHost = false;
+function onlineScreen(note = '') {
+  netLeave();
+  show(`<button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
+    <h2>👥 ${t('onlinePlay')}</h2>
+    <p>${t('onlineHow')}</p>
+    ${note ? `<p class="how">${note}</p>` : ''}
+    <h3 class="slot">${t('onlineHost')}</h3>
+    <div class="book-modes">
+      <button class="primary book-mode is-sprints" type="button" data-act="online-host" data-variant="fusion"><b>🧬 ${t('boardFusion')}</b></button>
+      <button class="primary book-mode is-gold" type="button" data-act="online-host" data-variant="tactics"><b>⭐ ${t('boardTactics')}</b></button>
+    </div>
+    <h3 class="slot">${t('onlineJoin')}</h3>
+    <input class="name-field online-code" id="onlineCode" maxlength="4" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ABCD" aria-label="${t('onlineCodeLabel')}">
+    <button class="primary" type="button" data-act="online-join">${t('onlineJoinBtn')}</button>`);
+}
+const netHandlers = (): NetHandlers => ({
+  code: (code) => show(`<button class="ui-close" type="button" data-act="online" aria-label="${t('back')}"></button>
+      <h2>👥 ${t('onlineHost')}</h2>
+      <p>${t('onlineGive')}</p>
+      <p class="online-big">${code}</p>
+      <p class="how">⏳ ${t('onlineWait')}</p>`),
+  open: () => { if (!onlineHost) netSend({ t: 'hello', name: save.name, skin: heroKey(save.skin, save.equipped.head) }); },
+  msg: onNetMsg,
+  close: rivalGone,
+  error: (why) => onlineScreen(`⚠ ${t(why === 'peer-unavailable' ? 'onlineNoGame' : 'onlineError')}`),
+});
+function onNetMsg(m: NetMsg) {
+  if (m.t === 'hello') {
+    if (onlineHost) {
+      // The guest has said hello: the host sends the game's world, way and seed, and both start.
+      const seed = Math.floor(Math.random() * 2 ** 31);
+      const world = worldIn('board');
+      netSend({ t: 'hello', name: save.name, skin: heroKey(save.skin, save.equipped.head), variant: onlineVariant, world, seed });
+      startBoard(world, { variant: onlineVariant, online: { me: 0, seed, rivalLives: 10, rivalName: m.name, rivalArmy: null, waiting: false } });
+    } else if (m.seed !== undefined && m.world && m.variant) {
+      startBoard(m.world, { variant: m.variant, online: { me: 1, seed: m.seed, rivalLives: 10, rivalName: m.name, rivalArmy: null, waiting: false } });
+    }
+  } else if (m.t === 'ready') {
+    rivalReady = { round: m.round, army: m.army };
+    if (board?.online && !board.online.waiting) flash(t('onlineRivalReady', { name: esc(board.online.rivalName) }));
+    tryOnlineFight();
+  } else if (m.t === 'bye') rivalGone();
+}
+/** Both armies are in: the fight starts on both phones from the same seed. */
+function tryOnlineFight() {
+  const b = board;
+  if (!b?.online?.waiting || !sentArmy || rivalReady?.round !== b.round) return;
+  const rival = rivalReady.army;
+  rivalReady = null;
+  boardFast = false;
+  boardAcc = 0;
+  if (startOnlineFight(b, rival, sentArmy)) { audio.play('door'); audio.play('slam'); audio.setIntensity(0.7); }
+  sentArmy = null;
+  renderBoardUi();
+}
+function rivalGone() {
+  const b = board;
+  if (!b?.online || b.phase === 'over' || b.phase === 'won') return;
+  netLeave();
+  paused = true;
+  show(`<h2>👥 ${t('onlineGone', { name: esc(b.online.rivalName) })}</h2>
+    <button class="primary" data-act="board-leave">${t('menu')}</button>`);
+}
+function startBoard(world: number, net?: { variant: Variant; online: Online }) {
   game = null;
   paused = false;
   hud.hidden = true;
@@ -1695,7 +1771,10 @@ function startBoard(world: number) {
   showcaseBtn.hidden = true;
   closeGearPanel();
   hide();
-  board = newBoard(world, save.boardUnlocked, save.boardVariant);
+  board = newBoard(world, save.boardUnlocked, net?.variant ?? save.boardVariant);
+  if (net) { board.online = net.online; board.wave = []; }
+  rivalReady = null;
+  sentArmy = null;
   const key = heroKey(save.skin, save.equipped.head);
   const pic = (pose: string) => Object.assign(new Image(), { src: `./images/game/hero/${key}-${pose}.webp` });
   heroPics = { front: pic('front'), shoot: pic('shoot'), hurt: pic('hurt'), cheer: pic('cheer'), down: pic('down'), pad: Object.assign(new Image(), { src: './images/game/ui/portal_pad.webp' }), padRed: Object.assign(new Image(), { src: './images/game/ui/portal_pad_red.webp' }) };
@@ -1710,7 +1789,7 @@ function startBoard(world: number) {
   audio.setWorld(world);
   audio.start();
   audio.setIntensity(0.3);
-  flash(t('boardStart', { n: world }));
+  flash(net ? t('onlineVs', { name: esc(net.online.rivalName) }) : t('boardStart', { n: world }));
   // How to merge and sell, once, instead of a line in the shop that took room from the board.
   window.setTimeout(() => { if (board?.phase === 'prep' && board.round === 1) flash(t(board.variant === 'tactics' ? 'boardHintT' : 'boardHint')); }, 1900);
   renderBoardUi();
@@ -1718,6 +1797,7 @@ function startBoard(world: number) {
 /** Leaves the board for the menu or the map (nothing banked: the end screen already banked it, or the player quit). */
 function endBoard() {
   if (!board) return;
+  if (board.online) netLeave();
   board = null;
   boardDrag = null;
   boardUi.hidden = true;
@@ -1729,6 +1809,13 @@ function bankBoard(b: BoardGame): number | null {
   if (boardBanked) return null;
   boardBanked = true;
   const won = b.phase === 'won';
+  if (b.online) {
+    // Against a person: the coins and the time, but no record and no world opened.
+    save.coins += Math.round(boardCoins(b) * (1 + masteries() * 0.05));
+    save.playTime = (save.playTime || 0) + boardTime;
+    persist();
+    return null;
+  }
   const records = b.variant === 'tactics' ? save.boardBestT : save.boardBest;
   const best = records[b.world];
   const reach = won ? ROUNDS : b.round;
@@ -1786,12 +1873,14 @@ function renderBoardUi() {
   const prep = b.phase === 'prep';
   const speedUp = b.phase === 'fight' && b.time >= BOARD_FAST_AFTER;
   const syns = synergies(b);
-  const key = [b.phase, b.round, b.lives, b.gold, b.autoMerge, b.autoBought, b.army.map((p) => `${p.tier}${p.cast}${p.star ?? 1}`).sort().join(','), b.shop.map((o) => (o ? `${o.tier}${o.cast}${o.price}` : '-')).join(''), b.army.length, speedUp, boardFast, b.skillUsed, syns.map((x) => `${x.cast}${x.n}`).join(''), b.event].join('|');
+  const key = [b.phase, b.round, b.lives, b.gold, b.autoMerge, b.autoBought, b.army.map((p) => `${p.tier}${p.cast}${p.star ?? 1}`).sort().join(','), b.shop.map((o) => (o ? `${o.tier}${o.cast}${o.price}` : '-')).join(''), b.army.length, speedUp, boardFast, b.skillUsed, b.online?.waiting, syns.map((x) => `${x.cast}${x.n}`).join(''), b.event].join('|');
   if (key === boardKey) return;
   boardKey = key;
   // The game's own pieces: the painted coins, the shop's orange item frame for the
   // cards and the dialogs' bars for the buttons (the emoji and plain shapes stay for retro).
   const coin = save.retro ? '◉' : COIN_PIC;
+  // Against a person, once your army is sent the button waits for the rival's.
+  const go = b.online?.waiting ? `⏳ ${t('onlineWaitRival', { name: esc(b.online.rivalName) })}` : `⚔️ ${t('boardFight')}`;
   // The same pieces as a run's HUD: the round back button, the world's plate with its emblem, the coins' plate and
   // the round pause button (the hearts are over the commanders, the units over the shop's first card).
   boardTop.style.setProperty('--icon', JSON.stringify(WORLD_ICON[b.world - 1]));
@@ -1823,10 +1912,10 @@ function renderBoardUi() {
       ${fusion ? `<button class="board-auto${b.autoMerge ? ' is-on' : b.autoBought ? ' is-off' : ''}" type="button" data-bact="auto" aria-pressed="${b.autoMerge}"${!b.autoBought && b.gold < autoMergePrice(b) ? ' aria-disabled="true"' : ''} aria-label="${t('boardAuto')}"><i aria-hidden="true"></i>${b.autoBought ? '' : `<small>${coin} ${autoMergePrice(b)}</small>`}</button>` : ''}
       ${fusion
         ? `<button class="ghost board-reroll board-summon" type="button" data-bact="summon"${b.gold < summonPrice(b) ? ' disabled' : ''}>✨ ${t('boardSummon')} · ${coin} ${summonPrice(b)}</button>
-           <button class="primary board-go" type="button" data-bact="fight"${b.army.length ? '' : ' disabled'}>⚔️ ${t('boardFight')}</button>`
+           <button class="primary board-go" type="button" data-bact="fight"${b.army.length && !b.online?.waiting ? '' : ' disabled'}>${go}</button>`
         : `<button class="ghost board-reroll" type="button" data-bact="reroll"${b.gold < 1 ? ' disabled' : ''}>🎲 ${t('boardReroll')} · ${coin} 1</button>
-           <button class="primary board-go" type="button" data-bact="fight"${b.army.length ? '' : ' disabled'}>⚔️ ${t('boardFight')}</button>`}
-    </div>` : `<div class="board-fight-row"><button class="board-skill" type="button" data-bact="skill"${b.skillUsed ? ' disabled' : ''} aria-label="${t('boardSkill')}">${save.retro ? '🔥' : '<img src="./images/game/skills/fireball.webp" alt="">'}</button><p class="board-fighting">${t('boardFighting')}</p>${speedUp ? `<button class="board-speed${boardFast ? ' is-on' : ''}" type="button" data-bact="speed" aria-pressed="${boardFast}" aria-label="${t('boardSpeed')}">${boardFast ? '×1' : '×2'}</button>` : ''}</div>`;
+           <button class="primary board-go" type="button" data-bact="fight"${b.army.length && !b.online?.waiting ? '' : ' disabled'}>${go}</button>`}
+    </div>` : `<div class="board-fight-row">${b.online ? '' : `<button class="board-skill" type="button" data-bact="skill"${b.skillUsed ? ' disabled' : ''} aria-label="${t('boardSkill')}">${save.retro ? '🔥' : '<img src="./images/game/skills/fireball.webp" alt="">'}</button>`}<p class="board-fighting">${t('boardFighting')}</p>${speedUp ? `<button class="board-speed${boardFast ? ' is-on' : ''}" type="button" data-bact="speed" aria-pressed="${boardFast}" aria-label="${t('boardSpeed')}">${boardFast ? '×1' : '×2'}</button>` : ''}</div>`;
 }
 
 /* Tactics: a shop card can also be dragged onto a cell of your half, where it lands (a tap still buys it onto the
@@ -1883,6 +1972,8 @@ boardUi.addEventListener('click', (event) => {
   const el = (event.target as HTMLElement).closest<HTMLElement>('[data-bact]');
   const b = board;
   if (!el || !b) return;
+  // Waiting for the rival: the army already sent can no longer change.
+  if (b.online?.waiting && !['quit', 'pause', 'bonus'].includes(el.dataset.bact ?? '')) return;
   // The click that ends a card's drag is not a tap.
   if (cardDragged && el.dataset.bact === 'buy') { cardDragged = false; return; }
   audio.unlock();
@@ -1921,6 +2012,16 @@ boardUi.addEventListener('click', (event) => {
   else if (act === 'speed') { boardFast = !boardFast; audio.play('click'); }
   else if (act === 'skill') { if (commanderStrike(b)) audio.play('shoot'); }
   else if (act === 'bonus') openBoardBonus();
+  else if (act === 'fight' && b.online) {
+    if (b.online.waiting || !b.army.length) return;
+    // Your army as it stands goes to the other phone; the fight starts once theirs is in too.
+    tickMerge(b, 0, true);
+    sentArmy = JSON.parse(JSON.stringify(b.army)) as Piece[];
+    b.online.waiting = true;
+    netSend({ t: 'ready', round: b.round, army: sentArmy });
+    audio.play('click');
+    tryOnlineFight();
+  }
   else if (act === 'fight') {
     boardFast = false;
     if (startFight(b)) { audio.play('door'); audio.play('slam'); audio.setIntensity(0.7); audio.setBoss(b.round === ROUNDS); }
@@ -1954,6 +2055,17 @@ function boardResultScreen(b: BoardGame) {
     const coins = Math.round(boardCoins(b) * (1 + masteries() * 0.05));
     audio.play(won ? 'win' : 'over');
     audio.setBoss(false);
+    if (b.online) {
+      const name = esc(b.online.rivalName);
+      const draw = b.lives === b.online.rivalLives;
+      netLeave();
+      show(`${head(won ? 'victory' : 'defeat', draw ? t('onlineDraw') : won ? t('onlineWon', { name }) : t('onlineLost', { name }))}
+        <p>❤ ${b.lives} · ${name} ❤ ${b.online.rivalLives}</p>
+        <p class="reward">+${coins} 🪙</p>
+        <button class="primary" data-act="online">👥 ${t('onlineAgain')}</button>
+        <button class="ghost" data-act="board-leave">← ${t('menu')}</button>`);
+      return;
+    }
     show(`${head(won ? 'victory' : 'defeat', t(won ? 'boardWon' : 'boardOver'))}
       <p>${t('boardReached', { n: won ? ROUNDS : b.round, total: ROUNDS })}</p>
       <p class="reward">+${coins} 🪙</p>
@@ -1982,8 +2094,14 @@ function boardStep(dt: number, now: number) {
     boardTime += dt;
     // At ×2 the fight takes two steps a frame (the same steps, so it plays out the same, only faster).
     let hit = false;
-    for (let i = 0; i < (boardFast ? 2 : 1) && b.phase === 'fight'; i++) {
-      updateBoard(b, dt);
+    // Against a person the fight goes in fixed steps of 1/60 s, so it plays out the same on both phones whatever
+    // their frame rates.
+    const fixed = !!b.online;
+    if (fixed) boardAcc = Math.min(0.25, boardAcc + dt * (boardFast ? 2 : 1));
+    const steps = fixed ? Math.floor(boardAcc / ONLINE_STEP) : boardFast ? 2 : 1;
+    if (fixed) boardAcc -= steps * ONLINE_STEP;
+    for (let i = 0; i < steps && b.phase === 'fight'; i++) {
+      updateBoard(b, fixed ? ONLINE_STEP : dt);
       for (const e of b.events) {
         if ((e === 'bite' || e === 'slam') && !hit) { hit = true; audio.play(e === 'slam' ? 'slam' : 'hit'); }
         if (e === 'kill') audio.play('kill');
@@ -2039,7 +2157,9 @@ function boardStep(dt: number, now: number) {
   // The arena's floor from just under the top bar to just over the buttons (the cards lie on it).
   const acts = boardShop.querySelector('.board-acts, .board-fighting')?.getBoundingClientRect();
   const floor = { top: top - 6, bottom: (acts ? acts.top : boardShop.getBoundingClientRect().bottom) - rect.top - 4 };
-  if (heroPics) drawBoard(ctx, b, boardLay, now / 1000, boardDrag, save.retro, view.dpr, heroPics, boardEnded === null ? null : now / 1000 - boardEnded, floor);
+  // The guest sees the shared fight turned round, its own army at the bottom.
+  const seen = b.online?.me === 1 ? mirrorFight(b) : b;
+  if (heroPics) drawBoard(ctx, seen, boardLay, now / 1000, boardDrag, save.retro, view.dpr, heroPics, boardEnded === null ? null : now / 1000 - boardEnded, floor);
   boardFloat.hidden = !boardDrag;
   if (boardDrag || floatDrawn) {
     const w = Math.round(canvas.clientWidth * view.dpr), h = Math.round(canvas.clientHeight * view.dpr);
@@ -2155,6 +2275,20 @@ screen.addEventListener('click', (event) => {
     save.boardVariant = target.dataset.variant === 'tactics' ? 'tactics' : 'fusion';
     persist();
     startBoard(Number(target.dataset.bworld) || worldIn('board'));
+  }
+  else if (act === 'online') onlineScreen();
+  else if (act === 'online-host') {
+    onlineVariant = target.dataset.variant === 'tactics' ? 'tactics' : 'fusion';
+    onlineHost = true;
+    show(`<h2>👥 ${t('onlineHost')}</h2><p class="how">⏳ ${t('onlineMaking')}</p><button class="ghost" data-act="online">${t('cancel')}</button>`);
+    hostGame(netHandlers());
+  }
+  else if (act === 'online-join') {
+    const code = cleanCode((document.getElementById('onlineCode') as HTMLInputElement | null)?.value ?? '');
+    if (code.length !== 4) { flash(t('onlineCodeLabel')); return; }
+    onlineHost = false;
+    show(`<h2>👥 ${t('onlineJoin')}</h2><p class="how">⏳ ${t('onlineJoining', { code })}</p><button class="ghost" data-act="online">${t('cancel')}</button>`);
+    joinGame(code, netHandlers());
   }
   else if (act === 'board-quit-ask') boardQuitScreen();
   else if (act === 'board-leave' && board) { bankBoard(board); menuScreen(); }
