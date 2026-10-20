@@ -51,6 +51,8 @@ export type Save = {
   arsenal: SkillId[];
   /** When the shop's ad gift was last taken (ms since 1970; one every `AD_GIFT_EVERY`). */
   adGiftAt: number;
+  /** The guide (the book on the cover) has been opened once: until then the first visit dims the cover round it. */
+  bookSeen: boolean;
   /** When the daily chest was last opened (ms since 1970); the next is ready 24 hours later (`daily.ts`). */
   dailyAt: number;
   /** Coin-store purchases made (pack and offer ids, `store.ts`); an offer can be bought once. */
@@ -134,6 +136,7 @@ const fresh = (): Save => ({
   itemLevels: {},
   arsenal: [],
   adGiftAt: 0,
+  bookSeen: false,
   dailyAt: 0,
   purchases: [],
   equipped: {},
@@ -275,7 +278,7 @@ export const worldWon = (save: Save, n: number) => save.bestByWorld[n]?.time !==
 
 /** Back to a fresh start: progress, coins, gear and level go; name, skins bought, settings, masteries, star colour, the lifetime totals, the achievements and the extra charm's slot (empty: what it held goes with the items) stay. */
 export function wipeProgress(save: Save) {
-  const keep = { name: save.name, skin: save.skin, skins: [...save.skins], retro: save.retro, style: save.style, scene: save.scene, song: save.song, music: save.music, sfx: save.sfx, mode: save.mode, masteries: save.masteries, extraSlot: save.extraSlot, starColor: save.starColor, playTime: save.playTime, dailyAt: save.dailyAt, purchases: [...save.purchases], stats: save.stats, achieved: save.achieved, achNew: save.achNew };
+  const keep = { name: save.name, skin: save.skin, skins: [...save.skins], retro: save.retro, style: save.style, scene: save.scene, song: save.song, music: save.music, sfx: save.sfx, mode: save.mode, masteries: save.masteries, extraSlot: save.extraSlot, starColor: save.starColor, playTime: save.playTime, dailyAt: save.dailyAt, purchases: [...save.purchases], stats: save.stats, achieved: save.achieved, achNew: save.achNew, bookSeen: save.bookSeen };
   Object.assign(save, fresh(), keep);
   // `fresh()` has no `extra`, so the item the charm held would stay worn without being owned.
   delete save.extra;
