@@ -1352,7 +1352,7 @@ function stylesScreen(note = '') {
           + (levels ? `<div class="row-levels">${levels}</div>` : '');
       }).join('')}
       ${save.equipped[slot] ? `<button class="ghost small" data-undress="${slot}">${t('dressNone')}</button>` : ''}
-      <button class="primary small" data-act="shop">🛒 ${t('goShop')}</button>
+      <button class="ghost is-warn" data-act="shop">🛒 ${t('goShop')}</button>
       </div>`;
   }
   // Each round button shows what is picked now, in the game's own art (the emoji stays for retro and the picks with no picture).
