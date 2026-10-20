@@ -678,15 +678,20 @@ function mapScreen() {
     ? `<button class="primary mastery-btn" data-act="mastery-ask">${t('masteryBtn', { mode: modeShort(save.mode) })}</button>`
     : '';
   // Nightmare: On call in the last world with no clock, once that world is open there.
-  const nightmare = save.mode === 'horde' && picked === NIGHTMARE_WORLD && pickedOpen
-    ? `<button class="ghost is-danger nightmare-btn" data-act="play-nightmare">${NIGHTMARE_ICON} ${t('nightmare')} ∞</button><small class="map-record nightmare-rec">${t('nightmareText')} · ${nightmareLine()}</small>`
+  // Always offered on call, under the play button like Boss Rush in sprints, whichever world is picked; locked until the
+  // last world is open there.
+  const nightmareOpen = save.hordeUnlocked >= NIGHTMARE_WORLD;
+  const nightmare = save.mode === 'horde'
+    ? nightmareOpen
+      ? `<button class="ghost is-danger nightmare-btn" data-act="play-nightmare">${NIGHTMARE_ICON} ${t('nightmare')} ∞</button><small class="map-record nightmare-rec">${t('nightmareText')} · ${nightmareLine()}</small>`
+      : `<button class="ghost is-danger nightmare-btn is-locked" disabled>🔒 ${t('nightmare')} ∞</button><small class="map-record nightmare-rec">${t('nightmareLocked', { name: worldName(NIGHTMARE_WORLD) })}</small>`
     : '';
   // Boss Rush: sprints, once world 1 is won there; the bosses of every world open in sprints, one after another.
   const rush = save.mode === 'sprints' && save.unlocked >= 2
     ? `<button class="ghost is-warn rush-btn" data-act="play-rush">${RUSH_ICON} ${t('rush')}</button><small class="map-record rush-rec">${t('rushText')} · ${rushLine()}</small>`
     : '';
   const action = pickedOpen
-    ? `<button class="play" data-act="play-picked"><span class="play-tri" aria-hidden="true"></span><span class="play-copy">${t('playWorld', { n: picked })}</span></button>${nightmare}${rush}`
+    ? `<button class="play" data-act="play-picked"><span class="play-tri" aria-hidden="true"></span><span class="play-copy">${t('playWorld', { n: picked })}</span></button>`
     : `<button class="play is-locked" disabled><span class="play-lock" aria-hidden="true">🔒</span><span class="play-copy">${t('lockedBtn')}</span></button>`;
   // Only the islands scroll; the title, the world's card and the play button stay put. Picking an island
   // re-renders the screen, so the islands keep their scroll.
@@ -712,7 +717,7 @@ function mapScreen() {
           <small class="mode-text">${t(save.mode === 'horde' ? 'modeHordeText' : 'modeSprintsText')}</small>
         </div>
       </div>
-      ${action}
+      ${action}${nightmare}${rush}
       ${mastery}
       <button class="ghost hexghost" data-act="menu">← ${t('menu')}</button>
       </div>
