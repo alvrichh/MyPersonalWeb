@@ -374,6 +374,7 @@ function menuScreen() {
   audio.setBoss(false);
   audio.setFinal(false, false);
   audio.setWorld(0);
+  audio.setPreview(false);
   const { level, progress } = profileLevel(save.xp);
   const copy = (cls: string, title: string, sub: string) => `<span class="cover-card-copy ${cls}"><b>${title}</b>${sub ? `<small>${sub}</small>` : ''}</span>`;
   show(`
@@ -1152,6 +1153,8 @@ function playMusicNow() {
 }
 
 function stylesScreen(note = '') {
+  // The menus play the original; the music list plays what is picked in it.
+  audio.setPreview(dressSlot === 'song');
   const slotButton = (slot: Slot) => {
     const id = save.equipped[slot];
     const item = id ? itemById(id) : null;
