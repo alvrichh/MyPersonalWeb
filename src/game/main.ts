@@ -13,7 +13,7 @@ import { ARMOUR_SLOTS, ARSENAL, ITEMS, itemLevel, type SpiritSkin, UPGRADES, WEA
 import { Scene } from './scene';
 import { makeT, pickLang, type Key } from './strings';
 import {
-  CATEGORY, EVO_PARTNER, H, NIGHTMARE_WORLD, SECRET_WORLD, showcaseHit, canFuse, revivePrice, SKILLS, arrowLook, arrowOptions, bladeElement, bladeOptions, canEvolve, evoOf, fusionOf, fusionWith, evoLostBy, pairFusion, arrowElements, settleEffects, rerollChoices, adReroll, adRevive, canAdReroll, canAdRevive, maxLevel, pickArrow, pickBlade, pickSpirit, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_LUCKY, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
+  CATEGORY, EVO_PARTNER, H, NIGHTMARE_WORLD, SECRET_WORLD, showcaseHit, startShowcase, canFuse, revivePrice, SKILLS, arrowLook, arrowOptions, bladeElement, bladeOptions, canEvolve, evoOf, fusionOf, fusionWith, evoLostBy, pairFusion, arrowElements, settleEffects, rerollChoices, adReroll, adRevive, canAdReroll, canAdRevive, maxLevel, pickArrow, pickBlade, pickSpirit, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_LUCKY, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
   type ArrowLook, type Category, type Choice, type Fusion, type Game, type GameEvent, type Input, type Look, type SkillId, type WheelOutcome,
 } from './world';
 
@@ -1451,11 +1451,11 @@ screen.addEventListener('click', (event) => {
   if (act === 'play') startRun();
   // The world this run unlocked, in the same mode.
   else if (act === 'play-next') { const n = Number(target.dataset.next); setWorld(n, game?.mode ?? save.mode); persist(); startRun(n, game?.mode ?? save.mode); }
-  else if (act === 'play-secret-showcase' || (act === 'play-same' && game?.secret && game.showcase)) { startRun(SECRET_WORLD, 'horde', false, 0, true); if (game) game.showcase = true; flash(t('showcaseStart')); }
+  else if (act === 'play-secret-showcase' || (act === 'play-same' && game?.secret && game.showcase)) { startRun(SECRET_WORLD, 'horde', false, 0, true); if (game) startShowcase(game); flash(t('showcaseStart')); }
   else if (act === 'play-same' && game?.secret) startRun(SECRET_WORLD, 'horde', false, 0, true);
   else if (act === 'play-same') game?.rush ? startRun(1, 'sprints', false, rushWorlds()) : startRun(game?.world ?? worldIn(), game?.mode ?? save.mode, game?.endless);
   else if (act === 'play-rush') startRun(1, 'sprints', false, rushWorlds());
-  else if (act === 'play-showcase' || (act === 'play-same' && game?.showcase)) { startRun(1, 'sprints', false, rushWorlds()); if (game) game.showcase = true; flash(t('showcaseStart')); }
+  else if (act === 'play-showcase' || (act === 'play-same' && game?.showcase)) { startRun(1, 'sprints', false, rushWorlds()); if (game) startShowcase(game); flash(t('showcaseStart')); }
   else if (act === 'secret') secretScreen();
   else if (act === 'play-secret') startRun(SECRET_WORLD, 'horde', false, 0, true);
   else if (act === 'play-nightmare') startRun(NIGHTMARE_WORLD, 'horde', true);
