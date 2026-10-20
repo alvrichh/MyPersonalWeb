@@ -203,7 +203,7 @@ body {
 }
 
 /* The board mode («Sprint Planning»): its top bar and its shop over the canvas, which draws the board between them. */
-.board-ui { position: absolute; inset: 0; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; z-index: 5; }
+.board-ui { position: absolute; inset: 0; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; z-index: 2; }
 .board-ui[hidden] { display: none; }
 .board-top, .board-shop { pointer-events: auto; }
 .board-top {
