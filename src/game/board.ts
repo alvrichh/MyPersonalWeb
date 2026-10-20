@@ -211,8 +211,11 @@ export const inBoard = (s: Slot) => s.c >= 0 && s.c < COLS && s.r >= 0 && s.r < 
 export const isCorner = (s: Slot) => (s.c === COLS - 1 && s.r === ROWS - 1) || (s.c === 0 && s.r === 0);
 export const homeCell = (s: Slot) => inBoard(s) && s.r >= HOME_ROW && !isCorner(s);
 /** The first free cell of your half, from the front row back. */
-function freeCell(b: BoardGame): Slot | null {
-  for (let r = HOME_ROW; r < ROWS; r++) for (const c of [2, 3, 1, 4, 0, 5]) if (homeCell({ c, r }) && !pieceAt(b, { c, r })) return { c, r };
+function freeCell(b: BoardGame, backFirst = false): Slot | null {
+  // Fusion's summons fill from the front row back; Tactics' cards bought with a tap from the back row up.
+  const rows = Array.from({ length: ROWS - HOME_ROW }, (_, i) => HOME_ROW + i);
+  if (backFirst) rows.reverse();
+  for (const r of rows) for (const c of [2, 3, 1, 4, 0, 5]) if (homeCell({ c, r }) && !pieceAt(b, { c, r })) return { c, r };
   return null;
 }
 /** What a step of a cast costs in the shop, and gives back when sold. */
@@ -270,10 +273,10 @@ export function reroll(b: BoardGame) {
 /** How many units you may field in a round: four in the first, up to ten. */
 export const armyCap = (round: number) => Math.min(10, 3 + Math.ceil(round * 0.7));
 
-export function buy(b: BoardGame, i: number) {
+export function buy(b: BoardGame, i: number, at?: Slot) {
   const offer = b.shop[i];
   if (b.phase !== 'prep' || !offer || b.gold < offer.price) return false;
-  if (b.variant === 'tactics') return buyTactics(b, i, offer);
+  if (b.variant === 'tactics') return buyTactics(b, i, offer, at);
   const twin = b.autoMerge && b.army.find((p) => p.tier === offer.tier && p.cast === offer.cast && p.tier < maxTier(p.cast));
   if (!twin && (b.army.length >= armyCap(b.round) || !freeCell(b))) return false;
   b.gold -= offer.price;
@@ -390,11 +393,13 @@ export function summon(b: BoardGame): 'ok' | 'gold' | 'full' | 'none' {
 
 /** Tactics: a card bought makes three copies of the same character at the same star with two on the board? They
     become one, a star up, where the first one stood (and on up when that makes three of the next star). */
-function buyTactics(b: BoardGame, i: number, offer: NonNullable<Offer>) {
+function buyTactics(b: BoardGame, i: number, offer: NonNullable<Offer>, where?: Slot) {
   const same = (p: Piece, star: Star) => p.tier === offer.tier && p.cast === offer.cast && starOf(p) === star;
   const pair = b.army.filter((p) => same(p, 1));
   if (pair.length < TACTICS.copies - 1 && b.army.length >= armyCap(b.round)) return false;
-  const at = pair.length >= TACTICS.copies - 1 ? null : freeCell(b);
+  // Dragged onto a free cell of your half it lands there; tapped, on the first free cell from the back row up.
+  const chosen = where && homeCell(where) && !pieceAt(b, where) ? where : null;
+  const at = pair.length >= TACTICS.copies - 1 ? null : chosen ?? freeCell(b, true);
   if (!at && pair.length < TACTICS.copies - 1) return false;
   b.gold -= offer.price;
   b.shop[i] = null;

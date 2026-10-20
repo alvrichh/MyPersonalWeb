@@ -1829,25 +1829,69 @@ function renderBoardUi() {
     </div>` : `<div class="board-fight-row"><button class="board-skill" type="button" data-bact="skill"${b.skillUsed ? ' disabled' : ''} aria-label="${t('boardSkill')}">${save.retro ? '🔥' : '<img src="./images/game/skills/fireball.webp" alt="">'}</button><p class="board-fighting">${t('boardFighting')}</p>${speedUp ? `<button class="board-speed${boardFast ? ' is-on' : ''}" type="button" data-bact="speed" aria-pressed="${boardFast}" aria-label="${t('boardSpeed')}">${boardFast ? '×1' : '×2'}</button>` : ''}</div>`;
 }
 
+/* Tactics: a shop card can also be dragged onto a cell of your half, where it lands (a tap still buys it onto the
+   first free cell from the back). The card's unit follows the finger on the float canvas, the cell under it lit. */
+let cardDown: { i: number; x: number; y: number; id: number } | null = null;
+let cardDragged = false;
+boardUi.addEventListener('pointerdown', (event) => {
+  const card = (event.target as HTMLElement).closest<HTMLButtonElement>('.board-card[data-i]');
+  const b = board;
+  if (!card || card.disabled || !b || b.variant !== 'tactics' || b.phase !== 'prep') return;
+  event.preventDefault(); // or the card's picture starts the browser's own drag, which cancels the pointer
+  cardDown = { i: Number(card.dataset.i), x: event.clientX, y: event.clientY, id: event.pointerId };
+  cardDragged = false;
+});
+window.addEventListener('pointermove', (event) => {
+  const b = board;
+  if (!cardDown || !b || event.pointerId !== cardDown.id) return;
+  const offer = b.shop[cardDown.i];
+  if (!offer) return;
+  if (!cardDragged && Math.hypot(event.clientX - cardDown.x, event.clientY - cardDown.y) < 10) return;
+  cardDragged = true;
+  const rect = canvas.getBoundingClientRect();
+  const x = event.clientX - rect.left, y = event.clientY - rect.top;
+  boardDrag = { piece: { id: -1, tier: offer.tier, cast: offer.cast, slot: { c: -1, r: -1 }, star: 1 }, x, y, over: slotAt(boardLay, x, y) };
+});
+window.addEventListener('pointerup', (event) => {
+  const b = board;
+  const down = cardDown;
+  cardDown = null;
+  if (!down || !b || event.pointerId !== down.id || !cardDragged) return;
+  const over = boardDrag?.over;
+  boardDrag = null;
+  const offer = b.shop[down.i];
+  if (!over || !offer) return;
+  if (b.gold < offer.price) { flash(t('boardNoGold')); return; }
+  if (boardBuy(b, down.i, over)) afterBuy(b);
+  else flash(t('boardBenchFull'));
+  boardKey = '';
+  renderBoardUi();
+});
+window.addEventListener('pointercancel', () => { if (cardDown) { cardDown = null; boardDrag = null; } });
+/** After a card is bought: its merge (three of a kind) with the smoke, or a pick sound. */
+function afterBuy(b: BoardGame) {
+  if (b.lastMerge) {
+    const m = b.lastMerge;
+    b.lastMerge = null;
+    boardMerged(m.slot, m.id, performance.now() / 1000);
+    audio.play('zip');
+    const name = boardTierName(pieceAt(b, m.slot)?.tier ?? 0);
+    flash(m.star ? t('boardStarUp', { name, star: '★'.repeat(m.star) }) : m.combo > 1 ? t('boardCombo', { n: m.combo, name }) : t('boardMerged', { name }));
+  } else audio.play('pick');
+}
 boardUi.addEventListener('click', (event) => {
   const el = (event.target as HTMLElement).closest<HTMLElement>('[data-bact]');
   const b = board;
   if (!el || !b) return;
+  // The click that ends a card's drag is not a tap.
+  if (cardDragged && el.dataset.bact === 'buy') { cardDragged = false; return; }
   audio.unlock();
   const act = el.dataset.bact;
   if (act === 'buy') {
     const offer = b.shop[Number(el.dataset.i)];
     if (offer && b.gold < offer.price) flash(t('boardNoGold'));
     else if (!boardBuy(b, Number(el.dataset.i))) flash(t('boardBenchFull'));
-    else if (b.lastMerge) {
-      // Bought next to its twin: merged at once, a combo when it went on up.
-      const m = b.lastMerge;
-      b.lastMerge = null;
-      boardMerged(m.slot, m.id, performance.now() / 1000);
-      audio.play('zip');
-      const name = boardTierName(pieceAt(b, m.slot)?.tier ?? 0);
-      flash(m.star ? t('boardStarUp', { name, star: '★'.repeat(m.star) }) : m.combo > 1 ? t('boardCombo', { n: m.combo, name }) : t('boardMerged', { name }));
-    } else audio.play('pick');
+    else afterBuy(b);
   } else if (act === 'reroll') { if (boardReroll(b)) audio.play('click'); }
   else if (act === 'auto') {
     if (b.autoBought) { toggleAutoMerge(b); audio.play('click'); flash(t(b.autoMerge ? 'boardAutoResumed' : 'boardAutoPaused')); }
@@ -2038,6 +2082,7 @@ function boardPointerMove(event: PointerEvent) {
   }
 }
 function boardPointerUp(event: PointerEvent) {
+  if (cardDown) return; // a shop card being dragged: its own handler on the window ends it
   const b = board;
   const drag = boardDrag;
   const down = boardDown;
