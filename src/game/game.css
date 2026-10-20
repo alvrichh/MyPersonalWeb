@@ -3531,3 +3531,36 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .dress-extra { grid-column: 2; grid-row: 1; display: flex; justify-content: center; width: 100%; }
 /* as wide as the side cards, even where the middle column is narrower (on phones) */
 .dress-extra .dslot { flex: none; width: clamp(84px, 30vw, 112px); }
+
+/* The slot cards on the shop's sub-heading plate instead of a box: the ring, the slot's name on the small plate with
+   its gold brackets, and the worn item under it, so the cards take less room and the hero more. */
+.dslot .plate {
+  min-height: 0;
+  margin-top: 2px;
+  padding: 0;
+  background: none;
+  box-shadow: none !important;
+  clip-path: none;
+  gap: 3px;
+}
+.dslot .plate small {
+  display: grid;
+  place-items: center;
+  justify-self: center;
+  min-height: 24px;
+  padding: 0 2px 1px;
+  border: 0 solid transparent;
+  border-width: 0 16px;
+  border-image: url('/images/game/ui/sub_plate.webp') 0 106 fill / 0 16px stretch;
+  color: #e0f2fe;
+  white-space: nowrap;
+}
+.dslot.is-open .plate small { color: #fcd34d; }
+.dslot .plate b { padding: 0 2px; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8); }
+/* The hero keeps its shape and size however narrow the middle column gets (max-width squashed it on phones);
+   a little wider than the column, it stands under the side cards. */
+.dress-hero img.hero-fig { max-width: none; }
+:root[data-retro] .dslot .plate small { border: 0; border-image: none; min-height: 0; }
+/* Centred even when wider than the middle column (43px on a 360px phone): equal negative side margins let it
+   spill out evenly on both sides instead of to the right. */
+.dress-hero > .hero-fig, .dress-hero > .wing-host { margin-inline: -60px; }
