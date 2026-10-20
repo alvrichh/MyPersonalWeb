@@ -5017,7 +5017,8 @@ export type BoardFigure = { look: Look; kind: Enemy['kind']; final: boolean; bos
 export function drawBoardFigure(ctx: CanvasRenderingContext2D, f: BoardFigure, now: number, retro: boolean, outline: string | null = null) {
   retroLook = retro;
   spriteOutline = outline;
-  spriteHeight = f.kind === 'boss' ? 2.15 : 2.3;
+  // The bosses stand well above the rest: the room-6 boss big, the final boss bigger still (its phases more).
+  spriteHeight = f.kind !== 'boss' ? 2.3 : f.final ? 3.3 : 2.8;
   const e = {
     phase: 1, rise: 0, pain: f.kind === 'boss' ? f.hit : 0, gaze: false, chan: 0, pose: f.kind === 'boss' && f.swing > 0 ? f.swing : 0, act: 'burst', aim: 0, dash: 0,
     cd: 0, minion: false, clone: false, snake: 0, spawn: 0, wobble: 0, slow: 0, burn: 0, dir: { x: 0, y: 1 }, tint: '#fff', side: 1, id: 0,
