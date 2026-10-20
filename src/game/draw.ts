@@ -4478,11 +4478,11 @@ const BOSS_ART = new Set<string>(['kernel', 'archdemon', 'drakkar', 'valdur', 'm
 const BOSS_CANVAS: Record<string, { k: number; feet: number }> = {
   kernel: { k: 2.155, feet: 0.1766 }, archdemon: { k: 1.69, feet: 0.1232 },
   drakkar: { k: 1.081, feet: 0.12 }, valdur: { k: 1.538, feet: 0.1954 }, zeus: { k: 1.782, feet: 0.2063 }, queen: { k: 1.348, feet: 0.1484 },
-  wraith: { k: 1.295, feet: 0.1974 }, valkyrie: { k: 2.6, feet: 0.1691 }, medusa: { k: 2.116, feet: 0.012 }, medusa2: { k: 2.066, feet: 0.012 }, mudmonster: { k: 1.615, feet: 0.072 }, monolith: { k: 2.9, feet: 0.2121 }, minotaur: { k: 2.6, feet: 0.2765 }, mainframe: { k: 2.3, feet: 0.2248 }, kratos: { k: 2.4, feet: 0.1892 }, kratos2: { k: 5.0, feet: 0.1744 }, mech: { k: 1.412, feet: 0.0878 }, chimera: { k: 1.712, feet: 0.1553 }, chimera2: { k: 1.749, feet: 0.2262 }, chimera3: { k: 1.706, feet: 0.2686 },
+  wraith: { k: 1.295, feet: 0.1974 }, valkyrie: { k: 2.6, feet: 0.1691 }, medusa: { k: 2.116, feet: 0.012 }, medusa2: { k: 2.066, feet: 0.012 }, mudmonster: { k: 1.615, feet: 0.072 }, monolith: { k: 2.9, feet: 0.2121 }, minotaur: { k: 2.6, feet: 0.2765 }, mainframe: { k: 2.3, feet: 0.2248 }, overlord: { k: 2.36, feet: 0.2265 }, kratos: { k: 2.4, feet: 0.1892 }, kratos2: { k: 5.0, feet: 0.1744 }, mech: { k: 1.412, feet: 0.0878 }, chimera: { k: 1.712, feet: 0.1553 }, chimera2: { k: 1.749, feet: 0.2262 }, chimera3: { k: 1.706, feet: 0.2686 },
 };
-/** Room-6 bosses with a nine-pose sheet of their own, in the final bosses' order: the backlog's Monolith, the vikings'
+/** Room-6 bosses with a nine-pose sheet of their own, in the final bosses' order: the backlog's Monolith, the fire world's Overlord, the vikings'
     Valkyrie, the Mud Monster, the Arena's Minotaur, the Forge's Mainframe. */
-const MID_ART: Partial<Record<Look, string>> = { original: 'monolith', viking: 'valkyrie', mud: 'mudmonster', greek: 'minotaur', robot: 'mainframe' };
+const MID_ART: Partial<Record<Look, string>> = { original: 'monolith', demon: 'overlord', viking: 'valkyrie', mud: 'mudmonster', greek: 'minotaur', robot: 'mainframe' };
 const finalSprites = new Map<string, HTMLImageElement[]>();
 function finalFrame(e: Enemy) {
   if (e.pain > 0) return 8;
