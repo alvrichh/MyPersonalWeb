@@ -99,6 +99,7 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   drawStrikes(ctx, g, now);
   drawParticles(ctx, g, false);
   ctx.globalAlpha = 1;
+  if (g.hazard === 'fog' && !g.showcase) drawFog(ctx, g, vis);
   if (g.player.dark > 0 && g.phase === 'play') drawDark(ctx, g, vis);
 }
 
@@ -785,11 +786,22 @@ function drawStatus(ctx: CanvasRenderingContext2D, g: Game, now: number) {
 function drawDark(ctx: CanvasRenderingContext2D, g: Game, vis: Rect) {
   const p = g.player;
   const k = Math.min(1, p.dark / 0.4);
-  // Softer than it was: a wide clear circle round you, and the rest dimmed rather than black.
-  const grad = ctx.createRadialGradient(p.x, p.y, 80, p.x, p.y, 230);
+  // The view closes in tight round you, far tighter than the world's fog (the owner wanted it to cut the view more).
+  const grad = ctx.createRadialGradient(p.x, p.y, 30, p.x, p.y, 120);
   grad.addColorStop(0, 'rgba(10,6,22,0)');
-  grad.addColorStop(0.55, `rgba(10,6,22,${0.4 * k})`);
-  grad.addColorStop(1, `rgba(10,6,22,${0.68 * k})`);
+  grad.addColorStop(0.5, `rgba(10,6,22,${0.75 * k})`);
+  grad.addColorStop(1, `rgba(10,6,22,${0.96 * k})`);
+  ctx.fillStyle = grad;
+  ctx.fillRect(vis.x, vis.y, vis.w, vis.h);
+}
+
+/** The haunted servers' fog, for good: only what is near you shows (as it was before it was taken out). */
+function drawFog(ctx: CanvasRenderingContext2D, g: Game, vis: Rect) {
+  const p = g.player;
+  const grad = ctx.createRadialGradient(p.x, p.y, 70, p.x, p.y, 200);
+  grad.addColorStop(0, 'rgba(8,9,15,0)');
+  grad.addColorStop(0.6, 'rgba(8,9,15,0.6)');
+  grad.addColorStop(1, 'rgba(8,9,15,0.86)');
   ctx.fillStyle = grad;
   ctx.fillRect(vis.x, vis.y, vis.w, vis.h);
 }
