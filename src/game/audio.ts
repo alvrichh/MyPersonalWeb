@@ -50,7 +50,7 @@ const SET: Block[] = ['liquid', 'neuro', 'liquid', 'neuro', 'breakdown', 'trance
    `b2b` is the original; `doom` is the final boss's: D minor with a harmonic-minor A that pulls home,
    neuro first and the growl singing its own melody from the start. */
 export type SongId = 'b2b' | 'doom' | 'w1';
-export type SongPick = 'auto' | SongId | V2Id;
+export type SongPick = 'auto' | 'worlds' | SongId | V2Id;
 type Song = { root: number; chords: number[][]; roots: number[]; chordsB: number[][]; rootsB: number[]; set: Block[]; reese?: number[][]; pluck?: OscillatorType };
 const SONGS: Record<SongId, Song> = {
   b2b: { root: ROOT, chords: CHORDS, roots: BASS_ROOTS, chordsB: CHORDS_B, rootsB: BASS_ROOTS_B, set: SET },
@@ -101,6 +101,8 @@ type V2 = {
   lead: LeadVoice; leadOct: number; melody: Note[][];
 };
 export type V2Id = 'w1v2' | 'w2v2' | 'w3v2' | 'mudv2' | 'w4v2' | 'w5v2' | 'w6v2' | 'w7v2' | 'w8v2';
+/** «By world»: each world's second version, in world order (the first world's in the menus too). */
+const WORLD_V2: V2Id[] = ['w1v2', 'w2v2', 'w3v2', 'mudv2', 'w4v2', 'w5v2', 'w6v2', 'w7v2', 'w8v2'];
 const V2S: Record<V2Id, V2> = {
   w1v2: { // The Backlog: a bright C major chiptune roller on the Amen break; keyboards typing, mail dings, a dial-up modem.
     theme: 1, root: 32.7,
@@ -333,6 +335,13 @@ class Engine {
     this.pick = pick;
     this.songNow = true;
   }
+  /** The world being played (0 in the menus), for «by world». */
+  private world = 0;
+  setWorld(n: number) {
+    if (n === this.world) return;
+    this.world = n;
+    if (this.pick === 'worlds') this.songNow = true;
+  }
 
   /** A boss is out: the growl plays its boss line (`BOSS_REESE`), from its next hit. */
   boss = false;
@@ -372,7 +381,8 @@ class Engine {
       if (this.final) { this.siren(at); this.siren(at + BAR / 2); }
     }
     // The song changes only where a phrase begins (or on the next bar, when picked by hand).
-    const wanted = this.pick === 'auto' ? (this.finalWanted ? 'doom' : 'b2b') : this.pick;
+    // «By world» keeps the world's song for its final boss too: the tension layer goes on top of it.
+    const wanted = this.pick === 'auto' ? (this.finalWanted ? 'doom' : 'b2b') : this.pick === 'worlds' ? WORLD_V2[this.world - 1] ?? 'w1v2' : this.pick;
     if (inBar === 0 && wanted !== this.songId && (bar % 4 === 0 || this.songNow)) { this.songId = wanted; this.songNow = false; }
     const v2 = V2S[this.songId as V2Id];
     if (v2) { this.root = v2.root; this.scheduleV2(step, at, v2); return; }

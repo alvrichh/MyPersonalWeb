@@ -373,6 +373,7 @@ function menuScreen() {
   audio.setIntensity(0.5);
   audio.setBoss(false);
   audio.setFinal(false, false);
+  audio.setWorld(0);
   const { level, progress } = profileLevel(save.xp);
   const copy = (cls: string, title: string, sub: string) => `<span class="cover-card-copy ${cls}"><b>${title}</b>${sub ? `<small>${sub}</small>` : ''}</span>`;
   show(`
@@ -1179,8 +1180,8 @@ function stylesScreen(note = '') {
       row(`data-style="${style}"`, save.style === style, false, STYLE_ICON[style], t(`style${cap(style)}Name` as Key), t(`style${cap(style)}Text` as Key), save.style === style ? '✓' : '')).join('')}</div>`;
   } else if (dressSlot === 'song') {
     const songRow = (id: typeof save.song, icon: string, name: string, text: string) => row(`data-song="${id}"`, save.song === id, false, icon, name, text, save.song === id ? '✓' : '');
-    picks = `<h3 class="slot">${t('songPick')}</h3><div class="gear-list">${(['auto', 'b2b', 'doom'] as const).map((id) =>
-      songRow(id, id === 'auto' ? '🎚️' : id === 'b2b' ? '🎧' : '🔥', t(`song${cap(id)}Name` as Key), t(`song${cap(id)}Text` as Key))).join('')}</div>
+    picks = `<h3 class="slot">${t('songPick')}</h3><div class="gear-list">${(['auto', 'worlds', 'b2b', 'doom'] as const).map((id) =>
+      songRow(id, id === 'auto' ? '🎚️' : id === 'worlds' ? '🗺️' : id === 'b2b' ? '🎧' : '🔥', t(`song${cap(id)}Name` as Key), t(`song${cap(id)}Text` as Key))).join('')}</div>
       <h3 class="slot">${t('songWorlds')}</h3><div class="gear-list">${WORLD_SONGS.map(([world, ids, key]) => {
         // The first world's song has two versions: picking the row plays the one last picked (v1 at first) and opens a switch between them.
         const on = (ids as readonly string[]).includes(save.song);
@@ -2004,6 +2005,8 @@ function step(now: number) {
     audio.setBoss(g.phase !== 'over' && g.phase !== 'won' && g.enemies.some((e) => e.kind === 'boss' && !e.clone && !e.minion && !e.dead));
     const finalOut = g.phase !== 'over' && g.phase !== 'won' ? g.enemies.find((e) => e.final && !e.clone && !e.dead) : undefined;
     audio.setFinal(!!finalOut, !!finalOut?.rage);
+    // «By world»: the world's song while the run is on; the menus' once it is over.
+    audio.setWorld(g.phase === 'over' || g.phase === 'won' ? 0 : g.world);
     if (bossBar.hidden !== !boss) {
       bossBar.hidden = !boss;
       requestAnimationFrame(resize); // the room makes room for the bar (after layout)
