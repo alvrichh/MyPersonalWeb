@@ -1616,7 +1616,7 @@ function stepMode(by: number) {
   menuScreen();
 }
 function startRun(world = worldIn(), mode: PlayMode = save.mode, endless = false, rush = 0, secret = false, rushFrom = 1) {
-  if (mode === 'board') { startBoard(world); return; }
+  if (mode === 'board') { boardVariantScreen(world); return; }
   game = newGame({ ...buildLoadout(save.equipped, save.upgrades, masteries(), save.arsenal, save.itemLevels, save.extra), sprintMastery: masteries() }, save.style, world, mode, endless, rush, secret, rushFrom);
   // Boss Rush: every boss in its own world's floor and song (whatever Customise picked); the secret shift, the jungle's.
   game.scene = rush || secret ? 0 : save.scene;
@@ -1662,6 +1662,15 @@ let boardFast = false;
 /** When the last fight ended (the frame clock, in seconds), for the fireball. */
 let boardEnded: number | null = null;
 
+/** The board's two ways to play, picked each time a board run starts (the last pick ticked): Fusion, green, and
+    Tactics, blue. */
+function boardVariantScreen(world: number) {
+  const opt = (v: 'fusion' | 'tactics') => `<button class="primary book-mode is-${v === 'fusion' ? 'sprints' : 'horde'}${save.boardVariant === v ? ' is-on' : ''}" type="button" data-act="board-variant" data-variant="${v}" data-bworld="${world}"><b>${v === 'fusion' ? '🧬' : '⭐'} ${t(v === 'fusion' ? 'boardFusion' : 'boardTactics')}${save.boardVariant === v ? ' ✓' : ''}</b><small>${t(v === 'fusion' ? 'boardFusionText' : 'boardTacticsText')}</small></button>`;
+  show(`<button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
+    <h2>${MODE_ICON.board} ${t('modeBoard')}</h2>
+    <p>${t('boardVariantPick')}</p>
+    <div class="book-modes">${opt('fusion')}${opt('tactics')}</div>`);
+}
 function startBoard(world: number) {
   game = null;
   paused = false;
@@ -1671,7 +1680,7 @@ function startBoard(world: number) {
   showcaseBtn.hidden = true;
   closeGearPanel();
   hide();
-  board = newBoard(world, save.boardUnlocked);
+  board = newBoard(world, save.boardUnlocked, save.boardVariant);
   const key = heroKey(save.skin, save.equipped.head);
   const pic = (pose: string) => Object.assign(new Image(), { src: `./images/game/hero/${key}-${pose}.webp` });
   heroPics = { front: pic('front'), shoot: pic('shoot'), hurt: pic('hurt'), cheer: pic('cheer'), down: pic('down'), pad: Object.assign(new Image(), { src: './images/game/ui/portal_pad.webp' }), padRed: Object.assign(new Image(), { src: './images/game/ui/portal_pad_red.webp' }) };
@@ -1688,7 +1697,7 @@ function startBoard(world: number) {
   audio.setIntensity(0.3);
   flash(t('boardStart', { n: world }));
   // How to merge and sell, once, instead of a line in the shop that took room from the board.
-  window.setTimeout(() => { if (board?.phase === 'prep' && board.round === 1) flash(t('boardHint')); }, 1900);
+  window.setTimeout(() => { if (board?.phase === 'prep' && board.round === 1) flash(t(board.variant === 'tactics' ? 'boardHintT' : 'boardHint')); }, 1900);
   renderBoardUi();
 }
 /** Leaves the board for the menu or the map (nothing banked: the end screen already banked it, or the player quit). */
@@ -1703,9 +1712,10 @@ function bankBoard(b: BoardGame): number | null {
   if (boardBanked) return null;
   boardBanked = true;
   const won = b.phase === 'won';
-  const best = save.boardBest[b.world];
+  const records = b.variant === 'tactics' ? save.boardBestT : save.boardBest;
+  const best = records[b.world];
   const reach = won ? ROUNDS : b.round;
-  if (!best || (won && !best.won) || (!best.won && reach > best.round)) save.boardBest[b.world] = { round: reach, won: won || !!best?.won };
+  if (!best || (won && !best.won) || (!best.won && reach > best.round)) records[b.world] = { round: reach, won: won || !!best?.won };
   const coins = Math.round(boardCoins(b) * (1 + masteries() * 0.05));
   save.coins += coins;
   save.runs += 1;
@@ -1745,7 +1755,7 @@ function renderBoardUi() {
     <span class="hud-coins" aria-label="${t('boardGoldLabel')}"><span class="hud-coin-orb" aria-hidden="true">🪙</span><b>${b.gold}</b></span>
     <button class="hud-pause" type="button" data-bact="pause" aria-label="${t('pause')}"><span aria-hidden="true">Ⅱ</span></button>`;
   const cards = b.shop.map((o, i) => o
-    ? `<button class="board-card" type="button" data-bact="buy" data-i="${i}"${!prep || b.gold < o.price ? ' disabled' : ''}><i class="board-cast">${t('worldShort', { n: o.cast })}</i><img src="${boardPic(o.tier, o.cast)}" alt=""><b>${boardTierName(o.tier)}</b><span class="board-price">${coin} ${o.price}</span></button>`
+    ? `<button class="board-card${b.variant === 'tactics' ? ` is-r${o.tier}` : ''}" type="button" data-bact="buy" data-i="${i}"${!prep || b.gold < o.price ? ' disabled' : ''}><i class="board-cast">${t('worldShort', { n: o.cast })}</i><img src="${boardPic(o.tier, o.cast)}" alt=""><b>${boardTierName(o.tier)}</b><span class="board-price">${coin} ${o.price}</span></button>`
     : '<span class="board-card is-sold"></span>').join('');
   boardShop.innerHTML = prep ? `
     <div class="board-row">
@@ -1777,7 +1787,7 @@ boardUi.addEventListener('click', (event) => {
       boardMerged(m.slot, m.id, performance.now() / 1000);
       audio.play('levelup');
       const name = boardTierName(pieceAt(b, m.slot)?.tier ?? 0);
-      flash(m.combo > 1 ? t('boardCombo', { n: m.combo, name }) : t('boardMerged', { name }));
+      flash(m.star ? t('boardStarUp', { name, star: '★'.repeat(m.star) }) : m.combo > 1 ? t('boardCombo', { n: m.combo, name }) : t('boardMerged', { name }));
     } else audio.play('pick');
   } else if (act === 'reroll') { if (boardReroll(b)) audio.play('click'); }
   else if (act === 'speed') { boardFast = !boardFast; audio.play('click'); }
@@ -1908,11 +1918,11 @@ function boardPointerUp(event: PointerEvent) {
   const moved = Math.hypot(drag.x - down.x, drag.y - down.y) > 10;
   const from = drag.piece.slot;
   // A tap: what it is, the world its cast comes from, and what it would sell for.
-  if (!moved) { flash(`${boardTierName(drag.piece.tier)} · ${worldName(drag.piece.cast)} · ◉ ${saleOf(drag.piece)}`); return; }
+  if (!moved) { flash(`${boardTierName(drag.piece.tier)}${b.variant === 'tactics' ? ` ${'★'.repeat(drag.piece.star ?? 1)} · ${t(`boardRarity${drag.piece.tier}` as Key)}` : ''} · ${worldName(drag.piece.cast)} · ◉ ${saleOf(drag.piece, b.variant)}`); return; }
   // Dropped on the shop: sold, for half what it is worth.
   const shop = boardShop.getBoundingClientRect();
   if (event.clientY >= shop.top) {
-    const gain = saleOf(drag.piece);
+    const gain = saleOf(drag.piece, b.variant);
     if (boardSell(b, from)) { audio.play('coin'); flash(t('boardSold', { n: gain })); }
     renderBoardUi();
     return;
@@ -1963,6 +1973,11 @@ screen.addEventListener('click', (event) => {
   }
   else if (act === 'board-again' && board) startBoard(board.world);
   else if (act === 'board-stay') { paused = false; hide(); }
+  else if (act === 'board-variant') {
+    save.boardVariant = target.dataset.variant === 'tactics' ? 'tactics' : 'fusion';
+    persist();
+    startBoard(Number(target.dataset.bworld) || worldIn('board'));
+  }
   else if (act === 'board-quit-ask') boardQuitScreen();
   else if (act === 'board-leave' && board) { bankBoard(board); menuScreen(); }
   else if (act === 'secret') secretScreen();

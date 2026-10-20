@@ -75,13 +75,30 @@ export const STRIKE = { fly: 0.6, reach: 75, dmg: 140, perRound: 0.25 };
 
 export type Slot = { c: number; r: number };
 /** A unit you own, between fights: its step, the world its cast comes from, and its cell. */
-export type Piece = { id: number; tier: Tier; cast: number; slot: Slot };
+export type Piece = { id: number; tier: Tier; cast: number; slot: Slot; star?: Star };
+/** The board's two ways to play: Fusion (two of a kind make the next one up the cast) and Tactics (each card keeps
+    its character and rarity, and three copies raise it a star). */
+export type Variant = 'fusion' | 'tactics';
+export type Star = 1 | 2 | 3;
+/** Tactics: how much stronger each star is (health and damage each), how many copies make the next, what a card of
+    each rarity costs (bug common, ticket rare, legacy epic, room-6 boss legendary, final boss mythic) and how often
+    the shop shows each, from round 1 to round 10. */
+export const TACTICS = {
+  star: [1, 1.8, 3.2],
+  copies: 3,
+  price: [1, 2, 3, 5, 8],
+  odds: [[0.62, 0.28, 0.09, 0.01, 0], [0.34, 0.3, 0.22, 0.11, 0.03]],
+  /** The waves against a tactics army, against a fusion one. */
+  wave: 0.75,
+};
+const starOf = (p: { star?: Star }) => p.star ?? 1;
 /** A unit in a fight, yours (side 0) or the enemy's (side 1). */
 export type Fighter = {
   id: number;
   side: 0 | 1;
   tier: Tier;
   cast: number;
+  star: Star;
   x: number;
   y: number;
   hp: number;
@@ -121,6 +138,7 @@ export type BoardPhase = 'prep' | 'fight' | 'result' | 'over' | 'won';
 
 export type BoardGame = {
   world: number;
+  variant: Variant;
   /** The casts the shop sells from: worlds 1 to this one. */
   casts: number;
   round: number;
@@ -142,8 +160,9 @@ export type BoardGame = {
   skillUsed: boolean;
   strike: { x: number; y: number; t: number } | null;
   boom: { x: number; y: number; age: number } | null;
-  /** The last buy that merged by itself: where, into which unit, and how many merges in a row. */
-  lastMerge: { slot: Slot; id: number; combo: number } | null;
+  /** The last buy that merged by itself: where, into which unit, and how many merges in a row (in Tactics, the
+      star it reached). */
+  lastMerge: { slot: Slot; id: number; combo: number; star?: Star } | null;
   wins: number;
   /** Enemy units beaten, all told (for the profile's totals). */
   kills: number;
@@ -166,16 +185,19 @@ function freeCell(b: BoardGame): Slot | null {
   return null;
 }
 /** What a step of a cast costs in the shop, and gives back when sold. */
-export const priceOf = (tier: Tier, cast: number) => Math.max(1, Math.round(PRICE[Math.min(2, tier)] * castPower(cast)));
-export const saleOf = (p: Piece) => Math.max(1, Math.floor((TIER_VALUE[p.tier] * castPower(p.cast)) / 2));
+export const priceOf = (tier: Tier, cast: number, variant: Variant = 'fusion') => Math.max(1, Math.round((variant === 'tactics' ? TACTICS.price[tier] : PRICE[Math.min(2, tier)]) * castPower(cast)));
+export const saleOf = (p: Piece, variant: Variant = 'fusion') =>
+  variant === 'tactics'
+    ? Math.max(1, Math.floor((priceOf(p.tier, p.cast, 'tactics') * TACTICS.copies ** (starOf(p) - 1)) / 2))
+    : Math.max(1, Math.floor((TIER_VALUE[p.tier] * castPower(p.cast)) / 2));
 
-export function newBoard(world: number, casts: number): BoardGame {
+export function newBoard(world: number, casts: number, variant: Variant = 'fusion'): BoardGame {
   const b: BoardGame = {
-    world, casts: Math.max(1, casts), round: 1, lives: LIVES, gold: Math.round(8 * castPower(world)), phase: 'prep',
+    world, variant, casts: Math.max(1, casts), round: 1, lives: LIVES, gold: Math.round(8 * castPower(world)), phase: 'prep',
     army: [], shop: [], wave: enemyWave(world, 1), fighters: [], shots: [], time: 0, last: null, wins: 0, kills: 0, events: [], event: null, skillUsed: false, strike: null, boom: null, lastMerge: null,
   };
   // You start with a bug of the latest cast on the board.
-  b.army.push({ id: nextId++, tier: 0, cast: b.casts, slot: { c: 2, r: ROWS - 2 } });
+  b.army.push({ id: nextId++, tier: 0, cast: b.casts, slot: { c: 2, r: ROWS - 2 }, star: 1 });
   rollShop(b);
   return b;
 }
@@ -183,6 +205,19 @@ export function newBoard(world: number, casts: number): BoardGame {
 /** Four cards: mostly bugs and tickets (a legacy now and then from round 4), from any cast you have opened, the
     latest more often. */
 function rollShop(b: BoardGame) {
+  if (b.variant === 'tactics') {
+    // Rarer cards come more often as the rounds go on.
+    const k = (b.round - 1) / (ROUNDS - 1);
+    const odds = TACTICS.odds[0].map((o, i) => o + (TACTICS.odds[1][i] - o) * k);
+    b.shop = Array.from({ length: 4 }, () => {
+      let roll = Math.random();
+      let tier = 0;
+      while (tier < 4 && roll >= odds[tier]) { roll -= odds[tier]; tier += 1; }
+      const cast = Math.random() < 0.5 ? b.casts : 1 + Math.floor(Math.random() * b.casts);
+      return { tier: tier as Tier, cast, price: priceOf(tier as Tier, cast, 'tactics') };
+    });
+    return;
+  }
   b.shop = Array.from({ length: 4 }, () => {
     const roll = Math.random();
     const tier: Tier = b.round >= 4 && roll < 0.08 ? 2 : roll < 0.34 ? 1 : 0;
@@ -205,6 +240,7 @@ export const armyCap = (round: number) => Math.min(10, 3 + Math.ceil(round * 0.7
 export function buy(b: BoardGame, i: number) {
   const offer = b.shop[i];
   if (b.phase !== 'prep' || !offer || b.gold < offer.price) return false;
+  if (b.variant === 'tactics') return buyTactics(b, i, offer);
   // Bought next to its twin it merges at once, and on up while the new step has a twin too (a combo).
   const twin = b.army.find((p) => p.tier === offer.tier && p.cast === offer.cast && p.tier < maxTier(p.cast));
   if (!twin && b.army.length >= armyCap(b.round)) return false;
@@ -228,17 +264,47 @@ export function buy(b: BoardGame, i: number) {
   return true;
 }
 
+/** Tactics: a card bought makes three copies of the same character at the same star with two on the board? They
+    become one, a star up, where the first one stood (and on up when that makes three of the next star). */
+function buyTactics(b: BoardGame, i: number, offer: NonNullable<Offer>) {
+  const same = (p: Piece, star: Star) => p.tier === offer.tier && p.cast === offer.cast && starOf(p) === star;
+  const pair = b.army.filter((p) => same(p, 1));
+  if (pair.length < TACTICS.copies - 1 && b.army.length >= armyCap(b.round)) return false;
+  const at = pair.length >= TACTICS.copies - 1 ? null : freeCell(b);
+  if (!at && pair.length < TACTICS.copies - 1) return false;
+  b.gold -= offer.price;
+  b.shop[i] = null;
+  b.events.push('buy');
+  if (at) { b.army.push({ id: nextId++, tier: offer.tier, cast: offer.cast, slot: at, star: 1 }); return true; }
+  let star: Star = 1;
+  let keep = pair[0];
+  let group = pair.slice(0, TACTICS.copies - 1);
+  for (;;) {
+    b.army = b.army.filter((p) => !group.includes(p) || p === keep);
+    star = (star + 1) as Star;
+    keep.star = star;
+    if (star >= 3) break;
+    const next = b.army.filter((p) => p !== keep && same(p, star));
+    if (next.length < TACTICS.copies - 1) break;
+    group = [keep, ...next.slice(0, TACTICS.copies - 1)];
+    keep = group[0];
+  }
+  b.lastMerge = { slot: keep.slot, id: keep.id, combo: star - 1, star };
+  b.events.push('merge');
+  return true;
+}
+
 /** Sells a unit for half what it is worth. */
 export function sell(b: BoardGame, from: Slot) {
   const p = pieceAt(b, from);
   if (b.phase !== 'prep' || !p) return false;
   b.army = b.army.filter((q) => q !== p);
-  b.gold += saleOf(p);
+  b.gold += saleOf(p, b.variant);
   b.events.push('sell');
   return true;
 }
 
-export const canMerge = (p: Piece, q: Piece) => p !== q && p.tier === q.tier && p.cast === q.cast && p.tier < maxTier(p.cast);
+export const canMerge = (p: Piece, q: Piece, variant: Variant = 'fusion') => variant === 'fusion' && p !== q && p.tier === q.tier && p.cast === q.cast && p.tier < maxTier(p.cast);
 
 /** Drags a unit onto a cell of your half: onto its twin (same step, same cast) it merges into the next step, onto another it
     swaps, onto nothing it moves. */
@@ -246,7 +312,7 @@ export function moveUnit(b: BoardGame, from: Slot, to: Slot): 'merged' | 'swappe
   const p = pieceAt(b, from);
   if (b.phase !== 'prep' || !p || !homeCell(to) || (from.c === to.c && from.r === to.r)) return 'none';
   const q = pieceAt(b, to);
-  if (q && canMerge(p, q)) {
+  if (q && canMerge(p, q, b.variant)) {
     q.tier = (q.tier + 1) as Tier;
     b.army = b.army.filter((x) => x !== p);
     b.events.push('merge');
@@ -263,12 +329,13 @@ export function moveUnit(b: BoardGame, from: Slot, to: Slot): 'merged' | 'swappe
 
 export const cellCentre = (s: Slot) => ({ x: s.c * CELL + CELL / 2, y: s.r * CELL + CELL / 2 });
 
-function fighter(side: 0 | 1, tier: Tier, cast: number, x: number, y: number, mult: number, id = nextId++, syn = 0, synLv = 0, event: BoardEvent | null = null): Fighter {
+function fighter(side: 0 | 1, tier: Tier, cast: number, x: number, y: number, mult0: number, id = nextId++, syn = 0, synLv = 0, event: BoardEvent | null = null, star: Star = 1): Fighter {
   const st = TIER_STATS[tier];
+  const mult = mult0 * TACTICS.star[star - 1];
   const f = { syn, synLv };
   const hp = Math.round(st.hp * mult * (1 + synV(f, 1)) * (event === 'giants' ? 1.4 : 1));
   return {
-    id, side, tier, cast, x, y, hp, maxHp: hp, dmg: st.dmg * mult * (1 + synV(f, 9)), rate: st.rate * (1 + synV(f, 6)) * (event === 'frenzy' ? 1.3 : 1), range: st.range, speed: st.speed, r: st.r,
+    id, side, tier, cast, star, x, y, hp, maxHp: hp, dmg: st.dmg * mult * (1 + synV(f, 9)), rate: st.rate * (1 + synV(f, 6)) * (event === 'frenzy' ? 1.3 : 1), range: st.range, speed: st.speed, r: st.r,
     splash: st.splash ?? 0, ranged: !!st.ranged, cd: rand(0.1, 0.6), ring: RING.every * 0.6, target: -1, retarget: 0, dead: false,
     face: side === 0 ? 1 : -1, step: Math.random() * 4, swing: 0, hit: 0, syn, synLv, burn: 0, burnDps: 0, slow: 0, slowBy: 0,
   };
@@ -317,8 +384,8 @@ export function waveSpots(b: BoardGame) {
 export function startFight(b: BoardGame) {
   if (b.phase !== 'prep' || !b.army.length) return false;
   const lv = Object.fromEntries(synergies(b).map((x) => [x.cast, x.lv]));
-  b.fighters = b.army.map((p) => { const at = cellCentre(p.slot); return fighter(0, p.tier, p.cast, at.x, at.y, castPower(p.cast), p.id, lv[p.cast] ? p.cast : 0, lv[p.cast] ?? 0, b.event); });
-  const grow = castPower(b.world) * (1 + WAVE.tough * (b.world - 1));
+  b.fighters = b.army.map((p) => { const at = cellCentre(p.slot); return fighter(0, p.tier, p.cast, at.x, at.y, castPower(p.cast), p.id, lv[p.cast] ? p.cast : 0, lv[p.cast] ?? 0, b.event, starOf(p)); });
+  const grow = castPower(b.world) * (1 + WAVE.tough * (b.world - 1)) * (b.variant === 'tactics' ? TACTICS.wave : 1);
   for (const w of waveSpots(b)) b.fighters.push(fighter(1, w.tier, b.world, w.x, w.y, grow, nextId++, 0, 0, b.event));
   b.shots = [];
   b.skillUsed = false;

@@ -90,6 +90,9 @@ export type Save = {
   boardUnlocked: number;
   boardWorld: number;
   boardBest: Record<number, { round: number; won: boolean }>;
+  /** Tactics, the board's second way to play: its own records (the worlds it opens are shared), and the last pick. */
+  boardBestT: Record<number, { round: number; won: boolean }>;
+  boardVariant: 'fusion' | 'tactics';
   /** Masteries earned: one each time every world of both modes is cleared and the progress reset, for a small
       permanent boost. (Older saves kept one count per mode, `mastery`; `loadSave()` adds them up.) */
   masteries: number;
@@ -159,6 +162,8 @@ const fresh = (): Save => ({
   boardUnlocked: 1,
   boardWorld: 1,
   boardBest: {},
+  boardBestT: {},
+  boardVariant: 'fusion',
   masteries: 0,
   starColor: 'gold',
   hordeBest: {},
@@ -177,7 +182,7 @@ export function loadSave(): Save {
   const base = fresh();
   try {
     const data = JSON.parse(storage.get(KEY) || '{}') as Partial<Save>;
-    const save: Save = { ...base, ...data, equipped: {}, upgrades: { ...data.upgrades }, itemLevels: { ...data.itemLevels }, best: { ...base.best, ...data.best }, bestByWorld: { ...data.bestByWorld }, hordeBest: { ...data.hordeBest }, boardBest: { ...data.boardBest } };
+    const save: Save = { ...base, ...data, equipped: {}, upgrades: { ...data.upgrades }, itemLevels: { ...data.itemLevels }, best: { ...base.best, ...data.best }, bestByWorld: { ...data.bestByWorld }, hordeBest: { ...data.hordeBest }, boardBest: { ...data.boardBest }, boardBestT: { ...data.boardBestT } };
     if (save.mode !== 'sprints' && save.mode !== 'horde' && save.mode !== 'board') save.mode = 'sprints';
     save.stats = { ...base.stats, ...data.stats, killsByWorld: { ...data.stats?.killsByWorld } };
     // Older saves knew Nightmare's longest run before the totals came in.
@@ -252,7 +257,7 @@ export function loadSave(): Save {
     save.hordeUnlocked = nextAfter(Object.entries(save.hordeBest).filter(([, b]) => b?.won).map(([w]) => Number(w)));
     save.world = Math.min(save.world, save.unlocked);
     save.hordeWorld = Math.min(save.hordeWorld, save.hordeUnlocked);
-    save.boardUnlocked = nextAfter(Object.entries(save.boardBest).filter(([, b]) => b?.won).map(([w]) => Number(w)));
+    save.boardUnlocked = nextAfter([...Object.entries(save.boardBest), ...Object.entries(save.boardBestT)].filter(([, b]) => b?.won).map(([w]) => Number(w)));
     save.boardWorld = Math.min(Math.max(1, save.boardWorld || 1), save.boardUnlocked);
     return save;
   } catch {
