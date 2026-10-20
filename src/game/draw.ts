@@ -2605,20 +2605,21 @@ function drawFx(ctx: CanvasRenderingContext2D, g: Game, accent: string, layer: '
 }
 
 /* Boss shots drawn with the weapons' pictures: which picture, how wide, and where along it the shot's
-   point sits (1 = the right-hand tip; the fireball's ball is at 0.78). Arrows bring their trail. */
+   point sits (1 = the right-hand tip; the fireball's ball is at 0.78). Arrows bring their trail.
+   Drawn well past their hit circles (a rocket of r 6 is 48 wide) so they read as big boss shots. */
 const ORB_PIC: Record<OrbPic | 'medusa2', { src: 'fx' | 'arrow'; name: string; w: number; at: number; trail?: string; glow?: number }> = {
   // The mud world's: the Medusa's purple bolt, the Mud Monster's mud ball, the bats' venom.
   medusa: { src: 'fx', name: 'medusa-bolt', w: 48, at: 0.95 },
   medusa2: { src: 'fx', name: 'medusa-bolt-2', w: 48, at: 0.95 },
   // The haunted servers' Lich: purple embers, the orange flame turned purple and laid on its side.
   ember: { src: 'fx', name: 'ember-purple', w: 34, at: 0.72 },
-  mudball: { src: 'fx', name: 'mudball', w: 30, at: 0.72 },
-  venom: { src: 'fx', name: 'venom', w: 20, at: 0.75 },
+  mudball: { src: 'fx', name: 'mudball', w: 36, at: 0.72 },
+  venom: { src: 'fx', name: 'venom', w: 26, at: 0.75 },
   tornado: { src: 'fx', name: 'tornado-0', w: 0, at: 0 },
   fireball: { src: 'fx', name: 'fireball', w: 44, at: 0.78 },
-  rocket: { src: 'fx', name: 'rocket', w: 30, at: 0.75 },
-  shark: { src: 'fx', name: 'rocket-shark', w: 40, at: 0.75 },
-  durian: { src: 'fx', name: 'durian', w: 30, at: 0.5 },
+  rocket: { src: 'fx', name: 'rocket', w: 48, at: 0.75 },
+  shark: { src: 'fx', name: 'rocket-shark', w: 62, at: 0.75 },
+  durian: { src: 'fx', name: 'durian', w: 38, at: 0.5 },
   leaf: { src: 'arrow', name: 'leaf', w: 32, at: 1, trail: 'leaf-trail' },
   // The Queen's acid: a bigger leaf arrow in a wide, pale glow, so it stands out on the jungle floor.
   acid: { src: 'arrow', name: 'leaf', w: 46, at: 1, trail: 'leaf-trail', glow: 2.6 },
