@@ -1927,11 +1927,28 @@ class Engine {
       case 'laser2': return this.laser(at, 2);
       case 'laser3': return this.laser(at, 3);
       case 'laserEvo': return this.laser(at, 4);
-      // A merge on the board: a quick rising «zip», a swoosh of air and a little pop at its top.
-      case 'zip':
-        this.blip(at, 380, 2600, 0.11, 0.32, 'triangle');
-        this.hiss(at, 0.09, 0.18, 4500);
-        return this.blip(at + 0.1, 2200, 3000, 0.04, 0.15, 'sine');
+      // A merge on the board, after the merge games (Cow Evolution and the like): a round bubbly «bloop» rising
+      // with a wobble, a soft pop, then a bright little sparkle of two notes.
+      case 'zip': {
+        const o = this.ctx.createOscillator();
+        o.type = 'sine';
+        o.frequency.setValueAtTime(260, at);
+        o.frequency.exponentialRampToValueAtTime(980, at + 0.14);
+        const wob = this.ctx.createOscillator();
+        wob.frequency.value = 28;
+        const depth = this.ctx.createGain();
+        depth.gain.value = 40;
+        wob.connect(depth).connect(o.frequency);
+        const g = this.ctx.createGain();
+        this.env(g, at, 0.42, 0.006, 0.16);
+        o.connect(g).connect(this.sfxBus);
+        o.start(at);
+        wob.start(at);
+        o.stop(at + 0.22);
+        wob.stop(at + 0.22);
+        this.hiss(at + 0.13, 0.03, 0.14, 2500);
+        return this.chime(at + 0.15, [1568, 2093], 0.06, 0.2);
+      }
     }
   }
 

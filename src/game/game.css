@@ -4105,3 +4105,16 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 :root[data-retro] .panel .book-mode.is-gold { background: linear-gradient(135deg, #fde047, #f59e0b); }
 .panel .book-mode.board-variant { min-height: 60px; }
 .panel .book-mode.board-variant b { font-size: 1.2rem; }
+/* Dragging a unit: the shop and its buttons, where a drop sells it, under a soft red oval with no edge, brighter
+   once the unit is over it. */
+.board-shop { position: relative; }
+.board-shop::after {
+  content: ''; position: absolute; inset: -14px -6px; z-index: 3; pointer-events: none;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(239, 68, 68, 0.85), rgba(220, 38, 38, 0.5) 42%, rgba(239, 68, 68, 0) 72%);
+  opacity: 0; transition: opacity 0.15s ease;
+}
+.board-ui.is-dragging .board-shop::after { opacity: 0.45; }
+.board-ui.is-selling .board-shop::after { opacity: 1; }
+/* The cards fade back while a unit is over them, so the unit being sold shows through. */
+.board-ui.is-selling .board-cards, .board-ui.is-selling .board-acts { opacity: 0.45; transition: opacity 0.15s ease; }

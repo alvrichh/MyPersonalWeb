@@ -1205,6 +1205,7 @@ function bookScreen() {
     <h2>📖 ${t(title)}</h2>
     ${page === 'sprints' || page === 'horde' || page === 'board' ? `<img class="book-shot is-${page}" src="./images/game/book/${page}.webp" alt="${t(title)}">` : ''}
     <p class="book-text">${t(text)}</p>
+    ${page === 'board' ? `<p class="book-text"><b>🧬 ${t('boardFusion')}:</b> ${t('boardFusionText')}</p><p class="book-text"><b>⭐ ${t('boardTactics')}:</b> ${t('boardTacticsText')}</p>` : ''}
     ${modes}
     <small class="book-page">${t('bookPage', { n: bookPage + 1, total: BOOK.length })}</small>
     ${last ? `<button class="primary" data-act="menu">${t('bookDone')}</button>` : `<button class="primary" data-act="book-next">${t('bookNext')} →</button>`}
@@ -1951,6 +1952,9 @@ function boardPointerMove(event: PointerEvent) {
   boardDrag.x = event.clientX - rect.left;
   boardDrag.y = event.clientY - rect.top;
   boardDrag.over = slotAt(boardLay, boardDrag.x, boardDrag.y);
+  // Over the shop and the buttons it would be sold: a soft red glow there says so.
+  boardUi.classList.add('is-dragging');
+  boardUi.classList.toggle('is-selling', event.clientY >= boardShop.getBoundingClientRect().top);
 }
 function boardPointerUp(event: PointerEvent) {
   const b = board;
@@ -1958,6 +1962,7 @@ function boardPointerUp(event: PointerEvent) {
   const down = boardDown;
   boardDrag = null;
   boardDown = null;
+  boardUi.classList.remove('is-dragging', 'is-selling');
   if (!b || !drag || !down || event.pointerId !== down.id) return;
   const moved = Math.hypot(drag.x - down.x, drag.y - down.y) > 10;
   const from = drag.piece.slot;
