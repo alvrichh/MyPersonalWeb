@@ -39,6 +39,10 @@ export type BoardDrag = { piece: Piece; x: number; y: number; over: Slot | null 
 /** Your commander's pictures: the worn skin and headwear's poses, and the portal it stands on. */
 export type HeroPics = { front: HTMLImageElement; shoot: HTMLImageElement; hurt: HTMLImageElement; cheer: HTMLImageElement; down: HTMLImageElement; pad: HTMLImageElement; padRed: HTMLImageElement };
 
+/** How big each step is drawn (the radius the sprites are sized by): in the game's own order, bug, ticket, legacy,
+    room-6 boss, final boss, each bigger than the one before, a little under the game's sizes (12, 14, 20, 40, 52)
+    for the bosses so they fit the board. The fight's own hit circles stay `TIER_STATS`. */
+export const DRAW_R = [12, 14, 17, 21, 24];
 const figureOf = (tier: Tier, cast: number, face: number, step: number, swing: number, hit: number) => ({
   look: castLook(cast),
   kind: TIER_KIND[tier],
@@ -48,7 +52,7 @@ const figureOf = (tier: Tier, cast: number, face: number, step: number, swing: n
   step,
   swing,
   hit,
-  r: TIER_STATS[tier].r,
+  r: DRAW_R[tier],
 });
 
 /* The enemy's units are the same pictures as yours, so they are drawn with a red outline round them, the owner's
