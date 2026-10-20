@@ -1174,7 +1174,7 @@ function dressPalette() {
 /** The Phoenix cloak at ★3 is worn: its wings show behind the hero in Customise and the profile too (not in retro). */
 const wingsOn = () => !save.retro && (save.equipped.body === 'phoenix' || save.extra === 'phoenix') && itemLevel(save.itemLevels, 'phoenix') >= 3;
 /** The hero picture with the worn wings behind it, flapping (`.wing-host` in game.css). */
-const withWings = (img: string) => wingsOn() ? `<span class="wing-host"><img class="hero-wings" src="./images/game/fx/wings-1.webp" alt="">${img}</span>` : img;
+const withWings = (img: string) => wingsOn() ? `<span class="wing-host"><span class="wing-box" aria-hidden="true"><img class="hero-wings" src="./images/game/fx/wings-1.webp" alt=""></span>${img}</span>` : img;
 const heroPic = () => `./images/game/hero/${heroStill(save.skin, save.equipped.head)}.webp`;
 /** What the list under the hero shows: a slot's items, the skins or the enemy looks. */
 let dressSlot: Slot | 'skin' | 'foes' | 'scene' | 'song' | 'extra' | null = null;

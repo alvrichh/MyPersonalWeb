@@ -3502,30 +3502,38 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
    1.7 times the hero is tall, its join (57% down the picture) on the shoulders, 54% of the hero's height above its
    feet, flapping 1.4 times a second like in a run. The wrapper takes the hero's place, and its margin in Customise. */
 .wing-host { position: relative; display: inline-grid; flex: none; z-index: 1; }
-.wing-host > img:not(.hero-wings) { position: relative; z-index: 1; }
+.wing-host > img { position: relative; z-index: 1; }
 .dress-hero .wing-host { margin-bottom: calc(var(--pad-w) * 0.279 - 6px); }
 .dress-hero .wing-host > .hero-fig { margin-bottom: 0; }
-.hero-wings {
+.wing-host > .wing-box {
+  /* a box far wider than the hero, centred on it, with the wings centred inside by flex: no translate to centre
+     them (Safari dropped it while animating and drew the wings from the hero's middle out to the right) */
   position: absolute;
-  left: 50%;
+  left: -300%;
+  right: -300%;
   bottom: -7.7%;
-  z-index: 0;
-  width: auto;
   height: 144.9%;
-  max-width: none;
-  transform: translateX(-50%);
-  transform-origin: 50% 57%;
+  z-index: 0;
+  display: flex;
+  justify-content: center;
   pointer-events: none;
+}
+.hero-wings {
+  display: block;
+  width: auto;
+  height: 100%;
+  max-width: none;
+  transform-origin: 50% 57%;
   animation: wing-flap 0.714s ease-in-out infinite;
 }
 @keyframes wing-flap {
-  0%, 100% { transform: translateX(-50%) scaleX(1) translateY(0); }
-  50% { transform: translateX(-50%) scaleX(0.86) translateY(1.5%); }
+  0%, 100% { transform: scaleX(1) translateY(0); }
+  50% { transform: scaleX(0.86) translateY(1.5%); }
 }
 @media (prefers-reduced-motion: reduce) { .hero-wings { animation: none; } }
 /* In the profile the wings are smaller, kept inside the card, and under the name. */
 .profile-card .wing-host { margin-left: 34px; }
-.profile-card .hero-wings { height: 112%; bottom: -1%; }
+.profile-card .wing-box { height: 112%; bottom: -1%; }
 .profile-who { position: relative; z-index: 2; }
 
 /* The charm's slot card: in the middle column of the first row, between the head and the magic slots, the hero
