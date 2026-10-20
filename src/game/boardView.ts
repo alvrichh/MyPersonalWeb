@@ -1,4 +1,4 @@
-import { BOARD_H, BOARD_W, CELL, COLS, FINAL_ID, HOME_ROW, MERGE_DELAY, ROUNDS, STRIKE, homeCell, ROWS, TIER_KIND, TIER_STATS, canMerge, castLook, cellCentre, pieceAt, waveSpots, type BoardGame, type Piece, type Slot, type Tier } from './board';
+import { BOARD_H, BOARD_W, CELL, CHARGE, COLS, FINAL_ID, HOME_ROW, LEAP, MERGE_DELAY, ROUNDS, STRIKE, homeCell, ROWS, TIER_KIND, TIER_STATS, canMerge, castLook, cellCentre, pieceAt, waveSpots, type BoardGame, type Piece, type Slot, type Tier } from './board';
 import { boardFx, boardWallPieces, drawBoardBackdrop, drawBoardFigure } from './draw';
 
 /* Drawing the board mode on the game's canvas: the world's floor under a grid, your bugs on the lower half and the
@@ -47,7 +47,8 @@ export const DRAW_R = [12, 14, 17, 21, 24, 26, 28];
     sheet (`medusa2`, `chimera2`, `chimera3`, chosen by `drawEnemySprite` from the phase). */
 const phaseOf = (tier: Tier) => Math.max(1, tier - 3);
 const bossOf = (tier: Tier, cast: number) => (tier < 4 ? castLook(cast) : FINAL_ID[cast - 1] === 'drakkar' && tier > 4 ? 'valdur' : FINAL_ID[cast - 1]);
-const figureOf = (tier: Tier, cast: number, face: number, step: number, swing: number, hit: number) => ({
+const figureOf = (tier: Tier, cast: number, face: number, step: number, swing: number, hit: number, move?: { aim: number; dash: number; dir: { x: number; y: number } }) => ({
+  ...move,
   look: castLook(cast),
   kind: TIER_KIND[tier],
   final: tier >= 4,
@@ -59,6 +60,56 @@ const figureOf = (tier: Tier, cast: number, face: number, step: number, swing: n
   hit,
   r: DRAW_R[tier],
 });
+
+/* The bosses' moves on the floor, under the units: the final boss's charge warned as a band along its line while it
+   aims, a streak behind it while it dashes; the leaps' landings (the hammer's slam) and the charge's hits (a shock
+   ring) as the game's own pictures. */
+function drawBossMoves(ctx: CanvasRenderingContext2D, b: BoardGame, live: BoardGame['fighters'], now: number, retro: boolean) {
+  for (const f of live) {
+    if (f.aim > 0) {
+      const len = CHARGE.speed * CHARGE.dash;
+      const k = 1 - f.aim / CHARGE.aim;
+      ctx.save();
+      ctx.translate(f.x, f.y);
+      ctx.rotate(Math.atan2(f.dir.y, f.dir.x));
+      const g = ctx.createLinearGradient(0, 0, len, 0);
+      g.addColorStop(0, `rgba(248,113,113,${0.25 + k * 0.3})`);
+      g.addColorStop(1, 'rgba(248,113,113,0)');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, -f.r, len, f.r * 2);
+      ctx.strokeStyle = `rgba(254,202,202,${0.4 + k * 0.4})`;
+      ctx.setLineDash([8, 6]);
+      ctx.lineWidth = 2;
+      ctx.strokeRect(0, -f.r, len * (0.3 + k * 0.7), f.r * 2);
+      ctx.setLineDash([]);
+      ctx.restore();
+    }
+    if (f.dash > 0) {
+      ctx.save();
+      ctx.translate(f.x, f.y);
+      ctx.rotate(Math.atan2(f.dir.y, f.dir.x));
+      const g = ctx.createLinearGradient(-90, 0, 0, 0);
+      g.addColorStop(0, 'rgba(253,186,116,0)');
+      g.addColorStop(1, 'rgba(253,186,116,0.6)');
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.ellipse(-45, 0, 50, f.r * 0.8, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+  for (const i of b.impacts) {
+    const k = i.age / 0.5;
+    const img = boardFx(i.kind === 'slam' ? 'slam' : 'shock-ring');
+    ctx.save();
+    ctx.globalAlpha = 1 - k;
+    const w = (i.kind === 'slam' ? LEAP.reach * 2.4 : 50) * (0.7 + k * 0.5);
+    if (!retro && ok(img)) ctx.drawImage(img, i.x - w / 2, i.y - (w * img.naturalHeight) / img.naturalWidth / 2, w, (w * img.naturalHeight) / img.naturalWidth);
+    else { ctx.strokeStyle = '#fde68a'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(i.x, i.y, w / 2, 0, Math.PI * 2); ctx.stroke(); }
+    ctx.restore();
+  }
+  void now;
+}
 
 /* The wall between the halves: the world's own long blocks in a row along the halfway line, standing while you lay
    your army out; it sinks into the floor as the fight starts and rises again when it ends, shaking a little as it
@@ -433,16 +484,26 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
     }
   } else {
     const live = b.fighters.filter((f) => !f.dead).sort((p, q) => p.y - q.y);
+    drawBossMoves(ctx, b, live, now, retro);
     for (const f of live) {
       const colour = f.side === 0 ? '#38bdf8' : '#f87171';
+      // A leap: the figure up in an arc over its shadow on the floor, in its charge pose.
+      const lift = f.leap ? Math.sin(Math.min(1, f.leap.t / LEAP.time) * Math.PI) * 70 : 0;
+      const move = { aim: f.aim, dash: f.leap ? 1 : f.dash, dir: f.dir };
       ctx.save();
       ctx.translate(f.x, f.y);
-      ring(ctx, f.r, tactics && f.side === 0 ? RARITY_COLOUR[f.tier] : colour);
-      if (f.side === 1) drawEnemyFigure(ctx, figureOf(f.tier, f.cast, f.face, f.step, f.swing, f.hit), now, retro);
-      else { const k = FIG * starScale(f.star); ctx.scale(k, k); drawBoardFigure(ctx, figureOf(f.tier, f.cast, f.face, f.step, f.swing, f.hit), now, retro, STAR_BORDER[f.star - 1] || null); }
+      if (f.leap) {
+        ctx.fillStyle = 'rgba(0,0,0,0.35)';
+        ctx.beginPath();
+        ctx.ellipse(0, f.r * 0.7, f.r * (1.2 - lift / 140), f.r * 0.45, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.translate(0, -lift);
+      } else ring(ctx, f.r, tactics && f.side === 0 ? RARITY_COLOUR[f.tier] : colour);
+      if (f.side === 1) drawEnemyFigure(ctx, figureOf(f.tier, f.cast, f.face, f.step, f.swing, f.hit, move), now, retro);
+      else { const k = FIG * starScale(f.star); ctx.scale(k, k); drawBoardFigure(ctx, figureOf(f.tier, f.cast, f.face, f.step, f.swing, f.hit, move), now, retro, STAR_BORDER[f.star - 1] || null); }
       ctx.restore();
       const w = Math.max(22, f.r * 2);
-      const y = f.y - f.r * FIG * (f.tier >= 3 ? 3.2 : 2.3);
+      const y = f.y - lift - f.r * FIG * (f.tier >= 3 ? 3.2 : 2.3);
       ctx.fillStyle = 'rgba(0,0,0,0.6)';
       ctx.fillRect(f.x - w / 2, y, w, 4);
       ctx.fillStyle = f.side === 0 ? '#4ade80' : '#f87171';

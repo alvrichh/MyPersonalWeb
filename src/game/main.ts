@@ -1944,6 +1944,8 @@ function boardStep(dt: number, now: number) {
         if (e === 'kill') audio.play('kill');
         if (e === 'throw') audio.play('shoot');
         if (e === 'ring') audio.play('boom');
+        if (e === 'leap' || e === 'charge') audio.play('boss');
+        if (e === 'land') audio.play('slam');
       }
     }
   } else boardTime += b.phase === 'prep' ? dt : 0;
