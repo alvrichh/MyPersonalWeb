@@ -4083,6 +4083,10 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .board-fight-row { grid-template-columns: auto 1fr auto; }
 .board-flawless { color: #fde68a; font-weight: 700; }
 /* Tactics: each shop card glows in its rarity's colour (common grey, rare blue, epic purple, legendary orange, mythic red). */
+:root:not([data-retro]) .board-card.is-r0 { background-image: url('/images/game/ui/shop_r0.webp'); }
+:root:not([data-retro]) .board-card.is-r1 { background-image: url('/images/game/ui/shop_r1.webp'); }
+:root:not([data-retro]) .board-card.is-r2 { background-image: url('/images/game/ui/shop_r2.webp'); }
+:root:not([data-retro]) .board-card.is-r4 { background-image: url('/images/game/ui/shop_r4.webp'); }
 :root:not([data-retro]) .board-card.is-r0 { filter: drop-shadow(0 0 4px rgba(148, 163, 184, 0.8)); }
 :root:not([data-retro]) .board-card.is-r1 { filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.9)); }
 :root:not([data-retro]) .board-card.is-r2 { filter: drop-shadow(0 0 7px rgba(192, 132, 252, 0.95)); }
