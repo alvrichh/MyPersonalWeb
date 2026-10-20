@@ -538,6 +538,8 @@ export type Game = {
   stages: number;
   /** The world a rush starts at (1, or the picked world for the showcase of one world's bosses). */
   rushFrom: number;
+  /** Stages a world in this rush: 4 (small boss, room-6 boss, small boss, final boss), 2 in the showcase. */
+  rushStep: number;
   /** The showcase (Boss Rush's «look at the bosses» mode): nobody takes damage but the bugs they call, and the
       boss loses a quarter of its health only when `showcaseHit` is pressed, to see its phases at leisure. */
   showcase: boolean;
@@ -910,24 +912,31 @@ function enterRoom(g: Game, room: number) {
   }
 }
 
-/* Boss Rush: stage 1 is world 1's room-6 boss, stage 2 its final boss, stage 3 world 2's room-6 boss, and so on. */
-export const rushWorld = (stage: number) => Math.ceil(stage / 2);
+/* Boss Rush: four stages a world, a small boss of its cast alone, its room-6 boss, another small boss, its final boss, then
+   the next world's (`RUSH_STEP`); the showcase only its two bosses (`Game.rushStep` 2). */
+const RUSH_STEP = 4;
+export const rushWorld = (stage: number, step = RUSH_STEP) => Math.ceil(stage / step);
+/** The kind of fight a stage is: 'mini' (a small boss alone), 'mid' (the room-6 boss) or 'final'. */
+const rushKind = (stage: number, step: number) => { const k = (stage - 1) % step; return step === 2 ? (k ? 'final' : 'mid') : k === 3 ? 'final' : k === 1 ? 'mid' : 'mini'; };
+/** A small boss alone: the room-6 boss's kit, smaller, with this share of its health. */
+const RUSH_MINI = { r: 28, hp: 0.4 };
 /** Boss Rush: bosses give twice the XP, so the levels keep up with a run that has no rooms of bugs. */
 const RUSH_XP = 2;
 /** …and each new stage gives back this share of max health. */
 const RUSH_HEAL = 0.25;
 /** …and it starts with this many level ups to pick, what five rooms give a sprint. */
 const RUSH_START_PICKS = 4;
-/** …and every boss in it, room-6 and final alike, keeps one small boss of its world's cast at its side: the first after
-    `first` seconds, then a new one `every` seconds while none is out (the Drakkar keeps its Jarls). */
-const RUSH_MINION = { most: 1, first: 6, every: 12 };
 function enterStage(g: Game, stage: number) {
   g.rush = stage;
-  g.world = g.rushFrom - 1 + rushWorld(stage);
+  g.world = g.rushFrom - 1 + rushWorld(stage, g.rushStep);
+  const kind = rushKind(stage, g.rushStep);
   if (stage > 1) heal(g, g.player.maxHp * RUSH_HEAL);
-  enterRoom(g, stage % 2 ? 6 : ROOMS);
-  // Each boss calls a small boss of its world's cast to its side (`RUSH_MINION`), the first a few seconds in.
-  for (const e of g.enemies) if (e.kind === 'boss') { e.xp *= RUSH_XP; e.ttl = RUSH_MINION.first; }
+  enterRoom(g, kind === 'final' ? ROOMS : 6);
+  if (kind === 'mini') for (const e of g.enemies) if (e.kind === 'boss') {
+    Object.assign(e, { minion: true, r: RUSH_MINI.r });
+    e.hp = e.maxHp = Math.round(e.maxHp * RUSH_MINI.hp);
+  }
+  for (const e of g.enemies) if (e.kind === 'boss') e.xp *= RUSH_XP;
 }
 
 /** `rush`: a Boss Rush through the bosses of the first `rush` worlds (sprints only). */
@@ -943,6 +952,7 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     rush: 0,
     stages: 0,
     rushFrom: 1,
+    rushStep: RUSH_STEP,
     secret: false,
     showcase: false,
     scene: 0,
@@ -1034,7 +1044,7 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
   }
   else if (rush) {
     g.rushFrom = clamp(rushFrom, 1, WORLD_COUNT);
-    g.stages = 2 * clamp(rush, 1, WORLD_COUNT - g.rushFrom + 1);
+    g.stages = RUSH_STEP * clamp(rush, 1, WORLD_COUNT - g.rushFrom + 1);
     enterStage(g, 1);
     // With no rooms of bugs before it, the rush starts where a sprint reaches its first boss: a few levels to pick.
     g.level += RUSH_START_PICKS;
@@ -1308,6 +1318,8 @@ const power = (g: Game, cat: Category) => (1 + 0.25 * g.skills.power) * g.loadou
 const haste = (g: Game) => (1 + 0.28 * g.skills.speed) * g.loadout.hasteMult;
 
 function gainXp(g: Game, amount: number) {
+  // The showcase is only to look: no experience, so no level ups.
+  if (g.showcase) return;
   g.xp += amount * g.loadout.xpMult;
   g.xpEarned += amount * g.loadout.xpMult;
   while (g.xp >= g.xpNext) {
@@ -1387,7 +1399,7 @@ function kill(g: Game, e: Enemy) {
   g.events.push('kill');
   burst(g, e.x, e.y, ENEMY_COLOR[e.kind], e.kind === 'boss' ? 60 : 14, e.kind === 'boss' ? 260 : 140, e.kind === 'boss' ? 5 : 3);
   // XP drops as gems to collect; the boss scatters a handful.
-  const drops = e.kind === 'boss' ? 7 : 1;
+  const drops = g.showcase ? 0 : e.kind === 'boss' ? 7 : 1;
   for (let i = 0; i < drops; i++) {
     const a = rand(0, Math.PI * 2);
     const r = drops > 1 ? rand(10, 40) : 0;
@@ -1397,7 +1409,8 @@ function kill(g: Game, e: Enemy) {
     g.shake = 0.6;
     // The chest: not for the boss whose death ends the run.
     const last = g.mode === 'horde' ? !g.endless && g.hordeBoss >= HORDE_BOSS_AT.length : g.rush ? g.rush === g.stages : g.room === ROOMS;
-    if (!last) { g.chest = { x: e.x, y: e.y }; g.events.push('chest'); }
+    // (nor for a small boss, nor in the showcase)
+    if (!last && !e.minion && !g.showcase) { g.chest = { x: e.x, y: e.y }; g.events.push('chest'); }
   }
   // On call: tougher bugs may leave a heart behind (bosses always leave three).
   if (g.mode === 'horde') {
@@ -2731,14 +2744,12 @@ function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
   // With a sprint mastery, a sprint's final boss calls smaller bosses of its world's cast to its side; the
   // Drakkar (and Valdur after it) always calls Jarls, in both modes, smaller still.
   const jarls = e.bossId === 'drakkar' || e.bossId === 'valdur';
-  // In a Boss Rush every boss, room-6 ones too, keeps a small boss at its side.
-  const rush = g.rush > 0 && !g.showcase && !e.minion && !e.clone;
-  const most = jarls ? Math.max(JARLS.most, Math.min(MINION.most, g.loadout.sprintMastery)) : g.mode === 'sprints' ? Math.max(rush ? RUSH_MINION.most : 0, Math.min(MINION.most, g.loadout.sprintMastery)) : 0;
-  if ((final || rush) && most > 0) {
+  const most = jarls ? Math.max(JARLS.most, Math.min(MINION.most, g.loadout.sprintMastery)) : g.mode === 'sprints' ? Math.min(MINION.most, g.loadout.sprintMastery) : 0;
+  if (final && most > 0) {
     e.ttl -= dt;
     const out = g.enemies.filter((m) => m.minion && !m.dead).length;
     if (e.ttl <= 0 && out < most) {
-      e.ttl = (jarls ? JARLS.every : rush ? RUSH_MINION.every : MINION.every) * fury;
+      e.ttl = (jarls ? JARLS.every : MINION.every) * fury;
       const side = Math.random() < 0.5 ? -1 : 1;
       const near = { x: e.x + side * 90, y: e.y + 40 };
       const at = g.mode === 'sprints' ? { x: clamp(near.x, WALL + 30, W - WALL - 30), y: clamp(near.y, WALL + 30, H - WALL - 30) } : near;
@@ -3537,9 +3548,13 @@ export function applyWheel(g: Game, outcome: WheelOutcome): { outcome: WheelOutc
 /** Turn a run into the showcase: no skills (so no weapon, aura or companion is drawn), no level ups to pick. */
 export function startShowcase(g: Game) {
   g.showcase = true;
+  // Only the world's two bosses, no small ones in between: the rush is laid out again before the first frame.
+  if (g.rush) { g.rushStep = 2; g.stages = 2 * Math.round(g.stages / RUSH_STEP); enterStage(g, 1); }
   for (const s of SKILLS) g.skills[s] = 0;
   g.evolved = {};
   g.pendingLevels = 0;
+  g.level = 1;
+  g.xp = 0;
   g.choices = [];
   g.volleys = [];
   g.spirits = [];
