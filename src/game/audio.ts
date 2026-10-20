@@ -21,6 +21,20 @@ export type Sfx =
 const BPM = 174;
 const STEP = 60 / BPM / 4; // a sixteenth
 const BAR = STEP * 16;
+/* «Juicio final» is UK garage now, at a garage tempo: a sixteenth at 132 BPM, the odd ones swung late. */
+const G_BPM = 132;
+const GSTEP = 60 / G_BPM / 4;
+const GBAR = GSTEP * 16;
+const SWING = 0.2;
+/** Its form in eight-bar blocks: a 2-step groove, a funky breakbeat, a drumless break, and a drop with both. */
+type GBlock = 'intro' | 'garage' | 'breaks' | 'break' | 'drop';
+const GARAGE_FORM: GBlock[] = ['intro', 'garage', 'garage', 'breaks', 'break', 'drop', 'breaks', 'drop'];
+/** The bass line, two bars of sixteenths over the chord's root ('r' rests, null holds), and the lead's four bars of eighths. */
+const GARAGE_BASS: Note[] = [0, null, 'r', 12, 'r', 'r', 0, 'r', 'r', 'r', 10, null, 'r', 12, 'r', 7, 0, null, 'r', 'r', 12, 'r', 0, 'r', 'r', 3, 'r', 'r', 5, null, 7, 'r'];
+const GARAGE_LEAD: Note[][] = [
+  [12, null, 15, 12, 'r', 10, 12, null], [10, null, 8, 7, 'r', 5, 7, null],
+  [7, 10, 12, 15, 17, 15, 12, 10], [11, null, 12, null, 14, null, 'r', 'r'],
+];
 
 // F minor, PS2-era melancholy: Fm – Db – Ab – Eb, one chord per two bars.
 const ROOT = 43.65; // F1
@@ -461,7 +475,7 @@ class Engine {
     if (!this.playing) return;
     while (this.next < this.ctx.currentTime + 0.12) {
       this.schedule(this.step, this.next);
-      this.next += STEP;
+      this.next += this.songId === 'doom' ? GSTEP : STEP;
       this.step += 1;
     }
     this.timer = window.setTimeout(this.tick, 25);
@@ -490,6 +504,7 @@ class Engine {
     if (v2) { this.root = v2.root; this.scheduleV2(step, at, v2); return; }
     const song = SONGS[this.songId as SongId];
     this.root = song.root;
+    if (this.songId === 'doom') { this.scheduleGarage(step, at, song); return; }
     const setBar = bar % (song.set.length * 8);
     const block = song.set[Math.floor(setBar / 8)];
     const blockBar = setBar % 8;
@@ -532,7 +547,7 @@ class Engine {
     } else {
       if (liquid && (inBar === 0 || inBar === 10)) this.sub(at, semi(this.root, bassRoot), inBar === 0 ? STEP * 8 : STEP * 5);
       // With a final boss out the growl also plays in the liquid blocks, so it carries the fight throughout.
-      if (neuro || this.final || this.songId === 'doom') {
+      if (neuro || this.final) {
         const hits = [0, 3, 6, 10, 11, 14];
         const hit = hits.indexOf(inBar);
         // In a boss fight the growl keeps its sound and its rhythm (the same six hits, the same B2B set) but
@@ -852,6 +867,78 @@ class Engine {
     o.connect(g).connect(this.musicBus);
     o.start(at);
     o.stop(at + 0.3);
+  }
+
+  /* ------------------------------------------------- «Juicio final», UK garage */
+
+  /** One swung sixteenth of the final boss's song: 2-step garage and funky breakbeat in D minor, organ stabs on the
+      offbeats, a dubby sub bass, a bell lead, and the final boss's tension layer on top as in every song. */
+  private scheduleGarage(step: number, at: number, song: Song) {
+    const bar = Math.floor(step / 16);
+    const inBar = step % 16;
+    const setBar = bar % (GARAGE_FORM.length * 8);
+    const block = GARAGE_FORM[Math.floor(setBar / 8)];
+    const blockBar = setBar % 8;
+    const second = setBar >= 32;
+    const chord = (second ? song.chordsB : song.chords)[Math.floor(bar / 2) % 4];
+    const bassRoot = (second ? song.rootsB : song.roots)[Math.floor(bar / 2) % 4];
+    if (this.final) this.tension(bar, inBar, at, chord);
+    // The garage swing: every odd sixteenth comes a little late.
+    const t = inBar % 2 ? at + GSTEP * SWING : at;
+    const last = blockBar === 7;
+    const garage = block === 'garage' || block === 'drop';
+    const breaks = block === 'breaks' || block === 'drop';
+    if (inBar === 0 && blockBar === 0 && setBar !== 0) this.crash(at);
+    if (block === 'intro' || block === 'break') {
+      // No kick: shuffled hats and a rim, a riser into what comes next.
+      if (inBar % 2 === 1) this.hat(t, 0.12, false);
+      if (inBar === 4 || inBar === 12) this.hat(t, 0.3, true);
+      if (blockBar === 6 && inBar === 0) this.riser(at, GBAR * 2);
+      if (last && inBar >= 8 && inBar % 2 === 0) this.snare(at, 0.2 + (inBar - 8) * 0.07);
+    }
+    if (garage) {
+      // 2-step: the kick on one and the "and" of three, skipping the downbeat of two and four; a clap on two and four.
+      if (inBar === 0 || inBar === 10 || (blockBar % 2 === 1 && inBar === 7)) this.kick(t);
+      if (inBar === 4 || inBar === 12) { this.snare(at, 0.8); this.snare(at + 0.012, 0.35); }
+      // Swung sixteenth hats, the open one on every offbeat eighth, and a shaker.
+      this.hat(t, inBar % 4 === 2 ? 0.34 : 0.13, inBar % 4 === 2);
+      if (inBar === 3 || inBar === 11 || inBar === 14) this.hat(t, 0.2, false);
+    }
+    if (breaks) {
+      // A funky breakbeat: two kicks, the snare on two and four with ghost notes swung around it.
+      if (!garage && (inBar === 0 || inBar === 10 || inBar === 6)) this.kick(t);
+      if (!garage && (inBar === 4 || inBar === 12)) this.snare(at, 0.9);
+      if (inBar === 7 || inBar === 9 || inBar === 15) this.snare(t, 0.28);
+      if (!garage && inBar % 2 === 0) this.hat(t, inBar % 4 === 2 ? 0.3 : 0.18, false);
+      if (last && inBar >= 12) this.snare(t, 0.5 + (inBar - 12) * 0.12);
+    }
+    // The bass: a dubby sub line in the garage blocks, a growl in the breakbeat ones, one long sub in the break.
+    if (block === 'break') {
+      if (inBar === 0 && bar % 2 === 0) this.sub(at, semi(this.root, bassRoot), GBAR * 1.7);
+    } else if (block !== 'intro') {
+      const n = GARAGE_BASS[(bar % 2) * 16 + inBar];
+      if (typeof n === 'number') {
+        let len = 1;
+        while (GARAGE_BASS[((bar % 2) * 16 + inBar + len) % 32] === null) len += 1;
+        if (block === 'breaks' || (block === 'drop' && blockBar % 2 === 1)) this.reese(t, semi(this.root, bassRoot + n), GSTEP * len * 1.1);
+        else this.sub(t, semi(this.root, bassRoot + n), GSTEP * len);
+      }
+    }
+    // Organ stabs on the offbeats (the garage sound), a pad on every chord change in the quieter blocks.
+    if (garage && (inBar === 3 || inBar === 6 || (inBar === 11 && bar % 2 === 1))) this.stab(t, chord);
+    if (inBar === 0 && bar % 2 === 0 && (block === 'intro' || block === 'break' || block === 'breaks')) this.pad(at, chord, GBAR * 2);
+    // The lead: a bell melody over four bars, in the garage drop and the break.
+    if ((block === 'drop' || block === 'break' || (block === 'garage' && blockBar >= 4)) && inBar % 2 === 0) {
+      const line = GARAGE_LEAD[bar % 4];
+      const n = line[inBar / 2];
+      if (typeof n === 'number') {
+        let len = 1;
+        while (line[inBar / 2 + len] === null) len += 1;
+        this.leadV2(t, semi(this.root * 8, n), GSTEP * 2 * len, 'crystal');
+      }
+    }
+    // A sparkle of plucks over the intro.
+    if (block === 'intro' && inBar % 4 === 2 && Math.random() < 0.5) this.pluck(t, semi(this.root * 8, chord[(step >> 2) % chord.length]));
   }
 
   /* ------------------------------------------------------- v2 world songs */
