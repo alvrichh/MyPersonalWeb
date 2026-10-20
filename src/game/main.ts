@@ -2095,7 +2095,7 @@ screen.addEventListener('click', (event) => {
     nextRound(board);
     hide();
     renderBoardUi();
-    if (board.event) { audio.play('levelup'); flash(`⭐ ${t(`boardEvent${cap(board.event)}` as Key)}: ${t(`boardEvent${cap(board.event)}Text` as Key)}`); }
+    if (board.event) { audio.play('levelup'); flash(`⭐ ${t(`boardEvent${cap(board.event)}` as Key)}`); }
   }
   else if (act === 'board-again' && board) startBoard(board.world);
   else if (act === 'board-stay') { paused = false; hide(); }

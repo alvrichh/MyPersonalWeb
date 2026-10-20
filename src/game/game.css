@@ -187,7 +187,13 @@ body {
   background: none;
   translate: -50% 0;
   font-weight: 700;
-  white-space: nowrap;
+  /* Never wider than the screen: a long line wraps onto two instead of running off both sides. */
+  width: max-content;
+  max-width: calc(100vw - 24px);
+  box-sizing: border-box;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.2;
   pointer-events: none;
   text-shadow: 0 2px 3px rgba(0, 0, 0, 0.6);
 }
