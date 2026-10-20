@@ -4970,3 +4970,5 @@ export function drawBoardFigure(ctx: CanvasRenderingContext2D, f: BoardFigure, n
 }
 /** A world's painted floor, for the board. */
 export const boardFloor = (world: number) => floorImage(world);
+/** An effect picture, for the board. */
+export const boardFx = (name: string) => fxImage(name);

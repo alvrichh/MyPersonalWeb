@@ -214,6 +214,7 @@ body {
 }
 .board-where { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .board-lives { color: #fda4af; white-space: nowrap; }
+.board-count { color: #7dd3fc; white-space: nowrap; }
 .board-gold { color: #fcd34d; white-space: nowrap; }
 .board-quit { width: 30px; height: 30px; border: 0; border-radius: 50%; background: rgba(248, 113, 113, 0.25); color: #fecaca; font: 700 0.95rem/1 var(--font); cursor: pointer; }
 .board-shop {
