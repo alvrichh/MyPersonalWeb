@@ -42,18 +42,65 @@ export type HeroPics = { front: HTMLImageElement; shoot: HTMLImageElement; hurt:
 /** How big each step is drawn (the radius the sprites are sized by): in the game's own order, bug, ticket, legacy,
     room-6 boss, final boss, each bigger than the one before, a little under the game's sizes (12, 14, 20, 40, 52)
     for the bosses so they fit the board. The fight's own hit circles stay `TIER_STATS`. */
-export const DRAW_R = [12, 14, 17, 21, 24];
+export const DRAW_R = [12, 14, 17, 21, 24, 26, 28];
+/** A final boss's next phases on the board: the Drakkar's is Valdur out of the wreck; the others, their own phase's
+    sheet (`medusa2`, `chimera2`, `chimera3`, chosen by `drawEnemySprite` from the phase). */
+const phaseOf = (tier: Tier) => Math.max(1, tier - 3);
+const bossOf = (tier: Tier, cast: number) => (tier < 4 ? castLook(cast) : FINAL_ID[cast - 1] === 'drakkar' && tier > 4 ? 'valdur' : FINAL_ID[cast - 1]);
 const figureOf = (tier: Tier, cast: number, face: number, step: number, swing: number, hit: number) => ({
   look: castLook(cast),
   kind: TIER_KIND[tier],
-  final: tier === 4,
-  bossId: tier === 4 ? FINAL_ID[cast - 1] : castLook(cast),
+  final: tier >= 4,
+  bossId: bossOf(tier, cast),
+  phase: bossOf(tier, cast) === 'valdur' ? 1 : phaseOf(tier),
   face,
   step,
   swing,
   hit,
   r: DRAW_R[tier],
 });
+
+/* A merge: a puff of smoke on the cell (the steam fusion's cloud, `fx/steam-cloud`) and the new unit popping up
+   bigger and settling. */
+const PUFF = 0.65;
+const POP = 0.4;
+let puffs: { x: number; y: number; at: number }[] = [];
+let popped: { id: number; at: number } | null = null;
+export function boardMerged(slot: Slot, id: number, now: number) {
+  const c = cellCentre(slot);
+  puffs.push({ x: c.x, y: c.y, at: now });
+  popped = { id, at: now };
+}
+function drawPuffs(ctx: CanvasRenderingContext2D, now: number, retro: boolean) {
+  puffs = puffs.filter((p) => now - p.at < PUFF);
+  const img = boardFx('steam-cloud');
+  for (const p of puffs) {
+    const k = (now - p.at) / PUFF;
+    ctx.save();
+    ctx.globalAlpha = (1 - k) * 0.95;
+    if (!retro && ok(img)) {
+      // Three clouds swelling out from the cell.
+      for (let i = 0; i < 3; i++) {
+        const a = i * 2.1 + 0.4;
+        const w = CELL * (0.9 + k * 0.9);
+        const h = (w * img.naturalHeight) / img.naturalWidth;
+        ctx.drawImage(img, p.x + Math.cos(a) * k * 16 - w / 2, p.y - 6 + Math.sin(a) * k * 10 - h / 2, w, h);
+      }
+    } else {
+      ctx.fillStyle = '#e2e8f0';
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 14 + k * 22, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+}
+/** The size a unit just merged is drawn at: up to 1.35 at once, back to 1 over `POP`. */
+const popScale = (id: number, now: number) => {
+  if (!popped || popped.id !== id) return 1;
+  const k = (now - popped.at) / POP;
+  return k >= 1 ? 1 : 1 + 0.35 * (1 - k) * (1 - k);
+};
 
 /* The enemy's units are the same pictures as yours, so they are drawn with a red outline round them, the owner's
    pick, to tell the two armies apart at a glance in the fight. The outlined picture is worked out once per sprite
@@ -278,7 +325,8 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
       ctx.save();
       ctx.translate(c.x, c.y);
       ring(ctx, TIER_STATS[p.tier].r, '#38bdf8');
-      ctx.scale(FIG, FIG);
+      const pop = popScale(p.id, now);
+      ctx.scale(FIG * pop, FIG * pop);
       drawBoardFigure(ctx, figureOf(p.tier, p.cast, 1, 0, 0, 0), now, retro);
       ctx.restore();
       marks(ctx, c.x, c.y + CELL * 0.42, p);
@@ -358,6 +406,7 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
   const minePop = !won && ended !== null ? b.last?.lost ?? 0 : 0;
   hearts(ctx, RIVAL.x + 50, -TOP / 2, rivalHp(b), rivalPop, done ? popAt : 0, retro);
   hearts(ctx, MINE.x, MINE.y - 72, b.lives, minePop, done ? popAt : 0, retro);
+  drawPuffs(ctx, now, retro);
   if (drag) {
     const x = (drag.x - lay.ox) / lay.s;
     const y = (drag.y - lay.oy) / lay.s;

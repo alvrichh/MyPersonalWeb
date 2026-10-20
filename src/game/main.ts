@@ -9,7 +9,7 @@ import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
 import { draw, drawRetroFigure, preloadCast, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
 import { ROUNDS, armyCap, roundGold, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, updateBoard, type BoardGame } from './board';
-import { FIREBALL, drawBoard, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
+import { FIREBALL, boardMerged, drawBoard, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
 import type { Enemy } from './world';
 import { ARMOUR_SLOTS, ARSENAL, ITEMS, itemLevel, type SpiritSkin, UPGRADES, WEAPON_SLOTS, EXTRA_SLOT_PRICE, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
 import { Scene } from './scene';
@@ -1893,7 +1893,12 @@ function boardPointerUp(event: PointerEvent) {
   }
   if (!drag.over) return;
   const done = moveUnit(b, from, drag.over);
-  if (done === 'merged') { audio.play('levelup'); flash(t('boardMerged', { name: boardTierName(pieceAt(b, drag.over)?.tier ?? 0) })); }
+  if (done === 'merged') {
+    const merged = pieceAt(b, drag.over);
+    if (merged) boardMerged(drag.over, merged.id, performance.now() / 1000);
+    audio.play('levelup');
+    flash(t('boardMerged', { name: boardTierName(merged?.tier ?? 0) }));
+  }
   else if (done !== 'none') audio.play('click');
   renderBoardUi();
 }

@@ -19,12 +19,16 @@ export const LIVES = 10;
 /** How long a fight may go on: the hero still standing then has held the board. */
 export const FIGHT_TIME = 45;
 
-/** The cast's five steps, each made of two of the one before. */
-export type Tier = 0 | 1 | 2 | 3 | 4;
-export const TIER_KIND = ['bug', 'ticket', 'legacy', 'boss', 'boss'] as const;
-export const MAX_TIER: Tier = 4;
+/** The cast's steps, each made of two of the one before: five, and past the final boss one more for each phase it
+    has in the game (two Drakkars make Valdur leaping out of the wreck, two Medusas her awakened form, two Nocthraxes
+    its flight and two of those its final form). */
+export type Tier = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+export const TIER_KIND = ['bug', 'ticket', 'legacy', 'boss', 'boss', 'boss', 'boss'] as const;
+/** The final bosses' extra phases, by cast (world). */
+export const FINAL_PHASES: Record<number, number> = { 3: 1, 4: 1, 9: 2 };
+export const maxTier = (cast: number) => (4 + (FINAL_PHASES[cast] ?? 0)) as Tier;
 /** What each step is worth in gold before its cast's strength (a sale gives half back). */
-export const TIER_VALUE = [1, 2, 4, 8, 16];
+export const TIER_VALUE = [1, 2, 4, 8, 16, 32, 64];
 const PRICE = [1, 3, 5];
 
 type Stats = { hp: number; dmg: number; rate: number; range: number; speed: number; r: number; splash?: number; ranged?: boolean };
@@ -36,6 +40,8 @@ export const TIER_STATS: Stats[] = [
   { hp: 560, dmg: 22, rate: 0.9, range: 34, speed: 45, r: 17 },
   { hp: 1400, dmg: 40, rate: 0.8, range: 40, speed: 48, r: 17, splash: 44 },
   { hp: 3600, dmg: 62, rate: 0.8, range: 50, speed: 44, r: 18, splash: 60 },
+  { hp: 9000, dmg: 98, rate: 0.85, range: 55, speed: 46, r: 19, splash: 66 },
+  { hp: 22000, dmg: 155, rate: 0.9, range: 60, speed: 48, r: 20, splash: 72 },
 ];
 /** The final boss's ring of orbs: every few seconds, out in a circle. */
 const RING = { every: 5, n: 8, dmg: 22, speed: 170 };
@@ -184,7 +190,7 @@ export function sell(b: BoardGame, from: Slot) {
   return true;
 }
 
-export const canMerge = (p: Piece, q: Piece) => p !== q && p.tier === q.tier && p.cast === q.cast && p.tier < MAX_TIER;
+export const canMerge = (p: Piece, q: Piece) => p !== q && p.tier === q.tier && p.cast === q.cast && p.tier < maxTier(p.cast);
 
 /** Drags a unit onto a cell of your half: onto its twin (same step, same cast) it merges into the next step, onto another it
     swaps, onto nothing it moves. */
@@ -334,7 +340,7 @@ export function updateBoard(b: BoardGame, dt: number) {
       f.swing = 0.3;
       strike(b, f, t);
     }
-    if (f.tier === 4) {
+    if (f.tier >= 4) {
       f.ring -= dt;
       if (f.ring <= 0) {
         f.ring = RING.every;
