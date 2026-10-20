@@ -3448,6 +3448,9 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .panel .shop-sec { width: min(100%, 340px); justify-self: center; margin: 2px auto 0; }
 .panel .shop-sec .icon .item-pic { width: 2.3em; height: 2.3em; }
 .panel .shop-sec + .items, .panel .shop-sec + .how { margin-top: 8px; }
+/* A slot inside an open section (head, body, boots; magic, melee, ranged): a smaller row of its own. */
+.panel .shop-sec.is-sub { width: min(88%, 290px); font-size: 0.9em; margin-top: 4px; }
+.panel .shop-sec.is-sub .icon .item-pic { width: 2em; height: 2em; }
 .wheel-slice .item-pic { width: 84%; height: 84%; }
 .wheel-result .wheel-res-icon { display: inline-block; vertical-align: middle; }
 .wheel-result .wheel-res-icon .item-pic { width: 1.6em; height: 1.6em; }
