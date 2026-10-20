@@ -9,7 +9,7 @@ import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
 import { draw, drawRetroFigure, preloadCast, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
 import { CELL, HOME_ROW, ROUNDS, SYNERGY, TACTICS, armyCap, toggleAutoMerge, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, startOnlineFight, updateBoard, type BoardGame, type Online, type Piece, type Variant } from './board';
-import { cleanCode, hostGame, joinGame, leave as netLeave, send as netSend, type NetHandlers, type NetMsg } from './net';
+import { cleanCode, hostGame, joinGame, leave as netLeave, send as netSend, type NetHandlers, type NetMsg, type NetProfile, type NetState, type Together } from './net';
 import { FIREBALL, boardMerged, drawBoard, mirrorFight, drawBoardDrag, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
 import type { Enemy } from './world';
 import { ARMOUR_SLOTS, ARSENAL, ITEMS, itemLevel, type SpiritSkin, UPGRADES, WEAPON_SLOTS, EXTRA_SLOT_PRICE, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
@@ -17,7 +17,7 @@ import { Scene } from './scene';
 import { ACHIEVEMENTS, achEarned, achTotal, checkAchievements, tierKey, tiersDone, type Ach, type AchId } from './achievements';
 import { makeT, pickLang, type Key, type Lang } from './strings';
 import {
-  CATEGORY, EVO_PARTNER, H, NIGHTMARE_WORLD, SECRET_WORLD, showcaseHit, startShowcase, canFuse, revivePrice, SKILLS, arrowLook, arrowOptions, bladeElement, bladeOptions, canEvolve, evoOf, fusionOf, fusionWith, evoLostBy, pairFusion, arrowElements, settleEffects, rerollChoices, adReroll, adRevive, canAdReroll, canAdRevive, maxLevel, pickArrow, pickBlade, pickSpirit, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_LUCKY, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
+  CATEGORY, EVO_PARTNER, H, NIGHTMARE_WORLD, SECRET_WORLD, showcaseHit, startShowcase, canFuse, revivePrice, SKILLS, arrowLook, arrowOptions, bladeElement, bladeOptions, canEvolve, evoOf, fusionOf, fusionWith, evoLostBy, pairFusion, arrowElements, settleEffects, rerollChoices, adReroll, adRevive, canAdReroll, canAdRevive, maxLevel, pickArrow, pickBlade, pickSpirit, ROOMS, SHRINE_ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_LUCKY, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
   type ArrowLook, type Category, type Choice, type Fusion, type Game, type GameEvent, type Input, type Look, type SkillId, type WheelOutcome,
 } from './world';
 
@@ -444,6 +444,8 @@ const backButton = (act: string, label: Key = 'menu') => `<button class="ghost" 
 
 function menuScreen() {
   endBoard();
+  friendMini.hidden = true;
+  together = null;
   showcaseBtn.hidden = true;
   game = null;
   audio.setSong(save.song); // a Boss Rush played by world; back to the pick
@@ -1627,6 +1629,7 @@ function stepMode(by: number) {
 }
 function startRun(world = worldIn(), mode: PlayMode = save.mode, endless = false, rush = 0, secret = false, rushFrom = 1) {
   if (mode === 'board') { boardVariantScreen(world); return; }
+  together = null;
   game = newGame({ ...buildLoadout(save.equipped, save.upgrades, masteries(), save.arsenal, save.itemLevels, save.extra), sprintMastery: masteries() }, save.style, world, mode, endless, rush, secret, rushFrom);
   // Boss Rush: every boss in its own world's floor and song (whatever Customise picked); the secret shift, the jungle's.
   game.scene = rush || secret ? 0 : save.scene;
@@ -1707,22 +1710,183 @@ function friendInvite() {
    types in, and kept open while you play on: the cover shows the friend under your profile, the board's screen
    offers to invite them, and in a game their own hero stands in the rival's corner. An invitation carries the
    way, the world and the seed; whoever invites is side 0 of the shared fights. */
-type Friend = { name: string; key: string; still: string };
+type Friend = { name: string; key: string; still: string; profile?: NetProfile };
 let friend: Friend | null = null;
 let rivalReady: { round: number; army: Piece[] } | null = null;
 let sentArmy: Piece[] | null = null;
 /** The invitation you sent and wait on, and the one you were sent and have not answered. */
-let inviting: { variant: Variant; world: number; seed: number } | null = null;
-let invitedBy: { variant: Variant; world: number; seed: number } | null = null;
-const hello = (): NetMsg => ({ t: 'hello', name: save.name, key: heroKey(save.skin, save.equipped.head), still: heroStill(save.skin, save.equipped.head) });
+type Invite = { mode: Together; variant: Variant; world: number; seed: number };
+let inviting: Invite | null = null;
+let invitedBy: Invite | null = null;
+/** What an invitation is to, for its dialogs. */
+const inviteWhat = (v: Invite) => v.mode === 'sprints' ? `${MODE_ICON.sprints} ${t('modeSprints')}` : v.mode === 'horde' ? `${MODE_ICON.horde} ${t('modeHorde')}` : `${v.variant === 'tactics' ? '⭐' : '🧬'} ${t(v.variant === 'tactics' ? 'boardTactics' : 'boardFusion')}`;
+/** Your whole profile goes with your hello: your hero as worn, its level and masteries, what you wear and how far your
+    forge and items are upgraded (each phone plays its own run with its own save, so this is what the other sees). */
+const hello = (): NetMsg => ({
+  t: 'hello', name: save.name, key: heroKey(save.skin, save.equipped.head), still: heroStill(save.skin, save.equipped.head),
+  profile: {
+    level: profileLevel(save.xp).level, masteries: masteries(), skin: save.skin, equipped: Object.values(save.equipped).filter((x): x is ItemId => !!x),
+    upgrades: Object.values(save.upgrades ?? {}).reduce((n: number, v) => n + (Number(v) || 0), 0), items: save.owned.length,
+  },
+});
+/** Playing a run together (`startTogether`): the mode and the shared seed (On call's field is laid from it). */
+let together: { mode: 'sprints' | 'horde'; seed: number } | null = null;
+/** The friend's last state in their run, and when it came (seconds on the frame clock). */
+let friendState: (NetState & { at: number; sx: number; sy: number }) | null = null;
+let stateSent = 0;
+/* Playing with a friend, in a run of your own: your state goes to them a few times a second, and theirs is shown.
+   On call, side by side on the same field of blocks, they are drawn where they stand (their hero as worn, walking
+   the way they walk), and when they are off the screen their head waits at its edge in a ring, pointing their way;
+   in sprints a small card under your health shows their run, the room they are in among the twelve. */
+const friendPics = new Map<string, HTMLImageElement>();
+function friendPic(name: string) {
+  const src = `./images/game/hero/${name}.webp`;
+  let img = friendPics.get(src);
+  if (!img) { img = new Image(); img.src = src; friendPics.set(src, img); }
+  return img;
+}
+const friendMini = document.createElement('div');
+friendMini.className = 'friend-mini';
+friendMini.hidden = true;
+document.body.append(friendMini);
+let overlayAt = 0;
+function friendOverlay(g: Game, now: number, frozen: boolean) {
+  const dt = Math.min(0.1, Math.max(0, now - overlayAt));
+  overlayAt = now;
+  if (friend && now - stateSent > 0.15) {
+    stateSent = now;
+    const p = g.player;
+    netSend({ t: 'state', mode: g.mode, world: g.world, room: g.room, x: Math.round(p.x), y: Math.round(p.y), vx: p.moving ? Math.round(Math.cos(p.heading) * 100) / 100 : 0, vy: p.moving ? Math.round(Math.sin(p.heading) * 100) / 100 : 0, hp: Math.max(0, p.hp) / p.maxHp, level: g.level, phase: g.phase });
+  }
+  const fs = friendState;
+  const fresh = !!friend && !!fs && now - fs.at < 3;
+  // Sprints: the friend's run on a small card under your health.
+  const mini = fresh && fs && friend && g.mode === 'sprints' && fs.mode === 'sprints' && !g.rush && !g.showcase;
+  friendMini.hidden = !mini;
+  if (mini && fs && friend) {
+    const key = `${friend.still}|${fs.world}|${fs.room}|${fs.phase}|${Math.round(fs.hp * 10)}`;
+    if (friendMini.dataset.key !== key) {
+      friendMini.dataset.key = key;
+      const dots = Array.from({ length: ROOMS }, (_, i) => {
+        const r = i + 1;
+        return `<i class="${r < fs.room ? 'is-done' : r === fs.room ? 'is-here' : ''}${SHRINE_ROOMS.includes(r) ? ' is-shrine' : ''}${r === 6 || r === ROOMS ? ' is-boss' : ''}"></i>`;
+      }).join('');
+      const end = fs.phase === 'over' ? ' 💀' : fs.phase === 'won' ? ' 🏆' : '';
+      friendMini.innerHTML = `<span class="friend-pic"><img src="./images/game/hero/${friend.still}.webp" alt=""></span>
+        <div><b>${esc(friend.name)}${end}</b><small>${t('worldShort', { n: fs.world })} · ${t('linkRoom', { n: fs.room, total: ROOMS })}</small>
+        <span class="friend-rooms">${dots}</span><span class="friend-hp"><b style="width:${Math.round(fs.hp * 100)}%"></b></span></div>`;
+    }
+    const top = hud.getBoundingClientRect().bottom;
+    friendMini.style.top = `${Math.round(top + 6)}px`;
+  }
+  // On call together: the friend on the same field, or their head at the edge of the screen.
+  if (!fresh || !fs || !friend || frozen || save.retro || together?.mode !== 'horde' || g.mode !== 'horde' || fs.mode !== 'horde') return;
+  const ahead = Math.min(0.3, now - fs.at);
+  const tx = fs.x + fs.vx * 150 * ahead, ty = fs.y + fs.vy * 150 * ahead;
+  const k = Math.min(1, dt * 12);
+  fs.sx += (tx - fs.sx) * k;
+  fs.sy += (ty - fs.sy) * k;
+  const p = g.player;
+  const x = view.cx + (fs.sx - p.x) * view.scale;
+  const y = view.cy + (fs.sy - p.y) * view.scale;
+  const w = canvas.clientWidth, h = canvas.clientHeight;
+  const top = Math.max(60, hud.getBoundingClientRect().bottom - canvasRect.top + 20);
+  ctx.save();
+  ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
+  const moving = Math.hypot(fs.vx, fs.vy) > 0.2;
+  const step = Math.floor(now * 6) % 2 ? '2' : '';
+  const pose = fs.phase === 'over' ? 'down' : !moving ? 'front' : fs.vy < -0.6 ? 'back' : fs.vy > 0.6 ? `fwalk${step}` : `walk${step}`;
+  const img = friendPic(`${friend.key}-${pose}`);
+  const fallback = friendPic(friend.still);
+  const pic = img.complete && img.naturalWidth ? img : fallback;
+  const inside = x > 0 && x < w && y > top - 40 && y < h + 20;
+  if (inside && pic.complete && pic.naturalWidth) {
+    const ph = 15 * 3.05 * (pic.naturalHeight / 150) * view.scale;
+    const pw = (ph * pic.naturalWidth) / pic.naturalHeight;
+    ctx.fillStyle = 'rgba(0,0,0,0.3)';
+    ctx.beginPath();
+    ctx.ellipse(x, y, pw * 0.32, pw * 0.1, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.translate(x, y);
+    if (moving && fs.vx < -0.2) ctx.scale(-1, 1);
+    ctx.drawImage(pic, -pw / 2, -ph, pw, ph);
+    ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
+    // Their name over their head.
+    ctx.font = '700 12px Fredoka, sans-serif';
+    const label = friend.name;
+    const lw = ctx.measureText(label).width + 12;
+    ctx.fillStyle = 'rgba(8,12,28,0.7)';
+    ctx.beginPath();
+    ctx.roundRect(x - lw / 2, y - ph - 20, lw, 17, 8);
+    ctx.fill();
+    ctx.fillStyle = '#86efac';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(label, x, y - ph - 11.5);
+  } else {
+    // Off the screen: their head in a ring at the edge, pointing to where they are.
+    const R = 22;
+    const cx0 = w / 2, cy0 = (top + h) / 2;
+    const dx = x - cx0, dy = y - 25 * view.scale - cy0;
+    const kx = (w / 2 - R - 8) / Math.max(1e-6, Math.abs(dx)), ky = ((h - top) / 2 - R - 8) / Math.max(1e-6, Math.abs(dy));
+    const kk = Math.min(kx, ky, 1);
+    const ex = cx0 + dx * kk, ey = cy0 + dy * kk;
+    const a = Math.atan2(dy, dx);
+    ctx.fillStyle = '#4ade80';
+    ctx.beginPath();
+    ctx.moveTo(ex + Math.cos(a) * (R + 10), ey + Math.sin(a) * (R + 10));
+    ctx.lineTo(ex + Math.cos(a + 0.45) * (R + 1), ey + Math.sin(a + 0.45) * (R + 1));
+    ctx.lineTo(ex + Math.cos(a - 0.45) * (R + 1), ey + Math.sin(a - 0.45) * (R + 1));
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(ex, ey, R, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(11,24,36,0.9)';
+    ctx.fill();
+    ctx.lineWidth = 2.5;
+    ctx.strokeStyle = '#4ade80';
+    ctx.stroke();
+    const head = fallback.complete && fallback.naturalWidth ? fallback : null;
+    if (head) {
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(ex, ey, R - 2, 0, Math.PI * 2);
+      ctx.clip();
+      const hh = R * 3.4, hw = (hh * head.naturalWidth) / head.naturalHeight;
+      ctx.drawImage(head, ex - hw / 2, ey - R * 0.95, hw, hh);
+      ctx.restore();
+    }
+  }
+  ctx.restore();
+}
+/** Starts what an invitation agreed on, on both phones: the board as before, or a run of your own, side by side. */
+function startTogether(mode: Together, variant: Variant, world: number, seed: number, me: 0 | 1) {
+  if (!friend) return;
+  if (mode === 'board') { startBoard(world, { variant, online: { me, seed, rivalLives: 10, rivalName: friend.name, rivalArmy: null, waiting: false } }); return; }
+  startRun(world, mode);
+  if (!game) return;
+  together = { mode, seed };
+  // On call: the same field of blocks for both, laid from the shared seed.
+  if (mode === 'horde') { game.fieldSeed = seed; game.fieldKey = ''; }
+  flash(t(mode === 'horde' ? 'linkHordeStart' : 'linkSprintStart', { name: esc(friend.name) }));
+}
 const onCover = () => !board && !game && !!document.querySelector('.screen.is-menu');
+/** The friend's profile, as their phone sent it: level, masteries and what they wear. */
+function friendProfile() {
+  const p = friend?.profile;
+  if (!p) return '';
+  const worn = p.equipped.map((id) => itemById(id as ItemId)).filter((it) => !!it).map((it) => `<img src="./images/game/${it!.pic}" alt="" title="${esc(t(`${it!.id}Name` as Key))}" width="30" height="30">`).join('');
+  return `<p class="friend-stats">${t('lvShort', { level: p.level })}${p.masteries ? ` · ★${p.masteries}` : ''} · ⚒ ${p.upgrades} · 🎒 ${p.items}</p>${worn ? `<div class="friend-worn">${worn}</div>` : ''}`;
+}
 function linkScreen(note = '') {
   if (friend) {
     show(`<button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
       <h2>👥 ${t('onlinePlay')}</h2>
       <div class="friend-card"><span class="friend-pic"><img src="./images/game/hero/${friend.still}.webp" alt=""></span><b>${esc(friend.name)}</b><i class="friend-dot" aria-hidden="true"></i></div>
+      ${friendProfile()}
       <p class="how">${t('linkOn', { name: esc(friend.name) })}</p>
-      <button class="primary" type="button" data-act="board-pick">⚔️ ${t('modeBoard')}</button>
+      <button class="primary" type="button" data-act="invite" data-mode="sprints">${MODE_ICON.sprints} ${t('linkSprints')}</button>
+      <button class="primary" type="button" data-act="invite" data-mode="horde">${MODE_ICON.horde} ${t('linkHorde')}</button>
+      <button class="primary" type="button" data-act="board-pick">${MODE_ICON.board} ${t('modeBoard')}</button>
       <button class="ghost is-danger" type="button" data-act="link-off">${t('linkOff')}</button>`);
     return;
   }
@@ -1751,26 +1915,31 @@ function onNetMsg(m: NetMsg) {
   if (m.t === 'hello') {
     const first = !friend;
     friend = { name: cleanName(m.name), key: String(m.key).replace(/[^a-z-]/g, ''), still: String(m.still).replace(/[^a-z-]/g, '') };
+    if (m.profile) friend.profile = { level: Number(m.profile.level) || 1, masteries: Number(m.profile.masteries) || 0, skin: String(m.profile.skin), equipped: (m.profile.equipped ?? []).map(String).filter((id) => !!itemById(id as ItemId)), upgrades: Number(m.profile.upgrades) || 0, items: Number(m.profile.items) || 0 };
     if (first) { flash(t('linkMade', { name: esc(friend.name) })); audio.play('door'); if (!board && !game) menuScreen(); }
   } else if (m.t === 'invite') {
     if (board || game || inviting) { netSend({ t: 'decline' }); return; }
-    invitedBy = { variant: m.variant === 'tactics' ? 'tactics' : 'fusion', world: Math.max(1, Math.min(WORLD_COUNT, Math.round(m.world) || 1)), seed: m.seed >>> 0 };
+    invitedBy = { mode: m.mode === 'sprints' || m.mode === 'horde' ? m.mode : 'board', variant: m.variant === 'tactics' ? 'tactics' : 'fusion', world: Math.max(1, Math.min(WORLD_COUNT, Math.round(m.world) || 1)), seed: m.seed >>> 0 };
     audio.play('levelup');
     show(`${friend ? `<div class="friend-card"><span class="friend-pic"><img src="./images/game/hero/${friend.still}.webp" alt=""></span><b>${esc(friend.name)}</b></div>` : ''}
-      <h2>${t('linkInvited', { name: esc(friend?.name ?? '') })}</h2>
-      <p>${invitedBy.variant === 'tactics' ? '⭐' : '🧬'} ${t(invitedBy.variant === 'tactics' ? 'boardTactics' : 'boardFusion')} · ${t('worldShort', { n: invitedBy.world })}</p>
+      <h2>${t(invitedBy.mode === 'board' ? 'linkInvited' : 'linkInvitedRun', { name: esc(friend?.name ?? '') })}</h2>
+      <p>${inviteWhat(invitedBy)} · ${t('worldShort', { n: invitedBy.world })}</p>
       <button class="primary" type="button" data-act="invite-yes">${t('linkAccept')}</button>
       <button class="ghost" type="button" data-act="invite-no">${t('linkDecline')}</button>`);
   } else if (m.t === 'uninvite') {
     if (invitedBy) { invitedBy = null; if (!board && !game) menuScreen(); }
   } else if (m.t === 'accept') {
-    if (inviting && friend) { const v = inviting; inviting = null; startBoard(v.world, { variant: v.variant, online: { me: 0, seed: v.seed, rivalLives: 10, rivalName: friend.name, rivalArmy: null, waiting: false } }); }
+    if (inviting && friend) { const v = inviting; inviting = null; startTogether(v.mode, v.variant, v.world, v.seed, 0); }
   } else if (m.t === 'decline') {
-    if (inviting) { inviting = null; flash(t('linkBusy', { name: esc(friend?.name ?? '') })); boardVariantScreen(worldIn('board')); }
+    if (inviting) { const v = inviting; inviting = null; flash(t('linkBusy', { name: esc(friend?.name ?? '') })); if (v.mode === 'board') boardVariantScreen(worldIn('board')); else linkScreen(); }
   } else if (m.t === 'ready') {
     rivalReady = { round: m.round, army: m.army };
     if (board?.online && !board.online.waiting) flash(t('onlineRivalReady', { name: esc(board.online.rivalName) }));
     tryOnlineFight();
+  } else if (m.t === 'state') {
+    const at = performance.now() / 1000;
+    const prev = friendState;
+    friendState = { ...m, at, sx: prev && prev.mode === m.mode ? prev.sx : m.x, sy: prev && prev.mode === m.mode ? prev.sy : m.y };
   } else if (m.t === 'quit') rivalQuit();
   else if (m.t === 'bye') friendGone();
 }
@@ -1799,6 +1968,8 @@ function rivalQuit() {
 function friendGone() {
   const was = friend;
   friend = null;
+  friendState = null;
+  friendMini.hidden = true;
   inviting = null;
   invitedBy = null;
   netLeave();
@@ -2339,18 +2510,19 @@ screen.addEventListener('click', (event) => {
   }
   else if (act === 'board-pick') { menuScreen(); boardVariantScreen(worldIn('board')); }
   else if (act === 'invite' && friend) {
-    inviting = { variant: target.dataset.variant === 'tactics' ? 'tactics' : 'fusion', world: worldIn('board'), seed: Math.floor(Math.random() * 2 ** 31) };
+    const mode: Together = target.dataset.mode === 'sprints' || target.dataset.mode === 'horde' ? target.dataset.mode : 'board';
+    inviting = { mode, variant: target.dataset.variant === 'tactics' ? 'tactics' : 'fusion', world: worldIn(mode), seed: Math.floor(Math.random() * 2 ** 31) };
     netSend({ t: 'invite', ...inviting });
     show(`<div class="friend-card"><span class="friend-pic"><img src="./images/game/hero/${friend.still}.webp" alt=""></span><b>${esc(friend.name)}</b></div>
       <p class="how">⏳ ${t('linkWaitAnswer', { name: esc(friend.name) })}</p>
       <button class="ghost" type="button" data-act="invite-cancel">${t('cancel')}</button>`);
   }
-  else if (act === 'invite-cancel') { inviting = null; netSend({ t: 'uninvite' }); boardVariantScreen(worldIn('board')); }
+  else if (act === 'invite-cancel') { const v = inviting; inviting = null; netSend({ t: 'uninvite' }); if (v?.mode === 'board') boardVariantScreen(worldIn('board')); else linkScreen(); }
   else if (act === 'invite-yes' && invitedBy && friend) {
     const v = invitedBy;
     invitedBy = null;
     netSend({ t: 'accept' });
-    startBoard(v.world, { variant: v.variant, online: { me: 1, seed: v.seed, rivalLives: 10, rivalName: friend.name, rivalArmy: null, waiting: false } });
+    startTogether(v.mode, v.variant, v.world, v.seed, 1);
   }
   else if (act === 'invite-no') { invitedBy = null; netSend({ t: 'decline' }); menuScreen(); }
   else if (act === 'board-quit-ask') boardQuitScreen();
@@ -3144,6 +3316,7 @@ function step(now: number) {
     // redrawn every frame under the dialog's full-screen blur). A resize draws it again.
     const still = paused || (g.phase !== 'play' && g.phase !== 'over' && g.phase !== 'won');
     if (!still || !stillDrawn) draw(ctx, g, view, palette, now / 1000);
+    friendOverlay(g, now / 1000, still && stillDrawn);
     stillDrawn = still;
     setText(hudRoom, `${t('worldShort', { n: g.world })} · ${whereLine(g)}`);
     showcaseBtn.hidden = !g.showcase || g.phase !== 'play' || !g.enemies.some((e) => e.kind === 'boss' && !e.dead);

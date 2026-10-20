@@ -8,11 +8,17 @@ import Peer, { type DataConnection } from 'peerjs';
 import type { Piece, Variant } from './board';
 
 /** Who you are: your name, your hero's set (for its poses) and its standing picture. */
-export type NetHello = { t: 'hello'; name: string; key: string; still: string };
-/** An invitation to a board game: its way, world and seed. */
-export type NetInvite = { t: 'invite'; variant: Variant; world: number; seed: number };
+export type NetProfile = { level: number; masteries: number; skin: string; equipped: string[]; upgrades: number; items: number };
+export type NetHello = { t: 'hello'; name: string; key: string; still: string; profile?: NetProfile };
+/** What we play together: the board in either way, a sprint run each side by side, or one On call shift. */
+export type Together = 'board' | 'sprints' | 'horde';
+/** An invitation: what to play, its way on the board, the world and the seed. */
+export type NetInvite = { t: 'invite'; mode?: Together; variant: Variant; world: number; seed: number };
+/** Where you are in a run, a few times a second: the mode and world, the sprint (room), your place on the field,
+    which way you walk, your health and level, and how the run stands. */
+export type NetState = { t: 'state'; mode: 'sprints' | 'horde'; world: number; room: number; x: number; y: number; vx: number; vy: number; hp: number; level: number; phase: string };
 export type NetMsg = NetHello | NetInvite | { t: 'accept' } | { t: 'decline' } | { t: 'uninvite' }
-  | { t: 'ready'; round: number; army: Piece[] } | { t: 'quit' } | { t: 'bye' };
+  | { t: 'ready'; round: number; army: Piece[] } | NetState | { t: 'quit' } | { t: 'bye' };
 
 export type NetHandlers = {
   /** The host's code, once PeerJS has it. */
