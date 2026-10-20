@@ -1,4 +1,5 @@
 import './game.css';
+import { GAME_BUILD, GAME_VERSION } from './version';
 import { storage } from '../lib/storage';
 import { ads, configureAds, type AdSpot, type PlayAd } from './ads';
 import { configurePayments, payments } from './payments';
@@ -430,7 +431,8 @@ function menuScreen() {
       <button class="hot cover-card is-options" data-act="options" aria-label="${t('options')}"></button>
       ${copy('is-options', t('options'), '')}
       <p class="cover-best">${bestLine()}</p>
-    </div></div>`, false, true);
+    </div>
+    <small class="cover-version">Bug Hunter v${GAME_VERSION} · ${GAME_BUILD.built.split('-').reverse().join('/')} · ${GAME_BUILD.commit}</small></div>`, false, true);
 }
 
 const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
