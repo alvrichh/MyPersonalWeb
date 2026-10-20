@@ -62,8 +62,8 @@ export type HazardKind = 'none' | 'lava' | 'puddle' | 'thorns' | 'strike' | 'ice
 export type WorldDef = { element: Element; hazard: HazardKind; look: Look | 'random'; tint: string; floor: string; grid: string; wall: string; door: string };
 
 /** How an enemy is drawn: the world's cast, or whatever the picker forces. */
-export type Look = 'original' | 'demon' | 'viking' | 'mud' | 'jungle' | 'greek' | 'robot' | 'nightmare';
-export const LOOKS: Look[] = ['original', 'demon', 'viking', 'mud', 'jungle', 'greek', 'robot', 'nightmare'];
+export type Look = 'original' | 'demon' | 'viking' | 'mud' | 'jungle' | 'greek' | 'robot' | 'nightmare' | 'core';
+export const LOOKS: Look[] = ['original', 'demon', 'viking', 'mud', 'jungle', 'greek', 'robot', 'nightmare', 'core'];
 
 export const WORLDS: WorldDef[] = [
   { element: 'original', hazard: 'none', look: 'original', tint: '', floor: '#0f141d', grid: 'rgba(255,255,255,0.035)', wall: '#1d2533', door: '' },
@@ -75,7 +75,7 @@ export const WORLDS: WorldDef[] = [
   { element: 'bolt', hazard: 'strike', look: 'greek', tint: '#facc15', floor: '#15140a', grid: 'rgba(250,204,21,0.07)', wall: '#2e2a10', door: '#ffd45f' },
   { element: 'spark', hazard: 'bouncy', look: 'robot', tint: '#fb923c', floor: '#160f09', grid: 'rgba(251,146,60,0.08)', wall: '#3b2412', door: '#ffb86f' },
   { element: 'ghost', hazard: 'fog', look: 'nightmare', tint: '#c7d2fe', floor: '#0c0d14', grid: 'rgba(199,210,254,0.05)', wall: '#1f2130', door: '#edf2fb' },
-  { element: 'heart', hazard: 'mixed', look: 'random', tint: '#f472b6', floor: '#170a12', grid: 'rgba(244,114,182,0.07)', wall: '#3a1430', door: '#ff79c9' },
+  { element: 'heart', hazard: 'mixed', look: 'core', tint: '#f472b6', floor: '#170a12', grid: 'rgba(244,114,182,0.07)', wall: '#3a1430', door: '#ff79c9' },
 ];
 export const WORLD_COUNT = WORLDS.length;
 
@@ -2283,7 +2283,7 @@ export const GAZE = { reach: 120, hold: 2, stone: 1.5, out: 20 };
 /** How fast each boss walks by its build, on its base pace (40, a little more each world): the heavy ones (the Monolith,
     the Treant, the Queen, the Drakkar's longship) as they were, the light and fierce ones much quicker, so none plods. */
 const BOSS_PACE: Record<string, number> = {
-  original: 1, demon: 1.5, viking: 1.6, mud: 1.15, jungle: 1, greek: 1.45, robot: 1.2, nightmare: 1.3,
+  original: 1, demon: 1.5, viking: 1.6, mud: 1.15, jungle: 1, greek: 1.45, robot: 1.2, nightmare: 1.3, core: 1.3,
   kernel: 1.2, archdemon: 1.35, drakkar: 1, medusa: 1.2, queen: 1, zeus: 1.3, mech: 1.25, wraith: 1.5, chimera: 1.3, kratos: 1.6,
 };
 /** Stops a bug dead for `secs`, unless it was stopped a moment ago: then it is only slowed (see `paraCd`). */
@@ -2570,7 +2570,7 @@ const SIGNATURE: Signature[] = ['spiral', 'meteors', 'tide', 'sigils', 'roots', 
 const HORDE_LEAP = 9;
 const moveOf = (g: Game, e: Enemy): Move =>
   // Kratos: his blades sweep fire in front of him (the demons' breath); his signature is the fire world's meteors.
-  e.bossId === 'kratos' ? (e.phase > 1 ? 'javelins' : 'breath') : e.bossId === 'viking' ? 'icerows' : e.bossId === 'valdur' ? 'leap' : e.bossId === 'queen' ? 'acid' : g.world < WORLD_COUNT ? MID_MOVE[g.world - 1]
+  e.bossId === 'kratos' ? (e.phase > 1 ? 'javelins' : 'breath') : e.bossId === 'viking' ? 'icerows' : e.bossId === 'core' ? 'breath' : e.bossId === 'valdur' ? 'leap' : e.bossId === 'queen' ? 'acid' : g.world < WORLD_COUNT ? MID_MOVE[g.world - 1]
   // Nocthrax: the Treant's vanishing leap half the time (the owner's favourite), any other move otherwise.
   : e.bossId === 'chimera' && !e.clone && Math.random() < 0.5 ? 'leap' : MID_MOVE[Math.floor(Math.random() * MID_MOVE.length)];
 const signatureOf = (g: Game, e: Enemy): Signature =>
@@ -2638,9 +2638,9 @@ function inside(g: Game, v: Vec, m: number): Vec {
   return { x: clamp(v.x, b.x + m, b.x + b.w - m), y: clamp(v.y, b.y + m, b.y + b.h - m) };
 }
 /** The final bosses' rings fly as their element's weapon pictures (the cast bosses keep the plain orbs). */
-const RING_PIC: Partial<Record<string, OrbPic>> = { original: 'glitch', kernel: 'glitch', demon: 'fireball', viking: 'water', jungle: 'leaf', greek: 'bolt', robot: 'spark', chimera: 'ember', nightmare: 'ember', mud: 'mudball', medusa: 'medusa', archdemon: 'fireball', kratos: 'fireball', kratos2: 'bolt', drakkar: 'water', valdur: 'water', queen: 'leaf', zeus: 'bolt', mech: 'spark', wraith: 'ghost' };
+const RING_PIC: Partial<Record<string, OrbPic>> = { original: 'glitch', kernel: 'glitch', demon: 'fireball', viking: 'water', jungle: 'leaf', greek: 'bolt', robot: 'spark', chimera: 'ember', core: 'ember', nightmare: 'ember', mud: 'mudball', medusa: 'medusa', archdemon: 'fireball', kratos: 'fireball', kratos2: 'bolt', drakkar: 'water', valdur: 'water', queen: 'leaf', zeus: 'bolt', mech: 'spark', wraith: 'ghost' };
 /** Rings in a colour of their own (glow and track); the rest are the usual red. The Lich's embers are purple. */
-const RING_TONE: Partial<Record<string, string>> = { nightmare: '#a855f7', chimera: '#e879f9' };
+const RING_TONE: Partial<Record<string, string>> = { nightmare: '#a855f7', chimera: '#e879f9', core: '#e879f9' };
 const ring = (g: Game, e: Enemy, n: number, speed: number, tone = '', turn = rand(0, Math.PI * 2), pic?: OrbPic) => {
   for (let i = 0; i < n; i++) {
     const a = turn + (i / n) * Math.PI * 2;
@@ -3044,6 +3044,7 @@ const LANDING: Record<string, { el: ThreatEl; fx: string; pic?: OrbPic; tone?: s
   demon: { el: 'fire', fx: 'boom-big', pic: 'fireball' }, archdemon: { el: 'fire', fx: 'boom-big', pic: 'fireball' }, kratos: { el: 'fire', fx: 'boom-big', pic: 'fireball' }, chimera: { el: 'fire', fx: 'boom-big', pic: 'ember', tone: '#e879f9' },
   greek: { el: 'bolt', fx: 'volt-burst', pic: 'bolt' }, zeus: { el: 'bolt', fx: 'volt-burst', pic: 'bolt' },
   robot: { el: 'fire', fx: 'impact', pic: 'rocket', tone: '#fb923c' }, mech: { el: 'fire', fx: 'boom-big', pic: 'shark', tone: '#fb923c' },
+  core: { el: 'fire', fx: 'boom-big', pic: 'ember', tone: '#e879f9' },
   nightmare: { el: 'shadow', fx: 'spectral-bolt', pic: 'ember', tone: '#a855f7' }, wraith: { el: 'shadow', fx: 'spectral-bolt', pic: 'ghost' },
   mud: { el: 'mud', fx: 'mud-splat', pic: 'mudball' }, medusa: { el: 'arcane', fx: 'medusa-burst', pic: 'medusa' },
   original: { el: 'glitch', fx: 'impact', pic: 'glitch' }, kernel: { el: 'glitch', fx: 'impact', pic: 'glitch' },
