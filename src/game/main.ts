@@ -316,15 +316,16 @@ const COIN_PIC = '<i class="coin-ic" aria-hidden="true"></i>';
 /** How long the run's last moment stays on the field before its dialog. */
 const END_PAUSE = 1100;
 function show(html: string, wide = false, menu = false, extra = '') {
-  // A dialog that opens (not one re-rendering itself) pops up with a zoom.
-  const opening = screen.hidden;
+  // A dialog that opens (not one re-rendering itself) pops up with a zoom: over the game, or from the cover
+  // (options, Customise, the shop, the map and the rest of the main menu's screens).
+  const opening = screen.hidden || (screen.classList.contains('is-menu') && !menu);
   if (!save.retro) html = html.replaceAll('🪙', COIN_PIC);
   // A dialog that re-renders itself (the shop after a purchase) keeps its scroll.
   const keepScroll = extra === 'keep-scroll' ? screen.querySelector('.panel-in')?.scrollTop ?? 0 : 0;
   // The corner buttons (close, options) are pulled out of the scrolling box so they stay put.
   const close = (html.match(/<button class="ui-(?:close|opts|top)"[^>]*>(?:<span[^>]*>(?:[^<]|<(?!\/span>))*<\/span>)?<\/button>/g) ?? []).join('');
   for (const b of html.match(/<button class="ui-(?:close|opts|top)"[^>]*>(?:<span[^>]*>(?:[^<]|<(?!\/span>))*<\/span>)?<\/button>/g) ?? []) html = html.replace(b, '');
-  const cls = `panel${wide ? ' panel-wide' : ''}${opening && !menu && extra !== 'is-map' ? ' is-pop' : ''}`;
+  const cls = `panel${wide ? ' panel-wide' : ''}${opening && !menu ? ' is-pop' : ''}`;
   const old = opening ? null : screen.querySelector<HTMLElement>(':scope > .panel');
   if (old) {
     // A dialog re-rendering itself (a pick, a purchase, a colour) keeps its frame element and every picture
