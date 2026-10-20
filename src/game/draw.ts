@@ -3057,6 +3057,40 @@ function drawThreats(ctx: CanvasRenderingContext2D, g: Game, now: number, top: b
   }
 }
 
+/* The Medusa's snakes, from the owner's sheet (`enemies/snake-{p,t}-0..5.webp`, purple and turquoise: five slithering
+   poses and the bite, cut from his black sheet on one canvas per colour, belly on the bottom edge, `scratchpad` `snake/cut.py`).
+   They face right, are mirrored to face left, slither back and forth through the five poses as they cover ground and bite
+   while close to you; `SNAKE_W` is how many times their radius the picture is drawn wide. */
+const snakeSets = new Map<number, HTMLImageElement[]>();
+const SNAKE_SLITHER = [0, 1, 2, 3, 4, 3, 2, 1];
+const SNAKE_W = 7;
+function snakeFrames(colour: number) {
+  let set = snakeSets.get(colour);
+  if (!set) {
+    set = Array.from({ length: 6 }, (_, i) => Object.assign(new Image(), { src: `./images/game/enemies/snake-${colour === 2 ? 't' : 'p'}-${i}.webp` }));
+    snakeSets.set(colour, set);
+  }
+  return set;
+}
+function drawSnake(ctx: CanvasRenderingContext2D, e: Enemy) {
+  const set = snakeFrames(e.snake);
+  const pic = set[e.swing > 0 ? 5 : SNAKE_SLITHER[((Math.floor(e.step) % 8) + 8) % 8]];
+  if (retroLook || !ready(pic)) return false;
+  const w = e.r * SNAKE_W;
+  const h = (w * pic.naturalHeight) / pic.naturalWidth;
+  ctx.fillStyle = 'rgba(0,0,0,0.3)';
+  ctx.beginPath();
+  ctx.ellipse(e.x, e.y + e.r * 0.8, w * 0.36, e.r * 0.32, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.save();
+  ctx.translate(e.x, e.y + e.r * 0.9);
+  if (e.face < 0) ctx.scale(-1, 1);
+  if (e.hit > 0) ctx.globalAlpha = 0.55;
+  ctx.drawImage(pic, -w / 2, -h, w, h);
+  ctx.restore();
+  return true;
+}
+
 function drawEnemy(ctx: CanvasRenderingContext2D, e: Enemy, now: number) {
   // A boss off the floor: its shadow grows where it will land.
   if (e.spawn > 0 && e.vanish) {
@@ -3080,6 +3114,8 @@ function drawEnemy(ctx: CanvasRenderingContext2D, e: Enemy, now: number) {
     ctx.fill();
     return;
   }
+  if (e.bossId === 'medusa') { snakeFrames(1); snakeFrames(2); }
+  if (e.snake && e.spawn <= 0 && drawSnake(ctx, e)) return;
   // Warning circle while it spawns.
   if (e.spawn > 0) {
     ctx.strokeStyle = 'rgba(255,107,107,0.7)';

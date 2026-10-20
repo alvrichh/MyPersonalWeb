@@ -276,8 +276,12 @@ export type Enemy = {
   minion: boolean;
   /** Seconds to the Queen's next plants. */
   grow: number;
+  /** Seconds to the Medusa's next snakes (0 until her first frame). */
+  snakeAt?: number;
   /** A plant the Carnivorous Queen grows: it stays rooted where it came up and spits at you. */
   rooted: boolean;
+  /** A snake the Medusa lets loose: 1 purple (her first phase), 2 turquoise (her second); 0 for every other bug. */
+  snake: number;
   ttl: number;
   /** A boss off the floor (a leap, a blink): its spawn circle warns where it lands, and `land` says what it does then. */
   vanish: boolean;
@@ -626,7 +630,7 @@ export type Game = {
 
 export type GameEvent =
   | 'fusion' | 'clear' | 'boss' | 'hurt' | 'levelup' | 'room' | 'revive' | 'heal' | 'wheel' | 'shrine'
-  | 'shoot' | 'knife' | 'boomerang' | 'orb' | 'hit' | 'kill' | 'gem' | 'heart' | 'chest' | 'slash' | 'slam' | 'strike' | 'boom' | 'minute' | 'rage' | 'phase' | 'minion' | 'plants' | 'laser' | 'dodge' | 'safe' | BossStatus;
+  | 'shoot' | 'knife' | 'boomerang' | 'orb' | 'hit' | 'kill' | 'gem' | 'heart' | 'chest' | 'slash' | 'slam' | 'strike' | 'boom' | 'minute' | 'rage' | 'phase' | 'minion' | 'plants' | 'snakes' | 'laser' | 'dodge' | 'safe' | BossStatus;
 
 /* ------------------------------------------------------------------ helpers */
 
@@ -794,6 +798,7 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
     clone: false,
     minion: false,
     rooted: false,
+    snake: 0,
     grow: 4,
     ttl: final ? 8 : 0,
     vanish: false,
@@ -1343,7 +1348,7 @@ function kill(g: Game, e: Enemy) {
   }
   // The real boss down: its clones and the bosses it called go with it.
   if (e.kind === 'boss' && !e.minion) {
-    for (const c of g.enemies) if ((c.clone || c.minion || c.rooted) && !c.dead) { c.dead = true; burst(g, c.x, c.y, '#a78bfa', 18, 120, 3); }
+    for (const c of g.enemies) if ((c.clone || c.minion || c.rooted || c.snake) && !c.dead) { c.dead = true; burst(g, c.x, c.y, '#a78bfa', 18, 120, 3); }
     g.threats = g.threats.filter((t) => t.owner !== e.id);
   }
   // Plasma (fire + lightning arrows): a burning bug blows up when it dies, setting its neighbours alight.
@@ -2624,6 +2629,8 @@ const MINION = { most: 2, every: 14, r: 26, hp: 0.15 };
 const JARLS = { most: 2, every: 12, r: 22, hp: 0.08 };
 /** The Queen's plants: two at a time every `every` seconds (sooner in her fury), at most `most` up at once. */
 const PLANTS = { each: 2, every: 9, most: 4 };
+/** The Medusa's snakes: how many at a time, how often, how many at most, and how fast and tough against a bug. */
+const SNAKES = { each: 2, every: 8, most: 4, first: 5, speed: 1.3, hp: 0.6, r: 11 };
 
 function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
   const final = e.final;
@@ -2684,6 +2691,25 @@ function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
         g.enemies.push(m);
       }
       if (plants === 0) g.events.push('plants');
+    }
+  }
+  // The Medusa lets snakes loose from her hair, purple and then turquoise as her phase turns, a few at a time:
+  // quick, weak bugs that slither at you and fall with her.
+  if (e.bossId === 'medusa' && !e.clone && !e.minion) {
+    if (!e.snakeAt) e.snakeAt = SNAKES.first;
+    e.snakeAt -= dt;
+    const snakes = g.enemies.filter((m) => m.snake && !m.dead).length;
+    if (e.snakeAt <= 0 && snakes < SNAKES.most) {
+      e.snakeAt = SNAKES.every * fury;
+      for (let i = 0; i < SNAKES.each && snakes + i < SNAKES.most; i++) {
+        const a = rand(0, Math.PI * 2);
+        const at = inside(g, { x: e.x + Math.cos(a) * (e.r + 20), y: e.y + Math.sin(a) * (e.r + 20) }, 20);
+        const m = makeEnemy(g, 'bug', g.room, at, 0.35);
+        Object.assign(m, { look: 'mud' as Look, snake: e.phase > 1 ? 2 : 1, r: SNAKES.r, speed: m.speed * SNAKES.speed });
+        m.hp = m.maxHp = Math.max(1, Math.round(m.maxHp * SNAKES.hp));
+        g.enemies.push(m);
+      }
+      if (snakes === 0) g.events.push('snakes');
     }
   }
   // With a sprint mastery, a sprint's final boss calls smaller bosses of its world's cast to its side; the
@@ -3638,7 +3664,7 @@ export function update(g: Game, dt: number, input: Input) {
 
   // The showcase: no weapons, auras or companions on the hero, and the bugs a boss calls gone at once (its clones,
   // helpers and the Queen's plants stay, they are part of it), so nothing covers the boss.
-  if (g.showcase) g.enemies = g.enemies.filter((e) => e.kind === 'boss' || e.minion || e.clone || e.rooted);
+  if (g.showcase) g.enemies = g.enemies.filter((e) => e.kind === 'boss' || e.minion || e.clone || e.rooted || e.snake);
   else useWeapons(g, dt);
   // The energy drink: a little health back every second.
   if (g.skills.drink) heal(g, 0.6 * g.skills.drink * dt);
