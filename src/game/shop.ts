@@ -206,8 +206,8 @@ export const MASTERY_STEP = { damage: 0.05, hp: 10, coins: 0.05, xp: 0.05 } as c
    once bought it can come up in the level ups of both modes. */
 export const ARSENAL: { id: SkillId; price: number; world: number }[] = [
   { id: 'brick', price: 900, world: 1 }, { id: 'molotov', price: 900, world: 2 }, { id: 'mines', price: 1100, world: 3 },
-  { id: 'durian', price: 1100, world: 5 }, { id: 'ball', price: 1300, world: 6 }, { id: 'drill', price: 1300, world: 7 },
-  { id: 'rocket', price: 1500, world: 8 },
+  { id: 'durian', price: 1100, world: 5 }, { id: 'ball', price: 1300, world: 6 }, { id: 'rocket', price: 1500, world: 7 },
+  { id: 'drill', price: 1300, world: 8 },
 ];
 /** The extra charm's price: one more item worn, of any kind (under a skin's, per the owner's rule). */
 export const EXTRA_SLOT_PRICE = 5000;
