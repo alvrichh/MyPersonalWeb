@@ -1207,7 +1207,7 @@ function stylesScreen(note = '') {
   const extraItem = save.extra ? itemById(save.extra) : null;
   const extraButton = `<button class="dslot is-extra${extraItem ? ' is-worn' : ''}${dressSlot === 'extra' ? ' is-open' : ''}" data-slot="extra" aria-pressed="${dressSlot === 'extra'}">
       <span class="ring" aria-hidden="true"><span class="icon${extraItem ? '' : ' is-empty'}">${extraItem ? picIcon(extraItem.icon, extraItem.pic) : save.extraSlot ? '✚' : '🔒'}</span></span>
-      <span class="plate"><small>${t('extraSlot')}</small><b>${extraItem ? t(`${extraItem.id}Name` as Key) : save.extraSlot ? '—' : `🪙 ${EXTRA_SLOT_PRICE}`}</b></span>
+      <span class="plate"><small>${t('extraShort')}</small><b>${extraItem ? t(`${extraItem.id}Name` as Key) : save.extraSlot ? '—' : `🪙 ${EXTRA_SLOT_PRICE}`}</b></span>
     </button>`;
   const hero = save.retro
     ? `<canvas class="hero-fig" width="180" height="200" aria-hidden="true"></canvas>`
