@@ -89,6 +89,8 @@ export type Save = {
   hordeBest: Record<number, { time: number; kills: number; won: boolean }>;
   /** Nightmare's longest run (no clock, so the time is the record). */
   nightmareBest: { time: number; kills: number } | null;
+  /** Boss Rush: the furthest boss reached (out of how many), and the time, the fastest of the cleared ones. */
+  rushBest: { stage: number; stages: number; time: number; won: boolean } | null;
   runs: number;
   /** Seconds played in runs, all told; kept through a reset or a mastery. */
   playTime: number;
@@ -138,6 +140,7 @@ const fresh = (): Save => ({
   starColor: 'gold',
   hordeBest: {},
   nightmareBest: null,
+  rushBest: null,
   runs: 0,
   playTime: 0,
   xp: 0,
