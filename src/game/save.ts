@@ -34,6 +34,10 @@ export const heroStill = (skin: HeroSkin, head?: string) => {
 /** The three ways to play: the two of `world.ts` and the board's. */
 export type PlayMode = Mode | 'board';
 
+/** A friend kept in the save: their id, name and standing picture as last seen. */
+export type Friend = { id: string; name: string; still: string };
+export const NET_ID = /^[a-z0-9]{10}$/;
+export const makeNetId = () => Array.from({ length: 10 }, () => 'abcdefghijkmnpqrstuvwxyz23456789'[Math.floor(Math.random() * 32)]).join('');
 export type Save = {
   /** The player's name, shown on the cover and the profile (the hero is alvrich by default). */
   name: string;
@@ -53,6 +57,10 @@ export type Save = {
   adGiftAt: number;
   /** The guide (the book on the cover) has been opened once: until then the first visit dims the cover round it. */
   bookSeen: boolean;
+  /** Your id among players, made once: friends find you by it (`bughunter-p-<id>`, `presence` in `net.ts`). */
+  netId: string;
+  /** The friends you have linked with, to find again without a code. */
+  friends: Friend[];
   /** When the daily chest was last opened (ms since 1970); the next is ready 24 hours later (`daily.ts`). */
   dailyAt: number;
   /** Coin-store purchases made (pack and offer ids, `store.ts`); an offer can be bought once. */
@@ -140,6 +148,8 @@ const fresh = (): Save => ({
   arsenal: [],
   adGiftAt: 0,
   bookSeen: false,
+  netId: '',
+  friends: [],
   dailyAt: 0,
   purchases: [],
   equipped: {},
@@ -188,6 +198,8 @@ export function loadSave(): Save {
     // Older saves knew Nightmare's longest run before the totals came in.
     save.stats.nightmareLongest = Math.max(save.stats.nightmareLongest, data.nightmareBest?.time ?? 0);
     save.achieved = { ...data.achieved };
+    if (!NET_ID.test(save.netId)) save.netId = makeNetId();
+    save.friends = (Array.isArray(data.friends) ? data.friends : []).filter((f) => f && NET_ID.test(f.id) && f.id !== save.netId).slice(0, 30).map((f) => ({ id: f.id, name: cleanName(String(f.name)) || '?', still: String(f.still ?? '').replace(/[^a-z-]/g, '') }));
     save.achNew = Array.isArray(data.achNew) ? data.achNew.filter((id) => typeof id === 'string') : [];
     // The mud world came in as world 4: what an older save kept for worlds 4–8 belongs to 5–9 now.
     if (!data.mudWorld) {
@@ -261,7 +273,7 @@ export function loadSave(): Save {
     save.boardWorld = Math.min(Math.max(1, save.boardWorld || 1), save.boardUnlocked);
     return save;
   } catch {
-    return base;
+    return { ...base, netId: makeNetId() };
   }
 }
 
@@ -283,7 +295,7 @@ export const worldWon = (save: Save, n: number) => save.bestByWorld[n]?.time !==
 
 /** Back to a fresh start: progress, coins, gear and level go; name, skins bought, settings, masteries, star colour, the lifetime totals, the achievements and the extra charm's slot (empty: what it held goes with the items) stay. */
 export function wipeProgress(save: Save) {
-  const keep = { name: save.name, skin: save.skin, skins: [...save.skins], retro: save.retro, style: save.style, scene: save.scene, song: save.song, music: save.music, sfx: save.sfx, mode: save.mode, masteries: save.masteries, extraSlot: save.extraSlot, starColor: save.starColor, playTime: save.playTime, dailyAt: save.dailyAt, purchases: [...save.purchases], stats: save.stats, achieved: save.achieved, achNew: save.achNew, bookSeen: save.bookSeen };
+  const keep = { name: save.name, skin: save.skin, skins: [...save.skins], retro: save.retro, style: save.style, scene: save.scene, song: save.song, music: save.music, sfx: save.sfx, mode: save.mode, masteries: save.masteries, extraSlot: save.extraSlot, starColor: save.starColor, playTime: save.playTime, dailyAt: save.dailyAt, purchases: [...save.purchases], stats: save.stats, achieved: save.achieved, achNew: save.achNew, bookSeen: save.bookSeen, netId: save.netId, friends: [...save.friends] };
   Object.assign(save, fresh(), keep);
   // `fresh()` has no `extra`, so the item the charm held would stay worn without being owned.
   delete save.extra;
