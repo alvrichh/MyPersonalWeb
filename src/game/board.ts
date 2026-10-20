@@ -167,6 +167,9 @@ export type BoardGame = {
   lastSummon: { slot: Slot; id: number } | null;
   /** Fusion: the auto-merge, bought once a run (`buyAutoMerge`); without it you merge by dragging. */
   autoMerge: boolean;
+  /** Fusion's auto-merge, played out: the two units about to merge (`a` into `b`), lightning between them until `t`
+      runs out, and the merges in a row so far. */
+  pending: { a: number; b: number; t: number; combo: number } | null;
   wins: number;
   /** Enemy units beaten, all told (for the profile's totals). */
   kills: number;
@@ -198,7 +201,7 @@ export const saleOf = (p: Piece, variant: Variant = 'fusion') =>
 export function newBoard(world: number, casts: number, variant: Variant = 'fusion'): BoardGame {
   const b: BoardGame = {
     world, variant, casts: Math.max(1, casts), round: 1, lives: LIVES, gold: Math.round(8 * castPower(world)), phase: 'prep',
-    army: [], shop: [], wave: enemyWave(world, 1), fighters: [], shots: [], time: 0, last: null, wins: 0, kills: 0, events: [], event: null, skillUsed: false, strike: null, boom: null, lastMerge: null, lastSummon: null, autoMerge: false,
+    army: [], shop: [], wave: enemyWave(world, 1), fighters: [], shots: [], time: 0, last: null, wins: 0, kills: 0, events: [], event: null, skillUsed: false, strike: null, boom: null, lastMerge: null, lastSummon: null, autoMerge: false, pending: null,
   };
   // You start with a bug of the latest cast on the board.
   b.army.push({ id: nextId++, tier: 0, cast: b.casts, slot: { c: 2, r: ROWS - 2 }, star: 1 });
@@ -260,10 +263,13 @@ export function buy(b: BoardGame, i: number) {
     (a combo). The caller has checked there is room or a twin. */
 function placeFusion(b: BoardGame, tier: Tier, cast: number) {
   const twin = b.autoMerge ? b.army.find((p) => p.tier === tier && p.cast === cast && p.tier < maxTier(p.cast)) : undefined;
-  if (!twin) {
-    const p = { id: nextId++, tier, cast, slot: freeCell(b)! };
+  const cell = freeCell(b);
+  if (!twin || cell) {
+    // It lands first; with the auto-merge and a twin on the board, the merge comes a moment later (`tickMerge`).
+    const p = { id: nextId++, tier, cast, slot: cell! };
     b.army.push(p);
     b.lastSummon = { slot: p.slot, id: p.id };
+    if (twin) queueMerge(b, p, twin, 0);
     return;
   }
   twin.tier = (twin.tier + 1) as Tier;
@@ -279,6 +285,38 @@ function placeFusion(b: BoardGame, tier: Tier, cast: number) {
   b.events.push('merge');
 }
 
+/** How long the lightning plays between two units before they merge, in seconds. */
+export const MERGE_DELAY = 0.9;
+function queueMerge(b: BoardGame, a: Piece, into: Piece, combo: number) {
+  if (!b.pending) b.pending = { a: a.id, b: into.id, t: MERGE_DELAY, combo };
+}
+/** Plays the auto-merge out: when the lightning has run, the newer unit merges into its twin, and the next pair (if
+    the new step has a twin too) is queued at once, a combo. `skip` finishes every one at once (the fight starts). */
+export function tickMerge(b: BoardGame, dt: number, skip = false) {
+  while (b.pending) {
+    b.pending.t -= dt;
+    if (b.pending.t > 0 && !skip) return;
+    const { a, b: into, combo } = b.pending;
+    b.pending = null;
+    const p = b.army.find((x) => x.id === a);
+    const q = b.army.find((x) => x.id === into);
+    if (!p || !q || p.tier !== q.tier || p.cast !== q.cast || q.tier >= maxTier(q.cast)) continue;
+    b.army = b.army.filter((x) => x !== p);
+    q.tier = (q.tier + 1) as Tier;
+    b.lastMerge = { slot: q.slot, id: q.id, combo: combo + 1 };
+    b.events.push('merge');
+    const next = b.army.find((x) => x !== q && x.tier === q.tier && x.cast === q.cast && q.tier < maxTier(q.cast));
+    if (next) queueMerge(b, q, next, combo + 1);
+    else {
+      // Any other pair left on the board (after the auto-merge was bought) goes next.
+      const o = b.army.find((x) => b.army.some((y) => y !== x && y.tier === x.tier && y.cast === x.cast && x.tier < maxTier(x.cast)));
+      const o2 = o && b.army.find((y) => y !== o && y.tier === o.tier && y.cast === o.cast);
+      if (o && o2) queueMerge(b, o, o2, 0);
+    }
+    dt = 0;
+  }
+}
+
 /** Fusion has no shop: the summon button drops a unit straight onto your half for a set price, nearly always a bug,
     now and then a ticket and, from round 4, a legacy, of the latest world's cast six times in ten and any opened
     one otherwise; it merges with its twin at once. */
@@ -291,19 +329,10 @@ export function buyAutoMerge(b: BoardGame) {
   if (b.variant !== 'fusion' || b.phase !== 'prep' || b.autoMerge || b.gold < autoMergePrice(b)) return false;
   b.gold -= autoMergePrice(b);
   b.autoMerge = true;
-  // The pairs already on the board merge at once (the first one found, then on up).
-  let combo = 0;
-  let last: Piece | undefined;
-  for (;;) {
-    const p = b.army.find((x) => b.army.some((y) => y !== x && y.tier === x.tier && y.cast === x.cast && x.tier < maxTier(x.cast)));
-    if (!p) break;
-    const q = b.army.find((y) => y !== p && y.tier === p.tier && y.cast === p.cast)!;
-    b.army = b.army.filter((y) => y !== q);
-    p.tier = (p.tier + 1) as Tier;
-    combo += 1;
-    last = p;
-  }
-  if (last) { b.lastMerge = { slot: last.slot, id: last.id, combo }; b.events.push('merge'); }
+  // The pairs already on the board merge one after another, with the lightning (`tickMerge`).
+  const p = b.army.find((x) => b.army.some((y) => y !== x && y.tier === x.tier && y.cast === x.cast && x.tier < maxTier(x.cast)));
+  const q = p && b.army.find((y) => y !== p && y.tier === p.tier && y.cast === p.cast);
+  if (p && q) queueMerge(b, p, q, 0);
   return true;
 }
 export const summonPrice = (b: BoardGame) => Math.max(1, Math.round(SUMMON.price * castPower(b.world)));
@@ -439,6 +468,7 @@ export function waveSpots(b: BoardGame) {
 /** Sets the fight up: your bugs as placed, the enemy's wave on the upper half. */
 export function startFight(b: BoardGame) {
   if (b.phase !== 'prep' || !b.army.length) return false;
+  tickMerge(b, 0, true);
   const lv = Object.fromEntries(synergies(b).map((x) => [x.cast, x.lv]));
   b.fighters = b.army.map((p) => { const at = cellCentre(p.slot); return fighter(0, p.tier, p.cast, at.x, at.y, castPower(p.cast), p.id, lv[p.cast] ? p.cast : 0, lv[p.cast] ?? 0, b.event, starOf(p)); });
   const grow = castPower(b.world) * (1 + WAVE.tough * (b.world - 1)) * (b.variant === 'tactics' ? TACTICS.wave : 1);

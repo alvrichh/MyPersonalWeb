@@ -1,4 +1,4 @@
-import { BOARD_H, BOARD_W, CELL, COLS, FINAL_ID, HOME_ROW, ROUNDS, STRIKE, homeCell, ROWS, TIER_KIND, TIER_STATS, canMerge, castLook, cellCentre, pieceAt, waveSpots, type BoardGame, type Piece, type Slot, type Tier } from './board';
+import { BOARD_H, BOARD_W, CELL, COLS, FINAL_ID, HOME_ROW, MERGE_DELAY, ROUNDS, STRIKE, homeCell, ROWS, TIER_KIND, TIER_STATS, canMerge, castLook, cellCentre, pieceAt, waveSpots, type BoardGame, type Piece, type Slot, type Tier } from './board';
 import { boardFx, drawBoardBackdrop, drawBoardFigure } from './draw';
 
 /* Drawing the board mode on the game's canvas: the world's floor under a grid, your bugs on the lower half and the
@@ -447,6 +447,52 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
     if (!retro && ok(boom)) ctx.drawImage(boom, b.boom.x - w / 2, b.boom.y - (w * boom.naturalHeight) / boom.naturalWidth / 2, w, (w * boom.naturalHeight) / boom.naturalWidth);
     else { ctx.fillStyle = '#fdba74'; ctx.beginPath(); ctx.arc(b.boom.x, b.boom.y, w / 2, 0, Math.PI * 2); ctx.fill(); }
     ctx.restore();
+  }
+  // The auto-merge's lightning between the two units about to merge: the lightning arrows' yellow arcs, redrawn
+  // jagged a dozen times a second, thicker as the merge comes, both units glowing.
+  if (b.pending) {
+    const p = b.army.find((x) => x.id === b.pending!.a);
+    const q = b.army.find((x) => x.id === b.pending!.b);
+    if (p && q) {
+      const k = 1 - b.pending.t / MERGE_DELAY;
+      const A = cellCentre(p.slot), B = cellCentre(q.slot);
+      const from = { x: A.x, y: A.y - 10 }, to = { x: B.x, y: B.y - 10 };
+      const seed = Math.floor(now * 14);
+      ctx.save();
+      ctx.lineJoin = 'round';
+      ctx.shadowColor = '#facc15';
+      ctx.shadowBlur = retro ? 0 : 12;
+      for (let arc = 0; arc < 2; arc++) {
+        const pts = [from];
+        const n = 7;
+        for (let i = 1; i < n; i++) {
+          const f = i / n;
+          const r = Math.sin((seed + arc * 7) * 12.9898 + i * 78.233) * 43758.5453;
+          const off = (r - Math.floor(r) - 0.5) * 22;
+          const dx = to.x - from.x, dy = to.y - from.y, len = Math.hypot(dx, dy) || 1;
+          pts.push({ x: from.x + dx * f - (dy / len) * off, y: from.y + dy * f + (dx / len) * off });
+        }
+        pts.push(to);
+        for (const [w, c] of [[5 + k * 4, 'rgba(250,204,21,0.45)'], [1.8 + k * 1.4, '#fef9c3']] as [number, string][]) {
+          ctx.strokeStyle = c;
+          ctx.lineWidth = w;
+          ctx.beginPath();
+          pts.forEach((pt, i) => (i ? ctx.lineTo(pt.x, pt.y) : ctx.moveTo(pt.x, pt.y)));
+          ctx.stroke();
+        }
+      }
+      // A glow on each, growing.
+      for (const c of [from, to]) {
+        const gl = ctx.createRadialGradient(c.x, c.y, 2, c.x, c.y, 26 + k * 10);
+        gl.addColorStop(0, `rgba(254,249,195,${0.55 + k * 0.35})`);
+        gl.addColorStop(1, 'rgba(250,204,21,0)');
+        ctx.fillStyle = gl;
+        ctx.beginPath();
+        ctx.arc(c.x, c.y, 36, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+    }
   }
   drawPuffs(ctx, now, retro);
 }
