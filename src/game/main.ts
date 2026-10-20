@@ -446,6 +446,8 @@ function menuScreen() {
   endBoard();
   friendMini.hidden = true;
   together = null;
+  // Back on the cover: your profile may have grown in the run (a level, an item), so the friend gets it again.
+  if (friend) netSend(hello());
   showcaseBtn.hidden = true;
   game = null;
   audio.setSong(save.song); // a Boss Rush played by world; back to the pick
@@ -1776,8 +1778,11 @@ function friendOverlay(g: Game, now: number, frozen: boolean) {
         <div><b>${esc(friend.name)}${end}</b><small>${t('worldShort', { n: fs.world })} · ${t('linkRoom', { n: fs.room, total: ROOMS })}</small>
         <span class="friend-rooms">${dots}</span><span class="friend-hp"><b style="width:${Math.round(fs.hp * 100)}%"></b></span></div>`;
     }
-    const top = hud.getBoundingClientRect().bottom;
-    friendMini.style.top = `${Math.round(top + 6)}px`;
+    // Under the HUD; on wide screens the HUD is a panel down the left, so the card sits beside its top.
+    const box = hud.getBoundingClientRect();
+    const side = box.height > window.innerHeight * 0.5;
+    friendMini.style.top = `${Math.round(side ? box.top + 8 : box.bottom + 6)}px`;
+    friendMini.style.left = `${Math.round(side ? box.right + 8 : 8)}px`;
   }
   // On call together: the friend on the same field, or their head at the edge of the screen.
   if (!fresh || !fs || !friend || frozen || save.retro || together?.mode !== 'horde' || g.mode !== 'horde' || fs.mode !== 'horde') return;
@@ -1908,12 +1913,14 @@ const netHandlers = (): NetHandlers => ({
       <p class="how">⏳ ${t('onlineWait')}</p>`),
   open: () => netSend(hello()),
   msg: onNetMsg,
+  drop: friendDropped,
   close: friendGone,
   error: (why) => linkScreen(`⚠ ${t(why === 'peer-unavailable' ? 'onlineNoGame' : 'onlineError')}`),
 });
 function onNetMsg(m: NetMsg) {
   if (m.t === 'hello') {
     const first = !friend;
+    if (dropped) { dropped = false; window.clearTimeout(dropTimer); flash(t('linkBack', { name: esc(cleanName(m.name)) })); }
     friend = { name: cleanName(m.name), key: String(m.key).replace(/[^a-z-]/g, ''), still: String(m.still).replace(/[^a-z-]/g, '') };
     if (m.profile) friend.profile = { level: Number(m.profile.level) || 1, masteries: Number(m.profile.masteries) || 0, skin: String(m.profile.skin), equipped: (m.profile.equipped ?? []).map(String).filter((id) => !!itemById(id as ItemId)), upgrades: Number(m.profile.upgrades) || 0, items: Number(m.profile.items) || 0 };
     if (first) { flash(t('linkMade', { name: esc(friend.name) })); audio.play('door'); if (!board && !game) menuScreen(); }
@@ -1933,13 +1940,21 @@ function onNetMsg(m: NetMsg) {
   } else if (m.t === 'decline') {
     if (inviting) { const v = inviting; inviting = null; flash(t('linkBusy', { name: esc(friend?.name ?? '') })); if (v.mode === 'board') boardVariantScreen(worldIn('board')); else linkScreen(); }
   } else if (m.t === 'ready') {
-    rivalReady = { round: m.round, army: m.army };
+    // What came over the link is checked before it is used: whole numbers within the board, at most a full army.
+    const army = (Array.isArray(m.army) ? m.army : []).slice(0, 12).map((p, i) => ({
+      id: i + 1, tier: Math.max(0, Math.min(6, Math.round(Number(p?.tier)) || 0)) as Piece['tier'], cast: Math.max(1, Math.min(WORLD_COUNT, Math.round(Number(p?.cast)) || 1)),
+      slot: { c: Math.max(0, Math.min(5, Math.round(Number(p?.slot?.c)) || 0)), r: Math.max(4, Math.min(7, Math.round(Number(p?.slot?.r)) || 4)) },
+      star: Math.max(1, Math.min(3, Math.round(Number(p?.star)) || 1)) as Piece['star'],
+    }));
+    rivalReady = { round: Math.round(Number(m.round)) || 0, army };
     if (board?.online && !board.online.waiting) flash(t('onlineRivalReady', { name: esc(board.online.rivalName) }));
     tryOnlineFight();
   } else if (m.t === 'state') {
     const at = performance.now() / 1000;
     const prev = friendState;
-    friendState = { ...m, at, sx: prev && prev.mode === m.mode ? prev.sx : m.x, sy: prev && prev.mode === m.mode ? prev.sy : m.y };
+    const n = (v: unknown, lo: number, hi: number) => Math.max(lo, Math.min(hi, Number(v) || 0));
+    const st: NetState = { t: 'state', mode: m.mode === 'horde' ? 'horde' : 'sprints', world: n(m.world, 1, WORLD_COUNT), room: n(m.room, 1, ROOMS), x: n(m.x, -1e6, 1e6), y: n(m.y, -1e6, 1e6), vx: n(m.vx, -1, 1), vy: n(m.vy, -1, 1), hp: n(m.hp, 0, 1), level: n(m.level, 1, 999), phase: String(m.phase).slice(0, 10) };
+    friendState = { ...st, at, sx: prev && prev.mode === st.mode ? prev.sx : st.x, sy: prev && prev.mode === st.mode ? prev.sy : st.y };
   } else if (m.t === 'quit') rivalQuit();
   else if (m.t === 'bye') friendGone();
 }
@@ -1964,8 +1979,23 @@ function rivalQuit() {
   show(`<h2>👥 ${t('onlineGone', { name: esc(friend?.name ?? '') })}</h2>
     <button class="primary" data-act="board-leave">${t('menu')}</button>`);
 }
+/** The link dropped without a goodbye (a phone asleep, a blip in the Wi-Fi): it is tried again for a while, the
+    friend kept meanwhile; a board game cannot wait (a round's army could be lost), so it ends. */
+let dropTimer = 0;
+let dropped = false;
+function friendDropped() {
+  if (!friend) return;
+  if (board?.online && board.phase !== 'over' && board.phase !== 'won') rivalQuit();
+  if (dropped) return;
+  dropped = true;
+  flash(t('linkDrop', { name: esc(friend.name) }));
+  window.clearTimeout(dropTimer);
+  dropTimer = window.setTimeout(() => { if (dropped) friendGone(); }, 40000);
+}
 /** The link is gone: the friend disconnected or the connection dropped. */
 function friendGone() {
+  window.clearTimeout(dropTimer);
+  dropped = false;
   const was = friend;
   friend = null;
   friendState = null;
