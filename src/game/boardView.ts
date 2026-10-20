@@ -63,7 +63,7 @@ const figureOf = (tier: Tier, cast: number, face: number, step: number, swing: n
 /* The wall between the halves: the world's own long blocks in a row along the halfway line, standing while you lay
    your army out; it sinks into the floor as the fight starts and rises again when it ends, shaking a little as it
    moves, with dust where it meets the floor. */
-const WALL = { move: 0.5, w: BOARD_W / 3 };
+const WALL = { move: 0.5, h: 26 };
 let wallUp = 1;
 let wallAt = 0;
 function drawWall(ctx: CanvasRenderingContext2D, b: BoardGame, now: number, retro: boolean) {
@@ -74,7 +74,13 @@ function drawWall(ctx: CanvasRenderingContext2D, b: BoardGame, now: number, retr
   wallUp = target > wallUp ? Math.min(1, wallUp + dt / WALL.move) : Math.max(0, wallUp - dt / WALL.move);
   const pieces = boardWallPieces(b.world);
   if (retro || wallUp <= 0 || !pieces.every(ok)) return;
-  const base = HOME_ROW * CELL + 10;
+  // As many pieces as keep the wall about half a cell tall (thin enough to stand between the rows, not over the
+  // units on either side), centred on the halfway line; the units are drawn over it.
+  const ratio = pieces[0].naturalHeight / pieces[0].naturalWidth;
+  const n = Math.max(3, Math.round(BOARD_W / (WALL.h / ratio)));
+  const w = BOARD_W / n;
+  const h = w * ratio;
+  const base = HOME_ROW * CELL + h / 2;
   const moving = wallUp !== was && wallUp > 0 && wallUp < 1;
   const shake = moving ? Math.sin(now * 60) * 1.2 : 0;
   ctx.save();
@@ -82,13 +88,8 @@ function drawWall(ctx: CanvasRenderingContext2D, b: BoardGame, now: number, retr
   ctx.beginPath();
   ctx.rect(-20, -200, BOARD_W + 40, base + 200);
   ctx.clip();
-  for (let i = 0; i < 3; i++) {
-    const img = pieces[i % 2];
-    const w = WALL.w * 1.04;
-    const h = (w * img.naturalHeight) / img.naturalWidth;
-    const k = 1 - wallUp;
-    ctx.drawImage(img, i * WALL.w - WALL.w * 0.02 + shake, base - h + k * (h + 2), w, h);
-  }
+  const k = 1 - wallUp;
+  for (let i = 0; i < n; i++) ctx.drawImage(pieces[i % 2], i * w - w * 0.02 + shake, base - h + k * (h + 2), w * 1.04, h);
   ctx.restore();
   // Dust along its foot while it moves.
   if (moving) {
