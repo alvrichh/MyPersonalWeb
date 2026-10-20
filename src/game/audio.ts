@@ -1571,8 +1571,11 @@ class Engine {
         if (sec === 'peak' && inBar === 0 && bar % 2 === 0) this.theremin(at, semi(this.root * 16, chord[1]), BAR * 1.9);
         break;
       case 9: // Big Ball of Mud: frogs croaking in turn, mud bubbling, drips, crickets, a snake's rattling hiss.
-        // Fewer frogs and bubbles than before: the short rising sweeps came too often for the owner.
-        if (calm ? inBar === 0 && bar % 2 === 0 : inBar === 11 && bar % 4 === 3 && r < 0.5) this.croak(at, bar % 4 < 2 ? 1 : 1.25);
+        // Two frogs answering each other on the beat, a low croak then a higher one an eighth later, at the end of
+        // every fourth bar (every eighth in the loud parts), the owner's wish: before they came often and off the grid.
+        const frogs = bar % (calm ? 4 : 8) === (calm ? 3 : 7);
+        if (frogs && inBar === 12) this.croak(at, 1);
+        if (frogs && inBar === 14) this.croak(at, 1.335);
         // The mud's bubbles, which the owner likes: a little more often and louder than they first were.
         if (r < (calm ? 0.08 : 0.03)) this.bloop(at + Math.random() * STEP, true);
         if (calm && inBar % 4 === 2 && Math.random() < 0.35) this.drip(at);
@@ -1858,10 +1861,10 @@ class Engine {
   }
   /** A frog: two quick, throaty pulses dropping in pitch ("rib-bit"). */
   private croak(at: number, pitch: number) {
-    for (const [dt, f] of [[0, 210], [0.09, 170]]) {
+    for (const [dt, f] of [[0, 190]]) {
       const t = at + dt;
       const o = this.osc('square', f * pitch, t, t + 0.09);
-      o.frequency.exponentialRampToValueAtTime(f * pitch * 0.7, t + 0.07);
+      o.frequency.exponentialRampToValueAtTime(f * pitch * 0.85, t + 0.08);
       const am = this.osc('square', 45, t, t + 0.09);
       const amg = this.ctx.createGain();
       amg.gain.value = 0.5;
