@@ -1970,7 +1970,7 @@ function boardResultScreen(b: BoardGame) {
     ${last.hp ? `<p>⏱ ${t('boardTimeHp', { a: last.hp[0], b: last.hp[1] })}</p>` : ''}
     ${last.lost ? `<p>${t('boardLost', { n: last.lost })}</p>` : ''}
     ${last.flawless ? `<p class="board-flawless">🎁 ${t('boardFlawless')}</p>` : ''}
-    <p class="how">${t('boardGold', { n: roundGold(b.world, win) + roundBonus(b) })}</p>
+    <p class="how">${t('boardGold', { n: roundGold(b.world, win && !last.timeout) + roundBonus(b) })}</p>
     <button class="primary" data-act="board-next">▶ ${t('boardNext')}</button>`);
 }
 

@@ -195,10 +195,13 @@ const PUFF = 0.65;
 const POP = 0.4;
 let puffs: { x: number; y: number; at: number }[] = [];
 let popped: { id: number; at: number } | null = null;
-/** The rival building its army while you prepare: each unit comes in as a bug and merges up a step at a time, round
-    robin, one step every `RIVAL_STEP` s (squeezed so it is all done in `RIVAL_ALL`), from when the round's prep began. */
-const RIVAL_STEP = 0.55, RIVAL_ALL = 10, RIVAL_WAIT = 0.6;
+/** The rival building its army while you prepare, as a player would by hand: each unit is summoned as a bug, then
+    merged up a step at a time, round robin, each merge a twin picked up from a free cell and dragged onto it (lifted,
+    a little bigger, like your own drag) before the smoke and the step up. One step every `RIVAL_STEP` s, squeezed so
+    it is all done in `RIVAL_ALL`, from when the round's prep began. Only to be seen: the wave is set from the start. */
+const RIVAL_STEP = 0.8, RIVAL_ALL = 14, RIVAL_WAIT = 0.6, RIVAL_DRAG = 0.7;
 let rival = { key: '', start: 0, seen: [] as number[] };
+type RivalDrag = { tier: number; x: number; y: number };
 function rivalShown(b: BoardGame, spots: { tier: number; x: number; y: number }[], now: number) {
   const key = `${b.world}:${b.round}:${b.lives}:${b.wave.join(',')}`;
   if (rival.key !== key) rival = { key, start: now, seen: spots.map(() => -1) };
@@ -206,13 +209,23 @@ function rivalShown(b: BoardGame, spots: { tier: number; x: number; y: number }[
   const top = Math.max(0, ...spots.map((w) => w.tier));
   for (let lv = 0; lv <= top; lv++) spots.forEach((w, i) => { if (w.tier >= lv) order.push([i, lv]); });
   const step = Math.min(RIVAL_STEP, RIVAL_ALL / Math.max(1, order.length));
-  const done = Math.floor((now - rival.start - RIVAL_WAIT) / step) + 1;
+  const t = (now - rival.start - RIVAL_WAIT) / step;
   const shown = spots.map(() => -1);
-  for (let k = 0; k < Math.min(done, order.length); k++) shown[order[k][0]] = order[k][1];
+  let drag: RivalDrag | null = null;
+  for (let k = 0; k < order.length && k <= t; k++) {
+    const [i, lv] = order[k];
+    const into = t - k; // how far through its step this event is
+    if (lv === 0 || into >= RIVAL_DRAG) { shown[i] = lv; continue; }
+    // The twin, dragged from a free cell of the rival's half (the back row, by turn) onto the unit.
+    const from = cellCentre({ c: (k * 2 + 1) % COLS, r: 0 });
+    const e = into / RIVAL_DRAG;
+    const ease = e < 0.5 ? 2 * e * e : 1 - (-2 * e + 2) ** 2 / 2;
+    drag = { tier: lv - 1, x: from.x + (spots[i].x - from.x) * ease, y: from.y + (spots[i].y - from.y) * ease - Math.sin(e * Math.PI) * 14 };
+  }
   shown.forEach((lv, i) => {
     if (lv > rival.seen[i]) { puffs.push({ x: spots[i].x, y: spots[i].y, at: now }); rival.seen[i] = lv; }
   });
-  return shown;
+  return { shown, drag };
 }
 
 export function boardMerged(slot: Slot, id: number, now: number) {
@@ -531,7 +544,7 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
     // The coming wave, faint, on its half, built up before your eyes while you prepare: the rival summons its units one
     // by one and merges them up to what it will field (`rivalShown`), with the merge's smoke on each step.
     const spots = waveSpots(b);
-    const shown = rivalShown(b, spots, now);
+    const { shown, drag: twin } = rivalShown(b, spots, now);
     spots.forEach((w, i) => {
       const tier = shown[i];
       if (tier < 0) return;
@@ -542,6 +555,14 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
       drawEnemyFigure(ctx, figureOf(tier as Tier, b.world, -1, 0, 0, 0), now, retro);
       ctx.restore();
     });
+    if (twin) {
+      ctx.save();
+      ctx.translate(twin.x, twin.y);
+      ctx.globalAlpha = 0.75;
+      ctx.scale(1.12, 1.12);
+      drawEnemyFigure(ctx, figureOf(twin.tier as Tier, b.world, -1, 0, 0, 0), now, retro);
+      ctx.restore();
+    }
     const pieces = [...b.army].sort((p, q) => p.slot.r - q.slot.r);
     for (const p of pieces) {
       if (drag?.piece === p) continue;
