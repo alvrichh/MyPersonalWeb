@@ -305,6 +305,8 @@ export type Orb = {
   home?: number;
   /** The boss that fired it (its `bossId`), for what its hit leaves on you; a boss's shot leaves a track. */
   from?: string;
+  /** Fired in the boss's second phase (the green-haired Medusa's turquoise bolts). */
+  alt?: boolean;
   /** Seconds to the next dab of its track. */
   trail?: number;
   /** Seconds before it starts (a tornado forming as a vortex on the floor). */
@@ -341,6 +343,8 @@ export type Threat = {
   owner?: number;
   /** The boss that cast it (its `bossId`). */
   from?: string;
+  /** Cast in the boss's second phase (the green-haired Medusa's turquoise sigils). */
+  alt?: boolean;
   /** A row of thorny vine (which of the two pictures): it bursts along the line and stays as thorns. */
   vine?: number;
   /** Zeus's lightning is blue; everyone else's yellow. */
@@ -2206,6 +2210,22 @@ function updateEnemy(g: Game, e: Enemy, dt: number) {
     const sway = e.kind === 'bug' ? Math.sin(e.wobble) * 0.35 : 0;
     mx = ux - uy * sway;
     my = uy + ux * sway;
+    // The big ones pounce: close enough, they crouch for a moment (their wind-up frame) and then hurl themselves
+    // at where you stood (their attack frame), so their attack shows; they still hurt only on contact.
+    if (e.kind === 'legacy') {
+      e.cd -= dt;
+      if (e.aim > 0) {
+        e.aim -= dt;
+        mx = 0; my = 0;
+        if (e.aim <= 0) { e.dash = POUNCE.dash; e.dir = { x: ux, y: uy }; }
+      } else if (e.dash > 0) {
+        e.dash -= dt;
+        mx = e.dir.x * POUNCE.speed; my = e.dir.y * POUNCE.speed;
+        if (e.dash <= 0) e.cd = rand(POUNCE.every[0], POUNCE.every[1]);
+      } else if (e.cd <= 0 && d < POUNCE.reach && d > e.r + p.r + 6 && !blocked(e, p, g.obstacles)) {
+        e.aim = POUNCE.aim;
+      }
+    }
   } else if (e.kind === 'ticket') {
     // Keeps its distance and throws a ticket at you every couple of seconds.
     if (blocked(e, p, g.obstacles)) { mx = -uy * e.side; my = ux * e.side; } // step out for a clear shot
@@ -2225,6 +2245,12 @@ function updateEnemy(g: Game, e: Enemy, dt: number) {
     updateBoss(g, e, dt, ux, uy);
     for (let i = orbs0; i < g.orbs.length; i++) g.orbs[i].from ??= e.bossId;
     for (let i = threats0; i < g.threats.length; i++) g.threats[i].from ??= e.bossId;
+    // The Medusa's attacks take her colour: purple, then turquoise once her snakes turn green.
+    if (e.bossId === 'medusa') {
+      const alt = e.phase > 1;
+      for (let i = orbs0; i < g.orbs.length; i++) if (g.orbs[i].pic === 'medusa') { g.orbs[i].alt = alt; g.orbs[i].tone = alt ? '#2dd4bf' : '#c084fc'; }
+      for (let i = threats0; i < g.threats.length; i++) g.threats[i].alt = alt;
+    }
     const walk = e.rage ? Math.min(RAGE_WALK, RAGE_TOP / e.speed) : 0.6;
     const run = e.rage ? 12 : 9;
     if (e.dash > 0) { mx = e.dir.x * run; my = e.dir.y * run; } else if (e.aim > 0 || e.chan > 0) { mx = 0; my = 0; } else { mx = ux * walk; my = uy * walk; }
@@ -2264,6 +2290,9 @@ function updateEnemy(g: Game, e: Enemy, dt: number) {
   e.swing = e.kind !== 'boss' && gap < p.r + e.r + ATTACK_REACH ? e.swing + dt : 0;
   if (gap < p.r + e.r - 2) hurtPlayer(g, e.dmg, e.kind === 'boss' ? e.bossId : undefined);
 }
+/** The big ones' pounce: within `reach` they crouch for `aim` seconds, then hurl themselves at `speed` times their
+    pace for `dash` seconds, every 3–4.5 s. */
+const POUNCE = { reach: 140, aim: 0.45, dash: 0.32, speed: 6, every: [3, 4.5] as const };
 /** How far past touching an enemy starts its attack animation, and how long one swing (wind-up and hit) takes. */
 export const ATTACK_REACH = 30;
 export const ATTACK_CYCLE = 0.55;
@@ -2805,7 +2834,7 @@ function threatHits(g: Game, t: Threat) {
     if (t.el === 'leaf' && t.after) g.fx.push({ kind: 'pic', pic: 'caltrops', x: t.x, y: t.y, r: t.r * 1.2, a: rand(0, 6), life: 2.5, max: 2.5 });
     // Mud balls splash and leave a puddle; the Medusa's sigils burst in purple.
     if (t.el === 'mud') g.fx.push({ kind: 'pic', pic: 'mud-splat', x: t.x, y: t.y, r: t.r * 1.5, a: 0, life: 0.6, max: 0.6 });
-    if (t.el === 'arcane') g.fx.push({ kind: 'pic', pic: 'medusa-burst', top: true, x: t.x, y: t.y, r: t.r * 1.6, a: 0, life: 0.45, max: 0.45 });
+    if (t.el === 'arcane') g.fx.push({ kind: 'pic', pic: t.alt ? 'medusa-burst-2' : 'medusa-burst', top: true, x: t.x, y: t.y, r: t.r * 1.6, a: 0, life: 0.45, max: 0.45 });
     if (t.after) g.hazards.push({ kind: t.after, x: t.x, y: t.y, r: t.after === 'lava' ? 26 : t.after === 'puddle' ? 30 : 16, ttl: t.after === 'lava' ? 4 : t.after === 'puddle' ? 5 : 2.5 });
     if (t.el === 'fire') g.events.push('boom');
   } else if (t.shot) {

@@ -2163,7 +2163,7 @@ const ready = (img: HTMLImageElement) => img.complete && img.naturalWidth > 0;
 /** Warm the effect pictures up when a run starts, so the first swing and strike are already painted. */
 export function preloadFx() {
   for (const n of ['fireball', 'boom-small', 'boom-big', 'knife', 'boomerang', 'slash', 'chest', 'slam', 'crystals', 'gem', 'gem-big', 'bolt-1', 'bolt-2', 'bolt-3', 'bolt-4', 'bolt-5', 'bolt-6', 'bolt-y-1', 'bolt-y-2', 'bolt-y-3', 'bolt-y-4', 'bolt-y-5', 'bolt-y-6',
-    'brick', 'iron', 'molotov', 'barrel', 'durian', 'durian-big', 'drill', 'drill-evo', 'rocket', 'rocket-shark', 'ball', 'ball-evo', 'phoenix-0', 'phoenix-1', 'phoenix-2', 'phoenix-3', 'wings-0', 'wings-1', 'wings-2', 'angle-front', 'angle-side', 'angle-quarter',
+    'brick', 'iron', 'molotov', 'barrel', 'durian', 'durian-big', 'drill', 'drill-evo', 'rocket', 'rocket-shark', 'ball', 'ball-evo', 'phoenix-0', 'phoenix-1', 'phoenix-2', 'phoenix-3', 'wings-0', 'wings-1', 'wings-2',
     'fire-pool', 'fire-pool-big', 'caltrops', 'mine', 'mine-on', 'mine-volt', 'volt-burst', 'impact', 'heart', 'rune', 'crescent',
     'steam-cloud', 'plasma-burst', 'wisp-flame', 'shock-ring', 'ice-block', 'spectral-bolt', 'laser-yellow', 'laser-orange', 'laser-red', 'laser-purple', 'drakkar-wreck', 'vine-row-0', 'vine-row-1', 'wave-strip-0', 'wave-strip-1', 'wave-strip-2', ...Array.from({ length: 7 }, (_, i) => `tornado-${i}`), 'vortex-0', 'vortex-1', ...Array.from({ length: 7 }, (_, i) => `lava-${i}`)]) fxImage(n);
 }
@@ -2318,17 +2318,8 @@ function drawPhoenixWings(ctx: CanvasRenderingContext2D, x: number, y: number, s
    the join between the wings at the same point (`WINGS_JOIN` of the height), flapping slowly; the drawn
    wings stand in until they load. */
 const WINGS_JOIN = 0.5733;
-/* The Phoenix cloak at ★3: the owner's wings of fire, at the angle the hero is seen from. Walking away
-   they are the full back view, in front of the hero; facing us they peek out behind both shoulders;
-   side on (standing, aiming, walking) the three-quarter view, or the side view while walking sideways,
-   mirrored to face left. Each picture's shoulder point is `anchor` (share of its width and height); all
-   were cut on one scale, the back view 400 px wide. */
-type WingAngle = 'front' | 'side' | 'quarter';
-const WING_ANGLE: Record<WingAngle, { anchor: [number, number] }> = {
-  front: { anchor: [0.5, 0.42] },
-  side: { anchor: [0.9, 0.5] },
-  quarter: { anchor: [0.82, 0.45] },
-};
+/* The Phoenix cloak at ★3: the owner's wings of fire (`wings-0..2`), the same pair from every side, at the owner's
+   request: in front of the hero walking away, behind it facing us, and side on only the wing on its back. */
 function drawHeroWings(ctx: CanvasRenderingContext2D, g: Game, pal: Palette, now: number, overHero: boolean) {
   if (retroLook || g.phase === 'over') return;
   const p = g.player;
@@ -2339,31 +2330,18 @@ function drawHeroWings(ctx: CanvasRenderingContext2D, g: Game, pal: Palette, now
   if (back !== overHero) return;
   const x = p.x;
   const y = p.y - p.r * 0.75;
-  if (back) { drawWornWings(ctx, x, y, p.r, now); return; }
+  // From the back and from the front, the same pair of wings (behind the hero when it faces you); from the
+  // side, only the wing on its back: the left one when it faces right, the right one when it faces left.
   const facing = pose === 'front' || pose === 'fwalk' || pose === 'fwalk2' || pose === 'cheer';
-  const angle: WingAngle = facing ? 'front' : p.moving && (pose === 'walk' || pose === 'walk2') ? 'side' : 'quarter';
-  const pic = fxImage(`angle-${angle}`);
-  if (!ready(pic)) { drawWornWings(ctx, x, y, p.r, now); return; }
+  if (back || facing) { drawWornWings(ctx, x, y, p.r, now); return; }
   const turn = pose === 'wshoot' || pose === 'wshoot2' || !p.moving ? p.face : p.heading;
-  const left = !facing && Math.cos(turn) < -0.2;
-  const k = (p.r * 5.2) / 400;
-  const w = pic.naturalWidth * k;
-  const h = pic.naturalHeight * k;
-  const [ax, ay] = WING_ANGLE[angle].anchor;
-  const beat = Math.sin(now * FLAPS_PER_SECOND * Math.PI * 2);
-  ctx.save();
-  ctx.translate(x, y + beat * 1.4);
-  if (left) ctx.scale(-1, 1);
-  ctx.scale(0.84 + 0.16 * (beat * 0.5 + 0.5), 1);
-  ctx.globalAlpha = 0.95;
-  ctx.drawImage(pic, -w * ax, -h * ay, w, h);
-  ctx.restore();
+  drawWornWings(ctx, x, y, p.r, now, Math.cos(turn) < 0 ? 'right' : 'left');
 }
 
 /* One flap: spread, raised, spread, half open; each pose fades into the next, so it flows rather than steps. */
 const WING_FLAP = [1, 2, 1, 0];
-const FLAPS_PER_SECOND = 2.2;
-function drawWornWings(ctx: CanvasRenderingContext2D, x: number, y: number, r: number, now: number) {
+const FLAPS_PER_SECOND = 1.4;
+function drawWornWings(ctx: CanvasRenderingContext2D, x: number, y: number, r: number, now: number, only?: 'left' | 'right') {
   if (retroLook) return;
   const pics = [0, 1, 2].map((i) => fxImage(`wings-${i}`));
   if (!pics.every(ready)) { drawPhoenixWings(ctx, x, y, r * 1.7, now, 0.55); return; }
@@ -2377,6 +2355,12 @@ function drawWornWings(ctx: CanvasRenderingContext2D, x: number, y: number, r: n
   const lift = beat * 1.4;
   ctx.save();
   ctx.translate(x, y);
+  // Seen from the side only the wing on the hero's back shows: the other half of the picture is clipped away.
+  if (only) {
+    ctx.beginPath();
+    ctx.rect(only === 'left' ? -w : 0, -w * 2, w, w * 4);
+    ctx.clip();
+  }
   ctx.scale(0.86 + 0.14 * (beat * 0.5 + 0.5), 1);
   for (const [pose, alpha] of [[WING_FLAP[i], 1 - blend], [WING_FLAP[(i + 1) % WING_FLAP.length], blend]]) {
     if (alpha <= 0.01) continue;
@@ -2597,9 +2581,10 @@ function drawFx(ctx: CanvasRenderingContext2D, g: Game, accent: string, layer: '
 
 /* Boss shots drawn with the weapons' pictures: which picture, how wide, and where along it the shot's
    point sits (1 = the right-hand tip; the fireball's ball is at 0.78). Arrows bring their trail. */
-const ORB_PIC: Record<OrbPic, { src: 'fx' | 'arrow'; name: string; w: number; at: number; trail?: string; glow?: number }> = {
+const ORB_PIC: Record<OrbPic | 'medusa2', { src: 'fx' | 'arrow'; name: string; w: number; at: number; trail?: string; glow?: number }> = {
   // The mud world's: the Medusa's purple bolt, the Mud Monster's mud ball, the bats' venom.
   medusa: { src: 'fx', name: 'medusa-bolt', w: 48, at: 0.95 },
+  medusa2: { src: 'fx', name: 'medusa-bolt-2', w: 48, at: 0.95 },
   // The haunted servers' Lich: purple embers, the orange flame turned purple and laid on its side.
   ember: { src: 'fx', name: 'ember-purple', w: 34, at: 0.72 },
   mudball: { src: 'fx', name: 'mudball', w: 30, at: 0.72 },
@@ -2657,7 +2642,7 @@ function drawOrbs(ctx: CanvasRenderingContext2D, g: Game) {
         continue;
       }
     }
-    const look = o.pic && !retroLook ? ORB_PIC[o.pic] : undefined;
+    const look = o.pic && !retroLook ? ORB_PIC[o.pic === 'medusa' && o.alt ? 'medusa2' : o.pic] : undefined;
     const pic = look && (look.src === 'fx' ? fxImage(look.name) : arrowImage(look.name));
     if (look && pic && ready(pic)) {
       ctx.save();
@@ -2744,7 +2729,7 @@ function drawThreats(ctx: CanvasRenderingContext2D, g: Game, now: number, top: b
   for (const t of g.threats) {
     const live = t.warn <= 0;
     if (top !== (live && (t.kind === 'beam' || t.kind === 'wave'))) continue;
-    const [c, light] = t.blue ? THREAT_TONE.water : THREAT_TONE[t.el];
+    const [c, light] = t.blue ? THREAT_TONE.water : t.alt ? ['45,212,191', '204,251,241'] : THREAT_TONE[t.el];
     const k = live ? 1 : 1 - t.warn / (t.max || 1);
     ctx.save();
     if (t.kind === 'circle') {
@@ -2776,7 +2761,7 @@ function drawThreats(ctx: CanvasRenderingContext2D, g: Game, now: number, top: b
           ctx.drawImage(mud, -w / 2, -h / 2, w, h);
           ctx.restore();
         }
-        const rune = t.el === 'arcane' && !retroLook ? fxImage('medusa-rune') : null;
+        const rune = t.el === 'arcane' && !retroLook ? fxImage(t.alt ? 'medusa-rune-2' : 'medusa-rune') : null;
         if (rune && ready(rune)) {
           const s = t.r * 2.3 * (0.5 + 0.5 * k);
           ctx.save();
@@ -4397,8 +4382,9 @@ function enemyFrame(e: Enemy, count: number) {
   if (count === 4) return walkFrame(e, WALK4);
   if (e.kind === 'boss' ? e.pain > 0 : e.hit > 0) return 5;
   // Attacks: a boss winding up (aim) or charging (dash); a ticket just after it threw (its cooldown was reset high).
-  if (e.kind === 'boss' && e.aim > 0) return 3;
-  if (e.kind === 'boss' && e.dash > 0) return 4;
+  // A boss or a big one winding up (aim) and charging or pouncing (dash).
+  if ((e.kind === 'boss' || e.kind === 'legacy') && e.aim > 0) return 3;
+  if ((e.kind === 'boss' || e.kind === 'legacy') && e.dash > 0) return 4;
   if (e.kind === 'ticket' && e.cd > 1.5) return e.cd > 1.75 ? 3 : 4;
   // Close to you: wind-up and hit in turn (the damage itself is still on contact).
   if (e.kind !== 'boss' && e.swing > 0) return (e.swing / ATTACK_CYCLE) % 1 < 0.5 ? 3 : 4;
@@ -4464,6 +4450,13 @@ function drawEnemySprite(ctx: CanvasRenderingContext2D, e: Enemy) {
   if (e.face < 0) ctx.scale(-1, 1);
   // Swinging at you: a lunge forward on each hit, the whole attack for the sets that have no attack frames.
   const lunge = e.kind !== 'boss' && e.swing > 0 ? Math.max(0, Math.sin((e.swing / ATTACK_CYCLE) * Math.PI * 2 - Math.PI / 2)) * e.r * (count === 4 ? 0.45 : 0.2) : 0;
+  // A big one crouching before its pounce squats a little (the four-frame sets have no wind-up picture).
+  if (e.kind === 'legacy' && e.aim > 0) {
+    const foot = e.r * 0.85 + under;
+    ctx.translate(0, foot);
+    ctx.scale(1.08, 0.88);
+    ctx.translate(0, -foot);
+  }
   ctx.drawImage(img, -w / 2 + lunge, e.r * 0.85 - h + under + bob, w, h);
   return true;
 }
