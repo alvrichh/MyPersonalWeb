@@ -928,6 +928,9 @@ class Engine {
       // 2-step: the kick on one and the "and" of three, skipping the downbeat of two and four; a clap on two and four.
       if (inBar === 0 || inBar === 10 || (blockBar % 2 === 1 && inBar === 7)) this.kick(t);
       if (inBar === 4 || inBar === 12) { this.snare(at, 0.8); this.snare(at + 0.012, 0.35); }
+      // A clap on two and four over the snare, and a ghost clap pushing into the next bar every other bar.
+      if (inBar === 4 || inBar === 12) this.clap(at, 0.5);
+      if (bar % 2 === 1 && inBar === 15) this.clap(t, 0.2);
       // Swung sixteenth hats, the open one on every offbeat eighth, and a shaker.
       this.hat(t, inBar % 4 === 2 ? 0.34 : 0.13, inBar % 4 === 2);
       if (inBar === 3 || inBar === 11 || inBar === 14) this.hat(t, 0.2, false);
@@ -937,7 +940,7 @@ class Engine {
       // ghost snares swung around them, and the last beat of every other bar stuttered in thirty-seconds.
       const chop = BREAK_CHOPS[(bar * 3 + blockBar) % BREAK_CHOPS.length];
       if (!garage && chop.kick.includes(inBar)) this.kick(t);
-      if (!garage && chop.snare.includes(inBar)) this.snare(at, 0.9);
+      if (!garage && chop.snare.includes(inBar)) { this.snare(at, 0.9); this.clap(at, 0.42); }
       if (chop.ghost.includes(inBar)) this.snare(t, 0.26);
       if (!garage && inBar % 2 === 0) this.hat(t, inBar % 4 === 2 ? 0.3 : 0.18, false);
       if (bar % 2 === 1 && inBar >= 12) { this.snare(at, 0.3 + (inBar - 12) * 0.1); this.snare(at + GSTEP / 2, 0.2 + (inBar - 12) * 0.08); }
@@ -963,6 +966,9 @@ class Engine {
         while (GARAGE_BASS[((bar % 2) * 16 + inBar + len) % 32] === null) len += 1;
         if (block === 'breaks' || (block === 'drop' && blockBar % 2 === 1)) this.reese(t, semi(this.root, bassRoot + n), GSTEP * len * 1.1);
         else this.sub(t, semi(this.root, bassRoot + n), GSTEP * len);
+        // The UK bass on top: the same line an octave up, a driven square-and-saw wah that opens on each note,
+        // so the bass is heard on a phone too, not only felt.
+        this.ukBass(t, semi(this.root * 2, bassRoot + n), GSTEP * len, block === 'drop');
       }
     }
     // Organ stabs on the offbeats (the garage sound), a pad on every chord change in the quieter blocks.
@@ -982,6 +988,31 @@ class Engine {
     if (block === 'intro' && inBar % 4 === 2 && Math.random() < 0.5) this.synthLead(t, semi(this.root * 4, chord[(step >> 2) % chord.length] + 12), GSTEP * 1.2, false);
   }
 
+  /** A clap: three quick bursts of filtered noise a few milliseconds apart and a short tail, into the reverb a little. */
+  private clap(at: number, vol: number) {
+    for (const [d, v, len] of [[0, 1, 0.02], [0.011, 0.85, 0.02], [0.022, 0.75, 0.13]] as [number, number, number][]) {
+      const n = this.noiseAt(at + d, len + 0.05);
+      const bp = this.filt('bandpass', 1150, 1.3);
+      const g = this.ctx.createGain();
+      this.env(g, at + d, vol * v, 0.001, len);
+      n.connect(bp).connect(g);
+      this.out(g, 0.18);
+    }
+  }
+  /** «Break to back»'s mid bass: a square and a saw through a resonant low-pass that opens on each note and
+      wobbles shut, driven a little; louder in the drop. */
+  private ukBass(at: number, freq: number, length: number, big: boolean) {
+    const end = at + length + 0.05;
+    const lp = this.filt('lowpass', 400, 8);
+    lp.frequency.setValueAtTime(big ? 1800 : 1300, at);
+    lp.frequency.exponentialRampToValueAtTime(260, at + Math.max(0.08, length * 0.9));
+    const g = this.ctx.createGain();
+    this.env(g, at, big ? 0.17 : 0.13, 0.004, length * 0.85, 0.6, 0.03);
+    this.osc('square', freq, at, end).connect(lp);
+    this.osc('sawtooth', freq, at, end, 9).connect(lp);
+    lp.connect(this.shaper(2.5)).connect(g);
+    this.out(g, 0.06);
+  }
   /** An acid line: a saw through a resonant low-pass whose envelope snaps open, harder on the accents. */
   private acid(at: number, freq: number, length: number, accent: boolean) {
     const o = this.osc('sawtooth', freq, at, at + length + 0.05);
@@ -1100,6 +1131,20 @@ class Engine {
     }
     // A bell on the downbeat of every other bar in the peak.
     if (block === 'peak' && inBar === 0 && bar % 2 === 0) this.bell(at, semi(this.root * 8, chord[0]));
+    // Little glass crystals glinting high over the chord, soft, now and then (never in the intro's first bars).
+    if ((block !== 'intro' || blockBar >= 4) && inBar % 4 === 2 && Math.random() < (block === 'break' ? 0.7 : 0.45))
+      this.glass(at, semi(this.root * 32, chord[(step >> 2) % chord.length]), block === 'break' ? 0.05 : 0.035);
+  }
+  /** A glass crystal: a short inharmonic bell high up, into the reverb. */
+  private glass(at: number, freq: number, vol: number) {
+    const g = this.ctx.createGain();
+    for (const [ratio, v] of [[1, 1], [2.76, 0.35], [5.4, 0.12]]) {
+      const pg = this.ctx.createGain();
+      pg.gain.value = v;
+      this.osc('sine', freq * ratio, at, at + 0.9).connect(pg).connect(g);
+    }
+    this.env(g, at, vol, 0.002, 0.45);
+    this.out(g, 0.6, this.padBus);
   }
   /** A ride cymbal: bright noise through a high band, ringing a little. */
   private ride(at: number, vol: number) {
@@ -1132,7 +1177,12 @@ class Engine {
     lp.frequency.setValueAtTime(600, at);
     lp.frequency.linearRampToValueAtTime(big ? 3200 : 2200, at + length * 0.4);
     lp.frequency.linearRampToValueAtTime(700, at + length);
-    this.env(g, at, big ? 0.2 : 0.16, 0.02, length * 0.6, 0.5, length * 0.3);
+    this.env(g, at, big ? 0.34 : 0.28, 0.02, length * 0.6, 0.55, length * 0.3);
+    // The «wua wua»: the filter swings open and shut twice a note.
+    const wah = this.osc('sine', 2 / length, at, at + length + 0.1);
+    const wd = this.ctx.createGain();
+    wd.gain.value = big ? 1100 : 800;
+    wah.connect(wd).connect(lp.frequency);
     for (const d of [-38, -18, 0, 18, 38]) {
       const o = this.osc('sawtooth', freq * 2 * 1.06, at, at + length + 0.1, d);
       o.frequency.exponentialRampToValueAtTime(freq * 2, at + 0.09);
