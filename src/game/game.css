@@ -4200,5 +4200,11 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .cover-friend .friend-dot { width: 1.8cqw; height: 1.8cqw; flex: none; }
 /* Not linked: the same pill as a «+ Añadir amigo» button. */
 .cover .cover-friend.is-add { border-color: rgba(103, 232, 249, 0.5); }
-.friend-pic.is-add { display: grid; place-items: center; border-color: rgba(103, 232, 249, 0.7); color: #67e8f9; font: 700 4.4cqw/1 var(--font); }
+/* The plus drawn as two bars, so it sits exactly in the middle (the font's «+» sat low). */
+.friend-pic.is-add { border-color: rgba(103, 232, 249, 0.7); }
+.friend-pic.is-add::before, .friend-pic.is-add::after {
+  content: ''; position: absolute; left: 50%; top: 50%; width: 46%; height: 12%; border-radius: 99px;
+  background: #67e8f9; translate: -50% -50%;
+}
+.friend-pic.is-add::after { rotate: 90deg; }
 :root[data-retro] .cover .cover-friend { display: flex; }
