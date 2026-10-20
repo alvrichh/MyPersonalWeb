@@ -484,7 +484,7 @@ function profileScreen(note = '') {
   show(`<button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
     <h2>${t('profile')}</h2>
     <div class="profile-card">
-      <img class="profile-pic${save.retro ? ' is-round' : ''}" src="${pic}" alt="" width="96" height="120">
+      ${withWings(`<img class="profile-pic${save.retro ? ' is-round' : ''}" src="${pic}" alt="" width="96" height="120">`)}
       <div class="profile-who">${editingName ? '' : name}${crests()}<span>${t('lvShort', { level })}</span><i class="profile-xp" title="${t('profileXp')}"><b style="width:${Math.round(progress * 100)}%"></b></i></div>
     </div>
     ${editingName ? `<div class="profile-form">${name}<small class="how">${t('profileNameHint')}</small>${save.name !== DEFAULT_NAME ? `<button class="ghost small" type="button" data-act="name-reset">${t('profileReset')}</button>` : ''}</div>` : ''}
@@ -1164,6 +1164,10 @@ function dressPalette() {
   palette.skin = save.skin;
   palette.boots = save.equipped.boots;
 }
+/** The Phoenix cloak at ★3 is worn: its wings show behind the hero in Customise and the profile too (not in retro). */
+const wingsOn = () => !save.retro && save.equipped.body === 'phoenix' && itemLevel(save.itemLevels, 'phoenix') >= 3;
+/** The hero picture with the worn wings behind it, flapping (`.wing-host` in game.css). */
+const withWings = (img: string) => wingsOn() ? `<span class="wing-host"><img class="hero-wings" src="./images/game/fx/wings-1.webp" alt="">${img}</span>` : img;
 const heroPic = () => `./images/game/hero/${heroStill(save.skin, save.equipped.head)}.webp`;
 /** What the list under the hero shows: a slot's items, the skins or the enemy looks. */
 let dressSlot: Slot | 'skin' | 'foes' | 'scene' | 'song' | null = null;
@@ -1194,7 +1198,7 @@ function stylesScreen(note = '') {
   };
   const hero = save.retro
     ? `<canvas class="hero-fig" width="180" height="200" aria-hidden="true"></canvas>`
-    : `<img class="hero-fig" src="${heroPic()}" alt="" width="128" height="160">`;
+    : withWings(`<img class="hero-fig" src="${heroPic()}" alt="" width="128" height="160">`);
   const row = (attr: string, on: boolean, locked: boolean, icon: string, name: string, text: string, state: string) =>
     `<button class="gear-row${on ? ' is-on' : ''}${locked ? ' is-locked' : ''}" ${attr} aria-pressed="${on}">
       <span class="icon" aria-hidden="true">${icon}</span><b>${name}</b><span>${text}</span>${state ? `<em>${state}</em>` : ''}
