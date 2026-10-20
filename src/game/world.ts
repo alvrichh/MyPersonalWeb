@@ -890,7 +890,7 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     shake: 0,
     events: [],
   };
-  for (const s of loadout.startSkills) g.skills[s] = Math.max(g.skills[s], 1);
+  for (const s of loadout.startSkills) g.skills[s] = Math.max(g.skills[s], Math.min(maxLevel(s), loadout.startLevels?.[s] ?? 1));
   // The Senior's Tome: random weapons at their top level, each with its partner, so the first level up offers to evolve them.
   const ready = (Object.keys(EVO_PARTNER) as SkillId[]).filter((w) => !g.skills[w] && allowedIn(g, w));
   for (let i = 0; i < loadout.startMaxed && ready.length; i++) {
