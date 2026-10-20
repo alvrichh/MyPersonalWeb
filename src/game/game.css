@@ -3853,3 +3853,8 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 /* The map's mode picker holds three modes: each a third, the icon over its name where the card is narrow. */
 .map-copy .mode-pick { grid-template-columns: repeat(3, 1fr); gap: 2px; border-radius: 16px; }
 .map-copy .mode-opt { padding: 6px 2px; border-radius: 13px; font-size: 0.7rem; line-height: 1.15; white-space: normal; text-align: center; }
+
+/* Options: the language, a pill like the mode picker's. */
+.lang-row > span { white-space: nowrap; }
+.lang-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; margin: 4px 0 10px; font-weight: 700; }
+.lang-row .lang-pick { width: auto; max-width: 220px; margin-top: 0; flex: 0 1 220px; }
