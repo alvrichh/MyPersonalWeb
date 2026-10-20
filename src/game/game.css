@@ -4127,3 +4127,6 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .board-up { position: absolute; left: 50%; top: 52%; translate: -50% 0; padding: 1px 7px; border-radius: 99px; background: linear-gradient(135deg, #fde047, #f59e0b); color: #2a1a00; font: 800 0.72rem/1.3 var(--font); font-style: normal; box-shadow: 0 0 10px rgba(253, 224, 71, 0.9); pointer-events: none; }
 :root[data-retro] .board-card.is-up { outline: 2px solid #fde047; }
 @media (prefers-reduced-motion: reduce) { :root:not([data-retro]) .board-card.is-up { animation: none; filter: brightness(1.3) drop-shadow(0 0 12px rgba(253, 224, 71, 1)); } }
+/* The dragged unit's own canvas, over the board's top bar and shop, never taking a tap. */
+.board-float { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 6; pointer-events: none; }
+.board-float[hidden] { display: none; }
