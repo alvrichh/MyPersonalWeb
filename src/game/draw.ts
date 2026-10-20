@@ -4592,7 +4592,7 @@ function heldFrame(e: Enemy, sheet: string, want: number, frames: HTMLImageEleme
 const FLAP_STEP = 105;
 /** A boss sheet's pictures, loaded once: nine poses, ten for the Medusa and Kratos with the blade, fifteen for
     Nocthrax in the air (its wing beat). */
-const NEXT_SHEETS: Record<string, string[]> = { chimera: ['chimera2', 'chimera3'], medusa: ['medusa2'], kratos: ['kratos2'] };
+const NEXT_SHEETS: Record<string, string[]> = { chimera: ['chimera2', 'chimera3'], medusa: ['medusa2'], kratos: ['kratos2'], drakkar: ['valdur'] };
 function bossSheet(sheet: string) {
   let frames = finalSprites.get(sheet);
   if (!frames) {
@@ -4606,7 +4606,8 @@ function bossSheet(sheet: string) {
     picture is still loading when they first come and the retro figure never shows in its place. */
 export function preloadCast(g: Game) {
   // A Boss Rush goes on through the later worlds; the secret shift's two bosses are Kratos.
-  const worlds = g.rush ? WORLDS.map((_, i) => i + 1).filter((w) => w >= g.rushFrom) : [g.world];
+  // (only the worlds the rush goes through: `rushStep` stages a world)
+  const worlds = g.rush ? WORLDS.map((_, i) => i + 1).filter((w) => w >= g.rushFrom && w < g.rushFrom + g.stages / g.rushStep) : [g.world];
   if (g.secret) bossSheet('kratos'), bossSheet('kratos2');
   for (const w of worlds) {
     const def = WORLDS[w - 1];
