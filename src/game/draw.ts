@@ -932,7 +932,7 @@ function drawGaze(ctx: CanvasRenderingContext2D, g: Game, now: number) {
   ctx.lineDashOffset = -now * 30;
   ctx.strokeStyle = `rgba(${tone}, ${0.35 + 0.4 * k})`;
   ctx.beginPath();
-  ctx.arc(m.x, m.y, GAZE.reach + m.r, 0, Math.PI * 2);
+  ctx.arc(m.x, m.y, GAZE.reach + m.r + GAZE.out, 0, Math.PI * 2);
   ctx.stroke();
   ctx.setLineDash([]);
   ctx.lineWidth = 4;
@@ -4513,6 +4513,27 @@ const BOSS_CANVAS: Record<string, { k: number; feet: number }> = {
     Valkyrie, the Mud Monster, the Arena's Minotaur, the Forge's Mainframe. */
 const MID_ART: Partial<Record<Look, string>> = { original: 'monolith', demon: 'overlord', viking: 'valkyrie', mud: 'mudmonster', greek: 'minotaur', robot: 'mainframe' };
 const finalSprites = new Map<string, HTMLImageElement[]>();
+/* Nine-pose bosses hold an action pose at least `POSE_HOLD` before it changes, unless something weightier comes
+   (the signature over the move or ring, those over the charge, the charge over the wind-up, any of them over the
+   gaze, the hurt pose or a step), and the last pose fades out over the next in `POSE_FADE`; only to be seen. */
+const POSE_HOLD = 0.28;
+const POSE_FADE = 0.09;
+/** How weighty each of the nine (and the Medusa's tenth) poses is: steps 0, the hurt pose 1, the gaze 2, wind-up 3,
+    charge 4, ring and move 5, signature 6. */
+const POSE_WEIGHT = [0, 0, 0, 3, 4, 5, 5, 6, 1, 2];
+const poseShown = new WeakMap<Enemy, { f: number; sheet: string; t: number; prev?: HTMLImageElement; pt: number }>();
+function heldFrame(e: Enemy, sheet: string, want: number, frames: HTMLImageElement[]) {
+  const now = performance.now() / 1000;
+  const s = poseShown.get(e);
+  if (!s || s.sheet !== sheet) { poseShown.set(e, { f: want, sheet, t: now, pt: -1 }); return want; }
+  if (want === s.f) return want;
+  if (POSE_WEIGHT[s.f] > 0 && now - s.t < POSE_HOLD && POSE_WEIGHT[want] <= POSE_WEIGHT[s.f]) return s.f;
+  s.prev = frames[s.f];
+  s.pt = now;
+  s.f = want;
+  s.t = now;
+  return want;
+}
 function finalFrame(e: Enemy) {
   if (e.pain > 0) return 8;
   // The Medusa's deep gaze (her tenth picture) while the hero stands within it and she is doing nothing else.
@@ -4542,7 +4563,7 @@ function drawEnemySprite(ctx: CanvasRenderingContext2D, e: Enemy) {
       // The next phase's sheet loads now, so it is in when the boss changes.
       if ((e.bossId === 'chimera' && sheet === 'chimera') || ((e.bossId === 'medusa' || e.bossId === 'kratos') && sheet === e.bossId)) for (const n of e.bossId === 'medusa' ? ['medusa2'] : e.bossId === 'kratos' ? ['kratos2'] : ['chimera2', 'chimera3']) finalSprites.set(n, Array.from({ length: n.startsWith('medusa') ? 10 : 9 }, (_, i) => Object.assign(new Image(), { src: `./images/game/bosses/${n}-${i}.webp` })));
     }
-    img = frames[finalFrame(e)];
+    img = frames[heldFrame(e, sheet, finalFrame(e), frames)];
     count = 9;
   }
   if (!count) return false;
@@ -4569,6 +4590,18 @@ function drawEnemySprite(ctx: CanvasRenderingContext2D, e: Enemy) {
     ctx.translate(0, -foot);
   }
   ctx.drawImage(img, -w / 2 + lunge, e.r * 0.85 - h + under + bob, w, h);
+  // A nine-pose boss's last pose fades out over the new one for a moment, so a change never cuts.
+  const shown = count === 9 ? poseShown.get(e) : undefined;
+  const fade = shown?.prev && shown.prev.complete && shown.prev.naturalWidth ? 1 - (performance.now() / 1000 - shown.pt) / POSE_FADE : 0;
+  if (shown?.prev && fade > 0) {
+    const pr = shown.prev.naturalWidth / shown.prev.naturalHeight;
+    const pw = pr >= 1 ? size : size * pr;
+    const ph = pr >= 1 ? size / pr : size;
+    const alpha = ctx.globalAlpha;
+    ctx.globalAlpha = alpha * fade;
+    ctx.drawImage(shown.prev, -pw / 2, e.r * 0.85 - ph + ph * (fit ? fit.feet : 0) + bob, pw, ph);
+    ctx.globalAlpha = alpha;
+  }
   return true;
 }
 
