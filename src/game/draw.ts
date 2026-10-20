@@ -4642,6 +4642,8 @@ function finalFrame(e: Enemy) {
   if (e.phase > 1 && e.bossId === 'chimera') return 9 + (Math.floor(performance.now() / FLAP_STEP) % 6);
   return walkFrame(e, WALK_FINAL);
 }
+/** While set (the board), `drawEnemySprite` draws every figure this many times its radius tall, whatever its sheet. */
+let spriteHeight = 0;
 /** While set, `drawEnemySprite` draws each picture with an outline in this colour (the board's enemy army). */
 let spriteOutline: string | null = null;
 /** A sprite picture with an outline round it, worked out once per picture and colour and kept: the picture stamped
@@ -4705,8 +4707,18 @@ function drawEnemySprite(ctx: CanvasRenderingContext2D, e: Enemy) {
   if (!ready(img)) img = frames.find(ready);
   if (!img) return false;
   const fit = count === 9 ? BOSS_CANVAS[sheet] : SPRITE_CANVAS[`${e.look}-${e.kind}`];
-  const size = e.r * (e.kind === 'boss' ? 2.6 : 2.5) * (fit ? fit.k : 1);
+  let size = e.r * (e.kind === 'boss' ? 2.6 : 2.5) * (fit ? fit.k : 1);
   const ratio = img.naturalWidth / img.naturalHeight;
+  // The board: every cast's figure the same height for its step, whatever its sheet's own scale (the demons' skull
+  // ticket drew far bigger than the vikings'), measured on the sheet's first picture so its poses keep their size.
+  if (spriteHeight) {
+    const ref = frames[0] && ready(frames[0]) ? frames[0] : img;
+    const rr = ref.naturalWidth / ref.naturalHeight;
+    const rh = rr >= 1 ? size / rr : size;
+    const vis = opaqueBox(ref);
+    const shown = rh * (vis.b - vis.t);
+    if (shown > 0) size *= (e.r * spriteHeight) / shown;
+  }
   const w = ratio >= 1 ? size : size * ratio;
   const h = ratio >= 1 ? size / ratio : size;
   const under = fit ? h * fit.feet : 0;
@@ -5005,6 +5017,7 @@ export type BoardFigure = { look: Look; kind: Enemy['kind']; final: boolean; bos
 export function drawBoardFigure(ctx: CanvasRenderingContext2D, f: BoardFigure, now: number, retro: boolean, outline: string | null = null) {
   retroLook = retro;
   spriteOutline = outline;
+  spriteHeight = f.kind === 'boss' ? 2.15 : 2.3;
   const e = {
     phase: 1, rise: 0, pain: f.kind === 'boss' ? f.hit : 0, gaze: false, chan: 0, pose: f.kind === 'boss' && f.swing > 0 ? f.swing : 0, act: 'burst', aim: 0, dash: 0,
     cd: 0, minion: false, clone: false, snake: 0, spawn: 0, wobble: 0, slow: 0, burn: 0, dir: { x: 0, y: 1 }, tint: '#fff', side: 1, id: 0,
@@ -5012,6 +5025,7 @@ export function drawBoardFigure(ctx: CanvasRenderingContext2D, f: BoardFigure, n
   } as unknown as Enemy;
   const painted = !retroLook && drawEnemySprite(ctx, e);
   spriteOutline = null;
+  spriteHeight = 0;
   if (!painted) LOOKS[f.look][f.kind](ctx, e, now);
 }
 /** An effect picture, for the board. */
