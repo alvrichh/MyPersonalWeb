@@ -420,6 +420,8 @@ export type Player = {
   dark: number;
   stone: number;
   mired: number;
+  /** Seconds left of the flames on you after a fire hit (lava, a fireball, meteors, a breath): only to be seen. */
+  burn: number;
 };
 
 /** Cooldowns and state for every weapon. */
@@ -838,7 +840,7 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     strikes: [],
     strikeIn: 2,
     hazard: 'none',
-    player: { x: W / 2, y: H - 70, r: 15, hp: loadout.maxHp, maxHp: loadout.maxHp, speed: 150 * loadout.speedMult, inv: 0, ouch: 0, moving: false, face: -Math.PI / 2, heading: -Math.PI / 2, poison: 0, stun: 0, chill: 0, dark: 0, stone: 0, mired: 0 },
+    player: { x: W / 2, y: H - 70, r: 15, hp: loadout.maxHp, maxHp: loadout.maxHp, speed: 150 * loadout.speedMult, inv: 0, ouch: 0, moving: false, face: -Math.PI / 2, heading: -Math.PI / 2, poison: 0, stun: 0, chill: 0, dark: 0, stone: 0, mired: 0, burn: 0 },
     enemies: [],
     shots: [],
     orbs: [],
@@ -1965,7 +1967,7 @@ function useWeapons(g: Game, dt: number) {
    stone (you can't move, like the stun) and the Mud Monster sticks you in the mud (you walk slower, like the chill). */
 export type BossStatus = 'poison' | 'stun' | 'chill' | 'dark' | 'stone' | 'mired';
 const BOSS_STATUS: Record<string, [BossStatus, number]> = {
-  queen: ['poison', 0.5], zeus: ['stun', 0.5], medusa: ['stone', 0.6], mud: ['mired', 1.2], drakkar: ['chill', 1.5], valdur: ['chill', 1.5], wraith: ['dark', 1.2], nightmare: ['dark', 1.2],
+  queen: ['poison', 0.5], zeus: ['stun', 0.5], medusa: ['stone', 0.6], mud: ['mired', 1.2], drakkar: ['chill', 1.5], valdur: ['chill', 1.5], wraith: ['dark', 4], nightmare: ['dark', 4],
 };
 /** Poison: health lost over its half second. */
 const POISON_DMG = 8;
@@ -1978,9 +1980,10 @@ export const ICICLE_STAY = 0.6;
 export const ICICLE_R = 30;
 const ICICLE_CHILL = 1.2;
 
-function hurtPlayer(g: Game, amount: number, from?: string) {
+function hurtPlayer(g: Game, amount: number, from?: string, fire = false) {
   const p = g.player;
   if (p.inv > 0 || g.phase !== 'play') return;
+  if (fire) p.burn = 1.2;
   const status = from ? BOSS_STATUS[from] : undefined;
   if (status) {
     p[status[0]] = Math.max(p[status[0]], status[1]);
@@ -2660,7 +2663,7 @@ function updateThreats(g: Game, dt: number) {
         }
       }
     }
-    if (t.dmg > 0 && touches(t, p, p.r * 0.6)) hurtPlayer(g, t.dmg, t.from);
+    if (t.dmg > 0 && touches(t, p, p.r * 0.6)) hurtPlayer(g, t.dmg, t.from, t.el === 'fire');
     t.life -= dt;
     return t.life > 0;
   });
@@ -2894,7 +2897,7 @@ function updateHazards(g: Game, dt: number) {
   updateThreats(g, dt);
   for (const h of g.hazards) {
     if (h.kind === 'puddle' || dist(h, p) > h.r + p.r * 0.4) continue;
-    hurtPlayer(g, h.kind === 'lava' ? 8 : 10);
+    hurtPlayer(g, h.kind === 'lava' ? 8 : 10, undefined, h.kind === 'lava');
     if (h.kind === 'lava' && Math.random() < 0.5) burst(g, p.x, p.y + p.r * 0.6, '#ff9a1f', 2, 60, 2.5);
   }
   // The viking world: ice spikes break out of the floor the same way, and chill you.
@@ -3063,6 +3066,7 @@ export function update(g: Game, dt: number, input: Input) {
   p.dark = Math.max(0, p.dark - dt);
   p.stone = Math.max(0, p.stone - dt);
   p.mired = Math.max(0, p.mired - dt);
+  p.burn = Math.max(0, p.burn - dt);
   if (p.poison > 0) p.hp = Math.max(1, p.hp - (POISON_DMG / 0.5) * dt);
   if (p.stun > 0 || p.stone > 0) p.moving = false;
   if (p.moving) {
@@ -3182,7 +3186,7 @@ export function update(g: Game, dt: number, input: Input) {
     if (o.life <= 0 || outside(g, o)) return false;
     if (g.obstacles.some((r) => inRect(o, r))) return false;
     if (Math.hypot(o.x - p.x, o.y - p.y) < o.r + p.r - 3) {
-      hurtPlayer(g, o.dmg, o.from);
+      hurtPlayer(g, o.dmg, o.from, o.pic === 'fireball' || o.tone === TONE.fire);
       return false;
     }
     return true;
