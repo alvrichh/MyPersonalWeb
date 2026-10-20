@@ -49,12 +49,13 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   if (horde) drawField(ctx, g, vis, now);
   else drawRoom(ctx, g, accent, now);
   drawHazards(ctx, g, now);
+  // Fire on the floor (molotov pools, the inferno's ground) lies under the walls, like the lava.
+  drawEmbers(ctx, g, now);
   drawObstacles(ctx, g, accent, now);
   drawGems(ctx, g, now);
   if (g.chest) drawChest(ctx, g.chest, now);
   drawHearts(ctx, g, now);
   if (g.skills.frost) drawFrost(ctx, g, now);
-  drawEmbers(ctx, g, now);
   drawMines(ctx, g, now);
   drawRunes(ctx, g, now);
   drawFx(ctx, g, accent, 'under');
@@ -1762,6 +1763,14 @@ function drawRunes(ctx: CanvasRenderingContext2D, g: Game, now: number) {
 export const FUSION_COLOR: Record<Fusion, string> = {
   steam: '226,232,240', plasma: '240,171,252', wisp: '94,234,212', shock: '125,211,252', frostbite: '186,230,253', spectral: '196,181,253',
 };
+/** A fire pool picture over a circle of radius `r`: never turned, only zooming in and out a little (`FIRE_ZOOM`),
+   each pool on its own beat. Molotov pools, the inferno's ground and lava all use it. */
+const FIRE_ZOOM = { by: 0.07, rate: 2.2 };
+function drawFirePool(ctx: CanvasRenderingContext2D, pic: HTMLImageElement, x: number, y: number, r: number, now: number) {
+  const w = r * 2.1 * (1 + FIRE_ZOOM.by * Math.sin(now * FIRE_ZOOM.rate + x * 0.07 + y * 0.05));
+  const h = (w * pic.naturalHeight) / pic.naturalWidth;
+  ctx.drawImage(pic, x - w / 2, y - h / 2, w, h);
+}
 function drawEmbers(ctx: CanvasRenderingContext2D, g: Game, now: number) {
   for (const em of g.embers) {
     const k = em.life / em.max;
@@ -1791,15 +1800,9 @@ function drawEmbers(ctx: CanvasRenderingContext2D, g: Game, now: number) {
     }
     const pool = fxImage(em.r > 40 ? 'fire-pool-big' : 'fire-pool');
     if (!retroLook && ready(pool)) {
-      // The owner's fire pool, turning slowly, fading in its last half second.
-      const w = em.r * 2.1;
-      const h = (w * pool.naturalHeight) / pool.naturalWidth;
+      // The owner's fire pool, breathing in and out a little, fading in its last half second.
       ctx.globalAlpha = Math.min(1, em.life * 2) * 0.72;
-      ctx.save();
-      ctx.translate(em.x, em.y);
-      ctx.rotate(now * 0.4 + em.x);
-      ctx.drawImage(pool, -w / 2, -h / 2, w, h);
-      ctx.restore();
+      drawFirePool(ctx, pool, em.x, em.y, em.r, now);
       ctx.globalAlpha = 1;
       continue;
     }
@@ -2235,7 +2238,7 @@ export function preloadFx() {
   for (const n of ['fireball', 'boom-small', 'boom-big', 'knife', 'boomerang', 'slash', 'chest', 'slam', 'crystals', 'gem', 'gem-big', 'bolt-1', 'bolt-2', 'bolt-3', 'bolt-4', 'bolt-5', 'bolt-6', 'bolt-y-1', 'bolt-y-2', 'bolt-y-3', 'bolt-y-4', 'bolt-y-5', 'bolt-y-6',
     'brick', 'iron', 'molotov', 'barrel', 'durian', 'durian-big', 'drill', 'drill-evo', 'rocket', 'rocket-shark', 'ball', 'ball-evo', 'phoenix-0', 'phoenix-1', 'phoenix-2', 'phoenix-3', 'wings-0', 'wings-1', 'wings-2',
     'fire-pool', 'fire-pool-big', 'caltrops', 'mine', 'mine-on', 'mine-volt', 'volt-burst', 'impact', 'heart', 'rune', 'crescent',
-    'steam-cloud', 'plasma-burst', 'segfault', 'crit-spark', 'lag-trail', 'safe-bubble', 'nova-burst', 'wisp-flame', 'shock-ring', 'ice-block', 'spectral-bolt', 'laser-yellow', 'laser-orange', 'laser-red', 'laser-purple', 'drakkar-wreck', 'vine-row-0', 'vine-row-1', 'wave-strip-0', 'wave-strip-1', 'wave-strip-2', ...Array.from({ length: 7 }, (_, i) => `tornado-${i}`), 'vortex-0', 'vortex-1', ...Array.from({ length: 7 }, (_, i) => `lava-${i}`)]) fxImage(n);
+    'steam-cloud', 'plasma-burst', 'segfault', 'crit-spark', 'lag-trail', 'safe-bubble', 'nova-burst', 'wisp-flame', 'shock-ring', 'ice-block', 'spectral-bolt', 'laser-yellow', 'laser-orange', 'laser-red', 'laser-purple', 'drakkar-wreck', 'vine-row-0', 'vine-row-1', 'wave-strip-0', 'wave-strip-1', 'wave-strip-2', ...Array.from({ length: 7 }, (_, i) => `tornado-${i}`), 'vortex-0', 'vortex-1']) fxImage(n);
 }
 
 function drawFireballs(ctx: CanvasRenderingContext2D, g: Game) {
@@ -4633,11 +4636,13 @@ const jungleImage = (name: string) => setImage('jungle', name);
 function drawHazards(ctx: CanvasRenderingContext2D, g: Game, now: number) {
   for (const h of g.hazards) {
     if (h.hidden && !retroLook) continue;
-    // The owner's bubbling lava pool: seven frames looping, each pool on its own beat (the disc is 91% of its picture).
-    const lava = h.kind === 'lava' && !retroLook ? fxImage(`lava-${((Math.floor(now * 7 + h.x * 0.05 + h.y * 0.03) % 7) + 7) % 7}`) : null;
+    // Lava is drawn as the molotov's fire pool, zooming a little (the owner's pick; the seven bubbling
+    // `lava-0..6` frames are kept in the files, unused).
+    const lava = h.kind === 'lava' && !retroLook ? fxImage(h.r > 40 ? 'fire-pool-big' : 'fire-pool') : null;
     if (lava && ready(lava)) {
-      const size = (h.r * 2) / 0.91;
-      ctx.drawImage(lava, h.x - size / 2, h.y - size / 2, size, size);
+      ctx.globalAlpha = 0.9;
+      drawFirePool(ctx, lava, h.x, h.y, h.r, now);
+      ctx.globalAlpha = 1;
       continue;
     }
     if (h.kind === 'lava') {
