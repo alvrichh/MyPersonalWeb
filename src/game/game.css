@@ -2567,6 +2567,7 @@ body {
   border-radius: 3px;
   background: rgba(255, 255, 255, 0.14);
 }
+.panel .lv-note { display: block; margin: -2px 0 4px; color: #fcd34d; font-size: 0.78em; font-weight: 600; }
 .pips i.is-on {
   background: linear-gradient(90deg, #fbbf24, #f59e0b);
   box-shadow: 0 0 6px rgba(251, 191, 36, 0.6);

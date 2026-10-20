@@ -996,8 +996,18 @@ function shopSection(key: string, title: string, count: string, body: string) {
     </button>${open ? body : ''}`;
 }
 
-/* Items with levels (the Phoenix cloak): pips and an upgrade button like the forge's, in the shop and in
-   Customise. What each level gives is not shown: it is a surprise. */
+/* Items with levels: pips and an upgrade button like the forge's, in the shop and in Customise. What the
+   Phoenix cloak's next level gives is not shown (the owner wants it to be a surprise); the weapon slots' items
+   say what they give now, the level their weapon starts at or their bonus (`buildLoadout` in shop.ts). */
+function levelNote(id: ItemId, lv: number) {
+  const item = itemById(id);
+  if (!WEAPON_SLOTS.includes(item.slot)) return '';
+  const { effect } = item;
+  if (effect.startSkills?.length) return `<small class="lv-note">${t('itemStartsAt', { level: lv })}</small>`;
+  const base = effect.mult ? Math.max(...Object.values(effect.mult)) : effect.xpMult ?? effect.hasteMult ?? 1;
+  const pct = Math.round((base - 1) * (1 + 0.5 * (lv - 1)) * 100);
+  return pct ? `<small class="lv-note">${t('itemBonusAt', { pct })}</small>` : '';
+}
 function levelBlock(item: { id: ItemId; levels?: number[] }) {
   if (!item.levels || !save.owned.includes(item.id)) return '';
   const lv = itemLevel(save.itemLevels, item.id);
@@ -1007,7 +1017,7 @@ function levelBlock(item: { id: ItemId; levels?: number[] }) {
   const up = price
     ? `<button class="buy${save.coins >= price ? '' : ' is-poor'}" data-item-up="${item.id}">${t('upgradeBtn', { price })}</button>`
     : `<button class="buy is-worn" disabled>✓ ${t('upgradeMax')}</button>`;
-  return `<span class="pips" aria-label="${t('upgradeLevel', { level: lv, max })}">${pips}</span>${up}`;
+  return `<span class="pips" aria-label="${t('upgradeLevel', { level: lv, max })}">${pips}</span>${levelNote(item.id, lv)}${up}`;
 }
 
 /* The shop card's frame has a lower band for its button (the owner's picture, drawn as a nine-slice). A card

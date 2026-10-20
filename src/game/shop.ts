@@ -97,6 +97,8 @@ export type Loadout = {
   /** The Phoenix cloak at its top level: wings of fire on the hero, and faster. */
   wings: boolean;
   startSkills: SkillId[];
+  /** The level each starting weapon begins at (an upgraded item starts it higher). */
+  startLevels: Partial<Record<SkillId, number>>;
   /** This many random weapons start at their top level, with the upgrade that evolves them. */
   startMaxed: number;
   /** Sprint masteries taken: from one on, the final bosses of sprints call smaller bosses to their side. */
@@ -123,6 +125,7 @@ export const BASE_LOADOUT: Loadout = {
   reviveHp: 0.5,
   wings: false,
   startSkills: [],
+  startLevels: {},
   startMaxed: 0,
   sprintMastery: 0,
   maxHp: 100,
@@ -150,24 +153,24 @@ export const ITEMS: Item[] = [
   { id: 'magnetBoots', slot: 'boots', price: 220, icon: '🧲', pic: 'items/magnetBoots.webp', effect: { magnet: 70 } },
   { id: 'ironBoots', slot: 'boots', price: 300, icon: '🥾', pic: 'items/ironBoots.webp', effect: { armor: 0.08, maxHp: 115 } },
   // Magic (the spirit companion lives here)
-  { id: 'orb', slot: 'magic', price: 600, icon: '🔮', pic: 'items/orb.webp', effect: { xpMult: 1.25 } },
-  { id: 'hourglass', slot: 'magic', price: 450, icon: '⏳', pic: 'items/hourglass.webp', effect: { hasteMult: 1.15 } },
-  { id: 'spellbook', slot: 'magic', price: 450, icon: '📖', pic: 'items/spellbook.webp', effect: { startSkills: ['fireball'] } },
+  { id: 'orb', slot: 'magic', price: 600, levels: [1000, 1600], icon: '🔮', pic: 'items/orb.webp', effect: { xpMult: 1.25 } },
+  { id: 'hourglass', slot: 'magic', price: 450, levels: [750, 1200], icon: '⏳', pic: 'items/hourglass.webp', effect: { hasteMult: 1.15 } },
+  { id: 'spellbook', slot: 'magic', price: 450, levels: [750, 1200], icon: '📖', pic: 'items/spellbook.webp', effect: { startSkills: ['fireball'] } },
   { id: 'seniorTome', slot: 'magic', price: 8000, icon: '📜', pic: 'items/seniorTome.webp', legendary: true, world: 9, effect: { startMaxed: 2 } },
-  { id: 'lantern', slot: 'magic', price: 500, icon: '👻', pic: 'spirits/water-float-0.webp', effect: { startSkills: ['spirits'], spirit: 'water' } },
-  { id: 'spiritFire', slot: 'magic', price: 700, icon: '👻', pic: 'spirits/fire-float-0.webp', effect: { startSkills: ['spirits'], spirit: 'fire' } },
-  { id: 'spiritTide', slot: 'magic', price: 700, icon: '👻', pic: 'spirits/tide-float-0.webp', effect: { startSkills: ['spirits'], spirit: 'tide' } },
-  { id: 'spiritThorn', slot: 'magic', price: 700, icon: '👻', pic: 'spirits/thorn-float-0.webp', effect: { startSkills: ['spirits'], spirit: 'thorn' } },
-  { id: 'spiritVolt', slot: 'magic', price: 800, icon: '👻', pic: 'spirits/volt-float-0.webp', effect: { startSkills: ['spirits'], spirit: 'volt' } },
-  { id: 'spiritShade', slot: 'magic', price: 800, icon: '👻', pic: 'spirits/shade-float-0.webp', effect: { startSkills: ['spirits'], spirit: 'shade' } },
+  { id: 'lantern', slot: 'magic', price: 500, levels: [800, 1300], icon: '👻', pic: 'spirits/water-float-0.webp', effect: { startSkills: ['spirits'], spirit: 'water' } },
+  { id: 'spiritFire', slot: 'magic', price: 700, levels: [1150, 1850], icon: '👻', pic: 'spirits/fire-float-0.webp', effect: { startSkills: ['spirits'], spirit: 'fire' } },
+  { id: 'spiritTide', slot: 'magic', price: 700, levels: [1150, 1850], icon: '👻', pic: 'spirits/tide-float-0.webp', effect: { startSkills: ['spirits'], spirit: 'tide' } },
+  { id: 'spiritThorn', slot: 'magic', price: 700, levels: [1150, 1850], icon: '👻', pic: 'spirits/thorn-float-0.webp', effect: { startSkills: ['spirits'], spirit: 'thorn' } },
+  { id: 'spiritVolt', slot: 'magic', price: 800, levels: [1300, 2100], icon: '👻', pic: 'spirits/volt-float-0.webp', effect: { startSkills: ['spirits'], spirit: 'volt' } },
+  { id: 'spiritShade', slot: 'magic', price: 800, levels: [1300, 2100], icon: '👻', pic: 'spirits/shade-float-0.webp', effect: { startSkills: ['spirits'], spirit: 'shade' } },
   // Melee
-  { id: 'keySword', slot: 'melee', price: 450, icon: '🗝️', pic: 'skills/sword.webp', effect: { startSkills: ['sword'] } },
-  { id: 'chainBlades', slot: 'melee', price: 450, icon: '⛓️', pic: 'skills/blades.webp', effect: { startSkills: ['blades'] } },
-  { id: 'warHammer', slot: 'melee', price: 500, icon: '🔨', pic: 'skills/hammer.webp', effect: { startSkills: ['hammer'] } },
+  { id: 'keySword', slot: 'melee', price: 450, levels: [750, 1200], icon: '🗝️', pic: 'skills/sword.webp', effect: { startSkills: ['sword'] } },
+  { id: 'chainBlades', slot: 'melee', price: 450, levels: [750, 1200], icon: '⛓️', pic: 'skills/blades.webp', effect: { startSkills: ['blades'] } },
+  { id: 'warHammer', slot: 'melee', price: 500, levels: [800, 1300], icon: '🔨', pic: 'skills/hammer.webp', effect: { startSkills: ['hammer'] } },
   // Ranged
-  { id: 'quiver', slot: 'ranged', price: 280, icon: '🏹', pic: 'items/quiver.webp', effect: { mult: { melee: 1, magic: 1, ranged: 1.3, upgrade: 1 } } },
-  { id: 'knifeSet', slot: 'ranged', price: 450, icon: '🔪', pic: 'skills/knives.webp', effect: { startSkills: ['knives'] } },
-  { id: 'huntBoomerang', slot: 'ranged', price: 450, icon: '🪃', pic: 'skills/boomerang.webp', effect: { startSkills: ['boomerang'] } },
+  { id: 'quiver', slot: 'ranged', price: 280, levels: [450, 750], icon: '🏹', pic: 'items/quiver.webp', effect: { mult: { melee: 1, magic: 1, ranged: 1.3, upgrade: 1 } } },
+  { id: 'knifeSet', slot: 'ranged', price: 450, levels: [750, 1200], icon: '🔪', pic: 'skills/knives.webp', effect: { startSkills: ['knives'] } },
+  { id: 'huntBoomerang', slot: 'ranged', price: 450, levels: [750, 1200], icon: '🪃', pic: 'skills/boomerang.webp', effect: { startSkills: ['boomerang'] } },
 ];
 
 export const SLOTS: Slot[] = ['head', 'body', 'boots', 'magic', 'melee', 'ranged'];
@@ -191,7 +194,7 @@ export const ARSENAL: { id: SkillId; price: number; world: number }[] = [
   { id: 'rocket', price: 1500, world: 8 },
 ];
 export function buildLoadout(equipped: Partial<Record<Slot, ItemId>>, upgrades: Upgrades = {}, masteries = 0, arsenal: SkillId[] = [], levels: ItemLevels = {}): Loadout {
-  const out: Loadout = { ...BASE_LOADOUT, mult: { ...BASE_LOADOUT.mult }, startSkills: [], arsenal: [...arsenal] };
+  const out: Loadout = { ...BASE_LOADOUT, mult: { ...BASE_LOADOUT.mult }, startSkills: [], startLevels: {}, arsenal: [...arsenal] };
   out.maxHp += MASTERY_STEP.hp * masteries;
   for (const k of Object.keys(out.mult) as Category[]) out.mult[k] *= 1 + MASTERY_STEP.damage * masteries;
   out.coinMult *= 1 + MASTERY_STEP.coins * masteries;
@@ -207,16 +210,21 @@ export function buildLoadout(equipped: Partial<Record<Slot, ItemId>>, upgrades: 
   for (const slot of SLOTS) {
     const id = equipped[slot];
     if (!id) continue;
-    const { effect } = itemById(id);
-    if (effect.mult) for (const k of Object.keys(effect.mult) as Category[]) out.mult[k] *= effect.mult[k];
-    if (effect.xpMult) out.xpMult *= effect.xpMult;
+    const item = itemById(id);
+    const { effect } = item;
+    // The weapon slots' items with levels: a starting weapon begins one level higher for each, and a bonus
+    // (damage, XP, haste) grows by half of itself for each (+30% becomes +45% and then +60%).
+    const ilv = item.levels && WEAPON_SLOTS.includes(item.slot) ? itemLevel(levels, id) : 1;
+    const grow = (m: number) => 1 + (m - 1) * (1 + 0.5 * (ilv - 1));
+    if (effect.mult) for (const k of Object.keys(effect.mult) as Category[]) out.mult[k] *= grow(effect.mult[k]);
+    if (effect.xpMult) out.xpMult *= grow(effect.xpMult);
     if (effect.coinMult) out.coinMult *= effect.coinMult;
     if (effect.revives) out.revives += effect.revives;
-    if (effect.startSkills) out.startSkills.push(...effect.startSkills);
+    if (effect.startSkills) for (const s of effect.startSkills) { out.startSkills.push(s); out.startLevels[s] = Math.max(out.startLevels[s] ?? 1, ilv); }
     if (effect.startMaxed) out.startMaxed += effect.startMaxed;
     if (effect.maxHp) out.maxHp += effect.maxHp - BASE_LOADOUT.maxHp;
     if (effect.speedMult) out.speedMult *= effect.speedMult;
-    if (effect.hasteMult) out.hasteMult *= effect.hasteMult;
+    if (effect.hasteMult) out.hasteMult *= grow(effect.hasteMult);
     if (effect.magnet) out.magnet += effect.magnet;
     if (effect.armor) out.armor = Math.min(0.6, out.armor + effect.armor);
     if (effect.spirit) out.spirit = effect.spirit;
