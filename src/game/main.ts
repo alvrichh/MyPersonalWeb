@@ -8,7 +8,7 @@ import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPr
 import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
 import { draw, drawRetroFigure, preloadCast, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
-import { ROUNDS, armyCap, roundGold, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, updateBoard, type BoardGame } from './board';
+import { ROUNDS, SYNERGY, armyCap, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, updateBoard, type BoardGame } from './board';
 import { FIREBALL, boardMerged, drawBoard, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
 import type { Enemy } from './world';
 import { ARMOUR_SLOTS, ARSENAL, ITEMS, itemLevel, type SpiritSkin, UPGRADES, WEAPON_SLOTS, EXTRA_SLOT_PRICE, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
@@ -1729,7 +1729,8 @@ function renderBoardUi() {
   if (!b) return;
   const prep = b.phase === 'prep';
   const speedUp = b.phase === 'fight' && b.time >= BOARD_FAST_AFTER;
-  const key = [b.phase, b.round, b.lives, b.gold, b.shop.map((o) => (o ? `${o.tier}${o.cast}${o.price}` : '-')).join(''), b.army.length, speedUp, boardFast].join('|');
+  const syns = synergies(b);
+  const key = [b.phase, b.round, b.lives, b.gold, b.shop.map((o) => (o ? `${o.tier}${o.cast}${o.price}` : '-')).join(''), b.army.length, speedUp, boardFast, b.skillUsed, syns.map((x) => `${x.cast}${x.n}`).join(''), b.event].join('|');
   if (key === boardKey) return;
   boardKey = key;
   // The game's own pieces: the painted coins, the shop's orange item frame for the
@@ -1747,12 +1748,16 @@ function renderBoardUi() {
     ? `<button class="board-card" type="button" data-bact="buy" data-i="${i}"${!prep || b.gold < o.price ? ' disabled' : ''}><i class="board-cast">${t('worldShort', { n: o.cast })}</i><img src="${boardPic(o.tier, o.cast)}" alt=""><b>${boardTierName(o.tier)}</b><span class="board-price">${coin} ${o.price}</span></button>`
     : '<span class="board-card is-sold"></span>').join('');
   boardShop.innerHTML = prep ? `
-    <span class="board-count" aria-label="${t('boardCapLabel')}">♟ ${b.army.length}/${armyCap(b.round)}</span>
+    <div class="board-row">
+      <span class="board-count" aria-label="${t('boardCapLabel')}">♟ ${b.army.length}/${armyCap(b.round)}</span>
+      ${syns.filter((x) => x.n >= 2).map((x) => `<button class="board-syn is-lv${x.lv}" type="button" data-bact="syn" data-cast="${x.cast}" aria-label="${t(`boardSyn${x.cast}` as Key)}">${WORLD_ICON[x.cast - 1]} ${x.n}/${x.lv >= 1 ? SYNERGY.need[1] : SYNERGY.need[0]}</button>`).join('')}
+      ${b.event ? `<span class="board-event">⭐ ${t(`boardEvent${cap(b.event)}` as Key)}</span>` : ''}
+    </div>
     <div class="board-cards">${cards}</div>
     <div class="board-acts">
       <button class="ghost board-reroll" type="button" data-bact="reroll"${b.gold < 1 ? ' disabled' : ''}>🎲 ${t('boardReroll')} · ${coin} 1</button>
       <button class="primary board-go" type="button" data-bact="fight"${b.army.length ? '' : ' disabled'}>⚔️ ${t('boardFight')}</button>
-    </div>` : `<div class="board-fight-row"><p class="board-fighting">${t('boardFighting')}</p>${speedUp ? `<button class="board-speed${boardFast ? ' is-on' : ''}" type="button" data-bact="speed" aria-pressed="${boardFast}" aria-label="${t('boardSpeed')}">${boardFast ? '×1' : '×2'}</button>` : ''}</div>`;
+    </div>` : `<div class="board-fight-row"><button class="board-skill" type="button" data-bact="skill"${b.skillUsed ? ' disabled' : ''} aria-label="${t('boardSkill')}">${save.retro ? '🔥' : '<img src="./images/game/skills/fireball.webp" alt="">'}</button><p class="board-fighting">${t('boardFighting')}</p>${speedUp ? `<button class="board-speed${boardFast ? ' is-on' : ''}" type="button" data-bact="speed" aria-pressed="${boardFast}" aria-label="${t('boardSpeed')}">${boardFast ? '×1' : '×2'}</button>` : ''}</div>`;
 }
 
 boardUi.addEventListener('click', (event) => {
@@ -1765,9 +1770,19 @@ boardUi.addEventListener('click', (event) => {
     const offer = b.shop[Number(el.dataset.i)];
     if (offer && b.gold < offer.price) flash(t('boardNoGold'));
     else if (!boardBuy(b, Number(el.dataset.i))) flash(t('boardBenchFull'));
-    else audio.play('pick');
+    else if (b.lastMerge) {
+      // Bought next to its twin: merged at once, a combo when it went on up.
+      const m = b.lastMerge;
+      b.lastMerge = null;
+      boardMerged(m.slot, m.id, performance.now() / 1000);
+      audio.play('levelup');
+      const name = boardTierName(pieceAt(b, m.slot)?.tier ?? 0);
+      flash(m.combo > 1 ? t('boardCombo', { n: m.combo, name }) : t('boardMerged', { name }));
+    } else audio.play('pick');
   } else if (act === 'reroll') { if (boardReroll(b)) audio.play('click'); }
   else if (act === 'speed') { boardFast = !boardFast; audio.play('click'); }
+  else if (act === 'skill') { if (commanderStrike(b)) audio.play('shoot'); }
+  else if (act === 'syn') { const c = Number(el.dataset.cast); flash(t('boardSynLine', { world: WORLD_ICON[c - 1], gift: t(`boardSyn${c}` as Key), need: SYNERGY.need[0], more: SYNERGY.need[1] })); }
   else if (act === 'fight') {
     boardFast = false;
     if (startFight(b)) { audio.play('door'); audio.setIntensity(0.7); audio.setBoss(b.round === ROUNDS); }
@@ -1814,7 +1829,8 @@ function boardResultScreen(b: BoardGame) {
   const win = last.result === 'win';
   show(`${head(win ? 'victory' : 'defeat', t(win ? 'boardWin' : 'boardLoss'))}
     ${last.lost ? `<p>${t('boardLost', { n: last.lost })}</p>` : ''}
-    <p class="how">${t('boardGold', { n: roundGold(b.world, win) })}</p>
+    ${last.flawless ? `<p class="board-flawless">🎁 ${t('boardFlawless')}</p>` : ''}
+    <p class="how">${t('boardGold', { n: roundGold(b.world, win) + roundBonus(b) })}</p>
     <button class="primary" data-act="board-next">▶ ${t('boardNext')}</button>`);
 }
 
@@ -1939,7 +1955,12 @@ screen.addEventListener('click', (event) => {
     if (game) startShowcase(game);
     flash(t('showcaseStart'));
   }
-  else if (act === 'board-next' && board) { nextRound(board); hide(); renderBoardUi(); }
+  else if (act === 'board-next' && board) {
+    nextRound(board);
+    hide();
+    renderBoardUi();
+    if (board.event) { audio.play('levelup'); flash(`⭐ ${t(`boardEvent${cap(board.event)}` as Key)}: ${t(`boardEvent${cap(board.event)}Text` as Key)}`); }
+  }
   else if (act === 'board-again' && board) startBoard(board.world);
   else if (act === 'board-stay') { paused = false; hide(); }
   else if (act === 'board-quit-ask') boardQuitScreen();

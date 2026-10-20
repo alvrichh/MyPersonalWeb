@@ -4050,7 +4050,7 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .board-fight-row { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8px; }
 .board-fight-row .board-fighting { grid-column: 1 / -1; grid-row: 1; }
 .board-speed {
-  grid-column: 2; grid-row: 1; z-index: 1;
+  grid-column: 3; grid-row: 1; z-index: 1;
   width: 54px; height: 54px; margin-right: 6px; padding: 0; border: 0; border-radius: 50%;
   background: url('/images/game/ui/orb.webp') center / contain no-repeat;
   color: #fff; font: 800 1.05rem/1 var(--font); text-shadow: 0 2px 3px #071324; cursor: pointer;
@@ -4060,3 +4060,18 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 @keyframes speed-in { from { transform: scale(0.4); opacity: 0; } }
 :root[data-retro] .board-speed { background: rgba(255, 255, 255, 0.1); border: 1px solid var(--line); }
 @media (prefers-reduced-motion: reduce) { .board-speed { animation: none; } }
+/* The row over the shop: the units, each world's synergy (lit gold once it counts, brighter at its second level)
+   and the round's special event. */
+.board-shop > .board-count { display: none; }
+.board-row { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; margin: 0 0 4px 2px; }
+.board-row .board-count, .board-syn, .board-event { display: inline-block; padding: 3px 8px; border-radius: 99px; background: rgba(6, 10, 24, 0.78); color: #e2e8f0; font: 700 0.78rem/1.1 var(--font); }
+.board-syn { border: 1px solid rgba(148, 163, 184, 0.4); cursor: pointer; }
+.board-syn.is-lv1 { border-color: #fcd34d; color: #fde68a; box-shadow: 0 0 8px rgba(252, 211, 77, 0.45); }
+.board-syn.is-lv2 { border-color: #fde047; background: rgba(120, 80, 0, 0.75); color: #fff7cc; box-shadow: 0 0 12px rgba(253, 224, 71, 0.7); }
+.board-event { border: 1px solid #c084fc; color: #f3e8ff; box-shadow: 0 0 8px rgba(192, 132, 252, 0.5); }
+/* The commander's fireball, once a fight, on the left of «Combatiendo…». */
+.board-skill { grid-column: 1; grid-row: 1; z-index: 1; width: 54px; height: 54px; margin-left: 6px; padding: 0; border: 0; border-radius: 50%; background: none; cursor: pointer; animation: speed-in 0.35s ease-out; }
+.board-skill img { width: 100%; height: 100%; filter: drop-shadow(0 0 8px rgba(251, 146, 60, 0.8)); }
+.board-skill:disabled { cursor: default; filter: grayscale(1) brightness(0.55); }
+.board-fight-row { grid-template-columns: auto 1fr auto; }
+.board-flawless { color: #fde68a; font-weight: 700; }

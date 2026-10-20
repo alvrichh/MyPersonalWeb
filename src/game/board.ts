@@ -54,9 +54,24 @@ export const castLook = (cast: number) => (WORLDS[cast - 1].look === 'random' ? 
 
 /** How strong the waves are against the gold you have had (×base in world 1, `world` more each world after), and
     how much tougher the enemy's units are than a cast's own each world past the first. */
-export const WAVE = { base: 0.88, world: 0.03, tough: 0.008 };
+export const WAVE = { base: 0.88, world: 0.05, tough: 0.012 };
 /** Your half of the board: the lower four rows. */
 export const HOME_ROW = 4;
+
+/** Three units of one world (five for the stronger one) give each of them its world's gift in the fight:
+    1 the Backlog +health, 2 fire burns, 3 ice slows, 4 mud takes less damage, 5 the jungle heals, 6 the Arena
+    strikes faster, 7 the Forge's hits arc to one more, 8 the haunted servers dodge, 9 the Core hits harder.
+    `v` is each level's amount. */
+export const SYNERGY = { need: [3, 5], v: { 1: [0.2, 0.35], 2: [0.3, 0.5], 3: [0.3, 0.45], 4: [0.2, 0.3], 5: [0.02, 0.035], 6: [0.2, 0.35], 7: [0.4, 0.6], 8: [0.15, 0.25], 9: [0.2, 0.35] } as Record<number, [number, number]> };
+/** How many of your units each world has, and the level of its synergy (0, 1 or 2). */
+export function synergies(b: { army: { cast: number }[] }) {
+  const count: Record<number, number> = {};
+  for (const p of b.army) count[p.cast] = (count[p.cast] ?? 0) + 1;
+  return Object.entries(count).map(([cast, n]) => ({ cast: Number(cast), n, lv: n >= SYNERGY.need[1] ? 2 : n >= SYNERGY.need[0] ? 1 : 0 })).sort((a, c) => c.n - a.n || a.cast - c.cast);
+}
+const synV = (f: { syn: number; synLv: number }, world: number) => (f.syn === world && f.synLv ? SYNERGY.v[world][f.synLv - 1] : 0);
+/** Your commander's fireball: it bursts on the thickest knot of enemies, its damage growing with the round. */
+export const STRIKE = { fly: 0.6, reach: 75, dmg: 140, perRound: 0.25 };
 
 export type Slot = { c: number; r: number };
 /** A unit you own, between fights: its step, the world its cast comes from, and its cell. */
@@ -88,8 +103,19 @@ export type Fighter = {
   step: number;
   swing: number;
   hit: number;
+  /** The world whose synergy it carries (0 for none) and how strong (1 with three of its world, 2 with five). */
+  syn: number;
+  synLv: number;
+  /** Burning (seconds left and damage a second) and slowed (seconds left). */
+  burn: number;
+  burnDps: number;
+  slow: number;
+  slowBy: number;
 };
-export type Shot = { x: number; y: number; vx: number; vy: number; side: 0 | 1; dmg: number; target: number; life: number; ring: boolean };
+export type Shot = { x: number; y: number; vx: number; vy: number; side: 0 | 1; dmg: number; target: number; life: number; ring: boolean; syn: number; synLv: number };
+/** The special rounds, every third: gold rains in, everyone hits faster, everyone is tougher, or a win pays double. */
+export type BoardEvent = 'gold' | 'frenzy' | 'giants' | 'bounty';
+export const EVENT_EVERY = 3;
 export type Offer = { tier: Tier; cast: number; price: number } | null;
 export type BoardPhase = 'prep' | 'fight' | 'result' | 'over' | 'won';
 
@@ -108,8 +134,16 @@ export type BoardGame = {
   fighters: Fighter[];
   shots: Shot[];
   time: number;
-  /** The last fight: won, lost or drawn, and the lives it cost. */
-  last: { result: 'win' | 'loss' | 'draw'; lost: number } | null;
+  /** The last fight: won, lost or drawn, the lives it cost, and whether it was won without losing a unit. */
+  last: { result: 'win' | 'loss' | 'draw'; lost: number; flawless?: boolean } | null;
+  /** This round's special event, if any. */
+  event: BoardEvent | null;
+  /** Your commander's fireball, once a fight: on its way (`t` seconds left) or bursting (`boom`). */
+  skillUsed: boolean;
+  strike: { x: number; y: number; t: number } | null;
+  boom: { x: number; y: number; age: number } | null;
+  /** The last buy that merged by itself: where, into which unit, and how many merges in a row. */
+  lastMerge: { slot: Slot; id: number; combo: number } | null;
   wins: number;
   /** Enemy units beaten, all told (for the profile's totals). */
   kills: number;
@@ -138,7 +172,7 @@ export const saleOf = (p: Piece) => Math.max(1, Math.floor((TIER_VALUE[p.tier] *
 export function newBoard(world: number, casts: number): BoardGame {
   const b: BoardGame = {
     world, casts: Math.max(1, casts), round: 1, lives: LIVES, gold: Math.round(8 * castPower(world)), phase: 'prep',
-    army: [], shop: [], wave: enemyWave(world, 1), fighters: [], shots: [], time: 0, last: null, wins: 0, kills: 0, events: [],
+    army: [], shop: [], wave: enemyWave(world, 1), fighters: [], shots: [], time: 0, last: null, wins: 0, kills: 0, events: [], event: null, skillUsed: false, strike: null, boom: null, lastMerge: null,
   };
   // You start with a bug of the latest cast on the board.
   b.army.push({ id: nextId++, tier: 0, cast: b.casts, slot: { c: 2, r: ROWS - 2 } });
@@ -170,13 +204,27 @@ export const armyCap = (round: number) => Math.min(10, 3 + Math.ceil(round * 0.7
 
 export function buy(b: BoardGame, i: number) {
   const offer = b.shop[i];
-  if (b.phase !== 'prep' || !offer || b.gold < offer.price || b.army.length >= armyCap(b.round)) return false;
-  const at = freeCell(b);
-  if (!at) return false;
+  if (b.phase !== 'prep' || !offer || b.gold < offer.price) return false;
+  // Bought next to its twin it merges at once, and on up while the new step has a twin too (a combo).
+  const twin = b.army.find((p) => p.tier === offer.tier && p.cast === offer.cast && p.tier < maxTier(p.cast));
+  if (!twin && b.army.length >= armyCap(b.round)) return false;
+  const at = twin ? null : freeCell(b);
+  if (!twin && !at) return false;
   b.gold -= offer.price;
   b.shop[i] = null;
-  b.army.push({ id: nextId++, tier: offer.tier, cast: offer.cast, slot: at });
   b.events.push('buy');
+  if (!twin) { b.army.push({ id: nextId++, tier: offer.tier, cast: offer.cast, slot: at! }); return true; }
+  twin.tier = (twin.tier + 1) as Tier;
+  let combo = 1;
+  for (;;) {
+    const next = b.army.find((p) => p !== twin && p.tier === twin.tier && p.cast === twin.cast && twin.tier < maxTier(twin.cast));
+    if (!next) break;
+    b.army = b.army.filter((p) => p !== next);
+    twin.tier = (twin.tier + 1) as Tier;
+    combo += 1;
+  }
+  b.lastMerge = { slot: twin.slot, id: twin.id, combo };
+  b.events.push('merge');
   return true;
 }
 
@@ -215,13 +263,14 @@ export function moveUnit(b: BoardGame, from: Slot, to: Slot): 'merged' | 'swappe
 
 export const cellCentre = (s: Slot) => ({ x: s.c * CELL + CELL / 2, y: s.r * CELL + CELL / 2 });
 
-function fighter(side: 0 | 1, tier: Tier, cast: number, x: number, y: number, mult: number, id = nextId++): Fighter {
+function fighter(side: 0 | 1, tier: Tier, cast: number, x: number, y: number, mult: number, id = nextId++, syn = 0, synLv = 0, event: BoardEvent | null = null): Fighter {
   const st = TIER_STATS[tier];
-  const hp = Math.round(st.hp * mult);
+  const f = { syn, synLv };
+  const hp = Math.round(st.hp * mult * (1 + synV(f, 1)) * (event === 'giants' ? 1.4 : 1));
   return {
-    id, side, tier, cast, x, y, hp, maxHp: hp, dmg: st.dmg * mult, rate: st.rate, range: st.range, speed: st.speed, r: st.r,
+    id, side, tier, cast, x, y, hp, maxHp: hp, dmg: st.dmg * mult * (1 + synV(f, 9)), rate: st.rate * (1 + synV(f, 6)) * (event === 'frenzy' ? 1.3 : 1), range: st.range, speed: st.speed, r: st.r,
     splash: st.splash ?? 0, ranged: !!st.ranged, cd: rand(0.1, 0.6), ring: RING.every * 0.6, target: -1, retarget: 0, dead: false,
-    face: side === 0 ? 1 : -1, step: Math.random() * 4, swing: 0, hit: 0,
+    face: side === 0 ? 1 : -1, step: Math.random() * 4, swing: 0, hit: 0, syn, synLv, burn: 0, burnDps: 0, slow: 0, slowBy: 0,
   };
 }
 
@@ -267,10 +316,14 @@ export function waveSpots(b: BoardGame) {
 /** Sets the fight up: your bugs as placed, the enemy's wave on the upper half. */
 export function startFight(b: BoardGame) {
   if (b.phase !== 'prep' || !b.army.length) return false;
-  b.fighters = b.army.map((p) => { const at = cellCentre(p.slot); return fighter(0, p.tier, p.cast, at.x, at.y, castPower(p.cast), p.id); });
+  const lv = Object.fromEntries(synergies(b).map((x) => [x.cast, x.lv]));
+  b.fighters = b.army.map((p) => { const at = cellCentre(p.slot); return fighter(0, p.tier, p.cast, at.x, at.y, castPower(p.cast), p.id, lv[p.cast] ? p.cast : 0, lv[p.cast] ?? 0, b.event); });
   const grow = castPower(b.world) * (1 + WAVE.tough * (b.world - 1));
-  for (const w of waveSpots(b)) b.fighters.push(fighter(1, w.tier, b.world, w.x, w.y, grow));
+  for (const w of waveSpots(b)) b.fighters.push(fighter(1, w.tier, b.world, w.x, w.y, grow, nextId++, 0, 0, b.event));
   b.shots = [];
+  b.skillUsed = false;
+  b.strike = null;
+  b.boom = null;
   b.time = 0;
   b.phase = 'fight';
   b.events.push('fight');
@@ -282,25 +335,59 @@ const byId = (b: BoardGame, id: number) => b.fighters.find((f) => f.id === id &&
 
 function damage(b: BoardGame, f: Fighter, dmg: number) {
   if (f.dead) return;
-  f.hp -= dmg;
+  // The haunted servers dodge; the mud takes less.
+  if (synV(f, 8) && Math.random() < synV(f, 8)) return;
+  f.hp -= dmg * (1 - synV(f, 4));
   f.hit = 0.15;
   if (f.hp <= 0) { f.dead = true; if (f.side === 1) b.kills += 1; b.events.push(f.side === 0 ? 'fall' : 'kill'); }
+}
+
+/** A blow landing, with the attacker's synergy: fire burns, ice slows, the Forge arcs to one more. */
+function land(b: BoardGame, from: { syn: number; synLv: number }, t: Fighter, dmg: number) {
+  damage(b, t, dmg);
+  if (t.dead) return;
+  if (synV(from, 2)) { t.burn = 2; t.burnDps = Math.max(t.burnDps, (dmg * synV(from, 2)) / 2); }
+  if (synV(from, 3)) { t.slow = Math.max(t.slow, 1.2); t.slowBy = Math.max(t.slowBy, synV(from, 3)); }
+  if (synV(from, 7)) {
+    let best = 70;
+    let next: Fighter | undefined;
+    for (const o of alive(b, t.side)) { const d = Math.hypot(o.x - t.x, o.y - t.y); if (o !== t && d < best) { best = d; next = o; } }
+    if (next) { damage(b, next, dmg * synV(from, 7)); b.events.push('arc'); }
+  }
 }
 
 function strike(b: BoardGame, f: Fighter, t: Fighter) {
   if (f.ranged) {
     const d = Math.hypot(t.x - f.x, t.y - f.y) || 1;
-    b.shots.push({ x: f.x, y: f.y - 8, vx: ((t.x - f.x) / d) * 260, vy: ((t.y - f.y) / d) * 260, side: f.side, dmg: f.dmg, target: t.id, life: 2, ring: false });
+    b.shots.push({ x: f.x, y: f.y - 8, vx: ((t.x - f.x) / d) * 260, vy: ((t.y - f.y) / d) * 260, side: f.side, dmg: f.dmg, target: t.id, life: 2, ring: false, syn: f.syn, synLv: f.synLv });
     b.events.push('throw');
     return;
   }
   if (f.splash) {
-    for (const o of alive(b, t.side)) if (Math.hypot(o.x - t.x, o.y - t.y) <= f.splash + o.r) damage(b, o, o === t ? f.dmg : f.dmg * 0.6);
+    for (const o of alive(b, t.side)) if (o !== t && Math.hypot(o.x - t.x, o.y - t.y) <= f.splash + o.r) damage(b, o, f.dmg * 0.6);
+    land(b, f, t, f.dmg);
     b.events.push('slam');
   } else {
-    damage(b, t, f.dmg);
+    land(b, f, t, f.dmg);
     b.events.push('bite');
   }
+}
+
+/** Your commander's fireball, once a fight: thrown at the enemy with the most others round it. */
+export function commanderStrike(b: BoardGame) {
+  if (b.phase !== 'fight' || b.skillUsed) return false;
+  const foes = alive(b, 1);
+  let best: Fighter | undefined;
+  let most = -1;
+  for (const f of foes) {
+    const n = foes.filter((o) => Math.hypot(o.x - f.x, o.y - f.y) <= STRIKE.reach).length;
+    if (n > most) { most = n; best = f; }
+  }
+  if (!best) return false;
+  b.skillUsed = true;
+  b.strike = { x: best.x, y: best.y, t: STRIKE.fly };
+  b.events.push('skill');
+  return true;
 }
 
 /** One step of the fight: every unit goes for the nearest foe, walks up to it and strikes; it ends when one side
@@ -309,11 +396,29 @@ export function updateBoard(b: BoardGame, dt: number) {
   b.events = [];
   if (b.phase !== 'fight') return;
   b.time += dt;
+  if (b.boom) { b.boom.age += dt; if (b.boom.age > 0.5) b.boom = null; }
+  if (b.strike) {
+    b.strike.t -= dt;
+    if (b.strike.t <= 0) {
+      const { x, y } = b.strike;
+      const dmg = STRIKE.dmg * castPower(b.world) * (1 + STRIKE.perRound * (b.round - 1));
+      for (const o of alive(b, 1)) if (Math.hypot(o.x - x, o.y - y) <= STRIKE.reach + o.r) damage(b, o, dmg);
+      b.boom = { x, y, age: 0 };
+      b.strike = null;
+      b.events.push('boom');
+    }
+  }
   for (const f of b.fighters) {
     f.hit = Math.max(0, f.hit - dt);
     f.swing = Math.max(0, f.swing - dt);
     if (f.dead) continue;
-    f.cd -= dt;
+    if (f.burn > 0) { f.burn -= dt; damage(b, f, f.burnDps * dt); if (f.dead) continue; }
+    f.slow = Math.max(0, f.slow - dt);
+    if (f.slow <= 0) f.slowBy = 0;
+    if (synV(f, 5)) f.hp = Math.min(f.maxHp, f.hp + f.maxHp * synV(f, 5) * dt);
+    // Slowed by ice: it walks and strikes 30% (45%) slower.
+    const slowK = 1 - f.slowBy;
+    f.cd -= dt * slowK;
     f.retarget -= dt;
     let t = byId(b, f.target);
     if (!t || f.retarget <= 0) {
@@ -331,7 +436,7 @@ export function updateBoard(b: BoardGame, dt: number) {
     const d = Math.hypot(dx, dy) || 1;
     if (Math.abs(dx) > 4) f.face = dx > 0 ? 1 : -1;
     if (d > f.range + t.r * 0.6) {
-      const step = Math.min(f.speed * dt, d - f.range);
+      const step = Math.min(f.speed * slowK * dt, d - f.range);
       f.x += (dx / d) * step;
       f.y += (dy / d) * step;
       f.step += step / 14;
@@ -346,7 +451,7 @@ export function updateBoard(b: BoardGame, dt: number) {
         f.ring = RING.every;
         for (let i = 0; i < RING.n; i++) {
           const a = (i / RING.n) * Math.PI * 2;
-          b.shots.push({ x: f.x, y: f.y, vx: Math.cos(a) * RING.speed, vy: Math.sin(a) * RING.speed, side: f.side, dmg: RING.dmg * (f.dmg / TIER_STATS[4].dmg), target: -1, life: 2.2, ring: true });
+          b.shots.push({ x: f.x, y: f.y, vx: Math.cos(a) * RING.speed, vy: Math.sin(a) * RING.speed, side: f.side, dmg: RING.dmg * (f.dmg / TIER_STATS[4].dmg), target: -1, life: 2.2, ring: true, syn: 0, synLv: 0 });
         }
         f.swing = 0.5;
         b.events.push('ring');
@@ -374,14 +479,14 @@ export function updateBoard(b: BoardGame, dt: number) {
     const foes = alive(b, s.side === 0 ? 1 : 0);
     const hit = s.ring ? foes.find((o) => Math.hypot(o.x - s.x, o.y - s.y) < o.r + 6) : byId(b, s.target);
     if (!s.ring && !hit) { s.life = 0; continue; }
-    if (hit && Math.hypot(hit.x - s.x, hit.y - s.y) < hit.r + 6) { damage(b, hit, s.dmg); s.life = 0; }
+    if (hit && Math.hypot(hit.x - s.x, hit.y - s.y) < hit.r + 6) { if (s.ring) damage(b, hit, s.dmg); else land(b, s, hit, s.dmg); s.life = 0; }
   }
   b.shots = b.shots.filter((s) => s.life > 0);
   const mine = alive(b, 0).length;
   const theirs = alive(b, 1).length;
   if (mine && theirs && b.time < FIGHT_TIME) return;
   // The round's result: a loss costs a life plus one for each two enemy steps still standing (four at most).
-  if (!theirs && mine) { b.last = { result: 'win', lost: 0 }; b.wins += 1; }
+  if (!theirs && mine) { b.last = { result: 'win', lost: 0, flawless: b.fighters.every((f) => f.side === 1 || !f.dead) }; b.wins += 1; }
   else {
     const left = alive(b, 1).reduce((n, f) => n + f.tier + 1, 0);
     const lost = mine ? 1 : Math.min(4, 1 + Math.floor(left / 2));
@@ -399,11 +504,22 @@ export const roundGold = (world: number, won: boolean) => Math.round((GOLD.round
 
 /** On to the next round: gold (more after a win), a fresh shop and the next wave. Your bugs come back whole. The last round
     must be won: lose it and you play it again, while lives last. */
+/** The gold a round pays on top: a flawless win's chest, and double the win's gold in a bounty round. */
+export function roundBonus(b: BoardGame) {
+  const won = b.last?.result === 'win';
+  return (b.last?.flawless ? Math.round(3 * castPower(b.world)) : 0) + (won && b.event === 'bounty' ? roundGold(b.world, true) : 0);
+}
+const EVENTS: BoardEvent[] = ['gold', 'frenzy', 'giants', 'bounty'];
+
 export function nextRound(b: BoardGame) {
   if (b.phase !== 'result') return;
   const won = b.last?.result === 'win';
+  b.gold += roundBonus(b);
   if (b.round < ROUNDS) b.round += 1;
   b.gold += roundGold(b.world, won);
+  // Every third round is a special one (never the last, which is the final boss's).
+  b.event = b.round % EVENT_EVERY === 0 && b.round < ROUNDS ? EVENTS[Math.floor(Math.random() * EVENTS.length)] : null;
+  if (b.event === 'gold') b.gold += Math.round(6 * castPower(b.world));
   b.fighters = [];
   b.shots = [];
   b.phase = 'prep';

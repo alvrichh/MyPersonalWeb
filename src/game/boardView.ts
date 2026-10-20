@@ -1,4 +1,4 @@
-import { BOARD_H, BOARD_W, CELL, COLS, FINAL_ID, HOME_ROW, ROUNDS, homeCell, ROWS, TIER_KIND, TIER_STATS, canMerge, castLook, cellCentre, pieceAt, waveSpots, type BoardGame, type Piece, type Slot, type Tier } from './board';
+import { BOARD_H, BOARD_W, CELL, COLS, FINAL_ID, HOME_ROW, ROUNDS, STRIKE, homeCell, ROWS, TIER_KIND, TIER_STATS, canMerge, castLook, cellCentre, pieceAt, waveSpots, type BoardGame, type Piece, type Slot, type Tier } from './board';
 import { boardFx, drawBoardBackdrop, drawBoardFigure } from './draw';
 
 /* Drawing the board mode on the game's canvas: the world's floor under a grid, your bugs on the lower half and the
@@ -406,6 +406,30 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
   const minePop = !won && ended !== null ? b.last?.lost ?? 0 : 0;
   hearts(ctx, RIVAL.x + 50, -TOP / 2, rivalHp(b), rivalPop, done ? popAt : 0, retro);
   hearts(ctx, MINE.x, MINE.y - 72, b.lives, minePop, done ? popAt : 0, retro);
+  // Your commander's fireball in the fight: from your hero onto the enemies' thickest knot, then its blast.
+  if (b.strike) {
+    const k = 1 - b.strike.t / STRIKE.fly;
+    const from = { x: MINE.x - 12, y: MINE.y - 36 };
+    const x = from.x + (b.strike.x - from.x) * k;
+    const y = from.y + (b.strike.y - from.y) * k - Math.sin(k * Math.PI) * 70;
+    const ball = boardFx('fireball');
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(Math.atan2(b.strike.y - from.y - Math.cos(k * Math.PI) * 70 * Math.PI, b.strike.x - from.x));
+    if (!retro && ok(ball)) ctx.drawImage(ball, -40, -14, 54, 54 * (ball.naturalHeight / ball.naturalWidth));
+    else { ctx.fillStyle = '#fb923c'; ctx.beginPath(); ctx.arc(0, 0, 9, 0, Math.PI * 2); ctx.fill(); }
+    ctx.restore();
+  }
+  if (b.boom) {
+    const k = b.boom.age / 0.5;
+    const boom = boardFx('boom-big');
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, 1 - k);
+    const w = STRIKE.reach * 2 * (0.7 + k * 0.4);
+    if (!retro && ok(boom)) ctx.drawImage(boom, b.boom.x - w / 2, b.boom.y - (w * boom.naturalHeight) / boom.naturalWidth / 2, w, (w * boom.naturalHeight) / boom.naturalWidth);
+    else { ctx.fillStyle = '#fdba74'; ctx.beginPath(); ctx.arc(b.boom.x, b.boom.y, w / 2, 0, Math.PI * 2); ctx.fill(); }
+    ctx.restore();
+  }
   drawPuffs(ctx, now, retro);
   if (drag) {
     const x = (drag.x - lay.ox) / lay.s;
