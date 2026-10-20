@@ -1655,6 +1655,10 @@ let boardTime = 0;
 let boardBanked = false;
 /** Your commander in the corner: the worn skin and headwear's poses. */
 let heroPics: HeroPics | null = null;
+/** A long fight can be watched at twice the speed: a ×2 button shows under your hero after `BOARD_FAST_AFTER`
+    seconds of it (back to normal for the next fight). */
+const BOARD_FAST_AFTER = 15;
+let boardFast = false;
 /** When the last fight ended (the frame clock, in seconds), for the fireball. */
 let boardEnded: number | null = null;
 
@@ -1724,7 +1728,8 @@ function renderBoardUi() {
   const b = board;
   if (!b) return;
   const prep = b.phase === 'prep';
-  const key = [b.phase, b.round, b.lives, b.gold, b.shop.map((o) => (o ? `${o.tier}${o.cast}${o.price}` : '-')).join(''), b.army.length].join('|');
+  const speedUp = b.phase === 'fight' && b.time >= BOARD_FAST_AFTER;
+  const key = [b.phase, b.round, b.lives, b.gold, b.shop.map((o) => (o ? `${o.tier}${o.cast}${o.price}` : '-')).join(''), b.army.length, speedUp, boardFast].join('|');
   if (key === boardKey) return;
   boardKey = key;
   // The game's own pieces: the painted coins, the shop's orange item frame for the
@@ -1747,7 +1752,7 @@ function renderBoardUi() {
     <div class="board-acts">
       <button class="ghost board-reroll" type="button" data-bact="reroll"${b.gold < 1 ? ' disabled' : ''}>🎲 ${t('boardReroll')} · ${coin} 1</button>
       <button class="primary board-go" type="button" data-bact="fight"${b.army.length ? '' : ' disabled'}>⚔️ ${t('boardFight')}</button>
-    </div>` : `<p class="board-fighting">${t('boardFighting')}</p>`;
+    </div>` : `<div class="board-fight-row"><p class="board-fighting">${t('boardFighting')}</p>${speedUp ? `<button class="board-speed${boardFast ? ' is-on' : ''}" type="button" data-bact="speed" aria-pressed="${boardFast}" aria-label="${t('boardSpeed')}">${boardFast ? '×1' : '×2'}</button>` : ''}</div>`;
 }
 
 boardUi.addEventListener('click', (event) => {
@@ -1762,7 +1767,9 @@ boardUi.addEventListener('click', (event) => {
     else if (!boardBuy(b, Number(el.dataset.i))) flash(t('boardBenchFull'));
     else audio.play('pick');
   } else if (act === 'reroll') { if (boardReroll(b)) audio.play('click'); }
+  else if (act === 'speed') { boardFast = !boardFast; audio.play('click'); }
   else if (act === 'fight') {
+    boardFast = false;
     if (startFight(b)) { audio.play('door'); audio.setIntensity(0.7); audio.setBoss(b.round === ROUNDS); }
     else flash(t('boardEmpty'));
   } else if (act === 'quit') { paused = true; boardQuitScreen(); }
@@ -1817,13 +1824,16 @@ function boardStep(dt: number, now: number) {
   if (!b) return;
   if (b.phase === 'fight' && !paused) {
     boardTime += dt;
-    updateBoard(b, dt);
+    // At ×2 the fight takes two steps a frame (the same steps, so it plays out the same, only faster).
     let hit = false;
-    for (const e of b.events) {
-      if ((e === 'bite' || e === 'slam') && !hit) { hit = true; audio.play(e === 'slam' ? 'slam' : 'hit'); }
-      if (e === 'kill') audio.play('kill');
-      if (e === 'throw') audio.play('shoot');
-      if (e === 'ring') audio.play('boom');
+    for (let i = 0; i < (boardFast ? 2 : 1) && b.phase === 'fight'; i++) {
+      updateBoard(b, dt);
+      for (const e of b.events) {
+        if ((e === 'bite' || e === 'slam') && !hit) { hit = true; audio.play(e === 'slam' ? 'slam' : 'hit'); }
+        if (e === 'kill') audio.play('kill');
+        if (e === 'throw') audio.play('shoot');
+        if (e === 'ring') audio.play('boom');
+      }
     }
   } else boardTime += b.phase === 'prep' ? dt : 0;
   const shown = `${b.phase}${b.round}${b.lives}`;

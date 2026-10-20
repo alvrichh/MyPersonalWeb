@@ -4046,3 +4046,17 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .board-top button { cursor: pointer; }
 /* The units over the shop's first card, on the floor's lower edge. */
 .board-shop > .board-count { display: inline-block; margin: 0 0 4px 2px; padding: 3px 9px; border-radius: 99px; background: rgba(6, 10, 24, 0.75); font: 700 0.82rem/1 var(--font); }
+/* The fight's ×2: a round orb like the HUD's, on the right under your hero. */
+.board-fight-row { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8px; }
+.board-fight-row .board-fighting { grid-column: 1 / -1; grid-row: 1; }
+.board-speed {
+  grid-column: 2; grid-row: 1; z-index: 1;
+  width: 54px; height: 54px; margin-right: 6px; padding: 0; border: 0; border-radius: 50%;
+  background: url('/images/game/ui/orb.webp') center / contain no-repeat;
+  color: #fff; font: 800 1.05rem/1 var(--font); text-shadow: 0 2px 3px #071324; cursor: pointer;
+  animation: speed-in 0.35s ease-out;
+}
+.board-speed.is-on { filter: hue-rotate(150deg) saturate(1.3); }
+@keyframes speed-in { from { transform: scale(0.4); opacity: 0; } }
+:root[data-retro] .board-speed { background: rgba(255, 255, 255, 0.1); border: 1px solid var(--line); }
+@media (prefers-reduced-motion: reduce) { .board-speed { animation: none; } }
