@@ -1879,7 +1879,7 @@ boardUi.addEventListener('click', (event) => {
   else if (act === 'bonus') openBoardBonus();
   else if (act === 'fight') {
     boardFast = false;
-    if (startFight(b)) { audio.play('door'); audio.setIntensity(0.7); audio.setBoss(b.round === ROUNDS); }
+    if (startFight(b)) { audio.play('door'); audio.play('slam'); audio.setIntensity(0.7); audio.setBoss(b.round === ROUNDS); }
     else flash(t('boardEmpty'));
   } else if (act === 'quit') { paused = true; boardQuitScreen(); }
   else if (act === 'pause') { paused = true; boardPauseScreen(); }
