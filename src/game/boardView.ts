@@ -1,17 +1,18 @@
-import { BOARD_H, BOARD_W, CELL, COLS, FINAL_ID, HOME_ROW, ROUNDS, ROWS, TIER_KIND, TIER_STATS, canMerge, castLook, cellCentre, pieceAt, waveSpots, type BoardGame, type Piece, type Slot, type Tier } from './board';
+import { BOARD_H, BOARD_W, CELL, COLS, FINAL_ID, HOME_ROW, ROUNDS, homeCell, ROWS, TIER_KIND, TIER_STATS, canMerge, castLook, cellCentre, pieceAt, waveSpots, type BoardGame, type Piece, type Slot, type Tier } from './board';
 import { boardFloor, boardFx, drawBoardFigure } from './draw';
 
 /* Drawing the board mode on the game's canvas: the world's floor under a grid, your bugs on the lower half and the
    round's enemy on the upper (faint while you prepare), each with its cast's own pictures, and the two commanders
-   in the corners outside the board: your hero, from the worn skin's poses, on Customise's portal at the lower
-   right, and the world's final boss on a red halo at the upper left, with the fireball one throws at the other
+   in the board's own corner cells (left free for them): your hero, from the worn skin's poses, on Customise's
+   portal at the lower right, and the world's final boss on a red halo at the upper left, their names and health
+   in thin strips above and below the board, with the fireball one throws at the other
    when a fight ends. */
 
 /** The units are drawn bigger than their hit circles, so they fill their cells. */
 const FIG = 1.4;
-/** Room above and below the board for the commanders. */
-const TOP = 64;
-const BOT = 64;
+/** Room above and below the board for the commanders' names and health. */
+const TOP = 30;
+const BOT = 30;
 /** How long the fireball flies, and how long its blast lasts, in seconds (main.ts waits for both). */
 export const FIREBALL = { fly: 0.75, blast: 0.45 };
 
@@ -20,7 +21,7 @@ export type BoardLayout = { s: number; ox: number; oy: number };
 /** Fits the board (and the strip above it) into the area between the top bar and the shop. */
 export function layoutBoard(w: number, top: number, bottom: number): BoardLayout {
   const room = Math.max(120, bottom - top);
-  const s = Math.min((w - 16) / BOARD_W, room / (BOARD_H + TOP + BOT));
+  const s = Math.min((w - 8) / BOARD_W, room / (BOARD_H + TOP + BOT));
   return { s, ox: (w - BOARD_W * s) / 2, oy: top + TOP * s + (room - (BOARD_H + TOP + BOT) * s) / 2 };
 }
 
@@ -78,15 +79,15 @@ function marks(ctx: CanvasRenderingContext2D, x: number, y: number, p: { tier: n
 }
 
 const ok = (img: HTMLImageElement) => img.complete && img.naturalWidth > 0;
-/** Where each commander stands (its feet), outside the board's corners. */
-const MINE = { x: BOARD_W - 40, y: BOARD_H + BOT - 14 };
-const RIVAL = { x: 40, y: -12 };
+/** Where each commander stands (its feet), in the board's corner cells. */
+const MINE = { x: BOARD_W - CELL / 2 - 6, y: BOARD_H - 12 };
+const RIVAL = { x: CELL / 2 + 4, y: CELL - 12 };
 
 function drawHero(ctx: CanvasRenderingContext2D, pics: HeroPics, pose: HTMLImageElement, now: number, hit: number) {
   const { x, y } = MINE;
   // Customise's portal under its feet, its ring's middle at 74.6% of the picture's height.
   if (ok(pics.pad)) {
-    const w = 92;
+    const w = 70;
     const h = (w * pics.pad.naturalHeight) / pics.pad.naturalWidth;
     ctx.drawImage(pics.pad, x - w / 2, y - h * 0.746, w, h);
   } else {
@@ -97,7 +98,7 @@ function drawHero(ctx: CanvasRenderingContext2D, pics: HeroPics, pose: HTMLImage
   }
   const img = ok(pose) ? pose : pics.front;
   if (!ok(img)) return;
-  const h = 62;
+  const h = 58;
   const w = (h * img.naturalWidth) / img.naturalHeight;
   ctx.save();
   ctx.translate(x, y + Math.sin(now * 2.2) * 0.8);
@@ -116,21 +117,21 @@ function drawRival(ctx: CanvasRenderingContext2D, world: number, now: number, hi
   rise.addColorStop(0, 'rgba(248,113,113,0.35)');
   rise.addColorStop(1, 'rgba(248,113,113,0)');
   ctx.fillStyle = rise;
-  ctx.fillRect(-26, -60, 52, 60);
+  ctx.fillRect(-22, -56, 44, 56);
   const pulse = 0.75 + Math.sin(now * 3) * 0.15;
   ctx.shadowColor = '#ef4444';
   ctx.shadowBlur = 14;
   ctx.strokeStyle = `rgba(248,113,113,${pulse})`;
   ctx.lineWidth = 2.5;
   ctx.beginPath();
-  ctx.ellipse(0, 0, 34, 10, 0, 0, Math.PI * 2);
+  ctx.ellipse(0, 0, 26, 8, 0, 0, Math.PI * 2);
   ctx.stroke();
   ctx.shadowBlur = 0;
   ctx.fillStyle = 'rgba(127,29,29,0.45)';
   ctx.fill();
   ctx.globalAlpha = 1 - gone;
   ctx.translate(0, 2 + gone * 8);
-  ctx.scale(0.95, 0.95);
+  ctx.scale(0.78, 0.78);
   drawBoardFigure(ctx, figureOf(4, world, 1, now * 1.5, 0, hit), now, false);
   ctx.restore();
 }
@@ -203,17 +204,17 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
   const done = ended !== null && ended > FIREBALL.fly;
   const rivalGone = b.phase === 'won' && done ? Math.min(1, (ended! - FIREBALL.fly) / 0.6) : 0;
   drawRival(ctx, b.world, now, won ? struck : 0, rivalGone);
-  lifeBar(ctx, RIVAL.x + 40, -TOP + 22, 150, (rivalHp(b) + (won && ended !== null && !done ? 1 : 0)) / ROUNDS, '#ef4444', names.rival, false);
+  lifeBar(ctx, CELL + 4, -9, 170, (rivalHp(b) + (won && ended !== null && !done ? 1 : 0)) / ROUNDS, '#ef4444', names.rival, false);
   const pose = b.phase === 'over' && done ? pics.down : ended !== null && won && !done ? pics.shoot : b.phase === 'won' && done ? pics.cheer : !won && struck > 0 ? pics.hurt : pics.front;
   drawHero(ctx, pics, pose, now, won ? 0 : struck * 0.6);
-  lifeBar(ctx, MINE.x - 40 - 150, BOARD_H + BOT - 18, 150, b.lives / 10, '#4ade80', `${names.mine} · ❤ ${b.lives}`, true);
+  lifeBar(ctx, BOARD_W - CELL - 174, BOARD_H + 20, 170, b.lives / 10, '#4ade80', `${names.mine} · ❤ ${b.lives}`, true);
 
   // Where the dragged unit would go: green to move, gold to merge.
   if (drag?.over) {
     const target = pieceAt(b, drag.over);
     const merge = target && canMerge(drag.piece, target);
     const c = cellCentre(drag.over);
-    ctx.fillStyle = drag.over.r < HOME_ROW ? 'rgba(248,113,113,0.2)' : merge ? 'rgba(252,211,77,0.42)' : 'rgba(74,222,128,0.26)';
+    ctx.fillStyle = !homeCell(drag.over) ? 'rgba(248,113,113,0.2)' : merge ? 'rgba(252,211,77,0.42)' : 'rgba(74,222,128,0.26)';
     ctx.fillRect(c.x - CELL / 2 + 2, c.y - CELL / 2 + 2, CELL - 4, CELL - 4);
   }
   if (b.phase === 'prep' || !b.fighters.length) {
