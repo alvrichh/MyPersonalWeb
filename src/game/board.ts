@@ -167,6 +167,8 @@ export type BoardGame = {
   lastSummon: { slot: Slot; id: number } | null;
   /** Fusion: the auto-merge, bought once a run (`buyAutoMerge`); without it you merge by dragging. */
   autoMerge: boolean;
+  /** Whether the auto-merge has been bought this run (then it can be turned on and off at will, `toggleAutoMerge`). */
+  autoBought: boolean;
   /** Fusion's auto-merge, played out: the two units about to merge (`a` into `b`), lightning between them until `t`
       runs out, and the merges in a row so far. */
   pending: { a: number; b: number; t: number; combo: number } | null;
@@ -201,7 +203,7 @@ export const saleOf = (p: Piece, variant: Variant = 'fusion') =>
 export function newBoard(world: number, casts: number, variant: Variant = 'fusion'): BoardGame {
   const b: BoardGame = {
     world, variant, casts: Math.max(1, casts), round: 1, lives: LIVES, gold: Math.round(8 * castPower(world)), phase: 'prep',
-    army: [], shop: [], wave: enemyWave(world, 1), fighters: [], shots: [], time: 0, last: null, wins: 0, kills: 0, events: [], event: null, skillUsed: false, strike: null, boom: null, lastMerge: null, lastSummon: null, autoMerge: false, pending: null,
+    army: [], shop: [], wave: enemyWave(world, 1), fighters: [], shots: [], time: 0, last: null, wins: 0, kills: 0, events: [], event: null, skillUsed: false, strike: null, boom: null, lastMerge: null, lastSummon: null, autoMerge: false, autoBought: false, pending: null,
   };
   // You start with a bug of the latest cast on the board.
   b.army.push({ id: nextId++, tier: 0, cast: b.casts, slot: { c: 2, r: ROWS - 2 }, star: 1 });
@@ -326,9 +328,22 @@ export const SUMMON = { price: 1.5, ticket: 0.25, legacy: 0.06, latest: 0.6 };
 export const AUTO_MERGE = { price: 3 };
 export const autoMergePrice = (b: BoardGame) => Math.round(AUTO_MERGE.price * castPower(b.world));
 export function buyAutoMerge(b: BoardGame) {
-  if (b.variant !== 'fusion' || b.phase !== 'prep' || b.autoMerge || b.gold < autoMergePrice(b)) return false;
+  if (b.variant !== 'fusion' || b.phase !== 'prep' || b.autoBought || b.gold < autoMergePrice(b)) return false;
   b.gold -= autoMergePrice(b);
+  b.autoBought = true;
   b.autoMerge = true;
+  queuePairs(b);
+  return true;
+}
+/** Once bought, the auto-merge turns on and off at will; turned on, the pairs on the board merge in turn. */
+export function toggleAutoMerge(b: BoardGame) {
+  if (b.variant !== 'fusion' || !b.autoBought) return false;
+  b.autoMerge = !b.autoMerge;
+  if (b.autoMerge && b.phase === 'prep') queuePairs(b);
+  if (!b.autoMerge) b.pending = null;
+  return true;
+}
+function queuePairs(b: BoardGame) {
   // The pairs already on the board merge one after another, with the lightning (`tickMerge`).
   const p = b.army.find((x) => b.army.some((y) => y !== x && y.tier === x.tier && y.cast === x.cast && x.tier < maxTier(x.cast)));
   const q = p && b.army.find((y) => y !== p && y.tier === p.tier && y.cast === p.cast);
