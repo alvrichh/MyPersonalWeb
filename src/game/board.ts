@@ -189,6 +189,8 @@ export type BoardGame = {
   autoMerge: boolean;
   /** Whether the auto-merge has been bought this run (then it can be turned on and off at will, `toggleAutoMerge`). */
   autoBought: boolean;
+  /** Units summoned this round (each round starts again from the base price). */
+  summons: number;
   /** Fusion's auto-merge, played out: the two units about to merge (`a` into `b`), lightning between them until `t`
       runs out, and the merges in a row so far. */
   pending: { a: number; b: number; t: number; combo: number } | null;
@@ -223,7 +225,7 @@ export const saleOf = (p: Piece, variant: Variant = 'fusion') =>
 export function newBoard(world: number, casts: number, variant: Variant = 'fusion'): BoardGame {
   const b: BoardGame = {
     world, variant, casts: Math.max(1, casts), round: 1, lives: LIVES, gold: Math.round(8 * castPower(world)), phase: 'prep',
-    army: [], shop: [], wave: enemyWave(world, 1), fighters: [], shots: [], time: 0, last: null, wins: 0, kills: 0, events: [], event: null, skillUsed: false, strike: null, boom: null, impacts: [], lastMerge: null, lastSummon: null, autoMerge: false, autoBought: false, pending: null,
+    army: [], shop: [], wave: enemyWave(world, 1), fighters: [], shots: [], time: 0, last: null, wins: 0, kills: 0, events: [], event: null, skillUsed: false, strike: null, boom: null, impacts: [], lastMerge: null, lastSummon: null, autoMerge: false, autoBought: false, summons: 0, pending: null,
   };
   // You start with a bug of the latest cast on the board.
   b.army.push({ id: nextId++, tier: 0, cast: b.casts, slot: { c: 2, r: ROWS - 2 }, star: 1 });
@@ -342,7 +344,7 @@ export function tickMerge(b: BoardGame, dt: number, skip = false) {
 /** Fusion has no shop: the summon button drops a unit straight onto your half for a set price, nearly always a bug,
     now and then a ticket and, from round 4, a legacy, of the latest world's cast six times in ten and any opened
     one otherwise; it merges with its twin at once. */
-export const SUMMON = { price: 1.5, ticket: 0.25, legacy: 0.06, latest: 0.6 };
+export const SUMMON = { price: 1.5, ticket: 0.25, legacy: 0.06, latest: 0.6, step: 4, wave: 0.9 };
 /** The auto-merge's price, once a run: from then on a unit summoned next to its twin merges by itself, and every
     pair already on the board merges at once. */
 export const AUTO_MERGE = { price: 3 };
@@ -370,12 +372,14 @@ function queuePairs(b: BoardGame) {
   if (p && q) queueMerge(b, p, q, 0);
   return true;
 }
-export const summonPrice = (b: BoardGame) => Math.max(1, Math.round(SUMMON.price * castPower(b.world)));
+/** The summon's price: the base, and one gold more for every `SUMMON.step` summons already made this round. */
+export const summonPrice = (b: BoardGame) => Math.max(1, Math.round(SUMMON.price * castPower(b.world))) + Math.floor(b.summons / SUMMON.step);
 export function summon(b: BoardGame): 'ok' | 'gold' | 'full' | 'none' {
   if (b.phase !== 'prep' || b.variant !== 'fusion') return 'none';
   if (b.gold < summonPrice(b)) return 'gold';
   if (b.army.length >= armyCap(b.round) || !freeCell(b)) return 'full';
   b.gold -= summonPrice(b);
+  b.summons += 1;
   const roll = Math.random();
   const tier: Tier = b.round >= 4 && roll < SUMMON.legacy ? 2 : roll < SUMMON.legacy + SUMMON.ticket ? 1 : 0;
   const cast = Math.random() < SUMMON.latest ? b.casts : 1 + Math.floor(Math.random() * b.casts);
@@ -507,7 +511,7 @@ export function startFight(b: BoardGame) {
   tickMerge(b, 0, true);
   const lv = Object.fromEntries(synergies(b).map((x) => [x.cast, x.lv]));
   b.fighters = b.army.map((p) => { const at = cellCentre(p.slot); return fighter(0, p.tier, p.cast, at.x, at.y, castPower(p.cast), p.id, lv[p.cast] ? p.cast : 0, lv[p.cast] ?? 0, b.event, starOf(p)); });
-  const grow = castPower(b.world) * (1 + WAVE.tough * (b.world - 1)) * (b.variant === 'tactics' ? TACTICS.wave : 1);
+  const grow = castPower(b.world) * (1 + WAVE.tough * (b.world - 1)) * (b.variant === 'tactics' ? TACTICS.wave : SUMMON.wave);
   for (const w of waveSpots(b)) b.fighters.push(fighter(1, w.tier, b.world, w.x, w.y, grow, nextId++, 0, 0, b.event));
   b.shots = [];
   b.skillUsed = false;
@@ -802,6 +806,7 @@ export function nextRound(b: BoardGame) {
   b.fighters = [];
   b.shots = [];
   b.phase = 'prep';
+  b.summons = 0;
   b.wave = enemyWave(b.world, b.round);
   rollShop(b);
 }
