@@ -2402,7 +2402,8 @@ document.addEventListener('visibilitychange', () => {
   if (document.hidden) {
     togglePause(true);
     audio.stop();
-  } else if (game && !document.hidden) {
+  } else if (!document.hidden && save.music > 0) {
+    // Back on the page: the music goes on, in a run or on the cover.
     audio.start();
   }
 });
@@ -2780,5 +2781,22 @@ Promise.race([
   menuScreen();
   loading.classList.add('is-done');
   setTimeout(() => loading.remove(), 400);
+  musicOnLanding();
 });
+/* The music starts as soon as the cover is up. Browsers only let a page make sound after the player has touched
+   it, so it is tried at once (allowed when the page was opened from a tap, or the browser trusts the site) and
+   again on the very first touch, click or key anywhere, whatever it lands on. Muted music stays silent. */
+function musicOnLanding() {
+  const go = () => {
+    if (save.music <= 0) return;
+    audio.unlock();
+    audio.start();
+  };
+  go();
+  const first = () => {
+    go();
+    for (const e of ['pointerdown', 'pointerup', 'touchend', 'keydown'] as const) window.removeEventListener(e, first, true);
+  };
+  for (const e of ['pointerdown', 'pointerup', 'touchend', 'keydown'] as const) window.addEventListener(e, first, true);
+}
 requestAnimationFrame(frame);
