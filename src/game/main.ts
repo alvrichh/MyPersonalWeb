@@ -1292,7 +1292,7 @@ function stylesScreen(note = '') {
     picks = `<h3 class="slot">${t('skinPick')}</h3>${note ? `<p class="note">${note}</p>` : ''}<div class="gear-list">${SKINS.map((skin) => {
       const owned = save.skins.includes(skin);
       const worn = save.skin === skin;
-      return row(`data-skin="${skin}"`, worn, !owned && save.coins < SKIN_PRICE[skin], `<img class="skin-pic" src="./images/game/hero/${heroStill(skin, save.equipped.head)}.webp" alt="">`, t(`skin${cap(skin)}Name` as Key), t(`skin${cap(skin)}Text` as Key), worn ? `✓ ${t('worn')}` : owned ? t('equip') : `🪙 ${SKIN_PRICE[skin]}`);
+      return row(`data-skin="${skin}"`, worn, !owned && save.coins < SKIN_PRICE[skin], `<img class="skin-pic" src="./images/game/hero/${heroStill(skin, save.equipped.head)}.webp" alt="">`, t(`skin${cap(skin)}Name` as Key), t(`skin${cap(skin)}Text` as Key), worn ? `✓ ${t('worn')}` : owned ? t('equip') : `${t('buy')} 🪙 ${SKIN_PRICE[skin]}`);
     }).join('')}</div>`;
   } else if (dressSlot === 'foes') {
     picks = `<h3 class="slot">${t('stylePick')}</h3><div class="gear-list">${STYLES.map((style) =>
@@ -1344,7 +1344,7 @@ function stylesScreen(note = '') {
         const can = save.coins >= item.price;
         const open = itemOpen(item);
         const levels = levelBlock(item);
-        return row(`data-dress="${item.id}"`, worn, !owned && (!can || !open), picIcon(item.icon, item.pic), item.legendary ? `<span class="legend-name">${t(`${item.id}Name` as Key)}</span>` : t(`${item.id}Name` as Key), t(`${item.id}Text` as Key), worn ? `✓ ${t('worn')}` : owned ? t('equip') : !open ? `🔒 ${lockText(item)}` : `${item.legendary ? '★ ' : ''}🪙 ${item.price}`)
+        return row(`data-dress="${item.id}"`, worn, !owned && (!can || !open), picIcon(item.icon, item.pic), item.legendary ? `<span class="legend-name">${t(`${item.id}Name` as Key)}</span>` : t(`${item.id}Name` as Key), t(`${item.id}Text` as Key), worn ? `✓ ${t('worn')}` : owned ? t('equip') : !open ? `🔒 ${lockText(item)}` : `${item.legendary ? '★ ' : ''}${t('buy')} 🪙 ${item.price}`)
           + (levels ? `<div class="row-levels">${levels}</div>` : '');
       }).join('')}
       ${save.equipped[slot] ? `<button class="ghost small" data-undress="${slot}">${t('dressNone')}</button>` : ''}
@@ -1656,11 +1656,9 @@ screen.addEventListener('click', (event) => {
     const item = itemById(target.dataset.buy as ItemId);
     if (!itemOpen(item)) return;
     if (save.coins < item.price) { shopScreen(t('notEnough')); return; }
+    // Unlocking only adds it to what you own; it is put on from Customise (the owner's call).
     save.coins -= item.price;
     save.owned.push(item.id);
-    save.equipped[item.slot] = item.id;
-    if (save.extra === item.id) delete save.extra;
-    dropExtraClash();
     persist();
     audio.play('coin');
     shopScreen();
@@ -1723,8 +1721,7 @@ screen.addEventListener('click', (event) => {
       save.coins -= SKIN_PRICE[skin];
       save.skins.push(skin);
       audio.play('coin');
-    }
-    save.skin = skin;
+    } else save.skin = skin;
     persist();
     dressPalette();
     stylesScreen();
@@ -1768,10 +1765,9 @@ screen.addEventListener('click', (event) => {
     else if (!itemOpen(item)) { stylesScreen(lockText(item)); return; }
     else if (save.coins < item.price) { stylesScreen(t('notEnough')); return; }
     else {
+      // Unlocking does not put it on: a second tap does.
       save.coins -= item.price;
       save.owned.push(item.id);
-      save.equipped[item.slot] = item.id;
-      dropExtraClash();
       audio.play('coin');
     }
     persist();
