@@ -52,42 +52,12 @@ const figureOf = (tier: Tier, cast: number, face: number, step: number, swing: n
 });
 
 /* The enemy's units are the same pictures as yours, so they are drawn with a red outline round them, the owner's
-   pick, to tell the two armies apart at a glance in the fight: the figure on a small canvas, stamped in red a
-   little off in eight directions under itself (Safari has no canvas filter). */
-const OUTLINE = { colour: '#ef4444', width: 1.6 };
-let redCanvas: HTMLCanvasElement | null = null;
-let figCanvas: HTMLCanvasElement | null = null;
+   pick, to tell the two armies apart at a glance in the fight. The outlined picture is worked out once per sprite
+   picture and kept (`outlined` in `draw.ts`); it was built on two scratch canvases for every unit every frame. */
+const OUTLINE = { colour: '#ef4444' };
 function drawEnemyFigure(ctx: CanvasRenderingContext2D, fig: ReturnType<typeof figureOf>, now: number, retro: boolean) {
-  const big = fig.kind === 'boss';
-  const box = big ? 230 : 120;
-  const k = Math.min(4, Math.max(1, Math.abs(ctx.getTransform().a)));
-  redCanvas ??= document.createElement('canvas');
-  figCanvas ??= document.createElement('canvas');
-  const px = Math.ceil(box * k);
-  for (const c of [redCanvas, figCanvas]) if (c.width !== px) { c.width = px; c.height = px; }
-  const f = figCanvas.getContext('2d');
-  const o = redCanvas.getContext('2d');
-  if (!f || !o) { ctx.scale(FIG, FIG); drawBoardFigure(ctx, fig, now, retro); return; }
-  // The figure, its feet at 70% of the box so the bosses' height fits above them.
-  f.setTransform(1, 0, 0, 1, 0, 0);
-  f.clearRect(0, 0, px, px);
-  f.setTransform(k * FIG, 0, 0, k * FIG, px / 2, px * 0.7);
-  drawBoardFigure(f, fig, now, retro);
-  // Its outline: the figure stamped round itself, turned red, then the figure on top.
-  o.setTransform(1, 0, 0, 1, 0, 0);
-  o.globalCompositeOperation = 'source-over';
-  o.clearRect(0, 0, px, px);
-  const d = OUTLINE.width * k;
-  for (let i = 0; i < 8; i++) {
-    const a = (i / 8) * Math.PI * 2;
-    o.drawImage(figCanvas, Math.cos(a) * d, Math.sin(a) * d);
-  }
-  o.globalCompositeOperation = 'source-in';
-  o.fillStyle = OUTLINE.colour;
-  o.fillRect(0, 0, px, px);
-  o.globalCompositeOperation = 'source-over';
-  o.drawImage(figCanvas, 0, 0);
-  ctx.drawImage(redCanvas, -box / 2, -box * 0.7, box, box);
+  ctx.scale(FIG, FIG);
+  drawBoardFigure(ctx, fig, now, retro, OUTLINE.colour);
 }
 
 function ring(ctx: CanvasRenderingContext2D, r: number, colour: string) {

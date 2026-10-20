@@ -673,10 +673,14 @@ function drawTinted(ctx: CanvasRenderingContext2D, img: HTMLImageElement | HTMLC
   if (!tint) { ctx.drawImage(img, x, y, w, h); return; }
   tintCanvas ??= document.createElement('canvas');
   const c = tintCanvas;
-  c.width = img instanceof HTMLImageElement ? img.naturalWidth : img.width;
-  c.height = img instanceof HTMLImageElement ? img.naturalHeight : img.height;
+  const iw = img instanceof HTMLImageElement ? img.naturalWidth : img.width;
+  const ih = img instanceof HTMLImageElement ? img.naturalHeight : img.height;
+  // Resized only when the picture's size changes: setting the size every frame reallocated the canvas.
+  if (c.width !== iw || c.height !== ih) { c.width = iw; c.height = ih; }
   const t = c.getContext('2d');
   if (!t) { ctx.drawImage(img, x, y, w, h); return; }
+  t.globalCompositeOperation = 'source-over';
+  t.clearRect(0, 0, iw, ih);
   t.drawImage(img, 0, 0);
   t.globalCompositeOperation = 'source-atop';
   t.fillStyle = `rgba(${tint[0]},${0.42 * tint[1]})`;
@@ -4638,6 +4642,46 @@ function finalFrame(e: Enemy) {
   if (e.phase > 1 && e.bossId === 'chimera') return 9 + (Math.floor(performance.now() / FLAP_STEP) % 6);
   return walkFrame(e, WALK_FINAL);
 }
+/** While set, `drawEnemySprite` draws each picture with an outline in this colour (the board's enemy army). */
+let spriteOutline: string | null = null;
+/** A sprite picture with an outline round it, worked out once per picture and colour and kept: the picture stamped
+    a little off in eight directions, turned to the colour, with the picture on top. `pad` is the outline's width in
+    the picture's own pixels (3.5% of its longer side), so it reads the same at any size it is drawn. */
+const outlines = new WeakMap<HTMLImageElement, Map<string, { c: HTMLCanvasElement; pad: number }>>();
+function outlined(img: HTMLImageElement, colour: string) {
+  let byColour = outlines.get(img);
+  if (!byColour) { byColour = new Map(); outlines.set(img, byColour); }
+  let o = byColour.get(colour);
+  if (o) return o;
+  const pad = Math.max(2, Math.round(Math.max(img.naturalWidth, img.naturalHeight) * 0.035));
+  const c = document.createElement('canvas');
+  c.width = img.naturalWidth + pad * 2;
+  c.height = img.naturalHeight + pad * 2;
+  const t = c.getContext('2d');
+  if (t) {
+    for (let i = 0; i < 8; i++) {
+      const a = (i / 8) * Math.PI * 2;
+      t.drawImage(img, pad + Math.cos(a) * pad, pad + Math.sin(a) * pad);
+    }
+    t.globalCompositeOperation = 'source-in';
+    t.fillStyle = colour;
+    t.fillRect(0, 0, c.width, c.height);
+    t.globalCompositeOperation = 'source-over';
+    t.drawImage(img, pad, pad);
+  }
+  o = { c, pad };
+  byColour.set(colour, o);
+  return o;
+}
+/** Draws a sprite picture, with the outline when one is asked for. */
+function drawSpritePic(ctx: CanvasRenderingContext2D, img: HTMLImageElement, x: number, y: number, w: number, h: number) {
+  if (!spriteOutline) { ctx.drawImage(img, x, y, w, h); return; }
+  const { c, pad } = outlined(img, spriteOutline);
+  const px = (pad * w) / img.naturalWidth;
+  const py = (pad * h) / img.naturalHeight;
+  ctx.drawImage(c, x - px, y - py, w + px * 2, h + py * 2);
+}
+
 function drawEnemySprite(ctx: CanvasRenderingContext2D, e: Enemy) {
   let count = SPRITE_FRAMES[e.look];
   let frames: HTMLImageElement[] | undefined;
@@ -4679,7 +4723,7 @@ function drawEnemySprite(ctx: CanvasRenderingContext2D, e: Enemy) {
     ctx.scale(1.08, 0.88);
     ctx.translate(0, -foot);
   }
-  ctx.drawImage(img, -w / 2 + lunge, e.r * 0.85 - h + under + bob, w, h);
+  drawSpritePic(ctx, img, -w / 2 + lunge, e.r * 0.85 - h + under + bob, w, h);
   // A nine-pose boss's last pose fades out over the new one for a moment, so a change never cuts.
   const shown = count === 9 ? poseShown.get(e) : undefined;
   const fade = shown?.prev && shown.prev.complete && shown.prev.naturalWidth ? 1 - (performance.now() / 1000 - shown.pt) / POSE_FADE : 0;
@@ -4689,7 +4733,7 @@ function drawEnemySprite(ctx: CanvasRenderingContext2D, e: Enemy) {
     const ph = pr >= 1 ? size / pr : size;
     const alpha = ctx.globalAlpha;
     ctx.globalAlpha = alpha * fade;
-    ctx.drawImage(shown.prev, -pw / 2, e.r * 0.85 - ph + ph * (fit ? fit.feet : 0) + bob, pw, ph);
+    drawSpritePic(ctx, shown.prev, -pw / 2, e.r * 0.85 - ph + ph * (fit ? fit.feet : 0) + bob, pw, ph);
     ctx.globalAlpha = alpha;
   }
   return true;
@@ -4958,14 +5002,16 @@ const ICE_SPIKES: [number, number, number, number][] = [
 export type BoardFigure = { look: Look; kind: Enemy['kind']; final: boolean; bossId: string; face: number; step: number; swing: number; hit: number; r: number };
 /** Draws a board unit at the origin (the caller translates to its feet's centre), its painted sprite or, in retro
     or until the pictures load, the cast's drawn figure. */
-export function drawBoardFigure(ctx: CanvasRenderingContext2D, f: BoardFigure, now: number, retro: boolean) {
+export function drawBoardFigure(ctx: CanvasRenderingContext2D, f: BoardFigure, now: number, retro: boolean, outline: string | null = null) {
   retroLook = retro;
+  spriteOutline = outline;
   const e = {
     phase: 1, rise: 0, pain: f.kind === 'boss' ? f.hit : 0, gaze: false, chan: 0, pose: f.kind === 'boss' && f.swing > 0 ? f.swing : 0, act: 'burst', aim: 0, dash: 0,
     cd: 0, minion: false, clone: false, snake: 0, spawn: 0, wobble: 0, slow: 0, burn: 0, dir: { x: 0, y: 1 }, tint: '#fff', side: 1, id: 0,
     ...f, hit: f.kind === 'boss' ? 0 : f.hit,
   } as unknown as Enemy;
   const painted = !retroLook && drawEnemySprite(ctx, e);
+  spriteOutline = null;
   if (!painted) LOOKS[f.look][f.kind](ctx, e, now);
 }
 /** An effect picture, for the board. */

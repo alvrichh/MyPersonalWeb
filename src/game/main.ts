@@ -2532,11 +2532,24 @@ function readInput(): Input {
 
 /* A meter's fill: the width for the flat retro bars, and --p on the meter
    for the painted ones, whose fill is clipped rather than resized. */
+/** A meter's fill, written only when it moves by a quarter of a percent (a style write every frame invalidated the
+    HUD's style for nothing). */
 function setMeter(fill: HTMLElement, frac: number) {
-  const pct = `${Math.max(0, Math.min(1, frac)) * 100}%`;
+  const pct = `${Math.round(Math.max(0, Math.min(1, frac)) * 400) / 4}%`;
+  if (fill.dataset.p === pct) return;
+  fill.dataset.p = pct;
   fill.style.width = pct;
   fill.parentElement?.style.setProperty('--p', pct);
 }
+/** A HUD line, written only when it changes. */
+function setText(el: HTMLElement, text: string) {
+  if (el.textContent !== text) el.textContent = text;
+}
+/** Where the canvas sits on the page, kept by `resize()`: reading it every frame for the joystick forced a layout
+    right after the HUD's writes. */
+let canvasRect = { left: 0, top: 0 };
+/** The field has been drawn since the run stood still (see `step`); a resize clears the canvas, so it is drawn again. */
+let stillDrawn = false;
 
 /* --------------------------------------------------------------- the frame */
 
@@ -2548,6 +2561,9 @@ function resize() {
   const width = canvas.clientWidth;
   const height = canvas.clientHeight;
   if (!width || !height) return;
+  const r = canvas.getBoundingClientRect();
+  canvasRect = { left: r.left, top: r.top };
+  stillDrawn = false;
   fitted = { width, height, dpr };
   canvas.width = Math.round(width * dpr);
   canvas.height = Math.round(height * dpr);
@@ -2689,16 +2705,20 @@ function step(now: number) {
   if (g) {
     // On call: the field is whatever the canvas shows, so bugs spawn just past its edge.
     g.viewHalf = { x: Math.max(W / 2, view.cx / view.scale), y: Math.max(H / 2, (view.h - view.cy) / view.scale, view.cy / view.scale) };
-    draw(ctx, g, view, palette, now / 1000);
-    hudRoom.textContent = `${t('worldShort', { n: g.world })} · ${whereLine(g)}`;
+    // Paused, or a level-up, shrine or wheel dialog up: nothing moves, so the field is drawn once and left (it was
+    // redrawn every frame under the dialog's full-screen blur). A resize draws it again.
+    const still = paused || (g.phase !== 'play' && g.phase !== 'over' && g.phase !== 'won');
+    if (!still || !stillDrawn) draw(ctx, g, view, palette, now / 1000);
+    stillDrawn = still;
+    setText(hudRoom, `${t('worldShort', { n: g.world })} · ${whereLine(g)}`);
     showcaseBtn.hidden = !g.showcase || g.phase !== 'play' || !g.enemies.some((e) => e.kind === 'boss' && !e.dead);
     // Boss Rush moves from world to world: the plate's icon follows.
     if (hudRoom.dataset.world !== String(g.world)) { hudRoom.dataset.world = String(g.world); hudRoom.style.setProperty('--icon', JSON.stringify(WORLD_ICON[g.world - 1])); }
-    hudLevel.textContent = t('level', { level: g.level });
+    setText(hudLevel, t('level', { level: g.level }));
     setMeter(hudXp, g.xp / g.xpNext);
     setMeter(hudHp, Math.max(0, g.player.hp) / g.player.maxHp);
     // The wallet: what is banked plus what this run has picked up so far (banked when the run ends).
-    hudCoins.textContent = String(Math.floor(save.coins + g.coins));
+    setText(hudCoins, String(Math.floor(save.coins + g.coins)));
     const bowLook = arrowLook(g);
     const gear = [['bow', bowLook && bowLook !== 'fusion' ? g.skills[bowLook] : 1] as const, ...ownedWeapons(g).map((id) => [id, g.skills[id]] as const)];
     const isEvo = (id: SkillId | 'bow') => id !== 'bow' && !!g.evolved[id];
@@ -2728,9 +2748,8 @@ function step(now: number) {
   // Joystick, drawn in screen pixels.
   if (stick.on && g && g.phase === 'play' && !paused) {
     ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
-    const rect = canvas.getBoundingClientRect();
-    const cx = stick.ox - rect.left;
-    const cy = stick.oy - rect.top;
+    const cx = stick.ox - canvasRect.left;
+    const cy = stick.oy - canvasRect.top;
     const dx = stick.x - stick.ox;
     const dy = stick.y - stick.oy;
     const len = Math.hypot(dx, dy) || 1;
