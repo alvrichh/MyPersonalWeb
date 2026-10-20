@@ -13,7 +13,7 @@ import { ARMOUR_SLOTS, ARSENAL, ITEMS, itemLevel, type SpiritSkin, UPGRADES, WEA
 import { Scene } from './scene';
 import { makeT, pickLang, type Key } from './strings';
 import {
-  CATEGORY, EVO_PARTNER, H, NIGHTMARE_WORLD, canFuse, revivePrice, SKILLS, arrowLook, arrowOptions, bladeElement, bladeOptions, canEvolve, evoOf, fusionOf, fusionWith, evoLostBy, pairFusion, arrowElements, settleEffects, rerollChoices, adReroll, adRevive, canAdReroll, canAdRevive, maxLevel, pickArrow, pickBlade, pickSpirit, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_LUCKY, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
+  CATEGORY, EVO_PARTNER, H, NIGHTMARE_WORLD, SECRET_WORLD, canFuse, revivePrice, SKILLS, arrowLook, arrowOptions, bladeElement, bladeOptions, canEvolve, evoOf, fusionOf, fusionWith, evoLostBy, pairFusion, arrowElements, settleEffects, rerollChoices, adReroll, adRevive, canAdReroll, canAdRevive, maxLevel, pickArrow, pickBlade, pickSpirit, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_LUCKY, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
   type ArrowLook, type Category, type Choice, type Fusion, type Game, type GameEvent, type Input, type Look, type SkillId, type WheelOutcome,
 } from './world';
 
@@ -88,6 +88,7 @@ const clock = (seconds: number) => `${Math.floor(seconds / 60)}:${String(Math.fl
 const RUSH_ICON = '👑';
 /** Boss Rush runs through the bosses of the worlds open in sprints. */
 const rushWorlds = () => Math.min(WORLD_COUNT, save.unlocked);
+const secretLine = () => (save.secretBest ? t('secretBest', { time: clock(save.secretBest.time), kills: save.secretBest.kills }) : t('bestNone'));
 const rushLine = () => (save.rushBest ? t('rushBest', { n: save.rushBest.stage, total: save.rushBest.stages, time: clock(save.rushBest.time) }) : t('bestNone'));
 const nightmareLine = () => (save.nightmareBest ? t('nightmareBest', { time: clock(save.nightmareBest.time), kills: save.nightmareBest.kills }) : t('bestNone'));
 const bestLine = (world = worldIn(), mode: Mode = save.mode) => {
@@ -136,7 +137,11 @@ function playTimeText(seconds: number) {
 function bankRun(g: Game): number | null {
   const won = g.phase === 'won';
   const wasWon = worldWon(save, g.world);
-  if (g.rush) {
+  if (g.secret) {
+    // The secret shift: its own record; it opens nothing and leaves the jungle's records alone.
+    const best = save.secretBest;
+    if (!best || (won && !best.won) || (won === best.won && g.time > best.time)) save.secretBest = { time: g.time, kills: g.kills, won };
+  } else if (g.rush) {
     // Boss Rush: the furthest boss counts (out of more bosses beats fewer), then the fastest clear; it opens nothing.
     const best = save.rushBest;
     const reach = g.rush - (won ? 0 : 1);
@@ -162,16 +167,19 @@ function bankRun(g: Game): number | null {
   save.playTime = (save.playTime || 0) + g.time;
   save.xp += Math.round(g.xpEarned);
   let unlocked: number | null = null;
-  if (won && g.world < WORLD_COUNT && unlockedIn(g.mode) < g.world + 1) {
+  // Only a plain run opens a world or puts things on sale: a Boss Rush ends in its last boss's world and the secret
+  // shift plays in the jungle, and neither should open what comes after them.
+  const plain = !g.rush && !g.secret && !g.endless;
+  if (plain && won && g.world < WORLD_COUNT && unlockedIn(g.mode) < g.world + 1) {
     if (g.mode === 'horde') save.hordeUnlocked = g.world + 1;
     else save.unlocked = g.world + 1;
     setWorld(g.world + 1, g.mode);
     unlocked = g.world + 1;
   }
   const weapon = ARSENAL.find((a) => a.world === g.world);
-  arsenalOpened = won && !wasWon && weapon && !save.arsenal.includes(weapon.id) ? weapon.id : null;
+  arsenalOpened = plain && won && !wasWon && weapon && !save.arsenal.includes(weapon.id) ? weapon.id : null;
   const item = ITEMS.find((it) => it.world === g.world);
-  itemOpened = won && !wasWon && item && !save.owned.includes(item.id) ? item.id : null;
+  itemOpened = plain && won && !wasWon && item && !save.owned.includes(item.id) ? item.id : null;
   persist();
   return unlocked;
 }
@@ -222,7 +230,7 @@ const STYLE_ICON: Record<EnemyStyle, string> = { world: '🌍', original: '🐞'
 const styleIcon = (style: EnemyStyle) => style === 'world' || style === 'random' || save.retro ? STYLE_ICON[style]
   : `<img class="scene-pic boss-pic" src="./images/game/enemies/${style}-bug-icon.webp" alt="">`;
 /** A boss's name: the cast's boss in room 6, the world's own final boss in room 12. */
-const bossTitle = (e: Enemy) => t(e.final ? (`final${cap(e.bossId)}` as Key) : BOSS_NAME[e.look]);
+const bossTitle = (e: Enemy) => t(e.final || e.bossId === 'kratos' ? (`final${cap(e.bossId)}` as Key) : BOSS_NAME[e.look]);
 const BOSS_NAME: Record<Look, Key> = { original: 'bossOriginal', demon: 'bossDemon', viking: 'bossViking', mud: 'bossMud', jungle: 'bossJungle', greek: 'bossGreek', robot: 'bossRobot', nightmare: 'bossNightmare' };
 
 let game: Game | null = null;
@@ -578,9 +586,9 @@ function endScreen(g: Game) {
   const record = g.endless && save.nightmareBest?.time === g.time;
   const rushRecord = !!g.rush && save.rushBest?.time === g.time;
   show(`
-    <p class="kicker">${g.rush ? `${RUSH_ICON} ${t('rush')} · ${worldName(g.world)}` : `${worldName(g.world)} ·`} ${g.rush ? '' : g.endless ? `${NIGHTMARE_ICON} ${t('nightmare')}` : horde ? `${MODE_ICON.horde} ${modeName('horde')}` : t('sprint', { room: g.room })}</p>
-    ${head(won ? 'victory' : 'defeat', t(g.rush ? (won ? 'rushWon' : 'over') : horde ? (won ? 'hordeWon' : 'over') : won ? 'won' : 'over'))}
-    <p>${g.rush ? t(won ? 'rushWonText' : 'rushOverText', { n: g.rush, total: g.stages, time: clock(g.time) }) : t(horde ? (won ? 'hordeWonText' : 'hordeOverText') : won ? 'wonText' : 'overText', { room: g.room, kills: g.kills, time: clock(g.time) })}</p>
+    <p class="kicker">${g.secret ? `${t('secretName')} · ${MODE_ICON.horde} ${modeName('horde')}` : g.rush ? `${RUSH_ICON} ${t('rush')} · ${worldName(g.world)}` : `${worldName(g.world)} ·`} ${g.rush || g.secret ? '' : g.endless ? `${NIGHTMARE_ICON} ${t('nightmare')}` : horde ? `${MODE_ICON.horde} ${modeName('horde')}` : t('sprint', { room: g.room })}</p>
+    ${head(won ? 'victory' : 'defeat', t(g.secret ? (won ? 'secretWon' : 'over') : g.rush ? (won ? 'rushWon' : 'over') : horde ? (won ? 'hordeWon' : 'over') : won ? 'won' : 'over'))}
+    <p>${g.secret && won ? t('secretWonText', { kills: g.kills }) : g.rush ? t(won ? 'rushWonText' : 'rushOverText', { n: g.rush, total: g.stages, time: clock(g.time) }) : t(horde ? (won ? 'hordeWonText' : 'hordeOverText') : won ? 'wonText' : 'overText', { room: g.room, kills: g.kills, time: clock(g.time) })}</p>
     ${record ? notice(NIGHTMARE_ICON, t('nightmareRecord')) : ''}
     ${rushRecord ? notice(RUSH_ICON, t('rushRecord')) : ''}
     <p class="earned">${coinsLine(earned)} <small>${t('coinsRun', { coins: earned })}</small></p>
@@ -592,7 +600,7 @@ function endScreen(g: Game) {
       <button class="ghost is-warn" data-act="shop">🛒 ${t('shop')}</button>
       <button class="ghost" data-act="menu">${t('menu')}</button>
     </div>
-    <p class="best">${g.rush ? rushLine() : g.endless ? nightmareLine() : bestLine(g.world, g.mode)}</p>`);
+    <p class="best">${g.secret ? secretLine() : g.rush ? rushLine() : g.endless ? nightmareLine() : bestLine(g.world, g.mode)}</p>`);
   adEarned = earned;
   if (earned > 0) offerAd('doubleCoins', `<button class="primary ad-btn" data-act="ad-double">📺 ${t('adDouble', { coins: earned })}</button>`);
 }
@@ -614,6 +622,16 @@ const ISLAND_META: Record<string, { w: number; h: number; ring: number[]; plate:
 
 /** The world the map is showing (locked ones can be looked at, not played). */
 let mapPick = 0;
+
+/** The easter egg behind the «coming soon» island on call: a shift in the jungle where Kratos waits at five and ten. */
+function secretScreen() {
+  show(`<button class="ui-close" type="button" data-act="map" aria-label="${t('back')}"></button>
+    ${head('shrine', t('secretTitle'))}
+    <p>${t('secretText')}</p>
+    <button class="play" data-act="play-secret"><span class="play-tri" aria-hidden="true"></span><span class="play-copy">${t('secretPlay')}</span></button>
+    <p class="best">${secretLine()}</p>
+    ${backButton('map', 'toMap')}`);
+}
 
 function mapScreen() {
   if (!mapPick || mapPick > unlockedIn() + 1) mapPick = worldIn();
@@ -642,7 +660,10 @@ function mapScreen() {
   const islands = stops.map((st) => {
     if (st.soon) {
       const style = `left:${(st.left / MAP_W) * 100}%;top:${(st.top / MAP_H) * 100}%;width:${(st.w / MAP_W) * 100}%;--px:${st.m.plate[0]}%;--py:${st.m.plate[1]}%;--pw:${st.m.plate[2]}%;--ph:${st.m.plate[3]}%`;
-      return [`
+      // The easter egg: on call the «coming soon» island can be tapped, and something waits there (`secretScreen`).
+      const secret = save.mode === 'horde';
+      return [secret ? `
+      <button class="isle is-soon is-secret" data-act="secret" style="${style}" aria-label="${t('comingSoon')}"><img src="./images/game/map/soon.webp" alt="" width="${st.m.w}" height="${st.m.h}"></button>` : `
       <span class="isle is-soon" style="${style}"><img src="./images/game/map/soon.webp" alt="" width="${st.m.w}" height="${st.m.h}"></span>`, `
       <span class="isle isle-labels is-soon" style="${style};aspect-ratio:${st.m.w}/${st.m.h}" aria-hidden="true">
         <span class="isle-plate">${t('comingSoon')}</span>
@@ -1367,10 +1388,10 @@ function showPicks() {
   }
 }
 
-function startRun(world = worldIn(), mode = save.mode, endless = false, rush = 0) {
-  game = newGame({ ...buildLoadout(save.equipped, save.upgrades, masteries(), save.arsenal, save.itemLevels, save.extra), sprintMastery: save.mastery.sprints }, save.style, world, mode, endless, rush);
-  // Boss Rush: every boss in its own world's floor and song (whatever Customise picked).
-  game.scene = rush ? 0 : save.scene;
+function startRun(world = worldIn(), mode = save.mode, endless = false, rush = 0, secret = false) {
+  game = newGame({ ...buildLoadout(save.equipped, save.upgrades, masteries(), save.arsenal, save.itemLevels, save.extra), sprintMastery: save.mastery.sprints }, save.style, world, mode, endless, rush, secret);
+  // Boss Rush: every boss in its own world's floor and song (whatever Customise picked); the secret shift, the jungle's.
+  game.scene = rush || secret ? 0 : save.scene;
   audio.setSong(rush ? 'worlds' : save.song);
   preloadFx();
   paused = false;
@@ -1382,7 +1403,7 @@ function startRun(world = worldIn(), mode = save.mode, endless = false, rush = 0
   hide();
   hudRoom.style.setProperty('--icon', JSON.stringify(WORLD_ICON[game.world - 1]));
   resize(); // Reserve the live HUD + weapons row, including the iOS safe area.
-  flash(game.rush ? t('rushStart', { n: game.stages }) : game.endless ? t('nightmareStart') : game.mode === 'horde' ? t('hordeStart') : `${worldName(game.world)} · ${t('sprint', { room: 1 })}`);
+  flash(game.secret ? t('secretStart') : game.rush ? t('rushStart', { n: game.stages }) : game.endless ? t('nightmareStart') : game.mode === 'horde' ? t('hordeStart') : `${worldName(game.world)} · ${t('sprint', { room: 1 })}`);
   audio.start();
   audio.setIntensity(0.2);
 }
@@ -1396,8 +1417,11 @@ screen.addEventListener('click', (event) => {
   if (act === 'play') startRun();
   // The world this run unlocked, in the same mode.
   else if (act === 'play-next') { const n = Number(target.dataset.next); setWorld(n, game?.mode ?? save.mode); persist(); startRun(n, game?.mode ?? save.mode); }
+  else if (act === 'play-same' && game?.secret) startRun(SECRET_WORLD, 'horde', false, 0, true);
   else if (act === 'play-same') game?.rush ? startRun(1, 'sprints', false, rushWorlds()) : startRun(game?.world ?? worldIn(), game?.mode ?? save.mode, game?.endless);
   else if (act === 'play-rush') startRun(1, 'sprints', false, rushWorlds());
+  else if (act === 'secret') secretScreen();
+  else if (act === 'play-secret') startRun(SECRET_WORLD, 'horde', false, 0, true);
   else if (act === 'play-nightmare') startRun(NIGHTMARE_WORLD, 'horde', true);
   else if (act === 'mode') { save.mode = save.mode === 'horde' ? 'sprints' : 'horde'; persist(); menuScreen(); }
   else if (target.dataset.mode) { save.mode = target.dataset.mode as Mode; mapPick = worldIn(); persist(); mapScreen(); }
