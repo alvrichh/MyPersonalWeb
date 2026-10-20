@@ -208,6 +208,8 @@ export type Enemy = {
   burnTick: number;
   slow: number;
   slowBy: number;
+  /** Seconds before it can be stopped dead again (a stun, a freeze, the 1-ton weight): until then those only slow it. */
+  paraCd: number;
   /** Pushed back by a hit (decays quickly). */
   kx: number;
   ky: number;
@@ -252,6 +254,8 @@ export type Enemy = {
   cd5: number;
   /** On call: time to this boss's next leap at you (every boss leaps there, like the Treant). */
   leapCd: number;
+  /** Final bosses whose world sells a weapon throw it now and then (`ARMOURY`): time to the next. */
+  armCd: number;
   sigs: number;
   /** Charges still to chain (Valdur's frenzy). */
   combo: number;
@@ -320,7 +324,7 @@ export type Orb = {
 export type BossTrail = { x: number; y: number; r: number; life: number; max: number; dmg: number; tone: string; from?: string };
 /** Every boss shot leaves a track: a dab every `every` seconds that lasts `life` and hurts for `share` of the shot. */
 const BOSS_TRAIL = { every: 0.05, life: 0.55, share: 0.4, cap: 360 };
-export type OrbPic = 'shark' | 'ember' | 'medusa' | 'mudball' | 'venom' | 'tornado' | 'fireball' | 'rocket' | 'leaf' | 'acid' | 'water' | 'ghost' | 'bolt' | 'spark';
+export type OrbPic = 'durian' | 'shark' | 'ember' | 'medusa' | 'mudball' | 'venom' | 'tornado' | 'fireball' | 'rocket' | 'leaf' | 'acid' | 'water' | 'ghost' | 'bolt' | 'spark';
 /** What a boss's attack looks like: its element. */
 export type ThreatEl = 'fire' | 'water' | 'mud' | 'arcane' | 'leaf' | 'bolt' | 'laser' | 'shadow' | 'glitch';
 /**
@@ -361,7 +365,9 @@ export type Threat = {
   /** Left on the floor when it hits. */
   after?: 'lava' | 'thorns' | 'puddle';
   /** Something lobbed onto the circle while it warns (the Mech's fuel barrels, the molotov's evolution). */
-  lob?: 'barrel';
+  lob?: 'barrel' | 'brick' | 'molotov';
+  /** A mine sown by the Drakkar: goes off when its warning runs out, or at once if you step on it. */
+  mine?: boolean;
   /** A javelin: when the warning runs out a bolt flies along the line instead of the whole line striking. */
   shot?: OrbPic;
 };
@@ -433,6 +439,8 @@ export type Player = {
   dark: number;
   stone: number;
   mired: number;
+  /** Seconds before a stun or the stone can hold you again (each leaves you free a while after it ends). */
+  paraCd: number;
   /** Seconds left of the flames on you after a fire hit (lava, a fireball, meteors, a breath): only to be seen. */
   burn: number;
 };
@@ -707,6 +715,7 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
     burnTick: 0,
     slow: 0,
     slowBy: 0,
+    paraCd: 0,
     kx: 0,
     ky: 0,
     cd: rand(1.2, 2.4),
@@ -737,6 +746,7 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
     cd5: 4.5,
     swing: 0,
     leapCd: 4,
+    armCd: 5,
     sigs: 0,
     combo: 0,
     rage: false,
@@ -858,7 +868,7 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     strikes: [],
     strikeIn: 2,
     hazard: 'none',
-    player: { x: W / 2, y: H - 70, r: 15, hp: loadout.maxHp, maxHp: loadout.maxHp, speed: 150 * loadout.speedMult, inv: 0, ouch: 0, moving: false, face: -Math.PI / 2, heading: -Math.PI / 2, poison: 0, stun: 0, chill: 0, dark: 0, stone: 0, mired: 0, burn: 0 },
+    player: { x: W / 2, y: H - 70, r: 15, hp: loadout.maxHp, maxHp: loadout.maxHp, speed: 150 * loadout.speedMult, inv: 0, ouch: 0, moving: false, face: -Math.PI / 2, heading: -Math.PI / 2, poison: 0, stun: 0, chill: 0, dark: 0, stone: 0, mired: 0, paraCd: 0, burn: 0 },
     enemies: [],
     shots: [],
     orbs: [],
@@ -1380,8 +1390,8 @@ function fuse(g: Game, e: Enemy, s: Shot, fusion: Fusion) {
     if (e.slow < 0.2 && g.fx.filter((f) => f.pic === 'ice-block').length < 10) {
       g.fx.push({ kind: 'pic', pic: 'ice-block', top: true, x: e.x, y: e.y, r: e.r + 6, a: 0, life: 0.5, max: 0.5 });
     }
-    e.slow = Math.max(e.slow, 0.5);
-    e.slowBy = e.kind === 'boss' ? Math.max(e.slowBy, 0.6) : 1;
+    if (e.kind === 'boss') { e.slow = Math.max(e.slow, 0.5); e.slowBy = Math.max(e.slowBy, 0.6); }
+    else paralyze(e, 0.5);
   } else if (fusion === 'spectral') {
     // Spectral storm: each bug the arrow goes through calls a bolt from the sky (the first two).
     if (s.hits.size <= 2) {
@@ -1542,7 +1552,7 @@ function slamHammer(g: Game) {
   for (const e of live(g)) {
     if (dist(p, e) > reach + e.r) continue;
     hurt(g, e, (40 + 16 * (lv - 1)) * power(g, 'melee') * (evolved ? 1.4 : 1), away(p, e, 260));
-    if (evolved) { e.slow = Math.max(e.slow, 1.2); e.slowBy = 1; }
+    if (evolved) paralyze(e, 1.2);
     heal(g, 1);
   }
 }
@@ -2067,6 +2077,15 @@ const BOSS_STATUS: Record<string, [BossStatus, number]> = {
 };
 /** Poison: health lost over its half second. */
 const POISON_DMG = 8;
+/** Seconds you stay free after a stun or the stone ends, and a bug after it was stopped dead, before it can happen again. */
+const PARA_FREE = 2.5;
+/** Stops a bug dead for `secs`, unless it was stopped a moment ago: then it is only slowed (see `paraCd`). */
+function paralyze(e: Enemy, secs: number) {
+  e.slow = Math.max(e.slow, secs);
+  if (e.paraCd > 0) { e.slowBy = Math.max(e.slowBy, 0.5); return; }
+  e.slowBy = 1;
+  e.paraCd = secs + PARA_FREE;
+}
 /** Chill: how much slower you walk. */
 const CHILL_SLOW = 0.35;
 /** The viking world's ice spikes: how much less often than the Greek bolts they come, their reach, how long
@@ -2081,8 +2100,12 @@ function hurtPlayer(g: Game, amount: number, from?: string, fire = false) {
   if (p.inv > 0 || g.phase !== 'play') return;
   if (fire) p.burn = 1.2;
   const status = from ? BOSS_STATUS[from] : undefined;
-  if (status) {
+  // Being stopped dead (Zeus's stun, the Medusa's stone) has a cooldown: after one ends you are free for PARA_FREE
+  // seconds, so a string of hits can't keep you frozen.
+  const holds = status && (status[0] === 'stun' || status[0] === 'stone');
+  if (status && (!holds || p.paraCd <= 0)) {
     p[status[0]] = Math.max(p[status[0]], status[1]);
+    if (holds) p.paraCd = status[1] + PARA_FREE;
     g.events.push(status[0]);
   }
   // The exo-bracer stacks on the worn armour.
@@ -2202,6 +2225,7 @@ function updateEnemy(g: Game, e: Enemy, dt: number) {
       burst(g, e.x, e.y - e.r * 0.5, '#ff9a1f', 2, 40, 2.5);
     }
   }
+  e.paraCd = Math.max(0, e.paraCd - dt);
   if (e.slow > 0) e.slow -= dt;
   else e.slowBy = 0;
   const slowFactor = e.slow > 0 ? 1 - e.slowBy : 1;
@@ -2519,6 +2543,14 @@ function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
     worldMove(g, e, moveOf(g, e));
     if (e.spawn > 0 || e.chan > 0) return;
   }
+  // The weapon its world puts on sale, thrown now and then, so winning it means something.
+  if (final && !e.clone && ARMOURY[e.bossId]) {
+    e.armCd -= dt;
+    if (e.armCd <= 0) {
+      e.armCd = 7.5 * fury;
+      ARMOURY[e.bossId]!(g, e, Math.round(e.dmg * 0.8));
+    }
+  }
   // The final boss's signature.
   if (final) {
     e.cd5 -= dt;
@@ -2760,6 +2792,38 @@ const LANDING: Record<string, { el: ThreatEl; fx: string; pic?: OrbPic; tone?: s
 };
 /** Fuel barrels lobbed onto the hero and round them: warned circles, a barrel tumbling down onto each, then a burst
     of fire and a pool of burning fuel left a while (the molotov's evolution, which the Mech's world sells). */
+/** Some final bosses throw the weapon their world's victory puts on sale in the arsenal. */
+const ARMOURY: Partial<Record<string, (g: Game, e: Enemy, dmg: number) => void>> = {
+  // The Kernel Panic drops legacy bricks onto you: warned circles, a brick falling onto each.
+  kernel: (g, _e, dmg) => lobbed(g, 4, dmg, 26, 'glitch', 'brick'),
+  // The Archdemon lobs molotovs that leave fire.
+  archdemon: (g, _e, dmg) => lobbed(g, 3, dmg, 30, 'fire', 'molotov', 'lava'),
+  // The Drakkar sows blue electric mines round you: each goes off after a while, or at once if you step on it.
+  drakkar: (g, _e, dmg) => {
+    const p = g.player;
+    for (let i = 0; i < 4; i++) {
+      const a = (i / 4) * Math.PI * 2 + rand(-0.4, 0.4);
+      const at = inside(g, { x: p.x + Math.cos(a) * rand(60, 120), y: p.y + Math.sin(a) * rand(60, 120) }, 30);
+      const t = circle(g, at, 32, 3.2 + i * 0.3, dmg, 'bolt');
+      Object.assign(g.threats[t - 1], { mine: true, blue: true });
+    }
+  },
+  // The Carnivorous Queen spits spiky durians that bounce off the walls a while.
+  queen: (g, e, dmg) => {
+    const aim = Math.atan2(g.player.y - e.y, g.player.x - e.x);
+    for (const off of [-0.45, 0, 0.45]) g.orbs.push({ x: e.x, y: e.y, vx: Math.cos(aim + off) * 120, vy: Math.sin(aim + off) * 120, r: 12, dmg, life: 4.5, bounce: 2, tone: '#a3e635', pic: 'durian' });
+  },
+};
+/** Things lobbed onto the hero and round them: warned circles, the thing tumbling down onto each. */
+function lobbed(g: Game, n: number, dmg: number, r: number, el: ThreatEl, lob: Threat['lob'], after?: Threat['after']) {
+  const p = g.player;
+  for (let i = 0; i < n; i++) {
+    const a = rand(0, Math.PI * 2);
+    const at = i === 0 ? p : { x: p.x + Math.cos(a) * rand(50, 100), y: p.y + Math.sin(a) * rand(50, 100) };
+    const t = circle(g, inside(g, at, r + 4), r, 1.1 + i * 0.22, dmg, el, after);
+    g.threats[t - 1].lob = lob;
+  }
+}
 function fuelBarrels(g: Game, n: number, dmg: number) {
   const p = g.player;
   for (let i = 0; i < n; i++) {
@@ -2829,6 +2893,8 @@ function updateThreats(g: Game, dt: number) {
     }
     if (t.warn > 0) {
       t.warn -= dt;
+      // A mine goes off at once when you step on it (once armed, after its first half second).
+      if (t.mine && t.max - t.warn > 0.5 && dist(t, p) < t.r * 0.6 + p.r * 0.5) t.warn = 0;
       if (t.warn <= 0) threatHits(g, t);
       return true;
     }
@@ -2882,6 +2948,8 @@ function threatHits(g: Game, t: Threat) {
     if (t.el === 'water' && t.r < 40) g.fx.push({ kind: 'pic', pic: 'steam-cloud', top: true, x: t.x, y: t.y, r: t.r * 1.6, a: rand(0, 6), life: 0.5, max: 0.5 });
     if (t.el === 'leaf' && t.after) g.fx.push({ kind: 'pic', pic: 'caltrops', x: t.x, y: t.y, r: t.r * 1.2, a: rand(0, 6), life: 2.5, max: 2.5 });
     // Mud balls splash and leave a puddle; the Medusa's sigils burst in purple.
+    if (t.mine) g.fx.push({ kind: 'pic', pic: 'volt-burst', top: true, x: t.x, y: t.y, r: t.r * 1.5, a: rand(0, 6), life: 0.45, max: 0.45 });
+    if (t.lob === 'brick') g.fx.push({ kind: 'pic', pic: 'impact', top: true, x: t.x, y: t.y, r: t.r * 1.1, a: rand(0, 6), life: 0.4, max: 0.4 });
     if (t.el === 'mud') g.fx.push({ kind: 'pic', pic: 'mud-splat', x: t.x, y: t.y, r: t.r * 1.5, a: 0, life: 0.6, max: 0.6 });
     if (t.el === 'arcane') g.fx.push({ kind: 'pic', pic: t.alt ? 'medusa-burst-2' : 'medusa-burst', top: true, x: t.x, y: t.y, r: t.r * 1.6, a: 0, life: 0.45, max: 0.45 });
     if (t.after) g.hazards.push({ kind: t.after, x: t.x, y: t.y, r: t.after === 'lava' ? 26 : t.after === 'puddle' ? 30 : 16, ttl: t.after === 'lava' ? 4 : t.after === 'puddle' ? 5 : 2.5 });
@@ -3029,8 +3097,7 @@ function updateShot(g: Game, s: Shot, dt: number): boolean {
     if (s.kind === 'brick') {
       const iron = !!g.evolved.brick;
       if (iron) {
-        e.slow = Math.max(e.slow, 0.6);
-        e.slowBy = 1;
+        paralyze(e, 0.6);
         g.shake = Math.max(g.shake, 0.08);
       }
       g.fx.push({ kind: 'pic', pic: 'impact', x: e.x, y: e.y + e.r * 0.3, r: iron ? 26 : 18, a: rand(0, 6), life: 0.45, max: 0.45, top: true });
@@ -3245,6 +3312,7 @@ export function update(g: Game, dt: number, input: Input) {
   // A boss's hit: stunned you stand, chilled you walk slower, poisoned you lose a little health (never the last point).
   p.poison = Math.max(0, p.poison - dt);
   p.stun = Math.max(0, p.stun - dt);
+  p.paraCd = Math.max(0, p.paraCd - dt);
   p.chill = Math.max(0, p.chill - dt);
   p.dark = Math.max(0, p.dark - dt);
   p.stone = Math.max(0, p.stone - dt);

@@ -2618,6 +2618,7 @@ const ORB_PIC: Record<OrbPic | 'medusa2', { src: 'fx' | 'arrow'; name: string; w
   fireball: { src: 'fx', name: 'fireball', w: 44, at: 0.78 },
   rocket: { src: 'fx', name: 'rocket', w: 30, at: 0.75 },
   shark: { src: 'fx', name: 'rocket-shark', w: 40, at: 0.75 },
+  durian: { src: 'fx', name: 'durian', w: 30, at: 0.5 },
   leaf: { src: 'arrow', name: 'leaf', w: 32, at: 1, trail: 'leaf-trail' },
   // The Queen's acid: a bigger leaf arrow in a wide, pale glow, so it stands out on the jungle floor.
   acid: { src: 'arrow', name: 'leaf', w: 46, at: 1, trail: 'leaf-trail', glow: 2.6 },
@@ -2787,11 +2788,18 @@ function drawThreats(ctx: CanvasRenderingContext2D, g: Game, now: number, top: b
           ctx.drawImage(mud, -w / 2, -h / 2, w, h);
           ctx.restore();
         }
-        // The Mech's fuel barrels: the arsenal's barrel lobbed down onto its circle, tumbling.
-        const barrel = t.lob === 'barrel' && !retroLook ? fxImage('barrel') : null;
+        // Lobbed weapons from the arsenal (the Mech's fuel barrels, the Archdemon's molotovs, the Kernel's bricks):
+        // the picture falling onto its circle, tumbling. The Drakkar's mines lie on theirs, blinking.
+        const mine = t.mine && !retroLook ? fxImage('mine-volt') : null;
+        if (mine && ready(mine)) {
+          const w = 30 * (Math.sin(now * (6 + k * 14)) > 0 ? 1 : 0.92);
+          const h = (w * mine.naturalHeight) / mine.naturalWidth;
+          ctx.drawImage(mine, t.x - w / 2, t.y - h / 2, w, h);
+        }
+        const barrel = t.lob && !retroLook ? fxImage(t.lob) : null;
         if (barrel && ready(barrel) && k > 0.2) {
           const f = (k - 0.2) / 0.8;
-          const w = 34;
+          const w = t.lob === 'brick' ? 26 : 34;
           const h = (w * barrel.naturalHeight) / barrel.naturalWidth;
           ctx.save();
           ctx.translate(t.x, t.y - Math.sin(f * Math.PI) * 130 - (1 - f) * 50);
