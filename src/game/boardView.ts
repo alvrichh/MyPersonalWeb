@@ -195,6 +195,26 @@ const PUFF = 0.65;
 const POP = 0.4;
 let puffs: { x: number; y: number; at: number }[] = [];
 let popped: { id: number; at: number } | null = null;
+/** The rival building its army while you prepare: each unit comes in as a bug and merges up a step at a time, round
+    robin, one step every `RIVAL_STEP` s (squeezed so it is all done in `RIVAL_ALL`), from when the round's prep began. */
+const RIVAL_STEP = 0.55, RIVAL_ALL = 10, RIVAL_WAIT = 0.6;
+let rival = { key: '', start: 0, seen: [] as number[] };
+function rivalShown(b: BoardGame, spots: { tier: number; x: number; y: number }[], now: number) {
+  const key = `${b.world}:${b.round}:${b.lives}:${b.wave.join(',')}`;
+  if (rival.key !== key) rival = { key, start: now, seen: spots.map(() => -1) };
+  const order: [number, number][] = [];
+  const top = Math.max(0, ...spots.map((w) => w.tier));
+  for (let lv = 0; lv <= top; lv++) spots.forEach((w, i) => { if (w.tier >= lv) order.push([i, lv]); });
+  const step = Math.min(RIVAL_STEP, RIVAL_ALL / Math.max(1, order.length));
+  const done = Math.floor((now - rival.start - RIVAL_WAIT) / step) + 1;
+  const shown = spots.map(() => -1);
+  for (let k = 0; k < Math.min(done, order.length); k++) shown[order[k][0]] = order[k][1];
+  shown.forEach((lv, i) => {
+    if (lv > rival.seen[i]) { puffs.push({ x: spots[i].x, y: spots[i].y, at: now }); rival.seen[i] = lv; }
+  });
+  return shown;
+}
+
 export function boardMerged(slot: Slot, id: number, now: number) {
   const c = cellCentre(slot);
   puffs.push({ x: c.x, y: c.y, at: now });
@@ -508,15 +528,20 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
     ctx.fillRect(c.x - CELL / 2 + 2, c.y - CELL / 2 + 2, CELL - 4, CELL - 4);
   }
   if (b.phase === 'prep' || !b.fighters.length) {
-    // The coming wave, faint, on its half.
-    for (const w of waveSpots(b).sort((p, q) => p.y - q.y)) {
+    // The coming wave, faint, on its half, built up before your eyes while you prepare: the rival summons its units one
+    // by one and merges them up to what it will field (`rivalShown`), with the merge's smoke on each step.
+    const spots = waveSpots(b);
+    const shown = rivalShown(b, spots, now);
+    spots.forEach((w, i) => {
+      const tier = shown[i];
+      if (tier < 0) return;
       ctx.save();
       ctx.translate(w.x, w.y);
       ctx.globalAlpha = 0.5 + Math.sin(now * 2.5) * 0.08;
-      ring(ctx, TIER_STATS[w.tier].r, '#f87171');
-      drawEnemyFigure(ctx, figureOf(w.tier, b.world, -1, 0, 0, 0), now, retro);
+      ring(ctx, TIER_STATS[tier].r, '#f87171');
+      drawEnemyFigure(ctx, figureOf(tier as Tier, b.world, -1, 0, 0, 0), now, retro);
       ctx.restore();
-    }
+    });
     const pieces = [...b.army].sort((p, q) => p.slot.r - q.slot.r);
     for (const p of pieces) {
       if (drag?.piece === p) continue;
