@@ -1,4 +1,4 @@
-import { H, W, WALL, WHEEL_X, ICICLE_R, ICICLE_STAY, ATTACK_CYCLE, WORLDS, frostReach, waveAt, type Threat, type OrbPic, isBossRoom, type Enemy, type Game, type Shot, type Look, type Statue, type Rect, type Vec, type Fusion, arrowLook, fusionOf, bladeCount, bladeElement, sawOrbit, sawScale, type BladeElement, type Fx, type SkillId } from './world';
+import { GAZE, H, W, WALL, WHEEL_X, ICICLE_R, ICICLE_STAY, ATTACK_CYCLE, WORLDS, frostReach, waveAt, type Threat, type OrbPic, isBossRoom, type Enemy, type Game, type Shot, type Look, type Statue, type Rect, type Vec, type Fusion, arrowLook, fusionOf, bladeCount, bladeElement, sawOrbit, sawScale, type BladeElement, type Fx, type SkillId } from './world';
 import { SPIRIT_COLOR, type ItemId, type SpiritSkin } from './shop';
 import { FULL_HERO_SETS, heroKey, type HeroSkin } from './save';
 
@@ -86,6 +86,7 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
     if (g.loadout.wings) drawHeroWings(ctx, g, pal, now, false);
     drawPlayer(ctx, g, pal, now);
     drawSafeBubble(ctx, g, now);
+    drawGaze(ctx, g, now);
     if (g.loadout.wings) {
       drawHeroWings(ctx, g, pal, now, true);
       drawSpirits(ctx, g, now);
@@ -917,6 +918,34 @@ function drawStriding(ctx: CanvasRenderingContext2D, img: HTMLImageElement, w: n
   drawTinted(ctx, frame, -w / 2 - steps.pad * k, -h - lift, frame.width * k, h, tint);
 }
 
+/** The Medusa's deep gaze: while you stand within it, her reach as a dashed ring in her colour and, round your feet,
+    an arc filling as it builds towards the stone. */
+function drawGaze(ctx: CanvasRenderingContext2D, g: Game, now: number) {
+  const m = g.enemies.find((e) => e.bossId === 'medusa' && e.gaze && !e.dead);
+  if (!m) return;
+  const p = g.player;
+  const tone = m.phase > 1 ? '45, 212, 191' : '192, 132, 252';
+  const k = Math.min(1, p.gaze / GAZE.hold);
+  ctx.save();
+  ctx.lineWidth = 2;
+  ctx.setLineDash([10, 8]);
+  ctx.lineDashOffset = -now * 30;
+  ctx.strokeStyle = `rgba(${tone}, ${0.35 + 0.4 * k})`;
+  ctx.beginPath();
+  ctx.arc(m.x, m.y, GAZE.reach + m.r, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.lineWidth = 4;
+  ctx.strokeStyle = `rgba(${tone}, 0.25)`;
+  ctx.beginPath();
+  ctx.arc(p.x, p.y + 4, p.r + 8, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.strokeStyle = `rgba(${k > 0.75 ? '248, 113, 113' : tone}, 0.95)`;
+  ctx.beginPath();
+  ctx.arc(p.x, p.y + 4, p.r + 8, -Math.PI / 2, -Math.PI / 2 + k * Math.PI * 2);
+  ctx.stroke();
+  ctx.restore();
+}
 /** Safe mode: the owner's golden force-field bubble round the hero while it lasts, breathing, fading in and out. */
 function drawSafeBubble(ctx: CanvasRenderingContext2D, g: Game, now: number) {
   const p = g.player;
@@ -4486,6 +4515,8 @@ const MID_ART: Partial<Record<Look, string>> = { original: 'monolith', demon: 'o
 const finalSprites = new Map<string, HTMLImageElement[]>();
 function finalFrame(e: Enemy) {
   if (e.pain > 0) return 8;
+  // The Medusa's deep gaze (her tenth picture) while the hero stands within it and she is doing nothing else.
+  if (e.gaze && e.bossId === 'medusa' && e.chan <= 0 && e.pose <= 0 && e.aim <= 0 && e.dash <= 0) return 9;
   if (e.chan > 0) return 7;
   if (e.pose > 0) return e.act === 'sig' ? 7 : e.act === 'move' ? 6 : 5;
   if (e.aim > 0) return 3;
@@ -4506,10 +4537,10 @@ function drawEnemySprite(ctx: CanvasRenderingContext2D, e: Enemy) {
   if ((e.final && BOSS_ART.has(e.bossId)) || mid) {
     frames = finalSprites.get(sheet);
     if (!frames) {
-      frames = Array.from({ length: 9 }, (_, i) => Object.assign(new Image(), { src: `./images/game/bosses/${sheet}-${i}.webp` }));
+      frames = Array.from({ length: sheet.startsWith('medusa') ? 10 : 9 }, (_, i) => Object.assign(new Image(), { src: `./images/game/bosses/${sheet}-${i}.webp` }));
       finalSprites.set(sheet, frames);
       // The next phase's sheet loads now, so it is in when the boss changes.
-      if ((e.bossId === 'chimera' && sheet === 'chimera') || ((e.bossId === 'medusa' || e.bossId === 'kratos') && sheet === e.bossId)) for (const n of e.bossId === 'medusa' ? ['medusa2'] : e.bossId === 'kratos' ? ['kratos2'] : ['chimera2', 'chimera3']) finalSprites.set(n, Array.from({ length: 9 }, (_, i) => Object.assign(new Image(), { src: `./images/game/bosses/${n}-${i}.webp` })));
+      if ((e.bossId === 'chimera' && sheet === 'chimera') || ((e.bossId === 'medusa' || e.bossId === 'kratos') && sheet === e.bossId)) for (const n of e.bossId === 'medusa' ? ['medusa2'] : e.bossId === 'kratos' ? ['kratos2'] : ['chimera2', 'chimera3']) finalSprites.set(n, Array.from({ length: n.startsWith('medusa') ? 10 : 9 }, (_, i) => Object.assign(new Image(), { src: `./images/game/bosses/${n}-${i}.webp` })));
     }
     img = frames[finalFrame(e)];
     count = 9;
