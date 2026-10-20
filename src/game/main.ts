@@ -1169,11 +1169,17 @@ const SHOP_SEC_ICON: Record<string, [string, string]> = {
 /** The shop opened at one slot's items (from Customise's «Ir a la tienda»): its section unfolded and its heading at
     the top of the dialog. */
 function shopAt(slot: Slot) {
+  shopOpen.clear();
   shopOpen.add((ARMOUR_SLOTS as readonly Slot[]).includes(slot) ? 'armour' : 'weapons');
+  shopOpen.add(`slot:${slot}`);
   shopScreen();
+  scrollShopTo(`slot:${slot}`);
+}
+/** Brings a shop section's row to the top of the dialog, once it has been fitted. */
+function scrollShopTo(key: string) {
   const go = () => {
     const box = screen.querySelector<HTMLElement>('.panel-in');
-    const head = screen.querySelector<HTMLElement>(`[data-shop-head="${slot}"]`);
+    const head = screen.querySelector<HTMLElement>(`[data-shop-sec="${key}"]`);
     if (!box || !head) return;
     box.scrollTop = head.getBoundingClientRect().top - box.getBoundingClientRect().top + box.scrollTop - 8;
     // `fitPanel()` puts the kept scroll back each time a picture loads (the one Customise had, at first): keep this one.
@@ -1181,10 +1187,12 @@ function shopAt(slot: Slot) {
   };
   requestAnimationFrame(() => requestAnimationFrame(go));
 }
-function shopSection(key: string, title: string, count: string, body: string) {
+/** Each slot's mark for the retro look (its painted ring otherwise). */
+const SLOT_EMOJI: Record<Slot, string> = { head: '🪖', body: '🛡️', boots: '🥾', magic: '🔮', melee: '🗡️', ranged: '🏹' };
+function shopSection(key: string, title: string, count: string, body: string, icon?: [string, string]) {
   const open = shopOpen.has(key);
-  const [emoji, pic] = SHOP_SEC_ICON[key] ?? ['🛒', ''];
-  return `<button type="button" class="gear-row shop-sec${open ? ' is-on' : ''}" data-shop-sec="${key}" aria-expanded="${open}">
+  const [emoji, pic] = icon ?? SHOP_SEC_ICON[key] ?? ['🛒', ''];
+  return `<button type="button" class="gear-row shop-sec${key.startsWith('slot:') ? ' is-sub' : ''}${open ? ' is-on' : ''}" data-shop-sec="${key}" aria-expanded="${open}">
       <span class="icon" aria-hidden="true">${picIcon(emoji, pic || undefined)}</span><b>${title}</b><em>${count} ${open ? '▴' : '▾'}</em>
     </button>${open ? body : ''}`;
 }
@@ -1273,14 +1281,17 @@ function shopScreen(note = '') {
     return { slot, owned: all.filter((i) => save.owned.includes(i.id)).length, total: all.length, cards };
   };
   type Group = ReturnType<typeof group>;
-  /** A section holding several sub-groups, each under its own heading (or none, for a single group). */
+  /** A section holding several slots, each one more foldable row of its own (its items only once it is open), or
+      for a single group its items straight away. */
   const merged = (key: string, title: string, parts: Group[], headed = true) => shopSection(key, title,
     `${parts.reduce((n, x) => n + x.owned, 0)}/${parts.reduce((n, x) => n + x.total, 0)}`,
-    parts.filter((x) => x.total).map((x) => `${headed ? `<h3 class="slot" data-shop-head="${x.slot}">${t(SLOT_LABEL[x.slot])}</h3>` : ''}<div class="items">${x.cards}</div>`).join(''));
+    parts.filter((x) => x.total).map((x) => headed
+      ? shopSection(`slot:${x.slot}`, t(SLOT_LABEL[x.slot]), `${x.owned}/${x.total}`, `<div class="items">${x.cards}</div>`, [SLOT_EMOJI[x.slot], `slots/${x.slot}.webp`])
+      : `<div class="items">${x.cards}</div>`).join(''));
   // Armour (head, body, boots), Weapons (magic, melee, ranged) and the Spirits on their own.
   const armourSec = merged('armour', t('shopArmour'), ARMOUR_SLOTS.map((slot) => group(slot, () => true)));
-  const weaponSecs = merged('weapons', t('shopWeapons'), WEAPON_SLOTS.map((slot) => group(slot, (id) => !isSpirit(id))))
-    + merged('spirits', t('shopSpirits'), [group('magic', isSpirit)], false);
+  const weaponSecs = merged('weapons', t('shopWeapons'), WEAPON_SLOTS.map((slot) => group(slot, (id) => !isSpirit(id))));
+  const spiritSec = merged('spirits', t('shopSpirits'), [group('magic', isSpirit)], false);
   // The forge: permanent, levelled upgrades.
   // The extra charm, sold in the forge too: one more item of any kind, worn from Customise.
   const extraCard = `<div class="item forge-item${save.extraSlot ? ' is-on' : save.coins < EXTRA_SLOT_PRICE ? ' is-locked' : ''}">
@@ -1330,8 +1341,9 @@ function shopScreen(note = '') {
     ${note ? `<p class="note">${note}</p>` : `<p class="how">${t('earnHint')}</p>`}
     ${giftLine}
     ${shopSection('forge', t('forge'), `${UPGRADES.reduce((n, u) => n + (save.upgrades[u.id] ?? 0), 0)}/${UPGRADES.reduce((n, u) => n + u.max, 0)}`, `<p class="how">${t('forgeHint')}</p><div class="items">${forge}${extraCard}</div>`)}
-    ${shopSection('arsenal', t('arsenal'), `${save.arsenal.length}/${ARSENAL.length}`, `<p class="how">${t('arsenalHint')}</p><div class="items">${arsenal}</div>`)}
     ${armourSec}${weaponSecs}
+    ${shopSection('arsenal', t('arsenal'), `${save.arsenal.length}/${ARSENAL.length}`, `<p class="how">${t('arsenalHint')}</p><div class="items">${arsenal}</div>`)}
+    ${spiritSec}
     ${backButton('menu')}`, true, false, 'keep-scroll');
   bandCards();
   if (ads.enabled && giftWait <= 0) offerAd('gift', `<button class="primary ad-btn" data-act="ad-gift">📺 ${t('adGift', { coins: AD_GIFT_COINS })}</button>`);
@@ -2026,10 +2038,15 @@ screen.addEventListener('click', (event) => {
     audio.play('coin');
     shopScreen();
   } else if (target.dataset.shopSec) {
+    // One section open at a time, and one slot inside it, so the shop never grows too long to scroll.
     const key = target.dataset.shopSec;
-    if (shopOpen.has(key)) shopOpen.delete(key); else shopOpen.add(key);
+    const sub = key.startsWith('slot:');
+    const was = shopOpen.has(key);
+    for (const k of [...shopOpen]) if (k.startsWith('slot:') || !sub) shopOpen.delete(k);
+    if (!was) shopOpen.add(key);
     audio.play('click');
     shopScreen();
+    if (!was) scrollShopTo(key);
   } else if (target.dataset.arsenal) {
     const w = ARSENAL.find((a) => a.id === target.dataset.arsenal);
     if (!w || save.arsenal.includes(w.id) || !worldWon(save, w.world)) return;
