@@ -314,9 +314,11 @@ function drawRoom(ctx: CanvasRenderingContext2D, g: Game, accent: string, now: n
 /** Every block of every layout (`LAYOUTS` in world.ts), by size and place: the pieces drawn for the viking and Greek worlds. */
 const LAYOUT_PIECES = new Set(['64x26-0', '64x26-1', '40x40-0', '40x40-1', '50x50-0', '100x24-0', '100x24-1', '60x24-0', '36x36-0', '36x36-1', '36x36-2', '36x36-3']);
 
-/** How much bigger than its block a world's pieces are drawn: the haunted servers' graves and fences are wide and
-    low, and at the block's own width they looked too small (only the picture grows; the block you bump into stays). */
-const LAYOUT_SCALE: Partial<Record<string, number>> = { nightmare: 1.45 };
+/** Worlds whose pieces are drawn at one scale, the picture's pixels per unit, instead of by their block's width:
+    the haunted servers' graves, fences and mausoleum were cut at one scale but do not share their blocks' shapes,
+    so by the block's width the fences ran far past their ends and the mausoleum came out squat. A piece is never
+    drawn wider than twice its block (only the picture; the block you bump into stays). */
+const LAYOUT_PX: Partial<Record<string, number>> = { nightmare: 4 };
 /** Each world's pieces drawn for every layout block, by its file prefix (none for the jungle, which picks by shape). */
 const LAYOUT_SET: Record<string, string> = { viking: 'ice-', greek: 'arena-', demon: 'lava-', original: 'server-', robot: 'forge-', nightmare: 'grave-', core: 'core-', jungle: '' };
 
@@ -341,7 +343,8 @@ function drawObstacles(ctx: CanvasRenderingContext2D, g: Game, accent: string, n
     if (!ready(pic)) continue;
     // As wide as the block and a little more, its own shape kept, standing on the block's bottom edge
     // (a pillar a little narrower, since it stands twice as tall as it is wide).
-    const w = o.w * (pic.naturalHeight > pic.naturalWidth * 1.5 ? 0.9 : 1.12) * (LAYOUT_SCALE[stones!] ?? 1);
+    const px = LAYOUT_PX[stones!];
+    const w = px ? Math.min(pic.naturalWidth / px, o.w * 2) : o.w * (pic.naturalHeight > pic.naturalWidth * 1.5 ? 0.9 : 1.12);
     const h = (w * pic.naturalHeight) / pic.naturalWidth;
     ctx.fillStyle = 'rgba(0,0,0,0.3)';
     ctx.beginPath();
@@ -2445,6 +2448,8 @@ function drawFx(ctx: CanvasRenderingContext2D, g: Game, accent: string, layer: '
 const ORB_PIC: Record<OrbPic, { src: 'fx' | 'arrow'; name: string; w: number; at: number; trail?: string; glow?: number }> = {
   // The mud world's: the Medusa's purple bolt, the Mud Monster's mud ball, the bats' venom.
   medusa: { src: 'fx', name: 'medusa-bolt', w: 48, at: 0.95 },
+  // The haunted servers' Lich: purple embers, the orange flame turned purple and laid on its side.
+  ember: { src: 'fx', name: 'ember-purple', w: 34, at: 0.72 },
   mudball: { src: 'fx', name: 'mudball', w: 30, at: 0.72 },
   venom: { src: 'fx', name: 'venom', w: 20, at: 0.75 },
   tornado: { src: 'fx', name: 'tornado-0', w: 0, at: 0 },
