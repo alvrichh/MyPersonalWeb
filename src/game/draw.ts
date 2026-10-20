@@ -4590,6 +4590,38 @@ function heldFrame(e: Enemy, sheet: string, want: number, frames: HTMLImageEleme
 }
 /** Milliseconds each picture of Nocthrax's wing beat shows (six to a beat). */
 const FLAP_STEP = 105;
+/** A boss sheet's pictures, loaded once: nine poses, ten for the Medusa and Kratos with the blade, fifteen for
+    Nocthrax in the air (its wing beat). */
+const NEXT_SHEETS: Record<string, string[]> = { chimera: ['chimera2', 'chimera3'], medusa: ['medusa2'], kratos: ['kratos2'] };
+function bossSheet(sheet: string) {
+  let frames = finalSprites.get(sheet);
+  if (!frames) {
+    const n = sheet === 'chimera2' || sheet === 'chimera3' ? 15 : sheet.startsWith('medusa') || sheet === 'kratos2' ? 10 : 9;
+    frames = Array.from({ length: n }, (_, i) => Object.assign(new Image(), { src: `./images/game/bosses/${sheet}-${i}.webp` }));
+    finalSprites.set(sheet, frames);
+  }
+  return frames;
+}
+/** Warm a run's cast up when it starts (its bugs, its room-6 boss and its final boss with every phase), so no
+    picture is still loading when they first come and the retro figure never shows in its place. */
+export function preloadCast(g: Game) {
+  // A Boss Rush goes on through the later worlds; the secret shift's two bosses are Kratos.
+  const worlds = g.rush ? WORLDS.map((_, i) => i + 1).filter((w) => w >= g.rushFrom) : [g.world];
+  if (g.secret) bossSheet('kratos'), bossSheet('kratos2');
+  for (const w of worlds) {
+    const def = WORLDS[w - 1];
+    const look = g.style === 'world' ? def.look : g.style;
+    if (look === 'random') continue;
+    const count = SPRITE_FRAMES[look];
+    if (count) for (const kind of ['bug', 'ticket', 'legacy', 'boss'] as const) enemyFrames(look, kind, count);
+    const mid = MID_ART[look];
+    if (mid) bossSheet(mid);
+    const fin = FINAL_BOSS_ART[w - 1];
+    if (fin) { bossSheet(fin); for (const n of NEXT_SHEETS[fin] ?? []) bossSheet(n); }
+  }
+}
+/** Each world's final boss sheet, in world order. */
+const FINAL_BOSS_ART = ['kernel', 'archdemon', 'drakkar', 'medusa', 'queen', 'zeus', 'mech', 'wraith', 'chimera'];
 function finalFrame(e: Enemy) {
   // Kratos taking up the Blade of Olympus: his tenth picture, leaping with it raised out of a burst of lightning.
   if (e.rise) return 9;
@@ -4615,20 +4647,18 @@ function drawEnemySprite(ctx: CanvasRenderingContext2D, e: Enemy) {
   const mid = e.kind === 'boss' && !e.final && !e.minion ? (e.bossId === 'kratos' ? (e.phase > 1 ? 'kratos2' : 'kratos') : MID_ART[e.look]) : undefined;
   const sheet = mid ?? (e.phase > 1 ? `${e.bossId}${e.phase}` : e.bossId);
   if ((e.final && BOSS_ART.has(e.bossId)) || mid) {
-    frames = finalSprites.get(sheet);
-    if (!frames) {
-      frames = Array.from({ length: sheet === 'chimera2' || sheet === 'chimera3' ? 15 : sheet.startsWith('medusa') || sheet === 'kratos2' ? 10 : 9 }, (_, i) => Object.assign(new Image(), { src: `./images/game/bosses/${sheet}-${i}.webp` }));
-      finalSprites.set(sheet, frames);
-      // The next phase's sheet loads now, so it is in when the boss changes.
-      if ((e.bossId === 'chimera' && sheet === 'chimera') || ((e.bossId === 'medusa' || e.bossId === 'kratos') && sheet === e.bossId)) for (const n of e.bossId === 'medusa' ? ['medusa2'] : e.bossId === 'kratos' ? ['kratos2'] : ['chimera2', 'chimera3']) finalSprites.set(n, Array.from({ length: n === 'chimera2' || n === 'chimera3' ? 15 : n.startsWith('medusa') || n === 'kratos2' ? 10 : 9 }, (_, i) => Object.assign(new Image(), { src: `./images/game/bosses/${n}-${i}.webp` })));
-    }
+    frames = bossSheet(sheet);
+    // The next phase's sheet loads now, so it is in when the boss changes.
+    for (const n of NEXT_SHEETS[sheet] ?? []) bossSheet(n);
     img = frames[heldFrame(e, sheet, finalFrame(e), frames)];
     count = 9;
   }
   if (!count) return false;
   frames ??= enemyFrames(e.look, e.kind, count);
   img ??= frames[enemyFrame(e, count)] ?? frames[0];
-  if (!img.complete || !img.naturalWidth) return false;
+  // A pose still loading shows another of the same sheet that is in, never the retro figure for a moment.
+  if (!ready(img)) img = frames.find(ready);
+  if (!img) return false;
   const fit = count === 9 ? BOSS_CANVAS[sheet] : SPRITE_CANVAS[`${e.look}-${e.kind}`];
   const size = e.r * (e.kind === 'boss' ? 2.6 : 2.5) * (fit ? fit.k : 1);
   const ratio = img.naturalWidth / img.naturalHeight;
