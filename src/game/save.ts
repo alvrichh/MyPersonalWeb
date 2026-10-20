@@ -31,6 +31,9 @@ export const heroStill = (skin: HeroSkin, head?: string) => {
   return `${key}-${FULL_HERO_SETS.includes(key) ? 'front' : 'idle'}`;
 };
 
+/** The three ways to play: the two of `world.ts` and the board's. */
+export type PlayMode = Mode | 'board';
+
 export type Save = {
   /** The player's name, shown on the cover and the profile (the hero is alvrich by default). */
   name: string;
@@ -76,11 +79,15 @@ export type Save = {
   unlocked: number;
   /** The world picked on the map. */
   world: number;
-  /** Sprints (rooms) or on call (the ten-minute horde). */
-  mode: Mode;
+  /** Sprints (rooms), on call (the ten-minute horde) or the board (the auto battler, `board.ts`). */
+  mode: PlayMode;
   /** On call keeps its own world progress: worlds you may enter there, and the one picked. */
   hordeUnlocked: number;
   hordeWorld: number;
+  /** The board keeps its own world progress and records too: the furthest round reached, and whether it was won. */
+  boardUnlocked: number;
+  boardWorld: number;
+  boardBest: Record<number, { round: number; won: boolean }>;
   /** Masteries earned: one each time every world of both modes is cleared and the progress reset, for a small
       permanent boost. (Older saves kept one count per mode, `mastery`; `loadSave()` adds them up.) */
   masteries: number;
@@ -146,6 +153,9 @@ const fresh = (): Save => ({
   mode: 'sprints',
   hordeUnlocked: 1,
   hordeWorld: 1,
+  boardUnlocked: 1,
+  boardWorld: 1,
+  boardBest: {},
   masteries: 0,
   starColor: 'gold',
   hordeBest: {},
@@ -164,8 +174,8 @@ export function loadSave(): Save {
   const base = fresh();
   try {
     const data = JSON.parse(storage.get(KEY) || '{}') as Partial<Save>;
-    const save: Save = { ...base, ...data, equipped: {}, upgrades: { ...data.upgrades }, itemLevels: { ...data.itemLevels }, best: { ...base.best, ...data.best }, bestByWorld: { ...data.bestByWorld }, hordeBest: { ...data.hordeBest } };
-    if (save.mode !== 'sprints' && save.mode !== 'horde') save.mode = 'sprints';
+    const save: Save = { ...base, ...data, equipped: {}, upgrades: { ...data.upgrades }, itemLevels: { ...data.itemLevels }, best: { ...base.best, ...data.best }, bestByWorld: { ...data.bestByWorld }, hordeBest: { ...data.hordeBest }, boardBest: { ...data.boardBest } };
+    if (save.mode !== 'sprints' && save.mode !== 'horde' && save.mode !== 'board') save.mode = 'sprints';
     save.stats = { ...base.stats, ...data.stats, killsByWorld: { ...data.stats?.killsByWorld } };
     // Older saves knew Nightmare's longest run before the totals came in.
     save.stats.nightmareLongest = Math.max(save.stats.nightmareLongest, data.nightmareBest?.time ?? 0);
@@ -239,6 +249,8 @@ export function loadSave(): Save {
     save.hordeUnlocked = nextAfter(Object.entries(save.hordeBest).filter(([, b]) => b?.won).map(([w]) => Number(w)));
     save.world = Math.min(save.world, save.unlocked);
     save.hordeWorld = Math.min(save.hordeWorld, save.hordeUnlocked);
+    save.boardUnlocked = nextAfter(Object.entries(save.boardBest).filter(([, b]) => b?.won).map(([w]) => Number(w)));
+    save.boardWorld = Math.min(Math.max(1, save.boardWorld || 1), save.boardUnlocked);
     return save;
   } catch {
     return base;
@@ -258,8 +270,8 @@ export function profileLevel(xp: number) {
   return { level, progress: left / need };
 }
 
-/** A world won in either mode: a sprint run cleared or an on-call shift completed. */
-export const worldWon = (save: Save, n: number) => save.bestByWorld[n]?.time !== undefined || !!save.hordeBest[n]?.won;
+/** A world won in any mode: a sprint run cleared, an on-call shift completed or the board's ten rounds won. */
+export const worldWon = (save: Save, n: number) => save.bestByWorld[n]?.time !== undefined || !!save.hordeBest[n]?.won || !!save.boardBest[n]?.won;
 
 /** Back to a fresh start: progress, coins, gear and level go; name, skins bought, settings, masteries, star colour, the lifetime totals, the achievements and the extra charm's slot (empty: what it held goes with the items) stay. */
 export function wipeProgress(save: Save) {
