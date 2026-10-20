@@ -360,6 +360,8 @@ export type Threat = {
   span?: number;
   /** Left on the floor when it hits. */
   after?: 'lava' | 'thorns' | 'puddle';
+  /** Something lobbed onto the circle while it warns (the Mech's fuel barrels, the molotov's evolution). */
+  lob?: 'barrel';
   /** A javelin: when the warning runs out a bolt flies along the line instead of the whole line striking. */
   shot?: OrbPic;
 };
@@ -2688,6 +2690,8 @@ function signature(g: Game, e: Enemy, sig: Signature) {
       const aim = Math.atan2(p.y - e.y, p.x - e.x);
       const spin = (Math.random() < 0.5 ? -1 : 1) * 0.95;
       for (const off of [0, Math.PI]) g.threats.push({ kind: 'beam', x: e.x, y: e.y, r: 9, a: aim + off, len: 760, warn: 1, max: 1, life: 3.4, dmg, el: 'laser', spin, owner: e.id });
+      // …and fuel barrels lobbed onto you while they sweep, the arsenal's Fuel Barrel: each bursts into a pool of fire.
+      fuelBarrels(g, 3, dmg);
       e.chan = 4.4;
       break;
     }
@@ -2754,6 +2758,17 @@ const LANDING: Record<string, { el: ThreatEl; fx: string; pic?: OrbPic; tone?: s
   mud: { el: 'mud', fx: 'mud-splat', pic: 'mudball' }, medusa: { el: 'arcane', fx: 'medusa-burst', pic: 'medusa' },
   original: { el: 'glitch', fx: 'impact' }, kernel: { el: 'glitch', fx: 'impact' },
 };
+/** Fuel barrels lobbed onto the hero and round them: warned circles, a barrel tumbling down onto each, then a burst
+    of fire and a pool of burning fuel left a while (the molotov's evolution, which the Mech's world sells). */
+function fuelBarrels(g: Game, n: number, dmg: number) {
+  const p = g.player;
+  for (let i = 0; i < n; i++) {
+    const a = rand(0, Math.PI * 2);
+    const at = i === 0 ? p : { x: p.x + Math.cos(a) * rand(55, 100), y: p.y + Math.sin(a) * rand(55, 100) };
+    const t = circle(g, inside(g, at, 34), 34, 1.1 + i * 0.25, dmg, 'fire', 'lava');
+    g.threats[t - 1].lob = 'barrel';
+  }
+}
 function bossLands(g: Game, e: Enemy) {
   const orbs0 = g.orbs.length;
   const threats0 = g.threats.length;
@@ -2782,6 +2797,7 @@ function landing(g: Game, e: Enemy) {
         g.orbs.push({ x: e.x, y: e.y, vx: Math.cos(a) * 135, vy: Math.sin(a) * 135, r: 8, dmg: Math.round(e.dmg * 0.85), life: 5, bounce: 0, tone: '#fb923c', home: 1.4, pic: 'shark' });
       }
     } else ring(g, e, 8, 120, land.tone ?? TONE[el], undefined, land.pic);
+    if (e.bossId === 'mech') fuelBarrels(g, 2, Math.round(e.dmg * 0.9));
     // Valdur roars as he lands.
     if (e.bossId === 'valdur') { e.pose = 0.6; e.act = 'move'; }
   } else {
