@@ -751,6 +751,7 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
   // The Core's Chimera, the last of all: twice the health of the other final bosses' formula.
   const chimera = final && g.world === WORLD_COUNT ? 2 : 1;
   const hp = Math.round(base.hp * (kind === 'boss' ? worldUp * g.bossHpMult * chimera : tough));
+  const bossId: string = kind !== 'boss' ? '' : g.secret ? 'kratos' : final ? FINAL_BOSS[g.world - 1] : look;
   return {
     id: nextId++,
     kind,
@@ -761,7 +762,7 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
     r: final ? (g.world === 3 ? 60 : 52) : base.r,
     hp,
     maxHp: hp,
-    speed: base.speed * (final && g.world === 3 ? 0.8 : 1) * (1 + (g.world - 1) * 0.03) * (horde && kind !== 'boss' ? 1 + (g.time / 60) * 0.02 : 1),
+    speed: base.speed * (final && g.world === 3 ? 0.8 : 1) * (BOSS_PACE[bossId] ?? 1) * (1 + (g.world - 1) * 0.03) * (horde && kind !== 'boss' ? 1 + (g.time / 60) * 0.02 : 1),
     dmg: Math.round(base.dmg * (1 + (g.world - 1) * 0.1)),
     xp: base.xp,
     spawn,
@@ -788,7 +789,7 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
     side: Math.random() < 0.5 ? -1 : 1,
     detour: 0,
     dead: false,
-    bossId: kind !== 'boss' ? '' : g.secret ? 'kratos' : final ? FINAL_BOSS[g.world - 1] : look,
+    bossId,
     final,
     clone: false,
     minion: false,
@@ -1419,7 +1420,8 @@ function hurt(g: Game, e: Enemy, amount: number, push?: Vec) {
   }
   e.hp -= amount;
   e.hit = 0.1;
-  if (e.kind === 'boss' && e.painCd <= 0) { e.pain = BOSS_PAIN.show; e.painCd = BOSS_PAIN.every; }
+  // The hurt pose only shows while the boss walks or stands: it no longer cuts into a wind-up, a charge or an attack.
+  if (e.kind === 'boss' && e.painCd <= 0 && e.aim <= 0 && e.dash <= 0 && e.pose <= 0 && e.chan <= 0) { e.pain = BOSS_PAIN.show; e.painCd = BOSS_PAIN.every; }
   if (e.bossId === 'drakkar' && e.hp <= e.maxHp / 2) {
     breakShip(g, e);
     return;
@@ -2247,7 +2249,13 @@ const POISON_DMG = 8;
 const PARA_FREE = 2.5;
 /** The Medusa's deep gaze: stay within `reach` of her for `hold` seconds and you turn to stone for `stone` seconds
     (the same cooldown as any hold); out of it the gaze fades twice as fast. */
-export const GAZE = { reach: 150, hold: 2, stone: 1.5 };
+export const GAZE = { reach: 120, hold: 2, stone: 1.5, out: 20 };
+/** How fast each boss walks by its build, on its base pace (40, a little more each world): the heavy ones (the Monolith,
+    the Treant, the Queen, the Drakkar's longship) as they were, the light and fierce ones much quicker, so none plods. */
+const BOSS_PACE: Record<string, number> = {
+  original: 1, demon: 1.5, viking: 1.6, mud: 1.15, jungle: 1, greek: 1.45, robot: 1.2, nightmare: 1.3,
+  kernel: 1.2, archdemon: 1.35, drakkar: 1, medusa: 1.2, queen: 1, zeus: 1.3, mech: 1.25, wraith: 1.5, chimera: 1.3, kratos: 1.6,
+};
 /** Stops a bug dead for `secs`, unless it was stopped a moment ago: then it is only slowed (see `paraCd`). */
 function paralyze(e: Enemy, secs: number) {
   e.slow = Math.max(e.slow, secs);
@@ -3519,7 +3527,8 @@ export function update(g: Game, dt: number, input: Input) {
   p.paraCd = Math.max(0, p.paraCd - dt);
   // The Medusa's gaze: it builds while you stay near her and turns you to stone when it is full.
   const medusa = g.enemies.find((e) => e.bossId === 'medusa' && !e.dead && !e.clone && e.spawn <= 0 && !e.vanish);
-  const gazed = !!medusa && dist(medusa, p) < GAZE.reach + medusa.r && p.stone <= 0;
+  // Hysteresis: the gaze takes you at `reach` and lets go only past `reach + out`, so at its edge it does not flicker.
+  const gazed = !!medusa && dist(medusa, p) < GAZE.reach + medusa.r + (medusa.gaze ? GAZE.out : 0) && p.stone <= 0;
   if (medusa) medusa.gaze = gazed;
   p.gaze = gazed ? p.gaze + dt : Math.max(0, p.gaze - 2 * dt);
   // Full: it petrifies as soon as it can (not through a hit's blink, the cooldown after a hold or the showcase).
