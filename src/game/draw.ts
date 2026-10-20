@@ -4560,7 +4560,7 @@ const BOSS_ART = new Set<string>(['kernel', 'archdemon', 'drakkar', 'valdur', 'm
 const BOSS_CANVAS: Record<string, { k: number; feet: number }> = {
   kernel: { k: 2.155, feet: 0.1766 }, archdemon: { k: 2.028, feet: 0.1232 },
   drakkar: { k: 1.081, feet: 0.12 }, valdur: { k: 1.538, feet: 0.1954 }, zeus: { k: 1.782, feet: 0.2063 }, queen: { k: 1.348, feet: 0.1484 },
-  wraith: { k: 1.295, feet: 0.1974 }, valkyrie: { k: 2.6, feet: 0.1691 }, medusa: { k: 2.116, feet: 0.012 }, medusa2: { k: 2.066, feet: 0.012 }, mudmonster: { k: 1.615, feet: 0.072 }, monolith: { k: 2.9, feet: 0.2121 }, minotaur: { k: 2.99, feet: 0.2765 }, mainframe: { k: 2.3, feet: 0.2248 }, overlord: { k: 3.186, feet: 0.2265 }, kratos: { k: 2.4, feet: 0.1892 }, kratos2: { k: 3.12, feet: 0.3172 }, mech: { k: 1.412, feet: 0.0878 }, chimera: { k: 2.226, feet: 0.1553 }, chimera2: { k: 1.749, feet: 0.1787 }, chimera3: { k: 1.706, feet: 0.2686 },
+  wraith: { k: 1.295, feet: 0.1974 }, valkyrie: { k: 2.6, feet: 0.1691 }, medusa: { k: 2.116, feet: 0.012 }, medusa2: { k: 2.066, feet: 0.012 }, mudmonster: { k: 1.615, feet: 0.072 }, monolith: { k: 2.9, feet: 0.2121 }, minotaur: { k: 2.99, feet: 0.2765 }, mainframe: { k: 2.3, feet: 0.2248 }, overlord: { k: 3.186, feet: 0.2265 }, kratos: { k: 2.4, feet: 0.1892 }, kratos2: { k: 3.12, feet: 0.3172 }, mech: { k: 1.412, feet: 0.0878 }, chimera: { k: 2.226, feet: 0.1553 }, chimera2: { k: 1.749, feet: 0.1787 }, chimera3: { k: 1.706, feet: 0.2403 },
 };
 /** Room-6 bosses with a nine-pose sheet of their own, in the final bosses' order: the backlog's Monolith, the fire world's Overlord, the vikings'
     Valkyrie, the Mud Monster, the Arena's Minotaur, the Forge's Mainframe. */
@@ -4599,10 +4599,9 @@ function finalFrame(e: Enemy) {
   if (e.pose > 0) return e.act === 'sig' ? 7 : e.act === 'move' ? 6 : 5;
   if (e.aim > 0) return 3;
   if (e.dash > 0) return 4;
-  // In the air Nocthrax flaps whether it moves or not: in its phase 2 the owner's six-picture wing beat (`chimera2-9..14`,
-  // the body still and only the wings moving, `FLAP_STEP` a picture), in its final form the sheet's first three poses.
-  if (e.phase === 2 && e.bossId === 'chimera') return 9 + (Math.floor(performance.now() / FLAP_STEP) % 6);
-  if (e.phase > 1 && e.bossId === 'chimera') return [0, 1, 2, 1][Math.floor(performance.now() / 120) % 4];
+  // In the air Nocthrax flaps whether it moves or not: the owner's six-picture wing beat for each phase
+  // (`chimera2-9..14`, `chimera3-9..14`, the body still and only the wings moving, `FLAP_STEP` a picture).
+  if (e.phase > 1 && e.bossId === 'chimera') return 9 + (Math.floor(performance.now() / FLAP_STEP) % 6);
   return walkFrame(e, WALK_FINAL);
 }
 function drawEnemySprite(ctx: CanvasRenderingContext2D, e: Enemy) {
@@ -4617,10 +4616,10 @@ function drawEnemySprite(ctx: CanvasRenderingContext2D, e: Enemy) {
   if ((e.final && BOSS_ART.has(e.bossId)) || mid) {
     frames = finalSprites.get(sheet);
     if (!frames) {
-      frames = Array.from({ length: sheet === 'chimera2' ? 15 : sheet.startsWith('medusa') || sheet === 'kratos2' ? 10 : 9 }, (_, i) => Object.assign(new Image(), { src: `./images/game/bosses/${sheet}-${i}.webp` }));
+      frames = Array.from({ length: sheet === 'chimera2' || sheet === 'chimera3' ? 15 : sheet.startsWith('medusa') || sheet === 'kratos2' ? 10 : 9 }, (_, i) => Object.assign(new Image(), { src: `./images/game/bosses/${sheet}-${i}.webp` }));
       finalSprites.set(sheet, frames);
       // The next phase's sheet loads now, so it is in when the boss changes.
-      if ((e.bossId === 'chimera' && sheet === 'chimera') || ((e.bossId === 'medusa' || e.bossId === 'kratos') && sheet === e.bossId)) for (const n of e.bossId === 'medusa' ? ['medusa2'] : e.bossId === 'kratos' ? ['kratos2'] : ['chimera2', 'chimera3']) finalSprites.set(n, Array.from({ length: n === 'chimera2' ? 15 : n.startsWith('medusa') || n === 'kratos2' ? 10 : 9 }, (_, i) => Object.assign(new Image(), { src: `./images/game/bosses/${n}-${i}.webp` })));
+      if ((e.bossId === 'chimera' && sheet === 'chimera') || ((e.bossId === 'medusa' || e.bossId === 'kratos') && sheet === e.bossId)) for (const n of e.bossId === 'medusa' ? ['medusa2'] : e.bossId === 'kratos' ? ['kratos2'] : ['chimera2', 'chimera3']) finalSprites.set(n, Array.from({ length: n === 'chimera2' || n === 'chimera3' ? 15 : n.startsWith('medusa') || n === 'kratos2' ? 10 : 9 }, (_, i) => Object.assign(new Image(), { src: `./images/game/bosses/${n}-${i}.webp` })));
     }
     img = frames[heldFrame(e, sheet, finalFrame(e), frames)];
     count = 9;
