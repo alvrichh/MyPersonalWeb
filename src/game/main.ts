@@ -266,6 +266,8 @@ const FRAMES = {
 const FADE = 18;
 function fadeEdges(el: HTMLElement) {
   const more = el.scrollHeight - el.clientHeight;
+  // Customise's back-to-top button shows only once the list is scrolled down.
+  el.parentElement?.querySelector('.ui-top')?.classList.toggle('is-shown', el.scrollTop > 40);
   el.style.setProperty('--ft', `${more > 1 ? Math.min(FADE, el.scrollTop) : 0}px`);
   el.style.setProperty('--fb', `${more > 1 ? Math.min(FADE, more - el.scrollTop) : 0}px`);
 }
@@ -320,8 +322,8 @@ function show(html: string, wide = false, menu = false, extra = '') {
   // A dialog that re-renders itself (the shop after a purchase) keeps its scroll.
   const keepScroll = extra === 'keep-scroll' ? screen.querySelector('.panel-in')?.scrollTop ?? 0 : 0;
   // The corner buttons (close, options) are pulled out of the scrolling box so they stay put.
-  const close = (html.match(/<button class="ui-(?:close|opts)"[^>]*>(?:<span[^<]*<\/span>)?<\/button>/g) ?? []).join('');
-  for (const b of html.match(/<button class="ui-(?:close|opts)"[^>]*>(?:<span[^<]*<\/span>)?<\/button>/g) ?? []) html = html.replace(b, '');
+  const close = (html.match(/<button class="ui-(?:close|opts|top)"[^>]*>(?:<span[^<]*<\/span>)?<\/button>/g) ?? []).join('');
+  for (const b of html.match(/<button class="ui-(?:close|opts|top)"[^>]*>(?:<span[^<]*<\/span>)?<\/button>/g) ?? []) html = html.replace(b, '');
   const cls = `panel${wide ? ' panel-wide' : ''}${opening && !menu && extra !== 'is-map' ? ' is-pop' : ''}`;
   const old = opening ? null : screen.querySelector<HTMLElement>(':scope > .panel');
   if (old) {
@@ -1375,6 +1377,7 @@ function stylesScreen(note = '') {
   const nav = (key: 'skin' | 'foes' | 'scene' | 'song', label: Key) =>
     `<button class="dnav${dressSlot === key ? ' is-open' : ''}" data-dress-list="${key}" aria-pressed="${dressSlot === key}"><span class="ring${navIcon[key] && !save.retro ? ' has-pic' : ''}" aria-hidden="true">${navIcon[key] && !save.retro ? navIcon[key] : NAV_EMOJI[key]}</span><small>${t(label)}</small></button>`;
   show(`<button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
+    <button class="ui-top" type="button" data-act="to-top" aria-label="${t('toTop')}"><span aria-hidden="true">▲</span></button>
     <div class="dress-title"><h2>${t('styles')}</h2></div>
     <p class="wallet">${coinsLine()}</p>
     <div class="dress">
@@ -1484,6 +1487,7 @@ screen.addEventListener('click', (event) => {
     if (n <= unlockedIn()) { setWorld(n); persist(); }
     mapScreen();
   }
+  else if (act === 'to-top') screen.querySelector('.panel-in')?.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   else if (act === 'resume') { paused = false; hide(); }
   else if ((act === 'shrine-heal' || act === 'shrine-skill') && game) {
     const got = shrinePick(game, act === 'shrine-heal' ? 'heal' : 'skill');
