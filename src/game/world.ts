@@ -246,6 +246,8 @@ export type Enemy = {
   /** Cooldowns of the world's special attack and of the final boss's signature, and signatures used (the chimera cycles). */
   cd4: number;
   cd5: number;
+  /** On call: time to this boss's next leap at you (every boss leaps there, like the Treant). */
+  leapCd: number;
   sigs: number;
   /** Charges still to chain (Valdur's frenzy). */
   combo: number;
@@ -723,6 +725,7 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
     chanTick: 0,
     cd4: 3,
     cd5: 4.5,
+    leapCd: 4,
     sigs: 0,
     combo: 0,
     rage: false,
@@ -2267,6 +2270,8 @@ type Signature = 'tornado' | 'spiral' | 'meteors' | 'tide' | 'sigils' | 'roots' 
 const MID_MOVE: Move[] = ['volley', 'breath', 'geysers', 'mudball', 'leap', 'javelins', 'missiles', 'blink'];
 const SIGNATURE: Signature[] = ['spiral', 'meteors', 'tide', 'sigils', 'roots', 'grid', 'laser', 'clones'];
 /** The last world mixes them: a random move each time, and the signatures of the worlds before it (but the first) in turn. */
+/** On call: how often every boss leaps at you, on top of its own move. */
+const HORDE_LEAP = 9;
 const moveOf = (g: Game, e: Enemy): Move =>
   e.bossId === 'valdur' ? 'leap' : e.bossId === 'queen' ? 'acid' : g.world < WORLD_COUNT ? MID_MOVE[g.world - 1]
   // Nocthrax: the Treant's vanishing leap half the time (the owner's favourite), any other move otherwise.
@@ -2445,6 +2450,16 @@ function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
     }
   }
   if (e.dash > 0 || e.aim > 0) return;
+  // On call every boss also leaps at you now and then, the Treant's leap, on its own clock (not the clones, the
+  // bosses it calls, or the Drakkar's longship; the ones whose own move is the leap already do it).
+  if (g.mode === 'horde' && !e.clone && !e.minion && e.bossId !== 'drakkar' && moveOf(g, e) !== 'leap') {
+    e.leapCd -= dt;
+    if (e.leapCd <= 0) {
+      e.leapCd = HORDE_LEAP * fury;
+      worldMove(g, e, 'leap');
+      return;
+    }
+  }
   // The world's move.
   e.cd4 -= dt;
   if (e.cd4 <= 0) {
