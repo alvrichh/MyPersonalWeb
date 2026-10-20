@@ -2617,9 +2617,9 @@ function inside(g: Game, v: Vec, m: number): Vec {
   return { x: clamp(v.x, b.x + m, b.x + b.w - m), y: clamp(v.y, b.y + m, b.y + b.h - m) };
 }
 /** The final bosses' rings fly as their element's weapon pictures (the cast bosses keep the plain orbs). */
-const RING_PIC: Partial<Record<string, OrbPic>> = { nightmare: 'ember', mud: 'mudball', medusa: 'medusa', archdemon: 'fireball', kratos: 'fireball', kratos2: 'bolt', drakkar: 'water', valdur: 'water', queen: 'leaf', zeus: 'bolt', mech: 'spark', wraith: 'ghost' };
+const RING_PIC: Partial<Record<string, OrbPic>> = { demon: 'fireball', viking: 'water', jungle: 'leaf', greek: 'bolt', robot: 'spark', chimera: 'ember', nightmare: 'ember', mud: 'mudball', medusa: 'medusa', archdemon: 'fireball', kratos: 'fireball', kratos2: 'bolt', drakkar: 'water', valdur: 'water', queen: 'leaf', zeus: 'bolt', mech: 'spark', wraith: 'ghost' };
 /** Rings in a colour of their own (glow and track); the rest are the usual red. The Lich's embers are purple. */
-const RING_TONE: Partial<Record<string, string>> = { nightmare: '#a855f7' };
+const RING_TONE: Partial<Record<string, string>> = { nightmare: '#a855f7', chimera: '#e879f9' };
 const ring = (g: Game, e: Enemy, n: number, speed: number, tone = '', turn = rand(0, Math.PI * 2), pic?: OrbPic) => {
   for (let i = 0; i < n; i++) {
     const a = turn + (i / n) * Math.PI * 2;
