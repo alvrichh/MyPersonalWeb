@@ -278,6 +278,8 @@ export type Enemy = {
   grow: number;
   /** Seconds to the Medusa's next snakes (0 until her first frame). */
   snakeAt?: number;
+  /** Seconds left of Kratos taking up the Blade of Olympus: he stands in his pillar of lightning and does nothing else. */
+  rise?: number;
   /** A plant the Carnivorous Queen grows: it stays rooted where it came up and spits at you. */
   rooted: boolean;
   /** A snake the Medusa lets loose: 1 purple (her first phase), 2 turquoise (her second); 0 for every other bug. */
@@ -1442,6 +1444,8 @@ function hurt(g: Game, e: Enemy, amount: number, push?: Vec) {
   // Kratos at half health takes up the Blade of Olympus: his second sheet, `kratos2`, and lightning for fire.
   if (e.bossId === 'kratos' && e.phase < 2 && e.hp > 0 && e.hp <= e.maxHp / 2) {
     e.phase = 2;
+    e.rise = KRATOS_RISE;
+    e.dash = e.aim = e.chan = e.pose = 0;
     g.shake = Math.max(g.shake, 0.5);
     burst(g, e.x, e.y, '#60a5fa', 34, 220, 3.5);
     g.events.push('phase');
@@ -2419,6 +2423,8 @@ function updateEnemy(g: Game, e: Enemy, dt: number) {
     }
   }
   e.paraCd = Math.max(0, e.paraCd - dt);
+  // Kratos rising with the Blade of Olympus stands still, attacking nothing, until it is done.
+  if (e.rise) { e.rise = Math.max(0, e.rise - dt); if (e.rise > 0) return; }
   if (e.slow > 0) e.slow -= dt;
   else e.slowBy = 0;
   const slowFactor = e.slow > 0 ? 1 - e.slowBy : 1;
@@ -2630,6 +2636,8 @@ const JARLS = { most: 2, every: 12, r: 22, hp: 0.08 };
 /** The Queen's plants: two at a time every `every` seconds (sooner in her fury), at most `most` up at once. */
 const PLANTS = { each: 2, every: 9, most: 4 };
 /** The Medusa's snakes: how many at a time, how often, how many at most, and how fast and tough against a bug. */
+/** How long Kratos stands in his pillar of lightning as he takes up the Blade of Olympus. */
+const KRATOS_RISE = 2;
 const SNAKES = { each: 2, every: 8, most: 4, first: 5, speed: 1.3, hp: 0.6, r: 11 };
 
 function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
