@@ -7,9 +7,9 @@ import { COIN_PACKS, currentOffer, grant, packBonus, SKIN_OFFERS, type CoinPack,
 import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPrize, type DailyResult } from './daily';
 import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
 import { draw, drawRetroFigure, preloadCast, preloadFx, type Palette, type View } from './draw';
-import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, type PlayMode, heroStill } from './save';
-import { ROUNDS, TIER_KIND, boardCap, boardCoins, buy as boardBuy, moveUnit, newBoard, nextRound, onBoard, pieceAt, reroll as boardReroll, sell as boardSell, startFight, updateBoard, type BoardGame } from './board';
-import { drawBoard, layoutBoard, slotAt, type BoardDrag, type BoardLayout } from './boardView';
+import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
+import { GOLD, ROUNDS, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, updateBoard, type BoardGame } from './board';
+import { drawBoard, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
 import type { Enemy } from './world';
 import { ARMOUR_SLOTS, ARSENAL, ITEMS, itemLevel, type SpiritSkin, UPGRADES, WEAPON_SLOTS, EXTRA_SLOT_PRICE, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
 import { Scene } from './scene';
@@ -554,7 +554,8 @@ const esc = (s: string) => s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`)
    the name, whose colour the profile picks. */
 const masteries = () => save.masteries;
 /** The mastery is offered once every world of both modes is cleared. */
-const masteryReady = () => MODES.every((m) => worldsLeft(m) === 0);
+// The board does not count: it has no shop, items or skills of its own.
+const masteryReady = () => worldsLeft('sprints') === 0 && worldsLeft('horde') === 0;
 const clearedIn = (mode: PlayMode) =>
   Array.from({ length: WORLD_COUNT }, (_, i) => i + 1).filter((w) => (mode === 'board' ? save.boardBest[w]?.won : mode === 'horde' ? save.hordeBest[w]?.won : save.bestByWorld[w]?.time !== undefined)).length;
 const worldsLeft = (mode: PlayMode) => WORLD_COUNT - clearedIn(mode);
@@ -568,7 +569,7 @@ const crests = () => (!masteries() ? '' : save.retro ? stars()
 const stars = () => (masteries() ? `<span class="mstars" style="--star:${starColor()}" aria-label="${t('profileStars')}: ${masteries()}">${'★'.repeat(Math.min(masteries(), 5))}${masteries() > 5 ? `×${masteries()}` : ''}</span>` : '');
 function resetScreen() {
   show(`<h2>${t('resetTitle')}</h2>
-    <p class="note">${t('resetLeft', { sprints: worldsLeft('sprints'), horde: worldsLeft('horde'), board: worldsLeft('board') })}</p>
+    <p class="note">${t('resetLeft', { sprints: worldsLeft('sprints'), horde: worldsLeft('horde') })}</p>
     <p>${t('resetText')}</p>
     <button class="ghost is-danger" data-act="reset-do">${t('resetDo')}</button>
     <button class="primary" data-act="profile">${t('cancel')}</button>`);
@@ -1593,6 +1594,8 @@ let boardKey = '';
 let boardShown = '';
 let boardTime = 0;
 let boardBanked = false;
+/** The hero who comes down onto the board: the worn skin and headwear's poses. */
+let heroPics: HeroPics | null = null;
 
 function startBoard(world: number) {
   game = null;
@@ -1603,7 +1606,10 @@ function startBoard(world: number) {
   showcaseBtn.hidden = true;
   closeGearPanel();
   hide();
-  board = newBoard(world, masteries());
+  board = newBoard(world, save.boardUnlocked);
+  const key = heroKey(save.skin, save.equipped.head);
+  const pic = (pose: string) => Object.assign(new Image(), { src: `./images/game/hero/${key}-${pose}.webp` });
+  heroPics = { front: pic('front'), walk: pic('fwalk'), walk2: pic('fwalk2'), shoot: pic('shoot'), hurt: pic('hurt'), cheer: pic('cheer'), down: pic('down') };
   boardTime = 0;
   boardBanked = false;
   boardShown = '';
@@ -1636,8 +1642,6 @@ function bankBoard(b: BoardGame): number | null {
   save.coins += coins;
   save.runs += 1;
   save.playTime = (save.playTime || 0) + boardTime;
-  save.stats.kills += b.kills;
-  save.stats.killsByWorld[b.world] = (save.stats.killsByWorld[b.world] ?? 0) + b.kills;
   let unlocked: number | null = null;
   if (won && b.world < WORLD_COUNT && save.boardUnlocked < b.world + 1) {
     save.boardUnlocked = b.world + 1;
@@ -1648,7 +1652,7 @@ function bankBoard(b: BoardGame): number | null {
   return unlocked;
 }
 
-const boardPic = (b: BoardGame, tier: number) => `./images/game/enemies/${b.look}-${TIER_KIND[tier]}-0.webp`;
+const boardPic = (tier: number, cast: number) => `./images/game/enemies/${castLook(cast)}-${TIER_KIND[tier]}-0.webp`;
 const boardTierName = (tier: number) => t(`boardTier${tier}` as Key);
 
 /** The top bar and the shop, rebuilt only when something on them changes. */
@@ -1656,7 +1660,7 @@ function renderBoardUi() {
   const b = board;
   if (!b) return;
   const prep = b.phase === 'prep';
-  const key = [b.phase, b.round, b.lives, b.gold, onBoard(b).length, b.shop.map((o) => (o ? `${o.tier}${o.price}` : '-')).join(''), b.army.length].join('|');
+  const key = [b.phase, b.round, b.lives, b.gold, b.shop.map((o) => (o ? `${o.tier}${o.cast}${o.price}` : '-')).join(''), b.army.length].join('|');
   if (key === boardKey) return;
   boardKey = key;
   boardTop.innerHTML = `
@@ -1665,14 +1669,14 @@ function renderBoardUi() {
     <span class="board-lives" aria-label="${t('boardLives')}">❤ ${b.lives}</span>
     <span class="board-gold" aria-label="${t('boardGoldLabel')}">◉ ${b.gold}</span>`;
   const cards = b.shop.map((o, i) => o
-    ? `<button class="board-card" type="button" data-bact="buy" data-i="${i}"${!prep || b.gold < o.price ? ' disabled' : ''}><img src="${boardPic(b, o.tier)}" alt=""><b>${boardTierName(o.tier)}</b><span>◉ ${o.price}</span></button>`
+    ? `<button class="board-card" type="button" data-bact="buy" data-i="${i}"${!prep || b.gold < o.price ? ' disabled' : ''}><i class="board-cast">${t('worldShort', { n: o.cast })}</i><img src="${boardPic(o.tier, o.cast)}" alt=""><b>${boardTierName(o.tier)}</b><span>◉ ${o.price}</span></button>`
     : '<span class="board-card is-sold"></span>').join('');
   boardShop.innerHTML = prep ? `
-    <small class="board-cap">${t('boardCapLabel')} ${onBoard(b).length}/${boardCap(b.round)} · ${t('boardHint')}</small>
+    <small class="board-cap">${t('boardHint')}</small>
     <div class="board-cards">${cards}</div>
     <div class="board-acts">
       <button class="ghost board-reroll" type="button" data-bact="reroll"${b.gold < 1 ? ' disabled' : ''}>🎲 ${t('boardReroll')} · ◉ 1</button>
-      <button class="primary board-go" type="button" data-bact="fight"${onBoard(b).length ? '' : ' disabled'}>⚔️ ${t('boardFight')}</button>
+      <button class="primary board-go" type="button" data-bact="fight"${b.army.length ? '' : ' disabled'}>⚔️ ${t('boardFight')}</button>
     </div>` : `<p class="board-fighting">${t('boardFighting')}</p>`;
 }
 
@@ -1689,7 +1693,7 @@ boardUi.addEventListener('click', (event) => {
     else audio.play('pick');
   } else if (act === 'reroll') { if (boardReroll(b)) audio.play('click'); }
   else if (act === 'fight') {
-    if (startFight(b)) { audio.play('door'); audio.setIntensity(0.7); audio.setBoss(b.wave.some((x) => x >= 3)); }
+    if (startFight(b)) { audio.play('door'); audio.setIntensity(0.7); audio.setBoss(b.round === ROUNDS); }
     else flash(t('boardEmpty'));
   } else if (act === 'quit') boardQuitScreen();
   renderBoardUi();
@@ -1723,9 +1727,9 @@ function boardResultScreen(b: BoardGame) {
   audio.setBoss(false);
   audio.setIntensity(0.3);
   const win = last.result === 'win';
-  show(`${head(win ? 'victory' : 'defeat', t(win ? 'boardWin' : last.result === 'draw' ? 'boardDraw' : 'boardLoss'))}
+  show(`${head(win ? 'victory' : 'defeat', t(win ? 'boardWin' : 'boardLoss'))}
     ${last.lost ? `<p>${t('boardLost', { n: last.lost })}</p>` : ''}
-    <p class="how">${t('boardGold', { n: 5 + (win ? 2 : 0) })}</p>
+    <p class="how">${t('boardGold', { n: GOLD.round + (win ? GOLD.win : 0) })}</p>
     <button class="primary" data-act="board-next">▶ ${t('boardNext')}</button>`);
 }
 
@@ -1758,7 +1762,7 @@ function boardStep(dt: number, now: number) {
   ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
   ctx.fillStyle = '#0b0820';
   ctx.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
-  drawBoard(ctx, b, boardLay, now / 1000, boardDrag, save.retro, view.dpr);
+  if (heroPics) drawBoard(ctx, b, boardLay, now / 1000, boardDrag, save.retro, view.dpr, heroPics);
 }
 
 /* Dragging units about while you prepare: onto a cell to move it, onto one of its kind to merge them, onto the
@@ -1792,23 +1796,19 @@ function boardPointerUp(event: PointerEvent) {
   if (!b || !drag || !down || event.pointerId !== down.id) return;
   const moved = Math.hypot(drag.x - down.x, drag.y - down.y) > 10;
   const from = drag.piece.slot;
-  if (!moved) {
-    // A tap: from the bench to the first free cell of your half, or back to the bench.
-    if (from.where === 'bench') {
-      if (onBoard(b).length >= boardCap(b.round)) { flash(t('boardFull')); return; }
-      for (let r = 4; r < 8; r++) for (let c = 0; c < 6; c++) if (!pieceAt(b, { where: 'board', c, r })) { moveUnit(b, from, { where: 'board', c, r }); audio.play('click'); renderBoardUi(); return; }
-    } else {
-      for (let i = 0; i < 6; i++) if (!pieceAt(b, { where: 'bench', i })) { moveUnit(b, from, { where: 'bench', i }); audio.play('click'); renderBoardUi(); return; }
-    }
+  // A tap: what it is, the world its cast comes from, and what it would sell for.
+  if (!moved) { flash(`${boardTierName(drag.piece.tier)} · ${worldName(drag.piece.cast)} · ◉ ${saleOf(drag.piece)}`); return; }
+  // Dropped on the shop: sold, for half what it is worth.
+  const shop = boardShop.getBoundingClientRect();
+  if (event.clientY >= shop.top) {
+    const gain = saleOf(drag.piece);
+    if (boardSell(b, from)) { audio.play('coin'); flash(t('boardSold', { n: gain })); }
+    renderBoardUi();
     return;
   }
-  // Dropped on the shop: sold.
-  const shop = boardShop.getBoundingClientRect();
-  if (event.clientY >= shop.top) { if (boardSell(b, from)) audio.play('coin'); renderBoardUi(); return; }
   if (!drag.over) return;
   const done = moveUnit(b, from, drag.over);
   if (done === 'merged') { audio.play('levelup'); flash(t('boardMerged', { name: boardTierName(pieceAt(b, drag.over)?.tier ?? 0) })); }
-  else if (done === 'none' && drag.over.where === 'board' && from.where === 'bench' && onBoard(b).length >= boardCap(b.round)) flash(t('boardFull'));
   else if (done !== 'none') audio.play('click');
   renderBoardUi();
 }

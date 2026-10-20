@@ -230,6 +230,8 @@ body {
   font: 700 0.74rem/1.1 var(--font); cursor: pointer;
 }
 .board-card img { width: 52px; height: 46px; object-fit: contain; }
+.board-card { position: relative; }
+.board-cast { position: absolute; top: 3px; right: 4px; padding: 1px 5px; border-radius: 99px; background: rgba(8, 12, 28, 0.85); color: #fcd34d; font: 700 0.62rem/1.2 var(--font); font-style: normal; }
 .board-card span { color: #fcd34d; }
 .board-card:disabled { opacity: 0.45; cursor: default; }
 .board-card.is-sold { border-style: dashed; border-color: rgba(148, 163, 184, 0.25); background: rgba(15, 23, 42, 0.5); }

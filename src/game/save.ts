@@ -270,8 +270,8 @@ export function profileLevel(xp: number) {
   return { level, progress: left / need };
 }
 
-/** A world won in any mode: a sprint run cleared, an on-call shift completed or the board's ten rounds won. */
-export const worldWon = (save: Save, n: number) => save.bestByWorld[n]?.time !== undefined || !!save.hordeBest[n]?.won || !!save.boardBest[n]?.won;
+/** A world won in either mode: a sprint run cleared or an on-call shift completed (the board, with no shop of its own, opens nothing). */
+export const worldWon = (save: Save, n: number) => save.bestByWorld[n]?.time !== undefined || !!save.hordeBest[n]?.won;
 
 /** Back to a fresh start: progress, coins, gear and level go; name, skins bought, settings, masteries, star colour, the lifetime totals, the achievements and the extra charm's slot (empty: what it held goes with the items) stay. */
 export function wipeProgress(save: Save) {
