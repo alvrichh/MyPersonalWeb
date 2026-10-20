@@ -196,6 +196,8 @@ export type Enemy = {
   /** Seconds until it joins the fight (it is shown as a warning circle). */
   spawn: number;
   hit: number;
+  /** Seconds it has been close enough to swing at you (0 when not): only for its attack animation, damage is still on contact. */
+  swing: number;
   /** Seconds of a boss's hurt pose, and seconds before it can show it again (`BOSS_PAIN`), so it doesn't flinch at every arrow. */
   pain: number;
   painCd: number;
@@ -725,6 +727,7 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
     chanTick: 0,
     cd4: 3,
     cd5: 4.5,
+    swing: 0,
     leapCd: 4,
     sigs: 0,
     combo: 0,
@@ -2249,8 +2252,14 @@ function updateEnemy(g: Game, e: Enemy, dt: number) {
     else if (blocked(e, p, g.obstacles)) e.detour = 2.5;
   }
 
-  if (Math.hypot(p.x - e.x, p.y - e.y) < p.r + e.r - 2) hurtPlayer(g, e.dmg, e.kind === 'boss' ? e.bossId : undefined);
+  const gap = Math.hypot(p.x - e.x, p.y - e.y);
+  // Close by, it swings at you, so its attack shows; it still hurts only on contact.
+  e.swing = e.kind !== 'boss' && gap < p.r + e.r + ATTACK_REACH ? e.swing + dt : 0;
+  if (gap < p.r + e.r - 2) hurtPlayer(g, e.dmg, e.kind === 'boss' ? e.bossId : undefined);
 }
+/** How far past touching an enemy starts its attack animation, and how long one swing (wind-up and hit) takes. */
+export const ATTACK_REACH = 30;
+export const ATTACK_CYCLE = 0.55;
 
 /* ------------------------------------------------------------------ bosses */
 

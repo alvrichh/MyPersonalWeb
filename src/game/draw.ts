@@ -1,4 +1,4 @@
-import { H, W, WALL, WHEEL_X, ICICLE_R, ICICLE_STAY, WORLDS, frostReach, waveAt, type Threat, type OrbPic, isBossRoom, type Enemy, type Game, type Shot, type Look, type Statue, type Rect, type Vec, type Fusion, arrowLook, fusionOf, bladeCount, bladeElement, sawOrbit, sawScale, type BladeElement, type Fx } from './world';
+import { H, W, WALL, WHEEL_X, ICICLE_R, ICICLE_STAY, ATTACK_CYCLE, WORLDS, frostReach, waveAt, type Threat, type OrbPic, isBossRoom, type Enemy, type Game, type Shot, type Look, type Statue, type Rect, type Vec, type Fusion, arrowLook, fusionOf, bladeCount, bladeElement, sawOrbit, sawScale, type BladeElement, type Fx } from './world';
 import { SPIRIT_COLOR, type ItemId, type SpiritSkin } from './shop';
 import { FULL_HERO_SETS, heroKey, type HeroSkin } from './save';
 
@@ -4400,6 +4400,8 @@ function enemyFrame(e: Enemy, count: number) {
   if (e.kind === 'boss' && e.aim > 0) return 3;
   if (e.kind === 'boss' && e.dash > 0) return 4;
   if (e.kind === 'ticket' && e.cd > 1.5) return e.cd > 1.75 ? 3 : 4;
+  // Close to you: wind-up and hit in turn (the damage itself is still on contact).
+  if (e.kind !== 'boss' && e.swing > 0) return (e.swing / ATTACK_CYCLE) % 1 < 0.5 ? 3 : 4;
   return walkFrame(e, WALK3);
 }
 /* Final bosses with a sheet of their own (static/images/game/bosses/<id>-<frame>.webp, nine poses, the same
@@ -4460,7 +4462,9 @@ function drawEnemySprite(ctx: CanvasRenderingContext2D, e: Enemy) {
   const bob = -Math.abs(Math.sin(e.step * Math.PI)) * 1.4;
   // The painted sprites face right (or the viewer): mirrored when it faces left.
   if (e.face < 0) ctx.scale(-1, 1);
-  ctx.drawImage(img, -w / 2, e.r * 0.85 - h + under + bob, w, h);
+  // Swinging at you: a lunge forward on each hit, the whole attack for the sets that have no attack frames.
+  const lunge = e.kind !== 'boss' && e.swing > 0 ? Math.max(0, Math.sin((e.swing / ATTACK_CYCLE) * Math.PI * 2 - Math.PI / 2)) * e.r * (count === 4 ? 0.45 : 0.2) : 0;
+  ctx.drawImage(img, -w / 2 + lunge, e.r * 0.85 - h + under + bob, w, h);
   return true;
 }
 
