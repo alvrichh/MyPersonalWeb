@@ -2630,8 +2630,8 @@ body {
   display: grid;
   grid-template-columns: minmax(84px, 112px) minmax(0, 1fr) minmax(84px, 112px);
   /* Three shared rows: a two-line item name on one side no longer pushes that column out of line. */
-  /* the hero in rows 2–3 sets their height, shared evenly (no name over it any more, so they stay close) */
-  grid-template-rows: auto 1fr 1fr;
+  /* the rows are as tall as the slot cards, all the same; the hero in rows 2–3 does not stretch them */
+  grid-template-rows: repeat(3, auto);
   align-items: center;
   justify-items: center;
   gap: 8px 6px;
@@ -3589,3 +3589,8 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   font-size: 1.3rem;
   line-height: 1;
 }
+
+/* The hero sizes no row (its few spare pixels spill over the gap), so the three slot rows sit evenly spaced. */
+:root:not([data-retro]) .dress-hero { contain: size; }
+.dress-extra { position: relative; z-index: 2; }
+@media (max-width: 400px) { :root:not([data-retro]) .dress-hero img.hero-fig { height: 116px; } }
