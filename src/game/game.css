@@ -3472,3 +3472,5 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 var(--ft), #000 calc(100% - var(--fb)), transparent 100%);
   mask-image: linear-gradient(180deg, transparent 0, #000 var(--ft), #000 calc(100% - var(--fb)), transparent 100%);
 }
+/* The final bosses' songs in Customise: the boss's own picture in the ring, whole. */
+.gear-row .scene-pic.boss-pic { object-fit: contain; border-radius: 0; background: radial-gradient(circle, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.3)); border-radius: 50%; }

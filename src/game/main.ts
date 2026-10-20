@@ -4,7 +4,7 @@ import { ads, configureAds, type AdSpot, type PlayAd } from './ads';
 import { configurePayments, payments } from './payments';
 import { COIN_PACKS, currentOffer, grant, packBonus, SKIN_OFFERS, type CoinPack, type SkinOffer } from './store';
 import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPrize, type DailyResult } from './daily';
-import { audio, type Sfx, type SongPick } from './audio';
+import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
 import { draw, drawRetroFigure, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, worldWon, type StarColor, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, heroStill } from './save';
 import type { Enemy, Mode } from './world';
@@ -1192,7 +1192,9 @@ function stylesScreen(note = '') {
         return row(`data-song="${on ? save.song : ids[0]}"`, on, false, pic, t(`${key}Name` as Key),
           v2 ? t(`${key}V2` as Key) : t('songWorldText', { world: t(`world${world}Name` as Key) }), on ? `✓ ${v2 ? 'v2' : 'v1'}` : '')
           + (on ? `<div class="mode-pick song-ver" role="group" aria-label="${t('songVersion')}">${ver(ids[0], 'v1')}${ver(ids[1], 'v2')}</div>` : '');
-      }).join('')}</div>`;
+      }).join('')}</div>
+      <h3 class="slot">${t('songBosses')}</h3><div class="gear-list">${BOSS_SONGS.map((id, i) =>
+        songRow(`boss-${id}`, `<img class="scene-pic boss-pic" src="./images/game/bosses/${id}-0.webp" alt="">`, t(`final${cap(id)}` as Key), t('songBossText', { world: t(`world${i + 1}Name` as Key) }))).join('')}</div>`;
   } else if (dressSlot === 'scene') {
     picks = `<h3 class="slot">${t('scenePick')}</h3><div class="gear-list">${Array.from({ length: WORLD_COUNT + 1 }, (_, n) => n).map((n) =>
       row(`data-scene="${n}"`, save.scene === n, false, n ? `<img class="scene-pic" src="./images/game/floors/world${n}.webp" alt="">` : '🌍',
@@ -2004,7 +2006,7 @@ function step(now: number) {
     const boss = g.mode === 'horde' || isBossRoom(g.room) ? g.enemies.find((e) => e.kind === 'boss' && !e.clone && !e.minion && (e.spawn <= 0 || e.vanish)) : undefined;
     audio.setBoss(g.phase !== 'over' && g.phase !== 'won' && g.enemies.some((e) => e.kind === 'boss' && !e.clone && !e.minion && !e.dead));
     const finalOut = g.phase !== 'over' && g.phase !== 'won' ? g.enemies.find((e) => e.final && !e.clone && !e.dead) : undefined;
-    audio.setFinal(!!finalOut, !!finalOut?.rage);
+    audio.setFinal(!!finalOut, !!finalOut?.rage, finalOut?.bossId);
     // «By world»: the world's song while the run is on; the menus' once it is over.
     audio.setWorld(g.phase === 'over' || g.phase === 'won' ? 0 : g.world);
     if (bossBar.hidden !== !boss) {
