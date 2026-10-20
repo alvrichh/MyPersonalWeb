@@ -3455,6 +3455,7 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 /* Items with levels (the Phoenix cloak): stars, what each level gives, and the upgrade button. */
 /* Nightmare: On call in the last world with no clock, under the play button. */
 .panel .nightmare-btn { margin-top: 6px; }
+.panel .nightmare-btn.is-locked { filter: grayscale(0.75) brightness(0.8); cursor: default; }
 .panel .nightmare-rec { display: block; text-align: center; margin: 2px 0 4px; }
 .panel .rush-btn { margin-top: 6px; }
 .panel .rush-rec { display: block; text-align: center; margin: 2px 0 4px; }
