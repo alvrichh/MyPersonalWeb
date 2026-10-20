@@ -171,7 +171,7 @@ export type BoardGame = {
   shots: Shot[];
   time: number;
   /** The last fight: won, lost or drawn, the lives it cost, and whether it was won without losing a unit. */
-  last: { result: 'win' | 'loss' | 'draw'; lost: number; flawless?: boolean; hp?: [number, number] } | null;
+  last: { result: 'win' | 'loss' | 'draw'; lost: number; flawless?: boolean; hp?: [number, number]; timeout?: boolean } | null;
   /** This round's special event, if any. */
   event: BoardEvent | null;
   /** Your commander's fireball, once a fight: on its way (`t` seconds left) or bursting (`boom`). */
@@ -781,7 +781,8 @@ export function updateBoard(b: BoardGame, dt: number) {
     const hp = (side: 0 | 1) => Math.round(alive(b, side).reduce((n, f) => n + Math.max(0, f.hp), 0));
     const ours = hp(0), rival = hp(1);
     const result = ours > rival ? 'win' : ours < rival ? 'loss' : 'draw';
-    b.last = { result, lost: result === 'win' ? 0 : 1, flawless: result === 'win' && flawless(), hp: [ours, rival] };
+    // A win on time keeps your life but pays only a round's plain gold: no win bonus, no chest, no bounty.
+    b.last = { result, lost: result === 'win' ? 0 : 1, hp: [ours, rival], timeout: true };
     if (result === 'win') b.wins += 1;
     else b.lives = Math.max(0, b.lives - 1);
   } else {
@@ -804,7 +805,7 @@ export const roundGold = (world: number, won: boolean) => Math.round((GOLD.round
 /** The gold a round pays on top: a flawless win's chest, and double the win's gold in a bounty round. */
 export function roundBonus(b: BoardGame) {
   const won = b.last?.result === 'win';
-  return (b.last?.flawless ? Math.round(3 * castPower(b.world)) : 0) + (won && b.event === 'bounty' ? roundGold(b.world, true) : 0);
+  return (b.last?.flawless ? Math.round(3 * castPower(b.world)) : 0) + (won && !b.last?.timeout && b.event === 'bounty' ? roundGold(b.world, true) : 0);
 }
 const EVENTS: BoardEvent[] = ['gold', 'frenzy', 'giants', 'bounty'];
 
@@ -813,7 +814,7 @@ export function nextRound(b: BoardGame) {
   const won = b.last?.result === 'win';
   b.gold += roundBonus(b);
   if (b.round < ROUNDS) b.round += 1;
-  b.gold += roundGold(b.world, won);
+  b.gold += roundGold(b.world, won && !b.last?.timeout);
   // Every third round is a special one (never the last, which is the final boss's).
   b.event = b.round % EVENT_EVERY === 0 && b.round < ROUNDS ? EVENTS[Math.floor(Math.random() * EVENTS.length)] : null;
   if (b.event === 'gold') b.gold += Math.round(6 * castPower(b.world));
