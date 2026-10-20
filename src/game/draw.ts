@@ -322,6 +322,36 @@ const LAYOUT_PX: Partial<Record<string, number>> = { nightmare: 4 };
 /** Each world's pieces drawn for every layout block, by its file prefix (none for the jungle, which picks by shape). */
 const LAYOUT_SET: Record<string, string> = { viking: 'ice-', greek: 'arena-', demon: 'lava-', original: 'server-', robot: 'forge-', nightmare: 'grave-', core: 'core-', jungle: '' };
 
+/** The part of a picture that shows (alpha over half), as fractions of its width and height, read once from its pixels. */
+const opaqueCache = new WeakMap<HTMLImageElement, { l: number; r: number; t: number; b: number }>();
+function opaqueBox(img: HTMLImageElement) {
+  let box = opaqueCache.get(img);
+  if (box) return box;
+  box = { l: 0, r: 1, t: 0, b: 1 };
+  try {
+    const w = img.naturalWidth;
+    const h = img.naturalHeight;
+    const c = document.createElement('canvas');
+    c.width = w;
+    c.height = h;
+    const t = c.getContext('2d', { willReadFrequently: true });
+    if (t) {
+      t.drawImage(img, 0, 0);
+      const d = t.getImageData(0, 0, w, h).data;
+      let l = w, r = -1, top = h, b = -1;
+      for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+        if (d[(y * w + x) * 4 + 3] <= 128) continue;
+        if (x < l) l = x;
+        if (x > r) r = x;
+        if (y < top) top = y;
+        if (y > b) b = y;
+      }
+      if (r >= l) box = { l: l / w, r: (r + 1) / w, t: top / h, b: (b + 1) / h };
+    }
+  } catch { /* keep the whole picture */ }
+  opaqueCache.set(img, box);
+  return box;
+}
 function drawObstacles(ctx: CanvasRenderingContext2D, g: Game, accent: string, now: number) {
   // The jungle world: the owner's mossy stone blocks instead of racks, the piece whose shape is closest.
   const look = WORLDS[sceneOf(g) - 1].look;
@@ -342,16 +372,26 @@ function drawObstacles(ctx: CanvasRenderingContext2D, g: Game, accent: string, n
       ? LAYOUT_SET[stones!] + (ratio > 3.2 ? '100x24-0' : ratio > 1.7 ? '64x26-0' : '36x36-0')
       : ratio > 3.2 ? 'stone-long-1' : ratio > 1.7 ? 'stone-long-0' : (o.x + o.y) % 2 ? 'stone-0' : 'stone-1');
     if (!ready(pic)) continue;
-    // As wide as the block and a little more, its own shape kept, standing on the block's bottom edge
-    // (a pillar a little narrower, since it stands twice as tall as it is wide).
-    const px = LAYOUT_PX[stones!];
-    const w = px ? Math.min(pic.naturalWidth / px, o.w * 2) : o.w * (pic.naturalHeight > pic.naturalWidth * 1.5 ? 0.9 : 1.12);
-    const h = (w * pic.naturalHeight) / pic.naturalWidth;
     ctx.fillStyle = 'rgba(0,0,0,0.3)';
     ctx.beginPath();
     ctx.ellipse(o.x + o.w / 2, o.y + o.h, o.w * 0.55, 6, 0, 0, Math.PI * 2);
     ctx.fill();
-    ctx.drawImage(pic, o.x + o.w / 2 - w / 2, o.y + o.h + 4 - h, w, h);
+    const px = LAYOUT_PX[stones!];
+    if (px) {
+      const w = Math.min(pic.naturalWidth / px, o.w * 2);
+      const h = (w * pic.naturalHeight) / pic.naturalWidth;
+      ctx.drawImage(pic, o.x + o.w / 2 - w / 2, o.y + o.h + 4 - h, w, h);
+      continue;
+    }
+    // Fitted by what shows, not by the file (whose margins are see-through): the visible part 4% wider than the
+    // block and centred on it, standing on its bottom edge, and stretched upwards only if it would not reach the
+    // block's top, so the block you bump into is all covered (the mud and jungle walls were half their block's height).
+    const vis = opaqueBox(pic);
+    const w = (o.w * 1.04) / (vis.r - vis.l);
+    let h = (w * pic.naturalHeight) / pic.naturalWidth;
+    const base = o.y + o.h + 3.5;
+    if ((vis.b - vis.t) * h < o.h + 3.5) h = (o.h + 3.5) / (vis.b - vis.t);
+    ctx.drawImage(pic, o.x + o.w / 2 - w * (vis.l + vis.r) / 2, base - vis.b * h, w, h);
   }
   // Server racks, with blinking lights.
   for (const o of stones && set && ready(setImage(set, !byShape ? `${LAYOUT_SET[stones]}36x36-0` : 'stone-0')) ? [] : g.obstacles) {
