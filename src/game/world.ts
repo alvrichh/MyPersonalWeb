@@ -3466,6 +3466,18 @@ export function applyWheel(g: Game, outcome: WheelOutcome): { outcome: WheelOutc
   }
 }
 
+/** Turn a run into the showcase: no skills (so no weapon, aura or companion is drawn), no level ups to pick. */
+export function startShowcase(g: Game) {
+  g.showcase = true;
+  for (const s of SKILLS) g.skills[s] = 0;
+  g.evolved = {};
+  g.pendingLevels = 0;
+  g.choices = [];
+  g.volleys = [];
+  g.spirits = [];
+  g.shots = [];
+}
+
 /** The showcase's button: a quarter of the boss's health at once (its phases and last stand go off as they would),
     the backup bugs swept away with it. False when there is no boss to hit. */
 export function showcaseHit(g: Game) {
@@ -3599,7 +3611,10 @@ export function update(g: Game, dt: number, input: Input) {
   p.inv = Math.max(0, p.inv - dt);
   p.ouch = Math.max(0, p.ouch - dt);
 
-  useWeapons(g, dt);
+  // The showcase: no weapons, auras or companions on the hero, and the bugs a boss calls gone at once (its clones,
+  // helpers and the Queen's plants stay, they are part of it), so nothing covers the boss.
+  if (g.showcase) g.enemies = g.enemies.filter((e) => e.kind === 'boss' || e.minion || e.clone || e.rooted);
+  else useWeapons(g, dt);
   // The energy drink: a little health back every second.
   if (g.skills.drink) heal(g, 0.6 * g.skills.drink * dt);
   moveSpirits(g, dt);
