@@ -49,6 +49,38 @@ const figureOf = (tier: Tier, cast: number, face: number, step: number, swing: n
   r: TIER_STATS[tier].r,
 });
 
+/* The enemy's units are the same pictures as yours, so they are drawn tinted red with a red glow round their
+   outline, to tell the two armies apart at a glance in the fight (on a small canvas, since Safari has no canvas
+   filter). */
+const RED = { tint: 'rgba(239,68,68,0.4)', glow: '#ef4444' };
+let redCanvas: HTMLCanvasElement | null = null;
+function drawEnemyFigure(ctx: CanvasRenderingContext2D, fig: ReturnType<typeof figureOf>, now: number, retro: boolean) {
+  const big = fig.kind === 'boss';
+  const box = big ? 230 : 120;
+  const k = Math.min(4, Math.max(1, Math.abs(ctx.getTransform().a)));
+  redCanvas ??= document.createElement('canvas');
+  const c = redCanvas;
+  const px = Math.ceil(box * k);
+  if (c.width !== px) { c.width = px; c.height = px; }
+  const t = c.getContext('2d');
+  if (!t) { ctx.scale(FIG, FIG); drawBoardFigure(ctx, fig, now, retro); return; }
+  t.setTransform(1, 0, 0, 1, 0, 0);
+  t.globalCompositeOperation = 'source-over';
+  t.clearRect(0, 0, px, px);
+  // The figure's feet at 70% of the box, so the bosses' height fits above them.
+  t.setTransform(k * FIG, 0, 0, k * FIG, px / 2, px * 0.7);
+  drawBoardFigure(t, fig, now, retro);
+  t.setTransform(1, 0, 0, 1, 0, 0);
+  t.globalCompositeOperation = 'source-atop';
+  t.fillStyle = RED.tint;
+  t.fillRect(0, 0, px, px);
+  ctx.save();
+  ctx.shadowColor = RED.glow;
+  ctx.shadowBlur = 6 * k;
+  ctx.drawImage(c, -box / 2, -box * 0.7, box, box);
+  ctx.restore();
+}
+
 function ring(ctx: CanvasRenderingContext2D, r: number, colour: string) {
   ctx.fillStyle = `${colour}55`;
   ctx.strokeStyle = colour;
@@ -219,8 +251,7 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
       ctx.translate(w.x, w.y);
       ctx.globalAlpha = 0.5 + Math.sin(now * 2.5) * 0.08;
       ring(ctx, TIER_STATS[w.tier].r, '#f87171');
-      ctx.scale(FIG, FIG);
-      drawBoardFigure(ctx, figureOf(w.tier, b.world, -1, 0, 0, 0), now, retro);
+      drawEnemyFigure(ctx, figureOf(w.tier, b.world, -1, 0, 0, 0), now, retro);
       ctx.restore();
     }
     const pieces = [...b.army].sort((p, q) => p.slot.r - q.slot.r);
@@ -242,8 +273,8 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
       ctx.save();
       ctx.translate(f.x, f.y);
       ring(ctx, f.r, colour);
-      ctx.scale(FIG, FIG);
-      drawBoardFigure(ctx, figureOf(f.tier, f.cast, f.face, f.step, f.swing, f.hit), now, retro);
+      if (f.side === 1) drawEnemyFigure(ctx, figureOf(f.tier, f.cast, f.face, f.step, f.swing, f.hit), now, retro);
+      else { ctx.scale(FIG, FIG); drawBoardFigure(ctx, figureOf(f.tier, f.cast, f.face, f.step, f.swing, f.hit), now, retro); }
       ctx.restore();
       const w = Math.max(22, f.r * 2);
       const y = f.y - f.r * FIG * (f.tier >= 3 ? 3.2 : 2.3);
