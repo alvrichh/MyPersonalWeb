@@ -644,7 +644,8 @@ function secretScreen() {
 }
 
 function mapScreen() {
-  if (!mapPick || mapPick > unlockedIn() + 1) mapPick = worldIn();
+  // (with a sprints mastery any island can be picked in sprints, to look at its bosses)
+  if (!mapPick || (mapPick > unlockedIn() + 1 && !(save.mode === 'sprints' && save.mastery.sprints > 0))) mapPick = worldIn();
   const picked = mapPick;
   const pickedOpen = picked <= unlockedIn();
   const islandW = 0.45 * MAP_W;
@@ -715,10 +716,9 @@ function mapScreen() {
   const opts: { act: string; label: string; cls: string; locked?: boolean }[] = [pickedOpen
     ? { act: 'play-picked', label: t('playWorld', { n: picked }), cls: '' }
     : { act: '', label: t('lockedBtn'), cls: 'is-locked', locked: true }];
-  if (save.mode === 'sprints' && save.unlocked >= 2) {
-    opts.push({ act: 'play-rush', label: `${RUSH_ICON} ${t('rush')}`, cls: 'is-rush' });
-    opts.push({ act: 'play-showcase', label: `👁 ${t('showcaseShort')}`, cls: 'is-showcase' });
-  }
+  if (save.mode === 'sprints' && save.unlocked >= 2) opts.push({ act: 'play-rush', label: `${RUSH_ICON} ${t('rush')}`, cls: 'is-rush' });
+  // The showcase shows the picked world's own two bosses: only an open world's, or any world's once a sprints mastery is taken.
+  if (save.mode === 'sprints' && (pickedOpen || save.mastery.sprints > 0)) opts.push({ act: 'play-showcase', label: `👁 ${t('showcaseShort')}`, cls: 'is-showcase' });
   if (save.mode === 'horde') opts.push(save.hordeUnlocked >= NIGHTMARE_WORLD
     ? { act: 'play-nightmare', label: `${NIGHTMARE_ICON} ${t('nightmare')} ∞`, cls: 'is-nightmare' }
     : { act: '', label: `🔒 ${t('nightmare')} ∞`, cls: 'is-nightmare is-dim', locked: true });
@@ -1421,8 +1421,8 @@ screen.addEventListener('pointerup', (e) => {
   mapPlayIdx += dx < 0 ? 1 : -1;
   mapPlayStep();
 });
-function startRun(world = worldIn(), mode = save.mode, endless = false, rush = 0, secret = false) {
-  game = newGame({ ...buildLoadout(save.equipped, save.upgrades, masteries(), save.arsenal, save.itemLevels, save.extra), sprintMastery: save.mastery.sprints }, save.style, world, mode, endless, rush, secret);
+function startRun(world = worldIn(), mode = save.mode, endless = false, rush = 0, secret = false, rushFrom = 1) {
+  game = newGame({ ...buildLoadout(save.equipped, save.upgrades, masteries(), save.arsenal, save.itemLevels, save.extra), sprintMastery: save.mastery.sprints }, save.style, world, mode, endless, rush, secret, rushFrom);
   // Boss Rush: every boss in its own world's floor and song (whatever Customise picked); the secret shift, the jungle's.
   game.scene = rush || secret ? 0 : save.scene;
   audio.setSong(rush ? 'worlds' : save.song);
@@ -1455,7 +1455,13 @@ screen.addEventListener('click', (event) => {
   else if (act === 'play-same' && game?.secret) startRun(SECRET_WORLD, 'horde', false, 0, true);
   else if (act === 'play-same') game?.rush ? startRun(1, 'sprints', false, rushWorlds()) : startRun(game?.world ?? worldIn(), game?.mode ?? save.mode, game?.endless);
   else if (act === 'play-rush') startRun(1, 'sprints', false, rushWorlds());
-  else if (act === 'play-showcase' || (act === 'play-same' && game?.showcase)) { startRun(1, 'sprints', false, rushWorlds()); if (game) startShowcase(game); flash(t('showcaseStart')); }
+  else if (act === 'play-showcase' || (act === 'play-same' && game?.showcase)) {
+    // The showcase: only the picked world's two bosses (the same world again on a replay).
+    const w = act === 'play-same' && game ? game.rushFrom : mapPick;
+    startRun(w, 'sprints', false, 1, false, w);
+    if (game) startShowcase(game);
+    flash(t('showcaseStart'));
+  }
   else if (act === 'secret') secretScreen();
   else if (act === 'play-secret') startRun(SECRET_WORLD, 'horde', false, 0, true);
   else if (act === 'play-nightmare') startRun(NIGHTMARE_WORLD, 'horde', true);
