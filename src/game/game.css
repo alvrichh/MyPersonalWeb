@@ -2777,12 +2777,16 @@ body {
   :root:not([data-retro]) .panel .skill-melee { --card: url('/images/game/ui/tall_orange.webp'); }
   :root:not([data-retro]) .panel .skill-magic { --card: url('/images/game/ui/tall_purple.webp'); }
   :root:not([data-retro]) .panel .skill-upgrade { --card: url('/images/game/ui/tall_green.webp'); }
-  :root:not([data-retro]) .panel .skill .icon { grid-row: 1; align-self: center; }
-  :root:not([data-retro]) .panel .skill .icon .skill-icon { width: 36cqw; height: 36cqw; margin-top: 3cqw; }
+  /* The medallion and the level line are placed on the picture itself, not by the grid (whose rows move with the
+     padding and the font's metrics): the ring's hole is centred at 50% / 18.7% of the card, the bottom plate's
+     middle at 80.9% (its rims at 72.4% and 89%, measured on tall_*.webp). */
+  :root:not([data-retro]) .panel .skill { position: relative; }
+  :root:not([data-retro]) .panel .skill .icon { position: absolute; left: 50%; top: 18.7%; grid-row: 1; margin: 0; transform: translate(-50%, -50%); }
+  :root:not([data-retro]) .panel .skill .icon .skill-icon { display: block; width: 36cqw; height: 36cqw; margin: 0; }
   :root:not([data-retro]) .panel .skill .cat { display: none; }
   :root:not([data-retro]) .panel .skill b { grid-row: 2; align-self: center; font-size: 8.4cqw; line-height: 1.05; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); }
   :root:not([data-retro]) .panel .skill > span:not(.icon):not(.cat):not(.lvl) { grid-row: 3; align-self: center; font-size: 7.2cqw; line-height: 1.22; }
-  :root:not([data-retro]) .panel .skill .lvl { grid-row: 4; align-self: center; font-size: 6.8cqw; color: #fff; }
+  :root:not([data-retro]) .panel .skill .lvl { position: absolute; left: 12%; right: 12%; top: 80.9%; margin: 0; transform: translateY(-50%); font-size: 6.8cqw; line-height: 1; text-align: center; color: #fff; }
   :root:not([data-retro]) .panel .skill:hover,
   :root:not([data-retro]) .panel .skill:focus-visible { background: var(--card) center / 100% 100% no-repeat; filter: brightness(1.15); }
 }
