@@ -421,7 +421,7 @@ class Engine {
     this.pick = pick;
     this.songNow = true;
   }
-  /** The world being played (0 in the menus: they always play the original, `b2b`, whatever is picked). */
+  /** The world being played (0 in the menus, where «by world» plays the original, `b2b`, like «automatic»). */
   private world = 0;
   setWorld(n: number) {
     if (n === this.world) return;
@@ -481,7 +481,8 @@ class Engine {
     // «By world»: the world's song, and its final boss's own while it is out (with the tension layer on top).
     const bossSong = `boss-${this.finalId}` as BossSongId;
     const byWorld = this.finalWanted && bossSong in V2S ? bossSong : WORLD_V2[this.world - 1] ?? 'w1v2';
-    const menu = this.world === 0 && !this.preview;
+    // In the menus «by world» plays what «automatic» does, the original; a song picked to play always plays there too.
+    const menu = this.pick === 'worlds' && this.world === 0 && !this.preview;
     const wanted = menu ? 'b2b' : this.pick === 'auto' ? (this.finalWanted ? 'doom' : 'b2b') : this.pick === 'worlds' ? byWorld : this.pick;
     if (inBar === 0 && wanted !== this.songId && (bar % 4 === 0 || this.songNow)) { this.songId = wanted; this.songNow = false; }
     const v2 = V2S[this.songId as V2Id];
