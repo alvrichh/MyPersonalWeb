@@ -4970,16 +4970,12 @@ export function drawBoardFigure(ctx: CanvasRenderingContext2D, f: BoardFigure, n
 }
 /** An effect picture, for the board. */
 export const boardFx = (name: string) => fxImage(name);
-/** The board's backdrop: the world's floor, its plain middle without the painted walls, as the open field draws it,
-    filling the whole screen under the board, the top bar and the shop (the transform is the board's own). */
-export function drawBoardBackdrop(ctx: CanvasRenderingContext2D, world: number, vis: Rect, retro: boolean) {
-  const theme = WORLDS[world - 1];
-  ctx.fillStyle = theme.floor;
-  ctx.fillRect(vis.x, vis.y, vis.w, vis.h);
+/** The board's backdrop: the world's whole arena floor, its painted walls and corners included, as a sprint's room
+    draws it, stretched over the whole screen under the board, the top bar and the shop. */
+export function drawBoardBackdrop(ctx: CanvasRenderingContext2D, world: number, w: number, h: number, dpr: number, retro: boolean) {
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.fillStyle = WORLDS[world - 1].floor;
+  ctx.fillRect(0, 0, w, h);
   const floor = retro ? undefined : floorImage(world);
-  const pattern = floor && ready(floor) ? fieldPattern(ctx, floor, W * FLOOR_CROP.w, H * FLOOR_CROP.h) : null;
-  if (pattern) {
-    ctx.fillStyle = pattern;
-    ctx.fillRect(vis.x, vis.y, vis.w, vis.h);
-  }
+  if (floor && ready(floor)) ctx.drawImage(floor, 0, 0, w, h);
 }

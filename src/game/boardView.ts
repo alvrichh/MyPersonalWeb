@@ -236,9 +236,9 @@ function hearts(ctx: CanvasRenderingContext2D, cx: number, y: number, left: numb
 const rivalHp = (b: BoardGame) => ROUNDS - b.round + (b.phase !== 'prep' && b.phase !== 'fight' && b.last?.result === 'win' ? 0 : 1);
 
 export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: BoardLayout, now: number, drag: BoardDrag | null, retro: boolean, dpr: number, pics: HeroPics, ended: number | null) {
+  // The world's whole arena floor, walls and corners, over the whole screen, as in a sprint; the board is only its grid.
+  drawBoardBackdrop(ctx, b.world, ctx.canvas.width / dpr, ctx.canvas.height / dpr, dpr, retro);
   ctx.setTransform(dpr * lay.s, 0, 0, dpr * lay.s, dpr * lay.ox, dpr * lay.oy);
-  // The world's floor over the whole screen, like the open field's, with no painted walls; the board is only its grid.
-  drawBoardBackdrop(ctx, b.world, { x: -lay.ox / lay.s, y: -lay.oy / lay.s, w: ctx.canvas.width / dpr / lay.s, h: ctx.canvas.height / dpr / lay.s }, retro);
   ctx.save();
   ctx.beginPath();
   ctx.roundRect(0, 0, BOARD_W, BOARD_H, 10);
