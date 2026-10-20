@@ -85,6 +85,7 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
     for (const f of g.fx) if (f.kind === 'phoenix') drawPhoenixRise(ctx, f, g.time, 'over');
     if (g.loadout.wings) drawHeroWings(ctx, g, pal, now, false);
     drawPlayer(ctx, g, pal, now);
+    drawSafeBubble(ctx, g, now);
     if (g.loadout.wings) {
       drawHeroWings(ctx, g, pal, now, true);
       drawSpirits(ctx, g, now);
@@ -916,6 +917,18 @@ function drawStriding(ctx: CanvasRenderingContext2D, img: HTMLImageElement, w: n
   drawTinted(ctx, frame, -w / 2 - steps.pad * k, -h - lift, frame.width * k, h, tint);
 }
 
+/** Safe mode: the owner's golden force-field bubble round the hero while it lasts, breathing, fading in and out. */
+function drawSafeBubble(ctx: CanvasRenderingContext2D, g: Game, now: number) {
+  const p = g.player;
+  if (p.safe <= 0 || retroLook) return;
+  const pic = fxImage('safe-bubble');
+  if (!ready(pic)) return;
+  const w = p.r * 4.4 * (1 + 0.04 * Math.sin(now * 9));
+  const h = (w * pic.naturalHeight) / pic.naturalWidth;
+  ctx.globalAlpha = Math.min(1, p.safe / 0.3) * 0.85;
+  ctx.drawImage(pic, p.x - w / 2, p.y - p.r * 0.9 - h / 2, w, h);
+  ctx.globalAlpha = 1;
+}
 function drawPlayer(ctx: CanvasRenderingContext2D, g: Game, pal: Palette, now: number) {
   const { accent, accent2 } = pal;
   const p = g.player;
@@ -2193,7 +2206,7 @@ export function preloadFx() {
   for (const n of ['fireball', 'boom-small', 'boom-big', 'knife', 'boomerang', 'slash', 'chest', 'slam', 'crystals', 'gem', 'gem-big', 'bolt-1', 'bolt-2', 'bolt-3', 'bolt-4', 'bolt-5', 'bolt-6', 'bolt-y-1', 'bolt-y-2', 'bolt-y-3', 'bolt-y-4', 'bolt-y-5', 'bolt-y-6',
     'brick', 'iron', 'molotov', 'barrel', 'durian', 'durian-big', 'drill', 'drill-evo', 'rocket', 'rocket-shark', 'ball', 'ball-evo', 'phoenix-0', 'phoenix-1', 'phoenix-2', 'phoenix-3', 'wings-0', 'wings-1', 'wings-2',
     'fire-pool', 'fire-pool-big', 'caltrops', 'mine', 'mine-on', 'mine-volt', 'volt-burst', 'impact', 'heart', 'rune', 'crescent',
-    'steam-cloud', 'plasma-burst', 'wisp-flame', 'shock-ring', 'ice-block', 'spectral-bolt', 'laser-yellow', 'laser-orange', 'laser-red', 'laser-purple', 'drakkar-wreck', 'vine-row-0', 'vine-row-1', 'wave-strip-0', 'wave-strip-1', 'wave-strip-2', ...Array.from({ length: 7 }, (_, i) => `tornado-${i}`), 'vortex-0', 'vortex-1', ...Array.from({ length: 7 }, (_, i) => `lava-${i}`)]) fxImage(n);
+    'steam-cloud', 'plasma-burst', 'segfault', 'crit-spark', 'lag-trail', 'safe-bubble', 'nova-burst', 'wisp-flame', 'shock-ring', 'ice-block', 'spectral-bolt', 'laser-yellow', 'laser-orange', 'laser-red', 'laser-purple', 'drakkar-wreck', 'vine-row-0', 'vine-row-1', 'wave-strip-0', 'wave-strip-1', 'wave-strip-2', ...Array.from({ length: 7 }, (_, i) => `tornado-${i}`), 'vortex-0', 'vortex-1', ...Array.from({ length: 7 }, (_, i) => `lava-${i}`)]) fxImage(n);
 }
 
 function drawFireballs(ctx: CanvasRenderingContext2D, g: Game) {

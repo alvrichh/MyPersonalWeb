@@ -480,6 +480,8 @@ export type Player = {
   paraCd: number;
   /** Seconds left of the flames on you after a fire hit (lava, a fireball, meteors, a breath): only to be seen. */
   burn: number;
+  /** Seconds left of Safe mode's bubble (the invincibility itself is `inv`): only to be seen. */
+  safe: number;
 };
 
 /** Cooldowns and state for every weapon. */
@@ -933,7 +935,7 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     strikes: [],
     strikeIn: 2,
     hazard: 'none',
-    player: { x: W / 2, y: H - 70, r: 15, hp: loadout.maxHp, maxHp: loadout.maxHp, speed: 150 * loadout.speedMult, inv: 0, ouch: 0, moving: false, face: -Math.PI / 2, heading: -Math.PI / 2, poison: 0, stun: 0, chill: 0, dark: 0, stone: 0, mired: 0, paraCd: 0, burn: 0 },
+    player: { x: W / 2, y: H - 70, r: 15, hp: loadout.maxHp, maxHp: loadout.maxHp, speed: 150 * loadout.speedMult, inv: 0, ouch: 0, moving: false, face: -Math.PI / 2, heading: -Math.PI / 2, poison: 0, stun: 0, chill: 0, dark: 0, stone: 0, mired: 0, paraCd: 0, burn: 0, safe: 0 },
     enemies: [],
     shots: [],
     orbs: [],
@@ -1342,7 +1344,7 @@ function kill(g: Game, e: Enemy) {
     const lv = g.skills.nova;
     const reach = ARCHERO.novaReach + 6 * (lv - 1);
     novaing = true;
-    g.fx.push({ kind: 'pic', pic: 'plasma-burst', top: true, x: e.x, y: e.y, r: reach * 1.3, a: rand(0, 6), life: 0.35, max: 0.35 });
+    g.fx.push({ kind: 'pic', pic: 'nova-burst', top: true, x: e.x, y: e.y, r: reach * 1.4, a: rand(-0.3, 0.3), life: 0.35, max: 0.35 });
     for (const o of live(g)) if (dist(o, e) <= reach + o.r) hurt(g, o, (ARCHERO.novaDmg + 8 * (lv - 1)) * power(g, 'upgrade'));
     novaing = false;
   }
@@ -1390,7 +1392,7 @@ function hurt(g: Game, e: Enemy, amount: number, push?: Vec) {
   // Critical hits: a real blow (not a burn's or an aura's tick) now and then lands twice as hard.
   if (g.skills.crit && amount >= 4 && Math.random() < ARCHERO.crit * g.skills.crit) {
     amount *= ARCHERO.critHit;
-    burst(g, e.x, e.y - e.r, '#facc15', 6, 120, 2.5);
+    g.fx.push({ kind: 'pic', pic: 'crit-spark', top: true, x: e.x, y: e.y - e.r * 0.4, r: 22, a: rand(-0.4, 0.4), life: 0.25, max: 0.25 });
   }
   e.hp -= amount;
   e.hit = 0.1;
@@ -1423,7 +1425,7 @@ const away = (from: Vec, e: Vec, strength: number) => {
 function hitWithShot(g: Game, e: Enemy, s: Shot) {
   // Segfault: now and then a bow arrow takes a bug down at once (never a boss, a clone or a boss's minion).
   if (s.bow && g.skills.headshot && e.kind !== 'boss' && !e.minion && Math.random() < ARCHERO.headshot * g.skills.headshot) {
-    g.fx.push({ kind: 'pic', pic: 'spectral-bolt', top: true, x: e.x, y: e.y, r: 30, a: 0, life: 0.35, max: 0.35 });
+    g.fx.push({ kind: 'pic', pic: 'segfault', top: true, x: e.x, y: e.y, r: 34, a: 0, life: 0.4, max: 0.4 });
     burst(g, e.x, e.y, '#f43f5e', 12, 160, 3);
     hurt(g, e, e.hp + 1);
     return;
@@ -2235,7 +2237,8 @@ function hurtPlayer(g: Game, amount: number, from?: string, fire = false) {
   // Lag: now and then the hit simply never arrives.
   if (g.skills.dodge && Math.random() < ARCHERO.dodge * g.skills.dodge) {
     p.inv = 0.3;
-    burst(g, p.x, p.y, '#67e8f9', 8, 110, 2);
+    // Glitch afterimages trailing behind the hero, the way it is going.
+    g.fx.push({ kind: 'pic', pic: 'lag-trail', top: true, x: p.x - Math.cos(p.heading) * 10, y: p.y - Math.sin(p.heading) * 10, r: 28, a: p.heading, life: 0.4, max: 0.4 });
     g.events.push('dodge');
     return;
   }
@@ -3460,6 +3463,7 @@ export function update(g: Game, dt: number, input: Input) {
   p.stone = Math.max(0, p.stone - dt);
   p.mired = Math.max(0, p.mired - dt);
   p.burn = Math.max(0, p.burn - dt);
+  p.safe = Math.max(0, p.safe - dt);
   if (p.poison > 0) p.hp = Math.max(1, p.hp - (POISON_DMG / 0.5) * dt);
   if (p.stun > 0 || p.stone > 0) p.moving = false;
   if (p.moving) {
@@ -3479,7 +3483,7 @@ export function update(g: Game, dt: number, input: Input) {
       const lv = g.skills.safe;
       g.safeCd = ARCHERO.safeEvery - 2 * (lv - 1);
       p.inv = Math.max(p.inv, ARCHERO.safeFor + 0.5 * (lv - 1));
-      burst(g, p.x, p.y, '#fde047', 16, 140, 3);
+      p.safe = ARCHERO.safeFor + 0.5 * (lv - 1);
       g.events.push('safe');
     }
   }
