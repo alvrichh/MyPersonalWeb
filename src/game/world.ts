@@ -1279,6 +1279,13 @@ function hurt(g: Game, e: Enemy, amount: number, push?: Vec) {
     return;
   }
   if (e.bossId === 'chimera' && !e.clone && e.phase < 2 && e.hp > 0 && e.hp <= e.maxHp / 2) takeWing(g, e);
+  // The Medusa at half health: her snakes turn green and her eyes red (her second sheet, `medusa2`).
+  if (e.bossId === 'medusa' && e.phase < 2 && e.hp > 0 && e.hp <= e.maxHp / 2) {
+    e.phase = 2;
+    g.shake = Math.max(g.shake, 0.5);
+    burst(g, e.x, e.y, '#2dd4bf', 30, 200, 3.5);
+    g.events.push('phase');
+  }
   if (e.final && !e.clone && !e.rage && e.hp > 0 && e.hp <= e.maxHp * RAGE_AT) enrage(g, e);
   if (push && e.kind !== 'boss') {
     e.kx += push.x;
