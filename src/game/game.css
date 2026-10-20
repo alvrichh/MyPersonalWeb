@@ -1497,6 +1497,8 @@ body {
 .map {
   position: relative;
   width: min(100%, 470px);
+  /* The right-hand islands' boxes end a fraction of a pixel past the map; clip it (no scroll box of its own). */
+  overflow-x: clip;
 }
 
 .map svg {
@@ -3404,6 +3406,9 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   min-height: 0;
   width: 100%;
   overflow-y: auto;
+  /* Up and down only: the zigzag's islands come within a pixel of the edge, which let it scroll sideways. */
+  overflow-x: hidden;
+  touch-action: pan-y;
   overscroll-behavior: contain;
   scrollbar-width: none;
   display: flex;
