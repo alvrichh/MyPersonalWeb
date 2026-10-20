@@ -1,4 +1,4 @@
-import { H, W, WALL, WHEEL_X, ICICLE_R, ICICLE_STAY, ATTACK_CYCLE, WORLDS, frostReach, waveAt, type Threat, type OrbPic, isBossRoom, type Enemy, type Game, type Shot, type Look, type Statue, type Rect, type Vec, type Fusion, arrowLook, fusionOf, bladeCount, bladeElement, sawOrbit, sawScale, type BladeElement, type Fx } from './world';
+import { H, W, WALL, WHEEL_X, ICICLE_R, ICICLE_STAY, ATTACK_CYCLE, WORLDS, frostReach, waveAt, type Threat, type OrbPic, isBossRoom, type Enemy, type Game, type Shot, type Look, type Statue, type Rect, type Vec, type Fusion, arrowLook, fusionOf, bladeCount, bladeElement, sawOrbit, sawScale, type BladeElement, type Fx, type SkillId } from './world';
 import { SPIRIT_COLOR, type ItemId, type SpiritSkin } from './shop';
 import { FULL_HERO_SETS, heroKey, type HeroSkin } from './save';
 
@@ -1103,7 +1103,7 @@ function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accen
       ctx.rotate(Math.atan2(a.vy, a.vx));
       const pic = fxImage('knife');
       if (!retroLook && ready(pic)) {
-        const w = 26;
+        const w = 30 * grow(g, 'knives');
         const h = (w * pic.naturalHeight) / pic.naturalWidth;
         // A short streak behind it in the accent colour, then the knife, tip on the shot.
         ctx.strokeStyle = accent;
@@ -1159,7 +1159,7 @@ function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accen
       ctx.rotate(a.spin);
       const pic = fxImage('boomerang');
       if (!retroLook && ready(pic)) {
-        const h = 22;
+        const h = 26 * grow(g, 'boomerang');
         const w = (h * pic.naturalWidth) / pic.naturalHeight;
         const halo = ctx.createRadialGradient(0, 0, 2, 0, 0, 16);
         halo.addColorStop(0, 'rgba(251,146,60,0.45)');
@@ -1246,14 +1246,17 @@ function drawShots(ctx: CanvasRenderingContext2D, g: Game, accent: string, accen
 /* The owner's pictures for those weapons, all turned to point right (their
    trail behind): [picture, width in room units, how far behind the shot the
    picture starts (share of its width), turn with the flight?]. */
+/** Weapon pictures grow with the weapon's level: 15% a level, so level 3 is drawn 1.3 times level 1 (an evolved
+    form has its own, bigger picture and size). */
+const grow = (g: Game, k: SkillId) => 1 + 0.15 * Math.max(0, (g.skills[k] ?? 1) - 1);
 const SHOT_PIC: Partial<Record<Shot['kind'], (g: Game, a: Shot) => [string, number, number, boolean]>> = {
-  brick: (g) => (g.evolved.brick ? ['iron', 44, 0.5, false] : ['brick', 26, 0.6, true]),
-  molotov: (g) => (g.evolved.molotov ? ['barrel', 34, 0.6, true] : ['molotov', 30, 0.6, true]),
+  brick: (g) => (g.evolved.brick ? ['iron', 52, 0.5, false] : ['brick', 30 * grow(g, 'brick'), 0.6, true]),
+  molotov: (g) => (g.evolved.molotov ? ['barrel', 44, 0.6, true] : ['molotov', 36 * grow(g, 'molotov'), 0.6, true]),
   durian: (g, a) => [g.evolved.durian ? 'durian-big' : 'durian', (a.size ?? 14) * 2.5, 0.62, true],
-  drill: (g, a) => [g.evolved.drill ? 'drill-evo' : 'drill', 30 * ((a.size ?? 7) / 7), 0.75, true],
-  rocket: (g) => (g.evolved.rocket ? ['rocket-shark', 38, 0.75, true] : ['rocket', 32, 0.75, true]),
+  drill: (g, a) => [g.evolved.drill ? 'drill-evo' : 'drill', 38 * ((a.size ?? 7) / 7), 0.75, true],
+  rocket: (g) => (g.evolved.rocket ? ['rocket-shark', 56, 0.75, true] : ['rocket', 42 * grow(g, 'rocket'), 0.75, true]),
   // The quantum ball's picture is mostly glow (the ball itself is under half its width): drawn wider to match its hit.
-  ball: (g, a) => (g.evolved.ball ? ['ball-evo', (a.size ?? 14) * 4.2, 0.55, true] : ['ball', (a.size ?? 8) * 2.9, 0.62, true]),
+  ball: (g, a) => (g.evolved.ball ? ['ball-evo', (a.size ?? 14) * 4.2, 0.55, true] : ['ball', (a.size ?? 8) * 3.2, 0.62, true]),
 };
 function drawNewShot(ctx: CanvasRenderingContext2D, g: Game, a: Shot) {
   const t = g.time;
@@ -2198,7 +2201,7 @@ function drawFireballs(ctx: CanvasRenderingContext2D, g: Game) {
   for (const f of g.fireballs) {
     if (!retroLook && ready(pic)) {
       // The ball sits at the picture's right end, the flames trail behind it.
-      const w = 52;
+      const w = 52 * grow(g, 'fireball');
       const h = (w * pic.naturalHeight) / pic.naturalWidth;
       ctx.save();
       ctx.translate(f.x, f.y);

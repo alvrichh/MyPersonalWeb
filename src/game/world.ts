@@ -1875,7 +1875,7 @@ function throwBricks(g: Game) {
   for (let i = 0; i < (evolved ? 2 : lv); i++) {
     g.shots.push(shot('brick', g.player, -Math.PI / 2 + rand(-0.55, 0.55), rand(470, 560), dmg, {
       // It falls back down and breaks on the first bug it hits (`updateShot`), or leaves the room or the view.
-      ghost: true, free: true, grav: 900, life: 3, size: evolved ? 22 : 13, spin: rand(0, 6),
+      ghost: true, free: true, grav: 900, life: 3, size: evolved ? 26 : 13 + 2 * (lv - 1), spin: rand(0, 6),
     }));
   }
 }
@@ -1883,16 +1883,28 @@ function throwBricks(g: Game) {
 /* Molotov (magic): bottles thrown at the bugs near you burst into a pool of
    fire that burns whatever stands in it. Evolved (Fuel Barrel): three
    barrels, wider pools that burn longer and hotter. */
+/** Where a bug will be after `secs`: bugs walk at you, so a step along the line to you at its pace (never more
+    than half the gap, and not for the rooted or the ones that keep their distance). */
+function lead(e: Enemy, to: Vec, secs: number): Vec {
+  const d = dist(e, to);
+  if (!d || e.rooted || e.kind === 'ticket' || e.kind === 'boss') return { x: e.x, y: e.y };
+  const step = Math.min(e.speed * secs * 0.8, d * 0.5);
+  return { x: e.x + ((to.x - e.x) / d) * step, y: e.y + ((to.y - e.y) / d) * step };
+}
 function throwMolotov(g: Game) {
   const p = g.player;
   const lv = g.skills.molotov;
   const evolved = !!g.evolved.molotov;
-  const pool = live(g).sort((a, b) => dist(a, p) - dist(b, p)).slice(0, 6);
-  // A slow lob, the bottle tumbling end over end on its way (see updateShot).
+  // The nearest bugs, in order: the first bottle always goes to the nearest one (it used to pick at random among
+  // the six nearest, so it often flew past the bug at your feet).
+  const pool = live(g).sort((a, b) => dist(a, p) - dist(b, p));
+  // A slow lob, the bottle tumbling end over end on its way (see updateShot)…
   const flight = 0.9;
-  for (let i = 0; i < (evolved ? 3 : lv >= 3 ? 2 : 1) && pool.length; i++) {
-    const t = pool.splice(Math.floor(Math.random() * pool.length), 1)[0];
-    g.shots.push(shot('molotov', p, 0, 0, 0, { vx: (t.x - p.x) / flight, vy: (t.y - p.y) / flight, life: flight, free: true, ghost: true, spin: rand(0, 6) }));
+  for (let i = 0; i < (evolved ? 3 : lv >= 3 ? 2 : 1) && i < pool.length; i++) {
+    const t = pool[i];
+    // …so it is thrown where the bug will be when it lands, not where it was.
+    const at = lead(t, p, flight);
+    g.shots.push(shot('molotov', p, 0, 0, 0, { vx: (at.x - p.x) / flight, vy: (at.y - p.y) / flight, life: flight, free: true, ghost: true, spin: rand(0, 6) }));
   }
 }
 function landMolotov(g: Game, at: Vec) {
@@ -1989,7 +2001,7 @@ function fireDrill(g: Game, target: Enemy) {
   const n = evolved ? 2 : 1;
   for (let i = 0; i < n; i++) {
     g.shots.push(shot('drill', p, angle + (i - (n - 1) / 2) * 0.3, evolved ? 420 : 330, (22 + 8 * (lv - 1)) * power(g, 'ranged') * (evolved ? 1.5 : 1) * boost(g, 'drill'), {
-      pierce: 1e9, ghost: true, free: true, bounce: 2 + lv + (evolved ? 4 : 0), life: evolved ? 5 : 3, size: evolved ? 11 : 7, tick: 0,
+      pierce: 1e9, ghost: true, free: true, bounce: 2 + lv + (evolved ? 4 : 0), life: evolved ? 5 : 3, size: evolved ? 11 : 7 + (lv - 1), tick: 0,
     }));
   }
 }
@@ -2015,7 +2027,7 @@ function fireRocket(g: Game, target: Enemy) {
     const spread = evolved ? (i - (n - 1) / 2) * 0.35 : 0;
     const angle = Math.atan2(t.y - p.y, t.x - p.x) + spread;
     const dmg = (70 + 30 * (lv - 1)) * power(g, 'ranged') * (evolved ? 0.6 : 1);
-    g.shots.push(shot('rocket', p, angle, evolved ? 300 : 240, dmg, { life: 2.2, size: evolved ? 5 : 7, aim: t.id }));
+    g.shots.push(shot('rocket', p, angle, evolved ? 300 : 240, dmg, { life: 2.2, size: evolved ? 5 : 7 + (lv - 1), aim: t.id }));
   }
 }
 function rocketBoom(g: Game, s: Shot) {
@@ -2038,7 +2050,7 @@ function kickBall(g: Game, target: Enemy) {
   const n = evolved ? 3 : 1;
   for (let i = 0; i < n; i++) {
     g.shots.push(shot('ball', p, angle + (i - (n - 1) / 2) * 0.5, 320, (20 + 8 * (lv - 1)) * power(g, 'ranged') * (evolved ? 1.5 : 1) * boost(g, 'ball'), {
-      pierce: 1e9, ghost: true, free: true, bounce: evolved ? 1e9 : 3 + 2 * lv, life: evolved ? 5 : 3, size: evolved ? 14 : 8, tick: 0,
+      pierce: 1e9, ghost: true, free: true, bounce: evolved ? 1e9 : 3 + 2 * lv, life: evolved ? 5 : 3, size: evolved ? 14 : 8 + (lv - 1), tick: 0,
     }));
   }
 }
