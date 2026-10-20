@@ -219,19 +219,22 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
   ctx.fillRect(0, 0, BOARD_W, HOME_ROW * CELL);
   ctx.fillStyle = 'rgba(6,14,40,0.12)';
   ctx.fillRect(0, HOME_ROW * CELL, BOARD_W, BOARD_H - HOME_ROW * CELL);
-  ctx.strokeStyle = 'rgba(255,255,255,0.12)';
-  ctx.lineWidth = 1;
-  for (let c = 1; c < COLS; c++) { ctx.beginPath(); ctx.moveTo(c * CELL, 0); ctx.lineTo(c * CELL, BOARD_H); ctx.stroke(); }
-  for (let r = 1; r < ROWS; r++) { ctx.beginPath(); ctx.moveTo(0, r * CELL); ctx.lineTo(BOARD_W, r * CELL); ctx.stroke(); }
-  ctx.strokeRect(0.5, 0.5, BOARD_W - 1, BOARD_H - 1);
-  ctx.strokeStyle = 'rgba(252,211,77,0.5)';
-  ctx.lineWidth = 2;
-  ctx.setLineDash([6, 6]);
-  ctx.beginPath();
-  ctx.moveTo(0, HOME_ROW * CELL);
-  ctx.lineTo(BOARD_W, HOME_ROW * CELL);
-  ctx.stroke();
-  ctx.setLineDash([]);
+  // The grid and the line between the halves are only there to lay the units out: once the fight starts they go.
+  if (b.phase === 'prep') {
+    ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+    ctx.lineWidth = 1;
+    for (let c = 1; c < COLS; c++) { ctx.beginPath(); ctx.moveTo(c * CELL, 0); ctx.lineTo(c * CELL, BOARD_H); ctx.stroke(); }
+    for (let r = 1; r < ROWS; r++) { ctx.beginPath(); ctx.moveTo(0, r * CELL); ctx.lineTo(BOARD_W, r * CELL); ctx.stroke(); }
+    ctx.strokeRect(0.5, 0.5, BOARD_W - 1, BOARD_H - 1);
+    ctx.strokeStyle = 'rgba(252,211,77,0.5)';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([6, 6]);
+    ctx.beginPath();
+    ctx.moveTo(0, HOME_ROW * CELL);
+    ctx.lineTo(BOARD_W, HOME_ROW * CELL);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
   ctx.restore();
 
   // The fireball at the end of a fight: yours at the rival after a win, the rival's at you otherwise.
