@@ -519,6 +519,11 @@ export type Game = {
   hordeBoss: number;
   /** Nightmare: On call with no clock, the bugs pouring in faster the longer you last. */
   endless: boolean;
+  /** Boss Rush (a sprints run of bosses only): the stage, 1 to `stages`, each a world's room-6 boss and then its
+      final boss, in that world's room, floor, hazard and song; 0 when not a rush. */
+  rush: number;
+  /** How many stages this rush has (two for each world open in sprints). */
+  stages: number;
   /** Which world's floor and blocks are drawn (0: the run's own); only the look, picked in Customise to try them out. */
   scene: number;
   hordeHazard: number;
@@ -882,12 +887,31 @@ function enterRoom(g: Game, room: number) {
   }
 }
 
-export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'world', world = 1, mode: Mode = 'sprints', endless = false): Game {
+/* Boss Rush: stage 1 is world 1's room-6 boss, stage 2 its final boss, stage 3 world 2's room-6 boss, and so on. */
+export const rushWorld = (stage: number) => Math.ceil(stage / 2);
+/** Boss Rush: bosses give twice the XP, so the levels keep up with a run that has no rooms of bugs. */
+const RUSH_XP = 2;
+/** …and each new stage gives back this share of max health. */
+const RUSH_HEAL = 0.25;
+/** …and it starts with this many level ups to pick, what five rooms give a sprint. */
+const RUSH_START_PICKS = 4;
+function enterStage(g: Game, stage: number) {
+  g.rush = stage;
+  g.world = rushWorld(stage);
+  if (stage > 1) heal(g, g.player.maxHp * RUSH_HEAL);
+  enterRoom(g, stage % 2 ? 6 : ROOMS);
+  for (const e of g.enemies) if (e.kind === 'boss') e.xp *= RUSH_XP;
+}
+
+/** `rush`: a Boss Rush through the bosses of the first `rush` worlds (sprints only). */
+export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'world', world = 1, mode: Mode = 'sprints', endless = false, rush = 0): Game {
   const nightmare = endless && mode === 'horde';
   const g: Game = {
     world: nightmare ? NIGHTMARE_WORLD : clamp(world, 1, WORLD_COUNT),
     mode,
     endless: nightmare,
+    rush: 0,
+    stages: 0,
     scene: 0,
     room: 1,
     hordeSpawn: 1.5,
@@ -973,6 +997,14 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     // It also starts at a higher bar: level 4 or so after the first minute, not 8.
     g.xpNext = 45;
     startField(g);
+  }
+  else if (rush) {
+    g.stages = 2 * clamp(rush, 1, WORLD_COUNT);
+    enterStage(g, 1);
+    // With no rooms of bugs before it, the rush starts where a sprint reaches its first boss: a few levels to pick.
+    g.level += RUSH_START_PICKS;
+    g.pendingLevels += RUSH_START_PICKS;
+    for (let i = 0; i < RUSH_START_PICKS; i++) g.xpNext += 15;
   }
   else enterRoom(g, 1);
   g.events = [];
@@ -1327,7 +1359,7 @@ function kill(g: Game, e: Enemy) {
   if (e.kind === 'boss') {
     g.shake = 0.6;
     // The chest: not for the boss whose death ends the run.
-    const last = g.mode === 'horde' ? !g.endless && g.hordeBoss >= HORDE_BOSS_AT.length : g.room === ROOMS;
+    const last = g.mode === 'horde' ? !g.endless && g.hordeBoss >= HORDE_BOSS_AT.length : g.rush ? g.rush === g.stages : g.room === ROOMS;
     if (!last) { g.chest = { x: e.x, y: e.y }; g.events.push('chest'); }
   }
   // On call: tougher bugs may leave a heart behind (bosses always leave three).
@@ -2095,7 +2127,7 @@ function fireRocket(g: Game, target: Enemy) {
     const spread = evolved ? (i - (n - 1) / 2) * 0.35 : 0;
     const angle = Math.atan2(t.y - p.y, t.x - p.x) + spread;
     const dmg = (70 + 30 * (lv - 1)) * power(g, 'ranged') * (evolved ? 0.6 : 1);
-    g.shots.push(shot('rocket', p, angle, evolved ? 300 : 240, dmg, { life: 2.2, size: evolved ? 5 : 7 + (lv - 1), aim: t.id }));
+    g.shots.push(shot('rocket', p, angle, evolved ? 200 : 240, dmg, { life: 2.2, size: evolved ? 5 : 7 + (lv - 1), aim: t.id }));
   }
 }
 function rocketBoom(g: Game, s: Shot) {
@@ -3109,8 +3141,9 @@ function updateShot(g: Game, s: Shot, dt: number): boolean {
   if (s.kind === 'molotov') s.spin += dt * 4.5;
   if (s.kind === 'durian' || s.kind === 'drill') s.spin += dt * 14;
   if (s.kind === 'rocket') {
-    // Rockets speed up and steer after their own bug (the evolved missiles turn harder).
-    const speed = Math.min(620, Math.hypot(s.vx, s.vy) * (1 + dt * 1.6));
+    // Rockets speed up and steer after their own bug (the evolved missiles turn harder). The shark missiles once went
+    // from 300 to 620 in under half a second and could hardly be seen: now they speed up gently and top out lower.
+    const speed = Math.min(g.evolved.rocket ? 360 : 480, Math.hypot(s.vx, s.vy) * (1 + dt * 0.9));
     let a = Math.atan2(s.vy, s.vx);
     const t = g.enemies.find((e) => e.id === s.aim && !e.dead) ?? (g.evolved.rocket ? nearest(g, s) : undefined);
     if (t) {
@@ -3474,6 +3507,12 @@ export function update(g: Game, dt: number, input: Input) {
   }
   const atDoor = g.mode === 'sprints' && g.door && Math.abs(p.x - W / 2) < DOOR_HALF - 4 && p.y - p.r < WALL + 6;
   if (atDoor) {
+    // Boss Rush: on to the next boss, or the win after the last.
+    if (g.rush) {
+      if (g.rush >= g.stages) { g.coins += 50 * g.stages; g.phase = 'won'; return; }
+      enterStage(g, g.rush + 1);
+      return;
+    }
     if (g.room === ROOMS) {
       g.coins += 50 * worldPay(g);
       g.phase = 'won';
