@@ -975,11 +975,11 @@ class Engine {
       if (typeof n === 'number') {
         let len = 1;
         while (line[inBar / 2 + len] === null) len += 1;
-        this.leadV2(t, semi(this.root * 8, n), GSTEP * 2 * len, 'crystal');
+        this.synthLead(t, semi(this.root * 4, n), GSTEP * 2 * len, block === 'drop');
       }
     }
     // A sparkle of plucks over the intro.
-    if (block === 'intro' && inBar % 4 === 2 && Math.random() < 0.5) this.pluck(t, semi(this.root * 8, chord[(step >> 2) % chord.length]));
+    if (block === 'intro' && inBar % 4 === 2 && Math.random() < 0.5) this.synthLead(t, semi(this.root * 4, chord[(step >> 2) % chord.length] + 12), GSTEP * 1.2, false);
   }
 
   /** An acid line: a saw through a resonant low-pass whose envelope snaps open, harder on the accents. */
@@ -992,6 +992,40 @@ class Engine {
     this.env(g, at, accent ? 0.16 : 0.11, 0.003, length * 0.8, 0.3, 0.03);
     o.connect(lp).connect(g);
     this.out(g, 0.12);
+  }
+  /** «Break to back»'s lead: three detuned saws and a square an octave down, through a resonant low-pass that snaps
+      open on each note and closes, a quick vibrato on long notes, and a dotted-eighth echo; louder and brighter in the drop. */
+  private synthLead(at: number, freq: number, length: number, big: boolean) {
+    const end = at + length + 0.08;
+    const lp = this.filt('lowpass', 800, 7);
+    lp.frequency.setValueAtTime(big ? 5200 : 3800, at);
+    lp.frequency.exponentialRampToValueAtTime(big ? 1400 : 1000, at + Math.min(length, 0.25));
+    const g = this.ctx.createGain();
+    this.env(g, at, big ? 0.13 : 0.1, 0.004, length * 0.85, 0.55, 0.06);
+    const vib = this.osc('sine', 6, at, end);
+    const depth = this.ctx.createGain();
+    depth.gain.setValueAtTime(0, at);
+    depth.gain.linearRampToValueAtTime(length > 0.2 ? 14 : 0, at + length);
+    vib.connect(depth);
+    for (const d of [-14, 0, 14]) {
+      const o = this.osc('sawtooth', freq, at, end, d);
+      depth.connect(o.detune);
+      o.connect(lp);
+    }
+    const sq = this.osc('square', freq / 2, at, end);
+    const sqg = this.ctx.createGain();
+    sqg.gain.value = 0.35;
+    sq.connect(sqg).connect(lp);
+    lp.connect(g);
+    this.out(g, 0.2);
+    // The echo: the same note a dotted eighth later, softer and darker.
+    const echo = this.ctx.createDelay(1);
+    echo.delayTime.value = GSTEP * 3;
+    const eg = this.ctx.createGain();
+    eg.gain.value = 0.35;
+    const elp = this.filt('lowpass', 2200, 0.7);
+    g.connect(echo).connect(elp).connect(eg);
+    this.out(eg);
   }
   /** A bleep on the music: a quick pitch sweep. */
   private bleep(at: number, from: number, to: number, length: number, vol: number, type: OscillatorType = 'square') {
