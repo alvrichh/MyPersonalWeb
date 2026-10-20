@@ -2787,6 +2787,18 @@ function drawThreats(ctx: CanvasRenderingContext2D, g: Game, now: number, top: b
           ctx.drawImage(mud, -w / 2, -h / 2, w, h);
           ctx.restore();
         }
+        // The Mech's fuel barrels: the arsenal's barrel lobbed down onto its circle, tumbling.
+        const barrel = t.lob === 'barrel' && !retroLook ? fxImage('barrel') : null;
+        if (barrel && ready(barrel) && k > 0.2) {
+          const f = (k - 0.2) / 0.8;
+          const w = 34;
+          const h = (w * barrel.naturalHeight) / barrel.naturalWidth;
+          ctx.save();
+          ctx.translate(t.x, t.y - Math.sin(f * Math.PI) * 130 - (1 - f) * 50);
+          ctx.rotate(f * 7);
+          ctx.drawImage(barrel, -w / 2, -h / 2, w, h);
+          ctx.restore();
+        }
         const rune = t.el === 'arcane' && !retroLook ? fxImage(t.alt ? 'medusa-rune-2' : 'medusa-rune') : null;
         if (rune && ready(rune)) {
           const s = t.r * 2.3 * (0.5 + 0.5 * k);
