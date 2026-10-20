@@ -1124,6 +1124,8 @@ function updateHorde(g: Game, dt: number) {
     g.coins += 5 * worldPay(g);
     g.events.push('minute');
   }
+  // The showcase on call (the secret shift's): no waiting for the clock, the next boss comes two seconds after the last.
+  if (g.showcase && nextBossAt(g) < Infinity && !g.enemies.some((e) => e.kind === 'boss' && !e.dead)) g.time = Math.max(g.time, nextBossAt(g) - 2);
   // Bosses: summoned once each when their minute comes.
   if (g.time >= nextBossAt(g)) {
     g.hordeBoss += 1;
