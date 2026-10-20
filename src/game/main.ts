@@ -6,7 +6,7 @@ import { COIN_PACKS, currentOffer, grant, packBonus, SKIN_OFFERS, type CoinPack,
 import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPrize, type DailyResult } from './daily';
 import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
 import { draw, drawRetroFigure, preloadFx, type Palette, type View } from './draw';
-import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, worldWon, type StarColor, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, heroStill } from './save';
+import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, heroStill } from './save';
 import type { Enemy, Mode } from './world';
 import { ARMOUR_SLOTS, ARSENAL, ITEMS, itemLevel, type SpiritSkin, UPGRADES, WEAPON_SLOTS, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
 import { Scene } from './scene';
@@ -497,8 +497,7 @@ function profileScreen(note = '') {
     </div>
     <h3 class="slot">${t('profileStars')}</h3>
     ${masteries()
-      ? `<p class="mastery-line">${save.retro ? `<span style="color:${starColor()}">★</span>` : crest} ${modeShort('sprints')} ${save.mastery.sprints} · ${modeShort('horde')} ${save.mastery.horde}</p>
-         <div class="star-pick" role="group" aria-label="${t('profileStarColor')}">${(Object.keys(STAR_COLORS) as StarColor[]).map((c) => `<button type="button" class="star-chip${c === save.starColor ? ' is-on' : ''}" data-star="${c}" style="--star:${STAR_COLORS[c]}" aria-pressed="${c === save.starColor}" aria-label="${c}">★</button>`).join('')}</div>`
+      ? `<p class="mastery-line">${save.retro ? `<span style="color:${starColor()}">★</span>` : crest} ${modeShort('sprints')} ${save.mastery.sprints} · ${modeShort('horde')} ${save.mastery.horde}</p>`
       : `<p class="how">${t('masteryNone')}</p>`}
     <button class="ghost is-danger" data-act="reset-ask">${t('resetBtn')}</button>
     ${backButton('menu')}`, false, false, 'keep-scroll');
@@ -1439,18 +1438,6 @@ screen.addEventListener('click', (event) => {
       audio.play('win');
       profileScreen(t('masteryDone'));
     }
-  } else if (target.dataset.star) {
-    // Changed in place, no re-render: rebuilding the dialog made its painted frame and plates flash.
-    save.starColor = target.dataset.star as StarColor;
-    persist();
-    for (const chip of screen.querySelectorAll<HTMLElement>('[data-star]')) {
-      const on = chip.dataset.star === save.starColor;
-      chip.classList.toggle('is-on', on);
-      chip.setAttribute('aria-pressed', String(on));
-    }
-    for (const el of screen.querySelectorAll<HTMLElement>('.mstars')) el.style.setProperty('--star', starColor());
-    const mark = screen.querySelector<HTMLElement>('.mastery-line span');
-    if (mark) mark.style.color = starColor();
   }
   else if (act === 'name-reset') setName(DEFAULT_NAME);
   else if (act === 'name-edit') { editingName = true; profileScreen(); }
