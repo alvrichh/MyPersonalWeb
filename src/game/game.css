@@ -2610,7 +2610,7 @@ body {
 
 /* ------------------------------------------------------------ customise */
 /* After the owner's mock-up: the title in the gem plate, the hero on the
-   glowing pad (`glow_pad`, floor ring at 75% of its height), three slot
+   glowing portal (`portal_pad`, its ring's middle at 74% of its height), three slot
    cards down each side (one of the owner's rings sitting on a chamfered
    plate: grey when empty, blue when something is worn, lit orange while its
    list is open) and three round buttons under it. The lists use the
@@ -2712,11 +2712,11 @@ body {
   bottom: 0;
   left: 50%;
   z-index: 0;
-  width: 150%;
-  max-width: 220px;
-  aspect-ratio: 320 / 210;
+  width: 140%;
+  max-width: 200px;
+  aspect-ratio: 258 / 277;
   transform: translateX(-50%);
-  background: url('/images/game/ui/glow_pad.webp') center / 100% 100% no-repeat;
+  background: url('/images/game/ui/portal_pad.webp') center / 100% 100% no-repeat;
   pointer-events: none;
 }
 .dress-hero .hero-fig {
@@ -2726,9 +2726,10 @@ body {
   width: auto;
   height: 150px;
   max-width: 100%;
-  /* Feet on the pad's floor ring, a quarter of its height above its bottom (the pad is min(150%, 220px)
-     wide at 320:210, and margins in % follow the column's width); the name stands above the hero's head. */
-  margin-bottom: calc(min(150%, 220px) * 0.164 - 6px);
+  /* Feet on the middle of the portal's ring, 26% of its height above its bottom (the portal is
+     min(140%, 200px) wide at 258:277, so that is 0.279 of its width, and margins in % follow the column's
+     width); its light rises behind the hero; the name stands above the hero's head. */
+  margin-bottom: calc(min(140%, 200px) * 0.279 - 6px);
   filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.55));
 }
 canvas.hero-fig { height: 150px; width: 135px; filter: none; }
