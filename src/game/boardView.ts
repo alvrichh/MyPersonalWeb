@@ -37,7 +37,9 @@ export function slotAt(lay: BoardLayout, px: number, py: number): Slot | null {
 
 export type BoardDrag = { piece: Piece; x: number; y: number; over: Slot | null };
 /** Your commander's pictures: the worn skin and headwear's poses, and the portal it stands on. */
-export type HeroPics = { front: HTMLImageElement; shoot: HTMLImageElement; hurt: HTMLImageElement; cheer: HTMLImageElement; down: HTMLImageElement; pad: HTMLImageElement; padRed: HTMLImageElement };
+type Poses = { front: HTMLImageElement; shoot: HTMLImageElement; hurt: HTMLImageElement; cheer: HTMLImageElement; down: HTMLImageElement };
+/** Your hero's poses and portals, and against a friend their own hero's poses (`rival`), drawn as they are. */
+export type HeroPics = Poses & { pad: HTMLImageElement; padRed: HTMLImageElement; rival?: Poses };
 
 /** How big each step is drawn (the radius the sprites are sized by): in the game's own order, bug, ticket, legacy,
     room-6 boss, final boss, each bigger than the one before, a little under the game's sizes (12, 14, 20, 40, 52)
@@ -433,12 +435,15 @@ function drawRival(ctx: CanvasRenderingContext2D, pics: HeroPics, pose: HTMLImag
     ctx.ellipse(0, 0, 26, 8, 0, 0, Math.PI * 2);
     ctx.stroke();
   }
-  // Your own hero, its colours inverted, facing the board; it sinks and fades once beaten.
-  const img = ok(pose) ? pose : pics.front;
+  // Your own hero, its colours inverted, facing the board (against a friend, their own hero as it is); it sinks and
+  // fades once beaten.
+  const key = (['front', 'shoot', 'hurt', 'cheer', 'down'] as const).find((k) => pics[k] === pose) ?? 'front';
+  const theirs = pics.rival && ok(pics.rival[key]) ? pics.rival[key] : null;
+  const img = theirs ?? (ok(pose) ? pose : pics.front);
   if (ok(img)) {
     const h = 58;
     const w = (h * img.naturalWidth) / img.naturalHeight;
-    const pic = negative(img);
+    const pic = theirs ?? negative(img);
     ctx.globalAlpha = 1 - gone;
     ctx.translate(0, gone * 8 + Math.sin(now * 2.2 + 1) * 0.8);
     ctx.drawImage(pic, -w / 2, -h, w, h);
