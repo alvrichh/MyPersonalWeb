@@ -449,13 +449,18 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
     ctx.restore();
   }
   drawPuffs(ctx, now, retro);
-  if (drag) {
-    const x = (drag.x - lay.ox) / lay.s;
-    const y = (drag.y - lay.oy) / lay.s;
-    ctx.save();
-    ctx.translate(x, y - 10);
-    ctx.scale(FIG * 1.12, FIG * 1.12);
-    drawBoardFigure(ctx, figureOf(drag.piece.tier, drag.piece.cast, 1, 0, 0, 0), now, retro);
-    ctx.restore();
-  }
+}
+
+/** The unit being dragged, on its own canvas over the board's top bar and shop, so it is never hidden under them. */
+export function drawBoardDrag(ctx: CanvasRenderingContext2D, lay: BoardLayout, drag: BoardDrag | null, now: number, retro: boolean, dpr: number, tactics: boolean) {
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  if (!drag) return;
+  ctx.setTransform(dpr * lay.s, 0, 0, dpr * lay.s, dpr * lay.ox, dpr * lay.oy);
+  const x = (drag.x - lay.ox) / lay.s;
+  const y = (drag.y - lay.oy) / lay.s;
+  ctx.translate(x, y - 10);
+  const k = FIG * 1.12 * (tactics ? starScale(drag.piece.star) : 1);
+  ctx.scale(k, k);
+  drawBoardFigure(ctx, figureOf(drag.piece.tier, drag.piece.cast, 1, 0, 0, 0), now, retro, tactics ? STAR_BORDER[(drag.piece.star ?? 1) - 1] || null : null);
 }

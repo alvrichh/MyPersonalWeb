@@ -9,7 +9,7 @@ import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
 import { draw, drawRetroFigure, preloadCast, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
 import { ROUNDS, SYNERGY, TACTICS, armyCap, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, updateBoard, type BoardGame } from './board';
-import { FIREBALL, boardMerged, drawBoard, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
+import { FIREBALL, boardMerged, drawBoard, drawBoardDrag, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
 import type { Enemy } from './world';
 import { ARMOUR_SLOTS, ARSENAL, ITEMS, itemLevel, type SpiritSkin, UPGRADES, WEAPON_SLOTS, EXTRA_SLOT_PRICE, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
 import { Scene } from './scene';
@@ -1653,6 +1653,10 @@ function startRun(world = worldIn(), mode: PlayMode = save.mode, endless = false
 const boardUi = $<HTMLElement>('boardUi');
 const boardTop = $<HTMLElement>('boardTop');
 const boardShop = $<HTMLElement>('boardShop');
+/** The dragged unit's own canvas, over the top bar and the shop (cleared once after a drag ends). */
+let floatDrawn = false;
+const boardFloat = $<HTMLCanvasElement>('boardFloat');
+const floatCtx = boardFloat.getContext('2d') as CanvasRenderingContext2D;
 let board: BoardGame | null = null;
 let boardDrag: BoardDrag | null = null;
 let boardDown: { x: number; y: number; id: number } | null = null;
@@ -1714,6 +1718,7 @@ function endBoard() {
   board = null;
   boardDrag = null;
   boardUi.hidden = true;
+  boardFloat.hidden = true;
 }
 /** Banks a finished board run, once: coins, the world's record, a world opened, the totals. */
 function bankBoard(b: BoardGame): number | null {
@@ -1931,6 +1936,13 @@ function boardStep(dt: number, now: number) {
   const acts = boardShop.querySelector('.board-acts, .board-fighting')?.getBoundingClientRect();
   const floor = { top: top - 6, bottom: (acts ? acts.top : boardShop.getBoundingClientRect().bottom) - rect.top - 4 };
   if (heroPics) drawBoard(ctx, b, boardLay, now / 1000, boardDrag, save.retro, view.dpr, heroPics, boardEnded === null ? null : now / 1000 - boardEnded, floor);
+  boardFloat.hidden = !boardDrag;
+  if (boardDrag || floatDrawn) {
+    const w = Math.round(canvas.clientWidth * view.dpr), h = Math.round(canvas.clientHeight * view.dpr);
+    if (boardFloat.width !== w || boardFloat.height !== h) { boardFloat.width = w; boardFloat.height = h; }
+    drawBoardDrag(floatCtx, boardLay, boardDrag, now / 1000, save.retro, view.dpr, b.variant === 'tactics');
+    floatDrawn = !!boardDrag;
+  }
 }
 
 /* Dragging units about while you prepare: onto a cell to move it, onto one of its kind to merge them, onto the
