@@ -4747,7 +4747,7 @@ const ICICLE_PIC = [
 ];
 /** How long the spikes take to grow through their six frames once they strike. */
 const ICICLE_GROW = 0.18;
-function drawIcicleArt(ctx: CanvasRenderingContext2D, st: { x: number; y: number; t: number }, now: number) {
+function drawIcicleArt(ctx: CanvasRenderingContext2D, st: { x: number; y: number; t: number; r?: number }, now: number) {
   const v = Math.abs(Math.floor(st.x * 7 + st.y * 13)) % 4;
   const warn = st.t > 0;
   const age = -st.t;
@@ -4756,7 +4756,7 @@ function drawIcicleArt(ctx: CanvasRenderingContext2D, st: { x: number; y: number
   if (warn) for (let f = 1; f < 7; f++) fxImage(`icicle-${v}-${f}`);
   const pic = fxImage(`icicle-${v}-${frame}`);
   if (!ready(pic) || !ready(fxImage(`icicle-${v}-6`))) return false;
-  const r = ICICLE_R;
+  const r = st.r ?? ICICLE_R;
   const m = ICICLE_PIC[v];
   // The ring still marks where it will strike while the floor cracks open inside it.
   let alpha = 1;
@@ -4789,9 +4789,9 @@ function drawIcicleArt(ctx: CanvasRenderingContext2D, st: { x: number; y: number
   ctx.globalAlpha = 1;
   return true;
 }
-function drawIcicle(ctx: CanvasRenderingContext2D, st: { x: number; y: number; t: number; hit?: boolean }, now: number) {
+function drawIcicle(ctx: CanvasRenderingContext2D, st: { x: number; y: number; t: number; hit?: boolean; r?: number }, now: number) {
   if (!retroLook && drawIcicleArt(ctx, st, now)) return;
-  const r = ICICLE_R;
+  const r = st.r ?? ICICLE_R;
   if (st.t > 0) {
     const t = 1 - st.t / 0.9;
     ctx.strokeStyle = `rgba(186,230,253,${0.45 + t * 0.5})`;

@@ -84,7 +84,7 @@ export type Hazard = { kind: 'lava' | 'puddle' | 'thorns'; x: number; y: number;
 /** A lightning strike on its way: a warning circle, then the hit. */
 /** A bolt (or, in the viking world, ice spikes breaking out of the floor): `t` seconds of warning left;
    ice spikes stay up a moment after they strike (`t` below zero, `hit` once they have). */
-export type Strike = { x: number; y: number; t: number; ice?: boolean; hit?: boolean };
+export type Strike = { x: number; y: number; t: number; ice?: boolean; hit?: boolean; dmg?: number; boss?: boolean; r?: number };
 
 export type Vec = { x: number; y: number };
 /** A block; `piece` says which of the world's pieces of its size it is drawn as (the open field's blocks carry it). */
@@ -2271,6 +2271,9 @@ export const ICICLE_EVERY = 1.25;
 export const ICICLE_STAY = 0.6;
 export const ICICLE_R = 30;
 const ICICLE_CHILL = 1.2;
+/** Brynhild's rows of ice spikes: how many a row, where the first breaks out past her, how far apart, the first's
+    warning and how much later each next one comes. */
+const ICE_ROW = { count: 7, from: 22, gap: 34, warn: 0.45, step: 0.07, r: 19, spread: 0.55 };
 
 function hurtPlayer(g: Game, amount: number, from?: string, fire = false) {
   const p = g.player;
@@ -2526,7 +2529,7 @@ export const FINAL_BOSS = ['kernel', 'archdemon', 'drakkar', 'medusa', 'queen', 
 /** The water world's final boss is a Viking longship with its captain at the helm; at half health the ship
     breaks up and the captain, Valdur, fights on alone: smaller, much faster, leaping and charging in a frenzy. */
 export type FinalBoss = (typeof FINAL_BOSS)[number] | 'valdur';
-type Move = 'volley' | 'breath' | 'geysers' | 'mudball' | 'leap' | 'javelins' | 'missiles' | 'blink' | 'acid';
+type Move = 'volley' | 'breath' | 'geysers' | 'icerows' | 'mudball' | 'leap' | 'javelins' | 'missiles' | 'blink' | 'acid';
 type Signature = 'tornado' | 'spiral' | 'meteors' | 'tide' | 'sigils' | 'roots' | 'grid' | 'laser' | 'clones' | 'frenzy';
 const MID_MOVE: Move[] = ['volley', 'breath', 'geysers', 'mudball', 'leap', 'javelins', 'missiles', 'blink'];
 const SIGNATURE: Signature[] = ['spiral', 'meteors', 'tide', 'sigils', 'roots', 'grid', 'laser', 'clones'];
@@ -2535,7 +2538,7 @@ const SIGNATURE: Signature[] = ['spiral', 'meteors', 'tide', 'sigils', 'roots', 
 const HORDE_LEAP = 9;
 const moveOf = (g: Game, e: Enemy): Move =>
   // Kratos: his blades sweep fire in front of him (the demons' breath); his signature is the fire world's meteors.
-  e.bossId === 'kratos' ? (e.phase > 1 ? 'javelins' : 'breath') : e.bossId === 'valdur' ? 'leap' : e.bossId === 'queen' ? 'acid' : g.world < WORLD_COUNT ? MID_MOVE[g.world - 1]
+  e.bossId === 'kratos' ? (e.phase > 1 ? 'javelins' : 'breath') : e.bossId === 'viking' ? 'icerows' : e.bossId === 'valdur' ? 'leap' : e.bossId === 'queen' ? 'acid' : g.world < WORLD_COUNT ? MID_MOVE[g.world - 1]
   // Nocthrax: the Treant's vanishing leap half the time (the owner's favourite), any other move otherwise.
   : e.bossId === 'chimera' && !e.clone && Math.random() < 0.5 ? 'leap' : MID_MOVE[Math.floor(Math.random() * MID_MOVE.length)];
 const signatureOf = (g: Game, e: Enemy): Signature =>
@@ -2773,6 +2776,20 @@ function worldMove(g: Game, e: Enemy, move: Move) {
         g.orbs.push({ x: e.x, y: e.y, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, r: 7, dmg, life: 3, bounce: 0, tone: TONE.fire, pic: 'fireball' });
       }
       break;
+    case 'icerows': {
+      e.pose = 0.9;
+      // Brynhild stabs her spear into the floor and ice spikes break out of it in three rows towards you, one
+      // after another outwards (like the Queen's vines), each the vikings' own spike that hurts and chills.
+      for (const off of [-ICE_ROW.spread, 0, ICE_ROW.spread]) {
+        for (let i = 0; i < ICE_ROW.count; i++) {
+          const d = e.r + ICE_ROW.from + i * ICE_ROW.gap;
+          const at = { x: e.x + Math.cos(aim + off) * d, y: e.y + Math.sin(aim + off) * d };
+          if (g.mode === 'sprints' && (at.x < WALL + 20 || at.x > W - WALL - 20 || at.y < WALL + 20 || at.y > H - WALL - 20)) break;
+          g.strikes.push({ x: at.x, y: at.y, t: ICE_ROW.warn + i * ICE_ROW.step, ice: true, dmg, boss: true, r: ICE_ROW.r });
+        }
+      }
+      break;
+    }
     case 'geysers': {
       // Geysers burst under you, then along the way you were going.
       const step = p.moving ? { x: Math.cos(p.heading) * 55, y: Math.sin(p.heading) * 55 } : { x: 0, y: 0 };
@@ -3339,11 +3356,10 @@ function updateHazards(g: Game, dt: number) {
   }
   // The viking world: ice spikes break out of the floor the same way, and chill you.
   const icy = g.hazard === 'ice';
-  if (g.hazard !== 'strike' && !icy) return;
   // The storm: a bolt aims near you, warns for a moment, then hits anything
-  // in the circle, bugs included.
-  g.strikeIn -= dt;
-  if (g.strikeIn <= 0) {
+  // in the circle, bugs included. (A boss's ice spikes come in any world, so the strikes below always run.)
+  if (g.hazard === 'strike' || icy) g.strikeIn -= dt;
+  if ((g.hazard === 'strike' || icy) && g.strikeIn <= 0) {
     g.strikeIn = g.mode === 'horde' ? Math.max(2.2, 4.5 - (g.time / 60) * 0.25) : Math.max(1.4, 3 - g.room * 0.12);
     if (icy) g.strikeIn *= ICICLE_EVERY;
     const a = rand(0, Math.PI * 2);
@@ -3363,12 +3379,12 @@ function updateHazards(g: Game, dt: number) {
       burst(g, st.x, st.y, '#e0f2fe', 16, 150, 3);
       burst(g, st.x, st.y, '#7dd3fc', 8, 90, 2.5);
       g.events.push('strike');
-      if (dist(st, p) < ICICLE_R + p.r * 0.5 && p.inv <= 0 && g.phase === 'play') {
-        hurtPlayer(g, 12);
-        p.chill = Math.max(p.chill, ICICLE_CHILL);
+      if (dist(st, p) < (st.r ?? ICICLE_R) + p.r * 0.5 && p.inv <= 0 && g.phase === 'play') {
+        hurtPlayer(g, st.dmg ?? 12);
+        if (!g.showcase) p.chill = Math.max(p.chill, ICICLE_CHILL);
         g.events.push('chill');
       }
-      for (const e of live(g)) if (dist(st, e) < ICICLE_R + e.r) hurt(g, e, 40);
+      if (!st.boss) for (const e of live(g)) if (dist(st, e) < ICICLE_R + e.r) hurt(g, e, 40);
       return true;
     }
     g.fx.push({ kind: 'strike', x: st.x, y: st.y, r: 34, a: 0, life: 0.3, max: 0.3 });
