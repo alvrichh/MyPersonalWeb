@@ -60,6 +60,24 @@ const figureOf = (tier: Tier, cast: number, face: number, step: number, swing: n
   r: DRAW_R[tier],
 });
 
+/* Fusion's auto-merge: while the lightning plays, the newer unit walks over to its twin, slowly and then quicker,
+   and the twin leans a little towards it and back, so the two meet where the merged unit will stand. */
+const ease = (k: number) => k * k * (3 - 2 * k);
+function mergePos(b: BoardGame, p: Piece, now: number) {
+  const at = cellCentre(p.slot);
+  const m = b.pending;
+  if (!m || (m.a !== p.id && m.b !== p.id)) return at;
+  const other = b.army.find((x) => x.id === (m.a === p.id ? m.b : m.a));
+  if (!other) return at;
+  const to = cellCentre(other.slot);
+  const k = Math.max(0, Math.min(1, 1 - m.t / MERGE_DELAY));
+  // The newer one goes the whole way; the twin only leans in, a quarter of it at most, back as they meet.
+  const f = m.a === p.id ? ease(k) : 0.25 * Math.sin(k * Math.PI);
+  // A little hop as they go.
+  const hop = m.a === p.id ? -Math.abs(Math.sin(now * 14)) * 3 * (1 - k) : 0;
+  return { x: at.x + (to.x - at.x) * f, y: at.y + (to.y - at.y) * f + hop };
+}
+
 /* A merge: a puff of smoke on the cell (the steam fusion's cloud, `fx/steam-cloud`) and the new unit popping up
    bigger and settling. */
 const PUFF = 0.65;
@@ -339,7 +357,7 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
     const pieces = [...b.army].sort((p, q) => p.slot.r - q.slot.r);
     for (const p of pieces) {
       if (drag?.piece === p) continue;
-      const c = cellCentre(p.slot);
+      const c = mergePos(b, p, now);
       ctx.save();
       ctx.translate(c.x, c.y);
       ring(ctx, TIER_STATS[p.tier].r, tactics ? RARITY_COLOUR[p.tier] : '#38bdf8');
@@ -455,7 +473,7 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
     const q = b.army.find((x) => x.id === b.pending!.b);
     if (p && q) {
       const k = 1 - b.pending.t / MERGE_DELAY;
-      const A = cellCentre(p.slot), B = cellCentre(q.slot);
+      const A = mergePos(b, p, now), B = mergePos(b, q, now);
       const from = { x: A.x, y: A.y - 10 }, to = { x: B.x, y: B.y - 10 };
       const seed = Math.floor(now * 14);
       ctx.save();
