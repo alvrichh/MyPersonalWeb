@@ -1782,7 +1782,10 @@ function renderBoardUi() {
       ${syns.filter((x) => x.n >= 2).map((x) => `<button class="board-syn is-lv${x.lv}" type="button" data-bact="syn" data-cast="${x.cast}" aria-label="${t(`boardSyn${x.cast}` as Key)}">${WORLD_ICON[x.cast - 1]} ${x.n}/${x.lv >= 1 ? SYNERGY.need[1] : SYNERGY.need[0]}</button>`).join('')}
       ${b.event ? `<span class="board-event">⭐ ${t(`boardEvent${cap(b.event)}` as Key)}</span>` : ''}
     </div>
-    ${fusion ? '' : `<div class="board-cards">${cards}</div>`}
+    <div class="board-sellzone">
+      ${fusion ? '' : `<div class="board-cards">${cards}</div>`}
+      <b class="board-sell-price" aria-hidden="true"></b>
+    </div>
     <div class="board-acts">
       ${fusion ? `<button class="board-auto${b.autoMerge ? ' is-on' : ''}" type="button" data-bact="auto" aria-pressed="${b.autoMerge}"${!b.autoMerge && b.gold < autoMergePrice(b) ? ' aria-disabled="true"' : ''} aria-label="${t('boardAuto')}"><i aria-hidden="true"></i>${b.autoMerge ? '' : `<small>${coin} ${autoMergePrice(b)}</small>`}</button>` : ''}
       ${fusion
@@ -1972,6 +1975,10 @@ function boardPointerDown(event: PointerEvent) {
   boardDrag = { piece, x, y, over: slot };
   canvas.setPointerCapture(event.pointerId);
 }
+/** Where the sell zone starts: the shop's cards, or Fusion's strip above its buttons (and the buttons below it). */
+function sellTop() {
+  return (boardShop.querySelector('.board-sellzone') ?? boardShop).getBoundingClientRect().top - 14;
+}
 function boardPointerMove(event: PointerEvent) {
   if (!boardDrag || !boardDown || event.pointerId !== boardDown.id) return;
   const rect = canvas.getBoundingClientRect();
@@ -1980,7 +1987,14 @@ function boardPointerMove(event: PointerEvent) {
   boardDrag.over = slotAt(boardLay, boardDrag.x, boardDrag.y);
   // Over the shop and the buttons it would be sold: a soft red glow there says so.
   boardUi.classList.add('is-dragging');
-  boardUi.classList.toggle('is-selling', event.clientY >= boardShop.getBoundingClientRect().top);
+  const selling = event.clientY >= sellTop();
+  boardUi.classList.toggle('is-selling', selling);
+  // What it would sell for, in the middle of the red.
+  const price = boardShop.querySelector<HTMLElement>('.board-sell-price');
+  if (price && board) {
+    const text = `+${save.retro ? '◉' : COIN_PIC} ${saleOf(boardDrag.piece, board.variant)}`;
+    if (price.dataset.v !== text) { price.dataset.v = text; price.innerHTML = text; }
+  }
 }
 function boardPointerUp(event: PointerEvent) {
   const b = board;
@@ -1995,8 +2009,7 @@ function boardPointerUp(event: PointerEvent) {
   // A tap: what it is, the world its cast comes from, and what it would sell for.
   if (!moved) { flash(`${boardTierName(drag.piece.tier)}${b.variant === 'tactics' ? ` ${'★'.repeat(drag.piece.star ?? 1)} · ${t(`boardRarity${drag.piece.tier}` as Key)}` : ''} · ${worldName(drag.piece.cast)} · ◉ ${saleOf(drag.piece, b.variant)}`); return; }
   // Dropped on the shop: sold, for half what it is worth.
-  const shop = boardShop.getBoundingClientRect();
-  if (event.clientY >= shop.top) {
+  if (event.clientY >= sellTop()) {
     const gain = saleOf(drag.piece, b.variant);
     if (boardSell(b, from)) { audio.play('coin'); flash(t('boardSold', { n: gain })); }
     renderBoardUi();

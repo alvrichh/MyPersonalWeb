@@ -4105,19 +4105,30 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 :root[data-retro] .panel .book-mode.is-gold { background: linear-gradient(135deg, #fde047, #f59e0b); }
 .panel .book-mode.board-variant { min-height: 60px; padding: 0; align-content: center; justify-content: center; text-align: center; }
 .panel .book-mode.board-variant b { font-size: 1.2rem; }
-/* Dragging a unit: the shop and its buttons, where a drop sells it, under a soft red oval with no edge, brighter
-   once the unit is over it. */
+/* Dragging a unit: a soft red oval with no edge over the shop's cards (in Fusion, over a strip of its own above its buttons),
+   where a drop sells it, brighter once the unit is over it, with what it would sell for in its middle; the buttons
+   stay clear. */
 .board-shop { position: relative; }
-.board-shop::after {
-  content: ''; position: absolute; inset: -14px -6px; z-index: 3; pointer-events: none;
+.board-sellzone { position: relative; }
+/* Fusion has no cards: its sell strip is a band of its own above the buttons. */
+.board-sellzone:not(:has(.board-cards)) { min-height: 54px; }
+.board-sellzone::after {
+  content: ''; position: absolute; left: -6px; right: -6px; top: -14px; bottom: -6px; z-index: 3; pointer-events: none;
   border-radius: 50%;
   background: radial-gradient(ellipse at center, rgba(239, 68, 68, 0.85), rgba(220, 38, 38, 0.5) 42%, rgba(239, 68, 68, 0) 72%);
   opacity: 0; transition: opacity 0.15s ease;
 }
-.board-ui.is-dragging .board-shop::after { opacity: 0.45; }
-.board-ui.is-selling .board-shop::after { opacity: 1; }
+.board-ui.is-dragging .board-sellzone::after { opacity: 0.45; }
+.board-ui.is-selling .board-sellzone::after { opacity: 1; }
+.board-sell-price {
+  position: absolute; left: 50%; top: 50%; z-index: 4; translate: -50% -50%;
+  display: flex; align-items: center; gap: 4px; padding: 4px 12px; border-radius: 99px;
+  background: rgba(40, 6, 10, 0.75); color: #fde68a; font: 800 1.15rem/1 var(--font); text-shadow: 0 2px 3px #000;
+  opacity: 0; transition: opacity 0.15s ease; pointer-events: none; white-space: nowrap;
+}
+.board-ui.is-selling .board-sell-price { opacity: 1; }
 /* The cards fade back while a unit is over them, so the unit being sold shows through. */
-.board-ui.is-selling .board-cards, .board-ui.is-selling .board-acts { opacity: 0.45; transition: opacity 0.15s ease; }
+.board-ui.is-selling .board-cards { opacity: 0.45; transition: opacity 0.15s ease; }
 /* Tactics: a card that completes three of a kind shines and pulses, with a gold ★↑ on it. */
 :root:not([data-retro]) .board-card.is-up { animation: card-up 1.1s ease-in-out infinite; }
 @keyframes card-up {
