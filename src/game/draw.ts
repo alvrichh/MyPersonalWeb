@@ -625,12 +625,12 @@ function heroTint(g: Game): [string, number] | null {
   if (p.dark > 0) return ['167,139,250', Math.min(1, p.dark / 0.3)];
   return null;
 }
-function drawTinted(ctx: CanvasRenderingContext2D, img: HTMLImageElement, x: number, y: number, w: number, h: number, tint: [string, number] | null) {
+function drawTinted(ctx: CanvasRenderingContext2D, img: HTMLImageElement | HTMLCanvasElement, x: number, y: number, w: number, h: number, tint: [string, number] | null) {
   if (!tint) { ctx.drawImage(img, x, y, w, h); return; }
   tintCanvas ??= document.createElement('canvas');
   const c = tintCanvas;
-  c.width = img.naturalWidth;
-  c.height = img.naturalHeight;
+  c.width = img instanceof HTMLImageElement ? img.naturalWidth : img.width;
+  c.height = img instanceof HTMLImageElement ? img.naturalHeight : img.height;
   const t = c.getContext('2d');
   if (!t) { ctx.drawImage(img, x, y, w, h); return; }
   t.drawImage(img, 0, 0);
@@ -750,37 +750,47 @@ function drawDark(ctx: CanvasRenderingContext2D, g: Game, vis: Rect) {
   ctx.fillRect(vis.x, vis.y, vis.w, vis.h);
 }
 
-/* Walking sideways, the two step pictures are nearly the same, so the legs are swung in code too: each picture is
-   split at the hip and, below it, between its two shoes (`legSplit`, read once from the picture's own pixels), and
-   the two legs are sheared opposite ways about the hip, like scissors, a full stride every `STRIDE` seconds, with a
-   small lift on each step; the body above the hip stays as it is. */
+/* Walking sideways, the two step pictures are nearly the same, so the legs are walked in code too. Nothing is cut:
+   each picture is warped smoothly below the hip (the lowest 30% of the figure), every pixel moved sideways by more the
+   nearer it is to the feet (so the hands and the blaster by the hip hardly move), the back leg one way and the front
+   leg the other, blended across the gap between the shoes (`stepFrames`, read from the picture's own pixels), and the
+   leg swinging forward lifts its foot a little. Each output pixel is sampled from where it came from (bilinear, on
+   premultiplied colour), so no hole or seam can open. `STEP_FRAMES` frames a stride are worked out once per picture. */
 const SIDE_WALK = new Set<Pose>(['walk', 'walk2', 'wshoot', 'wshoot2']);
 const STRIDE = 0.42;
-/** How far a foot swings, as a shear of the leg (foot shift over leg length). */
-const LEG_SWING = 0.32;
-type Legs = { hip: number; split: number };
-const legCache = new WeakMap<HTMLImageElement, Legs | null>();
-function legSplit(img: HTMLImageElement): Legs | null {
-  if (legCache.has(img)) return legCache.get(img)!;
-  let legs: Legs | null = null;
+/** How far a foot swings, as a share of the leg's length, and how high the passing foot lifts (share of the figure). */
+const LEG_SWING = 0.42;
+const FOOT_LIFT = 0.035;
+const STEP_FRAMES = 12;
+type Steps = { frames: HTMLCanvasElement[]; pad: number };
+const stepCache = new WeakMap<HTMLImageElement, Steps | null>();
+function stepFrames(img: HTMLImageElement): Steps | null {
+  if (stepCache.has(img)) return stepCache.get(img)!;
+  let steps: Steps | null = null;
   try {
+    const w = img.naturalWidth;
+    const h = img.naturalHeight;
     const c = document.createElement('canvas');
-    c.width = img.naturalWidth;
-    c.height = img.naturalHeight;
+    c.width = w;
+    c.height = h;
     const t = c.getContext('2d', { willReadFrequently: true });
     if (t) {
       t.drawImage(img, 0, 0);
-      const { data, width, height } = t.getImageData(0, 0, c.width, c.height);
-      const solid = (x: number, y: number) => data[(y * width + x) * 4 + 3] > 100;
+      const src = t.getImageData(0, 0, w, h).data;
+      const alpha = (x: number, y: number) => src[(y * w + x) * 4 + 3];
       let top = 0;
-      while (top < height && ![...Array(width).keys()].some((x) => solid(x, top))) top += 1;
-      // The legs are about the lowest 30% of a chibi figure.
-      const hip = Math.round(height - (height - top) * 0.3);
-      // Between the shoes: the widest empty run across the lowest rows, or the middle of the feet when they touch.
-      const rows = Math.max(3, Math.round((height - top) * 0.08));
-      const filled = Array.from({ length: width }, (_, x) => { for (let y = height - rows; y < height; y++) if (solid(x, y)) return true; return false; });
+      while (top < h - 1 && !Array.from({ length: w }, (_, x) => alpha(x, top) > 100).some(Boolean)) top += 1;
+      let bottom = h - 1;
+      while (bottom > top && !Array.from({ length: w }, (_, x) => alpha(x, bottom) > 100).some(Boolean)) bottom -= 1;
+      const fig = bottom - top;
+      const hip = bottom - fig * 0.3;
+      const leg = bottom - hip;
+      // Between the shoes: the widest empty run across the lowest rows (the middle of the feet when they touch).
+      const rows = Math.max(3, Math.round(fig * 0.08));
+      const filled = Array.from({ length: w }, (_, x) => { for (let y = bottom - rows + 1; y <= bottom; y++) if (alpha(x, y) > 100) return true; return false; });
       const first = filled.indexOf(true);
       const last = filled.lastIndexOf(true);
+      if (first < 0) throw new Error('no feet');
       let split = (first + last) / 2;
       let best = 0;
       for (let x = first; x <= last; x++) {
@@ -790,40 +800,62 @@ function legSplit(img: HTMLImageElement): Legs | null {
         if (e - x > best) { best = e - x; split = (x + e) / 2; }
         x = e;
       }
-      if (first >= 0) legs = { hip: hip / height, split: split / width };
+      const soft = Math.max(2.5, (last - first) * 0.12);
+      // Premultiplied copy, so the edges blend cleanly.
+      const pm = new Float32Array(w * h * 4);
+      for (let k = 0; k < w * h; k++) {
+        const a = src[k * 4 + 3] / 255;
+        pm[k * 4] = src[k * 4] * a; pm[k * 4 + 1] = src[k * 4 + 1] * a; pm[k * 4 + 2] = src[k * 4 + 2] * a; pm[k * 4 + 3] = src[k * 4 + 3];
+      }
+      const pad = Math.ceil(leg * LEG_SWING) + 4;
+      const W = w + pad * 2;
+      const frames: HTMLCanvasElement[] = [];
+      for (let f = 0; f < STEP_FRAMES; f++) {
+        const phase = (f / STEP_FRAMES) * Math.PI * 2;
+        const swing = Math.sin(phase) * LEG_SWING * leg;
+        const out = new ImageData(W, h);
+        const d = out.data;
+        for (let y = 0; y < h; y++) {
+          const k = y <= hip ? 0 : Math.min(1, (y - hip) / leg) ** 1.6;
+          for (let X = 0; X < W; X++) {
+            const x = X - pad;
+            const side = Math.tanh((x - split) / soft);
+            const lift = side < 0 ? Math.max(0, Math.cos(phase)) : Math.max(0, -Math.cos(phase));
+            const sx = x + side * swing * k;
+            const sy = y + FOOT_LIFT * h * lift * k * (Math.abs(side));
+            // Bilinear sample of the premultiplied picture.
+            const x0 = Math.floor(sx), y0 = Math.floor(sy), fx = sx - x0, fy = sy - y0;
+            let r = 0, gg = 0, b = 0, a = 0;
+            for (const [px, py, wt] of [[x0, y0, (1 - fx) * (1 - fy)], [x0 + 1, y0, fx * (1 - fy)], [x0, y0 + 1, (1 - fx) * fy], [x0 + 1, y0 + 1, fx * fy]]) {
+              if (wt <= 0 || px < 0 || py < 0 || px >= w || py >= h) continue;
+              const q = (py * w + px) * 4;
+              r += pm[q] * wt; gg += pm[q + 1] * wt; b += pm[q + 2] * wt; a += pm[q + 3] * wt;
+            }
+            if (a < 1) continue;
+            const o = (y * W + X) * 4;
+            const un = 255 / a;
+            d[o] = r * un; d[o + 1] = gg * un; d[o + 2] = b * un; d[o + 3] = a;
+          }
+        }
+        const fc = document.createElement('canvas');
+        fc.width = W;
+        fc.height = h;
+        fc.getContext('2d')?.putImageData(out, 0, 0);
+        frames.push(fc);
+      }
+      steps = { frames, pad };
     }
-  } catch { legs = null; }
-  legCache.set(img, legs);
-  return legs;
+  } catch { steps = null; }
+  stepCache.set(img, steps);
+  return steps;
 }
-function drawStriding(ctx: CanvasRenderingContext2D, img: HTMLImageElement, w: number, h: number, legs: Legs, now: number, tint: [string, number] | null) {
-  const phase = (now / STRIDE) * Math.PI * 2;
-  const hip = -h + legs.hip * h;
-  const split = -w / 2 + legs.split * w;
+function drawStriding(ctx: CanvasRenderingContext2D, img: HTMLImageElement, w: number, h: number, steps: Steps, now: number, tint: [string, number] | null) {
+  const cycle = (now / STRIDE) % 1;
+  const frame = steps.frames[Math.floor(cycle * STEP_FRAMES) % STEP_FRAMES];
   // A little lift as each foot passes under the body.
-  const lift = Math.abs(Math.cos(phase)) * h * 0.012;
-  ctx.save();
-  ctx.translate(0, -lift);
-  // The body, down to just past the hip so no seam shows.
-  ctx.save();
-  ctx.beginPath();
-  ctx.rect(-w, -h - 20, w * 2, hip + h + 21);
-  ctx.clip();
-  drawTinted(ctx, img, -w / 2, -h, w, h, tint);
-  ctx.restore();
-  // Each leg sheared about the hip, the back one and the front one opposite ways; the clip is set after the shear,
-  // so it picks the leg's own pixels wherever they swing.
-  for (const [side, k] of [[-1, Math.sin(phase) * LEG_SWING], [1, -Math.sin(phase) * LEG_SWING]] as const) {
-    ctx.save();
-    ctx.transform(1, 0, k, 1, -k * hip, 0);
-    ctx.beginPath();
-    if (side < 0) ctx.rect(-w, hip, split + w, h);
-    else ctx.rect(split, hip, w, h);
-    ctx.clip();
-    drawTinted(ctx, img, -w / 2, -h, w, h, tint);
-    ctx.restore();
-  }
-  ctx.restore();
+  const lift = Math.abs(Math.cos(cycle * Math.PI * 2)) * h * 0.012;
+  const k = w / img.naturalWidth;
+  drawTinted(ctx, frame, -w / 2 - steps.pad * k, -h - lift, frame.width * k, h, tint);
 }
 
 function drawPlayer(ctx: CanvasRenderingContext2D, g: Game, pal: Palette, now: number) {
@@ -857,8 +889,8 @@ function drawPlayer(ctx: CanvasRenderingContext2D, g: Game, pal: Palette, now: n
     if (left || (vertical && step)) ctx.scale(-1, 1);
     if (vertical) ctx.rotate(0.06 * Math.sin(now * 7 * Math.PI));
     const tint = g.phase === 'play' ? heroTint(g) : null;
-    const legs = full && p.moving && SIDE_WALK.has(pose) ? legSplit(img) : null;
-    if (legs) drawStriding(ctx, img, w, h, legs, now, tint);
+    const steps = full && p.moving && SIDE_WALK.has(pose) ? stepFrames(img) : null;
+    if (steps) drawStriding(ctx, img, w, h, steps, now, tint);
     else drawTinted(ctx, img, -w / 2, -h, w, h, tint);
     ctx.restore();
     barTop = p.y + p.r * 0.9 - h - 9;
