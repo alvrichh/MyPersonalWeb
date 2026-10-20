@@ -1190,7 +1190,8 @@ function stylesScreen(note = '') {
         // The first world's song has two versions: picking the row plays the one last picked (v1 at first) and opens a switch between them.
         const on = (ids as readonly string[]).includes(save.song);
         const v2 = on && save.song.endsWith('v2');
-        const pic = `<img class="scene-pic" src="./images/game/floors/world${world}.webp" alt="">`;
+        // The world's preview, like the map's card.
+        const pic = `<img class="scene-pic" src="./images/game/map/pv-${ISLAND_ART[world - 1]}.jpg" alt="">`;
         if (ids.length === 1) return songRow(ids[0], pic, t(`${key}Name` as Key), t(`${key}V2` as Key));
         const ver = (id: typeof save.song, label: string) => `<button class="mode-opt${save.song === id ? ' is-on' : ''}" data-song="${id}" aria-pressed="${save.song === id}">${label}</button>`;
         return row(`data-song="${on ? save.song : ids[0]}"`, on, false, pic, t(`${key}Name` as Key),
@@ -1201,7 +1202,7 @@ function stylesScreen(note = '') {
         songRow(`boss-${id}`, `<img class="scene-pic boss-pic" src="./images/game/bosses/${id}-0.webp" alt="">`, t(`final${cap(id)}` as Key), t('songBossText', { world: t(`world${i + 1}Name` as Key) }))).join('')}</div>`;
   } else if (dressSlot === 'scene') {
     picks = `<h3 class="slot">${t('scenePick')}</h3><div class="gear-list">${Array.from({ length: WORLD_COUNT + 1 }, (_, n) => n).map((n) =>
-      row(`data-scene="${n}"`, save.scene === n, false, n ? `<img class="scene-pic" src="./images/game/floors/world${n}.webp" alt="">` : '🌍',
+      row(`data-scene="${n}"`, save.scene === n, false, n ? `<img class="scene-pic is-floor" src="./images/game/floors/world${n}.webp" alt="">` : '🌍',
         n ? t(`world${n}Name` as Key) : t('sceneOwn'), n ? t('sceneText', { n }) : t('sceneOwnText'), save.scene === n ? '✓' : '')).join('')}</div>`;
   } else if (dressSlot) {
     const slot = dressSlot;
