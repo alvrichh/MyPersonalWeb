@@ -2630,7 +2630,8 @@ body {
   display: grid;
   grid-template-columns: minmax(84px, 112px) minmax(0, 1fr) minmax(84px, 112px);
   /* Three shared rows: a two-line item name on one side no longer pushes that column out of line. */
-  grid-template-rows: repeat(3, auto);
+  /* three equal rows, so the slots keep an even spacing however tall the hero in rows 2–3 is */
+  grid-template-rows: repeat(3, 1fr);
   align-items: center;
   justify-items: center;
   gap: 8px 6px;
@@ -3577,3 +3578,14 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 :root:not([data-retro]) .dress-extra > .dslot { align-self: start; }
 :root:not([data-retro]) .dress-col > .dslot .plate,
 :root:not([data-retro]) .dress-extra > .dslot .plate { height: auto; margin-top: -6px; }
+/* The charm's empty or locked slot: its ✚ or 🔒 in the blue ring, like the other slots' painted medallions. */
+:root:not([data-retro]) .dslot.is-extra:not(.is-worn) .icon {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  background: url('/images/game/ui/ring_blue.webp') center / contain no-repeat;
+  color: #7dd3fc;
+  font-size: 1.3rem;
+  line-height: 1;
+}
