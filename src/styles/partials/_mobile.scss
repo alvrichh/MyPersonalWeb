@@ -287,6 +287,28 @@
     border-top: 1px solid var(--rule);
   }
 
+  .mobile-menu-game {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 0 14px 18px;
+    min-height: 52px;
+    padding: 0 16px;
+    border: 1px solid var(--rule);
+    border-radius: 18px;
+    background: color-mix(in srgb, var(--ink) 4%, transparent);
+    color: var(--ink);
+    font: 600 1rem var(--font-body);
+    text-decoration: none;
+  }
+
+  .mobile-menu-game img {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+  }
+
   .mobile-control-trigger {
     display: flex;
     align-items: center;
