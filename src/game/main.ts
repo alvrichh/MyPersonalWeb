@@ -1888,6 +1888,7 @@ boardUi.addEventListener('click', (event) => {
 function boardPauseScreen() {
   show(`<button class="ui-close" type="button" data-act="board-stay" aria-label="${t('resume')}"></button>
     ${head('pause', t('paused'))}
+    <button class="ui-opts" type="button" data-act="options-pause" aria-label="${t('options')}"><span aria-hidden="true">⚙</span></button>
     <button class="primary" data-act="board-stay">${t('resume')}</button>
     <button class="ghost is-danger" data-act="board-quit-ask">${t('quit')}</button>`);
 }
@@ -2209,7 +2210,7 @@ screen.addEventListener('click', (event) => {
     hide();
     if (!fromChest) flash(`${worldName(g.world)} · ${t('sprint', { room: g.room })}`);
   }
-  else if (act === 'pause') pauseScreen();
+  else if (act === 'pause') { if (board && !game) boardPauseScreen(); else pauseScreen(); }
   else if (act === 'confirm-quit') leaveScreen('menu');
   else if (act === 'confirm-restart') restartScreen();
   else if (act === 'restart' && game) {
