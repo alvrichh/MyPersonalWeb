@@ -63,7 +63,7 @@ const figureOf = (tier: Tier, cast: number, face: number, step: number, swing: n
 /* The wall between the halves: the world's own long blocks in a row along the halfway line, standing while you lay
    your army out; it sinks into the floor as the fight starts and rises again when it ends, shaking a little as it
    moves, with dust where it meets the floor. */
-const WALL = { move: 0.5, h: 26 };
+const WALL = { move: 0.5, h: 40 };
 let wallUp = 1;
 let wallAt = 0;
 function drawWall(ctx: CanvasRenderingContext2D, b: BoardGame, now: number, retro: boolean) {
@@ -74,14 +74,15 @@ function drawWall(ctx: CanvasRenderingContext2D, b: BoardGame, now: number, retr
   wallUp = target > wallUp ? Math.min(1, wallUp + dt / WALL.move) : Math.max(0, wallUp - dt / WALL.move);
   const pieces = boardWallPieces(b.world);
   if (retro || wallUp <= 0 || !pieces.every(ok)) return;
-  // As many pieces as keep the wall about half a cell tall (thin enough to stand between the rows, not over the
-  // units on either side), centred on the halfway line; the units are drawn over it.
+  // As many pieces as keep the wall `WALL.h` tall.
   const ratio = pieces[0].naturalHeight / pieces[0].naturalWidth;
   // Always an odd count, so there is a middle piece: the world's other block, the rest all alike either side of it.
   const n = Math.max(3, Math.round(BOARD_W / (WALL.h / ratio))) | 1;
   const w = BOARD_W / n;
   const h = w * ratio;
-  const base = HOME_ROW * CELL + h / 2;
+  // Its top just above the halfway line: the enemy's front row stands wholly behind it, in sight, and your own
+  // units, drawn over it, in front.
+  const base = HOME_ROW * CELL - 4 + h;
   const moving = wallUp !== was && wallUp > 0 && wallUp < 1;
   const shake = moving ? Math.sin(now * 60) * 1.2 : 0;
   ctx.save();
