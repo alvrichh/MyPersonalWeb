@@ -4044,3 +4044,5 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .board-top .hud-coins { grid-column: 3; grid-row: 1; display: flex; align-items: center; justify-self: end; }
 .board-stats { grid-column: 1 / -1; grid-row: 2; display: flex; justify-content: center; gap: 16px; font: 700 0.86rem/1 var(--font); text-shadow: 0 1px 2px #000; }
 .board-top button { cursor: pointer; }
+/* The units over the shop's first card, on the floor's lower edge. */
+.board-shop > .board-count { display: inline-block; margin: 0 0 4px 2px; padding: 3px 9px; border-radius: 99px; background: rgba(6, 10, 24, 0.75); font: 700 0.82rem/1 var(--font); }

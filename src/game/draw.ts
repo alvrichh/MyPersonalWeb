@@ -5017,11 +5017,12 @@ export function drawBoardFigure(ctx: CanvasRenderingContext2D, f: BoardFigure, n
 /** An effect picture, for the board. */
 export const boardFx = (name: string) => fxImage(name);
 /** The board's backdrop: the world's whole arena floor, its painted walls and corners included, as a sprint's room
-    draws it, stretched over the whole screen under the board, the top bar and the shop. */
-export function drawBoardBackdrop(ctx: CanvasRenderingContext2D, world: number, w: number, h: number, dpr: number, retro: boolean) {
+    draws it, stretched across the screen between `top` and `bottom` (under the top bar, over the buttons). */
+export function drawBoardBackdrop(ctx: CanvasRenderingContext2D, world: number, w: number, top: number, bottom: number, dpr: number, retro: boolean) {
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const h = Math.max(0, bottom - top);
   ctx.fillStyle = WORLDS[world - 1].floor;
-  ctx.fillRect(0, 0, w, h);
+  ctx.fillRect(0, top, w, h);
   const floor = retro ? undefined : floorImage(world);
-  if (floor && ready(floor)) ctx.drawImage(floor, 0, 0, w, h);
+  if (floor && ready(floor)) ctx.drawImage(floor, 0, top, w, h);
 }
