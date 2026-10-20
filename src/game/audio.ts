@@ -1514,7 +1514,12 @@ class Engine {
     const loud = sec === 'drop' || sec === 'peak';
     switch (v.theme) {
       case 1: // The Backlog: someone typing, mail dings, a modem, a chip arpeggio, an error beep.
-        if (r < (calm ? 0.55 : 0.3)) this.typing(at + Math.random() * STEP * 0.4);
+        // Typing in bursts, like a person: three or four keys in a row on some beats, then a pause (it was a key on
+        // more than half the sixteenths, a stream of clicks over the drumless intro).
+        if (inBar % 4 === 0 && r < (calm ? 0.55 : 0.4)) {
+          const keys = 3 + (bar + inBar) % 2;
+          for (let k = 0; k < keys; k++) this.typing(at + k * STEP * 0.5 + Math.random() * STEP * 0.15, calm ? 0.1 : 0.14);
+        }
         if (inBar === 0 && bar % 4 === 0) this.ding(at, semi(this.root * 32, chord[2]));
         if (loud && blockBar === 7 && inBar === 8) this.modem(at);
         if (sec === 'roll' && blockBar === 7 && inBar === 12) { this.beep(at, 880); this.beep(at + STEP, 440); }
@@ -1639,7 +1644,7 @@ class Engine {
     this.out(g, wet);
     return f;
   }
-  private typing(at: number) { this.burst(at, 0.012, 'bandpass', 2500 + Math.random() * 3000, 3, 0.18); }
+  private typing(at: number, vol = 0.18) { this.burst(at, 0.012, 'bandpass', 2500 + Math.random() * 3000, 3, vol); }
   private ding(at: number, freq: number) {
     const g = this.ctx.createGain();
     this.env(g, at, 0.07, 0.002, 0.7);
