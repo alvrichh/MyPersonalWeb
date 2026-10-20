@@ -247,6 +247,8 @@ export type Enemy = {
   slowBy: number;
   /** Seconds before it can be stopped dead again (a stun, a freeze, the 1-ton weight): until then those only slow it. */
   paraCd: number;
+  /** The Medusa's deep gaze: true while the hero is within its reach (her gaze pose, her tenth picture). */
+  gaze: boolean;
   /** Pushed back by a hit (decays quickly). */
   kx: number;
   ky: number;
@@ -478,6 +480,8 @@ export type Player = {
   mired: number;
   /** Seconds before a stun or the stone can hold you again (each leaves you free a while after it ends). */
   paraCd: number;
+  /** Seconds spent within the Medusa's gaze (`GAZE`): at `hold` you turn to stone. */
+  gaze: number;
   /** Seconds left of the flames on you after a fire hit (lava, a fireball, meteors, a breath): only to be seen. */
   burn: number;
   /** Seconds left of Safe mode's bubble (the invincibility itself is `inv`): only to be seen. */
@@ -770,6 +774,7 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
     slow: 0,
     slowBy: 0,
     paraCd: 0,
+    gaze: false,
     kx: 0,
     ky: 0,
     cd: rand(1.2, 2.4),
@@ -946,7 +951,7 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     strikes: [],
     strikeIn: 2,
     hazard: 'none',
-    player: { x: W / 2, y: H - 70, r: 15, hp: loadout.maxHp, maxHp: loadout.maxHp, speed: 150 * loadout.speedMult, inv: 0, ouch: 0, moving: false, face: -Math.PI / 2, heading: -Math.PI / 2, poison: 0, stun: 0, chill: 0, dark: 0, stone: 0, mired: 0, paraCd: 0, burn: 0, safe: 0 },
+    player: { x: W / 2, y: H - 70, r: 15, hp: loadout.maxHp, maxHp: loadout.maxHp, speed: 150 * loadout.speedMult, inv: 0, ouch: 0, moving: false, face: -Math.PI / 2, heading: -Math.PI / 2, poison: 0, stun: 0, chill: 0, dark: 0, stone: 0, mired: 0, paraCd: 0, burn: 0, safe: 0, gaze: 0 },
     enemies: [],
     shots: [],
     orbs: [],
@@ -2240,6 +2245,9 @@ const BOSS_STATUS: Record<string, [BossStatus, number]> = {
 const POISON_DMG = 8;
 /** Seconds you stay free after a stun or the stone ends, and a bug after it was stopped dead, before it can happen again. */
 const PARA_FREE = 2.5;
+/** The Medusa's deep gaze: stay within `reach` of her for `hold` seconds and you turn to stone for `stone` seconds
+    (the same cooldown as any hold); out of it the gaze fades twice as fast. */
+export const GAZE = { reach: 150, hold: 2, stone: 1.5 };
 /** Stops a bug dead for `secs`, unless it was stopped a moment ago: then it is only slowed (see `paraCd`). */
 function paralyze(e: Enemy, secs: number) {
   e.slow = Math.max(e.slow, secs);
@@ -3497,6 +3505,21 @@ export function update(g: Game, dt: number, input: Input) {
   p.poison = Math.max(0, p.poison - dt);
   p.stun = Math.max(0, p.stun - dt);
   p.paraCd = Math.max(0, p.paraCd - dt);
+  // The Medusa's gaze: it builds while you stay near her and turns you to stone when it is full.
+  const medusa = g.enemies.find((e) => e.bossId === 'medusa' && !e.dead && !e.clone && e.spawn <= 0 && !e.vanish);
+  const gazed = !!medusa && dist(medusa, p) < GAZE.reach + medusa.r && p.stone <= 0;
+  if (medusa) medusa.gaze = gazed;
+  p.gaze = gazed ? p.gaze + dt : Math.max(0, p.gaze - 2 * dt);
+  // Full: it petrifies as soon as it can (not through a hit's blink, the cooldown after a hold or the showcase).
+  if (p.gaze >= GAZE.hold) {
+    p.gaze = GAZE.hold;
+    if (p.paraCd <= 0 && p.inv <= 0 && !g.showcase) {
+      p.gaze = 0;
+      p.stone = GAZE.stone;
+      p.paraCd = GAZE.stone + PARA_FREE;
+      g.events.push('stone');
+    }
+  }
   p.chill = Math.max(0, p.chill - dt);
   p.dark = Math.max(0, p.dark - dt);
   p.stone = Math.max(0, p.stone - dt);
