@@ -311,7 +311,7 @@ export type Orb = {
 export type BossTrail = { x: number; y: number; r: number; life: number; max: number; dmg: number; tone: string; from?: string };
 /** Every boss shot leaves a track: a dab every `every` seconds that lasts `life` and hurts for `share` of the shot. */
 const BOSS_TRAIL = { every: 0.05, life: 0.55, share: 0.4, cap: 360 };
-export type OrbPic = 'medusa' | 'mudball' | 'venom' | 'tornado' | 'fireball' | 'rocket' | 'leaf' | 'acid' | 'water' | 'ghost' | 'bolt' | 'spark';
+export type OrbPic = 'ember' | 'medusa' | 'mudball' | 'venom' | 'tornado' | 'fireball' | 'rocket' | 'leaf' | 'acid' | 'water' | 'ghost' | 'bolt' | 'spark';
 /** What a boss's attack looks like: its element. */
 export type ThreatEl = 'fire' | 'water' | 'mud' | 'arcane' | 'leaf' | 'bolt' | 'laser' | 'shadow' | 'glitch';
 /**
@@ -2264,7 +2264,9 @@ function inside(g: Game, v: Vec, m: number): Vec {
   return { x: clamp(v.x, b.x + m, b.x + b.w - m), y: clamp(v.y, b.y + m, b.y + b.h - m) };
 }
 /** The final bosses' rings fly as their element's weapon pictures (the cast bosses keep the plain orbs). */
-const RING_PIC: Partial<Record<string, OrbPic>> = { mud: 'mudball', medusa: 'medusa', archdemon: 'fireball', drakkar: 'water', valdur: 'water', queen: 'leaf', zeus: 'bolt', mech: 'spark', wraith: 'ghost' };
+const RING_PIC: Partial<Record<string, OrbPic>> = { nightmare: 'ember', mud: 'mudball', medusa: 'medusa', archdemon: 'fireball', drakkar: 'water', valdur: 'water', queen: 'leaf', zeus: 'bolt', mech: 'spark', wraith: 'ghost' };
+/** Rings in a colour of their own (glow and track); the rest are the usual red. The Lich's embers are purple. */
+const RING_TONE: Partial<Record<string, string>> = { nightmare: '#a855f7' };
 const ring = (g: Game, e: Enemy, n: number, speed: number, tone = '', turn = rand(0, Math.PI * 2), pic?: OrbPic) => {
   for (let i = 0; i < n; i++) {
     const a = turn + (i / n) * Math.PI * 2;
@@ -2300,7 +2302,7 @@ function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
   e.cd -= dt;
   if (e.cd <= 0) {
     e.cd = (final ? 2.4 : 3.1) * fury;
-    ring(g, e, final ? 14 : 10, final ? 120 : 105, '', undefined, RING_PIC[e.bossId]);
+    ring(g, e, final ? 14 : 10, final ? 120 : 105, RING_TONE[e.bossId] ?? '', undefined, RING_PIC[e.bossId]);
     e.pose = 0.35;
     e.act = 'burst';
   }
