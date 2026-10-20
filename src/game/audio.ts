@@ -100,10 +100,96 @@ type V2 = {
   /** Four bars of eighths over the song's root, in the lead's own octave (`leadOct` times the root). */
   lead: LeadVoice; leadOct: number; melody: Note[][];
 };
-export type V2Id = 'w1v2' | 'w2v2' | 'w3v2' | 'mudv2' | 'w4v2' | 'w5v2' | 'w6v2' | 'w7v2' | 'w8v2';
+export type V2Id = 'w1v2' | 'w2v2' | 'w3v2' | 'mudv2' | 'w4v2' | 'w5v2' | 'w6v2' | 'w7v2' | 'w8v2' | BossSongId;
+/** The final bosses' own songs: a whole song each, built from its world's sounds (the same `theme`) but in its own key,
+    darker and harder, with no calm intro (it starts on the drop). «By world» plays it while that boss is out. */
+export const BOSS_SONGS = ['kernel', 'archdemon', 'drakkar', 'medusa', 'queen', 'zeus', 'mech', 'wraith', 'chimera'] as const;
+export type BossSongId = `boss-${(typeof BOSS_SONGS)[number]}`;
+const BOSS_FORM: Sec[] = ['drop', 'peak', 'roll', 'peak', 'break', 'drop', 'roll', 'peak'];
 /** «By world»: each world's second version, in world order (the first world's in the menus too). */
 const WORLD_V2: V2Id[] = ['w1v2', 'w2v2', 'w3v2', 'mudv2', 'w4v2', 'w5v2', 'w6v2', 'w7v2', 'w8v2'];
 const V2S: Record<V2Id, V2> = {
+  'boss-kernel': { // Kernel Panic: C minor gone wrong, a Neapolitan Db grinding on it; techstep and a chopped break, an alarm-like chiptune.
+    theme: 1, root: 32.7,
+    chords: [[0, 3, 7, 12], [-4, 0, 3, 8], [-2, 2, 5, 10], [7, 11, 14, 19]], roots: [0, -4, -2, 7],
+    chordsB: [[0, 3, 7, 12], [1, 5, 8, 13], [0, 3, 7, 12], [7, 11, 14, 19]], rootsB: [0, 1, 0, 7],
+    form: BOSS_FORM, grooves: { drop: 'techstep', roll: 'amen', peak: 'jungle' }, kit: { drive: 0.8, snare: 2400, decay: 0.12, wet: 0 },
+    bass: 'dist', line: [0, 'r', 0, 12, 'r', 0, 13, 'r', 0, 'r', 12, 0, 'r', 1, 0, 'r', 0, 'r', 0, 12, 'r', 0, 7, 'r', 13, 12, 'r', 7, 'r', 1, 0, 'r'],
+    lead: 'chip', leadOct: 8,
+    melody: [[12, 13, 12, 13, 12, null, 7, null], [15, 14, 12, null, 10, null, 7, null], [12, 13, 15, 17, 19, 17, 15, 13], [12, null, 11, null, 7, null, 0, null]],
+  },
+  'boss-archdemon': { // The Archdemon: E Phrygian dominant at its darkest, half-time and driven, a burning lead.
+    theme: 2, root: 41.2,
+    chords: [[0, 4, 7, 12], [1, 5, 8, 13], [-2, 1, 5, 10], [0, 4, 7, 12]], roots: [0, 1, -2, 0],
+    chordsB: [[5, 8, 12, 17], [1, 5, 8, 13], [-4, -1, 2, 8], [0, 4, 7, 12]], rootsB: [5, 1, -4, 0],
+    form: BOSS_FORM, grooves: { drop: 'halftime', roll: 'techstep', peak: 'techstep' }, kit: { drive: 1, snare: 1300, decay: 0.22, wet: 0.25 },
+    bass: 'dist', line: [0, null, null, 1, 0, 'r', 0, null, 'r', 0, 1, null, 0, 'r', -2, null, 0, null, null, 1, 0, 'r', 12, null, 13, 12, 'r', 8, 7, 'r', 1, 0],
+    lead: 'fire', leadOct: 8,
+    melody: [[12, 13, 16, 13, 12, null, 8, null], [7, 8, 7, 5, 4, null, 1, null], [12, 16, 17, 19, 20, 19, 17, 16], [13, null, 12, null, 8, 7, 4, 'r']],
+  },
+  'boss-drakkar': { // The Drakkar and Valdur: a D minor war march, rowing drums, the horn calling the charge.
+    theme: 3, root: 36.71,
+    chords: [[0, 3, 7, 12], [-4, 0, 3, 8], [-2, 2, 5, 10], [-5, -2, 2, 7]], roots: [0, -4, -2, -5],
+    chordsB: [[0, 3, 7, 12], [5, 8, 12, 17], [7, 11, 14, 19], [7, 11, 14, 19]], rootsB: [0, 5, 7, 7],
+    form: BOSS_FORM, grooves: { drop: 'twostep', roll: 'halftime', peak: 'amen' }, kit: { drive: 0.3, snare: 1900, decay: 0.24, wet: 0.5 },
+    bass: 'reese', line: [0, null, null, 0, null, null, 7, null, 0, null, null, 0, 3, null, 5, null, 0, null, null, 0, null, null, 7, null, 10, null, 7, null, 5, null, 3, null],
+    lead: 'horn', leadOct: 4,
+    melody: [[0, null, 7, null, 12, null, null, null], [10, null, 7, null, 5, null, 3, null], [0, null, 7, null, 12, null, 15, null], [14, null, null, null, 12, null, null, null]],
+  },
+  'boss-medusa': { // The Medusa: C# double harmonic, the snake charmer's pungi frantic, a squelching bass and a chopped break.
+    theme: 9, root: 34.65,
+    chords: [[0, 3, 7, 12], [1, 5, 8, 13], [0, 3, 7, 12], [-1, 3, 6, 11]], roots: [0, 1, 0, -1],
+    chordsB: [[5, 8, 12, 17], [1, 5, 8, 13], [-1, 3, 6, 11], [0, 4, 7, 12]], rootsB: [5, 1, -1, 0],
+    form: BOSS_FORM, grooves: { drop: 'halftime', roll: 'jungle', peak: 'techstep' }, kit: { drive: 0.6, snare: 1700, decay: 0.18, wet: 0.35 },
+    bass: 'squelch', line: [0, 'r', 0, 12, 'r', 1, 0, 'r', 0, 'r', 13, 12, 'r', 0, 1, 'r', 0, 'r', 0, 12, 'r', 1, 0, 'r', 8, 7, 'r', 4, 5, 'r', 1, 0],
+    lead: 'pungi', leadOct: 8,
+    melody: [[12, 13, 16, 17, 16, 13, 12, 11], [12, null, 8, 7, 8, null, 'r', null], [16, 17, 19, 20, 19, 17, 16, 13], [12, 11, 8, 7, 4, 5, 1, 0]],
+  },
+  'boss-queen': { // The Carnivorous Queen: G minor ragga jungle with a Phrygian Ab, the break chopped harder, log drums biting.
+    theme: 4, root: 49,
+    chords: [[0, 3, 7, 10], [1, 5, 8, 13], [0, 3, 7, 10], [-2, 2, 5, 9]], roots: [0, 1, 0, -2],
+    chordsB: [[5, 8, 12, 15], [1, 5, 8, 13], [3, 7, 10, 15], [-5, -1, 2, 7]], rootsB: [5, 1, 3, -5],
+    form: BOSS_FORM, grooves: { drop: 'jungle', roll: 'jungle', peak: 'jungle' }, kit: { drive: 0.3, snare: 2500, decay: 0.12, wet: 0.15 },
+    bass: 'slide', line: [0, null, null, 'r', 1, null, 0, null, null, null, 12, null, 10, null, 7, null, 0, null, null, 'r', 1, null, 0, null, null, null, -2, null, 0, null, 1, null],
+    lead: 'marimba', leadOct: 8,
+    melody: [[12, 13, 12, 10, 7, null, 8, 7], [5, null, 3, null, 1, null, 0, null], [7, 8, 10, 12, 13, 15, 13, 12], [10, 8, 7, 5, 7, null, null, 'r']],
+  },
+  'boss-zeus': { // Zeus: A minor at full storm, epic brass over taikos, two-step and a chopped break in turn.
+    theme: 5, root: 55,
+    chords: [[0, 3, 7, 12], [-4, 0, 3, 8], [-7, -4, 0, 5], [-5, -1, 2, 7]], roots: [0, -4, -7, -5],
+    chordsB: [[-4, 0, 3, 8], [-2, 2, 5, 10], [-5, -1, 2, 7], [-5, -1, 2, 7]], rootsB: [-4, -2, -5, -5],
+    form: BOSS_FORM, grooves: { drop: 'twostep', roll: 'amen', peak: 'jungle' }, kit: { drive: 0.4, snare: 1800, decay: 0.2, wet: 0.45 },
+    bass: 'reese', line: [0, null, 0, null, 12, null, 0, 10, null, 0, null, 7, null, 0, 3, null, 0, null, 0, null, 12, null, 0, 10, null, 12, null, 14, null, 15, null, 12],
+    lead: 'brass', leadOct: 4,
+    melody: [[12, null, 12, 15, 19, null, 24, null], [22, 20, 19, null, 17, null, 15, null], [12, null, 12, 15, 19, null, 24, 26], [27, null, 26, null, 23, null, 24, null]],
+  },
+  'boss-mech': { // The Overclock Mech: F# minor techstep at full speed, a semitone grinding, metal bass, the robot screaming.
+    theme: 6, root: 46.25,
+    chords: [[0, 3, 7, 12], [1, 5, 8, 13], [0, 3, 7, 12], [-1, 3, 6, 11]], roots: [0, 1, 0, -1],
+    chordsB: [[0, 3, 7, 12], [6, 9, 13, 18], [5, 8, 12, 17], [1, 5, 8, 13]], rootsB: [0, 6, 5, 1],
+    form: BOSS_FORM, grooves: { drop: 'techstep', roll: 'techstep', peak: 'amen' }, kit: { drive: 1, snare: 1150, decay: 0.15, wet: 0.1 },
+    bass: 'fm', line: [0, 'r', 0, 0, 'r', 12, 'r', 0, 1, 'r', 0, 'r', 13, 'r', 12, 0, 0, 'r', 0, 0, 'r', 12, 'r', 0, 6, 'r', 5, 'r', 1, 'r', 0, 'r'],
+    lead: 'robot', leadOct: 8,
+    melody: [[0, 0, 1, 0, 12, null, 11, null], [7, 6, 3, null, 1, null, 0, null], [12, 13, 15, 13, 12, 11, 12, null], [6, null, 7, null, 1, null, 0, 'r']],
+  },
+  'boss-wraith': { // The Shadow Wraith: B minor darkstep with the tritone, the broken music box turned sinister, a deep growl.
+    theme: 7, root: 30.87,
+    chords: [[0, 3, 7, 12], [1, 4, 8, 13], [0, 3, 7, 12], [6, 9, 13, 18]], roots: [0, 1, 0, 6],
+    chordsB: [[-4, 0, 3, 8], [-2, 1, 5, 10], [6, 9, 13, 18], [7, 11, 14, 19]], rootsB: [-4, -2, 6, 7],
+    form: BOSS_FORM, grooves: { drop: 'halftime', roll: 'amen', peak: 'halftime' }, kit: { drive: 0.2, snare: 1550, decay: 0.24, wet: 0.5 },
+    bass: 'reese', line: [0, null, null, null, 1, null, null, null, 0, null, 6, null, null, null, 5, null, 0, null, null, null, 1, null, null, null, 6, null, 7, null, 6, null, 1, null],
+    lead: 'musicbox', leadOct: 16,
+    melody: [[7, 6, 7, 3, 1, null, 0, null], [6, null, 7, null, 13, null, 'r', null], [12, 13, 12, 7, 6, 7, 3, 1], [0, null, 6, null, 0, null, null, 'r']],
+  },
+  'boss-chimera': { // Nocthrax: E minor at the end of everything, a wobbling bass, crystal bells, the dragon roaring every drop.
+    theme: 8, root: 41.2,
+    chords: [[0, 3, 7, 12], [1, 5, 8, 13], [0, 3, 7, 12], [7, 11, 14, 19]], roots: [0, 1, 0, 7],
+    chordsB: [[-4, 0, 3, 8], [-2, 2, 5, 10], [-1, 3, 6, 11], [7, 11, 14, 19]], rootsB: [-4, -2, -1, 7],
+    form: BOSS_FORM, grooves: { drop: 'techstep', roll: 'jungle', peak: 'twostep' }, kit: { drive: 0.9, snare: 2000, decay: 0.18, wet: 0.35 },
+    bass: 'wobble', line: [0, null, null, null, 1, null, 0, null, null, null, 12, null, 13, null, 0, null, 0, null, null, null, 1, null, 0, null, null, null, 15, null, 13, null, 12, null],
+    lead: 'crystal', leadOct: 16,
+    melody: [[0, 3, 7, 12, 13, 12, 7, 3], [1, 5, 8, 13, 8, 5, 1, 0], [7, 11, 14, 19, 14, 11, 7, 11], [12, 7, 3, 0, -1, 0, 3, 7]],
+  },
   w1v2: { // The Backlog: a bright C major chiptune roller on the Amen break; keyboards typing, mail dings, a dial-up modem.
     theme: 1, root: 32.7,
     chords: [[5, 9, 12, 16], [7, 11, 14, 17], [4, 7, 11, 16], [9, 12, 16, 19]], roots: [5, 7, 4, 9],
@@ -355,9 +441,12 @@ class Engine {
   private final = false;
   private finalFrom = 0;
   private rage = false;
-  setFinal(on: boolean, rage: boolean) {
+  /** Which final boss is out (its `bossId`; Valdur fights to the Drakkar's song). */
+  private finalId = '';
+  setFinal(on: boolean, rage: boolean, id = '') {
     this.finalWanted = on;
     this.rage = on && rage;
+    this.finalId = id === 'valdur' ? 'drakkar' : id;
   }
 
   private tick = () => {
@@ -382,7 +471,10 @@ class Engine {
     }
     // The song changes only where a phrase begins (or on the next bar, when picked by hand).
     // «By world» keeps the world's song for its final boss too: the tension layer goes on top of it.
-    const wanted = this.pick === 'auto' ? (this.finalWanted ? 'doom' : 'b2b') : this.pick === 'worlds' ? WORLD_V2[this.world - 1] ?? 'w1v2' : this.pick;
+    // «By world»: the world's song, and its final boss's own while it is out (with the tension layer on top).
+    const bossSong = `boss-${this.finalId}` as BossSongId;
+    const byWorld = this.finalWanted && bossSong in V2S ? bossSong : WORLD_V2[this.world - 1] ?? 'w1v2';
+    const wanted = this.pick === 'auto' ? (this.finalWanted ? 'doom' : 'b2b') : this.pick === 'worlds' ? byWorld : this.pick;
     if (inBar === 0 && wanted !== this.songId && (bar % 4 === 0 || this.songNow)) { this.songId = wanted; this.songNow = false; }
     const v2 = V2S[this.songId as V2Id];
     if (v2) { this.root = v2.root; this.scheduleV2(step, at, v2); return; }
