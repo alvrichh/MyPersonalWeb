@@ -232,7 +232,9 @@ const picIcon = (emoji: string, pic?: string) => pic ? `<img class="item-pic" sr
 const STYLE_ICON: Record<EnemyStyle, string> = { world: '🌍', original: '🐞', demon: '😈', viking: '🪓', mud: '🐸', jungle: '🕷️', greek: '🏛️', robot: '🤖', nightmare: '💀', random: '🎲' };
 /** Each cast's row shows its plain bug, the weakest and most common of its enemies (its first walking frame cropped to the
     figure and squared, `enemies/<look>-bug-icon.webp`); the world's own and the random mix keep their emoji, as does retro. */
-const styleIcon = (style: EnemyStyle) => style === 'world' || style === 'random' || save.retro ? STYLE_ICON[style]
+const styleIcon = (style: EnemyStyle) => style === 'random' || save.retro ? STYLE_ICON[style]
+  // «By world» has the owner's own medallion, a purple armoured bug (`ui/style-world.webp`).
+  : style === 'world' ? '<img class="scene-pic" src="./images/game/ui/style-world.webp" alt="">'
   : `<img class="scene-pic boss-pic" src="./images/game/enemies/${style}-bug-icon.webp" alt="">`;
 /** A boss's name: the cast's boss in room 6, the world's own final boss in room 12. */
 const bossTitle = (e: Enemy) => t(e.final || e.bossId === 'kratos' ? (`final${cap(e.bossId)}` as Key) : BOSS_NAME[e.look]);
@@ -1330,7 +1332,7 @@ function stylesScreen(note = '') {
         </div>`;
   } else if (dressSlot === 'scene') {
     picks = `<h3 class="slot">${t('scenePick')}</h3><div class="gear-list">${Array.from({ length: WORLD_COUNT + 1 }, (_, n) => n).map((n) =>
-      row(`data-scene="${n}"`, save.scene === n, false, n ? `<img class="scene-pic is-floor" src="./images/game/floors/world${n}.webp" alt="">` : '🌍',
+      row(`data-scene="${n}"`, save.scene === n, false, n ? `<img class="scene-pic is-floor" src="./images/game/floors/world${n}.webp" alt="">` : save.retro ? '🌍' : '<img class="scene-pic" src="./images/game/ui/scene-own.webp" alt="">',
         n ? t(`world${n}Name` as Key) : t('sceneOwn'), n ? t('sceneText', { n }) : t('sceneOwnText'), save.scene === n ? '✓' : '')).join('')}</div>`;
   } else if (dressSlot) {
     const slot = dressSlot;
@@ -1355,9 +1357,9 @@ function stylesScreen(note = '') {
   const songWorld = WORLD_SONGS.find(([, ids]) => (ids as readonly string[]).includes(save.song))?.[0] ?? (save.song === 'worlds' ? world : 0);
   const navIcon = {
     skin: navPic(heroPic(), ' is-hero'),
-    foes: look === 'random' ? '🎲' : navPic(`./images/game/enemies/${look}-bug-icon.webp`, ' is-foe'),
-    // The world's postcard (its floor's middle is too plain to tell apart at this size).
-    scene: navPic(`./images/game/map/pv-${ISLAND_ART[(save.scene || world) - 1]}.jpg`),
+    // «By world» and «each world its own» show the owner's medallions; a picked cast its bug, a picked world its postcard.
+    foes: save.style === 'world' ? navPic('./images/game/ui/style-world.webp') : look === 'random' ? '🎲' : navPic(`./images/game/enemies/${look}-bug-icon.webp`, ' is-foe'),
+    scene: save.scene ? navPic(`./images/game/map/pv-${ISLAND_ART[save.scene - 1]}.jpg`) : navPic('./images/game/ui/scene-own.webp'),
     // Automatic, «by world», the original and the final boss's song show their own medallions; a world's or a boss's song, its postcard or boss.
     song: (['auto', 'worlds', 'b2b', 'doom'] as string[]).includes(save.song) ? navPic(`./images/game/music/${save.song}.webp`)
       : save.song.startsWith('boss-') ? navPic(`./images/game/bosses/${save.song.slice(5)}-0.webp`, ' is-boss')
