@@ -1283,7 +1283,7 @@ function stylesScreen(note = '') {
     <div class="dress">
       <div class="dress-extra">${extraButton}</div>
       <div class="dress-col">${ARMOUR_SLOTS.map(slotButton).join('')}</div>
-      <div class="dress-hero"><span class="pad" aria-hidden="true"></span>${hero}<b>${esc(save.name)}</b></div>
+      <div class="dress-hero"><span class="pad" aria-hidden="true"></span>${hero}</div>
       <div class="dress-col">${WEAPON_SLOTS.map(slotButton).join('')}</div>
     </div>
     <div class="dress-nav">
