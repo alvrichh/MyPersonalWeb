@@ -733,10 +733,8 @@ function choiceScreen(g: Game) {
       return `<button class="skill skill-${cat}" data-skill="${id}"><span class="icon" aria-hidden="true">${skillIcon(id, 56, iconFile(g, id, next))}</span><span class="cat">${t(CATEGORY_LABEL[cat])}</span><b>${name}</b><span>${text}${fuse}</span>${level}</button>`;
     })
     .join('');
-  // On call: two rerolls a shift.
-  const reroll = g.mode === 'horde'
-    ? `<button class="ghost small reroll" data-act="reroll"${g.rerolls > 0 ? '' : ' disabled'}>🎲 ${t('reroll', { n: g.rerolls })}</button>`
-    : '';
+  // Two rerolls a run, in sprints and on call.
+  const reroll = `<button class="ghost small reroll" data-act="reroll"${g.rerolls > 0 ? '' : ' disabled'}>🎲 ${t('reroll', { n: g.rerolls })}</button>`;
   // …and, once they are spent, one more for an ad.
   const adSlot = canAdReroll(g) && ads.enabled ? '<div class="ad-slot" data-ad-slot="reroll"></div>' : '';
   show(`${head('levelup', t('levelUp'))}<p class="kicker">${t('level', { level: g.level })}</p><p>${t('choose')}</p><div class="skills">${cards}</div>${reroll}${adSlot}`, true, false, 'is-levelup');
