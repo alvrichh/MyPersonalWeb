@@ -1572,7 +1572,8 @@ class Engine {
       case 9: // Big Ball of Mud: frogs croaking in turn, mud bubbling, drips, crickets, a snake's rattling hiss.
         // Fewer frogs and bubbles than before: the short rising sweeps came too often for the owner.
         if (calm ? inBar === 0 && bar % 2 === 0 : inBar === 11 && bar % 4 === 3 && r < 0.5) this.croak(at, bar % 4 < 2 ? 1 : 1.25);
-        if (r < (calm ? 0.05 : 0.015)) this.bloop(at + Math.random() * STEP);
+        // TEMPORARY, so the owner can tell which sound it is: a loud bloop on every beat. Put back to 0.05 / 0.015.
+        if (inBar % 4 === 0) this.bloop(at, true);
         if (calm && inBar % 4 === 2 && Math.random() < 0.35) this.drip(at);
         if (calm && inBar === 8 && bar % 2 === 0) this.cricket(at);
         if (sec === 'peak' && inBar === 14 && bar % 2 === 1) this.rattle(at);
@@ -1872,12 +1873,12 @@ class Engine {
     }
   }
   /** A bubble of mud popping: a sine rising fast. */
-  private bloop(at: number) {
+  private bloop(at: number, loud = false) {
     const f = 140 + Math.random() * 120;
     const o = this.osc('sine', f, at, at + 0.12);
     o.frequency.exponentialRampToValueAtTime(f * 3.2, at + 0.08);
     const g = this.ctx.createGain();
-    this.env(g, at, 0.1, 0.003, 0.09);
+    this.env(g, at, loud ? 0.6 : 0.1, 0.003, 0.09);
     o.connect(g);
     this.out(g, 0.18);
   }
