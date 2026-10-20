@@ -11,7 +11,7 @@ import { boardFloor, boardFx, drawBoardFigure } from './draw';
 /** The units are drawn bigger than their hit circles, so they fill their cells. */
 const FIG = 1.4;
 /** Room above the board for the rival's hearts (yours float over your hero, inside the board). */
-const TOP = 20;
+const TOP = 28;
 const BOT = 4;
 /** Each commander's health as hearts: ten, in two rows of five. */
 const HEARTS = { n: 10, row: 5, size: 10, gap: 1.5 };
@@ -51,36 +51,43 @@ const figureOf = (tier: Tier, cast: number, face: number, step: number, swing: n
   r: TIER_STATS[tier].r,
 });
 
-/* The enemy's units are the same pictures as yours, so they are drawn tinted red with a red glow round their
-   outline, to tell the two armies apart at a glance in the fight (on a small canvas, since Safari has no canvas
-   filter). */
-const RED = { tint: 'rgba(239,68,68,0.4)', glow: '#ef4444' };
+/* The enemy's units are the same pictures as yours, so they are drawn with a red outline round them, the owner's
+   pick, to tell the two armies apart at a glance in the fight: the figure on a small canvas, stamped in red a
+   little off in eight directions under itself (Safari has no canvas filter). */
+const OUTLINE = { colour: '#ef4444', width: 1.6 };
 let redCanvas: HTMLCanvasElement | null = null;
+let figCanvas: HTMLCanvasElement | null = null;
 function drawEnemyFigure(ctx: CanvasRenderingContext2D, fig: ReturnType<typeof figureOf>, now: number, retro: boolean) {
   const big = fig.kind === 'boss';
   const box = big ? 230 : 120;
   const k = Math.min(4, Math.max(1, Math.abs(ctx.getTransform().a)));
   redCanvas ??= document.createElement('canvas');
-  const c = redCanvas;
+  figCanvas ??= document.createElement('canvas');
   const px = Math.ceil(box * k);
-  if (c.width !== px) { c.width = px; c.height = px; }
-  const t = c.getContext('2d');
-  if (!t) { ctx.scale(FIG, FIG); drawBoardFigure(ctx, fig, now, retro); return; }
-  t.setTransform(1, 0, 0, 1, 0, 0);
-  t.globalCompositeOperation = 'source-over';
-  t.clearRect(0, 0, px, px);
-  // The figure's feet at 70% of the box, so the bosses' height fits above them.
-  t.setTransform(k * FIG, 0, 0, k * FIG, px / 2, px * 0.7);
-  drawBoardFigure(t, fig, now, retro);
-  t.setTransform(1, 0, 0, 1, 0, 0);
-  t.globalCompositeOperation = 'source-atop';
-  t.fillStyle = RED.tint;
-  t.fillRect(0, 0, px, px);
-  ctx.save();
-  ctx.shadowColor = RED.glow;
-  ctx.shadowBlur = 6 * k;
-  ctx.drawImage(c, -box / 2, -box * 0.7, box, box);
-  ctx.restore();
+  for (const c of [redCanvas, figCanvas]) if (c.width !== px) { c.width = px; c.height = px; }
+  const f = figCanvas.getContext('2d');
+  const o = redCanvas.getContext('2d');
+  if (!f || !o) { ctx.scale(FIG, FIG); drawBoardFigure(ctx, fig, now, retro); return; }
+  // The figure, its feet at 70% of the box so the bosses' height fits above them.
+  f.setTransform(1, 0, 0, 1, 0, 0);
+  f.clearRect(0, 0, px, px);
+  f.setTransform(k * FIG, 0, 0, k * FIG, px / 2, px * 0.7);
+  drawBoardFigure(f, fig, now, retro);
+  // Its outline: the figure stamped round itself, turned red, then the figure on top.
+  o.setTransform(1, 0, 0, 1, 0, 0);
+  o.globalCompositeOperation = 'source-over';
+  o.clearRect(0, 0, px, px);
+  const d = OUTLINE.width * k;
+  for (let i = 0; i < 8; i++) {
+    const a = (i / 8) * Math.PI * 2;
+    o.drawImage(figCanvas, Math.cos(a) * d, Math.sin(a) * d);
+  }
+  o.globalCompositeOperation = 'source-in';
+  o.fillStyle = OUTLINE.colour;
+  o.fillRect(0, 0, px, px);
+  o.globalCompositeOperation = 'source-over';
+  o.drawImage(figCanvas, 0, 0);
+  ctx.drawImage(redCanvas, -box / 2, -box * 0.7, box, box);
 }
 
 function ring(ctx: CanvasRenderingContext2D, r: number, colour: string) {
@@ -116,6 +123,8 @@ const ok = (img: HTMLImageElement) => img.complete && img.naturalWidth > 0;
 /** Where each commander stands (its feet), in the board's corner cells. */
 const MINE = { x: BOARD_W - CELL / 2 - 6, y: BOARD_H - 12 };
 const RIVAL = { x: CELL / 2 + 4, y: CELL - 12 };
+/** How big the rival is drawn against its own sprite. */
+const RIVAL_K = 0.78;
 
 function drawHero(ctx: CanvasRenderingContext2D, pics: HeroPics, pose: HTMLImageElement, now: number, hit: number) {
   const { x, y } = MINE;
@@ -159,8 +168,9 @@ function drawRival(ctx: CanvasRenderingContext2D, pad: HTMLImageElement, world: 
     ctx.stroke();
   }
   ctx.globalAlpha = 1 - gone;
-  ctx.translate(0, 2 + gone * 8);
-  ctx.scale(0.78, 0.78);
+  // Its feet (the sprite's lie 0.85 of its radius under its middle) on the portal's ring.
+  ctx.translate(0, -TIER_STATS[4].r * 0.85 * RIVAL_K + gone * 8);
+  ctx.scale(RIVAL_K, RIVAL_K);
   drawBoardFigure(ctx, figureOf(4, world, 1, now * 1.5, 0, hit), now, false);
   ctx.restore();
 }
