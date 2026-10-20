@@ -456,7 +456,7 @@ class Engine {
 
   /** Which song plays (picked in Customise): 'auto' is the original with the final boss's own song for that fight. */
   private pick: SongPick = 'auto';
-  private songId: SongId | V2Id = 'b2b';
+  private songId: SongId | V2Id | 'mix' = 'b2b';
   private songNow = false;
   private root = ROOT;
   setSong(pick: SongPick) {
@@ -526,8 +526,11 @@ class Engine {
     const byWorld = this.finalWanted && bossSong in V2S ? bossSong : WORLD_V2[this.world - 1] ?? 'w1v2';
     // In the menus «by world» plays what «automatic» does, the original; a song picked to play always plays there too.
     const menu = this.pick === 'worlds' && this.world === 0 && !this.preview;
-    const wanted = menu ? 'b2b' : this.pick === 'auto' ? (this.finalWanted ? 'doom' : 'b2b') : this.pick === 'worlds' ? byWorld : this.pick;
+    // Listening to «by world» in Customise's music list: a mix of every world's song (`scheduleMix`).
+    const mixing = this.pick === 'worlds' && this.world === 0 && this.preview;
+    const wanted = menu ? 'b2b' : mixing ? 'mix' : this.pick === 'auto' ? (this.finalWanted ? 'doom' : 'b2b') : this.pick === 'worlds' ? byWorld : this.pick;
     if (inBar === 0 && wanted !== this.songId && (bar % 4 === 0 || this.songNow)) { this.songId = wanted; this.songNow = false; }
+    if (this.songId === 'mix') { this.scheduleMix(step, at); return; }
     const v2 = V2S[this.songId as V2Id];
     if (v2) { this.root = v2.root; this.scheduleV2(step, at, v2); return; }
     const song = SONGS[this.songId as SongId];
@@ -1216,7 +1219,19 @@ class Engine {
   /* ------------------------------------------------------- v2 world songs */
 
   /** A world song's second version, one sixteenth: its section, drums, bass, lead, pads and its world's own sounds. */
-  private scheduleV2(step: number, at: number, v: V2) {
+  /** «By world» previewed in Customise: every world's song in turn, four bars each (its drums, bass, lead and key),
+      with another world's own sounds laid over it, changing every two bars, so all their sounds come by mixed. */
+  private scheduleMix(step: number, at: number) {
+    const bar = Math.floor(step / 16);
+    const turn = Math.floor(bar / 4) % WORLD_V2.length;
+    const v = V2S[WORLD_V2[turn]];
+    let other = (turn + 1 + (Math.floor(bar / 2) % (WORLD_V2.length - 1))) % WORLD_V2.length;
+    if (other === turn) other = (other + 1) % WORLD_V2.length;
+    this.root = v.root;
+    this.scheduleV2(step, at, v, [V2S[WORLD_V2[other]]]);
+  }
+
+  private scheduleV2(step: number, at: number, v: V2, more: V2[] = []) {
     const bar = Math.floor(step / 16);
     const inBar = step % 16;
     const setBar = bar % (v.form.length * 8);
@@ -1270,6 +1285,7 @@ class Engine {
     }
 
     this.colour(v, { at, step, bar, inBar, blockBar, sec, chord, calm });
+    for (const o of more) this.colour(o, { at, step, bar, inBar, blockBar, sec, chord, calm });
   }
 
   private drumsV2(at: number, groove: Groove, bar: number, inBar: number, kit: Kit, roll: boolean) {
