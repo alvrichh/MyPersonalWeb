@@ -1553,8 +1553,15 @@ screen.addEventListener('click', (event) => {
     if (evo) { audio.play('win'); flash(`${t('evoReady')} ${t(`evo${cap(evo)}Name` as Key)}`); }
     else if (fused) { audio.play('win'); flash(`${t('fusionMade')} ${fusionLine(game, fused)}`); }
     else audio.play('pick');
-    shownChoices = '';
-    hide();
+    // More than one level up waiting (two at once, or the Boss Rush's opening picks): the next cards straight away,
+    // since the frame loop only opens the level-up screen as the game leaves play.
+    if (game.phase === 'levelup' && game.choices.length) {
+      shownChoices = game.choices.join();
+      choiceScreen(game);
+    } else {
+      shownChoices = '';
+      hide();
+    }
   } else if (target.dataset.itemUp) {
     const item = itemById(target.dataset.itemUp as ItemId);
     const lv = itemLevel(save.itemLevels, item.id);
