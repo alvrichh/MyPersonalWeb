@@ -165,6 +165,8 @@ export type BoardGame = {
   lastMerge: { slot: Slot; id: number; combo: number; star?: Star } | null;
   /** The last unit summoned that did not merge, to pop it in. */
   lastSummon: { slot: Slot; id: number } | null;
+  /** Fusion: the auto-merge, bought once a run (`buyAutoMerge`); without it you merge by dragging. */
+  autoMerge: boolean;
   wins: number;
   /** Enemy units beaten, all told (for the profile's totals). */
   kills: number;
@@ -196,7 +198,7 @@ export const saleOf = (p: Piece, variant: Variant = 'fusion') =>
 export function newBoard(world: number, casts: number, variant: Variant = 'fusion'): BoardGame {
   const b: BoardGame = {
     world, variant, casts: Math.max(1, casts), round: 1, lives: LIVES, gold: Math.round(8 * castPower(world)), phase: 'prep',
-    army: [], shop: [], wave: enemyWave(world, 1), fighters: [], shots: [], time: 0, last: null, wins: 0, kills: 0, events: [], event: null, skillUsed: false, strike: null, boom: null, lastMerge: null, lastSummon: null,
+    army: [], shop: [], wave: enemyWave(world, 1), fighters: [], shots: [], time: 0, last: null, wins: 0, kills: 0, events: [], event: null, skillUsed: false, strike: null, boom: null, lastMerge: null, lastSummon: null, autoMerge: false,
   };
   // You start with a bug of the latest cast on the board.
   b.army.push({ id: nextId++, tier: 0, cast: b.casts, slot: { c: 2, r: ROWS - 2 }, star: 1 });
@@ -245,7 +247,7 @@ export function buy(b: BoardGame, i: number) {
   const offer = b.shop[i];
   if (b.phase !== 'prep' || !offer || b.gold < offer.price) return false;
   if (b.variant === 'tactics') return buyTactics(b, i, offer);
-  const twin = b.army.find((p) => p.tier === offer.tier && p.cast === offer.cast && p.tier < maxTier(p.cast));
+  const twin = b.autoMerge && b.army.find((p) => p.tier === offer.tier && p.cast === offer.cast && p.tier < maxTier(p.cast));
   if (!twin && (b.army.length >= armyCap(b.round) || !freeCell(b))) return false;
   b.gold -= offer.price;
   b.shop[i] = null;
@@ -257,7 +259,7 @@ export function buy(b: BoardGame, i: number) {
 /** Fusion: a new unit onto the board; next to its twin it merges at once, and on up while the new step has a twin too
     (a combo). The caller has checked there is room or a twin. */
 function placeFusion(b: BoardGame, tier: Tier, cast: number) {
-  const twin = b.army.find((p) => p.tier === tier && p.cast === cast && p.tier < maxTier(p.cast));
+  const twin = b.autoMerge ? b.army.find((p) => p.tier === tier && p.cast === cast && p.tier < maxTier(p.cast)) : undefined;
   if (!twin) {
     const p = { id: nextId++, tier, cast, slot: freeCell(b)! };
     b.army.push(p);
@@ -281,6 +283,29 @@ function placeFusion(b: BoardGame, tier: Tier, cast: number) {
     now and then a ticket and, from round 4, a legacy, of the latest world's cast six times in ten and any opened
     one otherwise; it merges with its twin at once. */
 export const SUMMON = { price: 1.5, ticket: 0.25, legacy: 0.06, latest: 0.6 };
+/** The auto-merge's price, once a run: from then on a unit summoned next to its twin merges by itself, and every
+    pair already on the board merges at once. */
+export const AUTO_MERGE = { price: 3 };
+export const autoMergePrice = (b: BoardGame) => Math.round(AUTO_MERGE.price * castPower(b.world));
+export function buyAutoMerge(b: BoardGame) {
+  if (b.variant !== 'fusion' || b.phase !== 'prep' || b.autoMerge || b.gold < autoMergePrice(b)) return false;
+  b.gold -= autoMergePrice(b);
+  b.autoMerge = true;
+  // The pairs already on the board merge at once (the first one found, then on up).
+  let combo = 0;
+  let last: Piece | undefined;
+  for (;;) {
+    const p = b.army.find((x) => b.army.some((y) => y !== x && y.tier === x.tier && y.cast === x.cast && x.tier < maxTier(x.cast)));
+    if (!p) break;
+    const q = b.army.find((y) => y !== p && y.tier === p.tier && y.cast === p.cast)!;
+    b.army = b.army.filter((y) => y !== q);
+    p.tier = (p.tier + 1) as Tier;
+    combo += 1;
+    last = p;
+  }
+  if (last) { b.lastMerge = { slot: last.slot, id: last.id, combo }; b.events.push('merge'); }
+  return true;
+}
 export const summonPrice = (b: BoardGame) => Math.max(1, Math.round(SUMMON.price * castPower(b.world)));
 export function summon(b: BoardGame): 'ok' | 'gold' | 'full' | 'none' {
   if (b.phase !== 'prep' || b.variant !== 'fusion') return 'none';
