@@ -77,7 +77,8 @@ function drawWall(ctx: CanvasRenderingContext2D, b: BoardGame, now: number, retr
   // As many pieces as keep the wall about half a cell tall (thin enough to stand between the rows, not over the
   // units on either side), centred on the halfway line; the units are drawn over it.
   const ratio = pieces[0].naturalHeight / pieces[0].naturalWidth;
-  const n = Math.max(3, Math.round(BOARD_W / (WALL.h / ratio)));
+  // Always an odd count, so there is a middle piece: the world's other block, the rest all alike either side of it.
+  const n = Math.max(3, Math.round(BOARD_W / (WALL.h / ratio))) | 1;
   const w = BOARD_W / n;
   const h = w * ratio;
   const base = HOME_ROW * CELL + h / 2;
@@ -89,7 +90,17 @@ function drawWall(ctx: CanvasRenderingContext2D, b: BoardGame, now: number, retr
   ctx.rect(-20, -200, BOARD_W + 40, base + 200);
   ctx.clip();
   const k = 1 - wallUp;
-  for (let i = 0; i < n; i++) ctx.drawImage(pieces[i % 2], i * w - w * 0.02 + shake, base - h + k * (h + 2), w * 1.04, h);
+  // The middle piece at its own shape, the long ones sharing what is left either side.
+  const mid = pieces[1];
+  const mw = Math.min(BOARD_W / 2, (h * mid.naturalWidth) / mid.naturalHeight);
+  const sw = (BOARD_W - mw) / (n - 1);
+  let x = 0;
+  for (let i = 0; i < n; i++) {
+    const middle = i === (n - 1) / 2;
+    const pw = middle ? mw : sw;
+    ctx.drawImage(middle ? mid : pieces[0], x - pw * 0.02 + shake, base - h + k * (h + 2), pw * 1.04, h);
+    x += pw;
+  }
   ctx.restore();
   // Dust along its foot while it moves.
   if (moving) {
