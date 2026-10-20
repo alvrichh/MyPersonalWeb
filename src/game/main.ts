@@ -1624,6 +1624,8 @@ function startBoard(world: number) {
   audio.start();
   audio.setIntensity(0.3);
   flash(t('boardStart', { n: world }));
+  // How to merge and sell, once, instead of a line in the shop that took room from the board.
+  window.setTimeout(() => { if (board?.phase === 'prep' && board.round === 1) flash(t('boardHint')); }, 1900);
   renderBoardUi();
 }
 /** Leaves the board for the menu or the map (nothing banked: the end screen already banked it, or the player quit). */
@@ -1676,7 +1678,6 @@ function renderBoardUi() {
     ? `<button class="board-card" type="button" data-bact="buy" data-i="${i}"${!prep || b.gold < o.price ? ' disabled' : ''}><i class="board-cast">${t('worldShort', { n: o.cast })}</i><img src="${boardPic(o.tier, o.cast)}" alt=""><b>${boardTierName(o.tier)}</b><span>◉ ${o.price}</span></button>`
     : '<span class="board-card is-sold"></span>').join('');
   boardShop.innerHTML = prep ? `
-    <small class="board-cap">${t('boardHint')}</small>
     <div class="board-cards">${cards}</div>
     <div class="board-acts">
       <button class="ghost board-reroll" type="button" data-bact="reroll"${b.gold < 1 ? ' disabled' : ''}>🎲 ${t('boardReroll')} · ◉ 1</button>

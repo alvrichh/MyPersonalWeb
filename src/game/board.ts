@@ -117,10 +117,12 @@ const worldUp = (w: number) => 1 + (w - 1) * 0.25;
 export const pieceAt = (b: BoardGame, s: Slot) => b.army.find((p) => p.slot.c === s.c && p.slot.r === s.r);
 export const inBoard = (s: Slot) => s.c >= 0 && s.c < COLS && s.r >= 0 && s.r < ROWS;
 /** Your half: the lower four rows. */
-export const homeCell = (s: Slot) => inBoard(s) && s.r >= HOME_ROW;
+/** The corners where the commanders stand: yours at the lower right, the rival's at the upper left. */
+export const isCorner = (s: Slot) => (s.c === COLS - 1 && s.r === ROWS - 1) || (s.c === 0 && s.r === 0);
+export const homeCell = (s: Slot) => inBoard(s) && s.r >= HOME_ROW && !isCorner(s);
 /** The first free cell of your half, from the front row back. */
 function freeCell(b: BoardGame): Slot | null {
-  for (let r = HOME_ROW; r < ROWS; r++) for (const c of [2, 3, 1, 4, 0, 5]) if (!pieceAt(b, { c, r })) return { c, r };
+  for (let r = HOME_ROW; r < ROWS; r++) for (const c of [2, 3, 1, 4, 0, 5]) if (homeCell({ c, r }) && !pieceAt(b, { c, r })) return { c, r };
   return null;
 }
 /** What a step of a cast costs in the shop, and gives back when sold. */
@@ -245,7 +247,7 @@ export function enemyWave(world: number, round: number): Tier[] {
 /** Where this round's enemy stands: the small ones from the front row back, the bosses at the back in the middle. */
 export function waveSpots(b: BoardGame) {
   const cells: Slot[] = [];
-  for (const r of [3, 2, 1, 0]) for (const c of [2, 3, 1, 4, 0, 5]) cells.push({ c, r });
+  for (const r of [3, 2, 1, 0]) for (const c of [2, 3, 1, 4, 0, 5]) if (!isCorner({ c, r })) cells.push({ c, r });
   let i = 0;
   let boss = 0;
   return [...b.wave].sort((a, c) => a - c).map((tier) => {
