@@ -14,7 +14,7 @@ import type { Enemy } from './world';
 import { ARMOUR_SLOTS, ARSENAL, ITEMS, itemLevel, type SpiritSkin, UPGRADES, WEAPON_SLOTS, EXTRA_SLOT_PRICE, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
 import { Scene } from './scene';
 import { ACHIEVEMENTS, achEarned, achTotal, checkAchievements, tierKey, tiersDone, type Ach, type AchId } from './achievements';
-import { makeT, pickLang, type Key } from './strings';
+import { makeT, pickLang, type Key, type Lang } from './strings';
 import {
   CATEGORY, EVO_PARTNER, H, NIGHTMARE_WORLD, SECRET_WORLD, showcaseHit, startShowcase, canFuse, revivePrice, SKILLS, arrowLook, arrowOptions, bladeElement, bladeOptions, canEvolve, evoOf, fusionOf, fusionWith, evoLostBy, pairFusion, arrowElements, settleEffects, rerollChoices, adReroll, adRevive, canAdReroll, canAdRevive, maxLevel, pickArrow, pickBlade, pickSpirit, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_LUCKY, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
   type ArrowLook, type Category, type Choice, type Fusion, type Game, type GameEvent, type Input, type Look, type SkillId, type WheelOutcome,
@@ -24,9 +24,23 @@ import {
    (touch joystick or keyboard), sound hooks and the frame loop. The rules are
    in world.ts, the drawing in draw.ts, the music in audio.ts. */
 
-const lang = pickLang();
-const t = makeT(lang);
+/** The game's language: the site's saved one, and changed from Options (`setLang`), which saves it for the site too. */
+let lang = pickLang();
+let t = makeT(lang);
 document.documentElement.lang = lang;
+function setLang(next: Lang) {
+  lang = next;
+  t = makeT(lang);
+  document.documentElement.lang = lang;
+  storage.set('lang', lang);
+  // What was set once at load, in the new language.
+  document.title = `${t('title')} · alvrich`;
+  configurePayments({ title: t('payTestTitle'), note: t('payTestNote'), ok: t('payTestOk'), cancel: t('payTestCancel') });
+  backLink.setAttribute('aria-label', t('back'));
+  pauseBtn.setAttribute('aria-label', t('pause'));
+  hudGear.setAttribute('aria-label', t('gearOpen'));
+  hudHp.parentElement?.setAttribute('aria-label', lang === 'es' ? 'Vida' : 'Health');
+}
 document.title = `${t('title')} · alvrich`;
 configurePayments({ title: t('payTestTitle'), note: t('payTestNote'), ok: t('payTestOk'), cancel: t('payTestCancel') });
 configureAds({ pause: () => audio.duck(true), resume: () => audio.duck(false), text: { title: t('adDevTitle'), skip: t('adDevSkip') } });
@@ -1153,10 +1167,12 @@ function optionsScreen() {
     <h2>${t('options')}</h2>
     <label class="slider"><span>🎵 ${t('music')}</span><b>${Math.round(save.music * 100)}%</b><input type="range" min="0" max="100" value="${Math.round(save.music * 100)}" style="--p:${save.music}" data-vol="music"></label>
     <label class="slider"><span>🔔 ${t('sfx')}</span><b>${Math.round(save.sfx * 100)}%</b><input type="range" min="0" max="100" value="${Math.round(save.sfx * 100)}" style="--p:${save.sfx}" data-vol="sfx"></label>
-    <p class="how">${t('musicNote')}</p>
     <button class="mute-toggle" type="button" data-act="mute" aria-pressed="${muted}"><span class="toggle-art${muted ? ' is-off' : ''}" aria-hidden="true"></span><span>${muted ? t('unmute') : t('mute')}</span></button>
     <button class="mute-toggle" type="button" data-act="retro" aria-pressed="${save.retro}"><span class="toggle-art${save.retro ? '' : ' is-off'}" aria-hidden="true"></span><span>${t('retro')}</span></button>
     <p class="how">${t('retroNote')}</p>
+    <div class="lang-row"><span>🌐 ${t('language')}</span>
+      <div class="mode-pick lang-pick" role="group" aria-label="${t('language')}">${(['es', 'en'] as Lang[]).map((l) => `<button type="button" class="mode-opt${l === lang ? ' is-on' : ''}" data-act="lang" data-lang="${l}" aria-pressed="${l === lang}">${l === 'es' ? 'Español' : 'English'}</button>`).join('')}</div>
+    </div>
     ${backButton(optionsFrom === 'pause' ? 'pause' : 'menu', optionsFrom === 'pause' ? 'resume' : 'menu')}`);
 }
 
@@ -1985,7 +2001,10 @@ screen.addEventListener('click', (event) => {
   else if (act === 'styles') { dressSlot = null; stylesScreen(); }
   else if (act === 'options') { optionsFrom = 'menu'; optionsScreen(); }
   else if (act === 'options-pause') { optionsFrom = 'pause'; optionsScreen(); }
-  else if (act === 'retro') {
+  else if (act === 'lang') {
+    const next = target.dataset.lang as Lang;
+    if (next && next !== lang) { setLang(next); boardKey = ''; renderBoardUi(); optionsScreen(); }
+  } else if (act === 'retro') {
     save.retro = !save.retro;
     palette.retro = save.retro;
     document.documentElement.toggleAttribute('data-retro', save.retro);
