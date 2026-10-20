@@ -479,7 +479,23 @@ function hearts(ctx: CanvasRenderingContext2D, cx: number, y: number, left: numb
 }
 
 /** The rival's health: one for each round still to win. */
-const rivalHp = (b: BoardGame) => ROUNDS - b.round + (b.phase !== 'prep' && b.phase !== 'fight' && b.last?.result === 'win' ? 0 : 1);
+const rivalHp = (b: BoardGame) => b.online ? b.online.rivalLives : ROUNDS - b.round + (b.phase !== 'prep' && b.phase !== 'fight' && b.last?.result === 'win' ? 0 : 1);
+
+/** Against a person the fight is the same on both phones, the host's army on side 0 at the bottom; the guest's
+    screen draws it turned round, so its own army is at the bottom too: every unit, shot and blow put at the opposite
+    point of the board, its side and its facing swapped. Only to be drawn: the rules go on with the real fight. */
+export function mirrorFight(b: BoardGame): BoardGame {
+  const mx = (x: number) => BOARD_W - x, my = (y: number) => BOARD_H - y;
+  return {
+    ...b,
+    fighters: b.fighters.map((f) => ({
+      ...f, x: mx(f.x), y: my(f.y), side: (1 - f.side) as 0 | 1, face: -f.face, dir: { x: -f.dir.x, y: -f.dir.y },
+      leap: f.leap && { ...f.leap, fx: mx(f.leap.fx), fy: my(f.leap.fy), tx: mx(f.leap.tx), ty: my(f.leap.ty) },
+    })),
+    shots: b.shots.map((s) => ({ ...s, x: mx(s.x), y: my(s.y), vx: -s.vx, vy: -s.vy, side: (1 - s.side) as 0 | 1 })),
+    impacts: b.impacts.map((i) => ({ ...i, x: mx(i.x), y: my(i.y) })),
+  };
+}
 
 export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: BoardLayout, now: number, drag: BoardDrag | null, retro: boolean, dpr: number, pics: HeroPics, ended: number | null, floor: { top: number; bottom: number }) {
   const tactics = b.variant === 'tactics';
@@ -657,7 +673,7 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
   // The hearts last, over everything on the board: the rival's above it, yours over your hero's head. Until the
   // fireball strikes they still show the hearts the round has just cost; then those burst.
   const popAt = ended === null ? 1 : Math.max(0, Math.min(1, (ended - FIREBALL.fly) / FIREBALL.blast));
-  const rivalPop = won && ended !== null ? 1 : 0;
+  const rivalPop = ended === null ? 0 : b.online ? b.online.rivalLost ?? 0 : won ? 1 : 0;
   const minePop = !won && ended !== null ? b.last?.lost ?? 0 : 0;
   hearts(ctx, RIVAL.x + 50, -TOP / 2, rivalHp(b), rivalPop, done ? popAt : 0, retro);
   hearts(ctx, MINE.x, MINE.y - 72, b.lives, minePop, done ? popAt : 0, retro);
