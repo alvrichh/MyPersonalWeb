@@ -306,7 +306,7 @@ export type Enemy = {
   combo: number;
   /** The final boss's last stand, from 20% health: it runs and charges much faster (`RAGE_AT`). */
   rage: boolean;
-  /** Nocthrax's phase: 1 on the ground, 2 in the air from half health (30% bigger), 3 its final form from 20% (40% bigger again). */
+  /** Nocthrax's phase: 1 on the ground, 2 in the air from two thirds of its health (30% bigger), 3 its final form from one third (40% bigger again). */
   phase: number;
   /** Which way it faces, 1 right or -1 left: towards you, or the way it charges or steps round a rack (the sprites face right). */
   face: number;
@@ -1454,7 +1454,7 @@ function hurt(g: Game, e: Enemy, amount: number, push?: Vec) {
     breakShip(g, e);
     return;
   }
-  if (e.bossId === 'chimera' && !e.clone && e.phase < 2 && e.hp > 0 && e.hp <= e.maxHp / 2) takeWing(g, e);
+  if (e.bossId === 'chimera' && !e.clone && e.phase < 2 && e.hp > 0 && e.hp <= e.maxHp * NOCTHRAX_PHASES[0]) takeWing(g, e);
   // The Medusa at half health: her snakes turn green and her eyes red (her second sheet, `medusa2`).
   if (e.bossId === 'medusa' && e.phase < 2 && e.hp > 0 && e.hp <= e.maxHp / 2) {
     e.phase = 2;
@@ -1471,7 +1471,7 @@ function hurt(g: Game, e: Enemy, amount: number, push?: Vec) {
     burst(g, e.x, e.y, '#60a5fa', 34, 220, 3.5);
     g.events.push('phase');
   }
-  if (e.final && !e.clone && !e.rage && e.hp > 0 && e.hp <= e.maxHp * RAGE_AT) enrage(g, e);
+  if (e.final && !e.clone && !e.rage && e.hp > 0 && e.hp <= e.maxHp * (e.bossId === 'chimera' ? NOCTHRAX_PHASES[1] : RAGE_AT)) enrage(g, e);
   if (push && e.kind !== 'boss') {
     e.kx += push.x;
     e.ky += push.y;
@@ -2582,11 +2582,14 @@ const signatureOf = (g: Game, e: Enemy): Signature =>
 /** The longship breaks up at half health: wreckage, water on the floor, and Valdur leaps out of it. */
 /** Below this share of its health the final boss goes into its last stand. */
 export const RAGE_AT = 0.2;
+/** Nocthrax's three phases last a third of its health each: it takes wing at two thirds and its final form, with
+    its last stand, comes at one third. */
+export const NOCTHRAX_PHASES = [2 / 3, 1 / 3];
 /* Its walk goes from 0.6 to 1.8 of its speed, never faster than 120 (the hero runs at 150),
    its charges are a third faster and it aims for less time. */
 const RAGE_WALK = 1.8;
 const RAGE_TOP = 120;
-/** Nocthrax at half health: it rises into the air, 30% bigger (its phase-2 sheet). */
+/** Nocthrax at two thirds of its health: it rises into the air, 30% bigger (its phase-2 sheet). */
 function takeWing(g: Game, e: Enemy) {
   e.phase = 2;
   e.r = Math.round(e.r * 1.3);
@@ -2672,7 +2675,7 @@ function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
     return;
   }
   // The final boss's fury: under half health everything comes a quarter sooner.
-  const fury = final && e.hp < e.maxHp / 2 ? 0.75 : 1;
+  const fury = final && (e.bossId === 'chimera' ? e.phase > 1 : e.hp < e.maxHp / 2) ? 0.75 : 1;
   // Nocthrax attacks more often with each phase (more attacks, never harder ones): in the air its ring, charge,
   // move and signature come sooner, and in its final form sooner still, with a clock of extra tornadoes on top.
   const tempo = e.bossId === 'chimera' ? NOCTHRAX_TEMPO[e.phase - 1] ?? 1 : 1;
