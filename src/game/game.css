@@ -4100,3 +4100,6 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .board-auto.is-on { cursor: default; filter: none; box-shadow: 0 0 0 3px #fbbf24, 0 0 16px rgba(251, 191, 36, 0.9); animation: auto-glow 1.6s ease-in-out infinite; }
 @keyframes auto-glow { 50% { box-shadow: 0 0 0 3px #fde68a, 0 0 24px rgba(253, 224, 71, 1); } }
 @media (prefers-reduced-motion: reduce) { .board-auto.is-on { animation: none; } }
+/* The board's Tactics: the gold bar, in its start dialog as on the map's play button. */
+.panel .book-mode.is-gold { --bar: url('/images/game/ui/btn2_gold.webp'); color: #2a1a00; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35); }
+:root[data-retro] .panel .book-mode.is-gold { background: linear-gradient(135deg, #fde047, #f59e0b); }
