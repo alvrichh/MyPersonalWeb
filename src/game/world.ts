@@ -1391,7 +1391,7 @@ function kill(g: Game, e: Enemy) {
     const lv = g.skills.nova;
     const reach = ARCHERO.novaReach + 6 * (lv - 1);
     novaing = true;
-    g.fx.push({ kind: 'pic', pic: 'nova-burst', top: true, x: e.x, y: e.y, r: reach * 1.4, a: rand(-0.3, 0.3), life: 0.35, max: 0.35 });
+    g.fx.push({ kind: 'pic', pic: 'nova-burst', x: e.x, y: e.y, r: reach * 1.4, a: rand(-0.3, 0.3), life: 0.35, max: 0.35 });
     for (const o of live(g)) if (dist(o, e) <= reach + o.r) hurt(g, o, (ARCHERO.novaDmg + 8 * (lv - 1)) * power(g, 'upgrade'));
     novaing = false;
   }
