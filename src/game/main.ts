@@ -636,6 +636,7 @@ function secretScreen() {
     ${head('shrine', t('secretTitle'))}
     <p>${t('secretText')}</p>
     <button class="play" data-act="play-secret"><span class="play-tri" aria-hidden="true"></span><span class="play-copy">${t('secretPlay')}</span></button>
+    <button class="ghost small showcase-btn" data-act="play-secret-showcase">👁 ${t('showcaseKratos')}</button>
     <p class="best">${secretLine()}</p>
     ${backButton('map', 'toMap')}`);
 }
@@ -1425,6 +1426,7 @@ screen.addEventListener('click', (event) => {
   if (act === 'play') startRun();
   // The world this run unlocked, in the same mode.
   else if (act === 'play-next') { const n = Number(target.dataset.next); setWorld(n, game?.mode ?? save.mode); persist(); startRun(n, game?.mode ?? save.mode); }
+  else if (act === 'play-secret-showcase' || (act === 'play-same' && game?.secret && game.showcase)) { startRun(SECRET_WORLD, 'horde', false, 0, true); if (game) game.showcase = true; flash(t('showcaseStart')); }
   else if (act === 'play-same' && game?.secret) startRun(SECRET_WORLD, 'horde', false, 0, true);
   else if (act === 'play-same') game?.rush ? startRun(1, 'sprints', false, rushWorlds()) : startRun(game?.world ?? worldIn(), game?.mode ?? save.mode, game?.endless);
   else if (act === 'play-rush') startRun(1, 'sprints', false, rushWorlds());
