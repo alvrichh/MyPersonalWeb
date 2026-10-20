@@ -4951,3 +4951,22 @@ const ICE_SPIKES: [number, number, number, number][] = [
   [-0.45, -0.5, 26, 7], [0.4, -0.55, 30, 8], [0.05, -0.35, 44, 10], [-0.65, 0.15, 22, 7], [0.7, 0.1, 24, 7], [-0.25, 0.35, 34, 9], [0.3, 0.4, 30, 8],
 ];
 
+
+/* ------------------------------------------------------- the board mode */
+
+/** What the board mode (`boardView.ts`) needs to draw one of its units with the cast's own pictures. */
+export type BoardFigure = { look: Look; kind: Enemy['kind']; final: boolean; bossId: string; face: number; step: number; swing: number; hit: number; r: number };
+/** Draws a board unit at the origin (the caller translates to its feet's centre), its painted sprite or, in retro
+    or until the pictures load, the cast's drawn figure. */
+export function drawBoardFigure(ctx: CanvasRenderingContext2D, f: BoardFigure, now: number, retro: boolean) {
+  retroLook = retro;
+  const e = {
+    phase: 1, rise: 0, pain: f.kind === 'boss' ? f.hit : 0, gaze: false, chan: 0, pose: f.kind === 'boss' && f.swing > 0 ? f.swing : 0, act: 'burst', aim: 0, dash: 0,
+    cd: 0, minion: false, clone: false, snake: 0, spawn: 0, wobble: 0, slow: 0, burn: 0, dir: { x: 0, y: 1 }, tint: '#fff', side: 1, id: 0,
+    ...f, hit: f.kind === 'boss' ? 0 : f.hit,
+  } as unknown as Enemy;
+  const painted = !retroLook && drawEnemySprite(ctx, e);
+  if (!painted) LOOKS[f.look][f.kind](ctx, e, now);
+}
+/** A world's painted floor, for the board. */
+export const boardFloor = (world: number) => floorImage(world);

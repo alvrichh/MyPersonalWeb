@@ -7,8 +7,10 @@ import { COIN_PACKS, currentOffer, grant, packBonus, SKIN_OFFERS, type CoinPack,
 import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPrize, type DailyResult } from './daily';
 import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
 import { draw, drawRetroFigure, preloadCast, preloadFx, type Palette, type View } from './draw';
-import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, heroStill } from './save';
-import type { Enemy, Mode } from './world';
+import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, type PlayMode, heroStill } from './save';
+import { ROUNDS, TIER_KIND, boardCap, boardCoins, buy as boardBuy, moveUnit, newBoard, nextRound, onBoard, pieceAt, reroll as boardReroll, sell as boardSell, startFight, updateBoard, type BoardGame } from './board';
+import { drawBoard, layoutBoard, slotAt, type BoardDrag, type BoardLayout } from './boardView';
+import type { Enemy } from './world';
 import { ARMOUR_SLOTS, ARSENAL, ITEMS, itemLevel, type SpiritSkin, UPGRADES, WEAPON_SLOTS, EXTRA_SLOT_PRICE, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
 import { Scene } from './scene';
 import { ACHIEVEMENTS, achEarned, achTotal, checkAchievements, tierKey, tiersDone, type Ach, type AchId } from './achievements';
@@ -98,7 +100,12 @@ const rushWorlds = () => Math.min(WORLD_COUNT, save.unlocked);
 const secretLine = () => (save.secretBest ? t('secretBest', { time: clock(save.secretBest.time), kills: save.secretBest.kills }) : t('bestNone'));
 const rushLine = () => (save.rushBest ? t('rushBest', { n: save.rushBest.stage, total: save.rushBest.stages, time: clock(save.rushBest.time) }) : t('bestNone'));
 const nightmareLine = () => (save.nightmareBest ? t('nightmareBest', { time: clock(save.nightmareBest.time), kills: save.nightmareBest.kills }) : t('bestNone'));
-const bestLine = (world = worldIn(), mode: Mode = save.mode) => {
+const bestLine = (world = worldIn(), mode: PlayMode = save.mode) => {
+  if (mode === 'board') {
+    const best = save.boardBest[world];
+    if (!best) return '';
+    return best.won ? t('boardBestWon') : t('boardBest', { n: best.round, total: ROUNDS });
+  }
   if (mode === 'horde') {
     const best = save.hordeBest[world];
     if (!best) return '';
@@ -110,14 +117,17 @@ const bestLine = (world = worldIn(), mode: Mode = save.mode) => {
   return best.room ? t('best', { room: best.room }) : '';
 };
 /* Each mode has its own world progress: sprints keep `unlocked`/`world`, on call `hordeUnlocked`/`hordeWorld`. */
-const unlockedIn = (mode: Mode = save.mode) => (mode === 'horde' ? save.hordeUnlocked : save.unlocked);
-const worldIn = (mode: Mode = save.mode) => (mode === 'horde' ? save.hordeWorld : save.world);
-function setWorld(n: number, mode: Mode = save.mode) {
-  if (mode === 'horde') save.hordeWorld = n;
+const unlockedIn = (mode: PlayMode = save.mode) => (mode === 'board' ? save.boardUnlocked : mode === 'horde' ? save.hordeUnlocked : save.unlocked);
+const worldIn = (mode: PlayMode = save.mode) => (mode === 'board' ? save.boardWorld : mode === 'horde' ? save.hordeWorld : save.world);
+function setWorld(n: number, mode: PlayMode = save.mode) {
+  if (mode === 'board') save.boardWorld = n;
+  else if (mode === 'horde') save.hordeWorld = n;
   else save.world = n;
 }
-const modeName = (mode: Mode = save.mode) => t(mode === 'horde' ? 'modeHorde' : 'modeSprints');
-const MODE_ICON: Record<Mode, string> = { sprints: '⚔️', horde: '🛡️' };
+const modeName = (mode: PlayMode = save.mode) => t(mode === 'board' ? 'modeBoard' : mode === 'horde' ? 'modeHorde' : 'modeSprints');
+const modeText = (mode: PlayMode = save.mode) => t(mode === 'board' ? 'modeBoardText' : mode === 'horde' ? 'modeHordeText' : 'modeSprintsText');
+const MODE_ICON: Record<PlayMode, string> = { sprints: '⚔️', horde: '🛡️', board: '♟️' };
+const MODES: PlayMode[] = ['sprints', 'horde', 'board'];
 const NIGHTMARE_ICON = '☠️';
 /** Where the run is: the sprint, or the shift's clock. */
 const whereLine = (g: Game) => (g.rush ? `${g.showcase ? '👁' : RUSH_ICON} ${t('rushWhere', { n: g.rush, total: g.stages })}` : g.mode === 'horde' ? `${g.endless ? NIGHTMARE_ICON : MODE_ICON.horde} ${clock(g.time)}` : t('sprint', { room: g.room }));
@@ -418,6 +428,7 @@ let adEarned = 0;
 const backButton = (act: string, label: Key = 'menu') => `<button class="ghost" data-act="${act}">← ${t(label)}</button>`;
 
 function menuScreen() {
+  endBoard();
   showcaseBtn.hidden = true;
   game = null;
   audio.setSong(save.song); // a Boss Rush played by world; back to the pick
@@ -450,7 +461,7 @@ function menuScreen() {
       <button class="cover-chest${dailyReady(save) ? ' is-ready' : ''}" type="button" data-act="daily" aria-label="${t('dailyTitle')}"><img src="./images/game/fx/chest.webp" width="165" height="140" alt=""><i${dailyReady(save) ? '>' + t('dailyReady') : ` data-daily-clock>${dailyClock()}`}</i></button>
       <button class="hot cover-play" data-act="play" aria-label="${t('playNow')} · ${worldName(worldIn())}"></button>
       <span class="cover-play-copy"><b>${t('playNow')}</b><small>${WORLD_ICON[worldIn() - 1]} ${worldName(worldIn())}</small></span>
-      <button class="cover-mode" type="button" data-act="mode" aria-label="${t('modePick')}: ${modeName()}"><span class="${save.mode === 'sprints' ? 'is-on' : ''}">${MODE_ICON.sprints} ${t('modeSprints')}</span><span class="${save.mode === 'horde' ? 'is-on' : ''}">${MODE_ICON.horde} ${t('modeHorde')}</span></button>
+      <button class="cover-mode" type="button" data-act="mode" aria-label="${t('modePick')}: ${modeName()}">${MODES.map((m) => `<span class="${save.mode === m ? 'is-on' : ''}">${MODE_ICON[m]} ${modeName(m)}</span>`).join('')}</button>
       <button class="hot cover-card is-map" data-act="map" aria-label="${t('map')}"></button>
       ${copy('is-map', t('map'), `🌍 ${unlockedIn()} / ${WORLD_COUNT}`)}
       <button class="hot cover-card is-shop" data-act="shop" aria-label="${t('shop')}"></button>
@@ -543,10 +554,10 @@ const esc = (s: string) => s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`)
    the name, whose colour the profile picks. */
 const masteries = () => save.masteries;
 /** The mastery is offered once every world of both modes is cleared. */
-const masteryReady = () => worldsLeft('sprints') === 0 && worldsLeft('horde') === 0;
-const clearedIn = (mode: Mode) =>
-  Array.from({ length: WORLD_COUNT }, (_, i) => i + 1).filter((w) => (mode === 'horde' ? save.hordeBest[w]?.won : save.bestByWorld[w]?.time !== undefined)).length;
-const worldsLeft = (mode: Mode) => WORLD_COUNT - clearedIn(mode);
+const masteryReady = () => MODES.every((m) => worldsLeft(m) === 0);
+const clearedIn = (mode: PlayMode) =>
+  Array.from({ length: WORLD_COUNT }, (_, i) => i + 1).filter((w) => (mode === 'board' ? save.boardBest[w]?.won : mode === 'horde' ? save.hordeBest[w]?.won : save.bestByWorld[w]?.time !== undefined)).length;
+const worldsLeft = (mode: PlayMode) => WORLD_COUNT - clearedIn(mode);
 const starColor = () => STAR_COLORS[save.starColor];
 /** The stars by the name: one per mastery, in the chosen colour. */
 /** In the profile, each mastery is the owner's purple bug crest (`ui/mastery.webp`) instead of a star, up to three, then one with
@@ -557,7 +568,7 @@ const crests = () => (!masteries() ? '' : save.retro ? stars()
 const stars = () => (masteries() ? `<span class="mstars" style="--star:${starColor()}" aria-label="${t('profileStars')}: ${masteries()}">${'★'.repeat(Math.min(masteries(), 5))}${masteries() > 5 ? `×${masteries()}` : ''}</span>` : '');
 function resetScreen() {
   show(`<h2>${t('resetTitle')}</h2>
-    <p class="note">${t('resetLeft', { sprints: worldsLeft('sprints'), horde: worldsLeft('horde') })}</p>
+    <p class="note">${t('resetLeft', { sprints: worldsLeft('sprints'), horde: worldsLeft('horde'), board: worldsLeft('board') })}</p>
     <p>${t('resetText')}</p>
     <button class="ghost is-danger" data-act="reset-do">${t('resetDo')}</button>
     <button class="primary" data-act="profile">${t('cancel')}</button>`);
@@ -730,6 +741,7 @@ function secretScreen() {
 }
 
 function mapScreen() {
+  endBoard();
   // (with a sprints mastery any island can be picked in sprints, to look at its bosses)
   if (!mapPick || (mapPick > unlockedIn() + 1 && !(save.mode === 'sprints' && masteries() > 0))) mapPick = worldIn();
   const picked = mapPick;
@@ -770,9 +782,11 @@ function mapScreen() {
     // (the sprint, or the longest shift on call) or ▶ for a world not tried yet.
     const best = save.bestByWorld[st.n];
     const shift = save.hordeBest[st.n];
+    const plan = save.boardBest[st.n];
     const horde = save.mode === 'horde';
-    const done = horde ? !!shift?.won : best?.time !== undefined;
-    const tried = horde ? shift ? clock(shift.time) : '' : best?.room ? `${best.room}/${ROOMS}` : '';
+    const boardMode = save.mode === 'board';
+    const done = boardMode ? !!plan?.won : horde ? !!shift?.won : best?.time !== undefined;
+    const tried = boardMode ? plan ? `${plan.round}/${ROUNDS}` : '' : horde ? shift ? clock(shift.time) : '' : best?.room ? `${best.room}/${ROOMS}` : '';
     const under = !st.open ? '🔒' : done ? '✓' : tried || '▶';
     const style = `left:${(st.left / MAP_W) * 100}%;top:${(st.top / MAP_H) * 100}%;width:${(st.w / MAP_W) * 100}%;--rx:${st.m.ring[0]}%;--ry:${st.m.ring[1]}%;--px:${st.m.plate[0]}%;--py:${st.m.plate[1]}%;--pw:${st.m.plate[2]}%;--ph:${st.m.plate[3]}%;--bx:${st.m.badge[0]}%;--by:${st.m.badge[1]}%;--c:${WORLDS[st.n - 1].tint || '#38bdf8'}`;
     const cls = `${st.open ? ' is-open' : ' is-locked'}${st.n === picked ? ' is-picked' : ''}`;
@@ -789,8 +803,8 @@ function mapScreen() {
       </span>`];
   });
   const islandArt = islands.map((x) => x[0]).join('') + islands.map((x) => x[1]).join('');
-  const modes = (['sprints', 'horde'] as Mode[]).map((m) =>
-    `<button class="mode-opt${save.mode === m ? ' is-on' : ''}" data-mode="${m}" aria-pressed="${save.mode === m}" title="${t(m === 'horde' ? 'modeHordeText' : 'modeSprintsText')}">${MODE_ICON[m]} ${modeName(m)}</button>`).join('');
+  const modes = MODES.map((m) =>
+    `<button class="mode-opt${save.mode === m ? ' is-on' : ''}" data-mode="${m}" aria-pressed="${save.mode === m}" title="${modeText(m)}">${MODE_ICON[m]} ${modeName(m)}</button>`).join('');
   const status = pickedOpen
     ? `<small class="map-record">▮▮▮ ${bestLine(picked) || t('bestNone')}</small>`
     : `<small class="map-locked">🔒 ${t('lockedUntil', { n: picked - 1 })}</small>`;
@@ -837,7 +851,7 @@ function mapScreen() {
           <span>${t(`world${picked}Text` as Key)}</span>
           ${status}
           <div class="mode-pick" role="group" aria-label="${t('modePick')}">${modes}</div>
-          <small class="mode-text">${t(save.mode === 'horde' ? 'modeHordeText' : 'modeSprintsText')}</small>
+          <small class="mode-text">${modeText()}</small>
         </div>
       </div>
       ${action}
@@ -1514,7 +1528,8 @@ screen.addEventListener('pointerup', (e) => {
   mapPlayIdx += dx < 0 ? 1 : -1;
   mapPlayStep();
 });
-function startRun(world = worldIn(), mode = save.mode, endless = false, rush = 0, secret = false, rushFrom = 1) {
+function startRun(world = worldIn(), mode: PlayMode = save.mode, endless = false, rush = 0, secret = false, rushFrom = 1) {
+  if (mode === 'board') { startBoard(world); return; }
   game = newGame({ ...buildLoadout(save.equipped, save.upgrades, masteries(), save.arsenal, save.itemLevels, save.extra), sprintMastery: masteries() }, save.style, world, mode, endless, rush, secret, rushFrom);
   // Boss Rush: every boss in its own world's floor and song (whatever Customise picked); the secret shift, the jungle's.
   game.scene = rush || secret ? 0 : save.scene;
@@ -1533,6 +1548,242 @@ function startRun(world = worldIn(), mode = save.mode, endless = false, rush = 0
   flash(game.secret ? t('secretStart') : game.rush ? t('rushStart', { n: game.stages }) : game.endless ? t('nightmareStart') : game.mode === 'horde' ? t('hordeStart') : `${worldName(game.world)} · ${t('sprint', { room: 1 })}`);
   audio.start();
   audio.setIntensity(0.2);
+}
+
+
+/* ------------------------------------------------------------------ the board */
+
+/* «Sprint Planning», the board mode (rules in `board.ts`, drawing in `boardView.ts`): its own top bar and shop
+   over the canvas (`#boardUi`), the fight drawn on the canvas, and the result of each round in a dialog. */
+const boardUi = $<HTMLElement>('boardUi');
+const boardTop = $<HTMLElement>('boardTop');
+const boardShop = $<HTMLElement>('boardShop');
+let board: BoardGame | null = null;
+let boardDrag: BoardDrag | null = null;
+let boardDown: { x: number; y: number; id: number } | null = null;
+let boardLay: BoardLayout = { s: 1, ox: 0, oy: 0 };
+let boardKey = '';
+let boardShown = '';
+let boardTime = 0;
+let boardBanked = false;
+
+function startBoard(world: number) {
+  game = null;
+  paused = false;
+  hud.hidden = true;
+  hudGear.hidden = true;
+  bossBar.hidden = true;
+  showcaseBtn.hidden = true;
+  closeGearPanel();
+  hide();
+  board = newBoard(world, masteries());
+  boardTime = 0;
+  boardBanked = false;
+  boardShown = '';
+  boardKey = '';
+  boardDrag = null;
+  boardUi.hidden = false;
+  audio.setSong(save.song);
+  audio.setWorld(world);
+  audio.start();
+  audio.setIntensity(0.3);
+  flash(t('boardStart', { n: world }));
+  renderBoardUi();
+}
+/** Leaves the board for the menu or the map (nothing banked: the end screen already banked it, or the player quit). */
+function endBoard() {
+  if (!board) return;
+  board = null;
+  boardDrag = null;
+  boardUi.hidden = true;
+}
+/** Banks a finished board run, once: coins, the world's record, a world opened, the totals. */
+function bankBoard(b: BoardGame): number | null {
+  if (boardBanked) return null;
+  boardBanked = true;
+  const won = b.phase === 'won';
+  const best = save.boardBest[b.world];
+  const reach = won ? ROUNDS : b.round;
+  if (!best || (won && !best.won) || (!best.won && reach > best.round)) save.boardBest[b.world] = { round: reach, won: won || !!best?.won };
+  const coins = Math.round(boardCoins(b) * (1 + masteries() * 0.05));
+  save.coins += coins;
+  save.runs += 1;
+  save.playTime = (save.playTime || 0) + boardTime;
+  save.stats.kills += b.kills;
+  save.stats.killsByWorld[b.world] = (save.stats.killsByWorld[b.world] ?? 0) + b.kills;
+  let unlocked: number | null = null;
+  if (won && b.world < WORLD_COUNT && save.boardUnlocked < b.world + 1) {
+    save.boardUnlocked = b.world + 1;
+    save.boardWorld = b.world + 1;
+    unlocked = b.world + 1;
+  }
+  persist();
+  return unlocked;
+}
+
+const boardPic = (b: BoardGame, tier: number) => `./images/game/enemies/${b.look}-${TIER_KIND[tier]}-0.webp`;
+const boardTierName = (tier: number) => t(`boardTier${tier}` as Key);
+
+/** The top bar and the shop, rebuilt only when something on them changes. */
+function renderBoardUi() {
+  const b = board;
+  if (!b) return;
+  const prep = b.phase === 'prep';
+  const key = [b.phase, b.round, b.lives, b.gold, onBoard(b).length, b.shop.map((o) => (o ? `${o.tier}${o.price}` : '-')).join(''), b.army.length].join('|');
+  if (key === boardKey) return;
+  boardKey = key;
+  boardTop.innerHTML = `
+    <button class="board-quit" type="button" data-bact="quit" aria-label="${t('menu')}"><span aria-hidden="true">✕</span></button>
+    <span class="board-where">${MODE_ICON.board} ${t('worldShort', { n: b.world })} · ${t('boardRound', { n: b.round, total: ROUNDS })}</span>
+    <span class="board-lives" aria-label="${t('boardLives')}">❤ ${b.lives}</span>
+    <span class="board-gold" aria-label="${t('boardGoldLabel')}">◉ ${b.gold}</span>`;
+  const cards = b.shop.map((o, i) => o
+    ? `<button class="board-card" type="button" data-bact="buy" data-i="${i}"${!prep || b.gold < o.price ? ' disabled' : ''}><img src="${boardPic(b, o.tier)}" alt=""><b>${boardTierName(o.tier)}</b><span>◉ ${o.price}</span></button>`
+    : '<span class="board-card is-sold"></span>').join('');
+  boardShop.innerHTML = prep ? `
+    <small class="board-cap">${t('boardCapLabel')} ${onBoard(b).length}/${boardCap(b.round)} · ${t('boardHint')}</small>
+    <div class="board-cards">${cards}</div>
+    <div class="board-acts">
+      <button class="ghost board-reroll" type="button" data-bact="reroll"${b.gold < 1 ? ' disabled' : ''}>🎲 ${t('boardReroll')} · ◉ 1</button>
+      <button class="primary board-go" type="button" data-bact="fight"${onBoard(b).length ? '' : ' disabled'}>⚔️ ${t('boardFight')}</button>
+    </div>` : `<p class="board-fighting">${t('boardFighting')}</p>`;
+}
+
+boardUi.addEventListener('click', (event) => {
+  const el = (event.target as HTMLElement).closest<HTMLElement>('[data-bact]');
+  const b = board;
+  if (!el || !b) return;
+  audio.unlock();
+  const act = el.dataset.bact;
+  if (act === 'buy') {
+    const offer = b.shop[Number(el.dataset.i)];
+    if (offer && b.gold < offer.price) flash(t('boardNoGold'));
+    else if (!boardBuy(b, Number(el.dataset.i))) flash(t('boardBenchFull'));
+    else audio.play('pick');
+  } else if (act === 'reroll') { if (boardReroll(b)) audio.play('click'); }
+  else if (act === 'fight') {
+    if (startFight(b)) { audio.play('door'); audio.setIntensity(0.7); audio.setBoss(b.wave.some((x) => x >= 3)); }
+    else flash(t('boardEmpty'));
+  } else if (act === 'quit') boardQuitScreen();
+  renderBoardUi();
+});
+
+function boardQuitScreen() {
+  show(`<h2>${t('menu')}</h2><p>${t('boardQuit')}</p>
+    <button class="ghost is-danger" data-act="board-leave">${t('quit')}</button>
+    <button class="primary" data-act="board-stay">${t('cancel')}</button>`);
+}
+
+/** After each fight: the round's result, or the end of the run. */
+function boardResultScreen(b: BoardGame) {
+  const last = b.last;
+  if (!last) return;
+  if (b.phase === 'over' || b.phase === 'won') {
+    const won = b.phase === 'won';
+    const unlocked = bankBoard(b);
+    const coins = Math.round(boardCoins(b) * (1 + masteries() * 0.05));
+    audio.play(won ? 'win' : 'over');
+    audio.setBoss(false);
+    show(`${head(won ? 'victory' : 'defeat', t(won ? 'boardWon' : 'boardOver'))}
+      <p>${t('boardReached', { n: won ? ROUNDS : b.round, total: ROUNDS })}</p>
+      <p class="reward">+${coins} 🪙</p>
+      ${unlocked ? notice(save.retro ? WORLD_ICON[unlocked - 1] : `<img class="scene-pic" src="./images/game/map/pv-${ISLAND_ART[unlocked - 1]}.jpg" alt="">`, t('unlockedWorld', { n: unlocked }), worldName(unlocked)) : ''}
+      ${unlocked ? `<button class="primary is-go" data-act="play-next" data-next="${unlocked}">▶ ${t('nextWorld')}</button>` : `<button class="primary" data-act="board-again">${t('again')}</button>`}
+      <button class="ghost" data-act="map">${t('map')}</button>
+      <button class="ghost" data-act="menu">← ${t('menu')}</button>`);
+    return;
+  }
+  audio.setBoss(false);
+  audio.setIntensity(0.3);
+  const win = last.result === 'win';
+  show(`${head(win ? 'victory' : 'defeat', t(win ? 'boardWin' : last.result === 'draw' ? 'boardDraw' : 'boardLoss'))}
+    ${last.lost ? `<p>${t('boardLost', { n: last.lost })}</p>` : ''}
+    <p class="how">${t('boardGold', { n: 5 + (win ? 2 : 0) })}</p>
+    <button class="primary" data-act="board-next">▶ ${t('boardNext')}</button>`);
+}
+
+/** One frame of the board: the fight's step, its sounds, the result once it ends, and the picture. */
+function boardStep(dt: number, now: number) {
+  const b = board;
+  if (!b) return;
+  if (b.phase === 'fight' && !paused) {
+    boardTime += dt;
+    updateBoard(b, dt);
+    let hit = false;
+    for (const e of b.events) {
+      if ((e === 'bite' || e === 'slam') && !hit) { hit = true; audio.play(e === 'slam' ? 'slam' : 'hit'); }
+      if (e === 'kill') audio.play('kill');
+      if (e === 'throw') audio.play('shoot');
+      if (e === 'ring') audio.play('boom');
+    }
+  } else boardTime += b.phase === 'prep' ? dt : 0;
+  const shown = `${b.phase}${b.round}${b.lives}`;
+  if ((b.phase === 'result' || b.phase === 'over' || b.phase === 'won') && boardShown !== shown) {
+    boardShown = shown;
+    window.setTimeout(() => { if (board === b) boardResultScreen(b); }, 700);
+  }
+  renderBoardUi();
+  // The board between the top bar and the shop.
+  const rect = canvas.getBoundingClientRect();
+  const top = boardTop.getBoundingClientRect().bottom - rect.top + 6;
+  const bottom = boardShop.getBoundingClientRect().top - rect.top - 6;
+  boardLay = layoutBoard(canvas.clientWidth, top, bottom);
+  ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
+  ctx.fillStyle = '#0b0820';
+  ctx.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+  drawBoard(ctx, b, boardLay, now / 1000, boardDrag, save.retro, view.dpr);
+}
+
+/* Dragging units about while you prepare: onto a cell to move it, onto one of its kind to merge them, onto the
+   shop to sell it; a tap sends a bench unit to the board (or a board unit back to the bench). */
+function boardPointerDown(event: PointerEvent) {
+  const b = board;
+  if (!b || b.phase !== 'prep') return;
+  const rect = canvas.getBoundingClientRect();
+  const x = event.clientX - rect.left;
+  const y = event.clientY - rect.top;
+  const slot = slotAt(boardLay, x, y);
+  const piece = slot ? pieceAt(b, slot) : undefined;
+  if (!piece) return;
+  boardDown = { x, y, id: event.pointerId };
+  boardDrag = { piece, x, y, over: slot };
+  canvas.setPointerCapture(event.pointerId);
+}
+function boardPointerMove(event: PointerEvent) {
+  if (!boardDrag || !boardDown || event.pointerId !== boardDown.id) return;
+  const rect = canvas.getBoundingClientRect();
+  boardDrag.x = event.clientX - rect.left;
+  boardDrag.y = event.clientY - rect.top;
+  boardDrag.over = slotAt(boardLay, boardDrag.x, boardDrag.y);
+}
+function boardPointerUp(event: PointerEvent) {
+  const b = board;
+  const drag = boardDrag;
+  const down = boardDown;
+  boardDrag = null;
+  boardDown = null;
+  if (!b || !drag || !down || event.pointerId !== down.id) return;
+  const moved = Math.hypot(drag.x - down.x, drag.y - down.y) > 10;
+  const from = drag.piece.slot;
+  if (!moved) {
+    // A tap: from the bench to the first free cell of your half, or back to the bench.
+    if (from.where === 'bench') {
+      if (onBoard(b).length >= boardCap(b.round)) { flash(t('boardFull')); return; }
+      for (let r = 4; r < 8; r++) for (let c = 0; c < 6; c++) if (!pieceAt(b, { where: 'board', c, r })) { moveUnit(b, from, { where: 'board', c, r }); audio.play('click'); renderBoardUi(); return; }
+    } else {
+      for (let i = 0; i < 6; i++) if (!pieceAt(b, { where: 'bench', i })) { moveUnit(b, from, { where: 'bench', i }); audio.play('click'); renderBoardUi(); return; }
+    }
+    return;
+  }
+  // Dropped on the shop: sold.
+  const shop = boardShop.getBoundingClientRect();
+  if (event.clientY >= shop.top) { if (boardSell(b, from)) audio.play('coin'); renderBoardUi(); return; }
+  if (!drag.over) return;
+  const done = moveUnit(b, from, drag.over);
+  if (done === 'merged') { audio.play('levelup'); flash(t('boardMerged', { name: boardTierName(pieceAt(b, drag.over)?.tier ?? 0) })); }
+  else if (done === 'none' && drag.over.where === 'board' && from.where === 'bench' && onBoard(b).length >= boardCap(b.round)) flash(t('boardFull'));
+  else if (done !== 'none') audio.play('click');
+  renderBoardUi();
 }
 
 screen.addEventListener('click', (event) => {
@@ -1556,11 +1807,15 @@ screen.addEventListener('click', (event) => {
     if (game) startShowcase(game);
     flash(t('showcaseStart'));
   }
+  else if (act === 'board-next' && board) { nextRound(board); hide(); renderBoardUi(); }
+  else if (act === 'board-again' && board) startBoard(board.world);
+  else if (act === 'board-stay') hide();
+  else if (act === 'board-leave' && board) { bankBoard(board); menuScreen(); }
   else if (act === 'secret') secretScreen();
   else if (act === 'play-secret') startRun(SECRET_WORLD, 'horde', false, 0, true);
   else if (act === 'play-nightmare') startRun(NIGHTMARE_WORLD, 'horde', true);
-  else if (act === 'mode') { save.mode = save.mode === 'horde' ? 'sprints' : 'horde'; persist(); menuScreen(); }
-  else if (target.dataset.mode) { save.mode = target.dataset.mode as Mode; mapPick = worldIn(); mapPlayIdx = 0; persist(); mapScreen(); }
+  else if (act === 'mode') { save.mode = MODES[(MODES.indexOf(save.mode) + 1) % MODES.length]; persist(); menuScreen(); }
+  else if (target.dataset.mode) { save.mode = target.dataset.mode as PlayMode; mapPick = worldIn(); mapPlayIdx = 0; persist(); mapScreen(); }
   else if (act === 'map') { mapPick = worldIn(); mapScreen(); }
   else if (act === 'play-prev' || act === 'play-next-opt') { mapPlayIdx += act === 'play-prev' ? -1 : 1; mapPlayStep(); }
   else if (act === 'play-picked') { setWorld(mapPick); persist(); startRun(mapPick); }
@@ -2101,6 +2356,7 @@ stickRingImage.src = './images/game/ui/stick_ring.webp';
 const stickKnobImage = new Image();
 stickKnobImage.src = './images/game/ui/stick_knob.webp';
 canvas.addEventListener('pointerdown', (event) => {
+  if (board) { boardPointerDown(event); return; }
   if (stick.on) return;
   stick.on = true;
   stick.id = event.pointerId;
@@ -2109,11 +2365,13 @@ canvas.addEventListener('pointerdown', (event) => {
   canvas.setPointerCapture(event.pointerId);
 });
 canvas.addEventListener('pointermove', (event) => {
+  if (board) { boardPointerMove(event); return; }
   if (!stick.on || event.pointerId !== stick.id) return;
   stick.x = event.clientX;
   stick.y = event.clientY;
 });
 const release = (event: PointerEvent) => {
+  if (board) { boardPointerUp(event); return; }
   if (event.pointerId !== stick.id) return;
   stick.on = false;
   stick.id = -1;
@@ -2211,6 +2469,7 @@ function step(now: number) {
   const dt = Math.min(0.033, (now - last) / 1000);
   last = now;
   fitIfMoved();
+  if (board) { boardStep(dt, now); return; }
   const g = game;
   // Once the run is over its sparks and effects still play out and fade.
   if (g && (g.phase === 'over' || g.phase === 'won')) settleEffects(g, dt);
@@ -2372,6 +2631,7 @@ function step(now: number) {
 // a long run to reach (the statue, the wheel) can be checked by a script.
 if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) {
   Object.defineProperty(window, 'bugHunter', { get: () => game });
+  Object.defineProperty(window, 'bugHunterBoard', { get: () => board });
 }
 
 /* --------------------------------------------------------------- loading */
