@@ -463,7 +463,7 @@ function menuScreen() {
       <a class="hot cover-x" href="./index.html" aria-label="${t('back')}"></a>
       <button class="hot cover-more" data-act="options" aria-label="${t('options')}"></button>
       <div class="cover-in">
-      <button class="hot cover-gear" data-act="options" aria-label="${t('options')}"></button>
+      <button class="cover-book${save.bookSeen ? '' : ' is-first'}" type="button" data-act="book" aria-label="${t('bookOpen')}"><img src="./images/game/items/seniorTome.webp" alt=""></button>
       <button class="hot cover-profile" data-act="profile" aria-label="${t('profile')}: ${esc(save.name)} · ${t('lvShort', { level })}"></button>
       <span class="cover-avatar" aria-hidden="true"><img src="${heroPic()}" alt=""></span>
       <span class="cover-profile-copy"><small>${esc(save.name)}${masteries() ? ` ${stars()}` : ''}</small><b>${t('lvShort', { level })}</b><i><b style="width:${Math.round(progress * 100)}%"></b></i></span>
@@ -473,9 +473,12 @@ function menuScreen() {
       <span class="cover-num is-worlds">${unlockedIn()}/${WORLD_COUNT}</span>
       <p class="cover-tagline">${t('landingTagline')}</p>
       <button class="cover-chest${dailyReady(save) ? ' is-ready' : ''}" type="button" data-act="daily" aria-label="${t('dailyTitle')}"><img src="./images/game/fx/chest.webp" width="165" height="140" alt=""><i${dailyReady(save) ? '>' + t('dailyReady') : ` data-daily-clock>${dailyClock()}`}</i></button>
-      <button class="hot cover-play" data-act="play" aria-label="${t('playNow')} · ${worldName(worldIn())}"></button>
-      <span class="cover-play-copy"><b>${t('playNow')}</b><small>${WORLD_ICON[worldIn() - 1]} ${worldName(worldIn())}</small></span>
-      <button class="cover-mode" type="button" data-act="mode" aria-label="${t('modePick')}: ${modeName()}">${MODES.map((m) => `<span class="${save.mode === m ? 'is-on' : ''}">${MODE_ICON[m]} ${modeName(m)}</span>`).join('')}</button>
+      <span class="cover-play-tint is-${save.mode}" aria-hidden="true"></span>
+      <button class="hot cover-play" data-act="play" aria-label="${t('playNow')} · ${modeName()} · ${worldName(worldIn())}"></button>
+      <span class="cover-play-copy is-${save.mode}"><b>${MODE_ICON[save.mode]} ${modeName()}</b><small>${t('playNow')} · ${WORLD_ICON[worldIn() - 1]} ${worldName(worldIn())}</small></span>
+      <button class="cover-arrow is-prev" type="button" data-act="mode-prev" aria-label="${t('modeSwipe')}"></button>
+      <button class="cover-arrow is-next" type="button" data-act="mode-next" aria-label="${t('modeSwipe')}"></button>
+      <span class="cover-dots" aria-hidden="true">${MODES.map((m) => `<i class="is-${m}${save.mode === m ? ' is-on' : ''}"></i>`).join('')}</span>
       <button class="hot cover-card is-map" data-act="map" aria-label="${t('map')}"></button>
       ${copy('is-map', t('map'), `🌍 ${unlockedIn()} / ${WORLD_COUNT}`)}
       <button class="hot cover-card is-shop" data-act="shop" aria-label="${t('shop')}"></button>
@@ -485,8 +488,10 @@ function menuScreen() {
       <button class="hot cover-card is-options" data-act="options" aria-label="${t('options')}"></button>
       ${copy('is-options', t('options'), '')}
       <p class="cover-best">${bestLine()}</p>
+      ${save.bookSeen ? '' : `<p class="cover-dim-note" aria-live="polite"><b>${t('introTitle')}</b><span>${t('introText')}</span></p><i class="cover-dim-arrow" aria-hidden="true"></i>`}
     </div>
-    <small class="cover-version">Bug Hunter v${GAME_VERSION} · ${GAME_BUILD.built.split('-').reverse().join('/')} · ${GAME_BUILD.commit}</small></div>`, false, true);
+    <small class="cover-version">Bug Hunter v${GAME_VERSION} · ${GAME_BUILD.built.split('-').reverse().join('/')} · ${GAME_BUILD.commit}</small>
+    ${save.bookSeen ? '' : '<div class="cover-dim" aria-hidden="true"></div>'}</div>`, false, true);
   announceAchievements();
 }
 
@@ -1176,6 +1181,30 @@ function optionsScreen() {
     ${backButton(optionsFrom === 'pause' ? 'pause' : 'menu', optionsFrom === 'pause' ? 'resume' : 'menu')}`);
 }
 
+/* The guide: the book on the cover, which replaced the painted gear (Options has its own card). Its first page
+   picks the way to play, three bars in the modes' colours (green sprints, blue on call, red board); the next pages
+   say how each one plays and how to get stronger. The first visit dims the cover round the book until it is opened
+   (`save.bookSeen`). */
+let bookPage = 0;
+const BOOK = ['modes', 'sprints', 'horde', 'board', 'grow'] as const;
+function bookScreen() {
+  bookPage = Math.max(0, Math.min(BOOK.length - 1, bookPage));
+  const page = BOOK[bookPage];
+  const title = { modes: 'bookModesTitle', sprints: 'bookSprintsTitle', horde: 'bookHordeTitle', board: 'bookBoardTitle', grow: 'bookGrowTitle' }[page] as Key;
+  const text = { modes: 'bookModesText', sprints: 'bookSprintsText', horde: 'bookHordeText', board: 'bookBoardText', grow: 'bookGrowText' }[page] as Key;
+  const modes = page === 'modes'
+    ? `<div class="book-modes">${MODES.map((m) => `<button class="primary book-mode is-${m}${save.mode === m ? ' is-on' : ''}" type="button" data-book-mode="${m}" aria-pressed="${save.mode === m}"><b>${MODE_ICON[m]} ${modeName(m)}${save.mode === m ? ' ✓' : ''}</b><small>${t(m === 'board' ? 'bookModeBoard' : m === 'horde' ? 'bookModeHorde' : 'bookModeSprints')}</small></button>`).join('')}</div>`
+    : '';
+  const last = bookPage === BOOK.length - 1;
+  show(`<button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
+    <h2>📖 ${t(title)}</h2>
+    <p class="book-text">${t(text)}</p>
+    ${modes}
+    <small class="book-page">${t('bookPage', { n: bookPage + 1, total: BOOK.length })}</small>
+    ${last ? `<button class="primary" data-act="menu">${t('bookDone')}</button>` : `<button class="primary" data-act="book-next">${t('bookNext')} →</button>`}
+    ${bookPage ? `<button class="ghost" data-act="book-prev">← ${t('bookPrev')}</button>` : ''}`);
+}
+
 /** Which shop sections are unfolded (kept while the shop re-renders after a purchase). */
 const shopOpen = new Set<string>();
 /** A foldable shop section: one of the owner's ring-and-plate rows (orange while open) with its icon and a count, and its cards only when open. */
@@ -1562,16 +1591,29 @@ function mapPlayStep() {
 // A swipe across the map's play button turns it too (and the tap it ends in does not play).
 let swipeX: number | null = null;
 let swiped = false;
-screen.addEventListener('pointerdown', (e) => { swipeX = (e.target as HTMLElement).closest('.play-pick.has-more') ? e.clientX : null; swiped = false; });
+let swipeCover = false;
+screen.addEventListener('pointerdown', (e) => {
+  const el = e.target as HTMLElement;
+  swipeCover = !!el.closest('.cover-play, .cover-arrow');
+  swipeX = swipeCover || el.closest('.play-pick.has-more') ? e.clientX : null;
+  swiped = false;
+});
 screen.addEventListener('pointerup', (e) => {
   if (swipeX === null) return;
   const dx = e.clientX - swipeX;
   swipeX = null;
   if (Math.abs(dx) < 40) return;
   swiped = true;
+  if (swipeCover) { stepMode(dx < 0 ? 1 : -1); return; }
   mapPlayIdx += dx < 0 ? 1 : -1;
   mapPlayStep();
 });
+/** The cover's play bar turns to the next or the last way to play (its arrows, or a swipe across it). */
+function stepMode(by: number) {
+  save.mode = MODES[(MODES.indexOf(save.mode) + by + MODES.length) % MODES.length];
+  persist();
+  menuScreen();
+}
 function startRun(world = worldIn(), mode: PlayMode = save.mode, endless = false, rush = 0, secret = false, rushFrom = 1) {
   if (mode === 'board') { startBoard(world); return; }
   game = newGame({ ...buildLoadout(save.equipped, save.upgrades, masteries(), save.arsenal, save.itemLevels, save.extra), sprintMastery: masteries() }, save.style, world, mode, endless, rush, secret, rushFrom);
@@ -1866,7 +1908,10 @@ screen.addEventListener('click', (event) => {
   else if (act === 'secret') secretScreen();
   else if (act === 'play-secret') startRun(SECRET_WORLD, 'horde', false, 0, true);
   else if (act === 'play-nightmare') startRun(NIGHTMARE_WORLD, 'horde', true);
-  else if (act === 'mode') { save.mode = MODES[(MODES.indexOf(save.mode) + 1) % MODES.length]; persist(); menuScreen(); }
+  else if (act === 'mode-prev' || act === 'mode-next') stepMode(act === 'mode-prev' ? -1 : 1);
+  else if (act === 'book') { bookPage = 0; if (!save.bookSeen) { save.bookSeen = true; persist(); } bookScreen(); }
+  else if (act === 'book-prev' || act === 'book-next') { bookPage += act === 'book-prev' ? -1 : 1; bookScreen(); }
+  else if (target.dataset.bookMode) { save.mode = target.dataset.bookMode as PlayMode; persist(); bookScreen(); }
   else if (target.dataset.mode) { save.mode = target.dataset.mode as PlayMode; mapPick = worldIn(); mapPlayIdx = 0; persist(); mapScreen(); }
   else if (act === 'map') { mapPick = worldIn(); mapScreen(); }
   else if (act === 'play-prev' || act === 'play-next-opt') { mapPlayIdx += act === 'play-prev' ? -1 : 1; mapPlayStep(); }
