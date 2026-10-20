@@ -51,7 +51,7 @@ export const ACHIEVEMENTS: Ach[] = [
   { id: 'scrooge', pic: 'ui/wheel/coins.webp', icon: '💰', value: (s) => Math.floor(s.coins), goals: [5000, 20000, 50000] },
   { id: 'legend', pic: 'skills/headshot.webp', icon: '🏆', value: (s) => s.stats.kills, goals: [1000, 10000, 50000] },
   { id: 'veteran', pic: 'items/hourglass.webp', icon: '⏱️', value: (s) => Math.floor((s.playTime || 0) / 3600), goals: [1, 5, 20] },
-  { id: 'master', pic: 'ui/mastery.webp', icon: '⭐', value: (s) => s.mastery.sprints + s.mastery.horde, goals: [1, 2, 3] },
+  { id: 'master', pic: 'ui/mastery.webp', icon: '⭐', value: (s) => s.masteries, goals: [1, 2, 3] },
   { id: 'reborn', pic: 'items/phoenix.webp', icon: '🔥', value: (s) => yes(s.owned.includes('phoenix') && itemLevel(s.itemLevels, 'phoenix') >= 3), goals: [1] },
 ];
 

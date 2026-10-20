@@ -53,7 +53,7 @@ export type Save = {
   /** Coin-store purchases made (pack and offer ids, `store.ts`); an offer can be bought once. */
   purchases: string[];
   equipped: Partial<Record<Slot, ItemId>>;
-  /** The extra charm: bought once, it holds one more item of any kind besides the six slots (wiped by a reset or a mastery). */
+  /** The extra charm: bought once, it holds one more item of any kind besides the six slots (the slot stays through a reset or a mastery; what it holds goes with the items). */
   extraSlot: boolean;
   extra?: ItemId;
   /** The forge: permanent upgrade levels. */
@@ -81,8 +81,9 @@ export type Save = {
   /** On call keeps its own world progress: worlds you may enter there, and the one picked. */
   hordeUnlocked: number;
   hordeWorld: number;
-  /** Masteries earned per mode (clear all the worlds, then reset for a small permanent boost). */
-  mastery: { sprints: number; horde: number };
+  /** Masteries earned: one each time every world of both modes is cleared and the progress reset, for a small
+      permanent boost. (Older saves kept one count per mode, `mastery`; `loadSave()` adds them up.) */
+  masteries: number;
   /** The colour of the mastery stars by the player's name. */
   starColor: StarColor;
   /** Best on-call shift per world: how long you held out, bugs squashed, whether the last boss fell. */
@@ -145,7 +146,7 @@ const fresh = (): Save => ({
   mode: 'sprints',
   hordeUnlocked: 1,
   hordeWorld: 1,
-  mastery: { sprints: 0, horde: 0 },
+  masteries: 0,
   starColor: 'gold',
   hordeBest: {},
   nightmareBest: null,
@@ -185,7 +186,10 @@ export function loadSave(): Save {
     }
     save.hordeUnlocked = Math.min(Math.max(1, save.hordeUnlocked || 1), WORLD_COUNT);
     save.hordeWorld = Math.min(Math.max(1, save.hordeWorld || 1), save.hordeUnlocked);
-    save.mastery = { sprints: Math.max(0, data.mastery?.sprints ?? 0), horde: Math.max(0, data.mastery?.horde ?? 0) };
+    // The masteries were one per mode; now there is one, for clearing both: what an older save earned counts.
+    const old = (data as { mastery?: { sprints?: number; horde?: number } }).mastery;
+    delete (save as { mastery?: unknown }).mastery;
+    save.masteries = Math.max(0, Math.floor(Number(data.masteries ?? (old?.sprints ?? 0) + (old?.horde ?? 0)) || 0));
     if (!(save.starColor in STAR_COLORS)) save.starColor = 'gold';
     // The first daily chest counted calendar days: one opened on a day is ready again at the next midnight.
     const oldDay = (data as { dailyDay?: string }).dailyDay;
@@ -257,10 +261,12 @@ export function profileLevel(xp: number) {
 /** A world won in either mode: a sprint run cleared or an on-call shift completed. */
 export const worldWon = (save: Save, n: number) => save.bestByWorld[n]?.time !== undefined || !!save.hordeBest[n]?.won;
 
-/** Back to a fresh start: progress, coins, gear and level go; name, skins bought, settings, masteries, star colour, the lifetime totals and the achievements stay. */
+/** Back to a fresh start: progress, coins, gear and level go; name, skins bought, settings, masteries, star colour, the lifetime totals, the achievements and the extra charm's slot (empty: what it held goes with the items) stay. */
 export function wipeProgress(save: Save) {
-  const keep = { name: save.name, skin: save.skin, skins: [...save.skins], retro: save.retro, style: save.style, scene: save.scene, song: save.song, music: save.music, sfx: save.sfx, mode: save.mode, mastery: { ...save.mastery }, starColor: save.starColor, playTime: save.playTime, dailyAt: save.dailyAt, purchases: [...save.purchases], stats: save.stats, achieved: save.achieved, achNew: save.achNew };
+  const keep = { name: save.name, skin: save.skin, skins: [...save.skins], retro: save.retro, style: save.style, scene: save.scene, song: save.song, music: save.music, sfx: save.sfx, mode: save.mode, masteries: save.masteries, extraSlot: save.extraSlot, starColor: save.starColor, playTime: save.playTime, dailyAt: save.dailyAt, purchases: [...save.purchases], stats: save.stats, achieved: save.achieved, achNew: save.achNew };
   Object.assign(save, fresh(), keep);
+  // `fresh()` has no `extra`, so the item the charm held would stay worn without being owned.
+  delete save.extra;
 }
 
 export function writeSave(save: Save) {

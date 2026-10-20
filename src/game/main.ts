@@ -541,7 +541,9 @@ const esc = (s: string) => s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`)
    mastery. Taking it wipes the progress (`wipeProgress`) for a small
    permanent boost (`MASTERY_STEP`, folded in by `buildLoadout`) and a star by
    the name, whose colour the profile picks. */
-const masteries = () => save.mastery.sprints + save.mastery.horde;
+const masteries = () => save.masteries;
+/** The mastery is offered once every world of both modes is cleared. */
+const masteryReady = () => worldsLeft('sprints') === 0 && worldsLeft('horde') === 0;
 const clearedIn = (mode: Mode) =>
   Array.from({ length: WORLD_COUNT }, (_, i) => i + 1).filter((w) => (mode === 'horde' ? save.hordeBest[w]?.won : save.bestByWorld[w]?.time !== undefined)).length;
 const worldsLeft = (mode: Mode) => WORLD_COUNT - clearedIn(mode);
@@ -553,7 +555,6 @@ const crest = '<img class="mcrest" src="./images/game/ui/mastery.webp" alt="">';
 const crests = () => (!masteries() ? '' : save.retro ? stars()
   : `<span class="mcrests" aria-label="${t('profileStars')}: ${masteries()}">${masteries() <= 3 ? crest.repeat(masteries()) : `${crest}<small>×${masteries()}</small>`}</span>`);
 const stars = () => (masteries() ? `<span class="mstars" style="--star:${starColor()}" aria-label="${t('profileStars')}: ${masteries()}">${'★'.repeat(Math.min(masteries(), 5))}${masteries() > 5 ? `×${masteries()}` : ''}</span>` : '');
-const modeShort = (mode: Mode) => t(mode === 'horde' ? 'modeHordeShort' : 'modeSprintsShort');
 function resetScreen() {
   show(`<h2>${t('resetTitle')}</h2>
     <p class="note">${t('resetLeft', { sprints: worldsLeft('sprints'), horde: worldsLeft('horde') })}</p>
@@ -561,11 +562,11 @@ function resetScreen() {
     <button class="ghost is-danger" data-act="reset-do">${t('resetDo')}</button>
     <button class="primary" data-act="profile">${t('cancel')}</button>`);
 }
-function masteryScreen(mode: Mode) {
-  show(`<h2>★ ${t('masteryTitle', { mode: modeShort(mode) })}</h2>
+function masteryScreen() {
+  show(`<h2>★ ${t('masteryTitle')}</h2>
     <p>${t('masteryText')}</p>
     <p class="how">${t('masteryHave', { n: masteries() })}</p>
-    <button class="primary" data-act="mastery-do" data-mode-m="${mode}">${t('masteryDo')}</button>
+    <button class="primary" data-act="mastery-do">${t('masteryDo')}</button>
     <button class="ghost" data-act="map">${t('cancel')}</button>`);
 }
 
@@ -610,7 +611,7 @@ function profileScreen(note = '') {
     <button class="primary ach-open" data-act="achievements">🏆 ${t('achTitle')} · ${achEarned(save)}/${achTotal()}</button>
     <h3 class="slot">${t('profileStars')}</h3>
     ${masteries()
-      ? `<p class="mastery-line">${save.retro ? `<span style="color:${starColor()}">★</span>` : crest} ${modeShort('sprints')} ${save.mastery.sprints} · ${modeShort('horde')} ${save.mastery.horde}</p>`
+      ? `<p class="mastery-line">${save.retro ? `<span style="color:${starColor()}">★</span>` : crest} ${t('masteryHave', { n: masteries() })}</p>`
       : `<p class="how">${t('masteryNone')}</p>`}
     <button class="ghost is-danger" data-act="reset-ask">${t('resetBtn')}</button>
     ${backButton('menu')}`, false, false, 'keep-scroll');
@@ -730,7 +731,7 @@ function secretScreen() {
 
 function mapScreen() {
   // (with a sprints mastery any island can be picked in sprints, to look at its bosses)
-  if (!mapPick || (mapPick > unlockedIn() + 1 && !(save.mode === 'sprints' && save.mastery.sprints > 0))) mapPick = worldIn();
+  if (!mapPick || (mapPick > unlockedIn() + 1 && !(save.mode === 'sprints' && masteries() > 0))) mapPick = worldIn();
   const picked = mapPick;
   const pickedOpen = picked <= unlockedIn();
   const islandW = 0.45 * MAP_W;
@@ -793,8 +794,8 @@ function mapScreen() {
   const status = pickedOpen
     ? `<small class="map-record">▮▮▮ ${bestLine(picked) || t('bestNone')}</small>`
     : `<small class="map-locked">🔒 ${t('lockedUntil', { n: picked - 1 })}</small>`;
-  const mastery = worldsLeft(save.mode) === 0
-    ? `<button class="primary mastery-btn" data-act="mastery-ask">${t('masteryBtn', { mode: modeShort(save.mode) })}</button>`
+  const mastery = masteryReady()
+    ? `<button class="primary mastery-btn" data-act="mastery-ask">${t('masteryBtn')}</button>`
     : '';
   // One play button under the card; its arrows (or a swipe) turn it to the mode's other runs: in sprints the
   // Boss Rush and the showcase once world 1 is won there, on call Nightmare (locked until world 9 is open there).
@@ -803,7 +804,7 @@ function mapScreen() {
     : { act: '', label: t('lockedBtn'), cls: 'is-locked', locked: true }];
   if (save.mode === 'sprints' && save.unlocked >= 2) opts.push({ act: 'play-rush', label: `${RUSH_ICON} ${t('rush')}`, cls: 'is-rush' });
   // The showcase shows the picked world's own two bosses: only an open world's, or any world's once a sprints mastery is taken.
-  if (save.mode === 'sprints' && (pickedOpen || save.mastery.sprints > 0)) opts.push({ act: 'play-showcase', label: `👁 ${t('showcaseShort')}`, cls: 'is-showcase' });
+  if (save.mode === 'sprints' && (pickedOpen || masteries() > 0)) opts.push({ act: 'play-showcase', label: `👁 ${t('showcaseShort')}`, cls: 'is-showcase' });
   if (save.mode === 'horde') opts.push(save.hordeUnlocked >= NIGHTMARE_WORLD
     ? { act: 'play-nightmare', label: `${NIGHTMARE_ICON} ${t('nightmare')} ∞`, cls: 'is-nightmare' }
     : { act: '', label: `🔒 ${t('nightmare')} ∞`, cls: 'is-nightmare is-dim', locked: true });
@@ -1514,7 +1515,7 @@ screen.addEventListener('pointerup', (e) => {
   mapPlayStep();
 });
 function startRun(world = worldIn(), mode = save.mode, endless = false, rush = 0, secret = false, rushFrom = 1) {
-  game = newGame({ ...buildLoadout(save.equipped, save.upgrades, masteries(), save.arsenal, save.itemLevels, save.extra), sprintMastery: save.mastery.sprints }, save.style, world, mode, endless, rush, secret, rushFrom);
+  game = newGame({ ...buildLoadout(save.equipped, save.upgrades, masteries(), save.arsenal, save.itemLevels, save.extra), sprintMastery: masteries() }, save.style, world, mode, endless, rush, secret, rushFrom);
   // Boss Rush: every boss in its own world's floor and song (whatever Customise picked); the secret shift, the jungle's.
   game.scene = rush || secret ? 0 : save.scene;
   audio.setSong(rush ? 'worlds' : save.song);
@@ -1674,11 +1675,10 @@ screen.addEventListener('click', (event) => {
   else if (act === 'achievements') achievementsScreen();
   else if (act === 'reset-ask') resetScreen();
   else if (act === 'reset-do') { wipeProgress(save); persist(); dressPalette(); mapPick = 0; profileScreen(t('resetDone')); }
-  else if (act === 'mastery-ask') masteryScreen(save.mode);
+  else if (act === 'mastery-ask') masteryScreen();
   else if (act === 'mastery-do') {
-    const mode = (target.dataset.modeM as Mode) ?? save.mode;
-    if (worldsLeft(mode) === 0) {
-      save.mastery[mode] += 1;
+    if (masteryReady()) {
+      save.masteries += 1;
       wipeProgress(save);
       persist();
       dressPalette();
