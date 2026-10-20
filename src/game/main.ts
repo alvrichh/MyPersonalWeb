@@ -475,7 +475,8 @@ const ROMAN = ['I', 'II', 'III', 'IV', 'V'];
 /** An achievement's name, with its tier (I, II, III) when it has more than one. */
 const achName = (a: Ach, tier: number) => `${t(achKey(a.id))}${a.goals.length > 1 ? ` ${ROMAN[tier - 1]}` : ''}`;
 /** Its medal: the game's own picture in a ring of the tier's metal (the emoji in retro). */
-const metal = (a: Ach, tier: number) => (a.goals.length === 1 ? 3 : tier); // a plain one is gold
+// A plain one is gold, and so is the last tier of one with two.
+const metal = (a: Ach, tier: number) => (a.goals.length === 1 || tier === a.goals.length ? 3 : tier);
 const achMedal = (a: Ach, tier: number) =>
   `<span class="ach-ic is-t${metal(a, tier)}" aria-hidden="true"><img src="./images/game/${a.pic}" alt=""${a.pic.endsWith('.jpg') ? ' class="is-cover"' : ''}${a.zoom ? ` style="scale:${a.zoom}"` : ''}><i>${a.icon}</i></span>`;
 const fmtN = (n: number) => n.toLocaleString(lang === 'es' ? 'es-ES' : 'en-GB');
@@ -529,7 +530,7 @@ function achievementsScreen() {
     <h2>🏆 ${t('achTitle')}</h2>
     <p class="how">${t('achCount', { n: achEarned(save), total: achTotal() })}</p>
     <ul class="achs">${rows}</ul>
-    ${backButton('profile', 'profile')}`, false, false, 'keep-scroll');
+    ${backButton('profile', 'profile')}`);
 }
 
 const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
