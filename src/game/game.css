@@ -3168,6 +3168,8 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
     background: url('/images/game/cover-wide-ext.jpg') center / auto calc(var(--ch) * 1121 / 941) no-repeat;
     box-shadow: none;
   }
+  /* The version and build in the lower left corner of the window, out of the cards' way. */
+  .cover > .cover-version { left: max(14px, env(safe-area-inset-left)); right: auto; bottom: 10px; text-align: left; }
   .cover-in {
     position: absolute;
     left: calc(50% - var(--ch) * 1672 / 941 / 2);
