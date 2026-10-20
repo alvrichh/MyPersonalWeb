@@ -4,7 +4,7 @@ import { boardFloor, boardFx, drawBoardFigure } from './draw';
 /* Drawing the board mode on the game's canvas: the world's floor under a grid, your bugs on the lower half and the
    round's enemy on the upper (faint while you prepare), each with its cast's own pictures, and the two commanders
    in the board's own corner cells (left free for them): your hero, from the worn skin's poses, on Customise's
-   portal at the lower right, and the world's final boss on a red halo at the upper left, their names and health
+   portal at the lower right, and the world's final boss on the same portal turned red at the upper left, their names and health
    in thin strips above and below the board, with the fireball one throws at the other
    when a fight ends. */
 
@@ -35,7 +35,7 @@ export function slotAt(lay: BoardLayout, px: number, py: number): Slot | null {
 
 export type BoardDrag = { piece: Piece; x: number; y: number; over: Slot | null };
 /** Your commander's pictures: the worn skin and headwear's poses, and the portal it stands on. */
-export type HeroPics = { front: HTMLImageElement; shoot: HTMLImageElement; hurt: HTMLImageElement; cheer: HTMLImageElement; down: HTMLImageElement; pad: HTMLImageElement };
+export type HeroPics = { front: HTMLImageElement; shoot: HTMLImageElement; hurt: HTMLImageElement; cheer: HTMLImageElement; down: HTMLImageElement; pad: HTMLImageElement; padRed: HTMLImageElement };
 
 const figureOf = (tier: Tier, cast: number, face: number, step: number, swing: number, hit: number) => ({
   look: castLook(cast),
@@ -108,27 +108,22 @@ function drawHero(ctx: CanvasRenderingContext2D, pics: HeroPics, pose: HTMLImage
   ctx.restore();
 }
 
-function drawRival(ctx: CanvasRenderingContext2D, world: number, now: number, hit: number, gone: number) {
+function drawRival(ctx: CanvasRenderingContext2D, pad: HTMLImageElement, world: number, now: number, hit: number, gone: number) {
   const { x, y } = RIVAL;
-  // A red halo on the floor and its light rising.
   ctx.save();
   ctx.translate(x, y);
-  const rise = ctx.createLinearGradient(0, 0, 0, -60);
-  rise.addColorStop(0, 'rgba(248,113,113,0.35)');
-  rise.addColorStop(1, 'rgba(248,113,113,0)');
-  ctx.fillStyle = rise;
-  ctx.fillRect(-22, -56, 44, 56);
-  const pulse = 0.75 + Math.sin(now * 3) * 0.15;
-  ctx.shadowColor = '#ef4444';
-  ctx.shadowBlur = 14;
-  ctx.strokeStyle = `rgba(248,113,113,${pulse})`;
-  ctx.lineWidth = 2.5;
-  ctx.beginPath();
-  ctx.ellipse(0, 0, 26, 8, 0, 0, Math.PI * 2);
-  ctx.stroke();
-  ctx.shadowBlur = 0;
-  ctx.fillStyle = 'rgba(127,29,29,0.45)';
-  ctx.fill();
+  // Customise's portal turned red under its feet (its ring's middle at 74.6% of the picture's height).
+  if (ok(pad)) {
+    const w = 70;
+    const h = (w * pad.naturalHeight) / pad.naturalWidth;
+    ctx.drawImage(pad, -w / 2, -h * 0.746, w, h);
+  } else {
+    ctx.strokeStyle = 'rgba(248,113,113,0.85)';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.ellipse(0, 0, 26, 8, 0, 0, Math.PI * 2);
+    ctx.stroke();
+  }
   ctx.globalAlpha = 1 - gone;
   ctx.translate(0, 2 + gone * 8);
   ctx.scale(0.78, 0.78);
@@ -203,7 +198,7 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
   const struck = ended === null ? 0 : Math.max(0, 1 - Math.abs(ended - FIREBALL.fly) / FIREBALL.blast);
   const done = ended !== null && ended > FIREBALL.fly;
   const rivalGone = b.phase === 'won' && done ? Math.min(1, (ended! - FIREBALL.fly) / 0.6) : 0;
-  drawRival(ctx, b.world, now, won ? struck : 0, rivalGone);
+  drawRival(ctx, pics.padRed, b.world, now, won ? struck : 0, rivalGone);
   lifeBar(ctx, CELL + 4, -9, 170, (rivalHp(b) + (won && ended !== null && !done ? 1 : 0)) / ROUNDS, '#ef4444', names.rival, false);
   const pose = b.phase === 'over' && done ? pics.down : ended !== null && won && !done ? pics.shoot : b.phase === 'won' && done ? pics.cheer : !won && struck > 0 ? pics.hurt : pics.front;
   drawHero(ctx, pics, pose, now, won ? 0 : struck * 0.6);
