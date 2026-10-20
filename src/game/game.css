@@ -3572,3 +3572,8 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .dress { --pad-w: clamp(150px, 50vw, 230px); }
 .dslot .plate b { display: none; }
 :root[data-retro] .dslot .plate b { display: block; }
+/* The label right under the ring: the plate no longer stretches down the row (which centred the label far below). */
+:root:not([data-retro]) .dress-col > .dslot,
+:root:not([data-retro]) .dress-extra > .dslot { align-self: start; }
+:root:not([data-retro]) .dress-col > .dslot .plate,
+:root:not([data-retro]) .dress-extra > .dslot .plate { height: auto; margin-top: -6px; }
