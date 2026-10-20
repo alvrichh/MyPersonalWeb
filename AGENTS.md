@@ -29,6 +29,7 @@ Guide for any AI agent (Claude Code, Codex, Cursor, Gemini CLI…) working in th
 - **Dates:** `YYYY-MM` strings. Keep them consistent with the CV (see the CV section below).
 - **Git:** commit as the configured user; **no `Co-Authored-By` or AI attribution lines** unless the owner asks. Push to `main` only when asked. Pull (`--ff-only`) before you work; never force-push `main`.
 - Keep commits small and in English conventional style (`feat(experience): …`, `fix(mobile): …`).
+- **Push in batches.** Every push to `main` is a Vercel deployment, and the Hobby plan allows about 100 a day; on a busy day of one push per change the live site stopped updating. Commit each change on its own, but push several together (or when the owner asks).
 
 ## The CV (`scripts/cv/`)
 - The CV is an HTML template (`cv.html`) that reproduces the original Canva layout in Open Sans, A4, two pages. Edit text there, then `node scripts/cv/build.mjs` (needs Playwright; set `CHROMIUM_PATH` if the default browser is missing).
