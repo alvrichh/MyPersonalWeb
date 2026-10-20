@@ -2630,8 +2630,8 @@ body {
   display: grid;
   grid-template-columns: minmax(84px, 112px) minmax(0, 1fr) minmax(84px, 112px);
   /* Three shared rows: a two-line item name on one side no longer pushes that column out of line. */
-  /* three equal rows, so the slots keep an even spacing however tall the hero in rows 2–3 is */
-  grid-template-rows: repeat(3, 1fr);
+  /* the hero in rows 2–3 sets their height, shared evenly (no name over it any more, so they stay close) */
+  grid-template-rows: auto 1fr 1fr;
   align-items: center;
   justify-items: center;
   gap: 8px 6px;
