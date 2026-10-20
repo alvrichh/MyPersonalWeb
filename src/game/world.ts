@@ -677,9 +677,17 @@ function pushOut(c: { x: number; y: number; r: number }, rect: Rect) {
 /** True when a rack stands between two points (`pad` widens the racks, for a body passing by). */
 export function blocked(a: Vec, b: Vec, obstacles: Rect[], pad = 0) {
   const steps = Math.ceil(Math.hypot(b.x - a.x, b.y - a.y) / 8);
-  for (let i = 1; i < steps; i++) {
-    const p = { x: a.x + ((b.x - a.x) * i) / steps, y: a.y + ((b.y - a.y) * i) / steps };
-    if (obstacles.some((o) => inRect(p, o, pad))) return true;
+  // Checked rack by rack, skipping those clear of the segment's box, sampled every 8px as before but with no
+  // object a step: it ran for every bug, every frame, and took most of a crowded frame.
+  const minX = Math.min(a.x, b.x) - pad, maxX = Math.max(a.x, b.x) + pad;
+  const minY = Math.min(a.y, b.y) - pad, maxY = Math.max(a.y, b.y) + pad;
+  for (const o of obstacles) {
+    if (o.x + o.w < minX || o.x > maxX || o.y + o.h < minY || o.y > maxY) continue;
+    for (let i = 1; i < steps; i++) {
+      const x = a.x + ((b.x - a.x) * i) / steps;
+      const y = a.y + ((b.y - a.y) * i) / steps;
+      if (x > o.x - pad && x < o.x + o.w + pad && y > o.y - pad && y < o.y + o.h + pad) return true;
+    }
   }
   return false;
 }
@@ -699,9 +707,14 @@ const live = (g: Game) => g.enemies.filter((e) => !e.dead && e.spawn <= 0);
 function nearest(g: Game, from: Vec, sight = false): Enemy | undefined {
   let target: Enemy | undefined;
   let best = Infinity;
-  for (const e of live(g)) {
-    const d = dist(from, e) + (sight && blocked(from, e, g.obstacles) ? 10000 : 0);
-    if (d < best) { best = d; target = e; }
+  for (const e of g.enemies) {
+    if (e.dead || e.spawn > 0) continue;
+    let d = dist(from, e);
+    // Being out of sight only adds, so the sight line is only looked at for one that could still be the nearest.
+    if (d >= best) continue;
+    if (sight && blocked(from, e, g.obstacles)) { d += 10000; if (d >= best) continue; }
+    best = d;
+    target = e;
   }
   return target;
 }
@@ -2241,7 +2254,9 @@ function useWeapons(g: Game, dt: number) {
   const onTheMove = p.moving && g.mode === 'horde';
   if (!p.moving || onTheMove) {
     const slow = onTheMove ? 1.8 : 1;
-    const target = nearest(g, p, true);
+    // The nearest bug in sight is only looked for when a ranged weapon is ready to fire.
+    const due = gear.bow === 0 || (sk.knives && gear.knives === 0) || (sk.boomerang && gear.boomerang === 0) || (sk.drill && gear.drill === 0) || (sk.rocket && gear.rocket === 0) || (sk.ball && gear.ball === 0);
+    const target = due ? nearest(g, p, true) : undefined;
     if (target) {
       if (gear.bow === 0) { fireBow(g, target); gear.bow = (slow * (1 + ARCHERO.multiSlow * sk.multi)) / (2 * haste(g)); g.events.push('shoot'); }
       if (sk.knives && gear.knives === 0) { fireKnives(g, target); gear.knives = (slow * (1.2 - 0.15 * (sk.knives - 1))) / haste(g); g.events.push('knife'); }
