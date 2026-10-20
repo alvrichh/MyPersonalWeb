@@ -104,7 +104,12 @@ export type SkillId =
   // For everything.
   | 'power' | 'heart'
   // Passives (after Survivor.io): sports shoes, an exo-bracer, an energy drink.
-  | 'shoes' | 'bracer' | 'drink';
+  | 'shoes' | 'bracer' | 'drink'
+  // After Archero: a code review (arrows behind and to the sides), commit and push (a second volley), segfault (a
+  // one-shot kill), the garbage collector (health per kill), critical hits, crunch (harder as you weaken), lag (a
+  // dodge), safe mode (invincible now and then), a chained exception (bugs burst as they die), and the monolith or
+  // the microservice (bigger and harder-hitting, or smaller and quicker; one or the other).
+  | 'rear' | 'multi' | 'headshot' | 'vampire' | 'crit' | 'rage' | 'dodge' | 'safe' | 'nova' | 'giant' | 'dwarf';
 
 export type Category = 'melee' | 'magic' | 'ranged' | 'upgrade';
 
@@ -115,6 +120,8 @@ export const CATEGORY: Record<SkillId, Category> = {
   fire: 'upgrade', water: 'upgrade', leaf: 'upgrade', bolt: 'upgrade', spark: 'upgrade', ghost: 'upgrade',
   double: 'upgrade', speed: 'upgrade', power: 'upgrade', heart: 'upgrade',
   shoes: 'upgrade', bracer: 'upgrade', drink: 'upgrade',
+  rear: 'upgrade', multi: 'upgrade', headshot: 'upgrade', vampire: 'upgrade', crit: 'upgrade', rage: 'upgrade',
+  dodge: 'upgrade', safe: 'upgrade', nova: 'upgrade', giant: 'upgrade', dwarf: 'upgrade',
 };
 export const SKILLS = Object.keys(CATEGORY) as SkillId[];
 const WEAPONS = SKILLS.filter((s) => CATEGORY[s] !== 'upgrade');
@@ -182,7 +189,28 @@ export function evoLostBy(g: Game, s: SkillId): SkillId[] {
 export const ARSENAL_SKILLS: SkillId[] = ['brick', 'molotov', 'durian', 'mines', 'drill', 'rocket', 'ball'];
 /** …which come up, in either mode, only once bought in the shop's arsenal (`loadout.arsenal`). */
 const allowedIn = (g: Game, s: SkillId) => !ARSENAL_SKILLS.includes(s) || g.loadout.arsenal.includes(s);
-export const maxLevel = (s: SkillId) => (s === 'heart' ? 99 : s === 'double' ? 2 : s === 'blades' ? 5 : 3);
+export const maxLevel = (s: SkillId) => (s === 'heart' ? 99 : s === 'blades' ? 5 : s === 'double' || s === 'rear' || s === 'multi' ? 2 : s === 'giant' || s === 'dwarf' ? 1 : 3);
+/* The Archero picks' numbers. */
+export const ARCHERO = {
+  /** Commit and push: each level one more volley this long after the last, the bow a little slower and softer. */
+  multiGap: 0.11, multiSlow: 0.15, multiSoft: 0.9,
+  /** Segfault: the chance a bow arrow kills a bug outright (not a boss), a level. */
+  headshot: 0.04,
+  /** Garbage collector: health back per kill, as a share of max health, a level. */
+  vampire: 0.0015,
+  /** Critical hits: the chance a level, and how much harder. */
+  crit: 0.08, critHit: 2,
+  /** Crunch: extra damage a level at no health left (it grows as health drops). */
+  rage: 0.15,
+  /** Lag: the chance a level that a hit misses you. */
+  dodge: 0.06,
+  /** Safe mode: invincible for `safeFor` (+0.5 a level) every `safeEvery` (−2 a level) seconds. */
+  safeEvery: 14, safeFor: 1.5,
+  /** Chained exception: a bug's burst when it dies, reach and damage (more each level). */
+  novaReach: 34, novaDmg: 12,
+  /** The monolith's and the microservice's body (the hero's radius is 15) and what each brings. */
+  giantR: 18, giantDmg: 1.2, dwarfR: 13, dwarfSpeed: 1.08,
+};
 
 /* ---------------------------------------------------------------- the cast */
 
@@ -557,6 +585,10 @@ export type Game = {
   arrowPick: ArrowLook | null;
   /** Level-up rerolls left: two a run, in both modes. */
   rerolls: number;
+  /** Commit and push: seconds until each volley still to fire. */
+  volleys: number[];
+  /** Safe mode: seconds until the next spell of invincibility. */
+  safeCd: number;
   style: EnemyStyle;
   /** Coins earned this run (banked by the page when the run ends). */
   coins: number;
@@ -577,7 +609,7 @@ export type Game = {
 
 export type GameEvent =
   | 'fusion' | 'clear' | 'boss' | 'hurt' | 'levelup' | 'room' | 'revive' | 'heal' | 'wheel' | 'shrine'
-  | 'shoot' | 'knife' | 'boomerang' | 'orb' | 'hit' | 'kill' | 'gem' | 'heart' | 'chest' | 'slash' | 'slam' | 'strike' | 'boom' | 'minute' | 'rage' | 'phase' | 'minion' | 'plants' | 'laser' | BossStatus;
+  | 'shoot' | 'knife' | 'boomerang' | 'orb' | 'hit' | 'kill' | 'gem' | 'heart' | 'chest' | 'slash' | 'slam' | 'strike' | 'boom' | 'minute' | 'rage' | 'phase' | 'minion' | 'plants' | 'laser' | 'dodge' | 'safe' | BossStatus;
 
 /* ------------------------------------------------------------------ helpers */
 
@@ -904,6 +936,8 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     bladePick: null,
     arrowPick: null,
     rerolls: 2,
+    volleys: [],
+    safeCd: ARCHERO.safeEvery,
     style,
     coins: 0,
     revives: loadout.revives,
@@ -1110,6 +1144,8 @@ function canPick(g: Game, s: SkillId) {
   if (!allowedIn(g, s)) return false;
   // Two arrow elements a run: once you have a pair, the other two stop coming.
   if (elementShut(g, s)) return false;
+  // The monolith or the microservice, never both.
+  if ((s === 'giant' && g.skills.dwarf) || (s === 'dwarf' && g.skills.giant)) return false;
   // …and a new weapon that evolves with one of those two would stay at level 3 for good, so it stops coming too.
   if (g.skills[s] === 0 && CATEGORY[s] !== 'upgrade' && EVO_PARTNER[s] && elementShut(g, EVO_PARTNER[s]!)) return false;
   if (g.skills[s] >= maxLevel(s)) return false;
@@ -1196,7 +1232,9 @@ export function chooseSkill(g: Game, choice: Choice) {
   else g.phase = 'play';
 }
 
-const power = (g: Game, cat: Category) => (1 + 0.25 * g.skills.power) * g.loadout.mult[cat];
+const power = (g: Game, cat: Category) => (1 + 0.25 * g.skills.power) * g.loadout.mult[cat]
+  // Crunch: harder the less health you have left; the monolith hits harder all the time.
+  * (1 + ARCHERO.rage * g.skills.rage * (1 - g.player.hp / g.player.maxHp)) * (g.skills.giant ? ARCHERO.giantDmg : 1);
 /** Ranged weapons fire faster with the Hotfix upgrade. */
 const haste = (g: Game) => (1 + 0.28 * g.skills.speed) * g.loadout.hasteMult;
 
@@ -1238,6 +1276,8 @@ const HEART_CHANCE: Partial<Record<EnemyKind, number>> = { ticket: 0.06, legacy:
 export const HEART_LIFE = 18;
 const HEART_HEAL = 0.12;
 
+/** While a chained exception's burst is going off (its own kills don't burst again). */
+let novaing = false;
 function kill(g: Game, e: Enemy) {
   if (e.dead) return;
   e.dead = true;
@@ -1262,6 +1302,17 @@ function kill(g: Game, e: Enemy) {
       o.blueFire = false;
       hurt(g, o, 14 * power(g, 'ranged'));
     }
+  }
+  // Garbage collector: a little health back for every bug cleared.
+  if (g.skills.vampire) heal(g, g.player.maxHp * ARCHERO.vampire * g.skills.vampire);
+  // Chained exception: the bug bursts as it dies, hurting the ones round it (a burst's own kills don't burst again).
+  if (g.skills.nova && !novaing) {
+    const lv = g.skills.nova;
+    const reach = ARCHERO.novaReach + 6 * (lv - 1);
+    novaing = true;
+    g.fx.push({ kind: 'pic', pic: 'plasma-burst', top: true, x: e.x, y: e.y, r: reach * 1.3, a: rand(0, 6), life: 0.35, max: 0.35 });
+    for (const o of live(g)) if (dist(o, e) <= reach + o.r) hurt(g, o, (ARCHERO.novaDmg + 8 * (lv - 1)) * power(g, 'upgrade'));
+    novaing = false;
   }
   g.coins += COINS[e.kind] * worldPay(g) * (g.mode === 'horde' ? HORDE_PAY : 1);
   g.events.push('kill');
@@ -1304,6 +1355,11 @@ const BOSS_PAIN = { show: 0.18, every: 1.2 };
 
 function hurt(g: Game, e: Enemy, amount: number, push?: Vec) {
   if (e.dead) return;
+  // Critical hits: a real blow (not a burn's or an aura's tick) now and then lands twice as hard.
+  if (g.skills.crit && amount >= 4 && Math.random() < ARCHERO.crit * g.skills.crit) {
+    amount *= ARCHERO.critHit;
+    burst(g, e.x, e.y - e.r, '#facc15', 6, 120, 2.5);
+  }
   e.hp -= amount;
   e.hit = 0.1;
   if (e.kind === 'boss' && e.painCd <= 0) { e.pain = BOSS_PAIN.show; e.painCd = BOSS_PAIN.every; }
@@ -1333,6 +1389,13 @@ const away = (from: Vec, e: Vec, strength: number) => {
 };
 
 function hitWithShot(g: Game, e: Enemy, s: Shot) {
+  // Segfault: now and then a bow arrow takes a bug down at once (never a boss, a clone or a boss's minion).
+  if (s.bow && g.skills.headshot && e.kind !== 'boss' && !e.minion && Math.random() < ARCHERO.headshot * g.skills.headshot) {
+    g.fx.push({ kind: 'pic', pic: 'spectral-bolt', top: true, x: e.x, y: e.y, r: 30, a: 0, life: 0.35, max: 0.35 });
+    burst(g, e.x, e.y, '#f43f5e', 12, 160, 3);
+    hurt(g, e, e.hp + 1);
+    return;
+  }
   hurt(g, e, s.dmg, s.kind === 'boomerang' ? undefined : { x: s.vx * 0.06, y: s.vy * 0.06 });
   burst(g, s.x, s.y, '#ffffff', 4, 90, 2);
   g.events.push('hit');
@@ -1477,14 +1540,19 @@ function shot(kind: Shot['kind'], from: Vec, angle: number, speed: number, dmg: 
 
 /* ------------------------------------------------------------------ weapons */
 
-function fireBow(g: Game, target: Enemy) {
+function fireBow(g: Game, target: Enemy, echo = false) {
   const p = g.player;
   const angle = Math.atan2(target.y - p.y, target.x - p.x);
   p.face = angle;
   const angles = [angle];
   for (let i = 1; i <= g.skills.leaf; i++) angles.push(angle - i * 0.26, angle + i * 0.26);
+  // Code review: one arrow behind you, and from level 2 one to each side.
+  if (g.skills.rear) angles.push(angle + Math.PI);
+  if (g.skills.rear >= 2) angles.push(angle + Math.PI / 2, angle - Math.PI / 2);
+  // Commit and push: the next volleys follow on their own (see useWeapons).
+  if (!echo) for (let i = 1; i <= g.skills.multi; i++) g.volleys.push(ARCHERO.multiGap * i);
   const side = g.skills.double ? [-6, 6] : [0];
-  const dmg = 20 * power(g, 'ranged') * (g.skills.double === 2 ? 0.85 : 1);
+  const dmg = 20 * power(g, 'ranged') * (g.skills.double === 2 ? 0.85 : 1) * ARCHERO.multiSoft ** g.skills.multi;
   for (const a of angles) {
     for (const offset of side) {
       const from = { x: p.x + Math.cos(a + Math.PI / 2) * offset, y: p.y + Math.sin(a + Math.PI / 2) * offset };
@@ -2061,7 +2129,15 @@ function useWeapons(g: Game, dt: number) {
   const sk = g.skills;
   for (const k of ['bow', 'knives', 'boomerang', 'sword', 'hammer', 'storm', 'fireball', 'laser', 'brick', 'molotov', 'mines', 'drill', 'rocket', 'ball'] as const) gear[k] = Math.max(0, gear[k] - dt);
   const fighting = live(g).length > 0;
-  if (!fighting) return;
+  if (!fighting) { g.volleys = []; return; }
+  // Commit and push: the volleys still to come go off at the nearest bug, wherever you are.
+  if (g.volleys.length) {
+    g.volleys = g.volleys.map((t) => t - dt);
+    const due = g.volleys.filter((t) => t <= 0).length;
+    g.volleys = g.volleys.filter((t) => t > 0);
+    const target = due ? nearest(g, p, true) ?? nearest(g, p, false) : null;
+    for (let i = 0; i < due && target; i++) { fireBow(g, target, true); g.events.push('shoot'); }
+  }
 
   // Ranged: only while standing still, at the nearest bug in plain sight.
   // On call never lets you stand for long, so there they fire on the move
@@ -2071,7 +2147,7 @@ function useWeapons(g: Game, dt: number) {
     const slow = onTheMove ? 1.8 : 1;
     const target = nearest(g, p, true);
     if (target) {
-      if (gear.bow === 0) { fireBow(g, target); gear.bow = slow / (2 * haste(g)); g.events.push('shoot'); }
+      if (gear.bow === 0) { fireBow(g, target); gear.bow = (slow * (1 + ARCHERO.multiSlow * sk.multi)) / (2 * haste(g)); g.events.push('shoot'); }
       if (sk.knives && gear.knives === 0) { fireKnives(g, target); gear.knives = (slow * (1.2 - 0.15 * (sk.knives - 1))) / haste(g); g.events.push('knife'); }
       if (sk.boomerang && gear.boomerang === 0) { fireBoomerang(g, target); gear.boomerang = (slow * (2 - 0.25 * (sk.boomerang - 1))) / haste(g); g.events.push('boomerang'); }
       if (sk.drill && gear.drill === 0) { fireDrill(g, target); gear.drill = (slow * (2.6 - 0.3 * (sk.drill - 1))) / haste(g); g.events.push('knife'); }
@@ -2124,6 +2200,13 @@ const ICICLE_CHILL = 1.2;
 function hurtPlayer(g: Game, amount: number, from?: string, fire = false) {
   const p = g.player;
   if (p.inv > 0 || g.phase !== 'play') return;
+  // Lag: now and then the hit simply never arrives.
+  if (g.skills.dodge && Math.random() < ARCHERO.dodge * g.skills.dodge) {
+    p.inv = 0.3;
+    burst(g, p.x, p.y, '#67e8f9', 8, 110, 2);
+    g.events.push('dodge');
+    return;
+  }
   if (fire) p.burn = 1.2;
   const status = from ? BOSS_STATUS[from] : undefined;
   // Being stopped dead (Zeus's stun, the Medusa's stone) has a cooldown: after one ends you are free for PARA_FREE
@@ -3348,11 +3431,24 @@ export function update(g: Game, dt: number, input: Input) {
   if (p.stun > 0 || p.stone > 0) p.moving = false;
   if (p.moving) {
     const k = Math.min(1, len) * (wading ? 0.55 : 1) * (p.chill > 0 || p.mired > 0 ? 1 - CHILL_SLOW : 1);
-    const shoes = 1 + 0.1 * g.skills.shoes;
+    const shoes = (1 + 0.1 * g.skills.shoes) * (g.skills.dwarf ? ARCHERO.dwarfSpeed : 1);
     p.x += (input.x / len) * k * p.speed * shoes * dt;
     p.y += (input.y / len) * k * p.speed * shoes * dt;
     p.face = Math.atan2(input.y, input.x);
     p.heading = p.face;
+  }
+  // The monolith's and the microservice's body (drawn by the radius too).
+  p.r = g.skills.giant ? ARCHERO.giantR : g.skills.dwarf ? ARCHERO.dwarfR : 15;
+  // Safe mode: invincible for a moment every so often, while there is something to fight.
+  if (g.skills.safe && live(g).length) {
+    g.safeCd -= dt;
+    if (g.safeCd <= 0) {
+      const lv = g.skills.safe;
+      g.safeCd = ARCHERO.safeEvery - 2 * (lv - 1);
+      p.inv = Math.max(p.inv, ARCHERO.safeFor + 0.5 * (lv - 1));
+      burst(g, p.x, p.y, '#fde047', 16, 140, 3);
+      g.events.push('safe');
+    }
   }
   updateHazards(g, dt);
   // Touching a boss's chest spins the lucky wheel.

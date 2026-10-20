@@ -172,6 +172,7 @@ const EMOJI: Record<SkillId | 'bow', string> = {
   sword: '🗡️', blades: '🌀', hammer: '🔨', storm: '🌩️', fireball: '☄️', frost: '❄️', spirits: '👻', laser: '🔦', knives: '🔪', boomerang: '🪃',
   fire: '🔥', water: '💧', leaf: '🍃', bolt: '⚡', spark: '✨', ghost: '🫥', double: '🏹', speed: '⏩', power: '💥', heart: '💗', bow: '🏹',
   shoes: '👟', bracer: '🦾', drink: '🥤',
+  rear: '🔁', multi: '🚀', headshot: '💀', vampire: '🗑️', crit: '🎯', rage: '😤', dodge: '📶', safe: '🛡️', nova: '💥', giant: '🗿', dwarf: '🐜',
   brick: '🧱', molotov: '🍾', durian: '🌵', mines: '💣', drill: '🔩', rocket: '🚀', ball: '⚽',
 };
 /* The painted medallion, with the emoji beside it for the retro look (CSS shows one or the other). */
@@ -2037,6 +2038,8 @@ function step(now: number) {
       if (event === 'revive') flash(t('revived'));
       if (event === 'poison' || event === 'stun' || event === 'chill' || event === 'dark' || event === 'stone' || event === 'mired') flash(t(`status${cap(event)}` as Key));
       if (event === 'chest') flash(t('chestHint'));
+      if (event === 'dodge') flash(t('dodgeFlash'));
+      if (event === 'safe') flash(t('safeFlash'));
     }
     // update() may have moved the game on (TypeScript still thinks it's 'play').
     const phase = g.phase as Game['phase'];
