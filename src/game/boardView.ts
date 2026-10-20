@@ -4,7 +4,7 @@ import { boardFloor, boardFx, drawBoardFigure } from './draw';
 /* Drawing the board mode on the game's canvas: the world's floor under a grid, your bugs on the lower half and the
    round's enemy on the upper (faint while you prepare), each with its cast's own pictures, and the two commanders
    in the board's own corner cells (left free for them): your hero, from the worn skin's poses, on Customise's
-   portal at the lower right, and the world's final boss on the same portal turned red at the upper left, their names and health
+   portal at the lower right, and the the rival, your own hero with its colours inverted, on the same portal turned red at the upper left, their names and health
    in thin strips above and below the board, with the fireball one throws at the other
    when a fight ends. */
 
@@ -123,8 +123,6 @@ const ok = (img: HTMLImageElement) => img.complete && img.naturalWidth > 0;
 /** Where each commander stands (its feet), in the board's corner cells. */
 const MINE = { x: BOARD_W - CELL / 2 - 6, y: BOARD_H - 12 };
 const RIVAL = { x: CELL / 2 + 4, y: CELL - 12 };
-/** How big the rival is drawn against its own sprite. */
-const RIVAL_K = 0.78;
 
 function drawHero(ctx: CanvasRenderingContext2D, pics: HeroPics, pose: HTMLImageElement, now: number, hit: number) {
   const { x, y } = MINE;
@@ -151,11 +149,33 @@ function drawHero(ctx: CanvasRenderingContext2D, pics: HeroPics, pose: HTMLImage
   ctx.restore();
 }
 
-function drawRival(ctx: CanvasRenderingContext2D, pad: HTMLImageElement, world: number, now: number, hit: number, gone: number) {
+/** A pose of your hero with its colours inverted, for the rival (worked out once per picture and kept). */
+const negatives = new WeakMap<HTMLImageElement, HTMLCanvasElement>();
+function negative(img: HTMLImageElement) {
+  let c = negatives.get(img);
+  if (c) return c;
+  c = document.createElement('canvas');
+  c.width = img.naturalWidth;
+  c.height = img.naturalHeight;
+  const t = c.getContext('2d');
+  if (!t) return img;
+  t.drawImage(img, 0, 0);
+  // White minus every colour, then the picture's own alpha back on.
+  t.globalCompositeOperation = 'difference';
+  t.fillStyle = '#fff';
+  t.fillRect(0, 0, c.width, c.height);
+  t.globalCompositeOperation = 'destination-in';
+  t.drawImage(img, 0, 0);
+  negatives.set(img, c);
+  return c;
+}
+
+function drawRival(ctx: CanvasRenderingContext2D, pics: HeroPics, pose: HTMLImageElement, now: number, hit: number, gone: number) {
   const { x, y } = RIVAL;
   ctx.save();
   ctx.translate(x, y);
   // Customise's portal turned red under its feet (its ring's middle at 74.6% of the picture's height).
+  const pad = pics.padRed;
   if (ok(pad)) {
     const w = 70;
     const h = (w * pad.naturalHeight) / pad.naturalWidth;
@@ -167,11 +187,17 @@ function drawRival(ctx: CanvasRenderingContext2D, pad: HTMLImageElement, world: 
     ctx.ellipse(0, 0, 26, 8, 0, 0, Math.PI * 2);
     ctx.stroke();
   }
-  ctx.globalAlpha = 1 - gone;
-  // Its feet (the sprite's lie 0.85 of its radius under its middle) on the portal's ring.
-  ctx.translate(0, -TIER_STATS[4].r * 0.85 * RIVAL_K + gone * 8);
-  ctx.scale(RIVAL_K, RIVAL_K);
-  drawBoardFigure(ctx, figureOf(4, world, 1, now * 1.5, 0, hit), now, false);
+  // Your own hero, its colours inverted, facing the board; it sinks and fades once beaten.
+  const img = ok(pose) ? pose : pics.front;
+  if (ok(img)) {
+    const h = 58;
+    const w = (h * img.naturalWidth) / img.naturalHeight;
+    const pic = negative(img);
+    ctx.globalAlpha = 1 - gone;
+    ctx.translate(0, gone * 8 + Math.sin(now * 2.2 + 1) * 0.8);
+    ctx.drawImage(pic, -w / 2, -h, w, h);
+    if (hit > 0) { ctx.globalAlpha = (1 - gone) * hit; ctx.globalCompositeOperation = 'lighter'; ctx.drawImage(pic, -w / 2, -h, w, h); }
+  }
   ctx.restore();
 }
 
@@ -255,7 +281,9 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
   const struck = ended === null ? 0 : Math.max(0, 1 - Math.abs(ended - FIREBALL.fly) / FIREBALL.blast);
   const done = ended !== null && ended > FIREBALL.fly;
   const rivalGone = b.phase === 'won' && done ? Math.min(1, (ended! - FIREBALL.fly) / 0.6) : 0;
-  drawRival(ctx, pics.padRed, b.world, now, won ? struck : 0, rivalGone);
+  // The rival's pose, from your hero's: aiming while it throws at you, hurt when struck, cheering once you are out.
+  const rivalPose = b.phase === 'over' && done ? pics.cheer : ended !== null && !won && !done ? pics.shoot : won && struck > 0 ? pics.hurt : pics.front;
+  drawRival(ctx, pics, rivalPose, now, won ? struck : 0, rivalGone);
   const pose = b.phase === 'over' && done ? pics.down : ended !== null && won && !done ? pics.shoot : b.phase === 'won' && done ? pics.cheer : !won && struck > 0 ? pics.hurt : pics.front;
   drawHero(ctx, pics, pose, now, won ? 0 : struck * 0.6);
 
@@ -362,7 +390,7 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
   const popAt = ended === null ? 1 : Math.max(0, Math.min(1, (ended - FIREBALL.fly) / FIREBALL.blast));
   const rivalPop = won && ended !== null ? 1 : 0;
   const minePop = !won && ended !== null ? b.last?.lost ?? 0 : 0;
-  hearts(ctx, RIVAL.x + 6, -TOP / 2, rivalHp(b), rivalPop, done ? popAt : 0, retro);
+  hearts(ctx, RIVAL.x + 50, -TOP / 2, rivalHp(b), rivalPop, done ? popAt : 0, retro);
   hearts(ctx, MINE.x, MINE.y - 72, b.lives, minePop, done ? popAt : 0, retro);
   if (drag) {
     const x = (drag.x - lay.ox) / lay.s;
