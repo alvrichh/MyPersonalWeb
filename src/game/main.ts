@@ -220,7 +220,22 @@ const FRAMES = {
   short: { l: 0.13, r: 0.13, t: 0.11, b: 0.1, ratio: 720 / 600 },
   tall: { l: 0.13, r: 0.13, t: 0.075, b: 0.07, ratio: 1105 / 620 },
 };
+/* Scrolling boxes (`.fade-scroll`: every dialog's, the skills panel, the map) fade at an edge only while there is
+   more past it, a little more the further there is to go, up to `FADE` (`--ft`, `--fb` in game.css). */
+const FADE = 18;
+function fadeEdges(el: HTMLElement) {
+  const more = el.scrollHeight - el.clientHeight;
+  el.style.setProperty('--ft', `${more > 1 ? Math.min(FADE, el.scrollTop) : 0}px`);
+  el.style.setProperty('--fb', `${more > 1 ? Math.min(FADE, more - el.scrollTop) : 0}px`);
+}
+const fadeAll = () => document.querySelectorAll<HTMLElement>('.fade-scroll').forEach(fadeEdges);
+document.addEventListener('scroll', (e) => { if (e.target instanceof HTMLElement && e.target.classList.contains('fade-scroll')) fadeEdges(e.target); }, true);
+// Pictures arriving change the heights.
+document.addEventListener('load', fadeAll, true);
+window.addEventListener('resize', fadeAll);
+
 function fitPanel() {
+  requestAnimationFrame(fadeAll);
   const panel = screen.querySelector<HTMLElement>('.panel');
   const inner = panel?.querySelector<HTMLElement>('.panel-in');
   if (!panel || !inner || screen.hidden || screen.classList.contains('is-menu') || screen.classList.contains('is-map')) return;
@@ -280,7 +295,7 @@ function show(html: string, wide = false, menu = false, extra = '') {
     }
     old.className = cls;
     old.removeAttribute('style');
-    old.innerHTML = `${close}<div class="panel-in">${html}</div>`;
+    old.innerHTML = `${close}<div class="panel-in fade-scroll">${html}</div>`;
     for (const img of old.querySelectorAll('img')) {
       const same = kept.get(img.src)?.shift();
       if (!same) continue;
@@ -290,7 +305,7 @@ function show(html: string, wide = false, menu = false, extra = '') {
       img.replaceWith(same);
     }
   } else {
-    screen.innerHTML = `<div class="${cls}">${close}<div class="panel-in">${html}</div></div>`;
+    screen.innerHTML = `<div class="${cls}">${close}<div class="panel-in fade-scroll">${html}</div></div>`;
   }
 
   screen.classList.toggle('is-menu', menu);
@@ -640,7 +655,7 @@ function mapScreen() {
     <button class="ui-close" type="button" data-act="menu" aria-label="${t('menu')}"></button>
     <div class="mapscreen">
       <h2 class="map-title"><span>${t('map')}</span></h2>
-      <div class="map-scroll">
+      <div class="map-scroll fade-scroll">
         <div class="map" style="aspect-ratio:${MAP_W}/${MAP_H}">
           <svg viewBox="0 0 ${MAP_W} ${MAP_H}" preserveAspectRatio="none" aria-hidden="true">${trail}</svg>
           ${islandArt}
@@ -1656,6 +1671,8 @@ function openGearPanel() {
   gearPanel.style.top = `${Math.round(box.top)}px`;
   gearPanel.style.right = `${Math.round(window.innerWidth - box.left + 8)}px`;
   gearPanel.hidden = false;
+  gearPanel.classList.add('fade-scroll');
+  fadeEdges(gearPanel);
   document.documentElement.classList.add('gear-open');
   audio.play('click');
 }
@@ -1683,6 +1700,7 @@ function renderGearPanel(g: Game) {
     <h4>${t('gearWeapons')}</h4><ul>${weapons.map(row).join('')}</ul>${fusionRow}
     ${upgrades.length ? `<h4>${t('gearUpgrades')}</h4><ul>${upgrades.map(row).join('')}</ul>` : ''}
     <p class="gp-hint">${t('gearHint')}</p>`;
+  requestAnimationFrame(() => fadeEdges(gearPanel));
 }
 function closeGearPanel() {
   if (gearPanel.hidden) return;
