@@ -3149,15 +3149,28 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 @media (min-width: 900px) and (orientation: landscape) {
   .screen.is-menu { display: grid !important; place-items: center; background: #070b10 url('/images/game/landing-bg-wide.jpg') center / cover no-repeat; }
   .screen.is-menu[hidden] { display: none !important; }
+  /* The cover fills the window: the picture's own box (`.cover-in`, where every control sits) is as big as the
+     window allows, and the picture carries on past its sides (cover-wide-ext.jpg: its edges mirrored, blurred and
+     darkened, out to 2.4:1 wide and 1.5:1 tall, 2258×1121 round the 1672×941 picture), so a wide or a squarer window shows no bands of blurred backdrop beside it. */
   .cover {
-    width: min(100vw, calc(100dvh * 1672 / 941));
-    aspect-ratio: 1672 / 941;
+    --ch: min(100dvh, calc(100vw * 941 / 1672));
+    width: 100vw;
+    height: 100dvh;
+    aspect-ratio: auto;
     min-height: 0;
     display: block;
-    background-image: url('/images/game/cover-wide.jpg');
-    background-size: 100% 100%;
+    background: url('/images/game/cover-wide-ext.jpg') center / auto calc(var(--ch) * 1121 / 941) no-repeat;
+    box-shadow: none;
   }
-  .cover-in { position: absolute; inset: 0; aspect-ratio: auto; }
+  .cover-in {
+    position: absolute;
+    left: calc(50% - var(--ch) * 1672 / 941 / 2);
+    top: calc(50% - var(--ch) / 2);
+    width: calc(var(--ch) * 1672 / 941);
+    height: var(--ch);
+    aspect-ratio: auto;
+    container-type: inline-size;
+  }
   .screen.is-menu .panel-in { display: grid; }
   .cover > .cover-x {
     left: 1.2%; top: 3.6%; width: 3.4%; height: 6%; aspect-ratio: auto; box-shadow: none;
