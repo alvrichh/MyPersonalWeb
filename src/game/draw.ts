@@ -314,6 +314,9 @@ function drawRoom(ctx: CanvasRenderingContext2D, g: Game, accent: string, now: n
 /** Every block of every layout (`LAYOUTS` in world.ts), by size and place: the pieces drawn for the viking and Greek worlds. */
 const LAYOUT_PIECES = new Set(['64x26-0', '64x26-1', '40x40-0', '40x40-1', '50x50-0', '100x24-0', '100x24-1', '60x24-0', '36x36-0', '36x36-1', '36x36-2', '36x36-3']);
 
+/** How much bigger than its block a world's pieces are drawn: the haunted servers' graves and fences are wide and
+    low, and at the block's own width they looked too small (only the picture grows; the block you bump into stays). */
+const LAYOUT_SCALE: Partial<Record<string, number>> = { nightmare: 1.45 };
 /** Each world's pieces drawn for every layout block, by its file prefix (none for the jungle, which picks by shape). */
 const LAYOUT_SET: Record<string, string> = { viking: 'ice-', greek: 'arena-', demon: 'lava-', original: 'server-', robot: 'forge-', nightmare: 'grave-', core: 'core-', jungle: '' };
 
@@ -338,7 +341,7 @@ function drawObstacles(ctx: CanvasRenderingContext2D, g: Game, accent: string, n
     if (!ready(pic)) continue;
     // As wide as the block and a little more, its own shape kept, standing on the block's bottom edge
     // (a pillar a little narrower, since it stands twice as tall as it is wide).
-    const w = o.w * (pic.naturalHeight > pic.naturalWidth * 1.5 ? 0.9 : 1.12);
+    const w = o.w * (pic.naturalHeight > pic.naturalWidth * 1.5 ? 0.9 : 1.12) * (LAYOUT_SCALE[stones!] ?? 1);
     const h = (w * pic.naturalHeight) / pic.naturalWidth;
     ctx.fillStyle = 'rgba(0,0,0,0.3)';
     ctx.beginPath();
@@ -632,10 +635,43 @@ function drawTinted(ctx: CanvasRenderingContext2D, img: HTMLImageElement, x: num
   t.fillRect(0, 0, c.width, c.height);
   ctx.drawImage(c, x, y, w, h);
 }
+/* Something burning (an enemy set alight, or you after a fire hit): orange flames, the will-o'-wisp's flame turned
+   orange (`fx/flame-orange`), flickering all round it from its feet to its head, each on its own beat, about as tall
+   as the body is wide (11px at least, so a small bug's show too); false until the picture is in (or in retro), so the
+   dots stand in. */
+const FLAMES = 9;
+function drawFlames(ctx: CanvasRenderingContext2D, x: number, y: number, r: number, now: number, seed: number) {
+  const img = fxImage('flame-orange');
+  if (retroLook || !ready(img)) return false;
+  const base = ctx.globalAlpha;
+  ctx.save();
+  for (let i = 0; i < FLAMES; i++) {
+    const t = now * (2.2 + (i % 3) * 0.45) + seed * 0.37 + i * 0.61;
+    const k = (t % 1 + 1) % 1;
+    // All round the body, from the feet up to the head: each rises a little, shrinks and fades, and starts again.
+    const a = i * 2.39 + seed;
+    const up = i / (FLAMES - 1);
+    const fx = x + Math.cos(a) * r * (0.75 + 0.25 * Math.sin(i * 1.7));
+    const fy = y + r * 0.85 - up * r * 1.7 - k * r * 0.45;
+    const h = Math.max(11, r * (0.95 + 0.3 * Math.sin(t * 3.1))) * (1 - k * 0.45);
+    const w = (h * img.naturalWidth) / img.naturalHeight;
+    ctx.globalAlpha = base * (1 - k * 0.75);
+    ctx.drawImage(img, fx - w / 2, fy - h, w, h);
+  }
+  ctx.restore();
+  return true;
+}
+
 /** What shows round the hero while a boss's hit lasts: bubbles of poison, sparks of the stun, frost. */
 function drawStatus(ctx: CanvasRenderingContext2D, g: Game, now: number) {
   const p = g.player;
   ctx.save();
+  // Burnt by lava or a fireball: the same flames as a burning bug, over the hero's body.
+  if (p.burn > 0) {
+    ctx.globalAlpha = Math.min(1, p.burn / 0.3);
+    drawFlames(ctx, p.x, p.y - p.r * 0.9, p.r * 1.3, now, 3);
+    ctx.globalAlpha = 1;
+  }
   if (p.poison > 0) {
     for (let i = 0; i < 4; i++) {
       const k = (now * 1.6 + i / 4) % 1;
@@ -2901,12 +2937,14 @@ function drawEnemy(ctx: CanvasRenderingContext2D, e: Enemy, now: number) {
     ctx.stroke();
   }
   if (e.burn > 0) {
-    ctx.fillStyle = '#ff9a1f';
-    for (let i = 0; i < 3; i++) {
-      const a = now * 4 + i * 2.1;
-      ctx.beginPath();
-      ctx.arc(Math.cos(a) * e.r * 0.6, -e.r * 0.6 + Math.sin(a * 1.3) * 3, 2.5, 0, Math.PI * 2);
-      ctx.fill();
+    if (!drawFlames(ctx, 0, 0, e.r, now, e.id)) {
+      ctx.fillStyle = '#ff9a1f';
+      for (let i = 0; i < 3; i++) {
+        const a = now * 4 + i * 2.1;
+        ctx.beginPath();
+        ctx.arc(Math.cos(a) * e.r * 0.6, -e.r * 0.6 + Math.sin(a * 1.3) * 3, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
     }
   }
   ctx.restore();
