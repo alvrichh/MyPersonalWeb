@@ -107,6 +107,12 @@ export function MobileMenu({ home, current, accent, setAccent, theme, toggleThem
             </a>
           </div>
 
+          {/* Bug Hunter, the game, right under the CV button. */}
+          <a className="mobile-menu-game" href="./game.html" data-menu-close>
+            <img src="./images/game/icon-32.png" alt="" width={24} height={24} />
+            <span>{t('nav.game')}</span>
+          </a>
+
           <div className="mobile-menu-controls">
             <div className={`mobile-control${control === 'language' ? ' is-open' : ''}`}>
               <button className="mobile-control-trigger" type="button" aria-expanded={control === 'language'} onClick={() => toggleControl('language')}>
