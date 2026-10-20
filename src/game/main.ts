@@ -117,7 +117,10 @@ let arsenalOpened: SkillId | null = null;
 /** …and the shop item it put on sale (the Senior's Tome waits for the last world). */
 let itemOpened: ItemId | null = null;
 /** An item that waits for a world is on sale once that world is won in either mode. */
-const itemOpen = (item: { world?: number }) => !item.world || worldWon(save, item.world);
+const itemOpen = (item: { world?: number; needs?: SkillId }) => (!item.world || worldWon(save, item.world)) && (!item.needs || save.arsenal.includes(item.needs));
+/** What a closed item's button says: the world to win, or the arsenal weapon to buy first. */
+const lockText = (item: { world?: number; needs?: SkillId }) =>
+  item.needs && !save.arsenal.includes(item.needs) ? t('arsenalNeeds', { name: t(`${item.needs}Name` as Key) }) : t('arsenalLocked', { n: item.world ?? 0 });
 /** Banks the coins and the record; returns the world unlocked by this run, if any. */
 function bankRun(g: Game): number | null {
   const won = g.phase === 'won';
@@ -1067,7 +1070,7 @@ function shopScreen(note = '') {
         const can = save.coins >= item.price;
         const open = itemOpen(item);
         const action = !owned && !open
-          ? `<button class="buy is-poor" disabled>🔒 ${t('arsenalLocked', { n: item.world ?? 0 })}</button>`
+          ? `<button class="buy is-poor" disabled>🔒 ${lockText(item)}</button>`
           : !owned
           ? `<button class="buy${can ? '' : ' is-poor'}" data-buy="${item.id}">${t('buy')} · 🪙 ${item.price}</button>`
           : worn
@@ -1231,7 +1234,7 @@ function stylesScreen(note = '') {
         const can = save.coins >= item.price;
         const open = itemOpen(item);
         const levels = levelBlock(item);
-        return row(`data-dress="${item.id}"`, worn, !owned && (!can || !open), picIcon(item.icon, item.pic), item.legendary ? `<span class="legend-name">${t(`${item.id}Name` as Key)}</span>` : t(`${item.id}Name` as Key), t(`${item.id}Text` as Key), worn ? `✓ ${t('worn')}` : owned ? t('equip') : !open ? `🔒 ${t('arsenalLocked', { n: item.world ?? 0 })}` : `${item.legendary ? '★ ' : ''}🪙 ${item.price}`)
+        return row(`data-dress="${item.id}"`, worn, !owned && (!can || !open), picIcon(item.icon, item.pic), item.legendary ? `<span class="legend-name">${t(`${item.id}Name` as Key)}</span>` : t(`${item.id}Name` as Key), t(`${item.id}Text` as Key), worn ? `✓ ${t('worn')}` : owned ? t('equip') : !open ? `🔒 ${lockText(item)}` : `${item.legendary ? '★ ' : ''}🪙 ${item.price}`)
           + (levels ? `<div class="row-levels">${levels}</div>` : '');
       }).join('')}
       ${save.equipped[slot] ? `<button class="ghost small" data-undress="${slot}">${t('dressNone')}</button>` : ''}
@@ -1577,7 +1580,7 @@ screen.addEventListener('click', (event) => {
     const worn = save.equipped[item.slot] === item.id;
     if (worn) delete save.equipped[item.slot];
     else if (save.owned.includes(item.id)) save.equipped[item.slot] = item.id;
-    else if (!itemOpen(item)) { stylesScreen(t('arsenalLocked', { n: item.world ?? 0 })); return; }
+    else if (!itemOpen(item)) { stylesScreen(lockText(item)); return; }
     else if (save.coins < item.price) { stylesScreen(t('notEnough')); return; }
     else {
       save.coins -= item.price;

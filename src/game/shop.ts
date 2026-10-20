@@ -35,7 +35,10 @@ export type ItemId =
   | 'orb' | 'hourglass' | 'spellbook' | 'lantern' | 'seniorTome'
   | 'spiritFire' | 'spiritTide' | 'spiritThorn' | 'spiritVolt' | 'spiritShade'
   | 'keySword' | 'chainBlades' | 'warHammer'
-  | 'quiver' | 'knifeSet' | 'huntBoomerang';
+  | 'quiver' | 'knifeSet' | 'huntBoomerang'
+  | 'stormRod' | 'frostAmulet' | 'prism' | 'brickSack' | 'molotovCrate'
+  | 'gauntlets' | 'mineCrate' | 'luckyDurian'
+  | 'signedBall' | 'pocketDrill' | 'pocketRocket';
 
 /*
  * The forge: permanent upgrades bought level by level. They always apply,
@@ -75,6 +78,8 @@ export type Item = {
   legendary?: boolean;
   /** On sale only once this world is won, in either mode (`worldWon` in save.ts). */
   world?: number;
+  /** On sale only once this arsenal weapon is bought (the items that start you with one). */
+  needs?: SkillId;
   /** Prices of the upgrades past level 1 (level 2, level 3…), bought in the shop once it is owned. */
   levels?: number[];
 };
@@ -163,14 +168,25 @@ export const ITEMS: Item[] = [
   { id: 'spiritThorn', slot: 'magic', price: 700, levels: [1150, 1850], icon: '👻', pic: 'spirits/thorn-float-0.webp', effect: { startSkills: ['spirits'], spirit: 'thorn' } },
   { id: 'spiritVolt', slot: 'magic', price: 800, levels: [1300, 2100], icon: '👻', pic: 'spirits/volt-float-0.webp', effect: { startSkills: ['spirits'], spirit: 'volt' } },
   { id: 'spiritShade', slot: 'magic', price: 800, levels: [1300, 2100], icon: '👻', pic: 'spirits/shade-float-0.webp', effect: { startSkills: ['spirits'], spirit: 'shade' } },
+  { id: 'stormRod', slot: 'magic', price: 450, levels: [750, 1200], icon: '⚡', pic: 'skills/storm.webp', effect: { startSkills: ['storm'] } },
+  { id: 'frostAmulet', slot: 'magic', price: 450, levels: [750, 1200], icon: '❄️', pic: 'skills/frost.webp', effect: { startSkills: ['frost'] } },
+  { id: 'prism', slot: 'magic', price: 500, levels: [800, 1300], icon: '🔺', pic: 'skills/laser.webp', effect: { startSkills: ['laser'] } },
+  { id: 'brickSack', slot: 'magic', price: 600, levels: [1000, 1600], icon: '🧱', pic: 'skills/brick.webp', needs: 'brick', effect: { startSkills: ['brick'] } },
+  { id: 'molotovCrate', slot: 'magic', price: 600, levels: [1000, 1600], icon: '🍾', pic: 'skills/molotov.webp', needs: 'molotov', effect: { startSkills: ['molotov'] } },
   // Melee
   { id: 'keySword', slot: 'melee', price: 450, levels: [750, 1200], icon: '🗝️', pic: 'skills/sword.webp', effect: { startSkills: ['sword'] } },
   { id: 'chainBlades', slot: 'melee', price: 450, levels: [750, 1200], icon: '⛓️', pic: 'skills/blades.webp', effect: { startSkills: ['blades'] } },
   { id: 'warHammer', slot: 'melee', price: 500, levels: [800, 1300], icon: '🔨', pic: 'skills/hammer.webp', effect: { startSkills: ['hammer'] } },
+  { id: 'gauntlets', slot: 'melee', price: 280, levels: [450, 750], icon: '🥊', pic: 'forge/might.webp', effect: { mult: { melee: 1.3, magic: 1, ranged: 1, upgrade: 1 } } },
+  { id: 'mineCrate', slot: 'melee', price: 650, levels: [1050, 1700], icon: '💣', pic: 'skills/mines.webp', needs: 'mines', effect: { startSkills: ['mines'] } },
+  { id: 'luckyDurian', slot: 'melee', price: 650, levels: [1050, 1700], icon: '🌰', pic: 'skills/durian.webp', needs: 'durian', effect: { startSkills: ['durian'] } },
   // Ranged
   { id: 'quiver', slot: 'ranged', price: 280, levels: [450, 750], icon: '🏹', pic: 'items/quiver.webp', effect: { mult: { melee: 1, magic: 1, ranged: 1.3, upgrade: 1 } } },
   { id: 'knifeSet', slot: 'ranged', price: 450, levels: [750, 1200], icon: '🔪', pic: 'skills/knives.webp', effect: { startSkills: ['knives'] } },
   { id: 'huntBoomerang', slot: 'ranged', price: 450, levels: [750, 1200], icon: '🪃', pic: 'skills/boomerang.webp', effect: { startSkills: ['boomerang'] } },
+  { id: 'signedBall', slot: 'ranged', price: 700, levels: [1150, 1850], icon: '⚽', pic: 'skills/ball.webp', needs: 'ball', effect: { startSkills: ['ball'] } },
+  { id: 'pocketDrill', slot: 'ranged', price: 700, levels: [1150, 1850], icon: '🌀', pic: 'skills/drill.webp', needs: 'drill', effect: { startSkills: ['drill'] } },
+  { id: 'pocketRocket', slot: 'ranged', price: 800, levels: [1300, 2100], icon: '🚀', pic: 'skills/rocket.webp', needs: 'rocket', effect: { startSkills: ['rocket'] } },
 ];
 
 export const SLOTS: Slot[] = ['head', 'body', 'boots', 'magic', 'melee', 'ranged'];
