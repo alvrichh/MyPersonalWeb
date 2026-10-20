@@ -21,16 +21,34 @@ export type Sfx =
 const BPM = 174;
 const STEP = 60 / BPM / 4; // a sixteenth
 const BAR = STEP * 16;
-/* «Juicio final» is UK garage now, at a garage tempo: a sixteenth at 132 BPM, the odd ones swung late. */
-const G_BPM = 132;
+/* «Break to back» (`breaks`): UK bass breaks after mBreaks, at 140 BPM, the odd sixteenths swung a little late. */
+const G_BPM = 140;
 const GSTEP = 60 / G_BPM / 4;
 const GBAR = GSTEP * 16;
-const SWING = 0.2;
+const SWING = 0.12;
 /** Its form in eight-bar blocks: a 2-step groove, a funky breakbeat, a drumless break, and a drop with both. */
 type GBlock = 'intro' | 'garage' | 'breaks' | 'break' | 'drop';
 const GARAGE_FORM: GBlock[] = ['intro', 'garage', 'garage', 'breaks', 'break', 'drop', 'breaks', 'drop'];
 /** The bass line, two bars of sixteenths over the chord's root ('r' rests, null holds), and the lead's four bars of eighths. */
 const GARAGE_BASS: Note[] = [0, null, 'r', 12, 'r', 'r', 0, 'r', 'r', 'r', 10, null, 'r', 12, 'r', 7, 0, null, 'r', 'r', 12, 'r', 0, 'r', 'r', 3, 'r', 'r', 5, null, 7, 'r'];
+/** «Break to back»'s chops of its break, one a bar: where the kick, the snare and the ghost snares fall. */
+const BREAK_CHOPS: { kick: number[]; snare: number[]; ghost: number[] }[] = [
+  { kick: [0, 6, 10], snare: [4, 12], ghost: [7, 9, 15] },
+  { kick: [0, 3, 10], snare: [4, 12, 14], ghost: [7, 11] },
+  { kick: [0, 8, 11], snare: [4, 12], ghost: [2, 7, 15] },
+  { kick: [0, 6, 9, 14], snare: [4, 12], ghost: [3, 11] },
+  { kick: [0, 10], snare: [4, 7, 12], ghost: [9, 13, 15] },
+];
+/** Its acid line, two bars of eighths over the chord's root. */
+const BREAK_ACID: Note[] = [0, 12, 'r', 0, 15, 'r', 12, 10, 0, 'r', 12, 13, 'r', 12, 7, 'r'];
+/** «Juicio final»'s form, in eight-bar blocks: the cathedral alone, the drop with the hoover, the roll with the organ,
+    the break, the peak with everything. */
+type DBlock = 'intro' | 'drop' | 'roll' | 'break' | 'peak';
+const DOOM_FORM: DBlock[] = ['intro', 'drop', 'roll', 'drop', 'break', 'peak', 'roll', 'peak'];
+/** The hoover's line, two bars of quarter notes over the chord's root. */
+const DOOM_HOOVER: Note[] = [0, 12, 1, 0, 0, 7, 12, 13];
+/** The organ's melody, four bars of quarter notes in E Phrygian. */
+const DOOM_ORGAN: Note[][] = [[7, null, 8, 7], [5, null, 3, null], [3, 5, 7, 8], [7, null, null, 'r']];
 const GARAGE_LEAD: Note[][] = [
   [12, null, 15, 12, 'r', 10, 12, null], [10, null, 8, 7, 'r', 5, 7, null],
   [7, 10, 12, 15, 17, 15, 12, 10], [11, null, 12, null, 14, null, 'r', 'r'],
@@ -63,12 +81,12 @@ const SET: Block[] = ['liquid', 'neuro', 'liquid', 'neuro', 'breakdown', 'trance
    blocks); what changes is the key, the chords, the bass roots, the order of the blocks and the growl's line.
    `b2b` is the original; `doom` is the final boss's: D minor with a harmonic-minor A that pulls home,
    neuro first and the growl singing its own melody from the start. */
-export type SongId = 'b2b' | 'doom' | 'w1';
+export type SongId = 'b2b' | 'doom' | 'breaks' | 'w1';
 export type SongPick = 'auto' | 'worlds' | SongId | V2Id;
 type Song = { root: number; chords: number[][]; roots: number[]; chordsB: number[][]; rootsB: number[]; set: Block[]; reese?: number[][]; pluck?: OscillatorType };
 const SONGS: Record<SongId, Song> = {
   b2b: { root: ROOT, chords: CHORDS, roots: BASS_ROOTS, chordsB: CHORDS_B, rootsB: BASS_ROOTS_B, set: SET },
-  doom: {
+  breaks: {
     root: 36.71, // D1
     chords: [[0, 3, 7, 12], [-4, 0, 3, 8], [5, 8, 12, 15], [7, 11, 14, 19]],    // Dm – Bb – Gm7 – A
     roots: [0, -4, 5, 7],
@@ -81,6 +99,15 @@ const SONGS: Record<SongId, Song> = {
       [0, 7, 12, 15, 17, 19],
       [15, 12, 10, 7, 5, 3],
     ],
+  },
+  /* «Juicio final», drum and bass unlike the rest: E Phrygian, the F a semitone over the root grinding on it. */
+  doom: {
+    root: 41.2, // E1
+    chords: [[0, 3, 7, 12], [1, 5, 8, 13], [-4, 0, 3, 8], [1, 5, 8, 13]],    // Em – F – C – F
+    roots: [0, 1, -4, 1],
+    chordsB: [[5, 8, 12, 17], [1, 5, 8, 13], [-2, 2, 5, 10], [0, 3, 7, 12]],  // Am – F – D – Em
+    rootsB: [5, 1, -2, 0],
+    set: ['liquid', 'neuro', 'liquid', 'neuro', 'breakdown', 'trance', 'both', 'neuro'],
   },
   /* The first world's own song, on the same B2B beat in its own key, with its own chords, block order,
      growl line and pluck (the other worlds kept only their second versions, `V2S`). */
@@ -475,7 +502,7 @@ class Engine {
     if (!this.playing) return;
     while (this.next < this.ctx.currentTime + 0.12) {
       this.schedule(this.step, this.next);
-      this.next += this.songId === 'doom' ? GSTEP : STEP;
+      this.next += this.songId === 'breaks' ? GSTEP : STEP;
       this.step += 1;
     }
     this.timer = window.setTimeout(this.tick, 25);
@@ -504,7 +531,8 @@ class Engine {
     if (v2) { this.root = v2.root; this.scheduleV2(step, at, v2); return; }
     const song = SONGS[this.songId as SongId];
     this.root = song.root;
-    if (this.songId === 'doom') { this.scheduleGarage(step, at, song); return; }
+    if (this.songId === 'breaks') { this.scheduleGarage(step, at, song); return; }
+    if (this.songId === 'doom') { this.scheduleDoom(step, at, song); return; }
     const setBar = bar % (song.set.length * 8);
     const block = song.set[Math.floor(setBar / 8)];
     const blockBar = setBar % 8;
@@ -905,13 +933,26 @@ class Engine {
       if (inBar === 3 || inBar === 11 || inBar === 14) this.hat(t, 0.2, false);
     }
     if (breaks) {
-      // A funky breakbeat: two kicks, the snare on two and four with ghost notes swung around it.
-      if (!garage && (inBar === 0 || inBar === 10 || inBar === 6)) this.kick(t);
-      if (!garage && (inBar === 4 || inBar === 12)) this.snare(at, 0.9);
-      if (inBar === 7 || inBar === 9 || inBar === 15) this.snare(t, 0.28);
+      // Choppy breaks: each bar another chop of the same break (`BREAK_CHOPS`), the kick and snare moved about,
+      // ghost snares swung around them, and the last beat of every other bar stuttered in thirty-seconds.
+      const chop = BREAK_CHOPS[(bar * 3 + blockBar) % BREAK_CHOPS.length];
+      if (!garage && chop.kick.includes(inBar)) this.kick(t);
+      if (!garage && chop.snare.includes(inBar)) this.snare(at, 0.9);
+      if (chop.ghost.includes(inBar)) this.snare(t, 0.26);
       if (!garage && inBar % 2 === 0) this.hat(t, inBar % 4 === 2 ? 0.3 : 0.18, false);
-      if (last && inBar >= 12) this.snare(t, 0.5 + (inBar - 12) * 0.12);
+      if (bar % 2 === 1 && inBar >= 12) { this.snare(at, 0.3 + (inBar - 12) * 0.1); this.snare(at + GSTEP / 2, 0.2 + (inBar - 12) * 0.08); }
+      if (last && inBar >= 8) this.hat(at + GSTEP / 2, 0.16, false);
     }
+    // The electronic detail: an acid line squelching through the drops, bleeps answering the stabs, a laser falling
+    // into every block, and an 808 sub sliding down under each block's first beat.
+    if (block === 'drop' && inBar % 2 === 0) {
+      const n = BREAK_ACID[(bar % 2) * 8 + inBar / 2];
+      if (typeof n === 'number') this.acid(t, semi(this.root * 2, bassRoot + n), GSTEP * 1.8, inBar % 8 === 0);
+    }
+    if ((garage || breaks) && inBar === 14 && bar % 2 === 0) { this.bleep(t, semi(this.root * 16, chord[2]), semi(this.root * 16, chord[3] + 12), 0.07, 0.05); this.bleep(t + GSTEP, semi(this.root * 16, chord[3] + 12), semi(this.root * 16, chord[1]), 0.06, 0.04); }
+    if (breaks && inBar === 6 && bar % 4 === 3) this.bleep(at, 2400, 300, GSTEP * 3, 0.05, 'sawtooth');
+    if (last && inBar === 8) this.bleep(at, 3200, 120, GSTEP * 8, 0.05, 'square');
+    if (blockBar === 0 && inBar === 0 && block !== 'intro' && block !== 'break') this.slideSub(at, semi(this.root, bassRoot + 12), semi(this.root, bassRoot), GSTEP * 6);
     // The bass: a dubby sub line in the garage blocks, a growl in the breakbeat ones, one long sub in the break.
     if (block === 'break') {
       if (inBar === 0 && bar % 2 === 0) this.sub(at, semi(this.root, bassRoot), GBAR * 1.7);
@@ -939,6 +980,152 @@ class Engine {
     }
     // A sparkle of plucks over the intro.
     if (block === 'intro' && inBar % 4 === 2 && Math.random() < 0.5) this.pluck(t, semi(this.root * 8, chord[(step >> 2) % chord.length]));
+  }
+
+  /** An acid line: a saw through a resonant low-pass whose envelope snaps open, harder on the accents. */
+  private acid(at: number, freq: number, length: number, accent: boolean) {
+    const o = this.osc('sawtooth', freq, at, at + length + 0.05);
+    const lp = this.filt('lowpass', 300, accent ? 14 : 9);
+    lp.frequency.setValueAtTime(accent ? 2600 : 1500, at);
+    lp.frequency.exponentialRampToValueAtTime(260, at + length);
+    const g = this.ctx.createGain();
+    this.env(g, at, accent ? 0.16 : 0.11, 0.003, length * 0.8, 0.3, 0.03);
+    o.connect(lp).connect(g);
+    this.out(g, 0.12);
+  }
+  /** A bleep on the music: a quick pitch sweep. */
+  private bleep(at: number, from: number, to: number, length: number, vol: number, type: OscillatorType = 'square') {
+    const o = this.osc(type, from, at, at + length + 0.03);
+    o.frequency.exponentialRampToValueAtTime(Math.max(30, to), at + length);
+    const g = this.ctx.createGain();
+    this.env(g, at, vol, 0.002, length);
+    o.connect(g);
+    this.out(g, 0.25);
+  }
+  /** An 808 sub sliding down to its note. */
+  private slideSub(at: number, from: number, to: number, length: number) {
+    const o = this.osc('sine', from, at, at + length + 0.05);
+    o.frequency.exponentialRampToValueAtTime(to, at + 0.12);
+    const g = this.ctx.createGain();
+    this.env(g, at, 0.5, 0.005, length, 0.2, 0.05);
+    o.connect(this.shaper(2)).connect(g);
+    this.out(g);
+  }
+
+  /* --------------------------------------------- «Juicio final», drum and bass */
+
+  /** One sixteenth of the final boss's song, drum and bass unlike the rest: E Phrygian, a cathedral organ and choir,
+      a hoover bass diving into its notes and sliding between them, rolling drums with a ride and timpani, and the
+      final boss's tension layer on top as in every song. */
+  private scheduleDoom(step: number, at: number, song: Song) {
+    const bar = Math.floor(step / 16);
+    const inBar = step % 16;
+    const setBar = bar % (DOOM_FORM.length * 8);
+    const block = DOOM_FORM[Math.floor(setBar / 8)];
+    const blockBar = setBar % 8;
+    const second = setBar >= 32;
+    const chord = (second ? song.chordsB : song.chords)[Math.floor(bar / 2) % 4];
+    const bassRoot = (second ? song.rootsB : song.roots)[Math.floor(bar / 2) % 4];
+    if (this.final) this.tension(bar, inBar, at, chord);
+    const drums = block === 'roll' || block === 'drop' || block === 'peak';
+    const last = blockBar === 7;
+    if (inBar === 0 && blockBar === 0 && setBar !== 0) this.crash(at);
+    if (drums) {
+      // Rolling drums: the kick on one, the «and» of two and three, the snare on two and four, a ride on every eighth.
+      if (inBar === 0 || inBar === 7 || inBar === 10 || (block === 'peak' && inBar === 13)) this.kick(at);
+      if (inBar === 4 || inBar === 12) this.snare(at, 1);
+      if (inBar === 14 || (block !== 'roll' && inBar === 9)) this.snare(at, 0.22);
+      if (inBar % 2 === 0) this.ride(at, inBar % 4 === 0 ? 0.08 : 0.12);
+      if (inBar % 2 === 1) this.hat(at, 0.09, false);
+      // A snare roll building into each block's end, in thirty-seconds in the peak.
+      if (last && inBar >= 8) { this.snare(at, 0.25 + (inBar - 8) * 0.08); if (block === 'peak') this.snare(at + STEP / 2, 0.2 + (inBar - 8) * 0.06); }
+    } else {
+      // The intro and the break: timpani on the chord's root and a riser at the end.
+      if (inBar === 0 || (inBar === 12 && bar % 2 === 1)) this.timpani(at, semi(this.root * 2, bassRoot), inBar === 0 ? 0.5 : 0.3);
+      if (last && inBar >= 8 && inBar % 2 === 0) this.timpani(at, semi(this.root * 2, bassRoot), 0.2 + (inBar - 8) * 0.05);
+      if (blockBar === 6 && inBar === 0) this.riser(at, BAR * 2);
+    }
+    // The hoover: long notes that dive into place and slide to the next, two bars a line (`DOOM_HOOVER`).
+    if (block === 'drop' || block === 'peak') {
+      const n = DOOM_HOOVER[(bar % 2) * 4 + Math.floor(inBar / 4)];
+      if (inBar % 4 === 0 && typeof n === 'number') this.hoover(at, semi(this.root, bassRoot + n), STEP * 3.6, block === 'peak');
+      if (inBar === 0 || inBar === 8) this.sub(at, semi(this.root, bassRoot), STEP * 7);
+    } else if (block === 'roll') {
+      if (inBar === 0 || inBar === 10) this.sub(at, semi(this.root, bassRoot), inBar === 0 ? STEP * 9 : STEP * 5);
+    } else if (inBar === 0 && bar % 2 === 0) this.sub(at, semi(this.root, bassRoot), BAR * 1.8);
+    // The cathedral: a choir on every chord change, and the organ's slow melody (`DOOM_ORGAN`) over the roll, the break and the peak.
+    if (inBar === 0 && bar % 2 === 0) this.choir(at, chord, BAR * 2);
+    if (block === 'roll' || block === 'break' || block === 'peak' || block === 'intro') {
+      const line = DOOM_ORGAN[bar % 4];
+      const n = line[inBar / 4];
+      if (inBar % 4 === 0 && typeof n === 'number') {
+        let len = 1;
+        while (line[inBar / 4 + len] === null) len += 1;
+        this.organ(at, semi(this.root * 8, n), STEP * 4 * len - 0.02, block === 'intro' ? 0.05 : 0.08);
+      }
+    }
+    // A bell on the downbeat of every other bar in the peak.
+    if (block === 'peak' && inBar === 0 && bar % 2 === 0) this.bell(at, semi(this.root * 8, chord[0]));
+  }
+  /** A ride cymbal: bright noise through a high band, ringing a little. */
+  private ride(at: number, vol: number) {
+    const n = this.noiseAt(at, 0.4);
+    const bp = this.filt('bandpass', 7200, 1.4);
+    const g = this.ctx.createGain();
+    this.env(g, at, vol, 0.001, 0.32);
+    n.connect(bp).connect(g);
+    this.out(g, 0.1);
+  }
+  /** A timpani: a low sine with a drop in pitch and a thump of noise. */
+  private timpani(at: number, freq: number, vol: number) {
+    const o = this.osc('sine', freq * 1.5, at, at + 1.2);
+    o.frequency.exponentialRampToValueAtTime(freq, at + 0.08);
+    const g = this.ctx.createGain();
+    this.env(g, at, vol, 0.004, 0.9);
+    o.connect(g);
+    this.out(g, 0.35);
+    const n = this.noiseAt(at, 0.12);
+    const lp = this.filt('lowpass', 900, 1);
+    const ng = this.ctx.createGain();
+    this.env(ng, at, vol * 0.4, 0.001, 0.08);
+    n.connect(lp).connect(ng);
+    this.out(ng, 0.2);
+  }
+  /** The hoover: five wide-detuned saws diving into the note from above, through a low-pass that opens with it. */
+  private hoover(at: number, freq: number, length: number, big: boolean) {
+    const g = this.ctx.createGain();
+    const lp = this.filt('lowpass', 500, 3);
+    lp.frequency.setValueAtTime(600, at);
+    lp.frequency.linearRampToValueAtTime(big ? 3200 : 2200, at + length * 0.4);
+    lp.frequency.linearRampToValueAtTime(700, at + length);
+    this.env(g, at, big ? 0.2 : 0.16, 0.02, length * 0.6, 0.5, length * 0.3);
+    for (const d of [-38, -18, 0, 18, 38]) {
+      const o = this.osc('sawtooth', freq * 2 * 1.06, at, at + length + 0.1, d);
+      o.frequency.exponentialRampToValueAtTime(freq * 2, at + 0.09);
+      o.connect(lp);
+    }
+    const sub = this.osc('square', freq, at, at + length + 0.1);
+    sub.frequency.setValueAtTime(freq * 1.06, at);
+    sub.frequency.exponentialRampToValueAtTime(freq, at + 0.09);
+    sub.connect(lp);
+    lp.connect(this.shaper(3)).connect(g);
+    this.out(g, 0.15);
+  }
+  /** A cathedral organ: octaves of sine and square with a slow tremolo, into the reverb. */
+  private organ(at: number, freq: number, length: number, vol: number) {
+    const g = this.ctx.createGain();
+    this.env(g, at, vol, 0.03, length, 0.7, 0.25);
+    const trem = this.osc('sine', 5.5, at, at + length + 0.3);
+    const depth = this.ctx.createGain();
+    depth.gain.value = vol * 0.25;
+    trem.connect(depth).connect(g.gain);
+    for (const [mult, type] of [[1, 'square'], [2, 'sine'], [0.5, 'sine'], [3, 'sine']] as [number, OscillatorType][]) {
+      const o = this.osc(type, freq * mult, at, at + length + 0.3);
+      const lvl = this.ctx.createGain();
+      lvl.gain.value = type === 'square' ? 0.25 : 0.5;
+      o.connect(lvl).connect(g);
+    }
+    this.out(g, 0.5);
   }
 
   /* ------------------------------------------------------- v2 world songs */
