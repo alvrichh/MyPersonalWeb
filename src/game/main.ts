@@ -195,6 +195,11 @@ const SLOT_ICON: Record<Slot, string> = { head: '🪖', body: '🦺', boots: '�
 /** A painted icon with its emoji behind it for retro (the same switch as `skillIcon`). */
 const picIcon = (emoji: string, pic?: string) => pic ? `<img class="item-pic" src="./images/game/${pic}" alt=""><span class="skill-emoji">${emoji}</span>` : emoji;
 const STYLE_ICON: Record<EnemyStyle, string> = { world: '🌍', original: '🐞', demon: '😈', viking: '🪓', mud: '🐸', jungle: '🕷️', greek: '🏛️', robot: '🤖', nightmare: '💀', random: '🎲' };
+/** Each cast's row shows its boss, the one the cast is known by (the Valkyrie's and the Mud Monster's first pose cropped to the figure, since their sheets' canvas is mostly empty);
+    the world's own and the random mix keep their emoji, as does retro. */
+const STYLE_BOSS: Partial<Record<EnemyStyle, string>> = { viking: 'bosses/valkyrie-icon', mud: 'bosses/mudmonster-icon' };
+const styleIcon = (style: EnemyStyle) => style === 'world' || style === 'random' || save.retro ? STYLE_ICON[style]
+  : `<img class="scene-pic boss-pic" src="./images/game/${STYLE_BOSS[style] ?? `enemies/${style}-boss-0`}.webp" alt="">`;
 /** A boss's name: the cast's boss in room 6, the world's own final boss in room 12. */
 const bossTitle = (e: Enemy) => t(e.final ? (`final${cap(e.bossId)}` as Key) : BOSS_NAME[e.look]);
 const BOSS_NAME: Record<Look, Key> = { original: 'bossOriginal', demon: 'bossDemon', viking: 'bossViking', mud: 'bossMud', jungle: 'bossJungle', greek: 'bossGreek', robot: 'bossRobot', nightmare: 'bossNightmare' };
@@ -1179,7 +1184,7 @@ function stylesScreen(note = '') {
     }).join('')}</div>`;
   } else if (dressSlot === 'foes') {
     picks = `<h3 class="slot">${t('stylePick')}</h3><div class="gear-list">${STYLES.map((style) =>
-      row(`data-style="${style}"`, save.style === style, false, STYLE_ICON[style], t(`style${cap(style)}Name` as Key), t(`style${cap(style)}Text` as Key), save.style === style ? '✓' : '')).join('')}</div>`;
+      row(`data-style="${style}"`, save.style === style, false, styleIcon(style), t(`style${cap(style)}Name` as Key), t(`style${cap(style)}Text` as Key), save.style === style ? '✓' : '')).join('')}</div>`;
   } else if (dressSlot === 'song') {
     const songRow = (id: typeof save.song, icon: string, name: string, text: string) => row(`data-song="${id}"`, save.song === id, false, icon, name, text, save.song === id ? '✓' : '');
     picks = `<h3 class="slot">${t('songPick')}</h3><div class="gear-list">${(['auto', 'worlds', 'b2b', 'doom'] as const).map((id) =>
