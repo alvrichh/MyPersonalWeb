@@ -320,7 +320,7 @@ export type Orb = {
 export type BossTrail = { x: number; y: number; r: number; life: number; max: number; dmg: number; tone: string; from?: string };
 /** Every boss shot leaves a track: a dab every `every` seconds that lasts `life` and hurts for `share` of the shot. */
 const BOSS_TRAIL = { every: 0.05, life: 0.55, share: 0.4, cap: 360 };
-export type OrbPic = 'ember' | 'medusa' | 'mudball' | 'venom' | 'tornado' | 'fireball' | 'rocket' | 'leaf' | 'acid' | 'water' | 'ghost' | 'bolt' | 'spark';
+export type OrbPic = 'shark' | 'ember' | 'medusa' | 'mudball' | 'venom' | 'tornado' | 'fireball' | 'rocket' | 'leaf' | 'acid' | 'water' | 'ghost' | 'bolt' | 'spark';
 /** What a boss's attack looks like: its element. */
 export type ThreatEl = 'fire' | 'water' | 'mud' | 'arcane' | 'leaf' | 'bolt' | 'laser' | 'shadow' | 'glitch';
 /**
@@ -2742,18 +2742,46 @@ function channel(g: Game, e: Enemy, dt: number) {
 }
 
 /** A boss comes back down: a slam with a ring of shockwave orbs, or out of the shadows with a ring of its own. */
+/** What each boss's leap lands in: its element, the picture on the floor, and the shots it throws out (by bossId:
+    the cast bosses go by their look, the final bosses by their own id). */
+const LANDING: Record<string, { el: ThreatEl; fx: string; pic?: OrbPic; tone?: string }> = {
+  jungle: { el: 'leaf', fx: 'slam', pic: 'leaf' }, queen: { el: 'leaf', fx: 'slam', pic: 'acid' },
+  viking: { el: 'water', fx: 'shock-ring', pic: 'water' }, drakkar: { el: 'water', fx: 'shock-ring', pic: 'water' }, valdur: { el: 'water', fx: 'shock-ring', pic: 'water' },
+  demon: { el: 'fire', fx: 'boom-big', pic: 'fireball' }, archdemon: { el: 'fire', fx: 'boom-big', pic: 'fireball' }, chimera: { el: 'fire', fx: 'boom-big', pic: 'ember', tone: '#e879f9' },
+  greek: { el: 'bolt', fx: 'volt-burst', pic: 'bolt' }, zeus: { el: 'bolt', fx: 'volt-burst', pic: 'bolt' },
+  robot: { el: 'fire', fx: 'impact', pic: 'rocket', tone: '#fb923c' }, mech: { el: 'fire', fx: 'boom-big', pic: 'shark', tone: '#fb923c' },
+  nightmare: { el: 'shadow', fx: 'spectral-bolt', pic: 'ember', tone: '#a855f7' }, wraith: { el: 'shadow', fx: 'spectral-bolt', pic: 'ghost' },
+  mud: { el: 'mud', fx: 'mud-splat', pic: 'mudball' }, medusa: { el: 'arcane', fx: 'medusa-burst', pic: 'medusa' },
+  original: { el: 'glitch', fx: 'impact' }, kernel: { el: 'glitch', fx: 'impact' },
+};
 function bossLands(g: Game, e: Enemy) {
+  const orbs0 = g.orbs.length;
+  const threats0 = g.threats.length;
+  landing(g, e);
+  // what it threw out on landing is its own, like its other shots (its track, its status, the Medusa's colour)
+  for (let i = orbs0; i < g.orbs.length; i++) { g.orbs[i].from ??= e.bossId; if (e.bossId === 'medusa' && e.phase > 1) { g.orbs[i].alt = true; g.orbs[i].tone = '#2dd4bf'; } }
+  for (let i = threats0; i < g.threats.length; i++) { g.threats[i].from ??= e.bossId; if (e.bossId === 'medusa' && e.phase > 1) g.threats[i].alt = true; }
+}
+function landing(g: Game, e: Enemy) {
   const what = e.land;
   e.land = '';
   e.vanish = false;
   if (what === 'slam') {
-    const el: ThreatEl = e.bossId === 'valdur' ? 'water' : 'leaf';
+    // Each boss lands in its own element: its burst on the floor and its own shots flying out (the Treant's leaf
+    // arrows were everyone's once every boss leapt on call).
+    const land = LANDING[e.bossId] ?? LANDING.jungle;
+    const el = land.el;
     circle(g, e, 66, 0, Math.round(e.dmg * 0.9), el);
     g.fx.push({ kind: 'ring', x: e.x, y: e.y, r: 70, a: 0, life: 0.4, max: 0.4, big: true });
-    // The hammer's painted slam under it (blue rings of water for Valdur).
-    g.fx.push({ kind: 'pic', pic: el === 'water' ? 'shock-ring' : 'slam', x: e.x, y: e.y + e.r * 0.5, r: 80, a: 0, life: 0.45, max: 0.45 });
+    g.fx.push({ kind: 'pic', pic: land.fx, x: e.x, y: e.y + e.r * 0.5, r: 80, a: 0, life: 0.45, max: 0.45 });
     g.shake = Math.max(g.shake, 0.35);
-    ring(g, e, 8, 120, TONE[el], undefined, el === 'water' ? 'water' : 'leaf');
+    if (e.bossId === 'mech') {
+      // The Mech lands in a full volley of shark missiles: stronger than a ring, and they turn after you a moment.
+      for (let i = 0; i < 10; i++) {
+        const a = (i / 10) * Math.PI * 2 + rand(-0.1, 0.1);
+        g.orbs.push({ x: e.x, y: e.y, vx: Math.cos(a) * 135, vy: Math.sin(a) * 135, r: 8, dmg: Math.round(e.dmg * 0.85), life: 5, bounce: 0, tone: '#fb923c', home: 1.4, pic: 'shark' });
+      }
+    } else ring(g, e, 8, 120, land.tone ?? TONE[el], undefined, land.pic);
     // Valdur roars as he lands.
     if (e.bossId === 'valdur') { e.pose = 0.6; e.act = 'move'; }
   } else {
@@ -2762,7 +2790,7 @@ function bossLands(g: Game, e: Enemy) {
     if (!e.clone) ring(g, e, 12, 100, TONE.shadow, undefined, 'ghost');
     g.fx.push({ kind: 'pic', pic: 'spectral-bolt', top: true, x: e.x, y: e.y - e.r * 0.3, r: e.r * 1.2, a: 0, life: 0.4, max: 0.4 });
   }
-  burst(g, e.x, e.y, what !== 'slam' ? '#a78bfa' : e.bossId === 'valdur' ? '#7dd3fc' : '#86efac', 20, 150, 3);
+  burst(g, e.x, e.y, what !== 'slam' ? '#a78bfa' : (LANDING[e.bossId] ?? LANDING.jungle).tone ?? TONE[(LANDING[e.bossId] ?? LANDING.jungle).el], 20, 150, 3);
 }
 
 /** Distance from a point to the segment from (x, y) along angle a for len. */

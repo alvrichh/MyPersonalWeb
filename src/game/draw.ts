@@ -2617,6 +2617,7 @@ const ORB_PIC: Record<OrbPic | 'medusa2', { src: 'fx' | 'arrow'; name: string; w
   tornado: { src: 'fx', name: 'tornado-0', w: 0, at: 0 },
   fireball: { src: 'fx', name: 'fireball', w: 44, at: 0.78 },
   rocket: { src: 'fx', name: 'rocket', w: 30, at: 0.75 },
+  shark: { src: 'fx', name: 'rocket-shark', w: 40, at: 0.75 },
   leaf: { src: 'arrow', name: 'leaf', w: 32, at: 1, trail: 'leaf-trail' },
   // The Queen's acid: a bigger leaf arrow in a wide, pale glow, so it stands out on the jungle floor.
   acid: { src: 'arrow', name: 'leaf', w: 46, at: 1, trail: 'leaf-trail', glow: 2.6 },
