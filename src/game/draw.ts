@@ -4968,7 +4968,18 @@ export function drawBoardFigure(ctx: CanvasRenderingContext2D, f: BoardFigure, n
   const painted = !retroLook && drawEnemySprite(ctx, e);
   if (!painted) LOOKS[f.look][f.kind](ctx, e, now);
 }
-/** A world's painted floor, for the board. */
-export const boardFloor = (world: number) => floorImage(world);
 /** An effect picture, for the board. */
 export const boardFx = (name: string) => fxImage(name);
+/** The board's backdrop: the world's floor, its plain middle without the painted walls, as the open field draws it,
+    filling the whole screen under the board, the top bar and the shop (the transform is the board's own). */
+export function drawBoardBackdrop(ctx: CanvasRenderingContext2D, world: number, vis: Rect, retro: boolean) {
+  const theme = WORLDS[world - 1];
+  ctx.fillStyle = theme.floor;
+  ctx.fillRect(vis.x, vis.y, vis.w, vis.h);
+  const floor = retro ? undefined : floorImage(world);
+  const pattern = floor && ready(floor) ? fieldPattern(ctx, floor, W * FLOOR_CROP.w, H * FLOOR_CROP.h) : null;
+  if (pattern) {
+    ctx.fillStyle = pattern;
+    ctx.fillRect(vis.x, vis.y, vis.w, vis.h);
+  }
+}
