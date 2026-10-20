@@ -522,7 +522,7 @@ export type Game = {
   bladePick: BladeElement | null;
   /** The arrow look the player picked in the skills list (null: the first bow upgrade owned). */
   arrowPick: ArrowLook | null;
-  /** On call: level-up rerolls left (two a shift). */
+  /** Level-up rerolls left: two a run, in both modes. */
   rerolls: number;
   style: EnemyStyle;
   /** Coins earned this run (banked by the page when the run ends). */
@@ -864,7 +864,7 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     loadout,
     bladePick: null,
     arrowPick: null,
-    rerolls: mode === 'horde' ? 2 : 0,
+    rerolls: 2,
     style,
     coins: 0,
     revives: loadout.revives,
@@ -2050,7 +2050,7 @@ export function adRevive(g: Game) {
   return true;
 }
 /** On call: once a shift, an ad buys one more reroll when the two are spent. */
-export const canAdReroll = (g: Game) => g.mode === 'horde' && g.phase === 'levelup' && g.rerolls <= 0 && !g.adRerolled;
+export const canAdReroll = (g: Game) => g.phase === 'levelup' && g.rerolls <= 0 && !g.adRerolled;
 export function adReroll(g: Game) {
   if (!canAdReroll(g)) return false;
   g.adRerolled = true;
