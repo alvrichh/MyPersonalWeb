@@ -1980,9 +1980,10 @@ function boardStep(dt: number, now: number) {
   const top = boardTop.getBoundingClientRect().bottom - rect.top + 6;
   const bottom = boardShop.getBoundingClientRect().top - rect.top - 6;
   boardLay = layoutBoard(canvas.clientWidth, top, bottom);
-  // The bonuses' column on the left, just under the halfway line.
-  const sideAt = `${Math.round(rect.left + boardLay.ox + 4)}px,${Math.round(rect.top + boardLay.oy + HOME_ROW * CELL * boardLay.s + 6)}px`;
-  if (boardSide.dataset.at !== sideAt) { boardSide.dataset.at = sideAt; const [x, y] = sideAt.split(','); boardSide.style.left = x; boardSide.style.top = y; }
+  // The bonuses' column on the left, standing on top of the wall at the halfway line: it grows upwards as more come.
+  const wallTop = rect.top + boardLay.oy + (HOME_ROW * CELL - 4) * boardLay.s;
+  const sideAt = `${Math.round(rect.left + boardLay.ox + 4)}px,${Math.round(window.innerHeight - wallTop + 8)}px`;
+  if (boardSide.dataset.at !== sideAt) { boardSide.dataset.at = sideAt; const [x, y] = sideAt.split(','); boardSide.style.left = x; boardSide.style.bottom = y; boardSide.style.top = 'auto'; }
   ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
   ctx.fillStyle = '#0b0820';
   ctx.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);

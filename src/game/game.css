@@ -4152,7 +4152,7 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .board-float[hidden] { display: none; }
 /* The board's bonuses: a column of medallions on the left under the halfway line (the round's event first), each
    with its count; lit once it counts, dim before. A tap opens their panel. */
-.board-side { position: fixed; z-index: 2; display: flex; flex-direction: column; gap: 6px; pointer-events: auto; }
+.board-side { position: fixed; z-index: 2; display: flex; flex-direction: column-reverse; gap: 8px; pointer-events: auto; }
 .board-bonus { position: relative; width: 38px; height: 38px; padding: 0; border: 0; border-radius: 50%; background: none; cursor: pointer; }
 .board-bonus img { width: 100%; height: 100%; border-radius: 50%; filter: grayscale(0.85) brightness(0.65); }
 .board-bonus.is-on img { filter: drop-shadow(0 0 6px rgba(253, 224, 71, 0.8)); }
