@@ -1672,7 +1672,7 @@ let boardEnded: number | null = null;
 /** The board's two ways to play, picked each time a board run starts from the cover (the last pick ticked): Fusion,
     green, and Tactics, gold; the map's play button offers them as its two options. */
 function boardVariantScreen(world: number) {
-  const opt = (v: 'fusion' | 'tactics') => `<button class="primary book-mode is-${v === 'fusion' ? 'sprints' : 'gold'}${save.boardVariant === v ? ' is-on' : ''}" type="button" data-act="board-variant" data-variant="${v}" data-bworld="${world}"><b>${v === 'fusion' ? '🧬' : '⭐'} ${t(v === 'fusion' ? 'boardFusion' : 'boardTactics')}${save.boardVariant === v ? ' ✓' : ''}</b><small>${t(v === 'fusion' ? 'boardFusionText' : 'boardTacticsText')}</small></button>`;
+  const opt = (v: 'fusion' | 'tactics') => `<button class="primary book-mode board-variant is-${v === 'fusion' ? 'sprints' : 'gold'}${save.boardVariant === v ? ' is-on' : ''}" type="button" data-act="board-variant" data-variant="${v}" data-bworld="${world}"><b>${v === 'fusion' ? '🧬' : '⭐'} ${t(v === 'fusion' ? 'boardFusion' : 'boardTactics')}${save.boardVariant === v ? ' ✓' : ''}</b></button>`;
   show(`<button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
     <h2>${MODE_ICON.board} ${t('modeBoard')}</h2>
     <p>${t('boardVariantPick')}</p>
