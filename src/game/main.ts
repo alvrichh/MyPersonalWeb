@@ -1611,7 +1611,7 @@ function startBoard(world: number) {
   board = newBoard(world, save.boardUnlocked);
   const key = heroKey(save.skin, save.equipped.head);
   const pic = (pose: string) => Object.assign(new Image(), { src: `./images/game/hero/${key}-${pose}.webp` });
-  heroPics = { front: pic('front'), shoot: pic('shoot'), hurt: pic('hurt'), cheer: pic('cheer'), down: pic('down'), pad: Object.assign(new Image(), { src: './images/game/ui/portal_pad.webp' }) };
+  heroPics = { front: pic('front'), shoot: pic('shoot'), hurt: pic('hurt'), cheer: pic('cheer'), down: pic('down'), pad: Object.assign(new Image(), { src: './images/game/ui/portal_pad.webp' }), padRed: Object.assign(new Image(), { src: './images/game/ui/portal_pad_red.webp' }) };
   boardEnded = null;
   boardTime = 0;
   boardBanked = false;
