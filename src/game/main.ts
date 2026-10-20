@@ -195,11 +195,10 @@ const SLOT_ICON: Record<Slot, string> = { head: '🪖', body: '🦺', boots: '�
 /** A painted icon with its emoji behind it for retro (the same switch as `skillIcon`). */
 const picIcon = (emoji: string, pic?: string) => pic ? `<img class="item-pic" src="./images/game/${pic}" alt=""><span class="skill-emoji">${emoji}</span>` : emoji;
 const STYLE_ICON: Record<EnemyStyle, string> = { world: '🌍', original: '🐞', demon: '😈', viking: '🪓', mud: '🐸', jungle: '🕷️', greek: '🏛️', robot: '🤖', nightmare: '💀', random: '🎲' };
-/** Each cast's row shows its boss, the one the cast is known by (the Valkyrie's and the Mud Monster's first pose cropped to the figure, since their sheets' canvas is mostly empty);
-    the world's own and the random mix keep their emoji, as does retro. */
-const STYLE_BOSS: Partial<Record<EnemyStyle, string>> = { viking: 'bosses/valkyrie-icon', mud: 'bosses/mudmonster-icon' };
+/** Each cast's row shows its plain bug, the weakest and most common of its enemies (its first walking frame cropped to the
+    figure and squared, `enemies/<look>-bug-icon.webp`); the world's own and the random mix keep their emoji, as does retro. */
 const styleIcon = (style: EnemyStyle) => style === 'world' || style === 'random' || save.retro ? STYLE_ICON[style]
-  : `<img class="scene-pic boss-pic" src="./images/game/${STYLE_BOSS[style] ?? `enemies/${style}-boss-0`}.webp" alt="">`;
+  : `<img class="scene-pic boss-pic" src="./images/game/enemies/${style}-bug-icon.webp" alt="">`;
 /** A boss's name: the cast's boss in room 6, the world's own final boss in room 12. */
 const bossTitle = (e: Enemy) => t(e.final ? (`final${cap(e.bossId)}` as Key) : BOSS_NAME[e.look]);
 const BOSS_NAME: Record<Look, Key> = { original: 'bossOriginal', demon: 'bossDemon', viking: 'bossViking', mud: 'bossMud', jungle: 'bossJungle', greek: 'bossGreek', robot: 'bossRobot', nightmare: 'bossNightmare' };
