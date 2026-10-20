@@ -8,7 +8,7 @@ import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPr
 import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
 import { draw, drawRetroFigure, preloadCast, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
-import { ROUNDS, SYNERGY, TACTICS, armyCap, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, updateBoard, type BoardGame } from './board';
+import { CELL, HOME_ROW, ROUNDS, SYNERGY, TACTICS, armyCap, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, updateBoard, type BoardGame } from './board';
 import { FIREBALL, boardMerged, drawBoard, drawBoardDrag, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
 import type { Enemy } from './world';
 import { ARMOUR_SLOTS, ARSENAL, ITEMS, itemLevel, type SpiritSkin, UPGRADES, WEAPON_SLOTS, EXTRA_SLOT_PRICE, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
@@ -1653,6 +1653,7 @@ function startRun(world = worldIn(), mode: PlayMode = save.mode, endless = false
 const boardUi = $<HTMLElement>('boardUi');
 const boardTop = $<HTMLElement>('boardTop');
 const boardShop = $<HTMLElement>('boardShop');
+const boardSide = $<HTMLElement>('boardSide');
 /** The dragged unit's own canvas, over the top bar and the shop (cleared once after a drag ends). */
 let floatDrawn = false;
 /** The auto-merge whose lightning has crackled already. */
@@ -1721,6 +1722,7 @@ function endBoard() {
   boardDrag = null;
   boardUi.hidden = true;
   boardFloat.hidden = true;
+  closeGearPanel();
 }
 /** Banks a finished board run, once: coins, the world's record, a world opened, the totals. */
 function bankBoard(b: BoardGame): number | null {
@@ -1747,6 +1749,35 @@ function bankBoard(b: BoardGame): number | null {
 
 const boardPic = (tier: number, cast: number) => `./images/game/enemies/${castLook(cast)}-${TIER_KIND[tier]}-0.webp`;
 const boardTierName = (tier: number) => t(`boardTier${tier}` as Key);
+
+/** The board's bonuses as medallions from the rest of the game: the round's event, then each world with two or more
+    of your units, its synergy's skill medallion (lit once it counts). */
+const SYN_PIC: Record<number, string> = { 1: 'skills/heart.webp', 2: 'skills/fire.webp', 3: 'skills/frost.webp', 4: 'skills/bracer.webp', 5: 'skills/drink.webp', 6: 'skills/speed.webp', 7: 'skills/spark.webp', 8: 'skills/dodge.webp', 9: 'skills/power.webp' };
+const EVENT_PIC: Record<string, string> = { gold: 'ui/wheel/coins.webp', frenzy: 'skills/rage.webp', giants: 'skills/giant.webp', bounty: 'skills/crit.webp' };
+function boardBonuses(b: BoardGame) {
+  const out: { pic: string; name: string; text: string; count: string; on: boolean; event: boolean }[] = [];
+  if (b.event) out.push({ pic: EVENT_PIC[b.event], name: t(`boardEvent${cap(b.event)}` as Key), text: t(`boardEvent${cap(b.event)}Text` as Key), count: '⭐', on: true, event: true });
+  for (const x of synergies(b).filter((y) => y.n >= 2)) {
+    const need = x.lv >= 1 ? SYNERGY.need[1] : SYNERGY.need[0];
+    out.push({ pic: SYN_PIC[x.cast], name: `${WORLD_ICON[x.cast - 1]} ${worldName(x.cast)}`, text: t(`boardSyn${x.cast}` as Key), count: x.lv >= 2 ? `${x.n} ★` : `${x.n}/${need}`, on: x.lv > 0, event: false });
+  }
+  return out;
+}
+/** The bonuses' panel: the run's skills panel, with each one's medallion, name, count and what it does. */
+function openBoardBonus() {
+  const b = board;
+  if (!b) return;
+  const rows = boardBonuses(b).map((x) => `<li${x.on ? '' : ' class="is-off"'}><span class="gp-icon"><img src="./images/game/${x.pic}" alt="" width="34" height="34"></span><span class="gp-copy"><b>${x.name}</b><small>${x.text}</small></span><em>${x.count}</em></li>`).join('');
+  gearPanel.innerHTML = `<header><b>${t('boardBonusTitle')}</b><button type="button" class="gp-close" aria-label="${t('resume')}">✕</button></header>
+    <ul>${rows}</ul><p class="gp-hint">${t('boardBonusHint', { need: SYNERGY.need[0], more: SYNERGY.need[1] })}</p>`;
+  const box = boardSide.getBoundingClientRect();
+  gearPanel.style.top = `${Math.round(box.top)}px`;
+  gearPanel.style.right = `${Math.round(window.innerWidth - box.right - Math.min(300, window.innerWidth - 80) - 8)}px`;
+  gearPanel.hidden = false;
+  gearPanel.classList.add('fade-scroll', 'is-board');
+  fadeEdges(gearPanel);
+  paused = true;
+}
 
 /** The top bar and the shop, rebuilt only when something on them changes. */
 function renderBoardUi() {
@@ -1776,11 +1807,13 @@ function renderBoardUi() {
   const cards = b.shop.map((o, i) => o
     ? `<button class="board-card${b.variant === 'tactics' ? ` is-r${o.tier}${starsUp(o) ? ' is-up' : ''}` : ''}" type="button" data-bact="buy" data-i="${i}"${!prep || b.gold < o.price ? ' disabled' : ''}><i class="board-cast">${t('worldShort', { n: o.cast })}</i><img src="${boardPic(o.tier, o.cast)}" alt="">${b.variant === 'tactics' && starsUp(o) ? '<em class="board-up">★↑</em>' : ''}<b>${boardTierName(o.tier)}</b><span class="board-price">${coin} ${o.price}</span></button>`
     : '<span class="board-card is-sold"></span>').join('');
+  // The round's event and each world's synergy, a column of medallions on the left under the halfway line; a tap
+  // lists them with what they do, like a run's skills panel.
+  const bonus = boardBonuses(b);
+  boardSide.innerHTML = bonus.map((x) => `<button class="board-bonus${x.on ? ' is-on' : ''}${x.event ? ' is-event' : ''}" type="button" data-bact="bonus" aria-label="${x.name}"><img src="./images/game/${x.pic}" alt=""><small>${x.count}</small></button>`).join('');
   boardShop.innerHTML = prep ? `
     <div class="board-row">
       <span class="board-count" aria-label="${t('boardCapLabel')}">♟ ${b.army.length}/${armyCap(b.round)}</span>
-      ${syns.filter((x) => x.n >= 2).map((x) => `<button class="board-syn is-lv${x.lv}" type="button" data-bact="syn" data-cast="${x.cast}" aria-label="${t(`boardSyn${x.cast}` as Key)}">${WORLD_ICON[x.cast - 1]} ${x.n}/${x.lv >= 1 ? SYNERGY.need[1] : SYNERGY.need[0]}</button>`).join('')}
-      ${b.event ? `<span class="board-event">⭐ ${t(`boardEvent${cap(b.event)}` as Key)}</span>` : ''}
     </div>
     <div class="board-sellzone">
       ${fusion ? '' : `<div class="board-cards">${cards}</div>`}
@@ -1842,7 +1875,7 @@ boardUi.addEventListener('click', (event) => {
   }
   else if (act === 'speed') { boardFast = !boardFast; audio.play('click'); }
   else if (act === 'skill') { if (commanderStrike(b)) audio.play('shoot'); }
-  else if (act === 'syn') { const c = Number(el.dataset.cast); flash(t('boardSynLine', { world: WORLD_ICON[c - 1], gift: t(`boardSyn${c}` as Key), need: SYNERGY.need[0], more: SYNERGY.need[1] })); }
+  else if (act === 'bonus') openBoardBonus();
   else if (act === 'fight') {
     boardFast = false;
     if (startFight(b)) { audio.play('door'); audio.setIntensity(0.7); audio.setBoss(b.round === ROUNDS); }
@@ -1943,6 +1976,9 @@ function boardStep(dt: number, now: number) {
   const top = boardTop.getBoundingClientRect().bottom - rect.top + 6;
   const bottom = boardShop.getBoundingClientRect().top - rect.top - 6;
   boardLay = layoutBoard(canvas.clientWidth, top, bottom);
+  // The bonuses' column on the left, just under the halfway line.
+  const sideAt = `${Math.round(rect.left + boardLay.ox + 4)}px,${Math.round(rect.top + boardLay.oy + HOME_ROW * CELL * boardLay.s + 6)}px`;
+  if (boardSide.dataset.at !== sideAt) { boardSide.dataset.at = sideAt; const [x, y] = sideAt.split(','); boardSide.style.left = x; boardSide.style.top = y; }
   ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
   ctx.fillStyle = '#0b0820';
   ctx.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
@@ -2537,6 +2573,7 @@ function renderGearPanel(g: Game) {
 function closeGearPanel() {
   if (gearPanel.hidden) return;
   gearPanel.hidden = true;
+  gearPanel.classList.remove('is-board');
   document.documentElement.classList.remove('gear-open');
   paused = false;
 }
