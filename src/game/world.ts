@@ -87,7 +87,8 @@ export type Hazard = { kind: 'lava' | 'puddle' | 'thorns'; x: number; y: number;
 export type Strike = { x: number; y: number; t: number; ice?: boolean; hit?: boolean };
 
 export type Vec = { x: number; y: number };
-export type Rect = { x: number; y: number; w: number; h: number };
+/** A block; `piece` says which of the world's pieces of its size it is drawn as (the open field's blocks carry it). */
+export type Rect = { x: number; y: number; w: number; h: number; piece?: number };
 
 /* --------------------------------------------------------------- the picks */
 
@@ -506,6 +507,9 @@ export type Game = {
   fireballs: Fireball[];
   spirits: Spirit[];
   obstacles: Rect[];
+  /** On call: the run's seed for the field's blocks, and the cell the hero stood in when they were last laid out. */
+  fieldSeed: number;
+  fieldKey: string;
   door: boolean;
   skills: Record<SkillId, number>;
   /** Weapons that have evolved (see EVO_PARTNER). */
@@ -854,6 +858,8 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     fireballs: [],
     spirits: [],
     obstacles: [],
+    fieldSeed: Math.floor(Math.random() * 2 ** 31),
+    fieldKey: '',
     door: false,
     skills: Object.fromEntries(SKILLS.map((s) => [s, 0])) as Record<SkillId, number>,
     evolved: {},
@@ -907,9 +913,10 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
 
 /** The open field: the hero in the middle of nowhere, the world's weather, and the first bugs on their way. */
 function startField(g: Game) {
-  g.obstacles = [];
   g.player.x = 0;
   g.player.y = 0;
+  g.fieldKey = '';
+  layField(g);
   const def = WORLDS[g.world - 1];
   g.hazard = def.hazard === 'mixed' ? 'lava' : def.hazard;
   g.hazards = [];
@@ -920,16 +927,81 @@ function startField(g: Game) {
   g.events.push('room');
 }
 
-/** A point on a ring round the hero, just past the edge of what the page shows (`k` scales it). */
+/* The world's blocks scattered over the open field, so its pieces show on call too. The field is cut into cells and
+   each cell's blocks come from a hash of its place and the run's seed, so a cell left behind and found again holds the
+   same ones; only the cells round the hero are kept in `g.obstacles`. Every block is one of the room layouts' blocks,
+   with its place among them as its `piece`, so it is drawn as that piece. */
+const FIELD_CELL = 300;
+/** How many cells out from the hero's are kept (past the spawn ring and the stragglers' reach). */
+const FIELD_REACH = 3;
+/** The ground round the hero's starting spot stays clear. */
+const FIELD_CLEAR = 170;
+const FIELD_KINDS: Rect[] = (() => {
+  const kinds: Rect[] = [];
+  for (const layout of LAYOUTS) {
+    layout.forEach((o, i) => {
+      const piece = layout.slice(0, i).filter((b) => b.w === o.w && b.h === o.h).length;
+      if (!kinds.some((k) => k.w === o.w && k.h === o.h && k.piece === piece)) kinds.push({ x: 0, y: 0, w: o.w, h: o.h, piece });
+    });
+  }
+  return kinds;
+})();
+/** A small seeded random source (mulberry32) for one cell. */
+function cellRandom(seed: number, cx: number, cy: number) {
+  let a = (seed ^ Math.imul(cx, 0x27d4eb2d) ^ Math.imul(cy, 0x165667b1)) >>> 0;
+  return () => {
+    a = (a + 0x6d2b79f5) >>> 0;
+    let t = a;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+/** A cell's blocks: none a quarter of the time, one half of it, two well apart the rest (about three a screen). */
+function cellBlocks(seed: number, cx: number, cy: number): Rect[] {
+  const rnd = cellRandom(seed, cx, cy);
+  const roll = rnd();
+  const count = roll < 0.25 ? 0 : roll < 0.75 ? 1 : 2;
+  const out: Rect[] = [];
+  const margin = 40;
+  for (let i = 0; i < count; i++) {
+    const kind = FIELD_KINDS[Math.floor(rnd() * FIELD_KINDS.length)];
+    const b = { ...kind, x: cx * FIELD_CELL + margin + rnd() * (FIELD_CELL - 2 * margin - kind.w), y: cy * FIELD_CELL + margin + rnd() * (FIELD_CELL - 2 * margin - kind.h) };
+    if (inRect({ x: 0, y: 0 }, b, FIELD_CLEAR)) continue;
+    if (out.some((o) => b.x < o.x + o.w + 80 && o.x < b.x + b.w + 80 && b.y < o.y + o.h + 80 && o.y < b.y + b.h + 80)) continue;
+    out.push(b);
+  }
+  return out;
+}
+/** Lays out the blocks round the hero again whenever the hero walks into another cell. */
+function layField(g: Game) {
+  const cx = Math.floor(g.player.x / FIELD_CELL);
+  const cy = Math.floor(g.player.y / FIELD_CELL);
+  const key = `${cx},${cy}`;
+  if (key === g.fieldKey) return;
+  g.fieldKey = key;
+  const blocks: Rect[] = [];
+  for (let dx = -FIELD_REACH; dx <= FIELD_REACH; dx++)
+    for (let dy = -FIELD_REACH; dy <= FIELD_REACH; dy++) blocks.push(...cellBlocks(g.fieldSeed, cx + dx, cy + dy));
+  g.obstacles = blocks;
+}
+
+/** A point on a ring round the hero, just past the edge of what the page shows (`k` scales it), off the field's blocks. */
 function ringSpot(g: Game, k = 1): Vec {
   const p = g.player;
-  const a = rand(0, Math.PI * 2);
   const r = (Math.hypot(g.viewHalf.x, g.viewHalf.y) + 40) * k;
-  return { x: p.x + Math.cos(a) * r, y: p.y + Math.sin(a) * r };
+  let at: Vec = p;
+  for (let tries = 0; tries < 8; tries++) {
+    const a = rand(0, Math.PI * 2);
+    at = { x: p.x + Math.cos(a) * r, y: p.y + Math.sin(a) * r };
+    if (!g.obstacles.some((o) => inRect(at, o, 24))) break;
+  }
+  return at;
 }
 
 /** Ten minutes of bugs: the spawns speed up, the kinds widen, bosses come at 5:00 and 10:00. */
 function updateHorde(g: Game, dt: number) {
+  layField(g);
   const minute = g.time / 60;
   const before = Math.floor((g.time - dt) / 60);
   if (Math.floor(minute) > before && (g.endless || g.time < HORDE_LENGTH)) {

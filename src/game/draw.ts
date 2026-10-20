@@ -49,7 +49,7 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   if (horde) drawField(ctx, g, vis, now);
   else drawRoom(ctx, g, accent, now);
   drawHazards(ctx, g, now);
-  if (!horde) drawObstacles(ctx, g, accent, now);
+  drawObstacles(ctx, g, accent, now);
   drawGems(ctx, g, now);
   if (g.chest) drawChest(ctx, g.chest, now);
   drawHearts(ctx, g, now);
@@ -335,7 +335,8 @@ function drawObstacles(ctx: CanvasRenderingContext2D, g: Game, accent: string, n
     // Every world but the jungle: the owner drew one piece for each block of each layout (servers, volcanic
     // stone, ice, marble and gold, furnace crates, graves, the Core's obsidian), named by its size and its place among the blocks of that size (left to right, top to bottom).
     const size = `${o.w}x${o.h}`;
-    const slot = `${size}-${g.obstacles.filter((b) => `${b.w}x${b.h}` === size).indexOf(o)}`;
+    // The open field's blocks say which piece they are; a room's are named by their place in its layout.
+    const slot = `${size}-${o.piece ?? g.obstacles.filter((b) => `${b.w}x${b.h}` === size).indexOf(o)}`;
     const own = stones && LAYOUT_SET[stones] ? LAYOUT_SET[stones] + slot : '';
     const pic = setImage(set!, LAYOUT_PIECES.has(slot) && own ? own : !byShape
       ? LAYOUT_SET[stones!] + (ratio > 3.2 ? '100x24-0' : ratio > 1.7 ? '64x26-0' : '36x36-0')
