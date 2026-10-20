@@ -369,7 +369,7 @@ export type Orb = {
 export type BossTrail = { x: number; y: number; r: number; life: number; max: number; dmg: number; tone: string; from?: string };
 /** Every boss shot leaves a track: a dab every `every` seconds that lasts `life` and hurts for `share` of the shot. */
 const BOSS_TRAIL = { every: 0.05, life: 0.55, share: 0.4, cap: 360 };
-export type OrbPic = 'durian' | 'shark' | 'ember' | 'medusa' | 'mudball' | 'venom' | 'tornado' | 'fireball' | 'rocket' | 'leaf' | 'acid' | 'water' | 'ghost' | 'bolt' | 'spark';
+export type OrbPic = 'glitch' | 'durian' | 'shark' | 'ember' | 'medusa' | 'mudball' | 'venom' | 'tornado' | 'fireball' | 'rocket' | 'leaf' | 'acid' | 'water' | 'ghost' | 'bolt' | 'spark';
 /** What a boss's attack looks like: its element. */
 export type ThreatEl = 'fire' | 'water' | 'mud' | 'arcane' | 'leaf' | 'bolt' | 'laser' | 'shadow' | 'glitch';
 /**
@@ -2617,7 +2617,7 @@ function inside(g: Game, v: Vec, m: number): Vec {
   return { x: clamp(v.x, b.x + m, b.x + b.w - m), y: clamp(v.y, b.y + m, b.y + b.h - m) };
 }
 /** The final bosses' rings fly as their element's weapon pictures (the cast bosses keep the plain orbs). */
-const RING_PIC: Partial<Record<string, OrbPic>> = { demon: 'fireball', viking: 'water', jungle: 'leaf', greek: 'bolt', robot: 'spark', chimera: 'ember', nightmare: 'ember', mud: 'mudball', medusa: 'medusa', archdemon: 'fireball', kratos: 'fireball', kratos2: 'bolt', drakkar: 'water', valdur: 'water', queen: 'leaf', zeus: 'bolt', mech: 'spark', wraith: 'ghost' };
+const RING_PIC: Partial<Record<string, OrbPic>> = { original: 'glitch', kernel: 'glitch', demon: 'fireball', viking: 'water', jungle: 'leaf', greek: 'bolt', robot: 'spark', chimera: 'ember', nightmare: 'ember', mud: 'mudball', medusa: 'medusa', archdemon: 'fireball', kratos: 'fireball', kratos2: 'bolt', drakkar: 'water', valdur: 'water', queen: 'leaf', zeus: 'bolt', mech: 'spark', wraith: 'ghost' };
 /** Rings in a colour of their own (glow and track); the rest are the usual red. The Lich's embers are purple. */
 const RING_TONE: Partial<Record<string, string>> = { nightmare: '#a855f7', chimera: '#e879f9' };
 const ring = (g: Game, e: Enemy, n: number, speed: number, tone = '', turn = rand(0, Math.PI * 2), pic?: OrbPic) => {
@@ -2797,7 +2797,7 @@ function worldMove(g: Game, e: Enemy, move: Move) {
       for (const [k, speed] of [150, 185, 220].entries()) {
         for (const off of [-0.18, 0, 0.18]) {
           const a = aim + off + (k - 1) * 0.04;
-          g.orbs.push({ x: e.x, y: e.y, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, r: 6, dmg, life: 5, bounce: 0, tone: TONE.glitch });
+          g.orbs.push({ x: e.x, y: e.y, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, r: 6, dmg, life: 5, bounce: 0, tone: TONE.glitch, pic: 'glitch' });
         }
       }
       break;
@@ -3008,7 +3008,7 @@ function channel(g: Game, e: Enemy, dt: number) {
       e.chanTick = 0.11;
       const a = e.chan * 2.3;
       for (const off of [0, Math.PI]) {
-        g.orbs.push({ x: e.x, y: e.y, vx: Math.cos(a + off) * 135, vy: Math.sin(a + off) * 135, r: 6, dmg: Math.round(e.dmg * 0.55), life: 4.5, bounce: 0, tone: TONE.glitch });
+        g.orbs.push({ x: e.x, y: e.y, vx: Math.cos(a + off) * 135, vy: Math.sin(a + off) * 135, r: 6, dmg: Math.round(e.dmg * 0.55), life: 4.5, bounce: 0, tone: TONE.glitch, pic: 'glitch' });
       }
     }
   }
@@ -3025,7 +3025,7 @@ const LANDING: Record<string, { el: ThreatEl; fx: string; pic?: OrbPic; tone?: s
   robot: { el: 'fire', fx: 'impact', pic: 'rocket', tone: '#fb923c' }, mech: { el: 'fire', fx: 'boom-big', pic: 'shark', tone: '#fb923c' },
   nightmare: { el: 'shadow', fx: 'spectral-bolt', pic: 'ember', tone: '#a855f7' }, wraith: { el: 'shadow', fx: 'spectral-bolt', pic: 'ghost' },
   mud: { el: 'mud', fx: 'mud-splat', pic: 'mudball' }, medusa: { el: 'arcane', fx: 'medusa-burst', pic: 'medusa' },
-  original: { el: 'glitch', fx: 'impact' }, kernel: { el: 'glitch', fx: 'impact' },
+  original: { el: 'glitch', fx: 'impact', pic: 'glitch' }, kernel: { el: 'glitch', fx: 'impact', pic: 'glitch' },
 };
 /** Fuel barrels lobbed onto the hero and round them: warned circles, a barrel tumbling down onto each, then a burst
     of fire and a pool of burning fuel left a while (the molotov's evolution, which the Mech's world sells). */

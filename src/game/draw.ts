@@ -2668,6 +2668,8 @@ function drawFx(ctx: CanvasRenderingContext2D, g: Game, accent: string, layer: '
    point sits (1 = the right-hand tip; the fireball's ball is at 0.78). Arrows bring their trail.
    Drawn well past their hit circles (a rocket of r 6 is 48 wide) so they read as big boss shots. */
 const ORB_PIC: Record<OrbPic | 'medusa2', { src: 'fx' | 'arrow'; name: string; w: number; at: number; trail?: string; glow?: number }> = {
+  // The backlog's bug reports: a crumpled error sheet in purple glitch energy, four of them (`glitch-0..3`, one per shot).
+  glitch: { src: 'fx', name: 'glitch-0', w: 66, at: 0.8 },
   // The mud world's: the Medusa's purple bolt, the Mud Monster's mud ball, the bats' venom.
   medusa: { src: 'fx', name: 'medusa-bolt', w: 48, at: 0.95 },
   medusa2: { src: 'fx', name: 'medusa-bolt-2', w: 48, at: 0.95 },
@@ -2731,7 +2733,7 @@ function drawOrbs(ctx: CanvasRenderingContext2D, g: Game) {
       }
     }
     const look = o.pic && !retroLook ? ORB_PIC[o.pic === 'medusa' && o.alt ? 'medusa2' : o.pic] : undefined;
-    const pic = look && (look.src === 'fx' ? fxImage(look.name) : arrowImage(look.name));
+    const pic = look && (look.src === 'fx' ? fxImage(o.pic === 'glitch' ? `glitch-${Math.abs(Math.round(o.vx * 7 + o.vy * 13)) % 4}` : look.name) : arrowImage(look.name));
     if (look && pic && ready(pic)) {
       ctx.save();
       ctx.translate(o.x, o.y);
