@@ -1965,14 +1965,15 @@ function friendsBlock() {
     return `<div class="friend-row${on ? ' is-on' : ''}">
       <span class="friend-pic"><img src="${friendStill(on ? friend!.still : f.still)}" alt=""></span>
       <b>${esc(f.name)}</b>${on ? '<i class="friend-dot" aria-hidden="true"></i>' : ''}
-      <button class="ghost small" type="button" data-act="friend-call" data-id="${f.id}">${t(on ? 'friendPlay' : 'friendCall')}</button>
+      <button class="friend-go" type="button" data-act="friend-call" data-id="${f.id}">${t(on ? 'friendPlay' : 'friendCall')}</button>
       <button class="friend-del" type="button" data-act="friend-del" data-id="${f.id}" aria-label="${t('friendRemove')}">✕</button>
     </div>`;
   }).join('');
   return `<h3 class="slot">👥 ${t('friendsTitle')}</h3>
     ${rows ? `<div class="friend-list">${rows}</div>` : `<p class="how">${t('friendsNone')}</p>`}
     <button class="primary" type="button" data-act="share">🔗 ${t('shareProfile')}</button>
-    <button class="ghost" type="button" data-act="link">${t('friendByCode')}</button>`;
+    <button class="ghost" type="button" data-act="link">${t('friendByCode')}</button>
+    <button class="primary is-purple" type="button" data-act="styles">🎨 ${t('styles')}</button>`;
 }
 function linkScreen(note = '') {
   if (friend) {
@@ -2632,6 +2633,13 @@ screen.addEventListener('click', (event) => {
   else if (act === 'link') linkScreen();
   else if (act === 'friend-call') callFriend(target.dataset.id ?? '');
   else if (act === 'friend-del') {
+    const f = save.friends.find((x) => x.id === target.dataset.id);
+    if (!f) return;
+    show(`<h2>${t('friendRemove')}</h2><p>${t('friendRemoveAsk', { name: esc(f.name) })}</p>
+      <button class="ghost is-danger" type="button" data-act="friend-del-yes" data-id="${f.id}">${t('friendRemove')}</button>
+      <button class="primary" type="button" data-act="profile">${t('cancel')}</button>`);
+  }
+  else if (act === 'friend-del-yes') {
     const id = target.dataset.id ?? '';
     if (friend?.id === id) { const was = friend.name; friend = null; netLeave(); flash(t('linkLost', { name: esc(was) })); }
     save.friends = save.friends.filter((f) => f.id !== id);

@@ -4244,3 +4244,6 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .friend-row .ghost.small { flex: none; width: 84px; min-width: 0; margin: 0; padding: 4px 6px; font-size: 0.85rem; }
 .friend-row > b { flex-basis: 0; }
 .friend-del { flex: none; width: 28px; height: 28px; border: 0; border-radius: 50%; background: rgba(255, 255, 255, 0.08); color: #fca5a5; cursor: pointer; }
+.friend-row .friend-go { flex: none; min-width: 92px; padding: 7px 14px; border: 0; border-radius: 999px; background: linear-gradient(180deg, #4ade80, #16a34a); color: #062b12; font: 700 0.95rem var(--font); box-shadow: 0 0 10px rgba(74, 222, 128, 0.35); cursor: pointer; }
+.panel .primary.is-purple { --bar: url('/images/game/ui/btn2_purple.webp'); }
+:root[data-retro] .panel .primary.is-purple { background: linear-gradient(135deg, #a78bfa, #7c3aed); }
