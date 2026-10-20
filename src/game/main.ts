@@ -8,7 +8,7 @@ import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPr
 import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
 import { draw, drawRetroFigure, preloadCast, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
-import { FINAL_ID, ROUNDS, armyCap, roundGold, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, updateBoard, type BoardGame } from './board';
+import { ROUNDS, armyCap, roundGold, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, updateBoard, type BoardGame } from './board';
 import { FIREBALL, drawBoard, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
 import type { Enemy } from './world';
 import { ARMOUR_SLOTS, ARSENAL, ITEMS, itemLevel, type SpiritSkin, UPGRADES, WEAPON_SLOTS, EXTRA_SLOT_PRICE, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
@@ -1771,8 +1771,7 @@ function boardStep(dt: number, now: number) {
   ctx.fillStyle = '#0b0820';
   ctx.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
   if (b.phase === 'prep' || b.phase === 'fight') boardEnded = null;
-  const names = { mine: save.name, rival: t(`final${cap(FINAL_ID[b.world - 1])}` as Key) };
-  if (heroPics) drawBoard(ctx, b, boardLay, now / 1000, boardDrag, save.retro, view.dpr, heroPics, names, boardEnded === null ? null : now / 1000 - boardEnded);
+  if (heroPics) drawBoard(ctx, b, boardLay, now / 1000, boardDrag, save.retro, view.dpr, heroPics, boardEnded === null ? null : now / 1000 - boardEnded);
 }
 
 /* Dragging units about while you prepare: onto a cell to move it, onto one of its kind to merge them, onto the
