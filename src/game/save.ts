@@ -193,7 +193,7 @@ export function loadSave(): Save {
     if (!STYLES.includes(save.style)) save.style = 'world';
     // Only the first world kept both versions of its song: a first version picked for another world plays its second now.
     if (/^w[2-8]$/.test(save.song)) save.song = `${save.song}v2` as SongPick;
-    if (!/^(auto|worlds|b2b|doom|w1|w[1-8]v2|mudv2|boss-(kernel|archdemon|drakkar|medusa|queen|zeus|mech|wraith|chimera))$/.test(save.song)) save.song = 'worlds';
+    if (!/^(auto|worlds|b2b|breaks|doom|w1|w[1-8]v2|mudv2|boss-(kernel|archdemon|drakkar|medusa|queen|zeus|mech|wraith|chimera))$/.test(save.song)) save.song = 'worlds';
     if (!(Number.isInteger(save.scene) && save.scene >= 0 && save.scene <= WORLD_COUNT)) save.scene = 0;
     if (!SKINS.includes(save.skin)) save.skin = 'boy';
     // Skins cost coins now: the free one, plus whichever an older save already wore.

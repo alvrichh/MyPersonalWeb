@@ -1299,10 +1299,10 @@ function stylesScreen(note = '') {
       row(`data-style="${style}"`, save.style === style, false, styleIcon(style), t(`style${cap(style)}Name` as Key), t(`style${cap(style)}Text` as Key), save.style === style ? '✓' : '')).join('')}</div>`;
   } else if (dressSlot === 'song') {
     const songRow = (id: typeof save.song, icon: string, name: string, text: string) => row(`data-song="${id}"`, save.song === id, false, icon, name, text, save.song === id ? '✓' : '');
-    picks = `<h3 class="slot">${t('songPick')}</h3><div class="gear-list">${(['auto', 'worlds', 'b2b', 'doom'] as const).map((id) =>
+    picks = `<h3 class="slot">${t('songPick')}</h3><div class="gear-list">${(['auto', 'worlds', 'b2b', 'breaks', 'doom'] as const).map((id) =>
       // The owner's medallions: headphones for automatic, the world on a record for «by world», a vinyl for the
       // original, Nocthrax on a record for the final boss's own song.
-      songRow(id, save.retro ? (id === 'auto' ? '🎚️' : id === 'worlds' ? '🗺️' : id === 'b2b' ? '🎧' : '🔥')
+      songRow(id, save.retro ? (id === 'auto' ? '🎚️' : id === 'worlds' ? '🗺️' : id === 'b2b' ? '🎧' : id === 'breaks' ? '🥁' : '🔥')
         : `<img class="scene-pic" src="./images/game/music/${id}.webp" alt="">`,
         t(`song${cap(id)}Name` as Key), t(`song${cap(id)}Text` as Key))).join('')}</div>
       <h3 class="slot">${t('songWorlds')}</h3><div class="gear-list">${WORLD_SONGS.map(([world, ids, key]) => {
@@ -1361,7 +1361,7 @@ function stylesScreen(note = '') {
     foes: save.style === 'world' ? navPic('./images/game/ui/style-world.webp') : look === 'random' ? '🎲' : navPic(`./images/game/enemies/${look}-bug-icon.webp`, ' is-foe'),
     scene: save.scene ? navPic(`./images/game/map/pv-${ISLAND_ART[save.scene - 1]}.jpg`) : navPic('./images/game/ui/scene-own.webp'),
     // Automatic, «by world», the original and the final boss's song show their own medallions; a world's or a boss's song, its postcard or boss.
-    song: (['auto', 'worlds', 'b2b', 'doom'] as string[]).includes(save.song) ? navPic(`./images/game/music/${save.song}.webp`)
+    song: (['auto', 'worlds', 'b2b', 'breaks', 'doom'] as string[]).includes(save.song) ? navPic(`./images/game/music/${save.song}.webp`)
       : save.song.startsWith('boss-') ? navPic(`./images/game/bosses/${save.song.slice(5)}-0.webp`, ' is-boss')
       : songWorld ? navPic(`./images/game/map/pv-${ISLAND_ART[songWorld - 1]}.jpg`)
       : navPic('./images/game/music/auto.webp'),
