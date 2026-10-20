@@ -4208,3 +4208,29 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 }
 .friend-pic.is-add::after { rotate: 90deg; }
 :root[data-retro] .cover .cover-friend { display: flex; }
+
+/* The linked friend's profile on the link screen. */
+.friend-stats { margin: 0 0 4px; color: #cbd5e1; font-weight: 600; }
+.friend-worn { display: flex; justify-content: center; gap: 6px; margin-bottom: 8px; }
+.friend-worn img { width: 30px; height: 30px; object-fit: contain; }
+/* Sprints with a friend: their run under your health, semi-transparent, the room they are in among the twelve. */
+.friend-mini {
+  position: fixed; left: 8px; z-index: 2; display: flex; align-items: center; gap: 8px;
+  padding: 6px 10px 6px 6px; border: 1px solid rgba(74, 222, 128, 0.45); border-radius: 14px;
+  background: rgba(8, 12, 28, 0.55); color: #fff; pointer-events: none; opacity: 0.88;
+  font: 600 11px/1.15 var(--font);
+}
+.friend-mini[hidden] { display: none; }
+.friend-mini .friend-pic { width: 34px; height: 34px; }
+.friend-mini b { display: block; font-size: 12px; }
+.friend-mini small { display: block; color: #cbd5e1; margin: 1px 0 3px; }
+.friend-rooms { display: flex; gap: 2px; }
+.friend-rooms i { width: 7px; height: 7px; border-radius: 2px; background: rgba(148, 163, 184, 0.35); }
+.friend-rooms i.is-shrine { border-radius: 50%; }
+.friend-rooms i.is-boss { background: rgba(248, 113, 113, 0.4); }
+.friend-rooms i.is-done { background: #4ade80; }
+.friend-rooms i.is-here { background: #fde047; box-shadow: 0 0 6px #fde047; }
+.friend-hp { display: block; width: 100%; height: 3px; margin-top: 3px; border-radius: 2px; background: rgba(148, 163, 184, 0.3); overflow: hidden; }
+.friend-hp b { display: block; height: 100%; background: #4ade80; }
+@media (prefers-reduced-motion: no-preference) { .friend-rooms i.is-here { animation: friend-here 1s ease-in-out infinite alternate; } }
+@keyframes friend-here { to { opacity: 0.45; } }
