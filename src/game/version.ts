@@ -4,7 +4,7 @@
     boss chest, 1.3 the arsenal and fusions, 1.4 the final bosses, 1.5 the daily chest, coin store and ads,
     1.6 Nightmare, 1.7 the mud world and the songs, 1.8 Boss Rush and the Archero upgrades, 1.9 the secret shift, 1.10 the board), the patch with each
     smaller change since; the build stamp changes by itself on every deploy. */
-export const GAME_VERSION = '1.12.4';
+export const GAME_VERSION = '1.12.5';
 
 declare const __GAME_BUILD__: { commit: string; built: string };
 /** The build stamp from vite.config.mts (missing only if the file is run outside Vite). */
