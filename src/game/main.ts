@@ -425,6 +425,11 @@ const clearedIn = (mode: Mode) =>
 const worldsLeft = (mode: Mode) => WORLD_COUNT - clearedIn(mode);
 const starColor = () => STAR_COLORS[save.starColor];
 /** The stars by the name: one per mastery, in the chosen colour. */
+/** In the profile, each mastery is the owner's purple bug crest (`ui/mastery.webp`) instead of a star, up to three, then one with
+    «×N» so the row fits beside the name on a phone; retro keeps the stars. */
+const crest = '<img class="mcrest" src="./images/game/ui/mastery.webp" alt="">';
+const crests = () => (!masteries() ? '' : save.retro ? stars()
+  : `<span class="mcrests" aria-label="${t('profileStars')}: ${masteries()}">${masteries() <= 3 ? crest.repeat(masteries()) : `${crest}<small>×${masteries()}</small>`}</span>`);
 const stars = () => (masteries() ? `<span class="mstars" style="--star:${starColor()}" aria-label="${t('profileStars')}: ${masteries()}">${'★'.repeat(Math.min(masteries(), 5))}${masteries() > 5 ? `×${masteries()}` : ''}</span>` : '');
 const modeShort = (mode: Mode) => t(mode === 'horde' ? 'modeHordeShort' : 'modeSprintsShort');
 function resetScreen() {
@@ -470,7 +475,7 @@ function profileScreen(note = '') {
     <h2>${t('profile')}</h2>
     <div class="profile-card">
       <img class="profile-pic${save.retro ? ' is-round' : ''}" src="${pic}" alt="" width="96" height="120">
-      <div class="profile-who">${editingName ? '' : name}${stars()}<span>${t('lvShort', { level })}</span><i class="profile-xp" title="${t('profileXp')}"><b style="width:${Math.round(progress * 100)}%"></b></i></div>
+      <div class="profile-who">${editingName ? '' : name}${crests()}<span>${t('lvShort', { level })}</span><i class="profile-xp" title="${t('profileXp')}"><b style="width:${Math.round(progress * 100)}%"></b></i></div>
     </div>
     ${editingName ? `<div class="profile-form">${name}<small class="how">${t('profileNameHint')}</small>${save.name !== DEFAULT_NAME ? `<button class="ghost small" type="button" data-act="name-reset">${t('profileReset')}</button>` : ''}</div>` : ''}
     ${note ? `<p class="saved" role="status">✓ ${note}</p>` : ''}
@@ -481,7 +486,7 @@ function profileScreen(note = '') {
     </div>
     <h3 class="slot">${t('profileStars')}</h3>
     ${masteries()
-      ? `<p class="mastery-line"><span style="color:${starColor()}">★</span> ${modeShort('sprints')} ${save.mastery.sprints} · ${modeShort('horde')} ${save.mastery.horde}</p>
+      ? `<p class="mastery-line">${save.retro ? `<span style="color:${starColor()}">★</span>` : crest} ${modeShort('sprints')} ${save.mastery.sprints} · ${modeShort('horde')} ${save.mastery.horde}</p>
          <div class="star-pick" role="group" aria-label="${t('profileStarColor')}">${(Object.keys(STAR_COLORS) as StarColor[]).map((c) => `<button type="button" class="star-chip${c === save.starColor ? ' is-on' : ''}" data-star="${c}" style="--star:${STAR_COLORS[c]}" aria-pressed="${c === save.starColor}" aria-label="${c}">★</button>`).join('')}</div>`
       : `<p class="how">${t('masteryNone')}</p>`}
     <button class="ghost is-danger" data-act="reset-ask">${t('resetBtn')}</button>
