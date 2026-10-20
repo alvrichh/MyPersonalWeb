@@ -1727,19 +1727,23 @@ function renderBoardUi() {
   const key = [b.phase, b.round, b.lives, b.gold, b.shop.map((o) => (o ? `${o.tier}${o.cast}${o.price}` : '-')).join(''), b.army.length].join('|');
   if (key === boardKey) return;
   boardKey = key;
+  // The game's own pieces: the dialogs' red ✕, the painted heart and coins, the shop's orange item frame for the
+  // cards and the dialogs' bars for the buttons (the emoji and plain shapes stay for retro).
+  const coin = save.retro ? '◉' : COIN_PIC;
+  const heart = save.retro ? '❤' : '<img class="board-ic" src="./images/game/fx/heart.webp" alt="">';
   boardTop.innerHTML = `
     <button class="board-quit" type="button" data-bact="quit" aria-label="${t('menu')}"><span aria-hidden="true">✕</span></button>
     <span class="board-where">${MODE_ICON.board} ${t('worldShort', { n: b.world })} · ${t('boardRound', { n: b.round, total: ROUNDS })}</span>
-    <span class="board-lives" aria-label="${t('boardLives')}">❤ ${b.lives}</span>
+    <span class="board-lives" aria-label="${t('boardLives')}">${heart} ${b.lives}</span>
     <span class="board-count" aria-label="${t('boardCapLabel')}">♟ ${b.army.length}/${armyCap(b.round)}</span>
-    <span class="board-gold" aria-label="${t('boardGoldLabel')}">◉ ${b.gold}</span>`;
+    <span class="board-gold" aria-label="${t('boardGoldLabel')}">${coin} ${b.gold}</span>`;
   const cards = b.shop.map((o, i) => o
-    ? `<button class="board-card" type="button" data-bact="buy" data-i="${i}"${!prep || b.gold < o.price ? ' disabled' : ''}><i class="board-cast">${t('worldShort', { n: o.cast })}</i><img src="${boardPic(o.tier, o.cast)}" alt=""><b>${boardTierName(o.tier)}</b><span>◉ ${o.price}</span></button>`
+    ? `<button class="board-card" type="button" data-bact="buy" data-i="${i}"${!prep || b.gold < o.price ? ' disabled' : ''}><i class="board-cast">${t('worldShort', { n: o.cast })}</i><img src="${boardPic(o.tier, o.cast)}" alt=""><b>${boardTierName(o.tier)}</b><span class="board-price">${coin} ${o.price}</span></button>`
     : '<span class="board-card is-sold"></span>').join('');
   boardShop.innerHTML = prep ? `
     <div class="board-cards">${cards}</div>
     <div class="board-acts">
-      <button class="ghost board-reroll" type="button" data-bact="reroll"${b.gold < 1 ? ' disabled' : ''}>🎲 ${t('boardReroll')} · ◉ 1</button>
+      <button class="ghost board-reroll" type="button" data-bact="reroll"${b.gold < 1 ? ' disabled' : ''}>🎲 ${t('boardReroll')} · ${coin} 1</button>
       <button class="primary board-go" type="button" data-bact="fight"${b.army.length ? '' : ' disabled'}>⚔️ ${t('boardFight')}</button>
     </div>` : `<p class="board-fighting">${t('boardFighting')}</p>`;
 }

@@ -1,5 +1,5 @@
 import { BOARD_H, BOARD_W, CELL, COLS, FINAL_ID, HOME_ROW, ROUNDS, homeCell, ROWS, TIER_KIND, TIER_STATS, canMerge, castLook, cellCentre, pieceAt, waveSpots, type BoardGame, type Piece, type Slot, type Tier } from './board';
-import { boardFloor, boardFx, drawBoardFigure } from './draw';
+import { boardFx, drawBoardBackdrop, drawBoardFigure } from './draw';
 
 /* Drawing the board mode on the game's canvas: the world's floor under a grid, your bugs on the lower half and the
    round's enemy on the upper (faint while you prepare), each with its cast's own pictures, and the two commanders
@@ -237,29 +237,22 @@ const rivalHp = (b: BoardGame) => ROUNDS - b.round + (b.phase !== 'prep' && b.ph
 
 export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: BoardLayout, now: number, drag: BoardDrag | null, retro: boolean, dpr: number, pics: HeroPics, ended: number | null) {
   ctx.setTransform(dpr * lay.s, 0, 0, dpr * lay.s, dpr * lay.ox, dpr * lay.oy);
-  // The world's floor under the board.
-  const floor = boardFloor(b.world);
+  // The world's floor over the whole screen, like the open field's, with no painted walls; the board is only its grid.
+  drawBoardBackdrop(ctx, b.world, { x: -lay.ox / lay.s, y: -lay.oy / lay.s, w: ctx.canvas.width / dpr / lay.s, h: ctx.canvas.height / dpr / lay.s }, retro);
   ctx.save();
   ctx.beginPath();
   ctx.roundRect(0, 0, BOARD_W, BOARD_H, 10);
   ctx.clip();
-  if (!retro && ok(floor)) {
-    const k = Math.max(BOARD_W / (floor.naturalWidth * 0.8), BOARD_H / (floor.naturalHeight * 0.8));
-    const w = floor.naturalWidth * k, h = floor.naturalHeight * k;
-    ctx.drawImage(floor, (BOARD_W - w) / 2, (BOARD_H - h) / 2, w, h);
-  } else {
-    ctx.fillStyle = '#141b2e';
-    ctx.fillRect(0, 0, BOARD_W, BOARD_H);
-  }
   // The enemy's half a little darker and redder, yours a little bluer.
-  ctx.fillStyle = 'rgba(40,6,16,0.28)';
+  ctx.fillStyle = 'rgba(40,6,16,0.22)';
   ctx.fillRect(0, 0, BOARD_W, HOME_ROW * CELL);
-  ctx.fillStyle = 'rgba(6,14,40,0.18)';
+  ctx.fillStyle = 'rgba(6,14,40,0.12)';
   ctx.fillRect(0, HOME_ROW * CELL, BOARD_W, BOARD_H - HOME_ROW * CELL);
   ctx.strokeStyle = 'rgba(255,255,255,0.12)';
   ctx.lineWidth = 1;
   for (let c = 1; c < COLS; c++) { ctx.beginPath(); ctx.moveTo(c * CELL, 0); ctx.lineTo(c * CELL, BOARD_H); ctx.stroke(); }
   for (let r = 1; r < ROWS; r++) { ctx.beginPath(); ctx.moveTo(0, r * CELL); ctx.lineTo(BOARD_W, r * CELL); ctx.stroke(); }
+  ctx.strokeRect(0.5, 0.5, BOARD_W - 1, BOARD_H - 1);
   ctx.strokeStyle = 'rgba(252,211,77,0.5)';
   ctx.lineWidth = 2;
   ctx.setLineDash([6, 6]);
@@ -269,11 +262,6 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
   ctx.stroke();
   ctx.setLineDash([]);
   ctx.restore();
-  ctx.strokeStyle = 'rgba(148,163,184,0.5)';
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  ctx.roundRect(0, 0, BOARD_W, BOARD_H, 10);
-  ctx.stroke();
 
   // The fireball at the end of a fight: yours at the rival after a win, the rival's at you otherwise.
   const won = b.last?.result === 'win';
