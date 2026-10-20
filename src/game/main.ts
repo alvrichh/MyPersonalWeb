@@ -2016,7 +2016,10 @@ function boardStep(dt: number, now: number) {
     boardEnded = now / 1000;
     audio.play('shoot');
     window.setTimeout(() => { if (board === b) audio.play('boom'); }, FIREBALL.fly * 1000);
-    window.setTimeout(() => { if (board === b) boardResultScreen(b); }, (FIREBALL.fly + FIREBALL.blast) * 1000 + 450);
+    // A win: a chime as the fireball strikes, and the hero's celebration plays a moment longer before the dialog.
+    const won = b.last?.result === 'win';
+    if (won) window.setTimeout(() => { if (board === b) audio.play('win'); }, (FIREBALL.fly + 0.1) * 1000);
+    window.setTimeout(() => { if (board === b) boardResultScreen(b); }, (FIREBALL.fly + FIREBALL.blast) * 1000 + (won ? 1500 : 450));
   }
   renderBoardUi();
   // The board between the top bar and the shop.

@@ -288,10 +288,53 @@ function marks(ctx: CanvasRenderingContext2D, x: number, y: number, p: { tier: n
 
 const ok = (img: HTMLImageElement) => img.complete && img.naturalWidth > 0;
 /** Where each commander stands (its feet), in the board's corner cells. */
-const MINE = { x: BOARD_W - CELL / 2 - 6, y: BOARD_H - 12 };
+const MINE = { x: BOARD_W - CELL / 2 - 6, y: BOARD_H - 4 };
 const RIVAL = { x: CELL / 2 + 4, y: CELL - 12 };
 
-function drawHero(ctx: CanvasRenderingContext2D, pics: HeroPics, pose: HTMLImageElement, now: number, hit: number) {
+/** A round won: the hero cheers, hopping, with gold sparks and confetti bursting round it (`party`, seconds since the
+   fireball struck the rival). */
+const CONFETTI = ['#fde047', '#f472b6', '#38bdf8', '#4ade80', '#fb923c', '#c084fc'];
+function drawParty(ctx: CanvasRenderingContext2D, party: number) {
+  const { x, y } = MINE;
+  // Two bursts of confetti over the hero's head, one at once and one a little later, falling and fading.
+  for (let burst = 0; burst < 2; burst++) {
+    const t = party - burst * 0.7;
+    if (t < 0 || t > 1.6) continue;
+    for (let i = 0; i < 22; i++) {
+      const a = -Math.PI / 2 + ((i * 2.399 + burst) % 1.9) - 0.95;
+      const v = 70 + ((i * 37) % 50);
+      const px = x + Math.cos(a) * v * t;
+      const py = y - 46 + Math.sin(a) * v * t + 70 * t * t;
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, 1 - t / 1.6);
+      ctx.translate(px, py);
+      ctx.rotate(t * 9 + i);
+      ctx.fillStyle = CONFETTI[i % CONFETTI.length];
+      ctx.fillRect(-2.5, -1.2, 5, 2.4 * Math.abs(Math.cos(t * 7 + i)) + 0.6);
+      ctx.restore();
+    }
+  }
+  // Gold sparkles twinkling round it the whole time.
+  ctx.save();
+  ctx.globalCompositeOperation = 'lighter';
+  for (let i = 0; i < 6; i++) {
+    const tw = Math.sin(party * 6 + i * 1.7);
+    if (tw < 0) continue;
+    const a = i * 1.05 + party * 0.8;
+    const sx = x + Math.cos(a) * 26, sy = y - 30 + Math.sin(a) * 22;
+    const r = 2 + tw * 3.5;
+    ctx.globalAlpha = tw;
+    ctx.fillStyle = '#fde68a';
+    ctx.beginPath();
+    ctx.moveTo(sx, sy - r); ctx.lineTo(sx + r * 0.3, sy - r * 0.3); ctx.lineTo(sx + r, sy); ctx.lineTo(sx + r * 0.3, sy + r * 0.3);
+    ctx.lineTo(sx, sy + r); ctx.lineTo(sx - r * 0.3, sy + r * 0.3); ctx.lineTo(sx - r, sy); ctx.lineTo(sx - r * 0.3, sy - r * 0.3);
+    ctx.closePath();
+    ctx.fill();
+  }
+  ctx.restore();
+}
+
+function drawHero(ctx: CanvasRenderingContext2D, pics: HeroPics, pose: HTMLImageElement, now: number, hit: number, party = -1) {
   const { x, y } = MINE;
   // Customise's portal under its feet, its ring's middle at 74.6% of the picture's height.
   if (ok(pics.pad)) {
@@ -309,11 +352,14 @@ function drawHero(ctx: CanvasRenderingContext2D, pics: HeroPics, pose: HTMLImage
   const h = 58;
   const w = (h * img.naturalWidth) / img.naturalHeight;
   ctx.save();
-  ctx.translate(x, y + Math.sin(now * 2.2) * 0.8);
-  ctx.scale(-1, 1);
+  // Celebrating, it hops, squashing a little as it lands.
+  const hop = party >= 0 ? Math.abs(Math.sin(party * 7)) : 0;
+  ctx.translate(x, y + Math.sin(now * 2.2) * 0.8 - hop * 9);
+  ctx.scale(-1 * (1 + (1 - hop) * 0.05 * (party >= 0 ? 1 : 0)), 1 - (1 - hop) * 0.05 * (party >= 0 ? 1 : 0));
   ctx.drawImage(img, -w / 2, -h, w, h);
   if (hit > 0) { ctx.globalAlpha = hit; ctx.globalCompositeOperation = 'lighter'; ctx.drawImage(img, -w / 2, -h, w, h); }
   ctx.restore();
+  if (party >= 0) drawParty(ctx, party);
 }
 
 /** A pose of your hero with its colours inverted, for the rival (worked out once per picture and kept). */
@@ -448,8 +494,10 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
   // The rival's pose, from your hero's: aiming while it throws at you, hurt when struck, cheering once you are out.
   const rivalPose = b.phase === 'over' && done ? pics.cheer : ended !== null && !won && !done ? pics.shoot : won && struck > 0 ? pics.hurt : pics.front;
   drawRival(ctx, pics, rivalPose, now, won ? struck : 0, rivalGone);
-  const pose = b.phase === 'over' && done ? pics.down : ended !== null && won && !done ? pics.shoot : b.phase === 'won' && done ? pics.cheer : !won && struck > 0 ? pics.hurt : pics.front;
-  drawHero(ctx, pics, pose, now, won ? 0 : struck * 0.6);
+  // A round won: it cheers and celebrates once its fireball has struck (the world won too).
+  const party = won && done ? ended! - FIREBALL.fly : -1;
+  const pose = b.phase === 'over' && done ? pics.down : ended !== null && won && !done ? pics.shoot : party >= 0 ? pics.cheer : !won && struck > 0 ? pics.hurt : pics.front;
+  drawHero(ctx, pics, pose, now, won ? 0 : struck * 0.6, party);
 
   // Where the dragged unit would go: green to move, gold to merge.
   if (drag?.over) {
