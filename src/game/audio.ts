@@ -237,7 +237,8 @@ const V2S: Record<V2Id, V2> = {
     chordsB: [[0, 4, 7, 11], [9, 12, 16, 19], [5, 9, 12, 16], [7, 11, 14, 19]], rootsB: [0, 9, 5, 7],
     form: ['intro', 'drop', 'roll', 'drop', 'break', 'peak', 'roll', 'peak'],
     grooves: { drop: 'amen', roll: 'amen', peak: 'amen' }, kit: { drive: 0, snare: 2600, decay: 0.1, wet: 0 },
-    bass: 'chip', line: [0, null, 12, null, 0, null, 12, 0, 'r', 0, 12, null, 0, null, 7, 12, 0, null, 12, null, 0, null, 12, 0, 'r', 0, 12, null, 3, null, 5, 7],
+    // Half the notes it had (a busy, loud chip line on every other sixteenth was too much when the drums come in).
+    bass: 'chip', line: [0, null, null, null, 12, null, 0, null, 'r', 0, null, null, 12, null, 7, null, 0, null, null, null, 12, null, 0, null, 'r', 0, null, null, 3, null, 5, 7],
     lead: 'chip', leadOct: 8,
     melody: [[12, null, 16, 19, 17, 16, 14, 12], [14, null, null, 11, 12, 14, 16, null], [16, 19, 21, 19, 16, 14, 12, null], [9, null, 12, 14, 12, 11, 12, 'r']],
   },
@@ -1339,8 +1340,8 @@ class Engine {
     if (voice === 'chip') {
       // A chiptune bass: a square, lightly filtered, cut short.
       const o = this.osc('square', freq * 2, at, end);
-      const lp = this.filt('lowpass', 1600, 1);
-      this.env(g, at, 0.5, 0.003, length * 0.6, 0.5, length * 0.3);
+      const lp = this.filt('lowpass', 1100, 1);
+      this.env(g, at, 0.3, 0.003, length * 0.6, 0.5, length * 0.3);
       this.sub(at, freq, length);
       o.connect(lp).connect(g).connect(this.musicBus);
     } else if (voice === 'dist') {
@@ -1518,7 +1519,7 @@ class Engine {
         // more than half the sixteenths, a stream of clicks over the drumless intro).
         if (inBar % 4 === 0 && r < (calm ? 0.55 : 0.4)) {
           const keys = 3 + (bar + inBar) % 2;
-          for (let k = 0; k < keys; k++) this.typing(at + k * STEP * 0.5 + Math.random() * STEP * 0.15, calm ? 0.1 : 0.14);
+          for (let k = 0; k < keys; k++) this.typing(at + k * STEP * 0.5 + Math.random() * STEP * 0.15, calm ? 0.2 : 0.22);
         }
         if (inBar === 0 && bar % 4 === 0) this.ding(at, semi(this.root * 32, chord[2]));
         if (loud && blockBar === 7 && inBar === 8) this.modem(at);
