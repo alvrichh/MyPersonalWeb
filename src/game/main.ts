@@ -1727,23 +1727,22 @@ function renderBoardUi() {
   const key = [b.phase, b.round, b.lives, b.gold, b.shop.map((o) => (o ? `${o.tier}${o.cast}${o.price}` : '-')).join(''), b.army.length].join('|');
   if (key === boardKey) return;
   boardKey = key;
-  // The game's own pieces: the dialogs' red ✕, the painted heart and coins, the shop's orange item frame for the
+  // The game's own pieces: the painted coins, the shop's orange item frame for the
   // cards and the dialogs' bars for the buttons (the emoji and plain shapes stay for retro).
   const coin = save.retro ? '◉' : COIN_PIC;
-  const heart = save.retro ? '❤' : '<img class="board-ic" src="./images/game/fx/heart.webp" alt="">';
   // The same pieces as a run's HUD: the round back button, the world's plate with its emblem, the coins' plate and
-  // the round pause button, then a second line with the hearts and the units.
+  // the round pause button (the hearts are over the commanders, the units over the shop's first card).
   boardTop.style.setProperty('--icon', JSON.stringify(WORLD_ICON[b.world - 1]));
   boardTop.innerHTML = `
     <button class="hud-back" type="button" data-bact="quit" aria-label="${t('menu')}"><span aria-hidden="true">←</span></button>
     <span class="hud-room">${t('worldShort', { n: b.world })} · ${t('boardRound', { n: b.round, total: ROUNDS })}</span>
     <span class="hud-coins" aria-label="${t('boardGoldLabel')}"><span class="hud-coin-orb" aria-hidden="true">🪙</span><b>${b.gold}</b></span>
-    <button class="hud-pause" type="button" data-bact="pause" aria-label="${t('pause')}"><span aria-hidden="true">Ⅱ</span></button>
-    <span class="board-stats"><span class="board-lives" aria-label="${t('boardLives')}">${heart} ×${b.lives}</span><span class="board-count" aria-label="${t('boardCapLabel')}">♟ ${b.army.length}/${armyCap(b.round)}</span></span>`;
+    <button class="hud-pause" type="button" data-bact="pause" aria-label="${t('pause')}"><span aria-hidden="true">Ⅱ</span></button>`;
   const cards = b.shop.map((o, i) => o
     ? `<button class="board-card" type="button" data-bact="buy" data-i="${i}"${!prep || b.gold < o.price ? ' disabled' : ''}><i class="board-cast">${t('worldShort', { n: o.cast })}</i><img src="${boardPic(o.tier, o.cast)}" alt=""><b>${boardTierName(o.tier)}</b><span class="board-price">${coin} ${o.price}</span></button>`
     : '<span class="board-card is-sold"></span>').join('');
   boardShop.innerHTML = prep ? `
+    <span class="board-count" aria-label="${t('boardCapLabel')}">♟ ${b.army.length}/${armyCap(b.round)}</span>
     <div class="board-cards">${cards}</div>
     <div class="board-acts">
       <button class="ghost board-reroll" type="button" data-bact="reroll"${b.gold < 1 ? ' disabled' : ''}>🎲 ${t('boardReroll')} · ${coin} 1</button>
@@ -1845,7 +1844,10 @@ function boardStep(dt: number, now: number) {
   ctx.fillStyle = '#0b0820';
   ctx.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
   if (b.phase === 'prep' || b.phase === 'fight') boardEnded = null;
-  if (heroPics) drawBoard(ctx, b, boardLay, now / 1000, boardDrag, save.retro, view.dpr, heroPics, boardEnded === null ? null : now / 1000 - boardEnded);
+  // The arena's floor from just under the top bar to just over the buttons (the cards lie on it).
+  const acts = boardShop.querySelector('.board-acts, .board-fighting')?.getBoundingClientRect();
+  const floor = { top: top - 6, bottom: (acts ? acts.top : boardShop.getBoundingClientRect().bottom) - rect.top - 4 };
+  if (heroPics) drawBoard(ctx, b, boardLay, now / 1000, boardDrag, save.retro, view.dpr, heroPics, boardEnded === null ? null : now / 1000 - boardEnded, floor);
 }
 
 /* Dragging units about while you prepare: onto a cell to move it, onto one of its kind to merge them, onto the
