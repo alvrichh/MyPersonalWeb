@@ -684,8 +684,9 @@ function drawTinted(ctx: CanvasRenderingContext2D, img: HTMLImageElement | HTMLC
    as the body is wide (11px at least, so a small bug's show too); false until the picture is in (or in retro), so the
    dots stand in. */
 const FLAMES = 9;
-function drawFlames(ctx: CanvasRenderingContext2D, x: number, y: number, r: number, now: number, seed: number) {
-  const img = fxImage('flame-orange');
+function drawFlames(ctx: CanvasRenderingContext2D, x: number, y: number, r: number, now: number, seed: number, blue = false) {
+  // the will-o'-wisp's own blue flame for its burns, the orange one for every other fire
+  const img = fxImage(blue ? 'wisp-flame' : 'flame-orange');
   if (retroLook || !ready(img)) return false;
   const base = ctx.globalAlpha;
   ctx.save();
@@ -3118,7 +3119,7 @@ function drawEnemy(ctx: CanvasRenderingContext2D, e: Enemy, now: number) {
     ctx.stroke();
   }
   if (e.burn > 0) {
-    if (!drawFlames(ctx, 0, 0, e.r, now, e.id)) {
+    if (!drawFlames(ctx, 0, 0, e.r, now, e.id, !!e.blueFire)) {
       ctx.fillStyle = '#ff9a1f';
       for (let i = 0; i < 3; i++) {
         const a = now * 4 + i * 2.1;

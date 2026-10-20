@@ -203,6 +203,8 @@ export type Enemy = {
   painCd: number;
   burn: number;
   burnDps: number;
+  /** Burning with the will-o'-wisp's blue flames (its fused arrows and the flames they leave) rather than plain fire. */
+  blueFire?: boolean;
   burnTick: number;
   slow: number;
   slowBy: number;
@@ -1231,6 +1233,7 @@ function kill(g: Game, e: Enemy) {
       if (o === e || dist(o, e) > 40 + o.r) continue;
       o.burn = Math.max(o.burn, 2);
       o.burnDps = Math.max(o.burnDps, 10);
+      o.blueFire = false;
       hurt(g, o, 14 * power(g, 'ranged'));
     }
   }
@@ -1308,13 +1311,14 @@ function hitWithShot(g: Game, e: Enemy, s: Shot) {
   burst(g, s.x, s.y, '#ffffff', 4, 90, 2);
   g.events.push('hit');
   // The spirit's element: fire burns, tide slows, volt arcs to one more bug.
-  if (s.elem === 'fire') { e.burn = 2; e.burnDps = Math.max(e.burnDps, 7); }
+  if (s.elem === 'fire') { e.burn = 2; e.burnDps = Math.max(e.burnDps, 7); e.blueFire = false; }
   else if (s.elem === 'tide') { e.slow = 1.5; e.slowBy = Math.max(e.slowBy, 0.35); }
   else if (s.elem === 'volt') chain(g, e, 1, s.dmg * 0.6);
   if (!s.bow) return;
   if (g.skills.fire) {
     e.burn = 2;
     e.burnDps = 6 * g.skills.fire;
+    e.blueFire = fusionOf(g) === 'wisp';
   }
   if (g.skills.water) {
     e.slow = 1.5;
@@ -1655,7 +1659,7 @@ function spinBlades(g: Game, dt: number) {
       if (gear.bladeHits.has(e.id) || Math.hypot(e.x - bx, e.y - by) > e.r + reach) continue;
       gear.bladeHits.set(e.id, 0.4);
       hurt(g, e, dmg, away(p, e, 90));
-      if (el === 'fire') { e.burn = 2; e.burnDps = Math.max(e.burnDps, 6); }
+      if (el === 'fire') { e.burn = 2; e.burnDps = Math.max(e.burnDps, 6); e.blueFire = false; }
       else if (el === 'ice') { e.slow = 1.2; e.slowBy = Math.max(e.slowBy, 0.35); }
       else if (el === 'volt') chain(g, e, 1, dmg * 0.5);
       heal(g, 0.5);
@@ -1743,6 +1747,7 @@ function explode(g: Game, at: Vec) {
     hurt(g, e, (30 + 12 * (lv - 1)) * power(g, 'magic'), away(at, e, 120));
     e.burn = 2;
     e.burnDps = Math.max(e.burnDps, 8);
+    e.blueFire = false;
   }
 }
 
@@ -3351,6 +3356,7 @@ export function update(g: Game, dt: number, input: Input) {
       if (dist(em, e) >= em.r + e.r * 0.5) continue;
       e.burn = Math.max(e.burn, 0.6);
       e.burnDps = Math.max(e.burnDps, em.dps ?? 12);
+      e.blueFire = em.kind === 'wisp';
       if (em.slow) { e.slow = Math.max(e.slow, 0.3); e.slowBy = Math.max(e.slowBy, em.slow); }
     }
     return true;
