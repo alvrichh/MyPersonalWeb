@@ -4586,7 +4586,7 @@ function heldFrame(e: Enemy, sheet: string, want: number, frames: HTMLImageEleme
   return want;
 }
 function finalFrame(e: Enemy) {
-  // Kratos taking up the Blade of Olympus: his tenth picture, rising in the pillar of lightning.
+  // Kratos taking up the Blade of Olympus: his tenth picture, leaping with it raised out of a burst of lightning.
   if (e.rise) return 9;
   if (e.pain > 0) return 8;
   // The Medusa's deep gaze (her tenth picture) while the hero stands within it and she is doing nothing else.
