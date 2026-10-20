@@ -8,8 +8,8 @@ import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPr
 import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
 import { draw, drawRetroFigure, preloadCast, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
-import { GOLD, ROUNDS, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, updateBoard, type BoardGame } from './board';
-import { drawBoard, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
+import { FINAL_ID, ROUNDS, armyCap, roundGold, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, updateBoard, type BoardGame } from './board';
+import { FIREBALL, drawBoard, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
 import type { Enemy } from './world';
 import { ARMOUR_SLOTS, ARSENAL, ITEMS, itemLevel, type SpiritSkin, UPGRADES, WEAPON_SLOTS, EXTRA_SLOT_PRICE, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
 import { Scene } from './scene';
@@ -1594,8 +1594,10 @@ let boardKey = '';
 let boardShown = '';
 let boardTime = 0;
 let boardBanked = false;
-/** The hero who comes down onto the board: the worn skin and headwear's poses. */
+/** Your commander in the corner: the worn skin and headwear's poses. */
 let heroPics: HeroPics | null = null;
+/** When the last fight ended (the frame clock, in seconds), for the fireball. */
+let boardEnded: number | null = null;
 
 function startBoard(world: number) {
   game = null;
@@ -1609,7 +1611,8 @@ function startBoard(world: number) {
   board = newBoard(world, save.boardUnlocked);
   const key = heroKey(save.skin, save.equipped.head);
   const pic = (pose: string) => Object.assign(new Image(), { src: `./images/game/hero/${key}-${pose}.webp` });
-  heroPics = { front: pic('front'), walk: pic('fwalk'), walk2: pic('fwalk2'), shoot: pic('shoot'), hurt: pic('hurt'), cheer: pic('cheer'), down: pic('down') };
+  heroPics = { front: pic('front'), shoot: pic('shoot'), hurt: pic('hurt'), cheer: pic('cheer'), down: pic('down'), pad: Object.assign(new Image(), { src: './images/game/ui/portal_pad.webp' }) };
+  boardEnded = null;
   boardTime = 0;
   boardBanked = false;
   boardShown = '';
@@ -1667,6 +1670,7 @@ function renderBoardUi() {
     <button class="board-quit" type="button" data-bact="quit" aria-label="${t('menu')}"><span aria-hidden="true">✕</span></button>
     <span class="board-where">${MODE_ICON.board} ${t('worldShort', { n: b.world })} · ${t('boardRound', { n: b.round, total: ROUNDS })}</span>
     <span class="board-lives" aria-label="${t('boardLives')}">❤ ${b.lives}</span>
+    <span class="board-count" aria-label="${t('boardCapLabel')}">♟ ${b.army.length}/${armyCap(b.round)}</span>
     <span class="board-gold" aria-label="${t('boardGoldLabel')}">◉ ${b.gold}</span>`;
   const cards = b.shop.map((o, i) => o
     ? `<button class="board-card" type="button" data-bact="buy" data-i="${i}"${!prep || b.gold < o.price ? ' disabled' : ''}><i class="board-cast">${t('worldShort', { n: o.cast })}</i><img src="${boardPic(o.tier, o.cast)}" alt=""><b>${boardTierName(o.tier)}</b><span>◉ ${o.price}</span></button>`
@@ -1729,7 +1733,7 @@ function boardResultScreen(b: BoardGame) {
   const win = last.result === 'win';
   show(`${head(win ? 'victory' : 'defeat', t(win ? 'boardWin' : 'boardLoss'))}
     ${last.lost ? `<p>${t('boardLost', { n: last.lost })}</p>` : ''}
-    <p class="how">${t('boardGold', { n: GOLD.round + (win ? GOLD.win : 0) })}</p>
+    <p class="how">${t('boardGold', { n: roundGold(b.world, win) })}</p>
     <button class="primary" data-act="board-next">▶ ${t('boardNext')}</button>`);
 }
 
@@ -1751,7 +1755,10 @@ function boardStep(dt: number, now: number) {
   const shown = `${b.phase}${b.round}${b.lives}`;
   if ((b.phase === 'result' || b.phase === 'over' || b.phase === 'won') && boardShown !== shown) {
     boardShown = shown;
-    window.setTimeout(() => { if (board === b) boardResultScreen(b); }, 700);
+    boardEnded = now / 1000;
+    audio.play('shoot');
+    window.setTimeout(() => { if (board === b) audio.play('boom'); }, FIREBALL.fly * 1000);
+    window.setTimeout(() => { if (board === b) boardResultScreen(b); }, (FIREBALL.fly + FIREBALL.blast) * 1000 + 450);
   }
   renderBoardUi();
   // The board between the top bar and the shop.
@@ -1762,11 +1769,13 @@ function boardStep(dt: number, now: number) {
   ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
   ctx.fillStyle = '#0b0820';
   ctx.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
-  if (heroPics) drawBoard(ctx, b, boardLay, now / 1000, boardDrag, save.retro, view.dpr, heroPics);
+  if (b.phase === 'prep' || b.phase === 'fight') boardEnded = null;
+  const names = { mine: save.name, rival: t(`final${cap(FINAL_ID[b.world - 1])}` as Key) };
+  if (heroPics) drawBoard(ctx, b, boardLay, now / 1000, boardDrag, save.retro, view.dpr, heroPics, names, boardEnded === null ? null : now / 1000 - boardEnded);
 }
 
 /* Dragging units about while you prepare: onto a cell to move it, onto one of its kind to merge them, onto the
-   shop to sell it; a tap sends a bench unit to the board (or a board unit back to the bench). */
+   shop to sell it; a tap says what it is. Only your half, the lower four rows, takes them. */
 function boardPointerDown(event: PointerEvent) {
   const b = board;
   if (!b || b.phase !== 'prep') return;
