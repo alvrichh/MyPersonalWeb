@@ -467,7 +467,7 @@ function menuScreen() {
       <button class="cover-book${save.bookSeen ? '' : ' is-first'}" type="button" data-act="book" aria-label="${t('bookOpen')}"><img src="./images/game/items/seniorTome.webp" alt=""></button>
       <button class="hot cover-profile" data-act="profile" aria-label="${t('profile')}: ${esc(save.name)} · ${t('lvShort', { level })}"></button>
       <span class="cover-avatar" aria-hidden="true"><img src="${heroPic()}" alt=""></span>
-      ${friend ? `<button class="hot cover-friend" type="button" data-act="link" aria-label="${t('onlinePlay')}: ${esc(friend.name)}"><span class="friend-pic"><img src="./images/game/hero/${friend.still}.webp" alt=""></span><b>${esc(friend.name)}</b><i class="friend-dot" aria-hidden="true"></i></button>` : ''}
+      ${friend ? `<button class="hot cover-friend" type="button" data-act="link" aria-label="${t('onlinePlay')}: ${esc(friend.name)}"><span class="friend-pic"><img src="./images/game/hero/${friend.still}.webp" alt=""></span><b>${esc(friend.name)}</b><i class="friend-dot" aria-hidden="true"></i></button>` : `<button class="hot cover-friend is-add" type="button" data-act="link" aria-label="${t('linkAdd')}"><span class="friend-pic is-add" aria-hidden="true">+</span><b>${t('linkAdd')}</b></button>`}
       <span class="cover-profile-copy"><small>${esc(save.name)}${masteries() ? ` ${stars()}` : ''}</small><b>${t('lvShort', { level })}</b><i><b style="width:${Math.round(progress * 100)}%"></b></i></span>
       <button class="hot cover-coins" data-act="coin-store" aria-label="${t('storeTitle')}: ${Math.floor(save.coins)}"></button>
       <span class="cover-num is-coins">${Math.floor(save.coins)}</span>
