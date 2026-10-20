@@ -559,7 +559,7 @@ function endScreen(g: Game) {
   const next = unlocked
     ? `${notice(save.retro ? WORLD_ICON[unlocked - 1] : `<img class="scene-pic" src="./images/game/map/pv-${ISLAND_ART[unlocked - 1]}.jpg" alt="">`, t('unlockedWorld', { n: unlocked }), worldName(unlocked))}
        <button class="primary" data-act="map">🗺️ ${t('toMap')}</button>
-       <button class="ghost" data-act="play-same">${t('again')}</button>`
+       <button class="primary" data-act="play-next" data-next="${unlocked}">▶ ${t('nextWorld')}</button>`
     : `<button class="primary" data-act="play-same">${t('again')}</button>`;
   const horde = g.mode === 'horde';
   const record = g.endless && save.nightmareBest?.time === g.time;
@@ -1310,6 +1310,8 @@ screen.addEventListener('click', (event) => {
   const act = target.dataset.act;
   if (act !== 'mute') audio.play('click');
   if (act === 'play') startRun();
+  // The world this run unlocked, in the same mode.
+  else if (act === 'play-next') { const n = Number(target.dataset.next); setWorld(n, game?.mode ?? save.mode); persist(); startRun(n, game?.mode ?? save.mode); }
   else if (act === 'play-same') startRun(game?.world ?? worldIn(), game?.mode ?? save.mode, game?.endless);
   else if (act === 'play-nightmare') startRun(NIGHTMARE_WORLD, 'horde', true);
   else if (act === 'mode') { save.mode = save.mode === 'horde' ? 'sprints' : 'horde'; persist(); menuScreen(); }
