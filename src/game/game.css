@@ -2713,8 +2713,8 @@ body {
   bottom: 0;
   left: 50%;
   z-index: 0;
-  width: 140%;
-  max-width: 200px;
+  width: var(--pad-w);
+  max-width: none;
   aspect-ratio: 258 / 277;
   transform: translateX(-50%);
   background: url('/images/game/ui/portal_pad.webp') center / 100% 100% no-repeat;
@@ -2730,7 +2730,7 @@ body {
   /* Feet on the middle of the portal's ring, 26% of its height above its bottom (the portal is
      min(140%, 200px) wide at 258:277, so that is 0.279 of its width, and margins in % follow the column's
      width); its light rises behind the hero; the name stands above the hero's head. */
-  margin-bottom: calc(min(140%, 200px) * 0.279 - 6px);
+  margin-bottom: calc(var(--pad-w) * 0.279 - 6px);
   filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.55));
 }
 canvas.hero-fig { height: 150px; width: 135px; filter: none; }
@@ -3502,7 +3502,7 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
    feet, flapping 1.4 times a second like in a run. The wrapper takes the hero's place, and its margin in Customise. */
 .wing-host { position: relative; display: inline-grid; flex: none; z-index: 1; }
 .wing-host > img:not(.hero-wings) { position: relative; z-index: 1; }
-.dress-hero .wing-host { margin-bottom: calc(min(140%, 200px) * 0.279 - 6px); }
+.dress-hero .wing-host { margin-bottom: calc(var(--pad-w) * 0.279 - 6px); }
 .dress-hero .wing-host > .hero-fig { margin-bottom: 0; }
 .hero-wings {
   position: absolute;
@@ -3566,3 +3566,9 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 /* Centred even when wider than the middle column (43px on a 360px phone): equal negative side margins let it
    spill out evenly on both sides instead of to the right. */
 .dress-hero > .hero-fig, .dress-hero > .wing-host { margin-inline: -60px; }
+
+/* The portal under the hero's feet sized by the screen, not by the narrow middle column (it was only 60px wide on
+   phones); the slots show only their name now (the worn item is in the ring), so the hero and its portal fit centred. */
+.dress { --pad-w: clamp(150px, 50vw, 230px); }
+.dslot .plate b { display: none; }
+:root[data-retro] .dslot .plate b { display: block; }
