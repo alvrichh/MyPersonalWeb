@@ -8,7 +8,7 @@ import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
 import { draw, drawRetroFigure, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, heroStill } from './save';
 import type { Enemy, Mode } from './world';
-import { ARMOUR_SLOTS, ARSENAL, ITEMS, itemLevel, type SpiritSkin, UPGRADES, WEAPON_SLOTS, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
+import { ARMOUR_SLOTS, ARSENAL, ITEMS, itemLevel, type SpiritSkin, UPGRADES, WEAPON_SLOTS, EXTRA_SLOT_PRICE, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
 import { Scene } from './scene';
 import { makeT, pickLang, type Key } from './strings';
 import {
@@ -1104,6 +1104,13 @@ function shopScreen(note = '') {
   const weaponSecs = merged('weapons', t('shopWeapons'), WEAPON_SLOTS.map((slot) => group(slot, (id) => !isSpirit(id))))
     + merged('spirits', t('shopSpirits'), [group('magic', isSpirit)], false);
   // The forge: permanent, levelled upgrades.
+  // The extra charm, sold in the forge too: one more item of any kind, worn from Customise.
+  const extraCard = `<div class="item forge-item${save.extraSlot ? ' is-on' : save.coins < EXTRA_SLOT_PRICE ? ' is-locked' : ''}">
+      <span class="icon" aria-hidden="true">✚</span>
+      <b>${t('extraSlot')}</b>
+      <span>${t('extraText')}</span>
+      ${save.extraSlot ? `<button class="buy is-worn" disabled>✓ ${t('extraOwned')}</button>` : `<button class="buy${save.coins >= EXTRA_SLOT_PRICE ? '' : ' is-poor'}" data-extra-buy>${t('buy')} · 🪙 ${EXTRA_SLOT_PRICE}</button>`}
+    </div>`;
   const forge = UPGRADES.map((u) => {
     const level = save.upgrades[u.id] ?? 0;
     const maxed = level >= u.max;
@@ -1144,7 +1151,7 @@ function shopScreen(note = '') {
     <div class="shop-head"><h2>${t('shop')}</h2><p class="wallet">${coinsLine()} <button class="wallet-plus" type="button" data-act="coin-store" aria-label="${t('storeTitle')}">+</button></p></div>
     ${note ? `<p class="note">${note}</p>` : `<p class="how">${t('earnHint')}</p>`}
     ${giftLine}
-    ${shopSection('forge', t('forge'), `${UPGRADES.reduce((n, u) => n + (save.upgrades[u.id] ?? 0), 0)}/${UPGRADES.reduce((n, u) => n + u.max, 0)}`, `<p class="how">${t('forgeHint')}</p><div class="items">${forge}</div>`)}
+    ${shopSection('forge', t('forge'), `${UPGRADES.reduce((n, u) => n + (save.upgrades[u.id] ?? 0), 0)}/${UPGRADES.reduce((n, u) => n + u.max, 0)}`, `<p class="how">${t('forgeHint')}</p><div class="items">${forge}${extraCard}</div>`)}
     ${shopSection('arsenal', t('arsenal'), `${save.arsenal.length}/${ARSENAL.length}`, `<p class="how">${t('arsenalHint')}</p><div class="items">${arsenal}</div>`)}
     ${armourSec}${weaponSecs}
     ${backButton('menu')}`, true, false, 'keep-scroll');
@@ -1165,12 +1172,12 @@ function dressPalette() {
   palette.boots = save.equipped.boots;
 }
 /** The Phoenix cloak at ★3 is worn: its wings show behind the hero in Customise and the profile too (not in retro). */
-const wingsOn = () => !save.retro && save.equipped.body === 'phoenix' && itemLevel(save.itemLevels, 'phoenix') >= 3;
+const wingsOn = () => !save.retro && (save.equipped.body === 'phoenix' || save.extra === 'phoenix') && itemLevel(save.itemLevels, 'phoenix') >= 3;
 /** The hero picture with the worn wings behind it, flapping (`.wing-host` in game.css). */
 const withWings = (img: string) => wingsOn() ? `<span class="wing-host"><img class="hero-wings" src="./images/game/fx/wings-1.webp" alt="">${img}</span>` : img;
 const heroPic = () => `./images/game/hero/${heroStill(save.skin, save.equipped.head)}.webp`;
 /** What the list under the hero shows: a slot's items, the skins or the enemy looks. */
-let dressSlot: Slot | 'skin' | 'foes' | 'scene' | 'song' | null = null;
+let dressSlot: Slot | 'skin' | 'foes' | 'scene' | 'song' | 'extra' | null = null;
 /** The worlds' songs in Customise, in world order: the world, its versions (only the first world kept two) and
     its strings' key (`<key>Name`, `<key>V2`). The ids stay as they were before the mud world came in as world 4. */
 const WORLD_SONGS: [number, readonly SongPick[], string][] = [
@@ -1196,6 +1203,12 @@ function stylesScreen(note = '') {
       <span class="plate"><small>${t(SLOT_LABEL[slot])}</small><b>${item ? t(`${item.id}Name` as Key) : '—'}</b></span>
     </button>`;
   };
+  // The extra charm: one more item of any kind, under the hero (bought here or in the shop's forge).
+  const extraItem = save.extra ? itemById(save.extra) : null;
+  const extraButton = `<button class="dslot is-extra${extraItem ? ' is-worn' : ''}${dressSlot === 'extra' ? ' is-open' : ''}" data-slot="extra" aria-pressed="${dressSlot === 'extra'}">
+      <span class="ring" aria-hidden="true"><span class="icon${extraItem ? '' : ' is-empty'}">${extraItem ? picIcon(extraItem.icon, extraItem.pic) : save.extraSlot ? '✚' : '🔒'}</span></span>
+      <span class="plate"><small>${t('extraSlot')}</small><b>${extraItem ? t(`${extraItem.id}Name` as Key) : save.extraSlot ? '—' : `🪙 ${EXTRA_SLOT_PRICE}`}</b></span>
+    </button>`;
   const hero = save.retro
     ? `<canvas class="hero-fig" width="180" height="200" aria-hidden="true"></canvas>`
     : withWings(`<img class="hero-fig" src="${heroPic()}" alt="" width="128" height="160">`);
@@ -1231,6 +1244,17 @@ function stylesScreen(note = '') {
       }).join('')}</div>
       <h3 class="slot">${t('songBosses')}</h3><div class="gear-list">${BOSS_SONGS.map((id, i) =>
         songRow(`boss-${id}`, `<img class="scene-pic boss-pic" src="./images/game/bosses/${id}-0.webp" alt="">`, t(`final${cap(id)}` as Key), t('songBossText', { world: t(`world${i + 1}Name` as Key) }))).join('')}</div>`;
+  } else if (dressSlot === 'extra') {
+    // Any owned item not already worn in its own slot; or, until bought, the charm itself.
+    const worn = Object.values(save.equipped);
+    picks = !save.extraSlot
+      ? `<h3 class="slot">${t('extraSlot')}</h3>${note ? `<p class="note">${note}</p>` : ''}<p class="how">${t('extraText')}</p>
+        <button class="buy${save.coins >= EXTRA_SLOT_PRICE ? '' : ' is-poor'}" data-extra-buy>${t('buy')} · 🪙 ${EXTRA_SLOT_PRICE}</button>`
+      : `<h3 class="slot">${t('extraPick')}</h3>${note ? `<p class="note">${note}</p>` : ''}<p class="how">${t('extraText')}</p>
+        <div class="gear-list">${ITEMS.filter((item) => save.owned.includes(item.id) && !worn.includes(item.id)).map((item) =>
+          row(`data-extra="${item.id}"`, save.extra === item.id, false, picIcon(item.icon, item.pic), item.legendary ? `<span class="legend-name">${t(`${item.id}Name` as Key)}</span>` : t(`${item.id}Name` as Key), t(`${item.id}Text` as Key), save.extra === item.id ? `✓ ${t('worn')}` : t('equip'))).join('') || `<p class="how">${t('extraEmpty')}</p>`}
+        ${save.extra ? `<button class="ghost small" data-extra-off>${t('dressNone')}</button>` : ''}
+        </div>`;
   } else if (dressSlot === 'scene') {
     picks = `<h3 class="slot">${t('scenePick')}</h3><div class="gear-list">${Array.from({ length: WORLD_COUNT + 1 }, (_, n) => n).map((n) =>
       row(`data-scene="${n}"`, save.scene === n, false, n ? `<img class="scene-pic is-floor" src="./images/game/floors/world${n}.webp" alt="">` : '🌍',
@@ -1261,6 +1285,7 @@ function stylesScreen(note = '') {
       <div class="dress-hero"><span class="pad" aria-hidden="true"></span>${hero}<b>${esc(save.name)}</b></div>
       <div class="dress-col">${WEAPON_SLOTS.map(slotButton).join('')}</div>
     </div>
+    <div class="dress-extra">${extraButton}</div>
     <div class="dress-nav">
       <button class="dnav is-back" data-act="menu"><span class="ring" aria-hidden="true"></span><small>${t('backShort')}</small></button>
       ${nav('skin', '👕', 'skinBtn')}
@@ -1289,7 +1314,7 @@ function showPicks() {
 }
 
 function startRun(world = worldIn(), mode = save.mode, endless = false) {
-  game = newGame({ ...buildLoadout(save.equipped, save.upgrades, masteries(), save.arsenal, save.itemLevels), sprintMastery: save.mastery.sprints }, save.style, world, mode, endless);
+  game = newGame({ ...buildLoadout(save.equipped, save.upgrades, masteries(), save.arsenal, save.itemLevels, save.extra), sprintMastery: save.mastery.sprints }, save.style, world, mode, endless);
   game.scene = save.scene;
   preloadFx();
   paused = false;
@@ -1500,6 +1525,7 @@ screen.addEventListener('click', (event) => {
     save.coins -= item.price;
     save.owned.push(item.id);
     save.equipped[item.slot] = item.id;
+    if (save.extra === item.id) delete save.extra;
     persist();
     audio.play('coin');
     shopScreen();
@@ -1531,6 +1557,7 @@ screen.addEventListener('click', (event) => {
   } else if (target.dataset.equip) {
     const item = itemById(target.dataset.equip as ItemId);
     save.equipped[item.slot] = item.id;
+    if (save.extra === item.id) delete save.extra;
     persist();
     shopScreen();
   } else if (target.dataset.unequip) {
@@ -1565,6 +1592,27 @@ screen.addEventListener('click', (event) => {
     persist();
     dressPalette();
     stylesScreen();
+  } else if (target.dataset.extraBuy !== undefined) {
+    // The extra charm, from Customise or the shop.
+    const again = screen.querySelector('.dress') ? stylesScreen : shopScreen;
+    if (save.extraSlot) return;
+    if (save.coins < EXTRA_SLOT_PRICE) { again(t('notEnough')); return; }
+    save.coins -= EXTRA_SLOT_PRICE;
+    save.extraSlot = true;
+    persist();
+    audio.play('levelup');
+    again(t('extraBought'));
+  } else if (target.dataset.extra) {
+    const id = target.dataset.extra as ItemId;
+    save.extra = save.extra === id ? undefined : id;
+    persist();
+    dressPalette();
+    stylesScreen();
+  } else if (target.dataset.extraOff !== undefined) {
+    delete save.extra;
+    persist();
+    dressPalette();
+    stylesScreen();
   } else if (target.dataset.slot) {
     const slot = target.dataset.slot as Slot;
     dressSlot = dressSlot === slot ? null : slot;
@@ -1580,7 +1628,7 @@ screen.addEventListener('click', (event) => {
     const item = itemById(target.dataset.dress as ItemId);
     const worn = save.equipped[item.slot] === item.id;
     if (worn) delete save.equipped[item.slot];
-    else if (save.owned.includes(item.id)) save.equipped[item.slot] = item.id;
+    else if (save.owned.includes(item.id)) { save.equipped[item.slot] = item.id; if (save.extra === item.id) delete save.extra; }
     else if (!itemOpen(item)) { stylesScreen(lockText(item)); return; }
     else if (save.coins < item.price) { stylesScreen(t('notEnough')); return; }
     else {
