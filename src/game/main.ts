@@ -322,8 +322,8 @@ function show(html: string, wide = false, menu = false, extra = '') {
   // A dialog that re-renders itself (the shop after a purchase) keeps its scroll.
   const keepScroll = extra === 'keep-scroll' ? screen.querySelector('.panel-in')?.scrollTop ?? 0 : 0;
   // The corner buttons (close, options) are pulled out of the scrolling box so they stay put.
-  const close = (html.match(/<button class="ui-(?:close|opts|top)"[^>]*>(?:<span[^<]*<\/span>)?<\/button>/g) ?? []).join('');
-  for (const b of html.match(/<button class="ui-(?:close|opts|top)"[^>]*>(?:<span[^<]*<\/span>)?<\/button>/g) ?? []) html = html.replace(b, '');
+  const close = (html.match(/<button class="ui-(?:close|opts|top)"[^>]*>(?:<span[^>]*>(?:[^<]|<(?!\/span>))*<\/span>)?<\/button>/g) ?? []).join('');
+  for (const b of html.match(/<button class="ui-(?:close|opts|top)"[^>]*>(?:<span[^>]*>(?:[^<]|<(?!\/span>))*<\/span>)?<\/button>/g) ?? []) html = html.replace(b, '');
   const cls = `panel${wide ? ' panel-wide' : ''}${opening && !menu && extra !== 'is-map' ? ' is-pop' : ''}`;
   const old = opening ? null : screen.querySelector<HTMLElement>(':scope > .panel');
   if (old) {
@@ -1377,7 +1377,7 @@ function stylesScreen(note = '') {
   const nav = (key: 'skin' | 'foes' | 'scene' | 'song', label: Key) =>
     `<button class="dnav${dressSlot === key ? ' is-open' : ''}" data-dress-list="${key}" aria-pressed="${dressSlot === key}"><span class="ring${navIcon[key] && !save.retro ? ' has-pic' : ''}" aria-hidden="true">${navIcon[key] && !save.retro ? navIcon[key] : NAV_EMOJI[key]}</span><small>${t(label)}</small></button>`;
   show(`<button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
-    <button class="ui-top" type="button" data-act="to-top" aria-label="${t('toTop')}"><span aria-hidden="true">▲</span></button>
+    <button class="ui-top" type="button" data-act="to-top" aria-label="${t('toTop')}"><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 L20.5 11.5 L15 11.5 L15 21 L9 21 L9 11.5 L3.5 11.5 Z"/></svg></span></button>
     <div class="dress-title"><h2>${t('styles')}</h2></div>
     <p class="wallet">${coinsLine()}</p>
     <div class="dress">
