@@ -1338,7 +1338,11 @@ function stylesScreen(note = '') {
     const slot = dressSlot;
     picks = `<h3 class="slot">${t('dressPick', { slot: t(SLOT_LABEL[slot]) })}</h3>
       ${note ? `<p class="note">${note}</p>` : ''}
-      <div class="gear-list">${ITEMS.filter((item) => item.slot === slot).map((item) => {
+      <div class="gear-list">${(() => {
+        // Only what is already unlocked (and can still be upgraded here); the rest is unlocked in the shop.
+        const mine = ITEMS.filter((item) => item.slot === slot && save.owned.includes(item.id));
+        return mine.length ? '' : `<p class="how">${t('dressNoneOwned', { slot: t(SLOT_LABEL[slot]) })}</p>`;
+      })()}${ITEMS.filter((item) => item.slot === slot && save.owned.includes(item.id)).map((item) => {
         const owned = save.owned.includes(item.id);
         const worn = save.equipped[slot] === item.id;
         const can = save.coins >= item.price;
@@ -1348,6 +1352,7 @@ function stylesScreen(note = '') {
           + (levels ? `<div class="row-levels">${levels}</div>` : '');
       }).join('')}
       ${save.equipped[slot] ? `<button class="ghost small" data-undress="${slot}">${t('dressNone')}</button>` : ''}
+      <button class="primary small" data-act="shop">🛒 ${t('goShop')}</button>
       </div>`;
   }
   // Each round button shows what is picked now, in the game's own art (the emoji stays for retro and the picks with no picture).
