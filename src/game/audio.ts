@@ -16,7 +16,7 @@
 export type Sfx =
   | 'shoot' | 'knife' | 'boomerang' | 'hit' | 'kill' | 'gem' | 'hurt' | 'levelup' | 'pick'
   | 'door' | 'boss' | 'slam' | 'slash' | 'strike' | 'boom' | 'revive' | 'win' | 'over' | 'coin' | 'click'
-  | 'laser1' | 'laser2' | 'laser3' | 'laserEvo';
+  | 'laser1' | 'laser2' | 'laser3' | 'laserEvo' | 'zip';
 
 const BPM = 174;
 const STEP = 60 / BPM / 4; // a sixteenth
@@ -1927,6 +1927,11 @@ class Engine {
       case 'laser2': return this.laser(at, 2);
       case 'laser3': return this.laser(at, 3);
       case 'laserEvo': return this.laser(at, 4);
+      // A merge on the board: a quick rising «zip», a swoosh of air and a little pop at its top.
+      case 'zip':
+        this.blip(at, 380, 2600, 0.11, 0.32, 'triangle');
+        this.hiss(at, 0.09, 0.18, 4500);
+        return this.blip(at + 0.1, 2200, 3000, 0.04, 0.15, 'sine');
     }
   }
 

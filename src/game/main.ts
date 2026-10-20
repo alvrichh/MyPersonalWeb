@@ -8,7 +8,7 @@ import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPr
 import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
 import { draw, drawRetroFigure, preloadCast, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
-import { ROUNDS, SYNERGY, armyCap, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, updateBoard, type BoardGame } from './board';
+import { ROUNDS, SYNERGY, armyCap, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, updateBoard, type BoardGame } from './board';
 import { FIREBALL, boardMerged, drawBoard, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
 import type { Enemy } from './world';
 import { ARMOUR_SLOTS, ARSENAL, ITEMS, itemLevel, type SpiritSkin, UPGRADES, WEAPON_SLOTS, EXTRA_SLOT_PRICE, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
@@ -1740,7 +1740,7 @@ function renderBoardUi() {
   const prep = b.phase === 'prep';
   const speedUp = b.phase === 'fight' && b.time >= BOARD_FAST_AFTER;
   const syns = synergies(b);
-  const key = [b.phase, b.round, b.lives, b.gold, b.shop.map((o) => (o ? `${o.tier}${o.cast}${o.price}` : '-')).join(''), b.army.length, speedUp, boardFast, b.skillUsed, syns.map((x) => `${x.cast}${x.n}`).join(''), b.event].join('|');
+  const key = [b.phase, b.round, b.lives, b.gold, b.autoMerge, b.shop.map((o) => (o ? `${o.tier}${o.cast}${o.price}` : '-')).join(''), b.army.length, speedUp, boardFast, b.skillUsed, syns.map((x) => `${x.cast}${x.n}`).join(''), b.event].join('|');
   if (key === boardKey) return;
   boardKey = key;
   // The game's own pieces: the painted coins, the shop's orange item frame for the
@@ -1767,6 +1767,7 @@ function renderBoardUi() {
     </div>
     ${fusion ? '' : `<div class="board-cards">${cards}</div>`}
     <div class="board-acts">
+      ${fusion ? `<button class="board-auto${b.autoMerge ? ' is-on' : ''}" type="button" data-bact="auto" aria-pressed="${b.autoMerge}"${!b.autoMerge && b.gold < autoMergePrice(b) ? ' aria-disabled="true"' : ''} aria-label="${t('boardAuto')}"><i aria-hidden="true"></i>${b.autoMerge ? '' : `<small>${coin} ${autoMergePrice(b)}</small>`}</button>` : ''}
       ${fusion
         ? `<button class="ghost board-reroll board-summon" type="button" data-bact="summon"${b.gold < summonPrice(b) ? ' disabled' : ''}>✨ ${t('boardSummon')} · ${coin} ${summonPrice(b)}</button>`
         : `<button class="ghost board-reroll" type="button" data-bact="reroll"${b.gold < 1 ? ' disabled' : ''}>🎲 ${t('boardReroll')} · ${coin} 1</button>`}
@@ -1789,11 +1790,20 @@ boardUi.addEventListener('click', (event) => {
       const m = b.lastMerge;
       b.lastMerge = null;
       boardMerged(m.slot, m.id, performance.now() / 1000);
-      audio.play('levelup');
+      audio.play('zip');
       const name = boardTierName(pieceAt(b, m.slot)?.tier ?? 0);
       flash(m.star ? t('boardStarUp', { name, star: '★'.repeat(m.star) }) : m.combo > 1 ? t('boardCombo', { n: m.combo, name }) : t('boardMerged', { name }));
     } else audio.play('pick');
   } else if (act === 'reroll') { if (boardReroll(b)) audio.play('click'); }
+  else if (act === 'auto') {
+    if (b.autoMerge) flash(t('boardAutoOn'));
+    else if (b.gold < autoMergePrice(b)) flash(`${t('boardAuto')} · ${t('boardNoGold')}`);
+    else if (buyAutoMerge(b)) {
+      audio.play('zip');
+      flash(t('boardAutoBought'));
+      if (b.lastMerge) { const m = b.lastMerge; b.lastMerge = null; boardMerged(m.slot, m.id, performance.now() / 1000); }
+    }
+  }
   else if (act === 'summon') {
     const r = boardSummon(b);
     if (r === 'gold') flash(t('boardNoGold'));
@@ -1804,7 +1814,7 @@ boardUi.addEventListener('click', (event) => {
         const m = b.lastMerge;
         b.lastMerge = null;
         boardMerged(m.slot, m.id, now);
-        audio.play('levelup');
+        audio.play('zip');
         const name = boardTierName(pieceAt(b, m.slot)?.tier ?? 0);
         flash(m.combo > 1 ? t('boardCombo', { n: m.combo, name }) : t('boardMerged', { name }));
       } else if (b.lastSummon) {
@@ -1959,7 +1969,7 @@ function boardPointerUp(event: PointerEvent) {
   if (done === 'merged') {
     const merged = pieceAt(b, drag.over);
     if (merged) boardMerged(drag.over, merged.id, performance.now() / 1000);
-    audio.play('levelup');
+    audio.play('zip');
     flash(t('boardMerged', { name: boardTierName(merged?.tier ?? 0) }));
   }
   else if (done !== 'none') audio.play('click');
