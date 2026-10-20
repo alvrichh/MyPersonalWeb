@@ -8,7 +8,7 @@ import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPr
 import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
 import { draw, drawRetroFigure, preloadCast, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
-import { ROUNDS, SYNERGY, armyCap, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, updateBoard, type BoardGame } from './board';
+import { ROUNDS, SYNERGY, TACTICS, armyCap, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, updateBoard, type BoardGame } from './board';
 import { FIREBALL, boardMerged, drawBoard, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
 import type { Enemy } from './world';
 import { ARMOUR_SLOTS, ARSENAL, ITEMS, itemLevel, type SpiritSkin, UPGRADES, WEAPON_SLOTS, EXTRA_SLOT_PRICE, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
@@ -1748,7 +1748,7 @@ function renderBoardUi() {
   const prep = b.phase === 'prep';
   const speedUp = b.phase === 'fight' && b.time >= BOARD_FAST_AFTER;
   const syns = synergies(b);
-  const key = [b.phase, b.round, b.lives, b.gold, b.autoMerge, b.shop.map((o) => (o ? `${o.tier}${o.cast}${o.price}` : '-')).join(''), b.army.length, speedUp, boardFast, b.skillUsed, syns.map((x) => `${x.cast}${x.n}`).join(''), b.event].join('|');
+  const key = [b.phase, b.round, b.lives, b.gold, b.autoMerge, b.army.map((p) => `${p.tier}${p.cast}${p.star ?? 1}`).sort().join(','), b.shop.map((o) => (o ? `${o.tier}${o.cast}${o.price}` : '-')).join(''), b.army.length, speedUp, boardFast, b.skillUsed, syns.map((x) => `${x.cast}${x.n}`).join(''), b.event].join('|');
   if (key === boardKey) return;
   boardKey = key;
   // The game's own pieces: the painted coins, the shop's orange item frame for the
@@ -1762,10 +1762,12 @@ function renderBoardUi() {
     <span class="hud-room">${t('worldShort', { n: b.world })} · ${t('boardRound', { n: b.round, total: ROUNDS })}</span>
     <span class="hud-coins" aria-label="${t('boardGoldLabel')}"><span class="hud-coin-orb" aria-hidden="true">🪙</span><b>${b.gold}</b></span>
     <button class="hud-pause" type="button" data-bact="pause" aria-label="${t('pause')}"><span aria-hidden="true">Ⅱ</span></button>`;
+  // Tactics: a card that would make three of a kind (two copies at ★1 already on the board) glows and says ★↑.
+  const starsUp = (o: { tier: number; cast: number }) => b.army.filter((p) => p.tier === o.tier && p.cast === o.cast && (p.star ?? 1) === 1).length >= TACTICS.copies - 1;
   // Fusion has no cards: «Summon» drops a unit straight onto the board; the cards are Tactics' only.
   const fusion = b.variant === 'fusion';
   const cards = b.shop.map((o, i) => o
-    ? `<button class="board-card${b.variant === 'tactics' ? ` is-r${o.tier}` : ''}" type="button" data-bact="buy" data-i="${i}"${!prep || b.gold < o.price ? ' disabled' : ''}><i class="board-cast">${t('worldShort', { n: o.cast })}</i><img src="${boardPic(o.tier, o.cast)}" alt=""><b>${boardTierName(o.tier)}</b><span class="board-price">${coin} ${o.price}</span></button>`
+    ? `<button class="board-card${b.variant === 'tactics' ? ` is-r${o.tier}${starsUp(o) ? ' is-up' : ''}` : ''}" type="button" data-bact="buy" data-i="${i}"${!prep || b.gold < o.price ? ' disabled' : ''}><i class="board-cast">${t('worldShort', { n: o.cast })}</i><img src="${boardPic(o.tier, o.cast)}" alt="">${b.variant === 'tactics' && starsUp(o) ? '<em class="board-up">★↑</em>' : ''}<b>${boardTierName(o.tier)}</b><span class="board-price">${coin} ${o.price}</span></button>`
     : '<span class="board-card is-sold"></span>').join('');
   boardShop.innerHTML = prep ? `
     <div class="board-row">
