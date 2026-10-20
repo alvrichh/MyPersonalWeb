@@ -2746,6 +2746,15 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .dnav.is-open .ring { background-image: url('/images/game/ui/ring_orange_on.webp'); }
 .dnav small { max-width: 100%; overflow: hidden; font: 700 0.58rem/1.3 ui-monospace, monospace; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
 .dnav.is-open small { color: #fcd34d; }
+/* The picked skin, cast, floor or song shown in the ring's hole (about 55% of the ring's box, a circle). */
+.dnav .ring.has-pic { position: relative; }
+.dnav .nav-pic { position: absolute; left: 22.5%; top: 22.5%; width: 55%; height: 55%; border-radius: 50%; overflow: hidden; background: radial-gradient(circle at 50% 35%, #1f4a63, #0b1824 75%); }
+.dnav .nav-pic img { display: block; width: 100%; height: 100%; max-width: none; object-fit: cover; }
+/* A boss's picture has room round it for its attacks: drawn larger so the body fills the circle. */
+.dnav .nav-pic.is-boss img { position: absolute; left: 50%; top: 50%; width: 175%; height: 175%; translate: -50% -46%; object-fit: contain; }
+.dnav .nav-pic.is-foe img { object-fit: contain; padding: 8%; box-sizing: border-box; }
+/* The hero: head and shoulders. */
+.dnav .nav-pic.is-hero img { position: absolute; left: 50%; top: 6%; width: auto; height: 150%; translate: -50% 0; }
 .dnav:hover .ring, .dnav:focus-visible .ring { filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.5)) brightness(1.15); }
 
 .gear-list { display: grid; gap: 8px; width: 100%; max-width: 440px; justify-items: center; }
