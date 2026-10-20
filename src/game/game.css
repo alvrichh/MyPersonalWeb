@@ -2716,7 +2716,7 @@ body {
   z-index: 0;
   width: var(--pad-w);
   max-width: none;
-  aspect-ratio: 258 / 277;
+  aspect-ratio: 420 / 489;
   transform: translateX(-50%);
   background: url('/images/game/ui/portal_pad.webp') center / 100% 100% no-repeat;
   pointer-events: none;
@@ -2729,9 +2729,9 @@ body {
   height: 150px;
   max-width: 100%;
   /* Feet on the middle of the portal's ring, 26% of its height above its bottom (the portal is
-     min(140%, 200px) wide at 258:277, so that is 0.279 of its width, and margins in % follow the column's
+     var(--pad-w) wide at 420:489 with its ring at 74.6% of its height, so that is 0.2957 of its width, and margins in % follow the column's
      width); its light rises behind the hero; the name stands above the hero's head. */
-  margin-bottom: calc(var(--pad-w) * 0.279 - 6px);
+  margin-bottom: calc(var(--pad-w) * 0.2957 - 6px);
   filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.55));
 }
 canvas.hero-fig { height: 150px; width: 135px; filter: none; }
@@ -3503,7 +3503,7 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
    feet, flapping 1.4 times a second like in a run. The wrapper takes the hero's place, and its margin in Customise. */
 .wing-host { position: relative; display: inline-grid; flex: none; z-index: 1; }
 .wing-host > img { position: relative; z-index: 1; }
-.dress-hero .wing-host { margin-bottom: calc(var(--pad-w) * 0.279 - 6px); }
+.dress-hero .wing-host { margin-bottom: calc(var(--pad-w) * 0.2957 - 6px); }
 .dress-hero .wing-host > .hero-fig { margin-bottom: 0; }
 .wing-host > .wing-box {
   /* a box far wider than the hero, centred on it, with the wings centred inside by flex: no translate to centre
