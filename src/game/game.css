@@ -3594,3 +3594,5 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 :root:not([data-retro]) .dress-hero { contain: size; }
 .dress-extra { position: relative; z-index: 2; }
 @media (max-width: 400px) { :root:not([data-retro]) .dress-hero img.hero-fig { height: 116px; } }
+/* The hero and its portal a little lower, nearer the bottom slots. */
+:root:not([data-retro]) .dress-hero { transform: translateY(16px); }
