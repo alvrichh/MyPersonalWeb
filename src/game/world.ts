@@ -536,6 +536,8 @@ export type Game = {
   rush: number;
   /** How many stages this rush has (two for each world open in sprints). */
   stages: number;
+  /** The world a rush starts at (1, or the picked world for the showcase of one world's bosses). */
+  rushFrom: number;
   /** The showcase (Boss Rush's «look at the bosses» mode): nobody takes damage but the bugs they call, and the
       boss loses a quarter of its health only when `showcaseHit` is pressed, to see its phases at leisure. */
   showcase: boolean;
@@ -916,18 +918,22 @@ const RUSH_XP = 2;
 const RUSH_HEAL = 0.25;
 /** …and it starts with this many level ups to pick, what five rooms give a sprint. */
 const RUSH_START_PICKS = 4;
+/** …and every boss in it, room-6 and final alike, keeps one small boss of its world's cast at its side: the first after
+    `first` seconds, then a new one `every` seconds while none is out (the Drakkar keeps its Jarls). */
+const RUSH_MINION = { most: 1, first: 6, every: 12 };
 function enterStage(g: Game, stage: number) {
   g.rush = stage;
-  g.world = rushWorld(stage);
+  g.world = g.rushFrom - 1 + rushWorld(stage);
   if (stage > 1) heal(g, g.player.maxHp * RUSH_HEAL);
   enterRoom(g, stage % 2 ? 6 : ROOMS);
-  for (const e of g.enemies) if (e.kind === 'boss') e.xp *= RUSH_XP;
+  // Each boss calls a small boss of its world's cast to its side (`RUSH_MINION`), the first a few seconds in.
+  for (const e of g.enemies) if (e.kind === 'boss') { e.xp *= RUSH_XP; e.ttl = RUSH_MINION.first; }
 }
 
 /** `rush`: a Boss Rush through the bosses of the first `rush` worlds (sprints only). */
 /** The secret shift's world: its floor, blocks, cast and hazards are the jungle's. */
 export const SECRET_WORLD = 5;
-export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'world', world = 1, mode: Mode = 'sprints', endless = false, rush = 0, secret = false): Game {
+export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'world', world = 1, mode: Mode = 'sprints', endless = false, rush = 0, secret = false, rushFrom = 1): Game {
   if (secret) { mode = 'horde'; world = SECRET_WORLD; endless = false; }
   const nightmare = endless && mode === 'horde';
   const g: Game = {
@@ -936,6 +942,7 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     endless: nightmare,
     rush: 0,
     stages: 0,
+    rushFrom: 1,
     secret: false,
     showcase: false,
     scene: 0,
@@ -1026,7 +1033,8 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     startField(g);
   }
   else if (rush) {
-    g.stages = 2 * clamp(rush, 1, WORLD_COUNT);
+    g.rushFrom = clamp(rushFrom, 1, WORLD_COUNT);
+    g.stages = 2 * clamp(rush, 1, WORLD_COUNT - g.rushFrom + 1);
     enterStage(g, 1);
     // With no rooms of bugs before it, the rush starts where a sprint reaches its first boss: a few levels to pick.
     g.level += RUSH_START_PICKS;
@@ -2723,12 +2731,14 @@ function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
   // With a sprint mastery, a sprint's final boss calls smaller bosses of its world's cast to its side; the
   // Drakkar (and Valdur after it) always calls Jarls, in both modes, smaller still.
   const jarls = e.bossId === 'drakkar' || e.bossId === 'valdur';
-  const most = jarls ? Math.max(JARLS.most, Math.min(MINION.most, g.loadout.sprintMastery)) : g.mode === 'sprints' ? Math.min(MINION.most, g.loadout.sprintMastery) : 0;
-  if (final && most > 0) {
+  // In a Boss Rush every boss, room-6 ones too, keeps a small boss at its side.
+  const rush = g.rush > 0 && !g.showcase && !e.minion && !e.clone;
+  const most = jarls ? Math.max(JARLS.most, Math.min(MINION.most, g.loadout.sprintMastery)) : g.mode === 'sprints' ? Math.max(rush ? RUSH_MINION.most : 0, Math.min(MINION.most, g.loadout.sprintMastery)) : 0;
+  if ((final || rush) && most > 0) {
     e.ttl -= dt;
     const out = g.enemies.filter((m) => m.minion && !m.dead).length;
     if (e.ttl <= 0 && out < most) {
-      e.ttl = (jarls ? JARLS.every : MINION.every) * fury;
+      e.ttl = (jarls ? JARLS.every : rush ? RUSH_MINION.every : MINION.every) * fury;
       const side = Math.random() < 0.5 ? -1 : 1;
       const near = { x: e.x + side * 90, y: e.y + 40 };
       const at = g.mode === 'sprints' ? { x: clamp(near.x, WALL + 30, W - WALL - 30), y: clamp(near.y, WALL + 30, H - WALL - 30) } : near;
