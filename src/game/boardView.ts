@@ -121,13 +121,30 @@ function ring(ctx: CanvasRenderingContext2D, r: number, colour: string) {
   ctx.stroke();
 }
 /** Pips for the step (gold for the bosses), and the number of the world its cast comes from. */
-function marks(ctx: CanvasRenderingContext2D, x: number, y: number, p: { tier: number; cast: number }) {
-  const n = p.tier + 1;
-  for (let i = 0; i < n; i++) {
-    ctx.fillStyle = p.tier >= 3 ? '#fcd34d' : '#e2e8f0';
-    ctx.beginPath();
-    ctx.arc(x + (i - (n - 1) / 2) * 6, y, 2.2, 0, Math.PI * 2);
-    ctx.fill();
+/** Tactics: a ★2 unit wears a silver outline and a ★3 one a gold one, each star 12% bigger; its ring under its
+    feet takes its rarity's colour (common grey, rare blue, epic purple, legendary orange, mythic red). */
+export const STAR_BORDER = ['', '#e2e8f0', '#fbbf24'];
+const STAR_GROW = 0.12;
+export const RARITY_COLOUR = ['#94a3b8', '#38bdf8', '#c084fc', '#fb923c', '#f87171'];
+const starScale = (star: number | undefined) => 1 + STAR_GROW * ((star ?? 1) - 1);
+
+function marks(ctx: CanvasRenderingContext2D, x: number, y: number, p: { tier: number; cast: number; star?: number }, tactics: boolean) {
+  if (tactics) {
+    // Its stars, gold.
+    const n = p.star ?? 1;
+    ctx.fillStyle = '#fcd34d';
+    ctx.font = '700 9px system-ui, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('★'.repeat(n), x, y);
+  } else {
+    const n = p.tier + 1;
+    for (let i = 0; i < n; i++) {
+      ctx.fillStyle = p.tier >= 3 ? '#fcd34d' : '#e2e8f0';
+      ctx.beginPath();
+      ctx.arc(x + (i - (n - 1) / 2) * 6, y, 2.2, 0, Math.PI * 2);
+      ctx.fill();
+    }
   }
   ctx.fillStyle = 'rgba(8,12,28,0.85)';
   ctx.beginPath();
@@ -257,6 +274,7 @@ function hearts(ctx: CanvasRenderingContext2D, cx: number, y: number, left: numb
 const rivalHp = (b: BoardGame) => ROUNDS - b.round + (b.phase !== 'prep' && b.phase !== 'fight' && b.last?.result === 'win' ? 0 : 1);
 
 export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: BoardLayout, now: number, drag: BoardDrag | null, retro: boolean, dpr: number, pics: HeroPics, ended: number | null, floor: { top: number; bottom: number }) {
+  const tactics = b.variant === 'tactics';
   // The world's whole arena floor, walls and corners, as in a sprint, from under the top bar to over the buttons;
   // the board is only its grid.
   drawBoardBackdrop(ctx, b.world, ctx.canvas.width / dpr, floor.top, floor.bottom, dpr, retro);
@@ -303,7 +321,7 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
   // Where the dragged unit would go: green to move, gold to merge.
   if (drag?.over) {
     const target = pieceAt(b, drag.over);
-    const merge = target && canMerge(drag.piece, target);
+    const merge = target && canMerge(drag.piece, target, b.variant);
     const c = cellCentre(drag.over);
     ctx.fillStyle = !homeCell(drag.over) ? 'rgba(248,113,113,0.2)' : merge ? 'rgba(252,211,77,0.42)' : 'rgba(74,222,128,0.26)';
     ctx.fillRect(c.x - CELL / 2 + 2, c.y - CELL / 2 + 2, CELL - 4, CELL - 4);
@@ -324,12 +342,12 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
       const c = cellCentre(p.slot);
       ctx.save();
       ctx.translate(c.x, c.y);
-      ring(ctx, TIER_STATS[p.tier].r, '#38bdf8');
-      const pop = popScale(p.id, now);
+      ring(ctx, TIER_STATS[p.tier].r, tactics ? RARITY_COLOUR[p.tier] : '#38bdf8');
+      const pop = popScale(p.id, now) * starScale(p.star);
       ctx.scale(FIG * pop, FIG * pop);
-      drawBoardFigure(ctx, figureOf(p.tier, p.cast, 1, 0, 0, 0), now, retro);
+      drawBoardFigure(ctx, figureOf(p.tier, p.cast, 1, 0, 0, 0), now, retro, STAR_BORDER[(p.star ?? 1) - 1] || null);
       ctx.restore();
-      marks(ctx, c.x, c.y + CELL * 0.42, p);
+      marks(ctx, c.x, c.y + CELL * 0.42, p, tactics);
     }
   } else {
     const live = b.fighters.filter((f) => !f.dead).sort((p, q) => p.y - q.y);
@@ -337,9 +355,9 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
       const colour = f.side === 0 ? '#38bdf8' : '#f87171';
       ctx.save();
       ctx.translate(f.x, f.y);
-      ring(ctx, f.r, colour);
+      ring(ctx, f.r, tactics && f.side === 0 ? RARITY_COLOUR[f.tier] : colour);
       if (f.side === 1) drawEnemyFigure(ctx, figureOf(f.tier, f.cast, f.face, f.step, f.swing, f.hit), now, retro);
-      else { ctx.scale(FIG, FIG); drawBoardFigure(ctx, figureOf(f.tier, f.cast, f.face, f.step, f.swing, f.hit), now, retro); }
+      else { const k = FIG * starScale(f.star); ctx.scale(k, k); drawBoardFigure(ctx, figureOf(f.tier, f.cast, f.face, f.step, f.swing, f.hit), now, retro, STAR_BORDER[f.star - 1] || null); }
       ctx.restore();
       const w = Math.max(22, f.r * 2);
       const y = f.y - f.r * FIG * (f.tier >= 3 ? 3.2 : 2.3);
