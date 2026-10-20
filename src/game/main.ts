@@ -12,7 +12,7 @@ import { ARMOUR_SLOTS, ARSENAL, ITEMS, itemLevel, type SpiritSkin, UPGRADES, WEA
 import { Scene } from './scene';
 import { makeT, pickLang, type Key } from './strings';
 import {
-  CATEGORY, EVO_PARTNER, H, NIGHTMARE_WORLD, canFuse, revivePrice, SKILLS, arrowLook, arrowOptions, bladeElement, bladeOptions, canEvolve, evoOf, fusionOf, fusionWith, pairFusion, arrowElements, settleEffects, rerollChoices, adReroll, adRevive, canAdReroll, canAdRevive, maxLevel, pickArrow, pickBlade, pickSpirit, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_LUCKY, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
+  CATEGORY, EVO_PARTNER, H, NIGHTMARE_WORLD, canFuse, revivePrice, SKILLS, arrowLook, arrowOptions, bladeElement, bladeOptions, canEvolve, evoOf, fusionOf, fusionWith, evoLostBy, pairFusion, arrowElements, settleEffects, rerollChoices, adReroll, adRevive, canAdReroll, canAdRevive, maxLevel, pickArrow, pickBlade, pickSpirit, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_LUCKY, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
   type ArrowLook, type Category, type Choice, type Fusion, type Game, type GameEvent, type Input, type Look, type SkillId, type WheelOutcome,
 } from './world';
 
@@ -748,8 +748,11 @@ function choiceScreen(g: Game) {
       const level = id === 'heart' ? '' : `<span class="lvl">${fresh ? t('newWeapon') : t('skillLevel', { level: g.skills[id] + 1 })}</span>`;
       // A second arrow element says which fusion it makes (and that the other two stop coming).
       const fz = fusionWith(g, id);
-      const fuse = fz ? `<em class="fuse">${t('fusionCard', { fusion: fusionLine(g, fz, id) })}</em>` : '';
-      return `<button class="skill skill-${cat}" data-skill="${id}"><span class="icon" aria-hidden="true">${skillIcon(id, 56, iconFile(g, id, next))}</span><span class="cat">${t(CATEGORY_LABEL[cat])}</span><b>${name}</b><span>${text}${fuse}</span>${level}</button>`;
+      // …and warns when that pair shuts out the evolution of a weapon you carry (then the fusion line is cut short to fit).
+      const lost = evoLostBy(g, id);
+      const fuse = fz ? `<em class="fuse">${t(lost.length ? 'fusionCardShort' : 'fusionCard', { fusion: fusionLine(g, fz, id) })}</em>` : '';
+      const warn = lost.length ? `<em class="evo-lost">⚠ ${t(lost.length > 1 ? 'evoLostMany' : 'evoLost', { names: new Intl.ListFormat(lang, { type: 'conjunction' }).format(lost.map((w) => t(`${w}Name` as Key))) })}</em>` : '';
+      return `<button class="skill skill-${cat}" data-skill="${id}"><span class="icon" aria-hidden="true">${skillIcon(id, 56, iconFile(g, id, next))}</span><span class="cat">${t(CATEGORY_LABEL[cat])}</span><b>${name}</b><span>${text}${fuse}${warn}</span>${level}</button>`;
     })
     .join('');
   // Two rerolls a run, in sprints and on call.
@@ -1172,6 +1175,12 @@ function dressPalette() {
   palette.boots = save.equipped.boots;
 }
 /** The Phoenix cloak at ★3 is worn: its wings show behind the hero in Customise and the profile too (not in retro). */
+/** Only one companion floats by you, so the extra charm never holds a second spirit item. */
+const isSpirit = (id?: ItemId) => !!id && !!itemById(id).effect.spirit;
+const spiritClash = (id: ItemId) => isSpirit(id) && isSpirit(save.equipped.magic);
+/** After wearing a spirit item in its own slot, a spirit in the charm comes off. */
+const dropExtraClash = () => { if (save.extra && spiritClash(save.extra)) delete save.extra; };
+dropExtraClash(); // a save from before the rule
 const wingsOn = () => !save.retro && (save.equipped.body === 'phoenix' || save.extra === 'phoenix') && itemLevel(save.itemLevels, 'phoenix') >= 3;
 /** The hero picture with the worn wings behind it, flapping (`.wing-host` in game.css). */
 const withWings = (img: string) => wingsOn() ? `<span class="wing-host"><span class="wing-box" aria-hidden="true"><img class="hero-wings" src="./images/game/fx/wings-1.webp" alt=""></span>${img}</span>` : img;
@@ -1251,7 +1260,7 @@ function stylesScreen(note = '') {
       ? `<h3 class="slot">${t('extraSlot')}</h3>${note ? `<p class="note">${note}</p>` : ''}<p class="how">${t('extraText')}</p>
         <button class="buy${save.coins >= EXTRA_SLOT_PRICE ? '' : ' is-poor'}" data-extra-buy>${t('buy')} · 🪙 ${EXTRA_SLOT_PRICE}</button>`
       : `<h3 class="slot">${t('extraPick')}</h3>${note ? `<p class="note">${note}</p>` : ''}<p class="how">${t('extraText')}</p>
-        <div class="gear-list">${ITEMS.filter((item) => save.owned.includes(item.id) && !worn.includes(item.id)).map((item) =>
+        <div class="gear-list">${ITEMS.filter((item) => save.owned.includes(item.id) && !worn.includes(item.id) && !spiritClash(item.id)).map((item) =>
           row(`data-extra="${item.id}"`, save.extra === item.id, false, picIcon(item.icon, item.pic), item.legendary ? `<span class="legend-name">${t(`${item.id}Name` as Key)}</span>` : t(`${item.id}Name` as Key), t(`${item.id}Text` as Key), save.extra === item.id ? `✓ ${t('worn')}` : t('equip'))).join('') || `<p class="how">${t('extraEmpty')}</p>`}
         ${save.extra ? `<button class="ghost small" data-extra-off>${t('dressNone')}</button>` : ''}
         </div>`;
@@ -1526,6 +1535,7 @@ screen.addEventListener('click', (event) => {
     save.owned.push(item.id);
     save.equipped[item.slot] = item.id;
     if (save.extra === item.id) delete save.extra;
+    dropExtraClash();
     persist();
     audio.play('coin');
     shopScreen();
@@ -1558,6 +1568,7 @@ screen.addEventListener('click', (event) => {
     const item = itemById(target.dataset.equip as ItemId);
     save.equipped[item.slot] = item.id;
     if (save.extra === item.id) delete save.extra;
+    dropExtraClash();
     persist();
     shopScreen();
   } else if (target.dataset.unequip) {
@@ -1628,13 +1639,14 @@ screen.addEventListener('click', (event) => {
     const item = itemById(target.dataset.dress as ItemId);
     const worn = save.equipped[item.slot] === item.id;
     if (worn) delete save.equipped[item.slot];
-    else if (save.owned.includes(item.id)) { save.equipped[item.slot] = item.id; if (save.extra === item.id) delete save.extra; }
+    else if (save.owned.includes(item.id)) { save.equipped[item.slot] = item.id; if (save.extra === item.id) delete save.extra; dropExtraClash(); }
     else if (!itemOpen(item)) { stylesScreen(lockText(item)); return; }
     else if (save.coins < item.price) { stylesScreen(t('notEnough')); return; }
     else {
       save.coins -= item.price;
       save.owned.push(item.id);
       save.equipped[item.slot] = item.id;
+      dropExtraClash();
       audio.play('coin');
     }
     persist();
