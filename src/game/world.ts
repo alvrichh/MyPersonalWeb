@@ -58,7 +58,7 @@ export const WHEEL_X = W / 2 + 92;
 /** Each world is ten sprints with its own element: colours, a hazard and
  *  tougher bugs. World 1 is the plain backlog. */
 export type Element = 'original' | 'fire' | 'water' | 'mud' | 'leaf' | 'bolt' | 'spark' | 'ghost' | 'heart';
-export type HazardKind = 'none' | 'lava' | 'puddle' | 'thorns' | 'strike' | 'ice' | 'bouncy' | 'mixed';
+export type HazardKind = 'none' | 'lava' | 'puddle' | 'thorns' | 'strike' | 'ice' | 'bouncy' | 'fog' | 'mixed';
 export type WorldDef = { element: Element; hazard: HazardKind; look: Look | 'random'; tint: string; floor: string; grid: string; wall: string; door: string };
 
 /** How an enemy is drawn: the world's cast, or whatever the picker forces. */
@@ -74,7 +74,7 @@ export const WORLDS: WorldDef[] = [
   { element: 'leaf', hazard: 'thorns', look: 'jungle', tint: '#4ade80', floor: '#0a160f', grid: 'rgba(74,222,128,0.07)', wall: '#15321f', door: '#67dfa0' },
   { element: 'bolt', hazard: 'strike', look: 'greek', tint: '#facc15', floor: '#15140a', grid: 'rgba(250,204,21,0.07)', wall: '#2e2a10', door: '#ffd45f' },
   { element: 'spark', hazard: 'bouncy', look: 'robot', tint: '#fb923c', floor: '#160f09', grid: 'rgba(251,146,60,0.08)', wall: '#3b2412', door: '#ffb86f' },
-  { element: 'ghost', hazard: 'none', look: 'nightmare', tint: '#c7d2fe', floor: '#0c0d14', grid: 'rgba(199,210,254,0.05)', wall: '#1f2130', door: '#edf2fb' },
+  { element: 'ghost', hazard: 'fog', look: 'nightmare', tint: '#c7d2fe', floor: '#0c0d14', grid: 'rgba(199,210,254,0.05)', wall: '#1f2130', door: '#edf2fb' },
   { element: 'heart', hazard: 'mixed', look: 'random', tint: '#f472b6', floor: '#170a12', grid: 'rgba(244,114,182,0.07)', wall: '#3a1430', door: '#ff79c9' },
 ];
 export const WORLD_COUNT = WORLDS.length;
