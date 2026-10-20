@@ -2575,8 +2575,9 @@ const moveOf = (g: Game, e: Enemy): Move =>
   : e.bossId === 'chimera' && !e.clone && Math.random() < 0.5 ? 'leap' : MID_MOVE[Math.floor(Math.random() * MID_MOVE.length)];
 const signatureOf = (g: Game, e: Enemy): Signature =>
   e.bossId === 'kratos' ? (e.phase > 1 ? 'grid' : 'meteors') : e.bossId === 'valdur' ? 'frenzy' : g.world < WORLD_COUNT ? SIGNATURE[g.world - 1]
-  // Nocthrax: its own dark tornadoes every other time, the other worlds' signatures in between.
-  : e.bossId === 'chimera' && !e.clone && e.sigs % 2 === 0 ? 'tornado' : SIGNATURE[1 + (Math.floor(e.sigs / 2) % (SIGNATURE.length - 1))];
+  // Nocthrax: its own dark tornadoes every other time on the ground, two times in three in the air and three in
+  // four in its final form, the other worlds' signatures in between.
+  : e.bossId === 'chimera' && !e.clone && e.sigs % (e.phase + 1) !== e.phase ? 'tornado' : SIGNATURE[1 + (Math.floor(e.sigs / (e.bossId === 'chimera' ? e.phase + 1 : 2)) % (SIGNATURE.length - 1))];
 
 /** The longship breaks up at half health: wreckage, water on the floor, and Valdur leaps out of it. */
 /** Below this share of its health the final boss goes into its last stand. */
@@ -2672,6 +2673,9 @@ function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
   }
   // The final boss's fury: under half health everything comes a quarter sooner.
   const fury = final && e.hp < e.maxHp / 2 ? 0.75 : 1;
+  // Nocthrax attacks more often with each phase (more attacks, never harder ones): in the air its ring, charge,
+  // move and signature come sooner, and in its final form sooner still, with a clock of extra tornadoes on top.
+  const tempo = e.bossId === 'chimera' ? NOCTHRAX_TEMPO[e.phase - 1] ?? 1 : 1;
   if (e.chan > 0) {
     channel(g, e, dt);
     return;
@@ -2679,7 +2683,7 @@ function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
   // Radial burst of orbs, turning a little every time.
   e.cd -= dt;
   if (e.cd <= 0) {
-    e.cd = (final ? 2.4 : 3.1) * fury;
+    e.cd = (final ? 2.4 : 3.1) * fury * tempo;
     ring(g, e, final ? 14 : 10, final ? 120 : 105, RING_TONE[e.bossId] ?? '', undefined, RING_PIC[e.bossId === 'kratos' && e.phase > 1 ? 'kratos2' : e.bossId]);
     e.pose = 0.35;
     e.act = 'burst';
@@ -2698,7 +2702,7 @@ function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
   } else {
     e.cd2 -= dt;
     if (e.cd2 <= 0) {
-      e.cd2 = (final ? 5 : 6) * fury * (e.rage ? 0.6 : 1);
+      e.cd2 = (final ? 5 : 6) * fury * (e.rage ? 0.6 : 1) * tempo;
       e.aim = e.rage ? 0.4 : 0.7;
       e.dir = { x: ux, y: uy };
     }
@@ -2783,7 +2787,7 @@ function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
   // The world's move.
   e.cd4 -= dt;
   if (e.cd4 <= 0) {
-    e.cd4 = (final ? 6.5 : 5.5) * fury;
+    e.cd4 = (final ? 6.5 : 5.5) * fury * tempo;
     worldMove(g, e, moveOf(g, e));
     if (e.spawn > 0 || e.chan > 0) return;
   }
@@ -2799,10 +2803,34 @@ function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
   if (final) {
     e.cd5 -= dt;
     if (e.cd5 <= 0) {
-      e.cd5 = 8 * fury;
+      e.cd5 = 8 * fury * tempo;
       signature(g, e, signatureOf(g, e));
       e.sigs += 1;
     }
+  }
+  // Nocthrax's final form never lets up: two more tornadoes every few seconds, while there are not too many out.
+  if (e.bossId === 'chimera' && e.phase >= 3) {
+    e.grow -= dt;
+    if (e.grow <= 0) {
+      e.grow = TORNADO_EXTRA.every;
+      const out = g.orbs.filter((o) => o.pic === 'tornado').length;
+      if (out < TORNADO_EXTRA.most) tornadoes(g, e, Math.min(TORNADO_EXTRA.each, TORNADO_EXTRA.most - out), Math.round(e.dmg * 0.7));
+    }
+  }
+}
+
+/** How much sooner Nocthrax's attacks come in each phase: on the ground, in the air, its final form. */
+const NOCTHRAX_TEMPO = [1, 0.8, 0.6];
+/** Its final form's extra tornadoes: `each` every `every` seconds, never more than `most` out at once. */
+const TORNADO_EXTRA = { each: 2, every: 5, most: 8 };
+/** Dark tornadoes: vortices open round you, rise after a moment and chase you, slowly, for a while. */
+function tornadoes(g: Game, e: Enemy, n: number, dmg: number) {
+  const p = g.player;
+  for (let i = 0; i < n; i++) {
+    const a = rand(0, Math.PI * 2);
+    const at = inside(g, { x: p.x + Math.cos(a) * rand(130, 200), y: p.y + Math.sin(a) * rand(130, 200) }, 30);
+    const v = Math.atan2(p.y - at.y, p.x - at.x);
+    g.orbs.push({ x: at.x, y: at.y, vx: Math.cos(v) * 70, vy: Math.sin(v) * 70, r: 22, dmg, life: 6.5, bounce: 0, tone: '#e879f9', home: 6.5, pic: 'tornado', wait: 0.9 + i * 0.15, from: e.bossId });
   }
 }
 
@@ -2907,15 +2935,8 @@ function signature(g: Game, e: Enemy, sig: Signature) {
   e.act = 'sig';
   switch (sig) {
     case 'tornado': {
-      // Dark tornadoes: vortices open round you, rise after a moment and chase you, slowly, for a while
-      // (two, three or four by its phase).
-      const n = 1 + e.phase;
-      for (let i = 0; i < n; i++) {
-        const a = rand(0, Math.PI * 2);
-        const at = inside(g, { x: p.x + Math.cos(a) * rand(130, 200), y: p.y + Math.sin(a) * rand(130, 200) }, 30);
-        const v = Math.atan2(p.y - at.y, p.x - at.x);
-        g.orbs.push({ x: at.x, y: at.y, vx: Math.cos(v) * 70, vy: Math.sin(v) * 70, r: 22, dmg, life: 6.5, bounce: 0, tone: '#e879f9', home: 6.5, pic: 'tornado', wait: 0.9 + i * 0.15, from: e.bossId });
-      }
+      // Two, three or four by its phase.
+      tornadoes(g, e, 1 + e.phase, dmg);
       break;
     }
     case 'spiral':
