@@ -11,6 +11,7 @@ import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, worldWon,
 import type { Enemy, Mode } from './world';
 import { ARMOUR_SLOTS, ARSENAL, ITEMS, itemLevel, type SpiritSkin, UPGRADES, WEAPON_SLOTS, EXTRA_SLOT_PRICE, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
 import { Scene } from './scene';
+import { ACHIEVEMENTS, checkAchievements, type AchId } from './achievements';
 import { makeT, pickLang, type Key } from './strings';
 import {
   CATEGORY, EVO_PARTNER, H, NIGHTMARE_WORLD, SECRET_WORLD, showcaseHit, startShowcase, canFuse, revivePrice, SKILLS, arrowLook, arrowOptions, bladeElement, bladeOptions, canEvolve, evoOf, fusionOf, fusionWith, evoLostBy, pairFusion, arrowElements, settleEffects, rerollChoices, adReroll, adRevive, canAdReroll, canAdRevive, maxLevel, pickArrow, pickBlade, pickSpirit, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_LUCKY, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
@@ -80,7 +81,10 @@ const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 /* ----------------------------------------------------------------- the save */
 
 const save = loadSave();
-const persist = () => writeSave(save);
+// Every save also checks the achievements, so a purchase or a run earns them at once; the menu announces them.
+const persist = () => { checkAchievements(save); writeSave(save); };
+// What an older save already did counts at once (the menu then announces it).
+if (checkAchievements(save).length) writeSave(save);
 audio.setVolumes(save.music, save.sfx);
 audio.setSong(save.song);
 dressPalette();
@@ -168,6 +172,12 @@ function bankRun(g: Game): number | null {
     if (g.world === 1) save.best = save.bestByWorld[1];
   }
   save.coins += Math.floor(g.coins);
+  // The lifetime totals the achievements count: Nightmare's bugs on their own, the rest by the world played in.
+  save.stats.kills += g.kills;
+  if (g.endless) {
+    save.stats.nightmareKills += g.kills;
+    save.stats.nightmareLongest = Math.max(save.stats.nightmareLongest, g.time);
+  } else save.stats.killsByWorld[g.world] = (save.stats.killsByWorld[g.world] ?? 0) + g.kills;
   save.runs += 1;
   save.playTime = (save.playTime || 0) + g.time;
   save.xp += Math.round(g.xpEarned);
@@ -452,6 +462,55 @@ function menuScreen() {
       <p class="cover-best">${bestLine()}</p>
     </div>
     <small class="cover-version">Bug Hunter v${GAME_VERSION} · ${GAME_BUILD.built.split('-').reverse().join('/')} · ${GAME_BUILD.commit}</small></div>`, false, true);
+  announceAchievements();
+}
+
+/* Achievements earned since the menu last opened come in as gold toasts at the top, one after another (three at
+   most; past that, one toast says how many). */
+const achToast = $<HTMLElement>('achToast');
+let achQueue: AchId[] = [];
+let achTimer: number | undefined;
+function announceAchievements() {
+  if (!save.achNew.length) return;
+  const fresh = save.achNew.filter((id): id is AchId => ACHIEVEMENTS.some((a) => a.id === id));
+  save.achNew = [];
+  writeSave(save);
+  if (!fresh.length) return;
+  achQueue = fresh.length > 3 ? [...fresh.slice(0, 2), ...([`+${fresh.length - 2}`] as unknown as AchId[])] : fresh;
+  if (achTimer === undefined) nextAchToast();
+}
+function nextAchToast() {
+  const id = achQueue.shift();
+  if (!id) { achToast.hidden = true; achTimer = undefined; return; }
+  const a = ACHIEVEMENTS.find((x) => x.id === id);
+  achToast.innerHTML = a
+    ? `<span class="ach-ic" aria-hidden="true">${a.icon}</span><span><small>${t('achUnlocked')}</small><b>${t(achKey(a.id))}</b></span>`
+    : `<span class="ach-ic" aria-hidden="true">🏆</span><span><small>${t('achUnlocked')}</small><b>${t('achMore', { n: id.slice(1) })}</b></span>`;
+  achToast.hidden = false;
+  achToast.classList.remove('is-on');
+  void achToast.offsetWidth;
+  achToast.classList.add('is-on');
+  audio.play('levelup');
+  achTimer = window.setTimeout(nextAchToast, 2800);
+}
+const achKey = (id: AchId) => `ach${cap(id)}` as Key;
+
+/** The achievements: earned ones lit with the day they came, the rest greyed with how far along they are. */
+function achievementsScreen() {
+  const done = ACHIEVEMENTS.filter((a) => save.achieved[a.id]).length;
+  const day = (ms: number) => new Date(ms).toLocaleDateString(lang === 'es' ? 'es-ES' : 'en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  const rows = ACHIEVEMENTS.map((a) => {
+    const at = save.achieved[a.id];
+    const [now, goal] = a.progress(save);
+    const bar = !at && goal > 1 ? `<i class="ach-bar" aria-label="${Math.min(now, goal)}/${goal}"><b style="width:${Math.round((Math.min(now, goal) / goal) * 100)}%"></b></i><small class="ach-n">${Math.min(now, goal)}/${goal}</small>` : '';
+    return `<li class="ach${at ? ' is-done' : ''}"><span class="ach-ic" aria-hidden="true">${a.icon}</span><span class="ach-copy"><b>${t(achKey(a.id))}</b><span>${t(`${achKey(a.id)}Text` as Key)}</span>${bar}</span><span class="ach-state">${at ? `✓<small>${day(at)}</small>` : '🔒'}</span></li>`;
+  }).join('');
+  show(`<button class="ui-close" type="button" data-act="profile" aria-label="${t('back')}"></button>
+    <button class="ui-top" type="button" data-act="to-top" aria-label="${t('toTop')}"><span><svg viewBox="0 0 24 24"><path d="M12 3 L20.5 11.5 L15 11.5 L15 21 L9 21 L9 11.5 L3.5 11.5 Z"/></svg></span></button>
+    <h2>🏆 ${t('achTitle')}</h2>
+    <p class="how">${t('achCount', { n: done, total: ACHIEVEMENTS.length })}</p>
+    <ul class="achs">${rows}</ul>
+    ${backButton('profile', 'profile')}`, false, false, 'keep-scroll');
 }
 
 const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
@@ -528,6 +587,7 @@ function profileScreen(note = '') {
       ${stat('profileWorlds', `${unlockedIn()}/${WORLD_COUNT}`)}
       ${stat('profileCoins', `🪙 ${Math.floor(save.coins)}`)}
     </div>
+    <button class="primary ach-open" data-act="achievements">🏆 ${t('achTitle')} · ${ACHIEVEMENTS.filter((a) => save.achieved[a.id]).length}/${ACHIEVEMENTS.length}</button>
     <h3 class="slot">${t('profileStars')}</h3>
     ${masteries()
       ? `<p class="mastery-line">${save.retro ? `<span style="color:${starColor()}">★</span>` : crest} ${modeShort('sprints')} ${save.mastery.sprints} · ${modeShort('horde')} ${save.mastery.horde}</p>`
@@ -1591,6 +1651,7 @@ screen.addEventListener('click', (event) => {
   } else if (act === 'menu') menuScreen();
   else if (act === 'shop') shopScreen();
   else if (act === 'profile') { editingName = false; profileScreen(); }
+  else if (act === 'achievements') achievementsScreen();
   else if (act === 'reset-ask') resetScreen();
   else if (act === 'reset-do') { wipeProgress(save); persist(); dressPalette(); mapPick = 0; profileScreen(t('resetDone')); }
   else if (act === 'mastery-ask') masteryScreen(save.mode);
