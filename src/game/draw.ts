@@ -5026,3 +5026,14 @@ export function drawBoardBackdrop(ctx: CanvasRenderingContext2D, world: number, 
   const floor = retro ? undefined : floorImage(world);
   if (floor && ready(floor)) ctx.drawImage(floor, 0, top, w, h);
 }
+/** The board's wall between the halves: each world's own long blocks (the servers, the volcanic stone, the ice…;
+    the mud world the vikings' old wet stones, the jungle its mossy ones), two of them in turn. */
+export function boardWallPieces(world: number): HTMLImageElement[] {
+  const look = WORLDS[world - 1].look;
+  const stones = look === 'random' ? 'core' : look;
+  if (stones === 'mud') return [setImage('viking', 'stone-long-0'), setImage('viking', 'stone-long-1')];
+  if (stones === 'jungle') return [setImage('jungle', 'stone-long-0'), setImage('jungle', 'stone-long-1')];
+  const pre = LAYOUT_SET[stones] ?? 'server-';
+  const set = (stones in LAYOUT_SET ? stones : 'original') as Look | 'core';
+  return [setImage(set, `${pre}100x24-0`), setImage(set, `${pre}100x24-1`)];
+}

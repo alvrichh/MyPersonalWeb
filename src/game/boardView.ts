@@ -1,5 +1,5 @@
 import { BOARD_H, BOARD_W, CELL, COLS, FINAL_ID, HOME_ROW, MERGE_DELAY, ROUNDS, STRIKE, homeCell, ROWS, TIER_KIND, TIER_STATS, canMerge, castLook, cellCentre, pieceAt, waveSpots, type BoardGame, type Piece, type Slot, type Tier } from './board';
-import { boardFx, drawBoardBackdrop, drawBoardFigure } from './draw';
+import { boardFx, boardWallPieces, drawBoardBackdrop, drawBoardFigure } from './draw';
 
 /* Drawing the board mode on the game's canvas: the world's floor under a grid, your bugs on the lower half and the
    round's enemy on the upper (faint while you prepare), each with its cast's own pictures, and the two commanders
@@ -59,6 +59,51 @@ const figureOf = (tier: Tier, cast: number, face: number, step: number, swing: n
   hit,
   r: DRAW_R[tier],
 });
+
+/* The wall between the halves: the world's own long blocks in a row along the halfway line, standing while you lay
+   your army out; it sinks into the floor as the fight starts and rises again when it ends, shaking a little as it
+   moves, with dust where it meets the floor. */
+const WALL = { move: 0.5, w: BOARD_W / 3 };
+let wallUp = 1;
+let wallAt = 0;
+function drawWall(ctx: CanvasRenderingContext2D, b: BoardGame, now: number, retro: boolean) {
+  const dt = Math.min(0.05, Math.max(0, now - wallAt));
+  wallAt = now;
+  const target = b.phase === 'fight' ? 0 : 1;
+  const was = wallUp;
+  wallUp = target > wallUp ? Math.min(1, wallUp + dt / WALL.move) : Math.max(0, wallUp - dt / WALL.move);
+  const pieces = boardWallPieces(b.world);
+  if (retro || wallUp <= 0 || !pieces.every(ok)) return;
+  const base = HOME_ROW * CELL + 10;
+  const moving = wallUp !== was && wallUp > 0 && wallUp < 1;
+  const shake = moving ? Math.sin(now * 60) * 1.2 : 0;
+  ctx.save();
+  // It sinks below the floor: only what is above the line it stands on shows.
+  ctx.beginPath();
+  ctx.rect(-20, -200, BOARD_W + 40, base + 200);
+  ctx.clip();
+  for (let i = 0; i < 3; i++) {
+    const img = pieces[i % 2];
+    const w = WALL.w * 1.04;
+    const h = (w * img.naturalHeight) / img.naturalWidth;
+    const k = 1 - wallUp;
+    ctx.drawImage(img, i * WALL.w - WALL.w * 0.02 + shake, base - h + k * (h + 2), w, h);
+  }
+  ctx.restore();
+  // Dust along its foot while it moves.
+  if (moving) {
+    ctx.save();
+    ctx.globalAlpha = 0.3 * Math.sin(wallUp * Math.PI);
+    ctx.fillStyle = '#cbd5e1';
+    for (let i = 0; i < 14; i++) {
+      const x = (i + 0.5) * (BOARD_W / 14) + Math.sin(now * 9 + i) * 4;
+      ctx.beginPath();
+      ctx.ellipse(x, base - 2 - Math.abs(Math.sin(now * 11 + i * 1.7)) * 5, 9, 4, 0, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+}
 
 /* Fusion's auto-merge: while the lightning plays, the newer unit walks over to its twin, slowly and then quicker,
    and the twin leans a little towards it and back, so the two meet where the merged unit will stand. */
@@ -313,16 +358,20 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
     for (let c = 1; c < COLS; c++) { ctx.beginPath(); ctx.moveTo(c * CELL, 0); ctx.lineTo(c * CELL, BOARD_H); ctx.stroke(); }
     for (let r = 1; r < ROWS; r++) { ctx.beginPath(); ctx.moveTo(0, r * CELL); ctx.lineTo(BOARD_W, r * CELL); ctx.stroke(); }
     ctx.strokeRect(0.5, 0.5, BOARD_W - 1, BOARD_H - 1);
-    ctx.strokeStyle = 'rgba(252,211,77,0.5)';
-    ctx.lineWidth = 2;
-    ctx.setLineDash([6, 6]);
-    ctx.beginPath();
-    ctx.moveTo(0, HOME_ROW * CELL);
-    ctx.lineTo(BOARD_W, HOME_ROW * CELL);
-    ctx.stroke();
-    ctx.setLineDash([]);
+    // The dashed line, until the world's wall pieces are in (and in retro).
+    if (retro || !boardWallPieces(b.world).every(ok)) {
+      ctx.strokeStyle = 'rgba(252,211,77,0.5)';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([6, 6]);
+      ctx.beginPath();
+      ctx.moveTo(0, HOME_ROW * CELL);
+      ctx.lineTo(BOARD_W, HOME_ROW * CELL);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
   }
   ctx.restore();
+  drawWall(ctx, b, now, retro);
 
   // The fireball at the end of a fight: yours at the rival after a win, the rival's at you otherwise.
   const won = b.last?.result === 'win';
