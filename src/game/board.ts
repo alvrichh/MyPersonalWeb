@@ -163,6 +163,8 @@ export type BoardGame = {
   /** The last buy that merged by itself: where, into which unit, and how many merges in a row (in Tactics, the
       star it reached). */
   lastMerge: { slot: Slot; id: number; combo: number; star?: Star } | null;
+  /** The last unit summoned that did not merge, to pop it in. */
+  lastSummon: { slot: Slot; id: number } | null;
   wins: number;
   /** Enemy units beaten, all told (for the profile's totals). */
   kills: number;
@@ -194,7 +196,7 @@ export const saleOf = (p: Piece, variant: Variant = 'fusion') =>
 export function newBoard(world: number, casts: number, variant: Variant = 'fusion'): BoardGame {
   const b: BoardGame = {
     world, variant, casts: Math.max(1, casts), round: 1, lives: LIVES, gold: Math.round(8 * castPower(world)), phase: 'prep',
-    army: [], shop: [], wave: enemyWave(world, 1), fighters: [], shots: [], time: 0, last: null, wins: 0, kills: 0, events: [], event: null, skillUsed: false, strike: null, boom: null, lastMerge: null,
+    army: [], shop: [], wave: enemyWave(world, 1), fighters: [], shots: [], time: 0, last: null, wins: 0, kills: 0, events: [], event: null, skillUsed: false, strike: null, boom: null, lastMerge: null, lastSummon: null,
   };
   // You start with a bug of the latest cast on the board.
   b.army.push({ id: nextId++, tier: 0, cast: b.casts, slot: { c: 2, r: ROWS - 2 }, star: 1 });
@@ -205,6 +207,8 @@ export function newBoard(world: number, casts: number, variant: Variant = 'fusio
 /** Four cards: mostly bugs and tickets (a legacy now and then from round 4), from any cast you have opened, the
     latest more often. */
 function rollShop(b: BoardGame) {
+  // Fusion has no cards: its units are summoned (`summon`).
+  if (b.variant === 'fusion') { b.shop = []; return; }
   if (b.variant === 'tactics') {
     // Rarer cards come more often as the rounds go on.
     const k = (b.round - 1) / (ROUNDS - 1);
@@ -241,15 +245,25 @@ export function buy(b: BoardGame, i: number) {
   const offer = b.shop[i];
   if (b.phase !== 'prep' || !offer || b.gold < offer.price) return false;
   if (b.variant === 'tactics') return buyTactics(b, i, offer);
-  // Bought next to its twin it merges at once, and on up while the new step has a twin too (a combo).
   const twin = b.army.find((p) => p.tier === offer.tier && p.cast === offer.cast && p.tier < maxTier(p.cast));
-  if (!twin && b.army.length >= armyCap(b.round)) return false;
-  const at = twin ? null : freeCell(b);
-  if (!twin && !at) return false;
+  if (!twin && (b.army.length >= armyCap(b.round) || !freeCell(b))) return false;
   b.gold -= offer.price;
   b.shop[i] = null;
   b.events.push('buy');
-  if (!twin) { b.army.push({ id: nextId++, tier: offer.tier, cast: offer.cast, slot: at! }); return true; }
+  placeFusion(b, offer.tier, offer.cast);
+  return true;
+}
+
+/** Fusion: a new unit onto the board; next to its twin it merges at once, and on up while the new step has a twin too
+    (a combo). The caller has checked there is room or a twin. */
+function placeFusion(b: BoardGame, tier: Tier, cast: number) {
+  const twin = b.army.find((p) => p.tier === tier && p.cast === cast && p.tier < maxTier(p.cast));
+  if (!twin) {
+    const p = { id: nextId++, tier, cast, slot: freeCell(b)! };
+    b.army.push(p);
+    b.lastSummon = { slot: p.slot, id: p.id };
+    return;
+  }
   twin.tier = (twin.tier + 1) as Tier;
   let combo = 1;
   for (;;) {
@@ -261,7 +275,24 @@ export function buy(b: BoardGame, i: number) {
   }
   b.lastMerge = { slot: twin.slot, id: twin.id, combo };
   b.events.push('merge');
-  return true;
+}
+
+/** Fusion has no shop: the summon button drops a unit straight onto your half for a set price, nearly always a bug,
+    now and then a ticket and, from round 4, a legacy, of the latest world's cast six times in ten and any opened
+    one otherwise; it merges with its twin at once. */
+export const SUMMON = { price: 1.5, ticket: 0.25, legacy: 0.06, latest: 0.6 };
+export const summonPrice = (b: BoardGame) => Math.max(1, Math.round(SUMMON.price * castPower(b.world)));
+export function summon(b: BoardGame): 'ok' | 'gold' | 'full' | 'none' {
+  if (b.phase !== 'prep' || b.variant !== 'fusion') return 'none';
+  if (b.gold < summonPrice(b)) return 'gold';
+  if (b.army.length >= armyCap(b.round) || !freeCell(b)) return 'full';
+  b.gold -= summonPrice(b);
+  const roll = Math.random();
+  const tier: Tier = b.round >= 4 && roll < SUMMON.legacy ? 2 : roll < SUMMON.legacy + SUMMON.ticket ? 1 : 0;
+  const cast = Math.random() < SUMMON.latest ? b.casts : 1 + Math.floor(Math.random() * b.casts);
+  b.events.push('summon');
+  placeFusion(b, tier, cast);
+  return 'ok';
 }
 
 /** Tactics: a card bought makes three copies of the same character at the same star with two on the board? They
