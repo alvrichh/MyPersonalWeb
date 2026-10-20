@@ -1166,6 +1166,21 @@ const SHOP_SEC_ICON: Record<string, [string, string]> = {
   forge: ['⚒️', 'forge/might.webp'], arsenal: ['🚀', 'skills/rocket.webp'],
   armour: ['🛡️', 'slots/body.webp'], weapons: ['🗡️', 'slots/melee.webp'], spirits: ['👻', 'spirits/water-float-0.webp'],
 };
+/** The shop opened at one slot's items (from Customise's «Ir a la tienda»): its section unfolded and its heading at
+    the top of the dialog. */
+function shopAt(slot: Slot) {
+  shopOpen.add((ARMOUR_SLOTS as readonly Slot[]).includes(slot) ? 'armour' : 'weapons');
+  shopScreen();
+  const go = () => {
+    const box = screen.querySelector<HTMLElement>('.panel-in');
+    const head = screen.querySelector<HTMLElement>(`[data-shop-head="${slot}"]`);
+    if (!box || !head) return;
+    box.scrollTop = head.getBoundingClientRect().top - box.getBoundingClientRect().top + box.scrollTop - 8;
+    // `fitPanel()` puts the kept scroll back each time a picture loads (the one Customise had, at first): keep this one.
+    box.dataset.scroll = String(box.scrollTop);
+  };
+  requestAnimationFrame(() => requestAnimationFrame(go));
+}
 function shopSection(key: string, title: string, count: string, body: string) {
   const open = shopOpen.has(key);
   const [emoji, pic] = SHOP_SEC_ICON[key] ?? ['🛒', ''];
@@ -1261,7 +1276,7 @@ function shopScreen(note = '') {
   /** A section holding several sub-groups, each under its own heading (or none, for a single group). */
   const merged = (key: string, title: string, parts: Group[], headed = true) => shopSection(key, title,
     `${parts.reduce((n, x) => n + x.owned, 0)}/${parts.reduce((n, x) => n + x.total, 0)}`,
-    parts.filter((x) => x.total).map((x) => `${headed ? `<h3 class="slot">${t(SLOT_LABEL[x.slot])}</h3>` : ''}<div class="items">${x.cards}</div>`).join(''));
+    parts.filter((x) => x.total).map((x) => `${headed ? `<h3 class="slot" data-shop-head="${x.slot}">${t(SLOT_LABEL[x.slot])}</h3>` : ''}<div class="items">${x.cards}</div>`).join(''));
   // Armour (head, body, boots), Weapons (magic, melee, ranged) and the Spirits on their own.
   const armourSec = merged('armour', t('shopArmour'), ARMOUR_SLOTS.map((slot) => group(slot, () => true)));
   const weaponSecs = merged('weapons', t('shopWeapons'), WEAPON_SLOTS.map((slot) => group(slot, (id) => !isSpirit(id))))
@@ -1450,7 +1465,7 @@ function stylesScreen(note = '') {
           + (levels ? `<div class="row-levels">${levels}</div>` : '');
       }).join('')}
       ${save.equipped[slot] ? `<button class="ghost small" data-undress="${slot}">${t('dressNone')}</button>` : ''}
-      <button class="ghost is-warn" data-act="shop">🛒 ${t('goShop')}</button>
+      <button class="ghost is-warn" data-act="shop" data-shop-slot="${slot}">🛒 ${t('goShop')}</button>
       </div>`;
   }
   // Each round button shows what is picked now, in the game's own art (the emoji stays for retro and the picks with no picture).
@@ -1925,6 +1940,7 @@ screen.addEventListener('click', (event) => {
     if (game) { bankRun(game); persist(); }
     location.href = './index.html';
   } else if (act === 'menu') menuScreen();
+  else if (act === 'shop' && target.dataset.shopSlot) shopAt(target.dataset.shopSlot as Slot);
   else if (act === 'shop') shopScreen();
   else if (act === 'profile') { editingName = false; profileScreen(); }
   else if (act === 'achievements') achievementsScreen();
