@@ -7,9 +7,9 @@ import { COIN_PACKS, currentOffer, grant, packBonus, SKIN_OFFERS, type CoinPack,
 import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPrize, type DailyResult } from './daily';
 import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
 import { draw, drawRetroFigure, preloadCast, preloadFx, type Palette, type View } from './draw';
-import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
+import { DEFAULT_NAME, NAME_MAX, NET_ID, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
 import { CELL, HOME_ROW, ROUNDS, SYNERGY, TACTICS, armyCap, toggleAutoMerge, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, startOnlineFight, updateBoard, type BoardGame, type Online, type Piece, type Variant } from './board';
-import { cleanCode, hostGame, joinGame, leave as netLeave, send as netSend, type NetHandlers, type NetMsg, type NetProfile, type NetState, type Together } from './net';
+import { cleanCode, dial, hostGame, joinGame, leave as netLeave, presence, presenceOn, presenceReady, send as netSend, type NetHandlers, type NetMsg, type NetProfile, type NetState, type Together } from './net';
 import { FIREBALL, boardMerged, drawBoard, mirrorFight, drawBoardDrag, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
 import type { Enemy } from './world';
 import { ARMOUR_SLOTS, ARSENAL, ITEMS, itemLevel, type SpiritSkin, UPGRADES, WEAPON_SLOTS, EXTRA_SLOT_PRICE, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
@@ -19,6 +19,7 @@ import { makeT, pickLang, type Key, type Lang } from './strings';
 import {
   CATEGORY, EVO_PARTNER, H, NIGHTMARE_WORLD, SECRET_WORLD, showcaseHit, startShowcase, canFuse, revivePrice, SKILLS, arrowLook, arrowOptions, bladeElement, bladeOptions, canEvolve, evoOf, fusionOf, fusionWith, evoLostBy, pairFusion, arrowElements, settleEffects, rerollChoices, adReroll, adRevive, canAdReroll, canAdRevive, maxLevel, pickArrow, pickBlade, pickSpirit, ROOMS, SHRINE_ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_LUCKY, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
   type ArrowLook, type Category, type Choice, type Fusion, type Game, type GameEvent, type Input, type Look, type SkillId, type WheelOutcome,
+  coopApply, coopDealt, coopHits, coopSnapshot,
 } from './world';
 
 /* Bug Hunter's page: the menus (play, shop, enemy looks, options), input
@@ -448,6 +449,7 @@ function menuScreen() {
   together = null;
   // Back on the cover: your profile may have grown in the run (a level, an item), so the friend gets it again.
   if (friend) netSend(hello());
+  else goOnline();
   showcaseBtn.hidden = true;
   game = null;
   audio.setSong(save.song); // a Boss Rush played by world; back to the pick
@@ -645,6 +647,7 @@ function profileScreen(note = '') {
       ${stat('profileWorlds', `${unlockedIn()}/${WORLD_COUNT}`)}
       ${stat('profileCoins', `🪙 ${Math.floor(save.coins)}`)}
     </div>
+    ${friendsBlock()}
     <button class="primary ach-open" data-act="achievements">🏆 ${t('achTitle')} · ${achEarned(save)}/${achTotal()}</button>
     <h3 class="slot">${t('profileStars')}</h3>
     ${masteries()
@@ -1712,7 +1715,7 @@ function friendInvite() {
    types in, and kept open while you play on: the cover shows the friend under your profile, the board's screen
    offers to invite them, and in a game their own hero stands in the rival's corner. An invitation carries the
    way, the world and the seed; whoever invites is side 0 of the shared fights. */
-type Friend = { name: string; key: string; still: string; profile?: NetProfile };
+type Friend = { id?: string; name: string; key: string; still: string; profile?: NetProfile };
 let friend: Friend | null = null;
 let rivalReady: { round: number; army: Piece[] } | null = null;
 let sentArmy: Piece[] | null = null;
@@ -1725,7 +1728,7 @@ const inviteWhat = (v: Invite) => v.mode === 'sprints' ? `${MODE_ICON.sprints} $
 /** Your whole profile goes with your hello: your hero as worn, its level and masteries, what you wear and how far your
     forge and items are upgraded (each phone plays its own run with its own save, so this is what the other sees). */
 const hello = (): NetMsg => ({
-  t: 'hello', name: save.name, key: heroKey(save.skin, save.equipped.head), still: heroStill(save.skin, save.equipped.head),
+  t: 'hello', id: save.netId, name: save.name, key: heroKey(save.skin, save.equipped.head), still: heroStill(save.skin, save.equipped.head),
   profile: {
     level: profileLevel(save.xp).level, masteries: masteries(), skin: save.skin, equipped: Object.values(save.equipped).filter((x): x is ItemId => !!x),
     upgrades: Object.values(save.upgrades ?? {}).reduce((n: number, v) => n + (Number(v) || 0), 0), items: save.owned.length,
@@ -1752,6 +1755,8 @@ friendMini.className = 'friend-mini';
 friendMini.hidden = true;
 document.body.append(friendMini);
 let overlayAt = 0;
+let coopSent = 0;
+let raceTold = false;
 function friendOverlay(g: Game, now: number, frozen: boolean) {
   const dt = Math.min(0.1, Math.max(0, now - overlayAt));
   overlayAt = now;
@@ -1762,6 +1767,16 @@ function friendOverlay(g: Game, now: number, frozen: boolean) {
   }
   const fs = friendState;
   const fresh = !!friend && !!fs && now - fs.at < 3;
+  if (g.coop) {
+    g.coop.ally = fresh && fs && fs.mode === 'horde' && fs.phase !== 'over' ? { x: fs.sx, y: fs.sy } : null;
+    if (friend && now - coopSent > 0.1) {
+      coopSent = now;
+      if (g.coop.host) netSend({ t: 'snap', ...coopSnapshot(g) });
+      else { const h = coopDealt(g); if (h.length) netSend({ t: 'hits', h }); }
+    }
+  }
+  // Sprints are a race: who clears the world first.
+  if (fs && g.mode === 'sprints' && fs.mode === 'sprints' && fs.phase === 'won' && !raceTold && friend) { raceTold = true; if (g.phase === 'play') flash(t('raceFirst', { name: esc(friend.name) })); }
   // Sprints: the friend's run on a small card under your health.
   const mini = fresh && fs && friend && g.mode === 'sprints' && fs.mode === 'sprints' && !g.rush && !g.showcase;
   friendMini.hidden = !mini;
@@ -1870,8 +1885,10 @@ function startTogether(mode: Together, variant: Variant, world: number, seed: nu
   startRun(world, mode);
   if (!game) return;
   together = { mode, seed };
+  raceTold = false;
   // On call: the same field of blocks for both, laid from the shared seed.
-  if (mode === 'horde') { game.fieldSeed = seed; game.fieldKey = ''; }
+  // and the same bugs: the one who invited makes them, the other's follow (`Coop` in `world.ts`).
+  if (mode === 'horde') { game.fieldSeed = seed; game.fieldKey = ''; game.coop = { host: me === 0, ally: null, dealt: new Map(), known: new Set() }; }
   flash(t(mode === 'horde' ? 'linkHordeStart' : 'linkSprintStart', { name: esc(friend.name) }));
 }
 const onCover = () => !board && !game && !!document.querySelector('.screen.is-menu');
@@ -1881,6 +1898,81 @@ function friendProfile() {
   if (!p) return '';
   const worn = p.equipped.map((id) => itemById(id as ItemId)).filter((it) => !!it).map((it) => `<img src="./images/game/${it!.pic}" alt="" title="${esc(t(`${it!.id}Name` as Key))}" width="30" height="30">`).join('');
   return `<p class="friend-stats">${t('lvShort', { level: p.level })}${p.masteries ? ` · ★${p.masteries}` : ''} · ⚒ ${p.upgrades} · 🎒 ${p.items}</p>${worn ? `<div class="friend-worn">${worn}</div>` : ''}`;
+}
+/* Saved friends: while the game is open you wait under your own id (`presence` in `net.ts`), and on opening it you
+   call each saved friend in turn, so whoever opens the game second finds the other and both are linked, no code. */
+const presenceHandlers = (): NetHandlers => ({ open: () => netSend(hello()), msg: onNetMsg, drop: friendDropped, close: friendGone, error: () => {} });
+let dialled = false;
+/** A friend added from a shared link, called first. */
+let callFirst = '';
+function goOnline() {
+  if (friend || presenceOn()) return;
+  presence(save.netId, presenceHandlers());
+  if (dialled && !callFirst) return;
+  dialled = true;
+  const queue = [...new Set([callFirst, ...save.friends.map((f) => f.id)].filter(Boolean))];
+  callFirst = '';
+  let waited = 0;
+  const next = () => {
+    if (friend || !presenceOn() || !queue.length) return;
+    if (!presenceReady()) { if ((waited += 1) < 40) window.setTimeout(next, 250); return; }
+    dial(queue.shift()!, { ...presenceHandlers(), error: () => window.setTimeout(next, 200) });
+  };
+  next();
+}
+/** Calls one saved friend from the profile. */
+function callFriend(id: string) {
+  const f = save.friends.find((x) => x.id === id);
+  if (!f) return;
+  if (friend) { linkScreen(); return; }
+  if (!presenceOn()) presence(save.netId, presenceHandlers());
+  flash(t('friendCalling', { name: esc(f.name) }));
+  let waited = 0;
+  const go = () => {
+    if (friend) return;
+    if (!presenceReady()) { if ((waited += 1) < 40) window.setTimeout(go, 250); else flash(t('onlineError')); return; }
+    dial(id, { ...presenceHandlers(), error: () => { if (!friend) flash(t('friendAway', { name: esc(f.name) })); } });
+  };
+  go();
+}
+const shareUrl = () => `${location.origin}${location.pathname}#amigo=${save.netId}&n=${encodeURIComponent(save.name)}`;
+async function shareProfile() {
+  const url = shareUrl();
+  try {
+    if (navigator.share) { await navigator.share({ title: 'Bug Hunter', text: t('shareText', { name: save.name }), url }); return; }
+  } catch (e) { if ((e as Error).name === 'AbortError') return; }
+  try { await navigator.clipboard.writeText(url); flash(t('shareCopied')); }
+  catch { window.prompt(t('shareCopy'), url); }
+}
+/** Opened from a friend's shared link (`#amigo=<id>&n=<name>`): they are saved and called. */
+function readShared() {
+  const q = new URLSearchParams(location.hash.slice(1));
+  const id = q.get('amigo') ?? '';
+  if (!id) return;
+  history.replaceState(null, '', location.pathname + location.search);
+  if (!NET_ID.test(id) || id === save.netId) return;
+  const name = cleanName(q.get('n') ?? '') || '?';
+  const had = save.friends.find((f) => f.id === id);
+  save.friends = [{ id, name, still: had?.still ?? '' }, ...save.friends.filter((f) => f.id !== id)].slice(0, 30);
+  persist();
+  callFirst = id;
+  flash(t('friendAdded', { name: esc(name) }));
+}
+const friendStill = (still: string) => `./images/game/hero/${still || 'boy-base-front'}.webp`;
+function friendsBlock() {
+  const rows = save.friends.map((f) => {
+    const on = friend?.id === f.id;
+    return `<div class="friend-row${on ? ' is-on' : ''}">
+      <span class="friend-pic"><img src="${friendStill(on ? friend!.still : f.still)}" alt=""></span>
+      <b>${esc(f.name)}</b>${on ? '<i class="friend-dot" aria-hidden="true"></i>' : ''}
+      <button class="ghost small" type="button" data-act="friend-call" data-id="${f.id}">${t(on ? 'friendPlay' : 'friendCall')}</button>
+      <button class="friend-del" type="button" data-act="friend-del" data-id="${f.id}" aria-label="${t('friendRemove')}">✕</button>
+    </div>`;
+  }).join('');
+  return `<h3 class="slot">👥 ${t('friendsTitle')}</h3>
+    ${rows ? `<div class="friend-list">${rows}</div>` : `<p class="how">${t('friendsNone')}</p>`}
+    <button class="primary" type="button" data-act="share">🔗 ${t('shareProfile')}</button>
+    <button class="ghost" type="button" data-act="link">${t('friendByCode')}</button>`;
 }
 function linkScreen(note = '') {
   if (friend) {
@@ -1923,6 +2015,13 @@ function onNetMsg(m: NetMsg) {
     if (dropped) { dropped = false; window.clearTimeout(dropTimer); flash(t('linkBack', { name: esc(cleanName(m.name)) })); }
     friend = { name: cleanName(m.name), key: String(m.key).replace(/[^a-z-]/g, ''), still: String(m.still).replace(/[^a-z-]/g, '') };
     if (m.profile) friend.profile = { level: Number(m.profile.level) || 1, masteries: Number(m.profile.masteries) || 0, skin: String(m.profile.skin), equipped: (m.profile.equipped ?? []).map(String).filter((id) => !!itemById(id as ItemId)), upgrades: Number(m.profile.upgrades) || 0, items: Number(m.profile.items) || 0 };
+    const id = String(m.id ?? '');
+    if (NET_ID.test(id) && id !== save.netId) {
+      friend.id = id;
+      // Kept as a friend, to be found again without a code; the newest first.
+      save.friends = [{ id, name: friend.name, still: friend.still }, ...save.friends.filter((f) => f.id !== id)].slice(0, 30);
+      persist();
+    }
     if (first) { flash(t('linkMade', { name: esc(friend.name) })); audio.play('door'); if (!board && !game) menuScreen(); }
   } else if (m.t === 'invite') {
     if (board || game || inviting) { netSend({ t: 'decline' }); return; }
@@ -1955,6 +2054,10 @@ function onNetMsg(m: NetMsg) {
     const n = (v: unknown, lo: number, hi: number) => Math.max(lo, Math.min(hi, Number(v) || 0));
     const st: NetState = { t: 'state', mode: m.mode === 'horde' ? 'horde' : 'sprints', world: n(m.world, 1, WORLD_COUNT), room: n(m.room, 1, ROOMS), x: n(m.x, -1e6, 1e6), y: n(m.y, -1e6, 1e6), vx: n(m.vx, -1, 1), vy: n(m.vy, -1, 1), hp: n(m.hp, 0, 1), level: n(m.level, 1, 999), phase: String(m.phase).slice(0, 10) };
     friendState = { ...st, at, sx: prev && prev.mode === st.mode ? prev.sx : st.x, sy: prev && prev.mode === st.mode ? prev.sy : st.y };
+  } else if (m.t === 'snap') {
+    if (game?.coop && !game.coop.host && Array.isArray(m.e)) coopApply(game, { time: Number(m.time) || 0, b: Math.round(Number(m.b)) || 0, won: !!m.won, e: m.e.slice(0, 400).filter((x) => Array.isArray(x) && ['bug', 'ticket', 'legacy', 'boss'].includes(x[1])).map((x) => [Number(x[0]) || 0, x[1], Number(x[2]) || 0, Number(x[3]) || 0, Number(x[4]) || 0, Math.max(1, Number(x[5]) || 1), Math.max(4, Math.min(120, Number(x[6]) || 12)), String(x[7] ?? '').replace(/[^a-z0-9]/g, ''), x[8] ? 1 : 0]) });
+  } else if (m.t === 'hits') {
+    if (game?.coop?.host && Array.isArray(m.h)) coopHits(game, m.h.slice(0, 500).map((x) => [Number(x?.[0]) || 0, Math.max(0, Number(x?.[1]) || 0)]));
   } else if (m.t === 'quit') rivalQuit();
   else if (m.t === 'bye') friendGone();
 }
@@ -2527,6 +2630,15 @@ screen.addEventListener('click', (event) => {
     startBoard(Number(target.dataset.bworld) || worldIn('board'));
   }
   else if (act === 'link') linkScreen();
+  else if (act === 'friend-call') callFriend(target.dataset.id ?? '');
+  else if (act === 'friend-del') {
+    const id = target.dataset.id ?? '';
+    if (friend?.id === id) { const was = friend.name; friend = null; netLeave(); flash(t('linkLost', { name: esc(was) })); }
+    save.friends = save.friends.filter((f) => f.id !== id);
+    persist();
+    profileScreen();
+  }
+  else if (act === 'share') void shareProfile();
   else if (act === 'link-off') { const was = friend?.name; friend = null; netLeave(); if (was) flash(t('linkLost', { name: esc(was) })); menuScreen(); }
   else if (act === 'link-host') {
     show(`<h2>👥 ${t('onlineHost')}</h2><p class="how">⏳ ${t('onlineMaking')}</p><button class="ghost" data-act="link">${t('cancel')}</button>`);
@@ -3465,6 +3577,7 @@ Promise.race([
   new Promise<void>((resolve) => setTimeout(resolve, 6000)),
 ]).then(() => {
   loadingFill.style.setProperty('--p', '1');
+  readShared();
   menuScreen();
   loading.classList.add('is-done');
   setTimeout(() => loading.remove(), 400);

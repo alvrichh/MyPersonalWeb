@@ -522,7 +522,14 @@ type Gear = {
 /** The healing statue that appears when the room before a boss is cleared. */
 export type Statue = { x: number; y: number; used: boolean };
 
+/** On call with a friend: the bugs are shared. The host's phone makes them and sends them (`coopSnapshot`); the
+    guest's copies follow (`coopApply`) and the damage dealt to them goes back to the host (`coopHits`). Both heroes
+    are chased, and the bugs are tougher (`COOP`). */
+export type Coop = { host: boolean; ally: Vec | null; dealt: Map<number, number>; known: Set<number> };
+export const COOP = { hp: 1.5, dmg: 1.3 };
+export type CoopSnap = { time: number; b: number; won: boolean; e: [number, EnemyKind, number, number, number, number, number, string, number][] };
 export type Game = {
+  coop?: Coop;
   world: number;
   mode: Mode;
   room: number;
@@ -773,7 +780,7 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
   const final = kind === 'boss' && (horde ? finalBossNow(g) : room === ROOMS);
   // The Core's Chimera, the last of all: twice the health of the other final bosses' formula.
   const chimera = final && g.world === WORLD_COUNT ? 2 : 1;
-  const hp = Math.round(base.hp * (kind === 'boss' ? worldUp * g.bossHpMult * chimera : tough));
+  const hp = Math.round(base.hp * (kind === 'boss' ? worldUp * g.bossHpMult * chimera : tough) * (g.coop ? COOP.hp : 1));
   const bossId: string = kind !== 'boss' ? '' : g.secret ? 'kratos' : final ? FINAL_BOSS[g.world - 1] : look;
   return {
     id: nextId++,
@@ -786,7 +793,7 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
     hp,
     maxHp: hp,
     speed: base.speed * (final && g.world === 3 ? 0.8 : 1) * (BOSS_PACE[bossId] ?? 1) * (1 + (g.world - 1) * 0.03) * (horde && kind !== 'boss' ? 1 + (g.time / 60) * 0.02 : 1),
-    dmg: Math.round(base.dmg * (1 + (g.world - 1) * 0.1)),
+    dmg: Math.round(base.dmg * (1 + (g.world - 1) * 0.1) * (g.coop ? COOP.dmg : 1)),
     xp: base.xp,
     spawn,
     hit: 0,
@@ -1162,6 +1169,8 @@ function ringSpot(g: Game, k = 1): Vec {
 /** Ten minutes of bugs: the spawns speed up, the kinds widen, bosses come at 5:00 and 10:00. */
 function updateHorde(g: Game, dt: number) {
   layField(g);
+  // The guest of a shared shift makes no bugs of its own: the host's come over the link.
+  if (g.coop && !g.coop.host) return;
   const minute = g.time / 60;
   const before = Math.floor((g.time - dt) / 60);
   if (Math.floor(minute) > before && (g.endless || g.time < HORDE_LENGTH)) {
@@ -1461,6 +1470,7 @@ function hurt(g: Game, e: Enemy, amount: number, push?: Vec) {
   }
   e.hp -= amount;
   e.hit = 0.1;
+  if (g.coop && !g.coop.host) g.coop.dealt.set(e.id, (g.coop.dealt.get(e.id) ?? 0) + amount);
   // The hurt pose only shows while the boss walks or stands: it no longer cuts into a wind-up, a charge or an attack.
   if (e.kind === 'boss' && e.painCd <= 0 && e.aim <= 0 && e.dash <= 0 && e.pose <= 0 && e.chan <= 0) { e.pain = BOSS_PAIN.show; e.painCd = BOSS_PAIN.every; }
   if (e.bossId === 'drakkar' && e.hp <= e.maxHp / 2) {
@@ -2433,7 +2443,9 @@ export function settleEffects(g: Game, dt: number) {
 /* -------------------------------------------------------------------- update */
 
 function updateEnemy(g: Game, e: Enemy, dt: number) {
-  const p = g.player;
+  // With a friend on the field, each bug goes for the nearer hero.
+  const ally = g.coop?.ally;
+  const p = ally && dist(ally, e) < dist(g.player, e) ? { ...ally, r: 15 } : g.player;
   if (e.spawn > 0) {
     e.spawn -= dt;
     if (e.spawn <= 0 && e.land) bossLands(g, e);
@@ -2551,10 +2563,11 @@ function updateEnemy(g: Game, e: Enemy, dt: number) {
     else if (blocked(e, p, g.obstacles)) e.detour = 2.5;
   }
 
-  const gap = Math.hypot(p.x - e.x, p.y - e.y);
+  const me = g.player;
+  const gap = Math.hypot(me.x - e.x, me.y - e.y);
   // Close by, it swings at you, so its attack shows; it still hurts only on contact.
-  e.swing = e.kind !== 'boss' && gap < p.r + e.r + ATTACK_REACH ? e.swing + dt : 0;
-  if (gap < p.r + e.r - 2) hurtPlayer(g, e.dmg, e.kind === 'boss' ? e.bossId : undefined);
+  e.swing = e.kind !== 'boss' && Math.min(gap - me.r, Math.hypot(p.x - e.x, p.y - e.y) - p.r) < e.r + ATTACK_REACH ? e.swing + dt : 0;
+  if (gap < me.r + e.r - 2) hurtPlayer(g, e.dmg, e.kind === 'boss' ? e.bossId : undefined);
 }
 /** The big ones' pounce: within `reach` they crouch for `aim` seconds, then hurl themselves at `speed` times their
     pace for `dash` seconds, every 3–4.5 s. */
@@ -3883,4 +3896,67 @@ export function update(g: Game, dt: number, input: Input) {
     g.events.push('clear');
   }
   if (g.pendingLevels > 0 && g.phase === 'play') offerChoices(g);
+}
+
+/* A shared shift (`Coop`). */
+/** The host's bugs as they stand, a few times a second. */
+export function coopSnapshot(g: Game): CoopSnap {
+  return {
+    time: g.time, b: g.hordeBoss, won: g.phase === 'won',
+    e: g.enemies.filter((e) => !e.dead).slice(0, 400).map((e) => [e.id, e.kind, Math.round(e.x), Math.round(e.y), Math.ceil(e.hp), e.maxHp, e.r, e.bossId, e.spawn > 0 ? 1 : 0]),
+  };
+}
+/** The guest's copies follow the host's: new ones come in, moved ones are put back in place (gently), and the ones
+    the host killed die here too (their gems and hearts dropped for the guest as well). Bugs the guest made by itself
+    (a legacy splitting, a boss's backup) are dropped, since the host made its own. */
+export function coopApply(g: Game, snap: CoopSnap) {
+  const c = g.coop;
+  if (!c || c.host) return;
+  if (nextId < 1e6) nextId = 1e6; // the guest's own ids never meet the host's
+  g.time = snap.time;
+  g.hordeBoss = snap.b;
+  const byId = new Map(g.enemies.map((e) => [e.id, e]));
+  const seen = new Set<number>();
+  for (const [id, kind, x, y, hp, maxHp, r, bossId, waiting] of snap.e) {
+    seen.add(id);
+    let e = byId.get(id);
+    if (!e) {
+      if (c.known.has(id)) continue; // killed here already
+      e = makeEnemy(g, kind, 1, { x, y }, waiting ? 0.7 : 0);
+      e.id = id;
+      e.bossId = bossId;
+      e.final = kind === 'boss' && (FINAL_BOSS as readonly string[]).includes(bossId);
+      g.enemies.push(e);
+      c.known.add(id);
+    }
+    e.maxHp = maxHp;
+    e.hp = Math.min(e.hp, hp);
+    e.r = r;
+    // Far off: put it where the host has it; near: ease it there, so it does not jump.
+    const k = Math.hypot(e.x - x, e.y - y) > 80 ? 1 : 0.35;
+    e.x += (x - e.x) * k;
+    e.y += (y - e.y) * k;
+  }
+  for (const e of g.enemies) {
+    if (e.dead || seen.has(e.id)) continue;
+    if (c.known.has(e.id)) kill(g, e);
+    else e.dead = true;
+  }
+  g.enemies = g.enemies.filter((e) => !e.dead);
+  if (snap.won && g.phase === 'play') { g.coins += 50 * worldPay(g); g.phase = 'won'; }
+}
+/** The damage the guest dealt since it last sent, to be dealt on the host. */
+export function coopDealt(g: Game): [number, number][] {
+  const c = g.coop;
+  if (!c) return [];
+  const out = [...c.dealt].map(([id, n]) => [id, Math.round(n * 10) / 10] as [number, number]);
+  c.dealt.clear();
+  return out;
+}
+export function coopHits(g: Game, hits: [number, number][]) {
+  if (!g.coop?.host) return;
+  for (const [id, n] of hits) {
+    const e = g.enemies.find((x) => x.id === id && !x.dead);
+    if (e && e.spawn <= 0 && n > 0) hurt(g, e, Math.min(n, 1e5));
+  }
 }

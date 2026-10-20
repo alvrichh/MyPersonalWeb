@@ -4234,3 +4234,13 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .friend-hp b { display: block; height: 100%; background: #4ade80; }
 @media (prefers-reduced-motion: no-preference) { .friend-rooms i.is-here { animation: friend-here 1s ease-in-out infinite alternate; } }
 @keyframes friend-here { to { opacity: 0.45; } }
+
+/* The friends list in the profile: portrait, name, a green dot while linked, connect or play, and remove. */
+.friend-list { display: flex; flex-direction: column; gap: 6px; width: 100%; max-width: 360px; }
+.friend-row { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 12px; background: rgba(10, 14, 40, 0.55); min-width: 0; }
+.friend-row.is-on { box-shadow: inset 0 0 0 1px rgba(74, 222, 128, 0.6); }
+.friend-row > b { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: left; }
+.friend-row .friend-pic { flex: none; }
+.friend-row .ghost.small { flex: none; width: 84px; min-width: 0; margin: 0; padding: 4px 6px; font-size: 0.85rem; }
+.friend-row > b { flex-basis: 0; }
+.friend-del { flex: none; width: 28px; height: 28px; border: 0; border-radius: 50%; background: rgba(255, 255, 255, 0.08); color: #fca5a5; cursor: pointer; }
