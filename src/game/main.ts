@@ -833,9 +833,12 @@ function mapScreen() {
     : '';
   // One play button under the card; its arrows (or a swipe) turn it to the mode's other runs: in sprints the
   // Boss Rush and the showcase once world 1 is won there, on call Nightmare (locked until world 9 is open there).
-  const opts: { act: string; label: string; cls: string; locked?: boolean }[] = [pickedOpen
-    ? { act: 'play-picked', label: t('playWorld', { n: picked }), cls: '' }
-    : { act: '', label: t('lockedBtn'), cls: 'is-locked', locked: true }];
+  // The board: its two ways to play are the play button's two options, Fusion (green) and Tactics (gold).
+  const opts: { act: string; label: string; cls: string; locked?: boolean }[] = !pickedOpen
+    ? [{ act: '', label: t('lockedBtn'), cls: 'is-locked', locked: true }]
+    : save.mode === 'board'
+      ? [{ act: 'play-board-fusion', label: `🧬 ${t('boardFusion')} · ${t('worldShort', { n: picked })}`, cls: '' }, { act: 'play-board-tactics', label: `⭐ ${t('boardTactics')} · ${t('worldShort', { n: picked })}`, cls: 'is-rush' }]
+      : [{ act: 'play-picked', label: t('playWorld', { n: picked }), cls: '' }];
   if (save.mode === 'sprints' && save.unlocked >= 2) opts.push({ act: 'play-rush', label: `${RUSH_ICON} ${t('rush')}`, cls: 'is-rush' });
   // The showcase shows the picked world's own two bosses: only an open world's, or any world's once a sprints mastery is taken.
   if (save.mode === 'sprints' && (pickedOpen || masteries() > 0)) opts.push({ act: 'play-showcase', label: `👁 ${t('showcaseShort')}`, cls: 'is-showcase' });
@@ -843,10 +846,12 @@ function mapScreen() {
     ? { act: 'play-nightmare', label: `${NIGHTMARE_ICON} ${t('nightmare')} ∞`, cls: 'is-nightmare' }
     : { act: '', label: `🔒 ${t('nightmare')} ∞`, cls: 'is-nightmare is-dim', locked: true });
   mapPlayIdx = Math.min(mapPlayIdx, opts.length - 1);
+  // The board's button opens on the way it was last played.
+  if (save.mode === 'board' && pickedOpen && !mapBoardShown) { mapPlayIdx = save.boardVariant === 'tactics' ? 1 : 0; mapBoardShown = true; }
   const opt = opts[mapPlayIdx];
   const many = opts.length > 1;
   const action = `<div class="play-pick${many ? ' has-more' : ''}">
-      <button class="play ${opt.cls}"${opt.act ? ` data-act="${opt.act}"` : ' disabled'}>${opt.locked && !opt.cls.includes('is-dim') ? '<span class="play-lock" aria-hidden="true">🔒</span>' : opt.act === 'play-picked' ? '<span class="play-tri" aria-hidden="true"></span>' : ''}<span class="play-copy">${opt.label}</span></button>
+      <button class="play ${opt.cls}"${opt.act ? ` data-act="${opt.act}"` : ' disabled'}>${opt.locked && !opt.cls.includes('is-dim') ? '<span class="play-lock" aria-hidden="true">🔒</span>' : opt.act === 'play-picked' || opt.act === 'play-board-fusion' ? '<span class="play-tri" aria-hidden="true"></span>' : ''}<span class="play-copy">${opt.label}</span></button>
       ${many ? `<button class="play-arrow is-prev" type="button" data-act="play-prev" aria-label="${t('playPrev')}"></button><button class="play-arrow is-next" type="button" data-act="play-next-opt" aria-label="${t('playNextOpt')}"></button>
       <span class="play-dots" aria-hidden="true">${opts.map((_, i) => `<i${i === mapPlayIdx ? ' class="is-on"' : ''}></i>`).join('')}</span>` : ''}
     </div>`;
@@ -1584,6 +1589,8 @@ function showPicks() {
 }
 
 /** Turn the map's play button to the next or previous option, wrapping round. */
+/** The map's board button has been turned to the last variant once since the map opened. */
+let mapBoardShown = false;
 function mapPlayStep() {
   const n = screen.querySelectorAll('.play-dots i').length || 1;
   mapPlayIdx = (mapPlayIdx + n) % n;
@@ -1662,10 +1669,10 @@ let boardFast = false;
 /** When the last fight ended (the frame clock, in seconds), for the fireball. */
 let boardEnded: number | null = null;
 
-/** The board's two ways to play, picked each time a board run starts (the last pick ticked): Fusion, green, and
-    Tactics, blue. */
+/** The board's two ways to play, picked each time a board run starts from the cover (the last pick ticked): Fusion,
+    green, and Tactics, gold; the map's play button offers them as its two options. */
 function boardVariantScreen(world: number) {
-  const opt = (v: 'fusion' | 'tactics') => `<button class="primary book-mode is-${v === 'fusion' ? 'sprints' : 'horde'}${save.boardVariant === v ? ' is-on' : ''}" type="button" data-act="board-variant" data-variant="${v}" data-bworld="${world}"><b>${v === 'fusion' ? '🧬' : '⭐'} ${t(v === 'fusion' ? 'boardFusion' : 'boardTactics')}${save.boardVariant === v ? ' ✓' : ''}</b><small>${t(v === 'fusion' ? 'boardFusionText' : 'boardTacticsText')}</small></button>`;
+  const opt = (v: 'fusion' | 'tactics') => `<button class="primary book-mode is-${v === 'fusion' ? 'sprints' : 'gold'}${save.boardVariant === v ? ' is-on' : ''}" type="button" data-act="board-variant" data-variant="${v}" data-bworld="${world}"><b>${v === 'fusion' ? '🧬' : '⭐'} ${t(v === 'fusion' ? 'boardFusion' : 'boardTactics')}${save.boardVariant === v ? ' ✓' : ''}</b><small>${t(v === 'fusion' ? 'boardFusionText' : 'boardTacticsText')}</small></button>`;
   show(`<button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
     <h2>${MODE_ICON.board} ${t('modeBoard')}</h2>
     <p>${t('boardVariantPick')}</p>
@@ -2024,10 +2031,16 @@ screen.addEventListener('click', (event) => {
   else if (act === 'book') { bookPage = 0; if (!save.bookSeen) { save.bookSeen = true; persist(); } bookScreen(); }
   else if (act === 'book-prev' || act === 'book-next') { bookPage += act === 'book-prev' ? -1 : 1; bookScreen(); }
   else if (target.dataset.bookMode) { save.mode = target.dataset.bookMode as PlayMode; persist(); bookScreen(); }
-  else if (target.dataset.mode) { save.mode = target.dataset.mode as PlayMode; mapPick = worldIn(); mapPlayIdx = 0; persist(); mapScreen(); }
-  else if (act === 'map') { mapPick = worldIn(); mapScreen(); }
+  else if (target.dataset.mode) { save.mode = target.dataset.mode as PlayMode; mapPick = worldIn(); mapPlayIdx = 0; mapBoardShown = false; persist(); mapScreen(); }
+  else if (act === 'map') { mapPick = worldIn(); mapBoardShown = false; mapScreen(); }
   else if (act === 'play-prev' || act === 'play-next-opt') { mapPlayIdx += act === 'play-prev' ? -1 : 1; mapPlayStep(); }
   else if (act === 'play-picked') { setWorld(mapPick); persist(); startRun(mapPick); }
+  else if (act === 'play-board-fusion' || act === 'play-board-tactics') {
+    save.boardVariant = act === 'play-board-tactics' ? 'tactics' : 'fusion';
+    setWorld(mapPick);
+    persist();
+    startBoard(mapPick);
+  }
   else if (target.dataset.world) {
     const n = Number(target.dataset.world);
     mapPick = n;
