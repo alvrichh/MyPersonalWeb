@@ -2099,7 +2099,7 @@ function step(now: number) {
       }
       if (event === 'phase') {
         const boss = g.enemies.find((e) => e.phase > 1);
-        if (boss) flash(t(boss.phase > 2 ? 'bossFinalForm' : boss.bossId === 'medusa' ? 'bossMedusaShift' : 'bossWing', { name: bossTitle(boss) }));
+        if (boss) flash(t(boss.phase > 2 ? 'bossFinalForm' : boss.bossId === 'medusa' ? 'bossMedusaShift' : boss.bossId === 'kratos' ? 'bossKratosShift' : 'bossWing', { name: bossTitle(boss) }));
       }
       if (event === 'rage') {
         const boss = g.enemies.find((e) => e.rage);

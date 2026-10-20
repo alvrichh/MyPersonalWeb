@@ -4478,7 +4478,7 @@ const BOSS_ART = new Set<string>(['kernel', 'archdemon', 'drakkar', 'valdur', 'm
 const BOSS_CANVAS: Record<string, { k: number; feet: number }> = {
   kernel: { k: 2.155, feet: 0.1766 }, archdemon: { k: 1.69, feet: 0.1232 },
   drakkar: { k: 1.081, feet: 0.12 }, valdur: { k: 1.538, feet: 0.1954 }, zeus: { k: 1.782, feet: 0.2063 }, queen: { k: 1.348, feet: 0.1484 },
-  wraith: { k: 1.295, feet: 0.1974 }, valkyrie: { k: 2.6, feet: 0.1691 }, medusa: { k: 2.116, feet: 0.012 }, medusa2: { k: 2.066, feet: 0.012 }, mudmonster: { k: 1.615, feet: 0.072 }, monolith: { k: 2.9, feet: 0.2121 }, minotaur: { k: 2.6, feet: 0.2765 }, mainframe: { k: 2.3, feet: 0.2248 }, kratos: { k: 2.4, feet: 0.1892 }, mech: { k: 1.412, feet: 0.0878 }, chimera: { k: 1.712, feet: 0.1553 }, chimera2: { k: 1.749, feet: 0.2262 }, chimera3: { k: 1.706, feet: 0.2686 },
+  wraith: { k: 1.295, feet: 0.1974 }, valkyrie: { k: 2.6, feet: 0.1691 }, medusa: { k: 2.116, feet: 0.012 }, medusa2: { k: 2.066, feet: 0.012 }, mudmonster: { k: 1.615, feet: 0.072 }, monolith: { k: 2.9, feet: 0.2121 }, minotaur: { k: 2.6, feet: 0.2765 }, mainframe: { k: 2.3, feet: 0.2248 }, kratos: { k: 2.4, feet: 0.1892 }, kratos2: { k: 5.0, feet: 0.1744 }, mech: { k: 1.412, feet: 0.0878 }, chimera: { k: 1.712, feet: 0.1553 }, chimera2: { k: 1.749, feet: 0.2262 }, chimera3: { k: 1.706, feet: 0.2686 },
 };
 /** Room-6 bosses with a nine-pose sheet of their own, in the final bosses' order: the backlog's Monolith, the vikings'
     Valkyrie, the Mud Monster, the Arena's Minotaur, the Forge's Mainframe. */
@@ -4501,7 +4501,7 @@ function drawEnemySprite(ctx: CanvasRenderingContext2D, e: Enemy) {
   // A boss with phases has a sheet per phase (`chimera2` for Nocthrax in the air).
   // A cast's room-6 boss can have a nine-pose sheet too (`MID_ART`); the bosses a final boss calls keep the cast's own.
   // The secret shift's first Kratos wears his own sheet too, with the room-6 kit.
-  const mid = e.kind === 'boss' && !e.final && !e.minion ? (e.bossId === 'kratos' ? 'kratos' : MID_ART[e.look]) : undefined;
+  const mid = e.kind === 'boss' && !e.final && !e.minion ? (e.bossId === 'kratos' ? (e.phase > 1 ? 'kratos2' : 'kratos') : MID_ART[e.look]) : undefined;
   const sheet = mid ?? (e.phase > 1 ? `${e.bossId}${e.phase}` : e.bossId);
   if ((e.final && BOSS_ART.has(e.bossId)) || mid) {
     frames = finalSprites.get(sheet);
@@ -4509,7 +4509,7 @@ function drawEnemySprite(ctx: CanvasRenderingContext2D, e: Enemy) {
       frames = Array.from({ length: 9 }, (_, i) => Object.assign(new Image(), { src: `./images/game/bosses/${sheet}-${i}.webp` }));
       finalSprites.set(sheet, frames);
       // The next phase's sheet loads now, so it is in when the boss changes.
-      if ((e.bossId === 'chimera' && sheet === 'chimera') || (e.bossId === 'medusa' && sheet === 'medusa')) for (const n of e.bossId === 'medusa' ? ['medusa2'] : ['chimera2', 'chimera3']) finalSprites.set(n, Array.from({ length: 9 }, (_, i) => Object.assign(new Image(), { src: `./images/game/bosses/${n}-${i}.webp` })));
+      if ((e.bossId === 'chimera' && sheet === 'chimera') || ((e.bossId === 'medusa' || e.bossId === 'kratos') && sheet === e.bossId)) for (const n of e.bossId === 'medusa' ? ['medusa2'] : e.bossId === 'kratos' ? ['kratos2'] : ['chimera2', 'chimera3']) finalSprites.set(n, Array.from({ length: 9 }, (_, i) => Object.assign(new Image(), { src: `./images/game/bosses/${n}-${i}.webp` })));
     }
     img = frames[finalFrame(e)];
     count = 9;

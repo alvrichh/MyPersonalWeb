@@ -1417,6 +1417,13 @@ function hurt(g: Game, e: Enemy, amount: number, push?: Vec) {
     burst(g, e.x, e.y, '#2dd4bf', 30, 200, 3.5);
     g.events.push('phase');
   }
+  // Kratos at half health takes up the Blade of Olympus: his second sheet, `kratos2`, and lightning for fire.
+  if (e.bossId === 'kratos' && e.phase < 2 && e.hp > 0 && e.hp <= e.maxHp / 2) {
+    e.phase = 2;
+    g.shake = Math.max(g.shake, 0.5);
+    burst(g, e.x, e.y, '#60a5fa', 34, 220, 3.5);
+    g.events.push('phase');
+  }
   if (e.final && !e.clone && !e.rage && e.hp > 0 && e.hp <= e.maxHp * RAGE_AT) enrage(g, e);
   if (push && e.kind !== 'boss') {
     e.kx += push.x;
@@ -2502,11 +2509,11 @@ const SIGNATURE: Signature[] = ['spiral', 'meteors', 'tide', 'sigils', 'roots', 
 const HORDE_LEAP = 9;
 const moveOf = (g: Game, e: Enemy): Move =>
   // Kratos: his blades sweep fire in front of him (the demons' breath); his signature is the fire world's meteors.
-  e.bossId === 'kratos' ? 'breath' : e.bossId === 'valdur' ? 'leap' : e.bossId === 'queen' ? 'acid' : g.world < WORLD_COUNT ? MID_MOVE[g.world - 1]
+  e.bossId === 'kratos' ? (e.phase > 1 ? 'javelins' : 'breath') : e.bossId === 'valdur' ? 'leap' : e.bossId === 'queen' ? 'acid' : g.world < WORLD_COUNT ? MID_MOVE[g.world - 1]
   // Nocthrax: the Treant's vanishing leap half the time (the owner's favourite), any other move otherwise.
   : e.bossId === 'chimera' && !e.clone && Math.random() < 0.5 ? 'leap' : MID_MOVE[Math.floor(Math.random() * MID_MOVE.length)];
 const signatureOf = (g: Game, e: Enemy): Signature =>
-  e.bossId === 'kratos' ? 'meteors' : e.bossId === 'valdur' ? 'frenzy' : g.world < WORLD_COUNT ? SIGNATURE[g.world - 1]
+  e.bossId === 'kratos' ? (e.phase > 1 ? 'grid' : 'meteors') : e.bossId === 'valdur' ? 'frenzy' : g.world < WORLD_COUNT ? SIGNATURE[g.world - 1]
   // Nocthrax: its own dark tornadoes every other time, the other worlds' signatures in between.
   : e.bossId === 'chimera' && !e.clone && e.sigs % 2 === 0 ? 'tornado' : SIGNATURE[1 + (Math.floor(e.sigs / 2) % (SIGNATURE.length - 1))];
 
@@ -2570,7 +2577,7 @@ function inside(g: Game, v: Vec, m: number): Vec {
   return { x: clamp(v.x, b.x + m, b.x + b.w - m), y: clamp(v.y, b.y + m, b.y + b.h - m) };
 }
 /** The final bosses' rings fly as their element's weapon pictures (the cast bosses keep the plain orbs). */
-const RING_PIC: Partial<Record<string, OrbPic>> = { nightmare: 'ember', mud: 'mudball', medusa: 'medusa', archdemon: 'fireball', kratos: 'fireball', drakkar: 'water', valdur: 'water', queen: 'leaf', zeus: 'bolt', mech: 'spark', wraith: 'ghost' };
+const RING_PIC: Partial<Record<string, OrbPic>> = { nightmare: 'ember', mud: 'mudball', medusa: 'medusa', archdemon: 'fireball', kratos: 'fireball', kratos2: 'bolt', drakkar: 'water', valdur: 'water', queen: 'leaf', zeus: 'bolt', mech: 'spark', wraith: 'ghost' };
 /** Rings in a colour of their own (glow and track); the rest are the usual red. The Lich's embers are purple. */
 const RING_TONE: Partial<Record<string, string>> = { nightmare: '#a855f7' };
 const ring = (g: Game, e: Enemy, n: number, speed: number, tone = '', turn = rand(0, Math.PI * 2), pic?: OrbPic) => {
@@ -2608,7 +2615,7 @@ function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
   e.cd -= dt;
   if (e.cd <= 0) {
     e.cd = (final ? 2.4 : 3.1) * fury;
-    ring(g, e, final ? 14 : 10, final ? 120 : 105, RING_TONE[e.bossId] ?? '', undefined, RING_PIC[e.bossId]);
+    ring(g, e, final ? 14 : 10, final ? 120 : 105, RING_TONE[e.bossId] ?? '', undefined, RING_PIC[e.bossId === 'kratos' && e.phase > 1 ? 'kratos2' : e.bossId]);
     e.pose = 0.35;
     e.act = 'burst';
   }
@@ -2859,7 +2866,7 @@ function signature(g: Game, e: Enemy, sig: Signature) {
     }
     case 'grid': {
       // The storm grid: three bolts across the room, then three down it (blue when Zeus casts it).
-      const blue = e.bossId === 'zeus';
+      const blue = e.bossId === 'zeus' || e.bossId === 'kratos';
       for (const [i, dy] of [-110, 0, 110].entries()) {
         const y = clamp(p.y + dy, b.y + 14, b.y + b.h - 14);
         g.threats.push({ kind: 'line', x: b.x, y, r: 12, a: 0, len: b.w, warn: 1 + i * 0.05, max: 1, life: 0.2, dmg, el: 'bolt', blue });
@@ -3001,7 +3008,7 @@ function landing(g: Game, e: Enemy) {
   if (what === 'slam') {
     // Each boss lands in its own element: its burst on the floor and its own shots flying out (the Treant's leaf
     // arrows were everyone's once every boss leapt on call).
-    const land = LANDING[e.bossId] ?? LANDING.jungle;
+    const land = LANDING[e.bossId === 'kratos' && e.phase > 1 ? 'zeus' : e.bossId] ?? LANDING.jungle;
     const el = land.el;
     circle(g, e, 66, 0, Math.round(e.dmg * 0.9), el);
     g.fx.push({ kind: 'ring', x: e.x, y: e.y, r: 70, a: 0, life: 0.4, max: 0.4, big: true });
