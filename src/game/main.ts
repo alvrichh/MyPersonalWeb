@@ -1880,9 +1880,14 @@ function boardPointerUp(event: PointerEvent) {
   renderBoardUi();
 }
 
+/** With a mouse, a click outside a dialog closes it as its ✕ would (on a touch screen a stray tap could, so not there). */
+const mouse = window.matchMedia('(hover: hover) and (pointer: fine)');
 screen.addEventListener('click', (event) => {
   const target = (event.target as HTMLElement).closest<HTMLElement>('button, [data-act], [data-world]');
-  if (!target) return;
+  if (!target) {
+    if (mouse.matches && !screen.classList.contains('is-menu') && !(event.target as HTMLElement).closest('.panel')) screen.querySelector<HTMLElement>(':scope > .panel > .ui-close')?.click();
+    return;
+  }
   if (swiped) { swiped = false; return; }
   audio.unlock();
   const act = target.dataset.act;
@@ -2749,7 +2754,7 @@ if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) {
 /** Wide landscape screens get the owner's desktop cover (game.css switches at the same query). */
 const WIDE_COVER = window.matchMedia('(min-width: 900px) and (orientation: landscape)').matches;
 const PRELOAD: [string, number][] = [
-  [WIDE_COVER ? './images/game/cover-wide.jpg' : './images/game/cover-tall.jpg', 10],
+  [WIDE_COVER ? './images/game/cover-wide-ext.jpg' : './images/game/cover-tall.jpg', 10],
   ['./images/game/landing-bg.jpg', 1],
   ['./images/favicon-192.png', 1],
   ['./images/game/map/bg.jpg', 1],
