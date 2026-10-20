@@ -11,7 +11,7 @@ import { DEFAULT_NAME, NAME_MAX, STAR_COLORS, cleanName, wipeProgress, worldWon,
 import type { Enemy, Mode } from './world';
 import { ARMOUR_SLOTS, ARSENAL, ITEMS, itemLevel, type SpiritSkin, UPGRADES, WEAPON_SLOTS, EXTRA_SLOT_PRICE, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
 import { Scene } from './scene';
-import { ACHIEVEMENTS, checkAchievements, type AchId } from './achievements';
+import { ACHIEVEMENTS, achEarned, achTotal, checkAchievements, tierKey, tiersDone, type Ach, type AchId } from './achievements';
 import { makeT, pickLang, type Key } from './strings';
 import {
   CATEGORY, EVO_PARTNER, H, NIGHTMARE_WORLD, SECRET_WORLD, showcaseHit, startShowcase, canFuse, revivePrice, SKILLS, arrowLook, arrowOptions, bladeElement, bladeOptions, canEvolve, evoOf, fusionOf, fusionWith, evoLostBy, pairFusion, arrowElements, settleEffects, rerollChoices, adReroll, adRevive, canAdReroll, canAdRevive, maxLevel, pickArrow, pickBlade, pickSpirit, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_LUCKY, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
@@ -466,26 +466,42 @@ function menuScreen() {
 }
 
 /* Achievements earned since the menu last opened come in as gold toasts at the top, one after another (three at
-   most; past that, one toast says how many). */
+   most; past that, one toast says how many). A tier is kept as `id`, `id:2`, `id:3` (`tierKey`). */
 const achToast = $<HTMLElement>('achToast');
-let achQueue: AchId[] = [];
+let achQueue: string[] = [];
 let achTimer: number | undefined;
+const achKey = (id: AchId) => `ach${cap(id)}` as Key;
+const ROMAN = ['I', 'II', 'III', 'IV', 'V'];
+/** An achievement's name, with its tier (I, II, III) when it has more than one. */
+const achName = (a: Ach, tier: number) => `${t(achKey(a.id))}${a.goals.length > 1 ? ` ${ROMAN[tier - 1]}` : ''}`;
+/** Its medal: the game's own picture in a ring of the tier's metal (the emoji in retro). */
+const metal = (a: Ach, tier: number) => (a.goals.length === 1 ? 3 : tier); // a plain one is gold
+const achMedal = (a: Ach, tier: number) =>
+  `<span class="ach-ic is-t${metal(a, tier)}" aria-hidden="true"><img src="./images/game/${a.pic}" alt=""${a.pic.endsWith('.jpg') ? ' class="is-cover"' : ''}${a.zoom ? ` style="scale:${a.zoom}"` : ''}><i>${a.icon}</i></span>`;
+const fmtN = (n: number) => n.toLocaleString(lang === 'es' ? 'es-ES' : 'en-GB');
+function parseTier(key: string): [Ach, number] | null {
+  const [id, n] = key.split(':');
+  const a = ACHIEVEMENTS.find((x) => x.id === id);
+  const tier = n ? Number(n) : 1;
+  return a && tier >= 1 && tier <= a.goals.length ? [a, tier] : null;
+}
 function announceAchievements() {
   if (!save.achNew.length) return;
-  const fresh = save.achNew.filter((id): id is AchId => ACHIEVEMENTS.some((a) => a.id === id));
+  const fresh = save.achNew.filter((k) => parseTier(k));
   save.achNew = [];
   writeSave(save);
   if (!fresh.length) return;
-  achQueue = fresh.length > 3 ? [...fresh.slice(0, 2), ...([`+${fresh.length - 2}`] as unknown as AchId[])] : fresh;
+  // Queued after whatever is still showing.
+  achQueue.push(...(fresh.length > 3 ? [...fresh.slice(0, 2), `+${fresh.length - 2}`] : fresh));
   if (achTimer === undefined) nextAchToast();
 }
 function nextAchToast() {
-  const id = achQueue.shift();
-  if (!id) { achToast.hidden = true; achTimer = undefined; return; }
-  const a = ACHIEVEMENTS.find((x) => x.id === id);
-  achToast.innerHTML = a
-    ? `<span class="ach-ic" aria-hidden="true">${a.icon}</span><span><small>${t('achUnlocked')}</small><b>${t(achKey(a.id))}</b></span>`
-    : `<span class="ach-ic" aria-hidden="true">🏆</span><span><small>${t('achUnlocked')}</small><b>${t('achMore', { n: id.slice(1) })}</b></span>`;
+  const key = achQueue.shift();
+  if (!key) { achToast.hidden = true; achTimer = undefined; return; }
+  const hit = key.startsWith('+') ? null : parseTier(key);
+  achToast.innerHTML = hit
+    ? `${achMedal(hit[0], hit[1])}<span><small>${t('achUnlocked')}</small><b>${achName(hit[0], hit[1])}</b></span>`
+    : `<span class="ach-ic is-t3" aria-hidden="true"><img src="./images/game/ui/mastery.webp" alt=""><i>🏆</i></span><span><small>${t('achUnlocked')}</small><b>${t('achMore', { n: key.slice(1) })}</b></span>`;
   achToast.hidden = false;
   achToast.classList.remove('is-on');
   void achToast.offsetWidth;
@@ -493,22 +509,25 @@ function nextAchToast() {
   audio.play('levelup');
   achTimer = window.setTimeout(nextAchToast, 2800);
 }
-const achKey = (id: AchId) => `ach${cap(id)}` as Key;
 
-/** The achievements: earned ones lit with the day they came, the rest greyed with how far along they are. */
+/** The achievements: earned ones lit in their tier's metal with the day the last tier came, the rest greyed; a
+    tiered one shows its tiers as pips and a bar towards the next. */
 function achievementsScreen() {
-  const done = ACHIEVEMENTS.filter((a) => save.achieved[a.id]).length;
   const day = (ms: number) => new Date(ms).toLocaleDateString(lang === 'es' ? 'es-ES' : 'en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
   const rows = ACHIEVEMENTS.map((a) => {
-    const at = save.achieved[a.id];
-    const [now, goal] = a.progress(save);
-    const bar = !at && goal > 1 ? `<i class="ach-bar" aria-label="${Math.min(now, goal)}/${goal}"><b style="width:${Math.round((Math.min(now, goal) / goal) * 100)}%"></b></i><small class="ach-n">${Math.min(now, goal)}/${goal}</small>` : '';
-    return `<li class="ach${at ? ' is-done' : ''}"><span class="ach-ic" aria-hidden="true">${a.icon}</span><span class="ach-copy"><b>${t(achKey(a.id))}</b><span>${t(`${achKey(a.id)}Text` as Key)}</span>${bar}</span><span class="ach-state">${at ? `✓<small>${day(at)}</small>` : '🔒'}</span></li>`;
+    const done = tiersDone(save, a);
+    const all = done >= a.goals.length;
+    const goal = a.goals[Math.min(done, a.goals.length - 1)];
+    const now = Math.min(a.value(save), goal);
+    const at = done ? save.achieved[tierKey(a.id, done)] : 0;
+    const pips = a.goals.length > 1 ? `<span class="ach-pips">${a.goals.map((_, i) => `<i class="${i < done ? `is-t${i + 1}` : ''}"></i>`).join('')}</span>` : '';
+    const bar = !all && goal > 1 ? `<i class="ach-bar"><b style="width:${Math.round((now / goal) * 100)}%"></b></i><small class="ach-n">${fmtN(now)}/${fmtN(goal)}</small>` : '';
+    return `<li class="ach${done ? ` is-done is-t${metal(a, done)}` : ''}">${achMedal(a, Math.max(1, done))}<span class="ach-copy"><b>${achName(a, Math.max(1, all ? done : done + 1))}${pips}</b><span>${t(`${achKey(a.id)}Text` as Key, { n: fmtN(goal) })}</span>${bar}</span><span class="ach-state">${all ? `✓<small>${day(at)}</small>` : done ? `<small>${day(at)}</small>` : '🔒'}</span></li>`;
   }).join('');
   show(`<button class="ui-close" type="button" data-act="profile" aria-label="${t('back')}"></button>
     <button class="ui-top" type="button" data-act="to-top" aria-label="${t('toTop')}"><span><svg viewBox="0 0 24 24"><path d="M12 3 L20.5 11.5 L15 11.5 L15 21 L9 21 L9 11.5 L3.5 11.5 Z"/></svg></span></button>
     <h2>🏆 ${t('achTitle')}</h2>
-    <p class="how">${t('achCount', { n: done, total: ACHIEVEMENTS.length })}</p>
+    <p class="how">${t('achCount', { n: achEarned(save), total: achTotal() })}</p>
     <ul class="achs">${rows}</ul>
     ${backButton('profile', 'profile')}`, false, false, 'keep-scroll');
 }
@@ -587,7 +606,7 @@ function profileScreen(note = '') {
       ${stat('profileWorlds', `${unlockedIn()}/${WORLD_COUNT}`)}
       ${stat('profileCoins', `🪙 ${Math.floor(save.coins)}`)}
     </div>
-    <button class="primary ach-open" data-act="achievements">🏆 ${t('achTitle')} · ${ACHIEVEMENTS.filter((a) => save.achieved[a.id]).length}/${ACHIEVEMENTS.length}</button>
+    <button class="primary ach-open" data-act="achievements">🏆 ${t('achTitle')} · ${achEarned(save)}/${achTotal()}</button>
     <h3 class="slot">${t('profileStars')}</h3>
     ${masteries()
       ? `<p class="mastery-line">${save.retro ? `<span style="color:${starColor()}">★</span>` : crest} ${modeShort('sprints')} ${save.mastery.sprints} · ${modeShort('horde')} ${save.mastery.horde}</p>`
