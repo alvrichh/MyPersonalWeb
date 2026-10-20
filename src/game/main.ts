@@ -1298,10 +1298,10 @@ function stylesScreen(note = '') {
   } else if (dressSlot === 'song') {
     const songRow = (id: typeof save.song, icon: string, name: string, text: string) => row(`data-song="${id}"`, save.song === id, false, icon, name, text, save.song === id ? '✓' : '');
     picks = `<h3 class="slot">${t('songPick')}</h3><div class="gear-list">${(['auto', 'worlds', 'b2b', 'doom'] as const).map((id) =>
-      // The owner's medallions for automatic and the original, a world's postcard for «by world», Nocthrax for the final boss's own song.
+      // The owner's medallions: headphones for automatic, the world on a record for «by world», a vinyl for the
+      // original, Nocthrax on a record for the final boss's own song.
       songRow(id, save.retro ? (id === 'auto' ? '🎚️' : id === 'worlds' ? '🗺️' : id === 'b2b' ? '🎧' : '🔥')
-        : id === 'doom' ? '<img class="scene-pic boss-pic" src="./images/game/bosses/chimera-0.webp" alt="">'
-        : `<img class="scene-pic" src="./images/game/${id === 'worlds' ? `map/pv-${ISLAND_ART[worldIn('sprints') - 1]}.jpg` : `music/${id}.webp`}" alt="">`,
+        : `<img class="scene-pic" src="./images/game/music/${id}.webp" alt="">`,
         t(`song${cap(id)}Name` as Key), t(`song${cap(id)}Text` as Key))).join('')}</div>
       <h3 class="slot">${t('songWorlds')}</h3><div class="gear-list">${WORLD_SONGS.map(([world, ids, key]) => {
         // The first world's song has two versions: picking the row plays the one last picked (v1 at first) and opens a switch between them.
@@ -1358,10 +1358,11 @@ function stylesScreen(note = '') {
     foes: look === 'random' ? '🎲' : navPic(`./images/game/enemies/${look}-bug-icon.webp`, ' is-foe'),
     // The world's postcard (its floor's middle is too plain to tell apart at this size).
     scene: navPic(`./images/game/map/pv-${ISLAND_ART[(save.scene || world) - 1]}.jpg`),
-    song: save.song.startsWith('boss-') ? navPic(`./images/game/bosses/${save.song.slice(5)}-0.webp`, ' is-boss')
-      : save.song === 'doom' ? navPic('./images/game/bosses/chimera-0.webp', ' is-boss')
+    // Automatic, «by world», the original and the final boss's song show their own medallions; a world's or a boss's song, its postcard or boss.
+    song: (['auto', 'worlds', 'b2b', 'doom'] as string[]).includes(save.song) ? navPic(`./images/game/music/${save.song}.webp`)
+      : save.song.startsWith('boss-') ? navPic(`./images/game/bosses/${save.song.slice(5)}-0.webp`, ' is-boss')
       : songWorld ? navPic(`./images/game/map/pv-${ISLAND_ART[songWorld - 1]}.jpg`)
-      : navPic(`./images/game/music/${save.song === 'b2b' ? 'b2b' : 'auto'}.webp`),
+      : navPic('./images/game/music/auto.webp'),
   };
   const NAV_EMOJI = { skin: '👕', foes: '👾', scene: '🗺️', song: '🎵' };
   const nav = (key: 'skin' | 'foes' | 'scene' | 'song', label: Key) =>
