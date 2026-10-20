@@ -2130,6 +2130,10 @@ function step(now: number) {
         const boss = g.enemies.find((e) => e.bossId === 'queen');
         if (boss) flash(t('bossPlants', { name: bossTitle(boss) }));
       }
+      if (event === 'snakes') {
+        const boss = g.enemies.find((e) => e.bossId === 'medusa' && !e.clone);
+        if (boss) flash(t('bossSnakes', { name: bossTitle(boss) }));
+      }
       if (event === 'minion') {
         const boss = g.enemies.find((e) => e.final && !e.clone);
         if (boss) flash(t('bossMinion', { name: bossTitle(boss) }));
