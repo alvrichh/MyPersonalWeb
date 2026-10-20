@@ -800,7 +800,7 @@ const SIDE_WALK = new Set<Pose>(['walk', 'walk2', 'wshoot', 'wshoot2']);
 /* Sets with the owner's own side walk cycle (`hero/<set>-swalk-0..3` and, aiming, `-saim-0..3`: contact, passing,
    the other contact, passing), cut from his sheet on one canvas per row, head centred and feet on the bottom, at the
    walk picture's scale (`scratchpad` `sidewalk/cut.py`); the other sets keep the warp below until theirs come. */
-const SIDE_CYCLE = new Set(['boy-base']);
+const SIDE_CYCLE = new Set(['boy-base', 'boy-wizard', 'boy-helm', 'boy-bandana', 'boy-crown']);
 /** Seconds each frame of the side walk cycle shows (a full stride is four). */
 const SIDE_STEP = 0.12;
 const sideCycles = new Map<string, HTMLImageElement[]>();
