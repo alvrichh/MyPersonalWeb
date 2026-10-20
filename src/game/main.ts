@@ -629,6 +629,8 @@ const ISLAND_META: Record<string, { w: number; h: number; ring: number[]; plate:
 
 /** The world the map is showing (locked ones can be looked at, not played). */
 let mapPick = 0;
+/** Which of the map's play options the play button shows (the world, the Boss Rush, the showcase, Nightmare). */
+let mapPlayIdx = 0;
 
 /** The easter egg behind the «coming soon» island on call: a shift in the jungle where Kratos waits at five and ten. */
 function secretScreen() {
@@ -708,23 +710,26 @@ function mapScreen() {
   const mastery = worldsLeft(save.mode) === 0
     ? `<button class="primary mastery-btn" data-act="mastery-ask">${t('masteryBtn', { mode: modeShort(save.mode) })}</button>`
     : '';
-  // Nightmare: On call in the last world with no clock, once that world is open there.
-  // Always offered on call, under the play button like Boss Rush in sprints, whichever world is picked; locked until the
-  // last world is open there.
-  const nightmareOpen = save.hordeUnlocked >= NIGHTMARE_WORLD;
-  const nightmare = save.mode === 'horde'
-    ? nightmareOpen
-      ? `<button class="ghost is-danger nightmare-btn" data-act="play-nightmare">${NIGHTMARE_ICON} ${t('nightmare')} ∞</button><small class="map-record nightmare-rec">${t('nightmareText')} · ${nightmareLine()}</small>`
-      : `<button class="ghost is-danger nightmare-btn is-locked" disabled>🔒 ${t('nightmare')} ∞</button><small class="map-record nightmare-rec">${t('nightmareLocked', { name: worldName(NIGHTMARE_WORLD) })}</small>`
-    : '';
-  // Boss Rush: sprints, once world 1 is won there; the bosses of every world open in sprints, one after another.
-  const rush = save.mode === 'sprints' && save.unlocked >= 2
-    ? `<button class="ghost is-warn rush-btn" data-act="play-rush">${RUSH_ICON} ${t('rush')}</button><small class="map-record rush-rec">${t('rushText')} · ${rushLine()}</small>
-       <button class="ghost small showcase-btn" data-act="play-showcase">👁 ${t('showcase')}</button>`
-    : '';
-  const action = pickedOpen
-    ? `<button class="play" data-act="play-picked"><span class="play-tri" aria-hidden="true"></span><span class="play-copy">${t('playWorld', { n: picked })}</span></button>`
-    : `<button class="play is-locked" disabled><span class="play-lock" aria-hidden="true">🔒</span><span class="play-copy">${t('lockedBtn')}</span></button>`;
+  // One play button under the card; its arrows (or a swipe) turn it to the mode's other runs: in sprints the
+  // Boss Rush and the showcase once world 1 is won there, on call Nightmare (locked until world 9 is open there).
+  const opts: { act: string; label: string; cls: string; locked?: boolean }[] = [pickedOpen
+    ? { act: 'play-picked', label: t('playWorld', { n: picked }), cls: '' }
+    : { act: '', label: t('lockedBtn'), cls: 'is-locked', locked: true }];
+  if (save.mode === 'sprints' && save.unlocked >= 2) {
+    opts.push({ act: 'play-rush', label: `${RUSH_ICON} ${t('rush')}`, cls: 'is-rush' });
+    opts.push({ act: 'play-showcase', label: `👁 ${t('showcaseShort')}`, cls: 'is-showcase' });
+  }
+  if (save.mode === 'horde') opts.push(save.hordeUnlocked >= NIGHTMARE_WORLD
+    ? { act: 'play-nightmare', label: `${NIGHTMARE_ICON} ${t('nightmare')} ∞`, cls: 'is-nightmare' }
+    : { act: '', label: `🔒 ${t('nightmare')} ∞`, cls: 'is-nightmare is-dim', locked: true });
+  mapPlayIdx = Math.min(mapPlayIdx, opts.length - 1);
+  const opt = opts[mapPlayIdx];
+  const many = opts.length > 1;
+  const action = `<div class="play-pick${many ? ' has-more' : ''}">
+      <button class="play ${opt.cls}"${opt.act ? ` data-act="${opt.act}"` : ' disabled'}>${opt.locked && !opt.cls.includes('is-dim') ? '<span class="play-lock" aria-hidden="true">🔒</span>' : opt.act === 'play-picked' ? '<span class="play-tri" aria-hidden="true"></span>' : ''}<span class="play-copy">${opt.label}</span></button>
+      ${many ? `<button class="play-arrow is-prev" type="button" data-act="play-prev" aria-label="${t('playPrev')}"></button><button class="play-arrow is-next" type="button" data-act="play-next-opt" aria-label="${t('playNextOpt')}"></button>
+      <span class="play-dots" aria-hidden="true">${opts.map((_, i) => `<i${i === mapPlayIdx ? ' class="is-on"' : ''}></i>`).join('')}</span>` : ''}
+    </div>`;
   // Only the islands scroll; the title, the world's card and the play button stay put. Picking an island
   // re-renders the screen, so the islands keep their scroll.
   const kept = screen.querySelector<HTMLElement>('.map-scroll')?.scrollTop;
@@ -749,7 +754,7 @@ function mapScreen() {
           <small class="mode-text">${t(save.mode === 'horde' ? 'modeHordeText' : 'modeSprintsText')}</small>
         </div>
       </div>
-      ${action}${nightmare}${rush}
+      ${action}
       ${mastery}
       <button class="ghost hexghost" data-act="menu">← ${t('menu')}</button>
       </div>
@@ -1397,6 +1402,25 @@ function showPicks() {
   }
 }
 
+/** Turn the map's play button to the next or previous option, wrapping round. */
+function mapPlayStep() {
+  const n = screen.querySelectorAll('.play-dots i').length || 1;
+  mapPlayIdx = (mapPlayIdx + n) % n;
+  mapScreen();
+}
+// A swipe across the map's play button turns it too (and the tap it ends in does not play).
+let swipeX: number | null = null;
+let swiped = false;
+screen.addEventListener('pointerdown', (e) => { swipeX = (e.target as HTMLElement).closest('.play-pick.has-more') ? e.clientX : null; swiped = false; });
+screen.addEventListener('pointerup', (e) => {
+  if (swipeX === null) return;
+  const dx = e.clientX - swipeX;
+  swipeX = null;
+  if (Math.abs(dx) < 40) return;
+  swiped = true;
+  mapPlayIdx += dx < 0 ? 1 : -1;
+  mapPlayStep();
+});
 function startRun(world = worldIn(), mode = save.mode, endless = false, rush = 0, secret = false) {
   game = newGame({ ...buildLoadout(save.equipped, save.upgrades, masteries(), save.arsenal, save.itemLevels, save.extra), sprintMastery: save.mastery.sprints }, save.style, world, mode, endless, rush, secret);
   // Boss Rush: every boss in its own world's floor and song (whatever Customise picked); the secret shift, the jungle's.
@@ -1420,6 +1444,7 @@ function startRun(world = worldIn(), mode = save.mode, endless = false, rush = 0
 screen.addEventListener('click', (event) => {
   const target = (event.target as HTMLElement).closest<HTMLElement>('button, [data-act], [data-world]');
   if (!target) return;
+  if (swiped) { swiped = false; return; }
   audio.unlock();
   const act = target.dataset.act;
   if (act !== 'mute') audio.play('click');
@@ -1435,8 +1460,9 @@ screen.addEventListener('click', (event) => {
   else if (act === 'play-secret') startRun(SECRET_WORLD, 'horde', false, 0, true);
   else if (act === 'play-nightmare') startRun(NIGHTMARE_WORLD, 'horde', true);
   else if (act === 'mode') { save.mode = save.mode === 'horde' ? 'sprints' : 'horde'; persist(); menuScreen(); }
-  else if (target.dataset.mode) { save.mode = target.dataset.mode as Mode; mapPick = worldIn(); persist(); mapScreen(); }
+  else if (target.dataset.mode) { save.mode = target.dataset.mode as Mode; mapPick = worldIn(); mapPlayIdx = 0; persist(); mapScreen(); }
   else if (act === 'map') { mapPick = worldIn(); mapScreen(); }
+  else if (act === 'play-prev' || act === 'play-next-opt') { mapPlayIdx += act === 'play-prev' ? -1 : 1; mapPlayStep(); }
   else if (act === 'play-picked') { setWorld(mapPick); persist(); startRun(mapPick); }
   else if (target.dataset.world) {
     const n = Number(target.dataset.world);

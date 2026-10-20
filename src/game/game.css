@@ -3654,3 +3654,31 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .showcase-hit:active { translate: -50% 2px; }
 .showcase-hit[hidden] { display: none; }
 .panel .showcase-btn { margin-top: 4px; }
+
+/* The map's one play button: its arrows (over the bar's own painted chevrons) and a swipe turn it to the mode's
+   other runs; the bar takes each run's colour, and dots under it say which of them it shows. */
+.mapscreen .play-pick { position: relative; width: calc(100% - 24px); margin: 0 auto; touch-action: pan-y; }
+.mapscreen .play-pick > .play { width: 100%; margin: 0; }
+.mapscreen .play.is-rush { border-image-source: url('/images/game/ui/btn2_gold.webp'); color: #2a1a00; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35); filter: drop-shadow(0 0 16px rgba(251, 191, 36, 0.45)); }
+.mapscreen .play.is-showcase { border-image-source: url('/images/game/ui/btn2_blue.webp'); filter: drop-shadow(0 0 16px rgba(56, 189, 248, 0.45)); }
+.mapscreen .play.is-nightmare { border-image-source: url('/images/game/ui/btn2_red.webp'); filter: drop-shadow(0 0 16px rgba(248, 113, 113, 0.45)); }
+.mapscreen .play.is-dim { filter: grayscale(0.75) brightness(0.8); cursor: default; }
+.mapscreen .play-arrow {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 58px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.mapscreen .play-arrow.is-prev { left: 0; }
+.mapscreen .play-arrow.is-next { right: 0; }
+.mapscreen .play-arrow:active { background: radial-gradient(circle, rgba(255, 255, 255, 0.18), transparent 70%); }
+.mapscreen .play-dots { display: flex; justify-content: center; gap: 6px; margin: 4px 0 2px; }
+.mapscreen .play-dots i { width: 7px; height: 7px; border-radius: 50%; background: rgba(148, 163, 184, 0.45); }
+.mapscreen .play-dots i.is-on { background: #f8fafc; box-shadow: 0 0 6px rgba(248, 250, 252, 0.8); }
+:root[data-retro] .mapscreen .play-arrow.is-prev::before { content: '‹'; }
+:root[data-retro] .mapscreen .play-arrow.is-next::before { content: '›'; }
+:root[data-retro] .mapscreen .play-arrow { color: var(--text); font-size: 1.6rem; }
