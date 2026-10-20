@@ -10,9 +10,11 @@ import { boardFloor, boardFx, drawBoardFigure } from './draw';
 
 /** The units are drawn bigger than their hit circles, so they fill their cells. */
 const FIG = 1.4;
-/** Room above and below the board for the commanders' names and health. */
-const TOP = 30;
-const BOT = 30;
+/** Room above the board for the rival's hearts (yours float over your hero, inside the board). */
+const TOP = 20;
+const BOT = 4;
+/** Each commander's health as hearts: ten, in two rows of five. */
+const HEARTS = { n: 10, row: 5, size: 10, gap: 1.5 };
 /** How long the fireball flies, and how long its blast lasts, in seconds (main.ts waits for both). */
 export const FIREBALL = { fly: 0.75, blast: 0.45 };
 
@@ -163,28 +165,38 @@ function drawRival(ctx: CanvasRenderingContext2D, pad: HTMLImageElement, world: 
   ctx.restore();
 }
 
-function lifeBar(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, p: number, colour: string, label: string, right: boolean) {
-  ctx.fillStyle = 'rgba(0,0,0,0.6)';
-  ctx.fillRect(x, y, w, 7);
-  ctx.fillStyle = colour;
-  const f = w * Math.max(0, Math.min(1, p));
-  ctx.fillRect(right ? x + w - f : x, y, f, 7);
-  ctx.strokeStyle = 'rgba(255,255,255,0.35)';
-  ctx.lineWidth = 1;
-  ctx.strokeRect(x, y, w, 7);
-  ctx.fillStyle = '#f8fafc';
-  ctx.font = '700 11px system-ui, sans-serif';
-  ctx.textAlign = right ? 'right' : 'left';
-  ctx.textBaseline = 'bottom';
-  ctx.fillText(label, right ? x + w : x, y - 2);
+/** A commander's hearts over its head: full ones in colour, the lost ones dark; the ones just lost (`pop`)
+    burst out when the fireball strikes. */
+function hearts(ctx: CanvasRenderingContext2D, cx: number, top: number, left: number, pop: number, popAt: number, retro: boolean) {
+  const img = boardFx('heart');
+  const { n, row, size, gap } = HEARTS;
+  const w = row * size + (row - 1) * gap;
+  for (let i = 0; i < n; i++) {
+    const x = cx - w / 2 + (i % row) * (size + gap) + size / 2;
+    const y = top + Math.floor(i / row) * (size + gap) + size / 2;
+    const full = i < left;
+    const going = !full && i < left + pop;
+    ctx.save();
+    ctx.translate(x, y);
+    if (going) { const k = 1 + popAt * 0.8; ctx.scale(k, k); ctx.globalAlpha = 1 - popAt; }
+    else if (!full) ctx.globalAlpha = 0.22; // a lost heart, faint
+    if (!retro && ok(img)) {
+      ctx.drawImage(img, -size / 2, -size / 2, size, size);
+    } else {
+      ctx.fillStyle = full || going ? '#f472b6' : '#334155';
+      ctx.font = `${size + 2}px system-ui, sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('❤', 0, 0.5);
+    }
+    ctx.restore();
+  }
 }
 
 /** The rival's health: one for each round still to win. */
 const rivalHp = (b: BoardGame) => ROUNDS - b.round + (b.phase !== 'prep' && b.phase !== 'fight' && b.last?.result === 'win' ? 0 : 1);
 
-export type BoardNames = { mine: string; rival: string };
-
-export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: BoardLayout, now: number, drag: BoardDrag | null, retro: boolean, dpr: number, pics: HeroPics, names: BoardNames, ended: number | null) {
+export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: BoardLayout, now: number, drag: BoardDrag | null, retro: boolean, dpr: number, pics: HeroPics, ended: number | null) {
   ctx.setTransform(dpr * lay.s, 0, 0, dpr * lay.s, dpr * lay.ox, dpr * lay.oy);
   // The world's floor under the board.
   const floor = boardFloor(b.world);
@@ -231,10 +243,8 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
   const done = ended !== null && ended > FIREBALL.fly;
   const rivalGone = b.phase === 'won' && done ? Math.min(1, (ended! - FIREBALL.fly) / 0.6) : 0;
   drawRival(ctx, pics.padRed, b.world, now, won ? struck : 0, rivalGone);
-  lifeBar(ctx, CELL + 4, -9, 170, (rivalHp(b) + (won && ended !== null && !done ? 1 : 0)) / ROUNDS, '#ef4444', names.rival, false);
   const pose = b.phase === 'over' && done ? pics.down : ended !== null && won && !done ? pics.shoot : b.phase === 'won' && done ? pics.cheer : !won && struck > 0 ? pics.hurt : pics.front;
   drawHero(ctx, pics, pose, now, won ? 0 : struck * 0.6);
-  lifeBar(ctx, BOARD_W - CELL - 174, BOARD_H + 20, 170, b.lives / 10, '#4ade80', `${names.mine} · ❤ ${b.lives}`, true);
 
   // Where the dragged unit would go: green to move, gold to merge.
   if (drag?.over) {
@@ -334,6 +344,13 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
     }
     ctx.restore();
   }
+  // The hearts last, over everything on the board: the rival's above it, yours over your hero's head. Until the
+  // fireball strikes they still show the hearts the round has just cost; then those burst.
+  const popAt = ended === null ? 1 : Math.max(0, Math.min(1, (ended - FIREBALL.fly) / FIREBALL.blast));
+  const rivalPop = won && ended !== null ? 1 : 0;
+  const minePop = !won && ended !== null ? b.last?.lost ?? 0 : 0;
+  hearts(ctx, RIVAL.x + 6, -TOP + 1, rivalHp(b), rivalPop, done ? popAt : 0, retro);
+  hearts(ctx, MINE.x, MINE.y - 84, b.lives, minePop, done ? popAt : 0, retro);
   if (drag) {
     const x = (drag.x - lay.ox) / lay.s;
     const y = (drag.y - lay.oy) / lay.s;
