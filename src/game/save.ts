@@ -98,6 +98,13 @@ export type Save = {
   playTime: number;
   /** All the XP ever picked up: the profile level on the title screen. */
   xp: number;
+  /** Lifetime totals the achievements count (kept through a reset or a mastery): bugs squashed, per world (by the
+      world a run is played in) and in Nightmare, and Nightmare's longest run in seconds. */
+  stats: { kills: number; killsByWorld: Record<number, number>; nightmareKills: number; nightmareLongest: number };
+  /** Achievements earned (id → when, ms since 1970), kept through a reset or a mastery (`achievements.ts`). */
+  achieved: Record<string, number>;
+  /** Achievements earned but not announced yet: the menu toasts them the next time it opens. */
+  achNew: string[];
 };
 
 const KEY = 'bugHunter';
@@ -147,6 +154,9 @@ const fresh = (): Save => ({
   runs: 0,
   playTime: 0,
   xp: 0,
+  stats: { kills: 0, killsByWorld: {}, nightmareKills: 0, nightmareLongest: 0 },
+  achieved: {},
+  achNew: [],
 });
 
 export function loadSave(): Save {
@@ -155,6 +165,11 @@ export function loadSave(): Save {
     const data = JSON.parse(storage.get(KEY) || '{}') as Partial<Save>;
     const save: Save = { ...base, ...data, equipped: {}, upgrades: { ...data.upgrades }, itemLevels: { ...data.itemLevels }, best: { ...base.best, ...data.best }, bestByWorld: { ...data.bestByWorld }, hordeBest: { ...data.hordeBest } };
     if (save.mode !== 'sprints' && save.mode !== 'horde') save.mode = 'sprints';
+    save.stats = { ...base.stats, ...data.stats, killsByWorld: { ...data.stats?.killsByWorld } };
+    // Older saves knew Nightmare's longest run before the totals came in.
+    save.stats.nightmareLongest = Math.max(save.stats.nightmareLongest, data.nightmareBest?.time ?? 0);
+    save.achieved = { ...data.achieved };
+    save.achNew = Array.isArray(data.achNew) ? data.achNew.filter((id) => typeof id === 'string') : [];
     // The mud world came in as world 4: what an older save kept for worlds 4–8 belongs to 5–9 now.
     if (!data.mudWorld) {
       const up = <T,>(rec: Record<number, T>) => Object.fromEntries(Object.entries(rec).map(([w, v]) => [Number(w) >= 4 ? Number(w) + 1 : Number(w), v])) as Record<number, T>;
@@ -242,9 +257,9 @@ export function profileLevel(xp: number) {
 /** A world won in either mode: a sprint run cleared or an on-call shift completed. */
 export const worldWon = (save: Save, n: number) => save.bestByWorld[n]?.time !== undefined || !!save.hordeBest[n]?.won;
 
-/** Back to a fresh start: progress, coins, gear and level go; name, skins bought, settings, masteries and star colour stay. */
+/** Back to a fresh start: progress, coins, gear and level go; name, skins bought, settings, masteries, star colour, the lifetime totals and the achievements stay. */
 export function wipeProgress(save: Save) {
-  const keep = { name: save.name, skin: save.skin, skins: [...save.skins], retro: save.retro, style: save.style, scene: save.scene, song: save.song, music: save.music, sfx: save.sfx, mode: save.mode, mastery: { ...save.mastery }, starColor: save.starColor, playTime: save.playTime, dailyAt: save.dailyAt, purchases: [...save.purchases] };
+  const keep = { name: save.name, skin: save.skin, skins: [...save.skins], retro: save.retro, style: save.style, scene: save.scene, song: save.song, music: save.music, sfx: save.sfx, mode: save.mode, mastery: { ...save.mastery }, starColor: save.starColor, playTime: save.playTime, dailyAt: save.dailyAt, purchases: [...save.purchases], stats: save.stats, achieved: save.achieved, achNew: save.achNew };
   Object.assign(save, fresh(), keep);
 }
 
