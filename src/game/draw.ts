@@ -5027,7 +5027,7 @@ export function drawBoardBackdrop(ctx: CanvasRenderingContext2D, world: number, 
   if (floor && ready(floor)) ctx.drawImage(floor, 0, top, w, h);
 }
 /** The board's wall between the halves: each world's own long blocks (the servers, the volcanic stone, the ice…;
-    the mud world the vikings' old wet stones, the jungle its mossy ones), two of them in turn. */
+    the mud world the vikings' old wet stones, the jungle its mossy ones): the long block, and the piece for the middle. */
 export function boardWallPieces(world: number): HTMLImageElement[] {
   const look = WORLDS[world - 1].look;
   const stones = look === 'random' ? 'core' : look;
@@ -5035,5 +5035,6 @@ export function boardWallPieces(world: number): HTMLImageElement[] {
   if (stones === 'jungle') return [setImage('jungle', 'stone-long-0'), setImage('jungle', 'stone-long-1')];
   const pre = LAYOUT_SET[stones] ?? 'server-';
   const set = (stones in LAYOUT_SET ? stones : 'original') as Look | 'core';
-  return [setImage(set, `${pre}100x24-0`), setImage(set, `${pre}100x24-1`)];
+  // The middle one is the world's shorter, distinct block (the vikings' banner, the Arena's shield…).
+  return [setImage(set, `${pre}100x24-0`), setImage(set, stones === 'greek' ? `${pre}64x26-0` : `${pre}60x24-0`)];
 }
