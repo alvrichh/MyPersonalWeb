@@ -797,6 +797,23 @@ function drawDark(ctx: CanvasRenderingContext2D, g: Game, vis: Rect) {
    leg swinging forward lifts its foot a little. Each output pixel is sampled from where it came from (bilinear, on
    premultiplied colour), so no hole or seam can open. `STEP_FRAMES` frames a stride are worked out once per picture. */
 const SIDE_WALK = new Set<Pose>(['walk', 'walk2', 'wshoot', 'wshoot2']);
+/* Sets with the owner's own side walk cycle (`hero/<set>-swalk-0..3` and, aiming, `-saim-0..3`: contact, passing,
+   the other contact, passing), cut from his sheet on one canvas per row, head centred and feet on the bottom, at the
+   walk picture's scale (`scratchpad` `sidewalk/cut.py`); the other sets keep the warp below until theirs come. */
+const SIDE_CYCLE = new Set(['boy-base']);
+/** Seconds each frame of the side walk cycle shows (a full stride is four). */
+const SIDE_STEP = 0.12;
+const sideCycles = new Map<string, HTMLImageElement[]>();
+function sideCycle(key: string, aim: boolean) {
+  if (!SIDE_CYCLE.has(key)) return null;
+  const name = `${key}-${aim ? 'saim' : 'swalk'}`;
+  let frames = sideCycles.get(name);
+  if (!frames) {
+    frames = [0, 1, 2, 3].map((i) => Object.assign(new Image(), { src: `./images/game/hero/${name}-${i}.webp` }));
+    sideCycles.set(name, frames);
+  }
+  return frames.every(ready) ? frames : null;
+}
 const STRIDE = 0.42;
 /** How far a foot swings, as a share of the leg's length, and how high the passing foot lifts (share of the figure). */
 const LEG_SWING = 0.42;
@@ -929,8 +946,15 @@ function drawPlayer(ctx: CanvasRenderingContext2D, g: Game, pal: Palette, now: n
     if (left || (vertical && step)) ctx.scale(-1, 1);
     if (vertical) ctx.rotate(0.06 * Math.sin(now * 7 * Math.PI));
     const tint = g.phase === 'play' ? heroTint(g) : null;
-    const steps = full && p.moving && SIDE_WALK.has(pose) ? stepFrames(img) : null;
-    if (steps) drawStriding(ctx, img, w, h, steps, now, tint);
+    // The owner's own side walk cycle when the set has one (four frames, legs passing in turn); otherwise the warp.
+    const cycle = full && p.moving && SIDE_WALK.has(pose) ? sideCycle(heroKey(pal.skin ?? 'boy', pal.hat), pose === 'wshoot' || pose === 'wshoot2') : null;
+    const steps = !cycle && full && p.moving && SIDE_WALK.has(pose) ? stepFrames(img) : null;
+    if (cycle) {
+      const f = cycle[Math.floor(now / SIDE_STEP) % cycle.length];
+      const fh = p.r * 3.05 * (f.naturalHeight / FULL_BASE_H);
+      const fw = (fh * f.naturalWidth) / f.naturalHeight;
+      drawTinted(ctx, f, -fw / 2, -fh, fw, fh, tint);
+    } else if (steps) drawStriding(ctx, img, w, h, steps, now, tint);
     else drawTinted(ctx, img, -w / 2, -h, w, h, tint);
     ctx.restore();
     barTop = p.y + p.r * 0.9 - h - 9;
