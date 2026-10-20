@@ -2754,6 +2754,9 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   justify-items: start;
   gap: 1px;
   width: 100%;
+  /* A row taller than its picture's shape would also grow wider and scroll the dialog sideways; keep the texts short. */
+  max-width: 100%;
+  min-width: 0;
   aspect-ratio: 505 / 221;
   padding: 7% 11% 7% 39%;
   border: 0;
