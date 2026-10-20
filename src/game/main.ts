@@ -13,7 +13,7 @@ import { ARMOUR_SLOTS, ARSENAL, ITEMS, itemLevel, type SpiritSkin, UPGRADES, WEA
 import { Scene } from './scene';
 import { makeT, pickLang, type Key } from './strings';
 import {
-  CATEGORY, EVO_PARTNER, H, NIGHTMARE_WORLD, SECRET_WORLD, canFuse, revivePrice, SKILLS, arrowLook, arrowOptions, bladeElement, bladeOptions, canEvolve, evoOf, fusionOf, fusionWith, evoLostBy, pairFusion, arrowElements, settleEffects, rerollChoices, adReroll, adRevive, canAdReroll, canAdRevive, maxLevel, pickArrow, pickBlade, pickSpirit, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_LUCKY, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
+  CATEGORY, EVO_PARTNER, H, NIGHTMARE_WORLD, SECRET_WORLD, showcaseHit, canFuse, revivePrice, SKILLS, arrowLook, arrowOptions, bladeElement, bladeOptions, canEvolve, evoOf, fusionOf, fusionWith, evoLostBy, pairFusion, arrowElements, settleEffects, rerollChoices, adReroll, adRevive, canAdReroll, canAdRevive, maxLevel, pickArrow, pickBlade, pickSpirit, ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_LUCKY, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
   type ArrowLook, type Category, type Choice, type Fusion, type Game, type GameEvent, type Input, type Look, type SkillId, type WheelOutcome,
 } from './world';
 
@@ -57,6 +57,9 @@ const hudXp = $<HTMLElement>('hudXp');
 const hudHp = $<HTMLElement>('hudHp');
 hudHp.parentElement?.setAttribute('aria-label', lang === 'es' ? 'Vida' : 'Health');
 const hudGear = $<HTMLElement>('hudGear');
+/** The showcase's button: a quarter of the boss's health off, to move it on to its next phase or finish it. */
+const showcaseBtn = $<HTMLButtonElement>('showcaseHit');
+showcaseBtn.addEventListener('click', () => { if (game && showcaseHit(game)) audio.play('hit'); });
 const gearPanel = $<HTMLElement>('gearPanel');
 const hudCoins = $<HTMLElement>('hudCoins');
 const bossBar = $<HTMLElement>('bossBar');
@@ -113,7 +116,7 @@ const modeName = (mode: Mode = save.mode) => t(mode === 'horde' ? 'modeHorde' : 
 const MODE_ICON: Record<Mode, string> = { sprints: '⚔️', horde: '🛡️' };
 const NIGHTMARE_ICON = '☠️';
 /** Where the run is: the sprint, or the shift's clock. */
-const whereLine = (g: Game) => (g.rush ? `${RUSH_ICON} ${t('rushWhere', { n: g.rush, total: g.stages })}` : g.mode === 'horde' ? `${g.endless ? NIGHTMARE_ICON : MODE_ICON.horde} ${clock(g.time)}` : t('sprint', { room: g.room }));
+const whereLine = (g: Game) => (g.rush ? `${g.showcase ? '👁' : RUSH_ICON} ${t('rushWhere', { n: g.rush, total: g.stages })}` : g.mode === 'horde' ? `${g.endless ? NIGHTMARE_ICON : MODE_ICON.horde} ${clock(g.time)}` : t('sprint', { room: g.room }));
 const worldName = (n: number) => t(`world${n}Name` as Key);
 const WORLD_ICON = ['🐞', '🔥', '❄️', '🐸', '🍃', '🛡️', '✨', '👻', '💗'];
 const coinsLine = (n = save.coins) => `<span class="coin">🪙</span> ${Math.floor(n)}`;
@@ -135,6 +138,8 @@ function playTimeText(seconds: number) {
   return h >= 100 ? `${h} h` : h ? `${h} h ${min % 60} min` : `${min} min`;
 }
 function bankRun(g: Game): number | null {
+  // The showcase is only for looking: no record, no coins, no run counted.
+  if (g.showcase) { arsenalOpened = null; itemOpened = null; return null; }
   const won = g.phase === 'won';
   const wasWon = worldWon(save, g.world);
   if (g.secret) {
@@ -398,6 +403,7 @@ let adEarned = 0;
 const backButton = (act: string, label: Key = 'menu') => `<button class="ghost" data-act="${act}">← ${t(label)}</button>`;
 
 function menuScreen() {
+  showcaseBtn.hidden = true;
   game = null;
   audio.setSong(save.song); // a Boss Rush played by world; back to the pick
   hud.hidden = true;
@@ -569,6 +575,7 @@ function offerRevive(g: Game) {
 }
 
 function endScreen(g: Game) {
+  showcaseBtn.hidden = true;
   hud.hidden = true;
   hudGear.hidden = true;
   closeGearPanel();
@@ -711,7 +718,8 @@ function mapScreen() {
     : '';
   // Boss Rush: sprints, once world 1 is won there; the bosses of every world open in sprints, one after another.
   const rush = save.mode === 'sprints' && save.unlocked >= 2
-    ? `<button class="ghost is-warn rush-btn" data-act="play-rush">${RUSH_ICON} ${t('rush')}</button><small class="map-record rush-rec">${t('rushText')} · ${rushLine()}</small>`
+    ? `<button class="ghost is-warn rush-btn" data-act="play-rush">${RUSH_ICON} ${t('rush')}</button><small class="map-record rush-rec">${t('rushText')} · ${rushLine()}</small>
+       <button class="ghost small showcase-btn" data-act="play-showcase">👁 ${t('showcase')}</button>`
     : '';
   const action = pickedOpen
     ? `<button class="play" data-act="play-picked"><span class="play-tri" aria-hidden="true"></span><span class="play-copy">${t('playWorld', { n: picked })}</span></button>`
@@ -1420,6 +1428,7 @@ screen.addEventListener('click', (event) => {
   else if (act === 'play-same' && game?.secret) startRun(SECRET_WORLD, 'horde', false, 0, true);
   else if (act === 'play-same') game?.rush ? startRun(1, 'sprints', false, rushWorlds()) : startRun(game?.world ?? worldIn(), game?.mode ?? save.mode, game?.endless);
   else if (act === 'play-rush') startRun(1, 'sprints', false, rushWorlds());
+  else if (act === 'play-showcase' || (act === 'play-same' && game?.showcase)) { startRun(1, 'sprints', false, rushWorlds()); if (game) game.showcase = true; flash(t('showcaseStart')); }
   else if (act === 'secret') secretScreen();
   else if (act === 'play-secret') startRun(SECRET_WORLD, 'horde', false, 0, true);
   else if (act === 'play-nightmare') startRun(NIGHTMARE_WORLD, 'horde', true);
@@ -2157,6 +2166,7 @@ function step(now: number) {
     g.viewHalf = { x: Math.max(W / 2, view.cx / view.scale), y: Math.max(H / 2, (view.h - view.cy) / view.scale, view.cy / view.scale) };
     draw(ctx, g, view, palette, now / 1000);
     hudRoom.textContent = `${t('worldShort', { n: g.world })} · ${whereLine(g)}`;
+    showcaseBtn.hidden = !g.showcase || g.phase !== 'play' || !g.enemies.some((e) => e.kind === 'boss' && !e.dead);
     // Boss Rush moves from world to world: the plate's icon follows.
     if (hudRoom.dataset.world !== String(g.world)) { hudRoom.dataset.world = String(g.world); hudRoom.style.setProperty('--icon', JSON.stringify(WORLD_ICON[g.world - 1])); }
     hudLevel.textContent = t('level', { level: g.level });

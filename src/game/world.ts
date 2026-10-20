@@ -526,6 +526,9 @@ export type Game = {
   rush: number;
   /** How many stages this rush has (two for each world open in sprints). */
   stages: number;
+  /** The showcase (Boss Rush's «look at the bosses» mode): nobody takes damage but the bugs they call, and the
+      boss loses a quarter of its health only when `showcaseHit` is pressed, to see its phases at leisure. */
+  showcase: boolean;
   /** The secret shift (an easter egg behind the map's «coming soon» island, on call): the jungle's field, cast and
       hazards, and both bosses are Kratos (the room-6 kit at 5:00, the final one at 10:00). */
   secret: boolean;
@@ -921,6 +924,7 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     rush: 0,
     stages: 0,
     secret: false,
+    showcase: false,
     scene: 0,
     room: 1,
     hordeSpawn: 1.5,
@@ -1395,8 +1399,12 @@ function kill(g: Game, e: Enemy) {
 /** A boss shows its hurt pose for `show` seconds when hit, then not again for `every` seconds, however many hits land. */
 const BOSS_PAIN = { show: 0.18, every: 1.2 };
 
+/** Set while `showcaseHit` is taking its quarter, so the showcase lets that one blow through. */
+let showcaseBlow = false;
 function hurt(g: Game, e: Enemy, amount: number, push?: Vec) {
   if (e.dead) return;
+  // The showcase: bosses (their clones and helpers too) only lose health to its button.
+  if (g.showcase && !showcaseBlow && (e.kind === 'boss' || e.minion || e.clone)) { e.hit = 0.1; return; }
   // Critical hits: a real blow (not a burn's or an aura's tick) now and then lands twice as hard.
   if (g.skills.crit && amount >= 4 && Math.random() < ARCHERO.crit * g.skills.crit) {
     amount *= ARCHERO.critHit;
@@ -2248,7 +2256,7 @@ const ICICLE_CHILL = 1.2;
 
 function hurtPlayer(g: Game, amount: number, from?: string, fire = false) {
   const p = g.player;
-  if (p.inv > 0 || g.phase !== 'play') return;
+  if (p.inv > 0 || g.phase !== 'play' || g.showcase) return;
   // Lag: now and then the hit simply never arrives.
   if (g.skills.dodge && Math.random() < ARCHERO.dodge * g.skills.dodge) {
     p.inv = 0.3;
@@ -3446,6 +3454,19 @@ export function applyWheel(g: Game, outcome: WheelOutcome): { outcome: WheelOutc
     default:
       return { outcome: 'nothing' };
   }
+}
+
+/** The showcase's button: a quarter of the boss's health at once (its phases and last stand go off as they would),
+    the backup bugs swept away with it. False when there is no boss to hit. */
+export function showcaseHit(g: Game) {
+  if (!g.showcase || g.phase !== 'play') return false;
+  const boss = live(g).find((e) => e.kind === 'boss' && !e.clone && !e.minion && e.spawn <= 0 && !e.vanish);
+  if (!boss) return false;
+  showcaseBlow = true;
+  hurt(g, boss, boss.maxHp * 0.25 + 1);
+  showcaseBlow = false;
+  burst(g, boss.x, boss.y, '#fde047', 20, 180, 3);
+  return true;
 }
 
 /** Walk on from the wheel room into the next one. */
