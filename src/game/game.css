@@ -3508,10 +3508,11 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .dress-hero .wing-host > .hero-fig { margin-bottom: 0; }
 .wing-host > .wing-box {
   /* a box far wider than the hero, centred on it, with the wings centred inside by flex: no translate to centre
-     them (Safari dropped it while animating and drew the wings from the hero's middle out to the right) */
+     them (Safari dropped it while animating and drew the wings from the hero's middle out to the right); three times the
+     hero's width holds the wings (about 2.7 times it) without spilling past the dialog, which made it scroll sideways */
   position: absolute;
-  left: -300%;
-  right: -300%;
+  left: -100%;
+  right: -100%;
   bottom: -7.7%;
   height: 144.9%;
   z-index: 0;
