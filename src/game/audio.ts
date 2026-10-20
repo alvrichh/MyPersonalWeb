@@ -453,7 +453,8 @@ class Engine {
   setFinal(on: boolean, rage: boolean, id = '') {
     this.finalWanted = on;
     this.rage = on && rage;
-    this.finalId = id === 'valdur' ? 'drakkar' : id;
+    // Valdur fights to the Drakkar's song, the secret Kratos to the Archdemon's.
+    this.finalId = id === 'valdur' ? 'drakkar' : id === 'kratos' ? 'archdemon' : id;
   }
 
   private tick = () => {

@@ -3511,6 +3511,7 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 
 /* The map's «coming soon» island (filling the last row): not a world, so nothing to tap and a grey plate. */
 .isle.is-soon { pointer-events: none; }
+.isle.is-soon.is-secret { pointer-events: auto; cursor: pointer; }
 .isle.is-soon .isle-plate { border-color: #94a3b8; box-shadow: 0 0 10px rgba(148, 163, 184, 0.45); color: #e2e8f0; }
 .trail.is-soon { opacity: 0.45; }
 

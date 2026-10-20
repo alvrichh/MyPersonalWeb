@@ -91,6 +91,8 @@ export type Save = {
   nightmareBest: { time: number; kills: number } | null;
   /** Boss Rush: the furthest boss reached (out of how many), and the time, the fastest of the cleared ones. */
   rushBest: { stage: number; stages: number; time: number; won: boolean } | null;
+  /** The secret shift (Kratos, behind the map's «coming soon» island on call): the best run, a won one above all. */
+  secretBest: { time: number; kills: number; won: boolean } | null;
   runs: number;
   /** Seconds played in runs, all told; kept through a reset or a mastery. */
   playTime: number;
@@ -141,6 +143,7 @@ const fresh = (): Save => ({
   hordeBest: {},
   nightmareBest: null,
   rushBest: null,
+  secretBest: null,
   runs: 0,
   playTime: 0,
   xp: 0,

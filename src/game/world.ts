@@ -526,6 +526,9 @@ export type Game = {
   rush: number;
   /** How many stages this rush has (two for each world open in sprints). */
   stages: number;
+  /** The secret shift (an easter egg behind the map's «coming soon» island, on call): the jungle's field, cast and
+      hazards, and both bosses are Kratos (the room-6 kit at 5:00, the final one at 10:00). */
+  secret: boolean;
   /** Which world's floor and blocks are drawn (0: the run's own); only the look, picked in Customise to try them out. */
   scene: number;
   hordeHazard: number;
@@ -777,7 +780,7 @@ function makeEnemy(g: Game, kind: EnemyKind, room: number, at: Vec, spawn = 0.7)
     side: Math.random() < 0.5 ? -1 : 1,
     detour: 0,
     dead: false,
-    bossId: kind !== 'boss' ? '' : final ? FINAL_BOSS[g.world - 1] : look,
+    bossId: kind !== 'boss' ? '' : g.secret ? 'kratos' : final ? FINAL_BOSS[g.world - 1] : look,
     final,
     clone: false,
     minion: false,
@@ -906,7 +909,10 @@ function enterStage(g: Game, stage: number) {
 }
 
 /** `rush`: a Boss Rush through the bosses of the first `rush` worlds (sprints only). */
-export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'world', world = 1, mode: Mode = 'sprints', endless = false, rush = 0): Game {
+/** The secret shift's world: its floor, blocks, cast and hazards are the jungle's. */
+export const SECRET_WORLD = 5;
+export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'world', world = 1, mode: Mode = 'sprints', endless = false, rush = 0, secret = false): Game {
+  if (secret) { mode = 'horde'; world = SECRET_WORLD; endless = false; }
   const nightmare = endless && mode === 'horde';
   const g: Game = {
     world: nightmare ? NIGHTMARE_WORLD : clamp(world, 1, WORLD_COUNT),
@@ -914,6 +920,7 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     endless: nightmare,
     rush: 0,
     stages: 0,
+    secret: false,
     scene: 0,
     room: 1,
     hordeSpawn: 1.5,
@@ -995,6 +1002,7 @@ export function newGame(loadout: Loadout = BASE_LOADOUT, style: EnemyStyle = 'wo
     const partner = EVO_PARTNER[w]!;
     g.skills[partner] = Math.max(g.skills[partner], 1);
   }
+  g.secret = secret;
   if (mode === 'horde') {
     // It also starts at a higher bar: level 4 or so after the first minute, not 8.
     g.xpNext = 45;
@@ -2493,11 +2501,12 @@ const SIGNATURE: Signature[] = ['spiral', 'meteors', 'tide', 'sigils', 'roots', 
 /** On call: how often every boss leaps at you, on top of its own move. */
 const HORDE_LEAP = 9;
 const moveOf = (g: Game, e: Enemy): Move =>
-  e.bossId === 'valdur' ? 'leap' : e.bossId === 'queen' ? 'acid' : g.world < WORLD_COUNT ? MID_MOVE[g.world - 1]
+  // Kratos: his blades sweep fire in front of him (the demons' breath); his signature is the fire world's meteors.
+  e.bossId === 'kratos' ? 'breath' : e.bossId === 'valdur' ? 'leap' : e.bossId === 'queen' ? 'acid' : g.world < WORLD_COUNT ? MID_MOVE[g.world - 1]
   // Nocthrax: the Treant's vanishing leap half the time (the owner's favourite), any other move otherwise.
   : e.bossId === 'chimera' && !e.clone && Math.random() < 0.5 ? 'leap' : MID_MOVE[Math.floor(Math.random() * MID_MOVE.length)];
 const signatureOf = (g: Game, e: Enemy): Signature =>
-  e.bossId === 'valdur' ? 'frenzy' : g.world < WORLD_COUNT ? SIGNATURE[g.world - 1]
+  e.bossId === 'kratos' ? 'meteors' : e.bossId === 'valdur' ? 'frenzy' : g.world < WORLD_COUNT ? SIGNATURE[g.world - 1]
   // Nocthrax: its own dark tornadoes every other time, the other worlds' signatures in between.
   : e.bossId === 'chimera' && !e.clone && e.sigs % 2 === 0 ? 'tornado' : SIGNATURE[1 + (Math.floor(e.sigs / 2) % (SIGNATURE.length - 1))];
 
@@ -2561,7 +2570,7 @@ function inside(g: Game, v: Vec, m: number): Vec {
   return { x: clamp(v.x, b.x + m, b.x + b.w - m), y: clamp(v.y, b.y + m, b.y + b.h - m) };
 }
 /** The final bosses' rings fly as their element's weapon pictures (the cast bosses keep the plain orbs). */
-const RING_PIC: Partial<Record<string, OrbPic>> = { nightmare: 'ember', mud: 'mudball', medusa: 'medusa', archdemon: 'fireball', drakkar: 'water', valdur: 'water', queen: 'leaf', zeus: 'bolt', mech: 'spark', wraith: 'ghost' };
+const RING_PIC: Partial<Record<string, OrbPic>> = { nightmare: 'ember', mud: 'mudball', medusa: 'medusa', archdemon: 'fireball', kratos: 'fireball', drakkar: 'water', valdur: 'water', queen: 'leaf', zeus: 'bolt', mech: 'spark', wraith: 'ghost' };
 /** Rings in a colour of their own (glow and track); the rest are the usual red. The Lich's embers are purple. */
 const RING_TONE: Partial<Record<string, string>> = { nightmare: '#a855f7' };
 const ring = (g: Game, e: Enemy, n: number, speed: number, tone = '', turn = rand(0, Math.PI * 2), pic?: OrbPic) => {
@@ -2927,7 +2936,7 @@ function channel(g: Game, e: Enemy, dt: number) {
 const LANDING: Record<string, { el: ThreatEl; fx: string; pic?: OrbPic; tone?: string }> = {
   jungle: { el: 'leaf', fx: 'slam', pic: 'leaf' }, queen: { el: 'leaf', fx: 'slam', pic: 'acid' },
   viking: { el: 'water', fx: 'shock-ring', pic: 'water' }, drakkar: { el: 'water', fx: 'shock-ring', pic: 'water' }, valdur: { el: 'water', fx: 'shock-ring', pic: 'water' },
-  demon: { el: 'fire', fx: 'boom-big', pic: 'fireball' }, archdemon: { el: 'fire', fx: 'boom-big', pic: 'fireball' }, chimera: { el: 'fire', fx: 'boom-big', pic: 'ember', tone: '#e879f9' },
+  demon: { el: 'fire', fx: 'boom-big', pic: 'fireball' }, archdemon: { el: 'fire', fx: 'boom-big', pic: 'fireball' }, kratos: { el: 'fire', fx: 'boom-big', pic: 'fireball' }, chimera: { el: 'fire', fx: 'boom-big', pic: 'ember', tone: '#e879f9' },
   greek: { el: 'bolt', fx: 'volt-burst', pic: 'bolt' }, zeus: { el: 'bolt', fx: 'volt-burst', pic: 'bolt' },
   robot: { el: 'fire', fx: 'impact', pic: 'rocket', tone: '#fb923c' }, mech: { el: 'fire', fx: 'boom-big', pic: 'shark', tone: '#fb923c' },
   nightmare: { el: 'shadow', fx: 'spectral-bolt', pic: 'ember', tone: '#a855f7' }, wraith: { el: 'shadow', fx: 'spectral-bolt', pic: 'ghost' },
