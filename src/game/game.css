@@ -4103,7 +4103,7 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 /* The board's Tactics: the gold bar, in its start dialog as on the map's play button. */
 .panel .book-mode.is-gold { --bar: url('/images/game/ui/btn2_gold.webp'); color: #2a1a00; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35); }
 :root[data-retro] .panel .book-mode.is-gold { background: linear-gradient(135deg, #fde047, #f59e0b); }
-.panel .book-mode.board-variant { min-height: 60px; }
+.panel .book-mode.board-variant { min-height: 60px; padding: 0; align-content: center; justify-content: center; text-align: center; }
 .panel .book-mode.board-variant b { font-size: 1.2rem; }
 /* Dragging a unit: the shop and its buttons, where a drop sells it, under a soft red oval with no edge, brighter
    once the unit is over it. */
