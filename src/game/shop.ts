@@ -209,7 +209,9 @@ export const ARSENAL: { id: SkillId; price: number; world: number }[] = [
   { id: 'durian', price: 1100, world: 5 }, { id: 'ball', price: 1300, world: 6 }, { id: 'drill', price: 1300, world: 7 },
   { id: 'rocket', price: 1500, world: 8 },
 ];
-export function buildLoadout(equipped: Partial<Record<Slot, ItemId>>, upgrades: Upgrades = {}, masteries = 0, arsenal: SkillId[] = [], levels: ItemLevels = {}): Loadout {
+/** The extra charm's price: one more item worn, of any kind (under a skin's, per the owner's rule). */
+export const EXTRA_SLOT_PRICE = 5000;
+export function buildLoadout(equipped: Partial<Record<Slot, ItemId>>, upgrades: Upgrades = {}, masteries = 0, arsenal: SkillId[] = [], levels: ItemLevels = {}, extra?: ItemId): Loadout {
   const out: Loadout = { ...BASE_LOADOUT, mult: { ...BASE_LOADOUT.mult }, startSkills: [], startLevels: {}, arsenal: [...arsenal] };
   out.maxHp += MASTERY_STEP.hp * masteries;
   for (const k of Object.keys(out.mult) as Category[]) out.mult[k] *= 1 + MASTERY_STEP.damage * masteries;
@@ -223,8 +225,8 @@ export function buildLoadout(equipped: Partial<Record<Slot, ItemId>>, upgrades: 
   out.magnet = UPGRADE_STEP.magnet * lv('magnet');
   out.coinMult *= 1 + UPGRADE_STEP.fortune * lv('fortune');
   out.xpMult *= 1 + UPGRADE_STEP.wisdom * lv('wisdom');
-  for (const slot of SLOTS) {
-    const id = equipped[slot];
+  // The six slots' items, then the extra charm's.
+  for (const id of [...SLOTS.map((slot) => equipped[slot]), extra]) {
     if (!id) continue;
     const item = itemById(id);
     const { effect } = item;

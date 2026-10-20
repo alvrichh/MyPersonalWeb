@@ -3526,3 +3526,7 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .profile-card .wing-host { margin-left: 34px; }
 .profile-card .hero-wings { height: 112%; bottom: -1%; }
 .profile-who { position: relative; z-index: 2; }
+
+/* The extra charm's slot card, under the hero and the two columns. */
+.dress-extra { display: flex; justify-content: center; width: 100%; margin-top: 4px; }
+.dress-extra .dslot { width: min(46%, 150px); }

@@ -53,6 +53,9 @@ export type Save = {
   /** Coin-store purchases made (pack and offer ids, `store.ts`); an offer can be bought once. */
   purchases: string[];
   equipped: Partial<Record<Slot, ItemId>>;
+  /** The extra charm: bought once, it holds one more item of any kind besides the six slots (wiped by a reset or a mastery). */
+  extraSlot: boolean;
+  extra?: ItemId;
   /** The forge: permanent upgrade levels. */
   upgrades: Upgrades;
   style: EnemyStyle;
@@ -115,6 +118,7 @@ const fresh = (): Save => ({
   dailyAt: 0,
   purchases: [],
   equipped: {},
+  extraSlot: false,
   upgrades: {},
   style: 'world',
   styleV2: true,
@@ -177,6 +181,9 @@ export function loadSave(): Save {
       const item = ITEMS.find((it) => it.id === id);
       if (item && save.owned.includes(item.id)) save.equipped[item.slot] = item.id;
     }
+    // The extra charm holds an owned item that is not already worn in its own slot.
+    save.extraSlot = data.extraSlot === true;
+    if (!save.extraSlot || !save.extra || !save.owned.includes(save.extra) || Object.values(save.equipped).includes(save.extra)) delete save.extra;
     if (!STYLES.includes(save.style)) save.style = 'world';
     // Only the first world kept both versions of its song: a first version picked for another world plays its second now.
     if (/^w[2-8]$/.test(save.song)) save.song = `${save.song}v2` as SongPick;
