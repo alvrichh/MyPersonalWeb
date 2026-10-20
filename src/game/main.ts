@@ -1731,12 +1731,15 @@ function renderBoardUi() {
   // cards and the dialogs' bars for the buttons (the emoji and plain shapes stay for retro).
   const coin = save.retro ? '◉' : COIN_PIC;
   const heart = save.retro ? '❤' : '<img class="board-ic" src="./images/game/fx/heart.webp" alt="">';
+  // The same pieces as a run's HUD: the round back button, the world's plate with its emblem, the coins' plate and
+  // the round pause button, then a second line with the hearts and the units.
+  boardTop.style.setProperty('--icon', JSON.stringify(WORLD_ICON[b.world - 1]));
   boardTop.innerHTML = `
-    <button class="board-quit" type="button" data-bact="quit" aria-label="${t('menu')}"><span aria-hidden="true">✕</span></button>
-    <span class="board-where">${MODE_ICON.board} ${t('worldShort', { n: b.world })} · ${t('boardRound', { n: b.round, total: ROUNDS })}</span>
-    <span class="board-lives" aria-label="${t('boardLives')}">${heart} ${b.lives}</span>
-    <span class="board-count" aria-label="${t('boardCapLabel')}">♟ ${b.army.length}/${armyCap(b.round)}</span>
-    <span class="board-gold" aria-label="${t('boardGoldLabel')}">${coin} ${b.gold}</span>`;
+    <button class="hud-back" type="button" data-bact="quit" aria-label="${t('menu')}"><span aria-hidden="true">←</span></button>
+    <span class="hud-room">${t('worldShort', { n: b.world })} · ${t('boardRound', { n: b.round, total: ROUNDS })}</span>
+    <span class="hud-coins" aria-label="${t('boardGoldLabel')}"><span class="hud-coin-orb" aria-hidden="true">🪙</span><b>${b.gold}</b></span>
+    <button class="hud-pause" type="button" data-bact="pause" aria-label="${t('pause')}"><span aria-hidden="true">Ⅱ</span></button>
+    <span class="board-stats"><span class="board-lives" aria-label="${t('boardLives')}">${heart} ×${b.lives}</span><span class="board-count" aria-label="${t('boardCapLabel')}">♟ ${b.army.length}/${armyCap(b.round)}</span></span>`;
   const cards = b.shop.map((o, i) => o
     ? `<button class="board-card" type="button" data-bact="buy" data-i="${i}"${!prep || b.gold < o.price ? ' disabled' : ''}><i class="board-cast">${t('worldShort', { n: o.cast })}</i><img src="${boardPic(o.tier, o.cast)}" alt=""><b>${boardTierName(o.tier)}</b><span class="board-price">${coin} ${o.price}</span></button>`
     : '<span class="board-card is-sold"></span>').join('');
@@ -1763,9 +1766,17 @@ boardUi.addEventListener('click', (event) => {
   else if (act === 'fight') {
     if (startFight(b)) { audio.play('door'); audio.setIntensity(0.7); audio.setBoss(b.round === ROUNDS); }
     else flash(t('boardEmpty'));
-  } else if (act === 'quit') boardQuitScreen();
+  } else if (act === 'quit') { paused = true; boardQuitScreen(); }
+  else if (act === 'pause') { paused = true; boardPauseScreen(); }
   renderBoardUi();
 });
+/** The board's pause: the fight stops (`boardStep` reads `paused`) until it is resumed. */
+function boardPauseScreen() {
+  show(`<button class="ui-close" type="button" data-act="board-stay" aria-label="${t('resume')}"></button>
+    ${head('pause', t('paused'))}
+    <button class="primary" data-act="board-stay">${t('resume')}</button>
+    <button class="ghost is-danger" data-act="board-quit-ask">${t('quit')}</button>`);
+}
 
 function boardQuitScreen() {
   show(`<h2>${t('menu')}</h2><p>${t('boardQuit')}</p>
@@ -1913,7 +1924,8 @@ screen.addEventListener('click', (event) => {
   }
   else if (act === 'board-next' && board) { nextRound(board); hide(); renderBoardUi(); }
   else if (act === 'board-again' && board) startBoard(board.world);
-  else if (act === 'board-stay') hide();
+  else if (act === 'board-stay') { paused = false; hide(); }
+  else if (act === 'board-quit-ask') boardQuitScreen();
   else if (act === 'board-leave' && board) { bankBoard(board); menuScreen(); }
   else if (act === 'secret') secretScreen();
   else if (act === 'play-secret') startRun(SECRET_WORLD, 'horde', false, 0, true);
@@ -2401,6 +2413,14 @@ function togglePause(force?: boolean) {
   if (!gearPanel.hidden) {
     // Esc / P close the skills list; hiding the tab keeps it paused.
     if (force !== true) closeGearPanel();
+    return;
+  }
+  if (board && !game) {
+    // The board: only while no other dialog (a round's result, the quit question) is up.
+    if (!screen.hidden && !paused) return;
+    paused = force ?? !paused;
+    if (paused) boardPauseScreen();
+    else hide();
     return;
   }
   if (!game || game.phase !== 'play') return;
