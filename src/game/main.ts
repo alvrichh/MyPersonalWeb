@@ -1967,6 +1967,7 @@ function boardResultScreen(b: BoardGame) {
   audio.setIntensity(0.3);
   const win = last.result === 'win';
   show(`${head(win ? 'victory' : 'defeat', t(win ? 'boardWin' : 'boardLoss'))}
+    ${last.hp ? `<p>⏱ ${t('boardTimeHp', { a: last.hp[0], b: last.hp[1] })}</p>` : ''}
     ${last.lost ? `<p>${t('boardLost', { n: last.lost })}</p>` : ''}
     ${last.flawless ? `<p class="board-flawless">🎁 ${t('boardFlawless')}</p>` : ''}
     <p class="how">${t('boardGold', { n: roundGold(b.world, win) + roundBonus(b) })}</p>

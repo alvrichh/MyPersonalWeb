@@ -171,7 +171,7 @@ export type BoardGame = {
   shots: Shot[];
   time: number;
   /** The last fight: won, lost or drawn, the lives it cost, and whether it was won without losing a unit. */
-  last: { result: 'win' | 'loss' | 'draw'; lost: number; flawless?: boolean } | null;
+  last: { result: 'win' | 'loss' | 'draw'; lost: number; flawless?: boolean; hp?: [number, number] } | null;
   /** This round's special event, if any. */
   event: BoardEvent | null;
   /** Your commander's fireball, once a fight: on its way (`t` seconds left) or bursting (`boom`). */
@@ -774,8 +774,17 @@ export function updateBoard(b: BoardGame, dt: number) {
   const theirs = alive(b, 1).length;
   if (mine && theirs && b.time < FIGHT_TIME) return;
   // The round's result: a loss costs a life plus one for each two enemy steps still standing (four at most).
-  if (!theirs && mine) { b.last = { result: 'win', lost: 0, flawless: b.fighters.every((f) => f.side === 1 || !f.dead) }; b.wins += 1; }
-  else {
+  const flawless = () => b.fighters.every((f) => f.side === 1 || !f.dead);
+  if (!theirs && mine) { b.last = { result: 'win', lost: 0, flawless: flawless() }; b.wins += 1; }
+  else if (mine && theirs) {
+    // Time's up with both sides standing: the side with more health left in all wins (a loss costs one life).
+    const hp = (side: 0 | 1) => Math.round(alive(b, side).reduce((n, f) => n + Math.max(0, f.hp), 0));
+    const ours = hp(0), rival = hp(1);
+    const result = ours > rival ? 'win' : ours < rival ? 'loss' : 'draw';
+    b.last = { result, lost: result === 'win' ? 0 : 1, flawless: result === 'win' && flawless(), hp: [ours, rival] };
+    if (result === 'win') b.wins += 1;
+    else b.lives = Math.max(0, b.lives - 1);
+  } else {
     const left = alive(b, 1).reduce((n, f) => n + f.tier + 1, 0);
     const lost = mine ? 1 : Math.min(4, 1 + Math.floor(left / 2));
     b.last = { result: mine ? 'draw' : 'loss', lost };
