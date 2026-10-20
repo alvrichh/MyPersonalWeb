@@ -1302,8 +1302,23 @@ function stylesScreen(note = '') {
       ${save.equipped[slot] ? `<button class="ghost small" data-undress="${slot}">${t('dressNone')}</button>` : ''}
       </div>`;
   }
-  const nav = (key: 'skin' | 'foes' | 'scene' | 'song', icon: string, label: Key) =>
-    `<button class="dnav${dressSlot === key ? ' is-open' : ''}" data-dress-list="${key}" aria-pressed="${dressSlot === key}"><span class="ring" aria-hidden="true">${icon}</span><small>${t(label)}</small></button>`;
+  // Each round button shows what is picked now, in the game's own art (the emoji stays for retro and the picks with no picture).
+  const navPic = (src: string, cls = '') => `<span class="nav-pic${cls}"><img src="${src}" alt=""></span>`;
+  const world = worldIn('sprints');
+  const look = save.style === 'world' ? WORLDS[world - 1].look : save.style;
+  const songWorld = WORLD_SONGS.find(([, ids]) => (ids as readonly string[]).includes(save.song))?.[0] ?? (save.song === 'worlds' ? world : 0);
+  const navIcon = {
+    skin: navPic(heroPic(), ' is-hero'),
+    foes: look === 'random' ? '🎲' : navPic(`./images/game/enemies/${look}-bug-icon.webp`, ' is-foe'),
+    // The world's postcard (its floor's middle is too plain to tell apart at this size).
+    scene: navPic(`./images/game/map/pv-${ISLAND_ART[(save.scene || world) - 1]}.jpg`),
+    song: save.song.startsWith('boss-') ? navPic(`./images/game/bosses/${save.song.slice(5)}-0.webp`, ' is-boss')
+      : save.song === 'doom' ? navPic('./images/game/bosses/chimera-0.webp', ' is-boss')
+      : songWorld ? navPic(`./images/game/map/pv-${ISLAND_ART[songWorld - 1]}.jpg`) : '',
+  };
+  const NAV_EMOJI = { skin: '👕', foes: '👾', scene: '🗺️', song: '🎵' };
+  const nav = (key: 'skin' | 'foes' | 'scene' | 'song', label: Key) =>
+    `<button class="dnav${dressSlot === key ? ' is-open' : ''}" data-dress-list="${key}" aria-pressed="${dressSlot === key}"><span class="ring${navIcon[key] && !save.retro ? ' has-pic' : ''}" aria-hidden="true">${navIcon[key] && !save.retro ? navIcon[key] : NAV_EMOJI[key]}</span><small>${t(label)}</small></button>`;
   show(`<button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
     <div class="dress-title"><h2>${t('styles')}</h2></div>
     <p class="wallet">${coinsLine()}</p>
@@ -1315,10 +1330,10 @@ function stylesScreen(note = '') {
     </div>
     <div class="dress-nav">
       <button class="dnav is-back" data-act="menu"><span class="ring" aria-hidden="true"></span><small>${t('backShort')}</small></button>
-      ${nav('skin', '👕', 'skinBtn')}
-      ${nav('foes', '👾', 'enemies')}
-      ${nav('scene', '🗺️', 'sceneBtn')}
-      ${nav('song', '🎵', 'songBtn')}
+      ${nav('skin', 'skinBtn')}
+      ${nav('foes', 'enemies')}
+      ${nav('scene', 'sceneBtn')}
+      ${nav('song', 'songBtn')}
     </div>
     ${picks}`, true, false, 'keep-scroll');
   const fig = screen.querySelector<HTMLCanvasElement>('canvas.hero-fig');
