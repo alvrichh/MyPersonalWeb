@@ -1183,7 +1183,7 @@ function optionsScreen() {
 
 /* The guide: the book on the cover, which replaced the painted gear (Options has its own card). Its first page
    picks the way to play, three bars in the modes' colours (green sprints, blue on call, red board); the next pages
-   say how each one plays and how to get stronger. The first visit dims the cover round the book until it is opened
+   say how each one plays, each with a picture of it in world 1 (`book/<mode>.webp`), and how to get stronger. The first visit dims the cover round the book until it is opened
    (`save.bookSeen`). */
 let bookPage = 0;
 const BOOK = ['modes', 'sprints', 'horde', 'board', 'grow'] as const;
@@ -1198,6 +1198,7 @@ function bookScreen() {
   const last = bookPage === BOOK.length - 1;
   show(`<button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
     <h2>📖 ${t(title)}</h2>
+    ${page === 'sprints' || page === 'horde' || page === 'board' ? `<img class="book-shot is-${page}" src="./images/game/book/${page}.webp" alt="${t(title)}">` : ''}
     <p class="book-text">${t(text)}</p>
     ${modes}
     <small class="book-page">${t('bookPage', { n: bookPage + 1, total: BOOK.length })}</small>

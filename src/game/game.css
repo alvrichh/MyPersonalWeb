@@ -3983,3 +3983,7 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   .cover-dim-note b { font-size: 1.6cqw; }
   .cover-dim-arrow { right: 4%; top: 9%; width: 2.6cqw; height: 3cqw; }
 }
+
+/* The guide's pictures: a moment of each way to play in world 1. */
+.book-shot { display: block; width: min(100%, 260px); height: auto; aspect-ratio: 520 / 667; max-height: 40vh; object-fit: cover; margin: 2px auto 4px; border: 2px solid rgba(125, 211, 252, 0.45); border-radius: 12px; box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5); }
+.book-shot.is-board { aspect-ratio: 520 / 733; }
