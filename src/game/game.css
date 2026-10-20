@@ -2142,6 +2142,43 @@ body {
 .panel .ui-opts span { display: none; }
 .panel .ui-opts:active { transform: scale(0.94); }
 .ui-opts:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+/* Customise's back to the top: the same round button in the top-left corner, mirroring the ✕, a blue disc with an arrow;
+   only there once the list is scrolled down, sliding back up smoothly. */
+.panel .ui-top {
+  position: absolute;
+  top: 2%;
+  left: 4%;
+  z-index: 3;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  padding: 0;
+  border-radius: 50%;
+  background: url('/images/game/ui/gear.webp') center / contain no-repeat;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.panel .ui-top.is-shown { opacity: 1; pointer-events: auto; }
+/* The gear is covered by a blue disc with the arrow, inside the ring. */
+.panel .ui-top span {
+  position: absolute;
+  inset: 22%;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #60a5fa, #1d4ed8 70%);
+  color: #fff;
+  font-size: 19px;
+  line-height: 1;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+.panel .ui-top:active { transform: scale(0.94); }
+.ui-top:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+:root[data-retro] .panel .ui-top { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.35); }
+@media (prefers-reduced-motion: reduce) { .panel .ui-top { transition: none; } }
 
 /* Store card illustrations remain decorative; item names/prices remain DOM. */
 .panel .item {
