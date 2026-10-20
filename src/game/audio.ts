@@ -1178,11 +1178,11 @@ class Engine {
     lp.frequency.setValueAtTime(600, at);
     lp.frequency.linearRampToValueAtTime(big ? 3200 : 2200, at + length * 0.4);
     lp.frequency.linearRampToValueAtTime(700, at + length);
-    this.env(g, at, big ? 0.34 : 0.28, 0.02, length * 0.6, 0.55, length * 0.3);
-    // The «wua wua»: the filter swings open and shut twice a note.
+    this.env(g, at, big ? 0.5 : 0.42, 0.02, length * 0.6, 0.55, length * 0.3);
+    // The «wua wua»: the filter swings open and shut twice a note (louder and deeper at the owner's wish).
     const wah = this.osc('sine', 2 / length, at, at + length + 0.1);
     const wd = this.ctx.createGain();
-    wd.gain.value = big ? 1100 : 800;
+    wd.gain.value = big ? 1400 : 1100;
     wah.connect(wd).connect(lp.frequency);
     for (const d of [-38, -18, 0, 18, 38]) {
       const o = this.osc('sawtooth', freq * 2 * 1.06, at, at + length + 0.1, d);
