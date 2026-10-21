@@ -99,7 +99,7 @@ export type Slot = { c: number; r: number };
 /** A unit you own, between fights: its step, the world its cast comes from, and its cell. */
 export type Piece = { id: number; tier: Tier; cast: number; slot: Slot; star?: Star };
 /** The board's two ways to play: Fusion (two of a kind make the next one up the cast) and Tactics (each card keeps
-    its character and rarity, and three copies raise it a star). */
+    its character and rarity, and two copies raise it a star). */
 export type Variant = 'fusion' | 'tactics';
 export type Star = 1 | 2 | 3;
 /** Tactics: how much stronger each star is (health and damage each), how many copies make the next, what a card of
@@ -107,7 +107,7 @@ export type Star = 1 | 2 | 3;
     the shop shows each, from round 1 to round 10. */
 export const TACTICS = {
   star: [1, 1.8, 3.2],
-  copies: 3,
+  copies: 2,
   price: [1, 2, 3, 5, 8],
   odds: [[0.62, 0.28, 0.09, 0.01, 0], [0.34, 0.3, 0.22, 0.11, 0.03]],
   /** The waves against a tactics army, against a fusion one. */
@@ -428,8 +428,8 @@ export function summon(b: BoardGame): 'ok' | 'gold' | 'full' | 'none' {
   return 'ok';
 }
 
-/** Tactics: a card bought makes three copies of the same character at the same star with two on the board? They
-    become one, a star up, where the first one stood (and on up when that makes three of the next star). */
+/** Tactics: buying a matching card raises the existing copy a star, keeping its character and cell.
+    Another copy at the new star continues the chain, up to three stars. */
 function buyTactics(b: BoardGame, i: number, offer: NonNullable<Offer>, where?: Slot) {
   const same = (p: Piece, star: Star) => p.tier === offer.tier && p.cast === offer.cast && starOf(p) === star;
   const pair = b.army.filter((p) => same(p, 1));

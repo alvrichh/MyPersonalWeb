@@ -5045,15 +5045,33 @@ export function drawBoardFigure(ctx: CanvasRenderingContext2D, f: BoardFigure, n
 }
 /** An effect picture, for the board. */
 export const boardFx = (name: string) => fxImage(name);
-/** The board's backdrop: the world's whole arena floor, its painted walls and corners included, as a sprint's room
-    draws it, stretched across the screen between `top` and `bottom` (under the top bar, over the buttons). */
+/** Fit the complete arena without stretching its art. The grid uses the same bounds to stay inside the walls. */
+export function boardBackdropBounds(world: number, w: number, top: number, bottom: number): Rect {
+  const floor = floorImage(world);
+  const ratio = ready(floor) ? floor.naturalWidth / floor.naturalHeight : W / H;
+  const available = Math.max(0, bottom - top);
+  const width = Math.min(w, available * ratio);
+  const height = width / ratio;
+  return { x: (w - width) / 2, y: top + (available - height) / 2, w: width, h: height };
+}
+/** The complete arena in the middle; on wide screens, dim floor tiles fill the sides at their normal scale. */
 export function drawBoardBackdrop(ctx: CanvasRenderingContext2D, world: number, w: number, top: number, bottom: number, dpr: number, retro: boolean) {
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   const h = Math.max(0, bottom - top);
   ctx.fillStyle = WORLDS[world - 1].floor;
   ctx.fillRect(0, top, w, h);
   const floor = retro ? undefined : floorImage(world);
-  if (floor && ready(floor)) ctx.drawImage(floor, 0, top, w, h);
+  if (floor && ready(floor)) {
+    const bounds = boardBackdropBounds(world, w, top, bottom);
+    const pattern = fieldPattern(ctx, floor, W * FLOOR_CROP.w, H * FLOOR_CROP.h);
+    if (pattern) {
+      ctx.fillStyle = pattern;
+      ctx.fillRect(0, top, w, h);
+    }
+    ctx.fillStyle = 'rgba(7, 9, 15, 0.65)';
+    ctx.fillRect(0, top, w, h);
+    ctx.drawImage(floor, bounds.x, bounds.y, bounds.w, bounds.h);
+  }
 }
 /** The board's wall between the halves: each world's own long blocks (the servers, the volcanic stone, the ice…;
     the mud world the vikings' old wet stones, the jungle its mossy ones): the long block, and the piece for the middle. */

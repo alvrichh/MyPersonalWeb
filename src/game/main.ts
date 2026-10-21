@@ -6,7 +6,7 @@ import { configurePayments, payments } from './payments';
 import { COIN_PACKS, currentOffer, grant, packBonus, SKIN_OFFERS, type CoinPack, type SkinOffer } from './store';
 import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPrize, type DailyResult } from './daily';
 import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
-import { draw, drawRetroFigure, preloadCast, preloadFx, type Palette, type View } from './draw';
+import { boardBackdropBounds, draw, drawRetroFigure, preloadCast, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, NET_ID, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, SKIN_GATE, skinOpen, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
 import { ABILITY, ABIL_V, CELL, HOME_ROW, ROUNDS, SYNERGY, TACTICS, armyCap, toggleAutoMerge, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, startOnlineFight, updateBoard, type BoardGame, type Online, type Piece, type Variant } from './board';
 import { cleanCode, dial, hostGame, joinGame, leave as netLeave, presence, presenceOn, presenceReady, send as netSend, type NetHandlers, type NetMsg, type NetProfile, type NetState, type Together } from './net';
@@ -2259,7 +2259,7 @@ function renderBoardUi() {
     <span class="hud-room">${t('worldShort', { n: b.world })} · ${t('boardRound', { n: b.round, total: ROUNDS })}</span>
     <span class="hud-coins" aria-label="${t('boardGoldLabel')}"><span class="hud-coin-orb" aria-hidden="true">🪙</span><b>${b.gold}</b></span>
     <button class="hud-pause" type="button" data-bact="pause" aria-label="${t('pause')}"><span aria-hidden="true">Ⅱ</span></button>`;
-  // Tactics: a card that would make three of a kind (two copies at ★1 already on the board) glows and says ★↑.
+  // Tactics: buying the second copy at ★1 upgrades it; highlight the matching card with ★↑.
   const starsUp = (o: { tier: number; cast: number }) => b.army.filter((p) => p.tier === o.tier && p.cast === o.cast && (p.star ?? 1) === 1).length >= TACTICS.copies - 1;
   // Fusion has no cards: «Summon» drops a unit straight onto the board; the cards are Tactics' only.
   const fusion = b.variant === 'fusion';
@@ -2327,7 +2327,7 @@ window.addEventListener('pointerup', (event) => {
   renderBoardUi();
 });
 window.addEventListener('pointercancel', () => { if (cardDown) { cardDown = null; boardDrag = null; } });
-/** After a card is bought: its merge (three of a kind) with the smoke, or a pick sound. */
+/** After a card is bought: its star upgrade with the smoke, or a pick sound. */
 function afterBuy(b: BoardGame) {
   if (b.lastMerge) {
     const m = b.lastMerge;
@@ -2514,7 +2514,11 @@ function boardStep(dt: number, now: number) {
   const rect = canvas.getBoundingClientRect();
   const top = boardTop.getBoundingClientRect().bottom - rect.top + 6;
   const bottom = boardShop.getBoundingClientRect().top - rect.top - 6;
-  boardLay = layoutBoard(canvas.clientWidth, top, bottom);
+  // The cards sit over the arena's lower edge. Fit its art first, then keep the grid inside its walls.
+  const acts = boardShop.querySelector('.board-acts, .board-fighting')?.getBoundingClientRect();
+  const floor = { top: top - 6, bottom: (acts ? acts.top : boardShop.getBoundingClientRect().bottom) - rect.top - 4 };
+  const arena = boardBackdropBounds(b.world, canvas.clientWidth, floor.top, floor.bottom);
+  boardLay = layoutBoard(canvas.clientWidth, Math.max(top, arena.y + arena.h * 0.06), Math.min(bottom, arena.y + arena.h * 0.94), arena.w * 0.86);
   // The bonuses' column on the left, standing on top of the wall at the halfway line: it grows upwards as more come.
   const wallTop = rect.top + boardLay.oy + (HOME_ROW * CELL - 4) * boardLay.s;
   const sideAt = `${Math.round(rect.left + boardLay.ox + 4)}px,${Math.round(window.innerHeight - wallTop + 8)}px`;
@@ -2523,9 +2527,6 @@ function boardStep(dt: number, now: number) {
   ctx.fillStyle = '#0b0820';
   ctx.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
   if (b.phase === 'prep' || b.phase === 'fight') boardEnded = null;
-  // The arena's floor from just under the top bar to just over the buttons (the cards lie on it).
-  const acts = boardShop.querySelector('.board-acts, .board-fighting')?.getBoundingClientRect();
-  const floor = { top: top - 6, bottom: (acts ? acts.top : boardShop.getBoundingClientRect().bottom) - rect.top - 4 };
   // The guest sees the shared fight turned round, its own army at the bottom.
   const seen = b.online?.me === 1 ? mirrorFight(b) : b;
   if (heroPics) drawBoard(ctx, seen, boardLay, now / 1000, boardDrag, save.retro, view.dpr, heroPics, boardEnded === null ? null : now / 1000 - boardEnded, floor);
