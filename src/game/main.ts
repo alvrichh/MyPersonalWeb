@@ -8,7 +8,7 @@ import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPr
 import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
 import { boardBackdropBounds, draw, drawRetroFigure, preloadCast, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, NET_ID, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, SKIN_GATE, skinOpen, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
-import { ABILITY, ABIL_V, CELL, HOME_ROW, ROUNDS, SYNERGY, TACTICS, armyCap, toggleAutoMerge, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, startOnlineFight, updateBoard, type BoardGame, type Online, type Piece, type Variant } from './board';
+import { ABILITY, ABIL_V, BOARD_W, CELL, HOME_ROW, ROUNDS, SYNERGY, TACTICS, armyCap, toggleAutoMerge, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, startOnlineFight, updateBoard, type BoardGame, type Online, type Piece, type Variant } from './board';
 import { cleanCode, dial, hostGame, joinGame, leave as netLeave, presence, presenceOn, presenceReady, send as netSend, type NetHandlers, type NetMsg, type NetProfile, type NetState, type Together } from './net';
 import { ABILITY_ICON, FIREBALL, boardMerged, drawBoard, mirrorFight, drawBoardDrag, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
 import type { Enemy } from './world';
@@ -2229,7 +2229,9 @@ function openBoardBonus() {
     <ul>${rows}</ul><p class="gp-hint">${t('boardBonusHint', { need: SYNERGY.need[0], more: SYNERGY.need[1] })}</p>`;
   const box = boardSide.getBoundingClientRect();
   gearPanel.style.top = `${Math.round(box.top)}px`;
-  gearPanel.style.right = `${Math.round(window.innerWidth - box.right - Math.min(300, window.innerWidth - 80) - 8)}px`;
+  const panelWidth = Math.min(300, window.innerWidth - 80);
+  const sideOnRight = !window.matchMedia('(min-width: 900px) and (orientation: landscape)').matches;
+  gearPanel.style.right = `${Math.round(sideOnRight ? window.innerWidth - box.left + 8 : window.innerWidth - box.right - panelWidth - 8)}px`;
   gearPanel.hidden = false;
   gearPanel.classList.add('fade-scroll', 'is-board');
   fadeEdges(gearPanel);
@@ -2259,12 +2261,6 @@ function renderBoardUi() {
     <span class="hud-room">${t('worldShort', { n: b.world })} · ${t('boardRound', { n: b.round, total: ROUNDS })}</span>
     <span class="hud-coins" aria-label="${t('boardGoldLabel')}"><span class="hud-coin-orb" aria-hidden="true">🪙</span><b>${b.gold}</b></span>
     <button class="hud-pause" type="button" data-bact="pause" aria-label="${t('pause')}"><span aria-hidden="true">Ⅱ</span></button>`;
-  const ownPortrait = heroPics?.front.src ?? `./images/game/hero/${heroKey(save.skin, save.equipped.head)}-front.webp`;
-  const rivalPortrait = heroPics?.rival?.front.src ?? './images/game/hero/boy-base-front.webp';
-  const commanders = `<div class="board-commanders" aria-label="${t('boardLives')}">
-    <div class="board-commander is-rival"><img src="${rivalPortrait}" alt=""><span>${b.online ? esc(b.online.rivalName) : t('boardOpponent')}</span><b>❤️ ×${b.online ? b.online.rivalLives : ROUNDS - b.round + (b.phase !== 'prep' && b.phase !== 'fight' && b.last?.result === 'win' ? 0 : 1)}</b></div>
-    <div class="board-commander is-mine"><img src="${ownPortrait}" alt=""><span>${esc(save.name || t('boardLives'))}</span><b>❤️ ×${b.lives}</b></div>
-  </div>`;
   // Tactics: buying the second copy at ★1 upgrades it; highlight the matching card with ★↑.
   const starsUp = (o: { tier: number; cast: number }) => b.army.filter((p) => p.tier === o.tier && p.cast === o.cast && (p.star ?? 1) === 1).length >= TACTICS.copies - 1;
   // Fusion has no cards: «Summon» drops a unit straight onto the board; the cards are Tactics' only.
@@ -2276,7 +2272,7 @@ function renderBoardUi() {
   // lists them with what they do, like a run's skills panel.
   const bonus = boardBonuses(b);
   boardSide.innerHTML = bonus.map((x) => `<button class="board-bonus${x.on ? ' is-on' : ''}${x.event ? ' is-event' : ''}" type="button" data-bact="bonus" aria-label="${x.name}"><img src="./images/game/${x.pic}" alt=""><small>${x.count}</small></button>`).join('');
-  boardShop.innerHTML = `${commanders}${prep ? `
+  boardShop.innerHTML = `${prep ? `
     <div class="board-row">
       <span class="board-count" aria-label="${t('boardCapLabel')}">♟ ${b.army.length}/${armyCap(b.round)}</span>
     </div>
@@ -2526,11 +2522,15 @@ function boardStep(dt: number, now: number) {
   const floor = { top: top - 6, bottom: (acts ? acts.top : boardShop.getBoundingClientRect().bottom) - rect.top - 4 };
   const shopWidth = wide ? Math.min(330, Math.max(280, canvas.clientWidth * 0.25)) : 0;
   const fieldWidth = canvas.clientWidth - shopWidth;
-  const arena = boardBackdropBounds(b.world, fieldWidth, floor.top, floor.bottom);
-  boardLay = layoutBoard(fieldWidth, Math.max(top, arena.y + arena.h * 0.04), Math.min(bottom, arena.y + arena.h * 0.96), arena.w * 0.96);
-  // The bonuses' column on the left, standing on top of the wall at the halfway line: it grows upwards as more come.
+  const boardWidth = wide ? fieldWidth : Math.max(180, fieldWidth - 46);
+  const arena = boardBackdropBounds(b.world, boardWidth, floor.top, floor.bottom);
+  boardLay = layoutBoard(boardWidth, Math.max(top, arena.y + arena.h * 0.04), Math.min(bottom, arena.y + arena.h * 0.96), arena.w * 0.96);
+  // Keep bonuses outside the grid: left on desktop, right on smaller screens, aligned with the halfway wall.
   const wallTop = rect.top + boardLay.oy + (HOME_ROW * CELL - 4) * boardLay.s;
-  const sideAt = `${Math.round(rect.left + boardLay.ox + 4)}px,${Math.round(window.innerHeight - wallTop + 8)}px`;
+  const sideLeft = wide
+    ? rect.left + boardLay.ox - 51
+    : rect.left + boardLay.ox + boardLay.s * BOARD_W + 4;
+  const sideAt = `${Math.round(sideLeft)}px,${Math.round(window.innerHeight - wallTop + 8)}px`;
   if (boardSide.dataset.at !== sideAt) { boardSide.dataset.at = sideAt; const [x, y] = sideAt.split(','); boardSide.style.left = x; boardSide.style.bottom = y; boardSide.style.top = 'auto'; }
   ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
   ctx.fillStyle = '#0b0820';
