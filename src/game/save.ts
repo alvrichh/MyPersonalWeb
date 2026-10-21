@@ -9,13 +9,13 @@ export type EnemyStyle = 'world' | 'original' | 'demon' | 'viking' | 'mud' | 'ju
 export const STYLES: EnemyStyle[] = ['world', 'original', 'demon', 'viking', 'mud', 'jungle', 'greek', 'robot', 'nightmare', 'core', 'random'];
 
 /** Alvrich, the robot, Kitty, and Alvrich dressed for each world (the owner's sheets, one a world in order). */
-export type HeroSkin = 'boy' | 'robot' | 'kitty' | 'intern' | 'lava' | 'arctic' | 'swamp' | 'jungle' | 'gladiator' | 'mech' | 'ghost' | 'dragon' | 'kratos' | 'medusa';
+export type HeroSkin = 'boy' | 'robot' | 'kitty' | 'intern' | 'lava' | 'arctic' | 'swamp' | 'jungle' | 'gladiator' | 'mech' | 'ghost' | 'dragon' | 'kratos' | 'medusa' | 'weso';
 /** Special skins, the dearest kind (the owner's rule), hatless like the world ones. */
-export const SPECIAL_SKINS = ['kratos', 'medusa'] as const;
+export const SPECIAL_SKINS = ['kratos', 'medusa', 'weso'] as const;
 export const WORLD_SKINS = ['intern', 'lava', 'arctic', 'swamp', 'jungle', 'gladiator', 'mech', 'ghost', 'dragon'] as const;
 export const SKINS: HeroSkin[] = ['boy', 'robot', 'kitty', ...SPECIAL_SKINS, ...WORLD_SKINS];
 /** What each figure costs in coins; Alvrich comes free. The owner's rule: skins are always the dearest thing in the game (items, forge levels, the revive), so raise these if anything else goes past them. */
-export const SKIN_PRICE: Record<HeroSkin, number> = { boy: 0, robot: 10000, kitty: 10000, intern: 1000, lava: 1000, arctic: 1000, swamp: 1000, jungle: 1000, gladiator: 1000, mech: 1000, ghost: 1000, dragon: 1000, kratos: 10000, medusa: 10000 };
+export const SKIN_PRICE: Record<HeroSkin, number> = { boy: 0, robot: 10000, kitty: 10000, intern: 1000, lava: 1000, arctic: 1000, swamp: 1000, jungle: 1000, gladiator: 1000, mech: 1000, ghost: 1000, dragon: 1000, kratos: 10000, medusa: 10000, weso: 10000 };
 /** The hats are painted on the hero's pictures; a skin listed here has no hat versions and always shows its base set. */
 const HATLESS: HeroSkin[] = ['kitty', ...SPECIAL_SKINS, ...WORLD_SKINS];
 const HAT_SET: Record<string, string> = { wizardHat: 'wizard', gladHelm: 'helm', bandana: 'bandana', crown: 'crown' };
