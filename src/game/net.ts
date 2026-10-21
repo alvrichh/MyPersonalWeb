@@ -57,6 +57,9 @@ let code = '';
 let target = '';
 /** Waiting under your own id (`presence`), so a saved friend can call you. */
 let present = false;
+/** Your own id while waiting under it, to ask for it again when the server still holds it. */
+let presentId = '';
+let presentTimer = 0;
 let handlers: NetHandlers | null = null;
 let retries = 0;
 let retryTimer = 0;
@@ -105,6 +108,14 @@ function watchPeer(p: Peer, h: NetHandlers) {
     // The code was taken by someone else: try another (only while making the game).
     if (typeOf(e) === 'unavailable-id' && role === 'host' && !joined) { hostGame(h); return; }
     // Before the first join an error means it could not be made; afterwards it is only a drop to ride out.
+    // Your own id still held by the server (it was given up a moment ago, after a disconnect or removing a friend):
+    // ask for it again in a while, or nobody could ever call you until the page is reloaded.
+    if (present && !joined && typeOf(e) === 'unavailable-id' && role === 'host') {
+      window.clearTimeout(presentTimer);
+      const id = presentId;
+      presentTimer = window.setTimeout(() => { if (present && !joined && !conn?.open && presentId === id) presence(id, h); }, 3000);
+      return;
+    }
     // Waiting under your own id: a friend not there, or the id open in another tab, is nothing to show.
     if (present && !joined) { if (role === 'guest' && typeOf(e) === 'peer-unavailable') h.error('peer-unavailable'); return; }
     if (!joined) h.error(typeOf(e));
@@ -154,6 +165,7 @@ export function presence(me: string, h: NetHandlers) {
   quitting = false;
   joined = false;
   present = true;
+  presentId = me;
   role = 'host';
   handlers = h;
   peer = new Peer(PERSONAL + me);
@@ -194,6 +206,7 @@ export function send(m: NetMsg) {
 export function leave() {
   quitting = true;
   window.clearTimeout(retryTimer);
+  window.clearTimeout(presentTimer);
   if (conn?.open) { try { conn.send({ t: 'bye' } satisfies NetMsg); } catch { /* gone already */ } }
   conn?.close();
   peer?.destroy();

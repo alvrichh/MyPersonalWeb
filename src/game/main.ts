@@ -2111,6 +2111,7 @@ function friendGone() {
   inviting = null;
   invitedBy = null;
   netLeave();
+  goOnline();
   if (board?.online && board.phase !== 'over' && board.phase !== 'won') { rivalQuit(); return; }
   if (was) flash(t('linkLost', { name: esc(was.name) }));
   if (onCover()) menuScreen();
@@ -2646,6 +2647,8 @@ screen.addEventListener('click', (event) => {
   else if (act === 'friend-del-yes') {
     const id = target.dataset.id ?? '';
     if (friend?.id === id) { const was = friend.name; friend = null; netLeave(); flash(t('linkLost', { name: esc(was) })); }
+    // Waiting under your own id again, so they (or anyone) can still find you.
+    goOnline();
     save.friends = save.friends.filter((f) => f.id !== id);
     persist();
     profileScreen();
