@@ -21,9 +21,9 @@ export const FIREBALL = { fly: 0.75, blast: 0.45 };
 export type BoardLayout = { s: number; ox: number; oy: number };
 
 /** Fits the board (and the strip above it) into the area between the top bar and the shop. */
-export function layoutBoard(w: number, top: number, bottom: number): BoardLayout {
+export function layoutBoard(w: number, top: number, bottom: number, arenaWidth = w): BoardLayout {
   const room = Math.max(120, bottom - top);
-  const s = Math.min((w - 8) / BOARD_W, room / (BOARD_H + TOP + BOT));
+  const s = Math.min((Math.min(w, arenaWidth) - 8) / BOARD_W, room / (BOARD_H + TOP + BOT));
   return { s, ox: (w - BOARD_W * s) / 2, oy: top + TOP * s + (room - (BOARD_H + TOP + BOT) * s) / 2 };
 }
 

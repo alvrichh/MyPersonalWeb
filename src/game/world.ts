@@ -1938,10 +1938,11 @@ function callStorm(g: Game) {
 function throwFireball(g: Game) {
   const p = g.player;
   const lv = g.skills.fireball;
-  const pool = live(g);
-  for (let i = 0; i < (g.evolved.fireball ? 3 : lv === 3 ? 2 : 1) && pool.length; i++) {
-    const e = pool[Math.floor(Math.random() * pool.length)];
-    const a = Math.atan2(e.y - p.y, e.x - p.x);
+  const target = nearest(g, p);
+  if (!target) return;
+  // Every cast aims at the closest active enemy, including the upgraded volleys.
+  const a = Math.atan2(target.y - p.y, target.x - p.x);
+  for (let i = 0; i < (g.evolved.fireball ? 3 : lv === 3 ? 2 : 1); i++) {
     g.fireballs.push({ x: p.x, y: p.y, vx: Math.cos(a) * 240, vy: Math.sin(a) * 240, life: 1.4 });
   }
 }
