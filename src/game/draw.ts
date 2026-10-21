@@ -1005,6 +1005,18 @@ function drawPlayer(ctx: CanvasRenderingContext2D, g: Game, pal: Palette, now: n
     ctx.translate(p.x, p.y + p.r * 0.9 - bob);
     if (left || (vertical && step)) ctx.scale(-1, 1);
     if (vertical) ctx.rotate(0.06 * Math.sin(now * 7 * Math.PI));
+    // The Server Reaper is nearly black: a cold backlight, like the Wraith boss's, keeps him readable on dark floors.
+    if (pal.skin === 'reaper') {
+      const cy = -h * 0.5;
+      const back = ctx.createRadialGradient(0, cy, h * 0.08, 0, cy, h * 0.75);
+      back.addColorStop(0, 'rgba(147,197,253,0.45)');
+      back.addColorStop(0.6, 'rgba(59,130,246,0.18)');
+      back.addColorStop(1, 'transparent');
+      ctx.fillStyle = back;
+      ctx.beginPath();
+      ctx.arc(0, cy, h * 0.75, 0, Math.PI * 2);
+      ctx.fill();
+    }
     const tint = g.phase === 'play' ? heroTint(g) : null;
     // The owner's own side walk cycle when the set has one (four frames, legs passing in turn); otherwise the warp.
     const cycle = full && p.moving && SIDE_WALK.has(pose) ? sideCycle(heroKey(pal.skin ?? 'boy', pal.hat), pose === 'wshoot' || pose === 'wshoot2') : null;
