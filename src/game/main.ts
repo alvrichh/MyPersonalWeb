@@ -19,7 +19,7 @@ import { makeT, pickLang, type Key, type Lang } from './strings';
 import {
   CATEGORY, EVO_PARTNER, H, NIGHTMARE_WORLD, SECRET_WORLD, showcaseHit, startShowcase, canFuse, revivePrice, SKILLS, arrowLook, arrowOptions, bladeElement, bladeOptions, canEvolve, evoOf, fusionOf, fusionWith, evoLostBy, pairFusion, arrowElements, settleEffects, rerollChoices, adReroll, adRevive, canAdReroll, canAdRevive, maxLevel, pickArrow, pickBlade, pickSpirit, ROOMS, SHRINE_ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_LUCKY, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
   type ArrowLook, type Category, type Choice, type Fusion, type Game, type GameEvent, type Input, type Look, type SkillId, type WheelOutcome,
-  FINAL_BOSS, coopApply, coopDealt, coopHits, coopSnapshot,
+  coopApply, coopDealt, coopHits, coopSnapshot,
 } from './world';
 
 /* Bug Hunter's page: the menus (play, shop, enemy looks, options), input
@@ -1481,7 +1481,7 @@ function stylesScreen(note = '') {
       const worn = save.skin === skin;
       const open = skinOpen(save, skin);
       const gate = SKIN_GATE[skin];
-      const lock = !gate ? '' : 'world' in gate ? t('skinLockWorld', { n: gate.world }) : 'boss' in gate ? t('skinLockBoss', { name: t(`final${cap(FINAL_BOSS[gate.boss - 1])}` as Key) }) : t('skinLockSecret');
+      const lock = !gate ? '' : 'world' in gate ? t('skinLockWorld', { n: gate.world }) : 'boss' in gate ? t('skinLockBoss', { n: gate.boss }) : t('skinLockSecret');
       if (!open) return row(`data-skin="${skin}"`, false, true, `<img class="skin-pic" src="./images/game/hero/${heroStill(skin)}.webp" alt="">`, t(`skin${cap(skin)}Name` as Key), t(`skin${cap(skin)}Text` as Key), `🔒 ${lock}`);
       return row(`data-skin="${skin}"`, worn, !owned && save.coins < SKIN_PRICE[skin], `<img class="skin-pic" src="./images/game/hero/${heroStill(skin, save.equipped.head)}.webp" alt="">`, t(`skin${cap(skin)}Name` as Key), t(`skin${cap(skin)}Text` as Key), worn ? `✓ ${t('worn')}` : owned ? t('equip') : `${t('buy')} 🪙 ${SKIN_PRICE[skin]}`);
     }).join('')}</div>`;
