@@ -1,12 +1,9 @@
 import { BOARD_H, BOARD_W, CELL, CHARGE, COLS, FINAL_ID, HOME_ROW, LEAP, MERGE_DELAY, ROUNDS, STRIKE, homeCell, ROWS, TIER_KIND, TIER_STATS, canMerge, castLook, cellCentre, pieceAt, waveSpots, ABILITY, type Ability, type BoardGame, type Piece, type Slot, type Tier } from './board';
 import { boardFx, boardWallPieces, drawBoardBackdrop, drawBoardFigure } from './draw';
 
-/* Drawing the board mode on the game's canvas: the world's floor under a grid, your bugs on the lower half and the
-   round's enemy on the upper (faint while you prepare), each with its cast's own pictures, and the two commanders
-   in the board's own corner cells (left free for them): your hero, from the worn skin's poses, on Customise's
-   portal at the lower right, and the the rival, your own hero with its colours inverted, on the same portal turned red at the upper left, their names and health
-   in thin strips above and below the board, with the fireball one throws at the other
-   when a fight ends. */
+/* Draw the board mode: bugs and waves on the grid, with the worn hero and the rival on their portals. On phones they
+   keep the board corners; on desktop they move into the open strip beside it. The heroes, health and fireballs all
+   follow those positions. */
 
 /** The units are drawn bigger than their hit circles, so they fill their cells. */
 const FIG = 1.4;
@@ -339,8 +336,7 @@ const RIVAL = { x: CELL / 2 + 4, y: CELL - 12 };
 /** A round won: the hero cheers, hopping, with gold sparks and confetti bursting round it (`party`, seconds since the
    fireball struck the rival). */
 const CONFETTI = ['#fde047', '#f472b6', '#38bdf8', '#4ade80', '#fb923c', '#c084fc'];
-function drawParty(ctx: CanvasRenderingContext2D, party: number) {
-  const { x, y } = MINE;
+function drawParty(ctx: CanvasRenderingContext2D, party: number, x = MINE.x, y = MINE.y) {
   // Two bursts of confetti over the hero's head, one at once and one a little later, falling and fading.
   for (let burst = 0; burst < 2; burst++) {
     const t = party - burst * 0.7;
@@ -379,8 +375,8 @@ function drawParty(ctx: CanvasRenderingContext2D, party: number) {
   ctx.restore();
 }
 
-function drawHero(ctx: CanvasRenderingContext2D, pics: HeroPics, pose: HTMLImageElement, now: number, hit: number, party = -1) {
-  const { x, y } = MINE;
+function drawHero(ctx: CanvasRenderingContext2D, pics: HeroPics, pose: HTMLImageElement, now: number, hit: number, party = -1, at = MINE) {
+  const { x, y } = at;
   // Customise's portal under its feet, its ring's middle at 74.6% of the picture's height.
   if (ok(pics.pad)) {
     const w = 70;
@@ -404,7 +400,7 @@ function drawHero(ctx: CanvasRenderingContext2D, pics: HeroPics, pose: HTMLImage
   ctx.drawImage(img, -w / 2, -h, w, h);
   if (hit > 0) { ctx.globalAlpha = hit; ctx.globalCompositeOperation = 'lighter'; ctx.drawImage(img, -w / 2, -h, w, h); }
   ctx.restore();
-  if (party >= 0) drawParty(ctx, party);
+  if (party >= 0) drawParty(ctx, party, x, y);
 }
 
 /** A pose of your hero with its colours inverted, for the rival (worked out once per picture and kept). */
@@ -428,8 +424,8 @@ function negative(img: HTMLImageElement) {
   return c;
 }
 
-function drawRival(ctx: CanvasRenderingContext2D, pics: HeroPics, pose: HTMLImageElement, now: number, hit: number, gone: number) {
-  const { x, y } = RIVAL;
+function drawRival(ctx: CanvasRenderingContext2D, pics: HeroPics, pose: HTMLImageElement, now: number, hit: number, gone: number, at = RIVAL) {
+  const { x, y } = at;
   ctx.save();
   ctx.translate(x, y);
   // Customise's portal turned red under its feet (its ring's middle at 74.6% of the picture's height).
@@ -512,8 +508,19 @@ export function mirrorFight(b: BoardGame): BoardGame {
   };
 }
 
-export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: BoardLayout, now: number, drag: BoardDrag | null, retro: boolean, dpr: number, pics: HeroPics, ended: number | null, floor: { top: number; bottom: number; width?: number }, commandersInSidebar = false) {
+export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: BoardLayout, now: number, drag: BoardDrag | null, retro: boolean, dpr: number, pics: HeroPics, ended: number | null, floor: { top: number; bottom: number; width?: number }, commandersOutsideBoard = false) {
   const tactics = b.variant === 'tactics';
+  // On desktop, preserve the animated commanders and their portals just outside the board, in the open strip before the shop.
+  const commandersOutside = commandersOutsideBoard ? (() => {
+    const fieldRight = floor.width ?? ctx.canvas.width / dpr;
+    const boardRight = lay.ox + BOARD_W * lay.s;
+    const x = (boardRight + fieldRight) / 2;
+    const toBoard = (screenX: number) => (screenX - lay.ox) / lay.s;
+    return {
+      mine: { x: toBoard(x), y: MINE.y },
+      rival: { x: toBoard(x), y: RIVAL.y },
+    };
+  })() : null;
   // The world's whole arena floor, walls and corners, as in a sprint, from under the top bar to over the buttons;
   // the board is only its grid.
   drawBoardBackdrop(ctx, b.world, ctx.canvas.width / dpr, floor.top, floor.bottom, dpr, retro, floor.width);
@@ -557,11 +564,11 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
   const rivalGone = b.phase === 'won' && done ? Math.min(1, (ended! - FIREBALL.fly) / 0.6) : 0;
   // The rival's pose, from your hero's: aiming while it throws at you, hurt when struck, cheering once you are out.
   const rivalPose = b.phase === 'over' && done ? pics.cheer : ended !== null && !won && !done ? pics.shoot : won && struck > 0 ? pics.hurt : pics.front;
-  if (!commandersInSidebar) drawRival(ctx, pics, rivalPose, now, won ? struck : 0, rivalGone);
+  drawRival(ctx, pics, rivalPose, now, won ? struck : 0, rivalGone, commandersOutside?.rival ?? RIVAL);
   // A round won: it cheers and celebrates once its fireball has struck (the world won too).
   const party = won && done ? ended! - FIREBALL.fly : -1;
   const pose = b.phase === 'over' && done ? pics.down : ended !== null && won && !done ? pics.shoot : party >= 0 ? pics.cheer : !won && struck > 0 ? pics.hurt : pics.front;
-  if (!commandersInSidebar) drawHero(ctx, pics, pose, now, won ? 0 : struck * 0.6, party);
+  drawHero(ctx, pics, pose, now, won ? 0 : struck * 0.6, party, commandersOutside?.mine ?? MINE);
 
   // Where the dragged unit would go: green to move, gold to merge.
   if (drag?.over) {
@@ -645,8 +652,10 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
     }
   }
   if (ended !== null && fly < 1) {
-    const from = won ? { x: commandersInSidebar ? BOARD_W - 12 : MINE.x - 12, y: MINE.y - 36 } : { x: commandersInSidebar ? 10 : RIVAL.x + 10, y: RIVAL.y - 20 };
-    const to = won ? { x: commandersInSidebar ? BOARD_W - 8 : RIVAL.x, y: RIVAL.y - 22 } : { x: commandersInSidebar ? 8 : MINE.x, y: MINE.y - 30 };
+    const mine = commandersOutside?.mine ?? MINE;
+    const rival = commandersOutside?.rival ?? RIVAL;
+    const from = won ? { x: mine.x - 12, y: mine.y - 36 } : { x: rival.x + 10, y: rival.y - 20 };
+    const to = won ? { x: rival.x, y: rival.y - 22 } : { x: mine.x, y: mine.y - 30 };
     const k = Math.max(0, fly);
     const x = from.x + (to.x - from.x) * k;
     const y = from.y + (to.y - from.y) * k - Math.sin(k * Math.PI) * 60;
@@ -669,7 +678,7 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
     ctx.restore();
   }
   if (ended !== null && ended > FIREBALL.fly && ended < FIREBALL.fly + FIREBALL.blast) {
-    const at = won ? { x: commandersInSidebar ? BOARD_W - 8 : RIVAL.x, y: RIVAL.y - 22 } : { x: commandersInSidebar ? 8 : MINE.x, y: MINE.y - 30 };
+    const at = won ? { x: commandersOutsideBoard ? BOARD_W - 8 : RIVAL.x, y: RIVAL.y - 22 } : { x: commandersOutsideBoard ? 8 : MINE.x, y: MINE.y - 30 };
     const k = (ended - FIREBALL.fly) / FIREBALL.blast;
     const boom = boardFx('boom-big');
     ctx.save();
@@ -690,14 +699,14 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
   const popAt = ended === null ? 1 : Math.max(0, Math.min(1, (ended - FIREBALL.fly) / FIREBALL.blast));
   const rivalPop = ended === null ? 0 : b.online ? b.online.rivalLost ?? 0 : won ? 1 : 0;
   const minePop = !won && ended !== null ? b.last?.lost ?? 0 : 0;
-  if (!commandersInSidebar) {
-    hearts(ctx, RIVAL.x + 50, -TOP / 2, rivalHp(b), rivalPop, done ? popAt : 0, retro);
-    hearts(ctx, MINE.x, MINE.y - 72, b.lives, minePop, done ? popAt : 0, retro);
-  }
+  const mine = commandersOutside?.mine ?? MINE;
+  const rival = commandersOutside?.rival ?? RIVAL;
+  hearts(ctx, commandersOutside ? rival.x : rival.x + 50, commandersOutside ? rival.y - 72 : -TOP / 2, rivalHp(b), rivalPop, done ? popAt : 0, retro);
+  hearts(ctx, mine.x, mine.y - 72, b.lives, minePop, done ? popAt : 0, retro);
   // Your commander's fireball in the fight: from your hero onto the enemies' thickest knot, then its blast.
   if (b.strike) {
     const k = 1 - b.strike.t / STRIKE.fly;
-    const from = { x: commandersInSidebar ? BOARD_W - 12 : MINE.x - 12, y: MINE.y - 36 };
+    const from = { x: mine.x - 12, y: mine.y - 36 };
     const x = from.x + (b.strike.x - from.x) * k;
     const y = from.y + (b.strike.y - from.y) * k - Math.sin(k * Math.PI) * 70;
     const ball = boardFx('fireball');
