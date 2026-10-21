@@ -8,7 +8,7 @@ import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPr
 import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
 import { boardBackdropBounds, draw, drawRetroFigure, preloadCast, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, NET_ID, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, SKIN_GATE, skinOpen, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
-import { ABILITY, ABIL_V, BOARD_W, CELL, HOME_ROW, ROUNDS, SYNERGY, TACTICS, armyCap, toggleAutoMerge, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, startOnlineFight, updateBoard, type BoardGame, type Online, type Piece, type Variant } from './board';
+import { ABILITY, ABIL_V, BOARD_W, CELL, HOME_ROW, ROUNDS, SYNERGY, TACTICS, armyCap, toggleAutoMerge, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, startOnlineFight, updateBoard, type Ability, type BoardGame, type Online, type Piece, type Variant } from './board';
 import { cleanCode, dial, hostGame, joinGame, leave as netLeave, presence, presenceOn, presenceReady, send as netSend, type NetHandlers, type NetMsg, type NetProfile, type NetState, type Together } from './net';
 import { ABILITY_ICON, FIREBALL, boardMerged, drawBoard, mirrorFight, drawBoardDrag, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
 import type { Enemy } from './world';
@@ -2197,10 +2197,14 @@ function bankBoard(b: BoardGame): number | null {
 const boardPic = (tier: number, cast: number) => `./images/game/enemies/${castLook(cast)}-${TIER_KIND[tier]}-0.webp`;
 const boardTierName = (tier: number) => t(`boardTier${tier}` as Key);
 
-/** The board's bonuses as medallions from the rest of the game: the round's event, then each world with two or more
-    of your units, its synergy's skill medallion (lit once it counts). */
+/** The round's event and the active gifts, using the same icon in the sidebar and its details panel. */
 const SYN_PIC: Record<number, string> = { 1: 'skills/heart.webp', 2: 'skills/fire.webp', 3: 'skills/frost.webp', 4: 'skills/bracer.webp', 5: 'skills/drink.webp', 6: 'skills/speed.webp', 7: 'skills/spark.webp', 8: 'skills/dodge.webp', 9: 'skills/power.webp' };
-const EVENT_PIC: Record<string, string> = { gold: 'ui/wheel/coins.webp', frenzy: 'skills/rage.webp', giants: 'skills/giant.webp', bounty: 'skills/crit.webp' };
+// Fusion follows each world's gift; Tactics follows its actual effect (`ABILITY`).
+const TACTICS_PIC: Record<Ability, string> = {
+  poison: 'skills/molotov.webp', burn: 'skills/fire.webp', freeze: 'skills/frost.webp', slow: 'skills/water.webp', drain: 'skills/vampire.webp',
+  shock: 'skills/bolt.webp', armor: 'skills/bracer.webp', dodge: 'skills/dodge.webp', power: 'skills/power.webp',
+};
+const EVENT_PIC: Record<string, string> = { gold: 'ui/wheel/coins.webp', frenzy: 'skills/rage.webp', giants: 'skills/giant.webp', bounty: 'ui/wheel/coins.webp' };
 function boardBonuses(b: BoardGame) {
   const out: { pic: string; name: string; text: string; count: string; on: boolean; event: boolean }[] = [];
   if (b.event) out.push({ pic: EVENT_PIC[b.event], name: t(`boardEvent${cap(b.event)}` as Key), text: t(`boardEvent${cap(b.event)}Text` as Key), count: '⭐', on: true, event: true });
@@ -2210,7 +2214,7 @@ function boardBonuses(b: BoardGame) {
       const ab = ABILITY[x.cast];
       const pct = Math.round(ABIL_V[ab][x.lv] * 100);
       const need = x.lv >= 1 ? SYNERGY.need[1] : SYNERGY.need[0];
-      out.push({ pic: SYN_PIC[x.cast], name: `${ABILITY_ICON[ab]} ${t(`boardAbil${cap(ab)}` as Key)} · ${worldName(x.cast)}`, text: t(`boardAbil${cap(ab)}Text` as Key, { n: pct }), count: x.lv >= 2 ? `${x.n} ★★` : `${x.n}/${need}`, on: true, event: false });
+      out.push({ pic: TACTICS_PIC[ab], name: `${ABILITY_ICON[ab]} ${t(`boardAbil${cap(ab)}` as Key)} · ${worldName(x.cast)}`, text: t(`boardAbil${cap(ab)}Text` as Key, { n: pct }), count: x.lv >= 2 ? `${x.n} ★★` : `${x.n}/${need}`, on: true, event: false });
     }
     return out;
   }
