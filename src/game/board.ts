@@ -10,7 +10,7 @@ import { WORLDS, type Look } from './world';
    can be simulated in Node; drawn by `boardView.ts`. */
 
 export const COLS = 6;
-export const ROWS = 8;
+export const ROWS = 10;
 export const CELL = 56;
 export const ROUNDS = 10;
 export const BOARD_W = COLS * CELL;
@@ -57,8 +57,8 @@ export const castLook = (cast: number) => (WORLDS[cast - 1].look === 'random' ? 
 /** How strong the waves are against the gold you have had (×base in world 1, `world` more each world after), and
     how much tougher the enemy's units are than a cast's own each world past the first. */
 export const WAVE = { base: 0.88, world: 0.05, tough: 0.012 };
-/** Your half of the board: the lower four rows. */
-export const HOME_ROW = 4;
+/** Your half of the board: the lower five rows. */
+export const HOME_ROW = 5;
 
 /** Three units of one world (five for the stronger one) give each of them its world's gift in the fight:
     1 the Backlog +health, 2 fire burns, 3 ice slows, 4 mud takes less damage, 5 the jungle heals, 6 the Arena
@@ -242,7 +242,7 @@ const worldUp = (w: number) => 1 + (w - 1) * 0.25;
 
 export const pieceAt = (b: BoardGame, s: Slot) => b.army.find((p) => p.slot.c === s.c && p.slot.r === s.r);
 export const inBoard = (s: Slot) => s.c >= 0 && s.c < COLS && s.r >= 0 && s.r < ROWS;
-/** Your half: the lower four rows. */
+/** Your half: the lower five rows. */
 /** The corners where the commanders stand: yours at the lower right, the rival's at the upper left. */
 export const isCorner = (s: Slot) => (s.c === COLS - 1 && s.r === ROWS - 1) || (s.c === 0 && s.r === 0);
 export const homeCell = (s: Slot) => inBoard(s) && s.r >= HOME_ROW && !isCorner(s);
@@ -536,7 +536,7 @@ export function enemyWave(world: number, round: number): Tier[] {
 /** Where this round's enemy stands: the small ones from the front row back, the bosses at the back in the middle. */
 export function waveSpots(b: BoardGame) {
   const cells: Slot[] = [];
-  for (const r of [3, 2, 1, 0]) for (const c of [2, 3, 1, 4, 0, 5]) if (!isCorner({ c, r })) cells.push({ c, r });
+  for (let r = HOME_ROW - 1; r >= 0; r--) for (const c of [2, 3, 1, 4, 0, 5]) if (!isCorner({ c, r })) cells.push({ c, r });
   let i = 0;
   let boss = 0;
   return [...b.wave].sort((a, c) => a - c).map((tier) => {
