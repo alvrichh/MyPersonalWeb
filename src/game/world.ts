@@ -1942,10 +1942,16 @@ function throwFireball(g: Game) {
   const lv = g.skills.fireball;
   const target = nearest(g, p);
   if (!target) return;
-  // Every cast aims at the closest active enemy, including the upgraded volleys.
-  const a = Math.atan2(target.y - p.y, target.x - p.x);
-  for (let i = 0; i < (g.evolved.fireball ? 3 : lv === 3 ? 2 : 1); i++) {
-    g.fireballs.push({ x: p.x, y: p.y, vx: Math.cos(a) * 240, vy: Math.sin(a) * 240, life: 1.4 });
+  // Every cast centres on the closest active enemy. Multi-fireball volleys use parallel lanes so their
+  // projectiles and blasts stay visible instead of stacking on the exact same path.
+  const count = g.evolved.fireball ? 3 : lv === 3 ? 2 : 1;
+  const dx = target.x - p.x, dy = target.y - p.y;
+  const length = Math.hypot(dx, dy) || 1;
+  const px = -dy / length, py = dx / length;
+  const spacing = count > 1 ? 18 : 0;
+  for (let i = 0; i < count; i++) {
+    const lane = i - (count - 1) / 2;
+    g.fireballs.push({ x: p.x + px * lane * spacing, y: p.y + py * lane * spacing, vx: (dx / length) * 240, vy: (dy / length) * 240, life: 1.4 });
   }
 }
 
