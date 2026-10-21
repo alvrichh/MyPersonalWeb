@@ -931,14 +931,15 @@ function choiceScreen(g: Game) {
         return `<button class="skill skill-${CATEGORY[evo]} is-evo" data-skill="${choice}"><span class="icon" aria-hidden="true">${skillIcon(evo, 56, EVO_ICON.includes(evo) ? evoIcon(evo, g) : iconFile(g, evo))}</span><span class="cat">★ ${t('evoCat')}</span><b>${t(`evo${cap(evo)}Name` as Key)}</b><span>${t(`evo${cap(evo)}Text` as Key)}</span><span class="lvl">${t('evoLabel')}</span></button>`;
       }
       const id = choice as SkillId;
-      const el = id === 'blades' ? bladeElement(g) : 'steel';
+      const fresh = CATEGORY[id] !== 'upgrade' && g.skills[id] === 0;
+      // The first blade card always introduces plain steel; later upgrades follow the run's current element.
+      const el = id === 'blades' && fresh ? 'steel' : id === 'blades' ? bladeElement(g) : 'steel';
       const name = el === 'steel' ? t(`${id}Name` as Key) : t(`blades${el[0].toUpperCase()}${el.slice(1)}Name` as Key);
       const next = g.skills[id] + 1;
       const text = id === 'blades' && next >= 4 ? t(next >= 5 ? 'bladesGrow5' : 'bladesGrow4')
         : el !== 'steel' ? t(`blades${cap(el)}Text` as Key) : id === 'blades' ? `${t('bladesText')} ${t('bladesHint')}` : t(`${id}Text` as Key);
 
       const cat = CATEGORY[id];
-      const fresh = cat !== 'upgrade' && g.skills[id] === 0;
       const level = id === 'heart' ? '' : `<span class="lvl">${fresh ? t('newWeapon') : t('skillLevel', { level: g.skills[id] + 1 })}</span>`;
       // A second arrow element says which fusion it makes (and that the other two stop coming).
       const fz = fusionWith(g, id);
@@ -946,7 +947,8 @@ function choiceScreen(g: Game) {
       const lost = evoLostBy(g, id);
       const fuse = fz ? `<em class="fuse">${t(lost.length ? 'fusionCardShort' : 'fusionCard', { fusion: fusionLine(g, fz, id) })}</em>` : '';
       const warn = lost.length ? `<em class="evo-lost">⚠ ${t(lost.length > 1 ? 'evoLostMany' : 'evoLost', { names: new Intl.ListFormat(lang, { type: 'conjunction' }).format(lost.map((w) => t(`${w}Name` as Key))) })}</em>` : '';
-      return `<button class="skill skill-${cat}" data-skill="${id}"><span class="icon" aria-hidden="true">${skillIcon(id, 56, iconFile(g, id, next))}</span><span class="cat">${t(CATEGORY_LABEL[cat])}</span><b>${name}</b><span>${text}${fuse}${warn}</span>${level}</button>`;
+      const icon = id === 'blades' && fresh ? 'blades' : iconFile(g, id, next);
+      return `<button class="skill skill-${cat}" data-skill="${id}"><span class="icon" aria-hidden="true">${skillIcon(id, 56, icon)}</span><span class="cat">${t(CATEGORY_LABEL[cat])}</span><b>${name}</b><span>${text}${fuse}${warn}</span>${level}</button>`;
     })
     .join('');
   // Two rerolls a run, in sprints and on call.

@@ -810,12 +810,9 @@ function drawFog(ctx: CanvasRenderingContext2D, g: Game, vis: Rect) {
   ctx.fillRect(vis.x, vis.y, vis.w, vis.h);
 }
 
-/* Walking sideways, the two step pictures are nearly the same, so the legs are walked in code too. Nothing is cut:
-   each picture is warped smoothly below the hip (the lowest 30% of the figure), every pixel moved sideways by more the
-   nearer it is to the feet (so the hands and the blaster by the hip hardly move), the back leg one way and the front
-   leg the other, blended across the gap between the shoes (`stepFrames`, read from the picture's own pixels), and the
-   leg swinging forward lifts its foot a little. Each output pixel is sampled from where it came from (bilinear, on
-   premultiplied colour), so no hole or seam can open. `STEP_FRAMES` frames a stride are worked out once per picture. */
+/* When a set has no authored step cycle, walk its legs in code. Nothing is cut: the lower 30% is warped smoothly,
+   with each pixel moving more near the feet and the two legs moving in opposite phases. The passing foot lifts a little.
+   Sampling is bilinear on premultiplied colour, so no hole or seam opens. `STEP_FRAMES` are cached once per picture. */
 const SIDE_WALK = new Set<Pose>(['walk', 'walk2', 'wshoot', 'wshoot2']);
 /* Sets with the owner's own side walk cycle (`hero/<set>-swalk-0..3` and, aiming, `-saim-0..3`: contact, passing,
    the other contact, passing), cut from his sheet on one canvas per row, head centred and feet on the bottom, at the
@@ -901,7 +898,7 @@ function stepFrames(img: HTMLImageElement): Steps | null {
             const side = Math.tanh((x - split) / soft);
             const lift = side < 0 ? Math.max(0, Math.cos(phase)) : Math.max(0, -Math.cos(phase));
             const sx = x + side * swing * k;
-            const sy = y + FOOT_LIFT * h * lift * k * (Math.abs(side));
+            const sy = y + FOOT_LIFT * h * lift * k * Math.abs(side);
             // Bilinear sample of the premultiplied picture.
             const x0 = Math.floor(sx), y0 = Math.floor(sy), fx = sx - x0, fy = sy - y0;
             let r = 0, gg = 0, b = 0, a = 0;
@@ -1000,12 +997,11 @@ function drawPlayer(ctx: CanvasRenderingContext2D, g: Game, pal: Palette, now: n
     // Shooting on the move faces the target; plain walking faces the way you go.
     const turn = pose === 'wshoot' || pose === 'wshoot2' || !p.moving ? p.face : p.heading;
     const left = Math.cos(turn) < -0.2 && pose !== 'back' && pose !== 'cheer' && pose !== 'front' && pose !== 'fwalk' && pose !== 'fwalk2';
-    // Walking up there is one picture (down has two steps): mirror it every step and rock it a little, so it walks rather than glides.
+    // Keep the back sprite facing the same way; its legs get a procedural stride below instead of mirroring the whole figure.
     const vertical = p.moving && (pose === 'front' || pose === 'back');
-    const step = Math.floor(now * 7) % 2;
     ctx.save();
     ctx.translate(p.x, p.y + p.r * 0.9 - bob);
-    if (left || (vertical && step)) ctx.scale(-1, 1);
+    if (left) ctx.scale(-1, 1);
     if (vertical) ctx.rotate(0.06 * Math.sin(now * 7 * Math.PI));
     // The Server Reaper is nearly black: a cold backlight, like the Wraith boss's, keeps him readable on dark floors.
     if (pal.skin === 'reaper') {
@@ -1022,7 +1018,8 @@ function drawPlayer(ctx: CanvasRenderingContext2D, g: Game, pal: Palette, now: n
     const tint = g.phase === 'play' ? heroTint(g) : null;
     // The owner's own side walk cycle when the set has one (four frames, legs passing in turn); otherwise the warp.
     const cycle = full && p.moving && SIDE_WALK.has(pose) ? sideCycle(heroKey(pal.skin ?? 'boy', pal.hat), pose === 'wshoot' || pose === 'wshoot2') : null;
-    const steps = !cycle && full && p.moving && SIDE_WALK.has(pose) ? stepFrames(img) : null;
+    const backStride = pose === 'back' && pal.skin !== 'medusa';
+    const steps = !cycle && full && p.moving && (SIDE_WALK.has(pose) || backStride) ? stepFrames(img) : null;
     if (cycle) {
       const f = cycle[Math.floor(now / SIDE_STEP) % cycle.length];
       const fh = p.r * 3.05 * (f.naturalHeight / FULL_BASE_H);
