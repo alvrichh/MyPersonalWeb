@@ -88,7 +88,7 @@ const pauseBtn = $<HTMLButtonElement>('pauseBtn');
 const backLink = $<HTMLAnchorElement>('backLink');
 backLink.setAttribute('aria-label', t('back'));
 backLink.addEventListener('click', (event) => {
-  if (!game || game.phase !== 'play') return;
+  if (!game || game.phase === 'over' || game.phase === 'won') return;
   event.preventDefault();
   leaveScreen('site');
 });
