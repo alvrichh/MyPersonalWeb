@@ -2528,14 +2528,13 @@ function boardStep(dt: number, now: number) {
   const floor = { top: top - 6, bottom: (acts ? acts.top : boardShop.getBoundingClientRect().bottom) - rect.top - 4 };
   const shopWidth = wide ? Math.min(330, Math.max(280, canvas.clientWidth * 0.25)) : 0;
   const fieldWidth = canvas.clientWidth - shopWidth;
-  const boardWidth = wide ? fieldWidth : Math.max(180, fieldWidth - 46);
-  const arena = boardBackdropBounds(b.world, boardWidth, floor.top, floor.bottom);
-  boardLay = layoutBoard(boardWidth, Math.max(top, arena.y + arena.h * 0.04), Math.min(bottom, arena.y + arena.h * 0.96), arena.w * 0.96);
-  // Keep bonuses outside the grid: left on desktop, right on smaller screens, aligned with the halfway wall.
+  const arena = boardBackdropBounds(b.world, fieldWidth, floor.top, floor.bottom);
+  boardLay = layoutBoard(fieldWidth, Math.max(top, arena.y + arena.h * 0.04), Math.min(bottom, arena.y + arena.h * 0.96), arena.w * 0.96);
+  // Bonuses overlay the board on mobile so they do not steal width; on desktop they sit just outside its left edge.
   const wallTop = rect.top + boardLay.oy + (HOME_ROW * CELL - 4) * boardLay.s;
   const sideLeft = wide
     ? rect.left + boardLay.ox - 51
-    : rect.left + boardLay.ox + boardLay.s * BOARD_W + 4;
+    : rect.left + boardLay.ox + boardLay.s * BOARD_W - 42;
   const sideAt = `${Math.round(sideLeft)}px,${Math.round(window.innerHeight - wallTop + 8)}px`;
   if (boardSide.dataset.at !== sideAt) { boardSide.dataset.at = sideAt; const [x, y] = sideAt.split(','); boardSide.style.left = x; boardSide.style.bottom = y; boardSide.style.top = 'auto'; }
   ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
@@ -2555,7 +2554,7 @@ function boardStep(dt: number, now: number) {
 }
 
 /* Dragging units about while you prepare: onto a cell to move it, onto one of its kind to merge them, onto the
-   shop to sell it; a tap says what it is. Only your half, the lower four rows, takes them. */
+   shop to sell it; a tap says what it is. Only your half, the lower five rows, takes them. */
 function boardPointerDown(event: PointerEvent) {
   const b = board;
   if (!b || b.phase !== 'prep') return;
