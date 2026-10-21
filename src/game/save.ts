@@ -13,7 +13,8 @@ export type HeroSkin = 'boy' | 'robot' | 'kitty' | 'intern' | 'lava' | 'arctic' 
 /** Special skins, the dearest kind (the owner's rule), hatless like the world ones. */
 export const SPECIAL_SKINS = ['kratos', 'medusa', 'weso', 'reaper'] as const;
 export const WORLD_SKINS = ['intern', 'lava', 'arctic', 'swamp', 'jungle', 'gladiator', 'mech', 'ghost', 'dragon'] as const;
-export const SKINS: HeroSkin[] = ['boy', 'robot', 'kitty', ...SPECIAL_SKINS, ...WORLD_SKINS];
+// Alvrich, then the world skins in world order, and the special ones (the dearest) at the end of the list.
+export const SKINS: HeroSkin[] = ['boy', ...WORLD_SKINS, 'robot', 'kitty', ...SPECIAL_SKINS];
 /** What each figure costs in coins; Alvrich comes free. The owner's rule: skins are always the dearest thing in the game (items, forge levels, the revive), so raise these if anything else goes past them. */
 /** What each figure costs in coins once it is open (`skinOpen`); Alvrich comes free. The owner's rule: the special
     skins (robot, Kitty and the boss-like ones) are the dearest thing in the game; the world skins are plain outfits,

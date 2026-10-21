@@ -4247,3 +4247,8 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .friend-row .friend-go { flex: none; min-width: 92px; padding: 7px 14px; border: 0; border-radius: 999px; background: linear-gradient(180deg, #4ade80, #16a34a); color: #062b12; font: 700 0.95rem var(--font); box-shadow: 0 0 10px rgba(74, 222, 128, 0.35); cursor: pointer; }
 .panel .primary.is-purple { --bar: url('/images/game/ui/btn2_purple.webp'); }
 :root[data-retro] .panel .primary.is-purple { background: linear-gradient(135deg, #a78bfa, #7c3aed); }
+/* A locked row's reason may be long («Jefe final del mundo 8 en Guardia»): it wraps instead of widening the row,
+   which pushed the whole list off the side of the dialog on an iPhone. */
+.gear-row.is-locked em { white-space: normal; overflow-wrap: anywhere; font-size: 0.62rem; line-height: 1.15; }
+.gear-row { min-width: 0; }
+.gear-row > * { min-width: 0; }
