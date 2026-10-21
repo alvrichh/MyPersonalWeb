@@ -8,12 +8,14 @@ import type { SongPick } from './audio';
 export type EnemyStyle = 'world' | 'original' | 'demon' | 'viking' | 'mud' | 'jungle' | 'greek' | 'robot' | 'nightmare' | 'core' | 'random';
 export const STYLES: EnemyStyle[] = ['world', 'original', 'demon', 'viking', 'mud', 'jungle', 'greek', 'robot', 'nightmare', 'core', 'random'];
 
-export type HeroSkin = 'boy' | 'robot' | 'kitty';
-export const SKINS: HeroSkin[] = ['boy', 'robot', 'kitty'];
+/** Alvrich, the robot, Kitty, and Alvrich dressed for each world (the owner's sheets, one a world in order). */
+export type HeroSkin = 'boy' | 'robot' | 'kitty' | 'intern' | 'lava' | 'arctic' | 'swamp' | 'jungle' | 'gladiator' | 'mech' | 'ghost' | 'dragon';
+export const WORLD_SKINS = ['intern', 'lava', 'arctic', 'swamp', 'jungle', 'gladiator', 'mech', 'ghost', 'dragon'] as const;
+export const SKINS: HeroSkin[] = ['boy', 'robot', 'kitty', ...WORLD_SKINS];
 /** What each figure costs in coins; Alvrich comes free. The owner's rule: skins are always the dearest thing in the game (items, forge levels, the revive), so raise these if anything else goes past them. */
-export const SKIN_PRICE: Record<HeroSkin, number> = { boy: 0, robot: 10000, kitty: 10000 };
+export const SKIN_PRICE: Record<HeroSkin, number> = { boy: 0, robot: 10000, kitty: 10000, intern: 10000, lava: 10000, arctic: 10000, swamp: 10000, jungle: 10000, gladiator: 10000, mech: 10000, ghost: 10000, dragon: 10000 };
 /** The hats are painted on the hero's pictures; a skin listed here has no hat versions and always shows its base set. */
-const HATLESS: HeroSkin[] = ['kitty'];
+const HATLESS: HeroSkin[] = ['kitty', ...WORLD_SKINS];
 const HAT_SET: Record<string, string> = { wizardHat: 'wizard', gladHelm: 'helm', bandana: 'bandana', crown: 'crown' };
 /** Hats painted only for some skins (Kitty wears none, see HATLESS). */
 const HAT_SKINS: Record<string, HeroSkin[]> = { crown: ['boy', 'robot'] };
@@ -24,6 +26,7 @@ export const heroKey = (skin: HeroSkin, head?: string) =>
 export const FULL_HERO_SETS = [
   'boy-base', 'boy-wizard', 'boy-helm', 'boy-bandana', 'boy-crown',
   'robot-base', 'robot-wizard', 'robot-helm', 'robot-bandana', 'robot-crown', 'kitty-base',
+  ...WORLD_SKINS.map((s) => `${s}-base`),
 ];
 /** The still picture for menus: facing the camera where the set has it, else the side idle. */
 export const heroStill = (skin: HeroSkin, head?: string) => {
