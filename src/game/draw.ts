@@ -1,4 +1,4 @@
-import { GAZE, H, W, WALL, WHEEL_X, ICICLE_R, ICICLE_STAY, ICICLE_PERSIST_STAY, ICICLE_SINK, ATTACK_CYCLE, WORLDS, frostReach, waveAt, type Threat, type OrbPic, isBossRoom, type Enemy, type Game, type Shot, type Look, type Statue, type Rect, type Vec, type Fusion, arrowLook, fusionOf, bladeCount, bladeElement, sawOrbit, sawScale, type BladeElement, type Fx, type SkillId } from './world';
+import { GAZE, H, W, WALL, WHEEL_X, ICICLE_R, ICICLE_STAY, ICICLE_PERSIST_STAY, ICICLE_SINK, ATTACK_CYCLE, WORLDS, frostReach, waveAt, type Threat, type ThreatEl, type OrbPic, isBossRoom, type Enemy, type Game, type Shot, type Look, type Statue, type Rect, type Vec, type Fusion, arrowLook, fusionOf, bladeCount, bladeElement, sawOrbit, sawScale, type BladeElement, type Fx, type SkillId } from './world';
 import { SPIRIT_COLOR, type ItemId, type SpiritSkin } from './shop';
 import { FULL_HERO_SETS, heroKey, type HeroSkin } from './save';
 
@@ -810,13 +810,14 @@ function drawFog(ctx: CanvasRenderingContext2D, g: Game, vis: Rect) {
   ctx.fillRect(vis.x, vis.y, vis.w, vis.h);
 }
 
-/* When a set has no authored step cycle, walk its legs in code. Nothing is cut: the lower 30% is warped smoothly,
-   with each pixel moving more near the feet and the two legs moving in opposite phases. The passing foot lifts a little.
+/* Animate the single rear pose in code. Nothing is cut: the lower 30% is warped smoothly,
+   with each pixel moving more near the feet. Each foot only lifts in turn, keeping the stance's width.
+   Only Medusa's side view uses a horizontal wave for her tail; the other sets have authored step poses.
    Sampling is bilinear on premultiplied colour, so no hole or seam opens. `STEP_FRAMES` are cached once per picture. */
 const SIDE_WALK = new Set<Pose>(['walk', 'walk2', 'wshoot', 'wshoot2']);
 /* Sets with the owner's own side walk cycle (`hero/<set>-swalk-0..3` and, aiming, `-saim-0..3`: contact, passing,
    the other contact, passing), cut from his sheet on one canvas per row, head centred and feet on the bottom, at the
-   walk picture's scale (`scratchpad` `sidewalk/cut.py`); the other sets keep the warp below until theirs come. */
+   walk picture's scale (`scratchpad` `sidewalk/cut.py`); the other bipeds retain their authored two-pose cycle. */
 const SIDE_CYCLE = new Set(['boy-base', 'boy-wizard', 'boy-helm', 'boy-bandana', 'boy-crown',
   // The world skins and the special ones with legs (Medusa's tail is walked by the warp), from their own sheets.
   ...['intern', 'lava', 'arctic', 'swamp', 'jungle', 'gladiator', 'mech', 'ghost', 'dragon', 'kratos', 'weso', 'reaper'].map((s) => `${s}-base`)]);
@@ -837,11 +838,14 @@ const STRIDE = 0.42;
 /** How far a foot swings, as a share of the leg's length, and how high the passing foot lifts (share of the figure). */
 const LEG_SWING = 0.42;
 const FOOT_LIFT = 0.035;
+const BACK_FOOT_LIFT = 0.065;
 const STEP_FRAMES = 12;
-type Steps = { frames: HTMLCanvasElement[]; pad: number };
+type Steps = { frames: HTMLCanvasElement[]; pad: number; back: boolean };
 const stepCache = new WeakMap<HTMLImageElement, Steps | null>();
-function stepFrames(img: HTMLImageElement): Steps | null {
-  if (stepCache.has(img)) return stepCache.get(img)!;
+const backStepCache = new WeakMap<HTMLImageElement, Steps | null>();
+function stepFrames(img: HTMLImageElement, back = false): Steps | null {
+  const cache = back ? backStepCache : stepCache;
+  if (cache.has(img)) return cache.get(img)!;
   let steps: Steps | null = null;
   try {
     const w = img.naturalWidth;
@@ -883,7 +887,7 @@ function stepFrames(img: HTMLImageElement): Steps | null {
         const a = src[k * 4 + 3] / 255;
         pm[k * 4] = src[k * 4] * a; pm[k * 4 + 1] = src[k * 4 + 1] * a; pm[k * 4 + 2] = src[k * 4 + 2] * a; pm[k * 4 + 3] = src[k * 4 + 3];
       }
-      const pad = Math.ceil(leg * LEG_SWING) + 4;
+      const pad = back ? 0 : Math.ceil(leg * LEG_SWING) + 4;
       const W = w + pad * 2;
       const frames: HTMLCanvasElement[] = [];
       for (let f = 0; f < STEP_FRAMES; f++) {
@@ -897,8 +901,8 @@ function stepFrames(img: HTMLImageElement): Steps | null {
             const x = X - pad;
             const side = Math.tanh((x - split) / soft);
             const lift = side < 0 ? Math.max(0, Math.cos(phase)) : Math.max(0, -Math.cos(phase));
-            const sx = x + side * swing * k;
-            const sy = y + FOOT_LIFT * h * lift * k * Math.abs(side);
+            const sx = back ? x : x + side * swing * k;
+            const sy = y + (back ? BACK_FOOT_LIFT * fig : FOOT_LIFT * h) * lift * k * Math.abs(side);
             // Bilinear sample of the premultiplied picture.
             const x0 = Math.floor(sx), y0 = Math.floor(sy), fx = sx - x0, fy = sy - y0;
             let r = 0, gg = 0, b = 0, a = 0;
@@ -919,17 +923,17 @@ function stepFrames(img: HTMLImageElement): Steps | null {
         fc.getContext('2d')?.putImageData(out, 0, 0);
         frames.push(fc);
       }
-      steps = { frames, pad };
+      steps = { frames, pad, back };
     }
   } catch { steps = null; }
-  stepCache.set(img, steps);
+  cache.set(img, steps);
   return steps;
 }
 function drawStriding(ctx: CanvasRenderingContext2D, img: HTMLImageElement, w: number, h: number, steps: Steps, now: number, tint: [string, number] | null) {
   const cycle = (now / STRIDE) % 1;
   const frame = steps.frames[Math.floor(cycle * STEP_FRAMES) % STEP_FRAMES];
   // A little lift as each foot passes under the body.
-  const lift = Math.abs(Math.cos(cycle * Math.PI * 2)) * h * 0.012;
+  const lift = steps.back ? 0 : Math.abs(Math.cos(cycle * Math.PI * 2)) * h * 0.012;
   const k = w / img.naturalWidth;
   drawTinted(ctx, frame, -w / 2 - steps.pad * k, -h - lift, frame.width * k, h, tint);
 }
@@ -993,12 +997,12 @@ function drawPlayer(ctx: CanvasRenderingContext2D, g: Game, pal: Palette, now: n
     const h = full ? p.r * 3.05 * (img.naturalHeight / FULL_BASE_H) : p.r * (pose === 'cheer' ? 3.1 : 2.7);
     const w = (h * img.naturalWidth) / img.naturalHeight;
     // Feet stay on the shadow: the full sets have their own step frames, so only a tiny bounce while walking.
-    const bob = p.moving ? Math.abs(Math.sin(now * 14)) * (full ? 0.6 : 2) : pose === 'cheer' ? Math.abs(Math.sin(now * 6)) * 3 : 0;
+    const bob = p.moving ? (pose === 'back' ? 0 : Math.abs(Math.sin(now * 14)) * (full ? 0.6 : 2)) : pose === 'cheer' ? Math.abs(Math.sin(now * 6)) * 3 : 0;
     // Shooting on the move faces the target; plain walking faces the way you go.
     const turn = pose === 'wshoot' || pose === 'wshoot2' || !p.moving ? p.face : p.heading;
     const left = Math.cos(turn) < -0.2 && pose !== 'back' && pose !== 'cheer' && pose !== 'front' && pose !== 'fwalk' && pose !== 'fwalk2';
     // Keep the back sprite facing the same way; its legs get a procedural stride below instead of mirroring the whole figure.
-    const vertical = p.moving && (pose === 'front' || pose === 'back');
+    const vertical = p.moving && pose === 'front';
     ctx.save();
     ctx.translate(p.x, p.y + p.r * 0.9 - bob);
     if (left) ctx.scale(-1, 1);
@@ -1016,10 +1020,12 @@ function drawPlayer(ctx: CanvasRenderingContext2D, g: Game, pal: Palette, now: n
       ctx.fill();
     }
     const tint = g.phase === 'play' ? heroTint(g) : null;
-    // The owner's own side walk cycle when the set has one (four frames, legs passing in turn); otherwise the warp.
+    // Four-frame side cycles when supplied, otherwise the authored two step poses (Robot and Kitty).
+    // Warping those existing poses again would spread their feet sideways, including while a four-frame cycle loads.
     const cycle = full && p.moving && SIDE_WALK.has(pose) ? sideCycle(heroKey(pal.skin ?? 'boy', pal.hat), pose === 'wshoot' || pose === 'wshoot2') : null;
     const backStride = pose === 'back' && pal.skin !== 'medusa';
-    const steps = !cycle && full && p.moving && (SIDE_WALK.has(pose) || backStride) ? stepFrames(img) : null;
+    const tailStride = pal.skin === 'medusa' && SIDE_WALK.has(pose);
+    const steps = !cycle && full && p.moving && (tailStride || backStride) ? stepFrames(img, backStride) : null;
     if (cycle) {
       const f = cycle[Math.floor(now / SIDE_STEP) % cycle.length];
       const fh = p.r * 3.05 * (f.naturalHeight / FULL_BASE_H);
@@ -4580,7 +4586,7 @@ const BOSS_CANVAS: Record<string, { k: number; feet: number }> = {
 };
 /** Room-6 bosses with a nine-pose sheet of their own, in the final bosses' order: the backlog's Monolith, the fire world's Overlord, the vikings'
     Valkyrie, the Mud Monster, the Arena's Minotaur, the Forge's Mainframe. */
-const MID_ART: Partial<Record<Look, string>> = { original: 'monolith', demon: 'overlord', viking: 'valkyrie', mud: 'mudmonster', greek: 'minotaur', robot: 'mainframe', core: 'hydra' };
+export const MID_ART: Partial<Record<Look, string>> = { original: 'monolith', demon: 'overlord', viking: 'valkyrie', mud: 'mudmonster', greek: 'minotaur', robot: 'mainframe', core: 'hydra' };
 const finalSprites = new Map<string, HTMLImageElement[]>();
 /* Nine-pose bosses hold an action pose at least `POSE_HOLD` before it changes, unless something weightier comes
    (the signature over the move or ring, those over the charge, the charge over the wind-up, any of them over the
@@ -5028,7 +5034,44 @@ const ICE_SPIKES: [number, number, number, number][] = [
 /* ------------------------------------------------------- the board mode */
 
 /** What the board mode (`boardView.ts`) needs to draw one of its units with the cast's own pictures. */
-export type BoardFigure = { look: Look; kind: Enemy['kind']; final: boolean; bossId: string; face: number; step: number; swing: number; hit: number; r: number; aim?: number; dash?: number; dir?: { x: number; y: number } };
+export type BoardFigure = { look: Look; kind: Enemy['kind']; final: boolean; bossId: string; face: number; step: number; swing: number; hit: number; r: number; aim?: number; dash?: number; dir?: { x: number; y: number }; pose?: number; act?: 'move' | 'sig' | 'burst'; chan?: number };
+/** A boss projectile on the compact board, using the same projectile pictures as Sprints and Guardia. */
+export function drawBoardOrb(ctx: CanvasRenderingContext2D, pic: OrbPic, x: number, y: number, vx: number, vy: number, r: number, el: ThreatEl, now: number, retro: boolean, seed = 0) {
+  const look = ORB_PIC[pic];
+  const image = !retro && (look.src === 'fx'
+    ? fxImage(pic === 'glitch' ? `glitch-${Math.abs(seed) % 4}` : look.name)
+    : arrowImage(look.name));
+  const colours: Record<ThreatEl, string> = {
+    fire: '#fb923c', water: '#38bdf8', mud: '#a3a36d', arcane: '#c084fc', leaf: '#4ade80',
+    bolt: '#fde047', laser: '#fb7185', shadow: '#a78bfa', glitch: '#e879f9',
+  };
+  const colour = colours[el];
+  const size = Math.max(18, Math.min(42, r * 3.6));
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(Math.atan2(vy, vx));
+  const glow = ctx.createRadialGradient(0, 0, 1, 0, 0, size * 0.7);
+  glow.addColorStop(0, `${colour}bb`);
+  glow.addColorStop(1, `${colour}00`);
+  ctx.fillStyle = glow;
+  ctx.beginPath(); ctx.arc(0, 0, size * 0.7, 0, Math.PI * 2); ctx.fill();
+  if (image && image.complete && image.naturalWidth) {
+    const w = Math.max(size, look.w * 0.62);
+    const h = w * image.naturalHeight / image.naturalWidth;
+    ctx.drawImage(image, -w * look.at, -h / 2, w, h);
+  } else {
+    ctx.fillStyle = '#fff7ed';
+    ctx.beginPath(); ctx.arc(0, 0, Math.max(3, r * 0.48), 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = colour;
+    ctx.beginPath(); ctx.arc(0, 0, Math.max(3, r * 0.34), 0, Math.PI * 2); ctx.fill();
+  }
+  if (pic === 'tornado' && !retro && image && image.complete && image.naturalWidth) {
+    ctx.globalAlpha = 0.48 + Math.sin(now * 12 + seed) * 0.16;
+    const w = size * 1.25, h = w * image.naturalHeight / image.naturalWidth;
+    ctx.drawImage(image, -w / 2, -h / 2, w, h);
+  }
+  ctx.restore();
+}
 /** Draws a board unit at the origin (the caller translates to its feet's centre), its painted sprite or, in retro
     or until the pictures load, the cast's drawn figure. */
 export function drawBoardFigure(ctx: CanvasRenderingContext2D, f: BoardFigure, now: number, retro: boolean, outline: string | null = null) {
@@ -5037,9 +5080,11 @@ export function drawBoardFigure(ctx: CanvasRenderingContext2D, f: BoardFigure, n
   // The bosses stand well above the rest: the room-6 boss big, the final boss bigger still (its phases more).
   spriteHeight = f.kind !== 'boss' ? 2.3 : f.final ? 3.3 : 2.8;
   const e = {
-    phase: 1, rise: 0, pain: f.kind === 'boss' ? f.hit : 0, gaze: false, chan: 0, pose: f.kind === 'boss' && f.swing > 0 ? f.swing : 0, act: 'burst', aim: 0, dash: 0,
+    phase: 1, rise: 0, pain: f.kind === 'boss' ? f.hit : 0, gaze: false, aim: 0, dash: 0,
     cd: 0, minion: false, clone: false, snake: 0, spawn: 0, wobble: 0, slow: 0, burn: 0, dir: { x: 0, y: 1 }, tint: '#fff', side: 1, id: 0,
     ...f, hit: f.kind === 'boss' ? 0 : f.hit,
+    // Use the same action poses as Sprints/Guard: move = 6, signature/channel = 7, ring = 5.
+    pose: f.pose ?? (f.kind === 'boss' && f.swing > 0 ? f.swing : 0), act: f.act ?? 'burst', chan: f.chan ?? 0,
   } as unknown as Enemy;
   const painted = !retroLook && drawEnemySprite(ctx, e);
   spriteOutline = null;

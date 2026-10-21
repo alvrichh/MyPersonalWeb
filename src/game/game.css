@@ -4018,7 +4018,10 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 :root:not([data-retro]) .board-card img { width: 62%; height: 78%; margin-top: 8%; }
 :root:not([data-retro]) .board-card b { align-self: center; margin-bottom: 4%; font-size: 0.7rem; text-shadow: 0 1px 2px #000; }
 :root:not([data-retro]) .board-card .board-price { position: absolute; left: 9%; top: 8%; padding: 1px 5px; border-radius: 99px; background: rgba(8, 12, 28, 0.82); color: #fcd34d; font-size: 0.7rem; line-height: 1.2; }
+:root:not([data-retro]) .board-card .board-price img { width: 1.05em; height: 1.05em; margin: 0; object-fit: contain; }
 :root:not([data-retro]) .board-card .board-cast { top: 8%; right: 9%; }
+:root:not([data-retro]) .board-card .board-cast img { width: 15px; height: 15px; margin: 0; object-fit: contain; }
+:root:not([data-retro]) .board-card.is-boss > img { width: 88%; height: 95%; margin-top: 0; }
 :root:not([data-retro]) .board-card:disabled { opacity: 1; filter: grayscale(0.7) brightness(0.65) drop-shadow(0 4px 6px rgba(0, 0, 0, 0.45)); }
 :root:not([data-retro]) .board-card.is-sold { opacity: 0.35; filter: grayscale(1); background-image: url('/images/game/ui/shop_orange.webp'); }
 .board-card.is-pop { animation: board-card-pop 0.42s cubic-bezier(0.2, 0.85, 0.3, 1.25) both; }
@@ -4100,6 +4103,8 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 :root:not([data-retro]) .board-card.is-r3 { filter: drop-shadow(0 0 8px rgba(251, 146, 60, 1)); }
 :root:not([data-retro]) .board-card.is-r4 { filter: drop-shadow(0 0 10px rgba(248, 113, 113, 1)); }
 .board-card.is-r1 b { color: #7dd3fc; } .board-card.is-r2 b { color: #d8b4fe; } .board-card.is-r3 b { color: #fdba74; } .board-card.is-r4 b { color: #fca5a5; }
+.board-card[aria-disabled="true"] { filter: grayscale(0.72) brightness(0.62); opacity: 0.78; }
+.board-card[aria-disabled="true"]:hover, .board-card[aria-disabled="true"]:focus-visible { filter: grayscale(0.55) brightness(0.78); }
 /* Fusion's auto-merge, bought once a run: a round button with two orange arrows meeting, its price under them,
    lit gold once it is on. */
 :root:not([data-retro]) .board-acts:has(.board-auto) { grid-template-columns: 56px 1fr 1.25fr; align-items: center; }
@@ -4162,15 +4167,42 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 /* The dragged unit's own canvas, over the board's top bar and shop, never taking a tap. */
 .board-float { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 6; pointer-events: none; }
 .board-float[hidden] { display: none; }
+.board-tooltip {
+  position: fixed; z-index: 9; width: min(290px, calc(100vw - 16px)); max-height: calc(100dvh - 16px); overflow: auto;
+  box-sizing: border-box; padding: 10px 12px; border: 1px solid rgba(103, 232, 249, 0.55); border-radius: 14px;
+  background: linear-gradient(145deg, rgba(14, 25, 48, 0.98), rgba(6, 10, 24, 0.98)); color: #f8fafc;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.58), inset 0 0 16px rgba(34, 211, 238, 0.08);
+  pointer-events: none; font: 500 0.78rem/1.3 var(--font); overscroll-behavior: contain;
+}
+.board-tooltip[hidden] { display: none; }
+.board-tip-head { display: flex; align-items: center; gap: 9px; padding-bottom: 7px; border-bottom: 1px solid rgba(148, 163, 184, 0.22); }
+.board-tip-head img { width: 48px; height: 48px; flex: none; object-fit: contain; filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.5)); }
+.board-tip-head > span { display: grid; gap: 2px; min-width: 0; }
+.board-tip-head > span > b { color: #fff; font-size: 0.98rem; }
+.board-tip-head small { color: #bae6fd; font-size: 0.68rem; }
+.board-tip-stars { color: #facc15; font-style: normal; letter-spacing: 0.04em; }
+.board-tip-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px 10px; padding: 8px 0; }
+.board-tip-stats > div { display: flex; align-items: baseline; justify-content: space-between; gap: 6px; }
+.board-tip-stats small { color: #94a3b8; font-size: 0.65rem; }
+.board-tip-stats b { color: #fef3c7; font-size: 0.76rem; white-space: nowrap; }
+.board-tip-details { display: grid; gap: 6px; }
+.board-tip-details section { padding: 6px 8px; border-radius: 8px; background: rgba(30, 41, 59, 0.72); }
+.board-tip-details section > b { color: #67e8f9; font-size: 0.72rem; }
+.board-tip-details p { margin: 2px 0 0; color: #dbeafe; font-size: 0.7rem; }
+@media (max-width: 480px) {
+  .board-tooltip { padding: 8px 10px; border-radius: 12px; }
+  .board-tip-head img { width: 40px; height: 40px; }
+  .board-tip-stats { gap: 4px 7px; }
+}
 /* The board's bonuses overlay its edge (left on desktop, right on phones) under the halfway line, each with its
    count; lit once it counts, dim before. A tap opens their panel. */
-.board-side { position: fixed; z-index: 2; display: flex; flex-direction: column-reverse; gap: 8px; pointer-events: auto; }
-.board-bonus { position: relative; width: 38px; height: 38px; padding: 0; border: 0; border-radius: 50%; background: none; cursor: pointer; }
-.board-bonus img { width: 100%; height: 100%; border-radius: 50%; filter: grayscale(0.85) brightness(0.65); }
+.board-side { position: fixed; z-index: 2; display: flex; flex-direction: column-reverse; gap: 8px; pointer-events: auto; overflow-y: auto; scrollbar-width: none; }
+.board-bonus { position: relative; flex: none; width: 38px; height: 38px; margin-bottom: 5px; padding: 0; border: 0; border-radius: 50%; background: none; cursor: pointer; }
+.board-bonus img { width: 100%; height: 100%; object-fit: contain; border-radius: 50%; filter: grayscale(0.85) brightness(0.65); }
 .board-bonus.is-on img { filter: drop-shadow(0 0 6px rgba(253, 224, 71, 0.8)); }
 .board-bonus.is-event img { filter: drop-shadow(0 0 7px rgba(192, 132, 252, 0.95)); }
 .board-bonus small { position: absolute; left: 50%; bottom: -5px; translate: -50% 0; padding: 0 4px; border-radius: 99px; background: rgba(6, 10, 24, 0.9); color: #fde68a; font: 700 0.62rem/1.3 var(--font); white-space: nowrap; }
-.gear-panel.is-board { z-index: 7; }
+.gear-panel.is-board { z-index: 7; max-height: calc(100dvh - var(--board-panel-top, 8px) - 12px); }
 .gear-panel li.is-off { opacity: 0.6; }
 
 /* Bought but turned off: its colours, dimmer and without the gold ring. */
@@ -4283,10 +4315,12 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
     width: 100%; height: 64px; min-height: 64px; aspect-ratio: auto; padding: 4px 8px; text-align: left; font-size: 0.76rem;
   }
   .board-card img { grid-column: 1; grid-row: 1 / span 2; width: 48px; height: 48px; margin: 0; }
-  :root:not([data-retro]) .board-card { aspect-ratio: auto; }
+  :root:not([data-retro]) .board-card { aspect-ratio: auto; grid-template-rows: 1fr 1fr; padding: 4px 8px; }
   :root:not([data-retro]) .board-card img { width: 48px; height: 48px; margin: 0; }
+  :root:not([data-retro]) .board-card.is-boss > img { width: 56px; height: 56px; }
   .board-card > b { grid-column: 2; grid-row: 1 / span 2; }
   .board-card .board-price { grid-column: 3; grid-row: 1 / span 2; white-space: nowrap; }
+  :root:not([data-retro]) .board-card .board-price { position: static; justify-self: end; }
   .board-cast { top: 2px; right: 4px; z-index: 1; }
   .board-up { left: 28px; top: 50%; }
   .board-acts { grid-template-columns: 1fr; margin-top: auto; gap: 7px; }
