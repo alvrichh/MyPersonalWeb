@@ -50,6 +50,8 @@ export const FINAL_ID = ['kernel', 'archdemon', 'drakkar', 'medusa', 'queen', 'z
 /** A cast's strength: health and damage ×(1 + `CAST.step` a world past the first); its price grows the same. */
 export const CAST = { step: 0.25 };
 export const castPower = (cast: number) => 1 + CAST.step * (cast - 1);
+/** A unit's strength: its cast's in Fusion, the world's for every cast in Tactics (all levelled). */
+export const unitPower = (b: { variant: Variant; world: number }, cast: number) => castPower(b.variant === 'tactics' ? b.world : cast);
 export const castLook = (cast: number) => (WORLDS[cast - 1].look === 'random' ? 'core' : WORLDS[cast - 1].look) as Look;
 
 /** How strong the waves are against the gold you have had (×base in world 1, `world` more each world after), and
@@ -69,7 +71,20 @@ export function synergies(b: { army: { cast: number }[] }) {
   for (const p of b.army) count[p.cast] = (count[p.cast] ?? 0) + 1;
   return Object.entries(count).map(([cast, n]) => ({ cast: Number(cast), n, lv: n >= SYNERGY.need[1] ? 2 : n >= SYNERGY.need[0] ? 1 : 0 })).sort((a, c) => c.n - a.n || a.cast - c.cast);
 }
-const synV = (f: { syn: number; synLv: number }, world: number) => (f.syn === world && f.synLv ? SYNERGY.v[world][f.synLv - 1] : 0);
+const synV = (f: { syn: number; synLv: number; tac?: boolean }, world: number) => (!f.tac && f.syn === world && f.synLv ? SYNERGY.v[world][f.synLv - 1] : 0);
+/** Tactics: every unit fights with its own world's ability, alone at its first level, and stronger with three (second)
+    or five (third) of its world on the board, so mixing worlds makes combos; all casts are equally strong there. */
+export type Ability = 'poison' | 'burn' | 'freeze' | 'slow' | 'drain' | 'shock' | 'armor' | 'dodge' | 'power';
+export const ABILITY: Record<number, Ability> = { 1: 'poison', 2: 'burn', 3: 'freeze', 4: 'slow', 5: 'drain', 6: 'shock', 7: 'armor', 8: 'dodge', 9: 'power' };
+/** Each ability's amount at its three levels: poison and burn a share of the hit over 3 and 2 s, freeze a chance to
+    stop the foe for `FREEZE` seconds, slow by that much for 1.2 s, drain a share of the hit healed, shock a share
+    arcing to one more, armor and dodge against hits taken, power more damage. */
+export const ABIL_V: Record<Ability, [number, number, number]> = {
+  poison: [0.3, 0.45, 0.65], burn: [0.3, 0.45, 0.65], freeze: [0.12, 0.2, 0.3], slow: [0.25, 0.35, 0.5], drain: [0.15, 0.25, 0.35],
+  shock: [0.35, 0.5, 0.7], armor: [0.12, 0.2, 0.3], dodge: [0.1, 0.16, 0.24], power: [0.15, 0.25, 0.4],
+};
+const FREEZE = 0.7;
+const abil = (f: { syn: number; synLv: number; tac?: boolean }, a: Ability) => (f.tac && f.synLv && ABILITY[f.syn] === a ? ABIL_V[a][f.synLv - 1] : 0);
 /** The room-6 boss's leap: after `wait` seconds of the fight it jumps over the front line to land beside the enemy's
     ranged unit furthest back (or its furthest unit), in `time` seconds, its landing hitting all within `reach`. */
 export const LEAP = { wait: 0.8, time: 0.55, reach: 46, dmg: 0.6 };
@@ -96,7 +111,7 @@ export const TACTICS = {
   price: [1, 2, 3, 5, 8],
   odds: [[0.62, 0.28, 0.09, 0.01, 0], [0.34, 0.3, 0.22, 0.11, 0.03]],
   /** The waves against a tactics army, against a fusion one. */
-  wave: 0.75,
+  wave: 0.68,
 };
 const starOf = (p: { star?: Star }) => p.star ?? 1;
 /** A unit in a fight, yours (side 0) or the enemy's (side 1). */
@@ -130,6 +145,10 @@ export type Fighter = {
   /** The world whose synergy it carries (0 for none) and how strong (1 with three of its world, 2 with five). */
   syn: number;
   synLv: number;
+  /** Tactics: `syn` is always its own world and `synLv` its ability's level (`ABILITY`). */
+  tac?: boolean;
+  poison: number;
+  poisonDps: number;
   /** Burning (seconds left and damage a second) and slowed (seconds left). */
   burn: number;
   burnDps: number;
@@ -147,7 +166,7 @@ export type Fighter = {
   chargeCd: number;
   hitIds: number[];
 };
-export type Shot = { x: number; y: number; vx: number; vy: number; side: 0 | 1; dmg: number; target: number; life: number; ring: boolean; syn: number; synLv: number };
+export type Shot = { x: number; y: number; vx: number; vy: number; side: 0 | 1; dmg: number; target: number; life: number; ring: boolean; syn: number; synLv: number; tac?: boolean; from?: number };
 /** The special rounds, every third: gold rains in, everyone hits faster, everyone is tougher, or a win pays double. */
 export type BoardEvent = 'gold' | 'frenzy' | 'giants' | 'bounty';
 export const EVENT_EVERY = 3;
@@ -237,9 +256,9 @@ function freeCell(b: BoardGame, backFirst = false): Slot | null {
 }
 /** What a step of a cast costs in the shop, and gives back when sold. */
 export const priceOf = (tier: Tier, cast: number, variant: Variant = 'fusion') => Math.max(1, Math.round((variant === 'tactics' ? TACTICS.price[tier] : PRICE[Math.min(2, tier)]) * castPower(cast)));
-export const saleOf = (p: Piece, variant: Variant = 'fusion') =>
+export const saleOf = (p: Piece, variant: Variant = 'fusion', world = p.cast) =>
   variant === 'tactics'
-    ? Math.max(1, Math.floor((priceOf(p.tier, p.cast, 'tactics') * TACTICS.copies ** (starOf(p) - 1)) / 2))
+    ? Math.max(1, Math.floor((priceOf(p.tier, world, 'tactics') * TACTICS.copies ** (starOf(p) - 1)) / 2))
     : Math.max(1, Math.floor((TIER_VALUE[p.tier] * castPower(p.cast)) / 2));
 
 export function newBoard(world: number, casts: number, variant: Variant = 'fusion'): BoardGame {
@@ -266,8 +285,9 @@ function rollShop(b: BoardGame) {
       let roll = Math.random();
       let tier = 0;
       while (tier < 4 && roll >= odds[tier]) { roll -= odds[tier]; tier += 1; }
-      const cast = Math.random() < 0.5 ? b.casts : 1 + Math.floor(Math.random() * b.casts);
-      return { tier: tier as Tier, cast, price: priceOf(tier as Tier, cast, 'tactics') };
+      // Every world's cast from the start, all equally strong and priced: what sets them apart is their ability.
+      const cast = 1 + Math.floor(Math.random() * WORLDS.length);
+      return { tier: tier as Tier, cast, price: priceOf(tier as Tier, b.world, 'tactics') };
     });
     return;
   }
@@ -445,7 +465,7 @@ export function sell(b: BoardGame, from: Slot) {
   const p = pieceAt(b, from);
   if (b.phase !== 'prep' || !p) return false;
   b.army = b.army.filter((q) => q !== p);
-  b.gold += saleOf(p, b.variant);
+  b.gold += saleOf(p, b.variant, b.world);
   b.events.push('sell');
   return true;
 }
@@ -475,15 +495,15 @@ export function moveUnit(b: BoardGame, from: Slot, to: Slot): 'merged' | 'swappe
 
 export const cellCentre = (s: Slot) => ({ x: s.c * CELL + CELL / 2, y: s.r * CELL + CELL / 2 });
 
-function fighter(side: 0 | 1, tier: Tier, cast: number, x: number, y: number, mult0: number, id = nextId++, syn = 0, synLv = 0, event: BoardEvent | null = null, star: Star = 1): Fighter {
+function fighter(side: 0 | 1, tier: Tier, cast: number, x: number, y: number, mult0: number, id = nextId++, syn = 0, synLv = 0, event: BoardEvent | null = null, star: Star = 1, tac = false): Fighter {
   const st = TIER_STATS[tier];
   const mult = mult0 * TACTICS.star[star - 1];
-  const f = { syn, synLv };
+  const f = { syn, synLv, tac };
   const hp = Math.round(st.hp * mult * (1 + synV(f, 1)) * (event === 'giants' ? 1.4 : 1));
   return {
-    id, side, tier, cast, star, x, y, hp, maxHp: hp, dmg: st.dmg * mult * (1 + synV(f, 9)), rate: st.rate * (1 + synV(f, 6)) * (event === 'frenzy' ? 1.3 : 1), range: st.range, speed: st.speed, r: st.r,
+    id, side, tier, cast, star, x, y, hp, maxHp: hp, dmg: st.dmg * mult * (1 + synV(f, 9) + abil(f, 'power')), rate: st.rate * (1 + synV(f, 6)) * (event === 'frenzy' ? 1.3 : 1), range: st.range, speed: st.speed, r: st.r,
     splash: st.splash ?? 0, ranged: !!st.ranged, cd: rand(0.1, 0.6), ring: RING.every * 0.6, target: -1, retarget: 0, dead: false,
-    face: side === 0 ? 1 : -1, step: roll() * 4, swing: 0, hit: 0, syn, synLv, burn: 0, burnDps: 0, slow: 0, slowBy: 0,
+    face: side === 0 ? 1 : -1, step: roll() * 4, swing: 0, hit: 0, syn, synLv, tac, poison: 0, poisonDps: 0, burn: 0, burnDps: 0, slow: 0, slowBy: 0,
     leap: null, leapCd: tier === 3 ? LEAP.wait : Infinity, aim: 0, dash: 0, dir: { x: 0, y: side === 0 ? -1 : 1 }, chargeCd: tier >= 4 ? CHARGE.first : Infinity, hitIds: [],
   };
 }
@@ -532,9 +552,12 @@ export function startFight(b: BoardGame) {
   if (b.phase !== 'prep' || !b.army.length) return false;
   tickMerge(b, 0, true);
   const lv = Object.fromEntries(synergies(b).map((x) => [x.cast, x.lv]));
-  b.fighters = b.army.map((p) => { const at = cellCentre(p.slot); return fighter(0, p.tier, p.cast, at.x, at.y, castPower(p.cast), p.id, lv[p.cast] ? p.cast : 0, lv[p.cast] ?? 0, b.event, starOf(p)); });
+  const tac = b.variant === 'tactics';
+  b.fighters = b.army.map((p) => { const at = cellCentre(p.slot); return tac
+    ? fighter(0, p.tier, p.cast, at.x, at.y, unitPower(b, p.cast), p.id, p.cast, 1 + (lv[p.cast] ?? 0), b.event, starOf(p), true)
+    : fighter(0, p.tier, p.cast, at.x, at.y, castPower(p.cast), p.id, lv[p.cast] ? p.cast : 0, lv[p.cast] ?? 0, b.event, starOf(p)); });
   const grow = castPower(b.world) * (1 + WAVE.tough * (b.world - 1)) * (b.variant === 'tactics' ? TACTICS.wave : SUMMON.wave);
-  for (const w of waveSpots(b)) b.fighters.push(fighter(1, w.tier, b.world, w.x, w.y, grow, nextId++, 0, 0, b.event));
+  for (const w of waveSpots(b)) b.fighters.push(tac ? fighter(1, w.tier, b.world, w.x, w.y, grow, nextId++, b.world, 1, b.event, 1, true) : fighter(1, w.tier, b.world, w.x, w.y, grow, nextId++, 0, 0, b.event));
   b.shots = [];
   b.skillUsed = false;
   b.strike = null;
@@ -561,7 +584,9 @@ export function startOnlineFight(b: BoardGame, rival: Piece[], mine: Piece[] = b
     const lv = Object.fromEntries(synergies({ army }).map((x) => [x.cast, x.lv]));
     return army.map((p) => {
       const at = cellCentre(side === 0 ? p.slot : { c: COLS - 1 - p.slot.c, r: ROWS - 1 - p.slot.r });
-      return fighter(side, p.tier, p.cast, at.x, at.y, castPower(p.cast), id++, lv[p.cast] ? p.cast : 0, lv[p.cast] ?? 0, b.event, starOf(p));
+      return b.variant === 'tactics'
+        ? fighter(side, p.tier, p.cast, at.x, at.y, unitPower(b, p.cast), id++, p.cast, 1 + (lv[p.cast] ?? 0), b.event, starOf(p), true)
+        : fighter(side, p.tier, p.cast, at.x, at.y, castPower(p.cast), id++, lv[p.cast] ? p.cast : 0, lv[p.cast] ?? 0, b.event, starOf(p));
     });
   };
   b.fighters = [...make(0, host), ...make(1, guest)];
@@ -614,14 +639,16 @@ function damage(b: BoardGame, f: Fighter, dmg: number) {
   if (f.dead) return;
   // The haunted servers dodge; the mud takes less.
   if (synV(f, 8) && roll() < synV(f, 8)) return;
-  f.hp -= dmg * (1 - synV(f, 4));
+  if (abil(f, 'dodge') && roll() < abil(f, 'dodge')) return;
+  f.hp -= dmg * (1 - synV(f, 4)) * (1 - abil(f, 'armor'));
   f.hit = 0.15;
   if (f.hp <= 0) { f.dead = true; if (f.side !== (b.online?.me ?? 0)) b.kills += 1; b.events.push(f.side === 0 ? 'fall' : 'kill'); }
 }
 
 /** A blow landing, with the attacker's synergy: fire burns, ice slows, the Forge arcs to one more. */
-function land(b: BoardGame, from: { syn: number; synLv: number }, t: Fighter, dmg: number) {
+function land(b: BoardGame, from: { syn: number; synLv: number; tac?: boolean; id?: number; from?: number }, t: Fighter, dmg: number) {
   damage(b, t, dmg);
+  if (from.tac) { tacticsHit(b, from, t, dmg); return; }
   if (t.dead) return;
   if (synV(from, 2)) { t.burn = 2; t.burnDps = Math.max(t.burnDps, (dmg * synV(from, 2)) / 2); }
   if (synV(from, 3)) { t.slow = Math.max(t.slow, 1.2); t.slowBy = Math.max(t.slowBy, synV(from, 3)); }
@@ -633,10 +660,27 @@ function land(b: BoardGame, from: { syn: number; synLv: number }, t: Fighter, dm
   }
 }
 
+/** Tactics: a blow's world ability (`ABILITY`). */
+function tacticsHit(b: BoardGame, from: { syn: number; synLv: number; tac?: boolean; id?: number; from?: number }, t: Fighter, dmg: number) {
+  const me = byId(b, from.from ?? from.id ?? -1);
+  if (me && abil(from, 'drain')) me.hp = Math.min(me.maxHp, me.hp + dmg * abil(from, 'drain'));
+  if (t.dead) return;
+  if (abil(from, 'poison')) { t.poison = 3; t.poisonDps = Math.max(t.poisonDps, (dmg * abil(from, 'poison')) / 3); }
+  if (abil(from, 'burn')) { t.burn = 2; t.burnDps = Math.max(t.burnDps, (dmg * abil(from, 'burn')) / 2); }
+  if (abil(from, 'slow')) { t.slow = Math.max(t.slow, 1.2); t.slowBy = Math.max(t.slowBy, abil(from, 'slow')); }
+  if (abil(from, 'freeze') && t.tier < 3 && roll() < abil(from, 'freeze')) { t.slow = Math.max(t.slow, FREEZE); t.slowBy = 1; b.events.push('freeze'); }
+  if (abil(from, 'shock')) {
+    let best = 70;
+    let next: Fighter | undefined;
+    for (const o of alive(b, t.side)) { const d = Math.hypot(o.x - t.x, o.y - t.y); if (o !== t && d < best) { best = d; next = o; } }
+    if (next) { damage(b, next, dmg * abil(from, 'shock')); b.events.push('arc'); }
+  }
+}
+
 function strike(b: BoardGame, f: Fighter, t: Fighter) {
   if (f.ranged) {
     const d = Math.hypot(t.x - f.x, t.y - f.y) || 1;
-    b.shots.push({ x: f.x, y: f.y - 8, vx: ((t.x - f.x) / d) * 260, vy: ((t.y - f.y) / d) * 260, side: f.side, dmg: f.dmg, target: t.id, life: 2, ring: false, syn: f.syn, synLv: f.synLv });
+    b.shots.push({ x: f.x, y: f.y - 8, vx: ((t.x - f.x) / d) * 260, vy: ((t.y - f.y) / d) * 260, side: f.side, dmg: f.dmg, target: t.id, life: 2, ring: false, syn: f.syn, synLv: f.synLv, tac: f.tac, from: f.id });
     b.events.push('throw');
     return;
   }
@@ -778,6 +822,7 @@ export function updateBoard(b: BoardGame, dt: number) {
     f.swing = Math.max(0, f.swing - dt);
     if (f.dead) continue;
     if (f.burn > 0) { f.burn -= dt; damage(b, f, f.burnDps * dt); if (f.dead) continue; }
+    if (f.poison > 0) { f.poison -= dt; damage(b, f, f.poisonDps * dt); if (f.dead) continue; } else f.poisonDps = 0;
     f.slow = Math.max(0, f.slow - dt);
     if (f.slow <= 0) f.slowBy = 0;
     if (synV(f, 5)) f.hp = Math.min(f.maxHp, f.hp + f.maxHp * synV(f, 5) * dt);

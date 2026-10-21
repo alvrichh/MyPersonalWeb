@@ -1,4 +1,4 @@
-import { BOARD_H, BOARD_W, CELL, CHARGE, COLS, FINAL_ID, HOME_ROW, LEAP, MERGE_DELAY, ROUNDS, STRIKE, homeCell, ROWS, TIER_KIND, TIER_STATS, canMerge, castLook, cellCentre, pieceAt, waveSpots, type BoardGame, type Piece, type Slot, type Tier } from './board';
+import { BOARD_H, BOARD_W, CELL, CHARGE, COLS, FINAL_ID, HOME_ROW, LEAP, MERGE_DELAY, ROUNDS, STRIKE, homeCell, ROWS, TIER_KIND, TIER_STATS, canMerge, castLook, cellCentre, pieceAt, waveSpots, ABILITY, type Ability, type BoardGame, type Piece, type Slot, type Tier } from './board';
 import { boardFx, boardWallPieces, drawBoardBackdrop, drawBoardFigure } from './draw';
 
 /* Drawing the board mode on the game's canvas: the world's floor under a grid, your bugs on the lower half and the
@@ -314,12 +314,22 @@ function marks(ctx: CanvasRenderingContext2D, x: number, y: number, p: { tier: n
   ctx.beginPath();
   ctx.arc(x + CELL * 0.36, y - CELL * 0.62, 7, 0, Math.PI * 2);
   ctx.fill();
-  ctx.fillStyle = '#fcd34d';
-  ctx.font = '700 9px system-ui, sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
+  if (tactics) {
+    // Tactics: the unit's world ability, not its world's number.
+    ctx.font = '9px system-ui, sans-serif';
+    ctx.fillStyle = '#e0f2fe';
+    ctx.fillText(ABILITY_ICON[ABILITY[p.cast]] ?? String(p.cast), x + CELL * 0.36, y - CELL * 0.62 + 1);
+    return;
+  }
+  ctx.fillStyle = '#fcd34d';
+  ctx.font = '700 9px system-ui, sans-serif';
   ctx.fillText(String(p.cast), x + CELL * 0.36, y - CELL * 0.62 + 0.5);
 }
+
+/** Each world ability's symbol on a Tactics unit. */
+export const ABILITY_ICON: Record<Ability, string> = { poison: '☠', burn: '🔥', freeze: '❄', slow: '🐌', drain: '🩸', shock: '⚡', armor: '🛡', dodge: '👻', power: '💪' };
 
 const ok = (img: HTMLImageElement) => img.complete && img.naturalWidth > 0;
 /** Where each commander stands (its feet), in the board's corner cells. */
