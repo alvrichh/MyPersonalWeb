@@ -4911,7 +4911,7 @@ const ICICLE_PIC = [
 ];
 /** How long the spikes take to grow through their six frames once they strike. */
 const ICICLE_GROW = 0.18;
-function drawIcicleArt(ctx: CanvasRenderingContext2D, st: { x: number; y: number; t: number; r?: number }, now: number) {
+function drawIcicleArt(ctx: CanvasRenderingContext2D, st: { x: number; y: number; t: number; r?: number; persistent?: boolean }, now: number) {
   const v = Math.abs(Math.floor(st.x * 7 + st.y * 13)) % 4;
   const warn = st.t > 0;
   const age = -st.t;
@@ -4944,7 +4944,7 @@ function drawIcicleArt(ctx: CanvasRenderingContext2D, st: { x: number; y: number
     ctx.setLineDash([]);
     alpha = 0.5 + 0.5 * t;
     grow = 0.55 + 0.45 * t;
-  } else alpha = Math.min(1, (ICICLE_STAY - age) / (ICICLE_STAY * 0.35));
+  } else alpha = st.persistent ? 1 : Math.min(1, (ICICLE_STAY - age) / (ICICLE_STAY * 0.35));
   if (alpha <= 0) return true;
   const w = ((r * 2.5) / m.cw) * grow;
   const h = (w * pic.naturalHeight) / pic.naturalWidth;
@@ -4953,7 +4953,7 @@ function drawIcicleArt(ctx: CanvasRenderingContext2D, st: { x: number; y: number
   ctx.globalAlpha = 1;
   return true;
 }
-function drawIcicle(ctx: CanvasRenderingContext2D, st: { x: number; y: number; t: number; hit?: boolean; r?: number }, now: number) {
+function drawIcicle(ctx: CanvasRenderingContext2D, st: { x: number; y: number; t: number; hit?: boolean; persistent?: boolean; r?: number }, now: number) {
   if (!retroLook && drawIcicleArt(ctx, st, now)) return;
   const r = st.r ?? ICICLE_R;
   if (st.t > 0) {
@@ -4985,7 +4985,7 @@ function drawIcicle(ctx: CanvasRenderingContext2D, st: { x: number; y: number; t
   }
   // Up in a tenth of a second, down over the last third of its stay.
   const age = -st.t;
-  const up = Math.min(1, age / 0.1) * Math.min(1, (ICICLE_STAY - age) / (ICICLE_STAY * 0.35));
+  const up = st.persistent ? 1 : Math.min(1, age / 0.1) * Math.min(1, (ICICLE_STAY - age) / (ICICLE_STAY * 0.35));
   if (up <= 0) return;
   ctx.fillStyle = 'rgba(8,20,35,0.35)';
   ctx.beginPath();

@@ -82,9 +82,9 @@ export const WORLD_COUNT = WORLDS.length;
 /** Lava and thorns hurt, puddles slow you down. A boss's meteor or roots leave some that fade (`ttl`, seconds). */
 export type Hazard = { kind: 'lava' | 'puddle' | 'thorns'; x: number; y: number; r: number; ttl?: number; /** Drawn by something else (a vine row's picture). */ hidden?: boolean };
 /** A lightning strike on its way: a warning circle, then the hit. */
-/** A bolt (or, in the viking world, ice spikes breaking out of the floor): `t` seconds of warning left;
-   ice spikes stay up a moment after they strike (`t` below zero, `hit` once they have). */
-export type Strike = { x: number; y: number; t: number; ice?: boolean; hit?: boolean; dmg?: number; boss?: boolean; r?: number };
+/** A bolt or ice spikes breaking out of the floor: `t` seconds of warning left; world-3 spikes can remain as
+   persistent hazards after they strike, while boss attacks still crumble after a moment. */
+export type Strike = { x: number; y: number; t: number; ice?: boolean; hit?: boolean; persistent?: boolean; dmg?: number; boss?: boolean; r?: number };
 
 export type Vec = { x: number; y: number };
 /** A block; `piece` says which of the world's pieces of its size it is drawn as (the open field's blocks carry it). */
@@ -1211,6 +1211,7 @@ function updateHorde(g: Game, dt: number) {
   }
   // Stragglers left far behind are brought round to the front, so the horde stays with you.
   const far = Math.hypot(g.viewHalf.x, g.viewHalf.y) * 2.2;
+  g.strikes = g.strikes.filter((st) => !st.persistent || dist(st, g.player) < far);
   for (const e of g.enemies) {
     if (e.kind !== 'boss' && dist(e, g.player) > far) {
       const at = ringSpot(g);
@@ -1229,6 +1230,7 @@ function updateHorde(g: Game, dt: number) {
     }
     g.hazards = g.hazards.filter((h) => dist(h, g.player) < far);
   }
+  trimIcePatches(g);
   // Gems nobody will go back for are banked, so the field doesn't fill up.
   if (g.gems.length > 160) {
     g.gems.sort((a, b) => dist(a, g.player) - dist(b, g.player));
@@ -2326,10 +2328,19 @@ const CHILL_SLOW = 0.35;
 export const ICICLE_EVERY = 1.25;
 export const ICICLE_STAY = 0.6;
 export const ICICLE_R = 30;
+/** Bound the number of ice patches kept in one room or around the hero in the open field. */
+const ICICLE_PATCH_CAP = 32;
 const ICICLE_CHILL = 1.2;
 /** Brynhild's rows of ice spikes: how many a row, where the first breaks out past her, how far apart, the first's
     warning and how much later each next one comes. */
 const ICE_ROW = { count: 7, from: 22, gap: 34, warn: 0.45, step: 0.07, r: 19, spread: 0.55 };
+
+function trimIcePatches(g: Game) {
+  const ice = g.strikes.filter((st) => st.persistent);
+  if (ice.length <= ICICLE_PATCH_CAP) return;
+  const oldest = new Set(ice.slice(0, ice.length - ICICLE_PATCH_CAP));
+  g.strikes = g.strikes.filter((st) => !oldest.has(st));
+}
 
 function hurtPlayer(g: Game, amount: number, from?: string, fire = false) {
   const p = g.player;
@@ -3478,13 +3489,21 @@ function updateHazards(g: Game, dt: number) {
     g.strikes.push({ x: at.x, y: at.y, t: 0.9, ice: icy || undefined });
   }
   g.strikes = g.strikes.filter((st) => {
+    if (st.persistent && st.hit) {
+      if (dist(st, p) < (st.r ?? ICICLE_R) + p.r * 0.5) {
+        hurtPlayer(g, 8);
+        if (!g.showcase) p.chill = Math.max(p.chill, ICICLE_CHILL);
+      }
+      return true;
+    }
     st.t -= dt;
     if (st.t > 0) return true;
     if (st.ice) {
-      // Ice spikes break out of the floor: whoever stands on them is hurt and slowed for a moment,
-      // and they stay up a little before they crumble.
+      // Ice spikes break out of the floor. Ambient world-3 spikes remain dangerous; boss spikes still crumble.
       if (st.hit) return st.t > -ICICLE_STAY;
       st.hit = true;
+      st.persistent = icy && !st.boss;
+      if (st.persistent) st.t = -ICICLE_STAY;
       burst(g, st.x, st.y, '#e0f2fe', 16, 150, 3);
       burst(g, st.x, st.y, '#7dd3fc', 8, 90, 2.5);
       g.events.push('strike');
@@ -3494,6 +3513,7 @@ function updateHazards(g: Game, dt: number) {
         g.events.push('chill');
       }
       if (!st.boss) for (const e of live(g)) if (dist(st, e) < ICICLE_R + e.r) hurt(g, e, 40);
+      if (st.persistent) trimIcePatches(g);
       return true;
     }
     g.fx.push({ kind: 'strike', x: st.x, y: st.y, r: 34, a: 0, life: 0.3, max: 0.3 });
