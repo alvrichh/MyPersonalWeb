@@ -1245,6 +1245,8 @@ export const ownedWeapons = (g: Game) => WEAPONS.filter((s) => g.skills[s] > 0);
 
 function canPick(g: Game, s: SkillId) {
   if (!allowedIn(g, s)) return false;
+  // Guard has enough kills for per-kill healing to scale out of balance; keep this upgrade in Sprints only.
+  if (g.mode === 'horde' && s === 'vampire') return false;
   // Two arrow elements a run: once you have a pair, the other two stop coming.
   if (elementShut(g, s)) return false;
   // The monolith or the microservice, never both.
