@@ -15,7 +15,9 @@ export const SPECIAL_SKINS = ['kratos', 'medusa', 'weso'] as const;
 export const WORLD_SKINS = ['intern', 'lava', 'arctic', 'swamp', 'jungle', 'gladiator', 'mech', 'ghost', 'dragon'] as const;
 export const SKINS: HeroSkin[] = ['boy', 'robot', 'kitty', ...SPECIAL_SKINS, ...WORLD_SKINS];
 /** What each figure costs in coins; Alvrich comes free. The owner's rule: skins are always the dearest thing in the game (items, forge levels, the revive), so raise these if anything else goes past them. */
-export const SKIN_PRICE: Record<HeroSkin, number> = { boy: 0, robot: 10000, kitty: 10000, intern: 1000, lava: 1000, arctic: 1000, swamp: 1000, jungle: 1000, gladiator: 1000, mech: 1000, ghost: 1000, dragon: 1000, kratos: 10000, medusa: 10000, weso: 10000 };
+/** Every skin free for now, at the owner's request, so he can try them; the prices they will have once the unlocks come:
+    robot and Kitty 10000, Kratos, Medusa and El Weso 10000 (to be won by beating final bosses on call), the world skins 1000. */
+export const SKIN_PRICE: Record<HeroSkin, number> = Object.fromEntries(SKINS.map((k) => [k, 0])) as Record<HeroSkin, number>;
 /** The hats are painted on the hero's pictures; a skin listed here has no hat versions and always shows its base set. */
 const HATLESS: HeroSkin[] = ['kitty', ...SPECIAL_SKINS, ...WORLD_SKINS];
 const HAT_SET: Record<string, string> = { wizardHat: 'wizard', gladHelm: 'helm', bandana: 'bandana', crown: 'crown' };
