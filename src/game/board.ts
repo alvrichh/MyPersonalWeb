@@ -1,4 +1,6 @@
-import { WORLDS, type Look } from './world';
+import { WORLDS, type Look, type ThreatEl } from './world';
+import { BOSS_CAST, bossKit, planBossCast, type BoardBossAttack, type BossPool, type BossShot } from './boardBoss';
+export { bossKit } from './boardBoss';
 
 /* «Sprint Planning», the board mode: an auto battler. Between fights you buy bugs of the casts you have opened,
    lay them on your half of the board and merge two of a kind into the next one up the cast (two bugs make a
@@ -43,8 +45,6 @@ export const TIER_STATS: Stats[] = [
   { hp: 9000, dmg: 98, rate: 0.85, range: 55, speed: 46, r: 19, splash: 66 },
   { hp: 22000, dmg: 155, rate: 0.9, range: 60, speed: 48, r: 20, splash: 72 },
 ];
-/** The final boss's ring of orbs: every few seconds, out in a circle. */
-const RING = { every: 5, n: 8, dmg: 22, speed: 170 };
 /** The final boss of each world (its art id, as in `world.ts`'s FINAL_BOSS). */
 export const FINAL_ID = ['kernel', 'archdemon', 'drakkar', 'medusa', 'queen', 'zeus', 'mech', 'wraith', 'chimera'];
 /** A cast's strength: health and damage ×(1 + `CAST.step` a world past the first); its price grows the same. */
@@ -154,6 +154,8 @@ export type Fighter = {
   burnDps: number;
   slow: number;
   slowBy: number;
+  slowKind?: 'ice' | 'mud';
+  freeze: number;
   /** The room-6 boss's leap, once a fight: in the air (`t` running from 0 to `LEAP.time`) from where it stood to beside
       the enemy's ranged units at the back; null on the ground. `leapCd` counts down to it. */
   leap: { t: number; fx: number; fy: number; tx: number; ty: number } | null;
@@ -165,8 +167,15 @@ export type Fighter = {
   dir: { x: number; y: number };
   chargeCd: number;
   hitIds: number[];
+  /** A boss's characteristic move and final signature use independent, deterministic clocks. */
+  moveCd: number;
+  signatureCd: number;
+  bossPose?: 'move' | 'sig';
+  bossPoseTime: number;
+  channel: number;
 };
-export type Shot = { x: number; y: number; vx: number; vy: number; side: 0 | 1; dmg: number; target: number; life: number; ring: boolean; syn: number; synLv: number; tac?: boolean; from?: number };
+export type Shot = { x: number; y: number; vx: number; vy: number; side: 0 | 1; dmg: number; target: number; life: number; ring: boolean; syn: number; synLv: number; tac?: boolean; from?: number; pic?: BossShot['pic']; el?: ThreatEl; r?: number; home?: number; delay?: number; group?: BossPool };
+export type BoardEffect = { kind: 'arc' | 'heal' | 'dodge' | 'armor' | 'power'; x: number; y: number; tx?: number; ty?: number; age: number };
 /** The special rounds, every third: gold rains in, everyone hits faster, everyone is tougher, or a win pays double. */
 export type BoardEvent = 'gold' | 'frenzy' | 'giants' | 'bounty';
 export const EVENT_EVERY = 3;
@@ -199,6 +208,10 @@ export type BoardGame = {
   boom: { x: number; y: number; age: number } | null;
   /** The bosses' impacts, only to be seen: a leap's landing (`slam`) and a charge's hits (`ring`). */
   impacts: { x: number; y: number; age: number; kind: 'slam' | 'ring' }[];
+  /** Brief, bounded visual feedback for bonuses that actually triggered. */
+  effects: BoardEffect[];
+  /** Warned attacks from each boss's own Sprints/Guard kit. */
+  bossAttacks: BoardBossAttack[];
   /** The last buy that merged by itself: where, into which unit, and how many merges in a row (in Tactics, the
       star it reached). */
   lastMerge: { slot: Slot; id: number; combo: number; star?: Star } | null;
@@ -263,8 +276,8 @@ export const saleOf = (p: Piece, variant: Variant = 'fusion', world = p.cast) =>
 
 export function newBoard(world: number, casts: number, variant: Variant = 'fusion'): BoardGame {
   const b: BoardGame = {
-    world, variant, casts: Math.max(1, casts), round: 1, lives: LIVES, gold: Math.round(8 * castPower(world)), phase: 'prep',
-    army: [], shop: [], wave: enemyWave(world, 1), fighters: [], shots: [], time: 0, last: null, wins: 0, kills: 0, events: [], event: null, skillUsed: false, strike: null, boom: null, impacts: [], lastMerge: null, lastSummon: null, autoMerge: false, autoBought: false, summons: 0, pending: null,
+    world, variant, casts: Math.max(1, Math.min(world, casts, WORLDS.length)), round: 1, lives: LIVES, gold: Math.round(8 * castPower(world)), phase: 'prep',
+    army: [], shop: [], wave: enemyWave(world, 1), fighters: [], shots: [], time: 0, last: null, wins: 0, kills: 0, events: [], event: null, skillUsed: false, strike: null, boom: null, impacts: [], effects: [], bossAttacks: [], lastMerge: null, lastSummon: null, autoMerge: false, autoBought: false, summons: 0, pending: null,
   };
   // You start with a bug of the latest cast on the board.
   b.army.push({ id: nextId++, tier: 0, cast: b.casts, slot: { c: 2, r: ROWS - 2 }, star: 1 });
@@ -281,8 +294,8 @@ function rollTacticsOffer(b: BoardGame): NonNullable<Offer> {
   let roll = Math.random();
   let tier = 0;
   while (tier < 4 && roll >= odds[tier]) { roll -= odds[tier]; tier += 1; }
-  // Every world's cast from the start, all equally strong and priced: what sets them apart is their ability.
-  const cast = 1 + Math.floor(Math.random() * WORLDS.length);
+  // Only this world's cast and the earlier ones unlocked for the board.
+  const cast = 1 + Math.floor(Math.random() * b.casts);
   return { tier: tier as Tier, cast, price: priceOf(tier as Tier, b.world, 'tactics') };
 }
 
@@ -494,16 +507,29 @@ export function moveUnit(b: BoardGame, from: Slot, to: Slot): 'merged' | 'swappe
 
 export const cellCentre = (s: Slot) => ({ x: s.c * CELL + CELL / 2, y: s.r * CELL + CELL / 2 });
 
-function fighter(side: 0 | 1, tier: Tier, cast: number, x: number, y: number, mult0: number, id = nextId++, syn = 0, synLv = 0, event: BoardEvent | null = null, star: Star = 1, tac = false): Fighter {
+function combatStats(tier: Tier, mult0: number, syn: number, synLv: number, event: BoardEvent | null, star: Star, tac: boolean) {
   const st = TIER_STATS[tier];
   const mult = mult0 * TACTICS.star[star - 1];
   const f = { syn, synLv, tac };
   const hp = Math.round(st.hp * mult * (1 + synV(f, 1)) * (event === 'giants' ? 1.4 : 1));
+  return { hp, maxHp: hp, dmg: st.dmg * mult * (1 + synV(f, 9) + abil(f, 'power')), rate: st.rate * (1 + synV(f, 6)) * (event === 'frenzy' ? 1.3 : 1), range: st.range, speed: st.speed, r: st.r, splash: st.splash ?? 0, ranged: !!st.ranged };
+}
+
+/** Exactly the combat numbers shown by a piece's hold-to-inspect bubble; no dice or IDs are consumed. */
+export function unitStats(b: Pick<BoardGame, 'variant' | 'world' | 'event' | 'army'>, p: Piece) {
+  const tac = b.variant === 'tactics';
+  const lv = synergies(b).find((s) => s.cast === p.cast)?.lv ?? 0;
+  const syn = tac || lv ? p.cast : 0;
+  const synLv = tac ? 1 + lv : lv;
+  return { ...combatStats(p.tier, unitPower(b, p.cast), syn, synLv, b.event, starOf(p), tac), syn, synLv, ability: tac ? ABILITY[p.cast] : undefined, kit: bossKit(p.cast, p.tier) };
+}
+
+function fighter(side: 0 | 1, tier: Tier, cast: number, x: number, y: number, mult0: number, id = nextId++, syn = 0, synLv = 0, event: BoardEvent | null = null, star: Star = 1, tac = false): Fighter {
   return {
-    id, side, tier, cast, star, x, y, hp, maxHp: hp, dmg: st.dmg * mult * (1 + synV(f, 9) + abil(f, 'power')), rate: st.rate * (1 + synV(f, 6)) * (event === 'frenzy' ? 1.3 : 1), range: st.range, speed: st.speed, r: st.r,
-    splash: st.splash ?? 0, ranged: !!st.ranged, cd: rand(0.1, 0.6), ring: RING.every * 0.6, target: -1, retarget: 0, dead: false,
-    face: side === 0 ? 1 : -1, step: roll() * 4, swing: 0, hit: 0, syn, synLv, tac, poison: 0, poisonDps: 0, burn: 0, burnDps: 0, slow: 0, slowBy: 0,
-    leap: null, leapCd: tier === 3 ? LEAP.wait : Infinity, aim: 0, dash: 0, dir: { x: 0, y: side === 0 ? -1 : 1 }, chargeCd: tier >= 4 ? CHARGE.first : Infinity, hitIds: [],
+    id, side, tier, cast, star, x, y, ...combatStats(tier, mult0, syn, synLv, event, star, tac), cd: rand(0.1, 0.6), ring: 0, target: -1, retarget: 0, dead: false,
+    face: side === 0 ? 1 : -1, step: roll() * 4, swing: 0, hit: 0, syn, synLv, tac, poison: 0, poisonDps: 0, burn: 0, burnDps: 0, slow: 0, slowBy: 0, freeze: 0,
+    leap: null, leapCd: Infinity, aim: 0, dash: 0, dir: { x: 0, y: side === 0 ? -1 : 1 }, chargeCd: tier >= 4 ? CHARGE.first : Infinity, hitIds: [],
+    moveCd: tier >= 3 ? BOSS_CAST.first : Infinity, signatureCd: tier >= 4 ? BOSS_CAST.signatureFirst : Infinity, bossPoseTime: 0, channel: 0,
   };
 }
 
@@ -562,6 +588,8 @@ export function startFight(b: BoardGame) {
   b.strike = null;
   b.boom = null;
   b.impacts = [];
+  b.effects = [];
+  b.bossAttacks = [];
   b.time = 0;
   b.phase = 'fight';
   b.events.push('fight');
@@ -596,6 +624,8 @@ export function startOnlineFight(b: BoardGame, rival: Piece[], mine: Piece[] = b
   b.strike = null;
   b.boom = null;
   b.impacts = [];
+  b.effects = [];
+  b.bossAttacks = [];
   b.time = 0;
   b.phase = 'fight';
   b.events.push('fight');
@@ -634,45 +664,62 @@ function endOnline(b: BoardGame, o: Online) {
 const alive = (b: BoardGame, side: 0 | 1) => b.fighters.filter((f) => !f.dead && f.side === side);
 const byId = (b: BoardGame, id: number) => b.fighters.find((f) => f.id === id && !f.dead);
 
-function damage(b: BoardGame, f: Fighter, dmg: number) {
-  if (f.dead) return;
+function bonusEffect(b: BoardGame, kind: BoardEffect['kind'], at: Fighter, to?: Fighter) {
+  if (b.effects.length >= 64) return;
+  b.effects.push({ kind, x: at.x, y: at.y, ...(to ? { tx: to.x, ty: to.y } : {}), age: 0 });
+}
+
+function damage(b: BoardGame, f: Fighter, dmg: number, direct = true): number {
+  if (f.dead || dmg <= 0) return 0;
   // The haunted servers dodge; the mud takes less.
-  if (synV(f, 8) && roll() < synV(f, 8)) return;
-  if (abil(f, 'dodge') && roll() < abil(f, 'dodge')) return;
-  f.hp -= dmg * (1 - synV(f, 4)) * (1 - abil(f, 'armor'));
-  f.hit = 0.15;
+  const dodge = synV(f, 8) || abil(f, 'dodge');
+  if (direct && dodge && roll() < dodge) { bonusEffect(b, 'dodge', f); return 0; }
+  const armor = synV(f, 4) || abil(f, 'armor');
+  const dealt = Math.min(f.hp, dmg * (1 - armor));
+  f.hp -= dealt;
+  if (direct) {
+    f.hit = 0.15;
+    if (armor) bonusEffect(b, 'armor', f);
+  }
   if (f.hp <= 0) { f.dead = true; if (f.side !== (b.online?.me ?? 0)) b.kills += 1; b.events.push(f.side === 0 ? 'fall' : 'kill'); }
+  return dealt;
 }
 
 /** A blow landing, with the attacker's synergy: fire burns, ice slows, the Forge arcs to one more. */
 function land(b: BoardGame, from: { syn: number; synLv: number; tac?: boolean; id?: number; from?: number }, t: Fighter, dmg: number) {
-  damage(b, t, dmg);
-  if (from.tac) { tacticsHit(b, from, t, dmg); return; }
-  if (t.dead) return;
-  if (synV(from, 2)) { t.burn = 2; t.burnDps = Math.max(t.burnDps, (dmg * synV(from, 2)) / 2); }
-  if (synV(from, 3)) { t.slow = Math.max(t.slow, 1.2); t.slowBy = Math.max(t.slowBy, synV(from, 3)); }
+  const dealt = damage(b, t, dmg);
+  if (dealt <= 0) return;
+  if (from.tac) { tacticsHit(b, from, t, dmg, dealt); return; }
+  if (!t.dead && synV(from, 2)) { t.burn = 2; t.burnDps = Math.max(t.burnDps, (dmg * synV(from, 2)) / 2); }
+  if (!t.dead && synV(from, 3)) { t.slow = Math.max(t.slow, 1.2); t.slowBy = Math.max(t.slowBy, synV(from, 3)); t.slowKind = 'ice'; }
+  if (synV(from, 9)) bonusEffect(b, 'power', t);
   if (synV(from, 7)) {
     let best = 70;
     let next: Fighter | undefined;
     for (const o of alive(b, t.side)) { const d = Math.hypot(o.x - t.x, o.y - t.y); if (o !== t && d < best) { best = d; next = o; } }
-    if (next) { damage(b, next, dmg * synV(from, 7)); b.events.push('arc'); }
+    if (next) { damage(b, next, dmg * synV(from, 7)); bonusEffect(b, 'arc', t, next); b.events.push('arc'); }
   }
 }
 
 /** Tactics: a blow's world ability (`ABILITY`). */
-function tacticsHit(b: BoardGame, from: { syn: number; synLv: number; tac?: boolean; id?: number; from?: number }, t: Fighter, dmg: number) {
+function tacticsHit(b: BoardGame, from: { syn: number; synLv: number; tac?: boolean; id?: number; from?: number }, t: Fighter, dmg: number, dealt: number) {
   const me = byId(b, from.from ?? from.id ?? -1);
-  if (me && abil(from, 'drain')) me.hp = Math.min(me.maxHp, me.hp + dmg * abil(from, 'drain'));
-  if (t.dead) return;
-  if (abil(from, 'poison')) { t.poison = 3; t.poisonDps = Math.max(t.poisonDps, (dmg * abil(from, 'poison')) / 3); }
-  if (abil(from, 'burn')) { t.burn = 2; t.burnDps = Math.max(t.burnDps, (dmg * abil(from, 'burn')) / 2); }
-  if (abil(from, 'slow')) { t.slow = Math.max(t.slow, 1.2); t.slowBy = Math.max(t.slowBy, abil(from, 'slow')); }
-  if (abil(from, 'freeze') && t.tier < 3 && roll() < abil(from, 'freeze')) { t.slow = Math.max(t.slow, FREEZE); t.slowBy = 1; b.events.push('freeze'); }
+  if (me && abil(from, 'drain') && me.hp < me.maxHp) {
+    me.hp = Math.min(me.maxHp, me.hp + dealt * abil(from, 'drain'));
+    bonusEffect(b, 'heal', me);
+  }
+  if (!t.dead) {
+    if (abil(from, 'poison')) { t.poison = 3; t.poisonDps = Math.max(t.poisonDps, (dmg * abil(from, 'poison')) / 3); }
+    if (abil(from, 'burn')) { t.burn = 2; t.burnDps = Math.max(t.burnDps, (dmg * abil(from, 'burn')) / 2); }
+    if (abil(from, 'slow')) { t.slow = Math.max(t.slow, 1.2); if (t.slowBy < 1) t.slowKind = 'mud'; t.slowBy = Math.max(t.slowBy, abil(from, 'slow')); }
+    if (abil(from, 'freeze') && t.tier < 3 && roll() < abil(from, 'freeze')) { t.freeze = Math.max(t.freeze, FREEZE); b.events.push('freeze'); }
+  }
+  if (abil(from, 'power')) bonusEffect(b, 'power', t);
   if (abil(from, 'shock')) {
     let best = 70;
     let next: Fighter | undefined;
     for (const o of alive(b, t.side)) { const d = Math.hypot(o.x - t.x, o.y - t.y); if (o !== t && d < best) { best = d; next = o; } }
-    if (next) { damage(b, next, dmg * abil(from, 'shock')); b.events.push('arc'); }
+    if (next) { damage(b, next, dmg * abil(from, 'shock')); bonusEffect(b, 'arc', t, next); b.events.push('arc'); }
   }
 }
 
@@ -710,9 +757,9 @@ export function commanderStrike(b: BoardGame) {
   return true;
 }
 
-/** The bosses' moves, which take over their turn while they run: the room-6 boss leaps once over the front line
-    onto the archers at the back; the final boss charges through a line of foes every few seconds. */
-function bossMoves(b: BoardGame, f: Fighter, dt: number) {
+/** The bosses' native world move and, for final bosses, signature, adapted to the board. Each cast has a shared
+    damage budget so a crowded telegraph cannot multiply its damage. */
+function bossMoves(b: BoardGame, f: Fighter, dt: number, slowK: number) {
   const foes = alive(b, f.side === 0 ? 1 : 0);
   if (f.leap) {
     f.leap.t += dt;
@@ -720,7 +767,6 @@ function bossMoves(b: BoardGame, f: Fighter, dt: number) {
     f.x = f.leap.fx + (f.leap.tx - f.leap.fx) * k;
     f.y = f.leap.fy + (f.leap.ty - f.leap.fy) * k;
     if (k >= 1) {
-      for (const o of foes) if (Math.hypot(o.x - f.x, o.y - f.y) <= LEAP.reach + o.r) land(b, f, o, f.dmg * LEAP.dmg);
       f.leap = null;
       f.swing = 0.4;
       b.impacts.push({ x: f.x, y: f.y, age: 0, kind: 'slam' });
@@ -729,71 +775,88 @@ function bossMoves(b: BoardGame, f: Fighter, dt: number) {
     }
     return true;
   }
-  if (f.leapCd !== Infinity) {
-    f.leapCd -= dt;
-    if (f.leapCd <= 0) {
-      f.leapCd = Infinity;
-      // The ranged foe furthest back, or the furthest foe of all.
-      const back = (o: Fighter) => (f.side === 0 ? -o.y : o.y);
-      const pool = foes.some((o) => o.ranged) ? foes.filter((o) => o.ranged) : foes;
-      const t = pool.sort((p, q) => back(q) - back(p))[0];
-      if (t) {
-        const side = t.x < BOARD_W / 2 ? 1 : -1;
-        const tx = Math.max(f.r, Math.min(BOARD_W - f.r, t.x + side * (t.r + f.r) * 0.7));
-        const ty = Math.max(f.r, Math.min(BOARD_H - f.r, t.y + (f.side === 0 ? -1 : 1) * 6));
-        f.leap = { t: 0, fx: f.x, fy: f.y, tx, ty };
-        f.target = t.id;
-        f.face = tx > f.x ? 1 : -1;
-        b.events.push('leap');
-        return true;
-      }
-    }
-  }
-  if (f.dash > 0) {
-    f.dash -= dt;
-    const step = CHARGE.speed * dt;
-    f.x = Math.max(f.r, Math.min(BOARD_W - f.r, f.x + f.dir.x * step));
-    f.y = Math.max(f.r, Math.min(BOARD_H - f.r, f.y + f.dir.y * step));
-    for (const o of foes) {
-      if (f.hitIds.includes(o.id) || Math.hypot(o.x - f.x, o.y - f.y) > f.r + o.r) continue;
-      f.hitIds.push(o.id);
-      land(b, f, o, f.dmg * CHARGE.dmg);
-      b.impacts.push({ x: o.x, y: o.y, age: 0, kind: 'ring' });
-      // Thrown aside, off its line.
-      const side = (o.x - f.x) * f.dir.y - (o.y - f.y) * f.dir.x >= 0 ? 1 : -1;
-      o.x = Math.max(o.r, Math.min(BOARD_W - o.r, o.x - f.dir.y * side * CHARGE.push));
-      o.y = Math.max(o.r, Math.min(BOARD_H - o.r, o.y + f.dir.x * side * CHARGE.push));
-      b.events.push('slam');
-    }
-    if (f.dash <= 0) f.retarget = 0;
+  if (!bossKit(f.cast, f.tier) || !foes.length) return false;
+  f.channel = Math.max(0, f.channel - dt);
+  if (f.bossPoseTime > 0) {
+    f.bossPoseTime = Math.max(0, f.bossPoseTime - dt);
+    if (!f.bossPoseTime) { f.bossPose = undefined; f.channel = 0; }
     return true;
   }
-  if (f.aim > 0) {
-    f.aim -= dt;
-    if (f.aim <= 0) { f.dash = CHARGE.dash; f.hitIds = []; b.events.push('charge'); }
-    return true;
+
+  const rateDt = dt * slowK;
+  f.moveCd -= rateDt;
+  if (f.tier >= 4) f.signatureCd -= rateDt;
+  const signature = f.tier >= 4 && f.signatureCd <= 0;
+  if (f.moveCd > 0 && !signature) return false;
+
+  const plan = planBossCast(f, foes.map((o) => ({ id: o.id, x: o.x, y: o.y, r: o.r, ranged: o.ranged })), signature, BOARD_W, BOARD_H);
+  if (signature) {
+    f.signatureCd = BOSS_CAST.signature;
+    f.moveCd = Math.max(f.moveCd, BOSS_CAST.finalMove);
+    f.bossPose = 'sig';
+  } else {
+    f.moveCd = f.tier >= 4 ? BOSS_CAST.finalMove : BOSS_CAST.move;
+    f.bossPose = 'move';
   }
-  if (f.chargeCd !== Infinity) {
-    f.chargeCd -= dt;
-    if (f.chargeCd <= 0 && foes.length) {
-      f.chargeCd = CHARGE.every;
-      // At the thickest knot of foes within reach of a dash.
-      let best: Fighter | undefined;
-      let most = -1;
-      for (const o of foes) {
-        const n = foes.filter((q) => Math.hypot(q.x - o.x, q.y - o.y) <= 60).length - Math.hypot(o.x - f.x, o.y - f.y) / 400;
-        if (n > most) { most = n; best = o; }
-      }
-      if (best) {
-        const dx = best.x - f.x, dy = best.y - f.y, d = Math.hypot(dx, dy) || 1;
-        f.dir = { x: dx / d, y: dy / d };
-        f.face = dx >= 0 ? 1 : -1;
-        f.aim = CHARGE.aim;
-        return true;
+  f.bossPoseTime = plan.hold;
+  f.channel = signature ? plan.hold : 0;
+
+  for (const attack of plan.attacks) {
+    attack.age = -plan.hold;
+    b.bossAttacks.push(attack);
+  }
+  for (const shot of plan.shots) b.shots.push({ ...shot, delay: plan.hold });
+
+  if (plan.action?.kind === 'leap') {
+    f.leap = { t: 0, fx: f.x, fy: f.y, tx: plan.action.x, ty: plan.action.y };
+    f.target = foes.reduce((best, o) => Math.hypot(o.x - f.x, o.y - f.y) < Math.hypot(best.x - f.x, best.y - f.y) ? o : best).id;
+    f.face = plan.action.x >= f.x ? 1 : -1;
+    b.events.push('leap');
+  } else if (plan.action?.kind === 'blink') {
+    f.x = plan.action.x; f.y = plan.action.y;
+    f.retarget = 0;
+    b.impacts.push({ x: f.x, y: f.y, age: 0, kind: 'ring' });
+    b.events.push('boss-move');
+  } else b.events.push(signature ? 'boss-signature' : 'boss-move');
+  return true;
+}
+
+function bossAttackTouches(a: BoardBossAttack, f: Fighter) {
+  if (a.age < a.warn || a.age > a.warn + a.life || a.hitIds.includes(f.id)) return false;
+  const active = a.age - a.warn;
+  if (a.kind === 'wave') {
+    return Math.abs(f.x - a.x) <= a.len / 2 + f.r && Math.abs(f.y - a.y) <= a.r + f.r;
+  }
+  const angle = a.a + (a.kind === 'beam' ? (a.spin ?? 0) * active : 0);
+  if (a.kind === 'circle' || a.kind === 'clone') return Math.hypot(f.x - a.x, f.y - a.y) <= a.r + f.r;
+  const dx = Math.cos(angle) * a.len, dy = Math.sin(angle) * a.len;
+  const lx = f.x - a.x, ly = f.y - a.y;
+  const along = (lx * dx + ly * dy) / (a.len * a.len || 1);
+  if (along < 0 || along > 1) return false;
+  const cross = Math.abs(lx * dy - ly * dx) / (a.len || 1);
+  return cross <= a.r + f.r;
+}
+
+function updateBossAttacks(b: BoardGame, dt: number) {
+  for (const attack of b.bossAttacks) {
+    attack.age += dt;
+    if (attack.kind === 'wave' && attack.age >= attack.warn) attack.y += (attack.speed ?? 0) * Math.sign(Math.sin(attack.a)) * dt;
+    if (attack.age < attack.warn || attack.age > attack.warn + attack.life || attack.group.remaining <= 0) continue;
+    for (const foe of alive(b, attack.side === 0 ? 1 : 0)) {
+      if (!bossAttackTouches(attack, foe)) continue;
+      attack.hitIds.push(foe.id);
+      const hit = Math.min(attack.group.remaining, attack.group.dmg);
+      if (hit <= 0) break;
+      attack.group.remaining -= hit;
+      const dealt = damage(b, foe, hit);
+      if (dealt > 0) {
+        if (attack.freeze && foe.tier < 3) { foe.freeze = Math.max(foe.freeze, attack.freeze); b.events.push('freeze'); }
+        if (attack.slow) { foe.slow = Math.max(foe.slow, 1.2); foe.slowBy = Math.max(foe.slowBy, attack.slow); foe.slowKind = attack.el === 'mud' ? 'mud' : 'ice'; }
+        b.impacts.push({ x: foe.x, y: foe.y, age: 0, kind: 'ring' });
       }
     }
   }
-  return false;
+  b.bossAttacks = b.bossAttacks.filter((a) => a.age <= a.warn + a.life && a.group.remaining > 0);
 }
 
 /** One step of the fight: every unit goes for the nearest foe, walks up to it and strikes; it ends when one side
@@ -805,6 +868,8 @@ export function updateBoard(b: BoardGame, dt: number) {
   if (b.boom) { b.boom.age += dt; if (b.boom.age > 0.5) b.boom = null; }
   for (const i of b.impacts) i.age += dt;
   b.impacts = b.impacts.filter((i) => i.age < 0.5);
+  for (const e of b.effects) e.age += dt;
+  b.effects = b.effects.filter((e) => e.age < 0.5);
   if (b.strike) {
     b.strike.t -= dt;
     if (b.strike.t <= 0) {
@@ -820,14 +885,23 @@ export function updateBoard(b: BoardGame, dt: number) {
     f.hit = Math.max(0, f.hit - dt);
     f.swing = Math.max(0, f.swing - dt);
     if (f.dead) continue;
-    if (f.burn > 0) { f.burn -= dt; damage(b, f, f.burnDps * dt); if (f.dead) continue; }
-    if (f.poison > 0) { f.poison -= dt; damage(b, f, f.poisonDps * dt); if (f.dead) continue; } else f.poisonDps = 0;
+    if (f.burn > 0) { const tick = Math.min(dt, f.burn); f.burn = Math.max(0, f.burn - dt); damage(b, f, f.burnDps * tick, false); }
+    if (f.burn <= 0) f.burnDps = 0;
+    if (f.dead) continue;
+    if (f.poison > 0) { const tick = Math.min(dt, f.poison); f.poison = Math.max(0, f.poison - dt); damage(b, f, f.poisonDps * tick, false); }
+    if (f.poison <= 0) f.poisonDps = 0;
+    if (f.dead) continue;
     f.slow = Math.max(0, f.slow - dt);
+    f.freeze = Math.max(0, f.freeze - dt);
     if (f.slow <= 0) f.slowBy = 0;
-    if (synV(f, 5)) f.hp = Math.min(f.maxHp, f.hp + f.maxHp * synV(f, 5) * dt);
+    if (synV(f, 5) && f.hp < f.maxHp) {
+      f.hp = Math.min(f.maxHp, f.hp + f.maxHp * synV(f, 5) * dt);
+      if (Math.floor((b.time - dt) * 2) < Math.floor(b.time * 2)) bonusEffect(b, 'heal', f);
+    }
+    if (f.freeze > 0) continue;
     // Slowed by ice: it walks and strikes 30% (45%) slower.
     const slowK = 1 - f.slowBy;
-    if (bossMoves(b, f, dt)) continue;
+    if (bossMoves(b, f, dt, slowK)) continue;
     f.cd -= dt * slowK;
     f.retarget -= dt;
     let t = byId(b, f.target);
@@ -855,19 +929,8 @@ export function updateBoard(b: BoardGame, dt: number) {
       f.swing = 0.3;
       strike(b, f, t);
     }
-    if (f.tier >= 4) {
-      f.ring -= dt;
-      if (f.ring <= 0) {
-        f.ring = RING.every;
-        for (let i = 0; i < RING.n; i++) {
-          const a = (i / RING.n) * Math.PI * 2;
-          b.shots.push({ x: f.x, y: f.y, vx: Math.cos(a) * RING.speed, vy: Math.sin(a) * RING.speed, side: f.side, dmg: RING.dmg * (f.dmg / TIER_STATS[4].dmg), target: -1, life: 2.2, ring: true, syn: 0, synLv: 0 });
-        }
-        f.swing = 0.5;
-        b.events.push('ring');
-      }
-    }
   }
+  updateBossAttacks(b, dt);
   // Units push one another apart and stay on the board.
   const live = b.fighters.filter((f) => !f.dead && !f.leap);
   for (let i = 0; i < live.length; i++) for (let j = i + 1; j < live.length; j++) {
@@ -884,12 +947,35 @@ export function updateBoard(b: BoardGame, dt: number) {
   for (const f of live) { f.x = Math.max(f.r, Math.min(BOARD_W - f.r, f.x)); f.y = Math.max(f.r, Math.min(BOARD_H - f.r, f.y)); }
   for (const s of b.shots) {
     s.life -= dt;
+    if (s.delay && s.delay > 0) { s.delay = Math.max(0, s.delay - dt); continue; }
+    if (s.home && s.home > 0) {
+      const target = byId(b, s.target);
+      s.home = Math.max(0, s.home - dt);
+      if (target) {
+        const speed = Math.hypot(s.vx, s.vy);
+        const current = Math.atan2(s.vy, s.vx);
+        const wanted = Math.atan2(target.y - s.y, target.x - s.x);
+        const delta = Math.atan2(Math.sin(wanted - current), Math.cos(wanted - current));
+        const angle = current + Math.max(-2.4 * dt, Math.min(2.4 * dt, delta));
+        s.vx = Math.cos(angle) * speed; s.vy = Math.sin(angle) * speed;
+      }
+    }
     s.x += s.vx * dt;
     s.y += s.vy * dt;
     const foes = alive(b, s.side === 0 ? 1 : 0);
-    const hit = s.ring ? foes.find((o) => Math.hypot(o.x - s.x, o.y - s.y) < o.r + 6) : byId(b, s.target);
+    const radius = s.r ?? 6;
+    const hit = s.ring ? foes.find((o) => Math.hypot(o.x - s.x, o.y - s.y) < o.r + radius) : byId(b, s.target);
     if (!s.ring && !hit) { s.life = 0; continue; }
-    if (hit && Math.hypot(hit.x - s.x, hit.y - s.y) < hit.r + 6) { if (s.ring) damage(b, hit, s.dmg); else land(b, s, hit, s.dmg); s.life = 0; }
+    if (hit && Math.hypot(hit.x - s.x, hit.y - s.y) < hit.r + radius) {
+      if (s.group) {
+        const dealt = Math.min(s.dmg, s.group.remaining);
+        s.group.remaining -= dealt;
+        if (dealt > 0) damage(b, hit, dealt);
+      } else if (s.ring) damage(b, hit, s.dmg);
+      else land(b, s, hit, s.dmg);
+      s.life = 0;
+    }
+    if (s.x < -20 || s.x > BOARD_W + 20 || s.y < -20 || s.y > BOARD_H + 20) s.life = 0;
   }
   b.shots = b.shots.filter((s) => s.life > 0);
   const mine = alive(b, 0).length;

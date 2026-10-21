@@ -6,11 +6,11 @@ import { configurePayments, payments } from './payments';
 import { COIN_PACKS, currentOffer, grant, packBonus, SKIN_OFFERS, type CoinPack, type SkinOffer } from './store';
 import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPrize, type DailyResult } from './daily';
 import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
-import { boardBackdropBounds, draw, drawRetroFigure, preloadCast, preloadFx, type Palette, type View } from './draw';
+import { MID_ART, boardBackdropBounds, draw, drawRetroFigure, preloadCast, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, NET_ID, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, SKIN_GATE, skinOpen, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
-import { ABILITY, ABIL_V, CELL, HOME_ROW, ROUNDS, SYNERGY, TACTICS, armyCap, toggleAutoMerge, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, startOnlineFight, updateBoard, type Ability, type BoardGame, type Online, type Piece, type Variant } from './board';
+import { ABILITY, ABIL_V, CELL, FINAL_ID, HOME_ROW, ROUNDS, SYNERGY, TACTICS, armyCap, toggleAutoMerge, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, startOnlineFight, unitStats, updateBoard, type BoardGame, type Online, type Piece, type Variant } from './board';
 import { cleanCode, dial, hostGame, joinGame, leave as netLeave, presence, presenceOn, presenceReady, send as netSend, type NetHandlers, type NetMsg, type NetProfile, type NetState, type Together } from './net';
-import { ABILITY_ICON, FIREBALL, boardMerged, drawBoard, mirrorFight, drawBoardDrag, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
+import { ABILITY_ICON, ABILITY_PIC, SYNERGY_PIC, FIREBALL, boardMerged, drawBoard, mirrorFight, drawBoardDrag, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
 import type { Enemy } from './world';
 import { ARMOUR_SLOTS, ARSENAL, ITEMS, itemLevel, type SpiritSkin, UPGRADES, WEAPON_SLOTS, EXTRA_SLOT_PRICE, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
 import { Scene } from './scene';
@@ -1678,8 +1678,11 @@ const boardFloat = $<HTMLCanvasElement>('boardFloat');
 const floatCtx = boardFloat.getContext('2d') as CanvasRenderingContext2D;
 let board: BoardGame | null = null;
 let boardDrag: BoardDrag | null = null;
-let boardDown: { x: number; y: number; id: number } | null = null;
+let boardDown: { x: number; y: number; id: number; piece: Piece; moved: boolean; held: boolean; timer: number } | null = null;
+/** Keep the timer's mutation outside TypeScript's literal-false narrowing of the freshly-created press state. */
+function markBoardPressHeld(down: { held: boolean }) { down.held = true; }
 let boardLay: BoardLayout = { s: 1, ox: 0, oy: 0 };
+const boardTooltip = $<HTMLElement>('boardTooltip');
 let boardKey = '';
 let boardShopPopSlot = -1;
 let boardShopPopSerial = 0;
@@ -2121,6 +2124,7 @@ function friendGone() {
   if (onCover()) menuScreen();
 }
 function startBoard(world: number, net?: { variant: Variant; online: Online }) {
+  clearBoardInteraction();
   game = null;
   paused = false;
   hud.hidden = true;
@@ -2161,6 +2165,7 @@ function startBoard(world: number, net?: { variant: Variant; online: Online }) {
 /** Leaves the board for the menu or the map (nothing banked: the end screen already banked it, or the player quit). */
 function endBoard() {
   if (!board) return;
+  clearBoardInteraction();
   if (board.online && board.phase !== 'over' && board.phase !== 'won') netSend({ t: 'quit' });
   board = null;
   boardDrag = null;
@@ -2198,16 +2203,93 @@ function bankBoard(b: BoardGame): number | null {
   return unlocked;
 }
 
-const boardPic = (tier: number, cast: number) => `./images/game/enemies/${castLook(cast)}-${TIER_KIND[tier]}-0.webp`;
+const boardPic = (tier: number, cast: number) => {
+  const mid = tier === 3 ? MID_ART[castLook(cast)] : undefined;
+  const boss = tier >= 4 ? FINAL_ID[cast - 1] : mid;
+  return boss ? `./images/game/bosses/${boss}-0.webp` : `./images/game/enemies/${castLook(cast)}-${TIER_KIND[tier]}-0.webp`;
+};
 const boardTierName = (tier: number) => t(`boardTier${tier}` as Key);
+function boardTooltipHtml(b: BoardGame, piece: Piece) {
+  const stats = unitStats(b, piece);
+  const locale = lang === 'es' ? 'es-ES' : 'en-US';
+  const number = (value: number) => Math.round(value).toLocaleString(locale);
+  const rate = stats.rate.toLocaleString(locale, { maximumFractionDigits: 1 });
+  const details: string[] = [];
+  if (stats.ability) {
+    const level = Math.max(0, Math.min(2, stats.synLv - 1));
+    const percent = bonusPercent(ABIL_V[stats.ability][level]);
+    details.push(`<section><b>${t(`boardAbil${cap(stats.ability)}` as Key)}</b><p>${t(`boardAbil${cap(stats.ability)}Text` as Key, { n: percent })}</p></section>`);
+  } else if (b.variant === 'fusion') {
+    const synergy = synergies(b).find((x) => x.cast === piece.cast);
+    if (synergy?.lv) {
+      const percent = bonusPercent(SYNERGY.v[piece.cast][synergy.lv - 1]);
+      details.push(`<section><b>${worldName(piece.cast)}</b><p>${t(`boardSyn${piece.cast}` as Key, { n: percent })}</p></section>`);
+    } else details.push(`<section><b>${worldName(piece.cast)}</b><p>${t('boardSynergyUnlock')}</p></section>`);
+  }
+  if (stats.kit) {
+    details.push(`<section><b>${t(`boardBossMove${cap(stats.kit.move)}` as Key)}</b><p>${t(`boardBossMove${cap(stats.kit.move)}Text` as Key)}</p></section>`);
+    if (stats.kit.signature) details.push(`<section><b>${t(`boardBossSig${cap(stats.kit.signature)}` as Key)}</b><p>${t(`boardBossSig${cap(stats.kit.signature)}Text` as Key)}</p></section>`);
+  } else if (piece.tier === 1) details.push(`<section><b>${t('boardSpecialRange')}</b><p>${t('boardSpecialThrower')}</p></section>`);
+  else if (piece.tier === 2) details.push(`<section><b>${t('boardSpecialHeavy')}</b><p>${t('boardSpecialHeavyText')}</p></section>`);
+
+  const rarity = b.variant === 'tactics' ? `<small>${t(`boardRarity${piece.tier}` as Key)} · ${'★'.repeat(piece.star ?? 1)}</small>` : '';
+  const splash = stats.splash ? `<div><small>${t('boardStatSplash')}</small><b>${(stats.splash / CELL).toLocaleString(locale, { maximumFractionDigits: 1 })} ${t('boardStatTiles')}</b></div>` : '';
+  return `<div class="board-tip-head"><img src="${boardPic(piece.tier, piece.cast)}" alt=""><span><b>${boardTierName(piece.tier)}</b><small>${worldName(piece.cast)}${rarity ? ` · ${rarity}` : ''}</small></span></div>
+    <div class="board-tip-stats">
+      <div><small>${t('boardStatHealth')}</small><b>${number(stats.maxHp)}</b></div>
+      <div><small>${t('boardStatDamage')}</small><b>${number(stats.dmg)}</b></div>
+      <div><small>${t('boardStatDps')}</small><b>${number(stats.dmg * stats.rate)}</b></div>
+      <div><small>${t('boardStatRate')}</small><b>${rate}/s</b></div>
+      <div><small>${t('boardStatRange')}</small><b>${(stats.range / CELL).toLocaleString(locale, { maximumFractionDigits: 1 })} ${t('boardStatTiles')}</b></div>
+      <div><small>${t('boardStatSpeed')}</small><b>${number(stats.speed)}</b></div>${splash}
+    </div><div class="board-tip-details">${details.join('')}</div>`;
+}
+function showBoardTooltip(b: BoardGame, piece: Piece, x: number, y: number) {
+  boardTooltip.innerHTML = boardTooltipHtml(b, piece);
+  boardTooltip.hidden = false;
+  const box = boardTooltip.getBoundingClientRect();
+  const left = Math.max(8, Math.min(x + 14, window.innerWidth - box.width - 8));
+  const above = y - box.height - 16;
+  const top = above >= 8 ? above : Math.min(window.innerHeight - box.height - 8, y + 16);
+  boardTooltip.style.left = `${Math.round(left)}px`;
+  boardTooltip.style.top = `${Math.round(Math.max(8, top))}px`;
+}
+function hideBoardTooltip() { boardTooltip.hidden = true; }
+const boardCastIcon = (cast: number) => save.retro ? ABILITY_ICON[ABILITY[cast]] : `<img src="./images/game/${ABILITY_PIC[ABILITY[cast]]}" alt="">`;
+const boardPortraits = new Map<string, string>();
+/** Boss sheets reserve transparent space for attacks; cards only need the standing figure. */
+function fitBoardPortraits() {
+  boardShop.querySelectorAll<HTMLImageElement>('.board-card.is-boss > img').forEach((img) => {
+    const src = img.getAttribute('src')!;
+    const cached = boardPortraits.get(src);
+    if (cached) { img.src = cached; return; }
+    const fit = () => {
+      if (!img.isConnected || !img.naturalWidth) return;
+      const canvas = document.createElement('canvas');
+      canvas.width = img.naturalWidth; canvas.height = img.naturalHeight;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      ctx.drawImage(img, 0, 0);
+      const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+      let left = canvas.width, top = canvas.height, right = -1, bottom = -1;
+      for (let y = 0; y < canvas.height; y++) for (let x = 0; x < canvas.width; x++) {
+        if (pixels[(y * canvas.width + x) * 4 + 3] <= 32) continue;
+        left = Math.min(left, x); right = Math.max(right, x); top = Math.min(top, y); bottom = Math.max(bottom, y);
+      }
+      if (right < left) return;
+      const crop = document.createElement('canvas');
+      crop.width = right - left + 1; crop.height = bottom - top + 1;
+      crop.getContext('2d')?.drawImage(canvas, left, top, crop.width, crop.height, 0, 0, crop.width, crop.height);
+      const portrait = crop.toDataURL();
+      boardPortraits.set(src, portrait);
+      img.src = portrait;
+    };
+    if (img.complete) fit(); else img.addEventListener('load', fit, { once: true });
+  });
+}
 
 /** The round's event and the active gifts, using the same icon in the sidebar and its details panel. */
-const SYN_PIC: Record<number, string> = { 1: 'skills/heart.webp', 2: 'skills/fire.webp', 3: 'skills/frost.webp', 4: 'skills/bracer.webp', 5: 'skills/drink.webp', 6: 'skills/speed.webp', 7: 'skills/spark.webp', 8: 'skills/dodge.webp', 9: 'skills/power.webp' };
-// Fusion follows each world's gift; Tactics follows its actual effect (`ABILITY`).
-const TACTICS_PIC: Record<Ability, string> = {
-  poison: 'skills/molotov.webp', burn: 'skills/fire.webp', freeze: 'skills/frost.webp', slow: 'skills/water.webp', drain: 'skills/vampire.webp',
-  shock: 'skills/bolt.webp', armor: 'skills/bracer.webp', dodge: 'skills/dodge.webp', power: 'skills/power.webp',
-};
+const bonusPercent = (v: number) => Math.round(v * 1000) / 10;
 const EVENT_PIC: Record<string, string> = { gold: 'ui/wheel/coins.webp', frenzy: 'skills/rage.webp', giants: 'skills/giant.webp', bounty: 'ui/wheel/coins.webp' };
 function boardBonuses(b: BoardGame) {
   const out: { pic: string; name: string; text: string; count: string; on: boolean; event: boolean }[] = [];
@@ -2216,15 +2298,19 @@ function boardBonuses(b: BoardGame) {
     // Tactics: every world on the board brings its ability, stronger with three and five of it.
     for (const x of synergies(b).filter((y) => y.n >= 1)) {
       const ab = ABILITY[x.cast];
-      const pct = Math.round(ABIL_V[ab][x.lv] * 100);
+      const values = ABIL_V[ab].map(bonusPercent);
+      const levels = t('boardBonusLevelsT', { base: values[0], three: values[1], five: values[2] });
       const need = x.lv >= 1 ? SYNERGY.need[1] : SYNERGY.need[0];
-      out.push({ pic: TACTICS_PIC[ab], name: `${ABILITY_ICON[ab]} ${t(`boardAbil${cap(ab)}` as Key)} · ${worldName(x.cast)}`, text: t(`boardAbil${cap(ab)}Text` as Key, { n: pct }), count: x.lv >= 2 ? `${x.n} ★★` : `${x.n}/${need}`, on: true, event: false });
+      out.push({ pic: ABILITY_PIC[ab], name: `${t(`boardAbil${cap(ab)}` as Key)} · ${worldName(x.cast)}`, text: `${t(`boardAbil${cap(ab)}Text` as Key, { n: values[x.lv] })} ${levels}`, count: x.lv >= 2 ? `${x.n} ★★` : `${x.n}/${need}`, on: true, event: false });
     }
     return out;
   }
-  for (const x of synergies(b).filter((y) => y.n >= 2)) {
+  for (const x of synergies(b)) {
     const need = x.lv >= 1 ? SYNERGY.need[1] : SYNERGY.need[0];
-    out.push({ pic: SYN_PIC[x.cast], name: `${WORLD_ICON[x.cast - 1]} ${worldName(x.cast)}`, text: t(`boardSyn${x.cast}` as Key), count: x.lv >= 2 ? `${x.n} ★` : `${x.n}/${need}`, on: x.lv > 0, event: false });
+    const values = SYNERGY.v[x.cast].map(bonusPercent);
+    const levels = t('boardBonusLevels', { three: values[0], five: values[1] });
+    const active = x.lv ? '' : `${t('boardBonusInactive')} `;
+    out.push({ pic: SYNERGY_PIC[x.cast], name: worldName(x.cast), text: `${active}${t(`boardSyn${x.cast}` as Key, { n: values[Math.max(0, x.lv - 1)] })} ${levels}`, count: x.lv >= 2 ? `${x.n} ★★` : `${x.n}/${need}`, on: x.lv > 0, event: false });
   }
   return out;
 }
@@ -2234,16 +2320,24 @@ function openBoardBonus() {
   if (!b) return;
   const rows = boardBonuses(b).map((x) => `<li${x.on ? '' : ' class="is-off"'}><span class="gp-icon"><img src="./images/game/${x.pic}" alt="" width="34" height="34"></span><span class="gp-copy"><b>${x.name}</b><small>${x.text}</small></span><em>${x.count}</em></li>`).join('');
   gearPanel.innerHTML = `<header><b>${t('boardBonusTitle')}</b><button type="button" class="gp-close" aria-label="${t('resume')}">✕</button></header>
-    <ul>${rows}</ul><p class="gp-hint">${t('boardBonusHint', { need: SYNERGY.need[0], more: SYNERGY.need[1] })}</p>`;
-  const box = boardSide.getBoundingClientRect();
-  gearPanel.style.top = `${Math.round(box.top)}px`;
-  const panelWidth = Math.min(300, window.innerWidth - 80);
-  const sideOnRight = !window.matchMedia('(min-width: 900px) and (orientation: landscape)').matches;
-  gearPanel.style.right = `${Math.round(sideOnRight ? window.innerWidth - box.left + 8 : window.innerWidth - box.right - panelWidth - 8)}px`;
+    <ul>${rows}</ul><p class="gp-hint">${b.variant === 'tactics' ? t('boardBonusHintT') : t('boardBonusHint', { need: SYNERGY.need[0], more: SYNERGY.need[1] })}</p>`;
+  positionBoardBonusPanel();
   gearPanel.hidden = false;
   gearPanel.classList.add('fade-scroll', 'is-board');
   fadeEdges(gearPanel);
   paused = true;
+}
+
+function positionBoardBonusPanel() {
+  const box = boardSide.getBoundingClientRect();
+  const panelTop = Math.max(8, Math.min(box.top, window.innerHeight - 120));
+  gearPanel.style.top = `${Math.round(panelTop)}px`;
+  gearPanel.style.setProperty('--board-panel-top', `${Math.round(panelTop)}px`);
+  const panelWidth = Math.min(300, window.innerWidth - 80);
+  const sideOnRight = !window.matchMedia('(min-width: 900px) and (orientation: landscape)').matches;
+  const left = sideOnRight ? box.left - panelWidth - 8 : box.right + 8;
+  const safeLeft = Math.max(8, Math.min(left, window.innerWidth - panelWidth - 8));
+  gearPanel.style.right = `${Math.round(window.innerWidth - safeLeft - panelWidth)}px`;
 }
 
 /** The top bar and the shop, rebuilt only when something on them changes. */
@@ -2274,7 +2368,7 @@ function renderBoardUi() {
   // Fusion has no cards: «Summon» drops a unit straight onto the board; the cards are Tactics' only.
   const fusion = b.variant === 'fusion';
   const cards = b.shop.map((o, i) => o
-    ? `<button class="board-card${b.variant === 'tactics' ? ` is-r${o.tier}${starsUp(o) ? ' is-up' : ''}` : ''}" type="button" data-bact="buy" data-i="${i}"${!prep || b.gold < o.price ? ' disabled' : ''}><i class="board-cast">${b.variant === 'tactics' ? ABILITY_ICON[ABILITY[o.cast]] : t('worldShort', { n: o.cast })}</i><img src="${boardPic(o.tier, o.cast)}" alt="">${b.variant === 'tactics' && starsUp(o) ? '<em class="board-up">★↑</em>' : ''}<b>${boardTierName(o.tier)}</b><span class="board-price">${coin} ${o.price}</span></button>`
+    ? `<button class="board-card${b.variant === 'tactics' ? ` is-r${o.tier}${starsUp(o) ? ' is-up' : ''}` : ''}${o.tier >= 3 ? ' is-boss' : ''}" type="button" data-bact="buy" data-i="${i}"${!prep ? ' disabled' : b.gold < o.price ? ' aria-disabled="true"' : ''}><i class="board-cast">${b.variant === 'tactics' ? boardCastIcon(o.cast) : t('worldShort', { n: o.cast })}</i><img src="${boardPic(o.tier, o.cast)}" alt="">${b.variant === 'tactics' && starsUp(o) ? '<em class="board-up">★↑</em>' : ''}<b>${boardTierName(o.tier)}</b><span class="board-price">${coin} ${o.price}</span></button>`
     : '<span class="board-card is-sold"></span>').join('');
   // The round's event and each world's synergy, a column of medallions by the board edge; a tap lists their effects.
   const bonus = boardBonuses(b);
@@ -2301,27 +2395,37 @@ function renderBoardUi() {
     });
     boardShopPopSlot = -1;
   }
+  if (prep && !fusion) fitBoardPortraits();
 }
 
 /* Tactics: a shop card can also be dragged onto a cell of your half, where it lands (a tap still buys it onto the
    first free cell from the back). The card's unit follows the finger on the float canvas, the cell under it lit. */
-let cardDown: { i: number; x: number; y: number; id: number } | null = null;
-let cardDragged = false;
+let cardDown: { i: number; x: number; y: number; id: number; offer: NonNullable<BoardGame['shop'][number]>; canBuy: boolean; moved: boolean; held: boolean; timer: number } | null = null;
+let cardClickBlockUntil = 0;
 boardUi.addEventListener('pointerdown', (event) => {
   const card = (event.target as HTMLElement).closest<HTMLButtonElement>('.board-card[data-i]');
   const b = board;
-  if (!card || card.disabled || !b || b.variant !== 'tactics' || b.phase !== 'prep') return;
+  if (!card || !b || b.variant !== 'tactics' || b.phase !== 'prep' || cardDown || boardDown) return;
+  const i = Number(card.dataset.i);
+  const offer = b.shop[i];
+  if (!offer) return;
   event.preventDefault(); // or the card's picture starts the browser's own drag, which cancels the pointer
-  cardDown = { i: Number(card.dataset.i), x: event.clientX, y: event.clientY, id: event.pointerId };
-  cardDragged = false;
+  const down = cardDown = { i, x: event.clientX, y: event.clientY, id: event.pointerId, offer, canBuy: !card.hasAttribute('aria-disabled'), moved: false, held: false, timer: 0 };
+  down.timer = window.setTimeout(() => {
+    if (cardDown !== down || down.moved || board !== b || b.phase !== 'prep') return;
+    markBoardPressHeld(down);
+    showBoardTooltip(b, { id: -1, tier: offer.tier, cast: offer.cast, slot: { c: -1, r: -1 }, star: 1 }, event.clientX, event.clientY);
+  }, 520);
+  cardClickBlockUntil = 0;
 });
 window.addEventListener('pointermove', (event) => {
   const b = board;
   if (!cardDown || !b || event.pointerId !== cardDown.id) return;
-  const offer = b.shop[cardDown.i];
-  if (!offer) return;
-  if (!cardDragged && Math.hypot(event.clientX - cardDown.x, event.clientY - cardDown.y) < 10) return;
-  cardDragged = true;
+  const down = cardDown;
+  const offer = down.offer;
+  if (!down.moved && Math.hypot(event.clientX - down.x, event.clientY - down.y) < 10) return;
+  if (!down.canBuy) return;
+  if (!down.moved) { down.moved = true; window.clearTimeout(down.timer); hideBoardTooltip(); }
   const rect = canvas.getBoundingClientRect();
   const x = event.clientX - rect.left, y = event.clientY - rect.top;
   boardDrag = { piece: { id: -1, tier: offer.tier, cast: offer.cast, slot: { c: -1, r: -1 }, star: 1 }, x, y, over: slotAt(boardLay, x, y) };
@@ -2329,8 +2433,12 @@ window.addEventListener('pointermove', (event) => {
 window.addEventListener('pointerup', (event) => {
   const b = board;
   const down = cardDown;
+  if (!down || event.pointerId !== down.id) return;
   cardDown = null;
-  if (!down || !b || event.pointerId !== down.id || !cardDragged) return;
+  window.clearTimeout(down.timer);
+  hideBoardTooltip();
+  if (down.held || down.moved) cardClickBlockUntil = performance.now() + 350;
+  if (!b || !down.moved || !down.canBuy) { boardDrag = null; return; }
   const over = boardDrag?.over;
   boardDrag = null;
   const offer = b.shop[down.i];
@@ -2341,7 +2449,21 @@ window.addEventListener('pointerup', (event) => {
   boardKey = '';
   renderBoardUi();
 });
-window.addEventListener('pointercancel', () => { if (cardDown) { cardDown = null; boardDrag = null; } });
+window.addEventListener('pointercancel', (event) => cancelBoardPointer(event));
+function clearBoardInteraction() {
+  if (boardDown) window.clearTimeout(boardDown.timer);
+  if (cardDown) window.clearTimeout(cardDown.timer);
+  boardDown = null; cardDown = null; boardDrag = null; cardClickBlockUntil = 0;
+  boardUi.classList.remove('is-dragging', 'is-selling');
+  boardFloat.hidden = true;
+  hideBoardTooltip();
+}
+function cancelBoardPointer(event: PointerEvent) {
+  if (boardDown?.id === event.pointerId) { window.clearTimeout(boardDown.timer); boardDown = null; boardDrag = null; }
+  if (cardDown?.id === event.pointerId) { window.clearTimeout(cardDown.timer); cardDown = null; boardDrag = null; }
+  boardUi.classList.remove('is-dragging', 'is-selling');
+  hideBoardTooltip();
+}
 /** After a card is bought: its star upgrade with the smoke, or a pick sound. */
 function afterBuy(b: BoardGame, shopIndex?: number) {
   if (b.variant === 'tactics' && shopIndex !== undefined) {
@@ -2364,7 +2486,9 @@ boardUi.addEventListener('click', (event) => {
   // Waiting for the rival: the army already sent can no longer change.
   if (b.online?.waiting && !['quit', 'pause', 'bonus'].includes(el.dataset.bact ?? '')) return;
   // The click that ends a card's drag is not a tap.
-  if (cardDragged && el.dataset.bact === 'buy') { cardDragged = false; return; }
+  if (el.dataset.bact === 'buy' && performance.now() <= cardClickBlockUntil) {
+    cardClickBlockUntil = 0; event.preventDefault(); return;
+  }
   audio.unlock();
   const act = el.dataset.bact;
   if (act === 'buy') {
@@ -2541,14 +2665,21 @@ function boardStep(dt: number, now: number) {
   const shopWidth = wide ? Math.min(330, Math.max(280, canvas.clientWidth * 0.25)) : 0;
   const fieldWidth = canvas.clientWidth - shopWidth;
   const arena = boardBackdropBounds(b.world, fieldWidth, floor.top, floor.bottom);
-  boardLay = layoutBoard(fieldWidth, Math.max(top, arena.y + arena.h * 0.04), Math.min(bottom, arena.y + arena.h * 0.96), arena.w * 0.96);
+  boardLay = layoutBoard(fieldWidth, Math.max(top, arena.y + arena.h * 0.04), Math.min(bottom, arena.y + arena.h * 0.96), arena.w * 0.96, wide);
   // Bonuses overlay the board on mobile so they do not steal width; on desktop they sit just outside its left edge.
   const wallTop = rect.top + boardLay.oy + (HOME_ROW * CELL - 4) * boardLay.s;
+  const sideHeight = `${Math.max(43, wallTop - rect.top - top - 12)}px`;
+  if (boardSide.style.maxHeight !== sideHeight) boardSide.style.maxHeight = sideHeight;
   const sideLeft = wide
     ? rect.left + boardLay.ox - 51
     : rect.left + fieldWidth - 42;
   const sideAt = `${Math.round(sideLeft)}px,${Math.round(window.innerHeight - wallTop + 8)}px`;
-  if (boardSide.dataset.at !== sideAt) { boardSide.dataset.at = sideAt; const [x, y] = sideAt.split(','); boardSide.style.left = x; boardSide.style.bottom = y; boardSide.style.top = 'auto'; }
+  if (boardSide.dataset.at !== sideAt) {
+    boardSide.dataset.at = sideAt;
+    const [x, y] = sideAt.split(',');
+    boardSide.style.left = x; boardSide.style.bottom = y; boardSide.style.top = 'auto';
+    if (!gearPanel.hidden && gearPanel.classList.contains('is-board')) positionBoardBonusPanel();
+  }
   ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
   ctx.fillStyle = '#0b0820';
   ctx.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
@@ -2569,15 +2700,19 @@ function boardStep(dt: number, now: number) {
    shop to sell it; a tap says what it is. Only your half, the lower five rows, takes them. */
 function boardPointerDown(event: PointerEvent) {
   const b = board;
-  if (!b || b.phase !== 'prep') return;
+  if (!b || b.phase !== 'prep' || boardDown || cardDown) return;
   const rect = canvas.getBoundingClientRect();
   const x = event.clientX - rect.left;
   const y = event.clientY - rect.top;
   const slot = slotAt(boardLay, x, y);
   const piece = slot ? pieceAt(b, slot) : undefined;
   if (!piece) return;
-  boardDown = { x, y, id: event.pointerId };
-  boardDrag = { piece, x, y, over: slot };
+  const down = boardDown = { x, y, id: event.pointerId, piece, moved: false, held: false, timer: 0 };
+  down.timer = window.setTimeout(() => {
+    if (boardDown !== down || down.moved || board !== b || b.phase !== 'prep') return;
+    markBoardPressHeld(down);
+    showBoardTooltip(b, piece, event.clientX, event.clientY);
+  }, 520);
   canvas.setPointerCapture(event.pointerId);
 }
 /** Where the sell zone starts: the shop's cards, or Fusion's strip above its buttons (and the buttons below it). */
@@ -2585,10 +2720,21 @@ function sellTop() {
   return (boardShop.querySelector('.board-sellzone') ?? boardShop).getBoundingClientRect().top - 14;
 }
 function boardPointerMove(event: PointerEvent) {
-  if (!boardDrag || !boardDown || event.pointerId !== boardDown.id) return;
+  const down = boardDown;
+  if (!down || event.pointerId !== down.id) return;
   const rect = canvas.getBoundingClientRect();
-  boardDrag.x = event.clientX - rect.left;
-  boardDrag.y = event.clientY - rect.top;
+  const x = event.clientX - rect.left;
+  const y = event.clientY - rect.top;
+  if (!down.moved && Math.hypot(x - down.x, y - down.y) < 10) return;
+  if (!down.moved) {
+    down.moved = true;
+    window.clearTimeout(down.timer);
+    hideBoardTooltip();
+    boardDrag = { piece: down.piece, x, y, over: slotAt(boardLay, x, y) };
+  }
+  if (!boardDrag) return;
+  boardDrag.x = x;
+  boardDrag.y = y;
   boardDrag.over = slotAt(boardLay, boardDrag.x, boardDrag.y);
   // Over the shop and the buttons it would be sold: a soft red glow there says so.
   boardUi.classList.add('is-dragging');
@@ -2604,16 +2750,19 @@ function boardPointerMove(event: PointerEvent) {
 function boardPointerUp(event: PointerEvent) {
   if (cardDown) return; // a shop card being dragged: its own handler on the window ends it
   const b = board;
-  const drag = boardDrag;
   const down = boardDown;
+  if (!down || event.pointerId !== down.id) return;
+  window.clearTimeout(down.timer);
   boardDrag = null;
   boardDown = null;
+  hideBoardTooltip();
   boardUi.classList.remove('is-dragging', 'is-selling');
-  if (!b || !drag || !down || event.pointerId !== down.id) return;
-  const moved = Math.hypot(drag.x - down.x, drag.y - down.y) > 10;
+  const drag = down.moved ? { piece: down.piece, over: slotAt(boardLay, event.clientX - canvas.getBoundingClientRect().left, event.clientY - canvas.getBoundingClientRect().top) } : null;
+  if (!b || !drag) {
+    if (b && !down.held) flash(`${boardTierName(down.piece.tier)}${b.variant === 'tactics' ? ` ${'★'.repeat(down.piece.star ?? 1)} · ${t(`boardRarity${down.piece.tier}` as Key)}` : ''} · ${worldName(down.piece.cast)} · ◉ ${saleOf(down.piece, b.variant, b.world)}`);
+    return;
+  }
   const from = drag.piece.slot;
-  // A tap: what it is, the world its cast comes from, and what it would sell for.
-  if (!moved) { flash(`${boardTierName(drag.piece.tier)}${b.variant === 'tactics' ? ` ${'★'.repeat(drag.piece.star ?? 1)} · ${t(`boardRarity${drag.piece.tier}` as Key)}` : ''} · ${worldName(drag.piece.cast)} · ◉ ${saleOf(drag.piece, b.variant, b.world)}`); return; }
   // Dropped on the shop: sold, for half what it is worth.
   if (event.clientY >= sellTop()) {
     const gain = saleOf(drag.piece, b.variant, b.world);
@@ -3133,8 +3282,9 @@ function spiritChips(g: Game) {
 }
 gearPanel.addEventListener('click', (event) => {
   const target = (event.target as HTMLElement).closest<HTMLElement>('button');
-  if (!target || !game) return;
+  if (!target) return;
   if (target.classList.contains('gp-close')) { closeGearPanel(); return; }
+  if (!game) return;
   if (target.dataset.blade) pickBlade(game, target.dataset.blade as Parameters<typeof pickBlade>[1]);
   else if (target.dataset.arrow) pickArrow(game, target.dataset.arrow as ArrowLook);
   else if (target.dataset.spirit) pickSpirit(game, target.dataset.spirit as SpiritSkin);
@@ -3310,7 +3460,7 @@ canvas.addEventListener('pointermove', (event) => {
   stick.y = event.clientY;
 });
 const release = (event: PointerEvent) => {
-  if (board) { boardPointerUp(event); return; }
+  if (board) { event.type === 'pointercancel' ? cancelBoardPointer(event) : boardPointerUp(event); return; }
   if (event.pointerId !== stick.id) return;
   stick.on = false;
   stick.id = -1;
