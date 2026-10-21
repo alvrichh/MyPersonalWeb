@@ -274,23 +274,22 @@ export function newBoard(world: number, casts: number, variant: Variant = 'fusio
 
 /** Four cards: mostly bugs and tickets (a legacy now and then from round 4), from any cast you have opened, the
     latest more often. */
+function rollTacticsOffer(b: BoardGame): NonNullable<Offer> {
+  // Rarer cards come more often as the rounds go on.
+  const k = (b.round - 1) / (ROUNDS - 1);
+  const odds = TACTICS.odds[0].map((o, i) => o + (TACTICS.odds[1][i] - o) * k);
+  let roll = Math.random();
+  let tier = 0;
+  while (tier < 4 && roll >= odds[tier]) { roll -= odds[tier]; tier += 1; }
+  // Every world's cast from the start, all equally strong and priced: what sets them apart is their ability.
+  const cast = 1 + Math.floor(Math.random() * WORLDS.length);
+  return { tier: tier as Tier, cast, price: priceOf(tier as Tier, b.world, 'tactics') };
+}
+
 function rollShop(b: BoardGame) {
   // Fusion has no cards: its units are summoned (`summon`).
   if (b.variant === 'fusion') { b.shop = []; return; }
-  if (b.variant === 'tactics') {
-    // Rarer cards come more often as the rounds go on.
-    const k = (b.round - 1) / (ROUNDS - 1);
-    const odds = TACTICS.odds[0].map((o, i) => o + (TACTICS.odds[1][i] - o) * k);
-    b.shop = Array.from({ length: 4 }, () => {
-      let roll = Math.random();
-      let tier = 0;
-      while (tier < 4 && roll >= odds[tier]) { roll -= odds[tier]; tier += 1; }
-      // Every world's cast from the start, all equally strong and priced: what sets them apart is their ability.
-      const cast = 1 + Math.floor(Math.random() * WORLDS.length);
-      return { tier: tier as Tier, cast, price: priceOf(tier as Tier, b.world, 'tactics') };
-    });
-    return;
-  }
+  if (b.variant === 'tactics') { b.shop = Array.from({ length: 4 }, () => rollTacticsOffer(b)); return; }
   b.shop = Array.from({ length: 4 }, () => {
     const roll = Math.random();
     const tier: Tier = b.round >= 4 && roll < 0.08 ? 2 : roll < 0.34 ? 1 : 0;
@@ -439,7 +438,7 @@ function buyTactics(b: BoardGame, i: number, offer: NonNullable<Offer>, where?: 
   const at = pair.length >= TACTICS.copies - 1 ? null : chosen ?? freeCell(b, true);
   if (!at && pair.length < TACTICS.copies - 1) return false;
   b.gold -= offer.price;
-  b.shop[i] = null;
+  b.shop[i] = rollTacticsOffer(b);
   b.events.push('buy');
   if (at) { b.army.push({ id: nextId++, tier: offer.tier, cast: offer.cast, slot: at, star: 1 }); return true; }
   let star: Star = 1;

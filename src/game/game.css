@@ -4021,6 +4021,9 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 :root:not([data-retro]) .board-card .board-cast { top: 8%; right: 9%; }
 :root:not([data-retro]) .board-card:disabled { opacity: 1; filter: grayscale(0.7) brightness(0.65) drop-shadow(0 4px 6px rgba(0, 0, 0, 0.45)); }
 :root:not([data-retro]) .board-card.is-sold { opacity: 0.35; filter: grayscale(1); background-image: url('/images/game/ui/shop_orange.webp'); }
+.board-card.is-pop { animation: board-card-pop 0.42s cubic-bezier(0.2, 0.85, 0.3, 1.25) both; }
+@keyframes board-card-pop { 0% { opacity: 0; transform: scale(0.68) translateY(10px); } 72% { opacity: 1; transform: scale(1.07); } 100% { opacity: 1; transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) { .board-card.is-pop { animation: none; } }
 :root:not([data-retro]) .board-acts { margin-top: 6px; }
 :root:not([data-retro]) .board-acts .board-reroll {
   min-height: 52px; border-style: solid; border-width: 0 22px; border-radius: 0;

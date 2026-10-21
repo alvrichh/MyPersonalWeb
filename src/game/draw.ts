@@ -1,4 +1,4 @@
-import { GAZE, H, W, WALL, WHEEL_X, ICICLE_R, ICICLE_STAY, ATTACK_CYCLE, WORLDS, frostReach, waveAt, type Threat, type OrbPic, isBossRoom, type Enemy, type Game, type Shot, type Look, type Statue, type Rect, type Vec, type Fusion, arrowLook, fusionOf, bladeCount, bladeElement, sawOrbit, sawScale, type BladeElement, type Fx, type SkillId } from './world';
+import { GAZE, H, W, WALL, WHEEL_X, ICICLE_R, ICICLE_STAY, ICICLE_PERSIST_STAY, ICICLE_SINK, ATTACK_CYCLE, WORLDS, frostReach, waveAt, type Threat, type OrbPic, isBossRoom, type Enemy, type Game, type Shot, type Look, type Statue, type Rect, type Vec, type Fusion, arrowLook, fusionOf, bladeCount, bladeElement, sawOrbit, sawScale, type BladeElement, type Fx, type SkillId } from './world';
 import { SPIRIT_COLOR, type ItemId, type SpiritSkin } from './shop';
 import { FULL_HERO_SETS, heroKey, type HeroSkin } from './save';
 
@@ -4896,7 +4896,7 @@ function drawStrikes(ctx: CanvasRenderingContext2D, g: Game, now: number) {
 }
 
 /** Ice spikes: while they warn, an icy ring with the floor cracking open more and more inside it; then a
-   cluster of spikes bursts up out of it, stays a moment and crumbles back down. */
+   cluster of spikes bursts up. Ambient world-3 spikes sink after ten seconds; boss spikes crumble sooner. */
 /* The owner's ice spikes, four variants of seven frames (`fx/icicle-<v>-<f>.webp`: the floor cracking, then the spikes
    growing), each variant cut on one canvas so its frames share the floor point: where the crack's middle sits (`cx`, `cy`,
    fractions of the picture) and how wide the crack is (`cw`), so it is drawn as wide as the warned ring. */
@@ -4941,12 +4941,17 @@ function drawIcicleArt(ctx: CanvasRenderingContext2D, st: { x: number; y: number
     ctx.setLineDash([]);
     alpha = 0.5 + 0.5 * t;
     grow = 0.55 + 0.45 * t;
-  } else alpha = st.persistent ? 1 : Math.min(1, (ICICLE_STAY - age) / (ICICLE_STAY * 0.35));
+  } else if (st.persistent) {
+    const sink = Math.max(0, Math.min(1, (age - ICICLE_PERSIST_STAY) / ICICLE_SINK));
+    alpha = 1 - sink;
+    grow = 1 - sink;
+  } else alpha = Math.min(1, (ICICLE_STAY - age) / (ICICLE_STAY * 0.35));
   if (alpha <= 0) return true;
   const w = ((r * 2.5) / m.cw) * grow;
   const h = (w * pic.naturalHeight) / pic.naturalWidth;
   ctx.globalAlpha = alpha;
-  ctx.drawImage(pic, st.x - w * m.cx, st.y - h * m.cy, w, h);
+  const sinkY = st.persistent ? Math.max(0, Math.min(1, (age - ICICLE_PERSIST_STAY) / ICICLE_SINK)) * h * 0.2 : 0;
+  ctx.drawImage(pic, st.x - w * m.cx, st.y - h * m.cy + sinkY, w, h);
   ctx.globalAlpha = 1;
   return true;
 }
@@ -4982,7 +4987,8 @@ function drawIcicle(ctx: CanvasRenderingContext2D, st: { x: number; y: number; t
   }
   // Up in a tenth of a second, down over the last third of its stay.
   const age = -st.t;
-  const up = st.persistent ? 1 : Math.min(1, age / 0.1) * Math.min(1, (ICICLE_STAY - age) / (ICICLE_STAY * 0.35));
+  const sink = st.persistent ? Math.max(0, Math.min(1, (age - ICICLE_PERSIST_STAY) / ICICLE_SINK)) : 0;
+  const up = st.persistent ? 1 - sink : Math.min(1, age / 0.1) * Math.min(1, (ICICLE_STAY - age) / (ICICLE_STAY * 0.35));
   if (up <= 0) return;
   ctx.fillStyle = 'rgba(8,20,35,0.35)';
   ctx.beginPath();
@@ -4990,7 +4996,7 @@ function drawIcicle(ctx: CanvasRenderingContext2D, st: { x: number; y: number; t
   ctx.fill();
   // Back ones first, so the front ones stand over them.
   for (const [dx, dy, h, w] of ICE_SPIKES) {
-    const bx = st.x + dx * r; const by = st.y + dy * r * 0.5;
+    const bx = st.x + dx * r; const by = st.y + dy * r * 0.5 + sink * r * 0.65;
     const tall = h * up; const half = w;
     const grad = ctx.createLinearGradient(bx - half, 0, bx + half, 0);
     grad.addColorStop(0, '#bae6fd');
