@@ -5055,14 +5055,14 @@ export function boardBackdropBounds(world: number, w: number, top: number, botto
   return { x: (w - width) / 2, y: top + (available - height) / 2, w: width, h: height };
 }
 /** The complete arena in the middle; on wide screens, dim floor tiles fill the sides at their normal scale. */
-export function drawBoardBackdrop(ctx: CanvasRenderingContext2D, world: number, w: number, top: number, bottom: number, dpr: number, retro: boolean) {
+export function drawBoardBackdrop(ctx: CanvasRenderingContext2D, world: number, w: number, top: number, bottom: number, dpr: number, retro: boolean, areaWidth = w) {
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   const h = Math.max(0, bottom - top);
   ctx.fillStyle = WORLDS[world - 1].floor;
   ctx.fillRect(0, top, w, h);
   const floor = retro ? undefined : floorImage(world);
   if (floor && ready(floor)) {
-    const bounds = boardBackdropBounds(world, w, top, bottom);
+    const bounds = boardBackdropBounds(world, areaWidth, top, bottom);
     const pattern = fieldPattern(ctx, floor, W * FLOOR_CROP.w, H * FLOOR_CROP.h);
     if (pattern) {
       ctx.fillStyle = pattern;

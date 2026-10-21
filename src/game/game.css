@@ -4256,3 +4256,43 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .gear-row.is-locked em { white-space: normal; overflow-wrap: anywhere; font-size: 0.62rem; line-height: 1.15; }
 .gear-row { min-width: 0; }
 .gear-row > * { min-width: 0; }
+
+/* On desktop, keep the arena broad and give the shop, commanders and fight controls one vertical rail. */
+.board-commanders { display: none; }
+@media (min-width: 900px) and (orientation: landscape) {
+  .board-ui { display: grid; grid-template-columns: minmax(0, 1fr) clamp(280px, 25vw, 330px); grid-template-rows: auto minmax(0, 1fr); column-gap: 12px; }
+  .board-top { grid-column: 1; grid-row: 1; margin: max(10px, env(safe-area-inset-top)) 0 0 12px; }
+  .board-shop {
+    grid-column: 2; grid-row: 1 / span 2; align-self: stretch; justify-self: stretch;
+    width: auto; min-width: 0; box-sizing: border-box; margin: max(10px, env(safe-area-inset-top)) 12px max(10px, env(safe-area-inset-bottom)) 0;
+    padding: 12px; display: flex; flex-direction: column; gap: 10px; overflow: auto;
+    border-color: rgba(56, 189, 248, 0.5); background: linear-gradient(160deg, rgba(8, 18, 42, 0.96), rgba(8, 12, 28, 0.94));
+  }
+  .board-commanders { display: grid; gap: 8px; }
+  .board-commander {
+    display: grid; grid-template-columns: 54px minmax(0, 1fr); grid-template-rows: 1fr auto; align-items: center; column-gap: 9px;
+    min-height: 64px; padding: 6px 9px; border: 1px solid rgba(148, 163, 184, 0.25); border-radius: 13px;
+    background: rgba(15, 23, 42, 0.78); color: #e2e8f0; font: 700 0.78rem/1.15 var(--font);
+  }
+  .board-commander img { grid-row: 1 / span 2; width: 50px; height: 58px; object-fit: contain; object-position: center bottom; filter: drop-shadow(0 3px 5px #0009); }
+  .board-commander span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .board-commander b { color: #fda4af; font-size: 0.72rem; }
+  .board-commander.is-mine b { color: #7dd3fc; }
+  .board-count { display: inline-block; align-self: flex-start; margin: 0; padding: 4px 8px; border-radius: 99px; background: rgba(6, 10, 24, 0.75); font: 700 0.78rem/1 var(--font); }
+  .board-sellzone { flex: 1 1 auto; min-height: 0; }
+  .board-cards { width: 100%; grid-template-columns: minmax(0, 1fr); gap: 7px; }
+  .board-card {
+    grid-template-columns: 56px minmax(0, 1fr) auto; grid-template-rows: 1fr 1fr; align-items: center; justify-items: start; column-gap: 8px;
+    min-height: 58px; padding: 4px 8px; text-align: left; font-size: 0.76rem;
+  }
+  .board-card img { grid-column: 1; grid-row: 1 / span 2; width: 52px; height: 50px; }
+  .board-card > b { grid-column: 2; grid-row: 1 / span 2; }
+  .board-card .board-price { grid-column: 3; grid-row: 1 / span 2; white-space: nowrap; }
+  .board-cast { top: 2px; right: 4px; z-index: 1; }
+  .board-up { left: 28px; top: 50%; }
+  .board-acts { grid-template-columns: 1fr; margin-top: auto; gap: 7px; }
+  .board-acts button { min-height: 42px; font-size: 0.88rem; }
+  .board-fight-row { display: grid; grid-template-columns: 52px minmax(0, 1fr) 52px; align-items: center; gap: 8px; margin-top: auto; }
+  .board-fight-row .board-fighting { margin: 0; }
+  .board-side { z-index: 3; }
+}
