@@ -1,5 +1,5 @@
 import { ARSENAL, ITEMS, UPGRADES, itemLevel } from './shop';
-import { SKINS, worldWon, type Save } from './save';
+import { SKINS, WORLD_SKINS, worldWon, type Save } from './save';
 import { WORLD_COUNT } from './world';
 
 /* Achievements: shown in the profile (`achievementsScreen` in `main.ts`) and announced by a toast the next time the
@@ -12,7 +12,7 @@ import { WORLD_COUNT } from './world';
 export type AchId =
   | 'firstRun' | 'helloWorld' | 'exterminator' | 'croak' | 'nightmareHater' | 'insomniac' | 'dragonSlayer'
   | 'sprinter' | 'onCall' | 'rushKing' | 'somethingMoves' | 'spartan' | 'collector' | 'senior' | 'armoury'
-  | 'smith' | 'fashion' | 'scrooge' | 'legend' | 'veteran' | 'master' | 'reborn';
+  | 'smith' | 'fashion' | 'based' | 'scrooge' | 'legend' | 'veteran' | 'master' | 'reborn';
 
 export type Ach = {
   id: AchId;
@@ -48,6 +48,7 @@ export const ACHIEVEMENTS: Ach[] = [
   { id: 'armoury', pic: 'skills/rocket.webp', icon: '💣', value: (s) => ARSENAL.filter((a) => s.arsenal.includes(a.id)).length, goals: [1, 4, ARSENAL.length] },
   { id: 'smith', pic: 'forge/might.webp', icon: '⚒️', value: (s) => UPGRADES.filter((u) => (s.upgrades[u.id] ?? 0) >= u.max).length, goals: [1, 4, UPGRADES.length] },
   { id: 'fashion', pic: 'hero/robot-base-front.webp', zoom: 1.5, icon: '🕶️', value: (s) => SKINS.filter((k) => s.skins.includes(k)).length, goals: [2, SKINS.length] },
+  { id: 'based', pic: 'hero/swamp-base-front.webp', zoom: 1.5, icon: '😎', value: (s) => WORLD_SKINS.filter((k) => s.skins.includes(k)).length, goals: [WORLD_SKINS.length] },
   { id: 'scrooge', pic: 'ui/wheel/coins.webp', icon: '💰', value: (s) => Math.floor(s.coins), goals: [5000, 20000, 50000] },
   { id: 'legend', pic: 'skills/headshot.webp', icon: '🏆', value: (s) => s.stats.kills, goals: [1000, 10000, 50000] },
   { id: 'veteran', pic: 'items/hourglass.webp', icon: '⏱️', value: (s) => Math.floor((s.playTime || 0) / 3600), goals: [1, 5, 20] },
