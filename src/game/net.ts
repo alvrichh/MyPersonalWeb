@@ -62,6 +62,29 @@ let presentId = '';
 let presentTimer = 0;
 let handlers: NetHandlers | null = null;
 let retries = 0;
+/** Joining by code: the host's page may be asleep for a moment (an iPhone hides it while the code is passed on in
+    another app), so the guest calls again for a while before saying there is no such game. */
+const JOIN = { every: 2500, times: 6 };
+let joinTries = 0;
+let joinTimer = 0;
+function joinAgain(h: NetHandlers): boolean {
+  if (quitting || joined || present || role !== 'guest' || joinTries >= JOIN.times || !peer) return false;
+  joinTries += 1;
+  window.clearTimeout(joinTimer);
+  joinTimer = window.setTimeout(() => {
+    if (quitting || joined || !peer || peer.destroyed) return;
+    const c = peer.connect(target, { reliable: true });
+    wire(c, h);
+    // PeerJS may not say again that nobody is there: give each try its own deadline.
+    joinTimer = window.setTimeout(() => {
+      if (joined || quitting || conn !== c) return;
+      conn = null;
+      try { c.close(); } catch { /* never opened */ }
+      if (!joinAgain(h)) h.error('peer-unavailable');
+    }, JOIN.every);
+  }, JOIN.every);
+  return true;
+}
 let retryTimer = 0;
 
 export const netOn = () => !!conn?.open;
@@ -77,7 +100,7 @@ function wire(c: DataConnection, h: NetHandlers) {
     gone = true;
     if (conn === c) conn = null;
     // Never joined: the guest's call simply failed.
-    if (!joined) { if (present) role = 'host'; h.error('peer-unavailable'); return; }
+    if (!joined) { if (present) role = 'host'; if (joinAgain(h)) return; h.error('peer-unavailable'); return; }
     h.drop?.();
     if (role === 'guest') retry();
   };
@@ -118,6 +141,7 @@ function watchPeer(p: Peer, h: NetHandlers) {
     }
     // Waiting under your own id: a friend not there, or the id open in another tab, is nothing to show.
     if (present && !joined) { if (role === 'guest' && typeOf(e) === 'peer-unavailable') h.error('peer-unavailable'); return; }
+    if (!joined && typeOf(e) === 'peer-unavailable' && joinAgain(h)) return;
     if (!joined) h.error(typeOf(e));
     else if (role === 'guest' && !conn?.open) { conn = null; retry(); }
   });
@@ -150,6 +174,7 @@ export function joinGame(to: string, h: NetHandlers) {
   role = 'guest';
   handlers = h;
   code = to;
+  joinTries = 0;
   target = PREFIX + to;
   present = false;
   retries = 0;
@@ -206,6 +231,7 @@ export function send(m: NetMsg) {
 export function leave() {
   quitting = true;
   window.clearTimeout(retryTimer);
+  window.clearTimeout(joinTimer);
   window.clearTimeout(presentTimer);
   if (conn?.open) { try { conn.send({ t: 'bye' } satisfies NetMsg); } catch { /* gone already */ } }
   conn?.close();
@@ -217,6 +243,12 @@ export function leave() {
   handlers = null;
   joined = false;
 }
+
+// Back on the page (the phone woke, or the player came back from another app): the introduction server dropped us
+// while the page slept, so ask to be known again at once, the code or your own id open for the other to call.
+if (typeof document !== 'undefined') document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && peer && !peer.destroyed && peer.disconnected && !quitting) { try { peer.reconnect(); } catch { /* tried */ } }
+});
 
 // On localhost only, a way for a test script to cut the link as a drop would (no goodbye).
 if (typeof location !== 'undefined' && location.hostname === 'localhost') (window as unknown as { bugHunterNet: object }).bugHunterNet = { cut: () => conn?.close() };
