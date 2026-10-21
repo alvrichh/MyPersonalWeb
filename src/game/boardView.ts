@@ -512,11 +512,11 @@ export function mirrorFight(b: BoardGame): BoardGame {
   };
 }
 
-export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: BoardLayout, now: number, drag: BoardDrag | null, retro: boolean, dpr: number, pics: HeroPics, ended: number | null, floor: { top: number; bottom: number }) {
+export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: BoardLayout, now: number, drag: BoardDrag | null, retro: boolean, dpr: number, pics: HeroPics, ended: number | null, floor: { top: number; bottom: number; width?: number }, commandersInSidebar = false) {
   const tactics = b.variant === 'tactics';
   // The world's whole arena floor, walls and corners, as in a sprint, from under the top bar to over the buttons;
   // the board is only its grid.
-  drawBoardBackdrop(ctx, b.world, ctx.canvas.width / dpr, floor.top, floor.bottom, dpr, retro);
+  drawBoardBackdrop(ctx, b.world, ctx.canvas.width / dpr, floor.top, floor.bottom, dpr, retro, floor.width);
   ctx.setTransform(dpr * lay.s, 0, 0, dpr * lay.s, dpr * lay.ox, dpr * lay.oy);
   ctx.save();
   ctx.beginPath();
@@ -557,11 +557,11 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
   const rivalGone = b.phase === 'won' && done ? Math.min(1, (ended! - FIREBALL.fly) / 0.6) : 0;
   // The rival's pose, from your hero's: aiming while it throws at you, hurt when struck, cheering once you are out.
   const rivalPose = b.phase === 'over' && done ? pics.cheer : ended !== null && !won && !done ? pics.shoot : won && struck > 0 ? pics.hurt : pics.front;
-  drawRival(ctx, pics, rivalPose, now, won ? struck : 0, rivalGone);
+  if (!commandersInSidebar) drawRival(ctx, pics, rivalPose, now, won ? struck : 0, rivalGone);
   // A round won: it cheers and celebrates once its fireball has struck (the world won too).
   const party = won && done ? ended! - FIREBALL.fly : -1;
   const pose = b.phase === 'over' && done ? pics.down : ended !== null && won && !done ? pics.shoot : party >= 0 ? pics.cheer : !won && struck > 0 ? pics.hurt : pics.front;
-  drawHero(ctx, pics, pose, now, won ? 0 : struck * 0.6, party);
+  if (!commandersInSidebar) drawHero(ctx, pics, pose, now, won ? 0 : struck * 0.6, party);
 
   // Where the dragged unit would go: green to move, gold to merge.
   if (drag?.over) {
@@ -645,8 +645,8 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
     }
   }
   if (ended !== null && fly < 1) {
-    const from = won ? { x: MINE.x - 12, y: MINE.y - 36 } : { x: RIVAL.x + 10, y: RIVAL.y - 20 };
-    const to = won ? { x: RIVAL.x, y: RIVAL.y - 22 } : { x: MINE.x, y: MINE.y - 30 };
+    const from = won ? { x: commandersInSidebar ? BOARD_W - 12 : MINE.x - 12, y: MINE.y - 36 } : { x: commandersInSidebar ? 10 : RIVAL.x + 10, y: RIVAL.y - 20 };
+    const to = won ? { x: commandersInSidebar ? BOARD_W - 8 : RIVAL.x, y: RIVAL.y - 22 } : { x: commandersInSidebar ? 8 : MINE.x, y: MINE.y - 30 };
     const k = Math.max(0, fly);
     const x = from.x + (to.x - from.x) * k;
     const y = from.y + (to.y - from.y) * k - Math.sin(k * Math.PI) * 60;
@@ -669,7 +669,7 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
     ctx.restore();
   }
   if (ended !== null && ended > FIREBALL.fly && ended < FIREBALL.fly + FIREBALL.blast) {
-    const at = won ? { x: RIVAL.x, y: RIVAL.y - 22 } : { x: MINE.x, y: MINE.y - 30 };
+    const at = won ? { x: commandersInSidebar ? BOARD_W - 8 : RIVAL.x, y: RIVAL.y - 22 } : { x: commandersInSidebar ? 8 : MINE.x, y: MINE.y - 30 };
     const k = (ended - FIREBALL.fly) / FIREBALL.blast;
     const boom = boardFx('boom-big');
     ctx.save();
@@ -690,12 +690,14 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
   const popAt = ended === null ? 1 : Math.max(0, Math.min(1, (ended - FIREBALL.fly) / FIREBALL.blast));
   const rivalPop = ended === null ? 0 : b.online ? b.online.rivalLost ?? 0 : won ? 1 : 0;
   const minePop = !won && ended !== null ? b.last?.lost ?? 0 : 0;
-  hearts(ctx, RIVAL.x + 50, -TOP / 2, rivalHp(b), rivalPop, done ? popAt : 0, retro);
-  hearts(ctx, MINE.x, MINE.y - 72, b.lives, minePop, done ? popAt : 0, retro);
+  if (!commandersInSidebar) {
+    hearts(ctx, RIVAL.x + 50, -TOP / 2, rivalHp(b), rivalPop, done ? popAt : 0, retro);
+    hearts(ctx, MINE.x, MINE.y - 72, b.lives, minePop, done ? popAt : 0, retro);
+  }
   // Your commander's fireball in the fight: from your hero onto the enemies' thickest knot, then its blast.
   if (b.strike) {
     const k = 1 - b.strike.t / STRIKE.fly;
-    const from = { x: MINE.x - 12, y: MINE.y - 36 };
+    const from = { x: commandersInSidebar ? BOARD_W - 12 : MINE.x - 12, y: MINE.y - 36 };
     const x = from.x + (b.strike.x - from.x) * k;
     const y = from.y + (b.strike.y - from.y) * k - Math.sin(k * Math.PI) * 70;
     const ball = boardFx('fireball');

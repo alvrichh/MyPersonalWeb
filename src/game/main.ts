@@ -2259,6 +2259,12 @@ function renderBoardUi() {
     <span class="hud-room">${t('worldShort', { n: b.world })} · ${t('boardRound', { n: b.round, total: ROUNDS })}</span>
     <span class="hud-coins" aria-label="${t('boardGoldLabel')}"><span class="hud-coin-orb" aria-hidden="true">🪙</span><b>${b.gold}</b></span>
     <button class="hud-pause" type="button" data-bact="pause" aria-label="${t('pause')}"><span aria-hidden="true">Ⅱ</span></button>`;
+  const ownPortrait = heroPics?.front.src ?? `./images/game/hero/${heroKey(save.skin, save.equipped.head)}-front.webp`;
+  const rivalPortrait = heroPics?.rival?.front.src ?? './images/game/hero/boy-base-front.webp';
+  const commanders = `<div class="board-commanders" aria-label="${t('boardLives')}">
+    <div class="board-commander is-rival"><img src="${rivalPortrait}" alt=""><span>${b.online ? esc(b.online.rivalName) : t('boardOpponent')}</span><b>❤️ ×${b.online ? b.online.rivalLives : ROUNDS - b.round + (b.phase !== 'prep' && b.phase !== 'fight' && b.last?.result === 'win' ? 0 : 1)}</b></div>
+    <div class="board-commander is-mine"><img src="${ownPortrait}" alt=""><span>${esc(save.name || t('boardLives'))}</span><b>❤️ ×${b.lives}</b></div>
+  </div>`;
   // Tactics: buying the second copy at ★1 upgrades it; highlight the matching card with ★↑.
   const starsUp = (o: { tier: number; cast: number }) => b.army.filter((p) => p.tier === o.tier && p.cast === o.cast && (p.star ?? 1) === 1).length >= TACTICS.copies - 1;
   // Fusion has no cards: «Summon» drops a unit straight onto the board; the cards are Tactics' only.
@@ -2270,7 +2276,7 @@ function renderBoardUi() {
   // lists them with what they do, like a run's skills panel.
   const bonus = boardBonuses(b);
   boardSide.innerHTML = bonus.map((x) => `<button class="board-bonus${x.on ? ' is-on' : ''}${x.event ? ' is-event' : ''}" type="button" data-bact="bonus" aria-label="${x.name}"><img src="./images/game/${x.pic}" alt=""><small>${x.count}</small></button>`).join('');
-  boardShop.innerHTML = prep ? `
+  boardShop.innerHTML = `${commanders}${prep ? `
     <div class="board-row">
       <span class="board-count" aria-label="${t('boardCapLabel')}">♟ ${b.army.length}/${armyCap(b.round)}</span>
     </div>
@@ -2285,7 +2291,7 @@ function renderBoardUi() {
            <button class="primary board-go" type="button" data-bact="fight"${b.army.length && !b.online?.waiting ? '' : ' disabled'}>${go}</button>`
         : `<button class="ghost board-reroll" type="button" data-bact="reroll"${b.gold < 1 ? ' disabled' : ''}>🎲 ${t('boardReroll')} · ${coin} 1</button>
            <button class="primary board-go" type="button" data-bact="fight"${b.army.length && !b.online?.waiting ? '' : ' disabled'}>${go}</button>`}
-    </div>` : `<div class="board-fight-row">${b.online ? '' : `<button class="board-skill" type="button" data-bact="skill"${b.skillUsed ? ' disabled' : ''} aria-label="${t('boardSkill')}">${save.retro ? '🔥' : '<img src="./images/game/skills/fireball.webp" alt="">'}</button>`}<p class="board-fighting">${t('boardFighting')}</p>${speedUp ? `<button class="board-speed${boardFast ? ' is-on' : ''}" type="button" data-bact="speed" aria-pressed="${boardFast}" aria-label="${t('boardSpeed')}">${boardFast ? '×1' : '×2'}</button>` : ''}</div>`;
+    </div>` : `<div class="board-fight-row">${b.online ? '' : `<button class="board-skill" type="button" data-bact="skill"${b.skillUsed ? ' disabled' : ''} aria-label="${t('boardSkill')}">${save.retro ? '🔥' : '<img src="./images/game/skills/fireball.webp" alt="">'}</button>`}<p class="board-fighting">${t('boardFighting')}</p>${speedUp ? `<button class="board-speed${boardFast ? ' is-on' : ''}" type="button" data-bact="speed" aria-pressed="${boardFast}" aria-label="${t('boardSpeed')}">${boardFast ? '×1' : '×2'}</button>` : ''}</div>`}`;
 }
 
 /* Tactics: a shop card can also be dragged onto a cell of your half, where it lands (a tap still buys it onto the
@@ -2513,12 +2519,15 @@ function boardStep(dt: number, now: number) {
   // The board between the top bar and the shop.
   const rect = canvas.getBoundingClientRect();
   const top = boardTop.getBoundingClientRect().bottom - rect.top + 6;
-  const bottom = boardShop.getBoundingClientRect().top - rect.top - 6;
+  const wide = window.matchMedia('(min-width: 900px) and (orientation: landscape)').matches;
+  const bottom = wide ? canvas.clientHeight - 8 : boardShop.getBoundingClientRect().top - rect.top - 6;
   // The cards sit over the arena's lower edge. Fit its art first, then keep the grid inside its walls.
   const acts = boardShop.querySelector('.board-acts, .board-fighting')?.getBoundingClientRect();
   const floor = { top: top - 6, bottom: (acts ? acts.top : boardShop.getBoundingClientRect().bottom) - rect.top - 4 };
-  const arena = boardBackdropBounds(b.world, canvas.clientWidth, floor.top, floor.bottom);
-  boardLay = layoutBoard(canvas.clientWidth, Math.max(top, arena.y + arena.h * 0.06), Math.min(bottom, arena.y + arena.h * 0.94), arena.w * 0.86);
+  const shopWidth = wide ? Math.min(330, Math.max(280, canvas.clientWidth * 0.25)) : 0;
+  const fieldWidth = canvas.clientWidth - shopWidth;
+  const arena = boardBackdropBounds(b.world, fieldWidth, floor.top, floor.bottom);
+  boardLay = layoutBoard(fieldWidth, Math.max(top, arena.y + arena.h * 0.04), Math.min(bottom, arena.y + arena.h * 0.96), arena.w * 0.96);
   // The bonuses' column on the left, standing on top of the wall at the halfway line: it grows upwards as more come.
   const wallTop = rect.top + boardLay.oy + (HOME_ROW * CELL - 4) * boardLay.s;
   const sideAt = `${Math.round(rect.left + boardLay.ox + 4)}px,${Math.round(window.innerHeight - wallTop + 8)}px`;
@@ -2529,7 +2538,7 @@ function boardStep(dt: number, now: number) {
   if (b.phase === 'prep' || b.phase === 'fight') boardEnded = null;
   // The guest sees the shared fight turned round, its own army at the bottom.
   const seen = b.online?.me === 1 ? mirrorFight(b) : b;
-  if (heroPics) drawBoard(ctx, seen, boardLay, now / 1000, boardDrag, save.retro, view.dpr, heroPics, boardEnded === null ? null : now / 1000 - boardEnded, floor);
+  if (heroPics) drawBoard(ctx, seen, boardLay, now / 1000, boardDrag, save.retro, view.dpr, heroPics, boardEnded === null ? null : now / 1000 - boardEnded, { ...floor, width: fieldWidth }, wide);
   boardFloat.hidden = !boardDrag;
   if (boardDrag || floatDrawn) {
     const w = Math.round(canvas.clientWidth * view.dpr), h = Math.round(canvas.clientHeight * view.dpr);
