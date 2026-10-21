@@ -8,9 +8,9 @@ import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPr
 import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
 import { draw, drawRetroFigure, preloadCast, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, NET_ID, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, SKIN_GATE, skinOpen, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
-import { CELL, HOME_ROW, ROUNDS, SYNERGY, TACTICS, armyCap, toggleAutoMerge, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, startOnlineFight, updateBoard, type BoardGame, type Online, type Piece, type Variant } from './board';
+import { ABILITY, ABIL_V, CELL, HOME_ROW, ROUNDS, SYNERGY, TACTICS, armyCap, toggleAutoMerge, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, startOnlineFight, updateBoard, type BoardGame, type Online, type Piece, type Variant } from './board';
 import { cleanCode, dial, hostGame, joinGame, leave as netLeave, presence, presenceOn, presenceReady, send as netSend, type NetHandlers, type NetMsg, type NetProfile, type NetState, type Together } from './net';
-import { FIREBALL, boardMerged, drawBoard, mirrorFight, drawBoardDrag, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
+import { ABILITY_ICON, FIREBALL, boardMerged, drawBoard, mirrorFight, drawBoardDrag, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
 import type { Enemy } from './world';
 import { ARMOUR_SLOTS, ARSENAL, ITEMS, itemLevel, type SpiritSkin, UPGRADES, WEAPON_SLOTS, EXTRA_SLOT_PRICE, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
 import { Scene } from './scene';
@@ -2204,6 +2204,16 @@ const EVENT_PIC: Record<string, string> = { gold: 'ui/wheel/coins.webp', frenzy:
 function boardBonuses(b: BoardGame) {
   const out: { pic: string; name: string; text: string; count: string; on: boolean; event: boolean }[] = [];
   if (b.event) out.push({ pic: EVENT_PIC[b.event], name: t(`boardEvent${cap(b.event)}` as Key), text: t(`boardEvent${cap(b.event)}Text` as Key), count: '⭐', on: true, event: true });
+  if (b.variant === 'tactics') {
+    // Tactics: every world on the board brings its ability, stronger with three and five of it.
+    for (const x of synergies(b).filter((y) => y.n >= 1)) {
+      const ab = ABILITY[x.cast];
+      const pct = Math.round(ABIL_V[ab][x.lv] * 100);
+      const need = x.lv >= 1 ? SYNERGY.need[1] : SYNERGY.need[0];
+      out.push({ pic: SYN_PIC[x.cast], name: `${ABILITY_ICON[ab]} ${t(`boardAbil${cap(ab)}` as Key)} · ${worldName(x.cast)}`, text: t(`boardAbil${cap(ab)}Text` as Key, { n: pct }), count: x.lv >= 2 ? `${x.n} ★★` : `${x.n}/${need}`, on: true, event: false });
+    }
+    return out;
+  }
   for (const x of synergies(b).filter((y) => y.n >= 2)) {
     const need = x.lv >= 1 ? SYNERGY.need[1] : SYNERGY.need[0];
     out.push({ pic: SYN_PIC[x.cast], name: `${WORLD_ICON[x.cast - 1]} ${worldName(x.cast)}`, text: t(`boardSyn${x.cast}` as Key), count: x.lv >= 2 ? `${x.n} ★` : `${x.n}/${need}`, on: x.lv > 0, event: false });
@@ -2254,7 +2264,7 @@ function renderBoardUi() {
   // Fusion has no cards: «Summon» drops a unit straight onto the board; the cards are Tactics' only.
   const fusion = b.variant === 'fusion';
   const cards = b.shop.map((o, i) => o
-    ? `<button class="board-card${b.variant === 'tactics' ? ` is-r${o.tier}${starsUp(o) ? ' is-up' : ''}` : ''}" type="button" data-bact="buy" data-i="${i}"${!prep || b.gold < o.price ? ' disabled' : ''}><i class="board-cast">${t('worldShort', { n: o.cast })}</i><img src="${boardPic(o.tier, o.cast)}" alt="">${b.variant === 'tactics' && starsUp(o) ? '<em class="board-up">★↑</em>' : ''}<b>${boardTierName(o.tier)}</b><span class="board-price">${coin} ${o.price}</span></button>`
+    ? `<button class="board-card${b.variant === 'tactics' ? ` is-r${o.tier}${starsUp(o) ? ' is-up' : ''}` : ''}" type="button" data-bact="buy" data-i="${i}"${!prep || b.gold < o.price ? ' disabled' : ''}><i class="board-cast">${b.variant === 'tactics' ? ABILITY_ICON[ABILITY[o.cast]] : t('worldShort', { n: o.cast })}</i><img src="${boardPic(o.tier, o.cast)}" alt="">${b.variant === 'tactics' && starsUp(o) ? '<em class="board-up">★↑</em>' : ''}<b>${boardTierName(o.tier)}</b><span class="board-price">${coin} ${o.price}</span></button>`
     : '<span class="board-card is-sold"></span>').join('');
   // The round's event and each world's synergy, a column of medallions on the left under the halfway line; a tap
   // lists them with what they do, like a run's skills panel.
@@ -2560,7 +2570,7 @@ function boardPointerMove(event: PointerEvent) {
   // What it would sell for, in the middle of the red.
   const price = boardShop.querySelector<HTMLElement>('.board-sell-price');
   if (price && board) {
-    const text = `+${save.retro ? '◉' : COIN_PIC} ${saleOf(boardDrag.piece, board.variant)}`;
+    const text = `+${save.retro ? '◉' : COIN_PIC} ${saleOf(boardDrag.piece, board.variant, board.world)}`;
     if (price.dataset.v !== text) { price.dataset.v = text; price.innerHTML = text; }
   }
 }
@@ -2576,10 +2586,10 @@ function boardPointerUp(event: PointerEvent) {
   const moved = Math.hypot(drag.x - down.x, drag.y - down.y) > 10;
   const from = drag.piece.slot;
   // A tap: what it is, the world its cast comes from, and what it would sell for.
-  if (!moved) { flash(`${boardTierName(drag.piece.tier)}${b.variant === 'tactics' ? ` ${'★'.repeat(drag.piece.star ?? 1)} · ${t(`boardRarity${drag.piece.tier}` as Key)}` : ''} · ${worldName(drag.piece.cast)} · ◉ ${saleOf(drag.piece, b.variant)}`); return; }
+  if (!moved) { flash(`${boardTierName(drag.piece.tier)}${b.variant === 'tactics' ? ` ${'★'.repeat(drag.piece.star ?? 1)} · ${t(`boardRarity${drag.piece.tier}` as Key)}` : ''} · ${worldName(drag.piece.cast)} · ◉ ${saleOf(drag.piece, b.variant, b.world)}`); return; }
   // Dropped on the shop: sold, for half what it is worth.
   if (event.clientY >= sellTop()) {
-    const gain = saleOf(drag.piece, b.variant);
+    const gain = saleOf(drag.piece, b.variant, b.world);
     if (boardSell(b, from)) { audio.play('coin'); flash(t('boardSold', { n: gain })); }
     renderBoardUi();
     return;
