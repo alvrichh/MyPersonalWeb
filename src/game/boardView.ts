@@ -18,9 +18,9 @@ export const FIREBALL = { fly: 0.75, blast: 0.45 };
 export type BoardLayout = { s: number; ox: number; oy: number };
 
 /** Fits the board (and the strip above it) into the area between the top bar and the shop. */
-export function layoutBoard(w: number, top: number, bottom: number, arenaWidth = w, wide = false): BoardLayout {
-  // A phone's commander stands below the grid, with only its head reaching the bottom corner.
-  const room = Math.max(120, bottom - top - (wide ? 0 : 92));
+export function layoutBoard(w: number, top: number, bottom: number, arenaWidth = w): BoardLayout {
+  // The commanders float over the arena, so their art must not take height away from the grid.
+  const room = Math.max(120, bottom - top);
   const s = Math.min((Math.min(w, arenaWidth) - 8) / BOARD_W, room / (BOARD_H + TOP + BOT));
   return { s, ox: (w - BOARD_W * s) / 2, oy: top + TOP * s + (room - (BOARD_H + TOP + BOT) * s) / 2 };
 }
@@ -523,7 +523,7 @@ function drawParty(ctx: CanvasRenderingContext2D, party: number, x = MINE.x, y =
   ctx.restore();
 }
 
-function drawHero(ctx: CanvasRenderingContext2D, pics: HeroPics, pose: HTMLImageElement, now: number, hit: number, party = -1, at = MINE, scale = 1, belowGrid = false) {
+function drawHero(ctx: CanvasRenderingContext2D, pics: HeroPics, pose: HTMLImageElement, now: number, hit: number, party = -1, at = MINE, scale = 1) {
   const { x, y } = at;
   // Customise's portal under its feet, its ring's middle at 74.6% of the picture's height.
   if (ok(pics.pad)) {
@@ -544,7 +544,7 @@ function drawHero(ctx: CanvasRenderingContext2D, pics: HeroPics, pose: HTMLImage
   // Celebrating, it hops, squashing a little as it lands.
   const hop = party >= 0 ? Math.abs(Math.sin(party * 7)) : 0;
   const footY = y + (Math.sin(now * 2.2) * 0.8 - hop * 9) * scale;
-  ctx.translate(x, belowGrid ? Math.max(BOARD_H + h, footY) : footY);
+  ctx.translate(x, footY);
   ctx.scale(-1 * (1 + (1 - hop) * 0.05 * (party >= 0 ? 1 : 0)), 1 - (1 - hop) * 0.05 * (party >= 0 ? 1 : 0));
   ctx.drawImage(img, -w / 2, -h, w, h);
   if (hit > 0) { ctx.globalAlpha = hit; ctx.globalCompositeOperation = 'lighter'; ctx.drawImage(img, -w / 2, -h, w, h); }
@@ -573,21 +573,21 @@ function negative(img: HTMLImageElement) {
   return c;
 }
 
-function drawRival(ctx: CanvasRenderingContext2D, pics: HeroPics, pose: HTMLImageElement, now: number, hit: number, gone: number, at = RIVAL) {
+function drawRival(ctx: CanvasRenderingContext2D, pics: HeroPics, pose: HTMLImageElement, now: number, hit: number, gone: number, at = RIVAL, scale = 1) {
   const { x, y } = at;
   ctx.save();
   ctx.translate(x, y);
   // Customise's portal turned red under its feet (its ring's middle at 74.6% of the picture's height).
   const pad = pics.padRed;
   if (ok(pad)) {
-    const w = 70;
+    const w = 80 * scale;
     const h = (w * pad.naturalHeight) / pad.naturalWidth;
     ctx.drawImage(pad, -w / 2, -h * 0.746, w, h);
   } else {
     ctx.strokeStyle = 'rgba(248,113,113,0.85)';
     ctx.lineWidth = 2.5;
     ctx.beginPath();
-    ctx.ellipse(0, 0, 26, 8, 0, 0, Math.PI * 2);
+    ctx.ellipse(0, 0, 34 * scale, 10 * scale, 0, 0, Math.PI * 2);
     ctx.stroke();
   }
   // Your own hero, its colours inverted, facing the board (against a friend, their own hero as it is); it sinks and
@@ -596,7 +596,7 @@ function drawRival(ctx: CanvasRenderingContext2D, pics: HeroPics, pose: HTMLImag
   const theirs = pics.rival && ok(pics.rival[key]) ? pics.rival[key] : null;
   const img = theirs ?? (ok(pose) ? pose : pics.front);
   if (ok(img)) {
-    const h = 58;
+    const h = Math.min(72 * scale, (72 * scale * img.naturalHeight) / img.naturalWidth);
     const w = (h * img.naturalWidth) / img.naturalHeight;
     const pic = theirs ?? negative(img);
     ctx.globalAlpha = 1 - gone;
@@ -665,8 +665,9 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
   const fieldRight = floor.width ?? ctx.canvas.width / dpr;
   const boardRight = lay.ox + BOARD_W * lay.s;
   const heroScale = 1 / lay.s;
+  const rivalScale = heroScale;
   const commandersOutside = {
-    mine: { x: (fieldRight - 44 - lay.ox) / lay.s, y: commandersOutsideBoard ? MINE.y : BOARD_H + 73 * heroScale },
+    mine: { x: (fieldRight - 44 - lay.ox) / lay.s, y: MINE.y },
     rival: commandersOutsideBoard ? { x: ((boardRight + fieldRight) / 2 - lay.ox) / lay.s, y: RIVAL.y } : RIVAL,
   };
   // The world's whole arena floor, walls and corners, as in a sprint, from under the top bar to over the buttons;
@@ -712,11 +713,11 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
   const rivalGone = b.phase === 'won' && done ? Math.min(1, (ended! - FIREBALL.fly) / 0.6) : 0;
   // The rival's pose, from your hero's: aiming while it throws at you, hurt when struck, cheering once you are out.
   const rivalPose = b.phase === 'over' && done ? pics.cheer : ended !== null && !won && !done ? pics.shoot : won && struck > 0 ? pics.hurt : pics.front;
-  drawRival(ctx, pics, rivalPose, now, won ? struck : 0, rivalGone, commandersOutside?.rival ?? RIVAL);
+  drawRival(ctx, pics, rivalPose, now, won ? struck : 0, rivalGone, commandersOutside?.rival ?? RIVAL, rivalScale);
   // A round won: it cheers and celebrates once its fireball has struck (the world won too).
   const party = won && done ? ended! - FIREBALL.fly : -1;
   const pose = b.phase === 'over' && done ? pics.down : ended !== null && won && !done ? pics.shoot : party >= 0 ? pics.cheer : !won && struck > 0 ? pics.hurt : pics.front;
-  drawHero(ctx, pics, pose, now, won ? 0 : struck * 0.6, party, commandersOutside.mine, heroScale, !commandersOutsideBoard);
+  drawHero(ctx, pics, pose, now, won ? 0 : struck * 0.6, party, commandersOutside.mine, heroScale);
 
   // Where the dragged unit would go: green to move, gold to merge.
   if (drag?.over) {
@@ -806,43 +807,43 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
   if (ended !== null && fly < 1) {
     const mine = commandersOutside?.mine ?? MINE;
     const rival = commandersOutside?.rival ?? RIVAL;
-    const from = won ? { x: mine.x - 12, y: mine.y - 36 } : { x: rival.x + 10, y: rival.y - 20 };
-    const to = won ? { x: rival.x, y: rival.y - 22 } : { x: mine.x, y: mine.y - 30 };
+    const from = won ? { x: mine.x - 12 * heroScale, y: mine.y - 36 * heroScale } : { x: rival.x + 10 * rivalScale, y: rival.y - 20 * rivalScale };
+    const to = won ? { x: rival.x, y: rival.y - 22 * rivalScale } : { x: mine.x, y: mine.y - 30 * heroScale };
     const k = Math.max(0, fly);
     const x = from.x + (to.x - from.x) * k;
-    const y = from.y + (to.y - from.y) * k - Math.sin(k * Math.PI) * 60;
-    const dx = to.x - from.x, dy = to.y - from.y - Math.cos(k * Math.PI) * 60 * Math.PI;
+    const y = from.y + (to.y - from.y) * k - Math.sin(k * Math.PI) * 60 * heroScale;
+    const dx = to.x - from.x, dy = to.y - from.y - Math.cos(k * Math.PI) * 60 * Math.PI * heroScale;
     const ball = boardFx('fireball');
     ctx.save();
     ctx.translate(x, y);
     ctx.rotate(Math.atan2(dy, dx));
     if (!retro && ok(ball)) {
-      const w = 58;
+      const w = 58 * heroScale;
       ctx.drawImage(ball, -w * 0.75, -w * 0.3, w, w * (ball.naturalHeight / ball.naturalWidth));
     } else {
       ctx.fillStyle = '#fb923c';
       ctx.shadowColor = '#f97316';
-      ctx.shadowBlur = 16;
+      ctx.shadowBlur = 16 * heroScale;
       ctx.beginPath();
-      ctx.arc(0, 0, 10, 0, Math.PI * 2);
+      ctx.arc(0, 0, 10 * heroScale, 0, Math.PI * 2);
       ctx.fill();
     }
     ctx.restore();
   }
   if (ended !== null && ended > FIREBALL.fly && ended < FIREBALL.fly + FIREBALL.blast) {
     const hit = won ? commandersOutside.rival : commandersOutside.mine;
-    const at = { x: hit.x, y: hit.y - (won ? 22 : 30) };
+    const at = { x: hit.x, y: hit.y - (won ? 22 * rivalScale : 30 * heroScale) };
     const k = (ended - FIREBALL.fly) / FIREBALL.blast;
     const boom = boardFx('boom-big');
     ctx.save();
     ctx.globalAlpha = 1 - k;
     if (!retro && ok(boom)) {
-      const w = 70 + k * 40;
+      const w = (70 + k * 40) * (won ? rivalScale : heroScale);
       ctx.drawImage(boom, at.x - w / 2, at.y - w / 2, w, w * (boom.naturalHeight / boom.naturalWidth));
     } else {
       ctx.fillStyle = '#fdba74';
       ctx.beginPath();
-      ctx.arc(at.x, at.y, 20 + k * 30, 0, Math.PI * 2);
+      ctx.arc(at.x, at.y, (20 + k * 30) * (won ? rivalScale : heroScale), 0, Math.PI * 2);
       ctx.fill();
     }
     ctx.restore();
@@ -854,20 +855,20 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
   const minePop = !won && ended !== null ? b.last?.lost ?? 0 : 0;
   const mine = commandersOutside?.mine ?? MINE;
   const rival = commandersOutside?.rival ?? RIVAL;
-  hearts(ctx, commandersOutsideBoard ? rival.x : rival.x + 50, commandersOutsideBoard ? rival.y - 72 : -TOP / 2, rivalHp(b), rivalPop, done ? popAt : 0, retro);
+  hearts(ctx, commandersOutsideBoard ? rival.x : rival.x + 50, commandersOutsideBoard ? rival.y - 82 * rivalScale : -TOP / 2, rivalHp(b), rivalPop, done ? popAt : 0, retro);
   hearts(ctx, mine.x, mine.y - 82 * heroScale, b.lives, minePop, done ? popAt : 0, retro);
   // Your commander's fireball in the fight: from your hero onto the enemies' thickest knot, then its blast.
   if (b.strike) {
     const k = 1 - b.strike.t / STRIKE.fly;
-    const from = { x: mine.x - 12, y: mine.y - 36 };
+    const from = { x: mine.x - 12 * heroScale, y: mine.y - 36 * heroScale };
     const x = from.x + (b.strike.x - from.x) * k;
-    const y = from.y + (b.strike.y - from.y) * k - Math.sin(k * Math.PI) * 70;
+    const y = from.y + (b.strike.y - from.y) * k - Math.sin(k * Math.PI) * 70 * heroScale;
     const ball = boardFx('fireball');
     ctx.save();
     ctx.translate(x, y);
-    ctx.rotate(Math.atan2(b.strike.y - from.y - Math.cos(k * Math.PI) * 70 * Math.PI, b.strike.x - from.x));
-    if (!retro && ok(ball)) ctx.drawImage(ball, -40, -14, 54, 54 * (ball.naturalHeight / ball.naturalWidth));
-    else { ctx.fillStyle = '#fb923c'; ctx.beginPath(); ctx.arc(0, 0, 9, 0, Math.PI * 2); ctx.fill(); }
+    ctx.rotate(Math.atan2(b.strike.y - from.y - Math.cos(k * Math.PI) * 70 * Math.PI * heroScale, b.strike.x - from.x));
+    if (!retro && ok(ball)) { const w = 54 * heroScale; ctx.drawImage(ball, -w * 0.74, -w * 0.26, w, w * (ball.naturalHeight / ball.naturalWidth)); }
+    else { ctx.fillStyle = '#fb923c'; ctx.beginPath(); ctx.arc(0, 0, 9 * heroScale, 0, Math.PI * 2); ctx.fill(); }
     ctx.restore();
   }
   if (b.boom) {
