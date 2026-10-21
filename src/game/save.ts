@@ -9,15 +9,19 @@ export type EnemyStyle = 'world' | 'original' | 'demon' | 'viking' | 'mud' | 'ju
 export const STYLES: EnemyStyle[] = ['world', 'original', 'demon', 'viking', 'mud', 'jungle', 'greek', 'robot', 'nightmare', 'core', 'random'];
 
 /** Alvrich, the robot, Kitty, and Alvrich dressed for each world (the owner's sheets, one a world in order). */
-export type HeroSkin = 'boy' | 'robot' | 'kitty' | 'intern' | 'lava' | 'arctic' | 'swamp' | 'jungle' | 'gladiator' | 'mech' | 'ghost' | 'dragon' | 'kratos' | 'medusa' | 'weso';
+export type HeroSkin = 'boy' | 'robot' | 'kitty' | 'intern' | 'lava' | 'arctic' | 'swamp' | 'jungle' | 'gladiator' | 'mech' | 'ghost' | 'dragon' | 'kratos' | 'medusa' | 'weso' | 'reaper';
 /** Special skins, the dearest kind (the owner's rule), hatless like the world ones. */
-export const SPECIAL_SKINS = ['kratos', 'medusa', 'weso'] as const;
+export const SPECIAL_SKINS = ['kratos', 'medusa', 'weso', 'reaper'] as const;
 export const WORLD_SKINS = ['intern', 'lava', 'arctic', 'swamp', 'jungle', 'gladiator', 'mech', 'ghost', 'dragon'] as const;
 export const SKINS: HeroSkin[] = ['boy', 'robot', 'kitty', ...SPECIAL_SKINS, ...WORLD_SKINS];
 /** What each figure costs in coins; Alvrich comes free. The owner's rule: skins are always the dearest thing in the game (items, forge levels, the revive), so raise these if anything else goes past them. */
-/** Every skin free for now, at the owner's request, so he can try them; the prices they will have once the unlocks come:
-    robot and Kitty 10000, Kratos, Medusa and El Weso 10000 (to be won by beating final bosses on call), the world skins 1000. */
-export const SKIN_PRICE: Record<HeroSkin, number> = Object.fromEntries(SKINS.map((k) => [k, 0])) as Record<HeroSkin, number>;
+/** What each figure costs in coins once it is open (`skinOpen`); Alvrich comes free. The owner's rule: the special
+    skins (robot, Kitty and the boss-like ones) are the dearest thing in the game; the world skins are plain outfits,
+    1000, and the intern, the first, 500. */
+export const SKIN_PRICE: Record<HeroSkin, number> = {
+  boy: 0, robot: 10000, kitty: 10000, kratos: 10000, medusa: 10000, weso: 10000, reaper: 10000,
+  intern: 500, lava: 1000, arctic: 1000, swamp: 1000, jungle: 1000, gladiator: 1000, mech: 1000, ghost: 1000, dragon: 1000,
+};
 /** The hats are painted on the hero's pictures; a skin listed here has no hat versions and always shows its base set. */
 const HATLESS: HeroSkin[] = ['kitty', ...SPECIAL_SKINS, ...WORLD_SKINS];
 const HAT_SET: Record<string, string> = { wizardHat: 'wizard', gladHelm: 'helm', bandana: 'bandana', crown: 'crown' };
@@ -310,4 +314,21 @@ export function wipeProgress(save: Save) {
 
 export function writeSave(save: Save) {
   storage.set(KEY, JSON.stringify(save));
+}
+
+/** What opens a skin for sale (the owner's rules): world skin n once world n − 1 is won in any mode (the intern, world
+    1's, from the start); a special one once its final boss falls in On call (the secret shift's Kratos for the Spartan).
+    Robot and Kitty are on sale from the start. */
+export type SkinGate = { world: number } | { boss: number } | { secret: true } | null;
+export const SKIN_GATE: Record<HeroSkin, SkinGate> = {
+  boy: null, robot: null, kitty: null, intern: null,
+  lava: { world: 1 }, arctic: { world: 2 }, swamp: { world: 3 }, jungle: { world: 4 }, gladiator: { world: 5 }, mech: { world: 6 }, ghost: { world: 7 }, dragon: { world: 8 },
+  weso: { boss: 1 }, medusa: { boss: 4 }, reaper: { boss: 8 }, kratos: { secret: true },
+};
+export function skinOpen(save: Save, skin: HeroSkin) {
+  const g = SKIN_GATE[skin];
+  if (!g || save.skins.includes(skin)) return true;
+  if ('world' in g) return worldWon(save, g.world) || save.boardUnlocked > g.world;
+  if ('boss' in g) return !!save.hordeBest[g.boss]?.won;
+  return !!save.secretBest?.won;
 }
