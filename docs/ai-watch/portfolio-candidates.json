@@ -1,6 +1,156 @@
 {
-  "generatedAt": "2026-10-20T13:15:08.340Z",
+  "generatedAt": "2026-10-21T13:22:39.561Z",
   "candidates": [
+    {
+      "label": "Claude research and documentation flow",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Barclays scales Claude to upgrade operations and improve client experience",
+          "source": "Anthropic News",
+          "link": "https://www.anthropic.com/news/barclays-scales-claude",
+          "date": "2026-10-21"
+        },
+        {
+          "title": "How Claude’s text watermark works",
+          "source": "Anthropic News",
+          "link": "https://www.anthropic.com/news/claude-text-watermark",
+          "date": "2026-10-21"
+        },
+        {
+          "title": "Battle Drones - a vibe coded RTS with audio-based multiplayer",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/20/battledrones/",
+          "date": "2026-10-20"
+        }
+      ]
+    },
+    {
+      "label": "AI agents / automation workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Inside NVIDIA Sentry: Secure AI Agents at Runtime",
+          "source": "NVIDIA Developer",
+          "link": "https://developer.nvidia.com/blog/inside-nvidia-sentry-secure-ai-agents-at-runtime/",
+          "date": "2026-10-21"
+        },
+        {
+          "title": "How NVIDIA OpenShell Reference Architecture Secures and Governs AI Agent Workloads at Scale",
+          "source": "NVIDIA Developer",
+          "link": "https://developer.nvidia.com/blog/how-nvidia-openshell-reference-architecture-secures-and-governs-ai-agent-workloads-at-scale/",
+          "date": "2026-10-21"
+        },
+        {
+          "title": "Developing an AI Factory Digital Twin with an Agent-Assisted Workflow",
+          "source": "NVIDIA Developer",
+          "link": "https://developer.nvidia.com/blog/developing-an-ai-factory-digital-twin-with-an-agent-assisted-workflow/",
+          "date": "2026-10-21"
+        }
+      ]
+    },
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Developing an AI Factory Digital Twin with an Agent-Assisted Workflow",
+          "source": "NVIDIA Developer",
+          "link": "https://developer.nvidia.com/blog/developing-an-ai-factory-digital-twin-with-an-agent-assisted-workflow/",
+          "date": "2026-10-21"
+        },
+        {
+          "title": "Work management context for AI agents with Smartsheet MCP on AWS",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/work-management-context-for-ai-agents-with-smartsheet-mcp-on-aws/",
+          "date": "2026-10-20"
+        },
+        {
+          "title": "How Eon built multi-cloud investigation with an MCP Gateway on Amazon Bedrock AgentCore",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/how-eon-built-multi-cloud-investigation-with-an-mcp-gateway-on-amazon-bedrock-agentcore/",
+          "date": "2026-10-20"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "OpenAI models are coming to Google Cloud",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/openai-models-google-cloud",
+          "date": "2026-10-21"
+        },
+        {
+          "title": "Gemini's Personal Intelligence is coming to cars",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/google/2026/10/geminis-personal-intelligence-is-coming-to-cars/",
+          "date": "2026-10-20"
+        },
+        {
+          "title": "Google’s more personalized Gemini AI is heading to your car",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/1014999/google-gemini-ai-cars-android-auto",
+          "date": "2026-10-20"
+        }
+      ]
+    },
+    {
+      "label": "MCP / tool-connected assistants",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Work management context for AI agents with Smartsheet MCP on AWS",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/work-management-context-for-ai-agents-with-smartsheet-mcp-on-aws/",
+          "date": "2026-10-20"
+        },
+        {
+          "title": "Work management context for AI agents with Smartsheet MCP on AWS",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/work-management-context-for-ai-agents-with-smartsheet-mcp-on-aws/",
+          "date": "2026-10-20"
+        },
+        {
+          "title": "Discover tools at runtime with AWS Agent Registry",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/discover-tools-at-runtime-with-aws-agent-registry/",
+          "date": "2026-10-20"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "How 3 Java Champions are using GitHub Copilot for increased productivity",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-3-java-champions-are-using-github-copilot-for-increased-productivity/",
+          "date": "2026-10-20"
+        },
+        {
+          "title": "How to continue a GitHub Copilot app session in VS Code",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-to-continue-a-github-copilot-app-session-in-vs-code/",
+          "date": "2026-10-19"
+        },
+        {
+          "title": "Copilot model policy API for enterprise, orgs, and teams",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-10-19-copilot-model-policy-api-for-enterprise-orgs-and-teams",
+          "date": "2026-10-19"
+        }
+      ]
+    },
     {
       "label": "AI automation and workflow design",
       "status": "safe-data-candidate",
@@ -15,160 +165,16 @@
       ]
     },
     {
-      "label": "Claude research and documentation flow",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Structured outputs for Anthropic Claude models on Amazon Bedrock",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/structured-outputs-for-anthropic-claude-models-on-amazon-bedrock/",
-          "date": "2026-10-19"
-        },
-        {
-          "title": "AI researchers stranded Claude on a virtual desert island. It started to “play.”",
-          "source": "MIT Technology Review AI",
-          "link": "https://www.technologyreview.com/2026/10/19/1147095/ai-stranded-claude-virtual-desert-island-play/",
-          "date": "2026-10-19"
-        },
-        {
-          "title": "Quoting Addy Osmani, Morgan Westlee Lunt, and Qing Wang",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/16/code-review/",
-          "date": "2026-10-16"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Developers can now access SageMaker Studio through the new AWS experience",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/developers-can-now-access-sagemaker-studio-through-the-new-aws-experience/",
-          "date": "2026-10-19"
-        },
-        {
-          "title": "Code, Test, and Deploy on One Machine with NVIDIA RTX Spark",
-          "source": "NVIDIA Developer",
-          "link": "https://developer.nvidia.com/blog/code-test-and-deploy-on-one-machine-with-nvidia-rtx-spark/",
-          "date": "2026-10-16"
-        },
-        {
-          "title": "Gemini 4 Argon begins rolling out in Gemini app and Antigravity, but only if you pay",
-          "source": "Ars Technica AI",
-          "link": "https://arstechnica.com/ai/2026/10/gemini-4-argon-begins-rolling-out-in-gemini-app-and-antigravity-but-only-if-you-pay/",
-          "date": "2026-10-13"
-        }
-      ]
-    },
-    {
-      "label": "Multimodal AI product workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Pegasus 1.5 from TwelveLabs is now available in Amazon Bedrock",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/pegasus-1-5-from-twelvelabs-is-now-available-in-amazon-bedrock/",
-          "date": "2026-10-19"
-        },
-        {
-          "title": "Welcome Muse Spark Open: open-weight frontier multimodal mixture-of-experts model from Meta",
-          "source": "Hugging Face",
-          "link": "https://huggingface.co/blog/meta-muse-spark-open",
-          "date": "2026-10-15"
-        },
-        {
-          "title": "NVIDIA Nemotron 3.5 Super VL Powers Specialized Agents with Multimodal Reasoning",
-          "source": "NVIDIA Developer",
-          "link": "https://developer.nvidia.com/blog/nvidia-nemotron-3-5-super-vl-powers-specialized-agents-with-multimodal-reasoning/",
-          "date": "2026-10-15"
-        }
-      ]
-    },
-    {
-      "label": "AI agents / automation workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Improve TTFT for multi-turn agentic workloads with bi-directional KV transfer in vLLM",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/improve-ttft-for-multi-turn-agentic-workloads-with-bi-directional-kv-transfer-in-vllm/",
-          "date": "2026-10-19"
-        },
-        {
-          "title": "How to continue a GitHub Copilot app session in VS Code",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/how-to-continue-a-github-copilot-app-session-in-vs-code/",
-          "date": "2026-10-19"
-        },
-        {
-          "title": "GitHub Copilot models deprecated on October 19, 2026",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-10-19-github-copilot-models-deprecated-on-october-19-2026",
-          "date": "2026-10-19"
-        }
-      ]
-    },
-    {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "How to continue a GitHub Copilot app session in VS Code",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/how-to-continue-a-github-copilot-app-session-in-vs-code/",
-          "date": "2026-10-19"
-        },
-        {
-          "title": "Copilot model policy API for enterprise, orgs, and teams",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-10-19-copilot-model-policy-api-for-enterprise-orgs-and-teams",
-          "date": "2026-10-19"
-        },
-        {
-          "title": "GitHub Copilot models deprecated on October 19, 2026",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-10-19-github-copilot-models-deprecated-on-october-19-2026",
-          "date": "2026-10-19"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Advancing coding in low‑resource programming languages",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/low-resource-programming-languages",
-          "date": "2026-10-19"
-        },
-        {
-          "title": "My obituary for programming",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/19/my-obituary-for-programming/",
-          "date": "2026-10-19"
-        },
-        {
-          "title": "Quoting Addy Osmani, Morgan Westlee Lunt, and Qing Wang",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/16/code-review/",
-          "date": "2026-10-16"
-        }
-      ]
-    },
-    {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Franchisee reconciles cash in 94% less time with ChatGPT Work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/ted-taylor-restaurant",
+          "date": "2026-10-20"
+        },
         {
           "title": "Advancing coding in low‑resource programming languages",
           "source": "OpenAI News",
@@ -180,12 +186,6 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/stack-overflow-chatgpt-plugin",
           "date": "2026-10-16"
-        },
-        {
-          "title": "Amp puts AI agents to work beyond code with OpenAI models",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/amp-beyond-coding",
-          "date": "2026-10-14"
         }
       ]
     }
