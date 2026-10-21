@@ -8,7 +8,7 @@ import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPr
 import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
 import { boardBackdropBounds, draw, drawRetroFigure, preloadCast, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, NET_ID, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, SKIN_GATE, skinOpen, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
-import { ABILITY, ABIL_V, BOARD_W, CELL, HOME_ROW, ROUNDS, SYNERGY, TACTICS, armyCap, toggleAutoMerge, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, startOnlineFight, updateBoard, type Ability, type BoardGame, type Online, type Piece, type Variant } from './board';
+import { ABILITY, ABIL_V, CELL, HOME_ROW, ROUNDS, SYNERGY, TACTICS, armyCap, toggleAutoMerge, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, startOnlineFight, updateBoard, type Ability, type BoardGame, type Online, type Piece, type Variant } from './board';
 import { cleanCode, dial, hostGame, joinGame, leave as netLeave, presence, presenceOn, presenceReady, send as netSend, type NetHandlers, type NetMsg, type NetProfile, type NetState, type Together } from './net';
 import { ABILITY_ICON, FIREBALL, boardMerged, drawBoard, mirrorFight, drawBoardDrag, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
 import type { Enemy } from './world';
@@ -1681,6 +1681,8 @@ let boardDrag: BoardDrag | null = null;
 let boardDown: { x: number; y: number; id: number } | null = null;
 let boardLay: BoardLayout = { s: 1, ox: 0, oy: 0 };
 let boardKey = '';
+let boardShopPopSlot = -1;
+let boardShopPopSerial = 0;
 let boardShown = '';
 let boardTime = 0;
 let boardBanked = false;
@@ -2251,7 +2253,7 @@ function renderBoardUi() {
   const prep = b.phase === 'prep';
   const speedUp = b.phase === 'fight' && b.time >= BOARD_FAST_AFTER;
   const syns = synergies(b);
-  const key = [b.phase, b.round, b.lives, b.gold, b.autoMerge, b.autoBought, b.army.map((p) => `${p.tier}${p.cast}${p.star ?? 1}`).sort().join(','), b.shop.map((o) => (o ? `${o.tier}${o.cast}${o.price}` : '-')).join(''), b.army.length, speedUp, boardFast, b.skillUsed, b.online?.waiting, syns.map((x) => `${x.cast}${x.n}`).join(''), b.event].join('|');
+  const key = [b.phase, b.round, b.lives, b.gold, b.autoMerge, b.autoBought, b.army.map((p) => `${p.tier}${p.cast}${p.star ?? 1}`).sort().join(','), b.shop.map((o) => (o ? `${o.tier}${o.cast}${o.price}` : '-')).join(''), b.army.length, speedUp, boardFast, b.skillUsed, b.online?.waiting, syns.map((x) => `${x.cast}${x.n}`).join(''), b.event, boardShopPopSerial].join('|');
   if (key === boardKey) return;
   boardKey = key;
   // The game's own pieces: the painted coins, the shop's orange item frame for the
@@ -2274,8 +2276,7 @@ function renderBoardUi() {
   const cards = b.shop.map((o, i) => o
     ? `<button class="board-card${b.variant === 'tactics' ? ` is-r${o.tier}${starsUp(o) ? ' is-up' : ''}` : ''}" type="button" data-bact="buy" data-i="${i}"${!prep || b.gold < o.price ? ' disabled' : ''}><i class="board-cast">${b.variant === 'tactics' ? ABILITY_ICON[ABILITY[o.cast]] : t('worldShort', { n: o.cast })}</i><img src="${boardPic(o.tier, o.cast)}" alt="">${b.variant === 'tactics' && starsUp(o) ? '<em class="board-up">★↑</em>' : ''}<b>${boardTierName(o.tier)}</b><span class="board-price">${coin} ${o.price}</span></button>`
     : '<span class="board-card is-sold"></span>').join('');
-  // The round's event and each world's synergy, a column of medallions on the left under the halfway line; a tap
-  // lists them with what they do, like a run's skills panel.
+  // The round's event and each world's synergy, a column of medallions by the board edge; a tap lists their effects.
   const bonus = boardBonuses(b);
   boardSide.innerHTML = bonus.map((x) => `<button class="board-bonus${x.on ? ' is-on' : ''}${x.event ? ' is-event' : ''}" type="button" data-bact="bonus" aria-label="${x.name}"><img src="./images/game/${x.pic}" alt=""><small>${x.count}</small></button>`).join('');
   boardShop.innerHTML = `${prep ? `
@@ -2294,6 +2295,12 @@ function renderBoardUi() {
         : `<button class="ghost board-reroll" type="button" data-bact="reroll"${b.gold < 1 ? ' disabled' : ''}>🎲 ${t('boardReroll')} · ${coin} 1</button>
            <button class="primary board-go" type="button" data-bact="fight"${b.army.length && !b.online?.waiting ? '' : ' disabled'}>${go}</button>`}
     </div>` : `<div class="board-fight-row">${b.online ? '' : `<button class="board-skill" type="button" data-bact="skill"${b.skillUsed ? ' disabled' : ''} aria-label="${t('boardSkill')}">${save.retro ? '🔥' : '<img src="./images/game/skills/fireball.webp" alt="">'}</button>`}<p class="board-fighting">${t('boardFighting')}</p>${speedUp ? `<button class="board-speed${boardFast ? ' is-on' : ''}" type="button" data-bact="speed" aria-pressed="${boardFast}" aria-label="${t('boardSpeed')}">${boardFast ? '×1' : '×2'}</button>` : ''}</div>`}`;
+  if (boardShopPopSlot >= 0 && b.variant === 'tactics') {
+    boardShop.querySelectorAll<HTMLButtonElement>('.board-card[data-i]').forEach((card) => {
+      if (Number(card.dataset.i) === boardShopPopSlot) card.classList.add('is-pop');
+    });
+    boardShopPopSlot = -1;
+  }
 }
 
 /* Tactics: a shop card can also be dragged onto a cell of your half, where it lands (a tap still buys it onto the
@@ -2329,14 +2336,18 @@ window.addEventListener('pointerup', (event) => {
   const offer = b.shop[down.i];
   if (!over || !offer) return;
   if (b.gold < offer.price) { flash(t('boardNoGold')); return; }
-  if (boardBuy(b, down.i, over)) afterBuy(b);
+  if (boardBuy(b, down.i, over)) afterBuy(b, down.i);
   else flash(t('boardBenchFull'));
   boardKey = '';
   renderBoardUi();
 });
 window.addEventListener('pointercancel', () => { if (cardDown) { cardDown = null; boardDrag = null; } });
 /** After a card is bought: its star upgrade with the smoke, or a pick sound. */
-function afterBuy(b: BoardGame) {
+function afterBuy(b: BoardGame, shopIndex?: number) {
+  if (b.variant === 'tactics' && shopIndex !== undefined) {
+    boardShopPopSlot = shopIndex;
+    boardShopPopSerial += 1;
+  }
   if (b.lastMerge) {
     const m = b.lastMerge;
     b.lastMerge = null;
@@ -2357,10 +2368,11 @@ boardUi.addEventListener('click', (event) => {
   audio.unlock();
   const act = el.dataset.bact;
   if (act === 'buy') {
-    const offer = b.shop[Number(el.dataset.i)];
+    const index = Number(el.dataset.i);
+    const offer = b.shop[index];
     if (offer && b.gold < offer.price) flash(t('boardNoGold'));
-    else if (!boardBuy(b, Number(el.dataset.i))) flash(t('boardBenchFull'));
-    else afterBuy(b);
+    else if (!boardBuy(b, index)) flash(t('boardBenchFull'));
+    else afterBuy(b, index);
   } else if (act === 'reroll') { if (boardReroll(b)) audio.play('click'); }
   else if (act === 'auto') {
     if (b.autoBought) { toggleAutoMerge(b); audio.play('click'); flash(t(b.autoMerge ? 'boardAutoResumed' : 'boardAutoPaused')); }
@@ -2534,7 +2546,7 @@ function boardStep(dt: number, now: number) {
   const wallTop = rect.top + boardLay.oy + (HOME_ROW * CELL - 4) * boardLay.s;
   const sideLeft = wide
     ? rect.left + boardLay.ox - 51
-    : rect.left + boardLay.ox + boardLay.s * BOARD_W - 42;
+    : rect.left + fieldWidth - 42;
   const sideAt = `${Math.round(sideLeft)}px,${Math.round(window.innerHeight - wallTop + 8)}px`;
   if (boardSide.dataset.at !== sideAt) { boardSide.dataset.at = sideAt; const [x, y] = sideAt.split(','); boardSide.style.left = x; boardSide.style.bottom = y; boardSide.style.top = 'auto'; }
   ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);

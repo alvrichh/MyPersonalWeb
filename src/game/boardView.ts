@@ -330,7 +330,7 @@ export const ABILITY_ICON: Record<Ability, string> = { poison: 'â˜ ', burn: 'ðŸ”
 
 const ok = (img: HTMLImageElement) => img.complete && img.naturalWidth > 0;
 /** Where each commander stands (its feet), in the board's corner cells. */
-const MINE = { x: BOARD_W - CELL / 2 - 6, y: BOARD_H - 4 };
+const MINE = { x: BOARD_W - 30, y: BOARD_H + 4 };
 const RIVAL = { x: CELL / 2 + 4, y: CELL - 12 };
 
 /** A round won: the hero cheers, hopping, with gold sparks and confetti bursting round it (`party`, seconds since the
@@ -375,11 +375,11 @@ function drawParty(ctx: CanvasRenderingContext2D, party: number, x = MINE.x, y =
   ctx.restore();
 }
 
-function drawHero(ctx: CanvasRenderingContext2D, pics: HeroPics, pose: HTMLImageElement, now: number, hit: number, party = -1, at = MINE) {
+function drawHero(ctx: CanvasRenderingContext2D, pics: HeroPics, pose: HTMLImageElement, now: number, hit: number, party = -1, at = MINE, padWidth = 70) {
   const { x, y } = at;
   // Customise's portal under its feet, its ring's middle at 74.6% of the picture's height.
   if (ok(pics.pad)) {
-    const w = 70;
+    const w = padWidth;
     const h = (w * pics.pad.naturalHeight) / pics.pad.naturalWidth;
     ctx.drawImage(pics.pad, x - w / 2, y - h * 0.746, w, h);
   } else {
@@ -390,7 +390,7 @@ function drawHero(ctx: CanvasRenderingContext2D, pics: HeroPics, pose: HTMLImage
   }
   const img = ok(pose) ? pose : pics.front;
   if (!ok(img)) return;
-  const h = 58;
+  const h = 72;
   const w = (h * img.naturalWidth) / img.naturalHeight;
   ctx.save();
   // Celebrating, it hops, squashing a little as it lands.
@@ -521,6 +521,11 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
       rival: { x: toBoard(x), y: RIVAL.y },
     };
   })() : null;
+  // On phones the grid can be narrower than the screen. Keep the hero's head within the last cell while
+  // extending its portal to the screen edge; the portal is wider, so the hero stays grounded on the board.
+  const fieldRight = floor.width ?? ctx.canvas.width / dpr;
+  const targetRight = (fieldRight - 4 - lay.ox) / lay.s;
+  const minePadWidth = commandersOutsideBoard ? 70 : Math.max(70, Math.min(160, (targetRight - MINE.x) * 2));
   // The world's whole arena floor, walls and corners, as in a sprint, from under the top bar to over the buttons;
   // the board is only its grid.
   drawBoardBackdrop(ctx, b.world, ctx.canvas.width / dpr, floor.top, floor.bottom, dpr, retro, floor.width);
@@ -568,7 +573,7 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
   // A round won: it cheers and celebrates once its fireball has struck (the world won too).
   const party = won && done ? ended! - FIREBALL.fly : -1;
   const pose = b.phase === 'over' && done ? pics.down : ended !== null && won && !done ? pics.shoot : party >= 0 ? pics.cheer : !won && struck > 0 ? pics.hurt : pics.front;
-  drawHero(ctx, pics, pose, now, won ? 0 : struck * 0.6, party, commandersOutside?.mine ?? MINE);
+  drawHero(ctx, pics, pose, now, won ? 0 : struck * 0.6, party, commandersOutside?.mine ?? MINE, minePadWidth);
 
   // Where the dragged unit would go: green to move, gold to merge.
   if (drag?.over) {

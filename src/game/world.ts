@@ -2335,6 +2335,9 @@ const CHILL_SLOW = 0.35;
    they chill, and how long they stay up after striking. */
 export const ICICLE_EVERY = 1.25;
 export const ICICLE_STAY = 0.6;
+/** Ambient world-3 spikes stay dangerous for ten seconds, then sink away. */
+export const ICICLE_PERSIST_STAY = 10;
+export const ICICLE_SINK = 0.7;
 export const ICICLE_R = 30;
 /** Bound the number of ice patches kept in one room or around the hero in the open field. */
 const ICICLE_PATCH_CAP = 32;
@@ -3498,7 +3501,10 @@ function updateHazards(g: Game, dt: number) {
   }
   g.strikes = g.strikes.filter((st) => {
     if (st.persistent && st.hit) {
-      if (dist(st, p) < (st.r ?? ICICLE_R) + p.r * 0.5) {
+      st.t -= dt;
+      const age = -st.t;
+      if (age >= ICICLE_PERSIST_STAY + ICICLE_SINK) return false;
+      if (age < ICICLE_PERSIST_STAY && dist(st, p) < (st.r ?? ICICLE_R) + p.r * 0.5) {
         hurtPlayer(g, 8);
         if (!g.showcase) p.chill = Math.max(p.chill, ICICLE_CHILL);
       }
@@ -3511,7 +3517,7 @@ function updateHazards(g: Game, dt: number) {
       if (st.hit) return st.t > -ICICLE_STAY;
       st.hit = true;
       st.persistent = icy && !st.boss;
-      if (st.persistent) st.t = -ICICLE_STAY;
+      if (st.persistent) st.t = 0;
       burst(g, st.x, st.y, '#e0f2fe', 16, 150, 3);
       burst(g, st.x, st.y, '#7dd3fc', 8, 90, 2.5);
       g.events.push('strike');
