@@ -2696,14 +2696,20 @@ function boardStep(dt: number, now: number) {
   const rect = canvas.getBoundingClientRect();
   const top = boardTop.getBoundingClientRect().bottom - rect.top + 6;
   const wide = window.matchMedia('(min-width: 900px) and (orientation: landscape)').matches;
-  const bottom = wide ? canvas.clientHeight - 8 : boardShop.getBoundingClientRect().top - rect.top;
+  const shopRect = boardShop.getBoundingClientRect();
+  const bottom = wide ? canvas.clientHeight - 8 : shopRect.top - rect.top;
   // The cards sit over the arena's lower edge. Fit its art first, then keep the grid inside its walls.
   const acts = boardShop.querySelector('.board-acts, .board-fighting')?.getBoundingClientRect();
-  const floor = { top: top - 6, bottom: (acts ? acts.top : boardShop.getBoundingClientRect().bottom) - rect.top - 4 };
-  const shopWidth = wide ? Math.min(330, Math.max(280, canvas.clientWidth * 0.25)) : 0;
-  const fieldWidth = canvas.clientWidth - shopWidth;
+  // Floating desktop controls do not reserve space: the arena stays centred on the full screen.
+  const floor = {
+    top: top - 6,
+    bottom: wide ? bottom : (acts ? acts.top : shopRect.bottom) - rect.top - 4,
+    controlsTop: acts ? acts.top - rect.top : bottom,
+  };
+  const fieldWidth = canvas.clientWidth;
   const arena = boardBackdropBounds(b.world, fieldWidth, floor.top, floor.bottom);
-  boardLay = layoutBoard(fieldWidth, Math.max(top, arena.y + arena.h * 0.04), bottom, arena.w * 0.96);
+  const gridBottom = wide ? Math.min(bottom, arena.y + arena.h * 0.96) : bottom;
+  boardLay = layoutBoard(fieldWidth, Math.max(top, arena.y + arena.h * 0.04), gridBottom, arena.w * 0.96);
   // Bonuses overlay the board on mobile so they do not steal width; on desktop they sit just outside its left edge.
   const wallTop = rect.top + boardLay.oy + (HOME_ROW * CELL - 4) * boardLay.s;
   const sideHeight = `${Math.max(43, wallTop - rect.top - top - 12)}px`;
@@ -2724,8 +2730,7 @@ function boardStep(dt: number, now: number) {
   if (b.phase === 'prep' || b.phase === 'fight') boardEnded = null;
   // The guest sees the shared fight turned round, its own army at the bottom.
   const seen = b.online?.me === 1 ? mirrorFight(b) : b;
-  const splitCommanders = wide && !!b.online && b.variant === 'fusion';
-  if (heroPics) drawBoard(ctx, seen, boardLay, now / 1000, boardDrag, save.retro, view.dpr, heroPics, boardEnded === null ? null : now / 1000 - boardEnded, { ...floor, width: fieldWidth }, wide, splitCommanders, splitCommanders);
+  if (heroPics) drawBoard(ctx, seen, boardLay, now / 1000, boardDrag, save.retro, view.dpr, heroPics, boardEnded === null ? null : now / 1000 - boardEnded, { ...floor, width: fieldWidth }, wide);
   boardFloat.hidden = !boardDrag;
   if (boardDrag || floatDrawn) {
     const w = Math.round(canvas.clientWidth * view.dpr), h = Math.round(canvas.clientHeight * view.dpr);
@@ -2776,9 +2781,16 @@ function boardPointerDown(event: PointerEvent) {
   boardDown = { x, y, id: event.pointerId, piece, inspection, moved: false };
   canvas.setPointerCapture(event.pointerId);
 }
-/** Where the sell zone starts: the shop's cards, or Fusion's strip above its buttons (and the buttons below it). */
-function sellTop() {
-  return (boardShop.querySelector('.board-sellzone') ?? boardShop).getBoundingClientRect().top - 14;
+/** Only the visible cards or Fusion's sell strip accept a sale; the sidebar's height is not a drop target. */
+function isBoardSellPoint(clientX: number, clientY: number) {
+  const zone = boardShop.querySelector('.board-sellzone');
+  if (!zone) return false;
+  const rect = zone.getBoundingClientRect();
+  const shop = boardShop.getBoundingClientRect();
+  // The shop can scroll on shorter screens: do not sell over the clipped part of its cards.
+  const left = Math.max(rect.left, shop.left), right = Math.min(rect.right, shop.right);
+  const top = Math.max(rect.top, shop.top), bottom = Math.min(rect.bottom, shop.bottom);
+  return right > left && bottom > top && clientX >= left && clientX < right && clientY >= top && clientY < bottom;
 }
 function boardPointerMove(event: PointerEvent) {
   const down = boardDown;
@@ -2800,9 +2812,9 @@ function boardPointerMove(event: PointerEvent) {
   boardDrag.x = x;
   boardDrag.y = y;
   boardDrag.over = slotAt(boardLay, boardDrag.x, boardDrag.y);
-  // Over the shop and the buttons it would be sold: a soft red glow there says so.
+  // The red preview and the completed sale use the same target; a board cell always keeps the unit on the board.
   boardUi.classList.add('is-dragging');
-  const selling = event.clientY >= sellTop();
+  const selling = !boardDrag.over && isBoardSellPoint(event.clientX, event.clientY);
   boardUi.classList.toggle('is-selling', selling);
   // What it would sell for, in the middle of the red.
   const price = boardShop.querySelector<HTMLElement>('.board-sell-price');
@@ -2829,7 +2841,7 @@ function boardPointerUp(event: PointerEvent) {
   const drag = { piece: down.piece, over: slotAt(boardLay, event.clientX - canvas.getBoundingClientRect().left, event.clientY - canvas.getBoundingClientRect().top) };
   const from = drag.piece.slot;
   // Dropped on the shop: sold, for half what it is worth.
-  if (event.clientY >= sellTop()) {
+  if (!drag.over && isBoardSellPoint(event.clientX, event.clientY)) {
     const gain = saleOf(drag.piece, b.variant, b.world);
     if (boardSell(b, from)) { audio.play('coin'); flash(t('boardSold', { n: gain })); }
     renderBoardUi();
