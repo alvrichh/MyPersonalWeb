@@ -658,45 +658,33 @@ export function mirrorFight(b: BoardGame): BoardGame {
   };
 }
 
-export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: BoardLayout, now: number, drag: BoardDrag | null, retro: boolean, dpr: number, pics: HeroPics, ended: number | null, floor: { top: number; bottom: number; width?: number }, commandersOutsideBoard = false, playerInRightRail = false, rivalInLeftMargin = false) {
+export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: BoardLayout, now: number, drag: BoardDrag | null, retro: boolean, dpr: number, pics: HeroPics, ended: number | null, floor: { top: number; bottom: number; width?: number; controlsTop?: number }, commandersOutsideBoard = false) {
   const tactics = b.variant === 'tactics';
   // Move the complete hero and portal together. Their sizes never stretch to fill the side margin.
   const fieldRight = floor.width ?? ctx.canvas.width / dpr;
   const boardRight = lay.ox + BOARD_W * lay.s;
   const heroScale = 1 / lay.s;
   const rivalScale = heroScale;
-  const canvasWidth = ctx.canvas.width / dpr;
-  const railSpan = Math.max(120, floor.bottom - floor.top - 28);
-  const railPoint = (y: number, x = (fieldRight + canvasWidth) / 2) => ({
-    x,
-    y: floor.top + 14 + railSpan * y,
+  // Near-square desktop windows put the hero below the shorter card stack, clear of the fight controls.
+  const compactShop = tactics && fieldRight <= 1200 && fieldRight / (ctx.canvas.height / dpr) <= 1.2;
+  // Both desktop variants use the open margins beside the grid, clear of the shop and its controls.
+  const marginPoint = (x: number, height: number, bottom = floor.bottom - 24) => ({
+    x: (x - lay.ox) / lay.s,
+    y: (Math.min(bottom, Math.max(floor.top + 100, floor.top + (floor.bottom - floor.top) * height)) - lay.oy) / lay.s,
   });
-  const toBoardPoint = (point: { x: number; y: number }) => ({
-    x: (point.x - lay.ox) / lay.s,
-    y: (point.y - lay.oy) / lay.s,
-  });
+  const mineX = Math.max(boardRight + 48, (boardRight + fieldRight - 224) / 2);
+  const mineBottom = mineX + 40 > fieldRight - 220 ? Math.min(floor.bottom - 24, (floor.controlsTop ?? floor.bottom) - 34) : floor.bottom - 24;
   const commanders = {
-    mine: playerInRightRail ? toBoardPoint(railPoint(0.72)) : { x: (fieldRight - 44 - lay.ox) / lay.s, y: MINE.y },
-    rival: rivalInLeftMargin ? toBoardPoint(railPoint(0.25, lay.ox / 2)) : commandersOutsideBoard ? { x: ((boardRight + fieldRight) / 2 - lay.ox) / lay.s, y: RIVAL.y } : RIVAL,
+    mine: commandersOutsideBoard
+      ? compactShop
+        ? { x: (fieldRight - 116 - lay.ox) / lay.s, y: (floor.bottom - 88 - lay.oy) / lay.s }
+        : marginPoint(mineX, 0.75, mineBottom)
+      : { x: (fieldRight - 44 - lay.ox) / lay.s, y: MINE.y },
+    rival: commandersOutsideBoard ? marginPoint(lay.ox / 2, 0.25) : RIVAL,
   };
   // The world's whole arena floor, walls and corners, as in a sprint, from under the top bar to over the buttons;
   // the board is only its grid.
   drawBoardBackdrop(ctx, b.world, ctx.canvas.width / dpr, floor.top, floor.bottom, dpr, retro, floor.width);
-  if (playerInRightRail) {
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const left = fieldRight + 12;
-    const right = canvasWidth - 12;
-    const top = floor.top;
-    const height = Math.max(0, floor.bottom - top);
-    ctx.fillStyle = 'rgba(6, 12, 28, 0.48)';
-    ctx.fillRect(left, top, Math.max(0, right - left), height);
-    ctx.strokeStyle = 'rgba(56, 189, 248, 0.28)';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(left + 0.5, top);
-    ctx.lineTo(left + 0.5, top + height);
-    ctx.stroke();
-  }
   ctx.setTransform(dpr * lay.s, 0, 0, dpr * lay.s, dpr * lay.ox, dpr * lay.oy);
   ctx.save();
   ctx.beginPath();
