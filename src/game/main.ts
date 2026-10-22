@@ -2724,7 +2724,8 @@ function boardStep(dt: number, now: number) {
   if (b.phase === 'prep' || b.phase === 'fight') boardEnded = null;
   // The guest sees the shared fight turned round, its own army at the bottom.
   const seen = b.online?.me === 1 ? mirrorFight(b) : b;
-  if (heroPics) drawBoard(ctx, seen, boardLay, now / 1000, boardDrag, save.retro, view.dpr, heroPics, boardEnded === null ? null : now / 1000 - boardEnded, { ...floor, width: fieldWidth }, wide);
+  const splitCommanders = wide && !!b.online && b.variant === 'fusion';
+  if (heroPics) drawBoard(ctx, seen, boardLay, now / 1000, boardDrag, save.retro, view.dpr, heroPics, boardEnded === null ? null : now / 1000 - boardEnded, { ...floor, width: fieldWidth }, wide, splitCommanders, splitCommanders);
   boardFloat.hidden = !boardDrag;
   if (boardDrag || floatDrawn) {
     const w = Math.round(canvas.clientWidth * view.dpr), h = Math.round(canvas.clientHeight * view.dpr);
