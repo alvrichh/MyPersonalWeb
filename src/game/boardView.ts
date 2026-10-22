@@ -1,4 +1,4 @@
-import { BOARD_H, BOARD_W, CELL, COLS, FINAL_ID, HOME_ROW, LEAP, MERGE_DELAY, ROUNDS, STRIKE, homeCell, ROWS, TIER_KIND, TIER_STATS, canMerge, castLook, cellCentre, pieceAt, waveSpots, ABILITY, type Ability, type BoardGame, type Piece, type Slot, type Tier } from './board';
+import { BOARD_H, BOARD_W, CELL, COLS, FINAL_ID, HOME_ROW, LEAP, MERGE_DELAY, STRIKE, homeCell, ROWS, TIER_KIND, TIER_STATS, canMerge, castLook, cellCentre, pieceAt, waveSpots, ABILITY, type Ability, type BoardGame, type Piece, type Slot, type Tier } from './board';
 import { boardFx, boardWallPieces, drawBoardBackdrop, drawBoardFigure, drawBoardOrb } from './draw';
 
 /* Draw the board mode: bugs and waves on the grid, with the worn hero and the rival on their portals. On phones they
@@ -654,8 +654,8 @@ function hearts(ctx: CanvasRenderingContext2D, cx: number, y: number, left: numb
   ctx.restore();
 }
 
-/** The rival's health: one for each round still to win. */
-const rivalHp = (b: BoardGame) => b.online ? b.online.rivalLives : ROUNDS - b.round + (b.phase !== 'prep' && b.phase !== 'fight' && b.last?.result === 'win' ? 0 : 1);
+/** The rival commander's remaining lives after round damage. */
+const rivalHp = (b: BoardGame) => b.online ? b.online.rivalLives : b.rivalLives;
 
 /** Against a person the fight is the same on both phones, the host's army on side 0 at the bottom; the guest's
     screen draws it turned round, so its own army is at the bottom too: every unit, shot and blow put at the opposite
@@ -891,7 +891,7 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
   // The hearts last, over everything on the board: the rival's above it, yours over your hero's head. Until the
   // fireball strikes they still show the hearts the round has just cost; then those burst.
   const popAt = ended === null ? 1 : Math.max(0, Math.min(1, (ended - FIREBALL.fly) / FIREBALL.blast));
-  const rivalPop = ended === null ? 0 : b.online ? b.online.rivalLost ?? 0 : won ? 1 : 0;
+  const rivalPop = ended === null ? 0 : b.online ? b.online.rivalLost ?? 0 : b.last?.rivalLost ?? 0;
   const minePop = !won && ended !== null ? b.last?.lost ?? 0 : 0;
   const mine = commanders.mine;
   const rival = commanders.rival;
@@ -986,3 +986,4 @@ export function drawBoardDrag(ctx: CanvasRenderingContext2D, lay: BoardLayout, d
   ctx.restore();
   if (tactics) drawStars(ctx, 0, boardUnitBounds(drag.piece).y * 1.12 - 9, drag.piece.star, now, retro);
 }
+

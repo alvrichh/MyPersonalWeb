@@ -7,7 +7,7 @@ export { bossKit } from './boardBoss';
    ticket, two tickets a legacy, two legacy a room-6 boss, two of those the world's final boss); then the fight
    with the round's enemy wave plays out on its own. Your hero watches from the lower right corner and the world's
    final boss, the rival, from the upper left: a round won throws a fireball at the rival, a round lost one back at
-   you. Ten rounds a world, the room-6 boss in round 5 and the final boss in round 10; each world won opens its
+   you. Ten lives per commander; waves advance up to round ten, the room-6 boss in round 5 and the final boss in round 10; each world won opens its
    cast in the shop, and a later world's cast is stronger (and dearer) than an earlier one's. No DOM here, so it
    can be simulated in Node; drawn by `boardView.ts`. */
 
@@ -189,6 +189,10 @@ export type BoardGame = {
   casts: number;
   round: number;
   lives: number;
+  rivalLives: number;
+  /** Consecutive victories for each commander; losing or drawing breaks the streak. */
+  winStreak: number;
+  rivalStreak: number;
   gold: number;
   phase: BoardPhase;
   army: Piece[];
@@ -201,7 +205,7 @@ export type BoardGame = {
   shots: Shot[];
   time: number;
   /** The last fight: won, lost or drawn, the lives it cost, and whether it was won without losing a unit. */
-  last: { result: 'win' | 'loss' | 'draw'; lost: number; flawless?: boolean; hp?: [number, number]; timeout?: boolean } | null;
+  last: { result: 'win' | 'loss' | 'draw'; lost: number; rivalLost?: number; flawless?: boolean; hp?: [number, number]; timeout?: boolean } | null;
   /** This round's special event, if any. */
   event: BoardEvent | null;
   /** Your commander's fireball, once a fight: on its way (`t` seconds left) or bursting (`boom`). */
@@ -279,7 +283,7 @@ export const saleOf = (p: Piece, variant: Variant = 'fusion', world = p.cast) =>
 export function newBoard(world: number, casts: number, variant: Variant = 'fusion'): BoardGame {
   const wave = enemyWave(world, 1);
   const b: BoardGame = {
-    world, variant, casts: Math.max(1, Math.min(world, casts, WORLDS.length)), round: 1, lives: LIVES, gold: Math.round(8 * castPower(world)), phase: 'prep',
+    world, variant, casts: Math.max(1, Math.min(world, casts, WORLDS.length)), round: 1, lives: LIVES, rivalLives: LIVES, winStreak: 0, rivalStreak: 0, gold: Math.round(8 * castPower(world)), phase: 'prep',
     army: [], shop: [], wave, waveCasts: enemyWaveCasts(world, 1, wave, variant), fighters: [], shots: [], time: 0, last: null, wins: 0, kills: 0, events: [], event: null, skillUsed: false, strike: null, boom: null, impacts: [], effects: [], bossAttacks: [], lastMerge: null, lastSummon: null, autoMerge: false, autoBought: false, summons: 0, pending: null,
   };
   // You start with a bug of the latest cast on the board.
@@ -668,29 +672,30 @@ export function startOnlineFight(b: BoardGame, rival: Piece[], mine: Piece[] = b
   return true;
 }
 
-/** The end of a fight against a person, from your side: the loser loses a life plus one for each two of the
-    winner's steps still standing (four at most); on time, the side with more health wins and the other loses one;
-    both gone at once, both lose one. The game ends when one runs out of lives, or after the last round on lives. */
+/** The same 1, 2, 3 (capped) victory streak damage for either commander. Draws break both streaks. */
+function streakDamage(b: BoardGame, result: 'win' | 'loss' | 'draw') {
+  b.winStreak = result === 'win' ? b.winStreak + 1 : 0;
+  b.rivalStreak = result === 'loss' ? b.rivalStreak + 1 : 0;
+  return { lost: result === 'win' ? 0 : result === 'loss' ? Math.min(3, b.rivalStreak) : 1,
+    rivalLost: result === 'win' ? Math.min(3, b.winStreak) : 0 };
+}
+
+/** Online uses the same streaks; draws retain the one-life cost for both players.
+    The game ends when one runs out of lives, or after the last round on lives. */
 function endOnline(b: BoardGame, o: Online) {
   roll = Math.random;
   const me = o.me, them = (1 - me) as 0 | 1;
   const mine = alive(b, me), theirs = alive(b, them);
-  const steps = (l: Fighter[]) => l.reduce((n, f) => n + f.tier + 1, 0);
   const hp = (l: Fighter[]) => Math.round(l.reduce((n, f) => n + Math.max(0, f.hp), 0));
-  let result: 'win' | 'loss' | 'draw';
-  let lostMe = 0, lostThem = 0;
-  let timeout = false;
-  if (mine.length && theirs.length) {
-    timeout = true;
-    result = hp(mine) > hp(theirs) ? 'win' : hp(mine) < hp(theirs) ? 'loss' : 'draw';
-    if (result === 'win') lostThem = 1; else if (result === 'loss') lostMe = 1; else { lostMe = 1; lostThem = 1; }
-  } else if (!mine.length && !theirs.length) { result = 'draw'; lostMe = 1; lostThem = 1; }
-  else if (mine.length) { result = 'win'; lostThem = Math.min(4, 1 + Math.floor(steps(mine) / 2)); }
-  else { result = 'loss'; lostMe = Math.min(4, 1 + Math.floor(steps(theirs) / 2)); }
+  const timeout = mine.length > 0 && theirs.length > 0;
+  const result = timeout ? hp(mine) > hp(theirs) ? 'win' : hp(mine) < hp(theirs) ? 'loss' : 'draw'
+    : mine.length ? 'win' : theirs.length ? 'loss' : 'draw';
+  const roundDamage = streakDamage(b, result);
+  const lostMe = Math.min(b.lives, roundDamage.lost), lostThem = Math.min(o.rivalLives, result === 'draw' ? 1 : roundDamage.rivalLost);
   b.lives = Math.max(0, b.lives - lostMe);
   o.rivalLives = Math.max(0, o.rivalLives - lostThem);
   o.rivalLost = lostThem;
-  b.last = { result, lost: lostMe, ...(timeout ? { hp: [hp(mine), hp(theirs)] as [number, number], timeout } : { flawless: result === 'win' && b.fighters.every((f) => f.side !== me || !f.dead) }) };
+  b.last = { result, lost: lostMe, rivalLost: lostThem, ...(timeout ? { hp: [hp(mine), hp(theirs)] as [number, number], timeout } : { flawless: result === 'win' && b.fighters.every((f) => f.side !== me || !f.dead) }) };
   if (result === 'win') b.wins += 1;
   const over = b.lives <= 0 || o.rivalLives <= 0 || b.round >= ROUNDS;
   b.phase = !over ? 'result' : b.lives > o.rivalLives ? 'won' : 'over';
@@ -1018,25 +1023,26 @@ export function updateBoard(b: BoardGame, dt: number) {
   const theirs = alive(b, 1).length;
   if (mine && theirs && b.time < FIGHT_TIME) return;
   if (b.online) { endOnline(b, b.online); return; }
-  // The round's result: a loss costs a life plus one for each two enemy steps still standing (four at most).
-  const flawless = () => b.fighters.every((f) => f.side === 1 || !f.dead);
-  if (!theirs && mine) { b.last = { result: 'win', lost: 0, flawless: flawless() }; b.wins += 1; }
-  else if (mine && theirs) {
-    // Time's up with both sides standing: the side with more health left in all wins (a loss costs one life).
+  // Decide the winner first, then apply the same streak damage to either commander.
+  if (!theirs && mine) {
+    b.last = { result: 'win', lost: 0, flawless: b.fighters.every((f) => f.side === 1 || !f.dead) };
+  } else if (mine && theirs) {
     const hp = (side: 0 | 1) => Math.round(alive(b, side).reduce((n, f) => n + Math.max(0, f.hp), 0));
     const ours = hp(0), rival = hp(1);
     const result = ours > rival ? 'win' : ours < rival ? 'loss' : 'draw';
-    // A win on time keeps your life but pays only a round's plain gold: no win bonus, no chest, no bounty.
-    b.last = { result, lost: result === 'win' ? 0 : 1, hp: [ours, rival], timeout: true };
-    if (result === 'win') b.wins += 1;
-    else b.lives = Math.max(0, b.lives - 1);
+    // Timeout wins still pay only plain round gold, without a win bonus, chest or bounty.
+    b.last = { result, lost: 0, hp: [ours, rival], timeout: true };
   } else {
-    const left = alive(b, 1).reduce((n, f) => n + f.tier + 1, 0);
-    const lost = mine ? 1 : Math.min(4, 1 + Math.floor(left / 2));
-    b.last = { result: mine ? 'draw' : 'loss', lost };
-    b.lives = Math.max(0, b.lives - lost);
+    b.last = { result: 'loss', lost: 0 };
   }
-  b.phase = b.lives <= 0 ? 'over' : b.round >= ROUNDS && b.last.result === 'win' ? 'won' : 'result';
+  const roundDamage = streakDamage(b, b.last.result);
+  roundDamage.lost = Math.min(b.lives, roundDamage.lost);
+  roundDamage.rivalLost = Math.min(b.rivalLives, roundDamage.rivalLost);
+  Object.assign(b.last, roundDamage);
+  if (b.last.result === 'win') b.wins += 1;
+  b.lives = Math.max(0, b.lives - roundDamage.lost);
+  b.rivalLives = Math.max(0, b.rivalLives - roundDamage.rivalLost);
+  b.phase = b.lives <= 0 ? 'over' : b.rivalLives <= 0 ? 'won' : 'result';
   b.events.push(b.phase === 'over' ? 'over' : b.phase === 'won' ? 'won' : b.last.result);
 }
 
@@ -1045,8 +1051,8 @@ export const GOLD = { round: 6, win: 2 };
 /** The gold a round pays: more in a later world, as its cast's prices are higher (so an earlier cast comes cheap). */
 export const roundGold = (world: number, won: boolean) => Math.round((GOLD.round + (won ? GOLD.win : 0)) * castPower(world));
 
-/** On to the next round: gold (more after a win), a fresh shop and the next wave. Your bugs come back whole. The last round
-    must be won: lose it and you play it again, while lives last. */
+/** On to the next round: gold (more after a win), a fresh shop and the next wave. Your bugs come back whole. The last wave
+    repeats until a commander runs out of lives. */
 /** The gold a round pays on top: a flawless win's chest, and double the win's gold in a bounty round. */
 export function roundBonus(b: BoardGame) {
   const won = b.last?.result === 'win';
@@ -1077,3 +1083,4 @@ export function nextRound(b: BoardGame) {
 
 /** The coins a board run pays: for every fight won, and a bonus for clearing the world. */
 export const boardCoins = (b: BoardGame) => Math.round((30 * b.wins + (b.phase === 'won' ? 150 : 0)) * worldUp(b.world));
+
