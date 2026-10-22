@@ -14,20 +14,22 @@ const HEARTS = { size: 11 };
 /** How long the fireball flies, and how long its blast lasts, in seconds (main.ts waits for both). */
 export const FIREBALL = { fly: 0.75, blast: 0.45 };
 
-export type BoardLayout = { s: number; ox: number; oy: number };
+export type BoardLayout = { s: number; sx: number; ox: number; oy: number };
 
 /** Fits the board (and the strip above it) into the area between the top bar and the shop. */
-export function layoutBoard(w: number, top: number, bottom: number, arenaWidth = w): BoardLayout {
+export function layoutBoard(w: number, top: number, bottom: number, arenaWidth = w, widthScale = 1, maxBoardWidth = w): BoardLayout {
   // The commanders float over the arena, so their art must not take height away from the grid.
   const room = Math.max(120, bottom - top);
   const s = Math.min((Math.min(w, arenaWidth) - 8) / BOARD_W, room / (BOARD_H + TOP));
   const spare = Math.max(0, room - (BOARD_H + TOP) * s);
-  return { s, ox: (w - BOARD_W * s) / 2, oy: top + spare + TOP * s };
+  // Expand only the spacing between columns. Keep the previous height and never shrink the grid to fit its controls.
+  const sx = s * Math.max(1, Math.min(widthScale, maxBoardWidth / (BOARD_W * s)));
+  return { s, sx, ox: (w - BOARD_W * sx) / 2, oy: top + spare + TOP * s };
 }
 
 /** The cell under a point on the screen, or null off the board. */
 export function slotAt(lay: BoardLayout, px: number, py: number): Slot | null {
-  const x = (px - lay.ox) / lay.s;
+  const x = (px - lay.ox) / lay.sx;
   const y = (py - lay.oy) / lay.s;
   if (x < 0 || x >= BOARD_W || y < 0 || y >= BOARD_H) return null;
   return { c: Math.floor(x / CELL), r: Math.floor(y / CELL) };
@@ -63,7 +65,7 @@ const figureOf = (tier: Tier, cast: number, face: number, step: number, swing: n
 
 /* Boss telegraphs use the same floor pictures and colours as their native attacks. The warning stays readable
    before its damage window opens, with the cast's own effect asset over the marker once it lands. */
-function drawBossMoves(ctx: CanvasRenderingContext2D, b: BoardGame, live: BoardGame['fighters'], now: number, retro: boolean) {
+function drawBossMoves(ctx: CanvasRenderingContext2D, b: BoardGame, live: BoardGame['fighters'], now: number, retro: boolean, spread = 1) {
   const colours = { fire: '#fb923c', water: '#38bdf8', mud: '#a3a36d', arcane: '#c084fc', leaf: '#4ade80', bolt: '#fde047', laser: '#fb7185', shadow: '#a78bfa', glitch: '#e879f9' };
   for (const attack of b.bossAttacks) {
     if (attack.age < 0 || attack.age > attack.warn + attack.life) continue;
@@ -75,37 +77,49 @@ function drawBossMoves(ctx: CanvasRenderingContext2D, b: BoardGame, live: BoardG
     ctx.save();
     ctx.globalAlpha = alpha;
     if (attack.kind === 'circle' || attack.kind === 'clone') {
+      ctx.save();
+      ctx.scale(spread, 1);
       ctx.fillStyle = `${colour}22`;
       ctx.strokeStyle = warning ? '#fff7ed' : colour;
       ctx.lineWidth = warning ? 2 : 1.5;
       ctx.setLineDash(warning ? [6, 4] : []);
       ctx.beginPath(); ctx.arc(attack.x, attack.y, attack.r * (warning ? 0.86 + progress * 0.14 : 1), 0, Math.PI * 2); ctx.fill(); ctx.stroke();
       ctx.setLineDash([]);
+      ctx.restore();
       if (img && img.complete && img.naturalWidth) {
         const size = attack.r * (attack.asset === 'boom-big' ? 3 : 2.5);
         const h = size * img.naturalHeight / img.naturalWidth;
-        ctx.drawImage(img, attack.x - size / 2, attack.y - h / 2, size, h);
+        ctx.drawImage(img, attack.x * spread - size / 2, attack.y - h / 2, size, h);
       }
     } else if (attack.kind === 'wave') {
       const h = attack.r * 4;
+      ctx.save();
+      ctx.scale(spread, 1);
       ctx.fillStyle = `${colour}55`;
       ctx.fillRect(attack.x - attack.len / 2, attack.y - h / 2, attack.len, h);
       ctx.strokeStyle = warning ? '#fff7ed' : colour; ctx.lineWidth = 2;
       ctx.setLineDash(warning ? [8, 6] : []);
       ctx.beginPath(); ctx.moveTo(attack.x - attack.len / 2, attack.y); ctx.lineTo(attack.x + attack.len / 2, attack.y); ctx.stroke();
       ctx.setLineDash([]);
-      if (img && img.complete && img.naturalWidth) ctx.drawImage(img, attack.x - attack.len / 2, attack.y - h, attack.len, h * 2);
+      ctx.restore();
+      if (img && img.complete && img.naturalWidth) ctx.drawImage(img, (attack.x - attack.len / 2) * spread, attack.y - h * spread, attack.len * spread, h * 2 * spread);
     } else {
       const angle = attack.a + (attack.kind === 'beam' && !warning ? (attack.spin ?? 0) * (attack.age - attack.warn) : 0);
+      ctx.save();
+      ctx.scale(spread, 1);
       ctx.translate(attack.x, attack.y); ctx.rotate(angle);
       const grad = ctx.createLinearGradient(0, 0, attack.len, 0);
       grad.addColorStop(0, `${colour}dd`); grad.addColorStop(1, `${colour}22`);
       ctx.fillStyle = grad; ctx.fillRect(0, -attack.r, attack.len, attack.r * 2);
       ctx.strokeStyle = warning ? '#fff7ed' : colour; ctx.lineWidth = warning ? 2 : 1.5;
       ctx.setLineDash(warning ? [8, 6] : []); ctx.strokeRect(0, -attack.r, attack.len, attack.r * 2); ctx.setLineDash([]);
+      ctx.restore();
       if (img && img.complete && img.naturalWidth && (attack.asset.startsWith('vine-row') || attack.asset.startsWith('laser-'))) {
+        const dx = Math.cos(angle) * spread, dy = Math.sin(angle);
+        const lengthScale = Math.hypot(dx, dy);
+        ctx.translate(attack.x * spread, attack.y); ctx.rotate(Math.atan2(dy, dx));
         ctx.globalAlpha *= 0.85;
-        ctx.drawImage(img, 0, -attack.r * 1.6, attack.len, attack.r * 3.2);
+        ctx.drawImage(img, 0, -attack.r * 1.6 * lengthScale, attack.len * lengthScale, attack.r * 3.2 * lengthScale);
       }
     }
     ctx.restore();
@@ -116,8 +130,8 @@ function drawBossMoves(ctx: CanvasRenderingContext2D, b: BoardGame, live: BoardG
     ctx.save();
     ctx.globalAlpha = 1 - k;
     const w = (i.kind === 'slam' ? LEAP.reach * 2.4 : 50) * (0.7 + k * 0.5);
-    if (!retro && ok(img)) ctx.drawImage(img, i.x - w / 2, i.y - (w * img.naturalHeight) / img.naturalWidth / 2, w, (w * img.naturalHeight) / img.naturalWidth);
-    else { ctx.strokeStyle = '#fde68a'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(i.x, i.y, w / 2, 0, Math.PI * 2); ctx.stroke(); }
+    if (!retro && ok(img)) ctx.drawImage(img, i.x * spread - w / 2, i.y - (w * img.naturalHeight) / img.naturalWidth / 2, w, (w * img.naturalHeight) / img.naturalWidth);
+    else { ctx.strokeStyle = '#fde68a'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(i.x * spread, i.y, w / 2, 0, Math.PI * 2); ctx.stroke(); }
     ctx.restore();
   }
   void live; void now;
@@ -245,7 +259,7 @@ export function boardMerged(slot: Slot, id: number, now: number) {
   puffs.push({ x: c.x, y: c.y, at: now });
   popped = { id, at: now };
 }
-function drawPuffs(ctx: CanvasRenderingContext2D, now: number, retro: boolean) {
+function drawPuffs(ctx: CanvasRenderingContext2D, now: number, retro: boolean, spread = 1) {
   puffs = puffs.filter((p) => now - p.at < PUFF);
   const img = boardFx('steam-cloud');
   for (const p of puffs) {
@@ -258,12 +272,12 @@ function drawPuffs(ctx: CanvasRenderingContext2D, now: number, retro: boolean) {
         const a = i * 2.1 + 0.4;
         const w = CELL * (0.9 + k * 0.9);
         const h = (w * img.naturalHeight) / img.naturalWidth;
-        ctx.drawImage(img, p.x + Math.cos(a) * k * 16 - w / 2, p.y - 6 + Math.sin(a) * k * 10 - h / 2, w, h);
+        ctx.drawImage(img, p.x * spread + Math.cos(a) * k * 16 - w / 2, p.y - 6 + Math.sin(a) * k * 10 - h / 2, w, h);
       }
     } else {
       ctx.fillStyle = '#e2e8f0';
       ctx.beginPath();
-      ctx.arc(p.x, p.y, 14 + k * 22, 0, Math.PI * 2);
+      ctx.arc(p.x * spread, p.y, 14 + k * 22, 0, Math.PI * 2);
       ctx.fill();
     }
     ctx.restore();
@@ -434,7 +448,7 @@ function bonusImage(path: string) {
   return img;
 }
 
-function drawFighterBonuses(ctx: CanvasRenderingContext2D, f: BoardGame['fighters'][number], now: number, retro: boolean, healthY: number) {
+function drawFighterBonuses(ctx: CanvasRenderingContext2D, f: BoardGame['fighters'][number], now: number, retro: boolean, healthY: number, spread = 1) {
   const picture = (path: string, x: number, y: number, size: number, alpha = 1) => {
     const img = bonusImage(path);
     if (retro || !ok(img)) return;
@@ -442,34 +456,37 @@ function drawFighterBonuses(ctx: CanvasRenderingContext2D, f: BoardGame['fighter
     ctx.drawImage(img, x - size / 2, y - size / 2, size, size);
     ctx.restore();
   };
-  if (f.synLv > 0) picture(f.tac ? ABILITY_PIC[ABILITY[f.syn]] : SYNERGY_PIC[f.syn], f.x + f.r + 7, healthY + 2, 12);
-  if (f.poison > 0) picture(ABILITY_PIC.poison, f.x - f.r, f.y - 6 + Math.sin(now * 6) * 3, 14);
-  if (f.burn > 0) picture('fx/flame-orange.webp', f.x + f.r * 0.7, f.y - 4, 22 + Math.sin(now * 11) * 2);
-  if (f.freeze > 0) picture('fx/ice-block.webp', f.x, f.y - f.r, f.r * 3.2, 0.72);
-  else if (f.slow > 0) picture(f.slowKind === 'mud' ? ABILITY_PIC.slow : ABILITY_PIC.freeze, f.x, f.y + f.r * 0.55, 16, 0.85);
+  const x = f.x * spread;
+  if (f.synLv > 0) picture(f.tac ? ABILITY_PIC[ABILITY[f.syn]] : SYNERGY_PIC[f.syn], x + f.r + 7, healthY + 2, 12);
+  if (f.poison > 0) picture(ABILITY_PIC.poison, x - f.r, f.y - 6 + Math.sin(now * 6) * 3, 14);
+  if (f.burn > 0) picture('fx/flame-orange.webp', x + f.r * 0.7, f.y - 4, 22 + Math.sin(now * 11) * 2);
+  if (f.freeze > 0) picture('fx/ice-block.webp', x, f.y - f.r, f.r * 3.2, 0.72);
+  else if (f.slow > 0) picture(f.slowKind === 'mud' ? ABILITY_PIC.slow : ABILITY_PIC.freeze, x, f.y + f.r * 0.55, 16, 0.85);
 }
 
-function drawBonusEffects(ctx: CanvasRenderingContext2D, b: BoardGame, retro: boolean) {
+function drawBonusEffects(ctx: CanvasRenderingContext2D, b: BoardGame, retro: boolean, spread = 1) {
   for (const e of b.effects) {
     const k = e.age / 0.5;
     ctx.save(); ctx.globalAlpha = Math.max(0, 1 - k);
+    const x = e.x * spread;
     if (e.kind === 'arc' && e.tx !== undefined && e.ty !== undefined) {
-      const dx = e.tx - e.x, dy = e.ty - e.y;
+      const tx = e.tx * spread;
+      const dx = tx - x, dy = e.ty - e.y;
       const bolt = bonusImage('fx/bolt-y-1.webp');
       if (!retro && ok(bolt)) {
-        ctx.translate(e.x, e.y - 8); ctx.rotate(Math.atan2(dy, dx) - Math.PI / 2);
+        ctx.translate(x, e.y - 8); ctx.rotate(Math.atan2(dy, dx) - Math.PI / 2);
         ctx.drawImage(bolt, -7, 0, 14, Math.hypot(dx, dy));
       } else {
         ctx.strokeStyle = '#fde047'; ctx.lineWidth = 2;
-        ctx.beginPath(); ctx.moveTo(e.x, e.y - 8); ctx.lineTo((e.x + e.tx) / 2 + 5, (e.y + e.ty) / 2 - 12); ctx.lineTo(e.tx, e.ty - 8); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(x, e.y - 8); ctx.lineTo((x + tx) / 2 + 5, (e.y + e.ty) / 2 - 12); ctx.lineTo(tx, e.ty - 8); ctx.stroke();
       }
     } else {
       const path = e.kind === 'heal' ? 'fx/heart.webp' : e.kind === 'armor' ? ABILITY_PIC.armor : e.kind === 'power' ? 'fx/crit-spark.webp' : ABILITY_PIC.dodge;
       const img = bonusImage(path);
       const size = e.kind === 'power' ? 27 : 18;
       const y = e.y - 30 - k * 16;
-      if (!retro && ok(img)) ctx.drawImage(img, e.x - size / 2, y - size / 2, size, size);
-      else { ctx.fillStyle = e.kind === 'heal' ? '#4ade80' : '#fde047'; ctx.font = 'bold 12px system-ui'; ctx.fillText(e.kind === 'heal' ? '+' : e.kind === 'dodge' ? '↷' : '✦', e.x, y); }
+      if (!retro && ok(img)) ctx.drawImage(img, x - size / 2, y - size / 2, size, size);
+      else { ctx.fillStyle = e.kind === 'heal' ? '#4ade80' : '#fde047'; ctx.font = 'bold 12px system-ui'; ctx.fillText(e.kind === 'heal' ? '+' : e.kind === 'dodge' ? '↷' : '✦', x, y); }
     }
     ctx.restore();
   }
@@ -658,34 +675,38 @@ export function mirrorFight(b: BoardGame): BoardGame {
   };
 }
 
-export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: BoardLayout, now: number, drag: BoardDrag | null, retro: boolean, dpr: number, pics: HeroPics, ended: number | null, floor: { top: number; bottom: number; width?: number; controlsTop?: number }, commandersOutsideBoard = false) {
+export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: BoardLayout, now: number, drag: BoardDrag | null, retro: boolean, dpr: number, pics: HeroPics, ended: number | null, floor: { top: number; bottom: number; width?: number; widthScale?: number; controlsTop?: number }, commandersOutsideBoard = false) {
   const tactics = b.variant === 'tactics';
   // Move the complete hero and portal together. Their sizes never stretch to fill the side margin.
   const fieldRight = floor.width ?? ctx.canvas.width / dpr;
-  const boardRight = lay.ox + BOARD_W * lay.s;
-  const heroScale = 1 / lay.s;
+  const spread = lay.sx / lay.s;
+  const boardRight = lay.ox + BOARD_W * lay.sx;
+  const heroScale = (commandersOutsideBoard ? 1.15 : 1) / lay.s;
   const rivalScale = heroScale;
   // Near-square desktop windows put the hero below the shorter card stack, clear of the fight controls.
   const compactShop = tactics && fieldRight <= 1200 && fieldRight / (ctx.canvas.height / dpr) <= 1.2;
   // Both desktop variants use the open margins beside the grid, clear of the shop and its controls.
   const marginPoint = (x: number, height: number, bottom = floor.bottom - 24) => ({
     x: (x - lay.ox) / lay.s,
-    y: (Math.min(bottom, Math.max(floor.top + 100, floor.top + (floor.bottom - floor.top) * height)) - lay.oy) / lay.s,
+    y: (Math.min(bottom, Math.max(floor.top + 112, floor.top + (floor.bottom - floor.top) * height)) - lay.oy) / lay.s,
   });
-  const mineX = Math.max(boardRight + 48, (boardRight + fieldRight - 224) / 2);
-  const mineBottom = mineX + 40 > fieldRight - 220 ? Math.min(floor.bottom - 24, (floor.controlsTop ?? floor.bottom) - 34) : floor.bottom - 24;
+  const mineX = Math.min(fieldRight - 54, boardRight + 64);
+  const mineBottom = mineX + 46 > fieldRight - 220 ? Math.min(floor.bottom - 32, (floor.controlsTop ?? floor.bottom) - 42) : floor.bottom - 32;
   const commanders = {
     mine: commandersOutsideBoard
       ? compactShop
-        ? { x: (fieldRight - 116 - lay.ox) / lay.s, y: (floor.bottom - 88 - lay.oy) / lay.s }
+        ? { x: (mineX - lay.ox) / lay.s, y: (floor.bottom - 96 - lay.oy) / lay.s }
         : marginPoint(mineX, 0.75, mineBottom)
       : { x: (fieldRight - 44 - lay.ox) / lay.s, y: MINE.y },
-    rival: commandersOutsideBoard ? marginPoint(lay.ox / 2, 0.25) : RIVAL,
+    rival: commandersOutsideBoard ? marginPoint(Math.max(54, lay.ox - 64), 0.25) : RIVAL,
   };
   // The world's whole arena floor, walls and corners, as in a sprint, from under the top bar to over the buttons;
   // the board is only its grid.
-  drawBoardBackdrop(ctx, b.world, ctx.canvas.width / dpr, floor.top, floor.bottom, dpr, retro, floor.width);
+  drawBoardBackdrop(ctx, b.world, ctx.canvas.width / dpr, floor.top, floor.bottom, dpr, retro, floor.width, floor.widthScale);
   ctx.setTransform(dpr * lay.s, 0, 0, dpr * lay.s, dpr * lay.ox, dpr * lay.oy);
+  // Only the grid and its wall use the wider transform; sprites and effects keep their own proportions.
+  ctx.save();
+  ctx.scale(spread, 1);
   ctx.save();
   ctx.beginPath();
   ctx.roundRect(0, 0, BOARD_W, BOARD_H, 10);
@@ -716,6 +737,7 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
   }
   ctx.restore();
   drawWall(ctx, b, now, retro);
+  ctx.restore();
 
   // The fireball at the end of a fight: yours at the rival after a win, the rival's at you otherwise.
   const won = b.last?.result === 'win';
@@ -736,8 +758,11 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
     const target = pieceAt(b, drag.over);
     const merge = target && canMerge(drag.piece, target, b.variant);
     const c = cellCentre(drag.over);
+    ctx.save();
+    ctx.scale(spread, 1);
     ctx.fillStyle = !homeCell(drag.over) ? 'rgba(248,113,113,0.2)' : merge ? 'rgba(252,211,77,0.42)' : 'rgba(74,222,128,0.26)';
     ctx.fillRect(c.x - CELL / 2 + 2, c.y - CELL / 2 + 2, CELL - 4, CELL - 4);
+    ctx.restore();
   }
   if (b.phase === 'prep' || !b.fighters.length) {
     // The coming wave, faint, on its half, built up before your eyes while you prepare: the rival summons its units one
@@ -748,7 +773,7 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
       const tier = shown[i];
       if (tier < 0) return;
       ctx.save();
-      ctx.translate(w.x, w.y);
+      ctx.translate(w.x * spread, w.y);
       ctx.globalAlpha = 0.5 + Math.sin(now * 2.5) * 0.08;
       enemyBase(ctx, TIER_STATS[tier].r);
       drawEnemyFigure(ctx, figureOf(tier as Tier, w.cast, -1, 0, 0, 0), now, retro);
@@ -756,7 +781,7 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
     });
     if (twin) {
       ctx.save();
-      ctx.translate(twin.x, twin.y);
+      ctx.translate(twin.x * spread, twin.y);
       ctx.globalAlpha = 0.75;
       ctx.scale(1.12, 1.12);
       drawEnemyFigure(ctx, figureOf(twin.tier as Tier, twin.cast, -1, 0, 0, 0), now, retro);
@@ -767,24 +792,25 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
       if (drag?.piece === p) continue;
       const c = mergePos(b, p, now);
       ctx.save();
-      ctx.translate(c.x, c.y);
+      ctx.translate(c.x * spread, c.y);
       ring(ctx, TIER_STATS[p.tier].r, tactics ? RARITY_COLOUR[p.tier] : '#38bdf8');
       const pop = popScale(p.id, now) * (tactics ? boardStarScale(p.star) : 1);
       ctx.scale(FIG * pop, FIG * pop);
       drawBoardFigure(ctx, figureOf(p.tier, p.cast, 1, 0, 0, 0), now, retro);
       ctx.restore();
-      marks(ctx, c.x, c.y + CELL * 0.42, p, tactics, retro, now);
+      marks(ctx, c.x * spread, c.y + CELL * 0.42, p, tactics, retro, now);
     }
   } else {
     const live = b.fighters.filter((f) => !f.dead).sort((p, q) => p.y - q.y);
-    drawBossMoves(ctx, b, live, now, retro);
+    drawBossMoves(ctx, b, live, now, retro, spread);
     for (const f of live) {
       const colour = f.side === 0 ? '#38bdf8' : '#f87171';
       // A leap: the figure up in an arc over its shadow on the floor, in its charge pose.
       const lift = f.leap ? Math.sin(Math.min(1, f.leap.t / LEAP.time) * Math.PI) * 70 : 0;
-      const move = { aim: f.aim, dash: f.leap ? 1 : f.dash, dir: f.dir, pose: f.bossPoseTime, act: f.bossPose === 'sig' ? 'sig' as const : f.bossPose ? 'move' as const : 'burst' as const, chan: f.channel };
+      const dirLength = Math.hypot(f.dir.x * spread, f.dir.y) || 1;
+      const move = { aim: f.aim, dash: f.leap ? 1 : f.dash, dir: { x: f.dir.x * spread / dirLength, y: f.dir.y / dirLength }, pose: f.bossPoseTime, act: f.bossPose === 'sig' ? 'sig' as const : f.bossPose ? 'move' as const : 'burst' as const, chan: f.channel };
       ctx.save();
-      ctx.translate(f.x, f.y);
+      ctx.translate(f.x * spread, f.y);
       if (f.leap) {
         ctx.fillStyle = 'rgba(0,0,0,0.35)';
         ctx.beginPath();
@@ -800,23 +826,23 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
       const headY = f.y - lift + boardUnitBounds({ tier: f.tier, star: tactics ? f.star : 1 }).y;
       const y = headY - (tactics ? 22 : 7);
       ctx.fillStyle = 'rgba(0,0,0,0.6)';
-      ctx.fillRect(f.x - w / 2, y, w, 4);
+      ctx.fillRect(f.x * spread - w / 2, y, w, 4);
       ctx.fillStyle = f.side === 0 ? '#4ade80' : '#f87171';
-      ctx.fillRect(f.x - w / 2, y, (w * Math.max(0, f.hp)) / f.maxHp, 4);
-      drawFighterBonuses(ctx, f, now, retro, y);
+      ctx.fillRect(f.x * spread - w / 2, y, (w * Math.max(0, f.hp)) / f.maxHp, 4);
+      drawFighterBonuses(ctx, f, now, retro, y, spread);
       // Keep Tactics' metal star marks visible over every unit during the fight. The top-row marks stay inside the board.
-      if (tactics) drawStars(ctx, f.x, Math.max(headY - 32, 12), f.star, now, retro);
+      if (tactics) drawStars(ctx, f.x * spread, Math.max(headY - 32, 12), f.star, now, retro);
     }
     for (const s of b.shots) {
       if (s.delay && s.delay > 0) continue;
-      if (s.pic && s.el) drawBoardOrb(ctx, s.pic, s.x, s.y, s.vx, s.vy, s.r ?? 6, s.el, now, retro, s.from ?? 0);
+      if (s.pic && s.el) drawBoardOrb(ctx, s.pic, s.x * spread, s.y, s.vx * spread, s.vy, s.r ?? 6, s.el, now, retro, s.from ?? 0);
       else {
         ctx.fillStyle = s.ring ? '#e879f9' : s.side === 0 ? '#7dd3fc' : '#fca5a5';
         ctx.shadowColor = ctx.fillStyle; ctx.shadowBlur = 8;
-        ctx.beginPath(); ctx.arc(s.x, s.y, s.ring ? 5 : 4, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0;
+        ctx.beginPath(); ctx.arc(s.x * spread, s.y, s.ring ? 5 : 4, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0;
       }
     }
-    drawBonusEffects(ctx, b, retro);
+    drawBonusEffects(ctx, b, retro, spread);
   }
   if (ended !== null && fly < 1) {
     const mine = commanders.mine;
@@ -875,12 +901,12 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
   if (b.strike) {
     const k = 1 - b.strike.t / STRIKE.fly;
     const from = { x: mine.x - 12 * heroScale, y: mine.y - 36 * heroScale };
-    const x = from.x + (b.strike.x - from.x) * k;
+    const x = from.x + (b.strike.x * spread - from.x) * k;
     const y = from.y + (b.strike.y - from.y) * k - Math.sin(k * Math.PI) * 70 * heroScale;
     const ball = boardFx('fireball');
     ctx.save();
     ctx.translate(x, y);
-    ctx.rotate(Math.atan2(b.strike.y - from.y - Math.cos(k * Math.PI) * 70 * Math.PI * heroScale, b.strike.x - from.x));
+    ctx.rotate(Math.atan2(b.strike.y - from.y - Math.cos(k * Math.PI) * 70 * Math.PI * heroScale, b.strike.x * spread - from.x));
     if (!retro && ok(ball)) { const w = 54 * heroScale; ctx.drawImage(ball, -w * 0.74, -w * 0.26, w, w * (ball.naturalHeight / ball.naturalWidth)); }
     else { ctx.fillStyle = '#fb923c'; ctx.beginPath(); ctx.arc(0, 0, 9 * heroScale, 0, Math.PI * 2); ctx.fill(); }
     ctx.restore();
@@ -891,8 +917,8 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
     ctx.save();
     ctx.globalAlpha = Math.max(0, 1 - k);
     const w = STRIKE.reach * 2 * (0.7 + k * 0.4);
-    if (!retro && ok(boom)) ctx.drawImage(boom, b.boom.x - w / 2, b.boom.y - (w * boom.naturalHeight) / boom.naturalWidth / 2, w, (w * boom.naturalHeight) / boom.naturalWidth);
-    else { ctx.fillStyle = '#fdba74'; ctx.beginPath(); ctx.arc(b.boom.x, b.boom.y, w / 2, 0, Math.PI * 2); ctx.fill(); }
+    if (!retro && ok(boom)) ctx.drawImage(boom, b.boom.x * spread - w / 2, b.boom.y - (w * boom.naturalHeight) / boom.naturalWidth / 2, w, (w * boom.naturalHeight) / boom.naturalWidth);
+    else { ctx.fillStyle = '#fdba74'; ctx.beginPath(); ctx.arc(b.boom.x * spread, b.boom.y, w / 2, 0, Math.PI * 2); ctx.fill(); }
     ctx.restore();
   }
   // The auto-merge's lightning between the two units about to merge: the lightning arrows' yellow arcs, redrawn
@@ -903,7 +929,7 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
     if (p && q) {
       const k = 1 - b.pending.t / MERGE_DELAY;
       const A = mergePos(b, p, now), B = mergePos(b, q, now);
-      const from = { x: A.x, y: A.y - 10 }, to = { x: B.x, y: B.y - 10 };
+      const from = { x: A.x * spread, y: A.y - 10 }, to = { x: B.x * spread, y: B.y - 10 };
       const seed = Math.floor(now * 14);
       ctx.save();
       ctx.lineJoin = 'round';
@@ -941,7 +967,7 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
       ctx.restore();
     }
   }
-  drawPuffs(ctx, now, retro);
+  drawPuffs(ctx, now, retro, spread);
 }
 
 /** The unit being dragged, on its own canvas over the board's top bar and shop, so it is never hidden under them. */

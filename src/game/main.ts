@@ -1682,7 +1682,7 @@ type BoardInspection = { piece: Piece; stats?: ReturnType<typeof unitStats>; ene
 let boardDown: { x: number; y: number; id: number; piece: Piece | null; inspection: BoardInspection | null; moved: boolean } | null = null;
 /** The shop card's long press opens its own stats card instead of buying on release. */
 function markBoardPressHeld(down: { held: boolean }) { down.held = true; }
-let boardLay: BoardLayout = { s: 1, ox: 0, oy: 0 };
+let boardLay: BoardLayout = { s: 1, sx: 1, ox: 0, oy: 0 };
 const boardTooltip = $<HTMLElement>('boardTooltip');
 window.addEventListener('pointerdown', (event) => {
   if (boardTooltip.hidden || boardTooltip.contains(event.target as Node)) return;
@@ -2709,7 +2709,7 @@ function boardStep(dt: number, now: number) {
   const fieldWidth = canvas.clientWidth;
   const arena = boardBackdropBounds(b.world, fieldWidth, floor.top, floor.bottom);
   const gridBottom = wide ? Math.min(bottom, arena.y + arena.h * 0.96) : bottom;
-  boardLay = layoutBoard(fieldWidth, Math.max(top, arena.y + arena.h * 0.04), gridBottom, arena.w * 0.96);
+  boardLay = layoutBoard(fieldWidth, Math.max(top, arena.y + arena.h * 0.04), gridBottom, arena.w * 0.96, wide ? 1.25 : 1, wide ? fieldWidth - 448 : fieldWidth);
   // Bonuses overlay the board on mobile so they do not steal width; on desktop they sit just outside its left edge.
   const wallTop = rect.top + boardLay.oy + (HOME_ROW * CELL - 4) * boardLay.s;
   const sideHeight = `${Math.max(43, wallTop - rect.top - top - 12)}px`;
@@ -2730,7 +2730,7 @@ function boardStep(dt: number, now: number) {
   if (b.phase === 'prep' || b.phase === 'fight') boardEnded = null;
   // The guest sees the shared fight turned round, its own army at the bottom.
   const seen = b.online?.me === 1 ? mirrorFight(b) : b;
-  if (heroPics) drawBoard(ctx, seen, boardLay, now / 1000, boardDrag, save.retro, view.dpr, heroPics, boardEnded === null ? null : now / 1000 - boardEnded, { ...floor, width: fieldWidth }, wide);
+  if (heroPics) drawBoard(ctx, seen, boardLay, now / 1000, boardDrag, save.retro, view.dpr, heroPics, boardEnded === null ? null : now / 1000 - boardEnded, { ...floor, width: fieldWidth, widthScale: boardLay.sx / boardLay.s }, wide);
   boardFloat.hidden = !boardDrag;
   if (boardDrag || floatDrawn) {
     const w = Math.round(canvas.clientWidth * view.dpr), h = Math.round(canvas.clientHeight * view.dpr);
@@ -2749,6 +2749,7 @@ function boardPointerDown(event: PointerEvent) {
   const y = event.clientY - rect.top;
   const bx = (x - boardLay.ox) / boardLay.s;
   const by = (y - boardLay.oy) / boardLay.s;
+  const spread = boardLay.sx / boardLay.s;
   let piece: Piece | null = null;
   let inspection: BoardInspection | null = null;
   if (b.phase === 'prep') {
@@ -2757,8 +2758,8 @@ function boardPointerDown(event: PointerEvent) {
     if (piece) inspection = { piece, enemy: false };
     else {
       const spot = waveSpots(b).map((enemy) => ({ enemy, bounds: boardUnitBounds({ tier: enemy.tier }) }))
-        .filter(({ enemy, bounds }) => bx >= enemy.x + bounds.x - 8 && bx <= enemy.x + bounds.x + bounds.w + 8 && by >= enemy.y + bounds.y - 8 && by <= enemy.y + bounds.y + bounds.h + 8)
-        .sort((a, c) => Math.hypot(bx - a.enemy.x, by - a.enemy.y) - Math.hypot(bx - c.enemy.x, by - c.enemy.y))[0]?.enemy;
+        .filter(({ enemy, bounds }) => bx >= enemy.x * spread + bounds.x - 8 && bx <= enemy.x * spread + bounds.x + bounds.w + 8 && by >= enemy.y + bounds.y - 8 && by <= enemy.y + bounds.y + bounds.h + 8)
+        .sort((a, c) => Math.hypot(bx - a.enemy.x * spread, by - a.enemy.y) - Math.hypot(bx - c.enemy.x * spread, by - c.enemy.y))[0]?.enemy;
       if (spot) {
         const rivalPiece: Piece = { id: -1, tier: spot.tier, cast: spot.cast, slot: { c: -1, r: -1 }, star: 1 };
         inspection = { piece: rivalPiece, stats: waveUnitStats(b, spot.tier, spot.cast), enemy: true };
@@ -2768,8 +2769,8 @@ function boardPointerDown(event: PointerEvent) {
     const seen = b.online?.me === 1 ? mirrorFight(b) : b;
     const target = seen.fighters.filter((fighter) => !fighter.dead)
       .map((fighter) => ({ fighter, bounds: boardUnitBounds({ tier: fighter.tier, star: b.variant === 'tactics' ? fighter.star : 1 }) }))
-      .filter(({ fighter, bounds }) => bx >= fighter.x + bounds.x - 10 && bx <= fighter.x + bounds.x + bounds.w + 10 && by >= fighter.y + bounds.y - 10 && by <= fighter.y + bounds.y + bounds.h + 10)
-      .sort((a, c) => Math.hypot(bx - a.fighter.x, by - a.fighter.y) - Math.hypot(bx - c.fighter.x, by - c.fighter.y))[0]?.fighter;
+      .filter(({ fighter, bounds }) => bx >= fighter.x * spread + bounds.x - 10 && bx <= fighter.x * spread + bounds.x + bounds.w + 10 && by >= fighter.y + bounds.y - 10 && by <= fighter.y + bounds.y + bounds.h + 10)
+      .sort((a, c) => Math.hypot(bx - a.fighter.x * spread, by - a.fighter.y) - Math.hypot(bx - c.fighter.x * spread, by - c.fighter.y))[0]?.fighter;
     if (target) {
       const fighterPiece: Piece = { id: target.id, tier: target.tier, cast: target.cast, slot: { c: -1, r: -1 }, star: target.star };
       const base = target.side === 1 ? waveUnitStats(b, target.tier, target.cast) : unitStats(b, fighterPiece);
