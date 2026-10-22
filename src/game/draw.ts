@@ -5104,24 +5104,25 @@ export function drawBoardFigure(ctx: CanvasRenderingContext2D, f: BoardFigure, n
 }
 /** An effect picture, for the board. */
 export const boardFx = (name: string) => fxImage(name);
-/** Fit the complete arena without stretching its art. The grid uses the same bounds to stay inside the walls. */
-export function boardBackdropBounds(world: number, w: number, top: number, bottom: number): Rect {
+/** Fit the arena vertically, optionally widening its floor while keeping the walls' original scale. */
+export function boardBackdropBounds(world: number, w: number, top: number, bottom: number, widthScale = 1): Rect {
   const floor = floorImage(world);
   const ratio = ready(floor) ? floor.naturalWidth / floor.naturalHeight : W / H;
   const available = Math.max(0, bottom - top);
-  const width = Math.min(w, available * ratio);
-  const height = width / ratio;
+  const fittedWidth = Math.min(w, available * ratio);
+  const height = fittedWidth / ratio;
+  const width = Math.min(w, fittedWidth * widthScale);
   return { x: (w - width) / 2, y: top + (available - height) / 2, w: width, h: height };
 }
 /** The complete arena in the middle; on wide screens, dim floor tiles fill the sides at their normal scale. */
-export function drawBoardBackdrop(ctx: CanvasRenderingContext2D, world: number, w: number, top: number, bottom: number, dpr: number, retro: boolean, areaWidth = w) {
+export function drawBoardBackdrop(ctx: CanvasRenderingContext2D, world: number, w: number, top: number, bottom: number, dpr: number, retro: boolean, areaWidth = w, widthScale = 1) {
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   const h = Math.max(0, bottom - top);
   ctx.fillStyle = WORLDS[world - 1].floor;
   ctx.fillRect(0, top, w, h);
   const floor = retro ? undefined : floorImage(world);
   if (floor && ready(floor)) {
-    const bounds = boardBackdropBounds(world, areaWidth, top, bottom);
+    const bounds = boardBackdropBounds(world, areaWidth, top, bottom, widthScale);
     const pattern = fieldPattern(ctx, floor, W * FLOOR_CROP.w, H * FLOOR_CROP.h);
     if (pattern) {
       ctx.fillStyle = pattern;
@@ -5129,7 +5130,18 @@ export function drawBoardBackdrop(ctx: CanvasRenderingContext2D, world: number, 
     }
     ctx.fillStyle = 'rgba(7, 9, 15, 0.65)';
     ctx.fillRect(0, top, w, h);
-    ctx.drawImage(floor, bounds.x, bounds.y, bounds.w, bounds.h);
+    if (widthScale > 1) {
+      // Keep both side walls and their corners proportional; only the central floor grows wider.
+      const sourceEdge = floor.naturalWidth * 0.2;
+      const edge = sourceEdge * bounds.h / floor.naturalHeight;
+      ctx.drawImage(floor, 0, 0, sourceEdge, floor.naturalHeight, bounds.x, bounds.y, edge, bounds.h);
+      ctx.drawImage(floor, sourceEdge, 0, floor.naturalWidth - sourceEdge * 2, floor.naturalHeight,
+        bounds.x + edge, bounds.y, bounds.w - edge * 2, bounds.h);
+      ctx.drawImage(floor, floor.naturalWidth - sourceEdge, 0, sourceEdge, floor.naturalHeight,
+        bounds.x + bounds.w - edge, bounds.y, edge, bounds.h);
+    } else {
+      ctx.drawImage(floor, bounds.x, bounds.y, bounds.w, bounds.h);
+    }
   }
 }
 /** The board's wall between the halves: each world's own long blocks (the servers, the volcanic stone, the ice…;
