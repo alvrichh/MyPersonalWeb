@@ -658,20 +658,45 @@ export function mirrorFight(b: BoardGame): BoardGame {
   };
 }
 
-export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: BoardLayout, now: number, drag: BoardDrag | null, retro: boolean, dpr: number, pics: HeroPics, ended: number | null, floor: { top: number; bottom: number; width?: number }, commandersOutsideBoard = false) {
+export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: BoardLayout, now: number, drag: BoardDrag | null, retro: boolean, dpr: number, pics: HeroPics, ended: number | null, floor: { top: number; bottom: number; width?: number }, commandersOutsideBoard = false, playerInRightRail = false, rivalInLeftMargin = false) {
   const tactics = b.variant === 'tactics';
   // Move the complete hero and portal together. Their sizes never stretch to fill the side margin.
   const fieldRight = floor.width ?? ctx.canvas.width / dpr;
   const boardRight = lay.ox + BOARD_W * lay.s;
   const heroScale = 1 / lay.s;
   const rivalScale = heroScale;
-  const commandersOutside = {
-    mine: { x: (fieldRight - 44 - lay.ox) / lay.s, y: MINE.y },
-    rival: commandersOutsideBoard ? { x: ((boardRight + fieldRight) / 2 - lay.ox) / lay.s, y: RIVAL.y } : RIVAL,
+  const canvasWidth = ctx.canvas.width / dpr;
+  const railSpan = Math.max(120, floor.bottom - floor.top - 28);
+  const railPoint = (y: number, x = (fieldRight + canvasWidth) / 2) => ({
+    x,
+    y: floor.top + 14 + railSpan * y,
+  });
+  const toBoardPoint = (point: { x: number; y: number }) => ({
+    x: (point.x - lay.ox) / lay.s,
+    y: (point.y - lay.oy) / lay.s,
+  });
+  const commanders = {
+    mine: playerInRightRail ? toBoardPoint(railPoint(0.72)) : { x: (fieldRight - 44 - lay.ox) / lay.s, y: MINE.y },
+    rival: rivalInLeftMargin ? toBoardPoint(railPoint(0.25, lay.ox / 2)) : commandersOutsideBoard ? { x: ((boardRight + fieldRight) / 2 - lay.ox) / lay.s, y: RIVAL.y } : RIVAL,
   };
   // The world's whole arena floor, walls and corners, as in a sprint, from under the top bar to over the buttons;
   // the board is only its grid.
   drawBoardBackdrop(ctx, b.world, ctx.canvas.width / dpr, floor.top, floor.bottom, dpr, retro, floor.width);
+  if (playerInRightRail) {
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const left = fieldRight + 12;
+    const right = canvasWidth - 12;
+    const top = floor.top;
+    const height = Math.max(0, floor.bottom - top);
+    ctx.fillStyle = 'rgba(6, 12, 28, 0.48)';
+    ctx.fillRect(left, top, Math.max(0, right - left), height);
+    ctx.strokeStyle = 'rgba(56, 189, 248, 0.28)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(left + 0.5, top);
+    ctx.lineTo(left + 0.5, top + height);
+    ctx.stroke();
+  }
   ctx.setTransform(dpr * lay.s, 0, 0, dpr * lay.s, dpr * lay.ox, dpr * lay.oy);
   ctx.save();
   ctx.beginPath();
@@ -712,11 +737,11 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
   const rivalGone = b.phase === 'won' && done ? Math.min(1, (ended! - FIREBALL.fly) / 0.6) : 0;
   // The rival's pose, from your hero's: aiming while it throws at you, hurt when struck, cheering once you are out.
   const rivalPose = b.phase === 'over' && done ? pics.cheer : ended !== null && !won && !done ? pics.shoot : won && struck > 0 ? pics.hurt : pics.front;
-  drawRival(ctx, pics, rivalPose, now, won ? struck : 0, rivalGone, commandersOutside?.rival ?? RIVAL, rivalScale);
+  drawRival(ctx, pics, rivalPose, now, won ? struck : 0, rivalGone, commanders.rival, rivalScale);
   // A round won: it cheers and celebrates once its fireball has struck (the world won too).
   const party = won && done ? ended! - FIREBALL.fly : -1;
   const pose = b.phase === 'over' && done ? pics.down : ended !== null && won && !done ? pics.shoot : party >= 0 ? pics.cheer : !won && struck > 0 ? pics.hurt : pics.front;
-  drawHero(ctx, pics, pose, now, won ? 0 : struck * 0.6, party, commandersOutside.mine, heroScale);
+  drawHero(ctx, pics, pose, now, won ? 0 : struck * 0.6, party, commanders.mine, heroScale);
 
   // Where the dragged unit would go: green to move, gold to merge.
   if (drag?.over) {
@@ -806,8 +831,8 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
     drawBonusEffects(ctx, b, retro);
   }
   if (ended !== null && fly < 1) {
-    const mine = commandersOutside?.mine ?? MINE;
-    const rival = commandersOutside?.rival ?? RIVAL;
+    const mine = commanders.mine;
+    const rival = commanders.rival;
     const from = won ? { x: mine.x - 12 * heroScale, y: mine.y - 36 * heroScale } : { x: rival.x + 10 * rivalScale, y: rival.y - 20 * rivalScale };
     const to = won ? { x: rival.x, y: rival.y - 22 * rivalScale } : { x: mine.x, y: mine.y - 30 * heroScale };
     const k = Math.max(0, fly);
@@ -832,7 +857,7 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
     ctx.restore();
   }
   if (ended !== null && ended > FIREBALL.fly && ended < FIREBALL.fly + FIREBALL.blast) {
-    const hit = won ? commandersOutside.rival : commandersOutside.mine;
+    const hit = won ? commanders.rival : commanders.mine;
     const at = { x: hit.x, y: hit.y - (won ? 22 * rivalScale : 30 * heroScale) };
     const k = (ended - FIREBALL.fly) / FIREBALL.blast;
     const boom = boardFx('boom-big');
@@ -854,8 +879,8 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
   const popAt = ended === null ? 1 : Math.max(0, Math.min(1, (ended - FIREBALL.fly) / FIREBALL.blast));
   const rivalPop = ended === null ? 0 : b.online ? b.online.rivalLost ?? 0 : won ? 1 : 0;
   const minePop = !won && ended !== null ? b.last?.lost ?? 0 : 0;
-  const mine = commandersOutside?.mine ?? MINE;
-  const rival = commandersOutside?.rival ?? RIVAL;
+  const mine = commanders.mine;
+  const rival = commanders.rival;
   hearts(ctx, commandersOutsideBoard ? rival.x : rival.x + 50, commandersOutsideBoard ? rival.y - 82 * rivalScale : -TOP / 2, rivalHp(b), rivalPop, done ? popAt : 0, retro);
   hearts(ctx, mine.x, mine.y - 82 * heroScale, b.lives, minePop, done ? popAt : 0, retro);
   // Your commander's fireball in the fight: from your hero onto the enemies' thickest knot, then its blast.

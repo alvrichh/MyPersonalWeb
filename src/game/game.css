@@ -4237,6 +4237,15 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .cover-friend .friend-pic { width: 6.4cqw; height: 6.4cqw; border-width: 1px; }
 .cover-friend b { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .cover-friend .friend-dot { width: 1.8cqw; height: 1.8cqw; flex: none; }
+@media (min-width: 900px) and (orientation: landscape) {
+  .cover .cover-friend {
+    left: 5.7%; top: 12.2%; max-width: 25%; gap: clamp(6px, 0.7cqw, 12px);
+    padding: clamp(6px, 0.55cqw, 10px) clamp(10px, 0.9cqw, 16px) clamp(6px, 0.55cqw, 10px) clamp(6px, 0.55cqw, 10px);
+    font-size: clamp(14px, 1.25cqw, 22px);
+  }
+  .cover-friend .friend-pic { width: clamp(42px, 3.5cqw, 58px); height: clamp(42px, 3.5cqw, 58px); }
+  .cover-friend .friend-dot { width: clamp(7px, 0.75cqw, 11px); height: clamp(7px, 0.75cqw, 11px); }
+}
 /* Not linked: the same pill as a «+ Añadir amigo» button. */
 .cover .cover-friend.is-add { border-color: rgba(103, 232, 249, 0.5); }
 /* The plus drawn as two bars, so it sits exactly in the middle (the font's «+» sat low). */
@@ -4307,6 +4316,11 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
     background: linear-gradient(160deg, rgba(8, 18, 42, 0.88), rgba(8, 12, 28, 0.84));
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.24); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
   }
+  /* Fusion has no shop cards: keep its sell target and controls together instead of stretching an empty panel. */
+  .board-shop:has(.board-summon), .board-shop:has(.board-fighting) {
+    grid-row: 2; align-self: end; height: auto; max-height: none; overflow: visible;
+  }
+  .board-shop:has(.board-summon) .board-sellzone { flex: 0 0 54px; }
   .board-count { display: inline-block; align-self: flex-start; margin: 0; padding: 4px 8px; border-radius: 99px; background: rgba(6, 10, 24, 0.75); font: 700 0.78rem/1 var(--font); }
   .board-sellzone { flex: 1 1 auto; min-height: 0; }
   .board-cards { width: 100%; grid-template-columns: minmax(0, 1fr); gap: 7px; }
