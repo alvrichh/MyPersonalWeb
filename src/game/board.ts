@@ -195,6 +195,8 @@ export type BoardGame = {
   shop: Offer[];
   /** This round's enemy, drawn faintly on their half while you prepare. */
   wave: Tier[];
+  /** The world card each rival unit comes from, chosen from worlds 1 through this world's cast. */
+  waveCasts: number[];
   fighters: Fighter[];
   shots: Shot[];
   time: number;
@@ -275,9 +277,10 @@ export const saleOf = (p: Piece, variant: Variant = 'fusion', world = p.cast) =>
     : Math.max(1, Math.floor((TIER_VALUE[p.tier] * castPower(p.cast)) / 2));
 
 export function newBoard(world: number, casts: number, variant: Variant = 'fusion'): BoardGame {
+  const wave = enemyWave(world, 1);
   const b: BoardGame = {
     world, variant, casts: Math.max(1, Math.min(world, casts, WORLDS.length)), round: 1, lives: LIVES, gold: Math.round(8 * castPower(world)), phase: 'prep',
-    army: [], shop: [], wave: enemyWave(world, 1), fighters: [], shots: [], time: 0, last: null, wins: 0, kills: 0, events: [], event: null, skillUsed: false, strike: null, boom: null, impacts: [], effects: [], bossAttacks: [], lastMerge: null, lastSummon: null, autoMerge: false, autoBought: false, summons: 0, pending: null,
+    army: [], shop: [], wave, waveCasts: enemyWaveCasts(world, 1, wave, variant), fighters: [], shots: [], time: 0, last: null, wins: 0, kills: 0, events: [], event: null, skillUsed: false, strike: null, boom: null, impacts: [], effects: [], bossAttacks: [], lastMerge: null, lastSummon: null, autoMerge: false, autoBought: false, summons: 0, pending: null,
   };
   // You start with a bug of the latest cast on the board.
   b.army.push({ id: nextId++, tier: 0, cast: b.casts, slot: { c: 2, r: ROWS - 2 }, star: 1 });
@@ -515,13 +518,22 @@ function combatStats(tier: Tier, mult0: number, syn: number, synLv: number, even
   return { hp, maxHp: hp, dmg: st.dmg * mult * (1 + synV(f, 9) + abil(f, 'power')), rate: st.rate * (1 + synV(f, 6)) * (event === 'frenzy' ? 1.3 : 1), range: st.range, speed: st.speed, r: st.r, splash: st.splash ?? 0, ranged: !!st.ranged };
 }
 
-/** Exactly the combat numbers shown by a piece's hold-to-inspect bubble; no dice or IDs are consumed. */
+/** Exactly the combat numbers shown by a piece's inspection card; no dice or IDs are consumed. */
 export function unitStats(b: Pick<BoardGame, 'variant' | 'world' | 'event' | 'army'>, p: Piece) {
   const tac = b.variant === 'tactics';
   const lv = synergies(b).find((s) => s.cast === p.cast)?.lv ?? 0;
   const syn = tac || lv ? p.cast : 0;
   const synLv = tac ? 1 + lv : lv;
   return { ...combatStats(p.tier, unitPower(b, p.cast), syn, synLv, b.event, starOf(p), tac), syn, synLv, ability: tac ? ABILITY[p.cast] : undefined, kit: bossKit(p.cast, p.tier) };
+}
+
+/** The rival's preview numbers use the same growth and event rules as the fighters created in startFight. */
+export function waveUnitStats(b: Pick<BoardGame, 'variant' | 'world' | 'event'>, tier: Tier, cast = b.world) {
+  const tac = b.variant === 'tactics';
+  const mult = castPower(b.world) * (1 + WAVE.tough * (b.world - 1)) * (tac ? TACTICS.wave : SUMMON.wave);
+  const syn = tac ? cast : 0;
+  const synLv = tac ? 1 : 0;
+  return { ...combatStats(tier, mult, syn, synLv, b.event, 1, tac), syn, synLv, ability: tac ? ABILITY[cast] : undefined, kit: bossKit(cast, tier) };
 }
 
 function fighter(side: 0 | 1, tier: Tier, cast: number, x: number, y: number, mult0: number, id = nextId++, syn = 0, synLv = 0, event: BoardEvent | null = null, star: Star = 1, tac = false): Fighter {
@@ -558,18 +570,42 @@ export function enemyWave(world: number, round: number): Tier[] {
   return out.sort((a, c) => c - a);
 }
 
-/** Where this round's enemy stands: the small ones from the front row back, the bosses at the back in the middle. */
+function waveSeed(world: number, round: number, variant: Variant, wave: Tier[], casts: number[] = [], extra = 0) {
+  let state = 2166136261;
+  for (const n of [world, round, extra, variant === 'tactics' ? 1 : 0, ...wave, ...casts]) state = Math.imul(state ^ n, 16777619) >>> 0;
+  return state || 1;
+}
+
+/** Assign each rival card a shuffled cast from the current world and its predecessors, balanced across the wave. */
+export function enemyWaveCasts(world: number, round: number, wave: Tier[], variant: Variant) {
+  const casts = Array.from({ length: Math.max(1, Math.min(world, WORLDS.length)) }, (_, i) => i + 1);
+  const random = seeded(waveSeed(world, round, variant, wave));
+  const out: number[] = [];
+  const counts = new Map<number, number>();
+  const maxPerCast = casts.length > 1 ? Math.ceil(wave.length / casts.length) + 1 : wave.length;
+  for (let i = 0; i < wave.length; i++) {
+    const available = casts.filter((cast) => (counts.get(cast) ?? 0) < maxPerCast);
+    let cast = available[Math.floor(random() * available.length)] ?? casts[0];
+    if (casts.length > 1 && i > 0 && i === wave.length - 1 && out.every((seen) => seen === cast)) cast = casts.find((candidate) => candidate !== cast)!;
+    out.push(cast);
+    counts.set(cast, (counts.get(cast) ?? 0) + 1);
+  }
+  return out;
+}
+
+/** Where this round's enemy stands: each card gets a varied cell from the rival's half. */
 export function waveSpots(b: BoardGame) {
   const cells: Slot[] = [];
-  for (let r = HOME_ROW - 1; r >= 0; r--) for (const c of [2, 3, 1, 4, 0, 5]) if (!isCorner({ c, r })) cells.push({ c, r });
-  let i = 0;
-  let boss = 0;
-  return [...b.wave].sort((a, c) => a - c).map((tier) => {
-    if (tier >= 3) return { tier, x: BOARD_W / 2 + (boss++ ? CELL * 1.5 : 0), y: CELL * 0.8 };
-    const at = cellCentre(cells[i % cells.length]);
-    i += 1;
-    return { tier, ...at };
-  });
+  for (let r = 0; r < HOME_ROW; r++) for (let c = 0; c < COLS; c++) if (!isCorner({ c, r })) cells.push({ c, r });
+  const wave = b.wave.map((tier, i) => ({ tier, cast: b.waveCasts[i] ?? b.world })).sort((a, c) => a.tier - c.tier);
+  // Shuffle with a round-local seed so the rival uses varied cells, while previews and both online screens
+  // stay stable across frames and devices. Do not consume the fight's random stream here.
+  const random = seeded(waveSeed(b.world, b.round, b.variant, b.wave, b.waveCasts, b.online?.seed ?? 0));
+  for (let i = cells.length - 1; i > 0; i--) {
+    const j = Math.floor(random() * (i + 1));
+    [cells[i], cells[j]] = [cells[j], cells[i]];
+  }
+  return wave.map(({ tier, cast }, i) => ({ tier, cast, ...cellCentre(cells[i]) }));
 }
 
 /** Sets the fight up: your bugs as placed, the enemy's wave on the upper half. */
@@ -582,7 +618,7 @@ export function startFight(b: BoardGame) {
     ? fighter(0, p.tier, p.cast, at.x, at.y, unitPower(b, p.cast), p.id, p.cast, 1 + (lv[p.cast] ?? 0), b.event, starOf(p), true)
     : fighter(0, p.tier, p.cast, at.x, at.y, castPower(p.cast), p.id, lv[p.cast] ? p.cast : 0, lv[p.cast] ?? 0, b.event, starOf(p)); });
   const grow = castPower(b.world) * (1 + WAVE.tough * (b.world - 1)) * (b.variant === 'tactics' ? TACTICS.wave : SUMMON.wave);
-  for (const w of waveSpots(b)) b.fighters.push(tac ? fighter(1, w.tier, b.world, w.x, w.y, grow, nextId++, b.world, 1, b.event, 1, true) : fighter(1, w.tier, b.world, w.x, w.y, grow, nextId++, 0, 0, b.event));
+  for (const w of waveSpots(b)) b.fighters.push(tac ? fighter(1, w.tier, w.cast, w.x, w.y, grow, nextId++, w.cast, 1, b.event, 1, true) : fighter(1, w.tier, w.cast, w.x, w.y, grow, nextId++, 0, 0, b.event));
   b.shots = [];
   b.skillUsed = false;
   b.strike = null;
@@ -1034,6 +1070,7 @@ export function nextRound(b: BoardGame) {
   b.phase = 'prep';
   b.summons = 0;
   b.wave = b.online ? [] : enemyWave(b.world, b.round);
+  b.waveCasts = b.online ? [] : enemyWaveCasts(b.world, b.round, b.wave, b.variant);
   if (b.online) { b.online.rivalArmy = null; b.online.waiting = false; }
   rollShop(b);
 }

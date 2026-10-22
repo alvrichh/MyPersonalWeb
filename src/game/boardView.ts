@@ -9,7 +9,6 @@ import { boardFx, boardWallPieces, drawBoardBackdrop, drawBoardFigure, drawBoard
 const FIG = 1.4;
 /** Room above the board for the rival's hearts (yours float over your hero, inside the board). */
 const TOP = 16;
-const BOT = 4;
 /** The size of the heart over each commander. */
 const HEARTS = { size: 11 };
 /** How long the fireball flies, and how long its blast lasts, in seconds (main.ts waits for both). */
@@ -21,8 +20,9 @@ export type BoardLayout = { s: number; ox: number; oy: number };
 export function layoutBoard(w: number, top: number, bottom: number, arenaWidth = w): BoardLayout {
   // The commanders float over the arena, so their art must not take height away from the grid.
   const room = Math.max(120, bottom - top);
-  const s = Math.min((Math.min(w, arenaWidth) - 8) / BOARD_W, room / (BOARD_H + TOP + BOT));
-  return { s, ox: (w - BOARD_W * s) / 2, oy: top + TOP * s + (room - (BOARD_H + TOP + BOT) * s) / 2 };
+  const s = Math.min((Math.min(w, arenaWidth) - 8) / BOARD_W, room / (BOARD_H + TOP));
+  const spare = Math.max(0, room - (BOARD_H + TOP) * s);
+  return { s, ox: (w - BOARD_W * s) / 2, oy: top + spare + TOP * s };
 }
 
 /** The cell under a point on the screen, or null off the board. */
@@ -213,9 +213,9 @@ let popped: { id: number; at: number } | null = null;
     it is all done in `RIVAL_ALL`, from when the round's prep began. Only to be seen: the wave is set from the start. */
 const RIVAL_STEP = 0.8, RIVAL_ALL = 14, RIVAL_WAIT = 0.6, RIVAL_DRAG = 0.7;
 let rival = { key: '', start: 0, seen: [] as number[] };
-type RivalDrag = { tier: number; x: number; y: number };
-function rivalShown(b: BoardGame, spots: { tier: number; x: number; y: number }[], now: number) {
-  const key = `${b.world}:${b.round}:${b.lives}:${b.wave.join(',')}`;
+type RivalDrag = { tier: number; cast: number; x: number; y: number };
+function rivalShown(b: BoardGame, spots: { tier: number; cast: number; x: number; y: number }[], now: number) {
+  const key = `${b.world}:${b.round}:${b.lives}:${b.wave.join(',')}:${b.waveCasts.join(',')}`;
   if (rival.key !== key) rival = { key, start: now, seen: spots.map(() => -1) };
   const order: [number, number][] = [];
   const top = Math.max(0, ...spots.map((w) => w.tier));
@@ -232,7 +232,7 @@ function rivalShown(b: BoardGame, spots: { tier: number; x: number; y: number }[
     const from = cellCentre({ c: (k * 2 + 1) % COLS, r: 0 });
     const e = into / RIVAL_DRAG;
     const ease = e < 0.5 ? 2 * e * e : 1 - (-2 * e + 2) ** 2 / 2;
-    drag = { tier: lv - 1, x: from.x + (spots[i].x - from.x) * ease, y: from.y + (spots[i].y - from.y) * ease - Math.sin(e * Math.PI) * 14 };
+    drag = { tier: lv - 1, cast: spots[i].cast, x: from.x + (spots[i].x - from.x) * ease, y: from.y + (spots[i].y - from.y) * ease - Math.sin(e * Math.PI) * 14 };
   }
   shown.forEach((lv, i) => {
     if (lv > rival.seen[i]) { puffs.push({ x: spots[i].x, y: spots[i].y, at: now }); rival.seen[i] = lv; }
@@ -308,7 +308,6 @@ function enemyBase(ctx: CanvasRenderingContext2D, r: number) {
 }
 
 /** Star upgrades grow the figure gently; rarity still colours the ring under its feet. */
-export const STAR_BORDER = ['', '#e2e8f0', '#fbbf24', '#c6f2ff'];
 const STAR_SCALE = [1, 1.1, 1.23];
 export const RARITY_COLOUR = ['#94a3b8', '#38bdf8', '#c084fc', '#fb923c', '#f87171'];
 export const boardStarScale = (star: number | undefined) => STAR_SCALE[Math.max(0, Math.min(2, (star ?? 1) - 1))];
@@ -739,7 +738,7 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
       ctx.translate(w.x, w.y);
       ctx.globalAlpha = 0.5 + Math.sin(now * 2.5) * 0.08;
       enemyBase(ctx, TIER_STATS[tier].r);
-      drawEnemyFigure(ctx, figureOf(tier as Tier, b.world, -1, 0, 0, 0), now, retro);
+      drawEnemyFigure(ctx, figureOf(tier as Tier, w.cast, -1, 0, 0, 0), now, retro);
       ctx.restore();
     });
     if (twin) {
@@ -747,7 +746,7 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
       ctx.translate(twin.x, twin.y);
       ctx.globalAlpha = 0.75;
       ctx.scale(1.12, 1.12);
-      drawEnemyFigure(ctx, figureOf(twin.tier as Tier, b.world, -1, 0, 0, 0), now, retro);
+      drawEnemyFigure(ctx, figureOf(twin.tier as Tier, twin.cast, -1, 0, 0, 0), now, retro);
       ctx.restore();
     }
     const pieces = [...b.army].sort((p, q) => p.slot.r - q.slot.r);
@@ -759,7 +758,7 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
       ring(ctx, TIER_STATS[p.tier].r, tactics ? RARITY_COLOUR[p.tier] : '#38bdf8');
       const pop = popScale(p.id, now) * (tactics ? boardStarScale(p.star) : 1);
       ctx.scale(FIG * pop, FIG * pop);
-      drawBoardFigure(ctx, figureOf(p.tier, p.cast, 1, 0, 0, 0), now, retro, STAR_BORDER[(p.star ?? 1) - 1] || null);
+      drawBoardFigure(ctx, figureOf(p.tier, p.cast, 1, 0, 0, 0), now, retro);
       ctx.restore();
       marks(ctx, c.x, c.y + CELL * 0.42, p, tactics, retro, now);
     }
@@ -782,7 +781,7 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
       } else if (f.side === 1) enemyBase(ctx, f.r);
       else ring(ctx, f.r, tactics ? RARITY_COLOUR[f.tier] : colour);
       if (f.side === 1) drawEnemyFigure(ctx, figureOf(f.tier, f.cast, f.face, f.step, f.swing, f.hit, move), now, retro, tactics ? f.star : 1);
-      else { const k = FIG * (tactics ? boardStarScale(f.star) : 1); ctx.scale(k, k); drawBoardFigure(ctx, figureOf(f.tier, f.cast, f.face, f.step, f.swing, f.hit, move), now, retro, tactics ? STAR_BORDER[f.star - 1] || null : null); }
+      else { const k = FIG * (tactics ? boardStarScale(f.star) : 1); ctx.scale(k, k); drawBoardFigure(ctx, figureOf(f.tier, f.cast, f.face, f.step, f.swing, f.hit, move), now, retro); }
       ctx.restore();
       const w = Math.max(22, f.r * 2);
       const headY = f.y - lift + boardUnitBounds({ tier: f.tier, star: tactics ? f.star : 1 }).y;
@@ -792,6 +791,8 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
       ctx.fillStyle = f.side === 0 ? '#4ade80' : '#f87171';
       ctx.fillRect(f.x - w / 2, y, (w * Math.max(0, f.hp)) / f.maxHp, 4);
       drawFighterBonuses(ctx, f, now, retro, y);
+      // Keep Tactics' metal star marks visible over every unit during the fight. The top-row marks stay inside the board.
+      if (tactics) drawStars(ctx, f.x, Math.max(headY - 32, 12), f.star, now, retro);
     }
     for (const s of b.shots) {
       if (s.delay && s.delay > 0) continue;
@@ -942,7 +943,7 @@ export function drawBoardDrag(ctx: CanvasRenderingContext2D, lay: BoardLayout, d
   const k = FIG * 1.12 * (tactics ? boardStarScale(drag.piece.star) : 1);
   ctx.save();
   ctx.scale(k, k);
-  drawBoardFigure(ctx, figureOf(drag.piece.tier, drag.piece.cast, 1, 0, 0, 0), now, retro, tactics ? STAR_BORDER[(drag.piece.star ?? 1) - 1] || null : null);
+  drawBoardFigure(ctx, figureOf(drag.piece.tier, drag.piece.cast, 1, 0, 0, 0), now, retro);
   ctx.restore();
   if (tactics) drawStars(ctx, 0, boardUnitBounds(drag.piece).y * 1.12 - 9, drag.piece.star, now, retro);
 }

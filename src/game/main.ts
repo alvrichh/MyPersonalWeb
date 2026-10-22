@@ -8,9 +8,9 @@ import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPr
 import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
 import { MID_ART, boardBackdropBounds, draw, drawRetroFigure, preloadCast, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, NET_ID, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, SKIN_GATE, skinOpen, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
-import { ABILITY, ABIL_V, CELL, FINAL_ID, HOME_ROW, ROUNDS, SYNERGY, TACTICS, armyCap, toggleAutoMerge, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, startOnlineFight, unitStats, updateBoard, type BoardGame, type Online, type Piece, type Variant } from './board';
+import { ABILITY, ABIL_V, CELL, FINAL_ID, HOME_ROW, ROUNDS, SYNERGY, TACTICS, armyCap, toggleAutoMerge, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, startOnlineFight, unitStats, updateBoard, waveSpots, waveUnitStats, type BoardGame, type Online, type Piece, type Variant } from './board';
 import { cleanCode, dial, hostGame, joinGame, leave as netLeave, presence, presenceOn, presenceReady, send as netSend, type NetHandlers, type NetMsg, type NetProfile, type NetState, type Together } from './net';
-import { ABILITY_ICON, ABILITY_PIC, SYNERGY_PIC, FIREBALL, boardMerged, drawBoard, mirrorFight, drawBoardDrag, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
+import { ABILITY_ICON, ABILITY_PIC, SYNERGY_PIC, FIREBALL, boardMerged, boardUnitBounds, drawBoard, mirrorFight, drawBoardDrag, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
 import type { Enemy } from './world';
 import { ARMOUR_SLOTS, ARSENAL, ITEMS, itemLevel, type SpiritSkin, UPGRADES, WEAPON_SLOTS, EXTRA_SLOT_PRICE, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
 import { Scene } from './scene';
@@ -1678,11 +1678,16 @@ const boardFloat = $<HTMLCanvasElement>('boardFloat');
 const floatCtx = boardFloat.getContext('2d') as CanvasRenderingContext2D;
 let board: BoardGame | null = null;
 let boardDrag: BoardDrag | null = null;
-let boardDown: { x: number; y: number; id: number; piece: Piece; moved: boolean; held: boolean; timer: number } | null = null;
-/** Keep the timer's mutation outside TypeScript's literal-false narrowing of the freshly-created press state. */
+type BoardInspection = { piece: Piece; stats?: ReturnType<typeof unitStats>; enemy: boolean };
+let boardDown: { x: number; y: number; id: number; piece: Piece | null; inspection: BoardInspection | null; moved: boolean } | null = null;
+/** The shop card's long press opens its own stats card instead of buying on release. */
 function markBoardPressHeld(down: { held: boolean }) { down.held = true; }
 let boardLay: BoardLayout = { s: 1, ox: 0, oy: 0 };
 const boardTooltip = $<HTMLElement>('boardTooltip');
+window.addEventListener('pointerdown', (event) => {
+  if (boardTooltip.hidden || boardTooltip.contains(event.target as Node)) return;
+  hideBoardTooltip();
+}, { capture: true });
 let boardKey = '';
 let boardShopPopSlot = -1;
 let boardShopPopSerial = 0;
@@ -2134,7 +2139,7 @@ function startBoard(world: number, net?: { variant: Variant; online: Online }) {
   closeGearPanel();
   hide();
   board = newBoard(world, save.boardUnlocked, net?.variant ?? save.boardVariant);
-  if (net) { board.online = net.online; board.wave = []; }
+  if (net) { board.online = net.online; board.wave = []; board.waveCasts = []; }
   rivalReady = null;
   sentArmy = null;
   const key = heroKey(save.skin, save.equipped.head);
@@ -2209,8 +2214,7 @@ const boardPic = (tier: number, cast: number) => {
   return boss ? `./images/game/bosses/${boss}-0.webp` : `./images/game/enemies/${castLook(cast)}-${TIER_KIND[tier]}-0.webp`;
 };
 const boardTierName = (tier: number) => t(`boardTier${tier}` as Key);
-function boardTooltipHtml(b: BoardGame, piece: Piece) {
-  const stats = unitStats(b, piece);
+function boardTooltipHtml(b: BoardGame, piece: Piece, stats = unitStats(b, piece), enemy = false) {
   const locale = lang === 'es' ? 'es-ES' : 'en-US';
   const number = (value: number) => Math.round(value).toLocaleString(locale);
   const rate = stats.rate.toLocaleString(locale, { maximumFractionDigits: 1 });
@@ -2219,7 +2223,7 @@ function boardTooltipHtml(b: BoardGame, piece: Piece) {
     const level = Math.max(0, Math.min(2, stats.synLv - 1));
     const percent = bonusPercent(ABIL_V[stats.ability][level]);
     details.push(`<section><b>${t(`boardAbil${cap(stats.ability)}` as Key)}</b><p>${t(`boardAbil${cap(stats.ability)}Text` as Key, { n: percent })}</p></section>`);
-  } else if (b.variant === 'fusion') {
+  } else if (b.variant === 'fusion' && !enemy) {
     const synergy = synergies(b).find((x) => x.cast === piece.cast);
     if (synergy?.lv) {
       const percent = bonusPercent(SYNERGY.v[piece.cast][synergy.lv - 1]);
@@ -2244,8 +2248,8 @@ function boardTooltipHtml(b: BoardGame, piece: Piece) {
       <div><small>${t('boardStatSpeed')}</small><b>${number(stats.speed)}</b></div>${splash}
     </div><div class="board-tip-details">${details.join('')}</div>`;
 }
-function showBoardTooltip(b: BoardGame, piece: Piece, x: number, y: number) {
-  boardTooltip.innerHTML = boardTooltipHtml(b, piece);
+function showBoardTooltip(b: BoardGame, piece: Piece, x: number, y: number, stats?: ReturnType<typeof unitStats>, enemy = false) {
+  boardTooltip.innerHTML = boardTooltipHtml(b, piece, stats ?? unitStats(b, piece), enemy);
   boardTooltip.hidden = false;
   const box = boardTooltip.getBoundingClientRect();
   const left = Math.max(8, Math.min(x + 14, window.innerWidth - box.width - 8));
@@ -2451,7 +2455,6 @@ window.addEventListener('pointerup', (event) => {
 });
 window.addEventListener('pointercancel', (event) => cancelBoardPointer(event));
 function clearBoardInteraction() {
-  if (boardDown) window.clearTimeout(boardDown.timer);
   if (cardDown) window.clearTimeout(cardDown.timer);
   boardDown = null; cardDown = null; boardDrag = null; cardClickBlockUntil = 0;
   boardUi.classList.remove('is-dragging', 'is-selling');
@@ -2459,7 +2462,7 @@ function clearBoardInteraction() {
   hideBoardTooltip();
 }
 function cancelBoardPointer(event: PointerEvent) {
-  if (boardDown?.id === event.pointerId) { window.clearTimeout(boardDown.timer); boardDown = null; boardDrag = null; }
+  if (boardDown?.id === event.pointerId) { boardDown = null; boardDrag = null; }
   if (cardDown?.id === event.pointerId) { window.clearTimeout(cardDown.timer); cardDown = null; boardDrag = null; }
   boardUi.classList.remove('is-dragging', 'is-selling');
   hideBoardTooltip();
@@ -2658,14 +2661,14 @@ function boardStep(dt: number, now: number) {
   const rect = canvas.getBoundingClientRect();
   const top = boardTop.getBoundingClientRect().bottom - rect.top + 6;
   const wide = window.matchMedia('(min-width: 900px) and (orientation: landscape)').matches;
-  const bottom = wide ? canvas.clientHeight - 8 : boardShop.getBoundingClientRect().top - rect.top - 6;
+  const bottom = wide ? canvas.clientHeight - 8 : boardShop.getBoundingClientRect().top - rect.top;
   // The cards sit over the arena's lower edge. Fit its art first, then keep the grid inside its walls.
   const acts = boardShop.querySelector('.board-acts, .board-fighting')?.getBoundingClientRect();
   const floor = { top: top - 6, bottom: (acts ? acts.top : boardShop.getBoundingClientRect().bottom) - rect.top - 4 };
   const shopWidth = wide ? Math.min(330, Math.max(280, canvas.clientWidth * 0.25)) : 0;
   const fieldWidth = canvas.clientWidth - shopWidth;
   const arena = boardBackdropBounds(b.world, fieldWidth, floor.top, floor.bottom);
-  boardLay = layoutBoard(fieldWidth, Math.max(top, arena.y + arena.h * 0.04), Math.min(bottom, arena.y + arena.h * 0.96), arena.w * 0.96);
+  boardLay = layoutBoard(fieldWidth, Math.max(top, arena.y + arena.h * 0.04), bottom, arena.w * 0.96);
   // Bonuses overlay the board on mobile so they do not steal width; on desktop they sit just outside its left edge.
   const wallTop = rect.top + boardLay.oy + (HOME_ROW * CELL - 4) * boardLay.s;
   const sideHeight = `${Math.max(43, wallTop - rect.top - top - 12)}px`;
@@ -2696,23 +2699,45 @@ function boardStep(dt: number, now: number) {
   }
 }
 
-/* Dragging units about while you prepare: onto a cell to move it, onto one of its kind to merge them, onto the
-   shop to sell it; a tap says what it is. Only your half, the lower five rows, takes them. */
+/* A tap inspects any unit; during preparation your own units can still be dragged, merged and sold. */
 function boardPointerDown(event: PointerEvent) {
   const b = board;
-  if (!b || b.phase !== 'prep' || boardDown || cardDown) return;
+  if (!b || boardDown || cardDown) return;
   const rect = canvas.getBoundingClientRect();
   const x = event.clientX - rect.left;
   const y = event.clientY - rect.top;
-  const slot = slotAt(boardLay, x, y);
-  const piece = slot ? pieceAt(b, slot) : undefined;
-  if (!piece) return;
-  const down = boardDown = { x, y, id: event.pointerId, piece, moved: false, held: false, timer: 0 };
-  down.timer = window.setTimeout(() => {
-    if (boardDown !== down || down.moved || board !== b || b.phase !== 'prep') return;
-    markBoardPressHeld(down);
-    showBoardTooltip(b, piece, event.clientX, event.clientY);
-  }, 520);
+  const bx = (x - boardLay.ox) / boardLay.s;
+  const by = (y - boardLay.oy) / boardLay.s;
+  let piece: Piece | null = null;
+  let inspection: BoardInspection | null = null;
+  if (b.phase === 'prep') {
+    const slot = slotAt(boardLay, x, y);
+    piece = (slot && pieceAt(b, slot)) || null;
+    if (piece) inspection = { piece, enemy: false };
+    else {
+      const spot = waveSpots(b).map((enemy) => ({ enemy, bounds: boardUnitBounds({ tier: enemy.tier }) }))
+        .filter(({ enemy, bounds }) => bx >= enemy.x + bounds.x - 8 && bx <= enemy.x + bounds.x + bounds.w + 8 && by >= enemy.y + bounds.y - 8 && by <= enemy.y + bounds.y + bounds.h + 8)
+        .sort((a, c) => Math.hypot(bx - a.enemy.x, by - a.enemy.y) - Math.hypot(bx - c.enemy.x, by - c.enemy.y))[0]?.enemy;
+      if (spot) {
+        const rivalPiece: Piece = { id: -1, tier: spot.tier, cast: spot.cast, slot: { c: -1, r: -1 }, star: 1 };
+        inspection = { piece: rivalPiece, stats: waveUnitStats(b, spot.tier, spot.cast), enemy: true };
+      }
+    }
+  } else if (b.phase === 'fight') {
+    const seen = b.online?.me === 1 ? mirrorFight(b) : b;
+    const target = seen.fighters.filter((fighter) => !fighter.dead)
+      .map((fighter) => ({ fighter, bounds: boardUnitBounds({ tier: fighter.tier, star: b.variant === 'tactics' ? fighter.star : 1 }) }))
+      .filter(({ fighter, bounds }) => bx >= fighter.x + bounds.x - 10 && bx <= fighter.x + bounds.x + bounds.w + 10 && by >= fighter.y + bounds.y - 10 && by <= fighter.y + bounds.y + bounds.h + 10)
+      .sort((a, c) => Math.hypot(bx - a.fighter.x, by - a.fighter.y) - Math.hypot(bx - c.fighter.x, by - c.fighter.y))[0]?.fighter;
+    if (target) {
+      const fighterPiece: Piece = { id: target.id, tier: target.tier, cast: target.cast, slot: { c: -1, r: -1 }, star: target.star };
+      const base = target.side === 1 ? waveUnitStats(b, target.tier, target.cast) : unitStats(b, fighterPiece);
+      const stats = { ...base, hp: target.hp, maxHp: target.maxHp, dmg: target.dmg, rate: target.rate, range: target.range, speed: target.speed, r: target.r, splash: target.splash, ranged: target.ranged, syn: target.syn, synLv: target.synLv, ability: target.tac ? ABILITY[target.cast] : undefined };
+      inspection = { piece: fighterPiece, stats, enemy: target.side === 1 };
+    }
+  }
+  if (!piece && !inspection) return;
+  boardDown = { x, y, id: event.pointerId, piece, inspection, moved: false };
   canvas.setPointerCapture(event.pointerId);
 }
 /** Where the sell zone starts: the shop's cards, or Fusion's strip above its buttons (and the buttons below it). */
@@ -2725,10 +2750,13 @@ function boardPointerMove(event: PointerEvent) {
   const rect = canvas.getBoundingClientRect();
   const x = event.clientX - rect.left;
   const y = event.clientY - rect.top;
+  if (!down.piece) {
+    if (!down.moved && Math.hypot(x - down.x, y - down.y) >= 10) down.moved = true;
+    return;
+  }
   if (!down.moved && Math.hypot(x - down.x, y - down.y) < 10) return;
   if (!down.moved) {
     down.moved = true;
-    window.clearTimeout(down.timer);
     hideBoardTooltip();
     boardDrag = { piece: down.piece, x, y, over: slotAt(boardLay, x, y) };
   }
@@ -2752,16 +2780,17 @@ function boardPointerUp(event: PointerEvent) {
   const b = board;
   const down = boardDown;
   if (!down || event.pointerId !== down.id) return;
-  window.clearTimeout(down.timer);
   boardDrag = null;
   boardDown = null;
-  hideBoardTooltip();
   boardUi.classList.remove('is-dragging', 'is-selling');
-  const drag = down.moved ? { piece: down.piece, over: slotAt(boardLay, event.clientX - canvas.getBoundingClientRect().left, event.clientY - canvas.getBoundingClientRect().top) } : null;
-  if (!b || !drag) {
-    if (b && !down.held) flash(`${boardTierName(down.piece.tier)}${b.variant === 'tactics' ? ` ${'★'.repeat(down.piece.star ?? 1)} · ${t(`boardRarity${down.piece.tier}` as Key)}` : ''} · ${worldName(down.piece.cast)} · ◉ ${saleOf(down.piece, b.variant, b.world)}`);
+  if (!b) { hideBoardTooltip(); return; }
+  if (!down.moved) {
+    if (down.inspection) showBoardTooltip(b, down.inspection.piece, event.clientX, event.clientY, down.inspection.stats, down.inspection.enemy);
     return;
   }
+  if (!down.piece) return;
+  hideBoardTooltip();
+  const drag = { piece: down.piece, over: slotAt(boardLay, event.clientX - canvas.getBoundingClientRect().left, event.clientY - canvas.getBoundingClientRect().top) };
   const from = drag.piece.slot;
   // Dropped on the shop: sold, for half what it is worth.
   if (event.clientY >= sellTop()) {
