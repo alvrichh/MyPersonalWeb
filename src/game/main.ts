@@ -6,7 +6,7 @@ import { configurePayments, payments } from './payments';
 import { COIN_PACKS, currentOffer, grant, packBonus, SKIN_OFFERS, type CoinPack, type SkinOffer } from './store';
 import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPrize, type DailyResult } from './daily';
 import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
-import { MID_ART, boardBackdropBounds, draw, drawRetroFigure, preloadCast, preloadFx, type Palette, type View } from './draw';
+import { MID_ART, boardBackdropBounds, draw, drawRetroFigure, preloadBoardBossFx, preloadCast, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, NET_ID, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, SKIN_GATE, skinOpen, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
 import { ABILITY, ABIL_V, CELL, FINAL_ID, HOME_ROW, ROUNDS, SYNERGY, TACTICS, armyCap, toggleAutoMerge, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, startOnlineFight, unitStats, updateBoard, waveSpots, waveUnitStats, type BoardGame, type Online, type Piece, type Variant } from './board';
 import { cleanCode, dial, hostGame, joinGame, leave as netLeave, presence, presenceOn, presenceReady, send as netSend, type NetHandlers, type NetMsg, type NetProfile, type NetState, type Together } from './net';
@@ -2129,6 +2129,7 @@ function friendGone() {
   if (onCover()) menuScreen();
 }
 function startBoard(world: number, net?: { variant: Variant; online: Online }) {
+  preloadBoardBossFx();
   clearBoardInteraction();
   game = null;
   paused = false;
@@ -2214,6 +2215,35 @@ const boardPic = (tier: number, cast: number) => {
   return boss ? `./images/game/bosses/${boss}-0.webp` : `./images/game/enemies/${castLook(cast)}-${TIER_KIND[tier]}-0.webp`;
 };
 const boardTierName = (tier: number) => t(`boardTier${tier}` as Key);
+const BOARD_CARD_NAMES: Record<number, [Key, Key, Key]> = {
+  1: ['boardCard1Bug', 'boardCard1Ticket', 'boardCard1Legacy'],
+  2: ['boardCard2Bug', 'boardCard2Ticket', 'boardCard2Legacy'],
+  3: ['boardCard3Bug', 'boardCard3Ticket', 'boardCard3Legacy'],
+  4: ['boardCard4Bug', 'boardCard4Ticket', 'boardCard4Legacy'],
+  5: ['boardCard5Bug', 'boardCard5Ticket', 'boardCard5Legacy'],
+  6: ['boardCard6Bug', 'boardCard6Ticket', 'boardCard6Legacy'],
+  7: ['boardCard7Bug', 'boardCard7Ticket', 'boardCard7Legacy'],
+  8: ['boardCard8Bug', 'boardCard8Ticket', 'boardCard8Legacy'],
+  9: ['boardCard9Bug', 'boardCard9Ticket', 'boardCard9Legacy'],
+};
+const BOARD_SUBBOSS_NAMES: Record<number, Key> = {
+  1: 'bossOriginal', 2: 'bossDemon', 3: 'bossViking', 4: 'bossMud', 5: 'bossJungle',
+  6: 'bossGreek', 7: 'bossRobot', 8: 'bossNightmare', 9: 'bossCore',
+};
+const BOARD_FINAL_NAMES: Record<number, Key> = {
+  1: 'finalKernel', 2: 'finalArchdemon', 3: 'finalDrakkar', 4: 'finalMedusa', 5: 'finalQueen',
+  6: 'finalZeus', 7: 'finalMech', 8: 'finalWraith', 9: 'finalChimera',
+};
+function boardCharacterName(tier: number, cast: number) {
+  if (tier < 3) {
+    const names = BOARD_CARD_NAMES[cast];
+    if (names) return t(names[tier] ?? names[0]);
+  }
+  if (tier === 3 && BOARD_SUBBOSS_NAMES[cast]) return t(BOARD_SUBBOSS_NAMES[cast]);
+  if (cast === 3 && tier >= 5) return t('finalValdur');
+  if (cast === 4 && tier >= 5) return t('boardAwakenedMedusa');
+  return BOARD_FINAL_NAMES[cast] ? t(BOARD_FINAL_NAMES[cast]) : boardTierName(tier);
+}
 function boardTooltipHtml(b: BoardGame, piece: Piece, stats = unitStats(b, piece), enemy = false) {
   const locale = lang === 'es' ? 'es-ES' : 'en-US';
   const number = (value: number) => Math.round(value).toLocaleString(locale);
@@ -2238,7 +2268,8 @@ function boardTooltipHtml(b: BoardGame, piece: Piece, stats = unitStats(b, piece
 
   const rarity = b.variant === 'tactics' ? `<small>${t(`boardRarity${piece.tier}` as Key)} · ${'★'.repeat(piece.star ?? 1)}</small>` : '';
   const splash = stats.splash ? `<div><small>${t('boardStatSplash')}</small><b>${(stats.splash / CELL).toLocaleString(locale, { maximumFractionDigits: 1 })} ${t('boardStatTiles')}</b></div>` : '';
-  return `<div class="board-tip-head"><img src="${boardPic(piece.tier, piece.cast)}" alt=""><span><b>${boardTierName(piece.tier)}</b><small>${worldName(piece.cast)}${rarity ? ` · ${rarity}` : ''}</small></span></div>
+  const characterName = boardCharacterName(piece.tier, piece.cast);
+  return `<div class="board-tip-head"><img src="${boardPic(piece.tier, piece.cast)}" alt=""><span><b>${characterName}</b><small>${worldName(piece.cast)}${rarity ? ` · ${rarity}` : ''}</small></span></div>
     <div class="board-tip-stats">
       <div><small>${t('boardStatHealth')}</small><b>${number(stats.maxHp)}</b></div>
       <div><small>${t('boardStatDamage')}</small><b>${number(stats.dmg)}</b></div>
@@ -2372,7 +2403,7 @@ function renderBoardUi() {
   // Fusion has no cards: «Summon» drops a unit straight onto the board; the cards are Tactics' only.
   const fusion = b.variant === 'fusion';
   const cards = b.shop.map((o, i) => o
-    ? `<button class="board-card${b.variant === 'tactics' ? ` is-r${o.tier}${starsUp(o) ? ' is-up' : ''}` : ''}${o.tier >= 3 ? ' is-boss' : ''}" type="button" data-bact="buy" data-i="${i}"${!prep ? ' disabled' : b.gold < o.price ? ' aria-disabled="true"' : ''}><i class="board-cast">${b.variant === 'tactics' ? boardCastIcon(o.cast) : t('worldShort', { n: o.cast })}</i><img src="${boardPic(o.tier, o.cast)}" alt="">${b.variant === 'tactics' && starsUp(o) ? '<em class="board-up">★↑</em>' : ''}<b>${boardTierName(o.tier)}</b><span class="board-price">${coin} ${o.price}</span></button>`
+    ? `<button class="board-card${b.variant === 'tactics' ? ` is-r${o.tier}${starsUp(o) ? ' is-up' : ''}` : ''}${o.tier >= 3 ? ' is-boss' : ''}" type="button" data-bact="buy" data-i="${i}"${!prep ? ' disabled' : b.gold < o.price ? ' aria-disabled="true"' : ''}><i class="board-cast">${b.variant === 'tactics' ? boardCastIcon(o.cast) : t('worldShort', { n: o.cast })}</i><img src="${boardPic(o.tier, o.cast)}" alt="">${b.variant === 'tactics' && starsUp(o) ? '<em class="board-up">★↑</em>' : ''}<b>${boardCharacterName(o.tier, o.cast)}</b><span class="board-price">${coin} ${o.price}</span></button>`
     : '<span class="board-card is-sold"></span>').join('');
   // The round's event and each world's synergy, a column of medallions by the board edge; a tap lists their effects.
   const bonus = boardBonuses(b);
@@ -2610,6 +2641,7 @@ function boardStep(dt: number, now: number) {
     boardTime += dt;
     // At ×2 the fight takes two steps a frame (the same steps, so it plays out the same, only faster).
     let hit = false;
+    let bossCue = false;
     // Against a person the fight goes in fixed steps of 1/60 s, so it plays out the same on both phones whatever
     // their frame rates.
     const fixed = !!b.online;
@@ -2623,7 +2655,10 @@ function boardStep(dt: number, now: number) {
         if (e === 'kill') audio.play('kill');
         if (e === 'throw') audio.play('shoot');
         if (e === 'ring') audio.play('boom');
-        if (e === 'leap' || e === 'charge') audio.play('boss');
+        if ((e === 'leap' || e === 'charge' || e === 'boss-move' || e === 'boss-signature') && !bossCue) {
+          bossCue = true;
+          audio.play('boss');
+        }
         if (e === 'land') audio.play('slam');
       }
     }

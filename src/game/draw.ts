@@ -69,8 +69,6 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   drawParticles(ctx, g, true);
   drawShots(ctx, g, accent, accent2);
   drawFireballs(ctx, g);
-  // With the Phoenix wings on, the spirits go over them (drawn after the hero below).
-  if (!g.loadout.wings || pal.retro) drawSpirits(ctx, g, now);
   drawZaps(ctx, g);
   if (g.skills.blades) drawBlades(ctx, g, accent);
   if (g.skills.frost) drawFrostTop(ctx, g, now);
@@ -80,17 +78,20 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   drawThreats(ctx, g, now, true);
   drawOrbs(ctx, g);
   for (const e of g.enemies) if (overShots(e) && onScreen(e, 120)) drawEnemy(ctx, e, now);
-  if (pal.retro) drawPlayerRetro(ctx, g, pal, now);
+  if (pal.retro) {
+    drawSpirits(ctx, g, now);
+    drawPlayerRetro(ctx, g, pal, now);
+  }
   else {
     // The firebird rises from behind the hero.
     for (const f of g.fx) if (f.kind === 'phoenix') drawPhoenixRise(ctx, f, g.time, 'over');
     if (g.loadout.wings) drawHeroWings(ctx, g, pal, now, false);
+    drawSpirits(ctx, g, now);
     drawPlayer(ctx, g, pal, now);
     drawSafeBubble(ctx, g, now);
     drawGaze(ctx, g, now);
     if (g.loadout.wings) {
       drawHeroWings(ctx, g, pal, now, true);
-      drawSpirits(ctx, g, now);
     }
   }
   drawFx(ctx, g, accent, 'over');
@@ -2266,12 +2267,22 @@ function fxImage(name: string) {
   return img;
 }
 const ready = (img: HTMLImageElement) => img.complete && img.naturalWidth > 0;
+const BOARD_BOSS_FX = ['glitch-0', 'glitch-1', 'glitch-2', 'glitch-3', 'mudball', 'mud-splat', 'medusa-bolt', 'medusa-bolt-2', 'medusa-burst', 'medusa-burst-2', 'ember-purple', 'venom', 'impact', 'boom-big', 'shock-ring', 'slam', 'ice-block', 'spectral-bolt', 'laser-red', 'vine-row-0', 'wave-strip-0', 'bolt-6', 'fireball', 'rocket', 'rocket-shark', 'durian', 'tornado-0'];
+const BOARD_BOSS_ARROWS = ['water', 'water-trail', 'leaf', 'leaf-trail', 'ghost', 'ghost-trail', 'spark', 'spark-trail', 'bolt'];
+/** Warm the native boss moves' projectiles and impact art before a Board fight starts. */
+export function preloadBoardBossFx() {
+  for (const name of BOARD_BOSS_FX) fxImage(name);
+  for (const name of BOARD_BOSS_ARROWS) arrowImage(name);
+}
 /** Warm the effect pictures up when a run starts, so the first swing and strike are already painted. */
 export function preloadFx() {
   for (const n of ['fireball', 'boom-small', 'boom-big', 'knife', 'boomerang', 'slash', 'chest', 'slam', 'crystals', 'gem', 'gem-big', 'bolt-1', 'bolt-2', 'bolt-3', 'bolt-4', 'bolt-5', 'bolt-6', 'bolt-y-1', 'bolt-y-2', 'bolt-y-3', 'bolt-y-4', 'bolt-y-5', 'bolt-y-6',
     'brick', 'iron', 'molotov', 'barrel', 'durian', 'durian-big', 'drill', 'drill-evo', 'rocket', 'rocket-shark', 'ball', 'ball-evo', 'phoenix-0', 'phoenix-1', 'phoenix-2', 'phoenix-3', 'wings-0', 'wings-1', 'wings-2',
     'fire-pool', 'fire-pool-big', 'caltrops', 'mine', 'mine-on', 'mine-volt', 'volt-burst', 'impact', 'heart', 'rune', 'crescent',
-    'steam-cloud', 'plasma-burst', 'segfault', 'crit-spark', 'lag-trail', 'safe-bubble', 'nova-burst', 'wisp-flame', 'shock-ring', 'ice-block', 'spectral-bolt', 'laser-yellow', 'laser-orange', 'laser-red', 'laser-purple', 'drakkar-wreck', 'vine-row-0', 'vine-row-1', 'wave-strip-0', 'wave-strip-1', 'wave-strip-2', ...Array.from({ length: 7 }, (_, i) => `tornado-${i}`), 'vortex-0', 'vortex-1']) fxImage(n);
+    'steam-cloud', 'plasma-burst', 'segfault', 'crit-spark', 'lag-trail', 'safe-bubble', 'nova-burst', 'wisp-flame', 'shock-ring', 'ice-block', 'spectral-bolt', 'laser-yellow', 'laser-orange', 'laser-red', 'laser-purple', 'drakkar-wreck', 'vine-row-0', 'vine-row-1', 'wave-strip-0', 'wave-strip-1', 'wave-strip-2',
+    ...BOARD_BOSS_FX, ...Array.from({ length: 7 }, (_, i) => `tornado-${i}`), 'vortex-0', 'vortex-1']) fxImage(n);
+  // Boss shots in Board also use the arrow art and its trails; warm both before their first attack.
+  for (const n of BOARD_BOSS_ARROWS) arrowImage(n);
 }
 
 function drawFireballs(ctx: CanvasRenderingContext2D, g: Game) {
