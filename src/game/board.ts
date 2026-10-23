@@ -924,7 +924,7 @@ function bossMoves(b: BoardGame, f: Fighter, dt: number, slowK: number) {
     attack.age = -plan.hold;
     b.bossAttacks.push(attack);
   }
-  for (const shot of plan.shots) b.shots.push({ ...shot, delay: plan.hold });
+  for (const shot of plan.shots) b.shots.push({ ...shot, delay: plan.hold + (shot.delay ?? 0) });
 
   if (plan.action?.kind === 'leap') {
     f.leap = { t: 0, fx: f.x, fy: f.y, tx: plan.action.x, ty: plan.action.y };
