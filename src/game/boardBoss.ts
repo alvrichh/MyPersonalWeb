@@ -120,7 +120,8 @@ export function planBossCast(f: Source, foes: Foe[], signature: boolean, width: 
       for (let i = 0; i < 3; i++) attack(sorted[i % sorted.length], { warn: 0.85 + i * 0.12, life: 0.55, r: 32, el: 'arcane', pic: 'medusa', asset: f.tier >= 5 ? 'medusa-burst-2' : 'medusa-burst', freeze: 0.4 });
       break;
     case 'roots':
-      for (const off of [-0.38, 0, 0.38]) attack(f, { kind: 'line', a: a + off, len: 190, r: 13, warn: 0.8, life: 0.6, pic: 'leaf', asset: 'vine-row-0', slow: 0.35 });
+      for (const [i, off] of (f.tier >= 5 ? [-0.6, -0.3, 0, 0.3, 0.6] : [-0.38, 0, 0.38]).entries())
+        attack(f, { kind: 'line', a: a + off, len: 190, r: 13, warn: 0.8 + i * 0.12, life: 0.6, pic: 'leaf', asset: 'vine-row-0', slow: 0.35 });
       break;
     case 'grid':
       for (const off of [-60, 0, 60]) {
@@ -136,8 +137,11 @@ export function planBossCast(f: Source, foes: Foe[], signature: boolean, width: 
     case 'clones':
       for (let i = 0; i < 3; i++) {
         const angle = a + (i / 3) * Math.PI * 2;
-        attack({ x: target.x + Math.cos(angle) * 50, y: target.y + Math.sin(angle) * 50 }, { kind: 'clone', warn: 0.65, life: 1.1, r: 58, pic: 'ghost', asset: 'spectral-bolt' });
+        attack({ x: target.x + Math.cos(angle) * 50, y: target.y + Math.sin(angle) * 50 }, { kind: 'clone', warn: 0.65 + i * 0.12, life: 1.1, r: 58, pic: 'ghost', asset: 'spectral-bolt' });
       }
+      // Extra delayed ghost strike follows the initial decoys, avoiding an
+      // unavoidable instant overlap with the first set of markers.
+      if (f.tier >= 5) attack(target, { warn: 1.35, life: 0.45, r: 26, pic: 'ghost', el: 'shadow', asset: 'spectral-bolt' });
       break;
     case 'frenzy':
       // Valdur's signature chains short, newly aimed charges; the resolver uses these warned impact lines.
