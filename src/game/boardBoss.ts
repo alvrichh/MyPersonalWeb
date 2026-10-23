@@ -128,6 +128,21 @@ export function planBossCast(f: Source, foes: Foe[], signature: boolean, width: 
     case 'roots':
       for (const [i, off] of (f.tier >= 5 ? [-0.6, -0.3, 0, 0.3, 0.6] : [-0.38, 0, 0.38]).entries())
         attack(f, { kind: 'line', a: a + off, len: 190, r: 13, warn: 0.8 + i * 0.12, life: 0.6, pic: 'leaf', asset: 'vine-row-0', slow: 0.35 });
+      // Final Queen: two clearly visible vine-wall segments per row, with
+      // alternating open corridors. The normal root lanes remain intact.
+      if (f.cast === 5 && f.tier >= 4) {
+        for (let row = 0; row < 2; row++) {
+          const y = Math.max(30, Math.min(height - 30, target.y + (row ? 48 : -48)));
+          const gapX = Math.max(70, Math.min(width - 70, target.x + (row ? 42 : -42)));
+          const halfGap = 35;
+          for (const [left, right] of [[12, gapX - halfGap], [gapX + halfGap, width - 12]]) {
+            if (right - left < 12) continue;
+            attack({ x: left, y }, { kind: 'line', a: 0, len: right - left,
+              r: 12, warn: 0.95 + row * 0.4, life: 0.85,
+              pic: 'leaf', asset: 'vine-row-0', slow: 0.35 });
+          }
+        }
+      }
       // Final Queen: a second pattern of staggered thorn walls with shifting gaps.
       if (f.cast === 5 && f.tier >= 4) for (let row = 0; row < 3; row++) {
         const gap = row % 2 === 0 ? 2 : 4;
