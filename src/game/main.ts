@@ -494,7 +494,7 @@ function menuScreen() {
       <button class="hot cover-card is-styles" data-act="styles" aria-label="${t('styles')}"></button>
       ${copy('is-styles', t('styles'), t(`skin${cap(save.skin)}Name` as Key))}
       <button class="hot cover-card is-options" data-act="options" aria-label="${t('options')}"></button>
-      ${copy('is-options', t('options'), '')}
+      ${copy('is-options', t('options'), t('optionsSub'))}
       <p class="cover-best">${bestLine()}</p>
       ${save.bookSeen ? '' : `<p class="cover-dim-note" aria-live="polite"><b>${t('introTitle')}</b><span>${t('introText')}</span></p><i class="cover-dim-arrow" aria-hidden="true"></i>`}
     </div>
