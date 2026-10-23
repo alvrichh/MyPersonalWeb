@@ -2,6 +2,13 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.12.59 - 2026-10-23
+
+### Fixed
+- Carnivorous Queen (World 5): her regular acid move now also creates two visibly warned rows of persistent thorn-vine walls with alternating safe openings in On Call/Sprints.
+- Tactical final Queen: her root signature additionally creates paired vine-wall segments with distinct safe gaps.
+- Existing thorn projectiles, roots, boss attack damage rules and other bosses remain unchanged.
+
 ## 1.12.58 - 2026-10-23
 
 ### Fixed
