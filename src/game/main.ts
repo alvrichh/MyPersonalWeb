@@ -473,7 +473,7 @@ function menuScreen() {
       <button class="cover-book${save.bookSeen ? '' : ' is-first'}" type="button" data-act="book" aria-label="${t('bookOpen')}"><img src="./images/game/items/seniorTome.webp" alt=""></button>
       <button class="hot cover-profile" data-act="profile" aria-label="${t('profile')}: ${esc(save.name)} · ${t('lvShort', { level })}"></button>
       <span class="cover-avatar" aria-hidden="true"><img src="${heroPic()}" alt=""></span>
-      ${friend ? `<button class="hot cover-friend" type="button" data-act="link" aria-label="${t('onlinePlay')}: ${esc(friend.name)}"><span class="friend-pic"><img src="./images/game/hero/${friend.still}.webp" alt=""></span><b>${esc(friend.name)}</b><i class="friend-dot" aria-hidden="true"></i></button>` : `<button class="hot cover-friend is-add" type="button" data-act="link" aria-label="${t('linkAdd')}"><span class="friend-pic is-add" aria-hidden="true"></span><b>${t('linkAdd')}</b></button>`}
+      ${friend ? `<button class="hot cover-friend" type="button" data-act="link" aria-label="${t('onlinePlay')}: ${esc(friend.name)}"><span class="friend-pic"><img src="./images/game/hero/${friend.still}.webp" alt=""></span><b>${linkedName()}</b><i class="friend-dot" aria-hidden="true"></i></button>` : `<button class="hot cover-friend is-add" type="button" data-act="link" aria-label="${t('linkAdd')}"><span class="friend-pic is-add" aria-hidden="true"></span><b>${t('linkAdd')}</b></button>`}
       <span class="cover-profile-copy"><small>${esc(save.name)}${masteries() ? ` ${stars()}` : ''}</small><b>${t('lvShort', { level })}</b><i><b style="width:${Math.round(progress * 100)}%"></b></i></span>
       <button class="hot cover-coins" data-act="coin-store" aria-label="${t('storeTitle')}: ${Math.floor(save.coins)}"></button>
       <span class="cover-num is-coins">${Math.floor(save.coins)}</span>
@@ -665,6 +665,7 @@ function setName(raw: string) {
   editingName = false;
   save.name = cleanName(raw) || DEFAULT_NAME;
   persist();
+  netSend(hello());
   profileScreen(t('profileSaved'));
 }
 
@@ -1169,8 +1170,8 @@ function leaveScreen(to: 'site' | 'menu') {
 const HEAD_SIZE: Record<string, [number, number]> = {
   pause: [480, 450], levelup: [520, 223], shrine: [450, 480], victory: [431, 480], defeat: [481, 472], boss: [480, 422], wings: [480, 304],
 };
-const head = (kind: 'pause' | 'levelup' | 'victory' | 'defeat' | 'shrine' | 'wings', text: string) =>
-  `<div class="ui-head is-${kind}"><img src="./images/game/ui/header_${kind}.webp" width="${HEAD_SIZE[kind][0]}" height="${HEAD_SIZE[kind][1]}" alt=""><span>${text}</span></div>`;
+const head = (kind: 'pause' | 'levelup' | 'victory' | 'defeat' | 'shrine' | 'wings', text: string, friendKey?: Key) =>
+  `<div class="ui-head is-${kind}"><img src="./images/game/ui/header_${kind}.webp" width="${HEAD_SIZE[kind][0]}" height="${HEAD_SIZE[kind][1]}" alt=""><span${friendKey ? ` data-friend-name data-friend-key="${friendKey}"` : ''}>${text}</span></div>`;
 
 function pauseScreen() {
   show(`<button class="ui-close" type="button" data-act="resume" aria-label="${t('resume')}"></button>
@@ -1719,8 +1720,8 @@ function boardVariantScreen(world: number) {
 /** With a friend linked: their portrait and name, and one button for each way to invite them to it. */
 function friendInvite() {
   if (!friend) return '';
-  return `<div class="friend-card"><span class="friend-pic"><img src="./images/game/hero/${friend.still}.webp" alt=""></span><b>${esc(friend.name)}</b><i class="friend-dot" aria-hidden="true"></i></div>
-    <p class="how">${t('linkInvite', { name: esc(friend.name) })}</p>
+  return `<div class="friend-card"><span class="friend-pic"><img src="./images/game/hero/${friend.still}.webp" alt=""></span><b>${linkedName()}</b><i class="friend-dot" aria-hidden="true"></i></div>
+    <p class="how">${linkedName('linkInvite')}</p>
     <div class="book-modes">
       <button class="primary book-mode is-sprints" type="button" data-act="invite" data-variant="fusion"><b>🧬 ${t('boardFusion')}</b></button>
       <button class="primary book-mode is-gold" type="button" data-act="invite" data-variant="tactics"><b>⭐ ${t('boardTactics')}</b></button>
@@ -1733,6 +1734,24 @@ function friendInvite() {
    way, the world and the seed; whoever invites is side 0 of the shared fights. */
 type Friend = { id?: string; name: string; key: string; still: string; profile?: NetProfile };
 let friend: Friend | null = null;
+/** Names stay live without rebuilding a screen that may contain a form, an invitation or a running game. */
+function linkedName(key?: Key) {
+  const name = esc(friend?.name ?? board?.online?.rivalName ?? '');
+  return `<span data-friend-name${key ? ` data-friend-key="${key}"` : ''}>${key ? t(key, { name }) : name}</span>`;
+}
+function refreshFriendName() {
+  if (!friend) return;
+  const { name, id } = friend;
+  if (board?.online) board.online.rivalName = name;
+  document.querySelectorAll<HTMLElement>('[data-friend-name]').forEach((node) => {
+    const key = node.dataset.friendKey as Key | undefined;
+    node.textContent = key ? t(key, { name }) : name;
+  });
+  document.querySelector('.cover-friend:not(.is-add)')?.setAttribute('aria-label', `${t('onlinePlay')}: ${name}`);
+  if (id && NET_ID.test(id)) {
+    document.querySelectorAll<HTMLElement>(`[data-friend-id="${id}"]`).forEach((node) => { node.textContent = name; });
+  }
+}
 let rivalReady: { round: number; army: Piece[] } | null = null;
 let sentArmy: Piece[] | null = null;
 /** The invitation you sent and wait on, and the one you were sent and have not answered. */
@@ -1797,7 +1816,7 @@ function friendOverlay(g: Game, now: number, frozen: boolean) {
   const mini = fresh && fs && friend && g.mode === 'sprints' && fs.mode === 'sprints' && !g.rush && !g.showcase;
   friendMini.hidden = !mini;
   if (mini && fs && friend) {
-    const key = `${friend.still}|${fs.world}|${fs.room}|${fs.phase}|${Math.round(fs.hp * 10)}`;
+    const key = `${friend.name}|${friend.still}|${fs.world}|${fs.room}|${fs.phase}|${Math.round(fs.hp * 10)}`;
     if (friendMini.dataset.key !== key) {
       friendMini.dataset.key = key;
       const dots = Array.from({ length: ROOMS }, (_, i) => {
@@ -1806,7 +1825,7 @@ function friendOverlay(g: Game, now: number, frozen: boolean) {
       }).join('');
       const end = fs.phase === 'over' ? ' 💀' : fs.phase === 'won' ? ' 🏆' : '';
       friendMini.innerHTML = `<span class="friend-pic"><img src="./images/game/hero/${friend.still}.webp" alt=""></span>
-        <div><b>${esc(friend.name)}${end}</b><small>${t('worldShort', { n: fs.world })} · ${t('linkRoom', { n: fs.room, total: ROOMS })}</small>
+        <div><b>${linkedName()}${end}</b><small>${t('worldShort', { n: fs.world })} · ${t('linkRoom', { n: fs.room, total: ROOMS })}</small>
         <span class="friend-rooms">${dots}</span><span class="friend-hp"><b style="width:${Math.round(fs.hp * 100)}%"></b></span></div>`;
     }
     // Under the HUD; on wide screens the HUD is a panel down the left, so the card sits beside its top.
@@ -1980,7 +1999,7 @@ function friendsBlock() {
     const on = friend?.id === f.id;
     return `<div class="friend-row${on ? ' is-on' : ''}">
       <span class="friend-pic"><img src="${friendStill(on ? friend!.still : f.still)}" alt=""></span>
-      <b>${esc(f.name)}</b>${on ? '<i class="friend-dot" aria-hidden="true"></i>' : ''}
+      <b data-friend-id="${f.id}">${esc(f.name)}</b>${on ? '<i class="friend-dot" aria-hidden="true"></i>' : ''}
       <button class="friend-go" type="button" data-act="friend-call" data-id="${f.id}">${t(on ? 'friendPlay' : 'friendCall')}</button>
       <button class="friend-del" type="button" data-act="friend-del" data-id="${f.id}" aria-label="${t('friendRemove')}">✕</button>
     </div>`;
@@ -1995,9 +2014,9 @@ function linkScreen(note = '') {
   if (friend) {
     show(`<button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
       <h2>👥 ${t('onlinePlay')}</h2>
-      <div class="friend-card"><span class="friend-pic"><img src="./images/game/hero/${friend.still}.webp" alt=""></span><b>${esc(friend.name)}</b><i class="friend-dot" aria-hidden="true"></i></div>
+      <div class="friend-card"><span class="friend-pic"><img src="./images/game/hero/${friend.still}.webp" alt=""></span><b>${linkedName()}</b><i class="friend-dot" aria-hidden="true"></i></div>
       ${friendProfile()}
-      <p class="how">${t('linkOn', { name: esc(friend.name) })}</p>
+      <p class="how">${linkedName('linkOn')}</p>
       <button class="primary" type="button" data-act="invite" data-mode="sprints">${MODE_ICON.sprints} ${t('linkSprints')}</button>
       <button class="primary" type="button" data-act="invite" data-mode="horde">${MODE_ICON.horde} ${t('linkHorde')}</button>
       <button class="primary" type="button" data-act="board-pick">${MODE_ICON.board} ${t('modeBoard')}</button>
@@ -2039,13 +2058,14 @@ function onNetMsg(m: NetMsg) {
       save.friends = [{ id, name: friend.name, still: friend.still }, ...save.friends.filter((f) => f.id !== id)].slice(0, 30);
       persist();
     }
+    refreshFriendName();
     if (first) { flash(t('linkMade', { name: esc(friend.name) })); audio.play('door'); if (!board && !game) menuScreen(); }
   } else if (m.t === 'invite') {
     if (board || game || inviting) { netSend({ t: 'decline' }); return; }
     invitedBy = { mode: m.mode === 'sprints' || m.mode === 'horde' ? m.mode : 'board', variant: m.variant === 'tactics' ? 'tactics' : 'fusion', world: Math.max(1, Math.min(WORLD_COUNT, Math.round(m.world) || 1)), seed: m.seed >>> 0 };
     audio.play('levelup');
-    show(`${friend ? `<div class="friend-card"><span class="friend-pic"><img src="./images/game/hero/${friend.still}.webp" alt=""></span><b>${esc(friend.name)}</b></div>` : ''}
-      <h2>${t(invitedBy.mode === 'board' ? 'linkInvited' : 'linkInvitedRun', { name: esc(friend?.name ?? '') })}</h2>
+    show(`${friend ? `<div class="friend-card"><span class="friend-pic"><img src="./images/game/hero/${friend.still}.webp" alt=""></span><b>${linkedName()}</b></div>` : ''}
+      <h2>${linkedName(invitedBy.mode === 'board' ? 'linkInvited' : 'linkInvitedRun')}</h2>
       <p>${inviteWhat(invitedBy)} · ${t('worldShort', { n: invitedBy.world })}</p>
       <button class="primary" type="button" data-act="invite-yes">${t('linkAccept')}</button>
       <button class="ghost" type="button" data-act="invite-no">${t('linkDecline')}</button>`);
@@ -2096,7 +2116,7 @@ function rivalQuit() {
   if (!b?.online || b.phase === 'over' || b.phase === 'won') return;
   b.online = undefined; // nothing more to send them about this game
   paused = true;
-  show(`<h2>👥 ${t('onlineGone', { name: esc(friend?.name ?? '') })}</h2>
+  show(`<h2>👥 ${linkedName('onlineGone')}</h2>
     <button class="primary" data-act="board-leave">${t('menu')}</button>`);
 }
 /** The link dropped without a goodbye (a phone asleep, a blip in the Wi-Fi): it is tried again for a while, the
@@ -2389,7 +2409,7 @@ function renderBoardUi() {
   // cards and the dialogs' bars for the buttons (the emoji and plain shapes stay for retro).
   const coin = save.retro ? '◉' : COIN_PIC;
   // Against a person, once your army is sent the button waits for the rival's.
-  const go = b.online?.waiting ? `⏳ ${t('onlineWaitRival', { name: esc(b.online.rivalName) })}` : `⚔️ ${t('boardFight')}`;
+  const go = b.online?.waiting ? `⏳ ${linkedName('onlineWaitRival')}` : `⚔️ ${t('boardFight')}`;
   // The same pieces as a run's HUD: the round back button, the world's plate with its emblem, the coins' plate and
   // the round pause button (the hearts are over the commanders, the units over the shop's first card).
   boardTop.style.setProperty('--icon', JSON.stringify(WORLD_ICON[b.world - 1]));
@@ -2604,10 +2624,10 @@ function boardResultScreen(b: BoardGame) {
     audio.play(won ? 'win' : 'over');
     audio.setBoss(false);
     if (b.online) {
-      const name = esc(b.online.rivalName);
       const draw = b.lives === b.online.rivalLives;
-      show(`${head(won ? 'victory' : 'defeat', draw ? t('onlineDraw') : won ? t('onlineWon', { name }) : t('onlineLost', { name }))}
-        <p>❤ ${b.lives} · ${name} ❤ ${b.online.rivalLives}</p>
+      const titleKey = draw ? undefined : won ? 'onlineWon' : 'onlineLost';
+      show(`${head(won ? 'victory' : 'defeat', titleKey ? t(titleKey, { name: esc(b.online.rivalName) }) : t('onlineDraw'), titleKey)}
+        <p>❤ ${b.lives} · ${linkedName()} ❤ ${b.online.rivalLives}</p>
         <p class="reward">+${coins} 🪙</p>
         <button class="primary" data-act="board-pick">👥 ${t('onlineAgain')}</button>
         <button class="ghost" data-act="board-leave">← ${t('menu')}</button>`);
@@ -2934,8 +2954,8 @@ screen.addEventListener('click', (event) => {
     const mode: Together = target.dataset.mode === 'sprints' || target.dataset.mode === 'horde' ? target.dataset.mode : 'board';
     inviting = { mode, variant: target.dataset.variant === 'tactics' ? 'tactics' : 'fusion', world: worldIn(mode), seed: Math.floor(Math.random() * 2 ** 31) };
     netSend({ t: 'invite', ...inviting });
-    show(`<div class="friend-card"><span class="friend-pic"><img src="./images/game/hero/${friend.still}.webp" alt=""></span><b>${esc(friend.name)}</b></div>
-      <p class="how">⏳ ${t('linkWaitAnswer', { name: esc(friend.name) })}</p>
+    show(`<div class="friend-card"><span class="friend-pic"><img src="./images/game/hero/${friend.still}.webp" alt=""></span><b>${linkedName()}</b></div>
+      <p class="how">⏳ ${linkedName('linkWaitAnswer')}</p>
       <button class="ghost" type="button" data-act="invite-cancel">${t('cancel')}</button>`);
   }
   else if (act === 'invite-cancel') { const v = inviting; inviting = null; netSend({ t: 'uninvite' }); if (v?.mode === 'board') boardVariantScreen(worldIn('board')); else linkScreen(); }
