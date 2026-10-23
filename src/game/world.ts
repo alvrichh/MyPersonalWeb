@@ -2821,11 +2821,14 @@ function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
   }
   // Calls for backup (on call, only while the field has room; never a called boss).
   e.cd3 -= dt;
-  // Medusa has her own purple/turquoise snake summons above: never add the mud world's generic frogs.
-  if (!e.minion && e.bossId !== 'medusa' && e.cd3 <= 0 && (g.mode === 'sprints' || g.enemies.length < 56)) {
+  // Medusa keeps the standard pair of backup summons, but uses snakes instead
+  // of the Mud world's frogs. Her separate snake-from-hair ability also remains.
+  if (!e.minion && e.cd3 <= 0 && (g.mode === 'sprints' || g.enemies.length < 56)) {
     e.cd3 = (final ? 8 : 10) * fury;
     for (const side of [-1, 1]) {
-      g.enemies.push(makeEnemy(g, 'bug', g.room, { x: g.mode === 'horde' ? e.x + side * 60 : clamp(e.x + side * 60, 40, W - 40), y: e.y + 30 }, 0.6));
+      const m = makeEnemy(g, 'bug', g.room, { x: g.mode === 'horde' ? e.x + side * 60 : clamp(e.x + side * 60, 40, W - 40), y: e.y + 30 }, 0.6);
+      if (e.bossId === 'medusa') Object.assign(m, { look: 'mud' as Look, snake: e.phase > 1 ? 2 : 1, r: SNAKES.r });
+      g.enemies.push(m);
     }
   }
   if (e.dash > 0 || e.aim > 0) return;
