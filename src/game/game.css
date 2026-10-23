@@ -1065,17 +1065,15 @@ body {
 .shop-title {
   position: relative;
   isolation: isolate;
-  width: min(100%, 390px);
-  min-height: 120px;
-  align-content: center;
-  justify-items: center;
+  width: min(100%, 360px);
+  aspect-ratio: 1312 / 450;
+  place-items: center;
   gap: 0;
-  padding: 0 48px;
+  padding: 9% 9% 3%;
   box-sizing: border-box;
   background: none;
 }
 .shop-title h2 {
-  transform: translateY(12px);
   text-align: center;
 }
 .shop-title::before {
