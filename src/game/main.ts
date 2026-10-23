@@ -473,7 +473,7 @@ function menuScreen() {
       <button class="cover-book${save.bookSeen ? '' : ' is-first'}" type="button" data-act="book" aria-label="${t('bookOpen')}"><img src="./images/game/items/seniorTome.webp" alt=""></button>
       <button class="hot cover-profile" data-act="profile" aria-label="${t('profile')}: ${esc(save.name)} · ${t('lvShort', { level })}"></button>
       <span class="cover-avatar" aria-hidden="true"><img src="${heroPic()}" alt=""></span>
-      ${friend ? `<button class="hot cover-friend" type="button" data-act="link" aria-label="${t('onlinePlay')}: ${esc(friend.name)}"><span class="friend-pic"><img src="./images/game/hero/${friend.still}.webp" alt=""></span><b>${linkedName()}</b><i class="friend-dot" aria-hidden="true"></i></button>` : `<button class="hot cover-friend is-add" type="button" data-act="link" aria-label="${t('linkAdd')}"><span class="friend-pic is-add" aria-hidden="true"></span><b>${t('linkAdd')}</b></button>`}
+      ${friend ? `<button class="hot cover-friend" type="button" data-act="link" aria-label="${t('onlinePlay')}: ${esc(friend.name)}"><span class="friend-pic"><img data-friend-portrait src="./images/game/hero/${friend.still}.webp" alt=""></span><b>${linkedName()}</b><i class="friend-dot" aria-hidden="true"></i></button>` : `<button class="hot cover-friend is-add" type="button" data-act="link" aria-label="${t('linkAdd')}"><span class="friend-pic is-add" aria-hidden="true"></span><b>${t('linkAdd')}</b></button>`}
       <span class="cover-profile-copy"><small>${esc(save.name)}${masteries() ? ` ${stars()}` : ''}</small><b>${t('lvShort', { level })}</b><i><b style="width:${Math.round(progress * 100)}%"></b></i></span>
       <button class="hot cover-coins" data-act="coin-store" aria-label="${t('storeTitle')}: ${Math.floor(save.coins)}"></button>
       <span class="cover-num is-coins">${Math.floor(save.coins)}</span>
@@ -1720,7 +1720,7 @@ function boardVariantScreen(world: number) {
 /** With a friend linked: their portrait and name, and one button for each way to invite them to it. */
 function friendInvite() {
   if (!friend) return '';
-  return `<div class="friend-card"><span class="friend-pic"><img src="./images/game/hero/${friend.still}.webp" alt=""></span><b>${linkedName()}</b><i class="friend-dot" aria-hidden="true"></i></div>
+  return `<div class="friend-card"><span class="friend-pic"><img data-friend-portrait src="./images/game/hero/${friend.still}.webp" alt=""></span><b>${linkedName()}</b><i class="friend-dot" aria-hidden="true"></i></div>
     <p class="how">${linkedName('linkInvite')}</p>
     <div class="book-modes">
       <button class="primary book-mode is-sprints" type="button" data-act="invite" data-variant="fusion"><b>🧬 ${t('boardFusion')}</b></button>
@@ -1741,8 +1741,22 @@ function linkedName(key?: Key) {
 }
 function refreshFriendName() {
   if (!friend) return;
-  const { name, id } = friend;
+  const { name, id, key, still } = friend;
   if (board?.online) board.online.rivalName = name;
+  // A hello is sent again after a name, skin or headwear change. Keep open cards
+  // and an online board in step without rebuilding the screen.
+  document.querySelectorAll<HTMLImageElement>('[data-friend-portrait]').forEach((img) => {
+    img.src = `./images/game/hero/${still}.webp`;
+  });
+  if (id && NET_ID.test(id)) {
+    document.querySelectorAll<HTMLImageElement>(`[data-friend-portrait-id="${id}"]`).forEach((img) => {
+      img.src = `./images/game/hero/${still}.webp`;
+    });
+  }
+  if (board?.online && heroPics) {
+    const pose = (name: string) => Object.assign(new Image(), { src: `./images/game/hero/${key}-${name}.webp` });
+    heroPics.rival = { front: pose('front'), shoot: pose('shoot'), hurt: pose('hurt'), cheer: pose('cheer'), down: pose('down') };
+  }
   document.querySelectorAll<HTMLElement>('[data-friend-name]').forEach((node) => {
     const key = node.dataset.friendKey as Key | undefined;
     node.textContent = key ? t(key, { name }) : name;
@@ -1769,6 +1783,10 @@ const hello = (): NetMsg => ({
     upgrades: Object.values(save.upgrades ?? {}).reduce((n: number, v) => n + (Number(v) || 0), 0), items: save.owned.length,
   },
 });
+const ownHeroPortrait = () => `${heroKey(save.skin, save.equipped.head)}|${heroStill(save.skin, save.equipped.head)}`;
+function syncFriendPortrait(before: string) {
+  if (before !== ownHeroPortrait()) netSend(hello());
+}
 /** Playing a run together (`startTogether`): the mode and the shared seed (On call's field is laid from it). */
 let together: { mode: 'sprints' | 'horde'; seed: number } | null = null;
 /** The friend's last state in their run, and when it came (seconds on the frame clock). */
@@ -1824,7 +1842,7 @@ function friendOverlay(g: Game, now: number, frozen: boolean) {
         return `<i class="${r < fs.room ? 'is-done' : r === fs.room ? 'is-here' : ''}${SHRINE_ROOMS.includes(r) ? ' is-shrine' : ''}${r === 6 || r === ROOMS ? ' is-boss' : ''}"></i>`;
       }).join('');
       const end = fs.phase === 'over' ? ' 💀' : fs.phase === 'won' ? ' 🏆' : '';
-      friendMini.innerHTML = `<span class="friend-pic"><img src="./images/game/hero/${friend.still}.webp" alt=""></span>
+      friendMini.innerHTML = `<span class="friend-pic"><img data-friend-portrait src="./images/game/hero/${friend.still}.webp" alt=""></span>
         <div><b>${linkedName()}${end}</b><small>${t('worldShort', { n: fs.world })} · ${t('linkRoom', { n: fs.room, total: ROOMS })}</small>
         <span class="friend-rooms">${dots}</span><span class="friend-hp"><b style="width:${Math.round(fs.hp * 100)}%"></b></span></div>`;
     }
@@ -1998,7 +2016,7 @@ function friendsBlock() {
   const rows = save.friends.map((f) => {
     const on = friend?.id === f.id;
     return `<div class="friend-row${on ? ' is-on' : ''}">
-      <span class="friend-pic"><img src="${friendStill(on ? friend!.still : f.still)}" alt=""></span>
+      <span class="friend-pic"><img${on ? ` data-friend-portrait-id="${f.id}"` : ""} src="${friendStill(on ? friend!.still : f.still)}" alt=""></span>
       <b data-friend-id="${f.id}">${esc(f.name)}</b>${on ? '<i class="friend-dot" aria-hidden="true"></i>' : ''}
       <button class="friend-go" type="button" data-act="friend-call" data-id="${f.id}">${t(on ? 'friendPlay' : 'friendCall')}</button>
       <button class="friend-del" type="button" data-act="friend-del" data-id="${f.id}" aria-label="${t('friendRemove')}">✕</button>
@@ -2014,7 +2032,7 @@ function linkScreen(note = '') {
   if (friend) {
     show(`<button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
       <h2>👥 ${t('onlinePlay')}</h2>
-      <div class="friend-card"><span class="friend-pic"><img src="./images/game/hero/${friend.still}.webp" alt=""></span><b>${linkedName()}</b><i class="friend-dot" aria-hidden="true"></i></div>
+      <div class="friend-card"><span class="friend-pic"><img data-friend-portrait src="./images/game/hero/${friend.still}.webp" alt=""></span><b>${linkedName()}</b><i class="friend-dot" aria-hidden="true"></i></div>
       ${friendProfile()}
       <p class="how">${linkedName('linkOn')}</p>
       <button class="primary" type="button" data-act="invite" data-mode="sprints">${MODE_ICON.sprints} ${t('linkSprints')}</button>
@@ -2064,7 +2082,7 @@ function onNetMsg(m: NetMsg) {
     if (board || game || inviting) { netSend({ t: 'decline' }); return; }
     invitedBy = { mode: m.mode === 'sprints' || m.mode === 'horde' ? m.mode : 'board', variant: m.variant === 'tactics' ? 'tactics' : 'fusion', world: Math.max(1, Math.min(WORLD_COUNT, Math.round(m.world) || 1)), seed: m.seed >>> 0 };
     audio.play('levelup');
-    show(`${friend ? `<div class="friend-card"><span class="friend-pic"><img src="./images/game/hero/${friend.still}.webp" alt=""></span><b>${linkedName()}</b></div>` : ''}
+    show(`${friend ? `<div class="friend-card"><span class="friend-pic"><img data-friend-portrait src="./images/game/hero/${friend.still}.webp" alt=""></span><b>${linkedName()}</b></div>` : ''}
       <h2>${linkedName(invitedBy.mode === 'board' ? 'linkInvited' : 'linkInvitedRun')}</h2>
       <p>${inviteWhat(invitedBy)} · ${t('worldShort', { n: invitedBy.world })}</p>
       <button class="primary" type="button" data-act="invite-yes">${t('linkAccept')}</button>
@@ -2954,7 +2972,7 @@ screen.addEventListener('click', (event) => {
     const mode: Together = target.dataset.mode === 'sprints' || target.dataset.mode === 'horde' ? target.dataset.mode : 'board';
     inviting = { mode, variant: target.dataset.variant === 'tactics' ? 'tactics' : 'fusion', world: worldIn(mode), seed: Math.floor(Math.random() * 2 ** 31) };
     netSend({ t: 'invite', ...inviting });
-    show(`<div class="friend-card"><span class="friend-pic"><img src="./images/game/hero/${friend.still}.webp" alt=""></span><b>${linkedName()}</b></div>
+    show(`<div class="friend-card"><span class="friend-pic"><img data-friend-portrait src="./images/game/hero/${friend.still}.webp" alt=""></span><b>${linkedName()}</b></div>
       <p class="how">⏳ ${linkedName('linkWaitAnswer')}</p>
       <button class="ghost" type="button" data-act="invite-cancel">${t('cancel')}</button>`);
   }
@@ -3096,13 +3114,14 @@ screen.addEventListener('click', (event) => {
   else if (act === 'profile') { editingName = false; profileScreen(); }
   else if (act === 'achievements') achievementsScreen();
   else if (act === 'reset-ask') resetScreen();
-  else if (act === 'reset-do') { wipeProgress(save); persist(); dressPalette(); mapPick = 0; profileScreen(t('resetDone')); }
+  else if (act === 'reset-do') { wipeProgress(save); persist(); netSend(hello()); dressPalette(); mapPick = 0; profileScreen(t('resetDone')); }
   else if (act === 'mastery-ask') masteryScreen();
   else if (act === 'mastery-do') {
     if (masteryReady()) {
       save.masteries += 1;
       wipeProgress(save);
       persist();
+      netSend(hello());
       dressPalette();
       mapPick = 0;
       audio.play('win');
@@ -3210,16 +3229,20 @@ screen.addEventListener('click', (event) => {
     audio.play('coin');
     shopScreen();
   } else if (target.dataset.equip) {
+    const portrait = ownHeroPortrait();
     const item = itemById(target.dataset.equip as ItemId);
     save.equipped[item.slot] = item.id;
     if (save.extra === item.id) delete save.extra;
     dropExtraClash();
     persist();
+    syncFriendPortrait(portrait);
     shopScreen();
   } else if (target.dataset.unequip) {
+    const portrait = ownHeroPortrait();
     const item = itemById(target.dataset.unequip as ItemId);
     delete save.equipped[item.slot];
     persist();
+    syncFriendPortrait(portrait);
     shopScreen();
   } else if (target.dataset.song) {
     save.song = target.dataset.song as typeof save.song;
@@ -3236,6 +3259,7 @@ screen.addEventListener('click', (event) => {
     persist();
     stylesScreen();
   } else if (target.dataset.skin) {
+    const portrait = ownHeroPortrait();
     // Skins are bought once with coins, then worn with a tap.
     const skin = target.dataset.skin as HeroSkin;
     if (!save.skins.includes(skin)) {
@@ -3246,6 +3270,7 @@ screen.addEventListener('click', (event) => {
       audio.play('coin');
     } else save.skin = skin;
     persist();
+    syncFriendPortrait(portrait);
     dressPalette();
     stylesScreen();
   } else if (target.dataset.extraBuy !== undefined) {
@@ -3281,6 +3306,7 @@ screen.addEventListener('click', (event) => {
     stylesScreen();
     showPicks();
   } else if (target.dataset.dress) {
+    const portrait = ownHeroPortrait();
     const item = itemById(target.dataset.dress as ItemId);
     const worn = save.equipped[item.slot] === item.id;
     if (worn) delete save.equipped[item.slot];
@@ -3294,11 +3320,14 @@ screen.addEventListener('click', (event) => {
       audio.play('coin');
     }
     persist();
+    syncFriendPortrait(portrait);
     dressPalette();
     stylesScreen();
   } else if (target.dataset.undress) {
+    const portrait = ownHeroPortrait();
     delete save.equipped[target.dataset.undress as Slot];
     persist();
+    syncFriendPortrait(portrait);
     dressPalette();
     stylesScreen();
   }
