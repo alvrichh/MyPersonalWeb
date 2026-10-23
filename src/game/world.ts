@@ -2722,7 +2722,17 @@ function updateBoss(g: Game, e: Enemy, dt: number, ux: number, uy: number) {
   // Clones only throw rings now and then.
   if (e.clone) {
     e.cd -= dt;
-    if (e.cd <= 0) { e.cd = rand(3.2, 4); ring(g, e, 7, 95, TONE.shadow, undefined, 'ghost'); }
+    if (e.cd <= 0) {
+      e.cd = rand(3.2, 4);
+      ring(g, e, 7, 95, TONE.shadow, undefined, 'ghost');
+      // Wraith copies pressure the player's current lane, not just the ground
+      // around themselves. Their slow bolt leaves a readable dodge window.
+      if (e.bossId === 'wraith') {
+        const angle = Math.atan2(g.player.y - e.y, g.player.x - e.x);
+        g.orbs.push({ x: e.x, y: e.y, vx: Math.cos(angle) * 115, vy: Math.sin(angle) * 115,
+          r: 7, dmg: Math.round(e.dmg * 0.45), life: 3, bounce: 0, tone: '#a78bfa', pic: 'ghost', from: e.bossId });
+      }
+    }
     return;
   }
   // The final boss's fury: under half health everything comes a quarter sooner.
@@ -3036,8 +3046,10 @@ function signature(g: Game, e: Enemy, sig: Signature) {
       // Three rows of thorny vine burst out of the floor towards you (the owner's vine rows), warned as
       // strips, and stay a moment as walls of thorns.
       const aim = Math.atan2(p.y - e.y, p.x - e.x);
-      for (const [i, off] of [-0.4, 0, 0.4].entries()) {
-        g.threats.push({ kind: 'line', x: e.x + Math.cos(aim + off) * 30, y: e.y + Math.sin(aim + off) * 30, r: 16, a: aim + off, len: 280, warn: 0.9 + i * 0.08, max: 0.9 + i * 0.08, life: 0.25, dmg: Math.round(dmg * 0.8), el: 'leaf', vine: i % 2 });
+      // At half health the Queen grows two more lanes, with staggered
+      // telegraphs so the player still has time to find a safe corridor.
+      for (const [i, off] of (e.hp < e.maxHp / 2 ? [-0.65, -0.32, 0, 0.32, 0.65] : [-0.4, 0, 0.4]).entries()) {
+        g.threats.push({ kind: 'line', x: e.x + Math.cos(aim + off) * 30, y: e.y + Math.sin(aim + off) * 30, r: 16, a: aim + off, len: 280, warn: 0.9 + i * 0.14, max: 0.9 + i * 0.14, life: 0.25, dmg: Math.round(dmg * 0.8), el: 'leaf', vine: i % 2 });
       }
       break;
     }
