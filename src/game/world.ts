@@ -2902,6 +2902,31 @@ function tornadoes(g: Game, e: Enemy, n: number, dmg: number) {
   }
 }
 
+/** Queen's actual thorn barriers: warned vine segments that remain as
+    temporary ground hazards. Unlike the projectile volley, these are walls. */
+function queenVineWalls(g: Game, e: Enemy, dmg: number) {
+  const b = bounds(g);
+  const margin = 28;
+  const left = b.x + margin;
+  const right = b.x + b.w - margin;
+  const width = right - left;
+  if (width < 180) return;
+  const gapW = 100;
+  for (let row = 0; row < 2; row++) {
+    const y = clamp(g.player.y + (row === 0 ? -65 : 65), b.y + 45, b.y + b.h - 45);
+    const shift = row === 0 ? -55 : 55;
+    const gapX = clamp(g.player.x + shift, left + gapW / 2 + 25, right - gapW / 2 - 25);
+    const segments = [[left, gapX - gapW / 2], [gapX + gapW / 2, right]];
+    for (const [x0, x1] of segments) {
+      if (x1 - x0 < 18) continue;
+      const warn = 1.05 + row * 0.45;
+      g.threats.push({ kind: 'line', x: x0, y, r: 12, a: 0, len: x1 - x0,
+        warn, max: warn, life: 0.25, dmg: Math.round(dmg * 0.65),
+        el: 'leaf', vine: row % 2 });
+    }
+  }
+}
+
 function worldMove(g: Game, e: Enemy, move: Move) {
   const p = g.player;
   const aim = Math.atan2(p.y - e.y, p.x - e.x);
@@ -2956,6 +2981,9 @@ function worldMove(g: Game, e: Enemy, move: Move) {
       }
       break;
     case 'acid':
+      // Every Queen acid move now also grows two visible thorn walls with
+      // staggered warning and openings, not merely projectile formations.
+      if (e.bossId === 'queen') queenVineWalls(g, e, dmg);
       // The Carnivorous Queen spits a gush of acid: big, slow blobs in a fan.
       for (let i = 0; i < 5; i++) {
         const a = aim + (i / 4 - 0.5) * 0.7;
