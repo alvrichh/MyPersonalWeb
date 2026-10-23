@@ -499,6 +499,11 @@ function menuScreen() {
       ${save.bookSeen ? '' : `<p class="cover-dim-note" aria-live="polite"><b>${t('introTitle')}</b><span>${t('introText')}</span></p><i class="cover-dim-arrow" aria-hidden="true"></i>`}
     </div>
     <small class="cover-version">Bug Hunter v${GAME_VERSION} · ${GAME_BUILD.built.split('-').reverse().join('/')} · ${GAME_BUILD.commit}</small>
+    <nav class="cover-legal" aria-label="${lang === 'es' ? 'Información legal' : 'Legal information'}">
+      <a href="/privacy.html">${lang === 'es' ? 'Privacidad' : 'Privacy'}</a>
+      <a href="/cookies.html">Cookies</a>
+      <a href="/legal.html">${lang === 'es' ? 'Aviso legal' : 'Legal notice'}</a>
+    </nav>
     ${save.bookSeen ? '' : '<div class="cover-dim" aria-hidden="true"></div>'}</div>`, false, true);
   announceAchievements();
 }
