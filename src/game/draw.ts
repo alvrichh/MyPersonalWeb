@@ -4674,10 +4674,12 @@ function finalFrame(e: Enemy) {
   if (e.pain > 0) return 8;
   // The Medusa's deep gaze (her tenth picture) while the hero stands within it and she is doing nothing else.
   if (e.gaze && e.bossId === 'medusa' && e.chan <= 0 && e.pose <= 0 && e.aim <= 0 && e.dash <= 0) return 9;
-  if (e.chan > 0) return 7;
-  if (e.pose > 0) return e.act === 'sig' ? 7 : e.act === 'move' ? 6 : 5;
+  // A charge can overlap a recently triggered attack pose. Show its actual
+  // wind-up and dash rather than letting the older ring/move pose hide them.
   if (e.aim > 0) return 3;
   if (e.dash > 0) return 4;
+  if (e.chan > 0) return 7;
+  if (e.pose > 0) return e.act === 'sig' ? 7 : e.act === 'move' ? 6 : 5;
   // In the air Nocthrax flaps whether it moves or not: the owner's six-picture wing beat for each phase
   // (`chimera2-9..14`, `chimera3-9..14`, the body still and only the wings moving, `FLAP_STEP` a picture).
   if (e.phase > 1 && e.bossId === 'chimera') return 9 + (Math.floor(performance.now() / FLAP_STEP) % 6);
