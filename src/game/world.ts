@@ -2995,6 +2995,36 @@ function worldMove(g: Game, e: Enemy, move: Move) {
   }
 }
 
+/** Geometric bullet patterns with fixed safe corridors and staggered launches.
+    Used only by Queen and Wraith; the other bosses keep their attacks. */
+function shapeVolley(g: Game, e: Enemy, angles: number[], speed: number, wait: number, colour: string, pic: OrbPic, damage: number) {
+  for (const angle of angles) g.orbs.push({
+    x: e.x, y: e.y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
+    r: 6, dmg: damage, life: 3.8, bounce: 0, tone: colour, pic, wait, from: e.bossId,
+  });
+}
+function queenThornWalls(g: Game, e: Enemy, aim: number, damage: number) {
+  // Three advancing rows of thorns; every row has a navigable central gap.
+  // The gap alternates sideways, so moving into the same lane repeatedly is unsafe.
+  for (let row = 0; row < 3; row++) {
+    const gap = row % 2 === 0 ? 0 : 2;
+    const angles = Array.from({ length: 7 }, (_, i) => i)
+      .filter(i => i !== gap && i !== gap + 1)
+      .map(i => aim + (i - 3) * 0.14);
+    shapeVolley(g, e, angles, 120 + row * 18, 0.3 + row * 0.55, '#bef264', 'leaf', damage);
+  }
+}
+function wraithTriangle(g: Game, e: Enemy, damage: number) {
+  // A triangle of inward-pointing volleys, rotated toward the player's position.
+  // The larger open sectors between its sides remain escape routes.
+  const aim = Math.atan2(g.player.y - e.y, g.player.x - e.x);
+  for (let side = 0; side < 3; side++) {
+    const center = aim + side * Math.PI * 2 / 3;
+    shapeVolley(g, e, [center - 0.18, center, center + 0.18], 118,
+      0.65 + side * 0.3, '#c4b5fd', 'ghost', damage);
+  }
+}
+
 function signature(g: Game, e: Enemy, sig: Signature) {
   const p = g.player;
   const b = bounds(g);
@@ -3043,6 +3073,9 @@ function signature(g: Game, e: Enemy, sig: Signature) {
       break;
     }
     case 'roots': {
+      // Five-lane root attack plus staggered thorn projectile walls in the Queen's second half.
+      if (e.bossId === 'queen' && e.hp < e.maxHp / 2)
+        queenThornWalls(g, e, Math.atan2(p.y - e.y, p.x - e.x), Math.round(dmg * 0.42));
       // Three rows of thorny vine burst out of the floor towards you (the owner's vine rows), warned as
       // strips, and stay a moment as walls of thorns.
       const aim = Math.atan2(p.y - e.y, p.x - e.x);
@@ -3084,6 +3117,8 @@ function signature(g: Game, e: Enemy, sig: Signature) {
       g.fx.push({ kind: 'ring', x: e.x, y: e.y, r: 60, a: 0, life: 0.4, max: 0.4 });
       break;
     case 'clones': {
+      if (e.bossId === 'wraith')
+        wraithTriangle(g, e, Math.round(dmg * 0.45));
       // Splits into the shadows: it and three clones come back round you, and only one is real.
       const turn = rand(0, Math.PI * 2);
       const spots = [0, 1, 2, 3].map((i) => {
