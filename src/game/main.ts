@@ -2795,12 +2795,12 @@ function boardPointerDown(event: PointerEvent) {
     piece = (slot && pieceAt(b, slot)) || null;
     if (piece) inspection = { piece, enemy: false };
     else {
-      const spot = waveSpots(b).map((enemy) => ({ enemy, bounds: boardUnitBounds({ tier: enemy.tier }) }))
+      const spot = waveSpots(b).map((enemy) => ({ enemy, bounds: boardUnitBounds({ tier: enemy.tier, star: enemy.star }) }))
         .filter(({ enemy, bounds }) => bx >= enemy.x * spread + bounds.x - 8 && bx <= enemy.x * spread + bounds.x + bounds.w + 8 && by >= enemy.y + bounds.y - 8 && by <= enemy.y + bounds.y + bounds.h + 8)
         .sort((a, c) => Math.hypot(bx - a.enemy.x * spread, by - a.enemy.y) - Math.hypot(bx - c.enemy.x * spread, by - c.enemy.y))[0]?.enemy;
       if (spot) {
-        const rivalPiece: Piece = { id: -1, tier: spot.tier, cast: spot.cast, slot: { c: -1, r: -1 }, star: 1 };
-        inspection = { piece: rivalPiece, stats: waveUnitStats(b, spot.tier, spot.cast), enemy: true };
+        const rivalPiece: Piece = { id: -1, tier: spot.tier, cast: spot.cast, slot: { c: -1, r: -1 }, star: spot.star };
+        inspection = { piece: rivalPiece, stats: waveUnitStats(b, spot.tier, spot.cast, spot.star), enemy: true };
       }
     }
   } else if (b.phase === 'fight') {
@@ -2811,7 +2811,7 @@ function boardPointerDown(event: PointerEvent) {
       .sort((a, c) => Math.hypot(bx - a.fighter.x * spread, by - a.fighter.y) - Math.hypot(bx - c.fighter.x * spread, by - c.fighter.y))[0]?.fighter;
     if (target) {
       const fighterPiece: Piece = { id: target.id, tier: target.tier, cast: target.cast, slot: { c: -1, r: -1 }, star: target.star };
-      const base = target.side === 1 ? waveUnitStats(b, target.tier, target.cast) : unitStats(b, fighterPiece);
+      const base = target.side === 1 ? waveUnitStats(b, target.tier, target.cast, target.star) : unitStats(b, fighterPiece);
       const stats = { ...base, hp: target.hp, maxHp: target.maxHp, dmg: target.dmg, rate: target.rate, range: target.range, speed: target.speed, r: target.r, splash: target.splash, ranged: target.ranged, syn: target.syn, synLv: target.synLv, ability: target.tac ? ABILITY[target.cast] : undefined };
       inspection = { piece: fighterPiece, stats, enemy: target.side === 1 };
     }
