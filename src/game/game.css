@@ -45,6 +45,9 @@ body {
 .game {
   position: fixed;
   inset: 0;
+  /* Keep Safari's double-tap smart zoom from shifting the whole game UI;
+     panning and pinch zoom remain available, and the canvas keeps its own `none`. */
+  touch-action: manipulation;
   -webkit-user-select: none;
   user-select: none;
   -webkit-touch-callout: none;
@@ -1046,6 +1049,51 @@ body {
   width: 100%;
   text-align: center;
 }
+.shop-wallet {
+  position: sticky;
+  top: 8px;
+  z-index: 4;
+  justify-self: start;
+  margin: 0 0 -2.8rem 8px;
+  padding: 5px 8px;
+  border: 1px solid #fcd34d55;
+  border-radius: 999px;
+  background: rgba(5, 19, 34, .94);
+  box-shadow: 0 2px 8px #0008;
+}
+.shop-title {
+  position: relative;
+  isolation: isolate;
+  width: min(100%, 390px);
+  min-height: 120px;
+  align-content: center;
+  justify-items: center;
+  gap: 0;
+  padding: 0 48px;
+  box-sizing: border-box;
+  background: none;
+}
+.shop-title h2 {
+  transform: translateY(12px);
+  text-align: center;
+}
+.shop-title::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: url('/images/game/ui/title_plate.webp') center / 100% 100% no-repeat;
+}
+.shop-title::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: #ffd43b;
+  mix-blend-mode: hue;
+  clip-path: polygon(50% 0, 55.5% 17%, 54.5% 31%, 50% 39%, 45.5% 31%, 44.5% 17%);
+  pointer-events: none;
+}
 
 .wallet {
   font: 700 1.05rem/1 ui-monospace, monospace;
@@ -1295,6 +1343,7 @@ body {
 
 /* Orange for anything that costs coins. */
 .panel .primary[data-act='revive-pay'] { --bar: url('/images/game/ui/btn2_orange.webp'); }
+.panel .primary.is-blue { --bar: url('/images/game/ui/btn2_blue.webp'); }
 /* Green to go and play. */
 .panel .primary[data-act='play-same'],
 .panel .primary[data-act='play-next'],
@@ -3485,6 +3534,15 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 /* A slot inside an open section (head, body, boots; magic, melee, ranged): a smaller row of its own. */
 .panel .shop-sec.is-sub { width: min(88%, 290px); font-size: 0.9em; margin-top: 4px; }
 .panel .shop-sec.is-sub .icon .item-pic { width: 2em; height: 2em; }
+@media (min-width: 900px) {
+  .panel-wide:has(.shop-title) .shop-sec { width: min(100%, 400px); }
+  .panel-wide:has(.shop-title) .shop-sec.is-sub { width: min(92%, 350px); }
+  .panel-wide:has(.shop-title) .shop-sec .icon { font-size: 2.25rem; }
+  .panel-wide:has(.shop-title) .shop-sec .icon .item-pic { width: 2.7em; height: 2.7em; }
+  .panel-wide:has(.shop-title) .shop-sec.is-sub .icon .item-pic { width: 2.35em; height: 2.35em; }
+  .panel-wide:has(.shop-title) .shop-sec b { font-size: 1.08rem; }
+  .panel-wide:has(.shop-title) .shop-sec em { font-size: .82rem; }
+}
 .wheel-slice .item-pic { width: 84%; height: 84%; }
 .wheel-result .wheel-res-icon { display: inline-block; vertical-align: middle; }
 .wheel-result .wheel-res-icon .item-pic { width: 1.6em; height: 1.6em; }
@@ -3525,15 +3583,16 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .panel .wallet-plus {
   display: inline-grid;
   place-items: center;
-  width: 1.6em;
-  height: 1.6em;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
   margin-left: 6px;
   padding: 0;
   border: 2px solid #bbf7d0;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 30%, #4ade80, #16a34a 70%);
   color: #fff;
-  font: 800 1rem/1 var(--font);
+  font: 800 18px/1 Arial, sans-serif;
   vertical-align: middle;
   cursor: pointer;
 }
@@ -3887,6 +3946,9 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 
 /* Options: the language, a pill like the mode picker's. */
 .lang-row > span { white-space: nowrap; }
+.privacy-links { width: 100%; margin: 14px 0 4px; padding-top: 12px; border-top: 1px solid #ffffff24; display: grid; justify-items: center; gap: 8px; }
+.privacy-links > div { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; font-size: 12px; }
+.privacy-links a { color: #aeb8c9; }
 .lang-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; margin: 4px 0 10px; font-weight: 700; }
 .lang-row .lang-pick { width: auto; max-width: 220px; margin-top: 0; flex: 0 1 220px; }
 
@@ -4295,6 +4357,9 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .friend-row .friend-go { flex: none; min-width: 92px; padding: 7px 14px; border: 0; border-radius: 999px; background: linear-gradient(180deg, #4ade80, #16a34a); color: #062b12; font: 700 0.95rem var(--font); box-shadow: 0 0 10px rgba(74, 222, 128, 0.35); cursor: pointer; }
 .panel .primary.is-purple { --bar: url('/images/game/ui/btn2_purple.webp'); }
 :root[data-retro] .panel .primary.is-purple { background: linear-gradient(135deg, #a78bfa, #7c3aed); }
+/* Primary actions throughout the menu and shop share the blue button art. */
+.panel .primary { --bar: url('/images/game/ui/btn2_blue.webp'); color: #fff; text-shadow: 0 2px 3px rgba(0, 0, 0, 0.5); }
+:root[data-retro] .panel .primary { background: linear-gradient(135deg, #38bdf8, #2563eb); color: #07101f; text-shadow: none; }
 /* A locked row's reason may be long («Jefe final del mundo 8 en Guardia»): it wraps instead of widening the row,
    which pushed the whole list off the side of the dialog on an iPhone. */
 .gear-row.is-locked em { white-space: normal; overflow-wrap: anywhere; font-size: 0.62rem; line-height: 1.15; }
