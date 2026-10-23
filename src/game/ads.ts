@@ -112,8 +112,20 @@ function h5(client: string, test: boolean): Provider {
 const env = import.meta.env;
 const client = typeof env.VITE_ADSENSE_CLIENT === 'string' ? env.VITE_ADSENSE_CLIENT.trim() : '';
 const local = ['localhost', '127.0.0.1'].includes(location.hostname);
+const CONSENT_KEY = 'bughunter-ad-consent-v1';
+let consent = local || localStorage.getItem(CONSENT_KEY) === 'accept';
 let provider: Provider | null = null;
-const current = () => (provider ??= client ? h5(client, env.VITE_ADS_TEST === '1') : local ? dev : none);
+export const adConsent = {
+  get status(): 'accept' | 'reject' | 'unset' { return local ? 'accept' : consent ? 'accept' : localStorage.getItem(CONSENT_KEY) === 'reject' ? 'reject' : 'unset'; },
+  set(value: 'accept' | 'reject') {
+    localStorage.setItem(CONSENT_KEY, value);
+    consent = value === 'accept';
+    provider = null;
+    if (consent && client) provider = h5(client, env.VITE_ADS_TEST === '1');
+  },
+};
+if (consent && client) provider = h5(client, env.VITE_ADS_TEST === '1');
+const current = () => provider ?? (local ? (provider = dev) : none);
 
 export const ads = {
   /** Whether any ad can ever show here (the page hides the ad buttons when not). */

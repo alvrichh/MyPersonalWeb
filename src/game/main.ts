@@ -90,7 +90,7 @@ backLink.setAttribute('aria-label', t('back'));
 backLink.addEventListener('click', (event) => {
   if (!game || game.phase === 'over' || game.phase === 'won') return;
   event.preventDefault();
-  leaveScreen('site');
+  leaveScreen('menu');
 });
 pauseBtn.setAttribute('aria-label', t('pause'));
 
@@ -1195,7 +1195,11 @@ function optionsScreen() {
     <div class="lang-row"><span>🌐 ${t('language')}</span>
       <div class="mode-pick lang-pick" role="group" aria-label="${t('language')}">${(['es', 'en'] as Lang[]).map((l) => `<button type="button" class="mode-opt${l === lang ? ' is-on' : ''}" data-act="lang" data-lang="${l}" aria-pressed="${l === lang}">${l === 'es' ? 'Español' : 'English'}</button>`).join('')}</div>
     </div>
-    ${backButton(optionsFrom === 'pause' ? 'pause' : 'menu', optionsFrom === 'pause' ? 'resume' : 'menu')}`);
+    <nav class="privacy-links" aria-label="${lang === 'es' ? 'Privacidad y aspectos legales' : 'Privacy and legal'}">
+      <button class="ghost small" type="button" data-act="privacy-settings">${lang === 'es' ? 'Preferencias de privacidad' : 'Privacy settings'}</button>
+      <div><a href="/privacy.html">${lang === 'es' ? 'Privacidad' : 'Privacy'}</a><a href="/cookies.html">Cookies</a><a href="/legal.html">${lang === 'es' ? 'Aviso legal' : 'Legal notice'}</a></div>
+    </nav>
+    <button class="primary is-blue" data-act="${optionsFrom === 'pause' ? 'pause' : 'menu'}">← ${t(optionsFrom === 'pause' ? 'resume' : 'menu')}</button>`);
 }
 
 /* The guide: the book on the cover, which replaced the painted gear (Options has its own card). Its first page
@@ -1402,14 +1406,15 @@ function shopScreen(note = '') {
   }).join('');
   show(`
     <button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
-    <div class="shop-head"><h2>${t('shop')}</h2><p class="wallet">${coinsLine()} <button class="wallet-plus" type="button" data-act="coin-store" aria-label="${t('storeTitle')}">+</button></p></div>
+    <p class="wallet shop-wallet">${coinsLine()} <button class="wallet-plus" type="button" data-act="coin-store" aria-label="${t('storeTitle')}">+</button></p>
+    <div class="shop-head shop-title"><h2>${t('shop')}</h2></div>
     ${note ? `<p class="note">${note}</p>` : `<p class="how">${t('earnHint')}</p>`}
     ${giftLine}
     ${shopSection('forge', t('forge'), `${UPGRADES.reduce((n, u) => n + (save.upgrades[u.id] ?? 0), 0)}/${UPGRADES.reduce((n, u) => n + u.max, 0)}`, `<p class="how">${t('forgeHint')}</p><div class="items">${forge}${extraCard}</div>`)}
     ${armourSec}${weaponSecs}
     ${shopSection('arsenal', t('arsenal'), `${save.arsenal.length}/${ARSENAL.length}`, `<p class="how">${t('arsenalHint')}</p><div class="items">${arsenal}</div>`)}
     ${spiritSec}
-    ${backButton('menu')}`, true, false, 'keep-scroll');
+    <button class="primary is-blue" type="button" data-act="menu">← ${t('menu')}</button>`, true, false, 'keep-scroll');
   bandCards();
   if (ads.enabled && giftWait <= 0) offerAd('gift', `<button class="primary ad-btn" data-act="ad-gift">📺 ${t('adGift', { coins: AD_GIFT_COINS })}</button>`);
 }
@@ -3134,6 +3139,7 @@ screen.addEventListener('click', (event) => {
   else if (act === 'styles') { dressSlot = null; stylesScreen(); }
   else if (act === 'options') { optionsFrom = 'menu'; optionsScreen(); }
   else if (act === 'options-pause') { optionsFrom = 'pause'; optionsScreen(); }
+  else if (act === 'privacy-settings') { window.openPrivacyChoices?.(); }
   else if (act === 'lang') {
     const next = target.dataset.lang as Lang;
     if (next && next !== lang) { setLang(next); boardKey = ''; renderBoardUi(); optionsScreen(); }
