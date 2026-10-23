@@ -59,6 +59,12 @@ export function planBossCast(f: Source, foes: Foe[], signature: boolean, width: 
     const speed = 160;
     plan.shots.push({ ...common, x: f.x, y: f.y - 6, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, dmg: group.dmg, target: -1, life: 2.5, ring: true, r: 6, ...more });
   };
+  // Reusable geometric formations: each wave shares this cast's damage pool.
+  // Delays on shots and warnings on ground attacks preserve dodge/readability.
+  const shapeShots = (angles: number[], delay: number, speed: number, pic: OrbPic) => {
+    for (const angle of angles) shot(angle, { vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed, delay, pic, life: 2.4, dmg: group.dmg * 0.42 });
+  };
   switch (move) {
     case 'volley':
       for (const off of [-0.18, 0, 0.18]) shot(a + off, { pic: 'glitch' });
@@ -122,6 +128,14 @@ export function planBossCast(f: Source, foes: Foe[], signature: boolean, width: 
     case 'roots':
       for (const [i, off] of (f.tier >= 5 ? [-0.6, -0.3, 0, 0.3, 0.6] : [-0.38, 0, 0.38]).entries())
         attack(f, { kind: 'line', a: a + off, len: 190, r: 13, warn: 0.8 + i * 0.12, life: 0.6, pic: 'leaf', asset: 'vine-row-0', slow: 0.35 });
+      // Final Queen: a second pattern of staggered thorn walls with shifting gaps.
+      if (f.cast === 5 && f.tier >= 4) for (let row = 0; row < 3; row++) {
+        const gap = row % 2 === 0 ? 2 : 4;
+        const angles = Array.from({ length: 7 }, (_, i) => i)
+          .filter(i => i !== gap && i !== gap + 1)
+          .map(i => a + (i - 3) * 0.16);
+        shapeShots(angles, 0.65 + row * 0.35, 135 + row * 10, 'leaf');
+      }
       break;
     case 'grid':
       for (const off of [-60, 0, 60]) {
@@ -139,8 +153,12 @@ export function planBossCast(f: Source, foes: Foe[], signature: boolean, width: 
         const angle = a + (i / 3) * Math.PI * 2;
         attack({ x: target.x + Math.cos(angle) * 50, y: target.y + Math.sin(angle) * 50 }, { kind: 'clone', warn: 0.65 + i * 0.12, life: 1.1, r: 58, pic: 'ghost', asset: 'spectral-bolt' });
       }
-      // Extra delayed ghost strike follows the initial decoys, avoiding an
-      // unavoidable instant overlap with the first set of markers.
+      // Three triangular arcs emerge in succession, leaving open sectors.
+      if (f.cast === 8 && f.tier >= 4) for (let side = 0; side < 3; side++) {
+        const center = a + side * Math.PI * 2 / 3;
+        shapeShots([center - 0.17, center, center + 0.17], 0.7 + side * 0.3, 130, 'ghost');
+      }
+      // Extra delayed ghost strike follows the initial decoys.
       if (f.tier >= 5) attack(target, { warn: 1.35, life: 0.45, r: 26, pic: 'ghost', el: 'shadow', asset: 'spectral-bolt' });
       break;
     case 'frenzy':
