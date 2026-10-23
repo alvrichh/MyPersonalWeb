@@ -4658,6 +4658,19 @@ const FINAL_BOSS_ART = ['kernel', 'archdemon', 'drakkar', 'medusa', 'queen', 'ze
 function finalFrame(e: Enemy) {
   // Kratos taking up the Blade of Olympus: his tenth picture, leaping with it raised out of a burst of lightning.
   if (e.rise) return 9;
+  // World 2 room-6 Overlord's new nine frames have their own action order:
+  // 3 punch, 4 roar/wind-up, 5 fire charging in mouth, 6 fire breath,
+  // 7 forward lunge, 8 ground impact/hurt. Prioritise charge/dash over
+  // the generic boss action so neither pose is hidden by an active cast.
+  if (e.kind === 'boss' && !e.final && e.look === 'demon' && !e.minion) {
+    if (e.pain > 0) return 8;
+    if (e.dash > 0) return 7;
+    if (e.aim > 0) return 5;
+    if (e.chan > 0) return 6;
+    if (e.pose > 0) return e.act === 'move' ? 6 : e.act === 'sig' ? 5 : 3;
+    if (e.swing > 0) return 3;
+    return walkFrame(e, WALK_FINAL);
+  }
   if (e.pain > 0) return 8;
   // The Medusa's deep gaze (her tenth picture) while the hero stands within it and she is doing nothing else.
   if (e.gaze && e.bossId === 'medusa' && e.chan <= 0 && e.pose <= 0 && e.aim <= 0 && e.dash <= 0) return 9;
