@@ -60,10 +60,11 @@ export function planBossCast(f: Source, foes: Foe[], signature: boolean, width: 
     plan.shots.push({ ...common, x: f.x, y: f.y - 6, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, dmg: group.dmg, target: -1, life: 2.5, ring: true, r: 6, ...more });
   };
   // Reusable geometric formations: each wave shares this cast's damage pool.
-  // Delays on shots and warnings on ground attacks preserve dodge/readability.
+  // board.ts counts lifetime during launch delay; include that time so each
+  // added wave still has 2.4 seconds of flight. Damage budgets are unchanged.
   const shapeShots = (angles: number[], delay: number, speed: number, pic: OrbPic) => {
     for (const angle of angles) shot(angle, { vx: Math.cos(angle) * speed,
-      vy: Math.sin(angle) * speed, delay, pic, life: 2.4, dmg: group.dmg * 0.42 });
+      vy: Math.sin(angle) * speed, delay, pic, life: 2.4 + plan.hold + delay, dmg: group.dmg * 0.42 });
   };
   switch (move) {
     case 'volley':
@@ -126,7 +127,7 @@ export function planBossCast(f: Source, foes: Foe[], signature: boolean, width: 
       for (let i = 0; i < 3; i++) attack(sorted[i % sorted.length], { warn: 0.85 + i * 0.12, life: 0.55, r: 32, el: 'arcane', pic: 'medusa', asset: f.tier >= 5 ? 'medusa-burst-2' : 'medusa-burst', freeze: 0.4 });
       break;
     case 'roots':
-      for (const [i, off] of (f.tier >= 5 ? [-0.6, -0.3, 0, 0.3, 0.6] : [-0.38, 0, 0.38]).entries())
+      for (const [i, off] of (f.cast === 5 && f.tier >= 4 ? [-0.6, -0.3, 0, 0.3, 0.6] : [-0.38, 0, 0.38]).entries())
         attack(f, { kind: 'line', a: a + off, len: 190, r: 13, warn: 0.8 + i * 0.12, life: 0.6, pic: 'leaf', asset: 'vine-row-0', slow: 0.35 });
       // Final Queen: two clearly visible vine-wall segments per row, with
       // alternating open corridors. The normal root lanes remain intact.
@@ -135,7 +136,7 @@ export function planBossCast(f: Source, foes: Foe[], signature: boolean, width: 
           const y = Math.max(30, Math.min(height - 30, target.y + (row ? 48 : -48)));
           const gapX = Math.max(70, Math.min(width - 70, target.x + (row ? 42 : -42)));
           const halfGap = 35;
-          for (const [left, right] of [[12, gapX - halfGap], [gapX + halfGap, width - 12]]) {
+          for (const [left, right] of [[20, gapX - halfGap], [gapX + halfGap, width - 20]]) {
             if (right - left < 12) continue;
             attack({ x: left, y }, { kind: 'line', a: 0, len: right - left,
               r: 12, warn: 0.95 + row * 0.4, life: 0.85,
@@ -174,7 +175,7 @@ export function planBossCast(f: Source, foes: Foe[], signature: boolean, width: 
         shapeShots([center - 0.17, center, center + 0.17], 0.7 + side * 0.3, 130, 'ghost');
       }
       // Extra delayed ghost strike follows the initial decoys.
-      if (f.tier >= 5) attack(target, { warn: 1.35, life: 0.45, r: 26, pic: 'ghost', el: 'shadow', asset: 'spectral-bolt' });
+      if (f.cast === 8 && f.tier >= 4) attack(target, { warn: 1.35, life: 0.45, r: 26, pic: 'ghost', el: 'shadow', asset: 'spectral-bolt' });
       break;
     case 'frenzy':
       // Valdur's signature chains short, newly aimed charges; the resolver uses these warned impact lines.
