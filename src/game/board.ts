@@ -2,7 +2,7 @@ import { WORLDS, type Look, type ThreatEl } from './world';
 import { BOSS_CAST, bossKit, planBossCast, type BoardBossAttack, type BossPool, type BossShot } from './boardBoss';
 export { bossKit } from './boardBoss';
 
-/* «Sprint Planning», the board mode: an auto battler. Between fights you buy bugs of the casts you have opened,
+/* «Sprint Planning», the board mode: an auto battler. Between fights you buy bugs from every cast,
    lay them on your half of the board and merge two of a kind into the next one up the cast (two bugs make a
    ticket, two tickets a legacy, two legacy a room-6 boss, two of those the world's final boss); then the fight
    with the round's enemy wave plays out on its own. Your hero watches from the lower right corner and the world's
@@ -12,7 +12,7 @@ export { bossKit } from './boardBoss';
    can be simulated in Node; drawn by `boardView.ts`. */
 
 export const COLS = 6;
-export const ROWS = 10;
+export const ROWS = 9;
 export const CELL = 56;
 export const ROUNDS = 10;
 export const BOARD_W = COLS * CELL;
@@ -50,38 +50,45 @@ export const FINAL_ID = ['kernel', 'archdemon', 'drakkar', 'medusa', 'queen', 'z
 /** A cast's strength: health and damage ×(1 + `CAST.step` a world past the first); its price grows the same. */
 export const CAST = { step: 0.25 };
 export const castPower = (cast: number) => 1 + CAST.step * (cast - 1);
-/** A unit's strength: its cast's in Fusion, the world's for every cast in Tactics (all levelled). */
-export const unitPower = (b: { variant: Variant; world: number }, cast: number) => castPower(b.variant === 'tactics' ? b.world : cast);
+/** Units native to the selected world get a small, consistent combat bonus in either board variant. */
+export const NATIVE_WORLD_BONUS = 0.15;
+export const nativeWorldPower = (world: number, cast: number) => cast === world ? 1 + NATIVE_WORLD_BONUS : 1;
+/** A unit's base strength follows the selected world; native units then receive their world bonus. */
+export const unitPower = (b: { variant: Variant; world: number }, cast: number) => castPower(b.world) * nativeWorldPower(b.world, cast);
 export const castLook = (cast: number) => (WORLDS[cast - 1].look === 'random' ? 'core' : WORLDS[cast - 1].look) as Look;
 
 /** How strong the waves are against the gold you have had (×base in world 1, `world` more each world after), and
     how much tougher the enemy's units are than a cast's own each world past the first. */
 export const WAVE = { base: 0.88, world: 0.05, tough: 0.012 };
-/** Your half of the board: the lower five rows. */
-export const HOME_ROW = 5;
+/** Your half of the board: the lower four rows. */
+export const WALL_ROW = 4;
+export const HOME_ROW = WALL_ROW + 1;
 
-/** Three units of one world (five for the stronger one) give each of them its world's gift in the fight:
+/** Fusion needs two units of one world (five for the stronger gift); Tactics needs two different worlds:
     1 the Backlog +health, 2 fire burns, 3 ice slows, 4 mud takes less damage, 5 the jungle heals, 6 the Arena
     strikes faster, 7 the Forge's hits arc to one more, 8 the haunted servers dodge, 9 the Core hits harder.
     `v` is each level's amount. */
-export const SYNERGY = { need: [3, 5], v: { 1: [0.2, 0.35], 2: [0.3, 0.5], 3: [0.3, 0.45], 4: [0.2, 0.3], 5: [0.02, 0.035], 6: [0.2, 0.35], 7: [0.4, 0.6], 8: [0.15, 0.25], 9: [0.2, 0.35] } as Record<number, [number, number]> };
+export const SYNERGY = { need: [2, 5], v: { 1: [0.2, 0.35], 2: [0.3, 0.5], 3: [0.3, 0.45], 4: [0.2, 0.3], 5: [0.02, 0.035], 6: [0.2, 0.35], 7: [0.4, 0.6], 8: [0.15, 0.25], 9: [0.2, 0.35] } as Record<number, [number, number]> };
 /** How many of your units each world has, and the level of its synergy (0, 1 or 2). */
-export function synergies(b: { army: { cast: number }[] }) {
+export function synergies(b: { army: { cast: number }[]; variant?: Variant }) {
   const count: Record<number, number> = {};
   for (const p of b.army) count[p.cast] = (count[p.cast] ?? 0) + 1;
-  return Object.entries(count).map(([cast, n]) => ({ cast: Number(cast), n, lv: n >= SYNERGY.need[1] ? 2 : n >= SYNERGY.need[0] ? 1 : 0 })).sort((a, c) => c.n - a.n || a.cast - c.cast);
+  const worlds = Object.keys(count).length;
+  return Object.entries(count).map(([cast, n]) => ({ cast: Number(cast), n, lv: b.variant === 'tactics'
+    ? worlds >= 2 ? (b.army.length >= SYNERGY.need[1] ? 2 : 1) : 0
+    : n >= SYNERGY.need[1] ? 2 : n >= SYNERGY.need[0] ? 1 : 0 })).sort((a, c) => c.n - a.n || a.cast - c.cast);
 }
 const synV = (f: { syn: number; synLv: number; tac?: boolean }, world: number) => (!f.tac && f.syn === world && f.synLv ? SYNERGY.v[world][f.synLv - 1] : 0);
-/** Tactics: every unit fights with its own world's ability, alone at its first level, and stronger with three (second)
-    or five (third) of its world on the board, so mixing worlds makes combos; all casts are equally strong there. */
+/** Tactics: every unit fights with its own world's ability; a mixed-world army strengthens it, and five units
+    strengthen it again. All casts are equally strong there. */
 export type Ability = 'poison' | 'burn' | 'freeze' | 'slow' | 'drain' | 'shock' | 'armor' | 'dodge' | 'power';
 export const ABILITY: Record<number, Ability> = { 1: 'poison', 2: 'burn', 3: 'freeze', 4: 'slow', 5: 'drain', 6: 'shock', 7: 'armor', 8: 'dodge', 9: 'power' };
 /** Each ability's amount at its three levels: poison and burn a share of the hit over 3 and 2 s, freeze a chance to
     stop the foe for `FREEZE` seconds, slow by that much for 1.2 s, drain a share of the hit healed, shock a share
     arcing to one more, armor and dodge against hits taken, power more damage. */
 export const ABIL_V: Record<Ability, [number, number, number]> = {
-  poison: [0.3, 0.45, 0.65], burn: [0.3, 0.45, 0.65], freeze: [0.12, 0.2, 0.3], slow: [0.25, 0.35, 0.5], drain: [0.15, 0.25, 0.35],
-  shock: [0.35, 0.5, 0.7], armor: [0.12, 0.2, 0.3], dodge: [0.1, 0.16, 0.24], power: [0.15, 0.25, 0.4],
+  poison: [0.3, 0.4, 0.65], burn: [0.3, 0.4, 0.65], freeze: [0.12, 0.16, 0.3], slow: [0.25, 0.3, 0.5], drain: [0.15, 0.2, 0.35],
+  shock: [0.35, 0.42, 0.7], armor: [0.12, 0.16, 0.3], dodge: [0.1, 0.13, 0.24], power: [0.15, 0.2, 0.4],
 };
 const FREEZE = 0.7;
 const abil = (f: { syn: number; synLv: number; tac?: boolean }, a: Ability) => (f.tac && f.synLv && ABILITY[f.syn] === a ? ABIL_V[a][f.synLv - 1] : 0);
@@ -196,6 +203,8 @@ export type BoardGame = {
   gold: number;
   phase: BoardPhase;
   army: Piece[];
+  /** Tactics cards held in reserve; they do not fight or count toward the field cap. */
+  bench: Piece[];
   shop: Offer[];
   /** This round's enemy, drawn faintly on their half while you prepare. */
   wave: Tier[];
@@ -261,10 +270,11 @@ const worldUp = (w: number) => 1 + (w - 1) * 0.25;
 
 export const pieceAt = (b: BoardGame, s: Slot) => b.army.find((p) => p.slot.c === s.c && p.slot.r === s.r);
 export const inBoard = (s: Slot) => s.c >= 0 && s.c < COLS && s.r >= 0 && s.r < ROWS;
-/** Your half: the lower five rows. */
+/** Your half: the lower four rows, below the reserved wall row. */
 /** The corners where the commanders stand: yours at the lower right, the rival's at the upper left. */
 export const isCorner = (s: Slot) => (s.c === COLS - 1 && s.r === ROWS - 1) || (s.c === 0 && s.r === 0);
-export const homeCell = (s: Slot) => inBoard(s) && s.r >= HOME_ROW && !isCorner(s);
+// The floating commander does not reserve a deployment cell: all four home rows are usable.
+export const homeCell = (s: Slot) => inBoard(s) && s.r >= HOME_ROW;
 /** The first free cell of your half, from the front row back. */
 function freeCell(b: BoardGame, backFirst = false): Slot | null {
   // Fusion's summons fill from the front row back; Tactics' cards bought with a tap from the back row up.
@@ -278,22 +288,22 @@ export const priceOf = (tier: Tier, cast: number, variant: Variant = 'fusion') =
 export const saleOf = (p: Piece, variant: Variant = 'fusion', world = p.cast) =>
   variant === 'tactics'
     ? Math.max(1, Math.floor((priceOf(p.tier, world, 'tactics') * TACTICS.copies ** (starOf(p) - 1)) / 2))
-    : Math.max(1, Math.floor((TIER_VALUE[p.tier] * castPower(p.cast)) / 2));
+    : Math.max(1, Math.floor((TIER_VALUE[p.tier] * castPower(world)) / 2));
 
 export function newBoard(world: number, casts: number, variant: Variant = 'fusion'): BoardGame {
   const wave = enemyWave(world, 1);
   const b: BoardGame = {
     world, variant, casts: Math.max(1, Math.min(world, casts, WORLDS.length)), round: 1, lives: LIVES, rivalLives: LIVES, winStreak: 0, rivalStreak: 0, gold: Math.round(8 * castPower(world)), phase: 'prep',
-    army: [], shop: [], wave, waveCasts: enemyWaveCasts(world, 1, wave, variant), fighters: [], shots: [], time: 0, last: null, wins: 0, kills: 0, events: [], event: null, skillUsed: false, strike: null, boom: null, impacts: [], effects: [], bossAttacks: [], lastMerge: null, lastSummon: null, autoMerge: false, autoBought: false, summons: 0, pending: null,
+    army: [], bench: [], shop: [], wave, waveCasts: enemyWaveCasts(world, 1, wave, variant), fighters: [], shots: [], time: 0, last: null, wins: 0, kills: 0, events: [], event: null, skillUsed: false, strike: null, boom: null, impacts: [], effects: [], bossAttacks: [], lastMerge: null, lastSummon: null, autoMerge: false, autoBought: false, summons: 0, pending: null,
   };
-  // You start with a bug of the latest cast on the board.
-  b.army.push({ id: nextId++, tier: 0, cast: b.casts, slot: { c: 2, r: ROWS - 2 }, star: 1 });
+  // You start with a native bug, which receives this world's bonus.
+  b.army.push({ id: nextId++, tier: 0, cast: b.world, slot: { c: 2, r: ROWS - 2 }, star: 1 });
   rollShop(b);
   return b;
 }
 
-/** Four cards: mostly bugs and tickets (a legacy now and then from round 4), from any cast you have opened, the
-    latest more often. */
+export const SHOP_SIZE = 3;
+/** Shop offers from every world's cast, with rarer units appearing more often in later rounds. */
 function rollTacticsOffer(b: BoardGame): NonNullable<Offer> {
   // Rarer cards come more often as the rounds go on.
   const k = (b.round - 1) / (ROUNDS - 1);
@@ -301,19 +311,19 @@ function rollTacticsOffer(b: BoardGame): NonNullable<Offer> {
   let roll = Math.random();
   let tier = 0;
   while (tier < 4 && roll >= odds[tier]) { roll -= odds[tier]; tier += 1; }
-  // Only this world's cast and the earlier ones unlocked for the board.
-  const cast = 1 + Math.floor(Math.random() * b.casts);
+  // Any world's characters can appear; native characters get a combat bonus in this world.
+  const cast = 1 + Math.floor(Math.random() * WORLDS.length);
   return { tier: tier as Tier, cast, price: priceOf(tier as Tier, b.world, 'tactics') };
 }
 
 function rollShop(b: BoardGame) {
   // Fusion has no cards: its units are summoned (`summon`).
   if (b.variant === 'fusion') { b.shop = []; return; }
-  if (b.variant === 'tactics') { b.shop = Array.from({ length: 4 }, () => rollTacticsOffer(b)); return; }
-  b.shop = Array.from({ length: 4 }, () => {
+  if (b.variant === 'tactics') { b.shop = Array.from({ length: SHOP_SIZE }, () => rollTacticsOffer(b)); return; }
+  b.shop = Array.from({ length: SHOP_SIZE }, () => {
     const roll = Math.random();
     const tier: Tier = b.round >= 4 && roll < 0.08 ? 2 : roll < 0.34 ? 1 : 0;
-    const cast = Math.random() < 0.5 ? b.casts : 1 + Math.floor(Math.random() * b.casts);
+    const cast = 1 + Math.floor(Math.random() * WORLDS.length);
     return { tier, cast, price: priceOf(tier, cast) };
   });
 }
@@ -328,6 +338,7 @@ export function reroll(b: BoardGame) {
 /** Buys a shop card onto the first free cell. */
 /** How many units you may field in a round: four in the first, up to ten. */
 export const armyCap = (round: number) => Math.min(10, 3 + Math.ceil(round * 0.7));
+export const BENCH_CAP = 4;
 
 export function buy(b: BoardGame, i: number, at?: Slot) {
   const offer = b.shop[i];
@@ -401,8 +412,7 @@ export function tickMerge(b: BoardGame, dt: number, skip = false) {
 }
 
 /** Fusion has no shop: the summon button drops a unit straight onto your half for a set price, nearly always a bug,
-    now and then a ticket and, from round 4, a legacy, of the latest world's cast six times in ten and any opened
-    one otherwise; it merges with its twin at once. */
+    now and then a ticket and, from round 4, a legacy. It favours this world's cast, while every cast can appear. */
 export const SUMMON = { price: 1.5, ticket: 0.25, legacy: 0.06, latest: 0.6, step: 4, wave: 0.9 };
 /** The auto-merge's price, once a run: from then on a unit summoned next to its twin merges by itself, and every
     pair already on the board merges at once. */
@@ -441,7 +451,7 @@ export function summon(b: BoardGame): 'ok' | 'gold' | 'full' | 'none' {
   b.summons += 1;
   const roll = Math.random();
   const tier: Tier = b.round >= 4 && roll < SUMMON.legacy ? 2 : roll < SUMMON.legacy + SUMMON.ticket ? 1 : 0;
-  const cast = Math.random() < SUMMON.latest ? b.casts : 1 + Math.floor(Math.random() * b.casts);
+  const cast = Math.random() < SUMMON.latest ? b.world : 1 + Math.floor(Math.random() * WORLDS.length);
   b.events.push('summon');
   placeFusion(b, tier, cast);
   return 'ok';
@@ -451,31 +461,84 @@ export function summon(b: BoardGame): 'ok' | 'gold' | 'full' | 'none' {
     Another copy at the new star continues the chain, up to three stars. */
 function buyTactics(b: BoardGame, i: number, offer: NonNullable<Offer>, where?: Slot) {
   const same = (p: Piece, star: Star) => p.tier === offer.tier && p.cast === offer.cast && starOf(p) === star;
-  const pair = b.army.filter((p) => same(p, 1));
-  if (pair.length < TACTICS.copies - 1 && b.army.length >= armyCap(b.round)) return false;
+  const pair = [...b.army, ...b.bench].filter((p) => same(p, 1));
+  if (pair.length < TACTICS.copies - 1 && b.army.length >= armyCap(b.round) && b.bench.length >= BENCH_CAP) return false;
   // Dragged onto a free cell of your half it lands there; tapped, on the first free cell from the back row up.
   const chosen = where && homeCell(where) && !pieceAt(b, where) ? where : null;
-  const at = pair.length >= TACTICS.copies - 1 ? null : chosen ?? freeCell(b, true);
-  if (!at && pair.length < TACTICS.copies - 1) return false;
+  // Empty grid cells do not grant extra army capacity. Overflow purchases belong in reserve.
+  const at = pair.length >= TACTICS.copies - 1 || b.army.length >= armyCap(b.round) ? null : chosen ?? freeCell(b, true);
+  const reserve = !at && pair.length < TACTICS.copies - 1 && b.bench.length < BENCH_CAP;
+  if (!at && pair.length < TACTICS.copies - 1 && !reserve) return false;
   b.gold -= offer.price;
   b.shop[i] = rollTacticsOffer(b);
   b.events.push('buy');
+  if (reserve) { b.bench.push({ id: nextId++, tier: offer.tier, cast: offer.cast, slot: { c: -1, r: b.bench.length }, star: 1 }); return true; }
   if (at) { b.army.push({ id: nextId++, tier: offer.tier, cast: offer.cast, slot: at, star: 1 }); return true; }
   let star: Star = 1;
   let keep = pair[0];
   let group = pair.slice(0, TACTICS.copies - 1);
   for (;;) {
     b.army = b.army.filter((p) => !group.includes(p) || p === keep);
+    b.bench = b.bench.filter((p) => !group.includes(p) || p === keep);
     star = (star + 1) as Star;
     keep.star = star;
     if (star >= 3) break;
-    const next = b.army.filter((p) => p !== keep && same(p, star));
+    const next = [...b.army, ...b.bench].filter((p) => p !== keep && same(p, star));
     if (next.length < TACTICS.copies - 1) break;
     group = [keep, ...next.slice(0, TACTICS.copies - 1)];
     keep = group[0];
   }
-  b.lastMerge = { slot: keep.slot, id: keep.id, combo: star - 1, star };
+  b.bench.forEach((piece, index) => { piece.slot.r = index; });
+  if (keep.slot.c >= 0) b.lastMerge = { slot: keep.slot, id: keep.id, combo: star - 1, star };
   b.events.push('merge');
+  return true;
+}
+
+/** Deploy a reserve into a free cell, or exchange it with the unit occupying the target cell. */
+export function deployBench(b: BoardGame, index: number, target?: Slot) {
+  if (b.phase !== 'prep' || b.variant !== 'tactics' || b.online?.waiting) return false;
+  const p = b.bench[index];
+  const at = target ?? freeCell(b, true);
+  if (!p || !at || !homeCell(at)) return false;
+  const other = pieceAt(b, at);
+  if (other) {
+    const armyIndex = b.army.indexOf(other);
+    p.slot = { ...at };
+    other.slot = { c: -1, r: index };
+    b.army[armyIndex] = p;
+    b.bench[index] = other;
+    b.events.push('deploy');
+    return true;
+  }
+  if (b.army.length >= armyCap(b.round)) return false;
+  b.bench.splice(index, 1);
+  p.slot = at;
+  b.bench.forEach((piece, i) => { piece.slot.r = i; });
+  b.army.push(p);
+  b.events.push('deploy');
+  return true;
+}
+
+/** Sell a reserve for the same value as the equivalent fielded unit. */
+export function sellBench(b: BoardGame, index: number) {
+  const p = b.bench[index];
+  if (b.phase !== 'prep' || b.variant !== 'tactics' || b.online?.waiting || !p) return false;
+  b.gold += saleOf(p, b.variant, b.world);
+  b.bench.splice(index, 1);
+  b.bench.forEach((piece, i) => { piece.slot.r = i; });
+  b.events.push('sell');
+  return true;
+}
+
+/** Store a fielded Tactics unit in the first free bench slot. */
+export function storeOnBench(b: BoardGame, from: Slot) {
+  if (b.phase !== 'prep' || b.variant !== 'tactics' || b.bench.length >= BENCH_CAP) return false;
+  const p = pieceAt(b, from);
+  if (!p) return false;
+  b.army = b.army.filter((unit) => unit !== p);
+  p.slot = { c: -1, r: b.bench.length };
+  b.bench.push(p);
+  b.events.push('bench');
   return true;
 }
 
@@ -534,7 +597,7 @@ export function unitStats(b: Pick<BoardGame, 'variant' | 'world' | 'event' | 'ar
 /** The rival's preview numbers use the same growth and event rules as the fighters created in startFight. */
 export function waveUnitStats(b: Pick<BoardGame, 'variant' | 'world' | 'event'>, tier: Tier, cast = b.world, star: Star = 1) {
   const tac = b.variant === 'tactics';
-  const mult = castPower(b.world) * (1 + WAVE.tough * (b.world - 1)) * (tac ? TACTICS.wave : SUMMON.wave);
+  const mult = castPower(b.world) * nativeWorldPower(b.world, cast) * (1 + WAVE.tough * (b.world - 1)) * (tac ? TACTICS.wave : SUMMON.wave);
   const syn = tac ? cast : 0;
   const synLv = tac ? 1 : 0;
   return { ...combatStats(tier, mult, syn, synLv, b.event, star, tac), syn, synLv, ability: tac ? ABILITY[cast] : undefined, kit: bossKit(cast, tier) };
@@ -611,7 +674,7 @@ export function enemyWaveCasts(world: number, round: number, wave: Tier[], varia
 /** Where this round's enemy stands: each card gets a varied cell from the rival's half. */
 export function waveSpots(b: BoardGame) {
   const cells: Slot[] = [];
-  for (let r = 0; r < HOME_ROW; r++) for (let c = 0; c < COLS; c++) if (!isCorner({ c, r })) cells.push({ c, r });
+  for (let r = 0; r < WALL_ROW; r++) for (let c = 0; c < COLS; c++) if (!isCorner({ c, r })) cells.push({ c, r });
   const stars = enemyWaveStars(b.round, b.wave, b.variant);
   const wave = b.wave.map((tier, i) => ({ tier, cast: b.waveCasts[i] ?? b.world, star: stars[i] })).sort((a, c) => a.tier - c.tier);
   // Shuffle with a round-local seed so the rival uses varied cells, while previews and both online screens
@@ -632,9 +695,12 @@ export function startFight(b: BoardGame) {
   const tac = b.variant === 'tactics';
   b.fighters = b.army.map((p) => { const at = cellCentre(p.slot); return tac
     ? fighter(0, p.tier, p.cast, at.x, at.y, unitPower(b, p.cast), p.id, p.cast, 1 + (lv[p.cast] ?? 0), b.event, starOf(p), true)
-    : fighter(0, p.tier, p.cast, at.x, at.y, castPower(p.cast), p.id, lv[p.cast] ? p.cast : 0, lv[p.cast] ?? 0, b.event, starOf(p)); });
+    : fighter(0, p.tier, p.cast, at.x, at.y, unitPower(b, p.cast), p.id, lv[p.cast] ? p.cast : 0, lv[p.cast] ?? 0, b.event, starOf(p)); });
   const grow = castPower(b.world) * (1 + WAVE.tough * (b.world - 1)) * (b.variant === 'tactics' ? TACTICS.wave : SUMMON.wave);
-  for (const w of waveSpots(b)) b.fighters.push(tac ? fighter(1, w.tier, w.cast, w.x, w.y, grow, nextId++, w.cast, 1, b.event, w.star, true) : fighter(1, w.tier, w.cast, w.x, w.y, grow, nextId++, 0, 0, b.event));
+  const wave = waveSpots(b);
+  const waveWorlds = new Set(wave.map((unit) => unit.cast)).size;
+  const enemySynergy = waveWorlds >= 2 ? (wave.length >= SYNERGY.need[1] ? 2 : 1) : 0;
+  for (const w of wave) b.fighters.push(tac ? fighter(1, w.tier, w.cast, w.x, w.y, grow * nativeWorldPower(b.world, w.cast), nextId++, w.cast, 1 + enemySynergy, b.event, w.star, true) : fighter(1, w.tier, w.cast, w.x, w.y, grow * nativeWorldPower(b.world, w.cast), nextId++, 0, 0, b.event));
   b.shots = [];
   b.skillUsed = false;
   b.strike = null;
@@ -660,12 +726,12 @@ export function startOnlineFight(b: BoardGame, rival: Piece[], mine: Piece[] = b
   const guest = o.me === 0 ? rival : mine;
   let id = 1;
   const make = (side: 0 | 1, army: Piece[]) => {
-    const lv = Object.fromEntries(synergies({ army }).map((x) => [x.cast, x.lv]));
+    const lv = Object.fromEntries(synergies({ army, variant: b.variant }).map((x) => [x.cast, x.lv]));
     return army.map((p) => {
       const at = cellCentre(side === 0 ? p.slot : { c: COLS - 1 - p.slot.c, r: ROWS - 1 - p.slot.r });
       return b.variant === 'tactics'
         ? fighter(side, p.tier, p.cast, at.x, at.y, unitPower(b, p.cast), id++, p.cast, 1 + (lv[p.cast] ?? 0), b.event, starOf(p), true)
-        : fighter(side, p.tier, p.cast, at.x, at.y, castPower(p.cast), id++, lv[p.cast] ? p.cast : 0, lv[p.cast] ?? 0, b.event, starOf(p));
+        : fighter(side, p.tier, p.cast, at.x, at.y, unitPower(b, p.cast), id++, lv[p.cast] ? p.cast : 0, lv[p.cast] ?? 0, b.event, starOf(p));
     });
   };
   b.fighters = [...make(0, host), ...make(1, guest)];

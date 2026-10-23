@@ -1,4 +1,4 @@
-import { BOARD_H, BOARD_W, CELL, COLS, FINAL_ID, HOME_ROW, LEAP, MERGE_DELAY, STRIKE, homeCell, ROWS, TIER_KIND, TIER_STATS, canMerge, castLook, cellCentre, pieceAt, waveSpots, ABILITY, type Ability, type BoardGame, type Piece, type Slot, type Tier } from './board';
+import { BOARD_H, BOARD_W, CELL, COLS, FINAL_ID, HOME_ROW, WALL_ROW, LEAP, MERGE_DELAY, STRIKE, homeCell, ROWS, TIER_KIND, TIER_STATS, canMerge, castLook, cellCentre, pieceAt, waveSpots, ABILITY, type Ability, type BoardGame, type Piece, type Slot, type Tier } from './board';
 import { boardFx, boardWallPieces, drawBoardBackdrop, drawBoardFigure, drawBoardOrb } from './draw';
 
 /* Draw the board mode: bugs and waves on the grid, with the worn hero and the rival on their portals. On phones they
@@ -17,13 +17,13 @@ export const FIREBALL = { fly: 0.75, blast: 0.45 };
 export type BoardLayout = { s: number; sx: number; ox: number; oy: number };
 
 /** Fits the board (and the strip above it) into the area between the top bar and the shop. */
-export function layoutBoard(w: number, top: number, bottom: number, arenaWidth = w, widthScale = 1, maxBoardWidth = w): BoardLayout {
+export function layoutBoard(w: number, top: number, bottom: number, arenaWidth = w, widthScale = 1, maxBoardWidth = w, fillHeight = false): BoardLayout {
   // The commanders float over the arena, so their art must not take height away from the grid.
   const room = Math.max(120, bottom - top);
-  const s = Math.min((Math.min(w, arenaWidth) - 8) / BOARD_W, room / (BOARD_H + TOP));
+  const s = fillHeight ? room / (BOARD_H + TOP) : Math.min((Math.min(w, arenaWidth) - 8) / BOARD_W, room / (BOARD_H + TOP));
   const spare = Math.max(0, room - (BOARD_H + TOP) * s);
   // Expand only the spacing between columns. Keep the previous height and never shrink the grid to fit its controls.
-  const sx = s * Math.max(1, Math.min(widthScale, maxBoardWidth / (BOARD_W * s)));
+  const sx = fillHeight ? Math.min(w - 8, maxBoardWidth) / BOARD_W : s * Math.max(1, Math.min(widthScale, maxBoardWidth / (BOARD_W * s)));
   return { s, sx, ox: (w - BOARD_W * sx) / 2, oy: top + spare + TOP * s };
 }
 
@@ -140,7 +140,7 @@ function drawBossMoves(ctx: CanvasRenderingContext2D, b: BoardGame, live: BoardG
 /* The wall between the halves: the world's own long blocks in a row along the halfway line, standing while you lay
    your army out; it sinks into the floor as the fight starts and rises again when it ends, shaking a little as it
    moves, with dust where it meets the floor. */
-const WALL = { move: 0.5, h: 40 };
+const WALL = { move: 0.5 };
 let wallUp = 1;
 let wallAt = 0;
 function drawWall(ctx: CanvasRenderingContext2D, b: BoardGame, now: number, retro: boolean) {
@@ -153,15 +153,10 @@ function drawWall(ctx: CanvasRenderingContext2D, b: BoardGame, now: number, retr
   else if (target < wallUp) wallUp = Math.max(0, wallUp - dt / WALL.move);
   const pieces = boardWallPieces(b.world);
   if (retro || wallUp <= 0 || !pieces.every(ok)) return;
-  // As many pieces as keep the wall `WALL.h` tall.
-  const ratio = pieces[0].naturalHeight / pieces[0].naturalWidth;
-  // Always an odd count, so there is a middle piece: the world's other block, the rest all alike either side of it.
-  const n = Math.max(3, Math.round(BOARD_W / (WALL.h / ratio))) | 1;
-  const w = BOARD_W / n;
-  const h = w * ratio;
-  // Its top just above the halfway line: the enemy's front row stands wholly behind it, in sight, and your own
-  // units, drawn over it, in front.
-  const base = HOME_ROW * CELL - 4 + h;
+  // Exactly three segments, each two columns wide and one reserved row tall.
+  const n = 3;
+  const h = CELL;
+  const base = (WALL_ROW + 1) * CELL;
   const moving = wallUp !== was && wallUp > 0 && wallUp < 1;
   const shake = moving ? Math.sin(now * 60) * 1.2 : 0;
   ctx.save();
@@ -170,16 +165,16 @@ function drawWall(ctx: CanvasRenderingContext2D, b: BoardGame, now: number, retr
   ctx.rect(-20, -200, BOARD_W + 40, base + 200);
   ctx.clip();
   const k = 1 - wallUp;
-  // The middle piece at its own shape, the long ones sharing what is left either side.
   const mid = pieces[1];
-  const mw = Math.min(BOARD_W / 2, (h * mid.naturalWidth) / mid.naturalHeight);
-  const sw = (BOARD_W - mw) / (n - 1);
-  let x = 0;
-  for (let i = 0; i < n; i++) {
+  const pw = BOARD_W / n;
+  const overlap = pw * 0.06;
+  // Extend into the neighbouring segment, keeping the outer edges inside the board.
+  // Paint the distinct centre last so its details stay visible over both joins.
+  for (const i of [0, 2, 1]) {
     const middle = i === (n - 1) / 2;
-    const pw = middle ? mw : sw;
-    ctx.drawImage(middle ? mid : pieces[0], x - pw * 0.02 + shake, base - h + k * (h + 2), pw * 1.04, h);
-    x += pw;
+    const left = i > 0 ? overlap : 0;
+    const right = i < n - 1 ? overlap : 0;
+    ctx.drawImage(middle ? mid : pieces[0], i * pw - left + shake, base - h + k * (h + 2), pw + left + right, h);
   }
   ctx.restore();
   // Dust along its foot while it moves.
@@ -396,7 +391,7 @@ function drawStars(ctx: CanvasRenderingContext2D, x: number, y: number, star: nu
 }
 
 /** Fusion's tier pips or Tactics' asset stars, plus the same bonus icon the shop and side panel use. */
-function marks(ctx: CanvasRenderingContext2D, x: number, y: number, p: { tier: number; cast: number; star?: number }, tactics: boolean, retro: boolean, now: number) {
+function marks(ctx: CanvasRenderingContext2D, x: number, y: number, p: { tier: number; cast: number; star?: number }, tactics: boolean, retro: boolean, now: number, native: boolean) {
   if (tactics) {
     drawStars(ctx, x, y - CELL * 0.42 + boardUnitBounds(p).y - 9, p.star, now, retro);
   } else {
@@ -412,6 +407,11 @@ function marks(ctx: CanvasRenderingContext2D, x: number, y: number, p: { tier: n
   ctx.beginPath();
   ctx.arc(x + CELL * 0.36, y - CELL * 0.62, 7, 0, Math.PI * 2);
   ctx.fill();
+  if (native) {
+    ctx.strokeStyle = '#facc15';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  }
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   const icon = bonusImage(tactics ? ABILITY_PIC[ABILITY[p.cast]] : SYNERGY_PIC[p.cast]);
@@ -434,11 +434,11 @@ function marks(ctx: CanvasRenderingContext2D, x: number, y: number, p: { tier: n
 /** Each world ability's symbol on a Tactics unit. */
 export const ABILITY_ICON: Record<Ability, string> = { poison: '☠', burn: '🔥', freeze: '❄', slow: '🐌', drain: '🩸', shock: '⚡', armor: '🛡', dodge: '👻', power: '💪' };
 export const ABILITY_PIC: Record<Ability, string> = {
-  poison: 'fx/venom.webp', burn: 'skills/fire.webp', freeze: 'skills/frost.webp', slow: 'fx/mud-splat.webp',
-  drain: 'fx/heart.webp', shock: 'skills/bolt.webp', armor: 'forge/armor.webp', dodge: 'skills/dodge.webp', power: 'skills/power.webp',
+  poison: 'fx/venom.webp', burn: 'fx/flame-orange.webp', freeze: 'skills/frost.webp', slow: 'fx/mud-splat.webp',
+  drain: 'skills/vampire.webp', shock: 'skills/bolt.webp', armor: 'forge/armor.webp', dodge: 'skills/dodge.webp', power: 'skills/power.webp',
 };
 export const SYNERGY_PIC: Record<number, string> = {
-  1: 'skills/heart.webp', 2: ABILITY_PIC.burn, 3: ABILITY_PIC.freeze, 4: ABILITY_PIC.armor,
+  1: 'forge/vitality.webp', 2: ABILITY_PIC.burn, 3: 'fx/ice-block.webp', 4: ABILITY_PIC.armor,
   5: 'skills/drink.webp', 6: 'skills/speed.webp', 7: ABILITY_PIC.shock, 8: ABILITY_PIC.dodge, 9: ABILITY_PIC.power,
 };
 const bonusImages = new Map<string, HTMLImageElement>();
@@ -697,12 +697,14 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
       ? compactShop
         ? { x: (mineX - lay.ox) / lay.s, y: (floor.bottom - 96 - lay.oy) / lay.s }
         : marginPoint(mineX, 0.75, mineBottom)
-      : { x: (fieldRight - 44 - lay.ox) / lay.s, y: MINE.y },
-    rival: commandersOutsideBoard ? marginPoint(Math.max(54, lay.ox - 64), 0.25) : RIVAL,
+      : { x: (fieldRight - 52 - lay.ox) / lay.s, y: BOARD_H - 64 },
+    rival: commandersOutsideBoard
+      ? marginPoint(Math.max(54, lay.ox - 64), 0.25)
+      : { x: (52 - lay.ox) / lay.s, y: (floor.top + 90 - lay.oy) / lay.s },
   };
   // The world's whole arena floor, walls and corners, as in a sprint, from under the top bar to over the buttons;
   // the board is only its grid.
-  drawBoardBackdrop(ctx, b.world, ctx.canvas.width / dpr, floor.top, floor.bottom, dpr, retro, floor.width, floor.widthScale);
+  drawBoardBackdrop(ctx, b.world, ctx.canvas.width / dpr, floor.top, floor.bottom, dpr, retro, floor.width, floor.widthScale, !commandersOutsideBoard);
   ctx.setTransform(dpr * lay.s, 0, 0, dpr * lay.s, dpr * lay.ox, dpr * lay.oy);
   // Only the grid and its wall use the wider transform; sprites and effects keep their own proportions.
   ctx.save();
@@ -713,7 +715,9 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
   ctx.clip();
   // The enemy's half a little darker and redder, yours a little bluer.
   ctx.fillStyle = 'rgba(40,6,16,0.22)';
-  ctx.fillRect(0, 0, BOARD_W, HOME_ROW * CELL);
+  ctx.fillRect(0, 0, BOARD_W, WALL_ROW * CELL);
+  ctx.fillStyle = 'rgba(8,12,20,0.35)';
+  ctx.fillRect(0, WALL_ROW * CELL, BOARD_W, CELL);
   ctx.fillStyle = 'rgba(6,14,40,0.12)';
   ctx.fillRect(0, HOME_ROW * CELL, BOARD_W, BOARD_H - HOME_ROW * CELL);
   // The grid and the line between the halves are only there to lay the units out: once the fight starts they go.
@@ -751,7 +755,9 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
   // A round won: it cheers and celebrates once its fireball has struck (the world won too).
   const party = won && done ? ended! - FIREBALL.fly : -1;
   const pose = b.phase === 'over' && done ? pics.down : ended !== null && won && !done ? pics.shoot : party >= 0 ? pics.cheer : !won && struck > 0 ? pics.hurt : pics.front;
-  drawHero(ctx, pics, pose, now, won ? 0 : struck * 0.6, party, commanders.mine, heroScale);
+  if (commandersOutsideBoard || !tactics || b.phase !== 'prep') {
+    drawHero(ctx, pics, pose, now, won ? 0 : struck * 0.6, party, commanders.mine, heroScale);
+  }
 
   // Where the dragged unit would go: green to move, gold to merge.
   if (drag?.over) {
@@ -799,7 +805,7 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
       ctx.scale(FIG * pop, FIG * pop);
       drawBoardFigure(ctx, figureOf(p.tier, p.cast, 1, 0, 0, 0), now, retro);
       ctx.restore();
-      marks(ctx, c.x * spread, c.y + CELL * 0.42, p, tactics, retro, now);
+      marks(ctx, c.x * spread, c.y + CELL * 0.42, p, tactics, retro, now, p.cast === b.world);
     }
   } else {
     const live = b.fighters.filter((f) => !f.dead).sort((p, q) => p.y - q.y);
@@ -896,8 +902,11 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
   const minePop = !won && ended !== null ? b.last?.lost ?? 0 : 0;
   const mine = commanders.mine;
   const rival = commanders.rival;
-  hearts(ctx, commandersOutsideBoard ? rival.x : rival.x + 50, commandersOutsideBoard ? rival.y - 82 * rivalScale : -TOP / 2, rivalHp(b), rivalPop, done ? popAt : 0, retro);
-  hearts(ctx, mine.x, mine.y - 82 * heroScale, b.lives, minePop, done ? popAt : 0, retro);
+  const rivalHeartY = rival.y - (commandersOutsideBoard ? 82 : 48) * rivalScale;
+  hearts(ctx, commandersOutsideBoard ? rival.x : rival.x + 50, rivalHeartY, rivalHp(b), rivalPop, done ? popAt : 0, retro);
+  if (commandersOutsideBoard || !tactics || b.phase !== 'prep') {
+    hearts(ctx, mine.x, mine.y - 82 * heroScale, b.lives, minePop, done ? popAt : 0, retro);
+  }
   // Your commander's fireball in the fight: from your hero onto the enemies' thickest knot, then its blast.
   if (b.strike) {
     const k = 1 - b.strike.t / STRIKE.fly;
