@@ -2,6 +2,26 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.0 - 2026-10-23
+
+### Release - Tactics update
+This minor-version milestone consolidates the Tactics work and related boss changes already released through v1.12.61. The entries below retain their original version numbers and details; they are not retroactively renamed.
+
+### Tactics and mobile battle layout
+- Stable board geometry and floor framing across preparation, combat and results, while preserving the divider's original lowering/raising animation.
+- Mobile board shifted down 8 CSS pixels without resizing cells; dragging and hit testing use the same origin. The army-capacity counter sits below the divider on the left, and the bench heading is left-aligned above the reserve cards.
+- Queen's visible vine-wall segments, five-lane roots and staggered thorn volleys; Wraith's ghost formations and delayed targeted strike. Final-boss conditions use the reachable tier 4, and delayed geometric volleys retain their intended flight lifetime.
+- Existing tactical damage budgets, shop/card positions and desktop layout are preserved.
+
+### Related boss changes in Sprints / On Call
+- Queen's warned thorn-vine walls and expanded root patterns; Wraith's additional clone projectiles and staggered ghost fans.
+- Medusa keeps her generic backup summons, using purple or turquoise snakes instead of frogs according to her phase.
+- Kernel Panic's introductory difficulty remains unchanged.
+
+### Versioning and scope
+- The game version advances from 1.12.61 to 1.13.0. Follow-up fixes to this milestone use 1.13.1, 1.13.2, and so on; a future substantial feature milestone can advance the minor version again.
+- This commit changes only version metadata and release notes. It introduces no additional gameplay, balance, layout or asset changes, and does not imply new runtime or visual validation. The verification limits recorded for earlier patches still apply.
+
 ## 1.12.61 - 2026-10-23
 
 ### Changed
