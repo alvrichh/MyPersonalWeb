@@ -146,7 +146,8 @@ let wallAt = 0;
 function drawWall(ctx: CanvasRenderingContext2D, b: BoardGame, now: number, retro: boolean) {
   const dt = Math.min(0.05, Math.max(0, now - wallAt));
   wallAt = now;
-  const target = b.phase === 'fight' ? 0 : 1;
+  // Keep the divider anchored to the same board row in prep, fight and results.
+  const target = 1;
   const was = wallUp;
   // Towards the target, and still once there (a plain `>` sent it down a step every frame it stood up).
   if (target > wallUp) wallUp = Math.min(1, wallUp + dt / WALL.move);
