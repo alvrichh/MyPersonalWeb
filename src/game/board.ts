@@ -532,12 +532,12 @@ export function unitStats(b: Pick<BoardGame, 'variant' | 'world' | 'event' | 'ar
 }
 
 /** The rival's preview numbers use the same growth and event rules as the fighters created in startFight. */
-export function waveUnitStats(b: Pick<BoardGame, 'variant' | 'world' | 'event'>, tier: Tier, cast = b.world) {
+export function waveUnitStats(b: Pick<BoardGame, 'variant' | 'world' | 'event'>, tier: Tier, cast = b.world, star: Star = 1) {
   const tac = b.variant === 'tactics';
   const mult = castPower(b.world) * (1 + WAVE.tough * (b.world - 1)) * (tac ? TACTICS.wave : SUMMON.wave);
   const syn = tac ? cast : 0;
   const synLv = tac ? 1 : 0;
-  return { ...combatStats(tier, mult, syn, synLv, b.event, 1, tac), syn, synLv, ability: tac ? ABILITY[cast] : undefined, kit: bossKit(cast, tier) };
+  return { ...combatStats(tier, mult, syn, synLv, b.event, star, tac), syn, synLv, ability: tac ? ABILITY[cast] : undefined, kit: bossKit(cast, tier) };
 }
 
 function fighter(side: 0 | 1, tier: Tier, cast: number, x: number, y: number, mult0: number, id = nextId++, syn = 0, synLv = 0, event: BoardEvent | null = null, star: Star = 1, tac = false): Fighter {
@@ -574,6 +574,17 @@ export function enemyWave(world: number, round: number): Tier[] {
   return out.sort((a, c) => c - a);
 }
 
+/** Tactics' rival also merges cards as the rounds advance. Its stronger units are
+    concentrated on the rarer cards, and the last rounds can field one 3-star. */
+export function enemyWaveStars(round: number, wave: Tier[], variant: Variant): Star[] {
+  const stars = wave.map((): Star => 1);
+  if (variant !== 'tactics' || !wave.length) return stars;
+  const upgraded = Math.min(wave.length, Math.floor(round * 0.42));
+  const threeStar = round >= 9 ? Math.min(1, upgraded) : 0;
+  for (let i = 0; i < upgraded; i++) stars[i] = i < threeStar ? 3 : 2;
+  return stars;
+}
+
 function waveSeed(world: number, round: number, variant: Variant, wave: Tier[], casts: number[] = [], extra = 0) {
   let state = 2166136261;
   for (const n of [world, round, extra, variant === 'tactics' ? 1 : 0, ...wave, ...casts]) state = Math.imul(state ^ n, 16777619) >>> 0;
@@ -601,7 +612,8 @@ export function enemyWaveCasts(world: number, round: number, wave: Tier[], varia
 export function waveSpots(b: BoardGame) {
   const cells: Slot[] = [];
   for (let r = 0; r < HOME_ROW; r++) for (let c = 0; c < COLS; c++) if (!isCorner({ c, r })) cells.push({ c, r });
-  const wave = b.wave.map((tier, i) => ({ tier, cast: b.waveCasts[i] ?? b.world })).sort((a, c) => a.tier - c.tier);
+  const stars = enemyWaveStars(b.round, b.wave, b.variant);
+  const wave = b.wave.map((tier, i) => ({ tier, cast: b.waveCasts[i] ?? b.world, star: stars[i] })).sort((a, c) => a.tier - c.tier);
   // Shuffle with a round-local seed so the rival uses varied cells, while previews and both online screens
   // stay stable across frames and devices. Do not consume the fight's random stream here.
   const random = seeded(waveSeed(b.world, b.round, b.variant, b.wave, b.waveCasts, b.online?.seed ?? 0));
@@ -609,7 +621,7 @@ export function waveSpots(b: BoardGame) {
     const j = Math.floor(random() * (i + 1));
     [cells[i], cells[j]] = [cells[j], cells[i]];
   }
-  return wave.map(({ tier, cast }, i) => ({ tier, cast, ...cellCentre(cells[i]) }));
+  return wave.map(({ tier, cast, star }, i) => ({ tier, cast, star, ...cellCentre(cells[i]) }));
 }
 
 /** Sets the fight up: your bugs as placed, the enemy's wave on the upper half. */
@@ -622,7 +634,7 @@ export function startFight(b: BoardGame) {
     ? fighter(0, p.tier, p.cast, at.x, at.y, unitPower(b, p.cast), p.id, p.cast, 1 + (lv[p.cast] ?? 0), b.event, starOf(p), true)
     : fighter(0, p.tier, p.cast, at.x, at.y, castPower(p.cast), p.id, lv[p.cast] ? p.cast : 0, lv[p.cast] ?? 0, b.event, starOf(p)); });
   const grow = castPower(b.world) * (1 + WAVE.tough * (b.world - 1)) * (b.variant === 'tactics' ? TACTICS.wave : SUMMON.wave);
-  for (const w of waveSpots(b)) b.fighters.push(tac ? fighter(1, w.tier, w.cast, w.x, w.y, grow, nextId++, w.cast, 1, b.event, 1, true) : fighter(1, w.tier, w.cast, w.x, w.y, grow, nextId++, 0, 0, b.event));
+  for (const w of waveSpots(b)) b.fighters.push(tac ? fighter(1, w.tier, w.cast, w.x, w.y, grow, nextId++, w.cast, 1, b.event, w.star, true) : fighter(1, w.tier, w.cast, w.x, w.y, grow, nextId++, 0, 0, b.event));
   b.shots = [];
   b.skillUsed = false;
   b.strike = null;

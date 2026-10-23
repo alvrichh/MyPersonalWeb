@@ -776,7 +776,8 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
       ctx.translate(w.x * spread, w.y);
       ctx.globalAlpha = 0.5 + Math.sin(now * 2.5) * 0.08;
       enemyBase(ctx, TIER_STATS[tier].r);
-      drawEnemyFigure(ctx, figureOf(tier as Tier, w.cast, -1, 0, 0, 0), now, retro);
+      drawEnemyFigure(ctx, figureOf(tier as Tier, w.cast, -1, 0, 0, 0), now, retro, tactics ? w.star : 1);
+      if (tactics) drawStars(ctx, 0, boardUnitBounds({ tier, star: w.star }).y - 9, w.star, now, retro);
       ctx.restore();
     });
     if (twin) {
