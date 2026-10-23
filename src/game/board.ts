@@ -111,7 +111,7 @@ export const TACTICS = {
   price: [1, 2, 3, 5, 8],
   odds: [[0.62, 0.28, 0.09, 0.01, 0], [0.34, 0.3, 0.22, 0.11, 0.03]],
   /** The waves against a tactics army, against a fusion one. */
-  wave: 0.68,
+  wave: 0.8,
 };
 const starOf = (p: { star?: Star }) => p.star ?? 1;
 /** A unit in a fight, yours (side 0) or the enemy's (side 1). */
