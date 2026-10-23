@@ -2,6 +2,17 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.12.57 - 2026-10-23
+
+### Added
+- Carnivorous Queen (World 5): staggered geometric thorn volleys with alternating escape corridors, alongside her existing roots. The extra pattern starts below half health in On Call/Sprints and accompanies her final-boss root cast on the tactical board.
+- Shadow Wraith (World 8): three delayed ghost projectile fans arranged in a triangular attack pattern alongside its clone ability, in both action and tactical boss modes.
+- Tactical boss projectiles now preserve individually staggered launch delays after their cast wind-up.
+
+### Unchanged
+- Kernel Panic's introductory difficulty and attacks.
+- Existing boss damage budgets, other bosses' unique attacks, and all sprite assets.
+
 ## 1.12.56 - 2026-10-23
 
 ### Changed
