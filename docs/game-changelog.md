@@ -2,6 +2,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.12.58 - 2026-10-23
+
+### Fixed
+- Tactical battle: the divider wall remains at the exact same row during preparation, combat and round results instead of sinking as the fight starts.
+- Unit, board and other asset positions are unchanged.
+
 ## 1.12.57 - 2026-10-23
 
 ### Added
