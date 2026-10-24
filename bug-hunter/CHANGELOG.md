@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.42 - 2026-10-24
+
+### Changed - New fire-world cast
+- The fire world's bug, ticket and legacy redrawn by the owner as six-pose sets: a flying imp, a floating flaming skull that spits a fireball, and a stone gargoyle with lava cracks (`enemies/demon-{bug,ticket,legacy}-0..5.webp`, `SET_FRAMES` 6, new `SPRITE_CANVAS`; the imp's icon remade). The sheet came on a red gradient, so they were cut by their colour's distance from the backdrop, inpainted and blurred, with the segmentation mask for the figure (`scratchpad` `demon/cutd.py`): dark wings and bright fire are kept, the haze is not; the gargoyle's two first poses lost part of their wings against the dark, so its walk uses its full-winged poses, and the imp's ragged flinch is its stance.
+- The four-frame pictures they replace are kept in `assets/old/02-hotfix-inferno/enemies/` (with a README), not loaded by the game. The sheet's bottom row, an infernal sorcerer, has too few poses for a skin.
+
 ## 1.13.41 - 2026-10-24
 
 ### Changed - New Arena hoplite
