@@ -1,48 +1,70 @@
 <!doctype html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Bug Hunter — Fortress Lab</title>
 <style>
-:root{color-scheme:dark;font:500 15px system-ui;background:#07101c;color:#e9f5ff}*{box-sizing:border-box}
-body{margin:0;min-height:100dvh;background:radial-gradient(ellipse at 50% 0%,#173657 0%,#080f1e 68%);display:flex;flex-direction:column}
-header{display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between;padding:12px 18px;background:#0a1529d9;border-bottom:1px solid #426782}
-h1{font-size:19px;margin:0;color:#a9f6ff}small{color:#a2bcd0}nav{display:flex;gap:7px;flex-wrap:wrap}
-button{background:#1b3651;border:1px solid #5798b2;color:#e0faff;border-radius:10px;padding:10px 12px;font:inherit;cursor:pointer}
-button[aria-pressed=true]{background:#287a86;border-color:#92f7f2}main{flex:1;display:flex;gap:18px;align-items:center;justify-content:center;padding:16px;min-height:0}
-#arena{width:min(100%,1050px);aspect-ratio:1.55;max-height:76dvh;border:5px solid #806c40;border-radius:20px;position:relative;overflow:hidden;box-shadow:0 8px 60px #000b}
-#map{position:absolute;inset:0;display:grid;gap:0;background:linear-gradient(135deg,#192b34,#0e1a2d)}
-.tile{position:relative;border:1px solid #98d6ec18;background:linear-gradient(130deg,#31535033,#263e4a33);min-width:0;min-height:0}
-.tile:nth-child(2n){background:linear-gradient(130deg,#1b3b4c44,#243d4244)}
-.tile.selected{outline:2px solid #ffda72;outline-offset:-3px;z-index:2}
-.tile img{display:block;position:absolute;left:50%;bottom:-3%;height:155%;width:155%;object-fit:contain;transform:translateX(-50%);pointer-events:none;filter:drop-shadow(0 4px 2px #0009)}
-.tile.wall img{height:126%;width:126%}.tile.hall img{height:205%;width:205%;bottom:-11%}
-aside{width:min(250px,28vw);align-self:stretch;background:#0c1d32;border:1px solid #2c5570;border-radius:15px;padding:15px}
-aside h2{font-size:16px;color:#9af3e8}p{color:#b1c9da;line-height:1.5}
-footer{padding:10px 18px;font-size:12px;color:#7fa8bb}
-@media(orientation:portrait){main{flex-direction:column;padding:8px}#arena{aspect-ratio:.89;max-height:60dvh}aside{width:min(100%,1050px);padding:10px;min-height:95px}aside h2{margin:2px}p{margin:5px 0}header{padding:10px}h1{font-size:17px}}
-</style></head><body>
-<header><div><h1>BUG HUNTER · FORTRESS LAB</h1><small>Vista de prueba · estilos provisionales · sin guardado</small></div><nav aria-label="Niveles" id="nav"></nav></header>
-<main><div id="arena"><div id="map" role="grid" aria-label="Fortaleza"></div></div>
-<aside><h2 id="selected">Selecciona un edificio</h2><p id="objective"></p><p id="info">Pulsa sobre un edificio para inspeccionarlo. En horizontal verás más terreno.</p></aside></main>
-<footer>Prototipo aislado: no modifica partidas, recursos ni los otros modos de Bug Hunter.</footer>
+:root{color-scheme:dark;font:500 14px system-ui;background:#07101c;color:#e9f5ff}*{box-sizing:border-box}
+body{margin:0;min-height:100dvh;background:#0a1626;display:flex;flex-direction:column}
+header{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:10px 16px;background:#081526;border-bottom:1px solid #36556e}
+h1{font-size:18px;color:#a9f6ff;margin:0}small{color:#a2bcd0}nav,.tools{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+button{background:#17344b;border:1px solid #578c9f;color:#ebfaff;border-radius:9px;padding:9px 12px;font:inherit;cursor:pointer}
+button[aria-pressed=true]{background:#1d7987;border-color:#8af5ee}
+main{flex:1;min-height:0;display:flex;align-items:stretch;gap:10px;padding:12px}
+#arena{min-width:0;flex:1;position:relative;overflow:hidden;border:3px solid #ad9c62;border-radius:16px;touch-action:none;background:radial-gradient(ellipse at 50% 30%,#507a45,#233c31 75%);cursor:grab}
+#arena.dragging{cursor:grabbing}
+canvas{display:block;width:100%;height:100%}
+#hint{position:absolute;left:12px;bottom:10px;background:#071928bc;color:#dcf8d3;padding:8px;border-radius:8px;pointer-events:none}
+aside{width:230px;border:1px solid #345570;border-radius:13px;background:#0c1c31;padding:12px}
+h2{font-size:17px;color:#a2f9e8;margin:3px 0 10px}
+p{color:#b5cbdc;line-height:1.45}
+footer{font-size:12px;color:#86a9c1;padding:8px 16px}
+@media(orientation:portrait){main{flex-direction:column}#arena{min-height:53dvh;max-height:67dvh}aside{width:100%;padding:8px}aside p{margin:4px 0}#hint{font-size:11px;max-width:70%}}
+@media(orientation:landscape){#arena{min-height:65dvh}}
+</style></head>
+<body><header><div><h1>BUG HUNTER · FORTRESS LAB</h1><small>Isométrico · selección · muros · zoom</small></div><nav id="nav" aria-label="Niveles"></nav></header>
+<main><div id="arena"><canvas id="view" aria-label="Terreno isométrico interactivo"></canvas><div id="hint">Arrastra para mover · toca un edificio · rueda/pellizco para zoom</div></div>
+<aside><h2 id="selected">Fortress</h2><p id="objective"></p><div class="tools"><button id="minus" aria-label="Alejar">−</button><button id="reset">Centrar</button><button id="plus" aria-label="Acercar">+</button></div><p id="info">Selecciona un edificio para inspeccionarlo.</p></aside></main>
+<footer>Laboratorio separado. Los diseños SVG son provisionales. Ningún cambio en partidas existentes.</footer>
 <script>
+'use strict';
 const root='/images/game/fortress/backlog/';
 const levels=[
-{name:'1 · Primer núcleo',w:10,h:8,description:'Prueba el Ayuntamiento: selección y disposición horizontal o vertical.',units:[['core-hall',4,2]]},
-{name:'2 · Recursos',w:10,h:8,description:'Tres edificios separados. Comprueba que no se superponen.',units:[['core-hall',4,2],['gold-mine',2,5],['gold-storage',6,5]]},
-{name:'3 · Primer muro',w:12,h:9,description:'Un cañón y cinco módulos de muro en línea.',units:[['core-hall',5,2],['cannon',5,5],...Array.from({length:5},(_,i)=>['wall',3+i,4])]}
-];
-const map=document.querySelector('#map'),nav=document.querySelector('#nav');
-function render(index){
-const level=levels[index];map.replaceChildren();map.style.gridTemplateColumns='repeat('+level.w+',1fr)';map.style.gridTemplateRows='repeat('+level.h+',1fr)';
-document.querySelector('#objective').textContent=level.description;document.querySelector('#selected').textContent=level.name;document.querySelector('#info').textContent='Toca un edificio para identificarlo.';
-nav.querySelectorAll('button').forEach((b,i)=>b.setAttribute('aria-pressed',String(i===index)));
-const dict=new Map(level.units.map(([name,x,y])=>[x+','+y,name]));
-for(let y=0;y<level.h;y++)for(let x=0;x<level.w;x++){
-const cell=document.createElement('button');cell.className='tile';cell.setAttribute('role','gridcell');cell.style.padding='0';cell.style.borderRadius='0';
-const name=dict.get(x+','+y);cell.setAttribute('aria-label',name?name+' ('+x+','+y+')':'Casilla vacía '+x+','+y);
-if(name){const image=new Image();image.src=root+name+'.svg';image.alt='';cell.append(image);if(name==='wall')cell.classList.add('wall');if(name==='core-hall')cell.classList.add('hall');}
-cell.addEventListener('click',()=>{map.querySelectorAll('.selected').forEach(c=>c.classList.remove('selected'));cell.classList.add('selected');document.querySelector('#selected').textContent=name?name.replaceAll('-',' ').toUpperCase():'Casilla libre';document.querySelector('#info').textContent='Coordenadas: ('+x+', '+y+'). '+(name?'Edificio de prueba.':'Disponible para futura construcción.');});
-map.append(cell);
+{name:'1 · Núcleo',w:10,h:8,description:'Un Ayuntamiento. Prueba selección, cámara y orientación.',units:[['core-hall',4,2]]},
+{name:'2 · Recursos',w:10,h:8,description:'Ayuntamiento, mina y almacén, en rombos separados.',units:[['core-hall',4,2],['gold-mine',2,5],['gold-storage',6,5]]},
+{name:'3 · Muros',w:12,h:9,description:'Cinco muros conectados, un cañón y el Ayuntamiento.',units:[['core-hall',5,2],['cannon',5,5],...Array.from({length:5},(_,i)=>['wall',3+i,4])]}];
+const arena=document.querySelector('#arena'),canvas=document.querySelector('#view'),ctx=canvas.getContext('2d'),nav=document.querySelector('#nav');
+let current=0,selected=null,zoom=1,panX=0,panY=0,dragging=false,origin=null,moved=false;
+const sprites=new Map(), pointers=new Map();
+const TILE_W=92,TILE_H=46;
+const names={'core-hall':'AYUNTAMIENTO','gold-mine':'MINA DE ORO','gold-storage':'ALMACÉN DE ORO','cannon':'CAÑÓN','wall':'MURO'};
+function image(kind){if(!sprites.has(kind)){const img=new Image();img.src=root+kind+'.svg';img.onload=draw;img.onerror=draw;sprites.set(kind,img);}return sprites.get(kind);}
+function screen(x,y){const l=levels[current],ox=canvas.clientWidth/2+panX,oy=canvas.clientHeight/2-(l.w+l.h)*TILE_H*zoom/4+panY;return {x:ox+(x-y)*TILE_W*.5*zoom,y:oy+(x+y)*TILE_H*.5*zoom};}
+function diamond(x,y,w,h,fill,stroke){ctx.beginPath();ctx.moveTo(x,y-h/2);ctx.lineTo(x+w/2,y);ctx.lineTo(x,y+h/2);ctx.lineTo(x-w/2,y);ctx.closePath();ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=Math.max(1,zoom);ctx.stroke();}}
+function draw(){
+const dpr=Math.min(devicePixelRatio||1,2),w=arena.clientWidth,h=arena.clientHeight;
+if(!w||!h)return;
+if(canvas.width!==Math.round(w*dpr)||canvas.height!==Math.round(h*dpr)){canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);}
+ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);
+const l=levels[current],halfW=TILE_W*.5*zoom,halfH=TILE_H*.5*zoom;
+const occupied=new Map(l.units.map(u=>[u[1]+','+u[2],u[0]]));
+for(let sum=0;sum<l.w+l.h-1;sum++)for(let y=0;y<l.h;y++){const x=sum-y;if(x<0||x>=l.w)continue;
+const center=screen(x+.5,y+.5),kind=occupied.get(x+','+y),active=selected&&selected.x===x&&selected.y===y;
+const grass=((x*7+y*13)%5===0)?'#567849':'#456e42';
+diamond(center.x,center.y,TILE_W*zoom,TILE_H*zoom,grass,active?'#ffe287':'#79a65c33');
+if(active)diamond(center.x,center.y,TILE_W*zoom*.92,TILE_H*zoom*.92,'#e8d88b48','#ffe693');
+if(!kind)continue;
+if(kind==='wall'){const left=occupied.get((x-1)+','+y)==='wall',right=occupied.get((x+1)+','+y)==='wall';let a=screen(x,y+.5),b=screen(x+1,y+.5);ctx.strokeStyle='#182b31';ctx.lineWidth=20*zoom;ctx.lineCap='square';ctx.beginPath();ctx.moveTo(a.x,a.y-10*zoom);ctx.lineTo(b.x,b.y-10*zoom);ctx.stroke();ctx.strokeStyle='#9bafaf';ctx.lineWidth=13*zoom;ctx.beginPath();ctx.moveTo(a.x,a.y-16*zoom);ctx.lineTo(b.x,b.y-16*zoom);ctx.stroke();for(const pt of [a,b]){if((pt===a&&!left)||(pt===b&&!right)){ctx.fillStyle='#617b91';ctx.fillRect(pt.x-7*zoom,pt.y-32*zoom,14*zoom,21*zoom);}}continue;}
+const img=image(kind);if(img.complete&&img.naturalWidth){const scale=kind==='core-hall'?1.75:1.25;const ww=TILE_W*zoom*scale,hh=ww;ctx.drawImage(img,center.x-ww/2,center.y-hh*.83,ww,hh);}
+else {diamond(center.x,center.y-15*zoom,halfW*1.3,halfH*1.7,'#405773','#9bdbdf');}
 }
 }
-levels.forEach((l,i)=>{const b=document.createElement('button');b.textContent=l.name;b.addEventListener('click',()=>render(i));nav.append(b)});render(0);
+function selectAt(px,py){const l=levels[current],ox=canvas.clientWidth/2+panX,oy=canvas.clientHeight/2-(l.w+l.h)*TILE_H*zoom/4+panY;const dx=(px-ox)/(TILE_W*.5*zoom),dy=(py-oy)/(TILE_H*.5*zoom);const x=Math.floor((dx+dy)/2),y=Math.floor((dy-dx)/2);if(x<0||y<0||x>=l.w||y>=l.h){selected=null;}else selected={x,y};const kind=l.units.find(u=>u[1]===x&&u[2]===y)?.[0];document.querySelector('#selected').textContent=kind?(names[kind]||kind):selected?'Casilla vacía':'Fuera del mapa';document.querySelector('#info').textContent=selected?'Posición ('+x+', '+y+'). '+(kind?'Edificio de prueba.':'Libre para construir más adelante.'):'Arrastra para explorar.';draw();}
+function setLevel(i){current=i;selected=null;zoom=1;panX=panY=0;document.querySelector('#selected').textContent=levels[i].name;document.querySelector('#objective').textContent=levels[i].description;document.querySelector('#info').textContent='Toca un edificio para inspeccionarlo.';nav.querySelectorAll('button').forEach((b,j)=>b.setAttribute('aria-pressed',String(i===j)));draw();}
+levels.forEach((l,i)=>{const b=document.createElement('button');b.textContent=l.name;b.onclick=()=>setLevel(i);nav.append(b);});
+function setZoom(value){zoom=Math.max(.55,Math.min(2.2,value));draw();}
+document.querySelector('#minus').onclick=()=>setZoom(zoom/1.2);document.querySelector('#plus').onclick=()=>setZoom(zoom*1.2);document.querySelector('#reset').onclick=()=>{zoom=1;panX=panY=0;draw();};
+canvas.addEventListener('pointerdown',e=>{canvas.setPointerCapture(e.pointerId);pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pointers.size===1){origin={x:e.clientX,y:e.clientY,panX,panY};moved=false;}});
+let oldPinch=0;
+canvas.addEventListener('pointermove',e=>{if(!pointers.has(e.pointerId))return;pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pointers.size===2){const [a,b]=[...pointers.values()];const dist=Math.hypot(a.x-b.x,a.y-b.y);if(oldPinch)setZoom(zoom*dist/oldPinch);oldPinch=dist;return;}if(origin){const dx=e.clientX-origin.x,dy=e.clientY-origin.y;if(Math.hypot(dx,dy)>6)moved=true;if(moved){panX=origin.panX+dx;panY=origin.panY+dy;draw();}}});
+function release(e){if(!pointers.has(e.pointerId))return;pointers.delete(e.pointerId);if(!moved&&pointers.size===0){const rect=canvas.getBoundingClientRect();selectAt(e.clientX-rect.left,e.clientY-rect.top);}if(pointers.size===0){origin=null;oldPinch=0;}else origin=null;}
+canvas.addEventListener('pointerup',release);canvas.addEventListener('pointercancel',e=>{pointers.delete(e.pointerId);origin=null;oldPinch=0;});canvas.addEventListener('wheel',e=>{e.preventDefault();setZoom(zoom*(e.deltaY>0?.9:1.1));},{passive:false});
+new ResizeObserver(draw).observe(arena);setLevel(0);
 </script></body></html>
