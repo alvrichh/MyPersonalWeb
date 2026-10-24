@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.44 - 2026-10-24
+
+### Changed - New Arena shield wall
+- The Arena's legacy, the shield wall (`enemies/greek-legacy-0..5.webp`), redrawn by the owner as a chibi six-pose sheet: three warriors behind two big shields, a hoplite's spear over them; two steps and a stand, the wind-up with swords and spear raised, the thrust and a flinch. Cut like the gladiator and the hoplite, each pose kept to its own figure so the neighbouring pose's spear streak does not come in; `SET_FRAMES['greek-legacy']` 6, `SPRITE_CANVAS['greek-legacy']` k 1.381, feet 0.0048. The Arena's whole cast now has six poses; the old pictures are kept in `assets/old/06-the-arena/enemies/`.
+
 ## 1.13.43 - 2026-10-24
 
 ### Changed - New Monolith
