@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.23 - 2026-10-24
+
+### Changed
+- The phone's Tactics bench sits 3 px higher.
+
 ## 1.13.22 - 2026-10-24
 
 ### Changed - Bench lower, behind the shop, and kept in the fight

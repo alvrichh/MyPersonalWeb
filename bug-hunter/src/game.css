@@ -5026,3 +5026,5 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   :root:not([data-retro]) .board-mobile-tray.is-active .board-bench-slot > img { left: -25%; width: 150%; height: 230%; }
   .board-mobile-tray.is-fighting .board-bench-title { display: none; }
 }
+/* v1.13.23 — the phone bench 3px higher. */
+@media (max-width: 899px) { :root:not([data-retro]) .board-mobile-tray.is-active .board-bench-slots { transform: translateY(-3px); } }
