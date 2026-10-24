@@ -4,6 +4,17 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.38 - 2026-10-24
+
+### Added - Fortress early prototype
+- Ten distinct transparent SVG placeholders for the first Backlog fortress buildings and wall; one asset file per building, not level upgrades.
+- Three very easy Fortress layout test stages: Core Hall, resources, and a cannon with five wall pieces.
+- Standalone responsive layout inspector at `/fortress-lab.html`; select buildings in landscape or portrait. Fortress is still not a playable or integrated game mode.
+- Asset projection support for `assets/special/fortress/` and asset manifest for future integration.
+
+### Scope
+- These are new simple placeholders, not actual crops from the earlier concept sheets. Original gameplay modes remain unchanged.
+
 ## 1.13.37 - 2026-10-24
 
 ### Changed - New Minotaur
