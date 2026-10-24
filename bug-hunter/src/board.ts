@@ -418,7 +418,16 @@ export function tickMerge(b: BoardGame, dt: number, skip = false) {
 
 /** Fusion has no shop: the summon button drops a unit straight onto your half for a set price, nearly always a bug,
     now and then a ticket and, from round 4, a legacy. It favours this world's cast, while every cast can appear. */
-export const SUMMON = { price: 1.5, ticket: 0.25, legacy: 0.06, latest: 0.6, step: 4, wave: 0.9 };
+export const SUMMON = {
+  price: 1.5, ticket: 0.25, legacy: 0.06, latest: 0.6, step: 4,
+  /** Fusion AI pressure. Round 1 is introductory; from round 2 the rival
+      receives stronger stats, more budget and guaranteed merged units. */
+  wave: 1.05,
+  enemyBudget: 1.2,
+  enemyPerRound: 0.045,
+};
+export const fusionEnemyPower = (round: number) =>
+  round <= 1 ? 0.95 : SUMMON.wave * (1 + SUMMON.enemyPerRound * Math.max(0, round - 2));
 /** The auto-merge's price, once a run: from then on a unit summoned next to its twin merges by itself, and every
     pair already on the board merges at once. */
 export const AUTO_MERGE = { price: 3 };
@@ -602,7 +611,7 @@ export function unitStats(b: Pick<BoardGame, 'variant' | 'world' | 'event' | 'ar
 /** The rival's preview numbers use the same growth and event rules as the fighters created in startFight. */
 export function waveUnitStats(b: Pick<BoardGame, 'variant' | 'world' | 'event' | 'round'>, tier: Tier, cast = b.world, star: Star = 1) {
   const tac = b.variant === 'tactics';
-  const mult = castPower(b.world) * nativeWorldPower(b.world, cast) * (1 + WAVE.tough * (b.world - 1)) * (tac ? tacticsEnemyPower(b.round) : SUMMON.wave);
+  const mult = castPower(b.world) * nativeWorldPower(b.world, cast) * (1 + WAVE.tough * (b.world - 1)) * (tac ? tacticsEnemyPower(b.round) : fusionEnemyPower(b.round));
   const syn = tac ? cast : 0;
   const synLv = tac ? 1 : 0;
   return { ...combatStats(tier, mult, syn, synLv, b.event, star, tac), syn, synLv, ability: tac ? ABILITY[cast] : undefined, kit: bossKit(cast, tier) };
@@ -627,10 +636,14 @@ export function enemyWave(world: number, round: number, variant: Variant = 'fusi
   const had = 8 + (GOLD.round + 1) * (round - 1);
   // Counted in the world's own cast's units: your gold grows with its prices (`roundGold`).
   let points = Math.round(had * (WAVE.base + WAVE.world * (world - 1)));
-  // Tactics AI gets a larger purchase budget from round 2 onward. Fusion keeps
-  // its original composition and economy.
-  if (variant === 'tactics' && round >= 2) points = Math.round(points * TACTICS.enemyBudget);
+  // Both battle variants ramp after the introductory round, but through their
+  // own progression systems: stars in Tactics, merged tiers in Fusion.
+  if (round >= 2) points = Math.round(points * (variant === 'tactics' ? TACTICS.enemyBudget : SUMMON.enemyBudget));
   const out: Tier[] = [];
+  if (variant === 'fusion' && round >= 2) {
+    const guaranteed: Tier[] = round >= 7 ? [2, 2] : round >= 4 ? [2] : [1];
+    for (const tier of guaranteed) { out.push(tier); points -= TIER_VALUE[tier]; }
+  }
   if (round === 5) { out.push(3); points -= TIER_VALUE[3]; }
   if (round === ROUNDS) { out.push(4); points -= TIER_VALUE[4]; }
   const top = Math.min(4, Math.floor((round + 1) / 2.5)) as Tier;
@@ -638,7 +651,9 @@ export function enemyWave(world: number, round: number, variant: Variant = 'fusi
   while (points > 0 && out.length < most) {
     const each = points / (most - out.length);
     let t = top;
-    while (t > 0 && (TIER_VALUE[t] > Math.max(1, each * 1.4) || Math.random() < 0.25)) t = (t - 1) as Tier;
+    const tierBudget = each * (variant === 'fusion' ? 1.8 : 1.4);
+    const downgradeChance = variant === 'fusion' ? 0.1 : 0.25;
+    while (t > 0 && (TIER_VALUE[t] > Math.max(1, tierBudget) || Math.random() < downgradeChance)) t = (t - 1) as Tier;
     out.push(t);
     points -= TIER_VALUE[t];
   }
@@ -706,7 +721,7 @@ export function startFight(b: BoardGame) {
   b.fighters = b.army.map((p) => { const at = cellCentre(p.slot); return tac
     ? fighter(0, p.tier, p.cast, at.x, at.y, unitPower(b, p.cast), p.id, p.cast, 1 + (lv[p.cast] ?? 0), b.event, starOf(p), true)
     : fighter(0, p.tier, p.cast, at.x, at.y, unitPower(b, p.cast), p.id, lv[p.cast] ? p.cast : 0, lv[p.cast] ?? 0, b.event, starOf(p)); });
-  const grow = castPower(b.world) * (1 + WAVE.tough * (b.world - 1)) * (b.variant === 'tactics' ? tacticsEnemyPower(b.round) : SUMMON.wave);
+  const grow = castPower(b.world) * (1 + WAVE.tough * (b.world - 1)) * (b.variant === 'tactics' ? tacticsEnemyPower(b.round) : fusionEnemyPower(b.round));
   const wave = waveSpots(b);
   const waveWorlds = new Set(wave.map((unit) => unit.cast)).size;
   const enemySynergy = waveWorlds >= 2 ? (wave.length >= SYNERGY.need[1] ? 2 : 1) : 0;

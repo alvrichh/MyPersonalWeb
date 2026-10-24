@@ -82,6 +82,18 @@ check('Fusion: automatic merge and price are unchanged', () => {
   assert.equal(g.army.length, 1); assert.equal(g.army[0].tier, 1);
   assert.equal(b.saleOf({ ...g.army[0], tier: 2 }, 'fusion'), 2);
 });
+check('Fusion AI: round 2 guarantees a merged Ticket-tier enemy', () => {
+  assert.ok(b.enemyWave(1, 2, 'fusion').some(tier => tier >= 1));
+});
+check('Fusion AI: round 4 guarantees a Legacy-tier enemy and round 7 guarantees two', () => {
+  assert.ok(b.enemyWave(1, 4, 'fusion').some(tier => tier >= 2));
+  assert.ok(b.enemyWave(1, 7, 'fusion').filter(tier => tier >= 2).length >= 2);
+});
+check('Fusion AI: combat scaling rises sharply after round 1', () => {
+  assert.equal(b.fusionEnemyPower(1), 0.95);
+  assert.equal(b.fusionEnemyPower(2), 1.05);
+  assert.ok(b.fusionEnemyPower(10) > 1.42);
+});
 check('Battle: the commander fireball still targets a cluster, once per fight', () => {
   const g = tactics(); b.startFight(g);
   const template = g.fighters.find(f => f.side === 1);
