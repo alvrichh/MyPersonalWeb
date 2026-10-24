@@ -4906,3 +4906,45 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   .cover-arrow.is-next { left: 87.5%; }
   :root:not([data-retro]) .cover-play-copy { left: 4%; width: 92%; }
 }
+
+/* The guide's first page: the cover's play bar to learn on (swipe it or tap its arrows), dots under it,
+   a hint, and a finger sliding across it so nobody misses that it moves. */
+.book-play { position: relative; width: 100%; margin: 4px 0 0; touch-action: pan-y; }
+.book-play-bar {
+  display: grid; gap: 3px; place-items: center; min-height: 76px; padding: 6px 0;
+  box-sizing: border-box; border-style: solid; border-width: 0 42px;
+  border-image: url('/images/game/ui/btn2_green.webp') 0 140 fill / 0 42px stretch;
+  color: #fff; text-align: center; text-shadow: 0 2px 3px rgba(0, 0, 0, 0.55);
+  filter: drop-shadow(0 0 12px rgba(74, 222, 128, 0.45));
+}
+.book-play-bar.is-horde { border-image-source: url('/images/game/ui/btn2_red.webp'); filter: drop-shadow(0 0 12px rgba(248, 113, 113, 0.45)); }
+.book-play-bar.is-board { border-image-source: url('/images/game/ui/btn2_blue.webp'); filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.45)); }
+.book-play-bar b { font: 800 1.15rem/1.1 var(--font); }
+.book-play-bar small { font: 600 0.72rem/1.25 var(--font); opacity: 0.95; }
+.book-arrow { position: absolute; top: 0; bottom: 0; width: 46px; padding: 0; border: 0; background: transparent; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.book-arrow.is-prev { left: 0; }
+.book-arrow.is-next { right: 0; }
+.book-arrow:active { background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent 70%); }
+.book-hand { position: absolute; bottom: -24px; left: 50%; font-size: 1.6rem; pointer-events: none; filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.7)); animation: book-hand 2.2s ease-in-out infinite; }
+@keyframes book-hand {
+  0%, 100% { transform: translateX(-40px) rotate(-8deg); opacity: 0; }
+  15% { opacity: 1; }
+  50% { transform: translateX(40px) rotate(8deg); opacity: 1; }
+  85% { opacity: 1; }
+}
+.book-dots { display: flex; justify-content: center; gap: 8px; margin-top: 20px; }
+.book-dots i { width: 9px; height: 9px; border-radius: 50%; background: rgba(255, 255, 255, 0.28); }
+.book-dots i.is-on.is-sprints { background: #4ade80; }
+.book-dots i.is-on.is-horde { background: #f87171; }
+.book-dots i.is-on.is-board { background: #38bdf8; }
+.book-swipe { margin: 4px 0 0; color: #fde68a; font: 700 0.86rem/1.3 var(--font); text-align: center; animation: book-swipe 1.6s ease-in-out infinite; }
+@keyframes book-swipe { 50% { opacity: 0.55; } }
+.book-list { display: grid; gap: 8px; margin: 2px 0 4px; padding: 0; list-style: none; text-align: left; }
+.book-list li { padding: 8px 10px; border-radius: 10px; background: rgba(15, 23, 42, 0.55); color: var(--text); font-size: 0.82rem; line-height: 1.35; }
+.book-shot.is-custom { aspect-ratio: 520 / 675; }
+@media (prefers-reduced-motion: reduce) { .book-hand, .book-swipe { animation: none; } .book-hand { opacity: 0.9; } }
+:root[data-retro] .book-play-bar { border: 0; border-image: none; border-radius: 12px; background: linear-gradient(135deg, #22c55e, #15803d); }
+:root[data-retro] .book-play-bar.is-horde { background: linear-gradient(135deg, #ef4444, #b91c1c); }
+:root[data-retro] .book-play-bar.is-board { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+:root[data-retro] .book-arrow.is-prev::after { content: '‹'; color: #fff; font: 800 2rem/1 var(--font); }
+:root[data-retro] .book-arrow.is-next::after { content: '›'; color: #fff; font: 800 2rem/1 var(--font); }
