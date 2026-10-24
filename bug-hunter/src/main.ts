@@ -145,6 +145,11 @@ const modeName = (mode: PlayMode = save.mode) => t(mode === 'board' ? 'modeBoard
 const modeText = (mode: PlayMode = save.mode) => t(mode === 'board' ? 'modeBoardText' : mode === 'horde' ? 'modeHordeText' : 'modeSprintsText');
 const MODE_ICON: Record<PlayMode, string> = { sprints: '⚔️', horde: '🛡️', board: '♟️' };
 const MODES: PlayMode[] = ['sprints', 'horde', 'board'];
+// Fourth cover position: preview only, never persisted as a PlayMode.
+let extraModePreview = false;
+const coverModes = [...MODES, 'coming-soon'] as const;
+const extraTitle = () => lang === 'es' ? 'Próximamente' : 'Coming Soon';
+const extraText = () => lang === 'es' ? 'Nuevos modos · Asedio Fortress' : 'New modes · Fortress Siege';
 const NIGHTMARE_ICON = '☠️';
 /** Where the run is: the sprint, or the shift's clock. */
 const whereLine = (g: Game) => (g.rush ? `${g.showcase ? '👁' : RUSH_ICON} ${t('rushWhere', { n: g.rush, total: g.stages })}` : g.mode === 'horde' ? `${g.endless ? NIGHTMARE_ICON : MODE_ICON.horde} ${clock(g.time)}` : t('sprint', { room: g.room }));
@@ -483,12 +488,12 @@ function menuScreen() {
       <p class="cover-tagline">${t('landingTagline')}</p>
       <button class="cover-chest${dailyReady(save) ? ' is-ready' : ''}" type="button" data-act="daily" aria-label="${t('dailyTitle')}"><img src="./images/game/fx/chest.webp" width="165" height="140" alt=""><i${dailyReady(save) ? '>' + t('dailyReady') : ` data-daily-clock>${dailyClock()}`}</i></button>
       <span class="cover-play-bar is-slot" aria-hidden="true"></span>
-      <span class="cover-play-bar is-${save.mode}" aria-hidden="true"></span>
-      <button class="hot cover-play" data-act="play" aria-label="${t('playNow')} · ${modeName()} · ${worldName(worldIn())}"></button>
-      <span class="cover-play-copy is-${save.mode}"><b>${MODE_ICON[save.mode]} ${modeName()}</b><small>${t('playNow')} · ${WORLD_ICON[worldIn() - 1]} ${worldName(worldIn())}</small></span>
+      <span class="cover-play-bar is-${extraModePreview ? 'board' : save.mode}" aria-hidden="true"></span>
+      <button class="hot cover-play" data-act="${extraModePreview ? 'extra-hub' : 'play'}" aria-label="${extraModePreview ? extraTitle() : t('playNow') + ' · ' + modeName() + ' · ' + worldName(worldIn())}"></button>
+      <span class="cover-play-copy is-${extraModePreview ? 'board' : save.mode}"><b>${extraModePreview ? '🏰 ' + extraTitle() : MODE_ICON[save.mode] + ' ' + modeName()}</b><small>${extraModePreview ? extraText() : t('playNow') + ' · ' + WORLD_ICON[worldIn() - 1] + ' ' + worldName(worldIn())}</small></span>
       <button class="cover-arrow is-prev" type="button" data-act="mode-prev" aria-label="${t('modeSwipe')}"></button>
       <button class="cover-arrow is-next" type="button" data-act="mode-next" aria-label="${t('modeSwipe')}"></button>
-      <span class="cover-dots" aria-hidden="true">${MODES.map((m) => `<i class="is-${m}${save.mode === m ? ' is-on' : ''}"></i>`).join('')}</span>
+      <span class="cover-dots" aria-hidden="true">${coverModes.map((m) => `<i class="is-${m === 'coming-soon' ? 'board' : m}${(m === 'coming-soon' ? extraModePreview : !extraModePreview && save.mode === m) ? ' is-on' : ''}"></i>`).join('')}</span>
       <button class="hot cover-card is-map" data-act="map" aria-label="${t('map')}"></button>
       ${copy('is-map', t('map'), `🌍 ${unlockedIn()} / ${WORLD_COUNT}`)}
       <button class="hot cover-card is-shop" data-act="shop" aria-label="${t('shop')}"></button>
@@ -1736,9 +1741,22 @@ function bookStepMode(by: number) {
 }
 /** The cover's play bar turns to the next or the last way to play (its arrows, or a swipe across it). */
 function stepMode(by: number) {
-  save.mode = MODES[(MODES.indexOf(save.mode) + by + MODES.length) % MODES.length];
-  persist();
+  const index = extraModePreview ? MODES.length : MODES.indexOf(save.mode);
+  const next = (index + by + coverModes.length) % coverModes.length;
+  extraModePreview = next === MODES.length;
+  if (!extraModePreview) { save.mode = MODES[next]; persist(); }
   menuScreen();
+}
+function extraHubScreen() {
+  const es = lang === 'es';
+  show(`<button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
+    <h2>🏰 ${es ? 'Próximamente · Nuevos juegos' : 'Coming Soon · New games'}</h2>
+    <p>${es ? 'Aquí reuniremos los próximos modos de Bug Hunter. Los tres modos existentes continúan sin cambios.' : 'This is the home for upcoming Bug Hunter game modes. Existing modes remain unchanged.'}</p>
+    <div class="book-modes">
+      <div class="book-mode"><b>🏰 Fortress · ${es ? 'Asedio' : 'Siege'}</b><p>${es ? 'Ataca fortalezas con tus bichos, destruye edificios y consigue hasta tres estrellas. Prototipo experimental disponible.' : 'Attack fortresses with bugs, destroy buildings and earn up to three stars. Experimental prototype available.'}</p>
+      <a class="primary book-mode" href="/fortress-lab.html">${es ? 'Abrir prototipo de Asedio' : 'Open Siege prototype'}</a></div>
+      <p>🧪 ${es ? 'Otros modos nuevos: en desarrollo' : 'Other new modes: in development'}</p>
+    </div>`);
 }
 function startRun(world = worldIn(), mode: PlayMode = save.mode, endless = false, rush = 0, secret = false, rushFrom = 1) {
   if (mode === 'board') { boardVariantScreen(world); return; }
@@ -3211,7 +3229,8 @@ screen.addEventListener('click', (event) => {
   audio.unlock();
   const act = target.dataset.act;
   if (act !== 'mute') audio.play('click');
-  if (act === 'play') startRun();
+  if (act === 'extra-hub') extraHubScreen();
+  else if (act === 'play') startRun();
   // The world this run unlocked, in the same mode.
   else if (act === 'play-next') { const n = Number(target.dataset.next); setWorld(n, game?.mode ?? save.mode); persist(); startRun(n, game?.mode ?? save.mode); }
   else if (act === 'play-secret-showcase' || (act === 'play-same' && game?.secret && game.showcase)) { startRun(SECRET_WORLD, 'horde', false, 0, true); if (game) startShowcase(game); flash(t('showcaseStart')); }
