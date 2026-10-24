@@ -4702,3 +4702,55 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   filter: saturate(1.25) drop-shadow(0 0 5px rgba(var(--bonus-rgb), 0.82));
 }
 .gear-panel.is-board li[class*='is-world-'] > em { color: var(--bonus-ink); }
+
+
+/* v1.13.7 — On mobile Tactics the bench caption is an overlay, not layout.
+   The reserve plinths keep roughly the same usable height while the board
+   receives the 18px that used to be reserved for "Bench · n/4". */
+@media (max-width: 899px) {
+  .board-ui { --board-tray-height: 94px; }
+  .board-mobile-tray.is-active .board-bench-float {
+    position: relative;
+    overflow: visible;
+  }
+  .board-mobile-tray.is-active .board-bench-head {
+    position: absolute;
+    z-index: 6;
+    left: 0;
+    right: 0;
+    bottom: calc(100% + 2px);
+    display: block;
+    height: 0;
+    min-width: 0;
+    overflow: visible;
+    pointer-events: none;
+  }
+  .board-mobile-tray.is-active .board-bench-title {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    max-width: min(190px, calc(50vw - 12px));
+    padding: 2px 5px;
+    border-radius: 6px;
+    background: rgba(6, 10, 24, 0.72);
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.28);
+    color: #dbeafe;
+    font-size: 0.58rem;
+    line-height: 14px;
+    text-align: left;
+    text-shadow: 0 1px 2px #000;
+    pointer-events: none;
+  }
+  /* The army-capacity chip is still moved under the divider by boardView.ts;
+     keep a measurable anchor without letting the overlay reserve any height. */
+  .board-mobile-tray.is-active .board-bench-head .board-count {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    pointer-events: none;
+  }
+  .board-mobile-tray.is-active .board-bench-slots {
+    flex: 1 1 auto;
+    height: 100%;
+  }
+}

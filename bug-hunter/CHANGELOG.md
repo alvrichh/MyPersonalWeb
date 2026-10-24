@@ -2,6 +2,14 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.7 - 2026-10-24
+
+### Changed - More mobile board space
+- Mobile Tactics no longer reserves a separate row for the `Bench · n/4` caption. The caption now floats over the lower edge of the board, in front of the arena.
+- Reclaimed the former caption height for the playable board by reducing only the reserve tray's reserved height by 18 px; the reserve-unit plinths keep approximately the same usable size.
+- The army-capacity chip remains positioned under the divider and neither label intercepts unit dragging.
+- Desktop layout, combat geometry, bench capacity, shop layout and gameplay are unchanged.
+
 ## 1.13.6 - 2026-10-24
 
 ### Changed - Tactics reserve and world identity
