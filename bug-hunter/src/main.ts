@@ -2823,8 +2823,12 @@ function boardStep(dt: number, now: number) {
     const gridWidth = COLS * CELL * boardLay.sx;
     boardLay.ox = (fieldWidth - gridWidth) / 2;
   }
-  // The reserve floats over the grid's left edge; it never reserves width in the board layout.
-  if (!boardBenchEl.hidden) {
+  // Desktop keeps the reserve floating beside the grid. Mobile Tactics owns the
+  // reserve through boardMobileTray, so never apply viewport coordinates to its
+  // child: when that child is positioned for the caption overlay, left/top would
+  // become relative offsets and push the whole bench off-screen.
+  const benchInMobileTray = mobileTactics && boardMobileTray.classList.contains('is-active');
+  if (!boardBenchEl.hidden && !benchInMobileTray) {
     const box = boardBenchEl.getBoundingClientRect();
     const benchHeight = box.height || 190;
     const boardLeft = rect.left + boardLay.ox;
@@ -2841,6 +2845,10 @@ function boardStep(dt: number, now: number) {
       boardBenchEl.style.left = x;
       boardBenchEl.style.top = y;
     }
+  } else if (benchInMobileTray) {
+    boardBenchEl.dataset.at = '';
+    boardBenchEl.style.left = '';
+    boardBenchEl.style.top = '';
   }
   // Bonuses float over the grid's right edge, above the canvas and clear of the shop.
   const wallTop = rect.top + boardLay.oy + (HOME_ROW * CELL - 4) * boardLay.s;

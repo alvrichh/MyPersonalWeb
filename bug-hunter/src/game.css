@@ -4808,3 +4808,15 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
     height: 80%;
   }
 }
+
+
+/* v1.13.9 — Mobile Tactics owns bench positioning through the fixed tray.
+   main.ts clears stale viewport coordinates; these rules ensure the reserve
+   itself starts at the tray origin and cannot inherit an old offset. */
+@media (max-width: 899px) {
+  .board-mobile-tray.is-active .board-bench-float {
+    left: auto !important;
+    top: auto !important;
+    margin: 0;
+  }
+}

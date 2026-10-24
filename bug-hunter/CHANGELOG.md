@@ -4,6 +4,14 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.9 - 2026-10-24
+
+### Fixed - Mobile Tactics bench positioning
+- Fixed the actual cause of the reserve disappearing on mobile: the bench container was being given viewport `left/top` coordinates by the desktop/floating positioning path while also being `position: relative` inside the mobile tray.
+- Mobile Tactics now lets `boardMobileTray` own the reserve position and explicitly clears stale inline `left/top` offsets.
+- The four world-plinth reserve slots and the overlaid `Bench · n/4` caption remain, and the board keeps the extra vertical space reclaimed in 1.13.7.
+- Desktop reserve positioning and drag/drop behavior are unchanged.
+
 ## 1.13.8 - 2026-10-24
 
 ### Fixed - Tactics bench visible again
