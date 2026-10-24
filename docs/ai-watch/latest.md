@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-10-23
+# Daily AI maintenance report — 2026-10-24
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -11,7 +11,7 @@ This file is generated automatically by the daily maintenance workflow. It updat
 - Hugging Face: OK (8 relevant items)
 - Simon Willison: OK (8 relevant items)
 - GitHub AI & ML Blog: OK (8 relevant items)
-- GitHub Changelog: OK (4 relevant items)
+- GitHub Changelog: OK (5 relevant items)
 - Azure Blog: OK (6 relevant items)
 - AWS Machine Learning: OK (8 relevant items)
 - NVIDIA Developer: OK (8 relevant items)
@@ -21,26 +21,54 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
-- **Expanding the Cyber Verification Program** — Anthropic News · 2026-10-23
+- **Expanding the Cyber Verification Program** — Anthropic News · 2026-10-24
   https://www.anthropic.com/news/cyber-verification-program
-- **Donating Agent Skills to the Agentic AI Foundation** — Anthropic News · 2026-10-23
+- **Donating Agent Skills to the Agentic AI Foundation** — Anthropic News · 2026-10-24
   https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation
-- **Introducing the Anthropic Cyber Mission** — Anthropic News · 2026-10-23
+- **Introducing the Anthropic Cyber Mission** — Anthropic News · 2026-10-24
   https://www.anthropic.com/news/anthropic-cyber-mission
-- **Security** — Anthropic News · 2026-10-23
+- **Security** — Anthropic News · 2026-10-24
   https://www.anthropic.com/news/security
-- **Barclays scales Claude to upgrade operations and improve client experience** — Anthropic News · 2026-10-23
+- **Barclays scales Claude to upgrade operations and improve client experience** — Anthropic News · 2026-10-24
   https://www.anthropic.com/news/barclays-scales-claude
-- **Partnering with Accenture on embedded evaluation** — Anthropic News · 2026-10-23
+- **Partnering with Accenture on embedded evaluation** — Anthropic News · 2026-10-24
   https://www.anthropic.com/news/accenture-embedded-evaluation
-- **Improving our alignment and security efforts** — Anthropic News · 2026-10-23
+- **Improving our alignment and security efforts** — Anthropic News · 2026-10-24
   https://www.anthropic.com/news/improving-alignment-security-efforts
-- **Previewing the Model Hardware Standard** — Anthropic News · 2026-10-23
+- **Previewing the Model Hardware Standard** — Anthropic News · 2026-10-24
   https://www.anthropic.com/news/model-hardware-standard-research-preview
+- **Multi-Turn Reinforcement Learning on Amazon SageMaker AI: A hands-on guide** — AWS Machine Learning · 2026-10-23
+  https://aws.amazon.com/blogs/machine-learning/multi-turn-reinforcement-learning-on-amazon-sagemaker-ai-a-hands-on-guide/
+- **Orchestrating SageMaker AI endpoint auto scaling with AWS CDK** — AWS Machine Learning · 2026-10-23
+  https://aws.amazon.com/blogs/machine-learning/orchestrating-sagemaker-ai-endpoint-auto-scaling-with-aws-cdk/
+- **How Bayer Crop Science built an agentic decision engine on Amazon Bedrock AgentCore with AWS Unified Operations** — AWS Machine Learning · 2026-10-23
+  https://aws.amazon.com/blogs/machine-learning/how-bayer-crop-science-built-an-agentic-decision-engine-on-amazon-bedrock-agentcore-with-aws-unified-operations/
+- **Usage metrics API adds usage from tools like OpenCode** — GitHub Changelog · 2026-10-23
+  https://github.blog/changelog/2026-10-23-usage-metrics-api-adds-usage-from-tools-like-opencode
+- **Turn notifications into code with GitHub Copilot in Teams** — GitHub Changelog · 2026-10-23
+  https://github.blog/changelog/2026-10-23-turn-notifications-into-code-with-github-copilot-in-teams
 - **GitHub Copilot in Visual Studio — September update** — GitHub Changelog · 2026-10-23
   https://github.blog/changelog/2026-10-22-github-copilot-in-visual-studio-september-update-2
+- **Does Your Model Run on AWS Trainium? Look It Up** — Hugging Face · 2026-10-23
+  https://huggingface.co/blog/torch-neuronx-model-support
+- **Scaling NVIDIA TensorRT Performance Optimization Beyond a Single Build Route with the Global Performance Tuner, Part 1** — NVIDIA Developer · 2026-10-23
+  https://developer.nvidia.com/blog/scaling-nvidia-tensorrt-performance-optimization-beyond-a-single-build-route-with-the-global-performance-tuner-part-1/
+- **Using AI Agents to Teach Robots Like Microduck to Walk in Simulation** — NVIDIA Developer · 2026-10-23
+  https://developer.nvidia.com/blog/using-ai-agents-to-teach-robots-like-microduck-to-walk-in-simulation/
+- **Rapidly scaling online storage to serve over 1 billion ChatGPT users (Part II)** — OpenAI News · 2026-10-23
+  https://openai.com/index/scaling-storage-one-billion-users-part-two
+- **Securing our frontier model training environment** — OpenAI News · 2026-10-23
+  https://openai.com/index/securing-our-frontier-model-training-environment
 - **OpenAI and Poland’s NASK partner to advance AI safety and security** — OpenAI News · 2026-10-23
   https://openai.com/index/openai-nask-ai-safety-security-partnership
+- **Quick Study** — Simon Willison · 2026-10-23
+  https://simonwillison.net/2026/Oct/23/quick-study-painter/
+- **Introducing Kimi K3.1 Pro** — Simon Willison · 2026-10-23
+  https://simonwillison.net/2026/Oct/23/kimi-k31-pro/
+- **OpenAI now trains its frontier AI models with no internet access** — The Verge AI · 2026-10-23
+  https://www.theverge.com/ai-artificial-intelligence/1018021/openai-training-top-ai-models-no-internet
+- **Jack Dorsey’s Block made an AI model that talks to you like an awkward new friend** — The Verge AI · 2026-10-23
+  https://www.theverge.com/ai-artificial-intelligence/1017906/jack-dorsey-block-dessa-ai-voice-speech
 - **Amazon Polly delivers a major upgrade to its Generative engine** — AWS Machine Learning · 2026-10-22
   https://aws.amazon.com/blogs/machine-learning/amazon-polly-delivers-a-major-upgrade-to-its-generative-engine/
 - **Announcing new ways to customize models with SageMaker AI, without managing GPUs** — AWS Machine Learning · 2026-10-22
@@ -51,20 +79,12 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://aws.amazon.com/blogs/machine-learning/deploy-ai-in-a-hipaa-eligible-environment-with-amazon-quick/
 - **Stream low-latency speech from AI agents using Kokoro TTS on Amazon SageMaker AI** — AWS Machine Learning · 2026-10-22
   https://aws.amazon.com/blogs/machine-learning/stream-low-latency-speech-from-ai-agents-using-kokoro-tts-on-amazon-sagemaker-ai/
-- **Stop guessing auto scaling targets for TTS on Amazon SageMaker AI** — AWS Machine Learning · 2026-10-22
-  https://aws.amazon.com/blogs/machine-learning/stop-guessing-auto-scaling-targets-for-tts-on-amazon-sagemaker-ai/
-- **How Rescale built an AI triage agent with Strands Agents and AI-DLC** — AWS Machine Learning · 2026-10-22
-  https://aws.amazon.com/blogs/machine-learning/how-rescale-built-an-ai-triage-agent-with-strands-agents-and-ai-dlc/
 - **Custom skills, agents, and MCP servers in usage metrics API** — GitHub Changelog · 2026-10-22
   https://github.blog/changelog/2026-10-22-custom-skills-agents-and-mcp-servers-in-usage-metrics-api
 - **Global default for Copilot features generally available** — GitHub Changelog · 2026-10-22
   https://github.blog/changelog/2026-10-22-global-default-for-copilot-features-generally-available
-- **Industry comparisons in the Copilot impact dashboard** — GitHub Changelog · 2026-10-22
-  https://github.blog/changelog/2026-10-22-industry-comparisons-in-the-copilot-impact-dashboard
 - **Turning Database Grading into RL Rewards: Post-Training Agents with ThinkingBox** — Hugging Face · 2026-10-22
   https://huggingface.co/blog/microsoft/thinkingbox-training
-- **OlmoEarth v1.3: State-of-the-art embeddings for the whole planet** — Hugging Face · 2026-10-22
-  https://huggingface.co/blog/allenai/olmoearth-v1-3
 - **Ensemble forecasting with IBM Granite time-series models** — Hugging Face · 2026-10-22
   https://huggingface.co/blog/ibm-research/granite-timeseries-ensemble-r1
 - **Designing an AI serving harness built to last** — MIT Technology Review AI · 2026-10-22
@@ -91,14 +111,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/ai-artificial-intelligence/1017151/canva-craft-in-house-ai-model
 - **Meta’s AI could still scrape news sites, legal experts say** — The Verge AI · 2026-10-22
   https://www.theverge.com/tech/1017082/meta-terms-update-ai-training-concerns
-- **Discord now formats Markdown previews right** — The Verge AI · 2026-10-22
-  https://www.theverge.com/news/1017012/discord-markdown-previews-organize-servers-channels
-- **In Meta’s version of the future, I’ll have my Muse call your Muse** — The Verge AI · 2026-10-22
-  https://www.theverge.com/tech/1016905/meta-earnings-fall-2026-muse-network
 - **OpenAI's latest AI models are coming to Google Cloud and Antigravity** — Ars Technica AI · 2026-10-21
   https://arstechnica.com/ai/2026/10/openais-latest-ai-models-are-coming-to-google-cloud-and-antigravity/
-- **5 production challenges in multi-agent systems and how Deep Insight solved them** — AWS Machine Learning · 2026-10-21
-  https://aws.amazon.com/blogs/machine-learning/5-production-challenges-in-multi-agent-systems-and-how-deep-insight-solved-them/
 - **NVIDIA Kumo Relational Outperforms Supervised Machine Learning on Relational Data, No Training Required** — Hugging Face · 2026-10-21
   https://huggingface.co/blog/nvidia/kumo-relational
 - **How Specializing the Vocabulary of SLMs Can Cut Inference Cost by 77% in Real Applications** — Hugging Face · 2026-10-21
@@ -115,18 +129,12 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://developer.nvidia.com/blog/how-nvidia-openshell-reference-architecture-secures-and-governs-ai-agent-workloads-at-scale/
 - **Developing an AI Factory Digital Twin with an Agent-Assisted Workflow** — NVIDIA Developer · 2026-10-21
   https://developer.nvidia.com/blog/developing-an-ai-factory-digital-twin-with-an-agent-assisted-workflow/
-- **Achieve Productive AI Capacity Faster and More Predictably with NVIDIA DSX POD** — NVIDIA Developer · 2026-10-21
-  https://developer.nvidia.com/blog/achieve-productive-ai-capacity-faster-and-more-predictably-with-nvidia-dsx-pod/
 - **OpenAI models are coming to Google Cloud** — OpenAI News · 2026-10-21
   https://openai.com/index/openai-models-google-cloud
 - **Patch the Planet: global response coordination as agents uncover critical vulnerabilities** — OpenAI News · 2026-10-21
   https://openai.com/index/coordinated-disclosure-of-critical-vulnerabilities
 - **Using thousands of AI agents to uncover new leads in biological data** — OpenAI News · 2026-10-21
   https://openai.com/index/scaling-ai-research-for-complex-biological-data
-- **Cloudflare links vulnerability discovery to defense with OpenAI** — OpenAI News · 2026-10-21
-  https://openai.com/index/cloudflare-cyber
-- **How we built ChatGPT’s novel ad stack for user trust and relevance** — OpenAI News · 2026-10-21
-  https://openai.com/index/building-chatgpt-ad-stack
 - **Today's PHP Security Release, and How We're Strengthening PHP Security** — Simon Willison · 2026-10-21
   https://simonwillison.net/2026/Oct/21/php-security-release/
 - **Panache — RTS Belle Époque pour mobile** — Simon Willison · 2026-10-21
@@ -153,12 +161,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.technologyreview.com/2026/10/19/1147186/making-the-internet-better-for-ai-agents-might-make-it-worse-for-everyone-else/
 - **“We were looking at it wrong”: The explosive claim that’s upended the AI world** — MIT Technology Review AI · 2026-10-19
   https://www.technologyreview.com/2026/10/19/1147149/we-were-looking-at-it-wrong-the-explosive-claim-thats-upended-the-ai-world/
-- **Accelerating Mamba-2 with High-Performance Forward Pass Kernels in NVIDIA CUDA Tile** — NVIDIA Developer · 2026-10-19
-  https://developer.nvidia.com/blog/accelerating-mamba-2-with-high-performance-forward-pass-kernels-in-nvidia-cuda-tile/
-- **My obituary for programming** — Simon Willison · 2026-10-19
-  https://simonwillison.net/2026/Oct/19/my-obituary-for-programming/
-- **llm-tools-datasette 0.1.1** — Simon Willison · 2026-10-18
-  https://simonwillison.net/2026/Oct/18/llm-tools-datasette/
 - **OpenAI models hacked a crypto wallet and breached more websites** — Ars Technica AI · 2026-10-16
   https://arstechnica.com/security/2026/10/openai-models-hacked-a-crypto-wallet-and-breached-more-websites/
 - **Managing open-weight model risk in enterprise deployments** — Azure Blog · 2026-10-16
@@ -179,18 +181,16 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://deepmind.google/blog/gemini-4-argon-for-robotics/
 - **Gemini 4 Argon: Built to solve your hardest problems** — Google DeepMind · 2026-10-13
   https://deepmind.google/blog/introducing-gemini-4-argon/
-- **Deep dive into Azure Maia 300 architecture** — Azure Blog · 2026-10-12
-  https://azure.microsoft.com/en-us/blog/deep-dive-into-azure-maia-300-architecture/
 
 ## Portfolio candidates
 
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **MCP / tool-connected assistants** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **MCP / tool-connected assistants** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI automation and workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 
 ## AI enrichment

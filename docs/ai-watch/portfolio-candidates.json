@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-23T13:01:51.543Z",
+  "generatedAt": "2026-10-24T12:24:55.094Z",
   "candidates": [
     {
       "label": "AI agents / automation workflows",
@@ -10,19 +10,19 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
+          "date": "2026-10-24"
+        },
+        {
+          "title": "Multi-Turn Reinforcement Learning on Amazon SageMaker AI: A hands-on guide",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/multi-turn-reinforcement-learning-on-amazon-sagemaker-ai-a-hands-on-guide/",
           "date": "2026-10-23"
         },
         {
-          "title": "Deploy AI in a HIPAA-eligible environment with Amazon Quick",
+          "title": "How Bayer Crop Science built an agentic decision engine on Amazon Bedrock AgentCore with AWS Unified Operations",
           "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/deploy-ai-in-a-hipaa-eligible-environment-with-amazon-quick/",
-          "date": "2026-10-22"
-        },
-        {
-          "title": "Stream low-latency speech from AI agents using Kokoro TTS on Amazon SageMaker AI",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/stream-low-latency-speech-from-ai-agents-using-kokoro-tts-on-amazon-sagemaker-ai/",
-          "date": "2026-10-22"
+          "link": "https://aws.amazon.com/blogs/machine-learning/how-bayer-crop-science-built-an-agentic-decision-engine-on-amazon-bedrock-agentcore-with-aws-unified-operations/",
+          "date": "2026-10-23"
         }
       ]
     },
@@ -35,19 +35,44 @@
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
+          "date": "2026-10-24"
+        },
+        {
+          "title": "Quick Study",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/23/quick-study-painter/",
           "date": "2026-10-23"
         },
         {
-          "title": "Donating Agent Skills to the Agentic AI Foundation",
+          "title": "Introducing Kimi K3.1 Pro",
           "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/22/donating-agent-skills/",
+          "link": "https://simonwillison.net/2026/Oct/23/kimi-k31-pro/",
+          "date": "2026-10-23"
+        }
+      ]
+    },
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Usage metrics API adds usage from tools like OpenCode",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-10-23-usage-metrics-api-adds-usage-from-tools-like-opencode",
+          "date": "2026-10-23"
+        },
+        {
+          "title": "Running Frontier-Class AI Models Across 8 NVIDIA DGX Spark Nodes",
+          "source": "NVIDIA Developer",
+          "link": "https://developer.nvidia.com/blog/running-frontier-class-ai-models-across-8-nvidia-dgx-spark-nodes/",
           "date": "2026-10-22"
         },
         {
-          "title": "Battle Drones - a vibe coded RTS with audio-based multiplayer",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/20/battledrones/",
-          "date": "2026-10-20"
+          "title": "Developing an AI Factory Digital Twin with an Agent-Assisted Workflow",
+          "source": "NVIDIA Developer",
+          "link": "https://developer.nvidia.com/blog/developing-an-ai-factory-digital-twin-with-an-agent-assisted-workflow/",
+          "date": "2026-10-21"
         }
       ]
     },
@@ -57,22 +82,66 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "Usage metrics API adds usage from tools like OpenCode",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-10-23-usage-metrics-api-adds-usage-from-tools-like-opencode",
+          "date": "2026-10-23"
+        },
+        {
+          "title": "Turn notifications into code with GitHub Copilot in Teams",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-10-23-turn-notifications-into-code-with-github-copilot-in-teams",
+          "date": "2026-10-23"
+        },
+        {
           "title": "GitHub Copilot in Visual Studio — September update",
           "source": "GitHub Changelog",
           "link": "https://github.blog/changelog/2026-10-22-github-copilot-in-visual-studio-september-update-2",
           "date": "2026-10-23"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Rapidly scaling online storage to serve over 1 billion ChatGPT users (Part II)",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/scaling-storage-one-billion-users-part-two",
+          "date": "2026-10-23"
         },
         {
-          "title": "Custom skills, agents, and MCP servers in usage metrics API",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-10-22-custom-skills-agents-and-mcp-servers-in-usage-metrics-api",
+          "title": "Uber brings ChatGPT Work to all employees with OpenAI",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/uber-chatgpt-work-rollout",
           "date": "2026-10-22"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Introducing Kimi K3.1 Pro",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/23/kimi-k31-pro/",
+          "date": "2026-10-23"
         },
         {
-          "title": "Global default for Copilot features generally available",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-10-22-global-default-for-copilot-features-generally-available",
-          "date": "2026-10-22"
+          "title": "OpenAI models are coming to Google Cloud",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/openai-models-google-cloud",
+          "date": "2026-10-21"
+        },
+        {
+          "title": "Today's PHP Security Release, and How We're Strengthening PHP Security",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/21/php-security-release/",
+          "date": "2026-10-21"
         }
       ]
     },
@@ -98,75 +167,6 @@
           "source": "Simon Willison",
           "link": "https://simonwillison.net/2026/Oct/22/donating-agent-skills/",
           "date": "2026-10-22"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Running Frontier-Class AI Models Across 8 NVIDIA DGX Spark Nodes",
-          "source": "NVIDIA Developer",
-          "link": "https://developer.nvidia.com/blog/running-frontier-class-ai-models-across-8-nvidia-dgx-spark-nodes/",
-          "date": "2026-10-22"
-        },
-        {
-          "title": "Developing an AI Factory Digital Twin with an Agent-Assisted Workflow",
-          "source": "NVIDIA Developer",
-          "link": "https://developer.nvidia.com/blog/developing-an-ai-factory-digital-twin-with-an-agent-assisted-workflow/",
-          "date": "2026-10-21"
-        },
-        {
-          "title": "Cloudflare links vulnerability discovery to defense with OpenAI",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/cloudflare-cyber",
-          "date": "2026-10-21"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Uber brings ChatGPT Work to all employees with OpenAI",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/uber-chatgpt-work-rollout",
-          "date": "2026-10-22"
-        },
-        {
-          "title": "How we built ChatGPT’s novel ad stack for user trust and relevance",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/building-chatgpt-ad-stack",
-          "date": "2026-10-21"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "OpenAI models are coming to Google Cloud",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/openai-models-google-cloud",
-          "date": "2026-10-21"
-        },
-        {
-          "title": "Today's PHP Security Release, and How We're Strengthening PHP Security",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/21/php-security-release/",
-          "date": "2026-10-21"
-        },
-        {
-          "title": "Gemini's Personal Intelligence is coming to cars",
-          "source": "Ars Technica AI",
-          "link": "https://arstechnica.com/google/2026/10/geminis-personal-intelligence-is-coming-to-cars/",
-          "date": "2026-10-20"
         }
       ]
     },
