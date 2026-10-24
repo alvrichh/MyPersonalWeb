@@ -4822,37 +4822,20 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 }
 
 
-/* v1.13.12 — The Tactics bench is one platform of the world being played, the
-   owner's plinth art (`ui/bench/world-N.webp`), spanning the whole bench; the
-   reserve units stand on it instead of on a small block of their own world. */
-:root:not([data-retro]) .board-bench-slots { position: relative; isolation: isolate; }
-:root:not([data-retro]) .board-bench-slots::before {
-  position: absolute;
-  z-index: 0;
-  left: -2%;
-  right: -2%;
-  top: -16%;
-  bottom: -6%;
-  content: '';
-  background: var(--bench-plinth) center bottom / 100% 100% no-repeat;
-  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5));
-  pointer-events: none;
-}
+/* v1.13.12 — The Tactics bench stands on the owner's platform art: each reserve
+   on its own world's platform (`ui/bench/world-N.webp`), sub-bosses and bosses on
+   the grander one (`ui/bench/boss-N.webp`), each at its own shape; an empty slot
+   shows the played world's platform, faint. */
 :root:not([data-retro]) .board-bench-slot { z-index: 1; filter: none; }
-:root:not([data-retro]) .board-bench-slot::before { display: none; }
-:root:not([data-retro]) .board-bench-slot > img { bottom: 38%; height: 78%; }
-:root:not([data-retro]) .board-bench-slot.is-empty { border: 0; background: none !important; }
-/* On desktop the bench is a column: each reserve stands on its own copy of the
-   platform, at its own shape, instead of one platform stretched down the column. */
-@media (min-width: 900px) {
-  :root:not([data-retro]) .board-bench-slots::before { display: none; }
-  :root:not([data-retro]) .board-bench-slot::before {
-    display: block;
-    left: -6%;
-    right: -6%;
-    height: 58%;
-    background: var(--bench-plinth) center bottom / contain no-repeat;
-  }
-  :root:not([data-retro]) .board-bench-slot > img { bottom: 17%; }
-  :root:not([data-retro]) .board-bench-slot.is-empty::before { display: block; opacity: 0.45; }
+:root:not([data-retro]) .board-bench-slot::before {
+  display: block;
+  left: -6%;
+  right: -6%;
+  bottom: 0;
+  height: 58%;
+  background: var(--bench-plinth) center bottom / contain no-repeat;
+  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.5));
 }
+:root:not([data-retro]) .board-bench-slot > img { bottom: 17%; height: 78%; }
+:root:not([data-retro]) .board-bench-slot.is-empty { border: 0; background: none !important; }
+:root:not([data-retro]) .board-bench-slot.is-empty::before { display: block; opacity: 0.4; }

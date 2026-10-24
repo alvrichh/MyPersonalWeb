@@ -2461,7 +2461,7 @@ function renderBoardUi() {
     : '<span class="board-card is-sold"></span>').join('');
   const capLabel = `<span class="board-count" aria-label="${t('boardCapLabel')}">♟ ${b.army.length}/${armyCap(b.round)}</span>`;
   const bench = !fusion ? `<div class="board-bench-head"><small class="board-bench-title">${t('boardBench')} · ${b.bench.length}/${BENCH_CAP}</small>${capLabel}</div><div class="board-bench-slots" style="--bench-plinth: url('/images/game/ui/bench/world-${b.world}.webp')">${Array.from({ length: BENCH_CAP }, (_, i) => { const p = b.bench[i]; return p
-    ? `<button type="button" class="board-bench-slot is-world-${p.cast}" data-bact="bench-deploy" data-i="${i}" aria-label="${t('boardBenchDeploy', { name: boardCharacterName(p.tier, p.cast) })}"${!prep || b.online?.waiting ? ' disabled' : ''}><img src="${boardPic(p.tier, p.cast)}" alt="">${(p.star ?? 1) > 1 ? `<em>${'★'.repeat(p.star ?? 1)}</em>` : ''}</button>`
+    ? `<button type="button" class="board-bench-slot is-world-${p.cast}" style="--bench-plinth: url('/images/game/ui/bench/${p.tier >= 3 ? 'boss' : 'world'}-${p.cast}.webp')" data-bact="bench-deploy" data-i="${i}" aria-label="${t('boardBenchDeploy', { name: boardCharacterName(p.tier, p.cast) })}"${!prep || b.online?.waiting ? ' disabled' : ''}><img src="${boardPic(p.tier, p.cast)}" alt="">${(p.star ?? 1) > 1 ? `<em>${'★'.repeat(p.star ?? 1)}</em>` : ''}</button>`
     : '<span class="board-bench-slot is-empty"></span>'; }).join('')}</div>` : '';
   boardBenchEl.hidden = fusion || !prep;
   boardBenchEl.setAttribute('aria-label', t('boardBench'));
