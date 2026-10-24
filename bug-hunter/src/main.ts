@@ -1213,12 +1213,13 @@ function optionsScreen() {
    say how each one plays, each with a picture of it in world 1 (`book/<mode>.webp`), and how to get stronger. The first visit dims the cover round the book until it is opened
    (`save.bookSeen`). */
 let bookPage = 0;
-const BOOK = ['modes', 'sprints', 'horde', 'board', 'custom', 'grow'] as const;
+const BOOK = ['modes', 'sprints', 'horde', 'fusion', 'tactics', 'custom', 'grow'] as const;
+const bookList = (keys: Key[]) => `<ul class="book-list">${keys.map((k) => `<li>${t(k)}</li>`).join('')}</ul>`;
 function bookScreen() {
   bookPage = Math.max(0, Math.min(BOOK.length - 1, bookPage));
   const page = BOOK[bookPage];
-  const title = { modes: 'bookModesTitle', sprints: 'bookSprintsTitle', horde: 'bookHordeTitle', board: 'bookBoardTitle', custom: 'bookCustomTitle', grow: 'bookGrowTitle' }[page] as Key;
-  const text = { modes: 'bookModesText', sprints: 'bookSprintsText', horde: 'bookHordeText', board: 'bookBoardText', custom: 'bookCustomText', grow: 'bookGrowText' }[page] as Key;
+  const title = { modes: 'bookModesTitle', sprints: 'bookSprintsTitle', horde: 'bookHordeTitle', fusion: 'bookFusionTitle', tactics: 'bookTacticsTitle', custom: 'bookCustomTitle', grow: 'bookGrowTitle' }[page] as Key;
+  const text = { modes: 'bookModesText', sprints: 'bookSprintsText', horde: 'bookHordeText', fusion: 'bookFusionText', tactics: 'bookTacticsText', custom: 'bookCustomText', grow: 'bookGrowText' }[page] as Key;
   const modes = page === 'modes'
     // The cover's own play bar, to learn it here: swiped or turned by its arrows, with a finger showing how.
     ? `<div class="book-play">
@@ -1233,12 +1234,13 @@ function bookScreen() {
   const last = bookPage === BOOK.length - 1;
   show(`<button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
     <h2>📖 ${t(title)}</h2>
-    ${page === 'sprints' || page === 'horde' || page === 'board' || page === 'custom' ? `<img class="book-shot is-${page}" src="./images/game/book/${page}.webp" alt="${t(title)}">` : ''}
+    ${page === 'sprints' || page === 'horde' || page === 'fusion' || page === 'tactics' || page === 'custom' ? `<img class="book-shot is-${page}" src="./images/game/book/${page}.webp" alt="${t(title)}">` : ''}
     <p class="book-text">${t(text)}</p>
-    ${page === 'board' ? `<p class="book-text"><b>🧬 ${t('boardFusion')}:</b> ${t('boardFusionText')}</p><p class="book-text"><b>⭐ ${t('boardTactics')}:</b> ${t('boardTacticsText')}</p>` : ''}
-    ${page === 'custom' ? `<ul class="book-list">${(['bookCustomSlots', 'bookCustomButtons', 'bookCustomShop'] as Key[]).map((k) => `<li>${t(k)}</li>`).join('')}</ul>` : ''}
+    ${page === 'fusion' ? bookList(['bookFusionSummon', 'bookFusionMerge', 'bookBoardFight']) : ''}
+    ${page === 'tactics' ? `${bookList(['bookTacticsShop', 'bookTacticsStars', 'bookTacticsBench', 'bookTacticsPower'])}<img class="book-shot is-tactics-bonus" src="./images/game/book/tactics-bonus.webp" alt="${t('boardBonusTitle')}">${bookList(['bookTacticsAbility', 'bookTacticsMix', 'bookBoardFight'])}` : ''}
+    ${page === 'custom' ? bookList(['bookCustomSlots', 'bookCustomButtons', 'bookCustomShop']) : ''}
     ${modes}
-    <small class="book-page">${t('bookPage', { n: bookPage + 1, total: BOOK.length })}</small>
+    <small class="book-page">${t('bookPage', { n: bookPage + 1, total: BOOK.length })} · ${t('bookPageSwipe')}</small>
     ${last ? `<button class="primary" data-act="menu">${t('bookDone')}</button>` : `<button class="primary" data-act="book-next">${t('bookNext')} →</button>`}
     ${bookPage ? `<button class="ghost" data-act="book-prev">← ${t('bookPrev')}</button>` : ''}`);
 }
@@ -1645,6 +1647,28 @@ screen.addEventListener('pointerdown', (e) => {
   swipeX = swipeCover || swipeBook || el.closest('.play-pick.has-more') ? e.clientX : null;
   swiped = false;
 });
+let pageX: number | null = null;
+let pageY = 0;
+screen.addEventListener('pointerdown', (e) => {
+  const el = e.target as HTMLElement;
+  pageX = screen.querySelector('.book-page') && !el.closest('.book-play') ? e.clientX : null;
+  pageY = e.clientY;
+});
+screen.addEventListener('pointerup', (e) => {
+  if (pageX === null) return;
+  const dx = e.clientX - pageX, dy = e.clientY - pageY;
+  pageX = null;
+  // A clear sideways swipe, not a scroll: left for the next page, right for the last one.
+  if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+  const to = bookPage + (dx < 0 ? 1 : -1);
+  if (to < 0 || to >= BOOK.length) return;
+  swiped = true;
+  bookPage = to;
+  bookScreen();
+  const panel = screen.querySelector<HTMLElement>('.panel');
+  if (panel && !matchMedia('(prefers-reduced-motion: reduce)').matches) panel.animate([{ transform: `translateX(${dx < 0 ? 60 : -60}px)`, opacity: 0.3 }, { transform: 'none', opacity: 1 }], { duration: 220, easing: 'ease-out' });
+});
+screen.addEventListener('pointercancel', () => { pageX = null; });
 /** What a swipe drags along: the cover's play bar and its words, or the map's play button. */
 const swipeParts = () => [...screen.querySelectorAll<HTMLElement>(swipeCover ? '.cover-play-bar:not(.is-slot), .cover-play-copy' : swipeBook ? '.book-play-bar' : '.play-pick.has-more > .play')];
 screen.addEventListener('pointermove', (e) => {

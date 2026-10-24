@@ -4948,3 +4948,11 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 :root[data-retro] .book-play-bar.is-board { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
 :root[data-retro] .book-arrow.is-prev::after { content: '‹'; color: #fff; font: 800 2rem/1 var(--font); }
 :root[data-retro] .book-arrow.is-next::after { content: '›'; color: #fff; font: 800 2rem/1 var(--font); }
+
+.book-shot.is-fusion { aspect-ratio: 520 / 659; }
+.book-shot.is-tactics { aspect-ratio: 520 / 699; }
+.book-shot.is-tactics-bonus { aspect-ratio: 520 / 486; max-height: 32vh; }
+/* The guide turns its pages by a sideways swipe: its pictures take no drag of their own and its box only scrolls up and down. */
+.book-shot { pointer-events: none; -webkit-user-drag: none; user-select: none; }
+.screen:has(.book-page) .panel,
+.screen:has(.book-page) .panel-in { touch-action: pan-y; }
