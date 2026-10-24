@@ -5119,3 +5119,11 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .bench-stars.is-s2 i { background-image: url('/images/game/ui/star-2.webp'); }
 .bench-stars.is-s3 i { background-image: url('/images/game/ui/star-3.webp'); }
 :root[data-retro] .bench-stars i::before { content: '★'; color: #fde047; font-size: 0.6rem; }
+/* v1.13.28 — The stars float clear above the unit's head, not over it. */
+:root:not([data-retro]) .board-bench-float .board-bench-slot > em.bench-stars { bottom: calc(var(--bench-unit, 170%) * var(--u) + 8%); }
+@media (min-width: 900px) { :root:not([data-retro]) .board-bench-float .board-bench-slot > em.bench-stars { bottom: calc(var(--bench-unit) * var(--u) - 24%); } }
+:root:not([data-retro]) .board-bench-float .board-bench-slot > em.bench-stars { bottom: calc(var(--bench-unit, 170%) * var(--u) + 16%); }
+@media (min-width: 900px) {
+  :root:not([data-retro]) .board-bench-float .board-bench-slot > em.bench-stars { bottom: calc(var(--bench-unit) * var(--u) - 20%); }
+  :root:not([data-retro]) .board-bench-float { padding-top: 40px; }
+}

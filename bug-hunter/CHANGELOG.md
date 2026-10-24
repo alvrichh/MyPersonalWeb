@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.29 - 2026-10-24
+
+### Changed
+- The bench's stars float clear above each unit's head instead of over it; on desktop the bench caption moved up so the stars do not run into it.
+
 ## 1.13.28 - 2026-10-24
 
 ### Added - Convergence background in Customize
