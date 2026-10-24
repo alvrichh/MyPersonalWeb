@@ -5168,3 +5168,9 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 /* v1.13.40 — Shop skins: the hero standing in the card's window, not so tall that it pushes its joke under the band. */
 .panel .skin-item .icon .skin-pic { width: auto; height: 5.2em; max-width: 100%; object-fit: contain; filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.55)); }
 .panel .skin-item.is-locked:not(.is-owned) .skin-pic { filter: grayscale(0.85) brightness(0.6); }
+
+/* v1.13.50: a locked world's play button is the same art, greyed. */
+.mapscreen .play.is-locked,
+.mapscreen .play-pick > .play.is-locked {
+  filter: grayscale(1) brightness(0.85) drop-shadow(0 0 10px rgba(148, 163, 184, 0.35));
+}

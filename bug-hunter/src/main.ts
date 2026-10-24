@@ -856,10 +856,10 @@ function mapScreen() {
     : save.mode === 'board'
       ? [{ act: 'play-board-fusion', label: `🧬 ${t('boardFusion')} · ${t('worldShort', { n: picked })}`, cls: '' }, { act: 'play-board-tactics', label: `⭐ ${t('boardTactics')} · ${t('worldShort', { n: picked })}`, cls: 'is-rush' }]
       : [{ act: 'play-picked', label: t('playWorld', { n: picked }), cls: '' }];
-  if (save.mode === 'sprints' && save.unlocked >= 2) opts.push({ act: 'play-rush', label: `${RUSH_ICON} ${t('rush')}`, cls: 'is-rush' });
-  // The showcase shows the picked world's own two bosses: only an open world's, or any world's once a sprints mastery is taken.
-  if (save.mode === 'sprints' && (pickedOpen || masteries() > 0)) opts.push({ act: 'play-showcase', label: `👁 ${t('showcaseShort')}`, cls: 'is-showcase' });
-  if (save.mode === 'horde') opts.push(save.hordeUnlocked >= NIGHTMARE_WORLD
+  if (pickedOpen && save.mode === 'sprints' && save.unlocked >= 2) opts.push({ act: 'play-rush', label: `${RUSH_ICON} ${t('rush')}`, cls: 'is-rush' });
+  // A locked world has only its grey locked button: no Boss Rush, no showcase. The showcase shows an open world's own two bosses.
+  if (pickedOpen && save.mode === 'sprints') opts.push({ act: 'play-showcase', label: `👁 ${t('showcaseShort')}`, cls: 'is-showcase' });
+  if (pickedOpen && save.mode === 'horde') opts.push(save.hordeUnlocked >= NIGHTMARE_WORLD
     ? { act: 'play-nightmare', label: `${NIGHTMARE_ICON} ${t('nightmare')} ∞`, cls: 'is-nightmare' }
     : { act: '', label: `🔒 ${t('nightmare')} ∞`, cls: 'is-nightmare is-dim', locked: true });
   mapPlayIdx = Math.min(mapPlayIdx, opts.length - 1);
