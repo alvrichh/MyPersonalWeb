@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.45 - 2026-10-24
+
+### Changed - New Kernel Panic
+- The Backlog's final boss, the Kernel Panic (`bosses/kernel-0..8.webp`), redrawn by the owner at a higher resolution in the game's pose order: two steps and a stand, the red-screened wind-up, the charge in a dust cloud, the ring of red error orbs, the glitch volley, the double spiral and the cracked-screen flinch. The sheet came on a purple gradient, so it was cut by colour distance from the inpainted backdrop like the fire world's cast (`scratchpad` `kp/cutk.py`), wider and more sensitive in the three poses whose effects share the backdrop's purple, pieces touching a cell's edge dropped; the flinch's square shadow from the sheet faded by hand. `BOSS_CANVAS.kernel` k 2.0, feet 0.0772. The old pictures are kept in `assets/old/01-backlog/bosses/`.
+
 ## 1.13.44 - 2026-10-24
 
 ### Changed - New Arena shield wall
