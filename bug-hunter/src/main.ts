@@ -2386,8 +2386,11 @@ function boardBonuses(b: BoardGame) {
       const ab = ABILITY[x.cast];
       const values = ABIL_V[ab].map(bonusPercent);
       const levels = t('boardBonusLevelsT', { base: values[0], duo: values[1], five: values[2] });
-      const teamProgress = `${Math.min(b.army.length, SYNERGY.need[1])}/${SYNERGY.need[1]}`;
-      out.push({ pic: ABILITY_PIC[ab], name: `${t(`boardAbil${cap(ab)}` as Key)} · ${worldName(x.cast)}`, text: `${t(`boardAbil${cap(ab)}Text` as Key, { n: values[x.lv] })} ${levels}`, count: teamProgress, on: true, event: false, cast: x.cast });
+      // The rail counter belongs to this world, not to the whole army. The
+      // five-unit team threshold is still global; this number shows how much
+      // of the deployed composition comes from the ability/world being shown.
+      const worldProgress = `${Math.min(x.n, SYNERGY.need[1])}/${SYNERGY.need[1]}`;
+      out.push({ pic: ABILITY_PIC[ab], name: `${t(`boardAbil${cap(ab)}` as Key)} · ${worldName(x.cast)}`, text: `${t(`boardAbil${cap(ab)}Text` as Key, { n: values[x.lv] })} ${levels}`, count: worldProgress, on: true, event: false, cast: x.cast });
     }
     return out;
   }
