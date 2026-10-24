@@ -5140,3 +5140,18 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .board-mobile-tray.is-active .board-mobile-acts { pointer-events: auto; }
 .board-bench-slot > img, .board-bench-slot > em, .board-bench-slot::after { pointer-events: none; }
 .board-mobile-tray.is-active .board-bench-slot.is-empty { pointer-events: none; }
+/* v1.13.33 — Phone Tactics: your hearts at the lower left, on the bench caption's line, the caption beside them. */
+.board-life { display: none; }
+@media (max-width: 899px) {
+  .board-mobile-tray.is-active .board-life {
+    position: absolute; left: 0; bottom: 0; z-index: 7;
+    display: inline-flex; align-items: center; gap: 2px;
+    padding: 2px 7px 2px 4px; border-radius: 99px;
+    background: rgba(6, 10, 24, 0.78); box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+    color: #f8fafc; font: 800 0.72rem/14px var(--font); text-shadow: 0 1px 2px #000;
+    pointer-events: none;
+  }
+  .board-mobile-tray.is-active .board-life.is-low { color: #fca5a5; }
+  .board-mobile-tray.is-active .board-life img { width: 15px; height: 15px; }
+  .board-mobile-tray.is-active .board-bench-title { left: 58px; }
+}

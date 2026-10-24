@@ -755,7 +755,8 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
   // A round won: it cheers and celebrates once its fireball has struck (the world won too).
   const party = won && done ? ended! - FIREBALL.fly : -1;
   const pose = b.phase === 'over' && done ? pics.down : ended !== null && won && !done ? pics.shoot : party >= 0 ? pics.cheer : !won && struck > 0 ? pics.hurt : pics.front;
-  if (commandersOutsideBoard || !tactics || b.phase !== 'prep') {
+  // Phone Tactics shows your hearts at the lower left, by the bench's caption (`.board-life` in main.ts).
+  if (commandersOutsideBoard || !tactics) {
     drawHero(ctx, pics, pose, now, won ? 0 : struck * 0.6, party, commanders.mine, heroScale);
   }
 
@@ -904,7 +905,8 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
   const rival = commanders.rival;
   const rivalHeartY = rival.y - (commandersOutsideBoard ? 82 : 48) * rivalScale;
   hearts(ctx, commandersOutsideBoard ? rival.x : rival.x + 50, rivalHeartY, rivalHp(b), rivalPop, done ? popAt : 0, retro);
-  if (commandersOutsideBoard || !tactics || b.phase !== 'prep') {
+  // Phone Tactics shows your hearts at the lower left, by the bench's caption (`.board-life` in main.ts).
+  if (commandersOutsideBoard || !tactics) {
     hearts(ctx, mine.x, mine.y - 82 * heroScale, b.lives, minePop, done ? popAt : 0, retro);
   }
   // Your commander's fireball in the fight: from your hero onto the enemies' thickest knot, then its blast.
