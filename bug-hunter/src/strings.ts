@@ -578,6 +578,8 @@ const en = {
   songBreaksName: 'Break to back',
   songBreaksText: 'UK bass breaks: chopped beats, garage stabs and acid, faster.',
   scenePick: 'Choose which world’s floor and blocks you play on',
+  sceneConvergence: 'Convergence',
+  sceneConvergenceText: 'An arena bringing all worlds together. Cosmetic background for Battle, Sprints and On Call.',
   sceneOwn: 'Each world its own',
   sceneOwnText: 'Every world shows its own floor and blocks.',
   sceneText: 'World {n}’s floor and blocks in every run (only the look).',
@@ -1599,6 +1601,8 @@ const es: Record<Key, string> = {
   songBreaksName: 'Break to back',
   songBreaksText: 'Breaks de UK bass: ritmos troceados, acordes de garage y acid, más rápido.',
   scenePick: 'Elige el suelo y los muros con los que juegas',
+  sceneConvergence: 'Convergencia',
+  sceneConvergenceText: 'Una arena que reúne todos los mundos. Fondo visual para Battle, Sprints y Guardia.',
   sceneOwn: 'Cada mundo el suyo',
   sceneOwnText: 'Cada mundo muestra su propio suelo y sus muros.',
   sceneText: 'Suelo y muros del mundo {n} en todas las partidas (solo el aspecto).',
@@ -2061,3 +2065,4 @@ export const makeT = (lang: Lang) => {
 };
 
 export type T = ReturnType<typeof makeT>;
+

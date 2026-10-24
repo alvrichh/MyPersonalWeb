@@ -4,6 +4,14 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.28 - 2026-10-24
+
+### Added - Convergence background in Customize
+- Added the original Convergence arena as a free selectable scene in Customize → World, with its own thumbnail and saved selection.
+- Battle draws the selected background within the existing arena bounds; board geometry, unit positions, divider animation, bench and shop layout remain unchanged.
+- Sprints can use the same floor and On Call its tiled interior, following the existing cosmetic scene behavior. Gameplay worlds and progression are unchanged.
+- Reuses the original JPEG without editing, resizing or recompressing the source asset.
+
 ## 1.13.27 - 2026-10-24
 
 ### Changed - The board's own stars on the bench
@@ -290,3 +298,4 @@ This minor-version milestone consolidates the Tactics work and related boss chan
 ### Scope
 - Other bosses' generic backup summons are unchanged.
 - No sprite files or combat attack timings were changed.
+

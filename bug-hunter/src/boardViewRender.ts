@@ -675,7 +675,7 @@ export function mirrorFight(b: BoardGame): BoardGame {
   };
 }
 
-export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: BoardLayout, now: number, drag: BoardDrag | null, retro: boolean, dpr: number, pics: HeroPics, ended: number | null, floor: { top: number; bottom: number; width?: number; widthScale?: number; controlsTop?: number }, commandersOutsideBoard = false) {
+export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: BoardLayout, now: number, drag: BoardDrag | null, retro: boolean, dpr: number, pics: HeroPics, ended: number | null, floor: { top: number; bottom: number; width?: number; widthScale?: number; controlsTop?: number; scene?: number }, commandersOutsideBoard = false) {
   const tactics = b.variant === 'tactics';
   // Move the complete hero and portal together. Their sizes never stretch to fill the side margin.
   const fieldRight = floor.width ?? ctx.canvas.width / dpr;
@@ -704,7 +704,7 @@ export function drawBoard(ctx: CanvasRenderingContext2D, b: BoardGame, lay: Boar
   };
   // The world's whole arena floor, walls and corners, as in a sprint, from under the top bar to over the buttons;
   // the board is only its grid.
-  drawBoardBackdrop(ctx, b.world, ctx.canvas.width / dpr, floor.top, floor.bottom, dpr, retro, floor.width, floor.widthScale, !commandersOutsideBoard);
+  drawBoardBackdrop(ctx, b.world, ctx.canvas.width / dpr, floor.top, floor.bottom, dpr, retro, floor.width, floor.widthScale, !commandersOutsideBoard, floor.scene);
   ctx.setTransform(dpr * lay.s, 0, 0, dpr * lay.s, dpr * lay.ox, dpr * lay.oy);
   // Only the grid and its wall use the wider transform; sprites and effects keep their own proportions.
   ctx.save();
@@ -996,4 +996,5 @@ export function drawBoardDrag(ctx: CanvasRenderingContext2D, lay: BoardLayout, d
   ctx.restore();
   if (tactics) drawStars(ctx, 0, boardUnitBounds(drag.piece).y * 1.12 - 9, drag.piece.star, now, retro);
 }
+
 
