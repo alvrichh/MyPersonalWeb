@@ -1,11 +1,11 @@
-// Run with node scripts/game/check-regressions.mjs. Uses Vite's installed esbuild.
+// Run with node bug-hunter/scripts/check-regressions.mjs. Uses Vite's installed esbuild.
 import assert from 'node:assert/strict';
 import { build } from 'esbuild';
 import { fileURLToPath } from 'node:url';
 
-const root = fileURLToPath(new URL('../../', import.meta.url));
+const root = fileURLToPath(new URL('../', import.meta.url));
 const bundle = await build({
-  stdin: { contents: "export * as world from './src/game/world.ts'; export * as board from './src/game/board.ts';", resolveDir: root },
+  stdin: { contents: "export * as world from './src/world.ts'; export * as board from './src/board.ts';", resolveDir: root },
   bundle: true, platform: 'node', format: 'esm', write: false,
 });
 const { world: w, board: b } = await import(`data:text/javascript;base64,${Buffer.from(bundle.outputFiles[0].text).toString('base64')}`);

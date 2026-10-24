@@ -8,9 +8,12 @@
   "scripts": {
     "start": "vite",
     "dev": "vite",
+    "dev:game": "vite --open /game.html",
     "preview": "vite preview",
     "typecheck": "tsc -p tsconfig.json",
-    "build": "node scripts/build/build.mjs",
+    "build": "node scripts/build/build.mjs && node bug-hunter/scripts/check-public.mjs",
+    "test:game:layout": "node --test bug-hunter/tests/integration.test.mjs",
+    "test:game": "node bug-hunter/scripts/check-regressions.mjs",
     "ai:maintenance": "node scripts/radar/daily-ai-maintenance.mjs",
     "ai:radar": "node scripts/radar/daily-ai-maintenance.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -21,7 +24,7 @@
   "devDependencies": {
     "@types/node": "^20.17.57",
     "@types/react": "^19.1.6",
-    "@types/react-dom": "^19.1.6",
+    "@types/react-dom": "^19.1.0",
     "@vitejs/plugin-react": "^4.5.2",
     "sass": "^1.89.2",
     "typescript": "^5.8.3",
