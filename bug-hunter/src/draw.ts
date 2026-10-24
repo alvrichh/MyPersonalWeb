@@ -4543,8 +4543,8 @@ const framesOf = (look: Look, kind: string) => SET_FRAMES[`${look}-${kind}`] ?? 
 const SPRITE_CANVAS: Record<string, { k: number; feet: number }> = {
   'viking-boss': { k: 1.265, feet: 0 }, 'jungle-boss': { k: 1.276, feet: 0 },
   'original-bug': { k: 1.018, feet: 0.0186 }, 'original-ticket': { k: 1.076, feet: 0.0283 }, 'original-legacy': { k: 1.113, feet: 0.0437 },
-  'original-boss': { k: 1.108, feet: 0.0533 }, 'demon-bug': { k: 1.22, feet: 0.0794 }, 'demon-ticket': { k: 2.548, feet: 0.3447 },
-  'demon-legacy': { k: 1.558, feet: 0.0872 }, 'demon-boss': { k: 1.183, feet: 0.0549 }, 'greek-bug': { k: 2.084, feet: 0.0056 },
+  'original-boss': { k: 1.108, feet: 0.0533 }, 'demon-bug': { k: 1.194, feet: 0.0492 }, 'demon-ticket': { k: 2.772, feet: 0.1327 },
+  'demon-legacy': { k: 1.24, feet: 0.0324 }, 'demon-boss': { k: 1.183, feet: 0.0549 }, 'greek-bug': { k: 2.084, feet: 0.0056 },
   'greek-ticket': { k: 3.5, feet: 0.0052 }, 'greek-legacy': { k: 1.381, feet: 0.0048 }, 'greek-boss': { k: 1.125, feet: 0.0455 },
   'viking-bug': { k: 1.067, feet: 0.0083 }, 'viking-ticket': { k: 1.091, feet: 0.0051 }, 'viking-legacy': { k: 1.166, feet: 0.023 },
   'jungle-bug': { k: 1.43, feet: 0 }, 'jungle-ticket': { k: 1.193, feet: 0.0271 }, 'jungle-legacy': { k: 1.455, feet: 0 },
@@ -4596,7 +4596,7 @@ const BOSS_ART = new Set<string>(['kernel', 'archdemon', 'drakkar', 'valdur', 'm
    how many times the body's width the canvas is drawn, and how much of the canvas lies under the feet
    (dust, a dash's trail, the volley's orbs). */
 const BOSS_CANVAS: Record<string, { k: number; feet: number }> = {
-  kernel: { k: 2.0, feet: 0.0772 }, archdemon: { k: 2.028, feet: 0.1232 },
+  kernel: { k: 1.494, feet: 0.0142 }, archdemon: { k: 2.028, feet: 0.1232 },
   drakkar: { k: 1.081, feet: 0.12 }, valdur: { k: 1.538, feet: 0.1954 }, zeus: { k: 1.782, feet: 0.2063 }, queen: { k: 1.348, feet: 0.1484 },
   wraith: { k: 1.295, feet: 0.1974 }, valkyrie: { k: 2.6, feet: 0.1691 }, medusa: { k: 2.116, feet: 0.012 }, medusa2: { k: 2.066, feet: 0.012 }, mudmonster: { k: 1.615, feet: 0.072 }, monolith: { k: 2.45, feet: 0.2243 }, minotaur: { k: 2.83, feet: 0.2455 }, mainframe: { k: 2.3, feet: 0.2248 }, overlord: { k: 2.35, feet: 0.16 }, kratos: { k: 2.4, feet: 0.1892 }, kratos2: { k: 3.12, feet: 0.3172 }, hydra: { k: 2.536, feet: 0.1103 }, mech: { k: 1.412, feet: 0.0878 }, chimera: { k: 2.226, feet: 0.1553 }, chimera2: { k: 1.749, feet: 0.1787 }, chimera3: { k: 1.706, feet: 0.2403 },
 };
