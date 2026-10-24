@@ -4959,3 +4959,59 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 
 .book-shot.is-map,
 .book-shot.is-shop { width: auto; max-width: 100%; height: 56vh; max-height: none; aspect-ratio: auto; object-fit: contain; }
+
+/* v1.13.21 — The Tactics bench is one bench per world, the owner's four-seat art (`ui/bench/bench-N.webp`) for the
+   world being played, with the reserves standing on its seats (between 15% and 85% of its width, their feet at
+   --seat-y of its height). On the phone it fills the tray's height, centred; on desktop it is horizontal, in the
+   open strip left of the board. */
+:root:not([data-retro]) .board-bench-float .board-bench-slots {
+  position: relative;
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 2%;
+  align-items: end;
+  box-sizing: border-box;
+  height: auto !important;
+  aspect-ratio: var(--bench-ar);
+  padding: 0 15% calc((1 - var(--seat-y)) / var(--bench-ar) * 100%);
+  background: var(--bench) center / 100% 100% no-repeat;
+  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.5));
+}
+:root:not([data-retro]) .board-bench-float .board-bench-slots::before { display: none; }
+:root:not([data-retro]) .board-bench-float .board-bench-slot {
+  position: relative;
+  width: auto !important;
+  height: 100% !important;
+  min-height: 0;
+  aspect-ratio: auto;
+  border: 0;
+  background: none !important;
+  overflow: visible;
+}
+:root:not([data-retro]) .board-bench-float .board-bench-slot::before { display: none !important; }
+:root:not([data-retro]) .board-bench-float .board-bench-slot > img {
+  position: absolute;
+  left: -10%;
+  bottom: -6%;
+  width: 120%;
+  height: 170%;
+  max-width: none;
+  max-height: none;
+  object-fit: contain;
+  object-position: center bottom;
+}
+:root:not([data-retro]) .board-bench-float .board-bench-slot.is-empty { border: 0; background: none !important; }
+@media (min-width: 900px) {
+  :root:not([data-retro]) .board-bench-float { width: 300px; padding: 22px 0 0; border: 0; background: none; box-shadow: none; backdrop-filter: none; }
+  :root:not([data-retro]) .board-bench-float .board-bench-head { position: absolute; top: 0; left: 0; right: 0; }
+}
+@media (max-width: 899px) {
+  .board-ui { --board-tray-height: 140px; }
+  /* The bench keeps its own shape across the tray's width, standing on the tray's floor; what it has above the tray
+     rises over the board's bottom edge. */
+  :root:not([data-retro]) .board-mobile-tray.is-active .board-bench-float { display: flex; flex-direction: column; justify-content: flex-end; }
+  :root:not([data-retro]) .board-mobile-tray.is-active .board-bench-slots { flex: none !important; width: 100%; height: auto !important; min-height: 0; }
+}
+/* A reserve's stars sit at its feet on its seat, not floating over the board. */
+:root:not([data-retro]) .board-bench-float .board-bench-slot > em { top: auto; right: auto; bottom: -14%; left: 50%; transform: translateX(-50%); white-space: nowrap; }
+@media (min-width: 900px) { :root:not([data-retro]) .board-bench-float { width: 340px; } }
