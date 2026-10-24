@@ -4,6 +4,14 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.8 - 2026-10-24
+
+### Fixed - Tactics bench visible again
+- Fixed the mobile Tactics reserve disappearing after the 1.13.7 bench-caption overlay change.
+- The reserve now uses an explicit four-column grid with a fixed 94 px tray and 88 px visible slots instead of relying on flexible square aspect-ratio sizing that could collapse or overflow off-screen.
+- The `Bench · n/4` caption remains overlaid in front of the board, so the board keeps the space reclaimed in 1.13.7.
+- Bench drag/drop behavior, capacity, unit art, world plinths and desktop layout are unchanged.
+
 ## 1.13.7 - 2026-10-24
 
 ### Changed - More mobile board space
