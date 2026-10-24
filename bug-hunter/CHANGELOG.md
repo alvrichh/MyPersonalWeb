@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.32 - 2026-10-24
+
+### Fixed - Units on the board's last row could not be dragged
+- Since the board moved half a cell lower (1.13.30) the bench's seats lie over its last row on the phone, and they took the touch, so a unit standing there could not be dragged. Now only the seats themselves take the pointer (empty seats none; the tray, the bench and its art never), a press on a seat over a board unit is handed to the board, and a drop counts as the bench only on a seat itself (`benchSeatAt`), so the last row stays the board's.
+- Checked with Playwright at 390 px: last-row units drag with the bench empty and full, reserves still deploy, and shop cards still drop onto the last row. On localhost `window.bugHunterBoardLay` exposes the board's layout for such tests.
+
 ## 1.13.31 - 2026-10-24
 
 ### Changed
