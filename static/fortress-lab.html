@@ -19,25 +19,44 @@ footer{font-size:12px;color:#86a9c1;padding:8px 16px}
 @media(orientation:portrait){main{flex-direction:column}#arena{min-height:53dvh;max-height:67dvh}aside{width:100%;padding:8px}aside p{margin:4px 0}#hint{font-size:11px;max-width:70%}}
 @media(orientation:landscape){#arena{min-height:65dvh}}
 </style></head>
-<body><header><div><h1>BUG HUNTER · FORTRESS LAB</h1><small>Isométrico · selección · muros · zoom</small></div><nav id="nav" aria-label="Niveles"></nav></header>
+<body><header><div><h1>BUG HUNTER · FORTRESS LAB</h1><small>Asedio PvE · despliega tropas · destruye fortalezas</small></div><nav id="nav" aria-label="Niveles"></nav></header>
 <main><div id="arena"><canvas id="view" aria-label="Terreno isométrico interactivo"></canvas><div id="hint">Arrastra para mover · toca un edificio · rueda/pellizco para zoom</div></div>
-<aside><h2 id="selected">Fortress</h2><p id="objective"></p><div class="tools"><button id="minus" aria-label="Alejar">−</button><button id="reset">Centrar</button><button id="plus" aria-label="Acercar">+</button></div><p id="info">Selecciona un edificio para inspeccionarlo.</p></aside></main>
-<footer>Laboratorio separado. Los diseños SVG son provisionales. Ningún cambio en partidas existentes.</footer>
+<aside><h2 id="selected">Fortress · Asedio</h2><p id="objective"></p><div class="tools"><button id="start">Atacar</button><button id="troop">Bicho: Guerrero</button><button id="restart">Reiniciar</button><button id="minus" aria-label="Alejar">−</button><button id="reset">Centrar</button><button id="plus" aria-label="Acercar">+</button></div><p id="info">Toca Atacar y despliega bichos fuera del perímetro de la base.</p><p id="score">0% · ☆☆☆</p><p id="army">Tropas: 8</p></aside></main>
+<footer>Prototipo PvE aislado · despliegue libre desde el exterior · arte y combate provisionales.</footer>
 <script>
 'use strict';
 const root='/images/game/fortress/backlog/';
 const levels=[
-{name:'1 · Núcleo',w:10,h:8,description:'Un Ayuntamiento. Prueba selección, cámara y orientación.',units:[['core-hall',4,2]]},
-{name:'2 · Recursos',w:10,h:8,description:'Ayuntamiento, mina y almacén, en rombos separados.',units:[['core-hall',4,2],['gold-mine',2,5],['gold-storage',6,5]]},
-{name:'3 · Muros',w:12,h:9,description:'Cinco muros conectados, un cañón y el Ayuntamiento.',units:[['core-hall',5,2],['cannon',5,5],...Array.from({length:5},(_,i)=>['wall',3+i,4])]}];
+{name:'1 · Núcleo',w:10,h:8,description:'Tutorial 1: destruye el Ayuntamiento con ocho bichos.',units:[['core-hall',4,2]]},
+{name:'2 · Recursos',w:10,h:8,description:'Tutorial 2: destruye el Ayuntamiento y los edificios auxiliares.',units:[['core-hall',4,2],['gold-mine',2,5],['gold-storage',6,5]]},
+{name:'3 · Muros',w:12,h:9,description:'Tutorial 3: rodea o rompe los muros y neutraliza el cañón.',units:[['core-hall',5,2],['cannon',5,5],...Array.from({length:5},(_,i)=>['wall',3+i,4])]}];
 const arena=document.querySelector('#arena'),canvas=document.querySelector('#view'),ctx=canvas.getContext('2d'),nav=document.querySelector('#nav');
 let current=0,selected=null,zoom=1,panX=0,panY=0,dragging=false,origin=null,moved=false;
+let phase='inspect', structures=[],troops=[],shots=[],army=8, chosen=0,progress=0,stars=0,elapsed=0,lastTime=0;
+const TROOP_TYPES=[{name:'Guerrero',hp:125,dps:28,speed:1.15,range:.6,color:'#65e7e3'},{name:'Lanzador',hp:80,dps:19,speed:.9,range:2.9,color:'#ffcd72'},{name:'Tanque',hp:240,dps:16,speed:.65,range:.75,color:'#bb83ff'}];
+const MAX_RAID_TIME=90;
 const sprites=new Map(), pointers=new Map();
 const TILE_W=92,TILE_H=46;
 const names={'core-hall':'AYUNTAMIENTO','gold-mine':'MINA DE ORO','gold-storage':'ALMACÉN DE ORO','cannon':'CAÑÓN','wall':'MURO'};
 function image(kind){if(!sprites.has(kind)){const img=new Image();img.src=root+kind+'.svg';img.onload=draw;img.onerror=draw;sprites.set(kind,img);}return sprites.get(kind);}
 function screen(x,y){const l=levels[current],ox=canvas.clientWidth/2+panX,oy=canvas.clientHeight/2-(l.w+l.h)*TILE_H*zoom/4+panY;return {x:ox+(x-y)*TILE_W*.5*zoom,y:oy+(x+y)*TILE_H*.5*zoom};}
 function diamond(x,y,w,h,fill,stroke){ctx.beginPath();ctx.moveTo(x,y-h/2);ctx.lineTo(x+w/2,y);ctx.lineTo(x,y+h/2);ctx.lineTo(x-w/2,y);ctx.closePath();ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=Math.max(1,zoom);ctx.stroke();}}
+function setupRaid(){phase='inspect';elapsed=0;army=8;progress=stars=0;troops=[];shots=[];structures=levels[current].units.map(([kind,x,y],id)=>({kind,x,y,id,hp:kind==='core-hall'?500:kind==='wall'?110:kind==='cannon'?240:150,maxHp:kind==='core-hall'?500:kind==='wall'?110:kind==='cannon'?240:150}));updateStats();}
+function getStars(){const hall=structures.some(b=>b.kind==='core-hall'&&b.hp<=0);return (progress>=50?1:0)+(hall?1:0)+(progress===100?1:0);}
+function updateStats(){progress=Math.round(100*structures.filter(b=>b.hp<=0).length/Math.max(1,structures.length));stars=getStars();document.querySelector('#score').textContent=progress+'% · '+ '★'.repeat(stars)+'☆'.repeat(3-stars)+' · '+Math.max(0,Math.ceil(MAX_RAID_TIME-elapsed))+'s';document.querySelector('#army').textContent='Tropas restantes: '+army+' · Desplegadas: '+troops.filter(t=>t.hp>0).length;document.querySelector('#start').textContent=phase==='raid'?'Combatiendo':phase==='done'?'Finalizado':'Atacar';}
+function defenseDamage(b){return b.kind==='core-hall'?500:b.kind==='wall'?110:b.kind==='cannon'?240:150;}
+function nearest(t){let candidates=structures.filter(b=>b.hp>0);if(!candidates.length)return null;const nonwalls=candidates.filter(b=>b.kind!=='wall');const blocked=(b)=>structures.some(w=>w.kind==='wall'&&w.hp>0&&Math.abs(w.x-(t.x+b.x)/2)<.85&&Math.abs(w.y-(t.y+b.y)/2)<.85);candidates.sort((a,b)=>{const dist=q=>Math.hypot(t.x-q.x,t.y-q.y);return (dist(a)+(a.kind==='wall'&&nonwalls.length?1.1:0))-(dist(b)+(b.kind==='wall'&&nonwalls.length?1.1:0));});let goal=candidates[0];if(goal.kind!=='wall'&&blocked(goal)){const wall=structures.filter(w=>w.kind==='wall'&&w.hp>0).sort((a,b)=>distTo(t,a)-distTo(t,b))[0];if(wall&&distTo(t,wall)<distTo(t,goal)+1)goal=wall;}return goal;}
+function distTo(a,b){return Math.hypot(a.x-b.x,a.y-b.y);}
+function update(dt){if(phase!=='raid')return;elapsed+=dt;
+for(const t of troops){if(t.hp<=0)continue;const target=nearest(t);if(!target)continue;const distance=distTo(t,target);if(distance>t.range){const step=Math.min(distance-t.range,t.speed*dt);t.x+=(target.x-t.x)/distance*step;t.y+=(target.y-t.y)/distance*step;}else{target.hp=Math.max(0,target.hp-t.dps*dt);t.attack=0.25;}}
+for(const b of structures){if(b.kind!=='cannon'||b.hp<=0)continue;b.cooldown=(b.cooldown??0)-dt;if(b.cooldown<=0){const target=troops.filter(t=>t.hp>0&&distTo(t,b)<5).sort((a,c)=>distTo(a,b)-distTo(c,b))[0];if(target){target.hp=Math.max(0,target.hp-18);shots.push({x:b.x,y:b.y,tx:target.x,ty:target.y,life:.3});b.cooldown=1.15;}}}
+shots=shots.filter(b=>(b.life-=dt)>0);
+for(const t of troops)t.attack=Math.max(0,(t.attack??0)-dt);
+updateStats();
+if(progress===100||(elapsed>=MAX_RAID_TIME)||(army===0&&troops.every(t=>t.hp<=0))){phase='done';document.querySelector('#info').textContent='Asedio finalizado: '+progress+'% y '+stars+' estrella(s). Pulsa Reiniciar para repetir.';updateStats();}
+}
+let raf=0;function tick(now){const dt=Math.min(.05,Math.max(0,(now-lastTime)/1000||0));lastTime=now;update(dt);draw();raf=requestAnimationFrame(tick);}
+function paintTroop(t){const p=screen(t.x+.5,t.y+.5),r=13*zoom;ctx.save();ctx.translate(p.x,p.y-15*zoom);ctx.fillStyle=t.hp>0?t.color:'#777';ctx.strokeStyle='#102d41';ctx.lineWidth=2*zoom;ctx.beginPath();ctx.ellipse(0,0,r,r*.85,0,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.fillStyle='#142131';ctx.fillRect(-r*.35,-r*.3,r*.25,r*.22);ctx.fillRect(r*.12,-r*.3,r*.25,r*.22);ctx.fillStyle='#49e9c9';ctx.fillRect(-r,-r*1.3,2*r*Math.max(0,t.hp/t.maxHp),3*zoom);ctx.restore();}
 function draw(){
 const dpr=Math.min(devicePixelRatio||1,2),w=arena.clientWidth,h=arena.clientHeight;
 if(!w||!h)return;
@@ -51,20 +70,30 @@ const grass=((x*7+y*13)%5===0)?'#567849':'#456e42';
 diamond(center.x,center.y,TILE_W*zoom,TILE_H*zoom,grass,active?'#ffe287':'#79a65c33');
 if(active)diamond(center.x,center.y,TILE_W*zoom*.92,TILE_H*zoom*.92,'#e8d88b48','#ffe693');
 if(!kind)continue;
+const b=structures.find(q=>q.x===x&&q.y===y&&q.hp>0);if(!b)continue;
 if(kind==='wall'){const left=occupied.get((x-1)+','+y)==='wall',right=occupied.get((x+1)+','+y)==='wall';let a=screen(x,y+.5),b=screen(x+1,y+.5);ctx.strokeStyle='#182b31';ctx.lineWidth=20*zoom;ctx.lineCap='square';ctx.beginPath();ctx.moveTo(a.x,a.y-10*zoom);ctx.lineTo(b.x,b.y-10*zoom);ctx.stroke();ctx.strokeStyle='#9bafaf';ctx.lineWidth=13*zoom;ctx.beginPath();ctx.moveTo(a.x,a.y-16*zoom);ctx.lineTo(b.x,b.y-16*zoom);ctx.stroke();for(const pt of [a,b]){if((pt===a&&!left)||(pt===b&&!right)){ctx.fillStyle='#617b91';ctx.fillRect(pt.x-7*zoom,pt.y-32*zoom,14*zoom,21*zoom);}}continue;}
 const img=image(kind);if(img.complete&&img.naturalWidth){const scale=kind==='core-hall'?1.75:1.25;const ww=TILE_W*zoom*scale,hh=ww;ctx.drawImage(img,center.x-ww/2,center.y-hh*.83,ww,hh);}
 else {diamond(center.x,center.y-15*zoom,halfW*1.3,halfH*1.7,'#405773','#9bdbdf');}
+if(phase!=='inspect'){ctx.fillStyle='#102131';ctx.fillRect(center.x-26*zoom,center.y-58*zoom,52*zoom,5*zoom);ctx.fillStyle='#ef8275';ctx.fillRect(center.x-26*zoom,center.y-58*zoom,52*zoom*b.hp/b.maxHp,5*zoom);}
 }
+for(const t of troops)if(t.hp>0)paintTroop(t);
+for(const shot of shots){const a=screen(shot.x+.5,shot.y+.5),b=screen(shot.tx+.5,shot.ty+.5);ctx.strokeStyle='#ffd86f';ctx.lineWidth=4*zoom*shot.life/.3;ctx.beginPath();ctx.moveTo(a.x,a.y-23*zoom);ctx.lineTo(b.x,b.y-14*zoom);ctx.stroke();}
 }
-function selectAt(px,py){const l=levels[current],ox=canvas.clientWidth/2+panX,oy=canvas.clientHeight/2-(l.w+l.h)*TILE_H*zoom/4+panY;const dx=(px-ox)/(TILE_W*.5*zoom),dy=(py-oy)/(TILE_H*.5*zoom);const x=Math.floor((dx+dy)/2),y=Math.floor((dy-dx)/2);if(x<0||y<0||x>=l.w||y>=l.h){selected=null;}else selected={x,y};const kind=l.units.find(u=>u[1]===x&&u[2]===y)?.[0];document.querySelector('#selected').textContent=kind?(names[kind]||kind):selected?'Casilla vacía':'Fuera del mapa';document.querySelector('#info').textContent=selected?'Posición ('+x+', '+y+'). '+(kind?'Edificio de prueba.':'Libre para construir más adelante.'):'Arrastra para explorar.';draw();}
-function setLevel(i){current=i;selected=null;zoom=1;panX=panY=0;document.querySelector('#selected').textContent=levels[i].name;document.querySelector('#objective').textContent=levels[i].description;document.querySelector('#info').textContent='Toca un edificio para inspeccionarlo.';nav.querySelectorAll('button').forEach((b,j)=>b.setAttribute('aria-pressed',String(i===j)));draw();}
+function selectAt(px,py){const l=levels[current],ox=canvas.clientWidth/2+panX,oy=canvas.clientHeight/2-(l.w+l.h)*TILE_H*zoom/4+panY;const dx=(px-ox)/(TILE_W*.5*zoom),dy=(py-oy)/(TILE_H*.5*zoom);const x=Math.floor((dx+dy)/2),y=Math.floor((dy-dx)/2);if(x<0||y<0||x>=l.w||y>=l.h){selected=null;}else selected={x,y};const kind=structures.find(u=>u.x===x&&u.y===y&&u.hp>0)?.kind;document.querySelector('#selected').textContent=kind?(names[kind]||kind):selected?'Casilla vacía':'Fuera del mapa';document.querySelector('#info').textContent=selected?'Posición ('+x+', '+y+'). '+(kind?'Edificio de prueba.':'Libre para construir más adelante.'):'Arrastra para explorar.';draw();}
+function deployAt(px,py){if(army<=0||phase!=='raid')return;const l=levels[current],ox=canvas.clientWidth/2+panX,oy=canvas.clientHeight/2-(l.w+l.h)*TILE_H*zoom/4+panY;const dx=(px-ox)/(TILE_W*.5*zoom),dy=(py-oy)/(TILE_H*.5*zoom);let x=(dx+dy)/2-.5,y=(dy-dx)/2-.5;
+const edge=x<1||y<1||x>l.w-2||y>l.h-2;if(!edge){document.querySelector('#info').textContent='Despliega desde el borde exterior (primer o último anillo de casillas).';return;}
+x=Math.max(-.4,Math.min(l.w-.6,x));y=Math.max(-.4,Math.min(l.h-.6,y));const type=TROOP_TYPES[chosen];troops.push({x,y,hp:type.hp,maxHp:type.hp,dps:type.dps,speed:type.speed,range:type.range,color:type.color});army--;updateStats();}
+function setLevel(i){current=i;selected=null;zoom=1;panX=panY=0;setupRaid();document.querySelector('#selected').textContent=levels[i].name;document.querySelector('#objective').textContent=levels[i].description;document.querySelector('#info').textContent='Toca un edificio para inspeccionarlo.';nav.querySelectorAll('button').forEach((b,j)=>b.setAttribute('aria-pressed',String(i===j)));draw();}
 levels.forEach((l,i)=>{const b=document.createElement('button');b.textContent=l.name;b.onclick=()=>setLevel(i);nav.append(b);});
 function setZoom(value){zoom=Math.max(.55,Math.min(2.2,value));draw();}
 document.querySelector('#minus').onclick=()=>setZoom(zoom/1.2);document.querySelector('#plus').onclick=()=>setZoom(zoom*1.2);document.querySelector('#reset').onclick=()=>{zoom=1;panX=panY=0;draw();};
+document.querySelector('#restart').onclick=()=>setLevel(current);
+document.querySelector('#start').onclick=()=>{if(phase==='inspect'){phase='raid';document.querySelector('#info').textContent='Toca fuera de los edificios para desplegar tus tropas (máximo 8).';updateStats();}};
+document.querySelector('#troop').onclick=()=>{chosen=(chosen+1)%TROOP_TYPES.length;document.querySelector('#troop').textContent='Bicho: '+TROOP_TYPES[chosen].name;};
 canvas.addEventListener('pointerdown',e=>{canvas.setPointerCapture(e.pointerId);pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pointers.size===1){origin={x:e.clientX,y:e.clientY,panX,panY};moved=false;}});
 let oldPinch=0;
 canvas.addEventListener('pointermove',e=>{if(!pointers.has(e.pointerId))return;pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pointers.size===2){const [a,b]=[...pointers.values()];const dist=Math.hypot(a.x-b.x,a.y-b.y);if(oldPinch)setZoom(zoom*dist/oldPinch);oldPinch=dist;return;}if(origin){const dx=e.clientX-origin.x,dy=e.clientY-origin.y;if(Math.hypot(dx,dy)>6)moved=true;if(moved){panX=origin.panX+dx;panY=origin.panY+dy;draw();}}});
-function release(e){if(!pointers.has(e.pointerId))return;pointers.delete(e.pointerId);if(!moved&&pointers.size===0){const rect=canvas.getBoundingClientRect();selectAt(e.clientX-rect.left,e.clientY-rect.top);}if(pointers.size===0){origin=null;oldPinch=0;}else origin=null;}
+function release(e){if(!pointers.has(e.pointerId))return;pointers.delete(e.pointerId);if(!moved&&pointers.size===0){const rect=canvas.getBoundingClientRect();if(phase==='raid'){deployAt(e.clientX-rect.left,e.clientY-rect.top);}else selectAt(e.clientX-rect.left,e.clientY-rect.top);}if(pointers.size===0){origin=null;oldPinch=0;}else origin=null;}
 canvas.addEventListener('pointerup',release);canvas.addEventListener('pointercancel',e=>{pointers.delete(e.pointerId);origin=null;oldPinch=0;});canvas.addEventListener('wheel',e=>{e.preventDefault();setZoom(zoom*(e.deltaY>0?.9:1.1));},{passive:false});
-new ResizeObserver(draw).observe(arena);setLevel(0);
+new ResizeObserver(draw).observe(arena);setLevel(0);requestAnimationFrame(tick);
 </script></body></html>
