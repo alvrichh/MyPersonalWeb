@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.50 - 2026-10-24
+
+### Fixed - Locked worlds on the map
+- A locked world's play button is the same art in grey, and it no longer offers the Boss Rush, the bosses' showcase or Nightmare.
+
 ## 1.13.49 - 2026-10-24
 
 ### Fixed - Boss Rush
