@@ -4,6 +4,14 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.30 - 2026-10-24
+
+### Changed - Bench seats, board position and world 8's colours
+- Bench seats are fixed: a reserve keeps the seat it is put on and gaps are allowed (`slot.r`, `freeSeat`, `moveBenchSeat` in `board.ts`). A shop card or a board unit dragged onto a seat goes to that seat (onto an occupied seat a board unit swaps with the reserve there); a reserve dragged onto another seat moves there, swapping. A tapped card that overflows still takes the first free seat.
+- Phone Tactics: the bench sits higher (24 px) and the whole board, wall included, half a cell lower.
+- World 8's floor (`floors/world8.webp`, used by every mode) has its purple mist and flames turned blue, like its bench; the orange candles stay.
+- New regression check for the bench seats (28 in all).
+
 ## 1.13.29 - 2026-10-24
 
 ### Changed

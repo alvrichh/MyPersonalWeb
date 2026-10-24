@@ -9,7 +9,7 @@ import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPr
 import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
 import { MID_ART, boardBackdropBounds, draw, drawRetroFigure, preloadBoardBossFx, preloadCast, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, NET_ID, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, SKIN_GATE, skinOpen, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
-import { ABILITY, ABIL_V, BENCH_CAP, canFight, CELL, COLS, FINAL_ID, HOME_ROW, NATIVE_WORLD_BONUS, ROWS, ROUNDS, SYNERGY, TACTICS, armyCap, deployBench, sellBench, storeOnBench, toggleAutoMerge, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, startOnlineFight, unitStats, updateBoard, waveSpots, waveUnitStats, type BoardGame, type Online, type Piece, type Variant } from './board';
+import { ABILITY, ABIL_V, BENCH_CAP, canFight, moveBenchSeat, CELL, COLS, FINAL_ID, HOME_ROW, NATIVE_WORLD_BONUS, ROWS, ROUNDS, SYNERGY, TACTICS, armyCap, deployBench, sellBench, storeOnBench, toggleAutoMerge, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, startOnlineFight, unitStats, updateBoard, waveSpots, waveUnitStats, type BoardGame, type Online, type Piece, type Variant } from './board';
 import { cleanCode, dial, hostGame, joinGame, leave as netLeave, presence, presenceOn, presenceReady, send as netSend, type NetHandlers, type NetMsg, type NetProfile, type NetState, type Together } from './net';
 import { ABILITY_ICON, ABILITY_PIC, SYNERGY_PIC, FIREBALL, boardMerged, boardUnitBounds, drawBoard, mirrorFight, drawBoardDrag, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
 import type { Enemy } from './world';
@@ -2562,9 +2562,9 @@ function renderBoardUi() {
     ? `<button class="board-card${b.variant === 'tactics' ? ` is-r${o.tier}${starsUp(o) ? ' is-up' : ''}${o.cast === b.world ? ' is-native' : ''}` : ''}${o.tier >= 3 ? ' is-boss' : ''}" type="button" data-bact="buy" data-i="${i}"${!prep ? ' disabled' : b.gold < o.price ? ' aria-disabled="true"' : ''}><i class="board-cast">${b.variant === 'tactics' ? boardCastIcon(o.cast) : t('worldShort', { n: o.cast })}</i><img src="${boardPic(o.tier, o.cast)}" alt="">${b.variant === 'tactics' && o.cast === b.world ? `<em class="board-native-bonus">+${Math.round(NATIVE_WORLD_BONUS * 100)}%</em>` : ''}${b.variant === 'tactics' && starsUp(o) ? '<em class="board-up">★↑</em>' : ''}<b>${boardCharacterName(o.tier, o.cast)}</b><span class="board-price">${coin} ${o.price}</span></button>`
     : '<span class="board-card is-sold"></span>').join('');
   const capLabel = `<span class="board-count" aria-label="${t('boardCapLabel')}">♟ ${b.army.length}/${armyCap(b.round)}</span>`;
-  const bench = !fusion ? `<div class="board-bench-head"><small class="board-bench-title">${t('boardBench')} · ${b.bench.length}/${BENCH_CAP}</small>${capLabel}</div><div class="board-bench-slots" style="${benchStyle(b.world)}">${Array.from({ length: BENCH_CAP }, (_, i) => { const p = b.bench[i]; return p
-    ? `<button type="button" class="board-bench-slot is-world-${p.cast} is-t${p.tier}" data-bact="bench-deploy" data-i="${i}" aria-label="${t('boardBenchDeploy', { name: boardCharacterName(p.tier, p.cast) })}"${!prep || b.online?.waiting ? ' disabled' : ''}><img data-trim="${boardPic(p.tier, p.cast)}" src="${trimmedPics.get(boardPic(p.tier, p.cast)) ?? boardPic(p.tier, p.cast)}" alt=""><em class="bench-stars is-s${p.star ?? 1}">${'<i></i>'.repeat(p.star ?? 1)}</em></button>`
-    : '<span class="board-bench-slot is-empty"></span>'; }).join('')}</div>` : '';
+  const bench = !fusion ? `<div class="board-bench-head"><small class="board-bench-title">${t('boardBench')} · ${b.bench.length}/${BENCH_CAP}</small>${capLabel}</div><div class="board-bench-slots" style="${benchStyle(b.world)}">${Array.from({ length: BENCH_CAP }, (_, seat) => { const p = b.bench.find((q) => q.slot.r === seat); const i = p ? b.bench.indexOf(p) : -1; return p
+    ? `<button type="button" class="board-bench-slot is-world-${p.cast} is-t${p.tier}" data-seat="${seat}" data-bact="bench-deploy" data-i="${i}" aria-label="${t('boardBenchDeploy', { name: boardCharacterName(p.tier, p.cast) })}"${!prep || b.online?.waiting ? ' disabled' : ''}><img data-trim="${boardPic(p.tier, p.cast)}" src="${trimmedPics.get(boardPic(p.tier, p.cast)) ?? boardPic(p.tier, p.cast)}" alt=""><em class="bench-stars is-s${p.star ?? 1}">${'<i></i>'.repeat(p.star ?? 1)}</em></button>`
+    : `<span class="board-bench-slot is-empty" data-seat="${seat}"></span>`; }).join('')}</div>` : '';
   // The bench stays in view through the fight too, its reserves dimmed (they do not fight).
   boardBenchEl.hidden = fusion || !(prep || b.phase === 'fight');
   boardBenchEl.setAttribute('aria-label', t('boardBench'));
@@ -2665,7 +2665,8 @@ window.addEventListener('pointerup', (event) => {
   hideBoardTooltip();
   if (down.held || down.moved) cardClickBlockUntil = performance.now() + 350;
   if (!b || !down.moved || !down.canBuy) { boardDrag = null; return; }
-  const over = boardDrag?.over;
+  const seat = b.variant === 'tactics' ? benchSeatAt(event.clientX, event.clientY) : -1;
+  const over = seat >= 0 ? { c: -1, r: seat } : boardDrag?.over;
   boardDrag = null;
   const offer = b.shop[down.i];
   if (!over || !offer) return;
@@ -2930,6 +2931,8 @@ function boardStep(dt: number, now: number) {
     const gridWidth = COLS * CELL * boardLay.sx;
     boardLay.ox = (fieldWidth - gridWidth) / 2;
   }
+  // Phone Tactics: the whole board, its wall too, half a cell lower, over the bench's top.
+  if (mobileTactics) boardLay.oy += CELL * boardLay.s * 0.5;
   // Desktop keeps the reserve floating beside the grid. Mobile Tactics owns the
   // reserve through boardMobileTray, so never apply viewport coordinates to its
   // child: when that child is positioned for the caption overlay, left/top would
@@ -3044,8 +3047,17 @@ function isBoardSellPoint(clientX: number, clientY: number) {
   const top = Math.max(rect.top, shop.top), bottom = Math.min(rect.bottom, shop.bottom);
   return right > left && bottom > top && clientX >= left && clientX < right && clientY >= top && clientY < bottom;
 }
+/** The bench seat under a point (its column across the bench), or -1. */
+function benchSeatAt(clientX: number, clientY: number) {
+  if (boardBenchEl.hidden) return -1;
+  for (const el of boardBenchEl.querySelectorAll<HTMLElement>('[data-seat]')) {
+    const r = el.getBoundingClientRect();
+    if (clientX >= r.left - 6 && clientX < r.right + 6 && clientY >= r.top - r.height && clientY < r.bottom + r.height * 0.6) return Number(el.dataset.seat);
+  }
+  return -1;
+}
 function isBoardBenchPoint(clientX: number, clientY: number) {
-  if (!board || board.variant !== 'tactics' || board.phase !== 'prep' || board.bench.length >= BENCH_CAP || boardBenchEl.hidden) return false;
+  if (!board || board.variant !== 'tactics' || board.phase !== 'prep' || boardBenchEl.hidden) return false;
   const rect = boardBenchEl.getBoundingClientRect();
   return clientX >= rect.left && clientX < rect.right && clientY >= rect.top && clientY < rect.bottom;
 }
@@ -3108,6 +3120,9 @@ function boardPointerUp(event: PointerEvent) {
     } else if (!onBench && target) {
       if (deployBench(b, index, target)) audio.play('click');
       else flash(t('boardBenchNoRoom'));
+    } else if (onBench) {
+      const seat = benchSeatAt(event.clientX, event.clientY);
+      if (seat >= 0 && moveBenchSeat(b, index, seat)) audio.play('click');
     }
     hideBoardTooltip();
     boardKey = '';
@@ -3124,7 +3139,7 @@ function boardPointerUp(event: PointerEvent) {
   const drag = { piece: down.piece, over: slotAt(boardLay, event.clientX - canvas.getBoundingClientRect().left, event.clientY - canvas.getBoundingClientRect().top) };
   const from = drag.piece.slot;
   if (isBoardBenchPoint(event.clientX, event.clientY)) {
-    if (storeOnBench(b, from)) { audio.play('click'); flash(t('boardBench')); }
+    if (storeOnBench(b, from, benchSeatAt(event.clientX, event.clientY))) { audio.play('click'); flash(t('boardBench')); }
     else flash(t('boardBenchFull'));
     boardKey = '';
     renderBoardUi();

@@ -477,20 +477,25 @@ export function summon(b: BoardGame): 'ok' | 'gold' | 'full' | 'none' {
 
 /** Tactics: buying a matching card raises the existing copy a star, keeping its character and cell.
     Another copy at the new star continues the chain, up to three stars. */
+/** The bench's four seats are fixed: a reserve keeps the seat it was put on (`slot.r`), and gaps are allowed. */
+export const freeSeat = (b: BoardGame) => { for (let r = 0; r < BENCH_CAP; r++) if (!b.bench.some((p) => p.slot.r === r)) return r; return -1; };
+const seatTaken = (b: BoardGame, seat: number) => b.bench.find((p) => p.slot.r === seat);
 function buyTactics(b: BoardGame, i: number, offer: NonNullable<Offer>, where?: Slot) {
   const same = (p: Piece, star: Star) => p.tier === offer.tier && p.cast === offer.cast && starOf(p) === star;
   const pair = [...b.army, ...b.bench].filter((p) => same(p, 1));
   if (pair.length < TACTICS.copies - 1 && b.army.length >= armyCap(b.round) && b.bench.length >= BENCH_CAP) return false;
   // Dragged onto a free cell of your half it lands there; tapped, on the first free cell from the back row up.
   const chosen = where && homeCell(where) && !pieceAt(b, where) ? where : null;
+  // Dragged onto a free bench seat it goes there, whatever room the board has.
+  const seat = where && where.c === -1 && where.r >= 0 && where.r < BENCH_CAP && !seatTaken(b, where.r) ? where.r : -1;
   // Empty grid cells do not grant extra army capacity. Overflow purchases belong in reserve.
-  const at = pair.length >= TACTICS.copies - 1 || b.army.length >= armyCap(b.round) ? null : chosen ?? freeCell(b, true);
+  const at = pair.length >= TACTICS.copies - 1 || seat >= 0 || b.army.length >= armyCap(b.round) ? null : chosen ?? freeCell(b, true);
   const reserve = !at && pair.length < TACTICS.copies - 1 && b.bench.length < BENCH_CAP;
   if (!at && pair.length < TACTICS.copies - 1 && !reserve) return false;
   b.gold -= offer.price;
   b.shop[i] = rollTacticsOffer(b);
   b.events.push('buy');
-  if (reserve) { b.bench.push({ id: nextId++, tier: offer.tier, cast: offer.cast, slot: { c: -1, r: b.bench.length }, star: 1 }); return true; }
+  if (reserve) { b.bench.push({ id: nextId++, tier: offer.tier, cast: offer.cast, slot: { c: -1, r: seat >= 0 ? seat : freeSeat(b) }, star: 1 }); return true; }
   if (at) { b.army.push({ id: nextId++, tier: offer.tier, cast: offer.cast, slot: at, star: 1 }); return true; }
   let star: Star = 1;
   let keep = pair[0];
@@ -506,7 +511,6 @@ function buyTactics(b: BoardGame, i: number, offer: NonNullable<Offer>, where?: 
     group = [keep, ...next.slice(0, TACTICS.copies - 1)];
     keep = group[0];
   }
-  b.bench.forEach((piece, index) => { piece.slot.r = index; });
   if (keep.slot.c >= 0) b.lastMerge = { slot: keep.slot, id: keep.id, combo: star - 1, star };
   b.events.push('merge');
   return true;
@@ -521,8 +525,8 @@ export function deployBench(b: BoardGame, index: number, target?: Slot) {
   const other = pieceAt(b, at);
   if (other) {
     const armyIndex = b.army.indexOf(other);
+    other.slot = { c: -1, r: p.slot.r };
     p.slot = { ...at };
-    other.slot = { c: -1, r: index };
     b.army[armyIndex] = p;
     b.bench[index] = other;
     b.events.push('deploy');
@@ -531,9 +535,19 @@ export function deployBench(b: BoardGame, index: number, target?: Slot) {
   if (b.army.length >= armyCap(b.round)) return false;
   b.bench.splice(index, 1);
   p.slot = at;
-  b.bench.forEach((piece, i) => { piece.slot.r = i; });
   b.army.push(p);
   b.events.push('deploy');
+  return true;
+}
+
+/** Move a reserve to another bench seat, swapping with the one there. */
+export function moveBenchSeat(b: BoardGame, index: number, seat: number) {
+  const p = b.bench[index];
+  if (b.phase !== 'prep' || b.variant !== 'tactics' || !p || seat < 0 || seat >= BENCH_CAP || p.slot.r === seat) return false;
+  const there = seatTaken(b, seat);
+  if (there) there.slot = { c: -1, r: p.slot.r };
+  p.slot = { c: -1, r: seat };
+  b.events.push('bench');
   return true;
 }
 
@@ -543,18 +557,29 @@ export function sellBench(b: BoardGame, index: number) {
   if (b.phase !== 'prep' || b.variant !== 'tactics' || b.online?.waiting || !p) return false;
   b.gold += saleOf(p, b.variant, b.world);
   b.bench.splice(index, 1);
-  b.bench.forEach((piece, i) => { piece.slot.r = i; });
   b.events.push('sell');
   return true;
 }
 
-/** Store a fielded Tactics unit in the first free bench slot. */
-export function storeOnBench(b: BoardGame, from: Slot) {
-  if (b.phase !== 'prep' || b.variant !== 'tactics' || b.bench.length >= BENCH_CAP) return false;
+/** Store a fielded Tactics unit on a bench seat: the one it is dropped on (swapping with the reserve there, which
+    takes its cell), or the first free one. */
+export function storeOnBench(b: BoardGame, from: Slot, seat = -1) {
+  if (b.phase !== 'prep' || b.variant !== 'tactics') return false;
   const p = pieceAt(b, from);
   if (!p) return false;
+  const there = seat >= 0 ? seatTaken(b, seat) : undefined;
+  if (there) {
+    b.army[b.army.indexOf(p)] = there;
+    there.slot = { ...p.slot };
+    p.slot = { c: -1, r: seat };
+    b.bench[b.bench.indexOf(there)] = p;
+    b.events.push('bench');
+    return true;
+  }
+  const to = seat >= 0 && seat < BENCH_CAP ? seat : freeSeat(b);
+  if (to < 0) return false;
   b.army = b.army.filter((unit) => unit !== p);
-  p.slot = { c: -1, r: b.bench.length };
+  p.slot = { c: -1, r: to };
   b.bench.push(p);
   b.events.push('bench');
   return true;
