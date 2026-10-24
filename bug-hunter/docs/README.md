@@ -6,6 +6,9 @@ This folder contains supporting documentation for BUG HUNTER. The main user/deve
 
 ## Documentation map
 
+- **[Fortress foundation](./fortress.md)** — new landscape-first base-building mode design, MVP scope, nine world styles, buildings and walls. Code scaffold: [`../src/fortress/types.ts`](../src/fortress/types.ts).
+
+
 | Document | Use it for |
 |---|---|
 | **[assets.md](./assets.md)** | Finding world/shared/special art, replacing sprites, and understanding repository paths versus `/images/game/...` URLs. |
