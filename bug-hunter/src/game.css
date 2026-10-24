@@ -4754,3 +4754,57 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
     height: 100%;
   }
 }
+
+
+/* v1.13.8 — Fix the mobile Tactics reserve after the caption-overlay change.
+   The previous 94px tray combined square aspect-ratio slots with flexible
+   sizing, which could push/collapse the reserve outside its visible area.
+   Give the reserve an explicit row and square slot size instead. */
+@media (max-width: 899px) {
+  .board-mobile-tray.is-active {
+    height: 94px;
+    min-height: 94px;
+    overflow: visible;
+  }
+  .board-mobile-tray.is-active .board-bench-float {
+    display: block;
+    flex: 1 1 100%;
+    width: 100%;
+    height: 94px;
+    min-height: 94px;
+    overflow: visible;
+  }
+  .board-mobile-tray.is-active .board-bench-slots {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    align-items: end;
+    gap: 6px;
+    width: 100%;
+    height: 94px;
+    min-height: 94px;
+  }
+  .board-mobile-tray.is-active .board-bench-slot,
+  :root:not([data-retro]) .board-mobile-tray.is-active .board-bench-slot {
+    display: grid;
+    width: 100%;
+    height: 88px;
+    min-width: 0;
+    min-height: 88px;
+    max-height: 88px;
+    aspect-ratio: auto;
+    align-self: end;
+    box-sizing: border-box;
+  }
+  :root:not([data-retro]) .board-mobile-tray.is-active .board-bench-slot::before {
+    left: 8%;
+    right: 8%;
+    bottom: 2px;
+    height: 62%;
+  }
+  :root:not([data-retro]) .board-mobile-tray.is-active .board-bench-slot > img {
+    left: 10%;
+    bottom: 14%;
+    width: 80%;
+    height: 80%;
+  }
+}
