@@ -2498,6 +2498,10 @@ function positionBoardBonusPanel() {
 }
 
 /** The top bar and the shop, rebuilt only when something on them changes. */
+/** The Tactics bench: one four-seat bench per world (`ui/bench/bench-N.webp`, 640 wide), its height and how far down
+    its seats' middle lies, so the reserves stand on them. */
+const BENCH_ART: Record<number, [number, number]> = { 1: [271, 0.38], 2: [332, 0.35], 3: [277, 0.38], 4: [270, 0.32], 5: [277, 0.37], 6: [280, 0.36], 7: [295, 0.3], 8: [329, 0.39], 9: [309, 0.43] };
+const benchStyle = (world: number) => { const [h, y] = BENCH_ART[world] ?? BENCH_ART[1]; return `--bench: url('/images/game/ui/bench/bench-${world}.webp'); --bench-ar: ${(640 / h).toFixed(4)}; --seat-y: ${y}`; };
 function renderBoardUi() {
   const b = board;
   if (!b) return;
@@ -2528,8 +2532,8 @@ function renderBoardUi() {
     ? `<button class="board-card${b.variant === 'tactics' ? ` is-r${o.tier}${starsUp(o) ? ' is-up' : ''}${o.cast === b.world ? ' is-native' : ''}` : ''}${o.tier >= 3 ? ' is-boss' : ''}" type="button" data-bact="buy" data-i="${i}"${!prep ? ' disabled' : b.gold < o.price ? ' aria-disabled="true"' : ''}><i class="board-cast">${b.variant === 'tactics' ? boardCastIcon(o.cast) : t('worldShort', { n: o.cast })}</i><img src="${boardPic(o.tier, o.cast)}" alt="">${b.variant === 'tactics' && o.cast === b.world ? `<em class="board-native-bonus">+${Math.round(NATIVE_WORLD_BONUS * 100)}%</em>` : ''}${b.variant === 'tactics' && starsUp(o) ? '<em class="board-up">★↑</em>' : ''}<b>${boardCharacterName(o.tier, o.cast)}</b><span class="board-price">${coin} ${o.price}</span></button>`
     : '<span class="board-card is-sold"></span>').join('');
   const capLabel = `<span class="board-count" aria-label="${t('boardCapLabel')}">♟ ${b.army.length}/${armyCap(b.round)}</span>`;
-  const bench = !fusion ? `<div class="board-bench-head"><small class="board-bench-title">${t('boardBench')} · ${b.bench.length}/${BENCH_CAP}</small>${capLabel}</div><div class="board-bench-slots" style="--bench-plinth: url('/images/game/ui/bench/world-${b.world}.webp')">${Array.from({ length: BENCH_CAP }, (_, i) => { const p = b.bench[i]; return p
-    ? `<button type="button" class="board-bench-slot is-world-${p.cast}" style="--bench-plinth: url('/images/game/ui/bench/${p.tier >= 3 ? 'boss' : 'world'}-${p.cast}.webp')" data-bact="bench-deploy" data-i="${i}" aria-label="${t('boardBenchDeploy', { name: boardCharacterName(p.tier, p.cast) })}"${!prep || b.online?.waiting ? ' disabled' : ''}><img src="${boardPic(p.tier, p.cast)}" alt="">${(p.star ?? 1) > 1 ? `<em>${'★'.repeat(p.star ?? 1)}</em>` : ''}</button>`
+  const bench = !fusion ? `<div class="board-bench-head"><small class="board-bench-title">${t('boardBench')} · ${b.bench.length}/${BENCH_CAP}</small>${capLabel}</div><div class="board-bench-slots" style="${benchStyle(b.world)}">${Array.from({ length: BENCH_CAP }, (_, i) => { const p = b.bench[i]; return p
+    ? `<button type="button" class="board-bench-slot is-world-${p.cast}" data-bact="bench-deploy" data-i="${i}" aria-label="${t('boardBenchDeploy', { name: boardCharacterName(p.tier, p.cast) })}"${!prep || b.online?.waiting ? ' disabled' : ''}><img src="${boardPic(p.tier, p.cast)}" alt="">${(p.star ?? 1) > 1 ? `<em>${'★'.repeat(p.star ?? 1)}</em>` : ''}</button>`
     : '<span class="board-bench-slot is-empty"></span>'; }).join('')}</div>` : '';
   boardBenchEl.hidden = fusion || !prep;
   boardBenchEl.setAttribute('aria-label', t('boardBench'));
@@ -2903,7 +2907,8 @@ function boardStep(dt: number, now: number) {
     const box = boardBenchEl.getBoundingClientRect();
     const benchHeight = box.height || 190;
     const boardLeft = rect.left + boardLay.ox;
-    const left = wide ? boardLeft + 3 : rect.left + 8;
+    const benchWidth = box.width || 300;
+    const left = wide ? (boardLeft - benchWidth - 14 > rect.left + 8 ? boardLeft - benchWidth - 14 : boardLeft + 3) : rect.left + 8;
     const halfTop = rect.top + boardLay.oy + HOME_ROW * CELL * boardLay.s;
     const desiredTop = wide
       ? halfTop + Math.max(0, (ROWS - HOME_ROW) * CELL * boardLay.s / 2 - benchHeight / 2)

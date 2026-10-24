@@ -4,6 +4,13 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.21 - 2026-10-24
+
+### Changed - One four-seat bench per world in Tactics
+- The Tactics reserve is now a single bench, the owner's four-seat art for the world being played (`assets/shared/ui/bench/bench-1..9.webp`, 640 px wide), cut from his dark sheets with the segmentation model, the glows (flames, lava, ghost fire, crystals) kept as light unblended from the backdrop and the drop shadows dropped. It replaces the per-unit platforms of 1.13.12–1.13.13, whose pictures (`world-N`, `boss-N`) are no longer used.
+- The reserves stand on its four seats (`BENCH_ART` in `main.ts`: each bench's height and the seats' line, the seats between 15% and 85% of its width), their stars at their feet.
+- Phone: the bench spans the tray's width at its own shape; the tray is 140 px (it was 94), and the bench's tops rise a little over the board's bottom edge. Desktop: the bench is horizontal, 340 px, in the open strip left of the board (beside it when there is no room).
+
 ## 1.13.20 - 2026-10-24
 
 ### Added - Guide pages for the worlds and the shop
