@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Bug Hunter — Fortress Lab</title>
+<style>
+:root{color-scheme:dark;font:500 15px system-ui;background:#07101c;color:#e9f5ff}*{box-sizing:border-box}
+body{margin:0;min-height:100dvh;background:radial-gradient(ellipse at 50% 0%,#173657 0%,#080f1e 68%);display:flex;flex-direction:column}
+header{display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between;padding:12px 18px;background:#0a1529d9;border-bottom:1px solid #426782}
+h1{font-size:19px;margin:0;color:#a9f6ff}small{color:#a2bcd0}nav{display:flex;gap:7px;flex-wrap:wrap}
+button{background:#1b3651;border:1px solid #5798b2;color:#e0faff;border-radius:10px;padding:10px 12px;font:inherit;cursor:pointer}
+button[aria-pressed=true]{background:#287a86;border-color:#92f7f2}main{flex:1;display:flex;gap:18px;align-items:center;justify-content:center;padding:16px;min-height:0}
+#arena{width:min(100%,1050px);aspect-ratio:1.55;max-height:76dvh;border:5px solid #806c40;border-radius:20px;position:relative;overflow:hidden;box-shadow:0 8px 60px #000b}
+#map{position:absolute;inset:0;display:grid;gap:0;background:linear-gradient(135deg,#192b34,#0e1a2d)}
+.tile{position:relative;border:1px solid #98d6ec18;background:linear-gradient(130deg,#31535033,#263e4a33);min-width:0;min-height:0}
+.tile:nth-child(2n){background:linear-gradient(130deg,#1b3b4c44,#243d4244)}
+.tile.selected{outline:2px solid #ffda72;outline-offset:-3px;z-index:2}
+.tile img{display:block;position:absolute;left:50%;bottom:-3%;height:155%;width:155%;object-fit:contain;transform:translateX(-50%);pointer-events:none;filter:drop-shadow(0 4px 2px #0009)}
+.tile.wall img{height:126%;width:126%}.tile.hall img{height:205%;width:205%;bottom:-11%}
+aside{width:min(250px,28vw);align-self:stretch;background:#0c1d32;border:1px solid #2c5570;border-radius:15px;padding:15px}
+aside h2{font-size:16px;color:#9af3e8}p{color:#b1c9da;line-height:1.5}
+footer{padding:10px 18px;font-size:12px;color:#7fa8bb}
+@media(orientation:portrait){main{flex-direction:column;padding:8px}#arena{aspect-ratio:.89;max-height:60dvh}aside{width:min(100%,1050px);padding:10px;min-height:95px}aside h2{margin:2px}p{margin:5px 0}header{padding:10px}h1{font-size:17px}}
+</style></head><body>
+<header><div><h1>BUG HUNTER · FORTRESS LAB</h1><small>Vista de prueba · estilos provisionales · sin guardado</small></div><nav aria-label="Niveles" id="nav"></nav></header>
+<main><div id="arena"><div id="map" role="grid" aria-label="Fortaleza"></div></div>
+<aside><h2 id="selected">Selecciona un edificio</h2><p id="objective"></p><p id="info">Pulsa sobre un edificio para inspeccionarlo. En horizontal verás más terreno.</p></aside></main>
+<footer>Prototipo aislado: no modifica partidas, recursos ni los otros modos de Bug Hunter.</footer>
+<script>
+const root='/images/game/fortress/backlog/';
+const levels=[
+{name:'1 · Primer núcleo',w:10,h:8,description:'Prueba el Ayuntamiento: selección y disposición horizontal o vertical.',units:[['core-hall',4,2]]},
+{name:'2 · Recursos',w:10,h:8,description:'Tres edificios separados. Comprueba que no se superponen.',units:[['core-hall',4,2],['gold-mine',2,5],['gold-storage',6,5]]},
+{name:'3 · Primer muro',w:12,h:9,description:'Un cañón y cinco módulos de muro en línea.',units:[['core-hall',5,2],['cannon',5,5],...Array.from({length:5},(_,i)=>['wall',3+i,4])]}
+];
+const map=document.querySelector('#map'),nav=document.querySelector('#nav');
+function render(index){
+const level=levels[index];map.replaceChildren();map.style.gridTemplateColumns='repeat('+level.w+',1fr)';map.style.gridTemplateRows='repeat('+level.h+',1fr)';
+document.querySelector('#objective').textContent=level.description;document.querySelector('#selected').textContent=level.name;document.querySelector('#info').textContent='Toca un edificio para identificarlo.';
+nav.querySelectorAll('button').forEach((b,i)=>b.setAttribute('aria-pressed',String(i===index)));
+const dict=new Map(level.units.map(([name,x,y])=>[x+','+y,name]));
+for(let y=0;y<level.h;y++)for(let x=0;x<level.w;x++){
+const cell=document.createElement('button');cell.className='tile';cell.setAttribute('role','gridcell');cell.style.padding='0';cell.style.borderRadius='0';
+const name=dict.get(x+','+y);cell.setAttribute('aria-label',name?name+' ('+x+','+y+')':'Casilla vacía '+x+','+y);
+if(name){const image=new Image();image.src=root+name+'.svg';image.alt='';cell.append(image);if(name==='wall')cell.classList.add('wall');if(name==='core-hall')cell.classList.add('hall');}
+cell.addEventListener('click',()=>{map.querySelectorAll('.selected').forEach(c=>c.classList.remove('selected'));cell.classList.add('selected');document.querySelector('#selected').textContent=name?name.replaceAll('-',' ').toUpperCase():'Casilla libre';document.querySelector('#info').textContent='Coordenadas: ('+x+', '+y+'). '+(name?'Edificio de prueba.':'Disponible para futura construcción.');});
+map.append(cell);
+}
+}
+levels.forEach((l,i)=>{const b=document.createElement('button');b.textContent=l.name;b.addEventListener('click',()=>render(i));nav.append(b)});render(0);
+</script></body></html>
