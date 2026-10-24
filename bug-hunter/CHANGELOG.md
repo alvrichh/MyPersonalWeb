@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.26 - 2026-10-24
+
+### Changed - Rarity and stars on the bench
+- Under each reserve a glowing oval in its rarity's colour, the same as the board's rings: grey common, blue rare, purple epic, orange legendary, red mythic (half as bright while fighting).
+- Its stars are gold ★ over its head, plain glowing text, in place of the dark pill at its feet that hid under the seats.
+
 ## 1.13.25 - 2026-10-24
 
 ### Changed
