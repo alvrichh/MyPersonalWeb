@@ -1,3 +1,4 @@
+import { CONVERGENCE_SCENE } from './scenery';
 import { storage } from '../lib/storage';
 import { ARSENAL, ITEMS, type ItemId, type Slot, type Upgrades } from './shop';
 import { WORLD_COUNT, type Mode, type SkillId } from './world';
@@ -255,7 +256,7 @@ export function loadSave(): Save {
     // Only the first world kept both versions of its song: a first version picked for another world plays its second now.
     if (/^w[2-8]$/.test(save.song)) save.song = `${save.song}v2` as SongPick;
     if (!/^(auto|worlds|b2b|breaks|doom|w1|w[1-8]v2|mudv2|boss-(kernel|archdemon|drakkar|medusa|queen|zeus|mech|wraith|chimera))$/.test(save.song)) save.song = 'worlds';
-    if (!(Number.isInteger(save.scene) && save.scene >= 0 && save.scene <= WORLD_COUNT)) save.scene = 0;
+    if (save.scene !== CONVERGENCE_SCENE && !(Number.isInteger(save.scene) && save.scene >= 0 && save.scene <= WORLD_COUNT)) save.scene = 0;
     if (!SKINS.includes(save.skin)) save.skin = 'boy';
     // Skins cost coins now: the free one, plus whichever an older save already wore.
     save.skins = [...new Set<HeroSkin>(['boy', save.skin, ...(data.skins ?? [])])].filter((s) => SKINS.includes(s));
@@ -333,3 +334,4 @@ export function skinOpen(save: Save, skin: HeroSkin) {
   if ('boss' in g) return !!save.hordeBest[g.boss]?.won;
   return !!save.secretBest?.won;
 }
+

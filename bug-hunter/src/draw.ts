@@ -1,3 +1,4 @@
+import { CONVERGENCE_SCENE, CONVERGENCE_IMAGE } from './scenery';
 import { GAZE, H, W, WALL, WHEEL_X, ICICLE_R, ICICLE_STAY, ICICLE_PERSIST_STAY, ICICLE_SINK, ATTACK_CYCLE, WORLDS, frostReach, waveAt, type Threat, type ThreatEl, type OrbPic, isBossRoom, type Enemy, type Game, type Shot, type Look, type Statue, type Rect, type Vec, type Fusion, arrowLook, fusionOf, bladeCount, bladeElement, sawOrbit, sawScale, type BladeElement, type Fx, type SkillId } from './world';
 import { SPIRIT_COLOR, type ItemId, type SpiritSkin } from './shop';
 import { FULL_HERO_SETS, heroKey, type HeroSkin } from './save';
@@ -18,7 +19,7 @@ let retroLook = false;
 const floors = new Map<number, HTMLImageElement>();
 function floorImage(world: number) {
   let img = floors.get(world);
-  if (!img) { img = new Image(); img.src = `./images/game/floors/world${world}.webp`; floors.set(world, img); }
+  if (!img) { img = new Image(); img.src = world === CONVERGENCE_SCENE ? CONVERGENCE_IMAGE : `./images/game/floors/world${world}.webp`; floors.set(world, img); }
   return img;
 }
 export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Palette, now: number) {
@@ -210,11 +211,12 @@ function fieldPattern(ctx: CanvasRenderingContext2D, floor: HTMLImageElement, tw
 }
 
 /** The world whose floor and blocks are drawn: the run's own, or the one picked in Customise. */
-const sceneOf = (g: Game) => g.scene || g.world;
+// A custom floor keeps the current world's walls and theme; it is not a new gameplay world.
+const sceneOf = (g: Game) => g.scene === CONVERGENCE_SCENE ? g.world : g.scene || g.world;
 
 function drawField(ctx: CanvasRenderingContext2D, g: Game, vis: Rect, now: number) {
   const theme = WORLDS[sceneOf(g) - 1];
-  const floor = retroLook ? undefined : floorImage(sceneOf(g));
+  const floor = retroLook ? undefined : floorImage(g.scene || g.world);
   const tw = W * FLOOR_CROP.w;
   const th = H * FLOOR_CROP.h;
   ctx.fillStyle = theme.floor;
@@ -249,7 +251,7 @@ function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: numbe
 function drawRoom(ctx: CanvasRenderingContext2D, g: Game, accent: string, now: number) {
   const theme = WORLDS[sceneOf(g) - 1];
   // Floor: the world's painted arena, or flat tiles in its colours (retro, or while it loads).
-  const floor = retroLook ? undefined : floorImage(sceneOf(g));
+  const floor = retroLook ? undefined : floorImage(g.scene || g.world);
   if (floor && floor.complete && floor.naturalWidth) {
     ctx.drawImage(floor, 0, 0, W, H);
     if (isBossRoom(g.room)) { ctx.fillStyle = 'rgba(20,10,30,0.25)'; ctx.fillRect(0, 0, W, H); }
@@ -5130,12 +5132,12 @@ export function boardBackdropBounds(world: number, w: number, top: number, botto
   return { x: (w - width) / 2, y: top + (available - height) / 2, w: width, h: height };
 }
 /** The complete arena in the middle; on wide screens, dim floor tiles fill the sides at their normal scale. */
-export function drawBoardBackdrop(ctx: CanvasRenderingContext2D, world: number, w: number, top: number, bottom: number, dpr: number, retro: boolean, areaWidth = w, widthScale = 1, stretchY = false) {
+export function drawBoardBackdrop(ctx: CanvasRenderingContext2D, world: number, w: number, top: number, bottom: number, dpr: number, retro: boolean, areaWidth = w, widthScale = 1, stretchY = false, scene = 0) {
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   const h = Math.max(0, bottom - top);
   ctx.fillStyle = WORLDS[world - 1].floor;
   ctx.fillRect(0, top, w, h);
-  const floor = retro ? undefined : floorImage(world);
+  const floor = retro ? undefined : floorImage(scene === CONVERGENCE_SCENE ? scene : world);
   if (floor && ready(floor)) {
     const bounds = stretchY
       ? { x: (w - areaWidth) / 2, y: top, w: areaWidth, h }
@@ -5173,3 +5175,4 @@ export function boardWallPieces(world: number): HTMLImageElement[] {
   // The middle one is the world's shorter, distinct block (the vikings' banner, the Arena's shield…).
   return [setImage(set, `${pre}100x24-0`), setImage(set, stones === 'greek' ? `${pre}64x26-0` : `${pre}60x24-0`)];
 }
+

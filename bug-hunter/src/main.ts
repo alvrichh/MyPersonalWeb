@@ -1,3 +1,4 @@
+import { CONVERGENCE_SCENE, CONVERGENCE_IMAGE } from './scenery';
 import './game.css';
 import { GAME_BUILD, GAME_VERSION } from './version';
 import { storage } from '../lib/storage';
@@ -1554,7 +1555,7 @@ function stylesScreen(note = '') {
   } else if (dressSlot === 'scene') {
     picks = `<h3 class="slot">${t('scenePick')}</h3><div class="gear-list">${Array.from({ length: WORLD_COUNT + 1 }, (_, n) => n).map((n) =>
       row(`data-scene="${n}"`, save.scene === n, false, n ? `<img class="scene-pic is-floor" src="./images/game/floors/world${n}.webp" alt="">` : save.retro ? '🌍' : '<img class="scene-pic" src="./images/game/ui/scene-own.webp" alt="">',
-        n ? t(`world${n}Name` as Key) : t('sceneOwn'), n ? t('sceneText', { n }) : t('sceneOwnText'), save.scene === n ? '✓' : '')).join('')}</div>`;
+        n ? t(`world${n}Name` as Key) : t('sceneOwn'), n ? t('sceneText', { n }) : t('sceneOwnText'), save.scene === n ? '✓' : '')).join('')}${row(`data-scene="${CONVERGENCE_SCENE}"`, save.scene === CONVERGENCE_SCENE, false, `<img class="scene-pic is-floor" src="${CONVERGENCE_IMAGE}" alt="">`, t('sceneConvergence'), t('sceneConvergenceText'), save.scene === CONVERGENCE_SCENE ? '✓' : '')}</div>`;
   } else if (dressSlot) {
     const slot = dressSlot;
     picks = `<h3 class="slot">${t('dressPick', { slot: t(SLOT_LABEL[slot]) })}</h3>
@@ -1585,7 +1586,7 @@ function stylesScreen(note = '') {
     skin: navPic(heroPic(), ' is-hero'),
     // «By world» and «each world its own» show the owner's medallions; a picked cast its bug, a picked world its postcard.
     foes: save.style === 'world' ? navPic('./images/game/ui/style-world.webp') : look === 'random' ? '🎲' : navPic(`./images/game/enemies/${look}-bug-icon.webp`, ' is-foe'),
-    scene: save.scene ? navPic(`./images/game/map/pv-${ISLAND_ART[save.scene - 1]}.jpg`) : navPic('./images/game/ui/scene-own.webp'),
+    scene: save.scene === CONVERGENCE_SCENE ? navPic(CONVERGENCE_IMAGE) : save.scene ? navPic(`./images/game/map/pv-${ISLAND_ART[save.scene - 1]}.jpg`) : navPic('./images/game/ui/scene-own.webp'),
     // Automatic, «by world», the original and the final boss's song show their own medallions; a world's or a boss's song, its postcard or boss.
     song: (['auto', 'worlds', 'b2b', 'breaks', 'doom'] as string[]).includes(save.song) ? navPic(`./images/game/music/${save.song}.webp`)
       : save.song.startsWith('boss-') ? navPic(`./images/game/bosses/${save.song.slice(5)}-0.webp`, ' is-boss')
@@ -2980,7 +2981,7 @@ function boardStep(dt: number, now: number) {
   if (b.phase === 'prep' || b.phase === 'fight') boardEnded = null;
   // The guest sees the shared fight turned round, its own army at the bottom.
   const seen = b.online?.me === 1 ? mirrorFight(b) : b;
-  if (heroPics) drawBoard(ctx, seen, boardLay, now / 1000, boardDrag, save.retro, view.dpr, heroPics, boardEnded === null ? null : now / 1000 - boardEnded, { ...floor, width: fieldWidth, widthScale: wide ? boardLay.sx / boardLay.s : mobileBackdropScale }, wide);
+  if (heroPics) drawBoard(ctx, seen, boardLay, now / 1000, boardDrag, save.retro, view.dpr, heroPics, boardEnded === null ? null : now / 1000 - boardEnded, { ...floor, width: fieldWidth, widthScale: wide ? boardLay.sx / boardLay.s : mobileBackdropScale, scene: save.scene === CONVERGENCE_SCENE ? CONVERGENCE_SCENE : 0 }, wide);
   boardFloat.hidden = !boardDrag;
   if (boardDrag || floatDrawn) {
     const w = Math.round(canvas.clientWidth * view.dpr), h = Math.round(canvas.clientHeight * view.dpr);
@@ -4183,3 +4184,4 @@ function musicOnLanding() {
   for (const e of ['pointerdown', 'pointerup', 'touchend', 'keydown'] as const) window.addEventListener(e, first, true);
 }
 requestAnimationFrame(frame);
+
