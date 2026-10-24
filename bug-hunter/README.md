@@ -1,17 +1,17 @@
 <p align="center">
-  <img src="./assets/readme/logo.png" alt="Bug Hunter" width="420">
+  <img src="./assets/shared/readme/logo.png" alt="Bug Hunter" width="420">
 </p>
 
 # BUG HUNTER
 
 An action roguelite and tactical auto-battler by **Álvaro Rodríguez Molina**, playable in the browser on mobile and desktop.
 
-**[Play](https://alvrich.vercel.app/game.html) · [Changelog](./CHANGELOG.md) · [Code](./src/) · [Assets](./assets/) · [Migration guide](./docs/structure.md)**
+**[Play](https://alvrich.vercel.app/game.html) · [Changelog](./CHANGELOG.md) · [Code](./src/) · [Assets by world](./assets/) · [Migration guide](./docs/structure.md)**
 
 This folder is the game's home inside MyPersonalWeb. Code, art, HTML, documentation and game-specific checks live here. The portfolio remains outside this folder; both use the shared root package and Vite build.
 
 <p align="center">
-  <img src="./assets/readme/screenshot-menu.webp" alt="Bug Hunter menu screenshot" width="720">
+  <img src="./assets/shared/readme/screenshot-menu.webp" alt="Bug Hunter menu screenshot" width="720">
 </p>
 
 ## Modes
@@ -33,17 +33,17 @@ In Battle, use the preparation phase to buy, deploy, reposition and combine unit
 
 ## Nine worlds
 
-| # | World |
-|---|---|
-| 1 | The Backlog |
-| 2 | Hotfix Inferno |
-| 3 | Code Freeze |
-| 4 | Big Ball of Mud |
-| 5 | Legacy Jungle |
-| 6 | The Arena |
-| 7 | The Forge |
-| 8 | Haunted Servers |
-| 9 | The Core |
+| # | World | Assets |
+|---|---|---|
+| 1 | The Backlog | [01-backlog](./assets/worlds/01-backlog/) |
+| 2 | Hotfix Inferno | [02-hotfix-inferno](./assets/worlds/02-hotfix-inferno/) |
+| 3 | Code Freeze | [03-code-freeze](./assets/worlds/03-code-freeze/) |
+| 4 | Big Ball of Mud | [04-big-ball-of-mud](./assets/worlds/04-big-ball-of-mud/) |
+| 5 | Legacy Jungle | [05-legacy-jungle](./assets/worlds/05-legacy-jungle/) |
+| 6 | The Arena | [06-the-arena](./assets/worlds/06-the-arena/) |
+| 7 | The Forge | [07-the-forge](./assets/worlds/07-the-forge/) |
+| 8 | Haunted Servers | [08-haunted-servers](./assets/worlds/08-haunted-servers/) |
+| 9 | The Core | [09-the-core](./assets/worlds/09-the-core/) |
 
 ## Project layout
 
@@ -65,13 +65,23 @@ bug-hunter/
     save.ts                 Saved progress
     strings.ts              English and Spanish game text
     version.ts              Game version
-  assets/                   Sprites, effects, UI, floors and world art
+  assets/
+    worlds/                 Nine numbered world folders
+      02-hotfix-inferno/     Example world
+        enemies/            Regular enemies and legacy cast sprites
+        bosses/             Sub-boss and final boss, all frames
+        floors/             World floor
+        scenery/            Existing world-specific environment art
+    shared/                 Heroes, UI, skills, effects, map and common art
+    special/secret-shift/    Secret-shift boss sprites
   lib/storage.ts            Adapter to shared portfolio storage
-  build/                    Shared-build integration
+  build/                    Shared-build integration and asset URL mapping
   scripts/                  Gameplay and published-asset checks
   tests/                    Layout/integration tests
   docs/                     Structure and retained design history
 ```
+
+Every world has enemies, bosses and its floor; scenery is present where an existing dedicated set was available. Shared effects, map-selection pictures and heroes are not duplicated across worlds. See [asset conventions](./assets/README.md) for the exact grouping.
 
 ## Run and build
 
@@ -80,7 +90,7 @@ Use the repository's **Node 24.x** requirement and run these from the repository
 ```bash
 npm ci
 npm run dev:game             # Open the existing /game.html route
-npm run test:game:layout     # Dependency-free preparation/integration tests
+npm run test:game:layout     # Preparation and world-asset integration tests
 npm run typecheck           # Includes bug-hunter/src and the integration types
 npm run test:game            # Existing gameplay regression checks, relocated
 npm run build               # Site + game, then verify published game assets
@@ -93,14 +103,17 @@ There is no second package installation inside this folder. Vercel continues usi
 
 | Edit this repository path | Existing public URL |
 |---|---|
-| `bug-hunter/assets/bosses/overlord-0.webp` | `/images/game/bosses/overlord-0.webp` |
-| `bug-hunter/assets/ui/logo.webp` | `/images/game/ui/logo.webp` |
+| `bug-hunter/assets/worlds/02-hotfix-inferno/bosses/overlord-0.webp` | `/images/game/bosses/overlord-0.webp` |
+| `bug-hunter/assets/worlds/04-big-ball-of-mud/enemies/snake-p-0.webp` | `/images/game/enemies/snake-p-0.webp` |
+| `bug-hunter/assets/shared/ui/logo.webp` | `/images/game/ui/logo.webp` |
 | `bug-hunter/game.html` | `/game.html` |
 
-The build integration mirrors public files into an ignored `.cache/` directory and generates the root HTML entry. Vite then emits the existing site layout into `dist/`; the shared build copies it to `public/` for deployment. Do not edit those generated locations, recreate the old source folders, or rename browser URLs merely because repository folders moved.
+The build-only resolver in `build/asset-paths.mjs` maps world/shared/special folders back to the established public URLs. Scenery maps back to its original cast folder, such as `demon/` or `jungle/`. Duplicate public URLs fail explicitly instead of overwriting another world's art.
 
-See [asset conventions](./assets/README.md) and [the structure/migration notes](./docs/structure.md). No sprite resizing, gameplay changes, save-key changes or combat-layout changes are part of this reorganization.
+The build integration mirrors these files into an ignored `.cache/` directory and generates the root HTML entry. Vite then emits the existing site layout into `dist/`; the shared build copies it to `public/` for deployment. Do not edit those generated locations, recreate the old source folders, or rename browser URLs merely because repository folders moved.
+
+See [the structure/migration notes](./docs/structure.md). No sprite resizing, gameplay changes, save-key changes or combat-layout changes are part of this reorganization.
 
 <p align="center">
-  <img src="./assets/readme/screenshot-gameplay.webp" alt="Bug Hunter action gameplay screenshot" width="720">
+  <img src="./assets/shared/readme/screenshot-gameplay.webp" alt="Bug Hunter action gameplay screenshot" width="720">
 </p>

@@ -12,7 +12,7 @@
     "preview": "vite preview",
     "typecheck": "tsc -p tsconfig.json",
     "build": "node scripts/build/build.mjs && node bug-hunter/scripts/check-public.mjs",
-    "test:game:layout": "node --test bug-hunter/tests/integration.test.mjs",
+    "test:game:layout": "node --test bug-hunter/tests/integration.test.mjs bug-hunter/tests/asset-layout.test.mjs",
     "test:game": "node bug-hunter/scripts/check-regressions.mjs",
     "ai:maintenance": "node scripts/radar/daily-ai-maintenance.mjs",
     "ai:radar": "node scripts/radar/daily-ai-maintenance.mjs",
