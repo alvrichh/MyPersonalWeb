@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.43 - 2026-10-24
+
+### Changed - New Monolith
+- The Backlog's room-6 boss, the Monolith (`bosses/monolith-0..8.webp`), redrawn by the owner as one 3×3 sheet on white at a far higher resolution (its body was about 90 px tall, now about 330): stance, two steps, wind-up, the charge with a purple trail, the ring of rocks, the bug-report volley, the ground slam and a flinch with an X-eyed screen. Cut with `kernel/cut.py` `seg`, `EDGECUT=1`, `HOT=1` at up to 520 px, its cells set by hand where the trail, the ring and the slam ran past the thirds; `BOSS_CANVAS.monolith` k 2.45, feet 0.2243. The old pictures are kept in `assets/old/01-backlog/bosses/`.
+
 ## 1.13.42 - 2026-10-24
 
 ### Changed - New fire-world cast

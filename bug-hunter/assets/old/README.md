@@ -5,3 +5,5 @@ published, under `/images/game/old/...`, like any asset). Each folder mirrors wh
 
 - `02-hotfix-inferno/enemies/demon-{bug,ticket,legacy}-0..3.webp`, `demon-bug-icon.webp`: the fire world's first
   four-frame imp, skull and gargoyle, replaced in 1.13.42.
+- `01-backlog/bosses/monolith-0..8.webp`: the Backlog's first Monolith, cut from a small sheet (bodies about 90 px
+  tall), replaced in 1.13.43.
