@@ -5165,3 +5165,6 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   .board-shop.is-mobile-tactics { margin-bottom: max(2px, calc(env(safe-area-inset-bottom) - 22px)); }
   :root:not([data-retro]) .board-mobile-tray.is-active .board-bench-slots { transform: translate(-50%, -12px); }
 }
+/* v1.13.40 — Shop skins: the hero standing in the card's window, not so tall that it pushes its joke under the band. */
+.panel .skin-item .icon .skin-pic { width: auto; height: 5.2em; max-width: 100%; object-fit: contain; filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.55)); }
+.panel .skin-item.is-locked:not(.is-owned) .skin-pic { filter: grayscale(0.85) brightness(0.6); }

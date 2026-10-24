@@ -1427,12 +1427,34 @@ function shopScreen(note = '') {
       ${action}
     </div>`;
   }).join('');
+  // Skins: a shop window, the dearest things in the game; unlocked here, worn from Customise.
+  const skinCards = SKINS.map((skin) => {
+    const owned = save.skins.includes(skin);
+    const worn = save.skin === skin;
+    const open = skinOpen(save, skin);
+    const price = SKIN_PRICE[skin];
+    const gate = SKIN_GATE[skin];
+    const lock = !gate ? '' : 'world' in gate ? t('skinLockWorld', { n: gate.world }) : 'boss' in gate ? t('skinLockBoss', { n: gate.boss }) : t('skinLockSecret');
+    const can = save.coins >= price;
+    const action = owned
+      ? worn ? `<button class="buy is-worn" disabled>✓ ${t('worn')}</button>` : `<button class="buy" data-act="styles-skin">${t('skinWearIn')}</button>`
+      : !open ? `<button class="buy is-poor" disabled>🔒 ${lock}</button>`
+      : `<button class="buy${can ? '' : ' is-poor'}" data-skin-buy="${skin}">${t('buy')} · 🪙 ${price}</button>`;
+    return `<div class="item skin-item${worn ? ' is-on' : ''}${owned ? ' is-owned' : ''}${!owned && (!can || !open) ? ' is-locked' : ''}">
+      <span class="icon" aria-hidden="true"><img class="skin-pic" src="./images/game/hero/${heroStill(skin)}.webp" alt=""></span>
+      <b>${t(`skin${cap(skin)}Name` as Key)}</b>
+      <span>${t(`skin${cap(skin)}Text` as Key)}</span>
+      ${action}
+    </div>`;
+  }).join('');
+  const skinSec = shopSection('skins', t('shopSkins'), `${save.skins.length}/${SKINS.length}`, `<p class="how">${t('shopSkinsHint')}</p><div class="items">${skinCards}</div>`, ['🧑', `hero/${heroStill(save.skin)}.webp`]);
   show(`
     <button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
     <p class="wallet shop-wallet">${coinsLine()} <button class="wallet-plus" type="button" data-act="coin-store" aria-label="${t('storeTitle')}">+</button></p>
     <div class="shop-head shop-title"><h2>${t('shop')}</h2></div>
     ${note ? `<p class="note">${note}</p>` : `<p class="how">${t('earnHint')}</p>`}
     ${giftLine}
+    ${skinSec}
     ${shopSection('forge', t('forge'), `${UPGRADES.reduce((n, u) => n + (save.upgrades[u.id] ?? 0), 0)}/${UPGRADES.reduce((n, u) => n + u.max, 0)}`, `<p class="how">${t('forgeHint')}</p><div class="items">${forge}${extraCard}</div>`)}
     ${armourSec}${weaponSecs}
     ${shopSection('arsenal', t('arsenal'), `${save.arsenal.length}/${ARSENAL.length}`, `<p class="how">${t('arsenalHint')}</p><div class="items">${arsenal}</div>`)}
@@ -3538,6 +3560,19 @@ screen.addEventListener('click', (event) => {
   } else if (target.dataset.style) {
     save.style = target.dataset.style as EnemyStyle;
     persist();
+    stylesScreen();
+  } else if (target.dataset.skinBuy) {
+    // A skin unlocked from the shop: bought, not worn (that is Customise's).
+    const skin = target.dataset.skinBuy as HeroSkin;
+    if (save.skins.includes(skin) || !skinOpen(save, skin)) return;
+    if (save.coins < SKIN_PRICE[skin]) { shopScreen(t('notEnough')); return; }
+    save.coins -= SKIN_PRICE[skin];
+    save.skins.push(skin);
+    audio.play('coin');
+    persist();
+    shopScreen(t('skinBought', { name: t(`skin${cap(skin)}Name` as Key) }));
+  } else if (act === 'styles-skin') {
+    dressSlot = 'skin';
     stylesScreen();
   } else if (target.dataset.skin) {
     const portrait = ownHeroPortrait();

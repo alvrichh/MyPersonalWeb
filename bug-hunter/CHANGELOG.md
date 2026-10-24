@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.40 - 2026-10-24
+
+### Added - Skins in the shop
+- A «Skins» section at the top of the shop, folded like the others, with the worn hero as its icon and how many you own: every skin as a card with its standing picture, name, joke and price, in the list's order. A skin on sale is unlocked here («Desbloquear · 🪙 N», `data-skin-buy`); one not yet open shows its gate («🔒 Gana el mundo N»…) greyed; one owned offers «Ponérsela en Personalizar», which opens Customise's character list, and the worn one reads «✓ Equipado». As with items, the shop only unlocks: skins are still worn (and can still be bought) in Customise.
+
 ## 1.13.39 - 2026-10-24
 
 ### Changed - New Arena gladiator
