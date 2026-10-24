@@ -4534,7 +4534,7 @@ export function drawSprite(ctx: CanvasRenderingContext2D, e: Enemy, now: number)
    taking a hit. */
 const SPRITE_FRAMES: Partial<Record<Look, number>> = { original: 4, demon: 4, greek: 4, viking: 6, mud: 6, jungle: 6, robot: 6, nightmare: 6, core: 6 };
 /** Sets redrawn with six poses (three walking, two attacking, one hit) in a cast that still has four. */
-const SET_FRAMES: Record<string, number> = { 'greek-bug': 6, 'greek-ticket': 6, 'demon-bug': 6, 'demon-ticket': 6, 'demon-legacy': 6 };
+const SET_FRAMES: Record<string, number> = { 'greek-bug': 6, 'greek-ticket': 6, 'greek-legacy': 6, 'demon-bug': 6, 'demon-ticket': 6, 'demon-legacy': 6 };
 const framesOf = (look: Look, kind: string) => SET_FRAMES[`${look}-${kind}`] ?? SPRITE_FRAMES[look];
 /* Every set is cut on one canvas for all its frames (each frame registered against the first by its head
    and torso, `scratchpad` `walkfix/fix.py`), so a stride or a swing never resizes or shifts the figure:
@@ -4545,7 +4545,7 @@ const SPRITE_CANVAS: Record<string, { k: number; feet: number }> = {
   'original-bug': { k: 1.018, feet: 0.0186 }, 'original-ticket': { k: 1.076, feet: 0.0283 }, 'original-legacy': { k: 1.113, feet: 0.0437 },
   'original-boss': { k: 1.108, feet: 0.0533 }, 'demon-bug': { k: 1.22, feet: 0.0794 }, 'demon-ticket': { k: 2.548, feet: 0.3447 },
   'demon-legacy': { k: 1.558, feet: 0.0872 }, 'demon-boss': { k: 1.183, feet: 0.0549 }, 'greek-bug': { k: 2.084, feet: 0.0056 },
-  'greek-ticket': { k: 3.5, feet: 0.0052 }, 'greek-legacy': { k: 1.134, feet: 0 }, 'greek-boss': { k: 1.125, feet: 0.0455 },
+  'greek-ticket': { k: 3.5, feet: 0.0052 }, 'greek-legacy': { k: 1.381, feet: 0.0048 }, 'greek-boss': { k: 1.125, feet: 0.0455 },
   'viking-bug': { k: 1.067, feet: 0.0083 }, 'viking-ticket': { k: 1.091, feet: 0.0051 }, 'viking-legacy': { k: 1.166, feet: 0.023 },
   'jungle-bug': { k: 1.43, feet: 0 }, 'jungle-ticket': { k: 1.193, feet: 0.0271 }, 'jungle-legacy': { k: 1.455, feet: 0 },
   'robot-bug': { k: 1.431, feet: 0.0051 }, 'robot-ticket': { k: 1.4, feet: 0 }, 'robot-legacy': { k: 1.446, feet: 0.0299 },
