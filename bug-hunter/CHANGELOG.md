@@ -2,6 +2,15 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.4 - 2026-10-24
+
+### Changed - Much harder Tactics AI
+- Round 1 remains the introductory fight, but from round 2 the rival is guaranteed at least one 2-star unit.
+- Rival star progression is much faster: more 2-star units appear each round, the first 3-star unit appears from round 7, and up to two 3-star units appear from round 9.
+- From round 2 the Tactics rival receives 20% more wave budget, allowing stronger and/or fuller enemy boards without changing Fusion waves.
+- Tactics AI combat strength rises from 90% in round 1 to 100% in round 2, then gains an additional 4% per round, reaching 132% base strength by round 10 before star multipliers and world abilities.
+- Fusion enemy strength, Fusion star behavior, player unit stats and player economy are unchanged.
+
 ## 1.13.3 - 2026-10-24
 
 ### Changed - Tactics bonus rail
