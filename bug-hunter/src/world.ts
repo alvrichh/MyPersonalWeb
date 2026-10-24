@@ -2904,7 +2904,7 @@ function tornadoes(g: Game, e: Enemy, n: number, dmg: number) {
 
 /** Queen's actual thorn barriers: warned vine segments that remain as
     temporary ground hazards. Unlike the projectile volley, these are walls. */
-function queenVineWalls(g: Game, e: Enemy, dmg: number) {
+function queenVineWalls(g: Game, _e: Enemy, dmg: number) {
   const b = bounds(g);
   const margin = 28;
   const left = b.x + margin;

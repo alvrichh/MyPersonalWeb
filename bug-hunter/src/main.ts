@@ -8,7 +8,7 @@ import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPr
 import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
 import { MID_ART, boardBackdropBounds, draw, drawRetroFigure, preloadBoardBossFx, preloadCast, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, NET_ID, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, SKIN_GATE, skinOpen, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
-import { ABILITY, ABIL_V, BENCH_CAP, CELL, COLS, FINAL_ID, HOME_ROW, NATIVE_WORLD_BONUS, ROWS, ROUNDS, SYNERGY, TACTICS, armyCap, deployBench, sellBench, storeOnBench, toggleAutoMerge, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, startOnlineFight, unitStats, updateBoard, waveSpots, waveUnitStats, type BoardGame, type Online, type Piece, type Variant } from './board';
+import { ABILITY, ABIL_V, BENCH_CAP, canFight, CELL, COLS, FINAL_ID, HOME_ROW, NATIVE_WORLD_BONUS, ROWS, ROUNDS, SYNERGY, TACTICS, armyCap, deployBench, sellBench, storeOnBench, toggleAutoMerge, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, startOnlineFight, unitStats, updateBoard, waveSpots, waveUnitStats, type BoardGame, type Online, type Piece, type Variant } from './board';
 import { cleanCode, dial, hostGame, joinGame, leave as netLeave, presence, presenceOn, presenceReady, send as netSend, type NetHandlers, type NetMsg, type NetProfile, type NetState, type Together } from './net';
 import { ABILITY_ICON, ABILITY_PIC, SYNERGY_PIC, FIREBALL, boardMerged, boardUnitBounds, drawBoard, mirrorFight, drawBoardDrag, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
 import type { Enemy } from './world';
@@ -2110,7 +2110,7 @@ function onNetMsg(m: NetMsg) {
     // What came over the link is checked before it is used: whole numbers within the board, at most a full army.
     const army = (Array.isArray(m.army) ? m.army : []).slice(0, 12).map((p, i) => ({
       id: i + 1, tier: Math.max(0, Math.min(6, Math.round(Number(p?.tier)) || 0)) as Piece['tier'], cast: Math.max(1, Math.min(WORLD_COUNT, Math.round(Number(p?.cast)) || 1)),
-      slot: { c: Math.max(0, Math.min(5, Math.round(Number(p?.slot?.c)) || 0)), r: Math.max(4, Math.min(7, Math.round(Number(p?.slot?.r)) || 4)) },
+      slot: { c: Math.max(0, Math.min(COLS - 1, Math.round(Number(p?.slot?.c)) || 0)), r: Math.max(HOME_ROW, Math.min(ROWS - 1, Math.round(Number(p?.slot?.r)) || HOME_ROW)) },
       star: Math.max(1, Math.min(3, Math.round(Number(p?.star)) || 1)) as Piece['star'],
     }));
     rivalReady = { round: Math.round(Number(m.round)) || 0, army };
@@ -2481,9 +2481,9 @@ function renderBoardUi() {
       ${fusion ? `<button class="board-auto${b.autoMerge ? ' is-on' : b.autoBought ? ' is-off' : ''}" type="button" data-bact="auto" aria-pressed="${b.autoMerge}"${!b.autoBought && b.gold < autoMergePrice(b) ? ' aria-disabled="true"' : ''} aria-label="${t('boardAuto')}"><i aria-hidden="true"></i>${b.autoBought ? '' : `<small>${coin} ${autoMergePrice(b)}</small>`}</button>` : ''}
       ${fusion
         ? `<button class="ghost board-reroll board-summon" type="button" data-bact="summon"${b.gold < summonPrice(b) ? ' disabled' : ''}>✨ ${t('boardSummon')} · ${coin} ${summonPrice(b)}</button>
-           <button class="primary board-go" type="button" data-bact="fight"${b.army.length && !b.online?.waiting ? '' : ' disabled'}>${go}</button>`
+           <button class="primary board-go" type="button" data-bact="fight"${canFight(b) && !b.online?.waiting ? '' : ' disabled'}>${go}</button>`
         : `<button class="ghost board-reroll" type="button" data-bact="reroll"${b.gold < 1 ? ' disabled' : ''}>🎲 ${t('boardReroll')} · ${coin} 1</button>
-           <button class="primary board-go" type="button" data-bact="fight"${b.army.length && !b.online?.waiting ? '' : ' disabled'}>${go}</button>`}
+           <button class="primary board-go" type="button" data-bact="fight"${canFight(b) && !b.online?.waiting ? '' : ' disabled'}>${go}</button>`}
     </div>` : `<div class="board-fight-row">${b.online ? '' : `<button class="board-skill" type="button" data-bact="skill"${b.skillUsed ? ' disabled' : ''} aria-label="${t('boardSkill')}">${save.retro ? '🔥' : '<img src="./images/game/skills/fireball.webp" alt="">'}</button>`}<p class="board-fighting">${t('boardFighting')}</p>${speedUp ? `<button class="board-speed${boardFast ? ' is-on' : ''}" type="button" data-bact="speed" aria-pressed="${boardFast}" aria-label="${t('boardSpeed')}">${boardFast ? '×1' : '×2'}</button>` : ''}</div>`}`;
   if (boardShopPopSlot >= 0 && b.variant === 'tactics') {
     boardShop.querySelectorAll<HTMLButtonElement>('.board-card[data-i]').forEach((card) => {
@@ -2651,7 +2651,7 @@ boardUi.addEventListener('click', (event) => {
   else if (act === 'skill') { if (commanderStrike(b)) audio.play('shoot'); }
   else if (act === 'bonus') openBoardBonus();
   else if (act === 'fight' && b.online) {
-    if (b.online.waiting || !b.army.length) return;
+    if (b.online.waiting || !canFight(b)) return;
     // Your army as it stands goes to the other phone; the fight starts once theirs is in too.
     tickMerge(b, 0, true);
     sentArmy = JSON.parse(JSON.stringify(b.army)) as Piece[];
@@ -3281,7 +3281,7 @@ screen.addEventListener('click', (event) => {
   else if (act === 'styles') { dressSlot = null; stylesScreen(); }
   else if (act === 'options') { optionsFrom = 'menu'; optionsScreen(); }
   else if (act === 'options-pause') { optionsFrom = 'pause'; optionsScreen(); }
-  else if (act === 'privacy-settings') { window.openPrivacyChoices?.(); }
+  else if (act === 'privacy-settings') { (window as Window & { openPrivacyChoices?: () => void }).openPrivacyChoices?.(); }
   else if (act === 'lang') {
     const next = target.dataset.lang as Lang;
     if (next && next !== lang) { setLang(next); boardKey = ''; renderBoardUi(); optionsScreen(); }

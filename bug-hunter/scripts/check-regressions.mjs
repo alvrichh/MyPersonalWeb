@@ -40,7 +40,8 @@ check('Tactics: second identical card upgrades the first, keeping its type and c
   assert.equal(b.buy(g, 0), true);
   assert.equal(g.army.length, 1);
   assert.deepEqual(g.army[0], { ...first, star: 2 });
-  assert.equal(g.gold, 99); assert.equal(g.shop[0], null); assert.equal(g.lastMerge.star, 2);
+  // The bought card's slot is refilled with a new offer.
+  assert.equal(g.gold, 99); assert.ok(g.shop[0]); assert.equal(g.lastMerge.star, 2);
 });
 check('Tactics: four base copies chain to three stars; three stars is the limit', () => {
   const g = tactics();
@@ -53,10 +54,12 @@ check('Tactics: different casts and rarities remain separate', () => {
   const g = tactics(); offer(g, 0, 2); b.buy(g, 0); offer(g, 1, 1); b.buy(g, 0);
   assert.equal(g.army.length, 3); assert.ok(g.army.every(p => p.star === 1));
 });
-check('Tactics: matching purchase works at army capacity, unrelated purchase is rejected', () => {
+check('Tactics: at army capacity a matching purchase merges, an unrelated one goes to the bench, then is rejected', () => {
   const g = tactics();
   for (let cast = 2; cast <= b.armyCap(1); cast++) { offer(g, 0, cast); assert.equal(b.buy(g, 0), true); }
-  offer(g, 1, 5); const gold = g.gold; assert.equal(b.buy(g, 0), false); assert.equal(g.gold, gold);
+  for (let i = 0; i < b.BENCH_CAP; i++) { offer(g, 1, 5 + (i % 4)); assert.equal(b.buy(g, 0), true); }
+  assert.equal(g.bench.length, b.BENCH_CAP); assert.equal(g.army.length, b.armyCap(1));
+  offer(g, 4, 9); const gold = g.gold; assert.equal(b.buy(g, 0), false); assert.equal(g.gold, gold);
   offer(g); assert.equal(b.buy(g, 0), true); assert.equal(g.army.length, b.armyCap(1)); assert.equal(g.army[0].star, 2);
 });
 check('Tactics: cannot buy without gold or during combat', () => {
@@ -68,6 +71,23 @@ check('Tactics: resale reflects two and four original copies', () => {
   const g = tactics(), p = { ...g.army[0], tier: 4 };
   assert.equal(b.saleOf({ ...p, star: 2 }, 'tactics', 1), 8);
   assert.equal(b.saleOf({ ...p, star: 3 }, 'tactics', 1), 16);
+});
+check('Board: a run with no units and too little gold can still fight (and lose) instead of locking', () => {
+  for (const variant of ['tactics', 'fusion']) {
+    const g = b.newBoard(9, 9, variant); g.army = []; g.bench = []; g.gold = 0;
+    assert.equal(b.canFight(g), true); assert.equal(b.startFight(g), true);
+    for (let t = 0; t < 2 && g.phase === 'fight'; t += 1 / 60) b.updateBoard(g, 1 / 60);
+    assert.equal(g.last.result, 'loss');
+    const rich = b.newBoard(9, 9, variant); rich.army = []; rich.gold = 99; assert.equal(b.canFight(rich), false);
+  }
+});
+check('Fusion: a cancelled auto-merge still merges the other pairs', () => {
+  const g = b.newBoard(1, 1, 'fusion'), first = g.army[0]; g.gold = 99;
+  g.army.push({ ...structuredClone(first), id: 9001, slot: { c: 3, r: 6 } }, { ...structuredClone(first), id: 9002, tier: 1, slot: { c: 4, r: 6 } }, { ...structuredClone(first), id: 9003, tier: 1, slot: { c: 1, r: 6 } });
+  assert.equal(b.buyAutoMerge(g), true);
+  const pend = g.pending; g.army = g.army.filter((p) => p.id !== pend.a);
+  b.tickMerge(g, b.MERGE_DELAY + 0.01); b.tickMerge(g, b.MERGE_DELAY + 0.01);
+  assert.ok(g.army.filter((p) => p.tier === 1).length < 2 || g.army.some((p) => p.tier === 2));
 });
 check('Fusion: two identical units still merge to the next character', () => {
   const g = b.newBoard(1, 1, 'fusion'), first = g.army[0];
