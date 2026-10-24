@@ -92,3 +92,8 @@ Keep Battle, Sprints and On Call untouched while scaffolding. Integrate into the
 - `src/fortress/levels.ts` defines three fixtures: one Core Hall; Core Hall plus two gold buildings; and Core Hall, cannon plus five straight wall sections.
 - `../static/fortress-lab.html` publishes `/fortress-lab.html` to inspect/select buildings in both orientations without changing saved game data.
 - Current SVGs are simple editable original placeholders, **not cropped final concept art**. Nine world-specific render-quality building families remain unimplemented.
+
+## Isometric lab update (1.13.47)
+- The independent `/fortress-lab.html` preview uses a diamond-isometric canvas with camera pan, mouse-wheel/pinch zoom, tap selection and responsive landscape/portrait layout.
+- In level 3, contiguous walls are rendered with a connected geometry placeholder rather than isolated square items.
+- These are visual/interaction prototypes, not a persistent building-placement system or final art.
