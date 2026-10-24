@@ -1,6 +1,6 @@
 # Fortress — foundation (draft v0.1)
 
-Status: **design + code scaffolding only**. Not yet a playable mode or a menu entry.
+Status: **early test preview**. Three static layout stages can be inspected via `/fortress-lab.html`; Fortress is not yet a playable or menu-integrated mode.
 Owner: BUG HUNTER. This document is the starting contract for implementation.
 
 ## Vision
@@ -85,3 +85,10 @@ Keep Battle, Sprints and On Call untouched while scaffolding. Integrate into the
 - Final resource names, construction time policy, attack troop supply and combat balance.
 - When to unlock PvE enemy fortresses and which buildings are available per Core Hall level.
 - Whether any cosmetic world-specific defense variants have distinct gameplay stats.
+
+## First test assets and levels (1.13.38)
+- Source assets: `assets/special/fortress/backlog/` (ten separate transparent SVG placeholder files: Core Hall, gold/energy generators and storage, cannon, archer tower, mortar, barracks, wall).
+- Browser assets: `/images/game/fortress/backlog/<building>.svg` via `build/asset-paths.mjs`.
+- `src/fortress/levels.ts` defines three fixtures: one Core Hall; Core Hall plus two gold buildings; and Core Hall, cannon plus five straight wall sections.
+- `../static/fortress-lab.html` publishes `/fortress-lab.html` to inspect/select buildings in both orientations without changing saved game data.
+- Current SVGs are simple editable original placeholders, **not cropped final concept art**. Nine world-specific render-quality building families remain unimplemented.
