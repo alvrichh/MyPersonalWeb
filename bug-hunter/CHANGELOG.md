@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.27 - 2026-10-24
+
+### Changed - The board's own stars on the bench
+- The bench's stars are the ones the board draws: the painted star of `ui/icon_star.webp` recoloured bronze (★1), silver (★★) and gold (★★★), overlapping in a row over the unit's head. Baked once as `assets/shared/ui/star-1..3.webp` with the board's own crop and colours (`starPicture` in `boardViewRender.ts`). ★1 now shows too, as on the board.
+
 ## 1.13.26 - 2026-10-24
 
 ### Changed - Rarity and stars on the bench
