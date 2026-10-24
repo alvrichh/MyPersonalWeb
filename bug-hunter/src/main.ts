@@ -2618,6 +2618,18 @@ let cardClickBlockUntil = 0;
 boardBenchEl.addEventListener('pointerdown', (event) => {
   const button = (event.target as HTMLElement).closest<HTMLButtonElement>('[data-bact="bench-deploy"]');
   const b = board;
+  // The bench's seats reach over the board's last row: a unit standing there is the board's to drag.
+  if (b && b.phase === 'prep') {
+    const r = canvas.getBoundingClientRect();
+    const cell = slotAt(boardLay, event.clientX - r.left, event.clientY - r.top);
+    if (cell && pieceAt(b, cell)) {
+      event.preventDefault();
+      event.stopPropagation();
+      canvas.setPointerCapture(event.pointerId);
+      boardPointerDown(event);
+      return;
+    }
+  }
   if (!button || !b || b.phase !== 'prep' || b.online?.waiting || boardDown || cardDown || event.button !== 0) return;
   const piece = b.bench[Number(button.dataset.i)];
   if (!piece) return;
@@ -3052,14 +3064,14 @@ function benchSeatAt(clientX: number, clientY: number) {
   if (boardBenchEl.hidden) return -1;
   for (const el of boardBenchEl.querySelectorAll<HTMLElement>('[data-seat]')) {
     const r = el.getBoundingClientRect();
-    if (clientX >= r.left - 6 && clientX < r.right + 6 && clientY >= r.top - r.height && clientY < r.bottom + r.height * 0.6) return Number(el.dataset.seat);
+    if (clientX >= r.left && clientX < r.right && clientY >= r.top && clientY < r.bottom) return Number(el.dataset.seat);
   }
   return -1;
 }
 function isBoardBenchPoint(clientX: number, clientY: number) {
   if (!board || board.variant !== 'tactics' || board.phase !== 'prep' || boardBenchEl.hidden) return false;
-  const rect = boardBenchEl.getBoundingClientRect();
-  return clientX >= rect.left && clientX < rect.right && clientY >= rect.top && clientY < rect.bottom;
+  // Only the seats themselves: the bench's art reaches up over the board's last row, which must stay the board's.
+  return benchSeatAt(clientX, clientY) >= 0;
 }
 function boardPointerMove(event: PointerEvent) {
   const down = boardDown;
@@ -3109,8 +3121,7 @@ function boardPointerUp(event: PointerEvent) {
     const index = b.bench.indexOf(down.piece!);
     const rect = canvas.getBoundingClientRect();
     const target = slotAt(boardLay, event.clientX - rect.left, event.clientY - rect.top);
-    const benchRect = boardBenchEl.getBoundingClientRect();
-    const onBench = event.clientX >= benchRect.left && event.clientX < benchRect.right && event.clientY >= benchRect.top && event.clientY < benchRect.bottom;
+    const onBench = benchSeatAt(event.clientX, event.clientY) >= 0;
     if (!down.moved) {
       if (deployBench(b, index)) audio.play('click');
       else flash(t('boardBenchNoRoom'));
@@ -4137,6 +4148,7 @@ function step(now: number) {
 if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) {
   Object.defineProperty(window, 'bugHunter', { get: () => game });
   Object.defineProperty(window, 'bugHunterBoard', { get: () => board });
+  Object.defineProperty(window, 'bugHunterBoardLay', { get: () => boardLay });
 }
 
 /* --------------------------------------------------------------- loading */

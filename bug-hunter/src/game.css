@@ -5130,3 +5130,13 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 
 /* v1.13.30 — the phone bench higher. */
 @media (max-width: 899px) { :root:not([data-retro]) .board-mobile-tray.is-active .board-bench-slots { transform: translate(-50%, -24px); } }
+
+/* v1.13.32 — The bench's art reaches over the board's last row: only its seats take the pointer, so units on that
+   row can still be dragged. */
+.board-mobile-tray.is-active,
+.board-mobile-tray.is-active .board-bench-float,
+.board-mobile-tray.is-active .board-bench-slots { pointer-events: none; }
+.board-mobile-tray.is-active .board-bench-slot,
+.board-mobile-tray.is-active .board-mobile-acts { pointer-events: auto; }
+.board-bench-slot > img, .board-bench-slot > em, .board-bench-slot::after { pointer-events: none; }
+.board-mobile-tray.is-active .board-bench-slot.is-empty { pointer-events: none; }
