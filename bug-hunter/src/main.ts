@@ -2535,7 +2535,8 @@ function renderBoardUi() {
   const bench = !fusion ? `<div class="board-bench-head"><small class="board-bench-title">${t('boardBench')} · ${b.bench.length}/${BENCH_CAP}</small>${capLabel}</div><div class="board-bench-slots" style="${benchStyle(b.world)}">${Array.from({ length: BENCH_CAP }, (_, i) => { const p = b.bench[i]; return p
     ? `<button type="button" class="board-bench-slot is-world-${p.cast}" data-bact="bench-deploy" data-i="${i}" aria-label="${t('boardBenchDeploy', { name: boardCharacterName(p.tier, p.cast) })}"${!prep || b.online?.waiting ? ' disabled' : ''}><img src="${boardPic(p.tier, p.cast)}" alt="">${(p.star ?? 1) > 1 ? `<em>${'★'.repeat(p.star ?? 1)}</em>` : ''}</button>`
     : '<span class="board-bench-slot is-empty"></span>'; }).join('')}</div>` : '';
-  boardBenchEl.hidden = fusion || !prep;
+  // The bench stays in view through the fight too, its reserves dimmed (they do not fight).
+  boardBenchEl.hidden = fusion || !(prep || b.phase === 'fight');
   boardBenchEl.setAttribute('aria-label', t('boardBench'));
   boardBenchEl.innerHTML = bench;
   // The round's event and each world's synergy, a column of medallions by the board edge; a tap lists their effects.

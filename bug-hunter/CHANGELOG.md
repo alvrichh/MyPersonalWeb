@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.22 - 2026-10-24
+
+### Changed - Bench lower, behind the shop, and kept in the fight
+- Phone: the bench hangs from the tray's top (100 px, it was 140) with its seats just over the shop and the rest of the picture going on down behind the shop's panel, uncropped; the tray sits under the shop (`z-index`). The reserves are drawn bigger on their seats.
+- The bench stays in view while fighting (phone and desktop), its reserves dimmed (`brightness(0.5)`) and not draggable; its caption hides in the fight on the phone, where it ran into the army counter.
+
 ## 1.13.21 - 2026-10-24
 
 ### Changed - One four-seat bench per world in Tactics
