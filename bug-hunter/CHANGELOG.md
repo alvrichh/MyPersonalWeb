@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.36 - 2026-10-24
+
+### Changed
+- Phone Tactics: the arena's floor picture ends at the shop's middle instead of the bottom of the screen, a little squashed, so its own lower wall shows round the bench rather than hidden below the shop; the top fence stays whole.
+
 ## 1.13.35 - 2026-10-24
 
 ### Changed

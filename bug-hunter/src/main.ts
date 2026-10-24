@@ -2912,7 +2912,8 @@ function boardStep(dt: number, now: number) {
   const floor = {
     top: top - 6,
     // Fusion's floor ends above its action buttons; Tactics continues behind its shop.
-    bottom: wide ? bottom : b.variant === 'fusion' ? (acts ? acts.top - rect.top - 4 : bottom) : canvas.clientHeight,
+    // Tactics' floor ends at the shop's middle, so the arena's own lower wall shows round the bench, not below the shop.
+    bottom: wide ? bottom : b.variant === 'fusion' ? (acts ? acts.top - rect.top - 4 : bottom) : (shopRect.top + shopRect.bottom) / 2 - rect.top,
     controlsTop: acts ? acts.top - rect.top : bottom,
   };
   const fieldWidth = canvas.clientWidth;
