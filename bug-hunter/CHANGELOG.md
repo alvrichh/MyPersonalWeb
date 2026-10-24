@@ -2,6 +2,13 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.3 - 2026-10-24
+
+### Changed - Tactics bonus rail
+- Tactics world-ability medallions are pinned flush to the right edge of the viewport with no horizontal margin.
+- Their compact counter now shows team progress toward the five-unit enhanced-combo threshold as `current/5` (capped at `5/5`) instead of repeating the number of distinct worlds.
+- The bonus details panel uses the same numeric progress. Fusion synergy counters and combat rules are unchanged.
+
 ## 1.13.2 - 2026-10-24
 
 ### Maintenance - Assets organized by world
