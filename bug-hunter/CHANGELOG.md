@@ -4,6 +4,14 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.14 - 2026-10-24
+
+### Changed - One button rule: tap or swipe
+- Every button you only tap now uses the simple bar, the shape of «Conectar con código», in its own colour: new `assets/shared/ui/btn1_{blue,green,orange,red,gold,purple}.webp`, the grey `btn_gray` with its face recoloured. This covers every dialog (profile, pause, end of run, shop, Customise, the guide, the board's buttons, the friends' «Conectar»), keeping each button's colour and icon.
+- The bar with the big arrows and leaves (`btn2_*`) now means «swipe me»: only the cover's play bar and the map's play button when it has more than one option wear it.
+- The cover's play bar is that arrowed bar in the mode's colour (green Sprints, red On call, blue Board), laid over the painted one with its words centred, on a dark rail of the same shape.
+- Swiping a play bar now drags it with the finger; let go past 40 px and the next option slides in from that side, otherwise it springs back. Nothing moves under `prefers-reduced-motion` beyond the drag itself. The cover's painted cards (map, shop, Customise, options) are unchanged.
+
 ## 1.13.13 - 2026-10-24
 
 ### Changed - One platform per reserve, grander ones for bosses

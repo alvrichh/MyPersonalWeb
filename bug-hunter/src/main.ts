@@ -481,7 +481,8 @@ function menuScreen() {
       <span class="cover-num is-worlds">${unlockedIn()}/${WORLD_COUNT}</span>
       <p class="cover-tagline">${t('landingTagline')}</p>
       <button class="cover-chest${dailyReady(save) ? ' is-ready' : ''}" type="button" data-act="daily" aria-label="${t('dailyTitle')}"><img src="./images/game/fx/chest.webp" width="165" height="140" alt=""><i${dailyReady(save) ? '>' + t('dailyReady') : ` data-daily-clock>${dailyClock()}`}</i></button>
-      <span class="cover-play-tint is-${save.mode}" aria-hidden="true"></span>
+      <span class="cover-play-bar is-slot" aria-hidden="true"></span>
+      <span class="cover-play-bar is-${save.mode}" aria-hidden="true"></span>
       <button class="hot cover-play" data-act="play" aria-label="${t('playNow')} · ${modeName()} · ${worldName(worldIn())}"></button>
       <span class="cover-play-copy is-${save.mode}"><b>${MODE_ICON[save.mode]} ${modeName()}</b><small>${t('playNow')} · ${WORLD_ICON[worldIn() - 1]} ${worldName(worldIn())}</small></span>
       <button class="cover-arrow is-prev" type="button" data-act="mode-prev" aria-label="${t('modeSwipe')}"></button>
@@ -1633,16 +1634,36 @@ screen.addEventListener('pointerdown', (e) => {
   swipeX = swipeCover || el.closest('.play-pick.has-more') ? e.clientX : null;
   swiped = false;
 });
-screen.addEventListener('pointerup', (e) => {
+/** What a swipe drags along: the cover's play bar and its words, or the map's play button. */
+const swipeParts = () => [...screen.querySelectorAll<HTMLElement>(swipeCover ? '.cover-play-bar:not(.is-slot), .cover-play-copy' : '.play-pick.has-more > .play')];
+screen.addEventListener('pointermove', (e) => {
   if (swipeX === null) return;
   const dx = e.clientX - swipeX;
-  swipeX = null;
-  if (Math.abs(dx) < 40) return;
-  swiped = true;
-  if (swipeCover) { stepMode(dx < 0 ? 1 : -1); return; }
-  mapPlayIdx += dx < 0 ? 1 : -1;
-  mapPlayStep();
+  if (Math.abs(dx) > 8) swiped = true;
+  // The bar follows the finger, a little less the further it goes.
+  const shift = Math.sign(dx) * Math.min(Math.abs(dx), 140) * 0.8;
+  for (const el of swipeParts()) { el.style.transition = 'none'; el.style.transform = `translateX(${shift}px)`; }
 });
+const swipeEnd = (e: PointerEvent) => {
+  if (swipeX === null) return;
+  const dx = e.type === 'pointercancel' ? 0 : e.clientX - swipeX;
+  swipeX = null;
+  if (Math.abs(dx) < 40) {
+    // Not far enough: it springs back.
+    for (const el of swipeParts()) { el.style.transition = 'transform 0.18s ease-out'; el.style.transform = ''; }
+    return;
+  }
+  swiped = true;
+  const by = dx < 0 ? 1 : -1;
+  if (swipeCover) stepMode(by);
+  else { mapPlayIdx += by; mapPlayStep(); }
+  // The next one slides in from the side the finger came from.
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    for (const el of swipeParts()) el.animate([{ transform: `translateX(${by * 70}px)`, opacity: 0.2 }, { transform: 'none', opacity: 1 }], { duration: 200, easing: 'ease-out' });
+  }
+};
+screen.addEventListener('pointerup', swipeEnd);
+screen.addEventListener('pointercancel', swipeEnd);
 /** The cover's play bar turns to the next or the last way to play (its arrows, or a swipe across it). */
 function stepMode(by: number) {
   save.mode = MODES[(MODES.indexOf(save.mode) + by + MODES.length) % MODES.length];

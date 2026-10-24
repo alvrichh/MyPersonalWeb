@@ -789,9 +789,9 @@ body {
   width: calc(100% - 24px);
   min-height: 66px;
   padding: 0 10px;
-  border-width: 0 44px;
+  border-width: 0 26px;
   border-style: solid;
-  border-image: url('/images/game/ui/btn2_green.webp') 0 140 fill / 0 44px stretch;
+  border-image: url('/images/game/ui/btn1_green.webp') 0 70 fill / 0 26px stretch;
   background: none;
   clip-path: none;
   color: #fff;
@@ -1325,12 +1325,12 @@ body {
 .panel .ghost,
 .panel .buy,
 .panel .play {
-  --bar: url('/images/game/ui/btn2_blue.webp');
+  --bar: url('/images/game/ui/btn1_blue.webp');
   min-height: 58px;
-  border-width: 0 40px;
+  border-width: 0 24px;
   border-style: solid;
   border-radius: 0;
-  border-image: var(--bar) 0 140 fill / 0 40px stretch;
+  border-image: var(--bar) 0 70 fill / 0 24px stretch;
   background: none;
   color: #fff;
   text-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
@@ -1342,13 +1342,13 @@ body {
 .panel .play:active { filter: brightness(0.85) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.35)); }
 
 /* Orange for anything that costs coins. */
-.panel .primary[data-act='revive-pay'] { --bar: url('/images/game/ui/btn2_orange.webp'); }
-.panel .primary.is-blue { --bar: url('/images/game/ui/btn2_blue.webp'); }
+.panel .primary[data-act='revive-pay'] { --bar: url('/images/game/ui/btn1_orange.webp'); }
+.panel .primary.is-blue { --bar: url('/images/game/ui/btn1_blue.webp'); }
 /* Green to go and play. */
 .panel .primary[data-act='play-same'],
 .panel .primary[data-act='play-next'],
 .panel .primary[data-act='play'],
-.panel .play { --bar: url('/images/game/ui/btn2_green.webp'); }
+.panel .play { --bar: url('/images/game/ui/btn1_green.webp'); }
 
 .panel .ghost {
   --bar: url('/images/game/ui/btn_gray.webp');
@@ -2396,17 +2396,17 @@ body {
 }
 
 .panel .buy {
-  --bar: url('/images/game/ui/btn2_orange.webp');
+  --bar: url('/images/game/ui/btn1_orange.webp');
   min-height: 44px;
   padding: 7px 1px;
-  border-width: 0 30px;
-  border-image: var(--bar) 0 140 fill / 0 30px stretch;
+  border-width: 0 18px;
+  border-image: var(--bar) 0 70 fill / 0 18px stretch;
   font: 700 0.8rem/1.15 var(--font);
 }
 
 /* Equip: green; worn: blue; can't afford: grey. */
-.panel .buy[data-equip] { --bar: url('/images/game/ui/btn2_green.webp'); }
-.panel .buy.is-worn { --bar: url('/images/game/ui/btn2_blue.webp'); }
+.panel .buy[data-equip] { --bar: url('/images/game/ui/btn1_green.webp'); }
+.panel .buy.is-worn { --bar: url('/images/game/ui/btn1_blue.webp'); }
 .panel .buy.is-poor {
   --bar: url('/images/game/ui/btn_gray.webp');
   border-width: 0 18px;
@@ -3442,18 +3442,18 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .star-chip.is-on { border-color: var(--star); box-shadow: 0 0 10px var(--star); }
 /* Destructive buttons (reset): the orange bar turned red, white text. */
 .panel .ghost.is-danger {
-  --bar: url('/images/game/ui/btn2_red.webp');
-  border-width: 0 44px;
-  border-image: var(--bar) 0 140 fill / 0 44px stretch;
+  --bar: url('/images/game/ui/btn1_red.webp');
+  border-width: 0 26px;
+  border-image: var(--bar) 0 70 fill / 0 26px stretch;
   min-height: 56px;
   color: #fff;
   text-shadow: 0 2px 3px rgba(0, 0, 0, 0.55);
 }
 /* Warning buttons (restart): the gold bar, dark text. */
 .panel .ghost.is-warn {
-  --bar: url('/images/game/ui/btn2_gold.webp');
-  border-width: 0 44px;
-  border-image: var(--bar) 0 140 fill / 0 44px stretch;
+  --bar: url('/images/game/ui/btn1_gold.webp');
+  border-width: 0 26px;
+  border-image: var(--bar) 0 70 fill / 0 26px stretch;
   min-height: 56px;
   color: #2a1a00;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
@@ -3465,7 +3465,7 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .mastery-btn { margin-top: 8px; }
 /* Mastery buttons: a gold copy of the owner's orange bar, dark text. */
 .panel .primary.mastery-btn,
-.panel .primary[data-act='mastery-do'] { --bar: url('/images/game/ui/btn2_gold.webp'); color: #2a1a00; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35); }
+.panel .primary[data-act='mastery-do'] { --bar: url('/images/game/ui/btn1_gold.webp'); color: #2a1a00; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35); }
 :root[data-retro] .panel .primary.mastery-btn,
 :root[data-retro] .panel .primary[data-act='mastery-do'] { background: linear-gradient(135deg, #fde047, #f59e0b); color: #2a1a00; }
 
@@ -3608,7 +3608,7 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   vertical-align: middle;
   cursor: pointer;
 }
-.panel .buy.is-money { --bar: url('/images/game/ui/btn2_green.webp'); font-weight: 800; }
+.panel .buy.is-money { --bar: url('/images/game/ui/btn1_green.webp'); font-weight: 800; }
 .panel .store-preview { color: #fde68a; }
 .store-packs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; width: 100%; max-width: 420px; }
 .store-pack {
@@ -3928,9 +3928,9 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
    other runs; the bar takes each run's colour, and dots under it say which of them it shows. */
 .mapscreen .play-pick { position: relative; width: calc(100% - 24px); margin: 0 auto; touch-action: pan-y; }
 .mapscreen .play-pick > .play { width: 100%; margin: 0; }
-.mapscreen .play.is-rush { border-image-source: url('/images/game/ui/btn2_gold.webp'); color: #2a1a00; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35); filter: drop-shadow(0 0 16px rgba(251, 191, 36, 0.45)); }
-.mapscreen .play.is-showcase { border-image-source: url('/images/game/ui/btn2_blue.webp'); filter: drop-shadow(0 0 16px rgba(56, 189, 248, 0.45)); }
-.mapscreen .play.is-nightmare { border-image-source: url('/images/game/ui/btn2_red.webp'); filter: drop-shadow(0 0 16px rgba(248, 113, 113, 0.45)); }
+.mapscreen .play.is-rush { border-image-source: url('/images/game/ui/btn1_gold.webp'); color: #2a1a00; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35); filter: drop-shadow(0 0 16px rgba(251, 191, 36, 0.45)); }
+.mapscreen .play.is-showcase { border-image-source: url('/images/game/ui/btn1_blue.webp'); filter: drop-shadow(0 0 16px rgba(56, 189, 248, 0.45)); }
+.mapscreen .play.is-nightmare { border-image-source: url('/images/game/ui/btn1_red.webp'); filter: drop-shadow(0 0 16px rgba(248, 113, 113, 0.45)); }
 .mapscreen .play.is-dim { filter: grayscale(0.75) brightness(0.8); cursor: default; }
 .mapscreen .play-arrow {
   position: absolute;
@@ -4046,9 +4046,9 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .panel .book-mode { display: grid; gap: 4px; min-height: 72px; padding: 10px 0; text-align: center; }
 .panel .book-mode b { font-size: 1.05rem; }
 .panel .book-mode small { font-size: 0.74rem; font-weight: 600; line-height: 1.3; opacity: 0.95; }
-.panel .book-mode.is-sprints { --bar: url('/images/game/ui/btn2_green.webp'); }
-.panel .book-mode.is-horde { --bar: url('/images/game/ui/btn2_red.webp'); }
-.panel .book-mode.is-board { --bar: url('/images/game/ui/btn2_blue.webp'); }
+.panel .book-mode.is-sprints { --bar: url('/images/game/ui/btn1_green.webp'); }
+.panel .book-mode.is-horde { --bar: url('/images/game/ui/btn1_red.webp'); }
+.panel .book-mode.is-board { --bar: url('/images/game/ui/btn1_blue.webp'); }
 .panel .book-mode:not(.is-on) { opacity: 0.78; }
 .panel .book-mode.is-on { filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.55)); }
 .book-page { color: var(--muted); }
@@ -4107,8 +4107,8 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   border-image: url('/images/game/ui/btn_gray.webp') 0 70 fill / 0 22px stretch; background: none; color: #0f172a; font-weight: 800;
 }
 :root:not([data-retro]) .board-acts .board-go {
-  min-height: 52px; border-style: solid; border-width: 0 34px; border-radius: 0;
-  border-image: url('/images/game/ui/btn2_red.webp') 0 140 fill / 0 34px stretch; background: none; color: #fff; font-weight: 800; text-shadow: 0 2px 3px rgba(0, 0, 0, 0.55);
+  min-height: 52px; border-style: solid; border-width: 0 20px; border-radius: 0;
+  border-image: url('/images/game/ui/btn1_red.webp') 0 70 fill / 0 20px stretch; background: none; color: #fff; font-weight: 800; text-shadow: 0 2px 3px rgba(0, 0, 0, 0.55);
 }
 :root:not([data-retro]) .board-acts button:disabled { filter: grayscale(0.8) brightness(0.7); cursor: default; }
 :root:not([data-retro]) .board-fighting { padding: 10px; border-radius: 14px; background: rgba(6, 10, 24, 0.62); }
@@ -4201,7 +4201,7 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 @keyframes auto-glow { 50% { box-shadow: 0 0 0 3px #fde68a, 0 0 24px rgba(253, 224, 71, 1); } }
 @media (prefers-reduced-motion: reduce) { .board-auto.is-on { animation: none; } }
 /* The board's Tactics: the gold bar, in its start dialog as on the map's play button. */
-.panel .book-mode.is-gold { --bar: url('/images/game/ui/btn2_gold.webp'); color: #2a1a00; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35); }
+.panel .book-mode.is-gold { --bar: url('/images/game/ui/btn1_gold.webp'); color: #2a1a00; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35); }
 :root[data-retro] .panel .book-mode.is-gold { background: linear-gradient(135deg, #fde047, #f59e0b); }
 .panel .book-mode.board-variant { min-height: 60px; padding: 0; align-content: center; justify-content: center; text-align: center; }
 .panel .book-mode.board-variant b { font-size: 1.2rem; }
@@ -4462,10 +4462,10 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .friend-row > b { flex-basis: 0; }
 .friend-del { flex: none; width: 28px; height: 28px; border: 0; border-radius: 50%; background: rgba(255, 255, 255, 0.08); color: #fca5a5; cursor: pointer; }
 .friend-row .friend-go { flex: none; min-width: 92px; padding: 7px 14px; border: 0; border-radius: 999px; background: linear-gradient(180deg, #4ade80, #16a34a); color: #062b12; font: 700 0.95rem var(--font); box-shadow: 0 0 10px rgba(74, 222, 128, 0.35); cursor: pointer; }
-.panel .primary.is-purple { --bar: url('/images/game/ui/btn2_purple.webp'); }
+.panel .primary.is-purple { --bar: url('/images/game/ui/btn1_purple.webp'); }
 :root[data-retro] .panel .primary.is-purple { background: linear-gradient(135deg, #a78bfa, #7c3aed); }
 /* Primary actions throughout the menu and shop share the blue button art. */
-.panel .primary { --bar: url('/images/game/ui/btn2_blue.webp'); color: #fff; text-shadow: 0 2px 3px rgba(0, 0, 0, 0.5); }
+.panel .primary { --bar: url('/images/game/ui/btn1_blue.webp'); color: #fff; text-shadow: 0 2px 3px rgba(0, 0, 0, 0.5); }
 :root[data-retro] .panel .primary { background: linear-gradient(135deg, #38bdf8, #2563eb); color: #07101f; text-shadow: none; }
 /* A locked row's reason may be long («Jefe final del mundo 8 en Guardia»): it wraps instead of widening the row,
    which pushed the whole list off the side of the dialog on an iPhone. */
@@ -4839,3 +4839,59 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 :root:not([data-retro]) .board-bench-slot > img { bottom: 17%; height: 78%; }
 :root:not([data-retro]) .board-bench-slot.is-empty { border: 0; background: none !important; }
 :root:not([data-retro]) .board-bench-slot.is-empty::before { display: block; opacity: 0.4; }
+
+
+/* v1.13.14 — One rule for every button: a button you only tap is the simple bar
+   (`btn1_<colour>.webp`, the grey «Conectar con código» bar recoloured), and only
+   a button you can swipe sideways wears the bar with the big arrows (`btn2_*`):
+   the cover's play bar and the map's play button when it has more options. */
+.mapscreen .play-pick.has-more > .play {
+  border-width: 0 44px;
+  border-image: url('/images/game/ui/btn2_green.webp') 0 140 fill / 0 44px stretch;
+}
+.mapscreen .play-pick.has-more > .play.is-rush { border-image-source: url('/images/game/ui/btn2_gold.webp'); }
+.mapscreen .play-pick.has-more > .play.is-showcase { border-image-source: url('/images/game/ui/btn2_blue.webp'); }
+.mapscreen .play-pick.has-more > .play.is-nightmare { border-image-source: url('/images/game/ui/btn2_red.webp'); }
+.mapscreen .play-pick.has-more > .play[data-act='play-board-tactics'] { border-image-source: url('/images/game/ui/btn2_gold.webp'); }
+:root:not([data-retro]) .friend-row .friend-go {
+  min-height: 40px;
+  padding: 0 2px;
+  border-style: solid;
+  border-width: 0 14px;
+  border-radius: 0;
+  border-image: url('/images/game/ui/btn1_green.webp') 0 70 fill / 0 14px stretch;
+  background: none;
+  box-shadow: none;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
+}
+
+/* The cover's play bar is the arrowed bar in the mode's colour (it is swiped to change
+   mode), laid over the painted one, with its words centred on it. */
+.cover-play-bar {
+  position: absolute;
+  left: 9.6%; top: 60.4%; width: 80.9%; height: 10.1%;
+  box-sizing: border-box;
+  border-style: solid;
+  border-width: 0 13.5cqw;
+  border-image: url('/images/game/ui/btn2_green.webp') 0 140 fill / 0 13.5cqw stretch;
+  filter: drop-shadow(0 0 10px rgba(74, 222, 128, 0.45));
+  pointer-events: none;
+}
+.cover-play-bar.is-horde { border-image-source: url('/images/game/ui/btn2_red.webp'); filter: drop-shadow(0 0 10px rgba(248, 113, 113, 0.45)); }
+.cover-play-bar.is-board { border-image-source: url('/images/game/ui/btn2_blue.webp'); filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.45)); }
+.cover-play { touch-action: pan-y; }
+:root:not([data-retro]) .cover-play-copy { left: 10.3%; width: 79.5%; justify-items: center; text-align: center; }
+:root:not([data-retro]) .cover-play-copy,
+:root:not([data-retro]) .cover-play-copy.is-horde,
+:root:not([data-retro]) .cover-play-copy.is-board { color: #fff; text-shadow: 0 2px 3px rgba(0, 0, 0, 0.55); }
+:root:not([data-retro]) .cover-play-copy small,
+:root:not([data-retro]) .cover-play-copy.is-horde small,
+:root:not([data-retro]) .cover-play-copy.is-board small { color: rgba(255, 255, 255, 0.88); }
+:root[data-retro] .cover-play-bar { display: none; }
+@media (min-width: 900px) and (orientation: landscape) {
+  .cover-play-bar { left: 31.8%; top: 60.8%; width: 36.3%; height: 12%; border-width: 0 5.1cqw; border-image-width: 0 5.1cqw; }
+  :root:not([data-retro]) .cover-play-copy { left: 32.3%; width: 35.3%; }
+}
+/* Under it a dark rail of the same shape, still while the bar is dragged, so the painted bar never shows. */
+.cover-play-bar.is-slot { border-image-source: url('/images/game/ui/btn2_blue.webp'); filter: brightness(0.22) saturate(0.4); }
