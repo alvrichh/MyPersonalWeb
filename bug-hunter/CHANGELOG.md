@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.37 - 2026-10-24
+
+### Changed - New Minotaur
+- The Arena's room-6 boss, the Minotaur (`bosses/minotaur-0..8.webp`), redrawn by the owner as one chibi 3×3 sheet, all poses at one scale: stance, two steps, wind-up, horns-first charge, sword spin (ring), three golden javelins (move), sword slam (signature), flinch (hit). Cut at full resolution (up to 520 px, the old one came from a sheet shrunk to 63%) with `kernel/cut.py` `seg`, `EDGECUT=1`, `HOT=1`, its cells set by hand where the javelins and the ring ran past the thirds; `BOSS_CANVAS.minotaur` k 2.83, feet 0.2455.
+
 ## 1.13.36 - 2026-10-24
 
 ### Changed
