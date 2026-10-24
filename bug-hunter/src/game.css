@@ -5174,3 +5174,10 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .mapscreen .play-pick > .play.is-locked {
   filter: grayscale(1) brightness(0.85) drop-shadow(0 0 10px rgba(148, 163, 184, 0.35));
 }
+
+/* Fourth cover option: same nine-slice play bar asset as the other modes, desaturated gray. */
+.cover-play-bar.is-coming-soon { border-image-source: url('/images/game/ui/btn2_blue.webp'); filter: grayscale(1) brightness(.9) drop-shadow(0 0 8px rgba(170,180,194,.32)); }
+.cover-play-copy.is-coming-soon { color: #16202b; }
+.cover-play-copy.is-coming-soon small { color: #273848; }
+:root:not([data-retro]) .cover-play-copy.is-coming-soon, :root:not([data-retro]) .cover-play-copy.is-coming-soon small { color: #fff; text-shadow: 0 2px 3px #0009; }
+.cover-dots i.is-on.is-coming-soon { background: #a6a9b0; box-shadow: 0 0 8px #a6a9b0; }
