@@ -81,7 +81,13 @@ bug-hunter/
   docs/                     Structure and retained design history
 ```
 
-Every world has enemies, bosses and its floor; scenery is present where an existing dedicated set was available. Shared effects, map-selection pictures and heroes are not duplicated across worlds. See [asset conventions](./assets/README.md) for the exact grouping.
+Every world has enemies, bosses and its floor; scenery is present where an existing dedicated set was available. Shared effects, map-selection pictures and heroes are not duplicated across worlds.
+
+### Asset organization and safe editing
+
+`shared/` holds heroes, UI, skills, weapons, companions, effects, equipment, global backgrounds, map-selection art, documentation images and upgrade icons. The shared `forge/` contains upgrade icons, not World 7 scenery. `special/secret-shift/bosses/` contains Kratos and his second form. Files are not duplicated across worlds.
+
+Keep filenames, numbered frames, transparency, dimensions and anchor points unchanged unless intentionally updating a character. Check `src/draw.ts` for frame selection; filenames alone do not describe a pose. Do not edit generated `.cache/`, `dist/` or root `public/` files.
 
 ## Run and build
 
