@@ -274,6 +274,8 @@ export type Enemy = {
   clone: boolean;
   /** A smaller boss a sprint final boss calls once a sprint mastery is taken (`MINION`). */
   minion: boolean;
+  /** A Boss Rush small boss: the room-6 boss shrunk, so it wears that boss's sheet. */
+  rushMini?: boolean;
   /** Seconds to the Queen's next plants. */
   grow: number;
   /** Seconds to the Medusa's next snakes (0 until her first frame). */
@@ -545,7 +547,7 @@ export type Game = {
   stages: number;
   /** The world a rush starts at (1, or the picked world for the showcase of one world's bosses). */
   rushFrom: number;
-  /** Stages a world in this rush: 4 (small boss, room-6 boss, small boss, final boss), 2 in the showcase. */
+  /** Stages a world in this rush: 2 (room-6 boss, final boss). */
   rushStep: number;
   /** The showcase (Boss Rush's «look at the bosses» mode): nobody takes damage but the bugs they call, and the
       boss loses a quarter of its health only when `showcaseHit` is pressed, to see its phases at leisure. */
@@ -932,9 +934,8 @@ function enterRoom(g: Game, room: number) {
   }
 }
 
-/* Boss Rush: four stages a world, a small boss of its cast alone, its room-6 boss, another small boss, its final boss, then
-   the next world's (`RUSH_STEP`); the showcase only its two bosses (`Game.rushStep` 2). */
-const RUSH_STEP = 4;
+/* Boss Rush: two stages a world, its room-6 boss then its final boss, then the next world's (`RUSH_STEP`). */
+const RUSH_STEP = 2;
 export const rushWorld = (stage: number, step = RUSH_STEP) => Math.ceil(stage / step);
 /** The kind of fight a stage is: 'mini' (a small boss alone), 'mid' (the room-6 boss) or 'final'. */
 const rushKind = (stage: number, step: number) => { const k = (stage - 1) % step; return step === 2 ? (k ? 'final' : 'mid') : k === 3 ? 'final' : k === 1 ? 'mid' : 'mini'; };
@@ -953,7 +954,7 @@ function enterStage(g: Game, stage: number) {
   if (stage > 1) heal(g, g.player.maxHp * RUSH_HEAL);
   enterRoom(g, kind === 'final' ? ROOMS : 6);
   if (kind === 'mini') for (const e of g.enemies) if (e.kind === 'boss') {
-    Object.assign(e, { minion: true, r: RUSH_MINI.r });
+    Object.assign(e, { minion: true, rushMini: true, r: RUSH_MINI.r });
     e.hp = e.maxHp = Math.round(e.maxHp * RUSH_MINI.hp);
   }
   for (const e of g.enemies) if (e.kind === 'boss') e.xp *= RUSH_XP;
