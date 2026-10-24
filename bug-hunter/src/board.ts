@@ -117,9 +117,14 @@ export const TACTICS = {
   copies: 2,
   price: [1, 2, 3, 5, 8],
   odds: [[0.62, 0.28, 0.09, 0.01, 0], [0.34, 0.3, 0.22, 0.11, 0.03]],
-  /** The waves against a tactics army, against a fusion one. */
-  wave: 0.8,
+  /** AI pressure in Tactics. Round 1 stays introductory; from round 2 the
+      rival reaches full base strength, receives more budget and keeps scaling. */
+  wave: 1,
+  enemyBudget: 1.2,
+  enemyPerRound: 0.04,
 };
+export const tacticsEnemyPower = (round: number) =>
+  round <= 1 ? 0.9 : TACTICS.wave * (1 + TACTICS.enemyPerRound * Math.max(0, round - 2));
 const starOf = (p: { star?: Star }) => p.star ?? 1;
 /** A unit in a fight, yours (side 0) or the enemy's (side 1). */
 export type Fighter = {
@@ -291,7 +296,7 @@ export const saleOf = (p: Piece, variant: Variant = 'fusion', world = p.cast) =>
     : Math.max(1, Math.floor((TIER_VALUE[p.tier] * castPower(world)) / 2));
 
 export function newBoard(world: number, casts: number, variant: Variant = 'fusion'): BoardGame {
-  const wave = enemyWave(world, 1);
+  const wave = enemyWave(world, 1, variant);
   const b: BoardGame = {
     world, variant, casts: Math.max(1, Math.min(world, casts, WORLDS.length)), round: 1, lives: LIVES, rivalLives: LIVES, winStreak: 0, rivalStreak: 0, gold: Math.round(8 * castPower(world)), phase: 'prep',
     army: [], bench: [], shop: [], wave, waveCasts: enemyWaveCasts(world, 1, wave, variant), fighters: [], shots: [], time: 0, last: null, wins: 0, kills: 0, events: [], event: null, skillUsed: false, strike: null, boom: null, impacts: [], effects: [], bossAttacks: [], lastMerge: null, lastSummon: null, autoMerge: false, autoBought: false, summons: 0, pending: null,
@@ -595,9 +600,9 @@ export function unitStats(b: Pick<BoardGame, 'variant' | 'world' | 'event' | 'ar
 }
 
 /** The rival's preview numbers use the same growth and event rules as the fighters created in startFight. */
-export function waveUnitStats(b: Pick<BoardGame, 'variant' | 'world' | 'event'>, tier: Tier, cast = b.world, star: Star = 1) {
+export function waveUnitStats(b: Pick<BoardGame, 'variant' | 'world' | 'event' | 'round'>, tier: Tier, cast = b.world, star: Star = 1) {
   const tac = b.variant === 'tactics';
-  const mult = castPower(b.world) * nativeWorldPower(b.world, cast) * (1 + WAVE.tough * (b.world - 1)) * (tac ? TACTICS.wave : SUMMON.wave);
+  const mult = castPower(b.world) * nativeWorldPower(b.world, cast) * (1 + WAVE.tough * (b.world - 1)) * (tac ? tacticsEnemyPower(b.round) : SUMMON.wave);
   const syn = tac ? cast : 0;
   const synLv = tac ? 1 : 0;
   return { ...combatStats(tier, mult, syn, synLv, b.event, star, tac), syn, synLv, ability: tac ? ABILITY[cast] : undefined, kit: bossKit(cast, tier) };
@@ -617,11 +622,14 @@ const waveMost = (world: number, round: number) => Math.min(8, 2 + Math.ceil(rou
 
 /** The enemy for a round: a budget of gold's worth grown with the rounds and the world, spent on the world's own
     cast, the room-6 boss in round 5 and the final boss in round 10. */
-export function enemyWave(world: number, round: number): Tier[] {
+export function enemyWave(world: number, round: number, variant: Variant = 'fusion'): Tier[] {
   // About the gold you have had by now, a little less in the first world and more in the last.
   const had = 8 + (GOLD.round + 1) * (round - 1);
   // Counted in the world's own cast's units: your gold grows with its prices (`roundGold`).
   let points = Math.round(had * (WAVE.base + WAVE.world * (world - 1)));
+  // Tactics AI gets a larger purchase budget from round 2 onward. Fusion keeps
+  // its original composition and economy.
+  if (variant === 'tactics' && round >= 2) points = Math.round(points * TACTICS.enemyBudget);
   const out: Tier[] = [];
   if (round === 5) { out.push(3); points -= TIER_VALUE[3]; }
   if (round === ROUNDS) { out.push(4); points -= TIER_VALUE[4]; }
@@ -641,9 +649,11 @@ export function enemyWave(world: number, round: number): Tier[] {
     concentrated on the rarer cards, and the last rounds can field one 3-star. */
 export function enemyWaveStars(round: number, wave: Tier[], variant: Variant): Star[] {
   const stars = wave.map((): Star => 1);
-  if (variant !== 'tactics' || !wave.length) return stars;
-  const upgraded = Math.min(wave.length, Math.floor(round * 0.42));
-  const threeStar = round >= 9 ? Math.min(1, upgraded) : 0;
+  if (variant !== 'tactics' || !wave.length || round <= 1) return stars;
+  // Round 2 always introduces at least one ★★. Upgrades then spread through
+  // the rival army quickly; ★★★ arrives from round 7 and doubles from round 9.
+  const upgraded = Math.min(wave.length, Math.max(1, Math.ceil((round - 1) * 0.55)));
+  const threeStar = round >= 9 ? Math.min(2, upgraded) : round >= 7 ? Math.min(1, upgraded) : 0;
   for (let i = 0; i < upgraded; i++) stars[i] = i < threeStar ? 3 : 2;
   return stars;
 }
@@ -696,7 +706,7 @@ export function startFight(b: BoardGame) {
   b.fighters = b.army.map((p) => { const at = cellCentre(p.slot); return tac
     ? fighter(0, p.tier, p.cast, at.x, at.y, unitPower(b, p.cast), p.id, p.cast, 1 + (lv[p.cast] ?? 0), b.event, starOf(p), true)
     : fighter(0, p.tier, p.cast, at.x, at.y, unitPower(b, p.cast), p.id, lv[p.cast] ? p.cast : 0, lv[p.cast] ?? 0, b.event, starOf(p)); });
-  const grow = castPower(b.world) * (1 + WAVE.tough * (b.world - 1)) * (b.variant === 'tactics' ? TACTICS.wave : SUMMON.wave);
+  const grow = castPower(b.world) * (1 + WAVE.tough * (b.world - 1)) * (b.variant === 'tactics' ? tacticsEnemyPower(b.round) : SUMMON.wave);
   const wave = waveSpots(b);
   const waveWorlds = new Set(wave.map((unit) => unit.cast)).size;
   const enemySynergy = waveWorlds >= 2 ? (wave.length >= SYNERGY.need[1] ? 2 : 1) : 0;
@@ -1153,7 +1163,7 @@ export function nextRound(b: BoardGame) {
   b.shots = [];
   b.phase = 'prep';
   b.summons = 0;
-  b.wave = b.online ? [] : enemyWave(b.world, b.round);
+  b.wave = b.online ? [] : enemyWave(b.world, b.round, b.variant);
   b.waveCasts = b.online ? [] : enemyWaveCasts(b.world, b.round, b.wave, b.variant);
   if (b.online) { b.online.rivalArmy = null; b.online.waiting = false; }
   rollShop(b);

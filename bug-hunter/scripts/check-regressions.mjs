@@ -17,6 +17,24 @@ function check(name, run) {
 }
 const offer = (game, tier = 0, cast = 1) => { game.shop = [{ tier, cast, price: b.priceOf(tier, game.world, game.variant) }]; };
 const tactics = () => { const g = b.newBoard(1, 1, 'tactics'); g.gold = 100; return g; };
+check('Tactics AI: round 2 guarantees a two-star rival unit', () => {
+  const stars = b.enemyWaveStars(2, [2, 1, 0], 'tactics');
+  assert.ok(stars.includes(2)); assert.equal(stars.includes(3), false);
+});
+check('Tactics AI: star pressure escalates early and reaches three stars by round 7', () => {
+  assert.deepEqual(b.enemyWaveStars(1, [4, 3, 2], 'tactics'), [1, 1, 1]);
+  assert.ok(b.enemyWaveStars(4, [4, 3, 2, 1], 'tactics').filter(x => x === 2).length >= 2);
+  assert.equal(b.enemyWaveStars(7, [4, 3, 2, 1, 0], 'tactics')[0], 3);
+  assert.equal(b.enemyWaveStars(9, [4, 3, 2, 1, 0], 'tactics').filter(x => x === 3).length, 2);
+});
+check('Tactics AI: combat scaling rises after the introductory round', () => {
+  assert.equal(b.tacticsEnemyPower(1), 0.9);
+  assert.equal(b.tacticsEnemyPower(2), 1);
+  assert.ok(b.tacticsEnemyPower(10) > 1.3);
+});
+check('Fusion: rival stars remain unupgraded by Tactics difficulty', () => {
+  assert.deepEqual(b.enemyWaveStars(10, [4, 3, 2, 1], 'fusion'), [1, 1, 1, 1]);
+});
 check('Tactics: second identical card upgrades the first, keeping its type and cell', () => {
   const g = tactics(), first = structuredClone(g.army[0]); offer(g);
   assert.equal(b.buy(g, 0), true);
