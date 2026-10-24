@@ -4,6 +4,18 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.48 - 2026-10-24
+
+### Added - Fortress PvE assault prototype
+- Three small isometric enemy bases can now be assaulted from outside their perimeter.
+- Three temporary troop archetypes (warrior, thrower and tank), eight deployments, auto-moving and building damage with a basic wall and cannon combat model.
+- Percentage destruction and up to three stars: 50%, Core Hall down, and 100%.
+- Retry and troop choice controls, simple attack timer and troop/building health feedback.
+
+### Limitations
+- Troops are placeholder markers rather than existing BUG HUNTER unit sprites; damage/pathfinding are early prototypes, not production-ready.
+- Fortress remains an isolated lab, not integrated into the game's main menu.
+
 ## 1.13.47 - 2026-10-24
 
 ### Added - Fortress isometric scene
