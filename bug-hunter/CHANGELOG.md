@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.31 - 2026-10-24
+
+### Changed
+- World 8's scenery (`scenery/grave-*.webp`: the graves, fences and coffins used as blocks in every mode and as the board's wall) has its purple flames turned blue like its floor and bench; the orange candles stay.
+
 ## 1.13.30 - 2026-10-24
 
 ### Changed - Bench seats, board position and world 8's colours
