@@ -20,8 +20,11 @@ export function publicAssetPath(relativePath) {
     parts.splice(0, 2);
     if (parts[0] === 'scenery') parts[0] = cast;
   } else if (parts[0] === 'special') {
-    if (parts[1] !== 'secret-shift') throw new Error(`Unknown special asset group: ${parts[1]}`);
-    parts.splice(0, 2);
+    if (parts[1] === 'fortress') {
+      parts.splice(0, 2);
+      parts.unshift('fortress');
+    } else if (parts[1] === 'secret-shift') parts.splice(0, 2);
+    else throw new Error(`Unknown special asset group: ${parts[1]}`);
   }
   // Flat suffixes remain accepted for old fixtures and incremental migrations.
   if (!parts.length) throw new Error(`Asset path has no public suffix: ${relativePath}`);
