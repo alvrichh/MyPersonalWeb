@@ -45,8 +45,9 @@ function placeMobileLabels(ctx: CanvasRenderingContext2D, board: Parameters<type
   const previous = countOffsets.get(count) ?? { x: 0, y: 0 };
   const x = Math.round(previous.x + rect.left + layout.ox + 4 - box.left);
   const y = Math.round(previous.y + rect.top + layout.oy + HOME_ROW * CELL * layout.s + 4 - box.top);
-  // Keep the original label in flow: the bench/shop geometry, live text and
-  // translated accessibility label stay unchanged. It must not intercept drags.
+  // The mobile bench header is an overlay: keep this chip measurable so it
+  // can be translated under the divider without reserving board height. It
+  // must not intercept drags.
   const transform = `translate(${x}px, ${y}px)`;
   if (count.style.transform !== transform) count.style.transform = transform;
   count.style.pointerEvents = 'none';
