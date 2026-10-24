@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.25 - 2026-10-24
+
+### Changed
+- On the phone the Tactics bench runs from one edge of the screen to the other, like the bonuses' rail.
+
 ## 1.13.24 - 2026-10-24
 
 ### Fixed - Reserves lined up on the bench

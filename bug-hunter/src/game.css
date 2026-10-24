@@ -5056,3 +5056,13 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   :root:not([data-retro]) .board-bench-float .board-bench-slot { --bench-unit: 140%; }
   :root:not([data-retro]) .board-bench-float .board-bench-slot > em { bottom: -46%; }
 }
+/* v1.13.25 — On the phone the bench runs from one edge of the screen to the other, like the bonuses' rail. */
+@media (max-width: 899px) {
+  :root:not([data-retro]) .board-mobile-tray.is-active .board-bench-slots {
+    width: 100vw;
+    max-width: none;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, -3px);
+  }
+}
