@@ -4898,3 +4898,11 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 /* The achievements button is gold, with dark text. */
 .panel .primary.ach-open { --bar: url('/images/game/ui/btn1_gold.webp'); color: #1a1200; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35); }
 :root[data-retro] .panel .primary.ach-open { background: linear-gradient(135deg, #fde047, #f59e0b); color: #1a1200; text-shadow: none; }
+/* v1.13.16 — On the phone cover the play bar runs from the left card's edge to the right one's. */
+@media not all and (min-width: 900px) and (orientation: landscape) {
+  .cover-play-bar { left: 3.6%; width: 92.8%; }
+  .cover-play { left: 4%; width: 92%; }
+  .cover-arrow.is-prev { left: 2.5%; }
+  .cover-arrow.is-next { left: 87.5%; }
+  :root:not([data-retro]) .cover-play-copy { left: 4%; width: 92%; }
+}
