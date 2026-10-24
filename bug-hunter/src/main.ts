@@ -1213,21 +1213,30 @@ function optionsScreen() {
    say how each one plays, each with a picture of it in world 1 (`book/<mode>.webp`), and how to get stronger. The first visit dims the cover round the book until it is opened
    (`save.bookSeen`). */
 let bookPage = 0;
-const BOOK = ['modes', 'sprints', 'horde', 'board', 'grow'] as const;
+const BOOK = ['modes', 'sprints', 'horde', 'board', 'custom', 'grow'] as const;
 function bookScreen() {
   bookPage = Math.max(0, Math.min(BOOK.length - 1, bookPage));
   const page = BOOK[bookPage];
-  const title = { modes: 'bookModesTitle', sprints: 'bookSprintsTitle', horde: 'bookHordeTitle', board: 'bookBoardTitle', grow: 'bookGrowTitle' }[page] as Key;
-  const text = { modes: 'bookModesText', sprints: 'bookSprintsText', horde: 'bookHordeText', board: 'bookBoardText', grow: 'bookGrowText' }[page] as Key;
+  const title = { modes: 'bookModesTitle', sprints: 'bookSprintsTitle', horde: 'bookHordeTitle', board: 'bookBoardTitle', custom: 'bookCustomTitle', grow: 'bookGrowTitle' }[page] as Key;
+  const text = { modes: 'bookModesText', sprints: 'bookSprintsText', horde: 'bookHordeText', board: 'bookBoardText', custom: 'bookCustomText', grow: 'bookGrowText' }[page] as Key;
   const modes = page === 'modes'
-    ? `<div class="book-modes">${MODES.map((m) => `<button class="primary book-mode is-${m}${save.mode === m ? ' is-on' : ''}" type="button" data-book-mode="${m}" aria-pressed="${save.mode === m}"><b>${MODE_ICON[m]} ${modeName(m)}${save.mode === m ? ' ✓' : ''}</b><small>${t(m === 'board' ? 'bookModeBoard' : m === 'horde' ? 'bookModeHorde' : 'bookModeSprints')}</small></button>`).join('')}</div>`
+    // The cover's own play bar, to learn it here: swiped or turned by its arrows, with a finger showing how.
+    ? `<div class="book-play">
+        <div class="book-play-bar is-${save.mode}"><b>${MODE_ICON[save.mode]} ${modeName(save.mode)}</b><small>${t(save.mode === 'board' ? 'bookModeBoard' : save.mode === 'horde' ? 'bookModeHorde' : 'bookModeSprints')}</small></div>
+        <button class="book-arrow is-prev" type="button" data-act="book-mode-prev" aria-label="${t('modeSwipe')}"></button>
+        <button class="book-arrow is-next" type="button" data-act="book-mode-next" aria-label="${t('modeSwipe')}"></button>
+        <span class="book-hand" aria-hidden="true">👆</span>
+      </div>
+      <span class="book-dots" aria-hidden="true">${MODES.map((m) => `<i class="is-${m}${save.mode === m ? ' is-on' : ''}"></i>`).join('')}</span>
+      <p class="book-swipe">⬅️ ${t('bookSwipeHint')} ➡️</p>`
     : '';
   const last = bookPage === BOOK.length - 1;
   show(`<button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
     <h2>📖 ${t(title)}</h2>
-    ${page === 'sprints' || page === 'horde' || page === 'board' ? `<img class="book-shot is-${page}" src="./images/game/book/${page}.webp" alt="${t(title)}">` : ''}
+    ${page === 'sprints' || page === 'horde' || page === 'board' || page === 'custom' ? `<img class="book-shot is-${page}" src="./images/game/book/${page}.webp" alt="${t(title)}">` : ''}
     <p class="book-text">${t(text)}</p>
     ${page === 'board' ? `<p class="book-text"><b>🧬 ${t('boardFusion')}:</b> ${t('boardFusionText')}</p><p class="book-text"><b>⭐ ${t('boardTactics')}:</b> ${t('boardTacticsText')}</p>` : ''}
+    ${page === 'custom' ? `<ul class="book-list">${(['bookCustomSlots', 'bookCustomButtons', 'bookCustomShop'] as Key[]).map((k) => `<li>${t(k)}</li>`).join('')}</ul>` : ''}
     ${modes}
     <small class="book-page">${t('bookPage', { n: bookPage + 1, total: BOOK.length })}</small>
     ${last ? `<button class="primary" data-act="menu">${t('bookDone')}</button>` : `<button class="primary" data-act="book-next">${t('bookNext')} →</button>`}
@@ -1628,14 +1637,16 @@ function mapPlayStep() {
 let swipeX: number | null = null;
 let swiped = false;
 let swipeCover = false;
+let swipeBook = false;
 screen.addEventListener('pointerdown', (e) => {
   const el = e.target as HTMLElement;
   swipeCover = !!el.closest('.cover-play, .cover-arrow');
-  swipeX = swipeCover || el.closest('.play-pick.has-more') ? e.clientX : null;
+  swipeBook = !swipeCover && !!el.closest('.book-play');
+  swipeX = swipeCover || swipeBook || el.closest('.play-pick.has-more') ? e.clientX : null;
   swiped = false;
 });
 /** What a swipe drags along: the cover's play bar and its words, or the map's play button. */
-const swipeParts = () => [...screen.querySelectorAll<HTMLElement>(swipeCover ? '.cover-play-bar:not(.is-slot), .cover-play-copy' : '.play-pick.has-more > .play')];
+const swipeParts = () => [...screen.querySelectorAll<HTMLElement>(swipeCover ? '.cover-play-bar:not(.is-slot), .cover-play-copy' : swipeBook ? '.book-play-bar' : '.play-pick.has-more > .play')];
 screen.addEventListener('pointermove', (e) => {
   if (swipeX === null) return;
   const dx = e.clientX - swipeX;
@@ -1656,6 +1667,7 @@ const swipeEnd = (e: PointerEvent) => {
   swiped = true;
   const by = dx < 0 ? 1 : -1;
   if (swipeCover) stepMode(by);
+  else if (swipeBook) bookStepMode(by);
   else { mapPlayIdx += by; mapPlayStep(); }
   // The next one slides in from the side the finger came from.
   if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -1664,6 +1676,12 @@ const swipeEnd = (e: PointerEvent) => {
 };
 screen.addEventListener('pointerup', swipeEnd);
 screen.addEventListener('pointercancel', swipeEnd);
+/** The guide's copy of the play bar turns the same way, and picks the mode as the cover's does. */
+function bookStepMode(by: number) {
+  save.mode = MODES[(MODES.indexOf(save.mode) + by + MODES.length) % MODES.length];
+  persist();
+  bookScreen();
+}
 /** The cover's play bar turns to the next or the last way to play (its arrows, or a swipe across it). */
 function stepMode(by: number) {
   save.mode = MODES[(MODES.indexOf(save.mode) + by + MODES.length) % MODES.length];
@@ -3160,6 +3178,7 @@ screen.addEventListener('click', (event) => {
   else if (act === 'mode-prev' || act === 'mode-next') stepMode(act === 'mode-prev' ? -1 : 1);
   else if (act === 'book') { bookPage = 0; if (!save.bookSeen) { save.bookSeen = true; persist(); } bookScreen(); }
   else if (act === 'book-prev' || act === 'book-next') { bookPage += act === 'book-prev' ? -1 : 1; bookScreen(); }
+  else if (act === 'book-mode-prev' || act === 'book-mode-next') bookStepMode(act === 'book-mode-prev' ? -1 : 1);
   else if (target.dataset.bookMode) { save.mode = target.dataset.bookMode as PlayMode; persist(); bookScreen(); }
   else if (target.dataset.mode) { save.mode = target.dataset.mode as PlayMode; mapPick = worldIn(); mapPlayIdx = 0; mapBoardShown = false; persist(); mapScreen(); }
   else if (act === 'map') { mapPick = worldIn(); mapBoardShown = false; mapScreen(); }

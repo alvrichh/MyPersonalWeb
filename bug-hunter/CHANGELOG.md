@@ -4,6 +4,13 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.17 - 2026-10-24
+
+### Changed - Clearer guide: the play bar to learn on, and a Customise page
+- The guide's first page no longer lists the three modes as separate buttons: it shows the cover's own play bar (the arrowed bar in the mode's colour, with the mode's description), which is swiped or turned by its arrows like on the cover, with dots under it, a pulsing «⬅️ Swipe it or tap its arrows ➡️» and a finger sliding across it. Picking a mode there still sets the cover's mode.
+- New guide page, «Customise» (6 pages now): a screenshot of the screen (`assets/shared/book/custom.webp`, taken with Playwright at 390 px) and three short points: the slots and the amulet, the round buttons (character, enemies, world, music), and that items are unlocked in the Shop.
+- The finger and the hint stand still under `prefers-reduced-motion`; retro shows plain bars with ‹ › arrows.
+
 ## 1.13.16 - 2026-10-24
 
 ### Changed - Wider play bar on the phone cover
