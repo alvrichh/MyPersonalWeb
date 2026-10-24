@@ -5127,3 +5127,6 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   :root:not([data-retro]) .board-bench-float .board-bench-slot > em.bench-stars { bottom: calc(var(--bench-unit) * var(--u) - 20%); }
   :root:not([data-retro]) .board-bench-float { padding-top: 40px; }
 }
+
+/* v1.13.30 — the phone bench higher. */
+@media (max-width: 899px) { :root:not([data-retro]) .board-mobile-tray.is-active .board-bench-slots { transform: translate(-50%, -24px); } }

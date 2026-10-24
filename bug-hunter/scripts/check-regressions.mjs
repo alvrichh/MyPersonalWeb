@@ -89,6 +89,18 @@ check('Fusion: a cancelled auto-merge still merges the other pairs', () => {
   b.tickMerge(g, b.MERGE_DELAY + 0.01); b.tickMerge(g, b.MERGE_DELAY + 0.01);
   assert.ok(g.army.filter((p) => p.tier === 1).length < 2 || g.army.some((p) => p.tier === 2));
 });
+check('Tactics: bench seats are fixed; a reserve can go on any free seat, move and swap', () => {
+  const g = tactics(); g.army = [];
+  offer(g, 0, 2); assert.equal(b.buy(g, 0, { c: -1, r: 2 }), true);
+  assert.equal(g.bench.length, 1); assert.equal(g.bench[0].slot.r, 2);
+  offer(g, 0, 3); assert.equal(b.buy(g, 0, { c: -1, r: 0 }), true);
+  assert.deepEqual(g.bench.map((p) => p.slot.r).sort(), [0, 2]);
+  assert.equal(b.moveBenchSeat(g, 0, 0), true);
+  assert.deepEqual(g.bench.map((p) => [p.cast, p.slot.r]).sort(), [[2, 0], [3, 2]]);
+  assert.equal(b.sellBench(g, g.bench.findIndex((p) => p.slot.r === 0)), true);
+  assert.equal(g.bench[0].slot.r, 2);
+  assert.equal(b.freeSeat(g), 0);
+});
 check('Fusion: two identical units still merge to the next character', () => {
   const g = b.newBoard(1, 1, 'fusion'), first = g.army[0];
   const slot = { c: 3, r: 6 }; g.army.push({ ...structuredClone(first), id: first.id + 100, slot });
