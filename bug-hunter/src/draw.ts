@@ -4596,7 +4596,7 @@ const BOSS_ART = new Set<string>(['kernel', 'archdemon', 'drakkar', 'valdur', 'm
    how many times the body's width the canvas is drawn, and how much of the canvas lies under the feet
    (dust, a dash's trail, the volley's orbs). */
 const BOSS_CANVAS: Record<string, { k: number; feet: number }> = {
-  kernel: { k: 2.155, feet: 0.1766 }, archdemon: { k: 2.028, feet: 0.1232 },
+  kernel: { k: 2.0, feet: 0.0772 }, archdemon: { k: 2.028, feet: 0.1232 },
   drakkar: { k: 1.081, feet: 0.12 }, valdur: { k: 1.538, feet: 0.1954 }, zeus: { k: 1.782, feet: 0.2063 }, queen: { k: 1.348, feet: 0.1484 },
   wraith: { k: 1.295, feet: 0.1974 }, valkyrie: { k: 2.6, feet: 0.1691 }, medusa: { k: 2.116, feet: 0.012 }, medusa2: { k: 2.066, feet: 0.012 }, mudmonster: { k: 1.615, feet: 0.072 }, monolith: { k: 2.45, feet: 0.2243 }, minotaur: { k: 2.83, feet: 0.2455 }, mainframe: { k: 2.3, feet: 0.2248 }, overlord: { k: 2.35, feet: 0.16 }, kratos: { k: 2.4, feet: 0.1892 }, kratos2: { k: 3.12, feet: 0.3172 }, hydra: { k: 2.536, feet: 0.1103 }, mech: { k: 1.412, feet: 0.0878 }, chimera: { k: 2.226, feet: 0.1553 }, chimera2: { k: 1.749, feet: 0.1787 }, chimera3: { k: 1.706, feet: 0.2403 },
 };

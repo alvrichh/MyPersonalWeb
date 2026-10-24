@@ -8,3 +8,4 @@ published, under `/images/game/old/...`, like any asset). Each folder mirrors wh
 - `01-backlog/bosses/monolith-0..8.webp`: the Backlog's first Monolith, cut from a small sheet (bodies about 90 px
   tall), replaced in 1.13.43.
 - `06-the-arena/enemies/greek-legacy-0..3.webp`: the Arena's first four-frame shield wall, replaced in 1.13.44.
+- `01-backlog/bosses/kernel-0..8.webp`: the Backlog's first Kernel Panic (bodies about 120 px), replaced in 1.13.45.
