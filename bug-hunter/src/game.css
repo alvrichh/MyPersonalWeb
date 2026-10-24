@@ -5006,12 +5006,23 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   :root:not([data-retro]) .board-bench-float .board-bench-head { position: absolute; top: 0; left: 0; right: 0; }
 }
 @media (max-width: 899px) {
-  .board-ui { --board-tray-height: 140px; }
-  /* The bench keeps its own shape across the tray's width, standing on the tray's floor; what it has above the tray
-     rises over the board's bottom edge. */
-  :root:not([data-retro]) .board-mobile-tray.is-active .board-bench-float { display: flex; flex-direction: column; justify-content: flex-end; }
+  .board-ui { --board-tray-height: 100px; }
+  /* The bench keeps its own shape across the tray's width, hanging from the tray's top: its seats in the tray, the
+     rest of it going on down behind the shop. */
+  :root:not([data-retro]) .board-mobile-tray.is-active .board-bench-float { display: flex; flex-direction: column; justify-content: flex-start; }
+  :root:not([data-retro]) .board-mobile-tray.is-active { z-index: 1; }
+  :root:not([data-retro]) .board-shop.is-mobile-tactics { position: relative; z-index: 3; }
+  .board-mobile-tray.is-fighting { visibility: visible; pointer-events: none; }
   :root:not([data-retro]) .board-mobile-tray.is-active .board-bench-slots { flex: none !important; width: 100%; height: auto !important; min-height: 0; }
 }
 /* A reserve's stars sit at its feet on its seat, not floating over the board. */
 :root:not([data-retro]) .board-bench-float .board-bench-slot > em { top: auto; right: auto; bottom: -14%; left: 50%; transform: translateX(-50%); white-space: nowrap; }
 @media (min-width: 900px) { :root:not([data-retro]) .board-bench-float { width: 340px; } }
+
+/* While fighting the bench stays, its reserves dimmed. */
+:root:not([data-retro]) .board-bench-slot:disabled { opacity: 1; }
+:root:not([data-retro]) .board-bench-slot:disabled > img { filter: brightness(0.5) saturate(0.7); }
+@media (max-width: 899px) {
+  :root:not([data-retro]) .board-mobile-tray.is-active .board-bench-slot > img { left: -25%; width: 150%; height: 230%; }
+  .board-mobile-tray.is-fighting .board-bench-title { display: none; }
+}
