@@ -4956,3 +4956,6 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .book-shot { pointer-events: none; -webkit-user-drag: none; user-select: none; }
 .screen:has(.book-page) .panel,
 .screen:has(.book-page) .panel-in { touch-action: pan-y; }
+
+.book-shot.is-map,
+.book-shot.is-shop { width: auto; max-width: 100%; height: 56vh; max-height: none; aspect-ratio: auto; object-fit: contain; }

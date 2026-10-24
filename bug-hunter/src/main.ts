@@ -1213,16 +1213,16 @@ function optionsScreen() {
    say how each one plays, each with a picture of it in world 1 (`book/<mode>.webp`), and how to get stronger. The first visit dims the cover round the book until it is opened
    (`save.bookSeen`). */
 let bookPage = 0;
-const BOOK = ['modes', 'sprints', 'horde', 'fusion', 'tactics', 'custom', 'grow'] as const;
+const BOOK = ['modes', 'sprints', 'horde', 'fusion', 'tactics', 'map', 'shop', 'custom', 'grow'] as const;
 /** The guide's pictures with words in them have an English copy (`<name>-en.webp`). */
-const BOOK_EN = new Set(['fusion', 'tactics', 'tactics-bonus', 'custom']);
+const BOOK_EN = new Set(['fusion', 'tactics', 'tactics-bonus', 'map', 'shop', 'custom']);
 const bookPic = (name: string) => (lang === 'en' && BOOK_EN.has(name) ? `${name}-en` : name);
 const bookList = (keys: Key[]) => `<ul class="book-list">${keys.map((k) => `<li>${t(k)}</li>`).join('')}</ul>`;
 function bookScreen() {
   bookPage = Math.max(0, Math.min(BOOK.length - 1, bookPage));
   const page = BOOK[bookPage];
-  const title = { modes: 'bookModesTitle', sprints: 'bookSprintsTitle', horde: 'bookHordeTitle', fusion: 'bookFusionTitle', tactics: 'bookTacticsTitle', custom: 'bookCustomTitle', grow: 'bookGrowTitle' }[page] as Key;
-  const text = { modes: 'bookModesText', sprints: 'bookSprintsText', horde: 'bookHordeText', fusion: 'bookFusionText', tactics: 'bookTacticsText', custom: 'bookCustomText', grow: 'bookGrowText' }[page] as Key;
+  const title = { modes: 'bookModesTitle', sprints: 'bookSprintsTitle', horde: 'bookHordeTitle', fusion: 'bookFusionTitle', tactics: 'bookTacticsTitle', map: 'bookMapTitle', shop: 'bookShopTitle', custom: 'bookCustomTitle', grow: 'bookGrowTitle' }[page] as Key;
+  const text = { modes: 'bookModesText', sprints: 'bookSprintsText', horde: 'bookHordeText', fusion: 'bookFusionText', tactics: 'bookTacticsText', map: 'bookMapText', shop: 'bookShopText', custom: 'bookCustomText', grow: 'bookGrowText' }[page] as Key;
   const modes = page === 'modes'
     // The cover's own play bar, to learn it here: swiped or turned by its arrows, with a finger showing how.
     ? `<div class="book-play">
@@ -1237,10 +1237,12 @@ function bookScreen() {
   const last = bookPage === BOOK.length - 1;
   show(`<button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
     <h2>📖 ${t(title)}</h2>
-    ${page === 'sprints' || page === 'horde' || page === 'fusion' || page === 'tactics' || page === 'custom' ? `<img class="book-shot is-${page}" src="./images/game/book/${bookPic(page)}.webp" alt="${t(title)}">` : ''}
+    ${page === 'sprints' || page === 'horde' || page === 'fusion' || page === 'tactics' || page === 'map' || page === 'shop' || page === 'custom' ? `<img class="book-shot is-${page}" src="./images/game/book/${bookPic(page)}.webp" alt="${t(title)}">` : ''}
     <p class="book-text">${t(text)}</p>
     ${page === 'fusion' ? bookList(['bookFusionSummon', 'bookFusionMerge', 'bookBoardFight']) : ''}
     ${page === 'tactics' ? `${bookList(['bookTacticsShop', 'bookTacticsStars', 'bookTacticsBench', 'bookTacticsPower'])}<img class="book-shot is-tactics-bonus" src="./images/game/book/${bookPic('tactics-bonus')}.webp" alt="${t('boardBonusTitle')}">${bookList(['bookTacticsAbility', 'bookTacticsMix', 'bookBoardFight'])}` : ''}
+    ${page === 'map' ? bookList(['bookMapIslands', 'bookMapModes', 'bookMapPlay']) : ''}
+    ${page === 'shop' ? bookList(['bookShopCoins', 'bookShopForge', 'bookShopGear', 'bookShopArsenal', 'bookShopSpirits']) : ''}
     ${page === 'custom' ? bookList(['bookCustomSlots', 'bookCustomButtons', 'bookCustomShop']) : ''}
     ${modes}
     <small class="book-page">${t('bookPage', { n: bookPage + 1, total: BOOK.length })} · ${t('bookPageSwipe')}</small>

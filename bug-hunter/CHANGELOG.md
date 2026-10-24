@@ -4,6 +4,13 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.20 - 2026-10-24
+
+### Added - Guide pages for the worlds and the shop
+- «Mundos / Worlds» (9 pages now): a screenshot of the World map (`book/map.webp`, `map-en.webp`) and how it works: islands and their badges, each mode's own progress, and the play button's options by swiping or its arrows (world, Boss Rush and See the bosses in Sprints; world and Nightmare in On call; Fusion and Tactics on the Board).
+- «Tienda / Shop»: a screenshot of the shop (`book/shop.webp`, `shop-en.webp`; the localhost-only test-ad gift was removed before taking it) and its sections: coins, the Forge, Armour and Weapons, the Arsenal and Spirits.
+- Both shots are shown whole (`object-fit: contain`), so the map's play button and the shop's coins are in view.
+
 ## 1.13.19 - 2026-10-24
 
 ### Changed - English guide screenshots
