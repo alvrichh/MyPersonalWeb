@@ -5155,3 +5155,8 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   .board-mobile-tray.is-active .board-life img { width: 15px; height: 15px; }
   .board-mobile-tray.is-active .board-bench-title { left: 58px; }
 }
+/* v1.13.34 — the hearts at the lower right instead, on the same line; the caption back at the left. */
+@media (max-width: 899px) {
+  .board-mobile-tray.is-active .board-life { left: auto; right: 0; }
+  .board-mobile-tray.is-active .board-bench-title { left: 0; }
+}
