@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.16 - 2026-10-24
+
+### Changed - Wider play bar on the phone cover
+- The cover's play bar now spans from the left card's edge to the right card's, with its tap area and arrows moved out to match. The desktop cover is unchanged.
+
 ## 1.13.15 - 2026-10-24
 
 ### Changed - Gold achievements button
