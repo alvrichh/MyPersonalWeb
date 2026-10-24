@@ -2498,6 +2498,35 @@ function positionBoardBonusPanel() {
 }
 
 /** The top bar and the shop, rebuilt only when something on them changes. */
+/** Each sheet's pictures carry their own empty margin under the feet and round the figure, so on the bench a
+    picture is cropped to what shows (alpha over 40) before it is stood on its seat: their feet then share one line. */
+const trimmedPics = new Map<string, string>();
+function trimPic(img: HTMLImageElement) {
+  const src = img.dataset.trim;
+  if (!src) return;
+  const done = trimmedPics.get(src);
+  if (done) { if (img.getAttribute('src') !== done) img.src = done; return; }
+  const pic = new Image();
+  pic.onload = () => {
+    const w = pic.naturalWidth, h = pic.naturalHeight;
+    const c = document.createElement('canvas');
+    c.width = w; c.height = h;
+    const x = c.getContext('2d', { willReadFrequently: true });
+    if (!x) return;
+    x.drawImage(pic, 0, 0);
+    const d = x.getImageData(0, 0, w, h).data;
+    let l = w, r = -1, top = h, bot = -1;
+    for (let y = 0; y < h; y++) for (let i = 0; i < w; i++) if (d[(y * w + i) * 4 + 3] > 40) { if (i < l) l = i; if (i > r) r = i; if (y < top) top = y; if (y > bot) bot = y; }
+    if (r < l) return;
+    const o = document.createElement('canvas');
+    o.width = r - l + 1; o.height = bot - top + 1;
+    o.getContext('2d')?.drawImage(c, l, top, o.width, o.height, 0, 0, o.width, o.height);
+    const url = o.toDataURL('image/png');
+    trimmedPics.set(src, url);
+    boardBenchEl.querySelectorAll<HTMLImageElement>(`img[data-trim="${src}"]`).forEach((el) => { el.src = url; });
+  };
+  pic.src = src;
+}
 /** The Tactics bench: one four-seat bench per world (`ui/bench/bench-N.webp`, 640 wide), its height and how far down
     its seats' middle lies, so the reserves stand on them. */
 const BENCH_ART: Record<number, [number, number]> = { 1: [271, 0.38], 2: [332, 0.35], 3: [277, 0.38], 4: [270, 0.32], 5: [277, 0.37], 6: [280, 0.36], 7: [295, 0.3], 8: [329, 0.39], 9: [309, 0.43] };
@@ -2533,12 +2562,13 @@ function renderBoardUi() {
     : '<span class="board-card is-sold"></span>').join('');
   const capLabel = `<span class="board-count" aria-label="${t('boardCapLabel')}">♟ ${b.army.length}/${armyCap(b.round)}</span>`;
   const bench = !fusion ? `<div class="board-bench-head"><small class="board-bench-title">${t('boardBench')} · ${b.bench.length}/${BENCH_CAP}</small>${capLabel}</div><div class="board-bench-slots" style="${benchStyle(b.world)}">${Array.from({ length: BENCH_CAP }, (_, i) => { const p = b.bench[i]; return p
-    ? `<button type="button" class="board-bench-slot is-world-${p.cast}" data-bact="bench-deploy" data-i="${i}" aria-label="${t('boardBenchDeploy', { name: boardCharacterName(p.tier, p.cast) })}"${!prep || b.online?.waiting ? ' disabled' : ''}><img src="${boardPic(p.tier, p.cast)}" alt="">${(p.star ?? 1) > 1 ? `<em>${'★'.repeat(p.star ?? 1)}</em>` : ''}</button>`
+    ? `<button type="button" class="board-bench-slot is-world-${p.cast} is-t${p.tier}" data-bact="bench-deploy" data-i="${i}" aria-label="${t('boardBenchDeploy', { name: boardCharacterName(p.tier, p.cast) })}"${!prep || b.online?.waiting ? ' disabled' : ''}><img data-trim="${boardPic(p.tier, p.cast)}" src="${trimmedPics.get(boardPic(p.tier, p.cast)) ?? boardPic(p.tier, p.cast)}" alt="">${(p.star ?? 1) > 1 ? `<em>${'★'.repeat(p.star ?? 1)}</em>` : ''}</button>`
     : '<span class="board-bench-slot is-empty"></span>'; }).join('')}</div>` : '';
   // The bench stays in view through the fight too, its reserves dimmed (they do not fight).
   boardBenchEl.hidden = fusion || !(prep || b.phase === 'fight');
   boardBenchEl.setAttribute('aria-label', t('boardBench'));
   boardBenchEl.innerHTML = bench;
+  boardBenchEl.querySelectorAll<HTMLImageElement>('img[data-trim]').forEach(trimPic);
   // The round's event and each world's synergy, a column of medallions by the board edge; a tap lists their effects.
   const bonus = boardBonuses(b);
   boardSide.innerHTML = bonus.map((x) => `<button class="board-bonus${x.on ? ' is-on' : ' is-off'}${x.event ? ' is-event' : ''}${x.cast ? ` is-world-${x.cast}` : ''}" type="button" data-bact="bonus" aria-label="${x.name}"><img src="./images/game/${x.pic}" alt=""><small>${x.count}</small></button>`).join('');
