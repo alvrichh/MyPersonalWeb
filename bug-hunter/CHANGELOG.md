@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.39 - 2026-10-24
+
+### Changed - New Arena gladiator
+- The Arena's bug, the gladiator (`enemies/greek-bug-0..5.webp`), redrawn by the owner as a chibi six-pose sheet: two steps and a stand, the wind-up, the strike with a golden swoosh and a flinch. Cut on one canvas (segmentation mask for the figure, effects unblended from white, each pose centred on its body with its feet on the bottom; the white and pale metal its outlines enclose, the sword blades, kept solid, since the mask left them see-through; `scratchpad` `greek/cut6.py`), its icon for Customise remade from the stand. The Arena's other kinds keep their four frames: a set can now have its own frame count (`SET_FRAMES` in `draw.ts`); `SPRITE_CANVAS['greek-bug']` k 2.084, feet 0.0084.
+
 ## 1.13.38 - 2026-10-24
 
 ### Added - Fortress early prototype

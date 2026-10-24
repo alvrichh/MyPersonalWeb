@@ -4533,6 +4533,9 @@ export function drawSprite(ctx: CanvasRenderingContext2D, e: Enemy, now: number)
    later ones six: three walking, two attacking (wind-up, strike) and one
    taking a hit. */
 const SPRITE_FRAMES: Partial<Record<Look, number>> = { original: 4, demon: 4, greek: 4, viking: 6, mud: 6, jungle: 6, robot: 6, nightmare: 6, core: 6 };
+/** Sets redrawn with six poses (three walking, two attacking, one hit) in a cast that still has four. */
+const SET_FRAMES: Record<string, number> = { 'greek-bug': 6 };
+const framesOf = (look: Look, kind: string) => SET_FRAMES[`${look}-${kind}`] ?? SPRITE_FRAMES[look];
 /* Every set is cut on one canvas for all its frames (each frame registered against the first by its head
    and torso, `scratchpad` `walkfix/fix.py`), so a stride or a swing never resizes or shifts the figure:
    how much larger than its first frame's own size to draw that canvas, so the body keeps its size, and how
@@ -4541,7 +4544,7 @@ const SPRITE_CANVAS: Record<string, { k: number; feet: number }> = {
   'viking-boss': { k: 1.265, feet: 0 }, 'jungle-boss': { k: 1.276, feet: 0 },
   'original-bug': { k: 1.018, feet: 0.0186 }, 'original-ticket': { k: 1.076, feet: 0.0283 }, 'original-legacy': { k: 1.113, feet: 0.0437 },
   'original-boss': { k: 1.108, feet: 0.0533 }, 'demon-bug': { k: 1.05, feet: 0.1387 }, 'demon-ticket': { k: 1.062, feet: 0 },
-  'demon-legacy': { k: 1.148, feet: 0.0248 }, 'demon-boss': { k: 1.183, feet: 0.0549 }, 'greek-bug': { k: 1.059, feet: 0.0409 },
+  'demon-legacy': { k: 1.148, feet: 0.0248 }, 'demon-boss': { k: 1.183, feet: 0.0549 }, 'greek-bug': { k: 2.084, feet: 0.0084 },
   'greek-ticket': { k: 1.215, feet: 0 }, 'greek-legacy': { k: 1.134, feet: 0 }, 'greek-boss': { k: 1.125, feet: 0.0455 },
   'viking-bug': { k: 1.067, feet: 0.0083 }, 'viking-ticket': { k: 1.091, feet: 0.0051 }, 'viking-legacy': { k: 1.166, feet: 0.023 },
   'jungle-bug': { k: 1.43, feet: 0 }, 'jungle-ticket': { k: 1.193, feet: 0.0271 }, 'jungle-legacy': { k: 1.455, feet: 0 },
@@ -4648,7 +4651,7 @@ export function preloadCast(g: Game) {
     const look = g.style === 'world' ? def.look : g.style;
     if (look === 'random') continue;
     const count = SPRITE_FRAMES[look];
-    if (count) for (const kind of ['bug', 'ticket', 'legacy', 'boss'] as const) enemyFrames(look, kind, count);
+    if (count) for (const kind of ['bug', 'ticket', 'legacy', 'boss'] as const) enemyFrames(look, kind, framesOf(look, kind) ?? count);
     const mid = MID_ART[look];
     if (mid) bossSheet(mid);
     const fin = FINAL_BOSS_ART[w - 1];
@@ -4730,7 +4733,7 @@ function drawSpritePic(ctx: CanvasRenderingContext2D, img: HTMLImageElement, x: 
 }
 
 function drawEnemySprite(ctx: CanvasRenderingContext2D, e: Enemy) {
-  let count = SPRITE_FRAMES[e.look];
+  let count = framesOf(e.look, e.kind);
   let frames: HTMLImageElement[] | undefined;
   let img: HTMLImageElement | undefined;
   // A boss with phases has a sheet per phase (`chimera2` for Nocthrax in the air).
