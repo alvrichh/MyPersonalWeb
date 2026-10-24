@@ -2378,8 +2378,8 @@ function fitBoardPortraits() {
 const bonusPercent = (v: number) => Math.round(v * 1000) / 10;
 const EVENT_PIC: Record<string, string> = { gold: 'ui/wheel/coins.webp', frenzy: 'skills/rage.webp', giants: 'skills/giant.webp', bounty: 'ui/wheel/coins.webp' };
 function boardBonuses(b: BoardGame) {
-  const out: { pic: string; name: string; text: string; count: string; on: boolean; event: boolean }[] = [];
-  if (b.event) out.push({ pic: EVENT_PIC[b.event], name: t(`boardEvent${cap(b.event)}` as Key), text: t(`boardEvent${cap(b.event)}Text` as Key), count: '⭐', on: true, event: true });
+  const out: { pic: string; name: string; text: string; count: string; on: boolean; event: boolean; cast: number }[] = [];
+  if (b.event) out.push({ pic: EVENT_PIC[b.event], name: t(`boardEvent${cap(b.event)}` as Key), text: t(`boardEvent${cap(b.event)}Text` as Key), count: '⭐', on: true, event: true, cast: 0 });
   if (b.variant === 'tactics') {
     // Tactics: every world on the board brings its ability, stronger with three and five of it.
     for (const x of synergies(b).filter((y) => y.n >= 1)) {
@@ -2387,7 +2387,7 @@ function boardBonuses(b: BoardGame) {
       const values = ABIL_V[ab].map(bonusPercent);
       const levels = t('boardBonusLevelsT', { base: values[0], duo: values[1], five: values[2] });
       const teamProgress = `${Math.min(b.army.length, SYNERGY.need[1])}/${SYNERGY.need[1]}`;
-      out.push({ pic: ABILITY_PIC[ab], name: `${t(`boardAbil${cap(ab)}` as Key)} · ${worldName(x.cast)}`, text: `${t(`boardAbil${cap(ab)}Text` as Key, { n: values[x.lv] })} ${levels}`, count: teamProgress, on: true, event: false });
+      out.push({ pic: ABILITY_PIC[ab], name: `${t(`boardAbil${cap(ab)}` as Key)} · ${worldName(x.cast)}`, text: `${t(`boardAbil${cap(ab)}Text` as Key, { n: values[x.lv] })} ${levels}`, count: teamProgress, on: true, event: false, cast: x.cast });
     }
     return out;
   }
@@ -2396,7 +2396,7 @@ function boardBonuses(b: BoardGame) {
     const values = SYNERGY.v[x.cast].map(bonusPercent);
     const levels = t('boardBonusLevels', { three: values[0], five: values[1] });
     const active = x.lv ? '' : `${t('boardBonusInactive')} `;
-    out.push({ pic: SYNERGY_PIC[x.cast], name: worldName(x.cast), text: `${active}${t(`boardSyn${x.cast}` as Key, { n: values[Math.max(0, x.lv - 1)] })} ${levels}`, count: x.lv >= 2 ? `${x.n} ★★` : `${x.n}/${need}`, on: x.lv > 0, event: false });
+    out.push({ pic: SYNERGY_PIC[x.cast], name: worldName(x.cast), text: `${active}${t(`boardSyn${x.cast}` as Key, { n: values[Math.max(0, x.lv - 1)] })} ${levels}`, count: x.lv >= 2 ? `${x.n} ★★` : `${x.n}/${need}`, on: x.lv > 0, event: false, cast: x.cast });
   }
   return out;
 }
@@ -2404,7 +2404,7 @@ function boardBonuses(b: BoardGame) {
 function openBoardBonus() {
   const b = board;
   if (!b) return;
-  const rows = boardBonuses(b).map((x) => `<li${x.on ? '' : ' class="is-off"'}><span class="gp-icon"><img src="./images/game/${x.pic}" alt="" width="34" height="34"></span><span class="gp-copy"><b>${x.name}</b><small>${x.text}</small></span><em>${x.count}</em></li>`).join('');
+  const rows = boardBonuses(b).map((x) => `<li class="${x.on ? '' : 'is-off '}${x.cast ? `is-world-${x.cast}` : 'is-event'}"><span class="gp-icon"><img src="./images/game/${x.pic}" alt="" width="34" height="34"></span><span class="gp-copy"><b>${x.name}</b><small>${x.text}</small></span><em>${x.count}</em></li>`).join('');
   gearPanel.innerHTML = `<header><b>${t('boardBonusTitle')}</b><button type="button" class="gp-close" aria-label="${t('resume')}">✕</button></header>
     <ul>${rows}</ul><p class="gp-hint">${b.variant === 'tactics' ? t('boardBonusHintT') : t('boardBonusHint', { need: SYNERGY.need[0], more: SYNERGY.need[1] })}</p>`;
   positionBoardBonusPanel();
@@ -2458,14 +2458,14 @@ function renderBoardUi() {
     : '<span class="board-card is-sold"></span>').join('');
   const capLabel = `<span class="board-count" aria-label="${t('boardCapLabel')}">♟ ${b.army.length}/${armyCap(b.round)}</span>`;
   const bench = !fusion ? `<div class="board-bench-head"><small class="board-bench-title">${t('boardBench')} · ${b.bench.length}/${BENCH_CAP}</small>${capLabel}</div><div class="board-bench-slots">${Array.from({ length: BENCH_CAP }, (_, i) => { const p = b.bench[i]; return p
-    ? `<button type="button" class="board-bench-slot is-r${p.tier}" data-bact="bench-deploy" data-i="${i}" aria-label="${t('boardBenchDeploy', { name: boardCharacterName(p.tier, p.cast) })}"${!prep || b.online?.waiting ? ' disabled' : ''}><img src="${boardPic(p.tier, p.cast)}" alt=""><b>${boardCharacterName(p.tier, p.cast)}</b>${(p.star ?? 1) > 1 ? `<em>${'★'.repeat(p.star ?? 1)}</em>` : ''}</button>`
+    ? `<button type="button" class="board-bench-slot is-world-${p.cast}" data-bact="bench-deploy" data-i="${i}" aria-label="${t('boardBenchDeploy', { name: boardCharacterName(p.tier, p.cast) })}"${!prep || b.online?.waiting ? ' disabled' : ''}><img src="${boardPic(p.tier, p.cast)}" alt="">${(p.star ?? 1) > 1 ? `<em>${'★'.repeat(p.star ?? 1)}</em>` : ''}</button>`
     : '<span class="board-bench-slot is-empty"></span>'; }).join('')}</div>` : '';
   boardBenchEl.hidden = fusion || !prep;
   boardBenchEl.setAttribute('aria-label', t('boardBench'));
   boardBenchEl.innerHTML = bench;
   // The round's event and each world's synergy, a column of medallions by the board edge; a tap lists their effects.
   const bonus = boardBonuses(b);
-  boardSide.innerHTML = bonus.map((x) => `<button class="board-bonus${x.on ? ' is-on' : ' is-off'}${x.event ? ' is-event' : ''}" type="button" data-bact="bonus" aria-label="${x.name}"><img src="./images/game/${x.pic}" alt=""><small>${x.count}</small></button>`).join('');
+  boardSide.innerHTML = bonus.map((x) => `<button class="board-bonus${x.on ? ' is-on' : ' is-off'}${x.event ? ' is-event' : ''}${x.cast ? ` is-world-${x.cast}` : ''}" type="button" data-bact="bonus" aria-label="${x.name}"><img src="./images/game/${x.pic}" alt=""><small>${x.count}</small></button>`).join('');
   const trayActs = boardMobileActs.querySelector<HTMLElement>('.board-acts');
   if (trayActs) boardShop.append(trayActs);
   boardShop.innerHTML = `${prep ? `
