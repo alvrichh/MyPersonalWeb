@@ -4667,7 +4667,7 @@ function finalFrame(e: Enemy) {
   // 3 punch, 4 roar/wind-up, 5 fire charging in mouth, 6 fire breath,
   // 7 forward lunge, 8 ground impact/hurt. Prioritise charge/dash over
   // the generic boss action so neither pose is hidden by an active cast.
-  if (e.kind === 'boss' && !e.final && e.look === 'demon' && !e.minion) {
+  if (e.kind === 'boss' && !e.final && e.look === 'demon' && (!e.minion || e.rushMini)) {
     if (e.pain > 0) return 8;
     if (e.dash > 0) return 7;
     if (e.aim > 0) return 5;
@@ -4739,7 +4739,7 @@ function drawEnemySprite(ctx: CanvasRenderingContext2D, e: Enemy) {
   // A boss with phases has a sheet per phase (`chimera2` for Nocthrax in the air).
   // A cast's room-6 boss can have a nine-pose sheet too (`MID_ART`); the bosses a final boss calls keep the cast's own.
   // The secret shift's first Kratos wears his own sheet too, with the room-6 kit.
-  const mid = e.kind === 'boss' && !e.final && !e.minion ? (e.bossId === 'kratos' ? (e.phase > 1 ? 'kratos2' : 'kratos') : MID_ART[e.look]) : undefined;
+  const mid = e.kind === 'boss' && !e.final && (!e.minion || e.rushMini) ? (e.bossId === 'kratos' ? (e.phase > 1 ? 'kratos2' : 'kratos') : MID_ART[e.look]) : undefined;
   const sheet = mid ?? (e.phase > 1 ? `${e.bossId}${e.phase}` : e.bossId);
   if ((e.final && BOSS_ART.has(e.bossId)) || mid) {
     frames = bossSheet(sheet);

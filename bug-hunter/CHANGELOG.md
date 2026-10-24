@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.49 - 2026-10-24
+
+### Fixed - Boss Rush
+- Two stages a world again, its room-6 boss and then its final boss; the small-boss stages, which wore the cast's old four-frame sprites, are gone (world 1 alone is 2 rounds, five worlds 10).
+
 ## 1.13.48 - 2026-10-24
 
 ### Added - Fortress PvE assault prototype
