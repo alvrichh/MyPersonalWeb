@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.33 - 2026-10-24
+
+### Changed
+- Phone Tactics: your hearts (♥ ×N, red from 3 down) sit at the lower left on the bench caption's line, the caption beside them, while preparing and fighting (`.board-life`); they are no longer drawn over your hero there. Desktop and Fusion are unchanged.
+
 ## 1.13.32 - 2026-10-24
 
 ### Fixed - Units on the board's last row could not be dragged
