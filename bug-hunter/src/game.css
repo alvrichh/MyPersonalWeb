@@ -5160,3 +5160,8 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   .board-mobile-tray.is-active .board-life { left: auto; right: 0; }
   .board-mobile-tray.is-active .board-bench-title { left: 0; }
 }
+/* v1.13.35 — Phone Tactics: the shop sits lower, into the home bar's safe area, and the bench lower still. */
+@media (max-width: 899px) {
+  .board-shop.is-mobile-tactics { margin-bottom: max(2px, calc(env(safe-area-inset-bottom) - 22px)); }
+  :root:not([data-retro]) .board-mobile-tray.is-active .board-bench-slots { transform: translate(-50%, -12px); }
+}

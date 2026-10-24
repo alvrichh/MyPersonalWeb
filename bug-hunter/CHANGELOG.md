@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.35 - 2026-10-24
+
+### Changed
+- Phone Tactics: the shop panel (cards and buttons) sits lower, 22 px into the home bar's safe area on an iPhone (2 px from the bottom elsewhere), and the bench 12 px lower than before against it; the board grows into the room they leave.
+
 ## 1.13.34 - 2026-10-24
 
 ### Changed
