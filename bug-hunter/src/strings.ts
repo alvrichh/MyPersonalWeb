@@ -418,7 +418,7 @@ const en = {
   bookSwipeHint: 'Swipe it or tap its arrows',
   bookCustomTitle: 'Customise',
   bookCustomText: 'Your hero, your gear and your style, all in one place: the third card on the cover.',
-  bookCustomSlots: '🛡️ The six rings round your hero are your slots: armour on the left (head, body, boots) and weapons on the right (magic, melee, ranged). Tap one to wear what you have unlocked. The amulet on top holds one more item of any kind.',
+  bookCustomSlots: '🛡️ The six rings round your hero are your slots: armour on the left (head, body, boots) and weapons on the right (magic, melee, ranged). Tap one to wear what you have unlocked. The charm on top holds one more item of any kind.',
   bookCustomButtons: '🎨 The round buttons under the hero change your character, the enemies\' look, the world you play in and the music.',
   bookCustomShop: '🛒 New items are unlocked in the Shop; each slot\'s list has a button that takes you straight there.',
   bookPageSwipe: 'swipe to turn the page',
