@@ -5066,3 +5066,48 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
     transform: translate(-50%, -3px);
   }
 }
+/* v1.13.26 — Under each reserve a glowing oval in its rarity's colour (as on the board's rings: grey common, blue
+   rare, purple epic, orange legendary, red mythic), and its stars in gold over its head, plain text. */
+:root:not([data-retro]) .board-bench-float .board-bench-slot.is-t0 { --rar: 148, 163, 184; }
+:root:not([data-retro]) .board-bench-float .board-bench-slot.is-t1 { --rar: 56, 189, 248; }
+:root:not([data-retro]) .board-bench-float .board-bench-slot.is-t2 { --rar: 192, 132, 252; }
+:root:not([data-retro]) .board-bench-float .board-bench-slot.is-t3 { --rar: 251, 146, 60; }
+:root:not([data-retro]) .board-bench-float .board-bench-slot.is-t4,
+:root:not([data-retro]) .board-bench-float .board-bench-slot.is-t5,
+:root:not([data-retro]) .board-bench-float .board-bench-slot.is-t6 { --rar: 248, 113, 113; }
+:root:not([data-retro]) .board-bench-float .board-bench-slot:not(.is-empty)::after {
+  position: absolute;
+  z-index: 0;
+  left: 8%;
+  right: 8%;
+  bottom: -10%;
+  height: 28%;
+  content: '';
+  border: 2px solid rgba(var(--rar), 0.95);
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(var(--rar), 0.75), rgba(var(--rar), 0.25) 55%, transparent 72%);
+  box-shadow: 0 0 10px rgba(var(--rar), 0.8);
+  pointer-events: none;
+}
+:root:not([data-retro]) .board-bench-float .board-bench-slot > img { z-index: 1; }
+:root:not([data-retro]) .board-bench-float .board-bench-slot > em {
+  z-index: 2;
+  top: auto;
+  bottom: calc(var(--bench-unit, 170%) * var(--u) - 2%);
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #fde047;
+  font: 800 0.95rem/1 var(--font);
+  letter-spacing: -1px;
+  text-shadow: 0 0 3px #000, 0 1px 2px #000, 0 0 6px rgba(253, 224, 71, 0.6);
+}
+:root:not([data-retro]) .board-bench-slot:disabled::after { opacity: 0.5; }
+:root:not([data-retro]) .board-bench-float .board-bench-slot:not(.is-empty)::after { bottom: -6%; height: 30%; }
+@media (min-width: 900px) {
+  :root:not([data-retro]) .board-bench-float .board-bench-slot:not(.is-empty)::after { bottom: -44%; height: 36%; }
+  :root:not([data-retro]) .board-bench-float .board-bench-slot > em { bottom: calc(var(--bench-unit) * var(--u) - 36%); font-size: 0.8rem; }
+}
