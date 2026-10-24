@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.18 - 2026-10-24
+
+### Changed - Guide: swipe between pages, Fusion and Tactics explained apart
+- A clear sideways swipe on a guide page turns it (left for the next, right for the last), with a short slide; the Next and Back buttons stay, and the page counter says «desliza para pasar página». The mode bar on the first page keeps its own swipe, which changes the mode. The guide's pictures take no drag of their own and its box only scrolls vertically, so the swipe is not cancelled.
+- The single Board page is now two (7 pages in all): «Tablero · Fusión» (summon, merging by dragging or the auto-merge, the fight) and «Tablero · Táctica», explained further with two world-1 screenshots: the shop, bench and army (`book/tactics.webp`) with rarity, price, stars, bench and the +15% for the world being played; and the abilities panel (`book/tactics-bonus.webp`) with each world's ability and the two-worlds / five-units boost. Fusion's picture is `book/fusion.webp`. Screenshots taken with Playwright at 390 px.
+
 ## 1.13.17 - 2026-10-24
 
 ### Changed - Clearer guide: the play bar to learn on, and a Customise page
