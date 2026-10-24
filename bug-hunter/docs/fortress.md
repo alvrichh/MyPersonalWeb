@@ -97,3 +97,9 @@ Keep Battle, Sprints and On Call untouched while scaffolding. Integrate into the
 - The independent `/fortress-lab.html` preview uses a diamond-isometric canvas with camera pan, mouse-wheel/pinch zoom, tap selection and responsive landscape/portrait layout.
 - In level 3, contiguous walls are rendered with a connected geometry placeholder rather than isolated square items.
 - These are visual/interaction prototypes, not a persistent building-placement system or final art.
+
+## First raid prototype (1.13.48)
+- Use `/fortress-lab.html` to choose one of three small enemy bases and tap **Atacar**.
+- Select Guerrero, Lanzador or Tanque (temporary archetypes), deploy a maximum of eight units near any outside boundary tile; they move toward and damage structures automatically.
+- Basic walls and a firing cannon are test mechanics, not final collision/pathfinding. Percentage and stars are based on buildings destroyed (>=50%, Core Hall, 100%).
+- The visual troops are placeholders. Future work is to map actual owned BUG HUNTER bugs/sprites and their existing stats/behavior.
