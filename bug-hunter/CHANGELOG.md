@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.15 - 2026-10-24
+
+### Changed - Gold achievements button
+- The profile's «Logros» button is the gold simple bar (`btn1_gold`) with black text.
+
 ## 1.13.14 - 2026-10-24
 
 ### Changed - One button rule: tap or swipe
