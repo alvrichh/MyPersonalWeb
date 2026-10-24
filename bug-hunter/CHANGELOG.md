@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.41 - 2026-10-24
+
+### Changed - New Arena hoplite
+- The Arena's ticket, the hoplite (`enemies/greek-ticket-0..5.webp`), redrawn by the owner as a chibi six-pose sheet in blue with a spear: two steps and a stand, the wind-up, the throw with the spear flying off and a flinch. Cut like the gladiator (`greek/cut6.py`, spear tips kept solid), and both recut with their rims pulled in a pixel and unblended from the paper's white so no pale halo shows on the floor, the paper trapped between a spear or sword and the body dropped, and every blade filled to its outline (its white ridge and tip were cut away as paper); `SET_FRAMES['greek-ticket']` 6, `SPRITE_CANVAS['greek-ticket']` k 2.928, feet 0.0078.
+
 ## 1.13.40 - 2026-10-24
 
 ### Added - Skins in the shop
