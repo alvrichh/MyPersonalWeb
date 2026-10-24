@@ -399,7 +399,11 @@ export function tickMerge(b: BoardGame, dt: number, skip = false) {
     b.pending = null;
     const p = b.army.find((x) => x.id === a);
     const q = b.army.find((x) => x.id === into);
-    if (!p || !q || p.tier !== q.tier || p.cast !== q.cast || q.tier >= maxTier(q.cast)) continue;
+    if (!p || !q || p.tier !== q.tier || p.cast !== q.cast || q.tier >= maxTier(q.cast)) {
+      // Its pair was sold or moved during the lightning: the other pairs still merge.
+      if (b.autoMerge) queuePairs(b);
+      continue;
+    }
     b.army = b.army.filter((x) => x !== p);
     q.tier = (q.tier + 1) as Tier;
     b.lastMerge = { slot: q.slot, id: q.id, combo: combo + 1 };
@@ -713,8 +717,13 @@ export function waveSpots(b: BoardGame) {
 }
 
 /** Sets the fight up: your bugs as placed, the enemy's wave on the upper half. */
+/** No unit fielded or in reserve and not enough gold for even the cheapest unit: the round can still be fought (and
+    lost), so the run never locks. */
+export const stranded = (b: BoardGame) => !b.army.length && !b.bench.length && !b.pending
+  && b.gold < (b.variant === 'tactics' ? priceOf(0, b.world, 'tactics') : summonPrice(b));
+export const canFight = (b: BoardGame) => b.army.length > 0 || stranded(b);
 export function startFight(b: BoardGame) {
-  if (b.phase !== 'prep' || !b.army.length) return false;
+  if (b.phase !== 'prep' || !canFight(b)) return false;
   tickMerge(b, 0, true);
   const lv = Object.fromEntries(synergies(b).map((x) => [x.cast, x.lv]));
   const tac = b.variant === 'tactics';
@@ -744,7 +753,7 @@ export function startFight(b: BoardGame) {
     plays out the same on each (the guest's screen draws it turned round, `mirrorFight` in `boardView.ts`). */
 export function startOnlineFight(b: BoardGame, rival: Piece[], mine: Piece[] = b.army) {
   const o = b.online;
-  if (!o || b.phase !== 'prep' || !b.army.length) return false;
+  if (!o || b.phase !== 'prep' || (!b.army.length && !mine.length && !stranded(b))) return false;
   tickMerge(b, 0, true);
   roll = seeded(o.seed + b.round * 7919);
   const host = o.me === 0 ? mine : rival;
