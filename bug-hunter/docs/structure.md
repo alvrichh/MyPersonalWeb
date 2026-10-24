@@ -1,50 +1,168 @@
-# Repository structure and compatibility
+# BUG HUNTER repository structure and compatibility
 
-## Canonical locations after 1.13.1
+[← Game README](../README.md) · [Documentation index](./README.md) · [Asset guide](./assets.md) · [Changelog](../CHANGELOG.md)
 
-| Previous location | New editable location |
+This document explains why BUG HUNTER is organized under `bug-hunter/` while keeping the browser routes and saved-game origin used before the reorganization.
+
+## Canonical source locations
+
+| Purpose | Canonical location |
+|---|---|
+| Game entry documentation | `bug-hunter/README.md` |
+| Gameplay / renderer / UI code | `bug-hunter/src/` |
+| Game assets | `bug-hunter/assets/` |
+| Editable game HTML | `bug-hunter/game.html` |
+| Release history | `bug-hunter/CHANGELOG.md` |
+| Game-specific scripts | `bug-hunter/scripts/` |
+| Game tests | `bug-hunter/tests/` |
+| Build/public-URL integration | `bug-hunter/build/` |
+| Supporting docs | `bug-hunter/docs/` |
+
+Previous locations such as `src/game/` and `static/images/game/` are retired source locations.
+
+## Historical path migration
+
+| Previous location | Current source |
 |---|---|
 | `src/game/` | `bug-hunter/src/` |
-| `static/images/game/` | `bug-hunter/assets/` (grouped by world since 1.13.2) |
-| Root `game.html` | `bug-hunter/game.html` |
+| `static/images/game/` | `bug-hunter/assets/` |
+| root editable `game.html` | `bug-hunter/game.html` |
 | `scripts/game/check-regressions.mjs` | `bug-hunter/scripts/check-regressions.mjs` |
 | `docs/game-changelog.md` | `bug-hunter/CHANGELOG.md` |
-| Game introduction hidden in the asset README | `bug-hunter/README.md` |
+| old asset-folder game README | `bug-hunter/README.md` |
 
-The root README remains the portfolio entry and links here. The old changelog location contains only a navigation link, not an independently maintained history. The original detailed AGENTS.md was preserved as `legacy-repository-guide.md`; treat its old paths as historical and follow the current root/game AGENTS.md for locations.
+The old [`docs/game-changelog.md`](../../docs/game-changelog.md) remains only as a compatibility/navigation file for existing bookmarks.
 
-## Asset organization since 1.13.2
+## Current asset organization
 
-`assets/worlds/01-backlog/` through `09-the-core/` group each world's enemies, bosses, floor and existing scenery. `assets/shared/` contains heroes, UI, effects, weapons, equipment, global backgrounds, map-selection art and documentation pictures. `assets/special/secret-shift/` contains the secret-shift bosses. The [asset guide](../assets/README.md) lists each world and its cast.
+The asset tree is documented separately in **[assets.md](./assets.md)**.
 
-Original filenames and Git blob contents are retained: this is an organizational move, not an image conversion. Existing legacy copies are retained where they represent distinct public paths. Shared files are not duplicated into every world.
+At a high level:
 
-## What remains shared
+```text
+assets/
+├── worlds/     enemies, bosses, floors and world scenery
+├── shared/     heroes, UI, skills, effects, equipment, map art, etc.
+└── special/    art owned by special modes/sets
+```
 
-`package.json`, `package-lock.json`, `tsconfig.json`, `vite.config.mts`, Vercel settings and the site build pipeline belong to the whole repository. Site-only source stays in root `src/`; site public files stay in `static/`. Legal pages continue to be shared site pages. Procedural music remains implemented in `src/audio.ts`; asset folders are preserved without changing their use.
+Do not put an additional main README in `assets/`; the game's visible entry point is `bug-hunter/README.md`.
 
-The game imports `../lib/storage` through the game-local adapter, which re-exports the existing `src/lib/storage.ts`. Internal game module imports stay unchanged. TypeScript includes the game paths explicitly.
+## What remains shared with the portfolio
 
-## Why browser URLs do not move
+The following stay at repository root because the portfolio and game use the same toolchain/deployment:
 
-A repository folder is not necessarily a public web route. The Vite configuration calls `build/integration.mjs` before the client build or dev server:
+- `package.json` and `package-lock.json`;
+- `tsconfig.json`;
+- `vite.config.mts`;
+- Vercel configuration;
+- root build/prerender scripts;
+- the shared storage implementation.
 
-1. Copy the site's `static/` into `.cache/site-public-<command>/`. Project the game's assets through `build/asset-paths.mjs` into `images/game/`, stripping organization prefixes and restoring original scenery cast prefixes. For example, `assets/worlds/02-hotfix-inferno/bosses/overlord-0.webp` becomes `images/game/bosses/overlord-0.webp`.
-2. Generate the root `game.html` from the canonical template. The original module-entry sentinel `/src/game/main.ts` is rewritten to `/bug-hunter/src/main.ts`; templates already using the new entry work too. All other HTML is preserved.
-3. Build the same multipage inputs and preserve `/game.html`, `/images/game/...`, portfolio links and deployment output directories.
+[`bug-hunter/lib/storage.ts`](../lib/storage.ts) is a deliberate adapter to the existing shared storage module. Directory organization must not silently change save keys or storage origin.
 
-The entire asset projection is validated before replacing a cache. Duplicate public paths, case-only collisions, file/directory conflicts and symlinks are rejected. New assets must fit the same naming rules; adding a world requires an explicit resolver entry.
+## Public URLs stay stable
 
-The SSR build does not regenerate or publish public files. Dev and build caches are separate. A dev watcher mirrors edits, additions and deletion of game/static assets through the same mapping. Removing one world's directory cannot remove another world's files from their shared public category. TypeScript continues to be handled by Vite normally. Source-folder page links in development redirect to `/game.html`.
+Repository paths are not public routes.
 
-`npm run build` additionally runs `scripts/check-public.mjs`, failing if `dist/` or `public/` lacks the compiled game page, the public asset set differs, or any asset differs from its canonical bytes. No root generated HTML, caches or output folders should be committed.
+The game still publishes at:
 
-## Validation scope
+- `/game.html`
+- `/images/game/...`
 
-`npm run test:game:layout` runs the original 12 preparation-layer tests and the 24 world-asset tests. These use temporary fixtures and a mocked development server; output-verifier tests use temporary generated pages, not a real Vite bundle. They check public paths, byte preservation, collisions, cache separation, live file changes and deletion isolation.
+Examples:
 
-The 24 new tests passed locally on Node 22.16.0. The repository's Node 24.x requirement is unchanged. This does not certify a full Vite production build, full TypeScript check or gameplay. Run the root typecheck, build and gameplay regression command with installed dependencies, then smoke-test the portfolio and `/game.html`.
+| Source | Published URL |
+|---|---|
+| `assets/worlds/02-hotfix-inferno/bosses/overlord-0.webp` | `/images/game/bosses/overlord-0.webp` |
+| `assets/worlds/05-legacy-jungle/scenery/stone-0.webp` | `/images/game/jungle/stone-0.webp` |
+| `assets/shared/ui/logo.webp` | `/images/game/ui/logo.webp` |
+| `assets/special/secret-shift/bosses/kratos-0.webp` | `/images/game/bosses/kratos-0.webp` |
+
+See [the asset guide](./assets.md) for the full mapping model.
+
+## Build flow
+
+The root Vite configuration uses the game-local build helpers before dev/build output is served.
+
+### 1. Asset projection
+
+[`build/asset-paths.mjs`](../build/asset-paths.mjs) walks `bug-hunter/assets/` and converts organized repository paths into stable public suffixes.
+
+It:
+
+- strips `shared/`;
+- strips `worlds/<world>/`;
+- maps world scenery back to its public cast prefix (for example Jungle → `jungle/`);
+- strips `special/secret-shift/`;
+- rejects unknown worlds/special groups;
+- rejects duplicate public paths and case-only collisions;
+- rejects file/directory conflicts;
+- rejects symlinks.
+
+### 2. Disposable public staging
+
+[`build/integration.mjs`](../build/integration.mjs) creates a command-specific `.cache/site-public-<command>/` staging directory, copies portfolio `static/`, then projects game assets into `images/game/`.
+
+The cache is disposable; it is not an editable source.
+
+### 3. Game HTML generation
+
+The canonical template is [`bug-hunter/game.html`](../game.html).
+
+The integration generates root `game.html` with the module entry pointing at `/bug-hunter/src/main.ts`. The browser route remains `/game.html`.
+
+### 4. Vite output
+
+The normal shared build emits the portfolio and game. The deployment continues to use the existing root project and Vercel configuration.
+
+## Development watcher
+
+During development, the game integration watches:
+
+- `bug-hunter/game.html`;
+- `bug-hunter/assets/`;
+- portfolio `static/`.
+
+Asset additions, edits and deletions are re-projected through the same mapping used by the build. Removing a file from one world does not delete unrelated assets from another world even when their public files share categories such as `bosses/` or `enemies/`.
+
+## Validation
+
+Run from repository root:
+
+```bash
+npm run test:game:layout
+npm run typecheck
+npm run test:game
+npm run build
+```
+
+The checks cover different scopes:
+
+- `test:game:layout` — structure/projection/layout fixture checks;
+- `typecheck` — TypeScript consistency;
+- `test:game` — game-rule regressions;
+- `build` — production build plus public-asset verification.
+
+A fixture check is not the same as an in-game visual test. Report the checks that actually ran.
+
+## Generated / non-authoritative locations
+
+Do not edit or commit generated output as a source of truth:
+
+- root generated `game.html`;
+- `.cache/`;
+- `dist/`;
+- `public/`.
+
+Do not recreate the retired `static/images/game/` source tree.
 
 ## Save compatibility
 
-The public domain/path, storage implementation and gameplay/save modules are preserved. This reorganization does not intentionally migrate or reset player data. Do not change save keys, storage behavior or deploy to a new origin as part of a directory move.
+The directory reorganization intentionally preserves the public origin/path and the existing storage implementation. It does not intentionally migrate or reset player progress.
+
+Changes to save keys, storage format or deployment origin are separate product changes and should not be bundled into folder/documentation maintenance.
+
+## Historical notes
+
+[`legacy-repository-guide.md`](./legacy-repository-guide.md) is retained for design/history context. It contains pre-migration paths, so current files and this structure guide take precedence.

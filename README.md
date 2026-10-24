@@ -8,10 +8,15 @@ browser. Eleven languages, light and dark themes and eight accent colours.
 
 ## BUG HUNTER
 
-The browser game has its own clearly separated home: **[bug-hunter/](./bug-hunter/)**.
-Open that folder for its README, action and Battle modes, code, sprites, development commands and release history.
+BUG HUNTER lives in its own top-level folder: **[bug-hunter/](./bug-hunter/)**.
+That folder is the source of truth for the game: code, art, HTML, documentation,
+tests and release notes all live together there.
 
-**[Play](https://alvrich.vercel.app/game.html) · [Game guide](./bug-hunter/README.md) · [Game code](./bug-hunter/src/) · [Assets](./bug-hunter/assets/) · [Changelog](./bug-hunter/CHANGELOG.md)**
+**[Play](https://alvrich.vercel.app/game.html) · [Game README](./bug-hunter/README.md) · [Asset guide](./bug-hunter/docs/assets.md) · [Browse assets](./bug-hunter/assets/) · [Changelog](./bug-hunter/CHANGELOG.md) · [Game docs](./bug-hunter/docs/)**
+
+The game still publishes at `/game.html`, and runtime images still use
+`/images/game/...`. Those public URLs are intentionally independent from the
+repository's organized `bug-hunter/assets/` tree.
 
 ## Run it
 
@@ -21,45 +26,51 @@ Use Node 24.x and run commands from this repository root:
 npm ci
 npm run dev               # portfolio and game development server
 npm run dev:game          # opens /game.html
-npm run build             # site + game into dist/ and public/; verifies game assets
-npm run preview
 npm run typecheck
-npm run test:game:layout   # source/build integration checks
-npm run test:game          # game rules regression checks
+npm run test:game:layout  # source/build + asset projection checks
+npm run test:game         # game-rule regression checks
+npm run build             # site + game; verifies published game assets
+npm run preview
 ```
 
-## Layout
+## Repository layout
 
 ```text
-bug-hunter/                 All game-specific source, art, HTML, docs and checks
-  README.md                 Game entry point for readers
-  CHANGELOG.md              Game releases
-  game.html                 Editable game page template
-  src/                      Rules, canvas/UI, sound, saves and game version
-  assets/                   Sprites, effects, UI and worlds
-  build/                    Integration with the shared Vite build
-  scripts/, tests/, docs/    Game checks and documentation
-index.html, ai-radar.html    React page shells
-calendar.html, gym.html,     Other standalone tools
-planning.html
-src/                        Portfolio code, translations, styles and shared helpers
-static/                     Site-only public files: images/, cv/, data/, legal pages
+bug-hunter/                 Game home
+  README.md                 Main game guide
+  CHANGELOG.md              Release history
+  AGENTS.md                 Game development guardrails
+  game.html                 Canonical game page template
+  src/                      Gameplay, rendering, UI, audio, saves and version
+  assets/
+    worlds/                 World-specific enemies, bosses, floors and scenery
+    shared/                 Heroes, UI, skills, effects, equipment and common art
+    special/                Special-mode art
+  docs/
+    README.md               Documentation index
+    assets.md               Canonical asset guide
+    structure.md            Build, paths and compatibility
+  build/                    Asset/public-URL projection and Vite integration
+  scripts/, tests/          Game checks
+
+src/                        Portfolio application code
+static/                     Portfolio-only public files
 scripts/build/              Shared client/SSR build and prerender pipeline
-scripts/radar/              Daily AI radar bot
-docs/ai-watch/              Daily radar reports
+scripts/radar/              AI Radar automation
+docs/ai-watch/              AI Radar reports
 ```
 
-The game still runs at `/game.html` and its images still use `/images/game/...`.
-Vite generates an ignored root `game.html` and a disposable `.cache/` public
-staging area from `bug-hunter/`. Edit the source folder, not generated files.
-The root package, lockfile, Vite/TypeScript configuration and deployment remain
-shared; the game does not require a second install or a new Vercel project.
+The root package, lockfile, Vite/TypeScript configuration and Vercel deployment
+are shared. BUG HUNTER does not have a second package installation or a separate
+deployment project.
 
 ## Adding text
 
-Portfolio strings live in `src/i18n/locales/`. Add keys to `en.json` first;
-keep the other languages aligned. Game text is separate, in
-`bug-hunter/src/strings.ts` (English and Spanish).
+Portfolio strings live in `src/i18n/locales/`. Add keys to `en.json` first
+and keep the other languages aligned.
+
+Game text is separate and currently maintained in English and Spanish in
+[`bug-hunter/src/strings.ts`](./bug-hunter/src/strings.ts).
 
 ## AI Radar
 
@@ -74,5 +85,7 @@ It never touches the site's code.
 
 Vercel builds every push with `npm run build` and publishes `public/`
 (see `vercel.json`). `dist/`, `public/`, `.cache/` and the generated root
-`game.html` are not committed. See the [game migration notes](./bug-hunter/docs/structure.md)
-for source-path changes and preserved public URLs.
+`game.html` are not committed.
+
+For BUG HUNTER path rules and source/public URL compatibility, see
+[the game structure guide](./bug-hunter/docs/structure.md).
