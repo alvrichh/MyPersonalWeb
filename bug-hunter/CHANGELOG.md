@@ -4,6 +4,13 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.51 - 2026-10-24
+
+### Added
+- A fourth **Coming Soon** position in the main cover's game-mode carousel, using the same existing button artwork in grayscale with a gray indicator.
+- The fourth slot opens a new-modes preview hub containing a link to the experimental Fortress Siege lab.
+- The fourth position is not a persisted PlayMode; existing Sprints, On Call and Battle save values and game logic remain unchanged.
+
 ## 1.13.50 - 2026-10-24
 
 ### Fixed - Locked worlds on the map
