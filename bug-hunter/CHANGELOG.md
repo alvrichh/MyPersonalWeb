@@ -4,6 +4,14 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.47 - 2026-10-24
+
+### Added - Fortress isometric scene
+- Fortress Lab now draws diamond-shaped isometric terrain instead of the initial rectangular CSS grid.
+- Pan with drag, zoom with pinch or wheel, tap a diamond to inspect its coordinate and building; reset controls work in both orientations.
+- Five adjacent wall segments in test level 3 are displayed as a continuous stone wall with end caps.
+- The existing three simple test layouts and temporary building sprites are preserved; the lab remains separate from the live game menu.
+
 ## 1.13.46 - 2026-10-24
 
 ### Fixed - Fire-world cast and Kernel Panic recut from their own transparency
