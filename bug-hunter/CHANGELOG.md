@@ -4,6 +4,13 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.13 - 2026-10-24
+
+### Changed - One platform per reserve, grander ones for bosses
+- The single mobile platform of 1.13.12 was stretched to the bench's width and came out squashed, half hidden under the shop. Every reserve now stands on its own platform at its own shape, on mobile as on desktop.
+- The platform is the unit's own world. Sub-bosses and bosses (tier 3 and up) stand on the owner's second, grander set (`assets/shared/ui/bench/boss-1..9.webp`, `/images/game/ui/bench/boss-N.webp`), cut from his opaque black sheet: solid body, glows unblended from the black.
+- An empty slot shows the played world's platform, faint. Retro look and bench behaviour are unchanged.
+
 ## 1.13.12 - 2026-10-24
 
 ### Changed - World platforms for the Tactics bench
