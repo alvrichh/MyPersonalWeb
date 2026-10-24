@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.34 - 2026-10-24
+
+### Changed
+- Phone Tactics: your hearts move to the lower right of the screen, still on the bench caption's line; the caption is back at the left.
+
 ## 1.13.33 - 2026-10-24
 
 ### Changed
