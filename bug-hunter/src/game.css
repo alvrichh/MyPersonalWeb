@@ -5028,3 +5028,31 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 }
 /* v1.13.23 — the phone bench 3px higher. */
 @media (max-width: 899px) { :root:not([data-retro]) .board-mobile-tray.is-active .board-bench-slots { transform: translateY(-3px); } }
+
+/* v1.13.24 — Reserves cropped to their figure (`trimPic`) stand with their feet on the seat line, one height per
+   step: bug, thrower, heavy, sub-boss, boss. */
+:root:not([data-retro]) .board-bench-float .board-bench-slot { --u: 1; }
+:root:not([data-retro]) .board-bench-float .board-bench-slot.is-t0 { --u: 0.62; }
+:root:not([data-retro]) .board-bench-float .board-bench-slot.is-t1 { --u: 0.72; }
+:root:not([data-retro]) .board-bench-float .board-bench-slot.is-t2 { --u: 0.82; }
+:root:not([data-retro]) .board-bench-float .board-bench-slot.is-t3 { --u: 0.95; }
+:root:not([data-retro]) .board-bench-float .board-bench-slot.is-t4,
+:root:not([data-retro]) .board-bench-float .board-bench-slot.is-t5,
+:root:not([data-retro]) .board-bench-float .board-bench-slot.is-t6 { --u: 1.05; }
+:root:not([data-retro]) .board-bench-float .board-bench-slot > img {
+  left: -30%;
+  bottom: 0;
+  width: 160%;
+  height: calc(var(--bench-unit, 170%) * var(--u));
+  object-fit: contain;
+  object-position: center bottom;
+}
+@media (max-width: 899px) { :root:not([data-retro]) .board-mobile-tray.is-active .board-bench-slot { --bench-unit: 68%; } :root:not([data-retro]) .board-mobile-tray.is-active .board-bench-slot > img { left: -30%; width: 160%; height: calc(var(--bench-unit) * var(--u)); } }
+@media (min-width: 900px) {
+  :root:not([data-retro]) .board-bench-float .board-bench-slot { --bench-unit: 115%; }
+  :root:not([data-retro]) .board-bench-float .board-bench-slot > img { bottom: -32%; }
+}
+@media (min-width: 900px) {
+  :root:not([data-retro]) .board-bench-float .board-bench-slot { --bench-unit: 140%; }
+  :root:not([data-retro]) .board-bench-float .board-bench-slot > em { bottom: -46%; }
+}

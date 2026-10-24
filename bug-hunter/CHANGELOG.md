@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.24 - 2026-10-24
+
+### Fixed - Reserves lined up on the bench
+- The reserves stood at different heights: each sheet's picture carries its own empty margin under the feet and round the figure, and they were fitted to one box by its bottom edge, so a picture with more margin floated higher and one with more room round it came out smaller. Each picture is now cropped to what shows (`trimPic` in `main.ts`, alpha over 40, kept per picture) and stood with its feet on the seats' line, at one height per step (bug, thrower, heavy, sub-boss, boss: `--u` in `game.css`), on the phone and on desktop. On desktop the stars sit under the unit.
+
 ## 1.13.23 - 2026-10-24
 
 ### Changed
