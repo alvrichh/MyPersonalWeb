@@ -488,12 +488,12 @@ function menuScreen() {
       <p class="cover-tagline">${t('landingTagline')}</p>
       <button class="cover-chest${dailyReady(save) ? ' is-ready' : ''}" type="button" data-act="daily" aria-label="${t('dailyTitle')}"><img src="./images/game/fx/chest.webp" width="165" height="140" alt=""><i${dailyReady(save) ? '>' + t('dailyReady') : ` data-daily-clock>${dailyClock()}`}</i></button>
       <span class="cover-play-bar is-slot" aria-hidden="true"></span>
-      <span class="cover-play-bar is-${extraModePreview ? 'board' : save.mode}" aria-hidden="true"></span>
+      <span class="cover-play-bar is-${extraModePreview ? 'coming-soon' : save.mode}" aria-hidden="true"></span>
       <button class="hot cover-play" data-act="${extraModePreview ? 'extra-hub' : 'play'}" aria-label="${extraModePreview ? extraTitle() : t('playNow') + ' · ' + modeName() + ' · ' + worldName(worldIn())}"></button>
-      <span class="cover-play-copy is-${extraModePreview ? 'board' : save.mode}"><b>${extraModePreview ? '🏰 ' + extraTitle() : MODE_ICON[save.mode] + ' ' + modeName()}</b><small>${extraModePreview ? extraText() : t('playNow') + ' · ' + WORLD_ICON[worldIn() - 1] + ' ' + worldName(worldIn())}</small></span>
+      <span class="cover-play-copy is-${extraModePreview ? 'coming-soon' : save.mode}"><b>${extraModePreview ? '🏰 ' + extraTitle() : MODE_ICON[save.mode] + ' ' + modeName()}</b><small>${extraModePreview ? extraText() : t('playNow') + ' · ' + WORLD_ICON[worldIn() - 1] + ' ' + worldName(worldIn())}</small></span>
       <button class="cover-arrow is-prev" type="button" data-act="mode-prev" aria-label="${t('modeSwipe')}"></button>
       <button class="cover-arrow is-next" type="button" data-act="mode-next" aria-label="${t('modeSwipe')}"></button>
-      <span class="cover-dots" aria-hidden="true">${coverModes.map((m) => `<i class="is-${m === 'coming-soon' ? 'board' : m}${(m === 'coming-soon' ? extraModePreview : !extraModePreview && save.mode === m) ? ' is-on' : ''}"></i>`).join('')}</span>
+      <span class="cover-dots" aria-hidden="true">${coverModes.map((m) => `<i class="is-${m === 'coming-soon' ? 'coming-soon' : m}${(m === 'coming-soon' ? extraModePreview : !extraModePreview && save.mode === m) ? ' is-on' : ''}"></i>`).join('')}</span>
       <button class="hot cover-card is-map" data-act="map" aria-label="${t('map')}"></button>
       ${copy('is-map', t('map'), `🌍 ${unlockedIn()} / ${WORLD_COUNT}`)}
       <button class="hot cover-card is-shop" data-act="shop" aria-label="${t('shop')}"></button>
