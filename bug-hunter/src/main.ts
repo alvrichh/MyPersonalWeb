@@ -2385,9 +2385,9 @@ function boardBonuses(b: BoardGame) {
     for (const x of synergies(b).filter((y) => y.n >= 1)) {
       const ab = ABILITY[x.cast];
       const values = ABIL_V[ab].map(bonusPercent);
-      const worlds = new Set(b.army.map((p) => p.cast)).size;
       const levels = t('boardBonusLevelsT', { base: values[0], duo: values[1], five: values[2] });
-      out.push({ pic: ABILITY_PIC[ab], name: `${t(`boardAbil${cap(ab)}` as Key)} · ${worldName(x.cast)}`, text: `${t(`boardAbil${cap(ab)}Text` as Key, { n: values[x.lv] })} ${levels}`, count: t('boardBonusWorldCount', { n: worlds }), on: true, event: false });
+      const teamProgress = `${Math.min(b.army.length, SYNERGY.need[1])}/${SYNERGY.need[1]}`;
+      out.push({ pic: ABILITY_PIC[ab], name: `${t(`boardAbil${cap(ab)}` as Key)} · ${worldName(x.cast)}`, text: `${t(`boardAbil${cap(ab)}Text` as Key, { n: values[x.lv] })} ${levels}`, count: teamProgress, on: true, event: false });
     }
     return out;
   }
@@ -2846,12 +2846,17 @@ function boardStep(dt: number, now: number) {
   const wallTop = rect.top + boardLay.oy + (HOME_ROW * CELL - 4) * boardLay.s;
   const sideHeight = `${Math.max(43, wallTop - rect.top - top - 12)}px`;
   if (boardSide.style.maxHeight !== sideHeight) boardSide.style.maxHeight = sideHeight;
+  const sideBottom = Math.round(window.innerHeight - wallTop + 8);
   const sideLeft = rect.left + boardLay.ox + COLS * CELL * boardLay.sx - 40;
-  const sideAt = `${Math.round(sideLeft)}px,${Math.round(window.innerHeight - wallTop + 8)}px`;
+  const tacticsSide = b.variant === 'tactics';
+  const sideAt = tacticsSide ? `right,${sideBottom}px` : `${Math.round(sideLeft)}px,${sideBottom}px`;
   if (boardSide.dataset.at !== sideAt) {
     boardSide.dataset.at = sideAt;
     const [x, y] = sideAt.split(',');
-    boardSide.style.left = x; boardSide.style.bottom = y; boardSide.style.top = 'auto';
+    boardSide.style.left = tacticsSide ? 'auto' : x;
+    boardSide.style.right = tacticsSide ? '0px' : 'auto';
+    boardSide.style.bottom = y;
+    boardSide.style.top = 'auto';
     if (!gearPanel.hidden && gearPanel.classList.contains('is-board')) positionBoardBonusPanel();
   }
   ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
