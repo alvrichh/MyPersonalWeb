@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.19 - 2026-10-24
+
+### Changed - English guide screenshots
+- The guide's pictures that show the game's words (Fusion, Tactics, the abilities panel and Customise) have English copies, `book/<name>-en.webp`, taken the same way, shown when the game is in English (`bookPic`). Sprints and On call have no words in them and stay shared.
+
 ## 1.13.18 - 2026-10-24
 
 ### Changed - Guide: swipe between pages, Fusion and Tactics explained apart

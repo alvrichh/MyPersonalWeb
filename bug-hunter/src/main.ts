@@ -1214,6 +1214,9 @@ function optionsScreen() {
    (`save.bookSeen`). */
 let bookPage = 0;
 const BOOK = ['modes', 'sprints', 'horde', 'fusion', 'tactics', 'custom', 'grow'] as const;
+/** The guide's pictures with words in them have an English copy (`<name>-en.webp`). */
+const BOOK_EN = new Set(['fusion', 'tactics', 'tactics-bonus', 'custom']);
+const bookPic = (name: string) => (lang === 'en' && BOOK_EN.has(name) ? `${name}-en` : name);
 const bookList = (keys: Key[]) => `<ul class="book-list">${keys.map((k) => `<li>${t(k)}</li>`).join('')}</ul>`;
 function bookScreen() {
   bookPage = Math.max(0, Math.min(BOOK.length - 1, bookPage));
@@ -1234,10 +1237,10 @@ function bookScreen() {
   const last = bookPage === BOOK.length - 1;
   show(`<button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
     <h2>📖 ${t(title)}</h2>
-    ${page === 'sprints' || page === 'horde' || page === 'fusion' || page === 'tactics' || page === 'custom' ? `<img class="book-shot is-${page}" src="./images/game/book/${page}.webp" alt="${t(title)}">` : ''}
+    ${page === 'sprints' || page === 'horde' || page === 'fusion' || page === 'tactics' || page === 'custom' ? `<img class="book-shot is-${page}" src="./images/game/book/${bookPic(page)}.webp" alt="${t(title)}">` : ''}
     <p class="book-text">${t(text)}</p>
     ${page === 'fusion' ? bookList(['bookFusionSummon', 'bookFusionMerge', 'bookBoardFight']) : ''}
-    ${page === 'tactics' ? `${bookList(['bookTacticsShop', 'bookTacticsStars', 'bookTacticsBench', 'bookTacticsPower'])}<img class="book-shot is-tactics-bonus" src="./images/game/book/tactics-bonus.webp" alt="${t('boardBonusTitle')}">${bookList(['bookTacticsAbility', 'bookTacticsMix', 'bookBoardFight'])}` : ''}
+    ${page === 'tactics' ? `${bookList(['bookTacticsShop', 'bookTacticsStars', 'bookTacticsBench', 'bookTacticsPower'])}<img class="book-shot is-tactics-bonus" src="./images/game/book/${bookPic('tactics-bonus')}.webp" alt="${t('boardBonusTitle')}">${bookList(['bookTacticsAbility', 'bookTacticsMix', 'bookBoardFight'])}` : ''}
     ${page === 'custom' ? bookList(['bookCustomSlots', 'bookCustomButtons', 'bookCustomShop']) : ''}
     ${modes}
     <small class="book-page">${t('bookPage', { n: bookPage + 1, total: BOOK.length })} · ${t('bookPageSwipe')}</small>
