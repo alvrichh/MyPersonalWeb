@@ -1,21 +1,33 @@
 # AGENTS.md — MyPersonalWeb
 
-This repository contains the portfolio and Bug Hunter, sharing one root Node/Vite toolchain. It is public: never add private or job-search information.
+This repository contains the portfolio and BUG HUNTER, sharing one root Node/Vite toolchain. It is public: never add private or job-search information.
 
 ## Current source locations
 
-- Portfolio: `src/`, `static/`, the root site HTML pages, `scripts/build/` and `scripts/radar/`.
-- Game: **`bug-hunter/`**. Read `bug-hunter/README.md`, `bug-hunter/AGENTS.md` and `bug-hunter/CHANGELOG.md` before editing it.
+- Portfolio: `src/`, `static/`, root site HTML pages, `scripts/build/` and `scripts/radar/`.
+- Game: **[`bug-hunter/`](./bug-hunter/)**.
+- Game guide: [`bug-hunter/README.md`](./bug-hunter/README.md).
+- Game asset guide: [`bug-hunter/docs/assets.md`](./bug-hunter/docs/assets.md).
+- Game structure/build guide: [`bug-hunter/docs/structure.md`](./bug-hunter/docs/structure.md).
+- Game release history: [`bug-hunter/CHANGELOG.md`](./bug-hunter/CHANGELOG.md).
 - Shared configuration: root `package.json`, lockfile, TypeScript/Vite configuration and `vercel.json`.
-- Game source: `bug-hunter/src/`; art: `bug-hunter/assets/`; HTML template: `bug-hunter/game.html`; game-specific checks: `bug-hunter/scripts/` and `bug-hunter/tests/`.
-- Public routes stay `/game.html` and `/images/game/...`. The root `game.html` and `.cache/` are generated and ignored. Do not recreate the retired source directories.
+
+Game source is `bug-hunter/src/`; art is `bug-hunter/assets/`; the editable HTML template is `bug-hunter/game.html`; game-specific checks live in `bug-hunter/scripts/` and `bug-hunter/tests/`.
+
+Public routes remain `/game.html` and `/images/game/...`. Root `game.html`, `.cache/`, `dist/` and `public/` are generated/non-authoritative. Do not recreate retired source directories.
 
 ## Preserved detailed notes
 
-The full previous guide, including portfolio conventions and extensive game design history, is retained byte-for-byte at [bug-hunter/docs/legacy-repository-guide.md](./bug-hunter/docs/legacy-repository-guide.md). Read the relevant sections for the area being changed. Its old paths must be translated using [the migration map](./bug-hunter/docs/structure.md); current paths above take precedence. This move does not discard those behavioral requirements.
+The previous detailed repository/design guide is retained at [`bug-hunter/docs/legacy-repository-guide.md`](./bug-hunter/docs/legacy-repository-guide.md). Its pre-migration paths are historical; translate them with [the current structure guide](./bug-hunter/docs/structure.md).
 
 ## Working rules
 
-Keep tasks scoped. A directory move must not silently alter gameplay, game layout, animations, save keys, art quality, portfolio content or deployment URLs. Portfolio UI strings belong in all eleven `src/i18n/locales/` files; game strings belong in the game's own English/Spanish dictionary. Do not publish secrets or private records.
+Keep tasks scoped. A directory or documentation change must not silently alter gameplay, layout, animations, save keys, art quality, portfolio behavior or deployment URLs.
 
-Use the root Node 24.x requirement and commands. Run the applicable typecheck, game tests and production build, and state accurately which checks ran. Never describe fixture checks as visual gameplay validation. Update the game version and its changelog together for game releases; preserve historical version entries. Do not edit generated `dist/`, `public/`, `.cache/` or the root `game.html`.
+Portfolio UI strings belong in all eleven `src/i18n/locales/` files. Game strings belong in `bug-hunter/src/strings.ts`.
+
+Use the root Node 24.x requirement and commands. Run applicable typecheck/game/build checks and report them accurately. Never describe fixture checks as visual gameplay validation.
+
+For game behavior/features/fixes, update the game version and changelog together. Pure documentation cleanup does not require a runtime version bump. Preserve historical version entries.
+
+Do not edit generated `dist/`, `public/`, `.cache/` or root `game.html`.

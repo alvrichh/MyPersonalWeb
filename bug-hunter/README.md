@@ -4,122 +4,137 @@
 
 # BUG HUNTER
 
-An action roguelite and tactical auto-battler by **Álvaro Rodríguez Molina**, playable in the browser on mobile and desktop.
-
-**[Play](https://alvrich.vercel.app/game.html) · [Changelog](./CHANGELOG.md) · [Code](./src/) · [Assets by world](./assets/) · [Migration guide](./docs/structure.md)**
-
-This folder is the game's home inside MyPersonalWeb. Code, art, HTML, documentation and game-specific checks live here. The portfolio remains outside this folder; both use the shared root package and Vite build.
+Action roguelite + tactical auto-battler by **Álvaro Rodríguez Molina**, playable in the browser on mobile and desktop.
 
 <p align="center">
-  <img src="./assets/shared/readme/screenshot-menu.webp" alt="Bug Hunter menu screenshot" width="720">
+  <strong><a href="https://alvrich.vercel.app/game.html">Play BUG HUNTER</a></strong>
 </p>
 
-## Modes
+**[Release history](./CHANGELOG.md) · [Asset guide](./docs/assets.md) · [Browse assets](./assets/) · [Source code](./src/) · [Documentation](./docs/) · [Repository structure](./docs/structure.md)**
 
-| Mode | How it plays |
+`bug-hunter/` is the canonical home of the game inside MyPersonalWeb. Edit the game here; do not edit generated root `game.html`, `.cache/`, `dist/` or `public/` output.
+
+<p align="center">
+  <img src="./assets/shared/readme/screenshot-menu.webp" alt="Bug Hunter main menu" width="720">
+</p>
+
+## Game modes
+
+| Mode | Core loop |
 |---|---|
-| **Sprints** | Room-by-room action: clear enemies, choose upgrades and fight bosses. |
-| **On Call** | Survive waves on a scrolling field, with bosses during the run. |
-| **Battle — Tactics** | Buy units, arrange your army and reserves, and upgrade matching units' stars before automatic combat. |
-| **Battle — Fusion** | Summon and combine matching units into the next character tier before automatic combat. |
+| **Sprints** | Clear rooms, collect XP, choose roguelite upgrades and defeat each world's bosses. |
+| **On Call** | Survive an open-field run while enemies arrive from every direction and bosses interrupt the run. |
+| **Battle — Tactics** | Buy cards, deploy an army and reserve bench, upgrade identical units by stars, then watch automatic combat. |
+| **Battle — Fusion** | Summon units, merge matching characters into higher tiers, position the army, then resolve automatic combat. |
 
-Boss Rush, Nightmare and the boss showcase are additional options as they become available. Game text is maintained in English and Spanish in `src/strings.ts`.
+Boss Rush, Nightmare and the boss showcase are additional game options where available. English and Spanish game copy lives in [`src/strings.ts`](./src/strings.ts).
 
 ## Controls
 
-In action modes, drag on a touch screen or use WASD / the arrow keys. In Sprints, stand still to fire ranged weapons; melee and magic keep working while moving. On Call also permits ranged attacks while moving at a reduced rate. Collect experience and choose upgrades during the run.
+**Action modes:** drag on touch, or use WASD / arrow keys. In Sprints, ranged weapons fire while stationary; melee and magic continue while moving. On Call also permits ranged attacks while moving at a reduced rate.
 
-In Battle, use the preparation phase to buy, deploy, reposition and combine units, then start the fight. Combat is automatic; the game provides its own battle controls.
+**Battle modes:** use the preparation phase to buy or summon, deploy, reposition and upgrade units. Press **Fight** when the formation is ready; combat then resolves automatically.
 
-## Nine worlds
+## Worlds
 
-| # | World | Assets |
-|---|---|---|
-| 1 | The Backlog | [01-backlog](./assets/worlds/01-backlog/) |
-| 2 | Hotfix Inferno | [02-hotfix-inferno](./assets/worlds/02-hotfix-inferno/) |
-| 3 | Code Freeze | [03-code-freeze](./assets/worlds/03-code-freeze/) |
-| 4 | Big Ball of Mud | [04-big-ball-of-mud](./assets/worlds/04-big-ball-of-mud/) |
-| 5 | Legacy Jungle | [05-legacy-jungle](./assets/worlds/05-legacy-jungle/) |
-| 6 | The Arena | [06-the-arena](./assets/worlds/06-the-arena/) |
-| 7 | The Forge | [07-the-forge](./assets/worlds/07-the-forge/) |
-| 8 | Haunted Servers | [08-haunted-servers](./assets/worlds/08-haunted-servers/) |
-| 9 | The Core | [09-the-core](./assets/worlds/09-the-core/) |
+Each world owns its gameplay cast and canonical art. Use these links when replacing or adding world-specific assets.
 
-## Project layout
+| # | World | Enemies | Bosses | Floor | Scenery |
+|---:|---|---|---|---|---|
+| 1 | **The Backlog** | [enemies](./assets/worlds/01-backlog/enemies/) | [bosses](./assets/worlds/01-backlog/bosses/) | [floors](./assets/worlds/01-backlog/floors/) | [scenery](./assets/worlds/01-backlog/scenery/) |
+| 2 | **Hotfix Inferno** | [enemies](./assets/worlds/02-hotfix-inferno/enemies/) | [bosses](./assets/worlds/02-hotfix-inferno/bosses/) | [floors](./assets/worlds/02-hotfix-inferno/floors/) | [scenery](./assets/worlds/02-hotfix-inferno/scenery/) |
+| 3 | **Code Freeze** | [enemies](./assets/worlds/03-code-freeze/enemies/) | [bosses](./assets/worlds/03-code-freeze/bosses/) | [floors](./assets/worlds/03-code-freeze/floors/) | [scenery](./assets/worlds/03-code-freeze/scenery/) |
+| 4 | **Big Ball of Mud** | [enemies](./assets/worlds/04-big-ball-of-mud/enemies/) | [bosses](./assets/worlds/04-big-ball-of-mud/bosses/) | [floors](./assets/worlds/04-big-ball-of-mud/floors/) | — |
+| 5 | **Legacy Jungle** | [enemies](./assets/worlds/05-legacy-jungle/enemies/) | [bosses](./assets/worlds/05-legacy-jungle/bosses/) | [floors](./assets/worlds/05-legacy-jungle/floors/) | [scenery](./assets/worlds/05-legacy-jungle/scenery/) |
+| 6 | **The Arena** | [enemies](./assets/worlds/06-the-arena/enemies/) | [bosses](./assets/worlds/06-the-arena/bosses/) | [floors](./assets/worlds/06-the-arena/floors/) | [scenery](./assets/worlds/06-the-arena/scenery/) |
+| 7 | **The Forge** | [enemies](./assets/worlds/07-the-forge/enemies/) | [bosses](./assets/worlds/07-the-forge/bosses/) | [floors](./assets/worlds/07-the-forge/floors/) | [scenery](./assets/worlds/07-the-forge/scenery/) |
+| 8 | **Haunted Servers** | [enemies](./assets/worlds/08-haunted-servers/enemies/) | [bosses](./assets/worlds/08-haunted-servers/bosses/) | [floors](./assets/worlds/08-haunted-servers/floors/) | [scenery](./assets/worlds/08-haunted-servers/scenery/) |
+| 9 | **The Core** | [enemies](./assets/worlds/09-the-core/enemies/) | [bosses](./assets/worlds/09-the-core/bosses/) | [floors](./assets/worlds/09-the-core/floors/) | [scenery](./assets/worlds/09-the-core/scenery/) |
+
+For heroes, abilities, UI, effects, equipment, map art and other shared resources, use the **[asset guide](./docs/assets.md)**.
+
+## Project map
 
 ```text
 bug-hunter/
-  README.md                 Start here
-  CHANGELOG.md              Game releases
-  AGENTS.md                 Development guardrails
-  game.html                 Canonical page template
-  src/
-    main.ts                 Page, input, menus and frame loop
-    world.ts                Action-mode rules
-    board.ts                Battle rules
-    boardBoss.ts            Tactical boss attack planning
-    draw.ts                 Canvas rendering
-    boardView*.ts           Board rendering and stable viewport
-    game.css                Game styles
-    audio.ts                Procedural music and sound
-    save.ts                 Saved progress
-    strings.ts              English and Spanish game text
-    version.ts              Game version
-  assets/
-    worlds/                 Nine numbered world folders
-      02-hotfix-inferno/     Example world
-        enemies/            Regular enemies and legacy cast sprites
-        bosses/             Sub-boss and final boss, all frames
-        floors/             World floor
-        scenery/            Existing world-specific environment art
-    shared/                 Heroes, UI, skills, effects, map and common art
-    special/secret-shift/    Secret-shift boss sprites
-  lib/storage.ts            Adapter to shared portfolio storage
-  build/                    Shared-build integration and asset URL mapping
-  scripts/                  Gameplay and published-asset checks
-  tests/                    Layout/integration tests
-  docs/                     Structure and retained design history
+├── README.md                 Start here
+├── CHANGELOG.md              Version history
+├── AGENTS.md                 Development guardrails
+├── game.html                 Editable page template
+├── src/
+│   ├── main.ts               Page/UI/input/frame loop
+│   ├── world.ts              Sprints / On Call rules
+│   ├── board.ts              Fusion / Tactics rules
+│   ├── boardBoss.ts          Battle boss planning
+│   ├── draw.ts               Action + shared canvas rendering
+│   ├── boardView*.ts         Battle renderer and mobile viewport
+│   ├── game.css              Game UI/layout styling
+│   ├── audio.ts              Procedural music and sound
+│   ├── save.ts               Persistent progress
+│   ├── strings.ts            English / Spanish game copy
+│   └── version.ts            Runtime game version
+├── assets/
+│   ├── worlds/               Nine world folders
+│   ├── shared/               Cross-world/common art
+│   └── special/              Special-mode art
+├── docs/
+│   ├── README.md             Documentation index
+│   ├── assets.md             Asset locations and URL mapping
+│   ├── structure.md          Build and compatibility rules
+│   └── legacy-repository-guide.md
+├── build/                    Vite/public asset integration
+├── lib/storage.ts            Adapter to shared portfolio storage
+├── scripts/                  Regression/public-output checks
+└── tests/                    Layout/integration tests
 ```
 
-Every world has enemies, bosses and its floor; scenery is present where an existing dedicated set was available. Shared effects, map-selection pictures and heroes are not duplicated across worlds.
+## Assets: source path vs public URL
 
-### Asset organization and safe editing
+Repository organization is intentionally different from browser URLs.
 
-`shared/` holds heroes, UI, skills, weapons, companions, effects, equipment, global backgrounds, map-selection art, documentation images and upgrade icons. The shared `forge/` contains upgrade icons, not World 7 scenery. `special/secret-shift/bosses/` contains Kratos and his second form. Files are not duplicated across worlds.
+| Canonical source | Runtime/public URL |
+|---|---|
+| `assets/worlds/02-hotfix-inferno/bosses/overlord-0.webp` | `/images/game/bosses/overlord-0.webp` |
+| `assets/worlds/05-legacy-jungle/scenery/stone-0.webp` | `/images/game/jungle/stone-0.webp` |
+| `assets/shared/skills/fire.webp` | `/images/game/skills/fire.webp` |
+| `assets/shared/ui/logo.webp` | `/images/game/ui/logo.webp` |
+| `assets/special/secret-shift/bosses/kratos-0.webp` | `/images/game/bosses/kratos-0.webp` |
+| `game.html` | `/game.html` |
 
-Keep filenames, numbered frames, transparency, dimensions and anchor points unchanged unless intentionally updating a character. Check `src/draw.ts` for frame selection; filenames alone do not describe a pose. Do not edit generated `.cache/`, `dist/` or root `public/` files.
+The projection is implemented by [`build/asset-paths.mjs`](./build/asset-paths.mjs) and [`build/integration.mjs`](./build/integration.mjs). Runtime code should continue to reference `/images/game/...`; do **not** rewrite browser paths to `/worlds/`, `/shared/` or `/special/`.
 
-## Run and build
+See **[Asset guide](./docs/assets.md)** for the full folder map and safe-editing rules.
 
-Use the repository's **Node 24.x** requirement and run these from the repository root:
+## Development
+
+Run commands from the **repository root** using Node 24.x:
 
 ```bash
 npm ci
-npm run dev:game             # Open the existing /game.html route
-npm run test:game:layout     # Preparation and world-asset integration tests
-npm run typecheck           # Includes bug-hunter/src and the integration types
-npm run test:game            # Existing gameplay regression checks, relocated
-npm run build               # Site + game, then verify published game assets
+npm run dev:game
+npm run typecheck
+npm run test:game:layout
+npm run test:game
+npm run build
 npm run preview
 ```
 
-There is no second package installation inside this folder. Vercel continues using the repository root and `npm run build`; no new deployment project is required.
+Useful source-of-truth rules:
 
-## Asset paths: source versus browser
+- Edit `bug-hunter/game.html`, not generated root `game.html`.
+- Edit `bug-hunter/assets/`, not the retired `static/images/game/`.
+- Keep sprite filenames, dimensions, transparency, frame order and anchor behavior stable unless the change explicitly requires otherwise.
+- Update [`src/version.ts`](./src/version.ts) and [`CHANGELOG.md`](./CHANGELOG.md) together for game releases.
+- Do not claim a fixture test is a visual gameplay test or a full production build.
 
-| Edit this repository path | Existing public URL |
-|---|---|
-| `bug-hunter/assets/worlds/02-hotfix-inferno/bosses/overlord-0.webp` | `/images/game/bosses/overlord-0.webp` |
-| `bug-hunter/assets/worlds/04-big-ball-of-mud/enemies/snake-p-0.webp` | `/images/game/enemies/snake-p-0.webp` |
-| `bug-hunter/assets/shared/ui/logo.webp` | `/images/game/ui/logo.webp` |
-| `bug-hunter/game.html` | `/game.html` |
+## Documentation
 
-The build-only resolver in `build/asset-paths.mjs` maps world/shared/special folders back to the established public URLs. Scenery maps back to its original cast folder, such as `demon/` or `jungle/`. Duplicate public URLs fail explicitly instead of overwriting another world's art.
-
-The build integration mirrors these files into an ignored `.cache/` directory and generates the root HTML entry. Vite then emits the existing site layout into `dist/`; the shared build copies it to `public/` for deployment. Do not edit those generated locations, recreate the old source folders, or rename browser URLs merely because repository folders moved.
-
-See [the structure/migration notes](./docs/structure.md). No sprite resizing, gameplay changes, save-key changes or combat-layout changes are part of this reorganization.
+- **[Asset guide](./docs/assets.md)** — where every class of game art belongs and how source paths map to public URLs.
+- **[Structure & compatibility](./docs/structure.md)** — how the dedicated game folder integrates with Vite and preserves existing URLs/saves.
+- **[Release history](./CHANGELOG.md)** — current and historical game versions.
+- **[Development guardrails](./AGENTS.md)** — rules for code/asset changes.
+- **[Legacy repository guide](./docs/legacy-repository-guide.md)** — preserved historical notes; old paths inside it are not authoritative.
 
 <p align="center">
-  <img src="./assets/shared/readme/screenshot-gameplay.webp" alt="Bug Hunter action gameplay screenshot" width="720">
+  <img src="./assets/shared/readme/screenshot-gameplay.webp" alt="Bug Hunter action gameplay" width="720">
 </p>

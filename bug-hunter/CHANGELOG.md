@@ -1,5 +1,7 @@
 # Bug Hunter - Changelog
 
+[Game README](./README.md) · [Asset guide](./docs/assets.md) · [Documentation](./docs/) · [Browse assets](./assets/)
+
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
 ## 1.13.7 - 2026-10-24
