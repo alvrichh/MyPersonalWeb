@@ -3,3 +3,7 @@ node_modules
 public
 dist-ssr
 dist
+
+# Generated public compatibility files; edit bug-hunter/ instead.
+/.cache/
+/game.html

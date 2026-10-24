@@ -15,5 +15,5 @@
     "noEmit": true,
     "types": ["vite/client"]
   },
-  "include": ["src", "vite.config.mts"]
+  "include": ["src", "bug-hunter/src", "bug-hunter/lib", "vite.config.mts"]
 }

@@ -6,46 +6,60 @@ React 19, TypeScript and SCSS, built with Vite. The pages are prerendered at
 build time, so they read fine without JavaScript, and React takes over in the
 browser. Eleven languages, light and dark themes and eight accent colours.
 
+## BUG HUNTER
+
+The browser game has its own clearly separated home: **[bug-hunter/](./bug-hunter/)**.
+Open that folder for its README, action and Battle modes, code, sprites, development commands and release history.
+
+**[Play](https://alvrich.vercel.app/game.html) · [Game guide](./bug-hunter/README.md) · [Game code](./bug-hunter/src/) · [Assets](./bug-hunter/assets/) · [Changelog](./bug-hunter/CHANGELOG.md)**
+
 ## Run it
 
+Use Node 24.x and run commands from this repository root:
+
 ```bash
-npm install
-npm run dev        # http://localhost:5173 with hot reload
-npm run build      # production build into dist/ (and a copy in public/ for Vercel)
-npm run preview    # serve that build
+npm ci
+npm run dev               # portfolio and game development server
+npm run dev:game          # opens /game.html
+npm run build             # site + game into dist/ and public/; verifies game assets
+npm run preview
 npm run typecheck
+npm run test:game:layout   # source/build integration checks
+npm run test:game          # game rules regression checks
 ```
 
 ## Layout
 
+```text
+bug-hunter/                 All game-specific source, art, HTML, docs and checks
+  README.md                 Game entry point for readers
+  CHANGELOG.md              Game releases
+  game.html                 Editable game page template
+  src/                      Rules, canvas/UI, sound, saves and game version
+  assets/                   Sprites, effects, UI and worlds
+  build/                    Integration with the shared Vite build
+  scripts/, tests/, docs/    Game checks and documentation
+index.html, ai-radar.html    React page shells
+calendar.html, gym.html,     Other standalone tools
+planning.html
+src/                        Portfolio code, translations, styles and shared helpers
+static/                     Site-only public files: images/, cv/, data/, legal pages
+scripts/build/              Shared client/SSR build and prerender pipeline
+scripts/radar/              Daily AI radar bot
+docs/ai-watch/              Daily radar reports
 ```
-index.html, ai-radar.html     React pages (the HTML shell; content comes from src/)
-gym.html, planning.html,      older standalone tools
-calendar.html
-game.html                     Bug Hunter, an Archero-style game (code in src/game/)
-src/
-  client.tsx, server.tsx      browser entry (hydrate) and build-time renderer
-  pages.tsx                   page layouts
-  sections/                   page sections (hero, work, experience, radar…)
-  components/                 header, menus, pickers, icons
-  data/                       experience, projects and skills
-  i18n/locales/               one JSON per language; en.json is the reference
-  lib/                        storage, preferences, dates, radar data
-  styles/                     SCSS, one partial per area
-  legacy/                     code for gym and calendar
-  game/                       Bug Hunter: rules (world.ts), drawing, screens
-static/                       copied as-is: images/, cv/, data/
-scripts/
-  build/                      Vite build + prerender
-  radar/                      daily AI radar bot (one-off/ holds backfill scripts)
-docs/ai-watch/                daily radar reports written by the bot
-```
+
+The game still runs at `/game.html` and its images still use `/images/game/...`.
+Vite generates an ignored root `game.html` and a disposable `.cache/` public
+staging area from `bug-hunter/`. Edit the source folder, not generated files.
+The root package, lockfile, Vite/TypeScript configuration and deployment remain
+shared; the game does not require a second install or a new Vercel project.
 
 ## Adding text
 
-Every visible string lives in `src/i18n/locales/`. Add the key to `en.json`
-first; the other languages fall back to English until they get their own
-translation.
+Portfolio strings live in `src/i18n/locales/`. Add keys to `en.json` first;
+keep the other languages aligned. Game text is separate, in
+`bug-hunter/src/strings.ts` (English and Spanish).
 
 ## AI Radar
 
@@ -59,4 +73,6 @@ It never touches the site's code.
 ## Deploy
 
 Vercel builds every push with `npm run build` and publishes `public/`
-(see `vercel.json`). `dist/` is not committed.
+(see `vercel.json`). `dist/`, `public/`, `.cache/` and the generated root
+`game.html` are not committed. See the [game migration notes](./bug-hunter/docs/structure.md)
+for source-path changes and preserved public URLs.
