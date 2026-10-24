@@ -2562,7 +2562,7 @@ function renderBoardUi() {
     : '<span class="board-card is-sold"></span>').join('');
   const capLabel = `<span class="board-count" aria-label="${t('boardCapLabel')}">♟ ${b.army.length}/${armyCap(b.round)}</span>`;
   const bench = !fusion ? `<div class="board-bench-head"><small class="board-bench-title">${t('boardBench')} · ${b.bench.length}/${BENCH_CAP}</small>${capLabel}</div><div class="board-bench-slots" style="${benchStyle(b.world)}">${Array.from({ length: BENCH_CAP }, (_, i) => { const p = b.bench[i]; return p
-    ? `<button type="button" class="board-bench-slot is-world-${p.cast} is-t${p.tier}" data-bact="bench-deploy" data-i="${i}" aria-label="${t('boardBenchDeploy', { name: boardCharacterName(p.tier, p.cast) })}"${!prep || b.online?.waiting ? ' disabled' : ''}><img data-trim="${boardPic(p.tier, p.cast)}" src="${trimmedPics.get(boardPic(p.tier, p.cast)) ?? boardPic(p.tier, p.cast)}" alt="">${(p.star ?? 1) > 1 ? `<em>${'★'.repeat(p.star ?? 1)}</em>` : ''}</button>`
+    ? `<button type="button" class="board-bench-slot is-world-${p.cast} is-t${p.tier}" data-bact="bench-deploy" data-i="${i}" aria-label="${t('boardBenchDeploy', { name: boardCharacterName(p.tier, p.cast) })}"${!prep || b.online?.waiting ? ' disabled' : ''}><img data-trim="${boardPic(p.tier, p.cast)}" src="${trimmedPics.get(boardPic(p.tier, p.cast)) ?? boardPic(p.tier, p.cast)}" alt=""><em class="bench-stars is-s${p.star ?? 1}">${'<i></i>'.repeat(p.star ?? 1)}</em></button>`
     : '<span class="board-bench-slot is-empty"></span>'; }).join('')}</div>` : '';
   // The bench stays in view through the fight too, its reserves dimmed (they do not fight).
   boardBenchEl.hidden = fusion || !(prep || b.phase === 'fight');

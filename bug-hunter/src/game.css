@@ -5111,3 +5111,11 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   :root:not([data-retro]) .board-bench-float .board-bench-slot:not(.is-empty)::after { bottom: -44%; height: 36%; }
   :root:not([data-retro]) .board-bench-float .board-bench-slot > em { bottom: calc(var(--bench-unit) * var(--u) - 36%); font-size: 0.8rem; }
 }
+/* v1.13.27 — The bench's stars are the board's own: the painted star in bronze (★2 shows two silver, ★3 three gold,
+   as the board draws them), overlapping in a row over the unit's head (`ui/star-1..3.webp`). */
+:root:not([data-retro]) .board-bench-float .board-bench-slot > em.bench-stars { display: flex; gap: 0; font-size: 0; text-shadow: none; }
+.bench-stars i { display: block; width: 17px; height: 16px; margin-left: -7px; background: url('/images/game/ui/star-1.webp') center / contain no-repeat; filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.8)); }
+.bench-stars i:first-child { margin-left: 0; }
+.bench-stars.is-s2 i { background-image: url('/images/game/ui/star-2.webp'); }
+.bench-stars.is-s3 i { background-image: url('/images/game/ui/star-3.webp'); }
+:root[data-retro] .bench-stars i::before { content: '★'; color: #fde047; font-size: 0.6rem; }
