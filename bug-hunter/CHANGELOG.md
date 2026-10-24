@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.13.46 - 2026-10-24
+
+### Fixed - Fire-world cast and Kernel Panic recut from their own transparency
+- Both sheets already came transparent, but they were opened as RGB, which dropped their alpha and left the painted backdrop; they were then cut against that backdrop, losing wings, fire and the Kernel's glitch effects and leaving its fringes. They are now laid out straight from the sheet's own alpha, untouched (`scratchpad` `cutalpha.py`: each cell's pieces, specks under 30 px dropped, feet on a shared baseline): the imp, skull and gargoyle with whole wings and fire (the gargoyle walks with its own first poses again, the imp flinches with its own), and the Kernel Panic with its full orbs, spirals and spark. New `SPRITE_CANVAS`/`BOSS_CANVAS` to match.
+
 ## 1.13.45 - 2026-10-24
 
 ### Changed - New Kernel Panic
