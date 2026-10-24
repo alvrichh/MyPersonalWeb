@@ -4895,3 +4895,6 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 }
 /* Under it a dark rail of the same shape, still while the bar is dragged, so the painted bar never shows. */
 .cover-play-bar.is-slot { border-image-source: url('/images/game/ui/btn2_blue.webp'); filter: brightness(0.22) saturate(0.4); }
+/* The achievements button is gold, with dark text. */
+.panel .primary.ach-open { --bar: url('/images/game/ui/btn1_gold.webp'); color: #1a1200; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35); }
+:root[data-retro] .panel .primary.ach-open { background: linear-gradient(135deg, #fde047, #f59e0b); color: #1a1200; text-shadow: none; }
