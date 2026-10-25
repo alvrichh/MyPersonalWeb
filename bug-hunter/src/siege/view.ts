@@ -1,4 +1,4 @@
-import { CASTS, FIELD, UNITS, type Effect, type Fighter, type Siege } from './model';
+import { CASTS, FIELD, UNITS, energyMax, type Effect, type Fighter, type Siege } from './model';
 
 export const THEMES = ['#50e6d0', '#ff885c', '#89d7ff', '#a8c36a', '#75d891', '#e9c66d', '#ffad60', '#a2b5ff', '#e688ff'];
 const pictures = new Map<string, { image: HTMLImageElement; crop?: [number, number, number, number] }>();
@@ -48,7 +48,7 @@ const backdropPath = (world: number) => `map/pv-${BACKDROPS[world - 1]}.jpg`;
 /** The story scenes' pictures: the world's map picture behind, its guardian's standing pose speaking. */
 export const backdropUrl = (world: number) => `/images/game/${backdropPath(world)}`;
 export const guardianUrl = (world: number) => `/images/game/bosses/${GUARDIANS[world - 1]}-2.webp`;
-const FX = ['arrows/water.webp', 'arrows/leaf.webp', 'arrows/fire.webp', 'fx/boom-big.webp', 'fx/impact.webp', ...[1, 2, 3, 4, 5, 6].map(n => `fx/bolt-y-${n}.webp`)];
+const FX = ['fx/wings-1.webp', 'fx/gem-big.webp', 'arrows/water.webp', 'arrows/leaf.webp', 'arrows/fire.webp', 'fx/boom-big.webp', 'fx/impact.webp', ...[1, 2, 3, 4, 5, 6].map(n => `fx/bolt-y-${n}.webp`)];
 /** Pictures drawn whole (backdrop, floor, effects): no alpha crop needed. */
 const stills = new Map<string, HTMLImageElement>();
 function still(path: string) {
@@ -116,6 +116,7 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   ctx.strokeStyle = color; ctx.globalAlpha = 0.6; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(0, ground - 10); ctx.lineTo(FIELD, ground - 10); ctx.stroke(); ctx.globalAlpha = 1;
   base(ctx, 80, ground, '#55e5c4', s.hp[0], s.maxHp[0], false, s.world);
   base(ctx, FIELD - 80, ground, '#ff718c', s.hp[1], s.maxHp[1], true, s.world);
+  mana(ctx, s, ground);
   const aimY = ground + 10;
   ctx.strokeStyle = '#ffe3a0'; ctx.globalAlpha = 0.65; ctx.setLineDash([4, 5]); ctx.beginPath(); ctx.ellipse(s.aim, aimY, 45, 13, 0, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha = 1;
   for (const u of [...s.units].sort((a, b) => a.lane - b.lane || a.x - b.x)) {
@@ -180,4 +181,35 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
   const bw = 90 + p * 90; ctx.drawImage(blast, e.x - bw / 2, ground + 10 - bw * 0.7, bw, bw * blast.naturalHeight / blast.naturalWidth);
   if (big) { const h = ground + 10, w = h * art.naturalWidth / art.naturalHeight; ctx.drawImage(art, e.x - w / 2, 0, w, h); }
   ctx.restore(); return true;
+}
+
+/** The mana angel, Cartoon Wars 2's statue on our side of the field: a crystal with wings on a pedestal that glows
+    brighter the more energy there is, and pulses when it is full. */
+const ANGEL_X = 290;
+function mana(ctx: CanvasRenderingContext2D, s: Siege, ground: number) {
+  const wings = still('fx/wings-1.webp'), gem = still('fx/gem-big.webp');
+  const fill = s.energy / energyMax(s), full = fill >= 0.999;
+  const glow = 0.35 + 0.65 * fill, beat = full ? 1 + Math.sin(s.time * 6) * 0.05 : 1;
+  const base = ground - 10, top = base - 48;
+  ctx.save();
+  // Pedestal.
+  ctx.fillStyle = '#3a4a5e'; ctx.strokeStyle = '#7f95b0'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(ANGEL_X - 26, base); ctx.lineTo(ANGEL_X - 18, top + 16); ctx.lineTo(ANGEL_X + 18, top + 16); ctx.lineTo(ANGEL_X + 26, base); ctx.closePath(); ctx.fill(); ctx.stroke();
+  ctx.fillRect(ANGEL_X - 24, top + 10, 48, 8);
+  if (ok(wings)) {
+    ctx.save(); ctx.globalAlpha = 0.55 + 0.45 * fill;
+    try { ctx.filter = 'hue-rotate(185deg) saturate(1.2)'; } catch { /* older canvases keep the fire wings */ }
+    const ww = 130 * beat, wh = ww * wings.naturalHeight / wings.naturalWidth;
+    ctx.drawImage(wings, ANGEL_X - ww / 2, top - wh * 0.62, ww, wh); ctx.restore();
+  }
+  ctx.shadowColor = '#5fd8ff'; ctx.shadowBlur = 8 + 30 * glow;
+  if (ok(gem)) {
+    const gw = 40 * beat, gh = gw * gem.naturalHeight / gem.naturalWidth;
+    ctx.globalAlpha = 0.5 + 0.5 * glow;
+    try { ctx.filter = 'hue-rotate(-75deg)'; } catch { /* purple gem */ }
+    ctx.drawImage(gem, ANGEL_X - gw / 2, top + 10 - gh, gw, gh);
+  }
+  ctx.restore();
+  // The energy rising inside the pedestal.
+  ctx.fillStyle = '#5fd8ff66'; const h = (base - top - 18) * fill; ctx.fillRect(ANGEL_X - 14, base - h, 28, h);
 }

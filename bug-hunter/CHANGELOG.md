@@ -4,6 +4,14 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.8 - 2026-10-25
+
+### Changed - Siege battle laid out like Cartoon Wars 2
+- Top bar: mana (energy, its rate and the army count) on the left; both fortresses' health bars face to face with «VS» in the middle, our wall and the enemy guardian at their ends; time left, coins and pause on the right.
+- The field: the bow's aim is a big ▲▼ control with a green orb standing on our wall; the camera is a small slider at the field's foot (dragging still pans).
+- A mana angel stands on our side of the field, a winged crystal on a pedestal that glows brighter, and fills, with the energy, pulsing when full (`fx/wings-1` tinted blue, `fx/gem-big`).
+- One bottom bar: the generator and the discharge as square magic buttons on the left, the five troop cards in the middle, and the bow as a big round button on the right with its quiver meter. On phones the cards take a second row.
+
 ## 1.14.7 - 2026-10-25
 
 ### Fixed - Arena thrower and shield wall sizes
