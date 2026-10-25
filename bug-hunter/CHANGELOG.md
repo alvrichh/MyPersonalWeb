@@ -7,7 +7,7 @@ This changelog tracks game-version changes starting with v1.12.55. Earlier relea
 ## 1.14.10 - 2026-10-25
 
 ### Changed - Siege ground without tile corners
-- The battlefield's ground no longer tiles the sprints' top-down floors (their frames showed as corners across the field). It is a plain band in each world's earth colours (moss, embers, snow, mud, jungle, sand, iron, haunted stone, crystal) with scattered pebbles, until each world has its own side-view ground strip.
+- The battlefield's ground is still each world's own floor, the one On Call is played on, but only its inside: the frame of walls round its edge showed as corners every time it repeated. Every other piece is mirrored so the joins match, and a band in the world's earth colours sits under it while it loads.
 
 ## 1.14.9 - 2026-10-25
 
