@@ -9,7 +9,7 @@ import { COIN_PACKS, currentOffer, grant, packBonus, SKIN_OFFERS, type CoinPack,
 import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPrize, type DailyResult } from './daily';
 import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
 import { MID_ART, boardBackdropBounds, draw, drawRetroFigure, preloadBoardBossFx, preloadCast, preloadFx, type Palette, type View } from './draw';
-import { DEFAULT_NAME, NAME_MAX, NET_ID, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, WORLD_SKINS, SKIN_PRICE, SKIN_GATE, skinOpen, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
+import { DEFAULT_NAME, NAME_MAX, NET_ID, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, WORLD_SKINS, SKIN_PRICE, SKIN_GATE, skinOpen, ownsSkin, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
 import { ABILITY, ABIL_V, BENCH_CAP, canFight, moveBenchSeat, CELL, COLS, FINAL_ID, HOME_ROW, NATIVE_WORLD_BONUS, ROWS, ROUNDS, SYNERGY, TACTICS, armyCap, deployBench, sellBench, storeOnBench, toggleAutoMerge, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, startOnlineFight, unitStats, updateBoard, waveSpots, waveUnitStats, type BoardGame, type Online, type Piece, type Variant } from './board';
 import { cleanCode, dial, hostGame, joinGame, leave as netLeave, presence, presenceOn, presenceReady, send as netSend, type NetHandlers, type NetMsg, type NetProfile, type NetState, type Together } from './net';
 import { ABILITY_ICON, ABILITY_PIC, SYNERGY_PIC, FIREBALL, boardMerged, boardUnitBounds, drawBoard, mirrorFight, drawBoardDrag, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
@@ -1435,7 +1435,7 @@ function shopScreen(note = '') {
   }).join('');
   // Skins: a shop window, the dearest things in the game; unlocked here, worn from Customise.
   const skinCards = SKINS.map((skin) => {
-    const owned = save.skins.includes(skin);
+    const owned = ownsSkin(save, skin);
     const worn = save.skin === skin;
     const open = skinOpen(save, skin);
     const price = SKIN_PRICE[skin];
@@ -1536,7 +1536,7 @@ function stylesScreen(note = '') {
   let picks = `<p class="how">${t('dressHint')}</p>`;
   if (dressSlot === 'skin') {
     const skinRow = (skin: HeroSkin) => {
-      const owned = save.skins.includes(skin);
+      const owned = ownsSkin(save, skin);
       const worn = save.skin === skin;
       const open = skinOpen(save, skin);
       const gate = SKIN_GATE[skin];
@@ -1546,7 +1546,7 @@ function stylesScreen(note = '') {
     };
     // Alvrich's world outfits fold away under one row (open while one of them is worn).
     const world = (WORLD_SKINS as readonly HeroSkin[]);
-    const worldOwned = world.filter((k) => save.skins.includes(k)).length;
+    const worldOwned = world.filter((k) => ownsSkin(save, k)).length;
     picks = `<h3 class="slot">${t('skinPick')}</h3>${note ? `<p class="note">${note}</p>` : ''}<div class="gear-list">${skinRow('boy')}
       <details class="skin-fold"${world.includes(save.skin) ? ' open' : ''}><summary><img class="skin-pic" src="./images/game/hero/${heroStill(world.includes(save.skin) ? save.skin : 'intern')}.webp" alt=""><b>${t('skinWorlds')}</b><em>${worldOwned}/${world.length}</em></summary>
         <div class="gear-list">${world.map(skinRow).join('')}</div></details>
@@ -3593,7 +3593,7 @@ screen.addEventListener('click', (event) => {
   } else if (target.dataset.skinBuy) {
     // A skin unlocked from the shop: bought, not worn (that is Customise's).
     const skin = target.dataset.skinBuy as HeroSkin;
-    if (save.skins.includes(skin) || !skinOpen(save, skin)) return;
+    if (ownsSkin(save, skin) || !skinOpen(save, skin)) return;
     if (save.coins < SKIN_PRICE[skin]) { shopScreen(t('notEnough')); return; }
     save.coins -= SKIN_PRICE[skin];
     save.skins.push(skin);
@@ -3607,7 +3607,7 @@ screen.addEventListener('click', (event) => {
     const portrait = ownHeroPortrait();
     // Skins are bought once with coins, then worn with a tap.
     const skin = target.dataset.skin as HeroSkin;
-    if (!save.skins.includes(skin)) {
+    if (!ownsSkin(save, skin)) {
       if (!skinOpen(save, skin)) return;
       if (save.coins < SKIN_PRICE[skin]) { stylesScreen(t('notEnough')); return; }
       save.coins -= SKIN_PRICE[skin];

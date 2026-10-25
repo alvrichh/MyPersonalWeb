@@ -3,7 +3,7 @@
    Nothing here takes money by itself: `payments.ts` decides whether a
    purchase can happen at all (today only the test checkout on localhost). */
 
-import type { HeroSkin, Save } from './save';
+import { ownsSkin, type HeroSkin, type Save } from './save';
 
 export type CoinPack = { id: string; price: number; coins: number; pic: number; tag?: 'popular' | 'best' | 'ultra' };
 export const COIN_PACKS: CoinPack[] = [
@@ -33,7 +33,7 @@ export function currentOffer(save: Save, now = Date.now()): { offer: SkinOffer; 
   const ends = (slot + 1) * OFFER_WINDOW;
   for (let i = 0; i < SKIN_OFFERS.length; i++) {
     const offer = SKIN_OFFERS[(slot + i) % SKIN_OFFERS.length];
-    if (!save.skins.includes(offer.skin) && !save.purchases.includes(offer.id)) return { offer, ends };
+    if (!ownsSkin(save, offer.skin) && !save.purchases.includes(offer.id)) return { offer, ends };
   }
   return null;
 }
