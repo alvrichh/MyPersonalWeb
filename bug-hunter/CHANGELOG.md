@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.38 - 2026-10-25
+
+### Changed - Server Reaper redrawn
+- The Server Reaper skin is replaced by the owner's redrawn sheet: scythe on his back, a blue lantern, and his shot a burst of ghost skulls from the lantern. Its 19 poses are cut with the sheet's own alpha and scaled to the old pictures' height, with his own back walk (`BACK_WALK`). The first pictures are kept in `assets/old/shared/hero/`.
+
 ## 1.14.37 - 2026-10-25
 
 ### Added - alvrich walks away with real steps
