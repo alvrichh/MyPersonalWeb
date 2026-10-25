@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.7 - 2026-10-25
+
+### Fixed - Arena thrower and shield wall sizes
+- The Arena's thrower (`greek-ticket`) drew about 48 px tall, taller than its own shield wall and every other world's thrower (28–45 px); `SPRITE_CANVAS` k 3.5 → 2.6 brings it to about 36 px.
+- Its shield wall (`greek-legacy`), the cast's tank, drew about 46 px; k 1.381 → 1.69 makes it about 56 px tall and 61 px wide, the biggest of the three as in the other worlds. The board's equal-height rule is unchanged.
+
 ## 1.14.6 - 2026-10-25
 
 ### Changed - Siege bow with a quiver meter
