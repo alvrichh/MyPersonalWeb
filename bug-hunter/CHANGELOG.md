@@ -6,9 +6,10 @@ This changelog tracks game-version changes starting with v1.12.55. Earlier relea
 
 ## 1.14.26 - 2026-10-25
 
-### Fixed - Intern, Kratos and Medusa skins cleaned up
-- The three skins' pictures (all their poses) are cleaned from their current files, the originals not being at hand (`scratchpad` `clean/clean.py`): see-through grey backdrop haze away from the figure is removed; the opaque grey ghost hugging the outline is peeled up to five pixels (the intern's legs and mug, Kratos's blades and chains; the intern's sneakers, at the bottom of the picture, left alone); Medusa's lime and yellow key fringe in the outer four pixels is removed; specks under 1% of the figure are dropped; small see-through holes inside the figure are filled from their surroundings; the intern's and Kratos's hard outline gets a one-pixel feather.
-- What the old cut lost (Medusa's snakes and blast cut at the picture's edge in some poses) cannot be brought back without the original sheets. The previous pictures are kept in `assets/old/shared/hero/`.
+### Fixed - Kratos and Medusa recut from their sheets, the intern cleaned up
+- Kratos (21 poses) and Medusa (13) are cut again from the owner's transparent sheets, using the sheets' own alpha: every figure takes its nearby pieces (effects, stars) and drops the sheet's stray specks and red/lime haze, then is scaled to the old pictures' height (Kratos 0.643, Medusa 0.47) so they keep their size in game. Medusa's cheer snakes and beam are now whole.
+- The intern, whose sheet is not at hand, is cleaned from its current files (`scratchpad` `clean/clean.py`): the grey backdrop haze and the grey ghost round its legs and mug are removed, specks dropped, small holes filled and its hard outline feathered.
+- The previous pictures are kept in `assets/old/shared/hero/`.
 
 ## 1.14.25 - 2026-10-25
 
