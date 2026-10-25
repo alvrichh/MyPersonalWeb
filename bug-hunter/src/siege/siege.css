@@ -96,3 +96,12 @@
 .siege-root .sg-skills [data-sg="strike"]:hover:not(:disabled){background:linear-gradient(#7d5ee6,#3f2a85);border-color:#c4b0ff}
 .siege-root .sg-bar .sg-deck button:hover:not(:disabled){background:linear-gradient(#2a83d1,#14507f);border-color:#9bd3ff}
 .sg-vs-pic{width:48px;height:36px}
+/* v1.14.9 — the L · A · S tabs (land, air, special) like Cartoon Wars 2, the active one gold. */
+.sg-tabs{display:flex;gap:4px}
+.siege-root .sg-tabs button{width:46px;height:64px;min-height:0;padding:0;border-radius:10px 4px 4px 10px;border:2px solid #5fb6ff;border-image:none;background:linear-gradient(#2a6db0,#123b66);color:#fff;font:900 26px/1 system-ui;font-style:italic;text-shadow:0 2px 0 #0a2a4a;clip-path:polygon(0 0,82% 0,100% 50%,82% 100%,0 100%)}
+.siege-root .sg-tabs button.is-on,.siege-root .sg-tabs button.is-on:hover{background:linear-gradient(#ffe07a,#e0a020);border-color:#fff3c4;color:#4a2a00;text-shadow:0 1px 0 #fff8}
+.siege-root .sg-tabs button:hover:not(.is-on){background:linear-gradient(#3680c8,#174a7c)}
+.siege-root .sg-bar .sg-deck [data-sg="generator"],.siege-root .sg-bar .sg-deck [data-sg="strike"],.siege-root .sg-bar .sg-deck [data-sg="missile"]{border-color:#c4a6ff;background:linear-gradient(#6a4bd1,#33206e)}
+.sg-bar .sg-deck small{white-space:nowrap}
+.sg-empty{margin:0;align-self:center;color:#aac3da;font-size:12px;padding:0 8px}
+@media(max-width:600px){.sg-tabs{grid-row:1;grid-column:1}.siege-root .sg-tabs button{width:44px;height:52px;font-size:22px}}

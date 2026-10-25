@@ -30,7 +30,7 @@ const GUARDIANS = ['monolith', 'overlord', 'valkyrie', 'mudmonster', 'queen', 'm
 const BACKDROPS = ['original', 'infierno', 'vikingos', 'lodo', 'jungla', 'rayo', 'robots', 'demonios', 'nucleo'];
 /** Six-pose sets; the rest walk on four, the boss sheets on their first three (two steps and a stand). */
 const SIX = new Set(['enemies/greek-bug', 'enemies/greek-ticket', 'enemies/greek-legacy', 'enemies/demon-bug', 'enemies/demon-ticket', 'enemies/demon-legacy']);
-const frames = (path: string) => path.startsWith('bosses/') ? 3 : SIX.has(path) ? 6 : 4;
+const frames = (path: string): number => path.startsWith('bosses/') ? 3 : SIX.has(path) ? 6 : 4;
 export function sprite(s: Siege, u: Fighter) {
   const spec = UNITS[u.id];
   if (!u.side) return spec.sprite;
@@ -48,7 +48,7 @@ const backdropPath = (world: number) => `map/pv-${BACKDROPS[world - 1]}.jpg`;
 /** The story scenes' pictures: the world's map picture behind, its guardian's standing pose speaking. */
 export const backdropUrl = (world: number) => `/images/game/${backdropPath(world)}`;
 export const guardianUrl = (world: number) => `/images/game/bosses/${GUARDIANS[world - 1]}-2.webp`;
-const FX = ['fx/wings-1.webp', 'fx/gem-big.webp', 'arrows/water.webp', 'arrows/leaf.webp', 'arrows/fire.webp', 'fx/boom-big.webp', 'fx/impact.webp', ...[1, 2, 3, 4, 5, 6].map(n => `fx/bolt-y-${n}.webp`)];
+const FX = ['fx/rocket.webp', 'fx/wings-1.webp', 'fx/gem-big.webp', 'arrows/water.webp', 'arrows/leaf.webp', 'arrows/fire.webp', 'fx/boom-big.webp', 'fx/impact.webp', ...[1, 2, 3, 4, 5, 6].map(n => `fx/bolt-y-${n}.webp`)];
 /** Pictures drawn whole (backdrop, floor, effects): no alpha crop needed. */
 const stills = new Map<string, HTMLImageElement>();
 function still(path: string) {
@@ -120,13 +120,14 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   const aimY = ground + 10;
   ctx.strokeStyle = '#ffe3a0'; ctx.globalAlpha = 0.65; ctx.setLineDash([4, 5]); ctx.beginPath(); ctx.ellipse(s.aim, aimY, 45, 13, 0, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha = 1;
   for (const u of [...s.units].sort((a, b) => a.lane - b.lane || a.x - b.x)) {
-    const spec = UNITS[u.id]; const y = ground + u.lane * 12;
+    // Air troops fly above their lane, their shadow on the ground under them.
+    const spec = UNITS[u.id], floor = ground + u.lane * 12, y = spec.air ? floor - 70 - u.lane * 8 + (reduced ? 0 : Math.sin(s.time * 4 + u.uid) * 5) : floor;
     const path = sprite(s, u);
     // A blow shows: the boss sheets' wind-up pose (3) and flinch (8), the others lunge and lean back when hit.
     const boss = path.startsWith('bosses/');
     const frame = boss && u.hit ? 3 : boss && u.flash ? 8 : reduced ? 0 : Math.floor(s.time * 6 + u.uid) % frames(path);
     const art = picture(`${path}-${frame}`); const size = spec.size * (u.boss ? 1.2 : 1);
-    ctx.fillStyle = u.side ? '#ff648577' : '#43ebce77'; ctx.beginPath(); ctx.ellipse(u.x, y + 2, size * 0.3, 7, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = u.side ? '#ff648577' : '#43ebce77'; ctx.beginPath(); ctx.ellipse(u.x, floor + 2, size * (spec.air ? 0.2 : 0.3), spec.air ? 4 : 7, 0, 0, Math.PI * 2); ctx.fill();
     if (art.image.complete && art.image.naturalWidth) {
       const crop = art.crop ?? [0, 0, art.image.width, art.image.height];
       const ratio = Math.min(size * 1.2 / crop[2], size / crop[3]);
@@ -159,6 +160,14 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
 /** The game's own effect art: the bow's painted arrows (wood from our fortress, water for our troops, leaf for theirs),
     impacts up close, and a blast with the yellow lightning for the discharge. */
 function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, ground: number) {
+  if (e.kind === 'rocket') {
+    const art = still('fx/rocket.webp'); if (!ok(art)) return false;
+    const at = (t: number) => ({ x: e.from + (e.x - e.from) * t, y: ground - 110 + 120 * t - Math.sin(t * Math.PI) * 190 });
+    const here = at(p), ahead = at(Math.min(1, p + 0.02)), len = 64, h = len * art.naturalHeight / art.naturalWidth;
+    ctx.save(); ctx.translate(here.x, here.y); ctx.rotate(Math.atan2(ahead.y - here.y, ahead.x - here.x || 0.001));
+    ctx.drawImage(art, -len / 2, -h / 2, len, h); ctx.restore(); return true;
+  }
+  if (e.kind === 'burst' && p < 0) return true;
   if (e.kind === 'arrow' || e.kind === 'shot') {
     const close = e.kind === 'shot' && Math.abs(e.x - e.from) < 60;
     const art = still(e.kind === 'arrow' ? 'arrows/fire.webp' : close ? 'fx/impact.webp' : e.side ? 'arrows/leaf.webp' : 'arrows/water.webp');

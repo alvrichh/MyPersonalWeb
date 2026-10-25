@@ -1,7 +1,7 @@
 import './siege.css';
 import { storage } from '../../lib/storage';
 import type { Key, T } from '../strings';
-import { CAP, FIELD, aimAt, LIMIT, SAVE_KEY, UNITS, canSummon, energyMax, energyRate, draw, BOW, generatorPrice, improveGenerator, newSiege, readProgress, settle, strike, summon, tick, upgrade, upgradePrice, type Siege } from './model';
+import { CAP, DECK, FIELD, aimAt, missile, LIMIT, SAVE_KEY, UNITS, canSummon, energyMax, energyRate, draw, BOW, generatorPrice, improveGenerator, newSiege, readProgress, settle, strike, summon, tick, upgrade, upgradePrice, type Siege } from './model';
 import { backdropUrl, guardianUrl, portrait, preload, render, type Camera } from './view';
 import { GUARDIAN_NAMES, bossTalk, intro, type Line } from './story';
 
@@ -15,6 +15,10 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   let selected = [...progress.deck], world = progress.unlocked;
   let state: Siege | null = null, paused = false, finished = false;
   let frame = 0, last = 0, accumulator = 0, uiAt = 0, bossTalked = false;
+  /** The bottom bar's tab, Cartoon Wars 2's L · A · S: land troops, air troops, special powers. */
+  let tab: 'land' | 'air' | 'special' = 'land';
+  const air = (id: number) => !!UNITS[id].air;
+  const tabCards = () => tab === 'special' ? [] : selected.filter(id => air(id) === (tab === 'air'));
   const camera: Camera = { x: 0, width: 650 };
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const previousFocus = document.activeElement as HTMLElement | null;
@@ -39,8 +43,9 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     cancelAnimationFrame(frame); battleAbort.abort(); state = null; paused = false;
     root.innerHTML = `<div class="sg-shell"><header class="sg-top"><span class="sg-eyebrow">BUG HUNTER / ${t('siegeName')}</span><button data-sg="exit">← ${t('siegeExit')}</button></header>
       <div class="sg-hero"><span class="sg-eyebrow">${t('siegeSoon')}</span><h1 class="sg-title">${t('siegeName')}</h1><p class="sg-intro">${t('siegeIntro')}</p>
-      <div class="sg-summary"><label>${t('siegeWorld')} <select data-sg-world aria-label="${t('siegeWorld')}">${Array.from({ length: 9 }, (_, i) => `<option value="${i + 1}" ${world === i + 1 ? 'selected' : ''} ${i + 1 > progress.unlocked ? 'disabled' : ''}>${i + 1}. ${worldName(i + 1)} ${progress.victories.includes(i + 1) ? '✓' : i + 1 > progress.unlocked ? '🔒' : ''}</option>`).join('')}</select></label><button class="sg-primary" data-sg="launch" ${selected.length !== 5 ? 'disabled' : ''}>${t('siegeLaunch')} →</button></div><p class="sg-muted">${t('siegePreviewNote')}</p></div>
-      <h2 class="sg-heading">${t('siegeArmy', { n: selected.length })}</h2><p class="sg-muted">${t('siegeChoose')}</p><div class="sg-roster">${UNITS.map(u => `<button class="sg-card ${selected.includes(u.id) ? 'is-selected' : ''}" data-sg-unit="${u.id}" aria-pressed="${selected.includes(u.id)}" ${u.unlock > progress.unlocked ? 'disabled' : ''}><span class="sg-check">${selected.includes(u.id) ? '✓' : ''}</span><img src="${portrait(u.id)}" alt=""><strong>${name(u.id)}</strong><small>${t(`siegeRole${u.id}` as Key)}</small><small>${u.unlock > progress.unlocked ? t('siegeUnlock', { n: u.unlock }) : t('siegeStats', { cost: u.cost, hp: u.hp, damage: u.damage })}</small></button>`).join('')}</div>
+      <div class="sg-summary"><label>${t('siegeWorld')} <select data-sg-world aria-label="${t('siegeWorld')}">${Array.from({ length: 9 }, (_, i) => `<option value="${i + 1}" ${world === i + 1 ? 'selected' : ''} ${i + 1 > progress.unlocked ? 'disabled' : ''}>${i + 1}. ${worldName(i + 1)} ${progress.victories.includes(i + 1) ? '✓' : i + 1 > progress.unlocked ? '🔒' : ''}</option>`).join('')}</select></label><button class="sg-primary" data-sg="launch" ${selected.length ? '' : 'disabled'}>${t('siegeLaunch')} →</button></div><p class="sg-muted">${t('siegePreviewNote')}</p></div>
+      <p class="sg-muted">${t('siegeChoose')}</p>
+      ${([false, true] as const).map(flying => `<h2 class="sg-heading">${t(flying ? 'siegeArmyAir' : 'siegeArmyLand', { n: selected.filter(id => air(id) === flying).length, max: DECK })}</h2><div class="sg-roster">${UNITS.filter(u => !!u.air === flying).map(u => `<button class="sg-card ${selected.includes(u.id) ? 'is-selected' : ''}" data-sg-unit="${u.id}" aria-pressed="${selected.includes(u.id)}" ${u.unlock > progress.unlocked ? 'disabled' : ''}><span class="sg-check">${selected.includes(u.id) ? '✓' : ''}</span><img src="${portrait(u.id)}" alt=""><strong>${name(u.id)}</strong><small>${t(`siegeRole${u.id}` as Key)}</small><small>${u.unlock > progress.unlocked ? t('siegeUnlock', { n: u.unlock }) : t('siegeStats', { cost: u.cost, hp: u.hp, damage: u.damage })}</small></button>`).join('')}</div>`).join('')}
       <p class="sg-message" role="status"></p><div class="sg-top"><h2 class="sg-heading">${t('siegeUpgrades')}</h2><strong>${t('siegeCoins', { n: progress.coins })}</strong></div>
       <div class="sg-upgrades">${progress.upgrades.map((level, i) => `<button data-sg-upgrade="${i}" ${level >= 5 || progress.coins < upgradePrice(level) ? 'disabled' : ''}><b>${t(`siegeUpgrade${i}` as Key)}</b><small>${level >= 5 ? t('siegeMax') : t('siegeUpgradeBuy', { n: level, cost: upgradePrice(level) })}</small></button>`).join('')}</div>
       <details class="sg-help"><summary>${t('siegeHow')}</summary><p>${t('siegeInstructions')}</p><p>${t('siegeKeys')}</p><p>${t('siegeRotate')}</p></details></div>`;
@@ -49,7 +54,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   function start() {
     cancelAnimationFrame(frame); battleAbort.abort(); battleAbort = new AbortController();
     const battleOptions = { signal: battleAbort.signal };
-    if (selected.length !== 5) return;
+    if (!selected.length) return;
     progress.deck = [...selected]; persist(); state = newSiege(progress, world); bossTalked = false;
     preload(world, selected); paused = false; camera.x = 0;
     // Laid out like Cartoon Wars 2: mana top left, both fortresses' health face to face in the middle, coins and pause
@@ -61,9 +66,10 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       <div class="sg-field"><canvas class="sg-arena" tabindex="0" role="img" aria-label="${t('siegeBattlefield')}"></canvas>
       <label class="sg-aim"><span aria-hidden="true">▲</span><input type="range" min="140" max="1080" step="10" value="700" data-sg-aim aria-label="${t('siegeAim')}"><span aria-hidden="true">▼</span></label>
       <div class="sg-camera"><button data-sg="home" aria-label="${t('siegeHome')}">◀</button><input type="range" min="0" max="1000" value="0" data-sg-camera aria-label="${t('siegeCamera')}"><button data-sg="enemy" aria-label="${t('siegeEnemy')}">▶</button></div></div>
-      <div class="sg-bar"><div class="sg-skills"><button data-sg="generator"></button><button data-sg="strike"></button></div>
-      <div class="sg-deck">${selected.map((id, i) => `<button data-sg-summon="${id}" aria-label="${i + 1}. ${name(id)} · ${UNITS[id].cost}"><img src="${portrait(id)}" alt=""><small data-sg-cost="${id}"></small><i class="sg-cooldown" data-sg-cooldown="${id}"></i></button>`).join('')}</div>
+      <div class="sg-bar"><div class="sg-tabs" role="tablist">${(['land', 'air', 'special'] as const).map(k => `<button role="tab" data-sg-tab="${k}" aria-label="${t(k === 'land' ? 'siegeTabLand' : k === 'air' ? 'siegeTabAir' : 'siegeTabSpecial')}">${k === 'land' ? 'L' : k === 'air' ? 'A' : 'S'}</button>`).join('')}</div>
+      <div class="sg-deck" data-sg-cards></div>
       <button data-sg="fire" class="sg-bow" aria-label="${t('siegeCannon')}"><img src="/images/game/arrows/fire.webp" alt=""><span data-sg-bow-label></span><i class="sg-quiver"><i data-sg-quiver></i></i></button></div></div>`;
+    tab = 'land'; cards();
     const canvas = q<HTMLCanvasElement>('canvas'); const ctx = canvas.getContext('2d')!;
     let pointer: { id: number; start: number; camera: number; moved: boolean } | null = null;
     canvas.addEventListener('pointerdown', e => {
@@ -109,6 +115,16 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     }
     updateUi(); canvas.focus(); frame = requestAnimationFrame(loop);
   }
+  /** Fill the bar's middle with the active tab's cards: its troops, or the special powers. */
+  function cards() {
+    root.querySelectorAll<HTMLElement>('[data-sg-tab]').forEach(b => { const on = b.dataset.sgTab === tab; b.classList.toggle('is-on', on); b.setAttribute('aria-selected', String(on)); });
+    const list = tabCards();
+    q('[data-sg-cards]').innerHTML = tab === 'special'
+      ? `<button data-sg="generator"></button><button data-sg="strike"></button><button data-sg="missile"></button>`
+      : list.length ? list.map((id, i) => `<button data-sg-summon="${id}" aria-label="${i + 1}. ${name(id)} · ${UNITS[id].cost}"><img src="${portrait(id)}" alt=""><small data-sg-cost="${id}"></small><i class="sg-cooldown" data-sg-cooldown="${id}"></i></button>`).join('')
+      : `<p class="sg-empty">${t('siegeAirEmpty')}</p>`;
+    updateUi();
+  }
   function updateUi() {
     if (!state) return; const s = state;
     for (const side of [0, 1]) {
@@ -119,16 +135,18 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     q('[data-sg-energy]').textContent = `${Math.floor(s.energy)} / ${energyMax(s)}`;
     const meter = q<HTMLProgressElement>('[data-sg-meter]'); meter.max = energyMax(s); meter.value = s.energy;
     q('[data-sg-status]').textContent = `+${energyRate(s).toFixed(1)}/s · ${s.units.filter(u => !u.side).length}/${CAP}`;
-    const generator = q<HTMLButtonElement>('[data-sg="generator"]'); generator.innerHTML = `<img src="/images/game/ui/orb.webp" alt=""><small>${s.generator >= 4 ? t('siegeMax') : `${s.generator}/4 · ${generatorPrice(s)}`}</small>`; generator.setAttribute('aria-label', s.generator >= 4 ? t('siegeMax') : t('siegeGenerator', { n: s.generator, cost: generatorPrice(s) })); generator.disabled = paused || s.phase !== 'fight' || s.generator >= 4 || s.energy < generatorPrice(s);
+    const generator = root.querySelector<HTMLButtonElement>('[data-sg="generator"]');
+    if (generator) { generator.innerHTML = `<img src="/images/game/ui/orb.webp" alt=""><small>${s.generator >= 4 ? t('siegeMax') : `${s.generator}/4 · ${generatorPrice(s)}`}</small>`; generator.setAttribute('aria-label', s.generator >= 4 ? t('siegeMax') : t('siegeGenerator', { n: s.generator, cost: generatorPrice(s) })); generator.disabled = paused || s.phase !== 'fight' || s.generator >= 4 || s.energy < generatorPrice(s); }
     const bowButton = q<HTMLButtonElement>('[data-sg="fire"]');
     q('[data-sg-bow-label]').textContent = s.bow.empty ? t('siegeBowEmpty') : t('siegeCannon');
     q('[data-sg-quiver]').style.width = `${s.bow.quiver / BOW.max * 100}%`;
     bowButton.classList.toggle('is-empty', s.bow.empty); bowButton.classList.toggle('is-drawing', s.bow.drawing && !s.bow.empty);
     bowButton.disabled = paused || s.phase !== 'fight';
-    for (const [action, key, cd] of [['strike', 'siegeSpell', s.spell]] as const) {
-      const button = q<HTMLButtonElement>(`[data-sg="${action}"]`); button.innerHTML = `<img src="/images/game/skills/bolt.webp" alt=""><small>${cd > 0 ? `${Math.ceil(cd)}s` : t('siegeReady')}</small>`; button.setAttribute('aria-label', t(key)); button.disabled = paused || s.phase !== 'fight' || cd > 0;
+    for (const [action, key, cd, pic] of [['strike', 'siegeSpell', s.spell, 'skills/bolt'], ['missile', 'siegeMissile', s.rocket, 'fx/rocket']] as const) {
+      const button = root.querySelector<HTMLButtonElement>(`[data-sg="${action}"]`); if (!button) continue;
+      button.innerHTML = `<img src="/images/game/${pic}.webp" alt=""><small>${cd > 0 ? `${Math.ceil(cd)}s` : t('siegeReady')}</small>`; button.setAttribute('aria-label', t(key)); button.disabled = paused || s.phase !== 'fight' || cd > 0;
     }
-    for (const id of selected) {
+    for (const id of tabCards()) {
       q<HTMLButtonElement>(`[data-sg-summon="${id}"]`).disabled = paused || !canSummon(s, id);
       q(`[data-sg-cost="${id}"]`).textContent = s.cooldowns[id] > 0 ? `${Math.ceil(s.cooldowns[id])}s` : `⚡ ${UNITS[id].cost}`;
       q(`[data-sg-cooldown="${id}"]`).style.width = `${s.cooldowns[id] / UNITS[id].cooldown * 100}%`;
@@ -189,11 +207,12 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     const { sg: action, sgUnit: unit, sgUpgrade: up, sgSummon: summonId } = button.dataset;
     if (unit !== undefined && !state) {
       const id = Number(unit); if (selected.includes(id)) selected = selected.filter(n => n !== id);
-      else if (selected.length < 5) selected.push(id);
+      else if (selected.filter(n => air(n) === air(id)).length < DECK) selected.push(id);
       else { q('.sg-message').textContent = t('siegeFull'); return; }
       prep(); root.querySelector<HTMLElement>(`[data-sg-unit="${id}"]`)?.focus(); return;
     }
     if (up !== undefined && !state) { if (upgrade(progress, Number(up))) { persist(); prep(); } return; }
+    if (button.dataset.sgTab && state) { tab = button.dataset.sgTab as typeof tab; cards(); return; }
     if (summonId !== undefined && state && !paused) { summon(state, Number(summonId)); updateUi(); return; }
     if (action === 'exit') close();
     else if (action === 'launch') talk(intro(world), start);
@@ -204,7 +223,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     else if (action === 'resume') resume();
     else if (action === 'home') camera.x = 0;
     else if (action === 'enemy') camera.x = Math.max(0, FIELD - camera.width);
-    else if (state && !paused) { if (action === 'generator') improveGenerator(state); if (action === 'strike') strike(state); updateUi(); }
+    else if (state && !paused) { if (action === 'generator') improveGenerator(state); if (action === 'strike') strike(state); if (action === 'missile') missile(state); updateUi(); }
   }, options);
   root.addEventListener('change', event => { if ((event.target as HTMLElement).hasAttribute('data-sg-world')) world = Number((event.target as HTMLSelectElement).value); }, options);
   root.addEventListener('input', event => {
@@ -227,8 +246,10 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     if (e.key === 'Escape') { e.preventDefault(); if (!state) close(); else if (state.phase === 'fight') paused ? resume() : pause(); return; }
     if (!state || paused || e.repeat || /INPUT|SELECT|TEXTAREA/.test((e.target as HTMLElement).tagName)) return;
     const key = e.key.toLowerCase();
-    if ('12345efq'.includes(key) || key.startsWith('arrow')) e.preventDefault();
-    if (/^[1-5]$/.test(key)) summon(state, selected[Number(key) - 1]);
+    if ('12345efqrlas'.includes(key) || key.startsWith('arrow')) e.preventDefault();
+    if (key === 'l' || key === 'a' || key === 's') { tab = key === 'l' ? 'land' : key === 'a' ? 'air' : 'special'; cards(); return; }
+    if (/^[1-5]$/.test(key)) { const n = Number(key) - 1; if (tab === 'special') [() => improveGenerator(state!), () => strike(state!), () => missile(state!)][n]?.(); else { const id = tabCards()[n]; if (id !== undefined) summon(state, id); } }
+    else if (key === 'r') missile(state);
     else if (key === 'e') improveGenerator(state); else if (key === 'f') draw(state, true); else if (key === 'q') strike(state);
     else if (key === 'arrowleft') camera.x = Math.max(0, camera.x - 100); else if (key === 'arrowright') camera.x = Math.min(Math.max(0, FIELD - camera.width), camera.x + 100);
     updateUi();
