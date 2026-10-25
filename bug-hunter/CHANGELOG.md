@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.36 - 2026-10-25
+
+### Added - Eight boss skins from On call
+- Eight new special skins (10000 each), each opened for sale by beating a final boss in On call, like the Server Reaper: Kernel Glitch (boss 1, Kernel Panic), Hotfix Demon (2, the Archdemon), Frost Shieldmaiden (3, the Drakkar), Legacy Bloom (5, the Queen), Thunder Heir (6, Zeus), Overclock Trooper (7, the Mech), Server Vampire (8, the Wraith) and Core Drake (9, Nocthrax).
+- Their 19 numbered poses are cut from the owner's transparent sheets with their own alpha (two touching poses on the vampire's sheet split at their thinnest column), scaled to alvrich's height, with their own back walk (`BACK_WALK`).
+
 ## 1.14.35 - 2026-10-25
 
 ### Added - Six new skins, redrawn, the first with their own back walk
