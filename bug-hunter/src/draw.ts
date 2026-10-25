@@ -485,6 +485,21 @@ function heroSet(skin: HeroSkin, hat?: ItemId) {
   return set;
 }
 
+/* Which way the hero faces, held steady: the pose's own angle (the target's while shooting on the move or standing,
+   the heading while walking) only turns the figure once it has pointed the other way for `FACE_HOLD` seconds, so a
+   shot at an enemy behind, a wave's gap or a stop between two touches no longer flips the figure for a frame. */
+const FACE_HOLD = 0.12;
+let faceLeft = false;
+let faceOtherSince = -1;
+function heroFacesLeft(angle: number, now: number) {
+  const c = Math.cos(angle);
+  const wantLeft = c < -0.2 ? true : c > 0.2 ? false : faceLeft;
+  if (wantLeft === faceLeft) { faceOtherSince = -1; return faceLeft; }
+  if (faceOtherSince < 0) faceOtherSince = now;
+  if (now - faceOtherSince >= FACE_HOLD) { faceLeft = wantLeft; faceOtherSince = -1; }
+  return faceLeft;
+}
+
 /* Retro: the ring with the portfolio's avatar and a hand-drawn hat, as the
    game first looked. */
 const avatar = new Image();
@@ -1015,7 +1030,7 @@ function drawPlayer(ctx: CanvasRenderingContext2D, g: Game, pal: Palette, now: n
     const bob = p.moving ? (pose === 'back' ? 0 : Math.abs(Math.sin(now * 14)) * (full ? 0.6 : 2)) : pose === 'cheer' ? Math.abs(Math.sin(now * 6)) * 3 : 0;
     // Shooting on the move faces the target; plain walking faces the way you go.
     const turn = pose === 'wshoot' || pose === 'wshoot2' || !p.moving ? p.face : p.heading;
-    const left = Math.cos(turn) < -0.2 && pose !== 'back' && pose !== 'cheer' && pose !== 'front' && pose !== 'fwalk' && pose !== 'fwalk2';
+    const left = heroFacesLeft(turn, now) && pose !== 'back' && pose !== 'cheer' && pose !== 'front' && pose !== 'fwalk' && pose !== 'fwalk2';
     // Keep the back sprite facing the same way; its legs get a procedural stride below instead of mirroring the whole figure.
     const vertical = p.moving && pose === 'front';
     ctx.save();
@@ -2470,7 +2485,7 @@ function drawHeroWings(ctx: CanvasRenderingContext2D, g: Game, pal: Palette, now
   const facing = pose === 'front' || pose === 'fwalk' || pose === 'fwalk2' || pose === 'cheer';
   if (back || facing) { drawWornWings(ctx, x, y, p.r, now); return; }
   const turn = pose === 'wshoot' || pose === 'wshoot2' || !p.moving ? p.face : p.heading;
-  drawWornWings(ctx, x, y, p.r, now, Math.cos(turn) < 0 ? 'right' : 'left');
+  drawWornWings(ctx, x, y, p.r, now, heroFacesLeft(turn, now) ? 'right' : 'left');
 }
 
 /* One flap: spread, raised, spread, half open; each pose fades into the next, so it flows rather than steps. */
