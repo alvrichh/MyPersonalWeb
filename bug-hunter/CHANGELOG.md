@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.33 - 2026-10-25
+
+### Changed - The profile's hero opens the character list scrolled into view
+- Tapping the hero (its 👕 badge) in the profile opens Customise already scrolled down to «Choose your character», instead of at its top.
+
 ## 1.14.32 - 2026-10-25
 
 ### Changed - Normal skin prices back; the six new skins removed
