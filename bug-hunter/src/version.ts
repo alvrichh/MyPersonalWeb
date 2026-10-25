@@ -4,7 +4,7 @@
  * This folder migration preserves the public game URL, saves and gameplay.
  * The build stamp changes automatically on each deployment.
  */
-export const GAME_VERSION = '1.14.26';
+export const GAME_VERSION = '1.14.27';
 
 declare const __GAME_BUILD__: { commit: string; built: string };
 /** Build stamp from the shared Vite configuration; safe outside Vite too. */
