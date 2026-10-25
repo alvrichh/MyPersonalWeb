@@ -95,7 +95,7 @@ function base(ctx: CanvasRenderingContext2D, x: number, ground: number, color: s
 }
 /** The camera: its left edge and width in field units, and how far left of the field it may go (a margin past our
     wall, so the aim control stands clear of it). */
-export interface Camera { x: number; width: number; min?: number }
+export interface Camera { x: number; width: number; min?: number; deck?: number }
 export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, s: Siege, camera: Camera, reduced: boolean) {
   const rect = canvas.getBoundingClientRect(); const w = rect.width, h = rect.height;
   if (!w || !h) return;
@@ -105,12 +105,15 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   const color = THEMES[s.world - 1];
   const sky = ctx.createLinearGradient(0, 0, 0, h); sky.addColorStop(0, '#080f21'); sky.addColorStop(1, '#172c3c');
   ctx.fillStyle = sky; ctx.fillRect(0, 0, w, h);
-  const scale = Math.min(h / 340, w / 650);
+  // Short, wide fields zoom in a little more, so the troops keep their size.
+  const scale = Math.min(h / (w / h > 2.2 ? 290 : 340), w / 650);
   camera.width = w / scale;
   camera.min = -AIM_GUTTER / scale;
   camera.x = Math.max(camera.min, Math.min(Math.max(camera.min, FIELD - camera.width), camera.x));
   // The bridge deck the troops walk on runs across the middle of the field.
-  const ground = h / scale * 0.5;
+  // On wide, short fields (phones held sideways) it sits lower, so less of the chasm shows.
+  camera.deck = w / h > 2.2 ? 0.62 : 0.5;
+  const ground = h / scale * camera.deck;
   // Cartoon Wars-style backdrop: the world's own map picture behind the field, scrolling slower than the troops.
   const back = still(backdropPath(s.world));
   if (ok(back)) {

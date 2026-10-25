@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.15 - 2026-10-25
+
+### Changed - Siege proportions on phones held sideways
+- On short landscape screens the HUD and the bottom bar are thin, as in Cartoon Wars 2: square 46 px cards, shorter L·A·S tabs, a smaller bow button and camera slider, so the field takes most of the screen (the bar took almost a third of it).
+- Wide fields (phones sideways, and wide desktops) zoom in a little and put the bridge deck lower (62% down instead of the middle), so less of the chasm shows and the troops keep their size. The aim control now follows the deck's height on every screen.
+
 ## 1.14.14 - 2026-10-25
 
 ### Changed - Siege: our fortress is the Backlog's Inferno Tower

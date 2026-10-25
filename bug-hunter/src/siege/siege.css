@@ -110,4 +110,21 @@
 .sg-aim{top:auto;bottom:30%;height:min(150px,48%);left:12px;width:40px;padding:4px 3px}
 .sg-aim input{min-height:0}
 /* The deck runs across the field's middle now: the aim stands on our wall, just above it. */
-.sg-aim{bottom:calc(50% + 6px);height:min(150px,44%)}
+.sg-aim{height:min(150px,52%)}
+/* v1.14.15 — phones held sideways (short screens), Cartoon Wars 2's proportions: a thin HUD, a thin bottom bar with
+   square cards, the field taking the rest. */
+@media (max-height:500px) and (orientation:landscape){
+  .sg-hud{padding:2px 10px;gap:8px}
+  .sg-mana{grid-template-columns:24px 1fr;column-gap:6px}.sg-mana img{width:24px;height:24px}
+  .sg-mana b{font-size:13px}.sg-mana small{font-size:10px}.sg-mana progress{height:4px}
+  .sg-vs-pic{width:32px;height:24px}.sg-hp{height:13px}
+  .siege-root .sg-hud-actions button{min-height:28px;min-width:34px}
+  .sg-bar{gap:6px;padding:3px 10px calc(3px + env(safe-area-inset-bottom) * .35)}
+  .siege-root .sg-tabs button{width:36px;height:46px;font-size:20px}
+  .siege-root .sg-bar .sg-deck button{flex:0 0 46px;width:46px;height:46px;border-radius:8px;padding:2px}
+  .sg-bar .sg-deck img{width:28px;height:28px}.sg-bar .sg-deck small{font-size:10px}
+  .siege-root .sg-bow{width:52px;height:52px;padding:4px}.sg-bow img{width:32px}
+  .sg-camera{bottom:3px;width:min(240px,40%);padding:0 4px}
+  .siege-root .sg-camera button{min-height:20px;min-width:20px;font-size:10px}
+  .sg-aim{height:min(120px,52%);width:34px}
+}
