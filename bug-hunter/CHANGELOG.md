@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.35 - 2026-10-25
+
+### Added - Six new skins, redrawn, the first with their own back walk
+- The owner's six redrawn special skins, now shooting like the hero, on sale from the start at their usual prices: Rubber Duck Trooper (5000), Cardboard Knight (5000), Black-Hat Hacker (8000), Skull King (10000), Potato Gladiator (5000) and Crunch-Time Boss (8000).
+- Each sheet's 19 numbered poses are cut with its own alpha (its faint haze under 70 and specks dropped) and scaled to alvrich's height: front, side and back standing; the back walk's two steps (`bwalk-0/1`, the first skins in `BACK_WALK`, so walking up alternates real steps); the front walk's two; the side walk's four; shooting; the aimed walk's four; cheer, hurt and knocked out.
+
 ## 1.14.34 - 2026-10-25
 
 ### Added - Room for a real walk away from the camera
