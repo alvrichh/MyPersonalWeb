@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.26 - 2026-10-25
+
+### Fixed - Intern, Kratos and Medusa skins cleaned up
+- The three skins' pictures (all their poses) are cleaned from their current files, the originals not being at hand (`scratchpad` `clean/clean.py`): see-through grey backdrop haze away from the figure is removed; the opaque grey ghost hugging the outline is peeled up to five pixels (the intern's legs and mug, Kratos's blades and chains; the intern's sneakers, at the bottom of the picture, left alone); Medusa's lime and yellow key fringe in the outer four pixels is removed; specks under 1% of the figure are dropped; small see-through holes inside the figure are filled from their surroundings; the intern's and Kratos's hard outline gets a one-pixel feather.
+- What the old cut lost (Medusa's snakes and blast cut at the picture's edge in some poses) cannot be brought back without the original sheets. The previous pictures are kept in `assets/old/shared/hero/`.
+
 ## 1.14.25 - 2026-10-25
 
 ### Added - Siege breaking robots and horned elite shooters (Cartoon Wars 2)
