@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.24 - 2026-10-25
+
+### Changed - Siege guardian after the fortress, and enemy flyers (Cartoon Wars 2)
+- As in Cartoon Wars 2, the world's guardian no longer joins when the fortress is half down or at 2:30: it comes out only once the fortress falls (its scene plays then), 2.6 times a troop's health instead of 1.35, and the battle is won when it falls too. The enemy's health bar becomes the guardian's, in purple.
+- Flyers join the enemy's waves as the battle goes on (from 1:42 in world 1 down to 0:40 in world 9), every third troop of a wave, each world its own (bat, imp, gargoyle, drone, dragon whelp…); only our ranged troops, flyers and arrows reach them. After two minutes the waves bring the heavy troop more often.
+
 ## 1.14.23 - 2026-10-25
 
 ### Changed - Siege bow lasts longer and empties like a ball

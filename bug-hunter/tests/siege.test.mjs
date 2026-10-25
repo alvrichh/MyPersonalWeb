@@ -51,9 +51,20 @@ test('base destruction, time limit and simultaneous destruction resolve defeat',
     m.tick(s, 1 / 30); assert.equal(s.phase, 'lost');
   }
 });
-test('guardian appears once at low base health', () => {
-  const s = m.newSiege(m.freshProgress(), 1); s.hp[1] = 500; m.tick(s, 1 / 30);
-  assert.equal(s.units.filter(u => u.boss).length, 1); run(s, 2); assert.equal(s.units.filter(u => u.boss).length, 1);
+test('the guardian comes out only when the fortress falls, and must fall for the win', () => {
+  const s = m.newSiege(m.freshProgress(), 1); s.nextWave = 999; s.hp[1] = 500; run(s, 1);
+  assert.equal(s.units.filter(u => u.boss).length, 0, 'not while the fortress stands');
+  s.hp[1] = 0; m.tick(s, 1 / 30);
+  assert.equal(s.units.filter(u => u.boss).length, 1); assert.equal(s.phase, 'fight', 'not won while the guardian stands');
+  run(s, 2); assert.equal(s.units.filter(u => u.boss).length, 1, 'only once');
+  s.units.find(u => u.boss).hp = 0; m.tick(s, 1 / 30); assert.equal(s.phase, 'won');
+});
+test('enemy flyers join the waves later on', () => {
+  const s = m.newSiege(m.freshProgress(), 2); s.hp[0] = 1e9; s.hp[1] = 1e9;
+  run(s, 20); assert.equal(s.units.some(u => u.side && m.UNITS[u.id].air), false);
+  run(s, 120); assert.ok(s.waves > 0); assert.ok(s.kills + s.units.filter(u => u.side).length > 0);
+  const seen = new Set(); for (let i = 0; i < 120 * 30; i++) { m.tick(s, 1 / 30); for (const u of s.units) if (u.side && m.UNITS[u.id].air) seen.add(u.id); }
+  assert.ok(seen.size > 0);
 });
 test('rewards are idempotent and unlock only the next world', () => {
   const p = m.freshProgress(), s = m.newSiege(p, 1); assert.equal(m.settle(p, s), 0);
