@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.48 - 2026-10-25
+
+### Changed - Wider, even shop cards on phones
+- Phones: the shop's content comes closer to the frame's stone (side bands 9.5% instead of 13%), so the two columns of cards are about 23 px wider in all.
+- Shop cards' lines sit in a box of the same height (three lines, four on phones), so the cards of a window line up. The long arsenal weapons, the spirits and the extra charm get short shop lines of about the same length (the full ones stay on the level-up cards).
+
 ## 1.14.47 - 2026-10-25
 
 ### Changed - Whole shop two by two on phones; skins worn from the shop; world outfits shown

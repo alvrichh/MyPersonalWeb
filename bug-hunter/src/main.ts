@@ -164,6 +164,10 @@ let arsenalOpened: SkillId | null = null;
 let itemOpened: ItemId | null = null;
 /** An item that waits for a world is on sale once that world is won in either mode. */
 const itemOpen = (item: { world?: number; needs?: SkillId }) => (!item.world || worldWon(save, item.world)) && (!item.needs || save.arsenal.includes(item.needs));
+/** A shop card's line: its own short one where the full text (also the level-up card's) runs long, so the cards in a
+    window come out about the same height. */
+const SHOP_SHORT = new Set(['extra', 'brick', 'molotov', 'mines', 'durian', 'ball', 'rocket', 'drill', 'lantern', 'spiritFire', 'spiritTide', 'spiritThorn', 'spiritVolt', 'spiritShade']);
+const shopText = (id: string) => t((SHOP_SHORT.has(id) ? `${id}Shop` : `${id}Text`) as Key);
 /** What a closed item's button says: the world to win, or the arsenal weapon to buy first. */
 const lockText = (item: { world?: number; needs?: SkillId }) =>
   item.needs && !save.arsenal.includes(item.needs) ? t('arsenalNeeds', { name: t(`${item.needs}Name` as Key) }) : t('arsenalLocked', { n: item.world ?? 0 });
@@ -331,8 +335,11 @@ function fitPanel() {
   if (save.retro) { panel.classList.remove('is-tall'); panel.style.height = ''; panel.style.padding = ''; return; }
   // offsetWidth, not the bounding box: the pop-up zoom must not shrink the measure.
   const w = panel.offsetWidth;
+  // The shop on a phone: its cards go two by two, so they come closer to the frame's stone (which ends at ~8.5% of the
+  // picture's width on both pictures; the 13% band also keeps the inner shade clear).
+  const snug = !!panel.querySelector('.shop-title') && window.matchMedia('(max-width: 600px)').matches;
   const pick = (kind: keyof typeof FRAMES) => {
-    const f = FRAMES[kind];
+    const f = snug ? { ...FRAMES[kind], l: 0.095, r: 0.095 } : FRAMES[kind];
     panel.style.padding = `0 ${f.r * w}px 0 ${f.l * w}px`;
     panel.style.height = 'auto';
     const content = inner.offsetHeight;
@@ -1373,7 +1380,7 @@ function shopScreen(note = '') {
         return `<div class="item${item.levels && owned ? ' has-levels' : ''}${worn ? ' is-on' : ''}${owned ? ' is-owned' : ''}${!owned && (!can || !open) ? ' is-locked' : ''}${item.legendary ? ' is-legendary' : ''}">
           <span class="icon" aria-hidden="true">${picIcon(item.icon, item.pic)}</span>
           <b>${item.legendary ? `<small class="legend">★ ${t('legendary')}</small>` : ''}${t(`${item.id}Name` as Key)}</b>
-          <span>${t(`${item.id}Text` as Key)}</span>
+          <span>${shopText(item.id)}</span>
           ${levelBlock(item)}
           ${action}
         </div>`;
@@ -1398,7 +1405,7 @@ function shopScreen(note = '') {
   const extraCard = `<div class="item forge-item${save.extraSlot ? ' is-on' : save.coins < EXTRA_SLOT_PRICE ? ' is-locked' : ''}">
       <span class="icon" aria-hidden="true">✚</span>
       <b>${t('extraSlot')}</b>
-      <span>${t('extraText')}</span>
+      <span>${shopText('extra')}</span>
       ${save.extraSlot ? `<button class="buy is-worn" disabled>✓ ${t('extraOwned')}</button>` : `<button class="buy${save.coins >= EXTRA_SLOT_PRICE ? '' : ' is-poor'}" data-extra-buy>${t('buy')} · 🪙 ${EXTRA_SLOT_PRICE}</button>`}
     </div>`;
   const forge = UPGRADES.map((u) => {
@@ -1413,7 +1420,7 @@ function shopScreen(note = '') {
     return `<div class="item forge-item${maxed ? ' is-on' : ''}${!maxed && !can ? ' is-locked' : ''}">
       <span class="icon" aria-hidden="true">${picIcon(u.icon, upgradePic(u.id))}</span>
       <b>${t(`${u.id}Name` as Key)}</b>
-      <span>${t(`${u.id}Text` as Key)}</span>
+      <span>${shopText(u.id)}</span>
       <span class="pips" aria-label="${t('upgradeLevel', { level, max: u.max })}">${pips}</span>
       ${action}
     </div>`;
@@ -1432,7 +1439,7 @@ function shopScreen(note = '') {
     return `<div class="item${owned ? ' is-on is-owned' : ''}${!owned && (!can || !open) ? ' is-locked' : ''}">
       <span class="icon" aria-hidden="true">${picIcon(EMOJI[id], `skills/${id}.webp`)}</span>
       <b>${t(`${id}Name` as Key)}</b>
-      <span>${t(`${id}Text` as Key)}</span>
+      <span>${shopText(id)}</span>
       ${action}
     </div>`;
   }).join('');
