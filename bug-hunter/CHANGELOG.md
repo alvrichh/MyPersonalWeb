@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.32 - 2026-10-25
+
+### Changed - Normal skin prices back; the six new skins removed
+- The testing switch is off (`FREE_SKINS = false`): skins have their world and boss gates and their usual prices again.
+- The six skins added in 1.14.28 (Rubber Duck Knight, Cardboard Knight, Black-Hat Hacker, Skull King, Potato Gladiator, The Boss) are removed, their pictures and names with them, as their art was not right. A save that bought or wore one (for 0 coins in 1.14.31) drops it and goes back to alvrich.
+
 ## 1.14.31 - 2026-10-25
 
 ### Changed - Skins on sale for 0 coins, not given away

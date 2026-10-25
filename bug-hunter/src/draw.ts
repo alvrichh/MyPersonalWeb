@@ -823,8 +823,7 @@ const SIDE_WALK = new Set<Pose>(['walk', 'walk2', 'wshoot', 'wshoot2']);
    walk picture's scale (`scratchpad` `sidewalk/cut.py`); the other bipeds retain their authored two-pose cycle. */
 const SIDE_CYCLE = new Set(['boy-base', 'boy-wizard', 'boy-helm', 'boy-bandana', 'boy-crown',
   // The world skins and the special ones with legs (Medusa's tail is walked by the warp), from their own sheets.
-  ...['intern', 'lava', 'arctic', 'swamp', 'jungle', 'gladiator', 'mech', 'ghost', 'dragon', 'kratos', 'weso', 'reaper',
-    'duck', 'box', 'hacker', 'king', 'potato', 'suit'].map((s) => `${s}-base`)]);
+  ...['intern', 'lava', 'arctic', 'swamp', 'jungle', 'gladiator', 'mech', 'ghost', 'dragon', 'kratos', 'weso', 'reaper'].map((s) => `${s}-base`)]);
 /** Seconds each frame of the side walk cycle shows (a full stride is four). */
 const SIDE_STEP = 0.12;
 const sideCycles = new Map<string, HTMLImageElement[]>();

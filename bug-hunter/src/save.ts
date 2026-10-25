@@ -10,26 +10,22 @@ export type EnemyStyle = 'world' | 'original' | 'demon' | 'viking' | 'mud' | 'ju
 export const STYLES: EnemyStyle[] = ['world', 'original', 'demon', 'viking', 'mud', 'jungle', 'greek', 'robot', 'nightmare', 'core', 'random'];
 
 /** Alvrich, the robot, Kitty, and Alvrich dressed for each world (the owner's sheets, one a world in order). */
-export type HeroSkin = 'boy' | 'robot' | 'kitty' | 'intern' | 'lava' | 'arctic' | 'swamp' | 'jungle' | 'gladiator' | 'mech' | 'ghost' | 'dragon' | 'kratos' | 'medusa' | 'weso' | 'reaper'
-  | 'duck' | 'box' | 'hacker' | 'king' | 'potato' | 'suit';
+export type HeroSkin = 'boy' | 'robot' | 'kitty' | 'intern' | 'lava' | 'arctic' | 'swamp' | 'jungle' | 'gladiator' | 'mech' | 'ghost' | 'dragon' | 'kratos' | 'medusa' | 'weso' | 'reaper';
 /** Special skins, the dearest kind (the owner's rule), hatless like the world ones. */
 export const SPECIAL_SKINS = ['kratos', 'medusa', 'weso', 'reaper'] as const;
-/** The owner's second family of special skins (1.14.28), on sale from the start. */
-export const NEW_SKINS = ['duck', 'box', 'hacker', 'king', 'potato', 'suit'] as const;
 export const WORLD_SKINS = ['intern', 'lava', 'arctic', 'swamp', 'jungle', 'gladiator', 'mech', 'ghost', 'dragon'] as const;
 // Alvrich, then the world skins in world order, and the special ones (the dearest) at the end of the list.
-export const SKINS: HeroSkin[] = ['boy', ...WORLD_SKINS, 'robot', 'kitty', ...NEW_SKINS, ...SPECIAL_SKINS];
+export const SKINS: HeroSkin[] = ['boy', ...WORLD_SKINS, 'robot', 'kitty', ...SPECIAL_SKINS];
 /** What each figure costs in coins; Alvrich comes free. The owner's rule: skins are always the dearest thing in the game (items, forge levels, the revive), so raise these if anything else goes past them. */
 /** What each figure costs in coins once it is open (`skinOpen`); Alvrich comes free. The owner's rule: the special
     skins (robot, Kitty and the boss-like ones) are the dearest thing in the game; the world skins are plain outfits,
     1000, and the intern, the first, 500. */
 export const SKIN_PRICE: Record<HeroSkin, number> = {
   boy: 0, robot: 10000, kitty: 10000, kratos: 10000, medusa: 10000, weso: 10000, reaper: 10000,
-  duck: 5000, box: 5000, hacker: 8000, king: 10000, potato: 5000, suit: 8000,
   intern: 500, lava: 1000, arctic: 1000, swamp: 1000, jungle: 1000, gladiator: 1000, mech: 1000, ghost: 1000, dragon: 1000,
 };
 /** The hats are painted on the hero's pictures; a skin listed here has no hat versions and always shows its base set. */
-const HATLESS: HeroSkin[] = ['kitty', ...SPECIAL_SKINS, ...WORLD_SKINS, ...NEW_SKINS];
+const HATLESS: HeroSkin[] = ['kitty', ...SPECIAL_SKINS, ...WORLD_SKINS];
 const HAT_SET: Record<string, string> = { wizardHat: 'wizard', gladHelm: 'helm', bandana: 'bandana', crown: 'crown' };
 /** Hats painted only for some skins (Kitty wears none, see HATLESS). */
 const HAT_SKINS: Record<string, HeroSkin[]> = { crown: ['boy', 'robot'] };
@@ -40,7 +36,7 @@ export const heroKey = (skin: HeroSkin, head?: string) =>
 export const FULL_HERO_SETS = [
   'boy-base', 'boy-wizard', 'boy-helm', 'boy-bandana', 'boy-crown',
   'robot-base', 'robot-wizard', 'robot-helm', 'robot-bandana', 'robot-crown', 'kitty-base',
-  ...[...SPECIAL_SKINS, ...WORLD_SKINS, ...NEW_SKINS].map((s) => `${s}-base`),
+  ...[...SPECIAL_SKINS, ...WORLD_SKINS].map((s) => `${s}-base`),
 ];
 /** The still picture for menus: facing the camera where the set has it, else the side idle. */
 export const heroStill = (skin: HeroSkin, head?: string) => {
@@ -328,13 +324,12 @@ export function writeSave(save: Save) {
 export type SkinGate = { world: number } | { boss: number } | { secret: true } | null;
 export const SKIN_GATE: Record<HeroSkin, SkinGate> = {
   boy: null, robot: null, kitty: null, intern: null,
-  duck: null, box: null, hacker: null, king: null, potato: null, suit: null,
   lava: { world: 1 }, arctic: { world: 2 }, swamp: { world: 3 }, jungle: { world: 4 }, gladiator: { world: 5 }, mech: { world: 6 }, ghost: { world: 7 }, dragon: { world: 8 },
   weso: { boss: 1 }, medusa: { boss: 4 }, reaper: { boss: 8 }, kratos: { secret: true },
 };
 /** Testing switch (the owner's call, 1.14.31): every skin on sale for 0 coins. Each still has to be bought to be owned
     (it is then in the save); set to false to bring back the gates and prices above. */
-export const FREE_SKINS = true;
+export const FREE_SKINS = false;
 /** What a skin costs now: 0 while `FREE_SKINS` is on. */
 export const skinPrice = (skin: HeroSkin) => (FREE_SKINS ? 0 : SKIN_PRICE[skin]);
 /** Whether the player has bought a skin. */
