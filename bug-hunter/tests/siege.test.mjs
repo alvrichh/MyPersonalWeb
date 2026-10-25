@@ -95,3 +95,19 @@ test('the bow empties its quiver while held, speeds up, and refills when let go'
   const p = m.freshProgress(); p.upgrades[3] = 4; const up = m.newSiege(p, 1);
   assert.ok(m.bowEvery(up.bow) < m.bowEvery(m.newSiege(m.freshProgress(), 1).bow)); assert.equal(m.bowCount(up.bow), 3);
 });
+test('air troops fly out of melee reach, ranged troops still hit them; armies keep five of each', () => {
+  assert.equal(m.canHit(0, 8), false, 'a melee bug cannot reach a bat'); assert.equal(m.canHit(1, 8), true, 'a spitter shoots it');
+  assert.equal(m.canHit(8, 0), true, 'a bat dives on the ground');
+  const s = m.newSiege(m.freshProgress(), 1); s.nextWave = 999; s.deck.push(8); s.energy = 999;
+  assert.equal(m.summon(s, 8), true); const bat = s.units[0]; bat.x = 500;
+  const bug = { ...bat, uid: 100, id: 0, side: 1, x: 520, hp: 9999, maxHp: 9999, damage: 50 };
+  s.units.push(bug); run(s, 2); assert.equal(bat.hp, bat.maxHp, 'the enemy bug never hits it'); assert.ok(bug.hp < 9999);
+  const p = m.readProgress(JSON.stringify({ version: 1, unlocked: 9, deck: [0, 1, 2, 3, 4, 6, 8, 9, 10, 11, 5, 7] }));
+  assert.equal(p.deck.filter(id => !m.UNITS[id].air).length, 5); assert.equal(p.deck.filter(id => m.UNITS[id].air).length, 5);
+});
+test('the missile blasts the aim and recharges', () => {
+  const s = m.newSiege(m.freshProgress(), 1); s.aim = 600;
+  s.units.push({ uid: 1, id: 0, side: 1, x: 620, lane: 0, hp: 200, maxHp: 200, damage: 0, attack: 0, flash: 0, boss: false });
+  assert.equal(m.missile(s), true); assert.ok(s.units[0].hp < 200); assert.equal(m.missile(s), false);
+  run(s, m.ROCKET.every + 0.1); assert.equal(m.missile(s), true);
+});

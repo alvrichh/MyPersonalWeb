@@ -4,6 +4,14 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.9 - 2026-10-25
+
+### Added - Siege L · A · S tabs, air troops and the missile
+- The bottom bar has Cartoon Wars 2's three tabs: L (land troops), A (air troops) and S (special powers); the cards in the middle change with the tab (keys L/A/S, and 1–5 for the tab's cards).
+- Air troops fly above the field, their shadow under them, out of reach of melee troops (only ranged ones and other flyers hit them). The flame skull is now one, and four join: the bat (from world 1), the imp (2), the drone (4, ranged) and the crystal harpy (6, area damage), all from the worlds' own flying enemies.
+- Armies take up to five land and five air troops; the preparation shows them in two groups. Older saves keep their troops.
+- S holds the generator, the discharge and a new missile (`fx/rocket`): it arcs from our wall to the aim and blasts there (12 s recharge, key R).
+
 ## 1.14.8 - 2026-10-25
 
 ### Changed - Siege battle laid out like Cartoon Wars 2
