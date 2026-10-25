@@ -11,9 +11,10 @@ export const STYLES: EnemyStyle[] = ['world', 'original', 'demon', 'viking', 'mu
 
 /** Alvrich, the robot, Kitty, and Alvrich dressed for each world (the owner's sheets, one a world in order). */
 export type HeroSkin = 'boy' | 'robot' | 'kitty' | 'intern' | 'lava' | 'arctic' | 'swamp' | 'jungle' | 'gladiator' | 'mech' | 'ghost' | 'dragon' | 'kratos' | 'medusa' | 'weso' | 'reaper'
-  | 'duck' | 'box' | 'hacker' | 'king' | 'potato' | 'suit';
+  | 'duck' | 'box' | 'hacker' | 'king' | 'potato' | 'suit'
+  | 'glitch' | 'inferno' | 'shieldmaiden' | 'bloom' | 'thunder' | 'overclock' | 'vampire' | 'drake';
 /** Special skins, the dearest kind (the owner's rule), hatless like the world ones. */
-export const SPECIAL_SKINS = ['kratos', 'medusa', 'weso', 'reaper'] as const;
+export const SPECIAL_SKINS = ['kratos', 'medusa', 'weso', 'reaper', 'glitch', 'inferno', 'shieldmaiden', 'bloom', 'thunder', 'overclock', 'vampire', 'drake'] as const;
 /** The owner's second family of special skins (1.14.35), on sale from the start, with their own back walk. */
 export const NEW_SKINS = ['duck', 'box', 'hacker', 'king', 'potato', 'suit'] as const;
 export const WORLD_SKINS = ['intern', 'lava', 'arctic', 'swamp', 'jungle', 'gladiator', 'mech', 'ghost', 'dragon'] as const;
@@ -25,6 +26,7 @@ export const SKINS: HeroSkin[] = ['boy', ...WORLD_SKINS, 'robot', 'kitty', ...NE
     1000, and the intern, the first, 500. */
 export const SKIN_PRICE: Record<HeroSkin, number> = {
   boy: 0, robot: 10000, kitty: 10000, kratos: 10000, medusa: 10000, weso: 10000, reaper: 10000,
+  glitch: 10000, inferno: 10000, shieldmaiden: 10000, bloom: 10000, thunder: 10000, overclock: 10000, vampire: 10000, drake: 10000,
   duck: 5000, box: 5000, hacker: 8000, king: 10000, potato: 5000, suit: 8000,
   intern: 500, lava: 1000, arctic: 1000, swamp: 1000, jungle: 1000, gladiator: 1000, mech: 1000, ghost: 1000, dragon: 1000,
 };
@@ -331,6 +333,8 @@ export const SKIN_GATE: Record<HeroSkin, SkinGate> = {
   duck: null, box: null, hacker: null, king: null, potato: null, suit: null,
   lava: { world: 1 }, arctic: { world: 2 }, swamp: { world: 3 }, jungle: { world: 4 }, gladiator: { world: 5 }, mech: { world: 6 }, ghost: { world: 7 }, dragon: { world: 8 },
   weso: { boss: 1 }, medusa: { boss: 4 }, reaper: { boss: 8 }, kratos: { secret: true },
+  // The owner's boss skins (1.14.36): each final boss beaten in On call opens its own.
+  glitch: { boss: 1 }, inferno: { boss: 2 }, shieldmaiden: { boss: 3 }, bloom: { boss: 5 }, thunder: { boss: 6 }, overclock: { boss: 7 }, vampire: { boss: 8 }, drake: { boss: 9 },
 };
 /** Testing switch (the owner's call, 1.14.31): every skin on sale for 0 coins. Each still has to be bought to be owned
     (it is then in the save); set to false to bring back the gates and prices above. */
