@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.46 - 2026-10-25
+
+### Changed - Skins in three groups; the shop's skins two by two on phones
+- Customise and the shop list the skins in the owner's three groups, each under a small gold title: World (alvrich and, in Customise, his folded world outfits), Specials (sold for coins from the start, cheapest first) and Bosses (in the order of the boss that opens each, the secret shift's Spartan last).
+- Shop, phones: skins two per row as small cards (figure, name and button; the description is read in Customise). Desktop already showed two per row. A group of one card (alvrich) is centred.
+
 ## 1.14.45 - 2026-10-25
 
 ### Fixed - Skin texts fit their plates and cards

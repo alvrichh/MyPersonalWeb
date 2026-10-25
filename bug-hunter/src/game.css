@@ -5207,3 +5207,30 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   padding-bottom: 0;
 }
 :root:not([data-retro]) .panel .skin-item:not(.is-locked) > .buy { margin-bottom: -64px; }
+/* v1.14.46 — Skins in the owner's three groups (world, specials, bosses), each under a small gold title, in
+   Customise and the shop. */
+.panel .skin-group {
+  display: flex; align-items: center; gap: 8px;
+  width: 100%; max-width: 440px; margin: 14px auto 4px;
+  font: 800 0.78rem/1 var(--font); letter-spacing: 0.14em; text-transform: uppercase;
+  color: #fcd34d; text-shadow: 0 1px 2px #000;
+}
+.panel .skin-group::before,
+.panel .skin-group::after { content: ''; flex: 1; height: 2px; background: linear-gradient(90deg, transparent, rgba(252, 211, 77, 0.65)); }
+.panel .skin-group::after { background: linear-gradient(270deg, transparent, rgba(252, 211, 77, 0.65)); }
+:root[data-retro] .panel .skin-group { color: var(--muted); text-shadow: none; font-family: ui-monospace, monospace; }
+:root[data-retro] .panel .skin-group::before,
+:root[data-retro] .panel .skin-group::after { background: var(--line); }
+/* Phones: the shop's skins two by two, as small cards: the figure, its name and the button (the joke is read in
+   Customise); the button's caption may take two lines. */
+@media (max-width: 600px) {
+  .panel .skin-items { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+  .panel .skin-items .skin-item { min-height: 0; padding-left: 2px; padding-right: 2px; padding-top: 8px; gap: 4px; }
+  .panel .skin-items .skin-item > span:not(.icon) { display: none; }
+  .panel .skin-items .skin-item b { font-size: 0.74rem; line-height: 1.15; }
+  .panel .skin-items .skin-item .icon .skin-pic { height: 4.6em; }
+  .panel .skin-items .skin-item .buy { width: 100%; min-height: 40px; padding: 4px 0; border-width: 0 12px; border-image-width: 0 12px; font-size: 0.62rem; line-height: 1.1; white-space: normal; }
+  :root:not([data-retro]) .panel .skin-items .skin-item:not(.is-locked) > .buy { margin-bottom: -62px; }
+}
+/* A group of one card (the shop's world group: alvrich alone) keeps a column's width, centred. */
+.panel .skin-items:has(> .skin-item:only-child) { grid-template-columns: minmax(0, calc(50% - 5px)); justify-content: center; }

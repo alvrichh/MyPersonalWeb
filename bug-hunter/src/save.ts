@@ -346,6 +346,19 @@ export const SKIN_GATE: Record<HeroSkin, SkinGate> = {
   // The owner's boss skins (1.14.36): each final boss beaten in On call opens its own.
   glitch: { boss: 1 }, inferno: { boss: 2 }, shieldmaiden: { boss: 3 }, bloom: { boss: 5 }, thunder: { boss: 6 }, overclock: { boss: 7 }, drake: { boss: 9 }, mudling: { boss: 4 },
 };
+/** The skins as Customise and the shop list them (the owner's order, 1.14.46): alvrich and his world outfits; the
+    specials sold for coins from the start, cheapest first; the boss skins by the boss that opens each, the secret
+    shift's last. */
+export const SKIN_GROUPS = (() => {
+  const world: HeroSkin[] = ['boy', ...WORLD_SKINS];
+  const bossOf = (k: HeroSkin) => { const g = SKIN_GATE[k]; return g && 'boss' in g ? g.boss : g && 'secret' in g ? 99 : 0; };
+  const rest = SKINS.filter((k) => !world.includes(k));
+  return {
+    world,
+    special: rest.filter((k) => !bossOf(k)).sort((a, b) => SKIN_PRICE[a] - SKIN_PRICE[b]),
+    boss: rest.filter((k) => bossOf(k)).sort((a, b) => bossOf(a) - bossOf(b)),
+  };
+})();
 /** Testing switch (the owner's call, 1.14.31): every skin on sale for 0 coins. Each still has to be bought to be owned
     (it is then in the save); set to false to bring back the gates and prices above. */
 export const FREE_SKINS = false;
