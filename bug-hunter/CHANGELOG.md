@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.16 - 2026-10-25
+
+### Changed - Siege: the Town Hall as our fortress, and a notice to turn the phone
+- Our fortress is now the Backlog's Town Hall, cut from its building sheet (`fortress/backlog/town-hall.webp`): wider and more of a castle than the Inferno Tower, which stays in the same folder for later. It is also our picture beside the health bars.
+- Holding a phone upright, a notice at the top of the field asks to turn it sideways for a better view; it can be dismissed and is never shown once the phone is sideways or on desktop.
+
 ## 1.14.15 - 2026-10-25
 
 ### Changed - Siege proportions on phones held sideways

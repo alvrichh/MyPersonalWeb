@@ -68,19 +68,19 @@ function still(path: string) {
   return image;
 }
 const ok = (image: HTMLImageElement) => image.complete && image.naturalWidth > 0;
-/** The fortresses: ours the Backlog's Inferno Tower (`fortress/backlog/inferno-tower`, cut from its building sheet), the
+/** The fortresses: ours the Backlog's Town Hall (`fortress/backlog/town-hall`, cut from its building sheet), the
     enemy's its world's walled Tactics bench front (`ui/bench/boss-N`). Falls back to the drawn tower while loading. */
 /** CSS pixels kept clear left of the field for the aim control. */
 const AIM_GUTTER = 60;
-const wallPath = (world: number, enemy: boolean) => !enemy ? 'fortress/backlog/inferno-tower' : `ui/bench/boss-${world}`;
+const wallPath = (world: number, enemy: boolean) => !enemy ? 'fortress/backlog/town-hall' : `ui/bench/boss-${world}`;
 function base(ctx: CanvasRenderingContext2D, x: number, ground: number, color: string, hp: number, max: number, enemy: boolean, world: number) {
   const wall = still(wallPath(world, enemy));
   ctx.save(); ctx.translate(x, ground);
   let top = -169;
   if (ok(wall)) {
-    // Ours is the Backlog's Inferno Tower (from its building sheet), standing tall; theirs a walled bench front.
+    // Ours is the Backlog's Town Hall (from its building sheet); theirs a walled bench front.
     // Never taller than the room above the deck, so its health bar stays in view.
-    const h = enemy ? 230 * wall.naturalHeight / wall.naturalWidth : Math.min(175, ground - 36), w = enemy ? 230 : h * wall.naturalWidth / wall.naturalHeight;
+    const h = enemy ? 230 * wall.naturalHeight / wall.naturalWidth : Math.min(150, ground - 36), w = enemy ? 230 : h * wall.naturalWidth / wall.naturalHeight;
     ctx.shadowColor = color; ctx.shadowBlur = 16;
     ctx.drawImage(wall, -w / 2, -h + (enemy ? 8 : 14), w, h);
     ctx.shadowBlur = 0; top = -h - 4;
