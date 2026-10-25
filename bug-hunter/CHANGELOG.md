@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.27 - 2026-10-25
+
+### Fixed - Intern recut from its sheet
+- The intern skin (21 poses) is cut again from the owner's transparent sheet like Kratos and Medusa in 1.14.26: the sheet's own alpha, each figure with its nearby effects (stars, blast), the sheet's red/yellow haze and specks dropped, scaled 0.653 to the old pictures' height. Its 1.14.26 cleanup is replaced; the first pictures stay in `assets/old/shared/hero/`.
+
 ## 1.14.26 - 2026-10-25
 
 ### Fixed - Kratos and Medusa recut from their sheets, the intern cleaned up
