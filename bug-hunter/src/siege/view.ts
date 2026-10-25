@@ -45,7 +45,7 @@ export function preload(world: number, deck: number[]) {
   [backdropPath(world), `floors/world${world}`, wallPath(world, false), wallPath(world, true), ...FX].forEach(still);
 }
 const backdropPath = (world: number) => `map/pv-${BACKDROPS[world - 1]}.jpg`;
-const FX = ['arrows/spark.webp', 'arrows/fire.webp', 'fx/fireball.webp', 'fx/boom-big.webp', 'fx/impact.webp', ...[1, 2, 3, 4, 5, 6].map(n => `fx/bolt-y-${n}.webp`)];
+const FX = ['arrows/water.webp', 'arrows/leaf.webp', 'arrows/fire.webp', 'fx/boom-big.webp', 'fx/impact.webp', ...[1, 2, 3, 4, 5, 6].map(n => `fx/bolt-y-${n}.webp`)];
 /** Pictures drawn whole (backdrop, floor, effects): no alpha crop needed. */
 const stills = new Map<string, HTMLImageElement>();
 function still(path: string) {
@@ -148,18 +148,22 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 
-/** The game's own effect art: shots fly as sparks (fire for the enemy), the cannon as a fireball, bursts as a blast. */
+/** The game's own effect art: the bow's painted arrows (wood from our fortress, water for our troops, leaf for theirs),
+    impacts up close, and a blast with the yellow lightning for the discharge. */
 function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, ground: number) {
-  if (e.kind === 'shot') {
-    const close = Math.abs(e.x - e.from) < 60;
-    const art = still(e.from === 80 ? 'fx/fireball.webp' : close ? 'fx/impact.webp' : e.side ? 'arrows/fire.webp' : 'arrows/spark.webp');
+  if (e.kind === 'arrow' || e.kind === 'shot') {
+    const close = e.kind === 'shot' && Math.abs(e.x - e.from) < 60;
+    const art = still(e.kind === 'arrow' ? 'arrows/fire.webp' : close ? 'fx/impact.webp' : e.side ? 'arrows/leaf.webp' : 'arrows/water.webp');
     if (!ok(art)) return false;
-    const x = close ? e.x : e.from + (e.x - e.from) * p, yy = close ? y : y - Math.sin(p * Math.PI) * 30;
-    const size = e.from === 80 ? 46 : close ? 30 : 26, dw = size, dh = size * art.naturalHeight / art.naturalWidth;
-    ctx.save(); ctx.globalAlpha = close ? 1 - p : 1; ctx.translate(x, yy);
-    if (!close) ctx.rotate(Math.atan2(-Math.cos(p * Math.PI) * 30 * Math.PI, e.x - e.from) + (e.x < e.from ? Math.PI : 0));
-    if (e.x < e.from) ctx.scale(-1, 1);
-    ctx.drawImage(art, -dw / 2, -dh / 2, dw, dh); ctx.restore(); return true;
+    if (close) { ctx.save(); ctx.globalAlpha = 1 - p; ctx.drawImage(art, e.x - 15, y - 15, 30, 30); ctx.restore(); return true; }
+    // A high arc for the fortress's arrows (from its wall top), a flat one for the troops'.
+    const startY = e.kind === 'arrow' ? ground - 110 : y, endY = e.kind === 'arrow' ? ground + e.lane * 12 - 14 : y;
+    const lift = e.kind === 'arrow' ? 150 : 30;
+    const at = (t: number) => ({ x: e.from + (e.x - e.from) * t, y: startY + (endY - startY) * t - Math.sin(t * Math.PI) * lift });
+    const here = at(p), ahead = at(Math.min(1, p + 0.02));
+    const len = e.kind === 'arrow' ? 72 : 40, h = len * art.naturalHeight / art.naturalWidth;
+    ctx.save(); ctx.translate(here.x, here.y); ctx.rotate(Math.atan2(ahead.y - here.y, ahead.x - here.x || 0.001));
+    ctx.drawImage(art, -len / 2, -h / 2, len, h); ctx.restore(); return true;
   }
   const big = e.max > 0.6;
   const art = still(big ? `fx/bolt-y-${1 + Math.min(5, Math.floor(p * 6))}.webp` : 'fx/boom-big.webp');
