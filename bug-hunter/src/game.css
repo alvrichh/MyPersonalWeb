@@ -3041,7 +3041,7 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .gear-row .scene-pic.is-floor { transform: scale(1.8); }
 .gear-row.is-locked .icon { opacity: 0.6; filter: grayscale(0.6); }
 .gear-row b { font-size: 0.92rem; color: #fff; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); }
-.gear-row > span:not(.icon) { font-size: 0.72rem; line-height: 1.25; }
+.gear-row > span:not(.icon) { font-size: 0.72rem; line-height: 1.25; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
 .gear-row em { font: 700 0.7rem/1 ui-monospace, monospace; letter-spacing: -0.03em; font-style: normal; color: #fcd34d; margin-top: 3px; white-space: nowrap; }
 .gear-row.is-on em { color: #86efac; }
 .gear-row.is-locked em { color: #cbd5e1; }
@@ -3061,8 +3061,9 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   .dress-nav { gap: 2px; }
   .dnav { width: 66px; }
   .dnav .ring { width: 52px; height: 52px; font-size: 1.3rem; }
-  .gear-row b { font-size: 0.82rem; }
-  .gear-row > span:not(.icon) { font-size: 0.64rem; }
+  /* A narrow phone: the name stays on one line and the text on two, so the plate's frame is never written over. */
+  .gear-row b { font-size: 0.74rem; letter-spacing: -0.01em; white-space: nowrap; }
+  .gear-row > span:not(.icon) { font-size: 0.62rem; }
 }
 
 /* Retro: plain circles, bordered plates and rows, no pad picture. */
@@ -5197,3 +5198,12 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .skin-fold[open] > summary::after { transform: rotate(180deg); }
 .skin-fold > summary .skin-pic { width: 40px; height: 48px; object-fit: contain; }
 .skin-fold > .gear-list { margin-top: 8px; }
+/* v1.14.45 — Shop skins on the lit card: its band and lower panel are a fixed strip at the bottom (the picture's
+   rows 200-322: band 205-224, panel 225-298), no longer stretched with the card, so the joke stays in the window above
+   the band and the button sits in the panel. */
+:root:not([data-retro]) .panel .skin-item:not(.is-locked) {
+  border-width: 15px 15px 84px;
+  border-image: url('/images/game/ui/shop_orange.webp') 45 45 122 fill / 15px 15px 84px stretch;
+  padding-bottom: 0;
+}
+:root:not([data-retro]) .panel .skin-item:not(.is-locked) > .buy { margin-bottom: -64px; }
