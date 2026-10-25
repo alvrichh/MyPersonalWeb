@@ -825,11 +825,11 @@ const SIDE_CYCLE = new Set(['boy-base', 'boy-wizard', 'boy-helm', 'boy-bandana',
   // The world skins and the special ones with legs (Medusa's tail is walked by the warp), from their own sheets.
   ...['intern', 'lava', 'arctic', 'swamp', 'jungle', 'gladiator', 'mech', 'ghost', 'dragon', 'kratos', 'weso', 'reaper',
     'duck', 'box', 'hacker', 'king', 'potato', 'suit',
-    'glitch', 'inferno', 'shieldmaiden', 'bloom', 'thunder', 'overclock', 'vampire', 'drake'].map((s) => `${s}-base`)]);
+    'glitch', 'inferno', 'shieldmaiden', 'bloom', 'thunder', 'overclock', 'vampire', 'drake', 'mudling'].map((s) => `${s}-base`)]);
 /* Sets with their own walk away from the camera (`hero/<set>-bwalk-0..1`: one foot up, then the other), drawn instead of
    striding the single back picture. Add a set's key here once its two pictures are in `assets/shared/hero/`. */
 const BACK_WALK = new Set<string>(['boy', 'reaper', 'duck', 'box', 'hacker', 'king', 'potato', 'suit',
-  'glitch', 'inferno', 'shieldmaiden', 'bloom', 'thunder', 'overclock', 'vampire', 'drake'].map((s) => `${s}-base`));
+  'glitch', 'inferno', 'shieldmaiden', 'bloom', 'thunder', 'overclock', 'vampire', 'drake', 'mudling'].map((s) => `${s}-base`));
 const backWalks = new Map<string, HTMLImageElement[]>();
 function backWalk(key: string) {
   let frames = backWalks.get(key);
