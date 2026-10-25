@@ -74,7 +74,9 @@ export interface Effect { x: number; from: number; lane: number; life: number; m
 export interface Siege {
   world: number; phase: 'fight' | 'won' | 'lost'; time: number; energy: number; generator: number; cooldowns: number[];
   hp: [number, number]; maxHp: [number, number]; units: Fighter[]; effects: Effect[]; nextId: number; nextWave: number; waves: number; kills: number;
-  spell: number; rocket: number; aim: number; bow: Bow; bossSpawned: boolean; paid: boolean; power: number; economy: number; deck: number[];
+  spell: number; rocket: number; aim: number; bow: Bow;
+  /** How many times the bow has shot this battle (the view plays a sound for each new one). */
+  shots?: number; bossSpawned: boolean; paid: boolean; power: number; economy: number; deck: number[];
 }
 export const energyMax = (s: Siege) => 180 + s.generator * 70;
 export const energyRate = (s: Siege) => 7 + s.generator * 2.5 + s.economy;
@@ -130,7 +132,7 @@ function bow(s: Siege, dt: number) {
   const b = s.bow;
   if (b.drawing) {
     b.held += dt; b.next -= dt;
-    if (b.next <= 0) { arrows(s, bowCount(b)); b.quiver -= BOW.cost; b.next = bowEvery(b); }
+    if (b.next <= 0) { arrows(s, bowCount(b)); s.shots = (s.shots ?? 0) + 1; b.quiver -= BOW.cost; b.next = bowEvery(b); }
     if (b.quiver < BOW.cost) b.drawing = false;
     if (b.drawing) return;
   }

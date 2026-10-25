@@ -14,7 +14,7 @@ const clock = (n: number) => `${Math.floor(n / 60)}:${String(Math.floor(n % 60))
 let closeActive: (() => void) | undefined;
 /** Own root, event lifecycle and save: existing game modes are never entered or mutated. */
 /** `hero`: the player's hero picture and name, the commander who speaks in the story scenes. */
-export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' }) {
+export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' }, sound: (name: 'arrow' | 'boom' | 'strike' | 'click') => void = () => {}) {
   closeActive?.();
   const progress = readProgress(storage.get(SAVE_KEY));
   let selected = [...progress.deck], world = progress.unlocked;
@@ -146,7 +146,10 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       if (!paused && state.phase === 'fight') {
         if (aimPush) state.aim = aimAt(state.aim + aimPush * Math.abs(aimPush) * AIM_SPEED * delta);
         accumulator += delta;
+        const shot = state.shots ?? 0;
         while (accumulator >= 1 / 30) { tick(state, 1 / 30); accumulator -= 1 / 30; }
+        // Each bow shot is heard (at most one sound a frame, so a fast volley stays a rattle, not a roar).
+        if ((state.shots ?? 0) > shot) sound('arrow');
       }
       render(ctx, canvas, state, camera, reduced);
       // The aim control stands on the deck, wherever the field puts it.
@@ -264,7 +267,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     if (up !== undefined && !state) { if (upgrade(progress, Number(up))) { persist(); prep(); } return; }
     if (button.hasAttribute('data-sg-turn')) { button.parentElement?.remove(); return; }
     if (button.dataset.sgTab && state) { tab = button.dataset.sgTab as typeof tab; cards(); return; }
-    if (summonId !== undefined && state && !paused) { summon(state, Number(summonId)); updateUi(); return; }
+    if (summonId !== undefined && state && !paused) { if (summon(state, Number(summonId))) sound('click'); updateUi(); return; }
     if (action === 'exit') close();
     else if (action === 'launch') talk(intro(world), start);
     else if (action === 'retry') start();
@@ -274,7 +277,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     else if (action === 'resume') resume();
     else if (action === 'home') camera.x = -Infinity;
     else if (action === 'enemy') camera.x = Math.max(0, FIELD - camera.width);
-    else if (state && !paused) { if (action === 'generator') improveGenerator(state); if (action === 'strike') strike(state); if (action === 'missile') missile(state); updateUi(); }
+    else if (state && !paused) { if (action === 'generator') improveGenerator(state); if (action === 'strike' && strike(state)) sound('strike'); if (action === 'missile' && missile(state)) sound('boom'); updateUi(); }
   }, options);
   root.addEventListener('input', event => {
     const el = event.target as HTMLInputElement;
