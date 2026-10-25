@@ -39,11 +39,11 @@ export function upgrade(p: Progress, slot: number): boolean {
   p.coins -= cost; p.upgrades[slot]++; return true;
 }
 export interface Fighter { uid: number; id: number; side: 0 | 1; x: number; lane: number; hp: number; maxHp: number; damage: number; attack: number; flash: number; boss: boolean }
-export interface Effect { x: number; from: number; lane: number; life: number; max: number; kind: 'shot' | 'burst'; side: 0 | 1 }
+export interface Effect { x: number; from: number; lane: number; life: number; max: number; kind: 'shot' | 'burst' | 'arrow'; side: 0 | 1 }
 export interface Siege {
   world: number; phase: 'fight' | 'won' | 'lost'; time: number; energy: number; generator: number; cooldowns: number[];
   hp: [number, number]; maxHp: [number, number]; units: Fighter[]; effects: Effect[]; nextId: number; nextWave: number; waves: number; kills: number;
-  weapon: number; spell: number; aim: number; bossSpawned: boolean; paid: boolean; power: number; economy: number; deck: number[];
+  weapon: number; spell: number; aim: number; archers?: number; bossSpawned: boolean; paid: boolean; power: number; economy: number; deck: number[];
 }
 export const energyMax = (s: Siege) => 180 + s.generator * 70;
 export const energyRate = (s: Siege) => 7 + s.generator * 2.5 + s.economy;
@@ -74,11 +74,21 @@ function damageArea(s: Siege, x: number, radius: number, damage: number, life = 
   for (const u of s.units) if (u.side === 1 && Math.abs(u.x - x) <= radius) { u.hp -= damage; u.flash = 0.18; }
   s.effects.push({ x, from: 80, lane: 1, life, max: life, kind: 'burst', side: 0 });
 }
+/** Our fortress's archers: arrows land around the aim (the left slider), and a volley rains more of them. */
+const ARROW = { every: 2.2, spread: 45, damage: 14 };
+export const VOLLEY = { count: 7, spread: 80, damage: 18 };
+export const aimAt = (x: number) => Math.max(140, Math.min(1080, x));
+function arrows(s: Siege, count: number, spread: number, damage: number) {
+  const x = aimAt(s.aim);
+  for (let i = 0; i < count; i++) {
+    const at = x + (count === 1 ? 0 : (i / (count - 1) - 0.5) * 2 * spread);
+    for (const u of s.units) if (u.side === 1 && Math.abs(u.x - at) <= 28) { u.hp -= damage * s.power; u.flash = 0.18; }
+    s.effects.push({ x: at, from: 80, lane: i % 3, life: 0.55 + i * 0.04, max: 0.55 + i * 0.04, kind: 'arrow', side: 0 });
+  }
+}
 export function fire(s: Siege): boolean {
   if (s.phase !== 'fight' || s.weapon > 0) return false;
-  const x = Math.max(140, Math.min(1080, s.aim));
-  damageArea(s, x, 80, 72 * s.power); s.weapon = 3.5;
-  s.effects.push({ x, from: 80, lane: 1, life: 0.3, max: 0.3, kind: 'shot', side: 0 }); return true;
+  arrows(s, VOLLEY.count, VOLLEY.spread, VOLLEY.damage); s.weapon = 3.5; return true;
 }
 export function strike(s: Siege): boolean {
   if (s.phase !== 'fight' || s.spell > 0) return false;
@@ -91,6 +101,9 @@ export function tick(s: Siege, dt: number) {
   s.energy = Math.min(energyMax(s), s.energy + energyRate(s) * dt);
   s.weapon = Math.max(0, s.weapon - dt); s.spell = Math.max(0, s.spell - dt);
   s.cooldowns = s.cooldowns.map(c => Math.max(0, c - dt));
+  // The archers shoot on their own, three arrows at the aim, like Cartoon Wars' castle bow.
+  s.archers = (s.archers ?? ARROW.every) - dt;
+  if (s.archers <= 0) { s.archers = ARROW.every; arrows(s, 3, ARROW.spread, ARROW.damage); }
   s.effects = s.effects.filter(e => (e.life -= dt) > 0);
   s.nextWave -= dt;
   if (s.nextWave <= 0) {

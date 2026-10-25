@@ -11,3 +11,9 @@
 .siege-root .sg-hud button{border-image-source:url('/images/game/ui/btn1_gold.webp');color:#2a1a02}
 .siege-root .sg-controls button:disabled,.siege-root .sg-primary:disabled{border-image-source:url('/images/game/ui/btn_gray.webp');color:#1d2633;text-shadow:none;opacity:1;filter:grayscale(1)}
 .siege-root .sg-primary:hover:not(:disabled),.siege-root .sg-controls button:hover:not(:disabled),.siege-root .sg-hud button:hover:not(:disabled){background:none;filter:brightness(1.1)}
+
+/* The bow's aim, Cartoon Wars-style: a vertical slider at the field's left; up sends the arrows farther. */
+.sg-field{position:relative;min-height:0}.sg-field .sg-arena{position:absolute;inset:0}
+.sg-aim{position:absolute;left:8px;top:10%;bottom:10%;display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 4px;border-radius:14px;background:#0a1424b3;border:1px solid #f6cc8266}
+.sg-aim span{font-size:18px}
+.sg-aim input{flex:1;writing-mode:vertical-lr;direction:rtl;width:26px;accent-color:#f6cc82;margin:0}

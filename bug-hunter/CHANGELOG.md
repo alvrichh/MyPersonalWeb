@@ -10,7 +10,8 @@ This changelog tracks game-version changes starting with v1.12.55. Earlier relea
 - The battlefield is a side-scrolling scene: each world's map picture (`map/pv-*.jpg`) is the backdrop, panning slower than the troops, over the world's own sprint floor (`floors/worldN`).
 - Each world sends its own guardian, its room-6 boss sheet (monolith, overlord, valkyrie, mud monster, queen, minotaur, mainframe, wraith, hydra), instead of the monolith everywhere.
 - Troops walk on all their poses (six for the Arena and fire-world sets, four for the rest, the boss sheets' two steps and a stand) instead of two.
-- Shots fly as the game's sparks (fire for the enemy), the cannon as a fireball, hits as impacts and blasts; the discharge drops the yellow lightning bolt.
+- Our fortress has archers instead of a cannon, like Cartoon Wars' castle bow: three arrows every 2.2 s on their own, and the volley button (was the cannon) rains seven. A vertical bow slider at the field's left sets where they land (up is farther); tapping the field still aims.
+- Arrows are the bow's painted ones (`arrows/fire` wood from the fortress, `arrows/water` for our troops, `arrows/leaf` for theirs), flying in an arc; hits up close are impacts, and the discharge drops the yellow lightning bolt over a blast.
 - The fortresses are the Tactics benches' walled fronts (`ui/bench/boss-N`): ours the Backlog's blue one, the enemy's its world's (the Backlog defends with its plain bench); the drawn tower stays only while they load.
 - Pause, launch, generator, cannon and discharge use the `btn1_*` button bars (grey when unavailable).
 

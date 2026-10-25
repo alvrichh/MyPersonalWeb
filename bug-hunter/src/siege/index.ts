@@ -1,7 +1,7 @@
 import './siege.css';
 import { storage } from '../../lib/storage';
 import type { Key, T } from '../strings';
-import { CAP, FIELD, LIMIT, SAVE_KEY, UNITS, canSummon, energyMax, energyRate, fire, generatorPrice, improveGenerator, newSiege, readProgress, settle, strike, summon, tick, upgrade, upgradePrice, type Siege } from './model';
+import { CAP, FIELD, aimAt, LIMIT, SAVE_KEY, UNITS, canSummon, energyMax, energyRate, fire, generatorPrice, improveGenerator, newSiege, readProgress, settle, strike, summon, tick, upgrade, upgradePrice, type Siege } from './model';
 import { portrait, preload, render, type Camera } from './view';
 
 const clock = (n: number) => `${Math.floor(n / 60)}:${String(Math.floor(n % 60)).padStart(2, '0')}`;
@@ -51,7 +51,8 @@ export function openSiege(t: T, onClose: () => void) {
     progress.deck = [...selected]; persist(); state = newSiege(progress, world);
     preload(world, selected); paused = false; camera.x = 0;
     root.innerHTML = `<div class="sg-battle"><header class="sg-hud"><div><small>${t('siegeHome')}</small><strong data-sg-health="0"></strong></div><div><small>${worldName(world)} · ${t('siegeSoon')}</small><strong data-sg-clock></strong></div><div><small>${t('siegeEnemy')}</small><strong data-sg-health="1"></strong></div><div class="sg-hud-actions"><button data-sg="pause">${t('pause')}</button></div></header>
-      <canvas class="sg-arena" tabindex="0" role="img" aria-label="${t('siegeBattlefield')}"></canvas>
+      <div class="sg-field"><canvas class="sg-arena" tabindex="0" role="img" aria-label="${t('siegeBattlefield')}"></canvas>
+      <label class="sg-aim"><span aria-hidden="true">🏹</span><input type="range" min="140" max="1080" step="10" value="700" data-sg-aim aria-label="${t('siegeAim')}"></label></div>
       <div class="sg-camera"><button data-sg="home">◀ ${t('siegeHome')}</button><input type="range" min="0" max="1000" value="0" data-sg-camera aria-label="${t('siegeCamera')}"><button data-sg="enemy">${t('siegeEnemy')} ▶</button></div>
       <div class="sg-controls"><div class="sg-resource"><strong data-sg-energy></strong><progress data-sg-meter></progress><small class="sg-status" data-sg-status></small></div><button data-sg="generator"></button><button data-sg="fire"></button><button data-sg="strike"></button></div>
       <div class="sg-deck">${selected.map((id, i) => `<button data-sg-summon="${id}" aria-label="${i + 1}. ${name(id)} · ${UNITS[id].cost}"><img src="${portrait(id)}" alt=""><span><b>${name(id)}</b><small data-sg-cost="${id}"></small></span><i class="sg-cooldown" data-sg-cooldown="${id}"></i></button>`).join('')}</div></div>`;
@@ -106,6 +107,7 @@ export function openSiege(t: T, onClose: () => void) {
       q(`[data-sg-cost="${id}"]`).textContent = s.cooldowns[id] > 0 ? `${Math.ceil(s.cooldowns[id])}s` : `⚡ ${UNITS[id].cost}`;
       q(`[data-sg-cooldown="${id}"]`).style.width = `${s.cooldowns[id] / UNITS[id].cooldown * 100}%`;
     }
+    const aim = q<HTMLInputElement>('[data-sg-aim]'); if (document.activeElement !== aim) aim.value = String(aimAt(s.aim));
     q<HTMLInputElement>('[data-sg-camera]').value = String(Math.round(camera.x / Math.max(1, FIELD - camera.width) * 1000));
   }
   function modal(content: string) {
@@ -148,7 +150,11 @@ export function openSiege(t: T, onClose: () => void) {
     else if (state && !paused) { if (action === 'generator') improveGenerator(state); if (action === 'fire') fire(state); if (action === 'strike') strike(state); updateUi(); }
   }, options);
   root.addEventListener('change', event => { if ((event.target as HTMLElement).hasAttribute('data-sg-world')) world = Number((event.target as HTMLSelectElement).value); }, options);
-  root.addEventListener('input', event => { if ((event.target as HTMLElement).hasAttribute('data-sg-camera')) camera.x = Math.max(0, FIELD - camera.width) * Number((event.target as HTMLInputElement).value) / 1000; }, options);
+  root.addEventListener('input', event => {
+    const el = event.target as HTMLInputElement;
+    if (el.hasAttribute('data-sg-aim') && state) { state.aim = Number(el.value); return; }
+    if (el.hasAttribute('data-sg-camera')) camera.x = Math.max(0, FIELD - camera.width) * Number(el.value) / 1000;
+  }, options);
   // Capture keyboard input so legacy page-level hotkeys never run behind this modal.
   const keyHandler = (e: KeyboardEvent) => {
     e.stopImmediatePropagation();
