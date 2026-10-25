@@ -3232,7 +3232,7 @@ screen.addEventListener('click', (event) => {
   const act = target.dataset.act;
   if (act !== 'mute') audio.play('click');
   if (act === 'extra-hub') extraHubScreen();
-  else if (act === 'siege-preview') openSiege(t, () => extraHubScreen());
+  else if (act === 'siege-preview') openSiege(t, () => extraHubScreen(), { pic: `/images/game/hero/${heroStill(save.skin, save.equipped.head)}.webp`, name: save.name || DEFAULT_NAME });
   else if (act === 'play') startRun();
   // The world this run unlocked, in the same mode.
   else if (act === 'play-next') { const n = Number(target.dataset.next); setWorld(n, game?.mode ?? save.mode); persist(); startRun(n, game?.mode ?? save.mode); }
