@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.39 - 2026-10-25
+
+### Changed - Boss skins in world order
+- In Customise the boss skins are listed in world order, by the On call boss that opens each (El Weso and Kernel Glitch, Hotfix Demon, Frost Shieldmaiden, Medusa, Legacy Bloom, Thunder Heir, Overclock Trooper, Server Reaper and Server Vampire, Core Drake), with the secret shift's Ashen Spartan last.
+
 ## 1.14.38 - 2026-10-25
 
 ### Changed - Server Reaper redrawn
