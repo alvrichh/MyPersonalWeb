@@ -4,6 +4,16 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.0 - 2026-10-25
+
+### Added - Siege / Asedio playable preview
+- Playable Siege entry inside the existing fourth main-cover Coming Soon hub, preserving its separate Fortress link. Labelled “Coming soon · Playable preview” in English and Spanish. Opens preparation and a complete lateral fortress battle without changing the existing PlayMode save schema.
+- Choose five troops, summon with regenerating energy and cooldowns, upgrade the in-battle generator, aim a friendly-fire-free cannon and trigger an area discharge. Troops fight automatically; opposing waves and a guardian defend the rival fortress. Includes victory, defeat, a five-minute limit, retry and pause/resume.
+- Nine themed preview fortresses, eight troop families, independent unlocks, workshop upgrades and gold rewards. Validated versioned local save; reward settlement is idempotent. Existing action/Battle economies and Fortress are unchanged.
+- Responsive portrait/landscape layout, camera drag/slider/base shortcuts, keyboard controls, background/tab pause, focus containment, reduced-motion handling and listener/animation cleanup.
+- Existing sprites are reused unchanged. The fortresses/scenery and shared guardian are preview visuals; balance and campaign content remain experimental.
+- New isolated `src/siege/` implementation and mode documentation. `test:game` also runs the Siege model regressions.
+
 ## 1.13.51 - 2026-10-24
 
 ### Added
@@ -436,4 +446,5 @@ This minor-version milestone consolidates the Tactics work and related boss chan
 ### Scope
 - Other bosses' generic backup summons are unchanged.
 - No sprite files or combat attack timings were changed.
+
 

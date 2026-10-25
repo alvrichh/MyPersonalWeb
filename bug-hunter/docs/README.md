@@ -6,6 +6,8 @@ This folder contains supporting documentation for BUG HUNTER. The main user/deve
 
 ## Documentation map
 
+- **[Siege / Asedio](./siege.md)** — fourth main-menu mode, playable preview, controls, economy, progression and isolated save.
+
 - **[Fortress foundation](./fortress.md)** — new landscape-first base-building mode design, MVP scope, nine world styles, buildings and walls. Code scaffold: [`../src/fortress/types.ts`](../src/fortress/types.ts).
 
 
@@ -28,3 +30,4 @@ This folder contains supporting documentation for BUG HUNTER. The main user/deve
 - Build integration: [`../build/integration.mjs`](../build/integration.mjs)
 
 Do not use generated root `game.html`, `.cache/`, `dist/` or `public/` as editable sources.
+

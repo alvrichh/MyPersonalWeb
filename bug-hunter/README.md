@@ -27,6 +27,8 @@ Action roguelite + tactical auto-battler by **Álvaro Rodríguez Molina**, playa
 | **Battle — Tactics** | Buy cards, deploy an army and reserve bench, upgrade identical units by stars, then watch automatic combat. |
 | **Battle — Fusion** | Summon units, merge matching characters into higher tiers, position the army, then resolve automatic combat. |
 
+**Siege / Asedio — Coming soon · Playable preview:** available inside the fourth main-menu option, Coming Soon, alongside the separate Fortress prototype. Choose five troops, manage energy, defend your fortress and conquer nine themed enemy bases. Separate progress, upgrades and rewards. [Mode guide](./docs/siege.md).
+
 **Fortress (planned, not playable yet):** landscape-first base-building and PvE raids, with a portrait management layout, nine world themes and modular walls. [Design foundation](./docs/fortress.md) · [Data types](./src/fortress/types.ts).
 
 Boss Rush, Nightmare and the boss showcase are additional game options where available. English and Spanish game copy lives in [`src/strings.ts`](./src/strings.ts).
@@ -140,3 +142,4 @@ Useful source-of-truth rules:
 <p align="center">
   <img src="./assets/shared/readme/screenshot-gameplay.webp" alt="Bug Hunter action gameplay" width="720">
 </p>
+
