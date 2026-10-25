@@ -2,17 +2,19 @@ import './siege.css';
 import { storage } from '../../lib/storage';
 import type { Key, T } from '../strings';
 import { CAP, FIELD, aimAt, LIMIT, SAVE_KEY, UNITS, canSummon, energyMax, energyRate, fire, generatorPrice, improveGenerator, newSiege, readProgress, settle, strike, summon, tick, upgrade, upgradePrice, type Siege } from './model';
-import { portrait, preload, render, type Camera } from './view';
+import { backdropUrl, guardianUrl, portrait, preload, render, type Camera } from './view';
+import { GUARDIAN_NAMES, bossTalk, intro, type Line } from './story';
 
 const clock = (n: number) => `${Math.floor(n / 60)}:${String(Math.floor(n % 60)).padStart(2, '0')}`;
 let closeActive: (() => void) | undefined;
 /** Own root, event lifecycle and save: existing game modes are never entered or mutated. */
-export function openSiege(t: T, onClose: () => void) {
+/** `hero`: the player's hero picture and name, the commander who speaks in the story scenes. */
+export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' }) {
   closeActive?.();
   const progress = readProgress(storage.get(SAVE_KEY));
   let selected = [...progress.deck], world = progress.unlocked;
   let state: Siege | null = null, paused = false, finished = false;
-  let frame = 0, last = 0, accumulator = 0, uiAt = 0;
+  let frame = 0, last = 0, accumulator = 0, uiAt = 0, bossTalked = false;
   const camera: Camera = { x: 0, width: 650 };
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const previousFocus = document.activeElement as HTMLElement | null;
@@ -48,7 +50,7 @@ export function openSiege(t: T, onClose: () => void) {
     cancelAnimationFrame(frame); battleAbort.abort(); battleAbort = new AbortController();
     const battleOptions = { signal: battleAbort.signal };
     if (selected.length !== 5) return;
-    progress.deck = [...selected]; persist(); state = newSiege(progress, world);
+    progress.deck = [...selected]; persist(); state = newSiege(progress, world); bossTalked = false;
     preload(world, selected); paused = false; camera.x = 0;
     root.innerHTML = `<div class="sg-battle"><header class="sg-hud"><div><small>${t('siegeHome')}</small><strong data-sg-health="0"></strong></div><div><small>${worldName(world)} · ${t('siegeSoon')}</small><strong data-sg-clock></strong></div><div><small>${t('siegeEnemy')}</small><strong data-sg-health="1"></strong></div><div class="sg-hud-actions"><button data-sg="pause">${t('pause')}</button></div></header>
       <div class="sg-field"><canvas class="sg-arena" tabindex="0" role="img" aria-label="${t('siegeBattlefield')}"></canvas>
@@ -86,6 +88,11 @@ export function openSiege(t: T, onClose: () => void) {
       render(ctx, canvas, state, camera, reduced);
       if (now >= uiAt) { updateUi(); uiAt = now + 100; }
       if (state.phase !== 'fight' && !state.paid) result();
+      // The guardian speaks the moment it joins, the battle held until the scene ends.
+      else if (state.bossSpawned && !bossTalked && state.phase === 'fight') {
+        bossTalked = true; paused = true; updateUi();
+        talk(bossTalk(world), () => { paused = false; last = performance.now(); accumulator = 0; q('canvas').focus(); });
+      }
       frame = requestAnimationFrame(loop);
     }
     updateUi(); canvas.focus(); frame = requestAnimationFrame(loop);
@@ -115,8 +122,38 @@ export function openSiege(t: T, onClose: () => void) {
     const overlay = document.createElement('div'); overlay.className = 'sg-overlay'; overlay.innerHTML = `<div class="sg-dialog" role="dialog" aria-modal="true">${content}</div>`;
     q('.sg-battle').inert = true; root.append(overlay); focus();
   }
+  /** A story scene, Cartoon Wars-style: the world's picture behind, the speaker's portrait on their side, a line at a
+      time. Tap or Next to go on, Skip to jump to the end; `done` runs after the last line. */
+  let story: (() => void) | null = null;
+  function talk(lines: Line[], done: () => void) {
+    let at = 0;
+    root.querySelector('.sg-overlay')?.remove();
+    const overlay = document.createElement('div'); overlay.className = 'sg-overlay sg-story';
+    overlay.style.backgroundImage = `linear-gradient(#050a14aa, #050a14ee), url('${backdropUrl(world)}')`;
+    const battle = root.querySelector<HTMLElement>('.sg-battle'); if (battle) battle.inert = true;
+    const end = () => { story = null; overlay.remove(); if (battle) battle.inert = false; done(); };
+    const show = () => {
+      const l = lines[at], last = at === lines.length - 1;
+      const who = l.who === 'boss' ? t(GUARDIAN_NAMES[world - 1]) : l.who === 'hero' ? hero.name.replace(/[&<>"']/g, c => `&#${c.charCodeAt(0)};`) : t('siegeNarrator');
+      const pic = l.who === 'boss' ? guardianUrl(world) : l.who === 'hero' ? hero.pic : '';
+      overlay.innerHTML = `<div class="sg-scene is-${l.who}" role="dialog" aria-modal="true" aria-label="${t('siegeName')}">
+        <span class="sg-eyebrow">${t(`world${world}Name` as Key)}</span>
+        ${pic ? `<img class="sg-speaker" src="${pic}" alt="">` : ''}
+        <div class="sg-line"><b>${who}</b><p>${t(l.key)}</p>
+        <div class="sg-dialog-actions"><button class="sg-primary" data-story="next">${last ? t(state ? 'resume' : 'siegeTalkGo') : `${t('siegeTalkNext')} ▶`}</button>${last ? '' : `<button data-story="skip">${t('siegeTalkSkip')}</button>`}</div></div></div>`;
+      overlay.querySelector<HTMLElement>('[data-story="next"]')?.focus();
+    };
+    const next = () => { if (++at >= lines.length) end(); else show(); };
+    overlay.addEventListener('click', e => {
+      const b = (e.target as HTMLElement).closest<HTMLElement>('[data-story]');
+      e.stopPropagation();
+      if (b?.dataset.story === 'skip') end(); else next();
+    });
+    story = end;
+    root.append(overlay); show();
+  }
   function pause() {
-    if (!state || state.phase !== 'fight' || paused) return;
+    if (!state || state.phase !== 'fight' || paused || story) return;
     paused = true; updateUi();
     modal(`<span class="sg-eyebrow">${t('siegeName')}</span><h2>${t('paused')}</h2><p>${t('siegePauseNote')}</p><div class="sg-dialog-actions"><button class="sg-primary" data-sg="resume">${t('resume')}</button><button data-sg="prep">${t('siegeLeave')}</button></div>`);
   }
@@ -140,7 +177,8 @@ export function openSiege(t: T, onClose: () => void) {
     if (up !== undefined && !state) { if (upgrade(progress, Number(up))) { persist(); prep(); } return; }
     if (summonId !== undefined && state && !paused) { summon(state, Number(summonId)); updateUi(); return; }
     if (action === 'exit') close();
-    else if (action === 'launch' || action === 'retry') start();
+    else if (action === 'launch') talk(intro(world), start);
+    else if (action === 'retry') start();
     else if (action === 'prep') prep();
     else if (action === 'next') { world = Math.min(9, world + 1); prep(); }
     else if (action === 'pause') pause();
@@ -166,6 +204,7 @@ export function openSiege(t: T, onClose: () => void) {
       else if (!e.shiftKey && document.activeElement === end) { e.preventDefault(); first?.focus(); }
       return;
     }
+    if (story) { if (e.key === 'Escape') { e.preventDefault(); story(); } return; }
     if (e.key === 'Escape') { e.preventDefault(); if (!state) close(); else if (state.phase === 'fight') paused ? resume() : pause(); return; }
     if (!state || paused || e.repeat || /INPUT|SELECT|TEXTAREA/.test((e.target as HTMLElement).tagName)) return;
     const key = e.key.toLowerCase();

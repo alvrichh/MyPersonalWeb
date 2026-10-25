@@ -17,3 +17,17 @@
 .sg-aim{position:absolute;left:8px;top:10%;bottom:10%;display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 4px;border-radius:14px;background:#0a1424b3;border:1px solid #f6cc8266}
 .sg-aim span{font-size:18px}
 .sg-aim input{flex:1;writing-mode:vertical-lr;direction:rtl;width:26px;accent-color:#f6cc82;margin:0}
+
+/* Story scenes: the world's picture behind, the speaker on their side (the guardian on the right), a line box below. */
+.sg-story{background-size:cover;background-position:center;align-items:end;place-items:end center;z-index:5}
+.sg-scene{position:relative;width:min(760px,100%);min-height:min(70vh,520px);display:flex;flex-direction:column;justify-content:flex-end;animation:sg-in .35s ease-out}
+.sg-scene>.sg-eyebrow{position:absolute;top:0;left:0}
+.sg-speaker{position:absolute;bottom:120px;left:0;height:min(46vh,340px);max-width:55%;object-fit:contain;object-position:bottom;filter:drop-shadow(0 10px 24px #000a);animation:sg-pop .35s ease-out}
+.sg-scene.is-boss .sg-speaker{left:auto;right:0;height:min(52vh,400px)}
+.sg-line{position:relative;background:#0d1a2df0;border:2px solid #f6cc82aa;border-radius:18px;padding:18px 20px;box-shadow:0 20px 60px #000a}
+.sg-scene.is-boss .sg-line{border-color:#ff718caa}.sg-scene.is-hero .sg-line{border-color:#55e5c4aa}
+.sg-line b{display:block;color:#f6cc82;font-size:15px;letter-spacing:.04em}.sg-scene.is-boss .sg-line b{color:#ff9cae}.sg-scene.is-hero .sg-line b{color:#7ff3d8}
+.sg-line p{margin:8px 0 0;font-size:clamp(16px,2.4vw,19px);line-height:1.45;color:#eef6ff}
+.sg-line .sg-dialog-actions{margin-top:14px}
+@keyframes sg-in{from{opacity:0;transform:translateY(12px)}}@keyframes sg-pop{from{opacity:0;transform:translateY(20px) scale(.96)}}
+@media(max-width:600px){.sg-speaker{bottom:150px;height:36vh;max-width:70%}.sg-scene.is-boss .sg-speaker{height:40vh}}

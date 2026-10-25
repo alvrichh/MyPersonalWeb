@@ -4,6 +4,14 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.5 - 2026-10-25
+
+### Added - Siege story
+- The campaign is told in story scenes, Cartoon Wars-style: the world's map picture behind, the speaker's portrait on their side and one line at a time (Next, or Skip to the end).
+- Launching a fortress opens its world's scene: the narrator and your commander (your hero, under your name). World 1 starts with a three-line prologue.
+- Each world's guardian speaks when it joins the battle (its standing pose on the right, its name from the action modes), and your commander answers; the battle waits until the scene ends.
+- Retrying a battle skips the intro. All lines are in `src/strings.ts` in English and Spanish (`src/siege/story.ts` sets who says what).
+
 ## 1.14.4 - 2026-10-25
 
 ### Changed - Final bosses' songs sound like their worlds

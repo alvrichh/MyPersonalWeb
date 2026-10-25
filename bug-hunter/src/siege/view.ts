@@ -45,6 +45,9 @@ export function preload(world: number, deck: number[]) {
   [backdropPath(world), `floors/world${world}`, wallPath(world, false), wallPath(world, true), ...FX].forEach(still);
 }
 const backdropPath = (world: number) => `map/pv-${BACKDROPS[world - 1]}.jpg`;
+/** The story scenes' pictures: the world's map picture behind, its guardian's standing pose speaking. */
+export const backdropUrl = (world: number) => `/images/game/${backdropPath(world)}`;
+export const guardianUrl = (world: number) => `/images/game/bosses/${GUARDIANS[world - 1]}-2.webp`;
 const FX = ['arrows/water.webp', 'arrows/leaf.webp', 'arrows/fire.webp', 'fx/boom-big.webp', 'fx/impact.webp', ...[1, 2, 3, 4, 5, 6].map(n => `fx/bolt-y-${n}.webp`)];
 /** Pictures drawn whole (backdrop, floor, effects): no alpha crop needed. */
 const stills = new Map<string, HTMLImageElement>();
