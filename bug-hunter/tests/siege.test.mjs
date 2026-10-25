@@ -84,14 +84,15 @@ test('Backlog can be won with a mixed army and active defenses, without upgrades
   assert.equal(s.phase, 'won', `ended ${s.phase}: ${s.hp}, time ${s.time}`);
 });
 
-test('the bow empties its quiver while held, speeds up, and refills when let go', () => {
+test('the bow: a tap starts it, it speeds up, stops on a tap or an empty quiver, and refills only while stopped', () => {
   const s = m.newSiege(m.freshProgress(), 1); s.nextWave = 999;
-  m.draw(s, true); m.tick(s, 1 / 30);
-  const first = s.effects.filter(e => e.kind === 'arrow').length; assert.equal(first, 1);
-  const slow = m.bowEvery(s.bow); run(s, 3); assert.ok(m.bowEvery(s.bow) < slow, 'faster the longer it is held'); assert.equal(m.bowCount(s.bow), 2);
-  for (let i = 0; i < 600 && !s.bow.empty; i++) m.tick(s, 1 / 30);
-  assert.equal(s.bow.empty, true, 'the quiver runs dry');
-  m.draw(s, false); run(s, 1); assert.equal(s.bow.empty, true); run(s, 2); assert.equal(s.bow.empty, false, 'back after a third refills');
+  m.toggleBow(s); m.tick(s, 1 / 30);
+  assert.equal(s.effects.filter(e => e.kind === 'arrow').length, 1);
+  const slow = m.bowEvery(s.bow); run(s, 3); assert.ok(m.bowEvery(s.bow) < slow, 'faster the longer it shoots'); assert.equal(m.bowCount(s.bow), 2);
+  m.toggleBow(s); const left = s.bow.quiver; assert.equal(s.bow.drawing, false); run(s, 1); assert.ok(s.bow.quiver > left, 'refills while stopped');
+  m.toggleBow(s); const before = s.bow.quiver; m.tick(s, 1 / 30); assert.ok(s.bow.quiver < before, 'no refill while shooting');
+  for (let i = 0; i < 900 && s.bow.drawing; i++) m.tick(s, 1 / 30);
+  assert.equal(s.bow.drawing, false, 'an empty quiver stops it'); assert.ok(s.bow.quiver < m.BOW.cost + 1);
   const p = m.freshProgress(); p.upgrades[3] = 4; const up = m.newSiege(p, 1);
   assert.ok(m.bowEvery(up.bow) < m.bowEvery(m.newSiege(m.freshProgress(), 1).bow)); assert.equal(m.bowCount(up.bow), 3);
 });

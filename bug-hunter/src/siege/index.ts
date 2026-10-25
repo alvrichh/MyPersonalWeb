@@ -1,7 +1,7 @@
 import './siege.css';
 import { storage } from '../../lib/storage';
 import type { Key, T } from '../strings';
-import { CAP, DECK, FIELD, aimAt, missile, LIMIT, SAVE_KEY, UNITS, canSummon, energyMax, energyRate, draw, BOW, generatorPrice, improveGenerator, newSiege, readProgress, settle, strike, summon, tick, upgrade, upgradePrice, type Siege } from './model';
+import { CAP, DECK, FIELD, aimAt, missile, LIMIT, SAVE_KEY, UNITS, canSummon, energyMax, energyRate, toggleBow, BOW, generatorPrice, improveGenerator, newSiege, readProgress, settle, strike, summon, tick, upgrade, upgradePrice, type Siege } from './model';
 import { backdropUrl, guardianUrl, portrait, preload, render, type Camera } from './view';
 import { GUARDIAN_NAMES, bossTalk, intro, type Line } from './story';
 
@@ -89,12 +89,8 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       pointer = null;
     }, battleOptions);
     canvas.addEventListener('pointercancel', () => pointer = null, battleOptions);
-    // The bow is held: arrows fly while the button is pressed and stop when it is let go.
-    const bowButton = q<HTMLButtonElement>('[data-sg="fire"]');
-    const loose = () => { if (state) draw(state, false); };
-    bowButton.addEventListener('pointerdown', e => { e.preventDefault(); if (state && !paused) { draw(state, true); bowButton.setPointerCapture(e.pointerId); } }, battleOptions);
-    for (const type of ['pointerup', 'pointercancel', 'lostpointercapture'] as const) bowButton.addEventListener(type, loose, battleOptions);
-    bowButton.addEventListener('contextmenu', e => e.preventDefault(), battleOptions);
+    // The bow is a switch: one tap starts the arrows, the next stops them.
+    q<HTMLButtonElement>('[data-sg="fire"]').addEventListener('click', e => { e.stopPropagation(); if (state && !paused) { toggleBow(state); updateUi(); } }, battleOptions);
     last = performance.now(); accumulator = 0; uiAt = 0;
     function loop(now: number) {
       if (!state || finished) return;
@@ -138,9 +134,10 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     const generator = root.querySelector<HTMLButtonElement>('[data-sg="generator"]');
     if (generator) { generator.innerHTML = `<img src="/images/game/ui/orb.webp" alt=""><small>${s.generator >= 4 ? t('siegeMax') : `${s.generator}/4 · ${generatorPrice(s)}`}</small>`; generator.setAttribute('aria-label', s.generator >= 4 ? t('siegeMax') : t('siegeGenerator', { n: s.generator, cost: generatorPrice(s) })); generator.disabled = paused || s.phase !== 'fight' || s.generator >= 4 || s.energy < generatorPrice(s); }
     const bowButton = q<HTMLButtonElement>('[data-sg="fire"]');
-    q('[data-sg-bow-label]').textContent = s.bow.empty ? t('siegeBowEmpty') : t('siegeCannon');
+    const reloading = !s.bow.drawing && s.bow.quiver < BOW.cost;
+    q('[data-sg-bow-label]').textContent = reloading ? t('siegeBowEmpty') : t('siegeCannon');
     q('[data-sg-quiver]').style.width = `${s.bow.quiver / BOW.max * 100}%`;
-    bowButton.classList.toggle('is-empty', s.bow.empty); bowButton.classList.toggle('is-drawing', s.bow.drawing && !s.bow.empty);
+    bowButton.classList.toggle('is-empty', reloading); bowButton.classList.toggle('is-drawing', s.bow.drawing); bowButton.setAttribute('aria-pressed', String(s.bow.drawing));
     bowButton.disabled = paused || s.phase !== 'fight';
     for (const [action, key, cd, pic] of [['strike', 'siegeSpell', s.spell, 'skills/bolt'], ['missile', 'siegeMissile', s.rocket, 'fx/rocket']] as const) {
       const button = root.querySelector<HTMLButtonElement>(`[data-sg="${action}"]`); if (!button) continue;
@@ -191,7 +188,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   }
   function pause() {
     if (!state || state.phase !== 'fight' || paused || story) return;
-    paused = true; draw(state, false); updateUi();
+    paused = true; updateUi();
     modal(`<span class="sg-eyebrow">${t('siegeName')}</span><h2>${t('paused')}</h2><p>${t('siegePauseNote')}</p><div class="sg-dialog-actions"><button class="sg-primary" data-sg="resume">${t('resume')}</button><button data-sg="prep">${t('siegeLeave')}</button></div>`);
   }
   function resume() {
@@ -250,12 +247,12 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     if (key === 'l' || key === 'a' || key === 's') { tab = key === 'l' ? 'land' : key === 'a' ? 'air' : 'special'; cards(); return; }
     if (/^[1-5]$/.test(key)) { const n = Number(key) - 1; if (tab === 'special') [() => improveGenerator(state!), () => strike(state!), () => missile(state!)][n]?.(); else { const id = tabCards()[n]; if (id !== undefined) summon(state, id); } }
     else if (key === 'r') missile(state);
-    else if (key === 'e') improveGenerator(state); else if (key === 'f') draw(state, true); else if (key === 'q') strike(state);
+    else if (key === 'e') improveGenerator(state); else if (key === 'f') toggleBow(state); else if (key === 'q') strike(state);
     else if (key === 'arrowleft') camera.x = Math.max(0, camera.x - 100); else if (key === 'arrowright') camera.x = Math.min(Math.max(0, FIELD - camera.width), camera.x + 100);
     updateUi();
   };
   window.addEventListener('keydown', keyHandler, { ...options, capture: true });
-  window.addEventListener('keyup', e => { e.stopImmediatePropagation(); if (state && e.key.toLowerCase() === 'f') draw(state, false); }, { ...options, capture: true });
+  window.addEventListener('keyup', e => e.stopImmediatePropagation(), { ...options, capture: true });
   document.addEventListener('visibilitychange', () => { if (document.hidden) pause(); }, options);
   window.addEventListener('blur', pause, options);
   prep();

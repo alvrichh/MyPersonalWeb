@@ -63,7 +63,7 @@ export const generatorPrice = (s: Siege) => 65 + s.generator * 45;
 export function newSiege(p: Progress, world: number): Siege {
   world = integer(world, 1, p.unlocked, 1);
   const maxHp: [number, number] = [1700 + p.upgrades[1] * 200, 1500 + world * 170];
-  return { world, phase: 'fight', time: 0, energy: 80, generator: 0, cooldowns: UNITS.map(() => 0), hp: [...maxHp], maxHp, units: [], effects: [], nextId: 1, nextWave: 7, waves: 0, kills: 0, spell: 0, rocket: 0, aim: 700, bossSpawned: false, paid: false, power: 1 + p.upgrades[0] * 0.08, economy: p.upgrades[2] * 0.6, deck: [...p.deck], bow: { quiver: BOW.max, drawing: false, held: 0, next: 0, empty: false, level: p.upgrades[3] } };
+  return { world, phase: 'fight', time: 0, energy: 80, generator: 0, cooldowns: UNITS.map(() => 0), hp: [...maxHp], maxHp, units: [], effects: [], nextId: 1, nextWave: 7, waves: 0, kills: 0, spell: 0, rocket: 0, aim: 700, bossSpawned: false, paid: false, power: 1 + p.upgrades[0] * 0.08, economy: p.upgrades[2] * 0.6, deck: [...p.deck], bow: { quiver: BOW.max, drawing: false, held: 0, next: 0, level: p.upgrades[3] } };
 }
 function spawn(s: Siege, id: number, side: 0 | 1, boss = false) {
   if (s.units.filter(u => u.side === side).length >= CAP) return;
@@ -86,11 +86,11 @@ function damageArea(s: Siege, x: number, radius: number, damage: number, life = 
   for (const u of s.units) if (u.side === 1 && Math.abs(u.x - x) <= radius) { u.hp -= damage; u.flash = 0.18; }
   s.effects.push({ x, from: 80, lane: 1, life, max: life, kind: 'burst', side: 0 });
 }
-/** Our fortress's bow, Cartoon Wars-style: held, it looses arrows one after another at the aim (the left slider), faster
-    and more at a time the longer it is held, emptying the quiver; let go, the quiver fills again. Run dry, it waits
-    until a third is back. The workshop's bow upgrade shoots more often and more arrows at once. */
-export const BOW = { max: 100, cost: 5, regen: 14, refill: 0.35, every: 0.42, step: 0.04, fastest: 0.13, ramp: 2.5, damage: 16, gap: 24 };
-export interface Bow { quiver: number; drawing: boolean; held: number; next: number; empty: boolean; level: number }
+/** Our fortress's bow, Cartoon Wars-style: one tap sets the archers shooting, arrows one after another at the aim (the
+    left slider), faster and more at a time the longer they keep on; another tap stops them, and so does an empty quiver.
+    The quiver fills again only while they are not shooting. The workshop's bow upgrade shoots more often and more arrows. */
+export const BOW = { max: 100, cost: 5, regen: 14, every: 0.42, step: 0.04, fastest: 0.13, ramp: 2.5, damage: 16, gap: 24 };
+export interface Bow { quiver: number; drawing: boolean; held: number; next: number; level: number }
 export const aimAt = (x: number) => Math.max(140, Math.min(1080, x));
 /** Seconds between shots and arrows per shot, for the bow's level and how long it has been held. */
 export const bowEvery = (b: Bow) => Math.max(BOW.fastest, (BOW.every - b.level * BOW.step) * (1 - Math.min(1, b.held / BOW.ramp) * 0.5));
@@ -103,21 +103,20 @@ function arrows(s: Siege, count: number) {
     s.effects.push({ x: at, from: 80, lane: i % 3, life: 0.5, max: 0.5, kind: 'arrow', side: 0 });
   }
 }
-/** Hold (true) or let go (false) of the bow. */
-export function draw(s: Siege, on: boolean) { if (s.phase === 'fight') s.bow.drawing = on; }
+/** Start (true) or stop (false) the archers; they only start with at least one shot in the quiver. */
+export function draw(s: Siege, on: boolean) { if (s.phase === 'fight') s.bow.drawing = on && s.bow.quiver >= BOW.cost; }
+/** The bow button: one tap starts the arrows, the next stops them. */
+export const toggleBow = (s: Siege) => draw(s, !s.bow.drawing);
 function bow(s: Siege, dt: number) {
   const b = s.bow;
-  if (b.drawing && !b.empty) {
+  if (b.drawing) {
     b.held += dt; b.next -= dt;
-    if (b.next <= 0) {
-      if (b.quiver < BOW.cost) { b.empty = true; return; }
-      arrows(s, bowCount(b)); b.quiver -= BOW.cost; b.next = bowEvery(b);
-    }
-    return;
+    if (b.next <= 0) { arrows(s, bowCount(b)); b.quiver -= BOW.cost; b.next = bowEvery(b); }
+    if (b.quiver < BOW.cost) b.drawing = false;
+    if (b.drawing) return;
   }
   b.held = 0; b.next = 0;
   b.quiver = Math.min(BOW.max, b.quiver + BOW.regen * dt);
-  if (b.empty && b.quiver >= BOW.max * BOW.refill) b.empty = false;
 }
 /** The missile: one heavy blast at the aim, a shorter recharge than the discharge. */
 export const ROCKET = { radius: 70, damage: 150, every: 12 };
