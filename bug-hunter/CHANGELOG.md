@@ -12,6 +12,11 @@ This changelog tracks game-version changes starting with v1.12.55. Earlier relea
 - The arrows' and the missile's arcs are capped so they never leave the top of the view.
 - New layout rule for this mode (`docs/siege.md`, linked from `AGENTS.md`): every visual change is checked with desktop and phone screenshots, looking at where each element sits.
 
+## 1.14.11 - 2026-10-25
+
+### Changed - Siege bow is a switch
+- The arrows button no longer has to be held: one tap starts the archers (arrows one after another, faster and more at a time the longer they keep on), another tap stops them, and an empty quiver stops them too. The quiver refills only while they are not shooting; «Reloading…» shows while it holds less than one shot. F toggles them on the keyboard.
+
 ## 1.14.10 - 2026-10-25
 
 ### Changed - Siege ground without tile corners
