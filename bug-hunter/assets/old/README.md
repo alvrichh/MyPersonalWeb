@@ -12,3 +12,4 @@ published, under `/images/game/old/...`, like any asset). Each folder mirrors wh
 - `shared/hero/{intern,kratos,medusa}-base-*.webp`: the intern, Kratos and Medusa skins before 1.14.26 (Kratos and
   Medusa recut from their sheets, the intern cleaned up; grey haze, Medusa's lime/yellow key fringe, specks).
 - `shared/hero/reaper-base-*.webp`: the first Server Reaper skin, replaced by the owner's redrawn sheet in 1.14.38.
+- `shared/hero/reaper-v2/reaper-base-*.webp`: the redrawn Server Reaper as first cut (scythe counted in its height, so the figure was smaller than alvrich), replaced in 1.14.44.

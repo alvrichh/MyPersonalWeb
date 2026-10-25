@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.44 - 2026-10-25
+
+### Fixed - The Server Reaper at full size; worn skin centred in Customize
+- The Server Reaper was scaled with its scythe counted in its height, so the figure itself came out smaller than alvrich. It is cut again from the owner's sheet with the hood-to-feet height matched to alvrich's (144 px on the front pose), so the scythe now rises above the head instead of shrinking the reaper. The previous cut is kept in `assets/old/shared/hero/reaper-v2/`.
+- Customize: the worn row's lit orange plate has its hole further in than the blue one, and the skin (or item) worn was drawn at the blue plate's spot, a few pixels off the ring. It is now centred in it.
+
 ## 1.14.43 - 2026-10-25
 
 ### Fixed - Smoother long On call runs; small bugs found on the way

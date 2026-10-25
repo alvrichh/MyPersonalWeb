@@ -3030,6 +3030,8 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.6));
 }
 .gear-row .skin-pic { display: block; height: 58px; width: auto; }
+/* The lit orange plate's hole sits further in (22.6% / 49.8%, see below): what is worn is centred in it too. */
+.gear-row.is-on .icon { left: 22.6%; top: 49.8%; }
 /* A world's picture as a round thumbnail filling the ring's hole exactly: measured on the plate pictures, the blue
    plate's hole is centred at 20.4% / 48.9% and 25.3% of its width across, the lit orange one's (its picture has the
    glow round it) at 22.6% / 49.8% and 22.5% across. A floor is zoomed into the middle of the arena, past its walls. */
