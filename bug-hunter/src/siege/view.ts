@@ -118,7 +118,9 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   for (const u of [...s.units].sort((a, b) => a.lane - b.lane || a.x - b.x)) {
     const spec = UNITS[u.id]; const y = ground + u.lane * 12;
     const path = sprite(s, u);
-    const frame = reduced ? 0 : Math.floor(s.time * 6 + u.uid) % frames(path);
+    // A blow shows: the boss sheets' wind-up pose (3) and flinch (8), the others lunge and lean back when hit.
+    const boss = path.startsWith('bosses/');
+    const frame = boss && u.hit ? 3 : boss && u.flash ? 8 : reduced ? 0 : Math.floor(s.time * 6 + u.uid) % frames(path);
     const art = picture(`${path}-${frame}`); const size = spec.size * (u.boss ? 1.2 : 1);
     ctx.fillStyle = u.side ? '#ff648577' : '#43ebce77'; ctx.beginPath(); ctx.ellipse(u.x, y + 2, size * 0.3, 7, 0, 0, Math.PI * 2); ctx.fill();
     if (art.image.complete && art.image.naturalWidth) {
@@ -126,7 +128,9 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
       const ratio = Math.min(size * 1.2 / crop[2], size / crop[3]);
       const dw = crop[2] * ratio, dh = crop[3] * ratio;
       const bob = reduced ? 0 : Math.sin(s.time * 9 + u.uid) * 1.8;
-      ctx.save(); ctx.translate(u.x, y + bob); if (u.side) ctx.scale(-1, 1);
+      const lunge = u.hit ? Math.sin((1 - u.hit / 0.3) * Math.PI) * 12 : 0;
+      ctx.save(); ctx.translate(u.x + (u.side ? -lunge : lunge), y + bob); if (u.side) ctx.scale(-1, 1);
+      if (!boss && u.flash) ctx.rotate(-0.12);
       if (u.flash) { ctx.shadowColor = '#fff'; ctx.shadowBlur = 10; }
       ctx.drawImage(art.image, ...crop, -dw / 2, -dh, dw, dh); ctx.restore();
     } else {

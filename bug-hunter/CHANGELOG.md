@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.2 - 2026-10-25
+
+### Changed - Siege troops show their blows
+- The boss sheets swap to their wind-up pose to strike and their flinch when hit; the other troops lunge forward and lean back.
+
 ## 1.14.1 - 2026-10-25
 
 ### Changed - Siege looks like Cartoon Wars 2, with the game's own art
