@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.37 - 2026-10-25
+
+### Added - alvrich walks away with real steps
+- alvrich (without a hat) has his own back walk: the owner's two back-walking poses (`boy-base-bwalk-0/1`, poses 4 and 5 of his new sheet) cut with the sheet's alpha and scaled to his back picture, so walking up alternates real steps instead of striding the back picture. His other pictures and the hat versions are unchanged.
+
 ## 1.14.36 - 2026-10-25
 
 ### Added - Eight boss skins from On call
