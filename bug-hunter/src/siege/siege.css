@@ -109,3 +109,5 @@
    where the bridge deck is), never taller than half the field, so it stays on screen in both orientations. */
 .sg-aim{top:auto;bottom:30%;height:min(150px,48%);left:12px;width:40px;padding:4px 3px}
 .sg-aim input{min-height:0}
+/* The deck runs across the field's middle now: the aim stands on our wall, just above it. */
+.sg-aim{bottom:calc(50% + 6px);height:min(150px,44%)}
