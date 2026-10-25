@@ -824,6 +824,15 @@ const SIDE_WALK = new Set<Pose>(['walk', 'walk2', 'wshoot', 'wshoot2']);
 const SIDE_CYCLE = new Set(['boy-base', 'boy-wizard', 'boy-helm', 'boy-bandana', 'boy-crown',
   // The world skins and the special ones with legs (Medusa's tail is walked by the warp), from their own sheets.
   ...['intern', 'lava', 'arctic', 'swamp', 'jungle', 'gladiator', 'mech', 'ghost', 'dragon', 'kratos', 'weso', 'reaper'].map((s) => `${s}-base`)]);
+/* Sets with their own walk away from the camera (`hero/<set>-bwalk-0..1`: one foot up, then the other), drawn instead of
+   striding the single back picture. Add a set's key here once its two pictures are in `assets/shared/hero/`. */
+const BACK_WALK = new Set<string>([]);
+const backWalks = new Map<string, HTMLImageElement[]>();
+function backWalk(key: string) {
+  let frames = backWalks.get(key);
+  if (!frames) { frames = [0, 1].map((i) => Object.assign(new Image(), { src: `./images/game/hero/${key}-bwalk-${i}.webp` })); backWalks.set(key, frames); }
+  return frames;
+}
 /** Seconds each frame of the side walk cycle shows (a full stride is four). */
 const SIDE_STEP = 0.12;
 const sideCycles = new Map<string, HTMLImageElement[]>();
@@ -1025,12 +1034,16 @@ function drawPlayer(ctx: CanvasRenderingContext2D, g: Game, pal: Palette, now: n
     const tint = g.phase === 'play' ? heroTint(g) : null;
     // Four-frame side cycles when supplied, otherwise the authored two step poses (Robot and Kitty).
     // Warping those existing poses again would spread their feet sideways, including while a four-frame cycle loads.
-    const cycle = full && p.moving && SIDE_WALK.has(pose) ? sideCycle(heroKey(pal.skin ?? 'boy', pal.hat), pose === 'wshoot' || pose === 'wshoot2') : null;
-    const backStride = pose === 'back' && pal.skin !== 'medusa';
+    const setKey = heroKey(pal.skin ?? 'boy', pal.hat);
+    // Walking away: the set's own two back steps when it has them (both loaded), else the back picture strided.
+    const backPair = full && p.moving && pose === 'back' && BACK_WALK.has(setKey) ? backWalk(setKey) : null;
+    const backFrames = backPair && backPair.every((f) => f.complete && f.naturalWidth) ? backPair : null;
+    const cycle = backFrames ?? (full && p.moving && SIDE_WALK.has(pose) ? sideCycle(setKey, pose === 'wshoot' || pose === 'wshoot2') : null);
+    const backStride = pose === 'back' && pal.skin !== 'medusa' && !backFrames;
     const tailStride = pal.skin === 'medusa' && SIDE_WALK.has(pose);
     const steps = !cycle && full && p.moving && (tailStride || backStride) ? stepFrames(img, backStride) : null;
     if (cycle) {
-      const f = cycle[Math.floor(now / SIDE_STEP) % cycle.length];
+      const f = cycle === backFrames ? cycle[Math.floor(now * 7) % 2] : cycle[Math.floor(now / SIDE_STEP) % cycle.length];
       const fh = p.r * 3.05 * (f.naturalHeight / FULL_BASE_H);
       const fw = (fh * f.naturalWidth) / f.naturalHeight;
       drawTinted(ctx, f, -fw / 2, -fh, fw, fh, tint);

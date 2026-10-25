@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.34 - 2026-10-25
+
+### Added - Room for a real walk away from the camera
+- A skin can now have its own two back-walking pictures (`hero/<set>-bwalk-0` and `-bwalk-1`: seen from behind, one foot up, then the other). Listed in `BACK_WALK` (`src/draw.ts`), the hero alternates them when walking up, instead of striding the single back picture by warping it. No set has them yet, so nothing changes until the pictures are added.
+
 ## 1.14.33 - 2026-10-25
 
 ### Changed - The profile's hero opens the character list scrolled into view
