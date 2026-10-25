@@ -828,7 +828,7 @@ const SIDE_CYCLE = new Set(['boy-base', 'boy-wizard', 'boy-helm', 'boy-bandana',
     'glitch', 'inferno', 'shieldmaiden', 'bloom', 'thunder', 'overclock', 'vampire', 'drake'].map((s) => `${s}-base`)]);
 /* Sets with their own walk away from the camera (`hero/<set>-bwalk-0..1`: one foot up, then the other), drawn instead of
    striding the single back picture. Add a set's key here once its two pictures are in `assets/shared/hero/`. */
-const BACK_WALK = new Set<string>(['boy', 'duck', 'box', 'hacker', 'king', 'potato', 'suit',
+const BACK_WALK = new Set<string>(['boy', 'reaper', 'duck', 'box', 'hacker', 'king', 'potato', 'suit',
   'glitch', 'inferno', 'shieldmaiden', 'bloom', 'thunder', 'overclock', 'vampire', 'drake'].map((s) => `${s}-base`));
 const backWalks = new Map<string, HTMLImageElement[]>();
 function backWalk(key: string) {

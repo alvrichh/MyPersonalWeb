@@ -11,3 +11,4 @@ published, under `/images/game/old/...`, like any asset). Each folder mirrors wh
 - `01-backlog/bosses/kernel-0..8.webp`: the Backlog's first Kernel Panic (bodies about 120 px), replaced in 1.13.45.
 - `shared/hero/{intern,kratos,medusa}-base-*.webp`: the intern, Kratos and Medusa skins before 1.14.26 (Kratos and
   Medusa recut from their sheets, the intern cleaned up; grey haze, Medusa's lime/yellow key fringe, specks).
+- `shared/hero/reaper-base-*.webp`: the first Server Reaper skin, replaced by the owner's redrawn sheet in 1.14.38.
