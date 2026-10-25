@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.42 - 2026-10-25
+
+### Fixed - The hero no longer flips for a frame while walking
+- The way the hero faces is held steady: the pose's angle (the target's while shooting, the heading while walking) only turns the figure once it has pointed the other way for 0.12 s. A shot at an enemy behind, the gap between two waves (walking swaps to the aimed walk and back) or a stop between two touches used to mirror the figure for a frame or two. The wings follow the same facing.
+
 ## 1.14.41 - 2026-10-25
 
 ### Added - World 4's boss skin; three skins sold without a gate
