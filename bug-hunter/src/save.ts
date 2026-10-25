@@ -19,7 +19,9 @@ export const SPECIAL_SKINS = ['kratos', 'medusa', 'weso', 'reaper', 'glitch', 'i
 export const NEW_SKINS = ['duck', 'box', 'hacker', 'king', 'potato', 'suit'] as const;
 export const WORLD_SKINS = ['intern', 'lava', 'arctic', 'swamp', 'jungle', 'gladiator', 'mech', 'ghost', 'dragon'] as const;
 // Alvrich, then the world skins in world order, and the special ones (the dearest) at the end of the list.
-export const SKINS: HeroSkin[] = ['boy', ...WORLD_SKINS, 'robot', 'kitty', ...NEW_SKINS, ...SPECIAL_SKINS];
+// The boss skins in world order (the boss that opens each, 1 to 9), the secret shift's Kratos last.
+export const SKINS: HeroSkin[] = ['boy', ...WORLD_SKINS, 'robot', 'kitty', ...NEW_SKINS,
+  'weso', 'glitch', 'inferno', 'shieldmaiden', 'medusa', 'bloom', 'thunder', 'overclock', 'reaper', 'vampire', 'drake', 'kratos'];
 /** What each figure costs in coins; Alvrich comes free. The owner's rule: skins are always the dearest thing in the game (items, forge levels, the revive), so raise these if anything else goes past them. */
 /** What each figure costs in coins once it is open (`skinOpen`); Alvrich comes free. The owner's rule: the special
     skins (robot, Kitty and the boss-like ones) are the dearest thing in the game; the world skins are plain outfits,
