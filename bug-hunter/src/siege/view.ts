@@ -68,17 +68,21 @@ function still(path: string) {
   return image;
 }
 const ok = (image: HTMLImageElement) => image.complete && image.naturalWidth > 0;
-/** The fortresses are the Tactics benches' walled fronts (`ui/bench/boss-N`): ours the Backlog's, the enemy's its world's
-    (the Backlog itself defends with its plain bench, so the two never match). Falls back to the drawn tower while loading. */
-const wallPath = (world: number, enemy: boolean) => !enemy ? 'ui/bench/boss-1' : world === 1 ? 'ui/bench/bench-1' : `ui/bench/boss-${world}`;
+/** The fortresses: ours the Backlog's Inferno Tower (`fortress/backlog/inferno-tower`, cut from its building sheet), the
+    enemy's its world's walled Tactics bench front (`ui/bench/boss-N`). Falls back to the drawn tower while loading. */
+/** CSS pixels kept clear left of the field for the aim control. */
+const AIM_GUTTER = 60;
+const wallPath = (world: number, enemy: boolean) => !enemy ? 'fortress/backlog/inferno-tower' : `ui/bench/boss-${world}`;
 function base(ctx: CanvasRenderingContext2D, x: number, ground: number, color: string, hp: number, max: number, enemy: boolean, world: number) {
   const wall = still(wallPath(world, enemy));
   ctx.save(); ctx.translate(x, ground);
   let top = -169;
   if (ok(wall)) {
-    const w = 230, h = w * wall.naturalHeight / wall.naturalWidth;
+    // Ours is the Backlog's Inferno Tower (from its building sheet), standing tall; theirs a walled bench front.
+    // Never taller than the room above the deck, so its health bar stays in view.
+    const h = enemy ? 230 * wall.naturalHeight / wall.naturalWidth : Math.min(175, ground - 36), w = enemy ? 230 : h * wall.naturalWidth / wall.naturalHeight;
     ctx.shadowColor = color; ctx.shadowBlur = 16;
-    ctx.drawImage(wall, -w / 2, -h + 8, w, h);
+    ctx.drawImage(wall, -w / 2, -h + (enemy ? 8 : 14), w, h);
     ctx.shadowBlur = 0; top = -h - 4;
   } else {
     ctx.shadowColor = color; ctx.shadowBlur = 18;
@@ -89,7 +93,9 @@ function base(ctx: CanvasRenderingContext2D, x: number, ground: number, color: s
   ctx.fillStyle = '#050d18'; ctx.fillRect(-60, top - 6, 120, 9); ctx.fillStyle = color; ctx.fillRect(-59, top - 5, 118 * Math.max(0, hp / max), 7);
   ctx.restore();
 }
-export interface Camera { x: number; width: number }
+/** The camera: its left edge and width in field units, and how far left of the field it may go (a margin past our
+    wall, so the aim control stands clear of it). */
+export interface Camera { x: number; width: number; min?: number }
 export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, s: Siege, camera: Camera, reduced: boolean) {
   const rect = canvas.getBoundingClientRect(); const w = rect.width, h = rect.height;
   if (!w || !h) return;
@@ -101,14 +107,15 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   ctx.fillStyle = sky; ctx.fillRect(0, 0, w, h);
   const scale = Math.min(h / 340, w / 650);
   camera.width = w / scale;
-  camera.x = Math.max(0, Math.min(Math.max(0, FIELD - camera.width), camera.x));
+  camera.min = -AIM_GUTTER / scale;
+  camera.x = Math.max(camera.min, Math.min(Math.max(camera.min, FIELD - camera.width), camera.x));
   // The bridge deck the troops walk on runs across the middle of the field.
   const ground = h / scale * 0.5;
   // Cartoon Wars-style backdrop: the world's own map picture behind the field, scrolling slower than the troops.
   const back = still(backdropPath(s.world));
   if (ok(back)) {
     const bh = h, bw = Math.max(w * 1.35, bh * back.naturalWidth / back.naturalHeight);
-    const pan = FIELD > camera.width ? camera.x / (FIELD - camera.width) : 0.5;
+    const pan = FIELD > camera.width ? Math.max(0, Math.min(1, camera.x / (FIELD - camera.width))) : 0.5;
     ctx.drawImage(back, -(bw - w) * pan, 0, bw, bh);
     const shade = ctx.createLinearGradient(0, 0, 0, bh); shade.addColorStop(0, '#080f2155'); shade.addColorStop(0.7, '#080f21aa'); shade.addColorStop(1, '#03060cf2');
     ctx.fillStyle = shade; ctx.fillRect(0, 0, w, bh);
@@ -118,7 +125,7 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   // The battle is fought on a bridge over the abyss, the world's Tactics bridge (`ui/bench/bench-N`) stretched from wall
   // to wall, the troops walking on its deck; the backdrop falls away under it.
   const chasm = ctx.createLinearGradient(0, ground, 0, viewH); chasm.addColorStop(0, '#03060c00'); chasm.addColorStop(1, '#03060cee');
-  ctx.fillStyle = chasm; ctx.fillRect(0, ground, FIELD, viewH);
+  ctx.fillStyle = chasm; ctx.fillRect(-400, ground, FIELD + 800, viewH);
   const bridge = picture(`ui/bench/bench-${s.world}`);
   if (bridge.image.complete && bridge.image.naturalWidth) {
     // One long bridge: its own left end, then its two middle slabs repeated as far as needed, then its right end.

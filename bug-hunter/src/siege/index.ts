@@ -56,12 +56,12 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     const battleOptions = { signal: battleAbort.signal };
     if (!selected.length) return;
     progress.deck = [...selected]; persist(); state = newSiege(progress, world); bossTalked = false;
-    preload(world, selected); paused = false; camera.x = 0;
+    preload(world, selected); paused = false; camera.x = -Infinity;
     // Laid out like Cartoon Wars 2: mana top left, both fortresses' health face to face in the middle, coins and pause
     // top right; the field with the bow's aim on our wall; one bar below with the magic, the troop cards and the bow.
     root.innerHTML = `<div class="sg-battle"><header class="sg-hud">
         <div class="sg-mana"><img src="/images/game/ui/orb.webp" alt=""><span><b data-sg-energy></b><small data-sg-status></small></span><progress data-sg-meter></progress></div>
-        <div class="sg-vs"><img class="sg-vs-pic" src="/images/game/ui/bench/boss-1.webp" alt=""><span class="sg-hp"><i data-sg-bar="0"></i><small data-sg-health="0"></small></span><b>VS</b><span class="sg-hp is-enemy"><i data-sg-bar="1"></i><small data-sg-health="1"></small></span><img class="sg-vs-pic" src="${guardianUrl(world)}" alt=""></div>
+        <div class="sg-vs"><img class="sg-vs-pic" src="/images/game/fortress/backlog/inferno-tower.webp" alt=""><span class="sg-hp"><i data-sg-bar="0"></i><small data-sg-health="0"></small></span><b>VS</b><span class="sg-hp is-enemy"><i data-sg-bar="1"></i><small data-sg-health="1"></small></span><img class="sg-vs-pic" src="${guardianUrl(world)}" alt=""></div>
         <div class="sg-hud-actions"><span class="sg-clock" data-sg-clock></span><span class="sg-gold">🪙 ${progress.coins}</span><button data-sg="pause" aria-label="${t('pause')}">⏸</button></div></header>
       <div class="sg-field"><canvas class="sg-arena" tabindex="0" role="img" aria-label="${t('siegeBattlefield')}"></canvas>
       <label class="sg-aim"><span aria-hidden="true">▲</span><input type="range" min="140" max="1080" step="10" value="700" data-sg-aim aria-label="${t('siegeAim')}"><span aria-hidden="true">▼</span></label>
@@ -79,7 +79,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     canvas.addEventListener('pointermove', e => {
       if (!pointer || e.pointerId !== pointer.id) return;
       const delta = e.clientX - pointer.start; if (Math.abs(delta) > 6) pointer.moved = true;
-      if (pointer.moved) camera.x = Math.max(0, Math.min(FIELD - camera.width, pointer.camera - delta * camera.width / canvas.clientWidth));
+      if (pointer.moved) camera.x = Math.max(camera.min ?? 0, Math.min(FIELD - camera.width, pointer.camera - delta * camera.width / canvas.clientWidth));
     }, battleOptions);
     canvas.addEventListener('pointerup', e => {
       if (pointer?.id !== e.pointerId) return;
@@ -218,7 +218,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     else if (action === 'next') { world = Math.min(9, world + 1); prep(); }
     else if (action === 'pause') pause();
     else if (action === 'resume') resume();
-    else if (action === 'home') camera.x = 0;
+    else if (action === 'home') camera.x = -Infinity;
     else if (action === 'enemy') camera.x = Math.max(0, FIELD - camera.width);
     else if (state && !paused) { if (action === 'generator') improveGenerator(state); if (action === 'strike') strike(state); if (action === 'missile') missile(state); updateUi(); }
   }, options);
@@ -248,7 +248,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     if (/^[1-5]$/.test(key)) { const n = Number(key) - 1; if (tab === 'special') [() => improveGenerator(state!), () => strike(state!), () => missile(state!)][n]?.(); else { const id = tabCards()[n]; if (id !== undefined) summon(state, id); } }
     else if (key === 'r') missile(state);
     else if (key === 'e') improveGenerator(state); else if (key === 'f') toggleBow(state); else if (key === 'q') strike(state);
-    else if (key === 'arrowleft') camera.x = Math.max(0, camera.x - 100); else if (key === 'arrowright') camera.x = Math.min(Math.max(0, FIELD - camera.width), camera.x + 100);
+    else if (key === 'arrowleft') camera.x = Math.max(camera.min ?? 0, camera.x - 100); else if (key === 'arrowright') camera.x = Math.min(Math.max(0, FIELD - camera.width), camera.x + 100);
     updateUi();
   };
   window.addEventListener('keydown', keyHandler, { ...options, capture: true });

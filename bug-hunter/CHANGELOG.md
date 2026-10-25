@@ -4,6 +4,13 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.14 - 2026-10-25
+
+### Changed - Siege: our fortress is the Backlog's Inferno Tower
+- Our fortress is the Inferno Tower cut from the Backlog's building sheet (`fortress/backlog/inferno-tower.webp`, its dark backdrop removed and its neighbours' corners dropped), standing on our end of the bridge; it is also our picture beside the health bars. It is never drawn taller than the room above the deck, so its health bar stays in view.
+- The camera keeps a margin left of the field, so the aim control stands clear of the tower and the bridge's own left end shows; the backdrop and the chasm's shade cover that margin too.
+- The enemy wall is its world's walled bench front in every world (world 1 used the plain bench while ours was the Backlog's walled one).
+
 ## 1.14.13 - 2026-10-25
 
 ### Fixed - Siege aim always on screen
