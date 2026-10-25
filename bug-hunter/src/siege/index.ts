@@ -100,6 +100,8 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
         while (accumulator >= 1 / 30) { tick(state, 1 / 30); accumulator -= 1 / 30; }
       }
       render(ctx, canvas, state, camera, reduced);
+      // The aim control stands on the deck, wherever the field puts it.
+      q<HTMLElement>('.sg-aim').style.bottom = `calc(${((1 - (camera.deck ?? 0.5)) * 100).toFixed(1)}% + 6px)`;
       if (now >= uiAt) { updateUi(); uiAt = now + 100; }
       if (state.phase !== 'fight' && !state.paid) result();
       // The guardian speaks the moment it joins, the battle held until the scene ends.
