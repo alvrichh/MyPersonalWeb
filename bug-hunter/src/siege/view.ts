@@ -42,7 +42,7 @@ export const portrait = (id: number) => `/images/game/${UNITS[id].sprite}-0.webp
 export function preload(world: number, deck: number[]) {
   const paths = new Set([...deck.map(id => UNITS[id].sprite), ...['bug', 'ticket', 'legacy'].map(kind => `enemies/${CASTS[world - 1]}-${kind}`), `bosses/${GUARDIANS[world - 1]}`]);
   paths.forEach(path => { for (let f = 0; f < frames(path); f++) picture(`${path}-${f}`); });
-  [backdropPath(world), `floors/world${world}`, ...FX].forEach(still);
+  [backdropPath(world), `floors/world${world}`, wallPath(world, false), wallPath(world, true), ...FX].forEach(still);
 }
 const backdropPath = (world: number) => `map/pv-${BACKDROPS[world - 1]}.jpg`;
 const FX = ['arrows/spark.webp', 'arrows/fire.webp', 'fx/fireball.webp', 'fx/boom-big.webp', 'fx/impact.webp', ...[1, 2, 3, 4, 5, 6].map(n => `fx/bolt-y-${n}.webp`)];
@@ -54,17 +54,25 @@ function still(path: string) {
   return image;
 }
 const ok = (image: HTMLImageElement) => image.complete && image.naturalWidth > 0;
-function base(ctx: CanvasRenderingContext2D, x: number, ground: number, color: string, hp: number, max: number, enemy: boolean) {
+/** The fortresses are the Tactics benches' walled fronts (`ui/bench/boss-N`): ours the Backlog's, the enemy's its world's
+    (the Backlog itself defends with its plain bench, so the two never match). Falls back to the drawn tower while loading. */
+const wallPath = (world: number, enemy: boolean) => !enemy ? 'ui/bench/boss-1' : world === 1 ? 'ui/bench/bench-1' : `ui/bench/boss-${world}`;
+function base(ctx: CanvasRenderingContext2D, x: number, ground: number, color: string, hp: number, max: number, enemy: boolean, world: number) {
+  const wall = still(wallPath(world, enemy));
   ctx.save(); ctx.translate(x, ground);
-  ctx.shadowColor = color; ctx.shadowBlur = 18;
-  ctx.fillStyle = '#111f32'; ctx.strokeStyle = color; ctx.lineWidth = 3;
-  ctx.beginPath(); ctx.moveTo(-49, 0); ctx.lineTo(-49, -115); ctx.lineTo(-32, -115); ctx.lineTo(-32, -145); ctx.lineTo(32, -145); ctx.lineTo(32, -115); ctx.lineTo(49, -115); ctx.lineTo(49, 0); ctx.closePath(); ctx.fill(); ctx.stroke();
-  ctx.shadowBlur = 0;
-  ctx.fillStyle = color;
-  for (let row = 0; row < 3; row++) for (let col = 0; col < 3; col++) ctx.fillRect(-29 + col * 24, -102 + row * 26, 10, 10);
-  ctx.fillRect(enemy ? -76 : 34, -120, 42, 9);
-  ctx.fillStyle = '#050d18'; ctx.fillRect(-16, -28, 32, 28);
-  ctx.fillRect(-52, -169, 104, 8); ctx.fillStyle = color; ctx.fillRect(-52, -169, 104 * hp / max, 8);
+  let top = -169;
+  if (ok(wall)) {
+    const w = 230, h = w * wall.naturalHeight / wall.naturalWidth;
+    ctx.shadowColor = color; ctx.shadowBlur = 16;
+    ctx.drawImage(wall, -w / 2, -h + 8, w, h);
+    ctx.shadowBlur = 0; top = -h - 4;
+  } else {
+    ctx.shadowColor = color; ctx.shadowBlur = 18;
+    ctx.fillStyle = '#111f32'; ctx.strokeStyle = color; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(-49, 0); ctx.lineTo(-49, -115); ctx.lineTo(-32, -115); ctx.lineTo(-32, -145); ctx.lineTo(32, -145); ctx.lineTo(32, -115); ctx.lineTo(49, -115); ctx.lineTo(49, 0); ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.shadowBlur = 0;
+  }
+  ctx.fillStyle = '#050d18'; ctx.fillRect(-60, top - 6, 120, 9); ctx.fillStyle = color; ctx.fillRect(-59, top - 5, 118 * Math.max(0, hp / max), 7);
   ctx.restore();
 }
 export interface Camera { x: number; width: number }
@@ -103,8 +111,8 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
     ctx.fillStyle = fade; ctx.fillRect(0, ground - 10, FIELD, viewH); ctx.restore();
   }
   ctx.strokeStyle = color; ctx.globalAlpha = 0.6; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(0, ground - 10); ctx.lineTo(FIELD, ground - 10); ctx.stroke(); ctx.globalAlpha = 1;
-  base(ctx, 80, ground, '#55e5c4', s.hp[0], s.maxHp[0], false);
-  base(ctx, FIELD - 80, ground, '#ff718c', s.hp[1], s.maxHp[1], true);
+  base(ctx, 80, ground, '#55e5c4', s.hp[0], s.maxHp[0], false, s.world);
+  base(ctx, FIELD - 80, ground, '#ff718c', s.hp[1], s.maxHp[1], true, s.world);
   const aimY = ground + 10;
   ctx.strokeStyle = '#ffe3a0'; ctx.globalAlpha = 0.65; ctx.setLineDash([4, 5]); ctx.beginPath(); ctx.ellipse(s.aim, aimY, 45, 13, 0, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha = 1;
   for (const u of [...s.units].sort((a, b) => a.lane - b.lane || a.x - b.x)) {
