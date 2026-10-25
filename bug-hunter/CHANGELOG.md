@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.6 - 2026-10-25
+
+### Changed - Siege bow with a quiver meter
+- Arrows no longer fly on their own or as a fixed volley. Hold the arrows button (or F) and they fly one after another at the aim, faster the longer it is held (up to twice as fast after 2.5 s, plus one more arrow at a time); each shot empties the quiver meter on the button, and let go it fills again. Run dry, it shows «Reloading…» until a third is back.
+- New workshop upgrade, the Bow (five levels): shoots more often and adds an arrow per shot every two levels. Older saves start it at level 0.
+
 ## 1.14.5 - 2026-10-25
 
 ### Added - Siege story

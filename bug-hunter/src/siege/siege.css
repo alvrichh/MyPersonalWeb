@@ -31,3 +31,11 @@
 .sg-line .sg-dialog-actions{margin-top:14px}
 @keyframes sg-in{from{opacity:0;transform:translateY(12px)}}@keyframes sg-pop{from{opacity:0;transform:translateY(20px) scale(.96)}}
 @media(max-width:600px){.sg-speaker{bottom:150px;height:36vh;max-width:70%}.sg-scene.is-boss .sg-speaker{height:40vh}}
+
+/* The bow button holds a quiver meter that empties while shooting and fills when let go. */
+.siege-root .sg-bow{display:flex;flex-direction:column;align-items:center;gap:3px;touch-action:none;user-select:none;-webkit-user-select:none}
+.sg-quiver{display:block;width:100%;height:5px;border-radius:3px;background:#2a1102aa;overflow:hidden}
+.sg-quiver>i{display:block;height:100%;background:linear-gradient(90deg,#fff3c4,#ffd166);transition:width .1s linear}
+.siege-root .sg-bow.is-drawing{filter:brightness(1.15) drop-shadow(0 0 8px #ffd16699)}
+.siege-root .sg-bow.is-empty .sg-quiver>i{background:#ff718c}
+.sg-upgrades{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
