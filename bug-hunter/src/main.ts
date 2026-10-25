@@ -9,7 +9,7 @@ import { COIN_PACKS, currentOffer, grant, packBonus, SKIN_OFFERS, type CoinPack,
 import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPrize, type DailyResult } from './daily';
 import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
 import { MID_ART, boardBackdropBounds, draw, drawRetroFigure, preloadBoardBossFx, preloadCast, preloadFx, type Palette, type View } from './draw';
-import { DEFAULT_NAME, NAME_MAX, NET_ID, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, WORLD_SKINS, SKIN_GATE, skinOpen, ownsSkin, skinPrice, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
+import { DEFAULT_NAME, NAME_MAX, NET_ID, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, WORLD_SKINS, SKIN_GATE, skinOpen, ownsSkin, skinPrice, worldOutfit, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
 import { ABILITY, ABIL_V, BENCH_CAP, canFight, moveBenchSeat, CELL, COLS, FINAL_ID, HOME_ROW, NATIVE_WORLD_BONUS, ROWS, ROUNDS, SYNERGY, TACTICS, armyCap, deployBench, sellBench, storeOnBench, toggleAutoMerge, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, startOnlineFight, unitStats, updateBoard, waveSpots, waveUnitStats, type BoardGame, type Online, type Piece, type Variant } from './board';
 import { cleanCode, dial, hostGame, joinGame, leave as netLeave, presence, presenceOn, presenceReady, send as netSend, type NetHandlers, type NetMsg, type NetProfile, type NetState, type Together } from './net';
 import { ABILITY_ICON, ABILITY_PIC, SYNERGY_PIC, FIREBALL, boardMerged, boardUnitBounds, drawBoard, mirrorFight, drawBoardDrag, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
@@ -224,6 +224,9 @@ function bankRun(g: Game): number | null {
     setWorld(g.world + 1, g.mode);
     unlocked = g.world + 1;
   }
+  // A sprints world won gives alvrich's next world outfit, worn at once.
+  const outfit = plain && won && g.mode === 'sprints' ? worldOutfit(g.world) : undefined;
+  if (outfit && !save.skins.includes(outfit)) { save.skins.push(outfit); save.skin = outfit; }
   const weapon = ARSENAL.find((a) => a.world === g.world);
   arsenalOpened = plain && won && !wasWon && weapon && !save.arsenal.includes(weapon.id) ? weapon.id : null;
   const item = ITEMS.find((it) => it.world === g.world);
@@ -1434,7 +1437,8 @@ function shopScreen(note = '') {
     </div>`;
   }).join('');
   // Skins: a shop window, the dearest things in the game; unlocked here, worn from Customise.
-  const skinCards = SKINS.map((skin) => {
+  // alvrich's world outfits are not sold (each comes with a sprints world), so the shop leaves them out.
+  const skinCards = SKINS.filter((skin) => !(WORLD_SKINS as readonly HeroSkin[]).includes(skin)).map((skin) => {
     const owned = ownsSkin(save, skin);
     const worn = save.skin === skin;
     const open = skinOpen(save, skin);

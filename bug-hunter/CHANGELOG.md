@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.40 - 2026-10-25
+
+### Changed - alvrich's world outfits come with sprints wins
+- alvrich's world outfits are no longer sold: winning world n in sprints gives world n + 1's outfit and puts it on at once (On call, Battle and the Boss Rush do not count). The intern, world 1's, is everyone's from the start.
+- Older saves get every outfit for the sprints worlds they have already won (and the intern) when they load; their coins are not touched. Locked outfits say «Win world n · Sprints», and the shop no longer lists them.
+
 ## 1.14.39 - 2026-10-25
 
 ### Changed - Boss skins in world order

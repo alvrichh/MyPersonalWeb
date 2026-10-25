@@ -30,7 +30,8 @@ export const SKIN_PRICE: Record<HeroSkin, number> = {
   boy: 0, robot: 10000, kitty: 10000, kratos: 10000, medusa: 10000, weso: 10000, reaper: 10000,
   glitch: 10000, inferno: 10000, shieldmaiden: 10000, bloom: 10000, thunder: 10000, overclock: 10000, vampire: 10000, drake: 10000,
   duck: 5000, box: 5000, hacker: 8000, king: 10000, potato: 5000, suit: 8000,
-  intern: 500, lava: 1000, arctic: 1000, swamp: 1000, jungle: 1000, gladiator: 1000, mech: 1000, ghost: 1000, dragon: 1000,
+  // alvrich's world outfits are not sold: each is given (and worn) for winning the world before it in sprints.
+  intern: 0, lava: 0, arctic: 0, swamp: 0, jungle: 0, gladiator: 0, mech: 0, ghost: 0, dragon: 0,
 };
 /** The hats are painted on the hero's pictures; a skin listed here has no hat versions and always shows its base set. */
 const HATLESS: HeroSkin[] = ['kitty', ...SPECIAL_SKINS, ...WORLD_SKINS, ...NEW_SKINS];
@@ -162,7 +163,7 @@ const fresh = (): Save => ({
   name: DEFAULT_NAME,
   coins: 0,
   skin: 'boy',
-  skins: ['boy'],
+  skins: ['boy', 'intern'],
   retro: false,
   owned: [],
   itemLevels: {},
@@ -268,6 +269,8 @@ export function loadSave(): Save {
     if (!SKINS.includes(save.skin)) save.skin = 'boy';
     // Skins cost coins now: the free one, plus whichever an older save already wore.
     save.skins = [...new Set<HeroSkin>(['boy', save.skin, ...(data.skins ?? [])])].filter((s) => SKINS.includes(s));
+    // alvrich's world outfits: the intern from the start, the rest for every world already won in sprints.
+    for (let n = 0; n < WORLD_SKINS.length; n++) if (n === 0 || sprintWon(save, n)) if (!save.skins.includes(WORLD_SKINS[n])) save.skins.push(WORLD_SKINS[n]);
     if (!data.styleV2) { save.style = 'world'; save.styleV2 = true; }
     save.unlocked = Math.max(1, save.unlocked || 1);
     save.world = Math.min(Math.max(1, save.world || 1), save.unlocked);
@@ -312,6 +315,10 @@ export function profileLevel(xp: number) {
 }
 
 /** A world won in either mode: a sprint run cleared or an on-call shift completed (the board, with no shop of its own, opens nothing). */
+/** World n won in sprints (its run has a time). */
+export const sprintWon = (save: Save, n: number) => save.bestByWorld[n]?.time !== undefined;
+/** The world outfit a sprints win of world n gives (the intern is everyone's from the start). */
+export const worldOutfit = (n: number): HeroSkin | undefined => WORLD_SKINS[n];
 export const worldWon = (save: Save, n: number) => save.bestByWorld[n]?.time !== undefined || !!save.hordeBest[n]?.won;
 
 /** Back to a fresh start: progress, coins, gear and level go; name, skins bought, settings, masteries, star colour, the lifetime totals, the achievements and the extra charm's slot (empty: what it held goes with the items) stay. */
@@ -349,7 +356,7 @@ export function skinOpen(save: Save, skin: HeroSkin) {
   if (FREE_SKINS) return true;
   const g = SKIN_GATE[skin];
   if (!g || save.skins.includes(skin)) return true;
-  if ('world' in g) return worldWon(save, g.world) || save.boardUnlocked > g.world;
+  if ('world' in g) return sprintWon(save, g.world);
   if ('boss' in g) return !!save.hordeBest[g.boss]?.won;
   return !!save.secretBest?.won;
 }
