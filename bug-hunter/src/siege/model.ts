@@ -38,7 +38,7 @@ export function upgrade(p: Progress, slot: number): boolean {
   if (level >= 5 || p.coins < cost) return false;
   p.coins -= cost; p.upgrades[slot]++; return true;
 }
-export interface Fighter { uid: number; id: number; side: 0 | 1; x: number; lane: number; hp: number; maxHp: number; damage: number; attack: number; flash: number; boss: boolean }
+export interface Fighter { uid: number; id: number; side: 0 | 1; x: number; lane: number; hp: number; maxHp: number; damage: number; attack: number; flash: number; boss: boolean; hit?: number }
 export interface Effect { x: number; from: number; lane: number; life: number; max: number; kind: 'shot' | 'burst' | 'arrow'; side: 0 | 1 }
 export interface Siege {
   world: number; phase: 'fight' | 'won' | 'lost'; time: number; energy: number; generator: number; cooldowns: number[];
@@ -118,18 +118,18 @@ export function tick(s: Siege, dt: number) {
   const alive = s.units.filter(u => u.hp > 0);
   const hits: { target: Fighter; damage: number }[] = [];
   for (const u of alive) {
-    const a = UNITS[u.id]; u.attack -= dt; u.flash = Math.max(0, u.flash - dt);
+    const a = UNITS[u.id]; u.attack -= dt; u.flash = Math.max(0, u.flash - dt); u.hit = Math.max(0, (u.hit ?? 0) - dt);
     const enemy = alive.filter(v => v.side !== u.side).sort((a, b) => Math.abs(a.x - u.x) - Math.abs(b.x - u.x))[0];
     const baseX = u.side ? 80 : FIELD - 80;
     const distance = enemy ? Math.abs(enemy.x - u.x) : Infinity;
     if (enemy && distance <= a.range + UNITS[enemy.id].size * 0.25) {
       if (u.attack <= 0) {
-        u.attack = a.rate;
+        u.attack = a.rate; u.hit = 0.3;
         for (const v of alive) if (v.side !== u.side && (v === enemy || (a.splash && Math.abs(v.x - enemy.x) < a.splash))) hits.push({ target: v, damage: u.damage });
         s.effects.push({ x: enemy.x, from: u.x, lane: enemy.lane, life: 0.2, max: 0.2, kind: 'shot', side: u.side });
       }
     } else if (Math.abs(baseX - u.x) <= a.range + 35) {
-      if (u.attack <= 0) { u.attack = a.rate; s.hp[u.side ? 0 : 1] -= u.damage; }
+      if (u.attack <= 0) { u.attack = a.rate; u.hit = 0.3; s.hp[u.side ? 0 : 1] -= u.damage; }
     } else {
       const movement = a.speed * dt;
       // Never step through an opponent, even during a long frame.
