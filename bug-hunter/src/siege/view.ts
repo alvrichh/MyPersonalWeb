@@ -160,7 +160,7 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
     // A blow shows: the boss sheets' wind-up pose (3) and flinch (8), the others lunge and lean back when hit.
     const boss = path.startsWith('bosses/');
     const frame = boss && u.hit ? 3 : boss && u.flash ? 8 : reduced ? 0 : Math.floor(s.time * 6 + u.uid) % frames(path);
-    const art = picture(`${path}-${frame}`); const size = spec.size * (u.boss ? 1.2 : 1);
+    const art = picture(`${path}-${frame}`); const size = spec.size * (u.boss ? 1.2 : 1) * Math.pow(0.8, u.stage ?? 0);
     ctx.fillStyle = u.side ? '#ff648577' : '#43ebce77'; ctx.beginPath(); ctx.ellipse(u.x, floor + 2, size * (spec.air ? 0.2 : 0.3), spec.air ? 4 : 7, 0, 0, Math.PI * 2); ctx.fill();
     if (art.image.complete && art.image.naturalWidth) {
       const crop = art.crop ?? [0, 0, art.image.width, art.image.height];
@@ -171,7 +171,15 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
       ctx.save(); ctx.translate(u.x + (u.side ? -lunge : lunge), y + bob); if (u.side) ctx.scale(-1, 1);
       if (!boss && u.flash) ctx.rotate(-0.12);
       if (u.flash) { ctx.shadowColor = '#fff'; ctx.shadowBlur = 10; }
-      ctx.drawImage(art.image, ...crop, -dw / 2, -dh, dw, dh); ctx.restore();
+      // Elites glow gold and wear horns; wrecks are darker the more broken they are.
+      else if (u.elite) { ctx.shadowColor = '#ffd84a'; ctx.shadowBlur = 14; }
+      if (u.stage) ctx.filter = `brightness(${1 - u.stage * 0.22}) saturate(${1 - u.stage * 0.3})`;
+      ctx.drawImage(art.image, ...crop, -dw / 2, -dh, dw, dh); ctx.filter = 'none';
+      if (u.elite) {
+        ctx.shadowBlur = 0; ctx.fillStyle = '#f5e6c8'; ctx.strokeStyle = '#3a2a10'; ctx.lineWidth = 1.5;
+        for (const side of [-1, 1]) { ctx.beginPath(); ctx.moveTo(side * dw * 0.12, -dh * 0.92); ctx.quadraticCurveTo(side * dw * 0.34, -dh * 1.12, side * dw * 0.3, -dh * 1.2); ctx.lineTo(side * dw * 0.22, -dh * 0.9); ctx.closePath(); ctx.fill(); ctx.stroke(); }
+      }
+      ctx.restore();
     } else {
       ctx.fillStyle = u.side ? '#fd9aac' : color; ctx.beginPath(); ctx.roundRect(u.x - size / 4, y - size * 0.65, size / 2, size * 0.65, 10); ctx.fill();
       ctx.fillStyle = '#102132'; ctx.fillRect(u.x - 9, y - size * 0.45, 5, 5); ctx.fillRect(u.x + 4, y - size * 0.45, 5, 5);
@@ -202,6 +210,13 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     ctx.drawImage(art, -len / 2, -h / 2, len, h); ctx.restore(); return true;
   }
   if (e.kind === 'burst' && p < 0) return true;
+  if (e.kind === 'bolt') {
+    // An elite's lightning: a jagged yellow line from shooter to target, fading.
+    ctx.save(); ctx.globalAlpha = 1 - p; ctx.strokeStyle = '#fff38a'; ctx.shadowColor = '#ffd84a'; ctx.shadowBlur = 12; ctx.lineWidth = 3;
+    ctx.beginPath(); const n = 6;
+    for (let i = 0; i <= n; i++) { const t = i / n, x = e.from + (e.x - e.from) * t, jag = i % n ? ((i * 37 + Math.floor(p * 8)) % 7 - 3) * 4 : 0; i ? ctx.lineTo(x, y + jag) : ctx.moveTo(x, y); }
+    ctx.stroke(); ctx.restore(); return true;
+  }
   if (e.kind === 'arrow' || e.kind === 'shot') {
     const close = e.kind === 'shot' && Math.abs(e.x - e.from) < 60;
     const art = still(e.kind === 'arrow' ? 'arrows/fire.webp' : close ? 'fx/impact.webp' : e.side ? 'arrows/leaf.webp' : 'arrows/water.webp');

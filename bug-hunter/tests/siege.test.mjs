@@ -127,3 +127,19 @@ test('every troop id is its place in the list, and every troop has a name', () =
   m.UNITS.forEach((u, i) => assert.equal(u.id, i));
   assert.ok(m.UNITS.length >= 29);
 });
+
+test('heavy robots break twice into weaker wrecks; elite shooters come later and hit harder', () => {
+  const open = { ...m.freshProgress(), unlocked: 9 };
+  const s = m.newSiege(open, 7); s.nextWave = 999; assert.equal(s.world, 7);
+  s.units.push({ uid: 50, id: 2, side: 1, x: 900, lane: 0, hp: 0, maxHp: 400, damage: 40, attack: 0, flash: 0, boss: false });
+  m.tick(s, 1 / 30); let wreck = s.units.find(u => u.side);
+  assert.equal(wreck.stage, 1); assert.equal(wreck.maxHp, 400 * m.SPLIT.hp); assert.ok(wreck.damage < 40);
+  wreck.hp = 0; m.tick(s, 1 / 30); wreck = s.units.find(u => u.side); assert.equal(wreck.stage, 2);
+  wreck.hp = 0; m.tick(s, 1 / 30); assert.equal(s.units.filter(u => u.side).length, 0, 'gone after its second break');
+  const other = m.newSiege(m.freshProgress(), 1); other.nextWave = 999;
+  other.units.push({ uid: 50, id: 2, side: 1, x: 900, lane: 0, hp: 0, maxHp: 400, damage: 40, attack: 0, flash: 0, boss: false });
+  m.tick(other, 1 / 30); assert.equal(other.units.length, 0, 'only the Forge\'s heavies break');
+  const late = m.newSiege(open, 3); late.hp[0] = late.hp[1] = 1e9;
+  let elite = null; for (let i = 0; i < 200 * 30 && !elite; i++) { m.tick(late, 1 / 30); elite = late.units.find(u => u.elite); }
+  assert.ok(elite, 'an elite shooter comes'); assert.ok(late.time >= m.ELITE.from); assert.equal(elite.id, 1);
+});
