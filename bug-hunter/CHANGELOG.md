@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.18 - 2026-10-25
+
+### Added - 17 more Siege troops
+- Every world's own cast joins the army, unlocked world by world (29 troops in all): land: raider (world 2), axe thrower and shield line (3), gladiator, frog and mud blob (4), hoplite, snapper and treant (5), turret (6, the longest range), crusher and zombie (7), skeleton and haunted tomb (8) and the stone drake (9); air: the gargoyle (3) and the dragon whelp (9).
+- Armies still take five land and five air troops, so there is more to choose from. A new check keeps each troop's id equal to its place in the list.
+
 ## 1.14.17 - 2026-10-25
 
 ### Changed - Siege preparation with the worlds and the game's art

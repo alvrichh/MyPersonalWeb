@@ -112,3 +112,7 @@ test('the missile blasts the aim and recharges', () => {
   assert.equal(m.missile(s), true); assert.ok(s.units[0].hp < 200); assert.equal(m.missile(s), false);
   run(s, m.ROCKET.every + 0.1); assert.equal(m.missile(s), true);
 });
+test('every troop id is its place in the list, and every troop has a name', () => {
+  m.UNITS.forEach((u, i) => assert.equal(u.id, i));
+  assert.ok(m.UNITS.length >= 29);
+});
