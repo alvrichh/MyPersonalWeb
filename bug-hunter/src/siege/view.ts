@@ -254,3 +254,30 @@ function mana(ctx: CanvasRenderingContext2D, s: Siege, ground: number) {
   // The energy rising inside the pedestal.
   ctx.fillStyle = '#5fd8ff66'; const h = (base - top - 18) * fill; ctx.fillRect(ANGEL_X - 14, base - h, 28, h);
 }
+
+/** Troop portraits carry wide empty margins (the boss sheets most), so on cards they are cropped to what shows (alpha
+    over 40), once per picture; every `img[data-trim]` under `scope` gets the cropped copy. */
+const trimmed = new Map<string, string>();
+export function trimImages(scope: ParentNode) {
+  scope.querySelectorAll<HTMLImageElement>('img[data-trim]').forEach(img => {
+    const src = img.dataset.trim!, done = trimmed.get(src);
+    if (done) { img.src = done; return; }
+    const pic = new Image();
+    pic.onload = () => {
+      const w = pic.naturalWidth, h = pic.naturalHeight, c = document.createElement('canvas'); c.width = w; c.height = h;
+      const x = c.getContext('2d', { willReadFrequently: true }); if (!x) return;
+      x.drawImage(pic, 0, 0);
+      let l = w, r = -1, t = h, b = -1;
+      try {
+        const d = x.getImageData(0, 0, w, h).data;
+        for (let y = 0; y < h; y++) for (let i = 0; i < w; i++) if (d[(y * w + i) * 4 + 3] > 40) { if (i < l) l = i; if (i > r) r = i; if (y < t) t = y; if (y > b) b = y; }
+      } catch { return; }
+      if (r < l) return;
+      const o = document.createElement('canvas'); o.width = r - l + 1; o.height = b - t + 1;
+      o.getContext('2d')?.drawImage(c, l, t, o.width, o.height, 0, 0, o.width, o.height);
+      const url = o.toDataURL('image/png'); trimmed.set(src, url);
+      document.querySelectorAll<HTMLImageElement>(`img[data-trim="${src}"]`).forEach(el => { el.src = url; });
+    };
+    pic.src = src;
+  });
+}
