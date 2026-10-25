@@ -4,6 +4,15 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.17 - 2026-10-25
+
+### Changed - Siege preparation with the worlds and the game's art
+- The preparation screen has three tabs as button bars (`btn1_*`, the open one gold): Map, Army and Workshop, under a header with a back button, the title and the mode's gold (`store/coins-2`), over the world map's backdrop.
+- Map: the nine worlds are the action modes' own islands (`map/*.webp`) in a row to scroll, numbered, won ones with the check ring and locked ones greyed with the padlock ring. The picked world's card shows its picture, name and description, its guardian standing on the right, the gold its first (or each new) victory gives, and the green play bar to launch.
+- Army: the land and air troop cards in blue frames, gold when picked, padlocked until their world.
+- Workshop: each upgrade a row with its picture in a ring (army helmet, fortress plate, energy orb, bow quiver), five level pips and its price in coins.
+- «How to play» keeps the instructions, keys and the preview note.
+
 ## 1.14.16 - 2026-10-25
 
 ### Changed - Siege: the Town Hall as our fortress, and a notice to turn the phone
