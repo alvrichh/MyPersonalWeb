@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.3 - 2026-10-25
+
+### Changed - Nocthrax fights to Doomsday
+- With the music «by world», the last boss, Nocthrax, now plays Doomsday (the final-boss song) instead of its own boss song.
+
 ## 1.14.2 - 2026-10-25
 
 ### Changed - Siege troops show their blows
