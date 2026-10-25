@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.21 - 2026-10-25
+
+### Changed - Siege aim stick
+- The aim is a stick as in Cartoon Wars 2: two big arrows and a green knob resting between them. Drag the knob up and the arrows' landing spot moves further (down, nearer) for as long as it is held, faster the further it is pushed; let go and the knob springs back to the middle while the landing spot stays where it was. Tapping the field still aims, and the stick takes the up/down keys when focused.
+
 ## 1.14.20 - 2026-10-25
 
 ### Changed - Siege arrows rain from the sky at long range

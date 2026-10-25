@@ -5,6 +5,8 @@ import { CAP, DECK, FIELD, aimAt, missile, LIMIT, SAVE_KEY, UNITS, canSummon, en
 import { backdropUrl, guardianUrl, trimImages, portrait, preload, render, type Camera } from './view';
 import { GUARDIAN_NAMES, bossTalk, intro, type Line } from './story';
 /** The map's island pictures, world by world, and the workshop's pictures, upgrade by upgrade (army, fortress, energy, bow). */
+/** Field units a second the landing spot moves with the stick pushed all the way. */
+const AIM_SPEED = 650;
 const ISLES = ['original', 'infierno', 'vikingos', 'lodo', 'jungla', 'rayo', 'robots', 'demonios', 'nucleo'];
 const UPGRADE_PICS = ['items/gladHelm', 'items/plate', 'ui/orb', 'items/quiver'];
 
@@ -18,6 +20,8 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   let selected = [...progress.deck], world = progress.unlocked;
   let state: Siege | null = null, paused = false, finished = false;
   let frame = 0, last = 0, accumulator = 0, uiAt = 0, bossTalked = false;
+  /** How far the aim stick is pushed, -1 (down, nearer) to 1 (up, further); 0 at rest. */
+  let aimPush = 0;
   /** The bottom bar's tab, Cartoon Wars 2's L · A · S: land troops, air troops, special powers. */
   let tab: 'land' | 'air' | 'special' = 'land';
   const air = (id: number) => !!UNITS[id].air;
@@ -94,7 +98,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
         <div class="sg-vs"><img class="sg-vs-pic" src="/images/game/fortress/backlog/town-hall.webp" alt=""><span class="sg-hp"><i data-sg-bar="0"></i><small data-sg-health="0"></small></span><b>VS</b><span class="sg-hp is-enemy"><i data-sg-bar="1"></i><small data-sg-health="1"></small></span><img class="sg-vs-pic" src="${guardianUrl(world)}" alt=""></div>
         <div class="sg-hud-actions"><span class="sg-clock" data-sg-clock></span><span class="sg-gold">🪙 ${progress.coins}</span><button data-sg="pause" aria-label="${t('pause')}">⏸</button></div></header>
       <div class="sg-field"><div class="sg-turn" role="status"><span aria-hidden="true">📱↻</span><b>${t('siegeTurn')}</b><button type="button" data-sg-turn aria-label="${t('siegeTurnOk')}">✕</button></div><canvas class="sg-arena" tabindex="0" role="img" aria-label="${t('siegeBattlefield')}"></canvas>
-      <label class="sg-aim"><span aria-hidden="true">▲</span><input type="range" min="140" max="1080" step="10" value="700" data-sg-aim aria-label="${t('siegeAim')}"><span aria-hidden="true">▼</span></label>
+      <div class="sg-aim" role="slider" tabindex="0" aria-orientation="vertical" aria-valuemin="140" aria-valuemax="1080" aria-valuenow="700" aria-label="${t('siegeAim')}" data-sg-aim><i class="sg-aim-up" aria-hidden="true"></i><i class="sg-aim-knob" aria-hidden="true"></i><i class="sg-aim-down" aria-hidden="true"></i></div>
       <div class="sg-camera"><button data-sg="home" aria-label="${t('siegeHome')}">◀</button><input type="range" min="0" max="1000" value="0" data-sg-camera aria-label="${t('siegeCamera')}"><button data-sg="enemy" aria-label="${t('siegeEnemy')}">▶</button></div></div>
       <div class="sg-bar"><div class="sg-tabs" role="tablist">${(['land', 'air', 'special'] as const).map(k => `<button role="tab" data-sg-tab="${k}" aria-label="${t(k === 'land' ? 'siegeTabLand' : k === 'air' ? 'siegeTabAir' : 'siegeTabSpecial')}">${k === 'land' ? 'L' : k === 'air' ? 'A' : 'S'}</button>`).join('')}</div>
       <div class="sg-deck" data-sg-cards></div>
@@ -119,6 +123,20 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       pointer = null;
     }, battleOptions);
     canvas.addEventListener('pointercancel', () => pointer = null, battleOptions);
+    // The aim is a stick, Cartoon Wars-style: its knob rests in the middle; pushed up the arrows' landing spot moves
+    // away (down, nearer) as long as it is held, faster the further it is pushed, and let go the knob springs back to
+    // the middle while the landing spot stays where it was.
+    const aimPad = q<HTMLElement>('[data-sg-aim]'), knob = q<HTMLElement>('.sg-aim-knob');
+    let stick: { id: number; mid: number; half: number } | null = null;
+    const push = (y: number) => { if (!stick) return; aimPush = Math.max(-1, Math.min(1, (stick.mid - y) / stick.half)); knob.style.transform = `translateY(${(-aimPush * stick.half * 0.8).toFixed(1)}px)`; };
+    aimPad.addEventListener('pointerdown', e => {
+      e.preventDefault(); const r = aimPad.getBoundingClientRect();
+      stick = { id: e.pointerId, mid: r.top + r.height / 2, half: r.height / 2 - 14 }; aimPad.setPointerCapture(e.pointerId); aimPad.classList.add('is-held'); push(e.clientY);
+    }, battleOptions);
+    aimPad.addEventListener('pointermove', e => { if (stick?.id === e.pointerId) push(e.clientY); }, battleOptions);
+    const release = () => { stick = null; aimPush = 0; knob.style.transform = ''; aimPad.classList.remove('is-held'); };
+    for (const type of ['pointerup', 'pointercancel', 'lostpointercapture'] as const) aimPad.addEventListener(type, release, battleOptions);
+    aimPad.addEventListener('keydown', e => { if (!state || (e.key !== 'ArrowUp' && e.key !== 'ArrowDown')) return; e.preventDefault(); e.stopPropagation(); state.aim = aimAt(state.aim + (e.key === 'ArrowUp' ? 40 : -40)); }, battleOptions);
     // The bow is a switch: one tap starts the arrows, the next stops them.
     q<HTMLButtonElement>('[data-sg="fire"]').addEventListener('click', e => { e.stopPropagation(); if (state && !paused) { toggleBow(state); updateUi(); } }, battleOptions);
     last = performance.now(); accumulator = 0; uiAt = 0;
@@ -126,6 +144,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       if (!state || finished) return;
       const delta = Math.min(0.15, (now - last) / 1000); last = now;
       if (!paused && state.phase === 'fight') {
+        if (aimPush) state.aim = aimAt(state.aim + aimPush * Math.abs(aimPush) * AIM_SPEED * delta);
         accumulator += delta;
         while (accumulator >= 1 / 30) { tick(state, 1 / 30); accumulator -= 1 / 30; }
       }
@@ -180,7 +199,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       q(`[data-sg-cost="${id}"]`).textContent = s.cooldowns[id] > 0 ? `${Math.ceil(s.cooldowns[id])}s` : `⚡ ${UNITS[id].cost}`;
       q(`[data-sg-cooldown="${id}"]`).style.width = `${s.cooldowns[id] / UNITS[id].cooldown * 100}%`;
     }
-    const aim = q<HTMLInputElement>('[data-sg-aim]'); if (document.activeElement !== aim) aim.value = String(aimAt(s.aim));
+    q('[data-sg-aim]').setAttribute('aria-valuenow', String(Math.round(aimAt(s.aim))));
     q<HTMLInputElement>('[data-sg-camera]').value = String(Math.round(camera.x / Math.max(1, FIELD - camera.width) * 1000));
   }
   function modal(content: string) {
@@ -259,7 +278,6 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   }, options);
   root.addEventListener('input', event => {
     const el = event.target as HTMLInputElement;
-    if (el.hasAttribute('data-sg-aim') && state) { state.aim = Number(el.value); return; }
     if (el.hasAttribute('data-sg-camera')) camera.x = Math.max(0, FIELD - camera.width) * Number(el.value) / 1000;
   }, options);
   // Capture keyboard input so legacy page-level hotkeys never run behind this modal.

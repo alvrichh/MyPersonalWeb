@@ -197,3 +197,15 @@
 }
 .siege-root .sg-ptabs button{min-width:0;padding:0 2px;white-space:nowrap}
 @media(max-width:600px){.sg-ptabs{gap:4px}.siege-root .sg-ptabs button{border-width:0 12px;border-image-width:0 12px;font-size:12px;min-height:44px}.sg-ptabs img{width:18px;height:18px}}
+
+/* v1.14.21 — the aim stick, as in Cartoon Wars 2: two big arrows and a green knob resting between them; dragged up or
+   down it moves the arrows' landing spot, let go it springs back to the middle. */
+.sg-aim{width:58px!important;padding:6px 0!important;justify-content:space-between;gap:0!important;border-radius:30px!important;background:linear-gradient(#0a1424cc,#0a1424aa)!important;border:2px solid #9bf07a99!important;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+.sg-aim.is-held{cursor:grabbing;border-color:#c8ff9e!important}
+.sg-aim:focus-visible{outline:3px solid #ffe1a1;outline-offset:3px}
+.sg-aim-up,.sg-aim-down{width:0;height:0;border-left:18px solid transparent;border-right:18px solid transparent;filter:drop-shadow(0 2px 0 #0008)}
+.sg-aim-up{border-bottom:22px solid #e8eef6}.sg-aim-down{border-top:22px solid #e8eef6}
+.sg-aim.is-held .sg-aim-up,.sg-aim.is-held .sg-aim-down{opacity:.85}
+.sg-aim-knob{width:38px;height:38px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#eaffd0,#7be04a 45%,#2f8f1c 80%);border:3px solid #173d10;box-shadow:0 3px 8px #000a,inset 0 -3px 6px #0004;transition:transform .18s cubic-bezier(.3,1.6,.5,1)}
+.sg-aim.is-held .sg-aim-knob{transition:none}
+@media (max-height:500px) and (orientation:landscape){.sg-aim{width:48px!important}.sg-aim-knob{width:32px;height:32px}.sg-aim-up,.sg-aim-down{border-left-width:14px;border-right-width:14px}.sg-aim-up{border-bottom-width:17px}.sg-aim-down{border-top-width:17px}}
