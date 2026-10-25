@@ -42,6 +42,7 @@ export function sprite(s: Siege, u: Fighter) {
   const spec = UNITS[u.id];
   if (!u.side) return spec.sprite;
   if (u.boss) return `bosses/${GUARDIANS[s.world - 1]}`;
+  if (spec.air) return spec.sprite;
   const kind = u.id === 1 ? 'ticket' : u.id === 2 ? 'legacy' : 'bug';
   return `enemies/${CASTS[s.world - 1]}-${kind}`;
 }

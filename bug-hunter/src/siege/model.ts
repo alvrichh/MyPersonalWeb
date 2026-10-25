@@ -86,10 +86,17 @@ export function newSiege(p: Progress, world: number): Siege {
   const maxHp: [number, number] = [1700 + p.upgrades[1] * 200, 1500 + world * 170];
   return { world, phase: 'fight', time: 0, energy: 80, generator: 0, cooldowns: UNITS.map(() => 0), hp: [...maxHp], maxHp, units: [], effects: [], nextId: 1, nextWave: 7, waves: 0, kills: 0, spell: 0, rocket: 0, aim: 700, bossSpawned: false, paid: false, power: 1 + p.upgrades[0] * 0.08, economy: p.upgrades[2] * 0.6, deck: [...p.deck], bow: { quiver: BOW.max, drawing: false, held: 0, next: 0, level: p.upgrades[3] } };
 }
+/** The guardian, Cartoon Wars 2-style: it only comes out once the enemy fortress falls, far tougher than a troop, and
+    the battle is won when it falls too. */
+const BOSS_HP = 2.6;
+/** Each world's flyer in the enemy's waves (a troop id: bat, imp, imp, bat, bat, gargoyle, drone, bat, dragon whelp), and
+    from how many seconds into the battle they come; later waves bring the heavy ones more often. */
+const ENEMY_AIR = [8, 9, 9, 8, 8, 27, 10, 8, 28];
+const airFrom = (world: number) => Math.max(40, 110 - world * 8);
 function spawn(s: Siege, id: number, side: 0 | 1, boss = false) {
   if (s.units.filter(u => u.side === side).length >= CAP) return;
   const spec = UNITS[id]; const scale = side ? 0.8 + s.world * 0.07 : s.power;
-  const hp = spec.hp * scale * (boss ? 1.35 : 1);
+  const hp = spec.hp * scale * (boss ? BOSS_HP : 1);
   s.units.push({ uid: s.nextId++, id, side, x: side ? FIELD - 120 : 120, lane: s.nextId % 3, hp, maxHp: hp, damage: spec.damage * scale, attack: 0, flash: 0, boss });
 }
 export function canSummon(s: Siege, id: number): boolean {
@@ -167,11 +174,12 @@ export function tick(s: Siege, dt: number) {
     s.waves++; s.nextWave = Math.max(4.5, 10 - s.world * 0.35 - s.time / 90);
     const count = Math.min(4, 1 + Math.floor(s.time / 55));
     for (let i = 0; i < count; i++) {
-      const pool = s.time < 25 ? [0, 0, 1] : [0, 1, 2, 3, 1, 0];
-      spawn(s, pool[(s.waves + i) % pool.length], 1);
+      const pool = s.time < 25 ? [0, 0, 1] : s.time < 120 ? [0, 1, 2, 3, 1, 0] : [0, 2, 1, 3, 2, 1];
+      const flyer = s.time >= airFrom(s.world) && (s.waves + i) % 3 === 2;
+      spawn(s, flyer ? ENEMY_AIR[s.world - 1] : pool[(s.waves + i) % pool.length], 1);
     }
   }
-  if (!s.bossSpawned && (s.hp[1] < s.maxHp[1] * 0.45 || s.time >= 150)) { s.bossSpawned = true; spawn(s, 4, 1, true); }
+  if (!s.bossSpawned && s.hp[1] <= 0) { s.bossSpawned = true; spawn(s, 4, 1, true); }
   const alive = s.units.filter(u => u.hp > 0);
   const hits: { target: Fighter; damage: number }[] = [];
   for (const u of alive) {
@@ -199,7 +207,7 @@ export function tick(s: Siege, dt: number) {
   s.units = s.units.filter(u => u.hp > 0);
   s.hp = s.hp.map(h => Math.max(0, h)) as [number, number];
   if (s.hp[0] <= 0 || s.time >= LIMIT) s.phase = 'lost';
-  else if (s.hp[1] <= 0) s.phase = 'won';
+  else if (s.hp[1] <= 0 && s.bossSpawned && !s.units.some(u => u.boss && u.side)) s.phase = 'won';
 }
 /** Rewards settle once per battle; a reload cannot replay a settled result. */
 export function settle(p: Progress, s: Siege): number {

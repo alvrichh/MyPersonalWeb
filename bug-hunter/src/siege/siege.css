@@ -220,3 +220,6 @@
 .siege-root .sg-bow.is-drawing::before{background:radial-gradient(circle at 40% 35%,#fff3c4,#ff9d3b 55%,#8a420e)}
 .siege-root .sg-bow.is-empty{border-color:#ff718c}
 .sg-bow .sg-quiver{display:none}
+
+/* The guardian's health bar, once the fortress has fallen: purple and glowing. */
+.sg-hp.is-enemy.is-boss>i{background:linear-gradient(#e0a0ff,#8a2be2)}.sg-hp.is-boss{box-shadow:0 0 10px #b366ff}

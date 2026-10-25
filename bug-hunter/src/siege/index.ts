@@ -177,10 +177,14 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   }
   function updateUi() {
     if (!state) return; const s = state;
+    // Once the fortress falls, the enemy's bar is its guardian's, as in Cartoon Wars 2.
+    const guard = s.units.find(u => u.boss && u.side);
     for (const side of [0, 1]) {
-      q(`[data-sg-health="${side}"]`).textContent = `${Math.ceil(s.hp[side])}`;
-      q(`[data-sg-bar="${side}"]`).style.width = `${s.hp[side] / s.maxHp[side] * 100}%`;
+      const [hp, max] = side && guard ? [guard.hp, guard.maxHp] : [s.hp[side], s.maxHp[side]];
+      q(`[data-sg-health="${side}"]`).textContent = `${Math.ceil(Math.max(0, hp))}`;
+      q(`[data-sg-bar="${side}"]`).style.width = `${Math.max(0, hp) / max * 100}%`;
     }
+    q('.sg-hp.is-enemy').classList.toggle('is-boss', !!guard);
     q('[data-sg-clock]').textContent = clock(Math.max(0, LIMIT - s.time));
     q('[data-sg-energy]').textContent = `${Math.floor(s.energy)} / ${energyMax(s)}`;
     const meter = q<HTMLProgressElement>('[data-sg-meter]'); meter.max = energyMax(s); meter.value = s.energy;
