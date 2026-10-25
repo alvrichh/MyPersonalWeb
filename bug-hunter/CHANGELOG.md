@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.29 - 2026-10-25
+
+### Fixed - New skins' cuts, alvrich in lower case
+- The Boss's running and attacking poses, drawn smaller on the sheet, are scaled to the same head size as his standing ones (about 10% up); a stray speck by the Rubber Duck Knight's walking attack is dropped. The six new skins were checked pose by pose on magenta: clean edges, their effects (papers, cubes, gems, slashes) kept.
+- The default skin's name is written «alvrich», and its world outfits' row «alvrich by world».
+
 ## 1.14.28 - 2026-10-25
 
 ### Added - Six new skins, the profile opens the skins, Alvrich's world outfits fold away
