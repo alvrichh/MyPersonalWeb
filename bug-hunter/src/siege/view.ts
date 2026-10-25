@@ -1,5 +1,12 @@
 import { CASTS, FIELD, UNITS, energyMax, type Effect, type Fighter, type Siege } from './model';
 
+/** Each world's ground: its top and bottom colours and its pebbles (moss, embers, snow, mud, jungle, sand, iron,
+    haunted stone, crystal). */
+const GROUND: [string, string, string][] = [
+  ['#3d5a45', '#18261d', '#8fbf9a'], ['#5e2c1a', '#1e0b07', '#ff8a4c'], ['#c6dbea', '#56738c', '#ffffff'],
+  ['#5a4628', '#21180c', '#9a7a48'], ['#46632a', '#17240d', '#9ccf5e'], ['#d2ae6c', '#6e4e26', '#f3dca8'],
+  ['#55555f', '#1d1d24', '#ffb35c'], ['#333d5c', '#11151f', '#9fb2ff'], ['#43306a', '#150d24', '#d58cff'],
+];
 export const THEMES = ['#50e6d0', '#ff885c', '#89d7ff', '#a8c36a', '#75d891', '#e9c66d', '#ffad60', '#a2b5ff', '#e688ff'];
 const pictures = new Map<string, { image: HTMLImageElement; crop?: [number, number, number, number] }>();
 function picture(path: string) {
@@ -42,7 +49,7 @@ export const portrait = (id: number) => `/images/game/${UNITS[id].sprite}-0.webp
 export function preload(world: number, deck: number[]) {
   const paths = new Set([...deck.map(id => UNITS[id].sprite), ...['bug', 'ticket', 'legacy'].map(kind => `enemies/${CASTS[world - 1]}-${kind}`), `bosses/${GUARDIANS[world - 1]}`]);
   paths.forEach(path => { for (let f = 0; f < frames(path); f++) picture(`${path}-${f}`); });
-  [backdropPath(world), `floors/world${world}`, wallPath(world, false), wallPath(world, true), ...FX].forEach(still);
+  [backdropPath(world), wallPath(world, false), wallPath(world, true), ...FX].forEach(still);
 }
 const backdropPath = (world: number) => `map/pv-${BACKDROPS[world - 1]}.jpg`;
 /** The story scenes' pictures: the world's map picture behind, its guardian's standing pose speaking. */
@@ -104,15 +111,14 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   ctx.scale(scale, scale); ctx.translate(-camera.x + Math.max(0, (camera.width - FIELD) / 2), 0);
   const viewH = h / scale;
   ctx.fillStyle = '#101d29'; ctx.fillRect(0, ground - 10, FIELD, viewH);
-  // The ground is the world's own floor, the one its sprints are played on.
-  const floor = still(`floors/world${s.world}`);
-  if (ok(floor)) {
-    const tile = 420, th = tile * floor.naturalHeight / floor.naturalWidth;
-    ctx.save(); ctx.beginPath(); ctx.rect(0, ground - 10, FIELD, viewH); ctx.clip();
-    for (let x = 0; x < FIELD; x += tile) for (let y = ground - 10; y < viewH; y += th) ctx.drawImage(floor, x, y, tile, th);
-    const fade = ctx.createLinearGradient(0, ground - 10, 0, viewH); fade.addColorStop(0, '#08101c33'); fade.addColorStop(1, '#08101caa');
-    ctx.fillStyle = fade; ctx.fillRect(0, ground - 10, FIELD, viewH); ctx.restore();
-  }
+  // The ground: a plain band in the world's earth colours, no tiles or corners, until each world has its own side strip.
+  const [top, low, speck] = GROUND[s.world - 1];
+  const earth = ctx.createLinearGradient(0, ground - 10, 0, viewH); earth.addColorStop(0, top); earth.addColorStop(1, low);
+  ctx.fillStyle = earth; ctx.fillRect(0, ground - 10, FIELD, viewH);
+  // Pebbles and tufts scattered on it, the same every frame.
+  ctx.fillStyle = speck;
+  for (let i = 0; i < 140; i++) { const x = (i * 97.3) % FIELD, y = ground - 4 + ((i * 53.7) % (viewH - ground)), r = 1.5 + (i % 4); ctx.globalAlpha = 0.18 + (i % 3) * 0.08; ctx.beginPath(); ctx.ellipse(x, y, r * 1.8, r, 0, 0, Math.PI * 2); ctx.fill(); }
+  ctx.globalAlpha = 1;
   ctx.strokeStyle = color; ctx.globalAlpha = 0.6; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(0, ground - 10); ctx.lineTo(FIELD, ground - 10); ctx.stroke(); ctx.globalAlpha = 1;
   base(ctx, 80, ground, '#55e5c4', s.hp[0], s.maxHp[0], false, s.world);
   base(ctx, FIELD - 80, ground, '#ff718c', s.hp[1], s.maxHp[1], true, s.world);

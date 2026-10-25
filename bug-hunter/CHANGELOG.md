@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.10 - 2026-10-25
+
+### Changed - Siege ground without tile corners
+- The battlefield's ground no longer tiles the sprints' top-down floors (their frames showed as corners across the field). It is a plain band in each world's earth colours (moss, embers, snow, mud, jungle, sand, iron, haunted stone, crystal) with scattered pebbles, until each world has its own side-view ground strip.
+
 ## 1.14.9 - 2026-10-25
 
 ### Added - Siege L · A · S tabs, air troops and the missile
