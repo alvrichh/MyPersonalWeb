@@ -4,6 +4,13 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.47 - 2026-10-25
+
+### Changed - Whole shop two by two on phones; skins worn from the shop; world outfits shown
+- Phones: every shop window (forge, armour, weapons, arsenal, spirits, skins) shows two cards per row. Cards there have a thinner frame, smaller texts and a button whose caption may take two lines; their single column no longer grows to the button's width (texts and buttons used to spill out of the card).
+- Every lit card that ends in its button keeps the band and lower panel as a fixed strip at the bottom, with the button centred in the panel and the texts above the band, whatever the row's height (a shorter card's button used to rise onto the band, and the band crossed long descriptions).
+- Skins: alvrich's world outfits are listed in the shop's World group with their lock (`World N · Sprints`), and an owned skin is worn straight from the shop with a green «Wear» button.
+
 ## 1.14.46 - 2026-10-25
 
 ### Changed - Skins in three groups; the shop's skins two by two on phones

@@ -1436,8 +1436,8 @@ function shopScreen(note = '') {
       ${action}
     </div>`;
   }).join('');
-  // Skins: a shop window, the dearest things in the game; unlocked here, worn from Customise.
-  // alvrich's world outfits are not sold (each comes with a sprints world), so the shop leaves them out.
+  // Skins: a shop window, the dearest things in the game; bought here and worn from here or from Customise.
+  // alvrich's world outfits are not sold (each comes with a sprints world): shown with their lock, worn once won.
   const skinCard = (skin: HeroSkin) => {
     const owned = ownsSkin(save, skin);
     const worn = save.skin === skin;
@@ -1447,7 +1447,7 @@ function shopScreen(note = '') {
     const lock = !gate ? '' : 'world' in gate ? t('skinLockWorld', { n: gate.world }) : 'boss' in gate ? t('skinLockBoss', { n: gate.boss }) : t('skinLockSecret');
     const can = save.coins >= price;
     const action = owned
-      ? worn ? `<button class="buy is-worn" disabled>✓ ${t('worn')}</button>` : `<button class="buy" data-act="styles-skin">${t('skinWearIn')}</button>`
+      ? worn ? `<button class="buy is-worn" disabled>✓ ${t('worn')}</button>` : `<button class="buy" data-skin-wear="${skin}">${t('equip')}</button>`
       : !open ? `<button class="buy is-poor" disabled>🔒 ${lock}</button>`
       : `<button class="buy${can ? '' : ' is-poor'}" data-skin-buy="${skin}">${t('buy')} · 🪙 ${price}</button>`;
     return `<div class="item skin-item${worn ? ' is-on' : ''}${owned ? ' is-owned' : ''}${!owned && (!can || !open) ? ' is-locked' : ''}">
@@ -1457,9 +1457,9 @@ function shopScreen(note = '') {
       ${action}
     </div>`;
   };
-  // The owner's three groups, as in Customise; of the world group only alvrich himself is in the shop.
+  // The owner's three groups, as in Customise.
   const skinGroup = (key: Key, list: HeroSkin[]) => `<h4 class="skin-group">${t(key)}</h4><div class="items skin-items">${list.map(skinCard).join('')}</div>`;
-  const skinCards = skinGroup('skinGroupWorld', ['boy']) + skinGroup('skinGroupSpecial', SKIN_GROUPS.special) + skinGroup('skinGroupBoss', SKIN_GROUPS.boss);
+  const skinCards = skinGroup('skinGroupWorld', SKIN_GROUPS.world) + skinGroup('skinGroupSpecial', SKIN_GROUPS.special) + skinGroup('skinGroupBoss', SKIN_GROUPS.boss);
   const skinSec = shopSection('skins', t('shopSkins'), `${save.skins.length}/${SKINS.length}`, `<p class="how">${t('shopSkinsHint')}</p>${skinCards}`, ['🧑', `hero/${heroStill(save.skin)}.webp`]);
   show(`
     <button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
@@ -3614,6 +3614,16 @@ screen.addEventListener('click', (event) => {
     audio.play('coin');
     persist();
     shopScreen(t('skinBought', { name: t(`skin${cap(skin)}Name` as Key) }));
+  } else if (target.dataset.skinWear) {
+    // A skin already owned, worn straight from the shop.
+    const skin = target.dataset.skinWear as HeroSkin;
+    if (!ownsSkin(save, skin)) return;
+    const portrait = ownHeroPortrait();
+    save.skin = skin;
+    persist();
+    syncFriendPortrait(portrait);
+    dressPalette();
+    shopScreen();
   } else if (act === 'styles-skin') {
     dressSlot = 'skin';
     stylesScreen();
