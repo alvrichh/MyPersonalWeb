@@ -70,9 +70,9 @@ export function improveGenerator(s: Siege): boolean {
   if (s.phase !== 'fight' || s.generator >= 4 || s.energy < generatorPrice(s)) return false;
   s.energy -= generatorPrice(s); s.generator++; return true;
 }
-function damageArea(s: Siege, x: number, radius: number, damage: number) {
+function damageArea(s: Siege, x: number, radius: number, damage: number, life = 0.45) {
   for (const u of s.units) if (u.side === 1 && Math.abs(u.x - x) <= radius) { u.hp -= damage; u.flash = 0.18; }
-  s.effects.push({ x, from: 80, lane: 1, life: 0.45, max: 0.45, kind: 'burst', side: 0 });
+  s.effects.push({ x, from: 80, lane: 1, life, max: life, kind: 'burst', side: 0 });
 }
 export function fire(s: Siege): boolean {
   if (s.phase !== 'fight' || s.weapon > 0) return false;
@@ -82,7 +82,7 @@ export function fire(s: Siege): boolean {
 }
 export function strike(s: Siege): boolean {
   if (s.phase !== 'fight' || s.spell > 0) return false;
-  damageArea(s, s.aim, 155, 210 * s.power); s.spell = 24; return true;
+  damageArea(s, s.aim, 155, 210 * s.power, 0.7); s.spell = 24; return true;
 }
 /** Fixed-step caller. Accumulate damage before removal so opposing lethal hits resolve fairly. */
 export function tick(s: Siege, dt: number) {

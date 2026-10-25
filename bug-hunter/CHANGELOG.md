@@ -4,6 +4,15 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.1 - 2026-10-25
+
+### Changed - Siege looks like Cartoon Wars 2, with the game's own art
+- The battlefield is a side-scrolling scene: each world's map picture (`map/pv-*.jpg`) is the backdrop, panning slower than the troops, over the world's own sprint floor (`floors/worldN`).
+- Each world sends its own guardian, its room-6 boss sheet (monolith, overlord, valkyrie, mud monster, queen, minotaur, mainframe, wraith, hydra), instead of the monolith everywhere.
+- Troops walk on all their poses (six for the Arena and fire-world sets, four for the rest, the boss sheets' two steps and a stand) instead of two.
+- Shots fly as the game's sparks (fire for the enemy), the cannon as a fireball, hits as impacts and blasts; the discharge drops the yellow lightning bolt.
+- Pause, launch, generator, cannon and discharge use the `btn1_*` button bars (grey when unavailable).
+
 ## 1.14.0 - 2026-10-25
 
 ### Added - Siege / Asedio playable preview
