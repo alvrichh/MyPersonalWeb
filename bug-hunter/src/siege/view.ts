@@ -1,7 +1,7 @@
 import { CASTS, FIELD, UNITS, energyMax, type Effect, type Fighter, type Siege } from './model';
 
-/** Each world's ground: its top and bottom colours and its pebbles (moss, embers, snow, mud, jungle, sand, iron,
-    haunted stone, crystal). */
+/** Each world's ground colours, under its floor while that loads (moss, embers, snow, mud, jungle, sand, iron,
+    haunted stone, crystal); the third is unused pebble colour kept for a later side strip. */
 const GROUND: [string, string, string][] = [
   ['#3d5a45', '#18261d', '#8fbf9a'], ['#5e2c1a', '#1e0b07', '#ff8a4c'], ['#c6dbea', '#56738c', '#ffffff'],
   ['#5a4628', '#21180c', '#9a7a48'], ['#46632a', '#17240d', '#9ccf5e'], ['#d2ae6c', '#6e4e26', '#f3dca8'],
@@ -49,7 +49,7 @@ export const portrait = (id: number) => `/images/game/${UNITS[id].sprite}-0.webp
 export function preload(world: number, deck: number[]) {
   const paths = new Set([...deck.map(id => UNITS[id].sprite), ...['bug', 'ticket', 'legacy'].map(kind => `enemies/${CASTS[world - 1]}-${kind}`), `bosses/${GUARDIANS[world - 1]}`]);
   paths.forEach(path => { for (let f = 0; f < frames(path); f++) picture(`${path}-${f}`); });
-  [backdropPath(world), wallPath(world, false), wallPath(world, true), ...FX].forEach(still);
+  [backdropPath(world), `floors/world${world}`, wallPath(world, false), wallPath(world, true), ...FX].forEach(still);
 }
 const backdropPath = (world: number) => `map/pv-${BACKDROPS[world - 1]}.jpg`;
 /** The story scenes' pictures: the world's map picture behind, its guardian's standing pose speaking. */
@@ -111,14 +111,23 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   ctx.scale(scale, scale); ctx.translate(-camera.x + Math.max(0, (camera.width - FIELD) / 2), 0);
   const viewH = h / scale;
   ctx.fillStyle = '#101d29'; ctx.fillRect(0, ground - 10, FIELD, viewH);
-  // The ground: a plain band in the world's earth colours, no tiles or corners, until each world has its own side strip.
-  const [top, low, speck] = GROUND[s.world - 1];
+  // The ground is the world's own floor, the one On Call is played on, without its frame of walls: only its inside is
+  // used, every other piece mirrored so the joins do not show; the plain band stays under it while it loads.
+  const [top, low] = GROUND[s.world - 1];
   const earth = ctx.createLinearGradient(0, ground - 10, 0, viewH); earth.addColorStop(0, top); earth.addColorStop(1, low);
   ctx.fillStyle = earth; ctx.fillRect(0, ground - 10, FIELD, viewH);
-  // Pebbles and tufts scattered on it, the same every frame.
-  ctx.fillStyle = speck;
-  for (let i = 0; i < 140; i++) { const x = (i * 97.3) % FIELD, y = ground - 4 + ((i * 53.7) % (viewH - ground)), r = 1.5 + (i % 4); ctx.globalAlpha = 0.18 + (i % 3) * 0.08; ctx.beginPath(); ctx.ellipse(x, y, r * 1.8, r, 0, 0, Math.PI * 2); ctx.fill(); }
-  ctx.globalAlpha = 1;
+  const floor = still(`floors/world${s.world}`);
+  if (ok(floor)) {
+    const sx = floor.naturalWidth * 0.15, sy = floor.naturalHeight * 0.12, sw = floor.naturalWidth * 0.7, sh = floor.naturalHeight * 0.76;
+    const tw = 320, th = tw * sh / sw;
+    ctx.save(); ctx.beginPath(); ctx.rect(0, ground - 10, FIELD, viewH); ctx.clip();
+    for (let i = 0, x = 0; x < FIELD; i++, x += tw) for (let j = 0, y = ground - 10; y < viewH; j++, y += th) {
+      ctx.save(); ctx.translate(x + (i % 2 ? tw : 0), y + (j % 2 ? th : 0)); ctx.scale(i % 2 ? -1 : 1, j % 2 ? -1 : 1);
+      ctx.drawImage(floor, sx, sy, sw, sh, 0, 0, tw, th); ctx.restore();
+    }
+    const shade = ctx.createLinearGradient(0, ground - 10, 0, viewH); shade.addColorStop(0, '#08101c22'); shade.addColorStop(1, '#08101c99');
+    ctx.fillStyle = shade; ctx.fillRect(0, ground - 10, FIELD, viewH); ctx.restore();
+  }
   ctx.strokeStyle = color; ctx.globalAlpha = 0.6; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(0, ground - 10); ctx.lineTo(FIELD, ground - 10); ctx.stroke(); ctx.globalAlpha = 1;
   base(ctx, 80, ground, '#55e5c4', s.hp[0], s.maxHp[0], false, s.world);
   base(ctx, FIELD - 80, ground, '#ff718c', s.hp[1], s.maxHp[1], true, s.world);
