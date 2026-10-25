@@ -31,3 +31,5 @@ Use the root Node 24.x requirement and commands. Run applicable typecheck/game/b
 For game behavior/features/fixes, update the game version and changelog together. Pure documentation cleanup does not require a runtime version bump. Preserve historical version entries.
 
 Do not edit generated `dist/`, `public/`, `.cache/` or root `game.html`.
+
+Siege (Coming Soon): follow the layout rule in [`bug-hunter/docs/siege.md`](./bug-hunter/docs/siege.md#layout-rule-always) on every visual change: screenshot desktop and phone, check where each element sits, and keep everything inside the view.

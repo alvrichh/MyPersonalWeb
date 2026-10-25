@@ -105,3 +105,7 @@
 .sg-bar .sg-deck small{white-space:nowrap}
 .sg-empty{margin:0;align-self:center;color:#aac3da;font-size:12px;padding:0 8px}
 @media(max-width:600px){.sg-tabs{grid-row:1;grid-column:1}.siege-root .sg-tabs button{width:44px;height:52px;font-size:22px}}
+/* v1.14.12 — the aim stands on our wall: a compact ▲ ● ▼ control just above the ground line (28% from the field's foot,
+   where the bridge deck is), never taller than half the field, so it stays on screen in both orientations. */
+.sg-aim{top:auto;bottom:30%;height:min(150px,48%);left:12px;width:40px;padding:4px 3px}
+.sg-aim input{min-height:0}

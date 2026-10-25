@@ -49,8 +49,12 @@ export const portrait = (id: number) => `/images/game/${UNITS[id].sprite}-0.webp
 export function preload(world: number, deck: number[]) {
   const paths = new Set([...deck.map(id => UNITS[id].sprite), ...['bug', 'ticket', 'legacy'].map(kind => `enemies/${CASTS[world - 1]}-${kind}`), `bosses/${GUARDIANS[world - 1]}`]);
   paths.forEach(path => { for (let f = 0; f < frames(path); f++) picture(`${path}-${f}`); });
-  [backdropPath(world), `floors/world${world}`, wallPath(world, false), wallPath(world, true), ...FX].forEach(still);
+  picture(`ui/bench/bench-${world}`);
+  [backdropPath(world), wallPath(world, false), wallPath(world, true), ...FX].forEach(still);
 }
+/** The bridge pieces: their width on the field, where the deck the troops walk on sits (a share of the piece's height
+    above the ground line), and the step between pieces (under 1, so their end posts overlap). */
+const BRIDGE = { width: 300, deck: 0.3, step: 0.9 };
 const backdropPath = (world: number) => `map/pv-${BACKDROPS[world - 1]}.jpg`;
 /** The story scenes' pictures: the world's map picture behind, its guardian's standing pose speaking. */
 export const backdropUrl = (world: number) => `/images/game/${backdropPath(world)}`;
@@ -102,31 +106,27 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   // Cartoon Wars-style backdrop: the world's own map picture behind the field, scrolling slower than the troops.
   const back = still(backdropPath(s.world));
   if (ok(back)) {
-    const bh = ground * scale + 6, bw = Math.max(w * 1.35, bh * back.naturalWidth / back.naturalHeight);
+    const bh = h, bw = Math.max(w * 1.35, bh * back.naturalWidth / back.naturalHeight);
     const pan = FIELD > camera.width ? camera.x / (FIELD - camera.width) : 0.5;
     ctx.drawImage(back, -(bw - w) * pan, 0, bw, bh);
-    const shade = ctx.createLinearGradient(0, 0, 0, bh); shade.addColorStop(0, '#080f2155'); shade.addColorStop(1, '#080f21cc');
+    const shade = ctx.createLinearGradient(0, 0, 0, bh); shade.addColorStop(0, '#080f2155'); shade.addColorStop(0.7, '#080f21aa'); shade.addColorStop(1, '#03060cf2');
     ctx.fillStyle = shade; ctx.fillRect(0, 0, w, bh);
   }
   ctx.scale(scale, scale); ctx.translate(-camera.x + Math.max(0, (camera.width - FIELD) / 2), 0);
   const viewH = h / scale;
-  ctx.fillStyle = '#101d29'; ctx.fillRect(0, ground - 10, FIELD, viewH);
-  // The ground is the world's own floor, the one On Call is played on, without its frame of walls: only its inside is
-  // used, every other piece mirrored so the joins do not show; the plain band stays under it while it loads.
-  const [top, low] = GROUND[s.world - 1];
-  const earth = ctx.createLinearGradient(0, ground - 10, 0, viewH); earth.addColorStop(0, top); earth.addColorStop(1, low);
-  ctx.fillStyle = earth; ctx.fillRect(0, ground - 10, FIELD, viewH);
-  const floor = still(`floors/world${s.world}`);
-  if (ok(floor)) {
-    const sx = floor.naturalWidth * 0.15, sy = floor.naturalHeight * 0.12, sw = floor.naturalWidth * 0.7, sh = floor.naturalHeight * 0.76;
-    const tw = 320, th = tw * sh / sw;
-    ctx.save(); ctx.beginPath(); ctx.rect(0, ground - 10, FIELD, viewH); ctx.clip();
-    for (let i = 0, x = 0; x < FIELD; i++, x += tw) for (let j = 0, y = ground - 10; y < viewH; j++, y += th) {
-      ctx.save(); ctx.translate(x + (i % 2 ? tw : 0), y + (j % 2 ? th : 0)); ctx.scale(i % 2 ? -1 : 1, j % 2 ? -1 : 1);
-      ctx.drawImage(floor, sx, sy, sw, sh, 0, 0, tw, th); ctx.restore();
-    }
-    const shade = ctx.createLinearGradient(0, ground - 10, 0, viewH); shade.addColorStop(0, '#08101c22'); shade.addColorStop(1, '#08101c99');
-    ctx.fillStyle = shade; ctx.fillRect(0, ground - 10, FIELD, viewH); ctx.restore();
+  // The battle is fought on a bridge over the abyss: the world's Tactics bridge (`ui/bench/bench-N`) repeated from wall
+  // to wall, its posts overlapping at the joins, the troops walking on its deck; the backdrop falls away under it.
+  const chasm = ctx.createLinearGradient(0, ground, 0, viewH); chasm.addColorStop(0, '#03060c00'); chasm.addColorStop(1, '#03060cee');
+  ctx.fillStyle = chasm; ctx.fillRect(0, ground, FIELD, viewH);
+  const bridge = picture(`ui/bench/bench-${s.world}`);
+  if (bridge.image.complete && bridge.image.naturalWidth) {
+    const [cx, cy, cw, ch] = bridge.crop ?? [0, 0, bridge.image.width, bridge.image.height];
+    const seg = BRIDGE.width, segH = seg * ch / cw, top = ground - segH * BRIDGE.deck;
+    for (let x = -seg * 0.3; x < FIELD + seg * 0.3; x += seg * BRIDGE.step) ctx.drawImage(bridge.image, cx, cy, cw, ch, x, top, seg, segH);
+  } else {
+    const [deck, low] = GROUND[s.world - 1];
+    const earth = ctx.createLinearGradient(0, ground - 10, 0, ground + 60); earth.addColorStop(0, deck); earth.addColorStop(1, low);
+    ctx.fillStyle = earth; ctx.fillRect(0, ground - 10, FIELD, 70);
   }
   ctx.strokeStyle = color; ctx.globalAlpha = 0.6; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(0, ground - 10); ctx.lineTo(FIELD, ground - 10); ctx.stroke(); ctx.globalAlpha = 1;
   base(ctx, 80, ground, '#55e5c4', s.hp[0], s.maxHp[0], false, s.world);
@@ -177,7 +177,7 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
 function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, ground: number) {
   if (e.kind === 'rocket') {
     const art = still('fx/rocket.webp'); if (!ok(art)) return false;
-    const at = (t: number) => ({ x: e.from + (e.x - e.from) * t, y: ground - 110 + 120 * t - Math.sin(t * Math.PI) * 190 });
+    const peak = Math.min(190, Math.max(20, ground - 134)), at = (t: number) => ({ x: e.from + (e.x - e.from) * t, y: ground - 110 + 120 * t - Math.sin(t * Math.PI) * peak });
     const here = at(p), ahead = at(Math.min(1, p + 0.02)), len = 64, h = len * art.naturalHeight / art.naturalWidth;
     ctx.save(); ctx.translate(here.x, here.y); ctx.rotate(Math.atan2(ahead.y - here.y, ahead.x - here.x || 0.001));
     ctx.drawImage(art, -len / 2, -h / 2, len, h); ctx.restore(); return true;
@@ -190,7 +190,8 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     if (close) { ctx.save(); ctx.globalAlpha = 1 - p; ctx.drawImage(art, e.x - 15, y - 15, 30, 30); ctx.restore(); return true; }
     // A high arc for the fortress's arrows (from its wall top), a flat one for the troops'.
     const startY = e.kind === 'arrow' ? ground - 110 : y, endY = e.kind === 'arrow' ? ground + e.lane * 12 - 14 : y;
-    const lift = e.kind === 'arrow' ? 150 : 30;
+    // High enough to read as a volley, never over the top of the view.
+    const lift = e.kind === 'arrow' ? Math.min(150, Math.max(20, startY - 24)) : 30;
     const at = (t: number) => ({ x: e.from + (e.x - e.from) * t, y: startY + (endY - startY) * t - Math.sin(t * Math.PI) * lift });
     const here = at(p), ahead = at(Math.min(1, p + 0.02));
     const len = e.kind === 'arrow' ? 72 : 40, h = len * art.naturalHeight / art.naturalWidth;
