@@ -9,5 +9,5 @@ published, under `/images/game/old/...`, like any asset). Each folder mirrors wh
   tall), replaced in 1.13.43.
 - `06-the-arena/enemies/greek-legacy-0..3.webp`: the Arena's first four-frame shield wall, replaced in 1.13.44.
 - `01-backlog/bosses/kernel-0..8.webp`: the Backlog's first Kernel Panic (bodies about 120 px), replaced in 1.13.45.
-- `shared/hero/{intern,kratos,medusa}-base-*.webp`: the intern, Kratos and Medusa skins before their cleanup in
-  1.14.26 (grey backdrop haze, Medusa's lime/yellow key fringe, specks and small holes).
+- `shared/hero/{intern,kratos,medusa}-base-*.webp`: the intern, Kratos and Medusa skins before 1.14.26 (Kratos and
+  Medusa recut from their sheets, the intern cleaned up; grey haze, Medusa's lime/yellow key fringe, specks).
