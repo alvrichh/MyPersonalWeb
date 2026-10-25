@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.31 - 2026-10-25
+
+### Changed - Skins on sale for 0 coins, not given away
+- With the testing switch (`FREE_SKINS`) on, every skin is open and costs 0 coins, but each must still be bought once to be owned (it is then kept in the save like any purchase); 1.14.30 gave them all to every player without buying. The shop and Customise show «Buy · 🪙 0». Turning the switch off brings back the gates and prices. No paid skin pack or daily skin is offered while it is on.
+
 ## 1.14.30 - 2026-10-25
 
 ### Changed - Every skin free for testing
