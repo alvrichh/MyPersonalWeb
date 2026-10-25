@@ -370,7 +370,7 @@ export type Orb = {
 /** A dab of a boss shot's track (see `BOSS_TRAIL`). */
 export type BossTrail = { x: number; y: number; r: number; life: number; max: number; dmg: number; tone: string; from?: string };
 /** Every boss shot leaves a track: a dab every `every` seconds that lasts `life` and hurts for `share` of the shot. */
-const BOSS_TRAIL = { every: 0.05, life: 0.55, share: 0.4, cap: 360 };
+const BOSS_TRAIL = { every: 0.07, life: 0.55, share: 0.4, cap: 240 };
 export type OrbPic = 'glitch' | 'durian' | 'shark' | 'ember' | 'medusa' | 'mudball' | 'venom' | 'tornado' | 'fireball' | 'rocket' | 'leaf' | 'acid' | 'water' | 'ghost' | 'bolt' | 'spark';
 /** What a boss's attack looks like: its element. */
 export type ThreatEl = 'fire' | 'water' | 'mud' | 'arcane' | 'leaf' | 'bolt' | 'laser' | 'shadow' | 'glitch';
@@ -711,7 +711,17 @@ function keepInRoom(g: Game, c: { x: number; y: number; r: number }) {
 /** Inside the room's walls; the open field has none. */
 const outside = (g: Game, v: Vec) => g.mode === 'sprints' && (v.x < WALL || v.x > W - WALL || v.y < WALL || v.y > H - WALL);
 
-const live = (g: Game) => g.enemies.filter((e) => !e.dead && e.spawn <= 0);
+/* The enemies standing (not dead, not still spawning), worked out once a frame and shared: it used to be a fresh
+   filtered array per caller, and the embers, mines, blades and spikes each asked per thing per frame (an array of
+   the whole horde allocated 80+ times a frame at 10 minutes). The frame is told by `g.time`; the array is read-only
+   (callers that sort copy it first), and everything that hurts an enemy checks `dead` itself. */
+let liveOf: Game | null = null;
+let liveAt = -1;
+let liveArr: Enemy[] = [];
+const live = (g: Game) => {
+  if (liveOf !== g || liveAt !== g.time) { liveOf = g; liveAt = g.time; liveArr = g.enemies.filter((e) => !e.dead && e.spawn <= 0); }
+  return liveArr;
+};
 
 function nearest(g: Game, from: Vec, sight = false): Enemy | undefined {
   let target: Enemy | undefined;
@@ -1214,7 +1224,8 @@ function updateHorde(g: Game, dt: number) {
   const far = Math.hypot(g.viewHalf.x, g.viewHalf.y) * 2.2;
   g.strikes = g.strikes.filter((st) => !st.persistent || dist(st, g.player) < far);
   for (const e of g.enemies) {
-    if (e.kind !== 'boss' && dist(e, g.player) > far) {
+    // (A rooted plant cannot walk back, so it stays where the Queen put it.)
+    if (e.kind !== 'boss' && !e.rooted && dist(e, g.player) > far) {
       const at = ringSpot(g);
       e.x = at.x;
       e.y = at.y;
@@ -1361,7 +1372,14 @@ function gainXp(g: Game, amount: number) {
 
 /* -------------------------------------------------------------------- combat */
 
+/** Particles alive at once: over the first figure a burst is cut to a spark or two, over the second it is dropped
+    (a pierce-and-fire build through a full horde used to pile up thousands, each drawn every frame). */
+const PARTICLE_SOFT = 500;
+const PARTICLE_HARD = 800;
 function burst(g: Game, x: number, y: number, color: string, count: number, speed = 120, size = 3) {
+  const n = g.particles.length;
+  if (n > PARTICLE_HARD || (g.mode === 'horde' && !inView(g, { x, y }))) return;
+  if (n > PARTICLE_SOFT) count = Math.min(count, 2);
   for (let i = 0; i < count; i++) {
     const a = rand(0, Math.PI * 2);
     const s = rand(speed * 0.3, speed);
@@ -1927,7 +1945,7 @@ function callStorm(g: Game) {
   // Evolved (Supercell): twice the bolts, wider, and each one arcs on to two more bugs.
   // The nearest bugs first (a few of them, picked at random), so the bolts come to your aid.
   const p0 = g.player;
-  const pool = live(g).sort((a, b) => dist(a, p0) - dist(b, p0)).slice(0, Math.max(4, lv * (evolved ? 4 : 2)));
+  const pool = [...live(g)].sort((a, b) => dist(a, p0) - dist(b, p0)).slice(0, Math.max(4, lv * (evolved ? 4 : 2)));
   const r = evolved ? 36 : 26;
   const dmg = (38 + 10 * (lv - 1)) * power(g, 'magic');
   for (let i = 0; i < lv * (evolved ? 2 : 1) && pool.length; i++) {
@@ -2096,7 +2114,7 @@ function throwMolotov(g: Game) {
   const evolved = !!g.evolved.molotov;
   // The nearest bugs, in order: the first bottle always goes to the nearest one (it used to pick at random among
   // the six nearest, so it often flew past the bug at your feet).
-  const pool = live(g).sort((a, b) => dist(a, p) - dist(b, p));
+  const pool = [...live(g)].sort((a, b) => dist(a, p) - dist(b, p));
   // A slow lob, the bottle tumbling end over end on its way (see updateShot)…
   const flight = 0.9;
   for (let i = 0; i < (evolved ? 3 : lv >= 3 ? 2 : 1) && i < pool.length; i++) {
@@ -3497,16 +3515,18 @@ function updateShot(g: Game, s: Shot, dt: number): boolean {
       }
     }
   }
+  // A rocket's own bug still standing: found once, not once per bug it flies over.
+  const ownAlive = s.kind === 'rocket' && s.aim !== undefined && g.enemies.some((o) => o.id === s.aim && !o.dead);
   for (const e of g.enemies) {
     if (e.dead || e.spawn > 0 || s.hits.has(e.id)) continue;
     if (Math.hypot(s.x - e.x, s.y - e.y) > e.r + (s.size ?? (s.kind === 'boomerang' ? 9 : 4))) continue;
-    s.hits.add(e.id);
     if (s.kind === 'rocket') {
       // It flies over the small fry while its own bug is still standing.
-      if (s.aim !== undefined && e.id !== s.aim && g.enemies.some((o) => o.id === s.aim && !o.dead)) { s.hits.delete(e.id); continue; }
+      if (ownAlive && e.id !== s.aim) continue;
       rocketBoom(g, s);
       return false;
     }
+    s.hits.add(e.id);
     hitWithShot(g, e, s);
     // A brick breaks on the bug it hits, with the impact burst; the 1-ton weight also stops that bug for a moment.
     if (s.kind === 'brick') {

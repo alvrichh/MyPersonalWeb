@@ -46,6 +46,7 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
     ? { x: p.x - view.cx / scale, y: p.y - view.cy / scale, w: view.w / scale, h: view.h / scale }
     : { x: 0, y: 0, w: W, h: H };
   const onScreen = (o: Vec, pad: number) => o.x > vis.x - pad && o.x < vis.x + vis.w + pad && o.y > vis.y - pad && o.y < vis.y + vis.h + pad;
+  visNow = vis;
 
   if (horde) drawField(ctx, g, vis, now);
   else drawRoom(ctx, g, accent, now);
@@ -105,10 +106,43 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   if (g.player.dark > 0 && g.phase === 'play') drawDark(ctx, g, vis);
 }
 
-/** The particles: arrow tracks (`Particle.low`) in a pass under the shots, the rest over everything. */
+/* Soft round glows (boss shots' tracks, the shots' halos, the bugs' world aura, plasma beads, steam puffs) used to be
+   a radial gradient built per thing per frame: hundreds of gradient objects a frame once a horde fills up. Each kind
+   of glow is now painted once, per colour, on a small canvas and stamped with `drawImage` scaled to size. */
+const GLOW_PX = 64;
+const glowSprites = new Map<string, HTMLCanvasElement>();
+function glowSprite(key: string, stops: [number, string][]) {
+  let c = glowSprites.get(key);
+  if (c) return c;
+  c = document.createElement('canvas');
+  c.width = c.height = GLOW_PX;
+  const t = c.getContext('2d');
+  if (t) {
+    const half = GLOW_PX / 2;
+    const grad = t.createRadialGradient(half, half, 0, half, half, half);
+    for (const [at, colour] of stops) grad.addColorStop(at, colour);
+    t.fillStyle = grad;
+    t.fillRect(0, 0, GLOW_PX, GLOW_PX);
+  }
+  glowSprites.set(key, c);
+  return c;
+}
+/** Stamps a glow sprite centred on (x, y) with the given radius. */
+function stampGlow(ctx: CanvasRenderingContext2D, c: HTMLCanvasElement, x: number, y: number, r: number) {
+  ctx.drawImage(c, x - r, y - r, r * 2, r * 2);
+}
+/** What the canvas shows this frame (room units) and a test against it, set by `draw()` for the passes that cull. */
+let visNow: Rect = { x: 0, y: 0, w: W, h: H };
+const inVis = (x: number, y: number, pad: number) => x > visNow.x - pad && x < visNow.x + visNow.w + pad && y > visNow.y - pad && y < visNow.y + visNow.h + pad;
+/** The particles: arrow tracks (`Particle.low`) in a pass under the shots, the rest over everything. Plasma beads and
+    electric crackle, which add their light, go in one `lighter` pass after the rest so the blend mode is not flipped
+    per particle; anything off the canvas is skipped. */
 function drawParticles(ctx: CanvasRenderingContext2D, g: Game, low: boolean) {
+  let lit = 0;
   for (const q of g.particles) {
     if (!!q.low !== low) continue;
+    if (!inVis(q.x, q.y, 40)) continue;
+    if (q.kind === 'glow' || q.kind === 'crackle') { lit++; continue; }
     const k = Math.max(0, q.life / q.max);
     ctx.globalAlpha = q.kind === 'puff' ? k * 0.55 : k;
     ctx.fillStyle = q.color;
@@ -125,22 +159,31 @@ function drawParticles(ctx: CanvasRenderingContext2D, g: Game, low: boolean) {
     } else if (q.kind === 'flake') {
       ctx.lineWidth = 1.3;
       snowflake(ctx, q.x, q.y, q.size, q.life * 4);
-    } else if (q.kind === 'glow') {
+    } else if (q.kind === 'puff') {
+      // Steam: a soft cloud that swells as it fades.
+      const r = q.size * (1 + (1 - k) * 1.6);
+      stampGlow(ctx, glowSprite(`puff:${q.color}`, [[0, q.color], [1, 'rgba(226,232,240,0)']]), q.x, q.y, r);
+    } else {
+      // Wisps shrink as they rise.
+      const r = q.kind === 'wisp' ? q.size * (0.4 + 0.6 * k) : q.size;
+      ctx.beginPath();
+      ctx.arc(q.x, q.y, r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+  if (!lit) return;
+  ctx.globalCompositeOperation = 'lighter';
+  for (const q of g.particles) {
+    if (!!q.low !== low || (q.kind !== 'glow' && q.kind !== 'crackle') || !inVis(q.x, q.y, 40)) continue;
+    const k = Math.max(0, q.life / q.max);
+    ctx.globalAlpha = k;
+    ctx.strokeStyle = q.color;
+    if (q.kind === 'glow') {
       // Plasma: a hot bead of light that shrinks as it cools.
       const r = q.size * (0.5 + 0.5 * k);
-      ctx.globalCompositeOperation = 'lighter';
-      const grad = ctx.createRadialGradient(q.x, q.y, 0, q.x, q.y, r * 2.2);
-      grad.addColorStop(0, '#fff');
-      grad.addColorStop(0.3, q.color);
-      grad.addColorStop(1, 'rgba(0,0,0,0)');
-      ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.arc(q.x, q.y, r * 2.2, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.globalCompositeOperation = 'source-over';
-    } else if (q.kind === 'crackle') {
+      stampGlow(ctx, glowSprite(`glow:${q.color}`, [[0, '#fff'], [0.3, q.color], [1, 'rgba(0,0,0,0)']]), q.x, q.y, r * 2.2);
+    } else {
       // Electrocution: a tiny zigzag of current, a new shape each frame.
-      ctx.globalCompositeOperation = 'lighter';
       ctx.lineWidth = 1.6;
       ctx.lineJoin = 'round';
       ctx.beginPath();
@@ -154,25 +197,9 @@ function drawParticles(ctx: CanvasRenderingContext2D, g: Game, low: boolean) {
         ctx.lineTo(x, y);
       }
       ctx.stroke();
-      ctx.globalCompositeOperation = 'source-over';
-    } else if (q.kind === 'puff') {
-      // Steam: a soft cloud that swells as it fades.
-      const r = q.size * (1 + (1 - k) * 1.6);
-      const grad = ctx.createRadialGradient(q.x, q.y, 0, q.x, q.y, r);
-      grad.addColorStop(0, q.color);
-      grad.addColorStop(1, 'rgba(226,232,240,0)');
-      ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.arc(q.x, q.y, r, 0, Math.PI * 2);
-      ctx.fill();
-    } else {
-      // Wisps shrink as they rise.
-      const r = q.kind === 'wisp' ? q.size * (0.4 + 0.6 * k) : q.size;
-      ctx.beginPath();
-      ctx.arc(q.x, q.y, r, 0, Math.PI * 2);
-      ctx.fill();
     }
   }
+  ctx.globalCompositeOperation = 'source-over';
   ctx.globalAlpha = 1;
 }
 
@@ -715,8 +742,10 @@ function drawFlames(ctx: CanvasRenderingContext2D, x: number, y: number, r: numb
   const img = fxImage(blue ? 'wisp-flame' : 'flame-orange');
   if (retroLook || !ready(img)) return false;
   const base = ctx.globalAlpha;
+  // Small bugs burn with four licks, not nine: a burning crowd was hundreds of extra draws a frame.
+  const licks = r < 16 ? 4 : FLAMES;
   ctx.save();
-  for (let i = 0; i < FLAMES; i++) {
+  for (let i = 0; i < licks; i++) {
     const t = now * (2.2 + (i % 3) * 0.45) + seed * 0.37 + i * 0.61;
     const k = (t % 1 + 1) % 1;
     // All round the body, from the feet up to the head: each rises a little, shrinks and fades, and starts again.
@@ -1059,7 +1088,8 @@ function drawPlayer(ctx: CanvasRenderingContext2D, g: Game, pal: Palette, now: n
     const cycle = backFrames ?? (full && p.moving && SIDE_WALK.has(pose) ? sideCycle(setKey, pose === 'wshoot' || pose === 'wshoot2') : null);
     const backStride = pose === 'back' && pal.skin !== 'medusa' && !backFrames;
     const tailStride = pal.skin === 'medusa' && SIDE_WALK.has(pose);
-    const steps = !cycle && full && p.moving && (tailStride || backStride) ? stepFrames(img, backStride) : null;
+    // (Only once the picture is in: cutting its frames from an undecoded picture threw, and the failure was kept.)
+    const steps = !cycle && full && p.moving && (tailStride || backStride) && ready(img) ? stepFrames(img, backStride) : null;
     if (cycle) {
       const f = cycle === backFrames ? cycle[Math.floor(now * 7) % 2] : cycle[Math.floor(now / SIDE_STEP) % cycle.length];
       const fh = p.r * 3.05 * (f.naturalHeight / FULL_BASE_H);
@@ -2758,20 +2788,15 @@ const ORB_PIC: Record<OrbPic | 'medusa2', { src: 'fx' | 'arrow'; name: string; w
 function drawOrbs(ctx: CanvasRenderingContext2D, g: Game) {
   // Boss shots' tracks first, under the shots: soft dabs in the shot's colour, shrinking as they fade.
   for (const d of g.bossTrail) {
+    if (!inVis(d.x, d.y, 40)) continue;
     const k = d.life / d.max;
     const r = d.r * (0.5 + 0.5 * k);
     ctx.globalAlpha = 0.75 * k;
-    const grad = ctx.createRadialGradient(d.x, d.y, 0, d.x, d.y, r * 1.5);
-    grad.addColorStop(0, '#fff3c4');
-    grad.addColorStop(0.35, d.tone);
-    grad.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = grad;
-    ctx.beginPath();
-    ctx.arc(d.x, d.y, r * 1.5, 0, Math.PI * 2);
-    ctx.fill();
+    stampGlow(ctx, glowSprite(`dab:${d.tone}`, [[0, '#fff3c4'], [0.35, d.tone], [1, 'rgba(0,0,0,0)']]), d.x, d.y, r * 1.5);
   }
   ctx.globalAlpha = 1;
   for (const o of g.orbs) {
+    if (!inVis(o.x, o.y, 120)) continue;
     // Nocthrax's tornadoes, the owner's pictures: a turning vortex on the floor while it forms, then the
     // funnel standing on its spot, its seven shapes in a loop so it churns, swaying a little.
     if (o.pic === 'tornado' && !retroLook) {
@@ -2805,13 +2830,8 @@ function drawOrbs(ctx: CanvasRenderingContext2D, g: Game) {
       ctx.rotate(Math.atan2(o.vy, o.vx));
       // A soft glow in the shot's colour so it still reads as dangerous.
       const gr = o.r * (look.glow ?? 1.6);
-      const glow = ctx.createRadialGradient(0, 0, 0, 0, 0, gr);
-      glow.addColorStop(0, `${o.tone || '#ff6b6b'}${look.glow ? 'cc' : '88'}`);
-      glow.addColorStop(1, 'transparent');
-      ctx.fillStyle = glow;
-      ctx.beginPath();
-      ctx.arc(0, 0, gr, 0, Math.PI * 2);
-      ctx.fill();
+      const tone = `${o.tone || '#ff6b6b'}${look.glow ? 'cc' : '88'}`;
+      stampGlow(ctx, glowSprite(`orb:${tone}`, [[0, tone], [1, 'transparent']]), 0, 0, gr);
       if (look.trail) {
         const trail = arrowImage(look.trail);
         if (ready(trail)) {
@@ -2827,14 +2847,7 @@ function drawOrbs(ctx: CanvasRenderingContext2D, g: Game) {
       ctx.restore();
       continue;
     }
-    const grad = ctx.createRadialGradient(o.x, o.y, 0, o.x, o.y, o.r * 1.8);
-    grad.addColorStop(0, '#fff3c4');
-    grad.addColorStop(0.45, o.tone || '#ff6b6b');
-    grad.addColorStop(1, 'transparent');
-    ctx.fillStyle = grad;
-    ctx.beginPath();
-    ctx.arc(o.x, o.y, o.r * 1.8, 0, Math.PI * 2);
-    ctx.fill();
+    stampGlow(ctx, glowSprite(`orbplain:${o.tone || '#ff6b6b'}`, [[0, '#fff3c4'], [0.45, o.tone || '#ff6b6b'], [1, 'transparent']]), o.x, o.y, o.r * 1.8);
   }
 }
 
@@ -3202,26 +3215,13 @@ function drawEnemy(ctx: CanvasRenderingContext2D, e: Enemy, now: number) {
   ctx.save();
   ctx.translate(e.x, e.y);
   // Later worlds: an aura in the world's element colour.
-  if (e.tint) {
-    const aura = ctx.createRadialGradient(0, 0, e.r * 0.5, 0, 0, e.r * 1.5);
-    aura.addColorStop(0, e.tint + '55');
-    aura.addColorStop(1, 'transparent');
-    ctx.fillStyle = aura;
-    ctx.beginPath();
-    ctx.arc(0, 0, e.r * 1.5, 0, Math.PI * 2);
-    ctx.fill();
-  }
+  if (e.tint) stampGlow(ctx, glowSprite(`aura:${e.tint}`, [[0, e.tint + '55'], [0.33, e.tint + '55'], [1, 'transparent']]), 0, 0, e.r * 1.5);
   // Its last stand (`rage`, from 20% health): a red glow pulsing fast behind it.
   if (e.rage) {
     const k = 0.5 + Math.sin(now * 12) * 0.5;
-    const glow = ctx.createRadialGradient(0, -e.r * 0.3, e.r * 0.3, 0, -e.r * 0.3, e.r * (1.9 + k * 0.3));
-    glow.addColorStop(0, `rgba(248,113,113,${0.35 + k * 0.2})`);
-    glow.addColorStop(0.6, 'rgba(220,38,38,0.22)');
-    glow.addColorStop(1, 'transparent');
-    ctx.fillStyle = glow;
-    ctx.beginPath();
-    ctx.arc(0, -e.r * 0.3, e.r * 2.2, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.globalAlpha = 0.7 + k * 0.3;
+    stampGlow(ctx, glowSprite('rage', [[0, 'rgba(248,113,113,0.55)'], [0.6, 'rgba(220,38,38,0.22)'], [1, 'transparent']]), 0, -e.r * 0.3, e.r * (1.9 + k * 0.3));
+    ctx.globalAlpha = 1;
   }
   // The world's final boss: a crown of light turning round it (its clones wear it too, to fool you); red and fast in its last stand.
   if (e.final) {
@@ -3231,7 +3231,8 @@ function drawEnemy(ctx: CanvasRenderingContext2D, e: Enemy, now: number) {
     ctx.strokeStyle = tone;
     ctx.globalAlpha = 0.55 + Math.sin(now * 3) * 0.15;
     ctx.lineWidth = 2.5;
-    if (!retroLook) { ctx.shadowColor = tone; ctx.shadowBlur = 12; }
+    // The halo under the crown is a stamped glow, not a shadow blur (a blur per frame per boss is dear).
+    if (!retroLook) stampGlow(ctx, glowSprite(`crown:${tone}`, [[0, 'transparent'], [0.7, 'transparent'], [0.85, tone + '66'], [1, 'transparent']]), 0, 0, e.r * 1.7);
     ctx.setLineDash([10, 8]);
     ctx.beginPath();
     ctx.arc(0, 0, e.r * 1.25, 0, Math.PI * 2);
@@ -3272,20 +3273,13 @@ function drawEnemy(ctx: CanvasRenderingContext2D, e: Enemy, now: number) {
   // silhouette (a shadow glow, which Safari draws too) keep it readable.
   const rim = e.bossId === 'chimera' && !retroLook;
   if (rim) {
-    const back = ctx.createRadialGradient(0, -e.r * 0.3, e.r * 0.2, 0, -e.r * 0.3, e.r * 2.2);
-    back.addColorStop(0, 'rgba(192,132,252,0.38)');
-    back.addColorStop(0.6, 'rgba(139,92,246,0.16)');
-    back.addColorStop(1, 'transparent');
-    ctx.fillStyle = back;
-    ctx.beginPath();
-    ctx.arc(0, -e.r * 0.3, e.r * 2.2, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.shadowColor = 'rgba(232,121,249,0.95)';
-    ctx.shadowBlur = Math.max(8, e.r * 0.3);
+    stampGlow(ctx, glowSprite('rim', [[0, 'rgba(192,132,252,0.38)'], [0.6, 'rgba(139,92,246,0.16)'], [1, 'transparent']]), 0, -e.r * 0.3, e.r * 2.2);
+    // Its violet rim is the cached outline of its picture (worked out once per pose), not a shadow blur each frame.
+    spriteOutline = 'rgba(232,121,249,0.95)';
   }
   const painted = !retroLook && drawEnemySprite(ctx, e);
+  spriteOutline = null;
   if (!painted) LOOKS[e.look][e.kind](ctx, e, now);
-  if (rim) ctx.shadowBlur = 0;
   // Status: white flash on hit (not on a painted boss, which shows its hit pose: a disc as big as the boss
   // covered it whenever the arrows kept it lit), blue tint when slowed, little flames when burning.
   if (e.hit > 0 && !(painted && e.kind === 'boss')) {

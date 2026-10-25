@@ -139,7 +139,8 @@ for (const mode of ['sprints', 'horde']) for (const [level, evolved] of [[1, fal
     const g = w.newGame(undefined, 'world', 1, mode);
     const template = w.newGame().enemies[0];
     assert.ok(template);
-    g.player.x = 180; g.player.y = 300; g.obstacles = []; g.hazards = [];
+    // (`fieldKey` as the player's cell, so On call does not lay its random racks back over the bare room.)
+    g.player.x = 180; g.player.y = 300; g.obstacles = []; g.hazards = []; g.fieldKey = '0,1';
     const enemy = (id, x, y, extra = {}) => ({ ...structuredClone(template), id, x, y, spawn: 0, speed: 0, hp: 10000, maxHp: 10000, cd: 100, ...extra });
     g.enemies = [enemy(100, 180, 240), enemy(101, 300, 300), enemy(102, 200, 300, { dead: true }), enemy(103, 180, 280, { spawn: 1 })];
     for (const key of Object.keys(g.skills)) g.skills[key] = 0;

@@ -501,6 +501,14 @@ class Engine {
 
   private tick = () => {
     if (!this.playing) return;
+    // After a stall of the main thread (a long frame, a tab switch) the steps missed are skipped, not all fired at
+    // once in the past: that burst of stacked drums was itself a hitch.
+    if (this.next < this.ctx.currentTime - 0.1) {
+      const step = this.songId === 'breaks' ? GSTEP : STEP;
+      const missed = Math.floor((this.ctx.currentTime - this.next) / step);
+      this.step += missed;
+      this.next += missed * step;
+    }
     while (this.next < this.ctx.currentTime + 0.12) {
       this.schedule(this.step, this.next);
       this.next += this.songId === 'breaks' ? GSTEP : STEP;
@@ -1928,9 +1936,12 @@ class Engine {
 
   /* ------------------------------------------------------------------ sfx */
 
+  /** When the hit sound last played: a crowd being hit sounds once every 50 ms, not once a frame. */
+  private lastHit = -1;
   play(name: Sfx) {
     if (!this.ready || this.volumes.sfx === 0) return;
     const at = this.ctx.currentTime;
+    if (name === 'hit') { if (at - this.lastHit < 0.05) return; this.lastHit = at; }
     switch (name) {
       case 'shoot': return this.blip(at, 900, 500, 0.05, 0.25, 'square');
       // A bowstring's twang and the arrow's whoosh, a little different each time so a volley does not drone.
