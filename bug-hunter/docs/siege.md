@@ -21,6 +21,18 @@ The nine preview stages reuse world enemy art and share the initial guardian sil
 - The battlefield pauses on tab hiding or window blur. Returning requires Resume. Time does not advance while paused.
 - The mode is a modal with background content inert, a focus loop, accessible button labels and reduced-motion support. All copy is in `src/strings.ts` in English and Spanish.
 
+## Layout rule (always)
+
+Every Siege change that touches what is drawn or where controls sit is checked by looking at it, not only by tests:
+
+1. Take screenshots of a real battle at **desktop 1280×720** and **phone 390×844** (more sizes when the change is about scaling), with troops on the field and the bow shooting.
+2. Look at where each thing is and say it: the HUD (mana left, health bars and VS centre, time/coins/pause right), our wall and the aim control standing on it, the mana angel, the bridge deck under the troops' feet, the enemy wall, the L·A·S tabs, cards and bow button in the bottom bar.
+3. Nothing may leave the view: projectiles' arcs, the aim control, labels, cards. Nothing may float off the deck or sink below it; flyers stay above their own shadow.
+4. Compare both orientations; a fix for one must not break the other.
+5. Report what was checked and what was not (for example "only world 4 was looked at").
+
+The bridge (`ui/bench/bench-N`) is the ground: `BRIDGE` in `src/siege/view.ts` sets its piece width, where its deck sits on the ground line and the overlap of its posts. The aim control's place is in `src/siege/siege.css` (`.sg-aim`).
+
 ## Architecture and compatibility
 
 - `src/siege/model.ts`: deterministic, DOM-free simulation, balance, save validation, upgrades and reward settlement.
