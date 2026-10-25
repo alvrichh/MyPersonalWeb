@@ -11,6 +11,7 @@ This changelog tracks game-version changes starting with v1.12.55. Earlier relea
 - Each world sends its own guardian, its room-6 boss sheet (monolith, overlord, valkyrie, mud monster, queen, minotaur, mainframe, wraith, hydra), instead of the monolith everywhere.
 - Troops walk on all their poses (six for the Arena and fire-world sets, four for the rest, the boss sheets' two steps and a stand) instead of two.
 - Shots fly as the game's sparks (fire for the enemy), the cannon as a fireball, hits as impacts and blasts; the discharge drops the yellow lightning bolt.
+- The fortresses are the Tactics benches' walled fronts (`ui/bench/boss-N`): ours the Backlog's blue one, the enemy's its world's (the Backlog defends with its plain bench); the drawn tower stays only while they load.
 - Pause, launch, generator, cannon and discharge use the `btn1_*` button bars (grey when unavailable).
 
 ## 1.14.0 - 2026-10-25
