@@ -89,9 +89,7 @@ function base(ctx: CanvasRenderingContext2D, x: number, ground: number, color: s
   ctx.fillStyle = '#050d18'; ctx.fillRect(-60, top - 6, 120, 9); ctx.fillStyle = color; ctx.fillRect(-59, top - 5, 118 * Math.max(0, hp / max), 7);
   ctx.restore();
 }
-/** The camera, and where our wall stands on screen after each frame (CSS pixels from the canvas's left), so the aim
-    control can stand on it. */
-export interface Camera { x: number; width: number; wallX?: number }
+export interface Camera { x: number; width: number }
 export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, s: Siege, camera: Camera, reduced: boolean) {
   const rect = canvas.getBoundingClientRect(); const w = rect.width, h = rect.height;
   if (!w || !h) return;
@@ -116,7 +114,6 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
     ctx.fillStyle = shade; ctx.fillRect(0, 0, w, bh);
   }
   ctx.scale(scale, scale); ctx.translate(-camera.x + Math.max(0, (camera.width - FIELD) / 2), 0);
-  camera.wallX = (80 - camera.x + Math.max(0, (camera.width - FIELD) / 2)) * scale;
   const viewH = h / scale;
   // The battle is fought on a bridge over the abyss, the world's Tactics bridge (`ui/bench/bench-N`) stretched from wall
   // to wall, the troops walking on its deck; the backdrop falls away under it.

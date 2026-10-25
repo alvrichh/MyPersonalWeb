@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.13 - 2026-10-25
+
+### Fixed - Siege aim always on screen
+- The aim control stays at the field's left edge whatever the camera shows, as before 1.14.12's follow-the-wall change, so the arrows can be aimed while looking at the enemy's side.
+
 ## 1.14.12 - 2026-10-25
 
 ### Changed - Siege on a bridge
