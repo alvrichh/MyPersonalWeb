@@ -4,6 +4,13 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.28 - 2026-10-25
+
+### Added - Six new skins, the profile opens the skins, Alvrich's world outfits fold away
+- Six new special skins from the owner's transparent sheet, on sale from the start: Rubber Duck Knight (5000), Cardboard Knight (5000), Black-Hat Hacker (8000), Skull King (10000), Potato Gladiator (5000) and The Boss (8000). Each row's 16–17 poses are cut with the sheet's own alpha (its faint haze under 60 dropped) and laid onto the hero's 21 (front, idle, the walks, the attack with its effect as the shot, hurt, knocked out); the sheet has no back view, so the side idle stands in for it.
+- In the profile, tapping the hero (a 👕 badge on it) opens Customise on the character list.
+- In the character list, Alvrich's nine world outfits fold under one «Alvrich by world» row with how many are owned; it opens by itself while one of them is worn.
+
 ## 1.14.27 - 2026-10-25
 
 ### Fixed - Intern recut from its sheet

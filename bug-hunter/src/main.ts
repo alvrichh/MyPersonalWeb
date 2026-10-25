@@ -9,7 +9,7 @@ import { COIN_PACKS, currentOffer, grant, packBonus, SKIN_OFFERS, type CoinPack,
 import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPrize, type DailyResult } from './daily';
 import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
 import { MID_ART, boardBackdropBounds, draw, drawRetroFigure, preloadBoardBossFx, preloadCast, preloadFx, type Palette, type View } from './draw';
-import { DEFAULT_NAME, NAME_MAX, NET_ID, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, SKIN_PRICE, SKIN_GATE, skinOpen, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
+import { DEFAULT_NAME, NAME_MAX, NET_ID, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, WORLD_SKINS, SKIN_PRICE, SKIN_GATE, skinOpen, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
 import { ABILITY, ABIL_V, BENCH_CAP, canFight, moveBenchSeat, CELL, COLS, FINAL_ID, HOME_ROW, NATIVE_WORLD_BONUS, ROWS, ROUNDS, SYNERGY, TACTICS, armyCap, deployBench, sellBench, storeOnBench, toggleAutoMerge, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, startOnlineFight, unitStats, updateBoard, waveSpots, waveUnitStats, type BoardGame, type Online, type Piece, type Variant } from './board';
 import { cleanCode, dial, hostGame, joinGame, leave as netLeave, presence, presenceOn, presenceReady, send as netSend, type NetHandlers, type NetMsg, type NetProfile, type NetState, type Together } from './net';
 import { ABILITY_ICON, ABILITY_PIC, SYNERGY_PIC, FIREBALL, boardMerged, boardUnitBounds, drawBoard, mirrorFight, drawBoardDrag, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
@@ -649,7 +649,7 @@ function profileScreen(note = '') {
   show(`<button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
     <h2>${t('profile')}</h2>
     <div class="profile-card">
-      ${withWings(`<img class="profile-pic${save.retro ? ' is-round' : ''}" src="${pic}" alt="" width="96" height="120">`)}
+      <button class="profile-skin" type="button" data-act="styles-skin" aria-label="${t('skinPick')}">${withWings(`<img class="profile-pic${save.retro ? ' is-round' : ''}" src="${pic}" alt="" width="96" height="120">`)}<span class="profile-skin-tag" aria-hidden="true">👕</span></button>
       <div class="profile-who">${editingName ? '' : name}${crests()}<span>${t('lvShort', { level })}</span><i class="profile-xp" title="${t('profileXp')}"><b style="width:${Math.round(progress * 100)}%"></b></i></div>
     </div>
     ${editingName ? `<div class="profile-form">${name}<small class="how">${t('profileNameHint')}</small>${save.name !== DEFAULT_NAME ? `<button class="ghost small" type="button" data-act="name-reset">${t('profileReset')}</button>` : ''}</div>` : ''}
@@ -1535,7 +1535,7 @@ function stylesScreen(note = '') {
     </button>`;
   let picks = `<p class="how">${t('dressHint')}</p>`;
   if (dressSlot === 'skin') {
-    picks = `<h3 class="slot">${t('skinPick')}</h3>${note ? `<p class="note">${note}</p>` : ''}<div class="gear-list">${SKINS.map((skin) => {
+    const skinRow = (skin: HeroSkin) => {
       const owned = save.skins.includes(skin);
       const worn = save.skin === skin;
       const open = skinOpen(save, skin);
@@ -1543,7 +1543,14 @@ function stylesScreen(note = '') {
       const lock = !gate ? '' : 'world' in gate ? t('skinLockWorld', { n: gate.world }) : 'boss' in gate ? t('skinLockBoss', { n: gate.boss }) : t('skinLockSecret');
       if (!open) return row(`data-skin="${skin}"`, false, true, `<img class="skin-pic" src="./images/game/hero/${heroStill(skin)}.webp" alt="">`, t(`skin${cap(skin)}Name` as Key), t(`skin${cap(skin)}Text` as Key), `🔒 ${lock}`);
       return row(`data-skin="${skin}"`, worn, !owned && save.coins < SKIN_PRICE[skin], `<img class="skin-pic" src="./images/game/hero/${heroStill(skin, save.equipped.head)}.webp" alt="">`, t(`skin${cap(skin)}Name` as Key), t(`skin${cap(skin)}Text` as Key), worn ? `✓ ${t('worn')}` : owned ? t('equip') : `${t('buy')} 🪙 ${SKIN_PRICE[skin]}`);
-    }).join('')}</div>`;
+    };
+    // Alvrich's world outfits fold away under one row (open while one of them is worn).
+    const world = (WORLD_SKINS as readonly HeroSkin[]);
+    const worldOwned = world.filter((k) => save.skins.includes(k)).length;
+    picks = `<h3 class="slot">${t('skinPick')}</h3>${note ? `<p class="note">${note}</p>` : ''}<div class="gear-list">${skinRow('boy')}
+      <details class="skin-fold"${world.includes(save.skin) ? ' open' : ''}><summary><img class="skin-pic" src="./images/game/hero/${heroStill(world.includes(save.skin) ? save.skin : 'intern')}.webp" alt=""><b>${t('skinWorlds')}</b><em>${worldOwned}/${world.length}</em></summary>
+        <div class="gear-list">${world.map(skinRow).join('')}</div></details>
+      ${SKINS.filter((k) => k !== 'boy' && !world.includes(k)).map(skinRow).join('')}</div>`;
   } else if (dressSlot === 'foes') {
     picks = `<h3 class="slot">${t('stylePick')}</h3><div class="gear-list">${STYLES.map((style) =>
       row(`data-style="${style}"`, save.style === style, false, styleIcon(style), t(`style${cap(style)}Name` as Key), t(`style${cap(style)}Text` as Key), save.style === style ? '✓' : '')).join('')}</div>`;
