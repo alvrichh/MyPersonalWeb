@@ -5,6 +5,7 @@ export const CAP = 36;
 export const SAVE_KEY = 'bugHunter.siege.v1';
 export const CASTS = ['original', 'demon', 'viking', 'mud', 'jungle', 'greek', 'robot', 'nightmare', 'core'];
 export interface Spec { id: number; cost: number; hp: number; damage: number; speed: number; range: number; rate: number; cooldown: number; unlock: number; sprite: string; size: number; splash?: number; air?: boolean }
+/** Every troop, its `id` its place in this list. */
 export const UNITS: readonly Spec[] = [
   { id: 0, cost: 20, hp: 115, damage: 16, speed: 43, range: 35, rate: 0.8, cooldown: 2, unlock: 1, sprite: 'enemies/original-bug', size: 52 },
   { id: 1, cost: 40, hp: 85, damage: 22, speed: 31, range: 185, rate: 1.3, cooldown: 4, unlock: 1, sprite: 'enemies/original-ticket', size: 58 },
@@ -19,6 +20,24 @@ export const UNITS: readonly Spec[] = [
   { id: 9, cost: 50, hp: 110, damage: 20, speed: 55, range: 40, rate: 0.8, cooldown: 5, unlock: 2, sprite: 'enemies/demon-bug', size: 58, air: true },
   { id: 10, cost: 75, hp: 120, damage: 24, speed: 40, range: 170, rate: 1.2, cooldown: 8, unlock: 4, sprite: 'enemies/robot-bug', size: 56, air: true },
   { id: 11, cost: 120, hp: 260, damage: 40, speed: 45, range: 60, rate: 1.1, cooldown: 14, unlock: 6, sprite: 'enemies/core-ticket', size: 72, splash: 50, air: true },
+  // More land troops, each world's own cast, unlocked world by world.
+  { id: 12, cost: 30, hp: 150, damage: 18, speed: 48, range: 35, rate: 0.8, cooldown: 3, unlock: 2, sprite: 'enemies/viking-bug', size: 54 },
+  { id: 13, cost: 55, hp: 110, damage: 26, speed: 32, range: 190, rate: 1.4, cooldown: 5, unlock: 3, sprite: 'enemies/viking-ticket', size: 58 },
+  { id: 14, cost: 85, hp: 560, damage: 20, speed: 22, range: 40, rate: 1.5, cooldown: 9, unlock: 3, sprite: 'enemies/viking-legacy', size: 80 },
+  { id: 15, cost: 60, hp: 240, damage: 34, speed: 46, range: 38, rate: 0.9, cooldown: 6, unlock: 4, sprite: 'enemies/greek-bug', size: 58 },
+  { id: 16, cost: 70, hp: 150, damage: 32, speed: 30, range: 230, rate: 1.5, cooldown: 7, unlock: 5, sprite: 'enemies/greek-ticket', size: 60 },
+  { id: 17, cost: 45, hp: 130, damage: 22, speed: 80, range: 35, rate: 0.6, cooldown: 4, unlock: 4, sprite: 'enemies/mud-bug', size: 50 },
+  { id: 18, cost: 95, hp: 720, damage: 22, speed: 20, range: 40, rate: 1.6, cooldown: 11, unlock: 4, sprite: 'enemies/mud-legacy', size: 78, splash: 40 },
+  { id: 19, cost: 75, hp: 170, damage: 30, speed: 26, range: 210, rate: 1.4, cooldown: 8, unlock: 5, sprite: 'enemies/jungle-ticket', size: 60 },
+  { id: 20, cost: 110, hp: 820, damage: 30, speed: 21, range: 45, rate: 1.5, cooldown: 12, unlock: 5, sprite: 'enemies/jungle-legacy', size: 82 },
+  { id: 21, cost: 95, hp: 220, damage: 45, speed: 18, range: 280, rate: 1.9, cooldown: 10, unlock: 6, sprite: 'enemies/robot-ticket', size: 64, splash: 50 },
+  { id: 22, cost: 130, hp: 1000, damage: 34, speed: 20, range: 45, rate: 1.5, cooldown: 14, unlock: 7, sprite: 'enemies/robot-legacy', size: 84 },
+  { id: 23, cost: 25, hp: 160, damage: 15, speed: 36, range: 35, rate: 0.9, cooldown: 2, unlock: 7, sprite: 'enemies/nightmare-bug', size: 54 },
+  { id: 24, cost: 70, hp: 260, damage: 36, speed: 44, range: 38, rate: 0.9, cooldown: 6, unlock: 8, sprite: 'enemies/nightmare-ticket', size: 60 },
+  { id: 25, cost: 120, hp: 900, damage: 40, speed: 18, range: 150, rate: 2, cooldown: 14, unlock: 8, sprite: 'enemies/nightmare-legacy', size: 80, splash: 60 },
+  { id: 26, cost: 160, hp: 1250, damage: 60, speed: 22, range: 60, rate: 1.7, cooldown: 18, unlock: 9, sprite: 'enemies/core-legacy', size: 92, splash: 70 },
+  { id: 27, cost: 90, hp: 300, damage: 34, speed: 42, range: 50, rate: 1, cooldown: 9, unlock: 3, sprite: 'enemies/demon-legacy', size: 70, air: true },
+  { id: 28, cost: 110, hp: 260, damage: 38, speed: 50, range: 180, rate: 1.3, cooldown: 11, unlock: 9, sprite: 'enemies/core-bug', size: 64, splash: 45, air: true },
 ];
 /** Up to this many land and this many air troops in an army. */
 export const DECK = 5;
