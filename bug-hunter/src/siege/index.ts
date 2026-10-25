@@ -100,6 +100,9 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
         while (accumulator >= 1 / 30) { tick(state, 1 / 30); accumulator -= 1 / 30; }
       }
       render(ctx, canvas, state, camera, reduced);
+      // The aim stands on our wall: it scrolls away with it, and hides once the wall is out of view.
+      const aimBox = q<HTMLElement>('.sg-aim'), shift = (camera.wallX ?? 80) - 80;
+      aimBox.style.transform = `translateX(${Math.round(shift)}px)`; aimBox.style.visibility = shift < -70 ? 'hidden' : '';
       if (now >= uiAt) { updateUi(); uiAt = now + 100; }
       if (state.phase !== 'fight' && !state.paid) result();
       // The guardian speaks the moment it joins, the battle held until the scene ends.

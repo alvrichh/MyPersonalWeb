@@ -8,7 +8,7 @@ This changelog tracks game-version changes starting with v1.12.55. Earlier relea
 
 ### Changed - Siege on a bridge
 - The battle is fought on one long bridge over the abyss, across the middle of the field: each world's Tactics bridge (`ui/bench/bench-N`) keeps its own two ends, and its two middle slabs repeat between them from wall to wall, the troops walking on its deck. The world's backdrop now fills the whole field and darkens into the chasm under it. The floor tiles are no longer used here.
-- The aim is a compact ▲ ● ▼ control standing on our wall, at most half the field's height, so it no longer runs off the screen on phones.
+- The aim is a compact ▲ ● ▼ control standing on our wall, at most half the field's height, so it no longer runs off the screen on phones; it scrolls with the wall and hides once the wall is out of view.
 - The arrows' and the missile's arcs are capped so they never leave the top of the view.
 - New layout rule for this mode (`docs/siege.md`, linked from `AGENTS.md`): every visual change is checked with desktop and phone screenshots, looking at where each element sits.
 
