@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.45 - 2026-10-25
+
+### Fixed - Skin texts fit their plates and cards
+- Customise, narrow phones: the lock line is shorter (`World N · Sprints`, like `Boss N · Guard`) so it no longer breaks onto the plate's frame; names stay on one line and descriptions on two, so no row writes over its frame. Two long descriptions (Skull King, Mud Mudling) and the Spanish hacker name are shorter.
+- Shop: on the lit card (skins you own or can buy) the band and lower panel are now a fixed strip at the bottom instead of stretching with the card, so the description stays in the window above the band and the button sits in the panel. The Spanish "wear it" button reads «Ir a Personalizar» so it fits on one line.
+
 ## 1.14.44 - 2026-10-25
 
 ### Fixed - The Server Reaper at full size; worn skin centred in Customize
