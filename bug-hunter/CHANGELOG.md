@@ -4,6 +4,18 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.4 - 2026-10-25
+
+### Changed - Final bosses' songs sound like their worlds
+- Six final-boss songs were whole new tunes that only shared their world's sounds; they are now their world's song as a boss version (same key, lead and melody, darker chords and a harder bass, starting on the drop):
+  - Kernel Panic: the Backlog's chiptune melody in C minor, back on the Amen break.
+  - Medusa: back in the mud world's D (it was a semitone lower), on its snake charmer tune.
+  - Drakkar/Valdur: Code Freeze's horn call as a war march.
+  - Carnivorous Queen: Legacy Jungle's marimba tune with a Phrygian bite.
+  - Overclock Mech: The Forge's robot riff, faster.
+  - Shadow Wraith: Haunted Servers' music box tune with the tritone.
+- The Archdemon and Zeus already followed their worlds; Nocthrax plays Doomsday.
+
 ## 1.14.3 - 2026-10-25
 
 ### Changed - Nocthrax fights to Doomsday
