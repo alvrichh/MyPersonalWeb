@@ -7,8 +7,8 @@ const run = (s, seconds) => { for (let i = 0; i < seconds * 30; i++) m.tick(s, 1
 test('safe save validation and independent schema', () => {
   assert.deepEqual(m.readProgress('{'), m.freshProgress());
   assert.deepEqual(m.readProgress('{"version":2}'), m.freshProgress());
-  const p = m.readProgress(JSON.stringify({ version: 1, unlocked: 500, coins: -20, upgrades: [99, -2, '3'], deck: [7, 7, 999, -1, 0], victories: [1, 1, 9, -2, 2.5] }));
-  assert.equal(p.unlocked, 9); assert.equal(p.coins, 0); assert.deepEqual(p.upgrades, [5, 0, 0]); assert.equal(new Set(p.deck).size, 5); assert.deepEqual(p.victories, [1, 9]);
+  const p = m.readProgress(JSON.stringify({ version: 1, unlocked: 500, coins: -20, upgrades: [99, -2, '3', 7], deck: [7, 7, 999, -1, 0], victories: [1, 1, 9, -2, 2.5] }));
+  assert.equal(p.unlocked, 9); assert.equal(p.coins, 0); assert.deepEqual(p.upgrades, [5, 0, 0, 5]); assert.equal(new Set(p.deck).size, 5); assert.deepEqual(p.victories, [1, 9]);
   assert.equal(m.readProgress('{"version":1,"deck":[7]}').deck.includes(7), false);
 });
 test('summoning enforces energy, deck, cooldown and population', () => {
@@ -29,8 +29,8 @@ test('generator spends energy, raises capacity/rate and caps at four', () => {
 test('weapons have separate recharge and never hurt friendly troops', () => {
   const s = m.newSiege(m.freshProgress(), 1); m.summon(s, 0); const u = s.units[0]; s.aim = u.x;
   const enemy = { ...u, uid: 100, side: 1, hp: 200, maxHp: 200 }; s.units.push(enemy);
-  const hp = u.hp, energy = s.energy;
-  assert.equal(m.fire(s), true); assert.equal(m.fire(s), false); assert.equal(u.hp, hp); assert.ok(enemy.hp < 200); assert.equal(s.energy, energy);
+  u.damage = 0; enemy.damage = 0; const hp = u.hp, energy = s.energy;
+  m.draw(s, true); m.tick(s, 1 / 30); assert.equal(u.hp, hp); assert.ok(enemy.hp < 200); m.draw(s, false); assert.ok(s.bow.quiver < m.BOW.max);
   assert.equal(m.strike(s), true); assert.equal(m.strike(s), false); assert.equal(u.hp, hp);
 });
 test('troops walk, engage opponents and cannot pass through them', () => {
@@ -78,8 +78,20 @@ test('Backlog can be won with a mixed army and active defenses, without upgrades
     if (s.generator < 3 && s.energy >= m.generatorPrice(s) + 20) m.improveGenerator(s);
     for (const id of [4, 2, 1, 0, 3]) if (s.energy >= m.UNITS[id].cost + (s.time < 25 ? 30 : 0)) m.summon(s, id);
     const threats = s.units.filter(u => u.side).sort((a, b) => a.x - b.x);
-    if (threats[0]) { s.aim = threats[0].x; if (s.aim < 1080) m.fire(s); m.strike(s); }
+    if (threats[0]) { s.aim = threats[0].x; m.draw(s, s.aim < 1080); m.strike(s); } else m.draw(s, false);
     m.tick(s, 1 / 30);
   }
   assert.equal(s.phase, 'won', `ended ${s.phase}: ${s.hp}, time ${s.time}`);
+});
+
+test('the bow empties its quiver while held, speeds up, and refills when let go', () => {
+  const s = m.newSiege(m.freshProgress(), 1); s.nextWave = 999;
+  m.draw(s, true); m.tick(s, 1 / 30);
+  const first = s.effects.filter(e => e.kind === 'arrow').length; assert.equal(first, 1);
+  const slow = m.bowEvery(s.bow); run(s, 3); assert.ok(m.bowEvery(s.bow) < slow, 'faster the longer it is held'); assert.equal(m.bowCount(s.bow), 2);
+  for (let i = 0; i < 600 && !s.bow.empty; i++) m.tick(s, 1 / 30);
+  assert.equal(s.bow.empty, true, 'the quiver runs dry');
+  m.draw(s, false); run(s, 1); assert.equal(s.bow.empty, true); run(s, 2); assert.equal(s.bow.empty, false, 'back after a third refills');
+  const p = m.freshProgress(); p.upgrades[3] = 4; const up = m.newSiege(p, 1);
+  assert.ok(m.bowEvery(up.bow) < m.bowEvery(m.newSiege(m.freshProgress(), 1).bow)); assert.equal(m.bowCount(up.bow), 3);
 });

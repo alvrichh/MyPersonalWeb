@@ -15,8 +15,8 @@ export const UNITS: readonly Spec[] = [
   { id: 6, cost: 100, hp: 650, damage: 27, speed: 24, range: 45, rate: 1.4, cooldown: 11, unlock: 5, sprite: 'enemies/greek-legacy', size: 84 },
   { id: 7, cost: 180, hp: 740, damage: 88, speed: 30, range: 190, rate: 2.3, cooldown: 24, unlock: 7, sprite: 'bosses/kernel', size: 110, splash: 95 },
 ];
-export interface Progress { version: 1; unlocked: number; coins: number; victories: number[]; upgrades: [number, number, number]; deck: number[] }
-export const freshProgress = (): Progress => ({ version: 1, unlocked: 1, coins: 0, victories: [], upgrades: [0, 0, 0], deck: [0, 1, 2, 3, 4] });
+export interface Progress { version: 1; unlocked: number; coins: number; victories: number[]; upgrades: [number, number, number, number]; deck: number[] }
+export const freshProgress = (): Progress => ({ version: 1, unlocked: 1, coins: 0, victories: [], upgrades: [0, 0, 0, 0], deck: [0, 1, 2, 3, 4] });
 const integer = (v: unknown, min: number, max: number, fallback: number) => typeof v === 'number' && Number.isFinite(v) ? Math.max(min, Math.min(max, Math.floor(v))) : fallback;
 export function readProgress(raw: string | null): Progress {
   const p = freshProgress();
@@ -25,7 +25,7 @@ export function readProgress(raw: string | null): Progress {
     if (!v || v.version !== 1) return p;
     p.unlocked = integer(v.unlocked, 1, 9, 1); p.coins = integer(v.coins, 0, 1000000, 0);
     p.victories = Array.isArray(v.victories) ? [...new Set<number>(v.victories.filter((n: unknown) => typeof n === 'number' && Number.isInteger(n) && n >= 1 && n <= 9))] : [];
-    p.upgrades = [0, 1, 2].map(i => integer(v.upgrades?.[i], 0, 5, 0)) as Progress['upgrades'];
+    p.upgrades = [0, 1, 2, 3].map(i => integer(v.upgrades?.[i], 0, 5, 0)) as Progress['upgrades'];
     p.deck = Array.isArray(v.deck) ? [...new Set<number>(v.deck.filter((n: unknown) => typeof n === 'number' && UNITS[n]?.unlock <= p.unlocked))].slice(0, 5) : [];
     for (let i = 0; p.deck.length < 5; i++) if (!p.deck.includes(i)) p.deck.push(i);
   } catch { /* corrupt or unavailable storage starts a safe, isolated preview */ }
@@ -33,7 +33,7 @@ export function readProgress(raw: string | null): Progress {
 }
 export const upgradePrice = (level: number) => 100 + level * 100;
 export function upgrade(p: Progress, slot: number): boolean {
-  if (!Number.isInteger(slot) || slot < 0 || slot > 2) return false;
+  if (!Number.isInteger(slot) || slot < 0 || slot > 3) return false;
   const level = p.upgrades[slot]; const cost = upgradePrice(level);
   if (level >= 5 || p.coins < cost) return false;
   p.coins -= cost; p.upgrades[slot]++; return true;
@@ -43,7 +43,7 @@ export interface Effect { x: number; from: number; lane: number; life: number; m
 export interface Siege {
   world: number; phase: 'fight' | 'won' | 'lost'; time: number; energy: number; generator: number; cooldowns: number[];
   hp: [number, number]; maxHp: [number, number]; units: Fighter[]; effects: Effect[]; nextId: number; nextWave: number; waves: number; kills: number;
-  weapon: number; spell: number; aim: number; archers?: number; bossSpawned: boolean; paid: boolean; power: number; economy: number; deck: number[];
+  spell: number; aim: number; bow: Bow; bossSpawned: boolean; paid: boolean; power: number; economy: number; deck: number[];
 }
 export const energyMax = (s: Siege) => 180 + s.generator * 70;
 export const energyRate = (s: Siege) => 7 + s.generator * 2.5 + s.economy;
@@ -51,7 +51,7 @@ export const generatorPrice = (s: Siege) => 65 + s.generator * 45;
 export function newSiege(p: Progress, world: number): Siege {
   world = integer(world, 1, p.unlocked, 1);
   const maxHp: [number, number] = [1700 + p.upgrades[1] * 200, 1500 + world * 170];
-  return { world, phase: 'fight', time: 0, energy: 80, generator: 0, cooldowns: UNITS.map(() => 0), hp: [...maxHp], maxHp, units: [], effects: [], nextId: 1, nextWave: 7, waves: 0, kills: 0, weapon: 0, spell: 0, aim: 700, bossSpawned: false, paid: false, power: 1 + p.upgrades[0] * 0.08, economy: p.upgrades[2] * 0.6, deck: [...p.deck] };
+  return { world, phase: 'fight', time: 0, energy: 80, generator: 0, cooldowns: UNITS.map(() => 0), hp: [...maxHp], maxHp, units: [], effects: [], nextId: 1, nextWave: 7, waves: 0, kills: 0, spell: 0, aim: 700, bossSpawned: false, paid: false, power: 1 + p.upgrades[0] * 0.08, economy: p.upgrades[2] * 0.6, deck: [...p.deck], bow: { quiver: BOW.max, drawing: false, held: 0, next: 0, empty: false, level: p.upgrades[3] } };
 }
 function spawn(s: Siege, id: number, side: 0 | 1, boss = false) {
   if (s.units.filter(u => u.side === side).length >= CAP) return;
@@ -74,21 +74,38 @@ function damageArea(s: Siege, x: number, radius: number, damage: number, life = 
   for (const u of s.units) if (u.side === 1 && Math.abs(u.x - x) <= radius) { u.hp -= damage; u.flash = 0.18; }
   s.effects.push({ x, from: 80, lane: 1, life, max: life, kind: 'burst', side: 0 });
 }
-/** Our fortress's archers: arrows land around the aim (the left slider), and a volley rains more of them. */
-const ARROW = { every: 2.2, spread: 45, damage: 14 };
-export const VOLLEY = { count: 7, spread: 80, damage: 18 };
+/** Our fortress's bow, Cartoon Wars-style: held, it looses arrows one after another at the aim (the left slider), faster
+    and more at a time the longer it is held, emptying the quiver; let go, the quiver fills again. Run dry, it waits
+    until a third is back. The workshop's bow upgrade shoots more often and more arrows at once. */
+export const BOW = { max: 100, cost: 5, regen: 14, refill: 0.35, every: 0.42, step: 0.04, fastest: 0.13, ramp: 2.5, damage: 16, gap: 24 };
+export interface Bow { quiver: number; drawing: boolean; held: number; next: number; empty: boolean; level: number }
 export const aimAt = (x: number) => Math.max(140, Math.min(1080, x));
-function arrows(s: Siege, count: number, spread: number, damage: number) {
+/** Seconds between shots and arrows per shot, for the bow's level and how long it has been held. */
+export const bowEvery = (b: Bow) => Math.max(BOW.fastest, (BOW.every - b.level * BOW.step) * (1 - Math.min(1, b.held / BOW.ramp) * 0.5));
+export const bowCount = (b: Bow) => 1 + Math.floor(b.level / 2) + (b.held >= BOW.ramp ? 1 : 0);
+function arrows(s: Siege, count: number) {
   const x = aimAt(s.aim);
   for (let i = 0; i < count; i++) {
-    const at = x + (count === 1 ? 0 : (i / (count - 1) - 0.5) * 2 * spread);
-    for (const u of s.units) if (u.side === 1 && Math.abs(u.x - at) <= 28) { u.hp -= damage * s.power; u.flash = 0.18; }
-    s.effects.push({ x: at, from: 80, lane: i % 3, life: 0.55 + i * 0.04, max: 0.55 + i * 0.04, kind: 'arrow', side: 0 });
+    const at = x + (i - (count - 1) / 2) * BOW.gap;
+    for (const u of s.units) if (u.side === 1 && Math.abs(u.x - at) <= 28) { u.hp -= BOW.damage * s.power; u.flash = 0.18; }
+    s.effects.push({ x: at, from: 80, lane: i % 3, life: 0.5, max: 0.5, kind: 'arrow', side: 0 });
   }
 }
-export function fire(s: Siege): boolean {
-  if (s.phase !== 'fight' || s.weapon > 0) return false;
-  arrows(s, VOLLEY.count, VOLLEY.spread, VOLLEY.damage); s.weapon = 3.5; return true;
+/** Hold (true) or let go (false) of the bow. */
+export function draw(s: Siege, on: boolean) { if (s.phase === 'fight') s.bow.drawing = on; }
+function bow(s: Siege, dt: number) {
+  const b = s.bow;
+  if (b.drawing && !b.empty) {
+    b.held += dt; b.next -= dt;
+    if (b.next <= 0) {
+      if (b.quiver < BOW.cost) { b.empty = true; return; }
+      arrows(s, bowCount(b)); b.quiver -= BOW.cost; b.next = bowEvery(b);
+    }
+    return;
+  }
+  b.held = 0; b.next = 0;
+  b.quiver = Math.min(BOW.max, b.quiver + BOW.regen * dt);
+  if (b.empty && b.quiver >= BOW.max * BOW.refill) b.empty = false;
 }
 export function strike(s: Siege): boolean {
   if (s.phase !== 'fight' || s.spell > 0) return false;
@@ -99,11 +116,9 @@ export function tick(s: Siege, dt: number) {
   if (s.phase !== 'fight' || !Number.isFinite(dt) || dt <= 0) return;
   dt = Math.min(dt, 0.1); s.time += dt;
   s.energy = Math.min(energyMax(s), s.energy + energyRate(s) * dt);
-  s.weapon = Math.max(0, s.weapon - dt); s.spell = Math.max(0, s.spell - dt);
+  s.spell = Math.max(0, s.spell - dt);
   s.cooldowns = s.cooldowns.map(c => Math.max(0, c - dt));
-  // The archers shoot on their own, three arrows at the aim, like Cartoon Wars' castle bow.
-  s.archers = (s.archers ?? ARROW.every) - dt;
-  if (s.archers <= 0) { s.archers = ARROW.every; arrows(s, 3, ARROW.spread, ARROW.damage); }
+  bow(s, dt);
   s.effects = s.effects.filter(e => (e.life -= dt) > 0);
   s.nextWave -= dt;
   if (s.nextWave <= 0) {
