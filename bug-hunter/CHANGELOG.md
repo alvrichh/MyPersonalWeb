@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.20 - 2026-10-25
+
+### Changed - Siege arrows rain from the sky at long range
+- Aimed far (from 760 on, the furthest aim 1080), the fortress's arrows stop arcing from the wall and fall from above the view, steep and accelerating, a little behind their landing spot; between the two they blend, so the further the aim, the steeper the rain. Damage and where they land are unchanged.
+
 ## 1.14.19 - 2026-10-25
 
 ### Fixed - Siege troop portraits fill their cards

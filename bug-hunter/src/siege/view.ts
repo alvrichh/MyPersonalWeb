@@ -55,6 +55,8 @@ export function preload(world: number, deck: number[]) {
 /** The bridge: the width a whole bridge picture is drawn at, where its deck sits (a share of its height above the
     ground line), and the share of its width holding its two middle slabs, the part repeated to make it long. */
 const BRIDGE = { width: 300, deck: 0.3, middle: [0.315, 0.685] };
+/** From this aim on (field units) the arrows start to fall from the sky; at the furthest aim they only rain down. */
+const RAIN_FROM = 760;
 const backdropPath = (world: number) => `map/pv-${BACKDROPS[world - 1]}.jpg`;
 /** The story scenes' pictures: the world's map picture behind, its guardian's standing pose speaking. */
 export const backdropUrl = (world: number) => `/images/game/${backdropPath(world)}`;
@@ -208,7 +210,13 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     const startY = e.kind === 'arrow' ? ground - 110 : y, endY = e.kind === 'arrow' ? ground + e.lane * 12 - 14 : y;
     // High enough to read as a volley, never over the top of the view.
     const lift = e.kind === 'arrow' ? Math.min(150, Math.max(20, startY - 24)) : 30;
-    const at = (t: number) => ({ x: e.from + (e.x - e.from) * t, y: startY + (endY - startY) * t - Math.sin(t * Math.PI) * lift });
+    // At the far end of the aim the fortress's arrows rain down: they come in from above the view, steep, a little
+    // behind their landing spot (the further the aim, the steeper), instead of arcing from the wall.
+    const rain = e.kind === 'arrow' ? Math.max(0, Math.min(1, (e.x - RAIN_FROM) / (1080 - RAIN_FROM))) : 0;
+    const arc = (t: number) => ({ x: e.from + (e.x - e.from) * t, y: startY + (endY - startY) * t - Math.sin(t * Math.PI) * lift });
+    const skyX = e.x - 140 + e.lane * 25, skyY = -40;
+    const drop = (t: number) => ({ x: skyX + (e.x - skyX) * t, y: skyY + (endY - skyY) * t * t });
+    const at = rain > 0 ? (t: number) => { const a = arc(t), d = drop(t); return { x: a.x + (d.x - a.x) * rain, y: a.y + (d.y - a.y) * rain }; } : arc;
     const here = at(p), ahead = at(Math.min(1, p + 0.02));
     const len = e.kind === 'arrow' ? 72 : 40, h = len * art.naturalHeight / art.naturalWidth;
     ctx.save(); ctx.translate(here.x, here.y); ctx.rotate(Math.atan2(ahead.y - here.y, ahead.x - here.x || 0.001));
