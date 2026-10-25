@@ -61,9 +61,9 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     // top right; the field with the bow's aim on our wall; one bar below with the magic, the troop cards and the bow.
     root.innerHTML = `<div class="sg-battle"><header class="sg-hud">
         <div class="sg-mana"><img src="/images/game/ui/orb.webp" alt=""><span><b data-sg-energy></b><small data-sg-status></small></span><progress data-sg-meter></progress></div>
-        <div class="sg-vs"><img class="sg-vs-pic" src="/images/game/fortress/backlog/inferno-tower.webp" alt=""><span class="sg-hp"><i data-sg-bar="0"></i><small data-sg-health="0"></small></span><b>VS</b><span class="sg-hp is-enemy"><i data-sg-bar="1"></i><small data-sg-health="1"></small></span><img class="sg-vs-pic" src="${guardianUrl(world)}" alt=""></div>
+        <div class="sg-vs"><img class="sg-vs-pic" src="/images/game/fortress/backlog/town-hall.webp" alt=""><span class="sg-hp"><i data-sg-bar="0"></i><small data-sg-health="0"></small></span><b>VS</b><span class="sg-hp is-enemy"><i data-sg-bar="1"></i><small data-sg-health="1"></small></span><img class="sg-vs-pic" src="${guardianUrl(world)}" alt=""></div>
         <div class="sg-hud-actions"><span class="sg-clock" data-sg-clock></span><span class="sg-gold">🪙 ${progress.coins}</span><button data-sg="pause" aria-label="${t('pause')}">⏸</button></div></header>
-      <div class="sg-field"><canvas class="sg-arena" tabindex="0" role="img" aria-label="${t('siegeBattlefield')}"></canvas>
+      <div class="sg-field"><div class="sg-turn" role="status"><span aria-hidden="true">📱↻</span><b>${t('siegeTurn')}</b><button type="button" data-sg-turn aria-label="${t('siegeTurnOk')}">✕</button></div><canvas class="sg-arena" tabindex="0" role="img" aria-label="${t('siegeBattlefield')}"></canvas>
       <label class="sg-aim"><span aria-hidden="true">▲</span><input type="range" min="140" max="1080" step="10" value="700" data-sg-aim aria-label="${t('siegeAim')}"><span aria-hidden="true">▼</span></label>
       <div class="sg-camera"><button data-sg="home" aria-label="${t('siegeHome')}">◀</button><input type="range" min="0" max="1000" value="0" data-sg-camera aria-label="${t('siegeCamera')}"><button data-sg="enemy" aria-label="${t('siegeEnemy')}">▶</button></div></div>
       <div class="sg-bar"><div class="sg-tabs" role="tablist">${(['land', 'air', 'special'] as const).map(k => `<button role="tab" data-sg-tab="${k}" aria-label="${t(k === 'land' ? 'siegeTabLand' : k === 'air' ? 'siegeTabAir' : 'siegeTabSpecial')}">${k === 'land' ? 'L' : k === 'air' ? 'A' : 'S'}</button>`).join('')}</div>
@@ -211,6 +211,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       prep(); root.querySelector<HTMLElement>(`[data-sg-unit="${id}"]`)?.focus(); return;
     }
     if (up !== undefined && !state) { if (upgrade(progress, Number(up))) { persist(); prep(); } return; }
+    if (button.hasAttribute('data-sg-turn')) { button.parentElement?.remove(); return; }
     if (button.dataset.sgTab && state) { tab = button.dataset.sgTab as typeof tab; cards(); return; }
     if (summonId !== undefined && state && !paused) { summon(state, Number(summonId)); updateUi(); return; }
     if (action === 'exit') close();
