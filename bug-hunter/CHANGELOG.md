@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.23 - 2026-10-25
+
+### Changed - Siege bow lasts longer and empties like a ball
+- A full quiver now keeps the arrows going about ten seconds (twice as many shots: each takes 2.5 of 100 instead of 5); it refills at 12 a second while the bow is stopped.
+- The quiver bar is gone: the round bow button is the meter, as in Cartoon Wars 2. Its orange fill sinks from the top as the quiver empties, leaving see-through glass, and rises again as it refills.
+
 ## 1.14.22 - 2026-10-25
 
 ### Added - Siege sounds
