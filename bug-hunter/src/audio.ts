@@ -16,7 +16,7 @@
 export type Sfx =
   | 'shoot' | 'knife' | 'boomerang' | 'hit' | 'kill' | 'gem' | 'hurt' | 'levelup' | 'pick'
   | 'door' | 'boss' | 'slam' | 'slash' | 'strike' | 'boom' | 'revive' | 'win' | 'over' | 'coin' | 'click'
-  | 'laser1' | 'laser2' | 'laser3' | 'laserEvo' | 'zip';
+  | 'laser1' | 'laser2' | 'laser3' | 'laserEvo' | 'zip' | 'arrow';
 
 const BPM = 174;
 const STEP = 60 / BPM / 4; // a sixteenth
@@ -1933,6 +1933,8 @@ class Engine {
     const at = this.ctx.currentTime;
     switch (name) {
       case 'shoot': return this.blip(at, 900, 500, 0.05, 0.25, 'square');
+      // A bowstring's twang and the arrow's whoosh, a little different each time so a volley does not drone.
+      case 'arrow': { const d = 1 + (Math.random() - 0.5) * 0.12; this.blip(at, 240 * d, 150 * d, 0.07, 0.2, 'triangle'); return this.hiss(at + 0.015, 0.14, 0.12, 2600 * d); }
       case 'knife': return this.blip(at, 1400, 700, 0.04, 0.18, 'triangle');
       case 'boomerang': return this.blip(at, 500, 900, 0.12, 0.2, 'triangle');
       case 'hit': return this.hiss(at, 0.03, 0.25, 3000);

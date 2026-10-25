@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.22 - 2026-10-25
+
+### Added - Siege sounds
+- Each bow shot is heard: a new `arrow` sound, a bowstring's twang and the arrow's whoosh, its pitch a little different each time so a volley rattles instead of droning (at most one a frame).
+- The missile booms, the discharge strikes and summoning a troop clicks, all with the game's own sound effects and its effects volume.
+
 ## 1.14.21 - 2026-10-25
 
 ### Changed - Siege aim stick
