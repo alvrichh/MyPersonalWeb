@@ -103,3 +103,8 @@ Keep Battle, Sprints and On Call untouched while scaffolding. Integrate into the
 - Select Guerrero, Lanzador or Tanque (temporary archetypes), deploy a maximum of eight units near any outside boundary tile; they move toward and damage structures automatically.
 - Basic walls and a firing cannon are test mechanics, not final collision/pathfinding. Percentage and stars are based on buildings destroyed (>=50%, Core Hall, 100%).
 - The visual troops are placeholders. Future work is to map actual owned BUG HUNTER bugs/sprites and their existing stats/behavior.
+
+## World building sheets (reference art)
+- `assets/special/fortress/<world>/buildings-sheet.webp`, one per world: `backlog`, `hotfix-inferno`, `code-freeze`, `big-ball-of-mud`, `legacy-jungle`, `the-arena`, `the-forge`, `haunted-servers`, `the-core` (published at `/images/game/fortress/<world>/buildings-sheet.webp`).
+- Each is the owner's full isometric family for its world, labelled on a dark backdrop: Town Hall, Clan Castle, Builder Hut, Barracks, Dark Barracks, Laboratory, Blacksmith, Army Camp, Spell Factory, Dark Spell Factory, Workshop, Pet House, Hero Hall, Gold Mine, Elixir Collector, Dark Drill, Gold/Elixir/Dark Storage, Cannon, Archer Tower, Mortar, Air Defense, Wizard Tower, Hidden Tesla, Bomb Tower, X-Bow, Inferno Tower, Scattershot, Eagle Artillery, Monolith, Spell Tower, and wall segment, corner and gate.
+- They are sheets, not game sprites yet: nothing in the game reads them. Each building still has to be cut to its own transparent file (and renamed to this game's buildings) before the lab or Siege can use it.
