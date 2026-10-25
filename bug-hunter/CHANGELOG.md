@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.30 - 2026-10-25
+
+### Changed - Every skin free for testing
+- A testing switch (`FREE_SKINS` in `src/save.ts`, the owner's call) makes every skin open and owned, so any can be worn at once: no world or boss gate, no price. Nothing is written to the save (owned skins and coins are untouched), so turning the switch off brings back the gates and prices as they were. While it is on, the shop offers no skin pack or daily skin, and the wardrobe achievements still count only skins really owned.
+
 ## 1.14.29 - 2026-10-25
 
 ### Fixed - New skins' cuts, alvrich in lower case
