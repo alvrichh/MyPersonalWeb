@@ -209,3 +209,14 @@
 .sg-aim-knob{width:38px;height:38px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#eaffd0,#7be04a 45%,#2f8f1c 80%);border:3px solid #173d10;box-shadow:0 3px 8px #000a,inset 0 -3px 6px #0004;transition:transform .18s cubic-bezier(.3,1.6,.5,1)}
 .sg-aim.is-held .sg-aim-knob{transition:none}
 @media (max-height:500px) and (orientation:landscape){.sg-aim{width:48px!important}.sg-aim-knob{width:32px;height:32px}.sg-aim-up,.sg-aim-down{border-left-width:14px;border-right-width:14px}.sg-aim-up{border-bottom-width:17px}.sg-aim-down{border-top-width:17px}}
+
+/* v1.14.23 — the bow button empties like a ball of liquid as the quiver does (Cartoon Wars 2): the orange fill sinks
+   from the top with what is left in the quiver, the rest of the ball see-through glass. */
+.siege-root .sg-bow,.siege-root .sg-bow:hover:not(:disabled),.siege-root .sg-bow.is-drawing{position:relative;overflow:hidden;isolation:isolate;
+  background:radial-gradient(circle at 40% 30%,#ffffff40,#ffffff10 45%,#0000 70%),#2a1a0c55;border-color:#ffd166}
+.siege-root .sg-bow::before{content:'';position:absolute;inset:0;z-index:-1;border-radius:50%;
+  background:radial-gradient(circle at 40% 35%,#ffe9a8,#f08c2b 55%,#7a3a0c);
+  clip-path:inset(calc((1 - var(--q,1)) * 100%) 0 0 0);transition:clip-path .12s linear}
+.siege-root .sg-bow.is-drawing::before{background:radial-gradient(circle at 40% 35%,#fff3c4,#ff9d3b 55%,#8a420e)}
+.siege-root .sg-bow.is-empty{border-color:#ff718c}
+.sg-bow .sg-quiver{display:none}

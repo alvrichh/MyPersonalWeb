@@ -102,7 +102,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       <div class="sg-camera"><button data-sg="home" aria-label="${t('siegeHome')}">◀</button><input type="range" min="0" max="1000" value="0" data-sg-camera aria-label="${t('siegeCamera')}"><button data-sg="enemy" aria-label="${t('siegeEnemy')}">▶</button></div></div>
       <div class="sg-bar"><div class="sg-tabs" role="tablist">${(['land', 'air', 'special'] as const).map(k => `<button role="tab" data-sg-tab="${k}" aria-label="${t(k === 'land' ? 'siegeTabLand' : k === 'air' ? 'siegeTabAir' : 'siegeTabSpecial')}">${k === 'land' ? 'L' : k === 'air' ? 'A' : 'S'}</button>`).join('')}</div>
       <div class="sg-deck" data-sg-cards></div>
-      <button data-sg="fire" class="sg-bow" aria-label="${t('siegeCannon')}"><img src="/images/game/arrows/fire.webp" alt=""><span data-sg-bow-label></span><i class="sg-quiver"><i data-sg-quiver></i></i></button></div></div>`;
+      <button data-sg="fire" class="sg-bow" aria-label="${t('siegeCannon')}"><img src="/images/game/arrows/fire.webp" alt=""><span data-sg-bow-label></span></button></div></div>`;
     tab = 'land'; cards();
     const canvas = q<HTMLCanvasElement>('canvas'); const ctx = canvas.getContext('2d')!;
     let pointer: { id: number; start: number; camera: number; moved: boolean } | null = null;
@@ -190,7 +190,8 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     const bowButton = q<HTMLButtonElement>('[data-sg="fire"]');
     const reloading = !s.bow.drawing && s.bow.quiver < BOW.cost;
     q('[data-sg-bow-label]').textContent = reloading ? t('siegeBowEmpty') : t('siegeCannon');
-    q('[data-sg-quiver]').style.width = `${s.bow.quiver / BOW.max * 100}%`;
+    // The bow button is a ball that empties as the quiver does: full colour when full, see-through when empty.
+    bowButton.style.setProperty('--q', (s.bow.quiver / BOW.max).toFixed(3));
     bowButton.classList.toggle('is-empty', reloading); bowButton.classList.toggle('is-drawing', s.bow.drawing); bowButton.setAttribute('aria-pressed', String(s.bow.drawing));
     bowButton.disabled = paused || s.phase !== 'fight';
     for (const [action, key, cd, pic] of [['strike', 'siegeSpell', s.spell, 'skills/bolt'], ['missile', 'siegeMissile', s.rocket, 'fx/rocket']] as const) {

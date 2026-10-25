@@ -110,7 +110,7 @@ function damageArea(s: Siege, x: number, radius: number, damage: number, life = 
 /** Our fortress's bow, Cartoon Wars-style: one tap sets the archers shooting, arrows one after another at the aim (the
     left slider), faster and more at a time the longer they keep on; another tap stops them, and so does an empty quiver.
     The quiver fills again only while they are not shooting. The workshop's bow upgrade shoots more often and more arrows. */
-export const BOW = { max: 100, cost: 5, regen: 14, every: 0.42, step: 0.04, fastest: 0.13, ramp: 2.5, damage: 16, gap: 24 };
+export const BOW = { max: 100, cost: 2.5, regen: 12, every: 0.42, step: 0.04, fastest: 0.13, ramp: 2.5, damage: 16, gap: 24 };
 export interface Bow { quiver: number; drawing: boolean; held: number; next: number; level: number }
 export const aimAt = (x: number) => Math.max(140, Math.min(1080, x));
 /** Seconds between shots and arrows per shot, for the bow's level and how long it has been held. */
