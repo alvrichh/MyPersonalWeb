@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.41 - 2026-10-25
+
+### Added - World 4's boss skin; three skins sold without a gate
+- New boss skin for world 4, the Mud Mudling (10000), opened by beating Medusa in On call: the owner's 20-pose sheet cut with its own alpha (one extra aiming pose dropped), scaled to alvrich's height, with its own back walk.
+- El Weso, Medusa and the Server Vampire are now sold for coins from the start, like Kitty (10000 each), and listed beside her; the boss skins keep world order.
+
 ## 1.14.40 - 2026-10-25
 
 ### Changed - alvrich's world outfits come with sprints wins
