@@ -13,7 +13,8 @@
     "typecheck": "tsc -p tsconfig.json",
     "build": "node scripts/build/build.mjs && node bug-hunter/scripts/check-public.mjs",
     "test:game:layout": "node --test bug-hunter/tests/integration.test.mjs bug-hunter/tests/asset-layout.test.mjs",
-    "test:game": "node bug-hunter/scripts/check-regressions.mjs",
+    "test:game": "node bug-hunter/scripts/check-regressions.mjs && node --test bug-hunter/tests/siege.test.mjs",
+    "test:game:siege": "node --test bug-hunter/tests/siege.test.mjs",
     "ai:maintenance": "node scripts/radar/daily-ai-maintenance.mjs",
     "ai:radar": "node scripts/radar/daily-ai-maintenance.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -36,3 +37,4 @@
     "react-dom": "^19.1.0"
   }
 }
+

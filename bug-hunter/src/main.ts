@@ -1,3 +1,4 @@
+import { openSiege } from './siege';
 import { CONVERGENCE_SCENE, CONVERGENCE_IMAGE } from './scenery';
 import './game.css';
 import { GAME_BUILD, GAME_VERSION } from './version';
@@ -149,7 +150,7 @@ const MODES: PlayMode[] = ['sprints', 'horde', 'board'];
 let extraModePreview = false;
 const coverModes = [...MODES, 'coming-soon'] as const;
 const extraTitle = () => lang === 'es' ? 'Próximamente' : 'Coming Soon';
-const extraText = () => lang === 'es' ? 'Nuevos modos · Asedio Fortress' : 'New modes · Fortress Siege';
+const extraText = () => t('siegeHubModes');
 const NIGHTMARE_ICON = '☠️';
 /** Where the run is: the sprint, or the shift's clock. */
 const whereLine = (g: Game) => (g.rush ? `${g.showcase ? '👁' : RUSH_ICON} ${t('rushWhere', { n: g.rush, total: g.stages })}` : g.mode === 'horde' ? `${g.endless ? NIGHTMARE_ICON : MODE_ICON.horde} ${clock(g.time)}` : t('sprint', { room: g.room }));
@@ -1753,6 +1754,7 @@ function extraHubScreen() {
     <h2>🏰 ${es ? 'Próximamente · Nuevos juegos' : 'Coming Soon · New games'}</h2>
     <p>${es ? 'Aquí reuniremos los próximos modos de Bug Hunter. Los tres modos existentes continúan sin cambios.' : 'This is the home for upcoming Bug Hunter game modes. Existing modes remain unchanged.'}</p>
     <div class="book-modes">
+      <div class="book-mode"><b>⚔️ ${t('siegeName')} · ${t('siegeSoon')}</b><p>${t('siegeIntro')}</p><button class="primary" type="button" data-act="siege-preview">${t('siegeLaunch')}</button></div>
       <div class="book-mode"><b>🏰 Fortress · ${es ? 'Asedio' : 'Siege'}</b><p>${es ? 'Ataca fortalezas con tus bichos, destruye edificios y consigue hasta tres estrellas. Prototipo experimental disponible.' : 'Attack fortresses with bugs, destroy buildings and earn up to three stars. Experimental prototype available.'}</p>
       <a class="primary book-mode" href="/fortress-lab.html">${es ? 'Abrir prototipo de Asedio' : 'Open Siege prototype'}</a></div>
       <p>🧪 ${es ? 'Otros modos nuevos: en desarrollo' : 'Other new modes: in development'}</p>
@@ -3230,6 +3232,7 @@ screen.addEventListener('click', (event) => {
   const act = target.dataset.act;
   if (act !== 'mute') audio.play('click');
   if (act === 'extra-hub') extraHubScreen();
+  else if (act === 'siege-preview') openSiege(t, () => extraHubScreen());
   else if (act === 'play') startRun();
   // The world this run unlocked, in the same mode.
   else if (act === 'play-next') { const n = Number(target.dataset.next); setWorld(n, game?.mode ?? save.mode); persist(); startRun(n, game?.mode ?? save.mode); }
@@ -4266,4 +4269,5 @@ function musicOnLanding() {
   for (const e of ['pointerdown', 'pointerup', 'touchend', 'keydown'] as const) window.addEventListener(e, first, true);
 }
 requestAnimationFrame(frame);
+
 
