@@ -4,7 +4,9 @@ export const LIMIT = 300;
 export const CAP = 36;
 export const SAVE_KEY = 'bugHunter.siege.v1';
 export const CASTS = ['original', 'demon', 'viking', 'mud', 'jungle', 'greek', 'robot', 'nightmare', 'core'];
-export interface Spec { id: number; cost: number; hp: number; damage: number; speed: number; range: number; rate: number; cooldown: number; unlock: number; sprite: string; size: number; splash?: number; air?: boolean }
+export interface Spec { id: number; cost: number; hp: number; damage: number; speed: number; range: number; rate: number; cooldown: number; unlock: number; sprite: string; size: number; splash?: number; air?: boolean;
+  /** Breaks into a weaker copy of itself when it falls, this many times (Cartoon Wars 2's gatling robots). */
+  splits?: number }
 /** Every troop, its `id` its place in this list. */
 export const UNITS: readonly Spec[] = [
   { id: 0, cost: 20, hp: 115, damage: 16, speed: 43, range: 35, rate: 0.8, cooldown: 2, unlock: 1, sprite: 'enemies/original-bug', size: 52 },
@@ -31,7 +33,7 @@ export const UNITS: readonly Spec[] = [
   { id: 19, cost: 75, hp: 170, damage: 30, speed: 26, range: 210, rate: 1.4, cooldown: 8, unlock: 5, sprite: 'enemies/jungle-ticket', size: 60 },
   { id: 20, cost: 110, hp: 820, damage: 30, speed: 21, range: 45, rate: 1.5, cooldown: 12, unlock: 5, sprite: 'enemies/jungle-legacy', size: 82 },
   { id: 21, cost: 95, hp: 220, damage: 45, speed: 18, range: 280, rate: 1.9, cooldown: 10, unlock: 6, sprite: 'enemies/robot-ticket', size: 64, splash: 50 },
-  { id: 22, cost: 130, hp: 1000, damage: 34, speed: 20, range: 45, rate: 1.5, cooldown: 14, unlock: 7, sprite: 'enemies/robot-legacy', size: 84 },
+  { id: 22, cost: 130, hp: 1000, damage: 34, speed: 20, range: 45, rate: 1.5, cooldown: 14, unlock: 7, sprite: 'enemies/robot-legacy', size: 84, splits: 2 },
   { id: 23, cost: 25, hp: 160, damage: 15, speed: 36, range: 35, rate: 0.9, cooldown: 2, unlock: 7, sprite: 'enemies/nightmare-bug', size: 54 },
   { id: 24, cost: 70, hp: 260, damage: 36, speed: 44, range: 38, rate: 0.9, cooldown: 6, unlock: 8, sprite: 'enemies/nightmare-ticket', size: 60 },
   { id: 25, cost: 120, hp: 900, damage: 40, speed: 18, range: 150, rate: 2, cooldown: 14, unlock: 8, sprite: 'enemies/nightmare-legacy', size: 80, splash: 60 },
@@ -69,8 +71,11 @@ export function upgrade(p: Progress, slot: number): boolean {
   if (level >= 5 || p.coins < cost) return false;
   p.coins -= cost; p.upgrades[slot]++; return true;
 }
-export interface Fighter { uid: number; id: number; side: 0 | 1; x: number; lane: number; hp: number; maxHp: number; damage: number; attack: number; flash: number; boss: boolean; hit?: number }
-export interface Effect { x: number; from: number; lane: number; life: number; max: number; kind: 'shot' | 'burst' | 'arrow' | 'rocket'; side: 0 | 1 }
+export interface Fighter { uid: number; id: number; side: 0 | 1; x: number; lane: number; hp: number; maxHp: number; damage: number; attack: number; flash: number; boss: boolean; hit?: number;
+  /** A breaking robot's stage (0 whole, 1 one arm and no gun, 2 a crawling wreck) and whether it is an elite (horned,
+      shooting lightning). */
+  stage?: number; elite?: boolean }
+export interface Effect { x: number; from: number; lane: number; life: number; max: number; kind: 'shot' | 'burst' | 'arrow' | 'rocket' | 'bolt'; side: 0 | 1 }
 export interface Siege {
   world: number; phase: 'fight' | 'won' | 'lost'; time: number; energy: number; generator: number; cooldowns: number[];
   hp: [number, number]; maxHp: [number, number]; units: Fighter[]; effects: Effect[]; nextId: number; nextWave: number; waves: number; kills: number;
@@ -93,11 +98,21 @@ const BOSS_HP = 2.6;
     from how many seconds into the battle they come; later waves bring the heavy ones more often. */
 const ENEMY_AIR = [8, 9, 9, 8, 8, 27, 10, 8, 28];
 const airFrom = (world: number) => Math.max(40, 110 - world * 8);
+/** The Forge's heavy robots, ours and theirs, break twice before they are gone: each wreck keeps this share of the
+    last one's health and damage, and is drawn smaller and darker. */
+export const SPLIT = { hp: 0.45, damage: 0.45 };
+const ROBOT_WORLD = 7;
+const splitsOf = (s: Siege, u: Fighter) => UNITS[u.id].splits ?? (u.side && !u.boss && s.world === ROBOT_WORLD && u.id === 2 ? 2 : 0);
+/** Elite ranged enemies, Cartoon Wars 2's horned archers: from this time on, every fourth ranged troop in a wave, tougher
+    and hitting harder, its shots lightning. */
+export const ELITE = { from: 60, every: 4, hp: 1.6, damage: 1.8 };
 function spawn(s: Siege, id: number, side: 0 | 1, boss = false) {
   if (s.units.filter(u => u.side === side).length >= CAP) return;
   const spec = UNITS[id]; const scale = side ? 0.8 + s.world * 0.07 : s.power;
   const hp = spec.hp * scale * (boss ? BOSS_HP : 1);
-  s.units.push({ uid: s.nextId++, id, side, x: side ? FIELD - 120 : 120, lane: s.nextId % 3, hp, maxHp: hp, damage: spec.damage * scale, attack: 0, flash: 0, boss });
+  const elite = !!side && !boss && id === 1 && s.time >= ELITE.from && s.waves % ELITE.every === 0;
+  const life = hp * (elite ? ELITE.hp : 1);
+  s.units.push({ uid: s.nextId++, id, side, x: side ? FIELD - 120 : 120, lane: s.nextId % 3, hp: life, maxHp: life, damage: spec.damage * scale * (elite ? ELITE.damage : 1), attack: 0, flash: 0, boss, elite: elite || undefined });
 }
 export function canSummon(s: Siege, id: number): boolean {
   return s.phase === 'fight' && s.deck.includes(id) && s.energy >= UNITS[id].cost && s.cooldowns[id] <= 0 && s.units.filter(u => !u.side).length < CAP;
@@ -191,7 +206,7 @@ export function tick(s: Siege, dt: number) {
       if (u.attack <= 0) {
         u.attack = a.rate; u.hit = 0.3;
         for (const v of alive) if (v.side !== u.side && canHit(u.id, v.id) && (v === enemy || (a.splash && Math.abs(v.x - enemy.x) < a.splash))) hits.push({ target: v, damage: u.damage });
-        s.effects.push({ x: enemy.x, from: u.x, lane: enemy.lane, life: 0.2, max: 0.2, kind: 'shot', side: u.side });
+        s.effects.push({ x: enemy.x, from: u.x, lane: enemy.lane, life: 0.2, max: 0.2, kind: u.elite ? 'bolt' : 'shot', side: u.side });
       }
     } else if (Math.abs(baseX - u.x) <= a.range + 35) {
       if (u.attack <= 0) { u.attack = a.rate; u.hit = 0.3; s.hp[u.side ? 0 : 1] -= u.damage; }
@@ -203,6 +218,12 @@ export function tick(s: Siege, dt: number) {
     }
   }
   for (const hit of hits) { hit.target.hp -= hit.damage; hit.target.flash = 0.12; }
+  // Breaking robots fall into a weaker wreck of themselves where they stood, with a blast.
+  for (const u of s.units) if (u.hp <= 0 && (u.stage ?? 0) < splitsOf(s, u)) {
+    const hp = u.maxHp * SPLIT.hp;
+    s.units.push({ ...u, uid: s.nextId++, hp, maxHp: hp, damage: u.damage * SPLIT.damage, attack: 0.8, flash: 0.3, hit: 0, stage: (u.stage ?? 0) + 1 });
+    s.effects.push({ x: u.x, from: u.x, lane: u.lane, life: 0.4, max: 0.4, kind: 'burst', side: u.side });
+  }
   s.kills += s.units.filter(u => u.side && u.hp <= 0).length;
   s.units = s.units.filter(u => u.hp > 0);
   s.hp = s.hp.map(h => Math.max(0, h)) as [number, number];

@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.25 - 2026-10-25
+
+### Added - Siege breaking robots and horned elite shooters (Cartoon Wars 2)
+- The Forge's heavy robots break twice before they are gone, like Cartoon Wars 2's gatling robots: the enemy's heavy in world 7 and our own Crusher fall into a wreck of themselves (45% of the last one's health and damage, smaller and darker), then into a crawling one, each break with a blast.
+- From one minute on, every fourth wave's ranged enemies are elites, like the horned archers: 1.6 times the health, 1.8 times the damage, a gold glow and horns, and their shots are lightning.
+
 ## 1.14.24 - 2026-10-25
 
 ### Changed - Siege guardian after the fortress, and enemy flyers (Cartoon Wars 2)
