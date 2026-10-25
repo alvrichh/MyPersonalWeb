@@ -5266,3 +5266,9 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   :root:not([data-retro]) .panel .items .item:not(.is-locked):has(> .buy:last-child) { border-width: 10px 10px 84px; border-image-width: 10px 10px 84px; }
   :root:not([data-retro]) .panel .items .item:not(.is-locked):has(> .buy:last-child) > .buy { height: 40px; margin-bottom: -40px; top: 22px; }
 }
+/* Shop cards' lines (short ones for the long weapons and spirits, see `shopText`) in a box of the same height, so the
+   cards of a window line up whatever their text: three lines, four on phones. */
+.panel .items .item > span:not(.icon) { min-height: calc(3 * 1.35em); }
+@media (max-width: 600px) {
+  .panel .items .item > span:not(.icon) { min-height: calc(4 * 1.3em); }
+}
