@@ -523,7 +523,8 @@ class Engine {
     // «By world» keeps the world's song for its final boss too: the tension layer goes on top of it.
     // «By world»: the world's song, and its final boss's own while it is out (with the tension layer on top).
     const bossSong = `boss-${this.finalId}` as BossSongId;
-    const byWorld = this.finalWanted && bossSong in V2S ? bossSong : WORLD_V2[this.world - 1] ?? 'w1v2';
+    // The last boss, Nocthrax, fights to Doomsday, the game's final-boss song.
+    const byWorld = this.finalWanted && this.finalId === 'chimera' ? 'doom' : this.finalWanted && bossSong in V2S ? bossSong : WORLD_V2[this.world - 1] ?? 'w1v2';
     // In the menus «by world» plays what «automatic» does, the original; a song picked to play always plays there too.
     const menu = this.pick === 'worlds' && this.world === 0 && !this.preview;
     // Listening to «by world» in Customise's music list: a mix of every world's song (`scheduleMix`).
