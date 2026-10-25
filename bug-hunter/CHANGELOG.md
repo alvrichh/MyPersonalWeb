@@ -4,6 +4,16 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.43 - 2026-10-25
+
+### Fixed - Smoother long On call runs; small bugs found on the way
+- On call slowed down towards the ten-minute mark: the boss trail, every orb, every enemy aura, the rage glow and the final crown each built a fresh radial gradient (and the crown and the chimera a blurred shadow) every frame, particles were never capped and everything off screen was still drawn. Glows are now stamped from small cached sprites, the chimera's rim is a sprite outline, particles are culled off screen and capped (soft 500, hard 800; none off screen in On call), the boss trail is capped at 240 dabs, fires use fewer licks when small.
+- The simulation filtered the live enemies anew for every shot, every chain and every count: one list per tick now. Rockets no longer scan the whole field once per enemy. Rooted plants are no longer teleported back with the stragglers.
+- Hit sound no longer plays once per frame on a crowd (50 ms spacing), and the music no longer fires a burst of stacked drums after a long frame or a tab switch: missed steps are skipped.
+- The friend card no longer measures the HUD every frame; the menu backdrop is no longer drawn under Siege; Siege's bar buttons keep their picture and only change their caption (they used to re-create an `<img>` ten times a second).
+- A sprite with back-walk steps is no longer cut before its picture is in (the failure was kept and the steps lost for the run).
+- Fixture: the fireball horde check lays the bare room with a fixed field key, so On call cannot put its random racks back and make the check flaky.
+
 ## 1.14.42 - 2026-10-25
 
 ### Fixed - The hero no longer flips for a frame while walking

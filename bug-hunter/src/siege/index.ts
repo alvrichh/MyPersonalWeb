@@ -10,6 +10,15 @@ const AIM_SPEED = 650;
 const ISLES = ['original', 'infierno', 'vikingos', 'lodo', 'jungla', 'rayo', 'robots', 'demonios', 'nucleo'];
 const UPGRADE_PICS = ['items/gladHelm', 'items/plate', 'ui/orb', 'items/quiver'];
 
+/** A bar button's picture and caption: the picture made once, only the caption's text changed after (ten times a
+    second, so no `<img>` is re-created each time). */
+function setPicButton(b: HTMLButtonElement, src: string, caption: string) {
+  if (!b.firstElementChild) b.innerHTML = '<img alt=""><small></small>';
+  const img = b.firstElementChild as HTMLImageElement;
+  if (img.getAttribute('src') !== src) img.src = src;
+  const small = b.lastElementChild as HTMLElement;
+  if (small.textContent !== caption) small.textContent = caption;
+}
 const clock = (n: number) => `${Math.floor(n / 60)}:${String(Math.floor(n % 60)).padStart(2, '0')}`;
 let closeActive: (() => void) | undefined;
 /** Own root, event lifecycle and save: existing game modes are never entered or mutated. */
@@ -190,7 +199,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     const meter = q<HTMLProgressElement>('[data-sg-meter]'); meter.max = energyMax(s); meter.value = s.energy;
     q('[data-sg-status]').textContent = `+${energyRate(s).toFixed(1)}/s · ${s.units.filter(u => !u.side).length}/${CAP}`;
     const generator = root.querySelector<HTMLButtonElement>('[data-sg="generator"]');
-    if (generator) { generator.innerHTML = `<img src="/images/game/ui/orb.webp" alt=""><small>${s.generator >= 4 ? t('siegeMax') : `${s.generator}/4 · ${generatorPrice(s)}`}</small>`; generator.setAttribute('aria-label', s.generator >= 4 ? t('siegeMax') : t('siegeGenerator', { n: s.generator, cost: generatorPrice(s) })); generator.disabled = paused || s.phase !== 'fight' || s.generator >= 4 || s.energy < generatorPrice(s); }
+    if (generator) { setPicButton(generator, '/images/game/ui/orb.webp', s.generator >= 4 ? t('siegeMax') : `${s.generator}/4 · ${generatorPrice(s)}`); generator.setAttribute('aria-label', s.generator >= 4 ? t('siegeMax') : t('siegeGenerator', { n: s.generator, cost: generatorPrice(s) })); generator.disabled = paused || s.phase !== 'fight' || s.generator >= 4 || s.energy < generatorPrice(s); }
     const bowButton = q<HTMLButtonElement>('[data-sg="fire"]');
     const reloading = !s.bow.drawing && s.bow.quiver < BOW.cost;
     q('[data-sg-bow-label]').textContent = reloading ? t('siegeBowEmpty') : t('siegeCannon');
@@ -200,7 +209,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     bowButton.disabled = paused || s.phase !== 'fight';
     for (const [action, key, cd, pic] of [['strike', 'siegeSpell', s.spell, 'skills/bolt'], ['missile', 'siegeMissile', s.rocket, 'fx/rocket']] as const) {
       const button = root.querySelector<HTMLButtonElement>(`[data-sg="${action}"]`); if (!button) continue;
-      button.innerHTML = `<img src="/images/game/${pic}.webp" alt=""><small>${cd > 0 ? `${Math.ceil(cd)}s` : t('siegeReady')}</small>`; button.setAttribute('aria-label', t(key)); button.disabled = paused || s.phase !== 'fight' || cd > 0;
+      setPicButton(button, `/images/game/${pic}.webp`, cd > 0 ? `${Math.ceil(cd)}s` : t('siegeReady')); button.setAttribute('aria-label', t(key)); button.disabled = paused || s.phase !== 'fight' || cd > 0;
     }
     for (const id of tabCards()) {
       q<HTMLButtonElement>(`[data-sg-summon="${id}"]`).disabled = paused || !canSummon(s, id);

@@ -1939,6 +1939,8 @@ function friendPic(name: string) {
   return img;
 }
 const friendMini = document.createElement('div');
+/** Where the HUD ends on screen, measured when the friend card is laid out (used to keep the friend's head below it). */
+let hudBottom = 0;
 friendMini.className = 'friend-mini';
 friendMini.hidden = true;
 document.body.append(friendMini);
@@ -1981,8 +1983,10 @@ function friendOverlay(g: Game, now: number, frozen: boolean) {
         <div><b>${linkedName()}${end}</b><small>${t('worldShort', { n: fs.world })} · ${t('linkRoom', { n: fs.room, total: ROOMS })}</small>
         <span class="friend-rooms">${dots}</span><span class="friend-hp"><b style="width:${Math.round(fs.hp * 100)}%"></b></span></div>`;
     }
-    // Under the HUD; on wide screens the HUD is a panel down the left, so the card sits beside its top.
+    // Under the HUD; on wide screens the HUD is a panel down the left, so the card sits beside its top. (Measured
+    // when the card is rewritten, not every frame: the measure forces a layout.)
     const box = hud.getBoundingClientRect();
+    hudBottom = box.bottom;
     const side = box.height > window.innerHeight * 0.5;
     friendMini.style.top = `${Math.round(side ? box.top + 8 : box.bottom + 6)}px`;
     friendMini.style.left = `${Math.round(side ? box.right + 8 : 8)}px`;
@@ -1998,7 +2002,7 @@ function friendOverlay(g: Game, now: number, frozen: boolean) {
   const x = view.cx + (fs.sx - p.x) * view.scale;
   const y = view.cy + (fs.sy - p.y) * view.scale;
   const w = canvas.clientWidth, h = canvas.clientHeight;
-  const top = Math.max(60, hud.getBoundingClientRect().bottom - canvasRect.top + 20);
+  const top = Math.max(60, hudBottom - canvasRect.top + 20);
   ctx.save();
   ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
   const moving = Math.hypot(fs.vx, fs.vy) > 0.2;
@@ -3243,7 +3247,7 @@ screen.addEventListener('click', (event) => {
   const act = target.dataset.act;
   if (act !== 'mute') audio.play('click');
   if (act === 'extra-hub') extraHubScreen();
-  else if (act === 'siege-preview') openSiege(t, () => extraHubScreen(), { pic: `/images/game/hero/${heroStill(save.skin, save.equipped.head)}.webp`, name: save.name || DEFAULT_NAME }, (name) => audio.play(name));
+  else if (act === 'siege-preview') (siegeOpen = true, openSiege(t, () => { siegeOpen = false; extraHubScreen(); }, { pic: `/images/game/hero/${heroStill(save.skin, save.equipped.head)}.webp`, name: save.name || DEFAULT_NAME }, (name) => audio.play(name)));
   else if (act === 'play') startRun();
   // The world this run unlocked, in the same mode.
   else if (act === 'play-next') { const n = Number(target.dataset.next); setWorld(n, game?.mode ?? save.mode); persist(); startRun(n, game?.mode ?? save.mode); }
@@ -4049,6 +4053,8 @@ function drawMenuBackdrop(now: number) {
   scene.draw(ctx, canvas.clientWidth, canvas.clientHeight, now, rb, palette.rainbow ? `hsl(${Math.round((now * 60 + 90) % 360)} 85% 70%)` : accent2, save.equipped.head);
 }
 
+/** Siege runs its own frame loop over an inert page: the menu backdrop is not drawn underneath meanwhile. */
+let siegeOpen = false;
 let last = performance.now();
 /* One bad frame must never stop the game: the next one is always booked. */
 function frame(now: number) {
@@ -4184,7 +4190,7 @@ function step(now: number) {
       setMeter(bossHp, Math.max(0, boss.hp) / boss.maxHp);
     }
   } else if (!screen.classList.contains('is-menu')) {
-    drawMenuBackdrop(now / 1000);
+    if (!siegeOpen) drawMenuBackdrop(now / 1000);
   }
 
   // Joystick, drawn in screen pixels.
