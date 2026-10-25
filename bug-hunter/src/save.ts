@@ -332,11 +332,13 @@ export const SKIN_GATE: Record<HeroSkin, SkinGate> = {
   lava: { world: 1 }, arctic: { world: 2 }, swamp: { world: 3 }, jungle: { world: 4 }, gladiator: { world: 5 }, mech: { world: 6 }, ghost: { world: 7 }, dragon: { world: 8 },
   weso: { boss: 1 }, medusa: { boss: 4 }, reaper: { boss: 8 }, kratos: { secret: true },
 };
-/** Testing switch (the owner's call, 1.14.30): every skin open and owned, free. Set to false to bring back the gates and
-    prices above; the coins and owned lists in saves are not touched. */
+/** Testing switch (the owner's call, 1.14.31): every skin on sale for 0 coins. Each still has to be bought to be owned
+    (it is then in the save); set to false to bring back the gates and prices above. */
 export const FREE_SKINS = true;
-/** Whether the player has a skin (all of them while `FREE_SKINS` is on; nothing is written to the save). */
-export const ownsSkin = (save: Save, skin: HeroSkin) => FREE_SKINS || save.skins.includes(skin);
+/** What a skin costs now: 0 while `FREE_SKINS` is on. */
+export const skinPrice = (skin: HeroSkin) => (FREE_SKINS ? 0 : SKIN_PRICE[skin]);
+/** Whether the player has bought a skin. */
+export const ownsSkin = (save: Save, skin: HeroSkin) => save.skins.includes(skin);
 export function skinOpen(save: Save, skin: HeroSkin) {
   if (FREE_SKINS) return true;
   const g = SKIN_GATE[skin];

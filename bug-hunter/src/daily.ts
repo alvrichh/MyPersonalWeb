@@ -5,7 +5,7 @@
    Nothing here is ever bought with money. */
 
 import { ARSENAL, ITEMS, type ItemId } from './shop';
-import { SKINS, SKIN_GATE, SKIN_PRICE, ownsSkin, worldWon, type HeroSkin, type Save } from './save';
+import { FREE_SKINS, SKINS, SKIN_GATE, SKIN_PRICE, ownsSkin, worldWon, type HeroSkin, type Save } from './save';
 import type { SkillId } from './world';
 
 export type DailyPrize = 'coins' | 'coinsBig' | 'jackpot' | 'weapon' | 'outfit' | 'accessory' | 'skin';
@@ -37,7 +37,7 @@ const pools = (save: Save) => ({
   outfit: ITEMS.filter((i) => i.slot === 'body' && !i.legendary && !save.owned.includes(i.id)).map((i) => i.id),
   accessory: ITEMS.filter((i) => (i.slot === 'head' || i.slot === 'boots') && !i.legendary && !save.owned.includes(i.id)).map((i) => i.id),
   // Only the skins with nothing to open them (robot, Kitty): the rest are won by playing.
-  skin: SKINS.filter((s) => s !== 'boy' && !SKIN_GATE[s] && SKIN_PRICE[s] > 1000 && !ownsSkin(save, s)),
+  skin: SKINS.filter((s) => s !== 'boy' && !SKIN_GATE[s] && SKIN_PRICE[s] > 1000 && !FREE_SKINS && !ownsSkin(save, s)),
 });
 
 /** Opens the chest: draws the prize, gives it and starts the next 24 hours. A prize with nothing left to win becomes coins. */
