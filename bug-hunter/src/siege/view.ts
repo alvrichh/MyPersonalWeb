@@ -52,9 +52,9 @@ export function preload(world: number, deck: number[]) {
   picture(`ui/bench/bench-${world}`);
   [backdropPath(world), wallPath(world, false), wallPath(world, true), ...FX].forEach(still);
 }
-/** The bridge pieces: their width on the field, where the deck the troops walk on sits (a share of the piece's height
-    above the ground line), and the step between pieces (under 1, so their end posts overlap). */
-const BRIDGE = { width: 300, deck: 0.3, step: 0.9 };
+/** The bridge: the width a whole bridge picture is drawn at, where its deck sits (a share of its height above the
+    ground line), and the share of its width holding its two middle slabs, the part repeated to make it long. */
+const BRIDGE = { width: 300, deck: 0.3, middle: [0.315, 0.685] };
 const backdropPath = (world: number) => `map/pv-${BACKDROPS[world - 1]}.jpg`;
 /** The story scenes' pictures: the world's map picture behind, its guardian's standing pose speaking. */
 export const backdropUrl = (world: number) => `/images/game/${backdropPath(world)}`;
@@ -102,7 +102,8 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   const scale = Math.min(h / 340, w / 650);
   camera.width = w / scale;
   camera.x = Math.max(0, Math.min(Math.max(0, FIELD - camera.width), camera.x));
-  const ground = h / scale * 0.72;
+  // The bridge deck the troops walk on runs across the middle of the field.
+  const ground = h / scale * 0.5;
   // Cartoon Wars-style backdrop: the world's own map picture behind the field, scrolling slower than the troops.
   const back = still(backdropPath(s.world));
   if (ok(back)) {
@@ -114,15 +115,20 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   }
   ctx.scale(scale, scale); ctx.translate(-camera.x + Math.max(0, (camera.width - FIELD) / 2), 0);
   const viewH = h / scale;
-  // The battle is fought on a bridge over the abyss: the world's Tactics bridge (`ui/bench/bench-N`) repeated from wall
-  // to wall, its posts overlapping at the joins, the troops walking on its deck; the backdrop falls away under it.
+  // The battle is fought on a bridge over the abyss, the world's Tactics bridge (`ui/bench/bench-N`) stretched from wall
+  // to wall, the troops walking on its deck; the backdrop falls away under it.
   const chasm = ctx.createLinearGradient(0, ground, 0, viewH); chasm.addColorStop(0, '#03060c00'); chasm.addColorStop(1, '#03060cee');
   ctx.fillStyle = chasm; ctx.fillRect(0, ground, FIELD, viewH);
   const bridge = picture(`ui/bench/bench-${s.world}`);
   if (bridge.image.complete && bridge.image.naturalWidth) {
+    // One long bridge: its own left end, then its two middle slabs repeated as far as needed, then its right end.
     const [cx, cy, cw, ch] = bridge.crop ?? [0, 0, bridge.image.width, bridge.image.height];
-    const seg = BRIDGE.width, segH = seg * ch / cw, top = ground - segH * BRIDGE.deck;
-    for (let x = -seg * 0.3; x < FIELD + seg * 0.3; x += seg * BRIDGE.step) ctx.drawImage(bridge.image, cx, cy, cw, ch, x, top, seg, segH);
+    const k = BRIDGE.width / cw, segH = ch * k, top = ground - segH * BRIDGE.deck;
+    const a = cw * BRIDGE.middle[0], b = cw * BRIDGE.middle[1], leftW = a * k, midW = (b - a) * k, rightW = (cw - b) * k;
+    const start = -leftW * 0.45, end = FIELD + rightW * 0.45 - rightW;
+    for (let x = start + leftW; x < end + 1; x += midW) ctx.drawImage(bridge.image, cx + a, cy, b - a, ch, x, top, midW + 0.5, segH);
+    ctx.drawImage(bridge.image, cx, cy, a, ch, start, top, leftW, segH);
+    ctx.drawImage(bridge.image, cx + b, cy, cw - b, ch, end, top, rightW, segH);
   } else {
     const [deck, low] = GROUND[s.world - 1];
     const earth = ctx.createLinearGradient(0, ground - 10, 0, ground + 60); earth.addColorStop(0, deck); earth.addColorStop(1, low);
