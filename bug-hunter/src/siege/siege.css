@@ -39,3 +39,60 @@
 .siege-root .sg-bow.is-drawing{filter:brightness(1.15) drop-shadow(0 0 8px #ffd16699)}
 .siege-root .sg-bow.is-empty .sg-quiver>i{background:#ff718c}
 .sg-upgrades{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+
+/* v1.14.8 — the battle laid out like Cartoon Wars 2. */
+.sg-battle{grid-template-rows:auto minmax(150px,1fr) auto}
+.sg-hud{display:grid;grid-template-columns:1fr minmax(0,2fr) 1fr;gap:10px;padding:6px 12px;background:linear-gradient(#0b1626,#0f1e31)}
+.sg-mana{display:grid;grid-template-columns:34px 1fr;grid-template-rows:auto auto;column-gap:8px;align-items:center;min-width:0}
+.sg-mana img{grid-row:span 2;width:34px;height:34px}
+.sg-mana b{display:block;color:#8ff0ff;font-size:15px;line-height:1.1}.sg-mana small{display:block;color:#9fb4c8;font-size:11px}
+.sg-mana progress{grid-column:2;width:100%;height:6px;accent-color:#5fd8ff}
+.sg-vs{display:flex;align-items:center;gap:6px;min-width:0}
+.sg-vs-pic{width:40px;height:32px;object-fit:contain;flex:none}
+.sg-vs>b{font:900 15px/1 system-ui;color:#ffe07a;text-shadow:0 2px 0 #0008;flex:none}
+.sg-hp{position:relative;flex:1;height:16px;border-radius:5px;background:#1d0d14;border:2px solid #0a1220;overflow:hidden;min-width:30px}
+.sg-hp>i{position:absolute;inset:0 auto 0 0;background:linear-gradient(#7ff3d8,#2fbf98);transition:width .2s}
+.sg-hp.is-enemy>i{left:auto;right:0;background:linear-gradient(#ff9cae,#e0435f)}
+.sg-hp small{position:absolute;inset:0;display:grid;place-items:center;font:700 10px/1 system-ui;color:#fff;text-shadow:0 1px 2px #000}
+.sg-hud-actions{justify-content:flex-end;align-items:center}
+.sg-clock{font:700 12px system-ui;color:#c9d7e6}.sg-gold{font:800 14px system-ui;color:#ffd166;white-space:nowrap}
+.siege-root .sg-hud-actions button{min-width:40px;min-height:36px;padding:0 6px}
+/* The aim: a big up/down control standing on our wall, the green orb the arrow's reach. */
+.sg-aim{left:10px;top:12%;bottom:22%;width:44px;gap:2px;background:#0a1424aa;border:2px solid #9bf07a88;border-radius:22px}
+.sg-aim span{font-size:14px;color:#9bf07a;line-height:1}
+.sg-aim input{accent-color:#58d93b;width:30px}
+.sg-camera{position:absolute;left:50%;transform:translateX(-50%);bottom:6px;width:min(320px,55%);display:flex;gap:6px;align-items:center;padding:2px 6px;background:#0a142499;border-radius:12px}
+.siege-root .sg-camera button{min-height:26px;min-width:26px;padding:0;font-size:12px}
+/* The bottom bar: the magic on the left, the cards in the middle, the bow's big round button on the right. */
+.sg-bar{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:8px;align-items:center;padding:6px 10px calc(6px + env(safe-area-inset-bottom));background:linear-gradient(#13243a,#0b1626);border-top:2px solid #2d4d6a}
+.sg-skills{display:flex;gap:6px}
+.siege-root .sg-skills button{width:58px;height:58px;min-height:0;padding:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;border:2px solid #4a7aa8;border-radius:12px;background:linear-gradient(#2a5a8f,#173456);border-image:none;color:#fff;text-shadow:0 1px 2px #000}
+.siege-root .sg-skills [data-sg="strike"]{border-color:#a68bff;background:linear-gradient(#6a4bd1,#33206e)}
+.sg-skills img{width:30px;height:30px;object-fit:contain}.sg-skills small{font-size:10px;line-height:1.1;white-space:nowrap}
+.siege-root .sg-skills button:disabled{filter:grayscale(.8);opacity:.6}
+.sg-bar .sg-deck{display:flex;gap:6px;padding:0;background:none;overflow-x:auto;scrollbar-width:none}
+.siege-root .sg-bar .sg-deck button{flex:0 0 64px;height:64px;min-height:0;padding:3px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;border:2px solid #5fb6ff;border-radius:10px;background:linear-gradient(#1f6fb8,#103e6a)}
+.sg-bar .sg-deck img{width:40px;height:40px;object-fit:contain}
+.sg-bar .sg-deck small{font:800 11px system-ui;color:#fff;text-shadow:0 1px 2px #000}
+.siege-root .sg-bar .sg-deck button:disabled{filter:grayscale(.7) brightness(.75);opacity:1}
+.siege-root .sg-bow{width:78px;height:78px;min-height:0;border-radius:50%;padding:6px;border:3px solid #ffd166;border-image:none;background:radial-gradient(circle at 40% 35%,#ffe9a8,#f08c2b 55%,#7a3a0c);color:#2a1102;font:800 10px/1.1 system-ui;gap:2px;justify-content:center}
+.sg-bow img{width:46px;transform:rotate(-35deg);filter:drop-shadow(0 2px 2px #0007)}
+.sg-bow [data-sg-bow-label]{display:none}
+.sg-bow .sg-quiver{width:70%}
+@media(max-width:600px){
+  .sg-hud{grid-template-columns:auto minmax(0,1fr) auto;gap:6px;padding:5px 8px}
+  .sg-mana{grid-template-columns:24px auto;column-gap:4px}.sg-mana img{width:24px;height:24px;grid-row:auto}.sg-mana small,.sg-mana progress{display:none}.sg-mana b{font-size:12px;white-space:nowrap}
+  .sg-vs-pic{width:28px;height:24px}.sg-clock{display:none}
+  .sg-bar{grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto auto;padding:5px 6px calc(5px + env(safe-area-inset-bottom))}
+  .sg-skills{grid-row:1;grid-column:1}.sg-bar .sg-deck{grid-row:2;grid-column:1/-1}.sg-bow{grid-row:1;grid-column:2}
+  .siege-root .sg-bar .sg-deck button{flex:1 0 56px;height:60px}
+  .siege-root .sg-skills button{width:52px;height:52px}
+  .siege-root .sg-bow{width:66px;height:66px}
+}
+/* Hover and press keep each bar button's own look (the generic button hover would paint over them). */
+.siege-root .sg-bow:hover:not(:disabled),.siege-root .sg-bow.is-drawing{background:radial-gradient(circle at 40% 35%,#fff3c4,#ff9d3b 55%,#8a420e);border-color:#ffe07a}
+.siege-root .sg-bow.is-drawing{transform:scale(.95)}
+.siege-root .sg-skills button:hover:not(:disabled){background:linear-gradient(#3670ad,#1d4270);border-color:#7fb3e6}
+.siege-root .sg-skills [data-sg="strike"]:hover:not(:disabled){background:linear-gradient(#7d5ee6,#3f2a85);border-color:#c4b0ff}
+.siege-root .sg-bar .sg-deck button:hover:not(:disabled){background:linear-gradient(#2a83d1,#14507f);border-color:#9bd3ff}
+.sg-vs-pic{width:48px;height:36px}

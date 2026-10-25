@@ -52,12 +52,18 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     if (selected.length !== 5) return;
     progress.deck = [...selected]; persist(); state = newSiege(progress, world); bossTalked = false;
     preload(world, selected); paused = false; camera.x = 0;
-    root.innerHTML = `<div class="sg-battle"><header class="sg-hud"><div><small>${t('siegeHome')}</small><strong data-sg-health="0"></strong></div><div><small>${worldName(world)} · ${t('siegeSoon')}</small><strong data-sg-clock></strong></div><div><small>${t('siegeEnemy')}</small><strong data-sg-health="1"></strong></div><div class="sg-hud-actions"><button data-sg="pause">${t('pause')}</button></div></header>
+    // Laid out like Cartoon Wars 2: mana top left, both fortresses' health face to face in the middle, coins and pause
+    // top right; the field with the bow's aim on our wall; one bar below with the magic, the troop cards and the bow.
+    root.innerHTML = `<div class="sg-battle"><header class="sg-hud">
+        <div class="sg-mana"><img src="/images/game/ui/orb.webp" alt=""><span><b data-sg-energy></b><small data-sg-status></small></span><progress data-sg-meter></progress></div>
+        <div class="sg-vs"><img class="sg-vs-pic" src="/images/game/ui/bench/boss-1.webp" alt=""><span class="sg-hp"><i data-sg-bar="0"></i><small data-sg-health="0"></small></span><b>VS</b><span class="sg-hp is-enemy"><i data-sg-bar="1"></i><small data-sg-health="1"></small></span><img class="sg-vs-pic" src="${guardianUrl(world)}" alt=""></div>
+        <div class="sg-hud-actions"><span class="sg-clock" data-sg-clock></span><span class="sg-gold">🪙 ${progress.coins}</span><button data-sg="pause" aria-label="${t('pause')}">⏸</button></div></header>
       <div class="sg-field"><canvas class="sg-arena" tabindex="0" role="img" aria-label="${t('siegeBattlefield')}"></canvas>
-      <label class="sg-aim"><span aria-hidden="true">🏹</span><input type="range" min="140" max="1080" step="10" value="700" data-sg-aim aria-label="${t('siegeAim')}"></label></div>
-      <div class="sg-camera"><button data-sg="home">◀ ${t('siegeHome')}</button><input type="range" min="0" max="1000" value="0" data-sg-camera aria-label="${t('siegeCamera')}"><button data-sg="enemy">${t('siegeEnemy')} ▶</button></div>
-      <div class="sg-controls"><div class="sg-resource"><strong data-sg-energy></strong><progress data-sg-meter></progress><small class="sg-status" data-sg-status></small></div><button data-sg="generator"></button><button data-sg="fire" class="sg-bow"><span data-sg-bow-label></span><i class="sg-quiver"><i data-sg-quiver></i></i></button><button data-sg="strike"></button></div>
-      <div class="sg-deck">${selected.map((id, i) => `<button data-sg-summon="${id}" aria-label="${i + 1}. ${name(id)} · ${UNITS[id].cost}"><img src="${portrait(id)}" alt=""><span><b>${name(id)}</b><small data-sg-cost="${id}"></small></span><i class="sg-cooldown" data-sg-cooldown="${id}"></i></button>`).join('')}</div></div>`;
+      <label class="sg-aim"><span aria-hidden="true">▲</span><input type="range" min="140" max="1080" step="10" value="700" data-sg-aim aria-label="${t('siegeAim')}"><span aria-hidden="true">▼</span></label>
+      <div class="sg-camera"><button data-sg="home" aria-label="${t('siegeHome')}">◀</button><input type="range" min="0" max="1000" value="0" data-sg-camera aria-label="${t('siegeCamera')}"><button data-sg="enemy" aria-label="${t('siegeEnemy')}">▶</button></div></div>
+      <div class="sg-bar"><div class="sg-skills"><button data-sg="generator"></button><button data-sg="strike"></button></div>
+      <div class="sg-deck">${selected.map((id, i) => `<button data-sg-summon="${id}" aria-label="${i + 1}. ${name(id)} · ${UNITS[id].cost}"><img src="${portrait(id)}" alt=""><small data-sg-cost="${id}"></small><i class="sg-cooldown" data-sg-cooldown="${id}"></i></button>`).join('')}</div>
+      <button data-sg="fire" class="sg-bow" aria-label="${t('siegeCannon')}"><img src="/images/game/arrows/fire.webp" alt=""><span data-sg-bow-label></span><i class="sg-quiver"><i data-sg-quiver></i></i></button></div></div>`;
     const canvas = q<HTMLCanvasElement>('canvas'); const ctx = canvas.getContext('2d')!;
     let pointer: { id: number; start: number; camera: number; moved: boolean } | null = null;
     canvas.addEventListener('pointerdown', e => {
@@ -105,20 +111,22 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   }
   function updateUi() {
     if (!state) return; const s = state;
-    q('[data-sg-health="0"]').textContent = `${Math.ceil(s.hp[0])} / ${s.maxHp[0]}`;
-    q('[data-sg-health="1"]').textContent = `${Math.ceil(s.hp[1])} / ${s.maxHp[1]}`;
-    q('[data-sg-clock]').textContent = `${clock(s.time)} / ${clock(LIMIT)}`;
-    q('[data-sg-energy]').textContent = t('siegeEnergy', { n: Math.floor(s.energy), max: energyMax(s) });
+    for (const side of [0, 1]) {
+      q(`[data-sg-health="${side}"]`).textContent = `${Math.ceil(s.hp[side])}`;
+      q(`[data-sg-bar="${side}"]`).style.width = `${s.hp[side] / s.maxHp[side] * 100}%`;
+    }
+    q('[data-sg-clock]').textContent = clock(Math.max(0, LIMIT - s.time));
+    q('[data-sg-energy]').textContent = `${Math.floor(s.energy)} / ${energyMax(s)}`;
     const meter = q<HTMLProgressElement>('[data-sg-meter]'); meter.max = energyMax(s); meter.value = s.energy;
-    q('[data-sg-status]').textContent = `+${energyRate(s).toFixed(1)}/s · ${t('siegePopulation', { n: s.units.filter(u => !u.side).length, max: CAP })}`;
-    const generator = q<HTMLButtonElement>('[data-sg="generator"]'); generator.textContent = s.generator >= 4 ? t('siegeMax') : t('siegeGenerator', { n: s.generator, cost: generatorPrice(s) }); generator.disabled = paused || s.phase !== 'fight' || s.generator >= 4 || s.energy < generatorPrice(s);
+    q('[data-sg-status]').textContent = `+${energyRate(s).toFixed(1)}/s · ${s.units.filter(u => !u.side).length}/${CAP}`;
+    const generator = q<HTMLButtonElement>('[data-sg="generator"]'); generator.innerHTML = `<img src="/images/game/ui/orb.webp" alt=""><small>${s.generator >= 4 ? t('siegeMax') : `${s.generator}/4 · ${generatorPrice(s)}`}</small>`; generator.setAttribute('aria-label', s.generator >= 4 ? t('siegeMax') : t('siegeGenerator', { n: s.generator, cost: generatorPrice(s) })); generator.disabled = paused || s.phase !== 'fight' || s.generator >= 4 || s.energy < generatorPrice(s);
     const bowButton = q<HTMLButtonElement>('[data-sg="fire"]');
     q('[data-sg-bow-label]').textContent = s.bow.empty ? t('siegeBowEmpty') : t('siegeCannon');
     q('[data-sg-quiver]').style.width = `${s.bow.quiver / BOW.max * 100}%`;
     bowButton.classList.toggle('is-empty', s.bow.empty); bowButton.classList.toggle('is-drawing', s.bow.drawing && !s.bow.empty);
     bowButton.disabled = paused || s.phase !== 'fight';
     for (const [action, key, cd] of [['strike', 'siegeSpell', s.spell]] as const) {
-      const button = q<HTMLButtonElement>(`[data-sg="${action}"]`); button.textContent = `${t(key)} · ${cd > 0 ? `${Math.ceil(cd)}s` : t('siegeReady')}`; button.disabled = paused || s.phase !== 'fight' || cd > 0;
+      const button = q<HTMLButtonElement>(`[data-sg="${action}"]`); button.innerHTML = `<img src="/images/game/skills/bolt.webp" alt=""><small>${cd > 0 ? `${Math.ceil(cd)}s` : t('siegeReady')}</small>`; button.setAttribute('aria-label', t(key)); button.disabled = paused || s.phase !== 'fight' || cd > 0;
     }
     for (const id of selected) {
       q<HTMLButtonElement>(`[data-sg-summon="${id}"]`).disabled = paused || !canSummon(s, id);
