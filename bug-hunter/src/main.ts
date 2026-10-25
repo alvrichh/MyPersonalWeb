@@ -649,7 +649,7 @@ function profileScreen(note = '') {
   show(`<button class="ui-close" type="button" data-act="menu" aria-label="${t('back')}"></button>
     <h2>${t('profile')}</h2>
     <div class="profile-card">
-      <button class="profile-skin" type="button" data-act="styles-skin" aria-label="${t('skinPick')}">${withWings(`<img class="profile-pic${save.retro ? ' is-round' : ''}" src="${pic}" alt="" width="96" height="120">`)}<span class="profile-skin-tag" aria-hidden="true">👕</span></button>
+      <button class="profile-skin" type="button" data-act="profile-skin" aria-label="${t('skinPick')}">${withWings(`<img class="profile-pic${save.retro ? ' is-round' : ''}" src="${pic}" alt="" width="96" height="120">`)}<span class="profile-skin-tag" aria-hidden="true">👕</span></button>
       <div class="profile-who">${editingName ? '' : name}${crests()}<span>${t('lvShort', { level })}</span><i class="profile-xp" title="${t('profileXp')}"><b style="width:${Math.round(progress * 100)}%"></b></i></div>
     </div>
     ${editingName ? `<div class="profile-form">${name}<small class="how">${t('profileNameHint')}</small>${save.name !== DEFAULT_NAME ? `<button class="ghost small" type="button" data-act="name-reset">${t('profileReset')}</button>` : ''}</div>` : ''}
@@ -3603,6 +3603,19 @@ screen.addEventListener('click', (event) => {
   } else if (act === 'styles-skin') {
     dressSlot = 'skin';
     stylesScreen();
+  } else if (act === 'profile-skin') {
+    // From the profile's hero: Customise opens already scrolled to the character list.
+    dressSlot = 'skin';
+    stylesScreen();
+    const go = () => {
+      const box = screen.querySelector<HTMLElement>('.panel-in');
+      const head = box?.querySelector<HTMLElement>('h3.slot');
+      if (!box || !head) return;
+      box.scrollTop = head.getBoundingClientRect().top - box.getBoundingClientRect().top + box.scrollTop - 8;
+      // `fitPanel()` puts the kept scroll back each time a picture loads: keep this one.
+      box.dataset.scroll = String(box.scrollTop);
+    };
+    requestAnimationFrame(() => requestAnimationFrame(go));
   } else if (target.dataset.skin) {
     const portrait = ownHeroPortrait();
     // Skins are bought once with coins, then worn with a tap.
