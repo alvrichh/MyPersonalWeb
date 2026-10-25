@@ -2,7 +2,7 @@ import './siege.css';
 import { storage } from '../../lib/storage';
 import type { Key, T } from '../strings';
 import { CAP, DECK, FIELD, aimAt, missile, LIMIT, SAVE_KEY, UNITS, canSummon, energyMax, energyRate, toggleBow, BOW, generatorPrice, improveGenerator, newSiege, readProgress, settle, strike, summon, tick, upgrade, upgradePrice, type Siege } from './model';
-import { backdropUrl, guardianUrl, portrait, preload, render, type Camera } from './view';
+import { backdropUrl, guardianUrl, trimImages, portrait, preload, render, type Camera } from './view';
 import { GUARDIAN_NAMES, bossTalk, intro, type Line } from './story';
 /** The map's island pictures, world by world, and the workshop's pictures, upgrade by upgrade (army, fortress, energy, bow). */
 const ISLES = ['original', 'infierno', 'vikingos', 'lodo', 'jungla', 'rayo', 'robots', 'demonios', 'nucleo'];
@@ -67,7 +67,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
         <button class="sg-play" data-sg="launch" ${selected.length ? '' : 'disabled'}><span class="sg-play-tri" aria-hidden="true"></span>${t('siegeLaunch')}</button>
       </article>`;
     const army = `<p class="sg-muted">${t('siegeChoose')}</p>
-      ${([false, true] as const).map(flying => `<h2 class="sg-heading">${t(flying ? 'siegeArmyAir' : 'siegeArmyLand', { n: selected.filter(id => air(id) === flying).length, max: DECK })}</h2><div class="sg-roster">${UNITS.filter(u => !!u.air === flying).map(u => `<button class="sg-card ${selected.includes(u.id) ? 'is-selected' : ''}" data-sg-unit="${u.id}" aria-pressed="${selected.includes(u.id)}" ${u.unlock > progress.unlocked ? 'disabled' : ''}><span class="sg-check">${selected.includes(u.id) ? '✓' : u.unlock > progress.unlocked ? '🔒' : ''}</span><img src="${portrait(u.id)}" alt=""><strong>${name(u.id)}</strong><small>${t(`siegeRole${u.id}` as Key)}</small><small class="sg-stat">${u.unlock > progress.unlocked ? t('siegeUnlock', { n: u.unlock }) : t('siegeStats', { cost: u.cost, hp: u.hp, damage: u.damage })}</small></button>`).join('')}</div>`).join('')}
+      ${([false, true] as const).map(flying => `<h2 class="sg-heading">${t(flying ? 'siegeArmyAir' : 'siegeArmyLand', { n: selected.filter(id => air(id) === flying).length, max: DECK })}</h2><div class="sg-roster">${UNITS.filter(u => !!u.air === flying).map(u => `<button class="sg-card ${selected.includes(u.id) ? 'is-selected' : ''}" data-sg-unit="${u.id}" aria-pressed="${selected.includes(u.id)}" ${u.unlock > progress.unlocked ? 'disabled' : ''}><span class="sg-check">${selected.includes(u.id) ? '✓' : u.unlock > progress.unlocked ? '🔒' : ''}</span><img src="${portrait(u.id)}" data-trim="${portrait(u.id)}" alt=""><strong>${name(u.id)}</strong><small>${t(`siegeRole${u.id}` as Key)}</small><small class="sg-stat">${u.unlock > progress.unlocked ? t('siegeUnlock', { n: u.unlock }) : t('siegeStats', { cost: u.cost, hp: u.hp, damage: u.damage })}</small></button>`).join('')}</div>`).join('')}
       <p class="sg-message" role="status"></p>`;
     const shop = `<p class="sg-muted">${t('siegeShopNote')}</p><div class="sg-upgrades">${progress.upgrades.map((level, i) => `<button data-sg-upgrade="${i}" ${level >= 5 || progress.coins < upgradePrice(level) ? 'disabled' : ''}>
         <span class="sg-up-pic"><img src="/images/game/${UPGRADE_PICS[i]}.webp" alt=""></span>
@@ -79,7 +79,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       <nav class="sg-ptabs" role="tablist">${tabs}</nav>
       <section class="sg-page">${prepTab === 'map' ? map : prepTab === 'army' ? army : shop}</section>
       <details class="sg-help"><summary>${t('siegeHow')}</summary><p>${t('siegeIntro')}</p><p>${t('siegeInstructions')}</p><p>${t('siegeKeys')}</p><p>${t('siegeRotate')}</p><p>${t('siegePreviewNote')}</p></details></div>`;
-    focus();
+    trimImages(root); focus();
   }
   function start() {
     cancelAnimationFrame(frame); battleAbort.abort(); battleAbort = new AbortController();
@@ -149,9 +149,9 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     const list = tabCards();
     q('[data-sg-cards]').innerHTML = tab === 'special'
       ? `<button data-sg="generator"></button><button data-sg="strike"></button><button data-sg="missile"></button>`
-      : list.length ? list.map((id, i) => `<button data-sg-summon="${id}" aria-label="${i + 1}. ${name(id)} · ${UNITS[id].cost}"><img src="${portrait(id)}" alt=""><small data-sg-cost="${id}"></small><i class="sg-cooldown" data-sg-cooldown="${id}"></i></button>`).join('')
+      : list.length ? list.map((id, i) => `<button data-sg-summon="${id}" aria-label="${i + 1}. ${name(id)} · ${UNITS[id].cost}"><img src="${portrait(id)}" data-trim="${portrait(id)}" alt=""><small data-sg-cost="${id}"></small><i class="sg-cooldown" data-sg-cooldown="${id}"></i></button>`).join('')
       : `<p class="sg-empty">${t('siegeAirEmpty')}</p>`;
-    updateUi();
+    trimImages(root); updateUi();
   }
   function updateUi() {
     if (!state) return; const s = state;

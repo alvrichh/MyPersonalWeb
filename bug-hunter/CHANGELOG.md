@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.19 - 2026-10-25
+
+### Fixed - Siege troop portraits fill their cards
+- Troop pictures are cropped to what shows (alpha over 40) on the Army tab and the battle's cards, once per picture, so the ones with wide empty margins (the Monolith, Kernel Panic, gladiator, hoplite, mud blob, crusher…) are as big as the rest.
+
 ## 1.14.18 - 2026-10-25
 
 ### Added - 17 more Siege troops
