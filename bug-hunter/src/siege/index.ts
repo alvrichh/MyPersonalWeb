@@ -279,6 +279,8 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
         if ((state.shots ?? 0) > shot) sound('arrow');
         troopSounds(now);
       }
+      // Siege Cartoon lays its card bar over the field: the troops walk just above it.
+      camera.bottom = mode === 'cartoon' ? q<HTMLElement>('.sg-bar').offsetHeight * 0.55 : 0;
       V.render(ctx, canvas, state, camera, reduced);
       // The aim control stands on the deck, wherever the field puts it.
       q<HTMLElement>('.sg-aim').style.bottom = `calc(${((1 - (camera.deck ?? 0.5)) * 100).toFixed(1)}% + 6px)`;

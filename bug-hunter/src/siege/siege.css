@@ -388,3 +388,13 @@
 .is-cartoon .sg-aim-up,.is-cartoon .sg-aim-down{visibility:hidden}
 .is-cartoon .sg-aim-knob{width:52px;height:43px;border:0;border-radius:0;box-shadow:none;background:url('/images/game/siege/aim-knob.webp') center/contain no-repeat}
 @media (max-height:500px) and (orientation:landscape){.is-cartoon .sg-aim-knob{width:42px;height:35px}}
+
+/* v1.14.84 — Siege Cartoon's battle shows the whole field: no dark strips, the HUD and the card bar laid over the
+   picture (the bar on the grass), and no camera slider (the field is dragged). */
+.is-cartoon .sg-battle{display:block;position:relative;height:100%}
+.is-cartoon .sg-battle .sg-field{position:absolute;inset:0}
+.is-cartoon .sg-hud{position:absolute;z-index:2;top:0;left:0;right:0;background:none;border:0;pointer-events:none;text-shadow:0 1px 2px #000c,0 0 6px #0008}
+.is-cartoon .sg-hud>*{pointer-events:auto}
+.is-cartoon .sg-camera{display:none}
+.siege-root.is-cartoon .sg-bar{position:absolute;z-index:2;left:0;right:0;bottom:0;background:url('/images/game/siege/bar.webp') center top / var(--bw) auto no-repeat}
+.is-cartoon .sg-turn{z-index:4;top:56px}

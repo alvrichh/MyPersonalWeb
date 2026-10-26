@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.84 - 2026-10-26
+
+### Changed - Siege Cartoon's battle shows the whole field
+- No dark strips above and below the field: the battlefield fills the screen, the HUD floats over its sky and the card bar over its grass, the troops walking just above the bar.
+- The camera slider is gone; the field is still dragged sideways, and the arrow keys still move it.
+
 ## 1.14.83 - 2026-10-26
 
 ### Changed - Siege Cartoon's bar whole, and Cartoon shots from our crossbow
