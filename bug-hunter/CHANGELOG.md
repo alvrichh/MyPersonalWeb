@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.10 - 2026-10-26
+
+### Changed - Siege Cartoon's music
+- Its songs are drum and bass again, epic: an orchestra on top of the drums (strings and horns on each chord, timpani, a cymbal opening each section, the choir at the peaks). The menus play liquid drum and bass in D minor with a heroic horn call; the battles half-time and Amen drum and bass with a war brass theme.
+- The guardians have their own song, Nocthrax's wobbling E minor with the orchestra and brass: it starts when the enemy fortress falls and the guardian comes out.
+
 ## 1.15.9 - 2026-10-26
 
 ### Changed - Siege Cartoon
