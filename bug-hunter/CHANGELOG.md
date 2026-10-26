@@ -4,6 +4,13 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.80 - 2026-10-26
+
+### Added - The last three Siege Cartoon air troops on six-pose sheets, and the flying mech
+- The owner's sheets for the armed helicopter (3 forms: one rocket, a pair, a salvo), the drill aircraft (2 forms, a drill rocket that rams) and the angel army (3 forms: axe and shield, a violet crescent, the golden archangel's beam) replace their old three-pose pictures, each with its own stats, price, shot and sound.
+- The six-form flying machine added in 1.14.77 as the drill aircraft is its own air troop now, the **flying mech** (recruited for 1,200 gold from act 5); every Siege Cartoon ally has its six-pose sheet. An army still takes five air troops.
+- Troop levels are saved by troop id, so a troop listed after the enemy's keeps its level.
+
 ## 1.14.79 - 2026-10-26
 
 ### Changed - Siege Cartoon's castle and crossbow in four levels
