@@ -544,3 +544,60 @@
 .siege-root.is-cartoon .sg-prep .sg-map-go .sg-play:hover:not(:disabled){background:#5fe04a}
 .siege-root.is-cartoon .sg-prep .sg-map-go .sg-play:disabled{background:#b8b8b8}
 .siege-root.is-cartoon .sg-prep .sg-map .sg-spot.is-boss:not(.is-locked) .sg-spot-boss{filter:drop-shadow(0 0 6px #ff3b3b) drop-shadow(0 4px 6px #000a)}
+/* v1.15.12 — Siege Cartoon's menus in the owner's UI kit (`siege/ui/*`: carved stone, blue enamel, gold), instead of
+   the paper cards: stretched with border-image, the gem ends kept whole. */
+.siege-root.is-cartoon .sg-prep{--ui:'/images/game/siege/ui/';color:#fff}
+.siege-root.is-cartoon .sg-prep .sg-map-top .sg-back,.siege-root.is-cartoon .sg-prep .sg-map-top .sg-back:hover:not(:disabled){width:52px;height:52px;border:0;border-radius:50%;box-shadow:none;background:url('/images/game/siege/ui/round.webp') center/contain no-repeat;color:#fff;font:900 22px system-ui;text-shadow:0 2px 2px #000}
+.siege-root.is-cartoon .sg-prep .sg-map-top .sg-back:active{background-image:url('/images/game/siege/ui/round-down.webp')}
+.siege-root.is-cartoon .sg-prep .sg-coins{min-width:150px;height:46px;padding:0 18px 0 52px;justify-content:flex-end;border:0;border-radius:0;box-shadow:none;background:url('/images/game/siege/ui/coin-plate.webp') center/100% 100% no-repeat;color:#ffd23f;font:900 20px system-ui;text-shadow:0 2px 2px #000}
+.siege-root.is-cartoon .sg-prep .sg-coins img{display:none}
+/* Map spots. */
+.siege-root.is-cartoon .sg-prep .sg-map .sg-spot,.siege-root.is-cartoon .sg-prep .sg-map .sg-spot:hover:not(:disabled){border:0;border-radius:50%;box-shadow:none;background:url('/images/game/siege/ui/spot.webp') center/contain no-repeat;color:#fff;text-shadow:0 2px 3px #000,0 0 6px #000;width:clamp(46px,7.2cqw,84px)}
+.siege-root.is-cartoon .sg-prep .sg-map .sg-spot.is-on{background:url('/images/game/siege/ui/spot-on.webp') center/contain no-repeat;box-shadow:0 0 22px 4px #ffd23fbb;color:#ffd23f}
+.siege-root.is-cartoon .sg-prep .sg-map .sg-spot.is-done{background-image:url('/images/game/siege/ui/spot-done.webp')}
+.siege-root.is-cartoon .sg-prep .sg-map .sg-spot.is-locked,.siege-root.is-cartoon .sg-prep .sg-map .sg-spot:disabled{background:url('/images/game/siege/ui/spot-locked.webp') center/contain no-repeat}
+.siege-root.is-cartoon .sg-prep .sg-map .sg-spot.is-boss{width:clamp(60px,9.6cqw,112px);background-image:url('/images/game/siege/ui/boss.webp')}
+.siege-root.is-cartoon .sg-prep .sg-map .sg-spot.is-boss.is-on{box-shadow:0 0 26px 6px #ff3b3bbb}
+.siege-root.is-cartoon .sg-prep .sg-map .sg-spot.is-boss.is-locked{background-image:url('/images/game/siege/ui/boss-locked.webp')}
+.sg-map .sg-spot-ring{display:none}
+.siege-root.is-cartoon .sg-prep .sg-map .sg-spot.is-locked .sg-spot-boss{display:none}
+.sg-map .sg-spot-name{padding:6px 22px 9px;border:0;border-radius:0;background:url('/images/game/siege/ui/ribbon.webp') center/100% 100% no-repeat;color:#fff;text-shadow:0 1px 2px #000}
+.siege-root.is-cartoon .sg-prep .sg-map-shop,.siege-root.is-cartoon .sg-prep .sg-map-shop:hover:not(:disabled){min-height:52px;padding:0 40px;border:0;border-radius:0;box-shadow:none;background:url('/images/game/siege/ui/btn-gold.webp') center/100% 100% no-repeat;color:#2a1a00;text-shadow:0 1px 0 #fff8}
+.siege-root.is-cartoon .sg-prep .sg-map-shop:active{background-image:url('/images/game/siege/ui/btn-gold-down.webp')}
+.sg-map-go{border-radius:0;box-shadow:none;padding:0;border-style:solid;border-color:transparent;border-width:16px 44px;border-image:url('/images/game/siege/ui/panel-wide.webp') 30 90 fill / 16px 44px stretch;background:none;color:#fff}
+.siege-root.is-cartoon .sg-prep .sg-map-go .sg-eyebrow{color:#ffd23f;text-shadow:0 1px 2px #000}
+.sg-map-go .sg-prize{color:#e8f1ff}
+/* Green, gold, red, grey buttons from the kit. */
+.siege-root.is-cartoon .sg-prep .sg-map-go .sg-play,.siege-root.is-cartoon .sg-prep .sg-map-go .sg-play:hover:not(:disabled),
+.siege-root.is-cartoon .sg-prep .sg-st-actions button,.siege-root.is-cartoon .sg-prep .sg-st-actions button:hover:not(:disabled),
+.siege-root.is-cartoon .sg-prep .sg-st-back,.siege-root.is-cartoon .sg-prep .sg-st-back:hover:not(:disabled){border-style:solid;border-color:transparent;border-width:0 34px;border-radius:0;border-image:url('/images/game/siege/ui/btn-green.webp') 0 70 fill / 0 34px stretch;background:none;box-shadow:none;color:#fff;text-shadow:0 2px 2px #000;padding:0 6px}
+.siege-root.is-cartoon .sg-prep .sg-map-go .sg-play:active:not(:disabled),.siege-root.is-cartoon .sg-prep .sg-st-actions .sg-st-go:active:not(:disabled){border-image-source:url('/images/game/siege/ui/btn-green-down.webp')}
+.siege-root.is-cartoon .sg-prep .sg-st-actions .sg-st-buy,.siege-root.is-cartoon .sg-prep .sg-st-actions .sg-st-buy:hover:not(:disabled){border-image-source:url('/images/game/siege/ui/btn-gold.webp');color:#2a1a00;text-shadow:0 1px 0 #fff8}
+.siege-root.is-cartoon .sg-prep .sg-st-back,.siege-root.is-cartoon .sg-prep .sg-st-back:hover:not(:disabled){border-image-source:url('/images/game/siege/ui/btn-red.webp')}
+.siege-root.is-cartoon .sg-prep .sg-map-go .sg-play:disabled,.siege-root.is-cartoon .sg-prep .sg-st-actions button:disabled{border-image-source:url('/images/game/siege/ui/btn-grey.webp');opacity:1;color:#cfcfcf}
+.siege-root.is-cartoon .sg-prep .sg-map-go .sg-play .sg-play-tri{border-left-color:#fff}
+/* The shop. */
+.siege-root.is-cartoon:has(.sg-shop-only){background:#0b1424 url('/images/game/siege/map-worlds.webp') center/cover}
+.siege-root.is-cartoon:has(.sg-shop-only)::before{content:"";position:fixed;inset:0;background:#0b1424b3;backdrop-filter:blur(6px);pointer-events:none}
+.sg-shop-only{position:relative}
+.siege-root.is-cartoon .sg-prep .sg-store{border:0;border-radius:0;box-shadow:none;background:none;padding:4px}
+.siege-root.is-cartoon .sg-prep .sg-st-tab,.siege-root.is-cartoon .sg-prep .sg-st-tab.is-land,.siege-root.is-cartoon .sg-prep .sg-st-tab.is-air,.siege-root.is-cartoon .sg-prep .sg-st-tab.is-base,.siege-root.is-cartoon .sg-prep .sg-st-tab:hover:not(:disabled){border-style:solid;border-color:transparent;border-width:0 30px;border-radius:0;border-image:url('/images/game/siege/ui/tab.webp') 0 60 fill / 0 30px stretch;background:none;box-shadow:none;color:#dbe8ff;opacity:1}
+.siege-root.is-cartoon .sg-prep .sg-st-tab.is-on{border-image-source:url('/images/game/siege/ui/tab-on.webp');color:#2a1a00;text-shadow:0 1px 0 #fff8}
+.siege-root.is-cartoon .sg-prep .sg-st-grid{border:0;border-radius:0;border-style:solid;border-color:transparent;border-width:22px 40px;border-image:url('/images/game/siege/ui/panel-wide.webp') 30 90 fill / 22px 40px stretch;background:none;padding:2px}
+.siege-root.is-cartoon .sg-prep .sg-st-row{background:#0d14247a;border-radius:10px}
+.siege-root.is-cartoon .sg-prep .sg-st-link{background:linear-gradient(#e2b54a,#9a6e14);height:5px}
+.siege-root.is-cartoon .sg-prep .sg-st-tile,.siege-root.is-cartoon .sg-prep .sg-st-tile:hover:not(:disabled),.siege-root.is-cartoon .sg-prep .sg-st-tile.is-next{border:0;border-radius:0;outline:0;box-shadow:none;padding:9px;background:url('/images/game/siege/ui/slot.webp') center/100% 100% no-repeat}
+.siege-root.is-cartoon .sg-prep .sg-st-tile.is-have{background-image:url('/images/game/siege/ui/slot-on.webp')}
+.siege-root.is-cartoon .sg-prep .sg-st-tile.is-locked{background:url('/images/game/siege/ui/slot.webp') center/100% 100% no-repeat;filter:grayscale(.8) brightness(.55)}
+.siege-root.is-cartoon .sg-prep .sg-st-tile.is-on{filter:drop-shadow(0 0 6px #ffd23f) drop-shadow(0 0 3px #fff)}
+.siege-root.is-cartoon .sg-prep .sg-st-tile.is-worn{box-shadow:none}
+.siege-root.is-cartoon .sg-prep .sg-st-slot{border:0;border-radius:0;background:url('/images/game/siege/ui/slot.webp') center/100% 100% no-repeat;opacity:.75}
+.siege-root.is-cartoon .sg-prep .sg-st-slot.is-full,.siege-root.is-cartoon .sg-prep .sg-st-slot.is-full:hover:not(:disabled){opacity:1;box-shadow:none;padding:8px;background:url('/images/game/siege/ui/slot-on.webp') center/100% 100% no-repeat}
+.siege-root.is-cartoon .sg-prep .sg-st-info{border:0;border-radius:0;border-style:solid;border-color:transparent;border-width:14px 44px;border-image:url('/images/game/siege/ui/panel-wide.webp') 30 90 fill / 14px 44px stretch;background:none;color:#fff;padding:0 4px}
+.siege-root.is-cartoon .sg-prep .sg-st-desc span{color:#ffd23f}.siege-root.is-cartoon .sg-prep .sg-st-desc span.is-poor{color:#ff7a7a}
+.siege-root.is-cartoon .sg-prep .sg-st-gold{min-width:150px;height:48px;padding:0 18px 0 56px;justify-content:flex-end;border:0;border-radius:0;background:url('/images/game/siege/ui/coin-plate.webp') center/100% 100% no-repeat;text-shadow:0 2px 2px #000}
+.siege-root.is-cartoon .sg-prep .sg-st-gold img{display:none}
+.siege-root.is-cartoon .sg-prep .sg-st-grid{border:3px solid #c9962e;border-image:none;border-radius:12px;background:linear-gradient(#1a2338,#0f1626);box-shadow:0 0 0 3px #3a4250,0 0 0 5px #1b1b1b,inset 0 0 18px #0008;padding:8px}
+.siege-root.is-cartoon .sg-prep .sg-st-tile.is-on{outline:0}
+.siege-root.is-cartoon .sg-prep .sg-st-actions .sg-st-go.is-fight,.siege-root.is-cartoon .sg-prep .sg-st-actions .sg-st-go.is-fight:hover:not(:disabled){background:none}
+.sg-map-go{padding:0 10px}
