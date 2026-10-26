@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.82 - 2026-10-26
+
+### Changed - Siege Cartoon's aim stick and mana monument
+- The aim stick is the owner's: a double arrow as its track and a green orb in a steel ring as its knob, glowing green while held.
+- The mana monument uses the owner's clean cut-out (no white fringe left from the earlier JPEG).
+
 ## 1.14.81 - 2026-10-26
 
 ### Changed - Siege Cartoon's battle bar and mana monument in the owner's art
