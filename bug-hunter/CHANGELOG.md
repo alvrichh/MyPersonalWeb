@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.50 - 2026-10-26
+
+### Changed - The shop's coins on the frame, beside the X
+- The shop's coins (and their + button) sit centred on the frame at the height of the X instead of floating over the top-left of the list, so they no longer cover a card's name while scrolling. They are lifted out of the scrolling box like the X (its edge fade clipped anything inside it). Retro keeps them above the title.
+
 ## 1.14.49 - 2026-10-26
 
 ### Fixed - Shop cards with levels, owned and worn
