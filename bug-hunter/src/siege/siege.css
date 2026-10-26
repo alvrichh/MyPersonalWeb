@@ -508,3 +508,39 @@
 /* v1.15.8 — the corrupt wind's warning over the field. */
 .sg-alert{position:absolute;z-index:3;left:50%;top:18%;transform:translateX(-50%);padding:8px 18px;border:3px solid #1b1b1b;border-radius:14px;background:#7b2cbf;color:#fff;font:900 clamp(15px,2.4vw,22px)/1.2 system-ui;text-align:center;text-shadow:0 2px 0 #0007;box-shadow:0 4px 0 #1b1b1b;animation:sg-alert 2.6s ease-out both;pointer-events:none;white-space:nowrap}
 @keyframes sg-alert{0%{opacity:0;transform:translate(-50%,-10px) scale(.9)}10%{opacity:1;transform:translate(-50%,0) scale(1.05)}20%{transform:translate(-50%,0) scale(1)}80%{opacity:1}100%{opacity:0}}
+/* v1.15.12 — Siege Cartoon's maps: the owner's pictures whole, fitted in the view over a blurred copy, buttons on their
+   platforms; Back, the gold and the Shop around them, and on a world's map the picked stage's Launch. */
+.siege-root.is-cartoon:has(.sg-map-only){overflow:hidden;background:#0b1424}
+.siege-root.is-cartoon .sg-prep.sg-map-only{max-width:none;height:100dvh;padding:0}
+.sg-map{position:relative;width:100%;height:100%;display:grid;place-items:center;overflow:hidden;container-type:size}
+.sg-map::before{content:"";position:absolute;inset:-30px;background:var(--map) center/cover;filter:blur(18px) brightness(.7)}
+.sg-map-pic{position:relative;width:min(100cqw,100cqh * 16 / 9);aspect-ratio:1672/941}
+.sg-map-pic>img{display:block;width:100%;height:100%;border-radius:6px;box-shadow:0 0 30px #0008}
+.siege-root.is-cartoon .sg-prep .sg-map .sg-spot{position:absolute;transform:translate(-50%,-50%);width:clamp(40px,6.4cqw,74px);aspect-ratio:1;padding:0;border:4px solid #1b1b1b;border-radius:50%;background:radial-gradient(#fff,#d8d2c2);box-shadow:0 4px 0 #1b1b1b,0 0 0 3px #fff8;display:grid;place-items:center;font:900 clamp(16px,2.4cqw,28px) system-ui;color:#1b1b1b;cursor:pointer}
+.siege-root.is-cartoon .sg-prep .sg-map .sg-spot:hover:not(:disabled){filter:brightness(1.08);background:radial-gradient(#fff,#d8d2c2)}
+.siege-root.is-cartoon .sg-prep .sg-map .sg-spot.is-on{background:radial-gradient(#fff6c8,#ffd23f);box-shadow:0 4px 0 #1b1b1b,0 0 0 4px #ffd23f,0 0 22px 6px #ffd23fcc;animation:sg-spot 1.4s ease-in-out infinite}
+@keyframes sg-spot{50%{transform:translate(-50%,-50%) scale(1.08)}}
+@media (prefers-reduced-motion:reduce){.siege-root.is-cartoon .sg-prep .sg-map .sg-spot.is-on{animation:none}}
+.siege-root.is-cartoon .sg-prep .sg-map .sg-spot.is-locked,.siege-root.is-cartoon .sg-prep .sg-map .sg-spot:disabled{opacity:1;background:radial-gradient(#9a958a,#5d5a54);color:#2a2a2a;cursor:default}
+.sg-spot b{position:relative;z-index:1}
+.sg-spot-ring{position:absolute;inset:-8%;width:116%;height:116%;object-fit:contain;pointer-events:none}
+.sg-spot.is-locked b{opacity:0}
+.siege-root.is-cartoon .sg-prep .sg-map .sg-spot.is-boss{width:clamp(52px,8.4cqw,96px)}
+.sg-spot-boss{position:absolute;left:50%;bottom:62%;width:170%;height:auto;max-height:190%;transform:translateX(-50%);object-fit:contain;filter:drop-shadow(0 4px 6px #000a);pointer-events:none}
+.sg-spot.is-locked .sg-spot-boss{filter:brightness(.35) drop-shadow(0 4px 6px #000a)}
+.sg-spot-name{position:absolute;top:104%;left:50%;transform:translateX(-50%);white-space:nowrap;padding:2px 8px;border:2px solid #1b1b1b;border-radius:8px;background:#fff;font:900 clamp(10px,1.3cqw,15px) system-ui;color:#1b1b1b}
+.sg-map-top{position:absolute;top:8px;left:10px;right:10px;display:flex;align-items:center;gap:10px;pointer-events:none}
+.sg-map-top>*{pointer-events:auto}
+.sg-map-title{flex:1;margin:0;font:900 clamp(18px,3.2cqw,32px) system-ui;color:#fff;text-shadow:0 2px 0 #1b1b1b,2px 0 0 #1b1b1b,-2px 0 0 #1b1b1b,0 -2px 0 #1b1b1b}
+.sg-map-title small{display:block;font-size:.5em;color:#ffd23f}
+.siege-root.is-cartoon .sg-prep .sg-map-shop{position:absolute;left:10px;bottom:10px;display:flex;align-items:center;gap:8px;min-height:48px;padding:0 16px;border:3px solid #1b1b1b;border-radius:14px;background:#ffd23f;box-shadow:0 4px 0 #1b1b1b;font:900 clamp(15px,2cqw,20px) system-ui;color:#1b1b1b}
+.sg-map-shop img{width:32px;height:24px;object-fit:contain}
+.sg-map-go{position:absolute;right:10px;bottom:10px;display:flex;flex-direction:column;align-items:flex-end;gap:4px;padding:8px 10px;border:3px solid #1b1b1b;border-radius:14px;background:#fffdf4ee;box-shadow:0 4px 0 #1b1b1b;color:#1b1b1b}
+.sg-map-go .sg-eyebrow{font:900 13px system-ui}
+.sg-map-go .sg-prize{display:flex;align-items:center;gap:6px;margin:0;font:700 13px system-ui}.sg-map-go .sg-prize img{width:26px;height:20px;object-fit:contain}
+.siege-root.is-cartoon .sg-prep .sg-map-go .sg-play{margin:0;min-height:46px;font-size:18px}
+@media (max-height:440px){.siege-root.is-cartoon .sg-prep .sg-map-go .sg-play{min-height:38px;font-size:15px}.sg-map-go .sg-prize{display:none}.siege-root.is-cartoon .sg-prep .sg-map-shop{min-height:40px}.sg-map-top .sg-back{width:38px;height:38px}}
+.siege-root.is-cartoon .sg-prep .sg-map-go .sg-play{background:#4cd137;border:3px solid #1b1b1b;border-radius:14px;padding:0 18px}
+.siege-root.is-cartoon .sg-prep .sg-map-go .sg-play:hover:not(:disabled){background:#5fe04a}
+.siege-root.is-cartoon .sg-prep .sg-map-go .sg-play:disabled{background:#b8b8b8}
+.siege-root.is-cartoon .sg-prep .sg-map .sg-spot.is-boss:not(.is-locked) .sg-spot-boss{filter:drop-shadow(0 0 6px #ff3b3b) drop-shadow(0 4px 6px #000a)}
