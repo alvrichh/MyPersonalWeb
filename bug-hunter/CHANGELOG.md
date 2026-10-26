@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.70 - 2026-10-26
+
+### Changed - Siege becomes Siege Legacy, a Cartoon Wars tribute
+- The mode is named Siege Legacy (Asedio Legacy), "a Cartoon Wars tribute". The map tab, How to play and the Coming Soon card tell why it exists: Cartoon Wars 2 was pulled from the stores and can no longer be played, so this mode brings back its battles, troops and rules. A credit line says Cartoon Wars is a Gamevil series and this is a non-commercial fan tribute, not affiliated with them.
+- Checked on desktop (1280x720) and phone (390x844): the tribute note fits above the world picker, no sideways scroll.
+
 ## 1.14.69 - 2026-10-26
 
 ### Added - Siege: every troop's attack and death have their own sound

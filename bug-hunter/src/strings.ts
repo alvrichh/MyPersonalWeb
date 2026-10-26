@@ -4,7 +4,7 @@ import { storage } from '../lib/storage';
    Spanish (Andalûh players get Spanish); every other site language falls back
    to English. */
 const en = {
-  siegeHubModes: 'New modes · Siege & Fortress',
+  siegeHubModes: 'New modes · Siege Legacy & Fortress',
   siegePrologue1: "The Backlog overflowed. Bugs crawled out of every ticket and raised fortresses across nine worlds.",
   siegePrologue2: "Then we raise ours. Every bug we squash is one less in production.",
   siegePrologue3: "Summon your troops, aim your archers and bring down each world's fortress.",
@@ -94,8 +94,10 @@ const en = {
   siegeFirstWin: "First victory: +{n} gold",
   siegeRepeatWin: "Won · each new victory: +{n} gold",
   siegeShopNote: "Spend the gold you win in Siege; upgrades last for every battle.",
-  siegeName: "Siege",
-  siegeSoon: "Coming soon · Playable preview",
+  siegeName: "Siege Legacy",
+  siegeSoon: "A Cartoon Wars tribute · Playable preview",
+  siegeTribute: "Cartoon Wars 2 was pulled from the stores and can no longer be played. Siege Legacy is our tribute: its battles, its troops and its rules, so they can be played again.",
+  siegeCredit: "Cartoon Wars is a Gamevil series. This is a non-commercial fan tribute, not affiliated with them.",
   siegeIntro: "Build your army. Hold the line. Break their fortress. A new experimental mode with its own campaign and progress.",
   siegePreviewNote: "Preview: balance, scenery and rewards may change. Progress stays separate from the other modes.",
   siegeArmy: "Your army · {n}/5 selected",
@@ -1217,7 +1219,7 @@ const en = {
 export type Key = keyof typeof en;
 
 const es: Record<Key, string> = {
-  siegeHubModes: 'Nuevos modos · Asedio y Fortress',
+  siegeHubModes: 'Nuevos modos · Asedio Legacy y Fortress',
   siegePrologue1: "El Backlog se desbordó. Los bugs salieron de cada ticket y levantaron fortalezas en nueve mundos.",
   siegePrologue2: "Pues levantamos la nuestra. Cada bug que aplastemos es uno menos en producción.",
   siegePrologue3: "Invoca a tus tropas, apunta con tus arqueros y derriba la fortaleza de cada mundo.",
@@ -1307,8 +1309,10 @@ const es: Record<Key, string> = {
   siegeFirstWin: "Primera victoria: +{n} de oro",
   siegeRepeatWin: "Conquistado · cada nueva victoria: +{n} de oro",
   siegeShopNote: "Gasta el oro que ganas en el Asedio; las mejoras sirven para todas las batallas.",
-  siegeName: "Asedio",
-  siegeSoon: "Próximamente · Avance jugable",
+  siegeName: "Asedio Legacy",
+  siegeSoon: "Homenaje a Cartoon Wars · Avance jugable",
+  siegeTribute: "Cartoon Wars 2 desapareció de las tiendas y ya no se puede jugar. Asedio Legacy es nuestro homenaje: sus batallas, sus tropas y sus reglas, para poder volver a jugarlas.",
+  siegeCredit: "Cartoon Wars es una saga de Gamevil. Esto es un homenaje de fans sin ánimo de lucro, sin relación con ellos.",
   siegeIntro: "Forma tu ejército. Defiende tu línea. Destruye su fortaleza. Un nuevo modo experimental con campaña y progreso propios.",
   siegePreviewNote: "Avance: el equilibrio, los escenarios y las recompensas pueden cambiar. El progreso es independiente del resto de modos.",
   siegeArmy: "Tu ejército · {n}/5 elegidas",

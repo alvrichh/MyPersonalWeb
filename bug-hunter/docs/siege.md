@@ -1,4 +1,6 @@
-# Siege / Asedio — playable preview
+# Siege Legacy / Asedio Legacy — playable preview
+
+**Why this mode exists.** Cartoon Wars 2 was pulled from the stores and can no longer be played. Siege Legacy is the owner's tribute to it: its battles, troops and rules (docs: [siege-roster.md](./siege-roster.md), [cw2-reference.md](./cw2-reference.md), [cw2-upgrades.md](./cw2-upgrades.md)), so it can be played again. It follows Cartoon Wars 2 on purpose, and says so in the game (the map tab and How to play), with a credit: Cartoon Wars is a Gamevil series; this is a non-commercial fan tribute, not affiliated with them. A Bug Hunter-themed siege of its own (bugs as the enemy, the dev team as the army) may come later as a separate mode.
 
 Status: **Coming soon · Playable preview**. Available in the fourth main-cover option, Coming Soon, after Sprints, On Call and Battle. The hub keeps its separate Fortress link. Battle still contains Fusion and Tactics. Fortress remains its separate construction prototype.
 
