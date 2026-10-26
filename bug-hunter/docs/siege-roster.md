@@ -55,6 +55,7 @@ New sheets have **6 poses** in one row: 1 walk A, 2 walk B (A and B alternated r
 
 - **Swordsman:** 5 forms (the reference's six with its fifth, the piercing swordsman, dropped): club, dagger, sword and shield, greatsword, master (fire slash, reaches flyers). Prices 200, 300, 400, 2000 gold; energy 20, 30, 50, 60, 200. Its scarf, capes and the level 4 crest are blue in every form (the owner's call: the first ally wears blue).
 - **Archer:** 4 forms: rock thrower, javelin thrower, archer with a bow, ninja with shurikens. Each throws the projectile cut from its own sheet's attack pose (`siege/units/shot-rock|javelin|arrow|shuriken`; rocks and shurikens spin, javelins and arrows point along their path). Prices 250, 400, 1500 gold; energy 30, 40, 50, 120. Projectiles in new sheets: leave them separate in the attack pose and they are cut out as the shot.
+- **Heavy armour:** 4 forms: knight with two swords, bigger knight with maces for hands, samurai who punches, bigger samurai. Prices 300, 500, 1800 gold; energy 65, 80, 100, 180. Its sheet is drawn larger than the swordsman's, so it is scaled by 0.8 (`six(name, px, k)`).
 - **Spearman:** 5 forms: basic spear, longer, longer still, horned fox helmet, lancer on a white horse (not thrown back by heavy blows, only stunned). The reference gives no prices: 250, 400, 600, 2200 gold; energy 30, 40, 50, 65, 220.
 
 ## In the game now (test set)
