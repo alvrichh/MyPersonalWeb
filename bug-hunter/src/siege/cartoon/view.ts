@@ -1,4 +1,4 @@
-import { actOf, foesAt, FIELD, FOE_AIR, FOE_LAND, GUARDIAN, KNOCK, SPELLS, UNITS, specAt, specOf, aimAt, enemyTier, energyMax, looksTier, type Effect, type Fighter, type Siege } from './model';
+import { actOf, foesAt, FIELD, FOE_AIR, FOE_LAND, GUARDIAN, KNOCK, SPELLS, UNITS, isBeam, isBullet, specAt, specOf, aimAt, enemyTier, energyMax, looksTier, type Effect, type Fighter, type Siege } from './model';
 import { gloom } from './story';
 
 /** Each world's ground colours, under its floor while that loads (moss, embers, snow, mud, jungle, sand, iron,
@@ -42,7 +42,7 @@ export function preload(world: number, deck: number[], _levels: number[] = []) {
   const specs = [...deck.map(c => specAt(c % 100, Math.floor(c / 100) + 1)), ...foes.map(id => UNITS[id])];
   specs.forEach(spec => { for (let f = 0; f < (spec.six ? 6 : 3); f++) picture(`${spec.sprite}-${f}`); });
   // The battlefield, and the fortresses and crossbow at every level (the workshop can change ours between battles).
-  [SCENE, 'siege/sky', 'siege/ground', ...['rock', 'javelin', 'arrow', 'shuriken', 'rocket', 'rockets', ...SPELLS].map(n => `siege/units/shot-${n}`), ...[1, 2, 3, 4].flatMap(n => [`siege/castle-${n}`, `siege/xbow-${n}`, ...(n < 4 ? [`siege/enemy-${n}`] : [])]), ...FX].forEach(still);
+  [SCENE, 'siege/sky', 'siege/ground', ...[...SHOTS, ...SPELLS].map(n => `siege/units/shot-${n}`), ...[1, 2, 3, 4].map(n => `siege/units/bolt-${n}`), ...[1, 2, 3, 4].flatMap(n => [`siege/castle-${n}`, `siege/xbow-${n}`, ...(n < 4 ? [`siege/enemy-${n}`] : [])]), ...FX].forEach(still);
 }
 /** The battlefield, one picture for every world for now (the owner's: our green side left, the bugs' red one right):
     drawn across the field with `pad` field units past each end, its walking ground (`ground`, a share of its height)
@@ -99,7 +99,7 @@ let bowAt = { x: 80, y: 0 };
 let manaBox = { x: 0, y: 0, w: 0, h: 0 };
 export const onMana = (x: number, y: number) => x >= manaBox.x && x <= manaBox.x + manaBox.w && y >= manaBox.y && y <= manaBox.y + manaBox.h;
 /** What our crossbow shoots, by its look: Cartoon's arrow, or a rocket from the rocket launcher (level 4). */
-let bolt = 'siege/units/shot-arrow';
+let bolt = 'siege/units/bolt-1';
 let lastShots = 0, kickUntil = 0;
 /** Smoke, then flames, on a fortress as it loses health (the game's steam and flame pictures, drifting). */
 function damage(ctx: CanvasRenderingContext2D, w: number, h: number, left: number, hp: number, max: number, t: number) {
@@ -140,7 +140,7 @@ function base(ctx: CanvasRenderingContext2D, s: Siege, x: number, ground: number
     if (!enemy) {
       // The crossbow seated in the turret, turning on its wheel.
       const bowTier = looksTier(s.bow.level), arm = still(`siege/xbow-${bowTier}`), [fx, fy] = XBOW.pivot[bowTier - 1];
-      bolt = bowTier === 4 ? 'siege/units/shot-rocket' : 'siege/units/shot-arrow';
+      bolt = `siege/units/bolt-${bowTier}`;
       const px = left + w * look.bow[0], py = -h + foot + h * look.bow[1];
       bowAt = { x: x + px, y: ground + py };
       if ((s.shots ?? 0) !== lastShots) { lastShots = s.shots ?? 0; kickUntil = s.time + 0.09; }
@@ -310,12 +310,16 @@ function dirAt(at: (t: number) => { x: number; y: number }, p: number) {
   const a = at(Math.max(0, p - 0.02)), b = at(Math.min(1, p + 0.02)), here = at(p);
   return { x: here.x + (b.x - a.x), y: here.y + (b.y - a.y) };
 }
+/** The height a troop's shot leaves from or flies to: a hand's height on the ground, a flyer's middle in the air. */
+const shotY = (air: boolean | undefined, y: number) => y - 15 - (air ? 60 : 0);
+/** Every picture a troop's attack shows on its way (`siege/units/shot-<name>`): thrown things, rockets, bullets, beams. */
+const SHOTS = ['rock', 'javelin', 'arrow', 'shuriken', 'rocket', 'rockets', 'salvo', 'ice', 'plasma', 'crescent', 'missile', 'bullet', 'bullet-rifle', 'bullet-uzi', 'bullet-sniper', 'ray', 'ray-blue', 'ray-gold', 'ray-pink'];
 /** The effect art: our crossbow's Cartoon arrows (or rockets) and missile, the old painted arrows (water for our troops,
     leaf for theirs),
     impacts up close, and a blast with the yellow lightning for the discharge. */
 function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, ground: number) {
   if (e.kind === 'rocket') {
-    const art = still('siege/units/shot-rocket'); if (!ok(art)) return false;
+    const art = still('siege/units/shot-missile'); if (!ok(art)) return false;
     // From the crossbow on our battlement (`bowAt`) to the aim.
     const from = e.side ? e.from : bowTip.x, y0 = e.side ? ground - 110 : bowTip.y;
     // A missile flies straight at its spot, no gravity.
@@ -375,28 +379,29 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
   }
   // A flamethrower's flame is in its attack pose: nothing flies.
   if (e.kind === 'shot' && e.art === 'none') return true;
-  if (e.kind === 'shot' && e.art === 'ray') {
-    // The ray gun: a cyan beam from the muzzle to the target at once, fading.
-    const hand = y - 16;
-    ctx.save(); ctx.globalAlpha = 1 - p; ctx.lineCap = 'round';
-    ctx.strokeStyle = '#38bdf8'; ctx.lineWidth = 7; ctx.beginPath(); ctx.moveTo(e.from, hand); ctx.lineTo(e.x, hand); ctx.stroke();
-    ctx.strokeStyle = '#e0f7ff'; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(e.from, hand); ctx.lineTo(e.x, hand); ctx.stroke();
-    ctx.restore(); return true;
+  if (e.kind === 'shot' && isBeam(e.art)) {
+    // A beam (the ray gun's cyan, the mech's blue, the archangel's gold, the air magician's pink lightning): its picture
+    // stretched from the muzzle to the target at once, fading.
+    const art = still(`siege/units/shot-${e.art}`); if (!ok(art)) return false;
+    const y0 = shotY(e.fromAir, y), y1 = shotY(e.toAir, y), len = Math.hypot(e.x - e.from, y1 - y0), h = 12;
+    ctx.save(); ctx.globalAlpha = 1 - p; ctx.translate(e.from, y0); ctx.rotate(Math.atan2(y1 - y0, e.x - e.from));
+    ctx.drawImage(art, 0, -h / 2, len, h); ctx.restore(); return true;
   }
-  if (e.kind === 'shot' && e.art === 'bullet') {
-    // A gunner's bullet: a short bright tracer, straight and fast, from the muzzle to the target.
-    const hand = y - 16, x = e.from + (e.x - e.from) * p, dir = Math.sign(e.x - e.from) || 1;
-    ctx.save(); ctx.strokeStyle = '#ffe9a0'; ctx.lineWidth = 2.2; ctx.lineCap = 'round'; ctx.globalAlpha = 0.95;
-    ctx.beginPath(); ctx.moveTo(x - dir * 16, hand); ctx.lineTo(x, hand); ctx.stroke();
-    ctx.fillStyle = '#fff6cf'; ctx.beginPath(); ctx.arc(x, hand, 1.8, 0, Math.PI * 2); ctx.fill(); ctx.restore(); return true;
+  if (e.kind === 'shot' && isBullet(e.art)) {
+    // A bullet (each gun its own: pistol, rifle, Uzis, sniper), straight and fast from the muzzle to the target.
+    const art = still(`siege/units/shot-${e.art}`); if (!ok(art)) return false;
+    const y0 = shotY(e.fromAir, y), y1 = shotY(e.toAir, y), x = e.from + (e.x - e.from) * p;
+    const w = art.naturalWidth * 0.4, h = art.naturalHeight * 0.4;
+    ctx.save(); ctx.translate(x, y0 + (y1 - y0) * p); ctx.rotate(Math.atan2(y1 - y0, e.x - e.from));
+    ctx.drawImage(art, -w, -h / 2, w, h); ctx.restore(); return true;
   }
   if (e.kind === 'shot' && e.art) {
     // A troop's own projectile from its sheet (a rock, a javelin, an arrow, a shuriken): from the thrower's hand
     // straight to the target, spinning or pointing along its path, drawn at the sheets' scale.
     const art = still(`siege/units/shot-${e.art}`); if (!ok(art)) return false;
     // Straight from the thrower's hand to the target, no gravity.
-    const hand = y - 14;
-    const at = (t: number) => ({ x: e.from + (e.x - e.from) * t, y: hand });
+    const y0 = shotY(e.fromAir, y), y1 = shotY(e.toAir, y);
+    const at = (t: number) => ({ x: e.from + (e.x - e.from) * t, y: y0 + (y1 - y0) * t });
     const here = at(p), ahead = dirAt(at, p), w = art.naturalWidth * 0.4, h = art.naturalHeight * 0.4;
     ctx.save(); ctx.translate(here.x, here.y);
     ctx.rotate(e.spin ? p * 14 * (e.x > e.from ? 1 : -1) : Math.atan2(ahead.y - here.y, ahead.x - here.x || 0.001));

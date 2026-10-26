@@ -81,11 +81,11 @@ export const UNITS: readonly Spec[] = [
     { price: 1800, cost: 180, hp: 980, damage: 48, rate: 1.2, splash: 30, ...six('ally-heavy-4', 232, 0.96) },
   ] },
   // The gunner's four forms (docs/cw2-reference.md): pistol, rifle, two Uzis (fast), sniper rifle (long reach, slow and
-  // heavy). They fire bullets (`shot: 'bullet'`, a tracer drawn in code). The reference gives no prices.
+  // heavy). They fire bullets, each gun its own (`shot: 'bullet'`, `bullet-rifle|uzi|sniper`). The reference gives no prices.
   { id: 4, cost: 45, hp: 95, damage: 24, speed: 32, range: 200, rate: 1.4, cooldown: 6, unlock: 1, infantry: true, shot: 'bullet', ...six('ally-gunner-1', 173, 0.72), forms: [
-    { price: 300, cost: 55, hp: 110, damage: 30, range: 230, ...six('ally-gunner-2', 187, 0.72) },
-    { price: 500, cost: 70, hp: 125, damage: 22, range: 210, rate: 0.6, ...six('ally-gunner-3', 204, 0.72) },
-    { price: 1600, cost: 140, hp: 150, damage: 90, range: 320, rate: 2.4, ...six('ally-gunner-4', 212, 0.72) },
+    { price: 300, cost: 55, hp: 110, damage: 30, range: 230, shot: 'bullet-rifle', ...six('ally-gunner-2', 187, 0.72) },
+    { price: 500, cost: 70, hp: 125, damage: 22, range: 210, rate: 0.6, shot: 'bullet-uzi', ...six('ally-gunner-3', 204, 0.72) },
+    { price: 1600, cost: 140, hp: 150, damage: 90, range: 320, rate: 2.4, shot: 'bullet-sniper', ...six('ally-gunner-4', 212, 0.72) },
   ] },
   // The blaster's four forms (docs/cw2-reference.md): bazooka, rocket launcher, ray gun, flamethrower. Rockets fly as
   // their own pictures and blast an area; the ray is drawn in code; the flame is in the attack pose (no projectile).
@@ -113,8 +113,8 @@ export const UNITS: readonly Spec[] = [
   // cannon on its back (from here it reaches flyers), and a huge one firing rocket salvos.
   { id: 9, cost: 200, hp: 1300, damage: 70, speed: 18, range: 200, rate: 2, cooldown: 22, unlock: 5, splash: 80, shot: 'bullet', ...six('ally-heavy-robot-1', 166, 1.46), forms: [
     { price: 1200, cost: 230, hp: 1500, damage: 80, shot: 'rockets', ...six('ally-heavy-robot-2', 186, 1.46) },
-    { price: 2200, cost: 260, hp: 1800, damage: 90, hitsAir: true, shot: 'bullet', ...six('ally-heavy-robot-3', 214, 1.46) },
-    { price: 4000, cost: 320, hp: 2600, damage: 120, splash: 100, hitsAir: true, shot: 'rockets', ...six('ally-heavy-robot-4', 254, 1.46) },
+    { price: 2200, cost: 260, hp: 1800, damage: 90, hitsAir: true, shot: 'ice', ...six('ally-heavy-robot-3', 214, 1.46) },
+    { price: 4000, cost: 320, hp: 2600, damage: 120, splash: 100, hitsAir: true, shot: 'salvo', ...six('ally-heavy-robot-4', 254, 1.46) },
   ] },
   // Ours, air (Cartoon Wars 2's A row): they fly over the field, out of reach of melee troops; only ranged ones hit them.
   // The aircraft fighter's four forms: a sword under a propeller pack, then with goggles and scarf, two rotors and blue
@@ -126,25 +126,25 @@ export const UNITS: readonly Spec[] = [
   ] },
   // The armed aircraft fighter's four forms (docs/cw2-reference.md): a rifleman under a propeller pack, a veteran
   // sniper, a laser gun, and the air magician casting pink lightning.
-  { id: 11, cost: 55, hp: 110, damage: 20, speed: 55, range: 190, rate: 0.8, cooldown: 5, unlock: 2, air: true, shot: 'bullet', ...six('ally-armed-fighter-1', 179, 0.7), forms: [
-    { price: 400, cost: 70, hp: 130, damage: 45, range: 260, rate: 1.6, shot: 'bullet', ...six('ally-armed-fighter-2', 180, 0.7) },
-    { price: 900, cost: 90, hp: 170, damage: 34, range: 230, rate: 0.9, shot: 'ray', ...six('ally-armed-fighter-3', 174, 0.7) },
-    { price: 2000, cost: 140, hp: 240, damage: 55, range: 220, rate: 1.4, splash: 60, shot: 'lightning', ...six('ally-armed-fighter-4', 198, 0.7) },
+  { id: 11, cost: 55, hp: 110, damage: 20, speed: 55, range: 190, rate: 0.8, cooldown: 5, unlock: 2, air: true, shot: 'bullet-rifle', ...six('ally-armed-fighter-1', 197, 0.63), forms: [
+    { price: 400, cost: 70, hp: 130, damage: 45, range: 260, rate: 1.6, shot: 'bullet-sniper', ...six('ally-armed-fighter-2', 202, 0.63) },
+    { price: 900, cost: 90, hp: 170, damage: 34, range: 230, rate: 0.9, shot: 'plasma', ...six('ally-armed-fighter-3', 212, 0.63) },
+    { price: 2000, cost: 140, hp: 240, damage: 55, range: 220, rate: 1.4, splash: 60, shot: 'ray-pink', ...six('ally-armed-fighter-4', 217, 0.63) },
   ] },
   // The armed helicopter's three forms: green with one rocket, blue with a pair, and the black and gold gunship's salvo.
-  { id: 12, cost: 95, hp: 320, damage: 44, speed: 35, range: 210, rate: 1.8, cooldown: 10, unlock: 4, air: true, splash: 50, shot: 'rocket', spin: false, ...six('ally-helicopter-1', 163, 0.62), forms: [
-    { price: 800, cost: 120, hp: 420, damage: 54, splash: 55, shot: 'rockets', ...six('ally-helicopter-2', 209, 0.62) },
-    { price: 2000, cost: 170, hp: 620, damage: 70, range: 230, splash: 70, shot: 'rockets', ...six('ally-helicopter-3', 227, 0.62) },
+  { id: 12, cost: 95, hp: 320, damage: 44, speed: 35, range: 210, rate: 1.8, cooldown: 10, unlock: 4, air: true, splash: 50, shot: 'rocket', spin: false, ...six('ally-helicopter-1', 169, 0.59), forms: [
+    { price: 800, cost: 120, hp: 420, damage: 54, splash: 55, shot: 'rockets', ...six('ally-helicopter-2', 196, 0.59) },
+    { price: 2000, cost: 170, hp: 620, damage: 70, range: 230, splash: 70, shot: 'salvo', ...six('ally-helicopter-3', 201, 0.59) },
   ] },
   // The drill aircraft, the flying shield (docs/cw2-reference.md): a drill rocket that rams, then a heavier gold one.
-  { id: 13, cost: 80, hp: 360, damage: 30, speed: 55, range: 40, rate: 0.9, cooldown: 8, unlock: 3, air: true, ...six('ally-drill-1', 159, 0.56), forms: [
-    { price: 1000, cost: 130, hp: 700, damage: 48, rate: 0.8, ...six('ally-drill-2', 242, 0.56) },
+  { id: 13, cost: 80, hp: 360, damage: 30, speed: 55, range: 40, rate: 0.9, cooldown: 8, unlock: 3, air: true, ...six('ally-drill-1', 192, 0.47), forms: [
+    { price: 1000, cost: 130, hp: 700, damage: 48, rate: 0.8, ...six('ally-drill-2', 244, 0.47) },
   ] },
   // The angel army, the dearest: an axe and shield (very fast), a staff throwing a violet crescent, and the golden
   // archangel's beam.
-  { id: 14, cost: 220, hp: 700, damage: 60, speed: 75, range: 45, rate: 0.9, cooldown: 20, unlock: 6, air: true, splash: 40, ...six('ally-angel-1', 197, 0.62), forms: [
-    { price: 1500, cost: 260, hp: 900, damage: 70, speed: 55, range: 180, rate: 1.1, splash: 50, shot: 'ray', ...six('ally-angel-2', 251, 0.62) },
-    { price: 4000, cost: 340, hp: 1300, damage: 110, speed: 55, range: 210, rate: 1.1, splash: 70, shot: 'ray', ...six('ally-angel-3', 331, 0.62) },
+  { id: 14, cost: 220, hp: 700, damage: 60, speed: 75, range: 45, rate: 0.9, cooldown: 20, unlock: 6, air: true, splash: 40, ...six('ally-angel-1', 246, 0.5), forms: [
+    { price: 1500, cost: 260, hp: 900, damage: 70, speed: 55, range: 180, rate: 1.1, splash: 50, shot: 'crescent', ...six('ally-angel-2', 282, 0.5) },
+    { price: 4000, cost: 340, hp: 1300, damage: 110, speed: 55, range: 210, rate: 1.1, splash: 70, shot: 'ray-gold', ...six('ally-angel-3', 298, 0.5) },
   ] },
   // The enemy's.
   { id: 15, cost: 0, hp: 115, damage: 16, speed: 43, range: 35, rate: 0.8, cooldown: 0, unlock: 1, foe: true, infantry: true, ...unit('foe-swordsman', 74) },
@@ -168,12 +168,12 @@ export const UNITS: readonly Spec[] = [
   // Ours again, appended (ids are places in this list):
   // The flying mech, in six forms: a rocket fist, a laser, a plasma beam, an ice burst, a gatling,
   // and a giant golden fist.
-  { id: 33, cost: 80, hp: 300, damage: 32, speed: 55, range: 45, rate: 0.9, cooldown: 8, unlock: 5, air: true, ...six('ally-mech-1', 126, 0.92), forms: [
-    { price: 500, cost: 95, hp: 340, damage: 30, range: 130, shot: 'ray', ...six('ally-mech-2', 136, 0.92) },
-    { price: 800, cost: 110, hp: 380, damage: 38, range: 150, shot: 'ray', ...six('ally-mech-3', 146, 0.92) },
-    { price: 1200, cost: 130, hp: 450, damage: 46, range: 60, splash: 40, ...six('ally-mech-4', 149, 0.92) },
-    { price: 1800, cost: 150, hp: 520, damage: 20, rate: 0.4, range: 160, shot: 'bullet', ...six('ally-mech-5', 145, 0.92) },
-    { price: 3000, cost: 200, hp: 800, damage: 80, range: 60, splash: 50, ...six('ally-mech-6', 175, 0.92) },
+  { id: 33, cost: 80, hp: 300, damage: 32, speed: 55, range: 45, rate: 0.9, cooldown: 8, unlock: 5, air: true, ...six('ally-mech-1', 140, 0.82), forms: [
+    { price: 500, cost: 95, hp: 340, damage: 30, range: 130, shot: 'ray-blue', ...six('ally-mech-2', 140, 0.82) },
+    { price: 800, cost: 110, hp: 380, damage: 38, range: 150, shot: 'plasma', ...six('ally-mech-3', 142, 0.82) },
+    { price: 1200, cost: 130, hp: 450, damage: 46, range: 60, splash: 40, ...six('ally-mech-4', 141, 0.82) },
+    { price: 1800, cost: 150, hp: 520, damage: 20, rate: 0.4, range: 160, shot: 'bullet', ...six('ally-mech-5', 146, 0.82) },
+    { price: 3000, cost: 200, hp: 800, damage: 80, range: 60, splash: 50, ...six('ally-mech-6', 179, 0.82) },
   ] },
 ];
 /** The enemy's land and air troops by act, each act adding to the last (docs/siege-roster.md): early waves draw
@@ -296,7 +296,9 @@ export interface Effect { x: number; from: number; lane: number; life: number; m
   /** A fallen enemy's bounty, shown rising where it fell. */
   gold?: number; mana?: number;
   /** A shot's own projectile picture (`Spec.shot`) and whether it spins. */
-  art?: string; spin?: boolean }
+  art?: string; spin?: boolean;
+  /** A shot from a flyer, or at one: it leaves from (or flies to) that height instead of the ground's. */
+  fromAir?: boolean; toAir?: boolean }
 export interface Siege {
   world: number; phase: 'fight' | 'won' | 'lost'; time: number; energy: number; generator: number; cooldowns: Record<number, number>;
   hp: [number, number]; maxHp: [number, number]; units: Fighter[]; effects: Effect[]; nextId: number; nextWave: number; waves: number; kills: number;
@@ -371,7 +373,10 @@ const ATTACK_SOUND: Record<number, string | string[]> = {
   15: 'blade', 16: 'pierce', 17: 'bite', 18: 'claw', 19: 'blade', 20: 'blunt', 21: 'blade', 22: 'rifle', 23: 'throw', 24: 'magic',
   25: 'claw', 26: 'breath', 27: 'blade', 28: 'claw', 29: 'claw', 30: 'magic', 31: 'blade', 32: 'gatling',
 };
-const SHOT_SOUND: Record<string, string> = { rock: 'throw', javelin: 'throw', shuriken: 'throw', arrow: 'bow', rocket: 'rocket', rockets: 'rocket', ray: 'ray', none: 'flame', lightning: 'thunder', tornado: 'wind', meteor: 'meteor' };
+const SHOT_SOUND: Record<string, string> = { rock: 'throw', javelin: 'throw', shuriken: 'throw', arrow: 'bow', rocket: 'rocket', rockets: 'rocket', salvo: 'rocket', ray: 'ray', 'ray-blue': 'ray', 'ray-gold': 'ray', 'ray-pink': 'thunder', plasma: 'ray', ice: 'ray', crescent: 'magic', none: 'flame', lightning: 'thunder', tornado: 'wind', meteor: 'meteor' };
+/** Bullets (`bullet`, `bullet-rifle|uzi|sniper`) sound like the gun that fires them; beams (`ray`, `ray-blue|gold|pink`) reach at once. */
+export const isBullet = (shot?: string) => !!shot?.startsWith('bullet');
+export const isBeam = (shot?: string) => !!shot?.startsWith('ray');
 const DEATH_SOUND: Record<number, string | string[]> = {
   1: ['die-man', 'die-man', 'die-man', 'die-man', 'die-horse'], 3: 'die-armor', 7: 'die-beast', 8: 'die-bot', 9: 'die-bot',
   10: 'die-flyer', 11: 'die-flyer', 12: 'die-flyer', 13: 'die-bot', 14: 'die-flyer', 33: 'die-bot',
@@ -382,7 +387,7 @@ const pickLevel = (v: string | string[] | undefined, lv: number) => (Array.isArr
 /** A fighter's attack and death sounds. */
 export function soundsOf(u: Fighter): [string, string] {
   const lv = u.side ? 1 : u.lv ?? 1, a = specOf(u);
-  const attack = (a.shot && a.shot !== 'bullet' && SHOT_SOUND[a.shot]) || pickLevel(ATTACK_SOUND[u.id], lv) || 'blade';
+  const attack = (a.shot && !isBullet(a.shot) && SHOT_SOUND[a.shot]) || pickLevel(ATTACK_SOUND[u.id], lv) || 'blade';
   return [attack, pickLevel(DEATH_SOUND[u.id], lv) ?? 'die-man'];
 }
 function hear(s: Siege, k: string, x: number) { const q = (s.sounds ??= []); q.push({ k, x }); if (q.length > 24) q.shift(); }
@@ -513,8 +518,8 @@ export function tick(s: Siege, dt: number) {
         u.attack = a.rate; u.hit = 0.3;
         for (const v of alive) if (v.side !== u.side && reaches(u, v) && (v === enemy || (a.splash && Math.abs(v.x - enemy.x) < a.splash))) hits.push({ target: v, damage: u.damage });
         // A thrown or shot projectile of its own flies a little longer, so it is seen on its way.
-        const flight = a.shot === 'bullet' || a.shot === 'ray' ? 0.16 : SPELLS.includes(a.shot ?? '') ? 0.6 : a.shot ? 0.35 : 0.2;
-        s.effects.push({ x: enemy.x, from: u.x, lane: enemy.lane, life: flight, max: flight, kind: u.elite ? 'bolt' : 'shot', side: u.side, art: a.shot, spin: a.spin });
+        const flight = isBullet(a.shot) || isBeam(a.shot) ? 0.16 : SPELLS.includes(a.shot ?? '') ? 0.6 : a.shot ? 0.35 : 0.2;
+        s.effects.push({ x: enemy.x, from: u.x, lane: enemy.lane, life: flight, max: flight, kind: u.elite ? 'bolt' : 'shot', side: u.side, art: a.shot, spin: a.spin, fromAir: !!a.air, toAir: !!UNITS[enemy.id].air });
         hear(s, soundsOf(u)[0], u.x);
       }
     } else if (Math.abs(baseX - u.x) <= a.range + 35) {
