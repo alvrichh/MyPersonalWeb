@@ -4,6 +4,14 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.59 - 2026-10-26
+
+### Added - Siege: troop levels and six-pose sheets, starting with the swordsman
+- The owner's swordsman sheet (stick figures, six poses: walk A, walk B, ready, attack, hurt, dead) is in, in five forms: club, dagger, sword and shield, greatsword and the master swordsman (his slash leaves fire and he reaches flyers). The reference's piercing swordsman is dropped, so the master is level 5.
+- Troops have levels: the workshop's new Troops rows show each troop with forms at its level and buy the next one (200, 300, 400 and 2000 gold for the swordsman). A form changes the troop's look, stats and energy cost; cards and battles use the level in the save. Old saves start every troop at level 1.
+- Six-pose troops alternate their two walking poses as they walk, wind up just before a blow, strike, show the hurt pose, and lie dead where they fell for a moment before fading. Troops with three poses still walk in code, and now tip over when they fall instead of vanishing.
+- Checks: Siege tests cover buying levels in order, the save clamp, the level's cost and stats, and the master reaching a flyer that the first form cannot (20 tests).
+
 ## 1.14.58 - 2026-10-26
 
 ### Changed - Siege: Cartoon Wars 2's armies (test set)
