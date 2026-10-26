@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.76 - 2026-10-26
+
+### Changed - Siege Cartoon's shop, laid out like Cartoon Wars 2's
+- Siege Cartoon's Army and Workshop tabs become one Shop, Cartoon Wars 2-style: Land, Air and Base tabs; a row of joined tiles per troop, one for each of its forms with its energy cost (owned bright, the next one to buy darker, the rest locked) and one per base upgrade (army, fortress, energy, bow) with its five levels; the equipped troops in five slots on the right (below on phones); and under them the picked tile's bar (name, level, role, price or why it is locked), the gold, Purchase and Equip/Unequip.
+- Siege Legacy's army and workshop are unchanged.
+
 ## 1.14.75 - 2026-10-26
 
 ### Changed - Siege Cartoon's progression

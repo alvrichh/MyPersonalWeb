@@ -299,3 +299,57 @@
 .siege-root.is-cartoon .sg-prep .sg-card.is-recruit img{filter:grayscale(.5)}
 .siege-root.is-cartoon .sg-prep .sg-card.is-poor .sg-stat{color:#c0392b}
 @media(max-width:600px){.is-cartoon .sg-world.is-act .sg-guard{max-width:none}}
+/* v1.14.76 — Siege Cartoon's shop, laid out like Cartoon Wars 2's: Land / Air / Base tabs, a row of joined tiles per
+   troop (its forms) or upgrade, the equipped slots on the right, the picked tile's bar, the gold, Purchase and Equip. */
+.sg-store{--st:#2f8fd8;--st-dark:#155a96;display:flex;flex-direction:column;gap:10px;padding:12px;border:3px solid #1b1b1b;border-radius:18px;background:#3b3f47;box-shadow:0 5px 0 #1b1b1b}
+.sg-store.is-air{--st:#22b3a6;--st-dark:#127065}.sg-store.is-base{--st:#f08c2b;--st-dark:#a8560e}
+.sg-st-tabs{display:flex;gap:6px}
+.siege-root.is-cartoon .sg-prep .sg-st-tab{flex:0 1 150px;min-height:42px;padding:0 18px;font:900 18px/1 system-ui;letter-spacing:.06em;text-transform:uppercase;color:#fff;text-shadow:0 2px 0 #0007;border-radius:12px 12px 4px 4px;box-shadow:0 3px 0 #1b1b1b;opacity:.55}
+.siege-root.is-cartoon .sg-prep .sg-st-tab.is-land{background:#2f8fd8}.siege-root.is-cartoon .sg-prep .sg-st-tab.is-air{background:#22b3a6}.siege-root.is-cartoon .sg-prep .sg-st-tab.is-base{background:#f08c2b}
+.siege-root.is-cartoon .sg-prep .sg-st-tab.is-on,.siege-root.is-cartoon .sg-prep .sg-st-tab:hover:not(:disabled){opacity:1;filter:none}
+.siege-root.is-cartoon .sg-prep .sg-st-tab.is-land:hover{background:#2f8fd8}.siege-root.is-cartoon .sg-prep .sg-st-tab.is-air:hover{background:#22b3a6}.siege-root.is-cartoon .sg-prep .sg-st-tab.is-base:hover{background:#f08c2b}
+.sg-st-body{display:flex;gap:10px;min-height:0}
+.sg-st-grid{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;max-height:min(52vh,420px);overflow:auto;padding:8px;border-radius:12px;background:#1d2026;border:2px solid #111;scrollbar-width:thin}
+.sg-st-row{display:flex;align-items:center;padding:4px;border-radius:10px;background:#272b33}
+.sg-st-link{flex:0 0 14px;height:6px;background:#555b66}
+.siege-root.is-cartoon .sg-prep .sg-st-tile{position:relative;flex:0 0 72px;width:72px;height:72px;min-height:0;padding:4px;border:3px solid #111;border-radius:10px;box-shadow:none;background:radial-gradient(circle at 50% 35%,#fff6,transparent 70%),var(--st)}
+.siege-root.is-cartoon .sg-prep .sg-st-tile:hover:not(:disabled){background:radial-gradient(circle at 50% 35%,#fff8,transparent 70%),var(--st)}
+.sg-st-tile img{width:100%;height:100%;object-fit:contain;pointer-events:none}
+.sg-st-tile small{position:absolute;right:3px;bottom:1px;font:900 12px/1 system-ui;color:#fff;text-shadow:0 1px 2px #000,0 0 3px #000}
+.sg-st-tile i{position:absolute;right:2px;bottom:1px;font-style:normal;font-size:14px}
+.siege-root.is-cartoon .sg-prep .sg-st-tile.is-locked{background:var(--st-dark);filter:brightness(.55) saturate(.6)}
+.siege-root.is-cartoon .sg-prep .sg-st-tile.is-next{background:var(--st-dark)}
+.siege-root.is-cartoon .sg-prep .sg-st-tile.is-next img{opacity:.75}
+.siege-root.is-cartoon .sg-prep .sg-st-tile.is-on{outline:3px solid #fff;outline-offset:1px;filter:none}
+.sg-st-row:has(.is-have)+.sg-st-row,.sg-st-row{transition:none}
+.sg-st-slots{flex:0 0 84px;display:flex;flex-direction:column;gap:8px}
+.sg-store.is-base .sg-st-slots{display:none}
+.sg-st-slot{display:block;width:84px;height:72px;border:3px solid #111;border-radius:10px;background:repeating-linear-gradient(45deg,#8a8f99 0 6px,#7b808a 6px 12px)}
+.siege-root.is-cartoon .sg-prep .sg-st-slot.is-full{min-height:0;padding:4px;box-shadow:none;background:radial-gradient(circle at 50% 35%,#fff6,transparent 70%),var(--st)}
+.sg-st-slot img{width:100%;height:100%;object-fit:contain;pointer-events:none}
+.sg-st-info{padding:10px 16px;border:3px solid #1b1b1b;border-radius:10px;background:#f2a33a;color:#1b1b1b}
+.sg-st-desc{display:flex;gap:12px;align-items:center;justify-content:space-between;margin:0;font-size:15px}
+.sg-st-desc b{font-weight:800}.sg-st-desc span{font:900 17px system-ui;white-space:nowrap}.sg-st-desc span.is-poor{color:#8a1010}
+.sg-st-info .sg-message{min-height:0;margin:4px 0 0;color:#8a1010;font-weight:700}.sg-st-info .sg-message:empty{display:none}
+.sg-st-actions{display:flex;gap:10px;align-items:center}
+.sg-st-gold{display:flex;align-items:center;gap:6px;margin-right:auto;padding:6px 14px 6px 6px;border:3px solid #1b1b1b;border-radius:12px;background:#1d2026;color:#ffd23f;font:900 20px system-ui}
+.sg-st-gold img{width:34px;height:26px;object-fit:contain}
+.siege-root.is-cartoon .sg-prep .sg-st-actions button{min-width:150px;min-height:52px;font:900 20px system-ui;text-transform:uppercase;background:#7ed957}
+.siege-root.is-cartoon .sg-prep .sg-st-actions button:hover:not(:disabled){background:#9be87a}
+.siege-root.is-cartoon .sg-prep .sg-st-actions button:disabled{background:#9a9a9a}
+@media(max-width:600px){
+  .sg-store{padding:8px;gap:8px}
+  .siege-root.is-cartoon .sg-prep .sg-st-tab{flex:1;padding:0 6px;font-size:14px}
+  .sg-st-body{flex-direction:column}
+  .sg-st-grid{max-height:50vh;padding:6px}
+  .siege-root.is-cartoon .sg-prep .sg-st-tile{flex-basis:54px;width:54px;height:54px;padding:2px;border-width:2px}
+  .sg-st-link{flex-basis:6px;height:4px}
+  .sg-st-slots{flex-direction:row;flex-basis:auto;gap:6px}
+  .sg-st-slot,.siege-root.is-cartoon .sg-prep .sg-st-slot.is-full{flex:1;width:auto;height:54px;border-width:2px}
+  .sg-st-desc{flex-direction:column;align-items:flex-start;gap:4px;font-size:13px}
+  .sg-st-gold{font-size:16px;padding:4px 10px 4px 4px}.sg-st-gold img{width:26px;height:20px}
+  .siege-root.is-cartoon .sg-prep .sg-st-actions button{min-width:0;flex:1;font-size:15px;min-height:46px;padding:0 6px}
+}
+@media (max-height:500px) and (orientation:landscape){.sg-st-grid{max-height:none}}
+.sg-st-tile i{right:auto;bottom:auto;left:3px;top:2px}
+@media(max-width:600px){.sg-st-grid{max-height:max(200px,calc(100svh - 500px))}}
