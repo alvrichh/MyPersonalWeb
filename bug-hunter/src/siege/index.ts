@@ -231,6 +231,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       <div class="sg-deck" data-sg-cards></div>
       <button data-sg="fire" class="sg-bow" aria-label="${t('siegeCannon')}"><img src="/images/game/arrows/fire.webp" alt=""><span data-sg-bow-label></span></button></div></div>`;
     tab = 'land'; cards();
+    window.addEventListener('resize', layoutBar, battleOptions);
     const canvas = q<HTMLCanvasElement>('canvas'); const ctx = canvas.getContext('2d')!;
     let pointer: { id: number; start: number; camera: number; moved: boolean } | null = null;
     canvas.addEventListener('pointerdown', e => {
@@ -303,7 +304,22 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       ? `<button data-sg="generator"></button><button data-sg="strike"></button><button data-sg="missile"></button>`
       : list.length ? list.map((id, i) => `<button data-sg-summon="${id}" aria-label="${i + 1}. ${name(id)} · ${M.specAt(id, progress.levels[id]).cost}"><img src="${V.portrait(id, progress.levels[id])}" data-trim="${V.portrait(id, progress.levels[id])}" alt=""><small data-sg-cost="${id}"></small><i class="sg-cooldown" data-sg-cooldown="${id}"></i></button>`).join('')
       : `<p class="sg-empty">${t('siegeAirEmpty')}</p>`;
-    V.trimImages(root); updateUi();
+    V.trimImages(root); layoutBar(); updateUi();
+  }
+  /** Siege Cartoon's bar runs the full width, its wall slot repeated (see siege.css): each card is laid on a slot, the
+      repeated ones first (as many as fit, stretched a little to fill), then the picture's own right-hand ones. */
+  function layoutBar() {
+    if (mode !== 'cartoon') return;
+    const bar = root.querySelector<HTMLElement>('.sg-bar'); if (!bar) return;
+    const u = bar.offsetHeight / 378, mid = Math.max(0, bar.clientWidth - 1902 * u), n = Math.max(1, Math.round(mid / (169 * u))), tile = mid / n, k = tile / (169 * u);
+    // The wall between the picture's ends: copies of its first slot, each stretched a little so they fill it exactly.
+    let wall = bar.querySelector<HTMLElement>('.sg-wall');
+    if (!wall) { wall = document.createElement('div'); wall.className = 'sg-wall'; wall.setAttribute('aria-hidden', 'true'); bar.prepend(wall); }
+    if (wall.childElementCount !== n) wall.innerHTML = '<i></i>'.repeat(n);
+    wall.querySelectorAll<HTMLElement>('i').forEach(t => { t.style.backgroundSize = `${(2071 * u * k).toFixed(1)}px 100%`; t.style.backgroundPosition = `${(-639 * u * k).toFixed(1)}px 0`; });
+    const slots = [...Array.from({ length: n }, (_, i) => ({ x: 639 * u + i * tile + 12 * u * k, w: 145 * u * k })),
+      ...[19, 187, 351, 517].map(off => ({ x: 639 * u + mid + (off - 7) * u, w: 145 * u }))];
+    root.querySelectorAll<HTMLElement>('.sg-bar .sg-deck button').forEach((b, i) => { const s = slots[i]; if (s) { b.style.left = `${s.x.toFixed(1)}px`; b.style.width = `${s.w.toFixed(1)}px`; } });
   }
   function updateUi() {
     if (!state) return; const s = state;
