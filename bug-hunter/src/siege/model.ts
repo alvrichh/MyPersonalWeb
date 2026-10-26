@@ -20,6 +20,8 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
   /** What it throws or shoots, a picture from its own sheet (`siege/units/shot-<name>`), and whether it spins in flight
       (a rock, a shuriken) or points along its path (a javelin, an arrow). */
   shot?: string; spin?: boolean;
+  /** Its sheet is drawn facing left (the owner's enemy sheets); the rest face right. */
+  facesLeft?: boolean;
   /** Its upgrade forms, level 2 on (docs/cw2-reference.md): each replaces these stats and looks, bought in the workshop. */
   forms?: Form[] }
 /** An upgrade form: its gold price in the workshop and what it changes. */
@@ -28,7 +30,7 @@ export type Form = Partial<Pick<Spec, 'cost' | 'hp' | 'damage' | 'speed' | 'rang
     1 attack, 2 hurt). `size` is the drawn height in field units, from the stand picture's height (0.62 a pixel) and how
     big the unit is meant to be. Every unit's `id` is its place in this list: ours first (10 land, then 5 air), then
     the enemy's, each one stated as the ally it equals in the reference. */
-const unit = (name: string, px: number, k = 1) => ({ sprite: `siege/units/${name}`, size: Math.round(px * 0.62 * k) });
+const unit = (name: string, px: number, k = 1) => ({ sprite: `siege/units/${name}`, size: Math.round(px * 0.62 * k), facesLeft: name.startsWith('foe-') || undefined });
 /** A six-pose sheet (drawn at a higher resolution: 0.4 a pixel of its first walking pose). */
 const six = (name: string, px: number) => ({ sprite: `siege/units/${name}`, size: Math.round(px * 0.4), six: true });
 export const UNITS: readonly Spec[] = [

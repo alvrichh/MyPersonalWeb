@@ -423,7 +423,11 @@ function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: nu
     else if (gone === undefined && u.elite) { ctx.shadowColor = '#ffd84a'; ctx.shadowBlur = 14; }
     else if (gone === undefined && u.boss) { ctx.shadowColor = '#ff3b3b'; ctx.shadowBlur = 16; }
     if (u.stage) ctx.filter = `brightness(${1 - u.stage * 0.22}) saturate(${1 - u.stage * 0.3})`;
-    ctx.drawImage(art.image, -sw / 2, -dh, dw, dh); ctx.filter = 'none';
+    // Everything is drawn facing its way of march; a sheet drawn facing left is turned round for that (and so keeps its
+    // back edge, the right one, on the first pose's).
+    if (spec.facesLeft) { ctx.save(); ctx.scale(-1, 1); ctx.drawImage(art.image, sw / 2 - dw, -dh, dw, dh); ctx.restore(); }
+    else ctx.drawImage(art.image, -sw / 2, -dh, dw, dh);
+    ctx.filter = 'none';
     if (u.elite && gone === undefined) {
       ctx.shadowBlur = 0; ctx.fillStyle = '#f5e6c8'; ctx.strokeStyle = '#3a2a10'; ctx.lineWidth = 1.5;
       const hw = sw, hh = size;

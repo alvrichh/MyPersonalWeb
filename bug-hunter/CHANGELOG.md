@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.63 - 2026-10-26
+
+### Fixed - Siege: enemies face our side
+- The owner's enemy sheet is drawn facing left, and the game turned every enemy round as if it faced right, so they marched and attacked backwards. Sheets now say which way they face (`facesLeft`, every enemy sheet) and are turned only when needed. The dragon's and the red dragon rider's hurt poses, drawn the other way in the sheet, are flipped to match.
+
 ## 1.14.62 - 2026-10-26
 
 ### Added - Siege: the archer in four forms, throwing its own projectiles
