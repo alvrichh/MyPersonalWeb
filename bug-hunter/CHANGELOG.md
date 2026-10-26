@@ -4,6 +4,14 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.97 - 2026-10-26
+
+### Changed - Siege Cartoon's crossbow
+- The crossbow turns steadily with the aim stick: aimed nearest it points down at the ground before our wall, aimed furthest it points high up; stick up, crossbow up.
+- The bow shoots steadily: always the same speed and the same number of arrows per volley (no more speeding up the longer it shoots). Only the shop's Bow level changes it: its look, the arrows per volley (one per look, four rockets at the last) and how often it fires.
+- A quiver lasts about twice as long (each volley takes half as much).
+- The bow ball loses its orange from the top as the quiver empties (that part of the picture turns grey), and refills as it recharges.
+
 ## 1.14.96 - 2026-10-26
 
 ### Changed

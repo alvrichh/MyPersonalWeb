@@ -109,17 +109,18 @@ test('Backlog can be won with a mixed army and active defenses, without upgrades
   assert.equal(s.phase, 'won', `ended ${s.phase}: ${s.hp}, time ${s.time}`);
 });
 
-test('the bow: a tap starts it, it speeds up, stops on a tap or an empty quiver, and refills only while stopped', () => {
+test('the bow: a tap starts it, it shoots steadily, stops on a tap or an empty quiver, and refills only while stopped', () => {
   const s = m.newSiege(m.freshProgress(), 1); s.nextWave = 999;
   m.toggleBow(s); m.tick(s, 1 / 30);
   assert.equal(s.effects.filter(e => e.kind === 'arrow').length, 1);
-  const slow = m.bowEvery(s.bow); run(s, 3); assert.ok(m.bowEvery(s.bow) < slow, 'faster the longer it shoots'); assert.equal(m.bowCount(s.bow), 2);
+  const every = m.bowEvery(s.bow); run(s, 3); assert.equal(m.bowEvery(s.bow), every, 'always the same speed'); assert.equal(m.bowCount(s.bow), 1, 'and count');
   m.toggleBow(s); const left = s.bow.quiver; assert.equal(s.bow.drawing, false); run(s, 1); assert.ok(s.bow.quiver > left, 'refills while stopped');
   m.toggleBow(s); const before = s.bow.quiver; m.tick(s, 1 / 30); assert.ok(s.bow.quiver < before, 'no refill while shooting');
-  for (let i = 0; i < 900 && s.bow.drawing; i++) m.tick(s, 1 / 30);
+  for (let i = 0; i < 1800 && s.bow.drawing; i++) m.tick(s, 1 / 30);
   assert.equal(s.bow.drawing, false, 'an empty quiver stops it'); assert.ok(s.bow.quiver < m.BOW.cost + 1);
   const p = m.freshProgress(); p.upgrades[3] = 4; const up = m.newSiege(p, 1);
-  assert.ok(m.bowEvery(up.bow) < m.bowEvery(m.newSiege(m.freshProgress(), 1).bow)); assert.equal(m.bowCount(up.bow), 3);
+  assert.ok(m.bowEvery(up.bow) < m.bowEvery(m.newSiege(m.freshProgress(), 1).bow)); assert.equal(m.bowCount(up.bow), 3, 'the shop\'s Bow level adds arrows');
+  p.upgrades[3] = 5; assert.equal(m.bowCount(m.newSiege(p, 1).bow), 4);
 });
 test('air troops fly out of melee reach, ranged troops still hit them; armies keep six of each', () => {
   assert.equal(m.canHit(0, 28), false, 'a swordsman cannot reach an eagle'); assert.equal(m.canHit(2, 28), true, 'an archer shoots it');
