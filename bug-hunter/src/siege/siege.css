@@ -471,9 +471,13 @@
 /* v1.14.93 — the battle bar holds six card slots (the picture's ends and two copied slots), centred; the field runs
    under the phone's safe areas (no dark strips), the HUD, aim and bar kept clear of them; cards on blue tiles. */
 .siege-root.is-cartoon:has(.sg-battle){padding:0;background:#16240f}
-.siege-root.is-cartoon .sg-bar{left:50%;right:auto;width:calc(2240 * var(--u));transform:translateX(-50%)}
 .is-cartoon .sg-hud{padding-left:calc(12px + env(safe-area-inset-left));padding-right:calc(12px + env(safe-area-inset-right));padding-top:calc(6px + env(safe-area-inset-top))}
 .is-cartoon .sg-aim{left:calc(12px + env(safe-area-inset-left))}
 .siege-root.is-cartoon .sg-bar .sg-deck button,.siege-root.is-cartoon .sg-bar .sg-deck button:hover:not(:disabled){border:2px solid #0a2a4a;border-radius:4px;background:radial-gradient(circle at 50% 35%,#7fd0ff,#1e7fd0 70%,#14589a)}
 .siege-root.is-cartoon .sg-bar .sg-deck button:hover:not(:disabled){filter:brightness(1.12)}
 .siege-root.is-cartoon .sg-bar .sg-deck button:disabled{filter:grayscale(.55) brightness(.8)}
+/* v1.14.94 — the bar edge to edge again, lower (more of its bottom rim under the screen's edge); a bigger aim stick. */
+.siege-root.is-cartoon .sg-bar{bottom:calc(-82 * var(--u))}
+.is-cartoon .sg-aim{width:78px!important;height:min(210px,60%)!important}
+.is-cartoon .sg-aim-knob{width:74px;height:62px}
+@media (max-height:500px) and (orientation:landscape){.is-cartoon .sg-aim{width:62px!important;height:min(170px,58%)!important}.is-cartoon .sg-aim-knob{width:58px;height:48px}}
