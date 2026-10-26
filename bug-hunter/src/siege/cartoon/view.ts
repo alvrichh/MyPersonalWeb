@@ -318,7 +318,8 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     const art = still('siege/units/shot-rocket'); if (!ok(art)) return false;
     // From the crossbow on our battlement (`bowAt`) to the aim.
     const from = e.side ? e.from : bowTip.x, y0 = e.side ? ground - 110 : bowTip.y;
-    const peak = Math.min(190, Math.max(20, y0 - 24)), at = e.side ? (t: number) => ({ x: from + (e.x - from) * t, y: y0 + (ground + 10 - y0) * t - Math.sin(t * Math.PI) * peak }) : flight({ x: from, y: y0 }, { x: e.x, y: ground + 4 });
+    // A missile flies straight at its spot, no gravity.
+    const at = (t: number) => ({ x: from + (e.x - from) * t, y: y0 + (ground + 4 - y0) * t });
     const here = at(p), ahead = dirAt(at, p), len = 64, h = len * art.naturalHeight / art.naturalWidth;
     ctx.save(); ctx.translate(here.x, here.y); ctx.rotate(Math.atan2(ahead.y - here.y, ahead.x - here.x || 0.001));
     ctx.drawImage(art, -len / 2, -h / 2, len, h); ctx.restore(); return true;
@@ -390,11 +391,12 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     ctx.fillStyle = '#fff6cf'; ctx.beginPath(); ctx.arc(x, hand, 1.8, 0, Math.PI * 2); ctx.fill(); ctx.restore(); return true;
   }
   if (e.kind === 'shot' && e.art) {
-    // A troop's own projectile from its sheet (a rock, a javelin, an arrow, a shuriken): a low arc from the thrower's
-    // hand to the target, spinning or pointing along its path, drawn at the sheets' scale.
+    // A troop's own projectile from its sheet (a rock, a javelin, an arrow, a shuriken): from the thrower's hand
+    // straight to the target, spinning or pointing along its path, drawn at the sheets' scale.
     const art = still(`siege/units/shot-${e.art}`); if (!ok(art)) return false;
-    const hand = y - 14, lift = Math.min(60, Math.abs(e.x - e.from) * 0.18);
-    const at = (t: number) => ({ x: e.from + (e.x - e.from) * t, y: hand + 8 * t - Math.sin(t * Math.PI) * lift });
+    // Straight from the thrower's hand to the target, no gravity.
+    const hand = y - 14;
+    const at = (t: number) => ({ x: e.from + (e.x - e.from) * t, y: hand });
     const here = at(p), ahead = dirAt(at, p), w = art.naturalWidth * 0.4, h = art.naturalHeight * 0.4;
     ctx.save(); ctx.translate(here.x, here.y);
     ctx.rotate(e.spin ? p * 14 * (e.x > e.from ? 1 : -1) : Math.atan2(ahead.y - here.y, ahead.x - here.x || 0.001));
@@ -405,10 +407,9 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     const art = still(e.kind === 'arrow' ? bolt : close ? 'fx/impact.webp' : e.side ? 'arrows/leaf.webp' : 'arrows/water.webp');
     if (!ok(art)) return false;
     if (close) { ctx.save(); ctx.globalAlpha = 1 - p; ctx.drawImage(art, e.x - 15, y - 15, 30, 30); ctx.restore(); return true; }
-    // Our arrows leave the crossbow's tip and fly under gravity onto their spot (`flight`); a troop's shot flies a low,
-    // flat arc.
+    // Our arrows leave the crossbow's tip and fly under gravity onto their spot (`flight`); a troop's shot flies straight.
     const at = e.kind === 'arrow' ? flight(bowTip, { x: e.x, y: ground - 2 })
-      : (t: number) => ({ x: e.from + (e.x - e.from) * t, y: y - Math.sin(t * Math.PI) * 30 });
+      : (t: number) => ({ x: e.from + (e.x - e.from) * t, y });
     const here = at(p), ahead = dirAt(at, p);
     const len = e.kind === 'arrow' ? (bolt.endsWith('rocket') ? 46 : 60) : 40, h = len * art.naturalHeight / art.naturalWidth;
     ctx.save(); ctx.translate(here.x, here.y); ctx.rotate(Math.atan2(ahead.y - here.y, ahead.x - here.x || 0.001));

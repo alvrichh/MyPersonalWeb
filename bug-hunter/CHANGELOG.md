@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.11 - 2026-10-26
+
+### Changed
+- Siege Cartoon: troops' shots (bullets, rockets, the archer's arrows, javelins, rocks, shurikens, spells' flights) and the missile fly straight, with no gravity. Our crossbow's arrows keep their flight, nearly straight up close and falling from the sky at the furthest aim.
+
 ## 1.15.10 - 2026-10-26
 
 ### Changed - Siege Cartoon's music
