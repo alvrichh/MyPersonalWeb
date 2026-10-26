@@ -31,6 +31,8 @@ Every Siege change that touches what is drawn or where controls sit is checked b
 4. Compare both orientations; a fix for one must not break the other.
 5. Report what was checked and what was not (for example "only world 4 was looked at").
 
+The fortresses are one design each for now (world-themed ones may come later as skins): ours `siege/castle-1..3` by the workshop's Fortress level (0-1, 2-3, 4-5), the enemy's `siege/enemy-1..3` by world (1-3, 4-6, 7-9), both side on. Our crossbow (`siege/xbow-base-N` and `siege/xbow-arm-N`, by the Bow level the same way) stands on our battlement; its arm turns towards the aim and the arrows and missile leave from it. Damage shows as smoke under 60% health and flames under 30%, drawn over the picture. Their sizes and the crossbow's seat are `CASTLES`, `ENEMY_H` and `XBOW` in `src/siege/view.ts`.
+
 The bridge (`ui/bench/bench-N`) is the ground: `BRIDGE` in `src/siege/view.ts` sets its piece width, where its deck sits on the ground line and the overlap of its posts. The aim control's place is in `src/siege/siege.css` (`.sg-aim`).
 
 ## Architecture and compatibility

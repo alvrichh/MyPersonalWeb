@@ -20,7 +20,8 @@ assets/
 │   └── 09-the-core/
 ├── shared/
 └── special/
-    └── secret-shift/
+    ├── secret-shift/
+    └── siege/
 ```
 
 ## World-specific assets
@@ -90,6 +91,7 @@ Special-mode art that does not belong to one of the nine normal worlds lives und
 Current special set:
 
 - [`special/secret-shift/bosses/`](../assets/special/secret-shift/bosses/) — Secret Shift boss sprites.
+- [`special/siege/`](../assets/special/siege/) — Siege's side-view fortresses: ours (`castle-1..3`) and the enemy's (`enemy-1..3`), one per upgrade/difficulty level, and our crossbow turret's base and arm (`xbow-base-1..3`, `xbow-arm-1..3`, the arm drawn horizontal, pointing right, pivot at its left end).
 
 ## Repository path vs browser URL
 
@@ -103,6 +105,7 @@ Never assume the repository folder is the browser path.
 | `assets/shared/skills/fire.webp` | `/images/game/skills/fire.webp` |
 | `assets/shared/ui/logo.webp` | `/images/game/ui/logo.webp` |
 | `assets/special/secret-shift/bosses/kratos-0.webp` | `/images/game/bosses/kratos-0.webp` |
+| `assets/special/siege/castle-1.webp` | `/images/game/siege/castle-1.webp` |
 
 Runtime TypeScript, CSS and HTML should continue to reference `/images/game/...`. Do not introduce runtime URLs containing `/worlds/`, `/shared/` or `/special/`.
 
