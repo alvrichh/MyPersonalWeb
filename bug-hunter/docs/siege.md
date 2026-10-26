@@ -21,7 +21,7 @@ The nine preview stages reuse world enemy art and share the initial guardian sil
 - The battlefield pauses on tab hiding or window blur. Returning requires Resume. Time does not advance while paused.
 - The mode is a modal with background content inert, a focus loop, accessible button labels and reduced-motion support. All copy is in `src/strings.ts` in English and Spanish.
 
-The roster is moving to Cartoon Wars 2's (our 15 units, the enemy roster by act, six bosses), with all-new art: see [siege-roster.md](./siege-roster.md) for the units, their rules and the sprite-sheet format.
+The roster is moving to Cartoon Wars 2's (our 15 units, the enemy roster by act, six bosses), with all-new art: see [siege-roster.md](./siege-roster.md) for the units, their rules and the sprite-sheet format, and [cw2-reference.md](./cw2-reference.md) for each unit's levels and looks.
 
 ## Layout rule (always)
 
