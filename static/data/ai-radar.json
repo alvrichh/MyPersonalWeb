@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-24T12:24:55.094Z",
-  "date": "2026-10-24",
+  "generatedAt": "2026-10-26T14:47:30.645Z",
+  "date": "2026-10-26",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
@@ -9,7 +9,7 @@
     {
       "title": "Expanding the Cyber Verification Program",
       "source": "Anthropic News",
-      "date": "2026-10-24",
+      "date": "2026-10-26",
       "url": "https://www.anthropic.com/news/cyber-verification-program",
       "summary": "We’re launching a new, expanded version of our Cyber Verification Program, which makes advanced cyber capabilities and reduced blocking classifiers available to qualifying security professionals.",
       "tags": [
@@ -20,7 +20,7 @@
     {
       "title": "Donating Agent Skills to the Agentic AI Foundation",
       "source": "Anthropic News",
-      "date": "2026-10-24",
+      "date": "2026-10-26",
       "url": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -32,7 +32,7 @@
     {
       "title": "Introducing the Anthropic Cyber Mission",
       "source": "Anthropic News",
-      "date": "2026-10-24",
+      "date": "2026-10-26",
       "url": "https://www.anthropic.com/news/anthropic-cyber-mission",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -43,13 +43,27 @@
     {
       "title": "Security",
       "source": "Anthropic News",
-      "date": "2026-10-24",
+      "date": "2026-10-26",
       "url": "https://www.anthropic.com/news/security",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
         "Claude"
       ],
       "image": "https://www-cdn.anthropic.com/images/4zrzovbb/website/6d4a0d28992ade92d6fa63646fd9c9d318245c6c-2400x1260.jpg"
+    },
+    {
+      "title": "battledrones v14: Compass Rose, a four player map",
+      "source": "Simon Willison",
+      "date": "2026-10-24",
+      "url": "https://simonwillison.net/2026/Oct/24/battledrones/",
+      "summary": "Release: battledrones v14: Compass Rose, a four player map I added four player online mode to Battledrones - previous maps were limited to two. Here's the initial prompt I used: Add a new map for a four player battle - f...",
+      "tags": [
+        "Claude",
+        "Dev Tools",
+        "Multimodal",
+        "Models"
+      ],
+      "image": "https://raw.githubusercontent.com/simonw/battledrones/v14/progress-shots/v14/compass-rose.jpg"
     },
     {
       "title": "Multi-Turn Reinforcement Learning on Amazon SageMaker AI: A hands-on guide",
@@ -228,17 +242,6 @@
         "Models"
       ],
       "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2025/02/STK155_OPEN_AI_2025_CVirgiia_B_d6ffc8.jpg?quality=90&strip=all&crop=0,0,100,100"
-    },
-    {
-      "title": "Jack Dorsey’s Block made an AI model that talks to you like an awkward new friend",
-      "source": "The Verge AI",
-      "date": "2026-10-23",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1017906/jack-dorsey-block-dessa-ai-voice-speech",
-      "summary": "Jack Dorsey's Block announced an AI model called Dessa that's trained \"from scratch on nothing but human conversation,\" and to show off the model, Block shared chats it has had with humans that can occasionally be a litt...",
-      "tags": [
-        "Models"
-      ],
-      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/09/STKS536_AI_HALLUCINATION_B.png?quality=90&strip=all&crop=0,0,100,100"
     }
   ],
   "candidates": [
@@ -251,7 +254,7 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
-          "date": "2026-10-24"
+          "date": "2026-10-26"
         },
         {
           "title": "Multi-Turn Reinforcement Learning on Amazon SageMaker AI: A hands-on guide",
@@ -276,18 +279,18 @@
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
+          "date": "2026-10-26"
+        },
+        {
+          "title": "battledrones v14: Compass Rose, a four player map",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/24/battledrones/",
           "date": "2026-10-24"
         },
         {
           "title": "Quick Study",
           "source": "Simon Willison",
           "link": "https://simonwillison.net/2026/Oct/23/quick-study-painter/",
-          "date": "2026-10-23"
-        },
-        {
-          "title": "Introducing Kimi K3.1 Pro",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/23/kimi-k31-pro/",
           "date": "2026-10-23"
         }
       ]

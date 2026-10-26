@@ -1,11 +1,11 @@
-# Daily AI maintenance report — 2026-10-24
+# Daily AI maintenance report — 2026-10-26
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
 ## Source status
 
 - OpenAI News: OK (8 relevant items)
-- Anthropic News: OK (8 relevant items)
+- Anthropic News: OK (7 relevant items)
 - Google AI Blog: OK (4 relevant items)
 - Google DeepMind: OK (8 relevant items)
 - Hugging Face: OK (8 relevant items)
@@ -17,26 +17,30 @@ This file is generated automatically by the daily maintenance workflow. It updat
 - NVIDIA Developer: OK (8 relevant items)
 - Ars Technica AI: OK (3 relevant items)
 - MIT Technology Review AI: OK (8 relevant items)
-- The Verge AI: OK (4 relevant items)
+- The Verge AI: OK (3 relevant items)
 
 ## Relevant AI updates
 
-- **Expanding the Cyber Verification Program** — Anthropic News · 2026-10-24
+- **Expanding the Cyber Verification Program** — Anthropic News · 2026-10-26
   https://www.anthropic.com/news/cyber-verification-program
-- **Donating Agent Skills to the Agentic AI Foundation** — Anthropic News · 2026-10-24
+- **Donating Agent Skills to the Agentic AI Foundation** — Anthropic News · 2026-10-26
   https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation
-- **Introducing the Anthropic Cyber Mission** — Anthropic News · 2026-10-24
+- **Introducing the Anthropic Cyber Mission** — Anthropic News · 2026-10-26
   https://www.anthropic.com/news/anthropic-cyber-mission
-- **Security** — Anthropic News · 2026-10-24
+- **Security** — Anthropic News · 2026-10-26
   https://www.anthropic.com/news/security
-- **Barclays scales Claude to upgrade operations and improve client experience** — Anthropic News · 2026-10-24
+- **Barclays scales Claude to upgrade operations and improve client experience** — Anthropic News · 2026-10-26
   https://www.anthropic.com/news/barclays-scales-claude
-- **Partnering with Accenture on embedded evaluation** — Anthropic News · 2026-10-24
+- **Partnering with Accenture on embedded evaluation** — Anthropic News · 2026-10-26
   https://www.anthropic.com/news/accenture-embedded-evaluation
-- **Improving our alignment and security efforts** — Anthropic News · 2026-10-24
+- **Improving our alignment and security efforts** — Anthropic News · 2026-10-26
   https://www.anthropic.com/news/improving-alignment-security-efforts
-- **Previewing the Model Hardware Standard** — Anthropic News · 2026-10-24
-  https://www.anthropic.com/news/model-hardware-standard-research-preview
+- **Seam Cutter** — Simon Willison · 2026-10-25
+  https://simonwillison.net/2026/Oct/25/seam-cutter/
+- **r/opensource just banned AI, non-English speakers, and more** — The Verge AI · 2026-10-25
+  https://www.theverge.com/ai-artificial-intelligence/1018217/reddit-opensource-ai-ban
+- **battledrones v14: Compass Rose, a four player map** — Simon Willison · 2026-10-24
+  https://simonwillison.net/2026/Oct/24/battledrones/
 - **Multi-Turn Reinforcement Learning on Amazon SageMaker AI: A hands-on guide** — AWS Machine Learning · 2026-10-23
   https://aws.amazon.com/blogs/machine-learning/multi-turn-reinforcement-learning-on-amazon-sagemaker-ai-a-hands-on-guide/
 - **Orchestrating SageMaker AI endpoint auto scaling with AWS CDK** — AWS Machine Learning · 2026-10-23
@@ -107,10 +111,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://simonwillison.net/2026/Oct/22/donating-agent-skills/
 - **Quoting Armin Ronacher** — Simon Willison · 2026-10-22
   https://simonwillison.net/2026/Oct/22/armin-ronacher/
-- **Canva’s first AI image model plans designs before generating them** — The Verge AI · 2026-10-22
-  https://www.theverge.com/ai-artificial-intelligence/1017151/canva-craft-in-house-ai-model
-- **Meta’s AI could still scrape news sites, legal experts say** — The Verge AI · 2026-10-22
-  https://www.theverge.com/tech/1017082/meta-terms-update-ai-training-concerns
 - **OpenAI's latest AI models are coming to Google Cloud and Antigravity** — Ars Technica AI · 2026-10-21
   https://arstechnica.com/ai/2026/10/openais-latest-ai-models-are-coming-to-google-cloud-and-antigravity/
 - **NVIDIA Kumo Relational Outperforms Supervised Machine Learning on Relational Data, No Training Required** — Hugging Face · 2026-10-21
@@ -149,10 +149,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.technologyreview.com/2026/10/20/1145423/ai-adoption-by-industry-shows-what-other-sectors-can-learn/
 - **A visit to Samsung’s massive new semiconductor hub** — MIT Technology Review AI · 2026-10-20
   https://www.technologyreview.com/2026/10/20/1145916/dispatch-visit-to-samsung-massive-new-semiconductor-hub/
-- **eMudhra Intermediate CA Compromise** — Simon Willison · 2026-10-20
-  https://simonwillison.net/2026/Oct/20/emudhra-certificates/
-- **Battle Drones - a vibe coded RTS with audio-based multiplayer** — Simon Willison · 2026-10-20
-  https://simonwillison.net/2026/Oct/20/battledrones/
 - **Designing for sovereign AI: A shared foundation from edge to cloud** — Azure Blog · 2026-10-19
   https://azure.microsoft.com/en-us/blog/designing-for-sovereign-ai-a-shared-foundation-from-edge-to-cloud/
 - **How to continue a GitHub Copilot app session in VS Code** — GitHub AI & ML Blog · 2026-10-19
@@ -181,6 +177,10 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://deepmind.google/blog/gemini-4-argon-for-robotics/
 - **Gemini 4 Argon: Built to solve your hardest problems** — Google DeepMind · 2026-10-13
   https://deepmind.google/blog/introducing-gemini-4-argon/
+- **Deep dive into Azure Maia 300 architecture** — Azure Blog · 2026-10-12
+  https://azure.microsoft.com/en-us/blog/deep-dive-into-azure-maia-300-architecture/
+- **GitHub Copilot app for Beginners: How to teach Copilot about your codebase** — GitHub AI & ML Blog · 2026-10-12
+  https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-teach-copilot-about-your-codebase/
 
 ## Portfolio candidates
 
