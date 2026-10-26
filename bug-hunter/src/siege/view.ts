@@ -1,4 +1,4 @@
-import { FIELD, FOE_AIR, FOE_LAND, KNOCK, UNITS, specAt, specOf, aimAt, enemyTier, energyMax, looksTier, type Effect, type Fighter, type Siege } from './model';
+import { FIELD, FOE_AIR, FOE_LAND, KNOCK, SPELLS, UNITS, specAt, specOf, aimAt, enemyTier, energyMax, looksTier, type Effect, type Fighter, type Siege } from './model';
 
 /** Each world's ground colours, under its floor while that loads (moss, embers, snow, mud, jungle, sand, iron,
     haunted stone, crystal); the third is unused pebble colour kept for a later side strip. */
@@ -45,7 +45,7 @@ export function preload(world: number, deck: number[], levels: number[] = []) {
   const specs = [...deck.map(id => specAt(id, levels[id])), ...foes.map(id => UNITS[id])];
   specs.forEach(spec => { for (let f = 0; f < (spec.six ? 6 : 3); f++) picture(`${spec.sprite}-${f}`); });
   // The battlefield, and the fortresses and crossbow at every level (the workshop can change ours between battles).
-  [SCENE, ...['rock', 'javelin', 'arrow', 'shuriken', 'rocket', 'rockets'].map(n => `siege/units/shot-${n}`), ...[1, 2, 3].flatMap(n => [`siege/castle-${n}`, `siege/enemy-${n}`, `siege/xbow-base-${n}`, `siege/xbow-arm-${n}`]), ...FX].forEach(still);
+  [SCENE, ...['rock', 'javelin', 'arrow', 'shuriken', 'rocket', 'rockets', ...SPELLS].map(n => `siege/units/shot-${n}`), ...[1, 2, 3].flatMap(n => [`siege/castle-${n}`, `siege/enemy-${n}`, `siege/xbow-base-${n}`, `siege/xbow-arm-${n}`]), ...FX].forEach(still);
 }
 /** The battlefield, one picture for every world for now (the owner's: our green side left, the bugs' red one right):
     drawn across the field with `pad` field units past each end, its walking ground (`ground`, a share of its height)
@@ -259,6 +259,17 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     ctx.beginPath(); const n = 6;
     for (let i = 0; i <= n; i++) { const t = i / n, x = e.from + (e.x - e.from) * t, jag = i % n ? ((i * 37 + Math.floor(p * 8)) % 7 - 3) * 4 : 0; i ? ctx.lineTo(x, y + jag) : ctx.moveTo(x, y); }
     ctx.stroke(); ctx.restore(); return true;
+  }
+  if (e.kind === 'shot' && e.art && SPELLS.includes(e.art)) {
+    // A wizard's spell lands on the target: the lightning and the tornado stand on it (the tornado turning a little),
+    // the meteor comes down from above onto it; all fade at the end.
+    const art = still(`siege/units/shot-${e.art}`); if (!ok(art)) return false;
+    const h = e.art === 'meteor' ? 150 : 120, w = h * art.naturalWidth / art.naturalHeight, foot = ground + e.lane * 12;
+    const drop = e.art === 'meteor' ? Math.max(0, 1 - p * 1.6) * 140 : 0;
+    ctx.save(); ctx.globalAlpha = p > 0.75 ? (1 - p) / 0.25 : 1;
+    ctx.translate(e.x + drop * 0.5, foot - drop);
+    if (e.art === 'tornado') ctx.scale(1 + Math.sin(p * 18) * 0.05, 1);
+    ctx.drawImage(art, -w / 2, -h, w, h); ctx.restore(); return true;
   }
   // A flamethrower's flame is in its attack pose: nothing flies.
   if (e.kind === 'shot' && e.art === 'none') return true;
