@@ -1,4 +1,4 @@
-import { actOf, foesAt, FIELD, FOE_AIR, FOE_LAND, GUARDIAN, KNOCK, SPELLS, UNITS, isBeam, isBullet, specAt, specOf, aimAt, enemyTier, energyMax, looksTier, type Effect, type Fighter, type Siege } from './model';
+import { actOf, foesAt, FIELD, FLY, FOE_AIR, FOE_LAND, GUARDIAN, KNOCK, SPELLS, UNITS, isBeam, isBullet, specAt, specOf, aimAt, enemyTier, energyMax, looksTier, type Effect, type Fighter, type Siege } from './model';
 import { gloom } from './story';
 
 /** Each world's ground colours, under its floor while that loads (moss, embers, snow, mud, jungle, sand, iron,
@@ -311,7 +311,7 @@ function dirAt(at: (t: number) => { x: number; y: number }, p: number) {
   return { x: here.x + (b.x - a.x), y: here.y + (b.y - a.y) };
 }
 /** The height a troop's shot leaves from or flies to: a hand's height on the ground, a flyer's middle in the air. */
-const shotY = (air: boolean | undefined, y: number) => y - 15 - (air ? 60 : 0);
+const shotY = (up: number | undefined, y: number) => y - 15 - Math.max(0, (up ?? 0) - 10);
 /** Every picture a troop's attack shows on its way (`siege/units/shot-<name>`): thrown things, rockets, bullets, beams. */
 const SHOTS = ['rock', 'javelin', 'arrow', 'shuriken', 'rocket', 'rockets', 'salvo', 'ice', 'plasma', 'crescent', 'missile', 'bullet', 'bullet-rifle', 'bullet-uzi', 'bullet-sniper', 'ray', 'ray-blue', 'ray-gold', 'ray-pink'];
 /** The effect art: our crossbow's Cartoon arrows (or rockets) and missile, the old painted arrows (water for our troops,
@@ -383,14 +383,14 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     // A beam (the ray gun's cyan, the mech's blue, the archangel's gold, the air magician's pink lightning): its picture
     // stretched from the muzzle to the target at once, fading.
     const art = still(`siege/units/shot-${e.art}`); if (!ok(art)) return false;
-    const y0 = shotY(e.fromAir, y), y1 = shotY(e.toAir, y), len = Math.hypot(e.x - e.from, y1 - y0), h = 12;
+    const y0 = shotY(e.fromUp, y), y1 = shotY(e.toUp, y), len = Math.hypot(e.x - e.from, y1 - y0), h = 12;
     ctx.save(); ctx.globalAlpha = 1 - p; ctx.translate(e.from, y0); ctx.rotate(Math.atan2(y1 - y0, e.x - e.from));
     ctx.drawImage(art, 0, -h / 2, len, h); ctx.restore(); return true;
   }
   if (e.kind === 'shot' && isBullet(e.art)) {
     // A bullet (each gun its own: pistol, rifle, Uzis, sniper), straight and fast from the muzzle to the target.
     const art = still(`siege/units/shot-${e.art}`); if (!ok(art)) return false;
-    const y0 = shotY(e.fromAir, y), y1 = shotY(e.toAir, y), x = e.from + (e.x - e.from) * p;
+    const y0 = shotY(e.fromUp, y), y1 = shotY(e.toUp, y), x = e.from + (e.x - e.from) * p;
     const w = art.naturalWidth * 0.4, h = art.naturalHeight * 0.4;
     ctx.save(); ctx.translate(x, y0 + (y1 - y0) * p); ctx.rotate(Math.atan2(y1 - y0, e.x - e.from));
     ctx.drawImage(art, -w, -h / 2, w, h); ctx.restore(); return true;
@@ -400,7 +400,7 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     // straight to the target, spinning or pointing along its path, drawn at the sheets' scale.
     const art = still(`siege/units/shot-${e.art}`); if (!ok(art)) return false;
     // Straight from the thrower's hand to the target, no gravity.
-    const y0 = shotY(e.fromAir, y), y1 = shotY(e.toAir, y);
+    const y0 = shotY(e.fromUp, y), y1 = shotY(e.toUp, y);
     const at = (t: number) => ({ x: e.from + (e.x - e.from) * t, y: y0 + (y1 - y0) * t });
     const here = at(p), ahead = dirAt(at, p), w = art.naturalWidth * 0.4, h = art.naturalHeight * 0.4;
     ctx.save(); ctx.translate(here.x, here.y);
@@ -516,7 +516,7 @@ function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: nu
   // Air troops fly above their lane, their shadow on the ground under them; the fallen lie on the ground.
   // Every troop on one line (the lanes only order who is drawn in front), so the card bar never hides one.
   const spec = specOf(u), floor = ground;
-  const y = gone !== undefined ? floor : spec.air ? floor - 70 - u.lane * 8 + (reduced ? 0 : Math.sin(s.time * 4 + u.uid) * 5) : floor;
+  const y = gone !== undefined ? floor : spec.air ? floor - (u.alt ?? FLY.high) - u.lane * 8 + (reduced ? 0 : Math.sin(s.time * 4 + u.uid) * 5) : floor;
   const path = spec.sprite, t = s.time + u.uid * 0.37;
   // The pose. Six-pose sheets: walk A/B in turn while walking, the wind-up just before a blow, the blow, hurt, dead.
   // Three-pose sheets: stand (walking in code), attack, hurt.
@@ -550,6 +550,8 @@ function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: nu
       lift = Math.abs(step) * (spec.six ? 1.6 : 3.2);
       if (!spec.six) { sy = 1 - (1 - Math.abs(step)) * 0.05; sx = 1 + (1 - Math.abs(step)) * 0.03; lean = step * 0.05 + 0.04; }
     } else if (!spec.air) sy = 1 + Math.sin(t * 3) * 0.015;
+    // Aiming up at a flyer: leaning back on its feet, the weapon raised.
+    if (u.aimUp && gone === undefined && !u.knock && !u.stun && !reduced) lean -= 0.3;
     ctx.save(); ctx.translate(u.x + (u.side ? -push : push), y - lift); if (u.side) ctx.scale(-1, 1);
     if (gone !== undefined) ctx.globalAlpha = gone < 0.66 ? 1 : 1 - (gone - 0.66) / 0.34;
     ctx.rotate(lean); ctx.scale(sx, sy);

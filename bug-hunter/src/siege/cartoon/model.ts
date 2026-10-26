@@ -287,6 +287,8 @@ export interface Fighter { uid: number; id: number; side: 0 | 1; x: number; lane
   blown?: number;
   /** An arrow's nudge: seconds left being pushed back, and until it can be nudged again. */
   nudge?: number; nudgeCd?: number;
+  /** A flyer's height over the ground (`FLY`), lower while it fights a walker; a walker aiming up at a flyer. */
+  alt?: number; aimUp?: boolean;
   /** How much bigger an enemy is drawn than its troop (it grows world by world, stage by stage). */
   grow?: number }
 /** A blow taking at least this share of a troop's health knocks it: infantry fly back (`KNOCK.back` field units over
@@ -297,8 +299,8 @@ export interface Effect { x: number; from: number; lane: number; life: number; m
   gold?: number; mana?: number;
   /** A shot's own projectile picture (`Spec.shot`) and whether it spins. */
   art?: string; spin?: boolean;
-  /** A shot from a flyer, or at one: it leaves from (or flies to) that height instead of the ground's. */
-  fromAir?: boolean; toAir?: boolean }
+  /** A shot from a flyer, or at one: the height (`Fighter.alt`) it leaves from, or flies to, instead of the ground's. */
+  fromUp?: number; toUp?: number }
 export interface Siege {
   world: number; phase: 'fight' | 'won' | 'lost'; time: number; energy: number; generator: number; cooldowns: Record<number, number>;
   hp: [number, number]; maxHp: [number, number]; units: Fighter[]; effects: Effect[]; nextId: number; nextWave: number; waves: number; kills: number;
@@ -417,6 +419,9 @@ function damageArea(s: Siege, x: number, radius: number, damage: number, life = 
     how often it fires. */
 /** Our arrows' nudge: `back` field units a second for `time` seconds, at most once every `every` seconds. */
 export const NUDGE = { back: 85, time: 0.14, every: 0.8 };
+/** How high flyers fly (field units over the ground): cruising, and swooping down on a walker they fight (lower still
+    for one that strikes in close), changing height at `rate` a second. */
+export const FLY = { high: 70, ranged: 45, close: 22, rate: 90 };
 export const BOW = { max: 100, cost: 1.2, regen: 12, every: 0.42, step: 0.03, damage: 16, gap: 24 };
 export interface Bow { quiver: number; drawing: boolean; held: number; next: number; level: number }
 export const aimAt = (x: number) => Math.max(140, Math.min(1080, x));
@@ -513,13 +518,18 @@ export function tick(s: Siege, dt: number) {
     const enemy = alive.filter(v => v.side !== u.side && reaches(u, v)).sort((a, b) => Math.abs(a.x - u.x) - Math.abs(b.x - u.x))[0];
     const baseX = u.side ? 80 : FIELD - 80;
     const distance = enemy ? Math.abs(enemy.x - u.x) : Infinity;
+    const near = !!enemy && distance <= a.range + UNITS[enemy.id].size * 0.25 + 60;
+    if (a.air) {
+      const want = near && !UNITS[enemy.id].air ? (a.range <= 60 ? FLY.close : FLY.ranged) : FLY.high, alt = u.alt ?? FLY.high;
+      u.alt = alt + Math.max(-FLY.rate * dt, Math.min(FLY.rate * dt, want - alt));
+    } else u.aimUp = near && !!UNITS[enemy.id].air;
     if (enemy && distance <= a.range + UNITS[enemy.id].size * 0.25) {
       if (u.attack <= 0) {
         u.attack = a.rate; u.hit = 0.3;
         for (const v of alive) if (v.side !== u.side && reaches(u, v) && (v === enemy || (a.splash && Math.abs(v.x - enemy.x) < a.splash))) hits.push({ target: v, damage: u.damage });
         // A thrown or shot projectile of its own flies a little longer, so it is seen on its way.
         const flight = isBullet(a.shot) || isBeam(a.shot) ? 0.16 : SPELLS.includes(a.shot ?? '') ? 0.6 : a.shot ? 0.35 : 0.2;
-        s.effects.push({ x: enemy.x, from: u.x, lane: enemy.lane, life: flight, max: flight, kind: u.elite ? 'bolt' : 'shot', side: u.side, art: a.shot, spin: a.spin, fromAir: !!a.air, toAir: !!UNITS[enemy.id].air });
+        s.effects.push({ x: enemy.x, from: u.x, lane: enemy.lane, life: flight, max: flight, kind: u.elite ? 'bolt' : 'shot', side: u.side, art: a.shot, spin: a.spin, fromUp: a.air ? u.alt ?? FLY.high : 0, toUp: UNITS[enemy.id].air ? enemy.alt ?? FLY.high : 0 });
         hear(s, soundsOf(u)[0], u.x);
       }
     } else if (Math.abs(baseX - u.x) <= a.range + 35) {
