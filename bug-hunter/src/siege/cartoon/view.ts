@@ -161,7 +161,7 @@ function base(ctx: CanvasRenderingContext2D, s: Siege, x: number, ground: number
 function bowAngle(s: Siege, ground: number) {
   // Aimed as a real crossbow would be: the angle whose shot, at the bow's one speed and under gravity, lands on the aim
   // (the flatter of the two). Near aims point down at the ground before our wall, far ones rise.
-  return launchAngle(aimAt(s.aim) - bowAt.x, ground - 2 - bowAt.y);
+  const x = aimAt(s.aim); return shotFor(x - bowAt.x, ground - 2 - bowAt.y, x).a;
 }
 /** Our crossbow's shots: one launch speed and gravity (field units, seconds). */
 const SHOT = { v: 1900, g: 900 };
@@ -171,10 +171,22 @@ function launchAngle(dx: number, dy: number) {
   const { v, g } = SHOT, x = Math.max(1, dx), up = -dy, d = v ** 4 - g * (g * x * x + 2 * up * v * v);
   return d < 0 ? -Math.PI / 4 : -Math.atan((v * v - Math.sqrt(d)) / (g * x));
 }
+/** From this aim on, shots rise more and more, until at the furthest they climb steeply and fall from the sky. */
+const LOB = { from: 650, to: 1080, steepest: -1.0 };
+/** A shot's launch angle and speed to land `dx` ahead and `dy` below: a hard, nearly straight shot (`SHOT.v`, the
+    flatter solution) up to `LOB.from`; past it the angle climbs towards `LOB.steepest` and the speed is the one that
+    still lands it there. */
+function shotFor(dx: number, dy: number, aim: number) {
+  const flat = launchAngle(dx, dy), k = Math.max(0, Math.min(1, (aim - LOB.from) / (LOB.to - LOB.from)));
+  const a = k > 0 ? Math.min(flat, flat + (LOB.steepest - flat) * k * k) : flat;
+  if (a === flat) return { a, v: SHOT.v };
+  const x = Math.max(1, dx), c = Math.cos(a), drop = dy - x * Math.tan(a);
+  return { a, v: drop > 0 ? Math.sqrt(SHOT.g * x * x / (2 * c * c * drop)) : SHOT.v };
+}
 /** A shot's flight from `from` to the spot `to`: the launch angle for it, and the point at a share `p` of the way (by
     time), under gravity, so it leaves along that angle and lands on the spot. */
 function flight(from: { x: number; y: number }, to: { x: number; y: number }) {
-  const a = launchAngle(to.x - from.x, to.y - from.y), vx = SHOT.v * Math.cos(a), vy = SHOT.v * Math.sin(a);
+  const { a, v } = shotFor(to.x - from.x, to.y - from.y, to.x), vx = v * Math.cos(a), vy = v * Math.sin(a);
   const T = Math.max(0.05, (to.x - from.x) / Math.max(1, vx));
   return (p: number) => { const t = p * T; return { x: from.x + vx * t, y: from.y + vy * t + SHOT.g * t * t / 2 }; };
 }

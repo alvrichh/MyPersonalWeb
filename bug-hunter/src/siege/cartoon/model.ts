@@ -396,7 +396,9 @@ function arrows(s: Siege, count: number) {
   for (let i = 0; i < count; i++) {
     const at = x + (i - (count - 1) / 2) * BOW.gap;
     for (const u of s.units) if (u.side === 1 && Math.abs(u.x - at) <= 28) { u.hp -= BOW.damage * s.power; u.flash = 0.18; }
-    s.effects.push({ x: at, from: 80, lane: i % 3, life: 0.5, max: 0.5, kind: 'arrow', side: 0 });
+    // Far shots are lobbed (the view draws them climbing and falling from the sky): they stay longer in the air.
+    const air = 0.5 + 0.45 * Math.max(0, Math.min(1, (x - 650) / 430));
+    s.effects.push({ x: at, from: 80, lane: i % 3, life: air, max: air, kind: 'arrow', side: 0 });
   }
 }
 /** Start (true) or stop (false) the archers; they only start with at least one shot in the quiver. */
