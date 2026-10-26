@@ -452,7 +452,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       const heroName = hero.name.replace(/[&<>"']/g, c => `&#${c.charCodeAt(0)};`), joker = 0;
       const who = l.who === 'king' ? t(cartoon ? 'siegeCastKing' : 'siegeKing') : l.who === 'boss' ? (cartoon ? actBoss(act) : t(GUARDIAN_NAMES[world - 1])) : l.who === 'hero' ? (cartoon ? t('siegeCastCaptain') : heroName) : l.who === 'wizard' ? t('siegeCastWizard') : l.who === 'joker' ? t('siegeCastJoker') : t('siegeNarrator');
       // The King is the great samurai: the heavy armour's last form.
-      // Cartoon's cast: King Alfonso (the crowned giant) leads, Captain Jorge (the winged spearman) commands, Fermín the
+      // Cartoon's cast: King Álvaro (the crowned giant) leads, Captain Jorge (the winged spearman) commands, Felipe the
       // Wizard is the clever one and Manolo (the swordsman with the club) the funny one. Legacy's hero is the player's.
       const pic = l.who === 'king' ? V.portrait(3, M.levelsOf(3)) : l.who === 'boss' ? (cartoon ? V.portrait(guard) : guardianUrl(world)) : l.who === 'hero' ? (cartoon ? V.portrait(1, 4) : hero.pic) : l.who === 'wizard' ? V.portrait(wizard, 1) : l.who === 'joker' ? V.portrait(joker, 1) : '';
       overlay.innerHTML = `<div class="sg-scene is-${l.who}" role="dialog" aria-modal="true" aria-label="${t('siegeName')}">

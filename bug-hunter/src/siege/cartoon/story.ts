@@ -1,6 +1,6 @@
 import type { Key } from '../../strings';
 
-/** Who speaks: the narrator; King Alfonso (the leader); Captain Jorge (`hero`, who commands the army); Fermín the Wizard
+/** Who speaks: the narrator; King Álvaro (the leader); Captain Jorge (`hero`, who commands the army); Felipe the Wizard
     (the clever one); Manolo the swordsman (the funny one); or the act's guardian. */
 export type Speaker = 'narrator' | 'king' | 'hero' | 'wizard' | 'joker' | 'boss';
 export interface Line { who: Speaker; key: Key }
