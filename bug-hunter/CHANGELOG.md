@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.99 - 2026-10-26
+
+### Fixed
+- Siege Cartoon: enemies attacked facing away from us. Their sheets draw the attack pose facing right while the other poses face left, so turned round to march at us the attack faced backwards; the eighteen enemy attack pictures are mirrored to match.
+
 ## 1.14.98 - 2026-10-26
 
 ### Fixed / Changed
