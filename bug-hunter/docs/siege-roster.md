@@ -60,6 +60,10 @@ New sheets have **6 poses** in one row: 1 walk A, 2 walk B (A and B alternated r
 - **Blaster:** 4 forms: bazooka, rocket launcher, ray gun, flamethrower. Rockets are cut from the sheet's attack poses (`shot-rocket`, `shot-rockets`) and blast an area; the ray is a beam drawn in code (`shot: 'ray'`); the flame is in the attack pose (`shot: 'none'`, short reach, wide area). Prices 350, 600, 1800 gold; energy 85, 100, 120, 170; scaled by 0.65.
 - **Wizard:** 3 forms, same staff: lightning, tornado, meteor (from level 3 he reaches flyers). Each spell is cut from the sheet (`shot-lightning|tornado|meteor`, listed in `SPELLS`) and lands on the target (the meteor falls from above). Prices 600, 2000 gold; energy 95, 120, 190; scaled by 0.6.
 - **Spearman:** 5 forms: basic spear, longer, longer still, horned fox helmet, lancer on a white horse (not thrown back by heavy blows, only stunned). The reference gives no prices: 250, 400, 600, 2200 gold; energy 30, 40, 50, 65, 220.
+- **Armed robot:** 3 forms: claw and arm rocket, walker with twin cannons (fast bullets), walker behind a shield firing missiles. Prices 700, 1800 gold; energy 110, 140, 180; scaled by 0.69.
+- **Heavy armed robot:** 4 forms: gatling bursts, small rockets added, a frozen back cannon (reaches flyers from here), a huge one firing rocket salvos. Prices 1200, 2200, 4000 gold; energy 200, 230, 260, 320; scaled by 1.29.
+- **Aircraft fighter** (air): 4 forms, a sword under a propeller pack: plain, goggles and scarf, two rotors and blue steel, gold rotors and a flaming sword. Prices 150, 400, 1200 gold; energy 30, 40, 55, 90; scaled by 0.7. Air sheets name their first two poses fly A and fly B.
+- **Drill aircraft** (air, the flying shield): 6 forms: rocket fist, laser, plasma beam (both beams drawn in code), ice burst, gatling, giant golden fist. Prices 500, 800, 1200, 1800, 3000 gold; energy 80, 95, 110, 130, 150, 200; scaled by 0.92.
 
 ## In the game now (test set)
 
