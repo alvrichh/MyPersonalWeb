@@ -45,7 +45,7 @@ export function preload(world: number, deck: number[], levels: number[] = []) {
   const specs = [...deck.map(id => specAt(id, levels[id])), ...foes.map(id => UNITS[id])];
   specs.forEach(spec => { for (let f = 0; f < (spec.six ? 6 : 3); f++) picture(`${spec.sprite}-${f}`); });
   // The battlefield, and the fortresses and crossbow at every level (the workshop can change ours between battles).
-  [SCENE, ...['rock', 'javelin', 'arrow', 'shuriken'].map(n => `siege/units/shot-${n}`), ...[1, 2, 3].flatMap(n => [`siege/castle-${n}`, `siege/enemy-${n}`, `siege/xbow-base-${n}`, `siege/xbow-arm-${n}`]), ...FX].forEach(still);
+  [SCENE, ...['rock', 'javelin', 'arrow', 'shuriken', 'rocket', 'rockets'].map(n => `siege/units/shot-${n}`), ...[1, 2, 3].flatMap(n => [`siege/castle-${n}`, `siege/enemy-${n}`, `siege/xbow-base-${n}`, `siege/xbow-arm-${n}`]), ...FX].forEach(still);
 }
 /** The battlefield, one picture for every world for now (the owner's: our green side left, the bugs' red one right):
     drawn across the field with `pad` field units past each end, its walking ground (`ground`, a share of its height)
@@ -259,6 +259,16 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     ctx.beginPath(); const n = 6;
     for (let i = 0; i <= n; i++) { const t = i / n, x = e.from + (e.x - e.from) * t, jag = i % n ? ((i * 37 + Math.floor(p * 8)) % 7 - 3) * 4 : 0; i ? ctx.lineTo(x, y + jag) : ctx.moveTo(x, y); }
     ctx.stroke(); ctx.restore(); return true;
+  }
+  // A flamethrower's flame is in its attack pose: nothing flies.
+  if (e.kind === 'shot' && e.art === 'none') return true;
+  if (e.kind === 'shot' && e.art === 'ray') {
+    // The ray gun: a cyan beam from the muzzle to the target at once, fading.
+    const hand = y - 16;
+    ctx.save(); ctx.globalAlpha = 1 - p; ctx.lineCap = 'round';
+    ctx.strokeStyle = '#38bdf8'; ctx.lineWidth = 7; ctx.beginPath(); ctx.moveTo(e.from, hand); ctx.lineTo(e.x, hand); ctx.stroke();
+    ctx.strokeStyle = '#e0f7ff'; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(e.from, hand); ctx.lineTo(e.x, hand); ctx.stroke();
+    ctx.restore(); return true;
   }
   if (e.kind === 'shot' && e.art === 'bullet') {
     // A gunner's bullet: a short bright tracer, straight and fast, from the muzzle to the target.

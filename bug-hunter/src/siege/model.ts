@@ -73,7 +73,13 @@ export const UNITS: readonly Spec[] = [
     { price: 500, cost: 70, hp: 125, damage: 22, range: 210, rate: 0.6, ...six('ally-gunner-3', 203, 0.65) },
     { price: 1600, cost: 140, hp: 150, damage: 90, range: 320, rate: 2.4, ...six('ally-gunner-4', 214, 0.65) },
   ] },
-  { id: 5, cost: 85, hp: 280, damage: 34, speed: 28, range: 200, rate: 1.5, cooldown: 8, unlock: 2, infantry: true, ...unit('ally-blaster', 95) },
+  // The blaster's four forms (docs/cw2-reference.md): bazooka, rocket launcher, ray gun, flamethrower. Rockets fly as
+  // their own pictures and blast an area; the ray is drawn in code; the flame is in the attack pose (no projectile).
+  { id: 5, cost: 85, hp: 260, damage: 34, speed: 28, range: 200, rate: 1.6, cooldown: 8, unlock: 2, infantry: true, splash: 40, shot: 'rocket', spin: false, ...six('ally-blaster-1', 186, 0.65), forms: [
+    { price: 350, cost: 100, hp: 290, damage: 44, splash: 50, shot: 'rockets', ...six('ally-blaster-2', 208, 0.65) },
+    { price: 600, cost: 120, hp: 320, damage: 52, range: 240, rate: 1.3, splash: 0, shot: 'ray', ...six('ally-blaster-3', 211, 0.65) },
+    { price: 1800, cost: 170, hp: 420, damage: 32, range: 110, rate: 0.5, splash: 70, shot: 'none', ...six('ally-blaster-4', 207, 0.65) },
+  ] },
   { id: 6, cost: 95, hp: 150, damage: 42, speed: 26, range: 220, rate: 1.9, cooldown: 10, unlock: 3, splash: 60, infantry: true, ...unit('ally-wizard', 99) },
   { id: 7, cost: 75, hp: 260, damage: 40, speed: 85, range: 38, rate: 0.8, cooldown: 7, unlock: 4, ...unit('ally-vulture', 90, 1.1) },
   { id: 8, cost: 110, hp: 320, damage: 38, speed: 50, range: 180, rate: 1, cooldown: 10, unlock: 5, ...unit('ally-robot', 85, 1.05) },
@@ -331,7 +337,7 @@ export function tick(s: Siege, dt: number) {
         u.attack = a.rate; u.hit = 0.3;
         for (const v of alive) if (v.side !== u.side && reaches(u, v) && (v === enemy || (a.splash && Math.abs(v.x - enemy.x) < a.splash))) hits.push({ target: v, damage: u.damage });
         // A thrown or shot projectile of its own flies a little longer, so it is seen on its way.
-        const flight = a.shot === 'bullet' ? 0.16 : a.shot ? 0.35 : 0.2;
+        const flight = a.shot === 'bullet' || a.shot === 'ray' ? 0.16 : a.shot ? 0.35 : 0.2;
         s.effects.push({ x: enemy.x, from: u.x, lane: enemy.lane, life: flight, max: flight, kind: u.elite ? 'bolt' : 'shot', side: u.side, art: a.shot, spin: a.spin });
       }
     } else if (Math.abs(baseX - u.x) <= a.range + 35) {
