@@ -4,6 +4,13 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.93 - 2026-10-26
+
+### Changed / Fixed - Siege Cartoon's battle bar
+- The bar holds six card slots, as many as an army takes (the picture's ends and two copied slots), centred, instead of filling the width with empty slots.
+- The troop cards sit on blue tiles, so the equipped ones stand out from the empty stone slots.
+- No dark strip at the screen's edges on phones with a notch or home bar: the field runs under the safe areas, with the HUD and the aim stick kept clear of them.
+
 ## 1.14.92 - 2026-10-26
 
 ### Changed
