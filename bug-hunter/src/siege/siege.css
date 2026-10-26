@@ -630,3 +630,16 @@
 .sg-scene.is-wizard .sg-line{border-color:#b18cffcc}.sg-scene.is-wizard .sg-line b{color:#c9b0ff}
 .sg-scene.is-joker .sg-line{border-color:#5fb6ffcc}.sg-scene.is-joker .sg-line b{color:#8ccaff}
 .sg-scene.is-wizard .sg-speaker,.sg-scene.is-joker .sg-speaker{height:min(38vh,280px)}
+/* Siege Cartoon's story lines on the owner's papyrus panel (`ui/panel`), white letters with a black outline. */
+.siege-root.is-cartoon .sg-story .sg-line{border-style:solid;border-color:transparent;border-width:50px;border-radius:0;border-image:url('/images/game/siege/ui/panel.webp') 112 fill / 50px stretch;background:none;box-shadow:none;padding:0 6px;filter:drop-shadow(0 12px 24px #000a)}
+.siege-root.is-cartoon .sg-story .sg-line p,.siege-root.is-cartoon .sg-story .sg-line b{color:#fff;text-shadow:-2px -2px 0 #000,2px -2px 0 #000,-2px 2px 0 #000,2px 2px 0 #000,0 2px 0 #000,0 -2px 0 #000,2px 0 0 #000,-2px 0 0 #000,0 3px 6px #000}
+.siege-root.is-cartoon .sg-story .sg-line b{font-size:17px}
+.siege-root.is-cartoon .sg-story .sg-line p{font-weight:700}
+.siege-root.is-cartoon .sg-story .sg-scene.is-king .sg-line b{color:#ffd23f}.siege-root.is-cartoon .sg-story .sg-scene.is-hero .sg-line b{color:#7ff3d8}
+.siege-root.is-cartoon .sg-story .sg-scene.is-wizard .sg-line b{color:#d9c4ff}.siege-root.is-cartoon .sg-story .sg-scene.is-joker .sg-line b{color:#9fd4ff}.siege-root.is-cartoon .sg-story .sg-scene.is-boss .sg-line b{color:#ff8a9c}
+@media (max-width:600px),(max-height:440px){.siege-root.is-cartoon .sg-story .sg-line{border-width:36px;border-image-width:36px}}
+.siege-root.is-cartoon .sg-story .sg-speaker{position:relative;z-index:1;align-self:flex-start;left:auto;bottom:auto;height:min(32vh,220px);max-width:60%;margin:0 0 -34px 40px}
+.siege-root.is-cartoon .sg-story .sg-scene.is-boss .sg-speaker{align-self:flex-end;right:auto;margin:0 40px -34px 0;height:min(36vh,250px)}
+.siege-root.is-cartoon .sg-story .sg-line{z-index:2}
+.siege-root.is-cartoon .sg-story [data-story="skip"],.siege-root.is-cartoon .sg-story [data-story="skip"]:hover{border-style:solid;border-color:transparent;border-width:0 26px;border-radius:0;border-image:url('/images/game/siege/ui/btn-grey.webp') 0 70 fill / 0 26px stretch;background:none;box-shadow:none;color:#fff;text-shadow:0 2px 2px #000;min-height:44px;padding:0 6px}
+@media (max-height:440px){.siege-root.is-cartoon .sg-story .sg-speaker{height:min(30vh,130px);margin-bottom:-22px}.siege-root.is-cartoon .sg-story .sg-scene.is-boss .sg-speaker{height:min(32vh,140px)}}
