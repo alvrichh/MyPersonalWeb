@@ -20,7 +20,7 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
   /** Its upgrade forms, level 2 on (docs/cw2-reference.md): each replaces these stats and looks, bought in the workshop. */
   forms?: Form[] }
 /** An upgrade form: its gold price in the workshop and what it changes. */
-export type Form = Partial<Pick<Spec, 'cost' | 'hp' | 'damage' | 'speed' | 'range' | 'rate' | 'splash' | 'hitsAir' | 'sprite' | 'size'>> & { price: number }
+export type Form = Partial<Pick<Spec, 'cost' | 'hp' | 'damage' | 'speed' | 'range' | 'rate' | 'splash' | 'hitsAir' | 'infantry' | 'sprite' | 'size'>> & { price: number }
 /** Cartoon Wars 2's rosters (docs/siege-roster.md), with the owner's sheets (`siege/units/<side>-<name>-<pose>`: 0 stand,
     1 attack, 2 hurt). `size` is the drawn height in field units, from the stand picture's height (0.62 a pixel) and how
     big the unit is meant to be. Every unit's `id` is its place in this list: ours first (10 land, then 5 air), then
@@ -38,7 +38,14 @@ export const UNITS: readonly Spec[] = [
     { price: 400, cost: 60, hp: 220, damage: 34, range: 42, ...six('ally-swordsman-4', 145) },
     { price: 2000, cost: 200, hp: 340, damage: 58, speed: 62, range: 45, splash: 30, hitsAir: true, ...six('ally-swordsman-5', 142) },
   ] },
-  { id: 1, cost: 30, hp: 150, damage: 20, speed: 40, range: 55, rate: 0.9, cooldown: 3, unlock: 1, infantry: true, ...unit('ally-spearman', 96) },
+  // The spearman's five forms (docs/cw2-reference.md): basic spear, longer, longer still, the horned fox helmet, and the
+  // lancer on a white horse. The reference gives no prices: a little above the swordsman's.
+  { id: 1, cost: 30, hp: 150, damage: 20, speed: 40, range: 55, rate: 0.9, cooldown: 3, unlock: 1, infantry: true, ...six('ally-spearman-1', 119), forms: [
+    { price: 250, cost: 40, hp: 175, damage: 24, range: 65, ...six('ally-spearman-2', 119) },
+    { price: 400, cost: 50, hp: 210, damage: 28, range: 75, ...six('ally-spearman-3', 121) },
+    { price: 600, cost: 65, hp: 270, damage: 34, range: 80, ...six('ally-spearman-4', 155) },
+    { price: 2200, cost: 220, hp: 620, damage: 60, speed: 70, range: 90, splash: 30, infantry: false, ...six('ally-spearman-5', 191) },
+  ] },
   { id: 2, cost: 40, hp: 85, damage: 22, speed: 31, range: 185, rate: 1.3, cooldown: 4, unlock: 1, infantry: true, ...unit('ally-archer', 85) },
   { id: 3, cost: 65, hp: 430, damage: 24, speed: 22, range: 40, rate: 1.5, cooldown: 7, unlock: 1, infantry: true, ...unit('ally-heavy', 104, 1.1) },
   { id: 4, cost: 55, hp: 100, damage: 30, speed: 30, range: 230, rate: 1.5, cooldown: 6, unlock: 1, infantry: true, ...unit('ally-gunner', 83) },

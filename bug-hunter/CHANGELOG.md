@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.60 - 2026-10-26
+
+### Added - Siege: the spearman in five forms; the swordsman in blue
+- The owner's spearman sheet (six poses, five forms): basic spear, a longer one, longer still, the horned fox helmet, and the lancer on a white horse, who is only stunned by heavy blows instead of thrown back. Cut figure by figure so each long spear stays with its pose. Prices 250, 400, 600 and 2200 gold (the reference gives none).
+- The swordsman wears blue in every form (the owner's call): the red scarf and capes of levels 2, 4 and 5 are recoloured to his level 3 blue, keeping the level 4 crest red and the master's fire slash. The red originals are kept in `assets/old/`.
+
 ## 1.14.59 - 2026-10-26
 
 ### Added - Siege: troop levels and six-pose sheets, starting with the swordsman
