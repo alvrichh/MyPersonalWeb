@@ -455,9 +455,11 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       // Cartoon's cast: King Álvaro (the crowned giant) leads, Captain Jorge (the winged spearman) commands, Felipe the
       // Wizard is the clever one and Manolo (the swordsman with the club) the funny one. Legacy's hero is the player's.
       const pic = l.who === 'king' ? V.portrait(3, M.levelsOf(3)) : l.who === 'boss' ? (cartoon ? V.portrait(guard) : guardianUrl(world)) : l.who === 'hero' ? (cartoon ? V.portrait(1, 4) : hero.pic) : l.who === 'wizard' ? V.portrait(wizard, 1) : l.who === 'joker' ? V.portrait(joker, 1) : '';
-      overlay.innerHTML = `<div class="sg-scene is-${l.who}" role="dialog" aria-modal="true" aria-label="${t('siegeName')}">
+      // A heated line shows the speaker mid-action (its sheet's wind-up, blow or hurt pose).
+      const pose = 'pose' in l && l.pose && cartoon && l.who !== 'narrator' && pic.endsWith('-0.webp') ? pic.replace(/-0\.webp$/, `-${l.pose}.webp`) : pic;
+      overlay.innerHTML = `<div class="sg-scene is-${l.who} ${pose !== pic ? 'is-heated' : ''}" role="dialog" aria-modal="true" aria-label="${t('siegeName')}">
         <span class="sg-eyebrow">${mode === 'cartoon' ? `${worldName(actNow())} · ${t(`siegeCtAct${actNow()}` as Key)}` : t(`world${world}Name` as Key)}</span>
-        ${pic ? `<img class="sg-speaker" src="${pic}" alt="">` : ''}
+        ${pic ? `<img class="sg-speaker" src="${pose}" alt="">` : ''}
         <div class="sg-line"><b>${who}</b><p>${t(l.key)}</p>
         <div class="sg-dialog-actions"><button class="sg-primary" data-story="next">${last ? t(state ? 'resume' : 'siegeTalkGo') : `${t('siegeTalkNext')} ▶`}</button>${last ? '' : `<button data-story="skip">${t('siegeTalkSkip')}</button>`}</div></div></div>`;
       overlay.querySelector<HTMLElement>('[data-story="next"]')?.focus();
