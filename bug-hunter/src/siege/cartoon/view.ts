@@ -1,4 +1,4 @@
-import { FIELD, FOE_AIR, FOE_LAND, KNOCK, SPELLS, UNITS, specAt, specOf, aimAt, enemyTier, energyMax, looksTier, type Effect, type Fighter, type Siege } from './model';
+import { actOf, foesAt, FIELD, FOE_AIR, FOE_LAND, GUARDIAN, KNOCK, SPELLS, UNITS, specAt, specOf, aimAt, enemyTier, energyMax, looksTier, type Effect, type Fighter, type Siege } from './model';
 import { gloom } from './story';
 
 /** Each world's ground colours, under its floor while that loads (moss, embers, snow, mud, jungle, sand, iron,
@@ -38,7 +38,7 @@ export function sprite(_s: Siege, u: Fighter) { return specOf(u).sprite; }
 /** A troop's card picture at its level. */
 export const portrait = (id: number, level = 1) => `/images/game/${specAt(id, level).sprite}-0.webp`;
 export function preload(world: number, deck: number[], levels: number[] = []) {
-  const foes: number[] = [...FOE_LAND.slice(0, world).flat(), ...FOE_AIR.slice(0, world).flat()];
+  const foes: number[] = [...foesAt(FOE_LAND, world), ...foesAt(FOE_AIR, world), GUARDIAN[actOf(world) - 1]];
   const specs = [...deck.map(id => specAt(id, levels[id])), ...foes.map(id => UNITS[id])];
   specs.forEach(spec => { for (let f = 0; f < (spec.six ? 6 : 3); f++) picture(`${spec.sprite}-${f}`); });
   // The battlefield, and the fortresses and crossbow at every level (the workshop can change ours between battles).
@@ -178,7 +178,7 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   const dpr = Math.min(2, window.devicePixelRatio || 1);
   if (canvas.width !== Math.round(w * dpr) || canvas.height !== Math.round(h * dpr)) { canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr); }
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  const color = THEMES[s.world - 1];
+  const color = THEMES[actOf(s.world) - 1];
   const sky = ctx.createLinearGradient(0, 0, 0, h); sky.addColorStop(0, '#080f21'); sky.addColorStop(1, '#172c3c');
   ctx.fillStyle = sky; ctx.fillRect(0, 0, w, h);
   // Short, wide fields zoom in a little more, so the troops keep their size.
@@ -209,13 +209,13 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
     }
     if (top + sh < viewH) ctx.drawImage(scene, 0, scene.naturalHeight - 1, scene.naturalWidth, 1, x0, top + sh - 1, sw, viewH - top - sh + 2);
   } else {
-    const [deck, low] = GROUND[s.world - 1];
+    const [deck, low] = GROUND[actOf(s.world) - 1];
     const earth = ctx.createLinearGradient(0, ground - 10, 0, viewH); earth.addColorStop(0, deck); earth.addColorStop(1, low);
     ctx.fillStyle = earth; ctx.fillRect(-SCENE_FIT.pad, ground - 10, FIELD + SCENE_FIT.pad * 2, viewH);
   }
   // The Darkness spreading act by act (`gloom`): over the land and sky, deeper on the enemy's side; not over the
   // fortresses or troops.
-  const g = gloom(s.world);
+  const g = gloom(actOf(s.world));
   if (g > 0) {
     const shade = ctx.createLinearGradient(0, 0, FIELD, 0);
     shade.addColorStop(0, `rgba(14,4,22,${(g * 0.6).toFixed(2)})`); shade.addColorStop(1, `rgba(30,2,14,${g.toFixed(2)})`);

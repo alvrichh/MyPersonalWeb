@@ -288,3 +288,14 @@
 .sg-actcard-in h2{margin:10px 0 18px;font:900 clamp(30px,7vw,64px)/1.05 system-ui;color:#fff;text-shadow:0 4px 0 #000,0 0 28px #000c}
 .is-cartoon .sg-world.is-act{background:linear-gradient(90deg,#fffaf0 38%,#fffaf0cc 58%,#fffaf000 80%),var(--shade,none),url('/images/game/siege/backdrop.webp') center bottom/cover}
 @media(max-width:600px){.is-cartoon .sg-world.is-act{background:linear-gradient(#fffaf0e6,#fffaf0e6),var(--shade,none),url('/images/game/siege/backdrop.webp') center bottom/cover}}
+/* v1.14.75 — Siege Cartoon's stages within an act, and recruiting troops with gold. */
+.sg-stages{display:flex;gap:8px;margin:4px 0 12px;flex-wrap:wrap}
+.siege-root.is-cartoon .sg-prep .sg-stages button{width:44px;height:44px;min-height:0;padding:0;border-radius:50%;font:900 16px system-ui;box-shadow:0 3px 0 #1b1b1b}
+.siege-root.is-cartoon .sg-prep .sg-stages button.is-won{background:#c8f2a8}
+.siege-root.is-cartoon .sg-prep .sg-stages button.is-on{background:#ffd23f}
+.siege-root.is-cartoon .sg-prep .sg-stages button:disabled{background:#e6dcc4;opacity:.7}
+.is-cartoon .sg-world.is-act .sg-guard{color:#4a4a4a;font-size:14px;max-width:56%}
+.siege-root.is-cartoon .sg-prep .sg-card.is-recruit{background:#fff3c4;border-style:dashed}
+.siege-root.is-cartoon .sg-prep .sg-card.is-recruit img{filter:grayscale(.5)}
+.siege-root.is-cartoon .sg-prep .sg-card.is-poor .sg-stat{color:#c0392b}
+@media(max-width:600px){.is-cartoon .sg-world.is-act .sg-guard{max-width:none}}
