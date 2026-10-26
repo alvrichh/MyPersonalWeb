@@ -450,10 +450,11 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       // Legacy's speakers: the player's hero and the world's guardian.
       const cartoon = mode === 'cartoon', wizard = 6, act = actNow(), guard = cartoonModel.GUARDIAN[act - 1];
       const heroName = hero.name.replace(/[&<>"']/g, c => `&#${c.charCodeAt(0)};`), joker = 0;
-      const who = l.who === 'king' ? t('siegeKing') : l.who === 'boss' ? (cartoon ? actBoss(act) : t(GUARDIAN_NAMES[world - 1])) : l.who === 'hero' ? heroName : l.who === 'wizard' ? name(wizard) : l.who === 'joker' ? name(joker) : t('siegeNarrator');
+      const who = l.who === 'king' ? t(cartoon ? 'siegeCastKing' : 'siegeKing') : l.who === 'boss' ? (cartoon ? actBoss(act) : t(GUARDIAN_NAMES[world - 1])) : l.who === 'hero' ? (cartoon ? t('siegeCastCaptain') : heroName) : l.who === 'wizard' ? t('siegeCastWizard') : l.who === 'joker' ? t('siegeCastJoker') : t('siegeNarrator');
       // The King is the great samurai: the heavy armour's last form.
-      // Cartoon's cast: the player's own hero commands, beside the King, the Wizard and the Swordsman (at its first form).
-      const pic = l.who === 'king' ? V.portrait(3, M.levelsOf(3)) : l.who === 'boss' ? (cartoon ? V.portrait(guard) : guardianUrl(world)) : l.who === 'hero' ? hero.pic : l.who === 'wizard' ? V.portrait(wizard, progress.levels[wizard]) : l.who === 'joker' ? V.portrait(joker, 1) : '';
+      // Cartoon's cast: King Alfonso (the crowned giant) leads, Captain Jorge (the winged spearman) commands, Fermín the
+      // Wizard is the clever one and Manolo (the swordsman with the club) the funny one. Legacy's hero is the player's.
+      const pic = l.who === 'king' ? V.portrait(3, M.levelsOf(3)) : l.who === 'boss' ? (cartoon ? V.portrait(guard) : guardianUrl(world)) : l.who === 'hero' ? (cartoon ? V.portrait(1, 4) : hero.pic) : l.who === 'wizard' ? V.portrait(wizard, 1) : l.who === 'joker' ? V.portrait(joker, 1) : '';
       overlay.innerHTML = `<div class="sg-scene is-${l.who}" role="dialog" aria-modal="true" aria-label="${t('siegeName')}">
         <span class="sg-eyebrow">${mode === 'cartoon' ? `${worldName(actNow())} · ${t(`siegeCtAct${actNow()}` as Key)}` : t(`world${world}Name` as Key)}</span>
         ${pic ? `<img class="sg-speaker" src="${pic}" alt="">` : ''}

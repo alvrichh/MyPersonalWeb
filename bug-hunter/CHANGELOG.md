@@ -7,7 +7,7 @@ This changelog tracks game-version changes starting with v1.12.55. Earlier relea
 ## 1.15.13 - 2026-10-26
 
 ### Changed - Siege Cartoon's story
-- The worlds' names and scenes follow their new battlefields and guardians: The Meadows (the slinger's quarry), The Sky Islands (the gatling robot's factories), The Sunken Forest (the dragons' nest over the swamp), The Desert of Bones (the maw-shaped cave), The Frozen Peaks (the beast under the red ice) and The Throne of Darkness. The story is told by a cast: the King leads, the player's own hero commands the army, the Wizard is the clever one and the Swordsman the funny one. They talk before each world, answer each guardian when it comes out, and close the ending. Their lines sit on the kit's papyrus panel in white letters outlined in black, the speaker standing on it.
+- The worlds' names and scenes follow their new battlefields and guardians: The Meadows (the slinger's quarry), The Sky Islands (the gatling robot's factories), The Sunken Forest (the dragons' nest over the swamp), The Desert of Bones (the maw-shaped cave), The Frozen Peaks (the beast under the red ice) and The Throne of Darkness. The story is told by a cast: King Alfonso leads (the crowned giant), Captain Jorge commands the army (the winged spearman), Fermín the Wizard is the clever one and Manolo, the swordsman with the club, the funny one. They talk before each world, answer each guardian when it comes out, and close the ending. Their lines sit on the kit's papyrus panel in white letters outlined in black, the speaker standing on it.
 
 ## 1.15.12 - 2026-10-26
 
