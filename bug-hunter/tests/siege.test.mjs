@@ -162,3 +162,18 @@ test('gatling robots break twice into weaker wrecks; horned gunners come later a
   let elite = null; for (let i = 0; i < 300 * 30 && !elite; i++) { m.tick(late, 1 / 30); elite = late.units.find(u => u.elite); if (i % 30 === 0) late.units = late.units.filter(u => !u.side); }
   assert.ok(elite, 'an elite shooter comes'); assert.ok(late.time >= m.ELITE.from); assert.equal(elite.id, m.ELITE_ID);
 });
+test('troop levels: bought in order with gold, saved, and the master swordsman hits harder and reaches flyers', () => {
+  const p = m.freshProgress(); assert.equal(p.levels[0], 1); assert.equal(m.levelsOf(0), 5);
+  assert.equal(m.levelUp(p, 0), false, 'no gold'); p.coins = 5000;
+  for (const price of [200, 300, 400, 2000]) { assert.equal(m.levelPrice(p, 0), price); assert.equal(m.levelUp(p, 0), true); }
+  assert.equal(p.levels[0], 5); assert.equal(m.levelUp(p, 0), false, 'at its last form'); assert.equal(p.coins, 5000 - 2900);
+  assert.equal(m.levelUp(p, 15), false, 'never an enemy troop');
+  assert.equal(m.readProgress(JSON.stringify({ ...p, levels: [99, -3] })).levels[0], 5, 'clamped to its forms');
+  const s = m.newSiege(p, 1); s.nextWave = 999; s.energy = 999;
+  assert.equal(m.costOf(s, 0), m.specAt(0, 5).cost); assert.equal(m.summon(s, 0), true);
+  const master = s.units[0]; assert.equal(master.lv, 5); assert.ok(master.maxHp > m.UNITS[0].hp);
+  master.x = 500; const eagle = { uid: 99, id: 28, side: 1, x: 530, lane: 0, hp: 9999, maxHp: 9999, damage: 0, attack: 9, flash: 0, boss: false };
+  s.units.push(eagle); run(s, 1); assert.ok(eagle.hp < 9999, 'the master reaches a flyer');
+  const plain = m.newSiege(m.freshProgress(), 1); plain.nextWave = 999; m.summon(plain, 0); plain.units[0].x = 500;
+  const eagle2 = { ...eagle, hp: 9999, flash: 0 }; plain.units.push(eagle2); run(plain, 1); assert.equal(eagle2.hp, 9999, 'the first form does not');
+});

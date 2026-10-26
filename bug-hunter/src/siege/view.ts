@@ -1,4 +1,4 @@
-import { FIELD, FOE_AIR, FOE_LAND, KNOCK, UNITS, aimAt, enemyTier, energyMax, looksTier, type Effect, type Fighter, type Siege } from './model';
+import { FIELD, FOE_AIR, FOE_LAND, KNOCK, UNITS, specAt, specOf, aimAt, enemyTier, energyMax, looksTier, type Effect, type Fighter, type Siege } from './model';
 
 /** Each world's ground colours, under its floor while that loads (moss, embers, snow, mud, jungle, sand, iron,
     haunted stone, crystal); the third is unused pebble colour kept for a later side strip. */
@@ -37,12 +37,13 @@ const GUARDIANS = ['monolith', 'overlord', 'valkyrie', 'mudmonster', 'queen', 'm
 const BACKDROPS = ['original', 'infierno', 'vikingos', 'lodo', 'jungla', 'rayo', 'robots', 'demonios', 'nucleo'];
 /** Every troop's sheet (`siege/units/...`): 0 standing, 1 attacking, 2 hurt. Walking, breathing, lunges and falls
     are animated here. */
-export function sprite(_s: Siege, u: Fighter) { return UNITS[u.id].sprite; }
-export const portrait = (id: number) => `/images/game/${UNITS[id].sprite}-0.webp`;
-export function preload(world: number, deck: number[]) {
+export function sprite(_s: Siege, u: Fighter) { return specOf(u).sprite; }
+/** A troop's card picture at its level. */
+export const portrait = (id: number, level = 1) => `/images/game/${specAt(id, level).sprite}-0.webp`;
+export function preload(world: number, deck: number[], levels: number[] = []) {
   const foes: number[] = [...FOE_LAND.slice(0, world).flat(), ...FOE_AIR.slice(0, world).flat()];
-  const paths = new Set([...deck, ...foes].map(id => UNITS[id].sprite));
-  paths.forEach(path => { for (let f = 0; f < 3; f++) picture(`${path}-${f}`); });
+  const specs = [...deck.map(id => specAt(id, levels[id])), ...foes.map(id => UNITS[id])];
+  specs.forEach(spec => { for (let f = 0; f < (spec.six ? 6 : 3); f++) picture(`${spec.sprite}-${f}`); });
   // The battlefield, and the fortresses and crossbow at every level (the workshop can change ours between battles).
   [SCENE, ...[1, 2, 3].flatMap(n => [`siege/castle-${n}`, `siege/enemy-${n}`, `siege/xbow-base-${n}`, `siege/xbow-arm-${n}`]), ...FX].forEach(still);
 }
@@ -224,55 +225,9 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   mana(ctx, s, ground);
   const aimY = ground + 10;
   ctx.strokeStyle = '#ffe3a0'; ctx.globalAlpha = 0.65; ctx.setLineDash([4, 5]); ctx.beginPath(); ctx.ellipse(s.aim, aimY, 45, 13, 0, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha = 1;
-  for (const u of [...s.units].sort((a, b) => a.lane - b.lane || a.x - b.x)) {
-    // Air troops fly above their lane, their shadow on the ground under them.
-    const spec = UNITS[u.id], floor = ground + u.lane * 12, y = spec.air ? floor - 70 - u.lane * 8 + (reduced ? 0 : Math.sin(s.time * 4 + u.uid) * 5) : floor;
-    const path = sprite(s, u);
-    // The pose: hurt while hit, knocked or stunned; attacking while it strikes; else standing (and walking in code).
-    const pose = u.flash || u.knock || u.stun ? 2 : u.hit ? 1 : 0;
-    const stand = picture(`${path}-0`), art = picture(`${path}-${pose}`);
-    const size = spec.size * (u.boss ? 1.6 : 1) * Math.pow(0.8, u.stage ?? 0);
-    ctx.fillStyle = u.side ? '#ff648577' : '#43ebce77'; ctx.beginPath(); ctx.ellipse(u.x, floor + 2, size * (spec.air ? 0.2 : 0.3), spec.air ? 4 : 7, 0, 0, Math.PI * 2); ctx.fill();
-    if (ok(stand.image) && ok(art.image)) {
-      // One scale for all three poses (from the standing one), so an attack's flash or swing keeps its size; every
-      // pose stands on the same feet and starts at the standing pose's left edge (its effect reaching forwards).
-      const k = size / stand.image.naturalHeight, sw = stand.image.naturalWidth * k;
-      const dw = art.image.naturalWidth * k, dh = art.image.naturalHeight * k;
-      const t = s.time + u.uid * 0.37;
-      let lift = 0, lean = 0, sx = 1, sy = 1, push = 0;
-      if (reduced) { /* still */ }
-      else if (u.knock) {
-        // Flying back from a heavy blow: up in an arc, turned over backwards, down again (and the model gets it up).
-        const p = 1 - u.knock / KNOCK.time;
-        lift = Math.sin(p * Math.PI) * 26; lean = -Math.sin(p * Math.PI) * 1.1;
-      } else if (u.stun) lean = Math.sin(s.time * 60) * 0.06;
-      else if (u.hit) push = Math.sin((1 - u.hit / 0.3) * Math.PI) * 10;
-      else if (u.moving && !spec.air) {
-        // A stride: a hop on each step, a squash as the foot lands, a lean forwards and back.
-        const step = Math.sin(t * 11);
-        lift = Math.abs(step) * 3.2; sy = 1 - (1 - Math.abs(step)) * 0.05; sx = 1 + (1 - Math.abs(step)) * 0.03; lean = step * 0.05 + 0.04;
-      } else if (!spec.air) sy = 1 + Math.sin(t * 3) * 0.015;
-      ctx.save(); ctx.translate(u.x + (u.side ? -push : push), y - lift); if (u.side) ctx.scale(-1, 1);
-      ctx.rotate(lean); ctx.scale(sx, sy);
-      if (u.flash) { ctx.shadowColor = '#fff'; ctx.shadowBlur = 10; }
-      // Elites glow gold and wear horns; wrecks are darker the more broken they are; guardians glow red.
-      else if (u.elite) { ctx.shadowColor = '#ffd84a'; ctx.shadowBlur = 14; }
-      else if (u.boss) { ctx.shadowColor = '#ff3b3b'; ctx.shadowBlur = 16; }
-      if (u.stage) ctx.filter = `brightness(${1 - u.stage * 0.22}) saturate(${1 - u.stage * 0.3})`;
-      ctx.drawImage(art.image, -sw / 2, -dh, dw, dh); ctx.filter = 'none';
-      if (u.elite) {
-        ctx.shadowBlur = 0; ctx.fillStyle = '#f5e6c8'; ctx.strokeStyle = '#3a2a10'; ctx.lineWidth = 1.5;
-        const hw = sw, hh = size;
-        for (const side of [-1, 1]) { ctx.beginPath(); ctx.moveTo(side * hw * 0.12, -hh * 0.92); ctx.quadraticCurveTo(side * hw * 0.34, -hh * 1.12, side * hw * 0.3, -hh * 1.2); ctx.lineTo(side * hw * 0.22, -hh * 0.9); ctx.closePath(); ctx.fill(); ctx.stroke(); }
-      }
-      ctx.restore();
-    } else {
-      ctx.fillStyle = u.side ? '#fd9aac' : color; ctx.beginPath(); ctx.roundRect(u.x - size / 4, y - size * 0.65, size / 2, size * 0.65, 10); ctx.fill();
-      ctx.fillStyle = '#102132'; ctx.fillRect(u.x - 9, y - size * 0.45, 5, 5); ctx.fillRect(u.x + 4, y - size * 0.45, 5, 5);
-    }
-    ctx.fillStyle = '#07111c'; ctx.fillRect(u.x - 21, y - size - 10, 42, 4);
-    ctx.fillStyle = u.side ? '#ff718c' : '#55e5c4'; ctx.fillRect(u.x - 21, y - size - 10, 42 * Math.max(0, u.hp / u.maxHp), 4);
-  }
+  // The fallen lie where they fell for a moment (the six-pose sheets' last pose; the others tip over), then fade.
+  for (const c of fallen(s)) fighter(ctx, s, c.u, ground, reduced, color, Math.min(1, (s.time - c.at) / DEAD_FOR));
+  for (const u of [...s.units].sort((a, b) => a.lane - b.lane || a.x - b.x)) fighter(ctx, s, u, ground, reduced, color);
   for (const e of s.effects) {
     const p = 1 - e.life / e.max; const y = ground + e.lane * 12 - 26;
     if (effect(ctx, e, p, y, ground)) continue;
@@ -394,4 +349,81 @@ export function trimImages(scope: ParentNode) {
     };
     pic.src = src;
   });
+}
+
+/** How long the fallen stay on the field, in seconds (fading over the last third). */
+const DEAD_FOR = 1.6;
+/** The fallen of the battle on screen: troops seen last frame and gone now (only death takes a troop off the field). */
+let seenOf: Siege | null = null;
+let seen = new Map<number, Fighter>();
+let dead: { u: Fighter; at: number }[] = [];
+function fallen(s: Siege) {
+  if (seenOf !== s) { seenOf = s; seen = new Map(); dead = []; }
+  const now = new Map(s.units.map(u => [u.uid, u]));
+  for (const [uid, u] of seen) if (!now.has(uid) && !UNITS[u.id].splits) dead.push({ u: { ...u, flash: 0, hit: 0, knock: 0, stun: 0, moving: false }, at: s.time });
+  seen = new Map([...now].map(([uid, u]) => [uid, { ...u }]));
+  dead = dead.filter(c => s.time - c.at < DEAD_FOR && s.time >= c.at);
+  return dead;
+}
+/** One troop: its pose for what it is doing, animated in code (walking, breathing, lunges, knock-backs); `gone` (0-1)
+    draws it fallen, fading at the end. */
+function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: number, reduced: boolean, color: string, gone?: number) {
+  // Air troops fly above their lane, their shadow on the ground under them; the fallen lie on the ground.
+  const spec = specOf(u), floor = ground + u.lane * 12;
+  const y = gone !== undefined ? floor : spec.air ? floor - 70 - u.lane * 8 + (reduced ? 0 : Math.sin(s.time * 4 + u.uid) * 5) : floor;
+  const path = spec.sprite, t = s.time + u.uid * 0.37;
+  // The pose. Six-pose sheets: walk A/B in turn while walking, the wind-up just before a blow, the blow, hurt, dead.
+  // Three-pose sheets: stand (walking in code), attack, hurt.
+  const hurt = !!(u.flash || u.knock || u.stun);
+  const ready = !u.moving && u.attack > 0 && u.attack < 0.3;
+  const pose = spec.six
+    ? gone !== undefined ? 5 : hurt ? 4 : u.hit ? 3 : ready ? 2 : u.moving && !reduced ? Math.floor(t * 5) % 2 : 0
+    : gone !== undefined ? 2 : hurt ? 2 : u.hit ? 1 : 0;
+  const stand = picture(`${path}-0`), art = picture(`${path}-${pose}`);
+  const size = spec.size * (u.boss ? 1.6 : 1) * Math.pow(0.8, u.stage ?? 0);
+  if (gone === undefined) { ctx.fillStyle = u.side ? '#ff648577' : '#43ebce77'; ctx.beginPath(); ctx.ellipse(u.x, floor + 2, size * (spec.air ? 0.2 : 0.3), spec.air ? 4 : 7, 0, 0, Math.PI * 2); ctx.fill(); }
+  if (ok(stand.image) && ok(art.image)) {
+    // One scale for every pose (from the first), so an attack's flash or swing keeps its size; every pose stands on
+    // the same feet and starts at the first pose's left edge (its effect reaching forwards).
+    const k = size / stand.image.naturalHeight, sw = stand.image.naturalWidth * k;
+    const dw = art.image.naturalWidth * k, dh = art.image.naturalHeight * k;
+    let lift = 0, lean = 0, sx = 1, sy = 1, push = 0;
+    if (gone !== undefined) {
+      // Three-pose sheets have no dead pose: the hurt one tips over backwards as it falls.
+      if (!spec.six) lean = -Math.min(1, gone * 6) * 1.45;
+    } else if (reduced) { /* still */ }
+    else if (u.knock) {
+      // Flying back from a heavy blow: up in an arc, turned over backwards, down again (and the model gets it up).
+      const p = 1 - u.knock / KNOCK.time;
+      lift = Math.sin(p * Math.PI) * 26; lean = -Math.sin(p * Math.PI) * 1.1;
+    } else if (u.stun) lean = Math.sin(s.time * 60) * 0.06;
+    else if (u.hit) push = Math.sin((1 - u.hit / 0.3) * Math.PI) * 10;
+    else if (u.moving && !spec.air) {
+      // A stride: a hop on each step (and, without walking poses, a squash as the foot lands and a lean).
+      const step = Math.sin(t * Math.PI * 5);
+      lift = Math.abs(step) * (spec.six ? 1.6 : 3.2);
+      if (!spec.six) { sy = 1 - (1 - Math.abs(step)) * 0.05; sx = 1 + (1 - Math.abs(step)) * 0.03; lean = step * 0.05 + 0.04; }
+    } else if (!spec.air) sy = 1 + Math.sin(t * 3) * 0.015;
+    ctx.save(); ctx.translate(u.x + (u.side ? -push : push), y - lift); if (u.side) ctx.scale(-1, 1);
+    if (gone !== undefined) ctx.globalAlpha = gone < 0.66 ? 1 : 1 - (gone - 0.66) / 0.34;
+    ctx.rotate(lean); ctx.scale(sx, sy);
+    if (gone === undefined && u.flash) { ctx.shadowColor = '#fff'; ctx.shadowBlur = 10; }
+    // Elites glow gold and wear horns; wrecks are darker the more broken they are; guardians glow red.
+    else if (gone === undefined && u.elite) { ctx.shadowColor = '#ffd84a'; ctx.shadowBlur = 14; }
+    else if (gone === undefined && u.boss) { ctx.shadowColor = '#ff3b3b'; ctx.shadowBlur = 16; }
+    if (u.stage) ctx.filter = `brightness(${1 - u.stage * 0.22}) saturate(${1 - u.stage * 0.3})`;
+    ctx.drawImage(art.image, -sw / 2, -dh, dw, dh); ctx.filter = 'none';
+    if (u.elite && gone === undefined) {
+      ctx.shadowBlur = 0; ctx.fillStyle = '#f5e6c8'; ctx.strokeStyle = '#3a2a10'; ctx.lineWidth = 1.5;
+      const hw = sw, hh = size;
+      for (const side of [-1, 1]) { ctx.beginPath(); ctx.moveTo(side * hw * 0.12, -hh * 0.92); ctx.quadraticCurveTo(side * hw * 0.34, -hh * 1.12, side * hw * 0.3, -hh * 1.2); ctx.lineTo(side * hw * 0.22, -hh * 0.9); ctx.closePath(); ctx.fill(); ctx.stroke(); }
+    }
+    ctx.restore();
+  } else if (gone === undefined) {
+    ctx.fillStyle = u.side ? '#fd9aac' : color; ctx.beginPath(); ctx.roundRect(u.x - size / 4, y - size * 0.65, size / 2, size * 0.65, 10); ctx.fill();
+    ctx.fillStyle = '#102132'; ctx.fillRect(u.x - 9, y - size * 0.45, 5, 5); ctx.fillRect(u.x + 4, y - size * 0.45, 5, 5);
+  }
+  if (gone !== undefined) return;
+  ctx.fillStyle = '#07111c'; ctx.fillRect(u.x - 21, y - size - 10, 42, 4);
+  ctx.fillStyle = u.side ? '#ff718c' : '#55e5c4'; ctx.fillRect(u.x - 21, y - size - 10, 42 * Math.max(0, u.hp / u.maxHp), 4);
 }

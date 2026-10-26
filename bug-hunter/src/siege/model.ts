@@ -12,15 +12,32 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
   /** Infantry: knocked back by a heavy blow (and up again), where the others only rock. */
   infantry?: boolean;
   /** Cannot be stunned (the Red Dragon Rider). */
-  steady?: boolean }
+  steady?: boolean;
+  /** Its sheet has the six poses (walk A, walk B, ready, attack, hurt, dead) instead of three (stand, attack, hurt). */
+  six?: boolean;
+  /** Reaches flyers although it fights up close (the master swordsman). */
+  hitsAir?: boolean;
+  /** Its upgrade forms, level 2 on (docs/cw2-reference.md): each replaces these stats and looks, bought in the workshop. */
+  forms?: Form[] }
+/** An upgrade form: its gold price in the workshop and what it changes. */
+export type Form = Partial<Pick<Spec, 'cost' | 'hp' | 'damage' | 'speed' | 'range' | 'rate' | 'splash' | 'hitsAir' | 'sprite' | 'size'>> & { price: number }
 /** Cartoon Wars 2's rosters (docs/siege-roster.md), with the owner's sheets (`siege/units/<side>-<name>-<pose>`: 0 stand,
     1 attack, 2 hurt). `size` is the drawn height in field units, from the stand picture's height (0.62 a pixel) and how
     big the unit is meant to be. Every unit's `id` is its place in this list: ours first (10 land, then 5 air), then
     the enemy's, each one stated as the ally it equals in the reference. */
 const unit = (name: string, px: number, k = 1) => ({ sprite: `siege/units/${name}`, size: Math.round(px * 0.62 * k) });
+/** A six-pose sheet (drawn at a higher resolution: 0.4 a pixel of its first walking pose). */
+const six = (name: string, px: number) => ({ sprite: `siege/units/${name}`, size: Math.round(px * 0.4), six: true });
 export const UNITS: readonly Spec[] = [
   // Ours, land.
-  { id: 0, cost: 20, hp: 115, damage: 16, speed: 43, range: 35, rate: 0.8, cooldown: 2, unlock: 1, infantry: true, ...unit('ally-swordsman', 78) },
+  // The swordsman's five forms (the reference's six, its fifth dropped): club, dagger, sword and shield, greatsword,
+  // and the master, whose slash leaves fire and reaches flyers. Energy follows the reference's mana, doubled.
+  { id: 0, cost: 20, hp: 115, damage: 16, speed: 43, range: 35, rate: 0.8, cooldown: 2, unlock: 1, infantry: true, ...six('ally-swordsman-1', 119), forms: [
+    { price: 200, cost: 30, hp: 135, damage: 21, speed: 46, ...six('ally-swordsman-2', 123) },
+    { price: 300, cost: 50, hp: 190, damage: 23, ...six('ally-swordsman-3', 129) },
+    { price: 400, cost: 60, hp: 220, damage: 34, range: 42, ...six('ally-swordsman-4', 145) },
+    { price: 2000, cost: 200, hp: 340, damage: 58, speed: 62, range: 45, splash: 30, hitsAir: true, ...six('ally-swordsman-5', 142) },
+  ] },
   { id: 1, cost: 30, hp: 150, damage: 20, speed: 40, range: 55, rate: 0.9, cooldown: 3, unlock: 1, infantry: true, ...unit('ally-spearman', 96) },
   { id: 2, cost: 40, hp: 85, damage: 22, speed: 31, range: 185, rate: 1.3, cooldown: 4, unlock: 1, infantry: true, ...unit('ally-archer', 85) },
   { id: 3, cost: 65, hp: 430, damage: 24, speed: 22, range: 40, rate: 1.5, cooldown: 7, unlock: 1, infantry: true, ...unit('ally-heavy', 104, 1.1) },
@@ -68,12 +85,27 @@ export const DECK = 5;
 const isAir = (id: number) => !!UNITS[id]?.air;
 /** Ours: the units an army can hold. */
 export const ALLIES = UNITS.filter(u => !u.foe);
+/** How many levels a troop has (its forms and the first). */
+export const levelsOf = (id: number) => 1 + (UNITS[id]?.forms?.length ?? 0);
+/** A troop at a level: its stats and looks with that form's changes. */
+export function specAt(id: number, level = 1): Spec {
+  const spec = UNITS[id], form = spec.forms?.[Math.min(level, levelsOf(id)) - 2];
+  if (!form) return spec;
+  const { price: _price, ...changes } = form;
+  return { ...spec, ...changes };
+}
+/** A fighter's own stats: ours at their level, the enemy's as listed. */
+export const specOf = (u: { id: number; side: number; lv?: number }) => (u.side ? UNITS[u.id] : specAt(u.id, u.lv));
+/** Can fighter `u` hit fighter `v`? Flyers are out of reach of ground troops that fight up close. */
+const reaches = (u: Fighter, v: Fighter) => { const a = specOf(u); return !isAir(v.id) || !!a.air || a.range >= 100 || !!a.hitsAir; };
 /** Can a fighter of `id` hit one of `target`? Melee troops on the ground cannot reach the air. */
 export const canHit = (id: number, target: number) => !isAir(target) || isAir(id) || UNITS[id].range >= 100;
 /** Keep at most `DECK` of each kind, in order. */
 export function capDeck(deck: number[]) { const land = deck.filter(id => !isAir(id)).slice(0, DECK), air = deck.filter(isAir).slice(0, DECK); return deck.filter(id => land.includes(id) || air.includes(id)); }
-export interface Progress { version: 1; unlocked: number; coins: number; victories: number[]; upgrades: [number, number, number, number]; deck: number[] }
-export const freshProgress = (): Progress => ({ version: 1, unlocked: 1, coins: 0, victories: [], upgrades: [0, 0, 0, 0], deck: [0, 1, 2, 3, 4] });
+export interface Progress { version: 1; unlocked: number; coins: number; victories: number[]; upgrades: [number, number, number, number]; deck: number[];
+  /** Each troop's level (index: its id), 1 to `levelsOf(id)`. */
+  levels: number[] }
+export const freshProgress = (): Progress => ({ version: 1, unlocked: 1, coins: 0, victories: [], upgrades: [0, 0, 0, 0], deck: [0, 1, 2, 3, 4], levels: ALLIES.map(() => 1) });
 const integer = (v: unknown, min: number, max: number, fallback: number) => typeof v === 'number' && Number.isFinite(v) ? Math.max(min, Math.min(max, Math.floor(v))) : fallback;
 export function readProgress(raw: string | null): Progress {
   const p = freshProgress();
@@ -83,6 +115,7 @@ export function readProgress(raw: string | null): Progress {
     p.unlocked = integer(v.unlocked, 1, 9, 1); p.coins = integer(v.coins, 0, 1000000, 0);
     p.victories = Array.isArray(v.victories) ? [...new Set<number>(v.victories.filter((n: unknown) => typeof n === 'number' && Number.isInteger(n) && n >= 1 && n <= 9))] : [];
     p.upgrades = [0, 1, 2, 3].map(i => integer(v.upgrades?.[i], 0, 5, 0)) as Progress['upgrades'];
+    p.levels = ALLIES.map(u => integer(v.levels?.[u.id], 1, levelsOf(u.id), 1));
     p.deck = Array.isArray(v.deck) ? capDeck([...new Set<number>(v.deck.filter((n: unknown) => typeof n === 'number' && !!UNITS[n] && !UNITS[n].foe && UNITS[n].unlock <= p.unlocked))]) : [];
     // Topped up to five land troops with the first open ones (never an enemy's, never a locked one).
     for (const u of ALLIES) if (p.deck.filter(id => !isAir(id)).length < DECK && !u.air && u.unlock <= p.unlocked && !p.deck.includes(u.id)) p.deck.push(u.id);
@@ -90,6 +123,14 @@ export function readProgress(raw: string | null): Progress {
   return p;
 }
 export const upgradePrice = (level: number) => 100 + level * 100;
+/** A troop's next form's gold price, or 0 at its last. */
+export const levelPrice = (p: Progress, id: number) => UNITS[id]?.forms?.[(p.levels[id] ?? 1) - 1]?.price ?? 0;
+/** Buys a troop's next form. */
+export function levelUp(p: Progress, id: number): boolean {
+  const price = levelPrice(p, id);
+  if (!price || UNITS[id].foe || UNITS[id].unlock > p.unlocked || p.coins < price) return false;
+  p.coins -= price; p.levels[id] = (p.levels[id] ?? 1) + 1; return true;
+}
 export function upgrade(p: Progress, slot: number): boolean {
   if (!Number.isInteger(slot) || slot < 0 || slot > 3) return false;
   const level = p.upgrades[slot]; const cost = upgradePrice(level);
@@ -100,6 +141,8 @@ export interface Fighter { uid: number; id: number; side: 0 | 1; x: number; lane
   /** A breaking robot's stage (0 whole, 1 one arm and no gun, 2 a crawling wreck) and whether it is an elite (horned,
       shooting lightning). */
   stage?: number; elite?: boolean;
+  /** Our troop's level (its form). */
+  lv?: number;
   /** Walking this step (the view swings its stride). */
   moving?: boolean;
   /** Seconds left flying back from a heavy blow (infantry), or stunned by one (the rest). */
@@ -116,6 +159,8 @@ export interface Siege {
   shots?: number; bossSpawned: boolean; paid: boolean; power: number; economy: number; deck: number[];
   /** The workshop's fortress level (0-5): it picks how our fortress looks. */
   fort: number;
+  /** Our troops' levels, from the save. */
+  levels: number[];
 }
 /** Which of the three pictures a workshop level (0-5) shows, for our fortress and its crossbow: 0-1, 2-3, 4-5. */
 export const looksTier = (level: number) => (level >= 4 ? 3 : level >= 2 ? 2 : 1);
@@ -127,7 +172,7 @@ export const generatorPrice = (s: Siege) => 65 + s.generator * 45;
 export function newSiege(p: Progress, world: number): Siege {
   world = integer(world, 1, p.unlocked, 1);
   const maxHp: [number, number] = [1700 + p.upgrades[1] * 200, 1500 + world * 170];
-  return { world, phase: 'fight', time: 0, energy: 80, generator: 0, cooldowns: UNITS.map(() => 0), hp: [...maxHp], maxHp, units: [], effects: [], nextId: 1, nextWave: 7, waves: 0, kills: 0, spell: 0, rocket: 0, aim: 700, bossSpawned: false, paid: false, power: 1 + p.upgrades[0] * 0.08, economy: p.upgrades[2] * 0.6, deck: [...p.deck], bow: { quiver: BOW.max, drawing: false, held: 0, next: 0, level: p.upgrades[3] }, fort: p.upgrades[1] };
+  return { world, phase: 'fight', time: 0, energy: 80, generator: 0, cooldowns: UNITS.map(() => 0), hp: [...maxHp], maxHp, units: [], effects: [], nextId: 1, nextWave: 7, waves: 0, kills: 0, spell: 0, rocket: 0, aim: 700, bossSpawned: false, paid: false, power: 1 + p.upgrades[0] * 0.08, economy: p.upgrades[2] * 0.6, deck: [...p.deck], bow: { quiver: BOW.max, drawing: false, held: 0, next: 0, level: p.upgrades[3] }, fort: p.upgrades[1], levels: [...(p.levels ?? [])] };
 }
 /** The guardian, Cartoon Wars 2-style: it only comes out once the enemy fortress falls, far tougher than a troop, and
     the battle is won when it falls too. */
@@ -145,19 +190,22 @@ export const ELITE = { from: 60, every: 4, hp: 1.6, damage: 1.8 };
 export const ELITE_ID = 22;
 function spawn(s: Siege, id: number, side: 0 | 1, boss = false) {
   if (s.units.filter(u => u.side === side).length >= CAP) return;
-  const spec = UNITS[id]; const scale = side ? 0.8 + s.world * 0.07 : s.power;
+  const lv = side ? undefined : s.levels[id] ?? 1;
+  const spec = side ? UNITS[id] : specAt(id, lv); const scale = side ? 0.8 + s.world * 0.07 : s.power;
   const hp = spec.hp * scale * (boss ? BOSS_HP : 1);
   // One gunner in every few (counted by its spawn number) comes horned.
   const elite = !!side && !boss && id === ELITE_ID && s.time >= ELITE.from && s.nextId % ELITE.every === 0;
   const life = hp * (elite ? ELITE.hp : 1);
-  s.units.push({ uid: s.nextId++, id, side, x: side ? FIELD - 120 : 120, lane: s.nextId % 3, hp: life, maxHp: life, damage: spec.damage * scale * (elite ? ELITE.damage : 1), attack: 0, flash: 0, boss, elite: elite || undefined });
+  s.units.push({ uid: s.nextId++, id, side, x: side ? FIELD - 120 : 120, lane: s.nextId % 3, hp: life, maxHp: life, damage: spec.damage * scale * (elite ? ELITE.damage : 1), attack: 0, flash: 0, boss, elite: elite || undefined, lv });
 }
+/** What summoning a troop costs now (its level's energy). */
+export const costOf = (s: Siege, id: number) => specAt(id, s.levels[id]).cost;
 export function canSummon(s: Siege, id: number): boolean {
-  return s.phase === 'fight' && !UNITS[id]?.foe && s.deck.includes(id) && s.energy >= UNITS[id].cost && s.cooldowns[id] <= 0 && s.units.filter(u => !u.side).length < CAP;
+  return s.phase === 'fight' && !UNITS[id]?.foe && s.deck.includes(id) && s.energy >= costOf(s, id) && s.cooldowns[id] <= 0 && s.units.filter(u => !u.side).length < CAP;
 }
 export function summon(s: Siege, id: number): boolean {
   if (!canSummon(s, id)) return false;
-  s.energy -= UNITS[id].cost; s.cooldowns[id] = UNITS[id].cooldown; spawn(s, id, 0); return true;
+  s.energy -= costOf(s, id); s.cooldowns[id] = UNITS[id].cooldown; spawn(s, id, 0); return true;
 }
 export function improveGenerator(s: Siege): boolean {
   if (s.phase !== 'fight' || s.generator >= 4 || s.energy < generatorPrice(s)) return false;
@@ -238,17 +286,17 @@ export function tick(s: Siege, dt: number) {
   const alive = s.units.filter(u => u.hp > 0);
   const hits: { target: Fighter; damage: number }[] = [];
   for (const u of alive) {
-    const a = UNITS[u.id]; u.attack -= dt; u.flash = Math.max(0, u.flash - dt); u.hit = Math.max(0, (u.hit ?? 0) - dt);
+    const a = specOf(u); u.attack -= dt; u.flash = Math.max(0, u.flash - dt); u.hit = Math.max(0, (u.hit ?? 0) - dt);
     u.moving = false;
     if (u.knock) { u.knock = Math.max(0, u.knock - dt); u.x = Math.max(110, Math.min(FIELD - 110, u.x + (u.side ? 1 : -1) * KNOCK.back / KNOCK.time * dt)); continue; }
     if (u.stun) { u.stun = Math.max(0, u.stun - dt); continue; }
-    const enemy = alive.filter(v => v.side !== u.side && canHit(u.id, v.id)).sort((a, b) => Math.abs(a.x - u.x) - Math.abs(b.x - u.x))[0];
+    const enemy = alive.filter(v => v.side !== u.side && reaches(u, v)).sort((a, b) => Math.abs(a.x - u.x) - Math.abs(b.x - u.x))[0];
     const baseX = u.side ? 80 : FIELD - 80;
     const distance = enemy ? Math.abs(enemy.x - u.x) : Infinity;
     if (enemy && distance <= a.range + UNITS[enemy.id].size * 0.25) {
       if (u.attack <= 0) {
         u.attack = a.rate; u.hit = 0.3;
-        for (const v of alive) if (v.side !== u.side && canHit(u.id, v.id) && (v === enemy || (a.splash && Math.abs(v.x - enemy.x) < a.splash))) hits.push({ target: v, damage: u.damage });
+        for (const v of alive) if (v.side !== u.side && reaches(u, v) && (v === enemy || (a.splash && Math.abs(v.x - enemy.x) < a.splash))) hits.push({ target: v, damage: u.damage });
         s.effects.push({ x: enemy.x, from: u.x, lane: enemy.lane, life: 0.2, max: 0.2, kind: u.elite ? 'bolt' : 'shot', side: u.side });
       }
     } else if (Math.abs(baseX - u.x) <= a.range + 35) {

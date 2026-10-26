@@ -1,7 +1,7 @@
 import './siege.css';
 import { storage } from '../../lib/storage';
 import type { Key, T } from '../strings';
-import { ALLIES, CAP, DECK, FIELD, aimAt, looksTier, missile, LIMIT, SAVE_KEY, UNITS, canSummon, energyMax, energyRate, toggleBow, BOW, generatorPrice, improveGenerator, newSiege, readProgress, settle, strike, summon, tick, upgrade, upgradePrice, type Siege } from './model';
+import { ALLIES, costOf, specAt, levelPrice, levelsOf, levelUp, CAP, DECK, FIELD, aimAt, looksTier, missile, LIMIT, SAVE_KEY, UNITS, canSummon, energyMax, energyRate, toggleBow, BOW, generatorPrice, improveGenerator, newSiege, readProgress, settle, strike, summon, tick, upgrade, upgradePrice, type Siege } from './model';
 import { backdropUrl, guardianUrl, trimImages, portrait, preload, render, type Camera } from './view';
 import { GUARDIAN_NAMES, bossTalk, intro, type Line } from './story';
 /** The map's island pictures, world by world, and the workshop's pictures, upgrade by upgrade (army, fortress, energy, bow). */
@@ -51,6 +51,17 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   const q = <E extends HTMLElement>(selector: string) => root.querySelector<E>(selector)!;
   const persist = () => { storage.set(SAVE_KEY, JSON.stringify(progress)); };
   const name = (id: number) => t(`siegeUnit${id}` as Key);
+  /** The workshop's troop rows: every troop with upgrade forms, its look at its level, its pips and the next price. */
+  const troopRows = () => {
+    const rows = ALLIES.filter(u => u.forms?.length).map(u => {
+      const level = progress.levels[u.id] ?? 1, max = levelsOf(u.id), price = levelPrice(progress, u.id), locked = u.unlock > progress.unlocked;
+      return `<button data-sg-level="${u.id}" ${!price || locked || progress.coins < price ? 'disabled' : ''}>
+        <span class="sg-up-pic"><img src="${portrait(u.id, level)}" data-trim="${portrait(u.id, level)}" alt=""></span>
+        <span class="sg-up-text"><b>${name(u.id)} · ${t('siegeLevel', { n: level })}</b><span class="sg-pips">${Array.from({ length: max }, (_, k) => `<i class="${k < level ? 'is-on' : ''}"></i>`).join('')}</span></span>
+        <span class="sg-up-cost">${!price ? t('siegeMax') : locked ? '🔒' : `<img src="/images/game/store/coins-2.webp" alt="">${price}`}</span></button>`;
+    }).join('');
+    return rows ? `<h2 class="sg-heading">${t('siegeTroopLevels')}</h2><div class="sg-upgrades">${rows}</div>` : '';
+  };
   const worldName = (n: number) => t(`world${n}Name` as Key);
   const focus = () => root.querySelector<HTMLElement>('.sg-overlay button, .sg-primary, .sg-play, button')?.focus();
   function close() {
@@ -89,7 +100,8 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     const shop = `<p class="sg-muted">${t('siegeShopNote')}</p><div class="sg-upgrades">${progress.upgrades.map((level, i) => `<button data-sg-upgrade="${i}" ${level >= 5 || progress.coins < upgradePrice(level) ? 'disabled' : ''}>
         <span class="sg-up-pic"><img src="/images/game/${upgradePic(i, level)}.webp" alt=""></span>
         <span class="sg-up-text"><b>${t(`siegeUpgrade${i}` as Key)}</b><span class="sg-pips">${Array.from({ length: 5 }, (_, k) => `<i class="${k < level ? 'is-on' : ''}"></i>`).join('')}</span></span>
-        <span class="sg-up-cost">${level >= 5 ? t('siegeMax') : `<img src="/images/game/store/coins-2.webp" alt="">${upgradePrice(level)}`}</span></button>`).join('')}</div>`;
+        <span class="sg-up-cost">${level >= 5 ? t('siegeMax') : `<img src="/images/game/store/coins-2.webp" alt="">${upgradePrice(level)}`}</span></button>`).join('')}</div>
+      ${troopRows()}`;
     root.innerHTML = `<div class="sg-shell sg-prep"><header class="sg-top"><button class="sg-back" data-sg="exit" aria-label="${t('siegeExit')}">←</button>
         <h1 class="sg-title"><small>${t('siegeSoon')}</small>${t('siegeName')}</h1>
         <span class="sg-coins"><img src="/images/game/store/coins-2.webp" alt="">${progress.coins}</span></header>
@@ -103,7 +115,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     const battleOptions = { signal: battleAbort.signal };
     if (!selected.length) return;
     progress.deck = [...selected]; persist(); state = newSiege(progress, world); bossTalked = false;
-    preload(world, selected); paused = false; camera.x = -Infinity;
+    preload(world, selected, progress.levels); paused = false; camera.x = -Infinity;
     // Laid out like Cartoon Wars 2: mana top left, both fortresses' health face to face in the middle, coins and pause
     // top right; the field with the bow's aim on our wall; one bar below with the magic, the troop cards and the bow.
     root.innerHTML = `<div class="sg-battle"><header class="sg-hud">
@@ -184,7 +196,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     const list = tabCards();
     q('[data-sg-cards]').innerHTML = tab === 'special'
       ? `<button data-sg="generator"></button><button data-sg="strike"></button><button data-sg="missile"></button>`
-      : list.length ? list.map((id, i) => `<button data-sg-summon="${id}" aria-label="${i + 1}. ${name(id)} · ${UNITS[id].cost}"><img src="${portrait(id)}" data-trim="${portrait(id)}" alt=""><small data-sg-cost="${id}"></small><i class="sg-cooldown" data-sg-cooldown="${id}"></i></button>`).join('')
+      : list.length ? list.map((id, i) => `<button data-sg-summon="${id}" aria-label="${i + 1}. ${name(id)} · ${specAt(id, progress.levels[id]).cost}"><img src="${portrait(id, progress.levels[id])}" data-trim="${portrait(id, progress.levels[id])}" alt=""><small data-sg-cost="${id}"></small><i class="sg-cooldown" data-sg-cooldown="${id}"></i></button>`).join('')
       : `<p class="sg-empty">${t('siegeAirEmpty')}</p>`;
     trimImages(root); updateUi();
   }
@@ -217,7 +229,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     }
     for (const id of tabCards()) {
       q<HTMLButtonElement>(`[data-sg-summon="${id}"]`).disabled = paused || !canSummon(s, id);
-      q(`[data-sg-cost="${id}"]`).textContent = s.cooldowns[id] > 0 ? `${Math.ceil(s.cooldowns[id])}s` : `⚡ ${UNITS[id].cost}`;
+      q(`[data-sg-cost="${id}"]`).textContent = s.cooldowns[id] > 0 ? `${Math.ceil(s.cooldowns[id])}s` : `⚡ ${costOf(s, id)}`;
       q(`[data-sg-cooldown="${id}"]`).style.width = `${s.cooldowns[id] / UNITS[id].cooldown * 100}%`;
     }
     q('[data-sg-aim]').setAttribute('aria-valuenow', String(Math.round(aimAt(s.aim))));
@@ -283,6 +295,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     if (button.dataset.sgPrep && !state) { prepTab = button.dataset.sgPrep as typeof prepTab; prep(); root.querySelector<HTMLElement>(`[data-sg-prep="${prepTab}"]`)?.focus(); return; }
     if (button.dataset.sgWorldPick && !state) { world = Number(button.dataset.sgWorldPick); const left = root.querySelector('.sg-isles')?.scrollLeft ?? 0; prep(); const isles = root.querySelector('.sg-isles'); if (isles) isles.scrollLeft = left; root.querySelector<HTMLElement>(`[data-sg-world-pick="${world}"]`)?.focus(); return; }
     if (up !== undefined && !state) { if (upgrade(progress, Number(up))) { persist(); prep(); } return; }
+    if (button.dataset.sgLevel !== undefined && !state) { if (levelUp(progress, Number(button.dataset.sgLevel))) { persist(); prep(); } return; }
     if (button.hasAttribute('data-sg-turn')) { button.parentElement?.remove(); return; }
     if (button.dataset.sgTab && state) { tab = button.dataset.sgTab as typeof tab; cards(); return; }
     if (summonId !== undefined && state && !paused) { if (summon(state, Number(summonId))) sound('click'); updateUi(); return; }

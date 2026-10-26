@@ -49,6 +49,12 @@ Each enemy is "equivalent" to one of our units at a level: that sets its stats. 
 | 5 | Rex Head, Rhinoceratops, Flightless Terror Bird, Tiger (leaps over and turns back), Spider Spearman | Spearman 4, about HAS 2, Spearman 4, Archer 4, Spearman 5 | Giant Dinosaur Brute |
 | 6 | Mammothsaurus, Giant Heavy Armor Axeman, Inter-Galactic Shooter, Green Ninja Bat, Red Dragon Rider (air, unstunnable), Devil Army (air) | Vulture 6, HAS 4, Gunner 2, Swordsman 6, Drill Aircraft 2, Angel | Giant King Dinosaur Brute |
 
+## Six-pose sheets and levels (current format)
+
+New sheets have **6 poses** in one row: 1 walk A, 2 walk B (A and B alternated read as walking), 3 attack ready, 4 attack, 5 hurt (feet on the ground), 6 dead (lying on the ground); simple stick figures (white round head, stick body). One row per level form, in order. A unit with such a sheet has `six: true` in `UNITS` (scale 0.4 a pixel of its first walk pose); its forms (`forms`) are bought in the workshop's Troops rows. Cut as `siege/units/ally-<name>-<level>-<pose>.webp` (pose 0-5).
+
+- **Swordsman:** 5 forms (the reference's six with its fifth, the piercing swordsman, dropped): club, dagger, sword and shield, greatsword, master (fire slash, reaches flyers). Prices 200, 300, 400, 2000 gold; energy 20, 30, 50, 60, 200.
+
 ## In the game now (test set)
 
 The owner's first two sheets are in: our 15 units and 18 enemy troops, **3 poses each** (0 standing, 1 attacking with its effect, 2 hurt), cut into `assets/special/siege/units/<ally|foe>-<name>-<pose>.webp`. `UNITS` in `src/siege/model.ts` lists them (ours 0-14, the enemy's 15-32) with stats from the equivalences above; `FOE_LAND` / `FOE_AIR` add the enemy's troops world by world, and each world's guardian is its toughest troop so far, drawn bigger (no boss sheets yet). The story scenes still show the old guardians. Walking (a hop, squash and lean on each step), breathing, the strike's lunge, the knock-back of infantry (thrown back, turned over, up again) and the others' stun are animated in code. Heavy blows (20% of a troop's health) knock: `KNOCK` in the model; the Red Dragon Rider is never knocked.
