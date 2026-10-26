@@ -415,3 +415,5 @@
 .siege-root.is-cartoon .sg-bar .sg-deck button{position:absolute;top:0;pointer-events:auto}
 .siege-root.is-cartoon .sg-bar .sg-deck .sg-empty{position:absolute;left:calc(660 * var(--u));top:0;bottom:0;display:flex;align-items:center;pointer-events:auto}
 @media (max-height:500px) and (orientation:landscape){.siege-root.is-cartoon .sg-bar{--u:min(.27px,calc((100vw - 4px) / 2240))}}
+/* v1.14.86 — the bar sits lower, its bottom rim under the screen's edge, so more of the ground shows above it. */
+.siege-root.is-cartoon .sg-bar{bottom:calc(-60 * var(--u))}

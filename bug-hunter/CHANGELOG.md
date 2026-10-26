@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.86 - 2026-10-26
+
+### Changed - Siege Cartoon's ground above the card bar
+- The card bar sits lower (its bottom rim under the screen's edge), and the troops' ground line rests on the wall's top, so the grass they walk on shows above the bar: lower on a wide screen, and raised on an upright phone, where the castle and troops were hidden behind the bar.
+
 ## 1.14.85 - 2026-10-26
 
 ### Changed - Siege Cartoon's battle bar runs the full width
