@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.15 - 2026-10-26
+
+### Fixed
+- Siege Cartoon: the sniper (the gunner's last form) walked as two soldiers at once; its poses are cut again, one soldier each, without bits of the next pose. The ninja's hurt pose no longer carries the shuriken it had thrown.
+
 ## 1.15.14 - 2026-10-26
 
 ### Changed
