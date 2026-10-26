@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.85 - 2026-10-26
+
+### Changed - Siege Cartoon's battle bar runs the full width
+- As in Cartoon Wars 2, the card bar spans the screen edge to edge: the owner's picture's left end (L · A · S and the staff) and right end (its wall slots and the bow ball in the corner) as drawn, with copies of its wall slot filling the width between them; the cards sit on the first slots.
+
 ## 1.14.84 - 2026-10-26
 
 ### Changed - Siege Cartoon's battle shows the whole field

@@ -398,3 +398,20 @@
 .is-cartoon .sg-camera{display:none}
 .siege-root.is-cartoon .sg-bar{position:absolute;z-index:2;left:0;right:0;bottom:0;background:url('/images/game/siege/bar.webp') center top / var(--bw) auto no-repeat}
 .is-cartoon .sg-turn{z-index:4;top:56px}
+
+/* v1.14.85 — the battle bar runs the full width, as in Cartoon Wars 2: the picture's left end (the L · A · S panel and
+   the staff, its first 639 pixels) and right end (its last 1263: the wall's own slots and the bow ball) as drawn, and
+   between them copies of its first wall slot (169 pixels), laid by `layoutBar()` with the cards on them. `--u` is one
+   picture pixel. */
+.siege-root.is-cartoon .sg-bar{--u:min(.4px,calc((100vw - 4px) / 2240));left:0;right:0;width:auto;height:calc(378 * var(--u));background:none;border:0}
+.siege-root.is-cartoon .sg-bar::before,.siege-root.is-cartoon .sg-bar::after{content:'';position:absolute;top:0;bottom:0;background:url('/images/game/siege/bar.webp') 0 0 / auto 100% no-repeat;pointer-events:none}
+.siege-root.is-cartoon .sg-bar::before{left:0;width:calc(639 * var(--u))}
+.siege-root.is-cartoon .sg-bar::after{right:0;width:calc(1263 * var(--u));background-position:right top}
+.sg-wall{position:absolute;top:0;bottom:0;left:calc(639 * var(--u));right:calc(1263 * var(--u));display:flex;pointer-events:none}
+.sg-wall i{flex:1;background:url('/images/game/siege/bar.webp') no-repeat}
+.siege-root.is-cartoon .sg-tabs{z-index:1;left:calc(51 * var(--u));width:calc(520 * var(--u))}
+.siege-root.is-cartoon .sg-bow,.siege-root.is-cartoon .sg-bow:hover:not(:disabled),.siege-root.is-cartoon .sg-bow.is-drawing{z-index:1;left:auto;right:calc(58 * var(--u));width:calc(160 * var(--u));height:calc(160 * var(--u))}
+.siege-root.is-cartoon .sg-bar .sg-deck{z-index:1;left:0;right:0;width:auto;top:37.57%;height:44.18%;display:block;pointer-events:none}
+.siege-root.is-cartoon .sg-bar .sg-deck button{position:absolute;top:0;pointer-events:auto}
+.siege-root.is-cartoon .sg-bar .sg-deck .sg-empty{position:absolute;left:calc(660 * var(--u));top:0;bottom:0;display:flex;align-items:center;pointer-events:auto}
+@media (max-height:500px) and (orientation:landscape){.siege-root.is-cartoon .sg-bar{--u:min(.27px,calc((100vw - 4px) / 2240))}}
