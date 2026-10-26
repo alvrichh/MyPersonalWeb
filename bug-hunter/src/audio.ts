@@ -13,6 +13,10 @@
  * `unlock()` is called from the first menu click.
  */
 
+/** Siege's troop sounds: attacks by weapon, deaths by body. */
+export const SIEGE_SOUNDS = ['blade', 'blunt', 'pierce', 'claw', 'bite', 'throw', 'bow', 'gun', 'rifle', 'uzi', 'sniper', 'gatling', 'rocket', 'ray', 'flame', 'thunder', 'wind', 'meteor', 'breath', 'drill', 'magic',
+  'die-man', 'die-armor', 'die-beast', 'die-brute', 'die-bot', 'die-flyer', 'die-horse', 'die-dragon'] as const;
+export type SiegeSound = (typeof SIEGE_SOUNDS)[number];
 export type Sfx =
   | 'shoot' | 'knife' | 'boomerang' | 'hit' | 'kill' | 'gem' | 'hurt' | 'levelup' | 'pick'
   | 'door' | 'boss' | 'slam' | 'slash' | 'strike' | 'boom' | 'revive' | 'win' | 'over' | 'coin' | 'click'
@@ -1935,6 +1939,80 @@ class Engine {
   }
 
   /* ------------------------------------------------------------------ sfx */
+
+  /* ------------------------------------------------------------ siege */
+
+  /** One of Siege's troop sounds (`SiegeSound`): an attack by its weapon or a death by its body, synthesised to
+      sound like the real thing (a blade's swish and ring, a gun's crack and body, a fall's thump), at a volume and a
+      left-right place for where it happens on screen. Each is a little different every time. */
+  siege(kind: SiegeSound, vol = 1, pan = 0) {
+    if (!this.ready || this.volumes.sfx === 0) return;
+    const ctx = this.ctx, at = ctx.currentTime, v = vol * 0.9, r = (k = 0.08) => 1 + (Math.random() - 0.5) * k * 2;
+    const out = ctx.createGain(); out.gain.value = v;
+    const panner = ctx.createStereoPanner(); panner.pan.value = Math.max(-1, Math.min(1, pan));
+    out.connect(panner).connect(this.sfxBus);
+    const tone = (t: number, type: OscillatorType, f0: number, f1: number, len: number, peak: number, attack = 0.003, filter?: [BiquadFilterType, number, number?]) => {
+      const o = ctx.createOscillator(); o.type = type; o.frequency.setValueAtTime(f0, at + t); o.frequency.exponentialRampToValueAtTime(Math.max(20, f1), at + t + len);
+      const g = ctx.createGain(); this.env(g, at + t, peak, attack, len);
+      let node: AudioNode = o;
+      if (filter) { const f = ctx.createBiquadFilter(); f.type = filter[0]; f.frequency.value = filter[1]; if (filter[2]) f.Q.value = filter[2]; node = o.connect(f); }
+      node.connect(g).connect(out); o.start(at + t); o.stop(at + t + len + 0.05);
+    };
+    const noise = (t: number, len: number, peak: number, type: BiquadFilterType, f0: number, f1 = f0, q = 1, attack = 0.002) => {
+      const n = ctx.createBufferSource(); n.buffer = this.noise;
+      const f = ctx.createBiquadFilter(); f.type = type; f.Q.value = q; f.frequency.setValueAtTime(f0, at + t); f.frequency.exponentialRampToValueAtTime(Math.max(20, f1), at + t + len);
+      const g = ctx.createGain(); this.env(g, at + t, peak, attack, len);
+      n.connect(f).connect(g).connect(out); n.start(at + t, Math.random()); n.stop(at + t + len + 0.05);
+    };
+    const ring = (t: number, freqs: number[], peak: number, len = 0.22) => freqs.forEach((f) => tone(t, 'sine', f * r(0.03), f * 0.98, len, peak / freqs.length * 1.6, 0.001));
+    const crack = (t: number, peak: number, body: number, tail = 0.12) => {
+      noise(t, 0.035, peak, 'highpass', 2400); noise(t, tail, peak * 0.8, 'lowpass', 1100 * r(), 260, 0.7);
+      tone(t, 'triangle', 170 * r(), 50, 0.09, body);
+    };
+    const boom = (t: number, peak: number, len = 0.55) => {
+      tone(t, 'sine', 95 * r(), 32, len * 0.7, peak); noise(t, len, peak * 0.9, 'lowpass', 1400, 120, 0.6, 0.004);
+      noise(t, 0.08, peak * 0.5, 'bandpass', 2600, 1200, 0.8);
+    };
+    const fall = (t: number, peak = 0.32) => { tone(t, 'sine', 120 * r(), 48, 0.12, peak); noise(t, 0.1, peak * 0.7, 'lowpass', 420, 140, 0.7); };
+    // A cry: a voiced sawtooth through a vowel-like band, falling in pitch (male-ish, lower for brutes).
+    const cry = (t: number, f0: number, f1: number, len: number, peak: number, vowel = 750) => {
+      tone(t, 'sawtooth', f0 * r(), f1, len, peak, 0.012, ['bandpass', vowel * r(0.1), 4]);
+      tone(t, 'sawtooth', f0 * r(), f1, len, peak * 0.6, 0.012, ['bandpass', vowel * 1.6, 5]);
+    };
+    switch (kind) {
+      // Attacks.
+      case 'blade': noise(0, 0.12, 0.3, 'bandpass', 1500 * r(), 4800, 1.2); ring(0.075, [2350, 3720, 5150], 0.09); return noise(0.07, 0.05, 0.18, 'highpass', 3500);
+      case 'blunt': noise(0, 0.1, 0.2, 'bandpass', 700 * r(), 1500, 1); tone(0.07, 'sine', 150 * r(), 52, 0.13, 0.55); return noise(0.07, 0.07, 0.35, 'lowpass', 600, 180);
+      case 'pierce': noise(0, 0.08, 0.26, 'bandpass', 2400 * r(), 5200, 1.4); tone(0.06, 'triangle', 230 * r(), 105, 0.07, 0.3); return noise(0.06, 0.04, 0.2, 'lowpass', 900);
+      case 'claw': for (let i = 0; i < 3; i++) noise(i * 0.028, 0.035, 0.5, 'bandpass', 3200 * r(), 2200, 2); return;
+      case 'bite': noise(0, 0.05, 0.3, 'bandpass', 1300 * r(), 900, 1.5); tone(0.02, 'triangle', 200, 90, 0.07, 0.3); return tone(0, 'sawtooth', 95 * r(), 70, 0.24, 0.12, 0.02, ['lowpass', 500]);
+      case 'throw': return noise(0, 0.2, 0.55, 'bandpass', 800 * r(), 2300, 1.2, 0.03);
+      case 'bow': { const d = r(0.06); tone(0, 'triangle', 240 * d, 150 * d, 0.07, 0.2); return noise(0.015, 0.14, 0.12, 'bandpass', 2600 * d, 2600 * d, 1); }
+      case 'gun': return crack(0, 0.5, 0.3);
+      case 'rifle': return crack(0, 0.6, 0.38, 0.2);
+      case 'uzi': for (let i = 0; i < 4; i++) crack(i * 0.055, 0.32, 0.16, 0.07); return;
+      case 'sniper': crack(0, 0.75, 0.45, 0.32); noise(0.05, 0.6, 0.12, 'lowpass', 700, 200, 0.5, 0.05); return crack(0.2, 0.08, 0.05, 0.2);
+      case 'gatling': for (let i = 0; i < 6; i++) crack(i * 0.045, 0.26, 0.12, 0.05); return;
+      case 'rocket': tone(0, 'sine', 140, 60, 0.1, 0.35); return noise(0.02, 0.5, 0.26, 'bandpass', 500 * r(), 2600, 0.9, 0.03);
+      case 'ray': tone(0, 'sine', 1900 * r(), 320, 0.26, 0.18); tone(0, 'square', 950, 160, 0.26, 0.05, 0.003, ['lowpass', 2500]); return noise(0, 0.2, 0.06, 'highpass', 6000);
+      case 'flame': noise(0, 0.5, 0.5, 'lowpass', 1300 * r(), 700, 0.7, 0.05); return noise(0, 0.45, 0.16, 'bandpass', 420, 300, 1.2, 0.04);
+      case 'thunder': noise(0, 0.05, 0.55, 'highpass', 4200); noise(0.01, 0.12, 0.4, 'bandpass', 1800, 900, 0.8); return noise(0.04, 0.95, 0.42, 'lowpass', 300 * r(), 90, 0.6, 0.03);
+      case 'wind': noise(0, 0.85, 0.75, 'bandpass', 380 * r(), 950, 1.8, 0.18); return noise(0.1, 0.7, 0.25, 'lowpass', 300, 200, 0.6, 0.2);
+      case 'meteor': tone(0, 'sine', 1700 * r(), 260, 0.5, 0.07, 0.04); noise(0, 0.5, 0.12, 'bandpass', 1500, 500, 2, 0.1); return boom(0.48, 0.6, 0.7);
+      case 'breath': noise(0, 0.6, 0.32, 'lowpass', 1500 * r(), 600, 0.7, 0.04); return tone(0, 'sawtooth', 110 * r(), 70, 0.5, 0.12, 0.05, ['lowpass', 420]);
+      case 'drill': tone(0, 'sawtooth', 72 * r(), 80, 0.32, 0.18, 0.01, ['lowpass', 900]); return noise(0, 0.32, 0.18, 'bandpass', 2400 * r(), 2600, 3, 0.01);
+      case 'magic': tone(0, 'sine', 700 * r(), 1500, 0.22, 0.12, 0.01); tone(0.03, 'triangle', 1400, 2400, 0.18, 0.06, 0.01); return noise(0, 0.25, 0.05, 'highpass', 7000);
+      // Deaths.
+      case 'die-man': cry(0, 210, 115, 0.24, 0.16); return fall(0.22);
+      case 'die-armor': cry(0, 175, 95, 0.24, 0.14, 650); fall(0.2, 0.36); [0.22, 0.27, 0.33].forEach((t) => ring(t, [1800 * r(), 2700 * r(), 3500 * r()], 0.05, 0.14)); return;
+      case 'die-beast': cry(0, 320, 130, 0.36, 0.15, 900); return fall(0.3, 0.38);
+      case 'die-brute': cry(0, 130, 70, 0.45, 0.2, 520); return fall(0.36, 0.45);
+      case 'die-bot': noise(0, 0.28, 0.18, 'highpass', 5200); tone(0, 'sawtooth', 420 * r(), 60, 0.32, 0.1, 0.003, ['lowpass', 1800]); return boom(0.18, 0.32, 0.4);
+      case 'die-flyer': tone(0, 'sine', 950 * r(), 190, 0.5, 0.08, 0.02); return fall(0.48, 0.4);
+      case 'die-horse': tone(0, 'sawtooth', 720 * r(), 480, 0.5, 0.1, 0.02, ['bandpass', 1300, 3]); cry(0.1, 260, 120, 0.3, 0.1); return fall(0.42, 0.5);
+      case 'die-dragon': tone(0, 'sawtooth', 120 * r(), 55, 0.75, 0.2, 0.04, ['bandpass', 480, 2]); noise(0, 0.7, 0.16, 'lowpass', 600, 150, 0.6, 0.05); return fall(0.6, 0.55);
+    }
+  }
 
   /** When the hit sound last played: a crowd being hit sounds once every 50 ms, not once a frame. */
   private lastHit = -1;

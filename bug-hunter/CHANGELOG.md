@@ -4,6 +4,14 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.69 - 2026-10-26
+
+### Added - Siege: every troop's attack and death have their own sound
+- Each troop sounds like its weapon when it attacks and like its body when it dies, synthesised to be as close to the real thing as Web Audio allows: a blade's swish and ring, a club's thump, a spear's thrust, claws, a bite, a throw's whoosh, the bow, pistol, rifle, Uzi bursts, the sniper's crack and echo, a gatling's rattle, rocket launches, the ray gun's zap, the flamethrower's roar, thunder, wind, a falling meteor's whistle and blast, a dragon's breath, a drill, magic; deaths are a cry and a fall (lower for brutes), armour clattering, beasts, robots fizzing and blowing up, flyers whistling down and crashing, a horse, a dragon. Levels change the sound with the weapon (club to sword, pistol to sniper, lightning to meteor; the lancer's horse).
+- Sounds are louder and centred where the camera looks, softer off screen and panned left or right by their place; the same sound plays at most every 70 ms and no more than four a frame, so a big battle stays a clash of distinct blows.
+- The owner's Cartoon Wars 2 upgrade research (bow power, range and speed steps, castle levels, mana, costs per unit form, which units are strong) is kept in `docs/cw2-upgrades.md` as a balance reference.
+- Checks: a Siege test covers the sounds of attacks and deaths per weapon, body and level, and the queue's cap (21 tests). Every sound was rendered offline in the browser without errors and none is silent.
+
 ## 1.14.68 - 2026-10-26
 
 ### Added - Siege: the wizard in three forms, his spells landing on the target

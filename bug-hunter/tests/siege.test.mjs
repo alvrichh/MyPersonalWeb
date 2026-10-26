@@ -177,3 +177,17 @@ test('troop levels: bought in order with gold, saved, and the master swordsman h
   const plain = m.newSiege(m.freshProgress(), 1); plain.nextWave = 999; m.summon(plain, 0); plain.units[0].x = 500;
   const eagle2 = { ...eagle, hp: 9999, flash: 0 }; plain.units.push(eagle2); run(plain, 1); assert.equal(eagle2.hp, 9999, 'the first form does not');
 });
+test('troop sounds: each attack and each death is heard as its weapon and body', () => {
+  const s = m.newSiege({ ...m.freshProgress(), levels: [1, 5, 1, 1, 4] }, 1); s.nextWave = 999;
+  const at = (id, x, side, extra = {}) => ({ uid: 300 + id + side * 50, id, side, x, lane: 0, hp: 100, maxHp: 100, damage: 5, attack: 0, flash: 0, boss: false, ...extra });
+  s.units.push(at(4, 500, 0, { lv: 4 }), at(17, 560, 1, { hp: 1 }));
+  m.tick(s, 1 / 30);
+  const kinds = s.sounds.map(x => x.k);
+  assert.ok(kinds.includes('sniper'), 'a level 4 gunner fires a sniper rifle');
+  assert.ok(kinds.includes('die-beast'), 'the dog dies as a beast');
+  assert.deepEqual(m.soundsOf(at(1, 0, 0, { lv: 5 })), ['pierce', 'die-horse']);
+  assert.deepEqual(m.soundsOf(at(6, 0, 0, { lv: 3 })), ['meteor', 'die-man']);
+  assert.deepEqual(m.soundsOf(at(0, 0, 0, { lv: 1 })), ['blunt', 'die-man']);
+  for (let i = 0; i < 60; i++) { s.units.push(at(15, 520, 1, { uid: 900 + i, hp: 0 })); m.tick(s, 1 / 30); }
+  assert.ok(s.sounds.length <= 24, 'the queue stays short');
+});
