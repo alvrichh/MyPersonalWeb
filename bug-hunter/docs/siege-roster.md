@@ -53,8 +53,8 @@ Each enemy is "equivalent" to one of our units at a level: that sets its stats. 
 
 - One sheet per unit and visual level; transparent background (real alpha); no text, no shadow; poses in **one row**, with wide empty space between them; all poses at the same scale, standing on the same ground line.
 - **Side view, facing RIGHT** for everything (ours and enemies); the code mirrors enemies.
-- **Land units, 8 poses in this order:** 1 stand, 2-5 walk cycle (4 steps), 6 attack wind-up, 7 attack strike (with its projectile or swing visible for ranged units: the shot is drawn separately in game, so only the muzzle flash), 8 hit (rocking back). Infantry also: 9 knocked flying (body horizontal in the air), 10 lying down.
-- **Air units, 6 poses:** 1-4 flying cycle, 5 attack, 6 hit (tilted back).
+- **5 poses, in this order, for every unit:** 1 walk with legs wide apart (a full stride), 2 walk with legs together (passing step), 3 attack ready (wind-up), 4 attack (the strike; ranged units only the muzzle flash, the shot is drawn in game), 5 hurt (rocking back). Air units: 1 and 2 are two flying frames (wings up, wings down).
+- **Animated in code, not drawn:** walking alternates poses 1 and 2 (about 6 a second) with a bounce, a squash on each footfall and a forward lean; standing is pose 1 breathing; the strike lunges forward; heavy hits push back, and infantry fly back on pose 5 spinning, land and get up; death is pose 5 falling over and fading; flyers float on a sine.
 - **Gatling robots:** 3 sheets, one per stage (whole, one arm, crawling wreck).
 - **Bosses:** the land format at about twice a normal unit's size.
 - Cut and placed in `assets/special/siege/units/<unit>-<level>-<pose>.webp` (public `/images/game/siege/units/...`), scaled so a Swordsman is the reference height.
@@ -67,12 +67,11 @@ Replace `<UNIT>` with one line from the lists below.
 Game sprite sheet, transparent background, no text, no shadow, no ground.
 Side view (pure 2D profile), facing RIGHT, of <UNIT>, for a cartoon side-scrolling army battle game like Cartoon Wars 2.
 Style: glossy stylised cartoon, chunky proportions with a big head, thick clean outlines, strong rim light, same rendering as a mobile strategy game.
-8 poses in ONE row, left to right, same scale, same ground line, wide empty space between them, no pose touching another:
-1) standing, 2) walk step 1, 3) walk step 2, 4) walk step 3, 5) walk step 4, 6) attack wind-up, 7) attack strike, 8) hit, rocking backwards.
+5 poses in ONE row, left to right, same scale, same ground line, wide empty space between them, no pose touching another:
+1) walking, legs wide apart in a full stride, 2) walking, legs together passing each other, 3) attack ready (wind-up), 4) attacking (the strike), 5) hurt, rocking backwards.
 ```
 
-For infantry add: `9) knocked back, flying horizontally in the air, 10) lying on the ground` and say "10 poses".
-For air units use: `6 poses: 1-4) flying cycle, 5) attacking, 6) hit, tilted backwards`.
+For air units replace poses 1 and 2 with: `1) flying, wings up, 2) flying, wings down`.
 
 **Our army** (blue and steel, cyan neon trims, like our fortress):
 - `a young swordsman in light steel armour with a blue tunic and a short sword`
