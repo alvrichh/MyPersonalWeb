@@ -38,7 +38,8 @@ const clock = (n: number) => `${Math.floor(n / 60)}:${String(Math.floor(n % 60))
 let closeActive: (() => void) | undefined;
 /** Own root, event lifecycle and save: existing game modes are never entered or mutated. */
 /** `hero`: the player's hero picture and name, the commander who speaks in the story scenes. */
-export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' }, sound: (name: string, vol?: number, pan?: number) => void = () => {}) {
+/** `music`: Siege Cartoon's songs, its menus' or its battles', or null to go back to the player's pick. */
+export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' }, sound: (name: string, vol?: number, pan?: number) => void = () => {}, music: (song: 'menu' | 'battle' | null) => void = () => {}) {
   closeActive?.();
   /** The mode being played (null on the mode screen), its engine and its save. */
   let mode: Mode | null = null, M = ENGINES.cartoon.m, V = ENGINES.cartoon.v;
@@ -47,7 +48,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   let state: Siege | null = null, paused = false, finished = false;
   // Local checks (like `window.bugHunter` for the main game): the battle's state, read and nudged by test scripts.
   if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) Object.defineProperty(window, 'bugHunterSiege', { get: () => state, configurable: true });
-  let frame = 0, last = 0, accumulator = 0, uiAt = 0, bossTalked = false;
+  let frame = 0, last = 0, accumulator = 0, uiAt = 0, bossTalked = false, baseFell = false, lootHeard = 0;
   /** How far the aim stick is pushed, -1 (down, nearer) to 1 (up, further); 0 at rest. */
   let aimPush = 0;
   /** The bottom bar's tab, Cartoon Wars 2's L · A · S: land troops, air troops, special powers. */
@@ -95,7 +96,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   function close() {
     if (finished) return; finished = true;
     cancelAnimationFrame(frame); battleAbort.abort(); abort.abort(); root.remove(); siblings.forEach(({ el, inert }) => el.inert = inert);
-    closeActive = undefined; onClose(); previousFocus?.isConnected && previousFocus.focus();
+    closeActive = undefined; music(null); onClose(); previousFocus?.isConnected && previousFocus.focus();
   }
   closeActive = close;
   /** An army card: a troop to pick, or (Cartoon) one to recruit with gold once its act is open. */
@@ -120,7 +121,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     }
     const owned = M.owns(progress, row), now = progress.levels[row] ?? 1, open = M.isOpen(progress, row);
     const next = open && (owned ? level === now + 1 : level === 1);
-    return { have: owned && level <= now, next, price: level === 1 ? M.troopPrice(row) : M.UNITS[row].forms?.[level - 2]?.price ?? 0, why: !open ? t('siegeOpensAct', { n: M.UNITS[row].unlock }) : t('siegeBuyFirst') };
+    return { have: owned && level <= now, next, price: level === 1 || (mode === 'cartoon' && cartoonModel.testing.free) ? M.troopPrice(row) : M.UNITS[row].forms?.[level - 2]?.price ?? 0, why: !open ? t('siegeOpensAct', { n: M.UNITS[row].unlock }) : t('siegeBuyFirst') };
   };
   const shopRows = () => (shopTab === 'base' ? [0, 1, 2, 3] : M.ALLIES.filter(u => !!u.air === (shopTab === 'air')).map(u => u.id));
   const rowLevels = (row: number) => (shopTab === 'base' ? 5 : M.levelsOf(row));
@@ -139,7 +140,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     }).join('<span class="sg-st-link" aria-hidden="true"></span>')}</div>`).join('');
     const x = tile(pick.row, pick.level), troop = shopTab !== 'base';
     const label = troop ? `${name(pick.row)} · ${t('siegeLevel', { n: pick.level })} — ${role(pick.row)}` : `${t(`siegeUpgrade${pick.row}` as Key)} · ${t('siegeLevel', { n: pick.level })}`;
-    const price = x.have ? `✓ ${t('siegeHave')}` : x.next ? `🪙 ${x.price}` : `🔒 ${x.why}`;
+    const price = x.have ? `✓ ${t('siegeHave')}` : x.next ? (x.price ? `🪙 ${x.price}` : t('siegeFree')) : `🔒 ${x.why}`;
     const kind = shopTab === 'air';
     // The equipped cards; a tap on one takes it out of the army.
     const slots = Array.from({ length: M.DECK }, (_, i) => { const c = selected.filter(n => air(n) === kind)[i]; return c === undefined ? '<span class="sg-st-slot"></span>' : `<button class="sg-st-slot is-full" data-sg-tile="${cid(c)}:${clv(c)}" aria-label="${name(cid(c))} · ${t('siegeLevel', { n: clv(c) })}"><img src="${V.portrait(cid(c), clv(c))}" data-trim="${V.portrait(cid(c), clv(c))}" alt=""><small>${clv(c)}</small></button>`; }).join('');
@@ -170,6 +171,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   const prize = (n: number, first: boolean) => (mode === 'cartoon' ? cartoonModel.prize(n, first) : first ? 160 + n * 30 : 45 + n * 5);
   function prep() {
     cancelAnimationFrame(frame); battleAbort.abort(); state = null; paused = false;
+    music(mode === 'cartoon' ? 'menu' : null);
     const tabs = (mode === 'cartoon' ? ['map', 'shop'] as const : ['map', 'army', 'shop'] as const).map(k => `<button role="tab" class="${prepTab === k ? 'is-on' : ''}" aria-selected="${prepTab === k}" data-sg-prep="${k}"><img src="${mode === 'cartoon' ? (k === 'map' ? '/images/game/siege/enemy-1.webp' : k === 'army' ? V.portrait(0) : '/images/game/store/coins-2.webp') : `/images/game/${k === 'map' ? 'ui/ring_world' : k === 'army' ? 'enemies/original-bug-0' : 'store/coins-2'}.webp`}" alt="">${t(k === 'map' ? 'siegeTabMap' : k === 'army' ? 'siegeTabArmy' : mode === 'cartoon' ? 'siegeTabStore' : 'siegeTabShop')}</button>`).join('');
     // The map: the action modes' own islands, locked ones greyed with the padlock ring, won ones with the check ring.
     const cartoon = mode === 'cartoon';
@@ -222,7 +224,8 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     cancelAnimationFrame(frame); battleAbort.abort(); battleAbort = new AbortController();
     const battleOptions = { signal: battleAbort.signal };
     if (!selected.length) return;
-    progress.deck = [...selected]; persist(); state = M.newSiege(progress, world); bossTalked = false;
+    progress.deck = [...selected]; persist(); state = M.newSiege(progress, world); bossTalked = false; baseFell = false; lootHeard = 0;
+    if (mode === 'cartoon') music('battle');
     V.preload(world, selected, progress.levels); paused = false; camera.x = -Infinity;
     // Laid out like Cartoon Wars 2: mana top left, both fortresses' health face to face in the middle, coins and pause
     // top right; the field with the bow's aim on our wall; one bar below with the magic, the troop cards and the bow.
@@ -293,6 +296,10 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
         // Each bow shot is heard (at most one sound a frame, so a fast volley stays a rattle, not a roar).
         if ((state.shots ?? 0) > shot) sound('arrow');
         troopSounds(now);
+        // The enemy fortress falling (its crumble, then the guardian's horn), and a coin for a fat bounty.
+        if (mode === 'cartoon' && !baseFell && state.hp[1] <= 0) { baseFell = true; sound('base-falls'); }
+        if (mode === 'cartoon' && (state.loot ?? 0) - lootHeard >= 8) sound('coin', 0.7);
+        lootHeard = state.loot ?? 0;
       }
       // Siege Cartoon lays its card bar over the field: the troops walk just above it.
       // The ground line sits on the wall's top (30% down the bar's picture), so the troops walk on the grass above it.
@@ -511,7 +518,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   window.addEventListener('blur', pause, options);
   /** The first screen: Siege Legacy or Siege Cartoon, each with its own progress. */
   function modes() {
-    cancelAnimationFrame(frame); battleAbort.abort(); state = null; paused = false; mode = null; root.classList.remove('is-cartoon', 'is-legacy');
+    cancelAnimationFrame(frame); battleAbort.abort(); state = null; paused = false; mode = null; root.classList.remove('is-cartoon', 'is-legacy'); music(null);
     const card = (m: Mode, pic: string) => `<button class="sg-mode is-${m}" data-sg-mode="${m}"><img src="${pic}" data-trim="${pic}" alt=""><b>${t(m === 'legacy' ? 'siegeLegacy' : 'siegeCartoon')}</b><small>${t(m === 'legacy' ? 'siegeLegacyNote' : 'siegeCartoonNote')}</small></button>`;
     root.innerHTML = `<div class="sg-shell sg-prep sg-modes-page"><header class="sg-top"><button class="sg-back" data-sg="exit" aria-label="${t('siegeExit')}">←</button>
         <h1 class="sg-title"><small>${t('siegeSoon')}</small>${t('siegeName')}</h1></header>

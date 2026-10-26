@@ -224,10 +224,13 @@ export interface Progress { version: 1; unlocked: number; coins: number; victori
 export const freshProgress = (): Progress => ({ version: 1, unlocked: 1, coins: 0, victories: [], upgrades: [0, 0, 0, 0], deck: [0], levels: UNITS.map(() => 1), owned: [0], cards: 1 });
 /** Can this card go in the army: its troop recruited and its level bought? */
 export const hasCard = (p: Progress, c: number) => Number.isInteger(c) && c >= 0 && owns(p, cardId(c)) && cardLevel(c) <= (p.levels[cardId(c)] ?? 1);
+/** The owner's testing switch: every troop open from the start and recruited and levelled for free. Set `free` to
+    false to bring back the act unlocks and the gold prices. */
+export const testing = { free: true };
 /** Has the battles won opened this troop's act? */
-export const isOpen = (p: Progress, id: number) => !!UNITS[id] && !UNITS[id].foe && UNITS[id].unlock <= actOf(p.unlocked);
+export const isOpen = (p: Progress, id: number) => !!UNITS[id] && !UNITS[id].foe && (testing.free || UNITS[id].unlock <= actOf(p.unlocked));
 export const owns = (p: Progress, id: number) => p.owned.includes(id);
-export const troopPrice = (id: number) => RECRUIT[id] ?? 0;
+export const troopPrice = (id: number) => (testing.free ? 0 : RECRUIT[id] ?? 0);
 /** Recruits a troop with gold, into the army if there is room. */
 export function buyTroop(p: Progress, id: number): boolean {
   if (owns(p, id) || !isOpen(p, id) || p.coins < troopPrice(id)) return false;
@@ -259,8 +262,9 @@ export const levelPrice = (p: Progress, id: number) => UNITS[id]?.forms?.[(p.lev
 /** Buys a troop's next form. */
 export function levelUp(p: Progress, id: number): boolean {
   const price = levelPrice(p, id);
-  if (!price || !owns(p, id) || p.coins < price) return false;
-  p.coins -= price; p.levels[id] = (p.levels[id] ?? 1) + 1; return true;
+  const pay = testing.free ? 0 : price;
+  if (!price || !owns(p, id) || p.coins < pay) return false;
+  p.coins -= pay; p.levels[id] = (p.levels[id] ?? 1) + 1; return true;
 }
 export function upgrade(p: Progress, slot: number): boolean {
   if (!Number.isInteger(slot) || slot < 0 || slot > 3) return false;

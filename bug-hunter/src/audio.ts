@@ -15,7 +15,7 @@
 
 /** Siege's troop sounds: attacks by weapon, deaths by body. */
 export const SIEGE_SOUNDS = ['blade', 'blunt', 'pierce', 'claw', 'bite', 'throw', 'bow', 'gun', 'rifle', 'uzi', 'sniper', 'gatling', 'rocket', 'ray', 'flame', 'thunder', 'wind', 'meteor', 'breath', 'drill', 'magic',
-  'die-man', 'die-armor', 'die-beast', 'die-brute', 'die-bot', 'die-flyer', 'die-horse', 'die-dragon'] as const;
+  'die-man', 'die-armor', 'die-beast', 'die-brute', 'die-bot', 'die-flyer', 'die-horse', 'die-dragon', 'base-falls', 'coin'] as const;
 export type SiegeSound = (typeof SIEGE_SOUNDS)[number];
 export type Sfx =
   | 'shoot' | 'knife' | 'boomerang' | 'hit' | 'kill' | 'gem' | 'hurt' | 'levelup' | 'pick'
@@ -145,7 +145,9 @@ type V2 = {
   /** Four bars of eighths over the song's root, in the lead's own octave (`leadOct` times the root). */
   lead: LeadVoice; leadOct: number; melody: Note[][];
 };
-export type V2Id = 'w1v2' | 'w2v2' | 'w3v2' | 'mudv2' | 'w4v2' | 'w5v2' | 'w6v2' | 'w7v2' | 'w8v2' | BossSongId;
+export type V2Id = 'w1v2' | 'w2v2' | 'w3v2' | 'mudv2' | 'w4v2' | 'w5v2' | 'w6v2' | 'w7v2' | 'w8v2' | BossSongId | CartoonSongId;
+/** Siege Cartoon's own songs: its menus' (bright and bouncy) and its battles' (a marching charge). */
+export type CartoonSongId = 'cartoon-menu' | 'cartoon-battle';
 /** The final bosses' own songs: each its world's song as a boss version, the same key, sounds (`theme`), lead and
     melody, its bass line and chords darker and harder, with no calm intro (it starts on the drop). «By world» plays it while that boss is out. */
 export const BOSS_SONGS = ['kernel', 'archdemon', 'drakkar', 'medusa', 'queen', 'zeus', 'mech', 'wraith', 'chimera'] as const;
@@ -154,6 +156,26 @@ const BOSS_FORM: Sec[] = ['drop', 'peak', 'roll', 'peak', 'break', 'drop', 'roll
 /** «By world»: each world's second version, in world order (the first world's in the menus too). */
 const WORLD_V2: V2Id[] = ['w1v2', 'w2v2', 'w3v2', 'mudv2', 'w4v2', 'w5v2', 'w6v2', 'w7v2', 'w8v2'];
 const V2S: Record<V2Id, V2> = {
+  'cartoon-menu': { // Siege Cartoon's menus: a bright F major bounce on a two-step, a marimba tune over a sliding bass.
+    theme: 10, root: 43.65,
+    chords: [[0, 4, 7, 12], [5, 9, 12, 17], [-3, 0, 4, 9], [7, 11, 14, 19]], roots: [0, 5, -3, 7],
+    chordsB: [[2, 5, 9, 14], [7, 11, 14, 19], [0, 4, 7, 12], [5, 9, 12, 17]], rootsB: [2, 7, 0, 5],
+    form: ['intro', 'roll', 'drop', 'roll', 'break', 'drop', 'peak', 'roll'],
+    grooves: { drop: 'twostep', roll: 'twostep', peak: 'amen' }, kit: { drive: 0, snare: 2800, decay: 0.09, wet: 0.15 },
+    bass: 'slide', line: [0, null, 'r', 12, null, 'r', 0, null, 7, null, 'r', 0, 12, null, 7, 'r', 0, null, 'r', 12, null, 'r', 0, null, 5, null, 'r', 4, 2, null, 0, 'r'],
+    lead: 'marimba', leadOct: 8,
+    melody: [[12, 16, 19, 16, 21, null, 19, null], [17, 16, 14, null, 12, null, 'r', null], [12, 16, 19, 24, 21, 19, 16, 14], [16, null, 14, 12, 11, null, 12, 'r']],
+  },
+  'cartoon-battle': { // Siege Cartoon's battles: a D minor charge, war brass over the Amen, a driving bass, the drums rolling.
+    theme: 10, root: 36.71,
+    chords: [[0, 3, 7, 12], [-2, 2, 5, 10], [-4, 0, 3, 8], [-5, -1, 2, 7]], roots: [0, -2, -4, -5],
+    chordsB: [[3, 7, 10, 15], [-2, 2, 5, 10], [5, 8, 12, 17], [7, 11, 14, 19]], rootsB: [3, -2, 5, 7],
+    form: ['drop', 'roll', 'drop', 'peak', 'break', 'drop', 'roll', 'peak'],
+    grooves: { drop: 'amen', roll: 'jungle', peak: 'amen' }, kit: { drive: 0.5, snare: 2100, decay: 0.14, wet: 0.3 },
+    bass: 'reese', line: [0, null, 0, null, 7, null, 0, 'r', 0, null, 10, null, 7, null, 5, null, 0, null, 0, null, 7, null, 0, 'r', 12, null, 10, null, 7, null, 5, 3],
+    lead: 'brass', leadOct: 4,
+    melody: [[12, null, 12, 15, 19, null, 17, 15], [14, null, 10, null, 12, null, 'r', null], [12, null, 15, null, 19, 20, 22, null], [19, null, 17, 15, 14, null, 12, 'r']],
+  },
   'boss-kernel': { // Kernel Panic: the Backlog's chiptune turned to C minor (its thirds flattened, the B kept sharp), still on the Amen, a driven bass.
     theme: 1, root: 32.7,
     chords: [[5, 8, 12, 17], [7, 11, 14, 19], [3, 7, 10, 15], [8, 12, 15, 20]], roots: [5, 7, 3, 8],
@@ -1611,6 +1633,8 @@ class Engine {
         if (calm && inBar === 8 && bar % 2 === 0) this.cricket(at);
         if (sec === 'peak' && inBar === 14 && bar % 2 === 1) this.rattle(at);
         break;
+      case 10: // Siege Cartoon: no world noises, the band alone.
+        break;
       default: // The Core: its heart, magma, the dragon, laser zaps, crystal bells.
         if (calm && (inBar === 0 || inBar === 8)) this.heartbeat(at, 1);
         if (!calm && inBar === 0) this.heartbeat(at, 0.5);
@@ -1979,38 +2003,60 @@ class Engine {
       tone(t, 'sawtooth', f0 * r(), f1, len, peak, 0.012, ['bandpass', vowel * r(0.1), 4]);
       tone(t, 'sawtooth', f0 * r(), f1, len, peak * 0.6, 0.012, ['bandpass', vowel * 1.6, 5]);
     };
+    // Cartoon touches: a springy boing, a quick pop, a squeaky voice, a puff of smoke.
+    const boing = (t: number, f: number, peak: number, len = 0.22) => {
+      const o = ctx.createOscillator(); o.type = 'sine'; o.frequency.setValueAtTime(f, at + t); o.frequency.exponentialRampToValueAtTime(f * 2.2, at + t + len);
+      const lfo = ctx.createOscillator(); lfo.frequency.value = 26; const lg = ctx.createGain(); lg.gain.value = f * 0.12; lfo.connect(lg).connect(o.frequency);
+      const g = ctx.createGain(); this.env(g, at + t, peak, 0.004, len); o.connect(g).connect(out);
+      o.start(at + t); lfo.start(at + t); o.stop(at + t + len + 0.05); lfo.stop(at + t + len + 0.05);
+    };
+    const pop = (t: number, peak: number) => { tone(t, 'sine', 520 * r(), 1500, 0.05, peak); noise(t, 0.04, peak * 0.6, 'bandpass', 2500, 1800, 1.5); };
+    const squeak = (t: number, f0: number, f1: number, len: number, peak: number, vowel = 1300) => {
+      tone(t, 'square', f0 * r(), f1, len, peak, 0.008, ['bandpass', vowel * r(0.1), 5]);
+      tone(t, 'sawtooth', f0 * 2 * r(), f1 * 2, len, peak * 0.4, 0.008, ['bandpass', vowel * 1.8, 6]);
+    };
+    const puff = (t: number, peak = 0.3) => noise(t, 0.3, peak, 'lowpass', 900 * r(), 180, 0.6, 0.02);
+    const slide = (t: number, f0: number, f1: number, len: number, peak: number) => tone(t, 'sine', f0 * r(), f1, len, peak, 0.02);
     switch (kind) {
       // Attacks.
-      case 'blade': noise(0, 0.12, 0.3, 'bandpass', 1500 * r(), 4800, 1.2); ring(0.075, [2350, 3720, 5150], 0.09); return noise(0.07, 0.05, 0.18, 'highpass', 3500);
-      case 'blunt': noise(0, 0.1, 0.2, 'bandpass', 700 * r(), 1500, 1); tone(0.07, 'sine', 150 * r(), 52, 0.13, 0.55); return noise(0.07, 0.07, 0.35, 'lowpass', 600, 180);
-      case 'pierce': noise(0, 0.08, 0.26, 'bandpass', 2400 * r(), 5200, 1.4); tone(0.06, 'triangle', 230 * r(), 105, 0.07, 0.3); return noise(0.06, 0.04, 0.2, 'lowpass', 900);
-      case 'claw': for (let i = 0; i < 3; i++) noise(i * 0.028, 0.035, 0.5, 'bandpass', 3200 * r(), 2200, 2); return;
-      case 'bite': noise(0, 0.05, 0.3, 'bandpass', 1300 * r(), 900, 1.5); tone(0.02, 'triangle', 200, 90, 0.07, 0.3); return tone(0, 'sawtooth', 95 * r(), 70, 0.24, 0.12, 0.02, ['lowpass', 500]);
-      case 'throw': return noise(0, 0.2, 0.55, 'bandpass', 800 * r(), 2300, 1.2, 0.03);
-      case 'bow': { const d = r(0.06); tone(0, 'triangle', 240 * d, 150 * d, 0.07, 0.2); return noise(0.015, 0.14, 0.12, 'bandpass', 2600 * d, 2600 * d, 1); }
-      case 'gun': return crack(0, 0.5, 0.3);
-      case 'rifle': return crack(0, 0.6, 0.38, 0.2);
-      case 'uzi': for (let i = 0; i < 4; i++) crack(i * 0.055, 0.32, 0.16, 0.07); return;
-      case 'sniper': crack(0, 0.75, 0.45, 0.32); noise(0.05, 0.6, 0.12, 'lowpass', 700, 200, 0.5, 0.05); return crack(0.2, 0.08, 0.05, 0.2);
-      case 'gatling': for (let i = 0; i < 6; i++) crack(i * 0.045, 0.26, 0.12, 0.05); return;
-      case 'rocket': tone(0, 'sine', 140, 60, 0.1, 0.35); return noise(0.02, 0.5, 0.26, 'bandpass', 500 * r(), 2600, 0.9, 0.03);
-      case 'ray': tone(0, 'sine', 1900 * r(), 320, 0.26, 0.18); tone(0, 'square', 950, 160, 0.26, 0.05, 0.003, ['lowpass', 2500]); return noise(0, 0.2, 0.06, 'highpass', 6000);
-      case 'flame': noise(0, 0.5, 0.5, 'lowpass', 1300 * r(), 700, 0.7, 0.05); return noise(0, 0.45, 0.16, 'bandpass', 420, 300, 1.2, 0.04);
+      case 'blade': noise(0, 0.09, 0.32, 'bandpass', 700 * r(), 4500, 1.4, 0.01); return ring(0.07, [2600, 3900, 5400], 0.08, 0.16);
+      case 'blunt': tone(0, 'square', 560 * r(), 300, 0.06, 0.16, 0.002, ['bandpass', 900, 3]); tone(0, 'sine', 170 * r(), 70, 0.12, 0.5); return boing(0.03, 260, 0.06, 0.14);
+      case 'pierce': tone(0, 'sine', 1500 * r(), 320, 0.07, 0.22); return noise(0.04, 0.05, 0.2, 'lowpass', 900);
+      case 'claw': for (let i = 0; i < 3; i++) tone(i * 0.03, 'sine', 1400 * r(), 3200, 0.04, 0.16); return noise(0, 0.1, 0.18, 'bandpass', 3000, 2000, 2);
+      case 'bite': tone(0, 'square', 300 * r(), 160, 0.05, 0.14, 0.002, ['lowpass', 1200]); tone(0.07, 'square', 280 * r(), 140, 0.05, 0.16, 0.002, ['lowpass', 1200]); return tone(0, 'sawtooth', 95 * r(), 70, 0.24, 0.1, 0.02, ['lowpass', 500]);
+      case 'throw': slide(0, 320, 950, 0.16, 0.14); return noise(0, 0.18, 0.3, 'bandpass', 800 * r(), 2300, 1.2, 0.03);
+      case 'bow': { const d = r(0.05); tone(0, 'triangle', 440 * d, 400 * d, 0.22, 0.22, 0.002); tone(0, 'triangle', 446 * d, 404 * d, 0.22, 0.12, 0.002); return noise(0.01, 0.12, 0.12, 'bandpass', 2800 * d, 2400, 1.2); }
+      case 'gun': slide(0, 1600, 420, 0.08, 0.12); return crack(0, 0.42, 0.26);
+      case 'rifle': slide(0, 1300, 300, 0.1, 0.1); return crack(0, 0.55, 0.36, 0.2);
+      case 'uzi': for (let i = 0; i < 4; i++) { crack(i * 0.055, 0.28, 0.14, 0.06); slide(i * 0.055, 1800, 700, 0.04, 0.06); } return;
+      case 'sniper': crack(0, 0.7, 0.45, 0.32); slide(0, 2400, 500, 0.18, 0.1); return noise(0.05, 0.6, 0.12, 'lowpass', 700, 200, 0.5, 0.05);
+      case 'gatling': for (let i = 0; i < 6; i++) crack(i * 0.045, 0.24, 0.11, 0.05); return;
+      case 'rocket': tone(0, 'sine', 140, 60, 0.1, 0.3); slide(0.02, 300, 1100, 0.4, 0.06); return noise(0.02, 0.5, 0.24, 'bandpass', 500 * r(), 2600, 0.9, 0.03);
+      case 'ray': tone(0, 'sine', 2200 * r(), 300, 0.24, 0.16); tone(0.02, 'sine', 1800, 250, 0.22, 0.08); return tone(0, 'square', 950, 160, 0.26, 0.04, 0.003, ['lowpass', 2500]);
+      case 'flame': noise(0, 0.5, 0.48, 'lowpass', 1300 * r(), 700, 0.7, 0.05); return noise(0, 0.45, 0.16, 'bandpass', 420, 300, 1.2, 0.04);
       case 'thunder': noise(0, 0.05, 0.55, 'highpass', 4200); noise(0.01, 0.12, 0.4, 'bandpass', 1800, 900, 0.8); return noise(0.04, 0.95, 0.42, 'lowpass', 300 * r(), 90, 0.6, 0.03);
-      case 'wind': noise(0, 0.85, 0.75, 'bandpass', 380 * r(), 950, 1.8, 0.18); return noise(0.1, 0.7, 0.25, 'lowpass', 300, 200, 0.6, 0.2);
-      case 'meteor': tone(0, 'sine', 1700 * r(), 260, 0.5, 0.07, 0.04); noise(0, 0.5, 0.12, 'bandpass', 1500, 500, 2, 0.1); return boom(0.48, 0.6, 0.7);
+      case 'wind': noise(0, 0.85, 0.7, 'bandpass', 380 * r(), 950, 1.8, 0.18); return slide(0.05, 500, 900, 0.7, 0.04);
+      case 'meteor': slide(0, 2000, 300, 0.5, 0.09); noise(0, 0.5, 0.12, 'bandpass', 1500, 500, 2, 0.1); return boom(0.48, 0.6, 0.7);
       case 'breath': noise(0, 0.6, 0.32, 'lowpass', 1500 * r(), 600, 0.7, 0.04); return tone(0, 'sawtooth', 110 * r(), 70, 0.5, 0.12, 0.05, ['lowpass', 420]);
       case 'drill': tone(0, 'sawtooth', 72 * r(), 80, 0.32, 0.18, 0.01, ['lowpass', 900]); return noise(0, 0.32, 0.18, 'bandpass', 2400 * r(), 2600, 3, 0.01);
-      case 'magic': tone(0, 'sine', 700 * r(), 1500, 0.22, 0.12, 0.01); tone(0.03, 'triangle', 1400, 2400, 0.18, 0.06, 0.01); return noise(0, 0.25, 0.05, 'highpass', 7000);
-      // Deaths.
-      case 'die-man': cry(0, 210, 115, 0.24, 0.16); return fall(0.22);
-      case 'die-armor': cry(0, 175, 95, 0.24, 0.14, 650); fall(0.2, 0.36); [0.22, 0.27, 0.33].forEach((t) => ring(t, [1800 * r(), 2700 * r(), 3500 * r()], 0.05, 0.14)); return;
-      case 'die-beast': cry(0, 320, 130, 0.36, 0.15, 900); return fall(0.3, 0.38);
-      case 'die-brute': cry(0, 130, 70, 0.45, 0.2, 520); return fall(0.36, 0.45);
-      case 'die-bot': noise(0, 0.28, 0.18, 'highpass', 5200); tone(0, 'sawtooth', 420 * r(), 60, 0.32, 0.1, 0.003, ['lowpass', 1800]); return boom(0.18, 0.32, 0.4);
-      case 'die-flyer': tone(0, 'sine', 950 * r(), 190, 0.5, 0.08, 0.02); return fall(0.48, 0.4);
-      case 'die-horse': tone(0, 'sawtooth', 720 * r(), 480, 0.5, 0.1, 0.02, ['bandpass', 1300, 3]); cry(0.1, 260, 120, 0.3, 0.1); return fall(0.42, 0.5);
-      case 'die-dragon': tone(0, 'sawtooth', 120 * r(), 55, 0.75, 0.2, 0.04, ['bandpass', 480, 2]); noise(0, 0.7, 0.16, 'lowpass', 600, 150, 0.6, 0.05); return fall(0.6, 0.55);
+      case 'magic': for (let i = 0; i < 4; i++) tone(i * 0.04, 'sine', [880, 1110, 1320, 1760][i] * r(0.02), [880, 1110, 1320, 1760][i] * 1.01, 0.18, 0.07, 0.003); return noise(0, 0.25, 0.05, 'highpass', 7000);
+      // Deaths: a cartoon cry, a pop and a puff of smoke as they fall.
+      case 'die-man': squeak(0, 620, 280, 0.26, 0.11); pop(0.24, 0.16); return puff(0.25, 0.22);
+      case 'die-armor': squeak(0, 480, 220, 0.24, 0.1, 1100); fall(0.2, 0.32); [0.22, 0.27, 0.33].forEach((t) => ring(t, [1800 * r(), 2700 * r(), 3500 * r()], 0.05, 0.14)); return puff(0.3, 0.18);
+      case 'die-beast': squeak(0, 900, 360, 0.3, 0.1, 1600); fall(0.28, 0.34); return puff(0.3, 0.2);
+      case 'die-brute': cry(0, 150, 70, 0.4, 0.18, 520); fall(0.34, 0.45); return puff(0.36, 0.3);
+      case 'die-bot': noise(0, 0.2, 0.14, 'highpass', 5200); boing(0, 180, 0.12, 0.35); return boom(0.2, 0.3, 0.4);
+      case 'die-flyer': slide(0, 1500, 260, 0.55, 0.12); return puff(0.5, 0.22);
+      case 'die-horse': tone(0, 'sawtooth', 760 * r(), 480, 0.45, 0.1, 0.02, ['bandpass', 1300, 3]); squeak(0.12, 520, 240, 0.25, 0.08); return fall(0.42, 0.45);
+      case 'die-dragon': tone(0, 'sawtooth', 120 * r(), 55, 0.75, 0.2, 0.04, ['bandpass', 480, 2]); noise(0, 0.7, 0.16, 'lowpass', 600, 150, 0.6, 0.05); fall(0.6, 0.5); return puff(0.62, 0.3);
+      // The enemy fortress falls: a long crumble of booms and stones, then the guardian's war horn and its roar.
+      case 'base-falls': {
+        for (let i = 0; i < 5; i++) boom(i * 0.16, 0.5 - i * 0.06, 0.5);
+        for (let i = 0; i < 9; i++) noise(0.1 + i * 0.07, 0.08, 0.16, 'bandpass', 900 * r(0.3), 500, 1.5);
+        [0, 7, 12].forEach((n) => tone(0.9, 'sawtooth', 110 * 2 ** (n / 12), 108 * 2 ** (n / 12), 1.1, 0.07, 0.15, ['lowpass', 1400]));
+        tone(1.3, 'sawtooth', 90, 45, 0.9, 0.2, 0.08, ['bandpass', 420, 2]); return noise(1.3, 0.9, 0.18, 'lowpass', 700, 150, 0.6, 0.08);
+      }
+      case 'coin': tone(0, 'square', 1320, 1320, 0.06, 0.06, 0.002, ['lowpass', 5000]); return tone(0.06, 'square', 1760, 1760, 0.16, 0.06, 0.002, ['lowpass', 5000]);
     }
   }
 
