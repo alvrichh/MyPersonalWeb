@@ -132,19 +132,19 @@ export const UNITS: readonly Spec[] = [
     { price: 2000, cost: 140, hp: 240, damage: 55, range: 220, rate: 1.4, splash: 60, shot: 'ray-pink', ...six('ally-armed-fighter-4', 217, 0.63) },
   ] },
   // The armed helicopter's three forms: green with one rocket, blue with a pair, and the black and gold gunship's salvo.
-  { id: 12, cost: 95, hp: 320, damage: 44, speed: 35, range: 210, rate: 1.8, cooldown: 10, unlock: 4, air: true, splash: 50, shot: 'rocket', spin: false, ...six('ally-helicopter-1', 169, 0.59), forms: [
-    { price: 800, cost: 120, hp: 420, damage: 54, splash: 55, shot: 'rockets', ...six('ally-helicopter-2', 196, 0.59) },
-    { price: 2000, cost: 170, hp: 620, damage: 70, range: 230, splash: 70, shot: 'salvo', ...six('ally-helicopter-3', 201, 0.59) },
+  { id: 12, cost: 95, hp: 320, damage: 44, speed: 35, range: 210, rate: 1.8, cooldown: 10, unlock: 4, air: true, splash: 50, shot: 'rocket', spin: false, ...six('ally-helicopter-1', 169, 1.03), forms: [
+    { price: 800, cost: 120, hp: 420, damage: 54, splash: 55, shot: 'rockets', ...six('ally-helicopter-2', 196, 1.03) },
+    { price: 2000, cost: 170, hp: 620, damage: 70, range: 230, splash: 70, shot: 'salvo', ...six('ally-helicopter-3', 201, 1.03) },
   ] },
   // The drill aircraft, the flying shield (docs/cw2-reference.md): a drill rocket that rams, then a heavier gold one.
-  { id: 13, cost: 80, hp: 360, damage: 30, speed: 55, range: 40, rate: 0.9, cooldown: 8, unlock: 3, air: true, ...six('ally-drill-1', 192, 0.47), forms: [
-    { price: 1000, cost: 130, hp: 700, damage: 48, rate: 0.8, ...six('ally-drill-2', 244, 0.47) },
+  { id: 13, cost: 80, hp: 360, damage: 30, speed: 55, range: 40, rate: 0.9, cooldown: 8, unlock: 3, air: true, ...six('ally-drill-1', 192, 0.59), forms: [
+    { price: 1000, cost: 130, hp: 700, damage: 48, rate: 0.8, ...six('ally-drill-2', 244, 0.59) },
   ] },
   // The angel army, the dearest: an axe and shield (very fast), a staff throwing a violet crescent, and the golden
   // archangel's beam.
-  { id: 14, cost: 220, hp: 700, damage: 60, speed: 75, range: 45, rate: 0.9, cooldown: 20, unlock: 6, air: true, splash: 40, ...six('ally-angel-1', 246, 0.5), forms: [
-    { price: 1500, cost: 260, hp: 900, damage: 70, speed: 55, range: 180, rate: 1.1, splash: 50, shot: 'crescent', ...six('ally-angel-2', 282, 0.5) },
-    { price: 4000, cost: 340, hp: 1300, damage: 110, speed: 55, range: 210, rate: 1.1, splash: 70, shot: 'ray-gold', ...six('ally-angel-3', 298, 0.5) },
+  { id: 14, cost: 220, hp: 700, damage: 60, speed: 75, range: 45, rate: 0.9, cooldown: 20, unlock: 6, air: true, splash: 40, ...six('ally-angel-1', 246, 0.58), forms: [
+    { price: 1500, cost: 260, hp: 900, damage: 70, speed: 55, range: 180, rate: 1.1, splash: 50, shot: 'crescent', ...six('ally-angel-2', 282, 0.58) },
+    { price: 4000, cost: 340, hp: 1300, damage: 110, speed: 55, range: 210, rate: 1.1, splash: 70, shot: 'ray-gold', ...six('ally-angel-3', 298, 0.58) },
   ] },
   // The enemy's.
   { id: 15, cost: 0, hp: 115, damage: 16, speed: 43, range: 35, rate: 0.8, cooldown: 0, unlock: 1, foe: true, infantry: true, ...unit('foe-swordsman', 74) },
@@ -168,12 +168,12 @@ export const UNITS: readonly Spec[] = [
   // Ours again, appended (ids are places in this list):
   // The flying mech, in six forms: a rocket fist, a laser, a plasma beam, an ice burst, a gatling,
   // and a giant golden fist.
-  { id: 33, cost: 80, hp: 300, damage: 32, speed: 55, range: 45, rate: 0.9, cooldown: 8, unlock: 5, air: true, ...six('ally-mech-1', 140, 0.82), forms: [
-    { price: 500, cost: 95, hp: 340, damage: 30, range: 130, shot: 'ray-blue', ...six('ally-mech-2', 140, 0.82) },
-    { price: 800, cost: 110, hp: 380, damage: 38, range: 150, shot: 'plasma', ...six('ally-mech-3', 142, 0.82) },
-    { price: 1200, cost: 130, hp: 450, damage: 46, range: 60, splash: 40, ...six('ally-mech-4', 141, 0.82) },
-    { price: 1800, cost: 150, hp: 520, damage: 20, rate: 0.4, range: 160, shot: 'bullet', ...six('ally-mech-5', 146, 0.82) },
-    { price: 3000, cost: 200, hp: 800, damage: 80, range: 60, splash: 50, ...six('ally-mech-6', 179, 0.82) },
+  { id: 33, cost: 80, hp: 300, damage: 32, speed: 55, range: 45, rate: 0.9, cooldown: 8, unlock: 5, air: true, ...six('ally-mech-1', 140, 1.07), forms: [
+    { price: 500, cost: 95, hp: 340, damage: 30, range: 130, shot: 'ray-blue', ...six('ally-mech-2', 140, 1.07) },
+    { price: 800, cost: 110, hp: 380, damage: 38, range: 150, shot: 'plasma', ...six('ally-mech-3', 142, 1.07) },
+    { price: 1200, cost: 130, hp: 450, damage: 46, range: 60, splash: 40, ...six('ally-mech-4', 141, 1.07) },
+    { price: 1800, cost: 150, hp: 520, damage: 20, rate: 0.4, range: 160, shot: 'bullet', ...six('ally-mech-5', 146, 1.07) },
+    { price: 3000, cost: 200, hp: 800, damage: 80, range: 60, splash: 50, ...six('ally-mech-6', 179, 1.07) },
   ] },
 ];
 /** The enemy's land and air troops by act, each act adding to the last (docs/siege-roster.md): early waves draw
