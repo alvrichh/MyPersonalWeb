@@ -32,7 +32,8 @@ export type Form = Partial<Pick<Spec, 'cost' | 'hp' | 'damage' | 'speed' | 'rang
     the enemy's, each one stated as the ally it equals in the reference. */
 const unit = (name: string, px: number, k = 1) => ({ sprite: `siege/units/${name}`, size: Math.round(px * 0.62 * k), facesLeft: name.startsWith('foe-') || undefined });
 /** A six-pose sheet (drawn at a higher resolution: 0.4 a pixel of its first walking pose). */
-const six = (name: string, px: number) => ({ sprite: `siege/units/${name}`, size: Math.round(px * 0.4), six: true });
+/** `k` evens out a sheet drawn at another scale than the swordsman's. */
+const six = (name: string, px: number, k = 1) => ({ sprite: `siege/units/${name}`, size: Math.round(px * 0.4 * k), six: true });
 export const UNITS: readonly Spec[] = [
   // Ours, land.
   // The swordsman's five forms (the reference's six, its fifth dropped): club, dagger, sword and shield, greatsword,
@@ -58,7 +59,13 @@ export const UNITS: readonly Spec[] = [
     { price: 400, cost: 50, hp: 100, damage: 27, range: 200, shot: 'arrow', spin: false, ...six('ally-archer-3', 187) },
     { price: 1500, cost: 120, hp: 150, damage: 32, speed: 50, range: 195, rate: 0.8, shot: 'shuriken', spin: true, ...six('ally-archer-4', 195) },
   ] },
-  { id: 3, cost: 65, hp: 430, damage: 24, speed: 22, range: 40, rate: 1.5, cooldown: 7, unlock: 1, infantry: true, ...unit('ally-heavy', 104, 1.1) },
+  // The heavy armour swordsman's four forms (docs/cw2-reference.md): a knight with two swords, a bigger one with maces
+  // for hands, the samurai who punches, and a bigger samurai. The reference gives no prices.
+  { id: 3, cost: 65, hp: 430, damage: 24, speed: 22, range: 40, rate: 1.5, cooldown: 7, unlock: 1, infantry: true, ...six('ally-heavy-1', 199, 0.8), forms: [
+    { price: 300, cost: 80, hp: 560, damage: 30, ...six('ally-heavy-2', 200, 0.8) },
+    { price: 500, cost: 100, hp: 700, damage: 34, rate: 1.2, ...six('ally-heavy-3', 216, 0.8) },
+    { price: 1800, cost: 180, hp: 980, damage: 48, rate: 1.2, splash: 30, ...six('ally-heavy-4', 261, 0.8) },
+  ] },
   { id: 4, cost: 55, hp: 100, damage: 30, speed: 30, range: 230, rate: 1.5, cooldown: 6, unlock: 1, infantry: true, ...unit('ally-gunner', 83) },
   { id: 5, cost: 85, hp: 280, damage: 34, speed: 28, range: 200, rate: 1.5, cooldown: 8, unlock: 2, infantry: true, ...unit('ally-blaster', 95) },
   { id: 6, cost: 95, hp: 150, damage: 42, speed: 26, range: 220, rate: 1.9, cooldown: 10, unlock: 3, splash: 60, infantry: true, ...unit('ally-wizard', 99) },

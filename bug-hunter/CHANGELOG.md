@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.65 - 2026-10-26
+
+### Added - Siege: the heavy armour swordsman in four forms
+- The owner's sheet (six poses, four forms, as the reference describes): a knight with two swords, a bigger knight with maces for hands, the samurai who fights with his fists, and a bigger samurai. Cut figure by figure; the big samurai's punch flash goes with his attack. Prices 300, 500 and 1800 gold (the reference gives none); health grows most of all, as he is the line's shield.
+- The sheet is drawn larger than the swordsman's, so it is scaled down to stand a little taller than him, the last form clearly bigger.
+
 ## 1.14.64 - 2026-10-26
 
 ### Fixed - Siege: troops stand on their feet
