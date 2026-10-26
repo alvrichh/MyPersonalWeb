@@ -51,7 +51,7 @@ export function preload(world: number, deck: number[], _levels: number[] = []) {
     so a world does not look the same five times); acts without one keep the first picture (`SCENE`). */
 const SCENE = 'siege/backdrop';
 const SCENE_FIT = { pad: 120, ground: 0.8 };
-const SCENES: Record<number, [string, string?]> = { 2: ['siege/bg-islands', 'siege/bg-sky'], 3: ['siege/bg-forest', 'siege/bg-swamp'], 4: ['siege/bg-desert'], 5: ['siege/bg-snow'] };
+const SCENES: Record<number, [string, string?]> = { 2: ['siege/bg-islands', 'siege/bg-sky'], 3: ['siege/bg-forest', 'siege/bg-swamp'], 4: ['siege/bg-desert'], 5: ['siege/bg-snow'], 6: ['siege/bg-final'] };
 const sceneOf = (stage: number) => { const pics = SCENES[actOf(stage)]; return pics ? (stageIn(stage) === 4 && pics[1]) || pics[0] : SCENE; };
 /** Each picture's top row averaged down to 16 colours, kept: stretched over any sky above the picture (a tall view) it
     is a smooth gradient, where the raw row stretched would be streaks. */
