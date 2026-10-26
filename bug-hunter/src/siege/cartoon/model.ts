@@ -40,14 +40,14 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
 export const SPELLS = ['lightning', 'tornado', 'meteor'];
 /** An upgrade form: its gold price in the workshop and what it changes. */
 export type Form = Partial<Pick<Spec, 'cost' | 'hp' | 'damage' | 'speed' | 'range' | 'rate' | 'splash' | 'hitsAir' | 'infantry' | 'shot' | 'spin' | 'sprite' | 'size'>> & { price: number }
-/** Cartoon Wars 2's rosters (docs/siege-roster.md), with the owner's sheets (`siege/units/<side>-<name>-<pose>`: 0 stand,
-    1 attack, 2 hurt). `size` is the drawn height in field units, from the stand picture's height (0.62 a pixel) and how
-    big the unit is meant to be. Every unit's `id` is its place in this list: ours first (10 land, then 5 air), then
-    the enemy's, each one stated as the ally it equals in the reference. */
-const unit = (name: string, px: number, k = 1) => ({ sprite: `siege/units/${name}`, size: Math.round(px * 0.62 * k), facesLeft: name.startsWith('foe-') || undefined });
+/** Cartoon Wars 2's rosters (docs/siege-roster.md), every unit from the owner's six-pose sheets. Every unit's `id` is
+    its place in this list: ours first (10 land, then 5 air), then the enemy's, each one stated as the ally it equals
+    in the reference, then our flying mech and the enemy's guardians. */
 /** A six-pose sheet (drawn at a higher resolution: 0.4 a pixel of its first walking pose). */
 /** `k` evens out a sheet drawn at another scale than the swordsman's. */
 const six = (name: string, px: number, k = 1) => ({ sprite: `siege/units/${name}`, size: Math.round(px * 0.4 * k), six: true });
+/** The enemy's six-pose sheets, drawn facing left (our way). */
+const foe = (name: string, px: number, k = 1) => ({ ...six(name, px, k), facesLeft: true as const });
 export const UNITS: readonly Spec[] = [
   // Ours, land.
   // The swordsman's five forms (the reference's six, its fifth dropped): club, dagger, sword and shield, greatsword,
@@ -147,24 +147,24 @@ export const UNITS: readonly Spec[] = [
     { price: 4000, cost: 340, hp: 1300, damage: 110, speed: 55, range: 210, rate: 1.1, splash: 70, shot: 'ray-gold', ...six('ally-angel-3', 298, 0.58) },
   ] },
   // The enemy's.
-  { id: 15, cost: 0, hp: 115, damage: 16, speed: 43, range: 35, rate: 0.8, cooldown: 0, unlock: 1, foe: true, infantry: true, ...unit('foe-swordsman', 74) },
-  { id: 16, cost: 0, hp: 150, damage: 20, speed: 40, range: 55, rate: 0.9, cooldown: 0, unlock: 1, foe: true, infantry: true, ...unit('foe-spearman', 74) },
-  { id: 17, cost: 0, hp: 130, damage: 18, speed: 70, range: 35, rate: 0.7, cooldown: 0, unlock: 1, foe: true, ...unit('foe-dog', 64) },
-  { id: 18, cost: 0, hp: 480, damage: 26, speed: 24, range: 42, rate: 1.5, cooldown: 0, unlock: 1, foe: true, ...unit('foe-bear', 94, 1.15) },
-  { id: 19, cost: 0, hp: 240, damage: 32, speed: 40, range: 60, rate: 1, cooldown: 0, unlock: 1, foe: true, infantry: true, ...unit('foe-reaper', 80, 1.05) },
-  { id: 20, cost: 0, hp: 560, damage: 30, speed: 22, range: 45, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 40, infantry: true, ...unit('foe-hammer', 81, 1.1) },
-  { id: 21, cost: 0, hp: 720, damage: 34, speed: 21, range: 48, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 40, infantry: true, ...unit('foe-axeman', 88, 1.15) },
-  { id: 22, cost: 0, hp: 100, damage: 30, speed: 30, range: 230, rate: 1.5, cooldown: 0, unlock: 1, foe: true, infantry: true, ...unit('foe-gunner', 74) },
-  { id: 23, cost: 0, hp: 300, damage: 38, speed: 28, range: 210, rate: 1.5, cooldown: 0, unlock: 1, foe: true, infantry: true, ...unit('foe-blaster', 70) },
-  { id: 24, cost: 0, hp: 150, damage: 42, speed: 26, range: 220, rate: 1.9, cooldown: 0, unlock: 1, foe: true, splash: 60, infantry: true, ...unit('foe-wizard', 82) },
-  { id: 25, cost: 0, hp: 280, damage: 36, speed: 60, range: 40, rate: 1, cooldown: 0, unlock: 1, foe: true, ...unit('foe-tiger', 81, 1.1) },
-  { id: 26, cost: 0, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, ...unit('foe-dragon', 89, 1.2) },
-  { id: 27, cost: 0, hp: 380, damage: 40, speed: 55, range: 45, rate: 0.9, cooldown: 0, unlock: 1, foe: true, air: true, ...unit('foe-death-angel', 94) },
-  { id: 28, cost: 0, hp: 70, damage: 12, speed: 70, range: 40, rate: 0.7, cooldown: 0, unlock: 1, foe: true, air: true, ...unit('foe-eagle', 78) },
-  { id: 29, cost: 0, hp: 110, damage: 18, speed: 60, range: 40, rate: 0.7, cooldown: 0, unlock: 1, foe: true, air: true, ...unit('foe-ninja-bat', 45, 1.3) },
-  { id: 30, cost: 0, hp: 130, damage: 24, speed: 45, range: 180, rate: 1.2, cooldown: 0, unlock: 1, foe: true, air: true, ...unit('foe-hypno-bat', 67, 1.1) },
-  { id: 31, cost: 0, hp: 900, damage: 55, speed: 40, range: 130, rate: 1.4, cooldown: 0, unlock: 1, foe: true, air: true, splash: 50, steady: true, ...unit('foe-red-dragon-rider', 93, 1.3) },
-  { id: 32, cost: 0, hp: 760, damage: 40, speed: 24, range: 180, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splits: 2, ...unit('foe-gatling', 88, 1.1) },
+  { id: 15, cost: 0, hp: 115, damage: 16, speed: 43, range: 35, rate: 0.8, cooldown: 0, unlock: 1, foe: true, infantry: true, ...foe('foe-swordsman-1', 141, 0.82) },
+  { id: 16, cost: 0, hp: 150, damage: 20, speed: 40, range: 55, rate: 0.9, cooldown: 0, unlock: 1, foe: true, infantry: true, ...foe('foe-spearman-1', 132, 0.87) },
+  { id: 17, cost: 0, hp: 130, damage: 18, speed: 70, range: 35, rate: 0.7, cooldown: 0, unlock: 1, foe: true, ...foe('foe-dog-1', 102, 0.98) },
+  { id: 18, cost: 0, hp: 480, damage: 26, speed: 24, range: 42, rate: 1.5, cooldown: 0, unlock: 1, foe: true, ...foe('foe-bear-1', 141, 1.19) },
+  { id: 19, cost: 0, hp: 240, damage: 32, speed: 40, range: 60, rate: 1, cooldown: 0, unlock: 1, foe: true, infantry: true, ...foe('foe-reaper-1', 140, 0.93) },
+  { id: 20, cost: 0, hp: 560, damage: 30, speed: 22, range: 45, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 40, infantry: true, ...foe('foe-hammer-1', 133, 1.03) },
+  { id: 21, cost: 0, hp: 720, damage: 34, speed: 21, range: 48, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 40, infantry: true, ...foe('foe-axeman-1', 147, 1.07) },
+  { id: 22, cost: 0, hp: 100, damage: 30, speed: 30, range: 230, rate: 1.5, cooldown: 0, unlock: 1, foe: true, infantry: true, ...foe('foe-gunner-1', 134, 0.86) },
+  { id: 23, cost: 0, hp: 300, damage: 38, speed: 28, range: 210, rate: 1.5, cooldown: 0, unlock: 1, foe: true, infantry: true, ...foe('foe-blaster-1', 158, 0.68) },
+  { id: 24, cost: 0, hp: 150, damage: 42, speed: 26, range: 220, rate: 1.9, cooldown: 0, unlock: 1, foe: true, splash: 60, infantry: true, ...foe('foe-wizard-1', 165, 0.77) },
+  { id: 25, cost: 0, hp: 280, damage: 36, speed: 60, range: 40, rate: 1, cooldown: 0, unlock: 1, foe: true, ...foe('foe-tiger-1', 115, 1.2) },
+  { id: 26, cost: 0, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, ...foe('foe-dragon-1', 120, 1.38) },
+  { id: 27, cost: 0, hp: 380, damage: 40, speed: 55, range: 45, rate: 0.9, cooldown: 0, unlock: 1, foe: true, air: true, ...foe('foe-death-angel-1', 156, 0.93) },
+  { id: 28, cost: 0, hp: 70, damage: 12, speed: 70, range: 40, rate: 0.7, cooldown: 0, unlock: 1, foe: true, air: true, ...foe('foe-eagle-1', 171, 0.7) },
+  { id: 29, cost: 0, hp: 110, damage: 18, speed: 60, range: 40, rate: 0.7, cooldown: 0, unlock: 1, foe: true, air: true, ...foe('foe-ninja-bat-1', 128, 0.7) },
+  { id: 30, cost: 0, hp: 130, damage: 24, speed: 45, range: 180, rate: 1.2, cooldown: 0, unlock: 1, foe: true, air: true, ...foe('foe-hypno-bat-1', 139, 0.83) },
+  { id: 31, cost: 0, hp: 900, damage: 55, speed: 40, range: 130, rate: 1.4, cooldown: 0, unlock: 1, foe: true, air: true, splash: 50, steady: true, ...foe('foe-red-dragon-rider-1', 179, 1.05) },
+  { id: 32, cost: 0, hp: 760, damage: 40, speed: 24, range: 180, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splits: 2, ...foe('foe-gatling-1', 123, 1.22) },
   // Ours again, appended (ids are places in this list):
   // The flying mech, in six forms: a rocket fist, a laser, a plasma beam, an ice burst, a gatling,
   // and a giant golden fist.
@@ -175,6 +175,13 @@ export const UNITS: readonly Spec[] = [
     { price: 1800, cost: 150, hp: 520, damage: 20, rate: 0.4, range: 160, shot: 'bullet', ...six('ally-mech-5', 146, 1.07) },
     { price: 3000, cost: 200, hp: 800, damage: 80, range: 60, splash: 50, ...six('ally-mech-6', 179, 1.07) },
   ] },
+  // The guardians (`GUARDIAN`), each act's own picture; their stats are those of the troops that stood in for them.
+  { id: 34, cost: 0, hp: 480, damage: 26, speed: 24, range: 42, rate: 1.5, cooldown: 0, unlock: 1, foe: true, ...foe('boss-slinger-1', 221, 0.85) },
+  { id: 35, cost: 0, hp: 760, damage: 40, speed: 24, range: 180, rate: 1.4, cooldown: 0, unlock: 1, foe: true, ...foe('boss-gatling-1', 224, 0.84) },
+  { id: 36, cost: 0, hp: 900, damage: 55, speed: 40, range: 130, rate: 1.4, cooldown: 0, unlock: 1, foe: true, air: true, splash: 50, steady: true, ...foe('boss-dragon-rider-1', 217, 0.92) },
+  { id: 37, cost: 0, hp: 720, damage: 34, speed: 21, range: 48, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 40, ...foe('boss-brute-eater-1', 176, 1.07) },
+  { id: 38, cost: 0, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, ...foe('boss-dino-1', 199, 1.0) },
+  { id: 39, cost: 0, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, ...foe('boss-king-dino-1', 258, 0.87) },
 ];
 /** The enemy's land and air troops by act, each act adding to the last (docs/siege-roster.md): early waves draw
     from the first two of the land list. */
@@ -184,10 +191,9 @@ export const FOE_AIR = [[28], [29], [27], [30], [], [31]];
 export const foesAt = (lists: number[][], stage: number) => [...lists.slice(0, actOf(stage) - 1).flat(), ...(lists[actOf(stage) - 1] ?? []).slice(0, stageIn(stage))];
 /** What recruiting each of our troops costs in gold (the swordsman is everyone's first). Bought once, kept. */
 export const RECRUIT: Record<number, number> = { 0: 0, 1: 100, 2: 120, 3: 350, 4: 300, 5: 600, 6: 900, 7: 700, 8: 900, 9: 1600, 10: 250, 11: 500, 12: 900, 13: 700, 14: 2000, 33: 1200 };
-/** The guardian of each act, drawn bigger: the Large Gatling Robot and the Large Red Dragon Rider are their troops;
-    the others stand in for their own pictures (Large Slinger, Giant Brute Eater, Giant Dinosaur Brute, Giant King
-    Dinosaur Brute) until those exist. */
-export const GUARDIAN = [18, 32, 31, 21, 26, 26];
+/** The guardian of each act, drawn bigger: Large Slinger, Large Gatling Robot, Large Red Dragon Rider, Giant Brute
+    Eater, Giant Dinosaur Brute, Giant King Dinosaur Brute. */
+export const GUARDIAN = [34, 35, 36, 37, 38, 39];
 /** Up to this many land and this many air troops in an army. */
 export const DECK = 6;
 /** An army card: a troop at one of its levels, `id + (level - 1) * 100` (so a level-1 card is the troop's id). Two forms
@@ -374,6 +380,7 @@ const ATTACK_SOUND: Record<number, string | string[]> = {
   7: 'claw', 8: ['rocket', 'gatling', 'rocket'], 9: ['gatling', 'gatling', 'gatling', 'gatling'], 10: 'blade', 11: ['rifle', 'sniper', 'ray', 'thunder'], 12: 'rocket', 13: 'drill', 14: ['blade', 'magic', 'magic'], 33: ['blunt', 'ray', 'ray', 'blunt', 'gatling', 'blunt'],
   15: 'blade', 16: 'pierce', 17: 'bite', 18: 'claw', 19: 'blade', 20: 'blunt', 21: 'blade', 22: 'rifle', 23: 'throw', 24: 'magic',
   25: 'claw', 26: 'breath', 27: 'blade', 28: 'claw', 29: 'claw', 30: 'magic', 31: 'blade', 32: 'gatling',
+  34: 'throw', 35: 'gatling', 36: 'breath', 37: 'blunt', 38: 'bite', 39: 'bite',
 };
 const SHOT_SOUND: Record<string, string> = { rock: 'throw', javelin: 'throw', shuriken: 'throw', arrow: 'bow', rocket: 'rocket', rockets: 'rocket', salvo: 'rocket', ray: 'ray', 'ray-blue': 'ray', 'ray-gold': 'ray', 'ray-pink': 'thunder', plasma: 'ray', ice: 'ray', crescent: 'magic', none: 'flame', lightning: 'thunder', tornado: 'wind', meteor: 'meteor' };
 /** Bullets (`bullet`, `bullet-rifle|uzi|sniper`) sound like the gun that fires them; beams (`ray`, `ray-blue|gold|pink`) reach at once. */
@@ -384,6 +391,7 @@ const DEATH_SOUND: Record<number, string | string[]> = {
   10: 'die-flyer', 11: 'die-flyer', 12: 'die-flyer', 13: 'die-bot', 14: 'die-flyer', 33: 'die-bot',
   17: 'die-beast', 18: 'die-brute', 20: 'die-armor', 21: 'die-armor', 25: 'die-beast', 26: 'die-dragon', 27: 'die-flyer', 28: 'die-flyer',
   29: 'die-flyer', 30: 'die-flyer', 31: 'die-dragon', 32: 'die-bot',
+  34: 'die-brute', 35: 'die-bot', 36: 'die-dragon', 37: 'die-brute', 38: 'die-dragon', 39: 'die-dragon',
 };
 const pickLevel = (v: string | string[] | undefined, lv: number) => (Array.isArray(v) ? v[Math.min(lv, v.length) - 1] : v);
 /** A fighter's attack and death sounds. */
