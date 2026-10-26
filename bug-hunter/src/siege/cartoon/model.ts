@@ -276,8 +276,8 @@ export interface Siege {
 }
 /** The gold an enemy drops when it falls: by its toughness, double for a horned one, a guardian far more. */
 export const dropOf = (u: Fighter) => (u.boss ? 60 : Math.max(3, Math.round(UNITS[u.id].hp / 30)) * (u.elite ? 2 : 1));
-/** Which of the three pictures a workshop level (0-5) shows, for our fortress and its crossbow: 0-1, 2-3, 4-5. */
-export const looksTier = (level: number) => (level >= 4 ? 3 : level >= 2 ? 2 : 1);
+/** Which of the four pictures a workshop level (0-5) shows, for our fortress and its crossbow: 0-1, 2-3, 4, 5. */
+export const looksTier = (level: number) => (level >= 5 ? 4 : level >= 4 ? 3 : level >= 2 ? 2 : 1);
 /** Which of the enemy fortress's three pictures a battle shows, by its act: acts 1-2, 3-4, 5-6. */
 export const enemyTier = (stage: number) => Math.min(3, Math.max(1, Math.ceil(actOf(stage) / 2)));
 
