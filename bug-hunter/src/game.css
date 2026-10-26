@@ -1051,12 +1051,19 @@ body {
   width: 100%;
   text-align: center;
 }
+/* The shop's coins sit on the frame, centred at the height of the X (top 2%, 44px), out of the list that scrolls, so
+   they never cover a card (absolute to the panel: the scrolling box is not its containing block). */
 .shop-wallet {
-  position: sticky;
-  top: 8px;
+  position: absolute;
+  top: calc(2% + 22px);
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 4;
-  justify-self: start;
-  margin: 0 0 -2.8rem 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  margin: 0;
   padding: 5px 8px;
   border: 1px solid #fcd34d55;
   border-radius: 999px;
@@ -5273,3 +5280,5 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 @media (max-width: 600px) {
   .panel .items .item > span:not(.icon):not(.pips):not(.lv-note) { min-height: calc(4 * 1.3em); }
 }
+/* Retro has no X and no frame: the shop's coins stay in the list, centred above the title. */
+:root[data-retro] .shop-wallet { position: static; transform: none; justify-self: center; }

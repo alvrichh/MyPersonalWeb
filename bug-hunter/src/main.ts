@@ -378,6 +378,9 @@ function show(html: string, wide = false, menu = false, extra = '') {
   // The corner buttons (close, options) are pulled out of the scrolling box so they stay put.
   const close = (html.match(/<button class="ui-(?:close|opts|top)"[^>]*>(?:<span[^>]*>(?:[^<]|<(?!\/span>))*<\/span>)?<\/button>/g) ?? []).join('');
   for (const b of html.match(/<button class="ui-(?:close|opts|top)"[^>]*>(?:<span[^>]*>(?:[^<]|<(?!\/span>))*<\/span>)?<\/button>/g) ?? []) html = html.replace(b, '');
+  // The shop's coins sit on the frame beside the X too: out of the scrolling box, whose edge fade would clip them.
+  const wallet = html.match(/<p class="wallet shop-wallet">[\s\S]*?<\/p>/)?.[0] ?? '';
+  if (wallet) html = html.replace(wallet, '');
   const cls = `panel${wide ? ' panel-wide' : ''}${opening && !menu ? ' is-pop' : ''}`;
   const old = opening ? null : screen.querySelector<HTMLElement>(':scope > .panel');
   if (old) {
@@ -392,7 +395,7 @@ function show(html: string, wide = false, menu = false, extra = '') {
     }
     old.className = cls;
     old.removeAttribute('style');
-    old.innerHTML = `${close}<div class="panel-in fade-scroll">${html}</div>`;
+    old.innerHTML = `${close}${wallet}<div class="panel-in fade-scroll">${html}</div>`;
     for (const img of old.querySelectorAll('img')) {
       const same = kept.get(img.src)?.shift();
       if (!same) continue;
@@ -402,7 +405,7 @@ function show(html: string, wide = false, menu = false, extra = '') {
       img.replaceWith(same);
     }
   } else {
-    screen.innerHTML = `<div class="${cls}">${close}<div class="panel-in fade-scroll">${html}</div></div>`;
+    screen.innerHTML = `<div class="${cls}">${close}${wallet}<div class="panel-in fade-scroll">${html}</div></div>`;
   }
 
   screen.classList.toggle('is-menu', menu);
