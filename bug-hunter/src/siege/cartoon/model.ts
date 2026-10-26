@@ -53,10 +53,10 @@ export const UNITS: readonly Spec[] = [
   // The swordsman's five forms (the reference's six, its fifth dropped): club, dagger, sword and shield, greatsword,
   // and the master, whose slash leaves fire and reaches flyers. Energy follows the reference's mana, doubled.
   { id: 0, cost: 20, hp: 115, damage: 16, speed: 43, range: 35, rate: 0.8, cooldown: 2, unlock: 1, infantry: true, ...six('ally-swordsman-1', 166, 0.72), forms: [
-    { price: 120, cost: 30, hp: 135, damage: 21, speed: 46, ...six('ally-swordsman-2', 154, 0.72) },
+    { price: 120, cost: 30, hp: 135, damage: 21, speed: 46, ...six('ally-swordsman-2', 154, 0.78) },
     { price: 300, cost: 50, hp: 190, damage: 23, ...six('ally-swordsman-3', 168, 0.72) },
     { price: 400, cost: 60, hp: 220, damage: 34, range: 42, ...six('ally-swordsman-4', 200, 0.72) },
-    { price: 2000, cost: 200, hp: 340, damage: 58, speed: 62, range: 45, splash: 30, hitsAir: true, ...six('ally-swordsman-5', 187, 0.72) },
+    { price: 2000, cost: 200, hp: 340, damage: 58, speed: 62, range: 45, splash: 30, hitsAir: true, ...six('ally-swordsman-5', 187, 0.78) },
   ] },
   // The spearman's five forms (docs/cw2-reference.md): basic spear, longer, longer still, the horned fox helmet, and the
   // lancer on a white horse. The reference gives no prices: a little above the swordsman's.
@@ -82,24 +82,24 @@ export const UNITS: readonly Spec[] = [
   ] },
   // The gunner's four forms (docs/cw2-reference.md): pistol, rifle, two Uzis (fast), sniper rifle (long reach, slow and
   // heavy). They fire bullets, each gun its own (`shot: 'bullet'`, `bullet-rifle|uzi|sniper`). The reference gives no prices.
-  { id: 4, cost: 45, hp: 95, damage: 24, speed: 32, range: 200, rate: 1.4, cooldown: 6, unlock: 1, infantry: true, shot: 'bullet', ...six('ally-gunner-1', 173, 0.72), forms: [
-    { price: 300, cost: 55, hp: 110, damage: 30, range: 230, shot: 'bullet-rifle', ...six('ally-gunner-2', 187, 0.72) },
-    { price: 500, cost: 70, hp: 125, damage: 22, range: 210, rate: 0.6, shot: 'bullet-uzi', ...six('ally-gunner-3', 204, 0.72) },
-    { price: 1600, cost: 140, hp: 150, damage: 90, range: 320, rate: 2.4, shot: 'bullet-sniper', ...six('ally-gunner-4', 212, 0.72) },
+  { id: 4, cost: 45, hp: 95, damage: 24, speed: 32, range: 200, rate: 1.4, cooldown: 6, unlock: 1, infantry: true, shot: 'bullet', ...six('ally-gunner-1', 173, 0.6), forms: [
+    { price: 300, cost: 55, hp: 110, damage: 30, range: 230, shot: 'bullet-rifle', ...six('ally-gunner-2', 187, 0.6) },
+    { price: 500, cost: 70, hp: 125, damage: 22, range: 210, rate: 0.6, shot: 'bullet-uzi', ...six('ally-gunner-3', 204, 0.6) },
+    { price: 1600, cost: 140, hp: 150, damage: 90, range: 320, rate: 2.4, shot: 'bullet-sniper', ...six('ally-gunner-4', 212, 0.6) },
   ] },
   // The blaster's four forms (docs/cw2-reference.md): bazooka, rocket launcher, ray gun, flamethrower. Rockets fly as
   // their own pictures and blast an area; the ray is drawn in code; the flame is in the attack pose (no projectile).
-  { id: 5, cost: 85, hp: 260, damage: 34, speed: 28, range: 200, rate: 1.6, cooldown: 8, unlock: 2, infantry: true, splash: 40, shot: 'rocket', spin: false, ...six('ally-blaster-1', 158, 0.76), forms: [
-    { price: 350, cost: 100, hp: 290, damage: 44, splash: 50, shot: 'rockets', ...six('ally-blaster-2', 182, 0.76) },
-    { price: 600, cost: 120, hp: 320, damage: 52, range: 240, rate: 1.3, splash: 0, shot: 'ray', ...six('ally-blaster-3', 179, 0.76) },
-    { price: 1800, cost: 170, hp: 420, damage: 32, range: 110, rate: 0.5, splash: 70, shot: 'none', ...six('ally-blaster-4', 202, 0.76) },
+  { id: 5, cost: 85, hp: 260, damage: 34, speed: 28, range: 200, rate: 1.6, cooldown: 8, unlock: 2, infantry: true, splash: 40, shot: 'rocket', spin: false, ...six('ally-blaster-1', 158, 0.65), forms: [
+    { price: 350, cost: 100, hp: 290, damage: 44, splash: 50, shot: 'rockets', ...six('ally-blaster-2', 182, 0.65) },
+    { price: 600, cost: 120, hp: 320, damage: 52, range: 240, rate: 1.3, splash: 0, shot: 'ray', ...six('ally-blaster-3', 179, 0.65) },
+    { price: 1800, cost: 170, hp: 420, damage: 32, range: 110, rate: 0.5, splash: 70, shot: 'none', ...six('ally-blaster-4', 202, 0.65) },
   ] },
   // The wizard's three forms (docs/cw2-reference.md), the same staff: lightning striking the ground, a tornado, and a
   // meteor that leaves flames. The spell lands on the target from the sheet (`shot-lightning|tornado|meteor`); from
   // level 3 he reaches flyers. The reference gives no prices.
-  { id: 6, cost: 95, hp: 150, damage: 40, speed: 26, range: 220, rate: 1.9, cooldown: 10, unlock: 3, splash: 55, infantry: true, shot: 'lightning', ...six('ally-wizard-1', 220, 0.61), forms: [
-    { price: 600, cost: 120, hp: 180, damage: 46, splash: 75, shot: 'tornado', ...six('ally-wizard-2', 251, 0.61) },
-    { price: 2000, cost: 190, hp: 230, damage: 70, splash: 90, hitsAir: true, shot: 'meteor', ...six('ally-wizard-3', 258, 0.61) },
+  { id: 6, cost: 95, hp: 150, damage: 40, speed: 26, range: 220, rate: 1.9, cooldown: 10, unlock: 3, splash: 55, infantry: true, shot: 'lightning', ...six('ally-wizard-1', 220, 0.52), forms: [
+    { price: 600, cost: 120, hp: 180, damage: 46, splash: 75, shot: 'tornado', ...six('ally-wizard-2', 251, 0.52) },
+    { price: 2000, cost: 190, hp: 230, damage: 70, splash: 90, hitsAir: true, shot: 'meteor', ...six('ally-wizard-3', 258, 0.52) },
   ] },
   // The vulture rider: a knight with a spear on a walking vulture.
   { id: 7, cost: 75, hp: 260, damage: 40, speed: 85, range: 38, rate: 0.8, cooldown: 7, unlock: 4, ...six('ally-vulture-1', 319, 0.6) },
@@ -111,10 +111,10 @@ export const UNITS: readonly Spec[] = [
   ] },
   // The heavy armed robot's four forms (docs/cw2-reference.md): gatling bursts, small rockets added (MK2), a frozen
   // cannon on its back (from here it reaches flyers), and a huge one firing rocket salvos.
-  { id: 9, cost: 200, hp: 1300, damage: 70, speed: 18, range: 200, rate: 2, cooldown: 22, unlock: 5, splash: 80, shot: 'bullet', ...six('ally-heavy-robot-1', 166, 1.46), forms: [
-    { price: 1200, cost: 230, hp: 1500, damage: 80, shot: 'rockets', ...six('ally-heavy-robot-2', 186, 1.46) },
-    { price: 2200, cost: 260, hp: 1800, damage: 90, hitsAir: true, shot: 'ice', ...six('ally-heavy-robot-3', 214, 1.46) },
-    { price: 4000, cost: 320, hp: 2600, damage: 120, splash: 100, hitsAir: true, shot: 'salvo', ...six('ally-heavy-robot-4', 254, 1.46) },
+  { id: 9, cost: 200, hp: 1300, damage: 70, speed: 18, range: 200, rate: 2, cooldown: 22, unlock: 5, splash: 80, shot: 'bullet', ...six('ally-heavy-robot-1', 166, 1.17), forms: [
+    { price: 1200, cost: 230, hp: 1500, damage: 80, shot: 'rockets', ...six('ally-heavy-robot-2', 186, 1.17) },
+    { price: 2200, cost: 260, hp: 1800, damage: 90, hitsAir: true, shot: 'ice', ...six('ally-heavy-robot-3', 214, 1.17) },
+    { price: 4000, cost: 320, hp: 2600, damage: 120, splash: 100, hitsAir: true, shot: 'salvo', ...six('ally-heavy-robot-4', 254, 1.17) },
   ] },
   // Ours, air (Cartoon Wars 2's A row): they fly over the field, out of reach of melee troops; only ranged ones hit them.
   // The aircraft fighter's four forms: a sword under a propeller pack, then with goggles and scarf, two rotors and blue
