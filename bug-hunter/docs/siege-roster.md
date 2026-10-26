@@ -53,7 +53,7 @@ Each enemy is "equivalent" to one of our units at a level: that sets its stats. 
 
 New sheets have **6 poses** in one row: 1 walk A, 2 walk B (A and B alternated read as walking), 3 attack ready, 4 attack, 5 hurt (feet on the ground), 6 dead (lying on the ground); simple stick figures (white round head, stick body). One row per level form, in order. A unit with such a sheet has `six: true` in `UNITS` (scale 0.4 a pixel of its first walk pose); its forms (`forms`) are bought in the workshop's Troops rows. Cut as `siege/units/ally-<name>-<level>-<pose>.webp` (pose 0-5).
 
-- **Swordsman:** 5 forms (the reference's six with its fifth, the piercing swordsman, dropped): club, dagger, sword and shield, greatsword, master (fire slash, reaches flyers). Prices 200, 300, 400, 2000 gold; energy 20, 30, 50, 60, 200. Its scarf and capes are blue in every form (the owner's call: the first ally wears blue); the level 4 crest stays red.
+- **Swordsman:** 5 forms (the reference's six with its fifth, the piercing swordsman, dropped): club, dagger, sword and shield, greatsword, master (fire slash, reaches flyers). Prices 200, 300, 400, 2000 gold; energy 20, 30, 50, 60, 200. Its scarf, capes and the level 4 crest are blue in every form (the owner's call: the first ally wears blue).
 - **Spearman:** 5 forms: basic spear, longer, longer still, horned fox helmet, lancer on a white horse (not thrown back by heavy blows, only stunned). The reference gives no prices: 250, 400, 600, 2200 gold; energy 30, 40, 50, 65, 220.
 
 ## In the game now (test set)
