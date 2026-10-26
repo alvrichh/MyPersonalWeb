@@ -643,3 +643,8 @@
 .siege-root.is-cartoon .sg-story .sg-line{z-index:2}
 .siege-root.is-cartoon .sg-story [data-story="skip"],.siege-root.is-cartoon .sg-story [data-story="skip"]:hover{border-style:solid;border-color:transparent;border-width:0 26px;border-radius:0;border-image:url('/images/game/siege/ui/btn-grey.webp') 0 70 fill / 0 26px stretch;background:none;box-shadow:none;color:#fff;text-shadow:0 2px 2px #000;min-height:44px;padding:0 6px}
 @media (max-height:440px){.siege-root.is-cartoon .sg-story .sg-speaker{height:min(30vh,130px);margin-bottom:-22px}.siege-root.is-cartoon .sg-story .sg-scene.is-boss .sg-speaker{height:min(32vh,140px)}}
+/* The world's name at the top of the screen, the speaker standing clear of the box. */
+.siege-root.is-cartoon .sg-story .sg-scene>.sg-eyebrow{position:fixed;top:14px;left:50%;transform:translateX(-50%);font-size:15px;color:#ffd23f;text-shadow:0 2px 3px #000,0 0 8px #000;white-space:nowrap}
+.siege-root.is-cartoon .sg-story .sg-speaker{margin-bottom:-12px}
+.siege-root.is-cartoon .sg-story .sg-scene.is-boss .sg-speaker{margin-bottom:-12px}
+@media (max-height:440px){.siege-root.is-cartoon .sg-story .sg-speaker,.siege-root.is-cartoon .sg-story .sg-scene.is-boss .sg-speaker{margin-bottom:-8px}.siege-root.is-cartoon .sg-story .sg-scene>.sg-eyebrow{top:8px}}

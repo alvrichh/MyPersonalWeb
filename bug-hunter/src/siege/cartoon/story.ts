@@ -1,7 +1,7 @@
 import type { Key } from '../../strings';
 
-/** Who speaks: the narrator; our King (the leader); the player's own hero, who commands the army; our Wizard (the clever
-    one); our Swordsman (the funny one); or the act's guardian. */
+/** Who speaks: the narrator; King Alfonso (the leader); Captain Jorge (`hero`, who commands the army); Fermín the Wizard
+    (the clever one); Manolo the swordsman (the funny one); or the act's guardian. */
 export type Speaker = 'narrator' | 'king' | 'hero' | 'wizard' | 'joker' | 'boss';
 export interface Line { who: Speaker; key: Key }
 /** Siege Cartoon's story: the Darkness rises in the east to destroy everything, and our King marches to push it back. */
