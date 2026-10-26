@@ -37,9 +37,9 @@ function picture(path: string) {
 export function sprite(_s: Siege, u: Fighter) { return specOf(u).sprite; }
 /** A troop's card picture at its level. */
 export const portrait = (id: number, level = 1) => `/images/game/${specAt(id, level).sprite}-0.webp`;
-export function preload(world: number, deck: number[], levels: number[] = []) {
+export function preload(world: number, deck: number[], _levels: number[] = []) {
   const foes: number[] = [...foesAt(FOE_LAND, world), ...foesAt(FOE_AIR, world), GUARDIAN[actOf(world) - 1]];
-  const specs = [...deck.map(id => specAt(id, levels[id])), ...foes.map(id => UNITS[id])];
+  const specs = [...deck.map(c => specAt(c % 100, Math.floor(c / 100) + 1)), ...foes.map(id => UNITS[id])];
   specs.forEach(spec => { for (let f = 0; f < (spec.six ? 6 : 3); f++) picture(`${spec.sprite}-${f}`); });
   // The battlefield, and the fortresses and crossbow at every level (the workshop can change ours between battles).
   [SCENE, ...['rock', 'javelin', 'arrow', 'shuriken', 'rocket', 'rockets', ...SPELLS].map(n => `siege/units/shot-${n}`), ...[1, 2, 3, 4].flatMap(n => [`siege/castle-${n}`, `siege/xbow-${n}`, ...(n < 4 ? [`siege/enemy-${n}`] : [])]), ...FX].forEach(still);
