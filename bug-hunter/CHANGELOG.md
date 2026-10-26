@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.67 - 2026-10-26
+
+### Added - Siege: the blaster in four forms
+- The owner's sheet (six poses, four forms, as the reference describes): bazooka, rocket launcher, ray gun and flamethrower. The ray and the flame reached into the next pose in the sheet; figures were told apart from effects by their black stick bodies, and each effect was given to the pose that fires it.
+- The bazooka's rocket and the launcher's pair of rockets are cut from their attack poses and fly to the target, blasting an area. The ray gun fires a cyan beam drawn in code; the flamethrower's flame is in its attack pose, with a short reach and a wide area. Prices 350, 600 and 1800 gold (the reference gives none).
+
 ## 1.14.66 - 2026-10-26
 
 ### Added - Siege: the gunner in four forms
