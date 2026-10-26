@@ -110,6 +110,15 @@ test('Backlog can be won with a mixed army and active defenses, without upgrades
   assert.equal(s.phase, 'won', `ended ${s.phase}: ${s.hp}, time ${s.time}`);
 });
 
+test('arrows strike the flyers their path crosses, not those above or behind it', () => {
+  const s = m.newSiege(m.freshProgress(), 1); s.nextWave = 999; s.gusted = true; s.aim = 1000; s.bowFrom = { x: 150, up: 140 };
+  const path = m.flight({ x: 150, y: -140 }, { x: 1000, y: -2 }), mid = 600, height = -path((mid - 150) / 850).y;
+  const flyer = (uid, x, alt) => ({ uid, id: 28, side: 1, x, lane: 0, alt, hp: 500, maxHp: 500, damage: 0, attack: 9, flash: 0, boss: false });
+  const crossed = flyer(1, mid, height - 20), above = flyer(2, mid, height + 200), walker = { ...flyer(3, mid, 0), id: 15 };
+  s.units.push(crossed, above, walker); m.toggleBow(s); m.tick(s, 1 / 30);
+  assert.ok(crossed.hp < 500, 'the flyer in its path is hit'); assert.equal(above.hp, 500, 'not one high above it'); assert.equal(walker.hp, 500, 'nor a walker short of where it lands');
+});
+
 test('the bow: a tap starts it, it shoots steadily, stops on a tap or an empty quiver, and refills only while stopped', () => {
   const s = m.newSiege(m.freshProgress(), 1); s.nextWave = 999;
   m.toggleBow(s); m.tick(s, 1 / 30);
