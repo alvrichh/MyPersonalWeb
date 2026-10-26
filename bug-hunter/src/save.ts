@@ -47,6 +47,12 @@ export const FULL_HERO_SETS = [
   'robot-base', 'robot-wizard', 'robot-helm', 'robot-bandana', 'robot-crown', 'kitty-base',
   ...[...SPECIAL_SKINS, ...WORLD_SKINS, ...NEW_SKINS].map((s) => `${s}-base`),
 ];
+/** Skins with the owner's two back-walk steps (`<skin>-base-bwalk-0/1`): walking away from the camera alternates them. */
+export const BACK_WALK_SKINS: HeroSkin[] = ['boy', 'reaper', 'duck', 'box', 'hacker', 'king', 'potato', 'suit',
+  'glitch', 'inferno', 'shieldmaiden', 'bloom', 'thunder', 'overclock', 'vampire', 'drake', 'mudling'];
+/** Skins whose pictures are taller than alvrich's 144 px because something rises above the head (the reaper's scythe):
+    lists draw them this much taller, so the figure itself matches the others and the extra sticks out. */
+export const SKIN_TALL: Partial<Record<HeroSkin, number>> = { reaper: 168 / 144 };
 /** The still picture for menus: facing the camera where the set has it, else the side idle. */
 export const heroStill = (skin: HeroSkin, head?: string) => {
   const key = heroKey(skin, head);

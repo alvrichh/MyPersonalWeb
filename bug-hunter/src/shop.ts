@@ -142,6 +142,9 @@ export const BASE_LOADOUT: Loadout = {
   arsenal: [],
 };
 
+/** Shop cards whose full text (also the level-up card's) runs long: they show a short line of their own, `<id>Shop`,
+    so the cards of a window come out about the same height. */
+export const SHOP_SHORT = new Set(['extra', 'brick', 'molotov', 'mines', 'durian', 'ball', 'rocket', 'drill', 'lantern', 'spiritFire', 'spiritTide', 'spiritThorn', 'spiritVolt', 'spiritShade']);
 export const ITEMS: Item[] = [
   // Head
   { id: 'wizardHat', slot: 'head', price: 250, icon: '🧙', pic: 'items/wizardHat.webp', effect: { mult: { melee: 1, magic: 1.3, ranged: 1, upgrade: 1 } } },

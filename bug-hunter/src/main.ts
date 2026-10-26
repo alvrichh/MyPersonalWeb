@@ -9,12 +9,12 @@ import { COIN_PACKS, currentOffer, grant, packBonus, SKIN_OFFERS, type CoinPack,
 import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPrize, type DailyResult } from './daily';
 import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
 import { MID_ART, boardBackdropBounds, draw, drawRetroFigure, preloadBoardBossFx, preloadCast, preloadFx, type Palette, type View } from './draw';
-import { DEFAULT_NAME, NAME_MAX, NET_ID, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, WORLD_SKINS, SKIN_GATE, SKIN_GROUPS, skinOpen, ownsSkin, skinPrice, worldOutfit, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
+import { DEFAULT_NAME, NAME_MAX, NET_ID, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, WORLD_SKINS, SKIN_GATE, SKIN_GROUPS, SKIN_TALL, skinOpen, ownsSkin, skinPrice, worldOutfit, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
 import { ABILITY, ABIL_V, BENCH_CAP, canFight, moveBenchSeat, CELL, COLS, FINAL_ID, HOME_ROW, NATIVE_WORLD_BONUS, ROWS, ROUNDS, SYNERGY, TACTICS, armyCap, deployBench, sellBench, storeOnBench, toggleAutoMerge, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, startOnlineFight, unitStats, updateBoard, waveSpots, waveUnitStats, type BoardGame, type Online, type Piece, type Variant } from './board';
 import { cleanCode, dial, hostGame, joinGame, leave as netLeave, presence, presenceOn, presenceReady, send as netSend, type NetHandlers, type NetMsg, type NetProfile, type NetState, type Together } from './net';
 import { ABILITY_ICON, ABILITY_PIC, SYNERGY_PIC, FIREBALL, boardMerged, boardUnitBounds, drawBoard, mirrorFight, drawBoardDrag, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
 import type { Enemy } from './world';
-import { ARMOUR_SLOTS, ARSENAL, ITEMS, itemLevel, type SpiritSkin, UPGRADES, WEAPON_SLOTS, EXTRA_SLOT_PRICE, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
+import { ARMOUR_SLOTS, ARSENAL, ITEMS, SHOP_SHORT, itemLevel, type SpiritSkin, UPGRADES, WEAPON_SLOTS, EXTRA_SLOT_PRICE, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
 import { Scene } from './scene';
 import { ACHIEVEMENTS, achEarned, achTotal, checkAchievements, tierKey, tiersDone, type Ach, type AchId } from './achievements';
 import { makeT, pickLang, type Key, type Lang } from './strings';
@@ -164,13 +164,8 @@ let arsenalOpened: SkillId | null = null;
 let itemOpened: ItemId | null = null;
 /** An item that waits for a world is on sale once that world is won in either mode. */
 const itemOpen = (item: { world?: number; needs?: SkillId }) => (!item.world || worldWon(save, item.world)) && (!item.needs || save.arsenal.includes(item.needs));
-/** Skins whose pictures are taller than alvrich's 144 px because something rises above the head (the reaper's scythe):
-    lists draw them this much taller, so the figure itself matches the others and the extra sticks out. */
-const SKIN_TALL: Partial<Record<HeroSkin, number>> = { reaper: 168 / 144 };
 const skinTall = (skin: HeroSkin) => (SKIN_TALL[skin] ? ` style="--tall:${SKIN_TALL[skin]!.toFixed(3)}"` : '');
-/** A shop card's line: its own short one where the full text (also the level-up card's) runs long, so the cards in a
-    window come out about the same height. */
-const SHOP_SHORT = new Set(['extra', 'brick', 'molotov', 'mines', 'durian', 'ball', 'rocket', 'drill', 'lantern', 'spiritFire', 'spiritTide', 'spiritThorn', 'spiritVolt', 'spiritShade']);
+/** A shop card's line: its own short one (`<id>Shop`, see `SHOP_SHORT`) where the full text runs long. */
 const shopText = (id: string) => t((SHOP_SHORT.has(id) ? `${id}Shop` : `${id}Text`) as Key);
 /** What a closed item's button says: the world to win, or the arsenal weapon to buy first. */
 const lockText = (item: { world?: number; needs?: SkillId }) =>
