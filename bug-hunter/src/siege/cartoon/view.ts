@@ -226,24 +226,19 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
     // The picture spans the field (and moves with it, so distances read true), its sky colours carried on above it.
     const sw = FIELD + SCENE_FIT.pad * 2, sh = sw * scene.naturalHeight / scene.naturalWidth;
     const x0 = -SCENE_FIT.pad, top = ground - sh * SCENE_FIT.ground;
-    ctx.drawImage(scene, x0, top, sw, sh);
+    // When the view runs below the picture, its foreground (the part under the walking ground) is stretched down to
+    // the view's foot, so the picture itself fills it (never one stretched row, which reads as a blur).
+    const nh = scene.naturalHeight, gRow = nh * SCENE_FIT.ground;
+    if (top + sh < viewH) {
+      ctx.drawImage(scene, 0, 0, scene.naturalWidth, gRow, x0, top, sw, ground - top);
+      ctx.drawImage(scene, 0, gRow, scene.naturalWidth, nh - gRow, x0, ground, sw, viewH - ground + 1);
+    } else ctx.drawImage(scene, x0, top, sw, sh);
     if (top > 0) {
       const strip = skyOf(scene), fade = 60;
       ctx.drawImage(strip, 0, 0, 16, 1, x0, -1, sw, top + 2);
       for (let i = 0; i < 12; i++) { ctx.globalAlpha = 1 - (i + 0.5) / 12; ctx.drawImage(strip, 0, 0, 16, 1, x0, top + (i * fade) / 12, sw, fade / 12 + 0.5); }
       ctx.globalAlpha = 1;
     }
-    if (top + sh < viewH) ctx.drawImage(scene, 0, scene.naturalHeight - 1, scene.naturalWidth, 1, x0, top + sh - 1, sw, viewH - top - sh + 2);
-    // Below the walking ground the picture's foreground (big stone slabs, drawn huge at this scale) is covered with its
-    // own grass: the band just under the ground line repeated down (every other copy flipped, so no seam shows), a
-    // little darker the lower it goes, so only the bar and the troops read there.
-    const turf = ground + 14, nh = scene.naturalHeight, row = nh * SCENE_FIT.ground + nh * 0.012, band = nh * 0.035, bh = band * sh / nh;
-    for (let yy = turf, k = 0; yy < viewH + 2; yy += bh, k++) {
-      ctx.save(); ctx.translate(0, k % 2 ? yy + bh : yy); ctx.scale(1, k % 2 ? -1 : 1);
-      ctx.drawImage(scene, 0, row, scene.naturalWidth, band, x0, 0, sw, bh + 0.5); ctx.restore();
-    }
-    const fade = ctx.createLinearGradient(0, turf, 0, turf + 70); fade.addColorStop(0, '#00000000'); fade.addColorStop(1, '#00000052');
-    ctx.fillStyle = fade; ctx.fillRect(x0, turf, sw, viewH - turf + 4);
   } else {
     const [deck, low] = GROUND[actOf(s.world) - 1];
     const earth = ctx.createLinearGradient(0, ground - 10, 0, viewH); earth.addColorStop(0, deck); earth.addColorStop(1, low);
