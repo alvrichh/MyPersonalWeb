@@ -3221,7 +3221,7 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
    words wiped off the same way), as big as the window allows, with every
    control re-placed in percentages of that picture. There is no painted
    exit or menu dot, so the exit is a small drawn button in the corner. */
-@media (min-width: 900px) and (orientation: landscape) {
+@media (min-width: 560px) and (orientation: landscape) {
   .screen.is-menu { display: grid !important; place-items: center; background: #070b10 url('/images/game/landing-bg-wide.jpg') center / cover no-repeat; }
   .screen.is-menu[hidden] { display: none !important; }
   /* The cover fills the window: the picture's own box (`.cover-in`, where every control sits) is as big as the
@@ -4065,7 +4065,7 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 :root[data-retro] .panel .book-mode.is-horde { background: linear-gradient(135deg, #ef4444, #b91c1c); }
 :root[data-retro] .panel .book-mode.is-board { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
 
-@media (min-width: 900px) and (orientation: landscape) {
+@media (min-width: 560px) and (orientation: landscape) {
   .cover-play-tint { left: 32.3%; top: 61.4%; width: 35.3%; height: 10.8%; }
   .cover-arrow { top: 61.4%; width: 4.5%; height: 10.8%; border-radius: 1cqw; }
   .cover-arrow.is-prev { left: 31.3%; }
@@ -4415,7 +4415,7 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .cover-friend .friend-pic { width: 6.4cqw; height: 6.4cqw; border-width: 1px; }
 .cover-friend b { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .cover-friend .friend-dot { width: 1.8cqw; height: 1.8cqw; flex: none; }
-@media (min-width: 900px) and (orientation: landscape) {
+@media (min-width: 560px) and (orientation: landscape) {
   .cover .cover-friend {
     left: 5.7%; top: 12.2%; max-width: 25%; gap: clamp(6px, 0.7cqw, 12px);
     padding: clamp(6px, 0.55cqw, 10px) clamp(10px, 0.9cqw, 16px) clamp(6px, 0.55cqw, 10px) clamp(6px, 0.55cqw, 10px);
@@ -4898,7 +4898,7 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 :root:not([data-retro]) .cover-play-copy.is-horde small,
 :root:not([data-retro]) .cover-play-copy.is-board small { color: rgba(255, 255, 255, 0.88); }
 :root[data-retro] .cover-play-bar { display: none; }
-@media (min-width: 900px) and (orientation: landscape) {
+@media (min-width: 560px) and (orientation: landscape) {
   .cover-play-bar { left: 31.8%; top: 60.8%; width: 36.3%; height: 12%; border-width: 0 5.1cqw; border-image-width: 0 5.1cqw; }
   :root:not([data-retro]) .cover-play-copy { left: 32.3%; width: 35.3%; }
 }
@@ -4908,7 +4908,7 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .panel .primary.ach-open { --bar: url('/images/game/ui/btn1_gold.webp'); color: #1a1200; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35); }
 :root[data-retro] .panel .primary.ach-open { background: linear-gradient(135deg, #fde047, #f59e0b); color: #1a1200; text-shadow: none; }
 /* v1.13.16 — On the phone cover the play bar runs from the left card's edge to the right one's. */
-@media not all and (min-width: 900px) and (orientation: landscape) {
+@media not all and (min-width: 560px) and (orientation: landscape) {
   .cover-play-bar { left: 3.6%; width: 92.8%; }
   .cover-play { left: 4%; width: 92%; }
   .cover-arrow.is-prev { left: 2.5%; }
