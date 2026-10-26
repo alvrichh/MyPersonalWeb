@@ -167,7 +167,9 @@ function bowAngle(s: Siege, ground: number) {
 }
 /** The camera: its left edge and width in field units, and how far left of the field it may go (a margin past our
     wall, so the aim control stands clear of it). */
-export interface Camera { x: number; width: number; min?: number; deck?: number }
+export interface Camera { x: number; width: number; min?: number; deck?: number;
+  /** CSS pixels at the foot of the view covered by the card bar laid over the field: the ground line stays above them. */
+  bottom?: number }
 export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, s: Siege, camera: Camera, reduced: boolean) {
   const rect = canvas.getBoundingClientRect(); const w = rect.width, h = rect.height;
   if (!w || !h) return;
@@ -187,6 +189,7 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   // A tall view (a phone upright): the ground line comes down until the picture's foot reaches the bottom of the view.
   const below = (FIELD + SCENE_FIT.pad * 2) * (1 - SCENE_FIT.ground) * 724 / 2172;
   camera.deck = Math.max(camera.deck, 1 - (below * 0.95 * scale) / h);
+  if (camera.bottom) camera.deck = Math.min(camera.deck, 1 - (camera.bottom + 4) / h);
   const ground = h / scale * camera.deck;
   ctx.scale(scale, scale); ctx.translate(-camera.x + Math.max(0, (camera.width - FIELD) / 2), 0);
   const viewH = h / scale;
