@@ -278,3 +278,13 @@
 @media(max-width:600px){.siege-root.is-cartoon .sg-isle{flex-basis:108px}.is-cartoon .sg-world.is-act{background:linear-gradient(#fffaf0e6,#fffaf0e6),url('/images/game/siege/backdrop.webp') center bottom/cover}}
 /* Story scenes cover the screen even over a scrolled preparation page, in their own light-on-dark colours. */
 .siege-root .sg-story{position:fixed;color:#edf7ff;color-scheme:dark}
+/* v1.14.74 — Siege Cartoon: the King speaks without a picture; each act opens on its title as the Darkness spreads. */
+.sg-scene.is-king .sg-line{border-color:#ffd166cc}.sg-scene.is-king .sg-line b{color:#ffd166}
+.siege-root .sg-actcard{place-items:center;background:#050a14 url('/images/game/siege/backdrop.webp') center/cover;overflow:hidden}
+.sg-gloom{position:absolute;inset:0;background:linear-gradient(90deg,#0e0416,#1e020e);opacity:var(--to);animation:sg-gloom 3s ease-in .3s both}
+@keyframes sg-gloom{from{opacity:var(--from)}to{opacity:var(--to)}}
+.sg-actcard-in{position:relative;text-align:center;padding:24px 28px;animation:sg-in .6s ease-out .2s both}
+.sg-actcard-in small{display:block;font:900 clamp(14px,2.4vw,18px)/1 system-ui;letter-spacing:.3em;text-transform:uppercase;color:#ffd166;text-shadow:0 2px 6px #000}
+.sg-actcard-in h2{margin:10px 0 18px;font:900 clamp(30px,7vw,64px)/1.05 system-ui;color:#fff;text-shadow:0 4px 0 #000,0 0 28px #000c}
+.is-cartoon .sg-world.is-act{background:linear-gradient(90deg,#fffaf0 38%,#fffaf0cc 58%,#fffaf000 80%),var(--shade,none),url('/images/game/siege/backdrop.webp') center bottom/cover}
+@media(max-width:600px){.is-cartoon .sg-world.is-act{background:linear-gradient(#fffaf0e6,#fffaf0e6),var(--shade,none),url('/images/game/siege/backdrop.webp') center bottom/cover}}

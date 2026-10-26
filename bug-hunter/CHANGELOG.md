@@ -4,6 +4,15 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.74 - 2026-10-26
+
+### Changed - Siege Cartoon's story, retold
+- The story is now the Darkness, risen in the east to destroy everything, against our King, who marches to push it back fortress by fortress. The King speaks the prologue and the ending (no picture yet); the Wizard speaks on the field; the guardians speak when they join. The acts are now The Border, The Forges, The Red Skies, The Caves, The Ancient Lands and The Throne of Darkness.
+
+### Added
+- Each act opens on its title card ("Act N" and its name over the battlefield), the Darkness spreading over it from the last act's to this one's.
+- The world grows darker act by act: the battlefield (deeper on the enemy's side, never over the fortresses or troops), the story scenes and the act's card on the map.
+
 ## 1.14.73 - 2026-10-26
 
 ### Added - Siege Cartoon's story
