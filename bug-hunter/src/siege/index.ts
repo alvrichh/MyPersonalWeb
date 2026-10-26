@@ -48,7 +48,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   let state: Siege | null = null, paused = false, finished = false;
   // Local checks (like `window.bugHunter` for the main game): the battle's state, read and nudged by test scripts.
   if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) Object.defineProperty(window, 'bugHunterSiege', { get: () => state, configurable: true });
-  let frame = 0, last = 0, accumulator = 0, uiAt = 0, bossTalked = false, baseFell = false, lootHeard = 0;
+  let frame = 0, last = 0, accumulator = 0, uiAt = 0, bossTalked = false, baseFell = false, lootHeard = 0, gustShown = false;
   /** How far the aim stick is pushed, -1 (down, nearer) to 1 (up, further); 0 at rest. */
   let aimPush = 0;
   /** The bottom bar's tab, Cartoon Wars 2's L · A · S: land troops, air troops, special powers. */
@@ -224,7 +224,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     cancelAnimationFrame(frame); battleAbort.abort(); battleAbort = new AbortController();
     const battleOptions = { signal: battleAbort.signal };
     if (!selected.length) return;
-    progress.deck = [...selected]; persist(); state = M.newSiege(progress, world); bossTalked = false; baseFell = false; lootHeard = 0;
+    progress.deck = [...selected]; persist(); state = M.newSiege(progress, world); bossTalked = false; baseFell = false; lootHeard = 0; gustShown = false;
     if (mode === 'cartoon') music('battle');
     V.preload(world, selected, progress.levels); paused = false; camera.x = -Infinity;
     // Laid out like Cartoon Wars 2: mana top left, both fortresses' health face to face in the middle, coins and pause
@@ -298,6 +298,11 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
         troopSounds(now);
         // The enemy fortress falling (its crumble, then the guardian's horn), and a coin for a fat bounty.
         if (mode === 'cartoon' && !baseFell && state.hp[1] <= 0) { baseFell = true; sound('base-falls'); }
+        // The corrupt wind's warning, across the top of the field for a moment.
+        if (state.gusted && !gustShown) {
+          gustShown = true; const note = document.createElement('div'); note.className = 'sg-alert'; note.setAttribute('role', 'status'); note.textContent = t('siegeGust');
+          q('.sg-field').append(note); setTimeout(() => note.remove(), 2600);
+        }
         if (mode === 'cartoon' && (state.loot ?? 0) - lootHeard >= 8) sound('coin', 0.7);
         lootHeard = state.loot ?? 0;
       }

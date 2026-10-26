@@ -281,11 +281,17 @@ export interface Fighter { uid: number; id: number; side: 0 | 1; x: number; lane
   /** Walking this step (the view swings its stride). */
   moving?: boolean;
   /** Seconds left flying back from a heavy blow (infantry), or stunned by one (the rest). */
-  knock?: number; stun?: number }
+  knock?: number; stun?: number;
+  /** Seconds left being blown back by the corrupt wind. */
+  blown?: number;
+  /** How much bigger an enemy is drawn than its troop (it grows world by world, stage by stage). */
+  grow?: number }
 /** A blow taking at least this share of a troop's health knocks it: infantry fly back (`KNOCK.back` field units over
     `KNOCK.time`) and get up, the rest are stunned for `KNOCK.stun`; bosses and the steady never. */
 export const KNOCK = { share: 0.2, time: 0.55, back: 70, stun: 0.35 };
-export interface Effect { x: number; from: number; lane: number; life: number; max: number; kind: 'shot' | 'burst' | 'arrow' | 'rocket' | 'bolt'; side: 0 | 1;
+export interface Effect { x: number; from: number; lane: number; life: number; max: number; kind: 'shot' | 'burst' | 'arrow' | 'rocket' | 'bolt' | 'gust' | 'loot'; side: 0 | 1;
+  /** A fallen enemy's bounty, shown rising where it fell. */
+  gold?: number; mana?: number;
   /** A shot's own projectile picture (`Spec.shot`) and whether it spins. */
   art?: string; spin?: boolean }
 export interface Siege {
@@ -302,9 +308,21 @@ export interface Siege {
   levels: number[];
   /** The gold the enemies dropped this battle: kept whether it is won or lost. */
   loot?: number;
+  /** The corrupt wind has blown this battle. */
+  gusted?: boolean;
 }
 /** The gold an enemy drops when it falls: by its toughness, double for a horned one, a guardian far more. */
-export const dropOf = (u: Fighter) => (u.boss ? 60 : Math.max(3, Math.round(UNITS[u.id].hp / 30)) * (u.elite ? 2 : 1));
+export const dropOf = (u: Fighter) => (u.boss ? 120 : Math.max(3, Math.round((UNITS[u.id].hp / 30) ** 1.3 / 2.2)) * (u.elite ? 2 : 1));
+/** The energy an enemy gives as it falls: a little for the weak, a lot for the strong. */
+export const manaOf = (u: Fighter) => (u.boss ? 80 : Math.max(2, Math.round(UNITS[u.id].hp / 25)) * (u.elite ? 2 : 1));
+/** The corrupt wind: once the enemy fortress is down to `at` of its health, a gust from it blows our troops back
+    (`back` field units a second for `time` seconds) and the enemy pours out a horde that grows world by world: `weak` of
+    its first troops plus one a world, and one of its toughest every `strongEvery` worlds. */
+export const GUST = { at: 0.5, back: 330, time: 0.7, weak: 3, strongEvery: 3 };
+export const hordeOf = (stage: number) => ({ weak: GUST.weak + actOf(stage), strong: Math.ceil(actOf(stage) / GUST.strongEvery) });
+/** How much bigger the enemy grows: 0 on the first battle, `GROW` at the last. */
+export const GROW = 0.3;
+const growAt = (stage: number) => 1 + GROW * (Math.min(LAST, Math.max(1, stage)) - 1) / (LAST - 1);
 /** Which of the four pictures a workshop level (0-5) shows, for our fortress and its crossbow: 0-1, 2-3, 4, 5. */
 export const looksTier = (level: number) => (level >= 5 ? 4 : level >= 4 ? 3 : level >= 2 ? 2 : 1);
 /** Which of the enemy fortress's three pictures a battle shows, by its act: acts 1-2, 3-4, 5-6. */
@@ -335,12 +353,12 @@ export const ELITE_ID = 22;
 function spawn(s: Siege, id: number, side: 0 | 1, boss = false, level?: number) {
   if (s.units.filter(u => u.side === side).length >= CAP) return;
   const lv = side ? undefined : level ?? s.levels[id] ?? 1;
-  const spec = side ? UNITS[id] : specAt(id, lv); const scale = side ? 0.95 + hard(s.world) * 0.04 : s.power;
+  const spec = side ? UNITS[id] : specAt(id, lv); const scale = side ? 0.95 + hard(s.world) * 0.03 : s.power;
   const hp = spec.hp * scale * (boss ? BOSS_HP : 1);
   // One gunner in every few (counted by its spawn number) comes horned.
   const elite = !!side && !boss && id === ELITE_ID && s.time >= ELITE.from && s.nextId % ELITE.every === 0;
   const life = hp * (elite ? ELITE.hp : 1);
-  s.units.push({ uid: s.nextId++, id, side, x: side ? FIELD - 120 : 120, lane: s.nextId % 3, hp: life, maxHp: life, damage: spec.damage * scale * (elite ? ELITE.damage : 1), attack: 0, flash: 0, boss, elite: elite || undefined, lv });
+  s.units.push({ uid: s.nextId++, id, side, x: side ? FIELD - 120 : 120, lane: s.nextId % 3, hp: life, maxHp: life, damage: spec.damage * scale * (elite ? ELITE.damage : 1), attack: 0, flash: 0, boss, elite: elite || undefined, lv, grow: side ? growAt(s.world) : undefined });
 }
 /** What a troop's attack sounds like (its weapon) and its death (its body), by id; an array is per level. Projectile
     troops sound like what they fire (`SHOT_SOUND`). Names are the audio engine's `SiegeSound`s. */
@@ -455,12 +473,24 @@ export function tick(s: Siege, dt: number) {
       spawn(s, flyer ? flyers[(s.waves + i) % flyers.length] : pick[(s.waves * 3 + i) % pick.length], 1);
     }
   }
+  // The corrupt wind, once a battle, when the enemy fortress is down to half.
+  if (!s.gusted && s.hp[1] > 0 && s.hp[1] <= s.maxHp[1] * GUST.at) {
+    s.gusted = true;
+    for (const u of s.units) if (!u.side) { u.blown = GUST.time; u.knock = 0; u.stun = 0; }
+    s.effects.push({ x: FIELD - 120, from: FIELD - 120, lane: 1, life: 1.2, max: 1.2, kind: 'gust', side: 1 });
+    hear(s, 'corrupt-wind', FIELD - 300);
+    const land = foesAt(FOE_LAND, s.world), tough = [...land].sort((a, b) => UNITS[b].hp - UNITS[a].hp);
+    const horde = hordeOf(s.world);
+    for (let i = 0; i < horde.weak; i++) { spawn(s, land[i % Math.min(2, land.length)], 1); const u = s.units[s.units.length - 1]; if (u?.side) u.x -= i * 18; }
+    for (let i = 0; i < horde.strong; i++) spawn(s, tough[i % tough.length], 1);
+  }
   if (!s.bossSpawned && s.hp[1] <= 0 && guarded(s.world)) { s.bossSpawned = true; spawn(s, GUARDIAN[actOf(s.world) - 1], 1, true); }
   const alive = s.units.filter(u => u.hp > 0);
   const hits: { target: Fighter; damage: number }[] = [];
   for (const u of alive) {
     const a = specOf(u); u.attack -= dt; u.flash = Math.max(0, u.flash - dt); u.hit = Math.max(0, (u.hit ?? 0) - dt);
     u.moving = false;
+    if (u.blown) { u.blown = Math.max(0, u.blown - dt); u.x = Math.max(110, u.x - GUST.back * dt); continue; }
     if (u.knock) { u.knock = Math.max(0, u.knock - dt); u.x = Math.max(110, Math.min(FIELD - 110, u.x + (u.side ? 1 : -1) * KNOCK.back / KNOCK.time * dt)); continue; }
     if (u.stun) { u.stun = Math.max(0, u.stun - dt); continue; }
     const enemy = alive.filter(v => v.side !== u.side && reaches(u, v)).sort((a, b) => Math.abs(a.x - u.x) - Math.abs(b.x - u.x))[0];
@@ -495,7 +525,15 @@ export function tick(s: Siege, dt: number) {
     s.units.push({ ...u, uid: s.nextId++, hp, maxHp: hp, damage: u.damage * SPLIT.damage, attack: 0.8, flash: 0.3, hit: 0, stage: (u.stage ?? 0) + 1 });
     s.effects.push({ x: u.x, from: u.x, lane: u.lane, life: 0.4, max: 0.4, kind: 'burst', side: u.side });
   }
-  for (const u of s.units) if (u.hp <= 0) { hear(s, soundsOf(u)[1], u.x); if (u.side) s.loot = (s.loot ?? 0) + dropOf(u); }
+  for (const u of s.units) if (u.hp <= 0) {
+    hear(s, soundsOf(u)[1], u.x);
+    // A fallen enemy's bounty: gold (kept win or lose) and energy, shown rising where it fell.
+    if (u.side && !((u.stage ?? 0) < splitsOf(u))) {
+      const gold = dropOf(u), mana = manaOf(u);
+      s.loot = (s.loot ?? 0) + gold; s.energy = Math.min(energyMax(s), s.energy + mana);
+      s.effects.push({ x: u.x, from: u.uid, lane: 0, life: 1, max: 1, kind: 'loot', side: 1, gold, mana });
+    }
+  }
   s.kills += s.units.filter(u => u.side && u.hp <= 0).length;
   s.units = s.units.filter(u => u.hp > 0);
   s.hp = s.hp.map(h => Math.max(0, h)) as [number, number];
