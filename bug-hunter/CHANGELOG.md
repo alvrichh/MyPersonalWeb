@@ -4,6 +4,13 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.81 - 2026-10-26
+
+### Changed - Siege Cartoon's battle bar and mana monument in the owner's art
+- The bottom bar is the owner's: the L · A · S hexes (the picked one gold), the golden staff, the troop cards on the stone wall's slots (empty slots show along the rest of the wall), and the bow ball in its spiked ring, darkening from the top as the quiver empties.
+- The mana in mid-field is the owner's winged crystal monument, glowing brighter as the energy fills and pulsing when full.
+- Siege Legacy's bar and mana are unchanged.
+
 ## 1.14.80 - 2026-10-26
 
 ### Added - The last three Siege Cartoon air troops on six-pose sheets, and the flying mech

@@ -91,7 +91,7 @@ Special-mode art that does not belong to one of the nine normal worlds lives und
 Current special set:
 
 - [`special/secret-shift/bosses/`](../assets/special/secret-shift/bosses/) — Secret Shift boss sprites.
-- [`special/siege/`](../assets/special/siege/) — Siege's battlefield (`backdrop`, ground included) and its side-view fortresses: ours (`castle-1..4`, a round turret on the right for the crossbow) and the enemy's (`enemy-1..3`), one per upgrade/difficulty level, and our crossbow (`xbow-1..4`, one picture each, drawn horizontal and pointing right, turning on its wheel; the fourth is a rocket launcher).
+- [`special/siege/`](../assets/special/siege/) — Siege's battlefield (`backdrop`, ground included) and its side-view fortresses: ours (`castle-1..4`, a round turret on the right for the crossbow) and the enemy's (`enemy-1..3`), one per upgrade/difficulty level, and our crossbow (`xbow-1..4`, one picture each, drawn horizontal and pointing right, turning on its wheel; the fourth is a rocket launcher). Also the mana monument in mid-field (`mana`, a winged crystal pillar) and Siege Cartoon's battle bar, cut from the owner's bar picture: the L · A · S hexes (`bar-tab-l|a|s`), the golden staff (`bar-staff`), one wall tile with a card slot (`bar-wall`, repeated along the deck) and the bow ball in its spiked ring (`bar-bow`).
 
 ## Repository path vs browser URL
 
