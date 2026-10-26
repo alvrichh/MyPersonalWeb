@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.13 - 2026-10-26
+
+### Changed - Siege Cartoon's story
+- The worlds' names and scenes follow their new battlefields and guardians: The Meadows (the slinger's quarry), The Sky Islands (the gatling robot's factories), The Sunken Forest (the dragons' nest over the swamp), The Desert of Bones (the maw-shaped cave), The Frozen Peaks (the beast under the red ice) and The Throne of Darkness. The guardians of the first three worlds and the wizard before the fifth say new lines; the King's prologue speaks of the land turning black and red.
+
 ## 1.15.12 - 2026-10-26
 
 ### Changed - Siege Cartoon's troops
