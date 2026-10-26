@@ -64,7 +64,7 @@ The owner's first two sheets are in: our 15 units and 18 enemy troops, **3 poses
 ## Sheet format (the same for every unit)
 
 - One sheet per unit and visual level; transparent background (real alpha); no text, no shadow; poses in **one row**, with wide empty space between them; all poses at the same scale, standing on the same ground line.
-- **Side view, facing RIGHT** for everything (ours and enemies); the code mirrors enemies.
+- **Side view.** Our units face RIGHT. The enemy sheets so far face LEFT (`facesLeft` in `UNITS`); a sheet that faces the other way is turned in code. Keep every pose of a sheet facing the same way.
 - **5 poses, in this order, for every unit:** 1 walk with legs wide apart (a full stride), 2 walk with legs together (passing step), 3 attack ready (wind-up), 4 attack (the strike; ranged units only the muzzle flash, the shot is drawn in game), 5 hurt (rocking back). Air units: 1 and 2 are two flying frames (wings up, wings down).
 - **Animated in code, not drawn:** walking alternates poses 1 and 2 (about 6 a second) with a bounce, a squash on each footfall and a forward lean; standing is pose 1 breathing; the strike lunges forward; heavy hits push back, and infantry fly back on pose 5 spinning, land and get up; death is pose 5 falling over and fading; flyers float on a sine.
 - **Gatling robots:** 3 sheets, one per stage (whole, one arm, crawling wreck).
