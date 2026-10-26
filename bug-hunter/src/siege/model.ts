@@ -24,6 +24,8 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
   facesLeft?: boolean;
   /** Its upgrade forms, level 2 on (docs/cw2-reference.md): each replaces these stats and looks, bought in the workshop. */
   forms?: Form[] }
+/** Spells that land on their target instead of flying to it (the wizard's). */
+export const SPELLS = ['lightning', 'tornado', 'meteor'];
 /** An upgrade form: its gold price in the workshop and what it changes. */
 export type Form = Partial<Pick<Spec, 'cost' | 'hp' | 'damage' | 'speed' | 'range' | 'rate' | 'splash' | 'hitsAir' | 'infantry' | 'shot' | 'spin' | 'sprite' | 'size'>> & { price: number }
 /** Cartoon Wars 2's rosters (docs/siege-roster.md), with the owner's sheets (`siege/units/<side>-<name>-<pose>`: 0 stand,
@@ -80,7 +82,13 @@ export const UNITS: readonly Spec[] = [
     { price: 600, cost: 120, hp: 320, damage: 52, range: 240, rate: 1.3, splash: 0, shot: 'ray', ...six('ally-blaster-3', 211, 0.65) },
     { price: 1800, cost: 170, hp: 420, damage: 32, range: 110, rate: 0.5, splash: 70, shot: 'none', ...six('ally-blaster-4', 207, 0.65) },
   ] },
-  { id: 6, cost: 95, hp: 150, damage: 42, speed: 26, range: 220, rate: 1.9, cooldown: 10, unlock: 3, splash: 60, infantry: true, ...unit('ally-wizard', 99) },
+  // The wizard's three forms (docs/cw2-reference.md), the same staff: lightning striking the ground, a tornado, and a
+  // meteor that leaves flames. The spell lands on the target from the sheet (`shot-lightning|tornado|meteor`); from
+  // level 3 he reaches flyers. The reference gives no prices.
+  { id: 6, cost: 95, hp: 150, damage: 40, speed: 26, range: 220, rate: 1.9, cooldown: 10, unlock: 3, splash: 55, infantry: true, shot: 'lightning', ...six('ally-wizard-1', 226, 0.6), forms: [
+    { price: 600, cost: 120, hp: 180, damage: 46, splash: 75, shot: 'tornado', ...six('ally-wizard-2', 241, 0.6) },
+    { price: 2000, cost: 190, hp: 230, damage: 70, splash: 90, hitsAir: true, shot: 'meteor', ...six('ally-wizard-3', 265, 0.6) },
+  ] },
   { id: 7, cost: 75, hp: 260, damage: 40, speed: 85, range: 38, rate: 0.8, cooldown: 7, unlock: 4, ...unit('ally-vulture', 90, 1.1) },
   { id: 8, cost: 110, hp: 320, damage: 38, speed: 50, range: 180, rate: 1, cooldown: 10, unlock: 5, ...unit('ally-robot', 85, 1.05) },
   { id: 9, cost: 200, hp: 1300, damage: 70, speed: 18, range: 200, rate: 2, cooldown: 22, unlock: 7, splash: 80, ...unit('ally-heavy-robot', 104, 1.5) },
@@ -337,7 +345,7 @@ export function tick(s: Siege, dt: number) {
         u.attack = a.rate; u.hit = 0.3;
         for (const v of alive) if (v.side !== u.side && reaches(u, v) && (v === enemy || (a.splash && Math.abs(v.x - enemy.x) < a.splash))) hits.push({ target: v, damage: u.damage });
         // A thrown or shot projectile of its own flies a little longer, so it is seen on its way.
-        const flight = a.shot === 'bullet' || a.shot === 'ray' ? 0.16 : a.shot ? 0.35 : 0.2;
+        const flight = a.shot === 'bullet' || a.shot === 'ray' ? 0.16 : SPELLS.includes(a.shot ?? '') ? 0.6 : a.shot ? 0.35 : 0.2;
         s.effects.push({ x: enemy.x, from: u.x, lane: enemy.lane, life: flight, max: flight, kind: u.elite ? 'bolt' : 'shot', side: u.side, art: a.shot, spin: a.spin });
       }
     } else if (Math.abs(baseX - u.x) <= a.range + 35) {

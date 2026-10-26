@@ -58,6 +58,7 @@ New sheets have **6 poses** in one row: 1 walk A, 2 walk B (A and B alternated r
 - **Heavy armour:** 4 forms: knight with two swords, bigger knight with maces for hands, samurai who punches, bigger samurai. Prices 300, 500, 1800 gold; energy 65, 80, 100, 180. Its sheet is drawn larger than the swordsman's, so it is scaled by 0.8 (`six(name, px, k)`).
 - **Gunner:** 4 forms: pistol, rifle, two Uzis (fast), sniper (long reach, slow and heavy). Bullets are a tracer drawn in code (`shot: 'bullet'`). Prices 300, 500, 1600 gold; energy 45, 55, 70, 140; scaled by 0.65.
 - **Blaster:** 4 forms: bazooka, rocket launcher, ray gun, flamethrower. Rockets are cut from the sheet's attack poses (`shot-rocket`, `shot-rockets`) and blast an area; the ray is a beam drawn in code (`shot: 'ray'`); the flame is in the attack pose (`shot: 'none'`, short reach, wide area). Prices 350, 600, 1800 gold; energy 85, 100, 120, 170; scaled by 0.65.
+- **Wizard:** 3 forms, same staff: lightning, tornado, meteor (from level 3 he reaches flyers). Each spell is cut from the sheet (`shot-lightning|tornado|meteor`, listed in `SPELLS`) and lands on the target (the meteor falls from above). Prices 600, 2000 gold; energy 95, 120, 190; scaled by 0.6.
 - **Spearman:** 5 forms: basic spear, longer, longer still, horned fox helmet, lancer on a white horse (not thrown back by heavy blows, only stunned). The reference gives no prices: 250, 400, 600, 2200 gold; energy 30, 40, 50, 65, 220.
 
 ## In the game now (test set)

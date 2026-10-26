@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.68 - 2026-10-26
+
+### Added - Siege: the wizard in three forms, his spells landing on the target
+- The owner's sheet (six poses, three forms, as the reference describes, the same staff throughout): lightning, tornado and meteor. Each spell was drawn touching the attack pose's staff: the staff tip is given back to the pose and the spell is cut out on its own, the gap where the staff's ball was filled from its glow.
+- Spells land on their target instead of flying to it: the lightning and the tornado stand on it, the meteor comes down from above; all hit an area. From level 3 (meteor) the wizard reaches flyers, as the reference says. Prices 600 and 2000 gold (the reference gives none).
+
 ## 1.14.67 - 2026-10-26
 
 ### Added - Siege: the blaster in four forms
