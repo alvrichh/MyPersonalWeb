@@ -76,16 +76,16 @@ const AIM_GUTTER = 60;
     units; `deck` how far its foot sinks under the ground line. Our crossbow stands on the battlement at the top right:
     `bow` is that spot as fractions of the picture (x from the left, y from the top). */
 const CASTLES = [
-  { h: 132, deck: 6, bow: [0.83, 0.19] },
-  { h: 152, deck: 6, bow: [0.81, 0.3] },
-  { h: 174, deck: 6, bow: [0.82, 0.4] },
-  { h: 198, deck: 6, bow: [0.83, 0.38] },
+  { h: 172, deck: 8, bow: [0.83, 0.19] },
+  { h: 198, deck: 8, bow: [0.81, 0.3] },
+  { h: 226, deck: 8, bow: [0.82, 0.4] },
+  { h: 257, deck: 8, bow: [0.83, 0.38] },
 ] as const;
-const ENEMY_H = [138, 156, 172];
+const ENEMY_H = [180, 203, 224];
 /** Our crossbow in its turret (`siege/xbow-N`, by the Bow level: three crossbows and a rocket launcher), one picture
     pointing right drawn `width` field units wide, turning on its wheel (`pivot`, fractions of the picture) towards where
     the arrows go and kicking back a little at each shot. */
-const XBOW = { width: 64, pivot: [[0.35, 0.62], [0.28, 0.54], [0.34, 0.58], [0.25, 0.6]] } as const;
+const XBOW = { width: 83, pivot: [[0.35, 0.62], [0.28, 0.54], [0.34, 0.58], [0.25, 0.6]] } as const;
 /** Where our crossbow's arm turns, worked out by `base()` each frame: arrows and the missile leave from it. */
 let bowAt = { x: 80, y: 0 };
 /** The mana monument's box on the canvas (CSS pixels), for taps: tapping it raises the generator. */
@@ -183,7 +183,8 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   const sky = ctx.createLinearGradient(0, 0, 0, h); sky.addColorStop(0, '#080f21'); sky.addColorStop(1, '#172c3c');
   ctx.fillStyle = sky; ctx.fillRect(0, 0, w, h);
   // Short, wide fields zoom in a little more, so the troops keep their size.
-  const scale = Math.min(h / (w / h > 2.2 ? 290 : 340), w / 650);
+  // A wide view stands further back (more field and sky, smaller troops); an upright phone keeps it closer.
+  const scale = w >= h ? Math.min(h / (w / h > 2.2 ? 360 : 425), w / 810) : Math.min(h / 340, w / 650);
   camera.width = w / scale;
   camera.min = -AIM_GUTTER / scale;
   camera.x = Math.max(camera.min, Math.min(Math.max(camera.min, FIELD - camera.width), camera.x));

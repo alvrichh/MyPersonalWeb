@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.89 - 2026-10-26
+
+### Changed - Siege Cartoon's camera stands further back
+- On wide screens the camera stands about 20% further back: the troops, the mana monument and the backdrop look smaller, and more of the field and nearly the whole sky show.
+- The fortresses and our crossbow are drawn 30% bigger, so they stand out over the troops (on upright phones, whose camera is unchanged, they are simply bigger).
+
 ## 1.14.88 - 2026-10-26
 
 ### Changed
