@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.52 - 2026-10-26
+
+### Fixed - No slow ring over painted bosses
+- A slowed enemy shows a light-blue ring at its hit circle. On a painted boss that circle is far smaller than its picture, so the ring floated over the middle of its body (seen on Nocthrax under the frost). Painted bosses no longer draw it, like the white hit flash they already skip.
+
 ## 1.14.51 - 2026-10-26
 
 ### Fixed - Nocthrax's rim is a soft glow again

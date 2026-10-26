@@ -3291,7 +3291,8 @@ function drawEnemy(ctx: CanvasRenderingContext2D, e: Enemy, now: number) {
     ctx.fill();
     ctx.globalAlpha = 1;
   }
-  if (e.slow > 0) {
+  // (Not on a painted boss either: its hit circle is far smaller than its picture, so the ring floated over its body.)
+  if (e.slow > 0 && !(painted && e.kind === 'boss')) {
     ctx.strokeStyle = 'rgba(122,216,255,0.8)';
     ctx.lineWidth = 2;
     ctx.beginPath();
