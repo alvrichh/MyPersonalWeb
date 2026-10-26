@@ -13,6 +13,7 @@ This changelog tracks game-version changes starting with v1.12.55. Earlier relea
 - Bigger on the field: the helicopter (about 75% taller), the flying mech and the drill (about 30% and 25%) and the angel (15%).
 - Four enemy poses that faced the wrong way now face us: the axeman's and the hammer wielder's blows, the eagle and the gatling robot when hurt.
 - New art for all eighteen enemy troops, black and red with six poses each (walking, wind-up, blow, hurt, fallen), and the six guardians have their own pictures at last: Large Slinger, Large Gatling Robot, Large Red Dragon Rider, Giant Brute Eater, Giant Dinosaur Brute and Giant King Dinosaur Brute (with the stats of the troops that stood in for them). Each enemy keeps its size and stats.
+- Our crossbow's arrows strike the enemy flyers their path crosses on the way, not only what is under the aim where they land.
 - The heavy armour's forms in order: two swords, the armoured one who punches, the maces, and the crowned giant, who is now the King's portrait.
 
 ## 1.15.11 - 2026-10-26

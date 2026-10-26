@@ -314,6 +314,8 @@ export interface Siege {
   /** The troops' sounds since the view last took them (attacks and deaths, where they happened); kept short. */
   sounds?: { k: string; x: number }[];
   /** How many times the bow has shot this battle (the view plays a sound for each new one). */
+  /** Our crossbow's tip as the view draws it (x, and height over the ground): the arrows' path starts there. */
+  bowFrom?: { x: number; up: number };
   shots?: number; bossSpawned: boolean; paid: boolean; power: number; economy: number; deck: number[];
   /** The workshop's fortress level (0-5): it picks how our fortress looks. */
   fort: number;
@@ -436,11 +438,52 @@ export const aimAt = (x: number) => Math.max(140, Math.min(1080, x));
 /** Seconds between shots and arrows per shot, for the bow's level and how long it has been held. */
 export const bowEvery = (b: Bow) => BOW.every - b.level * BOW.step;
 export const bowCount = (b: Bow) => looksTier(b.level);
+/** Our crossbow's shots: one launch speed and gravity (field units, seconds). */
+const SHOT = { v: 1900, g: 900 };
+/** The screen angle (y down) to hit a spot `dx` ahead and `dy` below at `SHOT`'s speed: the flatter solution; out of
+    reach, 45° up. */
+export function launchAngle(dx: number, dy: number) {
+  const { v, g } = SHOT, x = Math.max(1, dx), up = -dy, d = v ** 4 - g * (g * x * x + 2 * up * v * v);
+  return d < 0 ? -Math.PI / 4 : -Math.atan((v * v - Math.sqrt(d)) / (g * x));
+}
+/** From this aim on, shots rise more and more, until at the furthest they climb steeply and fall from the sky. */
+const LOB = { from: 650, to: 1080, steepest: -1.0 };
+/** A shot's launch angle and speed to land `dx` ahead and `dy` below: a hard, nearly straight shot (`SHOT.v`, the
+    flatter solution) up to `LOB.from`; past it the angle climbs towards `LOB.steepest` and the speed is the one that
+    still lands it there. */
+export function shotFor(dx: number, dy: number, aim: number) {
+  const flat = launchAngle(dx, dy), k = Math.max(0, Math.min(1, (aim - LOB.from) / (LOB.to - LOB.from)));
+  const a = k > 0 ? Math.min(flat, flat + (LOB.steepest - flat) * k * k) : flat;
+  if (a === flat) return { a, v: SHOT.v };
+  const x = Math.max(1, dx), c = Math.cos(a), drop = dy - x * Math.tan(a);
+  return { a, v: drop > 0 ? Math.sqrt(SHOT.g * x * x / (2 * c * c * drop)) : SHOT.v };
+}
+/** A shot's flight from `from` to the spot `to`: the launch angle for it, and the point at a share `p` of the way (by
+    time), under gravity, so it leaves along that angle and lands on the spot. */
+export function flight(from: { x: number; y: number }, to: { x: number; y: number }) {
+  const { a, v } = shotFor(to.x - from.x, to.y - from.y, to.x), vx = v * Math.cos(a), vy = v * Math.sin(a);
+  const T = Math.max(0.05, (to.x - from.x) / Math.max(1, vx));
+  return (p: number) => { const t = p * T; return { x: from.x + vx * t, y: from.y + vy * t + SHOT.g * t * t / 2 }; };
+}
+/** The height (over the ground) a flyer is drawn at, its feet: its flying height and its lane's step. */
+const flyerFoot = (u: Fighter) => (u.alt ?? FLY.high) + u.lane * 8;
+/** Where our crossbow's tip is when the battle has not been drawn yet (tests, simulations). */
+const BOW_FROM = { x: 150, up: 140 };
 function arrows(s: Siege, count: number) {
-  const x = aimAt(s.aim);
+  const x = aimAt(s.aim), from = s.bowFrom ?? BOW_FROM;
   for (let i = 0; i < count; i++) {
     const at = x + (i - (count - 1) / 2) * BOW.gap;
-    for (const u of s.units) if (u.side === 1 && Math.abs(u.x - at) <= 28) {
+    // What it lands on, and the flyers its path crosses on the way (a flyer is a box from its feet up its height).
+    const path = flight({ x: from.x, y: -from.up }, { x: at, y: -2 });
+    const span = Math.max(1, at - from.x);
+    const crossed = (u: Fighter) => {
+      if (!UNITS[u.id].air || u.x < from.x || u.x > at + 28) return false;
+      const spec = UNITS[u.id], h = spec.size * (u.boss ? 1.6 : 1) * (u.grow ?? 1), foot = flyerFoot(u);
+      // The path's heights across its body (a third of its height either side of its middle).
+      const ys = [-h / 3, 0, h / 3].map(d => -path(Math.max(0, Math.min(1, (u.x + d - from.x) / span))).y);
+      return Math.max(...ys) >= foot - 6 && Math.min(...ys) <= foot + h;
+    };
+    for (const u of s.units) if (u.side === 1 && u.hp > 0 && (Math.abs(u.x - at) <= 28 || crossed(u))) {
       u.hp -= BOW.damage * s.power; u.flash = 0.18;
       // A hit nudges it back a little (not the guardians or the steady), at most once every `NUDGE.every`, so it still
       // makes its way forward.
