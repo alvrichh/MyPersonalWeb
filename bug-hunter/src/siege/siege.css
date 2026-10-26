@@ -223,7 +223,3 @@
 
 /* The guardian's health bar, once the fortress has fallen: purple and glowing. */
 .sg-hp.is-enemy.is-boss>i{background:linear-gradient(#e0a0ff,#8a2be2)}.sg-hp.is-boss{box-shadow:0 0 10px #b366ff}
-
-/* The tribute line on the map tab: why this mode exists (Cartoon Wars 2 is gone from the stores), and the credit. */
-.sg-tribute { margin: 0 0 10px; padding: 10px 12px; border-left: 3px solid #fbbf24; border-radius: 8px; background: rgba(251, 191, 36, 0.1); color: #fde68a; font-size: 0.85rem; line-height: 1.4; }
-.sg-tribute small { display: block; margin-top: 4px; color: #cbd5e1; font-size: 0.72rem; }
