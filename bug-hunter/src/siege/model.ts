@@ -17,10 +17,13 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
   six?: boolean;
   /** Reaches flyers although it fights up close (the master swordsman). */
   hitsAir?: boolean;
+  /** What it throws or shoots, a picture from its own sheet (`siege/units/shot-<name>`), and whether it spins in flight
+      (a rock, a shuriken) or points along its path (a javelin, an arrow). */
+  shot?: string; spin?: boolean;
   /** Its upgrade forms, level 2 on (docs/cw2-reference.md): each replaces these stats and looks, bought in the workshop. */
   forms?: Form[] }
 /** An upgrade form: its gold price in the workshop and what it changes. */
-export type Form = Partial<Pick<Spec, 'cost' | 'hp' | 'damage' | 'speed' | 'range' | 'rate' | 'splash' | 'hitsAir' | 'infantry' | 'sprite' | 'size'>> & { price: number }
+export type Form = Partial<Pick<Spec, 'cost' | 'hp' | 'damage' | 'speed' | 'range' | 'rate' | 'splash' | 'hitsAir' | 'infantry' | 'shot' | 'spin' | 'sprite' | 'size'>> & { price: number }
 /** Cartoon Wars 2's rosters (docs/siege-roster.md), with the owner's sheets (`siege/units/<side>-<name>-<pose>`: 0 stand,
     1 attack, 2 hurt). `size` is the drawn height in field units, from the stand picture's height (0.62 a pixel) and how
     big the unit is meant to be. Every unit's `id` is its place in this list: ours first (10 land, then 5 air), then
@@ -46,7 +49,13 @@ export const UNITS: readonly Spec[] = [
     { price: 600, cost: 65, hp: 270, damage: 34, range: 80, ...six('ally-spearman-4', 155) },
     { price: 2200, cost: 220, hp: 620, damage: 60, speed: 70, range: 90, splash: 30, infantry: false, ...six('ally-spearman-5', 191) },
   ] },
-  { id: 2, cost: 40, hp: 85, damage: 22, speed: 31, range: 185, rate: 1.3, cooldown: 4, unlock: 1, infantry: true, ...unit('ally-archer', 85) },
+  // The archer's four forms (docs/cw2-reference.md): rock thrower, javelin thrower, archer with a bow, and the ninja
+  // throwing shurikens; each throws its own sheet's projectile. The reference gives no prices.
+  { id: 2, cost: 30, hp: 80, damage: 18, speed: 33, range: 150, rate: 1.3, cooldown: 4, unlock: 1, infantry: true, shot: 'rock', spin: true, ...six('ally-archer-1', 155), forms: [
+    { price: 250, cost: 40, hp: 90, damage: 24, range: 175, shot: 'javelin', spin: false, ...six('ally-archer-2', 159) },
+    { price: 400, cost: 50, hp: 100, damage: 27, range: 200, shot: 'arrow', spin: false, ...six('ally-archer-3', 187) },
+    { price: 1500, cost: 120, hp: 150, damage: 32, speed: 50, range: 195, rate: 0.8, shot: 'shuriken', spin: true, ...six('ally-archer-4', 195) },
+  ] },
   { id: 3, cost: 65, hp: 430, damage: 24, speed: 22, range: 40, rate: 1.5, cooldown: 7, unlock: 1, infantry: true, ...unit('ally-heavy', 104, 1.1) },
   { id: 4, cost: 55, hp: 100, damage: 30, speed: 30, range: 230, rate: 1.5, cooldown: 6, unlock: 1, infantry: true, ...unit('ally-gunner', 83) },
   { id: 5, cost: 85, hp: 280, damage: 34, speed: 28, range: 200, rate: 1.5, cooldown: 8, unlock: 2, infantry: true, ...unit('ally-blaster', 95) },
@@ -157,7 +166,9 @@ export interface Fighter { uid: number; id: number; side: 0 | 1; x: number; lane
 /** A blow taking at least this share of a troop's health knocks it: infantry fly back (`KNOCK.back` field units over
     `KNOCK.time`) and get up, the rest are stunned for `KNOCK.stun`; bosses and the steady never. */
 export const KNOCK = { share: 0.2, time: 0.55, back: 70, stun: 0.35 };
-export interface Effect { x: number; from: number; lane: number; life: number; max: number; kind: 'shot' | 'burst' | 'arrow' | 'rocket' | 'bolt'; side: 0 | 1 }
+export interface Effect { x: number; from: number; lane: number; life: number; max: number; kind: 'shot' | 'burst' | 'arrow' | 'rocket' | 'bolt'; side: 0 | 1;
+  /** A shot's own projectile picture (`Spec.shot`) and whether it spins. */
+  art?: string; spin?: boolean }
 export interface Siege {
   world: number; phase: 'fight' | 'won' | 'lost'; time: number; energy: number; generator: number; cooldowns: number[];
   hp: [number, number]; maxHp: [number, number]; units: Fighter[]; effects: Effect[]; nextId: number; nextWave: number; waves: number; kills: number;
@@ -304,7 +315,9 @@ export function tick(s: Siege, dt: number) {
       if (u.attack <= 0) {
         u.attack = a.rate; u.hit = 0.3;
         for (const v of alive) if (v.side !== u.side && reaches(u, v) && (v === enemy || (a.splash && Math.abs(v.x - enemy.x) < a.splash))) hits.push({ target: v, damage: u.damage });
-        s.effects.push({ x: enemy.x, from: u.x, lane: enemy.lane, life: 0.2, max: 0.2, kind: u.elite ? 'bolt' : 'shot', side: u.side });
+        // A thrown or shot projectile of its own flies a little longer, so it is seen on its way.
+        const flight = a.shot ? 0.35 : 0.2;
+        s.effects.push({ x: enemy.x, from: u.x, lane: enemy.lane, life: flight, max: flight, kind: u.elite ? 'bolt' : 'shot', side: u.side, art: a.shot, spin: a.spin });
       }
     } else if (Math.abs(baseX - u.x) <= a.range + 35) {
       if (u.attack <= 0) { u.attack = a.rate; u.hit = 0.3; s.hp[u.side ? 0 : 1] -= u.damage; }

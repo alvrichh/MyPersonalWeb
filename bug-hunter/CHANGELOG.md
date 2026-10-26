@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.62 - 2026-10-26
+
+### Added - Siege: the archer in four forms, throwing its own projectiles
+- The owner's archer sheet (six poses, four forms): rock thrower, javelin thrower, archer with a bow, and the ninja with shurikens. Prices 250, 400 and 1500 gold (the reference gives none).
+- The projectile each form throws is cut from its own attack pose (a rock, a javelin, an arrow, a shuriken) and flies in a low arc to its target: rocks and shurikens spin, javelins and arrows point along their path. Troops without a projectile of their own keep the old shot.
+
 ## 1.14.61 - 2026-10-26
 
 ### Changed - Siege: the swordsman's helmet crest is blue too
