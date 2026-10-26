@@ -58,8 +58,6 @@ function skyOf(scene: HTMLImageElement) {
   const t = c.getContext('2d'); if (t) { t.imageSmoothingQuality = 'high'; t.drawImage(scene, 0, 0, scene.naturalWidth, 8, 0, 0, 16, 1); }
   return (skyStrip = c);
 }
-/** From this aim on (field units) the arrows start to fall from the sky; at the furthest aim they only rain down. */
-const RAIN_FROM = 760;
 const FX = ['siege/mana', 'arrows/water.webp', 'arrows/leaf.webp', 'fx/boom-big.webp', 'fx/impact.webp', ...[1, 2, 3, 4, 5, 6].map(n => `fx/bolt-y-${n}.webp`)];
 /** Pictures drawn whole (backdrop, floor, effects): no alpha crop needed. */
 const stills = new Map<string, HTMLImageElement>();
@@ -143,6 +141,8 @@ function base(ctx: CanvasRenderingContext2D, s: Siege, x: number, ground: number
         const kick = s.time < kickUntil ? -5 : 0;
         ctx.drawImage(arm, -aw * fx + kick, -ah * fy, aw, ah);
         ctx.restore();
+        const ang = bowAngle(s, ground), reach = aw * (1 - fx);
+        bowTip = { x: bowAt.x + Math.cos(ang) * reach, y: bowAt.y + Math.sin(ang) * reach };
       }
       top = Math.min(top, py - 30);
     }
@@ -156,17 +156,30 @@ function base(ctx: CanvasRenderingContext2D, s: Siege, x: number, ground: number
   ctx.fillStyle = '#050d18'; ctx.fillRect(-60, top - 6, 120, 9); ctx.fillStyle = color; ctx.fillRect(-59, top - 5, 118 * Math.max(0, hp / max), 7);
   ctx.restore();
 }
-/** How high our shots arc for an aim (0-1 of their full lift): none at the nearest aim, so the crossbow points straight
-    down at it, growing to the full arc halfway to where the arrows start raining. */
-const arcShare = (x: number) => Math.max(0, Math.min(1, (x - 140) / ((RAIN_FROM - 140) * 0.6)));
 /** The crossbow arm's angle: the way an arrow leaves it for the current aim (the start of its arc): down at a near aim,
     rising as the aim goes further, nearly straight up where the arrows rain from the sky. */
 function bowAngle(s: Siege, ground: number) {
-  // Steadily with the aim, as the stick moves it: aimed nearest, the crossbow points down at the ground before our
-  // wall; aimed furthest, it points high up (the arrows then rain down). Stick up, crossbow up.
-  const t = (aimAt(s.aim) - 140) / (1080 - 140);
-  void ground; return 0.55 + (-1.15 - 0.55) * t;
+  // Aimed as a real crossbow would be: the angle whose shot, at the bow's one speed and under gravity, lands on the aim
+  // (the flatter of the two). Near aims point down at the ground before our wall, far ones rise.
+  return launchAngle(aimAt(s.aim) - bowAt.x, ground - 2 - bowAt.y);
 }
+/** Our crossbow's shots: one launch speed and gravity (field units, seconds). */
+const SHOT = { v: 950, g: 900 };
+/** The screen angle (y down) to hit a spot `dx` ahead and `dy` below at `SHOT`'s speed: the flatter solution; out of
+    reach, 45° up. */
+function launchAngle(dx: number, dy: number) {
+  const { v, g } = SHOT, x = Math.max(1, dx), up = -dy, d = v ** 4 - g * (g * x * x + 2 * up * v * v);
+  return d < 0 ? -Math.PI / 4 : -Math.atan((v * v - Math.sqrt(d)) / (g * x));
+}
+/** A shot's flight from `from` to the spot `to`: the launch angle for it, and the point at a share `p` of the way (by
+    time), under gravity, so it leaves along that angle and lands on the spot. */
+function flight(from: { x: number; y: number }, to: { x: number; y: number }) {
+  const a = launchAngle(to.x - from.x, to.y - from.y), vx = SHOT.v * Math.cos(a), vy = SHOT.v * Math.sin(a);
+  const T = Math.max(0.05, (to.x - from.x) / Math.max(1, vx));
+  return (p: number) => { const t = p * T; return { x: from.x + vx * t, y: from.y + vy * t + SHOT.g * t * t / 2 }; };
+}
+/** The tip of our crossbow (where shots leave it), set when it is drawn. */
+let bowTip = { x: 80, y: 0 };
 /** The camera: its left edge and width in field units, and how far left of the field it may go (a margin past our
     wall, so the aim control stands clear of it). */
 export interface Camera { x: number; width: number; min?: number; deck?: number;
@@ -255,8 +268,8 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
   if (e.kind === 'rocket') {
     const art = still('siege/units/shot-rocket'); if (!ok(art)) return false;
     // From the crossbow on our battlement (`bowAt`) to the aim.
-    const from = e.side ? e.from : bowAt.x, y0 = e.side ? ground - 110 : bowAt.y;
-    const peak = Math.min(190, Math.max(20, y0 - 24)) * (e.side ? 1 : arcShare(e.x)), at = (t: number) => ({ x: from + (e.x - from) * t, y: y0 + (ground + 10 - y0) * t - Math.sin(t * Math.PI) * peak });
+    const from = e.side ? e.from : bowTip.x, y0 = e.side ? ground - 110 : bowTip.y;
+    const peak = Math.min(190, Math.max(20, y0 - 24)), at = e.side ? (t: number) => ({ x: from + (e.x - from) * t, y: y0 + (ground + 10 - y0) * t - Math.sin(t * Math.PI) * peak }) : flight({ x: from, y: y0 }, { x: e.x, y: ground + 4 });
     const here = at(p), ahead = dirAt(at, p), len = 64, h = len * art.naturalHeight / art.naturalWidth;
     ctx.save(); ctx.translate(here.x, here.y); ctx.rotate(Math.atan2(ahead.y - here.y, ahead.x - here.x || 0.001));
     ctx.drawImage(art, -len / 2, -h / 2, len, h); ctx.restore(); return true;
@@ -313,19 +326,10 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     const art = still(e.kind === 'arrow' ? bolt : close ? 'fx/impact.webp' : e.side ? 'arrows/leaf.webp' : 'arrows/water.webp');
     if (!ok(art)) return false;
     if (close) { ctx.save(); ctx.globalAlpha = 1 - p; ctx.drawImage(art, e.x - 15, y - 15, 30, 30); ctx.restore(); return true; }
-    // A high arc for the fortress's arrows (from its wall top), a flat one for the troops'.
-    // Our arrows leave the crossbow on the battlement (`bowAt`).
-    const fromX = e.kind === 'arrow' ? bowAt.x : e.from;
-    const startY = e.kind === 'arrow' ? bowAt.y : y, endY = e.kind === 'arrow' ? ground + e.lane * 12 - 14 : y;
-    // High enough to read as a volley, never over the top of the view.
-    const lift = e.kind === 'arrow' ? Math.min(150, Math.max(20, startY - 24)) * arcShare(e.x) : 30;
-    // At the far end of the aim the fortress's arrows rain down: they come in from above the view, steep, a little
-    // behind their landing spot (the further the aim, the steeper), instead of arcing from the wall.
-    const rain = e.kind === 'arrow' ? Math.max(0, Math.min(1, (e.x - RAIN_FROM) / (1080 - RAIN_FROM))) : 0;
-    const arc = (t: number) => ({ x: fromX + (e.x - fromX) * t, y: startY + (endY - startY) * t - Math.sin(t * Math.PI) * lift });
-    const skyX = e.x - 140 + e.lane * 25, skyY = -40;
-    const drop = (t: number) => ({ x: skyX + (e.x - skyX) * t, y: skyY + (endY - skyY) * t * t });
-    const at = rain > 0 ? (t: number) => { const a = arc(t), d = drop(t); return { x: a.x + (d.x - a.x) * rain, y: a.y + (d.y - a.y) * rain }; } : arc;
+    // Our arrows leave the crossbow's tip and fly under gravity onto their spot (`flight`); a troop's shot flies a low,
+    // flat arc.
+    const at = e.kind === 'arrow' ? flight(bowTip, { x: e.x, y: ground + e.lane * 6 - 2 })
+      : (t: number) => ({ x: e.from + (e.x - e.from) * t, y: y - Math.sin(t * Math.PI) * 30 });
     const here = at(p), ahead = dirAt(at, p);
     const len = e.kind === 'arrow' ? (bolt.endsWith('rocket') ? 46 : 60) : 40, h = len * art.naturalHeight / art.naturalWidth;
     ctx.save(); ctx.translate(here.x, here.y); ctx.rotate(Math.atan2(ahead.y - here.y, ahead.x - here.x || 0.001));
