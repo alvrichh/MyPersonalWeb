@@ -260,6 +260,13 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     for (let i = 0; i <= n; i++) { const t = i / n, x = e.from + (e.x - e.from) * t, jag = i % n ? ((i * 37 + Math.floor(p * 8)) % 7 - 3) * 4 : 0; i ? ctx.lineTo(x, y + jag) : ctx.moveTo(x, y); }
     ctx.stroke(); ctx.restore(); return true;
   }
+  if (e.kind === 'shot' && e.art === 'bullet') {
+    // A gunner's bullet: a short bright tracer, straight and fast, from the muzzle to the target.
+    const hand = y - 16, x = e.from + (e.x - e.from) * p, dir = Math.sign(e.x - e.from) || 1;
+    ctx.save(); ctx.strokeStyle = '#ffe9a0'; ctx.lineWidth = 2.2; ctx.lineCap = 'round'; ctx.globalAlpha = 0.95;
+    ctx.beginPath(); ctx.moveTo(x - dir * 16, hand); ctx.lineTo(x, hand); ctx.stroke();
+    ctx.fillStyle = '#fff6cf'; ctx.beginPath(); ctx.arc(x, hand, 1.8, 0, Math.PI * 2); ctx.fill(); ctx.restore(); return true;
+  }
   if (e.kind === 'shot' && e.art) {
     // A troop's own projectile from its sheet (a rock, a javelin, an arrow, a shuriken): a low arc from the thrower's
     // hand to the target, spinning or pointing along its path, drawn at the sheets' scale.

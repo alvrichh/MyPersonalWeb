@@ -66,7 +66,13 @@ export const UNITS: readonly Spec[] = [
     { price: 500, cost: 100, hp: 700, damage: 34, rate: 1.2, ...six('ally-heavy-3', 216, 0.8) },
     { price: 1800, cost: 180, hp: 980, damage: 48, rate: 1.2, splash: 30, ...six('ally-heavy-4', 261, 0.8) },
   ] },
-  { id: 4, cost: 55, hp: 100, damage: 30, speed: 30, range: 230, rate: 1.5, cooldown: 6, unlock: 1, infantry: true, ...unit('ally-gunner', 83) },
+  // The gunner's four forms (docs/cw2-reference.md): pistol, rifle, two Uzis (fast), sniper rifle (long reach, slow and
+  // heavy). They fire bullets (`shot: 'bullet'`, a tracer drawn in code). The reference gives no prices.
+  { id: 4, cost: 45, hp: 95, damage: 24, speed: 32, range: 200, rate: 1.4, cooldown: 6, unlock: 1, infantry: true, shot: 'bullet', ...six('ally-gunner-1', 192, 0.65), forms: [
+    { price: 300, cost: 55, hp: 110, damage: 30, range: 230, ...six('ally-gunner-2', 213, 0.65) },
+    { price: 500, cost: 70, hp: 125, damage: 22, range: 210, rate: 0.6, ...six('ally-gunner-3', 203, 0.65) },
+    { price: 1600, cost: 140, hp: 150, damage: 90, range: 320, rate: 2.4, ...six('ally-gunner-4', 214, 0.65) },
+  ] },
   { id: 5, cost: 85, hp: 280, damage: 34, speed: 28, range: 200, rate: 1.5, cooldown: 8, unlock: 2, infantry: true, ...unit('ally-blaster', 95) },
   { id: 6, cost: 95, hp: 150, damage: 42, speed: 26, range: 220, rate: 1.9, cooldown: 10, unlock: 3, splash: 60, infantry: true, ...unit('ally-wizard', 99) },
   { id: 7, cost: 75, hp: 260, damage: 40, speed: 85, range: 38, rate: 0.8, cooldown: 7, unlock: 4, ...unit('ally-vulture', 90, 1.1) },
@@ -325,7 +331,7 @@ export function tick(s: Siege, dt: number) {
         u.attack = a.rate; u.hit = 0.3;
         for (const v of alive) if (v.side !== u.side && reaches(u, v) && (v === enemy || (a.splash && Math.abs(v.x - enemy.x) < a.splash))) hits.push({ target: v, damage: u.damage });
         // A thrown or shot projectile of its own flies a little longer, so it is seen on its way.
-        const flight = a.shot ? 0.35 : 0.2;
+        const flight = a.shot === 'bullet' ? 0.16 : a.shot ? 0.35 : 0.2;
         s.effects.push({ x: enemy.x, from: u.x, lane: enemy.lane, life: flight, max: flight, kind: u.elite ? 'bolt' : 'shot', side: u.side, art: a.shot, spin: a.spin });
       }
     } else if (Math.abs(baseX - u.x) <= a.range + 35) {

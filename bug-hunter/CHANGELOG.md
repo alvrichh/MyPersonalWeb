@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.66 - 2026-10-26
+
+### Added - Siege: the gunner in four forms
+- The owner's sheet (six poses, four forms, as the reference describes): pistol, rifle, two Uzis and the sniper. The sniper's long rifles touched the next poses in the sheet; they were parted by shrinking the figures until they separate and giving each pixel back to the nearest one, so no barrel or cape is cut. Shell casings and flashes go with the attack.
+- Gunners fire bullets, a short bright tracer from the muzzle to the target. The Uzis shoot fast; the sniper reaches far, slowly and hard. Prices 300, 500 and 1600 gold (the reference gives none). The sheet is scaled to stand a little taller than the swordsman.
+
 ## 1.14.65 - 2026-10-26
 
 ### Added - Siege: the heavy armour swordsman in four forms
