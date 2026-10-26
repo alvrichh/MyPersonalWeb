@@ -442,7 +442,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     let at = 0;
     root.querySelector('.sg-overlay')?.remove();
     const overlay = document.createElement('div'); overlay.className = 'sg-overlay sg-story';
-    overlay.style.backgroundImage = mode === 'cartoon' ? `${shade(actNow())}, linear-gradient(#050a1499, #050a14ee), url('/images/game/siege/backdrop.webp')` : `linear-gradient(#050a14aa, #050a14ee), url('${backdropUrl(world)}')`;
+    overlay.style.backgroundImage = mode === 'cartoon' ? `linear-gradient(#050a1466, #050a14cc), url('/images/game/${cartoonView.sceneOf(world)}.webp')` : `linear-gradient(#050a14aa, #050a14ee), url('${backdropUrl(world)}')`;
     const battle = root.querySelector<HTMLElement>('.sg-battle'); if (battle) battle.inert = true;
     const end = () => { story = null; overlay.remove(); if (battle) battle.inert = false; done(); };
     const show = () => {
@@ -480,7 +480,9 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   function actCard(act: number, done: () => void) {
     root.querySelector('.sg-overlay')?.remove();
     const overlay = document.createElement('div'); overlay.className = 'sg-overlay sg-story sg-actcard';
-    overlay.style.setProperty('--from', String(cartoonStory.gloom(act - 1))); overlay.style.setProperty('--to', String(cartoonStory.gloom(act)));
+    // Over the world's own battlefield, which shows its corruption itself (no veil spreading over it).
+    overlay.style.backgroundImage = `url('/images/game/${cartoonView.sceneOf(world)}.webp')`;
+    overlay.style.setProperty('--from', '0'); overlay.style.setProperty('--to', '0');
     overlay.innerHTML = `<i class="sg-gloom" aria-hidden="true"></i><div class="sg-actcard-in" role="dialog" aria-modal="true" aria-label="${worldName(act)}">
       <small>${worldName(act)}</small><h2>${t(`siegeCtAct${act}` as Key)}</h2><button class="sg-primary" data-story="next">${t('siegeTalkNext')} ▶</button></div>`;
     let timer = 0;
