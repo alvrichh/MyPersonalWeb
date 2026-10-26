@@ -242,6 +242,12 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 
+/** A point a little further along a flight's path, for its heading; at the very end (where a step forward is the same
+    spot, and the arrow would lie flat) the heading continues from a step back. */
+function dirAt(at: (t: number) => { x: number; y: number }, p: number) {
+  const a = at(Math.max(0, p - 0.02)), b = at(Math.min(1, p + 0.02)), here = at(p);
+  return { x: here.x + (b.x - a.x), y: here.y + (b.y - a.y) };
+}
 /** The effect art: our crossbow's Cartoon arrows (or rockets) and missile, the old painted arrows (water for our troops,
     leaf for theirs),
     impacts up close, and a blast with the yellow lightning for the discharge. */
@@ -251,7 +257,7 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     // From the crossbow on our battlement (`bowAt`) to the aim.
     const from = e.side ? e.from : bowAt.x, y0 = e.side ? ground - 110 : bowAt.y;
     const peak = Math.min(190, Math.max(20, y0 - 24)) * (e.side ? 1 : arcShare(e.x)), at = (t: number) => ({ x: from + (e.x - from) * t, y: y0 + (ground + 10 - y0) * t - Math.sin(t * Math.PI) * peak });
-    const here = at(p), ahead = at(Math.min(1, p + 0.02)), len = 64, h = len * art.naturalHeight / art.naturalWidth;
+    const here = at(p), ahead = dirAt(at, p), len = 64, h = len * art.naturalHeight / art.naturalWidth;
     ctx.save(); ctx.translate(here.x, here.y); ctx.rotate(Math.atan2(ahead.y - here.y, ahead.x - here.x || 0.001));
     ctx.drawImage(art, -len / 2, -h / 2, len, h); ctx.restore(); return true;
   }
@@ -297,7 +303,7 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     const art = still(`siege/units/shot-${e.art}`); if (!ok(art)) return false;
     const hand = y - 14, lift = Math.min(60, Math.abs(e.x - e.from) * 0.18);
     const at = (t: number) => ({ x: e.from + (e.x - e.from) * t, y: hand + 8 * t - Math.sin(t * Math.PI) * lift });
-    const here = at(p), ahead = at(Math.min(1, p + 0.03)), w = art.naturalWidth * 0.4, h = art.naturalHeight * 0.4;
+    const here = at(p), ahead = dirAt(at, p), w = art.naturalWidth * 0.4, h = art.naturalHeight * 0.4;
     ctx.save(); ctx.translate(here.x, here.y);
     ctx.rotate(e.spin ? p * 14 * (e.x > e.from ? 1 : -1) : Math.atan2(ahead.y - here.y, ahead.x - here.x || 0.001));
     ctx.drawImage(art, -w / 2, -h / 2, w, h); ctx.restore(); return true;
@@ -320,7 +326,7 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     const skyX = e.x - 140 + e.lane * 25, skyY = -40;
     const drop = (t: number) => ({ x: skyX + (e.x - skyX) * t, y: skyY + (endY - skyY) * t * t });
     const at = rain > 0 ? (t: number) => { const a = arc(t), d = drop(t); return { x: a.x + (d.x - a.x) * rain, y: a.y + (d.y - a.y) * rain }; } : arc;
-    const here = at(p), ahead = at(Math.min(1, p + 0.02));
+    const here = at(p), ahead = dirAt(at, p);
     const len = e.kind === 'arrow' ? (bolt.endsWith('rocket') ? 46 : 60) : 40, h = len * art.naturalHeight / art.naturalWidth;
     ctx.save(); ctx.translate(here.x, here.y); ctx.rotate(Math.atan2(ahead.y - here.y, ahead.x - here.x || 0.001));
     ctx.drawImage(art, -len / 2, -h / 2, len, h); ctx.restore(); return true;
