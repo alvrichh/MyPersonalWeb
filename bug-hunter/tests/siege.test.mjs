@@ -108,14 +108,15 @@ test('the bow: a tap starts it, it speeds up, stops on a tap or an empty quiver,
   assert.ok(m.bowEvery(up.bow) < m.bowEvery(m.newSiege(m.freshProgress(), 1).bow)); assert.equal(m.bowCount(up.bow), 3);
 });
 test('air troops fly out of melee reach, ranged troops still hit them; armies keep five of each', () => {
-  assert.equal(m.canHit(0, 8), false, 'a melee bug cannot reach a bat'); assert.equal(m.canHit(1, 8), true, 'a spitter shoots it');
-  assert.equal(m.canHit(8, 0), true, 'a bat dives on the ground');
-  const s = m.newSiege(m.freshProgress(), 1); s.nextWave = 999; s.deck.push(8); s.energy = 999;
-  assert.equal(m.summon(s, 8), true); const bat = s.units[0]; bat.x = 500;
-  const bug = { ...bat, uid: 100, id: 0, side: 1, x: 520, hp: 9999, maxHp: 9999, damage: 50 };
-  s.units.push(bug); run(s, 2); assert.equal(bat.hp, bat.maxHp, 'the enemy bug never hits it'); assert.ok(bug.hp < 9999);
-  const p = m.readProgress(JSON.stringify({ version: 1, unlocked: 9, deck: [0, 1, 2, 3, 4, 6, 8, 9, 10, 11, 5, 7] }));
+  assert.equal(m.canHit(0, 28), false, 'a swordsman cannot reach an eagle'); assert.equal(m.canHit(2, 28), true, 'an archer shoots it');
+  assert.equal(m.canHit(28, 0), true, 'an eagle dives on the ground');
+  const s = m.newSiege(m.freshProgress(), 1); s.nextWave = 999; s.deck.push(10); s.energy = 999;
+  assert.equal(m.summon(s, 10), true); const plane = s.units[0]; plane.x = 500;
+  const foe = { ...plane, uid: 100, id: 15, side: 1, x: 520, hp: 9999, maxHp: 9999, damage: 50 };
+  s.units.push(foe); run(s, 2); assert.equal(plane.hp, plane.maxHp, 'the enemy swordsman never hits it'); assert.ok(foe.hp < 9999);
+  const p = m.readProgress(JSON.stringify({ version: 1, unlocked: 9, deck: [0, 1, 2, 3, 4, 5, 6, 10, 11, 12, 13, 14, 20, 31] }));
   assert.equal(p.deck.filter(id => !m.UNITS[id].air).length, 5); assert.equal(p.deck.filter(id => m.UNITS[id].air).length, 5);
+  assert.equal(p.deck.some(id => m.UNITS[id].foe), false, 'never an enemy troop');
 });
 test('the missile blasts the aim and recharges', () => {
   const s = m.newSiege(m.freshProgress(), 1); s.aim = 600;
@@ -123,23 +124,41 @@ test('the missile blasts the aim and recharges', () => {
   assert.equal(m.missile(s), true); assert.ok(s.units[0].hp < 200); assert.equal(m.missile(s), false);
   run(s, m.ROCKET.every + 0.1); assert.equal(m.missile(s), true);
 });
-test('every troop id is its place in the list, and every troop has a name', () => {
+test('every troop id is its place in the list; ours are 10 land and 5 air, the enemy\'s are theirs only', () => {
   m.UNITS.forEach((u, i) => assert.equal(u.id, i));
-  assert.ok(m.UNITS.length >= 29);
+  assert.equal(m.ALLIES.filter(u => !u.air).length, 10); assert.equal(m.ALLIES.filter(u => u.air).length, 5);
+  const foes = m.UNITS.filter(u => u.foe); assert.ok(foes.length >= 18);
+  const s = m.newSiege(m.freshProgress(), 1); s.energy = 999; s.deck.push(15);
+  assert.equal(m.summon(s, 15), false, 'an enemy troop cannot be summoned');
+  for (const lists of [m.FOE_LAND, m.FOE_AIR]) for (const id of lists.flat()) assert.ok(m.UNITS[id].foe && !!m.UNITS[id].air === (lists === m.FOE_AIR));
 });
-
-test('heavy robots break twice into weaker wrecks; elite shooters come later and hit harder', () => {
+test('a heavy blow throws infantry back, stuns the rest, and never moves the steady dragon rider', () => {
+  const s = m.newSiege(m.freshProgress(), 1); s.nextWave = 999;
+  const at = (id, x, side, extra = {}) => ({ uid: 900 + id + side * 50, id, side, x, lane: 0, hp: 100, maxHp: 100, damage: 0, attack: 9, flash: 0, boss: false, ...extra });
+  const hammer = at(20, 560, 1, { damage: 60, attack: 0 });
+  const soldier = at(0, 520, 0); s.units.push(soldier, hammer);
+  m.tick(s, 1 / 30); assert.ok(soldier.knock > 0, 'infantry knocked'); const x = soldier.x; run(s, 0.3); assert.ok(soldier.x < x, 'flies back');
+  run(s, 1); assert.equal(soldier.knock, 0, 'and gets up');
+  const t = m.newSiege(m.freshProgress(), 1); t.nextWave = 999;
+  const robot = at(8, 520, 0), heavy = at(20, 560, 1, { damage: 60, attack: 0 }); t.units.push(robot, heavy);
+  m.tick(t, 1 / 30); assert.ok(robot.stun > 0 && !robot.knock, 'a robot is stunned, not thrown');
+  const u = m.newSiege(m.freshProgress(), 1); u.nextWave = 999;
+  const rider = at(31, 560, 1), gunner = at(4, 400, 0, { damage: 80, attack: 0 }); u.units.push(rider, gunner);
+  m.tick(u, 1 / 30); assert.ok(rider.hp < 100); assert.ok(!rider.knock && !rider.stun, 'the red dragon rider cannot be stunned');
+});
+test('gatling robots break twice into weaker wrecks; horned gunners come later and hit harder', () => {
   const open = { ...m.freshProgress(), unlocked: 9 };
   const s = m.newSiege(open, 7); s.nextWave = 999; assert.equal(s.world, 7);
-  s.units.push({ uid: 50, id: 2, side: 1, x: 900, lane: 0, hp: 0, maxHp: 400, damage: 40, attack: 0, flash: 0, boss: false });
+  s.units.push({ uid: 50, id: 32, side: 1, x: 900, lane: 0, hp: 0, maxHp: 400, damage: 40, attack: 0, flash: 0, boss: false });
   m.tick(s, 1 / 30); let wreck = s.units.find(u => u.side);
   assert.equal(wreck.stage, 1); assert.equal(wreck.maxHp, 400 * m.SPLIT.hp); assert.ok(wreck.damage < 40);
   wreck.hp = 0; m.tick(s, 1 / 30); wreck = s.units.find(u => u.side); assert.equal(wreck.stage, 2);
   wreck.hp = 0; m.tick(s, 1 / 30); assert.equal(s.units.filter(u => u.side).length, 0, 'gone after its second break');
   const other = m.newSiege(m.freshProgress(), 1); other.nextWave = 999;
-  other.units.push({ uid: 50, id: 2, side: 1, x: 900, lane: 0, hp: 0, maxHp: 400, damage: 40, attack: 0, flash: 0, boss: false });
-  m.tick(other, 1 / 30); assert.equal(other.units.length, 0, 'only the Forge\'s heavies break');
+  other.units.push({ uid: 50, id: 18, side: 1, x: 900, lane: 0, hp: 0, maxHp: 400, damage: 40, attack: 0, flash: 0, boss: false });
+  m.tick(other, 1 / 30); assert.equal(other.units.length, 0, 'only gatling robots break');
   const late = m.newSiege(open, 3); late.hp[0] = late.hp[1] = 1e9;
-  let elite = null; for (let i = 0; i < 200 * 30 && !elite; i++) { m.tick(late, 1 / 30); elite = late.units.find(u => u.elite); }
-  assert.ok(elite, 'an elite shooter comes'); assert.ok(late.time >= m.ELITE.from); assert.equal(elite.id, 1);
+  // (Enemies are cleared every second, as if fought off, so the waves keep coming instead of filling the field.)
+  let elite = null; for (let i = 0; i < 300 * 30 && !elite; i++) { m.tick(late, 1 / 30); elite = late.units.find(u => u.elite); if (i % 30 === 0) late.units = late.units.filter(u => !u.side); }
+  assert.ok(elite, 'an elite shooter comes'); assert.ok(late.time >= m.ELITE.from); assert.equal(elite.id, m.ELITE_ID);
 });

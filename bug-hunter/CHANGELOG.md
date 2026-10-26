@@ -4,6 +4,15 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.58 - 2026-10-26
+
+### Changed - Siege: Cartoon Wars 2's armies (test set)
+- The owner's first sheets are in: our army is now Cartoon Wars 2's 15 units (10 land: swordsman, spearman, archer, heavy armour, gunner, blaster, wizard, vulture rider, armed robot, heavy robot; 5 air: fighter, armed fighter, helicopter, drill craft, angel army), and the enemy has its own 18 troops (swordsman, spearman, dog, bear, reaper, hammer, axeman, gunner, spike blaster, wizard, tiger, dragon, death angel, eagle, ninja bat, hypnotist bat, red dragon rider, gatling robot), each cut from its three poses (standing, attacking, hurt) with its own alpha. They replace the bugs borrowed from the main game.
+- Stats follow the reference's equivalences; enemy troops join world by world (`FOE_LAND`, `FOE_AIR`) and each world's guardian is its toughest troop so far, drawn bigger and glowing red, until there are boss sheets. Enemy troops can never be in our army or be summoned.
+- Animated in code: walking (a hop, squash and lean each step), breathing, the strike's lunge, and heavy blows (20% of a troop's health): infantry are thrown back, turned over, and get up; the rest are stunned; the red dragon rider never. Gatling robots break twice into wrecks; about one enemy gunner in four comes horned (elite).
+- Old saves keep their progress; their army is checked against the new list and topped up.
+- Checks: the Siege tests now cover the new rosters, knock-back, stun and the steady rider (19 tests).
+
 ## 1.14.57 - 2026-10-26
 
 ### Fixed - Siege: the crossbow points down at a near aim
