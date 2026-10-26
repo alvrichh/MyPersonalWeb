@@ -23,6 +23,9 @@ export function publicAssetPath(relativePath) {
     if (parts[1] === 'fortress') {
       parts.splice(0, 2);
       parts.unshift('fortress');
+    } else if (parts[1] === 'siege') {
+      parts.splice(0, 2);
+      parts.unshift('siege');
     } else if (parts[1] === 'secret-shift') parts.splice(0, 2);
     else throw new Error(`Unknown special asset group: ${parts[1]}`);
   }

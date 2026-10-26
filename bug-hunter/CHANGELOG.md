@@ -4,6 +4,16 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.55 - 2026-10-26
+
+### Added - Siege: our fortress, its crossbow and the enemy fortress
+- The owner's three side-on sheets, cut with their own alpha into `assets/special/siege/` (public `/images/game/siege/...`): our tech fortress and the enemy bug fortress in three levels each, and our crossbow's base and arm in three levels.
+- One fortress per side for now (world themes later, as skins): ours follows the workshop's Fortress level (0-1, 2-3, 4-5), the enemy's the world (1-3, 4-6, 7-9). They replace the Backlog Town Hall and the Tactics bench front.
+- The crossbow stands on our battlement and follows the Bow level; its arm turns towards the aim (steep where the arrows rain from the sky) and kicks back at each shot; the arrows and the missile now leave from it.
+- A fortress smokes under 60% health and burns under 30%.
+- The workshop's Fortress and Bow rows show the fortress and crossbow your level gives.
+- Checked by screenshots at 1280x720, 844x390 and 390x844 (levels 0, 3 and 5; worlds 1, 5 and 9; full and low health): everything stays in view.
+
 ## 1.14.54 - 2026-10-26
 
 ### Added - Checks for skins and the shop

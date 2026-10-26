@@ -1,7 +1,7 @@
 import './siege.css';
 import { storage } from '../../lib/storage';
 import type { Key, T } from '../strings';
-import { CAP, DECK, FIELD, aimAt, missile, LIMIT, SAVE_KEY, UNITS, canSummon, energyMax, energyRate, toggleBow, BOW, generatorPrice, improveGenerator, newSiege, readProgress, settle, strike, summon, tick, upgrade, upgradePrice, type Siege } from './model';
+import { CAP, DECK, FIELD, aimAt, looksTier, missile, LIMIT, SAVE_KEY, UNITS, canSummon, energyMax, energyRate, toggleBow, BOW, generatorPrice, improveGenerator, newSiege, readProgress, settle, strike, summon, tick, upgrade, upgradePrice, type Siege } from './model';
 import { backdropUrl, guardianUrl, trimImages, portrait, preload, render, type Camera } from './view';
 import { GUARDIAN_NAMES, bossTalk, intro, type Line } from './story';
 /** The map's island pictures, world by world, and the workshop's pictures, upgrade by upgrade (army, fortress, energy, bow). */
@@ -9,6 +9,8 @@ import { GUARDIAN_NAMES, bossTalk, intro, type Line } from './story';
 const AIM_SPEED = 650;
 const ISLES = ['original', 'infierno', 'vikingos', 'lodo', 'jungla', 'rayo', 'robots', 'demonios', 'nucleo'];
 const UPGRADE_PICS = ['items/gladHelm', 'items/plate', 'ui/orb', 'items/quiver'];
+/** A workshop row's picture: the fortress and the crossbow show the look their level gives (`looksTier`). */
+const upgradePic = (i: number, level: number) => (i === 1 ? `siege/castle-${looksTier(level)}` : i === 3 ? `siege/xbow-arm-${looksTier(level)}` : UPGRADE_PICS[i]);
 
 /** A bar button's picture and caption: the picture made once, only the caption's text changed after (ten times a
     second, so no `<img>` is re-created each time). */
@@ -28,6 +30,8 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   const progress = readProgress(storage.get(SAVE_KEY));
   let selected = [...progress.deck], world = progress.unlocked;
   let state: Siege | null = null, paused = false, finished = false;
+  // Local checks (like `window.bugHunter` for the main game): the battle's state, read and nudged by test scripts.
+  if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) Object.defineProperty(window, 'bugHunterSiege', { get: () => state, configurable: true });
   let frame = 0, last = 0, accumulator = 0, uiAt = 0, bossTalked = false;
   /** How far the aim stick is pushed, -1 (down, nearer) to 1 (up, further); 0 at rest. */
   let aimPush = 0;
@@ -83,7 +87,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       ${([false, true] as const).map(flying => `<h2 class="sg-heading">${t(flying ? 'siegeArmyAir' : 'siegeArmyLand', { n: selected.filter(id => air(id) === flying).length, max: DECK })}</h2><div class="sg-roster">${UNITS.filter(u => !!u.air === flying).map(u => `<button class="sg-card ${selected.includes(u.id) ? 'is-selected' : ''}" data-sg-unit="${u.id}" aria-pressed="${selected.includes(u.id)}" ${u.unlock > progress.unlocked ? 'disabled' : ''}><span class="sg-check">${selected.includes(u.id) ? '✓' : u.unlock > progress.unlocked ? '🔒' : ''}</span><img src="${portrait(u.id)}" data-trim="${portrait(u.id)}" alt=""><strong>${name(u.id)}</strong><small>${t(`siegeRole${u.id}` as Key)}</small><small class="sg-stat">${u.unlock > progress.unlocked ? t('siegeUnlock', { n: u.unlock }) : t('siegeStats', { cost: u.cost, hp: u.hp, damage: u.damage })}</small></button>`).join('')}</div>`).join('')}
       <p class="sg-message" role="status"></p>`;
     const shop = `<p class="sg-muted">${t('siegeShopNote')}</p><div class="sg-upgrades">${progress.upgrades.map((level, i) => `<button data-sg-upgrade="${i}" ${level >= 5 || progress.coins < upgradePrice(level) ? 'disabled' : ''}>
-        <span class="sg-up-pic"><img src="/images/game/${UPGRADE_PICS[i]}.webp" alt=""></span>
+        <span class="sg-up-pic"><img src="/images/game/${upgradePic(i, level)}.webp" alt=""></span>
         <span class="sg-up-text"><b>${t(`siegeUpgrade${i}` as Key)}</b><span class="sg-pips">${Array.from({ length: 5 }, (_, k) => `<i class="${k < level ? 'is-on' : ''}"></i>`).join('')}</span></span>
         <span class="sg-up-cost">${level >= 5 ? t('siegeMax') : `<img src="/images/game/store/coins-2.webp" alt="">${upgradePrice(level)}`}</span></button>`).join('')}</div>`;
     root.innerHTML = `<div class="sg-shell sg-prep"><header class="sg-top"><button class="sg-back" data-sg="exit" aria-label="${t('siegeExit')}">←</button>

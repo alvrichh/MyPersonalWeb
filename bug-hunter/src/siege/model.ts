@@ -82,14 +82,20 @@ export interface Siege {
   spell: number; rocket: number; aim: number; bow: Bow;
   /** How many times the bow has shot this battle (the view plays a sound for each new one). */
   shots?: number; bossSpawned: boolean; paid: boolean; power: number; economy: number; deck: number[];
+  /** The workshop's fortress level (0-5): it picks how our fortress looks. */
+  fort: number;
 }
+/** Which of the three pictures a workshop level (0-5) shows, for our fortress and its crossbow: 0-1, 2-3, 4-5. */
+export const looksTier = (level: number) => (level >= 4 ? 3 : level >= 2 ? 2 : 1);
+/** Which of the enemy fortress's three pictures a world shows: worlds 1-3, 4-6, 7-9. */
+export const enemyTier = (world: number) => Math.min(3, Math.max(1, Math.ceil(world / 3)));
 export const energyMax = (s: Siege) => 180 + s.generator * 70;
 export const energyRate = (s: Siege) => 7 + s.generator * 2.5 + s.economy;
 export const generatorPrice = (s: Siege) => 65 + s.generator * 45;
 export function newSiege(p: Progress, world: number): Siege {
   world = integer(world, 1, p.unlocked, 1);
   const maxHp: [number, number] = [1700 + p.upgrades[1] * 200, 1500 + world * 170];
-  return { world, phase: 'fight', time: 0, energy: 80, generator: 0, cooldowns: UNITS.map(() => 0), hp: [...maxHp], maxHp, units: [], effects: [], nextId: 1, nextWave: 7, waves: 0, kills: 0, spell: 0, rocket: 0, aim: 700, bossSpawned: false, paid: false, power: 1 + p.upgrades[0] * 0.08, economy: p.upgrades[2] * 0.6, deck: [...p.deck], bow: { quiver: BOW.max, drawing: false, held: 0, next: 0, level: p.upgrades[3] } };
+  return { world, phase: 'fight', time: 0, energy: 80, generator: 0, cooldowns: UNITS.map(() => 0), hp: [...maxHp], maxHp, units: [], effects: [], nextId: 1, nextWave: 7, waves: 0, kills: 0, spell: 0, rocket: 0, aim: 700, bossSpawned: false, paid: false, power: 1 + p.upgrades[0] * 0.08, economy: p.upgrades[2] * 0.6, deck: [...p.deck], bow: { quiver: BOW.max, drawing: false, held: 0, next: 0, level: p.upgrades[3] }, fort: p.upgrades[1] };
 }
 /** The guardian, Cartoon Wars 2-style: it only comes out once the enemy fortress falls, far tougher than a troop, and
     the battle is won when it falls too. */
