@@ -130,17 +130,21 @@ export const UNITS: readonly Spec[] = [
     { price: 900, cost: 90, hp: 170, damage: 34, range: 230, rate: 0.9, shot: 'ray', ...six('ally-armed-fighter-3', 174, 0.7) },
     { price: 2000, cost: 140, hp: 240, damage: 55, range: 220, rate: 1.4, splash: 60, shot: 'lightning', ...six('ally-armed-fighter-4', 198, 0.7) },
   ] },
-  { id: 12, cost: 95, hp: 320, damage: 44, speed: 35, range: 210, rate: 1.8, cooldown: 10, unlock: 4, air: true, splash: 50, ...unit('ally-helicopter', 84) },
-  // The drill aircraft, the flying shield, in six forms: a rocket fist, a laser, a plasma beam, an ice burst, a gatling,
-  // and a giant golden fist.
-  { id: 13, cost: 80, hp: 300, damage: 32, speed: 55, range: 45, rate: 0.9, cooldown: 8, unlock: 5, air: true, ...six('ally-drill-1', 126, 0.92), forms: [
-    { price: 500, cost: 95, hp: 340, damage: 30, range: 130, shot: 'ray', ...six('ally-drill-2', 136, 0.92) },
-    { price: 800, cost: 110, hp: 380, damage: 38, range: 150, shot: 'ray', ...six('ally-drill-3', 146, 0.92) },
-    { price: 1200, cost: 130, hp: 450, damage: 46, range: 60, splash: 40, ...six('ally-drill-4', 149, 0.92) },
-    { price: 1800, cost: 150, hp: 520, damage: 20, rate: 0.4, range: 160, shot: 'bullet', ...six('ally-drill-5', 145, 0.92) },
-    { price: 3000, cost: 200, hp: 800, damage: 80, range: 60, splash: 50, ...six('ally-drill-6', 175, 0.92) },
+  // The armed helicopter's three forms: green with one rocket, blue with a pair, and the black and gold gunship's salvo.
+  { id: 12, cost: 95, hp: 320, damage: 44, speed: 35, range: 210, rate: 1.8, cooldown: 10, unlock: 4, air: true, splash: 50, shot: 'rocket', spin: false, ...six('ally-helicopter-1', 163, 0.62), forms: [
+    { price: 800, cost: 120, hp: 420, damage: 54, splash: 55, shot: 'rockets', ...six('ally-helicopter-2', 209, 0.62) },
+    { price: 2000, cost: 170, hp: 620, damage: 70, range: 230, splash: 70, shot: 'rockets', ...six('ally-helicopter-3', 227, 0.62) },
   ] },
-  { id: 14, cost: 220, hp: 700, damage: 60, speed: 65, range: 45, rate: 0.9, cooldown: 20, unlock: 6, air: true, splash: 40, ...unit('ally-angel', 120) },
+  // The drill aircraft, the flying shield (docs/cw2-reference.md): a drill rocket that rams, then a heavier gold one.
+  { id: 13, cost: 80, hp: 360, damage: 30, speed: 55, range: 40, rate: 0.9, cooldown: 8, unlock: 3, air: true, ...six('ally-drill-1', 159, 0.56), forms: [
+    { price: 1000, cost: 130, hp: 700, damage: 48, rate: 0.8, ...six('ally-drill-2', 242, 0.56) },
+  ] },
+  // The angel army, the dearest: an axe and shield (very fast), a staff throwing a violet crescent, and the golden
+  // archangel's beam.
+  { id: 14, cost: 220, hp: 700, damage: 60, speed: 75, range: 45, rate: 0.9, cooldown: 20, unlock: 6, air: true, splash: 40, ...six('ally-angel-1', 197, 0.62), forms: [
+    { price: 1500, cost: 260, hp: 900, damage: 70, speed: 55, range: 180, rate: 1.1, splash: 50, shot: 'ray', ...six('ally-angel-2', 251, 0.62) },
+    { price: 4000, cost: 340, hp: 1300, damage: 110, speed: 55, range: 210, rate: 1.1, splash: 70, shot: 'ray', ...six('ally-angel-3', 331, 0.62) },
+  ] },
   // The enemy's.
   { id: 15, cost: 0, hp: 115, damage: 16, speed: 43, range: 35, rate: 0.8, cooldown: 0, unlock: 1, foe: true, infantry: true, ...unit('foe-swordsman', 74) },
   { id: 16, cost: 0, hp: 150, damage: 20, speed: 40, range: 55, rate: 0.9, cooldown: 0, unlock: 1, foe: true, infantry: true, ...unit('foe-spearman', 74) },
@@ -160,6 +164,16 @@ export const UNITS: readonly Spec[] = [
   { id: 30, cost: 0, hp: 130, damage: 24, speed: 45, range: 180, rate: 1.2, cooldown: 0, unlock: 1, foe: true, air: true, ...unit('foe-hypno-bat', 67, 1.1) },
   { id: 31, cost: 0, hp: 900, damage: 55, speed: 40, range: 130, rate: 1.4, cooldown: 0, unlock: 1, foe: true, air: true, splash: 50, steady: true, ...unit('foe-red-dragon-rider', 93, 1.3) },
   { id: 32, cost: 0, hp: 760, damage: 40, speed: 24, range: 180, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splits: 2, ...unit('foe-gatling', 88, 1.1) },
+  // Ours again, appended (ids are places in this list):
+  // The flying mech, in six forms: a rocket fist, a laser, a plasma beam, an ice burst, a gatling,
+  // and a giant golden fist.
+  { id: 33, cost: 80, hp: 300, damage: 32, speed: 55, range: 45, rate: 0.9, cooldown: 8, unlock: 5, air: true, ...six('ally-mech-1', 126, 0.92), forms: [
+    { price: 500, cost: 95, hp: 340, damage: 30, range: 130, shot: 'ray', ...six('ally-mech-2', 136, 0.92) },
+    { price: 800, cost: 110, hp: 380, damage: 38, range: 150, shot: 'ray', ...six('ally-mech-3', 146, 0.92) },
+    { price: 1200, cost: 130, hp: 450, damage: 46, range: 60, splash: 40, ...six('ally-mech-4', 149, 0.92) },
+    { price: 1800, cost: 150, hp: 520, damage: 20, rate: 0.4, range: 160, shot: 'bullet', ...six('ally-mech-5', 145, 0.92) },
+    { price: 3000, cost: 200, hp: 800, damage: 80, range: 60, splash: 50, ...six('ally-mech-6', 175, 0.92) },
+  ] },
 ];
 /** The enemy's land and air troops by act, each act adding to the last (docs/siege-roster.md): early waves draw
     from the first two of the land list. */
@@ -168,7 +182,7 @@ export const FOE_AIR = [[28], [29], [27], [30], [], [31]];
 /** The enemy's troops in a battle: every earlier act's, and its own act's coming in one more each stage. */
 export const foesAt = (lists: number[][], stage: number) => [...lists.slice(0, actOf(stage) - 1).flat(), ...(lists[actOf(stage) - 1] ?? []).slice(0, stageIn(stage))];
 /** What recruiting each of our troops costs in gold (the swordsman is everyone's first). Bought once, kept. */
-export const RECRUIT: Record<number, number> = { 0: 0, 1: 100, 2: 120, 3: 350, 4: 300, 5: 600, 6: 900, 7: 700, 8: 900, 9: 1600, 10: 250, 11: 500, 12: 900, 13: 900, 14: 2000 };
+export const RECRUIT: Record<number, number> = { 0: 0, 1: 100, 2: 120, 3: 350, 4: 300, 5: 600, 6: 900, 7: 700, 8: 900, 9: 1600, 10: 250, 11: 500, 12: 900, 13: 700, 14: 2000, 33: 1200 };
 /** The guardian of each act, drawn bigger: the Large Gatling Robot and the Large Red Dragon Rider are their troops;
     the others stand in for their own pictures (Large Slinger, Giant Brute Eater, Giant Dinosaur Brute, Giant King
     Dinosaur Brute) until those exist. */
@@ -200,7 +214,7 @@ export interface Progress { version: 1; unlocked: number; coins: number; victori
   levels: number[];
   /** The troops recruited so far (the swordsman from the start). */
   owned: number[] }
-export const freshProgress = (): Progress => ({ version: 1, unlocked: 1, coins: 0, victories: [], upgrades: [0, 0, 0, 0], deck: [0], levels: ALLIES.map(() => 1), owned: [0] });
+export const freshProgress = (): Progress => ({ version: 1, unlocked: 1, coins: 0, victories: [], upgrades: [0, 0, 0, 0], deck: [0], levels: UNITS.map(() => 1), owned: [0] });
 /** Has the battles won opened this troop's act? */
 export const isOpen = (p: Progress, id: number) => !!UNITS[id] && !UNITS[id].foe && UNITS[id].unlock <= actOf(p.unlocked);
 export const owns = (p: Progress, id: number) => p.owned.includes(id);
@@ -221,7 +235,7 @@ export function readProgress(raw: string | null): Progress {
     p.unlocked = integer(v.unlocked, 1, LAST, 1); p.coins = integer(v.coins, 0, 1000000, 0);
     p.victories = Array.isArray(v.victories) ? [...new Set<number>(v.victories.filter((n: unknown) => typeof n === 'number' && Number.isInteger(n) && n >= 1 && n <= LAST))] : [];
     p.upgrades = [0, 1, 2, 3].map(i => integer(v.upgrades?.[i], 0, 5, 0)) as Progress['upgrades'];
-    p.levels = ALLIES.map(u => integer(v.levels?.[u.id], 1, levelsOf(u.id), 1));
+    p.levels = UNITS.map(u => (u.foe ? 1 : integer(v.levels?.[u.id], 1, levelsOf(u.id), 1)));
     p.owned = [...new Set<number>([0, ...(Array.isArray(v.owned) ? v.owned.filter((n: unknown) => typeof n === 'number' && isOpen(p, n)) : [])])];
     p.deck = Array.isArray(v.deck) ? capDeck([...new Set<number>(v.deck.filter((n: unknown) => typeof n === 'number' && owns(p, n)))]) : [];
     if (!p.deck.length) p.deck = [0];
@@ -317,14 +331,14 @@ function spawn(s: Siege, id: number, side: 0 | 1, boss = false) {
     troops sound like what they fire (`SHOT_SOUND`). Names are the audio engine's `SiegeSound`s. */
 const ATTACK_SOUND: Record<number, string | string[]> = {
   0: ['blunt', 'blade', 'blade', 'blade', 'blade'], 1: 'pierce', 3: ['blade', 'blunt', 'blunt', 'blunt'], 4: ['gun', 'rifle', 'uzi', 'sniper'],
-  7: 'claw', 8: ['rocket', 'gatling', 'rocket'], 9: ['gatling', 'gatling', 'gatling', 'gatling'], 10: 'blade', 11: ['rifle', 'sniper', 'ray', 'thunder'], 12: 'rocket', 13: ['blunt', 'ray', 'ray', 'blunt', 'gatling', 'blunt'], 14: 'magic',
+  7: 'claw', 8: ['rocket', 'gatling', 'rocket'], 9: ['gatling', 'gatling', 'gatling', 'gatling'], 10: 'blade', 11: ['rifle', 'sniper', 'ray', 'thunder'], 12: 'rocket', 13: 'drill', 14: ['blade', 'magic', 'magic'], 33: ['blunt', 'ray', 'ray', 'blunt', 'gatling', 'blunt'],
   15: 'blade', 16: 'pierce', 17: 'bite', 18: 'claw', 19: 'blade', 20: 'blunt', 21: 'blade', 22: 'rifle', 23: 'throw', 24: 'magic',
   25: 'claw', 26: 'breath', 27: 'blade', 28: 'claw', 29: 'claw', 30: 'magic', 31: 'blade', 32: 'gatling',
 };
 const SHOT_SOUND: Record<string, string> = { rock: 'throw', javelin: 'throw', shuriken: 'throw', arrow: 'bow', rocket: 'rocket', rockets: 'rocket', ray: 'ray', none: 'flame', lightning: 'thunder', tornado: 'wind', meteor: 'meteor' };
 const DEATH_SOUND: Record<number, string | string[]> = {
   1: ['die-man', 'die-man', 'die-man', 'die-man', 'die-horse'], 3: 'die-armor', 7: 'die-beast', 8: 'die-bot', 9: 'die-bot',
-  10: 'die-flyer', 11: 'die-flyer', 12: 'die-flyer', 13: 'die-bot', 14: 'die-flyer',
+  10: 'die-flyer', 11: 'die-flyer', 12: 'die-flyer', 13: 'die-bot', 14: 'die-flyer', 33: 'die-bot',
   17: 'die-beast', 18: 'die-brute', 20: 'die-armor', 21: 'die-armor', 25: 'die-beast', 26: 'die-dragon', 27: 'die-flyer', 28: 'die-flyer',
   29: 'die-flyer', 30: 'die-flyer', 31: 'die-dragon', 32: 'die-bot',
 };

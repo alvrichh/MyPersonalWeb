@@ -138,9 +138,10 @@ test('the missile blasts the aim and recharges', () => {
   assert.equal(m.missile(s), true); assert.ok(s.units[0].hp < 200); assert.equal(m.missile(s), false);
   run(s, m.ROCKET.every + 0.1); assert.equal(m.missile(s), true);
 });
-test('every troop id is its place in the list; ours are 10 land and 5 air, the enemy\'s are theirs only', () => {
+test('every troop id is its place in the list; ours are 10 land and 6 air, the enemy\'s are theirs only', () => {
   m.UNITS.forEach((u, i) => assert.equal(u.id, i));
-  assert.equal(m.ALLIES.filter(u => !u.air).length, 10); assert.equal(m.ALLIES.filter(u => u.air).length, 5);
+  assert.equal(m.ALLIES.filter(u => !u.air).length, 10); assert.equal(m.ALLIES.filter(u => u.air).length, 6);
+  const p = m.freshProgress(); p.levels[33] = 6; assert.equal(m.readProgress(JSON.stringify(p)).levels[33], 6, 'a troop appended after the enemy keeps its level');
   const foes = m.UNITS.filter(u => u.foe); assert.ok(foes.length >= 18);
   const s = m.newSiege(m.freshProgress(), 1); s.energy = 999; s.deck.push(15);
   assert.equal(m.summon(s, 15), false, 'an enemy troop cannot be summoned');
