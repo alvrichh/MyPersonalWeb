@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.94 - 2026-10-26
+
+### Changed
+- Siege Cartoon's battle bar runs edge to edge again (as in 1.14.91), lower on the screen, its cards on blue tiles; the aim stick is bigger.
+
 ## 1.14.93 - 2026-10-26
 
 ### Changed / Fixed - Siege Cartoon's battle bar

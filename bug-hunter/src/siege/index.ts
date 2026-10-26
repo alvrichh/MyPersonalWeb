@@ -321,8 +321,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   function layoutBar() {
     if (mode !== 'cartoon') return;
     const bar = root.querySelector<HTMLElement>('.sg-bar'); if (!bar) return;
-    // Only as many slots as an army has cards: the picture's own four on the right, the rest copies of its first one.
-    const u = bar.offsetHeight / 378, n = Math.max(0, M.DECK - 4), tile = 169 * u, mid = n * tile, k = 1;
+    const u = bar.offsetHeight / 378, mid = Math.max(0, bar.clientWidth - 1902 * u), n = Math.max(1, Math.round(mid / (169 * u))), tile = mid / n, k = tile / (169 * u);
     // The wall between the picture's ends: copies of its first slot, each stretched a little so they fill it exactly.
     let wall = bar.querySelector<HTMLElement>('.sg-wall');
     if (!wall) { wall = document.createElement('div'); wall.className = 'sg-wall'; wall.setAttribute('aria-hidden', 'true'); bar.prepend(wall); }
