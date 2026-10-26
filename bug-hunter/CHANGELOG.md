@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.88 - 2026-10-26
+
+### Changed
+- Siege Cartoon's battlefield picture spans the field again on wide screens (as before 1.14.87): fitted to the view's height it was shorter than the field, so the enemy's kingdom showed right beside our fortress. A longer picture (about 5:1) will let the whole sky show at true distances. Tapping the mana monument stays.
+
 ## 1.14.87 - 2026-10-26
 
 ### Added

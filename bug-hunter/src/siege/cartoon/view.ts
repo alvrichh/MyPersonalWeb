@@ -197,8 +197,8 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   ctx.scale(scale, scale); ctx.translate(-camera.x + Math.max(0, (camera.width - FIELD) / 2), 0);
   const viewH = h / scale;
   const scene = still(SCENE);
-  if (ok(scene) && w < h) {
-    // An upright view: the picture spans the field (and moves with it), its sky colours carried on above it.
+  if (ok(scene)) {
+    // The picture spans the field (and moves with it, so distances read true), its sky colours carried on above it.
     const sw = FIELD + SCENE_FIT.pad * 2, sh = sw * scene.naturalHeight / scene.naturalWidth;
     const x0 = -SCENE_FIT.pad, top = ground - sh * SCENE_FIT.ground;
     ctx.drawImage(scene, x0, top, sw, sh);
@@ -209,18 +209,6 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
       ctx.globalAlpha = 1;
     }
     if (top + sh < viewH) ctx.drawImage(scene, 0, scene.naturalHeight - 1, scene.naturalWidth, 1, x0, top + sh - 1, sw, viewH - top - sh + 2);
-  } else if (ok(scene)) {
-    // A wide view: the battlefield picture fits the view's height (its sky's top at the view's top, its walking ground on the ground
-    // line), never narrower than the view; it scrolls behind the field a little slower than the troops, end to end as
-    // the camera goes from our fortress to theirs.
-    ctx.save(); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const gy = h * camera.deck, ph = Math.max(gy / SCENE_FIT.ground, w * scene.naturalHeight / scene.naturalWidth), pw = ph * scene.naturalWidth / scene.naturalHeight;
-    const span = Math.max(1, FIELD - camera.width - (camera.min ?? 0)), along = Math.max(0, Math.min(1, (camera.x - (camera.min ?? 0)) / span));
-    const px = -(pw - w) * along, top = gy - ph * SCENE_FIT.ground;
-    ctx.drawImage(scene, px, top, pw, ph);
-    if (top > 0) { const strip = skyOf(scene); ctx.drawImage(strip, 0, 0, 16, 1, px, -1, pw, top + 2); }
-    if (top + ph < h) ctx.drawImage(scene, 0, scene.naturalHeight - 1, scene.naturalWidth, 1, px, top + ph - 1, pw, h - top - ph + 2);
-    ctx.restore();
   } else {
     const [deck, low] = GROUND[actOf(s.world) - 1];
     const earth = ctx.createLinearGradient(0, ground - 10, 0, viewH); earth.addColorStop(0, deck); earth.addColorStop(1, low);
