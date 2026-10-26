@@ -648,3 +648,6 @@
 .siege-root.is-cartoon .sg-story .sg-speaker{margin-bottom:-12px}
 .siege-root.is-cartoon .sg-story .sg-scene.is-boss .sg-speaker{margin-bottom:-12px}
 @media (max-height:440px){.siege-root.is-cartoon .sg-story .sg-speaker,.siege-root.is-cartoon .sg-story .sg-scene.is-boss .sg-speaker{margin-bottom:-8px}.siege-root.is-cartoon .sg-story .sg-scene>.sg-eyebrow{top:8px}}
+/* The speaker's legs hidden behind the box. */
+.siege-root.is-cartoon .sg-story .sg-speaker,.siege-root.is-cartoon .sg-story .sg-scene.is-boss .sg-speaker{margin-bottom:-40px}
+@media (max-height:440px){.siege-root.is-cartoon .sg-story .sg-speaker,.siege-root.is-cartoon .sg-story .sg-scene.is-boss .sg-speaker{margin-bottom:-26px}}
