@@ -492,3 +492,9 @@
 .sg-wall{display:none}
 @media (max-height:500px) and (orientation:landscape){.siege-root.is-cartoon .sg-bar{--u:min(.3px,calc((100vw - 4px) / 2071))}}
 @media (orientation:portrait){.is-cartoon .sg-aim{width:52px!important;height:min(130px,22%)!important}.is-cartoon .sg-aim-knob{width:48px;height:40px}}
+/* v1.14.97 — the bow ball loses its orange from the top as the quiver empties (that part turns grey). */
+.siege-root.is-cartoon .sg-bar .sg-bow::before,.siege-root.is-cartoon .sg-bar .sg-bow.is-drawing::before{inset:0;border-radius:50%;background:url('/images/game/siege/bar.webp') calc(-1853 * var(--u)) calc(-136 * var(--u)) / calc(2071 * var(--u)) calc(378 * var(--u)) no-repeat;filter:grayscale(1) brightness(.8)}
+/* The bow button covers the whole ball (180 picture pixels from 1844, 116), its grey copy drawn from the same spot. */
+.siege-root.is-cartoon .sg-bar .sg-bow,.siege-root.is-cartoon .sg-bar .sg-bow:hover:not(:disabled),.siege-root.is-cartoon .sg-bar .sg-bow.is-drawing{left:calc(1844 * var(--u));right:auto;top:calc(116 * var(--u));width:calc(180 * var(--u));height:calc(180 * var(--u))}
+.siege-root.is-cartoon .sg-bar .sg-bow::before,.siege-root.is-cartoon .sg-bar .sg-bow.is-drawing::before{background-position:calc(-1844 * var(--u)) calc(-116 * var(--u))}
+.siege-root.is-cartoon .sg-bar .sg-bow.is-drawing{transform:none}

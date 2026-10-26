@@ -162,11 +162,10 @@ const arcShare = (x: number) => Math.max(0, Math.min(1, (x - 140) / ((RAIN_FROM 
 /** The crossbow arm's angle: the way an arrow leaves it for the current aim (the start of its arc): down at a near aim,
     rising as the aim goes further, nearly straight up where the arrows rain from the sky. */
 function bowAngle(s: Siege, ground: number) {
-  const x = aimAt(s.aim), dx = Math.max(20, x - bowAt.x), endY = ground - 14;
-  const lift = Math.min(150, Math.max(20, bowAt.y - 24)) * arcShare(x);
-  const arc = Math.atan2(endY - bowAt.y - Math.PI * lift, dx);
-  const rain = Math.max(0, Math.min(1, (x - RAIN_FROM) / (1080 - RAIN_FROM)));
-  return Math.max(-1.35, arc + (-1.25 - arc) * rain);
+  // Steadily with the aim, as the stick moves it: aimed nearest, the crossbow points down at the ground before our
+  // wall; aimed furthest, it points high up (the arrows then rain down). Stick up, crossbow up.
+  const t = (aimAt(s.aim) - 140) / (1080 - 140);
+  void ground; return 0.55 + (-1.15 - 0.55) * t;
 }
 /** The camera: its left edge and width in field units, and how far left of the field it may go (a margin past our
     wall, so the aim control stands clear of it). */
