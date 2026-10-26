@@ -274,7 +274,13 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     for (const type of ['pointerup', 'pointercancel', 'lostpointercapture'] as const) aimPad.addEventListener(type, release, battleOptions);
     aimPad.addEventListener('keydown', e => { if (!state || (e.key !== 'ArrowUp' && e.key !== 'ArrowDown')) return; e.preventDefault(); e.stopPropagation(); state.aim = M.aimAt(state.aim + (e.key === 'ArrowUp' ? 40 : -40)); }, battleOptions);
     // The bow is a switch: one tap starts the arrows, the next stops them.
-    q<HTMLButtonElement>('[data-sg="fire"]').addEventListener('click', e => { e.stopPropagation(); if (state && !paused) { M.toggleBow(state); updateUi(); } }, battleOptions);
+    // It answers the moment it is touched (pointerdown), so it works with another finger on the aim stick, where a
+    // second finger's tap never becomes a click; a click from the keyboard (no pointer) still works.
+    const fireButton = q<HTMLButtonElement>('[data-sg="fire"]');
+    const fire = () => { if (state && !paused && state.phase === 'fight') { M.toggleBow(state); updateUi(); } };
+    let pressedAt = -1e9;
+    fireButton.addEventListener('pointerdown', e => { e.preventDefault(); e.stopPropagation(); pressedAt = performance.now(); fire(); }, battleOptions);
+    fireButton.addEventListener('click', e => { e.stopPropagation(); if (performance.now() - pressedAt > 700) fire(); }, battleOptions);
     last = performance.now(); accumulator = 0; uiAt = 0;
     function loop(now: number) {
       if (!state || finished) return;

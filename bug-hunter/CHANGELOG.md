@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.3 - 2026-10-26
+
+### Fixed
+- Siege Cartoon: the bow ball can be tapped while another finger holds the aim stick. It answers the moment it is touched (a second finger's tap never became a click); mouse and keyboard still work.
+
 ## 1.15.2 - 2026-10-26
 
 ### Changed
