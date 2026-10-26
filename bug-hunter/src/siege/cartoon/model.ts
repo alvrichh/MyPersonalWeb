@@ -102,13 +102,38 @@ export const UNITS: readonly Spec[] = [
     { price: 2000, cost: 190, hp: 230, damage: 70, splash: 90, hitsAir: true, shot: 'meteor', ...six('ally-wizard-3', 265, 0.6) },
   ] },
   { id: 7, cost: 75, hp: 260, damage: 40, speed: 85, range: 38, rate: 0.8, cooldown: 7, unlock: 4, ...unit('ally-vulture', 90, 1.1) },
-  { id: 8, cost: 110, hp: 320, damage: 38, speed: 50, range: 180, rate: 1, cooldown: 10, unlock: 5, ...unit('ally-robot', 85, 1.05) },
-  { id: 9, cost: 200, hp: 1300, damage: 70, speed: 18, range: 200, rate: 2, cooldown: 22, unlock: 5, splash: 80, ...unit('ally-heavy-robot', 104, 1.5) },
+  // The armed robot's three forms (docs/cw2-reference.md): claw and arm rocket, the walker with twin cannons (fast and
+  // strong), and the walker behind a wall-like shield firing missiles.
+  { id: 8, cost: 110, hp: 320, damage: 38, speed: 50, range: 180, rate: 1, cooldown: 10, unlock: 5, shot: 'rocket', spin: false, ...six('ally-robot-1', 199, 0.69), forms: [
+    { price: 700, cost: 140, hp: 420, damage: 22, rate: 0.45, range: 190, shot: 'bullet', ...six('ally-robot-2', 255, 0.69) },
+    { price: 1800, cost: 180, hp: 800, damage: 60, rate: 1.4, range: 200, splash: 40, shot: 'rockets', ...six('ally-robot-3', 309, 0.69) },
+  ] },
+  // The heavy armed robot's four forms (docs/cw2-reference.md): gatling bursts, small rockets added (MK2), a frozen
+  // cannon on its back (from here it reaches flyers), and a huge one firing rocket salvos.
+  { id: 9, cost: 200, hp: 1300, damage: 70, speed: 18, range: 200, rate: 2, cooldown: 22, unlock: 5, splash: 80, shot: 'bullet', ...six('ally-heavy-robot-1', 188, 1.29), forms: [
+    { price: 1200, cost: 230, hp: 1500, damage: 80, shot: 'rockets', ...six('ally-heavy-robot-2', 199, 1.29) },
+    { price: 2200, cost: 260, hp: 1800, damage: 90, hitsAir: true, shot: 'bullet', ...six('ally-heavy-robot-3', 234, 1.29) },
+    { price: 4000, cost: 320, hp: 2600, damage: 120, splash: 100, hitsAir: true, shot: 'rockets', ...six('ally-heavy-robot-4', 253, 1.29) },
+  ] },
   // Ours, air (Cartoon Wars 2's A row): they fly over the field, out of reach of melee troops; only ranged ones hit them.
-  { id: 10, cost: 30, hp: 70, damage: 12, speed: 70, range: 150, rate: 0.7, cooldown: 3, unlock: 1, air: true, ...unit('ally-fighter', 69) },
+  // The aircraft fighter's four forms: a sword under a propeller pack, then with goggles and scarf, two rotors and blue
+  // steel, and gold rotors with a flaming sword.
+  { id: 10, cost: 30, hp: 70, damage: 12, speed: 70, range: 40, rate: 0.7, cooldown: 3, unlock: 1, air: true, ...six('ally-fighter-1', 176, 0.7), forms: [
+    { price: 150, cost: 40, hp: 100, damage: 16, ...six('ally-fighter-2', 182, 0.7) },
+    { price: 400, cost: 55, hp: 140, damage: 22, ...six('ally-fighter-3', 190, 0.7) },
+    { price: 1200, cost: 90, hp: 220, damage: 34, speed: 80, splash: 25, ...six('ally-fighter-4', 195, 0.7) },
+  ] },
   { id: 11, cost: 55, hp: 110, damage: 20, speed: 55, range: 190, rate: 0.8, cooldown: 5, unlock: 2, air: true, ...unit('ally-armed-fighter', 74) },
   { id: 12, cost: 95, hp: 320, damage: 44, speed: 35, range: 210, rate: 1.8, cooldown: 10, unlock: 4, air: true, splash: 50, ...unit('ally-helicopter', 84) },
-  { id: 13, cost: 80, hp: 300, damage: 32, speed: 55, range: 40, rate: 0.9, cooldown: 8, unlock: 5, air: true, ...unit('ally-drill', 75) },
+  // The drill aircraft, the flying shield, in six forms: a rocket fist, a laser, a plasma beam, an ice burst, a gatling,
+  // and a giant golden fist.
+  { id: 13, cost: 80, hp: 300, damage: 32, speed: 55, range: 45, rate: 0.9, cooldown: 8, unlock: 5, air: true, ...six('ally-drill-1', 126, 0.92), forms: [
+    { price: 500, cost: 95, hp: 340, damage: 30, range: 130, shot: 'ray', ...six('ally-drill-2', 136, 0.92) },
+    { price: 800, cost: 110, hp: 380, damage: 38, range: 150, shot: 'ray', ...six('ally-drill-3', 146, 0.92) },
+    { price: 1200, cost: 130, hp: 450, damage: 46, range: 60, splash: 40, ...six('ally-drill-4', 149, 0.92) },
+    { price: 1800, cost: 150, hp: 520, damage: 20, rate: 0.4, range: 160, shot: 'bullet', ...six('ally-drill-5', 145, 0.92) },
+    { price: 3000, cost: 200, hp: 800, damage: 80, range: 60, splash: 50, ...six('ally-drill-6', 175, 0.92) },
+  ] },
   { id: 14, cost: 220, hp: 700, damage: 60, speed: 65, range: 45, rate: 0.9, cooldown: 20, unlock: 6, air: true, splash: 40, ...unit('ally-angel', 120) },
   // The enemy's.
   { id: 15, cost: 0, hp: 115, damage: 16, speed: 43, range: 35, rate: 0.8, cooldown: 0, unlock: 1, foe: true, infantry: true, ...unit('foe-swordsman', 74) },
@@ -286,14 +311,14 @@ function spawn(s: Siege, id: number, side: 0 | 1, boss = false) {
     troops sound like what they fire (`SHOT_SOUND`). Names are the audio engine's `SiegeSound`s. */
 const ATTACK_SOUND: Record<number, string | string[]> = {
   0: ['blunt', 'blade', 'blade', 'blade', 'blade'], 1: 'pierce', 3: ['blade', 'blunt', 'blunt', 'blunt'], 4: ['gun', 'rifle', 'uzi', 'sniper'],
-  7: 'claw', 8: 'ray', 9: 'rocket', 10: 'gun', 11: 'rifle', 12: 'rocket', 13: 'drill', 14: 'magic',
+  7: 'claw', 8: ['rocket', 'gatling', 'rocket'], 9: ['gatling', 'gatling', 'gatling', 'gatling'], 10: 'blade', 11: 'rifle', 12: 'rocket', 13: ['blunt', 'ray', 'ray', 'blunt', 'gatling', 'blunt'], 14: 'magic',
   15: 'blade', 16: 'pierce', 17: 'bite', 18: 'claw', 19: 'blade', 20: 'blunt', 21: 'blade', 22: 'rifle', 23: 'throw', 24: 'magic',
   25: 'claw', 26: 'breath', 27: 'blade', 28: 'claw', 29: 'claw', 30: 'magic', 31: 'blade', 32: 'gatling',
 };
 const SHOT_SOUND: Record<string, string> = { rock: 'throw', javelin: 'throw', shuriken: 'throw', arrow: 'bow', rocket: 'rocket', rockets: 'rocket', ray: 'ray', none: 'flame', lightning: 'thunder', tornado: 'wind', meteor: 'meteor' };
 const DEATH_SOUND: Record<number, string | string[]> = {
   1: ['die-man', 'die-man', 'die-man', 'die-man', 'die-horse'], 3: 'die-armor', 7: 'die-beast', 8: 'die-bot', 9: 'die-bot',
-  10: 'die-flyer', 11: 'die-flyer', 12: 'die-flyer', 13: 'die-flyer', 14: 'die-flyer',
+  10: 'die-flyer', 11: 'die-flyer', 12: 'die-flyer', 13: 'die-bot', 14: 'die-flyer',
   17: 'die-beast', 18: 'die-brute', 20: 'die-armor', 21: 'die-armor', 25: 'die-beast', 26: 'die-dragon', 27: 'die-flyer', 28: 'die-flyer',
   29: 'die-flyer', 30: 'die-flyer', 31: 'die-dragon', 32: 'die-bot',
 };

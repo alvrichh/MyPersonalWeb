@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.77 - 2026-10-26
+
+### Added - Four Siege Cartoon troops on six-pose sheets
+- The owner's sheets for the armed robot (3 forms), the heavy armed robot (4), the aircraft fighter (4, air) and the drill aircraft (6, air) replace their old three-pose pictures, each form with walk or fly A and B, ready, attack, hurt and defeated poses.
+- Each form has its own stats, price, shot and sound: the robot's rocket, twin-cannon bullets and missiles; the heavy robot's bursts, rockets, frozen cannon (reaching flyers from level 3) and rocket salvos; the fighter's sword; the drill aircraft's rocket fist, laser and plasma beams, ice burst, gatling and giant fist. The shop shows every form as a tile.
+
 ## 1.14.76 - 2026-10-26
 
 ### Changed - Siege Cartoon's shop, laid out like Cartoon Wars 2's
