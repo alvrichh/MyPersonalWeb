@@ -651,3 +651,10 @@
 /* The speaker's legs hidden behind the box. */
 .siege-root.is-cartoon .sg-story .sg-speaker,.siege-root.is-cartoon .sg-story .sg-scene.is-boss .sg-speaker{margin-bottom:-40px}
 @media (max-height:440px){.siege-root.is-cartoon .sg-story .sg-speaker,.siege-root.is-cartoon .sg-story .sg-scene.is-boss .sg-speaker{margin-bottom:-26px}}
+/* Down to the waist behind the box; a heated line shakes the speaker once as it changes pose. */
+.siege-root.is-cartoon .sg-story .sg-speaker{height:min(34vh,240px);margin-bottom:calc(min(34vh,240px) * -.45)}
+.siege-root.is-cartoon .sg-story .sg-scene.is-boss .sg-speaker{height:min(38vh,270px);margin-bottom:calc(min(38vh,270px) * -.4)}
+.siege-root.is-cartoon .sg-story .sg-scene.is-heated .sg-speaker{max-width:75%;animation:sg-pop .35s ease-out,sg-heat .4s ease-in-out .1s}
+@keyframes sg-heat{20%,60%{translate:-5px 0}40%,80%{translate:5px 0}}
+@media (prefers-reduced-motion:reduce){.siege-root.is-cartoon .sg-story .sg-scene.is-heated .sg-speaker{animation:none}}
+@media (max-height:440px){.siege-root.is-cartoon .sg-story .sg-speaker{height:min(34vh,150px);margin-bottom:calc(min(34vh,150px) * -.45)}.siege-root.is-cartoon .sg-story .sg-scene.is-boss .sg-speaker{height:min(38vh,160px);margin-bottom:calc(min(38vh,160px) * -.4)}}
