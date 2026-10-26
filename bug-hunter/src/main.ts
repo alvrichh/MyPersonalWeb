@@ -1329,31 +1329,6 @@ function levelBlock(item: { id: ItemId; levels?: number[] }) {
   return `<span class="pips" aria-label="${t('upgradeLevel', { level: lv, max })}">${pips}</span>${levelNote(item.id, lv)}${up}`;
 }
 
-/* The shop card's frame has a lower band for its button (the owner's picture, drawn as a nine-slice). A card
-   with two buttons is made tall enough that the band holds only the last one and the rest sits above the
-   divider. The ratios are measured on `ui/shop_orange.webp` (266×322, slices of 45 drawn at 15px). */
-function bandCards() {
-  if (save.retro) return;
-  for (const card of screen.querySelectorAll<HTMLElement>('.panel .item.has-levels')) {
-    const btn = card.lastElementChild as HTMLElement | null;
-    const prev = btn?.previousElementSibling as HTMLElement | null;
-    if (!btn || !prev) continue;
-    card.style.height = '';
-    btn.style.margin = '';
-    // offsetTop is from the card's padding edge (the card is `position: relative`), so add its top border.
-    if (prev.offsetParent !== card) continue;
-    const bodyEnd = prev.offsetTop + prev.offsetHeight + 15 + 8;
-    const bh = btn.offsetHeight;
-    // The divider's top is at 15 + 0.694·(H − 30); the band runs from 15 + 0.759·(H − 30) to H − 8.
-    const h = Math.ceil(Math.max((bodyEnd - 15) / 0.694 + 30, (bh + 14) / 0.241, card.offsetHeight));
-    const top = 15 + 0.759 * (h - 30);
-    const mid = (top + h - 8) / 2;
-    card.style.height = `${h}px`;
-    btn.style.marginTop = 'auto';
-    btn.style.marginBottom = `${Math.round(h - 24 - (mid + bh / 2))}px`;
-  }
-}
-
 function shopScreen(note = '') {
   // The ad gift: some coins once every few hours, or how long until the next.
   const giftWait = save.adGiftAt + AD_GIFT_EVERY - Date.now();
@@ -1480,7 +1455,6 @@ function shopScreen(note = '') {
     ${shopSection('arsenal', t('arsenal'), `${save.arsenal.length}/${ARSENAL.length}`, `<p class="how">${t('arsenalHint')}</p><div class="items">${arsenal}</div>`)}
     ${spiritSec}
     <button class="primary is-blue" type="button" data-act="menu">← ${t('menu')}</button>`, true, false, 'keep-scroll');
-  bandCards();
   if (ads.enabled && giftWait <= 0) offerAd('gift', `<button class="primary ad-btn" data-act="ad-gift">📺 ${t('adGift', { coins: AD_GIFT_COINS })}</button>`);
 }
 

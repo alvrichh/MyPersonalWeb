@@ -4,6 +4,13 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.49 - 2026-10-26
+
+### Fixed - Shop cards with levels, owned and worn
+- Items with levels (the Phoenix cloak, the quiver, the knives, the spirits): the old `bandCards()` sizing, made for the stretched frame, fought the fixed bottom strip and blew the card up with an empty lower panel; it is gone. Only the last button (wear / worn) goes into the strip, the upgrade stays above it in the window (both had been pulled into the strip, the upgrade hidden behind the other).
+- Lit cards no longer keep the old 196 px floor on top of the strip, and the level pips are no longer given the description's four-line box: forge and level cards lose their empty gap.
+- Checked on phones (360 and 430 px) and desktop with a fresh save and with an advanced one (items owned and worn, levels, maxed forge, arsenal and spirits bought).
+
 ## 1.14.48 - 2026-10-25
 
 ### Changed - Wider, even shop cards on phones

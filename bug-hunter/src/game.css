@@ -3745,14 +3745,13 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .panel .nightmare-rec { display: block; text-align: center; margin: 2px 0 4px; }
 .panel .rush-btn { margin-top: 6px; }
 .panel .rush-rec { display: block; text-align: center; margin: 2px 0 4px; }
-/* A shop card with two buttons (an item with levels): a column whose last button `bandCards()` drops into the frame's lower band. */
+/* A shop card with two buttons (an item with levels): a column whose last button sits in the frame's fixed bottom
+   strip (v1.14.47), the upgrade above it in the window. */
 .panel .item.has-levels { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; }
 .panel .item.has-levels > .buy { align-self: stretch; }
 /* Customise: an item's pips and upgrade under its row. */
 .panel .row-levels { display: grid; justify-items: center; gap: 4px; width: 100%; max-width: 340px; margin: -2px auto 6px; }
 .panel .row-levels .buy { width: 100%; }
-/* …and its neighbour in a two-column row keeps its own height, or its button would float above its band. */
-.panel .items:has(.has-levels) { align-items: start; }
 
 /* The HUD's two plates (the world's and the coins') are the owner's slot picture, 674×200 with the ring at
    its left end. Stretched whole they squashed or widened the ring, so the picture is drawn as a border
@@ -5256,19 +5255,21 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 /* Every lit shop card that ends in its button: like the skins' (v1.14.45), the band and lower panel are a fixed strip at
    the bottom, the button sits in the panel and the texts stay in the window above. */
 :root:not([data-retro]) .panel .item:not(.is-locked):has(> .buy:last-child) {
+  /* (No 196px floor: it counted on the old 15px border and now came on top of the 84px strip.) */
+  min-height: 0;
   display: flex; flex-direction: column; align-items: center;
   border-width: 15px 15px 84px;
   border-image: url('/images/game/ui/shop_orange.webp') 45 45 122 fill / 15px 15px 84px stretch;
   padding-bottom: 0;
 }
-:root:not([data-retro]) .panel .item:not(.is-locked):has(> .buy:last-child) > .buy { margin-top: auto; height: 44px; min-height: 0; margin-bottom: -44px; position: relative; top: 20px; }
+:root:not([data-retro]) .panel .item:not(.is-locked):has(> .buy:last-child) > .buy:last-child { margin-top: auto; height: 44px; min-height: 0; margin-bottom: -44px; position: relative; top: 20px; }
 @media (max-width: 600px) {
   :root:not([data-retro]) .panel .items .item:not(.is-locked):has(> .buy:last-child) { border-width: 10px 10px 84px; border-image-width: 10px 10px 84px; }
-  :root:not([data-retro]) .panel .items .item:not(.is-locked):has(> .buy:last-child) > .buy { height: 40px; margin-bottom: -40px; top: 22px; }
+  :root:not([data-retro]) .panel .items .item:not(.is-locked):has(> .buy:last-child) > .buy:last-child { height: 40px; margin-bottom: -40px; top: 22px; }
 }
 /* Shop cards' lines (short ones for the long weapons and spirits, see `shopText`) in a box of the same height, so the
    cards of a window line up whatever their text: three lines, four on phones. */
-.panel .items .item > span:not(.icon) { min-height: calc(3 * 1.35em); }
+.panel .items .item > span:not(.icon):not(.pips):not(.lv-note) { min-height: calc(3 * 1.35em); }
 @media (max-width: 600px) {
-  .panel .items .item > span:not(.icon) { min-height: calc(4 * 1.3em); }
+  .panel .items .item > span:not(.icon):not(.pips):not(.lv-note) { min-height: calc(4 * 1.3em); }
 }
