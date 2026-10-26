@@ -1,6 +1,11 @@
-# Siege Legacy / Asedio Legacy — playable preview
+# Siege / Asedio — playable preview
 
-Siege Legacy follows Cartoon Wars 2 on purpose (its battles, troops and rules: [siege-roster.md](./siege-roster.md), [cw2-reference.md](./cw2-reference.md), [cw2-upgrades.md](./cw2-upgrades.md)); keep it that way.
+Siege opens on a mode screen with two modes, each with its own engine, look and save:
+
+- **Siege Legacy / Asedio Legacy** (`src/siege/legacy/`, save `bugHunter.siege.v1`): the first troops (the game's own bugs, tickets, legacy code and bosses such as the Monolith), the nine worlds of the map with their story scenes and guardians, the bridge battlefield with each world's map picture, the Town Hall as our fortress and the Tactics bench front as the enemy's. It is kept as it was before the Cartoon troops arrived.
+- **Siege Cartoon / Asedio Cartoon** (`src/siege/cartoon/`, save `bugHunter.siege.cartoon.v1`): the new stick-figure troops, six acts like Cartoon Wars 2, the green/red battlefield with ground, our upgradable tech castle and crossbow, the enemy hive, troop levels in the workshop, and its own paper-and-ink look outside battle. Each act's guardian: Large Slinger, Large Gatling Robot, Large Red Dragon Rider, Giant Brute Eater, Giant Dinosaur Brute, Giant King Dinosaur Brute (`GUARDIAN` in its model; troops stand in for the pictures that do not exist yet). Its story is not written yet: it gets one only once the owner approves it.
+
+Siege Cartoon follows Cartoon Wars 2 on purpose (its battles, troops and rules: [siege-roster.md](./siege-roster.md), [cw2-reference.md](./cw2-reference.md), [cw2-upgrades.md](./cw2-upgrades.md)); keep it that way.
 
 Status: **Coming soon · Playable preview**. Available in the fourth main-cover option, Coming Soon, after Sprints, On Call and Battle. The hub keeps its separate Fortress link. Battle still contains Fusion and Tactics. Fortress remains its separate construction prototype.
 
@@ -35,19 +40,20 @@ Every Siege change that touches what is drawn or where controls sit is checked b
 4. Compare both orientations; a fix for one must not break the other.
 5. Report what was checked and what was not (for example "only world 4 was looked at").
 
-The fortresses are one design each for now (world-themed ones may come later as skins): ours `siege/castle-1..3` by the workshop's Fortress level (0-1, 2-3, 4-5), the enemy's `siege/enemy-1..3` by world (1-3, 4-6, 7-9), both side on. Our crossbow (`siege/xbow-base-N` and `siege/xbow-arm-N`, by the Bow level the same way) stands on our battlement; its arm turns towards the aim and the arrows and missile leave from it. Damage shows as smoke under 60% health and flames under 30%, drawn over the picture. Their sizes and the crossbow's seat are `CASTLES`, `ENEMY_H` and `XBOW` in `src/siege/view.ts`.
+In Siege Cartoon the fortresses are one design each for now (world-themed ones may come later as skins): ours `siege/castle-1..3` by the workshop's Fortress level (0-1, 2-3, 4-5), the enemy's `siege/enemy-1..3` by act (1-2, 3-4, 5-6), both side on. Our crossbow (`siege/xbow-base-N` and `siege/xbow-arm-N`, by the Bow level the same way) stands on our battlement; its arm turns towards the aim and the arrows and missile leave from it. Damage shows as smoke under 60% health and flames under 30%, drawn over the picture. Their sizes and the crossbow's seat are `CASTLES`, `ENEMY_H` and `XBOW` in `src/siege/cartoon/view.ts`.
 
-The battlefield is one picture for every world for now (`siege/backdrop`, the owner's: our green side left, the bugs' red one right), ground included, drawn across the whole field and moving with the troops: `SCENE_FIT` in `src/siege/view.ts` sets how far it runs past each end and where its walking ground sits (a share of its height) on the troops' ground line. On an upright phone the ground line comes down so the picture reaches the bottom, and its sky colours carry on above it. The aim control's place is in `src/siege/siege.css` (`.sg-aim`).
+Siege Cartoon's battlefield is one picture for every world for now (`siege/backdrop`, the owner's: our green side left, the bugs' red one right), ground included, drawn across the whole field and moving with the troops: `SCENE_FIT` in `src/siege/cartoon/view.ts` sets how far it runs past each end and where its walking ground sits (a share of its height) on the troops' ground line. On an upright phone the ground line comes down so the picture reaches the bottom, and its sky colours carry on above it. The aim control's place is in `src/siege/siege.css` (`.sg-aim`).
 
 ## Architecture and compatibility
 
-- `src/siege/model.ts`: deterministic, DOM-free simulation, balance, save validation, upgrades and reward settlement.
-- `src/siege/view.ts`: independent canvas renderer, camera and existing sprite loading.
-- `src/siege/index.ts`: preparation, inputs, pause/results, lifecycle and local save.
+- `src/siege/cartoon/model.ts` and `src/siege/legacy/model.ts`: each mode's deterministic, DOM-free simulation, balance, save validation, upgrades and reward settlement. Legacy's answers the same calls as Cartoon's (its troops have one level).
+- `src/siege/cartoon/view.ts` and `src/siege/legacy/view.ts`: each mode's canvas renderer, camera and sprite loading.
+- `src/siege/legacy/story.ts`: Legacy's story scenes.
+- `src/siege/index.ts`: the mode screen, preparation, inputs, pause/results, lifecycle and each mode's local save.
 - `src/siege/siege.css`: scoped responsive UI plus the fourth cover option's color.
-- `tests/siege.test.mjs`: meaningful model regressions, including a complete first-stage win.
+- `tests/siege.test.mjs` (Cartoon) and `tests/siege-legacy.test.mjs` (Legacy): meaningful model regressions, including a complete first-stage win.
 
-The existing `PlayMode`/action/board schema is intentionally unchanged. The cover has a separate four-entry selection; choosing Siege never writes an unsupported value into the previous save. The mode uses `bugHunter.siege.v1` through the shared safe storage adapter. Coins, unlocks, workshop levels and deck selection are separate from other modes. Battles are not resumed after reload. No server, multiplayer, paid currency or online synchronization is introduced.
+The existing `PlayMode`/action/board schema is intentionally unchanged. The cover has a separate four-entry selection; choosing Siege never writes an unsupported value into the previous save. Legacy uses `bugHunter.siege.v1` and Cartoon `bugHunter.siege.cartoon.v1`, through the shared safe storage adapter. Coins, unlocks, workshop levels and deck selection are separate from other modes and from each other. Battles are not resumed after reload. No server, multiplayer, paid currency or online synchronization is introduced.
 
 Simulation runs at a fixed 30 Hz, rendering with requestAnimationFrame and DOM counters at 10 Hz. Each side has a 36-unit cap. Leaving cancels the animation frame, removes listeners and restores background interactivity. New-game initialization copies upgrade values and the deck, and in-battle generators reset every battle.
 

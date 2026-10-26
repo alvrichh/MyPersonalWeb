@@ -1,14 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { build } from 'esbuild';
-const bundle = await build({ entryPoints: ['bug-hunter/src/siege/model.ts'], bundle: true, platform: 'node', format: 'esm', write: false });
+const bundle = await build({ entryPoints: ['bug-hunter/src/siege/cartoon/model.ts'], bundle: true, platform: 'node', format: 'esm', write: false });
 const m = await import(`data:text/javascript;base64,${Buffer.from(bundle.outputFiles[0].text).toString('base64')}`);
 const run = (s, seconds) => { for (let i = 0; i < seconds * 30; i++) m.tick(s, 1 / 30); };
 test('safe save validation and independent schema', () => {
   assert.deepEqual(m.readProgress('{'), m.freshProgress());
   assert.deepEqual(m.readProgress('{"version":2}'), m.freshProgress());
-  const p = m.readProgress(JSON.stringify({ version: 1, unlocked: 500, coins: -20, upgrades: [99, -2, '3', 7], deck: [7, 7, 999, -1, 0], victories: [1, 1, 9, -2, 2.5] }));
-  assert.equal(p.unlocked, 9); assert.equal(p.coins, 0); assert.deepEqual(p.upgrades, [5, 0, 0, 5]); assert.equal(new Set(p.deck).size, 5); assert.deepEqual(p.victories, [1, 9]);
+  const p = m.readProgress(JSON.stringify({ version: 1, unlocked: 500, coins: -20, upgrades: [99, -2, '3', 7], deck: [7, 7, 999, -1, 0], victories: [1, 1, 6, 9, -2, 2.5] }));
+  assert.equal(p.unlocked, m.ACTS); assert.equal(p.coins, 0); assert.deepEqual(p.upgrades, [5, 0, 0, 5]); assert.equal(new Set(p.deck).size, 5); assert.deepEqual(p.victories, [1, 6]);
   assert.equal(m.readProgress('{"version":1,"deck":[7]}').deck.includes(7), false);
 });
 test('summoning enforces energy, deck, cooldown and population', () => {
@@ -66,10 +66,18 @@ test('enemy flyers join the waves later on', () => {
   const seen = new Set(); for (let i = 0; i < 120 * 30; i++) { m.tick(s, 1 / 30); for (const u of s.units) if (u.side && m.UNITS[u.id].air) seen.add(u.id); }
   assert.ok(seen.size > 0);
 });
+test('Siege Cartoon: six acts, each with its foes and guardian, saved apart from Siege Legacy', () => {
+  assert.equal(m.ACTS, 6); assert.equal(m.FOE_LAND.length, 6); assert.equal(m.FOE_AIR.length, 6); assert.equal(m.GUARDIAN.length, 6);
+  assert.notEqual(m.SAVE_KEY, 'bugHunter.siege.v1');
+  for (const id of [...m.FOE_LAND.flat(), ...m.FOE_AIR.flat(), ...m.GUARDIAN]) assert.ok(m.UNITS[id].foe, `foe ${id}`);
+  assert.ok(m.ALLIES.every(u => u.unlock >= 1 && u.unlock <= m.ACTS));
+  assert.equal(m.newSiege({ ...m.freshProgress(), unlocked: 99 }, 9).world, 6, 'never past the last act');
+  assert.equal(m.readProgress(JSON.stringify({ version: 1, unlocked: 9 })).unlocked, 6);
+});
 test('rewards are idempotent and unlock only the next world', () => {
   const p = m.freshProgress(), s = m.newSiege(p, 1); assert.equal(m.settle(p, s), 0);
-  s.phase = 'won'; assert.equal(m.settle(p, s), 190); assert.equal(m.settle(p, s), 0); assert.equal(p.coins, 190); assert.equal(p.unlocked, 2);
-  const repeat = m.newSiege(p, 1); repeat.phase = 'won'; assert.equal(m.settle(p, repeat), 50);
+  s.phase = 'won'; assert.equal(m.settle(p, s), 205); assert.equal(m.settle(p, s), 0); assert.equal(p.coins, 205); assert.equal(p.unlocked, 2);
+  const repeat = m.newSiege(p, 1); repeat.phase = 'won'; assert.equal(m.settle(p, repeat), 53);
   const defeat = m.newSiege(p, 2); defeat.phase = 'lost'; assert.equal(m.settle(p, defeat), 0); assert.equal(p.unlocked, 2);
   assert.equal(m.newSiege(m.freshProgress(), 9).world, 1);
 });
@@ -147,8 +155,8 @@ test('a heavy blow throws infantry back, stuns the rest, and never moves the ste
   m.tick(u, 1 / 30); assert.ok(rider.hp < 100); assert.ok(!rider.knock && !rider.stun, 'the red dragon rider cannot be stunned');
 });
 test('gatling robots break twice into weaker wrecks; horned gunners come later and hit harder', () => {
-  const open = { ...m.freshProgress(), unlocked: 9 };
-  const s = m.newSiege(open, 7); s.nextWave = 999; assert.equal(s.world, 7);
+  const open = { ...m.freshProgress(), unlocked: m.ACTS };
+  const s = m.newSiege(open, 6); s.nextWave = 999; assert.equal(s.world, 6);
   s.units.push({ uid: 50, id: 32, side: 1, x: 900, lane: 0, hp: 0, maxHp: 400, damage: 40, attack: 0, flash: 0, boss: false });
   m.tick(s, 1 / 30); let wreck = s.units.find(u => u.side);
   assert.equal(wreck.stage, 1); assert.equal(wreck.maxHp, 400 * m.SPLIT.hp); assert.ok(wreck.damage < 40);

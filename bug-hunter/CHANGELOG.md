@@ -4,6 +4,15 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.72 - 2026-10-26
+
+### Changed - Siege splits into Siege Legacy and Siege Cartoon
+- Siege now opens on a mode screen with two modes, each with its own save: **Siege Legacy** (`bugHunter.siege.v1`, the existing save) and **Siege Cartoon** (`bugHunter.siege.cartoon.v1`, new).
+- Siege Legacy is back to the first troops (bugs, tickets, legacy code, the Monolith and the other bosses), the nine-world map with its story scenes and guardians, the bridge battlefield with each world's picture, the Town Hall as our fortress and the Tactics bench front as the enemy's.
+- Siege Cartoon keeps the new stick-figure troops, their levels and sounds, the green/red battlefield, the tech castle, the crossbow and the enemy hive, now over six acts like Cartoon Wars 2. Each act names its guardian (Large Slinger, Large Gatling Robot, Large Red Dragon Rider, Giant Brute Eater, Giant Dinosaur Brute, Giant King Dinosaur Brute); troops stand in for the pictures that do not exist yet. It has no story scenes until its story is approved.
+- Siege Cartoon has its own look outside battle (map of acts, army and workshop in paper and ink).
+- The Coming Soon card is called Siege again; the legacy troop names are restored.
+
 ## 1.14.71 - 2026-10-26
 
 ### Removed - Siege Legacy's tribute note

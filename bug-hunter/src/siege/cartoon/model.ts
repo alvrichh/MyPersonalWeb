@@ -2,7 +2,10 @@
 export const FIELD = 1600;
 export const LIMIT = 300;
 export const CAP = 36;
-export const SAVE_KEY = 'bugHunter.siege.v1';
+/** Its own save, apart from Siege Legacy's (`bugHunter.siege.v1`). */
+export const SAVE_KEY = 'bugHunter.siege.cartoon.v1';
+/** Cartoon Wars 2-style acts, each with its own guardian. */
+export const ACTS = 6;
 export const CASTS = ['original', 'demon', 'viking', 'mud', 'jungle', 'greek', 'robot', 'nightmare', 'core'];
 export interface Spec { id: number; cost: number; hp: number; damage: number; speed: number; range: number; rate: number; cooldown: number; unlock: number; sprite: string; size: number; splash?: number; air?: boolean;
   /** Breaks into a weaker copy of itself when it falls, this many times (Cartoon Wars 2's gatling robots). */
@@ -91,13 +94,13 @@ export const UNITS: readonly Spec[] = [
   ] },
   { id: 7, cost: 75, hp: 260, damage: 40, speed: 85, range: 38, rate: 0.8, cooldown: 7, unlock: 4, ...unit('ally-vulture', 90, 1.1) },
   { id: 8, cost: 110, hp: 320, damage: 38, speed: 50, range: 180, rate: 1, cooldown: 10, unlock: 5, ...unit('ally-robot', 85, 1.05) },
-  { id: 9, cost: 200, hp: 1300, damage: 70, speed: 18, range: 200, rate: 2, cooldown: 22, unlock: 7, splash: 80, ...unit('ally-heavy-robot', 104, 1.5) },
+  { id: 9, cost: 200, hp: 1300, damage: 70, speed: 18, range: 200, rate: 2, cooldown: 22, unlock: 5, splash: 80, ...unit('ally-heavy-robot', 104, 1.5) },
   // Ours, air (Cartoon Wars 2's A row): they fly over the field, out of reach of melee troops; only ranged ones hit them.
   { id: 10, cost: 30, hp: 70, damage: 12, speed: 70, range: 150, rate: 0.7, cooldown: 3, unlock: 1, air: true, ...unit('ally-fighter', 69) },
   { id: 11, cost: 55, hp: 110, damage: 20, speed: 55, range: 190, rate: 0.8, cooldown: 5, unlock: 2, air: true, ...unit('ally-armed-fighter', 74) },
   { id: 12, cost: 95, hp: 320, damage: 44, speed: 35, range: 210, rate: 1.8, cooldown: 10, unlock: 4, air: true, splash: 50, ...unit('ally-helicopter', 84) },
   { id: 13, cost: 80, hp: 300, damage: 32, speed: 55, range: 40, rate: 0.9, cooldown: 8, unlock: 5, air: true, ...unit('ally-drill', 75) },
-  { id: 14, cost: 220, hp: 700, damage: 60, speed: 65, range: 45, rate: 0.9, cooldown: 20, unlock: 8, air: true, splash: 40, ...unit('ally-angel', 120) },
+  { id: 14, cost: 220, hp: 700, damage: 60, speed: 65, range: 45, rate: 0.9, cooldown: 20, unlock: 6, air: true, splash: 40, ...unit('ally-angel', 120) },
   // The enemy's.
   { id: 15, cost: 0, hp: 115, damage: 16, speed: 43, range: 35, rate: 0.8, cooldown: 0, unlock: 1, foe: true, infantry: true, ...unit('foe-swordsman', 74) },
   { id: 16, cost: 0, hp: 150, damage: 20, speed: 40, range: 55, rate: 0.9, cooldown: 0, unlock: 1, foe: true, infantry: true, ...unit('foe-spearman', 74) },
@@ -118,13 +121,15 @@ export const UNITS: readonly Spec[] = [
   { id: 31, cost: 0, hp: 900, damage: 55, speed: 40, range: 130, rate: 1.4, cooldown: 0, unlock: 1, foe: true, air: true, splash: 50, steady: true, ...unit('foe-red-dragon-rider', 93, 1.3) },
   { id: 32, cost: 0, hp: 760, damage: 40, speed: 24, range: 180, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splits: 2, ...unit('foe-gatling', 88, 1.1) },
 ];
-/** The enemy's land and air troops by world, each world adding to the last (docs/siege-roster.md): early waves draw
+/** The enemy's land and air troops by act, each act adding to the last (docs/siege-roster.md): early waves draw
     from the first two of the land list. */
-export const FOE_LAND = [[15, 16, 17], [22], [19, 23], [18, 24], [25, 20], [26, 21], [32], [], []];
-export const FOE_AIR = [[28], [29], [27], [30], [], [], [], [31], []];
+export const FOE_LAND = [[15, 16, 17], [22, 19], [23, 18], [24, 25, 20], [26, 21], [32]];
+export const FOE_AIR = [[28], [29], [27], [30], [], [31]];
 const pool = (lists: number[][], world: number) => lists.slice(0, world).flat();
-/** The guardian of each world: the toughest of its troops so far, drawn bigger. */
-const GUARDIAN = [18, 18, 19, 18, 20, 21, 32, 31, 31];
+/** The guardian of each act, drawn bigger: the Large Gatling Robot and the Large Red Dragon Rider are their troops;
+    the others stand in for their own pictures (Large Slinger, Giant Brute Eater, Giant Dinosaur Brute, Giant King
+    Dinosaur Brute) until those exist. */
+export const GUARDIAN = [18, 32, 31, 21, 26, 26];
 /** Up to this many land and this many air troops in an army. */
 export const DECK = 5;
 const isAir = (id: number) => !!UNITS[id]?.air;
@@ -157,8 +162,8 @@ export function readProgress(raw: string | null): Progress {
   try {
     const v = JSON.parse(raw || 'null');
     if (!v || v.version !== 1) return p;
-    p.unlocked = integer(v.unlocked, 1, 9, 1); p.coins = integer(v.coins, 0, 1000000, 0);
-    p.victories = Array.isArray(v.victories) ? [...new Set<number>(v.victories.filter((n: unknown) => typeof n === 'number' && Number.isInteger(n) && n >= 1 && n <= 9))] : [];
+    p.unlocked = integer(v.unlocked, 1, ACTS, 1); p.coins = integer(v.coins, 0, 1000000, 0);
+    p.victories = Array.isArray(v.victories) ? [...new Set<number>(v.victories.filter((n: unknown) => typeof n === 'number' && Number.isInteger(n) && n >= 1 && n <= ACTS))] : [];
     p.upgrades = [0, 1, 2, 3].map(i => integer(v.upgrades?.[i], 0, 5, 0)) as Progress['upgrades'];
     p.levels = ALLIES.map(u => integer(v.levels?.[u.id], 1, levelsOf(u.id), 1));
     p.deck = Array.isArray(v.deck) ? capDeck([...new Set<number>(v.deck.filter((n: unknown) => typeof n === 'number' && !!UNITS[n] && !UNITS[n].foe && UNITS[n].unlock <= p.unlocked))]) : [];
@@ -213,21 +218,23 @@ export interface Siege {
 }
 /** Which of the three pictures a workshop level (0-5) shows, for our fortress and its crossbow: 0-1, 2-3, 4-5. */
 export const looksTier = (level: number) => (level >= 4 ? 3 : level >= 2 ? 2 : 1);
-/** Which of the enemy fortress's three pictures a world shows: worlds 1-3, 4-6, 7-9. */
-export const enemyTier = (world: number) => Math.min(3, Math.max(1, Math.ceil(world / 3)));
+/** Which of the enemy fortress's three pictures an act shows: acts 1-2, 3-4, 5-6. */
+export const enemyTier = (act: number) => Math.min(3, Math.max(1, Math.ceil(act / 2)));
+/** How hard an act is, on the old nine-world scale (act 6 as hard as world 9). */
+const hard = (act: number) => act * 1.5;
 export const energyMax = (s: Siege) => 180 + s.generator * 70;
 export const energyRate = (s: Siege) => 7 + s.generator * 2.5 + s.economy;
 export const generatorPrice = (s: Siege) => 65 + s.generator * 45;
 export function newSiege(p: Progress, world: number): Siege {
-  world = integer(world, 1, p.unlocked, 1);
-  const maxHp: [number, number] = [1700 + p.upgrades[1] * 200, 1500 + world * 170];
+  world = integer(world, 1, Math.min(ACTS, p.unlocked), 1);
+  const maxHp: [number, number] = [1700 + p.upgrades[1] * 200, 1500 + hard(world) * 170];
   return { world, phase: 'fight', time: 0, energy: 80, generator: 0, cooldowns: UNITS.map(() => 0), hp: [...maxHp], maxHp, units: [], effects: [], nextId: 1, nextWave: 7, waves: 0, kills: 0, spell: 0, rocket: 0, aim: 700, bossSpawned: false, paid: false, power: 1 + p.upgrades[0] * 0.08, economy: p.upgrades[2] * 0.6, deck: [...p.deck], bow: { quiver: BOW.max, drawing: false, held: 0, next: 0, level: p.upgrades[3] }, fort: p.upgrades[1], levels: [...(p.levels ?? [])] };
 }
 /** The guardian, Cartoon Wars 2-style: it only comes out once the enemy fortress falls, far tougher than a troop, and
     the battle is won when it falls too. */
 const BOSS_HP = 2.6;
 /** From how many seconds into the battle the enemy's flyers come. */
-const airFrom = (world: number) => Math.max(40, 110 - world * 8);
+const airFrom = (act: number) => Math.max(40, 110 - hard(act) * 8);
 /** The Forge's heavy robots, ours and theirs, break twice before they are gone: each wreck keeps this share of the
     last one's health and damage, and is drawn smaller and darker. */
 export const SPLIT = { hp: 0.45, damage: 0.45 };
@@ -240,7 +247,7 @@ export const ELITE_ID = 22;
 function spawn(s: Siege, id: number, side: 0 | 1, boss = false) {
   if (s.units.filter(u => u.side === side).length >= CAP) return;
   const lv = side ? undefined : s.levels[id] ?? 1;
-  const spec = side ? UNITS[id] : specAt(id, lv); const scale = side ? 0.8 + s.world * 0.07 : s.power;
+  const spec = side ? UNITS[id] : specAt(id, lv); const scale = side ? 0.8 + hard(s.world) * 0.07 : s.power;
   const hp = spec.hp * scale * (boss ? BOSS_HP : 1);
   // One gunner in every few (counted by its spawn number) comes horned.
   const elite = !!side && !boss && id === ELITE_ID && s.time >= ELITE.from && s.nextId % ELITE.every === 0;
@@ -344,7 +351,7 @@ export function tick(s: Siege, dt: number) {
   s.effects = s.effects.filter(e => (e.life -= dt) > 0);
   s.nextWave -= dt;
   if (s.nextWave <= 0) {
-    s.waves++; s.nextWave = Math.max(4.5, 10 - s.world * 0.35 - s.time / 90);
+    s.waves++; s.nextWave = Math.max(4.5, 10 - hard(s.world) * 0.35 - s.time / 90);
     const count = Math.min(4, 1 + Math.floor(s.time / 55));
     const land = pool(FOE_LAND, s.world), flyers = pool(FOE_AIR, s.world);
     // Early waves only the first two land troops; later the whole list, the newest (toughest) more often.
@@ -407,9 +414,9 @@ export function settle(p: Progress, s: Siege): number {
   s.paid = true;
   if (s.phase !== 'won') return 0;
   const first = !p.victories.includes(s.world);
-  const reward = first ? 160 + s.world * 30 : 45 + s.world * 5;
+  const reward = Math.round(first ? 160 + hard(s.world) * 30 : 45 + hard(s.world) * 5);
   p.coins += reward;
   if (first) p.victories.push(s.world);
-  p.unlocked = Math.min(9, Math.max(p.unlocked, s.world + 1));
+  p.unlocked = Math.min(ACTS, Math.max(p.unlocked, s.world + 1));
   return reward;
 }
