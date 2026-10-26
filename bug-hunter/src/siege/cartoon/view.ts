@@ -1,4 +1,5 @@
 import { FIELD, FOE_AIR, FOE_LAND, KNOCK, SPELLS, UNITS, specAt, specOf, aimAt, enemyTier, energyMax, looksTier, type Effect, type Fighter, type Siege } from './model';
+import { gloom } from './story';
 
 /** Each world's ground colours, under its floor while that loads (moss, embers, snow, mud, jungle, sand, iron,
     haunted stone, crystal); the third is unused pebble colour kept for a later side strip. */
@@ -211,6 +212,14 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
     const [deck, low] = GROUND[s.world - 1];
     const earth = ctx.createLinearGradient(0, ground - 10, 0, viewH); earth.addColorStop(0, deck); earth.addColorStop(1, low);
     ctx.fillStyle = earth; ctx.fillRect(-SCENE_FIT.pad, ground - 10, FIELD + SCENE_FIT.pad * 2, viewH);
+  }
+  // The Darkness spreading act by act (`gloom`): over the land and sky, deeper on the enemy's side; not over the
+  // fortresses or troops.
+  const g = gloom(s.world);
+  if (g > 0) {
+    const shade = ctx.createLinearGradient(0, 0, FIELD, 0);
+    shade.addColorStop(0, `rgba(14,4,22,${(g * 0.6).toFixed(2)})`); shade.addColorStop(1, `rgba(30,2,14,${g.toFixed(2)})`);
+    ctx.fillStyle = shade; ctx.fillRect(-SCENE_FIT.pad - camera.width, -viewH * 3, FIELD + (SCENE_FIT.pad + camera.width) * 2, viewH * 6);
   }
   base(ctx, s, 80, ground, '#55e5c4', false);
   base(ctx, s, FIELD - 80, ground, '#ff718c', true);

@@ -123,7 +123,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
         <b>${worldName(n)}</b></button>`;
     }).join('');
     const map = `<div class="sg-isles" role="list">${isles}</div>
-      ${cartoon ? `<article class="sg-world is-act">
+      ${cartoon ? `<article class="sg-world is-act" style="--shade:${shade(world)}">
         <img class="sg-world-boss" src="${V.portrait(cartoonModel.GUARDIAN[world - 1])}" data-trim="${V.portrait(cartoonModel.GUARDIAN[world - 1])}" alt="">
         <span class="sg-eyebrow">${worldName(world)} · ${t('siegeGuardian')}</span><h2>${actBoss(world)}</h2>` : `<article class="sg-world" style="background-image:linear-gradient(90deg,#08101ef2 30%,#08101e66),url('${backdropUrl(world)}')">
         <img class="sg-world-boss" src="${guardianUrl(world)}" alt="">
@@ -287,18 +287,18 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   /** A story scene, Cartoon Wars-style: the world's picture behind, the speaker's portrait on their side, a line at a
       time. Tap or Next to go on, Skip to jump to the end; `done` runs after the last line. */
   let story: (() => void) | null = null;
-  function talk(lines: Line[], done: () => void) {
+  function talk(lines: (Line | cartoonStory.Line)[], done: () => void) {
     let at = 0;
     root.querySelector('.sg-overlay')?.remove();
     const overlay = document.createElement('div'); overlay.className = 'sg-overlay sg-story';
-    overlay.style.backgroundImage = `linear-gradient(#050a14aa, #050a14ee), url('${mode === 'cartoon' ? '/images/game/siege/backdrop.webp' : backdropUrl(world)}')`;
+    overlay.style.backgroundImage = mode === 'cartoon' ? `${shade(world)}, linear-gradient(#050a1499, #050a14ee), url('/images/game/siege/backdrop.webp')` : `linear-gradient(#050a14aa, #050a14ee), url('${backdropUrl(world)}')`;
     const battle = root.querySelector<HTMLElement>('.sg-battle'); if (battle) battle.inert = true;
     const end = () => { story = null; overlay.remove(); if (battle) battle.inert = false; done(); };
     const show = () => {
       const l = lines[at], last = at === lines.length - 1;
       // Cartoon's speakers: our Wizard at its level, and the act's guardian; Legacy's: the player's hero and the world's.
       const cartoon = mode === 'cartoon', wizard = 6, guard = cartoonModel.GUARDIAN[world - 1];
-      const who = l.who === 'boss' ? (cartoon ? actBoss(world) : t(GUARDIAN_NAMES[world - 1])) : l.who === 'hero' ? (cartoon ? name(wizard) : hero.name.replace(/[&<>"']/g, c => `&#${c.charCodeAt(0)};`)) : t('siegeNarrator');
+      const who = l.who === 'king' ? t('siegeKing') : l.who === 'boss' ? (cartoon ? actBoss(world) : t(GUARDIAN_NAMES[world - 1])) : l.who === 'hero' ? (cartoon ? name(wizard) : hero.name.replace(/[&<>"']/g, c => `&#${c.charCodeAt(0)};`)) : t('siegeNarrator');
       const pic = l.who === 'boss' ? (cartoon ? V.portrait(guard) : guardianUrl(world)) : l.who === 'hero' ? (cartoon ? V.portrait(wizard, progress.levels[wizard]) : hero.pic) : '';
       overlay.innerHTML = `<div class="sg-scene is-${l.who}" role="dialog" aria-modal="true" aria-label="${t('siegeName')}">
         <span class="sg-eyebrow">${mode === 'cartoon' ? `${worldName(world)} · ${t(`siegeCtAct${world}` as Key)}` : t(`world${world}Name` as Key)}</span>
@@ -315,6 +315,22 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     });
     story = end;
     root.append(overlay); show();
+  }
+  /** The Darkness over an act, as a CSS layer: deeper act by act. */
+  const shade = (act: number) => { const g = cartoonStory.gloom(act); return `linear-gradient(90deg, rgba(14,4,22,${(g * 0.6).toFixed(2)}), rgba(30,2,14,${g.toFixed(2)}))`; };
+  /** Siege Cartoon's act title, before its story: "Act N" and its name over the battlefield, the Darkness spreading
+      over it from the last act's to this one's. Tap or wait to go on. */
+  function actCard(act: number, done: () => void) {
+    root.querySelector('.sg-overlay')?.remove();
+    const overlay = document.createElement('div'); overlay.className = 'sg-overlay sg-story sg-actcard';
+    overlay.style.setProperty('--from', String(cartoonStory.gloom(act - 1))); overlay.style.setProperty('--to', String(cartoonStory.gloom(act)));
+    overlay.innerHTML = `<i class="sg-gloom" aria-hidden="true"></i><div class="sg-actcard-in" role="dialog" aria-modal="true" aria-label="${worldName(act)}">
+      <small>${worldName(act)}</small><h2>${t(`siegeCtAct${act}` as Key)}</h2><button class="sg-primary" data-story="next">${t('siegeTalkNext')} ▶</button></div>`;
+    let timer = 0;
+    const end = () => { clearTimeout(timer); story = null; overlay.remove(); done(); };
+    overlay.addEventListener('click', e => { e.stopPropagation(); end(); });
+    story = end; root.append(overlay); overlay.querySelector<HTMLElement>('button')?.focus();
+    timer = window.setTimeout(() => overlay.isConnected && end(), reduced ? 2500 : 4200);
   }
   function pause() {
     if (!state || state.phase !== 'fight' || paused || story) return;
@@ -353,7 +369,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     if (button.dataset.sgTab && state) { tab = button.dataset.sgTab as typeof tab; cards(); return; }
     if (summonId !== undefined && state && !paused) { if (M.summon(state, Number(summonId))) sound('click'); updateUi(); return; }
     if (action === 'exit') close();
-    else if (action === 'launch') talk(mode === 'cartoon' ? cartoonStory.intro(world) : intro(world), start);
+    else if (action === 'launch') mode === 'cartoon' ? actCard(world, () => talk(cartoonStory.intro(world), start)) : talk(intro(world), start);
     else if (action === 'modes') modes();
     else if (action === 'retry') start();
     else if (action === 'prep') prep();
