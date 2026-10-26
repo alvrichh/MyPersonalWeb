@@ -481,3 +481,6 @@
 .is-cartoon .sg-aim{width:78px!important;height:min(210px,60%)!important}
 .is-cartoon .sg-aim-knob{width:74px;height:62px}
 @media (max-height:500px) and (orientation:landscape){.is-cartoon .sg-aim{width:62px!important;height:min(170px,58%)!important}.is-cartoon .sg-aim-knob{width:58px;height:48px}}
+/* v1.14.95 — the bow stays put on hover and press (an older rule made it `position: relative` there, moving it from
+   under the pointer, so taps never reached it). */
+.siege-root.is-cartoon .sg-bar .sg-bow,.siege-root.is-cartoon .sg-bar .sg-bow:hover:not(:disabled),.siege-root.is-cartoon .sg-bar .sg-bow.is-drawing{position:absolute}

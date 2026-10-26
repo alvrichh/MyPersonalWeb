@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.95 - 2026-10-26
+
+### Fixed
+- Siege Cartoon: tapping or clicking the bow ball did nothing, so the crossbow never shot. An older hover/press rule moved the button from under the pointer; it now stays put and the tap starts and stops the arrows.
+
 ## 1.14.94 - 2026-10-26
 
 ### Changed
