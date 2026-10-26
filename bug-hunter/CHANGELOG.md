@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.96 - 2026-10-26
+
+### Changed
+- Siege Cartoon's battle bar is the owner's picture exactly as drawn: whole, uncut, with its own seven slots and no copies added, centred at the foot of the screen; the cards sit on its slots. The aim stick is smaller on an upright phone, where the bigger one covered the castle.
+
 ## 1.14.95 - 2026-10-26
 
 ### Fixed

@@ -484,3 +484,11 @@
 /* v1.14.95 — the bow stays put on hover and press (an older rule made it `position: relative` there, moving it from
    under the pointer, so taps never reached it). */
 .siege-root.is-cartoon .sg-bar .sg-bow,.siege-root.is-cartoon .sg-bar .sg-bow:hover:not(:disabled),.siege-root.is-cartoon .sg-bar .sg-bow.is-drawing{position:absolute}
+/* v1.14.96 — the battle bar is the owner's picture exactly as drawn: whole, uncut, no slots added, centred at the foot
+   of the screen, as large as fits (`--u`: one picture pixel). */
+.siege-root.is-cartoon .sg-bar{--u:min(.4px,calc((100vw - 4px) / 2071));left:50%;right:auto;bottom:0;width:calc(2071 * var(--u));height:calc(378 * var(--u));transform:translateX(-50%);
+  background:url('/images/game/siege/bar.webp') 0 0 / 100% 100% no-repeat}
+.siege-root.is-cartoon .sg-bar::before,.siege-root.is-cartoon .sg-bar::after{content:none}
+.sg-wall{display:none}
+@media (max-height:500px) and (orientation:landscape){.siege-root.is-cartoon .sg-bar{--u:min(.3px,calc((100vw - 4px) / 2071))}}
+@media (orientation:portrait){.is-cartoon .sg-aim{width:52px!important;height:min(130px,22%)!important}.is-cartoon .sg-aim-knob{width:48px;height:40px}}

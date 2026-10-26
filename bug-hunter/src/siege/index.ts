@@ -321,15 +321,9 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   function layoutBar() {
     if (mode !== 'cartoon') return;
     const bar = root.querySelector<HTMLElement>('.sg-bar'); if (!bar) return;
-    const u = bar.offsetHeight / 378, mid = Math.max(0, bar.clientWidth - 1902 * u), n = Math.max(1, Math.round(mid / (169 * u))), tile = mid / n, k = tile / (169 * u);
-    // The wall between the picture's ends: copies of its first slot, each stretched a little so they fill it exactly.
-    let wall = bar.querySelector<HTMLElement>('.sg-wall');
-    if (!wall) { wall = document.createElement('div'); wall.className = 'sg-wall'; wall.setAttribute('aria-hidden', 'true'); bar.prepend(wall); }
-    if (wall.childElementCount !== n) wall.innerHTML = '<i></i>'.repeat(n);
-    wall.querySelectorAll<HTMLElement>('i').forEach(t => { t.style.backgroundSize = `${(2071 * u * k).toFixed(1)}px 100%`; t.style.backgroundPosition = `${(-639 * u * k).toFixed(1)}px 0`; });
-    const slots = [...Array.from({ length: n }, (_, i) => ({ x: 639 * u + i * tile + 12 * u * k, w: 145 * u * k })),
-      ...[19, 187, 351, 517].map(off => ({ x: 639 * u + mid + (off - 7) * u, w: 145 * u }))];
-    root.querySelectorAll<HTMLElement>('.sg-bar .sg-deck button').forEach((b, i) => { const s = slots[i]; if (s) { b.style.left = `${s.x.toFixed(1)}px`; b.style.width = `${s.w.toFixed(1)}px`; } });
+    // The bar is the owner's picture whole (2071 × 378, its seven wall slots 169 apart from x 646): a card on each slot.
+    const u = bar.offsetHeight / 378;
+    root.querySelectorAll<HTMLElement>('.sg-bar .sg-deck button').forEach((b, i) => { b.style.left = `${((646 + i * 169) * u).toFixed(1)}px`; b.style.width = `${(155 * u).toFixed(1)}px`; });
   }
   function updateUi() {
     if (!state) return; const s = state;
