@@ -229,7 +229,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     root.innerHTML = `<div class="sg-battle"><header class="sg-hud">
         <div class="sg-mana"><img src="/images/game/ui/orb.webp" alt=""><span><b data-sg-energy></b><small data-sg-status></small></span><progress data-sg-meter></progress></div>
         <div class="sg-vs"><img class="sg-vs-pic" src="${vsPic(0)}" alt=""><span class="sg-hp"><i data-sg-bar="0"></i><small data-sg-health="0"></small></span><b>VS</b><span class="sg-hp is-enemy"><i data-sg-bar="1"></i><small data-sg-health="1"></small></span><img class="sg-vs-pic" src="${vsPic(1)}" alt=""></div>
-        <div class="sg-hud-actions"><span class="sg-clock" data-sg-clock></span><span class="sg-gold" data-sg-gold>🪙 ${progress.coins}</span><button data-sg="pause" aria-label="${t('pause')}">⏸</button></div></header>
+        <div class="sg-hud-actions"><span class="sg-clock" data-sg-clock></span><span class="sg-gold"><img src="/images/game/store/coins-2.webp" alt=""><b data-sg-gold>${progress.coins}</b></span><button data-sg="pause" aria-label="${t('pause')}">⏸</button></div></header>
       <div class="sg-field"><div class="sg-turn" role="status"><span aria-hidden="true">📱↻</span><b>${t('siegeTurn')}</b><button type="button" data-sg-turn aria-label="${t('siegeTurnOk')}">✕</button></div><canvas class="sg-arena" tabindex="0" role="img" aria-label="${t('siegeBattlefield')}"></canvas>
       <div class="sg-aim" role="slider" tabindex="0" aria-orientation="vertical" aria-valuemin="140" aria-valuemax="1080" aria-valuenow="700" aria-label="${t('siegeAim')}" data-sg-aim><i class="sg-aim-up" aria-hidden="true"></i><i class="sg-aim-knob" aria-hidden="true"></i><i class="sg-aim-down" aria-hidden="true"></i></div>
       <div class="sg-camera"><button data-sg="home" aria-label="${t('siegeHome')}">◀</button><input type="range" min="0" max="1000" value="0" data-sg-camera aria-label="${t('siegeCamera')}"><button data-sg="enemy" aria-label="${t('siegeEnemy')}">▶</button></div></div>
@@ -342,7 +342,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     }
     q('.sg-hp.is-enemy').classList.toggle('is-boss', !!guard);
     q('[data-sg-clock]').textContent = clock(Math.max(0, M.LIMIT - s.time));
-    q('[data-sg-gold]').textContent = `🪙 ${progress.coins + (s.loot ?? 0)}`;
+    q('[data-sg-gold]').textContent = `${progress.coins + (s.loot ?? 0)}`;
     q('[data-sg-energy]').textContent = `${Math.floor(s.energy)} / ${M.energyMax(s)}`;
     const meter = q<HTMLProgressElement>('[data-sg-meter]'); meter.max = M.energyMax(s); meter.value = s.energy;
     q('[data-sg-status]').textContent = `+${M.energyRate(s).toFixed(1)}/s · ${s.units.filter(u => !u.side).length}/${M.CAP}`;

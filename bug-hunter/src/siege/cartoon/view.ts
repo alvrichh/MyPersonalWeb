@@ -234,6 +234,16 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
       ctx.globalAlpha = 1;
     }
     if (top + sh < viewH) ctx.drawImage(scene, 0, scene.naturalHeight - 1, scene.naturalWidth, 1, x0, top + sh - 1, sw, viewH - top - sh + 2);
+    // Below the walking ground the picture's foreground (big stone slabs, drawn huge at this scale) is covered with its
+    // own grass: the band just under the ground line repeated down (every other copy flipped, so no seam shows), a
+    // little darker the lower it goes, so only the bar and the troops read there.
+    const turf = ground + 14, nh = scene.naturalHeight, row = nh * SCENE_FIT.ground + nh * 0.012, band = nh * 0.035, bh = band * sh / nh;
+    for (let yy = turf, k = 0; yy < viewH + 2; yy += bh, k++) {
+      ctx.save(); ctx.translate(0, k % 2 ? yy + bh : yy); ctx.scale(1, k % 2 ? -1 : 1);
+      ctx.drawImage(scene, 0, row, scene.naturalWidth, band, x0, 0, sw, bh + 0.5); ctx.restore();
+    }
+    const fade = ctx.createLinearGradient(0, turf, 0, turf + 70); fade.addColorStop(0, '#00000000'); fade.addColorStop(1, '#00000052');
+    ctx.fillStyle = fade; ctx.fillRect(x0, turf, sw, viewH - turf + 4);
   } else {
     const [deck, low] = GROUND[actOf(s.world) - 1];
     const earth = ctx.createLinearGradient(0, ground - 10, 0, viewH); earth.addColorStop(0, deck); earth.addColorStop(1, low);
@@ -256,7 +266,7 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   for (const c of fallen(s)) fighter(ctx, s, c.u, ground, reduced, color, Math.min(1, (s.time - c.at) / DEAD_FOR));
   for (const u of [...s.units].sort((a, b) => a.lane - b.lane || a.x - b.x)) fighter(ctx, s, u, ground, reduced, color);
   for (const e of s.effects) {
-    const p = 1 - e.life / e.max; const y = ground + e.lane * 12 - 26;
+    const p = 1 - e.life / e.max; const y = ground - 26;
     if (effect(ctx, e, p, y, ground)) continue;
     ctx.globalAlpha = e.life / e.max; ctx.strokeStyle = e.side ? '#ff98b0' : '#fff0ae'; ctx.lineWidth = 3;
     ctx.beginPath();
@@ -298,7 +308,7 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     // A wizard's spell lands on the target: the lightning and the tornado stand on it (the tornado turning a little),
     // the meteor comes down from above onto it; all fade at the end.
     const art = still(`siege/units/shot-${e.art}`); if (!ok(art)) return false;
-    const h = e.art === 'meteor' ? 150 : 120, w = h * art.naturalWidth / art.naturalHeight, foot = ground + e.lane * 12;
+    const h = e.art === 'meteor' ? 150 : 120, w = h * art.naturalWidth / art.naturalHeight, foot = ground;
     const drop = e.art === 'meteor' ? Math.max(0, 1 - p * 1.6) * 140 : 0;
     ctx.save(); ctx.globalAlpha = p > 0.75 ? (1 - p) / 0.25 : 1;
     ctx.translate(e.x + drop * 0.5, foot - drop);
@@ -340,7 +350,7 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     if (close) { ctx.save(); ctx.globalAlpha = 1 - p; ctx.drawImage(art, e.x - 15, y - 15, 30, 30); ctx.restore(); return true; }
     // Our arrows leave the crossbow's tip and fly under gravity onto their spot (`flight`); a troop's shot flies a low,
     // flat arc.
-    const at = e.kind === 'arrow' ? flight(bowTip, { x: e.x, y: ground + e.lane * 6 - 2 })
+    const at = e.kind === 'arrow' ? flight(bowTip, { x: e.x, y: ground - 2 })
       : (t: number) => ({ x: e.from + (e.x - e.from) * t, y: y - Math.sin(t * Math.PI) * 30 });
     const here = at(p), ahead = dirAt(at, p);
     const len = e.kind === 'arrow' ? (bolt.endsWith('rocket') ? 46 : 60) : 40, h = len * art.naturalHeight / art.naturalWidth;
@@ -441,7 +451,8 @@ function fallen(s: Siege) {
     draws it fallen, fading at the end. */
 function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: number, reduced: boolean, color: string, gone?: number) {
   // Air troops fly above their lane, their shadow on the ground under them; the fallen lie on the ground.
-  const spec = specOf(u), floor = ground + u.lane * 12;
+  // Every troop on one line (the lanes only order who is drawn in front), so the card bar never hides one.
+  const spec = specOf(u), floor = ground;
   const y = gone !== undefined ? floor : spec.air ? floor - 70 - u.lane * 8 + (reduced ? 0 : Math.sin(s.time * 4 + u.uid) * 5) : floor;
   const path = spec.sprite, t = s.time + u.uid * 0.37;
   // The pose. Six-pose sheets: walk A/B in turn while walking, the wind-up just before a blow, the blow, hurt, dead.
