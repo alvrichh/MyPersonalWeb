@@ -4,6 +4,15 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.8 - 2026-10-26
+
+### Added / Changed - Siege Cartoon: worlds, the corrupt wind, bigger enemies, bounties
+- Acts are called worlds (World 1-6, five stages each).
+- The corrupt wind: once a battle, when the enemy fortress is down to half, a purple gust sweeps from it across the field, blowing our troops back, with a warning and its own howl; the enemy pours out a horde of weak troops and some of its toughest, growing world by world.
+- Enemies grow bigger stage by stage (up to 30% at the last battle), as they grow tougher.
+- Every fallen enemy gives gold and energy, far more for the strong (a bear about four times a swordsman; a guardian 120 gold and 80 energy), shown rising where it fell.
+- Balance, checked with a scripted player over all 30 battles: a steady climb with harder stages at the start of worlds 2, 5 and 6; enemies' stats grow a little less steeply at the end, where battles stalled.
+
 ## 1.15.7 - 2026-10-26
 
 ### Changed

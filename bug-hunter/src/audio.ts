@@ -15,7 +15,7 @@
 
 /** Siege's troop sounds: attacks by weapon, deaths by body. */
 export const SIEGE_SOUNDS = ['blade', 'blunt', 'pierce', 'claw', 'bite', 'throw', 'bow', 'gun', 'rifle', 'uzi', 'sniper', 'gatling', 'rocket', 'ray', 'flame', 'thunder', 'wind', 'meteor', 'breath', 'drill', 'magic',
-  'die-man', 'die-armor', 'die-beast', 'die-brute', 'die-bot', 'die-flyer', 'die-horse', 'die-dragon', 'base-falls', 'coin'] as const;
+  'die-man', 'die-armor', 'die-beast', 'die-brute', 'die-bot', 'die-flyer', 'die-horse', 'die-dragon', 'base-falls', 'coin', 'corrupt-wind'] as const;
 export type SiegeSound = (typeof SIEGE_SOUNDS)[number];
 export type Sfx =
   | 'shoot' | 'knife' | 'boomerang' | 'hit' | 'kill' | 'gem' | 'hurt' | 'levelup' | 'pick'
@@ -2139,6 +2139,12 @@ class Engine {
         for (let i = 0; i < 9; i++) noise(0.1 + i * 0.07, 0.08, 0.16, 'bandpass', 900 * r(0.3), 500, 1.5);
         [0, 7, 12].forEach((n) => tone(0.9, 'sawtooth', 110 * 2 ** (n / 12), 108 * 2 ** (n / 12), 1.1, 0.07, 0.15, ['lowpass', 1400]));
         tone(1.3, 'sawtooth', 90, 45, 0.9, 0.2, 0.08, ['bandpass', 420, 2]); return noise(1.3, 0.9, 0.18, 'lowpass', 700, 150, 0.6, 0.08);
+      }
+      // The corrupt wind: a low howl rising, a rushing gust, and a dark chord under it.
+      case 'corrupt-wind': {
+        noise(0, 1.3, 0.7, 'bandpass', 220, 1400, 1.4, 0.25); noise(0.15, 1.1, 0.35, 'lowpass', 600, 200, 0.6, 0.2);
+        [0, 1, 6].forEach((n) => tone(0, 'sawtooth', 73 * 2 ** (n / 12), 70 * 2 ** (n / 12), 1.4, 0.06, 0.3, ['lowpass', 700]));
+        return slide(0.1, 180, 520, 1.1, 0.06);
       }
       case 'coin': tone(0, 'square', 1320, 1320, 0.06, 0.06, 0.002, ['lowpass', 5000]); return tone(0.06, 'square', 1760, 1760, 0.16, 0.06, 0.002, ['lowpass', 5000]);
     }

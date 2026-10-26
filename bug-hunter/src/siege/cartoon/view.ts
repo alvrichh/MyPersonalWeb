@@ -319,6 +319,28 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     ctx.drawImage(art, -len / 2, -h / 2, len, h); ctx.restore(); return true;
   }
   if (e.kind === 'burst' && p < 0) return true;
+  if (e.kind === 'gust') {
+    // The corrupt wind: a purple wall of air rushing from the enemy fortress across the field, streaks in it.
+    const front = e.x - (e.x + 200) * Math.min(1, p * 1.25), a = p < 0.8 ? 1 : (1 - p) / 0.2;
+    ctx.save(); ctx.globalAlpha = 0.8 * a;
+    const g = ctx.createLinearGradient(front, 0, front + 620, 0); g.addColorStop(0, '#d070ff00'); g.addColorStop(0.12, '#b048f0dd'); g.addColorStop(0.5, '#7a20b088'); g.addColorStop(1, '#3a0a4a00');
+    ctx.fillStyle = g; ctx.fillRect(front, -2000, 620, ground + 2060);
+    ctx.strokeStyle = '#f0b8ff'; ctx.lineWidth = 3; ctx.lineCap = 'round'; ctx.globalAlpha = 0.7 * a;
+    for (let i = 0; i < 7; i++) {
+      const yy = ground - 30 - i * 32 - (i % 2) * 10, x0 = front + 40 + ((i * 53) % 160), len = 90 + (i % 3) * 40;
+      ctx.beginPath(); ctx.moveTo(x0, yy); ctx.quadraticCurveTo(x0 + len / 2, yy - 14, x0 + len, yy); ctx.stroke();
+    }
+    ctx.restore(); return true;
+  }
+  if (e.kind === 'loot') {
+    // A fallen enemy's bounty rising: its gold, and its energy under it.
+    // Fallen side by side, their bounties are staggered (by the effect's place in the list), not stacked.
+    const y = ground - 70 - p * 50 - ((e.from * 7) % 3) * 16;
+    ctx.save(); ctx.globalAlpha = p < 0.7 ? 1 : (1 - p) / 0.3; ctx.textAlign = 'center'; ctx.lineWidth = 3; ctx.strokeStyle = '#1b1b1b';
+    ctx.font = '900 15px system-ui'; ctx.fillStyle = '#ffd23f'; ctx.strokeText(`+${e.gold}`, e.x, y); ctx.fillText(`+${e.gold}`, e.x, y);
+    ctx.font = '800 12px system-ui'; ctx.fillStyle = '#7fe3ff'; ctx.strokeText(`+${e.mana} ⚡`, e.x, y + 15); ctx.fillText(`+${e.mana} ⚡`, e.x, y + 15);
+    ctx.restore(); return true;
+  }
   if (e.kind === 'bolt') {
     // An elite's lightning: a jagged yellow line from shooter to target, fading.
     ctx.save(); ctx.globalAlpha = 1 - p; ctx.strokeStyle = '#fff38a'; ctx.shadowColor = '#ffd84a'; ctx.shadowBlur = 12; ctx.lineWidth = 3;
@@ -485,7 +507,7 @@ function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: nu
     ? gone !== undefined ? 5 : hurt ? 4 : u.hit ? 3 : ready ? 2 : u.moving && !reduced ? Math.floor(t * 5) % 2 : 0
     : gone !== undefined ? 2 : hurt ? 2 : u.hit ? 1 : 0;
   const stand = picture(`${path}-0`), art = picture(`${path}-${pose}`);
-  const size = spec.size * (u.boss ? 1.6 : 1) * Math.pow(0.8, u.stage ?? 0);
+  const size = spec.size * (u.boss ? 1.6 : 1) * (u.grow ?? 1) * Math.pow(0.8, u.stage ?? 0);
   // The shadow under its feet (the troop's x is where its feet are), the feet standing on its middle.
   if (gone === undefined) { ctx.fillStyle = u.side ? '#ff648577' : '#43ebce77'; ctx.beginPath(); ctx.ellipse(u.x, floor, size * (spec.air ? 0.2 : 0.22), spec.air ? 4 : 5, 0, 0, Math.PI * 2); ctx.fill(); }
   if (ok(stand.image) && ok(art.image)) {

@@ -41,7 +41,7 @@ test('troops walk, engage opponents and cannot pass through them', () => {
   assert.ok(a.x < enemy.x); assert.ok(a.hp < a.maxHp); assert.ok(enemy.hp < enemy.maxHp);
 });
 test('units damage enemy fortress and win without touching their own', () => {
-  const s = m.newSiege(m.freshProgress(), 1); m.summon(s, 0); s.units[0].x = m.FIELD - 110; s.hp[1] = 1; s.bossSpawned = true;
+  const s = m.newSiege(m.freshProgress(), 1); m.summon(s, 0); s.units[0].x = m.FIELD - 110; s.hp[1] = 1; s.bossSpawned = true; s.gusted = true;
   m.tick(s, 1 / 30); assert.equal(s.phase, 'won'); assert.equal(s.hp[0], s.maxHp[0]); assert.equal(s.hp[1], 0);
   const snapshot = JSON.stringify(s); run(s, 5); assert.equal(JSON.stringify(s), snapshot);
 });
@@ -238,4 +238,19 @@ test('testing switch: every troop open, recruited and levelled for free', () => 
     const p = m.freshProgress(); assert.equal(p.coins, 0);
     assert.equal(m.buyTroop(p, 14), true, 'the dearest, at act 1, with no gold'); assert.equal(m.levelUp(p, 14), true); assert.equal(p.coins, 0);
   } finally { m.testing.free = false; }
+});
+test('the corrupt wind: at half the fortress\'s health, once, it blows our troops back and a horde comes; the fallen give gold and energy', () => {
+  const s = m.newSiege(m.freshProgress(), 1); s.nextWave = 999; s.energy = 999; m.summon(s, 0); const troop = s.units[0]; troop.x = 900;
+  s.hp[1] = s.maxHp[1] * 0.6; m.tick(s, 1 / 30); assert.equal(s.gusted ?? false, false, 'not yet');
+  s.hp[1] = s.maxHp[1] * 0.5; m.tick(s, 1 / 30);
+  assert.equal(s.gusted, true); assert.ok(troop.blown > 0); assert.equal(s.units.filter(u => u.side).length, m.hordeOf(1).weak + m.hordeOf(1).strong); assert.ok(m.hordeOf(30).weak > m.hordeOf(1).weak);
+  const x = troop.x; run(s, 0.5); assert.ok(troop.x < x - 100, 'blown back');
+  const count = s.units.filter(u => u.side).length; s.hp[1] = s.maxHp[1] * 0.2; m.tick(s, 1 / 30); assert.equal(s.units.filter(u => u.side).length, count, 'only once');
+  const t = m.newSiege(m.freshProgress(), 1); t.nextWave = 999; t.gusted = true; t.energy = 0;
+  t.units.push({ uid: 90, id: 18, side: 1, x: 900, lane: 0, hp: 0, maxHp: 480, damage: 1, attack: 9, flash: 0, boss: false });
+  t.units.push({ uid: 91, id: 15, side: 1, x: 900, lane: 0, hp: 0, maxHp: 115, damage: 1, attack: 9, flash: 0, boss: false });
+  m.tick(t, 1 / 30); assert.ok(t.energy > 0, 'energy for the fallen');
+  assert.ok(m.dropOf({ id: 18 }) > 3 * m.dropOf({ id: 15 }), 'a bear is worth far more than a swordsman');
+  const late = m.newSiege({ ...m.freshProgress(), unlocked: m.LAST }, m.LAST); late.nextWave = 0; m.tick(late, 1 / 30);
+  assert.ok(late.units.find(u => u.side).grow > 1.25, 'the last battle\'s enemies are bigger');
 });
