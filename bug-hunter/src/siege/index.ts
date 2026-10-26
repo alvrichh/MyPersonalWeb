@@ -242,12 +242,12 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     const buttons = act
       ? Array.from({ length: S }, (_, k) => {
         const n = (act - 1) * S + k + 1, open = n <= progress.unlocked, boss = k + 1 === S;
-        return `<button class="sg-spot ${boss ? 'is-boss' : ''} ${n === world ? 'is-on' : ''} ${open ? '' : 'is-locked'}" ${at(k)} data-sg-world-pick="${n}" ${open ? '' : 'disabled'} aria-pressed="${n === world}" aria-label="${t('siegeStage', { n: k + 1, max: S })}${boss ? ` · ${t('siegeGuardian')}: ${actBoss(act)}` : ''}">
+        return `<button class="sg-spot ${boss ? 'is-boss' : ''} ${n === world ? 'is-on' : ''} ${open ? won(n) ? 'is-done' : '' : 'is-locked'}" ${at(k)} data-sg-world-pick="${n}" ${open ? '' : 'disabled'} aria-pressed="${n === world}" aria-label="${t('siegeStage', { n: k + 1, max: S })}${boss ? ` · ${t('siegeGuardian')}: ${actBoss(act)}` : ''}">
           ${boss ? `<img class="sg-spot-boss" src="${V.portrait(cartoonModel.GUARDIAN[act - 1])}" data-trim="${V.portrait(cartoonModel.GUARDIAN[act - 1])}" alt="">` : ''}<b>${k + 1}</b>${ring(open, won(n))}</button>`;
       }).join('')
       : Array.from({ length: cartoonModel.ACTS }, (_, i) => {
         const n = i + 1, open = (n - 1) * S + 1 <= progress.unlocked, on = n === actNow();
-        return `<button class="sg-spot is-world ${on ? 'is-on' : ''} ${open ? '' : 'is-locked'}" ${at(i)} data-sg-map-act="${n}" ${open ? '' : 'disabled'} aria-label="${worldName(n)} · ${t(`siegeCtAct${n}` as Key)}">
+        return `<button class="sg-spot is-world ${on ? 'is-on' : ''} ${open ? won(n * S) ? 'is-done' : '' : 'is-locked'}" ${at(i)} data-sg-map-act="${n}" ${open ? '' : 'disabled'} aria-label="${worldName(n)} · ${t(`siegeCtAct${n}` as Key)}">
           <b>${n}</b>${ring(open, won(n * S))}<span class="sg-spot-name">${worldName(n)}</span></button>`;
       }).join('');
     const stage = cartoonModel.stageIn(world), here = act && actNow() === act;
