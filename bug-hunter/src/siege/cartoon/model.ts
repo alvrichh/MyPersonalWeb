@@ -188,7 +188,7 @@ export const RECRUIT: Record<number, number> = { 0: 0, 1: 100, 2: 120, 3: 350, 4
     Dinosaur Brute) until those exist. */
 export const GUARDIAN = [18, 32, 31, 21, 26, 26];
 /** Up to this many land and this many air troops in an army. */
-export const DECK = 5;
+export const DECK = 6;
 /** An army card: a troop at one of its levels, `id + (level - 1) * 100` (so a level-1 card is the troop's id). Two forms
     of a troop can both be in the army. */
 export const card = (id: number, level = 1) => id + (level - 1) * 100;

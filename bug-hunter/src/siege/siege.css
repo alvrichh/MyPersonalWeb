@@ -450,3 +450,12 @@
   .siege-root.is-cartoon .sg-prep .sg-st-actions button{min-height:38px;font-size:15px;min-width:110px}
   .sg-st-gold{font-size:16px;padding:2px 10px 2px 4px}.sg-st-gold img{width:26px;height:20px}
 }
+/* v1.14.91 — six cards a kind: the slot column shares its height among them (two columns of three on short screens). */
+@media (orientation:landscape){
+  .sg-prep .sg-st-slots{display:grid;grid-template-rows:repeat(6,minmax(0,1fr));gap:6px}
+  .sg-prep .sg-st-slot,.siege-root.is-cartoon .sg-prep .sg-st-slot.is-full{width:84px;height:auto;min-height:0}
+}
+@media (orientation:landscape) and (max-height:500px){
+  .sg-prep .sg-st-slots{flex-basis:96px;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(3,minmax(0,1fr));gap:4px}
+  .sg-prep .sg-st-slot,.siege-root.is-cartoon .sg-prep .sg-st-slot.is-full{width:auto;border-width:2px;padding:1px}
+}

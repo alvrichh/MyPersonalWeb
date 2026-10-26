@@ -495,9 +495,9 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     if (e.key === 'Escape') { e.preventDefault(); if (!state) mode ? modes() : close(); else if (state.phase === 'fight') paused ? resume() : pause(); return; }
     if (!state || paused || e.repeat || /INPUT|SELECT|TEXTAREA/.test((e.target as HTMLElement).tagName)) return;
     const key = e.key.toLowerCase();
-    if ('12345efqrlas'.includes(key) || key.startsWith('arrow')) e.preventDefault();
+    if ('123456efqrlas'.includes(key) || key.startsWith('arrow')) e.preventDefault();
     if (key === 'l' || key === 'a' || key === 's') { tab = key === 'l' ? 'land' : key === 'a' ? 'air' : 'special'; cards(); return; }
-    if (/^[1-5]$/.test(key)) { const n = Number(key) - 1; if (tab === 'special') [() => M.improveGenerator(state!), () => M.strike(state!), () => M.missile(state!)][n]?.(); else { const id = tabCards()[n]; if (id !== undefined) M.summon(state, id); } }
+    if (/^[1-6]$/.test(key)) { const n = Number(key) - 1; if (tab === 'special') [() => M.improveGenerator(state!), () => M.strike(state!), () => M.missile(state!)][n]?.(); else { const id = tabCards()[n]; if (id !== undefined) M.summon(state, id); } }
     else if (key === 'r') M.missile(state);
     else if (key === 'e') M.improveGenerator(state); else if (key === 'f') M.toggleBow(state); else if (key === 'q') M.strike(state);
     else if (key === 'arrowleft') camera.x = Math.max(camera.min ?? 0, camera.x - 100); else if (key === 'arrowright') camera.x = Math.min(Math.max(0, M.FIELD - camera.width), camera.x + 100);
