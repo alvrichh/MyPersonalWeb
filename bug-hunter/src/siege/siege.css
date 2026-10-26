@@ -459,3 +459,12 @@
   .sg-prep .sg-st-slots{flex-basis:96px;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(3,minmax(0,1fr));gap:4px}
   .sg-prep .sg-st-slot,.siege-root.is-cartoon .sg-prep .sg-st-slot.is-full{width:auto;border-width:2px;padding:1px}
 }
+/* v1.14.92 — Siege Cartoon's shop alone on the screen: its tabs and Back on top, the rows scrolling, the bar and buttons
+   below, in every orientation. */
+.siege-root.is-cartoon:has(.sg-shop-only){overflow:hidden}
+.siege-root.is-cartoon .sg-prep.sg-shop-only{max-width:1120px;height:100dvh;display:flex;flex-direction:column;padding:8px}
+.sg-shop-only .sg-store{flex:1;min-height:0;height:auto}
+.sg-shop-only .sg-st-body{flex:1;min-height:0}
+.sg-shop-only .sg-st-grid{max-height:none}
+.siege-root.is-cartoon .sg-prep .sg-st-back{margin-left:auto;min-height:42px;padding:0 18px;font:900 16px system-ui;text-transform:uppercase;background:#ffd23f}
+@media (max-width:600px){.siege-root.is-cartoon .sg-prep .sg-st-back{padding:0 10px;font-size:13px;min-height:36px}.sg-shop-only .sg-st-body{flex-direction:column}.sg-shop-only .sg-st-grid{flex:1}}
