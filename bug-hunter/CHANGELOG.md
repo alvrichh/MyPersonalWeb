@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.79 - 2026-10-26
+
+### Changed - Siege Cartoon's castle and crossbow in four levels
+- The owner's new castles and crossbows replace the three-level ones: four castles, growing from a small keep to a winged fortress with an eagle, each with a round turret on its right where the crossbow sits; and three crossbows and a rocket launcher, each one picture turning on its wheel (no separate base any more).
+- The workshop's Fortress and Bow levels pick the look: 0-1, 2-3, 4 and 5. The shop's Base tab shows each level's look.
+
 ## 1.14.78 - 2026-10-26
 
 ### Added - The armed aircraft fighter on its six-pose sheet

@@ -91,7 +91,7 @@ Special-mode art that does not belong to one of the nine normal worlds lives und
 Current special set:
 
 - [`special/secret-shift/bosses/`](../assets/special/secret-shift/bosses/) — Secret Shift boss sprites.
-- [`special/siege/`](../assets/special/siege/) — Siege's battlefield (`backdrop`, ground included) and its side-view fortresses: ours (`castle-1..3`) and the enemy's (`enemy-1..3`), one per upgrade/difficulty level, and our crossbow turret's base and arm (`xbow-base-1..3`, `xbow-arm-1..3`, the arm drawn horizontal, pointing right, pivot at its left end).
+- [`special/siege/`](../assets/special/siege/) — Siege's battlefield (`backdrop`, ground included) and its side-view fortresses: ours (`castle-1..4`, a round turret on the right for the crossbow) and the enemy's (`enemy-1..3`), one per upgrade/difficulty level, and our crossbow (`xbow-1..4`, one picture each, drawn horizontal and pointing right, turning on its wheel; the fourth is a rocket launcher).
 
 ## Repository path vs browser URL
 

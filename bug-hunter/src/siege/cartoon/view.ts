@@ -42,7 +42,7 @@ export function preload(world: number, deck: number[], levels: number[] = []) {
   const specs = [...deck.map(id => specAt(id, levels[id])), ...foes.map(id => UNITS[id])];
   specs.forEach(spec => { for (let f = 0; f < (spec.six ? 6 : 3); f++) picture(`${spec.sprite}-${f}`); });
   // The battlefield, and the fortresses and crossbow at every level (the workshop can change ours between battles).
-  [SCENE, ...['rock', 'javelin', 'arrow', 'shuriken', 'rocket', 'rockets', ...SPELLS].map(n => `siege/units/shot-${n}`), ...[1, 2, 3].flatMap(n => [`siege/castle-${n}`, `siege/enemy-${n}`, `siege/xbow-base-${n}`, `siege/xbow-arm-${n}`]), ...FX].forEach(still);
+  [SCENE, ...['rock', 'javelin', 'arrow', 'shuriken', 'rocket', 'rockets', ...SPELLS].map(n => `siege/units/shot-${n}`), ...[1, 2, 3, 4].flatMap(n => [`siege/castle-${n}`, `siege/xbow-${n}`, ...(n < 4 ? [`siege/enemy-${n}`] : [])]), ...FX].forEach(still);
 }
 /** The battlefield, one picture for every world for now (the owner's: our green side left, the bugs' red one right):
     drawn across the field with `pad` field units past each end, its walking ground (`ground`, a share of its height)
@@ -76,14 +76,16 @@ const AIM_GUTTER = 60;
     units; `deck` how far its foot sinks under the ground line. Our crossbow stands on the battlement at the top right:
     `bow` is that spot as fractions of the picture (x from the left, y from the top). */
 const CASTLES = [
-  { h: 132, deck: 10, bow: [0.8, 0.255] },
-  { h: 150, deck: 10, bow: [0.8, 0.31] },
-  { h: 168, deck: 10, bow: [0.84, 0.375] },
+  { h: 132, deck: 6, bow: [0.83, 0.19] },
+  { h: 152, deck: 6, bow: [0.81, 0.3] },
+  { h: 174, deck: 6, bow: [0.82, 0.4] },
+  { h: 198, deck: 6, bow: [0.83, 0.38] },
 ] as const;
 const ENEMY_H = [138, 156, 172];
-/** Our crossbow on the battlement: its base, and its arm pointing right with the pivot at its left end, drawn this many
-    field units wide; the arm turns towards where the arrows go and kicks back a little at each shot. */
-const XBOW = { base: 46, arm: 58, pivot: [0.13, 0.5], seat: 0.2 } as const;
+/** Our crossbow in its turret (`siege/xbow-N`, by the Bow level: three crossbows and a rocket launcher), one picture
+    pointing right drawn `width` field units wide, turning on its wheel (`pivot`, fractions of the picture) towards where
+    the arrows go and kicking back a little at each shot. */
+const XBOW = { width: 64, pivot: [[0.35, 0.62], [0.28, 0.54], [0.34, 0.58], [0.25, 0.6]] } as const;
 /** Where our crossbow's arm turns, worked out by `base()` each frame: arrows and the missile leave from it. */
 let bowAt = { x: 80, y: 0 };
 let lastShots = 0, kickUntil = 0;
@@ -119,32 +121,23 @@ function base(ctx: CanvasRenderingContext2D, s: Siege, x: number, ground: number
     // Never taller than the room above the deck, so its health bar stays in view.
     const look = CASTLES[tier - 1];
     const h = Math.min(enemy ? ENEMY_H[tier - 1] : look.h, ground - 30), w = h * wall.naturalWidth / wall.naturalHeight;
-    const foot = look.deck, left = -w / 2;
+    const foot = enemy ? 10 : look.deck, left = -w / 2;
     ctx.drawImage(wall, left, -h + foot, w, h);
     damage(ctx, w, h - foot, left, hp, max, s.time);
     top = -h + foot - 6;
     if (!enemy) {
-      // The crossbow: its base seated on the battlement, its arm turning on the base's pivot.
-      const bw = XBOW.base, bowTier = looksTier(s.bow.level);
-      const seatX = left + w * look.bow[0], seatY = -h + foot + h * look.bow[1];
-      const baseImg = still(`siege/xbow-base-${bowTier}`), arm = still(`siege/xbow-arm-${bowTier}`);
-      const bh = ok(baseImg) ? bw * baseImg.naturalHeight / baseImg.naturalWidth : 0;
-      const px = seatX, py = seatY - bh * (1 - XBOW.seat);
+      // The crossbow seated in the turret, turning on its wheel.
+      const bowTier = looksTier(s.bow.level), arm = still(`siege/xbow-${bowTier}`), [fx, fy] = XBOW.pivot[bowTier - 1];
+      const px = left + w * look.bow[0], py = -h + foot + h * look.bow[1];
       bowAt = { x: x + px, y: ground + py };
       if ((s.shots ?? 0) !== lastShots) { lastShots = s.shots ?? 0; kickUntil = s.time + 0.09; }
-      const angle = bowAngle(s, ground);
-      const drawArm = () => {
-        if (!ok(arm)) return;
-        const aw = XBOW.arm, ah = aw * arm.naturalHeight / arm.naturalWidth;
-        ctx.save(); ctx.translate(px, py); ctx.rotate(angle);
+      if (ok(arm)) {
+        const aw = XBOW.width, ah = aw * arm.naturalHeight / arm.naturalWidth;
+        ctx.save(); ctx.translate(px, py); ctx.rotate(bowAngle(s, ground));
         const kick = s.time < kickUntil ? -5 : 0;
-        ctx.drawImage(arm, -aw * XBOW.pivot[0] + kick, -ah * XBOW.pivot[1], aw, ah);
+        ctx.drawImage(arm, -aw * fx + kick, -ah * fy, aw, ah);
         ctx.restore();
-      };
-      // Pointing down (a near aim) the arm comes in front of its base, or the base would hide it.
-      if (angle <= 0.35) drawArm();
-      if (ok(baseImg)) ctx.drawImage(baseImg, seatX - bw / 2, seatY - bh, bw, bh);
-      if (angle > 0.35) drawArm();
+      }
       top = Math.min(top, py - 30);
     }
   } else {
