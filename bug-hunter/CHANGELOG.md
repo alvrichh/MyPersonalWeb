@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.2 - 2026-10-26
+
+### Changed
+- Siege Cartoon's far shots fall from the sky: past mid-field the crossbow lifts more and more as the aim goes further, and at the furthest it fires steeply up so the arrows climb out of view and drop steeply onto the spot. Near and middle shots stay hard and nearly straight. Lobbed arrows stay longer in the air, so their fall is seen.
+
 ## 1.15.1 - 2026-10-26
 
 ### Changed
