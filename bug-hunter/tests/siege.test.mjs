@@ -132,11 +132,13 @@ test('the bow: a tap starts it, it shoots steadily, stops on a tap or an empty q
   assert.ok(m.bowEvery(up.bow) < m.bowEvery(m.newSiege(m.freshProgress(), 1).bow)); assert.equal(m.bowCount(up.bow), 3, 'the shop\'s Bow level adds arrows');
   p.upgrades[3] = 5; assert.equal(m.bowCount(m.newSiege(p, 1).bow), 4);
 });
-test('air troops fly out of melee reach, ranged troops still hit them; armies keep six of each', () => {
-  assert.equal(m.canHit(0, 28), false, 'a swordsman cannot reach an eagle'); assert.equal(m.canHit(2, 28), true, 'an archer shoots it');
-  assert.equal(m.canHit(28, 0), true, 'an eagle dives on the ground');
-  const s = m.newSiege(m.freshProgress(), 1); s.nextWave = 999; s.deck.push(10); s.energy = 999;
-  assert.equal(m.summon(s, 10), true); const plane = s.units[0]; plane.x = 500;
+test('only some troops reach the air, and only some flyers the ground; armies keep six of each', () => {
+  assert.equal(m.canHit(0, 28), false, 'a swordsman cannot reach an eagle'); assert.equal(m.canHit(2, 28), false, 'nor a rock thrower');
+  assert.equal(m.canHit(9, 28), false, 'the heavy armed robot at first neither'); assert.equal(m.specAt(9, 3).hitsAir, true, 'but from its third form');
+  assert.equal(m.canHit(28, 0), false, 'an eagle fights only in the sky'); assert.equal(m.canHit(10, 15), false, 'so does our aircraft fighter');
+  assert.equal(m.canHit(10, 28), true, 'flyers fight each other'); assert.equal(m.canHit(12, 15), true, 'the helicopter strikes the ground'); assert.equal(m.canHit(27, 0), true, 'and so does the death angel');
+  const s = m.newSiege(m.freshProgress(), 1); s.nextWave = 999; s.deck.push(12); s.energy = 999;
+  assert.equal(m.summon(s, 12), true); const plane = s.units[0]; plane.x = 500;
   const foe = { ...plane, uid: 100, id: 15, side: 1, x: 520, hp: 9999, maxHp: 9999, damage: 50 };
   s.units.push(foe); run(s, 2); assert.equal(plane.hp, plane.maxHp, 'the enemy swordsman never hits it'); assert.ok(foe.hp < 9999);
   const p = m.readProgress(JSON.stringify({ version: 1, unlocked: 30, cards: 1, owned: m.ALLIES.map(u => u.id), deck: [0, 1, 2, 3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 33, 20, 31] }));
@@ -169,7 +171,7 @@ test('a heavy blow throws infantry back, stuns the rest, and never moves the ste
   const robot = at(8, 520, 0), heavy = at(20, 560, 1, { damage: 60, attack: 0 }); t.units.push(robot, heavy);
   m.tick(t, 1 / 30); assert.ok(robot.stun > 0 && !robot.knock, 'a robot is stunned, not thrown');
   const u = m.newSiege(m.freshProgress(), 1); u.nextWave = 999;
-  const rider = at(31, 560, 1), gunner = at(4, 400, 0, { damage: 80, attack: 0 }); u.units.push(rider, gunner);
+  const rider = at(31, 560, 1), gunner = at(12, 400, 0, { damage: 80, attack: 0 }); u.units.push(rider, gunner);
   m.tick(u, 1 / 30); assert.ok(rider.hp < 100); assert.ok(!rider.knock && !rider.stun, 'the red dragon rider cannot be stunned');
 });
 test('gatling robots break twice into weaker wrecks; horned gunners come later and hit harder', () => {

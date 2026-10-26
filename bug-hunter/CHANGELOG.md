@@ -4,6 +4,13 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.16 - 2026-10-26
+
+### Changed - Siege Cartoon: who can hit whom
+- Troops on the ground reach flyers only when their form says so: the master swordsman, the wizard's meteor and the heavy armed robot's last two forms. Archers, gunners, blasters and the rest no longer shoot the air.
+- The aircraft fighter and the armed aircraft fighter fight only in the sky (other flyers and the fortress), and so do the enemy's eagle, ninja bat and hypnotist bat; the helicopter, the drill, the angel, the flying mech, the death angel and the dragon riders still swoop on the ground.
+- Troops on the ground no longer lean back to aim up.
+
 ## 1.15.15 - 2026-10-26
 
 ### Fixed
