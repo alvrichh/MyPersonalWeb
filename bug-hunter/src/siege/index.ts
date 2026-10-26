@@ -8,6 +8,7 @@ import * as legacyView from './legacy/view';
 import type { Camera } from './cartoon/view';
 import type { Progress, Siege } from './cartoon/model';
 import { GUARDIAN_NAMES, bossTalk, intro, type Line } from './legacy/story';
+import * as cartoonStory from './cartoon/story';
 /** Siege's two modes, each its own engine and save: Legacy (the old troops, the nine worlds and their story) and
     Cartoon (the new troops, six acts). Legacy's engine answers the same calls, its troops on a single level. */
 type Mode = 'legacy' | 'cartoon';
@@ -225,9 +226,9 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       if (now >= uiAt) { updateUi(); uiAt = now + 100; }
       if (state.phase !== 'fight' && !state.paid) result();
       // The guardian speaks the moment it joins, the battle held until the scene ends.
-      else if (mode === 'legacy' && state.bossSpawned && !bossTalked && state.phase === 'fight') {
+      else if (state.bossSpawned && !bossTalked && state.phase === 'fight') {
         bossTalked = true; paused = true; updateUi();
-        talk(bossTalk(world), () => { paused = false; last = performance.now(); accumulator = 0; q('canvas').focus(); });
+        talk(mode === 'cartoon' ? cartoonStory.bossTalk(world) : bossTalk(world), () => { paused = false; last = performance.now(); accumulator = 0; q('canvas').focus(); });
       }
       frame = requestAnimationFrame(loop);
     }
@@ -290,15 +291,17 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     let at = 0;
     root.querySelector('.sg-overlay')?.remove();
     const overlay = document.createElement('div'); overlay.className = 'sg-overlay sg-story';
-    overlay.style.backgroundImage = `linear-gradient(#050a14aa, #050a14ee), url('${backdropUrl(world)}')`;
+    overlay.style.backgroundImage = `linear-gradient(#050a14aa, #050a14ee), url('${mode === 'cartoon' ? '/images/game/siege/backdrop.webp' : backdropUrl(world)}')`;
     const battle = root.querySelector<HTMLElement>('.sg-battle'); if (battle) battle.inert = true;
     const end = () => { story = null; overlay.remove(); if (battle) battle.inert = false; done(); };
     const show = () => {
       const l = lines[at], last = at === lines.length - 1;
-      const who = l.who === 'boss' ? t(GUARDIAN_NAMES[world - 1]) : l.who === 'hero' ? hero.name.replace(/[&<>"']/g, c => `&#${c.charCodeAt(0)};`) : t('siegeNarrator');
-      const pic = l.who === 'boss' ? guardianUrl(world) : l.who === 'hero' ? hero.pic : '';
+      // Cartoon's speakers: our Wizard at its level, and the act's guardian; Legacy's: the player's hero and the world's.
+      const cartoon = mode === 'cartoon', wizard = 6, guard = cartoonModel.GUARDIAN[world - 1];
+      const who = l.who === 'boss' ? (cartoon ? actBoss(world) : t(GUARDIAN_NAMES[world - 1])) : l.who === 'hero' ? (cartoon ? name(wizard) : hero.name.replace(/[&<>"']/g, c => `&#${c.charCodeAt(0)};`)) : t('siegeNarrator');
+      const pic = l.who === 'boss' ? (cartoon ? V.portrait(guard) : guardianUrl(world)) : l.who === 'hero' ? (cartoon ? V.portrait(wizard, progress.levels[wizard]) : hero.pic) : '';
       overlay.innerHTML = `<div class="sg-scene is-${l.who}" role="dialog" aria-modal="true" aria-label="${t('siegeName')}">
-        <span class="sg-eyebrow">${t(`world${world}Name` as Key)}</span>
+        <span class="sg-eyebrow">${mode === 'cartoon' ? `${worldName(world)} · ${t(`siegeCtAct${world}` as Key)}` : t(`world${world}Name` as Key)}</span>
         ${pic ? `<img class="sg-speaker" src="${pic}" alt="">` : ''}
         <div class="sg-line"><b>${who}</b><p>${t(l.key)}</p>
         <div class="sg-dialog-actions"><button class="sg-primary" data-story="next">${last ? t(state ? 'resume' : 'siegeTalkGo') : `${t('siegeTalkNext')} ▶`}</button>${last ? '' : `<button data-story="skip">${t('siegeTalkSkip')}</button>`}</div></div></div>`;
@@ -324,6 +327,12 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   function result() {
     if (!state) return;
     const reward = M.settle(progress, state); persist(); paused = true;
+    // Winning Cartoon's last act tells its ending first.
+    if (mode === 'cartoon' && state.phase === 'won' && world === lastWorld()) talk(cartoonStory.ending, () => outcome(reward));
+    else outcome(reward);
+  }
+  function outcome(reward: number) {
+    if (!state) return;
     modal(`<span class="sg-eyebrow">${t('siegeSoon')}</span><h2>${t(state.phase === 'won' ? 'siegeWon' : 'siegeLost')}</h2><p>${t('siegeResult', { kills: state.kills, time: clock(state.time) })}</p>${state.phase === 'won' ? `<strong>${t('siegeReward', { n: reward })}</strong>${world === lastWorld() ? `<p>${t(mode === 'cartoon' ? 'siegeCartoonComplete' : 'siegeComplete')}</p>` : ''}` : `<p>${t('siegeRetryHint')}</p>`}<div class="sg-dialog-actions">${state.phase === 'won' && world < lastWorld() ? `<button class="sg-primary" data-sg="next">${t('siegeNext')}</button>` : `<button class="sg-primary" data-sg="retry">${t('again')}</button>`}<button data-sg="prep">${t('siegeLeave')}</button></div>`);
   }
   root.addEventListener('click', event => {
@@ -344,7 +353,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     if (button.dataset.sgTab && state) { tab = button.dataset.sgTab as typeof tab; cards(); return; }
     if (summonId !== undefined && state && !paused) { if (M.summon(state, Number(summonId))) sound('click'); updateUi(); return; }
     if (action === 'exit') close();
-    else if (action === 'launch') mode === 'legacy' ? talk(intro(world), start) : start();
+    else if (action === 'launch') talk(mode === 'cartoon' ? cartoonStory.intro(world) : intro(world), start);
     else if (action === 'modes') modes();
     else if (action === 'retry') start();
     else if (action === 'prep') prep();
