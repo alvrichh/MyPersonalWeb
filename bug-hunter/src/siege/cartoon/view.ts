@@ -42,16 +42,25 @@ export function preload(world: number, deck: number[], _levels: number[] = []) {
   const specs = [...deck.map(c => specAt(c % 100, Math.floor(c / 100) + 1)), ...foes.map(id => UNITS[id])];
   specs.forEach(spec => { for (let f = 0; f < (spec.six ? 6 : 3); f++) picture(`${spec.sprite}-${f}`); });
   // The battlefield, and the fortresses and crossbow at every level (the workshop can change ours between battles).
-  [SCENE, ...['rock', 'javelin', 'arrow', 'shuriken', 'rocket', 'rockets', ...SPELLS].map(n => `siege/units/shot-${n}`), ...[1, 2, 3, 4].flatMap(n => [`siege/castle-${n}`, `siege/xbow-${n}`, ...(n < 4 ? [`siege/enemy-${n}`] : [])]), ...FX].forEach(still);
+  [SCENE, 'siege/sky', 'siege/ground', ...['rock', 'javelin', 'arrow', 'shuriken', 'rocket', 'rockets', ...SPELLS].map(n => `siege/units/shot-${n}`), ...[1, 2, 3, 4].flatMap(n => [`siege/castle-${n}`, `siege/xbow-${n}`, ...(n < 4 ? [`siege/enemy-${n}`] : [])]), ...FX].forEach(still);
 }
 /** The battlefield, one picture for every world for now (the owner's: our green side left, the bugs' red one right):
     drawn across the field with `pad` field units past each end, its walking ground (`ground`, a share of its height)
     on the troops' ground line; it moves with the troops. */
 const SCENE = 'siege/backdrop';
 const SCENE_FIT = { pad: 120, ground: 0.8 };
+/** The two-layer battlefield (`siege/sky` behind, `siege/ground` in front): the troops' line on the strip's grass. */
+const GROUND_STRIP = { walk: 0.4 };
 /** The picture's top row averaged down to 16 colours, kept: stretched over any sky above the picture (a tall view) it
     is a smooth gradient, where the raw row stretched would be streaks. */
 let skyStrip: HTMLCanvasElement | null = null;
+/** Any picture's top row averaged down to 16 colours, kept (the two-layer sky's, stretched above it). */
+const tops = new Map<HTMLImageElement, HTMLCanvasElement>();
+function topOf(image: HTMLImageElement) {
+  let c = tops.get(image);
+  if (!c) { c = document.createElement('canvas'); c.width = 16; c.height = 1; const t = c.getContext('2d'); if (t) { t.imageSmoothingQuality = 'high'; t.drawImage(image, 0, 0, image.naturalWidth, 8, 0, 0, 16, 1); } tops.set(image, c); }
+  return c;
+}
 function skyOf(scene: HTMLImageElement) {
   if (skyStrip) return skyStrip;
   const c = document.createElement('canvas'); c.width = 16; c.height = 1;
@@ -221,8 +230,26 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   const ground = h / scale * camera.deck;
   ctx.scale(scale, scale); ctx.translate(-camera.x + Math.max(0, (camera.width - FIELD) / 2), 0);
   const viewH = h / scale;
-  const scene = still(SCENE);
-  if (ok(scene)) {
+  const scene = still(SCENE), skyPic = still('siege/sky'), land = still('siege/ground');
+  // The owner's two-layer battlefield, in act 2 for now (to compare it with the single picture).
+  if (actOf(s.world) === 2 && ok(skyPic) && ok(land)) {
+    // Two layers: the sky behind, fitted to the view's height above the ground and scrolling slower than the field
+    // (end to end as the camera crosses it); the ground strip in front, spanning the field and moving with the troops,
+    // their walking line on its grass (`GROUND_STRIP.walk`, a share of its height).
+    ctx.save(); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    // On an upright phone the sky is not blown up past twice the view's width in height: above it, its top colours.
+    const ar = skyPic.naturalHeight / skyPic.naturalWidth, gy = h * camera.deck;
+    const sh2 = Math.max(w * ar, w < h ? Math.min(gy + 40, w * ar * 2) : gy + 40), sw2 = sh2 / ar;
+    const span = Math.max(1, FIELD - camera.width - (camera.min ?? 0)), along = Math.max(0, Math.min(1, (camera.x - (camera.min ?? 0)) / span));
+    const sx = -(sw2 - w) * along, sy = gy + 40 - sh2;
+    if (sy > 0) { const strip = topOf(skyPic); ctx.drawImage(strip, 0, 0, 16, 1, sx, -1, sw2, sy + 2); for (let i = 0; i < 12; i++) { ctx.globalAlpha = 1 - (i + 0.5) / 12; ctx.drawImage(strip, 0, 0, 16, 1, sx, sy + i * 5, sw2, 5.5); } ctx.globalAlpha = 1; }
+    ctx.drawImage(skyPic, sx, sy, sw2, sh2);
+    ctx.restore();
+    const lw = FIELD + SCENE_FIT.pad * 2, lh = lw * land.naturalHeight / land.naturalWidth, ltop = ground - lh * GROUND_STRIP.walk;
+    ctx.drawImage(land, -SCENE_FIT.pad, ltop, lw, lh);
+    // A view deeper than the strip: its stone foot stretched down to the bottom.
+    if (ltop + lh < viewH) { const nh = land.naturalHeight; ctx.drawImage(land, 0, nh * 0.7, land.naturalWidth, nh * 0.3, -SCENE_FIT.pad, ltop + lh * 0.7, lw, viewH - ltop - lh * 0.7 + 1); }
+  } else if (ok(scene)) {
     // The picture spans the field (and moves with it, so distances read true), its sky colours carried on above it.
     const sw = FIELD + SCENE_FIT.pad * 2, sh = sw * scene.naturalHeight / scene.naturalWidth;
     const x0 = -SCENE_FIT.pad, top = ground - sh * SCENE_FIT.ground;

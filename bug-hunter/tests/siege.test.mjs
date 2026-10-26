@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { build } from 'esbuild';
 const bundle = await build({ entryPoints: ['bug-hunter/src/siege/cartoon/model.ts'], bundle: true, platform: 'node', format: 'esm', write: false });
 const m = await import(`data:text/javascript;base64,${Buffer.from(bundle.outputFiles[0].text).toString('base64')}`);
+m.testing.free = false; // the gold economy, as it ships
 const run = (s, seconds) => { for (let i = 0; i < seconds * 30; i++) m.tick(s, 1 / 30); };
 test('safe save validation and independent schema', () => {
   assert.deepEqual(m.readProgress('{'), m.freshProgress());
@@ -230,4 +231,11 @@ test('army cards: two forms of one troop in the army at once, each its own card;
   const s = m.newSiege(restored, 1); s.nextWave = 999; s.energy = 999;
   assert.equal(m.summon(s, 0), true); assert.equal(m.summon(s, 200), true, 'its own cooldown'); assert.equal(m.summon(s, 0), false);
   assert.deepEqual(s.units.map(u => u.lv), [1, 3]);
+});
+test('testing switch: every troop open, recruited and levelled for free', () => {
+  m.testing.free = true;
+  try {
+    const p = m.freshProgress(); assert.equal(p.coins, 0);
+    assert.equal(m.buyTroop(p, 14), true, 'the dearest, at act 1, with no gold'); assert.equal(m.levelUp(p, 14), true); assert.equal(p.coins, 0);
+  } finally { m.testing.free = false; }
 });

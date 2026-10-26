@@ -4,6 +4,17 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.6 - 2026-10-26
+
+### Added - Siege Cartoon: a two-layer battlefield, its own music, and cartoon sounds
+- Act 2 is fought on the owner's new two-layer battlefield, to compare it with the single picture of the other acts: the sky behind, fitted to the view's height and scrolling slower than the field, and the ground strip in front, the troops walking on its grass.
+- Siege Cartoon has its own music: a bright marimba bounce in its menus (map and shop) and a brass charge in its battles; leaving Siege goes back to the player's pick.
+- The troops' sounds are cartoonier: a bonk and a boing for blunt hits, a twanging bow, pew-pew shots, a slide whistle for falling flyers, a spring for broken robots, and a squeaky cry, a pop and a puff of smoke for the fallen.
+- The enemy fortress falling is heard (a long crumble, then the guardian's war horn and roar), and a coin chimes when a fat bounty drops.
+
+### Changed (testing)
+- For testing, every Siege Cartoon troop is open from the start and recruited and levelled for free (`testing.free` in its model).
+
 ## 1.15.5 - 2026-10-26
 
 ### Fixed
