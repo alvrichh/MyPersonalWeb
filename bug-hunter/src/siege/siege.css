@@ -498,3 +498,5 @@
 .siege-root.is-cartoon .sg-bar .sg-bow,.siege-root.is-cartoon .sg-bar .sg-bow:hover:not(:disabled),.siege-root.is-cartoon .sg-bar .sg-bow.is-drawing{left:calc(1844 * var(--u));right:auto;top:calc(116 * var(--u));width:calc(180 * var(--u));height:calc(180 * var(--u))}
 .siege-root.is-cartoon .sg-bar .sg-bow::before,.siege-root.is-cartoon .sg-bar .sg-bow.is-drawing::before{background-position:calc(-1844 * var(--u)) calc(-116 * var(--u))}
 .siege-root.is-cartoon .sg-bar .sg-bow.is-drawing{transform:none}
+/* v1.14.98 — the card bar sits lower: its bottom rim (below the slots) under the screen's edge. */
+.siege-root.is-cartoon .sg-bar{bottom:calc(-58 * var(--u))}

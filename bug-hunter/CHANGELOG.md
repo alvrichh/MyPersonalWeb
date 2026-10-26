@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.98 - 2026-10-26
+
+### Fixed / Changed
+- Siege Cartoon: falling arrows (and rockets and thrown projectiles) kept their path's slope to the end; on their last frames they lay flat.
+- The card bar sits lower, its bottom rim under the screen's edge.
+
 ## 1.14.97 - 2026-10-26
 
 ### Changed - Siege Cartoon's crossbow
