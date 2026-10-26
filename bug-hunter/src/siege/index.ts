@@ -39,7 +39,7 @@ let closeActive: (() => void) | undefined;
 /** Own root, event lifecycle and save: existing game modes are never entered or mutated. */
 /** `hero`: the player's hero picture and name, the commander who speaks in the story scenes. */
 /** `music`: Siege Cartoon's songs, its menus' or its battles', or null to go back to the player's pick. */
-export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' }, sound: (name: string, vol?: number, pan?: number) => void = () => {}, music: (song: 'menu' | 'battle' | null) => void = () => {}) {
+export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' }, sound: (name: string, vol?: number, pan?: number) => void = () => {}, music: (song: 'menu' | 'battle' | 'boss' | null) => void = () => {}) {
   closeActive?.();
   /** The mode being played (null on the mode screen), its engine and its save. */
   let mode: Mode | null = null, M = ENGINES.cartoon.m, V = ENGINES.cartoon.v;
@@ -297,7 +297,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
         if ((state.shots ?? 0) > shot) sound('arrow');
         troopSounds(now);
         // The enemy fortress falling (its crumble, then the guardian's horn), and a coin for a fat bounty.
-        if (mode === 'cartoon' && !baseFell && state.hp[1] <= 0) { baseFell = true; sound('base-falls'); }
+        if (mode === 'cartoon' && !baseFell && state.hp[1] <= 0) { baseFell = true; sound('base-falls'); if (state.bossSpawned) music('boss'); }
         // The corrupt wind's warning, across the top of the field for a moment.
         if (state.gusted && !gustShown) {
           gustShown = true; const note = document.createElement('div'); note.className = 'sg-alert'; note.setAttribute('role', 'status'); note.textContent = t('siegeGust');
