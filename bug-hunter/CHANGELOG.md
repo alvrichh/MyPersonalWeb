@@ -4,6 +4,14 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.90 - 2026-10-26
+
+### Changed - Siege Cartoon's shop
+- Two or more forms of one troop can be in the army at once (the swordsman at levels 1 and 2, say), each its own card in battle with its own cost and cooldown. An army card is a troop at a level; saves from before keep each equipped troop at the level it had.
+- A tap on a form the player has equips it or takes it out (equipped forms carry a green check); the Equip button is gone. Purchase buys the picked form, troop or upgrade. The equipped slots show each card's level, and a tap on one takes it out.
+- Map and To battle buttons in the shop's bottom row.
+- In landscape the shop holds still, fitting the screen; only the troop rows scroll.
+
 ## 1.14.89 - 2026-10-26
 
 ### Changed - Siege Cartoon's camera stands further back

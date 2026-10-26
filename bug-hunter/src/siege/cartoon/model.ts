@@ -189,7 +189,12 @@ export const RECRUIT: Record<number, number> = { 0: 0, 1: 100, 2: 120, 3: 350, 4
 export const GUARDIAN = [18, 32, 31, 21, 26, 26];
 /** Up to this many land and this many air troops in an army. */
 export const DECK = 5;
-const isAir = (id: number) => !!UNITS[id]?.air;
+/** An army card: a troop at one of its levels, `id + (level - 1) * 100` (so a level-1 card is the troop's id). Two forms
+    of a troop can both be in the army. */
+export const card = (id: number, level = 1) => id + (level - 1) * 100;
+export const cardId = (c: number) => c % 100;
+export const cardLevel = (c: number) => Math.floor(c / 100) + 1;
+const isAir = (c: number) => !!UNITS[cardId(c)]?.air;
 /** Ours: the units an army can hold. */
 export const ALLIES = UNITS.filter(u => !u.foe);
 /** How many levels a troop has (its forms and the first). */
@@ -213,8 +218,12 @@ export interface Progress { version: 1; unlocked: number; coins: number; victori
   /** Each troop's level (index: its id), 1 to `levelsOf(id)`. */
   levels: number[];
   /** The troops recruited so far (the swordsman from the start). */
-  owned: number[] }
-export const freshProgress = (): Progress => ({ version: 1, unlocked: 1, coins: 0, victories: [], upgrades: [0, 0, 0, 0], deck: [0], levels: UNITS.map(() => 1), owned: [0] });
+  owned: number[];
+  /** Set once the deck holds cards (`card`), not troop ids. */
+  cards: 1 }
+export const freshProgress = (): Progress => ({ version: 1, unlocked: 1, coins: 0, victories: [], upgrades: [0, 0, 0, 0], deck: [0], levels: UNITS.map(() => 1), owned: [0], cards: 1 });
+/** Can this card go in the army: its troop recruited and its level bought? */
+export const hasCard = (p: Progress, c: number) => Number.isInteger(c) && c >= 0 && owns(p, cardId(c)) && cardLevel(c) <= (p.levels[cardId(c)] ?? 1);
 /** Has the battles won opened this troop's act? */
 export const isOpen = (p: Progress, id: number) => !!UNITS[id] && !UNITS[id].foe && UNITS[id].unlock <= actOf(p.unlocked);
 export const owns = (p: Progress, id: number) => p.owned.includes(id);
@@ -237,7 +246,9 @@ export function readProgress(raw: string | null): Progress {
     p.upgrades = [0, 1, 2, 3].map(i => integer(v.upgrades?.[i], 0, 5, 0)) as Progress['upgrades'];
     p.levels = UNITS.map(u => (u.foe ? 1 : integer(v.levels?.[u.id], 1, levelsOf(u.id), 1)));
     p.owned = [...new Set<number>([0, ...(Array.isArray(v.owned) ? v.owned.filter((n: unknown) => typeof n === 'number' && isOpen(p, n)) : [])])];
-    p.deck = Array.isArray(v.deck) ? capDeck([...new Set<number>(v.deck.filter((n: unknown) => typeof n === 'number' && owns(p, n)))]) : [];
+    // An older save's deck holds troop ids, each meaning the troop at its level then.
+    const deck: number[] = Array.isArray(v.deck) ? v.deck.filter((n: unknown): n is number => typeof n === 'number').map((n: number) => (v.cards === 1 ? n : owns(p, n) ? card(n, p.levels[n]) : -1)) : [];
+    p.deck = capDeck([...new Set<number>(deck.filter(c => hasCard(p, c)))]);
     if (!p.deck.length) p.deck = [0];
   } catch { /* corrupt or unavailable storage starts a safe, isolated preview */ }
   return p;
@@ -274,7 +285,7 @@ export interface Effect { x: number; from: number; lane: number; life: number; m
   /** A shot's own projectile picture (`Spec.shot`) and whether it spins. */
   art?: string; spin?: boolean }
 export interface Siege {
-  world: number; phase: 'fight' | 'won' | 'lost'; time: number; energy: number; generator: number; cooldowns: number[];
+  world: number; phase: 'fight' | 'won' | 'lost'; time: number; energy: number; generator: number; cooldowns: Record<number, number>;
   hp: [number, number]; maxHp: [number, number]; units: Fighter[]; effects: Effect[]; nextId: number; nextWave: number; waves: number; kills: number;
   spell: number; rocket: number; aim: number; bow: Bow;
   /** The troops' sounds since the view last took them (attacks and deaths, where they happened); kept short. */
@@ -301,7 +312,7 @@ export const generatorPrice = (s: Siege) => 65 + s.generator * 45;
 export function newSiege(p: Progress, world: number): Siege {
   world = integer(world, 1, Math.min(LAST, p.unlocked), 1);
   const maxHp: [number, number] = [1700 + p.upgrades[1] * 200, 1700 + hard(world) * 150];
-  return { world, phase: 'fight', time: 0, energy: 80, generator: 0, cooldowns: UNITS.map(() => 0), hp: [...maxHp], maxHp, units: [], effects: [], nextId: 1, nextWave: 7, waves: 0, kills: 0, spell: 0, rocket: 0, aim: 700, bossSpawned: false, paid: false, power: 1 + p.upgrades[0] * 0.08, economy: p.upgrades[2] * 0.6, deck: [...p.deck], bow: { quiver: BOW.max, drawing: false, held: 0, next: 0, level: p.upgrades[3] }, fort: p.upgrades[1], levels: [...(p.levels ?? [])] };
+  return { world, phase: 'fight', time: 0, energy: 80, generator: 0, cooldowns: {}, hp: [...maxHp], maxHp, units: [], effects: [], nextId: 1, nextWave: 7, waves: 0, kills: 0, spell: 0, rocket: 0, aim: 700, bossSpawned: false, paid: false, power: 1 + p.upgrades[0] * 0.08, economy: p.upgrades[2] * 0.6, deck: [...p.deck], bow: { quiver: BOW.max, drawing: false, held: 0, next: 0, level: p.upgrades[3] }, fort: p.upgrades[1], levels: [...(p.levels ?? [])] };
 }
 /** The guardian, Cartoon Wars 2-style: it only comes out once the enemy fortress falls, far tougher than a troop, and
     the battle is won when it falls too. */
@@ -317,9 +328,9 @@ const splitsOf = (u: Fighter) => (u.boss ? 0 : UNITS[u.id].splits ?? 0);
 export const ELITE = { from: 60, every: 4, hp: 1.6, damage: 1.8 };
 /** The enemy troop that comes horned: the gunner. */
 export const ELITE_ID = 22;
-function spawn(s: Siege, id: number, side: 0 | 1, boss = false) {
+function spawn(s: Siege, id: number, side: 0 | 1, boss = false, level?: number) {
   if (s.units.filter(u => u.side === side).length >= CAP) return;
-  const lv = side ? undefined : s.levels[id] ?? 1;
+  const lv = side ? undefined : level ?? s.levels[id] ?? 1;
   const spec = side ? UNITS[id] : specAt(id, lv); const scale = side ? 0.95 + hard(s.world) * 0.04 : s.power;
   const hp = spec.hp * scale * (boss ? BOSS_HP : 1);
   // One gunner in every few (counted by its spawn number) comes horned.
@@ -351,13 +362,14 @@ export function soundsOf(u: Fighter): [string, string] {
 }
 function hear(s: Siege, k: string, x: number) { const q = (s.sounds ??= []); q.push({ k, x }); if (q.length > 24) q.shift(); }
 /** What summoning a troop costs now (its level's energy). */
-export const costOf = (s: Siege, id: number) => specAt(id, s.levels[id]).cost;
-export function canSummon(s: Siege, id: number): boolean {
-  return s.phase === 'fight' && !UNITS[id]?.foe && s.deck.includes(id) && s.energy >= costOf(s, id) && s.cooldowns[id] <= 0 && s.units.filter(u => !u.side).length < CAP;
+export const costOf = (_s: Siege, c: number) => specAt(cardId(c), cardLevel(c)).cost;
+export function canSummon(s: Siege, c: number): boolean {
+  return s.phase === 'fight' && !!UNITS[cardId(c)] && !UNITS[cardId(c)].foe && s.deck.includes(c) && s.energy >= costOf(s, c) && (s.cooldowns[c] ?? 0) <= 0 && s.units.filter(u => !u.side).length < CAP;
 }
-export function summon(s: Siege, id: number): boolean {
-  if (!canSummon(s, id)) return false;
-  s.energy -= costOf(s, id); s.cooldowns[id] = UNITS[id].cooldown; spawn(s, id, 0); return true;
+/** Sends a card's troop at its level; each card has its own cooldown. */
+export function summon(s: Siege, c: number): boolean {
+  if (!canSummon(s, c)) return false;
+  s.energy -= costOf(s, c); s.cooldowns[c] = UNITS[cardId(c)].cooldown; spawn(s, cardId(c), 0, false, cardLevel(c)); return true;
 }
 export function improveGenerator(s: Siege): boolean {
   if (s.phase !== 'fight' || s.generator >= 4 || s.energy < generatorPrice(s)) return false;
@@ -419,7 +431,7 @@ export function tick(s: Siege, dt: number) {
   dt = Math.min(dt, 0.1); s.time += dt;
   s.energy = Math.min(energyMax(s), s.energy + energyRate(s) * dt);
   s.spell = Math.max(0, s.spell - dt); s.rocket = Math.max(0, s.rocket - dt);
-  s.cooldowns = s.cooldowns.map(c => Math.max(0, c - dt));
+  for (const k in s.cooldowns) s.cooldowns[k] = Math.max(0, s.cooldowns[k] - dt);
   bow(s, dt);
   s.effects = s.effects.filter(e => (e.life -= dt) > 0);
   s.nextWave -= dt;

@@ -417,3 +417,36 @@
 @media (max-height:500px) and (orientation:landscape){.siege-root.is-cartoon .sg-bar{--u:min(.27px,calc((100vw - 4px) / 2240))}}
 /* v1.14.86 — the bar sits lower, its bottom rim under the screen's edge, so more of the ground shows above it. */
 .siege-root.is-cartoon .sg-bar{bottom:calc(-60 * var(--u))}
+
+/* v1.14.90 — Siege Cartoon's shop: equipped forms marked (a tap equips or removes them), the slots show each card's
+   level, Map and To battle at hand; held still in landscape, only the troop rows scroll. */
+.sg-st-tile .sg-st-worn{position:absolute;top:-6px;right:-6px;width:22px;height:22px;display:grid;place-items:center;border-radius:50%;background:#4cd137;border:2px solid #111;color:#fff;font:900 13px/1 system-ui}
+.siege-root.is-cartoon .sg-prep .sg-st-tile.is-worn{box-shadow:0 0 0 3px #4cd137}
+.sg-st-slot{position:relative}.sg-st-slot small{position:absolute;right:3px;bottom:1px;font:900 12px/1 system-ui;color:#fff;text-shadow:0 1px 2px #000}
+.siege-root.is-cartoon .sg-prep .sg-st-actions .sg-st-go{background:#2f8fd8;color:#fff;text-shadow:0 2px 0 #0007;min-width:0;padding:0 16px}
+.siege-root.is-cartoon .sg-prep .sg-st-actions .sg-st-go:hover:not(:disabled){background:#4aa3e8}
+.siege-root.is-cartoon .sg-prep .sg-st-actions .sg-st-go.is-fight{background:#e8572a}
+.siege-root.is-cartoon .sg-prep .sg-st-actions .sg-st-go.is-fight:hover:not(:disabled){background:#f2774f}
+.sg-st-gold{margin-right:auto}
+@media (orientation:landscape){
+  .siege-root.is-cartoon:has(.sg-store){overflow:hidden}
+  .siege-root.is-cartoon .sg-prep:has(.sg-store){height:100dvh;display:flex;flex-direction:column;padding-top:8px;padding-bottom:8px}
+  .sg-prep:has(.sg-store) .sg-top{flex:none}.sg-prep:has(.sg-store) .sg-title{font-size:22px}.sg-prep:has(.sg-store) .sg-title small{display:none}
+  .sg-prep:has(.sg-store) .sg-ptabs{flex:none;margin:6px 0}
+  .siege-root.is-cartoon .sg-prep:has(.sg-store) .sg-ptabs button{min-height:38px}
+  .sg-prep:has(.sg-store) .sg-page{flex:1;min-height:0}
+  .sg-prep:has(.sg-store) .sg-help{display:none}
+  .sg-prep .sg-store{height:100%;box-sizing:border-box}
+  .sg-prep .sg-st-body{flex:1;min-height:0}
+  .sg-prep .sg-st-grid{max-height:none}
+  .sg-prep .sg-st-slots{overflow:hidden}
+}
+@media (orientation:landscape) and (max-height:500px){
+  .sg-store{padding:6px;gap:6px}
+  .siege-root.is-cartoon .sg-prep .sg-st-tab{min-height:32px;font-size:14px}
+  .siege-root.is-cartoon .sg-prep .sg-st-tile{flex-basis:52px;width:52px;height:52px;padding:2px}
+  .sg-st-slots{flex-basis:60px;gap:4px}.sg-st-slot,.siege-root.is-cartoon .sg-prep .sg-st-slot.is-full{width:60px;height:46px}
+  .sg-st-info{padding:4px 10px}.sg-st-desc{font-size:13px}.sg-st-desc span{font-size:14px}
+  .siege-root.is-cartoon .sg-prep .sg-st-actions button{min-height:38px;font-size:15px;min-width:110px}
+  .sg-st-gold{font-size:16px;padding:2px 10px 2px 4px}.sg-st-gold img{width:26px;height:20px}
+}

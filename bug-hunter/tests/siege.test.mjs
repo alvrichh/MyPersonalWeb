@@ -185,7 +185,7 @@ test('troop levels: bought in order with gold, saved, and the master swordsman h
   assert.equal(m.levelUp(p, 15), false, 'never an enemy troop');
   assert.equal(m.readProgress(JSON.stringify({ ...p, levels: [99, -3] })).levels[0], 5, 'clamped to its forms');
   const s = m.newSiege(p, 1); s.nextWave = 999; s.energy = 999;
-  assert.equal(m.costOf(s, 0), m.specAt(0, 5).cost); assert.equal(m.summon(s, 0), true);
+  s.deck = [m.card(0, 5)]; assert.equal(m.costOf(s, m.card(0, 5)), m.specAt(0, 5).cost); assert.equal(m.summon(s, m.card(0, 5)), true);
   const master = s.units[0]; assert.equal(master.lv, 5); assert.ok(master.maxHp > m.UNITS[0].hp);
   master.x = 500; const eagle = { uid: 99, id: 28, side: 1, x: 530, lane: 0, hp: 9999, maxHp: 9999, damage: 0, attack: 9, flash: 0, boss: false };
   s.units.push(eagle); run(s, 1); assert.ok(eagle.hp < 9999, 'the master reaches a flyer');
@@ -219,4 +219,14 @@ test('recruiting: the swordsman first, the rest bought with gold once their act 
   // After the first battle won, a second troop is within reach.
   const q = m.freshProgress(), first = m.newSiege(q, 1); first.phase = 'won'; first.loot = 20; m.settle(q, first);
   assert.ok(q.coins >= Math.min(m.troopPrice(1), m.troopPrice(2)));
+});
+test('army cards: two forms of one troop in the army at once, each its own card; an old save keeps its troops\' levels', () => {
+  const p = m.freshProgress(); p.owned = [0, 1]; p.levels[0] = 3; p.levels[1] = 2;
+  assert.equal(m.hasCard(p, m.card(0, 2)), true); assert.equal(m.hasCard(p, m.card(0, 4)), false, 'not a level not bought'); assert.equal(m.hasCard(p, m.card(2, 1)), false, 'not a troop not recruited');
+  p.deck = [m.card(0, 1), m.card(0, 3)]; const restored = m.readProgress(JSON.stringify(p)); assert.deepEqual(restored.deck, [0, 200]);
+  const old = m.readProgress(JSON.stringify({ version: 1, unlocked: 5, owned: [0, 1], levels: [3, 2], deck: [0, 1] }));
+  assert.deepEqual(old.deck, [m.card(0, 3), m.card(1, 2)], 'ids from before cards mean the troop at its level then');
+  const s = m.newSiege(restored, 1); s.nextWave = 999; s.energy = 999;
+  assert.equal(m.summon(s, 0), true); assert.equal(m.summon(s, 200), true, 'its own cooldown'); assert.equal(m.summon(s, 0), false);
+  assert.deepEqual(s.units.map(u => u.lv), [1, 3]);
 });
