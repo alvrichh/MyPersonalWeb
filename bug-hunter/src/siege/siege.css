@@ -387,3 +387,10 @@
 .siege-root.is-cartoon .sg-bow.is-empty{filter:saturate(.6)}
 @media(max-width:600px){.is-cartoon .sg-bar{--k:.38}.siege-root.is-cartoon .sg-bar .sg-deck button{flex:0 0 calc(152px * var(--k))}}
 @media (max-height:500px) and (orientation:landscape){.is-cartoon .sg-bar{--k:.3}}
+
+/* v1.14.82 — Siege Cartoon's aim stick in the owner's art: the double arrow as its track, the green orb as its knob. */
+.is-cartoon .sg-aim{background:url('/images/game/siege/aim-track.webp') center/contain no-repeat!important;border:0!important;border-radius:0!important;filter:drop-shadow(0 3px 4px #0007)}
+.is-cartoon .sg-aim.is-held{filter:drop-shadow(0 0 6px #9bf07a) drop-shadow(0 3px 4px #0007)}
+.is-cartoon .sg-aim-up,.is-cartoon .sg-aim-down{visibility:hidden}
+.is-cartoon .sg-aim-knob{width:52px;height:43px;border:0;border-radius:0;box-shadow:none;background:url('/images/game/siege/aim-knob.webp') center/contain no-repeat}
+@media (max-height:500px) and (orientation:landscape){.is-cartoon .sg-aim-knob{width:42px;height:35px}}
