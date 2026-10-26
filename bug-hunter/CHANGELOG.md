@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.0 - 2026-10-26
+
+### Changed - Siege Cartoon's crossbow shoots with real physics
+- Every shot leaves at one speed under gravity. The crossbow takes the angle that lands it on the aim (the flatter of the two), so it points where the arrows go: straight down at the ground before our wall at the nearest aim, rising as the aim goes further.
+- Arrows (and the missile) leave from the crossbow's tip along that angle and fall along a true ballistic path onto their spot, pointing the way they fly; no more drawn arcs or arrows raining from off screen. The aim ring stays as the guide of where they land.
+
 ## 1.14.99 - 2026-10-26
 
 ### Fixed
