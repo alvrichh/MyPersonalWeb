@@ -608,3 +608,21 @@
 .sg-map-shop img{display:none}
 .sg-map-shop span{position:absolute;left:15%;width:48%;top:31%;height:58%;display:grid;place-items:center;font:900 clamp(14px,2cqw,22px) system-ui}
 .siege-root.is-cartoon .sg-prep .sg-map-shop,.siege-root.is-cartoon .sg-prep .sg-map-shop:hover:not(:disabled),.siege-root.is-cartoon .sg-prep .sg-map-shop:active{width:min(clamp(120px,19cqw,230px),34cqh)}
+/* The units' frame: the owner's big stone panel, dark inside, its corners whole and its edges stretched; the four
+   gems sit on the edges' middles at their own size. */
+.sg-st-frame{position:relative;flex:1;min-width:0;min-height:0;display:flex;border-style:solid;border-color:transparent;border-width:52px;border-image:url('/images/game/siege/ui/frame.webp') 125 fill / 52px stretch;margin:-18px}
+.siege-root.is-cartoon .sg-prep .sg-st-frame .sg-st-grid{flex:1;border:0;border-radius:0;box-shadow:none;background:none;padding:0;margin:-30px;max-height:none}
+.sg-shop-only .sg-st-frame{max-height:none}
+.sg-st-gem{position:absolute;pointer-events:none;background:center/contain no-repeat}
+.sg-st-gem.is-top{top:-52px;left:50%;width:40px;height:26px;transform:translateX(-50%);background-image:url('/images/game/siege/ui/frame-gem-top.webp')}
+.sg-st-gem.is-bottom{bottom:-52px;left:50%;width:40px;height:25px;transform:translateX(-50%);background-image:url('/images/game/siege/ui/frame-gem-bottom.webp')}
+.sg-st-gem.is-left{left:-52px;top:50%;width:21px;height:33px;transform:translateY(-50%);background-image:url('/images/game/siege/ui/frame-gem-left.webp')}
+.sg-st-gem.is-right{right:-52px;top:50%;width:21px;height:33px;transform:translateY(-50%);background-image:url('/images/game/siege/ui/frame-gem-right.webp')}
+@media (max-height:500px){.sg-st-frame{border-width:40px;border-image-width:40px;margin:-14px}.siege-root.is-cartoon .sg-prep .sg-st-frame .sg-st-grid{margin:-24px}.sg-st-gem.is-top{top:-40px}.sg-st-gem.is-bottom{bottom:-40px}.sg-st-gem.is-left{left:-40px}.sg-st-gem.is-right{right:-40px}}
+.siege-root.is-cartoon .sg-prep .sg-st-frame .sg-st-grid{margin:-26px}@media (max-height:500px){.siege-root.is-cartoon .sg-prep .sg-st-frame .sg-st-grid{margin:-20px}}
+.sg-st-frame{border-width:74px;border-image-width:74px;margin:-30px -26px}
+.siege-root.is-cartoon .sg-prep .sg-st-frame .sg-st-grid{margin:-44px}
+.sg-st-gem.is-top{top:-74px;width:57px;height:37px}.sg-st-gem.is-bottom{bottom:-74px;width:57px;height:36px}
+.sg-st-gem.is-left{left:-74px;width:30px;height:48px}.sg-st-gem.is-right{right:-74px;width:30px;height:48px}
+@media (max-height:500px){.sg-st-frame{border-width:54px;border-image-width:54px;margin:-22px -18px}.siege-root.is-cartoon .sg-prep .sg-st-frame .sg-st-grid{margin:-32px}
+  .sg-st-gem.is-top{top:-54px;width:42px;height:27px}.sg-st-gem.is-bottom{bottom:-54px;width:42px;height:26px}.sg-st-gem.is-left{left:-54px;width:22px;height:35px}.sg-st-gem.is-right{right:-54px;width:22px;height:35px}}
