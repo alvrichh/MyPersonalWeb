@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.71 - 2026-10-26
+
+### Removed - Siege Legacy's tribute note
+- The tribute note and credit added in 1.14.70 (map tab, How to play, Coming Soon card) are removed, and the subtitle is back to "Coming soon · Playable preview": the owner did not want them. The mode keeps its name, Siege Legacy.
+
 ## 1.14.70 - 2026-10-26
 
 ### Changed - Siege becomes Siege Legacy, a Cartoon Wars tribute
