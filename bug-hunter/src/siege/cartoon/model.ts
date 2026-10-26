@@ -68,10 +68,10 @@ export const UNITS: readonly Spec[] = [
   ] },
   // The archer's four forms (docs/cw2-reference.md): rock thrower, javelin thrower, archer with a bow, and the ninja
   // throwing shurikens; each throws its own sheet's projectile. The reference gives no prices.
-  { id: 2, cost: 30, hp: 80, damage: 18, speed: 33, range: 150, rate: 1.3, cooldown: 4, unlock: 1, infantry: true, shot: 'rock', spin: true, ...six('ally-archer-1', 155), forms: [
-    { price: 250, cost: 40, hp: 90, damage: 24, range: 175, shot: 'javelin', spin: false, ...six('ally-archer-2', 159) },
-    { price: 400, cost: 50, hp: 100, damage: 27, range: 200, shot: 'arrow', spin: false, ...six('ally-archer-3', 187) },
-    { price: 1500, cost: 120, hp: 150, damage: 32, speed: 50, range: 195, rate: 0.8, shot: 'shuriken', spin: true, ...six('ally-archer-4', 195) },
+  { id: 2, cost: 30, hp: 80, damage: 18, speed: 33, range: 150, rate: 1.3, cooldown: 4, unlock: 1, infantry: true, shot: 'rock', spin: true, ...six('ally-archer-1', 155, 0.75), forms: [
+    { price: 250, cost: 40, hp: 90, damage: 24, range: 175, shot: 'javelin', spin: false, ...six('ally-archer-2', 159, 0.75) },
+    { price: 400, cost: 50, hp: 100, damage: 27, range: 200, shot: 'arrow', spin: false, ...six('ally-archer-3', 187, 0.75) },
+    { price: 1500, cost: 120, hp: 150, damage: 32, speed: 50, range: 195, rate: 0.8, shot: 'shuriken', spin: true, ...six('ally-archer-4', 195, 0.75) },
   ] },
   // The heavy armour swordsman's four forms (docs/cw2-reference.md): a knight with two swords, a bigger one with maces
   // for hands, the samurai who punches, and a bigger samurai. The reference gives no prices.

@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.5 - 2026-10-26
+
+### Fixed
+- Siege Cartoon: the ground below the troops shows the battlefield picture again (its grass, plants and stones) instead of a green blur; where the view runs below the picture, its foreground is stretched to the bottom rather than its last row.
+- The archer's four forms are drawn at three quarters, matching the other troops (its sheet is drawn bigger).
+
 ## 1.15.4 - 2026-10-26
 
 ### Changed / Fixed - Siege Cartoon's battlefield
