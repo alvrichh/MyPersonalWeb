@@ -4,6 +4,13 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.56 - 2026-10-26
+
+### Changed - Siege: one battlefield with its own ground, no bridge
+- The owner's panoramic battlefield (`siege/backdrop`): our green side with floating islands on the left, the bugs' red side with the vortex on the right, ground included. It is drawn across the whole field and moves with the troops, its walking ground on their ground line. It replaces each world's map picture behind the field and the bridge over the abyss (the bench pictures are no longer used here).
+- The ground line sits lower (70% of the view, 74% on short wide screens). On an upright phone it comes down until the picture reaches the bottom, and the picture's sky colours carry on above it, faded in, with no seam.
+- Checked by screenshots at 1280x720, 844x390 and 390x844: troops, fortresses, crossbow and arrows stay in view and stand on the picture's ground.
+
 ## 1.14.55 - 2026-10-26
 
 ### Added - Siege: our fortress, its crossbow and the enemy fortress

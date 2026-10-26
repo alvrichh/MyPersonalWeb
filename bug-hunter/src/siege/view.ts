@@ -50,13 +50,23 @@ export const portrait = (id: number) => `/images/game/${UNITS[id].sprite}-0.webp
 export function preload(world: number, deck: number[]) {
   const paths = new Set([...deck.map(id => UNITS[id].sprite), ...['bug', 'ticket', 'legacy'].map(kind => `enemies/${CASTS[world - 1]}-${kind}`), `bosses/${GUARDIANS[world - 1]}`]);
   paths.forEach(path => { for (let f = 0; f < frames(path); f++) picture(`${path}-${f}`); });
-  picture(`ui/bench/bench-${world}`);
-  // The fortresses and crossbow at every level (the workshop can change ours between battles).
-  [backdropPath(world), ...[1, 2, 3].flatMap(n => [`siege/castle-${n}`, `siege/enemy-${n}`, `siege/xbow-base-${n}`, `siege/xbow-arm-${n}`]), ...FX].forEach(still);
+  // The battlefield, and the fortresses and crossbow at every level (the workshop can change ours between battles).
+  [SCENE, ...[1, 2, 3].flatMap(n => [`siege/castle-${n}`, `siege/enemy-${n}`, `siege/xbow-base-${n}`, `siege/xbow-arm-${n}`]), ...FX].forEach(still);
 }
-/** The bridge: the width a whole bridge picture is drawn at, where its deck sits (a share of its height above the
-    ground line), and the share of its width holding its two middle slabs, the part repeated to make it long. */
-const BRIDGE = { width: 300, deck: 0.3, middle: [0.315, 0.685] };
+/** The battlefield, one picture for every world for now (the owner's: our green side left, the bugs' red one right):
+    drawn across the field with `pad` field units past each end, its walking ground (`ground`, a share of its height)
+    on the troops' ground line; it moves with the troops. */
+const SCENE = 'siege/backdrop';
+const SCENE_FIT = { pad: 120, ground: 0.8 };
+/** The picture's top row averaged down to 16 colours, kept: stretched over any sky above the picture (a tall view) it
+    is a smooth gradient, where the raw row stretched would be streaks. */
+let skyStrip: HTMLCanvasElement | null = null;
+function skyOf(scene: HTMLImageElement) {
+  if (skyStrip) return skyStrip;
+  const c = document.createElement('canvas'); c.width = 16; c.height = 1;
+  const t = c.getContext('2d'); if (t) { t.imageSmoothingQuality = 'high'; t.drawImage(scene, 0, 0, scene.naturalWidth, 8, 0, 0, 16, 1); }
+  return (skyStrip = c);
+}
 /** From this aim on (field units) the arrows start to fall from the sky; at the furthest aim they only rain down. */
 const RAIN_FROM = 760;
 const backdropPath = (world: number) => `map/pv-${BACKDROPS[world - 1]}.jpg`;
@@ -181,41 +191,33 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   camera.width = w / scale;
   camera.min = -AIM_GUTTER / scale;
   camera.x = Math.max(camera.min, Math.min(Math.max(camera.min, FIELD - camera.width), camera.x));
-  // The bridge deck the troops walk on runs across the middle of the field.
-  // On wide, short fields (phones held sideways) it sits lower, so less of the chasm shows.
-  camera.deck = w / h > 2.2 ? 0.62 : 0.5;
+  // The ground line sits low, so the picture's ground and the sky above both show.
+  camera.deck = w / h > 2.2 ? 0.74 : 0.7;
+  // A tall view (a phone upright): the ground line comes down until the picture's foot reaches the bottom of the view.
+  const below = (FIELD + SCENE_FIT.pad * 2) * (1 - SCENE_FIT.ground) * 724 / 2172;
+  camera.deck = Math.max(camera.deck, 1 - (below * 0.95 * scale) / h);
   const ground = h / scale * camera.deck;
-  // Cartoon Wars-style backdrop: the world's own map picture behind the field, scrolling slower than the troops.
-  const back = still(backdropPath(s.world));
-  if (ok(back)) {
-    const bh = h, bw = Math.max(w * 1.35, bh * back.naturalWidth / back.naturalHeight);
-    const pan = FIELD > camera.width ? Math.max(0, Math.min(1, camera.x / (FIELD - camera.width))) : 0.5;
-    ctx.drawImage(back, -(bw - w) * pan, 0, bw, bh);
-    const shade = ctx.createLinearGradient(0, 0, 0, bh); shade.addColorStop(0, '#080f2155'); shade.addColorStop(0.7, '#080f21aa'); shade.addColorStop(1, '#03060cf2');
-    ctx.fillStyle = shade; ctx.fillRect(0, 0, w, bh);
-  }
   ctx.scale(scale, scale); ctx.translate(-camera.x + Math.max(0, (camera.width - FIELD) / 2), 0);
   const viewH = h / scale;
-  // The battle is fought on a bridge over the abyss, the world's Tactics bridge (`ui/bench/bench-N`) stretched from wall
-  // to wall, the troops walking on its deck; the backdrop falls away under it.
-  const chasm = ctx.createLinearGradient(0, ground, 0, viewH); chasm.addColorStop(0, '#03060c00'); chasm.addColorStop(1, '#03060cee');
-  ctx.fillStyle = chasm; ctx.fillRect(-400, ground, FIELD + 800, viewH);
-  const bridge = picture(`ui/bench/bench-${s.world}`);
-  if (bridge.image.complete && bridge.image.naturalWidth) {
-    // One long bridge: its own left end, then its two middle slabs repeated as far as needed, then its right end.
-    const [cx, cy, cw, ch] = bridge.crop ?? [0, 0, bridge.image.width, bridge.image.height];
-    const k = BRIDGE.width / cw, segH = ch * k, top = ground - segH * BRIDGE.deck;
-    const a = cw * BRIDGE.middle[0], b = cw * BRIDGE.middle[1], leftW = a * k, midW = (b - a) * k, rightW = (cw - b) * k;
-    const start = -leftW * 0.45, end = FIELD + rightW * 0.45 - rightW;
-    for (let x = start + leftW; x < end + 1; x += midW) ctx.drawImage(bridge.image, cx + a, cy, b - a, ch, x, top, midW + 0.5, segH);
-    ctx.drawImage(bridge.image, cx, cy, a, ch, start, top, leftW, segH);
-    ctx.drawImage(bridge.image, cx + b, cy, cw - b, ch, end, top, rightW, segH);
+  const scene = still(SCENE);
+  if (ok(scene)) {
+    const sw = FIELD + SCENE_FIT.pad * 2, sh = sw * scene.naturalHeight / scene.naturalWidth;
+    const x0 = -SCENE_FIT.pad, top = ground - sh * SCENE_FIT.ground;
+    ctx.drawImage(scene, x0, top, sw, sh);
+    // Taller views than the picture: its sky colours carried on up, and its last ground row down (a sliver at most).
+    if (top > 0) {
+      const strip = skyOf(scene), fade = 60;
+      ctx.drawImage(strip, 0, 0, 16, 1, x0, -1, sw, top + 2);
+      // Faded into the picture's top edge in thin bands, so no seam shows.
+      for (let i = 0; i < 12; i++) { ctx.globalAlpha = 1 - (i + 0.5) / 12; ctx.drawImage(strip, 0, 0, 16, 1, x0, top + (i * fade) / 12, sw, fade / 12 + 0.5); }
+      ctx.globalAlpha = 1;
+    }
+    if (top + sh < viewH) ctx.drawImage(scene, 0, scene.naturalHeight - 1, scene.naturalWidth, 1, x0, top + sh - 1, sw, viewH - top - sh + 2);
   } else {
     const [deck, low] = GROUND[s.world - 1];
-    const earth = ctx.createLinearGradient(0, ground - 10, 0, ground + 60); earth.addColorStop(0, deck); earth.addColorStop(1, low);
-    ctx.fillStyle = earth; ctx.fillRect(0, ground - 10, FIELD, 70);
+    const earth = ctx.createLinearGradient(0, ground - 10, 0, viewH); earth.addColorStop(0, deck); earth.addColorStop(1, low);
+    ctx.fillStyle = earth; ctx.fillRect(-SCENE_FIT.pad, ground - 10, FIELD + SCENE_FIT.pad * 2, viewH);
   }
-  ctx.strokeStyle = color; ctx.globalAlpha = 0.6; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(0, ground - 10); ctx.lineTo(FIELD, ground - 10); ctx.stroke(); ctx.globalAlpha = 1;
   base(ctx, s, 80, ground, '#55e5c4', false);
   base(ctx, s, FIELD - 80, ground, '#ff718c', true);
   mana(ctx, s, ground);
