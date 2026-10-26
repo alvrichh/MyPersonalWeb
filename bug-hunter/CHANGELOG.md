@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.7 - 2026-10-26
+
+### Changed
+- Siege Cartoon's music is its own, nothing like Bug Hunter's drum and bass: a synthesised orchestra with trumpet fanfares in thirds, horns, strings, tubas, timpani, a marching snare and cymbals. Its menus play a majestic D major march (92 BPM), its battles a driving D minor charge (138 BPM) with a string ostinato and timpani rolls.
+
 ## 1.15.6 - 2026-10-26
 
 ### Added - Siege Cartoon: a two-layer battlefield, its own music, and cartoon sounds

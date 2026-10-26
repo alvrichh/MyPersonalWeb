@@ -86,7 +86,26 @@ const SET: Block[] = ['liquid', 'neuro', 'liquid', 'neuro', 'breakdown', 'trance
    `b2b` is the original; `doom` is the final boss's: D minor with a harmonic-minor A that pulls home,
    neuro first and the growl singing its own melody from the start. */
 export type SongId = 'b2b' | 'doom' | 'breaks' | 'w1';
-export type SongPick = 'auto' | 'worlds' | SongId | V2Id;
+export type SongPick = 'auto' | 'worlds' | SongId | V2Id | EpicId;
+/* Siege Cartoon's own music, nothing like Bug Hunter's drum and bass: an orchestra (trumpet fanfares, horns, strings,
+   timpani, a marching snare and cymbals), its menus' a majestic D major march, its battles' a driving D minor charge.
+   Eighth-note melodies over the song's tonic (`root`, the trumpets' octave); each bar one chord. */
+export type EpicId = 'cartoon-menu' | 'cartoon-battle';
+type Epic = { bpm: number; root: number; chords: number[][]; melody: Note[][]; drive: boolean };
+const EPICS: Record<EpicId, Epic> = {
+  'cartoon-menu': {
+    bpm: 92, root: 293.66, drive: false,
+    chords: [[0, 4, 7], [5, 9, 12], [7, 11, 14], [9, 12, 16], [5, 9, 12], [0, 4, 7], [7, 11, 14], [7, 11, 14]],
+    melody: [[0, null, null, 4, 7, null, 7, null], [9, null, 7, null, 5, null, 4, null], [7, null, null, 11, 14, null, 12, 11], [12, null, 9, null, 7, null, 'r', null],
+      [5, null, 9, 12, 14, null, 12, null], [11, null, 9, null, 7, null, 4, null], [7, null, 11, null, 14, null, 16, null], [14, null, null, null, 12, null, 'r', null]],
+  },
+  'cartoon-battle': {
+    bpm: 138, root: 293.66, drive: true,
+    chords: [[0, 3, 7], [-2, 2, 5], [-4, 0, 3], [-5, -1, 2], [5, 8, 12], [3, 7, 10], [-2, 2, 5], [-5, -1, 2]],
+    melody: [[0, null, 0, 3, 7, null, null, null], [5, null, 3, 2, 3, null, null, null], [0, null, 0, 3, 8, null, 7, null], [7, null, null, null, 'r', null, 'r', null],
+      [12, null, null, 10, 8, null, 7, null], [10, null, null, 8, 7, null, 5, null], [8, null, 7, 5, 3, null, 5, null], [7, null, null, null, 'r', null, 'r', null]],
+  },
+};
 type Song = { root: number; chords: number[][]; roots: number[]; chordsB: number[][]; rootsB: number[]; set: Block[]; reese?: number[][]; pluck?: OscillatorType };
 const SONGS: Record<SongId, Song> = {
   b2b: { root: ROOT, chords: CHORDS, roots: BASS_ROOTS, chordsB: CHORDS_B, rootsB: BASS_ROOTS_B, set: SET },
@@ -145,9 +164,7 @@ type V2 = {
   /** Four bars of eighths over the song's root, in the lead's own octave (`leadOct` times the root). */
   lead: LeadVoice; leadOct: number; melody: Note[][];
 };
-export type V2Id = 'w1v2' | 'w2v2' | 'w3v2' | 'mudv2' | 'w4v2' | 'w5v2' | 'w6v2' | 'w7v2' | 'w8v2' | BossSongId | CartoonSongId;
-/** Siege Cartoon's own songs: its menus' (bright and bouncy) and its battles' (a marching charge). */
-export type CartoonSongId = 'cartoon-menu' | 'cartoon-battle';
+export type V2Id = 'w1v2' | 'w2v2' | 'w3v2' | 'mudv2' | 'w4v2' | 'w5v2' | 'w6v2' | 'w7v2' | 'w8v2' | BossSongId;
 /** The final bosses' own songs: each its world's song as a boss version, the same key, sounds (`theme`), lead and
     melody, its bass line and chords darker and harder, with no calm intro (it starts on the drop). «By world» plays it while that boss is out. */
 export const BOSS_SONGS = ['kernel', 'archdemon', 'drakkar', 'medusa', 'queen', 'zeus', 'mech', 'wraith', 'chimera'] as const;
@@ -156,26 +173,6 @@ const BOSS_FORM: Sec[] = ['drop', 'peak', 'roll', 'peak', 'break', 'drop', 'roll
 /** «By world»: each world's second version, in world order (the first world's in the menus too). */
 const WORLD_V2: V2Id[] = ['w1v2', 'w2v2', 'w3v2', 'mudv2', 'w4v2', 'w5v2', 'w6v2', 'w7v2', 'w8v2'];
 const V2S: Record<V2Id, V2> = {
-  'cartoon-menu': { // Siege Cartoon's menus: a bright F major bounce on a two-step, a marimba tune over a sliding bass.
-    theme: 10, root: 43.65,
-    chords: [[0, 4, 7, 12], [5, 9, 12, 17], [-3, 0, 4, 9], [7, 11, 14, 19]], roots: [0, 5, -3, 7],
-    chordsB: [[2, 5, 9, 14], [7, 11, 14, 19], [0, 4, 7, 12], [5, 9, 12, 17]], rootsB: [2, 7, 0, 5],
-    form: ['intro', 'roll', 'drop', 'roll', 'break', 'drop', 'peak', 'roll'],
-    grooves: { drop: 'twostep', roll: 'twostep', peak: 'amen' }, kit: { drive: 0, snare: 2800, decay: 0.09, wet: 0.15 },
-    bass: 'slide', line: [0, null, 'r', 12, null, 'r', 0, null, 7, null, 'r', 0, 12, null, 7, 'r', 0, null, 'r', 12, null, 'r', 0, null, 5, null, 'r', 4, 2, null, 0, 'r'],
-    lead: 'marimba', leadOct: 8,
-    melody: [[12, 16, 19, 16, 21, null, 19, null], [17, 16, 14, null, 12, null, 'r', null], [12, 16, 19, 24, 21, 19, 16, 14], [16, null, 14, 12, 11, null, 12, 'r']],
-  },
-  'cartoon-battle': { // Siege Cartoon's battles: a D minor charge, war brass over the Amen, a driving bass, the drums rolling.
-    theme: 10, root: 36.71,
-    chords: [[0, 3, 7, 12], [-2, 2, 5, 10], [-4, 0, 3, 8], [-5, -1, 2, 7]], roots: [0, -2, -4, -5],
-    chordsB: [[3, 7, 10, 15], [-2, 2, 5, 10], [5, 8, 12, 17], [7, 11, 14, 19]], rootsB: [3, -2, 5, 7],
-    form: ['drop', 'roll', 'drop', 'peak', 'break', 'drop', 'roll', 'peak'],
-    grooves: { drop: 'amen', roll: 'jungle', peak: 'amen' }, kit: { drive: 0.5, snare: 2100, decay: 0.14, wet: 0.3 },
-    bass: 'reese', line: [0, null, 0, null, 7, null, 0, 'r', 0, null, 10, null, 7, null, 5, null, 0, null, 0, null, 7, null, 0, 'r', 12, null, 10, null, 7, null, 5, 3],
-    lead: 'brass', leadOct: 4,
-    melody: [[12, null, 12, 15, 19, null, 17, 15], [14, null, 10, null, 12, null, 'r', null], [12, null, 15, null, 19, 20, 22, null], [19, null, 17, 15, 14, null, 12, 'r']],
-  },
   'boss-kernel': { // Kernel Panic: the Backlog's chiptune turned to C minor (its thirds flattened, the B kept sharp), still on the Amen, a driven bass.
     theme: 1, root: 32.7,
     chords: [[5, 8, 12, 17], [7, 11, 14, 19], [3, 7, 10, 15], [8, 12, 15, 20]], roots: [5, 7, 3, 8],
@@ -482,7 +479,7 @@ class Engine {
 
   /** Which song plays (picked in Customise): 'auto' is the original with the final boss's own song for that fight. */
   private pick: SongPick = 'auto';
-  private songId: SongId | V2Id | 'mix' = 'b2b';
+  private songId: SongId | V2Id | EpicId | 'mix' = 'b2b';
   private songNow = false;
   private root = ROOT;
   setSong(pick: SongPick) {
@@ -525,19 +522,21 @@ class Engine {
     this.finalId = id === 'valdur' ? 'drakkar' : id === 'kratos' ? 'archdemon' : id;
   }
 
+  /** A sixteenth of the song playing (the epic songs keep their own tempo). */
+  private stepLen() { const e = EPICS[this.songId as EpicId]; return e ? 60 / e.bpm / 4 : this.songId === 'breaks' ? GSTEP : STEP; }
   private tick = () => {
     if (!this.playing) return;
     // After a stall of the main thread (a long frame, a tab switch) the steps missed are skipped, not all fired at
     // once in the past: that burst of stacked drums was itself a hitch.
     if (this.next < this.ctx.currentTime - 0.1) {
-      const step = this.songId === 'breaks' ? GSTEP : STEP;
+      const step = this.stepLen();
       const missed = Math.floor((this.ctx.currentTime - this.next) / step);
       this.step += missed;
       this.next += missed * step;
     }
     while (this.next < this.ctx.currentTime + 0.12) {
       this.schedule(this.step, this.next);
-      this.next += this.songId === 'breaks' ? GSTEP : STEP;
+      this.next += this.stepLen();
       this.step += 1;
     }
     this.timer = window.setTimeout(this.tick, 25);
@@ -566,6 +565,8 @@ class Engine {
     const wanted = menu ? 'b2b' : mixing ? 'mix' : this.pick === 'auto' ? (this.finalWanted ? 'doom' : 'b2b') : this.pick === 'worlds' ? byWorld : this.pick;
     if (inBar === 0 && wanted !== this.songId && (bar % 4 === 0 || this.songNow)) { this.songId = wanted; this.songNow = false; }
     if (this.songId === 'mix') { this.scheduleMix(step, at); return; }
+    const epic = EPICS[this.songId as EpicId];
+    if (epic) { this.scheduleEpic(step, at, epic); return; }
     const v2 = V2S[this.songId as V2Id];
     if (v2) { this.root = v2.root; this.scheduleV2(step, at, v2); return; }
     const song = SONGS[this.songId as SongId];
@@ -940,6 +941,91 @@ class Engine {
 
   /** One swung sixteenth of the final boss's song: 2-step garage and funky breakbeat in D minor, organ stabs on the
       offbeats, a dubby sub bass, a bell lead, and the final boss's tension layer on top as in every song. */
+  /** Siege Cartoon's orchestra: sixteen-bar loops, four bars of horns, strings and timpani to open, then the trumpets'
+      fanfare over everything; the battle song drives with a string ostinato and a marching snare. */
+  private scheduleEpic(step: number, at: number, e: Epic) {
+    const bar = Math.floor(step / 16), inBar = step % 16, step8 = 60 / e.bpm / 2, barLen = step8 * 8;
+    const loop = bar % 16, chord = e.chords[bar % 8], tonic = e.root, low = tonic / 4;
+    const f = (n: number, base = tonic) => base * 2 ** (n / 12);
+    if (inBar === 0) {
+      this.epicHorns(at, chord.map((n) => f(n, tonic / 2)), barLen * 0.98, e.drive ? 0.022 : 0.028);
+      this.epicStrings(at, chord.map((n) => f(n, tonic)), barLen, e.drive ? 0.012 : 0.018);
+      this.epicLowBrass(at, f(chord[0] % 12 - (chord[0] > 6 ? 12 : 0), low), e.drive ? step8 * 1.6 : barLen * 0.9);
+      this.timpani(at, f(chord[0] % 12 - (chord[0] > 6 ? 12 : 0), low * 2), e.drive ? 0.5 : 0.42);
+      if (loop === 4 || loop === 12) this.epicCrash(at);
+    }
+    if (inBar === 8) this.timpani(at, f(chord[0] + 7, low * 2) / (chord[0] + 7 > 6 ? 2 : 1), e.drive ? 0.36 : 0.24);
+    if (e.drive) {
+      // The charge: a string ostinato on every eighth, a marching snare and the timpani rolling into each phrase.
+      if (inBar % 2 === 0) this.epicStab(at, f(chord[0], tonic / 2), f(chord[2], tonic / 2), inBar % 8 === 0 ? 0.03 : 0.02);
+      if (inBar % 2 === 0 && inBar % 4 !== 0) this.epicLowBrass(at, f(chord[0] % 12 - (chord[0] > 6 ? 12 : 0), low), step8 * 0.8);
+      if (inBar === 4 || inBar === 12) this.epicSnare(at, 0.22);
+      if (inBar === 14 || inBar === 15) this.epicSnare(at, 0.12);
+      if (loop % 4 === 3 && inBar >= 8) this.timpani(at, f(0, low * 2), 0.18 + (inBar - 8) * 0.03);
+    } else {
+      if (inBar === 4 || inBar === 12) this.epicSnare(at, 0.07);
+      if (loop % 4 === 3 && inBar >= 12) this.epicSnare(at, 0.05 + (inBar - 12) * 0.02);
+    }
+    // The trumpets: the fanfare from the fifth bar of each loop, two in thirds and an octave of horns under them.
+    if (loop >= 4 && inBar % 2 === 0) {
+      const line = e.melody[(loop - 4) % 8], i = inBar / 2, n = line[i];
+      if (typeof n === 'number') {
+        let held = 1; while (i + held < 8 && line[i + held] === null) held++;
+        const len = held * step8 * 0.95;
+        this.trumpet(at, f(n), len, 0.06);
+        this.trumpet(at, f(n - (n % 12 === 0 || n % 12 === 7 ? 5 : 3)), len, 0.035);
+        this.trumpet(at, f(n, tonic / 2), len, 0.025);
+      }
+    }
+  }
+  /** A trumpet: bright saws through a filter that blares open on the attack, a vibrato coming in on held notes. */
+  private trumpet(at: number, freq: number, len: number, vol: number) {
+    const end = at + len + 0.2, g = this.ctx.createGain(), lp = this.filt('lowpass', 900, 2);
+    lp.frequency.setValueAtTime(900, at); lp.frequency.linearRampToValueAtTime(3800, at + 0.05); lp.frequency.linearRampToValueAtTime(2300, at + Math.min(len, 0.4));
+    const vib = this.ctx.createOscillator(), vg = this.ctx.createGain(); vib.frequency.value = 5.6;
+    vg.gain.setValueAtTime(0, at); vg.gain.linearRampToValueAtTime(freq * 0.012, at + Math.min(len, 0.35));
+    vib.connect(vg); vib.start(at); vib.stop(end);
+    for (const d of [-5, 5]) { const o = this.osc('sawtooth', freq, at, end, d); vg.connect(o.frequency); o.connect(lp); }
+    const sq = this.osc('square', freq, at, end); vg.connect(sq.frequency); const sg = this.ctx.createGain(); sg.gain.value = 0.35; sq.connect(sg).connect(lp);
+    this.env(g, at, vol, 0.025, len, 0.8, 0.14);
+    lp.connect(g); this.out(g, 0.35);
+  }
+  /** Horns: soft saws in a low chord, swelling in. */
+  private epicHorns(at: number, freqs: number[], len: number, vol: number) {
+    const g = this.ctx.createGain(), lp = this.filt('lowpass', 950, 0.8);
+    for (const fr of freqs) for (const d of [-7, 7]) this.osc('sawtooth', fr, at, at + len + 0.4, d).connect(lp);
+    this.env(g, at, vol, 0.14, len, 0.85, 0.3); lp.connect(g); this.out(g, 0.5);
+  }
+  /** Strings: a wide, slow-bowed chord. */
+  private epicStrings(at: number, freqs: number[], len: number, vol: number) {
+    const g = this.ctx.createGain(), lp = this.filt('lowpass', 2200, 0.7);
+    for (const fr of freqs) for (const d of [-12, 0, 12]) this.osc('sawtooth', fr, at, at + len + 0.5, d).connect(lp);
+    this.env(g, at, vol, 0.3, len, 0.9, 0.4); lp.connect(g); this.out(g, 0.6, this.padBus);
+  }
+  /** A short bowed stab (the battle's ostinato): the root and the fifth together. */
+  private epicStab(at: number, a: number, b: number, vol: number) {
+    const g = this.ctx.createGain(), lp = this.filt('lowpass', 1600, 1);
+    for (const fr of [a, b, a * 2]) this.osc('sawtooth', fr, at, at + 0.2).connect(lp);
+    this.env(g, at, vol, 0.008, 0.12); lp.connect(g); this.out(g, 0.25);
+  }
+  /** Tubas and trombones on the bass note. */
+  private epicLowBrass(at: number, freq: number, len: number) {
+    const g = this.ctx.createGain(), lp = this.filt('lowpass', 420, 1.2);
+    this.osc('sawtooth', freq, at, at + len + 0.2).connect(lp); this.osc('sawtooth', freq * 2, at, at + len + 0.2, 4).connect(lp);
+    this.env(g, at, 0.09, 0.03, len, 0.7, 0.12); lp.connect(g); this.out(g, 0.2);
+  }
+  /** A marching snare. */
+  private epicSnare(at: number, vol: number) {
+    const n = this.noiseAt(at, 0.2), bp = this.filt('bandpass', 2100, 0.9), g = this.ctx.createGain();
+    this.env(g, at, vol, 0.001, 0.13); n.connect(bp).connect(g); this.out(g, 0.3);
+    const o = this.osc('triangle', 210, at, at + 0.1), og = this.ctx.createGain(); this.env(og, at, vol * 0.5, 0.001, 0.06); o.connect(og); this.out(og);
+  }
+  /** A cymbal crash opening the fanfare. */
+  private epicCrash(at: number) {
+    const n = this.noiseAt(at, 2), hp = this.filt('highpass', 5200, 0.6), g = this.ctx.createGain();
+    this.env(g, at, 0.09, 0.004, 1.8); n.connect(hp).connect(g); this.out(g, 0.5);
+  }
+
   private scheduleGarage(step: number, at: number, song: Song) {
     const bar = Math.floor(step / 16);
     const inBar = step % 16;
@@ -1632,8 +1718,6 @@ class Engine {
         if (calm && inBar % 4 === 2 && Math.random() < 0.35) this.drip(at);
         if (calm && inBar === 8 && bar % 2 === 0) this.cricket(at);
         if (sec === 'peak' && inBar === 14 && bar % 2 === 1) this.rattle(at);
-        break;
-      case 10: // Siege Cartoon: no world noises, the band alone.
         break;
       default: // The Core: its heart, magma, the dragon, laser zaps, crystal bells.
         if (calm && (inBar === 0 || inBar === 8)) this.heartbeat(at, 1);
