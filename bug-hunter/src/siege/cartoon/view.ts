@@ -501,8 +501,6 @@ function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: nu
       lift = Math.abs(step) * (spec.six ? 1.6 : 3.2);
       if (!spec.six) { sy = 1 - (1 - Math.abs(step)) * 0.05; sx = 1 + (1 - Math.abs(step)) * 0.03; lean = step * 0.05 + 0.04; }
     } else if (!spec.air) sy = 1 + Math.sin(t * 3) * 0.015;
-    // Aiming up at a flyer: leaning back on its feet, the weapon raised.
-    if (u.aimUp && gone === undefined && !u.knock && !u.stun && !reduced) lean -= 0.3;
     ctx.save(); ctx.translate(u.x + (u.side ? -push : push), y - lift); if (u.side) ctx.scale(-1, 1);
     if (gone !== undefined) ctx.globalAlpha = gone < 0.66 ? 1 : 1 - (gone - 0.66) / 0.34;
     ctx.rotate(lean); ctx.scale(sx, sy);

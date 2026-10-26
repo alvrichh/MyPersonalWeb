@@ -29,6 +29,8 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
   six?: boolean;
   /** Reaches flyers although it fights up close (the master swordsman). */
   hitsAir?: boolean;
+  /** A flyer that only fights other flyers (and the fortress), never troops on the ground. */
+  skyOnly?: boolean;
   /** What it throws or shoots, a picture from its own sheet (`siege/units/shot-<name>`), and whether it spins in flight
       (a rock, a shuriken) or points along its path (a javelin, an arrow). */
   shot?: string; spin?: boolean;
@@ -119,14 +121,14 @@ export const UNITS: readonly Spec[] = [
   // Ours, air (Cartoon Wars 2's A row): they fly over the field, out of reach of melee troops; only ranged ones hit them.
   // The aircraft fighter's four forms: a sword under a propeller pack, then with goggles and scarf, two rotors and blue
   // steel, and gold rotors with a flaming sword.
-  { id: 10, cost: 30, hp: 70, damage: 12, speed: 70, range: 40, rate: 0.7, cooldown: 3, unlock: 1, air: true, ...six('ally-fighter-1', 191, 0.64), forms: [
+  { id: 10, cost: 30, hp: 70, damage: 12, speed: 70, range: 40, rate: 0.7, cooldown: 3, unlock: 1, air: true, skyOnly: true, ...six('ally-fighter-1', 191, 0.64), forms: [
     { price: 150, cost: 40, hp: 100, damage: 16, ...six('ally-fighter-2', 192, 0.64) },
     { price: 400, cost: 55, hp: 140, damage: 22, ...six('ally-fighter-3', 224, 0.64) },
     { price: 1200, cost: 90, hp: 220, damage: 34, speed: 80, splash: 25, ...six('ally-fighter-4', 231, 0.64) },
   ] },
   // The armed aircraft fighter's four forms (docs/cw2-reference.md): a rifleman under a propeller pack, a veteran
   // sniper, a laser gun, and the air magician casting pink lightning.
-  { id: 11, cost: 55, hp: 110, damage: 20, speed: 55, range: 190, rate: 0.8, cooldown: 5, unlock: 2, air: true, shot: 'bullet-rifle', ...six('ally-armed-fighter-1', 197, 0.63), forms: [
+  { id: 11, cost: 55, hp: 110, damage: 20, speed: 55, range: 190, rate: 0.8, cooldown: 5, unlock: 2, air: true, skyOnly: true, shot: 'bullet-rifle', ...six('ally-armed-fighter-1', 197, 0.63), forms: [
     { price: 400, cost: 70, hp: 130, damage: 45, range: 260, rate: 1.6, shot: 'bullet-sniper', ...six('ally-armed-fighter-2', 202, 0.63) },
     { price: 900, cost: 90, hp: 170, damage: 34, range: 230, rate: 0.9, shot: 'plasma', ...six('ally-armed-fighter-3', 212, 0.63) },
     { price: 2000, cost: 140, hp: 240, damage: 55, range: 220, rate: 1.4, splash: 60, shot: 'ray-pink', ...six('ally-armed-fighter-4', 217, 0.63) },
@@ -160,9 +162,9 @@ export const UNITS: readonly Spec[] = [
   { id: 25, cost: 0, hp: 280, damage: 36, speed: 60, range: 40, rate: 1, cooldown: 0, unlock: 1, foe: true, ...foe('foe-tiger-1', 115, 1.2) },
   { id: 26, cost: 0, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, ...foe('foe-dragon-1', 120, 1.38) },
   { id: 27, cost: 0, hp: 380, damage: 40, speed: 55, range: 45, rate: 0.9, cooldown: 0, unlock: 1, foe: true, air: true, ...foe('foe-death-angel-1', 156, 0.93) },
-  { id: 28, cost: 0, hp: 70, damage: 12, speed: 70, range: 40, rate: 0.7, cooldown: 0, unlock: 1, foe: true, air: true, ...foe('foe-eagle-1', 171, 0.7) },
-  { id: 29, cost: 0, hp: 110, damage: 18, speed: 60, range: 40, rate: 0.7, cooldown: 0, unlock: 1, foe: true, air: true, ...foe('foe-ninja-bat-1', 128, 0.7) },
-  { id: 30, cost: 0, hp: 130, damage: 24, speed: 45, range: 180, rate: 1.2, cooldown: 0, unlock: 1, foe: true, air: true, ...foe('foe-hypno-bat-1', 139, 0.83) },
+  { id: 28, cost: 0, hp: 70, damage: 12, speed: 70, range: 40, rate: 0.7, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-eagle-1', 171, 0.7) },
+  { id: 29, cost: 0, hp: 110, damage: 18, speed: 60, range: 40, rate: 0.7, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-ninja-bat-1', 128, 0.7) },
+  { id: 30, cost: 0, hp: 130, damage: 24, speed: 45, range: 180, rate: 1.2, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-hypno-bat-1', 139, 0.83) },
   { id: 31, cost: 0, hp: 900, damage: 55, speed: 40, range: 130, rate: 1.4, cooldown: 0, unlock: 1, foe: true, air: true, splash: 50, steady: true, ...foe('foe-red-dragon-rider-1', 179, 1.05) },
   { id: 32, cost: 0, hp: 760, damage: 40, speed: 24, range: 180, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splits: 2, ...foe('foe-gatling-1', 123, 1.22) },
   // Ours again, appended (ids are places in this list):
@@ -215,10 +217,13 @@ export function specAt(id: number, level = 1): Spec {
 }
 /** A fighter's own stats: ours at their level, the enemy's as listed. */
 export const specOf = (u: { id: number; side: number; lv?: number }) => (u.side ? UNITS[u.id] : specAt(u.id, u.lv));
-/** Can fighter `u` hit fighter `v`? Flyers are out of reach of ground troops that fight up close. */
-const reaches = (u: Fighter, v: Fighter) => { const a = specOf(u); return !isAir(v.id) || !!a.air || a.range >= 100 || !!a.hitsAir; };
-/** Can a fighter of `id` hit one of `target`? Melee troops on the ground cannot reach the air. */
-export const canHit = (id: number, target: number) => !isAir(target) || isAir(id) || UNITS[id].range >= 100;
+/** Who can hit whom: troops on the ground reach flyers only when they say so (`hitsAir`: the master swordsman, the
+    wizard's meteor, the heavy armed robot's last two forms); flyers reach each other, and the ground unless they only
+    fight in the sky (`skyOnly`: the aircraft fighters, the eagle and the bats). */
+const hits = (a: Spec, target: number) => (isAir(target) ? !!a.air || !!a.hitsAir : !a.skyOnly);
+const reaches = (u: Fighter, v: Fighter) => hits(specOf(u), v.id);
+/** Can a fighter of `id` (at its first form) hit one of `target`? */
+export const canHit = (id: number, target: number) => hits(UNITS[id], target);
 /** Keep at most `DECK` of each kind, in order. */
 export function capDeck(deck: number[]) { const land = deck.filter(id => !isAir(id)).slice(0, DECK), air = deck.filter(isAir).slice(0, DECK); return deck.filter(id => land.includes(id) || air.includes(id)); }
 export interface Progress { version: 1; unlocked: number; coins: number; victories: number[]; upgrades: [number, number, number, number]; deck: number[];
@@ -294,7 +299,7 @@ export interface Fighter { uid: number; id: number; side: 0 | 1; x: number; lane
   /** An arrow's nudge: seconds left being pushed back, and until it can be nudged again. */
   nudge?: number; nudgeCd?: number;
   /** A flyer's height over the ground (`FLY`), lower while it fights a walker; a walker aiming up at a flyer. */
-  alt?: number; aimUp?: boolean;
+  alt?: number;
   /** How much bigger an enemy is drawn than its troop (it grows world by world, stage by stage). */
   grow?: number }
 /** A blow taking at least this share of a troop's health knocks it: infantry fly back (`KNOCK.back` field units over
@@ -573,7 +578,7 @@ export function tick(s: Siege, dt: number) {
     if (a.air) {
       const want = near && !UNITS[enemy.id].air ? (a.range <= 60 ? FLY.close : FLY.ranged) : FLY.high, alt = u.alt ?? FLY.high;
       u.alt = alt + Math.max(-FLY.rate * dt, Math.min(FLY.rate * dt, want - alt));
-    } else u.aimUp = near && !!UNITS[enemy.id].air;
+    }
     if (enemy && distance <= a.range + UNITS[enemy.id].size * 0.25) {
       if (u.attack <= 0) {
         u.attack = a.rate; u.hit = 0.3;
