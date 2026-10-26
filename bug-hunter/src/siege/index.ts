@@ -259,7 +259,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       <header class="sg-map-top"><button class="sg-back" ${act ? 'data-sg-map-act="0"' : 'data-sg="modes"'} aria-label="${act ? t('siegeShopBack') : t('siegeModes')}">←</button>
         <h1 class="sg-map-title">${act ? `<small>${worldName(act)}</small>${t(`siegeCtAct${act}` as Key)}` : title()}</h1>
         <span class="sg-coins"><img src="/images/game/store/coins-2.webp" alt="">${progress.coins}</span></header>
-      <button class="sg-map-shop" data-sg-prep="shop"><img src="/images/game/store/coins-2.webp" alt="">${t('siegeTabStore')}</button>${panel}</div>`;
+      <button class="sg-map-shop" data-sg-prep="shop"><span>${t('siegeTabStore')}</span></button>${panel}</div>`;
   }
   /** The HUD's pictures of both sides: Legacy's Town Hall and world guardian, Cartoon's two fortresses. */
   const vsPic = (side: 0 | 1) => mode === 'cartoon'

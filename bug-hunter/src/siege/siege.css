@@ -601,3 +601,10 @@
 .siege-root.is-cartoon .sg-prep .sg-st-tile.is-on{outline:0}
 .siege-root.is-cartoon .sg-prep .sg-st-actions .sg-st-go.is-fight,.siege-root.is-cartoon .sg-prep .sg-st-actions .sg-st-go.is-fight:hover:not(:disabled){background:none}
 .sg-map-go{padding:0 10px}
+/* The map's Shop: the market stall with its chest, "Shop" written on its board. */
+.siege-root.is-cartoon .sg-prep .sg-map-shop,.siege-root.is-cartoon .sg-prep .sg-map-shop:hover:not(:disabled),.siege-root.is-cartoon .sg-prep .sg-map-shop:active{left:6px;bottom:6px;width:clamp(150px,19cqw,230px);aspect-ratio:552/326;min-height:0;padding:0;display:block;border:0;border-radius:0;box-shadow:none;background:url('/images/game/siege/ui/shop-stall.webp') center/contain no-repeat;filter:drop-shadow(0 4px 6px #000a);color:#fff;text-shadow:0 2px 2px #000}
+.siege-root.is-cartoon .sg-prep .sg-map-shop:hover:not(:disabled){filter:drop-shadow(0 0 8px #ffd23f) drop-shadow(0 4px 6px #000a)}
+.siege-root.is-cartoon .sg-prep .sg-map-shop:active{transform:translateY(2px)}
+.sg-map-shop img{display:none}
+.sg-map-shop span{position:absolute;left:15%;width:48%;top:31%;height:58%;display:grid;place-items:center;font:900 clamp(14px,2cqw,22px) system-ui}
+.siege-root.is-cartoon .sg-prep .sg-map-shop,.siege-root.is-cartoon .sg-prep .sg-map-shop:hover:not(:disabled),.siege-root.is-cartoon .sg-prep .sg-map-shop:active{width:min(clamp(120px,19cqw,230px),34cqh)}
