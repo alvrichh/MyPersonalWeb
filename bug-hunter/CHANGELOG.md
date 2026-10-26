@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.64 - 2026-10-26
+
+### Fixed - Siege: troops stand on their feet
+- Every pose was centred on the troop's place, so a long spear, a cape or an attack's flash pushed the body off it: the shadow sat ahead of or behind the feet, troops seemed to float at its top edge, and the body slid between poses. Each pose is now placed by its feet (the middle of the opaque pixels in its lowest rows, measured once a picture), and the shadow is drawn under them, the feet on its middle. Flyers stay centred.
+
 ## 1.14.63 - 2026-10-26
 
 ### Fixed - Siege: enemies face our side

@@ -362,6 +362,28 @@ export function trimImages(scope: ParentNode) {
   });
 }
 
+/** Where a pose's feet are, as a share of its picture's width: the middle of what is opaque in its lowest rows (a
+    long spear, a cape or a flash in the picture would otherwise put the troop off its feet). Measured once a picture. */
+const feet = new WeakMap<HTMLImageElement, number>();
+function feetOf(img: HTMLImageElement) {
+  let f = feet.get(img);
+  if (f !== undefined) return f;
+  f = 0.5;
+  try {
+    const w = img.naturalWidth, h = img.naturalHeight, band = Math.max(3, Math.round(h * 0.07));
+    const c = document.createElement('canvas'); c.width = w; c.height = band;
+    const t = c.getContext('2d', { willReadFrequently: true });
+    if (t) {
+      t.drawImage(img, 0, h - band, w, band, 0, 0, w, band);
+      const data = t.getImageData(0, 0, w, band).data;
+      let sum = 0, n = 0;
+      for (let y = 0; y < band; y++) for (let x = 0; x < w; x++) if (data[(y * w + x) * 4 + 3] > 120) { sum += x; n++; }
+      if (n) f = sum / n / w;
+    }
+  } catch { /* a picture that cannot be read stays centred */ }
+  feet.set(img, f);
+  return f;
+}
 /** How long the fallen stay on the field, in seconds (fading over the last third). */
 const DEAD_FOR = 1.6;
 /** The fallen of the battle on screen: troops seen last frame and gone now (only death takes a troop off the field). */
@@ -392,10 +414,10 @@ function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: nu
     : gone !== undefined ? 2 : hurt ? 2 : u.hit ? 1 : 0;
   const stand = picture(`${path}-0`), art = picture(`${path}-${pose}`);
   const size = spec.size * (u.boss ? 1.6 : 1) * Math.pow(0.8, u.stage ?? 0);
-  if (gone === undefined) { ctx.fillStyle = u.side ? '#ff648577' : '#43ebce77'; ctx.beginPath(); ctx.ellipse(u.x, floor + 2, size * (spec.air ? 0.2 : 0.3), spec.air ? 4 : 7, 0, 0, Math.PI * 2); ctx.fill(); }
+  // The shadow under its feet (the troop's x is where its feet are), the feet standing on its middle.
+  if (gone === undefined) { ctx.fillStyle = u.side ? '#ff648577' : '#43ebce77'; ctx.beginPath(); ctx.ellipse(u.x, floor, size * (spec.air ? 0.2 : 0.22), spec.air ? 4 : 5, 0, 0, Math.PI * 2); ctx.fill(); }
   if (ok(stand.image) && ok(art.image)) {
-    // One scale for every pose (from the first), so an attack's flash or swing keeps its size; every pose stands on
-    // the same feet and starts at the first pose's left edge (its effect reaching forwards).
+    // One scale for every pose (from the first), so an attack's flash or swing keeps its size.
     const k = size / stand.image.naturalHeight, sw = stand.image.naturalWidth * k;
     const dw = art.image.naturalWidth * k, dh = art.image.naturalHeight * k;
     let lift = 0, lean = 0, sx = 1, sy = 1, push = 0;
@@ -423,10 +445,11 @@ function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: nu
     else if (gone === undefined && u.elite) { ctx.shadowColor = '#ffd84a'; ctx.shadowBlur = 14; }
     else if (gone === undefined && u.boss) { ctx.shadowColor = '#ff3b3b'; ctx.shadowBlur = 16; }
     if (u.stage) ctx.filter = `brightness(${1 - u.stage * 0.22}) saturate(${1 - u.stage * 0.3})`;
-    // Everything is drawn facing its way of march; a sheet drawn facing left is turned round for that (and so keeps its
-    // back edge, the right one, on the first pose's).
-    if (spec.facesLeft) { ctx.save(); ctx.scale(-1, 1); ctx.drawImage(art.image, sw / 2 - dw, -dh, dw, dh); ctx.restore(); }
-    else ctx.drawImage(art.image, -sw / 2, -dh, dw, dh);
+    // Everything is drawn facing its way of march (a sheet drawn facing left is turned round for that), each pose on its
+    // own feet at the troop's x (flyers on their middle), so poses change without sliding.
+    const fx = spec.air && gone === undefined ? 0.5 : feetOf(art.image);
+    if (spec.facesLeft) { ctx.save(); ctx.scale(-1, 1); ctx.drawImage(art.image, -fx * dw, -dh, dw, dh); ctx.restore(); }
+    else ctx.drawImage(art.image, -fx * dw, -dh, dw, dh);
     ctx.filter = 'none';
     if (u.elite && gone === undefined) {
       ctx.shadowBlur = 0; ctx.fillStyle = '#f5e6c8'; ctx.strokeStyle = '#3a2a10'; ctx.lineWidth = 1.5;
