@@ -7,7 +7,7 @@ import { ads, configureAds, type AdSpot, type PlayAd } from './ads';
 import { configurePayments, payments } from './payments';
 import { COIN_PACKS, currentOffer, grant, packBonus, SKIN_OFFERS, type CoinPack, type SkinOffer } from './store';
 import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPrize, type DailyResult } from './daily';
-import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
+import { audio, BOSS_SONGS, SIEGE_SOUNDS, type SiegeSound, type Sfx, type SongPick } from './audio';
 import { MID_ART, boardBackdropBounds, draw, drawRetroFigure, preloadBoardBossFx, preloadCast, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, NET_ID, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, WORLD_SKINS, SKIN_GATE, SKIN_GROUPS, SKIN_TALL, skinOpen, ownsSkin, skinPrice, worldOutfit, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
 import { ABILITY, ABIL_V, BENCH_CAP, canFight, moveBenchSeat, CELL, COLS, FINAL_ID, HOME_ROW, NATIVE_WORLD_BONUS, ROWS, ROUNDS, SYNERGY, TACTICS, armyCap, deployBench, sellBench, storeOnBench, toggleAutoMerge, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, startOnlineFight, unitStats, updateBoard, waveSpots, waveUnitStats, type BoardGame, type Online, type Piece, type Variant } from './board';
@@ -3236,7 +3236,7 @@ screen.addEventListener('click', (event) => {
   const act = target.dataset.act;
   if (act !== 'mute') audio.play('click');
   if (act === 'extra-hub') extraHubScreen();
-  else if (act === 'siege-preview') (siegeOpen = true, openSiege(t, () => { siegeOpen = false; extraHubScreen(); }, { pic: `/images/game/hero/${heroStill(save.skin, save.equipped.head)}.webp`, name: save.name || DEFAULT_NAME }, (name) => audio.play(name)));
+  else if (act === 'siege-preview') (siegeOpen = true, openSiege(t, () => { siegeOpen = false; extraHubScreen(); }, { pic: `/images/game/hero/${heroStill(save.skin, save.equipped.head)}.webp`, name: save.name || DEFAULT_NAME }, (name, vol, pan) => (SIEGE_SOUNDS as readonly string[]).includes(name) ? audio.siege(name as SiegeSound, vol, pan) : audio.play(name as Sfx)));
   else if (act === 'play') startRun();
   // The world this run unlocked, in the same mode.
   else if (act === 'play-next') { const n = Number(target.dataset.next); setWorld(n, game?.mode ?? save.mode); persist(); startRun(n, game?.mode ?? save.mode); }
@@ -4234,6 +4234,7 @@ function step(now: number) {
 // a long run to reach (the statue, the wheel) can be checked by a script.
 if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) {
   Object.defineProperty(window, 'bugHunter', { get: () => game });
+  Object.defineProperty(window, 'bugHunterAudio', { get: () => audio });
   Object.defineProperty(window, 'bugHunterBoard', { get: () => board });
   Object.defineProperty(window, 'bugHunterBoardLay', { get: () => boardLay });
 }

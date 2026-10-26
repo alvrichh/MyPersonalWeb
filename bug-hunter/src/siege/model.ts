@@ -202,6 +202,8 @@ export interface Siege {
   world: number; phase: 'fight' | 'won' | 'lost'; time: number; energy: number; generator: number; cooldowns: number[];
   hp: [number, number]; maxHp: [number, number]; units: Fighter[]; effects: Effect[]; nextId: number; nextWave: number; waves: number; kills: number;
   spell: number; rocket: number; aim: number; bow: Bow;
+  /** The troops' sounds since the view last took them (attacks and deaths, where they happened); kept short. */
+  sounds?: { k: string; x: number }[];
   /** How many times the bow has shot this battle (the view plays a sound for each new one). */
   shots?: number; bossSpawned: boolean; paid: boolean; power: number; economy: number; deck: number[];
   /** The workshop's fortress level (0-5): it picks how our fortress looks. */
@@ -245,6 +247,29 @@ function spawn(s: Siege, id: number, side: 0 | 1, boss = false) {
   const life = hp * (elite ? ELITE.hp : 1);
   s.units.push({ uid: s.nextId++, id, side, x: side ? FIELD - 120 : 120, lane: s.nextId % 3, hp: life, maxHp: life, damage: spec.damage * scale * (elite ? ELITE.damage : 1), attack: 0, flash: 0, boss, elite: elite || undefined, lv });
 }
+/** What a troop's attack sounds like (its weapon) and its death (its body), by id; an array is per level. Projectile
+    troops sound like what they fire (`SHOT_SOUND`). Names are the audio engine's `SiegeSound`s. */
+const ATTACK_SOUND: Record<number, string | string[]> = {
+  0: ['blunt', 'blade', 'blade', 'blade', 'blade'], 1: 'pierce', 3: ['blade', 'blunt', 'blunt', 'blunt'], 4: ['gun', 'rifle', 'uzi', 'sniper'],
+  7: 'claw', 8: 'ray', 9: 'rocket', 10: 'gun', 11: 'rifle', 12: 'rocket', 13: 'drill', 14: 'magic',
+  15: 'blade', 16: 'pierce', 17: 'bite', 18: 'claw', 19: 'blade', 20: 'blunt', 21: 'blade', 22: 'rifle', 23: 'throw', 24: 'magic',
+  25: 'claw', 26: 'breath', 27: 'blade', 28: 'claw', 29: 'claw', 30: 'magic', 31: 'blade', 32: 'gatling',
+};
+const SHOT_SOUND: Record<string, string> = { rock: 'throw', javelin: 'throw', shuriken: 'throw', arrow: 'bow', rocket: 'rocket', rockets: 'rocket', ray: 'ray', none: 'flame', lightning: 'thunder', tornado: 'wind', meteor: 'meteor' };
+const DEATH_SOUND: Record<number, string | string[]> = {
+  1: ['die-man', 'die-man', 'die-man', 'die-man', 'die-horse'], 3: 'die-armor', 7: 'die-beast', 8: 'die-bot', 9: 'die-bot',
+  10: 'die-flyer', 11: 'die-flyer', 12: 'die-flyer', 13: 'die-flyer', 14: 'die-flyer',
+  17: 'die-beast', 18: 'die-brute', 20: 'die-armor', 21: 'die-armor', 25: 'die-beast', 26: 'die-dragon', 27: 'die-flyer', 28: 'die-flyer',
+  29: 'die-flyer', 30: 'die-flyer', 31: 'die-dragon', 32: 'die-bot',
+};
+const pickLevel = (v: string | string[] | undefined, lv: number) => (Array.isArray(v) ? v[Math.min(lv, v.length) - 1] : v);
+/** A fighter's attack and death sounds. */
+export function soundsOf(u: Fighter): [string, string] {
+  const lv = u.side ? 1 : u.lv ?? 1, a = specOf(u);
+  const attack = (a.shot && a.shot !== 'bullet' && SHOT_SOUND[a.shot]) || pickLevel(ATTACK_SOUND[u.id], lv) || 'blade';
+  return [attack, pickLevel(DEATH_SOUND[u.id], lv) ?? 'die-man'];
+}
+function hear(s: Siege, k: string, x: number) { const q = (s.sounds ??= []); q.push({ k, x }); if (q.length > 24) q.shift(); }
 /** What summoning a troop costs now (its level's energy). */
 export const costOf = (s: Siege, id: number) => specAt(id, s.levels[id]).cost;
 export function canSummon(s: Siege, id: number): boolean {
@@ -347,9 +372,10 @@ export function tick(s: Siege, dt: number) {
         // A thrown or shot projectile of its own flies a little longer, so it is seen on its way.
         const flight = a.shot === 'bullet' || a.shot === 'ray' ? 0.16 : SPELLS.includes(a.shot ?? '') ? 0.6 : a.shot ? 0.35 : 0.2;
         s.effects.push({ x: enemy.x, from: u.x, lane: enemy.lane, life: flight, max: flight, kind: u.elite ? 'bolt' : 'shot', side: u.side, art: a.shot, spin: a.spin });
+        hear(s, soundsOf(u)[0], u.x);
       }
     } else if (Math.abs(baseX - u.x) <= a.range + 35) {
-      if (u.attack <= 0) { u.attack = a.rate; u.hit = 0.3; s.hp[u.side ? 0 : 1] -= u.damage; }
+      if (u.attack <= 0) { u.attack = a.rate; u.hit = 0.3; s.hp[u.side ? 0 : 1] -= u.damage; hear(s, soundsOf(u)[0], u.x); }
     } else {
       const movement = a.speed * dt; u.moving = true;
       // Never step through an opponent, even during a long frame.
@@ -368,6 +394,7 @@ export function tick(s: Siege, dt: number) {
     s.units.push({ ...u, uid: s.nextId++, hp, maxHp: hp, damage: u.damage * SPLIT.damage, attack: 0.8, flash: 0.3, hit: 0, stage: (u.stage ?? 0) + 1 });
     s.effects.push({ x: u.x, from: u.x, lane: u.lane, life: 0.4, max: 0.4, kind: 'burst', side: u.side });
   }
+  for (const u of s.units) if (u.hp <= 0) hear(s, soundsOf(u)[1], u.x);
   s.kills += s.units.filter(u => u.side && u.hp <= 0).length;
   s.units = s.units.filter(u => u.hp > 0);
   s.hp = s.hp.map(h => Math.max(0, h)) as [number, number];

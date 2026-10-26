@@ -2,7 +2,7 @@
 
 Siege is moving to Cartoon Wars 2's campaign roster: our army of 10 land and 5 air units, a separate enemy roster, and one boss per act. Every unit gets new art. This file is the contract for that art and for the code that will use it. The current troops (bugs reused from the main game) stay until each new sheet lands.
 
-Reference: the Cartoon Wars 2 wiki pages on friendly units, enemy units and bosses (text supplied by the owner), and the owner's research on each unit's levels and looks: [cw2-reference.md](./cw2-reference.md). Unit level art (N1, N2…) follows that file; what it marks as pending is not a confirmed design.
+Reference: the Cartoon Wars 2 wiki pages on friendly units, enemy units and bosses (text supplied by the owner), and the owner's research on each unit's levels and looks: [cw2-reference.md](./cw2-reference.md). Upgrade effects, costs per form and which units are strong: [cw2-upgrades.md](./cw2-upgrades.md). Unit level art (N1, N2…) follows that file; what it marks as pending is not a confirmed design.
 
 ## Rules taken from the reference
 
