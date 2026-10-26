@@ -9,6 +9,7 @@ This changelog tracks game-version changes starting with v1.12.55. Earlier relea
 ### Changed - Siege Cartoon's troops
 - New art for all sixteen of our troops, every form and pose, from the owner's sheets: white round faces in blue and gold armour. The swordsman, spearman, archer, heavy armour, gunner, blaster, wizard, armed robot, heavy armed robot, aircraft fighter, armed aircraft, helicopter, drill, angel, flying mech and the vulture rider (now a knight with a spear on a walking vulture, with all six poses). Each keeps its size on the field and its stats.
 - New projectiles from the owner's effects sheet: rock, javelin, arrow, shuriken, rockets, spells, and our crossbow's arrows (one per crossbow level, a rocket at the last) and its missile. Bullets and beams are pictures now, each gun its own (pistol, rifle, Uzis, sniper; cyan, blue, gold and pink beams), and new shots for some forms: the frozen cannon's ice, a rocket salvo for the biggest robot and the gunship, plasma for the laser aircraft and the mech, a violet crescent for the angel's staff, the air magician's pink lightning.
+- Flyers swoop down on troops on the ground they fight (lower still those that strike in close) and climb again after; troops on the ground lean back to aim up at flyers. Shots leave from, and fly to, the height of whoever fires and is hit.
 - The heavy armour's forms in order: two swords, the armoured one who punches, the maces, and the crowned giant, who is now the King's portrait.
 
 ## 1.15.11 - 2026-10-26
