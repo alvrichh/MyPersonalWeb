@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.1 - 2026-10-26
+
+### Changed
+- Siege Cartoon's crossbow shoots twice as hard: its arrows fly nearly straight, curving down only a little as they go further, instead of being lobbed up and falling.
+
 ## 1.15.0 - 2026-10-26
 
 ### Changed - Siege Cartoon's crossbow shoots with real physics
