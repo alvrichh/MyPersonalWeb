@@ -13,3 +13,4 @@ published, under `/images/game/old/...`, like any asset). Each folder mirrors wh
   Medusa recut from their sheets, the intern cleaned up; grey haze, Medusa's lime/yellow key fringe, specks).
 - `shared/hero/reaper-base-*.webp`: the first Server Reaper skin, replaced by the owner's redrawn sheet in 1.14.38.
 - `shared/hero/reaper-v2/reaper-base-*.webp`: the redrawn Server Reaper as first cut (scythe counted in its height, so the figure was smaller than alvrich), replaced in 1.14.44.
+- `special/siege/units/ally-swordsman-{2,4,5}-*.webp`: the swordsman's forms with their red scarf and capes as drawn; recoloured blue in 1.14.60.
