@@ -500,3 +500,8 @@
 .siege-root.is-cartoon .sg-bar .sg-bow.is-drawing{transform:none}
 /* v1.14.98 — the card bar sits lower: its bottom rim (below the slots) under the screen's edge. */
 .siege-root.is-cartoon .sg-bar{bottom:calc(-58 * var(--u))}
+/* v1.15.4 — the bar a little lower still (only a few pixels of its rim under the slots show); the HUD's gold is the
+   game's coin picture; the energy line under the mana is easier to read. */
+.siege-root.is-cartoon .sg-bar{bottom:calc(-64 * var(--u))}
+.sg-gold{display:inline-flex;align-items:center;gap:4px}.sg-gold img{width:24px;height:18px;object-fit:contain}
+.is-cartoon .sg-mana small{color:#fff;opacity:.9}

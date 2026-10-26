@@ -4,6 +4,14 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.4 - 2026-10-26
+
+### Changed / Fixed - Siege Cartoon's battlefield
+- Every troop walks on one line (the lanes now only order who is drawn in front), so the card bar never hides one; shots, spells and the aim's landing spot follow.
+- The picture's foreground below the walking ground (a huge stone slab at this scale) is covered with its own grass, darkening downwards.
+- The card bar sits a little lower: only a few pixels of its rim under the slots show.
+- The HUD's gold shows the game's coin picture (the emoji showed as a grey coin on iPhone), and the energy line under the mana is easier to read.
+
 ## 1.15.3 - 2026-10-26
 
 ### Fixed
