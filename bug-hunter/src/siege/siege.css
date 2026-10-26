@@ -223,3 +223,56 @@
 
 /* The guardian's health bar, once the fortress has fallen: purple and glowing. */
 .sg-hp.is-enemy.is-boss>i{background:linear-gradient(#e0a0ff,#8a2be2)}.sg-hp.is-boss{box-shadow:0 0 10px #b366ff}
+
+/* v1.14.72 — the mode screen: Siege Legacy and Siege Cartoon side by side, each card in its own mode's look. */
+.sg-modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:18px}
+.siege-root .sg-mode{display:flex;flex-direction:column;align-items:center;gap:8px;padding:18px 16px 20px;border-radius:20px;text-align:center}
+.sg-mode img{width:100%;height:clamp(140px,28vh,220px);object-fit:contain;pointer-events:none}
+.sg-mode b{font:900 clamp(20px,3.4vw,28px)/1.1 system-ui}.sg-mode small{font-size:14px;line-height:1.35}
+.siege-root .sg-mode.is-legacy{border:2px solid #ffd16699;background:linear-gradient(#173456,#0d1f36);color:#edf7ff}
+.siege-root .sg-mode.is-legacy img{filter:drop-shadow(0 8px 14px #000a)}.sg-mode.is-legacy small{color:#bcd0e2}
+.siege-root .sg-mode.is-legacy:hover{background:linear-gradient(#21466f,#122a48);border-color:#ffd166}
+.siege-root .sg-mode.is-cartoon{border:3px solid #1b1b1b;background:#fffaf0;color:#1b1b1b;box-shadow:0 5px 0 #1b1b1b}
+.sg-mode.is-cartoon small{color:#4a4a4a}
+.siege-root .sg-mode.is-cartoon:hover{background:#fff3c4;border-color:#1b1b1b}
+@media(max-width:600px){.sg-modes{grid-template-columns:1fr;gap:12px}.sg-mode img{height:130px}}
+
+/* Siege Cartoon's own look outside battle: paper, ink outlines and flat colours, like its stick-figure troops. */
+.siege-root.is-cartoon:has(.sg-prep){background:#f4ecd8 radial-gradient(#d9ccae 1px,transparent 1.5px) 0 0/18px 18px;color:#1b1b1b;color-scheme:light}
+.is-cartoon .sg-prep .sg-title{color:#1b1b1b;text-shadow:3px 3px 0 #ffd23f}
+.is-cartoon .sg-prep .sg-title small{color:#c0392b}
+.is-cartoon .sg-prep .sg-eyebrow{color:#c0392b}
+.is-cartoon .sg-prep .sg-muted,.is-cartoon .sg-prep .sg-card small{color:#4a4a4a}
+.is-cartoon .sg-prep .sg-heading{color:#1b1b1b}
+.siege-root.is-cartoon .sg-prep button{border:3px solid #1b1b1b;border-image:none;border-radius:14px;background:#fff;color:#1b1b1b;text-shadow:none;box-shadow:0 4px 0 #1b1b1b}
+.siege-root.is-cartoon .sg-prep button:hover:not(:disabled){background:#fff3c4;border-color:#1b1b1b;filter:none}
+.siege-root.is-cartoon .sg-prep button:disabled{opacity:.55}
+.siege-root.is-cartoon .sg-back{border-radius:50%}
+.is-cartoon .sg-coins{background:#fff;border:3px solid #1b1b1b;color:#1b1b1b;box-shadow:0 3px 0 #1b1b1b}
+.siege-root.is-cartoon .sg-ptabs button{min-height:48px;border-width:3px}
+.siege-root.is-cartoon .sg-ptabs button.is-on,.siege-root.is-cartoon .sg-ptabs button.is-on:hover{background:#ffd23f}
+.siege-root.is-cartoon .sg-isle{flex-basis:132px;border-radius:16px}
+.siege-root.is-cartoon .sg-isle.is-on{background:#ffd23f;box-shadow:0 4px 0 #1b1b1b}
+.is-cartoon .sg-isle>img:first-child{aspect-ratio:1;filter:none}
+.is-cartoon .sg-isle.is-locked>img:first-child{filter:grayscale(1) opacity(.45)}
+.is-cartoon .sg-isle-n{background:#fff;border:2px solid #1b1b1b;color:#1b1b1b}
+.is-cartoon .sg-world.is-act{border:3px solid #1b1b1b;box-shadow:0 5px 0 #1b1b1b;color:#1b1b1b;
+  background:linear-gradient(90deg,#fffaf0 38%,#fffaf0cc 58%,#fffaf000 80%),url('/images/game/siege/backdrop.webp') center bottom/cover}
+.is-cartoon .sg-world.is-act h2{text-shadow:none}
+.is-cartoon .sg-world.is-act .sg-world-boss{filter:drop-shadow(0 6px 0 #0003)}
+.is-cartoon .sg-prize{color:#8a5a00}
+.siege-root.is-cartoon .sg-play{background:#4cd137;font:900 20px system-ui;padding:0 22px}
+.siege-root.is-cartoon .sg-play:hover:not(:disabled){background:#6ee05a}
+.siege-root.is-cartoon .sg-play:disabled{background:#c9c2b0}
+.is-cartoon .sg-play-tri{border-left-color:#1b1b1b}
+.siege-root.is-cartoon .sg-prep .sg-card{background:#fff}
+.siege-root.is-cartoon .sg-prep .sg-card.is-selected{background:#c8f2a8;border-color:#1b1b1b;box-shadow:0 4px 0 #1b1b1b}
+.is-cartoon .sg-prep .sg-card .sg-stat{color:#1b1b1b}
+.is-cartoon .sg-check{color:#1f7a12}
+.siege-root.is-cartoon .sg-prep .sg-upgrades button{background:#fff}
+.is-cartoon .sg-up-pic{background:#ffe9a8;border:3px solid #1b1b1b;border-radius:50%}
+.is-cartoon .sg-pips i{background:#fff;border:2px solid #1b1b1b}.is-cartoon .sg-pips i.is-on{background:#ffd23f;border-color:#1b1b1b}
+.is-cartoon .sg-up-cost{color:#8a5a00}
+.is-cartoon .sg-help{border:3px solid #1b1b1b;background:#fffaf0;color:#333}.is-cartoon .sg-help summary{color:#1b1b1b}
+.is-cartoon .sg-message{color:#c0392b}
+@media(max-width:600px){.siege-root.is-cartoon .sg-isle{flex-basis:108px}.is-cartoon .sg-world.is-act{background:linear-gradient(#fffaf0e6,#fffaf0e6),url('/images/game/siege/backdrop.webp') center bottom/cover}}

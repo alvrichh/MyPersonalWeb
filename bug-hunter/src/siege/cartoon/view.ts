@@ -31,10 +31,6 @@ function picture(path: string) {
   }
   return entry;
 }
-/** Each world's guardian is its own room-6 boss (the jungle and the haunted servers use their only boss). */
-const GUARDIANS = ['monolith', 'overlord', 'valkyrie', 'mudmonster', 'queen', 'minotaur', 'mainframe', 'wraith', 'hydra'];
-/** The world map's own picture of each world, the battle's backdrop. */
-const BACKDROPS = ['original', 'infierno', 'vikingos', 'lodo', 'jungla', 'rayo', 'robots', 'demonios', 'nucleo'];
 /** Every troop's sheet (`siege/units/...`): 0 standing, 1 attacking, 2 hurt. Walking, breathing, lunges and falls
     are animated here. */
 export function sprite(_s: Siege, u: Fighter) { return specOf(u).sprite; }
@@ -63,10 +59,6 @@ function skyOf(scene: HTMLImageElement) {
 }
 /** From this aim on (field units) the arrows start to fall from the sky; at the furthest aim they only rain down. */
 const RAIN_FROM = 760;
-const backdropPath = (world: number) => `map/pv-${BACKDROPS[world - 1]}.jpg`;
-/** The story scenes' pictures: the world's map picture behind, its guardian's standing pose speaking. */
-export const backdropUrl = (world: number) => `/images/game/${backdropPath(world)}`;
-export const guardianUrl = (world: number) => `/images/game/bosses/${GUARDIANS[world - 1]}-2.webp`;
 const FX = ['fx/rocket.webp', 'fx/wings-1.webp', 'fx/gem-big.webp', 'arrows/water.webp', 'arrows/leaf.webp', 'arrows/fire.webp', 'fx/boom-big.webp', 'fx/impact.webp', ...[1, 2, 3, 4, 5, 6].map(n => `fx/bolt-y-${n}.webp`)];
 /** Pictures drawn whole (backdrop, floor, effects): no alpha crop needed. */
 const stills = new Map<string, HTMLImageElement>();

@@ -1,4 +1,4 @@
-import type { Key } from '../strings';
+import type { Key } from '../../strings';
 
 /** Who speaks a line: the narrator, the player's commander (their hero), or the world's guardian. */
 export type Speaker = 'narrator' | 'hero' | 'boss';
