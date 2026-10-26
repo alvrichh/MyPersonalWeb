@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.51 - 2026-10-26
+
+### Fixed - Nocthrax's rim is a soft glow again
+- The performance pass of 1.14.43 had swapped the Core dragon's blurred magenta rim for a hard cached outline, which read as a flat pink blob round it. Its rim is again a soft glow, now blurred once per pose and kept (no shadow blur each frame), so it looks as before and costs as little as the outline.
+
 ## 1.14.50 - 2026-10-26
 
 ### Changed - The shop's coins on the frame, beside the X
