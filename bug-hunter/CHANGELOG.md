@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.57 - 2026-10-26
+
+### Fixed - Siege: the crossbow points down at a near aim
+- Our shots always flew a high arc, so at the nearest aim the crossbow pointed up although the target was below it. The arc now grows with the distance: none at the nearest aim (crossbow, arrows and missile go straight down at it), the full arc halfway to where the arrows rain from the sky. Pointing down, the arm is drawn in front of its base so it shows.
+
 ## 1.14.56 - 2026-10-26
 
 ### Changed - Siege: one battlefield with its own ground, no bridge
