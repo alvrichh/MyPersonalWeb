@@ -110,6 +110,20 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   /** The preparation screen's tab: the world map, the army, or the workshop (the mode's shop); Cartoon's shop is both
       the army and the workshop, Cartoon Wars 2-style. */
   let prepTab: 'map' | 'army' | 'shop' = 'map';
+  /** Cartoon's map: 0 shows the world map (`siege/map-worlds`), a world's number its own map of five stages
+      (`siege/map-N`). */
+  let mapAct = 0;
+  /** Where each map picture's platforms are (% of its width and height), measured on the owner's pictures: index 0 the
+      world map's six, then each world's five stages, left to right. */
+  const MAP_SPOTS: [number, number][][] = [
+    [[10.2, 68], [26.3, 51], [44.3, 52.1], [62.8, 41.4], [81, 34], [93.6, 24.8]],
+    [[14.1, 39.1], [41.6, 60.9], [54.1, 51], [70, 61.6], [86.4, 48.7]],
+    [[7.8, 35.6], [28.1, 51.8], [49.9, 42.3], [69.1, 58.2], [89.4, 34.5]],
+    [[11.1, 46], [33.2, 37.7], [51.7, 51.5], [71.2, 39.9], [89.7, 28.2]],
+    [[12.6, 57.9], [32.6, 44.4], [50.2, 55.8], [68.2, 43], [86.4, 38.8]],
+    [[7.2, 32.7], [31.1, 56.9], [51.1, 44.6], [68.5, 57.9], [89.7, 38.3]],
+    [[7.8, 34], [28.7, 55.8], [47.8, 43.9], [70, 57.9], [90, 36.7]],
+  ];
   /** Cartoon's shop: its tab (land, air or the base's upgrades) and the tile picked (a troop or upgrade, and a level). */
   let shopTab: 'land' | 'air' | 'base' = 'land';
   let pick = { row: 0, level: 1 };
@@ -207,6 +221,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
         <span class="sg-up-cost">${level >= 5 ? t('siegeMax') : `<img src="/images/game/store/coins-2.webp" alt="">${M.upgradePrice(level)}`}</span></button>`).join('')}</div>
       `;
     // Siege Cartoon's shop is the whole screen, Cartoon Wars 2-style: no header or page tabs, its own Back button.
+    if (mode === 'cartoon' && prepTab === 'map') { root.innerHTML = `<div class="sg-shell sg-prep sg-map-only">${cartoonMap()}</div>`; V.trimImages(root); focus(); return; }
     if (mode === 'cartoon' && prepTab === 'shop') { root.innerHTML = `<div class="sg-shell sg-prep sg-shop-only">${shop}</div>`; V.trimImages(root); focus(); return; }
     root.innerHTML = `<div class="sg-shell sg-prep"><header class="sg-top"><button class="sg-back" data-sg="modes" aria-label="${t('siegeModes')}">←</button>
         <h1 class="sg-title"><small>${t('siegeSoon')}</small>${title()}</h1>
@@ -216,6 +231,36 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       <details class="sg-help"><summary>${t('siegeHow')}</summary><p>${t('siegeIntro')}</p><p>${t('siegeInstructions')}</p><p>${t('siegeKeys')}</p><p>${t('siegeRotate')}</p><p>${t('siegePreviewNote')}</p></details></div>`;
     V.trimImages(root); focus();
   }
+  /** Cartoon's map, the owner's pictures whole (16:9, fitted in the view) with buttons on their stone platforms
+      (`MAP_SPOTS`, % of the picture): the world map's six worlds, or a world's five stages, the fifth the guardian's.
+      Around it: Back, the gold, the Shop, and on a world's map the picked stage's prize and Launch. */
+  function cartoonMap() {
+    const S = cartoonModel.STAGES, act = mapAct, pic = `/images/game/siege/map-${act ? act : 'worlds'}.webp`;
+    const spots = MAP_SPOTS[act];
+    const at = (k: number) => `style="left:${spots[k][0]}%;top:${spots[k][1]}%"`;
+    const ring = (open: boolean, done: boolean) => (!open ? '<img class="sg-spot-ring" src="/images/game/ui/ring_lock.webp" alt="">' : done ? '<img class="sg-spot-ring" src="/images/game/ui/ring_check.webp" alt="">' : '');
+    const buttons = act
+      ? Array.from({ length: S }, (_, k) => {
+        const n = (act - 1) * S + k + 1, open = n <= progress.unlocked, boss = k + 1 === S;
+        return `<button class="sg-spot ${boss ? 'is-boss' : ''} ${n === world ? 'is-on' : ''} ${open ? '' : 'is-locked'}" ${at(k)} data-sg-world-pick="${n}" ${open ? '' : 'disabled'} aria-pressed="${n === world}" aria-label="${t('siegeStage', { n: k + 1, max: S })}${boss ? ` · ${t('siegeGuardian')}: ${actBoss(act)}` : ''}">
+          ${boss ? `<img class="sg-spot-boss" src="${V.portrait(cartoonModel.GUARDIAN[act - 1])}" data-trim="${V.portrait(cartoonModel.GUARDIAN[act - 1])}" alt="">` : ''}<b>${k + 1}</b>${ring(open, won(n))}</button>`;
+      }).join('')
+      : Array.from({ length: cartoonModel.ACTS }, (_, i) => {
+        const n = i + 1, open = (n - 1) * S + 1 <= progress.unlocked, on = n === actNow();
+        return `<button class="sg-spot is-world ${on ? 'is-on' : ''} ${open ? '' : 'is-locked'}" ${at(i)} data-sg-map-act="${n}" ${open ? '' : 'disabled'} aria-label="${worldName(n)} · ${t(`siegeCtAct${n}` as Key)}">
+          <b>${n}</b>${ring(open, won(n * S))}<span class="sg-spot-name">${worldName(n)}</span></button>`;
+      }).join('');
+    const stage = cartoonModel.stageIn(world), here = act && actNow() === act;
+    const panel = here ? `<div class="sg-map-go">
+        <span class="sg-eyebrow">${worldName(act)} · ${t('siegeStage', { n: stage, max: S })}${stage === S ? ` · ${actBoss(act)}` : ''}</span>
+        <p class="sg-prize"><img src="/images/game/store/coins-2.webp" alt="">${won(world) ? t('siegeRepeatWin', { n: prize(world, false) }) : t('siegeFirstWin', { n: prize(world, true) })}</p>
+        <button class="sg-play" data-sg="launch" ${selected.length ? '' : 'disabled'}><span class="sg-play-tri" aria-hidden="true"></span>${t('siegeLaunch')}</button></div>` : '';
+    return `<div class="sg-map" style="--map:url('${pic}')"><div class="sg-map-pic"><img src="${pic}" alt="">${buttons}</div>
+      <header class="sg-map-top"><button class="sg-back" ${act ? 'data-sg-map-act="0"' : 'data-sg="modes"'} aria-label="${act ? t('siegeShopBack') : t('siegeModes')}">←</button>
+        <h1 class="sg-map-title">${act ? `<small>${worldName(act)}</small>${t(`siegeCtAct${act}` as Key)}` : title()}</h1>
+        <span class="sg-coins"><img src="/images/game/store/coins-2.webp" alt="">${progress.coins}</span></header>
+      <button class="sg-map-shop" data-sg-prep="shop"><img src="/images/game/store/coins-2.webp" alt="">${t('siegeTabStore')}</button>${panel}</div>`;
+  }
   /** The HUD's pictures of both sides: Legacy's Town Hall and world guardian, Cartoon's two fortresses. */
   const vsPic = (side: 0 | 1) => mode === 'cartoon'
     ? `/images/game/siege/${side ? `enemy-${cartoonModel.enemyTier(world)}` : `castle-${cartoonModel.looksTier(progress.upgrades[1])}`}.webp`
@@ -224,7 +269,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     cancelAnimationFrame(frame); battleAbort.abort(); battleAbort = new AbortController();
     const battleOptions = { signal: battleAbort.signal };
     if (!selected.length) return;
-    progress.deck = [...selected]; persist(); state = M.newSiege(progress, world); bossTalked = false; baseFell = false; lootHeard = 0; gustShown = false;
+    progress.deck = [...selected]; persist(); mapAct = mode === 'cartoon' ? actNow() : 0; state = M.newSiege(progress, world); bossTalked = false; baseFell = false; lootHeard = 0; gustShown = false;
     if (mode === 'cartoon') music('battle');
     V.preload(world, selected, progress.levels); paused = false; camera.x = -Infinity;
     // Laid out like Cartoon Wars 2: mana top left, both fortresses' health face to face in the middle, coins and pause
@@ -478,6 +523,12 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       return;
     }
     if (button.dataset.sgPrep && !state) { prepTab = button.dataset.sgPrep as typeof prepTab; prep(); root.querySelector<HTMLElement>(`[data-sg-prep="${prepTab}"]`)?.focus(); return; }
+    if (button.dataset.sgMapAct !== undefined && !state) {
+      mapAct = Number(button.dataset.sgMapAct);
+      // A world opens on its furthest open stage (the one picked, if it is in that world).
+      if (mapAct && actNow() !== mapAct) world = Math.min(mapAct * cartoonModel.STAGES, progress.unlocked);
+      sound('click'); prep(); return;
+    }
     if (button.dataset.sgWorldPick && !state) { world = Number(button.dataset.sgWorldPick); const left = root.querySelector('.sg-isles')?.scrollLeft ?? 0; prep(); const isles = root.querySelector('.sg-isles'); if (isles) isles.scrollLeft = left; root.querySelector<HTMLElement>(`[data-sg-world-pick="${world}"]`)?.focus(); return; }
     if (up !== undefined && !state) { if (M.upgrade(progress, Number(up))) { persist(); prep(); } return; }
     if (button.hasAttribute('data-sg-turn')) { button.parentElement?.remove(); return; }
@@ -511,7 +562,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       return;
     }
     if (story) { if (e.key === 'Escape') { e.preventDefault(); story(); } return; }
-    if (e.key === 'Escape') { e.preventDefault(); if (!state) mode === 'cartoon' && prepTab === 'shop' ? (prepTab = 'map', prep()) : mode ? modes() : close(); else if (state.phase === 'fight') paused ? resume() : pause(); return; }
+    if (e.key === 'Escape') { e.preventDefault(); if (!state) mode === 'cartoon' && prepTab === 'shop' ? (prepTab = 'map', prep()) : mode === 'cartoon' && mapAct ? (mapAct = 0, prep()) : mode ? modes() : close(); else if (state.phase === 'fight') paused ? resume() : pause(); return; }
     if (!state || paused || e.repeat || /INPUT|SELECT|TEXTAREA/.test((e.target as HTMLElement).tagName)) return;
     const key = e.key.toLowerCase();
     if ('123456efqrlas'.includes(key) || key.startsWith('arrow')) e.preventDefault();
@@ -538,7 +589,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   function choose(next: Mode) {
     mode = next; ({ m: M, v: V } = ENGINES[next]);
     root.classList.toggle('is-cartoon', next === 'cartoon'); root.classList.toggle('is-legacy', next === 'legacy');
-    progress = M.readProgress(storage.get(M.SAVE_KEY)); selected = [...progress.deck]; world = progress.unlocked; prepTab = 'map';
+    progress = M.readProgress(storage.get(M.SAVE_KEY)); selected = [...progress.deck]; world = progress.unlocked; prepTab = 'map'; mapAct = 0;
     prep();
   }
   modes();
