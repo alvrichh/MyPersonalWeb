@@ -45,7 +45,7 @@ export function preload(world: number, deck: number[], levels: number[] = []) {
   const specs = [...deck.map(id => specAt(id, levels[id])), ...foes.map(id => UNITS[id])];
   specs.forEach(spec => { for (let f = 0; f < (spec.six ? 6 : 3); f++) picture(`${spec.sprite}-${f}`); });
   // The battlefield, and the fortresses and crossbow at every level (the workshop can change ours between battles).
-  [SCENE, ...[1, 2, 3].flatMap(n => [`siege/castle-${n}`, `siege/enemy-${n}`, `siege/xbow-base-${n}`, `siege/xbow-arm-${n}`]), ...FX].forEach(still);
+  [SCENE, ...['rock', 'javelin', 'arrow', 'shuriken'].map(n => `siege/units/shot-${n}`), ...[1, 2, 3].flatMap(n => [`siege/castle-${n}`, `siege/enemy-${n}`, `siege/xbow-base-${n}`, `siege/xbow-arm-${n}`]), ...FX].forEach(still);
 }
 /** The battlefield, one picture for every world for now (the owner's: our green side left, the bugs' red one right):
     drawn across the field with `pad` field units past each end, its walking ground (`ground`, a share of its height)
@@ -259,6 +259,17 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     ctx.beginPath(); const n = 6;
     for (let i = 0; i <= n; i++) { const t = i / n, x = e.from + (e.x - e.from) * t, jag = i % n ? ((i * 37 + Math.floor(p * 8)) % 7 - 3) * 4 : 0; i ? ctx.lineTo(x, y + jag) : ctx.moveTo(x, y); }
     ctx.stroke(); ctx.restore(); return true;
+  }
+  if (e.kind === 'shot' && e.art) {
+    // A troop's own projectile from its sheet (a rock, a javelin, an arrow, a shuriken): a low arc from the thrower's
+    // hand to the target, spinning or pointing along its path, drawn at the sheets' scale.
+    const art = still(`siege/units/shot-${e.art}`); if (!ok(art)) return false;
+    const hand = y - 14, lift = Math.min(60, Math.abs(e.x - e.from) * 0.18);
+    const at = (t: number) => ({ x: e.from + (e.x - e.from) * t, y: hand + 8 * t - Math.sin(t * Math.PI) * lift });
+    const here = at(p), ahead = at(Math.min(1, p + 0.03)), w = art.naturalWidth * 0.4, h = art.naturalHeight * 0.4;
+    ctx.save(); ctx.translate(here.x, here.y);
+    ctx.rotate(e.spin ? p * 14 * (e.x > e.from ? 1 : -1) : Math.atan2(ahead.y - here.y, ahead.x - here.x || 0.001));
+    ctx.drawImage(art, -w / 2, -h / 2, w, h); ctx.restore(); return true;
   }
   if (e.kind === 'arrow' || e.kind === 'shot') {
     const close = e.kind === 'shot' && Math.abs(e.x - e.from) < 60;
