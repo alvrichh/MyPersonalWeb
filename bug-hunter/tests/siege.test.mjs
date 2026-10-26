@@ -121,15 +121,15 @@ test('the bow: a tap starts it, it speeds up, stops on a tap or an empty quiver,
   const p = m.freshProgress(); p.upgrades[3] = 4; const up = m.newSiege(p, 1);
   assert.ok(m.bowEvery(up.bow) < m.bowEvery(m.newSiege(m.freshProgress(), 1).bow)); assert.equal(m.bowCount(up.bow), 3);
 });
-test('air troops fly out of melee reach, ranged troops still hit them; armies keep five of each', () => {
+test('air troops fly out of melee reach, ranged troops still hit them; armies keep six of each', () => {
   assert.equal(m.canHit(0, 28), false, 'a swordsman cannot reach an eagle'); assert.equal(m.canHit(2, 28), true, 'an archer shoots it');
   assert.equal(m.canHit(28, 0), true, 'an eagle dives on the ground');
   const s = m.newSiege(m.freshProgress(), 1); s.nextWave = 999; s.deck.push(10); s.energy = 999;
   assert.equal(m.summon(s, 10), true); const plane = s.units[0]; plane.x = 500;
   const foe = { ...plane, uid: 100, id: 15, side: 1, x: 520, hp: 9999, maxHp: 9999, damage: 50 };
   s.units.push(foe); run(s, 2); assert.equal(plane.hp, plane.maxHp, 'the enemy swordsman never hits it'); assert.ok(foe.hp < 9999);
-  const p = m.readProgress(JSON.stringify({ version: 1, unlocked: 30, owned: m.ALLIES.map(u => u.id), deck: [0, 1, 2, 3, 4, 5, 6, 10, 11, 12, 13, 14, 20, 31] }));
-  assert.equal(p.deck.filter(id => !m.UNITS[id].air).length, 5); assert.equal(p.deck.filter(id => m.UNITS[id].air).length, 5);
+  const p = m.readProgress(JSON.stringify({ version: 1, unlocked: 30, cards: 1, owned: m.ALLIES.map(u => u.id), deck: [0, 1, 2, 3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 33, 20, 31] }));
+  assert.equal(m.DECK, 6); assert.equal(p.deck.filter(id => !m.UNITS[id].air).length, 6); assert.equal(p.deck.filter(id => m.UNITS[id].air).length, 6);
   assert.equal(p.deck.some(id => m.UNITS[id].foe), false, 'never an enemy troop');
 });
 test('the missile blasts the aim and recharges', () => {

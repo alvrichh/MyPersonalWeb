@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.91 - 2026-10-26
+
+### Changed
+- Siege Cartoon's army takes six land and six air cards (five before); key 6 sends the sixth. The shop's slot column shares its height among the six (two columns of three on short landscape screens). Siege Legacy keeps five.
+
 ## 1.14.90 - 2026-10-26
 
 ### Changed - Siege Cartoon's shop
