@@ -354,39 +354,33 @@
 .sg-st-tile i{right:auto;bottom:auto;left:3px;top:2px}
 @media(max-width:600px){.sg-st-grid{max-height:max(200px,calc(100svh - 500px))}}
 
-/* v1.14.81 — Siege Cartoon's battle bar in the owner's art: stone-wall card slots, the L · A · S hexes, the golden
-   staff between them, and the bow ball in its spiked ring. `--k` scales the art (1 = the source picture). */
-.is-cartoon .sg-bar{--k:.42;background:linear-gradient(#2a2f38,#1b1f26);border-top:3px solid #111}
-.is-cartoon .sg-tabs{align-items:center;gap:2px}
-.siege-root.is-cartoon .sg-tabs button{width:calc(170px * var(--k) * 1.05);height:calc(157px * var(--k) * 1.05);border:0;border-radius:0;clip-path:none;font-size:0;text-shadow:none;background:center/contain no-repeat;filter:drop-shadow(0 2px 0 #0008)}
-.siege-root.is-cartoon .sg-tabs [data-sg-tab="land"],.siege-root.is-cartoon .sg-tabs [data-sg-tab="land"]:hover{background:url('/images/game/siege/bar-tab-l.webp') center/contain no-repeat}
-.siege-root.is-cartoon .sg-tabs [data-sg-tab="air"],.siege-root.is-cartoon .sg-tabs [data-sg-tab="air"]:hover{background:url('/images/game/siege/bar-tab-a.webp') center/contain no-repeat}
-.siege-root.is-cartoon .sg-tabs [data-sg-tab="special"],.siege-root.is-cartoon .sg-tabs [data-sg-tab="special"]:hover{background:url('/images/game/siege/bar-tab-s.webp') center/contain no-repeat;filter:hue-rotate(150deg) saturate(.9) drop-shadow(0 2px 0 #0008)}
-.siege-root.is-cartoon .sg-tabs button:hover:not(.is-on){filter:brightness(1.12) drop-shadow(0 2px 0 #0008)}
-.siege-root.is-cartoon .sg-tabs [data-sg-tab="special"]:hover:not(.is-on){filter:hue-rotate(150deg) saturate(.9) brightness(1.12) drop-shadow(0 2px 0 #0008)}
-/* The picked tab turns gold, as the S is in the picture. */
-.siege-root.is-cartoon .sg-tabs button.is-on,.siege-root.is-cartoon .sg-tabs button.is-on:hover{background-color:transparent;filter:hue-rotate(-128deg) saturate(1.5) brightness(1.15) drop-shadow(0 0 6px #ffd23f99)}
-.siege-root.is-cartoon .sg-tabs [data-sg-tab="special"].is-on,.siege-root.is-cartoon .sg-tabs [data-sg-tab="special"].is-on:hover{filter:drop-shadow(0 0 6px #ffd23f99)}
-.is-cartoon .sg-tabs::after{content:'';flex:none;width:calc(63px * var(--k) * 1.05);height:calc(285px * var(--k) * .62);margin-left:2px;background:url('/images/game/siege/bar-staff.webp') center/contain no-repeat}
-/* The deck runs along the wall, each card on one of its stone slots (slot: 152 × 167 at 10, 52 in a 169 × 230 tile). */
-.siege-root.is-cartoon .sg-bar .sg-deck{gap:calc(17px * var(--k));padding:calc(52px * var(--k)) 0 calc(11px * var(--k)) calc(10px * var(--k));
-  background:url('/images/game/siege/bar-wall.webp') 0 0 / calc(169px * var(--k)) calc(230px * var(--k)) repeat-x local;min-height:calc(230px * var(--k))}
-.siege-root.is-cartoon .sg-bar .sg-deck button{flex:0 0 calc(152px * var(--k));width:calc(152px * var(--k));height:calc(167px * var(--k));border:0;border-radius:4px;background:transparent;padding:2px}
-.siege-root.is-cartoon .sg-bar .sg-deck button:hover:not(:disabled){background:#ffffff26}
-.siege-root.is-cartoon .sg-bar .sg-deck img{width:78%;height:66%}
-.siege-root.is-cartoon .sg-bar .sg-deck small{font-size:11px}
-.is-cartoon .sg-bar .sg-empty{color:#d7dde6}
-/* The bow: the clickable ball, its ring drawn around it (ball 160 at 105, 72 in the 318 × 307 picture); the empty part
-   of the quiver darkens the ball from the top. */
-.siege-root.is-cartoon .sg-bow,.siege-root.is-cartoon .sg-bow:hover:not(:disabled),.siege-root.is-cartoon .sg-bow.is-drawing{
-  --ball:calc(160px * var(--k) * .95);width:var(--ball);height:var(--ball);padding:0;margin:calc(var(--ball) * -.15) calc(var(--ball) * .85) calc(var(--ball) * .45) calc(var(--ball) * .7);align-self:center;border:0;border-radius:50%;background:transparent;overflow:visible}
-.siege-root.is-cartoon .sg-bow::after{content:'';position:absolute;z-index:-1;left:calc(var(--ball) * -.656);top:calc(var(--ball) * -.45);width:calc(var(--ball) * 1.99);height:calc(var(--ball) * 1.92);background:url('/images/game/siege/bar-bow.webp') center/100% 100% no-repeat;pointer-events:none}
-.siege-root.is-cartoon .sg-bow::before,.siege-root.is-cartoon .sg-bow.is-drawing::before{z-index:1;inset:6%;background:#14070099;clip-path:inset(0 0 calc(var(--q,1) * 100%) 0)}
+/* v1.14.83 — Siege Cartoon's battle bar is the owner's picture whole (`siege/bar`, 2071 × 378), drawn `--bw` wide and
+   centred; the tabs, the seven card slots and the bow ball are buttons laid on their places in it. `--at(x)` is a spot
+   x% across the picture. */
+.siege-root.is-cartoon .sg-bar{--bw:min(100vw - 8px, 820px);display:block;position:relative;height:calc(var(--bw) * .1825);padding:0;margin-bottom:env(safe-area-inset-bottom);border:0;
+  background:url('/images/game/siege/bar.webp') center top / var(--bw) auto no-repeat,linear-gradient(#20252d,#14171c)}
+.siege-root.is-cartoon .sg-bar>*{position:absolute;margin:0}
+.siege-root.is-cartoon .sg-tabs{left:calc(50% + var(--bw) * -.4754);top:37.04%;width:calc(var(--bw) * .2511);height:41.53%;display:grid;grid-template-columns:repeat(3,1fr);column-gap:.95%;gap:0}
+.siege-root.is-cartoon .sg-tabs button,.siege-root.is-cartoon .sg-tabs button:hover{width:100%;height:100%;min-height:0;padding:0;border:0;border-radius:0;clip-path:none;font-size:0;text-shadow:none;background:none;filter:none}
+/* The picked tab turns gold, as the S is drawn; the S turns blue when not picked. */
+.siege-root.is-cartoon .sg-tabs [data-sg-tab="land"].is-on{background:url('/images/game/siege/bar-tab-l.webp') center/100% 100% no-repeat;filter:hue-rotate(-128deg) saturate(1.5) brightness(1.15)}
+.siege-root.is-cartoon .sg-tabs [data-sg-tab="air"].is-on{background:url('/images/game/siege/bar-tab-a.webp') center/100% 100% no-repeat;filter:hue-rotate(-128deg) saturate(1.5) brightness(1.15)}
+.siege-root.is-cartoon .sg-tabs [data-sg-tab="special"]:not(.is-on){background:url('/images/game/siege/bar-tab-s.webp') center/100% 100% no-repeat;filter:hue-rotate(150deg) saturate(.9)}
+.siege-root.is-cartoon .sg-tabs button:hover:not(.is-on){filter:brightness(1.15)}
+.siege-root.is-cartoon .sg-tabs [data-sg-tab="special"]:hover:not(.is-on){filter:hue-rotate(150deg) saturate(.9) brightness(1.15)}
+.siege-root.is-cartoon .sg-bar .sg-deck{left:calc(50% + var(--bw) * -.1881);top:37.57%;width:calc(var(--bw) * .5644);height:44.18%;display:grid;grid-template-columns:repeat(7,1fr);column-gap:1.2%;gap:0 1.2%;padding:0;background:none;overflow:visible}
+.siege-root.is-cartoon .sg-bar .sg-deck button{width:100%;height:100%;min-height:0;padding:2px;border:0;border-radius:4px;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.siege-root.is-cartoon .sg-bar .sg-deck button:hover:not(:disabled){background:#ffffff2e}
+.siege-root.is-cartoon .sg-bar .sg-deck img{width:80%;height:62%;object-fit:contain}
+.siege-root.is-cartoon .sg-bar .sg-deck small{font-size:clamp(8px,1.3vw,11px);line-height:1.1}
+.is-cartoon .sg-bar .sg-empty{grid-column:1/-1;align-self:center;color:#2a2f38;font-weight:700;font-size:11px}
+.siege-root.is-cartoon .sg-bow,.siege-root.is-cartoon .sg-bow:hover:not(:disabled),.siege-root.is-cartoon .sg-bow.is-drawing{left:calc(50% + var(--bw) * .3947);top:35.98%;width:calc(var(--bw) * .0773);height:42.33%;padding:0;border:0;border-radius:50%;background:transparent;overflow:hidden}
+.siege-root.is-cartoon .sg-bow::after{content:none}
+.siege-root.is-cartoon .sg-bow::before,.siege-root.is-cartoon .sg-bow.is-drawing::before{z-index:1;inset:0;border-radius:50%;background:#14070099;clip-path:inset(0 0 calc(var(--q,1) * 100%) 0)}
 .siege-root.is-cartoon .sg-bow img{display:none}
-.siege-root.is-cartoon .sg-bow.is-drawing{transform:scale(.95)}
-.siege-root.is-cartoon .sg-bow.is-empty{filter:saturate(.6)}
-@media(max-width:600px){.is-cartoon .sg-bar{--k:.38}.siege-root.is-cartoon .sg-bar .sg-deck button{flex:0 0 calc(152px * var(--k))}}
-@media (max-height:500px) and (orientation:landscape){.is-cartoon .sg-bar{--k:.3}}
+.siege-root.is-cartoon .sg-bow.is-drawing{filter:brightness(1.2) drop-shadow(0 0 8px #ffd166)}
+.siege-root.is-cartoon .sg-bow.is-empty{filter:saturate(.5)}
+@media (max-height:500px) and (orientation:landscape){.siege-root.is-cartoon .sg-bar{--bw:min(100vw - 8px, 620px)}}
 
 /* v1.14.82 — Siege Cartoon's aim stick in the owner's art: the double arrow as its track, the green orb as its knob. */
 .is-cartoon .sg-aim{background:url('/images/game/siege/aim-track.webp') center/contain no-repeat!important;border:0!important;border-radius:0!important;filter:drop-shadow(0 3px 4px #0007)}

@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.83 - 2026-10-26
+
+### Changed - Siege Cartoon's bar whole, and Cartoon shots from our crossbow
+- The battle bar is the owner's picture whole, as drawn (the L · A · S panel with its staff, the wall with seven card slots, the bow ball in its ring), scaled to the screen and centred; the troop cards sit on its slots, the tabs on its hexes and the bow on its ball.
+- Our crossbow shoots Cartoon's arrow (the archer's) instead of Bug Hunter's fire arrow, and the rocket launcher (Bow level 5) shoots Cartoon's rockets; the missile is Cartoon's rocket too.
+
 ## 1.14.82 - 2026-10-26
 
 ### Changed - Siege Cartoon's aim stick and mana monument
