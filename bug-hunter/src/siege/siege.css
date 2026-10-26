@@ -658,3 +658,5 @@
 @keyframes sg-heat{20%,60%{translate:-5px 0}40%,80%{translate:5px 0}}
 @media (prefers-reduced-motion:reduce){.siege-root.is-cartoon .sg-story .sg-scene.is-heated .sg-speaker{animation:none}}
 @media (max-height:440px){.siege-root.is-cartoon .sg-story .sg-speaker{height:min(34vh,150px);margin-bottom:calc(min(34vh,150px) * -.45)}.siege-root.is-cartoon .sg-story .sg-scene.is-boss .sg-speaker{height:min(38vh,160px);margin-bottom:calc(min(38vh,160px) * -.4)}}
+/* The enemy speaks on a scorched, dark papyrus. */
+.siege-root.is-cartoon .sg-story .sg-scene.is-boss .sg-line{border-image-source:url('/images/game/siege/ui/panel-dark.webp')}
