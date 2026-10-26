@@ -1754,7 +1754,7 @@ function extraHubScreen() {
     <h2>🏰 ${es ? 'Próximamente · Nuevos juegos' : 'Coming Soon · New games'}</h2>
     <p>${es ? 'Aquí reuniremos los próximos modos de Bug Hunter. Los tres modos existentes continúan sin cambios.' : 'This is the home for upcoming Bug Hunter game modes. Existing modes remain unchanged.'}</p>
     <div class="book-modes">
-      <div class="book-mode"><b>⚔️ ${t('siegeName')} · ${t('siegeSoon')}</b><p>${t('siegeIntro')}</p><button class="primary" type="button" data-act="siege-preview">${t('siegeLaunch')}</button></div>
+      <div class="book-mode"><b>⚔️ ${t('siegeName')} · ${t('siegeSoon')}</b><p>${t('siegeTribute')}</p><p>${t('siegeIntro')}</p><button class="primary" type="button" data-act="siege-preview">${t('siegeLaunch')}</button></div>
       <div class="book-mode"><b>🏰 Fortress · ${es ? 'Asedio' : 'Siege'}</b><p>${es ? 'Ataca fortalezas con tus bichos, destruye edificios y consigue hasta tres estrellas. Prototipo experimental disponible.' : 'Attack fortresses with bugs, destroy buildings and earn up to three stars. Experimental prototype available.'}</p>
       <a class="primary book-mode" href="/fortress-lab.html">${es ? 'Abrir prototipo de Asedio' : 'Open Siege prototype'}</a></div>
       <p>🧪 ${es ? 'Otros modos nuevos: en desarrollo' : 'Other new modes: in development'}</p>

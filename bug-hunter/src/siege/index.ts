@@ -120,8 +120,8 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
         <h1 class="sg-title"><small>${t('siegeSoon')}</small>${t('siegeName')}</h1>
         <span class="sg-coins"><img src="/images/game/store/coins-2.webp" alt="">${progress.coins}</span></header>
       <nav class="sg-ptabs" role="tablist">${tabs}</nav>
-      <section class="sg-page">${prepTab === 'map' ? map : prepTab === 'army' ? army : shop}</section>
-      <details class="sg-help"><summary>${t('siegeHow')}</summary><p>${t('siegeIntro')}</p><p>${t('siegeInstructions')}</p><p>${t('siegeKeys')}</p><p>${t('siegeRotate')}</p><p>${t('siegePreviewNote')}</p></details></div>`;
+      <section class="sg-page">${prepTab === 'map' ? `<p class="sg-tribute">${t('siegeTribute')}<small>${t('siegeCredit')}</small></p>${map}` : prepTab === 'army' ? army : shop}</section>
+      <details class="sg-help"><summary>${t('siegeHow')}</summary><p>${t('siegeTribute')}</p><p>${t('siegeIntro')}</p><p>${t('siegeInstructions')}</p><p>${t('siegeKeys')}</p><p>${t('siegeRotate')}</p><p>${t('siegePreviewNote')}</p></details></div>`;
     trimImages(root); focus();
   }
   function start() {
