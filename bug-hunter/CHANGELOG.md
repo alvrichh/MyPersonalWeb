@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.53 - 2026-10-26
+
+### Fixed - The Server Reaper at full size in the shop and Customise
+- The lists fit every skin picture to the same height, and the reaper's picture is taller (168 px against 144) because its scythe rises above its head, so the figure came out smaller. The shop and Customise now draw it 168/144 taller, growing upwards only (feet and name where the others' are), so its body matches the other skins and the scythe sticks out.
+
 ## 1.14.52 - 2026-10-26
 
 ### Fixed - No slow ring over painted bosses

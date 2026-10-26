@@ -3036,7 +3036,7 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   line-height: 1;
   filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.6));
 }
-.gear-row .skin-pic { display: block; height: 58px; width: auto; }
+.gear-row .skin-pic { display: block; height: calc(58px * var(--tall, 1)); width: auto; }
 /* The lit orange plate's hole sits further in (22.6% / 49.8%, see below): what is worn is centred in it too. */
 .gear-row.is-on .icon { left: 22.6%; top: 49.8%; }
 /* A world's picture as a round thumbnail filling the ring's hole exactly: measured on the plate pictures, the blue
@@ -3102,7 +3102,7 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   color: var(--muted);
 }
 :root[data-retro] .gear-row .icon { position: static; transform: none; grid-row: 1 / span 2; justify-self: center; font-size: 1.7rem; filter: none; }
-:root[data-retro] .gear-row .skin-pic { height: 48px; }
+:root[data-retro] .gear-row .skin-pic { height: calc(48px * var(--tall, 1)); }
 :root[data-retro] .gear-row b { grid-column: 2; color: var(--text); text-shadow: none; }
 :root[data-retro] .gear-row > span:not(.icon) { grid-column: 2; font-size: 0.74rem; }
 :root[data-retro] .gear-row em { grid-column: 3; grid-row: 1 / span 2; margin: 0; color: var(--accent); }
@@ -5175,7 +5175,7 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   :root:not([data-retro]) .board-mobile-tray.is-active .board-bench-slots { transform: translate(-50%, -12px); }
 }
 /* v1.13.40 — Shop skins: the hero standing in the card's window, not so tall that it pushes its joke under the band. */
-.panel .skin-item .icon .skin-pic { width: auto; height: 5.2em; max-width: 100%; object-fit: contain; filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.55)); }
+.panel .skin-item .icon .skin-pic { width: auto; height: calc(5.2em * var(--tall, 1)); max-width: 100%; object-fit: contain; filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.55)); }
 .panel .skin-item.is-locked:not(.is-owned) .skin-pic { filter: grayscale(0.85) brightness(0.6); }
 
 /* v1.13.50: a locked world's play button is the same art, greyed. */
@@ -5236,7 +5236,7 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   .panel .skin-items .skin-item { min-height: 0; padding-left: 2px; padding-right: 2px; padding-top: 8px; gap: 4px; }
   .panel .skin-items .skin-item > span:not(.icon) { display: none; }
   .panel .skin-items .skin-item b { font-size: 0.74rem; line-height: 1.15; }
-  .panel .skin-items .skin-item .icon .skin-pic { height: 4.6em; }
+  .panel .skin-items .skin-item .icon .skin-pic { height: calc(4.6em * var(--tall, 1)); }
   .panel .skin-items .skin-item .buy { width: 100%; min-height: 40px; padding: 4px 0; border-width: 0 12px; border-image-width: 0 12px; font-size: 0.62rem; line-height: 1.1; white-space: normal; }
   :root:not([data-retro]) .panel .skin-items .skin-item:not(.is-locked) > .buy { height: 40px; margin-bottom: -40px; top: 22px; }
 }
@@ -5282,3 +5282,11 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 }
 /* Retro has no X and no frame: the shop's coins stay in the list, centred above the title. */
 :root[data-retro] .shop-wallet { position: static; transform: none; justify-self: center; }
+/* A taller skin picture (`--tall`, the reaper's scythe) grows upwards only: the extra is taken back with a negative
+   top margin, so its feet and name sit where the others' do and the scythe rises over the card's window. */
+.gear-row .skin-pic[style*='--tall'] { margin-top: calc(58px * (1 - var(--tall, 1))); }
+:root[data-retro] .gear-row .skin-pic[style*='--tall'] { margin-top: calc(48px * (1 - var(--tall, 1))); }
+.panel .skin-item .icon .skin-pic[style*='--tall'] { margin-top: calc(5.2em * (1 - var(--tall, 1))); }
+@media (max-width: 600px) {
+  .panel .skin-items .skin-item .icon .skin-pic[style*='--tall'] { margin-top: calc(4.6em * (1 - var(--tall, 1))); }
+}
