@@ -3274,11 +3274,12 @@ function drawEnemy(ctx: CanvasRenderingContext2D, e: Enemy, now: number) {
   const rim = e.bossId === 'chimera' && !retroLook;
   if (rim) {
     stampGlow(ctx, glowSprite('rim', [[0, 'rgba(192,132,252,0.38)'], [0.6, 'rgba(139,92,246,0.16)'], [1, 'transparent']]), 0, -e.r * 0.3, e.r * 2.2);
-    // Its violet rim is the cached outline of its picture (worked out once per pose), not a shadow blur each frame.
-    spriteOutline = 'rgba(232,121,249,0.95)';
+    // Its magenta rim is a soft glow round its picture, blurred once per pose and kept, not a shadow blur each frame
+    // (a hard outline, 1.14.43-1.14.50, read as a flat pink blob).
+    spriteGlow = 'rgba(232,121,249,0.95)';
   }
   const painted = !retroLook && drawEnemySprite(ctx, e);
-  spriteOutline = null;
+  spriteGlow = null;
   if (!painted) LOOKS[e.look][e.kind](ctx, e, now);
   // Status: white flash on hit (not on a painted boss, which shows its hit pose: a disc as big as the boss
   // covered it whenever the arrows kept it lit), blue tint when slowed, little flames when burning.
@@ -4748,8 +4749,43 @@ function outlined(img: HTMLImageElement, colour: string) {
   byColour.set(colour, o);
   return o;
 }
-/** Draws a sprite picture, with the outline when one is asked for. */
+/** While set, `drawEnemySprite` draws each picture with a soft glow of this colour round it (the Core's dragon). */
+let spriteGlow: string | null = null;
+/** A sprite picture with a soft glow round it, blurred once per picture and colour and kept: the picture drawn with a
+    shadow blur (3% of its longer side, in its own pixels) twice, for a stronger rim, then once more on top. */
+const glows = new WeakMap<HTMLImageElement, Map<string, { c: HTMLCanvasElement; pad: number }>>();
+function glowed(img: HTMLImageElement, colour: string) {
+  let byColour = glows.get(img);
+  if (!byColour) { byColour = new Map(); glows.set(img, byColour); }
+  let o = byColour.get(colour);
+  if (o) return o;
+  const blur = Math.max(4, Math.round(Math.max(img.naturalWidth, img.naturalHeight) * 0.03));
+  const pad = blur * 2;
+  const c = document.createElement('canvas');
+  c.width = img.naturalWidth + pad * 2;
+  c.height = img.naturalHeight + pad * 2;
+  const t = c.getContext('2d');
+  if (t) {
+    t.shadowColor = colour;
+    t.shadowBlur = blur;
+    t.drawImage(img, pad, pad);
+    t.drawImage(img, pad, pad);
+    t.shadowBlur = 0;
+    t.drawImage(img, pad, pad);
+  }
+  o = { c, pad };
+  byColour.set(colour, o);
+  return o;
+}
+/** Draws a sprite picture, with the outline or the glow when one is asked for. */
 function drawSpritePic(ctx: CanvasRenderingContext2D, img: HTMLImageElement, x: number, y: number, w: number, h: number) {
+  if (spriteGlow) {
+    const { c, pad } = glowed(img, spriteGlow);
+    const px = (pad * w) / img.naturalWidth;
+    const py = (pad * h) / img.naturalHeight;
+    ctx.drawImage(c, x - px, y - py, w + px * 2, h + py * 2);
+    return;
+  }
   if (!spriteOutline) { ctx.drawImage(img, x, y, w, h); return; }
   const { c, pad } = outlined(img, spriteOutline);
   const px = (pad * w) / img.naturalWidth;
