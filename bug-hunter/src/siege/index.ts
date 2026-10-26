@@ -255,8 +255,8 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
         <span class="sg-eyebrow">${worldName(act)} · ${t('siegeStage', { n: stage, max: S })}${stage === S ? ` · ${actBoss(act)}` : ''}</span>
         <p class="sg-prize"><img src="/images/game/store/coins-2.webp" alt="">${won(world) ? t('siegeRepeatWin', { n: prize(world, false) }) : t('siegeFirstWin', { n: prize(world, true) })}</p>
         <button class="sg-play" data-sg="launch" ${selected.length ? '' : 'disabled'}><span class="sg-play-tri" aria-hidden="true"></span>${t('siegeLaunch')}</button></div>` : '';
-    return `<div class="sg-map" style="--map:url('${pic}')"><div class="sg-map-pic"><img src="${pic}" alt="">${buttons}</div>
-      <header class="sg-map-top"><button class="sg-back" ${act ? 'data-sg-map-act="0"' : 'data-sg="modes"'} aria-label="${act ? t('siegeShopBack') : t('siegeModes')}">←</button>
+    return `<div class="sg-map" style="--map:url('${pic}')"><div class="sg-turn" role="status"><span aria-hidden="true">📱↻</span><b>${t('siegeTurn')}</b><button type="button" data-sg-turn aria-label="${t('siegeTurnOk')}">✕</button></div><div class="sg-map-pic"><img src="${pic}" alt="">${buttons}</div>
+      <header class="sg-map-top"><button class="sg-back" ${act ? 'data-sg-map-act="0"' : 'data-sg="exit"'} aria-label="${act ? t('siegeShopBack') : t('siegeExit')}">←</button>
         <h1 class="sg-map-title">${act ? `<small>${worldName(act)}</small>${t(`siegeCtAct${act}` as Key)}` : title()}</h1>
         <span class="sg-coins"><img src="/images/game/store/coins-2.webp" alt="">${progress.coins}</span></header>
       <button class="sg-map-shop" data-sg-prep="shop"><span>${t('siegeTabStore')}</span></button>${panel}</div>`;
@@ -517,7 +517,6 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       else { q('.sg-message').textContent = t('siegeFull'); return; }
       prep(); root.querySelector<HTMLElement>(`[data-sg-unit="${id}"]`)?.focus(); return;
     }
-    if (button.dataset.sgMode && !state) { choose(button.dataset.sgMode as Mode); return; }
     if (button.dataset.sgShopTab && !state) { shopTab = button.dataset.sgShopTab as typeof shopTab; pick = { row: shopRows()[0], level: 1 }; prep(); root.querySelector<HTMLElement>(`[data-sg-shop-tab="${shopTab}"]`)?.focus(); return; }
     if (button.dataset.sgTile && !state) { const [row, level] = button.dataset.sgTile.split(':').map(Number); pick = { row, level }; let full = false; if (shopTab !== 'base' && tile(row, level).have) full = !equip(row, level); const g = root.querySelector('.sg-st-grid')?.scrollTop ?? 0; prep(); const grid = root.querySelector('.sg-st-grid'); if (grid) grid.scrollTop = g; root.querySelector<HTMLElement>(`.sg-st-grid [data-sg-tile="${row}:${level}"]`)?.focus(); if (full) q('.sg-message').textContent = t('siegeFull'); return; }
     if (action === 'purchase' && !state) { const g = root.querySelector('.sg-st-grid')?.scrollTop ?? 0; purchase(); prep(); const grid = root.querySelector('.sg-st-grid'); if (grid) grid.scrollTop = g; root.querySelector<HTMLElement>(`[data-sg="${action}"]:not(:disabled)`)?.focus(); return; }
@@ -567,7 +566,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       return;
     }
     if (story) { if (e.key === 'Escape') { e.preventDefault(); story(); } return; }
-    if (e.key === 'Escape') { e.preventDefault(); if (!state) mode === 'cartoon' && prepTab === 'shop' ? (prepTab = 'map', prep()) : mode === 'cartoon' && mapAct ? (mapAct = 0, prep()) : mode ? modes() : close(); else if (state.phase === 'fight') paused ? resume() : pause(); return; }
+    if (e.key === 'Escape') { e.preventDefault(); if (!state) mode === 'cartoon' && prepTab === 'shop' ? (prepTab = 'map', prep()) : mode === 'cartoon' && mapAct ? (mapAct = 0, prep()) : close(); else if (state.phase === 'fight') paused ? resume() : pause(); return; }
     if (!state || paused || e.repeat || /INPUT|SELECT|TEXTAREA/.test((e.target as HTMLElement).tagName)) return;
     const key = e.key.toLowerCase();
     if ('123456efqrlas'.includes(key) || key.startsWith('arrow')) e.preventDefault();
@@ -582,15 +581,8 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   window.addEventListener('keyup', e => e.stopImmediatePropagation(), { ...options, capture: true });
   document.addEventListener('visibilitychange', () => { if (document.hidden) pause(); }, options);
   window.addEventListener('blur', pause, options);
-  /** The first screen: Siege Legacy or Siege Cartoon, each with its own progress. */
-  function modes() {
-    cancelAnimationFrame(frame); battleAbort.abort(); state = null; paused = false; mode = null; root.classList.remove('is-cartoon', 'is-legacy'); music(null);
-    const card = (m: Mode, pic: string) => `<button class="sg-mode is-${m}" data-sg-mode="${m}"><img src="${pic}" data-trim="${pic}" alt=""><b>${t(m === 'legacy' ? 'siegeLegacy' : 'siegeCartoon')}</b><small>${t(m === 'legacy' ? 'siegeLegacyNote' : 'siegeCartoonNote')}</small></button>`;
-    root.innerHTML = `<div class="sg-shell sg-prep sg-modes-page"><header class="sg-top"><button class="sg-back" data-sg="exit" aria-label="${t('siegeExit')}">←</button>
-        <h1 class="sg-title"><small>${t('siegeSoon')}</small>${t('siegeName')}</h1></header>
-      <section class="sg-modes">${card('legacy', '/images/game/bosses/monolith-2.webp')}${card('cartoon', ENGINES.cartoon.v.portrait(0, 5))}</section></div>`;
-    ENGINES.cartoon.v.trimImages(root); focus();
-  }
+  /** The first screen: Siege Cartoon's world map (Siege Legacy is no longer offered; its code and save stay). */
+  function modes() { choose('cartoon'); }
   function choose(next: Mode) {
     mode = next; ({ m: M, v: V } = ENGINES[next]);
     root.classList.toggle('is-cartoon', next === 'cartoon'); root.classList.toggle('is-legacy', next === 'legacy');

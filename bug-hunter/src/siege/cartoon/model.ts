@@ -233,7 +233,7 @@ export const freshProgress = (): Progress => ({ version: 1, unlocked: 1, coins: 
 export const hasCard = (p: Progress, c: number) => Number.isInteger(c) && c >= 0 && owns(p, cardId(c)) && cardLevel(c) <= (p.levels[cardId(c)] ?? 1);
 /** The owner's testing switch: every troop open from the start and recruited and levelled for free. Set `free` to
     false to bring back the act unlocks and the gold prices. */
-export const testing = { free: true };
+export const testing = { free: false };
 /** Has the battles won opened this troop's act? */
 export const isOpen = (p: Progress, id: number) => !!UNITS[id] && !UNITS[id].foe && (testing.free || UNITS[id].unlock <= actOf(p.unlocked));
 export const owns = (p: Progress, id: number) => p.owned.includes(id);

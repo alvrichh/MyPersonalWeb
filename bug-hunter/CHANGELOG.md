@@ -4,6 +4,14 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.14 - 2026-10-26
+
+### Changed
+- Siege opens straight on Siege Cartoon's world map (Siege Legacy is no longer offered; its save stays), with the turn-your-phone notice on an upright phone; Back leaves Siege.
+- Siege Cartoon's testing switch is off: troops open by world and cost gold again.
+- The cover's last slot is Siege itself, played straight from Play; Fortress is gone from Coming Soon.
+- A phone held sideways opens the cover on Siege, and shows the cover laid out as on a computer, full width with no scrolling.
+
 ## 1.15.13 - 2026-10-26
 
 ### Changed - Siege Cartoon's story

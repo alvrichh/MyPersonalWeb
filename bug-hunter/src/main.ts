@@ -147,9 +147,11 @@ const modeText = (mode: PlayMode = save.mode) => t(mode === 'board' ? 'modeBoard
 const MODE_ICON: Record<PlayMode, string> = { sprints: '⚔️', horde: '🛡️', board: '♟️' };
 const MODES: PlayMode[] = ['sprints', 'horde', 'board'];
 // Fourth cover position: preview only, never persisted as a PlayMode.
-let extraModePreview = false;
+/** A phone held sideways opens on Siege (the Coming Soon slot), ready to play. */
+let extraModePreview = window.matchMedia('(orientation: landscape) and (max-height: 500px)').matches;
 const coverModes = [...MODES, 'coming-soon'] as const;
-const extraTitle = () => lang === 'es' ? 'Próximamente' : 'Coming Soon';
+/** The last slot of the cover's carousel: Siege, the new mode (it used to be Coming Soon, with Fortress beside it). */
+const extraTitle = () => t('siegeName');
 const extraText = () => t('siegeHubModes');
 const NIGHTMARE_ICON = '☠️';
 /** Where the run is: the sprint, or the shift's clock. */
@@ -502,8 +504,8 @@ function menuScreen() {
       <button class="cover-chest${dailyReady(save) ? ' is-ready' : ''}" type="button" data-act="daily" aria-label="${t('dailyTitle')}"><img src="./images/game/fx/chest.webp" width="165" height="140" alt=""><i${dailyReady(save) ? '>' + t('dailyReady') : ` data-daily-clock>${dailyClock()}`}</i></button>
       <span class="cover-play-bar is-slot" aria-hidden="true"></span>
       <span class="cover-play-bar is-${extraModePreview ? 'coming-soon' : save.mode}" aria-hidden="true"></span>
-      <button class="hot cover-play" data-act="${extraModePreview ? 'extra-hub' : 'play'}" aria-label="${extraModePreview ? extraTitle() : t('playNow') + ' · ' + modeName() + ' · ' + worldName(worldIn())}"></button>
-      <span class="cover-play-copy is-${extraModePreview ? 'coming-soon' : save.mode}"><b>${extraModePreview ? '🏰 ' + extraTitle() : MODE_ICON[save.mode] + ' ' + modeName()}</b><small>${extraModePreview ? extraText() : t('playNow') + ' · ' + WORLD_ICON[worldIn() - 1] + ' ' + worldName(worldIn())}</small></span>
+      <button class="hot cover-play" data-act="${extraModePreview ? 'siege-preview' : 'play'}" aria-label="${extraModePreview ? extraTitle() : t('playNow') + ' · ' + modeName() + ' · ' + worldName(worldIn())}"></button>
+      <span class="cover-play-copy is-${extraModePreview ? 'coming-soon' : save.mode}"><b>${extraModePreview ? '⚔️ ' + extraTitle() : MODE_ICON[save.mode] + ' ' + modeName()}</b><small>${extraModePreview ? extraText() : t('playNow') + ' · ' + WORLD_ICON[worldIn() - 1] + ' ' + worldName(worldIn())}</small></span>
       <button class="cover-arrow is-prev" type="button" data-act="mode-prev" aria-label="${t('modeSwipe')}"></button>
       <button class="cover-arrow is-next" type="button" data-act="mode-next" aria-label="${t('modeSwipe')}"></button>
       <span class="cover-dots" aria-hidden="true">${coverModes.map((m) => `<i class="is-${m === 'coming-soon' ? 'coming-soon' : m}${(m === 'coming-soon' ? extraModePreview : !extraModePreview && save.mode === m) ? ' is-on' : ''}"></i>`).join('')}</span>
@@ -1755,8 +1757,6 @@ function extraHubScreen() {
     <p>${es ? 'Aquí reuniremos los próximos modos de Bug Hunter. Los tres modos existentes continúan sin cambios.' : 'This is the home for upcoming Bug Hunter game modes. Existing modes remain unchanged.'}</p>
     <div class="book-modes">
       <div class="book-mode"><b>⚔️ ${t('siegeName')} · ${t('siegeSoon')}</b><p>${t('siegeIntro')}</p><button class="primary" type="button" data-act="siege-preview">${t('siegeLaunch')}</button></div>
-      <div class="book-mode"><b>🏰 Fortress · ${es ? 'Asedio' : 'Siege'}</b><p>${es ? 'Ataca fortalezas con tus bichos, destruye edificios y consigue hasta tres estrellas. Prototipo experimental disponible.' : 'Attack fortresses with bugs, destroy buildings and earn up to three stars. Experimental prototype available.'}</p>
-      <a class="primary book-mode" href="/fortress-lab.html">${es ? 'Abrir prototipo de Asedio' : 'Open Siege prototype'}</a></div>
       <p>🧪 ${es ? 'Otros modos nuevos: en desarrollo' : 'Other new modes: in development'}</p>
     </div>`);
 }
@@ -3236,7 +3236,7 @@ screen.addEventListener('click', (event) => {
   const act = target.dataset.act;
   if (act !== 'mute') audio.play('click');
   if (act === 'extra-hub') extraHubScreen();
-  else if (act === 'siege-preview') (siegeOpen = true, openSiege(t, () => { siegeOpen = false; extraHubScreen(); }, { pic: `/images/game/hero/${heroStill(save.skin, save.equipped.head)}.webp`, name: save.name || DEFAULT_NAME }, (name, vol, pan) => (SIEGE_SOUNDS as readonly string[]).includes(name) ? audio.siege(name as SiegeSound, vol, pan) : audio.play(name as Sfx), (song) => audio.setSong(song === 'menu' ? 'cartoon-menu' : song === 'battle' ? 'cartoon-battle' : song === 'boss' ? 'cartoon-boss' : save.song)));
+  else if (act === 'siege-preview') (siegeOpen = true, openSiege(t, () => { siegeOpen = false; menuScreen(); }, { pic: `/images/game/hero/${heroStill(save.skin, save.equipped.head)}.webp`, name: save.name || DEFAULT_NAME }, (name, vol, pan) => (SIEGE_SOUNDS as readonly string[]).includes(name) ? audio.siege(name as SiegeSound, vol, pan) : audio.play(name as Sfx), (song) => audio.setSong(song === 'menu' ? 'cartoon-menu' : song === 'battle' ? 'cartoon-battle' : song === 'boss' ? 'cartoon-boss' : save.song)));
   else if (act === 'play') startRun();
   // The world this run unlocked, in the same mode.
   else if (act === 'play-next') { const n = Number(target.dataset.next); setWorld(n, game?.mode ?? save.mode); persist(); startRun(n, game?.mode ?? save.mode); }
