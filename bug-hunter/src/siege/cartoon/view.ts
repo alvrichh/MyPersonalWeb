@@ -205,8 +205,13 @@ let bowTip = { x: 80, y: 0 };
     wall, so the aim control stands clear of it). */
 export interface Camera { x: number; width: number; min?: number; deck?: number;
   /** CSS pixels at the foot of the view covered by the card bar laid over the field: the ground line stays above them. */
-  bottom?: number }
+  bottom?: number;
+  /** Where the HUD's gold and energy counters are on the canvas (CSS pixels): fallen enemies' orbs fly to them. */
+  goldAt?: { x: number; y: number }; manaAt?: { x: number; y: number } }
+/** The HUD counters' spots for this frame (`Camera.goldAt`, `manaAt`). */
+let hud: Pick<Camera, 'goldAt' | 'manaAt'> = {};
 export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, s: Siege, camera: Camera, reduced: boolean) {
+  hud = camera;
   const rect = canvas.getBoundingClientRect(); const w = rect.width, h = rect.height;
   if (!w || !h) return;
   const dpr = Math.min(2, window.devicePixelRatio || 1);
@@ -333,12 +338,20 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     ctx.restore(); return true;
   }
   if (e.kind === 'loot') {
-    // A fallen enemy's bounty rising: its gold, and its energy under it.
-    // Fallen side by side, their bounties are staggered (by the effect's place in the list), not stacked.
-    const y = ground - 70 - p * 50 - ((e.from * 7) % 3) * 16;
-    ctx.save(); ctx.globalAlpha = p < 0.7 ? 1 : (1 - p) / 0.3; ctx.textAlign = 'center'; ctx.lineWidth = 3; ctx.strokeStyle = '#1b1b1b';
-    ctx.font = '900 15px system-ui'; ctx.fillStyle = '#ffd23f'; ctx.strokeText(`+${e.gold}`, e.x, y); ctx.fillText(`+${e.gold}`, e.x, y);
-    ctx.font = '800 12px system-ui'; ctx.fillStyle = '#7fe3ff'; ctx.strokeText(`+${e.mana} ⚡`, e.x, y + 15); ctx.fillText(`+${e.mana} ⚡`, e.x, y + 15);
+    // A fallen enemy's bounty: a gold orb flying up to the gold counter and a blue one to the energy, from where it fell.
+    const m = ctx.getTransform(), d = Math.min(2, window.devicePixelRatio || 1);
+    const from = { x: (m.a * e.x + m.e) / d, y: (m.d * (ground - 40) + m.f) / d }, t = p * p * (3 - 2 * p);
+    ctx.save(); ctx.setTransform(d, 0, 0, d, 0, 0);
+    for (const [to, inner, outer, k] of [[hud.goldAt, '#ffffff', '#f2b600', 0], [hud.manaAt, '#ffffff', '#00d4ff', 0.08]] as const) {
+      if (!to) continue;
+      const q = Math.max(0, Math.min(1, (t - k) / (1 - k))), lift = 120;
+      const x = from.x + (to.x - from.x) * q, y = from.y + (to.y - from.y) * q - Math.sin(q * Math.PI) * lift * 0.4;
+      const r = 7 * (1 - q * 0.3), g = ctx.createRadialGradient(x - r * 0.3, y - r * 0.3, 1, x, y, r);
+      g.addColorStop(0, inner); g.addColorStop(1, outer);
+      ctx.globalAlpha = q > 0.92 ? (1 - q) / 0.08 : 1; ctx.shadowColor = outer; ctx.shadowBlur = 12; ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+      ctx.shadowBlur = 0; ctx.lineWidth = 1.6; ctx.strokeStyle = '#1b1b1b'; ctx.stroke();
+    }
     ctx.restore(); return true;
   }
   if (e.kind === 'bolt') {
