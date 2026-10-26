@@ -164,6 +164,10 @@ let arsenalOpened: SkillId | null = null;
 let itemOpened: ItemId | null = null;
 /** An item that waits for a world is on sale once that world is won in either mode. */
 const itemOpen = (item: { world?: number; needs?: SkillId }) => (!item.world || worldWon(save, item.world)) && (!item.needs || save.arsenal.includes(item.needs));
+/** Skins whose pictures are taller than alvrich's 144 px because something rises above the head (the reaper's scythe):
+    lists draw them this much taller, so the figure itself matches the others and the extra sticks out. */
+const SKIN_TALL: Partial<Record<HeroSkin, number>> = { reaper: 168 / 144 };
+const skinTall = (skin: HeroSkin) => (SKIN_TALL[skin] ? ` style="--tall:${SKIN_TALL[skin]!.toFixed(3)}"` : '');
 /** A shop card's line: its own short one where the full text (also the level-up card's) runs long, so the cards in a
     window come out about the same height. */
 const SHOP_SHORT = new Set(['extra', 'brick', 'molotov', 'mines', 'durian', 'ball', 'rocket', 'drill', 'lantern', 'spiritFire', 'spiritTide', 'spiritThorn', 'spiritVolt', 'spiritShade']);
@@ -1436,7 +1440,7 @@ function shopScreen(note = '') {
       : !open ? `<button class="buy is-poor" disabled>🔒 ${lock}</button>`
       : `<button class="buy${can ? '' : ' is-poor'}" data-skin-buy="${skin}">${t('buy')} · 🪙 ${price}</button>`;
     return `<div class="item skin-item${worn ? ' is-on' : ''}${owned ? ' is-owned' : ''}${!owned && (!can || !open) ? ' is-locked' : ''}">
-      <span class="icon" aria-hidden="true"><img class="skin-pic" src="./images/game/hero/${heroStill(skin)}.webp" alt=""></span>
+      <span class="icon" aria-hidden="true"><img class="skin-pic"${skinTall(skin)} src="./images/game/hero/${heroStill(skin)}.webp" alt=""></span>
       <b>${t(`skin${cap(skin)}Name` as Key)}</b>
       <span>${t(`skin${cap(skin)}Text` as Key)}</span>
       ${action}
@@ -1532,8 +1536,8 @@ function stylesScreen(note = '') {
       const open = skinOpen(save, skin);
       const gate = SKIN_GATE[skin];
       const lock = !gate ? '' : 'world' in gate ? t('skinLockWorld', { n: gate.world }) : 'boss' in gate ? t('skinLockBoss', { n: gate.boss }) : t('skinLockSecret');
-      if (!open) return row(`data-skin="${skin}"`, false, true, `<img class="skin-pic" src="./images/game/hero/${heroStill(skin)}.webp" alt="">`, t(`skin${cap(skin)}Name` as Key), t(`skin${cap(skin)}Text` as Key), `🔒 ${lock}`);
-      return row(`data-skin="${skin}"`, worn, !owned && save.coins < skinPrice(skin), `<img class="skin-pic" src="./images/game/hero/${heroStill(skin, save.equipped.head)}.webp" alt="">`, t(`skin${cap(skin)}Name` as Key), t(`skin${cap(skin)}Text` as Key), worn ? `✓ ${t('worn')}` : owned ? t('equip') : `${t('buy')} 🪙 ${skinPrice(skin)}`);
+      if (!open) return row(`data-skin="${skin}"`, false, true, `<img class="skin-pic"${skinTall(skin)} src="./images/game/hero/${heroStill(skin)}.webp" alt="">`, t(`skin${cap(skin)}Name` as Key), t(`skin${cap(skin)}Text` as Key), `🔒 ${lock}`);
+      return row(`data-skin="${skin}"`, worn, !owned && save.coins < skinPrice(skin), `<img class="skin-pic"${skinTall(skin)} src="./images/game/hero/${heroStill(skin, save.equipped.head)}.webp" alt="">`, t(`skin${cap(skin)}Name` as Key), t(`skin${cap(skin)}Text` as Key), worn ? `✓ ${t('worn')}` : owned ? t('equip') : `${t('buy')} 🪙 ${skinPrice(skin)}`);
     };
     // Alvrich's world outfits fold away under one row (open while one of them is worn).
     const world = (WORLD_SKINS as readonly HeroSkin[]);
