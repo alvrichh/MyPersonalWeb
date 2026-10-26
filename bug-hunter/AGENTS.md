@@ -39,6 +39,7 @@ npm run test:game:layout
 npm run typecheck
 npm run test:game
 npm run build
+npm run test:game:shop   # after the build: the shop and Customise in a browser (skips without Playwright)
 ```
 
 State which checks actually ran. Do not describe fixture tests as a full production build or visual gameplay validation.

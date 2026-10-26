@@ -2381,7 +2381,7 @@ const es: Record<Key, string> = {
   rocketShop: 'Va a por el bug con más vida y lo aparta todo. Dos desde el nivel 3.',
   drillShop: 'Atraviesa una fila de bugs y rebota en las paredes; más cada nivel.',
   lanternShop: 'Un fantasma de agua simpático a tu lado desde el principio.',
-  spiritFireShop: 'Un espíritu de fuego a tu lado desde el principio; sus bolitas queman.',
+  spiritFireShop: 'Un espíritu de fuego a tu lado desde el principio; quema a los bugs.',
   spiritTideShop: 'Un espíritu de agua a tu lado desde el principio; sus bolitas frenan.',
   spiritThornShop: 'Un espíritu de hojas a tu lado desde el principio; atraviesa un bug.',
   spiritVoltShop: 'Un espíritu de rayo a tu lado desde el principio; salta a otro bug.',

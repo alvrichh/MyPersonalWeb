@@ -4,6 +4,16 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.54 - 2026-10-26
+
+### Added - Checks for skins and the shop
+- `tests/skins.test.mjs` (in `npm run test:game`): the skin groups (every skin in one, specials cheapest first, bosses 1 to 9 then the secret one), the world outfits, every skin's name and line in both languages, every skin's pictures (13 base poses, side walk and aim in fours, back walk in pairs and only for `BACK_WALK_SKINS`), taller pictures listed in `SKIN_TALL`, and the shop's short lines (both languages, shorter than the full text, 72 characters at most).
+- `npm run test:game:shop` (after `npm run build`, needs Playwright): opens every shop section with a fresh and an advanced save at 360 px, 430 px and on desktop and fails when a card's content spills out, runs under a lit card's band, its button leaves the band's panel or a row's cards differ in height; also the coins level with the X, the three skin groups, and wearing a skin from the shop. It catches the 1.14.49 two-button bug when it is put back.
+- To let the checks read them without a browser, the back-walk skins, the tall skins and the shop's short-line list moved into `save.ts` and `shop.ts` (same values).
+
+### Fixed
+- The Spanish fire spirit's short shop line was the same as its full text; it is shorter now (found by the new check).
+
 ## 1.14.53 - 2026-10-26
 
 ### Fixed - The Server Reaper at full size in the shop and Customise

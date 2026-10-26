@@ -1,7 +1,7 @@
 import { CONVERGENCE_SCENE, CONVERGENCE_IMAGE } from './scenery';
 import { GAZE, H, W, WALL, WHEEL_X, ICICLE_R, ICICLE_STAY, ICICLE_PERSIST_STAY, ICICLE_SINK, ATTACK_CYCLE, WORLDS, frostReach, waveAt, type Threat, type ThreatEl, type OrbPic, isBossRoom, type Enemy, type Game, type Shot, type Look, type Statue, type Rect, type Vec, type Fusion, arrowLook, fusionOf, bladeCount, bladeElement, sawOrbit, sawScale, type BladeElement, type Fx, type SkillId } from './world';
 import { SPIRIT_COLOR, type ItemId, type SpiritSkin } from './shop';
-import { FULL_HERO_SETS, heroKey, type HeroSkin } from './save';
+import { BACK_WALK_SKINS, FULL_HERO_SETS, heroKey, type HeroSkin } from './save';
 
 /* Bug Hunter's renderer: everything is drawn in room units (360 × 600) and
    scaled to fit the screen. The accent colours are the player's. */
@@ -872,8 +872,7 @@ const SIDE_CYCLE = new Set(['boy-base', 'boy-wizard', 'boy-helm', 'boy-bandana',
     'glitch', 'inferno', 'shieldmaiden', 'bloom', 'thunder', 'overclock', 'vampire', 'drake', 'mudling'].map((s) => `${s}-base`)]);
 /* Sets with their own walk away from the camera (`hero/<set>-bwalk-0..1`: one foot up, then the other), drawn instead of
    striding the single back picture. Add a set's key here once its two pictures are in `assets/shared/hero/`. */
-const BACK_WALK = new Set<string>(['boy', 'reaper', 'duck', 'box', 'hacker', 'king', 'potato', 'suit',
-  'glitch', 'inferno', 'shieldmaiden', 'bloom', 'thunder', 'overclock', 'vampire', 'drake', 'mudling'].map((s) => `${s}-base`));
+const BACK_WALK = new Set<string>(BACK_WALK_SKINS.map((s) => `${s}-base`));
 const backWalks = new Map<string, HTMLImageElement[]>();
 function backWalk(key: string) {
   let frames = backWalks.get(key);
