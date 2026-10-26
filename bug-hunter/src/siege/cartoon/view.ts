@@ -164,7 +164,7 @@ function bowAngle(s: Siege, ground: number) {
   return launchAngle(aimAt(s.aim) - bowAt.x, ground - 2 - bowAt.y);
 }
 /** Our crossbow's shots: one launch speed and gravity (field units, seconds). */
-const SHOT = { v: 950, g: 900 };
+const SHOT = { v: 1900, g: 900 };
 /** The screen angle (y down) to hit a spot `dx` ahead and `dy` below at `SHOT`'s speed: the flatter solution; out of
     reach, 45° up. */
 function launchAngle(dx: number, dy: number) {
