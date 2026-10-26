@@ -88,6 +88,9 @@ const ENEMY_H = [138, 156, 172];
 const XBOW = { width: 64, pivot: [[0.35, 0.62], [0.28, 0.54], [0.34, 0.58], [0.25, 0.6]] } as const;
 /** Where our crossbow's arm turns, worked out by `base()` each frame: arrows and the missile leave from it. */
 let bowAt = { x: 80, y: 0 };
+/** The mana monument's box on the canvas (CSS pixels), for taps: tapping it raises the generator. */
+let manaBox = { x: 0, y: 0, w: 0, h: 0 };
+export const onMana = (x: number, y: number) => x >= manaBox.x && x <= manaBox.x + manaBox.w && y >= manaBox.y && y <= manaBox.y + manaBox.h;
 /** What our crossbow shoots, by its look: Cartoon's arrow, or a rocket from the rocket launcher (level 4). */
 let bolt = 'siege/units/shot-arrow';
 let lastShots = 0, kickUntil = 0;
@@ -194,19 +197,30 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   ctx.scale(scale, scale); ctx.translate(-camera.x + Math.max(0, (camera.width - FIELD) / 2), 0);
   const viewH = h / scale;
   const scene = still(SCENE);
-  if (ok(scene)) {
+  if (ok(scene) && w < h) {
+    // An upright view: the picture spans the field (and moves with it), its sky colours carried on above it.
     const sw = FIELD + SCENE_FIT.pad * 2, sh = sw * scene.naturalHeight / scene.naturalWidth;
     const x0 = -SCENE_FIT.pad, top = ground - sh * SCENE_FIT.ground;
     ctx.drawImage(scene, x0, top, sw, sh);
-    // Taller views than the picture: its sky colours carried on up, and its last ground row down (a sliver at most).
     if (top > 0) {
       const strip = skyOf(scene), fade = 60;
       ctx.drawImage(strip, 0, 0, 16, 1, x0, -1, sw, top + 2);
-      // Faded into the picture's top edge in thin bands, so no seam shows.
       for (let i = 0; i < 12; i++) { ctx.globalAlpha = 1 - (i + 0.5) / 12; ctx.drawImage(strip, 0, 0, 16, 1, x0, top + (i * fade) / 12, sw, fade / 12 + 0.5); }
       ctx.globalAlpha = 1;
     }
     if (top + sh < viewH) ctx.drawImage(scene, 0, scene.naturalHeight - 1, scene.naturalWidth, 1, x0, top + sh - 1, sw, viewH - top - sh + 2);
+  } else if (ok(scene)) {
+    // A wide view: the battlefield picture fits the view's height (its sky's top at the view's top, its walking ground on the ground
+    // line), never narrower than the view; it scrolls behind the field a little slower than the troops, end to end as
+    // the camera goes from our fortress to theirs.
+    ctx.save(); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const gy = h * camera.deck, ph = Math.max(gy / SCENE_FIT.ground, w * scene.naturalHeight / scene.naturalWidth), pw = ph * scene.naturalWidth / scene.naturalHeight;
+    const span = Math.max(1, FIELD - camera.width - (camera.min ?? 0)), along = Math.max(0, Math.min(1, (camera.x - (camera.min ?? 0)) / span));
+    const px = -(pw - w) * along, top = gy - ph * SCENE_FIT.ground;
+    ctx.drawImage(scene, px, top, pw, ph);
+    if (top > 0) { const strip = skyOf(scene); ctx.drawImage(strip, 0, 0, 16, 1, px, -1, pw, top + 2); }
+    if (top + ph < h) ctx.drawImage(scene, 0, scene.naturalHeight - 1, scene.naturalWidth, 1, px, top + ph - 1, pw, h - top - ph + 2);
+    ctx.restore();
   } else {
     const [deck, low] = GROUND[actOf(s.world) - 1];
     const earth = ctx.createLinearGradient(0, ground - 10, 0, viewH); earth.addColorStop(0, deck); earth.addColorStop(1, low);
@@ -344,6 +358,7 @@ function mana(ctx: CanvasRenderingContext2D, s: Siege, ground: number) {
   ctx.save();
   ctx.shadowColor = '#5fd8ff'; ctx.shadowBlur = 6 + 26 * fill;
   ctx.drawImage(pillar, x, y, w, h);
+  { const m = ctx.getTransform(), d = Math.min(2, window.devicePixelRatio || 1); manaBox = { x: (m.a * x + m.e) / d, y: (m.d * y + m.f) / d, w: m.a * w / d, h: m.d * h / d }; }
   ctx.shadowBlur = 0; ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = 0.28 * fill * (full ? 0.8 + Math.sin(s.time * 6) * 0.2 : 1);
   ctx.drawImage(pillar, x, y, w, h);
   ctx.restore();

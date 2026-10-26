@@ -4,6 +4,14 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.87 - 2026-10-26
+
+### Added
+- Siege Cartoon: tapping the mana monument raises the generator a level (when there is energy for it), as in Cartoon Wars 2.
+
+### Changed
+- Siege Cartoon on wide screens: the battlefield picture fits the view's height, so its whole sky shows (both kingdoms); it scrolls behind the field a little slower than the troops. Upright phones keep the picture as before.
+
 ## 1.14.86 - 2026-10-26
 
 ### Changed - Siege Cartoon's ground above the card bar

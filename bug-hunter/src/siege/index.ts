@@ -246,7 +246,9 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     canvas.addEventListener('pointerup', e => {
       if (pointer?.id !== e.pointerId) return;
       if (!pointer.moved && state && !paused) {
-        const rect = canvas.getBoundingClientRect(); state.aim = Math.max(120, Math.min(M.FIELD - 120, camera.x + (e.clientX - rect.left) * camera.width / rect.width - Math.max(0, (camera.width - M.FIELD) / 2)));
+        const rect = canvas.getBoundingClientRect();
+        // Siege Cartoon: a tap on the mana monument raises the generator, as in Cartoon Wars 2.
+        if (mode === 'cartoon' && cartoonView.onMana(e.clientX - rect.left, e.clientY - rect.top)) { if (M.improveGenerator(state)) sound('click'); updateUi(); pointer = null; return; } state.aim = Math.max(120, Math.min(M.FIELD - 120, camera.x + (e.clientX - rect.left) * camera.width / rect.width - Math.max(0, (camera.width - M.FIELD) / 2)));
       }
       pointer = null;
     }, battleOptions);
