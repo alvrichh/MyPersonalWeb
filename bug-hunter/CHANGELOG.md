@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.92 - 2026-10-26
+
+### Changed
+- Siege Cartoon's shop is the whole screen, as in Cartoon Wars 2: no header (back arrow, title, gold) and no Map/Shop tabs above it; a Back button at its top right returns to the map (Escape too), and the gold shows once, at its bottom. It holds still in every orientation; only the troop rows scroll.
+
 ## 1.14.91 - 2026-10-26
 
 ### Changed

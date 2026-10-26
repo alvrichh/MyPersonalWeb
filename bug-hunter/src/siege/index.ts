@@ -143,10 +143,10 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     const kind = shopTab === 'air';
     // The equipped cards; a tap on one takes it out of the army.
     const slots = Array.from({ length: M.DECK }, (_, i) => { const c = selected.filter(n => air(n) === kind)[i]; return c === undefined ? '<span class="sg-st-slot"></span>' : `<button class="sg-st-slot is-full" data-sg-tile="${cid(c)}:${clv(c)}" aria-label="${name(cid(c))} · ${t('siegeLevel', { n: clv(c) })}"><img src="${V.portrait(cid(c), clv(c))}" data-trim="${V.portrait(cid(c), clv(c))}" alt=""><small>${clv(c)}</small></button>`; }).join('');
-    return `<div class="sg-store is-${shopTab}"><nav class="sg-st-tabs" role="tablist">${tabs}</nav>
+    return `<div class="sg-store is-${shopTab}"><nav class="sg-st-tabs" role="tablist">${tabs}<button class="sg-st-back" data-sg-prep="map">◀ ${t('siegeShopBack')}</button></nav>
       <div class="sg-st-body"><div class="sg-st-grid">${grid}</div><aside class="sg-st-slots" aria-label="${t(kind ? 'siegeArmyAir' : 'siegeArmyLand', { n: selected.filter(n => air(n) === kind).length, max: M.DECK })}">${shopTab === 'base' ? '' : slots}</aside></div>
       <div class="sg-st-info"><p class="sg-st-desc"><b>${label}</b><span class="${x.next && progress.coins < x.price ? 'is-poor' : ''}">${price}</span></p><p class="sg-message" role="status"></p></div>
-      <div class="sg-st-actions"><button class="sg-st-go" data-sg-prep="map">◀ ${t('siegeTabMap')}</button><span class="sg-st-gold"><img src="/images/game/store/coins-2.webp" alt="">${progress.coins}</span>
+      <div class="sg-st-actions"><span class="sg-st-gold"><img src="/images/game/store/coins-2.webp" alt="">${progress.coins}</span>
         <button class="sg-st-buy" data-sg="purchase" ${x.next && progress.coins >= x.price ? '' : 'disabled'}>${t('siegeBuy')}</button>
         <button class="sg-st-go is-fight" data-sg="launch" ${selected.length ? '' : 'disabled'}>${t('siegeLaunch')} ▶</button></div></div>`;
   }
@@ -204,6 +204,8 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
         <span class="sg-up-text"><b>${t(`siegeUpgrade${i}` as Key)}</b><span class="sg-pips">${Array.from({ length: 5 }, (_, k) => `<i class="${k < level ? 'is-on' : ''}"></i>`).join('')}</span></span>
         <span class="sg-up-cost">${level >= 5 ? t('siegeMax') : `<img src="/images/game/store/coins-2.webp" alt="">${M.upgradePrice(level)}`}</span></button>`).join('')}</div>
       `;
+    // Siege Cartoon's shop is the whole screen, Cartoon Wars 2-style: no header or page tabs, its own Back button.
+    if (mode === 'cartoon' && prepTab === 'shop') { root.innerHTML = `<div class="sg-shell sg-prep sg-shop-only">${shop}</div>`; V.trimImages(root); focus(); return; }
     root.innerHTML = `<div class="sg-shell sg-prep"><header class="sg-top"><button class="sg-back" data-sg="modes" aria-label="${t('siegeModes')}">←</button>
         <h1 class="sg-title"><small>${t('siegeSoon')}</small>${title()}</h1>
         <span class="sg-coins"><img src="/images/game/store/coins-2.webp" alt="">${progress.coins}</span></header>
@@ -492,7 +494,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       return;
     }
     if (story) { if (e.key === 'Escape') { e.preventDefault(); story(); } return; }
-    if (e.key === 'Escape') { e.preventDefault(); if (!state) mode ? modes() : close(); else if (state.phase === 'fight') paused ? resume() : pause(); return; }
+    if (e.key === 'Escape') { e.preventDefault(); if (!state) mode === 'cartoon' && prepTab === 'shop' ? (prepTab = 'map', prep()) : mode ? modes() : close(); else if (state.phase === 'fight') paused ? resume() : pause(); return; }
     if (!state || paused || e.repeat || /INPUT|SELECT|TEXTAREA/.test((e.target as HTMLElement).tagName)) return;
     const key = e.key.toLowerCase();
     if ('123456efqrlas'.includes(key) || key.startsWith('arrow')) e.preventDefault();
