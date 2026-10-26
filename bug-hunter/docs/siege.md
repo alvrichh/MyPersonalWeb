@@ -26,14 +26,14 @@ The nine preview stages reuse world enemy art and share the initial guardian sil
 Every Siege change that touches what is drawn or where controls sit is checked by looking at it, not only by tests:
 
 1. Take screenshots of a real battle at **desktop 1280×720** and **phone 390×844** (more sizes when the change is about scaling), with troops on the field and the bow shooting.
-2. Look at where each thing is and say it: the HUD (mana left, health bars and VS centre, time/coins/pause right), our wall and the aim control standing on it, the mana angel, the bridge deck under the troops' feet, the enemy wall, the L·A·S tabs, cards and bow button in the bottom bar.
+2. Look at where each thing is and say it: the HUD (mana left, health bars and VS centre, time/coins/pause right), our wall and the aim control standing on it, the mana angel, the picture's ground under the troops' feet, the enemy wall, the L·A·S tabs, cards and bow button in the bottom bar.
 3. Nothing may leave the view: projectiles' arcs, the aim control, labels, cards. Nothing may float off the deck or sink below it; flyers stay above their own shadow.
 4. Compare both orientations; a fix for one must not break the other.
 5. Report what was checked and what was not (for example "only world 4 was looked at").
 
 The fortresses are one design each for now (world-themed ones may come later as skins): ours `siege/castle-1..3` by the workshop's Fortress level (0-1, 2-3, 4-5), the enemy's `siege/enemy-1..3` by world (1-3, 4-6, 7-9), both side on. Our crossbow (`siege/xbow-base-N` and `siege/xbow-arm-N`, by the Bow level the same way) stands on our battlement; its arm turns towards the aim and the arrows and missile leave from it. Damage shows as smoke under 60% health and flames under 30%, drawn over the picture. Their sizes and the crossbow's seat are `CASTLES`, `ENEMY_H` and `XBOW` in `src/siege/view.ts`.
 
-The bridge (`ui/bench/bench-N`) is the ground: `BRIDGE` in `src/siege/view.ts` sets its piece width, where its deck sits on the ground line and the overlap of its posts. The aim control's place is in `src/siege/siege.css` (`.sg-aim`).
+The battlefield is one picture for every world for now (`siege/backdrop`, the owner's: our green side left, the bugs' red one right), ground included, drawn across the whole field and moving with the troops: `SCENE_FIT` in `src/siege/view.ts` sets how far it runs past each end and where its walking ground sits (a share of its height) on the troops' ground line. On an upright phone the ground line comes down so the picture reaches the bottom, and its sky colours carry on above it. The aim control's place is in `src/siege/siege.css` (`.sg-aim`).
 
 ## Architecture and compatibility
 
