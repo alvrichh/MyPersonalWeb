@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.78 - 2026-10-26
+
+### Added - The armed aircraft fighter on its six-pose sheet
+- The owner's sheet for the armed aircraft fighter (air) replaces its old three-pose pictures: rifleman, veteran sniper, laser gun and air magician, each with fly A and B, ready, attack, hurt and defeated poses.
+- Each form has its own stats, price, shot and sound: rifle bullets, long-reach sniper shots, a laser beam, and the magician's lightning striking an area.
+
 ## 1.14.77 - 2026-10-26
 
 ### Added - Four Siege Cartoon troops on six-pose sheets

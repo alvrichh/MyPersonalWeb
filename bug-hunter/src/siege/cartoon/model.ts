@@ -123,7 +123,13 @@ export const UNITS: readonly Spec[] = [
     { price: 400, cost: 55, hp: 140, damage: 22, ...six('ally-fighter-3', 190, 0.7) },
     { price: 1200, cost: 90, hp: 220, damage: 34, speed: 80, splash: 25, ...six('ally-fighter-4', 195, 0.7) },
   ] },
-  { id: 11, cost: 55, hp: 110, damage: 20, speed: 55, range: 190, rate: 0.8, cooldown: 5, unlock: 2, air: true, ...unit('ally-armed-fighter', 74) },
+  // The armed aircraft fighter's four forms (docs/cw2-reference.md): a rifleman under a propeller pack, a veteran
+  // sniper, a laser gun, and the air magician casting pink lightning.
+  { id: 11, cost: 55, hp: 110, damage: 20, speed: 55, range: 190, rate: 0.8, cooldown: 5, unlock: 2, air: true, shot: 'bullet', ...six('ally-armed-fighter-1', 179, 0.7), forms: [
+    { price: 400, cost: 70, hp: 130, damage: 45, range: 260, rate: 1.6, shot: 'bullet', ...six('ally-armed-fighter-2', 180, 0.7) },
+    { price: 900, cost: 90, hp: 170, damage: 34, range: 230, rate: 0.9, shot: 'ray', ...six('ally-armed-fighter-3', 174, 0.7) },
+    { price: 2000, cost: 140, hp: 240, damage: 55, range: 220, rate: 1.4, splash: 60, shot: 'lightning', ...six('ally-armed-fighter-4', 198, 0.7) },
+  ] },
   { id: 12, cost: 95, hp: 320, damage: 44, speed: 35, range: 210, rate: 1.8, cooldown: 10, unlock: 4, air: true, splash: 50, ...unit('ally-helicopter', 84) },
   // The drill aircraft, the flying shield, in six forms: a rocket fist, a laser, a plasma beam, an ice burst, a gatling,
   // and a giant golden fist.
@@ -311,7 +317,7 @@ function spawn(s: Siege, id: number, side: 0 | 1, boss = false) {
     troops sound like what they fire (`SHOT_SOUND`). Names are the audio engine's `SiegeSound`s. */
 const ATTACK_SOUND: Record<number, string | string[]> = {
   0: ['blunt', 'blade', 'blade', 'blade', 'blade'], 1: 'pierce', 3: ['blade', 'blunt', 'blunt', 'blunt'], 4: ['gun', 'rifle', 'uzi', 'sniper'],
-  7: 'claw', 8: ['rocket', 'gatling', 'rocket'], 9: ['gatling', 'gatling', 'gatling', 'gatling'], 10: 'blade', 11: 'rifle', 12: 'rocket', 13: ['blunt', 'ray', 'ray', 'blunt', 'gatling', 'blunt'], 14: 'magic',
+  7: 'claw', 8: ['rocket', 'gatling', 'rocket'], 9: ['gatling', 'gatling', 'gatling', 'gatling'], 10: 'blade', 11: ['rifle', 'sniper', 'ray', 'thunder'], 12: 'rocket', 13: ['blunt', 'ray', 'ray', 'blunt', 'gatling', 'blunt'], 14: 'magic',
   15: 'blade', 16: 'pierce', 17: 'bite', 18: 'claw', 19: 'blade', 20: 'blunt', 21: 'blade', 22: 'rifle', 23: 'throw', 24: 'magic',
   25: 'claw', 26: 'breath', 27: 'blade', 28: 'claw', 29: 'claw', 30: 'magic', 31: 'blade', 32: 'gatling',
 };

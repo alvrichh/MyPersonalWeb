@@ -63,6 +63,7 @@ New sheets have **6 poses** in one row: 1 walk A, 2 walk B (A and B alternated r
 - **Armed robot:** 3 forms: claw and arm rocket, walker with twin cannons (fast bullets), walker behind a shield firing missiles. Prices 700, 1800 gold; energy 110, 140, 180; scaled by 0.69.
 - **Heavy armed robot:** 4 forms: gatling bursts, small rockets added, a frozen back cannon (reaches flyers from here), a huge one firing rocket salvos. Prices 1200, 2200, 4000 gold; energy 200, 230, 260, 320; scaled by 1.29.
 - **Aircraft fighter** (air): 4 forms, a sword under a propeller pack: plain, goggles and scarf, two rotors and blue steel, gold rotors and a flaming sword. Prices 150, 400, 1200 gold; energy 30, 40, 55, 90; scaled by 0.7. Air sheets name their first two poses fly A and fly B.
+- **Armed aircraft fighter** (air): 4 forms under a propeller pack: rifleman (red scarf), veteran sniper (blue scarf, long reach), laser gun (a beam drawn in code), air magician (pink lightning in the pose; the strike lands as the wizard's lightning). Prices 400, 900, 2000 gold; energy 55, 70, 90, 140; scaled by 0.7.
 - **Drill aircraft** (air, the flying shield): 6 forms: rocket fist, laser, plasma beam (both beams drawn in code), ice burst, gatling, giant golden fist. Prices 500, 800, 1200, 1800, 3000 gold; energy 80, 95, 110, 130, 150, 200; scaled by 0.92.
 
 ## In the game now (test set)
