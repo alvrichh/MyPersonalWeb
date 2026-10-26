@@ -1,0 +1,107 @@
+# Siege roster (target, assets in progress)
+
+Siege is moving to Cartoon Wars 2's campaign roster: our army of 10 land and 5 air units, a separate enemy roster, and one boss per act. Every unit gets new art. This file is the contract for that art and for the code that will use it. The current troops (bugs reused from the main game) stay until each new sheet lands.
+
+Reference: the Cartoon Wars 2 wiki pages on friendly units, enemy units and bosses (text supplied by the owner).
+
+## Rules taken from the reference
+
+- **Stun and knockback.** Every unit rocks back or is stunned for a moment under heavy fire. Infantry hit hard by one blow fly back a long way and get up quickly (so they keep fighting); non-infantry stay stunned, so repeated hits can lock them.
+- **Air.** All air units can be hit by our bow. Land units hit air only when listed (Wizard from level 3, Heavy Armed Robot from level 3).
+- **Unit levels.** Our units level up (workshop). Some change role with level: Archer starts as a rock thrower; Armed Aircraft becomes an "air magician" at level 4; Heavy Armed Robot level 4 is huge and is hit by the enemy bow too.
+- **Gatling robots split.** Small and medium gatling robots explode into a damaged copy (one arm, no gun, scratch attack), then into a crawling wreck (head and right arm on debris). The large one (act 2 boss) does not split; neither does the flying ray rider.
+- **Horned enemies are elites.** Horned archers shoot lightning arrows; horned wizards summon shadows (the plain ones ice crystals).
+- **Bosses** come only after the enemy fortress is destroyed; its health bar then becomes the boss's. Act 6 also brings a Giant Dinosaur Brute in the stage before the last.
+- **Red Dragon Rider** cannot be stunned by any of our units.
+
+## Our army
+
+Cost and order follow the reference; numbers are to be balanced in code.
+
+| # | Unit | Kind | Role and notes |
+|---|---|---|---|
+| L1 | Swordsman | land, infantry, melee | Cheap spam unit, weak later. |
+| L2 | Spearman | land, infantry, melee | A bit better than the swordsman. |
+| L3 | Archer | land, infantry, ranged | Level 1 throws rocks; best behind a Heavy Armor Swordsman. |
+| L4 | Heavy Armor Swordsman | land, infantry, melee | High health: the shield; hits hard too. |
+| L5 | Gunner | land, ranged | Keeps enemies away early. |
+| L6 | Blaster | land, ranged | Good attack, carries a shield. |
+| L7 | Wizard | land, ranged, area | Strong early, grows with level; hits air from level 3. |
+| L8 | Vulture | land (mount), fast melee | Very fast, strong; weak at the end. |
+| L9 | Armed Robot | land, ranged | Fast, strong at level 2. |
+| L10 | Heavy Armed Robot | land, ranged, heavy | 2000 mana (second dearest). Slow at levels 1-3; hits air at 3-4; level 4 is huge and is hit by the enemy bow. |
+| A1 | Aircraft Fighter | air | Fragile. |
+| A2 | Armed Aircraft Fighter | air, ranged | Longer range; "air magician" at level 4. |
+| A3 | Armed Helicopter | air, missiles | High health, slow attack, missiles. |
+| A4 | Drill Aircraft | air, melee | Used as a shield; good attack. |
+| A5 | Angel Army | air | The dearest. Very fast at level 1, slower afterwards. |
+
+## Enemy roster
+
+Each enemy is "equivalent" to one of our units at a level: that sets its stats. Acts are a proposal (the reference does not give the order).
+
+| Act | Enemies | Equivalent | Boss |
+|---|---|---|---|
+| 1 | Swordsman (grey, ragged), Spearman, Archer (horned: lightning), Dog (bites), Eagle (air) | our Swordsman, Spearman, Archer, Spearman 1, Aircraft 1 | Large Slinger |
+| 2 | Gunner, Blaster (spike blaster = level 2), Gatling Robot small and medium (split), Ninja Bat (land and air), Gatling Ray Rider (air), Inter-Galactic Ray Rider (air) | Gunner, Blaster, Armed Robot 2, Heavy Armed Robot 1, Aircraft 2, Armed Helicopter | Large Gatling Robot |
+| 3 | Grim Reaper (scythe), Undead Turkey, Dragon Breather, Dragon Rider (air), Death Angel (air), Red-eyed Eagle (air) | Spearman 3, Archer 2, Vulture 1, Drill Aircraft 1, Angel 2, Aircraft 3-4 | Large Red Dragon Rider |
+| 4 | Bear (one eye, scratch), Heavy Armor Hammer Wielder (skeletal), Slinger, Heavy Armor Axeman, Wizard (ice; horned: shadows), Hypnotist Bat (land and air) | HAS 1, HAS 2, HAS 3, HAS 3, Wizard 1/3, Armed Aircraft 1 | Giant Brute Eater |
+| 5 | Rex Head, Rhinoceratops, Flightless Terror Bird, Tiger (leaps over and turns back), Spider Spearman | Spearman 4, about HAS 2, Spearman 4, Archer 4, Spearman 5 | Giant Dinosaur Brute |
+| 6 | Mammothsaurus, Giant Heavy Armor Axeman, Inter-Galactic Shooter, Green Ninja Bat, Red Dragon Rider (air, unstunnable), Devil Army (air) | Vulture 6, HAS 4, Gunner 2, Swordsman 6, Drill Aircraft 2, Angel | Giant King Dinosaur Brute |
+
+## Sheet format (the same for every unit)
+
+- One sheet per unit and visual level; transparent background (real alpha); no text, no shadow; poses in **one row**, with wide empty space between them; all poses at the same scale, standing on the same ground line.
+- **Side view, facing RIGHT** for everything (ours and enemies); the code mirrors enemies.
+- **Land units, 8 poses in this order:** 1 stand, 2-5 walk cycle (4 steps), 6 attack wind-up, 7 attack strike (with its projectile or swing visible for ranged units: the shot is drawn separately in game, so only the muzzle flash), 8 hit (rocking back). Infantry also: 9 knocked flying (body horizontal in the air), 10 lying down.
+- **Air units, 6 poses:** 1-4 flying cycle, 5 attack, 6 hit (tilted back).
+- **Gatling robots:** 3 sheets, one per stage (whole, one arm, crawling wreck).
+- **Bosses:** the land format at about twice a normal unit's size.
+- Cut and placed in `assets/special/siege/units/<unit>-<level>-<pose>.webp` (public `/images/game/siege/units/...`), scaled so a Swordsman is the reference height.
+
+## Prompt (one per unit sheet)
+
+Replace `<UNIT>` with one line from the lists below.
+
+```
+Game sprite sheet, transparent background, no text, no shadow, no ground.
+Side view (pure 2D profile), facing RIGHT, of <UNIT>, for a cartoon side-scrolling army battle game like Cartoon Wars 2.
+Style: glossy stylised cartoon, chunky proportions with a big head, thick clean outlines, strong rim light, same rendering as a mobile strategy game.
+8 poses in ONE row, left to right, same scale, same ground line, wide empty space between them, no pose touching another:
+1) standing, 2) walk step 1, 3) walk step 2, 4) walk step 3, 5) walk step 4, 6) attack wind-up, 7) attack strike, 8) hit, rocking backwards.
+```
+
+For infantry add: `9) knocked back, flying horizontally in the air, 10) lying on the ground` and say "10 poses".
+For air units use: `6 poses: 1-4) flying cycle, 5) attacking, 6) hit, tilted backwards`.
+
+**Our army** (blue and steel, cyan neon trims, like our fortress):
+- `a young swordsman in light steel armour with a blue tunic and a short sword`
+- `a spearman in light steel armour with a blue tunic and a long spear`
+- `an archer in a blue hood throwing rocks with a sling (level 1)` / `an archer in a blue hood with a wooden bow (level 2+)`
+- `a heavy armour swordsman, bulky full plate armour with cyan neon seams, big sword and a tower shield`
+- `a gunner in a blue uniform and helmet with a musket rifle`
+- `a blaster soldier with a round shield on one arm and a short blaster cannon in the other`
+- `a wizard in a blue robe and pointy hat with a glowing cyan crystal staff`
+- `a knight riding a big vulture bird that runs on the ground`
+- `a small armed robot, steel and cyan neon, with a gun arm, running fast`
+- `a heavy armed robot, a huge steel walker with cyan neon, twin cannons on its shoulders`
+- `a small propeller aircraft fighter, steel with cyan trims, a pilot in goggles` (air)
+- `an armed aircraft fighter with two wing guns, steel and cyan` (air)
+- `an armed helicopter, steel and cyan, with missile pods` (air)
+- `a drill aircraft, a flying machine with a big spinning drill on its nose` (air)
+- `an angel soldier with white wings, golden armour and a spear` (air)
+
+**Enemies** (grey, ragged, dark red glowing eyes and red trims, like the bug fortress):
+- `a grey goblin swordsman with a ragged notched sword`, `a grey goblin spearman with a broken spear`, `a grey goblin archer with a crude bow` (and `with horns, shooting lightning arrows`)
+- `a mean grey dog`, `a one-eyed brown bear with big claws`, `a skeletal grey brute in heavy armour with a hammer`
+- `a grim reaper with a big scythe`, `an undead turkey`, `a flightless terror bird`, `a tiger`, `a spider with a spear`
+- `a slinger brute swinging a sling`, `a heavy armour axeman`, `a giant heavy armour axeman`
+- `a grey goblin gunner`, `a grey goblin blaster shooting spikes`, `a goblin wizard summoning ice crystals` (and `horned, summoning shadows`)
+- `a T-rex head on legs`, `a rhinoceros-triceratops`, `a mammoth-dinosaur`, `a dragon breathing fire, walking`
+- `a skeletal grey gatling robot with a big round red eye holding a heavy minigun` (and its two damaged stages)
+- `a ninja bat`, `a horned hypnotist bat with hands on its wings`, `a green ninja bat`, `an eagle`, `a red-eyed eagle` (air where they fly)
+- `a gatling robot riding a flying one-eyed ray with two curved teeth`, `a spiky alien shooter riding a small toothy flying ray` (air)
+- `a grey dragon with a rider holding a spear`, `a red-patterned dragon with a rider holding a big red-patterned sword`, `a dark death angel`, `a devil soldier with bat wings` (air)
+- `an inter-galactic shooter: thick legs, huge head with spikes for hair, a spike rifle grown into its left arm`
+
+**Bosses** (twice the size): `a large slinger brute`, `a large gatling robot (does not split)`, `a large red dragon rider`, `a giant brute eater with a huge mouth`, `a giant dinosaur brute`, `a giant king dinosaur brute with a crown of horns`.
