@@ -660,3 +660,7 @@
 @media (max-height:440px){.siege-root.is-cartoon .sg-story .sg-speaker{height:min(34vh,150px);margin-bottom:calc(min(34vh,150px) * -.45)}.siege-root.is-cartoon .sg-story .sg-scene.is-boss .sg-speaker{height:min(38vh,160px);margin-bottom:calc(min(38vh,160px) * -.4)}}
 /* The enemy speaks on a scorched, dark papyrus. */
 .siege-root.is-cartoon .sg-story .sg-scene.is-boss .sg-line{border-image-source:url('/images/game/siege/ui/panel-dark.webp')}
+/* A little more of the speaker above the box (chest up). */
+.siege-root.is-cartoon .sg-story .sg-speaker{margin-bottom:calc(min(34vh,240px) * -.3)}
+.siege-root.is-cartoon .sg-story .sg-scene.is-boss .sg-speaker{margin-bottom:calc(min(38vh,270px) * -.28)}
+@media (max-height:440px){.siege-root.is-cartoon .sg-story .sg-speaker{margin-bottom:calc(min(34vh,150px) * -.3)}.siege-root.is-cartoon .sg-story .sg-scene.is-boss .sg-speaker{margin-bottom:calc(min(38vh,160px) * -.28)}}
