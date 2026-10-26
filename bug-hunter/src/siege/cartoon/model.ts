@@ -284,6 +284,8 @@ export interface Fighter { uid: number; id: number; side: 0 | 1; x: number; lane
   knock?: number; stun?: number;
   /** Seconds left being blown back by the corrupt wind. */
   blown?: number;
+  /** An arrow's nudge: seconds left being pushed back, and until it can be nudged again. */
+  nudge?: number; nudgeCd?: number;
   /** How much bigger an enemy is drawn than its troop (it grows world by world, stage by stage). */
   grow?: number }
 /** A blow taking at least this share of a troop's health knocks it: infantry fly back (`KNOCK.back` field units over
@@ -407,6 +409,8 @@ function damageArea(s: Siege, x: number, radius: number, damage: number, life = 
 /** Our crossbow: a steady volley while it shoots (always the same speed and count), each volley taking `cost` from the
     quiver. Only the shop's Bow level changes it: its look (`looksTier`), how many arrows (or rockets) a volley has and
     how often it fires. */
+/** Our arrows' nudge: `back` field units a second for `time` seconds, at most once every `every` seconds. */
+export const NUDGE = { back: 85, time: 0.14, every: 0.8 };
 export const BOW = { max: 100, cost: 1.2, regen: 12, every: 0.42, step: 0.03, damage: 16, gap: 24 };
 export interface Bow { quiver: number; drawing: boolean; held: number; next: number; level: number }
 export const aimAt = (x: number) => Math.max(140, Math.min(1080, x));
@@ -417,7 +421,12 @@ function arrows(s: Siege, count: number) {
   const x = aimAt(s.aim);
   for (let i = 0; i < count; i++) {
     const at = x + (i - (count - 1) / 2) * BOW.gap;
-    for (const u of s.units) if (u.side === 1 && Math.abs(u.x - at) <= 28) { u.hp -= BOW.damage * s.power; u.flash = 0.18; }
+    for (const u of s.units) if (u.side === 1 && Math.abs(u.x - at) <= 28) {
+      u.hp -= BOW.damage * s.power; u.flash = 0.18;
+      // A hit nudges it back a little (not the guardians or the steady), at most once every `NUDGE.every`, so it still
+      // makes its way forward.
+      if (!u.boss && !UNITS[u.id].steady && !(u.nudgeCd! > 0)) { u.nudge = NUDGE.time; u.nudgeCd = NUDGE.every; }
+    }
     // Far shots are lobbed (the view draws them climbing and falling from the sky): they stay longer in the air.
     const air = 0.5 + 0.45 * Math.max(0, Math.min(1, (x - 650) / 430));
     s.effects.push({ x: at, from: 80, lane: i % 3, life: air, max: air, kind: 'arrow', side: 0 });
@@ -490,6 +499,8 @@ export function tick(s: Siege, dt: number) {
   for (const u of alive) {
     const a = specOf(u); u.attack -= dt; u.flash = Math.max(0, u.flash - dt); u.hit = Math.max(0, (u.hit ?? 0) - dt);
     u.moving = false;
+    if (u.nudgeCd) u.nudgeCd = Math.max(0, u.nudgeCd - dt);
+    if (u.nudge) { u.nudge = Math.max(0, u.nudge - dt); u.x = Math.min(FIELD - 110, u.x + NUDGE.back * dt); continue; }
     if (u.blown) { u.blown = Math.max(0, u.blown - dt); u.x = Math.max(110, u.x - GUST.back * dt); continue; }
     if (u.knock) { u.knock = Math.max(0, u.knock - dt); u.x = Math.max(110, Math.min(FIELD - 110, u.x + (u.side ? 1 : -1) * KNOCK.back / KNOCK.time * dt)); continue; }
     if (u.stun) { u.stun = Math.max(0, u.stun - dt); continue; }
@@ -531,7 +542,7 @@ export function tick(s: Siege, dt: number) {
     if (u.side && !((u.stage ?? 0) < splitsOf(u))) {
       const gold = dropOf(u), mana = manaOf(u);
       s.loot = (s.loot ?? 0) + gold; s.energy = Math.min(energyMax(s), s.energy + mana);
-      s.effects.push({ x: u.x, from: u.uid, lane: 0, life: 1, max: 1, kind: 'loot', side: 1, gold, mana });
+      s.effects.push({ x: u.x, from: u.uid, lane: 0, life: 0.9, max: 0.9, kind: 'loot', side: 1, gold, mana });
     }
   }
   s.kills += s.units.filter(u => u.side && u.hp <= 0).length;

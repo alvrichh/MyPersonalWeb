@@ -306,6 +306,11 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
         if (mode === 'cartoon' && (state.loot ?? 0) - lootHeard >= 8) sound('coin', 0.7);
         lootHeard = state.loot ?? 0;
       }
+      // Where the HUD's gold and energy counters are, for the fallen enemies' orbs.
+      if (mode === 'cartoon' && now >= uiAt) {
+        const c = canvas.getBoundingClientRect(), at = (sel: string) => { const r = root.querySelector(sel)?.getBoundingClientRect(); return r ? { x: r.left + r.width / 2 - c.left, y: r.top + r.height / 2 - c.top } : undefined; };
+        camera.goldAt = at('.sg-gold img'); camera.manaAt = at('.sg-mana img');
+      }
       // Siege Cartoon lays its card bar over the field: the troops walk just above it.
       // The ground line sits on the wall's top (30% down the bar's picture), so the troops walk on the grass above it.
       if (mode === 'cartoon') { const bar = q<HTMLElement>('.sg-bar').getBoundingClientRect(), field = canvas.getBoundingClientRect(); camera.bottom = Math.max(0, field.bottom - bar.top - bar.height * 0.3); }

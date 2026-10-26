@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.9 - 2026-10-26
+
+### Changed - Siege Cartoon
+- Our arrows nudge the enemies they hit back a little (at most once every 0.8 seconds each, never the guardians or the steady), so a volley pushes them without stopping their advance.
+- A fallen enemy's bounty flies as orbs from where it fell: a gold one to the gold counter, a blue one to the energy; no numbers.
+
 ## 1.15.8 - 2026-10-26
 
 ### Added / Changed - Siege Cartoon: worlds, the corrupt wind, bigger enemies, bounties
