@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.12 - 2026-10-26
+
+### Changed - Siege Cartoon's troops
+- New art for eleven of our troops, every form and pose, from the owner's sheets: white round faces in blue and gold armour. The swordsman, spearman, archer, heavy armour, gunner, blaster, wizard, armed robot, heavy armed robot, aircraft fighter and the vulture rider (now a knight with a spear on a walking vulture, with all six poses). Each keeps its size on the field and its stats.
+- The heavy armour's forms in order: two swords, the armoured one who punches, the maces, and the crowned giant, who is now the King's portrait.
+
 ## 1.15.11 - 2026-10-26
 
 ### Changed
