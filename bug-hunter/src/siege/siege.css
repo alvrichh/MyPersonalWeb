@@ -276,3 +276,5 @@
 .is-cartoon .sg-help{border:3px solid #1b1b1b;background:#fffaf0;color:#333}.is-cartoon .sg-help summary{color:#1b1b1b}
 .is-cartoon .sg-message{color:#c0392b}
 @media(max-width:600px){.siege-root.is-cartoon .sg-isle{flex-basis:108px}.is-cartoon .sg-world.is-act{background:linear-gradient(#fffaf0e6,#fffaf0e6),url('/images/game/siege/backdrop.webp') center bottom/cover}}
+/* Story scenes cover the screen even over a scrolled preparation page, in their own light-on-dark colours. */
+.siege-root .sg-story{position:fixed;color:#edf7ff;color-scheme:dark}

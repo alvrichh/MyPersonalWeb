@@ -4,6 +4,14 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.73 - 2026-10-26
+
+### Added - Siege Cartoon's story
+- Siege Cartoon has its story: the Blue Kingdom, drawn in a notebook's margins, against the Red Ink. A prologue before act 1, a scene before each act, each act's guardian speaking when it joins the battle, and an ending after act 6. Our Wizard speaks for our side (at its workshop level); each act has its own name (The Blank Page, The Gear Workshop, Ash Sky, The Hungry Cave, The Fossil Valley, The Last Page).
+
+### Fixed
+- Story scenes cover the whole screen on a scrolled preparation page (phones held sideways), and their Skip button is readable in Siege Cartoon.
+
 ## 1.14.72 - 2026-10-26
 
 ### Changed - Siege splits into Siege Legacy and Siege Cartoon
