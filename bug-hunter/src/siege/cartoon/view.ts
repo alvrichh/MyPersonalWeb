@@ -60,7 +60,7 @@ function skyOf(scene: HTMLImageElement) {
 }
 /** From this aim on (field units) the arrows start to fall from the sky; at the furthest aim they only rain down. */
 const RAIN_FROM = 760;
-const FX = ['siege/mana', 'fx/rocket.webp', 'arrows/water.webp', 'arrows/leaf.webp', 'arrows/fire.webp', 'fx/boom-big.webp', 'fx/impact.webp', ...[1, 2, 3, 4, 5, 6].map(n => `fx/bolt-y-${n}.webp`)];
+const FX = ['siege/mana', 'arrows/water.webp', 'arrows/leaf.webp', 'fx/boom-big.webp', 'fx/impact.webp', ...[1, 2, 3, 4, 5, 6].map(n => `fx/bolt-y-${n}.webp`)];
 /** Pictures drawn whole (backdrop, floor, effects): no alpha crop needed. */
 const stills = new Map<string, HTMLImageElement>();
 function still(path: string) {
@@ -88,6 +88,8 @@ const ENEMY_H = [138, 156, 172];
 const XBOW = { width: 64, pivot: [[0.35, 0.62], [0.28, 0.54], [0.34, 0.58], [0.25, 0.6]] } as const;
 /** Where our crossbow's arm turns, worked out by `base()` each frame: arrows and the missile leave from it. */
 let bowAt = { x: 80, y: 0 };
+/** What our crossbow shoots, by its look: Cartoon's arrow, or a rocket from the rocket launcher (level 4). */
+let bolt = 'siege/units/shot-arrow';
 let lastShots = 0, kickUntil = 0;
 /** Smoke, then flames, on a fortress as it loses health (the game's steam and flame pictures, drifting). */
 function damage(ctx: CanvasRenderingContext2D, w: number, h: number, left: number, hp: number, max: number, t: number) {
@@ -128,6 +130,7 @@ function base(ctx: CanvasRenderingContext2D, s: Siege, x: number, ground: number
     if (!enemy) {
       // The crossbow seated in the turret, turning on its wheel.
       const bowTier = looksTier(s.bow.level), arm = still(`siege/xbow-${bowTier}`), [fx, fy] = XBOW.pivot[bowTier - 1];
+      bolt = bowTier === 4 ? 'siege/units/shot-rocket' : 'siege/units/shot-arrow';
       const px = left + w * look.bow[0], py = -h + foot + h * look.bow[1];
       bowAt = { x: x + px, y: ground + py };
       if ((s.shots ?? 0) !== lastShots) { lastShots = s.shots ?? 0; kickUntil = s.time + 0.09; }
@@ -234,11 +237,12 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 
-/** The game's own effect art: the bow's painted arrows (wood from our fortress, water for our troops, leaf for theirs),
+/** The effect art: our crossbow's Cartoon arrows (or rockets) and missile, the old painted arrows (water for our troops,
+    leaf for theirs),
     impacts up close, and a blast with the yellow lightning for the discharge. */
 function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, ground: number) {
   if (e.kind === 'rocket') {
-    const art = still('fx/rocket.webp'); if (!ok(art)) return false;
+    const art = still('siege/units/shot-rocket'); if (!ok(art)) return false;
     // From the crossbow on our battlement (`bowAt`) to the aim.
     const from = e.side ? e.from : bowAt.x, y0 = e.side ? ground - 110 : bowAt.y;
     const peak = Math.min(190, Math.max(20, y0 - 24)) * (e.side ? 1 : arcShare(e.x)), at = (t: number) => ({ x: from + (e.x - from) * t, y: y0 + (ground + 10 - y0) * t - Math.sin(t * Math.PI) * peak });
@@ -295,7 +299,7 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
   }
   if (e.kind === 'arrow' || e.kind === 'shot') {
     const close = e.kind === 'shot' && Math.abs(e.x - e.from) < 60;
-    const art = still(e.kind === 'arrow' ? 'arrows/fire.webp' : close ? 'fx/impact.webp' : e.side ? 'arrows/leaf.webp' : 'arrows/water.webp');
+    const art = still(e.kind === 'arrow' ? bolt : close ? 'fx/impact.webp' : e.side ? 'arrows/leaf.webp' : 'arrows/water.webp');
     if (!ok(art)) return false;
     if (close) { ctx.save(); ctx.globalAlpha = 1 - p; ctx.drawImage(art, e.x - 15, y - 15, 30, 30); ctx.restore(); return true; }
     // A high arc for the fortress's arrows (from its wall top), a flat one for the troops'.
@@ -312,7 +316,7 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     const drop = (t: number) => ({ x: skyX + (e.x - skyX) * t, y: skyY + (endY - skyY) * t * t });
     const at = rain > 0 ? (t: number) => { const a = arc(t), d = drop(t); return { x: a.x + (d.x - a.x) * rain, y: a.y + (d.y - a.y) * rain }; } : arc;
     const here = at(p), ahead = at(Math.min(1, p + 0.02));
-    const len = e.kind === 'arrow' ? 72 : 40, h = len * art.naturalHeight / art.naturalWidth;
+    const len = e.kind === 'arrow' ? (bolt.endsWith('rocket') ? 46 : 60) : 40, h = len * art.naturalHeight / art.naturalWidth;
     ctx.save(); ctx.translate(here.x, here.y); ctx.rotate(Math.atan2(ahead.y - here.y, ahead.x - here.x || 0.001));
     ctx.drawImage(art, -len / 2, -h / 2, len, h); ctx.restore(); return true;
   }
