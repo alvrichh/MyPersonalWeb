@@ -626,3 +626,7 @@
 .sg-st-gem.is-left{left:-74px;width:30px;height:48px}.sg-st-gem.is-right{right:-74px;width:30px;height:48px}
 @media (max-height:500px){.sg-st-frame{border-width:54px;border-image-width:54px;margin:-22px -18px}.siege-root.is-cartoon .sg-prep .sg-st-frame .sg-st-grid{margin:-32px}
   .sg-st-gem.is-top{top:-54px;width:42px;height:27px}.sg-st-gem.is-bottom{bottom:-54px;width:42px;height:26px}.sg-st-gem.is-left{left:-54px;width:22px;height:35px}.sg-st-gem.is-right{right:-54px;width:22px;height:35px}}
+/* v1.15.13 — Siege Cartoon's cast: the Wizard (violet) and the Swordsman (blue) beside the King and the player's hero. */
+.sg-scene.is-wizard .sg-line{border-color:#b18cffcc}.sg-scene.is-wizard .sg-line b{color:#c9b0ff}
+.sg-scene.is-joker .sg-line{border-color:#5fb6ffcc}.sg-scene.is-joker .sg-line b{color:#8ccaff}
+.sg-scene.is-wizard .sg-speaker,.sg-scene.is-joker .sg-speaker{height:min(38vh,280px)}
