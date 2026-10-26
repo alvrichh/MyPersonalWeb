@@ -2,10 +2,19 @@
 export const FIELD = 1600;
 export const LIMIT = 300;
 export const CAP = 36;
-/** Its own save, apart from Siege Legacy's (`bugHunter.siege.v1`). */
-export const SAVE_KEY = 'bugHunter.siege.cartoon.v1';
-/** Cartoon Wars 2-style acts, each with its own guardian. */
+/** Its own save, apart from Siege Legacy's (`bugHunter.siege.v1`); v2 since battles became stages within acts. */
+export const SAVE_KEY = 'bugHunter.siege.cartoon.v2';
+/** Cartoon Wars 2-style acts, each with its own guardian, each fought over `STAGES` battles: the guardian comes in the
+    last. A battle's number (`world` in the model) runs from 1 to `LAST` across all the acts. */
 export const ACTS = 6;
+export const STAGES = 5;
+export const LAST = ACTS * STAGES;
+export const actOf = (stage: number) => Math.min(ACTS, Math.max(1, Math.ceil(stage / STAGES)));
+export const stageIn = (stage: number) => ((Math.max(1, stage) - 1) % STAGES) + 1;
+/** Is this the act's last battle, the one its guardian joins? */
+export const guarded = (stage: number) => stageIn(stage) === STAGES;
+/** How hard a battle is, on the old nine-world scale (the first 1, the last 9). */
+const hard = (stage: number) => 1 + 8 * Math.pow((Math.min(LAST, Math.max(1, stage)) - 1) / (LAST - 1), 0.75);
 export const CASTS = ['original', 'demon', 'viking', 'mud', 'jungle', 'greek', 'robot', 'nightmare', 'core'];
 export interface Spec { id: number; cost: number; hp: number; damage: number; speed: number; range: number; rate: number; cooldown: number; unlock: number; sprite: string; size: number; splash?: number; air?: boolean;
   /** Breaks into a weaker copy of itself when it falls, this many times (Cartoon Wars 2's gatling robots). */
@@ -44,7 +53,7 @@ export const UNITS: readonly Spec[] = [
   // The swordsman's five forms (the reference's six, its fifth dropped): club, dagger, sword and shield, greatsword,
   // and the master, whose slash leaves fire and reaches flyers. Energy follows the reference's mana, doubled.
   { id: 0, cost: 20, hp: 115, damage: 16, speed: 43, range: 35, rate: 0.8, cooldown: 2, unlock: 1, infantry: true, ...six('ally-swordsman-1', 119), forms: [
-    { price: 200, cost: 30, hp: 135, damage: 21, speed: 46, ...six('ally-swordsman-2', 123) },
+    { price: 120, cost: 30, hp: 135, damage: 21, speed: 46, ...six('ally-swordsman-2', 123) },
     { price: 300, cost: 50, hp: 190, damage: 23, ...six('ally-swordsman-3', 129) },
     { price: 400, cost: 60, hp: 220, damage: 34, range: 42, ...six('ally-swordsman-4', 145) },
     { price: 2000, cost: 200, hp: 340, damage: 58, speed: 62, range: 45, splash: 30, hitsAir: true, ...six('ally-swordsman-5', 142) },
@@ -125,7 +134,10 @@ export const UNITS: readonly Spec[] = [
     from the first two of the land list. */
 export const FOE_LAND = [[15, 16, 17], [22, 19], [23, 18], [24, 25, 20], [26, 21], [32]];
 export const FOE_AIR = [[28], [29], [27], [30], [], [31]];
-const pool = (lists: number[][], world: number) => lists.slice(0, world).flat();
+/** The enemy's troops in a battle: every earlier act's, and its own act's coming in one more each stage. */
+export const foesAt = (lists: number[][], stage: number) => [...lists.slice(0, actOf(stage) - 1).flat(), ...(lists[actOf(stage) - 1] ?? []).slice(0, stageIn(stage))];
+/** What recruiting each of our troops costs in gold (the swordsman is everyone's first). Bought once, kept. */
+export const RECRUIT: Record<number, number> = { 0: 0, 1: 100, 2: 120, 3: 350, 4: 300, 5: 600, 6: 900, 7: 700, 8: 900, 9: 1600, 10: 250, 11: 500, 12: 900, 13: 900, 14: 2000 };
 /** The guardian of each act, drawn bigger: the Large Gatling Robot and the Large Red Dragon Rider are their troops;
     the others stand in for their own pictures (Large Slinger, Giant Brute Eater, Giant Dinosaur Brute, Giant King
     Dinosaur Brute) until those exist. */
@@ -154,21 +166,34 @@ export const canHit = (id: number, target: number) => !isAir(target) || isAir(id
 export function capDeck(deck: number[]) { const land = deck.filter(id => !isAir(id)).slice(0, DECK), air = deck.filter(isAir).slice(0, DECK); return deck.filter(id => land.includes(id) || air.includes(id)); }
 export interface Progress { version: 1; unlocked: number; coins: number; victories: number[]; upgrades: [number, number, number, number]; deck: number[];
   /** Each troop's level (index: its id), 1 to `levelsOf(id)`. */
-  levels: number[] }
-export const freshProgress = (): Progress => ({ version: 1, unlocked: 1, coins: 0, victories: [], upgrades: [0, 0, 0, 0], deck: [0, 1, 2, 3, 4], levels: ALLIES.map(() => 1) });
+  levels: number[];
+  /** The troops recruited so far (the swordsman from the start). */
+  owned: number[] }
+export const freshProgress = (): Progress => ({ version: 1, unlocked: 1, coins: 0, victories: [], upgrades: [0, 0, 0, 0], deck: [0], levels: ALLIES.map(() => 1), owned: [0] });
+/** Has the battles won opened this troop's act? */
+export const isOpen = (p: Progress, id: number) => !!UNITS[id] && !UNITS[id].foe && UNITS[id].unlock <= actOf(p.unlocked);
+export const owns = (p: Progress, id: number) => p.owned.includes(id);
+export const troopPrice = (id: number) => RECRUIT[id] ?? 0;
+/** Recruits a troop with gold, into the army if there is room. */
+export function buyTroop(p: Progress, id: number): boolean {
+  if (owns(p, id) || !isOpen(p, id) || p.coins < troopPrice(id)) return false;
+  p.coins -= troopPrice(id); p.owned.push(id);
+  if (p.deck.filter(n => isAir(n) === isAir(id)).length < DECK) p.deck.push(id);
+  return true;
+}
 const integer = (v: unknown, min: number, max: number, fallback: number) => typeof v === 'number' && Number.isFinite(v) ? Math.max(min, Math.min(max, Math.floor(v))) : fallback;
 export function readProgress(raw: string | null): Progress {
   const p = freshProgress();
   try {
     const v = JSON.parse(raw || 'null');
     if (!v || v.version !== 1) return p;
-    p.unlocked = integer(v.unlocked, 1, ACTS, 1); p.coins = integer(v.coins, 0, 1000000, 0);
-    p.victories = Array.isArray(v.victories) ? [...new Set<number>(v.victories.filter((n: unknown) => typeof n === 'number' && Number.isInteger(n) && n >= 1 && n <= ACTS))] : [];
+    p.unlocked = integer(v.unlocked, 1, LAST, 1); p.coins = integer(v.coins, 0, 1000000, 0);
+    p.victories = Array.isArray(v.victories) ? [...new Set<number>(v.victories.filter((n: unknown) => typeof n === 'number' && Number.isInteger(n) && n >= 1 && n <= LAST))] : [];
     p.upgrades = [0, 1, 2, 3].map(i => integer(v.upgrades?.[i], 0, 5, 0)) as Progress['upgrades'];
     p.levels = ALLIES.map(u => integer(v.levels?.[u.id], 1, levelsOf(u.id), 1));
-    p.deck = Array.isArray(v.deck) ? capDeck([...new Set<number>(v.deck.filter((n: unknown) => typeof n === 'number' && !!UNITS[n] && !UNITS[n].foe && UNITS[n].unlock <= p.unlocked))]) : [];
-    // Topped up to five land troops with the first open ones (never an enemy's, never a locked one).
-    for (const u of ALLIES) if (p.deck.filter(id => !isAir(id)).length < DECK && !u.air && u.unlock <= p.unlocked && !p.deck.includes(u.id)) p.deck.push(u.id);
+    p.owned = [...new Set<number>([0, ...(Array.isArray(v.owned) ? v.owned.filter((n: unknown) => typeof n === 'number' && isOpen(p, n)) : [])])];
+    p.deck = Array.isArray(v.deck) ? capDeck([...new Set<number>(v.deck.filter((n: unknown) => typeof n === 'number' && owns(p, n)))]) : [];
+    if (!p.deck.length) p.deck = [0];
   } catch { /* corrupt or unavailable storage starts a safe, isolated preview */ }
   return p;
 }
@@ -178,7 +203,7 @@ export const levelPrice = (p: Progress, id: number) => UNITS[id]?.forms?.[(p.lev
 /** Buys a troop's next form. */
 export function levelUp(p: Progress, id: number): boolean {
   const price = levelPrice(p, id);
-  if (!price || UNITS[id].foe || UNITS[id].unlock > p.unlocked || p.coins < price) return false;
+  if (!price || !owns(p, id) || p.coins < price) return false;
   p.coins -= price; p.levels[id] = (p.levels[id] ?? 1) + 1; return true;
 }
 export function upgrade(p: Progress, slot: number): boolean {
@@ -215,26 +240,29 @@ export interface Siege {
   fort: number;
   /** Our troops' levels, from the save. */
   levels: number[];
+  /** The gold the enemies dropped this battle: kept whether it is won or lost. */
+  loot?: number;
 }
+/** The gold an enemy drops when it falls: by its toughness, double for a horned one, a guardian far more. */
+export const dropOf = (u: Fighter) => (u.boss ? 60 : Math.max(3, Math.round(UNITS[u.id].hp / 30)) * (u.elite ? 2 : 1));
 /** Which of the three pictures a workshop level (0-5) shows, for our fortress and its crossbow: 0-1, 2-3, 4-5. */
 export const looksTier = (level: number) => (level >= 4 ? 3 : level >= 2 ? 2 : 1);
-/** Which of the enemy fortress's three pictures an act shows: acts 1-2, 3-4, 5-6. */
-export const enemyTier = (act: number) => Math.min(3, Math.max(1, Math.ceil(act / 2)));
-/** How hard an act is, on the old nine-world scale (act 6 as hard as world 9). */
-const hard = (act: number) => act * 1.5;
+/** Which of the enemy fortress's three pictures a battle shows, by its act: acts 1-2, 3-4, 5-6. */
+export const enemyTier = (stage: number) => Math.min(3, Math.max(1, Math.ceil(actOf(stage) / 2)));
+
 export const energyMax = (s: Siege) => 180 + s.generator * 70;
 export const energyRate = (s: Siege) => 7 + s.generator * 2.5 + s.economy;
 export const generatorPrice = (s: Siege) => 65 + s.generator * 45;
 export function newSiege(p: Progress, world: number): Siege {
-  world = integer(world, 1, Math.min(ACTS, p.unlocked), 1);
-  const maxHp: [number, number] = [1700 + p.upgrades[1] * 200, 1500 + hard(world) * 170];
+  world = integer(world, 1, Math.min(LAST, p.unlocked), 1);
+  const maxHp: [number, number] = [1700 + p.upgrades[1] * 200, 1700 + hard(world) * 150];
   return { world, phase: 'fight', time: 0, energy: 80, generator: 0, cooldowns: UNITS.map(() => 0), hp: [...maxHp], maxHp, units: [], effects: [], nextId: 1, nextWave: 7, waves: 0, kills: 0, spell: 0, rocket: 0, aim: 700, bossSpawned: false, paid: false, power: 1 + p.upgrades[0] * 0.08, economy: p.upgrades[2] * 0.6, deck: [...p.deck], bow: { quiver: BOW.max, drawing: false, held: 0, next: 0, level: p.upgrades[3] }, fort: p.upgrades[1], levels: [...(p.levels ?? [])] };
 }
 /** The guardian, Cartoon Wars 2-style: it only comes out once the enemy fortress falls, far tougher than a troop, and
     the battle is won when it falls too. */
 const BOSS_HP = 2.6;
 /** From how many seconds into the battle the enemy's flyers come. */
-const airFrom = (act: number) => Math.max(40, 110 - hard(act) * 8);
+const airFrom = (stage: number) => Math.max(40, 110 - hard(stage) * 8);
 /** The Forge's heavy robots, ours and theirs, break twice before they are gone: each wreck keeps this share of the
     last one's health and damage, and is drawn smaller and darker. */
 export const SPLIT = { hp: 0.45, damage: 0.45 };
@@ -247,7 +275,7 @@ export const ELITE_ID = 22;
 function spawn(s: Siege, id: number, side: 0 | 1, boss = false) {
   if (s.units.filter(u => u.side === side).length >= CAP) return;
   const lv = side ? undefined : s.levels[id] ?? 1;
-  const spec = side ? UNITS[id] : specAt(id, lv); const scale = side ? 0.8 + hard(s.world) * 0.07 : s.power;
+  const spec = side ? UNITS[id] : specAt(id, lv); const scale = side ? 0.95 + hard(s.world) * 0.04 : s.power;
   const hp = spec.hp * scale * (boss ? BOSS_HP : 1);
   // One gunner in every few (counted by its spawn number) comes horned.
   const elite = !!side && !boss && id === ELITE_ID && s.time >= ELITE.from && s.nextId % ELITE.every === 0;
@@ -351,17 +379,17 @@ export function tick(s: Siege, dt: number) {
   s.effects = s.effects.filter(e => (e.life -= dt) > 0);
   s.nextWave -= dt;
   if (s.nextWave <= 0) {
-    s.waves++; s.nextWave = Math.max(4.5, 10 - hard(s.world) * 0.35 - s.time / 90);
-    const count = Math.min(4, 1 + Math.floor(s.time / 55));
-    const land = pool(FOE_LAND, s.world), flyers = pool(FOE_AIR, s.world);
+    s.waves++; s.nextWave = Math.max(4.5, 9 - hard(s.world) * 0.3 - s.time / 90);
+    const count = Math.min(3, 1 + Math.floor(s.time / 70));
+    const land = foesAt(FOE_LAND, s.world), flyers = foesAt(FOE_AIR, s.world);
     // Early waves only the first two land troops; later the whole list, the newest (toughest) more often.
     const pick = s.time < 25 ? land.slice(0, 2) : [...land, ...land.slice(-2)];
     for (let i = 0; i < count; i++) {
-      const flyer = s.time >= airFrom(s.world) && (s.waves + i) % 3 === 2;
+      const flyer = flyers.length > 0 && s.time >= airFrom(s.world) && (s.waves + i) % 3 === 2;
       spawn(s, flyer ? flyers[(s.waves + i) % flyers.length] : pick[(s.waves * 3 + i) % pick.length], 1);
     }
   }
-  if (!s.bossSpawned && s.hp[1] <= 0) { s.bossSpawned = true; spawn(s, GUARDIAN[s.world - 1], 1, true); }
+  if (!s.bossSpawned && s.hp[1] <= 0 && guarded(s.world)) { s.bossSpawned = true; spawn(s, GUARDIAN[actOf(s.world) - 1], 1, true); }
   const alive = s.units.filter(u => u.hp > 0);
   const hits: { target: Fighter; damage: number }[] = [];
   for (const u of alive) {
@@ -401,22 +429,27 @@ export function tick(s: Siege, dt: number) {
     s.units.push({ ...u, uid: s.nextId++, hp, maxHp: hp, damage: u.damage * SPLIT.damage, attack: 0.8, flash: 0.3, hit: 0, stage: (u.stage ?? 0) + 1 });
     s.effects.push({ x: u.x, from: u.x, lane: u.lane, life: 0.4, max: 0.4, kind: 'burst', side: u.side });
   }
-  for (const u of s.units) if (u.hp <= 0) hear(s, soundsOf(u)[1], u.x);
+  for (const u of s.units) if (u.hp <= 0) { hear(s, soundsOf(u)[1], u.x); if (u.side) s.loot = (s.loot ?? 0) + dropOf(u); }
   s.kills += s.units.filter(u => u.side && u.hp <= 0).length;
   s.units = s.units.filter(u => u.hp > 0);
   s.hp = s.hp.map(h => Math.max(0, h)) as [number, number];
   if (s.hp[0] <= 0 || s.time >= LIMIT) s.phase = 'lost';
-  else if (s.hp[1] <= 0 && s.bossSpawned && !s.units.some(u => u.boss && u.side)) s.phase = 'won';
+  else if (s.hp[1] <= 0 && (!guarded(s.world) || (s.bossSpawned && !s.units.some(u => u.boss && u.side)))) s.phase = 'won';
 }
 /** Rewards settle once per battle; a reload cannot replay a settled result. */
+/** What winning a battle pays the first time (a guardian's half as much again), and again after (a third of it). */
+export const prize = (stage: number, first: boolean) => { const full = Math.round((80 + stage * 10) * (guarded(stage) ? 1.5 : 1)); return first ? full : Math.round(full / 3); };
+/** Rewards settle once per battle; a reload cannot replay a settled result. The enemies' gold (`loot`) is kept win or
+    lose; the return is the victory's prize alone. */
 export function settle(p: Progress, s: Siege): number {
   if (s.phase === 'fight' || s.paid) return 0;
   s.paid = true;
+  p.coins += s.loot ?? 0;
   if (s.phase !== 'won') return 0;
   const first = !p.victories.includes(s.world);
-  const reward = Math.round(first ? 160 + hard(s.world) * 30 : 45 + hard(s.world) * 5);
+  const reward = prize(s.world, first);
   p.coins += reward;
   if (first) p.victories.push(s.world);
-  p.unlocked = Math.min(ACTS, Math.max(p.unlocked, s.world + 1));
+  p.unlocked = Math.min(LAST, Math.max(p.unlocked, s.world + 1));
   return reward;
 }

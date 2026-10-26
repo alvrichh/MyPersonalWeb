@@ -251,3 +251,9 @@ export const specAt = (id: number, _level = 1) => UNITS[id];
 export const levelPrice = (_p: Progress, _id: number) => 0;
 export const levelUp = (_p: Progress, _id: number) => false;
 export const costOf = (_s: Siege, id: number) => UNITS[id].cost;
+/* Siege Cartoon's recruiting and stages: Legacy's troops open world by world, free, one battle a world. */
+export const LAST = 9;
+export const isOpen = (p: Progress, id: number) => !!UNITS[id] && UNITS[id].unlock <= p.unlocked;
+export const owns = (_p: Progress, _id: number) => true;
+export const troopPrice = (_id: number) => 0;
+export const buyTroop = (_p: Progress, _id: number) => false;

@@ -4,6 +4,16 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.75 - 2026-10-26
+
+### Changed - Siege Cartoon's progression
+- Each of the six acts is now fought over five stages (30 battles). The first four are won by bringing down the fortress; the guardian comes in the fifth. An act's title card and story open its first stage, and the map shows each act's stages.
+- The army starts with the swordsman alone. The other troops are recruited once with gold (from 100 for the spearman), each from its act on; levels are bought only for recruited troops.
+- Every enemy drops gold as it falls (by its toughness, double for a horned one, 60 for a guardian), kept even if the battle is lost; the HUD's gold counts it as it comes. Victory prizes are smaller and grow stage by stage, with half as much again for a guardian; replays pay a third.
+- Balance, checked with a scripted player over the whole campaign: the first victory pays enough to recruit a second troop, the second one to recruit another or raise one, and difficulty climbs with walls at the start of acts 5 and 6. The swordsman's second form now costs 120.
+- Siege Cartoon's save is now `bugHunter.siege.cartoon.v2`: earlier Cartoon progress (from today's preview) starts over.
+- The King appears as the great samurai (the heavy armour's last form).
+
 ## 1.14.74 - 2026-10-26
 
 ### Changed - Siege Cartoon's story, retold
