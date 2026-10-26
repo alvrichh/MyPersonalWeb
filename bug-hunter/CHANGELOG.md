@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.14.61 - 2026-10-26
+
+### Changed - Siege: the swordsman's helmet crest is blue too
+- The level 4 swordsman's crest is recoloured to the same blue as his capes (the owner's call), so the first ally wears blue throughout.
+
 ## 1.14.60 - 2026-10-26
 
 ### Added - Siege: the spearman in five forms; the swordsman in blue
