@@ -288,7 +288,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     const panel = here ? `<div class="sg-map-go">
         <span class="sg-eyebrow">${worldName(act)} · ${t('siegeStage', { n: stage, max: S })}${stage === S ? ` · ${actBoss(act)}` : ''}</span>
         <p class="sg-prize"><img src="/images/game/store/coins-2.webp" alt="">${won(world) ? t('siegeRepeatWin', { n: prize(world, false) }) : t('siegeFirstWin', { n: prize(world, true) })}</p>
-        <button class="sg-play" data-sg="launch" ${selected.length ? '' : 'disabled'}><span class="sg-play-tri" aria-hidden="true"></span>${t('siegeLaunch')}</button></div>` : '';
+        <button class="sg-play" data-sg="launch" ${selected.length ? '' : 'disabled'} aria-label="${t('siegeLaunch')}"><span class="sg-play-tri" aria-hidden="true"></span>${t('siegeGo')}</button></div>` : '';
     return `<div class="sg-map" style="--map:url('${pic}')"><div class="sg-turn" role="status"><span aria-hidden="true">📱↻</span><b>${t('siegeTurn')}</b><button type="button" data-sg-turn aria-label="${t('siegeTurnOk')}">✕</button></div><div class="sg-map-pic"><img src="${pic}" alt="">${buttons}</div>
       <header class="sg-map-top"><button class="sg-back" ${act ? 'data-sg-map-act="0"' : 'data-sg="exit"'} aria-label="${act ? t('siegeShopBack') : t('siegeExit')}">←</button>
         <h1 class="sg-map-title">${act ? `<small>${worldName(act)}</small>${t(`siegeCtAct${act}` as Key)}` : title()}</h1>
