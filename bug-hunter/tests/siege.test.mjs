@@ -330,3 +330,11 @@ test('our arrows hurt our own troops, but less than they hurt the enemy', () => 
   const foe = { ...u, uid: 77, side: 1, hp: 500, maxHp: 500, damage: 0 }; s.units.push(foe); s.bow.next = 0; m.tick(s, 1 / 30);
   assert.ok(u.hp < 500 && foe.hp < 500 && 500 - u.hp < 500 - foe.hp + 1, 'friendly fire is the lighter');
 });
+test('every troop grows with its level, and the archangel sweeps everything ahead of it far back', () => {
+  for (const u of m.ALLIES) for (let l = 2; l <= m.levelsOf(u.id); l++) assert.ok(m.specAt(u.id, l).size >= m.specAt(u.id, l - 1).size, `${u.id} level ${l} is not smaller than level ${l - 1}`);
+  const p = m.freshProgress(); p.unlocked = 30; p.owned = [14]; p.levels[14] = 3; const s = m.newSiege(p, 30); s.deck = [m.card(14, 3)]; s.energy = 999; assert.equal(m.summon(s, m.card(14, 3)), true);
+  const angel = s.units[0]; angel.x = 600; const foes = [700, 760, 820, 1100].map((x, i) => { const f = { ...angel, uid: 50 + i, id: 15, side: 1, x, hp: 900, maxHp: 900, damage: 0, attack: 99 }; s.units.push(f); return f; });
+  run(s, 0.3);
+  assert.ok(foes.slice(0, 3).every(f => f.hp < 900), 'all those in front within reach are struck'); assert.equal(foes[3].hp, 900, 'not the far one');
+  run(s, 0.5); assert.ok(foes.slice(0, 3).every(f => f.x > 800) || foes.every(f => f.x > 760), 'and thrown back');
+});

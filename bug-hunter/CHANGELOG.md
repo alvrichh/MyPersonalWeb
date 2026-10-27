@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.55 - 2026-10-27
+
+### Changed
+- Siege Cartoon: the archangel's last form (level 3) is bigger and attacks with a sweeping golden crescent that strikes every enemy up to 230 units ahead and throws them 170 units back (a new sweep attack and a gold crescent picture, recoloured from the level 2 one); it fights closer in (range 120) and a little slower.
+- Siege Cartoon: every troop now grows with its level (no level looks smaller than the one before: the archer's level 4, the swordsman's levels 1-3, the mech's first five and others were the same size or smaller); a test keeps it that way.
+
 ## 1.15.54 - 2026-10-27
 
 ### Changed
