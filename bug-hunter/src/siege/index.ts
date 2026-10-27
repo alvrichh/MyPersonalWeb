@@ -23,7 +23,7 @@ const AIM_SPEED = 650;
 const ISLES = ['original', 'infierno', 'vikingos', 'lodo', 'jungla', 'rayo', 'robots', 'demonios', 'nucleo'];
 const UPGRADE_PICS = ['items/gladHelm', 'items/plate', 'ui/orb', 'items/quiver'];
 /** A workshop row's picture: the fortress and the crossbow show the look their level gives (`looksTier`). */
-const upgradePic = (mode: Mode, i: number, level: number) => (mode === 'legacy' ? UPGRADE_PICS[i] : i === 1 ? `siege/castle-${cartoonModel.looksTier(level)}` : i === 3 ? `siege/xbow-${cartoonModel.looksTier(level)}` : UPGRADE_PICS[i]);
+const upgradePic = (mode: Mode, i: number, level: number) => (mode === 'legacy' ? UPGRADE_PICS[i] : i === 1 ? `siege/castle-${cartoonModel.castleTier(level)}` : i === 3 ? `siege/xbow-${cartoonModel.looksTier(level)}` : UPGRADE_PICS[i]);
 
 /** A bar button's picture and caption: the picture made once, only the caption's text changed after (ten times a
     second, so no `<img>` is re-created each time). */
@@ -297,7 +297,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   }
   /** The HUD's pictures of both sides: Legacy's Town Hall and world guardian, Cartoon's two fortresses. */
   const vsPic = (side: 0 | 1) => mode === 'cartoon'
-    ? `/images/game/siege/${side ? `enemy-${cartoonModel.enemyTier(world)}` : `castle-${cartoonModel.looksTier(progress.upgrades[1])}`}.webp`
+    ? `/images/game/siege/${side ? `enemy-${cartoonModel.enemyTier(world)}` : `castle-${cartoonModel.castleTier(progress.upgrades[1])}`}.webp`
     : side ? guardianUrl(world) : '/images/game/fortress/backlog/town-hall.webp';
   function start() {
     cancelAnimationFrame(frame); battleAbort.abort(); battleAbort = new AbortController();

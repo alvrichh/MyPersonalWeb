@@ -1,4 +1,4 @@
-import { actOf, stageIn, flight, foesAt, FIELD, FLY, shotFor, FOE_AIR, FOE_LAND, GUARDIAN, KNOCK, SPELLS, UNITS, isBeam, isBullet, specAt, specOf, aimAt, enemyTier, energyMax, looksTier, type Effect, type Fighter, type Siege } from './model';
+import { actOf, stageIn, flight, foesAt, FIELD, FLY, shotFor, FOE_AIR, FOE_LAND, GUARDIAN, KNOCK, SPELLS, UNITS, isBeam, isBullet, specAt, specOf, aimAt, enemyTier, castleTier, energyMax, looksTier, type Effect, type Fighter, type Siege } from './model';
 import { gloom } from './story';
 
 /** Each world's ground colours, under its floor while that loads (moss, embers, snow, mud, jungle, sand, iron,
@@ -42,7 +42,7 @@ export function preload(world: number, deck: number[], _levels: number[] = []) {
   const specs = [...deck.map(c => specAt(c % 100, Math.floor(c / 100) + 1)), ...foes.map(id => UNITS[id])];
   specs.forEach(spec => { for (let f = 0; f < (spec.six ? 6 : 3); f++) picture(`${spec.sprite}-${f}`); });
   // The battlefield, and the fortresses and crossbow at every level (the workshop can change ours between battles).
-  [sceneOf(world), ...[...SHOTS, ...SPELLS].map(n => `siege/units/shot-${n}`), ...[1, 2, 3, 4].map(n => `siege/units/bolt-${n}`), ...[1, 2, 3, 4].flatMap(n => [`siege/castle-${n}`, `siege/xbow-${n}`, ...(n < 4 ? [`siege/enemy-${n}`] : [])]), ...FX].forEach(still);
+  [sceneOf(world), ...[...SHOTS, ...SPELLS].map(n => `siege/units/shot-${n}`), ...[1, 2, 3, 4].map(n => `siege/units/bolt-${n}`), ...[1, 2, 3, 4, 5].flatMap(n => [`siege/castle-${n}`, ...(n < 5 ? [`siege/xbow-${n}`] : []), ...(n < 4 ? [`siege/enemy-${n}`] : [])]), ...FX].forEach(still);
 }
 /** The battlefield, a picture per world (the owner's: clean on our side, corrupt on the enemy's), drawn across the
     field with `pad` field units past each end, its walking ground (`ground`, a share of its height) on the troops'
@@ -78,10 +78,11 @@ const AIM_GUTTER = 60;
     units; `deck` how far its foot sinks under the ground line. Our crossbow stands on the battlement at the top right:
     `bow` is that spot as fractions of the picture (x from the left, y from the top). */
 const CASTLES = [
-  { h: 210, deck: 8, bow: [0.83, 0.19] },
-  { h: 242, deck: 8, bow: [0.81, 0.3] },
-  { h: 276, deck: 8, bow: [0.82, 0.4] },
-  { h: 314, deck: 8, bow: [0.83, 0.38] },
+  { h: 190, deck: 8, bow: [0.79, 0.17] },
+  { h: 225, deck: 8, bow: [0.74, 0.25] },
+  { h: 275, deck: 8, bow: [0.79, 0.36] },
+  { h: 325, deck: 8, bow: [0.73, 0.32] },
+  { h: 365, deck: 8, bow: [0.81, 0.405] },
 ] as const;
 const ENEMY_H = [220, 248, 273];
 /** Our crossbow in its turret (`siege/xbow-N`, by the Bow level: three crossbows and a rocket launcher), one picture
@@ -120,7 +121,7 @@ function damage(ctx: CanvasRenderingContext2D, w: number, h: number, left: numbe
 }
 function base(ctx: CanvasRenderingContext2D, s: Siege, x: number, ground: number, color: string, enemy: boolean) {
   const hp = s.hp[enemy ? 1 : 0], max = s.maxHp[enemy ? 1 : 0];
-  const tier = enemy ? enemyTier(s.world) : looksTier(s.fort);
+  const tier = enemy ? enemyTier(s.world) : castleTier(s.fort);
   const wall = still(`siege/${enemy ? 'enemy' : 'castle'}-${tier}`);
   ctx.save(); ctx.translate(x, ground);
   let top = -169;
