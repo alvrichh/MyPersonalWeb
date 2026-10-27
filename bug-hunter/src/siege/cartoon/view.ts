@@ -321,14 +321,14 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
   // Effects that wait for a shot to land (`life` past `max`) are not drawn yet.
   if (p < 0 && (e.kind === 'boom' || e.kind === 'fire' || e.kind === 'shot' || e.kind === 'stuck')) return true;
   if (e.kind === 'stuck') {
-    // A landed arrow stuck in the ground at the angle it came in, a third of it buried, fading out at the end.
+    // A landed arrow stuck in the ground at the angle it came in, its head buried, fading out at the end.
     const art = still(bolt); if (!ok(art)) return false;
     const at = flight(bowTip, { x: e.x, y: ground - 2 }), end = at(1), back = at(0.97);
     // Never flatter than about 35° down, so even a near, flat shot reads as stuck in the ground.
     const ang = Math.max(0.6, Math.atan2(end.y - back.y, end.x - back.x || 0.001)), len = 60, h = len * art.naturalHeight / art.naturalWidth;
     ctx.save(); ctx.globalAlpha = p < 0.6 ? 1 : (1 - p) / 0.4;
     ctx.beginPath(); ctx.rect(e.x - 80, -5000, 160, 5000 + ground + 2 + (e.lane - 1) * 3); ctx.clip();
-    ctx.translate(e.x + Math.cos(ang) * len * 0.2, ground + 2 + (e.lane - 1) * 3 + Math.sin(ang) * len * 0.2); ctx.rotate(ang);
+    ctx.translate(e.x - Math.cos(ang) * len * 0.22, ground + 2 + (e.lane - 1) * 3 - Math.sin(ang) * len * 0.22); ctx.rotate(ang);
     ctx.drawImage(art, -len / 2, -h / 2, len, h); ctx.restore(); return true;
   }
   if (e.kind === 'boom') {
