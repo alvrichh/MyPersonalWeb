@@ -743,3 +743,5 @@
    and bottom only; a squarer screen (a tablet) keeps the picture whole so no stage is cut off at the sides. */
 @media (min-aspect-ratio:16/9){.sg-map-pic{width:max(100cqw,100cqh * 1672 / 941)}.sg-map-pic>img{border-radius:0;box-shadow:none}}
 @media (max-height:440px){.sg-map-go{width:min(290px,34%)}}
+.sg-map-go{width:min(330px,38%)}.siege-root.is-cartoon .sg-prep .sg-map-go .sg-play{min-width:60%}
+@media (max-height:440px){.sg-map-go{width:min(250px,30%)}}
