@@ -778,10 +778,10 @@
 .siege-root.is-cartoon .sg-bar .sg-bow.is-drawing::after{content:'';z-index:0;inset:0;left:0;top:0;width:100%;height:100%;transform:none;opacity:1;border-radius:50%;background:url('/images/game/siege/bow.webp') 0 0 / 300% 100% no-repeat;animation:sg-bow-frames .36s steps(3) infinite}
 @keyframes sg-bow-frames{to{background-position:150% 0}}
 @media (prefers-reduced-motion:reduce){.siege-root.is-cartoon .sg-bar .sg-bow.is-drawing::after{animation:none;background-position:50% 0}}
-/* v1.15.41 — the army's cards sit on the bar's own stone slots (no blue tile): the troop over the stone, its cost on a
-   dark plate with a gold rim. */
+/* v1.15.41 — the army's cards sit on the bar's own stone slots, tinted blue through (the stone's texture shows): the
+   troop over it, its cost on a dark plate with a gold rim. */
 .siege-root.is-cartoon .sg-bar .sg-deck button,.siege-root.is-cartoon .sg-bar .sg-deck button:hover:not(:disabled),
-.siege-root.is-cartoon .sg-bar .sg-deck [data-sg]{border:0;border-radius:4px;background:transparent;box-shadow:inset 0 0 calc(18 * var(--u)) #0004}
-.siege-root.is-cartoon .sg-bar .sg-deck button:hover:not(:disabled){background:#fff3;filter:none}
+.siege-root.is-cartoon .sg-bar .sg-deck [data-sg]{border:0;border-radius:4px;background:linear-gradient(#5cc0ff8c,#1c72d6a6);box-shadow:inset 0 0 calc(18 * var(--u)) #06285a99}
+.siege-root.is-cartoon .sg-bar .sg-deck button:hover:not(:disabled){background:linear-gradient(#8fd8ff99,#3a8cecb3);filter:none}
 .siege-root.is-cartoon .sg-bar .sg-deck small{padding:0 .5em;border:1px solid #e7b94a;border-radius:6px;background:#1d1a17e6;color:#ffe9a8}
 .siege-root.is-cartoon .sg-bar .sg-deck button:disabled{filter:grayscale(.8) brightness(.75)}

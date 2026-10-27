@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.42 - 2026-10-27
+
+### Changed
+- Siege Cartoon: the battle bar's cards are the stone slots tinted blue through (the stone's texture shows) instead of a plain blue tile.
+
 ## 1.15.41 - 2026-10-27
 
 ### Fixed
