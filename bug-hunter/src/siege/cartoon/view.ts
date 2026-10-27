@@ -421,6 +421,8 @@ function mana(ctx: CanvasRenderingContext2D, s: Siege, ground: number) {
 /** Troop portraits carry wide empty margins (the boss sheets most), so on cards they are cropped to what shows (alpha
     over 40), once per picture; every `img[data-trim]` under `scope` gets the cropped copy. */
 const trimmed = new Map<string, string>();
+/** A picture's trimmed copy, once made (so a screen drawn again shows it at once, never the untrimmed one first). */
+export const trimmedOf = (src: string) => trimmed.get(src);
 export function trimImages(scope: ParentNode) {
   scope.querySelectorAll<HTMLImageElement>('img[data-trim]').forEach(img => {
     const src = img.dataset.trim!, done = trimmed.get(src);

@@ -724,3 +724,16 @@
 .siege-root.is-cartoon .sg-prep .sg-map-go .sg-play{margin-bottom:-14px}
 @media (max-height:440px){.sg-map-go{width:min(320px,48%);border-width:30px;border-image-width:30px;gap:5px}.siege-root.is-cartoon .sg-prep .sg-map-go .sg-eyebrow{font-size:11px;margin-top:-14px}.siege-root.is-cartoon .sg-prep .sg-map-go .sg-play{margin-bottom:-10px}}
 .sg-map-go{width:min(440px,48%)}
+/* v1.15.31 — The shop: the army's slots square, Purchase greyed without a box behind it, and nothing moving as it
+   changes (no transitions, the pictures fixed in their frames). */
+.siege-root.is-cartoon .sg-prep .sg-st-slot,.siege-root.is-cartoon .sg-prep .sg-st-slot.is-full{aspect-ratio:1;height:auto;width:100%;max-width:96px;justify-self:center;align-self:center}
+.sg-shop-only .sg-st-slots{align-content:center}
+.siege-root.is-cartoon .sg-prep .sg-st-actions button:disabled,.siege-root.is-cartoon .sg-prep .sg-st-actions button:disabled:hover{background:none;box-shadow:none;filter:none}
+.siege-root.is-cartoon .sg-prep .sg-store *{transition:none!important;animation:none!important}
+.sg-st-tile img,.sg-st-slot img{display:block}
+.sg-shop-only .sg-st-slots{grid-template-rows:none;grid-auto-rows:min-content}
+/* The army's six slots in their own stone frame beside the troops; no focus box after a tap. */
+.siege-root.is-cartoon .sg-prep button:focus:not(:focus-visible){outline:none}
+.sg-shop-only .sg-st-slots{align-self:stretch;flex:0 0 auto;width:auto;border-style:solid;border-color:transparent;border-width:34px;border-image:url('/images/game/siege/ui/frame.webp') 125 fill / 34px stretch;margin:-22px -6px -22px 4px;padding:0;gap:6px;grid-template-columns:repeat(2,minmax(52px,64px));align-content:center;overflow:visible}
+@media (min-height:560px){.sg-shop-only .sg-st-slots{grid-template-columns:repeat(2,minmax(64px,84px))}}
+.siege-root.is-cartoon .sg-prep .sg-st-tab:focus,.siege-root.is-cartoon .sg-prep .sg-st-tab:focus-visible{outline:none;box-shadow:none}.siege-root.is-cartoon .sg-prep .sg-st-tab:focus-visible{filter:drop-shadow(0 0 6px #fff)}

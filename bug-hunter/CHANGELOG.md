@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.31 - 2026-10-27
+
+### Fixed - Siege Cartoon's shop
+- Nothing flashes or moves when a troop is bought, equipped or taken out: its pictures come in already trimmed and nothing is animated in it.
+- The army's six slots are square, in their own stone frame beside the troops; Purchase greyed out has no box behind it, and no focus box is left after a tap.
+
 ## 1.15.30 - 2026-10-27
 
 ### Changed - Siege Cartoon's guardians
