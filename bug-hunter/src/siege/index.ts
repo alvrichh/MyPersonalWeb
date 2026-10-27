@@ -22,13 +22,17 @@ const { backdropUrl, guardianUrl } = legacyView;
 const AIM_SPEED = 650;
 const ISLES = ['original', 'infierno', 'vikingos', 'lodo', 'jungla', 'rayo', 'robots', 'demonios', 'nucleo'];
 const UPGRADE_PICS = ['items/gladHelm', 'items/plate', 'ui/orb', 'items/quiver'];
+/** Cartoon's army and generator rows have a picture for each of their five levels. */
+const ARMY_PICS = ['items/bandana', 'items/gladHelm', 'items/plate', 'items/crown', 'items/phoenix'], GENERATOR_PICS = ['items/potion', 'items/lantern', 'items/hourglass', 'items/orb', 'ui/orb'];
 /** A workshop row's picture: the fortress and the crossbow show the look their level gives (`looksTier`). */
-const upgradePic = (mode: Mode, i: number, level: number) => (mode === 'legacy' ? UPGRADE_PICS[i] : i === 1 ? `siege/castle-${cartoonModel.castleTier(level)}` : i === 3 ? `siege/xbow-${cartoonModel.looksTier(level)}` : UPGRADE_PICS[i]);
+const upgradePic = (mode: Mode, i: number, level: number) => (mode === 'legacy' ? UPGRADE_PICS[i] : i === 1 ? `siege/castle-${cartoonModel.castleTier(level)}` : i === 3 ? `siege/xbow-${cartoonModel.looksTier(level)}` : i === 0 ? ARMY_PICS[Math.min(5, Math.max(1, level)) - 1] : i === 2 ? GENERATOR_PICS[Math.min(5, Math.max(1, level)) - 1] : UPGRADE_PICS[i]);
 
 /** A bar button's picture and caption: the picture made once, only the caption's text changed after (ten times a
     second, so no `<img>` is re-created each time). */
-function setPicButton(b: HTMLButtonElement, src: string, caption: string) {
-  if (!b.firstElementChild) b.innerHTML = '<img alt=""><small></small>';
+function setPicButton(b: HTMLButtonElement, src: string, caption: string, recharge = 0) {
+  if (!b.firstElementChild) b.innerHTML = '<img alt=""><i class="sg-cooldown" aria-hidden="true"></i><small></small>';
+  // The recharge darkens the button from the bottom, lightening from the top down as it goes (the share left, 0 to 1).
+  (b.querySelector('.sg-cooldown') as HTMLElement | null)?.style.setProperty('--cd', `${(Math.max(0, Math.min(1, recharge)) * 100).toFixed(1)}%`);
   const img = b.firstElementChild as HTMLImageElement;
   if (img.getAttribute('src') !== src) img.src = src;
   const small = b.lastElementChild as HTMLElement;
@@ -161,14 +165,14 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     const grid = rows.map(row => `<div class="sg-st-row">${Array.from({ length: rowLevels(row) }, (_, k) => {
       const level = k + 1, x = tile(row, level), on = pick.row === row && pick.level === level;
       const pic = shopTab === 'special' ? powerPic(row, level) : shopTab === 'base' ? `/images/game/${upgradePic('cartoon', row, level)}.webp` : V.portrait(row, level);
-      const corner = shopTab === 'special' ? t('siegePowerCd', { n: cartoonModel.POWERS[row].cooldown }) : shopTab === 'base' ? (x.have ? '✓' : '') : String(M.specAt(row, level).cost);
+      const corner = shopTab === 'special' ? t('siegePowerCd', { n: cartoonModel.POWERS[row].cooldown }) : shopTab === 'base' ? String(level) : String(M.specAt(row, level).cost);
       const worn = shopTab === 'special' ? level === progress.powers[row] && progress.kit.includes(row) : shopTab !== 'base' && selected.includes(cartoonModel.card(row, level));
       // What is still to come stays hidden as a «?» (only what is owned, the next one to buy, and every troop's first form show), for the hype.
       const hidden = !x.have && !x.next && !(shopTab !== 'base' && level === 1);
       return `<button class="sg-st-tile ${x.have ? 'is-have' : x.next ? 'is-next' : 'is-locked'} ${on ? 'is-on' : ''} ${worn ? 'is-worn' : ''}" data-sg-tile="${row}:${level}" aria-pressed="${on}" aria-label="${hidden ? '?' : `${shopTab === 'special' ? powerName(row, level) : shopTab === 'base' ? t(`siegeUpgrade${row}` as Key) : name(row)} · ${t('siegeLevel', { n: level })}`}">${hidden ? '<span class="sg-st-q" aria-hidden="true">?</span>' : `<img src="${pic}" ${shopTab === 'base' || shopTab === 'special' ? '' : `data-trim="${pic}"`} alt="">`}${corner && !hidden ? `<small>${corner}</small>` : ''}${worn ? '<b class="sg-st-worn" aria-hidden="true">✓</b>' : ''}</button>`;
     }).join('<span class="sg-st-link" aria-hidden="true"></span>')}</div>`).join('');
     const x = tile(pick.row, pick.level), troop = shopTab !== 'base';
-    const label = !x.have && !x.next && !(troop && pick.level === 1) ? '? ? ?' : shopTab === 'special' ? `${powerName(pick.row, pick.level)} — ${t(`siegePower${pick.row}Text` as Key)}` : troop ? `${name(pick.row)} · ${t('siegeLevel', { n: pick.level })} — ${role(pick.row)}` : `${t(`siegeUpgrade${pick.row}` as Key)} · ${t('siegeLevel', { n: pick.level })}`;
+    const label = !x.have && !x.next && !(troop && pick.level === 1) ? '? ? ?' : shopTab === 'special' ? `${powerName(pick.row, pick.level)} · ⚡ ${cartoonModel.POWERS[pick.row].mana} — ${t(`siegePower${pick.row}Text` as Key)}` : troop ? `${name(pick.row)} · ${t('siegeLevel', { n: pick.level })} — ${role(pick.row)}` : `${t(`siegeUpgrade${pick.row}` as Key)} · ${t('siegeLevel', { n: pick.level })}`;
     const price = x.have ? `✓ ${t('siegeHave')}` : x.next ? (x.price ? `🪙 ${x.price}` : t('siegeFree')) : `🔒 ${x.why}`;
     const kind = shopTab === 'air';
     // The equipped cards; a tap on one takes it out of the army.
@@ -464,20 +468,24 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     bowButton.style.setProperty('--q', (s.bow.quiver / M.BOW.max).toFixed(3));
     bowButton.classList.toggle('is-empty', reloading); bowButton.classList.toggle('is-drawing', s.bow.drawing); bowButton.setAttribute('aria-pressed', String(s.bow.drawing));
     bowButton.disabled = paused || s.phase !== 'fight';
-    for (const [action, key, cd, pic] of [['strike', 'siegeSpell', s.spell, 'skills/bolt'], ['missile', 'siegeMissile', s.rocket, 'fx/rocket']] as const) {
+    // Cartoon's specials cost energy and show their recharge as a darkening that lightens from the top down; Legacy's keep the seconds.
+    const cartoon = mode === 'cartoon';
+    for (const [action, key, cd, pic, total, mana] of [['strike', 'siegeSpell', s.spell, 'skills/bolt', cartoonModel.STRIKE_EVERY, cartoonModel.MANA.strike], ['missile', 'siegeMissile', s.rocket, 'fx/rocket', cartoonModel.ROCKET.every, cartoonModel.MANA.missile]] as const) {
       const button = root.querySelector<HTMLButtonElement>(`[data-sg="${action}"]`); if (!button) continue;
-      setPicButton(button, `/images/game/${pic}.webp`, cd > 0 ? `${Math.ceil(cd)}s` : t('siegeReady')); button.setAttribute('aria-label', t(key)); button.disabled = paused || s.phase !== 'fight' || cd > 0;
+      setPicButton(button, `/images/game/${pic}.webp`, cartoon ? `⚡ ${mana}` : cd > 0 ? `${Math.ceil(cd)}s` : t('siegeReady'), cartoon ? cd / total : 0); button.setAttribute('aria-label', t(key)); button.disabled = paused || s.phase !== 'fight' || cd > 0 || (cartoon && s.energy < mana); button.classList.toggle('is-cooling', cd > 0);
     }
     for (const k of s.kit ?? []) {
       const button = root.querySelector<HTMLButtonElement>(`[data-sg-power="${k.id}"]`); if (!button) continue;
       const cd = s.kitCd[k.id] ?? 0;
-      setPicButton(button, powerPic(k.id, k.level), cd > 0 ? `${Math.ceil(cd)}s` : t('siegeReady')); button.setAttribute('aria-label', powerName(k.id, k.level)); button.disabled = paused || s.phase !== 'fight' || cd > 0;
+      const w = cartoonModel.POWERS[k.id];
+      setPicButton(button, powerPic(k.id, k.level), `⚡ ${w.mana}`, cd / w.cooldown); button.setAttribute('aria-label', powerName(k.id, k.level)); button.disabled = paused || s.phase !== 'fight' || cd > 0 || s.energy < w.mana; button.classList.toggle('is-cooling', cd > 0);
     }
     for (const id of tabCards()) {
-      q<HTMLButtonElement>(`[data-sg-summon="${id}"]`).disabled = paused || !M.canSummon(s, id);
       const cd = s.cooldowns[id] ?? 0;
-      q(`[data-sg-cost="${id}"]`).textContent = cd > 0 ? `${Math.ceil(cd)}s` : `⚡ ${M.costOf(s, id)}`;
-      q(`[data-sg-cooldown="${id}"]`).style.width = `${cd / M.UNITS[cid(id)].cooldown * 100}%`;
+      const card = q<HTMLButtonElement>(`[data-sg-summon="${id}"]`); card.disabled = paused || !M.canSummon(s, id); card.classList.toggle('is-cooling', cd > 0);
+      q(`[data-sg-cost="${id}"]`).textContent = `⚡ ${M.costOf(s, id)}`;
+      const share = cd / M.UNITS[cid(id)].cooldown, bar = q(`[data-sg-cooldown="${id}"]`);
+      bar.style.width = `${share * 100}%`; bar.style.setProperty('--cd', `${(share * 100).toFixed(1)}%`);
     }
     q('[data-sg-aim]').setAttribute('aria-valuenow', String(Math.round(M.aimAt(s.aim))));
     q<HTMLInputElement>('[data-sg-camera]').value = String(Math.round(camera.x / Math.max(1, M.FIELD - camera.width) * 1000));
