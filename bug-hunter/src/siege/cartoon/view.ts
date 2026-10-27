@@ -62,7 +62,7 @@ function topOf(image: HTMLImageElement) {
   if (!c) { c = document.createElement('canvas'); c.width = 16; c.height = 1; const t = c.getContext('2d'); if (t) { t.imageSmoothingQuality = 'high'; t.drawImage(image, 0, 0, image.naturalWidth, 8, 0, 0, 16, 1); } tops.set(image, c); }
   return c;
 }
-const FX = ['siege/mana', ...[0, 1, 2, 3, 4, 5, 6, 7].flatMap(n => [`siege/fx-boom-${n}`, `siege/fx-boom-dark-${n}`]), 'fx/fire-pool.webp', 'arrows/water.webp', 'arrows/leaf.webp', 'fx/boom-big.webp', 'fx/impact.webp', ...[1, 2, 3, 4, 5, 6].map(n => `fx/bolt-y-${n}.webp`)];
+const FX = ['siege/mana', ...[0, 1, 2, 3, 4, 5, 6, 7].flatMap(n => [`siege/fx-boom-${n}`, `siege/fx-boom-dark-${n}`]), 'fx/fire-pool.webp', 'fx/fireball.webp', 'fx/rocket.webp', 'fx/volt-burst.webp', 'fx/impact.webp', 'fx/ice-block.webp', 'siege/units/shot-arrow', 'siege/units/shot-ice', 'siege/units/shot-lightning', ...[0, 1, 2].map(n => `fx/wave-strip-${n}.webp`), ...[0, 1, 2, 3, 4, 5, 6].map(n => `fx/icicle-0-${n}.webp`), 'arrows/water.webp', 'arrows/leaf.webp', 'fx/boom-big.webp', 'fx/impact.webp', ...[1, 2, 3, 4, 5, 6].map(n => `fx/bolt-y-${n}.webp`)];
 /** Pictures drawn whole (backdrop, floor, effects): no alpha crop needed. */
 const stills = new Map<string, HTMLImageElement>();
 function still(path: string) {
@@ -201,6 +201,8 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   camera.width = w / scale;
   camera.min = -AIM_GUTTER / scale;
   camera.x = Math.max(camera.min, Math.min(Math.max(camera.min, FIELD - camera.width), camera.x));
+  // The stretch of field on screen: the special powers cover it (the model reads it when one is cast).
+  s.view = { x: camera.x, width: camera.width };
   // The ground line sits low, so the picture's ground and the sky above both show.
   camera.deck = w / h > 2.2 ? 0.74 : 0.7;
   // A tall view (a phone upright): the ground line comes down until the picture's foot reaches the bottom of the view.
@@ -284,6 +286,60 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     const here = at(p), ahead = dirAt(at, p), len = 64, h = len * art.naturalHeight / art.naturalWidth;
     ctx.save(); ctx.translate(here.x, here.y); ctx.rotate(Math.atan2(ahead.y - here.y, ahead.x - here.x || 0.001));
     ctx.drawImage(art, -len / 2, -h / 2, len, h); ctx.restore(); return true;
+  }
+  // The special powers: things falling on the field, lightning, the tsunami and what they leave where they land.
+  if (e.kind === 'fall' || e.kind === 'ground' || e.kind === 'zap' || e.kind === 'wave') {
+    if (p < 0) return true;
+    const at = ground + 2 - (e.up ?? 0);
+    if (e.kind === 'fall') {
+      // Down from above the screen, a little slanted, pointing along its path.
+      const art = still(e.art === 'ice' ? 'siege/units/shot-ice' : e.art === 'fire' ? 'fx/fireball.webp' : e.art === 'rocket' ? 'fx/rocket.webp' : 'siege/units/shot-arrow'); if (!ok(art)) return false;
+      const len = e.art === 'arrow' ? 64 : e.art === 'ice' ? 60 : 58, h = len * art.naturalHeight / art.naturalWidth, drop = (1 - p) * 640;
+      ctx.save(); ctx.translate(e.x - drop * 0.3, at - drop); ctx.rotate(Math.atan2(1, 0.3)); ctx.drawImage(art, -len / 2, -h / 2, len, h); ctx.restore(); return true;
+    }
+    if (e.kind === 'ground') {
+      // Where it landed: an ice burst growing, a spark of lightning, a puff of dust.
+      ctx.save(); ctx.globalAlpha = p < 0.7 ? 1 : (1 - p) / 0.3;
+      if (e.art === 'ice') {
+        const art = still(`fx/icicle-0-${Math.min(6, Math.floor(p * 9))}.webp`); if (!ok(art)) { ctx.restore(); return false; }
+        const w = 54, h = w * art.naturalHeight / art.naturalWidth; ctx.drawImage(art, e.x - w / 2, at - h + 6, w, h);
+      } else if (e.art === 'arrow') {
+        // A landed arrow stuck in the ground, fading out.
+        const art = still('siege/units/shot-arrow'); if (!ok(art)) { ctx.restore(); return false; }
+        const ang = Math.atan2(1, 0.3), len = 64, h = len * art.naturalHeight / art.naturalWidth;
+        ctx.globalAlpha = p < 0.6 ? 1 : (1 - p) / 0.4; ctx.beginPath(); ctx.rect(e.x - 80, -5000, 160, 5000 + at); ctx.clip();
+        ctx.translate(e.x - Math.cos(ang) * len * 0.22, at - Math.sin(ang) * len * 0.22); ctx.rotate(ang); ctx.drawImage(art, -len / 2, -h / 2, len, h);
+      } else {
+        const art = still(e.art === 'volt' ? 'fx/volt-burst.webp' : 'fx/impact.webp'); if (!ok(art)) { ctx.restore(); return false; }
+        const w = e.art === 'volt' ? 70 : 26, h = w * art.naturalHeight / art.naturalWidth; ctx.drawImage(art, e.x - w / 2, at - h * (e.art === 'volt' ? 0.8 : 0.6), w, h);
+      }
+      ctx.restore(); return true;
+    }
+    if (e.kind === 'zap') {
+      // A column of lightning from the top of the screen to the ground, flickering as it fades.
+      const art = still('siege/units/shot-lightning'); if (!ok(art)) return false;
+      const h = at + 6, w = 130, flip = Math.floor(p * 10) % 2 ? -1 : 1;
+      ctx.save(); ctx.globalAlpha = p < 0.5 ? 1 : (1 - p) / 0.5; ctx.translate(e.x, 0); ctx.scale(flip, 1); ctx.drawImage(art, -w / 2, 0, w, h);
+      // Drawn twice, the second time adding light, so the bolt blazes against the sky.
+      ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha *= 0.7; ctx.drawImage(art, -w / 2, 0, w, h); ctx.restore(); return true;
+    }
+    // The tsunami: a wall of water running from the left of the screen to the right, foam along its crest and its foot.
+    const q = Math.min(1, p / 0.8), front = e.from + (e.x - e.from) * q, a = p < 0.8 ? 1 : (1 - p) / 0.2, size = Number(e.art) || 1;
+    const H = 120 + size * 28, tail = 360 + size * 60, left = Math.max(e.from - 80, front - tail);
+    ctx.save(); ctx.globalAlpha = 0.9 * a;
+    const body = ctx.createLinearGradient(0, at - H, 0, at + 4); body.addColorStop(0, '#bdf0ff'); body.addColorStop(0.25, '#3fb4f0'); body.addColorStop(1, '#0d5aa6');
+    ctx.fillStyle = body; ctx.beginPath(); ctx.moveTo(left, at + 4); ctx.lineTo(left, at - H * 0.05);
+    ctx.quadraticCurveTo((left + front) / 2, at - H * 0.3, front - 46, at - H); ctx.quadraticCurveTo(front + 6, at - H * 0.95, front + 18, at - H * 0.45); ctx.lineTo(front + 22, at + 4); ctx.closePath(); ctx.fill();
+    ctx.save(); ctx.clip();
+    for (let k = 0; k < 3; k++) {
+      const strip = still(`fx/wave-strip-${k}.webp`); if (!ok(strip)) continue;
+      const sw = Math.max(40, front + 20 - left), sh = Math.max(14, sw * strip.naturalHeight / strip.naturalWidth * 1.8);
+      ctx.drawImage(strip, 0, 0, strip.naturalWidth * Math.min(1, sw / 420), strip.naturalHeight, left, at - H * (0.18 + k * 0.28) - sh / 2, sw, sh);
+    }
+    ctx.restore(); ctx.lineWidth = 3; ctx.strokeStyle = '#0a2f66'; ctx.stroke();
+    ctx.globalAlpha = 0.8 * a; ctx.fillStyle = '#ffffff';
+    for (let k = 0; k < 9; k++) { const sx = front - 60 + ((k * 37 + Math.floor(p * 30) * 11) % 90) - 30, sy = at - H * 0.9 + ((k * 53) % 70) - Math.sin(p * 12 + k) * 8; ctx.beginPath(); ctx.arc(sx, sy, 3 + (k % 3), 0, Math.PI * 2); ctx.fill(); }
+    ctx.restore(); return true;
   }
   if (e.kind === 'burst' && p < 0) return true;
   if (e.kind === 'gust') {

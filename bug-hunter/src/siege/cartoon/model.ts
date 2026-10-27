@@ -233,9 +233,13 @@ export interface Progress { version: 1; unlocked: number; coins: number; victori
   levels: number[];
   /** The troops recruited so far (the swordsman from the start). */
   owned: number[];
+  /** The special powers bought (`POWERS`): each one's level, 0 when not bought. */
+  powers: number[];
+  /** The powers taken into battle (at most `KIT`), by id. */
+  kit: number[];
   /** Set once the deck holds cards (`card`), not troop ids. */
   cards: 1 }
-export const freshProgress = (): Progress => ({ version: 1, unlocked: 1, coins: 0, victories: [], upgrades: [0, 0, 0, 0], deck: [0], levels: UNITS.map(() => 1), owned: [0], cards: 1 });
+export const freshProgress = (): Progress => ({ version: 1, unlocked: 1, coins: 0, victories: [], upgrades: [0, 0, 0, 0], deck: [0], levels: UNITS.map(() => 1), owned: [0], powers: POWERS.map(() => 0), kit: [], cards: 1 });
 /** Can this card go in the army: its troop recruited and its level bought? */
 export const hasCard = (p: Progress, c: number) => Number.isInteger(c) && c >= 0 && owns(p, cardId(c)) && cardLevel(c) <= (p.levels[cardId(c)] ?? 1);
 /** The owner's testing switch: every troop open from the start and recruited and levelled for free. Set `free` to
@@ -262,6 +266,8 @@ export function readProgress(raw: string | null): Progress {
     p.victories = Array.isArray(v.victories) ? [...new Set<number>(v.victories.filter((n: unknown) => typeof n === 'number' && Number.isInteger(n) && n >= 1 && n <= LAST))] : [];
     p.upgrades = [0, 1, 2, 3].map(i => integer(v.upgrades?.[i], 0, 5, 0)) as Progress['upgrades'];
     p.levels = UNITS.map(u => (u.foe ? 1 : integer(v.levels?.[u.id], 1, levelsOf(u.id), 1)));
+    p.powers = POWERS.map((w, i) => integer(v.powers?.[i], 0, w.forms.length, 0));
+    p.kit = Array.isArray(v.kit) ? [...new Set<number>(v.kit.filter((n: unknown): n is number => typeof n === 'number' && p.powers[n] > 0))].slice(0, KIT) : [];
     p.owned = [...new Set<number>([0, ...(Array.isArray(v.owned) ? v.owned.filter((n: unknown) => typeof n === 'number' && isOpen(p, n)) : [])])];
     // An older save's deck holds troop ids, each meaning the troop at its level then.
     const deck: number[] = Array.isArray(v.deck) ? v.deck.filter((n: unknown): n is number => typeof n === 'number').map((n: number) => (v.cards === 1 ? n : owns(p, n) ? card(n, p.levels[n]) : -1)) : [];
@@ -309,7 +315,7 @@ export interface Fighter { uid: number; id: number; side: 0 | 1; x: number; lane
 /** A blow taking at least this share of a troop's health knocks it: infantry fly back (`KNOCK.back` field units over
     `KNOCK.time`) and get up, the rest are stunned for `KNOCK.stun`; bosses and the steady never. */
 export const KNOCK = { share: 0.2, time: 0.55, back: 70, stun: 0.35 };
-export interface Effect { x: number; from: number; lane: number; life: number; max: number; kind: 'shot' | 'burst' | 'arrow' | 'rocket' | 'bolt' | 'gust' | 'loot' | 'boom' | 'fire' | 'stuck'; side: 0 | 1;
+export interface Effect { x: number; from: number; lane: number; life: number; max: number; kind: 'shot' | 'burst' | 'arrow' | 'rocket' | 'bolt' | 'gust' | 'loot' | 'boom' | 'fire' | 'stuck' | 'fall' | 'ground' | 'zap' | 'wave'; side: 0 | 1;
   /** A `boom` (an explosion) or a `fire` (a burning pool on the ground): its size, and the height it is at. */
   size?: number; up?: number;
   /** A `boom` with black smoke (the robots' rockets) instead of grey (our crossbow's). */
@@ -324,6 +330,9 @@ export interface Siege {
   world: number; phase: 'fight' | 'won' | 'lost'; time: number; energy: number; generator: number; cooldowns: Record<number, number>;
   hp: [number, number]; maxHp: [number, number]; units: Fighter[]; effects: Effect[]; nextId: number; nextWave: number; waves: number; kills: number;
   spell: number; rocket: number; aim: number; bow: Bow;
+  /** The special powers taken into this battle (`POWERS`, at the level bought), their recharges, the blows each has
+      scheduled to land (`Hit`), and the stretch of field on screen (set by the view) that they cover. */
+  kit: { id: number; level: number }[]; kitCd: Record<number, number>; hitq: Hit[]; view: { x: number; width: number }; casts: number;
   /** The troops' sounds since the view last took them (attacks and deaths, where they happened); kept short. */
   sounds?: { k: string; x: number }[];
   /** How many times the bow has shot this battle (the view plays a sound for each new one). */
@@ -364,7 +373,7 @@ export const generatorPrice = (s: Siege) => 65 + s.generator * 45;
 export function newSiege(p: Progress, world: number): Siege {
   world = integer(world, 1, Math.min(LAST, p.unlocked), 1);
   const maxHp: [number, number] = [1700 + p.upgrades[1] * 200, 1700 + hard(world) * 150];
-  return { world, phase: 'fight', time: 0, energy: 80, generator: 0, cooldowns: {}, hp: [...maxHp], maxHp, units: [], effects: [], nextId: 1, nextWave: 7, waves: 0, kills: 0, spell: 0, rocket: 0, aim: 700, bossSpawned: false, paid: false, power: 1 + p.upgrades[0] * 0.08, economy: p.upgrades[2] * 0.6, deck: [...p.deck], bow: { quiver: BOW.max, drawing: false, held: 0, next: 0, level: p.upgrades[3] }, fort: p.upgrades[1], levels: [...(p.levels ?? [])] };
+  return { world, phase: 'fight', time: 0, energy: 80, generator: 0, cooldowns: {}, hp: [...maxHp], maxHp, units: [], effects: [], nextId: 1, nextWave: 7, waves: 0, kills: 0, spell: 0, rocket: 0, aim: 700, bossSpawned: false, paid: false, power: 1 + p.upgrades[0] * 0.08, economy: p.upgrades[2] * 0.6, deck: [...p.deck], bow: { quiver: BOW.max, drawing: false, held: 0, next: 0, level: p.upgrades[3] }, fort: p.upgrades[1], levels: [...(p.levels ?? [])], kit: p.kit.filter(id => p.powers[id] > 0).map(id => ({ id, level: p.powers[id] })), kitCd: {}, hitq: [], view: { x: 0, width: 650 }, casts: 0 };
 }
 /** The guardian, Cartoon Wars 2-style: it only comes out once the enemy fortress falls, far tougher than a troop, and
     the battle is won when it falls too. */
@@ -577,12 +586,109 @@ export function strike(s: Siege): boolean {
   if (s.phase !== 'fight' || s.spell > 0) return false;
   damageArea(s, s.aim, 155, 210 * s.power, 0.7); s.spell = 24; return true;
 }
+/** The special powers (the shop's Especial tab): bought with gold, each covers the stretch of field on screen. Level 1
+    is `price` gold, each later form its own `price`; `unlock` is the act that opens it. `damage` is per blow. */
+export interface PowerForm { price: number; damage: number; art?: string; freeze?: number; radius?: number; count?: number; push?: number }
+export const POWERS: { id: number; unlock: number; price: number; cooldown: number; forms: PowerForm[] }[] = [
+  // Arrow rain: arrows, ice arrows (they freeze), fire arrows (they leave flames), rockets (they explode).
+  { id: 0, unlock: 1, price: 400, cooldown: 30, forms: [{ price: 0, damage: 24, art: 'arrow' }, { price: 500, damage: 28, art: 'ice', freeze: 1.3 }, { price: 900, damage: 34, art: 'fire' }, { price: 1500, damage: 46, art: 'rocket', radius: 52 }] },
+  // Lightning rain: bolts across the field, the later forms more of them and stunning.
+  { id: 1, unlock: 2, price: 600, cooldown: 34, forms: [{ price: 0, damage: 60, count: 12 }, { price: 800, damage: 66, count: 18, freeze: 0.8 }, { price: 1400, damage: 76, count: 26, freeze: 1.3 }] },
+  // Tsunami: a wall of water sweeping the field, throwing the enemy back.
+  { id: 2, unlock: 3, price: 900, cooldown: 42, forms: [{ price: 0, damage: 90, push: 240 }, { price: 1100, damage: 140, push: 360 }, { price: 1900, damage: 210, push: 520, freeze: 1.2 }] },
+  // Meteor shower: burning rocks across the field, each leaving a fire.
+  { id: 3, unlock: 4, price: 1200, cooldown: 40, forms: [{ price: 0, damage: 95, count: 6, radius: 62 }, { price: 1500, damage: 115, count: 9, radius: 66 }, { price: 2400, damage: 135, count: 13, radius: 70 }] },
+];
+/** At most this many powers go into a battle. */
+export const KIT = 3;
+/** A blow a power has scheduled to land at `at` (battle time) on the enemies within `r` of `x`; `seen` makes a sweeping
+    one (the wave) strike each enemy only once. */
+export interface Hit { at: number; x: number; r: number; damage: number; freeze?: number; push?: number; seen?: Set<number> }
+const powerOpen = (p: Progress, id: number) => testing.free || POWERS[id].unlock <= actOf(p.unlocked);
+/** What a power's level costs in gold (level 1 is the power itself). */
+export const powerCost = (id: number, level: number) => (testing.free ? 0 : level <= 1 ? POWERS[id].price : POWERS[id].forms[level - 1]?.price ?? 0);
+export const isPowerOpen = (p: Progress, id: number) => !!POWERS[id] && powerOpen(p, id);
+/** Buys a power's first level or its next form; the first purchase also puts it in the kit if there is room. */
+export function buyPower(p: Progress, id: number): boolean {
+  const w = POWERS[id]; if (!w) return false;
+  const level = p.powers[id] ?? 0, cost = powerCost(id, level + 1);
+  if (level >= w.forms.length || !powerOpen(p, id) || p.coins < cost) return false;
+  p.coins -= cost; p.powers[id] = level + 1;
+  if (level === 0 && p.kit.length < KIT) p.kit.push(id);
+  return true;
+}
+/** Takes a bought power into the kit, or out of it; false when the kit is full or the power is not bought. */
+export function toggleKit(p: Progress, id: number): boolean {
+  if (p.kit.includes(id)) { p.kit = p.kit.filter(n => n !== id); return true; }
+  if (!(p.powers[id] > 0) || p.kit.length >= KIT) return false;
+  p.kit.push(id); return true;
+}
+/** A fixed pseudo-random 0..1 for a number (so a battle replays the same). */
+const rnd = (n: number) => { const x = Math.sin(n * 12.9898 + 4.1) * 43758.5453; return x - Math.floor(x); };
+/** A scheduled blow lands: it hurts (and freezes or throws back) each enemy it reaches, flyers too. */
+function land(s: Siege, h: Hit) {
+  for (const u of s.units) {
+    if (u.side !== 1 || u.hp <= 0 || Math.abs(u.x - h.x) > h.r || h.seen?.has(u.uid)) continue;
+    h.seen?.add(u.uid); u.hp -= h.damage * s.power; u.flash = 0.18;
+    if (!u.boss && h.freeze) u.stun = Math.max(u.stun ?? 0, h.freeze);
+    if (!u.boss && h.push && !UNITS[u.id].steady) { u.knock = KNOCK.time; u.knockBack = h.push; }
+  }
+}
+/** Sets off a power from the kit: its blows spread over the stretch of field on screen. */
+export function castPower(s: Siege, id: number): boolean {
+  const k = s.kit.find(n => n.id === id), w = POWERS[id];
+  if (!k || !w || s.phase !== 'fight' || (s.kitCd[id] ?? 0) > 0) return false;
+  const form = w.forms[Math.min(k.level, w.forms.length) - 1], c = ++s.casts;
+  let x0 = Math.max(110, s.view.x + 20), x1 = Math.min(FIELD - 90, s.view.x + s.view.width - 20);
+  if (x1 - x0 < 160) { x0 = 110; x1 = FIELD - 90; }
+  const span = x1 - x0, push = (e: Effect) => s.effects.push(e), foes = s.units.filter(u => u.side === 1 && u.x >= x0 && u.x <= x1);
+  if (id === 0) {
+    const n = Math.max(8, Math.round(span / 22)), fall = 0.55, r = form.radius ?? 32;
+    for (let i = 0; i < n; i++) {
+      const x = x0 + (i + 0.5) * span / n + (rnd(i * 3 + c) - 0.5) * 18, delay = rnd(i * 7 + c * 5) * 1.7, deep = Math.floor(rnd(i + c * 11) * 3) - 1, up = deep * 8, at = delay + fall;
+      push({ x, from: x, lane: 1, life: at, max: fall, kind: 'fall', side: 0, art: form.art, up });
+      s.hitq.push({ at: s.time + at, x, r, damage: form.damage, freeze: form.freeze });
+      if (form.art === 'rocket') push({ x, from: x, lane: 1, life: at + BOOM, max: BOOM, kind: 'boom', side: 0, size: 54, up });
+      else if (form.art === 'fire') push({ x, from: x, lane: 1, life: at + 1.4, max: 1.4, kind: 'fire', side: 0, size: 46, up });
+      else if (form.art === 'ice') push({ x, from: x, lane: 1, life: at + 0.9, max: 0.9, kind: 'ground', side: 0, art: 'ice', up });
+      else push({ x, from: x, lane: 1, life: at + 2.4, max: 2.4, kind: 'ground', side: 0, art: 'arrow', up });
+    }
+  } else if (id === 1) {
+    const n = form.count ?? 9;
+    for (let i = 0; i < n; i++) {
+      // Half the bolts go for the enemies on screen, the rest are spread over the field.
+      const x = foes.length && i % 2 ? foes[(i >> 1) % foes.length].x : x0 + (i + 0.5) * span / n + (rnd(i * 3 + c) - 0.5) * 24, delay = rnd(i * 5 + c * 3) * 1.4;
+      push({ x, from: x, lane: 1, life: delay + 0.65, max: 0.65, kind: 'zap', side: 0, up: (i % 3 - 1) * 8 });
+      s.hitq.push({ at: s.time + delay, x, r: 44, damage: form.damage, freeze: form.freeze });
+      push({ x, from: x, lane: 1, life: delay + 0.8, max: 0.8, kind: 'ground', side: 0, art: 'volt', up: (i % 3 - 1) * 8 });
+      hear(s, 'thunder', x);
+    }
+  } else if (id === 2) {
+    // The wave runs from the left of the screen to the right in two seconds; each enemy is struck as the front reaches it.
+    const dur = 2, seen = new Set<number>();
+    push({ x: x1, from: x0 - 40, lane: 1, life: dur, max: dur, kind: 'wave', side: 0, art: String(k.level) });
+    for (let x = x0; x <= x1 + 40; x += 45) s.hitq.push({ at: s.time + (x - x0) / span * dur * 0.8, x, r: 62, damage: form.damage, freeze: form.freeze, push: form.push, seen });
+  } else if (id === 3) {
+    const n = form.count ?? 6, flight = 0.6, r = form.radius ?? 62;
+    for (let i = 0; i < n; i++) {
+      const x = x0 + (i + 0.5) * span / n + (rnd(i * 3 + c) - 0.5) * 30, wait = rnd(i * 5 + c * 7) * 1.2, up = (i % 3 - 1) * 10;
+      push({ x, from: x, lane: 1, life: flight + wait, max: flight, kind: 'shot', side: 0, art: 'meteor', up });
+      push({ x, from: x, lane: 1, life: flight + wait + FIRE, max: FIRE, kind: 'fire', side: 0, size: 60, up });
+      push({ x, from: x, lane: 1, life: flight + wait + BOOM, max: BOOM, kind: 'boom', side: 0, size: 64, up });
+      s.hitq.push({ at: s.time + wait + flight, x, r, damage: form.damage });
+    }
+    hear(s, 'meteor', (x0 + x1) / 2);
+  }
+  s.kitCd[id] = w.cooldown; return true;
+}
 /** Fixed-step caller. Accumulate damage before removal so opposing lethal hits resolve fairly. */
 export function tick(s: Siege, dt: number) {
   if (s.phase !== 'fight' || !Number.isFinite(dt) || dt <= 0) return;
   dt = Math.min(dt, 0.1); s.time += dt;
   s.energy = Math.min(energyMax(s), s.energy + energyRate(s) * dt);
   s.spell = Math.max(0, s.spell - dt); s.rocket = Math.max(0, s.rocket - dt);
+  for (const k in s.kitCd) s.kitCd[k] = Math.max(0, s.kitCd[k] - dt);
+  if (s.hitq.length) { const due = s.hitq.filter(h => h.at <= s.time); if (due.length) { s.hitq = s.hitq.filter(h => h.at > s.time); for (const h of due) land(s, h); } }
   for (const k in s.cooldowns) s.cooldowns[k] = Math.max(0, s.cooldowns[k] - dt);
   bow(s, dt);
   s.effects = s.effects.filter(e => (e.life -= dt) > 0);

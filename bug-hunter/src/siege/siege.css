@@ -581,7 +581,7 @@
 .siege-root.is-cartoon:has(.sg-shop-only)::before{content:"";position:fixed;inset:0;background:#0b1424b3;backdrop-filter:blur(6px);pointer-events:none}
 .sg-shop-only{position:relative}
 .siege-root.is-cartoon .sg-prep .sg-store{border:0;border-radius:0;box-shadow:none;background:none;padding:4px}
-.siege-root.is-cartoon .sg-prep .sg-st-tab,.siege-root.is-cartoon .sg-prep .sg-st-tab.is-land,.siege-root.is-cartoon .sg-prep .sg-st-tab.is-air,.siege-root.is-cartoon .sg-prep .sg-st-tab.is-base,.siege-root.is-cartoon .sg-prep .sg-st-tab:hover:not(:disabled){border-style:solid;border-color:transparent;border-width:0 30px;border-radius:0;border-image:url('/images/game/siege/ui/tab.webp') 0 60 fill / 0 30px stretch;background:none;box-shadow:none;color:#dbe8ff;opacity:1}
+.siege-root.is-cartoon .sg-prep .sg-st-tab,.siege-root.is-cartoon .sg-prep .sg-st-tab.is-land,.siege-root.is-cartoon .sg-prep .sg-st-tab.is-air,.siege-root.is-cartoon .sg-prep .sg-st-tab.is-special,.siege-root.is-cartoon .sg-prep .sg-st-tab.is-base,.siege-root.is-cartoon .sg-prep .sg-st-tab:hover:not(:disabled){border-style:solid;border-color:transparent;border-width:0 30px;border-radius:0;border-image:url('/images/game/siege/ui/tab.webp') 0 60 fill / 0 30px stretch;background:none;box-shadow:none;color:#dbe8ff;opacity:1}
 .siege-root.is-cartoon .sg-prep .sg-st-tab.is-on{border-image-source:url('/images/game/siege/ui/tab-on.webp');color:#2a1a00;text-shadow:0 1px 0 #fff8}
 .siege-root.is-cartoon .sg-prep .sg-st-grid{border:0;border-radius:0;border-style:solid;border-color:transparent;border-width:22px 40px;border-image:url('/images/game/siege/ui/panel-wide.webp') 30 90 fill / 22px 40px stretch;background:none;padding:2px}
 .siege-root.is-cartoon .sg-prep .sg-st-row{background:#0d14247a;border-radius:10px}
@@ -808,3 +808,21 @@
 }
 /* v1.15.47 — the enemy fortress faces left, towards ours (its HUD picture too). */
 .siege-root.is-cartoon .sg-vs-pic:last-child{transform:scaleX(-1)}
+/* v1.15.49 — the shop's fourth tab, Special (powers), between Air and Base. */
+.siege-root.is-cartoon .sg-prep .sg-st-tab.is-special{background:#8a4fe0}
+.sg-st-tile img{image-rendering:auto}
+/* Narrow screens: four tabs and Back share the row, their art's ends slimmer, the labels smaller. */
+@media (max-width:720px){
+  .sg-st-tabs{gap:3px}
+  .siege-root.is-cartoon .sg-prep .sg-st-tab,.siege-root.is-cartoon .sg-prep .sg-st-tab:hover:not(:disabled){flex:1 1 0;min-width:0;padding:0 2px;border-width:0 14px;border-image-width:0 14px;font-size:12px;letter-spacing:0}
+  .siege-root.is-cartoon .sg-prep .sg-st-back{flex:0 0 auto;padding-left:6px;padding-right:6px;font-size:12px}
+}
+@media (max-width:600px){
+  .sg-st-tabs{flex-wrap:wrap}
+  .siege-root.is-cartoon .sg-prep .sg-st-tab,.siege-root.is-cartoon .sg-prep .sg-st-tab:hover:not(:disabled){flex:1 1 20%;font-size:12px}
+  .siege-root.is-cartoon .sg-prep .sg-st-back{order:5;flex:1 1 100%;margin-left:0}
+}
+@media (max-width:600px){
+  .sg-st-tabs{margin-bottom:8px}
+  .siege-root.is-cartoon .sg-prep .sg-st-actions button,.siege-root.is-cartoon .sg-prep .sg-st-actions button:hover:not(:disabled){font-size:12px;line-height:1.1;padding:0 2px;border-width:0 22px;border-image-width:0 22px}
+}

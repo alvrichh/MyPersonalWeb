@@ -69,3 +69,7 @@ npm run build
 ```
 
 `npm run test:game:siege` runs only the Siege model suite. UI checks must also cover the fourth cover option, choosing a deck, starting/restarting, a win/loss result, pause/resume, hidden-tab pausing, portrait/landscape, return to menu and storage isolation. Model and fixture tests are not visual gameplay verification.
+
+## Special powers (Siege Cartoon)
+
+The shop's **Especial** tab sells powers (`POWERS` in `cartoon/model.ts`): arrow rain (arrows → ice → fire → rockets), lightning rain, tsunami and meteor shower. Level 1 costs the power's `price` (an act opens it), each later form its own `price`; the save keeps each power's level (`powers`) and the three taken into battle (`kit`). `castPower` spreads a power's blows over the stretch of field on screen (`Siege.view`, set by the view each frame): blows are queued (`hitq`) and land with their effects (`fall`, `ground`, `zap`, `wave`; meteors reuse `shot`/`fire`/`boom`). Add a power by adding to `POWERS`, its strings (`siegePower<id>`, `siegePower<id>F<level>`, `siegePower<id>Text`), its pictures in `POWER_PICS` (`siege/index.ts`) and its cast in `castPower`.
