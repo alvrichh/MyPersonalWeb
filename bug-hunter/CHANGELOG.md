@@ -7,7 +7,7 @@ This changelog tracks game-version changes starting with v1.12.55. Earlier relea
 ## 1.15.18 - 2026-10-27
 
 ### Changed
-- Siege Cartoon: the wizard's three meteors land spread over the ground and leave bubbling lava instead of fire.
+- Siege Cartoon: the wizard's three meteors land spread over the ground and leave bubbling lava instead of fire; they come down from the upper left, their tails on the left.
 
 ## 1.15.17 - 2026-10-27
 
