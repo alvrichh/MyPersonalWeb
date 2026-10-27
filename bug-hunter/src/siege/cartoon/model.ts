@@ -452,6 +452,9 @@ export const NUDGE = { back: 85, time: 0.14, every: 0.8 };
 export const BOOM = 0.8, FIRE = 2.4;
 /** How long a crossbow arrow stays stuck in the ground after it lands (seconds), fading in its last part. */
 export const STUCK = 2.5;
+/** How far an arrow strays from the aim: up to `along` field units either way, and up to two steps of `deep` up or
+    down the ground (nearer or further). */
+export const SCATTER = { along: 34, deep: 6 };
 /** Where the wizard's three meteors land round the target: field units along the ground, and up it (back) or down
     (front): two at the back, one in front between them. */
 export const METEORS = [[-30, 10], [32, 10], [2, -10]];
@@ -496,7 +499,10 @@ const BOW_FROM = { x: 150, up: 140 };
 function arrows(s: Siege, count: number) {
   const x = aimAt(s.aim), from = s.bowFrom ?? BOW_FROM;
   for (let i = 0; i < count; i++) {
-    const at = x + (i - (count - 1) / 2) * BOW.gap;
+    // Each arrow strays a little from the aim, along the field and in depth (`SCATTER`; a fixed pattern by volley, so a
+    // battle replays the same), so a volley lands spread out instead of in one line.
+    const k = (s.shots ?? 0) * 7 + i * 5, stray = ((k * 37) % 11 - 5) / 5, deep = ((k * 53) % 5) - 2;
+    const at = x + (i - (count - 1) / 2) * BOW.gap + stray * SCATTER.along;
     // What it lands on, and the flyers its path crosses on the way (a flyer is a box from its feet up its height).
     const path = flight({ x: from.x, y: -from.up }, { x: at, y: -2 });
     const span = Math.max(1, at - from.x);
@@ -515,9 +521,9 @@ function arrows(s: Siege, count: number) {
     }
     // Far shots are lobbed (the view draws them climbing and falling from the sky): they stay longer in the air.
     const air = 0.5 + 0.45 * Math.max(0, Math.min(1, (x - 650) / 430));
-    s.effects.push({ x: at, from: 80, lane: i % 3, life: air, max: air, kind: 'arrow', side: 0 });
+    s.effects.push({ x: at, from: 80, lane: 1, life: air, max: air, kind: 'arrow', side: 0, up: deep * SCATTER.deep });
     // An arrow stays stuck in the ground where it lands, fading after a moment (rockets blow up instead).
-    if (looksTier(s.bow.level) < 4) s.effects.push({ x: at, from: 80, lane: i % 3, life: air + STUCK, max: STUCK, kind: 'stuck', side: 0 });
+    if (looksTier(s.bow.level) < 4) s.effects.push({ x: at, from: 80, lane: 1, life: air + STUCK, max: STUCK, kind: 'stuck', side: 0, up: deep * SCATTER.deep });
     // The rocket launcher's rockets blow up where they land (`life` past `max`: it waits for the rocket to get there).
     if (looksTier(s.bow.level) === 4) s.effects.push({ x: at, from: at, lane: 1, life: air + BOOM + i * 0.08, max: BOOM, kind: 'boom', side: 0, size: 58 + (i % 2) * 22, up: (i % 2) * 8 });
   }
