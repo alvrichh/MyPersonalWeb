@@ -42,7 +42,7 @@ export function preload(world: number, deck: number[], _levels: number[] = []) {
   const specs = [...deck.map(c => specAt(c % 100, Math.floor(c / 100) + 1)), ...foes.map(id => UNITS[id])];
   specs.forEach(spec => { for (let f = 0; f < (spec.six ? 6 : 3); f++) picture(`${spec.sprite}-${f}`); });
   // The battlefield, and the fortresses and crossbow at every level (the workshop can change ours between battles).
-  [sceneOf(world), ...[...SHOTS, ...SPELLS].map(n => `siege/units/shot-${n}`), ...[1, 2, 3, 4].map(n => `siege/units/bolt-${n}`), ...[1, 2, 3, 4, 5].flatMap(n => [`siege/castle-${n}`, ...(n < 5 ? [`siege/xbow-${n}`] : []), ...(n < 4 ? [`siege/enemy-${n}`] : [])]), ...FX].forEach(still);
+  [sceneOf(world), ...[...SHOTS, ...SPELLS].map(n => `siege/units/shot-${n}`), ...[1, 2, 3, 4].map(n => `siege/units/bolt-${n}`), ...[1, 2, 3, 4, 5].flatMap(n => [`siege/castle-${n}`, ...(n < 5 ? [`siege/xbow-${n}`] : []), `siege/enemy-${n}`]), ...FX].forEach(still);
 }
 /** The battlefield, a picture per world (the owner's: clean on our side, corrupt on the enemy's), drawn across the
     field with `pad` field units past each end, its walking ground (`ground`, a share of its height) on the troops'
@@ -73,7 +73,7 @@ function still(path: string) {
 const ok = (image: HTMLImageElement) => image.complete && image.naturalWidth > 0;
 /** CSS pixels kept clear left of the field for the aim control. */
 const AIM_GUTTER = 60;
-/** The fortresses, side on (`siege/castle-N` ours, facing right; `siege/enemy-N` theirs, facing left): three pictures
+/** The fortresses, side on (`siege/castle-N` ours, facing right; `siege/enemy-N` theirs, facing left): five pictures
     each, ours by its workshop level, theirs by world (`looksTier`, `enemyTier`). `h` is the height drawn in field
     units; `deck` how far its foot sinks under the ground line. Our crossbow stands on the battlement at the top right:
     `bow` is that spot as fractions of the picture (x from the left, y from the top). */
@@ -84,7 +84,7 @@ const CASTLES = [
   { h: 325, deck: 8, bow: [0.73, 0.32] },
   { h: 365, deck: 8, bow: [0.81, 0.405] },
 ] as const;
-const ENEMY_H = [220, 248, 273];
+const ENEMY_H = [200, 235, 270, 310, 350];
 /** Our crossbow in its turret (`siege/xbow-N`, by the Bow level: three crossbows and a rocket launcher), one picture
     pointing right drawn `width` field units wide, turning on its wheel (`pivot`, fractions of the picture) towards where
     the arrows go and kicking back a little at each shot. */

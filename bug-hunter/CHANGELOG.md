@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.46 - 2026-10-27
+
+### Changed
+- Siege Cartoon: the enemy fortress has five looks (the owner's new dark castles) instead of three: acts 1, 2 and 3 show the first three, acts 4 and 5 the fourth and the last act the fifth, with the skull.
+
 ## 1.15.45 - 2026-10-27
 
 ### Fixed
