@@ -61,7 +61,7 @@ function topOf(image: HTMLImageElement) {
   if (!c) { c = document.createElement('canvas'); c.width = 16; c.height = 1; const t = c.getContext('2d'); if (t) { t.imageSmoothingQuality = 'high'; t.drawImage(image, 0, 0, image.naturalWidth, 8, 0, 0, 16, 1); } tops.set(image, c); }
   return c;
 }
-const FX = ['siege/mana', ...[0, 1, 2, 3, 4, 5, 6].map(n => `fx/lava-${n}.webp`), 'arrows/water.webp', 'arrows/leaf.webp', 'fx/boom-big.webp', 'fx/impact.webp', ...[1, 2, 3, 4, 5, 6].map(n => `fx/bolt-y-${n}.webp`)];
+const FX = ['siege/mana', ...[0, 1, 2, 3, 4, 5, 6, 7].map(n => `siege/fx-boom-${n}`), ...[0, 1, 2, 3, 4, 5, 6].map(n => `fx/lava-${n}.webp`), 'arrows/water.webp', 'arrows/leaf.webp', 'fx/boom-big.webp', 'fx/impact.webp', ...[1, 2, 3, 4, 5, 6].map(n => `fx/bolt-y-${n}.webp`)];
 /** Pictures drawn whole (backdrop, floor, effects): no alpha crop needed. */
 const stills = new Map<string, HTMLImageElement>();
 function still(path: string) {
@@ -320,10 +320,11 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
   // Effects that wait for a shot to land (`life` past `max`) are not drawn yet.
   if (p < 0 && (e.kind === 'boom' || e.kind === 'fire' || e.kind === 'shot')) return true;
   if (e.kind === 'boom') {
-    // A rocket's explosion where it lands: a burst growing and fading.
-    const art = still('fx/boom-big.webp'); if (!ok(art)) return false;
-    const w = (e.size ?? 70) * (0.55 + p * 0.7), h = w * art.naturalHeight / art.naturalWidth, at = ground + 4 - (e.up ?? 0);
-    ctx.save(); ctx.globalAlpha = p < 0.6 ? 1 : (1 - p) / 0.4; ctx.drawImage(art, e.x - w / 2, at - h * 0.75, w, h); ctx.restore(); return true;
+    // A rocket's explosion where it lands: the owner's eight frames (`siege/fx-boom-0..7`), a flash rising into a
+    // mushroom cloud that turns to smoke, standing on the ground.
+    const art = still(`siege/fx-boom-${Math.min(7, Math.floor(p * 8))}`); if (!ok(art)) return false;
+    const w = (e.size ?? 70) * 1.5, h = w * art.naturalHeight / art.naturalWidth, at = ground + 4 - (e.up ?? 0);
+    ctx.save(); ctx.globalAlpha = p < 0.85 ? 1 : (1 - p) / 0.15; ctx.drawImage(art, e.x - w / 2, at - h, w, h); ctx.restore(); return true;
   }
   if (e.kind === 'fire') {
     // A meteor's lava on the ground: the game's bubbling lava pool (`fx/lava-0..6`) squashed into a flat oval, fading
