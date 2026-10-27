@@ -61,7 +61,7 @@ function topOf(image: HTMLImageElement) {
   if (!c) { c = document.createElement('canvas'); c.width = 16; c.height = 1; const t = c.getContext('2d'); if (t) { t.imageSmoothingQuality = 'high'; t.drawImage(image, 0, 0, image.naturalWidth, 8, 0, 0, 16, 1); } tops.set(image, c); }
   return c;
 }
-const FX = ['siege/mana', 'arrows/water.webp', 'arrows/leaf.webp', 'fx/boom-big.webp', 'fx/impact.webp', ...[1, 2, 3, 4, 5, 6].map(n => `fx/bolt-y-${n}.webp`)];
+const FX = ['siege/mana', 'fx/fire-pool.webp', 'arrows/water.webp', 'arrows/leaf.webp', 'fx/boom-big.webp', 'fx/impact.webp', ...[1, 2, 3, 4, 5, 6].map(n => `fx/bolt-y-${n}.webp`)];
 /** Pictures drawn whole (backdrop, floor, effects): no alpha crop needed. */
 const stills = new Map<string, HTMLImageElement>();
 function still(path: string) {
@@ -317,15 +317,32 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     for (let i = 0; i <= n; i++) { const t = i / n, x = e.from + (e.x - e.from) * t, jag = i % n ? ((i * 37 + Math.floor(p * 8)) % 7 - 3) * 4 : 0; i ? ctx.lineTo(x, y + jag) : ctx.moveTo(x, y); }
     ctx.stroke(); ctx.restore(); return true;
   }
+  // Effects that wait for a shot to land (`life` past `max`) are not drawn yet.
+  if (p < 0 && (e.kind === 'boom' || e.kind === 'fire' || e.kind === 'shot')) return true;
+  if (e.kind === 'boom') {
+    // A rocket's explosion where it lands: a burst growing and fading.
+    const art = still('fx/boom-big.webp'); if (!ok(art)) return false;
+    const w = (e.size ?? 70) * (0.55 + p * 0.7), h = w * art.naturalHeight / art.naturalWidth, at = ground + 4 - (e.up ?? 0);
+    ctx.save(); ctx.globalAlpha = p < 0.6 ? 1 : (1 - p) / 0.4; ctx.drawImage(art, e.x - w / 2, at - h * 0.75, w, h); ctx.restore(); return true;
+  }
+  if (e.kind === 'fire') {
+    // A meteor's fire on the ground: the game's fire pool squashed into a flat oval, breathing, fading at the end.
+    const art = still('fx/fire-pool.webp'); if (!ok(art)) return false;
+    const w = (e.size ?? 56) * (1 + Math.sin(p * 40) * 0.04), h = w * 0.32;
+    ctx.save(); ctx.globalAlpha = (p < 0.08 ? p / 0.08 : p > 0.75 ? (1 - p) / 0.25 : 1) * 0.95;
+    ctx.drawImage(art, e.x - w / 2, ground - h / 2 + 2, w, h); ctx.restore(); return true;
+  }
   if (e.kind === 'shot' && e.art && SPELLS.includes(e.art)) {
     // A wizard's spell lands on the target: the lightning and the tornado stand on it (the tornado turning a little),
     // the meteor comes down from above onto it; all fade at the end.
     const art = still(`siege/units/shot-${e.art}`); if (!ok(art)) return false;
-    const h = e.art === 'meteor' ? 150 : 120, w = h * art.naturalWidth / art.naturalHeight, foot = ground;
+    const h = e.art === 'meteor' ? 105 : 120, w = h * art.naturalWidth / art.naturalHeight, foot = ground;
     const drop = e.art === 'meteor' ? Math.max(0, 1 - p * 1.6) * 140 : 0;
     ctx.save(); ctx.globalAlpha = p > 0.75 ? (1 - p) / 0.25 : 1;
     ctx.translate(e.x + drop * 0.5, foot - drop);
     if (e.art === 'tornado') ctx.scale(1 + Math.sin(p * 18) * 0.05, 1);
+    // The meteor's picture flies down to the right; it comes down to the left here, so it is turned round.
+    if (e.art === 'meteor') ctx.scale(-1, 1);
     ctx.drawImage(art, -w / 2, -h, w, h); ctx.restore(); return true;
   }
   // A flamethrower's flame is in its attack pose: nothing flies.

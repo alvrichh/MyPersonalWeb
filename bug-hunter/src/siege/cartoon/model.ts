@@ -29,6 +29,8 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
   six?: boolean;
   /** Reaches flyers although it fights up close (the master swordsman). */
   hitsAir?: boolean;
+  /** Its rockets blow up where they land (the robots' last forms). */
+  blast?: boolean;
   /** A flyer that only fights other flyers (and the fortress), never troops on the ground. */
   skyOnly?: boolean;
   /** What it throws or shoots, a picture from its own sheet (`siege/units/shot-<name>`), and whether it spins in flight
@@ -41,7 +43,7 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
 /** Spells that land on their target instead of flying to it (the wizard's). */
 export const SPELLS = ['lightning', 'tornado', 'meteor'];
 /** An upgrade form: its gold price in the workshop and what it changes. */
-export type Form = Partial<Pick<Spec, 'cost' | 'hp' | 'damage' | 'speed' | 'range' | 'rate' | 'splash' | 'hitsAir' | 'infantry' | 'shot' | 'spin' | 'sprite' | 'size'>> & { price: number }
+export type Form = Partial<Pick<Spec, 'cost' | 'hp' | 'damage' | 'speed' | 'range' | 'rate' | 'splash' | 'hitsAir' | 'blast' | 'infantry' | 'shot' | 'spin' | 'sprite' | 'size'>> & { price: number }
 /** Cartoon Wars 2's rosters (docs/siege-roster.md), every unit from the owner's six-pose sheets. Every unit's `id` is
     its place in this list: ours first (10 land, then 5 air), then the enemy's, each one stated as the ally it equals
     in the reference, then our flying mech and the enemy's guardians. */
@@ -109,14 +111,14 @@ export const UNITS: readonly Spec[] = [
   // strong), and the walker behind a wall-like shield firing missiles.
   { id: 8, cost: 110, hp: 320, damage: 38, speed: 50, range: 180, rate: 1, cooldown: 10, unlock: 5, shot: 'rocket', spin: false, ...six('ally-robot-1', 167, 0.82), forms: [
     { price: 700, cost: 140, hp: 420, damage: 22, rate: 0.45, range: 190, shot: 'bullet', ...six('ally-robot-2', 231, 0.82) },
-    { price: 1800, cost: 180, hp: 800, damage: 60, rate: 1.4, range: 200, splash: 40, shot: 'rockets', ...six('ally-robot-3', 253, 0.82) },
+    { price: 1800, cost: 180, hp: 800, damage: 60, rate: 1.4, range: 200, splash: 40, shot: 'rockets', blast: true, ...six('ally-robot-3', 253, 0.82) },
   ] },
   // The heavy armed robot's four forms (docs/cw2-reference.md): gatling bursts, small rockets added (MK2), a frozen
   // cannon on its back (from here it reaches flyers), and a huge one firing rocket salvos.
   { id: 9, cost: 200, hp: 1300, damage: 70, speed: 18, range: 200, rate: 2, cooldown: 22, unlock: 5, splash: 80, shot: 'bullet', ...six('ally-heavy-robot-1', 166, 1.17), forms: [
     { price: 1200, cost: 230, hp: 1500, damage: 80, shot: 'rockets', ...six('ally-heavy-robot-2', 186, 1.17) },
     { price: 2200, cost: 260, hp: 1800, damage: 90, hitsAir: true, shot: 'ice', ...six('ally-heavy-robot-3', 214, 1.17) },
-    { price: 4000, cost: 320, hp: 2600, damage: 120, splash: 100, hitsAir: true, shot: 'salvo', ...six('ally-heavy-robot-4', 254, 1.17) },
+    { price: 4000, cost: 320, hp: 2600, damage: 120, splash: 100, hitsAir: true, blast: true, shot: 'salvo', ...six('ally-heavy-robot-4', 254, 1.17) },
   ] },
   // Ours, air (Cartoon Wars 2's A row): they fly over the field, out of reach of melee troops; only ranged ones hit them.
   // The aircraft fighter's four forms: a sword under a propeller pack, then with goggles and scarf, two rotors and blue
@@ -305,7 +307,9 @@ export interface Fighter { uid: number; id: number; side: 0 | 1; x: number; lane
 /** A blow taking at least this share of a troop's health knocks it: infantry fly back (`KNOCK.back` field units over
     `KNOCK.time`) and get up, the rest are stunned for `KNOCK.stun`; bosses and the steady never. */
 export const KNOCK = { share: 0.2, time: 0.55, back: 70, stun: 0.35 };
-export interface Effect { x: number; from: number; lane: number; life: number; max: number; kind: 'shot' | 'burst' | 'arrow' | 'rocket' | 'bolt' | 'gust' | 'loot'; side: 0 | 1;
+export interface Effect { x: number; from: number; lane: number; life: number; max: number; kind: 'shot' | 'burst' | 'arrow' | 'rocket' | 'bolt' | 'gust' | 'loot' | 'boom' | 'fire'; side: 0 | 1;
+  /** A `boom` (an explosion) or a `fire` (a burning pool on the ground): its size, and the height it is at. */
+  size?: number; up?: number;
   /** A fallen enemy's bounty, shown rising where it fell. */
   gold?: number; mana?: number;
   /** A shot's own projectile picture (`Spec.shot`) and whether it spins. */
@@ -436,6 +440,8 @@ function damageArea(s: Siege, x: number, radius: number, damage: number, life = 
 export const NUDGE = { back: 85, time: 0.14, every: 0.8 };
 /** How high flyers fly (field units over the ground): cruising, and swooping down on a walker they fight (lower still
     for one that strikes in close), changing height at `rate` a second. */
+/** How long a rocket's explosion and a meteor's fire on the ground last (seconds). */
+export const BOOM = 0.45, FIRE = 2.4;
 export const FLY = { high: 70, ranged: 45, close: 22, rate: 90 };
 export const BOW = { max: 100, cost: 1.2, regen: 12, every: 0.42, step: 0.03, damage: 16, gap: 24 };
 export interface Bow { quiver: number; drawing: boolean; held: number; next: number; level: number }
@@ -497,6 +503,8 @@ function arrows(s: Siege, count: number) {
     // Far shots are lobbed (the view draws them climbing and falling from the sky): they stay longer in the air.
     const air = 0.5 + 0.45 * Math.max(0, Math.min(1, (x - 650) / 430));
     s.effects.push({ x: at, from: 80, lane: i % 3, life: air, max: air, kind: 'arrow', side: 0 });
+    // The rocket launcher's rockets blow up where they land (`life` past `max`: it waits for the rocket to get there).
+    if (looksTier(s.bow.level) === 4) s.effects.push({ x: at, from: at, lane: 1, life: air + BOOM + i * 0.08, max: BOOM, kind: 'boom', side: 0, size: 58 + (i % 2) * 22, up: (i % 2) * 8 });
   }
 }
 /** Start (true) or stop (false) the archers; they only start with at least one shot in the quiver. */
@@ -585,7 +593,16 @@ export function tick(s: Siege, dt: number) {
         for (const v of alive) if (v.side !== u.side && reaches(u, v) && (v === enemy || (a.splash && Math.abs(v.x - enemy.x) < a.splash))) hits.push({ target: v, damage: u.damage });
         // A thrown or shot projectile of its own flies a little longer, so it is seen on its way.
         const flight = isBullet(a.shot) || isBeam(a.shot) ? 0.16 : SPELLS.includes(a.shot ?? '') ? 0.6 : a.shot ? 0.35 : 0.2;
-        s.effects.push({ x: enemy.x, from: u.x, lane: enemy.lane, life: flight, max: flight, kind: u.elite ? 'bolt' : 'shot', side: u.side, art: a.shot, spin: a.spin, fromUp: a.air ? u.alt ?? FLY.high : 0, toUp: UNITS[enemy.id].air ? enemy.alt ?? FLY.high : 0 });
+        const toUp = UNITS[enemy.id].air ? enemy.alt ?? FLY.high : 0;
+        if (a.shot === 'meteor') {
+          // The wizard's last form calls three meteors around the target, one after another, each leaving fire.
+          for (let k = 0; k < 3; k++) {
+            const x = enemy.x + (k - 1) * 30, wait = k * 0.14;
+            s.effects.push({ x, from: u.x, lane: enemy.lane, life: flight + wait, max: flight, kind: 'shot', side: u.side, art: 'meteor' });
+            s.effects.push({ x, from: x, lane: enemy.lane, life: flight + wait + FIRE, max: FIRE, kind: 'fire', side: u.side, size: 56 });
+          }
+        } else s.effects.push({ x: enemy.x, from: u.x, lane: enemy.lane, life: flight, max: flight, kind: u.elite ? 'bolt' : 'shot', side: u.side, art: a.shot, spin: a.spin, fromUp: a.air ? u.alt ?? FLY.high : 0, toUp });
+        if (a.blast) s.effects.push({ x: enemy.x, from: enemy.x, lane: enemy.lane, life: flight + BOOM, max: BOOM, kind: 'boom', side: u.side, size: a.shot === 'salvo' ? 90 : 70, up: toUp });
         hear(s, soundsOf(u)[0], u.x);
       }
     } else if (Math.abs(baseX - u.x) <= a.range + 35) {
