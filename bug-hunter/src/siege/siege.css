@@ -745,3 +745,9 @@
 @media (max-height:440px){.sg-map-go{width:min(290px,34%)}}
 .sg-map-go{width:min(330px,38%)}.siege-root.is-cartoon .sg-prep .sg-map-go .sg-play{min-width:60%}
 @media (max-height:440px){.sg-map-go{width:min(250px,30%)}}
+/* v1.15.35 — The stall has its shadow in its picture: a CSS drop-shadow on it made Safari on iPhone flicker a box
+   behind it while the current map spot pulsed. */
+.siege-root.is-cartoon .sg-prep .sg-map-shop,.siege-root.is-cartoon .sg-prep .sg-map-shop:hover:not(:disabled),.siege-root.is-cartoon .sg-prep .sg-map-shop:active{filter:none;aspect-ratio:576/350}
+@media (hover:hover){.siege-root.is-cartoon .sg-prep .sg-map-shop:hover:not(:disabled){filter:brightness(1.08)}}
+.sg-map-shop span{top:33%}
+.siege-root.is-cartoon .sg-prep .sg-map .sg-spot.is-on{will-change:transform}
