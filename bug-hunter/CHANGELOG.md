@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.19 - 2026-10-27
+
+### Changed
+- Siege Cartoon: rockets blow up with the owner's animated explosion, eight frames from a flash to a mushroom cloud to smoke.
+
 ## 1.15.18 - 2026-10-27
 
 ### Changed

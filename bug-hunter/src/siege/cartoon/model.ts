@@ -441,7 +441,7 @@ export const NUDGE = { back: 85, time: 0.14, every: 0.8 };
 /** How high flyers fly (field units over the ground): cruising, and swooping down on a walker they fight (lower still
     for one that strikes in close), changing height at `rate` a second. */
 /** How long a rocket's explosion and a meteor's fire on the ground last (seconds). */
-export const BOOM = 0.45, FIRE = 2.4;
+export const BOOM = 0.8, FIRE = 2.4;
 /** Where the wizard's three meteors land round the target: field units along the ground, and up it (back) or down (front). */
 export const METEORS = [[-34, 10], [42, 0], [6, -10]];
 export const FLY = { high: 70, ranged: 45, close: 22, rate: 90 };
