@@ -166,20 +166,20 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       const level = k + 1, x = tile(row, level), on = pick.row === row && pick.level === level;
       const pic = shopTab === 'special' ? powerPic(row, level) : shopTab === 'base' ? `/images/game/${upgradePic('cartoon', row, level)}.webp` : V.portrait(row, level);
       const corner = shopTab === 'special' ? t('siegePowerCd', { n: cartoonModel.POWERS[row].cooldown }) : shopTab === 'base' ? String(level) : String(M.specAt(row, level).cost);
-      const worn = shopTab === 'special' ? level === progress.powers[row] && progress.kit.includes(row) : shopTab !== 'base' && selected.includes(cartoonModel.card(row, level));
+      const worn = shopTab === 'special' ? progress.kit.includes(cartoonModel.powerCard(row, level)) : shopTab !== 'base' && selected.includes(cartoonModel.card(row, level));
       // What is still to come stays hidden as a «?» (only what is owned, the next one to buy, and every troop's first form show), for the hype.
       const hidden = !x.have && !x.next && !(shopTab !== 'base' && level === 1);
       return `<button class="sg-st-tile ${x.have ? 'is-have' : x.next ? 'is-next' : 'is-locked'} ${on ? 'is-on' : ''} ${worn ? 'is-worn' : ''}" data-sg-tile="${row}:${level}" aria-pressed="${on}" aria-label="${hidden ? '?' : `${shopTab === 'special' ? powerName(row, level) : shopTab === 'base' ? t(`siegeUpgrade${row}` as Key) : name(row)} · ${t('siegeLevel', { n: level })}`}">${hidden ? '<span class="sg-st-q" aria-hidden="true">?</span>' : `<img src="${pic}" ${shopTab === 'base' || shopTab === 'special' ? '' : `data-trim="${pic}"`} alt="">`}${corner && !hidden ? `<small>${corner}</small>` : ''}${worn ? '<b class="sg-st-worn" aria-hidden="true">✓</b>' : ''}</button>`;
     }).join('<span class="sg-st-link" aria-hidden="true"></span>')}</div>`).join('');
     const x = tile(pick.row, pick.level), troop = shopTab !== 'base';
-    const label = !x.have && !x.next && !(troop && pick.level === 1) ? '? ? ?' : shopTab === 'special' ? `${powerName(pick.row, pick.level)} · ⚡ ${cartoonModel.POWERS[pick.row].mana} — ${t(`siegePower${pick.row}Text` as Key)}` : troop ? `${name(pick.row)} · ${t('siegeLevel', { n: pick.level })} — ${role(pick.row)}` : `${t(`siegeUpgrade${pick.row}` as Key)} · ${t('siegeLevel', { n: pick.level })}`;
+    const label = !x.have && !x.next && !(troop && pick.level === 1) ? '? ? ?' : shopTab === 'special' ? `${powerName(pick.row, pick.level)} — ${t(`siegePower${pick.row}Text` as Key)}` : troop ? `${name(pick.row)} · ${t('siegeLevel', { n: pick.level })} — ${role(pick.row)}` : `${t(`siegeUpgrade${pick.row}` as Key)} · ${t('siegeLevel', { n: pick.level })}`;
     const price = x.have ? `✓ ${t('siegeHave')}` : x.next ? (x.price ? `🪙 ${x.price}` : t('siegeFree')) : `🔒 ${x.why}`;
     const kind = shopTab === 'air';
     // The equipped cards; a tap on one takes it out of the army.
-    const kitSlots = Array.from({ length: cartoonModel.KIT }, (_, i) => { const id = progress.kit[i]; return id === undefined ? '<span class="sg-st-slot"></span>' : `<button class="sg-st-slot is-full" data-sg-tile="${id}:${progress.powers[id]}" aria-label="${powerName(id, progress.powers[id])}"><img src="${powerPic(id, progress.powers[id])}" alt=""><small>${progress.powers[id]}</small></button>`; }).join('');
+    const kitSlots = Array.from({ length: cartoonModel.KIT }, (_, i) => { const c = progress.kit[i]; if (c === undefined) return '<span class="sg-st-slot"></span>'; const id = c % 100, lv = Math.floor(c / 100) + 1; return `<button class="sg-st-slot is-full" data-sg-tile="${id}:${lv}" aria-label="${powerName(id, lv)}"><img src="${powerPic(id, lv)}" alt=""><small>${lv}</small></button>`; }).join('');
     const slots = shopTab === 'special' ? kitSlots : Array.from({ length: M.DECK }, (_, i) => { const c = selected.filter(n => air(n) === kind)[i]; return c === undefined ? '<span class="sg-st-slot"></span>' : `<button class="sg-st-slot is-full" data-sg-tile="${cid(c)}:${clv(c)}" aria-label="${name(cid(c))} · ${t('siegeLevel', { n: clv(c) })}"><img src="${V.portrait(cid(c), clv(c))}" data-trim="${V.portrait(cid(c), clv(c))}" alt=""><small>${clv(c)}</small></button>`; }).join('');
     return `<div class="sg-store is-${shopTab}"><nav class="sg-st-tabs" role="tablist">${tabs}<button class="sg-st-back" data-sg-prep="map">◀ ${t('siegeShopBack')}</button></nav>
-      <div class="sg-st-body"><div class="sg-st-frame"><div class="sg-st-grid">${grid}</div>${['top', 'bottom', 'left', 'right'].map(k => `<i class="sg-st-gem is-${k}" aria-hidden="true"></i>`).join('')}</div><aside class="sg-st-slots" aria-label="${shopTab === 'special' ? t('siegeShopSpecial') : t(kind ? 'siegeArmyAir' : 'siegeArmyLand', { n: selected.filter(n => air(n) === kind).length, max: M.DECK })}">${shopTab === 'base' ? '' : slots}</aside></div>
+      <div class="sg-st-body"><div class="sg-st-frame"><div class="sg-st-grid">${grid}</div>${['top', 'bottom', 'left', 'right'].map(k => `<i class="sg-st-gem is-${k}" aria-hidden="true"></i>`).join('')}</div><aside class="sg-st-slots" aria-label="${shopTab === 'special' ? t('siegeShopSpecial') + ` ${progress.kit.length}/${cartoonModel.KIT}` : t(kind ? 'siegeArmyAir' : 'siegeArmyLand', { n: selected.filter(n => air(n) === kind).length, max: M.DECK })}">${shopTab === 'base' ? '' : slots}</aside></div>
       <div class="sg-st-info"><p class="sg-st-desc"><b>${label}</b><span class="${x.next && progress.coins < x.price ? 'is-poor' : ''}">${price}</span></p><p class="sg-message" role="status"></p></div>
       <div class="sg-st-actions"><span class="sg-st-gold"><img src="/images/game/store/coins-2.webp" alt="">${progress.coins}</span>
         <button class="sg-st-buy" data-sg="purchase" ${x.next && progress.coins >= x.price ? '' : 'disabled'}>${t('siegeBuy')}</button>
@@ -194,7 +194,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   /** A tap on a troop form the player has puts that card in the army, or takes it out; it returns false (and says
       so) when that kind's five places are full. */
   function equip(row: number, level: number) {
-    if (shopTab === 'special') { if (!cartoonModel.toggleKit(progress, row)) return false; persist(); sound('click'); return true; }
+    if (shopTab === 'special') { if (!cartoonModel.toggleKit(progress, row, level)) return false; persist(); sound('click'); return true; }
     const c = cartoonModel.card(row, level);
     if (selected.includes(c)) selected = selected.filter(n => n !== c);
     else if (selected.filter(n => air(n) === air(c)).length < M.DECK) selected.push(c);
@@ -429,7 +429,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     root.querySelectorAll<HTMLElement>('[data-sg-tab]').forEach(b => { const on = b.dataset.sgTab === tab; b.classList.toggle('is-on', on); b.setAttribute('aria-selected', String(on)); });
     const list = tabCards();
     q('[data-sg-cards]').innerHTML = tab === 'special'
-      ? `<button data-sg="generator"></button><button data-sg="strike"></button><button data-sg="missile"></button>${(state?.kit ?? []).map(k => `<button data-sg-power="${k.id}"></button>`).join('')}`
+      ? `<button data-sg="generator"></button><button data-sg="strike"></button><button data-sg="missile"></button>${(state?.kit ?? []).map(k => `<button data-sg-power="${k.card}"></button>`).join('')}`
       : list.length ? list.map((id, i) => `<button data-sg-summon="${id}" aria-label="${i + 1}. ${name(cid(id))} · ${t('siegeLevel', { n: clv(id) })} · ${M.specAt(cid(id), clv(id)).cost}"><img src="${V.portrait(cid(id), clv(id))}" data-trim="${V.portrait(cid(id), clv(id))}" alt=""><small data-sg-cost="${id}"></small><i class="sg-cooldown" data-sg-cooldown="${id}"></i></button>`).join('')
       : `<p class="sg-empty">${t('siegeAirEmpty')}</p>`;
     V.trimImages(root); layoutBar(); updateUi();
@@ -468,17 +468,16 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     bowButton.style.setProperty('--q', (s.bow.quiver / M.BOW.max).toFixed(3));
     bowButton.classList.toggle('is-empty', reloading); bowButton.classList.toggle('is-drawing', s.bow.drawing); bowButton.setAttribute('aria-pressed', String(s.bow.drawing));
     bowButton.disabled = paused || s.phase !== 'fight';
-    // Cartoon's specials cost energy and show their recharge as a darkening that lightens from the top down; Legacy's keep the seconds.
+    // Cartoon's specials show their recharge as a darkening that lightens from the top down; Legacy's keep the seconds.
     const cartoon = mode === 'cartoon';
-    for (const [action, key, cd, pic, total, mana] of [['strike', 'siegeSpell', s.spell, 'skills/bolt', cartoonModel.STRIKE_EVERY, cartoonModel.MANA.strike], ['missile', 'siegeMissile', s.rocket, 'fx/rocket', cartoonModel.ROCKET.every, cartoonModel.MANA.missile]] as const) {
+    for (const [action, key, cd, pic, total] of [['strike', 'siegeSpell', s.spell, 'skills/bolt', cartoonModel.STRIKE_EVERY], ['missile', 'siegeMissile', s.rocket, 'fx/rocket', cartoonModel.ROCKET.every]] as const) {
       const button = root.querySelector<HTMLButtonElement>(`[data-sg="${action}"]`); if (!button) continue;
-      setPicButton(button, `/images/game/${pic}.webp`, cartoon ? `⚡ ${mana}` : cd > 0 ? `${Math.ceil(cd)}s` : t('siegeReady'), cartoon ? cd / total : 0); button.setAttribute('aria-label', t(key)); button.disabled = paused || s.phase !== 'fight' || cd > 0 || (cartoon && s.energy < mana); button.classList.toggle('is-cooling', cd > 0);
+      setPicButton(button, `/images/game/${pic}.webp`, cartoon ? '' : cd > 0 ? `${Math.ceil(cd)}s` : t('siegeReady'), cartoon ? cd / total : 0); button.setAttribute('aria-label', t(key)); button.disabled = paused || s.phase !== 'fight' || cd > 0; button.classList.toggle('is-cooling', cd > 0);
     }
     for (const k of s.kit ?? []) {
-      const button = root.querySelector<HTMLButtonElement>(`[data-sg-power="${k.id}"]`); if (!button) continue;
-      const cd = s.kitCd[k.id] ?? 0;
-      const w = cartoonModel.POWERS[k.id];
-      setPicButton(button, powerPic(k.id, k.level), `⚡ ${w.mana}`, cd / w.cooldown); button.setAttribute('aria-label', powerName(k.id, k.level)); button.disabled = paused || s.phase !== 'fight' || cd > 0 || s.energy < w.mana; button.classList.toggle('is-cooling', cd > 0);
+      const button = root.querySelector<HTMLButtonElement>(`[data-sg-power="${k.card}"]`); if (!button) continue;
+      const cd = s.kitCd[k.card] ?? 0, w = cartoonModel.POWERS[k.id];
+      setPicButton(button, powerPic(k.id, k.level), '', cd / w.cooldown); button.setAttribute('aria-label', powerName(k.id, k.level)); button.disabled = paused || s.phase !== 'fight' || cd > 0; button.classList.toggle('is-cooling', cd > 0);
     }
     for (const id of tabCards()) {
       const cd = s.cooldowns[id] ?? 0;

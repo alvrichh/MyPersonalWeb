@@ -4,6 +4,15 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.52 - 2026-10-27
+
+### Changed
+- Siege Cartoon: an upgraded power keeps its earlier forms: any form bought (arrow rain, ice arrows, fire arrows, rockets...) can be taken into the kit, up to four, each with its own recharge; buying a new form puts it in the kit if there is room.
+- Siege Cartoon: the specials no longer cost energy (the shop's powers, the discharge and the missile are back to recharge only).
+
+### Fixed
+- Siege Cartoon: the L / A / S tabs are cut to their hexagons (their pictures were rectangles that showed a stretched square behind the tab when picked).
+
 ## 1.15.51 - 2026-10-27
 
 ### Changed
