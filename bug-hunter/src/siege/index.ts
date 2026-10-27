@@ -418,14 +418,15 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       : `<p class="sg-empty">${t('siegeAirEmpty')}</p>`;
     V.trimImages(root); layoutBar(); updateUi();
   }
-  /** Siege Cartoon's bar runs the full width, its wall slot repeated (see siege.css): each card is laid on a slot, the
-      repeated ones first (as many as fit, stretched a little to fill), then the picture's own right-hand ones. */
+  /** The left edge of each of the Cartoon bar's six wall slots, in picture pixels. */
+  const SLOTS = [672, 851, 1039, 1218, 1397, 1576];
+  /** Siege Cartoon's bar is the owner's picture (see siege.css): each card is laid on one of its slots. */
   function layoutBar() {
     if (mode !== 'cartoon') return;
     const bar = root.querySelector<HTMLElement>('.sg-bar'); if (!bar) return;
-    // The bar is the owner's picture whole (2071 × 378, its seven wall slots 169 apart from x 646): a card on each slot.
-    const u = bar.offsetHeight / 378;
-    root.querySelectorAll<HTMLElement>('.sg-bar .sg-deck button').forEach((b, i) => { b.style.left = `${((646 + i * 169) * u).toFixed(1)}px`; b.style.width = `${(155 * u).toFixed(1)}px`; });
+    // The bar is the owner's picture whole (2047 × 398, its six wall slots from x 672): a card on each slot.
+    const u = bar.offsetHeight / 398;
+    root.querySelectorAll<HTMLElement>('.sg-bar .sg-deck button').forEach((b, i) => { b.style.left = `${((SLOTS[i] ?? SLOTS[0]) * u).toFixed(1)}px`; b.style.width = `${(152 * u).toFixed(1)}px`; });
   }
   function updateUi() {
     if (!state) return; const s = state;

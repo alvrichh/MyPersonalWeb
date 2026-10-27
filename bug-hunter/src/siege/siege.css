@@ -761,3 +761,20 @@
 .siege-root.is-cartoon .sg-bow.is-drawing{box-shadow:0 0 0 3px #ffd166,0 0 16px 6px #ffb02ecc}
 .siege-root.is-cartoon .sg-bow.is-drawing::after{left:20%;top:38%;width:95%;height:26%;background-image:url('/images/game/siege/units/bolt-2.webp')}
 .siege-root.is-cartoon .sg-bow.is-drawing{box-shadow:inset 0 0 0 4px #ffe27a,inset 0 0 22px 8px #ffd166cc}
+/* v1.15.39 — the owner's new bar (2047 × 398): six wall slots, the L/A/S tabs drawn on it (the picked one turns gold),
+   and the bow ball playing its three arrow frames while shooting. */
+.siege-root.is-cartoon .sg-bar{--u:min(.4px,calc((100vw - 4px) / 2047));width:calc(2047 * var(--u));height:calc(398 * var(--u));bottom:calc(-80 * var(--u))}
+@media (max-height:500px) and (orientation:landscape){.siege-root.is-cartoon .sg-bar{--u:min(.3px,calc((100vw - 4px) / 2047))}}
+.siege-root.is-cartoon .sg-tabs{display:block;left:calc(54 * var(--u));top:calc(148 * var(--u));width:calc(534 * var(--u));height:calc(162 * var(--u))}
+.siege-root.is-cartoon .sg-tabs button,.siege-root.is-cartoon .sg-tabs button:hover{position:absolute;top:0;height:100%;filter:none}
+.siege-root.is-cartoon .sg-tabs [data-sg-tab="land"]{left:0;width:calc(170 * var(--u))}
+.siege-root.is-cartoon .sg-tabs [data-sg-tab="air"]{left:calc(176 * var(--u));width:calc(178 * var(--u))}
+.siege-root.is-cartoon .sg-tabs [data-sg-tab="special"]{left:calc(362 * var(--u));width:calc(172 * var(--u))}
+.siege-root.is-cartoon .sg-tabs [data-sg-tab].is-on,.siege-root.is-cartoon .sg-tabs [data-sg-tab="special"]:not(.is-on){filter:none}
+.siege-root.is-cartoon .sg-tabs button:hover:not(.is-on),.siege-root.is-cartoon .sg-tabs [data-sg-tab="special"]:hover:not(.is-on){filter:brightness(1.15)}
+.siege-root.is-cartoon .sg-bar .sg-deck{top:calc(166 * var(--u));height:calc(140 * var(--u))}
+.siege-root.is-cartoon .sg-bar .sg-bow,.siege-root.is-cartoon .sg-bar .sg-bow:hover:not(:disabled),.siege-root.is-cartoon .sg-bar .sg-bow.is-drawing{left:calc(1789 * var(--u));top:calc(98 * var(--u));width:calc(208 * var(--u));height:calc(208 * var(--u));box-shadow:none;animation:none;overflow:hidden}
+.siege-root.is-cartoon .sg-bar .sg-bow::before,.siege-root.is-cartoon .sg-bar .sg-bow.is-drawing::before{background-position:calc(-1789 * var(--u)) calc(-98 * var(--u));background-size:calc(2047 * var(--u)) calc(398 * var(--u))}
+.siege-root.is-cartoon .sg-bar .sg-bow.is-drawing::after{content:'';z-index:0;inset:0;left:0;top:0;width:100%;height:100%;transform:none;opacity:1;border-radius:50%;background:url('/images/game/siege/bow.webp') 0 0 / 300% 100% no-repeat;animation:sg-bow-frames .36s steps(3) infinite}
+@keyframes sg-bow-frames{to{background-position:150% 0}}
+@media (prefers-reduced-motion:reduce){.siege-root.is-cartoon .sg-bar .sg-bow.is-drawing::after{animation:none;background-position:50% 0}}
