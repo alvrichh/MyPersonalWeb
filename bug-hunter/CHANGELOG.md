@@ -4,6 +4,16 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.17 - 2026-10-27
+
+### Fixed
+- Siege Cartoon's map and shop no longer flash when a stage, a tile, Purchase or a slot is tapped: the screen is updated in place, its pictures kept, and the shop's list stays where it was scrolled to.
+- Three troop poses had a bit of their neighbour in them: the fire paladin's slash, the winged-helmet spearman's walk and wind-up, and the flying sniper's shot.
+
+### Changed - Siege Cartoon's blasts and fire
+- The rocket launcher's rockets (the crossbow's last level) blow up where they land, and so do the rockets of the armed robot's and the heavy armed robot's last forms.
+- The wizard's last form calls three meteors one after another, turned to fall the way they fly, each leaving a burning oval of fire on the ground for a moment (the game's fire pool, squashed flat).
+
 ## 1.15.16 - 2026-10-26
 
 ### Changed - Siege Cartoon: who can hit whom

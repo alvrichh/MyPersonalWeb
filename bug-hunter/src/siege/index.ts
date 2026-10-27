@@ -113,6 +113,8 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   /** Cartoon's map: 0 shows the world map (`siege/map-worlds`), a world's number its own map of five stages
       (`siege/map-N`). */
   let mapAct = 0;
+  /** The turn-your-phone notice was closed (it stays closed on the maps). */
+  let turnSeen = false;
   /** Where each map picture's platforms are (% of its width and height), measured on the owner's pictures: index 0 the
       world map's six, then each world's five stages, left to right. */
   const MAP_SPOTS: [number, number][][] = [
@@ -221,8 +223,8 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
         <span class="sg-up-cost">${level >= 5 ? t('siegeMax') : `<img src="/images/game/store/coins-2.webp" alt="">${M.upgradePrice(level)}`}</span></button>`).join('')}</div>
       `;
     // Siege Cartoon's shop is the whole screen, Cartoon Wars 2-style: no header or page tabs, its own Back button.
-    if (mode === 'cartoon' && prepTab === 'map') { root.innerHTML = `<div class="sg-shell sg-prep sg-map-only">${cartoonMap()}</div>`; V.trimImages(root); focus(); return; }
-    if (mode === 'cartoon' && prepTab === 'shop') { root.innerHTML = `<div class="sg-shell sg-prep sg-shop-only">${shop}</div>`; V.trimImages(root); focus(); return; }
+    if (mode === 'cartoon' && prepTab === 'map') { paint(`<div class="sg-shell sg-prep sg-map-only">${cartoonMap()}</div>`); return; }
+    if (mode === 'cartoon' && prepTab === 'shop') { paint(`<div class="sg-shell sg-prep sg-shop-only">${shop}</div>`); return; }
     root.innerHTML = `<div class="sg-shell sg-prep"><header class="sg-top"><button class="sg-back" data-sg="modes" aria-label="${t('siegeModes')}">←</button>
         <h1 class="sg-title"><small>${t('siegeSoon')}</small>${title()}</h1>
         <span class="sg-coins"><img src="/images/game/store/coins-2.webp" alt="">${progress.coins}</span></header>
@@ -230,6 +232,33 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       <section class="sg-page">${prepTab === 'map' ? map : prepTab === 'army' ? army : shop}</section>
       <details class="sg-help"><summary>${t('siegeHow')}</summary><p>${t('siegeIntro')}</p><p>${t('siegeInstructions')}</p><p>${t('siegeKeys')}</p><p>${t('siegeRotate')}</p><p>${t('siegePreviewNote')}</p></details></div>`;
     V.trimImages(root); focus();
+  }
+  /** Shows a Cartoon screen. The same screen again (a tap on a tile, a stage, Purchase) is updated in place, so its
+      pictures stay as they are (no flash while they load again) and its lists keep where they were scrolled to. */
+  function paint(html: string) {
+    const next = document.createElement('div'); next.innerHTML = html;
+    const now = root.firstElementChild, fresh = next.firstElementChild!;
+    if (now && now.className === fresh.className) morph(now, fresh);
+    else { root.replaceChildren(fresh); focus(); }
+    if (turnSeen) root.querySelector('.sg-map .sg-turn')?.remove();
+    V.trimImages(root);
+  }
+  /** Makes `from` like `to`, keeping every element that is still there (a trimmed picture keeps its trimmed source). */
+  function morph(from: Element, to: Element) {
+    for (const a of [...from.attributes]) if (!to.hasAttribute(a.name)) from.removeAttribute(a.name);
+    for (const a of [...to.attributes]) {
+      if (a.name === 'src' && from.getAttribute('data-trim') === to.getAttribute('data-trim') && from.hasAttribute('data-trim')) continue;
+      if (from.getAttribute(a.name) !== a.value) from.setAttribute(a.name, a.value);
+    }
+    const old = [...from.childNodes], neu = [...to.childNodes];
+    neu.forEach((n, i) => {
+      const o = old[i];
+      if (!o) from.append(n);
+      else if (o.nodeType === n.nodeType && (o.nodeType !== 1 || (o as Element).tagName === (n as Element).tagName)) {
+        if (o.nodeType === 1) morph(o as Element, n as Element); else if (o.textContent !== n.textContent) o.textContent = n.textContent;
+      } else o.replaceWith(n);
+    });
+    old.slice(neu.length).forEach(o => o.remove());
   }
   /** Cartoon's map, the owner's pictures whole (16:9, fitted in the view) with buttons on their stone platforms
       (`MAP_SPOTS`, % of the picture): the world map's six worlds, or a world's five stages, the fifth the guardian's.
@@ -520,8 +549,8 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       prep(); root.querySelector<HTMLElement>(`[data-sg-unit="${id}"]`)?.focus(); return;
     }
     if (button.dataset.sgShopTab && !state) { shopTab = button.dataset.sgShopTab as typeof shopTab; pick = { row: shopRows()[0], level: 1 }; prep(); root.querySelector<HTMLElement>(`[data-sg-shop-tab="${shopTab}"]`)?.focus(); return; }
-    if (button.dataset.sgTile && !state) { const [row, level] = button.dataset.sgTile.split(':').map(Number); pick = { row, level }; let full = false; if (shopTab !== 'base' && tile(row, level).have) full = !equip(row, level); const g = root.querySelector('.sg-st-grid')?.scrollTop ?? 0; prep(); const grid = root.querySelector('.sg-st-grid'); if (grid) grid.scrollTop = g; root.querySelector<HTMLElement>(`.sg-st-grid [data-sg-tile="${row}:${level}"]`)?.focus(); if (full) q('.sg-message').textContent = t('siegeFull'); return; }
-    if (action === 'purchase' && !state) { const g = root.querySelector('.sg-st-grid')?.scrollTop ?? 0; purchase(); prep(); const grid = root.querySelector('.sg-st-grid'); if (grid) grid.scrollTop = g; root.querySelector<HTMLElement>(`[data-sg="${action}"]:not(:disabled)`)?.focus(); return; }
+    if (button.dataset.sgTile && !state) { const [row, level] = button.dataset.sgTile.split(':').map(Number); pick = { row, level }; let full = false; if (shopTab !== 'base' && tile(row, level).have) full = !equip(row, level); const g = root.querySelector('.sg-st-grid')?.scrollTop ?? 0; prep(); const grid = root.querySelector('.sg-st-grid'); if (grid) grid.scrollTop = g; root.querySelector<HTMLElement>(`.sg-st-grid [data-sg-tile="${row}:${level}"]`)?.focus({ preventScroll: true }); if (full) q('.sg-message').textContent = t('siegeFull'); return; }
+    if (action === 'purchase' && !state) { const g = root.querySelector('.sg-st-grid')?.scrollTop ?? 0; purchase(); prep(); const grid = root.querySelector('.sg-st-grid'); if (grid) grid.scrollTop = g; root.querySelector<HTMLElement>(`[data-sg="${action}"]:not(:disabled)`)?.focus({ preventScroll: true }); return; }
     if (button.dataset.sgBuy !== undefined && !state) {
       const id = Number(button.dataset.sgBuy);
       if (M.buyTroop(progress, id)) { persist(); selected = [...progress.deck]; prep(); root.querySelector<HTMLElement>(`[data-sg-unit="${id}"]`)?.focus(); }
@@ -537,7 +566,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     }
     if (button.dataset.sgWorldPick && !state) { world = Number(button.dataset.sgWorldPick); const left = root.querySelector('.sg-isles')?.scrollLeft ?? 0; prep(); const isles = root.querySelector('.sg-isles'); if (isles) isles.scrollLeft = left; root.querySelector<HTMLElement>(`[data-sg-world-pick="${world}"]`)?.focus(); return; }
     if (up !== undefined && !state) { if (M.upgrade(progress, Number(up))) { persist(); prep(); } return; }
-    if (button.hasAttribute('data-sg-turn')) { button.parentElement?.remove(); return; }
+    if (button.hasAttribute('data-sg-turn')) { turnSeen = true; button.parentElement?.remove(); return; }
     if (button.dataset.sgTab && state) { tab = button.dataset.sgTab as typeof tab; cards(); return; }
     if (summonId !== undefined && state && !paused) { if (M.summon(state, Number(summonId))) sound('click'); updateUi(); return; }
     if (action === 'exit') close();
