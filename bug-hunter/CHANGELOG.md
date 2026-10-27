@@ -4,6 +4,15 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.30 - 2026-10-27
+
+### Changed - Siege Cartoon's guardians
+- Much tougher (4.2 times the troop they come from instead of 2.6, and 70% harder hitting), every blow lands on an area round its target with a blast, and throws back whatever it hits twice as far as a heavy blow (machines and flyers too).
+- As a guardian comes out of its fallen fortress, a gust blows our whole army back.
+
+### Changed
+- The stage panel on a world's map sits in the same dark stone frame as the pause.
+
 ## 1.15.29 - 2026-10-27
 
 ### Fixed

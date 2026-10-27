@@ -717,3 +717,10 @@
 .sg-map-go{width:min(470px,50%);padding-top:24px}
 .siege-root.is-cartoon .sg-prep .sg-map-go .sg-play{white-space:nowrap}
 @media (max-height:440px){.sg-map-go{width:min(360px,50%);padding-top:16px}.siege-root.is-cartoon .sg-prep .sg-map-go .sg-play{min-width:0;font-size:14px;padding:0 4px}}
+/* v1.15.30 — The stage panel in the same dark stone frame as the pause (corners and gems whole). */
+.sg-map-go{width:min(390px,46%);gap:8px;padding:0 4px;border-width:40px;border-image:url('/images/game/siege/ui/frame.webp') 125 fill / 40px stretch}
+.siege-root.is-cartoon .sg-prep .sg-map-go .sg-eyebrow{font-size:13px;margin-top:-18px}
+.sg-map-go .sg-prize{font-size:13px}
+.siege-root.is-cartoon .sg-prep .sg-map-go .sg-play{margin-bottom:-14px}
+@media (max-height:440px){.sg-map-go{width:min(320px,48%);border-width:30px;border-image-width:30px;gap:5px}.siege-root.is-cartoon .sg-prep .sg-map-go .sg-eyebrow{font-size:11px;margin-top:-14px}.siege-root.is-cartoon .sg-prep .sg-map-go .sg-play{margin-bottom:-10px}}
+.sg-map-go{width:min(440px,48%)}
