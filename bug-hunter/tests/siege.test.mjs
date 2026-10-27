@@ -63,11 +63,12 @@ test('the guardian comes out only when the fortress falls, and must fall for the
   run(s, 2); assert.equal(s.units.filter(u => u.boss).length, 1, 'only once');
   s.units.find(u => u.boss).hp = 0; m.tick(s, 1 / 30); assert.equal(s.phase, 'won');
 });
-test('enemy flyers join the waves later on', () => {
-  const s = m.newSiege(m.freshProgress(), 2); s.hp[0] = 1e9; s.hp[1] = 1e9;
+test('no enemy flyers in the first world; they join the waves later on', () => {
+  assert.deepEqual(m.foesAt(m.FOE_AIR, 5), [], 'none in world 1'); assert.ok(m.ALLIES.filter(u => u.air).every(u => u.unlock >= 2), 'nor our flyers');
+  const s = m.newSiege({ ...m.freshProgress(), unlocked: 7 }, 7); s.hp[0] = 1e9; s.hp[1] = 1e9;
   run(s, 20); assert.equal(s.units.some(u => u.side && m.UNITS[u.id].air), false);
   run(s, 120); assert.ok(s.waves > 0); assert.ok(s.kills + s.units.filter(u => u.side).length > 0);
-  const seen = new Set(); for (let i = 0; i < 120 * 30; i++) { m.tick(s, 1 / 30); for (const u of s.units) if (u.side && m.UNITS[u.id].air) seen.add(u.id); }
+  const seen = new Set(); for (let i = 0; i < 120 * 30; i++) { m.tick(s, 1 / 30); for (const u of s.units) if (u.side && m.UNITS[u.id].air) seen.add(u.id); if (i % 30 === 0) s.units = s.units.filter(u => !u.side); }
   assert.ok(seen.size > 0);
 });
 test('Siege Cartoon: six acts of five stages, each with its foes and guardian, saved apart from Siege Legacy', () => {
