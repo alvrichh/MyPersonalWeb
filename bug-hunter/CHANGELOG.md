@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.44 - 2026-10-27
+
+### Changed
+- Siege Cartoon's shop: the troop forms and base upgrades still to come (past the next one to buy) show as «?» instead of their picture and cost, for the surprise.
+
 ## 1.15.43 - 2026-10-27
 
 ### Changed

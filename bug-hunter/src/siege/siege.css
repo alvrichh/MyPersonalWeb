@@ -785,3 +785,5 @@
 .siege-root.is-cartoon .sg-bar .sg-deck button:hover:not(:disabled){background:linear-gradient(#8fd8ff99,#3a8cecb3);filter:none}
 .siege-root.is-cartoon .sg-bar .sg-deck small{padding:0 .5em;border:1px solid #e7b94a;border-radius:6px;background:#1d1a17e6;color:#ffe9a8}
 .siege-root.is-cartoon .sg-bar .sg-deck button:disabled{filter:grayscale(.8) brightness(.75)}
+/* v1.15.44 — what is still to come in the shop hides behind a «?». */
+.sg-st-tile .sg-st-q{display:grid;place-items:center;width:100%;height:100%;font:900 clamp(26px,5vw,40px)/1 system-ui;color:#ffe9a8;text-shadow:0 2px 0 #000,0 0 8px #000}
