@@ -323,12 +323,12 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
   if (e.kind === 'stuck') {
     // A landed arrow stuck in the ground at the angle it came in, its head buried, fading out at the end.
     const art = still(bolt); if (!ok(art)) return false;
-    const at = flight(bowTip, { x: e.x, y: ground - 2 }), end = at(1), back = at(0.97);
+    const at = flight(bowTip, { x: e.x, y: ground - 2 - (e.up ?? 0) }), end = at(1), back = at(0.97);
     // Never flatter than about 35° down, so even a near, flat shot reads as stuck in the ground.
     const ang = Math.max(0.6, Math.atan2(end.y - back.y, end.x - back.x || 0.001)), len = 60, h = len * art.naturalHeight / art.naturalWidth;
     ctx.save(); ctx.globalAlpha = p < 0.6 ? 1 : (1 - p) / 0.4;
-    ctx.beginPath(); ctx.rect(e.x - 80, -5000, 160, 5000 + ground + 2 + (e.lane - 1) * 3); ctx.clip();
-    ctx.translate(e.x - Math.cos(ang) * len * 0.22, ground + 2 + (e.lane - 1) * 3 - Math.sin(ang) * len * 0.22); ctx.rotate(ang);
+    ctx.beginPath(); ctx.rect(e.x - 80, -5000, 160, 5000 + ground + 2 - (e.up ?? 0)); ctx.clip();
+    ctx.translate(e.x - Math.cos(ang) * len * 0.22, ground + 2 - (e.up ?? 0) - Math.sin(ang) * len * 0.22); ctx.rotate(ang);
     ctx.drawImage(art, -len / 2, -h / 2, len, h); ctx.restore(); return true;
   }
   if (e.kind === 'boom') {
@@ -396,7 +396,7 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     if (!ok(art)) return false;
     if (close) { ctx.save(); ctx.globalAlpha = 1 - p; ctx.drawImage(art, e.x - 15, y - 15, 30, 30); ctx.restore(); return true; }
     // Our arrows leave the crossbow's tip and fly under gravity onto their spot (`flight`); a troop's shot flies straight.
-    const at = e.kind === 'arrow' ? flight(bowTip, { x: e.x, y: ground - 2 })
+    const at = e.kind === 'arrow' ? flight(bowTip, { x: e.x, y: ground - 2 - (e.up ?? 0) })
       : (t: number) => ({ x: e.from + (e.x - e.from) * t, y });
     const here = at(p), ahead = dirAt(at, p);
     const len = e.kind === 'arrow' ? (bolt.endsWith('rocket') ? 46 : 60) : 40, h = len * art.naturalHeight / art.naturalWidth;

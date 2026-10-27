@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.37 - 2026-10-27
+
+### Changed - Siege Cartoon's crossbow
+- Its arrows stray a little from the aim, along the field and nearer or further, so a volley lands spread out instead of in one line (and they stay stuck where each fell).
+- While it shoots, its button beats with each volley, with a gold ring and arrows flying out of it.
+
 ## 1.15.36 - 2026-10-27
 
 ### Changed - Siege Cartoon

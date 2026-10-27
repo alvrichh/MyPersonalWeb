@@ -112,12 +112,13 @@ test('Backlog can be won with a mixed army and active defenses, without upgrades
 });
 
 test('arrows strike the flyers their path crosses, not those above or behind it', () => {
+  const along = m.SCATTER.along; m.SCATTER.along = 0; // the aim exactly, for this geometry
   const s = m.newSiege(m.freshProgress(), 1); s.nextWave = 999; s.gusted = true; s.aim = 1000; s.bowFrom = { x: 150, up: 140 };
   const path = m.flight({ x: 150, y: -140 }, { x: 1000, y: -2 }), mid = 600, height = -path((mid - 150) / 850).y;
   const flyer = (uid, x, alt) => ({ uid, id: 28, side: 1, x, lane: 0, alt, hp: 500, maxHp: 500, damage: 0, attack: 9, flash: 0, boss: false });
   const crossed = flyer(1, mid, height - 20), above = flyer(2, mid, height + 200), walker = { ...flyer(3, mid, 0), id: 15 };
   s.units.push(crossed, above, walker); m.toggleBow(s); m.tick(s, 1 / 30);
-  assert.ok(crossed.hp < 500, 'the flyer in its path is hit'); assert.equal(above.hp, 500, 'not one high above it'); assert.equal(walker.hp, 500, 'nor a walker short of where it lands');
+  assert.ok(crossed.hp < 500, 'the flyer in its path is hit'); assert.equal(above.hp, 500, 'not one high above it'); assert.equal(walker.hp, 500, 'nor a walker short of where it lands'); m.SCATTER.along = along;
 });
 
 test('the bow: a tap starts it, it shoots steadily, stops on a tap or an empty quiver, and refills only while stopped', () => {
@@ -132,6 +133,12 @@ test('the bow: a tap starts it, it shoots steadily, stops on a tap or an empty q
   const p = m.freshProgress(); p.upgrades[3] = 4; const up = m.newSiege(p, 1);
   assert.ok(m.bowEvery(up.bow) < m.bowEvery(m.newSiege(m.freshProgress(), 1).bow)); assert.equal(m.bowCount(up.bow), 3, 'the shop\'s Bow level adds arrows');
   p.upgrades[3] = 5; assert.equal(m.bowCount(m.newSiege(p, 1).bow), 4);
+});
+test('a volley lands spread out, not in one line', () => {
+  const p = m.freshProgress(); p.upgrades[3] = 5; const s = m.newSiege(p, 1); s.nextWave = 999; s.aim = 900;
+  m.toggleBow(s); m.tick(s, 1 / 30); const shots = s.effects.filter(e => e.kind === 'arrow');
+  assert.ok(shots.length > 1); assert.ok(new Set(shots.map(e => e.up)).size > 1 || new Set(shots.map(e => Math.round(e.x - 900) % 24)).size > 1, 'arrows stray along and in depth');
+  for (const e of shots) assert.ok(Math.abs(e.x - 900) <= m.SCATTER.along + 2 * m.BOW.gap, 'but stay near the aim');
 });
 test('only some troops reach the air, and only some flyers the ground; armies keep six of each', () => {
   assert.equal(m.canHit(0, 28), false, 'a swordsman cannot reach an eagle'); assert.equal(m.canHit(2, 28), false, 'nor a rock thrower');

@@ -751,3 +751,13 @@
 @media (hover:hover){.siege-root.is-cartoon .sg-prep .sg-map-shop:hover:not(:disabled){filter:brightness(1.08)}}
 .sg-map-shop span{top:33%}
 .siege-root.is-cartoon .sg-prep .sg-map .sg-spot.is-on{will-change:transform}
+/* v1.15.37 — The bow button while it shoots: it beats with each volley, a gold ring round it, and arrows fly out of it
+   up to the right. No CSS filter on it (Safari on iPhone flickers those). */
+.siege-root.is-cartoon .sg-bow.is-drawing{filter:none;overflow:visible;box-shadow:0 0 0 calc(4 * var(--u)) #ffd166,0 0 calc(30 * var(--u)) calc(10 * var(--u)) #ffb02ecc;animation:sg-bow-beat .42s ease-in-out infinite}
+.siege-root.is-cartoon .sg-bow.is-drawing::after{content:'';position:absolute;z-index:2;left:30%;top:42%;width:70%;height:18%;pointer-events:none;background:url('/images/game/siege/units/bolt-1.webp') center/contain no-repeat;animation:sg-bow-shot .42s linear infinite}
+@keyframes sg-bow-beat{0%,100%{transform:scale(1)}30%{transform:scale(.9)}}
+@keyframes sg-bow-shot{0%{transform:rotate(-35deg) translateX(-30%);opacity:0}15%{opacity:1}100%{transform:rotate(-35deg) translateX(130%);opacity:0}}
+@media (prefers-reduced-motion:reduce){.siege-root.is-cartoon .sg-bow.is-drawing,.siege-root.is-cartoon .sg-bow.is-drawing::after{animation:none}}
+.siege-root.is-cartoon .sg-bow.is-drawing{box-shadow:0 0 0 3px #ffd166,0 0 16px 6px #ffb02ecc}
+.siege-root.is-cartoon .sg-bow.is-drawing::after{left:20%;top:38%;width:95%;height:26%;background-image:url('/images/game/siege/units/bolt-2.webp')}
+.siege-root.is-cartoon .sg-bow.is-drawing{box-shadow:inset 0 0 0 4px #ffe27a,inset 0 0 22px 8px #ffd166cc}
