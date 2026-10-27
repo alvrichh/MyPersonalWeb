@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.49 - 2026-10-27
+
+### Added
+- Siege Cartoon: a new **Special** tab in the shop (between Air and Base) sells powers that cover the stretch of field on screen: **Arrow rain** (arrows, then ice arrows that freeze, fire arrows that leave flames, and rockets that explode), **Lightning rain** (bolts across the field, the later forms more of them and stunning), **Tsunami** (a wall of water sweeping the screen and throwing the enemy back) and **Meteor shower**. Each is bought with gold (an act opens each one) and its forms upgraded like a troop's; three go into the kit, taken in and out with a tap, and appear on the battle bar's S tab beside the generator, the discharge and the missile, each with its own recharge.
+- The shop's tabs and buttons fit narrow phones (four tabs, Back on its own row in portrait).
+
 ## 1.15.48 - 2026-10-27
 
 ### Changed
