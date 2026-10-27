@@ -319,7 +319,18 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     ctx.stroke(); ctx.restore(); return true;
   }
   // Effects that wait for a shot to land (`life` past `max`) are not drawn yet.
-  if (p < 0 && (e.kind === 'boom' || e.kind === 'fire' || e.kind === 'shot')) return true;
+  if (p < 0 && (e.kind === 'boom' || e.kind === 'fire' || e.kind === 'shot' || e.kind === 'stuck')) return true;
+  if (e.kind === 'stuck') {
+    // A landed arrow stuck in the ground at the angle it came in, a third of it buried, fading out at the end.
+    const art = still(bolt); if (!ok(art)) return false;
+    const at = flight(bowTip, { x: e.x, y: ground - 2 }), end = at(1), back = at(0.97);
+    // Never flatter than about 35° down, so even a near, flat shot reads as stuck in the ground.
+    const ang = Math.max(0.6, Math.atan2(end.y - back.y, end.x - back.x || 0.001)), len = 60, h = len * art.naturalHeight / art.naturalWidth;
+    ctx.save(); ctx.globalAlpha = p < 0.6 ? 1 : (1 - p) / 0.4;
+    ctx.beginPath(); ctx.rect(e.x - 80, -5000, 160, 5000 + ground + 2 + (e.lane - 1) * 3); ctx.clip();
+    ctx.translate(e.x + Math.cos(ang) * len * 0.2, ground + 2 + (e.lane - 1) * 3 + Math.sin(ang) * len * 0.2); ctx.rotate(ang);
+    ctx.drawImage(art, -len / 2, -h / 2, len, h); ctx.restore(); return true;
+  }
   if (e.kind === 'boom') {
     // A rocket's explosion where it lands: the owner's eight frames (`siege/fx-boom-0..7`), a flash rising into a
     // mushroom cloud that turns to smoke, standing on the ground.
@@ -471,7 +482,9 @@ function feetOf(img: HTMLImageElement) {
   return f;
 }
 /** How long the fallen stay on the field, in seconds (fading over the last third). */
-const DEAD_FOR = 1.6;
+const DEAD_FOR = 2;
+/** A killed troop is thrown back this far (field units) in the first `DEATH_FLY` share of its fall, then lies there. */
+const DEATH = { back: 46, fly: 0.3 };
 /** The fallen of the battle on screen: troops seen last frame and gone now (only death takes a troop off the field). */
 let seenOf: Siege | null = null;
 let seen = new Map<number, Fighter>();
@@ -497,7 +510,7 @@ function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: nu
   const hurt = !!(u.flash || u.knock || u.stun);
   const ready = !u.moving && u.attack > 0 && u.attack < 0.3;
   const pose = spec.six
-    ? gone !== undefined ? 5 : hurt ? 4 : u.hit ? 3 : ready ? 2 : u.moving && !reduced ? Math.floor(t * 5) % 2 : 0
+    ? gone !== undefined ? (gone < DEATH.fly ? 4 : 5) : hurt ? 4 : u.hit ? 3 : ready ? 2 : u.moving && !reduced ? Math.floor(t * 5) % 2 : 0
     : gone !== undefined ? 2 : hurt ? 2 : u.hit ? 1 : 0;
   const stand = picture(`${path}-0`), art = picture(`${path}-${pose}`);
   const size = spec.size * (u.boss ? 1.6 : 1) * (u.grow ?? 1) * Math.pow(0.8, u.stage ?? 0);
@@ -509,6 +522,10 @@ function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: nu
     const dw = art.image.naturalWidth * k, dh = art.image.naturalHeight * k;
     let lift = 0, lean = 0, sx = 1, sy = 1, push = 0;
     if (gone !== undefined) {
+      // The killing blow throws it back: up in an arc, hurt, over `DEATH.fly` of its fall, then it lies where it lands.
+      const f = Math.min(1, gone / DEATH.fly);
+      push = -DEATH.back * (1 - (1 - f) * (1 - f));
+      if (!reduced && f < 1) { lift = Math.sin(f * Math.PI) * 22; lean = -Math.sin(f * Math.PI) * 0.5; }
       // Three-pose sheets have no dead pose: the hurt one tips over backwards as it falls.
       if (!spec.six) lean = -Math.min(1, gone * 6) * 1.45;
     } else if (reduced) { /* still */ }

@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.36 - 2026-10-27
+
+### Changed - Siege Cartoon
+- A troop killed is thrown back by the blow, up in an arc and hurt, then falls and lies where it lands before fading; the killing blow has its own sound, a heavy muffled hit for ours and a crunchy smack for the enemy's.
+- Our crossbow's arrows stay stuck in the ground where they land, at the angle they came in, and fade out after a couple of seconds (the rocket launcher's rockets still blow up).
+
 ## 1.15.35 - 2026-10-27
 
 ### Fixed
