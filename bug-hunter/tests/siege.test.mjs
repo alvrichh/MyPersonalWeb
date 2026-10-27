@@ -325,3 +325,8 @@ test('the free test mode: free base upgrades, free powers and troops, endless en
   } finally { m.testing.free = false; }
   const q = m.freshProgress(); assert.equal(m.upgrade(q, 1), false, 'not free once the mode is off');
 });
+test('our arrows hurt our own troops, but less than they hurt the enemy', () => {
+  const s = m.newSiege(m.freshProgress(), 1); m.summon(s, 0); const u = s.units[0]; u.hp = u.maxHp = 500; s.aim = u.x; m.draw(s, true); m.tick(s, 1 / 30);
+  const foe = { ...u, uid: 77, side: 1, hp: 500, maxHp: 500, damage: 0 }; s.units.push(foe); s.bow.next = 0; m.tick(s, 1 / 30);
+  assert.ok(u.hp < 500 && foe.hp < 500 && 500 - u.hp < 500 - foe.hp + 1, 'friendly fire is the lighter');
+});

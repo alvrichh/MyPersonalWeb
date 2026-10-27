@@ -4,6 +4,14 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.54 - 2026-10-27
+
+### Changed
+- Siege Cartoon balance: our own arrows now hurt our troops at 35% of the damage they do to enemies (it was 100%): a simulated player who kept the bow shooting at a melee scrum wiped its own army and could not win stages 2, 4, 5, 9, 10 and the last two within five minutes; with the lighter friendly fire the same player wins all but a few of the under-levelled attempts on stages 12-14.
+
+### Fixed
+- Siege Cartoon: the tallest fortresses (our levels 4-5, the enemy's last looks) are kept under the HUD on short screens, so they no longer run under the energy and health bars.
+
 ## 1.15.53 - 2026-10-27
 
 ### Changed

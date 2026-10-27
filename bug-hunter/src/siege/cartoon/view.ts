@@ -85,6 +85,9 @@ const CASTLES = [
   { h: 365, deck: 8, bow: [0.81, 0.405] },
 ] as const;
 const ENEMY_H = [200, 235, 270, 310, 350];
+/** Field units kept clear at the top of the view for the HUD (about 62 screen pixels); set each frame by `render`, read by the
+    fortresses so a tall one never runs under the energy and health bars on a short screen. */
+let hudRoom = 40;
 /** Our crossbow in its turret (`siege/xbow-N`, by the Bow level: three crossbows and a rocket launcher), one picture
     pointing right drawn `width` field units wide, turning on its wheel (`pivot`, fractions of the picture) towards where
     the arrows go and kicking back a little at each shot. */
@@ -126,9 +129,9 @@ function base(ctx: CanvasRenderingContext2D, s: Siege, x: number, ground: number
   ctx.save(); ctx.translate(x, ground);
   let top = -169;
   if (ok(wall)) {
-    // Never taller than the room above the deck, so its health bar stays in view.
+    // Never taller than the room above the deck under the HUD.
     const look = CASTLES[tier - 1];
-    const h = Math.min(enemy ? ENEMY_H[tier - 1] : look.h, ground - 30), w = h * wall.naturalWidth / wall.naturalHeight;
+    const h = Math.min(enemy ? ENEMY_H[tier - 1] : look.h, ground - Math.max(30, hudRoom)), w = h * wall.naturalWidth / wall.naturalHeight;
     // Kept whole on the field: a wide one moves in from the field's edge rather than past it.
     const foot = enemy ? 10 : look.deck, left = enemy ? Math.min(-w / 2, FIELD - 4 - x - w) : Math.max(-w / 2, 4 - x);
     // The enemy's pictures face front-right; the fortress is turned to face our side (left).
@@ -198,7 +201,7 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   // Short, wide fields zoom in a little more, so the troops keep their size.
   // A wide view stands further back (more field and sky, smaller troops); an upright phone keeps it closer.
   const scale = w >= h ? Math.min(h / (w / h > 2.2 ? 360 : 425), w / 810) : Math.min(h / 340, w / 650);
-  camera.width = w / scale;
+  camera.width = w / scale; hudRoom = 62 / scale;
   camera.min = -AIM_GUTTER / scale;
   camera.x = Math.max(camera.min, Math.min(Math.max(camera.min, FIELD - camera.width), camera.x));
   // The stretch of field on screen: the special powers cover it (the model reads it when one is cast).
