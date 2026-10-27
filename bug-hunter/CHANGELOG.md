@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.24 - 2026-10-27
+
+### Added
+- Siege Cartoon's settings open from the map too (the gear beside the gold) as well as from the pause: music and sound volume, the language (Spanish or English, the game's own), and, on the map, a temporary "everything free" switch for testing (remembered on the device) and Reset progress, which asks first and starts Siege Cartoon over.
+
 ## 1.15.23 - 2026-10-27
 
 ### Changed
