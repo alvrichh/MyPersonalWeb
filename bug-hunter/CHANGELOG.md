@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.32 - 2026-10-27
+
+### Changed
+- Siege Cartoon: the first world's guardian stage is fought on the first battlefield, half clean and half corrupt, where the Darkness reaches the meadows.
+
 ## 1.15.31 - 2026-10-27
 
 ### Fixed - Siege Cartoon's shop
