@@ -296,6 +296,8 @@ export interface Fighter { uid: number; id: number; side: 0 | 1; x: number; lane
   moving?: boolean;
   /** Seconds left flying back from a heavy blow (infantry), or stunned by one (the rest). */
   knock?: number; stun?: number;
+  /** How far this knock throws it (a guardian's blow throws further than `KNOCK.back`). */
+  knockBack?: number;
   /** Seconds left being blown back by the corrupt wind. */
   blown?: number;
   /** An arrow's nudge: seconds left being pushed back, and until it can be nudged again. */
@@ -364,7 +366,11 @@ export function newSiege(p: Progress, world: number): Siege {
 }
 /** The guardian, Cartoon Wars 2-style: it only comes out once the enemy fortress falls, far tougher than a troop, and
     the battle is won when it falls too. */
-const BOSS_HP = 2.6;
+/** The guardians: much tougher than the troop they are drawn from, harder hitting, every blow landing on an area
+    (`area` field units round its target) and throwing our troops back far (`knock`); and as one comes out, a gust from
+    the fallen fortress blows our army back (`gust` seconds). */
+export const BOSS = { hp: 4.2, damage: 1.7, area: 95, knock: 150, gust: 0.9 };
+const BOSS_HP = BOSS.hp;
 /** From how many seconds into the battle the enemy's flyers come. */
 const airFrom = (stage: number) => Math.max(40, 110 - hard(stage) * 8);
 /** The Forge's heavy robots, ours and theirs, break twice before they are gone: each wreck keeps this share of the
@@ -384,7 +390,7 @@ function spawn(s: Siege, id: number, side: 0 | 1, boss = false, level?: number) 
   // One gunner in every few (counted by its spawn number) comes horned.
   const elite = !!side && !boss && id === ELITE_ID && s.time >= ELITE.from && s.nextId % ELITE.every === 0;
   const life = hp * (elite ? ELITE.hp : 1);
-  s.units.push({ uid: s.nextId++, id, side, x: side ? FIELD - 120 : 120, lane: s.nextId % 3, hp: life, maxHp: life, damage: spec.damage * scale * (elite ? ELITE.damage : 1), attack: 0, flash: 0, boss, elite: elite || undefined, lv, grow: side ? growAt(s.world) : undefined });
+  s.units.push({ uid: s.nextId++, id, side, x: side ? FIELD - 120 : 120, lane: s.nextId % 3, hp: life, maxHp: life, damage: spec.damage * scale * (elite ? ELITE.damage : 1) * (boss ? BOSS.damage : 1), attack: 0, flash: 0, boss, elite: elite || undefined, lv, grow: side ? growAt(s.world) : undefined });
 }
 /** What a troop's attack sounds like (its weapon) and its death (its body), by id; an array is per level. Projectile
     troops sound like what they fire (`SHOT_SOUND`). Names are the audio engine's `SiegeSound`s. */
@@ -589,16 +595,22 @@ export function tick(s: Siege, dt: number) {
     for (let i = 0; i < horde.weak; i++) { spawn(s, land[i % Math.min(2, land.length)], 1); const u = s.units[s.units.length - 1]; if (u?.side) u.x -= i * 18; }
     for (let i = 0; i < horde.strong; i++) spawn(s, tough[i % tough.length], 1);
   }
-  if (!s.bossSpawned && s.hp[1] <= 0 && guarded(s.world)) { s.bossSpawned = true; spawn(s, GUARDIAN[actOf(s.world) - 1], 1, true); }
+  if (!s.bossSpawned && s.hp[1] <= 0 && guarded(s.world)) {
+    s.bossSpawned = true; spawn(s, GUARDIAN[actOf(s.world) - 1], 1, true);
+    // Its arrival: a gust from the ruins blows our army back.
+    for (const u of s.units) if (!u.side) { u.blown = BOSS.gust; u.knock = 0; u.stun = 0; }
+    s.effects.push({ x: FIELD - 120, from: FIELD - 120, lane: 1, life: 1.2, max: 1.2, kind: 'gust', side: 1 });
+    hear(s, 'corrupt-wind', FIELD - 300);
+  }
   const alive = s.units.filter(u => u.hp > 0);
-  const hits: { target: Fighter; damage: number }[] = [];
+  const hits: { target: Fighter; damage: number; boss?: boolean }[] = [];
   for (const u of alive) {
     const a = specOf(u); u.attack -= dt; u.flash = Math.max(0, u.flash - dt); u.hit = Math.max(0, (u.hit ?? 0) - dt);
     u.moving = false;
     if (u.nudgeCd) u.nudgeCd = Math.max(0, u.nudgeCd - dt);
     if (u.nudge) { u.nudge = Math.max(0, u.nudge - dt); u.x = Math.min(FIELD - 110, u.x + NUDGE.back * dt); continue; }
     if (u.blown) { u.blown = Math.max(0, u.blown - dt); u.x = Math.max(110, u.x - GUST.back * dt); continue; }
-    if (u.knock) { u.knock = Math.max(0, u.knock - dt); u.x = Math.max(110, Math.min(FIELD - 110, u.x + (u.side ? 1 : -1) * KNOCK.back / KNOCK.time * dt)); continue; }
+    if (u.knock) { u.knock = Math.max(0, u.knock - dt); u.x = Math.max(110, Math.min(FIELD - 110, u.x + (u.side ? 1 : -1) * (u.knockBack ?? KNOCK.back) / KNOCK.time * dt)); continue; }
     if (u.stun) { u.stun = Math.max(0, u.stun - dt); continue; }
     const enemy = alive.filter(v => v.side !== u.side && reaches(u, v)).sort((a, b) => Math.abs(a.x - u.x) - Math.abs(b.x - u.x))[0];
     const baseX = u.side ? 80 : FIELD - 80;
@@ -611,7 +623,9 @@ export function tick(s: Siege, dt: number) {
     if (enemy && distance <= a.range + UNITS[enemy.id].size * 0.25) {
       if (u.attack <= 0) {
         u.attack = a.rate; u.hit = 0.3;
-        for (const v of alive) if (v.side !== u.side && reaches(u, v) && (v === enemy || (a.splash && Math.abs(v.x - enemy.x) < a.splash))) hits.push({ target: v, damage: u.damage });
+        const area = u.boss ? Math.max(a.splash ?? 0, BOSS.area) : a.splash;
+        for (const v of alive) if (v.side !== u.side && reaches(u, v) && (v === enemy || (area && Math.abs(v.x - enemy.x) < area))) hits.push({ target: v, damage: u.damage, boss: u.boss });
+        if (u.boss) s.effects.push({ x: enemy.x, from: enemy.x, lane: enemy.lane, life: BOOM, max: BOOM, kind: 'boom', side: u.side, size: 80, dark: true });
         launch(s, u, a, enemy.x, enemy.lane, UNITS[enemy.id].air ? enemy.alt ?? FLY.high : 0);
         hear(s, soundsOf(u)[0], u.x);
       }
@@ -628,7 +642,10 @@ export function tick(s: Siege, dt: number) {
   for (const hit of hits) {
     const v = hit.target, spec = UNITS[v.id];
     v.hp -= hit.damage; v.flash = 0.12;
-    if (v.hp > 0 && !v.boss && !spec.steady && hit.damage >= v.maxHp * KNOCK.share) { if (spec.infantry) v.knock = KNOCK.time; else v.stun = KNOCK.stun; }
+    // A guardian's every blow throws back what it hits (stuns machines and flyers); others only a heavy blow.
+    if (v.hp > 0 && !v.boss && !spec.steady && (hit.boss || hit.damage >= v.maxHp * KNOCK.share)) {
+      if (spec.infantry || hit.boss) { v.knock = KNOCK.time; v.knockBack = hit.boss ? BOSS.knock : undefined; } else v.stun = KNOCK.stun;
+    }
   }
   // Breaking robots fall into a weaker wreck of themselves where they stood, with a blast.
   for (const u of s.units) if (u.hp <= 0 && (u.stage ?? 0) < splitsOf(u)) {
