@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-26T14:47:30.645Z",
-  "date": "2026-10-26",
+  "generatedAt": "2026-10-27T13:53:14.670Z",
+  "date": "2026-10-27",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
@@ -9,7 +9,7 @@
     {
       "title": "Expanding the Cyber Verification Program",
       "source": "Anthropic News",
-      "date": "2026-10-26",
+      "date": "2026-10-27",
       "url": "https://www.anthropic.com/news/cyber-verification-program",
       "summary": "We’re launching a new, expanded version of our Cyber Verification Program, which makes advanced cyber capabilities and reduced blocking classifiers available to qualifying security professionals.",
       "tags": [
@@ -20,7 +20,7 @@
     {
       "title": "Donating Agent Skills to the Agentic AI Foundation",
       "source": "Anthropic News",
-      "date": "2026-10-26",
+      "date": "2026-10-27",
       "url": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -32,7 +32,7 @@
     {
       "title": "Introducing the Anthropic Cyber Mission",
       "source": "Anthropic News",
-      "date": "2026-10-26",
+      "date": "2026-10-27",
       "url": "https://www.anthropic.com/news/anthropic-cyber-mission",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -43,13 +43,198 @@
     {
       "title": "Security",
       "source": "Anthropic News",
-      "date": "2026-10-26",
+      "date": "2026-10-27",
       "url": "https://www.anthropic.com/news/security",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
         "Claude"
       ],
       "image": "https://www-cdn.anthropic.com/images/4zrzovbb/website/6d4a0d28992ade92d6fa63646fd9c9d318245c6c-2400x1260.jpg"
+    },
+    {
+      "title": "Fleet-wide computer vision lifecycle at the edge with SageMaker SDK v3",
+      "source": "AWS Machine Learning",
+      "date": "2026-10-26",
+      "url": "https://aws.amazon.com/blogs/machine-learning/fleet-wide-computer-vision-lifecycle-at-the-edge-with-sagemaker-sdk-v3/",
+      "summary": "Fleet-wide computer vision needs a model per camera, not one model for the whole fleet. This post presents a working Amazon SageMaker SDK v3 reference architecture that trains, quality-gates, compiles per-camera models w...",
+      "tags": [
+        "Multimodal",
+        "Models"
+      ],
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/10/19/ML-20483-1-1.png"
+    },
+    {
+      "title": "Groundhog Day for AI agents: Prompt caching patterns for using OpenAI models on Amazon Bedrock",
+      "source": "AWS Machine Learning",
+      "date": "2026-10-26",
+      "url": "https://aws.amazon.com/blogs/machine-learning/groundhog-day-for-ai-agents-prompt-caching-patterns-for-using-openai-models-on-amazon-bedrock/",
+      "summary": "Every time an agent takes a step, it re-reads its entire context before acting. Here is how prompt caching for OpenAI models on Amazon Bedrock lets your agent remember, cutting input cost and latency without resending th...",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Models"
+      ],
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/10/23/ML-22246-1-1.png"
+    },
+    {
+      "title": "Build agentic retrieval on a Managed Amazon Bedrock Knowledge Base with CDK",
+      "source": "AWS Machine Learning",
+      "date": "2026-10-26",
+      "url": "https://aws.amazon.com/blogs/machine-learning/build-agentic-retrieval-on-a-managed-amazon-bedrock-knowledge-base-with-cdk/",
+      "summary": "Build enterprise agentic retrieval on a Managed Amazon Bedrock Knowledge Base with the AWS CDK: an agent that routes across two knowledge bases, retrieves through the AgentCore Gateway, and returns grounded, cited answer...",
+      "tags": [
+        "Agents"
+      ],
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/10/22/ML-21614-1.png"
+    },
+    {
+      "title": "GitHub Copilot assisted permissions generally available",
+      "source": "GitHub Changelog",
+      "date": "2026-10-26",
+      "url": "https://github.blog/changelog/2026-10-26-github-copilot-assisted-permissions-generally-available",
+      "summary": "Assisted permissions are now generally available in GitHub Copilot CLI, GitHub Copilot app, and Visual Studio Code. When Copilot requests permission to run a command, access a file system path,… The post GitHub Copilot a...",
+      "tags": [
+        "Copilot",
+        "Dev Tools"
+      ],
+      "image": "https://github.com/user-attachments/assets/35c8a739-d736-4270-890a-b1407e4c8e4d"
+    },
+    {
+      "title": "GPT-6.1 Terra in GitHub Copilot",
+      "source": "GitHub Changelog",
+      "date": "2026-10-26",
+      "url": "https://github.blog/changelog/2026-10-26-gpt-6-1-terra-in-github-copilot",
+      "summary": "GPT-6.1 Terra, OpenAI’s newest model, is now generally available in GitHub Copilot. It is designed for everyday agentic coding and terminal work at a lower cost than GPT-6.1 Sol. In… The post GPT-6.1 Terra in GitHub Copi...",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Copilot",
+        "Dev Tools"
+      ],
+      "image": "https://github.blog/wp-content/uploads/2026/10/682153766-30ae8bb0-a424-401c-80e8-bb06bec001b2.png"
+    },
+    {
+      "title": "How NVIDIA Mission Control 2.5 Brings Autonomous Recovery to Kubernetes",
+      "source": "NVIDIA Developer",
+      "date": "2026-10-26",
+      "url": "https://developer.nvidia.com/blog/how-nvidia-mission-control-2-5-brings-autonomous-recovery-to-kubernetes/",
+      "summary": "Training large-scale AI models on thousands of GPUs is a high-stakes operation where monitoring and automation must be built-in to optimize cluster resiliency...",
+      "tags": [
+        "Dev Tools",
+        "Automation",
+        "Models"
+      ],
+      "image": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/09/7_resized-768x431.jpg"
+    },
+    {
+      "title": "Greptile takes bug detection beyond code review with GPT-6 Astra",
+      "source": "OpenAI News",
+      "date": "2026-10-26",
+      "url": "https://openai.com/index/greptile-code-review-codex-astra",
+      "summary": "How Greptile uses GPT-6 Astra to test user workflows, Daybreak to strengthen security, and Codex to reduce rework.",
+      "tags": [
+        "ChatGPT",
+        "Dev Tools",
+        "Automation"
+      ],
+      "image": ""
+    },
+    {
+      "title": "Working with academic communities to build scientific understanding",
+      "source": "OpenAI News",
+      "date": "2026-10-26",
+      "url": "https://openai.com/index/building-scientific-understanding-with-academic-communities",
+      "summary": "OpenAI shares model results on the Kakeya conjecture, Exponential Time Hypothesis, and quantum chromodynamics—and how researchers can verify and build on them.",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ],
+      "image": ""
+    },
+    {
+      "title": "GPT-6.1 Sol helps CodeRabbit strengthen security across complex codebases",
+      "source": "OpenAI News",
+      "date": "2026-10-26",
+      "url": "https://openai.com/index/gpt-6-1-sol-coderabbit-code-security",
+      "summary": "CodeRabbit uses GPT-6.1 Sol to investigate security risks across complex codebases. Its security agent helps developers review findings and proposed fixes.",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Dev Tools"
+      ],
+      "image": ""
+    },
+    {
+      "title": "ChatGPT’s expanding world of work",
+      "source": "OpenAI News",
+      "date": "2026-10-26",
+      "url": "https://openai.com/index/chatgpt-expanding-world-of-work",
+      "summary": "Explore OpenAI Signals data on 165 work activities across nearly 100 countries, revealing how people use ChatGPT for work and how usage changes over time.",
+      "tags": [
+        "ChatGPT"
+      ],
+      "image": ""
+    },
+    {
+      "title": "GPT-6.1 Terra",
+      "source": "Simon Willison",
+      "date": "2026-10-26",
+      "url": "https://simonwillison.net/2026/Oct/26/gpt-61-terra/",
+      "summary": "GPT-6.1 Terra It's always interesting to note which aspects of a new model are emphasized in the release announcement. In the case of GPT-6.1 Terra, OpenAI went with visual reasoning and computer use: We’re introducing G...",
+      "tags": [
+        "ChatGPT",
+        "Claude",
+        "Dev Tools",
+        "Multimodal"
+      ],
+      "image": "https://static.simonwillison.net/static/2026-10-26/terra-max.webp"
+    },
+    {
+      "title": "Quoting Jason Koebler",
+      "source": "Simon Willison",
+      "date": "2026-10-26",
+      "url": "https://simonwillison.net/2026/Oct/26/jason-koebler/",
+      "summary": "Because big tech platforms essentially do not have customer support and make it impossible for their users to contact a human, many people experiencing run-of-the-mill tech problems have turned to ChatGPT. And, increasin...",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ],
+      "image": "https://simonwillison.net/2026/Oct/26/jason-koebler/"
+    },
+    {
+      "title": "webframe: evaluated as a scraper and a sandbox",
+      "source": "Simon Willison",
+      "date": "2026-10-26",
+      "url": "https://simonwillison.net/2026/Oct/26/webframe-evaluation/",
+      "summary": "Research: webframe: evaluated as a scraper and a sandbox webframe is a neat little project from Jeff Lindsay which lets you \"run a web page like a program\" - you point it at a URL or file and it executes it in a hidden h...",
+      "tags": [
+        "Claude"
+      ],
+      "image": "https://simonwillison.net/2026/Oct/26/webframe-evaluation/"
+    },
+    {
+      "title": "The RealReal won’t let AI agents hog designer clothing",
+      "source": "The Verge AI",
+      "date": "2026-10-26",
+      "url": "https://www.theverge.com/news/1018713/meta-muse-agentic-shopping-ai-the-realreal",
+      "summary": "The RealReal, a secondhand luxury fashion consignment retailer, said it's updating its bot defense system, effectively making it harder for AI agents to shop on its site. The change comes days after The Verge reported th...",
+      "tags": [
+        "Agents"
+      ],
+      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/10/STKS539_AI_AGENTS_SHOPPING_E.jpg?quality=90&strip=all&crop=0,0,100,100"
+    },
+    {
+      "title": "Can AI help solve the COBOL code crisis?",
+      "source": "The Verge AI",
+      "date": "2026-10-26",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1018434/cobol-migration-legacy-code-openai-anthropic",
+      "summary": "What do the IRS, banks, airlines, and government infrastructure around the world have in common? They're all running on systems propped up by antique computer code that nobody dares touch, lest everything come crashing d...",
+      "tags": [
+        "ChatGPT",
+        "Dev Tools",
+        "Models"
+      ],
+      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/10/gettyimages-1246435991.jpg?quality=90&strip=all&crop=0,0,100,100"
     },
     {
       "title": "battledrones v14: Compass Rose, a four player map",
@@ -64,184 +249,6 @@
         "Models"
       ],
       "image": "https://raw.githubusercontent.com/simonw/battledrones/v14/progress-shots/v14/compass-rose.jpg"
-    },
-    {
-      "title": "Multi-Turn Reinforcement Learning on Amazon SageMaker AI: A hands-on guide",
-      "source": "AWS Machine Learning",
-      "date": "2026-10-23",
-      "url": "https://aws.amazon.com/blogs/machine-learning/multi-turn-reinforcement-learning-on-amazon-sagemaker-ai-a-hands-on-guide/",
-      "summary": "Multi-Turn Reinforcement Learning (MTRL) on Amazon SageMaker AI trains models on the outcome of a whole multi-step task rather than labeled steps. This hands-on guide walks the full pipeline using Wordle: deploying the a...",
-      "tags": [
-        "Agents",
-        "Models"
-      ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/10/12/ML-22014-1.png"
-    },
-    {
-      "title": "Orchestrating SageMaker AI endpoint auto scaling with AWS CDK",
-      "source": "AWS Machine Learning",
-      "date": "2026-10-23",
-      "url": "https://aws.amazon.com/blogs/machine-learning/orchestrating-sagemaker-ai-endpoint-auto-scaling-with-aws-cdk/",
-      "summary": "Updating a SageMaker AI endpoint that has Application Auto Scaling registered makes AWS CloudFormation and AWS CDK deployments fail. This post shows how to build a reusable AWS CDK construct with CloudFormation custom re...",
-      "tags": [
-        "AI"
-      ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/10/19/ML-20841-1.png"
-    },
-    {
-      "title": "How Bayer Crop Science built an agentic decision engine on Amazon Bedrock AgentCore with AWS Unified Operations",
-      "source": "AWS Machine Learning",
-      "date": "2026-10-23",
-      "url": "https://aws.amazon.com/blogs/machine-learning/how-bayer-crop-science-built-an-agentic-decision-engine-on-amazon-bedrock-agentcore-with-aws-unified-operations/",
-      "summary": "Bayer Crop Science built the Agentic Decision Engine (ADE), a multi-agent platform on Amazon Bedrock AgentCore that lets breeders, analysts, and researchers ask natural language questions about their analytics platform. ...",
-      "tags": [
-        "Agents"
-      ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/10/22/ML-21834-1.png"
-    },
-    {
-      "title": "Usage metrics API adds usage from tools like OpenCode",
-      "source": "GitHub Changelog",
-      "date": "2026-10-23",
-      "url": "https://github.blog/changelog/2026-10-23-usage-metrics-api-adds-usage-from-tools-like-opencode",
-      "summary": "The Copilot usage metrics API now reports model usage from more of the tools your developers use with Copilot, including tools like OpenCode that weren’t previously captured in your reports.… The post Usage metrics API a...",
-      "tags": [
-        "Agents",
-        "Copilot",
-        "Dev Tools",
-        "Models"
-      ],
-      "image": "https://github.blog/wp-content/uploads/2026/10/682164468-bde58abd-ebed-4a21-983d-e7ea362b9ed5.jpeg"
-    },
-    {
-      "title": "Turn notifications into code with GitHub Copilot in Teams",
-      "source": "GitHub Changelog",
-      "date": "2026-10-23",
-      "url": "https://github.blog/changelog/2026-10-23-turn-notifications-into-code-with-github-copilot-in-teams",
-      "summary": "The new GitHub app in Teams brings notifications and Copilot together, helping teams turn issues into fixes and ship code faster without leaving the conversation. Get notified in channels, group… The post Turn notificati...",
-      "tags": [
-        "Copilot",
-        "Dev Tools"
-      ],
-      "image": "https://github.blog/wp-content/uploads/2026/10/Issue_notification_social.jpeg"
-    },
-    {
-      "title": "GitHub Copilot in Visual Studio — September update",
-      "source": "GitHub Changelog",
-      "date": "2026-10-23",
-      "url": "https://github.blog/changelog/2026-10-22-github-copilot-in-visual-studio-september-update-2",
-      "summary": "September 2026 brought deeper visibility into your work: explore pull requests without leaving chat, bring the AI model your team trusts, and fix vulnerable packages the moment Visual Studio flags… The post GitHub Copilo...",
-      "tags": [
-        "Copilot",
-        "Models"
-      ],
-      "image": "https://github.blog/wp-content/themes/github-2021-child/dist/img/social-v3-new-releases.jpg"
-    },
-    {
-      "title": "Does Your Model Run on AWS Trainium? Look It Up",
-      "source": "Hugging Face",
-      "date": "2026-10-23",
-      "url": "https://huggingface.co/blog/torch-neuronx-model-support",
-      "summary": "AI update detected from an official or high-signal source.",
-      "tags": [
-        "Models"
-      ],
-      "image": "https://huggingface.co/blog/assets/torch-neuronx-model-support/thumbnail.jpg"
-    },
-    {
-      "title": "Scaling NVIDIA TensorRT Performance Optimization Beyond a Single Build Route with the Global Performance Tuner, Part 1",
-      "source": "NVIDIA Developer",
-      "date": "2026-10-23",
-      "url": "https://developer.nvidia.com/blog/scaling-nvidia-tensorrt-performance-optimization-beyond-a-single-build-route-with-the-global-performance-tuner-part-1/",
-      "summary": "Deploying a trained neural network involves more than translating each operator into a GPU kernel. It is a compilation problem with many legitimate answers. For...",
-      "tags": [
-        "Dev Tools"
-      ],
-      "image": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/10/desktop-computer-overlay-768x432.png"
-    },
-    {
-      "title": "Using AI Agents to Teach Robots Like Microduck to Walk in Simulation",
-      "source": "NVIDIA Developer",
-      "date": "2026-10-23",
-      "url": "https://developer.nvidia.com/blog/using-ai-agents-to-teach-robots-like-microduck-to-walk-in-simulation/",
-      "summary": "Teaching a robot to navigate an obstacle course requires more than a walking policy. It must perceive its surroundings, maintain balance, and adjust its actions...",
-      "tags": [
-        "Agents",
-        "Dev Tools"
-      ],
-      "image": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/10/Microduck-labels-768x432.jpg"
-    },
-    {
-      "title": "Rapidly scaling online storage to serve over 1 billion ChatGPT users (Part II)",
-      "source": "OpenAI News",
-      "date": "2026-10-23",
-      "url": "https://openai.com/index/scaling-storage-one-billion-users-part-two",
-      "summary": "Learn how OpenAI scaled Habitat with reliable multi-tenancy, global caching, and Azure Cosmos DB to deliver 12× faster reads for ChatGPT.",
-      "tags": [
-        "ChatGPT"
-      ],
-      "image": ""
-    },
-    {
-      "title": "Securing our frontier model training environment",
-      "source": "OpenAI News",
-      "date": "2026-10-23",
-      "url": "https://openai.com/index/securing-our-frontier-model-training-environment",
-      "summary": "OpenAI explains how we strengthened containment for frontier model training and evaluation, including offline environments and high-compute red-teaming.",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ],
-      "image": ""
-    },
-    {
-      "title": "OpenAI and Poland’s NASK partner to advance AI safety and security",
-      "source": "OpenAI News",
-      "date": "2026-10-23",
-      "url": "https://openai.com/index/openai-nask-ai-safety-security-partnership",
-      "summary": "OpenAI and Poland’s NASK are partnering on AI safety, security, and technical research to strengthen safeguards and support a more resilient digital ecosystem.",
-      "tags": [
-        "ChatGPT"
-      ],
-      "image": ""
-    },
-    {
-      "title": "Quick Study",
-      "source": "Simon Willison",
-      "date": "2026-10-23",
-      "url": "https://simonwillison.net/2026/Oct/23/quick-study-painter/",
-      "summary": "Tool: Quick Study Prompt to Claude Opus 5.5 High : Build an artifact where you open a photo and it rapidly (in a few seconds) paints a version of that photo using a canvas element and simulated paintbrush See also my pre...",
-      "tags": [
-        "Agents",
-        "Claude"
-      ],
-      "image": "https://static.simonwillison.net/static/2026/heron-oil.webp"
-    },
-    {
-      "title": "Introducing Kimi K3.1 Pro",
-      "source": "Simon Willison",
-      "date": "2026-10-23",
-      "url": "https://simonwillison.net/2026/Oct/23/kimi-k31-pro/",
-      "summary": "Introducing Kimi K3.1 Pro Kimi K3.1 Pro landed on the Kimi API today - it's not yet open weights, but Moonshot promise \"Full model weights will be released by Nov 4, 2026\". They're also offering a \"Highspeed\" version tha...",
-      "tags": [
-        "ChatGPT",
-        "Claude",
-        "Gemini",
-        "Models"
-      ],
-      "image": "https://static.simonwillison.net/static/2026-10-23/image-2.png"
-    },
-    {
-      "title": "OpenAI now trains its frontier AI models with no internet access",
-      "source": "The Verge AI",
-      "date": "2026-10-23",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1018021/openai-training-top-ai-models-no-internet",
-      "summary": "OpenAI is now training its most advanced AI models without internet access following a string of rogue hacking incidents. In a blog post on Friday, OpenAI says it built an offline testing environment where AI models can ...",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ],
-      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2025/02/STK155_OPEN_AI_2025_CVirgiia_B_d6ffc8.jpg?quality=90&strip=all&crop=0,0,100,100"
     }
   ],
   "candidates": [
@@ -254,19 +261,19 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
+          "date": "2026-10-27"
+        },
+        {
+          "title": "Groundhog Day for AI agents: Prompt caching patterns for using OpenAI models on Amazon Bedrock",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/groundhog-day-for-ai-agents-prompt-caching-patterns-for-using-openai-models-on-amazon-bedrock/",
           "date": "2026-10-26"
         },
         {
-          "title": "Multi-Turn Reinforcement Learning on Amazon SageMaker AI: A hands-on guide",
+          "title": "Build agentic retrieval on a Managed Amazon Bedrock Knowledge Base with CDK",
           "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/multi-turn-reinforcement-learning-on-amazon-sagemaker-ai-a-hands-on-guide/",
-          "date": "2026-10-23"
-        },
-        {
-          "title": "How Bayer Crop Science built an agentic decision engine on Amazon Bedrock AgentCore with AWS Unified Operations",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/how-bayer-crop-science-built-an-agentic-decision-engine-on-amazon-bedrock-agentcore-with-aws-unified-operations/",
-          "date": "2026-10-23"
+          "link": "https://aws.amazon.com/blogs/machine-learning/build-agentic-retrieval-on-a-managed-amazon-bedrock-knowledge-base-with-cdk/",
+          "date": "2026-10-26"
         }
       ]
     },
@@ -279,6 +286,12 @@
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
+          "date": "2026-10-27"
+        },
+        {
+          "title": "webframe: evaluated as a scraper and a sandbox",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/26/webframe-evaluation/",
           "date": "2026-10-26"
         },
         {
@@ -286,37 +299,6 @@
           "source": "Simon Willison",
           "link": "https://simonwillison.net/2026/Oct/24/battledrones/",
           "date": "2026-10-24"
-        },
-        {
-          "title": "Quick Study",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/23/quick-study-painter/",
-          "date": "2026-10-23"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Usage metrics API adds usage from tools like OpenCode",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-10-23-usage-metrics-api-adds-usage-from-tools-like-opencode",
-          "date": "2026-10-23"
-        },
-        {
-          "title": "Running Frontier-Class AI Models Across 8 NVIDIA DGX Spark Nodes",
-          "source": "NVIDIA Developer",
-          "link": "https://developer.nvidia.com/blog/running-frontier-class-ai-models-across-8-nvidia-dgx-spark-nodes/",
-          "date": "2026-10-22"
-        },
-        {
-          "title": "Developing an AI Factory Digital Twin with an Agent-Assisted Workflow",
-          "source": "NVIDIA Developer",
-          "link": "https://developer.nvidia.com/blog/developing-an-ai-factory-digital-twin-with-an-agent-assisted-workflow/",
-          "date": "2026-10-21"
         }
       ]
     },
@@ -326,21 +308,78 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "GitHub Copilot assisted permissions generally available",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-10-26-github-copilot-assisted-permissions-generally-available",
+          "date": "2026-10-26"
+        },
+        {
+          "title": "GPT-6.1 Terra in GitHub Copilot",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-10-26-gpt-6-1-terra-in-github-copilot",
+          "date": "2026-10-26"
+        },
+        {
           "title": "Usage metrics API adds usage from tools like OpenCode",
           "source": "GitHub Changelog",
           "link": "https://github.blog/changelog/2026-10-23-usage-metrics-api-adds-usage-from-tools-like-opencode",
           "date": "2026-10-23"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "GPT-6.1 Terra in GitHub Copilot",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-10-26-gpt-6-1-terra-in-github-copilot",
+          "date": "2026-10-26"
+        }
+      ]
+    },
+    {
+      "label": "AI automation and workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "How NVIDIA Mission Control 2.5 Brings Autonomous Recovery to Kubernetes",
+          "source": "NVIDIA Developer",
+          "link": "https://developer.nvidia.com/blog/how-nvidia-mission-control-2-5-brings-autonomous-recovery-to-kubernetes/",
+          "date": "2026-10-26"
         },
         {
-          "title": "Turn notifications into code with GitHub Copilot in Teams",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-10-23-turn-notifications-into-code-with-github-copilot-in-teams",
-          "date": "2026-10-23"
+          "title": "AI adoption by industry shows what other sectors can learn",
+          "source": "MIT Technology Review AI",
+          "link": "https://www.technologyreview.com/2026/10/20/1145423/ai-adoption-by-industry-shows-what-other-sectors-can-learn/",
+          "date": "2026-10-20"
+        }
+      ]
+    },
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "GPT-6.1 Sol helps CodeRabbit strengthen security across complex codebases",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/gpt-6-1-sol-coderabbit-code-security",
+          "date": "2026-10-26"
         },
         {
-          "title": "GitHub Copilot in Visual Studio — September update",
+          "title": "GPT-6.1 Terra",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/26/gpt-61-terra/",
+          "date": "2026-10-26"
+        },
+        {
+          "title": "Usage metrics API adds usage from tools like OpenCode",
           "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-10-22-github-copilot-in-visual-studio-september-update-2",
+          "link": "https://github.blog/changelog/2026-10-23-usage-metrics-api-adds-usage-from-tools-like-opencode",
           "date": "2026-10-23"
         }
       ]
@@ -351,16 +390,22 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "ChatGPT’s expanding world of work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/chatgpt-expanding-world-of-work",
+          "date": "2026-10-26"
+        },
+        {
+          "title": "Quoting Jason Koebler",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/26/jason-koebler/",
+          "date": "2026-10-26"
+        },
+        {
           "title": "Rapidly scaling online storage to serve over 1 billion ChatGPT users (Part II)",
           "source": "OpenAI News",
           "link": "https://openai.com/index/scaling-storage-one-billion-users-part-two",
           "date": "2026-10-23"
-        },
-        {
-          "title": "Uber brings ChatGPT Work to all employees with OpenAI",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/uber-chatgpt-work-rollout",
-          "date": "2026-10-22"
         }
       ]
     },
@@ -376,54 +421,16 @@
           "date": "2026-10-23"
         },
         {
-          "title": "OpenAI models are coming to Google Cloud",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/openai-models-google-cloud",
-          "date": "2026-10-21"
-        },
-        {
-          "title": "Today's PHP Security Release, and How We're Strengthening PHP Security",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/21/php-security-release/",
-          "date": "2026-10-21"
-        }
-      ]
-    },
-    {
-      "label": "MCP / tool-connected assistants",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Custom skills, agents, and MCP servers in usage metrics API",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-10-22-custom-skills-agents-and-mcp-servers-in-usage-metrics-api",
-          "date": "2026-10-22"
-        },
-        {
-          "title": "Custom skills, agents, and MCP servers in usage metrics API",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-10-22-custom-skills-agents-and-mcp-servers-in-usage-metrics-api",
-          "date": "2026-10-22"
-        },
-        {
-          "title": "Donating Agent Skills to the Agentic AI Foundation",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/22/donating-agent-skills/",
-          "date": "2026-10-22"
-        }
-      ]
-    },
-    {
-      "label": "AI automation and workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "AI adoption by industry shows what other sectors can learn",
-          "source": "MIT Technology Review AI",
-          "link": "https://www.technologyreview.com/2026/10/20/1145423/ai-adoption-by-industry-shows-what-other-sectors-can-learn/",
+          "title": "Gemini's Personal Intelligence is coming to cars",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/google/2026/10/geminis-personal-intelligence-is-coming-to-cars/",
           "date": "2026-10-20"
+        },
+        {
+          "title": "Gemini 4 Argon: Built to solve your hardest problems",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-argon/",
+          "date": "2026-10-13"
         }
       ]
     }
