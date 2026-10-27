@@ -131,7 +131,10 @@ function base(ctx: CanvasRenderingContext2D, s: Siege, x: number, ground: number
     const h = Math.min(enemy ? ENEMY_H[tier - 1] : look.h, ground - 30), w = h * wall.naturalWidth / wall.naturalHeight;
     // Kept whole on the field: a wide one moves in from the field's edge rather than past it.
     const foot = enemy ? 10 : look.deck, left = enemy ? Math.min(-w / 2, FIELD - 4 - x - w) : Math.max(-w / 2, 4 - x);
+    // The enemy's pictures face front-right; the fortress is turned to face our side (left).
+    if (enemy) { ctx.save(); ctx.translate(left + w / 2, 0); ctx.scale(-1, 1); ctx.translate(-(left + w / 2), 0); }
     ctx.drawImage(wall, left, -h + foot, w, h);
+    if (enemy) ctx.restore();
     damage(ctx, w, h - foot, left, hp, max, s.time);
     top = -h + foot - 6;
     if (!enemy) {
