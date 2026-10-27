@@ -273,16 +273,19 @@ test('the corrupt wind: at half the fortress\'s health, once, it blows our troop
   const late = m.newSiege({ ...m.freshProgress(), unlocked: m.LAST }, m.LAST); late.nextWave = 0; m.tick(late, 1 / 30);
   assert.ok(late.units.find(u => u.side).grow > 1.25, 'the last battle\'s enemies are bigger');
 });
-test('special powers: bought with gold by act, three go into the kit, saves are sanitised', () => {
-  const p = m.freshProgress(); p.coins = 5000;
+test('special powers: bought with gold by act, any bought form goes in the kit (four), saves are sanitised', () => {
+  const p = m.freshProgress(); p.coins = 9000;
   assert.equal(m.buyPower(p, 2), false, 'tsunami is not open in act 1');
-  assert.equal(m.buyPower(p, 0), true); assert.equal(p.powers[0], 1); assert.deepEqual(p.kit, [0]); assert.equal(p.coins, 5000 - m.POWERS[0].price);
-  assert.equal(m.buyPower(p, 0), true); assert.equal(p.powers[0], 2, 'the next form');
+  assert.equal(m.buyPower(p, 0), true); assert.equal(p.powers[0], 1); assert.deepEqual(p.kit, [m.powerCard(0, 1)]); assert.equal(p.coins, 9000 - m.POWERS[0].price);
+  assert.equal(m.buyPower(p, 0), true); assert.equal(p.powers[0], 2, 'the next form'); assert.ok(p.kit.includes(m.powerCard(0, 1)) && p.kit.includes(m.powerCard(0, 2)), 'the earlier form stays and can be used with the new one');
+  assert.equal(m.toggleKit(p, 0, 1), true); assert.ok(!p.kit.includes(m.powerCard(0, 1)), 'taken out'); assert.equal(m.toggleKit(p, 0, 1), true); assert.ok(p.kit.includes(m.powerCard(0, 1)), 'and back in');
+  assert.equal(m.toggleKit(p, 0, 3), false, 'a form not bought yet cannot go in');
   for (let i = 0; i < 5; i++) m.buyPower(p, 0); assert.equal(p.powers[0], m.POWERS[0].forms.length, 'no further than the last form');
-  p.unlocked = 30; p.coins = 99999; for (const id of [1, 2, 3]) m.buyPower(p, id);
-  assert.equal(p.kit.length, m.KIT, 'the kit holds three'); assert.equal(m.toggleKit(p, 3), false, 'the kit is full'); assert.equal(m.toggleKit(p, 2), true, 'out'); assert.equal(m.toggleKit(p, 3), true, 'the power in its place'); assert.equal(m.toggleKit(p, 2), false, 'full again');
-  const back = m.readProgress(JSON.stringify({ ...p, powers: [99, -4, 'x', 2], kit: [0, 0, 1, 7, 'a', 3, 2, 1] }));
-  assert.equal(back.powers[0], m.POWERS[0].forms.length); assert.equal(back.powers[1], 0); assert.ok(back.kit.length <= m.KIT && back.kit.every(id => back.powers[id] > 0));
+  assert.equal(p.kit.length, m.KIT, 'the kit holds four'); assert.equal(m.toggleKit(p, 0, 1), true); assert.equal(m.toggleKit(p, 0, 1), true, 'out and back in'); 
+  p.unlocked = 30; p.coins = 99999; m.buyPower(p, 1); assert.equal(p.kit.length, m.KIT, 'a full kit takes no more by itself'); assert.equal(m.toggleKit(p, 1, 1), false, 'full');
+  const back = m.readProgress(JSON.stringify({ ...p, powers: [99, -4, 'x', 2], kit: [0, 0, 100, 900, 1, 'a', 3, 301, 200] }));
+  assert.equal(back.powers[0], m.POWERS[0].forms.length); assert.equal(back.powers[1], 0);
+  assert.ok(back.kit.length <= m.KIT && back.kit.every(c => m.hasPower(back, c)), 'only bought forms stay'); assert.ok(!back.kit.includes(1) && !back.kit.includes(900) && back.kit.includes(200));
   assert.equal(m.readProgress('{"version":1}').powers.length, m.POWERS.length, 'an older save has none');
 });
 test('special powers cover the stretch of field on screen, then recharge', () => {
@@ -290,12 +293,12 @@ test('special powers cover the stretch of field on screen, then recharge', () =>
     const p = m.freshProgress(); p.unlocked = 30; p.coins = 99999; m.buyPower(p, id);
     const s = m.newSiege(p, 1); s.view = { x: 500, width: 700 };
     const foes = [300, 600, 900, 1150, 1500].map((x, i) => { const u = { ...s.units[0] ?? { id: 0, lane: 0, uid: 0, damage: 0, attack: 9, flash: 0, boss: false }, uid: 100 + i, side: 1, x, hp: 4000, maxHp: 4000, damage: 0, attack: 99 }; s.units.push(u); return u; });
-    s.energy = 999; assert.equal(m.castPower(s, id), true); assert.equal(s.energy, 999 - m.POWERS[id].mana, 'it costs energy'); assert.equal(m.castPower(s, id), false, 'it recharges first');
+    assert.equal(m.castPower(s, id), true); assert.equal(s.energy, 80, 'it costs no energy'); assert.equal(m.castPower(s, id), false, 'it recharges first');
     const fx = s.effects.filter(e => e.kind !== 'wave'); for (const e of fx) assert.ok(e.x >= 500 && e.x <= 1200, `${id}: every blow lands on screen (${e.x})`);
     run(s, 4);
     assert.ok(foes[1].hp < 4000 && foes[2].hp < 4000 && foes[3].hp < 4000, `${id}: the enemies on screen are hurt`);
     assert.equal(foes[0].hp, 4000, `${id}: not those off the left`); assert.equal(foes[4].hp, 4000, `${id}: nor off the right`);
-    s.kitCd[id] = 0; s.energy = 5; assert.equal(m.castPower(s, id), false, 'not without the energy'); s.energy = 999; assert.equal(m.castPower(s, id), true);
+    s.kitCd[id] = 0; assert.equal(m.castPower(s, id), true);
   }
 });
 test('the tsunami throws the enemy back; ice and lightning freeze or stun; an unbought power cannot be cast', () => {
@@ -303,9 +306,11 @@ test('the tsunami throws the enemy back; ice and lightning freeze or stun; an un
   const s = m.newSiege(p, 1); s.view = { x: 400, width: 700 }; m.summon(s, 0);
   const foe = { ...s.units[0], uid: 50, side: 1, x: 700, hp: 9000, maxHp: 9000, damage: 0 }; s.units.push(foe); s.units[0].x = 150;
   assert.equal(m.castPower(s, 0), false, 'the arrow rain is not in the kit');
-  s.energy = 999; assert.equal(m.castPower(s, 2), true); run(s, 3); assert.ok(foe.x > 800, `pushed back (${foe.x})`);
+  assert.equal(m.castPower(s, 2), true); run(s, 3); assert.ok(foe.x > 800, `pushed back (${foe.x})`);
 });
-test('the discharge and the missile cost energy too', () => {
-  const s = m.newSiege(m.freshProgress(), 1); s.energy = m.MANA.strike - 1; assert.equal(m.strike(s), false); s.energy = m.MANA.missile - 1; assert.equal(m.missile(s), false);
-  s.energy = 200; assert.equal(m.strike(s), true); assert.equal(s.energy, 200 - m.MANA.strike); s.energy = 200; assert.equal(m.missile(s), true); assert.equal(s.energy, 200 - m.MANA.missile);
+test('an upgraded power still casts its earlier form, with its own recharge', () => {
+  const p = m.freshProgress(); p.coins = 9000; m.buyPower(p, 0); m.buyPower(p, 0);
+  const s = m.newSiege(p, 1); s.view = { x: 300, width: 700 };
+  assert.equal(m.castPower(s, m.powerCard(0, 1)), true); assert.equal(m.castPower(s, m.powerCard(0, 2)), true, 'the other form is not on the same recharge'); assert.equal(m.castPower(s, m.powerCard(0, 1)), false);
+  assert.equal(m.castPower(s, m.powerCard(0, 3)), false, 'a form not in the kit');
 });
