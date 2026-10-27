@@ -48,11 +48,12 @@ export function preload(world: number, deck: number[], _levels: number[] = []) {
     field with `pad` field units past each end, its walking ground (`ground`, a share of its height) on the troops'
     ground line; it moves with the troops. Every picture has its ground edge on the same row, so the troops stand alike
     on all of them. `SCENES` gives each act its picture, and for some a second one for its fourth stage (a nearby place,
-    so a world does not look the same five times); acts without one keep the first picture (`SCENE`). */
+    so a world does not look the same five times), and a third for its guardian's stage (the first world's: the old half
+    corrupt picture, the Darkness reaching it); acts without one keep the first picture (`SCENE`). */
 const SCENE = 'siege/backdrop';
 const SCENE_FIT = { pad: 120, ground: 0.8 };
-const SCENES: Record<number, [string, string?]> = { 1: ['siege/bg-clean'], 2: ['siege/bg-islands', 'siege/bg-sky'], 3: ['siege/bg-forest', 'siege/bg-swamp'], 4: ['siege/bg-desert'], 5: ['siege/bg-snow'], 6: ['siege/bg-final'] };
-export const sceneOf = (stage: number) => { const pics = SCENES[actOf(stage)]; return pics ? (stageIn(stage) === 4 && pics[1]) || pics[0] : SCENE; };
+const SCENES: Record<number, [string, string?, string?]> = { 1: ['siege/bg-clean', undefined, SCENE], 2: ['siege/bg-islands', 'siege/bg-sky'], 3: ['siege/bg-forest', 'siege/bg-swamp'], 4: ['siege/bg-desert'], 5: ['siege/bg-snow'], 6: ['siege/bg-final'] };
+export const sceneOf = (stage: number) => { const pics = SCENES[actOf(stage)]; return pics ? (stageIn(stage) === 4 && pics[1]) || (stageIn(stage) === 5 && pics[2]) || pics[0] : SCENE; };
 /** Each picture's top row averaged down to 16 colours, kept: stretched over any sky above the picture (a tall view) it
     is a smooth gradient, where the raw row stretched would be streaks. */
 const tops = new Map<HTMLImageElement, HTMLCanvasElement>();
