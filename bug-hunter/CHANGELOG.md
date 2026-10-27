@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.22 - 2026-10-27
+
+### Changed
+- Siege Cartoon: explosions are smaller, and the robots' rockets blow up with black smoke while our crossbow's keep the grey.
+
 ## 1.15.21 - 2026-10-27
 
 ### Changed

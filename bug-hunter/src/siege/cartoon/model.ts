@@ -310,6 +310,8 @@ export const KNOCK = { share: 0.2, time: 0.55, back: 70, stun: 0.35 };
 export interface Effect { x: number; from: number; lane: number; life: number; max: number; kind: 'shot' | 'burst' | 'arrow' | 'rocket' | 'bolt' | 'gust' | 'loot' | 'boom' | 'fire'; side: 0 | 1;
   /** A `boom` (an explosion) or a `fire` (a burning pool on the ground): its size, and the height it is at. */
   size?: number; up?: number;
+  /** A `boom` with black smoke (the robots' rockets) instead of grey (our crossbow's). */
+  dark?: boolean;
   /** A fallen enemy's bounty, shown rising where it fell. */
   gold?: number; mana?: number;
   /** A shot's own projectile picture (`Spec.shot`) and whether it spins. */
@@ -606,7 +608,7 @@ export function tick(s: Siege, dt: number) {
             s.effects.push({ x, from: x, lane: enemy.lane, life: flight + wait + FIRE, max: FIRE, kind: 'fire', side: u.side, size: 60, up: dy });
           }
         } else s.effects.push({ x: enemy.x, from: u.x, lane: enemy.lane, life: flight, max: flight, kind: u.elite ? 'bolt' : 'shot', side: u.side, art: a.shot, spin: a.spin, fromUp: a.air ? u.alt ?? FLY.high : 0, toUp });
-        if (a.blast) s.effects.push({ x: enemy.x, from: enemy.x, lane: enemy.lane, life: flight + BOOM, max: BOOM, kind: 'boom', side: u.side, size: a.shot === 'salvo' ? 90 : 70, up: toUp });
+        if (a.blast) s.effects.push({ x: enemy.x, from: enemy.x, lane: enemy.lane, life: flight + BOOM, max: BOOM, kind: 'boom', side: u.side, size: a.shot === 'salvo' ? 90 : 70, up: toUp, dark: true });
         hear(s, soundsOf(u)[0], u.x);
       }
     } else if (Math.abs(baseX - u.x) <= a.range + 35) {
