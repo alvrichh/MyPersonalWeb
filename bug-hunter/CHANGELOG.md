@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.43 - 2026-10-27
+
+### Changed
+- Siege Cartoon: our fortress has five looks, one per workshop level (the owner's new castles, crossbow seated on each one's cannon), instead of four.
+
 ## 1.15.42 - 2026-10-27
 
 ### Changed
