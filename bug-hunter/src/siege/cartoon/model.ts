@@ -355,8 +355,8 @@ const growAt = (stage: number) => 1 + GROW * (Math.min(LAST, Math.max(1, stage))
 export const looksTier = (level: number) => (level >= 5 ? 4 : level >= 4 ? 3 : level >= 2 ? 2 : 1);
 /** Which of the five castle pictures a workshop level (0-5) shows for our fortress. */
 export const castleTier = (level: number) => Math.max(1, Math.min(5, level));
-/** Which of the enemy fortress's three pictures a battle shows, by its act: acts 1-2, 3-4, 5-6. */
-export const enemyTier = (stage: number) => Math.min(3, Math.max(1, Math.ceil(actOf(stage) / 2)));
+/** Which of the enemy fortress's five pictures a battle shows, by its act (six acts: 1, 2, 3, 4, 4, 5). */
+export const enemyTier = (stage: number) => [1, 2, 3, 4, 4, 5][Math.min(ACTS, Math.max(1, actOf(stage))) - 1];
 
 export const energyMax = (s: Siege) => 180 + s.generator * 70;
 export const energyRate = (s: Siege) => 7 + s.generator * 2.5 + s.economy;
