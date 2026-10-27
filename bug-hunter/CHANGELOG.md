@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.45 - 2026-10-27
+
+### Fixed
+- Siege Cartoon's shop: the text strip under the tiles (name, description, price) no longer runs over the panel's gems, gold rails and centre ornament: the panel is drawn whole at the strip's height and the text stays in its dark inner part (desktop, phones in landscape and in portrait).
+
 ## 1.15.44 - 2026-10-27
 
 ### Changed
