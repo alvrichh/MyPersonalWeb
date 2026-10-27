@@ -826,3 +826,17 @@
   .sg-st-tabs{margin-bottom:8px}
   .siege-root.is-cartoon .sg-prep .sg-st-actions button,.siege-root.is-cartoon .sg-prep .sg-st-actions button:hover:not(:disabled){font-size:12px;line-height:1.1;padding:0 2px;border-width:0 22px;border-image-width:0 22px}
 }
+/* v1.15.50 — the L / A / S tabs are the bar's own drawing, none bigger or recoloured: the picked one just glows. (A tapped tab
+   kept its `:hover`, whose rule made it fill the whole row and hide the others: every state keeps its own place now.) */
+.siege-root.is-cartoon .sg-tabs button[data-sg-tab],.siege-root.is-cartoon .sg-tabs button[data-sg-tab]:hover,.siege-root.is-cartoon .sg-tabs button[data-sg-tab]:focus{position:absolute;top:0;height:100%;background:none;filter:none;transform:none;outline:0}
+.siege-root.is-cartoon .sg-tabs button[data-sg-tab="land"],.siege-root.is-cartoon .sg-tabs button[data-sg-tab="land"]:hover{left:0;width:calc(170 * var(--u))}
+.siege-root.is-cartoon .sg-tabs button[data-sg-tab="air"],.siege-root.is-cartoon .sg-tabs button[data-sg-tab="air"]:hover{left:calc(176 * var(--u));width:calc(178 * var(--u))}
+.siege-root.is-cartoon .sg-tabs button[data-sg-tab="special"],.siege-root.is-cartoon .sg-tabs button[data-sg-tab="special"]:hover{left:calc(362 * var(--u));width:calc(172 * var(--u))}
+.siege-root.is-cartoon .sg-tabs button[data-sg-tab].is-on,.siege-root.is-cartoon .sg-tabs button[data-sg-tab].is-on:hover{background-position:center;background-size:100% 100%;background-repeat:no-repeat;filter:brightness(1.35) saturate(1.2) drop-shadow(0 0 calc(10 * var(--u)) #fff) drop-shadow(0 0 calc(24 * var(--u)) #ffd23f)}
+.siege-root.is-cartoon .sg-tabs button[data-sg-tab="land"].is-on{background-image:url('/images/game/siege/bar-tab-l.webp')}
+.siege-root.is-cartoon .sg-tabs button[data-sg-tab="air"].is-on{background-image:url('/images/game/siege/bar-tab-a.webp')}
+.siege-root.is-cartoon .sg-tabs button[data-sg-tab="special"].is-on{background-image:url('/images/game/siege/bar-tab-s.webp')}
+.siege-root.is-cartoon .sg-tabs button[data-sg-tab]:hover:not(.is-on){background:#ffffff26}
+.siege-root.is-cartoon .sg-tabs button[data-sg-tab="land"].is-on:hover{background-image:url('/images/game/siege/bar-tab-l.webp')}
+.siege-root.is-cartoon .sg-tabs button[data-sg-tab="air"].is-on:hover{background-image:url('/images/game/siege/bar-tab-a.webp')}
+.siege-root.is-cartoon .sg-tabs button[data-sg-tab="special"].is-on:hover{background-image:url('/images/game/siege/bar-tab-s.webp')}
