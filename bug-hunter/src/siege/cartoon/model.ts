@@ -512,6 +512,22 @@ function arrows(s: Siege, count: number) {
     if (looksTier(s.bow.level) === 4) s.effects.push({ x: at, from: at, lane: 1, life: air + BOOM + i * 0.08, max: BOOM, kind: 'boom', side: 0, size: 58 + (i % 2) * 22, up: (i % 2) * 8 });
   }
 }
+/** What a fighter's attack shows flying to `x` (a troop, or the enemy fortress): its own projectile, the wizard's three
+    meteors with their fire, and a blast where a rocket of the robots' last forms lands. Damage is dealt apart. */
+function launch(s: Siege, u: Fighter, a: Spec, x0: number, lane: number, toUp: number) {
+  // A thrown or shot projectile of its own flies a little longer, so it is seen on its way.
+  const flight = isBullet(a.shot) || isBeam(a.shot) ? 0.16 : SPELLS.includes(a.shot ?? '') ? 0.6 : a.shot ? 0.35 : 0.2;
+  if (a.shot === 'meteor') {
+    // The wizard's last form calls three meteors around the target, one after another, each leaving fire.
+    for (let k = 0; k < 3; k++) {
+      // Spread over the ground: two at the back, one in front between them.
+      const [dx, dy] = METEORS[k], x = x0 + dx, wait = k * 0.14;
+      s.effects.push({ x, from: u.x, lane: lane, life: flight + wait, max: flight, kind: 'shot', side: u.side, art: 'meteor', up: dy });
+      s.effects.push({ x, from: x, lane: lane, life: flight + wait + FIRE, max: FIRE, kind: 'fire', side: u.side, size: 60, up: dy });
+    }
+  } else s.effects.push({ x: x0, from: u.x, lane: lane, life: flight, max: flight, kind: u.elite ? 'bolt' : 'shot', side: u.side, art: a.shot, spin: a.spin, fromUp: a.air ? u.alt ?? FLY.high : 0, toUp });
+  if (a.blast) s.effects.push({ x: x0, from: x0, lane: lane, life: flight + BOOM, max: BOOM, kind: 'boom', side: u.side, size: a.shot === 'salvo' ? 90 : 70, up: toUp, dark: true });
+}
 /** Start (true) or stop (false) the archers; they only start with at least one shot in the quiver. */
 export function draw(s: Siege, on: boolean) { if (s.phase === 'fight') s.bow.drawing = on && s.bow.quiver >= BOW.cost; }
 /** The bow button: one tap starts the arrows, the next stops them. */
@@ -596,23 +612,12 @@ export function tick(s: Siege, dt: number) {
       if (u.attack <= 0) {
         u.attack = a.rate; u.hit = 0.3;
         for (const v of alive) if (v.side !== u.side && reaches(u, v) && (v === enemy || (a.splash && Math.abs(v.x - enemy.x) < a.splash))) hits.push({ target: v, damage: u.damage });
-        // A thrown or shot projectile of its own flies a little longer, so it is seen on its way.
-        const flight = isBullet(a.shot) || isBeam(a.shot) ? 0.16 : SPELLS.includes(a.shot ?? '') ? 0.6 : a.shot ? 0.35 : 0.2;
-        const toUp = UNITS[enemy.id].air ? enemy.alt ?? FLY.high : 0;
-        if (a.shot === 'meteor') {
-          // The wizard's last form calls three meteors around the target, one after another, each leaving fire.
-          for (let k = 0; k < 3; k++) {
-            // Spread over the ground: two at the back, one in front between them.
-            const [dx, dy] = METEORS[k], x = enemy.x + dx, wait = k * 0.14;
-            s.effects.push({ x, from: u.x, lane: enemy.lane, life: flight + wait, max: flight, kind: 'shot', side: u.side, art: 'meteor', up: dy });
-            s.effects.push({ x, from: x, lane: enemy.lane, life: flight + wait + FIRE, max: FIRE, kind: 'fire', side: u.side, size: 60, up: dy });
-          }
-        } else s.effects.push({ x: enemy.x, from: u.x, lane: enemy.lane, life: flight, max: flight, kind: u.elite ? 'bolt' : 'shot', side: u.side, art: a.shot, spin: a.spin, fromUp: a.air ? u.alt ?? FLY.high : 0, toUp });
-        if (a.blast) s.effects.push({ x: enemy.x, from: enemy.x, lane: enemy.lane, life: flight + BOOM, max: BOOM, kind: 'boom', side: u.side, size: a.shot === 'salvo' ? 90 : 70, up: toUp, dark: true });
+        launch(s, u, a, enemy.x, enemy.lane, UNITS[enemy.id].air ? enemy.alt ?? FLY.high : 0);
         hear(s, soundsOf(u)[0], u.x);
       }
     } else if (Math.abs(baseX - u.x) <= a.range + 35) {
-      if (u.attack <= 0) { u.attack = a.rate; u.hit = 0.3; s.hp[u.side ? 0 : 1] -= u.damage; hear(s, soundsOf(u)[0], u.x); }
+      // At the fortress, what it throws or shoots flies into the wall (a little up it), as at a troop.
+      if (u.attack <= 0) { u.attack = a.rate; u.hit = 0.3; s.hp[u.side ? 0 : 1] -= u.damage; if (a.shot) launch(s, u, a, baseX + (u.side ? 30 : -30), 1, 40); hear(s, soundsOf(u)[0], u.x); }
     } else {
       const movement = a.speed * dt; u.moving = true;
       // Never step through an opponent, even during a long frame.
