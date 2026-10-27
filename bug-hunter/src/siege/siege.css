@@ -704,3 +704,16 @@
 .siege-root.is-cartoon .sg-prep .sg-map-shop,.siege-root.is-cartoon .sg-prep .sg-map-shop:hover:not(:disabled),.siege-root.is-cartoon .sg-prep .sg-map-shop:active{left:auto;right:6px;background-image:url('/images/game/siege/ui/shop-stall-r.webp')}
 .sg-map-shop span{left:37%}
 .sg-map-go{right:auto;left:10px;align-items:flex-start}
+/* v1.15.29 — The stage panel: everything centred inside the kit's wide stone panel, the stage line wrapping inside
+   it (never over the gems), Launch centred under it. */
+.sg-map-go{align-items:center;text-align:center;gap:6px;width:min(420px,46%);border-width:22px 58px;border-image-width:22px 58px;padding:2px 0}
+.siege-root.is-cartoon .sg-prep .sg-map-go .sg-eyebrow{display:block;max-width:100%;white-space:normal;line-height:1.25;font-size:12px;letter-spacing:.06em}
+.sg-map-go .sg-prize{justify-content:center;flex-wrap:wrap;line-height:1.25}
+.siege-root.is-cartoon .sg-prep .sg-map-go .sg-play{align-self:center;justify-content:center;min-width:72%}
+@media (max-height:440px){.sg-map-go{width:min(330px,44%);border-width:16px 44px;border-image-width:16px 44px;gap:4px}.siege-root.is-cartoon .sg-prep .sg-map-go .sg-eyebrow{font-size:10px}}
+.sg-map-go{padding:16px 4px 2px}
+.sg-map-go .sg-prize{flex-wrap:nowrap;font-size:12px}.sg-map-go .sg-prize img{flex:none}
+@media (max-height:440px){.sg-map-go{padding:10px 2px 0}}
+.sg-map-go{width:min(470px,50%);padding-top:24px}
+.siege-root.is-cartoon .sg-prep .sg-map-go .sg-play{white-space:nowrap}
+@media (max-height:440px){.sg-map-go{width:min(360px,50%);padding-top:16px}.siege-root.is-cartoon .sg-prep .sg-map-go .sg-play{min-width:0;font-size:14px;padding:0 4px}}
