@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.25 - 2026-10-27
+
+### Fixed
+- Siege Cartoon: the map's Shop stall is cut out cleanly (no grass, map specks or ragged edge around it).
+
 ## 1.15.24 - 2026-10-27
 
 ### Added
