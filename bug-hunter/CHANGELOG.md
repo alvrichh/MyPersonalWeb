@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.23 - 2026-10-27
+
+### Changed
+- Siege Cartoon's pause, in the UI kit and laid out like the main game's: the round stone pause button; a dark stone panel with the settings at the top left (music and sound volume, the game's own) and close at the top right, then Resume, Restart and Quit as the kit's green, gold and red buttons.
+
 ## 1.15.22 - 2026-10-27
 
 ### Changed

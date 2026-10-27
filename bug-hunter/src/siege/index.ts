@@ -39,7 +39,7 @@ let closeActive: (() => void) | undefined;
 /** Own root, event lifecycle and save: existing game modes are never entered or mutated. */
 /** `hero`: the player's hero picture and name, the commander who speaks in the story scenes. */
 /** `music`: Siege Cartoon's songs, its menus' or its battles', or null to go back to the player's pick. */
-export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' }, sound: (name: string, vol?: number, pan?: number) => void = () => {}, music: (song: 'menu' | 'battle' | 'boss' | null) => void = () => {}) {
+export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' }, sound: (name: string, vol?: number, pan?: number) => void = () => {}, music: (song: 'menu' | 'battle' | 'boss' | null) => void = () => {}, volumes: { get: () => [number, number]; set: (music: number, sfx: number) => void } = { get: () => [1, 1], set: () => {} }) {
   closeActive?.();
   /** The mode being played (null on the mode screen), its engine and its save. */
   let mode: Mode | null = null, M = ENGINES.cartoon.m, V = ENGINES.cartoon.v;
@@ -306,7 +306,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     root.innerHTML = `<div class="sg-battle"><header class="sg-hud">
         <div class="sg-mana"><img src="/images/game/ui/orb.webp" alt=""><span><b data-sg-energy></b><small data-sg-status></small></span><progress data-sg-meter></progress></div>
         <div class="sg-vs"><img class="sg-vs-pic" src="${vsPic(0)}" alt=""><span class="sg-hp"><i data-sg-bar="0"></i><small data-sg-health="0"></small></span><b>VS</b><span class="sg-hp is-enemy"><i data-sg-bar="1"></i><small data-sg-health="1"></small></span><img class="sg-vs-pic" src="${vsPic(1)}" alt=""></div>
-        <div class="sg-hud-actions"><span class="sg-clock" data-sg-clock></span><span class="sg-gold"><img src="/images/game/store/coins-2.webp" alt=""><b data-sg-gold>${progress.coins}</b></span><button data-sg="pause" aria-label="${t('pause')}">⏸</button></div></header>
+        <div class="sg-hud-actions"><span class="sg-clock" data-sg-clock></span><span class="sg-gold"><img src="/images/game/store/coins-2.webp" alt=""><b data-sg-gold>${progress.coins}</b></span><button class="sg-pause" data-sg="pause" aria-label="${t('pause')}"><span aria-hidden="true">Ⅱ</span></button></div></header>
       <div class="sg-field"><div class="sg-turn" role="status"><span aria-hidden="true">📱↻</span><b>${t('siegeTurn')}</b><button type="button" data-sg-turn aria-label="${t('siegeTurnOk')}">✕</button></div><canvas class="sg-arena" tabindex="0" role="img" aria-label="${t('siegeBattlefield')}"></canvas>
       <div class="sg-aim" role="slider" tabindex="0" aria-orientation="vertical" aria-valuemin="140" aria-valuemax="1080" aria-valuenow="700" aria-label="${t('siegeAim')}" data-sg-aim><i class="sg-aim-up" aria-hidden="true"></i><i class="sg-aim-knob" aria-hidden="true"></i><i class="sg-aim-down" aria-hidden="true"></i></div>
       <div class="sg-camera"><button data-sg="home" aria-label="${t('siegeHome')}">◀</button><input type="range" min="0" max="1000" value="0" data-sg-camera aria-label="${t('siegeCamera')}"><button data-sg="enemy" aria-label="${t('siegeEnemy')}">▶</button></div></div>
@@ -523,7 +523,28 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   function pause() {
     if (!state || state.phase !== 'fight' || paused || story) return;
     paused = true; updateUi();
+    if (mode === 'cartoon') { pauseMenu(); return; }
     modal(`<span class="sg-eyebrow">${title()}</span><h2>${t('paused')}</h2><p>${t('siegePauseNote')}</p><div class="sg-dialog-actions"><button class="sg-primary" data-sg="resume">${t('resume')}</button><button data-sg="prep">${t('siegeLeave')}</button></div>`);
+  }
+  /** Siege Cartoon's pause, laid out like the main game's: the settings at the top left, close at the top right, then
+      Resume, Restart and Leave, in the UI kit's stone and buttons. */
+  function pauseMenu() {
+    modal(`<div class="sg-pausebox"><button class="sg-round is-gear" data-sg="settings" aria-label="${t('options')}"><span aria-hidden="true">⚙</span></button>
+      <button class="sg-round is-close" data-sg="resume" aria-label="${t('resume')}"><span aria-hidden="true">✕</span></button>
+      <h2>${t('paused')}</h2><span class="sg-eyebrow">${title()}</span>
+      <div class="sg-kit-actions"><button class="sg-kit is-green" data-sg="resume">${t('resume')}</button><button class="sg-kit is-gold" data-sg="retry">${t('restart')}</button><button class="sg-kit is-red" data-sg="prep">${t('quit')}</button></div></div>`);
+  }
+  /** The settings, from the pause: music and sound volume (the game's own, kept in its save). */
+  function settingsMenu() {
+    const [m, f] = volumes.get(), row = (k: 'music' | 'sfx', v: number) => `<label class="sg-vol"><span>${k === 'music' ? '🎵' : '🔔'} ${t(k)}</span><b>${Math.round(v * 100)}%</b><input type="range" min="0" max="100" value="${Math.round(v * 100)}" data-sg-vol="${k}"></label>`;
+    modal(`<div class="sg-pausebox"><button class="sg-round is-close" data-sg="pause-back" aria-label="${t('paused')}"><span aria-hidden="true">✕</span></button>
+      <h2>${t('options')}</h2>${row('music', m)}${row('sfx', f)}
+      <div class="sg-kit-actions"><button class="sg-kit is-blue" data-sg="pause-back">← ${t('paused')}</button></div></div>`);
+    root.querySelectorAll<HTMLInputElement>('[data-sg-vol]').forEach(input => input.addEventListener('input', () => {
+      const [mm, ff] = volumes.get(), v = Number(input.value) / 100;
+      volumes.set(input.dataset.sgVol === 'music' ? v : mm, input.dataset.sgVol === 'sfx' ? v : ff);
+      const b = input.parentElement?.querySelector('b'); if (b) b.textContent = `${input.value}%`;
+    }));
   }
   function resume() {
     root.querySelector('.sg-overlay')?.remove(); q('.sg-battle').inert = false; paused = false; last = performance.now(); accumulator = 0; q('canvas').focus();
@@ -576,6 +597,8 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     else if (action === 'prep') prep();
     else if (action === 'next') { world = Math.min(lastWorld(), world + 1); prep(); }
     else if (action === 'pause') pause();
+    else if (action === 'settings') settingsMenu();
+    else if (action === 'pause-back') pauseMenu();
     else if (action === 'resume') resume();
     else if (action === 'home') camera.x = -Infinity;
     else if (action === 'enemy') camera.x = Math.max(0, M.FIELD - camera.width);

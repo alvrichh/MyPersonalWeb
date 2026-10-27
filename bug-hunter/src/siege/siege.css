@@ -664,3 +664,27 @@
 .siege-root.is-cartoon .sg-story .sg-speaker{margin-bottom:calc(min(34vh,240px) * -.3)}
 .siege-root.is-cartoon .sg-story .sg-scene.is-boss .sg-speaker{margin-bottom:calc(min(38vh,270px) * -.28)}
 @media (max-height:440px){.siege-root.is-cartoon .sg-story .sg-speaker{margin-bottom:calc(min(34vh,150px) * -.3)}.siege-root.is-cartoon .sg-story .sg-scene.is-boss .sg-speaker{margin-bottom:calc(min(38vh,160px) * -.28)}}
+/* v1.15.23 — Siege Cartoon's pause, in the UI kit: the round stone button in the HUD; a dark stone panel with the
+   settings at the top left and close at the top right, then the kit's green, gold and red buttons. */
+.siege-root.is-cartoon .sg-hud-actions .sg-pause,.siege-root.is-cartoon .sg-hud-actions .sg-pause:hover{width:46px;height:46px;min-width:0;min-height:0;padding:0;border:0;border-radius:50%;box-shadow:none;background:url('/images/game/siege/ui/round.webp') center/contain no-repeat;color:#fff;font:900 18px/1 system-ui;text-shadow:0 2px 2px #000}
+.siege-root.is-cartoon .sg-hud-actions .sg-pause:active{background-image:url('/images/game/siege/ui/round-down.webp')}
+.siege-root.is-cartoon .sg-overlay:has(.sg-pausebox){background:#050a14b3;backdrop-filter:blur(3px)}
+.siege-root.is-cartoon .sg-dialog:has(.sg-pausebox){width:min(420px,calc(100vw - 24px));padding:0;border:0;border-radius:0;background:none;box-shadow:none}
+.sg-pausebox{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;border-style:solid;border-color:transparent;border-width:56px;border-image:url('/images/game/siege/ui/frame.webp') 125 fill / 56px stretch;padding:0 6px;color:#fff;text-align:center;filter:drop-shadow(0 14px 30px #000c)}
+.sg-pausebox h2{margin:-12px 0 0;font:900 30px system-ui;color:#fff;text-shadow:0 3px 0 #000,0 0 10px #000}
+.sg-pausebox .sg-eyebrow{margin-top:-6px;color:#ffd23f;text-shadow:0 1px 2px #000}
+.siege-root.is-cartoon .sg-pausebox .sg-round,.siege-root.is-cartoon .sg-pausebox .sg-round:hover{position:absolute;top:-44px;width:50px;height:50px;min-height:0;padding:0;border:0;border-radius:50%;box-shadow:none;background:url('/images/game/siege/ui/round.webp') center/contain no-repeat;color:#fff;font:900 20px/1 system-ui;text-shadow:0 2px 2px #000}
+.siege-root.is-cartoon .sg-pausebox .sg-round:active{background-image:url('/images/game/siege/ui/round-down.webp')}
+.sg-pausebox .sg-round.is-gear{left:-44px}.sg-pausebox .sg-round.is-close{right:-44px}
+.sg-kit-actions{display:flex;flex-direction:column;gap:8px;width:100%;margin-top:6px}
+.siege-root.is-cartoon .sg-kit,.siege-root.is-cartoon .sg-kit:hover{min-height:52px;padding:0 6px;border-style:solid;border-color:transparent;border-width:0 34px;border-radius:0;border-image:url('/images/game/siege/ui/btn-green.webp') 0 70 fill / 0 34px stretch;background:none;box-shadow:none;color:#fff;font:900 18px system-ui;text-transform:uppercase;text-shadow:0 2px 2px #000}
+.siege-root.is-cartoon .sg-kit.is-gold{border-image-source:url('/images/game/siege/ui/btn-gold.webp');color:#2a1a00;text-shadow:0 1px 0 #fff8}
+.siege-root.is-cartoon .sg-kit.is-red{border-image-source:url('/images/game/siege/ui/btn-red.webp')}
+.siege-root.is-cartoon .sg-kit.is-blue{border-image-source:url('/images/game/siege/ui/btn-blue.webp')}
+.siege-root.is-cartoon .sg-kit.is-green:active{border-image-source:url('/images/game/siege/ui/btn-green-down.webp')}
+.siege-root.is-cartoon .sg-kit.is-gold:active{border-image-source:url('/images/game/siege/ui/btn-gold-down.webp')}
+.siege-root.is-cartoon .sg-kit.is-red:active{border-image-source:url('/images/game/siege/ui/btn-red-down.webp')}
+.siege-root.is-cartoon .sg-kit.is-blue:active{border-image-source:url('/images/game/siege/ui/btn-blue-down.webp')}
+.sg-vol{display:grid;grid-template-columns:1fr auto;gap:4px 10px;width:100%;text-align:left;font:800 15px system-ui;text-shadow:0 1px 2px #000}
+.sg-vol b{color:#ffd23f}.sg-vol input{grid-column:1/-1;width:100%;accent-color:#ffd23f}
+@media (max-height:440px){.sg-pausebox{border-width:42px;border-image-width:42px;gap:6px}.sg-pausebox h2{font-size:22px;margin-top:-16px}.siege-root.is-cartoon .sg-kit,.siege-root.is-cartoon .sg-kit:hover{min-height:40px;font-size:15px}.siege-root.is-cartoon .sg-pausebox .sg-round{top:-34px;width:42px;height:42px}.sg-pausebox .sg-round.is-gear{left:-34px}.sg-pausebox .sg-round.is-close{right:-34px}.sg-kit-actions{gap:5px}}
