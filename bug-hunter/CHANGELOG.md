@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.20 - 2026-10-27
+
+### Changed
+- Siege Cartoon: the wizard's meteors come down steeper (about 70°), two at the back and one in front, and leave the fire pool on the ground again instead of the bubbling lava.
+
 ## 1.15.19 - 2026-10-27
 
 ### Changed

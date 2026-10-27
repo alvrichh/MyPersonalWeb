@@ -442,8 +442,9 @@ export const NUDGE = { back: 85, time: 0.14, every: 0.8 };
     for one that strikes in close), changing height at `rate` a second. */
 /** How long a rocket's explosion and a meteor's fire on the ground last (seconds). */
 export const BOOM = 0.8, FIRE = 2.4;
-/** Where the wizard's three meteors land round the target: field units along the ground, and up it (back) or down (front). */
-export const METEORS = [[-34, 10], [42, 0], [6, -10]];
+/** Where the wizard's three meteors land round the target: field units along the ground, and up it (back) or down
+    (front): two at the back, one in front between them. */
+export const METEORS = [[-30, 10], [32, 10], [2, -10]];
 export const FLY = { high: 70, ranged: 45, close: 22, rate: 90 };
 export const BOW = { max: 100, cost: 1.2, regen: 12, every: 0.42, step: 0.03, damage: 16, gap: 24 };
 export interface Bow { quiver: number; drawing: boolean; held: number; next: number; level: number }
@@ -599,7 +600,7 @@ export function tick(s: Siege, dt: number) {
         if (a.shot === 'meteor') {
           // The wizard's last form calls three meteors around the target, one after another, each leaving fire.
           for (let k = 0; k < 3; k++) {
-            // Spread over the ground: one at the back on the left, one on the right, one in front in the middle.
+            // Spread over the ground: two at the back, one in front between them.
             const [dx, dy] = METEORS[k], x = enemy.x + dx, wait = k * 0.14;
             s.effects.push({ x, from: u.x, lane: enemy.lane, life: flight + wait, max: flight, kind: 'shot', side: u.side, art: 'meteor', up: dy });
             s.effects.push({ x, from: x, lane: enemy.lane, life: flight + wait + FIRE, max: FIRE, kind: 'fire', side: u.side, size: 60, up: dy });
