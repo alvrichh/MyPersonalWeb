@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.48 - 2026-10-27
+
+### Changed
+- Siege Cartoon's shop: every troop's first form always shows (only its later forms hide behind «?»: owning a form reveals the next one).
+
 ## 1.15.47 - 2026-10-27
 
 ### Fixed
