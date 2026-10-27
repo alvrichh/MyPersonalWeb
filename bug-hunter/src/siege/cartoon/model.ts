@@ -243,7 +243,8 @@ export interface Progress { version: 1; unlocked: number; coins: number; victori
 export const freshProgress = (): Progress => ({ version: 1, unlocked: 1, coins: 0, victories: [], upgrades: [0, 0, 0, 0], deck: [0], levels: UNITS.map(() => 1), owned: [0], powers: POWERS.map(() => 0), kit: [], cards: 1 });
 /** Can this card go in the army: its troop recruited and its level bought? */
 export const hasCard = (p: Progress, c: number) => Number.isInteger(c) && c >= 0 && owns(p, cardId(c)) && cardLevel(c) <= (p.levels[cardId(c)] ?? 1);
-/** The owner's testing switch: every troop open from the start and recruited and levelled for free. Set `free` to
+/** The owner's testing switch: every troop and power open from the start and recruited and levelled for free, the base's
+    upgrades free, and endless energy in battle. Set `free` to
     false to bring back the act unlocks and the gold prices. */
 export const testing = { free: false };
 /** Has the battles won opened this troop's act? */
@@ -277,7 +278,7 @@ export function readProgress(raw: string | null): Progress {
   } catch { /* corrupt or unavailable storage starts a safe, isolated preview */ }
   return p;
 }
-export const upgradePrice = (level: number) => 100 + level * 100;
+export const upgradePrice = (level: number) => (testing.free ? 0 : 100 + level * 100);
 /** A troop's next form's gold price, or 0 at its last. */
 export const levelPrice = (p: Progress, id: number) => UNITS[id]?.forms?.[(p.levels[id] ?? 1) - 1]?.price ?? 0;
 /** Buys a troop's next form. */
@@ -693,7 +694,7 @@ export function castPower(s: Siege, card: number): boolean {
 export function tick(s: Siege, dt: number) {
   if (s.phase !== 'fight' || !Number.isFinite(dt) || dt <= 0) return;
   dt = Math.min(dt, 0.1); s.time += dt;
-  s.energy = Math.min(energyMax(s), s.energy + energyRate(s) * dt);
+  s.energy = testing.free ? energyMax(s) : Math.min(energyMax(s), s.energy + energyRate(s) * dt);
   s.spell = Math.max(0, s.spell - dt); s.rocket = Math.max(0, s.rocket - dt);
   for (const k in s.kitCd) s.kitCd[k] = Math.max(0, s.kitCd[k] - dt);
   if (s.hitq.length) { const due = s.hitq.filter(h => h.at <= s.time); if (due.length) { s.hitq = s.hitq.filter(h => h.at > s.time); for (const h of due) land(s, h); } }
