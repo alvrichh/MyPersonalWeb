@@ -574,8 +574,12 @@ function bow(s: Siege, dt: number) {
 }
 /** The missile: one heavy blast at the aim, a shorter recharge than the discharge. */
 export const ROCKET = { radius: 70, damage: 150, every: 12 };
+/** What each special costs in energy (the discharge and the missile; the shop's powers have their own `mana`), and their recharge. */
+export const MANA = { strike: 40, missile: 30 };
+export const STRIKE_EVERY = 24;
 export function missile(s: Siege): boolean {
-  if (s.phase !== 'fight' || s.rocket > 0) return false;
+  if (s.phase !== 'fight' || s.rocket > 0 || s.energy < MANA.missile) return false;
+  s.energy -= MANA.missile;
   const x = aimAt(s.aim);
   s.effects.push({ x, from: 80, lane: 1, life: 0.55, max: 0.55, kind: 'rocket', side: 0 });
   damageArea(s, x, ROCKET.radius, ROCKET.damage * s.power); s.rocket = ROCKET.every;
@@ -583,21 +587,21 @@ export function missile(s: Siege): boolean {
   s.effects[s.effects.length - 1].life += 0.55; return true;
 }
 export function strike(s: Siege): boolean {
-  if (s.phase !== 'fight' || s.spell > 0) return false;
-  damageArea(s, s.aim, 155, 210 * s.power, 0.7); s.spell = 24; return true;
+  if (s.phase !== 'fight' || s.spell > 0 || s.energy < MANA.strike) return false;
+  s.energy -= MANA.strike; damageArea(s, s.aim, 155, 210 * s.power, 0.7); s.spell = STRIKE_EVERY; return true;
 }
 /** The special powers (the shop's Especial tab): bought with gold, each covers the stretch of field on screen. Level 1
     is `price` gold, each later form its own `price`; `unlock` is the act that opens it. `damage` is per blow. */
 export interface PowerForm { price: number; damage: number; art?: string; freeze?: number; radius?: number; count?: number; push?: number }
-export const POWERS: { id: number; unlock: number; price: number; cooldown: number; forms: PowerForm[] }[] = [
+export const POWERS: { id: number; unlock: number; price: number; cooldown: number; mana: number; forms: PowerForm[] }[] = [
   // Arrow rain: arrows, ice arrows (they freeze), fire arrows (they leave flames), rockets (they explode).
-  { id: 0, unlock: 1, price: 400, cooldown: 30, forms: [{ price: 0, damage: 24, art: 'arrow' }, { price: 500, damage: 28, art: 'ice', freeze: 1.3 }, { price: 900, damage: 34, art: 'fire' }, { price: 1500, damage: 46, art: 'rocket', radius: 52 }] },
+  { id: 0, unlock: 1, price: 400, cooldown: 30, mana: 70, forms: [{ price: 0, damage: 24, art: 'arrow' }, { price: 500, damage: 28, art: 'ice', freeze: 1.3 }, { price: 900, damage: 34, art: 'fire' }, { price: 1500, damage: 46, art: 'rocket', radius: 52 }] },
   // Lightning rain: bolts across the field, the later forms more of them and stunning.
-  { id: 1, unlock: 2, price: 600, cooldown: 34, forms: [{ price: 0, damage: 60, count: 12 }, { price: 800, damage: 66, count: 18, freeze: 0.8 }, { price: 1400, damage: 76, count: 26, freeze: 1.3 }] },
+  { id: 1, unlock: 2, price: 600, cooldown: 34, mana: 90, forms: [{ price: 0, damage: 60, count: 12 }, { price: 800, damage: 66, count: 18, freeze: 0.8 }, { price: 1400, damage: 76, count: 26, freeze: 1.3 }] },
   // Tsunami: a wall of water sweeping the field, throwing the enemy back.
-  { id: 2, unlock: 3, price: 900, cooldown: 42, forms: [{ price: 0, damage: 90, push: 240 }, { price: 1100, damage: 140, push: 360 }, { price: 1900, damage: 210, push: 520, freeze: 1.2 }] },
+  { id: 2, unlock: 3, price: 900, cooldown: 42, mana: 110, forms: [{ price: 0, damage: 90, push: 240 }, { price: 1100, damage: 140, push: 360 }, { price: 1900, damage: 210, push: 520, freeze: 1.2 }] },
   // Meteor shower: burning rocks across the field, each leaving a fire.
-  { id: 3, unlock: 4, price: 1200, cooldown: 40, forms: [{ price: 0, damage: 95, count: 6, radius: 62 }, { price: 1500, damage: 115, count: 9, radius: 66 }, { price: 2400, damage: 135, count: 13, radius: 70 }] },
+  { id: 3, unlock: 4, price: 1200, cooldown: 40, mana: 100, forms: [{ price: 0, damage: 95, count: 6, radius: 62 }, { price: 1500, damage: 115, count: 9, radius: 66 }, { price: 2400, damage: 135, count: 13, radius: 70 }] },
 ];
 /** At most this many powers go into a battle. */
 export const KIT = 3;
@@ -637,7 +641,7 @@ function land(s: Siege, h: Hit) {
 /** Sets off a power from the kit: its blows spread over the stretch of field on screen. */
 export function castPower(s: Siege, id: number): boolean {
   const k = s.kit.find(n => n.id === id), w = POWERS[id];
-  if (!k || !w || s.phase !== 'fight' || (s.kitCd[id] ?? 0) > 0) return false;
+  if (!k || !w || s.phase !== 'fight' || (s.kitCd[id] ?? 0) > 0 || s.energy < w.mana) return false;
   const form = w.forms[Math.min(k.level, w.forms.length) - 1], c = ++s.casts;
   let x0 = Math.max(110, s.view.x + 20), x1 = Math.min(FIELD - 90, s.view.x + s.view.width - 20);
   if (x1 - x0 < 160) { x0 = 110; x1 = FIELD - 90; }
@@ -679,7 +683,7 @@ export function castPower(s: Siege, id: number): boolean {
     }
     hear(s, 'meteor', (x0 + x1) / 2);
   }
-  s.kitCd[id] = w.cooldown; return true;
+  s.energy -= w.mana; s.kitCd[id] = w.cooldown; return true;
 }
 /** Fixed-step caller. Accumulate damage before removal so opposing lethal hits resolve fairly. */
 export function tick(s: Siege, dt: number) {

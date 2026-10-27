@@ -4,6 +4,13 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.51 - 2026-10-27
+
+### Changed
+- Siege Cartoon: the specials cost energy too: the shop's powers (arrow rain 70, lightning rain 90, tsunami 110, meteor shower 100), the discharge (40) and the missile (30); a special is greyed while there is not enough energy.
+- Siege Cartoon: a recharging card or special no longer counts down in seconds: it darkens and lightens from the top down as the wait runs out (its energy cost stays shown).
+- Siege Cartoon's shop, Base tab: the army and generator rows have a picture for each of their five levels instead of one for all, and every tile shows its level number.
+
 ## 1.15.50 - 2026-10-27
 
 ### Fixed

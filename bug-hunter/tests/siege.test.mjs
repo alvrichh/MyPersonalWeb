@@ -290,12 +290,12 @@ test('special powers cover the stretch of field on screen, then recharge', () =>
     const p = m.freshProgress(); p.unlocked = 30; p.coins = 99999; m.buyPower(p, id);
     const s = m.newSiege(p, 1); s.view = { x: 500, width: 700 };
     const foes = [300, 600, 900, 1150, 1500].map((x, i) => { const u = { ...s.units[0] ?? { id: 0, lane: 0, uid: 0, damage: 0, attack: 9, flash: 0, boss: false }, uid: 100 + i, side: 1, x, hp: 4000, maxHp: 4000, damage: 0, attack: 99 }; s.units.push(u); return u; });
-    assert.equal(m.castPower(s, id), true); assert.equal(m.castPower(s, id), false, 'it recharges first');
+    s.energy = 999; assert.equal(m.castPower(s, id), true); assert.equal(s.energy, 999 - m.POWERS[id].mana, 'it costs energy'); assert.equal(m.castPower(s, id), false, 'it recharges first');
     const fx = s.effects.filter(e => e.kind !== 'wave'); for (const e of fx) assert.ok(e.x >= 500 && e.x <= 1200, `${id}: every blow lands on screen (${e.x})`);
     run(s, 4);
     assert.ok(foes[1].hp < 4000 && foes[2].hp < 4000 && foes[3].hp < 4000, `${id}: the enemies on screen are hurt`);
     assert.equal(foes[0].hp, 4000, `${id}: not those off the left`); assert.equal(foes[4].hp, 4000, `${id}: nor off the right`);
-    s.kitCd[id] = 0; assert.equal(m.castPower(s, id), true);
+    s.kitCd[id] = 0; s.energy = 5; assert.equal(m.castPower(s, id), false, 'not without the energy'); s.energy = 999; assert.equal(m.castPower(s, id), true);
   }
 });
 test('the tsunami throws the enemy back; ice and lightning freeze or stun; an unbought power cannot be cast', () => {
@@ -303,5 +303,9 @@ test('the tsunami throws the enemy back; ice and lightning freeze or stun; an un
   const s = m.newSiege(p, 1); s.view = { x: 400, width: 700 }; m.summon(s, 0);
   const foe = { ...s.units[0], uid: 50, side: 1, x: 700, hp: 9000, maxHp: 9000, damage: 0 }; s.units.push(foe); s.units[0].x = 150;
   assert.equal(m.castPower(s, 0), false, 'the arrow rain is not in the kit');
-  assert.equal(m.castPower(s, 2), true); run(s, 3); assert.ok(foe.x > 800, `pushed back (${foe.x})`);
+  s.energy = 999; assert.equal(m.castPower(s, 2), true); run(s, 3); assert.ok(foe.x > 800, `pushed back (${foe.x})`);
+});
+test('the discharge and the missile cost energy too', () => {
+  const s = m.newSiege(m.freshProgress(), 1); s.energy = m.MANA.strike - 1; assert.equal(m.strike(s), false); s.energy = m.MANA.missile - 1; assert.equal(m.missile(s), false);
+  s.energy = 200; assert.equal(m.strike(s), true); assert.equal(s.energy, 200 - m.MANA.strike); s.energy = 200; assert.equal(m.missile(s), true); assert.equal(s.energy, 200 - m.MANA.missile);
 });

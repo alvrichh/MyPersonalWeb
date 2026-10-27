@@ -840,3 +840,8 @@
 .siege-root.is-cartoon .sg-tabs button[data-sg-tab="land"].is-on:hover{background-image:url('/images/game/siege/bar-tab-l.webp')}
 .siege-root.is-cartoon .sg-tabs button[data-sg-tab="air"].is-on:hover{background-image:url('/images/game/siege/bar-tab-a.webp')}
 .siege-root.is-cartoon .sg-tabs button[data-sg-tab="special"].is-on:hover{background-image:url('/images/game/siege/bar-tab-s.webp')}
+/* v1.15.51 — Cartoon's cards and specials show their recharge as a darkening over the button that lightens from the top
+   down (the share left, `--cd`, is the dark part, held at the bottom), no seconds. */
+.siege-root.is-cartoon .sg-bar .sg-deck .sg-cooldown{position:absolute;left:0;right:0;bottom:0;top:auto;width:auto!important;height:var(--cd,0%);background:linear-gradient(#0a0e1ab3,#05080fd9);border-radius:inherit;pointer-events:none;z-index:2;transition:none}
+/* A button that is only recharging is not greyed: the darkening over it is the recharge (greyed means not enough energy). */
+.siege-root.is-cartoon .sg-bar .sg-deck button.is-cooling:disabled{filter:none}
