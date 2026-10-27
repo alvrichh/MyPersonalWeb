@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.27 - 2026-10-27
+
+### Changed
+- Siege Cartoon's map: the Shop stall sits at the bottom right on every map, turned to face the map; a world's Launch panel moves to the bottom left. The map pictures are loaded in advance and buttons no longer flash when tapped on phones.
+
 ## 1.15.26 - 2026-10-27
 
 ### Changed - Siege Cartoon

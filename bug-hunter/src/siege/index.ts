@@ -648,6 +648,9 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   window.addEventListener('blur', pause, options);
   /** The first screen: Siege Cartoon's world map (Siege Legacy is no longer offered; its code and save stay). */
   function modes() { choose('cartoon'); }
+  /** Every map picture and the stall loaded once, so moving between maps never shows one half-loaded. */
+  const mapPics = ['worlds', 1, 2, 3, 4, 5, 6].map(n => Object.assign(new Image(), { src: `/images/game/siege/map-${n}.webp` }));
+  void mapPics; void Object.assign(new Image(), { src: '/images/game/siege/ui/shop-stall-r.webp' });
   function choose(next: Mode) {
     mode = next; ({ m: M, v: V } = ENGINES[next]);
     root.classList.toggle('is-cartoon', next === 'cartoon'); root.classList.toggle('is-legacy', next === 'legacy');

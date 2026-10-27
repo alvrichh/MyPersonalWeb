@@ -698,3 +698,9 @@
 .siege-root.is-cartoon .sg-dialog:has(.sg-pausebox){max-height:calc(100dvh - 16px);overflow:auto}
 @media (max-height:440px){.sg-pausebox .sg-vol{font-size:13px}.siege-root.is-cartoon .sg-langs .sg-kit,.siege-root.is-cartoon .sg-pausebox>.sg-kit{min-height:36px;font-size:13px}}
 @media (max-height:520px){.sg-pausebox{border-width:42px;border-image-width:42px;gap:6px}.sg-pausebox h2{font-size:22px;margin-top:-16px}.siege-root.is-cartoon .sg-pausebox .sg-kit{min-height:38px;font-size:14px}.siege-root.is-cartoon .sg-pausebox .sg-round{top:-34px;width:42px;height:42px}.sg-pausebox .sg-round.is-gear{left:-34px}.sg-pausebox .sg-round.is-close{right:-34px}.sg-pausebox .sg-vol{font-size:13px}.sg-kit-actions{gap:5px;margin-top:2px}}
+/* v1.15.27 — The map's Shop on the right, the stall turned to face the map, on every map; the stage's Launch panel
+   moves to the left. No tap flash on phones. */
+.siege-root,.siege-root button{-webkit-tap-highlight-color:transparent}
+.siege-root.is-cartoon .sg-prep .sg-map-shop,.siege-root.is-cartoon .sg-prep .sg-map-shop:hover:not(:disabled),.siege-root.is-cartoon .sg-prep .sg-map-shop:active{left:auto;right:6px;background-image:url('/images/game/siege/ui/shop-stall-r.webp')}
+.sg-map-shop span{left:37%}
+.sg-map-go{right:auto;left:10px;align-items:flex-start}
