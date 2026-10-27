@@ -472,7 +472,7 @@ export const SCATTER = { along: 14, deep: 4 };
     (front): two at the back, one in front between them. */
 export const METEORS = [[-30, 10], [32, 10], [2, -10]];
 export const FLY = { high: 70, ranged: 45, close: 22, rate: 90 };
-export const BOW = { max: 100, cost: 1.2, regen: 12, every: 0.42, step: 0.03, damage: 16, gap: 24 };
+export const BOW = { max: 100, cost: 1.2, regen: 12, every: 0.42, step: 0.03, damage: 16, gap: 24, friendly: 0.35 };
 export interface Bow { quiver: number; drawing: boolean; held: number; next: number; level: number }
 export const aimAt = (x: number) => Math.max(140, Math.min(1080, x));
 /** Seconds between shots and arrows per shot, for the bow's level and how long it has been held. */
@@ -528,7 +528,7 @@ function arrows(s: Siege, count: number) {
     };
     // It strikes whoever is there, ours too: aim past your own troops.
     for (const u of s.units) if (u.hp > 0 && (Math.abs(u.x - at) <= 28 && !(u.side === 0 && UNITS[u.id].air) || crossed(u))) {
-      u.hp -= BOW.damage * (u.side ? s.power : 1); u.flash = 0.18;
+      u.hp -= BOW.damage * (u.side ? s.power : BOW.friendly); u.flash = 0.18;
       if (u.side === 0) continue;
       // A hit nudges it back a little (not the guardians or the steady), at most once every `NUDGE.every`, so it still
       // makes its way forward.
