@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.47 - 2026-10-27
+
+### Fixed
+- Siege Cartoon: the enemy fortress is turned to face left, towards ours (and its small picture in the HUD).
+
 ## 1.15.46 - 2026-10-27
 
 ### Changed

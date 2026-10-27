@@ -806,3 +806,5 @@
   .siege-root.is-cartoon .sg-prep .sg-st-info{--ih:110px;--cap:calc(var(--ih) * .66);padding-top:calc(var(--ih) * .4);padding-bottom:calc(var(--ih) * .2)}
   .siege-root.is-cartoon .sg-prep .sg-st-desc{display:block;font-size:12px;line-height:1.15}.siege-root.is-cartoon .sg-prep .sg-st-desc span{display:inline;margin-left:6px;font-size:13px}
 }
+/* v1.15.47 — the enemy fortress faces left, towards ours (its HUD picture too). */
+.siege-root.is-cartoon .sg-vs-pic:last-child{transform:scaleX(-1)}
