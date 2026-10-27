@@ -7,6 +7,7 @@ Reference: the Cartoon Wars 2 wiki pages on friendly units, enemy units and boss
 ## Rules taken from the reference
 
 - **Stun and knockback.** Every unit rocks back or is stunned for a moment under heavy fire. Infantry hit hard by one blow fly back a long way and get up quickly (so they keep fighting); non-infantry stay stunned, so repeated hits can lock them.
+- **Air by world.** No enemy flyers in world 1 (`FOE_AIR` starts empty); ours open with them: Aircraft Fighter world 2, Armed Aircraft Fighter and Drill world 3, Helicopter 4, Flying Mech 5, Angel Army 6.
 - **Air.** All air units can be hit by our bow. Land units hit air only when listed (`hitsAir`: Swordsman level 5, Wizard level 3, Heavy Armed Robot levels 3-4). Flyers marked `skyOnly` (Aircraft Fighter, Armed Aircraft Fighter, the enemy's Eagle, Ninja Bat and Hypnotist Bat) never attack ground troops; the rest swoop on them.
 - **Unit levels.** Our units level up (workshop). Some change role with level: Archer starts as a rock thrower; Armed Aircraft becomes an "air magician" at level 4; Heavy Armed Robot level 4 is huge and is hit by the enemy bow too.
 - **Gatling robots split.** Small and medium gatling robots explode into a damaged copy (one arm, no gun, scratch attack), then into a crawling wreck (head and right arm on debris). The large one (act 2 boss) does not split; neither does the flying ray rider.

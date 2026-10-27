@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.26 - 2026-10-27
+
+### Changed - Siege Cartoon
+- No enemy flyers in the first world: the eagle comes in the second, the ninja bat and the death angel in the third, the hypnotist bat in the fourth and the red dragon rider in the last.
+- Our flyers open world by world with them: the aircraft fighter in world 2, the armed aircraft fighter and the drill in world 3, the helicopter in 4, the flying mech in 5 and the angel army in 6.
+
 ## 1.15.25 - 2026-10-27
 
 ### Fixed

@@ -123,14 +123,14 @@ export const UNITS: readonly Spec[] = [
   // Ours, air (Cartoon Wars 2's A row): they fly over the field, out of reach of melee troops; only ranged ones hit them.
   // The aircraft fighter's four forms: a sword under a propeller pack, then with goggles and scarf, two rotors and blue
   // steel, and gold rotors with a flaming sword.
-  { id: 10, cost: 30, hp: 70, damage: 12, speed: 70, range: 40, rate: 0.7, cooldown: 3, unlock: 1, air: true, skyOnly: true, ...six('ally-fighter-1', 191, 0.64), forms: [
+  { id: 10, cost: 30, hp: 70, damage: 12, speed: 70, range: 40, rate: 0.7, cooldown: 3, unlock: 2, air: true, skyOnly: true, ...six('ally-fighter-1', 191, 0.64), forms: [
     { price: 150, cost: 40, hp: 100, damage: 16, ...six('ally-fighter-2', 192, 0.64) },
     { price: 400, cost: 55, hp: 140, damage: 22, ...six('ally-fighter-3', 224, 0.64) },
     { price: 1200, cost: 90, hp: 220, damage: 34, speed: 80, splash: 25, ...six('ally-fighter-4', 231, 0.64) },
   ] },
   // The armed aircraft fighter's four forms (docs/cw2-reference.md): a rifleman under a propeller pack, a veteran
   // sniper, a laser gun, and the air magician casting pink lightning.
-  { id: 11, cost: 55, hp: 110, damage: 20, speed: 55, range: 190, rate: 0.8, cooldown: 5, unlock: 2, air: true, skyOnly: true, shot: 'bullet-rifle', ...six('ally-armed-fighter-1', 197, 0.63), forms: [
+  { id: 11, cost: 55, hp: 110, damage: 20, speed: 55, range: 190, rate: 0.8, cooldown: 5, unlock: 3, air: true, skyOnly: true, shot: 'bullet-rifle', ...six('ally-armed-fighter-1', 197, 0.63), forms: [
     { price: 400, cost: 70, hp: 130, damage: 45, range: 260, rate: 1.6, shot: 'bullet-sniper', ...six('ally-armed-fighter-2', 202, 0.63) },
     { price: 900, cost: 90, hp: 170, damage: 34, range: 230, rate: 0.9, shot: 'plasma', ...six('ally-armed-fighter-3', 212, 0.63) },
     { price: 2000, cost: 140, hp: 240, damage: 55, range: 220, rate: 1.4, splash: 60, shot: 'ray-pink', ...six('ally-armed-fighter-4', 217, 0.63) },
@@ -188,9 +188,9 @@ export const UNITS: readonly Spec[] = [
   { id: 39, cost: 0, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, ...foe('boss-king-dino-1', 258, 0.87) },
 ];
 /** The enemy's land and air troops by act, each act adding to the last (docs/siege-roster.md): early waves draw
-    from the first two of the land list. */
+    from the first two of the land list. No flyers in the first world: they come from the second. */
 export const FOE_LAND = [[15, 16, 17], [22, 19], [23, 18], [24, 25, 20], [26, 21], [32]];
-export const FOE_AIR = [[28], [29], [27], [30], [], [31]];
+export const FOE_AIR = [[], [28], [29, 27], [30], [], [31]];
 /** The enemy's troops in a battle: every earlier act's, and its own act's coming in one more each stage. */
 export const foesAt = (lists: number[][], stage: number) => [...lists.slice(0, actOf(stage) - 1).flat(), ...(lists[actOf(stage) - 1] ?? []).slice(0, stageIn(stage))];
 /** What recruiting each of our troops costs in gold (the swordsman is everyone's first). Bought once, kept. */
