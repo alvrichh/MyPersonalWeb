@@ -737,3 +737,9 @@
 .sg-shop-only .sg-st-slots{align-self:stretch;flex:0 0 auto;width:auto;border-style:solid;border-color:transparent;border-width:34px;border-image:url('/images/game/siege/ui/frame.webp') 125 fill / 34px stretch;margin:-22px -6px -22px 4px;padding:0;gap:6px;grid-template-columns:repeat(2,minmax(52px,64px));align-content:center;overflow:visible}
 @media (min-height:560px){.sg-shop-only .sg-st-slots{grid-template-columns:repeat(2,minmax(64px,84px))}}
 .siege-root.is-cartoon .sg-prep .sg-st-tab:focus,.siege-root.is-cartoon .sg-prep .sg-st-tab:focus-visible{outline:none;box-shadow:none}.siege-root.is-cartoon .sg-prep .sg-st-tab:focus-visible{filter:drop-shadow(0 0 6px #fff)}
+/* v1.15.33 — The map fills the screen sideways: the picture covers the view (cropped a little at the top and bottom
+   on wide phones) instead of sitting between blurred bands; upright, it still fits whole. */
+/* Only on screens at least as wide as the picture (phones on their side, wide monitors): those lose a strip at the top
+   and bottom only; a squarer screen (a tablet) keeps the picture whole so no stage is cut off at the sides. */
+@media (min-aspect-ratio:16/9){.sg-map-pic{width:max(100cqw,100cqh * 1672 / 941)}.sg-map-pic>img{border-radius:0;box-shadow:none}}
+@media (max-height:440px){.sg-map-go{width:min(290px,34%)}}
