@@ -2054,6 +2054,18 @@ class Engine {
       tone(t, 'square', f0 * r(), f1, len, peak, 0.008, ['bandpass', vowel * r(0.1), 5]);
       tone(t, 'sawtooth', f0 * 2 * r(), f1 * 2, len, peak * 0.4, 0.008, ['bandpass', vowel * 1.8, 6]);
     };
+    const aww = (t: number, f0: number, f1: number, len: number, peak: number, bright: number) => {
+      const o = ctx.createOscillator(); o.type = 'sawtooth';
+      o.frequency.setValueAtTime(f0 * r(), at + t); o.frequency.linearRampToValueAtTime(f0 * 1.08, at + t + len * 0.18);
+      o.frequency.exponentialRampToValueAtTime(f1, at + t + len);
+      const lfo = ctx.createOscillator(); lfo.frequency.value = 6.5; const lg = ctx.createGain(); lg.gain.value = f0 * 0.025; lfo.connect(lg).connect(o.frequency);
+      const g = ctx.createGain(); this.env(g, at + t, peak, 0.02, len);
+      for (const [f, q, k] of [[650 * bright, 6, 1], [1000 * bright, 7, 0.7], [2500 * bright, 9, 0.2]] as const) {
+        const bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = f; bp.Q.value = q;
+        const kg = ctx.createGain(); kg.gain.value = k * 2.2; o.connect(bp).connect(kg).connect(g);
+      }
+      g.connect(out); o.start(at + t); lfo.start(at + t); o.stop(at + t + len + 0.05); lfo.stop(at + t + len + 0.05);
+    };
     const puff = (t: number, peak = 0.3) => noise(t, 0.3, peak, 'lowpass', 900 * r(), 180, 0.6, 0.02);
     const slide = (t: number, f0: number, f1: number, len: number, peak: number) => tone(t, 'sine', f0 * r(), f1, len, peak, 0.02);
     switch (kind) {
@@ -2080,9 +2092,10 @@ class Engine {
       case 'drill': tone(0, 'sawtooth', 72 * r(), 80, 0.32, 0.18, 0.01, ['lowpass', 900]); return noise(0, 0.32, 0.18, 'bandpass', 2400 * r(), 2600, 3, 0.01);
       case 'magic': for (let i = 0; i < 4; i++) tone(i * 0.04, 'sine', [880, 1110, 1320, 1760][i] * r(0.02), [880, 1110, 1320, 1760][i] * 1.01, 0.18, 0.07, 0.003); return noise(0, 0.25, 0.05, 'highpass', 7000);
       // Deaths: a cartoon cry, a pop and a puff of smoke as they fall.
-      // The blow that kills: ours a heavy, muffled hit with a short grunt; theirs a crunchy smack with a rasp.
-      case 'death-ally': tone(0, 'sine', 180 * r(), 60, 0.16, 0.5); noise(0, 0.12, 0.34, 'lowpass', 900 * r(), 300, 0.8, 0.004); return cry(0.03, 260, 150, 0.2, 0.06, 650);
-      case 'death-foe': tone(0, 'square', 240 * r(), 70, 0.1, 0.18, 0.002, ['lowpass', 1400]); noise(0, 0.1, 0.4, 'bandpass', 1600 * r(), 900, 1.4, 0.003); return noise(0.05, 0.22, 0.14, 'highpass', 2500, 900, 0.7, 0.02);
+      // The cry of the one killed, a cartoon "aww!": a voice sliding down through the vowel's two formants (/ɔ/, about
+      // 650 and 1000 Hz), a little vibrato as it fades. Ours a higher, sadder one; theirs a lower, rougher groan.
+      case 'death-ally': aww(0, 360, 210, 0.5, 0.2, 1); return;
+      case 'death-foe': aww(0, 210, 110, 0.55, 0.22, 0.75); return noise(0, 0.4, 0.05, 'bandpass', 1200, 700, 1, 0.05);
       case 'die-man': squeak(0, 620, 280, 0.26, 0.11); pop(0.24, 0.16); return puff(0.25, 0.22);
       case 'die-armor': squeak(0, 480, 220, 0.24, 0.1, 1100); fall(0.2, 0.32); [0.22, 0.27, 0.33].forEach((t) => ring(t, [1800 * r(), 2700 * r(), 3500 * r()], 0.05, 0.14)); return puff(0.3, 0.18);
       case 'die-beast': squeak(0, 900, 360, 0.3, 0.1, 1600); fall(0.28, 0.34); return puff(0.3, 0.2);
