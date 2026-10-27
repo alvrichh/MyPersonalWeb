@@ -569,6 +569,8 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     if (!state) return;
     modal(`<span class="sg-eyebrow">${t('siegeSoon')}</span><h2>${t(state.phase === 'won' ? 'siegeWon' : 'siegeLost')}</h2><p>${t('siegeResult', { kills: state.kills, time: clock(state.time) })}</p>${state.loot ? `<strong>${t('siegeLoot', { n: state.loot })}</strong>` : ''}${state.phase === 'won' ? `<strong>${t('siegeReward', { n: reward })}</strong>${world === lastWorld() ? `<p>${t(mode === 'cartoon' ? 'siegeCartoonComplete' : 'siegeComplete')}</p>` : ''}` : `<p>${t('siegeRetryHint')}</p>`}<div class="sg-dialog-actions">${state.phase === 'won' && world < lastWorld() ? `<button class="sg-primary" data-sg="next">${t('siegeNext')}</button>` : `<button class="sg-primary" data-sg="retry">${t('again')}</button>`}<button data-sg="prep">${t('siegeLeave')}</button></div>`);
   }
+  /** The shop tile tapped last and when, to tell a double tap. */
+  let lastTile = { key: '', at: -1e9 };
   root.addEventListener('click', event => {
     const button = (event.target as HTMLElement).closest<HTMLButtonElement>('button'); if (!button || button.disabled) return;
     const { sg: action, sgUnit: unit, sgUpgrade: up, sgSummon: summonId } = button.dataset;
@@ -579,7 +581,12 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       prep(); root.querySelector<HTMLElement>(`[data-sg-unit="${id}"]`)?.focus(); return;
     }
     if (button.dataset.sgShopTab && !state) { shopTab = button.dataset.sgShopTab as typeof shopTab; pick = { row: shopRows()[0], level: 1 }; prep(); root.querySelector<HTMLElement>(`[data-sg-shop-tab="${shopTab}"]`)?.focus(); return; }
-    if (button.dataset.sgTile && !state) { const [row, level] = button.dataset.sgTile.split(':').map(Number); pick = { row, level }; let full = false; if (shopTab !== 'base' && tile(row, level).have) full = !equip(row, level); const g = root.querySelector('.sg-st-grid')?.scrollTop ?? 0; prep(); const grid = root.querySelector('.sg-st-grid'); if (grid) grid.scrollTop = g; root.querySelector<HTMLElement>(`.sg-st-grid [data-sg-tile="${row}:${level}"]`)?.focus({ preventScroll: true }); if (full) q('.sg-message').textContent = t('siegeFull'); return; }
+    if (button.dataset.sgTile && !state) {
+      const [row, level] = button.dataset.sgTile.split(':').map(Number);
+      // A double tap on a tile that can be bought buys it (the screen is redrawn between the taps, so no `dblclick`).
+      const again = lastTile.key === button.dataset.sgTile && event.timeStamp - lastTile.at < 450; lastTile = { key: button.dataset.sgTile, at: again ? -1e9 : event.timeStamp };
+      if (again && !button.classList.contains('sg-st-slot') && tile(row, level).next) { pick = { row, level }; const g = root.querySelector('.sg-st-grid')?.scrollTop ?? 0; purchase(); prep(); const grid = root.querySelector('.sg-st-grid'); if (grid) grid.scrollTop = g; root.querySelector<HTMLElement>(`[data-sg-tile="${row}:${level}"]`)?.focus({ preventScroll: true }); return; }
+      pick = { row, level }; let full = false; if (shopTab !== 'base' && tile(row, level).have) full = !equip(row, level); const g = root.querySelector('.sg-st-grid')?.scrollTop ?? 0; prep(); const grid = root.querySelector('.sg-st-grid'); if (grid) grid.scrollTop = g; root.querySelector<HTMLElement>(`.sg-st-grid [data-sg-tile="${row}:${level}"]`)?.focus({ preventScroll: true }); if (full) q('.sg-message').textContent = t('siegeFull'); return; }
     if (action === 'purchase' && !state) { const g = root.querySelector('.sg-st-grid')?.scrollTop ?? 0; purchase(); prep(); const grid = root.querySelector('.sg-st-grid'); if (grid) grid.scrollTop = g; root.querySelector<HTMLElement>(`[data-sg="${action}"]:not(:disabled)`)?.focus({ preventScroll: true }); return; }
     if (button.dataset.sgBuy !== undefined && !state) {
       const id = Number(button.dataset.sgBuy);

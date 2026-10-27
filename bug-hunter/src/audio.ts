@@ -415,7 +415,8 @@ class Engine {
 
   unlock() {
     if (this.ready) {
-      if (this.ctx.state === 'suspended') void this.ctx.resume();
+      // iOS leaves it 'interrupted' after a call or the phone locking, not only 'suspended'.
+      if (this.ctx.state !== 'running') void this.ctx.resume();
       return;
     }
     const Ctx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
@@ -472,6 +473,7 @@ class Engine {
 
   start() {
     if (!this.ready || this.playing) return;
+    if (this.ctx.state !== 'running') void this.ctx.resume();
     this.playing = true;
     // Picks up where it stopped (muting and unmuting must not restart the song); only the very first start is at 0.
     this.next = this.ctx.currentTime + 0.1;
@@ -541,13 +543,15 @@ class Engine {
     if (!this.playing) return;
     // After a stall of the main thread (a long frame, a tab switch) the steps missed are skipped, not all fired at
     // once in the past: that burst of stacked drums was itself a hitch.
-    if (this.next < this.ctx.currentTime - 0.1) {
+    if (this.next < this.ctx.currentTime) {
       const step = this.stepLen();
-      const missed = Math.floor((this.ctx.currentTime - this.next) / step);
+      const missed = Math.ceil((this.ctx.currentTime - this.next) / step);
       this.step += missed;
       this.next += missed * step;
     }
-    while (this.next < this.ctx.currentTime + 0.12) {
+    // A third of a second scheduled ahead: a busy frame (a screen being built, pictures decoding) no longer runs the
+    // music dry.
+    while (this.next < this.ctx.currentTime + 0.3) {
       this.schedule(this.step, this.next);
       this.next += this.stepLen();
       this.step += 1;
