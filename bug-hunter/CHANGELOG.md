@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.38 - 2026-10-27
+
+### Changed
+- Siege Cartoon: a troop killed cries a cartoon "aww!" (a higher, sadder one for ours, a lower, rougher groan for the enemy's) instead of the hit sound.
+
 ## 1.15.37 - 2026-10-27
 
 ### Changed - Siege Cartoon's crossbow
