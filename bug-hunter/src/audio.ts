@@ -15,7 +15,7 @@
 
 /** Siege's troop sounds: attacks by weapon, deaths by body. */
 export const SIEGE_SOUNDS = ['blade', 'blunt', 'pierce', 'claw', 'bite', 'throw', 'bow', 'gun', 'rifle', 'uzi', 'sniper', 'gatling', 'rocket', 'ray', 'flame', 'thunder', 'wind', 'meteor', 'breath', 'drill', 'magic',
-  'die-man', 'die-armor', 'die-beast', 'die-brute', 'die-bot', 'die-flyer', 'die-horse', 'die-dragon', 'base-falls', 'coin', 'corrupt-wind'] as const;
+  'die-man', 'die-armor', 'die-beast', 'die-brute', 'die-bot', 'die-flyer', 'die-horse', 'die-dragon', 'base-falls', 'coin', 'corrupt-wind', 'death-ally', 'death-foe'] as const;
 export type SiegeSound = (typeof SIEGE_SOUNDS)[number];
 export type Sfx =
   | 'shoot' | 'knife' | 'boomerang' | 'hit' | 'kill' | 'gem' | 'hurt' | 'levelup' | 'pick'
@@ -2080,6 +2080,9 @@ class Engine {
       case 'drill': tone(0, 'sawtooth', 72 * r(), 80, 0.32, 0.18, 0.01, ['lowpass', 900]); return noise(0, 0.32, 0.18, 'bandpass', 2400 * r(), 2600, 3, 0.01);
       case 'magic': for (let i = 0; i < 4; i++) tone(i * 0.04, 'sine', [880, 1110, 1320, 1760][i] * r(0.02), [880, 1110, 1320, 1760][i] * 1.01, 0.18, 0.07, 0.003); return noise(0, 0.25, 0.05, 'highpass', 7000);
       // Deaths: a cartoon cry, a pop and a puff of smoke as they fall.
+      // The blow that kills: ours a heavy, muffled hit with a short grunt; theirs a crunchy smack with a rasp.
+      case 'death-ally': tone(0, 'sine', 180 * r(), 60, 0.16, 0.5); noise(0, 0.12, 0.34, 'lowpass', 900 * r(), 300, 0.8, 0.004); return cry(0.03, 260, 150, 0.2, 0.06, 650);
+      case 'death-foe': tone(0, 'square', 240 * r(), 70, 0.1, 0.18, 0.002, ['lowpass', 1400]); noise(0, 0.1, 0.4, 'bandpass', 1600 * r(), 900, 1.4, 0.003); return noise(0.05, 0.22, 0.14, 'highpass', 2500, 900, 0.7, 0.02);
       case 'die-man': squeak(0, 620, 280, 0.26, 0.11); pop(0.24, 0.16); return puff(0.25, 0.22);
       case 'die-armor': squeak(0, 480, 220, 0.24, 0.1, 1100); fall(0.2, 0.32); [0.22, 0.27, 0.33].forEach((t) => ring(t, [1800 * r(), 2700 * r(), 3500 * r()], 0.05, 0.14)); return puff(0.3, 0.18);
       case 'die-beast': squeak(0, 900, 360, 0.3, 0.1, 1600); fall(0.28, 0.34); return puff(0.3, 0.2);

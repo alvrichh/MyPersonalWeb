@@ -309,7 +309,7 @@ export interface Fighter { uid: number; id: number; side: 0 | 1; x: number; lane
 /** A blow taking at least this share of a troop's health knocks it: infantry fly back (`KNOCK.back` field units over
     `KNOCK.time`) and get up, the rest are stunned for `KNOCK.stun`; bosses and the steady never. */
 export const KNOCK = { share: 0.2, time: 0.55, back: 70, stun: 0.35 };
-export interface Effect { x: number; from: number; lane: number; life: number; max: number; kind: 'shot' | 'burst' | 'arrow' | 'rocket' | 'bolt' | 'gust' | 'loot' | 'boom' | 'fire'; side: 0 | 1;
+export interface Effect { x: number; from: number; lane: number; life: number; max: number; kind: 'shot' | 'burst' | 'arrow' | 'rocket' | 'bolt' | 'gust' | 'loot' | 'boom' | 'fire' | 'stuck'; side: 0 | 1;
   /** A `boom` (an explosion) or a `fire` (a burning pool on the ground): its size, and the height it is at. */
   size?: number; up?: number;
   /** A `boom` with black smoke (the robots' rockets) instead of grey (our crossbow's). */
@@ -450,6 +450,8 @@ export const NUDGE = { back: 85, time: 0.14, every: 0.8 };
     for one that strikes in close), changing height at `rate` a second. */
 /** How long a rocket's explosion and a meteor's fire on the ground last (seconds). */
 export const BOOM = 0.8, FIRE = 2.4;
+/** How long a crossbow arrow stays stuck in the ground after it lands (seconds), fading in its last part. */
+export const STUCK = 2.5;
 /** Where the wizard's three meteors land round the target: field units along the ground, and up it (back) or down
     (front): two at the back, one in front between them. */
 export const METEORS = [[-30, 10], [32, 10], [2, -10]];
@@ -514,6 +516,8 @@ function arrows(s: Siege, count: number) {
     // Far shots are lobbed (the view draws them climbing and falling from the sky): they stay longer in the air.
     const air = 0.5 + 0.45 * Math.max(0, Math.min(1, (x - 650) / 430));
     s.effects.push({ x: at, from: 80, lane: i % 3, life: air, max: air, kind: 'arrow', side: 0 });
+    // An arrow stays stuck in the ground where it lands, fading after a moment (rockets blow up instead).
+    if (looksTier(s.bow.level) < 4) s.effects.push({ x: at, from: 80, lane: i % 3, life: air + STUCK, max: STUCK, kind: 'stuck', side: 0 });
     // The rocket launcher's rockets blow up where they land (`life` past `max`: it waits for the rocket to get there).
     if (looksTier(s.bow.level) === 4) s.effects.push({ x: at, from: at, lane: 1, life: air + BOOM + i * 0.08, max: BOOM, kind: 'boom', side: 0, size: 58 + (i % 2) * 22, up: (i % 2) * 8 });
   }
@@ -654,6 +658,7 @@ export function tick(s: Siege, dt: number) {
     s.effects.push({ x: u.x, from: u.x, lane: u.lane, life: 0.4, max: 0.4, kind: 'burst', side: u.side });
   }
   for (const u of s.units) if (u.hp <= 0) {
+    if (!((u.stage ?? 0) < splitsOf(u))) hear(s, u.side ? 'death-foe' : 'death-ally', u.x);
     hear(s, soundsOf(u)[1], u.x);
     // A fallen enemy's bounty: gold (kept win or lose) and energy, shown rising where it fell.
     if (u.side && !((u.stage ?? 0) < splitsOf(u))) {
