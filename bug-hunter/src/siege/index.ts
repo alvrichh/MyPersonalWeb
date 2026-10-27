@@ -240,6 +240,8 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       pictures stay as they are (no flash while they load again) and its lists keep where they were scrolled to. */
   function paint(html: string) {
     const next = document.createElement('div'); next.innerHTML = html;
+    // Pictures already trimmed come in trimmed, so nothing jumps from its first look to the trimmed one.
+    next.querySelectorAll<HTMLImageElement>('img[data-trim]').forEach(img => { const done = cartoonView.trimmedOf(img.dataset.trim!); if (done) img.src = done; });
     const now = root.firstElementChild, fresh = next.firstElementChild!;
     if (now && now.className === fresh.className) morph(now, fresh);
     else { root.replaceChildren(fresh); focus(); }
