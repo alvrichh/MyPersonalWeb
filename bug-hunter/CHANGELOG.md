@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.53 - 2026-10-27
+
+### Changed
+- Siege Cartoon's free test mode now also makes the shop's base upgrades free, and gives endless energy in battle (on top of free, open troops and powers).
+
 ## 1.15.52 - 2026-10-27
 
 ### Changed

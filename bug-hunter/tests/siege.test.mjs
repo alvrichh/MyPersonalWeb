@@ -314,3 +314,14 @@ test('an upgraded power still casts its earlier form, with its own recharge', ()
   assert.equal(m.castPower(s, m.powerCard(0, 1)), true); assert.equal(m.castPower(s, m.powerCard(0, 2)), true, 'the other form is not on the same recharge'); assert.equal(m.castPower(s, m.powerCard(0, 1)), false);
   assert.equal(m.castPower(s, m.powerCard(0, 3)), false, 'a form not in the kit');
 });
+test('the free test mode: free base upgrades, free powers and troops, endless energy in battle', () => {
+  m.testing.free = true;
+  try {
+    const p = m.freshProgress(); p.coins = 0;
+    assert.equal(m.upgrade(p, 1), true); assert.equal(p.upgrades[1], 1, 'a base upgrade costs nothing'); assert.equal(p.coins, 0);
+    assert.equal(m.buyPower(p, 3), true, 'an unopened power too'); assert.equal(m.buyPower(p, 3), true); assert.equal(m.buyTroop(p, 5), true);
+    const s = m.newSiege(p, 1); s.energy = 0; run(s, 1); assert.equal(s.energy, m.energyMax(s), 'the energy is always full');
+    m.summon(s, 0); assert.ok(s.units.length >= 1); run(s, 0.1); assert.equal(s.energy, m.energyMax(s), 'and refills at once');
+  } finally { m.testing.free = false; }
+  const q = m.freshProgress(); assert.equal(m.upgrade(q, 1), false, 'not free once the mode is off');
+});
