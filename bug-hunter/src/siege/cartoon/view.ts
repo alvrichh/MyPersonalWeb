@@ -62,7 +62,7 @@ function topOf(image: HTMLImageElement) {
   if (!c) { c = document.createElement('canvas'); c.width = 16; c.height = 1; const t = c.getContext('2d'); if (t) { t.imageSmoothingQuality = 'high'; t.drawImage(image, 0, 0, image.naturalWidth, 8, 0, 0, 16, 1); } tops.set(image, c); }
   return c;
 }
-const FX = ['siege/mana', ...[0, 1, 2, 3, 4, 5, 6, 7].flatMap(n => [`siege/fx-boom-${n}`, `siege/fx-boom-dark-${n}`]), 'fx/fire-pool.webp', 'fx/fireball.webp', 'fx/rocket.webp', 'fx/volt-burst.webp', 'fx/impact.webp', 'fx/ice-block.webp', 'siege/units/shot-arrow', 'siege/units/shot-ice', 'siege/units/shot-lightning', ...[0, 1, 2].map(n => `fx/wave-strip-${n}.webp`), ...[0, 1, 2, 3, 4, 5, 6].map(n => `fx/icicle-0-${n}.webp`), 'arrows/water.webp', 'arrows/leaf.webp', 'fx/boom-big.webp', 'fx/impact.webp', ...[1, 2, 3, 4, 5, 6].map(n => `fx/bolt-y-${n}.webp`)];
+const FX = ['siege/mana', ...[0, 1, 2, 3, 4, 5, 6, 7].flatMap(n => [`siege/fx-boom-${n}`, `siege/fx-boom-dark-${n}`]), 'siege/units/shot-crescent-gold', 'fx/fire-pool.webp', 'fx/fireball.webp', 'fx/rocket.webp', 'fx/volt-burst.webp', 'fx/impact.webp', 'fx/ice-block.webp', 'siege/units/shot-arrow', 'siege/units/shot-ice', 'siege/units/shot-lightning', ...[0, 1, 2].map(n => `fx/wave-strip-${n}.webp`), ...[0, 1, 2, 3, 4, 5, 6].map(n => `fx/icicle-0-${n}.webp`), 'arrows/water.webp', 'arrows/leaf.webp', 'fx/boom-big.webp', 'fx/impact.webp', ...[1, 2, 3, 4, 5, 6].map(n => `fx/bolt-y-${n}.webp`)];
 /** Pictures drawn whole (backdrop, floor, effects): no alpha crop needed. */
 const stills = new Map<string, HTMLImageElement>();
 function still(path: string) {
@@ -342,6 +342,20 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     ctx.restore(); ctx.lineWidth = 3; ctx.strokeStyle = '#0a2f66'; ctx.stroke();
     ctx.globalAlpha = 0.8 * a; ctx.fillStyle = '#ffffff';
     for (let k = 0; k < 9; k++) { const sx = front - 60 + ((k * 37 + Math.floor(p * 30) * 11) % 90) - 30, sy = at - H * 0.9 + ((k * 53) % 70) - Math.sin(p * 12 + k) * 8; ctx.beginPath(); ctx.arc(sx, sy, 3 + (k % 3), 0, Math.PI * 2); ctx.fill(); }
+    ctx.restore(); return true;
+  }
+  if (e.kind === 'sweep') {
+    // The archangel's golden crescent: a wide arc sweeping out from the angel over the ground ahead of it, growing, a
+    // white-hot core and gold streaks behind, fading; it is drawn twice, the second time adding light.
+    const art = still('siege/units/shot-crescent-gold'); if (!ok(art)) return false;
+    const dir = e.x >= e.from ? 1 : -1, reach = Math.abs(e.x - e.from), q = Math.min(1, p / 0.8), ease = 1 - (1 - q) * (1 - q);
+    const cx = e.from + dir * reach * ease, cy = ground - 36 - (e.fromUp ?? 0) * 0.4, h = 90 + 60 * ease, w = h * art.naturalWidth / art.naturalHeight;
+    ctx.save(); ctx.globalAlpha = p < 0.7 ? 1 : (1 - p) / 0.3; ctx.translate(cx, cy); ctx.scale(dir, 1);
+    ctx.shadowColor = '#ffd84a'; ctx.shadowBlur = 26;
+    ctx.drawImage(art, -w / 2, -h / 2, w, h);
+    ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha *= 0.45; ctx.drawImage(art, -w / 2, -h / 2, w, h);
+    ctx.shadowBlur = 0; ctx.globalAlpha *= 0.8; ctx.strokeStyle = '#fff3b0'; ctx.lineWidth = 3; ctx.lineCap = 'round';
+    for (let k = -2; k <= 2; k++) { ctx.beginPath(); ctx.moveTo(-w * (0.5 + 0.3 * (1 - Math.abs(k) / 3)), k * h * 0.18); ctx.lineTo(-w * (0.9 + 0.5 * ease), k * h * 0.18); ctx.stroke(); }
     ctx.restore(); return true;
   }
   if (e.kind === 'burst' && p < 0) return true;
