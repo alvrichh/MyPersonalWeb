@@ -155,12 +155,12 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       const pic = shopTab === 'base' ? `/images/game/${upgradePic('cartoon', row, level)}.webp` : V.portrait(row, level);
       const corner = shopTab === 'base' ? (x.have ? '✓' : '') : String(M.specAt(row, level).cost);
       const worn = shopTab !== 'base' && selected.includes(cartoonModel.card(row, level));
-      // What is still to come stays hidden as a «?» (only what is owned and the next one to buy show), for the hype.
-      const hidden = !x.have && !x.next;
+      // What is still to come stays hidden as a «?» (only what is owned, the next one to buy, and every troop's first form show), for the hype.
+      const hidden = !x.have && !x.next && !(shopTab !== 'base' && level === 1);
       return `<button class="sg-st-tile ${x.have ? 'is-have' : x.next ? 'is-next' : 'is-locked'} ${on ? 'is-on' : ''} ${worn ? 'is-worn' : ''}" data-sg-tile="${row}:${level}" aria-pressed="${on}" aria-label="${hidden ? '?' : `${shopTab === 'base' ? t(`siegeUpgrade${row}` as Key) : name(row)} · ${t('siegeLevel', { n: level })}`}">${hidden ? '<span class="sg-st-q" aria-hidden="true">?</span>' : `<img src="${pic}" ${shopTab === 'base' ? '' : `data-trim="${pic}"`} alt="">`}${corner && !hidden ? `<small>${corner}</small>` : ''}${worn ? '<b class="sg-st-worn" aria-hidden="true">✓</b>' : ''}</button>`;
     }).join('<span class="sg-st-link" aria-hidden="true"></span>')}</div>`).join('');
     const x = tile(pick.row, pick.level), troop = shopTab !== 'base';
-    const label = !x.have && !x.next ? '? ? ?' : troop ? `${name(pick.row)} · ${t('siegeLevel', { n: pick.level })} — ${role(pick.row)}` : `${t(`siegeUpgrade${pick.row}` as Key)} · ${t('siegeLevel', { n: pick.level })}`;
+    const label = !x.have && !x.next && !(troop && pick.level === 1) ? '? ? ?' : troop ? `${name(pick.row)} · ${t('siegeLevel', { n: pick.level })} — ${role(pick.row)}` : `${t(`siegeUpgrade${pick.row}` as Key)} · ${t('siegeLevel', { n: pick.level })}`;
     const price = x.have ? `✓ ${t('siegeHave')}` : x.next ? (x.price ? `🪙 ${x.price}` : t('siegeFree')) : `🔒 ${x.why}`;
     const kind = shopTab === 'air';
     // The equipped cards; a tap on one takes it out of the army.
