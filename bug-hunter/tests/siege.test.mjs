@@ -28,12 +28,12 @@ test('generator spends energy, raises capacity/rate and caps at four', () => {
   assert.equal(s.generator, 4); assert.equal(m.improveGenerator(s), false);
   run(s, 1); assert.ok(s.energy <= m.energyMax(s));
 });
-test('weapons have separate recharge and never hurt friendly troops', () => {
+test('weapons have separate recharge; arrows strike our own troops too, the spell never', () => {
   const s = m.newSiege(m.freshProgress(), 1); m.summon(s, 0); const u = s.units[0]; s.aim = u.x;
   const enemy = { ...u, uid: 100, side: 1, hp: 200, maxHp: 200 }; s.units.push(enemy);
-  u.damage = 0; enemy.damage = 0; const hp = u.hp, energy = s.energy;
-  m.draw(s, true); m.tick(s, 1 / 30); assert.equal(u.hp, hp); assert.ok(enemy.hp < 200); m.draw(s, false); assert.ok(s.bow.quiver < m.BOW.max);
-  assert.equal(m.strike(s), true); assert.equal(m.strike(s), false); assert.equal(u.hp, hp);
+  u.damage = 0; enemy.damage = 0; u.hp = u.maxHp = 500; const energy = s.energy;
+  m.draw(s, true); m.tick(s, 1 / 30); assert.ok(u.hp < 500, 'an arrow landing on ours hurts it'); assert.ok(enemy.hp < 200); m.draw(s, false); assert.ok(s.bow.quiver < m.BOW.max);
+  const hp = u.hp; assert.equal(m.strike(s), true); assert.equal(m.strike(s), false); assert.equal(u.hp, hp);
 });
 test('troops walk, engage opponents and cannot pass through them', () => {
   const s = m.newSiege(m.freshProgress(), 1); m.summon(s, 0); const a = s.units[0]; a.x = 500;

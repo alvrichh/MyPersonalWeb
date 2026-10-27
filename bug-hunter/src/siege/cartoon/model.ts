@@ -454,7 +454,7 @@ export const BOOM = 0.8, FIRE = 2.4;
 export const STUCK = 2.5;
 /** How far an arrow strays from the aim: up to `along` field units either way, and up to two steps of `deep` up or
     down the ground (nearer or further). */
-export const SCATTER = { along: 34, deep: 6 };
+export const SCATTER = { along: 14, deep: 4 };
 /** Where the wizard's three meteors land round the target: field units along the ground, and up it (back) or down
     (front): two at the back, one in front between them. */
 export const METEORS = [[-30, 10], [32, 10], [2, -10]];
@@ -513,8 +513,10 @@ function arrows(s: Siege, count: number) {
       const ys = [-h / 3, 0, h / 3].map(d => -path(Math.max(0, Math.min(1, (u.x + d - from.x) / span))).y);
       return Math.max(...ys) >= foot - 6 && Math.min(...ys) <= foot + h;
     };
-    for (const u of s.units) if (u.side === 1 && u.hp > 0 && (Math.abs(u.x - at) <= 28 || crossed(u))) {
-      u.hp -= BOW.damage * s.power; u.flash = 0.18;
+    // It strikes whoever is there, ours too: aim past your own troops.
+    for (const u of s.units) if (u.hp > 0 && (Math.abs(u.x - at) <= 28 && !(u.side === 0 && UNITS[u.id].air) || crossed(u))) {
+      u.hp -= BOW.damage * (u.side ? s.power : 1); u.flash = 0.18;
+      if (u.side === 0) continue;
       // A hit nudges it back a little (not the guardians or the steady), at most once every `NUDGE.every`, so it still
       // makes its way forward.
       if (!u.boss && !UNITS[u.id].steady && !(u.nudgeCd! > 0)) { u.nudge = NUDGE.time; u.nudgeCd = NUDGE.every; }
