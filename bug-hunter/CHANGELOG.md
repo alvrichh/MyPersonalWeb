@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.35 - 2026-10-27
+
+### Fixed
+- Siege Cartoon's map on iPhone: the Shop stall no longer flickers (a box flashing behind it while the current spot pulsed); its shadow is part of its picture now.
+
 ## 1.15.34 - 2026-10-27
 
 ### Changed
