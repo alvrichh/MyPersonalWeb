@@ -4,6 +4,15 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.41 - 2026-10-27
+
+### Fixed
+- Music: a busy moment (a screen being built, pictures loading) no longer leaves it stuttering or piling up notes (it is scheduled further ahead and late steps are skipped), and it comes back after the phone was locked or a call on iOS.
+
+### Changed
+- Siege Cartoon: a double tap on a shop tile that can be bought buys it.
+- Siege Cartoon: the battle bar's cards sit on its stone slots instead of blue tiles, their cost on a dark plate.
+
 ## 1.15.40 - 2026-10-27
 
 ### Changed
