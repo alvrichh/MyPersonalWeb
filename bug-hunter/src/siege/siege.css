@@ -688,3 +688,13 @@
 .sg-vol{display:grid;grid-template-columns:1fr auto;gap:4px 10px;width:100%;text-align:left;font:800 15px system-ui;text-shadow:0 1px 2px #000}
 .sg-vol b{color:#ffd23f}.sg-vol input{grid-column:1/-1;width:100%;accent-color:#ffd23f}
 @media (max-height:440px){.sg-pausebox{border-width:42px;border-image-width:42px;gap:6px}.sg-pausebox h2{font-size:22px;margin-top:-16px}.siege-root.is-cartoon .sg-kit,.siege-root.is-cartoon .sg-kit:hover{min-height:40px;font-size:15px}.siege-root.is-cartoon .sg-pausebox .sg-round{top:-34px;width:42px;height:42px}.sg-pausebox .sg-round.is-gear{left:-34px}.sg-pausebox .sg-round.is-close{right:-34px}.sg-kit-actions{gap:5px}}
+/* The map's settings button, beside the gold; the language row and the settings' own buttons. */
+.siege-root.is-cartoon .sg-map-top .sg-round,.siege-root.is-cartoon .sg-map-top .sg-round:hover{width:50px;height:50px;min-height:0;padding:0;border:0;border-radius:50%;box-shadow:none;background:url('/images/game/siege/ui/round.webp') center/contain no-repeat;color:#fff;font:900 20px/1 system-ui;text-shadow:0 2px 2px #000}
+.siege-root.is-cartoon .sg-map-top .sg-round:active{background-image:url('/images/game/siege/ui/round-down.webp')}
+.sg-langs{display:grid;grid-template-columns:1fr 1fr;gap:6px 8px;width:100%}
+.sg-langs>span{grid-column:1/-1;text-align:left;font:800 15px system-ui;text-shadow:0 1px 2px #000}
+.siege-root.is-cartoon .sg-langs .sg-kit,.siege-root.is-cartoon .sg-pausebox>.sg-kit{min-height:44px;font-size:15px;text-transform:none;width:100%}
+.sg-pausebox p{margin:0;color:#e8f1ff;font:600 15px/1.4 system-ui;text-shadow:0 1px 2px #000}
+.siege-root.is-cartoon .sg-dialog:has(.sg-pausebox){max-height:calc(100dvh - 16px);overflow:auto}
+@media (max-height:440px){.sg-pausebox .sg-vol{font-size:13px}.siege-root.is-cartoon .sg-langs .sg-kit,.siege-root.is-cartoon .sg-pausebox>.sg-kit{min-height:36px;font-size:13px}}
+@media (max-height:520px){.sg-pausebox{border-width:42px;border-image-width:42px;gap:6px}.sg-pausebox h2{font-size:22px;margin-top:-16px}.siege-root.is-cartoon .sg-pausebox .sg-kit{min-height:38px;font-size:14px}.siege-root.is-cartoon .sg-pausebox .sg-round{top:-34px;width:42px;height:42px}.sg-pausebox .sg-round.is-gear{left:-34px}.sg-pausebox .sg-round.is-close{right:-34px}.sg-pausebox .sg-vol{font-size:13px}.sg-kit-actions{gap:5px;margin-top:2px}}

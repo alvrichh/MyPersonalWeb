@@ -39,7 +39,7 @@ let closeActive: (() => void) | undefined;
 /** Own root, event lifecycle and save: existing game modes are never entered or mutated. */
 /** `hero`: the player's hero picture and name, the commander who speaks in the story scenes. */
 /** `music`: Siege Cartoon's songs, its menus' or its battles', or null to go back to the player's pick. */
-export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' }, sound: (name: string, vol?: number, pan?: number) => void = () => {}, music: (song: 'menu' | 'battle' | 'boss' | null) => void = () => {}, volumes: { get: () => [number, number]; set: (music: number, sfx: number) => void } = { get: () => [1, 1], set: () => {} }) {
+export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' }, sound: (name: string, vol?: number, pan?: number) => void = () => {}, music: (song: 'menu' | 'battle' | 'boss' | null) => void = () => {}, volumes: { get: () => [number, number]; set: (music: number, sfx: number) => void; lang?: () => string; setLang?: (lang: 'es' | 'en') => T } = { get: () => [1, 1], set: () => {} }) {
   closeActive?.();
   /** The mode being played (null on the mode screen), its engine and its save. */
   let mode: Mode | null = null, M = ENGINES.cartoon.m, V = ENGINES.cartoon.v;
@@ -113,6 +113,9 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   /** Cartoon's map: 0 shows the world map (`siege/map-worlds`), a world's number its own map of five stages
       (`siege/map-N`). */
   let mapAct = 0;
+  /** The owner's "everything free" testing switch, remembered on this device. */
+  const FREE_KEY = 'bugHunter.siege.cartoon.free';
+  cartoonModel.testing.free = storage.get(FREE_KEY) === '1';
   /** The turn-your-phone notice was closed (it stays closed on the maps). */
   let turnSeen = false;
   /** Where each map picture's platforms are (% of its width and height), measured on the owner's pictures: index 0 the
@@ -287,7 +290,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     return `<div class="sg-map" style="--map:url('${pic}')"><div class="sg-turn" role="status"><span aria-hidden="true">📱↻</span><b>${t('siegeTurn')}</b><button type="button" data-sg-turn aria-label="${t('siegeTurnOk')}">✕</button></div><div class="sg-map-pic"><img src="${pic}" alt="">${buttons}</div>
       <header class="sg-map-top"><button class="sg-back" ${act ? 'data-sg-map-act="0"' : 'data-sg="exit"'} aria-label="${act ? t('siegeShopBack') : t('siegeExit')}">←</button>
         <h1 class="sg-map-title">${act ? `<small>${worldName(act)}</small>${t(`siegeCtAct${act}` as Key)}` : title()}</h1>
-        <span class="sg-coins"><img src="/images/game/store/coins-2.webp" alt="">${progress.coins}</span></header>
+        <span class="sg-coins"><img src="/images/game/store/coins-2.webp" alt="">${progress.coins}</span><button class="sg-round is-gear" data-sg="settings" aria-label="${t('options')}"><span aria-hidden="true">⚙</span></button></header>
       <button class="sg-map-shop" data-sg-prep="shop"><span>${t('siegeTabStore')}</span></button>${panel}</div>`;
   }
   /** The HUD's pictures of both sides: Legacy's Town Hall and world guardian, Cartoon's two fortresses. */
@@ -462,7 +465,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   function modal(content: string) {
     root.querySelector('.sg-overlay')?.remove();
     const overlay = document.createElement('div'); overlay.className = 'sg-overlay'; overlay.innerHTML = `<div class="sg-dialog" role="dialog" aria-modal="true">${content}</div>`;
-    q('.sg-battle').inert = true; root.append(overlay); focus();
+    const under = root.querySelector<HTMLElement>('.sg-battle, .sg-map-only'); if (under) under.inert = true; root.append(overlay); focus();
   }
   /** A story scene, Cartoon Wars-style: the world's picture behind, the speaker's portrait on their side, a line at a
       time. Tap or Next to go on, Skip to jump to the end; `done` runs after the last line. */
@@ -537,9 +540,12 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   /** The settings, from the pause: music and sound volume (the game's own, kept in its save). */
   function settingsMenu() {
     const [m, f] = volumes.get(), row = (k: 'music' | 'sfx', v: number) => `<label class="sg-vol"><span>${k === 'music' ? '🎵' : '🔔'} ${t(k)}</span><b>${Math.round(v * 100)}%</b><input type="range" min="0" max="100" value="${Math.round(v * 100)}" data-sg-vol="${k}"></label>`;
-    modal(`<div class="sg-pausebox"><button class="sg-round is-close" data-sg="pause-back" aria-label="${t('paused')}"><span aria-hidden="true">✕</span></button>
+    modal(`<div class="sg-pausebox"><button class="sg-round is-close" data-sg="pause-back" aria-label="${t(state ? 'paused' : 'siegeTabMap')}"><span aria-hidden="true">✕</span></button>
       <h2>${t('options')}</h2>${row('music', m)}${row('sfx', f)}
-      <div class="sg-kit-actions"><button class="sg-kit is-blue" data-sg="pause-back">← ${t('paused')}</button></div></div>`);
+      ${volumes.lang ? `<div class="sg-langs" role="group" aria-label="${t('language')}"><span>🌐 ${t('language')}</span>${(['es', 'en'] as const).map(l => `<button class="sg-kit ${volumes.lang!() === l ? 'is-gold' : 'is-blue'}" data-sg-lang="${l}" aria-pressed="${volumes.lang!() === l}">${l === 'es' ? 'Español' : 'English'}</button>`).join('')}</div>` : ''}
+      ${state ? '' : `<button class="sg-kit ${cartoonModel.testing.free ? 'is-gold' : 'is-blue'}" data-sg="free" aria-pressed="${cartoonModel.testing.free}">${t('siegeFreeAll')}: ${cartoonModel.testing.free ? t('siegeOn') : t('siegeOff')}</button>
+      <button class="sg-kit is-red" data-sg="reset">${t('siegeReset')}</button>`}
+      <div class="sg-kit-actions"><button class="sg-kit is-blue" data-sg="pause-back">← ${t(state ? 'paused' : 'siegeTabMap')}</button></div></div>`);
     root.querySelectorAll<HTMLInputElement>('[data-sg-vol]').forEach(input => input.addEventListener('input', () => {
       const [mm, ff] = volumes.get(), v = Number(input.value) / 100;
       volumes.set(input.dataset.sgVol === 'music' ? v : mm, input.dataset.sgVol === 'sfx' ? v : ff);
@@ -587,6 +593,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     }
     if (button.dataset.sgWorldPick && !state) { world = Number(button.dataset.sgWorldPick); const left = root.querySelector('.sg-isles')?.scrollLeft ?? 0; prep(); const isles = root.querySelector('.sg-isles'); if (isles) isles.scrollLeft = left; root.querySelector<HTMLElement>(`[data-sg-world-pick="${world}"]`)?.focus(); return; }
     if (up !== undefined && !state) { if (M.upgrade(progress, Number(up))) { persist(); prep(); } return; }
+    if (button.dataset.sgLang && volumes.setLang) { t = volumes.setLang(button.dataset.sgLang as 'es' | 'en'); settingsMenu(); return; }
     if (button.hasAttribute('data-sg-turn')) { turnSeen = true; button.parentElement?.remove(); return; }
     if (button.dataset.sgTab && state) { tab = button.dataset.sgTab as typeof tab; cards(); return; }
     if (summonId !== undefined && state && !paused) { if (M.summon(state, Number(summonId))) sound('click'); updateUi(); return; }
@@ -598,7 +605,11 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     else if (action === 'next') { world = Math.min(lastWorld(), world + 1); prep(); }
     else if (action === 'pause') pause();
     else if (action === 'settings') settingsMenu();
-    else if (action === 'pause-back') pauseMenu();
+    else if (action === 'pause-back') { if (state) pauseMenu(); else { root.querySelector('.sg-overlay')?.remove(); prep(); } }
+    else if (action === 'free') { cartoonModel.testing.free = !cartoonModel.testing.free; storage.set(FREE_KEY, cartoonModel.testing.free ? '1' : ''); settingsMenu(); }
+    else if (action === 'reset') {
+      modal(`<div class="sg-pausebox"><h2>${t('siegeReset')}</h2><p>${t('siegeResetAsk')}</p><div class="sg-kit-actions"><button class="sg-kit is-red" data-sg="reset-yes">${t('siegeReset')}</button><button class="sg-kit is-blue" data-sg="settings">${t('siegeCancel')}</button></div></div>`);
+    } else if (action === 'reset-yes') { storage.set(M.SAVE_KEY, JSON.stringify(cartoonModel.freshProgress())); root.querySelector('.sg-overlay')?.remove(); choose('cartoon'); }
     else if (action === 'resume') resume();
     else if (action === 'home') camera.x = -Infinity;
     else if (action === 'enemy') camera.x = Math.max(0, M.FIELD - camera.width);
