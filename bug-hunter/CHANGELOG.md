@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.29 - 2026-10-27
+
+### Fixed
+- Siege Cartoon's stage panel on a world's map: its text and Launch are centred inside the stone panel, below its top gem and clear of the side ones, and Launch keeps to one line on phones.
+
 ## 1.15.28 - 2026-10-27
 
 ### Fixed
