@@ -340,10 +340,9 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     const h = e.art === 'meteor' ? 105 : 120, w = h * art.naturalWidth / art.naturalHeight, foot = ground - (e.up ?? 0);
     const drop = e.art === 'meteor' ? Math.max(0, 1 - p * 1.6) * 140 : 0;
     ctx.save(); ctx.globalAlpha = p > 0.75 ? (1 - p) / 0.25 : 1;
-    ctx.translate(e.x + drop * 0.5, foot - drop);
+    // The meteor comes down from the upper left, its tail behind it on the left (as its picture is drawn).
+    ctx.translate(e.x - drop * 0.5, foot - drop);
     if (e.art === 'tornado') ctx.scale(1 + Math.sin(p * 18) * 0.05, 1);
-    // The meteor's picture flies down to the right; it comes down to the left here, so it is turned round.
-    if (e.art === 'meteor') ctx.scale(-1, 1);
     ctx.drawImage(art, -w / 2, -h, w, h); ctx.restore(); return true;
   }
   // A flamethrower's flame is in its attack pose: nothing flies.
