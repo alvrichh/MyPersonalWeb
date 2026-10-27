@@ -78,12 +78,12 @@ const AIM_GUTTER = 60;
     units; `deck` how far its foot sinks under the ground line. Our crossbow stands on the battlement at the top right:
     `bow` is that spot as fractions of the picture (x from the left, y from the top). */
 const CASTLES = [
-  { h: 172, deck: 8, bow: [0.83, 0.19] },
-  { h: 198, deck: 8, bow: [0.81, 0.3] },
-  { h: 226, deck: 8, bow: [0.82, 0.4] },
-  { h: 257, deck: 8, bow: [0.83, 0.38] },
+  { h: 210, deck: 8, bow: [0.83, 0.19] },
+  { h: 242, deck: 8, bow: [0.81, 0.3] },
+  { h: 276, deck: 8, bow: [0.82, 0.4] },
+  { h: 314, deck: 8, bow: [0.83, 0.38] },
 ] as const;
-const ENEMY_H = [180, 203, 224];
+const ENEMY_H = [220, 248, 273];
 /** Our crossbow in its turret (`siege/xbow-N`, by the Bow level: three crossbows and a rocket launcher), one picture
     pointing right drawn `width` field units wide, turning on its wheel (`pivot`, fractions of the picture) towards where
     the arrows go and kicking back a little at each shot. */
@@ -128,7 +128,8 @@ function base(ctx: CanvasRenderingContext2D, s: Siege, x: number, ground: number
     // Never taller than the room above the deck, so its health bar stays in view.
     const look = CASTLES[tier - 1];
     const h = Math.min(enemy ? ENEMY_H[tier - 1] : look.h, ground - 30), w = h * wall.naturalWidth / wall.naturalHeight;
-    const foot = enemy ? 10 : look.deck, left = -w / 2;
+    // Kept whole on the field: a wide one moves in from the field's edge rather than past it.
+    const foot = enemy ? 10 : look.deck, left = enemy ? Math.min(-w / 2, FIELD - 4 - x - w) : Math.max(-w / 2, 4 - x);
     ctx.drawImage(wall, left, -h + foot, w, h);
     damage(ctx, w, h - foot, left, hp, max, s.time);
     top = -h + foot - 6;

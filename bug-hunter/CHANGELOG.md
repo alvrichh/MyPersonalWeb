@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.40 - 2026-10-27
+
+### Changed
+- Siege Cartoon: the fortress's arrows land closer to the aim (less scatter), and they now strike our own troops too, so aim past them.
+- Siege Cartoon: both fortresses are drawn taller (about a fifth), kept whole on the field.
+
 ## 1.15.39 - 2026-10-27
 
 ### Changed
