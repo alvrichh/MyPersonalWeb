@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.33 - 2026-10-27
+
+### Changed
+- Siege Cartoon's maps fill the whole screen on phones held sideways and wide monitors (a thin strip cropped at the top and bottom) instead of sitting between blurred bands; squarer screens such as tablets keep the picture whole. On phones the stage panel is narrower so it never covers a stage.
+
 ## 1.15.32 - 2026-10-27
 
 ### Changed
