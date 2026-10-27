@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.28 - 2026-10-27
+
+### Fixed
+- Siege Cartoon: troops that throw or shoot show what they fire when they attack the enemy fortress too (rocks, arrows, bullets, rockets with their blast, spells, the wizard's meteors), flying into its wall.
+
 ## 1.15.27 - 2026-10-27
 
 ### Changed
