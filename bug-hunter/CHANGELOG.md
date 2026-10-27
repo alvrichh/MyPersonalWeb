@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.50 - 2026-10-27
+
+### Fixed
+- Siege Cartoon: the battle bar's L / A / S tabs keep the bar's own drawing (no bigger, no gold recolour) and the picked one only glows. A tapped tab no longer stretches over the whole row (its `:hover` rule hid the other tabs on touch screens).
+
 ## 1.15.49 - 2026-10-27
 
 ### Added
