@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.66 - 2026-10-28
+
+### Fixed
+- Siege Cartoon: the ninja master's hurt pose no longer carries the shuriken left over from its attack, and its hit flash is now the game's gold star (`fx/crit-spark`) like the other hurt poses.
+- Siege Cartoon: stray specks (tiny loose dots and sparks left from the sheets) removed from the allied troops' poses.
+
 ## 1.15.65 - 2026-10-28
 
 ### Changed
