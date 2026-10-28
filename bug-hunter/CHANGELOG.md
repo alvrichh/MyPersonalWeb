@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.80 - 2026-10-28
+
+### Changed
+- Siege Cartoon story (Spanish): King Álvaro's lines have more swagger: a joker, a good sort and a bit of a show-off, but firm ("¿A morir? Mira, chaval, los he traído a echarte de aquí. Y yo no fallo.").
+
 ## 1.15.79 - 2026-10-28
 
 ### Changed
