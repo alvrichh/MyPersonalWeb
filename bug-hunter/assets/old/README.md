@@ -20,3 +20,5 @@ published, under `/images/game/old/...`, like any asset). Each folder mirrors wh
 - `special/siege/units-wizard-purple/ally-wizard-{1,2}-*.webp`: the wizard's levels 1 and 2 with their purple hat and robe, recoloured light and dark blue in 1.15.64.
 - `special/siege/units-heavy-robot/ally-heavy-robot-{1..4}-*.webp`: the heavy robot's four forms before the owner's redraw (1.15.65).
 - `special/siege/units-gunner-blue/ally-gunner-{2,3}-*.webp`: the gunner's levels 2 and 3 with their gold ornaments, recoloured silver-blue and red in 1.15.67.
+- `special/siege/units-blaster-3/ally-blaster-3-*.webp`: the blaster's level 3 (ray gun) before the owner's replacement (1.15.69).
+- `special/siege/reserve/gunner-1-4-previous.webp`: the owner's earlier gunner sheet (the golden sniper as level 4), kept in case it is used somewhere later.

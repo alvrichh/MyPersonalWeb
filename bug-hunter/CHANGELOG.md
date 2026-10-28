@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.69 - 2026-10-28
+
+### Changed
+- Siege Cartoon: the blaster's level 3 (ray gun) is replaced by the owner's new drawing (white and gold armour, blue helmet and cape, a cyan ray gun).
+
 ## 1.15.68 - 2026-10-28
 
 ### Fixed

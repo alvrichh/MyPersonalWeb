@@ -99,7 +99,7 @@ export const UNITS: readonly Spec[] = [
   // their own pictures and blast an area; the ray is drawn in code; the flame is in the attack pose (no projectile).
   { id: 5, cost: 85, hp: 260, damage: 34, speed: 28, range: 200, rate: 1.6, cooldown: 8, unlock: 2, infantry: true, splash: 40, shot: 'rocket', spin: false, hitsAir: true, ...six('ally-blaster-1', 256, 0.3906), forms: [
     { price: 350, cost: 100, hp: 290, damage: 44, splash: 50, shot: 'rockets', hitsAir: true, ...six('ally-blaster-2', 278, 0.4227) },
-    { price: 600, cost: 120, hp: 320, damage: 52, range: 240, rate: 1.3, splash: 0, shot: 'ray', hitsAir: true, ...six('ally-blaster-3', 238, 0.5252) },
+    { price: 600, cost: 120, hp: 320, damage: 52, range: 240, rate: 1.3, splash: 0, shot: 'ray', hitsAir: true, ...six('ally-blaster-3', 178, 0.7163) },
     { price: 1800, cost: 170, hp: 420, damage: 32, range: 110, rate: 0.5, splash: 70, shot: 'none', hitsAir: false, ...six('ally-blaster-4', 249, 0.5321) },
   ] },
   // The wizard's three forms (docs/cw2-reference.md), the same staff: lightning striking the ground, a tornado, and a
