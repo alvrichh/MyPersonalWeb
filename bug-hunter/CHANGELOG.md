@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.92 - 2026-10-28
+
+### Changed
+- Siege Cartoon base: upgrades cost much more and climb steeply: 150, 400, 800, 1400 and 2200 gold for levels 1 to 5. A full row is 4950, where it used to be 1500 (100 to 500 a level).
+
 ## 1.15.91 - 2026-10-28
 
 ### Added
