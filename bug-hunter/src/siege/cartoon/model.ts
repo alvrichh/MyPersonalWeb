@@ -236,10 +236,13 @@ const reaches = (u: Fighter, v: Fighter) => hits(specOf(u), v.id) || (isAir(v.id
 export const canHit = (id: number, target: number) => hits(UNITS[id], target);
 /** Keep at most `DECK` of each kind, in order. */
 export function capDeck(deck: number[]) { const land = deck.filter(id => !isAir(id)).slice(0, DECK), air = deck.filter(isAir).slice(0, DECK); return deck.filter(id => land.includes(id) || air.includes(id)); }
-/** The base's upgrades, each 0 to 5: army, fortress, energy, and the bow's three: power (damage, arrows a volley and its
-    look), speed (shots a second and reach) and quiver (shots held and refill). */
-export type Upgrades = [number, number, number, number, number, number];
-export const UPGRADES = 6;
+/** The base's upgrades, each 0 to 5: army, fortress, energy, the bow's three (power: damage, arrows a volley and its
+    look; speed: shots a second and reach; quiver: shots held and refill) and the mana pool (the energy a battle can hold
+    from the start, before the generator raises it). */
+export type Upgrades = [number, number, number, number, number, number, number];
+export const UPGRADES = 7;
+/** The energy each level of the mana pool upgrade adds to the battle's maximum. */
+export const MANA_STEP = 40;
 export interface Progress { version: 1; unlocked: number; coins: number; victories: number[]; upgrades: Upgrades; deck: number[];
   /** Each troop's level (index: its id), 1 to `levelsOf(id)`. */
   levels: number[];
@@ -252,7 +255,7 @@ export interface Progress { version: 1; unlocked: number; coins: number; victori
   kit: number[];
   /** Set once the deck holds cards (`card`), not troop ids. */
   cards: 1 }
-export const freshProgress = (): Progress => ({ version: 1, unlocked: 1, coins: 0, victories: [], upgrades: [0, 0, 0, 0, 0, 0], deck: [0], levels: UNITS.map(() => 1), owned: [0], powers: POWERS.map(() => 0), kit: [], cards: 1 });
+export const freshProgress = (): Progress => ({ version: 1, unlocked: 1, coins: 0, victories: [], upgrades: [0, 0, 0, 0, 0, 0, 0], deck: [0], levels: UNITS.map(() => 1), owned: [0], powers: POWERS.map(() => 0), kit: [], cards: 1 });
 /** Can this card go in the army: its troop recruited and its level bought? */
 export const hasCard = (p: Progress, c: number) => Number.isInteger(c) && c >= 0 && owns(p, cardId(c)) && cardLevel(c) <= (p.levels[cardId(c)] ?? 1);
 /** The owner's testing switch: every troop and power open from the start and recruited and levelled for free, the base's
@@ -344,6 +347,8 @@ export interface Effect { x: number; from: number; lane: number; life: number; m
   fromUp?: number; toUp?: number }
 export interface Siege {
   world: number; phase: 'fight' | 'won' | 'lost'; time: number; energy: number; generator: number; cooldowns: Record<number, number>;
+  /** The base's mana pool level (`MANA_STEP` more maximum energy each). */
+  pool?: number;
   hp: [number, number]; maxHp: [number, number]; units: Fighter[]; effects: Effect[]; nextId: number; nextWave: number; waves: number; kills: number;
   spell: number; rocket: number; aim: number; bow: Bow;
   /** The special powers taken into this battle (`POWERS`, at the level bought), their recharges, the blows each has
@@ -383,13 +388,13 @@ export const castleTier = (level: number) => Math.max(1, Math.min(5, level));
 /** Which of the enemy fortress's five pictures a battle shows, by its act (six acts: 1, 2, 3, 4, 4, 5). */
 export const enemyTier = (stage: number) => [1, 2, 3, 4, 4, 5][Math.min(ACTS, Math.max(1, actOf(stage))) - 1];
 
-export const energyMax = (s: Siege) => 180 + s.generator * 70;
+export const energyMax = (s: Siege) => 180 + (s.pool ?? 0) * MANA_STEP + s.generator * 70;
 export const energyRate = (s: Siege) => 7 + s.generator * 2.5 + s.economy;
 export const generatorPrice = (s: Siege) => 65 + s.generator * 45;
 export function newSiege(p: Progress, world: number): Siege {
   world = integer(world, 1, Math.min(LAST, p.unlocked), 1);
   const maxHp: [number, number] = [1700 + p.upgrades[1] * 200, 1700 + hard(world) * 150];
-  return { world, phase: 'fight', time: 0, energy: 80, generator: 0, cooldowns: {}, hp: [...maxHp], maxHp, units: [], effects: [], nextId: 1, nextWave: 7, waves: 0, kills: 0, spell: 0, rocket: 0, aim: 700, bossSpawned: false, paid: false, power: 1 + p.upgrades[0] * 0.08, economy: p.upgrades[2] * 0.6, deck: [...p.deck], bow: { quiver: BOW.max + p.upgrades[5] * BOW.storeStep, drawing: false, held: 0, next: 0, level: p.upgrades[3], speed: p.upgrades[4], store: p.upgrades[5] }, fort: p.upgrades[1], levels: [...(p.levels ?? [])], kit: p.kit.filter(c => hasPower(p, c)).map(c => ({ id: c % 100, level: Math.floor(c / 100) + 1, card: c })), kitCd: {}, hitq: [], view: { x: 0, width: 650 }, casts: 0 };
+  return { world, phase: 'fight', time: 0, energy: 80, generator: 0, pool: p.upgrades[6], cooldowns: {}, hp: [...maxHp], maxHp, units: [], effects: [], nextId: 1, nextWave: 7, waves: 0, kills: 0, spell: 0, rocket: 0, aim: 700, bossSpawned: false, paid: false, power: 1 + p.upgrades[0] * 0.08, economy: p.upgrades[2] * 0.6, deck: [...p.deck], bow: { quiver: BOW.max + p.upgrades[5] * BOW.storeStep, drawing: false, held: 0, next: 0, level: p.upgrades[3], speed: p.upgrades[4], store: p.upgrades[5] }, fort: p.upgrades[1], levels: [...(p.levels ?? [])], kit: p.kit.filter(c => hasPower(p, c)).map(c => ({ id: c % 100, level: Math.floor(c / 100) + 1, card: c })), kitCd: {}, hitq: [], view: { x: 0, width: 650 }, casts: 0 };
 }
 /** The guardian, Cartoon Wars 2-style: it only comes out once the enemy fortress falls, far tougher than a troop, and
     the battle is won when it falls too. */
