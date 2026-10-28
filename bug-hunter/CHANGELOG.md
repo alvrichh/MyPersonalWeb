@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.79 - 2026-10-28
+
+### Changed
+- Siege Cartoon story: back to the English telling the owner liked best (the cheese contest, Manolo guarding the cheese and losing it on the Sky Islands), now with sandwiches too for Manolo, and the Spanish is a faithful translation of it. Personalities kept sharp: Captain Jorge serious and laconic, Manolo the joker (the only one with a light Andalusian touch), Felipe the clever one, the King staying home to give orders.
+
 ## 1.15.78 - 2026-10-28
 
 ### Changed
