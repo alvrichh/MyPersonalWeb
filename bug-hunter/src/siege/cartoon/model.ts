@@ -511,6 +511,9 @@ export function flight(from: { x: number; y: number }, to: { x: number; y: numbe
   const T = Math.max(0.05, (to.x - from.x) / Math.max(1, vx));
   return (p: number) => { const t = p * T; return { x: from.x + vx * t, y: from.y + vy * t + SHOT.g * t * t / 2 }; };
 }
+/** How big a fighter is drawn (field units): its troop's size, bigger for a guardian and as enemies grow world by world;
+    a big one is reached (and struck) from further away. */
+const bodyOf = (v: Fighter) => UNITS[v.id].size * (v.boss ? 1.6 : 1) * (v.grow ?? 1);
 /** The height (over the ground) a flyer is drawn at, its feet: its flying height and its lane's step. */
 const flyerFoot = (u: Fighter) => (u.alt ?? FLY.high) + u.lane * 8;
 /** Where our crossbow's tip is when the battle has not been drawn yet (tests, simulations). */
@@ -525,12 +528,15 @@ function arrows(s: Siege, count: number) {
     // What it lands on, and the flyers its path crosses on the way (a flyer is a box from its feet up its height).
     const path = flight({ x: from.x, y: -from.up }, { x: at, y: -2 });
     const span = Math.max(1, at - from.x);
+    // Who its path crosses on the way: a flyer, or a tall enemy on the ground whose head or body it passes through
+    // (each one a box from its feet up its drawn height, about as wide as half its height).
     const crossed = (u: Fighter) => {
-      if (!UNITS[u.id].air || u.x < from.x || u.x > at + 28) return false;
-      const spec = UNITS[u.id], h = spec.size * (u.boss ? 1.6 : 1) * (u.grow ?? 1), foot = flyerFoot(u);
-      // The path's heights across its body (a third of its height either side of its middle).
-      const ys = [-h / 3, 0, h / 3].map(d => -path(Math.max(0, Math.min(1, (u.x + d - from.x) / span))).y);
-      return Math.max(...ys) >= foot - 6 && Math.min(...ys) <= foot + h;
+      const spec = UNITS[u.id];
+      if ((!spec.air && u.side !== 1) || u.x < from.x || u.x > at + 28) return false;
+      const h = spec.size * (u.boss ? 1.6 : 1) * (u.grow ?? 1) * Math.pow(0.8, u.stage ?? 0), foot = spec.air ? flyerFoot(u) : 0;
+      // The path's heights across its body.
+      const ys = [-0.3, -0.15, 0, 0.15, 0.3].map(d => -path(Math.max(0, Math.min(1, (u.x + d * h - from.x) / span))).y);
+      return Math.max(...ys) >= foot - 6 && Math.min(...ys) <= foot + h * 0.95;
     };
     // It strikes whoever is there, ours too: aim past your own troops.
     for (const u of s.units) if (u.hp > 0 && (Math.abs(u.x - at) <= 28 && !(u.side === 0 && UNITS[u.id].air) || crossed(u))) {
@@ -750,12 +756,12 @@ export function tick(s: Siege, dt: number) {
     const enemy = alive.filter(v => v.side !== u.side && reaches(u, v)).sort((a, b) => Math.abs(a.x - u.x) - Math.abs(b.x - u.x))[0];
     const baseX = u.side ? 80 : FIELD - 80;
     const distance = enemy ? Math.abs(enemy.x - u.x) : Infinity;
-    const near = !!enemy && distance <= a.range + UNITS[enemy.id].size * 0.25 + 60;
+    const near = !!enemy && distance <= a.range + bodyOf(enemy) * 0.25 + 60;
     if (a.air) {
       const want = near && !UNITS[enemy.id].air ? (a.range <= 60 ? FLY.close : FLY.ranged) : FLY.high, alt = u.alt ?? FLY.high;
       u.alt = alt + Math.max(-FLY.rate * dt, Math.min(FLY.rate * dt, want - alt));
     }
-    if (enemy && distance <= a.range + UNITS[enemy.id].size * 0.25) {
+    if (enemy && distance <= a.range + bodyOf(enemy) * 0.25) {
       if (u.attack <= 0) {
         u.attack = a.rate; u.hit = 0.3;
         const area = u.boss ? Math.max(a.splash ?? 0, BOSS.area) : a.splash;
