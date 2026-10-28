@@ -1,5 +1,5 @@
 /** Siege has its own balance and save schema. Nothing here changes action/board stats. */
-export const FIELD = 2400;
+export const FIELD = 2000;
 export const LIMIT = 300;
 export const CAP = 36;
 /** Its own save, apart from Siege Legacy's (`bugHunter.siege.v1`); v2 since battles became stages within acts. */
@@ -519,12 +519,15 @@ export function launchAngle(dx: number, dy: number) {
   return d < 0 ? -Math.PI / 4 : -Math.atan((v * v - Math.sqrt(d)) / (g * x));
 }
 /** From this aim on, shots rise more and more, until at the furthest they climb steeply and fall from the sky. */
-const LOB = { from: Math.round(FIELD * 0.4), to: AIM_MAX, steepest: -1.0 };
+/** Past half the bow's reach (`from`, a share of it) shots climb, steepest (`steepest`) at its very reach. */
+const LOB = { from: 0.5, steepest: -1.0 };
+/** How far into its lob a shot at `aim` is, 0 (straight) to 1 (steepest at the bow's `reach`). */
+const lobOf = (aim: number, reach: number) => Math.max(0, Math.min(1, (aim - reach * LOB.from) / (reach * (1 - LOB.from))));
 /** A shot's launch angle and speed to land `dx` ahead and `dy` below: a hard, nearly straight shot (`SHOT.v`, the
-    flatter solution) up to `LOB.from`; past it the angle climbs towards `LOB.steepest` and the speed is the one that
-    still lands it there. */
-export function shotFor(dx: number, dy: number, aim: number) {
-  const flat = launchAngle(dx, dy), k = Math.max(0, Math.min(1, (aim - LOB.from) / (LOB.to - LOB.from)));
+    flatter solution) up to half the bow's `reach`; past it the angle climbs towards `LOB.steepest`, reached at the
+    reach itself whatever the bow's level, and the speed is the one that still lands it there. */
+export function shotFor(dx: number, dy: number, aim: number, reach = AIM_MAX) {
+  const flat = launchAngle(dx, dy), k = lobOf(aim, reach);
   const a = k > 0 ? Math.min(flat, flat + (LOB.steepest - flat) * k * k) : flat;
   if (a === flat) return { a, v: SHOT.v };
   const x = Math.max(1, dx), c = Math.cos(a), drop = dy - x * Math.tan(a);
@@ -532,8 +535,8 @@ export function shotFor(dx: number, dy: number, aim: number) {
 }
 /** A shot's flight from `from` to the spot `to`: the launch angle for it, and the point at a share `p` of the way (by
     time), under gravity, so it leaves along that angle and lands on the spot. */
-export function flight(from: { x: number; y: number }, to: { x: number; y: number }) {
-  const { a, v } = shotFor(to.x - from.x, to.y - from.y, to.x), vx = v * Math.cos(a), vy = v * Math.sin(a);
+export function flight(from: { x: number; y: number }, to: { x: number; y: number }, reach = AIM_MAX) {
+  const { a, v } = shotFor(to.x - from.x, to.y - from.y, to.x, reach), vx = v * Math.cos(a), vy = v * Math.sin(a);
   const T = Math.max(0.05, (to.x - from.x) / Math.max(1, vx));
   return (p: number) => { const t = p * T; return { x: from.x + vx * t, y: from.y + vy * t + SHOT.g * t * t / 2 }; };
 }
@@ -552,7 +555,7 @@ function arrows(s: Siege, count: number) {
     const k = (s.shots ?? 0) * 7 + i * 5, stray = ((k * 37) % 11 - 5) / 5, deep = ((k * 53) % 5) - 2;
     const at = x + (i - (count - 1) / 2) * BOW.gap + stray * SCATTER.along;
     // What it lands on, and the flyers its path crosses on the way (a flyer is a box from its feet up its height).
-    const path = flight({ x: from.x, y: -from.up }, { x: at, y: -2 });
+    const path = flight({ x: from.x, y: -from.up }, { x: at, y: -2 }, bowReach(s.bow));
     const span = Math.max(1, at - from.x);
     // Who its path crosses on the way: a flyer, or a tall enemy on the ground whose head or body it passes through
     // (each one a box from its feet up its drawn height, about as wide as half its height).
@@ -573,7 +576,7 @@ function arrows(s: Siege, count: number) {
       if (!u.boss && !UNITS[u.id].steady && !(u.nudgeCd! > 0)) { u.nudge = NUDGE.time; u.nudgeCd = NUDGE.every; }
     }
     // Far shots are lobbed (the view draws them climbing and falling from the sky): they stay longer in the air.
-    const air = 0.5 + 0.45 * Math.max(0, Math.min(1, (x - LOB.from) / (LOB.to - LOB.from)));
+    const air = 0.5 + 0.45 * lobOf(x, bowReach(s.bow));
     s.effects.push({ x: at, from: 80, lane: 1, life: air, max: air, kind: 'arrow', side: 0, up: deep * SCATTER.deep });
     // An arrow stays stuck in the ground where it lands, fading after a moment (rockets blow up instead).
     if (looksTier(s.bow.level) < 4) s.effects.push({ x: at, from: 80, lane: 1, life: air + STUCK, max: STUCK, kind: 'stuck', side: 0, up: deep * SCATTER.deep });
