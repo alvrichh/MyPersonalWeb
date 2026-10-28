@@ -4,6 +4,14 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.99 - 2026-10-28
+
+### Changed
+- Siege Cartoon base: Bow · power now shows the arrow (or rocket) and Bow · speed the crossbow (they were the other way round).
+
+### Fixed
+- Siege Cartoon shop on an upright phone: the red Back button is smaller, at the left of its own row, and no longer runs into the frame's top gem.
+
 ## 1.15.98 - 2026-10-28
 
 ### Changed
