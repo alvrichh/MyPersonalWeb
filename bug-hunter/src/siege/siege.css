@@ -925,3 +925,8 @@
 /* v1.15.87 — the card a dragged one would swap with. */
 .siege-root.is-cartoon .sg-prep .sg-st-actions .sg-st-cell.is-target{outline:3px solid #ffd23f;outline-offset:1px;filter:brightness(1.2)}
 .sg-st-cell.is-target:not(.is-full){outline:3px dashed #ffd23f;outline-offset:-3px}
+/* v1.15.88 — a fallen guardian (its lying pose, wide and low) sits above the text panel, not tucked behind it: the
+   picture keeps its own shape (no tall empty box), and its bottom rests on the panel's top. */
+.siege-root.is-cartoon .sg-story .sg-scene.is-down .sg-speaker,.siege-root.is-cartoon .sg-story .sg-scene.is-boss.is-down .sg-speaker{height:auto;width:min(46vw,440px);max-width:80%;max-height:min(30vh,220px);margin-bottom:-6px;animation:sg-pop .35s ease-out}
+@media (max-width:600px){.siege-root.is-cartoon .sg-story .sg-scene.is-down .sg-speaker,.siege-root.is-cartoon .sg-story .sg-scene.is-boss.is-down .sg-speaker{width:80vw}}
+@media (max-height:440px){.siege-root.is-cartoon .sg-story .sg-scene.is-down .sg-speaker,.siege-root.is-cartoon .sg-story .sg-scene.is-boss.is-down .sg-speaker{width:min(34vw,280px);max-height:26vh;margin-bottom:-4px}}

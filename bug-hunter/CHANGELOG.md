@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.88 - 2026-10-28
+
+### Fixed
+- Siege Cartoon enemies: re-cut the poses that were cut badly from their sheets. The Brute Eater guardian's attack showed only its club and the red slash, its hurt pose showed the attack, and its lying pose showed the hurt one; all three are now right. The Dino guardian's lying pose no longer carries a piece of the Brute Eater. The enemy blaster lost the wizard's horns and flame hanging under its feet, so it now stands on the ground; it is drawn at the same size. The enemy wizard's wind-up has its burning staff again.
+- Siege Cartoon story: when a guardian falls, its lying pose sits above the text panel instead of half hidden behind it.
+
 ## 1.15.87 - 2026-10-28
 
 ### Changed
