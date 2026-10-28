@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.77 - 2026-10-28
+
+### Changed
+- Siege Cartoon story (Spanish): standard spelling again ("nada", "para", "todo", "-ado", "-ido"; no more "miarma"), keeping the Andalusian expressions ("illo", "quillo", "pisha", "ozú", "qué arte", "ni de coña", "se acabó la bulla").
+
 ## 1.15.76 - 2026-10-28
 
 ### Changed
