@@ -18,3 +18,4 @@ published, under `/images/game/old/...`, like any asset). Each folder mirrors wh
   sheets for the allied troops, kept in reserve and not used by the game (one row per level, six poses each, on white). The ninja
   master (archer 4) there is the owner's preferred one; the game uses the first set (1.15.56).
 - `special/siege/units-wizard-purple/ally-wizard-{1,2}-*.webp`: the wizard's levels 1 and 2 with their purple hat and robe, recoloured light and dark blue in 1.15.64.
+- `special/siege/units-heavy-robot/ally-heavy-robot-{1..4}-*.webp`: the heavy robot's four forms before the owner's redraw (1.15.65).

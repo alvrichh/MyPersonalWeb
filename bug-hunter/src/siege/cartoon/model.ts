@@ -121,10 +121,10 @@ export const UNITS: readonly Spec[] = [
   ] },
   // The heavy armed robot's four forms (docs/cw2-reference.md): gatling bursts, small rockets added (MK2), a frozen
   // cannon on its back (from here it reaches flyers), and a huge one firing rocket salvos.
-  { id: 9, cost: 200, hp: 1300, damage: 70, speed: 18, range: 200, rate: 2, cooldown: 22, unlock: 5, splash: 80, shot: 'bullet', ...six('ally-heavy-robot-1', 166, 1.17), forms: [
-    { price: 1200, cost: 230, hp: 1500, damage: 80, shot: 'rockets', hitsAir: true, ...six('ally-heavy-robot-2', 186, 1.17) },
-    { price: 2200, cost: 260, hp: 1800, damage: 90, hitsAir: true, shot: 'ice', ...six('ally-heavy-robot-3', 214, 1.17) },
-    { price: 4000, cost: 320, hp: 2600, damage: 120, splash: 100, hitsAir: true, blast: true, shot: 'salvo', ...six('ally-heavy-robot-4', 254, 1.17) },
+  { id: 9, cost: 200, hp: 1300, damage: 70, speed: 18, range: 200, rate: 2, cooldown: 22, unlock: 5, splash: 80, shot: 'bullet', ...six('ally-heavy-robot-1', 158, 1.2975), forms: [
+    { price: 1200, cost: 230, hp: 1500, damage: 80, shot: 'rockets', hitsAir: true, ...six('ally-heavy-robot-2', 191, 1.1911) },
+    { price: 2200, cost: 260, hp: 1800, damage: 90, hitsAir: true, shot: 'ice', ...six('ally-heavy-robot-3', 196, 1.2245) },
+    { price: 4000, cost: 320, hp: 2600, damage: 120, splash: 100, hitsAir: true, blast: true, shot: 'salvo', ...six('ally-heavy-robot-4', 274, 1.1314) },
   ] },
   // Ours, air (Cartoon Wars 2's A row): they fly over the field, out of reach of melee troops; only ranged ones hit them.
   // The aircraft fighter's four forms: a sword under a propeller pack, then with goggles and scarf, two rotors and blue
