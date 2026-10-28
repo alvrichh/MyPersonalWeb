@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.63 - 2026-10-28
+
+### Changed
+- Siege Cartoon: the wizard's three forms are back to their earlier art (the 1.15.56 redraw is undone).
+
 ## 1.15.62 - 2026-10-28
 
 ### Changed

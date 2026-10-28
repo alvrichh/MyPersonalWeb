@@ -105,9 +105,9 @@ export const UNITS: readonly Spec[] = [
   // The wizard's three forms (docs/cw2-reference.md), the same staff: lightning striking the ground, a tornado, and a
   // meteor that leaves flames. The spell lands on the target from the sheet (`shot-lightning|tornado|meteor`); from
   // level 3 he reaches flyers. The reference gives no prices.
-  { id: 6, cost: 95, hp: 150, damage: 40, speed: 26, range: 220, rate: 1.9, cooldown: 10, unlock: 3, splash: 55, infantry: true, shot: 'lightning', ...six('ally-wizard-1', 249, 0.4418), forms: [
-    { price: 600, cost: 120, hp: 180, damage: 46, splash: 75, shot: 'tornado', hitsAir: true, ...six('ally-wizard-2', 289, 0.4585) },
-    { price: 2000, cost: 190, hp: 230, damage: 70, splash: 90, hitsAir: true, shot: 'meteor', ...six('ally-wizard-3', 296, 0.5068) },
+  { id: 6, cost: 95, hp: 150, damage: 40, speed: 26, range: 220, rate: 1.9, cooldown: 10, unlock: 3, splash: 55, infantry: true, shot: 'lightning', ...six('ally-wizard-1', 220, 0.5227), forms: [
+    { price: 600, cost: 120, hp: 180, damage: 46, splash: 75, shot: 'tornado', hitsAir: true, ...six('ally-wizard-2', 251, 0.5179) },
+    { price: 2000, cost: 190, hp: 230, damage: 70, splash: 90, hitsAir: true, shot: 'meteor', ...six('ally-wizard-3', 258, 0.5814) },
   ] },
   // The vulture rider: a knight with a spear on a walking vulture.
   { id: 7, cost: 75, hp: 260, damage: 40, speed: 85, range: 38, rate: 0.8, cooldown: 7, unlock: 4, ...six('ally-vulture-1', 234, 0.7799), forms: [
