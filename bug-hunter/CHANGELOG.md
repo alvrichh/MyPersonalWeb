@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.81 - 2026-10-28
+
+### Changed
+- Siege Cartoon: the death cry is much quieter (it was about ten times louder than a blow; now under twice) and more human: the "ouch" trails off into a dying groan, with two slightly detuned voices, a slow uneven waver instead of a buzz, and breath through the same mouth growing as the voice fades.
+
 ## 1.15.80 - 2026-10-28
 
 ### Changed
