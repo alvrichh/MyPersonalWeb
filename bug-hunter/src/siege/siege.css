@@ -931,3 +931,9 @@
 @media (max-width:600px){.siege-root.is-cartoon .sg-story .sg-scene.is-down .sg-speaker,.siege-root.is-cartoon .sg-story .sg-scene.is-boss.is-down .sg-speaker{width:80vw}}
 @media (max-height:440px){.siege-root.is-cartoon .sg-story .sg-scene.is-down .sg-speaker,.siege-root.is-cartoon .sg-story .sg-scene.is-boss.is-down .sg-speaker{width:min(34vw,280px);max-height:26vh;margin-bottom:-4px}}
 @media (min-width:601px) and (min-height:501px){.sg-stars{font-size:15px}.sg-st-stats{padding-right:4px}}
+/* v1.15.99 — on a phone held upright the shop's Back button sits on its own row: smaller, at the left, clear of the
+   frame's top gem (the frame reaches up over the row below the tabs). */
+@media (max-width:600px){
+  .siege-root.is-cartoon .sg-prep .sg-st-tabs{margin-bottom:30px}
+  .siege-root.is-cartoon .sg-prep .sg-st-back,.siege-root.is-cartoon .sg-prep .sg-st-back:hover:not(:disabled){margin-left:0;margin-right:auto;min-width:0;min-height:32px;padding:0 4px;font-size:12px;border-width:0 22px;border-image-width:0 22px}
+}

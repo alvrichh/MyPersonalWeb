@@ -25,7 +25,7 @@ const UPGRADE_PICS = ['items/gladHelm', 'items/plate', 'ui/orb', 'items/quiver']
 /** Cartoon's army and generator rows have a picture for each of their five levels. */
 const ARMY_PICS = ['items/bandana', 'items/gladHelm', 'items/plate', 'items/crown', 'items/phoenix'], GENERATOR_PICS = ['items/potion', 'items/lantern', 'items/hourglass', 'items/orb', 'ui/orb'];
 /** A workshop row's picture: the fortress and the crossbow show the look their level gives (`looksTier`). */
-const upgradePic = (mode: Mode, i: number, level: number) => (mode === 'legacy' ? UPGRADE_PICS[i] : i === 1 ? `siege/castle-${cartoonModel.castleTier(level)}` : i === 3 ? `siege/xbow-${cartoonModel.looksTier(level)}` : i === 4 ? `siege/units/bolt-${cartoonModel.looksTier(level)}` : i === 5 ? 'items/quiver' : i === 6 ? 'siege/mana' : i === 0 ? ARMY_PICS[Math.min(5, Math.max(1, level)) - 1] : i === 2 ? GENERATOR_PICS[Math.min(5, Math.max(1, level)) - 1] : UPGRADE_PICS[i]);
+const upgradePic = (mode: Mode, i: number, level: number) => (mode === 'legacy' ? UPGRADE_PICS[i] : i === 1 ? `siege/castle-${cartoonModel.castleTier(level)}` : i === 3 ? `siege/units/bolt-${cartoonModel.looksTier(level)}` : i === 4 ? `siege/xbow-${cartoonModel.looksTier(level)}` : i === 5 ? 'items/quiver' : i === 6 ? 'siege/mana' : i === 0 ? ARMY_PICS[Math.min(5, Math.max(1, level)) - 1] : i === 2 ? GENERATOR_PICS[Math.min(5, Math.max(1, level)) - 1] : UPGRADE_PICS[i]);
 
 /** A bar button's picture and caption: the picture made once, only the caption's text changed after (ten times a
     second, so no `<img>` is re-created each time). */
