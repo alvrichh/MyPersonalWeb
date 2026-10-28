@@ -115,8 +115,8 @@ export const UNITS: readonly Spec[] = [
   ] },
   // The armed robot's three forms (docs/cw2-reference.md): claw and arm rocket, the walker with twin cannons (fast and
   // strong), and the walker behind a wall-like shield firing missiles.
-  { id: 8, cost: 110, hp: 320, damage: 38, speed: 50, range: 180, rate: 1.0, cooldown: 10, unlock: 5, shot: 'rocket', spin: false, ...six('ally-robot-1', 167, 0.82), forms: [
-    { price: 700, cost: 140, hp: 420, damage: 15, rate: 0.3, range: 190, shot: 'bullet', hitsAir: true, ...six('ally-robot-2', 231, 0.82) },
+  { id: 8, cost: 110, hp: 320, damage: 38, speed: 50, range: 180, rate: 1.0, cooldown: 10, unlock: 5, splash: 35, shot: 'rocket', spin: false, ...six('ally-robot-1', 167, 0.82), forms: [
+    { price: 700, cost: 140, hp: 420, damage: 15, rate: 0.3, range: 190, splash: 25, shot: 'bullet', hitsAir: true, ...six('ally-robot-2', 231, 0.82) },
     { price: 1800, cost: 180, hp: 800, damage: 43, rate: 1.0, range: 200, splash: 40, shot: 'rockets', blast: true, hitsAir: true, ...six('ally-robot-3', 253, 0.82) },
   ] },
   // The heavy armed robot's four forms (docs/cw2-reference.md): gatling bursts, small rockets added (MK2), a frozen
@@ -136,7 +136,7 @@ export const UNITS: readonly Spec[] = [
   ] },
   // The armed aircraft fighter's four forms (docs/cw2-reference.md): a rifleman under a propeller pack, a veteran
   // sniper, a laser gun, and the air magician casting pink lightning.
-  { id: 11, cost: 55, hp: 110, damage: 20, speed: 55, range: 190, rate: 0.8, cooldown: 5, unlock: 3, air: true, skyOnly: true, shot: 'bullet-rifle', ...six('ally-armed-fighter-1', 260, 0.4808), forms: [
+  { id: 11, cost: 55, hp: 110, damage: 20, speed: 55, range: 190, rate: 0.8, cooldown: 5, unlock: 3, air: true, shot: 'bullet-rifle', ...six('ally-armed-fighter-1', 260, 0.4808), forms: [
     { price: 400, cost: 70, hp: 130, damage: 34, range: 260, rate: 1.2, shot: 'bullet-sniper', ...six('ally-armed-fighter-2', 272, 0.4871) },
     { price: 900, cost: 90, hp: 170, damage: 23, range: 230, rate: 0.6, shot: 'plasma', ...six('ally-armed-fighter-3', 257, 0.5642) },
     { price: 2000, cost: 140, hp: 240, damage: 20, range: 220, rate: 0.5, splash: 60, shot: 'ray-pink', ...six('ally-armed-fighter-4', 285, 0.5702) },
@@ -174,20 +174,20 @@ export const UNITS: readonly Spec[] = [
   { id: 29, cost: 0, hp: 110, damage: 18, speed: 60, range: 40, rate: 0.7, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-ninja-bat-1', 128, 0.7) },
   { id: 30, cost: 0, hp: 130, damage: 24, speed: 45, range: 180, rate: 1.2, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-hypno-bat-1', 139, 0.83) },
   { id: 31, cost: 0, hp: 900, damage: 55, speed: 40, range: 130, rate: 1.4, cooldown: 0, unlock: 1, foe: true, air: true, splash: 50, steady: true, ...foe('foe-red-dragon-rider-1', 179, 1.05) },
-  { id: 32, cost: 0, hp: 760, damage: 40, speed: 24, range: 180, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splits: 2, hitsAir: true, ...foe('foe-gatling-1', 123, 1.22) },
+  { id: 32, cost: 0, hp: 760, damage: 40, speed: 24, range: 180, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splits: 2, splash: 35, hitsAir: true, ...foe('foe-gatling-1', 123, 1.22) },
   // Ours again, appended (ids are places in this list):
   // The flying mech, in six forms: a rocket fist, a laser, a plasma beam, an ice burst, a gatling,
   // and a giant golden fist.
-  { id: 33, cost: 80, hp: 300, damage: 32, speed: 55, range: 45, rate: 0.9, cooldown: 8, unlock: 5, air: true, ...six('ally-mech-1', 215, 0.6977), forms: [
-    { price: 500, cost: 95, hp: 340, damage: 23, range: 130, shot: 'ray-blue', rate: 0.7, ...six('ally-mech-2', 242, 0.6612) },
-    { price: 800, cost: 110, hp: 380, damage: 25, range: 150, shot: 'plasma', rate: 0.6, ...six('ally-mech-3', 268, 0.6437) },
+  { id: 33, cost: 80, hp: 300, damage: 32, speed: 55, range: 45, rate: 0.9, cooldown: 8, unlock: 5, air: true, splash: 30, ...six('ally-mech-1', 215, 0.6977), forms: [
+    { price: 500, cost: 95, hp: 340, damage: 23, range: 130, splash: 30, shot: 'ray-blue', rate: 0.7, ...six('ally-mech-2', 242, 0.6612) },
+    { price: 800, cost: 110, hp: 380, damage: 25, range: 150, splash: 35, shot: 'plasma', rate: 0.6, ...six('ally-mech-3', 268, 0.6437) },
     { price: 1200, cost: 130, hp: 450, damage: 26, range: 60, splash: 40, rate: 0.5, ...six('ally-mech-4', 280, 0.6518) },
-    { price: 1800, cost: 150, hp: 520, damage: 10, rate: 0.2, range: 160, shot: 'bullet', ...six('ally-mech-5', 212, 0.908) },
+    { price: 1800, cost: 150, hp: 520, damage: 10, rate: 0.2, range: 160, splash: 30, shot: 'bullet', ...six('ally-mech-5', 212, 0.908) },
     { price: 3000, cost: 200, hp: 800, damage: 53, range: 60, splash: 50, rate: 0.6, ...six('ally-mech-6', 259, 0.8398) },
   ] },
   // The guardians (`GUARDIAN`), each act's own picture; their stats are those of the troops that stood in for them.
   { id: 34, cost: 0, hp: 480, damage: 26, speed: 24, range: 42, rate: 1.5, cooldown: 0, unlock: 1, foe: true, hitsAir: true, ...foe('boss-slinger-1', 221, 0.85) },
-  { id: 35, cost: 0, hp: 760, damage: 40, speed: 24, range: 180, rate: 1.4, cooldown: 0, unlock: 1, foe: true, hitsAir: true, ...foe('boss-gatling-1', 224, 0.84) },
+  { id: 35, cost: 0, hp: 760, damage: 40, speed: 24, range: 180, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 45, hitsAir: true, ...foe('boss-gatling-1', 224, 0.84) },
   { id: 36, cost: 0, hp: 900, damage: 55, speed: 40, range: 130, rate: 1.4, cooldown: 0, unlock: 1, foe: true, air: true, splash: 50, steady: true, ...foe('boss-dragon-rider-1', 217, 0.92) },
   { id: 37, cost: 0, hp: 720, damage: 34, speed: 21, range: 48, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 40, hitsAir: true, ...foe('boss-brute-eater-1', 176, 1.07) },
   { id: 38, cost: 0, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, hitsAir: true, ...foe('boss-dino-1', 199, 1.0) },

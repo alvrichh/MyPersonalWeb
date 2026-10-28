@@ -87,7 +87,8 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   const q = <E extends HTMLElement>(selector: string) => root.querySelector<E>(selector)!;
   const persist = () => { storage.set(M.SAVE_KEY, JSON.stringify(progress)); };
   const name = (id: number) => t(`${mode === 'legacy' ? 'siegeLegacyUnit' : 'siegeUnit'}${id}` as Key);
-  const role = (id: number) => t(`${mode === 'legacy' ? 'siegeLegacyRole' : 'siegeRole'}${id}` as Key);
+  /** A troop's line in the shop: Cartoon's has one per level (the form it describes), Legacy's one per troop. */
+  const role = (id: number, level = 1) => t((mode === 'cartoon' ? `siegeRole${id}L${Math.max(1, level)}` : `${mode === 'legacy' ? 'siegeLegacyRole' : 'siegeRole'}${id}`) as Key);
   const title = () => t(mode === 'legacy' ? 'siegeLegacy' : mode === 'cartoon' ? 'siegeCartoon' : 'siegeName');
   /** The battle's last world or act. */
   const lastWorld = () => M.LAST;
@@ -109,7 +110,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     const lock = !open ? t(mode === 'cartoon' ? 'siegeOpensAct' : 'siegeUnlock', { n: u.unlock }) : '';
     const attrs = !open ? 'disabled' : owned ? `data-sg-unit="${id}" aria-pressed="${on}"` : `data-sg-buy="${id}"`;
     const stat = lock || (owned ? t('siegeStats', { cost: u.cost, hp: u.hp, damage: u.damage }) : t('siegeRecruit', { n: price }));
-    return `<button class="sg-card ${on ? 'is-selected' : ''} ${open && !owned ? 'is-recruit' : ''} ${open && !owned && progress.coins < price ? 'is-poor' : ''}" ${attrs}><span class="sg-check">${on ? '✓' : !open ? '🔒' : ''}</span><img src="${V.portrait(id, progress.levels[id])}" data-trim="${V.portrait(id, progress.levels[id])}" alt=""><strong>${name(id)}</strong><small>${role(id)}</small><small class="sg-stat">${stat}</small></button>`;
+    return `<button class="sg-card ${on ? 'is-selected' : ''} ${open && !owned ? 'is-recruit' : ''} ${open && !owned && progress.coins < price ? 'is-poor' : ''}" ${attrs}><span class="sg-check">${on ? '✓' : !open ? '🔒' : ''}</span><img src="${V.portrait(id, progress.levels[id])}" data-trim="${V.portrait(id, progress.levels[id])}" alt=""><strong>${name(id)}</strong><small>${role(id, progress.levels[id] ?? 1)}</small><small class="sg-stat">${stat}</small></button>`;
   };
   /** The preparation screen's tab: the world map, the army, or the workshop (the mode's shop); Cartoon's shop is both
       the army and the workshop, Cartoon Wars 2-style. */
@@ -172,7 +173,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       return `<button class="sg-st-tile ${x.have ? 'is-have' : x.next ? 'is-next' : 'is-locked'} ${on ? 'is-on' : ''} ${worn ? 'is-worn' : ''}" data-sg-tile="${row}:${level}" aria-pressed="${on}" aria-label="${hidden ? '?' : `${shopTab === 'special' ? powerName(row, level) : shopTab === 'base' ? t(`siegeUpgrade${row}` as Key) : name(row)} · ${t('siegeLevel', { n: level })}`}">${hidden ? '<span class="sg-st-q" aria-hidden="true">?</span>' : `<img src="${pic}" ${shopTab === 'base' || shopTab === 'special' ? '' : `data-trim="${pic}"`} alt="">`}${corner && !hidden ? `<small>${corner}</small>` : ''}${worn ? '<b class="sg-st-worn" aria-hidden="true">✓</b>' : ''}</button>`;
     }).join('<span class="sg-st-link" aria-hidden="true"></span>')}</div>`).join('');
     const x = tile(pick.row, pick.level), troop = shopTab !== 'base';
-    const label = !x.have && !x.next && !(troop && pick.level === 1) ? '? ? ?' : shopTab === 'special' ? `${powerName(pick.row, pick.level)} — ${t(`siegePower${pick.row}Text` as Key)}` : troop ? `${name(pick.row)} · ${t('siegeLevel', { n: pick.level })} — ${role(pick.row)}` : `${t(`siegeUpgrade${pick.row}` as Key)} · ${t('siegeLevel', { n: pick.level })}`;
+    const label = !x.have && !x.next && !(troop && pick.level === 1) ? '? ? ?' : shopTab === 'special' ? `${powerName(pick.row, pick.level)} — ${t(`siegePower${pick.row}Text` as Key)}` : troop ? `${name(pick.row)} · ${t('siegeLevel', { n: pick.level })} — ${role(pick.row, pick.level)}` : `${t(`siegeUpgrade${pick.row}` as Key)} · ${t('siegeLevel', { n: pick.level })}`;
     const price = x.have ? `✓ ${t('siegeHave')}` : x.next ? (x.price ? `🪙 ${x.price}` : t('siegeFree')) : `🔒 ${x.why}`;
     const kind = shopTab === 'air';
     // The equipped cards; a tap on one takes it out of the army.

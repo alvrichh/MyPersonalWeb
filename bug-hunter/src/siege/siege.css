@@ -809,7 +809,6 @@
 /* v1.15.47 — the enemy fortress faces left, towards ours (its HUD picture too). */
 .siege-root.is-cartoon .sg-vs-pic:last-child{transform:scaleX(-1)}
 /* v1.15.49 — the shop's fourth tab, Special (powers), between Air and Base. */
-.siege-root.is-cartoon .sg-prep .sg-st-tab.is-special{background:#8a4fe0}
 .sg-st-tile img{image-rendering:auto}
 /* Narrow screens: four tabs and Back share the row, their art's ends slimmer, the labels smaller. */
 @media (max-width:720px){
@@ -845,3 +844,13 @@
 .siege-root.is-cartoon .sg-bar .sg-deck .sg-cooldown{position:absolute;left:0;right:0;bottom:0;top:auto;width:auto!important;height:var(--cd,0%);background:linear-gradient(#0a0e1ab3,#05080fd9);border-radius:inherit;pointer-events:none;z-index:2;transition:none}
 /* A button that is only recharging is not greyed: the darkening over it is the recharge (greyed means not enough energy). */
 .siege-root.is-cartoon .sg-bar .sg-deck button.is-cooling:disabled{filter:none}
+/* v1.15.84 — the shop's top row: every tab is the same drawn tab (no coloured box behind Special), the row sits clear
+   above the frame's top gem, and on an upright phone Back keeps its own size on its row instead of stretching across. */
+.siege-root.is-cartoon .sg-prep .sg-st-tabs{margin-bottom:16px;align-items:center}
+/* The label sits below the tab's top gem, in its dark middle. */
+.siege-root.is-cartoon .sg-prep .sg-st-tab,.siege-root.is-cartoon .sg-prep .sg-st-tab:hover:not(:disabled){padding-top:7px;padding-bottom:0}
+@media (max-width:600px){
+  .siege-root.is-cartoon .sg-prep .sg-st-tabs{margin-bottom:18px;row-gap:6px}
+  .siege-root.is-cartoon .sg-prep .sg-st-tab,.siege-root.is-cartoon .sg-prep .sg-st-tab:hover:not(:disabled){font-size:10px;letter-spacing:0;padding-top:5px}
+  .siege-root.is-cartoon .sg-prep .sg-st-back,.siege-root.is-cartoon .sg-prep .sg-st-back:hover:not(:disabled){flex:0 0 auto;margin-left:auto;margin-right:auto;min-width:140px}
+}
