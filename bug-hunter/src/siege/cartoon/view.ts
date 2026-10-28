@@ -293,7 +293,10 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
     // left edge with the camera at our end to its right edge at the enemy's. The ground layer (`groundOf`) moves with
     // the troops, stretched along the whole field (a little wider than the picture), so it changes along the way as the
     // landscape behind it does. Its sky colours carry on above the picture.
-    const sw = SCENE_W, sh = sw * scene.naturalHeight / scene.naturalWidth, top = ground - sh * SCENE_FIT.ground;
+    // On a wide view the far landscape is drawn smaller, so its top meets the view's top (none of it cut off above) while
+    // its walking line stays at the troops' feet; never narrower than the view. A tall view keeps it at `SCENE_W`.
+    const ratio = scene.naturalHeight / scene.naturalWidth, fit = Math.max(ground / SCENE_FIT.ground, camera.width * ratio);
+    const sh = Math.min(SCENE_W * ratio, fit), sw = sh / ratio, top = ground - sh * SCENE_FIT.ground;
     const lo = camera.min ?? 0, hi = Math.max(lo, FIELD - camera.width), k = hi > lo ? (camera.x - lo) / (hi - lo) : 0;
     const x0 = camera.x - Math.max(0, sw - camera.width) * k - Math.max(0, camera.width - sw) / 2;
     // When the view runs below the picture, its foreground (the part under the walking ground) is stretched down to
