@@ -229,7 +229,9 @@ export const specOf = (u: { id: number; side: number; lv?: number }) => (u.side 
     wizard's meteor, the heavy armed robot's last two forms); flyers reach each other, and the ground unless they only
     fight in the sky (`skyOnly`: the aircraft fighters, the eagle and the bats). */
 const hits = (a: Spec, target: number) => (isAir(target) ? !!a.air || !!a.hitsAir : !a.skyOnly);
-const reaches = (u: Fighter, v: Fighter) => hits(specOf(u), v.id);
+/** A flyer that has swooped this low to strike a walker can be struck back by walkers too, any of them. */
+const LOW = 32;
+const reaches = (u: Fighter, v: Fighter) => hits(specOf(u), v.id) || (isAir(v.id) && !specOf(u).skyOnly && (v.alt ?? FLY.high) <= LOW);
 /** Can a fighter of `id` (at its first form) hit one of `target`? */
 export const canHit = (id: number, target: number) => hits(UNITS[id], target);
 /** Keep at most `DECK` of each kind, in order. */
