@@ -8,7 +8,8 @@ export interface Line { who: Speaker; key: Key; pose?: number }
 /** Siege Cartoon's story: the Darkness rises in the east to destroy everything, and our King marches to push it back. */
 /** The heated lines: who says them is shown mid-action. */
 const POSES: Record<string, number> = {
-  siegeCtPrologue9: 2, siegeCtTalk3_3: 2, siegeCtTalk5_3: 2, siegeCtTalk6_4: 3,
+  siegeCtPrologue9: 2, siegeCtHalf1_1: 4, siegeCtHalf2_1: 4, siegeCtHalf3_1: 4, siegeCtHalf4_1: 4, siegeCtHalf5_1: 4, siegeCtHalf6_1: 4,
+  siegeCtDown1_1: 5, siegeCtDown2_1: 5, siegeCtDown3_1: 5, siegeCtDown4_1: 5, siegeCtDown5_1: 5, siegeCtDown6_1: 5, siegeCtTalk3_3: 2, siegeCtTalk5_3: 2, siegeCtTalk6_4: 3,
   siegeCtBoss1_1: 3, siegeCtBoss1_2: 4, siegeCtBoss1_3: 3, siegeCtBoss2_1: 3, siegeCtBoss2_2: 2, siegeCtBoss3_1: 3, siegeCtBoss3_3: 3,
   siegeCtBoss4_1: 2, siegeCtBoss4_3: 3, siegeCtBoss5_1: 2, siegeCtBoss5_2: 3, siegeCtBoss5_3: 4, siegeCtBoss6_1: 2, siegeCtBoss6_2: 2, siegeCtBoss6_3: 3,
 };
@@ -44,6 +45,9 @@ export const bossDown = (act: number): Line[] => lines(`siegeCtDown${act}_`, DOW
 export const bossTalk = (act: number): Line[] => lines(`siegeCtBoss${act}_`, BOSS[act - 1] ?? []);
 /** A short exchange when the guardian joins the battle, the fight held for it. */
 const ARRIVE: Speaker[][] = [['boss', 'joker'], ['boss', 'joker'], ['boss', 'hero'], ['boss', 'joker'], ['boss', 'wizard'], ['boss', 'king']];
+/** What the guardian says at half its health, hurt (its hurt pose), and one of ours answers. */
+const HALF: Speaker[][] = [['boss', 'hero'], ['boss', 'joker'], ['boss', 'wizard'], ['boss', 'joker'], ['boss', 'wizard'], ['boss', 'king']];
+export const bossHalf = (act: number): Line[] => lines(`siegeCtHalf${act}_`, HALF[act - 1] ?? []);
 export const bossArrive = (act: number): Line[] => lines(`siegeCtArrive${act}_`, ARRIVE[act - 1] ?? []);
 /** After the last act is won. */
 export const ending: Line[] = lines('siegeCtEnding', ['king', 'wizard', 'joker', 'hero']);
