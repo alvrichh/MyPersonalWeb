@@ -4,6 +4,14 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.84 - 2026-10-28
+
+### Changed
+- Siege Cartoon: the armed flyer (the flying rifleman and its later forms) now shoots ground troops as well as flyers, from high up where walkers cannot reach it.
+- Siege Cartoon: every robot hits an area at every level: our cannon robot and flying mech at all their levels, and the enemy's gatling robots and the gatling boss.
+- Siege Cartoon: each troop level has its own description in the shop and on the army cards, describing that form's weapon and role.
+- Siege Cartoon: the shop's top tabs no longer show a purple box on Special; labels sit in the tab's dark middle, and on phones the row fits without stretching the Back button.
+
 ## 1.15.83 - 2026-10-28
 
 ### Changed

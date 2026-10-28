@@ -371,3 +371,19 @@ test('walkers strike a flyer only once it has swooped down to fight on the groun
   s.units = [sw, diver]; run(s, 2);
   assert.ok(diver.alt <= 32, 'the death angel swoops down to strike'); assert.ok(diver.hp < 500, 'and the swordsman hits it back');
 });
+test('the armed flyer shoots ground troops from above, and the enemy walkers below cannot reach it', () => {
+  const s = m.newSiege({ ...m.freshProgress(), owned: [0, 11], deck: [11] }, 1); s.nextWave = 999; s.gusted = true; s.energy = 999;
+  assert.equal(m.summon(s, 11), true); const gun = s.units[0]; gun.x = 600; gun.hp = gun.maxHp = 9000;
+  const foe = { uid: 90, id: 15, side: 1, x: 640, lane: 1, hp: 500, maxHp: 500, damage: 50, attack: 0, flash: 0, boss: false };
+  s.units.push(foe); run(s, 3);
+  assert.ok(foe.hp < 500, 'it shoots down at the walker'); assert.equal(gun.hp, 9000, 'the walker cannot hit it up there');
+});
+test('every robot hits an area, at every level', () => {
+  for (const id of [8, 9, 32, 33, 35]) for (const f of m.UNITS[id].forms ?? [m.UNITS[id]]) assert.ok((f.splash ?? m.UNITS[id].splash ?? 0) > 0, `${m.UNITS[id].name ?? id}`);
+});
+test('every troop level has its own shop description in both languages', async () => {
+  const src = (await import('node:fs')).readFileSync('bug-hunter/src/strings.ts', 'utf8'); const i = src.indexOf('const es');
+  for (const u of m.ALLIES) for (let l = 1; l <= (u.forms?.length ?? 1); l++) {
+    const k = `siegeRole${m.UNITS.indexOf(u)}L${l}:`; assert.ok(src.slice(0, i).includes(k) && src.slice(i).includes(k), k);
+  }
+});
