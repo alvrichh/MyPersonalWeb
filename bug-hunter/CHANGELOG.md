@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.98 - 2026-10-28
+
+### Changed
+- Siege Cartoon battlefield: on wide screens (desktop, phone held sideways) the far landscape is drawn smaller, so its top meets the top of the screen and the whole picture shows (sun, castles, floating islands), where its top used to be cut off. Troops, castles and the ground keep their size and place.
+
 ## 1.15.97 - 2026-10-28
 
 ### Changed
