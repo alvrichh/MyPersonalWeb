@@ -57,6 +57,27 @@ export const sceneOf = (stage: number) => { const pics = SCENES[actOf(stage)]; r
 /** Each picture's top row averaged down to 16 colours, kept: stretched over any sky above the picture (a tall view) it
     is a smooth gradient, where the raw row stretched would be streaks. */
 const tops = new Map<HTMLImageElement, HTMLCanvasElement>();
+/** The picture's width on the field (field units), fixed whatever the field's length: the far landscape keeps its size. */
+const SCENE_W = 2080;
+/** The picture's ground layer, which moves with the troops: from this share of its height down (a little above its
+    walking line, with the bushes), its top `fade` fading into the landscape behind. */
+const GROUND_LAYER = { from: 0.68, fade: 0.08 };
+const grounds = new WeakMap<HTMLImageElement, HTMLCanvasElement>();
+/** The ground layer of a picture (its lower band, the top fading out). */
+function groundOf(image: HTMLImageElement) {
+  let c = grounds.get(image);
+  if (!c) {
+    const nw = image.naturalWidth, nh = image.naturalHeight, y0 = Math.round(nh * GROUND_LAYER.from), h = nh - y0;
+    c = document.createElement('canvas'); c.width = nw; c.height = h; const t = c.getContext('2d');
+    if (t) {
+      t.drawImage(image, 0, y0, nw, h, 0, 0, nw, h);
+      const fade = t.createLinearGradient(0, 0, 0, nh * GROUND_LAYER.fade); fade.addColorStop(0, '#0000'); fade.addColorStop(1, '#000f');
+      t.globalCompositeOperation = 'destination-in'; t.fillStyle = fade; t.fillRect(0, 0, nw, nh * GROUND_LAYER.fade);
+    }
+    grounds.set(image, c);
+  }
+  return c;
+}
 function topOf(image: HTMLImageElement) {
   let c = tops.get(image);
   if (!c) { c = document.createElement('canvas'); c.width = 16; c.height = 1; const t = c.getContext('2d'); if (t) { t.imageSmoothingQuality = 'high'; t.drawImage(image, 0, 0, image.naturalWidth, 8, 0, 0, 16, 1); } tops.set(image, c); }
@@ -218,16 +239,22 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   const viewH = h / scale;
   const scene = still(sceneOf(s.world));
   if (ok(scene)) {
-    // The picture spans the field (and moves with it, so distances read true), its sky colours carried on above it.
-    const sw = FIELD + SCENE_FIT.pad * 2, sh = sw * scene.naturalHeight / scene.naturalWidth;
-    const x0 = -SCENE_FIT.pad, top = ground - sh * SCENE_FIT.ground;
+    // Two layers. The far landscape keeps its size (`SCENE_W`) and slides slower than the field (parallax): from its
+    // left edge with the camera at our end to its right edge at the enemy's. The ground layer (`groundOf`) moves with
+    // the troops, stretched along the whole field (a little wider than the picture), so it changes along the way as the
+    // landscape behind it does. Its sky colours carry on above the picture.
+    const sw = SCENE_W, sh = sw * scene.naturalHeight / scene.naturalWidth, top = ground - sh * SCENE_FIT.ground;
+    const lo = camera.min ?? 0, hi = Math.max(lo, FIELD - camera.width), k = hi > lo ? (camera.x - lo) / (hi - lo) : 0;
+    const x0 = camera.x - Math.max(0, sw - camera.width) * k - Math.max(0, camera.width - sw) / 2;
     // When the view runs below the picture, its foreground (the part under the walking ground) is stretched down to
     // the view's foot, so the picture itself fills it (never one stretched row, which reads as a blur).
-    const nh = scene.naturalHeight, gRow = nh * SCENE_FIT.ground;
-    if (top + sh < viewH) {
-      ctx.drawImage(scene, 0, 0, scene.naturalWidth, gRow, x0, top, sw, ground - top);
-      ctx.drawImage(scene, 0, gRow, scene.naturalWidth, nh - gRow, x0, ground, sw, viewH - ground + 1);
-    } else ctx.drawImage(scene, x0, top, sw, sh);
+    const nw = scene.naturalWidth, nh = scene.naturalHeight, gRow = nh * SCENE_FIT.ground, foot = Math.max(top + sh, viewH + 1);
+    ctx.drawImage(scene, 0, 0, nw, gRow, x0, top, sw, ground - top);
+    ctx.drawImage(scene, 0, gRow, nw, nh - gRow, x0, ground, sw, foot - ground);
+    const band = groundOf(scene), y0 = nh - band.height, layer = top + sh * (y0 / nh);
+    const gx = -SCENE_FIT.pad, gw = FIELD + SCENE_FIT.pad * 2;
+    ctx.drawImage(band, 0, 0, nw, gRow - y0, gx, layer, gw, ground - layer);
+    ctx.drawImage(band, 0, gRow - y0, nw, nh - gRow, gx, ground, gw, foot - ground);
     if (top > 0) {
       const strip = topOf(scene), fade = 60;
       ctx.drawImage(strip, 0, 0, 16, 1, x0, -1, sw, top + 2);

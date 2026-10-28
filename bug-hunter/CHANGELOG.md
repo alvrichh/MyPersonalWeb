@@ -4,6 +4,14 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.93 - 2026-10-28
+
+### Changed
+- Siege Cartoon battlefield (preview): the field is 30% longer (1840 → 2400) and the background has two layers.
+  - The ground (path and grass) moves with the troops, stretched along the whole field.
+  - The far landscape keeps its size and slides slower (parallax), from its left edge at our castle to its right edge at the enemy's.
+  - A soft fade joins the two layers.
+
 ## 1.15.92 - 2026-10-28
 
 ### Changed
