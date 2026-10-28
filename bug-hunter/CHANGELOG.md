@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.76 - 2026-10-28
+
+### Changed
+- Siege Cartoon story (Spanish): the lines are retold with a street-wise Andalusian, Sevillian sense of humour ("illo", "miarma", "pisha", "ozú", dropped endings like "pa", "tó", "ná", "-ao"); the story, the scenes, the speakers and the cheese gag stay. The English text is unchanged.
+
 ## 1.15.75 - 2026-10-28
 
 ### Changed
