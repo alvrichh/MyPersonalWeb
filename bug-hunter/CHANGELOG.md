@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.85 - 2026-10-28
+
+### Changed
+- Siege Cartoon shop: a new layout. The troop grid is on the left. On the right, a card for the picked tile shows its picture, name and level, four stats as one to five stars (health, strength, attack speed, move speed, each against every form of the army), its description, its price, and Purchase and Equip/Remove buttons. The army sits below on a stretch of the battle bar's wall, as in battle, between the gold and Start.
+- Siege Cartoon shop: a tap on a tile now only shows its card. A double tap buys it, or puts it in (or takes it out of) the army if already owned. Dragging an owned tile onto the army bar equips it, and dragging a card off the bar removes it (with a mouse at once, with a finger after a short hold, so swiping still scrolls). A tap on a card in the bar still removes it.
+
 ## 1.15.84 - 2026-10-28
 
 ### Changed

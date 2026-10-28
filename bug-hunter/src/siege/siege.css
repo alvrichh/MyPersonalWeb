@@ -854,3 +854,66 @@
   .siege-root.is-cartoon .sg-prep .sg-st-tab,.siege-root.is-cartoon .sg-prep .sg-st-tab:hover:not(:disabled){font-size:10px;letter-spacing:0;padding-top:5px}
   .siege-root.is-cartoon .sg-prep .sg-st-back,.siege-root.is-cartoon .sg-prep .sg-st-back:hover:not(:disabled){flex:0 0 auto;margin-left:auto;margin-right:auto;min-width:140px}
 }
+/* v1.15.85 — the shop's new layout: the grid on the left, the picked tile's card on the right (its picture, its stars,
+   its text, Purchase and Equip), and the army below on a stretch of the battle bar's wall, as in battle. */
+.sg-shop-only .sg-store{container-type:inline-size}
+.sg-st-card{flex:0 0 270px;min-width:0;display:flex;flex-direction:column;gap:8px;box-sizing:border-box;border-style:solid;border-color:transparent;border-width:34px;border-image:url('/images/game/siege/ui/frame.webp') 125 fill / 34px stretch;margin:-22px -6px -22px 4px;padding:0 2px;color:#fff;overflow:auto;scrollbar-width:none}
+.sg-st-head{display:flex;align-items:center;gap:10px}
+.sg-st-pic{flex:0 0 64px;width:64px;height:64px;object-fit:contain;padding:4px;box-sizing:border-box;background:url('/images/game/siege/ui/slot-on.webp') center/100% 100% no-repeat}
+.sg-st-pic.sg-st-q{display:grid;place-items:center;font-size:30px}
+.sg-st-head h3{margin:0;font:900 16px/1.15 system-ui;color:#ffe9a8;text-shadow:0 2px 2px #000}
+.sg-st-stats{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.sg-st-stats li span{white-space:nowrap}
+.sg-st-stats li{display:flex;align-items:center;justify-content:space-between;gap:8px;font:700 13px/1 system-ui;text-shadow:0 1px 2px #000}
+.sg-stars{position:relative;font-size:17px;line-height:1;letter-spacing:1px;white-space:nowrap;color:#3c4456;text-shadow:0 1px 0 #000}
+.sg-stars::after{content:'★★★★★';position:absolute;left:0;top:0;width:calc(var(--v) * 20%);overflow:hidden;color:#ffd23f;text-shadow:0 1px 0 #7a4b00,0 0 4px #ffb02e88}
+.sg-st-role{margin:0;font-size:13px;line-height:1.25;color:#e8ecf5;text-shadow:0 1px 2px #000}
+.sg-st-price{margin:0;font:900 16px system-ui;color:#ffd23f;text-shadow:0 1px 2px #000}.sg-st-price.is-poor{color:#ff7a7a}
+.sg-st-card .sg-message{margin:0;min-height:0;color:#ff9a9a;font-weight:700;font-size:13px;text-shadow:0 1px 2px #000}.sg-st-card .sg-message:empty{display:none}
+.sg-st-btns{display:flex;flex-direction:column;gap:6px;margin-top:auto}
+.siege-root.is-cartoon .sg-prep .sg-st-btns button,.siege-root.is-cartoon .sg-prep .sg-st-btns button:hover:not(:disabled){min-height:44px;font:900 16px system-ui;text-transform:uppercase;border-style:solid;border-color:transparent;border-width:0 30px;border-radius:0;border-image:url('/images/game/siege/ui/btn-gold.webp') 0 70 fill / 0 30px stretch;background:none;box-shadow:none;color:#2a1a00;text-shadow:0 1px 0 #fff8;padding:0 4px}
+.siege-root.is-cartoon .sg-prep .sg-st-btns .sg-st-wear,.siege-root.is-cartoon .sg-prep .sg-st-btns .sg-st-wear:hover:not(:disabled){border-image-source:url('/images/game/siege/ui/btn-blue.webp');color:#fff;text-shadow:0 2px 2px #000}
+.siege-root.is-cartoon .sg-prep .sg-st-btns .sg-st-wear.is-worn,.siege-root.is-cartoon .sg-prep .sg-st-btns .sg-st-wear.is-worn:hover:not(:disabled){border-image-source:url('/images/game/siege/ui/btn-red.webp')}
+.siege-root.is-cartoon .sg-prep .sg-st-btns button:disabled{border-image-source:url('/images/game/siege/ui/btn-grey.webp');opacity:1;color:#cfcfcf;text-shadow:0 1px 2px #000}
+.siege-root.is-cartoon .sg-prep .sg-st-btns button:hover:not(:disabled){filter:brightness(1.08)}
+/* The army: the wall part of the battle bar (x 648–1752, y 70–342 of the 2047 × 398 art) and its six cells on it. */
+.sg-st-army{--u:min(.42px,calc((100cqw - 8px) / 1104));position:relative;flex:none;align-self:center;width:calc(1104 * var(--u));height:calc(272 * var(--u));background:url('/images/game/siege/bar.webp') calc(-648 * var(--u)) calc(-70 * var(--u)) / calc(2047 * var(--u)) calc(398 * var(--u)) no-repeat;transition:filter .12s}
+.sg-st-army.is-over{filter:drop-shadow(0 0 8px #ffd23f) brightness(1.12)}
+.is-dragging .sg-st-army:not(.is-over){filter:drop-shadow(0 0 5px #8fd8ff)}
+.sg-st-cell{position:absolute;left:calc(var(--x) * var(--u));top:calc(96 * var(--u));width:calc(152 * var(--u));height:calc(140 * var(--u));box-sizing:border-box}
+.sg-st-cell.is-off{background:#05080fb3;border-radius:4px}
+.siege-root.is-cartoon .sg-prep .sg-st-cell.is-full,.siege-root.is-cartoon .sg-prep .sg-st-cell.is-full:hover:not(:disabled){min-height:0;padding:calc(6 * var(--u));border:0;border-radius:4px;background:linear-gradient(#5cc0ff8c,#1c72d6a6);box-shadow:inset 0 0 calc(18 * var(--u)) #06285a99;touch-action:pan-y}
+.siege-root.is-cartoon .sg-prep .sg-st-cell.is-full:hover:not(:disabled){background:linear-gradient(#8fd8ff99,#3a8cecb3)}
+.sg-st-cell img{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none}
+.sg-st-cell small{position:absolute;right:2px;bottom:2px;padding:0 .4em;font:900 11px/1.3 system-ui;border:1px solid #e7b94a;border-radius:6px;background:#1d1a17e6;color:#ffe9a8}
+.sg-st-tile,.sg-st-cell{-webkit-touch-callout:none;user-select:none;-webkit-user-select:none}
+.sg-st-ghost{position:fixed;z-index:50;pointer-events:none;object-fit:contain;opacity:.92;filter:drop-shadow(0 6px 8px #000a);transform:scale(1.12)}
+.sg-shop-only .sg-st-actions{flex:none}
+@media (max-width:600px){
+  .sg-shop-only .sg-st-body{flex-direction:column;gap:6px}
+  .sg-st-card{flex:none;margin:-14px -4px -12px;border-width:24px;border-image-width:24px;display:grid;grid-template-columns:auto 1fr;grid-template-areas:"head head" "stats btns" "role role" "price msg";column-gap:10px;row-gap:4px;overflow:visible}
+  .sg-st-head{grid-area:head}.sg-st-stats{grid-area:stats}.sg-st-btns{grid-area:btns;margin:0;justify-content:center}.sg-st-role{grid-area:role;font-size:12px}.sg-st-price{grid-area:price;font-size:14px}.sg-st-card .sg-message{grid-area:msg}
+  .sg-st-pic{flex-basis:40px;width:40px;height:40px}.sg-st-head h3{font-size:14px}
+  .sg-st-stats{gap:2px}.sg-st-stats li{font-size:11px}.sg-stars{font-size:13px;letter-spacing:0}
+  .siege-root.is-cartoon .sg-prep .sg-st-btns button,.siege-root.is-cartoon .sg-prep .sg-st-btns button:hover:not(:disabled){min-height:34px;font-size:12px;border-width:0 18px;border-image-width:0 18px}
+}
+@media (max-height:500px) and (orientation:landscape){
+  .sg-st-army{--u:min(.24px,calc((100cqw - 8px) / 1104))}
+  .sg-st-card{flex-basis:220px;gap:4px;border-width:26px;border-image-width:26px;margin:-16px -4px -16px 2px}
+  .sg-st-pic{flex-basis:38px;width:38px;height:38px}.sg-st-head h3{font-size:13px}
+  .sg-st-stats{gap:1px}.sg-st-stats li{font-size:11px}.sg-stars{font-size:12px;letter-spacing:0}
+  .sg-st-role{font-size:11px;line-height:1.15}.sg-st-price{font-size:13px}
+  .siege-root.is-cartoon .sg-prep .sg-st-btns{flex-direction:row}
+  .siege-root.is-cartoon .sg-prep .sg-st-btns button,.siege-root.is-cartoon .sg-prep .sg-st-btns button:hover:not(:disabled){flex:1;min-height:30px;font-size:11px;border-width:0 14px;border-image-width:0 14px}
+}
+/* The army sits in the bottom row, between the gold and Start; on a narrow phone it takes a row of its own above them. */
+.siege-root.is-cartoon .sg-prep .sg-st-actions{flex-wrap:wrap;justify-content:space-between;row-gap:4px}
+.sg-st-actions .sg-st-gold{margin-right:0}
+@media (max-width:600px){.sg-st-actions .sg-st-army{order:-1;margin:0 auto}.sg-st-actions .sg-st-gold{margin-right:auto}}
+@media (max-height:500px) and (orientation:landscape){
+  .sg-st-card{flex-basis:300px}
+  .sg-st-head .sg-st-pic{display:none}
+  .sg-st-actions .sg-st-army{--u:min(.22px,calc((100cqw - 8px) / 1104))}
+}
+/* The cells are buttons inside the bottom row: none of that row's big button art applies to them. */
+.siege-root.is-cartoon .sg-prep .sg-st-actions .sg-st-cell.is-full,.siege-root.is-cartoon .sg-prep .sg-st-actions .sg-st-cell.is-full:hover:not(:disabled),.siege-root.is-cartoon .sg-prep .sg-st-actions .sg-st-cell.is-full:active:not(:disabled){flex:none;min-width:0;min-height:0;width:calc(152 * var(--u));height:calc(140 * var(--u));padding:calc(6 * var(--u));border:0;border-image:none;border-radius:4px;font:inherit;text-transform:none;color:inherit;text-shadow:none}
