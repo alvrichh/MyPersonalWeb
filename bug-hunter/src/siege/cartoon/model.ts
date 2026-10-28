@@ -1,5 +1,5 @@
 /** Siege has its own balance and save schema. Nothing here changes action/board stats. */
-export const FIELD = 1600;
+export const FIELD = 1840;
 export const LIMIT = 300;
 export const CAP = 36;
 /** Its own save, apart from Siege Legacy's (`bugHunter.siege.v1`); v2 since battles became stages within acts. */
@@ -486,17 +486,19 @@ export const SCATTER = { along: 14, deep: 4 };
     (front): two at the back, one in front between them. */
 export const METEORS = [[-30, 10], [32, 10], [2, -10]];
 export const FLY = { high: 70, ranged: 45, close: 22, rate: 90 };
-export const BOW = { max: 100, cost: 1.2, regen: 12, every: 0.42, step: 0.03, damage: 16, gap: 24, friendly: 0.35, powerStep: 0.12, reach: 960, reachStep: 24, storeStep: 25, regenStep: 3 };
+export const BOW = { max: 100, cost: 1.2, regen: 12, every: 0.42, step: 0.06, damage: 16, gap: 24, friendly: 0.35, powerStep: 0.12, reach: 0.55, reachStep: 0.05, storeStep: 25, regenStep: 3 };
 /** The bow in battle: `level` its power upgrade (damage, arrows a volley, look), `speed` and `store` its other two. */
 export interface Bow { quiver: number; drawing: boolean; held: number; next: number; level: number; speed: number; store: number }
-export const aimAt = (x: number) => Math.max(140, Math.min(1080, x));
+/** The furthest any aim goes (the bow's own reach stops it sooner, `bowReach`). */
+export const AIM_MAX = Math.round(FIELD * 0.8);
+export const aimAt = (x: number) => Math.max(140, Math.min(AIM_MAX, x));
 /** Seconds between shots and arrows per shot, for the bow's level and how long it has been held. */
 export const bowEvery = (b: Bow) => BOW.every - b.speed * BOW.step;
 export const bowCount = (b: Bow) => looksTier(b.level);
 /** Each arrow's damage, by the bow's power. */
 export const bowDamage = (b: Bow) => Math.round(BOW.damage * (1 + b.level * BOW.powerStep));
-/** How far the bow reaches (the furthest aim), by its speed. */
-export const bowReach = (b: Bow) => BOW.reach + b.speed * BOW.reachStep;
+/** How far the bow reaches (the furthest aim), by its speed: from 55% of the field to 80% (`AIM_MAX`). */
+export const bowReach = (b: Bow) => Math.round(FIELD * (BOW.reach + b.speed * BOW.reachStep));
 /** The quiver: what it holds and how fast it refills, by its upgrade. */
 export const bowMax = (b: Bow) => BOW.max + b.store * BOW.storeStep;
 export const bowRegen = (b: Bow) => BOW.regen + b.store * BOW.regenStep;
@@ -509,7 +511,7 @@ export function launchAngle(dx: number, dy: number) {
   return d < 0 ? -Math.PI / 4 : -Math.atan((v * v - Math.sqrt(d)) / (g * x));
 }
 /** From this aim on, shots rise more and more, until at the furthest they climb steeply and fall from the sky. */
-const LOB = { from: 650, to: 1080, steepest: -1.0 };
+const LOB = { from: Math.round(FIELD * 0.4), to: AIM_MAX, steepest: -1.0 };
 /** A shot's launch angle and speed to land `dx` ahead and `dy` below: a hard, nearly straight shot (`SHOT.v`, the
     flatter solution) up to `LOB.from`; past it the angle climbs towards `LOB.steepest` and the speed is the one that
     still lands it there. */
@@ -563,7 +565,7 @@ function arrows(s: Siege, count: number) {
       if (!u.boss && !UNITS[u.id].steady && !(u.nudgeCd! > 0)) { u.nudge = NUDGE.time; u.nudgeCd = NUDGE.every; }
     }
     // Far shots are lobbed (the view draws them climbing and falling from the sky): they stay longer in the air.
-    const air = 0.5 + 0.45 * Math.max(0, Math.min(1, (x - 650) / 430));
+    const air = 0.5 + 0.45 * Math.max(0, Math.min(1, (x - LOB.from) / (LOB.to - LOB.from)));
     s.effects.push({ x: at, from: 80, lane: 1, life: air, max: air, kind: 'arrow', side: 0, up: deep * SCATTER.deep });
     // An arrow stays stuck in the ground where it lands, fading after a moment (rockets blow up instead).
     if (looksTier(s.bow.level) < 4) s.effects.push({ x: at, from: 80, lane: 1, life: air + STUCK, max: STUCK, kind: 'stuck', side: 0, up: deep * SCATTER.deep });

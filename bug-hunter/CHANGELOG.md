@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.90 - 2026-10-28
+
+### Changed
+- Siege Cartoon battlefield: the camera stands 15% further back on wide screens (desktop, phone held sideways), so more of the field and its picture show; an upright phone keeps its distance. The field is 15% longer (1600 → 1840), so troops take longer to cross it. The ground line is where it was, and troops still walk on it.
+- Siege Cartoon bow: its reach is now a share of the field. It reaches 55% at first and 80% with Bow · speed at level 5 (before, 60% to 68%), so the speed upgrade matters. Bow · speed at its top level shoots much faster: 8.3 shots a second, from 2.4 at first (before, 3.7 at the top).
+
 ## 1.15.89 - 2026-10-28
 
 ### Changed
