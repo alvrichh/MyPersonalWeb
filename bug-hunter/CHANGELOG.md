@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.71 - 2026-10-28
+
+### Changed
+- Siege Cartoon story: all of it is rewritten around the world names and a running gag (Manolo's cheese, lost on the Sky Islands): the prologue opens on the Meadows, where nothing ever happened, and the king staying home to give orders; each world's scene names its place (the Meadows, the Sky Islands, the Sunken Forest, the Desert of Bones, the Frozen Peaks, the Throne of Darkness); the guardians' lines, the new-in-the-shop line and the ending call back to them. No line says "World One" any more. Spanish and English.
+
 ## 1.15.70 - 2026-10-28
 
 ### Changed

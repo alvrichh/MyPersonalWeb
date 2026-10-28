@@ -21,9 +21,9 @@ const PROLOGUE = lines('siegeCtPrologue', ['narrator', 'narrator', 'king', 'wiza
 const INTRO: Speaker[][] = [
   ['wizard', 'joker', 'hero'],
   ['joker', 'wizard', 'hero'],
-  ['wizard', 'joker', 'king'],
+  ['wizard', 'joker', 'hero'],
   ['joker', 'wizard', 'hero'],
-  ['wizard', 'joker', 'king'],
+  ['wizard', 'joker', 'hero'],
   ['king', 'wizard', 'joker', 'hero'],
 ];
 /** What is said when the act's guardian joins the battle. */
