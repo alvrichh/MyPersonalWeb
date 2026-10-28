@@ -4,13 +4,18 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.94 - 2026-10-28
+
+### Changed
+- Siege Cartoon battlefield: the cut between the ground layer and the far landscape is a straight line exactly where the troops walk. Its top fades over a few pixels only, so it never reaches the rocks, ruins and plants standing behind the path. Before, the cut followed the scenery's silhouettes.
+
 ## 1.15.93 - 2026-10-28
 
 ### Changed
 - Siege Cartoon battlefield: the field is 30% longer (1840 → 2400) and the background has two layers.
   - The ground (path and grass) moves with the troops, stretched along the whole field.
   - The far landscape keeps its size and slides slower (parallax), from its left edge at our castle to its right edge at the enemy's.
-  - The cut between the two layers is a straight line exactly where the troops walk, its top fading over a few pixels only, so it never reaches the rocks and ruins standing behind the path.
+  - The cut between the two layers is worked out from each picture: it runs along the foot of what stands on the ground (rocks, ruins, bushes, bones) and along the path between them, so nothing is sliced in two. Those things stay whole in the far landscape, and the cut's edge is softened over a few pixels.
 
 ## 1.15.92 - 2026-10-28
 
