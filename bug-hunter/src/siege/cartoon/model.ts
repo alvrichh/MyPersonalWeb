@@ -93,14 +93,14 @@ export const UNITS: readonly Spec[] = [
   { id: 4, cost: 45, hp: 95, damage: 24, speed: 32, range: 200, rate: 1.4, cooldown: 6, unlock: 1, infantry: true, shot: 'bullet', ...six('ally-gunner-1', 246, 0.437), forms: [
     { price: 300, cost: 55, hp: 110, damage: 30, range: 230, shot: 'bullet-rifle', hitsAir: true, ...six('ally-gunner-2', 277, 0.4242) },
     { price: 500, cost: 70, hp: 125, damage: 22, range: 210, rate: 0.6, shot: 'bullet-uzi', hitsAir: true, ...six('ally-gunner-3', 278, 0.4676) },
-    { price: 1600, cost: 140, hp: 150, damage: 90, range: 320, rate: 2.4, shot: 'bullet-sniper', hitsAir: true, ...six('ally-gunner-4', 283, 0.4859) },
+    { price: 1600, cost: 140, hp: 150, damage: 90, range: 320, rate: 2.4, shot: 'bullet-sniper', hitsAir: true, ...six('ally-gunner-4', 282, 0.4876) },
   ] },
   // The blaster's four forms (docs/cw2-reference.md): bazooka, rocket launcher, ray gun, flamethrower. Rockets fly as
   // their own pictures and blast an area; the ray is drawn in code; the flame is in the attack pose (no projectile).
   { id: 5, cost: 85, hp: 260, damage: 34, speed: 28, range: 200, rate: 1.6, cooldown: 8, unlock: 2, infantry: true, splash: 40, shot: 'rocket', spin: false, hitsAir: true, ...six('ally-blaster-1', 256, 0.3906), forms: [
     { price: 350, cost: 100, hp: 290, damage: 44, splash: 50, shot: 'rockets', hitsAir: true, ...six('ally-blaster-2', 278, 0.4227) },
     { price: 600, cost: 120, hp: 320, damage: 52, range: 240, rate: 1.3, splash: 0, shot: 'ray', hitsAir: true, ...six('ally-blaster-3', 238, 0.5252) },
-    { price: 1800, cost: 170, hp: 420, damage: 32, range: 110, rate: 0.5, splash: 70, shot: 'none', hitsAir: false, ...six('ally-blaster-4', 251, 0.5279) },
+    { price: 1800, cost: 170, hp: 420, damage: 32, range: 110, rate: 0.5, splash: 70, shot: 'none', hitsAir: false, ...six('ally-blaster-4', 249, 0.5321) },
   ] },
   // The wizard's three forms (docs/cw2-reference.md), the same staff: lightning striking the ground, a tornado, and a
   // meteor that leaves flames. The spell lands on the target from the sheet (`shot-lightning|tornado|meteor`); from
@@ -124,20 +124,20 @@ export const UNITS: readonly Spec[] = [
   { id: 9, cost: 200, hp: 1300, damage: 70, speed: 18, range: 200, rate: 2, cooldown: 22, unlock: 5, splash: 80, shot: 'bullet', ...six('ally-heavy-robot-1', 158, 1.2975), forms: [
     { price: 1200, cost: 230, hp: 1500, damage: 80, shot: 'rockets', hitsAir: true, ...six('ally-heavy-robot-2', 191, 1.1911) },
     { price: 2200, cost: 260, hp: 1800, damage: 90, hitsAir: true, shot: 'ice', ...six('ally-heavy-robot-3', 196, 1.2245) },
-    { price: 4000, cost: 320, hp: 2600, damage: 120, splash: 100, hitsAir: true, blast: true, shot: 'salvo', ...six('ally-heavy-robot-4', 274, 1.1314) },
+    { price: 4000, cost: 320, hp: 2600, damage: 120, splash: 100, hitsAir: true, blast: true, shot: 'salvo', ...six('ally-heavy-robot-4', 273, 1.1355) },
   ] },
   // Ours, air (Cartoon Wars 2's A row): they fly over the field, out of reach of melee troops; only ranged ones hit them.
   // The aircraft fighter's four forms: a sword under a propeller pack, then with goggles and scarf, two rotors and blue
   // steel, and gold rotors with a flaming sword.
   { id: 10, cost: 30, hp: 70, damage: 12, speed: 70, range: 40, rate: 0.7, cooldown: 3, unlock: 2, air: true, skyOnly: true, ...six('ally-fighter-1', 242, 0.5062), forms: [
     { price: 150, cost: 40, hp: 100, damage: 16, ...six('ally-fighter-2', 269, 0.4833) },
-    { price: 400, cost: 55, hp: 140, damage: 22, ...six('ally-fighter-3', 267, 0.5243) },
-    { price: 1200, cost: 90, hp: 220, damage: 34, speed: 80, splash: 25, ...six('ally-fighter-4', 274, 0.5748) },
+    { price: 400, cost: 55, hp: 140, damage: 22, ...six('ally-fighter-3', 266, 0.5263) },
+    { price: 1200, cost: 90, hp: 220, damage: 34, speed: 80, splash: 25, ...six('ally-fighter-4', 272, 0.579) },
   ] },
   // The armed aircraft fighter's four forms (docs/cw2-reference.md): a rifleman under a propeller pack, a veteran
   // sniper, a laser gun, and the air magician casting pink lightning.
-  { id: 11, cost: 55, hp: 110, damage: 20, speed: 55, range: 190, rate: 0.8, cooldown: 5, unlock: 3, air: true, skyOnly: true, shot: 'bullet-rifle', ...six('ally-armed-fighter-1', 261, 0.4789), forms: [
-    { price: 400, cost: 70, hp: 130, damage: 45, range: 260, rate: 1.6, shot: 'bullet-sniper', ...six('ally-armed-fighter-2', 273, 0.4853) },
+  { id: 11, cost: 55, hp: 110, damage: 20, speed: 55, range: 190, rate: 0.8, cooldown: 5, unlock: 3, air: true, skyOnly: true, shot: 'bullet-rifle', ...six('ally-armed-fighter-1', 260, 0.4808), forms: [
+    { price: 400, cost: 70, hp: 130, damage: 45, range: 260, rate: 1.6, shot: 'bullet-sniper', ...six('ally-armed-fighter-2', 272, 0.4871) },
     { price: 900, cost: 90, hp: 170, damage: 34, range: 230, rate: 0.9, shot: 'plasma', ...six('ally-armed-fighter-3', 257, 0.5642) },
     { price: 2000, cost: 140, hp: 240, damage: 55, range: 220, rate: 1.4, splash: 60, shot: 'ray-pink', ...six('ally-armed-fighter-4', 285, 0.5702) },
   ] },

@@ -19,3 +19,4 @@ published, under `/images/game/old/...`, like any asset). Each folder mirrors wh
   master (archer 4) there is the owner's preferred one; the game uses the first set (1.15.56).
 - `special/siege/units-wizard-purple/ally-wizard-{1,2}-*.webp`: the wizard's levels 1 and 2 with their purple hat and robe, recoloured light and dark blue in 1.15.64.
 - `special/siege/units-heavy-robot/ally-heavy-robot-{1..4}-*.webp`: the heavy robot's four forms before the owner's redraw (1.15.65).
+- `special/siege/units-gunner-blue/ally-gunner-{2,3}-*.webp`: the gunner's levels 2 and 3 with their gold ornaments, recoloured silver-blue and red in 1.15.67.

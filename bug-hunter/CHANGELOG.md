@@ -4,6 +4,15 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.67 - 2026-10-28
+
+### Fixed
+- Siege Cartoon: the allied troops' sheets were cut from their white background again with a method that keeps the white inside attacks and effects (the flashes, sparks and ray cores that the first cut and the 1.15.66 clean-up had eaten); smoke stays see-through.
+- Siege Cartoon: the vulture rider's white pocket under the bird (leftover background between its legs) is gone.
+
+### Changed
+- Siege Cartoon: the gunner's levels differ more: level 2 silver-armoured, level 3 black and red (the ornaments recoloured, the blue helmet and cape kept).
+
 ## 1.15.66 - 2026-10-28
 
 ### Fixed
