@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.87 - 2026-10-28
+
+### Changed
+- Siege Cartoon shop: a card dragged within the army bar onto another card swaps places with it, and one dropped on an empty place moves to the end. The card it would swap with lights up while dragging. The order is kept in the save and is the battle bar's order (troops and special powers alike).
+
 ## 1.15.86 - 2026-10-28
 
 ### Changed

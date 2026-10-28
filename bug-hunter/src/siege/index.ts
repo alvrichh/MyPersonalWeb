@@ -634,6 +634,18 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   let drag: { key: string; fromBar: boolean; x: number; y: number; id: number; ghost?: HTMLElement; hold?: number } | null = null;
   let droppedAt = -1e9;
   const overBar = (x: number, y: number) => !!document.elementFromPoint(x, y)?.closest('.sg-st-army');
+  /** The army bar's cell under a point (a card, or an empty place), if any. */
+  const cellAt = (x: number, y: number) => document.elementFromPoint(x, y)?.closest<HTMLElement>('.sg-st-army .sg-st-cell:not(.is-off)') ?? null;
+  /** Moves a card in the army bar: dropped on another card, the two swap places; on an empty place, it goes last. */
+  function reorder(key: string, to: string | undefined) {
+    const [row, level] = key.split(':').map(Number), special = shopTab === 'special';
+    const code = (k: string) => { const [r, l] = k.split(':').map(Number); return special ? cartoonModel.powerCard(r, l) : cartoonModel.card(r, l); };
+    const list = special ? progress.kit : selected, a = list.indexOf(code(key)); if (a < 0) return;
+    if (to) { const b = list.indexOf(code(to)); if (b < 0) return; [list[a], list[b]] = [list[b], list[a]]; }
+    else list.push(...list.splice(a, 1));
+    if (!special) progress.deck = [...selected];
+    pick = { row, level }; persist(); sound('click');
+  }
   function lift(from: HTMLElement) {
     if (!drag) return; const img = from.querySelector('img'); if (!img) { drag = null; return; }
     const ghost = img.cloneNode() as HTMLElement; const r = from.getBoundingClientRect();
@@ -641,7 +653,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     ghost.style.left = `${drag.x - r.width / 2}px`; ghost.style.top = `${drag.y - r.height / 2}px`;
     root.append(ghost); drag.ghost = ghost; root.classList.add('is-dragging'); navigator.vibrate?.(12);
   }
-  function endDrag() { if (!drag) return; clearTimeout(drag.hold); drag.ghost?.remove(); root.classList.remove('is-dragging'); root.querySelector('.sg-st-army')?.classList.remove('is-over'); drag = null; }
+  function endDrag() { if (!drag) return; clearTimeout(drag.hold); drag.ghost?.remove(); root.classList.remove('is-dragging'); root.querySelector('.sg-st-army')?.classList.remove('is-over'); root.querySelectorAll('.sg-st-cell.is-target').forEach(c => c.classList.remove('is-target')); drag = null; }
   root.addEventListener('pointerdown', event => {
     endDrag(); if (state || shopTab === 'base' || event.button > 0) return;
     const from = (event.target as HTMLElement).closest<HTMLElement>('.sg-st-tile, .sg-st-cell.is-full'); if (!from?.dataset.sgTile) return;
@@ -661,6 +673,8 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     const w = drag.ghost.offsetWidth, h = drag.ghost.offsetHeight;
     drag.ghost.style.left = `${event.clientX - w / 2}px`; drag.ghost.style.top = `${event.clientY - h / 2}px`;
     root.querySelector('.sg-st-army')?.classList.toggle('is-over', overBar(event.clientX, event.clientY));
+    const onto = drag.fromBar ? cellAt(event.clientX, event.clientY) : null;
+    root.querySelectorAll('.sg-st-cell.is-target').forEach(c => c !== onto && c.classList.remove('is-target')); if (onto && onto.dataset.sgTile !== drag.key) onto.classList.add('is-target');
   }, options);
   // While a finger drags a card the page must not scroll (the hold already started it, so the browser has not panned yet).
   root.addEventListener('touchmove', event => { if (drag?.ghost) event.preventDefault(); }, { ...options, passive: false });
@@ -669,7 +683,9 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     if (!drag || event.pointerId !== drag.id) return;
     if (!drag.ghost) { endDrag(); return; }
     const { key, fromBar } = drag, [row, level] = key.split(':').map(Number), on = overBar(event.clientX, event.clientY);
+    const onto = cellAt(event.clientX, event.clientY);
     endDrag(); droppedAt = event.timeStamp;
+    if (fromBar && on) { if (onto && onto.dataset.sgTile !== key) { reorder(key, onto.dataset.sgTile); redraw(`.sg-st-army [data-sg-tile="${key}"]`); } return; }
     if (fromBar === on) return;
     pick = { row, level }; const full = isWorn(row, level) === on ? false : !equip(row, level);
     redraw(`.sg-st-grid [data-sg-tile="${key}"]`); if (full) q('.sg-message').textContent = t(shopTab === 'special' ? 'siegePowerKitFull' : 'siegeFull');
