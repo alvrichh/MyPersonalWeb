@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.74 - 2026-10-28
+
+### Changed
+- Siege Cartoon story: every line rewritten in natural, colloquial Spanish (and its English to match): shorter, punchier, funnier, and no more phrasing that read like a translation. Same story, scenes and speakers.
+
 ## 1.15.73 - 2026-10-28
 
 ### Changed
