@@ -59,6 +59,8 @@ export const sceneOf = (stage: number) => { const pics = SCENES[actOf(stage)]; r
 const tops = new Map<HTMLImageElement, HTMLCanvasElement>();
 /** The picture's width on the field (field units), fixed whatever the field's length: the far landscape keeps its size. */
 const SCENE_W = 2080;
+/** How much wider than its own shape the far landscape is drawn on a wide view (see the scene's drawing). */
+const SCENE_WIDEN = 1.25;
 /** The picture's ground layer, which moves with the troops: everything from its cut down to the picture's bottom. The
     cut never goes below the line the troops walk on (`SCENE_FIT.ground`, the base) nor above the back edge of the
     ground they walk on (`PATH_TOP`, measured by hand on each picture); between the two it follows the outlines, along
@@ -295,8 +297,10 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
     // landscape behind it does. Its sky colours carry on above the picture.
     // On a wide view the far landscape is drawn smaller, so its top meets the view's top (none of it cut off above) while
     // its walking line stays at the troops' feet; never narrower than the view. A tall view keeps it at `SCENE_W`.
+    // Shrunk like that it would barely slide (hardly wider than the view), so it is also widened by `SCENE_WIDEN`: the
+    // camera's run then moves it about five times as far, while its height still fits the view.
     const ratio = scene.naturalHeight / scene.naturalWidth, fit = Math.max(ground / SCENE_FIT.ground, camera.width * ratio);
-    const sh = Math.min(SCENE_W * ratio, fit), sw = sh / ratio, top = ground - sh * SCENE_FIT.ground;
+    const sh = Math.min(SCENE_W * ratio, fit), sw = sh / ratio * (sh < SCENE_W * ratio ? SCENE_WIDEN : 1), top = ground - sh * SCENE_FIT.ground;
     const lo = camera.min ?? 0, hi = Math.max(lo, FIELD - camera.width), k = hi > lo ? (camera.x - lo) / (hi - lo) : 0;
     const x0 = camera.x - Math.max(0, sw - camera.width) * k - Math.max(0, camera.width - sw) / 2;
     // When the view runs below the picture, its foreground (the part under the walking ground) is stretched down to
