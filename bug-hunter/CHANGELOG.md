@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.75 - 2026-10-28
+
+### Changed
+- Siege Cartoon: the death cry is the "ouch!" of 1.15.72 again (the Spanish «¡ay!» of 1.15.73 is undone).
+
 ## 1.15.74 - 2026-10-28
 
 ### Changed
