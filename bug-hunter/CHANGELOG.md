@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.60 - 2026-10-28
+
+### Added
+- Siege Cartoon story: when a guardian falls to half its health the battle pauses for a word from it (shown hurt) and one of ours; and its last words at the end are said from its fallen pose, before the scene of ours.
+
 ## 1.15.59 - 2026-10-28
 
 ### Added

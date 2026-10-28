@@ -52,7 +52,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   let state: Siege | null = null, paused = false, finished = false;
   // Local checks (like `window.bugHunter` for the main game): the battle's state, read and nudged by test scripts.
   if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) Object.defineProperty(window, 'bugHunterSiege', { get: () => state, configurable: true });
-  let frame = 0, last = 0, accumulator = 0, uiAt = 0, bossTalked = false, baseFell = false, lootHeard = 0, gustShown = false;
+  let frame = 0, last = 0, accumulator = 0, uiAt = 0, bossTalked = false, bossHalf = false, baseFell = false, lootHeard = 0, gustShown = false;
   /** How far the aim stick is pushed, -1 (down, nearer) to 1 (up, further); 0 at rest. */
   let aimPush = 0;
   /** The bottom bar's tab, Cartoon Wars 2's L · A · S: land troops, air troops, special powers. */
@@ -319,7 +319,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     cancelAnimationFrame(frame); battleAbort.abort(); battleAbort = new AbortController();
     const battleOptions = { signal: battleAbort.signal };
     if (!selected.length) return;
-    progress.deck = [...selected]; persist(); mapAct = mode === 'cartoon' ? actNow() : 0; state = M.newSiege(progress, world); bossTalked = false; baseFell = false; lootHeard = 0; gustShown = false;
+    progress.deck = [...selected]; persist(); mapAct = mode === 'cartoon' ? actNow() : 0; state = M.newSiege(progress, world); bossTalked = false; bossHalf = false; baseFell = false; lootHeard = 0; gustShown = false;
     if (mode === 'cartoon') music('battle');
     V.preload(world, selected, progress.levels); paused = false; camera.x = -Infinity;
     // Laid out like Cartoon Wars 2: mana top left, both fortresses' health face to face in the middle, coins and pause
@@ -419,6 +419,11 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       else if (state.bossSpawned && !bossTalked && state.phase === 'fight') {
         bossTalked = true; paused = true; updateUi();
         talk(mode === 'cartoon' ? cartoonStory.bossArrive(actNow()) : bossTalk(world), () => { paused = false; last = performance.now(); accumulator = 0; q('canvas').focus(); });
+      }
+      // Cartoon's guardian, hurt, says a word at half its health, the battle held for it.
+      else if (mode === 'cartoon' && !bossHalf && state.phase === 'fight' && state.units.some(u => u.boss && u.side && u.hp > 0 && u.hp <= u.maxHp * 0.5)) {
+        bossHalf = true; paused = true; updateUi();
+        talk(cartoonStory.bossHalf(actNow()), () => { paused = false; last = performance.now(); accumulator = 0; q('canvas').focus(); });
       }
       frame = requestAnimationFrame(loop);
     }
