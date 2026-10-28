@@ -383,7 +383,7 @@ test('every robot hits an area, at every level', () => {
 });
 test('every troop level has its own shop description in both languages', async () => {
   const src = (await import('node:fs')).readFileSync('bug-hunter/src/strings.ts', 'utf8'); const i = src.indexOf('const es');
-  for (const u of m.ALLIES) for (let l = 1; l <= (u.forms?.length ?? 1); l++) {
+  for (const u of m.ALLIES) for (let l = 1; l <= m.levelsOf(m.UNITS.indexOf(u)); l++) {
     const k = `siegeRole${m.UNITS.indexOf(u)}L${l}:`; assert.ok(src.slice(0, i).includes(k) && src.slice(i).includes(k), k);
   }
 });

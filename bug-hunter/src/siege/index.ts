@@ -172,19 +172,37 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       const hidden = !x.have && !x.next && !(shopTab !== 'base' && level === 1);
       return `<button class="sg-st-tile ${x.have ? 'is-have' : x.next ? 'is-next' : 'is-locked'} ${on ? 'is-on' : ''} ${worn ? 'is-worn' : ''}" data-sg-tile="${row}:${level}" aria-pressed="${on}" aria-label="${hidden ? '?' : `${shopTab === 'special' ? powerName(row, level) : shopTab === 'base' ? t(`siegeUpgrade${row}` as Key) : name(row)} · ${t('siegeLevel', { n: level })}`}">${hidden ? '<span class="sg-st-q" aria-hidden="true">?</span>' : `<img src="${pic}" ${shopTab === 'base' || shopTab === 'special' ? '' : `data-trim="${pic}"`} alt="">`}${corner && !hidden ? `<small>${corner}</small>` : ''}${worn ? '<b class="sg-st-worn" aria-hidden="true">✓</b>' : ''}</button>`;
     }).join('<span class="sg-st-link" aria-hidden="true"></span>')}</div>`).join('');
-    const x = tile(pick.row, pick.level), troop = shopTab !== 'base';
-    const label = !x.have && !x.next && !(troop && pick.level === 1) ? '? ? ?' : shopTab === 'special' ? `${powerName(pick.row, pick.level)} — ${t(`siegePower${pick.row}Text` as Key)}` : troop ? `${name(pick.row)} · ${t('siegeLevel', { n: pick.level })} — ${role(pick.row, pick.level)}` : `${t(`siegeUpgrade${pick.row}` as Key)} · ${t('siegeLevel', { n: pick.level })}`;
+    const x = tile(pick.row, pick.level), troop = shopTab !== 'base', hid = !x.have && !x.next && !(troop && pick.level === 1);
+    const title = hid ? '? ? ?' : `${shopTab === 'special' ? powerName(pick.row, pick.level) : troop ? name(pick.row) : t(`siegeUpgrade${pick.row}` as Key)} · ${t('siegeLevel', { n: pick.level })}`;
+    const text = hid ? '' : shopTab === 'special' ? `${t(`siegePower${pick.row}Text` as Key)} · ${t('siegePowerCd', { n: cartoonModel.POWERS[pick.row].cooldown })}` : troop ? role(pick.row, pick.level) : '';
+    const pic = shopTab === 'special' ? powerPic(pick.row, pick.level) : shopTab === 'base' ? `/images/game/${upgradePic('cartoon', pick.row, pick.level)}.webp` : V.portrait(pick.row, pick.level);
+    const stats = troop && shopTab !== 'special' && !hid ? `<ul class="sg-st-stats">${stars(pick.row, pick.level).map((n, i) => `<li><span>${t((['siegeStatHp', 'siegeStatDamage', 'siegeStatRate', 'siegeStatSpeed'] as const)[i])}</span><b class="sg-stars" style="--v:${n}" role="img" aria-label="${n}/5">★★★★★</b></li>`).join('')}</ul>` : '';
     const price = x.have ? `✓ ${t('siegeHave')}` : x.next ? (x.price ? `🪙 ${x.price}` : t('siegeFree')) : `🔒 ${x.why}`;
-    const kind = shopTab === 'air';
-    // The equipped cards; a tap on one takes it out of the army.
-    const kitSlots = Array.from({ length: cartoonModel.KIT }, (_, i) => { const c = progress.kit[i]; if (c === undefined) return '<span class="sg-st-slot"></span>'; const id = c % 100, lv = Math.floor(c / 100) + 1; return `<button class="sg-st-slot is-full" data-sg-tile="${id}:${lv}" aria-label="${powerName(id, lv)}"><img src="${powerPic(id, lv)}" alt=""><small>${lv}</small></button>`; }).join('');
-    const slots = shopTab === 'special' ? kitSlots : Array.from({ length: M.DECK }, (_, i) => { const c = selected.filter(n => air(n) === kind)[i]; return c === undefined ? '<span class="sg-st-slot"></span>' : `<button class="sg-st-slot is-full" data-sg-tile="${cid(c)}:${clv(c)}" aria-label="${name(cid(c))} · ${t('siegeLevel', { n: clv(c) })}"><img src="${V.portrait(cid(c), clv(c))}" data-trim="${V.portrait(cid(c), clv(c))}" alt=""><small>${clv(c)}</small></button>`; }).join('');
+    const kind = shopTab === 'air', worn = isWorn(pick.row, pick.level);
+    // The army on a stretch of the battle bar's wall, as in battle: a tap (or a drag off the bar) takes a card out.
+    const cell = (i: number, c: number | undefined, power = false) => c === undefined ? `<span class="sg-st-cell" style="--x:${CELLS[i]}"></span>` : power ? `<button class="sg-st-cell is-full" style="--x:${CELLS[i]}" data-sg-tile="${c % 100}:${Math.floor(c / 100) + 1}" aria-label="${powerName(c % 100, Math.floor(c / 100) + 1)}"><img src="${powerPic(c % 100, Math.floor(c / 100) + 1)}" alt="" draggable="false"><small>${Math.floor(c / 100) + 1}</small></button>` : `<button class="sg-st-cell is-full" style="--x:${CELLS[i]}" data-sg-tile="${cid(c)}:${clv(c)}" aria-label="${name(cid(c))} · ${t('siegeLevel', { n: clv(c) })}"><img src="${V.portrait(cid(c), clv(c))}" data-trim="${V.portrait(cid(c), clv(c))}" alt="" draggable="false"><small>${M.specAt(cid(c), clv(c)).cost}</small></button>`;
+    const army = shopTab === 'special' ? CELLS.map((_, i) => i < cartoonModel.KIT ? cell(i, progress.kit[i], true) : `<span class="sg-st-cell is-off" style="--x:${CELLS[i]}"></span>`).join('') : CELLS.map((_, i) => cell(i, selected.filter(n => air(n) === kind)[i])).join('');
+    const armyLabel = shopTab === 'special' ? `${t('siegeShopSpecial')} ${progress.kit.length}/${cartoonModel.KIT}` : t(kind ? 'siegeArmyAir' : 'siegeArmyLand', { n: selected.filter(n => air(n) === kind).length, max: M.DECK });
     return `<div class="sg-store is-${shopTab}"><nav class="sg-st-tabs" role="tablist">${tabs}<button class="sg-st-back" data-sg-prep="map">◀ ${t('siegeShopBack')}</button></nav>
-      <div class="sg-st-body"><div class="sg-st-frame"><div class="sg-st-grid">${grid}</div>${['top', 'bottom', 'left', 'right'].map(k => `<i class="sg-st-gem is-${k}" aria-hidden="true"></i>`).join('')}</div><aside class="sg-st-slots" aria-label="${shopTab === 'special' ? t('siegeShopSpecial') + ` ${progress.kit.length}/${cartoonModel.KIT}` : t(kind ? 'siegeArmyAir' : 'siegeArmyLand', { n: selected.filter(n => air(n) === kind).length, max: M.DECK })}">${shopTab === 'base' ? '' : slots}</aside></div>
-      <div class="sg-st-info"><p class="sg-st-desc"><b>${label}</b><span class="${x.next && progress.coins < x.price ? 'is-poor' : ''}">${price}</span></p><p class="sg-message" role="status"></p></div>
+      <div class="sg-st-body"><div class="sg-st-frame"><div class="sg-st-grid">${grid}</div>${['top', 'bottom', 'left', 'right'].map(k => `<i class="sg-st-gem is-${k}" aria-hidden="true"></i>`).join('')}</div>
+        <aside class="sg-st-card" aria-live="polite"><div class="sg-st-head">${hid ? '<span class="sg-st-pic sg-st-q">?</span>' : `<img class="sg-st-pic" src="${pic}" ${troop && shopTab !== 'special' ? `data-trim="${pic}"` : ''} alt="">`}<h3>${title}</h3></div>${stats}
+          ${text ? `<p class="sg-st-role">${text}</p>` : ''}<p class="sg-st-price ${x.next && progress.coins < x.price ? 'is-poor' : ''}">${price}</p><p class="sg-message" role="status"></p>
+          <div class="sg-st-btns"><button class="sg-st-buy" data-sg="purchase" ${x.next && progress.coins >= x.price ? '' : 'disabled'}>${t('siegeBuy')}</button>${troop ? `<button class="sg-st-wear ${worn ? 'is-worn' : ''}" data-sg="equip" ${x.have ? '' : 'disabled'}>${t(worn ? 'siegeUnequip' : 'siegeEquip')}</button>` : ''}</div></aside></div>
       <div class="sg-st-actions"><span class="sg-st-gold"><img src="/images/game/store/coins-2.webp" alt="">${progress.coins}</span>
-        <button class="sg-st-buy" data-sg="purchase" ${x.next && progress.coins >= x.price ? '' : 'disabled'}>${t('siegeBuy')}</button>
+        ${troop ? `<div class="sg-st-army" data-sg-army role="group" aria-label="${armyLabel}" title="${t('siegeDragHint')}">${army}</div>` : ''}
         <button class="sg-st-go is-fight" data-sg="launch" ${selected.length ? '' : 'disabled'}>${t('siegeLaunch')} ▶</button></div></div>`;
+  }
+  /** Where the army bar's six cells sit on the battle bar's art (its x on the 2047-wide sheet, less the cut at 648). */
+  const CELLS = [24, 203, 391, 570, 749, 928];
+  /** Whether a troop form (or a power's form, in Special) is in the army. */
+  const isWorn = (row: number, level: number) => (shopTab === 'special' ? progress.kit.includes(cartoonModel.powerCard(row, level)) : selected.includes(cartoonModel.card(row, level)));
+  /** A troop form's four stats as one to five stars, by halves (health, strength, attack speed, move speed), each
+      against every form of our army on a log scale, so the weakest form is one star and the best five. */
+  let statRange: [number, number][] | null = null;
+  const statsOf = (sp: { hp: number; damage: number; rate: number; speed: number }) => [sp.hp, sp.damage, 1 / sp.rate, sp.speed];
+  function stars(row: number, level: number) {
+    statRange ??= [0, 1, 2, 3].map(i => { const v = M.ALLIES.flatMap(u => Array.from({ length: M.levelsOf(u.id) }, (_, k) => statsOf(M.specAt(u.id, k + 1))[i])).filter(n => n > 0 && Number.isFinite(n)); return [Math.log(Math.min(...v)), Math.log(Math.max(...v))]; });
+    return statsOf(M.specAt(row, level)).map((v, i) => { const [lo, hi] = statRange![i]; return v > 0 && Number.isFinite(v) ? Math.max(1, Math.min(5, Math.round((1 + 4 * (Math.log(v) - lo) / (hi - lo || 1)) * 2) / 2)) : 1; });
   }
   /** Buys the picked tile: a troop's recruit or next form, or an upgrade's next level. */
   function purchase() {
@@ -601,7 +619,61 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   }
   /** The shop tile tapped last and when, to tell a double tap. */
   let lastTile = { key: '', at: -1e9 };
+  /** Redraws the preparation screen keeping the shop grid's scroll, then focuses `focus` (without scrolling). */
+  function redraw(focus: string) {
+    const g = root.querySelector('.sg-st-grid')?.scrollTop ?? 0; prep();
+    const grid = root.querySelector('.sg-st-grid'); if (grid) grid.scrollTop = g;
+    root.querySelector<HTMLElement>(focus)?.focus({ preventScroll: true });
+  }
+  /** The shop's drag and drop: a form the player owns dragged from the grid onto the army bar joins the army, a card
+      dragged off the bar leaves it. A mouse drags as soon as it moves; a finger after a short hold, so a swipe still
+      scrolls the grid. */
+  let drag: { key: string; fromBar: boolean; x: number; y: number; id: number; ghost?: HTMLElement; hold?: number } | null = null;
+  let droppedAt = -1e9;
+  const overBar = (x: number, y: number) => !!document.elementFromPoint(x, y)?.closest('.sg-st-army');
+  function lift(from: HTMLElement) {
+    if (!drag) return; const img = from.querySelector('img'); if (!img) { drag = null; return; }
+    const ghost = img.cloneNode() as HTMLElement; const r = from.getBoundingClientRect();
+    ghost.className = 'sg-st-ghost'; ghost.style.width = `${Math.round(r.width)}px`; ghost.style.height = `${Math.round(r.height)}px`;
+    ghost.style.left = `${drag.x - r.width / 2}px`; ghost.style.top = `${drag.y - r.height / 2}px`;
+    root.append(ghost); drag.ghost = ghost; root.classList.add('is-dragging'); navigator.vibrate?.(12);
+  }
+  function endDrag() { if (!drag) return; clearTimeout(drag.hold); drag.ghost?.remove(); root.classList.remove('is-dragging'); root.querySelector('.sg-st-army')?.classList.remove('is-over'); drag = null; }
+  root.addEventListener('pointerdown', event => {
+    endDrag(); if (state || shopTab === 'base' || event.button > 0) return;
+    const from = (event.target as HTMLElement).closest<HTMLElement>('.sg-st-tile, .sg-st-cell.is-full'); if (!from?.dataset.sgTile) return;
+    const [row, level] = from.dataset.sgTile.split(':').map(Number), fromBar = from.classList.contains('sg-st-cell');
+    if (!fromBar && !tile(row, level).have) return;
+    drag = { key: from.dataset.sgTile, fromBar, x: event.clientX, y: event.clientY, id: event.pointerId };
+    if (event.pointerType !== 'mouse') drag.hold = window.setTimeout(() => lift(from), 260);
+  }, options);
+  window.addEventListener('pointermove', event => {
+    if (!drag || event.pointerId !== drag.id) return;
+    const far = Math.hypot(event.clientX - drag.x, event.clientY - drag.y);
+    if (!drag.ghost) {
+      if (event.pointerType !== 'mouse') { if (far > 10) endDrag(); return; }
+      if (far < 6) return; const from = root.querySelector<HTMLElement>(`${drag.fromBar ? '.sg-st-army' : '.sg-st-grid'} [data-sg-tile="${drag.key}"]`); if (!from) { endDrag(); return; } lift(from);
+    }
+    if (!drag?.ghost) return;
+    const w = drag.ghost.offsetWidth, h = drag.ghost.offsetHeight;
+    drag.ghost.style.left = `${event.clientX - w / 2}px`; drag.ghost.style.top = `${event.clientY - h / 2}px`;
+    root.querySelector('.sg-st-army')?.classList.toggle('is-over', overBar(event.clientX, event.clientY));
+  }, options);
+  // While a finger drags a card the page must not scroll (the hold already started it, so the browser has not panned yet).
+  root.addEventListener('touchmove', event => { if (drag?.ghost) event.preventDefault(); }, { ...options, passive: false });
+  root.addEventListener('contextmenu', event => { if ((event.target as HTMLElement).closest('.sg-st-tile, .sg-st-cell')) event.preventDefault(); }, options);
+  window.addEventListener('pointerup', event => {
+    if (!drag || event.pointerId !== drag.id) return;
+    if (!drag.ghost) { endDrag(); return; }
+    const { key, fromBar } = drag, [row, level] = key.split(':').map(Number), on = overBar(event.clientX, event.clientY);
+    endDrag(); droppedAt = event.timeStamp;
+    if (fromBar === on) return;
+    pick = { row, level }; const full = isWorn(row, level) === on ? false : !equip(row, level);
+    redraw(`.sg-st-grid [data-sg-tile="${key}"]`); if (full) q('.sg-message').textContent = t(shopTab === 'special' ? 'siegePowerKitFull' : 'siegeFull');
+  }, options);
+  window.addEventListener('pointercancel', endDrag, options);
   root.addEventListener('click', event => {
+    if (event.timeStamp - droppedAt < 400) return;
     const button = (event.target as HTMLElement).closest<HTMLButtonElement>('button'); if (!button || button.disabled) return;
     const { sg: action, sgUnit: unit, sgUpgrade: up, sgSummon: summonId } = button.dataset;
     if (unit !== undefined && !state) {
@@ -613,11 +685,15 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     if (button.dataset.sgShopTab && !state) { shopTab = button.dataset.sgShopTab as typeof shopTab; pick = { row: shopRows()[0], level: 1 }; prep(); root.querySelector<HTMLElement>(`[data-sg-shop-tab="${shopTab}"]`)?.focus(); return; }
     if (button.dataset.sgTile && !state) {
       const [row, level] = button.dataset.sgTile.split(':').map(Number);
-      // A double tap on a tile that can be bought buys it (the screen is redrawn between the taps, so no `dblclick`).
+      // A double tap on a tile that can be bought buys it, on one owned puts it in (or takes it out of) the army (the
+      // screen is redrawn between the taps, so no `dblclick`); a single tap shows the tile's card on the right.
       const again = lastTile.key === button.dataset.sgTile && event.timeStamp - lastTile.at < 450; lastTile = { key: button.dataset.sgTile, at: again ? -1e9 : event.timeStamp };
-      if (again && !button.classList.contains('sg-st-slot') && tile(row, level).next) { pick = { row, level }; const g = root.querySelector('.sg-st-grid')?.scrollTop ?? 0; purchase(); prep(); const grid = root.querySelector('.sg-st-grid'); if (grid) grid.scrollTop = g; root.querySelector<HTMLElement>(`[data-sg-tile="${row}:${level}"]`)?.focus({ preventScroll: true }); return; }
-      pick = { row, level }; let full = false; if (shopTab !== 'base' && tile(row, level).have) full = !equip(row, level); const g = root.querySelector('.sg-st-grid')?.scrollTop ?? 0; prep(); const grid = root.querySelector('.sg-st-grid'); if (grid) grid.scrollTop = g; root.querySelector<HTMLElement>(`.sg-st-grid [data-sg-tile="${row}:${level}"]`)?.focus({ preventScroll: true }); if (full) q('.sg-message').textContent = t(shopTab === 'special' ? 'siegePowerKitFull' : 'siegeFull'); return; }
-    if (action === 'purchase' && !state) { const g = root.querySelector('.sg-st-grid')?.scrollTop ?? 0; purchase(); prep(); const grid = root.querySelector('.sg-st-grid'); if (grid) grid.scrollTop = g; root.querySelector<HTMLElement>(`[data-sg="${action}"]:not(:disabled)`)?.focus({ preventScroll: true }); return; }
+      const cell = !!button.closest('.sg-st-army');
+      if (again && !cell && tile(row, level).next) { pick = { row, level }; purchase(); redraw(`.sg-st-grid [data-sg-tile="${row}:${level}"]`); return; }
+      pick = { row, level }; let full = false; if (cell || (again && shopTab !== 'base' && tile(row, level).have)) full = !equip(row, level);
+      redraw(`.sg-st-grid [data-sg-tile="${row}:${level}"]`); if (full) q('.sg-message').textContent = t(shopTab === 'special' ? 'siegePowerKitFull' : 'siegeFull'); return; }
+    if (action === 'equip' && !state) { const full = !equip(pick.row, pick.level); redraw('[data-sg="equip"]'); if (full) q('.sg-message').textContent = t(shopTab === 'special' ? 'siegePowerKitFull' : 'siegeFull'); return; }
+    if (action === 'purchase' && !state) { purchase(); redraw('[data-sg="purchase"]:not(:disabled), [data-sg="equip"]'); return; }
     if (button.dataset.sgBuy !== undefined && !state) {
       const id = Number(button.dataset.sgBuy);
       if (M.buyTroop(progress, id)) { persist(); selected = [...progress.deck]; prep(); root.querySelector<HTMLElement>(`[data-sg-unit="${id}"]`)?.focus(); }
