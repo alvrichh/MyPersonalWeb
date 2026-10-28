@@ -4,6 +4,15 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.70 - 2026-10-28
+
+### Changed
+- Siege Cartoon: every allied troop's attack speed is re-levelled so the strongest forms strike fastest (a faster blow and a lighter one: each form keeps its damage per second). The helicopter now shoots about twice as often (0.9 / 0.7 / 0.5 s instead of 1.8 s), the ninja master throws shuriken extremely fast (0.22 s), the flamethrower, the gatling robots, the uzi gunner, the mech's gatling and the fighters' blades follow, and swordsmen, spearmen, heavy robots and the rest speed up level by level. The archangel's sweep stays slow and heavy.
+
+### Fixed
+- Siege Cartoon: the flamethrower's head stays at the same height in every pose (it dropped when it got ready to fire or was hit).
+- Siege Cartoon: the sniper (the gunner's last form) is cut properly: its rifle barrel is whole in the ready pose and the neighbouring poses' scraps are gone; and a grey metal part is no longer mistaken for smoke when a sheet's white background is removed.
+
 ## 1.15.69 - 2026-10-28
 
 ### Changed
