@@ -78,8 +78,8 @@ export const UNITS: readonly Spec[] = [
   // throwing shurikens; each throws its own sheet's projectile. The reference gives no prices.
   { id: 2, cost: 30, hp: 80, damage: 18, speed: 33, range: 150, rate: 1.3, cooldown: 4, unlock: 1, infantry: true, shot: 'rock', spin: true, ...six('ally-archer-1', 218, 0.5505), forms: [
     { price: 250, cost: 40, hp: 90, damage: 24, range: 175, shot: 'javelin', spin: false, ...six('ally-archer-2', 236, 0.572) },
-    { price: 400, cost: 50, hp: 100, damage: 27, range: 200, shot: 'arrow', spin: false, hitsAir: true, ...six('ally-archer-3', 250, 0.58) },
-    { price: 1500, cost: 120, hp: 150, damage: 32, speed: 50, range: 195, rate: 0.8, shot: 'shuriken', spin: true, hitsAir: true, ...six('ally-archer-4', 262, 0.5821) },
+    { price: 400, cost: 50, hp: 100, damage: 27, range: 200, shot: 'arrow', spin: false, hitsAir: true, ...six('ally-archer-3', 147, 1.0374) },
+    { price: 1500, cost: 120, hp: 150, damage: 32, speed: 50, range: 195, rate: 0.8, shot: 'shuriken', spin: true, hitsAir: true, ...six('ally-archer-4', 156, 1.0256) },
   ] },
   // The heavy armour swordsman's four forms (docs/cw2-reference.md): a knight with two swords, the armoured one who
   // punches, a bigger one with maces for hands, and the crowned giant (the King). The reference gives no prices.
