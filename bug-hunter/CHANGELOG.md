@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.68 - 2026-10-28
+
+### Fixed
+- Siege Cartoon: loose specks (tiny dots floating apart from a pose, not touching the figure or its effect) removed again from the allied troops' poses, now only the ones standing clear of everything else.
+
 ## 1.15.67 - 2026-10-28
 
 ### Fixed
