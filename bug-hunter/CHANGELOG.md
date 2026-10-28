@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.96 - 2026-10-28
+
+### Changed
+- Siege Cartoon battlefield: the ground layer that moves with the troops now covers the whole surface they walk on, from the back edge of the path (measured on each picture) down to the bottom. Its cut never drops below the troops' feet. Between the feet and the path's back edge it follows the outlines, passing under the feet of the rocks, bones and plants standing there so none is cut in two, and its edge fades over a few pixels.
+
 ## 1.15.95 - 2026-10-28
 
 ### Changed
