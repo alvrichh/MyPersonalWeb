@@ -922,3 +922,6 @@
 .sg-st-card{flex-basis:290px}.sg-stars{font-size:16px;letter-spacing:0}
 @media (max-width:600px){.sg-st-card{flex-basis:auto}.sg-stars{font-size:13px}}
 @media (max-height:500px) and (orientation:landscape){.sg-st-card{flex-basis:300px}.sg-stars{font-size:12px}}
+/* v1.15.87 — the card a dragged one would swap with. */
+.siege-root.is-cartoon .sg-prep .sg-st-actions .sg-st-cell.is-target{outline:3px solid #ffd23f;outline-offset:1px;filter:brightness(1.2)}
+.sg-st-cell.is-target:not(.is-full){outline:3px dashed #ffd23f;outline-offset:-3px}
