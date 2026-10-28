@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.62 - 2026-10-28
+
+### Changed
+- Siege Cartoon: the archer's levels 1 (rock), 2 (spear) and 3 (bow) are redrawn from the owner's transparent sheet (new hooded outfits with a blue scarf); the ninja master (level 4) stays the masked one.
+
 ## 1.15.61 - 2026-10-28
 
 ### Changed
