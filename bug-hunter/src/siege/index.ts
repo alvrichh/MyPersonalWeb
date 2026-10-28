@@ -319,7 +319,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     cancelAnimationFrame(frame); battleAbort.abort(); battleAbort = new AbortController();
     const battleOptions = { signal: battleAbort.signal };
     if (!selected.length) return;
-    progress.deck = [...selected]; persist(); mapAct = mode === 'cartoon' ? actNow() : 0; state = M.newSiege(progress, world); bossTalked = mode === 'cartoon'; baseFell = false; lootHeard = 0; gustShown = false;
+    progress.deck = [...selected]; persist(); mapAct = mode === 'cartoon' ? actNow() : 0; state = M.newSiege(progress, world); bossTalked = false; baseFell = false; lootHeard = 0; gustShown = false;
     if (mode === 'cartoon') music('battle');
     V.preload(world, selected, progress.levels); paused = false; camera.x = -Infinity;
     // Laid out like Cartoon Wars 2: mana top left, both fortresses' health face to face in the middle, coins and pause
@@ -415,10 +415,10 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       q<HTMLElement>('.sg-aim').style.bottom = `calc(${((1 - (camera.deck ?? 0.5)) * 100).toFixed(1)}% + 6px)`;
       if (now >= uiAt) { updateUi(); uiAt = now + 100; }
       if (state.phase !== 'fight' && !state.paid) result();
-      // Legacy's guardian speaks the moment it joins, the battle held until the scene ends (Cartoon's speaks as its stage opens).
+      // The guardian speaks the moment it joins, the battle held until the scene ends (Cartoon's long talk is when its stage opens; this is the short one).
       else if (state.bossSpawned && !bossTalked && state.phase === 'fight') {
         bossTalked = true; paused = true; updateUi();
-        talk(mode === 'cartoon' ? cartoonStory.bossTalk(actNow()) : bossTalk(world), () => { paused = false; last = performance.now(); accumulator = 0; q('canvas').focus(); });
+        talk(mode === 'cartoon' ? cartoonStory.bossArrive(actNow()) : bossTalk(world), () => { paused = false; last = performance.now(); accumulator = 0; q('canvas').focus(); });
       }
       frame = requestAnimationFrame(loop);
     }

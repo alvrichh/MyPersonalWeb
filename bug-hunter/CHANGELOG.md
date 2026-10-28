@@ -4,6 +4,15 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.59 - 2026-10-28
+
+### Added
+- Siege Cartoon story: a short exchange (the guardian and one of ours) when a world's guardian joins the battle, as well as the long talk as its stage opens.
+
+### Changed
+- Siege Cartoon story: the prologue is retold with the world's calm broken by a smell of sulphur, the corruption and the razed villages, and more jokes (nine lines now).
+- Siege Cartoon: every guardian reaches flyers, and its blows throw our flyers back like the troops on the ground.
+
 ## 1.15.58 - 2026-10-28
 
 ### Changed
