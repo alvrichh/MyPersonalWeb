@@ -236,7 +236,11 @@ const reaches = (u: Fighter, v: Fighter) => hits(specOf(u), v.id) || (isAir(v.id
 export const canHit = (id: number, target: number) => hits(UNITS[id], target);
 /** Keep at most `DECK` of each kind, in order. */
 export function capDeck(deck: number[]) { const land = deck.filter(id => !isAir(id)).slice(0, DECK), air = deck.filter(isAir).slice(0, DECK); return deck.filter(id => land.includes(id) || air.includes(id)); }
-export interface Progress { version: 1; unlocked: number; coins: number; victories: number[]; upgrades: [number, number, number, number]; deck: number[];
+/** The base's upgrades, each 0 to 5: army, fortress, energy, and the bow's three: power (damage, arrows a volley and its
+    look), speed (shots a second and reach) and quiver (shots held and refill). */
+export type Upgrades = [number, number, number, number, number, number];
+export const UPGRADES = 6;
+export interface Progress { version: 1; unlocked: number; coins: number; victories: number[]; upgrades: Upgrades; deck: number[];
   /** Each troop's level (index: its id), 1 to `levelsOf(id)`. */
   levels: number[];
   /** The troops recruited so far (the swordsman from the start). */
@@ -248,7 +252,7 @@ export interface Progress { version: 1; unlocked: number; coins: number; victori
   kit: number[];
   /** Set once the deck holds cards (`card`), not troop ids. */
   cards: 1 }
-export const freshProgress = (): Progress => ({ version: 1, unlocked: 1, coins: 0, victories: [], upgrades: [0, 0, 0, 0], deck: [0], levels: UNITS.map(() => 1), owned: [0], powers: POWERS.map(() => 0), kit: [], cards: 1 });
+export const freshProgress = (): Progress => ({ version: 1, unlocked: 1, coins: 0, victories: [], upgrades: [0, 0, 0, 0, 0, 0], deck: [0], levels: UNITS.map(() => 1), owned: [0], powers: POWERS.map(() => 0), kit: [], cards: 1 });
 /** Can this card go in the army: its troop recruited and its level bought? */
 export const hasCard = (p: Progress, c: number) => Number.isInteger(c) && c >= 0 && owns(p, cardId(c)) && cardLevel(c) <= (p.levels[cardId(c)] ?? 1);
 /** The owner's testing switch: every troop and power open from the start and recruited and levelled for free, the base's
@@ -274,7 +278,9 @@ export function readProgress(raw: string | null): Progress {
     if (!v || v.version !== 1) return p;
     p.unlocked = integer(v.unlocked, 1, LAST, 1); p.coins = integer(v.coins, 0, 1000000, 0);
     p.victories = Array.isArray(v.victories) ? [...new Set<number>(v.victories.filter((n: unknown) => typeof n === 'number' && Number.isInteger(n) && n >= 1 && n <= LAST))] : [];
-    p.upgrades = [0, 1, 2, 3].map(i => integer(v.upgrades?.[i], 0, 5, 0)) as Progress['upgrades'];
+    p.upgrades = Array.from({ length: UPGRADES }, (_, i) => integer(v.upgrades?.[i], 0, 5, 0)) as Upgrades;
+    // A save from when the Bow was one upgrade (faster and more arrows): its level becomes both its power and its speed.
+    if (Array.isArray(v.upgrades) && v.upgrades.length === 4) p.upgrades[4] = p.upgrades[3];
     p.levels = UNITS.map(u => (u.foe ? 1 : integer(v.levels?.[u.id], 1, levelsOf(u.id), 1)));
     p.powers = POWERS.map((w, i) => integer(v.powers?.[i], 0, w.forms.length, 0));
     p.kit = Array.isArray(v.kit) ? [...new Set<number>(v.kit.filter((n: unknown): n is number => typeof n === 'number' && hasPower(p, n)))].slice(0, KIT) : [];
@@ -297,7 +303,7 @@ export function levelUp(p: Progress, id: number): boolean {
   p.coins -= pay; p.levels[id] = (p.levels[id] ?? 1) + 1; return true;
 }
 export function upgrade(p: Progress, slot: number): boolean {
-  if (!Number.isInteger(slot) || slot < 0 || slot > 3) return false;
+  if (!Number.isInteger(slot) || slot < 0 || slot >= UPGRADES) return false;
   const level = p.upgrades[slot]; const cost = upgradePrice(level);
   if (level >= 5 || p.coins < cost) return false;
   p.coins -= cost; p.upgrades[slot]++; return true;
@@ -383,7 +389,7 @@ export const generatorPrice = (s: Siege) => 65 + s.generator * 45;
 export function newSiege(p: Progress, world: number): Siege {
   world = integer(world, 1, Math.min(LAST, p.unlocked), 1);
   const maxHp: [number, number] = [1700 + p.upgrades[1] * 200, 1700 + hard(world) * 150];
-  return { world, phase: 'fight', time: 0, energy: 80, generator: 0, cooldowns: {}, hp: [...maxHp], maxHp, units: [], effects: [], nextId: 1, nextWave: 7, waves: 0, kills: 0, spell: 0, rocket: 0, aim: 700, bossSpawned: false, paid: false, power: 1 + p.upgrades[0] * 0.08, economy: p.upgrades[2] * 0.6, deck: [...p.deck], bow: { quiver: BOW.max, drawing: false, held: 0, next: 0, level: p.upgrades[3] }, fort: p.upgrades[1], levels: [...(p.levels ?? [])], kit: p.kit.filter(c => hasPower(p, c)).map(c => ({ id: c % 100, level: Math.floor(c / 100) + 1, card: c })), kitCd: {}, hitq: [], view: { x: 0, width: 650 }, casts: 0 };
+  return { world, phase: 'fight', time: 0, energy: 80, generator: 0, cooldowns: {}, hp: [...maxHp], maxHp, units: [], effects: [], nextId: 1, nextWave: 7, waves: 0, kills: 0, spell: 0, rocket: 0, aim: 700, bossSpawned: false, paid: false, power: 1 + p.upgrades[0] * 0.08, economy: p.upgrades[2] * 0.6, deck: [...p.deck], bow: { quiver: BOW.max + p.upgrades[5] * BOW.storeStep, drawing: false, held: 0, next: 0, level: p.upgrades[3], speed: p.upgrades[4], store: p.upgrades[5] }, fort: p.upgrades[1], levels: [...(p.levels ?? [])], kit: p.kit.filter(c => hasPower(p, c)).map(c => ({ id: c % 100, level: Math.floor(c / 100) + 1, card: c })), kitCd: {}, hitq: [], view: { x: 0, width: 650 }, casts: 0 };
 }
 /** The guardian, Cartoon Wars 2-style: it only comes out once the enemy fortress falls, far tougher than a troop, and
     the battle is won when it falls too. */
@@ -480,12 +486,20 @@ export const SCATTER = { along: 14, deep: 4 };
     (front): two at the back, one in front between them. */
 export const METEORS = [[-30, 10], [32, 10], [2, -10]];
 export const FLY = { high: 70, ranged: 45, close: 22, rate: 90 };
-export const BOW = { max: 100, cost: 1.2, regen: 12, every: 0.42, step: 0.03, damage: 16, gap: 24, friendly: 0.35 };
-export interface Bow { quiver: number; drawing: boolean; held: number; next: number; level: number }
+export const BOW = { max: 100, cost: 1.2, regen: 12, every: 0.42, step: 0.03, damage: 16, gap: 24, friendly: 0.35, powerStep: 0.12, reach: 960, reachStep: 24, storeStep: 25, regenStep: 3 };
+/** The bow in battle: `level` its power upgrade (damage, arrows a volley, look), `speed` and `store` its other two. */
+export interface Bow { quiver: number; drawing: boolean; held: number; next: number; level: number; speed: number; store: number }
 export const aimAt = (x: number) => Math.max(140, Math.min(1080, x));
 /** Seconds between shots and arrows per shot, for the bow's level and how long it has been held. */
-export const bowEvery = (b: Bow) => BOW.every - b.level * BOW.step;
+export const bowEvery = (b: Bow) => BOW.every - b.speed * BOW.step;
 export const bowCount = (b: Bow) => looksTier(b.level);
+/** Each arrow's damage, by the bow's power. */
+export const bowDamage = (b: Bow) => Math.round(BOW.damage * (1 + b.level * BOW.powerStep));
+/** How far the bow reaches (the furthest aim), by its speed. */
+export const bowReach = (b: Bow) => BOW.reach + b.speed * BOW.reachStep;
+/** The quiver: what it holds and how fast it refills, by its upgrade. */
+export const bowMax = (b: Bow) => BOW.max + b.store * BOW.storeStep;
+export const bowRegen = (b: Bow) => BOW.regen + b.store * BOW.regenStep;
 /** Our crossbow's shots: one launch speed and gravity (field units, seconds). */
 const SHOT = { v: 1900, g: 900 };
 /** The screen angle (y down) to hit a spot `dx` ahead and `dy` below at `SHOT`'s speed: the flatter solution; out of
@@ -542,7 +556,7 @@ function arrows(s: Siege, count: number) {
     };
     // It strikes whoever is there, ours too: aim past your own troops.
     for (const u of s.units) if (u.hp > 0 && (Math.abs(u.x - at) <= 28 && !(u.side === 0 && UNITS[u.id].air) || crossed(u))) {
-      u.hp -= BOW.damage * (u.side ? s.power : BOW.friendly); u.flash = 0.18;
+      u.hp -= bowDamage(s.bow) * (u.side ? s.power : BOW.friendly); u.flash = 0.18;
       if (u.side === 0) continue;
       // A hit nudges it back a little (not the guardians or the steady), at most once every `NUDGE.every`, so it still
       // makes its way forward.
@@ -578,7 +592,7 @@ export function draw(s: Siege, on: boolean) { if (s.phase === 'fight') s.bow.dra
 /** The bow button: one tap starts the arrows, the next stops them. */
 export const toggleBow = (s: Siege) => draw(s, !s.bow.drawing);
 function bow(s: Siege, dt: number) {
-  const b = s.bow;
+  const b = s.bow; s.aim = Math.min(s.aim, bowReach(b));
   if (b.drawing) {
     b.held += dt; b.next -= dt;
     if (b.next <= 0) { arrows(s, bowCount(b)); s.shots = (s.shots ?? 0) + 1; b.quiver -= BOW.cost; b.next = bowEvery(b); }
@@ -586,7 +600,7 @@ function bow(s: Siege, dt: number) {
     if (b.drawing) return;
   }
   b.held = 0; b.next = 0;
-  b.quiver = Math.min(BOW.max, b.quiver + BOW.regen * dt);
+  b.quiver = Math.min(bowMax(b), b.quiver + bowRegen(b) * dt);
 }
 /** The missile: one heavy blast at the aim, a shorter recharge than the discharge. */
 export const ROCKET = { radius: 70, damage: 150, every: 12 };
@@ -671,7 +685,7 @@ export function castPower(s: Siege, card: number): boolean {
       const x = x0 + (i + 0.5) * span / n + (rnd(i * 3 + c) - 0.5) * 18, delay = rnd(i * 7 + c * 5) * 1.7, deep = Math.floor(rnd(i + c * 11) * 3) - 1, up = deep * 8, at = delay + fall;
       push({ x, from: x, lane: 1, life: at, max: fall, kind: 'fall', side: 0, art: form.art, up });
       s.hitq.push({ at: s.time + at, x, r, damage: form.damage, freeze: form.freeze });
-      if (form.art === 'rocket') push({ x, from: x, lane: 1, life: at + BOOM, max: BOOM, kind: 'boom', side: 0, size: 54, up });
+      if (form.art === 'rocket') push({ x, from: x, lane: 1, life: at + BOOM, max: BOOM, kind: 'boom', side: 0, size: 78 + (i % 3) * 10, up });
       else if (form.art === 'fire') push({ x, from: x, lane: 1, life: at + 1.4, max: 1.4, kind: 'fire', side: 0, size: 46, up });
       else if (form.art === 'ice') push({ x, from: x, lane: 1, life: at + 0.9, max: 0.9, kind: 'ground', side: 0, art: 'ice', up });
       else push({ x, from: x, lane: 1, life: at + 2.4, max: 2.4, kind: 'ground', side: 0, art: 'arrow', up });

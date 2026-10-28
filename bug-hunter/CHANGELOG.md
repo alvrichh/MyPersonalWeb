@@ -4,6 +4,18 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.89 - 2026-10-28
+
+### Changed
+- Siege Cartoon base: the Bow is now three upgrades, each with five levels.
+  - Bow · power: damage per arrow +12% a level, and more arrows a shot; its look still goes up to the rocket launcher.
+  - Bow · speed: shots a second, and how far it reaches. It now reaches 60% of the field at first and 68% at level 5, where it used to always reach 68%.
+  - Quiver: +25 shots held and +3 refill a second per level.
+
+  A save with the old Bow keeps its level as both power and speed.
+- Siege Cartoon shop: Base tiles show their card like troops: a short name, what the upgrade does, its numbers at that level and the level as stars.
+- Siege Cartoon: the rocket launcher's rockets are red, like the launcher (they were blue). The rocket rain power drops those red rockets nose first from the sky, and each one blows up with the explosion art, now bigger.
+
 ## 1.15.88 - 2026-10-28
 
 ### Fixed

@@ -9,7 +9,7 @@ test('safe save validation and independent schema', () => {
   assert.deepEqual(m.readProgress('{'), m.freshProgress());
   assert.deepEqual(m.readProgress('{"version":2}'), m.freshProgress());
   const p = m.readProgress(JSON.stringify({ version: 1, unlocked: 500, coins: -20, upgrades: [99, -2, '3', 7], owned: [7, 1, 2, 999, 20], deck: [7, 7, 999, -1, 0, 3], victories: [1, 1, 6, 30, 31, -2, 2.5] }));
-  assert.equal(p.unlocked, m.LAST); assert.equal(p.coins, 0); assert.deepEqual(p.upgrades, [5, 0, 0, 5]); assert.deepEqual(p.victories, [1, 6, 30]);
+  assert.equal(p.unlocked, m.LAST); assert.equal(p.coins, 0); assert.deepEqual(p.upgrades, [5, 0, 0, 5, 5, 0], 'an old four-upgrade save: its Bow becomes both power and speed'); assert.deepEqual(p.victories, [1, 6, 30]);
   assert.deepEqual(p.owned, [0, 7, 1, 2], 'the swordsman always, never a foe or unknown'); assert.deepEqual(p.deck, [7, 0], 'only recruited troops');
   assert.equal(m.readProgress('{"version":1,"deck":[7],"owned":[7]}').deck.includes(7), false, 'not before its act opens');
 });
@@ -113,7 +113,8 @@ test('Backlog can be won with a mixed army and active defenses, without upgrades
 
 test('arrows strike the flyers their path crosses, not those above or behind it', () => {
   const along = m.SCATTER.along; m.SCATTER.along = 0; // the aim exactly, for this geometry
-  const s = m.newSiege(m.freshProgress(), 1); s.nextWave = 999; s.gusted = true; s.aim = 1000; s.bowFrom = { x: 150, up: 140 };
+  const fast = m.freshProgress(); fast.upgrades[4] = 5; // a bow that reaches this far
+  const s = m.newSiege(fast, 1); s.nextWave = 999; s.gusted = true; s.aim = 1000; s.bowFrom = { x: 150, up: 140 };
   const path = m.flight({ x: 150, y: -140 }, { x: 1000, y: -2 }), mid = 600, height = -path((mid - 150) / 850).y;
   const flyer = (uid, x, alt) => ({ uid, id: 28, side: 1, x, lane: 0, alt, hp: 500, maxHp: 500, damage: 0, attack: 9, flash: 0, boss: false });
   const crossed = flyer(1, mid, height - 20), above = flyer(2, mid, height + 200), walker = { ...flyer(3, mid, 0), id: 15 };
@@ -130,7 +131,7 @@ test('the bow: a tap starts it, it shoots steadily, stops on a tap or an empty q
   m.toggleBow(s); const before = s.bow.quiver; m.tick(s, 1 / 30); assert.ok(s.bow.quiver < before, 'no refill while shooting');
   for (let i = 0; i < 1800 && s.bow.drawing; i++) m.tick(s, 1 / 30);
   assert.equal(s.bow.drawing, false, 'an empty quiver stops it'); assert.ok(s.bow.quiver < m.BOW.cost + 1);
-  const p = m.freshProgress(); p.upgrades[3] = 4; const up = m.newSiege(p, 1);
+  const p = m.freshProgress(); p.upgrades[3] = 4; p.upgrades[4] = 4; const up = m.newSiege(p, 1);
   assert.ok(m.bowEvery(up.bow) < m.bowEvery(m.newSiege(m.freshProgress(), 1).bow)); assert.equal(m.bowCount(up.bow), 3, 'the shop\'s Bow level adds arrows');
   p.upgrades[3] = 5; assert.equal(m.bowCount(m.newSiege(p, 1).bow), 4);
 });
@@ -386,4 +387,14 @@ test('every troop level has its own shop description in both languages', async (
   for (const u of m.ALLIES) for (let l = 1; l <= m.levelsOf(m.UNITS.indexOf(u)); l++) {
     const k = `siegeRole${m.UNITS.indexOf(u)}L${l}:`; assert.ok(src.slice(0, i).includes(k) && src.slice(i).includes(k), k);
   }
+});
+test('the bow\'s three upgrades: power, speed (and reach) and quiver, each on its own', () => {
+  const base = m.newSiege(m.freshProgress(), 1).bow;
+  const only = i => { const p = m.freshProgress(); p.upgrades[i] = 5; return m.newSiege(p, 1).bow; };
+  const power = only(3), speed = only(4), quiver = only(5);
+  assert.ok(m.bowDamage(power) > m.bowDamage(base) && m.bowCount(power) > m.bowCount(base)); assert.equal(m.bowEvery(power), m.bowEvery(base), 'power does not shoot faster');
+  assert.ok(m.bowEvery(speed) < m.bowEvery(base) && m.bowReach(speed) > m.bowReach(base)); assert.equal(m.bowDamage(speed), m.bowDamage(base), 'speed does not hit harder');
+  assert.ok(m.bowMax(quiver) > m.bowMax(base) && m.bowRegen(quiver) > m.bowRegen(base)); assert.equal(quiver.quiver, m.bowMax(quiver), 'it starts full');
+  const s = m.newSiege(m.freshProgress(), 1); s.aim = 2000; m.tick(s, 1 / 30); assert.equal(s.aim, m.bowReach(s.bow), 'the aim stops at the bow\'s reach');
+  const p = m.freshProgress(); p.coins = 9999; for (let i = 0; i < m.UPGRADES; i++) assert.equal(m.upgrade(p, i), true); assert.equal(m.upgrade(p, m.UPGRADES), false);
 });
