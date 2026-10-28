@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.56 - 2026-10-28
+
+### Changed
+- Siege Cartoon: new art for 12 allied troops, every form redrawn on the owner's new sheets: archer (the last form a ninja master), gunner (the last a ghost sniper), blaster (the last a flamethrower trooper), wizard, fighter, armed fighter (the last an air assassin), drill, vulture rider and the flying mech (six forms, the last black and gold). Each form keeps its six poses (walk A, walk B, ready, attack, hurt, defeated), sized so every level is larger than the one before.
+- Siege Cartoon: the vulture rider has a second form (dark armour, 1600 gold, tougher and hits harder).
+
 ## 1.15.55 - 2026-10-27
 
 ### Changed
