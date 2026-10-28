@@ -4,6 +4,14 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.97 - 2026-10-28
+
+### Changed
+- Siege Cartoon battlefield: the field is 2000 long (was 2400), so slow troops do not take too long to cross it.
+
+### Fixed
+- Siege Cartoon bow: aimed at its furthest, the crossbow now rises all the way up at every Bow · speed level. Its arc is measured against the bow's own reach, which it is limited to, not the furthest any bow can reach (at level 0 it used to stop about a third of the way up). Arrows keep the same arc as the crossbow.
+
 ## 1.15.96 - 2026-10-28
 
 ### Changed

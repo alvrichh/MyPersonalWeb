@@ -1,4 +1,4 @@
-import { actOf, stageIn, flight, foesAt, FIELD, FLY, shotFor, FOE_AIR, FOE_LAND, GUARDIAN, KNOCK, SPELLS, UNITS, isBeam, isBullet, specAt, specOf, aimAt, enemyTier, castleTier, energyMax, looksTier, type Effect, type Fighter, type Siege } from './model';
+import { actOf, stageIn, flight, bowReach, foesAt, FIELD, FLY, shotFor, FOE_AIR, FOE_LAND, GUARDIAN, KNOCK, SPELLS, UNITS, isBeam, isBullet, specAt, specOf, aimAt, enemyTier, castleTier, energyMax, looksTier, type Effect, type Fighter, type Siege } from './model';
 import { gloom } from './story';
 
 /** Each world's ground colours, under its floor while that loads (moss, embers, snow, mud, jungle, sand, iron,
@@ -240,10 +240,13 @@ function base(ctx: CanvasRenderingContext2D, s: Siege, x: number, ground: number
 }
 /** The crossbow arm's angle: the way an arrow leaves it for the current aim (the start of its arc): down at a near aim,
     rising as the aim goes further, nearly straight up where the arrows rain from the sky. */
+/** The bow's reach this frame (set as the battle is drawn), so arrows already in flight keep its arc. */
+let reachNow = FIELD * 0.8;
 function bowAngle(s: Siege, ground: number) {
+  reachNow = bowReach(s.bow);
   // Aimed as a real crossbow would be: the angle whose shot, at the bow's one speed and under gravity, lands on the aim
   // (the flatter of the two). Near aims point down at the ground before our wall, far ones rise.
-  const x = aimAt(s.aim); return shotFor(x - bowAt.x, ground - 2 - bowAt.y, x).a;
+  const x = aimAt(s.aim); return shotFor(x - bowAt.x, ground - 2 - bowAt.y, x, bowReach(s.bow)).a;
 }
 /** The tip of our crossbow (where shots leave it), set when it is drawn. */
 let bowTip = { x: 80, y: 0 };
@@ -477,7 +480,7 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
   if (e.kind === 'stuck') {
     // A landed arrow stuck in the ground at the angle it came in, its head buried, fading out at the end.
     const art = still(bolt); if (!ok(art)) return false;
-    const at = flight(bowTip, { x: e.x, y: ground - 2 - (e.up ?? 0) }), end = at(1), back = at(0.97);
+    const at = flight(bowTip, { x: e.x, y: ground - 2 - (e.up ?? 0) }, reachNow), end = at(1), back = at(0.97);
     // Never flatter than about 35° down, so even a near, flat shot reads as stuck in the ground.
     const ang = Math.max(0.6, Math.atan2(end.y - back.y, end.x - back.x || 0.001)), len = 60, h = len * art.naturalHeight / art.naturalWidth;
     ctx.save(); ctx.globalAlpha = p < 0.6 ? 1 : (1 - p) / 0.4;
@@ -550,7 +553,7 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     if (!ok(art)) return false;
     if (close) { ctx.save(); ctx.globalAlpha = 1 - p; ctx.drawImage(art, e.x - 15, y - 15, 30, 30); ctx.restore(); return true; }
     // Our arrows leave the crossbow's tip and fly under gravity onto their spot (`flight`); a troop's shot flies straight.
-    const at = e.kind === 'arrow' ? flight(bowTip, { x: e.x, y: ground - 2 - (e.up ?? 0) })
+    const at = e.kind === 'arrow' ? flight(bowTip, { x: e.x, y: ground - 2 - (e.up ?? 0) }, reachNow)
       : (t: number) => ({ x: e.from + (e.x - e.from) * t, y });
     const here = at(p), ahead = dirAt(at, p);
     const len = e.kind === 'arrow' ? (bolt.endsWith('rocket') ? 46 : 60) : 40, h = len * art.naturalHeight / art.naturalWidth;
