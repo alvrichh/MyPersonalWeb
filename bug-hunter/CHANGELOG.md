@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.82 - 2026-10-28
+
+### Fixed
+- Siege Cartoon hitboxes: an arrow from the fortress now hits a tall enemy on the ground whose head or body its path passes through (as it already did for flyers), not only where it lands; and our troops reach a guardian or a grown enemy by its drawn size (they no longer have to walk inside a big one to strike it).
+
 ## 1.15.81 - 2026-10-28
 
 ### Changed

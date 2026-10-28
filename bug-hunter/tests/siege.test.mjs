@@ -352,3 +352,12 @@ test('every guardian reaches flyers and its blows throw our flyers back', () => 
   s.units.push(boss, flyer); s.bossSpawned = true; s.gusted = true; m.tick(s, 1 / 30); run(s, 0.4);
   assert.ok(flyer.hp < 3000, 'struck'); assert.ok(flyer.x < 860, 'and thrown back');
 });
+test('an arrow passing through a tall enemy on the ground hits it; it flies over a short one', () => {
+  const s = m.newSiege(m.freshProgress(), 1); s.bowFrom = { x: 150, up: 140 }; s.aim = 900;
+  const along = m.SCATTER.along, deep = m.SCATTER.deep; m.SCATTER.along = 0; m.SCATTER.deep = 0;
+  const mk = (uid, id, x, boss) => ({ uid, id, side: 1, x, lane: 1, hp: 5000, maxHp: 5000, damage: 0, attack: 99, flash: 0, boss, grow: 1 });
+  const tall = mk(1, m.GUARDIAN[5], 860, true), short = mk(2, 17, 400, false); s.units.push(tall, short);
+  m.draw(s, true); m.tick(s, 1 / 30); m.draw(s, false);
+  m.SCATTER.along = along; m.SCATTER.deep = deep;
+  assert.ok(tall.hp < 5000, 'the tall one, short of where it lands, is hit in the head'); assert.equal(short.hp, 5000, 'the short one far before is flown over');
+});
