@@ -59,16 +59,16 @@ export const sceneOf = (stage: number) => { const pics = SCENES[actOf(stage)]; r
 const tops = new Map<HTMLImageElement, HTMLCanvasElement>();
 /** The picture's width on the field (field units), fixed whatever the field's length: the far landscape keeps its size. */
 const SCENE_W = 2080;
-/** The picture's ground layer, which moves with the troops: the picture from the line the troops walk on
-    (`SCENE_FIT.ground`) down, its top melting into the landscape over a thin `fade` (a share of the picture's height)
-    just above that line, too thin to reach the rocks and ruins standing behind the path. */
-const GROUND_LAYER = { fade: 0.012 };
+/** The picture's ground layer, which moves with the troops: the whole picture from the line the troops walk on
+    (`SCENE_FIT.ground`), raised `lift` pixels, down to its bottom; its top melts into the landscape over a thin `fade`
+    (a share of the picture's height) above that, too thin to reach the rocks and ruins standing behind the path. */
+const GROUND_LAYER = { lift: 4, fade: 0.012 };
 const grounds = new WeakMap<HTMLImageElement, HTMLCanvasElement>();
 function groundOf(image: HTMLImageElement) {
   let c = grounds.get(image);
   if (!c) {
     const nw = image.naturalWidth, nh = image.naturalHeight, f = Math.max(2, Math.round(nh * GROUND_LAYER.fade));
-    const y0 = Math.round(nh * SCENE_FIT.ground) - f, h = nh - y0;
+    const y0 = Math.round(nh * SCENE_FIT.ground) - GROUND_LAYER.lift - f, h = nh - y0;
     c = document.createElement('canvas'); c.width = nw; c.height = h; const t = c.getContext('2d');
     if (t) {
       t.drawImage(image, 0, y0, nw, h, 0, 0, nw, h);
