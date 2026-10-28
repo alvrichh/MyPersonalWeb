@@ -59,21 +59,67 @@ export const sceneOf = (stage: number) => { const pics = SCENES[actOf(stage)]; r
 const tops = new Map<HTMLImageElement, HTMLCanvasElement>();
 /** The picture's width on the field (field units), fixed whatever the field's length: the far landscape keeps its size. */
 const SCENE_W = 2080;
-/** The picture's ground layer, which moves with the troops: the whole picture from the line the troops walk on
-    (`SCENE_FIT.ground`), raised `lift` pixels, down to its bottom; its top melts into the landscape over a thin `fade`
-    (a share of the picture's height) above that, too thin to reach the rocks and ruins standing behind the path. */
-const GROUND_LAYER = { lift: 4, fade: 0.012 };
+/** The picture's ground layer, which moves with the troops: everything from its cut down to the picture's bottom. The
+    cut never goes below the line the troops walk on (`SCENE_FIT.ground`, the base) nor above the back edge of the
+    ground they walk on (`PATH_TOP`, measured by hand on each picture); between the two it follows the outlines, along
+    the path's back edge and under the feet of the rocks, bones and plants standing there, so none is cut in two. Its
+    edge fades over `soft` pixels. `pull` draws it up to the back edge, `step` how far it climbs or drops a column. */
+const GROUND_CUT = { pull: 0.35, step: 6, stepCost: 0.03, soft: 6 };
+/** Each picture's back edge of the walking ground (a share of its height); others use `top`. */
+const PATH_TOP: Record<string, number> = { top: 0.775, 'siege/bg-desert': 0.745 };
 const grounds = new WeakMap<HTMLImageElement, HTMLCanvasElement>();
-function groundOf(image: HTMLImageElement) {
+/** The cut, a row per column: the cheapest left-to-right path between the back edge and the base, where following an
+    outline (a strong edge) is cheap, crossing a flat area is dear, and every row below the back edge costs a little
+    more. */
+function groundCut(data: Uint8ClampedArray, w: number, h: number, from: number, to: number) {
+  const { pull, step, stepCost } = GROUND_CUT, lo = Math.floor(h * from), hi = Math.floor(h * to), rows = Math.max(2, hi - lo);
+  // Luminance, softened (3×3), then the Sobel edge strength, scaled by its 97th percentile.
+  const lum = new Float32Array(w * h);
+  for (let i = 0; i < w * h; i++) lum[i] = (data[i * 4] + data[i * 4 + 1] + data[i * 4 + 2]) / 3;
+  const soft = new Float32Array(w * h), edge = new Float32Array(w * rows);
+  for (let y = Math.max(1, lo - 2); y < Math.min(h - 1, hi + 2); y++) for (let x = 1; x < w - 1; x++) {
+    let sum = 0; for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) sum += lum[(y + dy) * w + x + dx];
+    soft[y * w + x] = sum / 9;
+  }
+  const at = (x: number, y: number) => soft[Math.max(0, Math.min(h - 1, y)) * w + Math.max(0, Math.min(w - 1, x))];
+  for (let r = 0; r < rows; r++) for (let x = 0; x < w; x++) {
+    const y = lo + r;
+    const gx = at(x + 1, y - 1) + 2 * at(x + 1, y) + at(x + 1, y + 1) - at(x - 1, y - 1) - 2 * at(x - 1, y) - at(x - 1, y + 1);
+    const gy = at(x - 1, y + 1) + 2 * at(x, y + 1) + at(x + 1, y + 1) - at(x - 1, y - 1) - 2 * at(x, y - 1) - at(x + 1, y - 1);
+    edge[r * w + x] = Math.hypot(gx, gy);
+  }
+  const sample = Array.from({ length: 4000 }, (_, i) => edge[Math.floor((i * 7919) % edge.length)]).sort((a, b) => a - b);
+  const top = sample[Math.floor(sample.length * 0.97)] || 1;
+  const cost = (r: number, x: number) => (1 - Math.min(1, edge[r * w + x] / top)) ** 2 + pull * r / rows;
+  let acc = new Float32Array(rows), next = new Float32Array(rows);
+  const back = new Int8Array(w * rows);
+  for (let r = 0; r < rows; r++) acc[r] = cost(r, 0);
+  for (let x = 1; x < w; x++) {
+    for (let r = 0; r < rows; r++) {
+      let best = Infinity, arg = 0;
+      for (let d = -step; d <= step; d++) { const q = r + d; if (q < 0 || q >= rows) continue; const v = acc[q] + stepCost * Math.abs(d); if (v < best) { best = v; arg = d; } }
+      next[r] = best + cost(r, x); back[x * rows + r] = arg;
+    }
+    [acc, next] = [next, acc];
+  }
+  let r = 0; for (let q = 1; q < rows; q++) if (acc[q] < acc[r]) r = q;
+  const cut = new Int16Array(w);
+  for (let x = w - 1; x >= 0; x--) { cut[x] = lo + r; if (x > 0) r += back[x * rows + r]; }
+  return cut;
+}
+function groundOf(image: HTMLImageElement, path: string) {
   let c = grounds.get(image);
   if (!c) {
-    const nw = image.naturalWidth, nh = image.naturalHeight, f = Math.max(2, Math.round(nh * GROUND_LAYER.fade));
-    const y0 = Math.round(nh * SCENE_FIT.ground) - GROUND_LAYER.lift - f, h = nh - y0;
-    c = document.createElement('canvas'); c.width = nw; c.height = h; const t = c.getContext('2d');
-    if (t) {
-      t.drawImage(image, 0, y0, nw, h, 0, 0, nw, h);
-      const blur = t.createLinearGradient(0, 0, 0, f); blur.addColorStop(0, '#0000'); blur.addColorStop(1, '#000f');
-      t.globalCompositeOperation = 'destination-in'; t.fillStyle = blur; t.fillRect(0, 0, nw, f);
+    const nw = image.naturalWidth, nh = image.naturalHeight, full = document.createElement('canvas');
+    full.width = nw; full.height = nh; const f = full.getContext('2d', { willReadFrequently: true });
+    c = document.createElement('canvas');
+    if (f) {
+      f.drawImage(image, 0, 0); const img = f.getImageData(0, 0, nw, nh);
+      const cut = groundCut(img.data, nw, nh, PATH_TOP[path] ?? PATH_TOP.top, SCENE_FIT.ground);
+      let y0 = nh; for (const y of cut) y0 = Math.min(y0, y - GROUND_CUT.soft);
+      y0 = Math.max(0, y0);
+      for (let x = 0; x < nw; x++) for (let y = y0; y < cut[x]; y++) img.data[(y * nw + x) * 4 + 3] *= Math.max(0, 1 - (cut[x] - y) / GROUND_CUT.soft);
+      c.width = nw; c.height = nh - y0; c.getContext('2d')?.putImageData(img, 0, -y0);
     }
     grounds.set(image, c);
   }
@@ -252,7 +298,7 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
     const nw = scene.naturalWidth, nh = scene.naturalHeight, gRow = nh * SCENE_FIT.ground, foot = Math.max(top + sh, viewH + 1);
     ctx.drawImage(scene, 0, 0, nw, gRow, x0, top, sw, ground - top);
     ctx.drawImage(scene, 0, gRow, nw, nh - gRow, x0, ground, sw, foot - ground);
-    const band = groundOf(scene), y0 = nh - band.height, layer = top + sh * (y0 / nh);
+    const band = groundOf(scene, sceneOf(s.world)), y0 = nh - band.height, layer = top + sh * (y0 / nh);
     const gx = -SCENE_FIT.pad, gw = FIELD + SCENE_FIT.pad * 2;
     ctx.drawImage(band, 0, 0, nw, gRow - y0, gx, layer, gw, ground - layer);
     ctx.drawImage(band, 0, gRow - y0, nw, nh - gRow, gx, ground, gw, foot - ground);
