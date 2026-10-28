@@ -338,3 +338,10 @@ test('every troop grows with its level, and the archangel sweeps everything ahea
   assert.ok(foes.slice(0, 3).every(f => f.hp < 900), 'all those in front within reach are struck'); assert.equal(foes[3].hp, 900, 'not the far one');
   run(s, 0.5); assert.ok(foes.slice(0, 3).every(f => f.x > 800) || foes.every(f => f.x > 760), 'and thrown back');
 });
+test('ground troops with bows, guns, rockets, rays and spells reach flyers; close weapons, flames and thrown rocks do not', () => {
+  const air = (id, lv) => !!m.specAt(id, lv).hitsAir;
+  for (const [id, lv] of [[2, 3], [2, 4], [4, 2], [4, 3], [4, 4], [5, 1], [5, 2], [5, 3], [6, 2], [6, 3], [8, 2], [8, 3], [9, 2], [9, 3], [0, 5]]) assert.ok(air(id, lv), `troop ${id} form ${lv} reaches flyers`);
+  for (const [id, lv] of [[0, 1], [0, 4], [1, 1], [1, 5], [2, 1], [2, 2], [3, 1], [3, 4], [4, 1], [5, 4], [6, 1], [8, 1], [7, 1], [7, 2]]) assert.ok(!air(id, lv), `troop ${id} form ${lv} does not`);
+  for (const id of [22, 23, 24, 32]) assert.ok(m.canHit(id, 10), `enemy ${id} shoots at flyers`);
+  for (const id of [15, 16, 17, 18, 20, 21, 25]) assert.ok(!m.canHit(id, 10), `enemy ${id} cannot`);
+});

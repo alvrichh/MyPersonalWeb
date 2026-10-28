@@ -4,6 +4,14 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.57 - 2026-10-28
+
+### Added
+- Siege Cartoon story: a scene when each world's guardian falls (its last words, then ours; after the last one, the ending as before), and the narrator tells what an act opens in the shop at the end of its first stage's scene (acts 2 to 6).
+
+### Changed
+- Siege Cartoon: more troops reach flyers from the ground: archers' bow and shuriken forms, the gunner from its rifle on, the blaster's bazooka, rocket pod and ray gun (not its flamethrower), the armed robot's gatling and rockets, the heavy robot's rockets and the wizard's tornado; and the enemy's gunner, blaster, wizard and gatling robot shoot at our flyers too. Close weapons, flames, rocks and javelins still do not.
+
 ## 1.15.56 - 2026-10-28
 
 ### Changed
