@@ -1,5 +1,5 @@
 /** Siege has its own balance and save schema. Nothing here changes action/board stats. */
-export const FIELD = 1840;
+export const FIELD = 2400;
 export const LIMIT = 300;
 export const CAP = 36;
 /** Its own save, apart from Siege Legacy's (`bugHunter.siege.v1`); v2 since battles became stages within acts. */
