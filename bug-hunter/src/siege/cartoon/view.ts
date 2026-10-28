@@ -296,8 +296,9 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     const at = ground + 2 - (e.up ?? 0);
     if (e.kind === 'fall') {
       // Down from above the screen, a little slanted, pointing along its path.
-      const art = still(e.art === 'ice' ? 'siege/units/shot-ice' : e.art === 'fire' ? 'fx/fireball.webp' : e.art === 'rocket' ? 'fx/rocket.webp' : 'siege/units/shot-arrow'); if (!ok(art)) return false;
-      const len = e.art === 'arrow' ? 64 : e.art === 'ice' ? 60 : 58, h = len * art.naturalHeight / art.naturalWidth, drop = (1 - p) * 640;
+      const art = still(e.art === 'ice' ? 'siege/units/shot-ice' : e.art === 'fire' ? 'fx/fireball.webp' : e.art === 'rocket' ? 'siege/units/bolt-4' : 'siege/units/shot-arrow'); if (!ok(art)) return false;
+      // The rocket rain drops the crossbow's red rockets nose first from the sky; they blow up where they land (`boom`).
+      const len = e.art === 'arrow' ? 64 : e.art === 'ice' ? 60 : e.art === 'rocket' ? 74 : 58, h = len * art.naturalHeight / art.naturalWidth, drop = (1 - p) * 640;
       ctx.save(); ctx.translate(e.x - drop * 0.3, at - drop); ctx.rotate(Math.atan2(1, 0.3)); ctx.drawImage(art, -len / 2, -h / 2, len, h); ctx.restore(); return true;
     }
     if (e.kind === 'ground') {

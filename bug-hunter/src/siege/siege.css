@@ -930,3 +930,4 @@
 .siege-root.is-cartoon .sg-story .sg-scene.is-down .sg-speaker,.siege-root.is-cartoon .sg-story .sg-scene.is-boss.is-down .sg-speaker{height:auto;width:min(46vw,440px);max-width:80%;max-height:min(30vh,220px);margin-bottom:-6px;animation:sg-pop .35s ease-out}
 @media (max-width:600px){.siege-root.is-cartoon .sg-story .sg-scene.is-down .sg-speaker,.siege-root.is-cartoon .sg-story .sg-scene.is-boss.is-down .sg-speaker{width:80vw}}
 @media (max-height:440px){.siege-root.is-cartoon .sg-story .sg-scene.is-down .sg-speaker,.siege-root.is-cartoon .sg-story .sg-scene.is-boss.is-down .sg-speaker{width:min(34vw,280px);max-height:26vh;margin-bottom:-4px}}
+@media (min-width:601px) and (min-height:501px){.sg-stars{font-size:15px}.sg-st-stats{padding-right:4px}}

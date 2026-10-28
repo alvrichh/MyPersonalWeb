@@ -25,7 +25,7 @@ const UPGRADE_PICS = ['items/gladHelm', 'items/plate', 'ui/orb', 'items/quiver']
 /** Cartoon's army and generator rows have a picture for each of their five levels. */
 const ARMY_PICS = ['items/bandana', 'items/gladHelm', 'items/plate', 'items/crown', 'items/phoenix'], GENERATOR_PICS = ['items/potion', 'items/lantern', 'items/hourglass', 'items/orb', 'ui/orb'];
 /** A workshop row's picture: the fortress and the crossbow show the look their level gives (`looksTier`). */
-const upgradePic = (mode: Mode, i: number, level: number) => (mode === 'legacy' ? UPGRADE_PICS[i] : i === 1 ? `siege/castle-${cartoonModel.castleTier(level)}` : i === 3 ? `siege/xbow-${cartoonModel.looksTier(level)}` : i === 0 ? ARMY_PICS[Math.min(5, Math.max(1, level)) - 1] : i === 2 ? GENERATOR_PICS[Math.min(5, Math.max(1, level)) - 1] : UPGRADE_PICS[i]);
+const upgradePic = (mode: Mode, i: number, level: number) => (mode === 'legacy' ? UPGRADE_PICS[i] : i === 1 ? `siege/castle-${cartoonModel.castleTier(level)}` : i === 3 ? `siege/xbow-${cartoonModel.looksTier(level)}` : i === 4 ? `siege/units/bolt-${cartoonModel.looksTier(level)}` : i === 5 ? 'items/quiver' : i === 0 ? ARMY_PICS[Math.min(5, Math.max(1, level)) - 1] : i === 2 ? GENERATOR_PICS[Math.min(5, Math.max(1, level)) - 1] : UPGRADE_PICS[i]);
 
 /** A bar button's picture and caption: the picture made once, only the caption's text changed after (ten times a
     second, so no `<img>` is re-created each time). */
@@ -155,7 +155,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   const POWER_PICS = [['skills/double', 'skills/frost', 'skills/fireball', 'skills/rocket'], ['skills/spark', 'skills/storm', 'skills/storm-evo'], ['skills/water', 'skills/water', 'skills/frost-evo'], ['skills/fireball', 'skills/fireball-evo', 'skills/nova']];
   const powerPic = (row: number, level: number) => `/images/game/${POWER_PICS[row][Math.min(level, POWER_PICS[row].length) - 1]}.webp`;
   const powerName = (row: number, level: number) => t(`siegePower${row}F${Math.min(level, cartoonModel.POWERS[row].forms.length)}` as Key);
-  const shopRows = () => (shopTab === 'special' ? cartoonModel.POWERS.map(w => w.id) : shopTab === 'base' ? [0, 1, 2, 3] : M.ALLIES.filter(u => !!u.air === (shopTab === 'air')).map(u => u.id));
+  const shopRows = () => (shopTab === 'special' ? cartoonModel.POWERS.map(w => w.id) : shopTab === 'base' ? Array.from({ length: cartoonModel.UPGRADES }, (_, i) => i) : M.ALLIES.filter(u => !!u.air === (shopTab === 'air')).map(u => u.id));
   const rowLevels = (row: number) => (shopTab === 'special' ? cartoonModel.POWERS[row].forms.length : shopTab === 'base' ? 5 : M.levelsOf(row));
   /** Cartoon's shop, laid out like Cartoon Wars 2's: tabs on top, a row of tiles per troop (each form, joined, its
       energy on it) or per upgrade, the equipped slots on the right, and below the picked tile's name, price, the gold,
@@ -170,13 +170,16 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       const worn = shopTab === 'special' ? progress.kit.includes(cartoonModel.powerCard(row, level)) : shopTab !== 'base' && selected.includes(cartoonModel.card(row, level));
       // What is still to come stays hidden as a «?» (only what is owned, the next one to buy, and every troop's first form show), for the hype.
       const hidden = !x.have && !x.next && !(shopTab !== 'base' && level === 1);
-      return `<button class="sg-st-tile ${x.have ? 'is-have' : x.next ? 'is-next' : 'is-locked'} ${on ? 'is-on' : ''} ${worn ? 'is-worn' : ''}" data-sg-tile="${row}:${level}" aria-pressed="${on}" aria-label="${hidden ? '?' : `${shopTab === 'special' ? powerName(row, level) : shopTab === 'base' ? t(`siegeUpgrade${row}` as Key) : name(row)} · ${t('siegeLevel', { n: level })}`}">${hidden ? '<span class="sg-st-q" aria-hidden="true">?</span>' : `<img src="${pic}" ${shopTab === 'base' || shopTab === 'special' ? '' : `data-trim="${pic}"`} alt="">`}${corner && !hidden ? `<small>${corner}</small>` : ''}${worn ? '<b class="sg-st-worn" aria-hidden="true">✓</b>' : ''}</button>`;
+      return `<button class="sg-st-tile ${x.have ? 'is-have' : x.next ? 'is-next' : 'is-locked'} ${on ? 'is-on' : ''} ${worn ? 'is-worn' : ''}" data-sg-tile="${row}:${level}" aria-pressed="${on}" aria-label="${hidden ? '?' : `${shopTab === 'special' ? powerName(row, level) : shopTab === 'base' ? t(`siegeBaseName${row}` as Key) : name(row)} · ${t('siegeLevel', { n: level })}`}">${hidden ? '<span class="sg-st-q" aria-hidden="true">?</span>' : `<img src="${pic}" ${shopTab === 'base' || shopTab === 'special' ? '' : `data-trim="${pic}"`} alt="">`}${corner && !hidden ? `<small>${corner}</small>` : ''}${worn ? '<b class="sg-st-worn" aria-hidden="true">✓</b>' : ''}</button>`;
     }).join('<span class="sg-st-link" aria-hidden="true"></span>')}</div>`).join('');
     const x = tile(pick.row, pick.level), troop = shopTab !== 'base', hid = !x.have && !x.next && !(troop && pick.level === 1);
-    const title = hid ? '? ? ?' : `${shopTab === 'special' ? powerName(pick.row, pick.level) : troop ? name(pick.row) : t(`siegeUpgrade${pick.row}` as Key)} · ${t('siegeLevel', { n: pick.level })}`;
-    const text = hid ? '' : shopTab === 'special' ? `${t(`siegePower${pick.row}Text` as Key)} · ${t('siegePowerCd', { n: cartoonModel.POWERS[pick.row].cooldown })}` : troop ? role(pick.row, pick.level) : '';
+    const title = hid ? '? ? ?' : `${shopTab === 'special' ? powerName(pick.row, pick.level) : troop ? name(pick.row) : t(`siegeBaseName${pick.row}` as Key)} · ${t('siegeLevel', { n: pick.level })}`;
+    const text = hid ? '' : shopTab === 'special' ? `${t(`siegePower${pick.row}Text` as Key)} · ${t('siegePowerCd', { n: cartoonModel.POWERS[pick.row].cooldown })}` : troop ? role(pick.row, pick.level) : t(`siegeBaseText${pick.row}` as Key);
     const pic = shopTab === 'special' ? powerPic(pick.row, pick.level) : shopTab === 'base' ? `/images/game/${upgradePic('cartoon', pick.row, pick.level)}.webp` : V.portrait(pick.row, pick.level);
-    const stats = troop && shopTab !== 'special' && !hid ? `<ul class="sg-st-stats">${stars(pick.row, pick.level).map((n, i) => `<li><span>${t((['siegeStatHp', 'siegeStatDamage', 'siegeStatRate', 'siegeStatSpeed'] as const)[i])}</span><em>${statText(pick.row, pick.level)[i]}</em><b class="sg-stars" style="--v:${n}" role="img" aria-label="${n}/5">★★★★★</b></li>`).join('')}</ul>` : '';
+    const row = (label: string, value: string, n: number) => `<li><span>${label}</span><em>${value}</em><b class="sg-stars" style="--v:${n}" role="img" aria-label="${n}/5">★★★★★</b></li>`;
+    const stats = hid || shopTab === 'special' ? '' : `<ul class="sg-st-stats">${troop
+      ? stars(pick.row, pick.level).map((n, i) => row(t((['siegeStatHp', 'siegeStatDamage', 'siegeStatRate', 'siegeStatSpeed'] as const)[i]), statText(pick.row, pick.level)[i], n)).join('')
+      : baseStats(pick.row, pick.level).map(([k, v]) => row(t(k), v, pick.level)).join('')}</ul>`;
     const price = x.have ? `✓ ${t('siegeHave')}` : x.next ? (x.price ? `🪙 ${x.price}` : t('siegeFree')) : `🔒 ${x.why}`;
     const kind = shopTab === 'air', worn = isWorn(pick.row, pick.level);
     // The army on a stretch of the battle bar's wall, as in battle: a tap (or a drag off the bar) takes a card out.
@@ -191,6 +194,16 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       <div class="sg-st-actions"><span class="sg-st-gold"><img src="/images/game/store/coins-2.webp" alt="">${progress.coins}</span>
         ${troop ? `<div class="sg-st-army" data-sg-army role="group" aria-label="${armyLabel}" title="${t('siegeDragHint')}">${army}</div>` : ''}
         <button class="sg-st-go is-fight" data-sg="launch" ${selected.length ? '' : 'disabled'}>${t('siegeLaunch')} ▶</button></div></div>`;
+  }
+  /** What a base upgrade gives at a level, for its card: each line's label and value (its stars are the level). */
+  function baseStats(row: number, level: number): [Key, string][] {
+    const b = { quiver: 0, drawing: false, held: 0, next: 0, level, speed: level, store: level };
+    if (row === 0) return [['siegeBaseArmy', `+${level * 8}%`]];
+    if (row === 1) return [['siegeBaseFort', String(1700 + level * 200)]];
+    if (row === 2) return [['siegeBaseEnergy', `+${(level * 0.6).toFixed(1)}/s`]];
+    if (row === 3) return [['siegeBaseArrowDamage', String(cartoonModel.bowDamage(b))], ['siegeBaseArrows', String(cartoonModel.bowCount(b))]];
+    if (row === 4) return [['siegeBaseRate', (1 / cartoonModel.bowEvery(b)).toFixed(1)], ['siegeBaseReach', `${Math.round(cartoonModel.bowReach(b) / cartoonModel.FIELD * 100)}%`]];
+    return [['siegeBaseStore', String(Math.floor(cartoonModel.bowMax(b) / cartoonModel.BOW.cost))], ['siegeBaseRegen', (cartoonModel.bowRegen(b) / cartoonModel.BOW.cost).toFixed(1)]];
   }
   /** Where the army bar's six cells sit on the battle bar's art (its x on the 2047-wide sheet, less the cut at 648). */
   const CELLS = [24, 203, 391, 570, 749, 928];
@@ -492,7 +505,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     const reloading = !s.bow.drawing && s.bow.quiver < M.BOW.cost;
     q('[data-sg-bow-label]').textContent = reloading ? t('siegeBowEmpty') : t('siegeCannon');
     // The bow button is a ball that empties as the quiver does: full colour when full, see-through when empty.
-    bowButton.style.setProperty('--q', (s.bow.quiver / M.BOW.max).toFixed(3));
+    bowButton.style.setProperty('--q', (s.bow.quiver / ('store' in s.bow ? cartoonModel.bowMax(s.bow) : M.BOW.max)).toFixed(3));
     bowButton.classList.toggle('is-empty', reloading); bowButton.classList.toggle('is-drawing', s.bow.drawing); bowButton.setAttribute('aria-pressed', String(s.bow.drawing));
     bowButton.disabled = paused || s.phase !== 'fight';
     // Cartoon's specials show their recharge as a darkening that lightens from the top down; Legacy's keep the seconds.
