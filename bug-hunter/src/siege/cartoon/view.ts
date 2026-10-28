@@ -199,8 +199,9 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   const sky = ctx.createLinearGradient(0, 0, 0, h); sky.addColorStop(0, '#080f21'); sky.addColorStop(1, '#172c3c');
   ctx.fillStyle = sky; ctx.fillRect(0, 0, w, h);
   // Short, wide fields zoom in a little more, so the troops keep their size.
-  // A wide view stands further back (more field and sky, smaller troops); an upright phone keeps it closer.
-  const scale = w >= h ? Math.min(h / (w / h > 2.2 ? 360 : 425), w / 810) : Math.min(h / 340, w / 650);
+  // A wide view stands further back (more field and sky, smaller troops), 15% more since v1.15.90 so more of the field
+  // and its picture show; an upright phone keeps it closer (further back it only shows more empty sky).
+  const scale = w >= h ? Math.min(h / (w / h > 2.2 ? 360 : 425), w / 810) * 0.85 : Math.min(h / 340, w / 650);
   camera.width = w / scale; hudRoom = 62 / scale;
   camera.min = -AIM_GUTTER / scale;
   camera.x = Math.max(camera.min, Math.min(Math.max(camera.min, FIELD - camera.width), camera.x));
