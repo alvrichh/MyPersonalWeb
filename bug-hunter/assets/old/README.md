@@ -17,3 +17,4 @@ published, under `/images/game/old/...`, like any asset). Each folder mirrors wh
 - `special/siege/reserve/{armed-fighter-1-4,archer-1-4-wizard-1-3,mech-1-6,gunner-blaster-1-4}.webp`: the owner's second set of
   sheets for the allied troops, kept in reserve and not used by the game (one row per level, six poses each, on white). The ninja
   master (archer 4) there is the owner's preferred one; the game uses the first set (1.15.56).
+- `special/siege/units-wizard-purple/ally-wizard-{1,2}-*.webp`: the wizard's levels 1 and 2 with their purple hat and robe, recoloured light and dark blue in 1.15.64.

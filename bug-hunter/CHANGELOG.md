@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.64 - 2026-10-28
+
+### Changed
+- Siege Cartoon: the wizard's hat and robe are recoloured by level: light blue (level 1), dark blue (level 2) and purple (level 3, as it was); the blue cape, the gold trim and the spell effects keep their colours.
+
 ## 1.15.63 - 2026-10-28
 
 ### Changed
