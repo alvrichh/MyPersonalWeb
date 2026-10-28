@@ -543,7 +543,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       const pic = l.who === 'king' ? V.portrait(3, M.levelsOf(3)) : l.who === 'boss' ? (cartoon ? V.portrait(guard) : guardianUrl(world)) : l.who === 'hero' ? (cartoon ? V.portrait(1, 4) : hero.pic) : l.who === 'wizard' ? V.portrait(wizard, 1) : l.who === 'joker' ? V.portrait(joker, 1) : '';
       // A heated line shows the speaker mid-action (its sheet's wind-up, blow or hurt pose).
       const pose = 'pose' in l && l.pose && cartoon && l.who !== 'narrator' && pic.endsWith('-0.webp') ? pic.replace(/-0\.webp$/, `-${l.pose}.webp`) : pic;
-      overlay.innerHTML = `<div class="sg-scene is-${l.who} ${pose !== pic ? 'is-heated' : ''}" role="dialog" aria-modal="true" aria-label="${t('siegeName')}">
+      overlay.innerHTML = `<div class="sg-scene is-${l.who} ${pose !== pic ? 'is-heated' : ''} ${pose !== pic && 'pose' in l && l.pose === 5 ? 'is-down' : ''}" role="dialog" aria-modal="true" aria-label="${t('siegeName')}">
         <span class="sg-eyebrow">${mode === 'cartoon' ? `${worldName(actNow())} · ${t(`siegeCtAct${actNow()}` as Key)}` : t(`world${world}Name` as Key)}</span>
         ${pic ? `<img class="sg-speaker" src="${pose}" alt="">` : ''}
         <div class="sg-line"><b>${who}</b><p>${t(l.key)}</p>
