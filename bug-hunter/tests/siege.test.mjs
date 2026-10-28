@@ -361,3 +361,13 @@ test('an arrow passing through a tall enemy on the ground hits it; it flies over
   m.SCATTER.along = along; m.SCATTER.deep = deep;
   assert.ok(tall.hp < 5000, 'the tall one, short of where it lands, is hit in the head'); assert.equal(short.hp, 5000, 'the short one far before is flown over');
 });
+test('walkers strike a flyer only once it has swooped down to fight on the ground', () => {
+  const s = m.newSiege(m.freshProgress(), 1); s.nextWave = 999; s.gusted = true;
+  m.summon(s, 0); const sw = s.units[0]; sw.x = 600; sw.hp = sw.maxHp = 9000;
+  const high = { uid: 80, id: 28, side: 1, x: 640, lane: 1, hp: 500, maxHp: 500, damage: 0, attack: 99, flash: 0, boss: false, alt: 70 };
+  s.units.push(high); run(s, 1);
+  assert.equal(high.hp, 500, 'a sky-only flyer up high is out of a swordsman reach');
+  const diver = { uid: 81, id: 27, side: 1, x: 640, lane: 1, hp: 500, maxHp: 500, damage: 1, attack: 0, flash: 0, boss: false, alt: 70 };
+  s.units = [sw, diver]; run(s, 2);
+  assert.ok(diver.alt <= 32, 'the death angel swoops down to strike'); assert.ok(diver.hp < 500, 'and the swordsman hits it back');
+});

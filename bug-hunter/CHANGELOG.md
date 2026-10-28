@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.83 - 2026-10-28
+
+### Changed
+- Siege Cartoon: a flyer that swoops down low to strike a walker (the enemy's death angel, our fighters, the drill...) can be struck back by any walker while it is down there; up high it is still out of reach of all but the troops that reach the air. Sky-only flyers never come down.
+
 ## 1.15.82 - 2026-10-28
 
 ### Fixed
