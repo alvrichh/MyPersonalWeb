@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.65 - 2026-10-28
+
+### Changed
+- Siege Cartoon: the heavy robot's four forms are redrawn from the owner's new sheet (navy and white armoured walkers with a blue scarf: gatling arms, then rocket pods, then heavy plating, and a cyan cannon on the last); each level is larger than the one before.
+
 ## 1.15.64 - 2026-10-28
 
 ### Changed
