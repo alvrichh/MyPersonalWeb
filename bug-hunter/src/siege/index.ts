@@ -585,8 +585,8 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   function result() {
     if (!state) return;
     const reward = M.settle(progress, state); persist(); paused = true;
-    // Winning Cartoon's last act tells its ending first.
-    if (mode === 'cartoon' && state.phase === 'won' && world === lastWorld()) talk(cartoonStory.ending, () => outcome(reward));
+    // The guardian's fall, then (after the last one) the ending.
+    if (mode === 'cartoon' && state.phase === 'won' && cartoonModel.guarded(world)) talk(cartoonStory.bossDown(actNow()), () => (world === lastWorld() ? talk(cartoonStory.ending, () => outcome(reward)) : outcome(reward)));
     else outcome(reward);
   }
   function outcome(reward: number) {

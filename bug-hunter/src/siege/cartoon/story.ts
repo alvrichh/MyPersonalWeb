@@ -35,7 +35,12 @@ const BOSS: Speaker[][] = [
   ['boss', 'king', 'hero'],
 ];
 /** The scene before an act (the prologue first in act 1). */
-export const intro = (act: number): Line[] => [...(act === 1 ? PROLOGUE : []), line('narrator', `siegeCtStory${act}`), ...lines(`siegeCtTalk${act}_`, INTRO[act - 1] ?? [])];
+/** After the talk, the narrator tells what the act opens in the shop (acts 2 to 6). */
+const NEWS = (act: number): Line[] => (act >= 2 ? [line('narrator', `siegeCtNew${act}`)] : []);
+export const intro = (act: number): Line[] => [...(act === 1 ? PROLOGUE : []), line('narrator', `siegeCtStory${act}`), ...lines(`siegeCtTalk${act}_`, INTRO[act - 1] ?? []), ...NEWS(act)];
+/** What is said when an act's guardian falls: its last words, then ours. */
+const DOWN: Speaker[][] = [['boss', 'hero', 'joker'], ['boss', 'wizard', 'joker'], ['boss', 'joker', 'hero'], ['boss', 'joker', 'wizard'], ['boss', 'wizard', 'king'], ['boss', 'king', 'hero']];
+export const bossDown = (act: number): Line[] => lines(`siegeCtDown${act}_`, DOWN[act - 1] ?? []);
 export const bossTalk = (act: number): Line[] => lines(`siegeCtBoss${act}_`, BOSS[act - 1] ?? []);
 /** After the last act is won. */
 export const ending: Line[] = lines('siegeCtEnding', ['king', 'wizard', 'joker', 'hero']);
