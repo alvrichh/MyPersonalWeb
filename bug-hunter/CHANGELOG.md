@@ -4,10 +4,15 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.95 - 2026-10-28
+
+### Changed
+- Siege Cartoon battlefield: the ground layer (everything from the troops' walking line down to the bottom of the picture) starts 4 pixels higher; the thin fade above it is unchanged.
+
 ## 1.15.94 - 2026-10-28
 
 ### Changed
-- Siege Cartoon battlefield: the cut between the ground layer and the far landscape is a straight line exactly where the troops walk. Its top fades over a few pixels only, so it never reaches the rocks, ruins and plants standing behind the path. Before, the cut followed the scenery's silhouettes.
+- Siege Cartoon battlefield: the ground layer (from the troops' walking line down to the bottom of the picture) now starts at a straight line exactly where the troops walk. Its top fades over a few pixels only, so it never reaches the rocks, ruins and plants standing behind the path. Before, the cut followed the scenery's silhouettes.
 
 ## 1.15.93 - 2026-10-28
 
