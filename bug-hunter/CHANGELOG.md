@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.78 - 2026-10-28
+
+### Changed
+- Siege Cartoon story: simpler, with sharper personalities: Manolo is the joker (and the only one with Andalusian slang), Captain Jorge the serious, laconic one, Felipe the clever one and the King the one who stays home "to give orders". The cheese gag is gone; the first scene ends on "I'll stay behind a shield. For strategy." — "You go in front. Also for strategy."
+
 ## 1.15.77 - 2026-10-28
 
 ### Changed
