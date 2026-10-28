@@ -176,7 +176,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     const title = hid ? '? ? ?' : `${shopTab === 'special' ? powerName(pick.row, pick.level) : troop ? name(pick.row) : t(`siegeUpgrade${pick.row}` as Key)} · ${t('siegeLevel', { n: pick.level })}`;
     const text = hid ? '' : shopTab === 'special' ? `${t(`siegePower${pick.row}Text` as Key)} · ${t('siegePowerCd', { n: cartoonModel.POWERS[pick.row].cooldown })}` : troop ? role(pick.row, pick.level) : '';
     const pic = shopTab === 'special' ? powerPic(pick.row, pick.level) : shopTab === 'base' ? `/images/game/${upgradePic('cartoon', pick.row, pick.level)}.webp` : V.portrait(pick.row, pick.level);
-    const stats = troop && shopTab !== 'special' && !hid ? `<ul class="sg-st-stats">${stars(pick.row, pick.level).map((n, i) => `<li><span>${t((['siegeStatHp', 'siegeStatDamage', 'siegeStatRate', 'siegeStatSpeed'] as const)[i])}</span><b class="sg-stars" style="--v:${n}" role="img" aria-label="${n}/5">★★★★★</b></li>`).join('')}</ul>` : '';
+    const stats = troop && shopTab !== 'special' && !hid ? `<ul class="sg-st-stats">${stars(pick.row, pick.level).map((n, i) => `<li><span>${t((['siegeStatHp', 'siegeStatDamage', 'siegeStatRate', 'siegeStatSpeed'] as const)[i])}</span><em>${statText(pick.row, pick.level)[i]}</em><b class="sg-stars" style="--v:${n}" role="img" aria-label="${n}/5">★★★★★</b></li>`).join('')}</ul>` : '';
     const price = x.have ? `✓ ${t('siegeHave')}` : x.next ? (x.price ? `🪙 ${x.price}` : t('siegeFree')) : `🔒 ${x.why}`;
     const kind = shopTab === 'air', worn = isWorn(pick.row, pick.level);
     // The army on a stretch of the battle bar's wall, as in battle: a tap (or a drag off the bar) takes a card out.
@@ -197,9 +197,12 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   /** Whether a troop form (or a power's form, in Special) is in the army. */
   const isWorn = (row: number, level: number) => (shopTab === 'special' ? progress.kit.includes(cartoonModel.powerCard(row, level)) : selected.includes(cartoonModel.card(row, level)));
   /** A troop form's four stats as one to five stars, by halves (health, strength, attack speed, move speed), each
-      against every form of our army on a log scale, so the weakest form is one star and the best five. */
+      against every form of our army on a log scale, so the weakest form is one star and the best five. Strength is
+      the damage per second, a quarter more for each hundred of splash (a sniper and an Uzi compare fairly). */
   let statRange: [number, number][] | null = null;
-  const statsOf = (sp: { hp: number; damage: number; rate: number; speed: number }) => [sp.hp, sp.damage, 1 / sp.rate, sp.speed];
+  const statsOf = (sp: { hp: number; damage: number; rate: number; speed: number; splash?: number }) => [sp.hp, sp.damage / sp.rate * (1 + (sp.splash ?? 0) / 100), 1 / sp.rate, sp.speed];
+  /** The number beside each row of stars: health, damage per second, attacks per second, speed. */
+  const statText = (row: number, level: number) => statsOf(M.specAt(row, level)).map((v, i) => (i === 2 ? v.toFixed(1) : String(Math.round(v))));
   function stars(row: number, level: number) {
     statRange ??= [0, 1, 2, 3].map(i => { const v = M.ALLIES.flatMap(u => Array.from({ length: M.levelsOf(u.id) }, (_, k) => statsOf(M.specAt(u.id, k + 1))[i])).filter(n => n > 0 && Number.isFinite(n)); return [Math.log(Math.min(...v)), Math.log(Math.max(...v))]; });
     return statsOf(M.specAt(row, level)).map((v, i) => { const [lo, hi] = statRange![i]; return v > 0 && Number.isFinite(v) ? Math.max(1, Math.min(5, Math.round((1 + 4 * (Math.log(v) - lo) / (hi - lo || 1)) * 2) / 2)) : 1; });
