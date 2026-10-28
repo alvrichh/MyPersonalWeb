@@ -295,7 +295,10 @@ export function readProgress(raw: string | null): Progress {
   } catch { /* corrupt or unavailable storage starts a safe, isolated preview */ }
   return p;
 }
-export const upgradePrice = (level: number) => (testing.free ? 0 : 100 + level * 100);
+/** A base upgrade's gold price from the level it has (0 to 4): steep, as each level lasts for every battle after it
+    (a whole row 4950, about a late troop form and a half). */
+export const UPGRADE_PRICES = [150, 400, 800, 1400, 2200];
+export const upgradePrice = (level: number) => (testing.free ? 0 : UPGRADE_PRICES[Math.max(0, Math.min(4, level))]);
 /** A troop's next form's gold price, or 0 at its last. */
 export const levelPrice = (p: Progress, id: number) => UNITS[id]?.forms?.[(p.levels[id] ?? 1) - 1]?.price ?? 0;
 /** Buys a troop's next form. */

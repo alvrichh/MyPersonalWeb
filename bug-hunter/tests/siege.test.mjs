@@ -91,7 +91,7 @@ test('rewards are idempotent and unlock only the next world', () => {
 });
 test('workshop validates purchases and persists bonuses', () => {
   const p = m.freshProgress(); assert.equal(m.upgrade(p, 0), false); p.coins = 200;
-  assert.equal(m.upgrade(p, 9), false); assert.equal(m.upgrade(p, 0), true); assert.equal(p.coins, 100);
+  assert.equal(m.upgrade(p, 9), false); assert.equal(m.upgrade(p, 0), true); assert.equal(p.coins, 200 - m.UPGRADE_PRICES[0]);
   const restored = m.readProgress(JSON.stringify(p)); const s = m.newSiege(restored, 1);
   assert.equal(s.power, 1.08); assert.equal(restored.upgrades[0], 1);
 });
