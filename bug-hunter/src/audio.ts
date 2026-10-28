@@ -2058,17 +2058,22 @@ class Engine {
       tone(t, 'square', f0 * r(), f1, len, peak, 0.008, ['bandpass', vowel * r(0.1), 5]);
       tone(t, 'sawtooth', f0 * 2 * r(), f1 * 2, len, peak * 0.4, 0.008, ['bandpass', vowel * 1.8, 6]);
     };
-    const aww = (t: number, f0: number, f1: number, len: number, peak: number, bright: number) => {
+    // A pained «ouch!»: a sharp, loud "ow" (the mouth glides from an open "a" to a closed "u", the pitch snaps up then falls) and
+    // a short "ch" of breath at the end. `f0` is the voice, `len` the vowel's length, `grit` its roughness.
+    const ouch = (t: number, f0: number, len: number, peak: number, grit: number) => {
       const o = ctx.createOscillator(); o.type = 'sawtooth';
-      o.frequency.setValueAtTime(f0 * r(), at + t); o.frequency.linearRampToValueAtTime(f0 * 1.08, at + t + len * 0.18);
-      o.frequency.exponentialRampToValueAtTime(f1, at + t + len);
-      const lfo = ctx.createOscillator(); lfo.frequency.value = 6.5; const lg = ctx.createGain(); lg.gain.value = f0 * 0.025; lfo.connect(lg).connect(o.frequency);
-      const g = ctx.createGain(); this.env(g, at + t, peak, 0.02, len);
-      for (const [f, q, k] of [[650 * bright, 6, 1], [1000 * bright, 7, 0.7], [2500 * bright, 9, 0.2]] as const) {
-        const bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = f; bp.Q.value = q;
-        const kg = ctx.createGain(); kg.gain.value = k * 2.2; o.connect(bp).connect(kg).connect(g);
+      o.frequency.setValueAtTime(f0 * 1.18 * r(), at + t); o.frequency.exponentialRampToValueAtTime(f0 * 1.02, at + t + len * 0.25); o.frequency.exponentialRampToValueAtTime(f0 * 0.74, at + t + len);
+      const lfo = ctx.createOscillator(); lfo.type = 'square'; lfo.frequency.value = 38; const lg = ctx.createGain(); lg.gain.value = f0 * grit; lfo.connect(lg).connect(o.frequency);
+      const g = ctx.createGain(); g.gain.setValueAtTime(0.0001, at + t); g.gain.exponentialRampToValueAtTime(peak, at + t + 0.012); g.gain.setValueAtTime(peak, at + t + len * 0.55); g.gain.exponentialRampToValueAtTime(0.0001, at + t + len + 0.04);
+      // Two formants gliding "a" → "u": the first from 850 to 400 Hz, the second from 1350 to 800.
+      for (const [f0f, f1f, q, k] of [[850, 400, 5, 1.6], [1350, 800, 7, 1.0], [2600, 2200, 9, 0.35]] as const) {
+        const bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.Q.value = q;
+        bp.frequency.setValueAtTime(f0f, at + t); bp.frequency.exponentialRampToValueAtTime(f1f, at + t + len);
+        const kg = ctx.createGain(); kg.gain.value = k * 2.6; o.connect(bp).connect(kg).connect(g);
       }
-      g.connect(out); o.start(at + t); lfo.start(at + t); o.stop(at + t + len + 0.05); lfo.stop(at + t + len + 0.05);
+      g.connect(out); o.start(at + t); lfo.start(at + t); o.stop(at + t + len + 0.08); lfo.stop(at + t + len + 0.08);
+      // The "ch": a short burst of high noise as the vowel ends.
+      noise(t + len * 0.8, 0.09, peak * 0.55, 'highpass', 3600, 3600, 1, 0.005);
     };
     const puff = (t: number, peak = 0.3) => noise(t, 0.3, peak, 'lowpass', 900 * r(), 180, 0.6, 0.02);
     const slide = (t: number, f0: number, f1: number, len: number, peak: number) => tone(t, 'sine', f0 * r(), f1, len, peak, 0.02);
@@ -2098,8 +2103,8 @@ class Engine {
       // Deaths: a cartoon cry, a pop and a puff of smoke as they fall.
       // The cry of the one killed, a cartoon "aww!": a voice sliding down through the vowel's two formants (/ɔ/, about
       // 650 and 1000 Hz), a little vibrato as it fades. Ours a higher, sadder one; theirs a lower, rougher groan.
-      case 'death-ally': aww(0, 360, 210, 0.5, 0.2, 1); return;
-      case 'death-foe': aww(0, 210, 110, 0.55, 0.22, 0.75); return noise(0, 0.4, 0.05, 'bandpass', 1200, 700, 1, 0.05);
+      case 'death-ally': ouch(0, 330, 0.26, 0.5, 0.012); return;
+      case 'death-foe': ouch(0, 190, 0.3, 0.55, 0.03); return noise(0, 0.12, 0.12, 'bandpass', 900, 500, 1, 0.01);
       case 'die-man': squeak(0, 620, 280, 0.26, 0.11); pop(0.24, 0.16); return puff(0.25, 0.22);
       case 'die-armor': squeak(0, 480, 220, 0.24, 0.1, 1100); fall(0.2, 0.32); [0.22, 0.27, 0.33].forEach((t) => ring(t, [1800 * r(), 2700 * r(), 3500 * r()], 0.05, 0.14)); return puff(0.3, 0.18);
       case 'die-beast': squeak(0, 900, 360, 0.3, 0.1, 1600); fall(0.28, 0.34); return puff(0.3, 0.2);

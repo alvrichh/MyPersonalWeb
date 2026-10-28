@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.72 - 2026-10-28
+
+### Changed
+- Siege Cartoon: a troop's death cry is now a sharp, loud pained "ouch!" (an "ow" that glides from an open to a closed vowel, the pitch snapping up then falling, and a short "ch" of breath), higher for ours and lower and rougher for the enemy's, instead of the soft "aww".
+
 ## 1.15.71 - 2026-10-28
 
 ### Changed
