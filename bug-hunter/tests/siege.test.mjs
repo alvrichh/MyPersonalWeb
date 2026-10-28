@@ -345,3 +345,10 @@ test('ground troops with bows, guns, rockets, rays and spells reach flyers; clos
   for (const id of [22, 23, 24, 32]) assert.ok(m.canHit(id, 10), `enemy ${id} shoots at flyers`);
   for (const id of [15, 16, 17, 18, 20, 21, 25]) assert.ok(!m.canHit(id, 10), `enemy ${id} cannot`);
 });
+test('every guardian reaches flyers and its blows throw our flyers back', () => {
+  for (const id of m.GUARDIAN) assert.ok(m.canHit(id, 10), `guardian ${id} reaches flyers`);
+  const s = m.newSiege(m.freshProgress(), 5); const boss = { id: m.GUARDIAN[0], side: 1, uid: 70, x: 900, lane: 1, hp: 4000, maxHp: 4000, damage: 50, attack: 0, flash: 0, boss: true };
+  const flyer = { id: 10, side: 0, uid: 71, x: 860, lane: 1, hp: 3000, maxHp: 3000, damage: 0, attack: 99, flash: 0, boss: false, alt: 70 };
+  s.units.push(boss, flyer); s.bossSpawned = true; s.gusted = true; m.tick(s, 1 / 30); run(s, 0.4);
+  assert.ok(flyer.hp < 3000, 'struck'); assert.ok(flyer.x < 860, 'and thrown back');
+});

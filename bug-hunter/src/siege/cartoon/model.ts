@@ -186,12 +186,12 @@ export const UNITS: readonly Spec[] = [
     { price: 3000, cost: 200, hp: 800, damage: 80, range: 60, splash: 50, ...six('ally-mech-6', 259, 0.8398) },
   ] },
   // The guardians (`GUARDIAN`), each act's own picture; their stats are those of the troops that stood in for them.
-  { id: 34, cost: 0, hp: 480, damage: 26, speed: 24, range: 42, rate: 1.5, cooldown: 0, unlock: 1, foe: true, ...foe('boss-slinger-1', 221, 0.85) },
-  { id: 35, cost: 0, hp: 760, damage: 40, speed: 24, range: 180, rate: 1.4, cooldown: 0, unlock: 1, foe: true, ...foe('boss-gatling-1', 224, 0.84) },
+  { id: 34, cost: 0, hp: 480, damage: 26, speed: 24, range: 42, rate: 1.5, cooldown: 0, unlock: 1, foe: true, hitsAir: true, ...foe('boss-slinger-1', 221, 0.85) },
+  { id: 35, cost: 0, hp: 760, damage: 40, speed: 24, range: 180, rate: 1.4, cooldown: 0, unlock: 1, foe: true, hitsAir: true, ...foe('boss-gatling-1', 224, 0.84) },
   { id: 36, cost: 0, hp: 900, damage: 55, speed: 40, range: 130, rate: 1.4, cooldown: 0, unlock: 1, foe: true, air: true, splash: 50, steady: true, ...foe('boss-dragon-rider-1', 217, 0.92) },
-  { id: 37, cost: 0, hp: 720, damage: 34, speed: 21, range: 48, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 40, ...foe('boss-brute-eater-1', 176, 1.07) },
-  { id: 38, cost: 0, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, ...foe('boss-dino-1', 199, 1.0) },
-  { id: 39, cost: 0, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, ...foe('boss-king-dino-1', 258, 0.87) },
+  { id: 37, cost: 0, hp: 720, damage: 34, speed: 21, range: 48, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 40, hitsAir: true, ...foe('boss-brute-eater-1', 176, 1.07) },
+  { id: 38, cost: 0, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, hitsAir: true, ...foe('boss-dino-1', 199, 1.0) },
+  { id: 39, cost: 0, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, hitsAir: true, ...foe('boss-king-dino-1', 258, 0.87) },
 ];
 /** The enemy's land and air troops by act, each act adding to the last (docs/siege-roster.md): early waves draw
     from the first two of the land list. No flyers in the first world: they come from the second. */
