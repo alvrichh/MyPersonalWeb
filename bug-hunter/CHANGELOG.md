@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.58 - 2026-10-28
+
+### Changed
+- Siege Cartoon: the guardian's talk now plays as the last stage of a world opens, before the fight, instead of pausing the battle when the guardian joins; the scene when it falls stays as it was.
+
 ## 1.15.57 - 2026-10-28
 
 ### Added

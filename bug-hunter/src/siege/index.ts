@@ -319,7 +319,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     cancelAnimationFrame(frame); battleAbort.abort(); battleAbort = new AbortController();
     const battleOptions = { signal: battleAbort.signal };
     if (!selected.length) return;
-    progress.deck = [...selected]; persist(); mapAct = mode === 'cartoon' ? actNow() : 0; state = M.newSiege(progress, world); bossTalked = false; baseFell = false; lootHeard = 0; gustShown = false;
+    progress.deck = [...selected]; persist(); mapAct = mode === 'cartoon' ? actNow() : 0; state = M.newSiege(progress, world); bossTalked = mode === 'cartoon'; baseFell = false; lootHeard = 0; gustShown = false;
     if (mode === 'cartoon') music('battle');
     V.preload(world, selected, progress.levels); paused = false; camera.x = -Infinity;
     // Laid out like Cartoon Wars 2: mana top left, both fortresses' health face to face in the middle, coins and pause
@@ -415,7 +415,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       q<HTMLElement>('.sg-aim').style.bottom = `calc(${((1 - (camera.deck ?? 0.5)) * 100).toFixed(1)}% + 6px)`;
       if (now >= uiAt) { updateUi(); uiAt = now + 100; }
       if (state.phase !== 'fight' && !state.paid) result();
-      // The guardian speaks the moment it joins, the battle held until the scene ends.
+      // Legacy's guardian speaks the moment it joins, the battle held until the scene ends (Cartoon's speaks as its stage opens).
       else if (state.bossSpawned && !bossTalked && state.phase === 'fight') {
         bossTalked = true; paused = true; updateUi();
         talk(mode === 'cartoon' ? cartoonStory.bossTalk(actNow()) : bossTalk(world), () => { paused = false; last = performance.now(); accumulator = 0; q('canvas').focus(); });
@@ -632,7 +632,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     if (button.dataset.sgTab && state) { tab = button.dataset.sgTab as typeof tab; cards(); return; }
     if (summonId !== undefined && state && !paused) { if (M.summon(state, Number(summonId))) sound('click'); updateUi(); return; }
     if (action === 'exit') close();
-    else if (action === 'launch') mode === 'legacy' ? talk(intro(world), start) : cartoonModel.stageIn(world) === 1 ? actCard(actNow(), () => talk(cartoonStory.intro(actNow()), start)) : start();
+    else if (action === 'launch') mode === 'legacy' ? talk(intro(world), start) : cartoonModel.stageIn(world) === 1 ? actCard(actNow(), () => talk(cartoonStory.intro(actNow()), start)) : cartoonModel.guarded(world) ? talk(cartoonStory.bossTalk(actNow()), start) : start();
     else if (action === 'modes') modes();
     else if (action === 'retry') start();
     else if (action === 'prep') prep();
