@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.100 - 2026-10-28
+
+### Changed
+- Siege Cartoon battlefield: on wide screens the far landscape is drawn 25% wider (its height still fits the screen), so it slides about five times further as the camera crosses the field (it barely moved since 1.15.98, while the ground raced past).
+
 ## 1.15.99 - 2026-10-28
 
 ### Changed
