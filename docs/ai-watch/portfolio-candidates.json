@@ -1,6 +1,31 @@
 {
-  "generatedAt": "2026-10-27T13:53:14.670Z",
+  "generatedAt": "2026-10-28T14:47:52.079Z",
   "candidates": [
+    {
+      "label": "Claude research and documentation flow",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
+          "source": "Anthropic News",
+          "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
+          "date": "2026-10-28"
+        },
+        {
+          "title": "Barclays scales Claude to upgrade operations and improve client experience",
+          "source": "Anthropic News",
+          "link": "https://www.anthropic.com/news/barclays-scales-claude",
+          "date": "2026-10-28"
+        },
+        {
+          "title": "webframe: evaluated as a scraper and a sandbox",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/26/webframe-evaluation/",
+          "date": "2026-10-26"
+        }
+      ]
+    },
     {
       "label": "AI agents / automation workflows",
       "status": "safe-data-candidate",
@@ -10,44 +35,69 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
+          "date": "2026-10-28"
+        },
+        {
+          "title": "Legora is building the agentic operating system for legal work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/legora-agentic-operating-system-for-legal-work",
+          "date": "2026-10-28"
+        },
+        {
+          "title": "Quoting Terk Terkowitz",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/28/terk-terkowitz/",
+          "date": "2026-10-28"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Legora is building the agentic operating system for legal work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/legora-agentic-operating-system-for-legal-work",
+          "date": "2026-10-28"
+        },
+        {
+          "title": "OpenAI expands partnership with Oracle to bring its apps to ChatGPT",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/oracle-apps-in-chatgpt",
           "date": "2026-10-27"
         },
         {
-          "title": "Groundhog Day for AI agents: Prompt caching patterns for using OpenAI models on Amazon Bedrock",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/groundhog-day-for-ai-agents-prompt-caching-patterns-for-using-openai-models-on-amazon-bedrock/",
-          "date": "2026-10-26"
-        },
-        {
-          "title": "Build agentic retrieval on a Managed Amazon Bedrock Knowledge Base with CDK",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/build-agentic-retrieval-on-a-managed-amazon-bedrock-knowledge-base-with-cdk/",
+          "title": "ChatGPT’s expanding world of work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/chatgpt-expanding-world-of-work",
           "date": "2026-10-26"
         }
       ]
     },
     {
-      "label": "Claude research and documentation flow",
+      "label": "AI developer tooling",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Barclays scales Claude to upgrade operations and improve client experience",
-          "source": "Anthropic News",
-          "link": "https://www.anthropic.com/news/barclays-scales-claude",
+          "title": "Quoting Terk Terkowitz",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/28/terk-terkowitz/",
+          "date": "2026-10-28"
+        },
+        {
+          "title": "DeepMind unveils Genie 4 world model promising more realistic physics and humans",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/google/2026/10/deepminds-genie-4-world-model-adds-audio-and-more-realistic-people-to-simulations/",
           "date": "2026-10-27"
         },
         {
-          "title": "webframe: evaluated as a scraper and a sandbox",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/26/webframe-evaluation/",
+          "title": "GPT-6.1 Sol helps CodeRabbit strengthen security across complex codebases",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/gpt-6-1-sol-coderabbit-code-security",
           "date": "2026-10-26"
-        },
-        {
-          "title": "battledrones v14: Compass Rose, a four player map",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/24/battledrones/",
-          "date": "2026-10-24"
         }
       ]
     },
@@ -56,6 +106,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "GitHub Copilot supports server-to-server authentication",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-10-27-github-copilot-supports-server-to-server-authentication",
+          "date": "2026-10-27"
+        },
         {
           "title": "GitHub Copilot assisted permissions generally available",
           "source": "GitHub Changelog",
@@ -67,12 +123,44 @@
           "source": "GitHub Changelog",
           "link": "https://github.blog/changelog/2026-10-26-gpt-6-1-terra-in-github-copilot",
           "date": "2026-10-26"
+        }
+      ]
+    },
+    {
+      "label": "Multimodal AI product workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Build specialized multimodal models with LFM3",
+          "source": "Hugging Face",
+          "link": "https://huggingface.co/blog/LiquidAI/lfm3",
+          "date": "2026-10-27"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Google’s next Genie AI model generates more realistic experiences",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/1019076/google-genie-4-ai-model",
+          "date": "2026-10-27"
         },
         {
-          "title": "Usage metrics API adds usage from tools like OpenCode",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-10-23-usage-metrics-api-adds-usage-from-tools-like-opencode",
+          "title": "Introducing Kimi K3.1 Pro",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/23/kimi-k31-pro/",
           "date": "2026-10-23"
+        },
+        {
+          "title": "Gemini's Personal Intelligence is coming to cars",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/google/2026/10/geminis-personal-intelligence-is-coming-to-cars/",
+          "date": "2026-10-20"
         }
       ]
     },
@@ -86,100 +174,6 @@
           "source": "GitHub Changelog",
           "link": "https://github.blog/changelog/2026-10-26-gpt-6-1-terra-in-github-copilot",
           "date": "2026-10-26"
-        }
-      ]
-    },
-    {
-      "label": "AI automation and workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "How NVIDIA Mission Control 2.5 Brings Autonomous Recovery to Kubernetes",
-          "source": "NVIDIA Developer",
-          "link": "https://developer.nvidia.com/blog/how-nvidia-mission-control-2-5-brings-autonomous-recovery-to-kubernetes/",
-          "date": "2026-10-26"
-        },
-        {
-          "title": "AI adoption by industry shows what other sectors can learn",
-          "source": "MIT Technology Review AI",
-          "link": "https://www.technologyreview.com/2026/10/20/1145423/ai-adoption-by-industry-shows-what-other-sectors-can-learn/",
-          "date": "2026-10-20"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "GPT-6.1 Sol helps CodeRabbit strengthen security across complex codebases",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/gpt-6-1-sol-coderabbit-code-security",
-          "date": "2026-10-26"
-        },
-        {
-          "title": "GPT-6.1 Terra",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/26/gpt-61-terra/",
-          "date": "2026-10-26"
-        },
-        {
-          "title": "Usage metrics API adds usage from tools like OpenCode",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-10-23-usage-metrics-api-adds-usage-from-tools-like-opencode",
-          "date": "2026-10-23"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "ChatGPT’s expanding world of work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/chatgpt-expanding-world-of-work",
-          "date": "2026-10-26"
-        },
-        {
-          "title": "Quoting Jason Koebler",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/26/jason-koebler/",
-          "date": "2026-10-26"
-        },
-        {
-          "title": "Rapidly scaling online storage to serve over 1 billion ChatGPT users (Part II)",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/scaling-storage-one-billion-users-part-two",
-          "date": "2026-10-23"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Introducing Kimi K3.1 Pro",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/23/kimi-k31-pro/",
-          "date": "2026-10-23"
-        },
-        {
-          "title": "Gemini's Personal Intelligence is coming to cars",
-          "source": "Ars Technica AI",
-          "link": "https://arstechnica.com/google/2026/10/geminis-personal-intelligence-is-coming-to-cars/",
-          "date": "2026-10-20"
-        },
-        {
-          "title": "Gemini 4 Argon: Built to solve your hardest problems",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-argon/",
-          "date": "2026-10-13"
         }
       ]
     }
