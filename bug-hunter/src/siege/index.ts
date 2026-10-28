@@ -25,7 +25,7 @@ const UPGRADE_PICS = ['items/gladHelm', 'items/plate', 'ui/orb', 'items/quiver']
 /** Cartoon's army and generator rows have a picture for each of their five levels. */
 const ARMY_PICS = ['items/bandana', 'items/gladHelm', 'items/plate', 'items/crown', 'items/phoenix'], GENERATOR_PICS = ['items/potion', 'items/lantern', 'items/hourglass', 'items/orb', 'ui/orb'];
 /** A workshop row's picture: the fortress and the crossbow show the look their level gives (`looksTier`). */
-const upgradePic = (mode: Mode, i: number, level: number) => (mode === 'legacy' ? UPGRADE_PICS[i] : i === 1 ? `siege/castle-${cartoonModel.castleTier(level)}` : i === 3 ? `siege/xbow-${cartoonModel.looksTier(level)}` : i === 4 ? `siege/units/bolt-${cartoonModel.looksTier(level)}` : i === 5 ? 'items/quiver' : i === 0 ? ARMY_PICS[Math.min(5, Math.max(1, level)) - 1] : i === 2 ? GENERATOR_PICS[Math.min(5, Math.max(1, level)) - 1] : UPGRADE_PICS[i]);
+const upgradePic = (mode: Mode, i: number, level: number) => (mode === 'legacy' ? UPGRADE_PICS[i] : i === 1 ? `siege/castle-${cartoonModel.castleTier(level)}` : i === 3 ? `siege/xbow-${cartoonModel.looksTier(level)}` : i === 4 ? `siege/units/bolt-${cartoonModel.looksTier(level)}` : i === 5 ? 'items/quiver' : i === 6 ? 'siege/mana' : i === 0 ? ARMY_PICS[Math.min(5, Math.max(1, level)) - 1] : i === 2 ? GENERATOR_PICS[Math.min(5, Math.max(1, level)) - 1] : UPGRADE_PICS[i]);
 
 /** A bar button's picture and caption: the picture made once, only the caption's text changed after (ten times a
     second, so no `<img>` is re-created each time). */
@@ -155,7 +155,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   const POWER_PICS = [['skills/double', 'skills/frost', 'skills/fireball', 'skills/rocket'], ['skills/spark', 'skills/storm', 'skills/storm-evo'], ['skills/water', 'skills/water', 'skills/frost-evo'], ['skills/fireball', 'skills/fireball-evo', 'skills/nova']];
   const powerPic = (row: number, level: number) => `/images/game/${POWER_PICS[row][Math.min(level, POWER_PICS[row].length) - 1]}.webp`;
   const powerName = (row: number, level: number) => t(`siegePower${row}F${Math.min(level, cartoonModel.POWERS[row].forms.length)}` as Key);
-  const shopRows = () => (shopTab === 'special' ? cartoonModel.POWERS.map(w => w.id) : shopTab === 'base' ? Array.from({ length: cartoonModel.UPGRADES }, (_, i) => i) : M.ALLIES.filter(u => !!u.air === (shopTab === 'air')).map(u => u.id));
+  const shopRows = () => (shopTab === 'special' ? cartoonModel.POWERS.map(w => w.id) : shopTab === 'base' ? BASE_ROWS : M.ALLIES.filter(u => !!u.air === (shopTab === 'air')).map(u => u.id));
   const rowLevels = (row: number) => (shopTab === 'special' ? cartoonModel.POWERS[row].forms.length : shopTab === 'base' ? 5 : M.levelsOf(row));
   /** Cartoon's shop, laid out like Cartoon Wars 2's: tabs on top, a row of tiles per troop (each form, joined, its
       energy on it) or per upgrade, the equipped slots on the right, and below the picked tile's name, price, the gold,
@@ -195,12 +195,15 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
         ${troop ? `<div class="sg-st-army" data-sg-army role="group" aria-label="${armyLabel}" title="${t('siegeDragHint')}">${army}</div>` : ''}
         <button class="sg-st-go is-fight" data-sg="launch" ${selected.length ? '' : 'disabled'}>${t('siegeLaunch')} ▶</button></div></div>`;
   }
+  /** The base's rows in the shop: the mana pool sits by the energy, before the bow's three. */
+  const BASE_ROWS = [0, 1, 2, 6, 3, 4, 5];
   /** What a base upgrade gives at a level, for its card: each line's label and value (its stars are the level). */
   function baseStats(row: number, level: number): [Key, string][] {
     const b = { quiver: 0, drawing: false, held: 0, next: 0, level, speed: level, store: level };
     if (row === 0) return [['siegeBaseArmy', `+${level * 8}%`]];
     if (row === 1) return [['siegeBaseFort', String(1700 + level * 200)]];
     if (row === 2) return [['siegeBaseEnergy', `+${(level * 0.6).toFixed(1)}/s`]];
+    if (row === 6) return [['siegeBaseMana', String(180 + level * cartoonModel.MANA_STEP)]];
     if (row === 3) return [['siegeBaseArrowDamage', String(cartoonModel.bowDamage(b))], ['siegeBaseArrows', String(cartoonModel.bowCount(b))]];
     if (row === 4) return [['siegeBaseRate', (1 / cartoonModel.bowEvery(b)).toFixed(1)], ['siegeBaseReach', `${Math.round(cartoonModel.bowReach(b) / cartoonModel.FIELD * 100)}%`]];
     return [['siegeBaseStore', String(Math.floor(cartoonModel.bowMax(b) / cartoonModel.BOW.cost))], ['siegeBaseRegen', (cartoonModel.bowRegen(b) / cartoonModel.BOW.cost).toFixed(1)]];

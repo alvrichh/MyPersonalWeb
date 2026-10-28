@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.91 - 2026-10-28
+
+### Added
+- Siege Cartoon base: a Mana pool upgrade (five levels, after Energy), with the battle's mana crystal as its picture. Each level adds 40 to the mana a battle can hold from the start, 180 → 380 at level 5. The battle's generator still adds its own on top. Its card shows the starting maximum at each level.
+
 ## 1.15.90 - 2026-10-28
 
 ### Changed

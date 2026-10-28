@@ -9,7 +9,7 @@ test('safe save validation and independent schema', () => {
   assert.deepEqual(m.readProgress('{'), m.freshProgress());
   assert.deepEqual(m.readProgress('{"version":2}'), m.freshProgress());
   const p = m.readProgress(JSON.stringify({ version: 1, unlocked: 500, coins: -20, upgrades: [99, -2, '3', 7], owned: [7, 1, 2, 999, 20], deck: [7, 7, 999, -1, 0, 3], victories: [1, 1, 6, 30, 31, -2, 2.5] }));
-  assert.equal(p.unlocked, m.LAST); assert.equal(p.coins, 0); assert.deepEqual(p.upgrades, [5, 0, 0, 5, 5, 0], 'an old four-upgrade save: its Bow becomes both power and speed'); assert.deepEqual(p.victories, [1, 6, 30]);
+  assert.equal(p.unlocked, m.LAST); assert.equal(p.coins, 0); assert.deepEqual(p.upgrades, [5, 0, 0, 5, 5, 0, 0], 'an old four-upgrade save: its Bow becomes both power and speed'); assert.deepEqual(p.victories, [1, 6, 30]);
   assert.deepEqual(p.owned, [0, 7, 1, 2], 'the swordsman always, never a foe or unknown'); assert.deepEqual(p.deck, [7, 0], 'only recruited troops');
   assert.equal(m.readProgress('{"version":1,"deck":[7],"owned":[7]}').deck.includes(7), false, 'not before its act opens');
 });
@@ -397,4 +397,9 @@ test('the bow\'s three upgrades: power, speed (and reach) and quiver, each on it
   assert.ok(m.bowMax(quiver) > m.bowMax(base) && m.bowRegen(quiver) > m.bowRegen(base)); assert.equal(quiver.quiver, m.bowMax(quiver), 'it starts full');
   const s = m.newSiege(m.freshProgress(), 1); s.aim = 2000; m.tick(s, 1 / 30); assert.equal(s.aim, m.bowReach(s.bow), 'the aim stops at the bow\'s reach');
   const p = m.freshProgress(); p.coins = 9999; for (let i = 0; i < m.UPGRADES; i++) assert.equal(m.upgrade(p, i), true); assert.equal(m.upgrade(p, m.UPGRADES), false);
+});
+test('the mana pool upgrade raises the energy a battle can hold from the start', () => {
+  const p = m.freshProgress(), plain = m.energyMax(m.newSiege(p, 1)); p.upgrades[6] = 5;
+  const s = m.newSiege(p, 1); assert.equal(m.energyMax(s), plain + 5 * m.MANA_STEP);
+  s.generator = 1; assert.equal(m.energyMax(s), plain + 5 * m.MANA_STEP + 70, 'the generator still adds on top');
 });
