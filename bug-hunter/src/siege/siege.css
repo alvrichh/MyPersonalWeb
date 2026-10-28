@@ -917,3 +917,8 @@
 }
 /* The cells are buttons inside the bottom row: none of that row's big button art applies to them. */
 .siege-root.is-cartoon .sg-prep .sg-st-actions .sg-st-cell.is-full,.siege-root.is-cartoon .sg-prep .sg-st-actions .sg-st-cell.is-full:hover:not(:disabled),.siege-root.is-cartoon .sg-prep .sg-st-actions .sg-st-cell.is-full:active:not(:disabled){flex:none;min-width:0;min-height:0;width:calc(152 * var(--u));height:calc(140 * var(--u));padding:calc(6 * var(--u));border:0;border-image:none;border-radius:4px;font:inherit;text-transform:none;color:inherit;text-shadow:none}
+.sg-st-stats li span{margin-right:auto}.sg-st-stats li em{font:800 12px/1 system-ui;font-style:normal;color:#9fb3d6;min-width:3ch;text-align:right}
+@media (max-width:600px),(max-height:500px) and (orientation:landscape){.sg-st-stats li em{font-size:10px}}
+.sg-st-card{flex-basis:290px}.sg-stars{font-size:16px;letter-spacing:0}
+@media (max-width:600px){.sg-st-card{flex-basis:auto}.sg-stars{font-size:13px}}
+@media (max-height:500px) and (orientation:landscape){.sg-st-card{flex-basis:300px}.sg-stars{font-size:12px}}

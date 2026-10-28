@@ -4,6 +4,13 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.86 - 2026-10-28
+
+### Changed
+- Siege Cartoon balance: every troop's levels now step up clearly. Each new form has at least 30% more overall power (health × damage per second) than the one before, and at least 20% more health and 20% more damage per second. The extra power keeps pace with the form's energy cost: forms that cost far more (the master swordsman, the mounted lancer, the ninja, the ghost sniper, the archangel) got much stronger, and none hits less hard per second than the form below it any more.
+- Siege Cartoon balance: the gunner's pistol and the wizard's lightning hit a little harder at level 1. The flying mech's later forms (100, 125, 155, 190, 230) and the heavy robot's (240, 290, 350) cost more energy, to match their bigger jumps.
+- Siege Cartoon shop: Strength is now damage per second (counting splash), so fast weak shots and slow heavy ones compare fairly. Each stat shows its number beside its stars.
+
 ## 1.15.85 - 2026-10-28
 
 ### Changed
