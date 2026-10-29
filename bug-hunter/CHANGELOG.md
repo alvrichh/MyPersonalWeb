@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.105 - 2026-10-29
+
+### Changed
+- Siege Cartoon battle: the view marker under the VS is just the eye, with no strip. It slides from the left end, under our castle's icon, with the camera at our castle, to the right end, under the enemy's icon, with the camera at theirs.
+
 ## 1.15.104 - 2026-10-29
 
 ### Fixed

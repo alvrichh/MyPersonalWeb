@@ -449,9 +449,9 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       if (mode === 'cartoon') { const bar = q<HTMLElement>('.sg-bar').getBoundingClientRect(), field = canvas.getBoundingClientRect(); camera.bottom = Math.max(0, field.bottom - bar.top - bar.height * 0.3); }
       else camera.bottom = 0;
       V.render(ctx, canvas, state, camera, reduced);
-      // The strip under the VS shows which stretch of the field is on screen (the camera's window over the whole field).
+      // An eye under the VS slides from its left end (the camera at our castle) to its right end (at the enemy's).
       const look = mode === 'cartoon' ? root.querySelector<HTMLElement>('[data-sg-view]') : null;
-      if (look) { const lo = camera.min ?? 0, span = M.FIELD - lo, w = Math.min(1, camera.width / span); look.style.width = `${(w * 100).toFixed(1)}%`; look.style.left = `${(Math.max(0, Math.min(1 - w, (camera.x - lo) / span)) * 100).toFixed(1)}%`; }
+      if (look) { const lo = camera.min ?? 0, run = Math.max(1, M.FIELD - camera.width - lo); look.style.setProperty('--k', Math.max(0, Math.min(1, (camera.x - lo) / run)).toFixed(3)); }
       // The aim control stands on the deck, wherever the field puts it.
       q<HTMLElement>('.sg-aim').style.bottom = `calc(${((1 - (camera.deck ?? 0.5)) * 100).toFixed(1)}% + 6px)`;
       if (now >= uiAt) { updateUi(); uiAt = now + 100; }
