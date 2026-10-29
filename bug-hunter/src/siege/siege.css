@@ -951,3 +951,10 @@
 .sg-view i{left:calc(var(--k, 0) * (100% - 18px));width:18px;background:none;box-shadow:none;color:#ffffffcc}
 .sg-view svg{width:16px;height:10px}
 @media (max-height:500px){.sg-view svg{width:14px;height:9px}}
+/* v1.15.106 — the stage maps run under a phone's notch and rounded corners (no dark bands at the sides); only their
+   buttons keep clear of them. The shop's Back button never breaks its arrow onto a line of its own. */
+.siege-root.is-cartoon:has(.sg-map-only){padding-left:0;padding-right:0;background:#0b1424}
+.sg-map-only .sg-map-top{left:calc(10px + env(safe-area-inset-left));right:calc(10px + env(safe-area-inset-right))}
+.sg-map-only .sg-map-go{left:calc(10px + env(safe-area-inset-left))}
+.sg-map-only .sg-map-shop{right:calc(6px + env(safe-area-inset-right))}
+.siege-root.is-cartoon .sg-prep .sg-st-back,.siege-root.is-cartoon .sg-prep .sg-st-back:hover:not(:disabled){white-space:nowrap;flex-shrink:0}
