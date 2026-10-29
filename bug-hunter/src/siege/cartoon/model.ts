@@ -131,25 +131,25 @@ export const UNITS: readonly Spec[] = [
   // Ours, air (Cartoon Wars 2's A row): they fly over the field, out of reach of melee troops; only ranged ones hit them.
   // The aircraft fighter's four forms: a sword under a propeller pack, then with goggles and scarf, two rotors and blue
   // steel, and gold rotors with a flaming sword.
-  { id: 10, flyAt: 95, cost: 30, hp: 70, damage: 12, speed: 70, range: 40, rate: 0.7, cooldown: 3, unlock: 2, air: true, skyOnly: true, ...six('ally-fighter-1', 242, 0.5062), forms: [
+  { id: 10, flyAt: 70, cost: 30, hp: 70, damage: 12, speed: 70, range: 40, rate: 0.7, cooldown: 3, unlock: 2, air: true, skyOnly: true, ...six('ally-fighter-1', 242, 0.5062), forms: [
     { price: 150, cost: 40, hp: 100, damage: 14, rate: 0.6, ...six('ally-fighter-2', 269, 0.4833) },
     { price: 400, cost: 55, hp: 140, damage: 16, rate: 0.5, ...six('ally-fighter-3', 266, 0.5263) },
     { price: 1200, cost: 90, hp: 220, damage: 17, speed: 80, splash: 25, rate: 0.35, ...six('ally-fighter-4', 272, 0.579) },
   ] },
   // The armed aircraft fighter's four forms (docs/cw2-reference.md): a rifleman under a propeller pack, a veteran
   // sniper, a laser gun, and the air magician casting pink lightning.
-  { id: 11, flyAt: 110, cost: 55, hp: 110, damage: 20, speed: 55, range: 190, rate: 0.8, cooldown: 5, unlock: 3, air: true, shot: 'bullet-rifle', ...six('ally-armed-fighter-1', 260, 0.4808), forms: [
+  { id: 11, flyAt: 70, cost: 55, hp: 110, damage: 20, speed: 55, range: 190, rate: 0.8, cooldown: 5, unlock: 3, air: true, shot: 'bullet-rifle', ...six('ally-armed-fighter-1', 260, 0.4808), forms: [
     { price: 400, cost: 70, hp: 145, damage: 38, range: 260, rate: 1.2, shot: 'bullet-sniper', ...six('ally-armed-fighter-2', 272, 0.4871) },
     { price: 900, cost: 90, hp: 185, damage: 25, range: 230, rate: 0.6, shot: 'plasma', ...six('ally-armed-fighter-3', 257, 0.5642) },
     { price: 2000, cost: 140, hp: 240, damage: 20, range: 220, rate: 0.5, splash: 60, shot: 'ray-pink', ...six('ally-armed-fighter-4', 285, 0.5702) },
   ] },
   // The armed helicopter's three forms: green with one rocket, blue with a pair, and the black and gold gunship's salvo.
-  { id: 12, flyAt: 120, cost: 95, hp: 320, damage: 22, speed: 35, range: 210, rate: 0.9, cooldown: 10, unlock: 4, air: true, splash: 50, shot: 'rocket', spin: false, ...six('ally-helicopter-1', 169, 1.0355), forms: [
+  { id: 12, flyAt: 125, cost: 95, hp: 320, damage: 22, speed: 35, range: 210, rate: 0.9, cooldown: 10, unlock: 4, air: true, splash: 50, shot: 'rocket', spin: false, ...six('ally-helicopter-1', 169, 1.0355), forms: [
     { price: 800, cost: 120, hp: 425, damage: 21, splash: 55, shot: 'rockets', rate: 0.7, ...six('ally-helicopter-2', 196, 1.0204) },
     { price: 2000, cost: 170, hp: 620, damage: 19, range: 230, splash: 70, shot: 'salvo', rate: 0.5, ...six('ally-helicopter-3', 201, 1.1443) },
   ] },
   // The drill aircraft, the flying shield (docs/cw2-reference.md): a drill rocket that rams, then a heavier gold one.
-  { id: 13, flyAt: 90, cost: 80, hp: 360, damage: 27, speed: 55, range: 40, rate: 0.8, cooldown: 8, unlock: 3, air: true, ...six('ally-drill-1', 199, 0.5528), forms: [
+  { id: 13, flyAt: 98, cost: 80, hp: 360, damage: 27, speed: 55, range: 40, rate: 0.8, cooldown: 8, unlock: 3, air: true, ...six('ally-drill-1', 199, 0.5528), forms: [
     { price: 1000, cost: 130, hp: 700, damage: 30, rate: 0.5, ...six('ally-drill-2', 242, 0.6095) },
   ] },
   // The angel army, the dearest: an axe and shield (very fast), a staff throwing a violet crescent, and the golden
@@ -171,16 +171,16 @@ export const UNITS: readonly Spec[] = [
   { id: 24, cost: 0, hp: 150, damage: 42, speed: 26, range: 220, rate: 1.9, cooldown: 0, unlock: 1, foe: true, splash: 60, infantry: true, hitsAir: true, ...foe('foe-wizard-1', 165, 0.77) },
   { id: 25, cost: 0, hp: 280, damage: 36, speed: 60, range: 40, rate: 1, cooldown: 0, unlock: 1, foe: true, ...foe('foe-tiger-1', 115, 1.2) },
   { id: 26, cost: 0, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, ...foe('foe-dragon-1', 120, 1.38) },
-  { id: 27, flyAt: 110, cost: 0, hp: 380, damage: 40, speed: 55, range: 45, rate: 0.9, cooldown: 0, unlock: 1, foe: true, air: true, ...foe('foe-death-angel-1', 156, 0.93) },
-  { id: 28, flyAt: 120, cost: 0, hp: 70, damage: 12, speed: 70, range: 40, rate: 0.7, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-eagle-1', 171, 0.7) },
-  { id: 29, flyAt: 95, cost: 0, hp: 110, damage: 18, speed: 60, range: 40, rate: 0.7, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-ninja-bat-1', 128, 0.7) },
-  { id: 30, flyAt: 115, cost: 0, hp: 130, damage: 24, speed: 45, range: 180, rate: 1.2, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-hypno-bat-1', 139, 0.83) },
-  { id: 31, flyAt: 125, cost: 0, hp: 900, damage: 55, speed: 40, range: 130, rate: 1.4, cooldown: 0, unlock: 1, foe: true, air: true, splash: 50, steady: true, ...foe('foe-red-dragon-rider-1', 179, 1.05) },
+  { id: 27, flyAt: 125, cost: 0, hp: 380, damage: 40, speed: 55, range: 45, rate: 0.9, cooldown: 0, unlock: 1, foe: true, air: true, ...foe('foe-death-angel-1', 156, 0.93) },
+  { id: 28, flyAt: 70, cost: 0, hp: 70, damage: 12, speed: 70, range: 40, rate: 0.7, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-eagle-1', 171, 0.7) },
+  { id: 29, flyAt: 70, cost: 0, hp: 110, damage: 18, speed: 60, range: 40, rate: 0.7, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-ninja-bat-1', 128, 0.7) },
+  { id: 30, flyAt: 70, cost: 0, hp: 130, damage: 24, speed: 45, range: 180, rate: 1.2, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-hypno-bat-1', 139, 0.83) },
+  { id: 31, flyAt: 70, cost: 0, hp: 900, damage: 55, speed: 40, range: 130, rate: 1.4, cooldown: 0, unlock: 1, foe: true, air: true, splash: 50, steady: true, ...foe('foe-red-dragon-rider-1', 179, 1.05) },
   { id: 32, cost: 0, hp: 760, damage: 40, speed: 24, range: 180, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splits: 2, splash: 35, hitsAir: true, ...foe('foe-gatling-1', 123, 1.22) },
   // Ours again, appended (ids are places in this list):
   // The flying mech, in six forms: a rocket fist, a laser, a plasma beam, an ice burst, a gatling,
   // and a giant golden fist.
-  { id: 33, flyAt: 105, cost: 80, hp: 300, damage: 32, speed: 55, range: 45, rate: 0.9, cooldown: 8, unlock: 5, air: true, splash: 30, ...six('ally-mech-1', 215, 0.6977), forms: [
+  { id: 33, flyAt: 98, cost: 80, hp: 300, damage: 32, speed: 55, range: 45, rate: 0.9, cooldown: 8, unlock: 5, air: true, splash: 30, ...six('ally-mech-1', 215, 0.6977), forms: [
     { price: 500, cost: 100, hp: 430, damage: 30, range: 130, splash: 30, shot: 'ray-blue', rate: 0.7, ...six('ally-mech-2', 242, 0.6612) },
     { price: 800, cost: 125, hp: 520, damage: 34, range: 150, splash: 35, shot: 'plasma', rate: 0.6, ...six('ally-mech-3', 268, 0.6437) },
     { price: 1200, cost: 155, hp: 640, damage: 37, range: 60, splash: 40, rate: 0.5, ...six('ally-mech-4', 280, 0.6518) },
@@ -190,7 +190,7 @@ export const UNITS: readonly Spec[] = [
   // The guardians (`GUARDIAN`), each act's own picture; their stats are those of the troops that stood in for them.
   { id: 34, cost: 0, hp: 480, damage: 26, speed: 24, range: 42, rate: 1.5, cooldown: 0, unlock: 1, foe: true, hitsAir: true, ...foe('boss-slinger-1', 221, 0.85) },
   { id: 35, cost: 0, hp: 760, damage: 40, speed: 24, range: 180, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 45, hitsAir: true, ...foe('boss-gatling-1', 224, 0.84) },
-  { id: 36, flyAt: 105, cost: 0, hp: 900, damage: 55, speed: 40, range: 130, rate: 1.4, cooldown: 0, unlock: 1, foe: true, air: true, splash: 50, steady: true, ...foe('boss-dragon-rider-1', 217, 0.92) },
+  { id: 36, flyAt: 70, cost: 0, hp: 900, damage: 55, speed: 40, range: 130, rate: 1.4, cooldown: 0, unlock: 1, foe: true, air: true, splash: 50, steady: true, ...foe('boss-dragon-rider-1', 217, 0.92) },
   { id: 37, cost: 0, hp: 720, damage: 34, speed: 21, range: 48, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 40, hitsAir: true, ...foe('boss-brute-eater-1', 176, 1.07) },
   { id: 38, cost: 0, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, hitsAir: true, ...foe('boss-dino-1', 199, 1.0) },
   { id: 39, cost: 0, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, hitsAir: true, ...foe('boss-king-dino-1', 258, 0.87) },
@@ -495,7 +495,7 @@ export const SCATTER = { along: 14, deep: 4 };
 /** Where the wizard's three meteors land round the target: field units along the ground, and up it (back) or down
     (front): two at the back, one in front between them. */
 export const METEORS = [[-30, 10], [32, 10], [2, -10]];
-export const FLY = { high: 100, ranged: 50, close: 22, rate: 90 };
+export const FLY = { high: 70, ranged: 50, close: 22, rate: 90 };
 /** How high a flyer cruises: its own height, or `FLY.high`. */
 export const highOf = (u: { id: number; side: number; lv?: number }) => specOf(u).flyAt ?? FLY.high;
 export const BOW = { max: 100, cost: 1.2, regen: 12, every: 0.42, step: 0.06, damage: 16, gap: 24, friendly: 0.35, powerStep: 0.12, reach: 0.55, reachStep: 0.05, storeStep: 25, regenStep: 3 };
