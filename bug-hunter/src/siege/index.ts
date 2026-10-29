@@ -62,17 +62,17 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   const air = (c: number) => !!M.UNITS[cid(c)].air;
   const tabCards = () => tab === 'special' ? [] : selected.filter(id => air(id) === (tab === 'air'));
   const camera: Camera = { x: 0, width: 650 };
-  /** When each troop sound last played (ms): the same sound at most every 70 ms, and no more than four a frame, so a
-      big battle stays a clash of distinct blows rather than a roar. */
-  const heard = new Map<string, number>();
+  /** When each troop sound last played (ms): the same sound at most every 140 ms, and one sound every 55 ms at most
+      (about eighteen a second), none far off screen, so a big battle stays a clash of distinct blows and the music, made
+      live on the same audio thread, never stutters under hundreds of sounds a second. */
+  const heard = new Map<string, number>(); let lastSound = -1e9;
   function troopSounds(now: number) {
     const q = state?.sounds; if (!q?.length) return;
-    let played = 0;
     for (const { k, x } of q.splice(0)) {
-      if (played >= 4 || now - (heard.get(k) ?? -1e9) < 70) continue;
-      heard.set(k, now); played++;
-      // Louder and centred where the camera looks, softer off screen, panned left or right by its place.
       const mid = camera.x + camera.width / 2, off = Math.abs(x - mid) / (camera.width / 2);
+      if (off > 1.6 || now - lastSound < 55 || now - (heard.get(k) ?? -1e9) < 140) continue;
+      heard.set(k, now); lastSound = now;
+      // Louder and centred where the camera looks, softer off screen, panned left or right by its place.
       sound(k, off <= 1 ? 1 - off * 0.25 : Math.max(0.15, 0.6 - (off - 1) * 0.5), Math.max(-1, Math.min(1, (x - mid) / (camera.width / 2))) * 0.7);
     }
   }
