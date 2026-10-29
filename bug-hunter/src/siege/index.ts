@@ -472,7 +472,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     root.querySelectorAll<HTMLElement>('[data-sg-tab]').forEach(b => { const on = b.dataset.sgTab === tab; b.classList.toggle('is-on', on); b.setAttribute('aria-selected', String(on)); });
     const list = tabCards();
     q('[data-sg-cards]').innerHTML = tab === 'special'
-      ? `<button data-sg="generator"></button><button data-sg="strike"></button><button data-sg="missile"></button>${(state?.kit ?? []).map(k => `<button data-sg-power="${k.card}"></button>`).join('')}`
+      ? `<button data-sg="generator"></button><button data-sg="strike"></button>${mode === 'cartoon' ? '' : '<button data-sg="missile"></button>'}${(state?.kit ?? []).map(k => `<button data-sg-power="${k.card}"></button>`).join('')}`
       : list.length ? list.map((id, i) => `<button data-sg-summon="${id}" aria-label="${i + 1}. ${name(cid(id))} · ${t('siegeLevel', { n: clv(id) })} · ${M.specAt(cid(id), clv(id)).cost}"><img src="${V.portrait(cid(id), clv(id))}" data-trim="${V.portrait(cid(id), clv(id))}" alt=""><small data-sg-cost="${id}"></small><i class="sg-cooldown" data-sg-cooldown="${id}"></i></button>`).join('')
       : `<p class="sg-empty">${t('siegeAirEmpty')}</p>`;
     V.trimImages(root); layoutBar(); updateUi();
@@ -513,9 +513,9 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     bowButton.disabled = paused || s.phase !== 'fight';
     // Cartoon's specials show their recharge as a darkening that lightens from the top down; Legacy's keep the seconds.
     const cartoon = mode === 'cartoon';
-    for (const [action, key, cd, pic, total] of [['strike', 'siegeSpell', s.spell, 'skills/bolt', cartoonModel.STRIKE_EVERY], ['missile', 'siegeMissile', s.rocket, 'fx/rocket', cartoonModel.ROCKET.every]] as const) {
+    for (const [action, key, cd, pic, total, cost] of [['strike', 'siegeSpell', s.spell, 'skills/bolt', cartoonModel.STRIKE_EVERY, cartoon ? cartoonModel.STRIKE_COST : 0], ['missile', 'siegeMissile', s.rocket, 'fx/rocket', cartoonModel.ROCKET.every, 0]] as const) {
       const button = root.querySelector<HTMLButtonElement>(`[data-sg="${action}"]`); if (!button) continue;
-      setPicButton(button, `/images/game/${pic}.webp`, cartoon ? '' : cd > 0 ? `${Math.ceil(cd)}s` : t('siegeReady'), cartoon ? cd / total : 0); button.setAttribute('aria-label', t(key)); button.disabled = paused || s.phase !== 'fight' || cd > 0; button.classList.toggle('is-cooling', cd > 0);
+      setPicButton(button, `/images/game/${pic}.webp`, cartoon ? (cost ? `⚡ ${cost}` : '') : cd > 0 ? `${Math.ceil(cd)}s` : t('siegeReady'), cartoon ? cd / total : 0); button.setAttribute('aria-label', t(key)); button.disabled = paused || s.phase !== 'fight' || cd > 0 || s.energy < cost; button.classList.toggle('is-cooling', cd > 0);
     }
     for (const k of s.kit ?? []) {
       const button = root.querySelector<HTMLButtonElement>(`[data-sg-power="${k.card}"]`); if (!button) continue;
@@ -788,7 +788,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     const key = e.key.toLowerCase();
     if ('123456efqrlas'.includes(key) || key.startsWith('arrow')) e.preventDefault();
     if (key === 'l' || key === 'a' || key === 's') { tab = key === 'l' ? 'land' : key === 'a' ? 'air' : 'special'; cards(); return; }
-    if (/^[1-6]$/.test(key)) { const n = Number(key) - 1; if (tab === 'special') [() => M.improveGenerator(state!), () => M.strike(state!), () => M.missile(state!)][n]?.(); else { const id = tabCards()[n]; if (id !== undefined) M.summon(state, id); } }
+    if (/^[1-6]$/.test(key)) { const n = Number(key) - 1; if (tab === 'special') [() => M.improveGenerator(state!), () => M.strike(state!), ...(mode === 'cartoon' ? [] : [() => M.missile(state!)])][n]?.(); else { const id = tabCards()[n]; if (id !== undefined) M.summon(state, id); } }
     else if (key === 'r') M.missile(state);
     else if (key === 'e') M.improveGenerator(state); else if (key === 'f') M.toggleBow(state); else if (key === 'q') M.strike(state);
     else if (key === 'arrowleft') camera.x = Math.max(camera.min ?? 0, camera.x - 100); else if (key === 'arrowright') camera.x = Math.min(Math.max(0, M.FIELD - camera.width), camera.x + 100);

@@ -1,4 +1,4 @@
-import { actOf, stageIn, flight, bowReach, foesAt, FIELD, FLY, shotFor, FOE_AIR, FOE_LAND, GUARDIAN, KNOCK, SPELLS, UNITS, isBeam, isBullet, specAt, specOf, aimAt, enemyTier, castleTier, energyMax, looksTier, type Effect, type Fighter, type Siege } from './model';
+import { actOf, stageIn, flight, bowReach, highOf, foesAt, FIELD, shotFor, FOE_AIR, FOE_LAND, GUARDIAN, KNOCK, SPELLS, UNITS, isBeam, isBullet, specAt, specOf, aimAt, enemyTier, castleTier, energyMax, looksTier, type Effect, type Fighter, type Siege } from './model';
 import { gloom } from './story';
 
 /** Each world's ground colours, under its floor while that loads (moss, embers, snow, mud, jungle, sand, iron,
@@ -667,7 +667,7 @@ function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: nu
   // Air troops fly above their lane, their shadow on the ground under them; the fallen lie on the ground.
   // Every troop on one line (the lanes only order who is drawn in front), so the card bar never hides one.
   const spec = specOf(u), floor = ground;
-  const y = gone !== undefined ? floor : spec.air ? floor - (u.alt ?? FLY.high) - u.lane * 8 + (reduced ? 0 : Math.sin(s.time * 4 + u.uid) * 5) : floor;
+  const y = gone !== undefined ? floor : spec.air ? floor - (u.alt ?? highOf(u)) - u.lane * 8 + (reduced ? 0 : Math.sin(s.time * 4 + u.uid) * 5) : floor;
   const path = spec.sprite, t = s.time + u.uid * 0.37;
   // The pose. Six-pose sheets: walk A/B in turn while walking, the wind-up just before a blow, the blow, hurt, dead.
   // Three-pose sheets: stand (walking in code), attack, hurt.
