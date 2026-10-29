@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.103 - 2026-10-29
+
+### Added
+- Siege Cartoon battle: under the VS health bars, a faint see-through strip of the whole field marks with an eye the stretch on screen, and follows the camera as it moves.
+
 ## 1.15.102 - 2026-10-29
 
 ### Changed

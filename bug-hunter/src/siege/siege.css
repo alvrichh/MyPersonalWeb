@@ -940,3 +940,9 @@
 /* v1.15.101 — a battle card that cannot be used now (recharging, or not enough energy yet) loses its blue: grey under its
    recharge shade, so only the cards ready to play stay blue. */
 .siege-root.is-cartoon .sg-bar .sg-deck button:disabled,.siege-root.is-cartoon .sg-bar .sg-deck button.is-cooling:disabled{filter:grayscale(.9) brightness(.72)}
+/* v1.15.103 — under the VS, a faint strip of the whole field with the stretch on screen marked by an eye. */
+.siege-root.is-cartoon .sg-vs{position:relative}
+.sg-view{position:absolute;left:12%;right:12%;top:calc(100% + 3px);height:9px;border-radius:5px;background:#0a142680;box-shadow:inset 0 0 0 1px #ffffff26;pointer-events:none}
+.sg-view i{position:absolute;top:0;bottom:0;display:grid;place-items:center;border-radius:5px;background:#ffffff40;box-shadow:inset 0 0 0 1px #ffffff59;color:#ffffffd9}
+.sg-view svg{width:13px;height:8px;filter:drop-shadow(0 1px 1px #0008)}
+@media (max-height:500px){.sg-view{top:calc(100% + 1px);height:8px}.sg-view svg{width:11px;height:7px}}
