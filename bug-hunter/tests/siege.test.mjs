@@ -420,3 +420,12 @@ test('a troop form recharges a second for every 10 energy it costs, 2 to 30 s', 
   const s = m.newSiege({ ...m.freshProgress(), owned: [0], levels: [5], deck: [400] }, 1); s.energy = 999;
   assert.equal(m.summon(s, 400), true); assert.equal(s.cooldowns[400], 20);
 });
+test('flyers that shoot stay up at their height to fire on walkers; close fighters drop to strike', () => {
+  const s = m.newSiege({ ...m.freshProgress(), owned: [0, 12, 13], deck: [12, 13] }, 1); s.nextWave = 999; s.gusted = true; s.energy = 999;
+  m.summon(s, 12); m.summon(s, 13);
+  const heli = s.units.find(u => u.id === 12), fighter = s.units.find(u => u.id === 13);
+  for (const u of [heli, fighter]) { u.x = 600; u.hp = u.maxHp = 9000; }
+  s.units.push({ uid: 99, id: 15, side: 1, x: 640, lane: 1, hp: 9000, maxHp: 9000, damage: 0, attack: 99, flash: 0, boss: false });
+  run(s, 3);
+  assert.ok(heli.alt >= m.highOf(heli) - 1, 'the helicopter never comes low'); assert.ok(fighter.alt <= 33, 'the drill swoops');
+});

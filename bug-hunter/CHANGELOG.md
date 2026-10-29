@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.118 - 2026-10-29
+
+### Changed
+- Siege Cartoon flyers stay up. Those that shoot (the helicopter, the armed flyer, the mech's guns, the angels' spells) fire down from their own height and no longer drop to 50. Only close fighters (swords, the drill, fists) come down, to a walker's reach (32, was 22) and no lower, where walkers can strike them back.
+
 ## 1.15.117 - 2026-10-29
 
 ### Changed
