@@ -414,3 +414,9 @@ test('flyers cruise at heights by kind: people low, machines higher, the helicop
   assert.equal(at(12), at(14), 'the helicopter and the angels at the top'); assert.ok(at(33) < at(12) && at(33) > at(10), 'the mech between them and the people');
   for (const id of [10, 11, 28, 29, 30, 31]) assert.ok(at(id) > 32 && at(id) < at(33), `${id} flies low, as before, out of walkers' reach`);
 });
+test('a troop form recharges a second for every 10 energy it costs, 2 to 30 s', () => {
+  assert.equal(m.cooldownOf(0, 1), 2); assert.equal(m.cooldownOf(0, 5), 20, 'the master swordsman cannot be sent over and over');
+  assert.equal(m.cooldownOf(9, 4), 30, 'capped'); assert.equal(m.cooldownOf(6, 3), 17);
+  const s = m.newSiege({ ...m.freshProgress(), owned: [0], levels: [5], deck: [400] }, 1); s.energy = 999;
+  assert.equal(m.summon(s, 400), true); assert.equal(s.cooldowns[400], 20);
+});
