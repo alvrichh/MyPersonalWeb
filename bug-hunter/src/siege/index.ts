@@ -364,7 +364,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     // top right; the field with the bow's aim on our wall; one bar below with the magic, the troop cards and the bow.
     root.innerHTML = `<div class="sg-battle"><header class="sg-hud">
         <div class="sg-mana"><img src="/images/game/ui/orb.webp" alt=""><span><b data-sg-energy></b><small data-sg-status></small></span><progress data-sg-meter></progress></div>
-        <div class="sg-vs"><img class="sg-vs-pic" src="${vsPic(0)}" alt=""><span class="sg-hp"><i data-sg-bar="0"></i><small data-sg-health="0"></small></span><b>VS</b><span class="sg-hp is-enemy"><i data-sg-bar="1"></i><small data-sg-health="1"></small></span><img class="sg-vs-pic" src="${vsPic(1)}" alt=""></div>
+        <div class="sg-vs"><img class="sg-vs-pic" src="${vsPic(0)}" alt=""><span class="sg-hp"><i data-sg-bar="0"></i><small data-sg-health="0"></small></span><b>VS</b><span class="sg-hp is-enemy"><i data-sg-bar="1"></i><small data-sg-health="1"></small></span>${mode === 'cartoon' ? '<span class="sg-view" aria-hidden="true"><i data-sg-view><svg viewBox="0 0 24 14"><path d="M1 7C4 2.5 8 1 12 1s8 1.5 11 6c-3 4.5-7 6-11 6S4 11.5 1 7Z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="7" r="3" fill="currentColor"/></svg></i></span>' : ''}<img class="sg-vs-pic" src="${vsPic(1)}" alt=""></div>
         <div class="sg-hud-actions"><span class="sg-clock" data-sg-clock></span><span class="sg-gold"><img src="/images/game/store/coins-2.webp" alt=""><b data-sg-gold>${progress.coins}</b></span><button class="sg-pause" data-sg="pause" aria-label="${t('pause')}"><span aria-hidden="true">Ⅱ</span></button></div></header>
       <div class="sg-field"><div class="sg-turn" role="status"><span aria-hidden="true">📱↻</span><b>${t('siegeTurn')}</b><button type="button" data-sg-turn aria-label="${t('siegeTurnOk')}">✕</button></div><canvas class="sg-arena" tabindex="0" role="img" aria-label="${t('siegeBattlefield')}"></canvas>
       <div class="sg-aim" role="slider" tabindex="0" aria-orientation="vertical" aria-valuemin="140" aria-valuemax="${mode === 'cartoon' ? cartoonModel.AIM_MAX : 1080}" aria-valuenow="700" aria-label="${t('siegeAim')}" data-sg-aim><i class="sg-aim-up" aria-hidden="true"></i><i class="sg-aim-knob" aria-hidden="true"></i><i class="sg-aim-down" aria-hidden="true"></i></div>
@@ -449,6 +449,9 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       if (mode === 'cartoon') { const bar = q<HTMLElement>('.sg-bar').getBoundingClientRect(), field = canvas.getBoundingClientRect(); camera.bottom = Math.max(0, field.bottom - bar.top - bar.height * 0.3); }
       else camera.bottom = 0;
       V.render(ctx, canvas, state, camera, reduced);
+      // The strip under the VS shows which stretch of the field is on screen (the camera's window over the whole field).
+      const look = mode === 'cartoon' ? root.querySelector<HTMLElement>('[data-sg-view]') : null;
+      if (look) { const lo = camera.min ?? 0, span = M.FIELD - lo, w = Math.min(1, camera.width / span); look.style.width = `${(w * 100).toFixed(1)}%`; look.style.left = `${(Math.max(0, Math.min(1 - w, (camera.x - lo) / span)) * 100).toFixed(1)}%`; }
       // The aim control stands on the deck, wherever the field puts it.
       q<HTMLElement>('.sg-aim').style.bottom = `calc(${((1 - (camera.deck ?? 0.5)) * 100).toFixed(1)}% + 6px)`;
       if (now >= uiAt) { updateUi(); uiAt = now + 100; }
