@@ -960,3 +960,20 @@
 .siege-root.is-cartoon .sg-prep .sg-st-back,.siege-root.is-cartoon .sg-prep .sg-st-back:hover:not(:disabled){white-space:nowrap;flex-shrink:0}
 /* v1.15.107 — the eye rides a thin see-through line across the VS, the line broken where the eye is (nothing behind it). */
 .sg-view{background:linear-gradient(90deg,#ffffff66 calc(var(--k, 0) * (100% - 18px) - 2px),transparent 0 calc(var(--k, 0) * (100% - 18px) + 20px),#ffffff66 0) center / 100% 2px no-repeat}
+/* v1.15.108 — the map's Start panel moves to the bottom right (under the right thumb) and the shop stall to the bottom
+   left, drawn the other way round (its chest on the inner side). */
+.siege-root.is-cartoon .sg-prep .sg-map-shop,.siege-root.is-cartoon .sg-prep .sg-map-shop:hover:not(:disabled),.siege-root.is-cartoon .sg-prep .sg-map-shop:active{right:auto;left:calc(6px + env(safe-area-inset-left));background-image:url('/images/game/siege/ui/shop-stall.webp')}
+.sg-map-shop span{left:15%}
+.sg-map-go,.sg-map-only .sg-map-go{left:auto;right:calc(10px + env(safe-area-inset-right))}
+/* On a short screen (a phone held sideways) both corners shrink, so neither covers a stage: the Start panel drops its
+   prize line and its frame thins, the stall gets smaller. */
+@media (max-height:500px){
+  .sg-map-go{width:min(250px,27%)!important;border-width:22px!important;border-image-width:22px!important;gap:2px!important}
+  .sg-map-go .sg-prize{display:none!important}
+  .siege-root.is-cartoon .sg-prep .sg-map-go .sg-eyebrow{margin-top:-6px!important;font-size:10px!important}
+  .siege-root.is-cartoon .sg-prep .sg-map-go .sg-play{min-height:34px!important;font-size:14px!important}
+  .siege-root.is-cartoon .sg-prep .sg-map-shop,.siege-root.is-cartoon .sg-prep .sg-map-shop:hover:not(:disabled),.siege-root.is-cartoon .sg-prep .sg-map-shop:active{width:clamp(110px,13cqw,150px)}
+}
+/* The world map has no Start panel; its first world sits in the bottom-left corner, so the stall stands beside it. */
+.siege-root.is-cartoon .sg-prep .sg-map:not(:has(.sg-map-go)) .sg-map-shop,.siege-root.is-cartoon .sg-prep .sg-map:not(:has(.sg-map-go)) .sg-map-shop:hover:not(:disabled){left:max(19cqw, calc(6px + env(safe-area-inset-left)))}
+@media (max-height:420px){.sg-map-go{width:min(220px,25%)!important}}
