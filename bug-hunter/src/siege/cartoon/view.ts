@@ -53,15 +53,15 @@ export function preload(world: number, deck: number[], _levels: number[] = []) {
 const SCENE = 'siege/backdrop';
 const SCENE_FIT = { pad: 120, ground: 0.8 };
 const SCENES: Record<number, [string, string?, string?]> = { 1: ['siege/bg-clean', undefined, SCENE], 2: ['siege/bg-islands', 'siege/bg-sky'], 3: ['siege/bg-forest', 'siege/bg-swamp'], 4: ['siege/bg-desert'], 5: ['siege/bg-snow'], 6: ['siege/bg-final'] };
-/** The owner's battle backgrounds, one per stage (`siege/backgrounds/world-N/scene-M`), each with where its troops walk
+/** The owner's battle backgrounds, one per stage, each world's growing darker stage by stage, the fifth its guardian's lair (`siege/backgrounds/world-N/scene-M`), each with where its troops walk
     (`feet`) and the back edge of its path (`back`), shares of its height measured by hand on each picture. */
 const STAGE_SCENES: [number, number, number][][] = [
-  [[1, 79, 76], [2, 78.5, 75.5], [3, 79, 76.5], [4, 77, 73.5], [5, 73.5, 70.5]],
-  [[1, 74.5, 72], [2, 80, 76.5], [8, 78.5, 76], [9, 74.5, 72], [10, 78.5, 76.5]],
-  [[1, 74.5, 71.5], [5, 74.5, 72], [2, 74.5, 72], [4, 74.5, 72], [6, 73, 70.5]],
-  [[1, 78.5, 75.5], [2, 77.5, 75], [3, 75, 72], [4, 78, 75], [5, 76, 73]],
-  [[2, 75, 73], [5, 76.5, 75.5], [3, 79, 77], [1, 80.5, 79.5], [4, 81, 79.5]],
-  [[1, 78.5, 76], [2, 74, 70], [3, 74, 71], [4, 75.5, 73], [5, 77.5, 74.5]],
+  [[2, 78.5, 75.5], [5, 73.5, 70.5], [3, 79, 76.5], [4, 77, 73.5], [1, 79, 76]],
+  [[10, 78.5, 76.5], [11, 78.5, 76.5], [1, 74.5, 72], [8, 78.5, 76], [2, 80, 76.5]],
+  [[6, 73, 70.5], [5, 74.5, 72], [2, 74.5, 72], [1, 74.5, 71.5], [3, 79, 76.5]],
+  [[5, 76, 73], [3, 75, 72], [2, 77.5, 75], [4, 78, 75], [1, 78.5, 75.5]],
+  [[3, 79, 77], [5, 76.5, 75.5], [2, 75, 73], [4, 81, 79.5], [1, 80.5, 79.5]],
+  [[5, 77.5, 74.5], [4, 75.5, 73], [3, 74, 71], [2, 74, 70], [1, 78.5, 76]],
 ];
 const FITS: Record<string, { feet: number; back: number }> = {};
 STAGE_SCENES.forEach((list, a) => list.forEach(([n, feet, back]) => { FITS[`siege/backgrounds/world-${a + 1}/scene-${n}`] = { feet: feet / 100, back: back / 100 }; }));

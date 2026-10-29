@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.114 - 2026-10-29
+
+### Changed
+- Siege Cartoon battlefield: the stage backgrounds are reordered so each world grows darker stage by stage. The fifth stage shows the guardian's lair from that world's map: the invaded king's walls, the cannon citadel, the corrupted giant tree, the dark pyramid, the black ice fortress and the throne castle.
+
 ## 1.15.113 - 2026-10-29
 
 ### Fixed
