@@ -125,6 +125,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   let turnSeen = false;
   /** Where each map picture's platforms are (% of its width and height), measured on the owner's pictures: index 0 the
       world map's six, then each world's five stages, left to right. */
+  const THREAT_ICONS: Record<string, string> = { swarm: '🐾', wall: '🛡️', sky: '🦅', shooters: '🎯', giants: '🗿' };
   const MAP_SPOTS: [number, number][][] = [
     [[10.5, 51.7], [31.9, 25.6], [45.8, 54.8], [61.6, 32.9], [74.9, 57.3], [92.6, 27.6]],
     [[14.1, 39.1], [41.6, 60.9], [54.1, 51], [70, 61.6], [86.4, 48.7]],
@@ -342,12 +343,20 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     const panel = here ? `<div class="sg-map-go">
         <span class="sg-eyebrow">${worldName(act)} · ${t('siegeStage', { n: stage, max: S })}${stage === S ? ` · ${actBoss(act)}` : ''}</span>
         <p class="sg-prize"><img src="/images/game/store/coins-2.webp" alt="">${won(world) ? t('siegeRepeatWin', { n: prize(world, false) }) : t('siegeFirstWin', { n: prize(world, true) })}</p>
+        ${threatLine()}
         <button class="sg-play" data-sg="launch" ${selected.length ? '' : 'disabled'} aria-label="${t('siegeLaunch')}"><span class="sg-play-tri" aria-hidden="true"></span>${t('siegeGo')}</button></div>` : '';
     return `<div class="sg-map" style="--map:url('${pic}')"><div class="sg-turn" role="status"><span aria-hidden="true">📱↻</span><b>${t('siegeTurn')}</b><button type="button" data-sg-turn aria-label="${t('siegeTurnOk')}">✕</button></div><div class="sg-map-pic"><img src="${pic}" alt="">${buttons}</div>
       <header class="sg-map-top"><button class="sg-back" ${act ? 'data-sg-map-act="0"' : 'data-sg="exit"'} aria-label="${act ? t('siegeShopBack') : t('siegeExit')}">←</button>
         <h1 class="sg-map-title">${act ? `<small>${worldName(act)}</small>${t(`siegeCtAct${act}` as Key)}` : title()}</h1>
         <span class="sg-coins"><img src="/images/game/store/coins-2.webp" alt="">${progress.coins}</span><button class="sg-round is-gear" data-sg="settings" aria-label="${t('options')}"><span aria-hidden="true">⚙</span></button></header>
       <button class="sg-map-shop" data-sg-prep="shop"><span>${t('siegeTabStore')}</span></button>${panel}</div>`;
+  }
+  /** The picked stage's threat on the map: what it sends most and what answers it, red with a way to the shop when the
+      army has nothing that does. */
+  function threatLine() {
+    const threat = cartoonModel.threatOf(world); if (threat === 'normal' || threat === 'mixed') return '';
+    const ready = selected.some(c => cartoonModel.counters(c, threat));
+    return `<p class="sg-threat ${ready ? '' : 'is-missing'}"><b>${THREAT_ICONS[threat]} ${t(`siegeThreat_${threat}` as Key)}</b> · ${t(`siegeThreatTip_${threat}` as Key)}${ready ? '' : ` <button type="button" class="sg-threat-fix" data-sg-prep="shop">${t('siegePrepare')}</button>`}</p>`;
   }
   /** The HUD's pictures of both sides: Legacy's Town Hall and world guardian, Cartoon's two fortresses. */
   const vsPic = (side: 0 | 1) => mode === 'cartoon'

@@ -4,6 +4,18 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.120 - 2026-10-29
+
+### Added
+- Siege Cartoon stage threats. Every stage throws one kind of trouble at you most, and it has a counter:
+  - Swarm: fast close fighters (counter: area damage).
+  - Wall: tough fighters that cannot reach the air (flyers, or shooters).
+  - Sky: flyers (troops that reach the air).
+  - Shooters: long-range troops (a tank, or fast troops).
+  - Giants: the toughest (heavy damage).
+
+  About two troops in three come from the threat, and each wave keeps the strength of a plain one: giants come fewer, a swarm more. The guardian's stage and a few mixed stages keep the usual mix. The map's Start panel names the threat and its counter; when the army has nothing that answers it, the line turns red with a "Prepare army" button to the shop.
+
 ## 1.15.119 - 2026-10-29
 
 ### Changed
