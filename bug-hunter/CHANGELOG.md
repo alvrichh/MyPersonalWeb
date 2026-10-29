@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.113 - 2026-10-29
+
+### Fixed
+- Siege Cartoon battlefield on an upright phone: the stage's background is drawn big enough to reach the top of the screen. Above it there used to be a stretched band of its top colours, green or dark stripes on the forest and Darkness stages.
+
 ## 1.15.112 - 2026-10-29
 
 ### Changed

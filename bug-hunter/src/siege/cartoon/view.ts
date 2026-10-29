@@ -311,12 +311,13 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
     // left edge with the camera at our end to its right edge at the enemy's. The ground layer (`groundOf`) moves with
     // the troops, stretched along the whole field (a little wider than the picture), so it changes along the way as the
     // landscape behind it does. Its sky colours carry on above the picture.
-    // On a wide view the far landscape is drawn smaller, so its top meets the view's top (none of it cut off above) while
+    // A tall view (a phone upright) draws it big enough to reach the view's top (no stretched sky above it). On a wide
+    // view the far landscape is drawn smaller, so its top meets the view's top (none of it cut off above) while
     // its walking line stays at the troops' feet; never narrower than the view. A tall view keeps it at `SCENE_W`.
     // Shrunk like that it would barely slide (hardly wider than the view), so it is also widened by `SCENE_WIDEN`: the
     // camera's run then moves it about five times as far, while its height still fits the view.
     const ratio = scene.naturalHeight / scene.naturalWidth, feet = fitOf(sceneOf(s.world)).feet, fit = Math.max(ground / feet, camera.width * ratio);
-    const sh = CLOSE.has(sceneOf(s.world)) ? SCENE_W * ratio : Math.min(SCENE_W * ratio, fit), sw = sh / ratio * (sh < SCENE_W * ratio ? SCENE_WIDEN : 1), top = ground - sh * feet;
+    const sh = w < h ? Math.max(SCENE_W * ratio, ground / feet) : CLOSE.has(sceneOf(s.world)) ? SCENE_W * ratio : Math.min(SCENE_W * ratio, fit), sw = sh / ratio * (sh < SCENE_W * ratio ? SCENE_WIDEN : 1), top = ground - sh * feet;
     const lo = camera.min ?? 0, hi = Math.max(lo, FIELD - camera.width), k = hi > lo ? (camera.x - lo) / (hi - lo) : 0;
     const x0 = camera.x - Math.max(0, sw - camera.width) * k - Math.max(0, camera.width - sw) / 2;
     // When the view runs below the picture, its foreground (the part under the walking ground) is stretched down to
