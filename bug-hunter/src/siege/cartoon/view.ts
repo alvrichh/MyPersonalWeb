@@ -61,9 +61,9 @@ const tops = new Map<HTMLImageElement, HTMLCanvasElement>();
 const SCENE_W = 2080;
 /** How much wider than its own shape the far landscape is drawn on a wide view (see the scene's drawing). */
 const SCENE_WIDEN = 1.25;
-/** The pictures whose sky is mostly empty (the first world's): drawn close at `SCENE_W`, their top cut off, rather than
+/** The pictures whose sky is mostly empty (the first, fifth and sixth worlds'): drawn close at `SCENE_W`, their top cut off, rather than
     shrunk to show it all. */
-const CLOSE = new Set(['siege/bg-clean', 'siege/backdrop']);
+const CLOSE = new Set(['siege/bg-clean', 'siege/backdrop', 'siege/bg-snow', 'siege/bg-final']);
 /** The picture's ground layer, which moves with the troops: everything from its cut down to the picture's bottom. The
     cut never goes below the line the troops walk on (`SCENE_FIT.ground`, the base) nor above the back edge of the
     ground they walk on (`PATH_TOP`, measured by hand on each picture); between the two it follows the outlines, along
