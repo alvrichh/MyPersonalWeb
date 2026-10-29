@@ -144,7 +144,7 @@ export const UNITS: readonly Spec[] = [
     { price: 2000, cost: 120, hp: 240, damage: 20, range: 220, rate: 0.5, splash: 60, shot: 'ray-pink', ...six('ally-armed-fighter-4', 285, 0.5702) },
   ] },
   // The armed helicopter's three forms: green with one rocket, blue with a pair, and the black and gold gunship's salvo.
-  { id: 12, flyAt: 125, cost: 95, hp: 320, damage: 22, speed: 35, range: 210, rate: 0.9, cooldown: 10, unlock: 4, air: true, splash: 50, shot: 'rocket', spin: false, ...six('ally-helicopter-1', 169, 1.0355), forms: [
+  { id: 12, flyAt: 125, cost: 95, hp: 320, damage: 22, speed: 50, range: 210, rate: 0.9, cooldown: 10, unlock: 4, air: true, splash: 50, shot: 'rocket', spin: false, ...six('ally-helicopter-1', 169, 1.0355), forms: [
     { price: 800, cost: 120, hp: 425, damage: 21, splash: 55, shot: 'rockets', rate: 0.7, ...six('ally-helicopter-2', 196, 1.0204) },
     { price: 2000, cost: 170, hp: 620, damage: 19, range: 230, splash: 70, shot: 'salvo', rate: 0.5, ...six('ally-helicopter-3', 201, 1.1443) },
   ] },
@@ -166,9 +166,9 @@ export const UNITS: readonly Spec[] = [
   { id: 19, cost: 0, hp: 240, damage: 32, speed: 40, range: 60, rate: 1, cooldown: 0, unlock: 1, foe: true, infantry: true, ...foe('foe-reaper-1', 140, 0.93) },
   { id: 20, cost: 0, hp: 560, damage: 30, speed: 22, range: 45, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 40, infantry: true, ...foe('foe-hammer-1', 133, 1.03) },
   { id: 21, cost: 0, hp: 720, damage: 34, speed: 21, range: 48, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 40, infantry: true, ...foe('foe-axeman-1', 147, 1.07) },
-  { id: 22, cost: 0, hp: 100, damage: 30, speed: 30, range: 230, rate: 1.5, cooldown: 0, unlock: 1, foe: true, infantry: true, hitsAir: true, ...foe('foe-gunner-1', 134, 0.86) },
-  { id: 23, cost: 0, hp: 300, damage: 38, speed: 28, range: 210, rate: 1.5, cooldown: 0, unlock: 1, foe: true, infantry: true, hitsAir: true, ...foe('foe-blaster-1', 125, 1.04) },
-  { id: 24, cost: 0, hp: 150, damage: 42, speed: 26, range: 220, rate: 1.9, cooldown: 0, unlock: 1, foe: true, splash: 60, infantry: true, hitsAir: true, ...foe('foe-wizard-1', 165, 0.77) },
+  { id: 22, cost: 0, hp: 100, damage: 30, speed: 30, range: 185, rate: 1.5, cooldown: 0, unlock: 1, foe: true, infantry: true, hitsAir: true, ...foe('foe-gunner-1', 134, 0.86) },
+  { id: 23, cost: 0, hp: 300, damage: 38, speed: 28, range: 175, rate: 1.5, cooldown: 0, unlock: 1, foe: true, infantry: true, hitsAir: true, ...foe('foe-blaster-1', 125, 1.04) },
+  { id: 24, cost: 0, hp: 150, damage: 42, speed: 26, range: 190, rate: 1.9, cooldown: 0, unlock: 1, foe: true, splash: 60, infantry: true, hitsAir: true, ...foe('foe-wizard-1', 165, 0.77) },
   { id: 25, cost: 0, hp: 280, damage: 36, speed: 60, range: 40, rate: 1, cooldown: 0, unlock: 1, foe: true, ...foe('foe-tiger-1', 115, 1.2) },
   { id: 26, cost: 0, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, ...foe('foe-dragon-1', 120, 1.38) },
   { id: 27, flyAt: 125, cost: 0, hp: 380, damage: 40, speed: 55, range: 45, rate: 0.9, cooldown: 0, unlock: 1, foe: true, air: true, ...foe('foe-death-angel-1', 156, 0.93) },
@@ -226,7 +226,7 @@ export function counters(card: number, threat: Threat): boolean {
   return true;
 }
 /** How strong an enemy troop is, for weighing a wave: its health times its damage a second (splash counted). */
-export const foePower = (id: number) => { const u = UNITS[id]; return u.hp * u.damage / u.rate * (1 + (u.splash ?? 0) / 100); };
+export const foePower = (id: number) => { const u = UNITS[id]; return u.hp * u.damage / u.rate * (1 + (u.splash ?? 0) / 100) };
 /** The troops a stage's threat sends: from every act so far (the whole of this one, so a threat can show what is to come). */
 export function threatPool(stage: number): number[] {
   const t = threatOf(stage), act = actOf(stage);
