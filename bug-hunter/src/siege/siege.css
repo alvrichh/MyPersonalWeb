@@ -958,3 +958,5 @@
 .sg-map-only .sg-map-go{left:calc(10px + env(safe-area-inset-left))}
 .sg-map-only .sg-map-shop{right:calc(6px + env(safe-area-inset-right))}
 .siege-root.is-cartoon .sg-prep .sg-st-back,.siege-root.is-cartoon .sg-prep .sg-st-back:hover:not(:disabled){white-space:nowrap;flex-shrink:0}
+/* v1.15.107 — the eye rides a thin see-through line across the VS, the line broken where the eye is (nothing behind it). */
+.sg-view{background:linear-gradient(90deg,#ffffff66 calc(var(--k, 0) * (100% - 18px) - 2px),transparent 0 calc(var(--k, 0) * (100% - 18px) + 20px),#ffffff66 0) center / 100% 2px no-repeat}
