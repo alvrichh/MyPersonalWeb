@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.122 - 2026-10-29
+
+### Changed
+- Siege Cartoon sky stages send the two toughest enemy flyers unlocked so far rather than the two newest: in the last world that is the death angel and the dragon rider instead of the hypno bat, so the archangel has something to fight for the sky.
+
 ## 1.15.121 - 2026-10-29
 
 ### Changed

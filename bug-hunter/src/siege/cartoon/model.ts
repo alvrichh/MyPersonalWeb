@@ -235,7 +235,8 @@ export function threatPool(stage: number): number[] {
   // The swarm: the fastest close fighters, this act's first.
   if (t === 'swarm') { const fast = (ids: number[]) => ids.filter(id => UNITS[id].range <= 60 && UNITS[id].speed >= 40).sort((a, b) => UNITS[b].speed - UNITS[a].speed); return [...new Set([...fast(mine), ...fast(land)])].slice(0, 2); }
   if (t === 'wall') return byHp(land.filter(id => UNITS[id].range <= 60 && !UNITS[id].hitsAir)).slice(0, 2);
-  if (t === 'sky') return air.length ? air.slice(-2) : [];
+  // The sky: the two toughest flyers so far (the death angel and the dragon rider in the last act, not the bats).
+  if (t === 'sky') return byHp(air).slice(0, 2);
   if (t === 'shooters') return land.filter(id => UNITS[id].range >= 150).slice(-2);
   if (t === 'giants') return byHp([...new Set(land)]).slice(0, 2);
   return [];
