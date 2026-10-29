@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.116 - 2026-10-29
+
+### Fixed
+- Siege: troops looked pixelated. The canvas no longer lowers its resolution while frames run slow; it is always at the screen's (at most 2× its CSS pixels). The other gains of 1.15.115 stay: in the busy-battle test it runs at about 13.5 frames a second where it ran at 6.6 before them.
+- Siege music stuttering in big battles. Troop sounds are capped at about eighteen a second, the same sound at most every 140 ms and none far off screen; there used to be up to four a frame, over two hundred a second. The music, made live on the same audio thread, now schedules most of a second ahead (it was a third), so a busy stretch of frames no longer runs it dry.
+
 ## 1.15.115 - 2026-10-29
 
 ### Changed

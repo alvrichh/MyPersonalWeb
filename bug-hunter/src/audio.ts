@@ -549,9 +549,9 @@ class Engine {
       this.step += missed;
       this.next += missed * step;
     }
-    // A third of a second scheduled ahead: a busy frame (a screen being built, pictures decoding) no longer runs the
+    // Most of a second scheduled ahead: a busy stretch of frames (a big battle, pictures decoding) no longer runs the
     // music dry.
-    while (this.next < this.ctx.currentTime + 0.3) {
+    while (this.next < this.ctx.currentTime + 0.8) {
       this.schedule(this.step, this.next);
       this.next += this.stepLen();
       this.step += 1;

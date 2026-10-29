@@ -278,24 +278,8 @@ export interface Camera { x: number; width: number; min?: number; deck?: number;
   goldAt?: { x: number; y: number }; manaAt?: { x: number; y: number } }
 /** The HUD counters' spots for this frame (`Camera.goldAt`, `manaAt`). */
 let hud: Pick<Camera, 'goldAt' | 'manaAt'> = {};
-/** The canvas's resolution (device pixels per CSS pixel): the screen's, at most 2, lowered a step at a time while frames
-    run slow (painting pixels is most of a frame's cost) and raised again once they run fast. */
-const RES = { max: 2, min: 1, step: 0.25, slow: 24, fast: 15, every: 45 };
 /** The painted backdrop, kept between frames (see `render`). */
 const backdrop = { canvas: document.createElement('canvas'), key: '' };
-let resolution = 0, frameAt = 0, frameSum = 0, frameCount = 0;
-function adaptResolution() {
-  const now = performance.now(), top = Math.min(RES.max, window.devicePixelRatio || 1);
-  if (!resolution) resolution = top;
-  if (frameAt && now - frameAt < 250) { frameSum += now - frameAt; frameCount++; }
-  frameAt = now;
-  if (frameCount >= RES.every) {
-    const avg = frameSum / frameCount; frameSum = 0; frameCount = 0;
-    if (avg > RES.slow && resolution > RES.min) resolution = Math.max(RES.min, resolution - RES.step);
-    else if (avg < RES.fast && resolution < top) resolution = Math.min(top, resolution + RES.step);
-  }
-  return Math.min(top, resolution);
-}
 /** The canvas's size in CSS pixels, read once and again only when it changes (a ResizeObserver), not every frame. */
 const sizes = new WeakMap<HTMLCanvasElement, { w: number; h: number }>();
 function sizeOf(canvas: HTMLCanvasElement) {
@@ -311,7 +295,8 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   hud = camera;
   const { w, h } = sizeOf(canvas);
   if (!w || !h) return;
-  const dpr = adaptResolution();
+  // Full sharpness (the screen's pixels, at most 2 a CSS pixel): the troops must stay crisp.
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
   if (canvas.width !== Math.round(w * dpr) || canvas.height !== Math.round(h * dpr)) { canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr); }
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   const color = THEMES[actOf(s.world) - 1];
