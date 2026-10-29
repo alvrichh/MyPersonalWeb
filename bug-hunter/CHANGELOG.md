@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.110 - 2026-10-29
+
+### Changed
+- Siege Cartoon battlefield: the camera is back at its distance from before 1.15.90, so troops and castles are their old size again. Worlds 1, 5 and 6 draw their landscape close, its top cut off, as before 1.15.98. Worlds 2, 3 and 4 keep showing it whole from top to bottom (floating islands, castles, the corrupted side).
+
 ## 1.15.109 - 2026-10-29
 
 ### Fixed
