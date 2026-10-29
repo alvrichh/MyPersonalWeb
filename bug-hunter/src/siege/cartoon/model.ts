@@ -593,6 +593,8 @@ function arrows(s: Siege, count: number) {
 }
 /** What a fighter's attack shows flying to `x` (a troop, or the enemy fortress): its own projectile, the wizard's three
     meteors with their fire, and a blast where a rocket of the robots' last forms lands. Damage is dealt apart. */
+/** The shots that are rockets. */
+const ROCKET_SHOTS = new Set(['rocket', 'rockets', 'salvo', 'missile']);
 function launch(s: Siege, u: Fighter, a: Spec, x0: number, lane: number, toUp: number) {
   // A thrown or shot projectile of its own flies a little longer, so it is seen on its way.
   const flight = isBullet(a.shot) || isBeam(a.shot) ? 0.16 : SPELLS.includes(a.shot ?? '') ? 0.6 : a.shot ? 0.35 : 0.2;
@@ -605,7 +607,8 @@ function launch(s: Siege, u: Fighter, a: Spec, x0: number, lane: number, toUp: n
       s.effects.push({ x, from: x, lane: lane, life: flight + wait + FIRE, max: FIRE, kind: 'fire', side: u.side, size: 60, up: dy });
     }
   } else s.effects.push({ x: x0, from: u.x, lane: lane, life: flight, max: flight, kind: u.elite ? 'bolt' : 'shot', side: u.side, art: a.shot, spin: a.spin, fromUp: a.air ? u.alt ?? highOf(u) : 0, toUp });
-  if (a.blast) s.effects.push({ x: x0, from: x0, lane: lane, life: flight + BOOM, max: BOOM, kind: 'boom', side: u.side, size: a.shot === 'salvo' ? 90 : 70, up: toUp, dark: true });
+  // Every rocket blows up where it lands, with the explosion art (bigger for salvos and the robots' blasts).
+  if (a.blast || ROCKET_SHOTS.has(a.shot ?? '')) s.effects.push({ x: x0, from: x0, lane: lane, life: flight + BOOM, max: BOOM, kind: 'boom', side: u.side, size: a.shot === 'salvo' ? 90 : a.blast ? 70 : 56, up: toUp, dark: true });
 }
 /** Start (true) or stop (false) the archers; they only start with at least one shot in the quiver. */
 export function draw(s: Siege, on: boolean) { if (s.phase === 'fight') s.bow.drawing = on && s.bow.quiver >= BOW.cost; }

@@ -429,3 +429,10 @@ test('flyers that shoot stay up at their height to fire on walkers; close fighte
   run(s, 3);
   assert.ok(heli.alt >= m.highOf(heli) - 1, 'the helicopter never comes low'); assert.ok(fighter.alt <= 33, 'the drill swoops');
 });
+test('every rocket blows up where it lands', () => {
+  const s = m.newSiege({ ...m.freshProgress(), owned: [0, 5], deck: [5] }, 1); s.nextWave = 999; s.gusted = true; s.energy = 999;
+  m.summon(s, 5); const b = s.units[0]; b.x = 600; b.hp = b.maxHp = 9000;
+  s.units.push({ uid: 99, id: 15, side: 1, x: 760, lane: 1, hp: 9000, maxHp: 9000, damage: 0, attack: 99, flash: 0, boss: false });
+  let booms = 0; for (let i = 0; i < 90; i++) { m.tick(s, 1 / 30); booms = Math.max(booms, s.effects.filter(e => e.kind === 'boom').length); }
+  assert.ok(booms > 0, 'the bazooka\'s rocket explodes');
+});
