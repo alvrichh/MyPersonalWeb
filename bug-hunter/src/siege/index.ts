@@ -124,6 +124,9 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   // The view (settings): the whole field at once is offered on a wide screen with a mouse, where the troops stay legible.
   const WIDE_KEY = 'bugHunter.siege.cartoon.wide', wideScreen = () => matchMedia('(min-width: 900px) and (pointer: fine)').matches;
   V.viewPrefs.wide = storage.get(WIDE_KEY) === '1' && wideScreen();
+  // Mute all (settings): both volumes to nothing, and back to what they were (the game's defaults if they were off already).
+  let lastHeard: [number, number] = [0.6, 0.8];
+  const muted = () => volumes.get().every(v => v === 0);
   const fullscreenOn = () => !!document.fullscreenElement, canFullscreen = () => !!document.fullscreenEnabled && !!document.documentElement.requestFullscreen;
   /** The turn-your-phone notice was closed (it stays closed on the maps). */
   let turnSeen = false;
@@ -629,6 +632,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     const [m, f] = volumes.get(), row = (k: 'music' | 'sfx', v: number) => `<label class="sg-vol"><span>${k === 'music' ? '🎵' : '🔔'} ${t(k)}</span><b>${Math.round(v * 100)}%</b><input type="range" min="0" max="100" value="${Math.round(v * 100)}" data-sg-vol="${k}"></label>`;
     modal(`<div class="sg-pausebox"><button class="sg-round is-close" data-sg="pause-back" aria-label="${t(state ? 'paused' : 'siegeTabMap')}"><span aria-hidden="true">✕</span></button>
       <h2>${t('options')}</h2>${row('music', m)}${row('sfx', f)}
+      <button class="sg-kit ${muted() ? 'is-gold' : 'is-blue'}" data-sg="mute" aria-pressed="${muted()}">${muted() ? '🔇 ' + t('unmute') : '🔊 ' + t('mute')}</button>
       ${volumes.lang ? `<div class="sg-langs" role="group" aria-label="${t('language')}"><span>🌐 ${t('language')}</span>${(['es', 'en'] as const).map(l => `<button class="sg-kit ${volumes.lang!() === l ? 'is-gold' : 'is-blue'}" data-sg-lang="${l}" aria-pressed="${volumes.lang!() === l}">${l === 'es' ? 'Español' : 'English'}</button>`).join('')}</div>` : ''}
       ${wideScreen() ? `<div class="sg-langs" role="group" aria-label="${t('siegeView')}"><span>🔭 ${t('siegeView')}</span><button class="sg-kit ${V.viewPrefs.wide ? 'is-blue' : 'is-gold'}" data-sg="view-close" aria-pressed="${!V.viewPrefs.wide}">${t('siegeViewClose')}</button><button class="sg-kit ${V.viewPrefs.wide ? 'is-gold' : 'is-blue'}" data-sg="view-wide" aria-pressed="${V.viewPrefs.wide}">${t('siegeViewWide')}</button></div>` : ''}
       ${canFullscreen() ? `<button class="sg-kit ${fullscreenOn() ? 'is-gold' : 'is-blue'}" data-sg="fullscreen" aria-pressed="${fullscreenOn()}">⛶ ${t(fullscreenOn() ? 'siegeFullscreenOff' : 'siegeFullscreen')}</button>` : ''}
@@ -789,6 +793,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     else if (action === 'pause') pause();
     else if (action === 'settings') settingsMenu();
     else if (action === 'pause-back') { if (state) pauseMenu(); else { root.querySelector('.sg-overlay')?.remove(); prep(); } }
+    else if (action === 'mute') { if (muted()) volumes.set(lastHeard[0] || 0.6, lastHeard[1] || 0.8); else { lastHeard = volumes.get(); volumes.set(0, 0); } settingsMenu(); }
     else if (action === 'view-close' || action === 'view-wide') { V.viewPrefs.wide = action === 'view-wide'; storage.set(WIDE_KEY, V.viewPrefs.wide ? '1' : ''); settingsMenu(); }
     else if (action === 'fullscreen') { (fullscreenOn() ? document.exitFullscreen() : document.documentElement.requestFullscreen()).catch(() => {}).then(() => settingsMenu()); }
     else if (action === 'free') { cartoonModel.testing.free = !cartoonModel.testing.free; storage.set(FREE_KEY, cartoonModel.testing.free ? '1' : ''); settingsMenu(); }
