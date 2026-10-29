@@ -81,7 +81,7 @@ export const UNITS: readonly Spec[] = [
   { id: 2, cost: 30, hp: 80, damage: 18, speed: 33, range: 150, rate: 1.3, cooldown: 4, unlock: 1, infantry: true, shot: 'rock', spin: true, ...six('ally-archer-1', 183, 0.6284), forms: [
     { price: 250, cost: 40, hp: 95, damage: 23, range: 175, shot: 'javelin', spin: false, rate: 1.2, ...six('ally-archer-2', 182, 0.6731) },
     { price: 400, cost: 50, hp: 120, damage: 25, range: 200, shot: 'arrow', spin: false, hitsAir: true, rate: 1.0, ...six('ally-archer-3', 189, 0.7672) },
-    { price: 1500, cost: 120, hp: 210, damage: 13, speed: 50, range: 195, rate: 0.22, shot: 'shuriken', spin: true, hitsAir: true, ...six('ally-archer-4', 156, 1.0256) },
+    { price: 1500, cost: 100, hp: 210, damage: 13, speed: 50, range: 195, rate: 0.22, shot: 'shuriken', spin: true, hitsAir: true, ...six('ally-archer-4', 156, 1.0256) },
   ] },
   // The heavy armour swordsman's four forms (docs/cw2-reference.md): a knight with two swords, the armoured one who
   // punches, a bigger one with maces for hands, and the crowned giant (the King). The reference gives no prices.
@@ -92,14 +92,14 @@ export const UNITS: readonly Spec[] = [
   ] },
   // The gunner's four forms (docs/cw2-reference.md): pistol, rifle, two Uzis (fast), sniper rifle (long reach, slow and
   // heavy). They fire bullets, each gun its own (`shot: 'bullet'`, `bullet-rifle|uzi|sniper`). The reference gives no prices.
-  { id: 4, cost: 45, hp: 95, damage: 24, speed: 32, range: 200, rate: 1.2, cooldown: 6, unlock: 1, infantry: true, shot: 'bullet', ...six('ally-gunner-1', 246, 0.437), forms: [
+  { id: 4, cost: 40, hp: 95, damage: 24, speed: 32, range: 200, rate: 1.2, cooldown: 6, unlock: 1, infantry: true, shot: 'bullet', ...six('ally-gunner-1', 246, 0.437), forms: [
     { price: 300, cost: 55, hp: 130, damage: 25, range: 230, shot: 'bullet-rifle', hitsAir: true, rate: 1.0, ...six('ally-gunner-2', 277, 0.4242) },
     { price: 500, cost: 70, hp: 155, damage: 14, range: 210, rate: 0.35, shot: 'bullet-uzi', hitsAir: true, ...six('ally-gunner-3', 278, 0.4676) },
-    { price: 1600, cost: 140, hp: 275, damage: 96, range: 320, rate: 1.4, shot: 'bullet-sniper', hitsAir: true, ...six('ally-gunner-4', 282, 0.4876) },
+    { price: 1600, cost: 120, hp: 275, damage: 96, range: 320, rate: 1.4, shot: 'bullet-sniper', hitsAir: true, ...six('ally-gunner-4', 282, 0.4876) },
   ] },
   // The blaster's four forms (docs/cw2-reference.md): bazooka, rocket launcher, ray gun, flamethrower. Rockets fly as
   // their own pictures and blast an area; the ray is drawn in code; the flame is in the attack pose (no projectile).
-  { id: 5, cost: 85, hp: 260, damage: 34, speed: 28, range: 200, rate: 1.6, cooldown: 8, unlock: 2, infantry: true, splash: 40, shot: 'rocket', spin: false, hitsAir: true, ...six('ally-blaster-1', 256, 0.5469), forms: [
+  { id: 5, cost: 75, hp: 260, damage: 34, speed: 28, range: 200, rate: 1.6, cooldown: 8, unlock: 2, infantry: true, splash: 40, shot: 'rocket', spin: false, hitsAir: true, ...six('ally-blaster-1', 256, 0.5469), forms: [
     { price: 350, cost: 100, hp: 310, damage: 34, splash: 50, shot: 'rockets', hitsAir: true, rate: 1.2, ...six('ally-blaster-2', 278, 0.5396) },
     { price: 600, cost: 120, hp: 420, damage: 42, range: 240, rate: 0.8, splash: 0, shot: 'ray', hitsAir: true, ...six('ally-blaster-3', 178, 0.8989) },
     { price: 1800, cost: 170, hp: 500, damage: 16, range: 110, rate: 0.25, splash: 70, shot: 'none', hitsAir: false, ...six('ally-blaster-4', 249, 0.7028) },
@@ -107,13 +107,13 @@ export const UNITS: readonly Spec[] = [
   // The wizard's three forms (docs/cw2-reference.md), the same staff: lightning striking the ground, a tornado, and a
   // meteor that leaves flames. The spell lands on the target from the sheet (`shot-lightning|tornado|meteor`); from
   // level 3 he reaches flyers. The reference gives no prices.
-  { id: 6, cost: 95, hp: 150, damage: 46, speed: 26, range: 220, rate: 1.9, cooldown: 10, unlock: 3, splash: 55, infantry: true, shot: 'lightning', ...six('ally-wizard-1', 220, 0.5227), forms: [
-    { price: 600, cost: 120, hp: 200, damage: 46, splash: 75, shot: 'tornado', hitsAir: true, rate: 1.7, ...six('ally-wizard-2', 251, 0.5179) },
-    { price: 2000, cost: 190, hp: 255, damage: 57, splash: 90, hitsAir: true, shot: 'meteor', rate: 1.4, ...six('ally-wizard-3', 258, 0.5814) },
+  { id: 6, cost: 95, hp: 150, damage: 60, speed: 26, range: 220, rate: 1.9, cooldown: 10, unlock: 3, splash: 55, infantry: true, shot: 'lightning', ...six('ally-wizard-1', 220, 0.5227), forms: [
+    { price: 600, cost: 120, hp: 200, damage: 66, splash: 75, shot: 'tornado', hitsAir: true, rate: 1.7, ...six('ally-wizard-2', 251, 0.5179) },
+    { price: 2000, cost: 170, hp: 255, damage: 95, splash: 90, hitsAir: true, shot: 'meteor', rate: 1.4, ...six('ally-wizard-3', 258, 0.5814) },
   ] },
   // The vulture rider: a knight with a spear on a walking vulture.
   { id: 7, cost: 75, hp: 260, damage: 40, speed: 85, range: 38, rate: 0.8, cooldown: 7, unlock: 4, ...six('ally-vulture-1', 234, 0.7799), forms: [
-    { price: 1600, cost: 105, hp: 440, damage: 43, range: 46, splash: 30, rate: 0.55, ...six('ally-vulture-2', 290, 0.7586) },
+    { price: 1600, cost: 130, hp: 440, damage: 43, range: 46, splash: 30, rate: 0.55, ...six('ally-vulture-2', 290, 0.7586) },
   ] },
   // The armed robot's three forms (docs/cw2-reference.md): claw and arm rocket, the walker with twin cannons (fast and
   // strong), and the walker behind a wall-like shield firing missiles.
@@ -138,10 +138,10 @@ export const UNITS: readonly Spec[] = [
   ] },
   // The armed aircraft fighter's four forms (docs/cw2-reference.md): a rifleman under a propeller pack, a veteran
   // sniper, a laser gun, and the air magician casting pink lightning.
-  { id: 11, flyAt: 70, cost: 55, hp: 110, damage: 20, speed: 55, range: 190, rate: 0.8, cooldown: 5, unlock: 3, air: true, shot: 'bullet-rifle', ...six('ally-armed-fighter-1', 260, 0.4808), forms: [
+  { id: 11, flyAt: 70, cost: 45, hp: 110, damage: 20, speed: 55, range: 190, rate: 0.8, cooldown: 5, unlock: 3, air: true, shot: 'bullet-rifle', ...six('ally-armed-fighter-1', 260, 0.4808), forms: [
     { price: 400, cost: 70, hp: 145, damage: 38, range: 260, rate: 1.2, shot: 'bullet-sniper', ...six('ally-armed-fighter-2', 272, 0.4871) },
     { price: 900, cost: 90, hp: 185, damage: 25, range: 230, rate: 0.6, shot: 'plasma', ...six('ally-armed-fighter-3', 257, 0.5642) },
-    { price: 2000, cost: 140, hp: 240, damage: 20, range: 220, rate: 0.5, splash: 60, shot: 'ray-pink', ...six('ally-armed-fighter-4', 285, 0.5702) },
+    { price: 2000, cost: 120, hp: 240, damage: 20, range: 220, rate: 0.5, splash: 60, shot: 'ray-pink', ...six('ally-armed-fighter-4', 285, 0.5702) },
   ] },
   // The armed helicopter's three forms: green with one rocket, blue with a pair, and the black and gold gunship's salvo.
   { id: 12, flyAt: 125, cost: 95, hp: 320, damage: 22, speed: 35, range: 210, rate: 0.9, cooldown: 10, unlock: 4, air: true, splash: 50, shot: 'rocket', spin: false, ...six('ally-helicopter-1', 169, 1.0355), forms: [
@@ -185,7 +185,7 @@ export const UNITS: readonly Spec[] = [
     { price: 800, cost: 125, hp: 520, damage: 34, range: 150, splash: 35, shot: 'plasma', rate: 0.6, ...six('ally-mech-3', 268, 0.6437) },
     { price: 1200, cost: 155, hp: 640, damage: 37, range: 60, splash: 40, rate: 0.5, ...six('ally-mech-4', 280, 0.6518) },
     { price: 1800, cost: 190, hp: 950, damage: 19, rate: 0.2, range: 160, splash: 30, shot: 'bullet', ...six('ally-mech-5', 212, 0.908) },
-    { price: 3000, cost: 230, hp: 1140, damage: 72, range: 60, splash: 50, rate: 0.6, ...six('ally-mech-6', 259, 0.8398) },
+    { price: 3000, cost: 260, hp: 1140, damage: 72, range: 60, splash: 50, rate: 0.6, ...six('ally-mech-6', 259, 0.8398) },
   ] },
   // The guardians (`GUARDIAN`), each act's own picture; their stats are those of the troops that stood in for them.
   { id: 34, cost: 0, hp: 480, damage: 26, speed: 24, range: 42, rate: 1.5, cooldown: 0, unlock: 1, foe: true, hitsAir: true, ...foe('boss-slinger-1', 221, 0.85) },
@@ -459,13 +459,16 @@ export function soundsOf(u: Fighter): [string, string] {
 function hear(s: Siege, k: string, x: number) { const q = (s.sounds ??= []); q.push({ k, x }); if (q.length > 24) q.shift(); }
 /** What summoning a troop costs now (its level's energy). */
 export const costOf = (_s: Siege, c: number) => specAt(cardId(c), cardLevel(c)).cost;
+/** A troop form's recharge after it is sent: a second for every 10 energy it costs (2 to 30 s), so a dear form cannot be
+    sent over and over the moment the energy is there. */
+export const cooldownOf = (id: number, level = 1) => Math.max(2, Math.min(30, Math.round(specAt(id, level).cost / 10)));
 export function canSummon(s: Siege, c: number): boolean {
   return s.phase === 'fight' && !!UNITS[cardId(c)] && !UNITS[cardId(c)].foe && s.deck.includes(c) && s.energy >= costOf(s, c) && (s.cooldowns[c] ?? 0) <= 0 && s.units.filter(u => !u.side).length < CAP;
 }
 /** Sends a card's troop at its level; each card has its own cooldown. */
 export function summon(s: Siege, c: number): boolean {
   if (!canSummon(s, c)) return false;
-  s.energy -= costOf(s, c); s.cooldowns[c] = UNITS[cardId(c)].cooldown; spawn(s, cardId(c), 0, false, cardLevel(c)); return true;
+  s.energy -= costOf(s, c); s.cooldowns[c] = cooldownOf(cardId(c), cardLevel(c)); spawn(s, cardId(c), 0, false, cardLevel(c)); return true;
 }
 export function improveGenerator(s: Siege): boolean {
   if (s.phase !== 'fight' || s.generator >= 4 || s.energy < generatorPrice(s)) return false;

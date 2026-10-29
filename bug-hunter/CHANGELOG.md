@@ -4,6 +4,15 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.117 - 2026-10-29
+
+### Changed
+- Siege Cartoon balance:
+  - The wizard hits much harder: 60, 66 and 95 a blow at levels 1–3 (was 46, 46 and 57), and level 3 costs 170 energy (was 190).
+  - Cheaper: the armed flyer at levels 1 and 4 (45 and 120), the ninja (100), the gunner at levels 1 and 4 (40 and 120) and the bazooka at level 1 (75).
+  - Dearer: the vulture rider at level 2 (130) and the flying mech at level 6 (260).
+- Siege Cartoon recharge: each troop form now recharges a second for every 10 energy it costs, between 2 and 30 seconds, instead of one recharge per troop at every level. The master swordsman, for example, now waits 20 s where it waited 2.
+
 ## 1.15.116 - 2026-10-29
 
 ### Fixed
