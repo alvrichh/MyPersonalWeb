@@ -4,6 +4,13 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.121 - 2026-10-29
+
+### Changed
+- Siege Cartoon balance, from simulated runs of all thirty stages:
+  - The enemy's shooters reach less far: gunner 230 → 185, blaster 210 → 175, wizard 220 → 190. They used to hold a line just outside the fortress bow's reach and beyond our archers', so the shooter stages (7, 14, 18, 26) and the third guardian were stalemates for everyone; now our archers and gunners outrange them and the bow reaches the line.
+  - The helicopter flies at 50 instead of 35: it no longer trails the foot troops.
+
 ## 1.15.120 - 2026-10-29
 
 ### Added
