@@ -61,6 +61,9 @@ const tops = new Map<HTMLImageElement, HTMLCanvasElement>();
 const SCENE_W = 2080;
 /** How much wider than its own shape the far landscape is drawn on a wide view (see the scene's drawing). */
 const SCENE_WIDEN = 1.25;
+/** The pictures whose sky is mostly empty (the first world's): drawn close at `SCENE_W`, their top cut off, rather than
+    shrunk to show it all. */
+const CLOSE = new Set(['siege/bg-clean', 'siege/backdrop']);
 /** The picture's ground layer, which moves with the troops: everything from its cut down to the picture's bottom. The
     cut never goes below the line the troops walk on (`SCENE_FIT.ground`, the base) nor above the back edge of the
     ground they walk on (`PATH_TOP`, measured by hand on each picture); between the two it follows the outlines, along
@@ -272,9 +275,8 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   const sky = ctx.createLinearGradient(0, 0, 0, h); sky.addColorStop(0, '#080f21'); sky.addColorStop(1, '#172c3c');
   ctx.fillStyle = sky; ctx.fillRect(0, 0, w, h);
   // Short, wide fields zoom in a little more, so the troops keep their size.
-  // A wide view stands further back (more field and sky, smaller troops), 15% more since v1.15.90 so more of the field
-  // and its picture show; an upright phone keeps it closer (further back it only shows more empty sky).
-  const scale = w >= h ? Math.min(h / (w / h > 2.2 ? 360 : 425), w / 810) * 0.85 : Math.min(h / 340, w / 650);
+  // A wide view stands further back (more field and sky, smaller troops); an upright phone keeps it closer.
+  const scale = w >= h ? Math.min(h / (w / h > 2.2 ? 360 : 425), w / 810) : Math.min(h / 340, w / 650);
   camera.width = w / scale; hudRoom = 62 / scale;
   camera.min = -AIM_GUTTER / scale;
   camera.x = Math.max(camera.min, Math.min(Math.max(camera.min, FIELD - camera.width), camera.x));
@@ -300,7 +302,7 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
     // Shrunk like that it would barely slide (hardly wider than the view), so it is also widened by `SCENE_WIDEN`: the
     // camera's run then moves it about five times as far, while its height still fits the view.
     const ratio = scene.naturalHeight / scene.naturalWidth, fit = Math.max(ground / SCENE_FIT.ground, camera.width * ratio);
-    const sh = Math.min(SCENE_W * ratio, fit), sw = sh / ratio * (sh < SCENE_W * ratio ? SCENE_WIDEN : 1), top = ground - sh * SCENE_FIT.ground;
+    const sh = CLOSE.has(sceneOf(s.world)) ? SCENE_W * ratio : Math.min(SCENE_W * ratio, fit), sw = sh / ratio * (sh < SCENE_W * ratio ? SCENE_WIDEN : 1), top = ground - sh * SCENE_FIT.ground;
     const lo = camera.min ?? 0, hi = Math.max(lo, FIELD - camera.width), k = hi > lo ? (camera.x - lo) / (hi - lo) : 0;
     const x0 = camera.x - Math.max(0, sw - camera.width) * k - Math.max(0, camera.width - sw) / 2;
     // When the view runs below the picture, its foreground (the part under the walking ground) is stretched down to
