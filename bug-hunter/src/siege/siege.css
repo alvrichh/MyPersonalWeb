@@ -974,6 +974,4 @@
   .siege-root.is-cartoon .sg-prep .sg-map-go .sg-play{min-height:34px!important;font-size:14px!important}
   .siege-root.is-cartoon .sg-prep .sg-map-shop,.siege-root.is-cartoon .sg-prep .sg-map-shop:hover:not(:disabled),.siege-root.is-cartoon .sg-prep .sg-map-shop:active{width:clamp(110px,13cqw,150px)}
 }
-/* The world map has no Start panel; its first world sits in the bottom-left corner, so the stall stands beside it. */
-.siege-root.is-cartoon .sg-prep .sg-map:not(:has(.sg-map-go)) .sg-map-shop,.siege-root.is-cartoon .sg-prep .sg-map:not(:has(.sg-map-go)) .sg-map-shop:hover:not(:disabled){left:max(19cqw, calc(6px + env(safe-area-inset-left)))}
 @media (max-height:420px){.sg-map-go{width:min(220px,25%)!important}}

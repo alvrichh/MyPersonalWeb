@@ -126,7 +126,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   /** Where each map picture's platforms are (% of its width and height), measured on the owner's pictures: index 0 the
       world map's six, then each world's five stages, left to right. */
   const MAP_SPOTS: [number, number][][] = [
-    [[10.2, 68], [26.3, 51], [44.3, 52.1], [62.8, 41.4], [81, 34], [93.6, 24.8]],
+    [[10.5, 51.7], [31.9, 25.6], [45.8, 54.8], [61.6, 32.9], [74.9, 57.3], [92.6, 27.6]],
     [[14.1, 39.1], [41.6, 60.9], [54.1, 51], [70, 61.6], [86.4, 48.7]],
     [[7.8, 35.6], [28.1, 51.8], [49.9, 42.3], [69.1, 58.2], [89.4, 34.5]],
     [[11.1, 46], [33.2, 37.7], [51.7, 51.5], [71.2, 39.9], [89.7, 28.2]],

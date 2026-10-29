@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.111 - 2026-10-29
+
+### Changed
+- Siege Cartoon world map: the owner's new map. The six worlds sit on its winding path in their own regions, and the shop stall is back in the bottom-left corner, where nothing is covered now. The old map is kept under `assets/old`.
+
 ## 1.15.110 - 2026-10-29
 
 ### Changed
