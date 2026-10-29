@@ -4,6 +4,18 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.115 - 2026-10-29
+
+### Changed
+- Siege performance, measured in a busy battle on a phone-sized screen at 2.75× pixel density with the CPU slowed 4×: from 6.6 to about 18 frames a second.
+  - The backdrop (sky, landscape, ground) is painted once into its own canvas and copied each frame; it is repainted only when the camera moves or the screen changes.
+  - The canvas resolution adapts: it steps down while frames run slow, and back up once they run fast again.
+  - Troops and effects off screen are not drawn.
+  - A hit troop flashes with a brightened second copy instead of a blur, which cost a lot each frame.
+  - The canvas size is measured only when it changes, and the HUD's layout ten times a second, not every frame.
+  - The main game's frame loop does nothing while Siege is open; it used to measure its canvas every frame underneath.
+- Site caching (`vercel.json`): fingerprinted files under `/assets/` are cached for a year; images under `/images/` for an hour, then served from cache while they refresh in the background, instead of being re-checked on every visit.
+
 ## 1.15.114 - 2026-10-29
 
 ### Changed
