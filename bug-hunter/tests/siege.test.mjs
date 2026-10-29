@@ -403,3 +403,13 @@ test('the mana pool upgrade raises the energy a battle can hold from the start',
   const s = m.newSiege(p, 1); assert.equal(m.energyMax(s), plain + 5 * m.MANA_STEP);
   s.generator = 1; assert.equal(m.energyMax(s), plain + 5 * m.MANA_STEP + 70, 'the generator still adds on top');
 });
+test('the discharge lands at the aim, costs energy and waits for enough of it', () => {
+  const s = m.newSiege(m.freshProgress(), 1); s.nextWave = 999; s.aim = 900; s.energy = m.STRIKE_COST - 1;
+  assert.equal(m.strike(s), false, 'not without the energy');
+  s.energy = 200; assert.equal(m.strike(s), true); assert.equal(s.energy, 200 - m.STRIKE_COST);
+  assert.ok(s.effects.some(e => e.kind === 'zap' && Math.abs(e.x - 900) <= 60), 'its lightning falls where the bow aims');
+});
+test('flyers cruise higher, each troop at its own height, out of walkers\' reach', () => {
+  for (const id of [10, 11, 12, 13, 14, 33, 27, 28, 29, 30, 31]) assert.ok(m.highOf({ id, side: m.UNITS[id].foe ? 1 : 0 }) >= 90, `${id}`);
+  assert.ok(m.highOf({ id: 14, side: 0 }) > m.highOf({ id: 13, side: 0 }), 'the angel above the drill');
+});

@@ -4,6 +4,13 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.101 - 2026-10-29
+
+### Changed
+- Siege Cartoon flyers cruise higher, each troop at its own height: the drill 90, the fighter and the bat 95, the mech and the guardian dragon 105, the armed flyer and the hypno bat 110-115, the helicopter and the eagle 120, the angel and the red dragon rider 125 (all flyers used to cruise at 70). Gunners drop to 50 to shoot, still out of walkers' reach.
+- Siege Cartoon special bar: the missile button is gone. The discharge (lightning) lands where the bow aims, now with its three bolts drawn there, and costs 60 energy (mana); it waits for enough energy as well as its recharge, and shows its cost.
+- Siege Cartoon battle bar: a card or special that cannot be used yet (recharging, or not enough energy) turns grey instead of staying blue; only the ones ready to play stay blue.
+
 ## 1.15.100 - 2026-10-28
 
 ### Changed

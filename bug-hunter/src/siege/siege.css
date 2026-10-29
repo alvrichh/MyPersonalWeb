@@ -937,3 +937,6 @@
   .siege-root.is-cartoon .sg-prep .sg-st-tabs{margin-bottom:30px}
   .siege-root.is-cartoon .sg-prep .sg-st-back,.siege-root.is-cartoon .sg-prep .sg-st-back:hover:not(:disabled){margin-left:0;margin-right:auto;min-width:0;min-height:32px;padding:0 4px;font-size:12px;border-width:0 22px;border-image-width:0 22px}
 }
+/* v1.15.101 — a battle card that cannot be used now (recharging, or not enough energy yet) loses its blue: grey under its
+   recharge shade, so only the cards ready to play stay blue. */
+.siege-root.is-cartoon .sg-bar .sg-deck button:disabled,.siege-root.is-cartoon .sg-bar .sg-deck button.is-cooling:disabled{filter:grayscale(.9) brightness(.72)}
