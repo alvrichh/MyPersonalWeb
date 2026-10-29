@@ -4067,6 +4067,8 @@ function frame(now: number) {
 function step(now: number) {
   const dt = Math.min(0.033, (now - last) / 1000);
   last = now;
+  // Siege runs its own loop over the page: nothing of the main game's needs doing meanwhile (not even measuring its canvas).
+  if (siegeOpen) return;
   fitIfMoved();
   if (board) { boardStep(dt, now); return; }
   const g = game;

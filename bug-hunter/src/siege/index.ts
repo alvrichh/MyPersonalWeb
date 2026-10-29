@@ -446,7 +446,8 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       }
       // Siege Cartoon lays its card bar over the field: the troops walk just above it.
       // The ground line sits on the wall's top (30% down the bar's picture), so the troops walk on the grass above it.
-      if (mode === 'cartoon') { const bar = q<HTMLElement>('.sg-bar').getBoundingClientRect(), field = canvas.getBoundingClientRect(); camera.bottom = Math.max(0, field.bottom - bar.top - bar.height * 0.3); }
+      // (measured with the HUD's spots, ten times a second: reading the layout every frame costs a reflow.)
+      if (mode === 'cartoon') { if (now >= uiAt) { const bar = q<HTMLElement>('.sg-bar').getBoundingClientRect(), field = canvas.getBoundingClientRect(); camera.bottom = Math.max(0, field.bottom - bar.top - bar.height * 0.3); } }
       else camera.bottom = 0;
       V.render(ctx, canvas, state, camera, reduced);
       // An eye under the VS slides from its left end (the camera at our castle) to its right end (at the enemy's).

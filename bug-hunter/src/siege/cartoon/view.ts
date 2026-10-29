@@ -278,16 +278,43 @@ export interface Camera { x: number; width: number; min?: number; deck?: number;
   goldAt?: { x: number; y: number }; manaAt?: { x: number; y: number } }
 /** The HUD counters' spots for this frame (`Camera.goldAt`, `manaAt`). */
 let hud: Pick<Camera, 'goldAt' | 'manaAt'> = {};
+/** The canvas's resolution (device pixels per CSS pixel): the screen's, at most 2, lowered a step at a time while frames
+    run slow (painting pixels is most of a frame's cost) and raised again once they run fast. */
+const RES = { max: 2, min: 1, step: 0.25, slow: 24, fast: 15, every: 45 };
+/** The painted backdrop, kept between frames (see `render`). */
+const backdrop = { canvas: document.createElement('canvas'), key: '' };
+let resolution = 0, frameAt = 0, frameSum = 0, frameCount = 0;
+function adaptResolution() {
+  const now = performance.now(), top = Math.min(RES.max, window.devicePixelRatio || 1);
+  if (!resolution) resolution = top;
+  if (frameAt && now - frameAt < 250) { frameSum += now - frameAt; frameCount++; }
+  frameAt = now;
+  if (frameCount >= RES.every) {
+    const avg = frameSum / frameCount; frameSum = 0; frameCount = 0;
+    if (avg > RES.slow && resolution > RES.min) resolution = Math.max(RES.min, resolution - RES.step);
+    else if (avg < RES.fast && resolution < top) resolution = Math.min(top, resolution + RES.step);
+  }
+  return Math.min(top, resolution);
+}
+/** The canvas's size in CSS pixels, read once and again only when it changes (a ResizeObserver), not every frame. */
+const sizes = new WeakMap<HTMLCanvasElement, { w: number; h: number }>();
+function sizeOf(canvas: HTMLCanvasElement) {
+  let size = sizes.get(canvas);
+  if (!size) {
+    const r = canvas.getBoundingClientRect(); const fresh = { w: r.width, h: r.height }; size = fresh; sizes.set(canvas, fresh);
+    if ('ResizeObserver' in window) new ResizeObserver(([e]) => { fresh.w = e.contentRect.width; fresh.h = e.contentRect.height; }).observe(canvas);
+    else sizes.delete(canvas);
+  }
+  return size;
+}
 export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, s: Siege, camera: Camera, reduced: boolean) {
   hud = camera;
-  const rect = canvas.getBoundingClientRect(); const w = rect.width, h = rect.height;
+  const { w, h } = sizeOf(canvas);
   if (!w || !h) return;
-  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  const dpr = adaptResolution();
   if (canvas.width !== Math.round(w * dpr) || canvas.height !== Math.round(h * dpr)) { canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr); }
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   const color = THEMES[actOf(s.world) - 1];
-  const sky = ctx.createLinearGradient(0, 0, 0, h); sky.addColorStop(0, '#080f21'); sky.addColorStop(1, '#172c3c');
-  ctx.fillStyle = sky; ctx.fillRect(0, 0, w, h);
   // Short, wide fields zoom in a little more, so the troops keep their size.
   // A wide view stands further back (more field and sky, smaller troops); an upright phone keeps it closer.
   const scale = w >= h ? Math.min(h / (w / h > 2.2 ? 360 : 425), w / 810) : Math.min(h / 340, w / 650);
@@ -303,60 +330,74 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   camera.deck = Math.max(camera.deck, 1 - (below * 0.95 * scale) / h);
   if (camera.bottom) camera.deck = Math.min(camera.deck, 1 - (camera.bottom + 4) / h);
   const ground = h / scale * camera.deck;
-  ctx.scale(scale, scale); ctx.translate(-camera.x + Math.max(0, (camera.width - FIELD) / 2), 0);
   const viewH = h / scale;
   const scene = still(sceneOf(s.world));
-  if (ok(scene)) {
-    // Two layers. The far landscape keeps its size (`SCENE_W`) and slides slower than the field (parallax): from its
-    // left edge with the camera at our end to its right edge at the enemy's. The ground layer (`groundOf`) moves with
-    // the troops, stretched along the whole field (a little wider than the picture), so it changes along the way as the
-    // landscape behind it does. Its sky colours carry on above the picture.
-    // A tall view (a phone upright) draws it big enough to reach the view's top (no stretched sky above it). On a wide
-    // view the far landscape is drawn smaller, so its top meets the view's top (none of it cut off above) while
-    // its walking line stays at the troops' feet; never narrower than the view. A tall view keeps it at `SCENE_W`.
-    // Shrunk like that it would barely slide (hardly wider than the view), so it is also widened by `SCENE_WIDEN`: the
-    // camera's run then moves it about five times as far, while its height still fits the view.
-    const ratio = scene.naturalHeight / scene.naturalWidth, feet = fitOf(sceneOf(s.world)).feet, fit = Math.max(ground / feet, camera.width * ratio);
-    const sh = w < h ? Math.max(SCENE_W * ratio, ground / feet) : CLOSE.has(sceneOf(s.world)) ? SCENE_W * ratio : Math.min(SCENE_W * ratio, fit), sw = sh / ratio * (sh < SCENE_W * ratio ? SCENE_WIDEN : 1), top = ground - sh * feet;
-    const lo = camera.min ?? 0, hi = Math.max(lo, FIELD - camera.width), k = hi > lo ? (camera.x - lo) / (hi - lo) : 0;
-    const x0 = camera.x - Math.max(0, sw - camera.width) * k - Math.max(0, camera.width - sw) / 2;
-    // When the view runs below the picture, its foreground (the part under the walking ground) is stretched down to
-    // the view's foot, so the picture itself fills it (never one stretched row, which reads as a blur).
-    const nw = scene.naturalWidth, nh = scene.naturalHeight, gRow = nh * feet, foot = Math.max(top + sh, viewH + 1);
-    ctx.drawImage(scene, 0, 0, nw, gRow, x0, top, sw, ground - top);
-    ctx.drawImage(scene, 0, gRow, nw, nh - gRow, x0, ground, sw, foot - ground);
-    const band = groundOf(scene, sceneOf(s.world)), y0 = nh - band.height, layer = top + sh * (y0 / nh);
-    const gx = -SCENE_FIT.pad, gw = FIELD + SCENE_FIT.pad * 2;
-    ctx.drawImage(band, 0, 0, nw, gRow - y0, gx, layer, gw, ground - layer);
-    ctx.drawImage(band, 0, gRow - y0, nw, nh - gRow, gx, ground, gw, foot - ground);
-    if (top > 0) {
-      const strip = topOf(scene), fade = 60;
-      ctx.drawImage(strip, 0, 0, 16, 1, x0, -1, sw, top + 2);
-      for (let i = 0; i < 12; i++) { ctx.globalAlpha = 1 - (i + 0.5) / 12; ctx.drawImage(strip, 0, 0, 16, 1, x0, top + (i * fade) / 12, sw, fade / 12 + 0.5); }
-      ctx.globalAlpha = 1;
+  // The backdrop (sky, far landscape, ground, gloom) is painted into its own canvas and only repainted when the view
+  // moves or resizes; otherwise each frame copies it whole (one picture instead of a dozen large ones).
+  const key = `${sceneOf(s.world)}|${ok(scene)}|${camera.x.toFixed(2)}|${canvas.width}x${canvas.height}|${ground.toFixed(2)}`;
+  if (backdrop.key !== key) {
+    backdrop.key = key; const c = backdrop.canvas; if (c.width !== canvas.width || c.height !== canvas.height) { c.width = canvas.width; c.height = canvas.height; }
+    const b = c.getContext('2d')!; b.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const sky = b.createLinearGradient(0, 0, 0, h); sky.addColorStop(0, '#080f21'); sky.addColorStop(1, '#172c3c');
+    b.fillStyle = sky; b.fillRect(0, 0, w, h);
+    b.scale(scale, scale); b.translate(-camera.x + Math.max(0, (camera.width - FIELD) / 2), 0);
+    if (ok(scene)) {
+      // Two layers. The far landscape keeps its size (`SCENE_W`) and slides slower than the field (parallax): from its
+      // left edge with the camera at our end to its right edge at the enemy's. The ground layer (`groundOf`) moves with
+      // the troops, stretched along the whole field (a little wider than the picture), so it changes along the way as the
+      // landscape behind it does. Its sky colours carry on above the picture.
+      // A tall view (a phone upright) draws it big enough to reach the view's top (no stretched sky above it). On a wide
+      // view the far landscape is drawn smaller, so its top meets the view's top (none of it cut off above) while
+      // its walking line stays at the troops' feet; never narrower than the view. A tall view keeps it at `SCENE_W`.
+      // Shrunk like that it would barely slide (hardly wider than the view), so it is also widened by `SCENE_WIDEN`: the
+      // camera's run then moves it about five times as far, while its height still fits the view.
+      const ratio = scene.naturalHeight / scene.naturalWidth, feet = fitOf(sceneOf(s.world)).feet, fit = Math.max(ground / feet, camera.width * ratio);
+      const sh = w < h ? Math.max(SCENE_W * ratio, ground / feet) : CLOSE.has(sceneOf(s.world)) ? SCENE_W * ratio : Math.min(SCENE_W * ratio, fit), sw = sh / ratio * (sh < SCENE_W * ratio ? SCENE_WIDEN : 1), top = ground - sh * feet;
+      const lo = camera.min ?? 0, hi = Math.max(lo, FIELD - camera.width), k = hi > lo ? (camera.x - lo) / (hi - lo) : 0;
+      const x0 = camera.x - Math.max(0, sw - camera.width) * k - Math.max(0, camera.width - sw) / 2;
+      // When the view runs below the picture, its foreground (the part under the walking ground) is stretched down to
+      // the view's foot, so the picture itself fills it (never one stretched row, which reads as a blur).
+      const nw = scene.naturalWidth, nh = scene.naturalHeight, gRow = nh * feet, foot = Math.max(top + sh, viewH + 1);
+      b.drawImage(scene, 0, 0, nw, gRow, x0, top, sw, ground - top);
+      b.drawImage(scene, 0, gRow, nw, nh - gRow, x0, ground, sw, foot - ground);
+      const band = groundOf(scene, sceneOf(s.world)), y0 = nh - band.height, layer = top + sh * (y0 / nh);
+      const gx = -SCENE_FIT.pad, gw = FIELD + SCENE_FIT.pad * 2;
+      b.drawImage(band, 0, 0, nw, gRow - y0, gx, layer, gw, ground - layer);
+      b.drawImage(band, 0, gRow - y0, nw, nh - gRow, gx, ground, gw, foot - ground);
+      if (top > 0) {
+        const strip = topOf(scene), fade = 60;
+        b.drawImage(strip, 0, 0, 16, 1, x0, -1, sw, top + 2);
+        for (let i = 0; i < 12; i++) { b.globalAlpha = 1 - (i + 0.5) / 12; b.drawImage(strip, 0, 0, 16, 1, x0, top + (i * fade) / 12, sw, fade / 12 + 0.5); }
+        b.globalAlpha = 1;
+      }
+    } else {
+      const [deck, low] = GROUND[actOf(s.world) - 1];
+      const earth = b.createLinearGradient(0, ground - 10, 0, viewH); earth.addColorStop(0, deck); earth.addColorStop(1, low);
+      b.fillStyle = earth; b.fillRect(-SCENE_FIT.pad, ground - 10, FIELD + SCENE_FIT.pad * 2, viewH);
     }
-  } else {
-    const [deck, low] = GROUND[actOf(s.world) - 1];
-    const earth = ctx.createLinearGradient(0, ground - 10, 0, viewH); earth.addColorStop(0, deck); earth.addColorStop(1, low);
-    ctx.fillStyle = earth; ctx.fillRect(-SCENE_FIT.pad, ground - 10, FIELD + SCENE_FIT.pad * 2, viewH);
+    // The Darkness spreading act by act (`gloom`): over the land and sky, deeper on the enemy's side; not over the
+    // fortresses or troops. Only over the first picture: the worlds' own show their corruption.
+    const g = sceneOf(s.world) === SCENE ? gloom(actOf(s.world)) : 0;
+    if (g > 0) {
+      const shade = b.createLinearGradient(0, 0, FIELD, 0);
+      shade.addColorStop(0, `rgba(14,4,22,${(g * 0.6).toFixed(2)})`); shade.addColorStop(1, `rgba(30,2,14,${g.toFixed(2)})`);
+      b.fillStyle = shade; b.fillRect(-SCENE_FIT.pad - camera.width, -viewH * 3, FIELD + (SCENE_FIT.pad + camera.width) * 2, viewH * 6);
+    }
   }
-  // The Darkness spreading act by act (`gloom`): over the land and sky, deeper on the enemy's side; not over the
-  // fortresses or troops. Only over the first picture: the worlds' own show their corruption.
-  const g = sceneOf(s.world) === SCENE ? gloom(actOf(s.world)) : 0;
-  if (g > 0) {
-    const shade = ctx.createLinearGradient(0, 0, FIELD, 0);
-    shade.addColorStop(0, `rgba(14,4,22,${(g * 0.6).toFixed(2)})`); shade.addColorStop(1, `rgba(30,2,14,${g.toFixed(2)})`);
-    ctx.fillStyle = shade; ctx.fillRect(-SCENE_FIT.pad - camera.width, -viewH * 3, FIELD + (SCENE_FIT.pad + camera.width) * 2, viewH * 6);
-  }
+  ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.drawImage(backdrop.canvas, 0, 0);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.scale(scale, scale); ctx.translate(-camera.x + Math.max(0, (camera.width - FIELD) / 2), 0);
   base(ctx, s, 80, ground, '#55e5c4', false);
   base(ctx, s, FIELD - 80, ground, '#ff718c', true);
   mana(ctx, s, ground);
   const aimY = ground + 10;
   ctx.strokeStyle = '#ffe3a0'; ctx.globalAlpha = 0.65; ctx.setLineDash([4, 5]); ctx.beginPath(); ctx.ellipse(s.aim, aimY, 45, 13, 0, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha = 1;
   // The fallen lie where they fell for a moment (the six-pose sheets' last pose; the others tip over), then fade.
-  for (const c of fallen(s)) fighter(ctx, s, c.u, ground, reduced, color, Math.min(1, (s.time - c.at) / DEAD_FOR));
-  for (const u of [...s.units].sort((a, b) => a.lane - b.lane || a.x - b.x)) fighter(ctx, s, u, ground, reduced, color);
+  // What is off screen is not drawn (a margin for the big ones, the guardians' sweeps and the falling powers).
+  const left = camera.x - 260, right = camera.x + camera.width + 260, seen = (x: number) => x >= left && x <= right;
+  for (const c of fallen(s)) if (seen(c.u.x)) fighter(ctx, s, c.u, ground, reduced, color, Math.min(1, (s.time - c.at) / DEAD_FOR));
+  for (const u of s.units.filter(u => seen(u.x)).sort((a, b) => a.lane - b.lane || a.x - b.x)) fighter(ctx, s, u, ground, reduced, color);
   for (const e of s.effects) {
+    if (e.x < left - 500 && e.from < left - 500 || e.x > right + 500 && e.from > right + 500) continue;
     const p = 1 - e.life / e.max; const y = ground - 26;
     if (effect(ctx, e, p, y, ground)) continue;
     ctx.globalAlpha = e.life / e.max; ctx.strokeStyle = e.side ? '#ff98b0' : '#fff0ae'; ctx.lineWidth = 3;
@@ -725,17 +766,20 @@ function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: nu
     ctx.save(); ctx.translate(u.x + (u.side ? -push : push), y - lift); if (u.side) ctx.scale(-1, 1);
     if (gone !== undefined) ctx.globalAlpha = gone < 0.66 ? 1 : 1 - (gone - 0.66) / 0.34;
     ctx.rotate(lean); ctx.scale(sx, sy);
-    if (gone === undefined && u.flash) { ctx.shadowColor = '#fff'; ctx.shadowBlur = 10; }
+    // A hit flashes it bright (drawn again, added on top: a blur on every hit troop costs too much each frame).
+    const flash = gone === undefined && !!u.flash;
     // Elites glow gold and wear horns; wrecks are darker the more broken they are; guardians glow red.
+    if (flash) { /* below */ }
     else if (gone === undefined && u.elite) { ctx.shadowColor = '#ffd84a'; ctx.shadowBlur = 14; }
     else if (gone === undefined && u.boss) { ctx.shadowColor = '#ff3b3b'; ctx.shadowBlur = 16; }
     if (u.stage) ctx.filter = `brightness(${1 - u.stage * 0.22}) saturate(${1 - u.stage * 0.3})`;
     // Everything is drawn facing its way of march (a sheet drawn facing left is turned round for that), each pose on its
     // own feet at the troop's x (flyers on their middle), so poses change without sliding.
     const fx = spec.air && gone === undefined ? 0.5 : feetOf(art.image);
-    if (spec.facesLeft) { ctx.save(); ctx.scale(-1, 1); ctx.drawImage(art.image, -fx * dw, -dh, dw, dh); ctx.restore(); }
-    else ctx.drawImage(art.image, -fx * dw, -dh, dw, dh);
-    ctx.filter = 'none';
+    const paint = () => { if (spec.facesLeft) { ctx.save(); ctx.scale(-1, 1); ctx.drawImage(art.image, -fx * dw, -dh, dw, dh); ctx.restore(); } else ctx.drawImage(art.image, -fx * dw, -dh, dw, dh); };
+    paint();
+    if (u.stage) ctx.filter = 'none';
+    if (flash) { ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha *= 0.45; paint(); ctx.restore(); }
     if (u.elite && gone === undefined) {
       ctx.shadowBlur = 0; ctx.fillStyle = '#f5e6c8'; ctx.strokeStyle = '#3a2a10'; ctx.lineWidth = 1.5;
       const hw = sw, hh = size;
