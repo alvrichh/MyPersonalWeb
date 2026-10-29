@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.128 - 2026-10-29
+
+### Changed
+- Siege Cartoon far view: the mouse wheel walks the arrows' spot (up: further) since the whole field is on screen; the ground line sits a little lower (54% of the view), so the picture is cropped a touch at the sides where it has to be.
+
 ## 1.15.127 - 2026-10-29
 
 ### Changed

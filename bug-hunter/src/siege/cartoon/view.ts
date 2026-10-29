@@ -274,6 +274,9 @@ let bowTip = { x: 80, y: 0 };
 /** How the field is viewed, from the settings: `wide` (a wide screen only) stands the camera back until both fortresses
     are on screen at once; otherwise it follows the camera over a stretch of the field. */
 export const viewPrefs = { wide: false };
+/** The far view's ground line, as a share of the view's height: the picture fills the view above it (whole across
+    where that fits, a little cropped at the sides where the ground has to sit lower). */
+const FAR_DECK = 0.54;
 export interface Camera { x: number; width: number; min?: number; deck?: number;
   /** CSS pixels at the foot of the view covered by the card bar laid over the field: the ground line stays above them. */
   bottom?: number;
@@ -320,7 +323,7 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   const scene = still(sceneOf(s.world));
   // The far view: the whole picture across the view, its top at the top; the ground line comes up to its walking line.
   const far = camera.width >= FIELD, sceneRatio = ok(scene) ? scene.naturalHeight / scene.naturalWidth : 724 / 2172;
-  if (far) camera.deck = camera.width * sceneRatio * fitOf(sceneOf(s.world)).feet / viewH;
+  if (far) camera.deck = Math.max(FAR_DECK, camera.width * sceneRatio * fitOf(sceneOf(s.world)).feet / viewH);
   if (camera.bottom) camera.deck = Math.min(camera.deck, 1 - (camera.bottom + 4) / h);
   const ground = h / scale * camera.deck;
   // The backdrop (sky, far landscape, ground, gloom) is painted into its own canvas and only repainted when the view
@@ -343,7 +346,7 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
       // Shrunk like that it would barely slide (hardly wider than the view), so it is also widened by `SCENE_WIDEN`: the
       // camera's run then moves it about five times as far, while its height still fits the view.
       const ratio = scene.naturalHeight / scene.naturalWidth, feet = fitOf(sceneOf(s.world)).feet, fit = Math.max(ground / feet, camera.width * ratio);
-      const sh = far ? camera.width * ratio : w < h ? Math.max(SCENE_W * ratio, ground / feet) : CLOSE.has(sceneOf(s.world)) ? SCENE_W * ratio : Math.min(SCENE_W * ratio, fit), sw = sh / ratio * (sh < SCENE_W * ratio ? SCENE_WIDEN : 1), top = ground - sh * feet;
+      const sh = far ? Math.max(camera.width * ratio, ground / feet) : w < h ? Math.max(SCENE_W * ratio, ground / feet) : CLOSE.has(sceneOf(s.world)) ? SCENE_W * ratio : Math.min(SCENE_W * ratio, fit), sw = sh / ratio * (sh < SCENE_W * ratio ? SCENE_WIDEN : 1), top = ground - sh * feet;
       const lo = camera.min ?? 0, hi = Math.max(lo, FIELD - camera.width), k = hi > lo ? (camera.x - lo) / (hi - lo) : 0.5;
       // The view's left edge in field units (a far view centres the field, so it starts before the camera's x).
       const left = camera.x - Math.max(0, (camera.width - FIELD) / 2);
