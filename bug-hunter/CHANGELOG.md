@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.124 - 2026-10-29
+
+### Added
+- Siege Cartoon settings on a wide screen with a mouse: a "View" choice between close up (as before) and the whole field, with both fortresses on screen at once, and a full-screen button where the browser allows it. The whole-field view fills the sky with the stage's picture, as the phone view does.
+
 ## 1.15.123 - 2026-10-29
 
 ### Changed

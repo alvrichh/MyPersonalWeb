@@ -271,6 +271,9 @@ function bowAngle(s: Siege, ground: number) {
 let bowTip = { x: 80, y: 0 };
 /** The camera: its left edge and width in field units, and how far left of the field it may go (a margin past our
     wall, so the aim control stands clear of it). */
+/** How the field is viewed, from the settings: `wide` (a wide screen only) stands the camera back until both fortresses
+    are on screen at once; otherwise it follows the camera over a stretch of the field. */
+export const viewPrefs = { wide: false };
 export interface Camera { x: number; width: number; min?: number; deck?: number;
   /** CSS pixels at the foot of the view covered by the card bar laid over the field: the ground line stays above them. */
   bottom?: number;
@@ -302,7 +305,7 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   const color = THEMES[actOf(s.world) - 1];
   // Short, wide fields zoom in a little more, so the troops keep their size.
   // A wide view stands further back (more field and sky, smaller troops); an upright phone keeps it closer.
-  const scale = w >= h ? Math.min(h / (w / h > 2.2 ? 360 : 425), w / 810) : Math.min(h / 340, w / 650);
+  const scale = viewPrefs.wide && w >= h ? Math.min(h / 425, w / (FIELD + AIM_GUTTER * 2 + 80)) : w >= h ? Math.min(h / (w / h > 2.2 ? 360 : 425), w / 810) : Math.min(h / 340, w / 650);
   camera.width = w / scale; hudRoom = 62 / scale;
   camera.min = -AIM_GUTTER / scale;
   camera.x = Math.max(camera.min, Math.min(Math.max(camera.min, FIELD - camera.width), camera.x));
@@ -319,7 +322,7 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   const scene = still(sceneOf(s.world));
   // The backdrop (sky, far landscape, ground, gloom) is painted into its own canvas and only repainted when the view
   // moves or resizes; otherwise each frame copies it whole (one picture instead of a dozen large ones).
-  const key = `${sceneOf(s.world)}|${ok(scene)}|${camera.x.toFixed(2)}|${canvas.width}x${canvas.height}|${ground.toFixed(2)}`;
+  const key = `${sceneOf(s.world)}|${ok(scene)}|${camera.x.toFixed(2)}|${camera.width.toFixed(1)}|${canvas.width}x${canvas.height}|${ground.toFixed(2)}`;
   if (backdrop.key !== key) {
     backdrop.key = key; const c = backdrop.canvas; if (c.width !== canvas.width || c.height !== canvas.height) { c.width = canvas.width; c.height = canvas.height; }
     const b = c.getContext('2d')!; b.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -337,8 +340,9 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
       // Shrunk like that it would barely slide (hardly wider than the view), so it is also widened by `SCENE_WIDEN`: the
       // camera's run then moves it about five times as far, while its height still fits the view.
       const ratio = scene.naturalHeight / scene.naturalWidth, feet = fitOf(sceneOf(s.world)).feet, fit = Math.max(ground / feet, camera.width * ratio);
-      const sh = w < h ? Math.max(SCENE_W * ratio, ground / feet) : CLOSE.has(sceneOf(s.world)) ? SCENE_W * ratio : Math.min(SCENE_W * ratio, fit), sw = sh / ratio * (sh < SCENE_W * ratio ? SCENE_WIDEN : 1), top = ground - sh * feet;
-      const lo = camera.min ?? 0, hi = Math.max(lo, FIELD - camera.width), k = hi > lo ? (camera.x - lo) / (hi - lo) : 0;
+      // The whole field on screen (`viewPrefs.wide`): the picture fills the view to its top, as on a phone, and sits centred.
+      const sh = w < h || camera.width >= FIELD ? Math.max(SCENE_W * ratio, ground / feet) : CLOSE.has(sceneOf(s.world)) ? SCENE_W * ratio : Math.min(SCENE_W * ratio, fit), sw = sh / ratio * (sh < SCENE_W * ratio ? SCENE_WIDEN : 1), top = ground - sh * feet;
+      const lo = camera.min ?? 0, hi = Math.max(lo, FIELD - camera.width), k = hi > lo ? (camera.x - lo) / (hi - lo) : 0.5;
       const x0 = camera.x - Math.max(0, sw - camera.width) * k - Math.max(0, camera.width - sw) / 2;
       // When the view runs below the picture, its foreground (the part under the walking ground) is stretched down to
       // the view's foot, so the picture itself fills it (never one stretched row, which reads as a blur).
