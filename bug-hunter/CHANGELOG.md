@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.127 - 2026-10-29
+
+### Changed
+- Siege Cartoon far view: the stage's whole picture shows across the view, nothing cut at the sides; the ground line comes up to the picture's walking line and the ground fills the rest below.
+
 ## 1.15.126 - 2026-10-29
 
 ### Added

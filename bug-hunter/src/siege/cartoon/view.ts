@@ -316,10 +316,13 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   // A tall view (a phone upright): the ground line comes down until the picture's foot reaches the bottom of the view.
   const below = (FIELD + SCENE_FIT.pad * 2) * (1 - fitOf(sceneOf(s.world)).feet) * 724 / 2172;
   camera.deck = Math.max(camera.deck, 1 - (below * 0.95 * scale) / h);
-  if (camera.bottom) camera.deck = Math.min(camera.deck, 1 - (camera.bottom + 4) / h);
-  const ground = h / scale * camera.deck;
   const viewH = h / scale;
   const scene = still(sceneOf(s.world));
+  // The far view: the whole picture across the view, its top at the top; the ground line comes up to its walking line.
+  const far = camera.width >= FIELD, sceneRatio = ok(scene) ? scene.naturalHeight / scene.naturalWidth : 724 / 2172;
+  if (far) camera.deck = camera.width * sceneRatio * fitOf(sceneOf(s.world)).feet / viewH;
+  if (camera.bottom) camera.deck = Math.min(camera.deck, 1 - (camera.bottom + 4) / h);
+  const ground = h / scale * camera.deck;
   // The backdrop (sky, far landscape, ground, gloom) is painted into its own canvas and only repainted when the view
   // moves or resizes; otherwise each frame copies it whole (one picture instead of a dozen large ones).
   const key = `${sceneOf(s.world)}|${ok(scene)}|${camera.x.toFixed(2)}|${camera.width.toFixed(1)}|${canvas.width}x${canvas.height}|${ground.toFixed(2)}`;
@@ -340,17 +343,18 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
       // Shrunk like that it would barely slide (hardly wider than the view), so it is also widened by `SCENE_WIDEN`: the
       // camera's run then moves it about five times as far, while its height still fits the view.
       const ratio = scene.naturalHeight / scene.naturalWidth, feet = fitOf(sceneOf(s.world)).feet, fit = Math.max(ground / feet, camera.width * ratio);
-      // The whole field on screen (`viewPrefs.wide`): the picture fills the view to its top, as on a phone, and sits centred.
-      const sh = w < h || camera.width >= FIELD ? Math.max(SCENE_W * ratio, ground / feet) : CLOSE.has(sceneOf(s.world)) ? SCENE_W * ratio : Math.min(SCENE_W * ratio, fit), sw = sh / ratio * (sh < SCENE_W * ratio ? SCENE_WIDEN : 1), top = ground - sh * feet;
+      const sh = far ? camera.width * ratio : w < h ? Math.max(SCENE_W * ratio, ground / feet) : CLOSE.has(sceneOf(s.world)) ? SCENE_W * ratio : Math.min(SCENE_W * ratio, fit), sw = sh / ratio * (sh < SCENE_W * ratio ? SCENE_WIDEN : 1), top = ground - sh * feet;
       const lo = camera.min ?? 0, hi = Math.max(lo, FIELD - camera.width), k = hi > lo ? (camera.x - lo) / (hi - lo) : 0.5;
-      const x0 = camera.x - Math.max(0, sw - camera.width) * k - Math.max(0, camera.width - sw) / 2;
+      // The view's left edge in field units (a far view centres the field, so it starts before the camera's x).
+      const left = camera.x - Math.max(0, (camera.width - FIELD) / 2);
+      const x0 = left - Math.max(0, sw - camera.width) * k - Math.max(0, camera.width - sw) / 2;
       // When the view runs below the picture, its foreground (the part under the walking ground) is stretched down to
       // the view's foot, so the picture itself fills it (never one stretched row, which reads as a blur).
       const nw = scene.naturalWidth, nh = scene.naturalHeight, gRow = nh * feet, foot = Math.max(top + sh, viewH + 1);
       b.drawImage(scene, 0, 0, nw, gRow, x0, top, sw, ground - top);
       b.drawImage(scene, 0, gRow, nw, nh - gRow, x0, ground, sw, foot - ground);
       const band = groundOf(scene, sceneOf(s.world)), y0 = nh - band.height, layer = top + sh * (y0 / nh);
-      const gx = -SCENE_FIT.pad, gw = FIELD + SCENE_FIT.pad * 2;
+      const gx = Math.min(-SCENE_FIT.pad, left), gw = Math.max(FIELD + SCENE_FIT.pad, left + camera.width) - gx;
       b.drawImage(band, 0, 0, nw, gRow - y0, gx, layer, gw, ground - layer);
       b.drawImage(band, 0, gRow - y0, nw, nh - gRow, gx, ground, gw, foot - ground);
       if (top > 0) {
