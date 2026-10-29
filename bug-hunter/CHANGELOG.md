@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.119 - 2026-10-29
+
+### Changed
+- Siege Cartoon: every rocket now blows up where it lands, with the explosion art. That covers the bazooka and rocket pod, the cannon robot, the heavy robot's rockets, the helicopter's rockets and salvos, and the enemy's. Before, only the robots' last forms exploded.
+
 ## 1.15.118 - 2026-10-29
 
 ### Changed
