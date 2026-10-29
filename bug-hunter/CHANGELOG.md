@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.125 - 2026-10-29
+
+### Added
+- Siege Cartoon settings: a "Mute all" button under the volume sliders; pressing it again brings the sound back as it was.
+
 ## 1.15.124 - 2026-10-29
 
 ### Added
