@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.112 - 2026-10-29
+
+### Changed
+- Siege Cartoon battlefield: every stage has its own background from the owner's new set (`siege/backgrounds/world-N/`), five per world. Each comes with where its troops walk and its path's back edge, measured on each picture, so troops and castles stand on that picture's path.
+
 ## 1.15.111 - 2026-10-29
 
 ### Changed
