@@ -498,7 +498,7 @@ export const SCATTER = { along: 14, deep: 4 };
 /** Where the wizard's three meteors land round the target: field units along the ground, and up it (back) or down
     (front): two at the back, one in front between them. */
 export const METEORS = [[-30, 10], [32, 10], [2, -10]];
-export const FLY = { high: 70, ranged: 50, close: 22, rate: 90 };
+export const FLY = { high: 70, rate: 90 };
 /** How high a flyer cruises: its own height, or `FLY.high`. */
 export const highOf = (u: { id: number; side: number; lv?: number }) => specOf(u).flyAt ?? FLY.high;
 export const BOW = { max: 100, cost: 1.2, regen: 12, every: 0.42, step: 0.06, damage: 16, gap: 24, friendly: 0.35, powerStep: 0.12, reach: 0.55, reachStep: 0.05, storeStep: 25, regenStep: 3 };
@@ -798,7 +798,9 @@ export function tick(s: Siege, dt: number) {
     const distance = enemy ? Math.abs(enemy.x - u.x) : Infinity;
     const near = !!enemy && distance <= a.range + bodyOf(enemy) * 0.25 + 60;
     if (a.air) {
-      const want = near && !UNITS[enemy.id].air ? (a.range <= 60 ? FLY.close : FLY.ranged) : highOf(u), alt = u.alt ?? highOf(u);
+      // Flyers stay up at their own height: those that shoot fire down from there (a helicopter never comes low); only
+      // close fighters (swords, drills, fists) drop to a walker's reach (`LOW`) to strike it, and can be struck back there.
+      const want = near && !UNITS[enemy.id].air && a.range <= 60 ? LOW : highOf(u), alt = u.alt ?? highOf(u);
       u.alt = alt + Math.max(-FLY.rate * dt, Math.min(FLY.rate * dt, want - alt));
     }
     if (enemy && distance <= a.range + bodyOf(enemy) * 0.25) {
