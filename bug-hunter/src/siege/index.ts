@@ -396,10 +396,14 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       if (paused || !state || state.phase !== 'fight') return;
       pointer = { id: e.pointerId, start: e.clientX, camera: camera.x, moved: false }; canvas.setPointerCapture(e.pointerId);
     }, battleOptions);
-    // The mouse wheel slides the camera over the field (sideways or up and down, as the wheel has them).
+    // The mouse wheel slides the camera over the field (sideways or up and down, as the wheel has them); in the far
+    // view, where the whole field is on screen, it walks the arrows' spot instead (up: further).
     canvas.addEventListener('wheel', e => {
-      if (paused || !state || state.phase !== 'fight' || camera.width >= M.FIELD) return;
-      e.preventDefault(); camera.x = Math.max(camera.min ?? 0, Math.min(Math.max(0, M.FIELD - camera.width), camera.x + (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) * 1.5));
+      if (paused || !state || state.phase !== 'fight') return;
+      e.preventDefault();
+      const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      if (camera.width >= M.FIELD) { state.aim = M.aimAt(state.aim - delta * 0.6); updateUi(); }
+      else camera.x = Math.max(camera.min ?? 0, Math.min(Math.max(0, M.FIELD - camera.width), camera.x + delta * 1.5));
     }, { ...battleOptions, passive: false });
     canvas.addEventListener('pointermove', e => {
       if (!pointer || e.pointerId !== pointer.id) return;
