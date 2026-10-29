@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.104 - 2026-10-29
+
+### Fixed
+- Siege battle on touch screens: while one finger holds the aim stick (or the bow), a tap with another finger on the bottom bar works: troop cards, the L/A/S tabs and the specials. A phone sends no click for such a tap, so the bar's buttons now act on that finger's touch-down instead.
+
 ## 1.15.103 - 2026-10-29
 
 ### Added

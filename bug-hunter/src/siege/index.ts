@@ -710,8 +710,21 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     redraw(`.sg-st-grid [data-sg-tile="${key}"]`); if (full) q('.sg-message').textContent = t(shopTab === 'special' ? 'siegePowerKitFull' : 'siegeFull');
   }, options);
   window.addEventListener('pointercancel', endDrag, options);
+  // In battle a second finger must work while the first holds the aim stick or the bow: a phone sends no click for a
+  // tap made while another finger is down, so a touch on the bottom bar's buttons acts on its own touch-down then, and the
+  // click that may still follow is dropped.
+  const touches = new Set<number>(); let pressed: { button: HTMLButtonElement; at: number } | null = null;
+  root.addEventListener('pointerdown', event => {
+    const others = touches.size; if (event.pointerType !== 'mouse') touches.add(event.pointerId);
+    if (!state || event.pointerType === 'mouse' || !others) return;
+    const button = (event.target as HTMLElement).closest<HTMLButtonElement>('.sg-bar button'); if (!button || button.disabled || button.dataset.sg === 'fire') return;
+    pressed = { button, at: event.timeStamp }; button.click();
+  }, { ...options, capture: true });
+  for (const type of ['pointerup', 'pointercancel'] as const) window.addEventListener(type, event => touches.delete(event.pointerId), { ...options, capture: true });
   root.addEventListener('click', event => {
     if (event.timeStamp - droppedAt < 400) return;
+    // The real click after a bar button already pressed by its touch-down (see above).
+    if (event.isTrusted && pressed && event.timeStamp - pressed.at < 800 && (event.target as HTMLElement).closest('button') === pressed.button) { pressed = null; return; }
     const button = (event.target as HTMLElement).closest<HTMLButtonElement>('button'); if (!button || button.disabled) return;
     const { sg: action, sgUnit: unit, sgUpgrade: up, sgSummon: summonId } = button.dataset;
     if (unit !== undefined && !state) {
