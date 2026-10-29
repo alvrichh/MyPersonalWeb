@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.106 - 2026-10-29
+
+### Fixed
+- Siege Cartoon maps on phones with a notch: the map now runs edge to edge, with no dark bands at the sides; its buttons still keep clear of the notch.
+- Siege Cartoon shop: the Back button never breaks its arrow onto a line of its own.
+
 ## 1.15.105 - 2026-10-29
 
 ### Changed
