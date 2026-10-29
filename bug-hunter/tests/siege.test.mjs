@@ -436,3 +436,16 @@ test('every rocket blows up where it lands', () => {
   let booms = 0; for (let i = 0; i < 90; i++) { m.tick(s, 1 / 30); booms = Math.max(booms, s.effects.filter(e => e.kind === 'boom').length); }
   assert.ok(booms > 0, 'the bazooka\'s rocket explodes');
 });
+test('each stage has a threat: its troops come mostly from it, at the strength of a plain wave', () => {
+  const sent = (stage, secs) => { const s = m.newSiege({ ...m.freshProgress(), unlocked: m.LAST }, stage); s.hp[1] = 1e9; s.maxHp[1] = 1e9; const ids = []; const seen = new Set();
+    for (let i = 0; i < secs * 30; i++) { m.tick(s, 1 / 30); for (const u of s.units) if (u.side && !seen.has(u.uid)) { seen.add(u.uid); ids.push(u.id); } s.units = s.units.filter(u => !u.side); } return ids; };
+  const sky = sent(6, 90); assert.ok(sky.filter(id => m.UNITS[id].air).length >= sky.length / 2, 'a sky stage sends mostly flyers');
+  const wall = sent(12, 90); assert.ok(wall.filter(id => m.threatPool(12).includes(id)).length >= wall.length / 2, 'a wall stage sends its wall');
+  const giants = sent(21, 150), swarm = sent(23, 150), power = ids => ids.reduce((a, id) => a + m.foePower(id), 0);
+  assert.ok(giants.length < swarm.length, 'giants come fewer'); assert.ok(Math.abs(power(giants) / power(swarm) - 1) < 0.6, 'but weigh about the same');
+});
+test('the map knows what answers a threat', () => {
+  assert.equal(m.counters(m.card(10, 1), 'sky'), true, 'a fighter meets flyers'); assert.equal(m.counters(m.card(0, 1), 'sky'), false);
+  assert.equal(m.counters(m.card(5, 1), 'swarm'), true, 'a bazooka hits an area'); assert.equal(m.counters(m.card(12, 1), 'wall'), true, 'a helicopter shoots the wall from above');
+  assert.equal(m.counters(m.card(3, 1), 'shooters'), true, 'a heavy knight takes the shots');
+});

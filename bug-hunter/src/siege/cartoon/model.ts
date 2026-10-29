@@ -199,6 +199,47 @@ export const UNITS: readonly Spec[] = [
     from the first two of the land list. No flyers in the first world: they come from the second. */
 export const FOE_LAND = [[15, 16, 17], [22, 19], [23, 18], [24, 25, 20], [26, 21], [32]];
 export const FOE_AIR = [[], [28], [29, 27], [30], [], [31]];
+/** What a stage throws at you most (its counter in brackets), stage by stage within each act; the fifth is the
+    guardian's, and `normal`/`mixed` stages send the usual mix. `swarm` (area damage): many small fast troops; `wall`
+    (flyers, or shooters behind a tank): tough close fighters that cannot reach the air; `sky` (troops that reach the
+    air): flyers; `shooters` (tanks in front, or fast troops): the long-range ones; `giants` (heavy damage): the toughest. */
+export type Threat = 'normal' | 'swarm' | 'wall' | 'sky' | 'shooters' | 'giants' | 'mixed';
+export const THREATS: Threat[][] = [
+  ['normal', 'swarm', 'wall', 'mixed', 'normal'],
+  ['sky', 'shooters', 'swarm', 'mixed', 'normal'],
+  ['giants', 'wall', 'sky', 'shooters', 'normal'],
+  ['swarm', 'wall', 'shooters', 'sky', 'normal'],
+  ['giants', 'wall', 'swarm', 'mixed', 'normal'],
+  ['shooters', 'sky', 'giants', 'mixed', 'normal'],
+];
+export const threatOf = (stage: number): Threat => THREATS[actOf(stage) - 1]?.[stageIn(stage) - 1] ?? 'normal';
+/** Does a card (a troop form) answer a threat? Sky: it flies or reaches the air. Wall: it shoots the ground from the air,
+    or from afar on the ground. Swarm: it hits an area. Shooters: a tank (400+ health) on the ground, or fast enough to
+    reach them. Giants: heavy damage (60+ a second). */
+export function counters(card: number, threat: Threat): boolean {
+  const sp = specAt(cardId(card), cardLevel(card)), dps = sp.damage / sp.rate * (1 + (sp.splash ?? 0) / 100);
+  if (threat === 'sky') return !!sp.air || !!sp.hitsAir;
+  if (threat === 'wall') return (!!sp.air && !sp.skyOnly) || (!sp.air && sp.range >= 150);
+  if (threat === 'swarm') return (sp.splash ?? 0) > 0;
+  if (threat === 'shooters') return (!sp.air && sp.hp >= 400) || (sp.speed >= 55 && !sp.skyOnly);
+  if (threat === 'giants') return dps >= 60;
+  return true;
+}
+/** How strong an enemy troop is, for weighing a wave: its health times its damage a second (splash counted). */
+export const foePower = (id: number) => { const u = UNITS[id]; return u.hp * u.damage / u.rate * (1 + (u.splash ?? 0) / 100); };
+/** The troops a stage's threat sends: from every act so far (the whole of this one, so a threat can show what is to come). */
+export function threatPool(stage: number): number[] {
+  const t = threatOf(stage), act = actOf(stage);
+  const land = FOE_LAND.slice(0, act).flat(), air = FOE_AIR.slice(0, act).flat(), mine = FOE_LAND[act - 1];
+  const byHp = (ids: number[]) => [...new Set(ids)].sort((a, b) => UNITS[b].hp - UNITS[a].hp);
+  // The swarm: the fastest close fighters, this act's first.
+  if (t === 'swarm') { const fast = (ids: number[]) => ids.filter(id => UNITS[id].range <= 60 && UNITS[id].speed >= 40).sort((a, b) => UNITS[b].speed - UNITS[a].speed); return [...new Set([...fast(mine), ...fast(land)])].slice(0, 2); }
+  if (t === 'wall') return byHp(land.filter(id => UNITS[id].range <= 60 && !UNITS[id].hitsAir)).slice(0, 2);
+  if (t === 'sky') return air.length ? air.slice(-2) : [];
+  if (t === 'shooters') return land.filter(id => UNITS[id].range >= 150).slice(-2);
+  if (t === 'giants') return byHp([...new Set(land)]).slice(0, 2);
+  return [];
+}
 /** The enemy's troops in a battle: every earlier act's, and its own act's coming in one more each stage. */
 export const foesAt = (lists: number[][], stage: number) => [...lists.slice(0, actOf(stage) - 1).flat(), ...(lists[actOf(stage) - 1] ?? []).slice(0, stageIn(stage))];
 /** What recruiting each of our troops costs in gold (the swordsman is everyone's first). Bought once, kept. */
@@ -763,9 +804,19 @@ export function tick(s: Siege, dt: number) {
     const land = foesAt(FOE_LAND, s.world), flyers = foesAt(FOE_AIR, s.world);
     // Early waves only the first two land troops; later the whole list, the newest (toughest) more often.
     const pick = s.time < 25 ? land.slice(0, 2) : [...land, ...land.slice(-2)];
-    for (let i = 0; i < count; i++) {
-      const flyer = flyers.length > 0 && s.time >= airFrom(s.world) && (s.waves + i) % 3 === 2;
-      spawn(s, flyer ? flyers[(s.waves + i) % flyers.length] : pick[(s.waves * 3 + i) % pick.length], 1);
+    const plain = (i: number) => { const flyer = flyers.length > 0 && s.time >= airFrom(s.world) && (s.waves + i) % 3 === 2; return flyer ? flyers[(s.waves + i) % flyers.length] : pick[(s.waves * 3 + i) % pick.length]; };
+    const pool = threatPool(s.world);
+    if (!pool.length) for (let i = 0; i < count; i++) spawn(s, plain(i), 1);
+    else {
+      // A stage with a threat (`THREATS`): about two of every three troops come from its pool, and the wave is the same
+      // strength as a plain one (`foePower`), so a few giants or a swarm of small ones weigh alike.
+      const budget = Array.from({ length: count }, (_, i) => foePower(plain(i))).reduce((a, b) => a + b, 0);
+      let spent = 0;
+      for (let i = 0; i < 8 && spent < budget * 0.95; i++) {
+        const id = (s.waves * 7 + i) % 3 < 2 ? pool[(s.waves + i) % pool.length] : plain(i);
+        if (i > 0 && spent + foePower(id) > budget * 1.2) continue;
+        spawn(s, id, 1); spent += foePower(id);
+      }
     }
   }
   // The corrupt wind, once a battle, when the enemy fortress is down to half.
