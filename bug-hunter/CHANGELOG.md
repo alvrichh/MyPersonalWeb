@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.107 - 2026-10-29
+
+### Changed
+- Siege Cartoon battle: the eye under the VS rides a thin see-through line across the bars' width, the line broken where the eye is, with nothing behind the eye.
+
 ## 1.15.106 - 2026-10-29
 
 ### Fixed

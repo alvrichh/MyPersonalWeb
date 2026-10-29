@@ -451,7 +451,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       V.render(ctx, canvas, state, camera, reduced);
       // An eye under the VS slides from its left end (the camera at our castle) to its right end (at the enemy's).
       const look = mode === 'cartoon' ? root.querySelector<HTMLElement>('[data-sg-view]') : null;
-      if (look) { const lo = camera.min ?? 0, run = Math.max(1, M.FIELD - camera.width - lo); look.style.setProperty('--k', Math.max(0, Math.min(1, (camera.x - lo) / run)).toFixed(3)); }
+      if (look) { const lo = camera.min ?? 0, run = Math.max(1, M.FIELD - camera.width - lo); look.parentElement?.style.setProperty('--k', Math.max(0, Math.min(1, (camera.x - lo) / run)).toFixed(3)); }
       // The aim control stands on the deck, wherever the field puts it.
       q<HTMLElement>('.sg-aim').style.bottom = `calc(${((1 - (camera.deck ?? 0.5)) * 100).toFixed(1)}% + 6px)`;
       if (now >= uiAt) { updateUi(); uiAt = now + 100; }
