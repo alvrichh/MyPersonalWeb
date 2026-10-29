@@ -53,7 +53,21 @@ export function preload(world: number, deck: number[], _levels: number[] = []) {
 const SCENE = 'siege/backdrop';
 const SCENE_FIT = { pad: 120, ground: 0.8 };
 const SCENES: Record<number, [string, string?, string?]> = { 1: ['siege/bg-clean', undefined, SCENE], 2: ['siege/bg-islands', 'siege/bg-sky'], 3: ['siege/bg-forest', 'siege/bg-swamp'], 4: ['siege/bg-desert'], 5: ['siege/bg-snow'], 6: ['siege/bg-final'] };
-export const sceneOf = (stage: number) => { const pics = SCENES[actOf(stage)]; return pics ? (stageIn(stage) === 4 && pics[1]) || (stageIn(stage) === 5 && pics[2]) || pics[0] : SCENE; };
+/** The owner's battle backgrounds, one per stage (`siege/backgrounds/world-N/scene-M`), each with where its troops walk
+    (`feet`) and the back edge of its path (`back`), shares of its height measured by hand on each picture. */
+const STAGE_SCENES: [number, number, number][][] = [
+  [[1, 79, 76], [2, 78.5, 75.5], [3, 79, 76.5], [4, 77, 73.5], [5, 73.5, 70.5]],
+  [[1, 74.5, 72], [2, 80, 76.5], [8, 78.5, 76], [9, 74.5, 72], [10, 78.5, 76.5]],
+  [[1, 74.5, 71.5], [5, 74.5, 72], [2, 74.5, 72], [4, 74.5, 72], [6, 73, 70.5]],
+  [[1, 78.5, 75.5], [2, 77.5, 75], [3, 75, 72], [4, 78, 75], [5, 76, 73]],
+  [[2, 75, 73], [5, 76.5, 75.5], [3, 79, 77], [1, 80.5, 79.5], [4, 81, 79.5]],
+  [[1, 78.5, 76], [2, 74, 70], [3, 74, 71], [4, 75.5, 73], [5, 77.5, 74.5]],
+];
+const FITS: Record<string, { feet: number; back: number }> = {};
+STAGE_SCENES.forEach((list, a) => list.forEach(([n, feet, back]) => { FITS[`siege/backgrounds/world-${a + 1}/scene-${n}`] = { feet: feet / 100, back: back / 100 }; }));
+/** A picture's walking line and path back edge: its own, or the older pictures' (`SCENE_FIT.ground`, `PATH_TOP`). */
+const fitOf = (path: string) => FITS[path] ?? { feet: SCENE_FIT.ground, back: PATH_TOP[path] ?? PATH_TOP.top };
+export const sceneOf = (stage: number) => { const own = STAGE_SCENES[actOf(stage) - 1]?.[stageIn(stage) - 1]; if (own) return `siege/backgrounds/world-${actOf(stage)}/scene-${own[0]}`; const pics = SCENES[actOf(stage)]; return pics ? (stageIn(stage) === 4 && pics[1]) || (stageIn(stage) === 5 && pics[2]) || pics[0] : SCENE; };
 /** Each picture's top row averaged down to 16 colours, kept: stretched over any sky above the picture (a tall view) it
     is a smooth gradient, where the raw row stretched would be streaks. */
 const tops = new Map<HTMLImageElement, HTMLCanvasElement>();
@@ -120,7 +134,7 @@ function groundOf(image: HTMLImageElement, path: string) {
     c = document.createElement('canvas');
     if (f) {
       f.drawImage(image, 0, 0); const img = f.getImageData(0, 0, nw, nh);
-      const cut = groundCut(img.data, nw, nh, PATH_TOP[path] ?? PATH_TOP.top, SCENE_FIT.ground);
+      const fit = fitOf(path), cut = groundCut(img.data, nw, nh, fit.back, fit.feet);
       let y0 = nh; for (const y of cut) y0 = Math.min(y0, y - GROUND_CUT.soft);
       y0 = Math.max(0, y0);
       for (let x = 0; x < nw; x++) for (let y = y0; y < cut[x]; y++) img.data[(y * nw + x) * 4 + 3] *= Math.max(0, 1 - (cut[x] - y) / GROUND_CUT.soft);
@@ -285,7 +299,7 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   // The ground line sits low, so the picture's ground and the sky above both show.
   camera.deck = w / h > 2.2 ? 0.74 : 0.7;
   // A tall view (a phone upright): the ground line comes down until the picture's foot reaches the bottom of the view.
-  const below = (FIELD + SCENE_FIT.pad * 2) * (1 - SCENE_FIT.ground) * 724 / 2172;
+  const below = (FIELD + SCENE_FIT.pad * 2) * (1 - fitOf(sceneOf(s.world)).feet) * 724 / 2172;
   camera.deck = Math.max(camera.deck, 1 - (below * 0.95 * scale) / h);
   if (camera.bottom) camera.deck = Math.min(camera.deck, 1 - (camera.bottom + 4) / h);
   const ground = h / scale * camera.deck;
@@ -301,13 +315,13 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
     // its walking line stays at the troops' feet; never narrower than the view. A tall view keeps it at `SCENE_W`.
     // Shrunk like that it would barely slide (hardly wider than the view), so it is also widened by `SCENE_WIDEN`: the
     // camera's run then moves it about five times as far, while its height still fits the view.
-    const ratio = scene.naturalHeight / scene.naturalWidth, fit = Math.max(ground / SCENE_FIT.ground, camera.width * ratio);
-    const sh = CLOSE.has(sceneOf(s.world)) ? SCENE_W * ratio : Math.min(SCENE_W * ratio, fit), sw = sh / ratio * (sh < SCENE_W * ratio ? SCENE_WIDEN : 1), top = ground - sh * SCENE_FIT.ground;
+    const ratio = scene.naturalHeight / scene.naturalWidth, feet = fitOf(sceneOf(s.world)).feet, fit = Math.max(ground / feet, camera.width * ratio);
+    const sh = CLOSE.has(sceneOf(s.world)) ? SCENE_W * ratio : Math.min(SCENE_W * ratio, fit), sw = sh / ratio * (sh < SCENE_W * ratio ? SCENE_WIDEN : 1), top = ground - sh * feet;
     const lo = camera.min ?? 0, hi = Math.max(lo, FIELD - camera.width), k = hi > lo ? (camera.x - lo) / (hi - lo) : 0;
     const x0 = camera.x - Math.max(0, sw - camera.width) * k - Math.max(0, camera.width - sw) / 2;
     // When the view runs below the picture, its foreground (the part under the walking ground) is stretched down to
     // the view's foot, so the picture itself fills it (never one stretched row, which reads as a blur).
-    const nw = scene.naturalWidth, nh = scene.naturalHeight, gRow = nh * SCENE_FIT.ground, foot = Math.max(top + sh, viewH + 1);
+    const nw = scene.naturalWidth, nh = scene.naturalHeight, gRow = nh * feet, foot = Math.max(top + sh, viewH + 1);
     ctx.drawImage(scene, 0, 0, nw, gRow, x0, top, sw, ground - top);
     ctx.drawImage(scene, 0, gRow, nw, nh - gRow, x0, ground, sw, foot - ground);
     const band = groundOf(scene, sceneOf(s.world)), y0 = nh - band.height, layer = top + sh * (y0 / nh);
