@@ -99,10 +99,10 @@ export const UNITS: readonly Spec[] = [
   ] },
   // The blaster's four forms (docs/cw2-reference.md): bazooka, rocket launcher, ray gun, flamethrower. Rockets fly as
   // their own pictures and blast an area; the ray is drawn in code; the flame is in the attack pose (no projectile).
-  { id: 5, cost: 85, hp: 260, damage: 34, speed: 28, range: 200, rate: 1.6, cooldown: 8, unlock: 2, infantry: true, splash: 40, shot: 'rocket', spin: false, hitsAir: true, ...six('ally-blaster-1', 256, 0.3906), forms: [
-    { price: 350, cost: 100, hp: 310, damage: 34, splash: 50, shot: 'rockets', hitsAir: true, rate: 1.2, ...six('ally-blaster-2', 278, 0.4227) },
-    { price: 600, cost: 120, hp: 420, damage: 42, range: 240, rate: 0.8, splash: 0, shot: 'ray', hitsAir: true, ...six('ally-blaster-3', 178, 0.7163) },
-    { price: 1800, cost: 170, hp: 500, damage: 16, range: 110, rate: 0.25, splash: 70, shot: 'none', hitsAir: false, ...six('ally-blaster-4', 249, 0.5321) },
+  { id: 5, cost: 85, hp: 260, damage: 34, speed: 28, range: 200, rate: 1.6, cooldown: 8, unlock: 2, infantry: true, splash: 40, shot: 'rocket', spin: false, hitsAir: true, ...six('ally-blaster-1', 256, 0.5469), forms: [
+    { price: 350, cost: 100, hp: 310, damage: 34, splash: 50, shot: 'rockets', hitsAir: true, rate: 1.2, ...six('ally-blaster-2', 278, 0.5396) },
+    { price: 600, cost: 120, hp: 420, damage: 42, range: 240, rate: 0.8, splash: 0, shot: 'ray', hitsAir: true, ...six('ally-blaster-3', 178, 0.8989) },
+    { price: 1800, cost: 170, hp: 500, damage: 16, range: 110, rate: 0.25, splash: 70, shot: 'none', hitsAir: false, ...six('ally-blaster-4', 249, 0.7028) },
   ] },
   // The wizard's three forms (docs/cw2-reference.md), the same staff: lightning striking the ground, a tornado, and a
   // meteor that leaves flames. The spell lands on the target from the sheet (`shot-lightning|tornado|meteor`); from
@@ -167,7 +167,7 @@ export const UNITS: readonly Spec[] = [
   { id: 20, cost: 0, hp: 560, damage: 30, speed: 22, range: 45, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 40, infantry: true, ...foe('foe-hammer-1', 133, 1.03) },
   { id: 21, cost: 0, hp: 720, damage: 34, speed: 21, range: 48, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 40, infantry: true, ...foe('foe-axeman-1', 147, 1.07) },
   { id: 22, cost: 0, hp: 100, damage: 30, speed: 30, range: 230, rate: 1.5, cooldown: 0, unlock: 1, foe: true, infantry: true, hitsAir: true, ...foe('foe-gunner-1', 134, 0.86) },
-  { id: 23, cost: 0, hp: 300, damage: 38, speed: 28, range: 210, rate: 1.5, cooldown: 0, unlock: 1, foe: true, infantry: true, hitsAir: true, ...foe('foe-blaster-1', 125, 0.68) },
+  { id: 23, cost: 0, hp: 300, damage: 38, speed: 28, range: 210, rate: 1.5, cooldown: 0, unlock: 1, foe: true, infantry: true, hitsAir: true, ...foe('foe-blaster-1', 125, 1.04) },
   { id: 24, cost: 0, hp: 150, damage: 42, speed: 26, range: 220, rate: 1.9, cooldown: 0, unlock: 1, foe: true, splash: 60, infantry: true, hitsAir: true, ...foe('foe-wizard-1', 165, 0.77) },
   { id: 25, cost: 0, hp: 280, damage: 36, speed: 60, range: 40, rate: 1, cooldown: 0, unlock: 1, foe: true, ...foe('foe-tiger-1', 115, 1.2) },
   { id: 26, cost: 0, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, ...foe('foe-dragon-1', 120, 1.38) },
