@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.108 - 2026-10-29
+
+### Changed
+- Siege Cartoon maps: the Start panel moves to the bottom right (under the right thumb) and the shop stall to the bottom left, drawn the other way round so its chest faces inward. On a phone held sideways both corners are smaller (the Start panel drops its first-win prize line) so neither covers a stage. On the world map the stall stands beside the first world.
+
 ## 1.15.107 - 2026-10-29
 
 ### Changed
