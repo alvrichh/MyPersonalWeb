@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.123 - 2026-10-29
+
+### Changed
+- Siege Cartoon guardian stages (each world's last) last ten minutes instead of five: the fortress has to fall and then the guardian. The other stages keep five.
+
 ## 1.15.122 - 2026-10-29
 
 ### Changed

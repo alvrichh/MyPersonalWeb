@@ -53,6 +53,11 @@ test('base destruction, time limit and simultaneous destruction resolve defeat',
     m.tick(s, 1 / 30); assert.equal(s.phase, 'lost');
   }
 });
+test('a guardian stage lasts ten minutes, the others five', () => {
+  assert.equal(m.limitOf(1), 300); assert.equal(m.limitOf(5), 600); assert.equal(m.limitOf(30), 600);
+  const p = m.freshProgress(); p.unlocked = 5; const s = m.newSiege(p, 5); assert.equal(s.world, 5); s.time = 300; m.tick(s, 1 / 30); assert.equal(s.phase, 'fight');
+  s.time = 600; m.tick(s, 1 / 30); assert.equal(s.phase, 'lost');
+});
 test('the guardian comes out only when the fortress falls, and must fall for the win', () => {
   const plain = m.newSiege(m.freshProgress(), 1); plain.nextWave = 999; plain.hp[1] = 0; m.tick(plain, 1 / 30);
   assert.equal(plain.phase, 'won', 'an act\'s first stages are won with the fortress'); assert.equal(plain.units.filter(u => u.boss).length, 0);

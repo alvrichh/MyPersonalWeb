@@ -13,6 +13,8 @@ export const actOf = (stage: number) => Math.min(ACTS, Math.max(1, Math.ceil(sta
 export const stageIn = (stage: number) => ((Math.max(1, stage) - 1) % STAGES) + 1;
 /** Is this the act's last battle, the one its guardian joins? */
 export const guarded = (stage: number) => stageIn(stage) === STAGES;
+/** How long a battle may last: five minutes, ten on a guardian's stage (its fortress has to fall and then the guardian). */
+export const limitOf = (stage: number) => (guarded(stage) ? LIMIT * 2 : LIMIT);
 /** How hard a battle is, on the old nine-world scale (the first 1, the last 9). */
 const hard = (stage: number) => 1 + 8 * Math.pow((Math.min(LAST, Math.max(1, stage)) - 1) / (LAST - 1), 0.75);
 export const CASTS = ['original', 'demon', 'viking', 'mud', 'jungle', 'greek', 'robot', 'nightmare', 'core'];
@@ -911,7 +913,7 @@ export function tick(s: Siege, dt: number) {
   s.kills += s.units.filter(u => u.side && u.hp <= 0).length;
   s.units = s.units.filter(u => u.hp > 0);
   s.hp = s.hp.map(h => Math.max(0, h)) as [number, number];
-  if (s.hp[0] <= 0 || s.time >= LIMIT) s.phase = 'lost';
+  if (s.hp[0] <= 0 || s.time >= limitOf(s.world)) s.phase = 'lost';
   else if (s.hp[1] <= 0 && (!guarded(s.world) || (s.bossSpawned && !s.units.some(u => u.boss && u.side)))) s.phase = 'won';
 }
 /** Rewards settle once per battle; a reload cannot replay a settled result. */

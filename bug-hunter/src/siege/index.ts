@@ -510,7 +510,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       q(`[data-sg-bar="${side}"]`).style.width = `${Math.max(0, hp) / max * 100}%`;
     }
     q('.sg-hp.is-enemy').classList.toggle('is-boss', !!guard);
-    q('[data-sg-clock]').textContent = clock(Math.max(0, M.LIMIT - s.time));
+    q('[data-sg-clock]').textContent = clock(Math.max(0, M.limitOf(s.world) - s.time));
     q('[data-sg-gold]').textContent = `${progress.coins + (s.loot ?? 0)}`;
     q('[data-sg-energy]').textContent = `${Math.floor(s.energy)} / ${M.energyMax(s)}`;
     const meter = q<HTMLProgressElement>('[data-sg-meter]'); meter.max = M.energyMax(s); meter.value = s.energy;
