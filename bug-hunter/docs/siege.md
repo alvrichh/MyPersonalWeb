@@ -15,7 +15,7 @@ Status: **Coming soon · Playable preview**. Available in the fourth main-cover 
 2. Pick an unlocked enemy world and exactly five troops. Eight troop families exist; the last three unlock at worlds 3, 5 and 7.
 3. Summon with regenerating energy. Troops advance and fight automatically on a lateral battlefield.
 4. Upgrade the generator during the battle (four levels). Tap the field to aim the cannon or area discharge; neither harms allies. Cannon range is capped at 1,080 world units, with a 3.5-second recharge; discharge recharges in 24 seconds.
-5. Destroy the enemy fortress within five minutes. A guardian joins once the enemy base drops below 45% health or at 150 seconds. Losing your own base or reaching the time limit is defeat; simultaneous destruction is defeat.
+5. Destroy the enemy fortress within five minutes (ten on a guardian's stage). A guardian joins once the enemy base drops below 45% health or at 150 seconds. Losing your own base or reaching the time limit is defeat; simultaneous destruction is defeat.
 6. Victories award mode-specific gold and unlock the next fortress, through all nine worlds. The workshop offers five levels each of army strength, base health and energy production. Repeat victories give smaller rewards. Defeats and abandoned battles give no reward.
 
 The nine preview stages reuse world enemy art and share the initial guardian silhouette. Fortress scenery is procedural preview art. This is not a promise of nine fully authored campaigns or finished balance. Existing source images are reused without rewriting/recompressing their bytes; alpha bounds are measured only at render time.
