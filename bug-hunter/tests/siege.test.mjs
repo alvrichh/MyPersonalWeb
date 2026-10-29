@@ -409,7 +409,8 @@ test('the discharge lands at the aim, costs energy and waits for enough of it', 
   s.energy = 200; assert.equal(m.strike(s), true); assert.equal(s.energy, 200 - m.STRIKE_COST);
   assert.ok(s.effects.some(e => e.kind === 'zap' && Math.abs(e.x - 900) <= 60), 'its lightning falls where the bow aims');
 });
-test('flyers cruise higher, each troop at its own height, out of walkers\' reach', () => {
-  for (const id of [10, 11, 12, 13, 14, 33, 27, 28, 29, 30, 31]) assert.ok(m.highOf({ id, side: m.UNITS[id].foe ? 1 : 0 }) >= 90, `${id}`);
-  assert.ok(m.highOf({ id: 14, side: 0 }) > m.highOf({ id: 13, side: 0 }), 'the angel above the drill');
+test('flyers cruise at heights by kind: people low, machines higher, the helicopter and angels highest', () => {
+  const at = id => m.highOf({ id, side: m.UNITS[id].foe ? 1 : 0 });
+  assert.equal(at(12), at(14), 'the helicopter and the angels at the top'); assert.ok(at(33) < at(12) && at(33) > at(10), 'the mech between them and the people');
+  for (const id of [10, 11, 28, 29, 30, 31]) assert.ok(at(id) > 32 && at(id) < at(33), `${id} flies low, as before, out of walkers' reach`);
 });

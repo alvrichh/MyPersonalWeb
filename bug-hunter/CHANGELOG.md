@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.102 - 2026-10-29
+
+### Changed
+- Siege Cartoon flyers' heights by kind. The flyers that are people or creatures (the fighter, the armed flyer, the eagle, the bats, the dragon riders) cruise low again, at 70. The machines in between (the flying mech, the drill) cruise at 98, and the helicopter and the angels (ours and the death angel) at the top, 125.
+
 ## 1.15.101 - 2026-10-29
 
 ### Changed
