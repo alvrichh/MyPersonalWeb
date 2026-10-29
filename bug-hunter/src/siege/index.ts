@@ -396,6 +396,11 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       if (paused || !state || state.phase !== 'fight') return;
       pointer = { id: e.pointerId, start: e.clientX, camera: camera.x, moved: false }; canvas.setPointerCapture(e.pointerId);
     }, battleOptions);
+    // The mouse wheel slides the camera over the field (sideways or up and down, as the wheel has them).
+    canvas.addEventListener('wheel', e => {
+      if (paused || !state || state.phase !== 'fight' || camera.width >= M.FIELD) return;
+      e.preventDefault(); camera.x = Math.max(camera.min ?? 0, Math.min(Math.max(0, M.FIELD - camera.width), camera.x + (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) * 1.5));
+    }, { ...battleOptions, passive: false });
     canvas.addEventListener('pointermove', e => {
       if (!pointer || e.pointerId !== pointer.id) return;
       const delta = e.clientX - pointer.start; if (Math.abs(delta) > 6) pointer.moved = true;
@@ -823,13 +828,16 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     }
     if (story) { if (e.key === 'Escape') { e.preventDefault(); story(); } return; }
     if (e.key === 'Escape') { e.preventDefault(); if (!state) mode === 'cartoon' && prepTab === 'shop' ? (prepTab = 'map', prep()) : mode === 'cartoon' && mapAct ? (mapAct = 0, prep()) : close(); else if (state.phase === 'fight') paused ? resume() : pause(); return; }
-    if (!state || paused || e.repeat || /INPUT|SELECT|TEXTAREA/.test((e.target as HTMLElement).tagName)) return;
+    if (!state || paused || /INPUT|SELECT|TEXTAREA/.test((e.target as HTMLElement).tagName)) return;
     const key = e.key.toLowerCase();
-    if ('123456efqrlas'.includes(key) || key.startsWith('arrow')) e.preventDefault();
+    if ('123456efqrlas '.includes(key) || key.startsWith('arrow')) e.preventDefault();
+    // Held keys repeat only for the aim (up and down walk the arrows' spot).
+    if (key === 'arrowup' || key === 'arrowdown') { state.aim = M.aimAt(state.aim + (key === 'arrowup' ? 40 : -40)); updateUi(); return; }
+    if (e.repeat) return;
     if (key === 'l' || key === 'a' || key === 's') { tab = key === 'l' ? 'land' : key === 'a' ? 'air' : 'special'; cards(); return; }
     if (/^[1-6]$/.test(key)) { const n = Number(key) - 1; if (tab === 'special') [() => M.improveGenerator(state!), () => M.strike(state!), ...(mode === 'cartoon' ? [] : [() => M.missile(state!)])][n]?.(); else { const id = tabCards()[n]; if (id !== undefined) M.summon(state, id); } }
     else if (key === 'r') M.missile(state);
-    else if (key === 'e') M.improveGenerator(state); else if (key === 'f') M.toggleBow(state); else if (key === 'q') M.strike(state);
+    else if (key === 'e') M.improveGenerator(state); else if (key === 'f' || key === ' ') M.toggleBow(state); else if (key === 'q') M.strike(state);
     else if (key === 'arrowleft') camera.x = Math.max(camera.min ?? 0, camera.x - 100); else if (key === 'arrowright') camera.x = Math.min(Math.max(0, M.FIELD - camera.width), camera.x + 100);
     updateUi();
   };
