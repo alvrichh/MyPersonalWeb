@@ -4,6 +4,14 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.126 - 2026-10-29
+
+### Added
+- Siege Cartoon on a computer: the mouse wheel slides the camera over the field in the close-up view; Space starts and stops the arrows; ↑ and ↓ move their spot (held, they keep moving).
+
+### Changed
+- The view setting reads "Close up / Far".
+
 ## 1.15.125 - 2026-10-29
 
 ### Added
