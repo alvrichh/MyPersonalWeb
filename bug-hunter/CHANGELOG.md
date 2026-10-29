@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.109 - 2026-10-29
+
+### Fixed
+- Siege Cartoon: the bazooka trooper was drawn far smaller than the rest. Ours is now drawn bigger at every level, 56/60/64/70 (was 40/47/51/53), between the swordsman and the heavy knight, and the enemy's at 52 (was 34), the size of its swordsmen and gunners.
+
 ## 1.15.108 - 2026-10-29
 
 ### Changed
