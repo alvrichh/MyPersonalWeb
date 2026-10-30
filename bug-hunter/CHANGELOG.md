@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.141 - 2026-10-30
+
+### Changed
+- Siege Cartoon shop and army lists go world by world, top to bottom: in the air the drill now sits with the armed fighter (world 3) before the helicopter, and the flying mech (world 5) before the angels, which come last.
+
 ## 1.15.140 - 2026-10-30
 
 ### Changed
