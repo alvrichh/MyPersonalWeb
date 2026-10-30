@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.132 - 2026-10-30
+
+### Changed
+- Siege Cartoon arrows button: while the quiver empties, the shooting arrow keeps moving across the whole ball; the emptied part shows it in grey.
+
 ## 1.15.131 - 2026-10-30
 
 ### Added
