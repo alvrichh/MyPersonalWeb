@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-29T14:53:58.460Z",
+  "generatedAt": "2026-10-30T14:46:14.557Z",
   "candidates": [
     {
       "label": "Claude research and documentation flow",
@@ -10,19 +10,19 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-10-29"
+          "date": "2026-10-30"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-10-29"
+          "date": "2026-10-30"
         },
         {
-          "title": "Google launches Gemini 4 Carbon with a ‘significant leap’ in cybersecurity",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/1021339/google-gemini-4-carbon-cybersecurity-frontier",
-          "date": "2026-10-28"
+          "title": "webframe: evaluated as a scraper and a sandbox",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/26/webframe-evaluation/",
+          "date": "2026-10-26"
         }
       ]
     },
@@ -35,18 +35,18 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
+          "date": "2026-10-30"
+        },
+        {
+          "title": "How the UK Amazon Quick User Group grew in 2026",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/how-the-uk-amazon-quick-user-group-grew-in-2026/",
           "date": "2026-10-29"
         },
         {
-          "title": "We urgently need to monitor AI agents’ actions in real time",
-          "source": "MIT Technology Review AI",
-          "link": "https://www.technologyreview.com/2026/10/29/1147824/monitor-ai-agents-actions-real-time/",
-          "date": "2026-10-29"
-        },
-        {
-          "title": "Quoting Ben Hylak",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/29/ben-hylak/",
+          "title": "Building intent-driven UI testing with Amazon Nova Act",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/building-intent-driven-ui-testing-with-amazon-nova-act/",
           "date": "2026-10-29"
         }
       ]
@@ -57,6 +57,12 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "How MoEngage turned over 400 APIs into agent tools with AgentCore Gateway",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/how-moengage-turned-over-400-apis-into-agent-tools-with-agentcore-gateway/",
+          "date": "2026-10-29"
+        },
+        {
           "title": "Quoting Ben Hylak",
           "source": "Simon Willison",
           "link": "https://simonwillison.net/2026/Oct/29/ben-hylak/",
@@ -65,10 +71,60 @@
       ]
     },
     {
+      "label": "Multimodal AI product workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Accelerate agentic AI with NVIDIA Nemotron models on Amazon EKS and SageMaker HyperPod EKS",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/accelerate-agentic-ai-with-nvidia-nemotron-models-on-amazon-eks-and-sagemaker-hyperpod-eks/",
+          "date": "2026-10-29"
+        },
+        {
+          "title": "Build specialized multimodal models with LFM3",
+          "source": "Hugging Face",
+          "link": "https://huggingface.co/blog/LiquidAI/lfm3",
+          "date": "2026-10-27"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "API credits benefit for eligible ChatGPT subscriptions",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/29/api-credits/",
+          "date": "2026-10-29"
+        },
+        {
+          "title": "OpenAI and ServiceNow expand partnership across enterprise workflows",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/openai-servicenow-partnership-expansion",
+          "date": "2026-10-28"
+        },
+        {
+          "title": "Legora is building the agentic operating system for legal work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/legora",
+          "date": "2026-10-28"
+        }
+      ]
+    },
+    {
       "label": "Gemini multimodal exploration",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "You can generate and edit Google Docs files directly in Gemini chats now",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1022519/google-gemini-file-editing-documents-pdfs",
+          "date": "2026-10-29"
+        },
         {
           "title": "Google announces Gemini 4 Carbon, its latest frontier AI model that you can't use",
           "source": "Ars Technica AI",
@@ -79,12 +135,6 @@
           "title": "Gemini 4 Carbon: Our next frontier model",
           "source": "Google DeepMind",
           "link": "https://deepmind.google/blog/gemini-4-carbon-our-next-frontier-model/",
-          "date": "2026-10-28"
-        },
-        {
-          "title": "Google launches Gemini 4 Carbon with a ‘significant leap’ in cybersecurity",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/1021339/google-gemini-4-carbon-cybersecurity-frontier",
           "date": "2026-10-28"
         }
       ]
@@ -135,50 +185,6 @@
           "title": "GitHub Copilot app, Universe releases",
           "source": "GitHub Changelog",
           "link": "https://github.blog/changelog/2026-10-28-github-copilot-app-universe-releases",
-          "date": "2026-10-28"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "OpenAI and ServiceNow expand partnership across enterprise workflows",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/openai-servicenow-partnership-expansion",
-          "date": "2026-10-28"
-        },
-        {
-          "title": "Legora is building the agentic operating system for legal work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/legora",
-          "date": "2026-10-28"
-        },
-        {
-          "title": "OpenAI expands partnership with Oracle to bring its apps to ChatGPT",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/oracle-apps-in-chatgpt",
-          "date": "2026-10-27"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "GitHub Octoverse 2026",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/28/github-octoverse-2026/",
-          "date": "2026-10-28"
-        },
-        {
-          "title": "Google launches Gemini 4 Carbon with a ‘significant leap’ in cybersecurity",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/1021339/google-gemini-4-carbon-cybersecurity-frontier",
           "date": "2026-10-28"
         }
       ]

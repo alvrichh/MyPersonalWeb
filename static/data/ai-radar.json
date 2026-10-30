@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-29T14:53:58.460Z",
-  "date": "2026-10-29",
+  "generatedAt": "2026-10-30T14:46:14.557Z",
+  "date": "2026-10-30",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
@@ -9,7 +9,7 @@
     {
       "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
       "source": "Anthropic News",
-      "date": "2026-10-29",
+      "date": "2026-10-30",
       "url": "https://www.anthropic.com/news/expanding-partnership-gsa",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -20,7 +20,7 @@
     {
       "title": "Donating Agent Skills to the Agentic AI Foundation",
       "source": "Anthropic News",
-      "date": "2026-10-29",
+      "date": "2026-10-30",
       "url": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -32,7 +32,7 @@
     {
       "title": "Introducing the Anthropic Cyber Mission",
       "source": "Anthropic News",
-      "date": "2026-10-29",
+      "date": "2026-10-30",
       "url": "https://www.anthropic.com/news/anthropic-cyber-mission",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -43,13 +43,72 @@
     {
       "title": "Security",
       "source": "Anthropic News",
-      "date": "2026-10-29",
+      "date": "2026-10-30",
       "url": "https://www.anthropic.com/news/security",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
         "Claude"
       ],
       "image": "https://www-cdn.anthropic.com/images/4zrzovbb/website/6d4a0d28992ade92d6fa63646fd9c9d318245c6c-2400x1260.jpg"
+    },
+    {
+      "title": "Wikipedia’s operator says a bad AI copyright ruling could threaten the open web",
+      "source": "The Verge AI",
+      "date": "2026-10-30",
+      "url": "https://www.theverge.com/policy/1022880/wikipedia-openai-new-york-times-copyright",
+      "summary": "The Wikimedia Foundation is staking out a middle ground in a group of landmark AI copyright cases, pushing courts to legally protect large language models (LLMs) training on copyrighted work - but not chatbots regurgitat...",
+      "tags": [
+        "Agents",
+        "Models"
+      ],
+      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/02/STK037_WIKIPEDIA_A.jpg?quality=90&strip=all&crop=0,0,100,100"
+    },
+    {
+      "title": "How the UK Amazon Quick User Group grew in 2026",
+      "source": "AWS Machine Learning",
+      "date": "2026-10-29",
+      "url": "https://aws.amazon.com/blogs/machine-learning/how-the-uk-amazon-quick-user-group-grew-in-2026/",
+      "summary": "The UK Amazon Quick User Group's 2026 roundup: three quarterly meetups, 150+ attendees, and customer stories from Arriva, Carsa, and Propulse Lab on using agentic AI and Amazon Quick to turn data into faster decisions, h...",
+      "tags": [
+        "Agents"
+      ],
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/10/28/ML-21295-1.jpeg"
+    },
+    {
+      "title": "Building intent-driven UI testing with Amazon Nova Act",
+      "source": "AWS Machine Learning",
+      "date": "2026-10-29",
+      "url": "https://aws.amazon.com/blogs/machine-learning/building-intent-driven-ui-testing-with-amazon-nova-act/",
+      "summary": "Epsilon's Agentic Platform team delivers UI testing as a managed, multi-tenant service built on Amazon Nova Act and Amazon Bedrock AgentCore Browser Tool. Tests are written in plain English and run on browsers managed by...",
+      "tags": [
+        "Agents"
+      ],
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/10/22/ML-21285-1.png"
+    },
+    {
+      "title": "How MoEngage turned over 400 APIs into agent tools with AgentCore Gateway",
+      "source": "AWS Machine Learning",
+      "date": "2026-10-29",
+      "url": "https://aws.amazon.com/blogs/machine-learning/how-moengage-turned-over-400-apis-into-agent-tools-with-agentcore-gateway/",
+      "summary": "MoEngage turned roughly 400 private REST APIs across 7 AWS Regions into permission-scoped agent tools with Amazon Bedrock AgentCore Gateway. No per-service MCP servers, no public endpoints, and no 400-tool context bloat....",
+      "tags": [
+        "Agents",
+        "MCP"
+      ],
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/10/21/ML-21704-1.png"
+    },
+    {
+      "title": "Accelerate agentic AI with NVIDIA Nemotron models on Amazon EKS and SageMaker HyperPod EKS",
+      "source": "AWS Machine Learning",
+      "date": "2026-10-29",
+      "url": "https://aws.amazon.com/blogs/machine-learning/accelerate-agentic-ai-with-nvidia-nemotron-models-on-amazon-eks-and-sagemaker-hyperpod-eks/",
+      "summary": "NVIDIA Nemotron 3.5 Super VL is a 120B-parameter mixture-of-experts model that pairs reasoning and tool use with multimodal understanding. This post explores its architecture and use cases, then shows how to deploy it on...",
+      "tags": [
+        "Agents",
+        "Multimodal",
+        "Models"
+      ],
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/10/28/ML-21105-1.png"
     },
     {
       "title": "Granite Switch 4.1.1 — Update models like you update software",
@@ -97,6 +156,55 @@
       "image": "https://wp.technologyreview.com/wp-content/uploads/2026/10/261028_AIsurveillance.jpg?resize=1200,600"
     },
     {
+      "title": "Unlocking Tensor Core Performance for Machine Learning Interatomic Potentials",
+      "source": "NVIDIA Developer",
+      "date": "2026-10-29",
+      "url": "https://developer.nvidia.com/blog/unlocking-tensor-core-performance-for-machine-learning-interatomic-potentials/",
+      "summary": "Atomistic simulations help researchers understand how molecules and materials behave, from chemical reactions and phase transitions to mechanical failure. These...",
+      "tags": [
+        "Dev Tools"
+      ],
+      "image": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/10/mlip-tensor-core-featured-768x432.jpg"
+    },
+    {
+      "title": "An updated Model Spec for more capable and beneficial AI",
+      "source": "OpenAI News",
+      "date": "2026-10-29",
+      "url": "https://openai.com/index/updated-model-spec",
+      "summary": "OpenAI’s updated Model Spec outlines five core values to guide more capable AI toward sound judgment, human agency, and faithfulness to human intent.",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ],
+      "image": ""
+    },
+    {
+      "title": "How we detect frontier model misalignment",
+      "source": "OpenAI News",
+      "date": "2026-10-29",
+      "url": "https://openai.com/index/how-we-detect-frontier-model-misalignment",
+      "summary": "OpenAI uses layered monitoring to detect frontier model misalignment and unauthorized agent behavior so responders can intervene before incidents escalate.",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Models"
+      ],
+      "image": ""
+    },
+    {
+      "title": "API credits benefit for eligible ChatGPT subscriptions",
+      "source": "Simon Willison",
+      "date": "2026-10-29",
+      "url": "https://simonwillison.net/2026/Oct/29/api-credits/",
+      "summary": "API credits benefit for eligible ChatGPT subscriptions Earlier this month Anthropic announced a generous new benefit for their Max and Team subscriptions: $100, $200, and $500 per month subscribers would get the equivale...",
+      "tags": [
+        "ChatGPT",
+        "Claude",
+        "Models"
+      ],
+      "image": "https://simonwillison.net/2026/Oct/29/api-credits/"
+    },
+    {
       "title": "Quoting Ben Hylak",
       "source": "Simon Willison",
       "date": "2026-10-29",
@@ -110,6 +218,18 @@
       "image": "https://simonwillison.net/2026/Oct/29/ben-hylak/"
     },
     {
+      "title": "You can generate and edit Google Docs files directly in Gemini chats now",
+      "source": "The Verge AI",
+      "date": "2026-10-29",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1022519/google-gemini-file-editing-documents-pdfs",
+      "summary": "Now you can generate, preview, and edit PDFs, Google Docs, Google Sheets, slide decks, Markdown files, TXT files, and code directly within Google Gemini. The new file editing capabilities are available starting today for...",
+      "tags": [
+        "Gemini",
+        "Dev Tools"
+      ],
+      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/04/STK255_Google_Gemini_B_474198.jpg?quality=90&strip=all&crop=0,0,100,100"
+    },
+    {
       "title": "Google announces Gemini 4 Carbon, its latest frontier AI model that you can't use",
       "source": "Ars Technica AI",
       "date": "2026-10-28",
@@ -120,123 +240,6 @@
         "Models"
       ],
       "image": "https://cdn.arstechnica.net/wp-content/uploads/2026/04/gemini-general-2-1152x648.jpg"
-    },
-    {
-      "title": "Building an Agentic AI Platform on Amazon Bedrock AgentCore",
-      "source": "AWS Machine Learning",
-      "date": "2026-10-28",
-      "url": "https://aws.amazon.com/blogs/machine-learning/building-an-agentic-ai-platform-on-amazon-bedrock-agentcore/",
-      "summary": "Stand up a governed, multi-account Agentic AI Platform on Amazon Bedrock AgentCore. This post walks through the architecture and an open-source reference blueprint: the operating model, control plane, per-Workstream cell...",
-      "tags": [
-        "Agents",
-        "Models"
-      ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/10/22/ML-21798-1.png"
-    },
-    {
-      "title": "Accelerating software delivery with agentic QA automation using Amazon Nova Act – Part 3",
-      "source": "AWS Machine Learning",
-      "date": "2026-10-28",
-      "url": "https://aws.amazon.com/blogs/machine-learning/accelerating-software-delivery-with-agentic-qa-automation-using-amazon-nova-act-part-3/",
-      "summary": "As QA test automation spreads across an organization, organizing tests and controlling who owns them becomes the real work. Part 3 of the QA Studio series on Amazon Nova Act adds applications that organize tests and repo...",
-      "tags": [
-        "Agents",
-        "Automation"
-      ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/10/27/ML-21434-1-1.png"
-    },
-    {
-      "title": "Introducing the Microsoft Copilot harness in Foundry Agent Service",
-      "source": "Azure Blog",
-      "date": "2026-10-28",
-      "url": "https://devblogs.microsoft.com/foundry/microsoft-copilot-harness-in-foundry/",
-      "summary": "Today, we’re introducing the Microsoft Copilot harness in Foundry Agent Service in public preview. The post Introducing the Microsoft Copilot harness in Foundry Agent Service appeared first on Microsoft Azure Blog .",
-      "tags": [
-        "Agents",
-        "Copilot"
-      ],
-      "image": "https://devblogs.microsoft.com/foundry/wp-content/uploads/sites/89/2026/10/Microsoft-Copilot-harness-DevBlog-header-4-1.webp"
-    },
-    {
-      "title": "Route and orchestrate models with GitHub Copilot Fusion",
-      "source": "GitHub Changelog",
-      "date": "2026-10-28",
-      "url": "https://github.blog/changelog/2026-10-28-route-and-orchestrate-models-with-github-copilot-fusion",
-      "summary": "GitHub Copilot Fusion is generally available. Instead of picking a model for each task, choose Copilot Fusion and let Copilot intelligently route and orchestrate which models it uses for you.… The post Route and orchestr...",
-      "tags": [
-        "Copilot",
-        "Models"
-      ],
-      "image": "https://github.com/user-attachments/assets/1eeffdb5-0c21-4697-8007-bb6df0e70e8b"
-    },
-    {
-      "title": "GitHub Copilot app, Universe releases",
-      "source": "GitHub Changelog",
-      "date": "2026-10-28",
-      "url": "https://github.blog/changelog/2026-10-28-github-copilot-app-universe-releases",
-      "summary": "Work doesn’t always fit in a single repository or session. A feature can span several repositories. A launch plan can pull in specs, designs, and assets without touching a repository… The post GitHub Copilot app, Univers...",
-      "tags": [
-        "Copilot"
-      ],
-      "image": "https://github.com/user-attachments/assets/37b3573f-d42f-439f-a136-9613293cf984"
-    },
-    {
-      "title": "GitHub Enterprise now includes access to GitHub Copilot",
-      "source": "GitHub Changelog",
-      "date": "2026-10-28",
-      "url": "https://github.blog/changelog/2026-10-28-github-enterprise-now-includes-access-to-github-copilot",
-      "summary": "Enterprises working with a GitHub or Microsoft account team can now get Copilot included with GitHub Enterprise for every licensed user. Previously, you had to manage two things: how many… The post GitHub Enterprise now ...",
-      "tags": [
-        "Copilot"
-      ],
-      "image": "https://github.blog/wp-content/uploads/2026/10/Changelog_NewRelease_Unfurl_Centered_GitHubEnterpriseCopilot.jpg"
-    },
-    {
-      "title": "Security extension for the GitHub Copilot app",
-      "source": "GitHub Changelog",
-      "date": "2026-10-28",
-      "url": "https://github.blog/changelog/2026-10-28-security-extension-for-the-github-copilot-app",
-      "summary": "You can now work through your repository’s GitHub code scanning alerts without leaving the GitHub Copilot app. The new GitHub security extension, now in public preview, lets you find the… The post Security extension for ...",
-      "tags": [
-        "Copilot",
-        "Dev Tools"
-      ],
-      "image": "https://github.com/user-attachments/assets/998394bd-4bce-4779-866e-f52939fac045"
-    },
-    {
-      "title": "Gemini 4 Carbon: Our next frontier model",
-      "source": "Google DeepMind",
-      "date": "2026-10-28",
-      "url": "https://deepmind.google/blog/gemini-4-carbon-our-next-frontier-model/",
-      "summary": "AI update detected from an official or high-signal source.",
-      "tags": [
-        "Gemini",
-        "Models"
-      ],
-      "image": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/gemini_carbon_102726_social_share.width-1300.png"
-    },
-    {
-      "title": "NVIDIA Nemotron 3.5 Transcribe and Granary v2: Intelligent Multilingual Transcription You Can Prompt and Adapt",
-      "source": "Hugging Face",
-      "date": "2026-10-28",
-      "url": "https://huggingface.co/blog/nvidia/nemotron-transcribe-granary",
-      "summary": "AI update detected from an official or high-signal source.",
-      "tags": [
-        "AI"
-      ],
-      "image": "https://cdn-uploads.huggingface.co/production/uploads/68127936de624fb6f57d9989/3vFxCEUXz_xJVrTBr4hNr.jpeg"
-    },
-    {
-      "title": "Creating AI value with enterprise context",
-      "source": "MIT Technology Review AI",
-      "date": "2026-10-28",
-      "url": "https://www.technologyreview.com/2026/10/28/1147709/creating-ai-value-with-enterprise-context/",
-      "summary": "Across a business, any number of AI platforms, systems, and tools may be at work simultaneously—for example, AI-powered customer platforms, conversational assistants, and workflow and process automation tools. Each one i...",
-      "tags": [
-        "Agents",
-        "Automation"
-      ],
-      "image": "https://wp.technologyreview.com/wp-content/uploads/2026/10/MIT_Atlan-Cover-28-26.png?w=840"
     }
   ],
   "candidates": [
@@ -249,19 +252,19 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-10-29"
+          "date": "2026-10-30"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-10-29"
+          "date": "2026-10-30"
         },
         {
-          "title": "Google launches Gemini 4 Carbon with a ‘significant leap’ in cybersecurity",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/1021339/google-gemini-4-carbon-cybersecurity-frontier",
-          "date": "2026-10-28"
+          "title": "webframe: evaluated as a scraper and a sandbox",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/26/webframe-evaluation/",
+          "date": "2026-10-26"
         }
       ]
     },
@@ -274,18 +277,18 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
+          "date": "2026-10-30"
+        },
+        {
+          "title": "How the UK Amazon Quick User Group grew in 2026",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/how-the-uk-amazon-quick-user-group-grew-in-2026/",
           "date": "2026-10-29"
         },
         {
-          "title": "We urgently need to monitor AI agents’ actions in real time",
-          "source": "MIT Technology Review AI",
-          "link": "https://www.technologyreview.com/2026/10/29/1147824/monitor-ai-agents-actions-real-time/",
-          "date": "2026-10-29"
-        },
-        {
-          "title": "Quoting Ben Hylak",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/29/ben-hylak/",
+          "title": "Building intent-driven UI testing with Amazon Nova Act",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/building-intent-driven-ui-testing-with-amazon-nova-act/",
           "date": "2026-10-29"
         }
       ]
@@ -296,6 +299,12 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "How MoEngage turned over 400 APIs into agent tools with AgentCore Gateway",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/how-moengage-turned-over-400-apis-into-agent-tools-with-agentcore-gateway/",
+          "date": "2026-10-29"
+        },
+        {
           "title": "Quoting Ben Hylak",
           "source": "Simon Willison",
           "link": "https://simonwillison.net/2026/Oct/29/ben-hylak/",
@@ -304,10 +313,60 @@
       ]
     },
     {
+      "label": "Multimodal AI product workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Accelerate agentic AI with NVIDIA Nemotron models on Amazon EKS and SageMaker HyperPod EKS",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/accelerate-agentic-ai-with-nvidia-nemotron-models-on-amazon-eks-and-sagemaker-hyperpod-eks/",
+          "date": "2026-10-29"
+        },
+        {
+          "title": "Build specialized multimodal models with LFM3",
+          "source": "Hugging Face",
+          "link": "https://huggingface.co/blog/LiquidAI/lfm3",
+          "date": "2026-10-27"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "API credits benefit for eligible ChatGPT subscriptions",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/29/api-credits/",
+          "date": "2026-10-29"
+        },
+        {
+          "title": "OpenAI and ServiceNow expand partnership across enterprise workflows",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/openai-servicenow-partnership-expansion",
+          "date": "2026-10-28"
+        },
+        {
+          "title": "Legora is building the agentic operating system for legal work",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/legora",
+          "date": "2026-10-28"
+        }
+      ]
+    },
+    {
       "label": "Gemini multimodal exploration",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "You can generate and edit Google Docs files directly in Gemini chats now",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1022519/google-gemini-file-editing-documents-pdfs",
+          "date": "2026-10-29"
+        },
         {
           "title": "Google announces Gemini 4 Carbon, its latest frontier AI model that you can't use",
           "source": "Ars Technica AI",
@@ -318,12 +377,6 @@
           "title": "Gemini 4 Carbon: Our next frontier model",
           "source": "Google DeepMind",
           "link": "https://deepmind.google/blog/gemini-4-carbon-our-next-frontier-model/",
-          "date": "2026-10-28"
-        },
-        {
-          "title": "Google launches Gemini 4 Carbon with a ‘significant leap’ in cybersecurity",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/1021339/google-gemini-4-carbon-cybersecurity-frontier",
           "date": "2026-10-28"
         }
       ]
@@ -374,50 +427,6 @@
           "title": "GitHub Copilot app, Universe releases",
           "source": "GitHub Changelog",
           "link": "https://github.blog/changelog/2026-10-28-github-copilot-app-universe-releases",
-          "date": "2026-10-28"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "OpenAI and ServiceNow expand partnership across enterprise workflows",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/openai-servicenow-partnership-expansion",
-          "date": "2026-10-28"
-        },
-        {
-          "title": "Legora is building the agentic operating system for legal work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/legora",
-          "date": "2026-10-28"
-        },
-        {
-          "title": "OpenAI expands partnership with Oracle to bring its apps to ChatGPT",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/oracle-apps-in-chatgpt",
-          "date": "2026-10-27"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "GitHub Octoverse 2026",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/28/github-octoverse-2026/",
-          "date": "2026-10-28"
-        },
-        {
-          "title": "Google launches Gemini 4 Carbon with a ‘significant leap’ in cybersecurity",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/1021339/google-gemini-4-carbon-cybersecurity-frontier",
           "date": "2026-10-28"
         }
       ]
