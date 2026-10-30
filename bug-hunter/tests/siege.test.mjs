@@ -442,7 +442,7 @@ test('the drill scoops: it dives, drives what it hits back rushing along with it
   for (let i = 0; i < 90 && !lunged; i++) { m.tick(s, 1 / 30); if (drill.lunge) lunged = true; }
   assert.ok(lunged, 'the drill lunges on its blow'); assert.ok(drill.alt <= 40, 'it struck from low');
   const dx = drill.x, fx = foe.x; run(s, m.KNOCK.time);
-  assert.ok(drill.x > dx + 60, 'the drill rushes forward'); assert.ok(foe.x > fx + 60, 'its target is driven back'); assert.ok(drill.alt <= 40, 'and it is still low');
+  assert.ok(drill.x > dx + 40 && drill.x < foe.x - 20, 'the drill rushes forward, short of where its target lands'); assert.ok(foe.x > fx + 60, 'its target is driven back'); assert.ok(drill.alt <= 40, 'and it is still low');
   run(s, m.RAM.low - 0.1); assert.ok(drill.alt <= 40, 'low for a while'); run(s, 0.6); assert.ok(drill.alt > 60 || drill.lunge || drill.low, 'then it climbs, unless it is on the next blow');
 });
 test('the gold drill scoops two at once, the first drill one', () => {

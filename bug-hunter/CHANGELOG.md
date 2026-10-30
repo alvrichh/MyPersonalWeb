@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.139 - 2026-10-30
+
+### Changed
+- Siege Cartoon drill aircraft, reined in: its rush stops short of where its target lands (six tenths of the throw), it strikes less often (every 1.2 s, the gold one every 0.9 s), and a flyer down at striking height can be hit by the walkers. Alone it now falls to five swordsmen, four spearmen or three gunners; the gold one still beats them.
+- The fortress quiver refills a little slower (10 a second at the first level, from 12).
+
 ## 1.15.138 - 2026-10-30
 
 ### Changed

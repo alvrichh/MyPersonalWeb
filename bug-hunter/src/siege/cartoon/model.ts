@@ -156,8 +156,8 @@ export const UNITS: readonly Spec[] = [
     { price: 2000, cost: 170, hp: 620, damage: 19, range: 230, splash: 70, shot: 'salvo', rate: 0.5, ...six('ally-helicopter-3', 201, 1.1443) },
   ] },
   // The drill aircraft, the flying shield (docs/cw2-reference.md): a drill rocket that rams, then a heavier gold one.
-  { id: 13, flyAt: 98, cost: 80, hp: 360, damage: 27, speed: 55, range: 40, rate: 0.8, cooldown: 8, unlock: 3, air: true, ram: 90, ...six('ally-drill-1', 199, 0.5528), forms: [
-    { price: 1000, cost: 130, hp: 700, damage: 30, rate: 0.5, ram: 110, ramHits: 2, ...six('ally-drill-2', 242, 0.6095) },
+  { id: 13, flyAt: 98, cost: 80, hp: 360, damage: 27, speed: 55, range: 40, rate: 1.2, cooldown: 8, unlock: 3, air: true, ram: 90, ...six('ally-drill-1', 199, 0.5528), forms: [
+    { price: 1000, cost: 130, hp: 700, damage: 30, rate: 0.9, ram: 110, ramHits: 2, ...six('ally-drill-2', 242, 0.6095) },
   ] },
   // The angel army, the dearest: an axe and shield (very fast), a staff throwing a violet crescent, and the golden
   // archangel, bigger, whose sweeping golden crescent hits everything ahead of it and throws it far back.
@@ -282,7 +282,9 @@ export const specOf = (u: { id: number; side: number; lv?: number }) => (u.side 
 const hits = (a: Spec, target: number) => (isAir(target) ? !!a.air || !!a.hitsAir : !a.skyOnly);
 /** A flyer that has swooped this low to strike a walker can be struck back by walkers too, any of them. */
 const LOW = 32;
-const reaches = (u: Fighter, v: Fighter) => hits(specOf(u), v.id) || (isAir(v.id) && !specOf(u).skyOnly && (v.alt ?? highOf(v)) <= LOW);
+/** Down to here a flyer is striking, or about to: the walkers can reach it. */
+const STRIKING = LOW + 8;
+const reaches = (u: Fighter, v: Fighter) => hits(specOf(u), v.id) || (isAir(v.id) && !specOf(u).skyOnly && (v.alt ?? highOf(v)) <= STRIKING);
 /** Can a fighter of `id` (at its first form) hit one of `target`? */
 export const canHit = (id: number, target: number) => hits(UNITS[id], target);
 /** Keep at most `DECK` of each kind, in order. */
@@ -391,7 +393,7 @@ export interface Fighter { uid: number; id: number; side: 0 | 1; x: number; lane
     `KNOCK.time`) and get up, the rest are stunned for `KNOCK.stun`; bosses and the steady never. */
 export const KNOCK = { share: 0.2, time: 0.55, back: 70, stun: 0.35 };
 /** A scooping blow (`ram`): the striker follows through this share of the throw, and stays low this long after. */
-export const RAM = { lunge: 1, low: 0.9 };
+export const RAM = { lunge: 0.6, low: 0.9 };
 export interface Effect { x: number; from: number; lane: number; life: number; max: number; kind: 'shot' | 'burst' | 'arrow' | 'rocket' | 'bolt' | 'gust' | 'loot' | 'boom' | 'fire' | 'stuck' | 'fall' | 'ground' | 'zap' | 'wave' | 'sweep'; side: 0 | 1;
   /** A `boom` (an explosion) or a `fire` (a burning pool on the ground): its size, and the height it is at. */
   size?: number; up?: number;
@@ -554,7 +556,7 @@ export const METEORS = [[-30, 10], [32, 10], [2, -10]];
 export const FLY = { high: 70, rate: 90 };
 /** How high a flyer cruises: its own height, or `FLY.high`. */
 export const highOf = (u: { id: number; side: number; lv?: number }) => specOf(u).flyAt ?? FLY.high;
-export const BOW = { max: 100, cost: 1.2, regen: 12, every: 0.42, step: 0.06, damage: 16, gap: 24, friendly: 0.35, powerStep: 0.12, reach: 0.55, reachStep: 0.05, storeStep: 25, regenStep: 3 };
+export const BOW = { max: 100, cost: 1.2, regen: 10, every: 0.42, step: 0.06, damage: 16, gap: 24, friendly: 0.35, powerStep: 0.12, reach: 0.55, reachStep: 0.05, storeStep: 25, regenStep: 3 };
 /** The bow in battle: `level` its power upgrade (damage, arrows a volley, look), `speed` and `store` its other two. */
 export interface Bow { quiver: number; drawing: boolean; held: number; next: number; level: number; speed: number; store: number }
 /** The furthest any aim goes (the bow's own reach stops it sooner, `bowReach`). */
@@ -877,7 +879,7 @@ export function tick(s: Siege, dt: number) {
     }
     if (enemy && distance <= a.range + bodyOf(enemy) * 0.25) {
       // A scooping blow lands only once it has come down to its target.
-      if (u.attack <= 0 && (!a.ram || (u.alt ?? highOf(u)) <= LOW + 8)) {
+      if (u.attack <= 0 && (!a.ram || (u.alt ?? highOf(u)) <= STRIKING)) {
         u.attack = a.rate; u.hit = 0.3;
         const area = u.boss ? Math.max(a.splash ?? 0, BOSS.area) : a.splash;
         if (a.sweep) {
