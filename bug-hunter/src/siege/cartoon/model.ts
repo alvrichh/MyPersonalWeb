@@ -42,6 +42,8 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
   /** A scooping blow (the drill aircraft): it dives, drives what it hits this far back, rushing along with it
       (`RAM.lunge` of the way), and stays low a moment (`RAM.low`), open to the walkers, before it climbs away. */
   ram?: number;
+  /** A pouncer (the tiger): it leaps on its target, strikes as it lands, then bounds back facing away and turns round. */
+  pounce?: boolean;
   /** How many it scoops at once (the gold drill takes two); one if unsaid. */
   ramHits?: number;
   /** A flyer that only fights other flyers (and the fortress), never troops on the ground. */
@@ -176,7 +178,7 @@ export const UNITS: readonly Spec[] = [
   { id: 22, cost: 0, hp: 100, damage: 30, speed: 30, range: 185, rate: 1.5, cooldown: 0, unlock: 1, foe: true, infantry: true, hitsAir: true, ...foe('foe-gunner-1', 134, 0.86) },
   { id: 23, cost: 0, hp: 300, damage: 38, speed: 28, range: 175, rate: 1.5, cooldown: 0, unlock: 1, foe: true, infantry: true, hitsAir: true, ...foe('foe-blaster-1', 125, 1.04) },
   { id: 24, cost: 0, hp: 150, damage: 42, speed: 26, range: 190, rate: 1.9, cooldown: 0, unlock: 1, foe: true, splash: 60, infantry: true, hitsAir: true, ...foe('foe-wizard-1', 165, 0.77) },
-  { id: 25, cost: 0, hp: 280, damage: 36, speed: 60, range: 40, rate: 1, cooldown: 0, unlock: 1, foe: true, ...foe('foe-tiger-1', 115, 1.2) },
+  { id: 25, cost: 0, hp: 280, damage: 36, speed: 60, range: 40, rate: 1, cooldown: 0, unlock: 1, foe: true, pounce: true, ...foe('foe-tiger-1', 115, 1.2) },
   { id: 26, cost: 0, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, ...foe('foe-dragon-1', 120, 1.38) },
   { id: 27, flyAt: 125, cost: 0, hp: 380, damage: 40, speed: 55, range: 45, rate: 0.9, cooldown: 0, unlock: 1, foe: true, air: true, ...foe('foe-death-angel-1', 156, 0.93) },
   { id: 28, flyAt: 70, cost: 0, hp: 70, damage: 12, speed: 70, range: 40, rate: 0.7, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-eagle-1', 171, 0.7) },
@@ -380,6 +382,8 @@ export interface Fighter { uid: number; id: number; side: 0 | 1; x: number; lane
   knock?: number; stun?: number;
   /** Seconds left of a scooping lunge (`ram`), following its thrown target a little; then seconds left low (`RAM.low`). */
   lunge?: number; lungeBack?: number; low?: number;
+  /** A pounce (`pounce`): seconds left of the leap on its prey, then of the bound back (facing away). */
+  leap?: number; bound?: number; prey?: number;
   /** How far this knock throws it (a guardian's blow throws further than `KNOCK.back`). */
   knockBack?: number;
   /** Seconds left being blown back by the corrupt wind. */
@@ -395,6 +399,8 @@ export interface Fighter { uid: number; id: number; side: 0 | 1; x: number; lane
 export const KNOCK = { share: 0.2, time: 0.55, back: 70, stun: 0.35 };
 /** A scooping blow (`ram`): the striker follows through this share of the throw, and stays low this long after. */
 export const RAM = { lunge: 0.6, low: 0.9 };
+/** A pounce: the leap (seconds, field units forward, how high), and the bound back after it. */
+export const POUNCE = { time: 0.4, forward: 45, height: 46, back: 0.45, away: 95 };
 export interface Effect { x: number; from: number; lane: number; life: number; max: number; kind: 'shot' | 'burst' | 'arrow' | 'rocket' | 'bolt' | 'gust' | 'loot' | 'boom' | 'fire' | 'stuck' | 'fall' | 'ground' | 'zap' | 'wave' | 'sweep'; side: 0 | 1;
   /** A `boom` (an explosion) or a `fire` (a burning pool on the ground): its size, and the height it is at. */
   size?: number; up?: number;
@@ -863,6 +869,22 @@ export function tick(s: Siege, dt: number) {
     if (u.knock) { u.knock = Math.max(0, u.knock - dt); u.x = Math.max(110, Math.min(FIELD - 110, u.x + (u.side ? 1 : -1) * (u.knockBack ?? KNOCK.back) / KNOCK.time * dt)); continue; }
     if (u.stun) { u.stun = Math.max(0, u.stun - dt); continue; }
     if (u.low) u.low = Math.max(0, u.low - dt);
+    if (u.leap) {
+      // In the air on its prey; it strikes as it lands, then bounds back.
+      const dir = u.side ? -1 : 1, step = Math.min(u.leap, dt); u.leap -= step; u.moving = true;
+      u.x = Math.max(110, Math.min(FIELD - 110, u.x + dir * POUNCE.forward / POUNCE.time * step));
+      if (u.leap <= 0) {
+        u.leap = 0; const prey = alive.find(v => v.uid === u.prey);
+        if (prey && Math.abs(prey.x - u.x) <= a.range + bodyOf(prey) * 0.25 + 30) hits.push({ target: prey, damage: u.damage, boss: u.boss });
+        u.bound = POUNCE.back; hear(s, soundsOf(u)[0], u.x);
+      }
+      continue;
+    }
+    if (u.bound) {
+      const dir = u.side ? -1 : 1, step = Math.min(u.bound, dt); u.bound -= step; u.moving = true;
+      u.x = Math.max(110, Math.min(FIELD - 110, u.x - dir * POUNCE.away / POUNCE.back * step));
+      continue;
+    }
     if (u.lunge) {
       u.lunge = Math.max(0, u.lunge - dt); u.moving = true;
       u.x = Math.max(110, Math.min(FIELD - 110, u.x + (u.side ? -1 : 1) * (u.lungeBack ?? 0) / KNOCK.time * dt));
@@ -880,7 +902,8 @@ export function tick(s: Siege, dt: number) {
     }
     if (enemy && distance <= a.range + bodyOf(enemy) * 0.25) {
       // A scooping blow lands only once it has come down to its target.
-      if (u.attack <= 0 && (!a.ram || (u.alt ?? highOf(u)) <= STRIKING)) {
+      if (u.attack <= 0 && a.pounce) { u.attack = a.rate + POUNCE.time + POUNCE.back; u.leap = POUNCE.time; u.prey = enemy.uid; u.hit = POUNCE.time; }
+      else if (u.attack <= 0 && (!a.ram || (u.alt ?? highOf(u)) <= STRIKING)) {
         u.attack = a.rate; u.hit = 0.3;
         const area = u.boss ? Math.max(a.splash ?? 0, BOSS.area) : a.splash;
         if (a.sweep) {

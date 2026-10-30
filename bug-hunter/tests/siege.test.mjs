@@ -455,6 +455,15 @@ test('the gold drill scoops two at once, the first drill one', () => {
     assert.equal(foes.filter(f => f.hp < 9000).length, expected, `level ${level} scoops ${expected}`);
   }
 });
+test('the tiger pounces: it leaps on its prey, strikes as it lands, then bounds back', () => {
+  const s = m.newSiege({ ...m.freshProgress(), owned: [0], deck: [0] }, 1); s.nextWave = 999; s.gusted = true; s.energy = 999;
+  m.summon(s, 0); const prey = s.units.find(u => !u.side); prey.x = 600; prey.hp = prey.maxHp = 9000; prey.attack = 99;
+  const tiger = { uid: 99, id: 25, side: 1, x: 645, lane: 1, hp: 9000, maxHp: 9000, damage: 36, attack: 0, flash: 0, boss: false }; s.units.push(tiger);
+  let leapt = false; for (let i = 0; i < 60 && !leapt; i++) { m.tick(s, 1 / 30); if (tiger.leap) leapt = true; }
+  assert.ok(leapt, 'it leaps'); const from = tiger.x; assert.equal(prey.hp, 9000, 'no blow before it lands');
+  run(s, m.POUNCE.time + 0.04); assert.ok(tiger.x < from - 30, 'it leaps forward'); assert.ok(prey.hp < 9000, 'the blow lands with it'); assert.ok(tiger.bound > 0, 'then it bounds back');
+  const landed = tiger.x; run(s, m.POUNCE.back); assert.ok(tiger.x > landed + 60, 'back the way it came');
+});
 test('every rocket blows up where it lands', () => {
   const s = m.newSiege({ ...m.freshProgress(), owned: [0, 5], deck: [5] }, 1); s.nextWave = 999; s.gusted = true; s.energy = 999;
   m.summon(s, 5); const b = s.units[0]; b.x = 600; b.hp = b.maxHp = 9000;
