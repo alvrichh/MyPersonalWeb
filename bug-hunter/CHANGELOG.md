@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.134 - 2026-10-30
+
+### Added
+- The cover announces Siege Cartoon once, on its papyrus with the mode's own buttons: "Try it" opens the siege, "Later" puts it away. It waits until the guide's first-visit note is done.
+
 ## 1.15.133 - 2026-10-30
 
 ### Fixed

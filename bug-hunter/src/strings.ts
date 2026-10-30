@@ -5,6 +5,10 @@ import { storage } from '../lib/storage';
    to English. */
 const en = {
   siegeHubModes: 'New mode · Play now',
+  siegeNewsTitle: 'Siege Cartoon is here!',
+  siegeNewsText: 'A new mode: build your army, break their fortress and bring down its guardian, across six worlds.',
+  siegeNewsTry: 'Try it',
+  siegeNewsLater: 'Later',
   siegePrologue1: "The Backlog overflowed. Bugs crawled out of every ticket and raised fortresses across nine worlds.",
   siegePrologue2: "Then we raise ours. Every bug we squash is one less in production.",
   siegePrologue3: "Summon your troops, aim your archers and bring down each world's fortress.",
@@ -1560,6 +1564,10 @@ export type Key = keyof typeof en;
 
 const es: Record<Key, string> = {
   siegeHubModes: 'Nuevo modo · Jugar ahora',
+  siegeNewsTitle: '¡Ya está disponible Asedio Cartoon!',
+  siegeNewsText: 'Nuevo modo: forma tu ejército, derriba su fortaleza y acaba con su guardián a lo largo de seis mundos.',
+  siegeNewsTry: 'Probar',
+  siegeNewsLater: 'Más tarde',
   siegePrologue1: "El Backlog se desbordó. Los bugs salieron de cada ticket y levantaron fortalezas en nueve mundos.",
   siegePrologue2: "Pues levantamos la nuestra. Cada bug que aplastemos es uno menos en producción.",
   siegePrologue3: "Invoca a tus tropas, apunta con tus arqueros y derriba la fortaleza de cada mundo.",
