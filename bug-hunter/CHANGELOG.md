@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.136 - 2026-10-30
+
+### Changed
+- Siege Cartoon's story: the running joke is a cake now, not a cheese, in all seven lines it runs through, in both languages.
+
 ## 1.15.135 - 2026-10-30
 
 ### Changed
