@@ -39,8 +39,8 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
   /** A sweeping blow: every enemy it can reach within `reach` field units in front is hit and thrown back `back` units (the
       archangel's golden crescent). */
   sweep?: { reach: number; back: number };
-  /** A scooping blow (the drill aircraft): it dives, throws what it hits this far back (`RAM.lunge` of it following
-      through itself) and stays low a moment (`RAM.low`), open to the walkers, before it climbs away. */
+  /** A scooping blow (the drill aircraft): it dives, drives what it hits this far back, rushing along with it
+      (`RAM.lunge` of the way), and stays low a moment (`RAM.low`), open to the walkers, before it climbs away. */
   ram?: number;
   /** A flyer that only fights other flyers (and the fortress), never troops on the ground. */
   skyOnly?: boolean;
@@ -389,7 +389,7 @@ export interface Fighter { uid: number; id: number; side: 0 | 1; x: number; lane
     `KNOCK.time`) and get up, the rest are stunned for `KNOCK.stun`; bosses and the steady never. */
 export const KNOCK = { share: 0.2, time: 0.55, back: 70, stun: 0.35 };
 /** A scooping blow (`ram`): the striker follows through this share of the throw, and stays low this long after. */
-export const RAM = { lunge: 0.3, low: 0.9 };
+export const RAM = { lunge: 1, low: 0.9 };
 export interface Effect { x: number; from: number; lane: number; life: number; max: number; kind: 'shot' | 'burst' | 'arrow' | 'rocket' | 'bolt' | 'gust' | 'loot' | 'boom' | 'fire' | 'stuck' | 'fall' | 'ground' | 'zap' | 'wave' | 'sweep'; side: 0 | 1;
   /** A `boom` (an explosion) or a `fire` (a burning pool on the ground): its size, and the height it is at. */
   size?: number; up?: number;
