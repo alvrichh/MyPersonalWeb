@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.140 - 2026-10-30
+
+### Changed
+- Siege Cartoon beams (the ray gun's, the mech's, the archangel's, the air magician's) are drawn under the troops, so a shooter stands over its own ray.
+- A Spanish story line: "No me queda ya ni bocata, tsss…".
+
 ## 1.15.139 - 2026-10-30
 
 ### Changed

@@ -1815,7 +1815,7 @@ const es: Record<Key, string> = {
   siegeCtTalk5_3: "Hemos llegado demasiado lejos para darnos la vuelta.",
   siegeCtTalk6_1: "¿Pensabais que me iba a perder el final? He dejado el castillo a cargo de un cojín con corona. Es de confianza.",
   siegeCtTalk6_2: "Es la última fortaleza. Si cae su rey, cae toda la Oscuridad. No hay segunda oportunidad.",
-  siegeCtTalk6_3: "Pues que salga a la primera, que tengo un hambre que no veo. No me queda ni el bocata de chorizo.",
+  siegeCtTalk6_3: "Pues que salga a la primera, que tengo un hambre que no veo. No me queda ya ni bocata, tsss…",
   siegeCtTalk6_4: "Por todo lo que hemos recuperado. Adelante.",
   siegeCtBoss1_1: "Cada piedra que tiro es una casa menos en La Pradera.",
   siegeCtBoss1_2: "¡Ozú, esa casi me da!",
