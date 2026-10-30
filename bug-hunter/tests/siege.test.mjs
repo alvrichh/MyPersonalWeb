@@ -165,9 +165,9 @@ test('the missile blasts the aim and recharges', () => {
   assert.equal(m.missile(s), true); assert.ok(s.units[0].hp < 200); assert.equal(m.missile(s), false);
   run(s, m.ROCKET.every + 0.1); assert.equal(m.missile(s), true);
 });
-test('every troop id is its place in the list; ours are 10 land and 6 air, the enemy\'s are theirs only', () => {
+test('every troop id is its place in the list; ours are 14 land and 8 air, the enemy\'s are theirs only', () => {
   m.UNITS.forEach((u, i) => assert.equal(u.id, i));
-  assert.equal(m.ALLIES.filter(u => !u.air).length, 10); assert.equal(m.ALLIES.filter(u => u.air).length, 6);
+  assert.equal(m.ALLIES.filter(u => !u.air).length, 14); assert.equal(m.ALLIES.filter(u => u.air).length, 8);
   const p = m.freshProgress(); p.levels[33] = 6; assert.equal(m.readProgress(JSON.stringify(p)).levels[33], 6, 'a troop appended after the enemy keeps its level');
   const foes = m.UNITS.filter(u => u.foe); assert.ok(foes.length >= 18);
   const s = m.newSiege(m.freshProgress(), 1); s.energy = 999; s.deck.push(15);
@@ -480,6 +480,23 @@ test('the mammothsaurus sweeps: every troop in front of it is struck and thrown 
   const mammoth = { uid: 99, id: 44, side: 1, x: 650, lane: 1, hp: 9000, maxHp: 9000, damage: 60, attack: 0, flash: 0, boss: false }; s.units.push(mammoth);
   const from = mine.map(u => u.x); run(s, m.KNOCK.time + 0.1);
   assert.ok(mine.every(u => u.hp < 9000), 'all three are struck'); assert.ok(mine.every((u, i) => u.x < from[i] - 150), 'and thrown far back');
+});
+test('the new recruits: the medic heals, the balloon only bombs the fortress, the ninja goes unseen, the catapult hits the fortress twice', () => {
+  const fresh = (ids) => { const s = m.newSiege({ ...m.freshProgress(), owned: [0, ...ids], deck: ids }, 30); s.nextWave = 999; s.gusted = true; s.energy = 9999; return s; };
+  let s = fresh([53, 0]); m.summon(s, 53); m.summon(s, 0);
+  const medic = s.units.find(u => u.id === 53), mate = s.units.find(u => u.id === 0); medic.x = 500; mate.x = 560; mate.hp = 10;
+  s.units.push({ uid: 99, id: 15, side: 1, x: 600, lane: 1, hp: 9000, maxHp: 9000, damage: 0, attack: 99, flash: 0, boss: false });
+  run(s, 2); assert.ok(mate.hp > 10, 'the medic heals'); assert.equal(s.units.find(u => u.uid === 99).hp <= 9000, true);
+  assert.equal(medic.damage, 0, 'and has no blow of its own');
+  s = fresh([52]); m.summon(s, 52); const balloon = s.units[0]; balloon.x = 600;
+  s.units.push({ uid: 98, id: 15, side: 1, x: 620, lane: 1, hp: 9000, maxHp: 9000, damage: 0, attack: 99, flash: 0, boss: false });
+  run(s, 3); assert.equal(s.units.find(u => u.uid === 98).hp, 9000, 'the balloon never fights troops'); assert.ok(balloon.x > 660, 'it flies on');
+  s = fresh([55]); m.summon(s, 55); const ninja = s.units[0]; assert.ok(ninja.hidden > 0, 'the ninja goes in unseen'); ninja.x = 600; ninja.hp = ninja.maxHp = 9000;
+  s.units.push({ uid: 97, id: 15, side: 1, x: 625, lane: 1, hp: 9000, maxHp: 9000, damage: 50, attack: 0, flash: 0, boss: false });
+  run(s, 1); assert.equal(ninja.hp, 9000, 'the enemy cannot strike it while unseen');
+  s = fresh([51]); m.summon(s, 51); const cat = s.units[0]; cat.x = m.FIELD - 80 - 380; const before = s.hp[1];
+  for (let i = 0; i < 120 && s.hp[1] === before; i++) m.tick(s, 1 / 30);
+  assert.equal(Math.round(before - s.hp[1]), Math.round(cat.damage * 2), 'twice its blow on the fortress');
 });
 test('every rocket blows up where it lands', () => {
   const s = m.newSiege({ ...m.freshProgress(), owned: [0, 5], deck: [5] }, 1); s.nextWave = 999; s.gusted = true; s.energy = 999;

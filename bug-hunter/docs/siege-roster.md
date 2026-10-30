@@ -50,6 +50,8 @@ Each enemy is "equivalent" to one of our units at a level: that sets its stats. 
 | 5 | Rex Head, Rhinoceratops, Flightless Terror Bird, Tiger (leaps over and turns back), Spider Spearman | Spearman 4, about HAS 2, Spearman 4, Archer 4, Spearman 5 | Giant Dinosaur Brute |
 | 6 | Mammothsaurus, Giant Heavy Armor Axeman, Inter-Galactic Shooter, Green Ninja Bat, Red Dragon Rider (air, unstunnable), Devil Army (air) | Vulture 6, HAS 4, Gunner 2, Swordsman 6, Drill Aircraft 2, Angel | Giant King Dinosaur Brute |
 
+**Our later recruits (v1.15.146, new designs, not in the reference):** medic (world 2, heals), shield bearer (3, a wall that shoves), catapult (4, two forms, double on the fortress), bomber balloon (4, air, bombs only the fortress), ninja (5, unseen at first), dragon rider (6, air, fire over an area).
+
 **In the game (v1.15.144).** Land, by world: 1 swordsman, spearman, dog; 2 gunner, reaper, horned archer; 3 blaster, bear, undead turkey; 4 wizard, tiger, hammer; 5 dragon, axeman, Rex Head, terror bird, rhinoceratops; 6 gatling robot, alien shooter, mammothsaurus, spider spearman. Air: 2 eagle; 3 ninja bat, death angel; 4 hypnotist bat; 5 pterodactyl; 6 red dragon rider, green ninja bat, devil army. A world's own list comes in one more each stage (`FOE_LAND`, `FOE_AIR`).
 
 ## Six-pose sheets and levels (current format)
