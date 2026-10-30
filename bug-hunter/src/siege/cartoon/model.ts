@@ -203,11 +203,24 @@ export const UNITS: readonly Spec[] = [
   { id: 37, cost: 0, hp: 720, damage: 34, speed: 21, range: 48, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 40, hitsAir: true, ...foe('boss-brute-eater-1', 176, 1.07) },
   { id: 38, cost: 0, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, hitsAir: true, ...foe('boss-dino-1', 199, 1.0) },
   { id: 39, cost: 0, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, hitsAir: true, ...foe('boss-king-dino-1', 258, 0.87) },
+  // The enemy's later arrivals (the owner's sheets of Cartoon Wars 2's roster, docs/siege-roster.md), appended: the
+  // mountains' beasts, the Darkness's mammoth and alien shooter, a horned archer, an undead turkey, and three flyers.
+  { id: 40, cost: 0, hp: 520, damage: 34, speed: 38, range: 50, rate: 1.1, cooldown: 0, unlock: 1, foe: true, infantry: true, ...foe('foe-rex-head-1', 137, 1.168) },
+  { id: 41, cost: 0, hp: 260, damage: 30, speed: 72, range: 40, rate: 0.8, cooldown: 0, unlock: 1, foe: true, ...foe('foe-terror-bird-1', 141, 0.993) },
+  { id: 42, cost: 0, hp: 900, damage: 42, speed: 28, range: 45, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 30, ...foe('foe-rhino-1', 104, 1.442) },
+  { id: 43, cost: 0, hp: 420, damage: 38, speed: 42, range: 70, rate: 1.2, cooldown: 0, unlock: 1, foe: true, ...foe('foe-spider-spearman-1', 121, 1.116) },
+  { id: 44, cost: 0, hp: 1600, damage: 60, speed: 18, range: 60, rate: 2, cooldown: 0, unlock: 1, foe: true, splash: 60, steady: true, ...foe('foe-mammoth-1', 149, 1.611) },
+  { id: 45, cost: 0, hp: 180, damage: 40, speed: 30, range: 190, rate: 1.3, cooldown: 0, unlock: 1, foe: true, infantry: true, hitsAir: true, shot: 'ray-red', ...foe('foe-shooter-1', 128, 0.977) },
+  { id: 46, cost: 0, hp: 130, damage: 26, speed: 32, range: 190, rate: 1.2, cooldown: 0, unlock: 1, foe: true, infantry: true, hitsAir: true, shot: 'arrow-red', spin: false, ...foe('foe-archer-1', 132, 0.909) },
+  { id: 47, cost: 0, hp: 200, damage: 22, speed: 50, range: 35, rate: 0.9, cooldown: 0, unlock: 1, foe: true, ...foe('foe-turkey-1', 150, 0.8) },
+  { id: 48, flyAt: 98, cost: 0, hp: 360, damage: 34, speed: 55, range: 45, rate: 1, cooldown: 0, unlock: 1, foe: true, air: true, ...foe('foe-pterodactyl-1', 176, 0.966) },
+  { id: 49, flyAt: 70, cost: 0, hp: 240, damage: 30, speed: 65, range: 40, rate: 0.7, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-green-bat-1', 160, 0.6875) },
+  { id: 50, flyAt: 125, cost: 0, hp: 520, damage: 46, speed: 50, range: 60, rate: 1, cooldown: 0, unlock: 1, foe: true, air: true, splash: 30, ...foe('foe-devil-1', 159, 0.975) },
 ];
 /** The enemy's land and air troops by act, each act adding to the last (docs/siege-roster.md): early waves draw
     from the first two of the land list. No flyers in the first world: they come from the second. */
-export const FOE_LAND = [[15, 16, 17], [22, 19], [23, 18], [24, 25, 20], [26, 21], [32]];
-export const FOE_AIR = [[], [28], [29, 27], [30], [], [31]];
+export const FOE_LAND = [[15, 16, 17], [22, 19, 46], [23, 18, 47], [24, 25, 20], [26, 21, 40, 41, 42], [32, 45, 44, 43]];
+export const FOE_AIR = [[], [28], [29, 27], [30], [48], [31, 49, 50]];
 /** What a stage throws at you most (its counter in brackets), stage by stage within each act; the fifth is the
     guardian's, and `normal`/`mixed` stages send the usual mix. `swarm` (area damage): many small fast troops; `wall`
     (flyers, or shooters behind a tank): tough close fighters that cannot reach the air; `sky` (troops that reach the
@@ -498,10 +511,11 @@ const ATTACK_SOUND: Record<number, string | string[]> = {
   0: ['blunt', 'blade', 'blade', 'blade', 'blade'], 1: 'pierce', 3: ['blade', 'blunt', 'blunt', 'blunt'], 4: ['gun', 'rifle', 'uzi', 'sniper'],
   7: 'claw', 8: ['rocket', 'gatling', 'rocket'], 9: ['gatling', 'gatling', 'gatling', 'gatling'], 10: 'blade', 11: ['rifle', 'sniper', 'ray', 'thunder'], 12: 'rocket', 13: 'drill', 14: ['blade', 'magic', 'magic'], 33: ['blunt', 'ray', 'ray', 'blunt', 'gatling', 'blunt'],
   15: 'blade', 16: 'pierce', 17: 'bite', 18: 'claw', 19: 'blade', 20: 'blunt', 21: 'blade', 22: 'rifle', 23: 'throw', 24: 'magic',
+  40: 'blunt', 41: 'bite', 42: 'blunt', 43: 'pierce', 44: 'blunt', 47: 'bite', 48: 'bite', 49: 'blade', 50: 'pierce',
   25: 'claw', 26: 'breath', 27: 'blade', 28: 'claw', 29: 'claw', 30: 'magic', 31: 'blade', 32: 'gatling',
   34: 'throw', 35: 'gatling', 36: 'breath', 37: 'blunt', 38: 'bite', 39: 'bite',
 };
-const SHOT_SOUND: Record<string, string> = { 'crescent-gold': 'wind', rock: 'throw', javelin: 'throw', shuriken: 'throw', arrow: 'bow', rocket: 'rocket', rockets: 'rocket', salvo: 'rocket', ray: 'ray', 'ray-blue': 'ray', 'ray-gold': 'ray', 'ray-pink': 'thunder', plasma: 'ray', ice: 'ray', crescent: 'magic', none: 'flame', lightning: 'thunder', tornado: 'wind', meteor: 'meteor' };
+const SHOT_SOUND: Record<string, string> = { 'crescent-gold': 'wind', rock: 'throw', javelin: 'throw', shuriken: 'throw', arrow: 'bow', rocket: 'rocket', rockets: 'rocket', salvo: 'rocket', ray: 'ray', 'ray-blue': 'ray', 'ray-gold': 'ray', 'ray-pink': 'thunder', 'ray-red': 'ray', 'arrow-red': 'bow', plasma: 'ray', ice: 'ray', crescent: 'magic', none: 'flame', lightning: 'thunder', tornado: 'wind', meteor: 'meteor' };
 /** Bullets (`bullet`, `bullet-rifle|uzi|sniper`) sound like the gun that fires them; beams (`ray`, `ray-blue|gold|pink`) reach at once. */
 export const isBullet = (shot?: string) => !!shot?.startsWith('bullet');
 export const isBeam = (shot?: string) => !!shot?.startsWith('ray');
@@ -509,6 +523,7 @@ const DEATH_SOUND: Record<number, string | string[]> = {
   1: ['die-man', 'die-man', 'die-man', 'die-man', 'die-horse'], 3: 'die-armor', 7: 'die-beast', 8: 'die-bot', 9: 'die-bot',
   10: 'die-flyer', 11: 'die-flyer', 12: 'die-flyer', 13: 'die-bot', 14: 'die-flyer', 33: 'die-bot',
   17: 'die-beast', 18: 'die-brute', 20: 'die-armor', 21: 'die-armor', 25: 'die-beast', 26: 'die-dragon', 27: 'die-flyer', 28: 'die-flyer',
+  40: 'die-beast', 41: 'die-beast', 42: 'die-brute', 44: 'die-brute', 47: 'die-beast', 48: 'die-flyer', 49: 'die-flyer', 50: 'die-flyer',
   29: 'die-flyer', 30: 'die-flyer', 31: 'die-dragon', 32: 'die-bot',
   34: 'die-brute', 35: 'die-bot', 36: 'die-dragon', 37: 'die-brute', 38: 'die-dragon', 39: 'die-dragon',
 };
