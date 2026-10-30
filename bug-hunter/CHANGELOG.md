@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.148 - 2026-10-30
+
+### Changed
+- Siege Cartoon's dragon rider is gigantic: more than twice as big, the largest of our troops, bigger than the guardians; it flies lower so it stays inside the view.
+
 ## 1.15.147 - 2026-10-30
 
 ### Fixed
