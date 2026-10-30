@@ -2176,6 +2176,7 @@ function linkScreen(note = '') {
     <p>${t('onlineHow')}</p>
     ${note ? `<p class="how">${note}</p>` : ''}
     <button class="primary" type="button" data-act="link-host">${t('onlineHost')}</button>
+    <button class="primary" type="button" data-act="share">🔗 ${t('shareProfile')}</button>
     <h3 class="slot">${t('onlineJoin')}</h3>
     <input class="online-code" id="onlineCode" maxlength="4" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ABCD" aria-label="${t('onlineCodeLabel')}">
     <button class="primary" type="button" data-act="link-join">${t('onlineJoinBtn')}</button>`);
