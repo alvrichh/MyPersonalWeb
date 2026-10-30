@@ -431,8 +431,18 @@ test('flyers that shoot stay up at their height to fire on walkers; close fighte
   const heli = s.units.find(u => u.id === 12), fighter = s.units.find(u => u.id === 13);
   for (const u of [heli, fighter]) { u.x = 600; u.hp = u.maxHp = 9000; }
   s.units.push({ uid: 99, id: 15, side: 1, x: 640, lane: 1, hp: 9000, maxHp: 9000, damage: 0, attack: 99, flash: 0, boss: false });
-  run(s, 3);
-  assert.ok(heli.alt >= m.highOf(heli) - 1, 'the helicopter never comes low'); assert.ok(fighter.alt <= 33, 'the drill swoops');
+  let lowest = 999; for (let i = 0; i < 90; i++) { m.tick(s, 1 / 30); lowest = Math.min(lowest, fighter.alt ?? 999); }
+  assert.ok(heli.alt >= m.highOf(heli) - 1, 'the helicopter never comes low'); assert.ok(lowest <= 40, 'the drill swoops');
+});
+test('the drill scoops: it dives, drags what it hits along with it and climbs away', () => {
+  const s = m.newSiege({ ...m.freshProgress(), owned: [0, 13], deck: [13] }, 1); s.nextWave = 999; s.gusted = true; s.energy = 999;
+  m.summon(s, 13); const drill = s.units.find(u => u.id === 13); drill.x = 600; drill.hp = drill.maxHp = 9000;
+  const foe = { uid: 99, id: 15, side: 1, x: 640, lane: 1, hp: 9000, maxHp: 9000, damage: 0, attack: 99, flash: 0, boss: false }; s.units.push(foe);
+  let lunged = false;
+  for (let i = 0; i < 90 && !lunged; i++) { m.tick(s, 1 / 30); if (drill.lunge) lunged = true; }
+  assert.ok(lunged, 'the drill lunges on its blow'); assert.ok(drill.alt <= 40, 'it struck from low');
+  const dx = drill.x, fx = foe.x; run(s, m.KNOCK.time);
+  assert.ok(drill.x > dx + 60, 'the drill lunges forward'); assert.ok(foe.x > fx + 60, 'its target is dragged along'); assert.ok(drill.alt > 80, 'and it climbs away');
 });
 test('every rocket blows up where it lands', () => {
   const s = m.newSiege({ ...m.freshProgress(), owned: [0, 5], deck: [5] }, 1); s.nextWave = 999; s.gusted = true; s.energy = 999;

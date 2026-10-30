@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.130 - 2026-10-30
+
+### Changed
+- Siege Cartoon drill aircraft: its blow is a scoop. It dives to its target, strikes once it is down, drags the target 90 field units forward with it (110 as the gold drill) and climbs away, then comes round for the next.
+
 ## 1.15.129 - 2026-10-29
 
 ### Changed
