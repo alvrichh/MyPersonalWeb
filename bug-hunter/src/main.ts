@@ -526,7 +526,8 @@ function menuScreen() {
       <a href="/cookies.html">Cookies</a>
       <a href="/legal.html">${lang === 'es' ? 'Aviso legal' : 'Legal notice'}</a>
     </nav>
-    ${save.bookSeen ? '' : '<div class="cover-dim" aria-hidden="true"></div>'}</div>`, false, true);
+    ${save.bookSeen ? '' : '<div class="cover-dim" aria-hidden="true"></div>'}
+    ${save.bookSeen && !save.siegeNewsSeen ? `<div class="siege-news" role="dialog" aria-labelledby="siege-news-title"><div class="siege-news-box"><b id="siege-news-title">⚔️ ${t('siegeNewsTitle')}</b><p>${t('siegeNewsText')}</p><div class="siege-news-actions"><button type="button" class="siege-news-btn is-gold" data-act="siege-news-try">${t('siegeNewsTry')}</button><button type="button" class="siege-news-btn is-blue" data-act="siege-news-later">${t('siegeNewsLater')}</button></div></div></div>` : ''}</div>`, false, true);
   announceAchievements();
 }
 
@@ -3317,6 +3318,7 @@ screen.addEventListener('click', (event) => {
   else if (act === 'play-secret') startRun(SECRET_WORLD, 'horde', false, 0, true);
   else if (act === 'play-nightmare') startRun(NIGHTMARE_WORLD, 'horde', true);
   else if (act === 'mode-prev' || act === 'mode-next') stepMode(act === 'mode-prev' ? -1 : 1);
+  else if (act === 'siege-news-try' || act === 'siege-news-later') { save.siegeNewsSeen = true; persist(); document.querySelector('.siege-news')?.remove(); if (act === 'siege-news-try') { extraModePreview = true; menuScreen(); document.querySelector<HTMLElement>('[data-act="siege-preview"]')?.click(); } }
   else if (act === 'book') { bookPage = 0; if (!save.bookSeen) { save.bookSeen = true; persist(); } bookScreen(); }
   else if (act === 'book-prev' || act === 'book-next') { bookPage += act === 'book-prev' ? -1 : 1; bookScreen(); }
   else if (act === 'book-mode-prev' || act === 'book-mode-next') bookStepMode(act === 'book-mode-prev' ? -1 : 1);
