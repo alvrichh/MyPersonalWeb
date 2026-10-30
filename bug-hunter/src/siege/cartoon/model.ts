@@ -399,8 +399,9 @@ export interface Fighter { uid: number; id: number; side: 0 | 1; x: number; lane
 export const KNOCK = { share: 0.2, time: 0.55, back: 70, stun: 0.35 };
 /** A scooping blow (`ram`): the striker follows through this share of the throw, and stays low this long after. */
 export const RAM = { lunge: 0.6, low: 0.9 };
-/** A pounce: the leap (seconds, field units forward, how high), and the bound back after it. */
-export const POUNCE = { time: 0.4, forward: 45, height: 46, back: 0.45, away: 95 };
+/** A pounce: the leap (seconds, field units forward, how high); the bound back is the same leap the other way, so it
+    lands where it started and does not gain ground while it fights. */
+export const POUNCE = { time: 0.4, forward: 45, height: 46 };
 export interface Effect { x: number; from: number; lane: number; life: number; max: number; kind: 'shot' | 'burst' | 'arrow' | 'rocket' | 'bolt' | 'gust' | 'loot' | 'boom' | 'fire' | 'stuck' | 'fall' | 'ground' | 'zap' | 'wave' | 'sweep'; side: 0 | 1;
   /** A `boom` (an explosion) or a `fire` (a burning pool on the ground): its size, and the height it is at. */
   size?: number; up?: number;
@@ -876,13 +877,13 @@ export function tick(s: Siege, dt: number) {
       if (u.leap <= 0) {
         u.leap = 0; const prey = alive.find(v => v.uid === u.prey);
         if (prey && Math.abs(prey.x - u.x) <= a.range + bodyOf(prey) * 0.25 + 30) hits.push({ target: prey, damage: u.damage, boss: u.boss });
-        u.bound = POUNCE.back; hear(s, soundsOf(u)[0], u.x);
+        u.bound = POUNCE.time; hear(s, soundsOf(u)[0], u.x);
       }
       continue;
     }
     if (u.bound) {
       const dir = u.side ? -1 : 1, step = Math.min(u.bound, dt); u.bound -= step; u.moving = true;
-      u.x = Math.max(110, Math.min(FIELD - 110, u.x - dir * POUNCE.away / POUNCE.back * step));
+      u.x = Math.max(110, Math.min(FIELD - 110, u.x - dir * POUNCE.forward / POUNCE.time * step));
       continue;
     }
     if (u.lunge) {
@@ -902,7 +903,7 @@ export function tick(s: Siege, dt: number) {
     }
     if (enemy && distance <= a.range + bodyOf(enemy) * 0.25) {
       // A scooping blow lands only once it has come down to its target.
-      if (u.attack <= 0 && a.pounce) { u.attack = a.rate + POUNCE.time + POUNCE.back; u.leap = POUNCE.time; u.prey = enemy.uid; u.hit = POUNCE.time; }
+      if (u.attack <= 0 && a.pounce) { u.attack = a.rate + POUNCE.time * 2; u.leap = POUNCE.time; u.prey = enemy.uid; u.hit = POUNCE.time; }
       else if (u.attack <= 0 && (!a.ram || (u.alt ?? highOf(u)) <= STRIKING)) {
         u.attack = a.rate; u.hit = 0.3;
         const area = u.boss ? Math.max(a.splash ?? 0, BOSS.area) : a.splash;
