@@ -728,11 +728,13 @@ function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: nu
   const path = spec.sprite, t = s.time + u.uid * 0.37;
   // The pose. Six-pose sheets: walk A/B in turn while walking, the wind-up just before a blow, the blow, hurt, dead.
   // Three-pose sheets: stand (walking in code), attack, hurt.
-  const hurt = !!(u.flash || u.knock || u.stun);
+  // Hurt when thrown back, stunned or wincing at a heavy blow (`WINCE`), not at every scratch; its own blow shows
+  // first (a charger strikes, then stands dazed).
+  const thrown = !!u.knock, hurt = !!(u.stun || u.wince);
   const ready = !u.moving && u.attack > 0 && u.attack < 0.3;
   const pose = spec.six
-    ? gone !== undefined ? (gone < DEATH.fly ? 4 : 5) : hurt ? 4 : u.hit ? 3 : ready ? 2 : u.moving && !reduced ? Math.floor(t * 5) % 2 : 0
-    : gone !== undefined ? 2 : hurt ? 2 : u.hit ? 1 : 0;
+    ? gone !== undefined ? (gone < DEATH.fly ? 4 : 5) : thrown ? 4 : u.hit ? 3 : hurt ? 4 : ready ? 2 : u.moving && !reduced ? Math.floor(t * 5) % 2 : 0
+    : gone !== undefined ? 2 : thrown ? 2 : u.hit ? 1 : hurt ? 2 : 0;
   const stand = picture(`${path}-0`), art = picture(`${path}-${pose}`);
   const size = spec.size * (u.boss ? 1.6 : 1) * (u.grow ?? 1) * Math.pow(0.8, u.stage ?? 0);
   // The shadow under its feet (the troop's x is where its feet are), the feet standing on its middle.

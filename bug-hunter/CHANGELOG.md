@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.147 - 2026-10-30
+
+### Fixed
+- Siege Cartoon poses: a troop's own blow now shows before its hurt pose, so the rhinoceratops's charge shows its attack before it stands dazed, and the tiger shows its leap. The hurt pose comes only when a troop is thrown back, stunned, or takes a heavy blow (8% of its health or more), at most once every 1.2 seconds, instead of on every arrow and scratch.
+
 ## 1.15.146 - 2026-10-30
 
 ### Added
