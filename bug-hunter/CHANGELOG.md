@@ -4,6 +4,14 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.131 - 2026-10-30
+
+### Added
+- Siege Cartoon on a phone: leaning the phone left or right slides the camera over the field, from where it was held when the battle began. On iPhones the first touch of a battle asks for it. It can be turned off in the settings.
+
+### Changed
+- The drill aircraft's scoop throws its target back (90 field units, 110 as the gold drill) and follows through only a little, then stays low about a second, open to the walkers, before it climbs away.
+
 ## 1.15.130 - 2026-10-30
 
 ### Changed

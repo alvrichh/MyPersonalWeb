@@ -39,7 +39,8 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
   /** A sweeping blow: every enemy it can reach within `reach` field units in front is hit and thrown back `back` units (the
       archangel's golden crescent). */
   sweep?: { reach: number; back: number };
-  /** A scooping blow (the drill aircraft): it dives, drags what it hits this far along with it, and climbs away. */
+  /** A scooping blow (the drill aircraft): it dives, throws what it hits this far back (`RAM.lunge` of it following
+      through itself) and stays low a moment (`RAM.low`), open to the walkers, before it climbs away. */
   ram?: number;
   /** A flyer that only fights other flyers (and the fortress), never troops on the ground. */
   skyOnly?: boolean;
@@ -372,8 +373,8 @@ export interface Fighter { uid: number; id: number; side: 0 | 1; x: number; lane
   moving?: boolean;
   /** Seconds left flying back from a heavy blow (infantry), or stunned by one (the rest). */
   knock?: number; stun?: number;
-  /** Seconds left of a scooping lunge (`ram`): forward and up, its target dragged along. */
-  lunge?: number; lungeBack?: number;
+  /** Seconds left of a scooping lunge (`ram`), following its thrown target a little; then seconds left low (`RAM.low`). */
+  lunge?: number; lungeBack?: number; low?: number;
   /** How far this knock throws it (a guardian's blow throws further than `KNOCK.back`). */
   knockBack?: number;
   /** Seconds left being blown back by the corrupt wind. */
@@ -387,6 +388,8 @@ export interface Fighter { uid: number; id: number; side: 0 | 1; x: number; lane
 /** A blow taking at least this share of a troop's health knocks it: infantry fly back (`KNOCK.back` field units over
     `KNOCK.time`) and get up, the rest are stunned for `KNOCK.stun`; bosses and the steady never. */
 export const KNOCK = { share: 0.2, time: 0.55, back: 70, stun: 0.35 };
+/** A scooping blow (`ram`): the striker follows through this share of the throw, and stays low this long after. */
+export const RAM = { lunge: 0.3, low: 0.9 };
 export interface Effect { x: number; from: number; lane: number; life: number; max: number; kind: 'shot' | 'burst' | 'arrow' | 'rocket' | 'bolt' | 'gust' | 'loot' | 'boom' | 'fire' | 'stuck' | 'fall' | 'ground' | 'zap' | 'wave' | 'sweep'; side: 0 | 1;
   /** A `boom` (an explosion) or a `fire` (a burning pool on the ground): its size, and the height it is at. */
   size?: number; up?: number;
@@ -854,10 +857,10 @@ export function tick(s: Siege, dt: number) {
     if (u.blown) { u.blown = Math.max(0, u.blown - dt); u.x = Math.max(110, u.x - GUST.back * dt); continue; }
     if (u.knock) { u.knock = Math.max(0, u.knock - dt); u.x = Math.max(110, Math.min(FIELD - 110, u.x + (u.side ? 1 : -1) * (u.knockBack ?? KNOCK.back) / KNOCK.time * dt)); continue; }
     if (u.stun) { u.stun = Math.max(0, u.stun - dt); continue; }
+    if (u.low) u.low = Math.max(0, u.low - dt);
     if (u.lunge) {
       u.lunge = Math.max(0, u.lunge - dt); u.moving = true;
       u.x = Math.max(110, Math.min(FIELD - 110, u.x + (u.side ? -1 : 1) * (u.lungeBack ?? 0) / KNOCK.time * dt));
-      u.alt = Math.min(highOf(u), (u.alt ?? LOW) + (highOf(u) - LOW) / KNOCK.time * dt);
       continue;
     }
     const enemy = alive.filter(v => v.side !== u.side && reaches(u, v)).sort((a, b) => Math.abs(a.x - u.x) - Math.abs(b.x - u.x))[0];
@@ -867,7 +870,7 @@ export function tick(s: Siege, dt: number) {
     if (a.air) {
       // Flyers stay up at their own height: those that shoot fire down from there (a helicopter never comes low); only
       // close fighters (swords, drills, fists) drop to a walker's reach (`LOW`) to strike it, and can be struck back there.
-      const want = near && !UNITS[enemy.id].air && a.range <= 60 ? LOW : highOf(u), alt = u.alt ?? highOf(u);
+      const want = (near && !UNITS[enemy.id].air && a.range <= 60) || u.low ? LOW : highOf(u), alt = u.alt ?? highOf(u);
       u.alt = alt + Math.max(-FLY.rate * dt, Math.min(FLY.rate * dt, want - alt));
     }
     if (enemy && distance <= a.range + bodyOf(enemy) * 0.25) {
@@ -882,7 +885,7 @@ export function tick(s: Siege, dt: number) {
           s.effects.push({ x: u.x + dir * a.sweep.reach, from: u.x, lane: u.lane, life: 0.5, max: 0.5, kind: 'sweep', side: u.side, fromUp: a.air ? u.alt ?? highOf(u) : 0 });
         } else {
         for (const v of alive) if (v.side !== u.side && reaches(u, v) && (v === enemy || (area && Math.abs(v.x - enemy.x) < area))) hits.push({ target: v, damage: u.damage, boss: u.boss, push: a.ram });
-        if (a.ram) { u.lunge = KNOCK.time; u.lungeBack = a.ram; }
+        if (a.ram) { u.lunge = KNOCK.time; u.lungeBack = a.ram * RAM.lunge; u.low = KNOCK.time + RAM.low; }
         if (u.boss) s.effects.push({ x: enemy.x, from: enemy.x, lane: enemy.lane, life: BOOM, max: BOOM, kind: 'boom', side: u.side, size: 80, dark: true });
         launch(s, u, a, enemy.x, enemy.lane, UNITS[enemy.id].air ? enemy.alt ?? highOf(enemy) : 0);
         }
