@@ -445,6 +445,16 @@ test('the drill scoops: it dives, drives what it hits back rushing along with it
   assert.ok(drill.x > dx + 60, 'the drill rushes forward'); assert.ok(foe.x > fx + 60, 'its target is driven back'); assert.ok(drill.alt <= 40, 'and it is still low');
   run(s, m.RAM.low - 0.1); assert.ok(drill.alt <= 40, 'low for a while'); run(s, 0.6); assert.ok(drill.alt > 60 || drill.lunge || drill.low, 'then it climbs, unless it is on the next blow');
 });
+test('the gold drill scoops two at once, the first drill one', () => {
+  for (const [level, expected] of [[1, 1], [2, 2]]) {
+    const levels = Array(14).fill(1); levels[13] = level;
+    const s = m.newSiege({ ...m.freshProgress(), owned: [0, 13], levels, deck: [m.card(13, level)] }, 1); s.nextWave = 999; s.gusted = true; s.energy = 999;
+    m.summon(s, m.card(13, level)); const drill = s.units.find(u => u.id === 13); drill.x = 600; drill.hp = drill.maxHp = 9000;
+    const foes = [640, 655, 670].map((x, i) => ({ uid: 90 + i, id: 15, side: 1, x, lane: 1, hp: 9000, maxHp: 9000, damage: 0, attack: 99, flash: 0, boss: false })); s.units.push(...foes);
+    for (let i = 0; i < 90 && !drill.lunge; i++) m.tick(s, 1 / 30);
+    assert.equal(foes.filter(f => f.hp < 9000).length, expected, `level ${level} scoops ${expected}`);
+  }
+});
 test('every rocket blows up where it lands', () => {
   const s = m.newSiege({ ...m.freshProgress(), owned: [0, 5], deck: [5] }, 1); s.nextWave = 999; s.gusted = true; s.energy = 999;
   m.summon(s, 5); const b = s.units[0]; b.x = 600; b.hp = b.maxHp = 9000;

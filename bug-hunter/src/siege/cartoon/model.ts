@@ -42,6 +42,8 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
   /** A scooping blow (the drill aircraft): it dives, drives what it hits this far back, rushing along with it
       (`RAM.lunge` of the way), and stays low a moment (`RAM.low`), open to the walkers, before it climbs away. */
   ram?: number;
+  /** How many it scoops at once (the gold drill takes two); one if unsaid. */
+  ramHits?: number;
   /** A flyer that only fights other flyers (and the fortress), never troops on the ground. */
   skyOnly?: boolean;
   /** What it throws or shoots, a picture from its own sheet (`siege/units/shot-<name>`), and whether it spins in flight
@@ -54,7 +56,7 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
 /** Spells that land on their target instead of flying to it (the wizard's). */
 export const SPELLS = ['lightning', 'tornado', 'meteor'];
 /** An upgrade form: its gold price in the workshop and what it changes. */
-export type Form = Partial<Pick<Spec, 'cost' | 'hp' | 'damage' | 'speed' | 'range' | 'rate' | 'splash' | 'hitsAir' | 'blast' | 'sweep' | 'ram' | 'infantry' | 'shot' | 'spin' | 'sprite' | 'size'>> & { price: number }
+export type Form = Partial<Pick<Spec, 'cost' | 'hp' | 'damage' | 'speed' | 'range' | 'rate' | 'splash' | 'hitsAir' | 'blast' | 'sweep' | 'ram' | 'ramHits' | 'infantry' | 'shot' | 'spin' | 'sprite' | 'size'>> & { price: number }
 /** Cartoon Wars 2's rosters (docs/siege-roster.md), every unit from the owner's six-pose sheets. Every unit's `id` is
     its place in this list: ours first (10 land, then 5 air), then the enemy's, each one stated as the ally it equals
     in the reference, then our flying mech and the enemy's guardians. */
@@ -155,7 +157,7 @@ export const UNITS: readonly Spec[] = [
   ] },
   // The drill aircraft, the flying shield (docs/cw2-reference.md): a drill rocket that rams, then a heavier gold one.
   { id: 13, flyAt: 98, cost: 80, hp: 360, damage: 27, speed: 55, range: 40, rate: 0.8, cooldown: 8, unlock: 3, air: true, ram: 90, ...six('ally-drill-1', 199, 0.5528), forms: [
-    { price: 1000, cost: 130, hp: 700, damage: 30, rate: 0.5, ram: 110, ...six('ally-drill-2', 242, 0.6095) },
+    { price: 1000, cost: 130, hp: 700, damage: 30, rate: 0.5, ram: 110, ramHits: 2, ...six('ally-drill-2', 242, 0.6095) },
   ] },
   // The angel army, the dearest: an axe and shield (very fast), a staff throwing a violet crescent, and the golden
   // archangel, bigger, whose sweeping golden crescent hits everything ahead of it and throws it far back.
@@ -884,7 +886,9 @@ export function tick(s: Siege, dt: number) {
           for (const v of alive) if (v.side !== u.side && reaches(u, v) && (v.x - u.x) * dir >= -20 && (v.x - u.x) * dir <= a.sweep.reach) hits.push({ target: v, damage: u.damage, push: a.sweep.back });
           s.effects.push({ x: u.x + dir * a.sweep.reach, from: u.x, lane: u.lane, life: 0.5, max: 0.5, kind: 'sweep', side: u.side, fromUp: a.air ? u.alt ?? highOf(u) : 0 });
         } else {
-        for (const v of alive) if (v.side !== u.side && reaches(u, v) && (v === enemy || (area && Math.abs(v.x - enemy.x) < area))) hits.push({ target: v, damage: u.damage, boss: u.boss, push: a.ram });
+        // A scoop takes the nearest few (`ramHits`) in its reach; anyone else strikes its target, and round it when it has an area.
+        const scooped = a.ram && (a.ramHits ?? 1) > 1 ? alive.filter(v => v.side !== u.side && reaches(u, v) && Math.abs(v.x - u.x) <= a.range + bodyOf(v) * 0.25 + 30).sort((p, q) => Math.abs(p.x - u.x) - Math.abs(q.x - u.x)).slice(0, a.ramHits) : null;
+        for (const v of alive) if (v.side !== u.side && reaches(u, v) && (scooped ? scooped.includes(v) : v === enemy || (area && Math.abs(v.x - enemy.x) < area))) hits.push({ target: v, damage: u.damage, boss: u.boss, push: a.ram });
         if (a.ram) { u.lunge = KNOCK.time; u.lungeBack = a.ram * RAM.lunge; u.low = KNOCK.time + RAM.low; }
         if (u.boss) s.effects.push({ x: enemy.x, from: enemy.x, lane: enemy.lane, life: BOOM, max: BOOM, kind: 'boom', side: u.side, size: 80, dark: true });
         launch(s, u, a, enemy.x, enemy.lane, UNITS[enemy.id].air ? enemy.alt ?? highOf(enemy) : 0);
