@@ -391,9 +391,12 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   // What is off screen is not drawn (a margin for the big ones, the guardians' sweeps and the falling powers).
   const left = camera.x - 260, right = camera.x + camera.width + 260, seen = (x: number) => x >= left && x <= right;
   for (const c of fallen(s)) if (seen(c.u.x)) fighter(ctx, s, c.u, ground, reduced, color, Math.min(1, (s.time - c.at) / DEAD_FOR));
+  // Beams (the ray gun's and the others') are drawn first, under the troops, so a shooter stands over its own ray.
+  const beam = (e: Effect) => e.kind === 'shot' && isBeam(e.art);
+  for (const e of s.effects) if (beam(e) && !(e.x < left - 500 && e.from < left - 500 || e.x > right + 500 && e.from > right + 500)) effect(ctx, e, 1 - e.life / e.max, ground - 26, ground);
   for (const u of s.units.filter(u => seen(u.x)).sort((a, b) => a.lane - b.lane || a.x - b.x)) fighter(ctx, s, u, ground, reduced, color);
   for (const e of s.effects) {
-    if (e.x < left - 500 && e.from < left - 500 || e.x > right + 500 && e.from > right + 500) continue;
+    if (beam(e) || e.x < left - 500 && e.from < left - 500 || e.x > right + 500 && e.from > right + 500) continue;
     const p = 1 - e.life / e.max; const y = ground - 26;
     if (effect(ctx, e, p, y, ground)) continue;
     ctx.globalAlpha = e.life / e.max; ctx.strokeStyle = e.side ? '#ff98b0' : '#fff0ae'; ctx.lineWidth = 3;
