@@ -1,4 +1,4 @@
-import { actOf, stageIn, flight, bowReach, highOf, foesAt, FIELD, shotFor, FOE_AIR, FOE_LAND, GUARDIAN, KNOCK, SPELLS, UNITS, isBeam, isBullet, specAt, specOf, aimAt, enemyTier, castleTier, energyMax, looksTier, type Effect, type Fighter, type Siege } from './model';
+import { actOf, stageIn, flight, bowReach, highOf, foesAt, FIELD, shotFor, FOE_AIR, FOE_LAND, GUARDIAN, KNOCK, POUNCE, SPELLS, UNITS, isBeam, isBullet, specAt, specOf, aimAt, enemyTier, castleTier, energyMax, looksTier, type Effect, type Fighter, type Siege } from './model';
 import { gloom } from './story';
 
 /** Each world's ground colours, under its floor while that loads (moss, embers, snow, mud, jungle, sand, iron,
@@ -750,7 +750,11 @@ function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: nu
       // Three-pose sheets have no dead pose: the hurt one tips over backwards as it falls.
       if (!spec.six) lean = -Math.min(1, gone * 6) * 1.45;
     } else if (reduced) { /* still */ }
-    else if (u.knock) {
+    else if (u.leap || u.bound) {
+      // A pounce: up in an arc onto its prey, then a lower bound back the other way (it turns, see below).
+      const p = u.leap ? 1 - u.leap / POUNCE.time : 1 - (u.bound ?? 0) / POUNCE.back;
+      lift = Math.sin(p * Math.PI) * (u.leap ? POUNCE.height : POUNCE.height * 0.55); lean = (u.leap ? -0.35 : 0.25) * Math.cos(p * Math.PI);
+    } else if (u.knock) {
       // Flying back from a heavy blow: up in an arc, turned over backwards, down again (and the model gets it up).
       const p = 1 - u.knock / KNOCK.time;
       lift = Math.sin(p * Math.PI) * 26; lean = -Math.sin(p * Math.PI) * 1.1;
@@ -763,6 +767,8 @@ function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: nu
       if (!spec.six) { sy = 1 - (1 - Math.abs(step)) * 0.05; sx = 1 + (1 - Math.abs(step)) * 0.03; lean = step * 0.05 + 0.04; }
     } else if (!spec.air) sy = 1 + Math.sin(t * 3) * 0.015;
     ctx.save(); ctx.translate(u.x + (u.side ? -push : push), y - lift); if (u.side) ctx.scale(-1, 1);
+    // Bounding back after a pounce it faces away, the way it goes.
+    if (u.bound) ctx.scale(-1, 1);
     if (gone !== undefined) ctx.globalAlpha = gone < 0.66 ? 1 : 1 - (gone - 0.66) / 0.34;
     ctx.rotate(lean); ctx.scale(sx, sy);
     // A hit flashes it bright (drawn again, added on top: a blur on every hit troop costs too much each frame).

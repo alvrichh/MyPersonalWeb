@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.142 - 2026-10-30
+
+### Changed
+- Siege Cartoon's enemy tiger pounces: it leaps in an arc onto its prey, strikes as it lands, then bounds back facing away and turns round to come again.
+
 ## 1.15.141 - 2026-10-30
 
 ### Changed
