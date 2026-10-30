@@ -237,7 +237,7 @@ export const UNITS: readonly Spec[] = [
   { id: 53, cost: 45, hp: 140, damage: 0, speed: 38, range: 150, rate: 1.4, cooldown: 5, unlock: 2, infantry: true, heal: 16, ...six('ally-medic-1', 208, 0.6) },
   { id: 54, cost: 90, hp: 950, damage: 12, speed: 24, range: 35, rate: 1.3, cooldown: 9, unlock: 3, steady: true, shove: 45, ...six('ally-shield-1', 175, 0.886) },
   { id: 55, cost: 100, hp: 260, damage: 42, speed: 62, range: 35, rate: 0.55, cooldown: 10, unlock: 5, infantry: true, stealth: 3, ...six('ally-ninja-1', 185, 0.676) },
-  { id: 56, flyAt: 98, cost: 300, hp: 2200, damage: 60, speed: 40, range: 140, rate: 1.6, cooldown: 30, unlock: 6, air: true, splash: 110, shot: 'none', ...six('ally-dragon-1', 227, 0.99) },
+  { id: 56, flyAt: 60, cost: 300, hp: 2200, damage: 60, speed: 40, range: 140, rate: 1.6, cooldown: 30, unlock: 6, air: true, splash: 110, shot: 'none', ...six('ally-dragon-1', 227, 2.3) },
 ];
 /** The enemy's land and air troops by act, each act adding to the last (docs/siege-roster.md): early waves draw
     from the first two of the land list. No flyers in the first world: they come from the second. */
