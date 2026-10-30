@@ -751,9 +751,9 @@ function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: nu
       if (!spec.six) lean = -Math.min(1, gone * 6) * 1.45;
     } else if (reduced) { /* still */ }
     else if (u.leap || u.bound) {
-      // A pounce: up in an arc onto its prey, then a lower bound back the other way (it turns, see below).
-      const p = u.leap ? 1 - u.leap / POUNCE.time : 1 - (u.bound ?? 0) / POUNCE.back;
-      lift = Math.sin(p * Math.PI) * (u.leap ? POUNCE.height : POUNCE.height * 0.55); lean = (u.leap ? -0.35 : 0.25) * Math.cos(p * Math.PI);
+      // A pounce: up in an arc onto its prey, then the same arc back the other way (it turns, see below).
+      const p = 1 - (u.leap || u.bound || 0) / POUNCE.time;
+      lift = Math.sin(p * Math.PI) * POUNCE.height; lean = -0.35 * Math.cos(p * Math.PI);
     } else if (u.knock) {
       // Flying back from a heavy blow: up in an arc, turned over backwards, down again (and the model gets it up).
       const p = 1 - u.knock / KNOCK.time;

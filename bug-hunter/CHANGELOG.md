@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.143 - 2026-10-30
+
+### Changed
+- Siege Cartoon's tiger: the bound back is the same leap as the pounce (as high, as far, as long), so it lands where it started and gains no ground while it fights.
+
 ## 1.15.142 - 2026-10-30
 
 ### Changed

@@ -462,7 +462,7 @@ test('the tiger pounces: it leaps on its prey, strikes as it lands, then bounds 
   let leapt = false; for (let i = 0; i < 60 && !leapt; i++) { m.tick(s, 1 / 30); if (tiger.leap) leapt = true; }
   assert.ok(leapt, 'it leaps'); const from = tiger.x; assert.equal(prey.hp, 9000, 'no blow before it lands');
   run(s, m.POUNCE.time + 0.04); assert.ok(tiger.x < from - 30, 'it leaps forward'); assert.ok(prey.hp < 9000, 'the blow lands with it'); assert.ok(tiger.bound > 0, 'then it bounds back');
-  const landed = tiger.x; run(s, m.POUNCE.back); assert.ok(tiger.x > landed + 60, 'back the way it came');
+  run(s, m.POUNCE.time); assert.ok(Math.abs(tiger.x - from) < 3, 'the same leap back: it lands where it started');
 });
 test('every rocket blows up where it lands', () => {
   const s = m.newSiege({ ...m.freshProgress(), owned: [0, 5], deck: [5] }, 1); s.nextWave = 999; s.gusted = true; s.energy = 999;
