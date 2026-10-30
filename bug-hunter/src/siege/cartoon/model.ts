@@ -44,6 +44,8 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
   ram?: number;
   /** A pouncer (the tiger): it leaps on its target, strikes as it lands, then bounds back facing away and turns round. */
   pounce?: boolean;
+  /** A charger (the rhinoceratops): from a little way off it rushes its target, throws it back, and stands dazed. */
+  charge?: boolean;
   /** How many it scoops at once (the gold drill takes two); one if unsaid. */
   ramHits?: number;
   /** A flyer that only fights other flyers (and the fortress), never troops on the ground. */
@@ -207,9 +209,9 @@ export const UNITS: readonly Spec[] = [
   // mountains' beasts, the Darkness's mammoth and alien shooter, a horned archer, an undead turkey, and three flyers.
   { id: 40, cost: 0, hp: 520, damage: 34, speed: 38, range: 50, rate: 1.1, cooldown: 0, unlock: 1, foe: true, infantry: true, ...foe('foe-rex-head-1', 137, 1.168) },
   { id: 41, cost: 0, hp: 260, damage: 30, speed: 72, range: 40, rate: 0.8, cooldown: 0, unlock: 1, foe: true, ...foe('foe-terror-bird-1', 141, 0.993) },
-  { id: 42, cost: 0, hp: 900, damage: 42, speed: 28, range: 45, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 30, ...foe('foe-rhino-1', 104, 1.442) },
+  { id: 42, cost: 0, hp: 900, damage: 42, speed: 28, range: 45, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 30, charge: true, ...foe('foe-rhino-1', 104, 1.442) },
   { id: 43, cost: 0, hp: 420, damage: 38, speed: 42, range: 70, rate: 1.2, cooldown: 0, unlock: 1, foe: true, ...foe('foe-spider-spearman-1', 121, 1.116) },
-  { id: 44, cost: 0, hp: 1600, damage: 60, speed: 18, range: 60, rate: 2, cooldown: 0, unlock: 1, foe: true, splash: 60, steady: true, ...foe('foe-mammoth-1', 149, 1.611) },
+  { id: 44, cost: 0, hp: 1600, damage: 60, speed: 18, range: 60, rate: 2, cooldown: 0, unlock: 1, foe: true, steady: true, sweep: { reach: 110, back: 210 }, ...foe('foe-mammoth-1', 149, 1.611) },
   { id: 45, cost: 0, hp: 180, damage: 40, speed: 30, range: 190, rate: 1.3, cooldown: 0, unlock: 1, foe: true, infantry: true, hitsAir: true, shot: 'ray-red', ...foe('foe-shooter-1', 128, 0.977) },
   { id: 46, cost: 0, hp: 130, damage: 26, speed: 32, range: 190, rate: 1.2, cooldown: 0, unlock: 1, foe: true, infantry: true, hitsAir: true, shot: 'arrow-red', spin: false, ...foe('foe-archer-1', 132, 0.909) },
   { id: 47, cost: 0, hp: 200, damage: 22, speed: 50, range: 35, rate: 0.9, cooldown: 0, unlock: 1, foe: true, ...foe('foe-turkey-1', 150, 0.8) },
@@ -397,6 +399,8 @@ export interface Fighter { uid: number; id: number; side: 0 | 1; x: number; lane
   lunge?: number; lungeBack?: number; low?: number;
   /** A pounce (`pounce`): seconds left of the leap on its prey, then of the bound back (facing away). */
   leap?: number; bound?: number; prey?: number;
+  /** Rushing its target (`charge`). */
+  rushing?: boolean;
   /** How far this knock throws it (a guardian's blow throws further than `KNOCK.back`). */
   knockBack?: number;
   /** Seconds left being blown back by the corrupt wind. */
@@ -415,6 +419,8 @@ export const RAM = { lunge: 0.6, low: 0.9 };
 /** A pounce: the leap (seconds, field units forward, how high); the bound back is the same leap the other way, so it
     lands where it started and does not gain ground while it fights. */
 export const POUNCE = { time: 0.4, forward: 45, height: 46 };
+/** A charge: how far off it starts (beyond its reach), how many times its pace, how far it throws, how long it stands dazed. */
+export const CHARGE = { reach: 170, pace: 4, back: 130, daze: 0.9 };
 export interface Effect { x: number; from: number; lane: number; life: number; max: number; kind: 'shot' | 'burst' | 'arrow' | 'rocket' | 'bolt' | 'gust' | 'loot' | 'boom' | 'fire' | 'stuck' | 'fall' | 'ground' | 'zap' | 'wave' | 'sweep'; side: 0 | 1;
   /** A `boom` (an explosion) or a `fire` (a burning pool on the ground): its size, and the height it is at. */
   size?: number; up?: number;
@@ -910,6 +916,18 @@ export function tick(s: Siege, dt: number) {
     const baseX = u.side ? 80 : FIELD - 80;
     const distance = enemy ? Math.abs(enemy.x - u.x) : Infinity;
     const near = !!enemy && distance <= a.range + bodyOf(enemy) * 0.25 + 60;
+    if (a.charge && enemy && !UNITS[enemy.id].air) {
+      // A charge: started from a little way off when it is ready, it rushes in, throws its target back and stands dazed.
+      const reach = a.range + bodyOf(enemy) * 0.25;
+      if (!u.rushing && u.attack <= 0 && distance > reach && distance <= reach + CHARGE.reach) u.rushing = true;
+      if (u.rushing) {
+        if (distance <= reach) {
+          hits.push({ target: enemy, damage: u.damage, push: CHARGE.back }); u.attack = a.rate; u.hit = 0.3; u.stun = CHARGE.daze; u.rushing = false;
+          hear(s, soundsOf(u)[0], u.x); continue;
+        }
+        u.moving = true; u.x += (u.side ? -1 : 1) * Math.min(a.speed * CHARGE.pace * dt, distance - reach); u.x = Math.max(110, Math.min(FIELD - 110, u.x)); continue;
+      }
+    } else if (u.rushing) u.rushing = false;
     if (a.air) {
       // Flyers stay up at their own height: those that shoot fire down from there (a helicopter never comes low); only
       // close fighters (swords, drills, fists) drop to a walker's reach (`LOW`) to strike it, and can be struck back there.
@@ -926,7 +944,8 @@ export function tick(s: Siege, dt: number) {
           // Everything it can reach in front of it, out to `reach`, is struck and thrown back.
           const dir = u.side ? -1 : 1;
           for (const v of alive) if (v.side !== u.side && reaches(u, v) && (v.x - u.x) * dir >= -20 && (v.x - u.x) * dir <= a.sweep.reach) hits.push({ target: v, damage: u.damage, push: a.sweep.back });
-          s.effects.push({ x: u.x + dir * a.sweep.reach, from: u.x, lane: u.lane, life: 0.5, max: 0.5, kind: 'sweep', side: u.side, fromUp: a.air ? u.alt ?? highOf(u) : 0 });
+          // The archangel's gold crescent is drawn; the enemy's sweeps (the mammoth's tusks) are in their own attack pose.
+          if (!u.side) s.effects.push({ x: u.x + dir * a.sweep.reach, from: u.x, lane: u.lane, life: 0.5, max: 0.5, kind: 'sweep', side: u.side, fromUp: a.air ? u.alt ?? highOf(u) : 0 });
         } else {
         // A scoop takes the nearest few (`ramHits`) in its reach; anyone else strikes its target, and round it when it has an area.
         const scooped = a.ram && (a.ramHits ?? 1) > 1 ? alive.filter(v => v.side !== u.side && reaches(u, v) && Math.abs(v.x - u.x) <= a.range + bodyOf(v) * 0.25 + 30).sort((p, q) => Math.abs(p.x - u.x) - Math.abs(q.x - u.x)).slice(0, a.ramHits) : null;

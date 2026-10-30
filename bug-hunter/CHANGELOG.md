@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.145 - 2026-10-30
+
+### Changed
+- Siege Cartoon's rhinoceratops charges: from a little way off it rushes its target at four times its pace, throws it back and stands dazed a moment, open to a counterblow.
+- The mammothsaurus sweeps with its tusks: every one of our troops in front of it is struck and thrown far back (210 field units).
+
 ## 1.15.144 - 2026-10-30
 
 ### Added

@@ -464,6 +464,23 @@ test('the tiger pounces: it leaps on its prey, strikes as it lands, then bounds 
   run(s, m.POUNCE.time + 0.04); assert.ok(tiger.x < from - 30, 'it leaps forward'); assert.ok(prey.hp < 9000, 'the blow lands with it'); assert.ok(tiger.bound > 0, 'then it bounds back');
   run(s, m.POUNCE.time); assert.ok(Math.abs(tiger.x - from) < 3, 'the same leap back: it lands where it started');
 });
+test('the rhinoceratops charges: it rushes in, throws its target back and stands dazed', () => {
+  const s = m.newSiege({ ...m.freshProgress(), owned: [0], deck: [0] }, 1); s.nextWave = 999; s.gusted = true; s.energy = 999;
+  m.summon(s, 0); const mine = s.units.find(u => !u.side); mine.x = 560; mine.hp = mine.maxHp = 9000; mine.attack = 99;
+  const rhino = { uid: 99, id: 42, side: 1, x: 700, lane: 1, hp: 9000, maxHp: 9000, damage: 42, attack: 0, flash: 0, boss: false }; s.units.push(rhino);
+  m.tick(s, 1 / 30); assert.ok(rhino.rushing, 'it charges from a little way off');
+  let struck = false; for (let i = 0; i < 60 && !struck; i++) { m.tick(s, 1 / 30); struck = mine.hp < 9000; }
+  assert.ok(struck, 'the charge lands'); assert.ok(rhino.stun > 0, 'and it stands dazed');
+  const at = mine.x; run(s, m.KNOCK.time + 0.05); assert.ok(mine.x < at - 100, 'its target is thrown back');
+});
+test('the mammothsaurus sweeps: every troop in front of it is struck and thrown far back', () => {
+  const s = m.newSiege({ ...m.freshProgress(), owned: [0], deck: [0] }, 1); s.nextWave = 999; s.gusted = true; s.energy = 999;
+  for (let i = 0; i < 3; i++) m.summon(s, 0), s.cooldowns = {};
+  const mine = s.units.filter(u => !u.side); mine.forEach((u, i) => { u.x = 600 - i * 25; u.hp = u.maxHp = 9000; u.attack = 99; });
+  const mammoth = { uid: 99, id: 44, side: 1, x: 650, lane: 1, hp: 9000, maxHp: 9000, damage: 60, attack: 0, flash: 0, boss: false }; s.units.push(mammoth);
+  const from = mine.map(u => u.x); run(s, m.KNOCK.time + 0.1);
+  assert.ok(mine.every(u => u.hp < 9000), 'all three are struck'); assert.ok(mine.every((u, i) => u.x < from[i] - 150), 'and thrown far back');
+});
 test('every rocket blows up where it lands', () => {
   const s = m.newSiege({ ...m.freshProgress(), owned: [0, 5], deck: [5] }, 1); s.nextWave = 999; s.gusted = true; s.energy = 999;
   m.summon(s, 5); const b = s.units[0]; b.x = 600; b.hp = b.maxHp = 9000;
