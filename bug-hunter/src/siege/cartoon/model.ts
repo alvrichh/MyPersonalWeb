@@ -39,6 +39,8 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
   /** A sweeping blow: every enemy it can reach within `reach` field units in front is hit and thrown back `back` units (the
       archangel's golden crescent). */
   sweep?: { reach: number; back: number };
+  /** A scooping blow (the drill aircraft): it dives, drags what it hits this far along with it, and climbs away. */
+  ram?: number;
   /** A flyer that only fights other flyers (and the fortress), never troops on the ground. */
   skyOnly?: boolean;
   /** What it throws or shoots, a picture from its own sheet (`siege/units/shot-<name>`), and whether it spins in flight
@@ -51,7 +53,7 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
 /** Spells that land on their target instead of flying to it (the wizard's). */
 export const SPELLS = ['lightning', 'tornado', 'meteor'];
 /** An upgrade form: its gold price in the workshop and what it changes. */
-export type Form = Partial<Pick<Spec, 'cost' | 'hp' | 'damage' | 'speed' | 'range' | 'rate' | 'splash' | 'hitsAir' | 'blast' | 'sweep' | 'infantry' | 'shot' | 'spin' | 'sprite' | 'size'>> & { price: number }
+export type Form = Partial<Pick<Spec, 'cost' | 'hp' | 'damage' | 'speed' | 'range' | 'rate' | 'splash' | 'hitsAir' | 'blast' | 'sweep' | 'ram' | 'infantry' | 'shot' | 'spin' | 'sprite' | 'size'>> & { price: number }
 /** Cartoon Wars 2's rosters (docs/siege-roster.md), every unit from the owner's six-pose sheets. Every unit's `id` is
     its place in this list: ours first (10 land, then 5 air), then the enemy's, each one stated as the ally it equals
     in the reference, then our flying mech and the enemy's guardians. */
@@ -151,8 +153,8 @@ export const UNITS: readonly Spec[] = [
     { price: 2000, cost: 170, hp: 620, damage: 19, range: 230, splash: 70, shot: 'salvo', rate: 0.5, ...six('ally-helicopter-3', 201, 1.1443) },
   ] },
   // The drill aircraft, the flying shield (docs/cw2-reference.md): a drill rocket that rams, then a heavier gold one.
-  { id: 13, flyAt: 98, cost: 80, hp: 360, damage: 27, speed: 55, range: 40, rate: 0.8, cooldown: 8, unlock: 3, air: true, ...six('ally-drill-1', 199, 0.5528), forms: [
-    { price: 1000, cost: 130, hp: 700, damage: 30, rate: 0.5, ...six('ally-drill-2', 242, 0.6095) },
+  { id: 13, flyAt: 98, cost: 80, hp: 360, damage: 27, speed: 55, range: 40, rate: 0.8, cooldown: 8, unlock: 3, air: true, ram: 90, ...six('ally-drill-1', 199, 0.5528), forms: [
+    { price: 1000, cost: 130, hp: 700, damage: 30, rate: 0.5, ram: 110, ...six('ally-drill-2', 242, 0.6095) },
   ] },
   // The angel army, the dearest: an axe and shield (very fast), a staff throwing a violet crescent, and the golden
   // archangel, bigger, whose sweeping golden crescent hits everything ahead of it and throws it far back.
@@ -370,6 +372,8 @@ export interface Fighter { uid: number; id: number; side: 0 | 1; x: number; lane
   moving?: boolean;
   /** Seconds left flying back from a heavy blow (infantry), or stunned by one (the rest). */
   knock?: number; stun?: number;
+  /** Seconds left of a scooping lunge (`ram`): forward and up, its target dragged along. */
+  lunge?: number; lungeBack?: number;
   /** How far this knock throws it (a guardian's blow throws further than `KNOCK.back`). */
   knockBack?: number;
   /** Seconds left being blown back by the corrupt wind. */
@@ -850,6 +854,12 @@ export function tick(s: Siege, dt: number) {
     if (u.blown) { u.blown = Math.max(0, u.blown - dt); u.x = Math.max(110, u.x - GUST.back * dt); continue; }
     if (u.knock) { u.knock = Math.max(0, u.knock - dt); u.x = Math.max(110, Math.min(FIELD - 110, u.x + (u.side ? 1 : -1) * (u.knockBack ?? KNOCK.back) / KNOCK.time * dt)); continue; }
     if (u.stun) { u.stun = Math.max(0, u.stun - dt); continue; }
+    if (u.lunge) {
+      u.lunge = Math.max(0, u.lunge - dt); u.moving = true;
+      u.x = Math.max(110, Math.min(FIELD - 110, u.x + (u.side ? -1 : 1) * (u.lungeBack ?? 0) / KNOCK.time * dt));
+      u.alt = Math.min(highOf(u), (u.alt ?? LOW) + (highOf(u) - LOW) / KNOCK.time * dt);
+      continue;
+    }
     const enemy = alive.filter(v => v.side !== u.side && reaches(u, v)).sort((a, b) => Math.abs(a.x - u.x) - Math.abs(b.x - u.x))[0];
     const baseX = u.side ? 80 : FIELD - 80;
     const distance = enemy ? Math.abs(enemy.x - u.x) : Infinity;
@@ -861,7 +871,8 @@ export function tick(s: Siege, dt: number) {
       u.alt = alt + Math.max(-FLY.rate * dt, Math.min(FLY.rate * dt, want - alt));
     }
     if (enemy && distance <= a.range + bodyOf(enemy) * 0.25) {
-      if (u.attack <= 0) {
+      // A scooping blow lands only once it has come down to its target.
+      if (u.attack <= 0 && (!a.ram || (u.alt ?? highOf(u)) <= LOW + 8)) {
         u.attack = a.rate; u.hit = 0.3;
         const area = u.boss ? Math.max(a.splash ?? 0, BOSS.area) : a.splash;
         if (a.sweep) {
@@ -870,7 +881,8 @@ export function tick(s: Siege, dt: number) {
           for (const v of alive) if (v.side !== u.side && reaches(u, v) && (v.x - u.x) * dir >= -20 && (v.x - u.x) * dir <= a.sweep.reach) hits.push({ target: v, damage: u.damage, push: a.sweep.back });
           s.effects.push({ x: u.x + dir * a.sweep.reach, from: u.x, lane: u.lane, life: 0.5, max: 0.5, kind: 'sweep', side: u.side, fromUp: a.air ? u.alt ?? highOf(u) : 0 });
         } else {
-        for (const v of alive) if (v.side !== u.side && reaches(u, v) && (v === enemy || (area && Math.abs(v.x - enemy.x) < area))) hits.push({ target: v, damage: u.damage, boss: u.boss });
+        for (const v of alive) if (v.side !== u.side && reaches(u, v) && (v === enemy || (area && Math.abs(v.x - enemy.x) < area))) hits.push({ target: v, damage: u.damage, boss: u.boss, push: a.ram });
+        if (a.ram) { u.lunge = KNOCK.time; u.lungeBack = a.ram; }
         if (u.boss) s.effects.push({ x: enemy.x, from: enemy.x, lane: enemy.lane, life: BOOM, max: BOOM, kind: 'boom', side: u.side, size: 80, dark: true });
         launch(s, u, a, enemy.x, enemy.lane, UNITS[enemy.id].air ? enemy.alt ?? highOf(enemy) : 0);
         }

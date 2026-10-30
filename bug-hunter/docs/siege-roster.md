@@ -34,7 +34,7 @@ Cost and order follow the reference; numbers are to be balanced in code.
 | A1 | Aircraft Fighter | air | Fragile. |
 | A2 | Armed Aircraft Fighter | air, ranged | Longer range; "air magician" at level 4. |
 | A3 | Armed Helicopter | air, missiles | High health, slow attack, missiles. |
-| A4 | Drill Aircraft | air, melee | Used as a shield; good attack. |
+| A4 | Drill Aircraft | air, melee | Used as a shield; good attack. Here it scoops: dives, drags its target forward and climbs away. |
 | A5 | Angel Army | air | The dearest. Very fast at level 1, slower afterwards. |
 
 ## Enemy roster
