@@ -4,6 +4,18 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.146 - 2026-10-30
+
+### Added
+- Siege Cartoon: six new troops of ours, from the owner's sheets.
+  - Medic (world 2, 400 gold): does not fight; heals every troop of ours around it.
+  - Shield bearer (world 3, 500): a wall, very tough and never thrown back; its bash shoves enemies back.
+  - Catapult (world 4, 900): throws rocks from far behind onto an area, twice as hard on the fortress; a rune catapult at level 2 (1600).
+  - Bomber balloon (world 4, 800): floats over the troops and bombs only the fortress.
+  - Ninja (world 5, 1100): unseen for 3 seconds after it is sent, fast double blades.
+  - Dragon rider (world 6, 3000): the dearest card, very tough, breathing fire over everything in front of it.
+- The other versions of the sheets (the dragon with its breath apart, a second shield bearer, the catapults with trails) are kept in reserve.
+
 ## 1.15.145 - 2026-10-30
 
 ### Changed

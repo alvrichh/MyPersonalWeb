@@ -417,7 +417,7 @@ function dirAt(at: (t: number) => { x: number; y: number }, p: number) {
 /** The height a troop's shot leaves from or flies to: a hand's height on the ground, a flyer's middle in the air. */
 const shotY = (up: number | undefined, y: number) => y - 15 - Math.max(0, (up ?? 0) - 10);
 /** Every picture a troop's attack shows on its way (`siege/units/shot-<name>`): thrown things, rockets, bullets, beams. */
-const SHOTS = ['rock', 'javelin', 'arrow', 'shuriken', 'rocket', 'rockets', 'salvo', 'ice', 'plasma', 'crescent', 'missile', 'bullet', 'bullet-rifle', 'bullet-uzi', 'bullet-sniper', 'ray', 'ray-blue', 'ray-gold', 'ray-pink', 'ray-red', 'arrow-red'];
+const SHOTS = ['rock', 'javelin', 'arrow', 'shuriken', 'rocket', 'rockets', 'salvo', 'ice', 'plasma', 'crescent', 'missile', 'bullet', 'bullet-rifle', 'bullet-uzi', 'bullet-sniper', 'ray', 'ray-blue', 'ray-gold', 'ray-pink', 'ray-red', 'arrow-red', 'boulder', 'boulder-blue', 'bomb'];
 /** The effect art: our crossbow's Cartoon arrows (or rockets) and missile, the old painted arrows (water for our troops,
     leaf for theirs),
     impacts up close, and a blast with the yellow lightning for the discharge. */
@@ -770,6 +770,8 @@ function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: nu
     // Bounding back after a pounce it faces away, the way it goes.
     if (u.bound) ctx.scale(-1, 1);
     if (gone !== undefined) ctx.globalAlpha = gone < 0.66 ? 1 : 1 - (gone - 0.66) / 0.34;
+    // Unseen (the ninja, just sent): see-through.
+    else if (u.hidden) ctx.globalAlpha = 0.45;
     ctx.rotate(lean); ctx.scale(sx, sy);
     // A hit flashes it bright (drawn again, added on top: a blur on every hit troop costs too much each frame).
     const flash = gone === undefined && !!u.flash;

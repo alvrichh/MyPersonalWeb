@@ -46,6 +46,16 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
   pounce?: boolean;
   /** A charger (the rhinoceratops): from a little way off it rushes its target, throws it back, and stands dazed. */
   charge?: boolean;
+  /** Its blows on a fortress count this many times over (the catapult). */
+  siege?: number;
+  /** A raider (the bomber balloon): it never fights troops, only drops its bombs on the fortress. */
+  raid?: boolean;
+  /** A healer (the medic): instead of striking, it mends this much on each of ours nearby. */
+  heal?: number;
+  /** A blow that also shoves its target this far back (the shield bearer's bash). */
+  shove?: number;
+  /** Seconds it stays unseen after it is sent (the ninja): the enemy cannot target it. */
+  stealth?: number;
   /** How many it scoops at once (the gold drill takes two); one if unsaid. */
   ramHits?: number;
   /** A flyer that only fights other flyers (and the fortress), never troops on the ground. */
@@ -60,7 +70,7 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
 /** Spells that land on their target instead of flying to it (the wizard's). */
 export const SPELLS = ['lightning', 'tornado', 'meteor'];
 /** An upgrade form: its gold price in the workshop and what it changes. */
-export type Form = Partial<Pick<Spec, 'cost' | 'hp' | 'damage' | 'speed' | 'range' | 'rate' | 'splash' | 'hitsAir' | 'blast' | 'sweep' | 'ram' | 'ramHits' | 'infantry' | 'shot' | 'spin' | 'sprite' | 'size'>> & { price: number }
+export type Form = Partial<Pick<Spec, 'cost' | 'hp' | 'damage' | 'speed' | 'range' | 'rate' | 'splash' | 'hitsAir' | 'blast' | 'sweep' | 'ram' | 'ramHits' | 'siege' | 'infantry' | 'shot' | 'spin' | 'sprite' | 'size'>> & { price: number }
 /** Cartoon Wars 2's rosters (docs/siege-roster.md), every unit from the owner's six-pose sheets. Every unit's `id` is
     its place in this list: ours first (10 land, then 5 air), then the enemy's, each one stated as the ally it equals
     in the reference, then our flying mech and the enemy's guardians. */
@@ -218,6 +228,16 @@ export const UNITS: readonly Spec[] = [
   { id: 48, flyAt: 98, cost: 0, hp: 360, damage: 34, speed: 55, range: 45, rate: 1, cooldown: 0, unlock: 1, foe: true, air: true, ...foe('foe-pterodactyl-1', 176, 0.966) },
   { id: 49, flyAt: 70, cost: 0, hp: 240, damage: 30, speed: 65, range: 40, rate: 0.7, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-green-bat-1', 160, 0.6875) },
   { id: 50, flyAt: 125, cost: 0, hp: 520, damage: 46, speed: 50, range: 60, rate: 1, cooldown: 0, unlock: 1, foe: true, air: true, splash: 30, ...foe('foe-devil-1', 159, 0.975) },
+  // Ours again, the later recruits (the owner's sheets): the catapult, the bomber balloon, the medic, the shield
+  // bearer, the ninja and the dragon rider, the dearest of all.
+  { id: 51, cost: 110, hp: 300, damage: 40, speed: 18, range: 400, rate: 3, cooldown: 11, unlock: 4, splash: 60, siege: 2, shot: 'boulder', spin: true, ...six('ally-catapult-1', 112, 1.43), forms: [
+    { price: 1600, cost: 150, hp: 450, damage: 55, range: 440, splash: 80, shot: 'boulder-blue', ...six('ally-catapult-2', 157, 1.146) },
+  ] },
+  { id: 52, flyAt: 125, cost: 90, hp: 260, damage: 60, speed: 30, range: 30, rate: 2.2, cooldown: 9, unlock: 4, air: true, raid: true, shot: 'bomb', spin: false, ...six('ally-balloon-1', 272, 0.78) },
+  { id: 53, cost: 45, hp: 140, damage: 0, speed: 38, range: 150, rate: 1.4, cooldown: 5, unlock: 2, infantry: true, heal: 16, ...six('ally-medic-1', 208, 0.6) },
+  { id: 54, cost: 90, hp: 950, damage: 12, speed: 24, range: 35, rate: 1.3, cooldown: 9, unlock: 3, steady: true, shove: 45, ...six('ally-shield-1', 175, 0.886) },
+  { id: 55, cost: 100, hp: 260, damage: 42, speed: 62, range: 35, rate: 0.55, cooldown: 10, unlock: 5, infantry: true, stealth: 3, ...six('ally-ninja-1', 185, 0.676) },
+  { id: 56, flyAt: 98, cost: 300, hp: 2200, damage: 60, speed: 40, range: 140, rate: 1.6, cooldown: 30, unlock: 6, air: true, splash: 110, shot: 'none', ...six('ally-dragon-1', 227, 0.99) },
 ];
 /** The enemy's land and air troops by act, each act adding to the last (docs/siege-roster.md): early waves draw
     from the first two of the land list. No flyers in the first world: they come from the second. */
@@ -268,7 +288,7 @@ export function threatPool(stage: number): number[] {
 /** The enemy's troops in a battle: every earlier act's, and its own act's coming in one more each stage. */
 export const foesAt = (lists: number[][], stage: number) => [...lists.slice(0, actOf(stage) - 1).flat(), ...(lists[actOf(stage) - 1] ?? []).slice(0, stageIn(stage))];
 /** What recruiting each of our troops costs in gold (the swordsman is everyone's first). Bought once, kept. */
-export const RECRUIT: Record<number, number> = { 0: 0, 1: 100, 2: 120, 3: 350, 4: 300, 5: 600, 6: 900, 7: 700, 8: 900, 9: 1600, 10: 250, 11: 500, 12: 900, 13: 700, 14: 2000, 33: 1200 };
+export const RECRUIT: Record<number, number> = { 0: 0, 1: 100, 2: 120, 3: 350, 4: 300, 5: 600, 6: 900, 7: 700, 8: 900, 9: 1600, 10: 250, 11: 500, 12: 900, 13: 700, 14: 2000, 33: 1200, 51: 900, 52: 800, 53: 400, 54: 500, 55: 1100, 56: 3000 };
 /** The guardian of each act, drawn bigger: Large Slinger, Large Gatling Robot, Large Red Dragon Rider, Giant Brute
     Eater, Giant Dinosaur Brute, Giant King Dinosaur Brute. */
 export const GUARDIAN = [34, 35, 36, 37, 38, 39];
@@ -302,7 +322,7 @@ const hits = (a: Spec, target: number) => (isAir(target) ? !!a.air || !!a.hitsAi
 const LOW = 32;
 /** Down to here a flyer is striking, or about to: the walkers can reach it. */
 const STRIKING = LOW + 8;
-const reaches = (u: Fighter, v: Fighter) => hits(specOf(u), v.id) || (isAir(v.id) && !specOf(u).skyOnly && (v.alt ?? highOf(v)) <= STRIKING);
+const reaches = (u: Fighter, v: Fighter) => !specOf(u).raid && !v.hidden && hits(specOf(u), v.id) || (isAir(v.id) && !specOf(u).skyOnly && (v.alt ?? highOf(v)) <= STRIKING);
 /** Can a fighter of `id` (at its first form) hit one of `target`? */
 export const canHit = (id: number, target: number) => hits(UNITS[id], target);
 /** Keep at most `DECK` of each kind, in order. */
@@ -401,6 +421,8 @@ export interface Fighter { uid: number; id: number; side: 0 | 1; x: number; lane
   leap?: number; bound?: number; prey?: number;
   /** Rushing its target (`charge`). */
   rushing?: boolean;
+  /** Seconds left unseen (`stealth`). */
+  hidden?: number;
   /** How far this knock throws it (a guardian's blow throws further than `KNOCK.back`). */
   knockBack?: number;
   /** Seconds left being blown back by the corrupt wind. */
@@ -420,6 +442,8 @@ export const RAM = { lunge: 0.6, low: 0.9 };
     lands where it started and does not gain ground while it fights. */
 export const POUNCE = { time: 0.4, forward: 45, height: 46 };
 /** A charge: how far off it starts (beyond its reach), how many times its pace, how far it throws, how long it stands dazed. */
+/** How far a healer's mending reaches (field units either side). */
+export const HEAL_REACH = 140;
 export const CHARGE = { reach: 170, pace: 4, back: 130, daze: 0.9 };
 export interface Effect { x: number; from: number; lane: number; life: number; max: number; kind: 'shot' | 'burst' | 'arrow' | 'rocket' | 'bolt' | 'gust' | 'loot' | 'boom' | 'fire' | 'stuck' | 'fall' | 'ground' | 'zap' | 'wave' | 'sweep'; side: 0 | 1;
   /** A `boom` (an explosion) or a `fire` (a burning pool on the ground): its size, and the height it is at. */
@@ -510,6 +534,7 @@ function spawn(s: Siege, id: number, side: 0 | 1, boss = false, level?: number) 
   const elite = !!side && !boss && id === ELITE_ID && s.time >= ELITE.from && s.nextId % ELITE.every === 0;
   const life = hp * (elite ? ELITE.hp : 1);
   s.units.push({ uid: s.nextId++, id, side, x: side ? FIELD - 120 : 120, lane: s.nextId % 3, hp: life, maxHp: life, damage: spec.damage * scale * (elite ? ELITE.damage : 1) * (boss ? BOSS.damage : 1), attack: 0, flash: 0, boss, elite: elite || undefined, lv, grow: side ? growAt(s.world) : undefined });
+  if (spec.stealth) s.units[s.units.length - 1].hidden = spec.stealth;
 }
 /** What a troop's attack sounds like (its weapon) and its death (its body), by id; an array is per level. Projectile
     troops sound like what they fire (`SHOT_SOUND`). Names are the audio engine's `SiegeSound`s. */
@@ -517,11 +542,12 @@ const ATTACK_SOUND: Record<number, string | string[]> = {
   0: ['blunt', 'blade', 'blade', 'blade', 'blade'], 1: 'pierce', 3: ['blade', 'blunt', 'blunt', 'blunt'], 4: ['gun', 'rifle', 'uzi', 'sniper'],
   7: 'claw', 8: ['rocket', 'gatling', 'rocket'], 9: ['gatling', 'gatling', 'gatling', 'gatling'], 10: 'blade', 11: ['rifle', 'sniper', 'ray', 'thunder'], 12: 'rocket', 13: 'drill', 14: ['blade', 'magic', 'magic'], 33: ['blunt', 'ray', 'ray', 'blunt', 'gatling', 'blunt'],
   15: 'blade', 16: 'pierce', 17: 'bite', 18: 'claw', 19: 'blade', 20: 'blunt', 21: 'blade', 22: 'rifle', 23: 'throw', 24: 'magic',
+  53: 'magic', 54: 'blunt', 55: 'blade',
   40: 'blunt', 41: 'bite', 42: 'blunt', 43: 'pierce', 44: 'blunt', 47: 'bite', 48: 'bite', 49: 'blade', 50: 'pierce',
   25: 'claw', 26: 'breath', 27: 'blade', 28: 'claw', 29: 'claw', 30: 'magic', 31: 'blade', 32: 'gatling',
   34: 'throw', 35: 'gatling', 36: 'breath', 37: 'blunt', 38: 'bite', 39: 'bite',
 };
-const SHOT_SOUND: Record<string, string> = { 'crescent-gold': 'wind', rock: 'throw', javelin: 'throw', shuriken: 'throw', arrow: 'bow', rocket: 'rocket', rockets: 'rocket', salvo: 'rocket', ray: 'ray', 'ray-blue': 'ray', 'ray-gold': 'ray', 'ray-pink': 'thunder', 'ray-red': 'ray', 'arrow-red': 'bow', plasma: 'ray', ice: 'ray', crescent: 'magic', none: 'flame', lightning: 'thunder', tornado: 'wind', meteor: 'meteor' };
+const SHOT_SOUND: Record<string, string> = { 'crescent-gold': 'wind', rock: 'throw', javelin: 'throw', shuriken: 'throw', arrow: 'bow', rocket: 'rocket', rockets: 'rocket', salvo: 'rocket', ray: 'ray', 'ray-blue': 'ray', 'ray-gold': 'ray', 'ray-pink': 'thunder', 'ray-red': 'ray', 'arrow-red': 'bow', boulder: 'throw', 'boulder-blue': 'rocket', bomb: 'rocket', plasma: 'ray', ice: 'ray', crescent: 'magic', none: 'flame', lightning: 'thunder', tornado: 'wind', meteor: 'meteor' };
 /** Bullets (`bullet`, `bullet-rifle|uzi|sniper`) sound like the gun that fires them; beams (`ray`, `ray-blue|gold|pink`) reach at once. */
 export const isBullet = (shot?: string) => !!shot?.startsWith('bullet');
 export const isBeam = (shot?: string) => !!shot?.startsWith('ray');
@@ -529,6 +555,7 @@ const DEATH_SOUND: Record<number, string | string[]> = {
   1: ['die-man', 'die-man', 'die-man', 'die-man', 'die-horse'], 3: 'die-armor', 7: 'die-beast', 8: 'die-bot', 9: 'die-bot',
   10: 'die-flyer', 11: 'die-flyer', 12: 'die-flyer', 13: 'die-bot', 14: 'die-flyer', 33: 'die-bot',
   17: 'die-beast', 18: 'die-brute', 20: 'die-armor', 21: 'die-armor', 25: 'die-beast', 26: 'die-dragon', 27: 'die-flyer', 28: 'die-flyer',
+  51: 'die-armor', 52: 'die-flyer', 54: 'die-armor', 56: 'die-dragon',
   40: 'die-beast', 41: 'die-beast', 42: 'die-brute', 44: 'die-brute', 47: 'die-beast', 48: 'die-flyer', 49: 'die-flyer', 50: 'die-flyer',
   29: 'die-flyer', 30: 'die-flyer', 31: 'die-dragon', 32: 'die-bot',
   34: 'die-brute', 35: 'die-bot', 36: 'die-dragon', 37: 'die-brute', 38: 'die-dragon', 39: 'die-dragon',
@@ -891,6 +918,7 @@ export function tick(s: Siege, dt: number) {
     if (u.knock) { u.knock = Math.max(0, u.knock - dt); u.x = Math.max(110, Math.min(FIELD - 110, u.x + (u.side ? 1 : -1) * (u.knockBack ?? KNOCK.back) / KNOCK.time * dt)); continue; }
     if (u.stun) { u.stun = Math.max(0, u.stun - dt); continue; }
     if (u.low) u.low = Math.max(0, u.low - dt);
+    if (u.hidden) u.hidden = Math.max(0, u.hidden - dt);
     if (u.leap) {
       // In the air on its prey; it strikes as it lands, then bounds back.
       const dir = u.side ? -1 : 1, step = Math.min(u.leap, dt); u.leap -= step; u.moving = true;
@@ -949,7 +977,11 @@ export function tick(s: Siege, dt: number) {
         } else {
         // A scoop takes the nearest few (`ramHits`) in its reach; anyone else strikes its target, and round it when it has an area.
         const scooped = a.ram && (a.ramHits ?? 1) > 1 ? alive.filter(v => v.side !== u.side && reaches(u, v) && Math.abs(v.x - u.x) <= a.range + bodyOf(v) * 0.25 + 30).sort((p, q) => Math.abs(p.x - u.x) - Math.abs(q.x - u.x)).slice(0, a.ramHits) : null;
-        for (const v of alive) if (v.side !== u.side && reaches(u, v) && (scooped ? scooped.includes(v) : v === enemy || (area && Math.abs(v.x - enemy.x) < area))) hits.push({ target: v, damage: u.damage, boss: u.boss, push: a.ram });
+        if (a.heal) {
+          // A healer mends every one of ours near it instead of striking.
+          for (const v of alive) if (v.side === u.side && v !== u && Math.abs(v.x - u.x) <= HEAL_REACH) v.hp = Math.min(v.maxHp, v.hp + a.heal);
+        } else
+        for (const v of alive) if (v.side !== u.side && reaches(u, v) && (scooped ? scooped.includes(v) : v === enemy || (area && Math.abs(v.x - enemy.x) < area))) hits.push({ target: v, damage: u.damage, boss: u.boss, push: a.ram ?? a.shove });
         if (a.ram) { u.lunge = KNOCK.time; u.lungeBack = a.ram * RAM.lunge; u.low = KNOCK.time + RAM.low; }
         if (u.boss) s.effects.push({ x: enemy.x, from: enemy.x, lane: enemy.lane, life: BOOM, max: BOOM, kind: 'boom', side: u.side, size: 80, dark: true });
         launch(s, u, a, enemy.x, enemy.lane, UNITS[enemy.id].air ? enemy.alt ?? highOf(enemy) : 0);
@@ -958,7 +990,7 @@ export function tick(s: Siege, dt: number) {
       }
     } else if (Math.abs(baseX - u.x) <= a.range + 35) {
       // At the fortress, what it throws or shoots flies into the wall (a little up it), as at a troop.
-      if (u.attack <= 0) { u.attack = a.rate; u.hit = 0.3; s.hp[u.side ? 0 : 1] -= u.damage; if (a.shot) launch(s, u, a, baseX + (u.side ? 30 : -30), 1, 40); hear(s, soundsOf(u)[0], u.x); }
+      if (u.attack <= 0) { u.attack = a.rate; u.hit = 0.3; s.hp[u.side ? 0 : 1] -= u.damage * (a.siege ?? 1); if (a.shot) launch(s, u, a, baseX + (u.side ? 30 : -30), 1, 40); hear(s, soundsOf(u)[0], u.x); }
     } else {
       const movement = a.speed * dt; u.moving = true;
       // Never step through an opponent, even during a long frame.
