@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.135 - 2026-10-30
+
+### Changed
+- The drill aircraft rushes forward with its blow again, the whole way its target is driven back, and still stays low a moment after.
+- The cover's word of Siege Cartoon says "bring down the Darkness", not the fortress.
+
 ## 1.15.134 - 2026-10-30
 
 ### Added
