@@ -264,7 +264,8 @@ export const cardId = (c: number) => c % 100;
 export const cardLevel = (c: number) => Math.floor(c / 100) + 1;
 const isAir = (c: number) => !!UNITS[cardId(c)]?.air;
 /** Ours: the units an army can hold. */
-export const ALLIES = UNITS.filter(u => !u.foe);
+/** Our troops in the order they arrive, world by world (the flying mech, listed last in `UNITS`, comes before the angels). */
+export const ALLIES = UNITS.filter(u => !u.foe).sort((a, b) => a.unlock - b.unlock);
 /** How many levels a troop has (its forms and the first). */
 export const levelsOf = (id: number) => 1 + (UNITS[id]?.forms?.length ?? 0);
 /** A troop at a level: its stats and looks with that form's changes. */
