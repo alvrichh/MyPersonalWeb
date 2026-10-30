@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.133 - 2026-10-30
+
+### Fixed
+- Siege Cartoon tilt: iPhones are now asked for the motion on any tap in the battle (a card, the stick or the field), not only a touch of the field, and again from the settings button; the settings say when the browser refused. The lean is read from gravity itself (`devicemotion`), so it works held flat or upright.
+
 ## 1.15.132 - 2026-10-30
 
 ### Changed

@@ -128,25 +128,33 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   let lastHeard: [number, number] = [0.6, 0.8];
   const muted = () => volumes.get().every(v => v === 0);
   // Tilt (phones, settings): leaning the phone left or right slides the camera, from where it was held at the start.
+  // It reads gravity itself (`devicemotion`), which tells the lean whether the phone is held flat or upright.
   const TILT_KEY = 'bugHunter.siege.cartoon.tilt', touchScreen = () => matchMedia('(pointer: coarse)').matches;
   const tiltOn = () => storage.get(TILT_KEY) !== '0';
-  let tiltBase: number | null = null, tilt = 0, tiltAsked = false;
+  let tiltBase: number | null = null, tilt = 0, tiltListening = false;
+  /** iPhones ask before giving the motion: not asked yet (null), given (true) or refused (false). */
+  let tiltGranted: boolean | null = null;
   const TILT = { dead: 3, full: 22, speed: 900 };
-  const onTilt = (e: DeviceOrientationEvent) => {
-    if (!state || paused || !tiltOn() || e.beta === null || e.gamma === null) { tilt = 0; return; }
-    const angle = (screen.orientation?.angle ?? 0), landscape = innerWidth > innerHeight;
-    // Held sideways the phone's long axis lies across, so a lean left or right is a turn about its short axis (beta).
-    const raw = landscape ? e.beta * (angle === 270 || angle === -90 ? -1 : 1) : e.gamma;
+  const onTilt = (e: DeviceMotionEvent) => {
+    const g = e.accelerationIncludingGravity;
+    if (!state || paused || !tiltOn() || !g || g.x === null || g.y === null || g.z === null) { tilt = 0; return; }
+    const size = Math.hypot(g.x, g.y, g.z) || 1, angle = screen.orientation?.angle ?? 0, landscape = innerWidth > innerHeight;
+    // The share of gravity along the screen's right: held sideways that is the phone's long axis (y), upright its short one (x).
+    const right = landscape ? (g.y / size) * (angle === 270 || angle === -90 ? 1 : -1) : -g.x / size;
+    const raw = Math.asin(Math.max(-1, Math.min(1, right))) * 180 / Math.PI;
     if (tiltBase === null) tiltBase = raw;
-    const lean = raw - tiltBase, size = Math.max(0, Math.abs(lean) - TILT.dead) / (TILT.full - TILT.dead);
-    tilt = Math.sign(lean) * Math.min(1, size);
+    const lean = raw - tiltBase, amount = Math.max(0, Math.abs(lean) - TILT.dead) / (TILT.full - TILT.dead);
+    tilt = Math.sign(lean) * Math.min(1, amount);
   };
-  const listenTilt = () => { tiltBase = null; window.addEventListener('deviceorientation', onTilt, { signal: battleAbort.signal }); };
-  /** iPhones ask before giving the tilt: asked on the first touch of a battle, once. */
+  const motionAsks = () => { const D = typeof DeviceMotionEvent !== 'undefined' ? (DeviceMotionEvent as unknown as { requestPermission?: () => Promise<string> }) : undefined; return typeof D?.requestPermission === 'function' ? D.requestPermission.bind(D) : null; };
+  const listenTilt = () => { if (tiltListening || typeof DeviceMotionEvent === 'undefined') return; tiltListening = true; tiltBase = null; window.addEventListener('devicemotion', onTilt, { signal: abort.signal }); };
+  /** Asked on a touch or tap (the browser only answers to one), once; without the asking the motion is simply listened to. */
   const askTilt = () => {
-    if (tiltAsked || !touchScreen() || !tiltOn()) return; tiltAsked = true;
-    const D = DeviceOrientationEvent as unknown as { requestPermission?: () => Promise<string> };
-    if (typeof D.requestPermission === 'function') D.requestPermission().then(r => { if (r === 'granted') listenTilt(); }).catch(() => {});
+    if (tiltListening || !touchScreen() || !tiltOn()) return;
+    const ask = motionAsks();
+    if (!ask) { listenTilt(); return; }
+    if (tiltGranted !== null) return;
+    ask().then(r => { tiltGranted = r === 'granted'; if (tiltGranted) listenTilt(); if (root.querySelector('[data-sg="tilt"]')) settingsMenu(); }).catch(() => { tiltGranted = false; });
   };
   const fullscreenOn = () => !!document.fullscreenElement, canFullscreen = () => !!document.fullscreenEnabled && !!document.documentElement.requestFullscreen;
   /** The turn-your-phone notice was closed (it stays closed on the maps). */
@@ -394,7 +402,9 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     cancelAnimationFrame(frame); battleAbort.abort(); battleAbort = new AbortController();
     const battleOptions = { signal: battleAbort.signal };
     if (!selected.length) return;
-    tilt = 0; if (touchScreen() && tiltOn() && typeof DeviceOrientationEvent !== 'undefined' && !('requestPermission' in DeviceOrientationEvent)) listenTilt();
+    tilt = 0; tiltBase = null; if (!motionAsks()) askTilt();
+    // A tap anywhere in the battle (a card, the stick, the field) asks iPhones for the motion, the one time they let us.
+    for (const kind of ['touchend', 'click'] as const) root.addEventListener(kind, () => askTilt(), { ...battleOptions, capture: true });
     progress.deck = [...selected]; persist(); mapAct = mode === 'cartoon' ? actNow() : 0; state = M.newSiege(progress, world); bossTalked = false; bossHalf = false; baseFell = false; lootHeard = 0; gustShown = false;
     if (mode === 'cartoon') music('battle');
     V.preload(world, selected, progress.levels); paused = false; camera.x = -Infinity;
@@ -416,7 +426,6 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     let pointer: { id: number; start: number; camera: number; moved: boolean } | null = null;
     canvas.addEventListener('pointerdown', e => {
       if (paused || !state || state.phase !== 'fight') return;
-      askTilt();
       pointer = { id: e.pointerId, start: e.clientX, camera: camera.x, moved: false }; canvas.setPointerCapture(e.pointerId);
     }, battleOptions);
     // The mouse wheel slides the camera over the field (sideways or up and down, as the wheel has them); in the far
@@ -668,7 +677,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       <button class="sg-kit ${muted() ? 'is-gold' : 'is-blue'}" data-sg="mute" aria-pressed="${muted()}">${muted() ? '🔇 ' + t('unmute') : '🔊 ' + t('mute')}</button>
       ${volumes.lang ? `<div class="sg-langs" role="group" aria-label="${t('language')}"><span>🌐 ${t('language')}</span>${(['es', 'en'] as const).map(l => `<button class="sg-kit ${volumes.lang!() === l ? 'is-gold' : 'is-blue'}" data-sg-lang="${l}" aria-pressed="${volumes.lang!() === l}">${l === 'es' ? 'Español' : 'English'}</button>`).join('')}</div>` : ''}
       ${wideScreen() ? `<div class="sg-langs" role="group" aria-label="${t('siegeView')}"><span>🔭 ${t('siegeView')}</span><button class="sg-kit ${V.viewPrefs.wide ? 'is-blue' : 'is-gold'}" data-sg="view-close" aria-pressed="${!V.viewPrefs.wide}">${t('siegeViewClose')}</button><button class="sg-kit ${V.viewPrefs.wide ? 'is-gold' : 'is-blue'}" data-sg="view-wide" aria-pressed="${V.viewPrefs.wide}">${t('siegeViewWide')}</button></div>` : ''}
-      ${touchScreen() ? `<button class="sg-kit ${tiltOn() ? 'is-gold' : 'is-blue'}" data-sg="tilt" aria-pressed="${tiltOn()}">📱 ${t('siegeTilt')}: ${tiltOn() ? t('siegeOn') : t('siegeOff')}</button>` : ''}
+      ${touchScreen() ? `<button class="sg-kit ${tiltOn() ? 'is-gold' : 'is-blue'}" data-sg="tilt" aria-pressed="${tiltOn()}">📱 ${t('siegeTilt')}: ${tiltOn() ? (tiltGranted === false ? t('siegeTiltRefused') : t('siegeOn')) : t('siegeOff')}</button>` : ''}
       ${canFullscreen() ? `<button class="sg-kit ${fullscreenOn() ? 'is-gold' : 'is-blue'}" data-sg="fullscreen" aria-pressed="${fullscreenOn()}">⛶ ${t(fullscreenOn() ? 'siegeFullscreenOff' : 'siegeFullscreen')}</button>` : ''}
       ${state ? '' : `<button class="sg-kit ${cartoonModel.testing.free ? 'is-gold' : 'is-blue'}" data-sg="free" aria-pressed="${cartoonModel.testing.free}">${t('siegeFreeAll')}: ${cartoonModel.testing.free ? t('siegeOn') : t('siegeOff')}</button>
       <button class="sg-kit is-red" data-sg="reset">${t('siegeReset')}</button>`}
@@ -827,7 +836,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     else if (action === 'pause') pause();
     else if (action === 'settings') settingsMenu();
     else if (action === 'pause-back') { if (state) pauseMenu(); else { root.querySelector('.sg-overlay')?.remove(); prep(); } }
-    else if (action === 'tilt') { storage.set(TILT_KEY, tiltOn() ? '0' : ''); tilt = 0; tiltBase = null; settingsMenu(); }
+    else if (action === 'tilt') { storage.set(TILT_KEY, tiltOn() ? '0' : ''); tilt = 0; tiltBase = null; if (tiltOn()) { tiltGranted = tiltGranted === false ? null : tiltGranted; askTilt(); } settingsMenu(); }
     else if (action === 'mute') { if (muted()) volumes.set(lastHeard[0] || 0.6, lastHeard[1] || 0.8); else { lastHeard = volumes.get(); volumes.set(0, 0); } settingsMenu(); }
     else if (action === 'view-close' || action === 'view-wide') { V.viewPrefs.wide = action === 'view-wide'; storage.set(WIDE_KEY, V.viewPrefs.wide ? '1' : ''); settingsMenu(); }
     else if (action === 'fullscreen') { (fullscreenOn() ? document.exitFullscreen() : document.documentElement.requestFullscreen()).catch(() => {}).then(() => settingsMenu()); }
