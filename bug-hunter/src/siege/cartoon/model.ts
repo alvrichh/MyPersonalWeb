@@ -423,6 +423,8 @@ export interface Fighter { uid: number; id: number; side: 0 | 1; x: number; lane
   rushing?: boolean;
   /** Seconds left unseen (`stealth`). */
   hidden?: number;
+  /** Seconds left showing a wince (its hurt pose) after a heavy blow, and until it can wince again (`WINCE`). */
+  wince?: number; winceCd?: number;
   /** How far this knock throws it (a guardian's blow throws further than `KNOCK.back`). */
   knockBack?: number;
   /** Seconds left being blown back by the corrupt wind. */
@@ -444,6 +446,12 @@ export const POUNCE = { time: 0.4, forward: 45, height: 46 };
 /** A charge: how far off it starts (beyond its reach), how many times its pace, how far it throws, how long it stands dazed. */
 /** How far a healer's mending reaches (field units either side). */
 export const HEAL_REACH = 140;
+/** A blow taking at least this share of a troop's health makes it wince (its hurt pose) this long, at most once in `every`. */
+export const WINCE = { share: 0.08, time: 0.25, every: 1.2 };
+/** A heavy blow shows: the troop winces (its hurt pose) a moment, not on every scratch. */
+function wince(u: Fighter, damage: number) {
+  if (damage >= u.maxHp * WINCE.share && !u.winceCd) { u.wince = WINCE.time; u.winceCd = WINCE.every; }
+}
 export const CHARGE = { reach: 170, pace: 4, back: 130, daze: 0.9 };
 export interface Effect { x: number; from: number; lane: number; life: number; max: number; kind: 'shot' | 'burst' | 'arrow' | 'rocket' | 'bolt' | 'gust' | 'loot' | 'boom' | 'fire' | 'stuck' | 'fall' | 'ground' | 'zap' | 'wave' | 'sweep'; side: 0 | 1;
   /** A `boom` (an explosion) or a `fire` (a burning pool on the ground): its size, and the height it is at. */
@@ -687,7 +695,7 @@ function arrows(s: Siege, count: number) {
     };
     // It strikes whoever is there, ours too: aim past your own troops.
     for (const u of s.units) if (u.hp > 0 && (Math.abs(u.x - at) <= 28 && !(u.side === 0 && UNITS[u.id].air) || crossed(u))) {
-      u.hp -= bowDamage(s.bow) * (u.side ? s.power : BOW.friendly); u.flash = 0.18;
+      const arrow = bowDamage(s.bow) * (u.side ? s.power : BOW.friendly); u.hp -= arrow; u.flash = 0.18; wince(u, arrow);
       if (u.side === 0) continue;
       // A hit nudges it back a little (not the guardians or the steady), at most once every `NUDGE.every`, so it still
       // makes its way forward.
@@ -919,6 +927,8 @@ export function tick(s: Siege, dt: number) {
     if (u.stun) { u.stun = Math.max(0, u.stun - dt); continue; }
     if (u.low) u.low = Math.max(0, u.low - dt);
     if (u.hidden) u.hidden = Math.max(0, u.hidden - dt);
+    if (u.wince) u.wince = Math.max(0, u.wince - dt);
+    if (u.winceCd) u.winceCd = Math.max(0, u.winceCd - dt);
     if (u.leap) {
       // In the air on its prey; it strikes as it lands, then bounds back.
       const dir = u.side ? -1 : 1, step = Math.min(u.leap, dt); u.leap -= step; u.moving = true;
@@ -1000,7 +1010,7 @@ export function tick(s: Siege, dt: number) {
   }
   for (const hit of hits) {
     const v = hit.target, spec = UNITS[v.id];
-    v.hp -= hit.damage; v.flash = 0.12;
+    v.hp -= hit.damage; v.flash = 0.12; wince(v, hit.damage);
     // A guardian's every blow throws back what it hits (stuns machines and flyers); others only a heavy blow.
     if (v.hp > 0 && !v.boss && !spec.steady && (hit.boss || hit.push || hit.damage >= v.maxHp * KNOCK.share)) {
       if (spec.infantry || hit.boss || hit.push) { v.knock = KNOCK.time; v.knockBack = hit.boss ? BOSS.knock : hit.push; } else v.stun = KNOCK.stun;
