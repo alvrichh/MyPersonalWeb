@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.137 - 2026-10-30
+
+### Changed
+- Siege Cartoon gold drill (level 2): its scoop takes the two nearest enemies in reach at once, where the first drill takes one.
+
 ## 1.15.136 - 2026-10-30
 
 ### Changed
