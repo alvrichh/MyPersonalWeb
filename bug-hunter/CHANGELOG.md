@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.149 - 2026-10-30
+
+### Added
+- "Play with someone" offers the same share-link button as "Add friend": the link adds you as a friend and calls you, with no code to type.
+
 ## 1.15.148 - 2026-10-30
 
 ### Changed
