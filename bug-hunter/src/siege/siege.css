@@ -777,7 +777,9 @@
 .siege-root.is-cartoon .sg-bar .sg-bow::before,.siege-root.is-cartoon .sg-bar .sg-bow.is-drawing::before{background-position:calc(-1789 * var(--u)) calc(-98 * var(--u));background-size:calc(2047 * var(--u)) calc(398 * var(--u))}
 .siege-root.is-cartoon .sg-bar .sg-bow.is-drawing::after{content:'';z-index:0;inset:0;left:0;top:0;width:100%;height:100%;transform:none;opacity:1;border-radius:50%;background:url('/images/game/siege/bow.webp') 0 0 / 300% 100% no-repeat;animation:sg-bow-frames .36s steps(3) infinite}
 @keyframes sg-bow-frames{to{background-position:150% 0}}
-@media (prefers-reduced-motion:reduce){.siege-root.is-cartoon .sg-bar .sg-bow.is-drawing::after{animation:none;background-position:50% 0}}
+/* The emptied part of the ball (the grey cap) shows the same shooting frames, greyed, so the arrow keeps flying across the whole ball. */
+.siege-root.is-cartoon .sg-bar .sg-bow.is-drawing::before{background:url('/images/game/siege/bow.webp') 0 0 / 300% 100% no-repeat;animation:sg-bow-frames .36s steps(3) infinite}
+@media (prefers-reduced-motion:reduce){.siege-root.is-cartoon .sg-bar .sg-bow.is-drawing::after,.siege-root.is-cartoon .sg-bar .sg-bow.is-drawing::before{animation:none;background-position:50% 0}}
 /* v1.15.41 — the army's cards sit on the bar's own stone slots, tinted blue through (the stone's texture shows): the
    troop over it, its cost on a dark plate with a gold rim. */
 .siege-root.is-cartoon .sg-bar .sg-deck button,.siege-root.is-cartoon .sg-bar .sg-deck button:hover:not(:disabled),
