@@ -50,6 +50,8 @@ Each enemy is "equivalent" to one of our units at a level: that sets its stats. 
 | 5 | Rex Head, Rhinoceratops, Flightless Terror Bird, Tiger (leaps over and turns back), Spider Spearman | Spearman 4, about HAS 2, Spearman 4, Archer 4, Spearman 5 | Giant Dinosaur Brute |
 | 6 | Mammothsaurus, Giant Heavy Armor Axeman, Inter-Galactic Shooter, Green Ninja Bat, Red Dragon Rider (air, unstunnable), Devil Army (air) | Vulture 6, HAS 4, Gunner 2, Swordsman 6, Drill Aircraft 2, Angel | Giant King Dinosaur Brute |
 
+**In the game (v1.15.144).** Land, by world: 1 swordsman, spearman, dog; 2 gunner, reaper, horned archer; 3 blaster, bear, undead turkey; 4 wizard, tiger, hammer; 5 dragon, axeman, Rex Head, terror bird, rhinoceratops; 6 gatling robot, alien shooter, mammothsaurus, spider spearman. Air: 2 eagle; 3 ninja bat, death angel; 4 hypnotist bat; 5 pterodactyl; 6 red dragon rider, green ninja bat, devil army. A world's own list comes in one more each stage (`FOE_LAND`, `FOE_AIR`).
+
 ## Six-pose sheets and levels (current format)
 
 New sheets have **6 poses** in one row: 1 walk A, 2 walk B (A and B alternated read as walking), 3 attack ready, 4 attack, 5 hurt (feet on the ground), 6 dead (lying on the ground); white round faces in blue and gold armour (the owner's sheets since v1.15.12; they replaced the first stick figures). One row per level form, in order. A unit with such a sheet has `six: true` in `UNITS` (scale 0.4 a pixel of its first walk pose); its forms (`forms`) are bought in the workshop's Troops rows. Cut as `siege/units/ally-<name>-<level>-<pose>.webp` (pose 0-5).

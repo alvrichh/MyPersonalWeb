@@ -4,6 +4,15 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.144 - 2026-10-30
+
+### Added
+- Siege Cartoon: eleven new enemy troops from the owner's sheets of Cartoon Wars 2's roster, mostly for the last two worlds, which were short of them.
+  - World 2: a horned archer firing red arrows. World 3: an undead turkey.
+  - World 5 (the mountains): Rex Head, the terror bird (fast), the rhinoceratops (tough) and its first flyer, a pterodactyl with a skull rider.
+  - World 6 (the Darkness): the alien shooter (a red ray that reaches flyers), the mammothsaurus (huge, slow, unshakeable), the spider spearman, and two flyers, the green ninja bat and the devil army.
+- The plasma-ball version of the alien shooter is kept in reserve (`assets/old/special/siege/reserve`).
+
 ## 1.15.143 - 2026-10-30
 
 ### Changed
