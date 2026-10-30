@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.138 - 2026-10-30
+
+### Changed
+- Siege Cartoon's Spanish story: the sandwich is a chorizo sandwich ("bocata de chorizo") in its five lines.
+
 ## 1.15.137 - 2026-10-30
 
 ### Changed
