@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.165 - 2026-10-31
+
+### Added
+- Siege Cartoon: a fifth legendary troop, the Weary Reaper (land, 3500 gold, 220 energy), from the owner's sheet. Hunched and slow, it hurls its chained scythe far ahead (185, the chain's length), strikes hard (260, round its prey too) and drags what it hooks 160 field units towards it. Hidden until the game is won.
+
 ## 1.15.164 - 2026-10-31
 
 ### Changed

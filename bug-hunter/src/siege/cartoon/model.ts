@@ -64,6 +64,8 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
   quake?: boolean;
   /** A piercing beam (the star eater's): it strikes everything ahead of it as far as it reaches, and bursts round its target. */
   pierce?: boolean;
+  /** A hook (the weary reaper's chained scythe): what it strikes is dragged this far towards it. */
+  hook?: number;
   /** Two attack poses of its own, aimed (6: down at walkers, 7: level at flyers), its blow drawn in them (the dragon, the star eater). */
   aimPoses?: boolean;
   /** A breath (the dragon's): its sweep is drawn as fire of these two colours (core, edge) instead of a crescent. */
@@ -257,6 +259,8 @@ export const UNITS: readonly Spec[] = [
   { id: 57, cost: 260, hp: 6500, damage: 170, speed: 17, range: 60, rate: 2.3, cooldown: 35, unlock: 6, legend: true, steady: true, sweep: { reach: 170, back: 230 }, quake: true, ...six('ally-golem-1', 209, 1.45) },
   // The star eater, legendary flyer: its cosmic beam (in its attack pose) pierces everything in a line and bursts into a star.
   { id: 58, flyAt: 82, cost: 280, hp: 3500, damage: 190, speed: 30, range: 320, rate: 2.2, cooldown: 35, unlock: 6, air: true, legend: true, hitsAir: true, pierce: true, aimPoses: true, splash: 90, shot: 'none', ...six('ally-star-eater-1', 237, 1.8) },
+  // The weary reaper, legendary: hunched and slow, it hurls its chained scythe far ahead and drags what it hooks to it.
+  { id: 59, cost: 220, hp: 3200, damage: 260, speed: 26, range: 185, rate: 2.4, cooldown: 30, unlock: 6, infantry: true, legend: true, splash: 50, hook: 160, ...six('ally-reaper-1', 154, 1.15) },
 ];
 /** The enemy's land and air troops by act, each act adding to the last (docs/siege-roster.md): early waves draw
     from the first two of the land list. No flyers in the first world: they come from the second. */
@@ -307,7 +311,7 @@ export function threatPool(stage: number): number[] {
 /** The enemy's troops in a battle: every earlier act's, and its own act's coming in one more each stage. */
 export const foesAt = (lists: number[][], stage: number) => [...lists.slice(0, actOf(stage) - 1).flat(), ...(lists[actOf(stage) - 1] ?? []).slice(0, stageIn(stage))];
 /** What recruiting each of our troops costs in gold (the swordsman is everyone's first). Bought once, kept. */
-export const RECRUIT: Record<number, number> = { 0: 0, 1: 100, 2: 120, 3: 350, 4: 300, 5: 600, 6: 900, 7: 700, 8: 900, 9: 1600, 10: 250, 11: 500, 12: 900, 13: 700, 14: 2000, 33: 1200, 51: 900, 52: 800, 53: 400, 54: 500, 55: 1100, 56: 3000, 57: 4000, 58: 4500 };
+export const RECRUIT: Record<number, number> = { 0: 0, 1: 100, 2: 120, 3: 350, 4: 300, 5: 600, 6: 900, 7: 700, 8: 900, 9: 1600, 10: 250, 11: 500, 12: 900, 13: 700, 14: 2000, 33: 1200, 51: 900, 52: 800, 53: 400, 54: 500, 55: 1100, 56: 3000, 57: 4000, 58: 4500, 59: 3500 };
 /** The guardian of each act, drawn bigger: Large Slinger, Large Gatling Robot, Large Red Dragon Rider, Giant Brute
     Eater, Giant Dinosaur Brute, Giant King Dinosaur Brute. */
 export const GUARDIAN = [34, 35, 36, 37, 38, 39];
@@ -575,7 +579,7 @@ const ATTACK_SOUND: Record<number, string | string[]> = {
   0: ['blunt', 'blade', 'blade', 'blade', 'blade'], 1: 'pierce', 3: ['blade', 'blunt', 'blunt', 'blunt'], 4: ['gun', 'rifle', 'uzi', 'sniper'],
   7: 'claw', 8: ['rocket', 'gatling', 'rocket'], 9: ['gatling', 'gatling', 'gatling', 'gatling'], 10: 'blade', 11: ['rifle', 'sniper', 'ray', 'thunder'], 12: 'rocket', 13: 'drill', 14: ['blade', 'magic', 'magic'], 33: ['blunt', 'ray', 'ray', 'blunt', 'gatling', 'blunt'],
   15: 'blade', 16: 'pierce', 17: 'bite', 18: 'claw', 19: 'blade', 20: 'blunt', 21: 'blade', 22: 'rifle', 23: 'throw', 24: 'magic',
-  53: 'heal', 54: 'blunt', 55: 'slash', 56: 'roar', 57: 'meteor', 58: 'thunder',
+  53: 'heal', 54: 'blunt', 55: 'slash', 56: 'roar', 57: 'meteor', 58: 'thunder', 59: 'slash',
   40: 'blunt', 41: 'bite', 42: 'blunt', 43: 'pierce', 44: 'blunt', 47: 'bite', 48: 'bite', 49: 'blade', 50: 'pierce',
   25: 'claw', 26: 'breath', 27: 'blade', 28: 'claw', 29: 'claw', 30: 'magic', 31: 'blade', 32: 'gatling',
   34: 'throw', 35: 'gatling', 36: 'breath', 37: 'blunt', 38: 'bite', 39: 'bite',
@@ -588,7 +592,7 @@ const DEATH_SOUND: Record<number, string | string[]> = {
   1: ['die-man', 'die-man', 'die-man', 'die-man', 'die-horse'], 3: 'die-armor', 7: 'die-beast', 8: 'die-bot', 9: 'die-bot',
   10: 'die-flyer', 11: 'die-flyer', 12: 'die-flyer', 13: 'die-bot', 14: 'die-flyer', 33: 'die-bot',
   17: 'die-beast', 18: 'die-brute', 20: 'die-armor', 21: 'die-armor', 25: 'die-beast', 26: 'die-dragon', 27: 'die-flyer', 28: 'die-flyer',
-  51: 'die-armor', 52: 'die-flyer', 54: 'die-armor', 56: 'die-dragon', 57: 'die-bot', 58: 'die-flyer',
+  51: 'die-armor', 52: 'die-flyer', 54: 'die-armor', 56: 'die-dragon', 57: 'die-bot', 58: 'die-flyer', 59: 'die-armor',
   40: 'die-beast', 41: 'die-beast', 42: 'die-brute', 44: 'die-brute', 47: 'die-beast', 48: 'die-flyer', 49: 'die-flyer', 50: 'die-flyer',
   29: 'die-flyer', 30: 'die-flyer', 31: 'die-dragon', 32: 'die-bot',
   34: 'die-brute', 35: 'die-bot', 36: 'die-dragon', 37: 'die-brute', 38: 'die-dragon', 39: 'die-dragon',
@@ -1024,7 +1028,7 @@ export function tick(s: Siege, dt: number) {
           }
           s.effects.push({ x: u.x, from: u.x, lane: u.lane, life: 0.7, max: 0.7, kind: 'heal', side: u.side, size: 1 });
         } else
-        for (const v of alive) if (v.side !== u.side && reaches(u, v) && (scooped ? scooped.includes(v) : v === enemy || (area && Math.abs(v.x - enemy.x) < area) || (a.pierce && (v.x - u.x) * (enemy.x - u.x) > 0 && Math.abs(v.x - u.x) <= a.range + 40))) hits.push({ target: v, damage: u.damage, boss: u.boss, push: a.ram ?? a.shove });
+        for (const v of alive) if (v.side !== u.side && reaches(u, v) && (scooped ? scooped.includes(v) : v === enemy || (area && Math.abs(v.x - enemy.x) < area) || (a.pierce && (v.x - u.x) * (enemy.x - u.x) > 0 && Math.abs(v.x - u.x) <= a.range + 40))) hits.push({ target: v, damage: u.damage, boss: u.boss, push: a.hook ? -a.hook : a.ram ?? a.shove });
         if (a.pierce) {
           const end = u.x + (enemy.x > u.x ? 1 : -1) * (a.range + 40); u.aimAir = !!UNITS[enemy.id].air;
           // At walkers its beam strikes the ground ahead (its attack pose) and runs along it as far as it reaches.
