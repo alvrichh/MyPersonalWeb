@@ -274,7 +274,6 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     if (shopTab === 'special') { if (!cartoonModel.toggleKit(progress, row, level)) return false; persist(); sound('click'); return true; }
     const c = cartoonModel.card(row, level);
     if (selected.includes(c)) selected = selected.filter(n => n !== c);
-    else if (mode === 'cartoon' && !cartoonModel.legendRoom(selected, c)) { const m = root.querySelector('.sg-message'); if (m) m.textContent = t('siegeOneLegend'); return false; }
     else if (selected.filter(n => air(n) === air(c)).length < M.DECK) selected.push(c);
     else return false;
     progress.deck = [...selected]; persist(); sound('click'); return true;

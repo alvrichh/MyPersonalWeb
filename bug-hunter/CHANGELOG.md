@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.154 - 2026-10-31
+
+### Changed
+- Siege Cartoon's legendary troops have no limit: the dragon rider and the ninja can go in the same army.
+
 ## 1.15.153 - 2026-10-31
 
 ### Changed

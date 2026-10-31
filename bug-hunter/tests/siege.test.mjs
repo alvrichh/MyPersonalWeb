@@ -500,12 +500,12 @@ test('the new recruits: the medic heals, the balloon only bombs the fortress, th
   for (let i = 0; i < 120 && s.hp[1] === before; i++) m.tick(s, 1 / 30);
   assert.equal(Math.round(before - s.hp[1]), Math.round(cat.damage * 2), 'twice its blow on the fortress');
 });
-test('the legendary troops open when the game is won, one at most in an army; the dragon sweeps and throws back', () => {
+test('the legendary troops open when the game is won, both can go in one army; the dragon sweeps and throws back', () => {
   const p = m.freshProgress(); p.unlocked = m.LAST; p.coins = 99999;
   assert.equal(m.isOpen(p, 56), false, 'not before the last battle is won'); assert.equal(m.buyTroop(p, 56), false);
   p.victories.push(m.LAST); assert.ok(m.buyTroop(p, 56) && m.buyTroop(p, 55), 'then they can be bought');
-  assert.equal(p.deck.filter(c => m.UNITS[m.cardId(c)].legend).length, 1, 'only one goes into the army');
-  assert.deepEqual(m.capDeck([56, 55, 0]), [56, 0], 'a saved army keeps one');
+  assert.equal(p.deck.filter(c => m.UNITS[m.cardId(c)].legend).length, 2, 'both go into the army');
+  assert.deepEqual(m.capDeck([56, 55, 0]), [56, 55, 0], 'a saved army keeps both');
   assert.deepEqual(m.ALLIES.slice(-2).map(u => u.id).sort(), [55, 56], 'listed last');
   const s = m.newSiege({ ...m.freshProgress(), owned: [0, 56], deck: [56], upgrades: [0, 0, 0, 0, 0, 0, 5] }, 1); s.nextWave = 999; s.gusted = true; s.energy = 9999;
   m.summon(s, 56); const dragon = s.units[0]; dragon.x = 500;
