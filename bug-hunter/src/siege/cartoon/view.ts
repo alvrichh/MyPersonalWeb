@@ -798,8 +798,15 @@ function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: nu
     // Bounding back after a pounce it faces away, the way it goes.
     if (u.bound) ctx.scale(-1, 1);
     if (gone !== undefined) ctx.globalAlpha = gone < 0.66 ? 1 : 1 - (gone - 0.66) / 0.34;
-    // Unseen (the ninja, just sent): see-through.
-    else if (u.hidden) ctx.globalAlpha = 0.45;
+    // Unseen (the ninja): a little see-through, wrapped in drifting puffs of dark smoke, so it reads as stealth.
+    else if (u.hidden) {
+      ctx.globalAlpha = 0.6;
+      if (!reduced) for (let k = 0; k < 7; k++) {
+        const f = (s.time * 0.8 + k / 7 + u.uid * 0.13) % 1, px = Math.sin(k * 2.4 + s.time * 1.7) * size * 0.35, py = -size * (0.15 + 0.7 * f);
+        ctx.save(); ctx.globalAlpha = 0.28 * Math.sin(f * Math.PI); ctx.fillStyle = '#16121c';
+        ctx.beginPath(); ctx.arc(px, py, size * (0.12 + 0.12 * f), 0, Math.PI * 2); ctx.fill(); ctx.restore();
+      }
+    }
     ctx.rotate(lean); ctx.scale(sx, sy);
     // A hit flashes it bright (drawn again, added on top: a blur on every hit troop costs too much each frame).
     const flash = gone === undefined && !!u.flash;
