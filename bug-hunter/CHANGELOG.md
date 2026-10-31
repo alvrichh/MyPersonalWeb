@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.156 - 2026-10-31
+
+### Changed
+- Siege Cartoon's level 2 ninja keeps the sheet's gold, fire and red eyes; only its black turns dark blue.
+
 ## 1.15.155 - 2026-10-31
 
 ### Changed
