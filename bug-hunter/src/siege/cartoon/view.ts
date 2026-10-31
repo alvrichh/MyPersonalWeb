@@ -502,17 +502,17 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     ctx.restore(); return true;
   }
   if (e.kind === 'beam') {
-    // The star eater's cosmic beam: from its mouth down onto the field and along it as far as it reaches, a white core
-    // in a blue glow, flaring then fading, with a few sparks running along it.
-    const body = e.size ?? 120, dir = e.x >= e.from ? 1 : -1, fade = p < 0.5 ? 1 : (1 - p) / 0.5, w = 26 * (p < 0.15 ? p / 0.15 : 1);
-    const mx = e.from + dir * body * 0.35, my = ground - (e.fromUp ?? 0) - body * 0.45, ly = ground - 22;
-    const path = () => { ctx.beginPath(); ctx.moveTo(mx, my); ctx.quadraticCurveTo(mx + dir * body * 0.9, ly, mx + dir * body * 1.6, ly); ctx.lineTo(e.x, ly); };
+    // The star eater's cosmic beam along the ground: from where its attack pose's beam strikes the ground ahead of it,
+    // on as far as it reaches, a white core in a blue glow, flaring then fading, sparks running along it.
+    const body = e.size ?? 120, dir = e.x >= e.from ? 1 : -1, fade = p < 0.5 ? 1 : (1 - p) / 0.5, w = 24 * (p < 0.15 ? p / 0.15 : 1);
+    const x0 = e.from + dir * body * 1.49, ly = ground - 20;
+    const path = () => { ctx.beginPath(); ctx.moveTo(x0, ly); ctx.lineTo(e.x, ly); };
     ctx.save(); ctx.lineCap = 'round'; ctx.globalCompositeOperation = 'lighter';
     ctx.globalAlpha = 0.45 * fade; ctx.strokeStyle = '#2f7dff'; ctx.lineWidth = w * 2.2; path(); ctx.stroke();
     ctx.globalAlpha = 0.8 * fade; ctx.strokeStyle = '#7fd8ff'; ctx.lineWidth = w; path(); ctx.stroke();
     ctx.globalAlpha = fade; ctx.strokeStyle = '#ffffff'; ctx.lineWidth = w * 0.35; path(); ctx.stroke();
     ctx.fillStyle = '#fff6c4';
-    for (let k = 0; k < 10; k++) { const f = (k / 10 + p * 2.5) % 1, x = mx + dir * body * 1.6 + (e.x - mx - dir * body * 1.6) * f; ctx.globalAlpha = fade * (1 - f * 0.5); ctx.beginPath(); ctx.arc(x, ly + Math.sin(k * 5 + p * 20) * 8, 3, 0, Math.PI * 2); ctx.fill(); }
+    for (let k = 0; k < 10; k++) { const f = (k / 10 + p * 2.5) % 1, x = x0 + (e.x - x0) * f; ctx.globalAlpha = fade * (1 - f * 0.5); ctx.beginPath(); ctx.arc(x, ly + Math.sin(k * 5 + p * 20) * 8, 3, 0, Math.PI * 2); ctx.fill(); }
     ctx.restore(); return true;
   }
   if (e.kind === 'heal') {
@@ -760,6 +760,9 @@ function fallen(s: Siege) {
 }
 /** One troop: its pose for what it is doing, animated in code (walking, breathing, lunges, knock-backs); `gone` (0-1)
     draws it fallen, fading at the end. */
+/** Where a pose wider or taller than its body stands: its body's middle and foot, as shares of the picture (the star
+    eater's beam poses, whose beam reaches far ahead of and below it). */
+const POSE_ANCHOR: Record<string, [number, number]> = { 'siege/units/ally-star-eater-1-6': [0.183, 0.585], 'siege/units/ally-star-eater-1-7': [0.171, 0.796] };
 function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: number, reduced: boolean, color: string, gone?: number) {
   // Air troops fly above their lane, their shadow on the ground under them; the fallen lie on the ground.
   // Every troop on one line (the lanes only order who is drawn in front), so the card bar never hides one.
@@ -775,7 +778,9 @@ function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: nu
   const pose = spec.six
     ? gone !== undefined ? (gone < DEATH.fly ? 4 : 5) : thrown ? 4 : u.hit ? 3 : hurt ? 4 : ready ? 2 : u.moving && !reduced ? Math.floor(t * 5) % 2 : 0
     : gone !== undefined ? 2 : thrown ? 2 : u.hit ? 1 : hurt ? 2 : 0;
-  const stand = picture(`${path}-0`), art = picture(`${path}-${pose}`);
+  // The star eater's beam has two attack poses of its own: down at the ground (6) or level at a flyer (7).
+  const shot = spec.pierce && pose === 3 ? (u.aimAir ? 7 : 6) : pose;
+  const stand = picture(`${path}-0`), art = picture(`${path}-${shot}`), anchor = POSE_ANCHOR[`${path}-${shot}`];
   const size = spec.size * (u.boss ? 1.6 : 1) * (u.grow ?? 1) * Math.pow(0.8, u.stage ?? 0);
   // The shadow under its feet (the troop's x is where its feet are), the feet standing on its middle.
   if (gone === undefined) { ctx.fillStyle = u.side ? '#ff648577' : '#43ebce77'; ctx.beginPath(); ctx.ellipse(u.x, floor, size * (spec.air ? 0.2 : 0.22), spec.air ? 4 : 5, 0, 0, Math.PI * 2); ctx.fill(); }
@@ -831,8 +836,8 @@ function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: nu
     if (u.stage) ctx.filter = `brightness(${1 - u.stage * 0.22}) saturate(${1 - u.stage * 0.3})`;
     // Everything is drawn facing its way of march (a sheet drawn facing left is turned round for that), each pose on its
     // own feet at the troop's x (flyers on their middle), so poses change without sliding.
-    const fx = spec.air && gone === undefined ? 0.5 : feetOf(art.image);
-    const paint = () => { if (spec.facesLeft) { ctx.save(); ctx.scale(-1, 1); ctx.drawImage(art.image, -fx * dw, -dh, dw, dh); ctx.restore(); } else ctx.drawImage(art.image, -fx * dw, -dh, dw, dh); };
+    const fx = anchor ? anchor[0] : spec.air && gone === undefined ? 0.5 : feetOf(art.image), fy = anchor ? anchor[1] : 1;
+    const paint = () => { if (spec.facesLeft) { ctx.save(); ctx.scale(-1, 1); ctx.drawImage(art.image, -fx * dw, -fy * dh, dw, dh); ctx.restore(); } else ctx.drawImage(art.image, -fx * dw, -fy * dh, dw, dh); };
     paint();
     if (u.stage) ctx.filter = 'none';
     if (flash) { ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha *= 0.45; paint(); ctx.restore(); }
