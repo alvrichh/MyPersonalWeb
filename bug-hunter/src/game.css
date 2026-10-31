@@ -3680,6 +3680,12 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
   text-align: left;
 }
 .store-ribbon { top: -10px; left: 12px; background: linear-gradient(#ec4899, #be185d); }
+/* The Halloween sale: pumpkin orange, the full price struck through. */
+.store-offer.is-halloween { border-color: #fb923c; background: radial-gradient(circle at 25% 50%, rgba(251, 146, 60, 0.3), transparent 60%), linear-gradient(135deg, rgba(67, 20, 7, 0.9), rgba(15, 23, 42, 0.92)); box-shadow: 0 0 18px rgba(251, 146, 60, 0.5); }
+.store-offer.is-halloween .store-ribbon { background: linear-gradient(#f97316, #9a3412); }
+.store-offers { display: grid; gap: 14px; width: 100%; justify-items: center; }
+.buy.is-money s { opacity: 0.7; font-weight: 600; margin-right: 4px; }
+.store-bonus.is-sale { background: linear-gradient(#f97316, #c2410c); }
 .store-offer-art { position: relative; display: grid; place-items: end center; height: 120px; }
 .store-offer-art img:first-child { height: 112px; width: auto; filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5)); }
 .store-offer-coins { position: absolute; right: -8px; bottom: -6px; width: 70%; height: auto; }

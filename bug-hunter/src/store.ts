@@ -40,6 +40,27 @@ export function currentOffer(save: Save, now = Date.now()): { offer: SkinOffer; 
   return null;
 }
 
+/* The Halloween sale, from 31 October to 2 November (the player's own calendar), every year: every coin pack at half
+   price, and the two spooky skins (the Vampiress and El Weso) offered together, each with coins, also at half price. */
+export const HALLOWEEN_OFFERS: SkinOffer[] = [
+  { id: 'halloween-vampire', skin: 'vampire', coins: 8000, price: 999 },
+  { id: 'halloween-weso', skin: 'weso', coins: 8000, price: 999 },
+];
+/** When the Halloween sale ends, or null when it is not on. */
+export function halloweenEnds(now = Date.now()): number | null {
+  const d = new Date(now), y = d.getFullYear(), start = new Date(y, 9, 31).getTime(), end = new Date(y, 10, 3).getTime();
+  return now >= start && now < end ? end : null;
+}
+/** What a pack or an offer costs now: half during the Halloween sale, ending in 9 cents like the full prices (4,99 for 9,99). */
+export const priceNow = (what: { price: number }, now = Date.now()) => (halloweenEnds(now) ? Math.max(9, Math.round(what.price / 20) * 10 - 1) : what.price);
+/** The offers on now: during Halloween its own spooky ones (those not owned yet), otherwise the turn's skin offer. */
+export function currentOffers(save: Save, now = Date.now()): { offer: SkinOffer; ends: number }[] {
+  const ends = halloweenEnds(now);
+  if (ends && !FREE_SKINS) return HALLOWEEN_OFFERS.filter((o) => !ownsSkin(save, o.skin) && !save.purchases.includes(o.id)).map((offer) => ({ offer, ends }));
+  const one = currentOffer(save, now);
+  return one ? [one] : [];
+}
+
 /** Gives what was paid for: the coins, and the skin of an offer. */
 export function grant(save: Save, what: CoinPack | SkinOffer) {
   save.coins += what.coins;
