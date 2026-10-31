@@ -165,9 +165,9 @@ test('the missile blasts the aim and recharges', () => {
   assert.equal(m.missile(s), true); assert.ok(s.units[0].hp < 200); assert.equal(m.missile(s), false);
   run(s, m.ROCKET.every + 0.1); assert.equal(m.missile(s), true);
 });
-test('every troop id is its place in the list; ours are 14 land and 8 air, the enemy\'s are theirs only', () => {
+test('every troop id is its place in the list; ours are 15 land and 8 air, the enemy\'s are theirs only', () => {
   m.UNITS.forEach((u, i) => assert.equal(u.id, i));
-  assert.equal(m.ALLIES.filter(u => !u.air).length, 14); assert.equal(m.ALLIES.filter(u => u.air).length, 8);
+  assert.equal(m.ALLIES.filter(u => !u.air).length, 15); assert.equal(m.ALLIES.filter(u => u.air).length, 8);
   const p = m.freshProgress(); p.levels[33] = 6; assert.equal(m.readProgress(JSON.stringify(p)).levels[33], 6, 'a troop appended after the enemy keeps its level');
   const foes = m.UNITS.filter(u => u.foe); assert.ok(foes.length >= 18);
   const s = m.newSiege(m.freshProgress(), 1); s.energy = 999; s.deck.push(15);
@@ -506,12 +506,20 @@ test('the legendary troops open when the game is won, both can go in one army; t
   p.victories.push(m.LAST); assert.ok(m.buyTroop(p, 56) && m.buyTroop(p, 55), 'then they can be bought');
   assert.equal(p.deck.filter(c => m.UNITS[m.cardId(c)].legend).length, 2, 'both go into the army');
   assert.deepEqual(m.capDeck([56, 55, 0]), [56, 55, 0], 'a saved army keeps both');
-  assert.deepEqual(m.ALLIES.slice(-2).map(u => u.id).sort(), [55, 56], 'listed last');
+  assert.deepEqual(m.ALLIES.slice(-3).map(u => u.id).sort(), [55, 56, 57], 'listed last');
   const s = m.newSiege({ ...m.freshProgress(), owned: [0, 56], deck: [56], upgrades: [0, 0, 0, 0, 0, 0, 5] }, 1); s.nextWave = 999; s.gusted = true; s.energy = 9999;
   m.summon(s, 56); const dragon = s.units[0]; dragon.x = 500;
   const foes = [620, 700, 780].map((x, i) => ({ uid: 90 + i, id: 15, side: 1, x, lane: i % 3, hp: 9000, maxHp: 9000, damage: 0, attack: 99, flash: 0, boss: false })); s.units.push(...foes);
   const from = foes.map(f => f.x); run(s, 1.5);
   assert.ok(foes.every(f => f.hp < 9000), 'its breath reaches all three'); assert.ok(foes.every((f, i) => f.x > from[i] + 60), 'and throws them back');
+});
+test('the golem punches a shockwave: everything in front is struck and thrown far back; it is legendary', () => {
+  assert.ok(m.UNITS[57].legend && m.UNITS[57].steady);
+  const s = m.newSiege({ ...m.freshProgress(), owned: [0, 57], deck: [57], upgrades: [0, 0, 0, 0, 0, 0, 5] }, 1); s.nextWave = 999; s.gusted = true; s.energy = 9999;
+  m.summon(s, 57); const golem = s.units[0]; golem.x = 500;
+  const foes = [570, 610, 650].map((x, i) => ({ uid: 90 + i, id: 15, side: 1, x, lane: i % 3, hp: 9000, maxHp: 9000, damage: 0, attack: 99, flash: 0, boss: false })); s.units.push(...foes);
+  const from = foes.map(f => f.x); run(s, 1.2);
+  assert.ok(foes.every(f => f.hp < 9000), 'all three struck'); assert.ok(foes.every((f, i) => f.x > from[i] + 150), 'and thrown far back');
 });
 test('every rocket blows up where it lands', () => {
   const s = m.newSiege({ ...m.freshProgress(), owned: [0, 5], deck: [5] }, 1); s.nextWave = 999; s.gusted = true; s.energy = 999;

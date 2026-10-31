@@ -60,6 +60,8 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
   support?: boolean;
   /** A legendary troop (the dragon, the ninja): opened by winning the last battle. */
   legend?: boolean;
+  /** A sweep whose wave is in its own attack pose (the golem's punch): nothing more is drawn. */
+  quake?: boolean;
   /** A breath (the dragon's): its sweep is drawn as fire of these two colours (core, edge) instead of a crescent. */
   breath?: [string, string];
   /** How many it scoops at once (the gold drill takes two); one if unsaid. */
@@ -247,6 +249,8 @@ export const UNITS: readonly Spec[] = [
     { price: 6000, cost: 200, hp: 800, damage: 560, rate: 1.2, ...six('ally-ninja-3', 182, 0.78) },
   ] },
   { id: 56, flyAt: 60, cost: 300, hp: 4000, damage: 150, speed: 40, range: 160, rate: 1.8, cooldown: 40, unlock: 6, air: true, legend: true, sweep: { reach: 340, back: 150 }, breath: ['#e8fbff', '#2fa8ff'], ...six('ally-dragon-1', 227, 2.3) },
+  // The golem, legendary: colossal gold and crystal; each punch sends a shockwave (in its attack pose) over everything in front.
+  { id: 57, cost: 260, hp: 6500, damage: 170, speed: 17, range: 60, rate: 2.3, cooldown: 35, unlock: 6, legend: true, steady: true, sweep: { reach: 170, back: 230 }, quake: true, ...six('ally-golem-1', 209, 1.45) },
 ];
 /** The enemy's land and air troops by act, each act adding to the last (docs/siege-roster.md): early waves draw
     from the first two of the land list. No flyers in the first world: they come from the second. */
@@ -297,7 +301,7 @@ export function threatPool(stage: number): number[] {
 /** The enemy's troops in a battle: every earlier act's, and its own act's coming in one more each stage. */
 export const foesAt = (lists: number[][], stage: number) => [...lists.slice(0, actOf(stage) - 1).flat(), ...(lists[actOf(stage) - 1] ?? []).slice(0, stageIn(stage))];
 /** What recruiting each of our troops costs in gold (the swordsman is everyone's first). Bought once, kept. */
-export const RECRUIT: Record<number, number> = { 0: 0, 1: 100, 2: 120, 3: 350, 4: 300, 5: 600, 6: 900, 7: 700, 8: 900, 9: 1600, 10: 250, 11: 500, 12: 900, 13: 700, 14: 2000, 33: 1200, 51: 900, 52: 800, 53: 400, 54: 500, 55: 1100, 56: 3000 };
+export const RECRUIT: Record<number, number> = { 0: 0, 1: 100, 2: 120, 3: 350, 4: 300, 5: 600, 6: 900, 7: 700, 8: 900, 9: 1600, 10: 250, 11: 500, 12: 900, 13: 700, 14: 2000, 33: 1200, 51: 900, 52: 800, 53: 400, 54: 500, 55: 1100, 56: 3000, 57: 4000 };
 /** The guardian of each act, drawn bigger: Large Slinger, Large Gatling Robot, Large Red Dragon Rider, Giant Brute
     Eater, Giant Dinosaur Brute, Giant King Dinosaur Brute. */
 export const GUARDIAN = [34, 35, 36, 37, 38, 39];
@@ -563,7 +567,7 @@ const ATTACK_SOUND: Record<number, string | string[]> = {
   0: ['blunt', 'blade', 'blade', 'blade', 'blade'], 1: 'pierce', 3: ['blade', 'blunt', 'blunt', 'blunt'], 4: ['gun', 'rifle', 'uzi', 'sniper'],
   7: 'claw', 8: ['rocket', 'gatling', 'rocket'], 9: ['gatling', 'gatling', 'gatling', 'gatling'], 10: 'blade', 11: ['rifle', 'sniper', 'ray', 'thunder'], 12: 'rocket', 13: 'drill', 14: ['blade', 'magic', 'magic'], 33: ['blunt', 'ray', 'ray', 'blunt', 'gatling', 'blunt'],
   15: 'blade', 16: 'pierce', 17: 'bite', 18: 'claw', 19: 'blade', 20: 'blunt', 21: 'blade', 22: 'rifle', 23: 'throw', 24: 'magic',
-  53: 'heal', 54: 'blunt', 55: 'slash', 56: 'roar',
+  53: 'heal', 54: 'blunt', 55: 'slash', 56: 'roar', 57: 'meteor',
   40: 'blunt', 41: 'bite', 42: 'blunt', 43: 'pierce', 44: 'blunt', 47: 'bite', 48: 'bite', 49: 'blade', 50: 'pierce',
   25: 'claw', 26: 'breath', 27: 'blade', 28: 'claw', 29: 'claw', 30: 'magic', 31: 'blade', 32: 'gatling',
   34: 'throw', 35: 'gatling', 36: 'breath', 37: 'blunt', 38: 'bite', 39: 'bite',
@@ -576,7 +580,7 @@ const DEATH_SOUND: Record<number, string | string[]> = {
   1: ['die-man', 'die-man', 'die-man', 'die-man', 'die-horse'], 3: 'die-armor', 7: 'die-beast', 8: 'die-bot', 9: 'die-bot',
   10: 'die-flyer', 11: 'die-flyer', 12: 'die-flyer', 13: 'die-bot', 14: 'die-flyer', 33: 'die-bot',
   17: 'die-beast', 18: 'die-brute', 20: 'die-armor', 21: 'die-armor', 25: 'die-beast', 26: 'die-dragon', 27: 'die-flyer', 28: 'die-flyer',
-  51: 'die-armor', 52: 'die-flyer', 54: 'die-armor', 56: 'die-dragon',
+  51: 'die-armor', 52: 'die-flyer', 54: 'die-armor', 56: 'die-dragon', 57: 'die-bot',
   40: 'die-beast', 41: 'die-beast', 42: 'die-brute', 44: 'die-brute', 47: 'die-beast', 48: 'die-flyer', 49: 'die-flyer', 50: 'die-flyer',
   29: 'die-flyer', 30: 'die-flyer', 31: 'die-dragon', 32: 'die-bot',
   34: 'die-brute', 35: 'die-bot', 36: 'die-dragon', 37: 'die-brute', 38: 'die-dragon', 39: 'die-dragon',
@@ -998,7 +1002,7 @@ export function tick(s: Siege, dt: number) {
           const dir = u.side ? -1 : 1;
           for (const v of alive) if (v.side !== u.side && reaches(u, v) && (v.x - u.x) * dir >= -20 && (v.x - u.x) * dir <= a.sweep.reach) hits.push({ target: v, damage: u.damage, push: a.sweep.back });
           // The archangel's gold crescent is drawn; the enemy's sweeps (the mammoth's tusks) are in their own attack pose.
-          if (!u.side) s.effects.push({ x: u.x + dir * a.sweep.reach, from: u.x, lane: u.lane, life: 0.5, max: 0.5, kind: a.breath ? 'breath' : 'sweep', side: u.side, fromUp: a.air ? u.alt ?? highOf(u) : 0, colors: a.breath, size: a.size });
+          if (!u.side && !a.quake) s.effects.push({ x: u.x + dir * a.sweep.reach, from: u.x, lane: u.lane, life: 0.5, max: 0.5, kind: a.breath ? 'breath' : 'sweep', side: u.side, fromUp: a.air ? u.alt ?? highOf(u) : 0, colors: a.breath, size: a.size });
           if (a.breath) hear(s, 'flame', u.x);
         } else {
         // A scoop takes the nearest few (`ramHits`) in its reach; anyone else strikes its target, and round it when it has an area.
