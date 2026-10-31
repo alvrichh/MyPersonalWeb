@@ -491,12 +491,27 @@ test('the new recruits: the medic heals, the balloon only bombs the fortress, th
   s = fresh([52]); m.summon(s, 52); const balloon = s.units[0]; balloon.x = 600;
   s.units.push({ uid: 98, id: 15, side: 1, x: 620, lane: 1, hp: 9000, maxHp: 9000, damage: 0, attack: 99, flash: 0, boss: false });
   run(s, 3); assert.equal(s.units.find(u => u.uid === 98).hp, 9000, 'the balloon never fights troops'); assert.ok(balloon.x > 660, 'it flies on');
-  s = fresh([55]); m.summon(s, 55); const ninja = s.units[0]; assert.ok(ninja.hidden > 0, 'the ninja goes in unseen'); ninja.x = 600; ninja.hp = ninja.maxHp = 9000;
-  s.units.push({ uid: 97, id: 15, side: 1, x: 625, lane: 1, hp: 9000, maxHp: 9000, damage: 50, attack: 0, flash: 0, boss: false });
-  run(s, 1); assert.equal(ninja.hp, 9000, 'the enemy cannot strike it while unseen');
+  s = fresh([55]); m.summon(s, 55); const ninja = s.units[0]; ninja.x = 300; ninja.hp = ninja.maxHp = 9000;
+  s.units.push({ uid: 97, id: 22, side: 1, x: 460, lane: 1, hp: 9000, maxHp: 9000, damage: 50, attack: 0, flash: 0, boss: false });
+  run(s, 0.6); assert.ok(ninja.hidden > 0, 'the ninja walks in unseen'); assert.equal(ninja.hp, 9000, 'the gunner cannot shoot it');
+  let seen = false; for (let i = 0; i < 90 && !seen; i++) { m.tick(s, 1 / 30); seen = !ninja.hidden; }
+  assert.ok(seen, 'it shows as it strikes'); run(s, 0.5); assert.ok(ninja.damage >= 400 && s.units.find(u => u.uid === 97).hp <= 9000 - ninja.damage + 1, 'and its blow is a killing one');
   s = fresh([51]); m.summon(s, 51); const cat = s.units[0]; cat.x = m.FIELD - 80 - 380; const before = s.hp[1];
   for (let i = 0; i < 120 && s.hp[1] === before; i++) m.tick(s, 1 / 30);
   assert.equal(Math.round(before - s.hp[1]), Math.round(cat.damage * 2), 'twice its blow on the fortress');
+});
+test('the legendary troops open when the game is won, one at most in an army; the dragon sweeps and throws back', () => {
+  const p = m.freshProgress(); p.unlocked = m.LAST; p.coins = 99999;
+  assert.equal(m.isOpen(p, 56), false, 'not before the last battle is won'); assert.equal(m.buyTroop(p, 56), false);
+  p.victories.push(m.LAST); assert.ok(m.buyTroop(p, 56) && m.buyTroop(p, 55), 'then they can be bought');
+  assert.equal(p.deck.filter(c => m.UNITS[m.cardId(c)].legend).length, 1, 'only one goes into the army');
+  assert.deepEqual(m.capDeck([56, 55, 0]), [56, 0], 'a saved army keeps one');
+  assert.deepEqual(m.ALLIES.slice(-2).map(u => u.id).sort(), [55, 56], 'listed last');
+  const s = m.newSiege({ ...m.freshProgress(), owned: [0, 56], deck: [56], upgrades: [0, 0, 0, 0, 0, 0, 5] }, 1); s.nextWave = 999; s.gusted = true; s.energy = 9999;
+  m.summon(s, 56); const dragon = s.units[0]; dragon.x = 500;
+  const foes = [620, 700, 780].map((x, i) => ({ uid: 90 + i, id: 15, side: 1, x, lane: i % 3, hp: 9000, maxHp: 9000, damage: 0, attack: 99, flash: 0, boss: false })); s.units.push(...foes);
+  const from = foes.map(f => f.x); run(s, 1.5);
+  assert.ok(foes.every(f => f.hp < 9000), 'its breath reaches all three'); assert.ok(foes.every((f, i) => f.x > from[i] + 60), 'and throws them back');
 });
 test('every rocket blows up where it lands', () => {
   const s = m.newSiege({ ...m.freshProgress(), owned: [0, 5], deck: [5] }, 1); s.nextWave = 999; s.gusted = true; s.energy = 999;

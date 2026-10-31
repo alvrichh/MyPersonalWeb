@@ -311,6 +311,9 @@
 .sg-st-body{display:flex;gap:10px;min-height:0}
 .sg-st-grid{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;max-height:min(52vh,420px);overflow:auto;padding:8px;border-radius:12px;background:#1d2026;border:2px solid #111;scrollbar-width:thin}
 .sg-st-row{display:flex;align-items:center;padding:4px;border-radius:10px;background:#272b33}
+/* The shop's troop groups: support, and the legendary ones in black and gold. */
+.sg-st-group{margin:8px 2px 0;font:900 13px system-ui;letter-spacing:.08em;text-transform:uppercase;color:#9fd4ff;text-shadow:0 1px 2px #000}
+.sg-st-group.is-legend{color:#ffd23f;text-shadow:0 0 8px #ff3b3b88,0 1px 2px #000}
 .sg-st-link{flex:0 0 14px;height:6px;background:#555b66}
 .siege-root.is-cartoon .sg-prep .sg-st-tile{position:relative;flex:0 0 72px;width:72px;height:72px;min-height:0;padding:4px;border:3px solid #111;border-radius:10px;box-shadow:none;background:radial-gradient(circle at 50% 35%,#fff6,transparent 70%),var(--st)}
 .siege-root.is-cartoon .sg-prep .sg-st-tile:hover:not(:disabled){background:radial-gradient(circle at 50% 35%,#fff8,transparent 70%),var(--st)}
