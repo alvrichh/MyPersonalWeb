@@ -252,11 +252,11 @@ export const UNITS: readonly Spec[] = [
     { price: 3000, cost: 180, hp: 700, damage: 490, rate: 1.3, ...six('ally-ninja-2', 179, 0.75) },
     { price: 6000, cost: 200, hp: 800, damage: 560, rate: 1.2, ...six('ally-ninja-3', 182, 0.78) },
   ] },
-  { id: 56, flyAt: 60, cost: 300, hp: 4000, damage: 150, speed: 40, range: 160, rate: 1.8, cooldown: 40, unlock: 6, air: true, legend: true, aimPoses: true, sweep: { reach: 340, back: 150 }, breath: ['#e8fbff', '#2fa8ff'], ...six('ally-dragon-1', 227, 2.3) },
+  { id: 56, flyAt: 80, cost: 300, hp: 4000, damage: 150, speed: 40, range: 160, rate: 1.8, cooldown: 40, unlock: 6, air: true, legend: true, aimPoses: true, sweep: { reach: 340, back: 150 }, breath: ['#e8fbff', '#2fa8ff'], ...six('ally-dragon-1', 227, 1.6) },
   // The golem, legendary: colossal gold and crystal; each punch sends a shockwave (in its attack pose) over everything in front.
   { id: 57, cost: 260, hp: 6500, damage: 170, speed: 17, range: 60, rate: 2.3, cooldown: 35, unlock: 6, legend: true, steady: true, sweep: { reach: 170, back: 230 }, quake: true, ...six('ally-golem-1', 209, 1.45) },
   // The star eater, legendary flyer: its cosmic beam (in its attack pose) pierces everything in a line and bursts into a star.
-  { id: 58, flyAt: 70, cost: 280, hp: 3500, damage: 190, speed: 30, range: 320, rate: 2.2, cooldown: 35, unlock: 6, air: true, legend: true, hitsAir: true, pierce: true, aimPoses: true, splash: 90, shot: 'none', ...six('ally-star-eater-1', 237, 1.3) },
+  { id: 58, flyAt: 82, cost: 280, hp: 3500, damage: 190, speed: 30, range: 320, rate: 2.2, cooldown: 35, unlock: 6, air: true, legend: true, hitsAir: true, pierce: true, aimPoses: true, splash: 90, shot: 'none', ...six('ally-star-eater-1', 237, 1.8) },
 ];
 /** The enemy's land and air troops by act, each act adding to the last (docs/siege-roster.md): early waves draw
     from the first two of the land list. No flyers in the first world: they come from the second. */

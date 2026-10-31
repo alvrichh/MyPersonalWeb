@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.164 - 2026-10-31
+
+### Changed
+- Siege Cartoon's Star Eater is the enormous one now and the dragon rider smaller beside it: the Star Eater drawn about 40% bigger, the dragon a third smaller, each at a height where its whole body and its health bar stay in the view and its breath or beam lands on the troops.
+
 ## 1.15.163 - 2026-10-31
 
 ### Changed
