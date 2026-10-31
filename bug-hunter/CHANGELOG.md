@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.158 - 2026-10-31
+
+### Changed
+- Siege Cartoon's level 2 ninja is dark blue again (as in 1.15.156).
+
 ## 1.15.157 - 2026-10-31
 
 ### Changed
