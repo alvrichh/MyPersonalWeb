@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.167 - 2026-10-31
+
+### Changed
+- «Break to back» leans towards Deekline's breakstep: a new breakstep block (three times in the song) with a straight funky break, a Miami 808 booming and sliding under every kick, the 808 cowbell (in the drop too), a DJ scratch every four bars and the reese growl joining in the second half; the song drops from 140 to 134 BPM.
+
 ## 1.15.166 - 2026-10-31
 
 ### Added
