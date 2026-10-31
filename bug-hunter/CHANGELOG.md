@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.162 - 2026-10-31
+
+### Changed
+- Siege Cartoon's Star Eater has its own beam poses from the owner's sheet: down at the ground when it fires at walkers (the beam then runs on along the ground as far as it reaches), level when it fires at a flyer.
+
 ## 1.15.161 - 2026-10-31
 
 ### Added

@@ -436,6 +436,8 @@ export interface Fighter { uid: number; id: number; side: 0 | 1; x: number; lane
   knock?: number; stun?: number;
   /** Seconds left of a scooping lunge (`ram`), following its thrown target a little; then seconds left low (`RAM.low`). */
   lunge?: number; lungeBack?: number; low?: number;
+  /** Its last beam was at a flyer (the star eater fires level then, down at the ground otherwise). */
+  aimAir?: boolean;
   /** A pounce (`pounce`): seconds left of the leap on its prey, then of the bound back (facing away). */
   leap?: number; bound?: number; prey?: number;
   /** Rushing its target (`charge`). */
@@ -1021,8 +1023,9 @@ export function tick(s: Siege, dt: number) {
         } else
         for (const v of alive) if (v.side !== u.side && reaches(u, v) && (scooped ? scooped.includes(v) : v === enemy || (area && Math.abs(v.x - enemy.x) < area) || (a.pierce && (v.x - u.x) * (enemy.x - u.x) > 0 && Math.abs(v.x - u.x) <= a.range + 40))) hits.push({ target: v, damage: u.damage, boss: u.boss, push: a.ram ?? a.shove });
         if (a.pierce) {
-          const end = u.x + (enemy.x > u.x ? 1 : -1) * (a.range + 40);
-          s.effects.push({ x: end, from: u.x, lane: u.lane, life: 0.55, max: 0.55, kind: 'beam', side: u.side, fromUp: u.alt ?? highOf(u), size: a.size });
+          const end = u.x + (enemy.x > u.x ? 1 : -1) * (a.range + 40); u.aimAir = !!UNITS[enemy.id].air;
+          // At walkers its beam strikes the ground ahead (its attack pose) and runs along it as far as it reaches.
+          if (!u.aimAir) s.effects.push({ x: end, from: u.x, lane: u.lane, life: 0.55, max: 0.55, kind: 'beam', side: u.side, fromUp: u.alt ?? highOf(u), size: a.size });
           s.effects.push({ x: enemy.x, from: enemy.x, lane: enemy.lane, life: BOOM, max: BOOM, kind: 'boom', side: u.side, size: 110 });
         }
         if (a.ram) { u.lunge = KNOCK.time; u.lungeBack = a.ram * RAM.lunge; u.low = KNOCK.time + RAM.low; }
