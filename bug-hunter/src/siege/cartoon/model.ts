@@ -58,7 +58,7 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
   stealth?: number;
   /** A support troop (medic, shield bearer, catapult, balloon): listed in its own group, after the others. */
   support?: boolean;
-  /** A legendary troop (the dragon, the ninja): opened by winning the last battle; one at most in an army. */
+  /** A legendary troop (the dragon, the ninja): opened by winning the last battle. */
   legend?: boolean;
   /** A breath (the dragon's): its sweep is drawn as fire of these two colours (core, edge) instead of a crescent. */
   breath?: [string, string];
@@ -336,7 +336,7 @@ const reaches = (u: Fighter, v: Fighter) => !specOf(u).raid && !v.hidden && hits
 /** Can a fighter of `id` (at its first form) hit one of `target`? */
 export const canHit = (id: number, target: number) => hits(UNITS[id], target);
 /** Keep at most `DECK` of each kind, in order. */
-export function capDeck(deck: number[]) { const one = deck.filter((c, i) => legendRoom(deck.slice(0, i), c)), land = one.filter(id => !isAir(id)).slice(0, DECK), air = one.filter(isAir).slice(0, DECK); return one.filter(id => land.includes(id) || air.includes(id)); }
+export function capDeck(deck: number[]) { const land = deck.filter(id => !isAir(id)).slice(0, DECK), air = deck.filter(isAir).slice(0, DECK); return deck.filter(id => land.includes(id) || air.includes(id)); }
 /** The base's upgrades, each 0 to 5: army, fortress, energy, the bow's three (power: damage, arrows a volley and its
     look; speed: shots a second and reach; quiver: shots held and refill) and the mana pool (the energy a battle can hold
     from the start, before the generator raises it). */
@@ -365,15 +365,13 @@ export const hasCard = (p: Progress, c: number) => Number.isInteger(c) && c >= 0
 export const testing = { free: false };
 /** Has the battles won opened this troop's act? */
 export const isOpen = (p: Progress, id: number) => !!UNITS[id] && !UNITS[id].foe && (testing.free || (UNITS[id].legend ? p.victories.includes(LAST) : UNITS[id].unlock <= actOf(p.unlocked)));
-/** An army holds one legendary troop at most: is there room for this card? */
-export const legendRoom = (deck: number[], c: number) => !UNITS[cardId(c)]?.legend || !deck.some(n => n !== c && UNITS[cardId(n)]?.legend);
 export const owns = (p: Progress, id: number) => p.owned.includes(id);
 export const troopPrice = (id: number) => (testing.free ? 0 : RECRUIT[id] ?? 0);
 /** Recruits a troop with gold, into the army if there is room. */
 export function buyTroop(p: Progress, id: number): boolean {
   if (owns(p, id) || !isOpen(p, id) || p.coins < troopPrice(id)) return false;
   p.coins -= troopPrice(id); p.owned.push(id);
-  if (p.deck.filter(n => isAir(n) === isAir(id)).length < DECK && legendRoom(p.deck, id)) p.deck.push(id);
+  if (p.deck.filter(n => isAir(n) === isAir(id)).length < DECK) p.deck.push(id);
   return true;
 }
 const integer = (v: unknown, min: number, max: number, fallback: number) => typeof v === 'number' && Number.isFinite(v) ? Math.max(min, Math.min(max, Math.floor(v))) : fallback;
