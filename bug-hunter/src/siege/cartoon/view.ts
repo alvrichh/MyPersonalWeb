@@ -762,7 +762,7 @@ function fallen(s: Siege) {
     draws it fallen, fading at the end. */
 /** Where a pose wider or taller than its body stands: its body's middle and foot, as shares of the picture (the star
     eater's beam poses, whose beam reaches far ahead of and below it). */
-const POSE_ANCHOR: Record<string, [number, number]> = { 'siege/units/ally-star-eater-1-6': [0.183, 0.585], 'siege/units/ally-star-eater-1-7': [0.171, 0.796], 'siege/units/ally-dragon-1-6': [0.313, 0.712], 'siege/units/ally-dragon-1-7': [0.254, 0.848] };
+const POSE_ANCHOR: Record<string, [number, number]> = { 'siege/units/ally-star-eater-1-6': [0.183, 0.585], 'siege/units/ally-star-eater-1-7': [0.171, 0.796], 'siege/units/ally-dragon-1-6': [0.313, 0.712], 'siege/units/ally-dragon-1-7': [0.254, 0.848], 'siege/units/ally-reaper-1-3': [0.297, 1] };
 function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: number, reduced: boolean, color: string, gone?: number) {
   // Air troops fly above their lane, their shadow on the ground under them; the fallen lie on the ground.
   // Every troop on one line (the lanes only order who is drawn in front), so the card bar never hides one.
