@@ -4,6 +4,14 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.166 - 2026-10-31
+
+### Added
+- A Halloween sale, from 31 October to 2 November every year: every coin pack at half price (the full price struck through), the Vampiress and El Weso offered together in the coin store, each with 8000 coins at half price, and both skins at half their coins in the skin shop.
+
+### Changed
+- The vampire skin is the Server Vampiress ("Vampiresa del Servidor").
+
 ## 1.15.165 - 2026-10-31
 
 ### Added

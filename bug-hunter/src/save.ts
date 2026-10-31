@@ -372,7 +372,10 @@ export const SKIN_GROUPS = (() => {
     (it is then in the save); set to false to bring back the gates and prices above. */
 export const FREE_SKINS = false;
 /** What a skin costs now: 0 while `FREE_SKINS` is on. */
-export const skinPrice = (skin: HeroSkin) => (FREE_SKINS ? 0 : SKIN_PRICE[skin]);
+export const skinPrice = (skin: HeroSkin) => (FREE_SKINS ? 0 : HALLOWEEN_SKINS.includes(skin) && halloweenNow() ? SKIN_PRICE[skin] / 2 : SKIN_PRICE[skin]);
+/** The spooky skins at half their coins from 31 October to 2 November (store.ts sells them with coins, at half price, too). */
+export const HALLOWEEN_SKINS: HeroSkin[] = ['vampire', 'weso'];
+export const halloweenNow = (now = Date.now()) => { const d = new Date(now), y = d.getFullYear(); return now >= new Date(y, 9, 31).getTime() && now < new Date(y, 10, 3).getTime(); };
 /** Whether the player has bought a skin. */
 export const ownsSkin = (save: Save, skin: HeroSkin) => save.skins.includes(skin);
 export function skinOpen(save: Save, skin: HeroSkin) {

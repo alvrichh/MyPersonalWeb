@@ -5,7 +5,7 @@ import { GAME_BUILD, GAME_VERSION } from './version';
 import { storage } from '../lib/storage';
 import { ads, configureAds, type AdSpot, type PlayAd } from './ads';
 import { configurePayments, payments } from './payments';
-import { COIN_PACKS, currentOffer, grant, packBonus, SKIN_OFFERS, type CoinPack, type SkinOffer } from './store';
+import { COIN_PACKS, currentOffers, grant, halloweenEnds, HALLOWEEN_OFFERS, packBonus, priceNow, SKIN_OFFERS, type CoinPack, type SkinOffer } from './store';
 import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPrize, type DailyResult } from './daily';
 import { audio, BOSS_SONGS, SIEGE_SOUNDS, type SiegeSound, type Sfx, type SongPick } from './audio';
 import { MID_ART, boardBackdropBounds, draw, drawRetroFigure, preloadBoardBossFx, preloadCast, preloadFx, type Palette, type View } from './draw';
@@ -1054,42 +1054,42 @@ const untilText = (ms: number) => {
   return s >= 86400 ? `${Math.floor(s / 86400)}d ${clock}` : clock;
 };
 function coinStoreScreen(note = '') {
-  const now = currentOffer(save);
-  const offer = now
-    ? `<div class="store-offer">
-        <span class="store-ribbon">${t('storeOffer')}</span>
+  const sale = halloweenEnds();
+  // A price, with the full one struck through beside it during the Halloween sale.
+  const priced = (what: { price: number }) => (sale ? `<s>${money(what.price)}</s> ${money(priceNow(what))}` : money(what.price));
+  const offer = currentOffers(save).map((now) => `<div class="store-offer${sale ? ' is-halloween' : ''}">
+        <span class="store-ribbon">${sale ? `🎃 ${t('storeHalloween')} · -50%` : t('storeOffer')}</span>
         <div class="store-offer-art"><img src="./images/game/hero/${heroStill(now.offer.skin)}.webp" alt=""><img class="store-offer-coins" src="./images/game/store/coins-3.webp" alt=""></div>
         <div class="store-offer-copy">
           <b>${t('storeOfferName', { skin: t(`skin${cap(now.offer.skin)}Name` as Key) })}</b>
           <span>${t('storeOfferText', { skin: t(`skin${cap(now.offer.skin)}Name` as Key), coins: count(now.offer.coins) })}</span>
           <small>⏳ ${t('storeEnds')} <span data-until="${now.ends}">${untilText(now.ends - Date.now())}</span></small>
         </div>
-        <button class="buy is-money" data-offer="${now.offer.id}">${money(now.offer.price)}</button>
-      </div>`
-    : '';
+        <button class="buy is-money" data-offer="${now.offer.id}">${priced(now.offer)}</button>
+      </div>`).join('');
   const tagText = { popular: t('storePopular'), best: t('storeBest'), ultra: t('storeUltra') };
   const packs = COIN_PACKS.map((p) => {
     const bonus = packBonus(p);
     return `<div class="store-pack${p.tag ? ` is-${p.tag}` : ''}">
       ${p.tag ? `<span class="store-tag">${tagText[p.tag]}</span>` : ''}
-      ${bonus > 0 ? `<span class="store-bonus">+${bonus}%</span>` : ''}
+      ${sale ? '<span class="store-bonus is-sale">-50%</span>' : bonus > 0 ? `<span class="store-bonus">+${bonus}%</span>` : ''}
       <img src="./images/game/store/coins-${p.pic}.webp" width="320" height="240" alt="">
       <b>🪙 ${count(p.coins)}</b>
-      <button class="buy is-money" data-pack="${p.id}">${money(p.price)}</button>
+      <button class="buy is-money" data-pack="${p.id}">${priced(p)}</button>
     </div>`;
   }).join('');
   show(`<button class="ui-close" type="button" data-act="${storeFrom}" aria-label="${t('back')}"></button>
     <div class="shop-head"><h2>${t('storeTitle')}</h2><p class="wallet">${coinsLine()}</p></div>
     ${note ? `<p class="note">${note}</p>` : ''}
     ${payments.enabled ? '' : `<p class="how store-preview">${t('storePreview')}</p>`}
-    ${offer}
+    ${offer ? `<div class="store-offers">${offer}</div>` : ''}
     <div class="store-packs">${packs}</div>
     <p class="how">${t('storeSmall')}</p>
     ${backButton(storeFrom, storeFrom === 'shop' ? 'shop' : 'menu')}`, true);
 }
 function buyStore(what: CoinPack | SkinOffer, name: string) {
   if (!payments.enabled) { coinStoreScreen(t('storeSoon')); return; }
-  void payments.buy({ name, price: money(what.price) }).then((paid) => {
+  void payments.buy({ name, price: money(priceNow(what)) }).then((paid) => {
     if (!paid) return;
     grant(save, what);
     persist();
@@ -3410,8 +3410,8 @@ screen.addEventListener('click', (event) => {
     const p = COIN_PACKS.find((x) => x.id === target.dataset.pack);
     if (p) buyStore(p, `${count(p.coins)} ${t('coins').toLowerCase()}`);
   } else if (target.dataset.offer) {
-    const o = SKIN_OFFERS.find((x) => x.id === target.dataset.offer);
-    if (o && currentOffer(save)?.offer.id === o.id) buyStore(o, t('storeOfferName', { skin: t(`skin${cap(o.skin)}Name` as Key) }));
+    const o = [...SKIN_OFFERS, ...HALLOWEEN_OFFERS].find((x) => x.id === target.dataset.offer);
+    if (o && currentOffers(save).some((x) => x.offer.id === o.id)) buyStore(o, t('storeOfferName', { skin: t(`skin${cap(o.skin)}Name` as Key) }));
   }
   else if (act === 'daily-spin') spinDaily();
   else if (act === 'wheel-go' && game) {
