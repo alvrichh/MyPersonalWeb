@@ -242,8 +242,9 @@ export const UNITS: readonly Spec[] = [
   { id: 52, flyAt: 125, cost: 90, hp: 260, damage: 60, speed: 30, range: 30, rate: 2.2, cooldown: 9, unlock: 4, air: true, support: true, raid: true, shot: 'bomb', spin: false, ...six('ally-balloon-1', 272, 0.78) },
   { id: 53, cost: 45, hp: 140, damage: 0, speed: 38, range: 150, rate: 1.4, cooldown: 5, unlock: 2, infantry: true, support: true, heal: 16, ...six('ally-medic-1', 208, 0.6) },
   { id: 54, cost: 90, hp: 950, damage: 12, speed: 24, range: 35, rate: 1.3, cooldown: 9, unlock: 3, support: true, steady: true, shove: 45, ...six('ally-shield-1', 175, 0.886) },
-  { id: 55, cost: 160, hp: 600, damage: 420, speed: 66, range: 35, rate: 1.4, cooldown: 25, unlock: 6, infantry: true, legend: true, stealth: 1, ...six('ally-ninja-1', 179, 0.75), forms: [
-    { price: 5000, cost: 200, hp: 800, damage: 560, rate: 1.2, ...six('ally-ninja-2', 182, 0.78) },
+  { id: 55, cost: 160, hp: 600, damage: 420, speed: 66, range: 35, rate: 1.4, cooldown: 25, unlock: 6, infantry: true, legend: true, stealth: 1, ...six('ally-ninja-1', 185, 0.676), forms: [
+    { price: 3000, cost: 180, hp: 700, damage: 490, rate: 1.3, ...six('ally-ninja-2', 179, 0.75) },
+    { price: 6000, cost: 200, hp: 800, damage: 560, rate: 1.2, ...six('ally-ninja-3', 182, 0.78) },
   ] },
   { id: 56, flyAt: 60, cost: 300, hp: 4000, damage: 150, speed: 40, range: 160, rate: 1.8, cooldown: 40, unlock: 6, air: true, legend: true, sweep: { reach: 340, back: 150 }, breath: ['#e8fbff', '#2fa8ff'], ...six('ally-dragon-1', 227, 2.3) },
 ];
