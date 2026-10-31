@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.155 - 2026-10-31
+
+### Changed
+- Siege Cartoon's legendary ninja has three forms: the blue ninja (level 1, back from reserve), the hooded shadow ninja recoloured in blue (level 2, 3000 gold) and the black and gold master ninja (level 3, 6000 gold).
+
 ## 1.15.154 - 2026-10-31
 
 ### Changed
