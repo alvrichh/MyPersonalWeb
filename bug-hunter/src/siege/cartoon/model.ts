@@ -64,6 +64,8 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
   quake?: boolean;
   /** A piercing beam (the star eater's): it strikes everything ahead of it as far as it reaches, and bursts round its target. */
   pierce?: boolean;
+  /** Two attack poses of its own, aimed (6: down at walkers, 7: level at flyers), its blow drawn in them (the dragon, the star eater). */
+  aimPoses?: boolean;
   /** A breath (the dragon's): its sweep is drawn as fire of these two colours (core, edge) instead of a crescent. */
   breath?: [string, string];
   /** How many it scoops at once (the gold drill takes two); one if unsaid. */
@@ -250,11 +252,11 @@ export const UNITS: readonly Spec[] = [
     { price: 3000, cost: 180, hp: 700, damage: 490, rate: 1.3, ...six('ally-ninja-2', 179, 0.75) },
     { price: 6000, cost: 200, hp: 800, damage: 560, rate: 1.2, ...six('ally-ninja-3', 182, 0.78) },
   ] },
-  { id: 56, flyAt: 60, cost: 300, hp: 4000, damage: 150, speed: 40, range: 160, rate: 1.8, cooldown: 40, unlock: 6, air: true, legend: true, sweep: { reach: 340, back: 150 }, breath: ['#e8fbff', '#2fa8ff'], ...six('ally-dragon-1', 227, 2.3) },
+  { id: 56, flyAt: 60, cost: 300, hp: 4000, damage: 150, speed: 40, range: 160, rate: 1.8, cooldown: 40, unlock: 6, air: true, legend: true, aimPoses: true, sweep: { reach: 340, back: 150 }, breath: ['#e8fbff', '#2fa8ff'], ...six('ally-dragon-1', 227, 2.3) },
   // The golem, legendary: colossal gold and crystal; each punch sends a shockwave (in its attack pose) over everything in front.
   { id: 57, cost: 260, hp: 6500, damage: 170, speed: 17, range: 60, rate: 2.3, cooldown: 35, unlock: 6, legend: true, steady: true, sweep: { reach: 170, back: 230 }, quake: true, ...six('ally-golem-1', 209, 1.45) },
   // The star eater, legendary flyer: its cosmic beam (in its attack pose) pierces everything in a line and bursts into a star.
-  { id: 58, flyAt: 70, cost: 280, hp: 3500, damage: 190, speed: 30, range: 320, rate: 2.2, cooldown: 35, unlock: 6, air: true, legend: true, hitsAir: true, pierce: true, splash: 90, shot: 'none', ...six('ally-star-eater-1', 237, 1.3) },
+  { id: 58, flyAt: 70, cost: 280, hp: 3500, damage: 190, speed: 30, range: 320, rate: 2.2, cooldown: 35, unlock: 6, air: true, legend: true, hitsAir: true, pierce: true, aimPoses: true, splash: 90, shot: 'none', ...six('ally-star-eater-1', 237, 1.3) },
 ];
 /** The enemy's land and air troops by act, each act adding to the last (docs/siege-roster.md): early waves draw
     from the first two of the land list. No flyers in the first world: they come from the second. */
@@ -1008,7 +1010,8 @@ export function tick(s: Siege, dt: number) {
           const dir = u.side ? -1 : 1;
           for (const v of alive) if (v.side !== u.side && reaches(u, v) && (v.x - u.x) * dir >= -20 && (v.x - u.x) * dir <= a.sweep.reach) hits.push({ target: v, damage: u.damage, push: a.sweep.back });
           // The archangel's gold crescent is drawn; the enemy's sweeps (the mammoth's tusks) are in their own attack pose.
-          if (!u.side && !a.quake) s.effects.push({ x: u.x + dir * a.sweep.reach, from: u.x, lane: u.lane, life: 0.5, max: 0.5, kind: a.breath ? 'breath' : 'sweep', side: u.side, fromUp: a.air ? u.alt ?? highOf(u) : 0, colors: a.breath, size: a.size });
+          if (a.aimPoses) u.aimAir = !!UNITS[enemy.id].air;
+          if (!u.side && !a.quake && !a.aimPoses) s.effects.push({ x: u.x + dir * a.sweep.reach, from: u.x, lane: u.lane, life: 0.5, max: 0.5, kind: a.breath ? 'breath' : 'sweep', side: u.side, fromUp: a.air ? u.alt ?? highOf(u) : 0, colors: a.breath, size: a.size });
           if (a.breath) hear(s, 'flame', u.x);
         } else {
         // A scoop takes the nearest few (`ramHits`) in its reach; anyone else strikes its target, and round it when it has an area.

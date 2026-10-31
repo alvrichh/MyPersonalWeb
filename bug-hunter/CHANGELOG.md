@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.163 - 2026-10-31
+
+### Changed
+- Siege Cartoon's dragon rider breathes with its own poses from the owner's sheet: fire down onto the ground at walkers, level at flyers, the breath drawn in the pose (it replaces the drawn puffs).
+
 ## 1.15.162 - 2026-10-31
 
 ### Changed
