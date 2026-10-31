@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.152 - 2026-10-31
+
+### Added
+- Siege Cartoon's legendary ninja has a second form, the master ninja (5000 gold), from the owner's second sheet: a black and gold ninja with a gold headband and red eyes, tougher (800 health) and quicker, whose blazing double slash (560) kills even the toughest troops.
+
 ## 1.15.151 - 2026-10-31
 
 ### Changed
