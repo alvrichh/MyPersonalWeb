@@ -48,6 +48,9 @@ const BREAK_CHOPS: { kick: number[]; snare: number[]; ghost: number[] }[] = [
   { kick: [0, 6, 9, 14], snare: [4, 12], ghost: [3, 11] },
   { kick: [0, 10], snare: [4, 7, 12], ghost: [9, 13, 15] },
 ];
+/** The Spanish breaks riff (after Colombo): two bars of sixteenths for the distorted mid bass that leads the breaks
+    and the drop, octave jumps and a turn at the end ('r' rests, null holds). */
+const COLOMBO_RIFF: Note[] = [0, null, 12, 0, 'r', 0, 10, null, 0, 'r', 12, 'r', 7, null, 10, 12, 0, null, 'r', 15, 12, null, 10, 'r', 0, 0, 'r', 12, 'r', 10, 7, 5];
 /** Its acid line, two bars of eighths over the chord's root. */
 const BREAK_ACID: Note[] = [0, 12, 'r', 0, 15, 'r', 12, 10, 0, 'r', 12, 13, 'r', 12, 7, 'r'];
 /** «Juicio final»'s form, in eight-bar blocks: the cathedral alone, the drop with the hoover, the roll with the organ,
@@ -1051,7 +1054,8 @@ class Engine {
     if (breaks && inBar === 6 && bar % 4 === 3) this.bleep(at, 2400, 300, GSTEP * 3, 0.05, 'sawtooth');
     if (last && inBar === 8) this.bleep(at, 3200, 120, GSTEP * 8, 0.05, 'square');
     if (blockBar === 0 && inBar === 0 && block !== 'intro' && block !== 'break') this.slideSub(at, semi(this.root, bassRoot + 12), semi(this.root, bassRoot), GSTEP * 6);
-    // The bass: a dubby sub line in the garage blocks, a growl in the breakbeat ones, one long sub in the break.
+    // The bass: a dubby sub line in the garage blocks, the Spanish breaks mid bass in the breakbeat ones and the drop,
+    // the 808 in the breakstep, one long sub in the break.
     if (block === 'break') {
       if (inBar === 0 && bar % 2 === 0) this.sub(at, semi(this.root, bassRoot), GBAR * 1.7);
     } else if (block === 'breakstep') {
@@ -1062,16 +1066,24 @@ class Engine {
         // The second half grows: the reese growl joins the 808.
         if (blockBar >= 4) { let len = 1; while (GARAGE_BASS[((bar % 2) * 16 + inBar + len) % 32] === null) len += 1; this.reese(t, semi(this.root, bassRoot + n), GSTEP * len * 1.1); }
       }
-    } else if (block !== 'intro') {
+    } else if (breaks) {
+      // The breaks and the drop: a clean sub on the beat, and the distorted mid bass leading with its own riff.
+      if (inBar === 0 || inBar === 8) this.sub(at, semi(this.root, bassRoot), GSTEP * 3);
+      const n = COLOMBO_RIFF[(bar % 2) * 16 + inBar];
+      if (typeof n === 'number') {
+        let len = 1;
+        while (COLOMBO_RIFF[((bar % 2) * 16 + inBar + len) % 32] === null) len += 1;
+        this.colomboBass(t, semi(this.root * 2, bassRoot + n), GSTEP * len, block === 'drop');
+      }
+    } else if (block === 'garage') {
       const n = GARAGE_BASS[(bar % 2) * 16 + inBar];
       if (typeof n === 'number') {
         let len = 1;
         while (GARAGE_BASS[((bar % 2) * 16 + inBar + len) % 32] === null) len += 1;
-        if (block === 'breaks' || (block === 'drop' && blockBar % 2 === 1)) this.reese(t, semi(this.root, bassRoot + n), GSTEP * len * 1.1);
-        else this.sub(t, semi(this.root, bassRoot + n), GSTEP * len);
+        this.sub(t, semi(this.root, bassRoot + n), GSTEP * len);
         // The UK bass on top: the same line an octave up, a driven square-and-saw wah that opens on each note,
         // so the bass is heard on a phone too, not only felt.
-        this.ukBass(t, semi(this.root * 2, bassRoot + n), GSTEP * len, block === 'drop');
+        this.ukBass(t, semi(this.root * 2, bassRoot + n), GSTEP * len, false);
       }
     }
     // Organ stabs on the offbeats (the garage sound), a pad on every chord change in the quieter blocks.
@@ -1115,6 +1127,24 @@ class Engine {
     this.osc('sawtooth', freq, at, end, 9).connect(lp);
     lp.connect(this.shaper(2.5)).connect(g);
     this.out(g, 0.06);
+  }
+  /** The Spanish breaks mid bass (after Colombo): three detuned saws and a square an octave down, driven hard, through
+      a resonant low-pass that opens, shuts and opens again within the note so it talks, with its middle pushed up so a
+      phone speaker carries it. */
+  private colomboBass(at: number, freq: number, length: number, big: boolean) {
+    const end = at + length + 0.05, d = Math.max(0.09, length);
+    const lp = this.filt('lowpass', 500, 9);
+    lp.frequency.setValueAtTime(260, at);
+    lp.frequency.exponentialRampToValueAtTime(big ? 2600 : 2000, at + d * 0.25);
+    lp.frequency.exponentialRampToValueAtTime(420, at + d * 0.55);
+    lp.frequency.exponentialRampToValueAtTime(big ? 1700 : 1300, at + d * 0.85);
+    const mid = this.ctx.createBiquadFilter(); mid.type = 'peaking'; mid.frequency.value = 750; mid.Q.value = 0.9; mid.gain.value = 9;
+    const g = this.ctx.createGain();
+    this.env(g, at, big ? 0.24 : 0.2, 0.004, length * 0.9, 0.75, 0.03);
+    for (const det of [-14, 0, 14]) this.osc('sawtooth', freq, at, end, det).connect(lp);
+    this.osc('square', freq / 2, at, end).connect(lp);
+    lp.connect(this.shaper(6)).connect(mid).connect(g);
+    this.out(g, 0.05);
   }
   /** An acid line: a saw through a resonant low-pass whose envelope snaps open, harder on the accents. */
   private acid(at: number, freq: number, length: number, accent: boolean) {

@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.168 - 2026-10-31
+
+### Changed
+- «Break to back»'s breakbeat blocks and drop are led by a Spanish breaks mid bass, after Colombo: three detuned saws and a square an octave down, driven hard, through a filter that talks within each note, playing its own riff over a clean sub on the strong beats. It replaces the reese there; the levels stay even across the song.
+
 ## 1.15.167 - 2026-10-31
 
 ### Changed
