@@ -438,7 +438,9 @@ class Engine {
     // the fight heats up.
     this.filter = this.ctx.createBiquadFilter();
     this.filter.type = 'lowpass';
-    this.filter.frequency.value = 2200;
+    // Opened as far as the intensity already set says (the cover sets it before the sound starts; it was left at
+    // 2200 Hz, every song muffled there until a run began).
+    this.filter.frequency.value = 1800 + Math.max(0.5, this.intensity) * 6000;
     this.filter.Q.value = 0.7;
     this.musicBus.connect(this.filter).connect(this.master);
     this.padBus = this.ctx.createGain();
@@ -998,8 +1000,6 @@ class Engine {
     const garage = block === 'garage' || block === 'drop';
     const breaks = block === 'breaks' || block === 'drop';
     if (inBar === 0 && blockBar === 0 && setBar !== 0) this.crash(at);
-    // The drop carries the cowbell too.
-    if (block === 'drop' && blockBar % 2 === 1 && STEP_BELL[bar % 2].includes(inBar)) this.cowbell(t, 0.09);
     if (block === 'intro' || block === 'break') {
       // No kick: shuffled hats and a rim, a riser into what comes next.
       if (inBar % 2 === 1) this.hat(t, 0.12, false);
@@ -1010,21 +1010,18 @@ class Engine {
     if (garage) {
       // 2-step: the kick on one and the "and" of three, skipping the downbeat of two and four; a clap on two and four.
       if (inBar === 0 || inBar === 10 || (blockBar % 2 === 1 && inBar === 7)) this.kick(t);
-      if (inBar === 4 || inBar === 12) { this.snare(at, 0.8); this.snare(at + 0.012, 0.35); }
-      // A clap on two and four over the snare, and a ghost clap pushing into the next bar every other bar.
-      if (inBar === 4 || inBar === 12) this.clap(at, 0.5);
-      if (bar % 2 === 1 && inBar === 15) this.clap(t, 0.2);
-      // Swung sixteenth hats, the open one on every offbeat eighth, and a shaker.
-      this.hat(t, inBar % 4 === 2 ? 0.34 : 0.13, inBar % 4 === 2);
-      if (inBar === 3 || inBar === 11 || inBar === 14) this.hat(t, 0.2, false);
+      // The big clap on two and four, over a snare (the backbeat everything hangs on, clean and loud).
+      if (inBar === 4 || inBar === 12) { this.snare(at, 0.6); this.bigClap(at, 0.9); }
+      // Swung sixteenth hats, the open one on every offbeat eighth.
+      this.hat(t, inBar % 4 === 2 ? 0.3 : 0.11, inBar % 4 === 2);
     }
     if (block === 'breakstep') {
       // Breakstep: a straight, funky break with a hard snare and clap, eighth hats opening on the offbeats, ghost snares
       // rolling into the next bar, the Miami cowbell, and every kick an 808 that booms and slides under it.
       const two = bar % 2;
       if (STEP_KICK[two].includes(inBar)) { this.kick(at); this.boom808(at, semi(this.root, bassRoot + (inBar >= 8 && two ? 7 : 0)), GSTEP * (inBar === 0 ? 7 : 4)); }
-      if (inBar === 4 || inBar === 12) { this.snare(at, 0.95); this.clap(at, 0.5); }
-      if (inBar === 7 || inBar === 9 || (two && inBar === 15)) this.snare(at, 0.24);
+      if (inBar === 4 || inBar === 12) { this.snare(at, 0.75); this.bigClap(at, 0.9); }
+      if (inBar === 7 || (two && inBar === 15)) this.snare(at, 0.2);
       if (inBar % 2 === 0) this.hat(at, inBar % 4 === 2 ? 0.32 : 0.16, inBar % 4 === 2);
       if (blockBar >= 2 && STEP_BELL[two].includes(inBar)) this.cowbell(at, inBar === STEP_BELL[two][0] ? 0.16 : 0.11);
       // The DJ's scratch closing every four bars, back and forth on the last beat.
@@ -1034,24 +1031,21 @@ class Engine {
       if (blockBar >= 4 && (inBar === 6 || inBar === 14)) this.stab(at, chord);
     }
     if (breaks) {
-      // Choppy breaks: each bar another chop of the same break (`BREAK_CHOPS`), the kick and snare moved about,
-      // ghost snares swung around them, and the last beat of every other bar stuttered in thirty-seconds.
+      // Choppy breaks: each bar another chop of the same break (`BREAK_CHOPS`), the kick and snare moved about, the big
+      // clap on the snares, a few ghost snares, and only the block's last beat stuttered in thirty-seconds.
       const chop = BREAK_CHOPS[(bar * 3 + blockBar) % BREAK_CHOPS.length];
       if (!garage && chop.kick.includes(inBar)) this.kick(t);
-      if (!garage && chop.snare.includes(inBar)) { this.snare(at, 0.9); this.clap(at, 0.42); }
-      if (chop.ghost.includes(inBar)) this.snare(t, 0.26);
-      if (!garage && inBar % 2 === 0) this.hat(t, inBar % 4 === 2 ? 0.3 : 0.18, false);
-      if (bar % 2 === 1 && inBar >= 12) { this.snare(at, 0.3 + (inBar - 12) * 0.1); this.snare(at + GSTEP / 2, 0.2 + (inBar - 12) * 0.08); }
-      if (last && inBar >= 8) this.hat(at + GSTEP / 2, 0.16, false);
+      if (!garage && chop.snare.includes(inBar)) { this.snare(at, 0.75); this.bigClap(at, inBar === 4 || inBar === 12 ? 0.85 : 0.5); }
+      if (bar % 2 === 0 && chop.ghost.includes(inBar)) this.snare(t, 0.18);
+      if (!garage && inBar % 2 === 0) this.hat(t, inBar % 4 === 2 ? 0.26 : 0.14, false);
+      if (last && inBar >= 12) { this.snare(at, 0.3 + (inBar - 12) * 0.1); this.snare(at + GSTEP / 2, 0.2 + (inBar - 12) * 0.08); }
     }
-    // The electronic detail: an acid line squelching through the drops, bleeps answering the stabs, a laser falling
-    // into every block, and an 808 sub sliding down under each block's first beat.
-    if (block === 'drop' && inBar % 2 === 0) {
+    // The electronic detail, kept sparse so the beat stays clean: an acid line in the drop's second half, a laser
+    // falling into every block, and an 808 sub sliding down under each block's first beat.
+    if (block === 'drop' && blockBar >= 4 && inBar % 2 === 0) {
       const n = BREAK_ACID[(bar % 2) * 8 + inBar / 2];
       if (typeof n === 'number') this.acid(t, semi(this.root * 2, bassRoot + n), GSTEP * 1.8, inBar % 8 === 0);
     }
-    if ((garage || breaks) && inBar === 14 && bar % 2 === 0) { this.bleep(t, semi(this.root * 16, chord[2]), semi(this.root * 16, chord[3] + 12), 0.07, 0.05); this.bleep(t + GSTEP, semi(this.root * 16, chord[3] + 12), semi(this.root * 16, chord[1]), 0.06, 0.04); }
-    if (breaks && inBar === 6 && bar % 4 === 3) this.bleep(at, 2400, 300, GSTEP * 3, 0.05, 'sawtooth');
     if (last && inBar === 8) this.bleep(at, 3200, 120, GSTEP * 8, 0.05, 'square');
     if (blockBar === 0 && inBar === 0 && block !== 'intro' && block !== 'break') this.slideSub(at, semi(this.root, bassRoot + 12), semi(this.root, bassRoot), GSTEP * 6);
     // The bass: a dubby sub line in the garage blocks, the Spanish breaks mid bass in the breakbeat ones and the drop,
@@ -1103,6 +1097,17 @@ class Engine {
     if (block === 'intro' && inBar % 4 === 2 && Math.random() < 0.5) this.synthLead(t, semi(this.root * 4, chord[(step >> 2) % chord.length] + 12), GSTEP * 1.2, false);
   }
 
+  /** The big clap (after The Prodigy's backbeat): the clap, a tight bright snap on top and a short body under it, loud and
+      dry, so two and four stand out of everything else. */
+  private bigClap(at: number, vol: number) {
+    this.clap(at, vol * 1.5);
+    const snap = this.noiseAt(at, 0.06), hp = this.filt('highpass', 2600, 0.7), gs = this.ctx.createGain();
+    this.env(gs, at, vol * 0.9, 0.001, 0.04);
+    snap.connect(hp).connect(gs); this.out(gs, 0.05);
+    const body = this.noiseAt(at, 0.12), bp = this.filt('bandpass', 1900, 0.9), gb = this.ctx.createGain();
+    this.env(gb, at, vol * 0.8, 0.002, 0.09);
+    body.connect(bp).connect(gb); this.out(gb, 0.1);
+  }
   /** A clap: three quick bursts of filtered noise a few milliseconds apart and a short tail, into the reverb a little. */
   private clap(at: number, vol: number) {
     for (const [d, v, len] of [[0, 1, 0.02], [0.011, 0.85, 0.02], [0.022, 0.75, 0.13]] as [number, number, number][]) {
