@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.151 - 2026-10-31
+
+### Changed
+- Siege Cartoon's legendary ninja has its own art from the owner's sheet: black and gold, glowing red eyes, wrapped in black smoke, with a blazing double slash; a little bigger than before. The blue ninja's poses are kept in reserve.
+
 ## 1.15.150 - 2026-10-31
 
 ### Changed
