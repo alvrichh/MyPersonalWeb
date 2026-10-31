@@ -4,6 +4,16 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.150 - 2026-10-31
+
+### Changed
+- Siege Cartoon's shop groups our troops: the army first, then **Support** (medic, shield bearer, catapult, bomber balloon) and, last, **Legendary**, each under its own heading and in world order.
+- The dragon rider and the ninja are legendary: they open when the game is won (the last battle), only one fits in an army, and they are far stronger.
+  - Dragon rider: 4000 health and a fire breath that sweeps 340 field units in front of it, striking everything for 150 and throwing it back; drawn as a cone of fire, with a roar and the flames' roar.
+  - Shadow ninja: unseen at all times but in the instant it strikes, when it can be hit; its blow (420) kills almost any troop; a fast slash sound.
+- The medic shows its mending: green crosses rising off every troop it heals and a green ring round it, with a soft chime.
+- The bomber balloon floats steady and slow instead of bobbing like the other flyers.
+
 ## 1.15.149 - 2026-10-30
 
 ### Added

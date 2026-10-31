@@ -14,7 +14,7 @@
  */
 
 /** Siege's troop sounds: attacks by weapon, deaths by body. */
-export const SIEGE_SOUNDS = ['blade', 'blunt', 'pierce', 'claw', 'bite', 'throw', 'bow', 'gun', 'rifle', 'uzi', 'sniper', 'gatling', 'rocket', 'ray', 'flame', 'thunder', 'wind', 'meteor', 'breath', 'drill', 'magic',
+export const SIEGE_SOUNDS = ['blade', 'blunt', 'pierce', 'claw', 'bite', 'throw', 'bow', 'gun', 'rifle', 'uzi', 'sniper', 'gatling', 'rocket', 'ray', 'flame', 'thunder', 'wind', 'meteor', 'breath', 'drill', 'magic', 'heal', 'slash', 'roar',
   'die-man', 'die-armor', 'die-beast', 'die-brute', 'die-bot', 'die-flyer', 'die-horse', 'die-dragon', 'base-falls', 'coin', 'corrupt-wind', 'death-ally', 'death-foe'] as const;
 export type SiegeSound = (typeof SIEGE_SOUNDS)[number];
 export type Sfx =
@@ -2117,6 +2117,9 @@ class Engine {
       case 'meteor': slide(0, 2000, 300, 0.5, 0.09); noise(0, 0.5, 0.12, 'bandpass', 1500, 500, 2, 0.1); return boom(0.48, 0.6, 0.7);
       case 'breath': noise(0, 0.6, 0.32, 'lowpass', 1500 * r(), 600, 0.7, 0.04); return tone(0, 'sawtooth', 110 * r(), 70, 0.5, 0.12, 0.05, ['lowpass', 420]);
       case 'drill': tone(0, 'sawtooth', 72 * r(), 80, 0.32, 0.18, 0.01, ['lowpass', 900]); return noise(0, 0.32, 0.18, 'bandpass', 2400 * r(), 2600, 3, 0.01);
+      case 'heal': for (let i = 0; i < 3; i++) tone(i * 0.09, 'sine', [660, 880, 1320][i] * r(0.01), [660, 880, 1320][i] * 1.02, 0.32, 0.08, 0.01); return noise(0.05, 0.4, 0.03, 'highpass', 6000);
+      case 'slash': noise(0, 0.12, 0.3, 'highpass', 2800 * r(), 6500, 0.8, 0.003); noise(0.06, 0.1, 0.22, 'highpass', 3400, 7000, 0.8, 0.003); return slide(0, 2200, 600, 0.12, 0.05);
+      case 'roar': tone(0, 'sawtooth', 160 * r(), 55, 0.9, 0.2, 0.06, ['lowpass', 700]); tone(0.04, 'square', 90, 40, 0.8, 0.08, 0.06, ['lowpass', 400]); noise(0.15, 0.9, 0.5, 'lowpass', 1600 * r(), 500, 0.7, 0.05); return noise(0.2, 0.7, 0.2, 'bandpass', 420, 300, 1.2, 0.05);
       case 'magic': for (let i = 0; i < 4; i++) tone(i * 0.04, 'sine', [880, 1110, 1320, 1760][i] * r(0.02), [880, 1110, 1320, 1760][i] * 1.01, 0.18, 0.07, 0.003); return noise(0, 0.25, 0.05, 'highpass', 7000);
       // Deaths: a cartoon cry, a pop and a puff of smoke as they fall.
       // The cry of the one killed, a cartoon "aww!": a voice sliding down through the vowel's two formants (/ɔ/, about

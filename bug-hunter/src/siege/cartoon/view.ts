@@ -487,6 +487,32 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     for (let k = 0; k < 9; k++) { const sx = front - 60 + ((k * 37 + Math.floor(p * 30) * 11) % 90) - 30, sy = at - H * 0.9 + ((k * 53) % 70) - Math.sin(p * 12 + k) * 8; ctx.beginPath(); ctx.arc(sx, sy, 3 + (k % 3), 0, Math.PI * 2); ctx.fill(); }
     ctx.restore(); return true;
   }
+  if (e.kind === 'breath') {
+    // A dragon's breath: a stream of fire puffs from its mouth down onto the field ahead, swelling as they go, fading.
+    const [core, edge] = e.colors ?? ['#fff3c4', '#ff7a1a'];
+    const dir = e.x >= e.from ? 1 : -1, reach = Math.abs(e.x - e.from), body = e.size ?? 120, grow = Math.min(1, p / 0.3), fade = p < 0.55 ? 1 : (1 - p) / 0.45;
+    const mx = e.from + dir * body * 0.42, my = ground - (e.fromUp ?? 0) - body * 0.55, tx = e.from + dir * reach * grow, ty = ground - 18;
+    ctx.save();
+    for (let k = 0; k < 22; k++) {
+      const f = (k + 1) / 22, wob = Math.sin(k * 2.1 + p * 14) * 8 * f;
+      const x = mx + (tx - mx) * f, y = my + (ty - my) * f * f + wob, r = 8 + 46 * f;
+      ctx.globalAlpha = 0.32 * fade * (1 - f * 0.4); ctx.fillStyle = edge; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+      ctx.globalAlpha = 0.45 * fade * (1 - f * 0.6); ctx.fillStyle = core; ctx.beginPath(); ctx.arc(x, y, r * 0.45, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.restore(); return true;
+  }
+  if (e.kind === 'heal') {
+    // The medic's mending: green crosses rising off each troop it heals; round the medic, a soft green ring.
+    ctx.save(); ctx.globalAlpha = p < 0.7 ? 1 : (1 - p) / 0.3;
+    if (e.size) { ctx.strokeStyle = '#7dff9a'; ctx.lineWidth = 3; ctx.beginPath(); ctx.ellipse(e.x, ground - 4, 40 + 100 * p, 10 + 18 * p, 0, 0, Math.PI * 2); ctx.stroke(); ctx.restore(); return true; }
+    const cy = ground - 40 - (e.up ?? 0) - p * 34;
+    for (const [dx, k] of [[-12, 0.8], [10, 1], [0, 0.65]] as const) {
+      const s2 = 7 * k, x = e.x + dx, y = cy - (dx === 0 ? 14 : 0);
+      ctx.fillStyle = '#1d6b2c'; ctx.fillRect(x - s2 - 1.5, y - s2 / 3 - 1.5, s2 * 2 + 3, s2 * 2 / 3 + 3); ctx.fillRect(x - s2 / 3 - 1.5, y - s2 - 1.5, s2 * 2 / 3 + 3, s2 * 2 + 3);
+      ctx.fillStyle = '#6dff8c'; ctx.fillRect(x - s2, y - s2 / 3, s2 * 2, s2 * 2 / 3); ctx.fillRect(x - s2 / 3, y - s2, s2 * 2 / 3, s2 * 2);
+    }
+    ctx.restore(); return true;
+  }
   if (e.kind === 'sweep') {
     // The archangel's golden crescent: a wide arc sweeping out from the angel over the ground ahead of it, growing, a
     // white-hot core and gold streaks behind, fading; it is drawn twice, the second time adding light.
@@ -724,7 +750,7 @@ function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: nu
   // Air troops fly above their lane, their shadow on the ground under them; the fallen lie on the ground.
   // Every troop on one line (the lanes only order who is drawn in front), so the card bar never hides one.
   const spec = specOf(u), floor = ground;
-  const y = gone !== undefined ? floor : spec.air ? floor - (u.alt ?? highOf(u)) - u.lane * 8 + (reduced ? 0 : Math.sin(s.time * 4 + u.uid) * 5) : floor;
+  const y = gone !== undefined ? floor : spec.air ? floor - (u.alt ?? highOf(u)) - u.lane * 8 + (reduced ? 0 : spec.raid ? Math.sin(s.time * 0.9 + u.uid) * 2 : Math.sin(s.time * 4 + u.uid) * 5) : floor;
   const path = spec.sprite, t = s.time + u.uid * 0.37;
   // The pose. Six-pose sheets: walk A/B in turn while walking, the wind-up just before a blow, the blow, hurt, dead.
   // Three-pose sheets: stand (walking in code), attack, hurt.

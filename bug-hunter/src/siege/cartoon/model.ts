@@ -54,8 +54,14 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
   heal?: number;
   /** A blow that also shoves its target this far back (the shield bearer's bash). */
   shove?: number;
-  /** Seconds it stays unseen after it is sent (the ninja): the enemy cannot target it. */
+  /** Unseen but while it strikes (the ninja): the enemy can target it only then. */
   stealth?: number;
+  /** A support troop (medic, shield bearer, catapult, balloon): listed in its own group, after the others. */
+  support?: boolean;
+  /** A legendary troop (the dragon, the ninja): opened by winning the last battle; one at most in an army. */
+  legend?: boolean;
+  /** A breath (the dragon's): its sweep is drawn as fire of these two colours (core, edge) instead of a crescent. */
+  breath?: [string, string];
   /** How many it scoops at once (the gold drill takes two); one if unsaid. */
   ramHits?: number;
   /** A flyer that only fights other flyers (and the fortress), never troops on the ground. */
@@ -230,14 +236,14 @@ export const UNITS: readonly Spec[] = [
   { id: 50, flyAt: 125, cost: 0, hp: 520, damage: 46, speed: 50, range: 60, rate: 1, cooldown: 0, unlock: 1, foe: true, air: true, splash: 30, ...foe('foe-devil-1', 159, 0.975) },
   // Ours again, the later recruits (the owner's sheets): the catapult, the bomber balloon, the medic, the shield
   // bearer, the ninja and the dragon rider, the dearest of all.
-  { id: 51, cost: 110, hp: 300, damage: 40, speed: 18, range: 400, rate: 3, cooldown: 11, unlock: 4, splash: 60, siege: 2, shot: 'boulder', spin: true, ...six('ally-catapult-1', 112, 1.43), forms: [
+  { id: 51, cost: 110, hp: 300, damage: 40, speed: 18, range: 400, rate: 3, cooldown: 11, unlock: 4, support: true, splash: 60, siege: 2, shot: 'boulder', spin: true, ...six('ally-catapult-1', 112, 1.43), forms: [
     { price: 1600, cost: 150, hp: 450, damage: 55, range: 440, splash: 80, shot: 'boulder-blue', ...six('ally-catapult-2', 157, 1.146) },
   ] },
-  { id: 52, flyAt: 125, cost: 90, hp: 260, damage: 60, speed: 30, range: 30, rate: 2.2, cooldown: 9, unlock: 4, air: true, raid: true, shot: 'bomb', spin: false, ...six('ally-balloon-1', 272, 0.78) },
-  { id: 53, cost: 45, hp: 140, damage: 0, speed: 38, range: 150, rate: 1.4, cooldown: 5, unlock: 2, infantry: true, heal: 16, ...six('ally-medic-1', 208, 0.6) },
-  { id: 54, cost: 90, hp: 950, damage: 12, speed: 24, range: 35, rate: 1.3, cooldown: 9, unlock: 3, steady: true, shove: 45, ...six('ally-shield-1', 175, 0.886) },
-  { id: 55, cost: 100, hp: 260, damage: 42, speed: 62, range: 35, rate: 0.55, cooldown: 10, unlock: 5, infantry: true, stealth: 3, ...six('ally-ninja-1', 185, 0.676) },
-  { id: 56, flyAt: 60, cost: 300, hp: 2200, damage: 60, speed: 40, range: 140, rate: 1.6, cooldown: 30, unlock: 6, air: true, splash: 110, shot: 'none', ...six('ally-dragon-1', 227, 2.3) },
+  { id: 52, flyAt: 125, cost: 90, hp: 260, damage: 60, speed: 30, range: 30, rate: 2.2, cooldown: 9, unlock: 4, air: true, support: true, raid: true, shot: 'bomb', spin: false, ...six('ally-balloon-1', 272, 0.78) },
+  { id: 53, cost: 45, hp: 140, damage: 0, speed: 38, range: 150, rate: 1.4, cooldown: 5, unlock: 2, infantry: true, support: true, heal: 16, ...six('ally-medic-1', 208, 0.6) },
+  { id: 54, cost: 90, hp: 950, damage: 12, speed: 24, range: 35, rate: 1.3, cooldown: 9, unlock: 3, support: true, steady: true, shove: 45, ...six('ally-shield-1', 175, 0.886) },
+  { id: 55, cost: 160, hp: 600, damage: 420, speed: 66, range: 35, rate: 1.4, cooldown: 25, unlock: 6, infantry: true, legend: true, stealth: 1, ...six('ally-ninja-1', 185, 0.676) },
+  { id: 56, flyAt: 60, cost: 300, hp: 4000, damage: 150, speed: 40, range: 160, rate: 1.8, cooldown: 40, unlock: 6, air: true, legend: true, sweep: { reach: 340, back: 150 }, breath: ['#e8fbff', '#2fa8ff'], ...six('ally-dragon-1', 227, 2.3) },
 ];
 /** The enemy's land and air troops by act, each act adding to the last (docs/siege-roster.md): early waves draw
     from the first two of the land list. No flyers in the first world: they come from the second. */
@@ -301,8 +307,10 @@ export const cardId = (c: number) => c % 100;
 export const cardLevel = (c: number) => Math.floor(c / 100) + 1;
 const isAir = (c: number) => !!UNITS[cardId(c)]?.air;
 /** Ours: the units an army can hold. */
+/** A troop's group in the shop: the army (0), support (1), legendary (2). */
+export const groupOf = (u: Spec) => (u.legend ? 2 : u.support ? 1 : 0);
 /** Our troops in the order they arrive, world by world (the flying mech, listed last in `UNITS`, comes before the angels). */
-export const ALLIES = UNITS.filter(u => !u.foe).sort((a, b) => a.unlock - b.unlock);
+export const ALLIES = UNITS.filter(u => !u.foe).sort((a, b) => groupOf(a) - groupOf(b) || a.unlock - b.unlock);
 /** How many levels a troop has (its forms and the first). */
 export const levelsOf = (id: number) => 1 + (UNITS[id]?.forms?.length ?? 0);
 /** A troop at a level: its stats and looks with that form's changes. */
@@ -326,7 +334,7 @@ const reaches = (u: Fighter, v: Fighter) => !specOf(u).raid && !v.hidden && hits
 /** Can a fighter of `id` (at its first form) hit one of `target`? */
 export const canHit = (id: number, target: number) => hits(UNITS[id], target);
 /** Keep at most `DECK` of each kind, in order. */
-export function capDeck(deck: number[]) { const land = deck.filter(id => !isAir(id)).slice(0, DECK), air = deck.filter(isAir).slice(0, DECK); return deck.filter(id => land.includes(id) || air.includes(id)); }
+export function capDeck(deck: number[]) { const one = deck.filter((c, i) => legendRoom(deck.slice(0, i), c)), land = one.filter(id => !isAir(id)).slice(0, DECK), air = one.filter(isAir).slice(0, DECK); return one.filter(id => land.includes(id) || air.includes(id)); }
 /** The base's upgrades, each 0 to 5: army, fortress, energy, the bow's three (power: damage, arrows a volley and its
     look; speed: shots a second and reach; quiver: shots held and refill) and the mana pool (the energy a battle can hold
     from the start, before the generator raises it). */
@@ -354,14 +362,16 @@ export const hasCard = (p: Progress, c: number) => Number.isInteger(c) && c >= 0
     false to bring back the act unlocks and the gold prices. */
 export const testing = { free: false };
 /** Has the battles won opened this troop's act? */
-export const isOpen = (p: Progress, id: number) => !!UNITS[id] && !UNITS[id].foe && (testing.free || UNITS[id].unlock <= actOf(p.unlocked));
+export const isOpen = (p: Progress, id: number) => !!UNITS[id] && !UNITS[id].foe && (testing.free || (UNITS[id].legend ? p.victories.includes(LAST) : UNITS[id].unlock <= actOf(p.unlocked)));
+/** An army holds one legendary troop at most: is there room for this card? */
+export const legendRoom = (deck: number[], c: number) => !UNITS[cardId(c)]?.legend || !deck.some(n => n !== c && UNITS[cardId(n)]?.legend);
 export const owns = (p: Progress, id: number) => p.owned.includes(id);
 export const troopPrice = (id: number) => (testing.free ? 0 : RECRUIT[id] ?? 0);
 /** Recruits a troop with gold, into the army if there is room. */
 export function buyTroop(p: Progress, id: number): boolean {
   if (owns(p, id) || !isOpen(p, id) || p.coins < troopPrice(id)) return false;
   p.coins -= troopPrice(id); p.owned.push(id);
-  if (p.deck.filter(n => isAir(n) === isAir(id)).length < DECK) p.deck.push(id);
+  if (p.deck.filter(n => isAir(n) === isAir(id)).length < DECK && legendRoom(p.deck, id)) p.deck.push(id);
   return true;
 }
 const integer = (v: unknown, min: number, max: number, fallback: number) => typeof v === 'number' && Number.isFinite(v) ? Math.max(min, Math.min(max, Math.floor(v))) : fallback;
@@ -453,7 +463,9 @@ function wince(u: Fighter, damage: number) {
   if (damage >= u.maxHp * WINCE.share && !u.winceCd) { u.wince = WINCE.time; u.winceCd = WINCE.every; }
 }
 export const CHARGE = { reach: 170, pace: 4, back: 130, daze: 0.9 };
-export interface Effect { x: number; from: number; lane: number; life: number; max: number; kind: 'shot' | 'burst' | 'arrow' | 'rocket' | 'bolt' | 'gust' | 'loot' | 'boom' | 'fire' | 'stuck' | 'fall' | 'ground' | 'zap' | 'wave' | 'sweep'; side: 0 | 1;
+export interface Effect { x: number; from: number; lane: number; life: number; max: number; kind: 'shot' | 'burst' | 'arrow' | 'rocket' | 'bolt' | 'gust' | 'loot' | 'boom' | 'fire' | 'stuck' | 'fall' | 'ground' | 'zap' | 'wave' | 'sweep' | 'breath' | 'heal'; side: 0 | 1;
+  /** A `breath`'s fire: core and edge colours. */
+  colors?: [string, string];
   /** A `boom` (an explosion) or a `fire` (a burning pool on the ground): its size, and the height it is at. */
   size?: number; up?: number;
   /** A `boom` with black smoke (the robots' rockets) instead of grey (our crossbow's). */
@@ -550,7 +562,7 @@ const ATTACK_SOUND: Record<number, string | string[]> = {
   0: ['blunt', 'blade', 'blade', 'blade', 'blade'], 1: 'pierce', 3: ['blade', 'blunt', 'blunt', 'blunt'], 4: ['gun', 'rifle', 'uzi', 'sniper'],
   7: 'claw', 8: ['rocket', 'gatling', 'rocket'], 9: ['gatling', 'gatling', 'gatling', 'gatling'], 10: 'blade', 11: ['rifle', 'sniper', 'ray', 'thunder'], 12: 'rocket', 13: 'drill', 14: ['blade', 'magic', 'magic'], 33: ['blunt', 'ray', 'ray', 'blunt', 'gatling', 'blunt'],
   15: 'blade', 16: 'pierce', 17: 'bite', 18: 'claw', 19: 'blade', 20: 'blunt', 21: 'blade', 22: 'rifle', 23: 'throw', 24: 'magic',
-  53: 'magic', 54: 'blunt', 55: 'blade',
+  53: 'heal', 54: 'blunt', 55: 'slash', 56: 'roar',
   40: 'blunt', 41: 'bite', 42: 'blunt', 43: 'pierce', 44: 'blunt', 47: 'bite', 48: 'bite', 49: 'blade', 50: 'pierce',
   25: 'claw', 26: 'breath', 27: 'blade', 28: 'claw', 29: 'claw', 30: 'magic', 31: 'blade', 32: 'gatling',
   34: 'throw', 35: 'gatling', 36: 'breath', 37: 'blunt', 38: 'bite', 39: 'bite',
@@ -954,6 +966,8 @@ export function tick(s: Siege, dt: number) {
     const baseX = u.side ? 80 : FIELD - 80;
     const distance = enemy ? Math.abs(enemy.x - u.x) : Infinity;
     const near = !!enemy && distance <= a.range + bodyOf(enemy) * 0.25 + 60;
+    // Unseen (the ninja) but while it is about to strike, striking, or just struck.
+    if (a.stealth) u.hidden = u.hit || (!!enemy && distance <= a.range + bodyOf(enemy) * 0.25 + 12 && u.attack < 0.35) ? 0 : a.stealth;
     if (a.charge && enemy && !UNITS[enemy.id].air) {
       // A charge: started from a little way off when it is ready, it rushes in, throws its target back and stands dazed.
       const reach = a.range + bodyOf(enemy) * 0.25;
@@ -983,13 +997,18 @@ export function tick(s: Siege, dt: number) {
           const dir = u.side ? -1 : 1;
           for (const v of alive) if (v.side !== u.side && reaches(u, v) && (v.x - u.x) * dir >= -20 && (v.x - u.x) * dir <= a.sweep.reach) hits.push({ target: v, damage: u.damage, push: a.sweep.back });
           // The archangel's gold crescent is drawn; the enemy's sweeps (the mammoth's tusks) are in their own attack pose.
-          if (!u.side) s.effects.push({ x: u.x + dir * a.sweep.reach, from: u.x, lane: u.lane, life: 0.5, max: 0.5, kind: 'sweep', side: u.side, fromUp: a.air ? u.alt ?? highOf(u) : 0 });
+          if (!u.side) s.effects.push({ x: u.x + dir * a.sweep.reach, from: u.x, lane: u.lane, life: 0.5, max: 0.5, kind: a.breath ? 'breath' : 'sweep', side: u.side, fromUp: a.air ? u.alt ?? highOf(u) : 0, colors: a.breath, size: a.size });
+          if (a.breath) hear(s, 'flame', u.x);
         } else {
         // A scoop takes the nearest few (`ramHits`) in its reach; anyone else strikes its target, and round it when it has an area.
         const scooped = a.ram && (a.ramHits ?? 1) > 1 ? alive.filter(v => v.side !== u.side && reaches(u, v) && Math.abs(v.x - u.x) <= a.range + bodyOf(v) * 0.25 + 30).sort((p, q) => Math.abs(p.x - u.x) - Math.abs(q.x - u.x)).slice(0, a.ramHits) : null;
         if (a.heal) {
           // A healer mends every one of ours near it instead of striking.
-          for (const v of alive) if (v.side === u.side && v !== u && Math.abs(v.x - u.x) <= HEAL_REACH) v.hp = Math.min(v.maxHp, v.hp + a.heal);
+          for (const v of alive) if (v.side === u.side && v !== u && Math.abs(v.x - u.x) <= HEAL_REACH) {
+            v.hp = Math.min(v.maxHp, v.hp + a.heal);
+            s.effects.push({ x: v.x, from: v.x, lane: v.lane, life: 0.9, max: 0.9, kind: 'heal', side: u.side, up: UNITS[v.id].air ? v.alt ?? highOf(v) : 0 });
+          }
+          s.effects.push({ x: u.x, from: u.x, lane: u.lane, life: 0.7, max: 0.7, kind: 'heal', side: u.side, size: 1 });
         } else
         for (const v of alive) if (v.side !== u.side && reaches(u, v) && (scooped ? scooped.includes(v) : v === enemy || (area && Math.abs(v.x - enemy.x) < area))) hits.push({ target: v, damage: u.damage, boss: u.boss, push: a.ram ?? a.shove });
         if (a.ram) { u.lunge = KNOCK.time; u.lungeBack = a.ram * RAM.lunge; u.low = KNOCK.time + RAM.low; }

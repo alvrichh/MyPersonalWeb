@@ -186,7 +186,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     }
     const owned = M.owns(progress, row), now = progress.levels[row] ?? 1, open = M.isOpen(progress, row);
     const next = open && (owned ? level === now + 1 : level === 1);
-    return { have: owned && level <= now, next, price: level === 1 || (mode === 'cartoon' && cartoonModel.testing.free) ? M.troopPrice(row) : M.UNITS[row].forms?.[level - 2]?.price ?? 0, why: !open ? t('siegeOpensAct', { n: M.UNITS[row].unlock }) : t('siegeBuyFirst') };
+    return { have: owned && level <= now, next, price: level === 1 || (mode === 'cartoon' && cartoonModel.testing.free) ? M.troopPrice(row) : M.UNITS[row].forms?.[level - 2]?.price ?? 0, why: !open ? (M.UNITS[row].legend ? t('siegeOpensLegend') : t('siegeOpensAct', { n: M.UNITS[row].unlock })) : t('siegeBuyFirst') };
   };
   /** A special power's picture at a form (the shop's tiles and the battle bar's buttons), under /images/game/. */
   const POWER_PICS = [['skills/double', 'skills/frost', 'skills/fireball', 'skills/rocket'], ['skills/spark', 'skills/storm', 'skills/storm-evo'], ['skills/water', 'skills/water', 'skills/frost-evo'], ['skills/fireball', 'skills/fireball-evo', 'skills/nova']];
@@ -200,7 +200,9 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   function cartoonShop() {
     const rows = shopRows(); if (!rows.includes(pick.row)) pick = { row: rows[0], level: 1 };
     const tabs = (['land', 'air', 'special', 'base'] as const).map(k => `<button role="tab" class="sg-st-tab is-${k} ${shopTab === k ? 'is-on' : ''}" aria-selected="${shopTab === k}" data-sg-shop-tab="${k}">${t(k === 'land' ? 'siegeShopLand' : k === 'air' ? 'siegeShopAir' : k === 'special' ? 'siegeShopSpecial' : 'siegeShopBase')}</button>`).join('');
-    const grid = rows.map(row => `<div class="sg-st-row">${Array.from({ length: rowLevels(row) }, (_, k) => {
+    // Troops come in groups: the army, then support, then the legendary ones, each after its own heading.
+    const groupHead = (row: number, i: number) => { if (shopTab !== 'land' && shopTab !== 'air') return ''; const g = cartoonModel.groupOf(M.UNITS[row]); return g && (i === 0 || cartoonModel.groupOf(M.UNITS[rows[i - 1]]) !== g) ? `<h4 class="sg-st-group is-${g === 2 ? 'legend' : 'support'}">${t(g === 2 ? 'siegeGroupLegend' : 'siegeGroupSupport')}</h4>` : ''; };
+    const grid = rows.map((row, i) => `${groupHead(row, i)}<div class="sg-st-row">${Array.from({ length: rowLevels(row) }, (_, k) => {
       const level = k + 1, x = tile(row, level), on = pick.row === row && pick.level === level;
       const pic = shopTab === 'special' ? powerPic(row, level) : shopTab === 'base' ? `/images/game/${upgradePic('cartoon', row, level)}.webp` : V.portrait(row, level);
       const corner = shopTab === 'special' ? t('siegePowerCd', { n: cartoonModel.POWERS[row].cooldown }) : shopTab === 'base' ? String(level) : String(M.specAt(row, level).cost);
@@ -272,6 +274,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     if (shopTab === 'special') { if (!cartoonModel.toggleKit(progress, row, level)) return false; persist(); sound('click'); return true; }
     const c = cartoonModel.card(row, level);
     if (selected.includes(c)) selected = selected.filter(n => n !== c);
+    else if (mode === 'cartoon' && !cartoonModel.legendRoom(selected, c)) { const m = root.querySelector('.sg-message'); if (m) m.textContent = t('siegeOneLegend'); return false; }
     else if (selected.filter(n => air(n) === air(c)).length < M.DECK) selected.push(c);
     else return false;
     progress.deck = [...selected]; persist(); sound('click'); return true;
