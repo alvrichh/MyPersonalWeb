@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.159 - 2026-10-31
+
+### Added
+- Siege Cartoon: a third legendary troop, the golem (land, 4000 gold, 260 energy), from the owner's sheet. Colossal gold and crystal, slow and almost unbreakable (6500 health, never thrown back); every punch sends a shockwave that strikes everything in front (170) and throws it far back. It opens when the game is won, like the dragon and the ninja.
+
 ## 1.15.158 - 2026-10-31
 
 ### Changed
