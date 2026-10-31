@@ -762,7 +762,7 @@ function fallen(s: Siege) {
     draws it fallen, fading at the end. */
 /** Where a pose wider or taller than its body stands: its body's middle and foot, as shares of the picture (the star
     eater's beam poses, whose beam reaches far ahead of and below it). */
-const POSE_ANCHOR: Record<string, [number, number]> = { 'siege/units/ally-star-eater-1-6': [0.183, 0.585], 'siege/units/ally-star-eater-1-7': [0.171, 0.796] };
+const POSE_ANCHOR: Record<string, [number, number]> = { 'siege/units/ally-star-eater-1-6': [0.183, 0.585], 'siege/units/ally-star-eater-1-7': [0.171, 0.796], 'siege/units/ally-dragon-1-6': [0.313, 0.712], 'siege/units/ally-dragon-1-7': [0.254, 0.848] };
 function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: number, reduced: boolean, color: string, gone?: number) {
   // Air troops fly above their lane, their shadow on the ground under them; the fallen lie on the ground.
   // Every troop on one line (the lanes only order who is drawn in front), so the card bar never hides one.
@@ -778,8 +778,8 @@ function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: nu
   const pose = spec.six
     ? gone !== undefined ? (gone < DEATH.fly ? 4 : 5) : thrown ? 4 : u.hit ? 3 : hurt ? 4 : ready ? 2 : u.moving && !reduced ? Math.floor(t * 5) % 2 : 0
     : gone !== undefined ? 2 : thrown ? 2 : u.hit ? 1 : hurt ? 2 : 0;
-  // The star eater's beam has two attack poses of its own: down at the ground (6) or level at a flyer (7).
-  const shot = spec.pierce && pose === 3 ? (u.aimAir ? 7 : 6) : pose;
+  // The dragon and the star eater have two attack poses of their own: down at the ground (6) or level at a flyer (7).
+  const shot = spec.aimPoses && pose === 3 ? (u.aimAir ? 7 : 6) : pose;
   const stand = picture(`${path}-0`), art = picture(`${path}-${shot}`), anchor = POSE_ANCHOR[`${path}-${shot}`];
   const size = spec.size * (u.boss ? 1.6 : 1) * (u.grow ?? 1) * Math.pow(0.8, u.stage ?? 0);
   // The shadow under its feet (the troop's x is where its feet are), the feet standing on its middle.
