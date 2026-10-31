@@ -200,6 +200,8 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   function cartoonShop() {
     const rows = shopRows(); if (!rows.includes(pick.row)) pick = { row: rows[0], level: 1 };
     const tabs = (['land', 'air', 'special', 'base'] as const).map(k => `<button role="tab" class="sg-st-tab is-${k} ${shopTab === k ? 'is-on' : ''}" aria-selected="${shopTab === k}" data-sg-shop-tab="${k}">${t(k === 'land' ? 'siegeShopLand' : k === 'air' ? 'siegeShopAir' : k === 'special' ? 'siegeShopSpecial' : 'siegeShopBase')}</button>`).join('');
+    // A legendary troop stays a «?» (even its first form) until the game is won: hidden troops, for the hype.
+    const secret = (row: number) => (shopTab === 'land' || shopTab === 'air') && !!M.UNITS[row]?.legend && !M.isOpen(progress, row);
     // Troops come in groups: the army, then support, then the legendary ones, each after its own heading.
     const groupHead = (row: number, i: number) => { if (shopTab !== 'land' && shopTab !== 'air') return ''; const g = cartoonModel.groupOf(M.UNITS[row]); return g && (i === 0 || cartoonModel.groupOf(M.UNITS[rows[i - 1]]) !== g) ? `<h4 class="sg-st-group is-${g === 2 ? 'legend' : 'support'}">${t(g === 2 ? 'siegeGroupLegend' : 'siegeGroupSupport')}</h4>` : ''; };
     const grid = rows.map((row, i) => `${groupHead(row, i)}<div class="sg-st-row">${Array.from({ length: rowLevels(row) }, (_, k) => {
@@ -208,10 +210,10 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       const corner = shopTab === 'special' ? t('siegePowerCd', { n: cartoonModel.POWERS[row].cooldown }) : shopTab === 'base' ? String(level) : String(M.specAt(row, level).cost);
       const worn = shopTab === 'special' ? progress.kit.includes(cartoonModel.powerCard(row, level)) : shopTab !== 'base' && selected.includes(cartoonModel.card(row, level));
       // What is still to come stays hidden as a «?» (only what is owned, the next one to buy, and every troop's first form show), for the hype.
-      const hidden = !x.have && !x.next && !(shopTab !== 'base' && level === 1);
+      const hidden = !x.have && !x.next && !(shopTab !== 'base' && level === 1 && !secret(row));
       return `<button class="sg-st-tile ${x.have ? 'is-have' : x.next ? 'is-next' : 'is-locked'} ${on ? 'is-on' : ''} ${worn ? 'is-worn' : ''}" data-sg-tile="${row}:${level}" aria-pressed="${on}" aria-label="${hidden ? '?' : `${shopTab === 'special' ? powerName(row, level) : shopTab === 'base' ? t(`siegeBaseName${row}` as Key) : name(row)} · ${t('siegeLevel', { n: level })}`}">${hidden ? '<span class="sg-st-q" aria-hidden="true">?</span>' : `<img src="${pic}" ${shopTab === 'base' || shopTab === 'special' ? '' : `data-trim="${pic}"`} alt="">`}${corner && !hidden ? `<small>${corner}</small>` : ''}${worn ? '<b class="sg-st-worn" aria-hidden="true">✓</b>' : ''}</button>`;
     }).join('<span class="sg-st-link" aria-hidden="true"></span>')}</div>`).join('');
-    const x = tile(pick.row, pick.level), troop = shopTab !== 'base', hid = !x.have && !x.next && !(troop && pick.level === 1);
+    const x = tile(pick.row, pick.level), troop = shopTab !== 'base', hid = !x.have && !x.next && !(troop && pick.level === 1 && !secret(pick.row));
     const title = hid ? '? ? ?' : `${shopTab === 'special' ? powerName(pick.row, pick.level) : troop ? name(pick.row) : t(`siegeBaseName${pick.row}` as Key)} · ${t('siegeLevel', { n: pick.level })}`;
     const text = hid ? '' : shopTab === 'special' ? `${t(`siegePower${pick.row}Text` as Key)} · ${t('siegePowerCd', { n: cartoonModel.POWERS[pick.row].cooldown })}` : troop ? role(pick.row, pick.level) : t(`siegeBaseText${pick.row}` as Key);
     const pic = shopTab === 'special' ? powerPic(pick.row, pick.level) : shopTab === 'base' ? `/images/game/${upgradePic('cartoon', pick.row, pick.level)}.webp` : V.portrait(pick.row, pick.level);
