@@ -8,6 +8,10 @@ This changelog tracks game-version changes starting with v1.12.55. Earlier relea
 
 ### Changed
 - «Break to back»'s breakbeat blocks and drop are led by a Spanish breaks mid bass, after Colombo: three detuned saws and a square an octave down, driven hard, through a filter that talks within each note, playing its own riff over a clean sub on the strong beats. It replaces the reese there; the levels stay even across the song.
+- «Break to back» is cleaner, after The Prodigy's backbeat: a big dry clap (a tight snap and a short body over the clap) marks two and four in every drum block, and the clutter around it is cut (most ghost snares and stutters, the answering bleeps, the cowbell in the drop, the acid in the drop's first half).
+
+### Fixed
+- The music's low-pass opens as the intensity already set says when the sound starts: every song was muffled at 2200 Hz on the cover until a run began.
 
 ## 1.15.167 - 2026-10-31
 
