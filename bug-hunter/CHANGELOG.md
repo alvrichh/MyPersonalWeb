@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.160 - 2026-10-31
+
+### Changed
+- Siege Cartoon's legendary troops are hidden troops: in the shop they show as «?» (every form, name and stats) until the game is won, with only their lock note. The golem is now the Core Titan.
+
 ## 1.15.159 - 2026-10-31
 
 ### Added
