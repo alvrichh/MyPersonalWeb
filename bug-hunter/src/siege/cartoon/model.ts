@@ -62,6 +62,8 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
   legend?: boolean;
   /** A sweep whose wave is in its own attack pose (the golem's punch): nothing more is drawn. */
   quake?: boolean;
+  /** A piercing beam (the star eater's): it strikes everything ahead of it as far as it reaches, and bursts round its target. */
+  pierce?: boolean;
   /** A breath (the dragon's): its sweep is drawn as fire of these two colours (core, edge) instead of a crescent. */
   breath?: [string, string];
   /** How many it scoops at once (the gold drill takes two); one if unsaid. */
@@ -251,6 +253,8 @@ export const UNITS: readonly Spec[] = [
   { id: 56, flyAt: 60, cost: 300, hp: 4000, damage: 150, speed: 40, range: 160, rate: 1.8, cooldown: 40, unlock: 6, air: true, legend: true, sweep: { reach: 340, back: 150 }, breath: ['#e8fbff', '#2fa8ff'], ...six('ally-dragon-1', 227, 2.3) },
   // The golem, legendary: colossal gold and crystal; each punch sends a shockwave (in its attack pose) over everything in front.
   { id: 57, cost: 260, hp: 6500, damage: 170, speed: 17, range: 60, rate: 2.3, cooldown: 35, unlock: 6, legend: true, steady: true, sweep: { reach: 170, back: 230 }, quake: true, ...six('ally-golem-1', 209, 1.45) },
+  // The star eater, legendary flyer: its cosmic beam (in its attack pose) pierces everything in a line and bursts into a star.
+  { id: 58, flyAt: 70, cost: 280, hp: 3500, damage: 190, speed: 30, range: 320, rate: 2.2, cooldown: 35, unlock: 6, air: true, legend: true, hitsAir: true, pierce: true, splash: 90, shot: 'none', ...six('ally-star-eater-1', 237, 1.3) },
 ];
 /** The enemy's land and air troops by act, each act adding to the last (docs/siege-roster.md): early waves draw
     from the first two of the land list. No flyers in the first world: they come from the second. */
@@ -301,7 +305,7 @@ export function threatPool(stage: number): number[] {
 /** The enemy's troops in a battle: every earlier act's, and its own act's coming in one more each stage. */
 export const foesAt = (lists: number[][], stage: number) => [...lists.slice(0, actOf(stage) - 1).flat(), ...(lists[actOf(stage) - 1] ?? []).slice(0, stageIn(stage))];
 /** What recruiting each of our troops costs in gold (the swordsman is everyone's first). Bought once, kept. */
-export const RECRUIT: Record<number, number> = { 0: 0, 1: 100, 2: 120, 3: 350, 4: 300, 5: 600, 6: 900, 7: 700, 8: 900, 9: 1600, 10: 250, 11: 500, 12: 900, 13: 700, 14: 2000, 33: 1200, 51: 900, 52: 800, 53: 400, 54: 500, 55: 1100, 56: 3000, 57: 4000 };
+export const RECRUIT: Record<number, number> = { 0: 0, 1: 100, 2: 120, 3: 350, 4: 300, 5: 600, 6: 900, 7: 700, 8: 900, 9: 1600, 10: 250, 11: 500, 12: 900, 13: 700, 14: 2000, 33: 1200, 51: 900, 52: 800, 53: 400, 54: 500, 55: 1100, 56: 3000, 57: 4000, 58: 4500 };
 /** The guardian of each act, drawn bigger: Large Slinger, Large Gatling Robot, Large Red Dragon Rider, Giant Brute
     Eater, Giant Dinosaur Brute, Giant King Dinosaur Brute. */
 export const GUARDIAN = [34, 35, 36, 37, 38, 39];
@@ -468,7 +472,7 @@ function wince(u: Fighter, damage: number) {
   if (damage >= u.maxHp * WINCE.share && !u.winceCd) { u.wince = WINCE.time; u.winceCd = WINCE.every; }
 }
 export const CHARGE = { reach: 170, pace: 4, back: 130, daze: 0.9 };
-export interface Effect { x: number; from: number; lane: number; life: number; max: number; kind: 'shot' | 'burst' | 'arrow' | 'rocket' | 'bolt' | 'gust' | 'loot' | 'boom' | 'fire' | 'stuck' | 'fall' | 'ground' | 'zap' | 'wave' | 'sweep' | 'breath' | 'heal'; side: 0 | 1;
+export interface Effect { x: number; from: number; lane: number; life: number; max: number; kind: 'shot' | 'burst' | 'arrow' | 'rocket' | 'bolt' | 'gust' | 'loot' | 'boom' | 'fire' | 'stuck' | 'fall' | 'ground' | 'zap' | 'wave' | 'sweep' | 'breath' | 'heal' | 'beam'; side: 0 | 1;
   /** A `breath`'s fire: core and edge colours. */
   colors?: [string, string];
   /** A `boom` (an explosion) or a `fire` (a burning pool on the ground): its size, and the height it is at. */
@@ -567,7 +571,7 @@ const ATTACK_SOUND: Record<number, string | string[]> = {
   0: ['blunt', 'blade', 'blade', 'blade', 'blade'], 1: 'pierce', 3: ['blade', 'blunt', 'blunt', 'blunt'], 4: ['gun', 'rifle', 'uzi', 'sniper'],
   7: 'claw', 8: ['rocket', 'gatling', 'rocket'], 9: ['gatling', 'gatling', 'gatling', 'gatling'], 10: 'blade', 11: ['rifle', 'sniper', 'ray', 'thunder'], 12: 'rocket', 13: 'drill', 14: ['blade', 'magic', 'magic'], 33: ['blunt', 'ray', 'ray', 'blunt', 'gatling', 'blunt'],
   15: 'blade', 16: 'pierce', 17: 'bite', 18: 'claw', 19: 'blade', 20: 'blunt', 21: 'blade', 22: 'rifle', 23: 'throw', 24: 'magic',
-  53: 'heal', 54: 'blunt', 55: 'slash', 56: 'roar', 57: 'meteor',
+  53: 'heal', 54: 'blunt', 55: 'slash', 56: 'roar', 57: 'meteor', 58: 'thunder',
   40: 'blunt', 41: 'bite', 42: 'blunt', 43: 'pierce', 44: 'blunt', 47: 'bite', 48: 'bite', 49: 'blade', 50: 'pierce',
   25: 'claw', 26: 'breath', 27: 'blade', 28: 'claw', 29: 'claw', 30: 'magic', 31: 'blade', 32: 'gatling',
   34: 'throw', 35: 'gatling', 36: 'breath', 37: 'blunt', 38: 'bite', 39: 'bite',
@@ -580,7 +584,7 @@ const DEATH_SOUND: Record<number, string | string[]> = {
   1: ['die-man', 'die-man', 'die-man', 'die-man', 'die-horse'], 3: 'die-armor', 7: 'die-beast', 8: 'die-bot', 9: 'die-bot',
   10: 'die-flyer', 11: 'die-flyer', 12: 'die-flyer', 13: 'die-bot', 14: 'die-flyer', 33: 'die-bot',
   17: 'die-beast', 18: 'die-brute', 20: 'die-armor', 21: 'die-armor', 25: 'die-beast', 26: 'die-dragon', 27: 'die-flyer', 28: 'die-flyer',
-  51: 'die-armor', 52: 'die-flyer', 54: 'die-armor', 56: 'die-dragon', 57: 'die-bot',
+  51: 'die-armor', 52: 'die-flyer', 54: 'die-armor', 56: 'die-dragon', 57: 'die-bot', 58: 'die-flyer',
   40: 'die-beast', 41: 'die-beast', 42: 'die-brute', 44: 'die-brute', 47: 'die-beast', 48: 'die-flyer', 49: 'die-flyer', 50: 'die-flyer',
   29: 'die-flyer', 30: 'die-flyer', 31: 'die-dragon', 32: 'die-bot',
   34: 'die-brute', 35: 'die-bot', 36: 'die-dragon', 37: 'die-brute', 38: 'die-dragon', 39: 'die-dragon',
@@ -1015,7 +1019,12 @@ export function tick(s: Siege, dt: number) {
           }
           s.effects.push({ x: u.x, from: u.x, lane: u.lane, life: 0.7, max: 0.7, kind: 'heal', side: u.side, size: 1 });
         } else
-        for (const v of alive) if (v.side !== u.side && reaches(u, v) && (scooped ? scooped.includes(v) : v === enemy || (area && Math.abs(v.x - enemy.x) < area))) hits.push({ target: v, damage: u.damage, boss: u.boss, push: a.ram ?? a.shove });
+        for (const v of alive) if (v.side !== u.side && reaches(u, v) && (scooped ? scooped.includes(v) : v === enemy || (area && Math.abs(v.x - enemy.x) < area) || (a.pierce && (v.x - u.x) * (enemy.x - u.x) > 0 && Math.abs(v.x - u.x) <= a.range + 40))) hits.push({ target: v, damage: u.damage, boss: u.boss, push: a.ram ?? a.shove });
+        if (a.pierce) {
+          const end = u.x + (enemy.x > u.x ? 1 : -1) * (a.range + 40);
+          s.effects.push({ x: end, from: u.x, lane: u.lane, life: 0.55, max: 0.55, kind: 'beam', side: u.side, fromUp: u.alt ?? highOf(u), size: a.size });
+          s.effects.push({ x: enemy.x, from: enemy.x, lane: enemy.lane, life: BOOM, max: BOOM, kind: 'boom', side: u.side, size: 110 });
+        }
         if (a.ram) { u.lunge = KNOCK.time; u.lungeBack = a.ram * RAM.lunge; u.low = KNOCK.time + RAM.low; }
         if (u.boss) s.effects.push({ x: enemy.x, from: enemy.x, lane: enemy.lane, life: BOOM, max: BOOM, kind: 'boom', side: u.side, size: 80, dark: true });
         launch(s, u, a, enemy.x, enemy.lane, UNITS[enemy.id].air ? enemy.alt ?? highOf(enemy) : 0);
