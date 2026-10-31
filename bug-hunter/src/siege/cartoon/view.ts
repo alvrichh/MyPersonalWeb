@@ -501,6 +501,20 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     }
     ctx.restore(); return true;
   }
+  if (e.kind === 'beam') {
+    // The star eater's cosmic beam: from its mouth down onto the field and along it as far as it reaches, a white core
+    // in a blue glow, flaring then fading, with a few sparks running along it.
+    const body = e.size ?? 120, dir = e.x >= e.from ? 1 : -1, fade = p < 0.5 ? 1 : (1 - p) / 0.5, w = 26 * (p < 0.15 ? p / 0.15 : 1);
+    const mx = e.from + dir * body * 0.35, my = ground - (e.fromUp ?? 0) - body * 0.45, ly = ground - 22;
+    const path = () => { ctx.beginPath(); ctx.moveTo(mx, my); ctx.quadraticCurveTo(mx + dir * body * 0.9, ly, mx + dir * body * 1.6, ly); ctx.lineTo(e.x, ly); };
+    ctx.save(); ctx.lineCap = 'round'; ctx.globalCompositeOperation = 'lighter';
+    ctx.globalAlpha = 0.45 * fade; ctx.strokeStyle = '#2f7dff'; ctx.lineWidth = w * 2.2; path(); ctx.stroke();
+    ctx.globalAlpha = 0.8 * fade; ctx.strokeStyle = '#7fd8ff'; ctx.lineWidth = w; path(); ctx.stroke();
+    ctx.globalAlpha = fade; ctx.strokeStyle = '#ffffff'; ctx.lineWidth = w * 0.35; path(); ctx.stroke();
+    ctx.fillStyle = '#fff6c4';
+    for (let k = 0; k < 10; k++) { const f = (k / 10 + p * 2.5) % 1, x = mx + dir * body * 1.6 + (e.x - mx - dir * body * 1.6) * f; ctx.globalAlpha = fade * (1 - f * 0.5); ctx.beginPath(); ctx.arc(x, ly + Math.sin(k * 5 + p * 20) * 8, 3, 0, Math.PI * 2); ctx.fill(); }
+    ctx.restore(); return true;
+  }
   if (e.kind === 'heal') {
     // The medic's mending: green crosses rising off each troop it heals; round the medic, a soft green ring.
     ctx.save(); ctx.globalAlpha = p < 0.7 ? 1 : (1 - p) / 0.3;

@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.161 - 2026-10-31
+
+### Added
+- Siege Cartoon: a fourth legendary troop, the Star Eater (air, 4500 gold, 280 energy), from the owner's sheet. From far off (320), its cosmic beam strikes everything ahead of it as far as it reaches (190) and bursts into a star at its target, reaching flyers too. Hidden until the game is won, like the others.
+
 ## 1.15.160 - 2026-10-31
 
 ### Changed
