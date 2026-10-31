@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-30T14:46:14.557Z",
+  "generatedAt": "2026-10-31T14:14:58.092Z",
   "candidates": [
     {
       "label": "Claude research and documentation flow",
@@ -10,19 +10,13 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-10-30"
+          "date": "2026-10-31"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-10-30"
-        },
-        {
-          "title": "webframe: evaluated as a scraper and a sandbox",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/26/webframe-evaluation/",
-          "date": "2026-10-26"
+          "date": "2026-10-31"
         }
       ]
     },
@@ -35,19 +29,88 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
+          "date": "2026-10-31"
+        },
+        {
+          "title": "Basically no one is using AI agents for their DoorDash orders",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/ai/2026/10/doordash-says-outside-ai-agents-have-only-led-to-hundreds-of-orders-so-far/",
           "date": "2026-10-30"
         },
         {
-          "title": "How the UK Amazon Quick User Group grew in 2026",
+          "title": "Preview web apps live as your coding agent builds them with Amazon Bedrock AgentCore runtime",
           "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/how-the-uk-amazon-quick-user-group-grew-in-2026/",
-          "date": "2026-10-29"
+          "link": "https://aws.amazon.com/blogs/machine-learning/preview-web-apps-live-as-your-coding-agent-builds-them-with-amazon-bedrock-agentcore-runtime/",
+          "date": "2026-10-30"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Preview web apps live as your coding agent builds them with Amazon Bedrock AgentCore runtime",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/preview-web-apps-live-as-your-coding-agent-builds-them-with-amazon-bedrock-agentcore-runtime/",
+          "date": "2026-10-30"
         },
         {
-          "title": "Building intent-driven UI testing with Amazon Nova Act",
+          "title": "GitHub Octoverse 2026",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/28/github-octoverse-2026/",
+          "date": "2026-10-28"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Configure the ChatGPT desktop app with Amazon Bedrock in AWS GovCloud (US)",
           "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/building-intent-driven-ui-testing-with-amazon-nova-act/",
+          "link": "https://aws.amazon.com/blogs/machine-learning/configure-the-chatgpt-desktop-app-with-amazon-bedrock-in-aws-govcloud-us/",
+          "date": "2026-10-30"
+        },
+        {
+          "title": "Community safety report and new protections for teens",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/community-safety-report-and-new-protections-for-teens",
+          "date": "2026-10-30"
+        },
+        {
+          "title": "Credit Saison achieves 954% ROI in a ChatGPT Enterprise pilot",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/credit-saison",
           "date": "2026-10-29"
+        }
+      ]
+    },
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Run AI Models for Edge Application Development with Just a Few Commands",
+          "source": "NVIDIA Developer",
+          "link": "https://developer.nvidia.com/blog/run-ai-models-for-edge-application-development-with-just-a-few-commands/",
+          "date": "2026-10-30"
+        },
+        {
+          "title": "Build Specialized Agents on a Stack You Control with NVIDIA NemoClaw",
+          "source": "NVIDIA Developer",
+          "link": "https://developer.nvidia.com/blog/build-specialized-agents-on-a-stack-you-control-with-nvidia-nemoclaw/",
+          "date": "2026-10-30"
+        },
+        {
+          "title": "Quoting Terk Terkowitz",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/28/terk-terkowitz/",
+          "date": "2026-10-28"
         }
       ]
     },
@@ -90,41 +153,10 @@
       ]
     },
     {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "API credits benefit for eligible ChatGPT subscriptions",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/29/api-credits/",
-          "date": "2026-10-29"
-        },
-        {
-          "title": "OpenAI and ServiceNow expand partnership across enterprise workflows",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/openai-servicenow-partnership-expansion",
-          "date": "2026-10-28"
-        },
-        {
-          "title": "Legora is building the agentic operating system for legal work",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/legora",
-          "date": "2026-10-28"
-        }
-      ]
-    },
-    {
       "label": "Gemini multimodal exploration",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
-        {
-          "title": "You can generate and edit Google Docs files directly in Gemini chats now",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1022519/google-gemini-file-editing-documents-pdfs",
-          "date": "2026-10-29"
-        },
         {
           "title": "Google announces Gemini 4 Carbon, its latest frontier AI model that you can't use",
           "source": "Ars Technica AI",
@@ -135,56 +167,6 @@
           "title": "Gemini 4 Carbon: Our next frontier model",
           "source": "Google DeepMind",
           "link": "https://deepmind.google/blog/gemini-4-carbon-our-next-frontier-model/",
-          "date": "2026-10-28"
-        }
-      ]
-    },
-    {
-      "label": "AI automation and workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Accelerating software delivery with agentic QA automation using Amazon Nova Act – Part 3",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/accelerating-software-delivery-with-agentic-qa-automation-using-amazon-nova-act-part-3/",
-          "date": "2026-10-28"
-        },
-        {
-          "title": "Build shared workflows for your team with Copilot Automations",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-10-28-build-shared-workflows-for-your-team-with-copilot-automations",
-          "date": "2026-10-28"
-        },
-        {
-          "title": "Creating AI value with enterprise context",
-          "source": "MIT Technology Review AI",
-          "link": "https://www.technologyreview.com/2026/10/28/1147709/creating-ai-value-with-enterprise-context/",
-          "date": "2026-10-28"
-        }
-      ]
-    },
-    {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Introducing the Microsoft Copilot harness in Foundry Agent Service",
-          "source": "Azure Blog",
-          "link": "https://devblogs.microsoft.com/foundry/microsoft-copilot-harness-in-foundry/",
-          "date": "2026-10-28"
-        },
-        {
-          "title": "Route and orchestrate models with GitHub Copilot Fusion",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-10-28-route-and-orchestrate-models-with-github-copilot-fusion",
-          "date": "2026-10-28"
-        },
-        {
-          "title": "GitHub Copilot app, Universe releases",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-10-28-github-copilot-app-universe-releases",
           "date": "2026-10-28"
         }
       ]
