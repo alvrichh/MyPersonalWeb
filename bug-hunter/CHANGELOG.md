@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.153 - 2026-10-31
+
+### Changed
+- Siege Cartoon's ninja, while unseen, is easier for you to follow: 60% opaque (from 45%) and wrapped in drifting puffs of dark smoke.
+
 ## 1.15.152 - 2026-10-31
 
 ### Added
