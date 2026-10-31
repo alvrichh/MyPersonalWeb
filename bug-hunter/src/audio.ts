@@ -25,14 +25,19 @@ export type Sfx =
 const BPM = 174;
 const STEP = 60 / BPM / 4; // a sixteenth
 const BAR = STEP * 16;
-/* «Break to back» (`breaks`): UK bass breaks after mBreaks, at 140 BPM, the odd sixteenths swung a little late. */
-const G_BPM = 140;
+/* «Break to back» (`breaks`): UK bass breaks after mBreaks and Deekline's breakstep, at 134 BPM, the odd sixteenths
+   swung a little late (straight in the breakstep blocks). */
+const G_BPM = 134;
 const GSTEP = 60 / G_BPM / 4;
 const GBAR = GSTEP * 16;
 const SWING = 0.12;
-/** Its form in eight-bar blocks: a 2-step groove, a funky breakbeat, a drumless break, and a drop with both. */
-type GBlock = 'intro' | 'garage' | 'breaks' | 'break' | 'drop';
-const GARAGE_FORM: GBlock[] = ['intro', 'garage', 'garage', 'breaks', 'break', 'drop', 'breaks', 'drop'];
+/** Its form in eight-bar blocks: a 2-step groove, a funky breakbeat, Deekline's breakstep (a straight funky break over
+    a Miami 808 boom and a cowbell), a drumless break, and a drop with everything. */
+type GBlock = 'intro' | 'garage' | 'breaks' | 'breakstep' | 'break' | 'drop';
+const GARAGE_FORM: GBlock[] = ['intro', 'breakstep', 'garage', 'breaks', 'break', 'breakstep', 'drop', 'breakstep'];
+/** The breakstep's break, two bars: kicks and snares straight on the grid (no swing), and the Miami cowbell. */
+const STEP_KICK = [[0, 3, 10], [0, 6, 8, 11]];
+const STEP_BELL = [[3, 6, 10, 14], [2, 7, 10, 13]];
 /** The bass line, two bars of sixteenths over the chord's root ('r' rests, null holds), and the lead's four bars of eighths. */
 const GARAGE_BASS: Note[] = [0, null, 'r', 12, 'r', 'r', 0, 'r', 'r', 'r', 10, null, 'r', 12, 'r', 7, 0, null, 'r', 'r', 12, 'r', 0, 'r', 'r', 3, 'r', 'r', 5, null, 7, 'r'];
 /** «Break to back»'s chops of its break, one a bar: where the kick, the snare and the ghost snares fall. */
@@ -984,12 +989,14 @@ class Engine {
     const chord = (second ? song.chordsB : song.chords)[Math.floor(bar / 2) % 4];
     const bassRoot = (second ? song.rootsB : song.roots)[Math.floor(bar / 2) % 4];
     if (this.final) this.tension(bar, inBar, at, chord);
-    // The garage swing: every odd sixteenth comes a little late.
-    const t = inBar % 2 ? at + GSTEP * SWING : at;
+    // The garage swing: every odd sixteenth comes a little late (the breakstep plays straight).
+    const t = inBar % 2 && block !== 'breakstep' ? at + GSTEP * SWING : at;
     const last = blockBar === 7;
     const garage = block === 'garage' || block === 'drop';
     const breaks = block === 'breaks' || block === 'drop';
     if (inBar === 0 && blockBar === 0 && setBar !== 0) this.crash(at);
+    // The drop carries the cowbell too.
+    if (block === 'drop' && blockBar % 2 === 1 && STEP_BELL[bar % 2].includes(inBar)) this.cowbell(t, 0.09);
     if (block === 'intro' || block === 'break') {
       // No kick: shuffled hats and a rim, a riser into what comes next.
       if (inBar % 2 === 1) this.hat(t, 0.12, false);
@@ -1007,6 +1014,21 @@ class Engine {
       // Swung sixteenth hats, the open one on every offbeat eighth, and a shaker.
       this.hat(t, inBar % 4 === 2 ? 0.34 : 0.13, inBar % 4 === 2);
       if (inBar === 3 || inBar === 11 || inBar === 14) this.hat(t, 0.2, false);
+    }
+    if (block === 'breakstep') {
+      // Breakstep: a straight, funky break with a hard snare and clap, eighth hats opening on the offbeats, ghost snares
+      // rolling into the next bar, the Miami cowbell, and every kick an 808 that booms and slides under it.
+      const two = bar % 2;
+      if (STEP_KICK[two].includes(inBar)) { this.kick(at); this.boom808(at, semi(this.root, bassRoot + (inBar >= 8 && two ? 7 : 0)), GSTEP * (inBar === 0 ? 7 : 4)); }
+      if (inBar === 4 || inBar === 12) { this.snare(at, 0.95); this.clap(at, 0.5); }
+      if (inBar === 7 || inBar === 9 || (two && inBar === 15)) this.snare(at, 0.24);
+      if (inBar % 2 === 0) this.hat(at, inBar % 4 === 2 ? 0.32 : 0.16, inBar % 4 === 2);
+      if (blockBar >= 2 && STEP_BELL[two].includes(inBar)) this.cowbell(at, inBar === STEP_BELL[two][0] ? 0.16 : 0.11);
+      // The DJ's scratch closing every four bars, back and forth on the last beat.
+      if (blockBar % 4 === 3 && inBar === 12) this.scratch(at);
+      if (last && inBar >= 12) this.snare(at, 0.35 + (inBar - 12) * 0.12);
+      // Stabs on the offbeats in the second half of the block, the garage's chords over the breakstep.
+      if (blockBar >= 4 && (inBar === 6 || inBar === 14)) this.stab(at, chord);
     }
     if (breaks) {
       // Choppy breaks: each bar another chop of the same break (`BREAK_CHOPS`), the kick and snare moved about,
@@ -1032,6 +1054,14 @@ class Engine {
     // The bass: a dubby sub line in the garage blocks, a growl in the breakbeat ones, one long sub in the break.
     if (block === 'break') {
       if (inBar === 0 && bar % 2 === 0) this.sub(at, semi(this.root, bassRoot), GBAR * 1.7);
+    } else if (block === 'breakstep') {
+      // The 808 under the kicks is the bass here; the UK wah line rides above it, and the reese in the second half.
+      const n = GARAGE_BASS[(bar % 2) * 16 + inBar];
+      if (typeof n === 'number') {
+        this.ukBass(t, semi(this.root * 2, bassRoot + n), GSTEP * 1.5, blockBar >= 4);
+        // The second half grows: the reese growl joins the 808.
+        if (blockBar >= 4) { let len = 1; while (GARAGE_BASS[((bar % 2) * 16 + inBar + len) % 32] === null) len += 1; this.reese(t, semi(this.root, bassRoot + n), GSTEP * len * 1.1); }
+      }
     } else if (block !== 'intro') {
       const n = GARAGE_BASS[(bar % 2) * 16 + inBar];
       if (typeof n === 'number') {
@@ -1139,6 +1169,37 @@ class Engine {
     this.env(g, at, vol, 0.002, length);
     o.connect(g);
     this.out(g, 0.25);
+  }
+  /** A Miami 808: a long sine boom that starts a little sharp, slides onto its note and rings out, driven so a phone
+      speaker hears it as well as feels it. */
+  private boom808(at: number, freq: number, length: number) {
+    const o = this.osc('sine', freq * 1.5, at, at + length + 0.1);
+    o.frequency.exponentialRampToValueAtTime(freq, at + 0.06);
+    o.frequency.exponentialRampToValueAtTime(freq * 0.94, at + length);
+    const g = this.ctx.createGain();
+    this.env(g, at, 0.95, 0.004, length * 0.5, 0.55, length * 0.5);
+    o.connect(this.shaper(4)).connect(g);
+    this.out(g);
+  }
+  /** The 808 cowbell: two detuned squares (540 and 800 Hz) through a band-pass, short and bright. */
+  private cowbell(at: number, vol: number) {
+    const g = this.ctx.createGain(), bp = this.filt('bandpass', 1100, 2.2);
+    for (const f of [540, 800]) this.osc('square', f, at, at + 0.3).connect(bp);
+    this.env(g, at, vol, 0.001, 0.22);
+    bp.connect(g);
+    this.out(g, 0.12);
+  }
+  /** A DJ's scratch: a burst of noise through a narrow band-pass swept up, down and up again, like a record pushed back
+      and forth under the needle. */
+  private scratch(at: number) {
+    const len = GSTEP * 4, n = this.noiseAt(at, len + 0.05), bp = this.filt('bandpass', 600, 6), g = this.ctx.createGain();
+    bp.frequency.setValueAtTime(500, at);
+    bp.frequency.exponentialRampToValueAtTime(2600, at + len * 0.3);
+    bp.frequency.exponentialRampToValueAtTime(400, at + len * 0.6);
+    bp.frequency.exponentialRampToValueAtTime(2200, at + len);
+    this.env(g, at, 0.3, 0.005, len, 0.6, 0.03);
+    n.connect(bp).connect(g);
+    this.out(g, 0.1);
   }
   /** An 808 sub sliding down to its note. */
   private slideSub(at: number, from: number, to: number, length: number) {
