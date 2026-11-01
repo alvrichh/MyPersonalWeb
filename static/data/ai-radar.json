@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-31T14:14:58.092Z",
-  "date": "2026-10-31",
+  "generatedAt": "2026-11-01T14:41:04.401Z",
+  "date": "2026-11-01",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
@@ -9,7 +9,7 @@
     {
       "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
       "source": "Anthropic News",
-      "date": "2026-10-31",
+      "date": "2026-11-01",
       "url": "https://www.anthropic.com/news/expanding-partnership-gsa",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -20,7 +20,7 @@
     {
       "title": "Donating Agent Skills to the Agentic AI Foundation",
       "source": "Anthropic News",
-      "date": "2026-10-31",
+      "date": "2026-11-01",
       "url": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -32,7 +32,7 @@
     {
       "title": "Introducing the Anthropic Cyber Mission",
       "source": "Anthropic News",
-      "date": "2026-10-31",
+      "date": "2026-11-01",
       "url": "https://www.anthropic.com/news/anthropic-cyber-mission",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -43,13 +43,39 @@
     {
       "title": "Security",
       "source": "Anthropic News",
-      "date": "2026-10-31",
+      "date": "2026-11-01",
       "url": "https://www.anthropic.com/news/security",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
         "Claude"
       ],
       "image": "https://www-cdn.anthropic.com/images/4zrzovbb/website/6d4a0d28992ade92d6fa63646fd9c9d318245c6c-2400x1260.jpg"
+    },
+    {
+      "title": "How We Took Over ChatGPT Accounts",
+      "source": "Simon Willison",
+      "date": "2026-10-31",
+      "url": "https://simonwillison.net/2026/Oct/31/how-we-took-over-chatgpt-accounts/",
+      "summary": "How We Took Over ChatGPT Accounts Parameter Labs describe an exploit they found against ChatGPT's implementation of the artifacts pattern (OpenAI used to call this \"Canvas\" but it looks like the latest revision is called...",
+      "tags": [
+        "ChatGPT",
+        "Dev Tools",
+        "Multimodal"
+      ],
+      "image": "https://simonwillison.net/2026/Oct/31/how-we-took-over-chatgpt-accounts/"
+    },
+    {
+      "title": "datasette-llm 0.1a9",
+      "source": "Simon Willison",
+      "date": "2026-10-31",
+      "url": "https://simonwillison.net/2026/Oct/31/datasette-llm/",
+      "summary": "Release: datasette-llm 0.1a9 I have some big upgrades to Datasette Agent in the pipeline, but in the meantime here's a tiny user experience improvement to the underlying datasette-llm plugin. It now picks up the default ...",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Models"
+      ],
+      "image": "https://simonwillison.net/2026/Oct/31/datasette-llm/"
     },
     {
       "title": "Anthropic VS code extension on Cursor backdoored for nearly 12 hours",
@@ -192,18 +218,6 @@
       "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/10/project-suncatcher-google.png?quality=90&strip=all&crop=0,0,100,100"
     },
     {
-      "title": "Wikipedia’s operator says a bad AI copyright ruling could threaten the open web",
-      "source": "The Verge AI",
-      "date": "2026-10-30",
-      "url": "https://www.theverge.com/policy/1022880/wikipedia-openai-new-york-times-copyright",
-      "summary": "The Wikimedia Foundation is staking out a middle ground in a group of landmark AI copyright cases, pushing courts to legally protect large language models (LLMs) training on copyrighted work - but not chatbots regurgitat...",
-      "tags": [
-        "Agents",
-        "Models"
-      ],
-      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/02/STK037_WIKIPEDIA_A.jpg?quality=90&strip=all&crop=0,0,100,100"
-    },
-    {
       "title": "Granite Switch 4.1.1 — Update models like you update software",
       "source": "Hugging Face",
       "date": "2026-10-29",
@@ -224,17 +238,6 @@
         "AI"
       ],
       "image": "https://huggingface.co/blog/assets/ml4/thumbnail.png"
-    },
-    {
-      "title": "Introducing AnySpeechRecognizer and AnyDecisionModel: Open Models for Speech and Decisions on Apple Platforms",
-      "source": "Hugging Face",
-      "date": "2026-10-29",
-      "url": "https://huggingface.co/blog/anydecisionmodel",
-      "summary": "AI update detected from an official or high-signal source.",
-      "tags": [
-        "Models"
-      ],
-      "image": "https://huggingface.co/blog/assets/anydecisionmodel/banner.png"
     }
   ],
   "candidates": [
@@ -247,13 +250,13 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-10-31"
+          "date": "2026-11-01"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-10-31"
+          "date": "2026-11-01"
         }
       ]
     },
@@ -266,6 +269,12 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
+          "date": "2026-11-01"
+        },
+        {
+          "title": "datasette-llm 0.1a9",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/31/datasette-llm/",
           "date": "2026-10-31"
         },
         {
@@ -273,11 +282,30 @@
           "source": "Ars Technica AI",
           "link": "https://arstechnica.com/ai/2026/10/doordash-says-outside-ai-agents-have-only-led-to-hundreds-of-orders-so-far/",
           "date": "2026-10-30"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "How We Took Over ChatGPT Accounts",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/31/how-we-took-over-chatgpt-accounts/",
+          "date": "2026-10-31"
         },
         {
-          "title": "Preview web apps live as your coding agent builds them with Amazon Bedrock AgentCore runtime",
+          "title": "Configure the ChatGPT desktop app with Amazon Bedrock in AWS GovCloud (US)",
           "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/preview-web-apps-live-as-your-coding-agent-builds-them-with-amazon-bedrock-agentcore-runtime/",
+          "link": "https://aws.amazon.com/blogs/machine-learning/configure-the-chatgpt-desktop-app-with-amazon-bedrock-in-aws-govcloud-us/",
+          "date": "2026-10-30"
+        },
+        {
+          "title": "Community safety report and new protections for teens",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/community-safety-report-and-new-protections-for-teens",
           "date": "2026-10-30"
         }
       ]
@@ -298,31 +326,6 @@
           "source": "Simon Willison",
           "link": "https://simonwillison.net/2026/Oct/28/github-octoverse-2026/",
           "date": "2026-10-28"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Configure the ChatGPT desktop app with Amazon Bedrock in AWS GovCloud (US)",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/configure-the-chatgpt-desktop-app-with-amazon-bedrock-in-aws-govcloud-us/",
-          "date": "2026-10-30"
-        },
-        {
-          "title": "Community safety report and new protections for teens",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/community-safety-report-and-new-protections-for-teens",
-          "date": "2026-10-30"
-        },
-        {
-          "title": "Credit Saison achieves 954% ROI in a ChatGPT Enterprise pilot",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/credit-saison",
-          "date": "2026-10-29"
         }
       ]
     },
