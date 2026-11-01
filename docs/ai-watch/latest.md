@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-10-31
+# Daily AI maintenance report — 2026-11-01
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -17,24 +17,28 @@ This file is generated automatically by the daily maintenance workflow. It updat
 - NVIDIA Developer: OK (8 relevant items)
 - Ars Technica AI: OK (6 relevant items)
 - MIT Technology Review AI: OK (6 relevant items)
-- The Verge AI: OK (3 relevant items)
+- The Verge AI: OK (2 relevant items)
 
 ## Relevant AI updates
 
-- **Expanding our partnership with GSA to bring Claude to all levels of government** — Anthropic News · 2026-10-31
+- **Expanding our partnership with GSA to bring Claude to all levels of government** — Anthropic News · 2026-11-01
   https://www.anthropic.com/news/expanding-partnership-gsa
-- **Donating Agent Skills to the Agentic AI Foundation** — Anthropic News · 2026-10-31
+- **Donating Agent Skills to the Agentic AI Foundation** — Anthropic News · 2026-11-01
   https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation
-- **Introducing the Anthropic Cyber Mission** — Anthropic News · 2026-10-31
+- **Introducing the Anthropic Cyber Mission** — Anthropic News · 2026-11-01
   https://www.anthropic.com/news/anthropic-cyber-mission
-- **Security** — Anthropic News · 2026-10-31
+- **Security** — Anthropic News · 2026-11-01
   https://www.anthropic.com/news/security
-- **Expanding the Cyber Verification Program** — Anthropic News · 2026-10-31
+- **Expanding the Cyber Verification Program** — Anthropic News · 2026-11-01
   https://www.anthropic.com/news/cyber-verification-program
-- **Barclays scales Claude to upgrade operations and improve client experience** — Anthropic News · 2026-10-31
+- **Barclays scales Claude to upgrade operations and improve client experience** — Anthropic News · 2026-11-01
   https://www.anthropic.com/news/barclays-scales-claude
-- **Partnering with Accenture on embedded evaluation** — Anthropic News · 2026-10-31
+- **Partnering with Accenture on embedded evaluation** — Anthropic News · 2026-11-01
   https://www.anthropic.com/news/accenture-embedded-evaluation
+- **How We Took Over ChatGPT Accounts** — Simon Willison · 2026-10-31
+  https://simonwillison.net/2026/Oct/31/how-we-took-over-chatgpt-accounts/
+- **datasette-llm 0.1a9** — Simon Willison · 2026-10-31
+  https://simonwillison.net/2026/Oct/31/datasette-llm/
 - **Anthropic VS code extension on Cursor backdoored for nearly 12 hours** — Ars Technica AI · 2026-10-30
   https://arstechnica.com/security/2026/10/anthropic-vs-code-extension-on-cursor-backdoored-for-nearly-12-hours/
 - **Basically no one is using AI agents for their DoorDash orders** — Ars Technica AI · 2026-10-30
@@ -63,8 +67,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/tech/1023763/openai-google-microsoft-ai-scraping-standard-opt-out
 - **Google’s satellite AI server transmits its first response to Earth** — The Verge AI · 2026-10-30
   https://www.theverge.com/tech/1023528/google-project-suncatcher-ai-satellite-transmission
-- **Wikipedia’s operator says a bad AI copyright ruling could threaten the open web** — The Verge AI · 2026-10-30
-  https://www.theverge.com/policy/1022880/wikipedia-openai-new-york-times-copyright
 - **How the UK Amazon Quick User Group grew in 2026** — AWS Machine Learning · 2026-10-29
   https://aws.amazon.com/blogs/machine-learning/how-the-uk-amazon-quick-user-group-grew-in-2026/
 - **Building intent-driven UI testing with Amazon Nova Act** — AWS Machine Learning · 2026-10-29
@@ -149,10 +151,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/oracle-apps-in-chatgpt
 - **How NVIDIA Mission Control 2.5 Brings Autonomous Recovery to Kubernetes** — NVIDIA Developer · 2026-10-26
   https://developer.nvidia.com/blog/how-nvidia-mission-control-2-5-brings-autonomous-recovery-to-kubernetes/
-- **GPT-6.1 Terra** — Simon Willison · 2026-10-26
-  https://simonwillison.net/2026/Oct/26/gpt-61-terra/
-- **Quoting Jason Koebler** — Simon Willison · 2026-10-26
-  https://simonwillison.net/2026/Oct/26/jason-koebler/
 - **Does Your Model Run on AWS Trainium? Look It Up** — Hugging Face · 2026-10-23
   https://huggingface.co/blog/torch-neuronx-model-support
 - **Turning Database Grading into RL Rewards: Post-Training Agents with ThinkingBox** — Hugging Face · 2026-10-22
@@ -174,20 +172,22 @@ This file is generated automatically by the daily maintenance workflow. It updat
 - **How to continue a GitHub Copilot app session in VS Code** — GitHub AI & ML Blog · 2026-10-19
   https://github.blog/ai-and-ml/github-copilot/how-to-continue-a-github-copilot-app-session-in-vs-code/
 - **Managing open-weight model risk in enterprise deployments** — Azure Blog · 2026-10-16
-  https://azure.microsoft.com/en-us/blog/managing-open-weight-model-risk-in-enterprise-deployments/
+  https://www.microsoft.com/en-us/security/blog/2026/10/16/managing-open-weight-model-risk-in-enterprise-deployments/
 - **Evolving the cloud-native foundation for the next generation of AI** — Azure Blog · 2026-10-15
   https://azure.microsoft.com/en-us/blog/evolving-the-cloud-native-foundation-for-the-next-generation-of-ai/
 - **Google DeepMind and Singapore Government collaborate to build fine-tuned AI model for scam detection** — Google DeepMind · 2026-10-14
   https://deepmind.google/blog/on-device-ai-scam-detection-mddi/
 - **Infrastructure for the frontier era: Scaling intelligence through open industry collaboration** — Azure Blog · 2026-10-13
   https://azure.microsoft.com/en-us/blog/infrastructure-for-the-frontier-era-scaling-intelligence-through-open-industry-collaboration/
+- **GitHub’s model for secret detection: Finding more secrets with less noise** — GitHub AI & ML Blog · 2026-10-13
+  https://github.blog/ai-and-ml/githubs-model-for-secret-detection-finding-more-secrets-with-less-noise/
 
 ## Portfolio candidates
 
 - **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **MCP / tool-connected assistants** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Multimodal AI product workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
