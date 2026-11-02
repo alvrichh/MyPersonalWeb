@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-01T14:41:04.401Z",
-  "date": "2026-11-01",
+  "generatedAt": "2026-11-02T17:43:50.167Z",
+  "date": "2026-11-02",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
@@ -9,7 +9,7 @@
     {
       "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
       "source": "Anthropic News",
-      "date": "2026-11-01",
+      "date": "2026-11-02",
       "url": "https://www.anthropic.com/news/expanding-partnership-gsa",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -20,7 +20,7 @@
     {
       "title": "Donating Agent Skills to the Agentic AI Foundation",
       "source": "Anthropic News",
-      "date": "2026-11-01",
+      "date": "2026-11-02",
       "url": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -32,7 +32,7 @@
     {
       "title": "Introducing the Anthropic Cyber Mission",
       "source": "Anthropic News",
-      "date": "2026-11-01",
+      "date": "2026-11-02",
       "url": "https://www.anthropic.com/news/anthropic-cyber-mission",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -43,13 +43,140 @@
     {
       "title": "Security",
       "source": "Anthropic News",
-      "date": "2026-11-01",
+      "date": "2026-11-02",
       "url": "https://www.anthropic.com/news/security",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
         "Claude"
       ],
       "image": "https://www-cdn.anthropic.com/images/4zrzovbb/website/6d4a0d28992ade92d6fa63646fd9c9d318245c6c-2400x1260.jpg"
+    },
+    {
+      "title": "Build efficient agents with knowledge distillation on Amazon SageMaker AI",
+      "source": "AWS Machine Learning",
+      "date": "2026-11-02",
+      "url": "https://aws.amazon.com/blogs/machine-learning/build-efficient-agents-with-knowledge-distillation-on-amazon-sagemaker-ai/",
+      "summary": "Agentic assistants built on frontier models run a multi-step tool loop, and paying frontier prices on every step is hard to sustain at production scale. This post shows how to use sequence-level knowledge distillation (S...",
+      "tags": [
+        "Agents",
+        "Models"
+      ],
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/10/28/ML-22281-1-1.png"
+    },
+    {
+      "title": "Agentic engineering intelligence with Amazon Nova Multimodal Embeddings and Amazon Bedrock AgentCore",
+      "source": "AWS Machine Learning",
+      "date": "2026-11-02",
+      "url": "https://aws.amazon.com/blogs/machine-learning/agentic-engineering-intelligence-with-amazon-nova-multimodal-embeddings-and-amazon-bedrock-agentcore/",
+      "summary": "Learn how to build a multi-agent engineering assistant that compresses aerospace component substitution evaluation from days to minutes, using Amazon Nova Multimodal Embeddings, Amazon Bedrock AgentCore, and the Strands ...",
+      "tags": [
+        "Agents",
+        "Multimodal"
+      ],
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/10/29/ML-21854-1.png"
+    },
+    {
+      "title": "How Circle K accelerated DevOps incident triage to under 15 minutes with Amazon Bedrock",
+      "source": "AWS Machine Learning",
+      "date": "2026-11-02",
+      "url": "https://aws.amazon.com/blogs/machine-learning/how-circle-k-accelerated-devops-incident-triage-to-under-15-minutes-with-amazon-bedrock/",
+      "summary": "Circle K's DevOps team cut incident triage from 45-60 minutes to under 15 by building an agentic triage system on Amazon Bedrock. This post walks through the architecture, the initial Amazon Bedrock Flows implementation,...",
+      "tags": [
+        "Agents"
+      ],
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/10/27/ML-21514-first-arch-final.jpg"
+    },
+    {
+      "title": "Raising the quality of insights in agentic analytics",
+      "source": "MIT Technology Review AI",
+      "date": "2026-11-02",
+      "url": "https://www.technologyreview.com/2026/11/02/1147660/raising-the-quality-of-insights-in-agentic-analytics/",
+      "summary": "In just a few years, generative AI has changed the face of enterprise analytics, notably by making analytics accessible to users across the organization. Agentic AI promises to do even more, by automating entire workflow...",
+      "tags": [
+        "Agents",
+        "Automation"
+      ],
+      "image": "https://wp.technologyreview.com/wp-content/uploads/2026/10/Snowflake-cover-2026.png"
+    },
+    {
+      "title": "Stop counting tokens, start counting what ships",
+      "source": "MIT Technology Review AI",
+      "date": "2026-11-02",
+      "url": "https://www.technologyreview.com/2026/11/02/1147702/stop-counting-tokens-start-counting-what-ships/",
+      "summary": "When a developer gives an AI agent a coding task, the agent does more than answer once. It plans, generates code, runs tests, and repeats the process to correct errors. A single task can use 10 to 50 times more tokens th...",
+      "tags": [
+        "Agents",
+        "Dev Tools"
+      ],
+      "image": "https://wp.technologyreview.com/wp-content/uploads/2026/10/iStock-2297734847.jpg?w=840"
+    },
+    {
+      "title": "The agentic web is here",
+      "source": "MIT Technology Review AI",
+      "date": "2026-11-02",
+      "url": "https://www.technologyreview.com/2026/11/02/1147846/the-agentic-web-is-here/",
+      "summary": "In 2001, a decade after he invented the World Wide Web, Tim Berners-Lee articulated a new vision. Together with two colleagues, he published an article in the magazine Scientific American in which he outlined what he cal...",
+      "tags": [
+        "Agents",
+        "Multimodal"
+      ],
+      "image": "https://wp.technologyreview.com/wp-content/uploads/2026/10/spot1.jpg"
+    },
+    {
+      "title": "Build World Models for Interactive Simulation with NVIDIA Cosmos",
+      "source": "NVIDIA Developer",
+      "date": "2026-11-02",
+      "url": "https://developer.nvidia.com/blog/build-world-models-for-interactive-simulation-with-nvidia-cosmos/",
+      "summary": "Physical AI developers working with world models face two distinct challenges: adapting models to their sensors, tasks, and data, and getting those models into...",
+      "tags": [
+        "Dev Tools",
+        "Models"
+      ],
+      "image": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/10/cosmos-framework-tech-blog-600x338-5784057.webp"
+    },
+    {
+      "title": "Support New AI Frameworks Faster Using NVIDIA Workload Map",
+      "source": "NVIDIA Developer",
+      "date": "2026-11-02",
+      "url": "https://developer.nvidia.com/blog/support-new-ai-frameworks-faster-using-nvidia-workload-map/",
+      "summary": "NVIDIA DSX AI Factory Platform brings together technologies to help the ecosystem design, build, and operate more efficient AI factories, including open source,...",
+      "tags": [
+        "Dev Tools"
+      ],
+      "image": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/10/AdobeStock_1f14ed65-d635-4fac-a472-570887464326-e1793050942456-768x431.webp"
+    },
+    {
+      "title": "LifeVal",
+      "source": "OpenAI News",
+      "date": "2026-11-02",
+      "url": "https://openai.com/index/lifeval",
+      "summary": "Introducing LifeVal, a benchmark measuring how well AI helps people complete everyday tasks, from finding childcare to managing finances and government paperwork.",
+      "tags": [
+        "ChatGPT"
+      ],
+      "image": ""
+    },
+    {
+      "title": "If in doubt, delete the uv.lock file",
+      "source": "Simon Willison",
+      "date": "2026-11-01",
+      "url": "https://simonwillison.net/2026/Nov/1/delete-uv-lock-first/",
+      "summary": "I've been getting the occasional confusing Python dependency error since switching over to Python 3.15 and the rule I'm having to remember is: If in doubt, delete the uv.lock file Most of my projects are libraries which ...",
+      "tags": [
+        "AI"
+      ],
+      "image": "https://simonwillison.net/2026/Nov/1/delete-uv-lock-first/"
+    },
+    {
+      "title": "Quoting Kyle Kingsbury",
+      "source": "Simon Willison",
+      "date": "2026-11-01",
+      "url": "https://simonwillison.net/2026/Nov/1/kyle-kingsbury/",
+      "summary": "More broadly, the use of LLMs erodes trust in documentation, in software, and in the organizations which produce them. Perhaps engineers will begin to treat any new software project with suspicion—the signals we used to ...",
+      "tags": [
+        "Models"
+      ],
+      "image": "https://simonwillison.net/2026/Nov/1/kyle-kingsbury/"
     },
     {
       "title": "How We Took Over ChatGPT Accounts",
@@ -110,134 +237,6 @@
         "AI"
       ],
       "image": "https://cdn.arstechnica.net/wp-content/uploads/2026/10/GettyImages-2202649793-1152x648.jpg"
-    },
-    {
-      "title": "Managing Amazon Bedrock costs end to end: A playbook for FinOps and platform teams",
-      "source": "AWS Machine Learning",
-      "date": "2026-10-30",
-      "url": "https://aws.amazon.com/blogs/machine-learning/managing-amazon-bedrock-costs-end-to-end-a-playbook-for-finops-and-platform-teams/",
-      "summary": "This post presents a five-stage operating model for managing Amazon Bedrock cost: attribute every dollar to an owner, make every request observable, enforce budgets, optimize platform defaults, and operate a review caden...",
-      "tags": [
-        "Models"
-      ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/10/29/ML-21654-1-1.png"
-    },
-    {
-      "title": "Preview web apps live as your coding agent builds them with Amazon Bedrock AgentCore runtime",
-      "source": "AWS Machine Learning",
-      "date": "2026-10-30",
-      "url": "https://aws.amazon.com/blogs/machine-learning/preview-web-apps-live-as-your-coding-agent-builds-them-with-amazon-bedrock-agentcore-runtime/",
-      "summary": "Amazon Bedrock AgentCore Session endpoints give each runtime session an authenticated URL that forwards any HTTP method, path, and WebSocket connection to the ports you allow. In this post, you deploy a coding agent that...",
-      "tags": [
-        "Agents",
-        "Dev Tools"
-      ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/10/28/ML-22062-1.png"
-    },
-    {
-      "title": "How Worldwide Express automated freight exceptions with Amazon Bedrock",
-      "source": "AWS Machine Learning",
-      "date": "2026-10-30",
-      "url": "https://aws.amazon.com/blogs/machine-learning/how-worldwide-express-automated-freight-exceptions-with-amazon-bedrock/",
-      "summary": "Worldwide Express automated its less-than-truckload freight billing-exception process with a multi-agent solution built on Amazon Bedrock. Six months after launch, the company cut active exceptions by 75%, improved time-...",
-      "tags": [
-        "Agents"
-      ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/10/29/ML-20953-1-2.png"
-    },
-    {
-      "title": "Configure the ChatGPT desktop app with Amazon Bedrock in AWS GovCloud (US)",
-      "source": "AWS Machine Learning",
-      "date": "2026-10-30",
-      "url": "https://aws.amazon.com/blogs/machine-learning/configure-the-chatgpt-desktop-app-with-amazon-bedrock-in-aws-govcloud-us/",
-      "summary": "The ChatGPT desktop app is now available on Amazon Bedrock in AWS GovCloud (US). This post walks through a controlled local deployment that routes model inference to Amazon Bedrock in AWS GovCloud (US-West) using API-mod...",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/10/28/ML-22175-1.png"
-    },
-    {
-      "title": "Build a Validated Kubernetes Runtime for NVIDIA Dynamo",
-      "source": "NVIDIA Developer",
-      "date": "2026-10-30",
-      "url": "https://developer.nvidia.com/blog/build-a-validated-kubernetes-runtime-for-nvidia-dynamo/",
-      "summary": "Teams building AI applications need a repeatable path from a model configuration to a working inference endpoint. NVIDIA Dynamo is a distributed inference...",
-      "tags": [
-        "Dev Tools",
-        "Models"
-      ],
-      "image": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/10/inline-image-1-1-768x432.png"
-    },
-    {
-      "title": "Run AI Models for Edge Application Development with Just a Few Commands",
-      "source": "NVIDIA Developer",
-      "date": "2026-10-30",
-      "url": "https://developer.nvidia.com/blog/run-ai-models-for-edge-application-development-with-just-a-few-commands/",
-      "summary": "AI is expanding beyond the data center as developers build a new generation of agents to act at the edge: monitoring driver attention and cabin conditions,...",
-      "tags": [
-        "Agents",
-        "Dev Tools",
-        "Models"
-      ],
-      "image": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/10/nvidia-trtedge-chat-terminal-1920x1080-1-768x432.png"
-    },
-    {
-      "title": "Build Specialized Agents on a Stack You Control with NVIDIA NemoClaw",
-      "source": "NVIDIA Developer",
-      "date": "2026-10-30",
-      "url": "https://developer.nvidia.com/blog/build-specialized-agents-on-a-stack-you-control-with-nvidia-nemoclaw/",
-      "summary": "Building an autonomous agent requires a model, a harness, and domain-specific tools. To deploy an agent more securely, developers need a runtime that enforces...",
-      "tags": [
-        "Agents",
-        "Dev Tools",
-        "Models"
-      ],
-      "image": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/10/nemoclaw-featured-768x432.png"
-    },
-    {
-      "title": "Community safety report and new protections for teens",
-      "source": "OpenAI News",
-      "date": "2026-10-30",
-      "url": "https://openai.com/index/community-safety-report-and-new-protections-for-teens",
-      "summary": "OpenAI is strengthening violence prevention in ChatGPT with expanded safeguards, earlier interventions, and a new commitment to public safety reporting.",
-      "tags": [
-        "ChatGPT"
-      ],
-      "image": ""
-    },
-    {
-      "title": "Google’s satellite AI server transmits its first response to Earth",
-      "source": "The Verge AI",
-      "date": "2026-10-30",
-      "url": "https://www.theverge.com/tech/1023528/google-project-suncatcher-ai-satellite-transmission",
-      "summary": "Google's AI chip-equipped satellite has generated its first response from space. In a blog post on Friday, Google says it successfully booted up the satellite's Tensor Processing Units (TPUs), allowing the on-board Gemma...",
-      "tags": [
-        "Models"
-      ],
-      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/10/project-suncatcher-google.png?quality=90&strip=all&crop=0,0,100,100"
-    },
-    {
-      "title": "Granite Switch 4.1.1 — Update models like you update software",
-      "source": "Hugging Face",
-      "date": "2026-10-29",
-      "url": "https://huggingface.co/blog/ibm-granite/granite-switch-4-1-1",
-      "summary": "AI update detected from an official or high-signal source.",
-      "tags": [
-        "Models"
-      ],
-      "image": "https://cdn-uploads.huggingface.co/production/uploads/662836b742709fe826510597/az6afuuoAkyiMImufSePe.png"
-    },
-    {
-      "title": "Welcome Le Chonk: Mistral Large 4 on Hugging Face",
-      "source": "Hugging Face",
-      "date": "2026-10-29",
-      "url": "https://huggingface.co/blog/mistral-large4",
-      "summary": "AI update detected from an official or high-signal source.",
-      "tags": [
-        "AI"
-      ],
-      "image": "https://huggingface.co/blog/assets/ml4/thumbnail.png"
     }
   ],
   "candidates": [
@@ -250,13 +249,19 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-11-01"
+          "date": "2026-11-02"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-11-01"
+          "date": "2026-11-02"
+        },
+        {
+          "title": "The U.S. Census Bureau and “Super Intelligence”",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Nov/2/census-bureau-super-intelligence/",
+          "date": "2026-11-02"
         }
       ]
     },
@@ -269,18 +274,87 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
-          "date": "2026-11-01"
+          "date": "2026-11-02"
         },
         {
-          "title": "datasette-llm 0.1a9",
+          "title": "Build efficient agents with knowledge distillation on Amazon SageMaker AI",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/build-efficient-agents-with-knowledge-distillation-on-amazon-sagemaker-ai/",
+          "date": "2026-11-02"
+        },
+        {
+          "title": "Agentic engineering intelligence with Amazon Nova Multimodal Embeddings and Amazon Bedrock AgentCore",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/agentic-engineering-intelligence-with-amazon-nova-multimodal-embeddings-and-amazon-bedrock-agentcore/",
+          "date": "2026-11-02"
+        }
+      ]
+    },
+    {
+      "label": "Multimodal AI product workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Agentic engineering intelligence with Amazon Nova Multimodal Embeddings and Amazon Bedrock AgentCore",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/agentic-engineering-intelligence-with-amazon-nova-multimodal-embeddings-and-amazon-bedrock-agentcore/",
+          "date": "2026-11-02"
+        },
+        {
+          "title": "Build specialized multimodal models with LFM3",
+          "source": "Hugging Face",
+          "link": "https://huggingface.co/blog/LiquidAI/lfm3",
+          "date": "2026-10-27"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Stop counting tokens, start counting what ships",
+          "source": "MIT Technology Review AI",
+          "link": "https://www.technologyreview.com/2026/11/02/1147702/stop-counting-tokens-start-counting-what-ships/",
+          "date": "2026-11-02"
+        },
+        {
+          "title": "The U.S. Census Bureau and “Super Intelligence”",
           "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/31/datasette-llm/",
-          "date": "2026-10-31"
+          "link": "https://simonwillison.net/2026/Nov/2/census-bureau-super-intelligence/",
+          "date": "2026-11-02"
         },
         {
-          "title": "Basically no one is using AI agents for their DoorDash orders",
-          "source": "Ars Technica AI",
-          "link": "https://arstechnica.com/ai/2026/10/doordash-says-outside-ai-agents-have-only-led-to-hundreds-of-orders-so-far/",
+          "title": "Preview web apps live as your coding agent builds them with Amazon Bedrock AgentCore runtime",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/preview-web-apps-live-as-your-coding-agent-builds-them-with-amazon-bedrock-agentcore-runtime/",
+          "date": "2026-10-30"
+        }
+      ]
+    },
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Stop counting tokens, start counting what ships",
+          "source": "MIT Technology Review AI",
+          "link": "https://www.technologyreview.com/2026/11/02/1147702/stop-counting-tokens-start-counting-what-ships/",
+          "date": "2026-11-02"
+        },
+        {
+          "title": "Build World Models for Interactive Simulation with NVIDIA Cosmos",
+          "source": "NVIDIA Developer",
+          "link": "https://developer.nvidia.com/blog/build-world-models-for-interactive-simulation-with-nvidia-cosmos/",
+          "date": "2026-11-02"
+        },
+        {
+          "title": "Run AI Models for Edge Application Development with Just a Few Commands",
+          "source": "NVIDIA Developer",
+          "link": "https://developer.nvidia.com/blog/run-ai-models-for-edge-application-development-with-just-a-few-commands/",
           "date": "2026-10-30"
         }
       ]
@@ -311,84 +385,15 @@
       ]
     },
     {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Preview web apps live as your coding agent builds them with Amazon Bedrock AgentCore runtime",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/preview-web-apps-live-as-your-coding-agent-builds-them-with-amazon-bedrock-agentcore-runtime/",
-          "date": "2026-10-30"
-        },
-        {
-          "title": "GitHub Octoverse 2026",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/28/github-octoverse-2026/",
-          "date": "2026-10-28"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Run AI Models for Edge Application Development with Just a Few Commands",
-          "source": "NVIDIA Developer",
-          "link": "https://developer.nvidia.com/blog/run-ai-models-for-edge-application-development-with-just-a-few-commands/",
-          "date": "2026-10-30"
-        },
-        {
-          "title": "Build Specialized Agents on a Stack You Control with NVIDIA NemoClaw",
-          "source": "NVIDIA Developer",
-          "link": "https://developer.nvidia.com/blog/build-specialized-agents-on-a-stack-you-control-with-nvidia-nemoclaw/",
-          "date": "2026-10-30"
-        },
-        {
-          "title": "Quoting Terk Terkowitz",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/28/terk-terkowitz/",
-          "date": "2026-10-28"
-        }
-      ]
-    },
-    {
       "label": "MCP / tool-connected assistants",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "How MoEngage turned over 400 APIs into agent tools with AgentCore Gateway",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/how-moengage-turned-over-400-apis-into-agent-tools-with-agentcore-gateway/",
-          "date": "2026-10-29"
-        },
-        {
           "title": "Quoting Ben Hylak",
           "source": "Simon Willison",
           "link": "https://simonwillison.net/2026/Oct/29/ben-hylak/",
           "date": "2026-10-29"
-        }
-      ]
-    },
-    {
-      "label": "Multimodal AI product workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Accelerate agentic AI with NVIDIA Nemotron models on Amazon EKS and SageMaker HyperPod EKS",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/accelerate-agentic-ai-with-nvidia-nemotron-models-on-amazon-eks-and-sagemaker-hyperpod-eks/",
-          "date": "2026-10-29"
-        },
-        {
-          "title": "Build specialized multimodal models with LFM3",
-          "source": "Hugging Face",
-          "link": "https://huggingface.co/blog/LiquidAI/lfm3",
-          "date": "2026-10-27"
         }
       ]
     },
