@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-02T17:43:50.167Z",
-  "date": "2026-11-02",
+  "generatedAt": "2026-11-03T15:45:34.461Z",
+  "date": "2026-11-03",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
@@ -9,7 +9,7 @@
     {
       "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
       "source": "Anthropic News",
-      "date": "2026-11-02",
+      "date": "2026-11-03",
       "url": "https://www.anthropic.com/news/expanding-partnership-gsa",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -20,7 +20,7 @@
     {
       "title": "Donating Agent Skills to the Agentic AI Foundation",
       "source": "Anthropic News",
-      "date": "2026-11-02",
+      "date": "2026-11-03",
       "url": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -32,7 +32,7 @@
     {
       "title": "Introducing the Anthropic Cyber Mission",
       "source": "Anthropic News",
-      "date": "2026-11-02",
+      "date": "2026-11-03",
       "url": "https://www.anthropic.com/news/anthropic-cyber-mission",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -43,13 +43,36 @@
     {
       "title": "Security",
       "source": "Anthropic News",
-      "date": "2026-11-02",
+      "date": "2026-11-03",
       "url": "https://www.anthropic.com/news/security",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
         "Claude"
       ],
       "image": "https://www-cdn.anthropic.com/images/4zrzovbb/website/6d4a0d28992ade92d6fa63646fd9c9d318245c6c-2400x1260.jpg"
+    },
+    {
+      "title": "Transformers Model Integration Contracts",
+      "source": "Hugging Face",
+      "date": "2026-11-03",
+      "url": "https://huggingface.co/blog/transformers-mic",
+      "summary": "AI update detected from an official or high-signal source.",
+      "tags": [
+        "Models"
+      ],
+      "image": "https://huggingface.co/blog/assets/transformers-mic/mic-logo.png"
+    },
+    {
+      "title": "Heimstaden is changing residential real estate management with AI",
+      "source": "OpenAI News",
+      "date": "2026-11-03",
+      "url": "https://openai.com/index/heimstaden",
+      "summary": "Discover how Heimstaden uses OpenAI’s ChatGPT Enterprise and Codex to transform property management, cut costs, and empower employees across Europe.",
+      "tags": [
+        "ChatGPT",
+        "Dev Tools"
+      ],
+      "image": ""
     },
     {
       "title": "Build efficient agents with knowledge distillation on Amazon SageMaker AI",
@@ -123,6 +146,28 @@
       "image": "https://wp.technologyreview.com/wp-content/uploads/2026/10/spot1.jpg"
     },
     {
+      "title": "Keep Distributed Training Running with Automated Workload Recovery",
+      "source": "NVIDIA Developer",
+      "date": "2026-11-02",
+      "url": "https://developer.nvidia.com/blog/keep-distributed-training-running-with-automated-workload-recovery/",
+      "summary": "As distributed AI training scales, failures across hardware and software dependencies increasingly disrupt training progress, making fast, reliable recovery...",
+      "tags": [
+        "Dev Tools"
+      ],
+      "image": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/11/image8-768x432.png"
+    },
+    {
+      "title": "Making Kubernetes AI-Ready for NVIDIA Vera Rubin on Day One",
+      "source": "NVIDIA Developer",
+      "date": "2026-11-02",
+      "url": "https://developer.nvidia.com/blog/making-kubernetes-ai-ready-for-nvidia-vera-rubin-on-day-one/",
+      "summary": "Configuring and optimizing Kubernetes for new GPU hardware such as NVIDIA Vera Rubin is complex and error-prone. Drivers, kernels, runtimes, networking,...",
+      "tags": [
+        "Dev Tools"
+      ],
+      "image": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/10/runai-tech-blog-compute-domains-1920x1080-4504000-1024x576-png-768x432.webp"
+    },
+    {
       "title": "Build World Models for Interactive Simulation with NVIDIA Cosmos",
       "source": "NVIDIA Developer",
       "date": "2026-11-02",
@@ -146,97 +191,52 @@
       "image": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/10/AdobeStock_1f14ed65-d635-4fac-a472-570887464326-e1793050942456-768x431.webp"
     },
     {
-      "title": "LifeVal",
+      "title": "Scaling Git at OpenAI",
       "source": "OpenAI News",
       "date": "2026-11-02",
-      "url": "https://openai.com/index/lifeval",
-      "summary": "Introducing LifeVal, a benchmark measuring how well AI helps people complete everyday tasks, from finding childcare to managing finances and government paperwork.",
+      "url": "https://openai.com/index/scaling-git-at-openai",
+      "summary": "How OpenAI built Pando, a Git-compatible backend designed for the scale of development that Codex makes possible.",
+      "tags": [
+        "ChatGPT",
+        "Dev Tools"
+      ],
+      "image": ""
+    },
+    {
+      "title": "Preparing our next security sprint to harden OpenAI",
+      "source": "OpenAI News",
+      "date": "2026-11-02",
+      "url": "https://openai.com/index/preparing-our-next-security-sprint-to-harden-openai",
+      "summary": "OpenAI is preparing its next internal security sprint with Cathedral Systems to test and strengthen its defenses using AI.",
       "tags": [
         "ChatGPT"
       ],
       "image": ""
     },
     {
-      "title": "If in doubt, delete the uv.lock file",
-      "source": "Simon Willison",
-      "date": "2026-11-01",
-      "url": "https://simonwillison.net/2026/Nov/1/delete-uv-lock-first/",
-      "summary": "I've been getting the occasional confusing Python dependency error since switching over to Python 3.15 and the rule I'm having to remember is: If in doubt, delete the uv.lock file Most of my projects are libraries which ...",
+      "title": "Rewarding defenders with bigger bug bounties",
+      "source": "OpenAI News",
+      "date": "2026-11-02",
+      "url": "https://openai.com/index/rewarding-defenders-with-bigger-bug-bounties",
+      "summary": "OpenAI is raising Security Bug Bounty rewards and introducing report quality, loyalty, and priority campaign bonuses for independent security researchers.",
       "tags": [
-        "AI"
+        "ChatGPT"
       ],
-      "image": "https://simonwillison.net/2026/Nov/1/delete-uv-lock-first/"
+      "image": ""
     },
     {
-      "title": "Quoting Kyle Kingsbury",
+      "title": "llm 0.37",
       "source": "Simon Willison",
-      "date": "2026-11-01",
-      "url": "https://simonwillison.net/2026/Nov/1/kyle-kingsbury/",
-      "summary": "More broadly, the use of LLMs erodes trust in documentation, in software, and in the organizations which produce them. Perhaps engineers will begin to treat any new software project with suspicion—the signals we used to ...",
-      "tags": [
-        "Models"
-      ],
-      "image": "https://simonwillison.net/2026/Nov/1/kyle-kingsbury/"
-    },
-    {
-      "title": "How We Took Over ChatGPT Accounts",
-      "source": "Simon Willison",
-      "date": "2026-10-31",
-      "url": "https://simonwillison.net/2026/Oct/31/how-we-took-over-chatgpt-accounts/",
-      "summary": "How We Took Over ChatGPT Accounts Parameter Labs describe an exploit they found against ChatGPT's implementation of the artifacts pattern (OpenAI used to call this \"Canvas\" but it looks like the latest revision is called...",
+      "date": "2026-11-02",
+      "url": "https://simonwillison.net/2026/Nov/2/llm/",
+      "summary": "Release: llm 0.37 There's a lot of stuff in this new release of my LLM CLI tool and Python library, representing around two months of accumulated features and fixes. I added gpt-6.1-sol and gpt-6.1-terra , plus a new llm...",
       "tags": [
         "ChatGPT",
-        "Dev Tools",
-        "Multimodal"
-      ],
-      "image": "https://simonwillison.net/2026/Oct/31/how-we-took-over-chatgpt-accounts/"
-    },
-    {
-      "title": "datasette-llm 0.1a9",
-      "source": "Simon Willison",
-      "date": "2026-10-31",
-      "url": "https://simonwillison.net/2026/Oct/31/datasette-llm/",
-      "summary": "Release: datasette-llm 0.1a9 I have some big upgrades to Datasette Agent in the pipeline, but in the meantime here's a tiny user experience improvement to the underlying datasette-llm plugin. It now picks up the default ...",
-      "tags": [
-        "Agents",
-        "ChatGPT",
+        "Gemini",
+        "Multimodal",
         "Models"
       ],
-      "image": "https://simonwillison.net/2026/Oct/31/datasette-llm/"
-    },
-    {
-      "title": "Anthropic VS code extension on Cursor backdoored for nearly 12 hours",
-      "source": "Ars Technica AI",
-      "date": "2026-10-30",
-      "url": "https://arstechnica.com/security/2026/10/anthropic-vs-code-extension-on-cursor-backdoored-for-nearly-12-hours/",
-      "summary": "It's still unknown how attackers got access to Anthropic's verified Cursor account.",
-      "tags": [
-        "Claude",
-        "Dev Tools"
-      ],
-      "image": "https://cdn.arstechnica.net/wp-content/uploads/2022/05/caution-tape-1000x648.jpeg"
-    },
-    {
-      "title": "Basically no one is using AI agents for their DoorDash orders",
-      "source": "Ars Technica AI",
-      "date": "2026-10-30",
-      "url": "https://arstechnica.com/ai/2026/10/doordash-says-outside-ai-agents-have-only-led-to-hundreds-of-orders-so-far/",
-      "summary": "But it's still early days for the relatively new e-commerce use case.",
-      "tags": [
-        "Agents"
-      ],
-      "image": "https://cdn.arstechnica.net/wp-content/uploads/2026/10/GettyImages-2301817894-1024x648.jpg"
-    },
-    {
-      "title": "Fujifilm to boost tape production 5x as AI fuels archiving demand",
-      "source": "Ars Technica AI",
-      "date": "2026-10-30",
-      "url": "https://arstechnica.com/gadgets/2026/10/fujifilm-to-boost-tape-production-5x-as-ai-fuels-archiving-demand/",
-      "summary": "Low costs and offline security mean magnetic tape still has a job.",
-      "tags": [
-        "AI"
-      ],
-      "image": "https://cdn.arstechnica.net/wp-content/uploads/2026/10/GettyImages-2202649793-1152x648.jpg"
+      "image": "https://simonwillison.net/2026/Nov/2/llm/"
     }
   ],
   "candidates": [
@@ -249,13 +249,13 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-11-02"
+          "date": "2026-11-03"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-11-02"
+          "date": "2026-11-03"
         },
         {
           "title": "The U.S. Census Bureau and “Super Intelligence”",
@@ -274,7 +274,7 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
-          "date": "2026-11-02"
+          "date": "2026-11-03"
         },
         {
           "title": "Build efficient agents with knowledge distillation on Amazon SageMaker AI",
@@ -287,6 +287,31 @@
           "source": "AWS Machine Learning",
           "link": "https://aws.amazon.com/blogs/machine-learning/agentic-engineering-intelligence-with-amazon-nova-multimodal-embeddings-and-amazon-bedrock-agentcore/",
           "date": "2026-11-02"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Heimstaden is changing residential real estate management with AI",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/heimstaden",
+          "date": "2026-11-03"
+        },
+        {
+          "title": "How We Took Over ChatGPT Accounts",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Oct/31/how-we-took-over-chatgpt-accounts/",
+          "date": "2026-10-31"
+        },
+        {
+          "title": "Configure the ChatGPT desktop app with Amazon Bedrock in AWS GovCloud (US)",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/configure-the-chatgpt-desktop-app-with-amazon-bedrock-in-aws-govcloud-us/",
+          "date": "2026-10-30"
         }
       ]
     },
@@ -321,16 +346,16 @@
           "date": "2026-11-02"
         },
         {
+          "title": "Qodo builds context into AI code review with Codex",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/qodo-codex-plugin",
+          "date": "2026-11-02"
+        },
+        {
           "title": "The U.S. Census Bureau and “Super Intelligence”",
           "source": "Simon Willison",
           "link": "https://simonwillison.net/2026/Nov/2/census-bureau-super-intelligence/",
           "date": "2026-11-02"
-        },
-        {
-          "title": "Preview web apps live as your coding agent builds them with Amazon Bedrock AgentCore runtime",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/preview-web-apps-live-as-your-coding-agent-builds-them-with-amazon-bedrock-agentcore-runtime/",
-          "date": "2026-10-30"
         }
       ]
     },
@@ -352,48 +377,10 @@
           "date": "2026-11-02"
         },
         {
-          "title": "Run AI Models for Edge Application Development with Just a Few Commands",
-          "source": "NVIDIA Developer",
-          "link": "https://developer.nvidia.com/blog/run-ai-models-for-edge-application-development-with-just-a-few-commands/",
-          "date": "2026-10-30"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "How We Took Over ChatGPT Accounts",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/31/how-we-took-over-chatgpt-accounts/",
-          "date": "2026-10-31"
-        },
-        {
-          "title": "Configure the ChatGPT desktop app with Amazon Bedrock in AWS GovCloud (US)",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/configure-the-chatgpt-desktop-app-with-amazon-bedrock-in-aws-govcloud-us/",
-          "date": "2026-10-30"
-        },
-        {
-          "title": "Community safety report and new protections for teens",
+          "title": "Qodo builds context into AI code review with Codex",
           "source": "OpenAI News",
-          "link": "https://openai.com/index/community-safety-report-and-new-protections-for-teens",
-          "date": "2026-10-30"
-        }
-      ]
-    },
-    {
-      "label": "MCP / tool-connected assistants",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Quoting Ben Hylak",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/29/ben-hylak/",
-          "date": "2026-10-29"
+          "link": "https://openai.com/index/qodo-codex-plugin",
+          "date": "2026-11-02"
         }
       ]
     },
@@ -402,6 +389,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "llm 0.37",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Nov/2/llm/",
+          "date": "2026-11-02"
+        },
         {
           "title": "Google announces Gemini 4 Carbon, its latest frontier AI model that you can't use",
           "source": "Ars Technica AI",
@@ -412,6 +405,31 @@
           "title": "Gemini 4 Carbon: Our next frontier model",
           "source": "Google DeepMind",
           "link": "https://deepmind.google/blog/gemini-4-carbon-our-next-frontier-model/",
+          "date": "2026-10-28"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Introducing the Microsoft Copilot harness in Foundry Agent Service",
+          "source": "Azure Blog",
+          "link": "https://devblogs.microsoft.com/foundry/microsoft-copilot-harness-in-foundry/",
+          "date": "2026-10-28"
+        },
+        {
+          "title": "Route and orchestrate models with GitHub Copilot Fusion",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-10-28-route-and-orchestrate-models-with-github-copilot-fusion",
+          "date": "2026-10-28"
+        },
+        {
+          "title": "GitHub Copilot app, Universe releases",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-10-28-github-copilot-app-universe-releases",
           "date": "2026-10-28"
         }
       ]
