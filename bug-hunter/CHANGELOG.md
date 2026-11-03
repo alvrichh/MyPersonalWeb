@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.170 - 2026-11-03
+
+### Changed
+- Siege Cartoon's crossbow no longer hurts our own troops: its arrows pass over them and strike only the enemy (friendly fire is off for now, `BOW.friendly`).
+
 ## 1.15.169 - 2026-11-03
 
 ### Changed

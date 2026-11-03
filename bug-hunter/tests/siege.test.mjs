@@ -28,11 +28,11 @@ test('generator spends energy, raises capacity/rate and caps at four', () => {
   assert.equal(s.generator, 4); assert.equal(m.improveGenerator(s), false);
   run(s, 1); assert.ok(s.energy <= m.energyMax(s));
 });
-test('weapons have separate recharge; arrows strike our own troops too, the spell never', () => {
+test('weapons have separate recharge; neither arrows nor the spell strike our own troops', () => {
   const s = m.newSiege(m.freshProgress(), 1); m.summon(s, 0); const u = s.units[0]; s.aim = u.x;
   const enemy = { ...u, uid: 100, side: 1, hp: 200, maxHp: 200 }; s.units.push(enemy);
   u.damage = 0; enemy.damage = 0; u.hp = u.maxHp = 500; const energy = s.energy;
-  m.draw(s, true); m.tick(s, 1 / 30); assert.ok(u.hp < 500, 'an arrow landing on ours hurts it'); assert.ok(enemy.hp < 200); m.draw(s, false); assert.ok(s.bow.quiver < m.BOW.max);
+  m.draw(s, true); m.tick(s, 1 / 30); assert.equal(u.hp, 500, 'an arrow landing on ours passes over it'); assert.ok(enemy.hp < 200); m.draw(s, false); assert.ok(s.bow.quiver < m.BOW.max);
   const hp = u.hp; assert.equal(m.strike(s), true); assert.equal(m.strike(s), false); assert.equal(u.hp, hp);
 });
 test('troops walk, engage opponents and cannot pass through them', () => {
@@ -331,10 +331,10 @@ test('the free test mode: free base upgrades, free powers and troops, endless en
   } finally { m.testing.free = false; }
   const q = m.freshProgress(); assert.equal(m.upgrade(q, 1), false, 'not free once the mode is off');
 });
-test('our arrows hurt our own troops, but less than they hurt the enemy', () => {
+test('our arrows pass over our own troops and strike the enemy', () => {
   const s = m.newSiege(m.freshProgress(), 1); m.summon(s, 0); const u = s.units[0]; u.hp = u.maxHp = 500; s.aim = u.x; m.draw(s, true); m.tick(s, 1 / 30);
   const foe = { ...u, uid: 77, side: 1, hp: 500, maxHp: 500, damage: 0 }; s.units.push(foe); s.bow.next = 0; m.tick(s, 1 / 30);
-  assert.ok(u.hp < 500 && foe.hp < 500 && 500 - u.hp < 500 - foe.hp + 1, 'friendly fire is the lighter');
+  assert.equal(u.hp, 500, 'no friendly fire'); assert.ok(foe.hp < 500, 'the enemy is struck');
 });
 test('every troop grows with its level, and the archangel sweeps everything ahead of it far back', () => {
   for (const u of m.ALLIES) for (let l = 2; l <= m.levelsOf(u.id); l++) assert.ok(m.specAt(u.id, l).size >= m.specAt(u.id, l - 1).size, `${u.id} level ${l} is not smaller than level ${l - 1}`);

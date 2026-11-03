@@ -656,7 +656,7 @@ export const METEORS = [[-30, 10], [32, 10], [2, -10]];
 export const FLY = { high: 70, rate: 90 };
 /** How high a flyer cruises: its own height, or `FLY.high`. */
 export const highOf = (u: { id: number; side: number; lv?: number }) => specOf(u).flyAt ?? FLY.high;
-export const BOW = { max: 100, cost: 1.2, regen: 10, every: 0.42, step: 0.06, damage: 16, gap: 24, friendly: 0.35, powerStep: 0.12, reach: 0.55, reachStep: 0.05, storeStep: 25, regenStep: 3 };
+export const BOW = { max: 100, cost: 1.2, regen: 10, every: 0.42, step: 0.06, damage: 16, gap: 24, friendly: 0, powerStep: 0.12, reach: 0.55, reachStep: 0.05, storeStep: 25, regenStep: 3 };
 /** The bow in battle: `level` its power upgrade (damage, arrows a volley, look), `speed` and `store` its other two. */
 export interface Bow { quiver: number; drawing: boolean; held: number; next: number; level: number; speed: number; store: number }
 /** The furthest any aim goes (the bow's own reach stops it sooner, `bowReach`). */
@@ -729,8 +729,8 @@ function arrows(s: Siege, count: number) {
       const ys = [-0.3, -0.15, 0, 0.15, 0.3].map(d => -path(Math.max(0, Math.min(1, (u.x + d * h - from.x) / span))).y);
       return Math.max(...ys) >= foot - 6 && Math.min(...ys) <= foot + h * 0.95;
     };
-    // It strikes whoever is there, ours too: aim past your own troops.
-    for (const u of s.units) if (u.hp > 0 && (Math.abs(u.x - at) <= 28 && !(u.side === 0 && UNITS[u.id].air) || crossed(u))) {
+    // It strikes the enemy there; ours only while `BOW.friendly` says so (off for now: the arrows pass over them).
+    for (const u of s.units) if (u.hp > 0 && (u.side || BOW.friendly > 0) && (Math.abs(u.x - at) <= 28 && !(u.side === 0 && UNITS[u.id].air) || crossed(u))) {
       const arrow = bowDamage(s.bow) * (u.side ? s.power : BOW.friendly); u.hp -= arrow; u.flash = 0.18; wince(u, arrow);
       if (u.side === 0) continue;
       // A hit nudges it back a little (not the guardians or the steady), at most once every `NUDGE.every`, so it still
