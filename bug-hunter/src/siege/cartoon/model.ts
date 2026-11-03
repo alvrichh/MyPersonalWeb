@@ -288,12 +288,13 @@ export function counters(card: number, threat: Threat): boolean {
   if (threat === 'sky') return !!sp.air || !!sp.hitsAir;
   if (threat === 'wall') return (!!sp.air && !sp.skyOnly) || (!sp.air && sp.range >= 150);
   if (threat === 'swarm') return (sp.splash ?? 0) > 0;
-  if (threat === 'shooters') return (!sp.air && sp.hp >= 400) || (sp.speed >= 55 && !sp.skyOnly);
+  // Shooters stand together at the back: a tank in front, fast troops, or a blow over an area (the wizard) breaks them.
+  if (threat === 'shooters') return (!sp.air && sp.hp >= 400) || (sp.speed >= 55 && !sp.skyOnly) || (sp.splash ?? 0) >= 40;
   if (threat === 'giants') return dps >= 60;
   return true;
 }
 /** How strong an enemy troop is, for weighing a wave: its health times its damage a second (splash counted). */
-export const foePower = (id: number) => { const u = UNITS[id]; return u.hp * u.damage / u.rate * (1 + (u.splash ?? 0) / 100) };
+export const foePower = (id: number) => { const u = UNITS[id]; return u.hp * u.damage / u.rate * (1 + (u.splash ?? 0) / 100) * (1 + Math.max(0, u.range - 60) / FOE_PACE.reach); };
 /** The troops a stage's threat sends: from every act so far (the whole of this one, so a threat can show what is to come). */
 export function threatPool(stage: number): number[] {
   const t = threatOf(stage), act = actOf(stage);
@@ -304,7 +305,8 @@ export function threatPool(stage: number): number[] {
   if (t === 'wall') return byHp(land.filter(id => UNITS[id].range <= 60 && !UNITS[id].hitsAir)).slice(0, 2);
   // The sky: the two toughest flyers so far (the death angel and the dragon rider in the last act, not the bats).
   if (t === 'sky') return byHp(air).slice(0, 2);
-  if (t === 'shooters') return land.filter(id => UNITS[id].range >= 150).slice(-2);
+  // The shooters: the newest light ones that shoot from afar (not the gatling robot, a giant that also shoots).
+  if (t === 'shooters') return land.filter(id => UNITS[id].range >= 150 && UNITS[id].hp <= 400).slice(-2);
   if (t === 'giants') return byHp([...new Set(land)]).slice(0, 2);
   return [];
 }
@@ -469,6 +471,11 @@ export const KNOCK = { share: 0.2, time: 0.55, back: 70, stun: 0.35 };
 export const RAM = { lunge: 0.6, low: 0.9 };
 /** A pounce: the leap (seconds, field units forward, how high); the bound back is the same leap the other way, so it
     lands where it started and does not gain ground while it fights. */
+/** The enemy's pace: the shortest gap between waves, how much each world shortens it, how much tougher its troops grow
+    world by world (`hard`), and two rules for a threat's waves: a troop's reach counts in its weight (`reach`: one more
+    weight for every this many field units past melee, so a wave of shooters is not twice as many of them), and at most
+    this many troops more than a plain wave (`extra`), so light troops never pile up into a wall. */
+export const FOE_PACE = { gap: 4.5, slope: 0.3, grow: 0.02, reach: 60, extra: 1 };
 export const POUNCE = { time: 0.4, forward: 45, height: 46 };
 /** A charge: how far off it starts (beyond its reach), how many times its pace, how far it throws, how long it stands dazed. */
 /** How far a healer's mending reaches (field units either side). */
@@ -565,7 +572,7 @@ export const ELITE_ID = 22;
 function spawn(s: Siege, id: number, side: 0 | 1, boss = false, level?: number) {
   if (s.units.filter(u => u.side === side).length >= CAP) return;
   const lv = side ? undefined : level ?? s.levels[id] ?? 1;
-  const spec = side ? UNITS[id] : specAt(id, lv); const scale = side ? 0.95 + hard(s.world) * 0.03 : s.power;
+  const spec = side ? UNITS[id] : specAt(id, lv); const scale = side ? 0.95 + hard(s.world) * FOE_PACE.grow : s.power;
   const hp = spec.hp * scale * (boss ? BOSS_HP : 1);
   // One gunner in every few (counted by its spawn number) comes horned.
   const elite = !!side && !boss && id === ELITE_ID && s.time >= ELITE.from && s.nextId % ELITE.every === 0;
@@ -906,7 +913,7 @@ export function tick(s: Siege, dt: number) {
   s.effects = s.effects.filter(e => (e.life -= dt) > 0);
   s.nextWave -= dt;
   if (s.nextWave <= 0) {
-    s.waves++; s.nextWave = Math.max(4.5, 9 - hard(s.world) * 0.3 - s.time / 90);
+    s.waves++; s.nextWave = Math.max(FOE_PACE.gap, 9 - hard(s.world) * FOE_PACE.slope - s.time / 90);
     const count = Math.min(3, 1 + Math.floor(s.time / 70));
     const land = foesAt(FOE_LAND, s.world), flyers = foesAt(FOE_AIR, s.world);
     // Early waves only the first two land troops; later the whole list, the newest (toughest) more often.
@@ -919,7 +926,8 @@ export function tick(s: Siege, dt: number) {
       // strength as a plain one (`foePower`), so a few giants or a swarm of small ones weigh alike.
       const budget = Array.from({ length: count }, (_, i) => foePower(plain(i))).reduce((a, b) => a + b, 0);
       let spent = 0;
-      for (let i = 0; i < 8 && spent < budget * 0.95; i++) {
+      // At most one more troop than a plain wave (`FOE_PACE.extra`): light troops would otherwise come eight at a time.
+      for (let i = 0; i < Math.min(8, count + FOE_PACE.extra) && spent < budget * 0.95; i++) {
         const id = (s.waves * 7 + i) % 3 < 2 ? pool[(s.waves + i) % pool.length] : plain(i);
         if (i > 0 && spent + foePower(id) > budget * 1.2) continue;
         spawn(s, id, 1); spent += foePower(id);

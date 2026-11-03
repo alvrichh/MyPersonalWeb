@@ -4,6 +4,15 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.169 - 2026-11-03
+
+### Changed
+- Siege Cartoon is fairer in its last worlds, from simulated runs without the crossbow:
+  - A threat's wave weighs a troop's reach as well as its health and blows, and sends at most one troop more than a plain wave: light shooters no longer pile up thirty at a time (the first stage of the Darkness had 26 at once against your 7).
+  - The shooters threat sends light shooters (the wizard, the alien shooter), not the gatling robot.
+  - The enemy grows a little less tough world by world (+2% a world instead of +3%).
+  - Its hint names what works against shooters: a tank in front and area damage (the wizard).
+
 ## 1.15.168 - 2026-10-31
 
 ### Changed

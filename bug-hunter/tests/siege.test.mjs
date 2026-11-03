@@ -552,5 +552,5 @@ test('each stage has a threat: its troops come mostly from it, at the strength o
 test('the map knows what answers a threat', () => {
   assert.equal(m.counters(m.card(10, 1), 'sky'), true, 'a fighter meets flyers'); assert.equal(m.counters(m.card(0, 1), 'sky'), false);
   assert.equal(m.counters(m.card(5, 1), 'swarm'), true, 'a bazooka hits an area'); assert.equal(m.counters(m.card(12, 1), 'wall'), true, 'a helicopter shoots the wall from above');
-  assert.equal(m.counters(m.card(3, 1), 'shooters'), true, 'a heavy knight takes the shots');
+  assert.equal(m.counters(m.card(3, 1), 'shooters'), true, 'a heavy knight takes the shots'); assert.equal(m.counters(m.card(6, 1), 'shooters'), true, 'the wizard\'s blow breaks them up');
 });
