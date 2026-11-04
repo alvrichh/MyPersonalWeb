@@ -998,7 +998,8 @@ export function tick(s: Siege, dt: number) {
       const reach = a.range + bodyOf(enemy) * 0.25;
       if (!u.rushing && u.attack <= 0 && distance > reach && distance <= reach + CHARGE.reach) u.rushing = true;
       if (u.rushing) {
-        if (distance <= reach) {
+        // A field unit's grace: the rush steps exactly up to `reach`, and rounding could leave it a hair short forever.
+        if (distance <= reach + 1) {
           hits.push({ target: enemy, damage: u.damage, push: CHARGE.back }); u.attack = a.rate; u.hit = 0.3; u.stun = CHARGE.daze; u.rushing = false;
           hear(s, soundsOf(u)[0], u.x); continue;
         }
