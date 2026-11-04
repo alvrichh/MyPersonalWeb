@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T15:45:34.461Z",
+  "generatedAt": "2026-11-04T15:55:28.656Z",
   "candidates": [
     {
       "label": "Claude research and documentation flow",
@@ -10,13 +10,13 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-11-03"
+          "date": "2026-11-04"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-11-03"
+          "date": "2026-11-04"
         },
         {
           "title": "The U.S. Census Bureau and “Super Intelligence”",
@@ -35,18 +35,68 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
+          "date": "2026-11-04"
+        },
+        {
+          "title": "Securing the agentic enterprise with data lineage",
+          "source": "MIT Technology Review AI",
+          "link": "https://www.technologyreview.com/2026/11/04/1147596/securing-the-agentic-enterprise-with-data-lineage/",
+          "date": "2026-11-04"
+        },
+        {
+          "title": "Bring structured and unstructured data together with Amazon Quick",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/bring-structured-and-unstructured-data-together-with-amazon-quick/",
+          "date": "2026-11-03"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "BYOK and enterprise custom models in the Copilot usage API",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-03-byok-and-enterprise-custom-models-in-the-copilot-usage-api",
+          "date": "2026-11-04"
+        },
+        {
+          "title": "GitHub Copilot is now available in JetBrains Air",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-03-github-copilot-is-now-available-in-jetbrains-air",
           "date": "2026-11-03"
         },
         {
-          "title": "Build efficient agents with knowledge distillation on Amazon SageMaker AI",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/build-efficient-agents-with-knowledge-distillation-on-amazon-sagemaker-ai/",
+          "title": "Introducing the Microsoft Copilot harness in Foundry Agent Service",
+          "source": "Azure Blog",
+          "link": "https://devblogs.microsoft.com/foundry/microsoft-copilot-harness-in-foundry/",
+          "date": "2026-10-28"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "GitHub Copilot is now available in JetBrains Air",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-03-github-copilot-is-now-available-in-jetbrains-air",
+          "date": "2026-11-03"
+        },
+        {
+          "title": "Stop counting tokens, start counting what ships",
+          "source": "MIT Technology Review AI",
+          "link": "https://www.technologyreview.com/2026/11/02/1147702/stop-counting-tokens-start-counting-what-ships/",
           "date": "2026-11-02"
         },
         {
-          "title": "Agentic engineering intelligence with Amazon Nova Multimodal Embeddings and Amazon Bedrock AgentCore",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/agentic-engineering-intelligence-with-amazon-nova-multimodal-embeddings-and-amazon-bedrock-agentcore/",
+          "title": "The U.S. Census Bureau and “Super Intelligence”",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Nov/2/census-bureau-super-intelligence/",
           "date": "2026-11-02"
         }
       ]
@@ -57,22 +107,47 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "Accelerating engineering for the physical world",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/accelerating-engineering-for-the-physical-world",
+          "date": "2026-11-03"
+        },
+        {
           "title": "Heimstaden is changing residential real estate management with AI",
           "source": "OpenAI News",
           "link": "https://openai.com/index/heimstaden",
           "date": "2026-11-03"
         },
         {
-          "title": "How We Took Over ChatGPT Accounts",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Oct/31/how-we-took-over-chatgpt-accounts/",
-          "date": "2026-10-31"
+          "title": "OpenAI says ChatGPT is catching up to Google in search",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1025482/openai-says-chatgpt-is-catching-up-to-google-in-search",
+          "date": "2026-11-03"
+        }
+      ]
+    },
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Apple starts giving Siri AI access to third-party apps",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/1025694/apple-siri-ai-third-party-apps",
+          "date": "2026-11-03"
         },
         {
-          "title": "Configure the ChatGPT desktop app with Amazon Bedrock in AWS GovCloud (US)",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/configure-the-chatgpt-desktop-app-with-amazon-bedrock-in-aws-govcloud-us/",
-          "date": "2026-10-30"
+          "title": "Stop counting tokens, start counting what ships",
+          "source": "MIT Technology Review AI",
+          "link": "https://www.technologyreview.com/2026/11/02/1147702/stop-counting-tokens-start-counting-what-ships/",
+          "date": "2026-11-02"
+        },
+        {
+          "title": "Build World Models for Interactive Simulation with NVIDIA Cosmos",
+          "source": "NVIDIA Developer",
+          "link": "https://developer.nvidia.com/blog/build-world-models-for-interactive-simulation-with-nvidia-cosmos/",
+          "date": "2026-11-02"
         }
       ]
     },
@@ -92,56 +167,6 @@
           "source": "Hugging Face",
           "link": "https://huggingface.co/blog/LiquidAI/lfm3",
           "date": "2026-10-27"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Stop counting tokens, start counting what ships",
-          "source": "MIT Technology Review AI",
-          "link": "https://www.technologyreview.com/2026/11/02/1147702/stop-counting-tokens-start-counting-what-ships/",
-          "date": "2026-11-02"
-        },
-        {
-          "title": "Qodo builds context into AI code review with Codex",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/qodo-codex-plugin",
-          "date": "2026-11-02"
-        },
-        {
-          "title": "The U.S. Census Bureau and “Super Intelligence”",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/2/census-bureau-super-intelligence/",
-          "date": "2026-11-02"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Stop counting tokens, start counting what ships",
-          "source": "MIT Technology Review AI",
-          "link": "https://www.technologyreview.com/2026/11/02/1147702/stop-counting-tokens-start-counting-what-ships/",
-          "date": "2026-11-02"
-        },
-        {
-          "title": "Build World Models for Interactive Simulation with NVIDIA Cosmos",
-          "source": "NVIDIA Developer",
-          "link": "https://developer.nvidia.com/blog/build-world-models-for-interactive-simulation-with-nvidia-cosmos/",
-          "date": "2026-11-02"
-        },
-        {
-          "title": "Qodo builds context into AI code review with Codex",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/qodo-codex-plugin",
-          "date": "2026-11-02"
         }
       ]
     },
@@ -166,31 +191,6 @@
           "title": "Gemini 4 Carbon: Our next frontier model",
           "source": "Google DeepMind",
           "link": "https://deepmind.google/blog/gemini-4-carbon-our-next-frontier-model/",
-          "date": "2026-10-28"
-        }
-      ]
-    },
-    {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Introducing the Microsoft Copilot harness in Foundry Agent Service",
-          "source": "Azure Blog",
-          "link": "https://devblogs.microsoft.com/foundry/microsoft-copilot-harness-in-foundry/",
-          "date": "2026-10-28"
-        },
-        {
-          "title": "Route and orchestrate models with GitHub Copilot Fusion",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-10-28-route-and-orchestrate-models-with-github-copilot-fusion",
-          "date": "2026-10-28"
-        },
-        {
-          "title": "GitHub Copilot app, Universe releases",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-10-28-github-copilot-app-universe-releases",
           "date": "2026-10-28"
         }
       ]
