@@ -473,6 +473,14 @@ test('the rhinoceratops charges: it rushes in, throws its target back and stands
   assert.ok(struck, 'the charge lands'); assert.ok(rhino.stun > 0, 'and it stands dazed');
   const at = mine.x; run(s, m.KNOCK.time + 0.05); assert.ok(mine.x < at - 100, 'its target is thrown back');
 });
+test('the rhinoceratops\'s charge always lands, even on a spearman (rounding once left it rushing in place)', () => {
+  const s = m.newSiege({ ...m.freshProgress(), owned: [0, 1], deck: [1] }, 1); s.nextWave = 999; s.gusted = true; s.energy = 999;
+  m.summon(s, 1); const mine = s.units[0]; mine.x = 500; mine.hp = mine.maxHp = 1e6;
+  const rhino = { uid: 99, id: 42, side: 1, x: 760, lane: 1, hp: 1e6, maxHp: 1e6, damage: 40, attack: 0, flash: 0, boss: false }; s.units.push(rhino);
+  let blows = 0, hp = mine.hp;
+  for (let i = 0; i < 30 * 15; i++) { m.tick(s, 1 / 30); if (mine.hp < hp) { blows++; hp = mine.hp; } }
+  assert.ok(blows >= 5, `it keeps striking (${blows} blows in 15 s)`);
+});
 test('the mammothsaurus sweeps: every troop in front of it is struck and thrown far back', () => {
   const s = m.newSiege({ ...m.freshProgress(), owned: [0], deck: [0] }, 1); s.nextWave = 999; s.gusted = true; s.energy = 999;
   for (let i = 0; i < 3; i++) m.summon(s, 0), s.cooldowns = {};

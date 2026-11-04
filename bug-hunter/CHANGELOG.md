@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.171 - 2026-11-04
+
+### Fixed
+- Siege Cartoon's rhinoceratops could get stuck charging in place, a hair short of its target, and never strike again (seen against the spearman): its rush stepped exactly up to its reach and rounding left it just outside. Its charge now lands within a field unit of its reach.
+
 ## 1.15.170 - 2026-11-03
 
 ### Changed
