@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.172 - 2026-11-04
+
+- Siege Cartoon's catapult lobs its rock high under gravity: it flies about a second in a parabola that grows with the distance and strikes where and when it lands (its splash, ground only).
+
 ## 1.15.171 - 2026-11-04
 
 ### Fixed

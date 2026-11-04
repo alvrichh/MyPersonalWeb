@@ -62,6 +62,8 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
   legend?: boolean;
   /** A sweep whose wave is in its own attack pose (the golem's punch): nothing more is drawn. */
   quake?: boolean;
+  /** A lobbed shot (the catapult's rock): it flies this many seconds, high under gravity, and strikes as it lands. */
+  lob?: number;
   /** A piercing beam (the star eater's): it strikes everything ahead of it as far as it reaches, and bursts round its target. */
   pierce?: boolean;
   /** A hook (the weary reaper's chained scythe): what it strikes is dragged this far towards it. */
@@ -244,7 +246,7 @@ export const UNITS: readonly Spec[] = [
   { id: 50, flyAt: 125, cost: 0, hp: 520, damage: 46, speed: 50, range: 60, rate: 1, cooldown: 0, unlock: 1, foe: true, air: true, splash: 30, ...foe('foe-devil-1', 159, 0.975) },
   // Ours again, the later recruits (the owner's sheets): the catapult, the bomber balloon, the medic, the shield
   // bearer, the ninja and the dragon rider, the dearest of all.
-  { id: 51, cost: 110, hp: 300, damage: 40, speed: 18, range: 400, rate: 3, cooldown: 11, unlock: 4, support: true, splash: 60, siege: 2, shot: 'boulder', spin: true, ...six('ally-catapult-1', 112, 1.43), forms: [
+  { id: 51, cost: 110, hp: 300, damage: 40, speed: 18, range: 400, rate: 3, lob: 0.9, cooldown: 11, unlock: 4, support: true, splash: 60, siege: 2, shot: 'boulder', spin: true, ...six('ally-catapult-1', 112, 1.43), forms: [
     { price: 1600, cost: 150, hp: 450, damage: 55, range: 440, splash: 80, shot: 'boulder-blue', ...six('ally-catapult-2', 157, 1.146) },
   ] },
   { id: 52, flyAt: 125, cost: 90, hp: 260, damage: 60, speed: 30, range: 30, rate: 2.2, cooldown: 9, unlock: 4, air: true, support: true, raid: true, shot: 'bomb', spin: false, ...six('ally-balloon-1', 272, 0.78) },
@@ -490,6 +492,8 @@ export const CHARGE = { reach: 170, pace: 4, back: 130, daze: 0.9 };
 export interface Effect { x: number; from: number; lane: number; life: number; max: number; kind: 'shot' | 'burst' | 'arrow' | 'rocket' | 'bolt' | 'gust' | 'loot' | 'boom' | 'fire' | 'stuck' | 'fall' | 'ground' | 'zap' | 'wave' | 'sweep' | 'breath' | 'heal' | 'beam'; side: 0 | 1;
   /** A `breath`'s fire: core and edge colours. */
   colors?: [string, string];
+  /** A lobbed shot's height at the top of its arc (field units), drawn falling under gravity. */
+  arc?: number;
   /** A `boom` (an explosion) or a `fire` (a burning pool on the ground): its size, and the height it is at. */
   size?: number; up?: number;
   /** A `boom` with black smoke (the robots' rockets) instead of grey (our crossbow's). */
@@ -752,7 +756,7 @@ function arrows(s: Siege, count: number) {
 const ROCKET_SHOTS = new Set(['rocket', 'rockets', 'salvo', 'missile']);
 function launch(s: Siege, u: Fighter, a: Spec, x0: number, lane: number, toUp: number) {
   // A thrown or shot projectile of its own flies a little longer, so it is seen on its way.
-  const flight = isBullet(a.shot) || isBeam(a.shot) ? 0.16 : SPELLS.includes(a.shot ?? '') ? 0.6 : a.shot ? 0.35 : 0.2;
+  const flight = a.lob ?? (isBullet(a.shot) || isBeam(a.shot) ? 0.16 : SPELLS.includes(a.shot ?? '') ? 0.6 : a.shot ? 0.35 : 0.2);
   if (a.shot === 'meteor') {
     // The wizard's last form calls three meteors around the target, one after another, each leaving fire.
     for (let k = 0; k < 3; k++) {
@@ -761,7 +765,7 @@ function launch(s: Siege, u: Fighter, a: Spec, x0: number, lane: number, toUp: n
       s.effects.push({ x, from: u.x, lane: lane, life: flight + wait, max: flight, kind: 'shot', side: u.side, art: 'meteor', up: dy });
       s.effects.push({ x, from: x, lane: lane, life: flight + wait + FIRE, max: FIRE, kind: 'fire', side: u.side, size: 60, up: dy });
     }
-  } else s.effects.push({ x: x0, from: u.x, lane: lane, life: flight, max: flight, kind: u.elite ? 'bolt' : 'shot', side: u.side, art: a.shot, spin: a.spin, fromUp: a.air ? u.alt ?? highOf(u) : 0, toUp });
+  } else s.effects.push({ x: x0, from: u.x, lane: lane, life: flight, max: flight, kind: u.elite ? 'bolt' : 'shot', side: u.side, art: a.shot, spin: a.spin, fromUp: a.air ? u.alt ?? highOf(u) : 0, toUp, arc: a.lob ? Math.min(190, 60 + Math.abs(x0 - u.x) * 0.3) : undefined });
   // Every rocket blows up where it lands, with the explosion art (bigger for salvos and the robots' blasts).
   if (a.blast || ROCKET_SHOTS.has(a.shot ?? '')) s.effects.push({ x: x0, from: x0, lane: lane, life: flight + BOOM, max: BOOM, kind: 'boom', side: u.side, size: a.shot === 'salvo' ? 90 : a.blast ? 70 : 56, up: toUp, dark: true });
 }
@@ -817,7 +821,7 @@ export const POWERS: { id: number; unlock: number; price: number; cooldown: numb
 export const KIT = 4;
 /** A blow a power has scheduled to land at `at` (battle time) on the enemies within `r` of `x`; `seen` makes a sweeping
     one (the wave) strike each enemy only once. */
-export interface Hit { at: number; x: number; r: number; damage: number; freeze?: number; push?: number; seen?: Set<number> }
+export interface Hit { at: number; x: number; r: number; damage: number; freeze?: number; push?: number; seen?: Set<number>; ground?: boolean }
 const powerOpen = (p: Progress, id: number) => testing.free || POWERS[id].unlock <= actOf(p.unlocked);
 /** What a power's level costs in gold (level 1 is the power itself). */
 export const powerCost = (id: number, level: number) => (testing.free ? 0 : level <= 1 ? POWERS[id].price : POWERS[id].forms[level - 1]?.price ?? 0);
@@ -847,7 +851,7 @@ const rnd = (n: number) => { const x = Math.sin(n * 12.9898 + 4.1) * 43758.5453;
 /** A scheduled blow lands: it hurts (and freezes or throws back) each enemy it reaches, flyers too. */
 function land(s: Siege, h: Hit) {
   for (const u of s.units) {
-    if (u.side !== 1 || u.hp <= 0 || Math.abs(u.x - h.x) > h.r || h.seen?.has(u.uid)) continue;
+    if (u.side !== 1 || u.hp <= 0 || Math.abs(u.x - h.x) > h.r || h.seen?.has(u.uid) || (h.ground && isAir(u.id))) continue;
     h.seen?.add(u.uid); u.hp -= h.damage * s.power; u.flash = 0.18;
     if (!u.boss && h.freeze) u.stun = Math.max(u.stun ?? 0, h.freeze);
     if (!u.boss && h.push && !UNITS[u.id].steady) { u.knock = KNOCK.time; u.knockBack = h.push; }
@@ -1037,7 +1041,9 @@ export function tick(s: Siege, dt: number) {
           }
           s.effects.push({ x: u.x, from: u.x, lane: u.lane, life: 0.7, max: 0.7, kind: 'heal', side: u.side, size: 1 });
         } else
-        for (const v of alive) if (v.side !== u.side && reaches(u, v) && (scooped ? scooped.includes(v) : v === enemy || (area && Math.abs(v.x - enemy.x) < area) || (a.pierce && (v.x - u.x) * (enemy.x - u.x) > 0 && Math.abs(v.x - u.x) <= a.range + 40))) hits.push({ target: v, damage: u.damage, boss: u.boss, push: a.hook ? -a.hook : a.ram ?? a.shove });
+        // A lobbed shot (the catapult's rock) strikes where it lands, when it lands; the rest strike at once.
+        if (a.lob && !u.side) s.hitq.push({ at: s.time + a.lob, x: enemy.x, r: Math.max(24, area ?? 0), damage: u.damage / s.power, ground: true });
+        else for (const v of alive) if (v.side !== u.side && reaches(u, v) && (scooped ? scooped.includes(v) : v === enemy || (area && Math.abs(v.x - enemy.x) < area) || (a.pierce && (v.x - u.x) * (enemy.x - u.x) > 0 && Math.abs(v.x - u.x) <= a.range + 40))) hits.push({ target: v, damage: u.damage, boss: u.boss, push: a.hook ? -a.hook : a.ram ?? a.shove });
         if (a.pierce) {
           const end = u.x + (enemy.x > u.x ? 1 : -1) * (a.range + 40); u.aimAir = !!UNITS[enemy.id].air;
           // At walkers its beam strikes the ground ahead (its attack pose) and runs along it as far as it reaches.

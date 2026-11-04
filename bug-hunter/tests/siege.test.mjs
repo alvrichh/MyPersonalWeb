@@ -542,6 +542,15 @@ test('the weary reaper hooks from afar and drags its prey to it', () => {
   let struck = false; for (let i = 0; i < 60 && !struck; i++) { m.tick(s, 1 / 30); struck = foe.hp < 9000; }
   assert.ok(struck, 'it strikes from afar'); const at = foe.x; run(s, m.KNOCK.time + 0.05); assert.ok(foe.x < at - 100, 'and drags its prey towards it');
 });
+test('the catapult lobs its rock: it strikes where it lands, when it lands', () => {
+  const s = m.newSiege({ ...m.freshProgress(), unlocked: 30, owned: [0, 51], deck: [51] }, 20); s.nextWave = 999; s.gusted = true; s.energy = 999;
+  m.summon(s, 51); const cat = s.units[0]; cat.x = 400;
+  const foe = { uid: 99, id: 15, side: 1, x: 700, lane: 1, hp: 9000, maxHp: 9000, damage: 0, attack: 99, flash: 0, boss: false }; s.units.push(foe);
+  let thrown = false; for (let i = 0; i < 120 && !thrown; i++) { m.tick(s, 1 / 30); thrown = s.effects.some(e => e.kind === 'shot' && e.art === 'boulder'); }
+  assert.ok(thrown, 'the rock is in the air'); assert.equal(foe.hp, 9000, 'nothing struck yet');
+  const rock = s.effects.find(e => e.art === 'boulder'); assert.ok(rock.arc > 120, 'thrown high');
+  run(s, m.UNITS[51].lob + 0.1); assert.ok(foe.hp < 9000, 'it strikes as it lands');
+});
 test('every rocket blows up where it lands', () => {
   const s = m.newSiege({ ...m.freshProgress(), owned: [0, 5], deck: [5] }, 1); s.nextWave = 999; s.gusted = true; s.energy = 999;
   m.summon(s, 5); const b = s.units[0]; b.x = 600; b.hp = b.maxHp = 9000;
