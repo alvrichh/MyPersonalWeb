@@ -643,9 +643,9 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     // A troop's own projectile from its sheet (a rock, a javelin, an arrow, a shuriken): from the thrower's hand
     // straight to the target, spinning or pointing along its path, drawn at the sheets' scale.
     const art = still(`siege/units/shot-${e.art}`); if (!ok(art)) return false;
-    // Straight from the thrower's hand to the target, no gravity.
-    const y0 = shotY(e.fromUp, y), y1 = shotY(e.toUp, y);
-    const at = (t: number) => ({ x: e.from + (e.x - e.from) * t, y: y0 + (y1 - y0) * t });
+    // Straight from the thrower's hand to the target, no gravity; a lobbed one (`arc`) climbs high and falls back down.
+    const y0 = shotY(e.fromUp, y), y1 = shotY(e.toUp, y), arc = e.arc ?? 0;
+    const at = (t: number) => ({ x: e.from + (e.x - e.from) * t, y: y0 + (y1 - y0) * t - 4 * arc * t * (1 - t) });
     const here = at(p), ahead = dirAt(at, p), w = art.naturalWidth * 0.4, h = art.naturalHeight * 0.4;
     ctx.save(); ctx.translate(here.x, here.y);
     ctx.rotate(e.spin ? p * 14 * (e.x > e.from ? 1 : -1) : Math.atan2(ahead.y - here.y, ahead.x - here.x || 0.001));
