@@ -4,6 +4,15 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.190 - 2026-11-05
+
+- Siege Cartoon has five more powers, with the owner's icons and animations:
+  - Glacial prison (act 3, 1000 gold, 200 energy): ice spires burst round the thickest group of enemies, hurt them and freeze them for about three seconds.
+  - Emergency wall (act 3, 900 gold, 180 energy): three great shields rise a step ahead of our foremost troop; the enemy on the ground cannot pass them for six seconds.
+  - Time rift (act 5, 1400 gold, 220 energy): for five seconds the enemy inside it walks and strikes at a third of its pace.
+  - Dragon flyby (act 6, 2000 gold, 380 energy): a blue dragon crosses the screen breathing cyan fire along the ground, burning walkers and flyers in its path.
+  - Reaper's anchor (act 6, 1700 gold, 260 energy): a chained blade lands behind the furthest enemy, hurts them and drags them back towards our army (not the guardians or the steady).
+
 ## 1.15.189 - 2026-11-05
 
 - Siege Cartoon's energy rebalanced:

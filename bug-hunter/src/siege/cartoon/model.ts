@@ -447,6 +447,8 @@ export interface Fighter { uid: number; id: number; side: 0 | 1; x: number; lane
   volley?: number;
   /** Seconds to its next footstep dust (heavy walkers) or charge dust (a rushing charger). */
   dust?: number;
+  /** Slowed by a time rift until this battle time. */
+  slowed?: number;
   /** Seconds left frozen in a block of ice (it shatters when they run out). */
   frozen?: number;
   /** A breaking robot's stage (0 whole, 1 one arm and no gun, 2 a crawling wreck) and whether it is an elite (horned,
@@ -539,7 +541,7 @@ export interface Siege {
       scheduled to land (`Hit`), and the stretch of field on screen (set by the view) that they cover. */
   kit: { id: number; level: number; card: number }[]; kitCd: Record<number, number>; hitq: Hit[];
   /** Powers that act for a while where they were cast: a black hole pulling the enemy in, a sanctuary healing ours. */
-  zones?: { kind: 'pull' | 'heal'; x: number; r: number; until: number; heal?: number; next?: number }[]; view: { x: number; width: number }; casts: number;
+  zones?: { kind: 'pull' | 'heal' | 'wall' | 'slow' | 'drag'; x: number; r: number; until: number; heal?: number; next?: number; from?: number; speed?: number }[]; view: { x: number; width: number }; casts: number;
   /** The troops' sounds since the view last took them (attacks and deaths, where they happened); kept short. */
   sounds?: { k: string; x: number }[];
   /** How many times the bow has shot this battle (the view plays a sound for each new one). */
@@ -791,11 +793,17 @@ function arrows(s: Siege, count: number) {
     meteors with their fire, and a blast where a rocket of the robots' last forms lands. Damage is dealt apart. */
 /** The shots that are rockets. */
 const ROCKET_SHOTS = new Set(['rocket', 'rockets', 'salvo', 'missile', 'rocket-dark', 'rockets-dark', 'salvo-dark']);
+/** Where a group of enemies is thickest (the middle of the most within `r` of one of them), or nothing when none. */
+function thickest(foes: Fighter[], r: number) {
+  const near = (x: number) => foes.filter(u => Math.abs(u.x - x) <= r);
+  const best = [...foes].sort((a, b) => near(b.x).length - near(a.x).length)[0]; if (!best) return undefined;
+  const group = near(best.x); return group.reduce((n, u) => n + u.x, 0) / group.length;
+}
 /** How fast a black hole drags the enemy in, field units a second. */
 const PULL = 110;
 /** The new powers' drawn effects play in three parts: coming in (`in` seconds, frames 0–3), at work (4–7, looping) and
     going (`out` seconds, frames 8–11). */
-export const PHASED: Record<string, { in: number; out: number; ground?: number }> = { blackhole: { in: 0.45, out: 0.5 }, judgement: { in: 0.35, out: 0.55, ground: 0.885 }, sanctuary: { in: 0.5, out: 0.5, ground: 0.81 } };
+export const PHASED: Record<string, { in: number; out: number; ground?: number }> = { blackhole: { in: 0.45, out: 0.5 }, judgement: { in: 0.35, out: 0.55, ground: 0.885 }, sanctuary: { in: 0.5, out: 0.5, ground: 0.81 }, glacial: { in: 0.4, out: 0.5, ground: 1 }, wall: { in: 0.4, out: 0.5, ground: 1 }, rift: { in: 0.45, out: 0.5 } };
 /** One of the owner's drawn effects (`siege/fx/<art>-<frame>`): it waits `wait` seconds, then plays over `time`. */
 function fx(s: Siege, art: string, x: number, time: number, o: Partial<Effect> = {}, wait = 0) {
   s.effects.push({ x, from: x, lane: 1, life: time + wait, max: time, kind: 'anim', side: 0, art, ...o });
@@ -894,6 +902,16 @@ export const POWERS: { id: number; unlock: number; price: number; cooldown: numb
   { id: 5, unlock: 4, price: 1300, cooldown: 44, forms: [{ price: 0, damage: 200, radius: 80, time: 4, count: 8, mana: 250 }] },
   // Healing sanctuary: a ring of green light at the front of our army mends whoever stands in it.
   { id: 6, unlock: 2, price: 700, cooldown: 40, forms: [{ price: 0, damage: 0, radius: 120, time: 6, heal: 0.08, mana: 150 }] },
+  // Glacial prison: ice spires burst from the ground round the thickest group of enemies and freeze them.
+  { id: 7, unlock: 3, price: 1000, cooldown: 40, forms: [{ price: 0, damage: 60, radius: 110, time: 3.2, mana: 200 }] },
+  // Emergency wall: three great shields rise in front of our army; the enemy on the ground cannot pass them for a while.
+  { id: 8, unlock: 3, price: 900, cooldown: 45, forms: [{ price: 0, damage: 0, time: 6, mana: 180 }] },
+  // Time rift: a field where the enemy moves and strikes at a crawl.
+  { id: 9, unlock: 5, price: 1400, cooldown: 44, forms: [{ price: 0, damage: 0, radius: 160, time: 5, mana: 220 }] },
+  // Dragon flyby: a blue dragon crosses the screen breathing cyan fire along the ground and on the flyers in its path.
+  { id: 10, unlock: 6, price: 2000, cooldown: 50, forms: [{ price: 0, damage: 120, radius: 55, time: 2.4, mana: 380 }] },
+  // Reaper's anchor: a chained blade lands behind the enemy and drags them back towards our army.
+  { id: 11, unlock: 6, price: 1700, cooldown: 42, forms: [{ price: 0, damage: 80, push: 230, time: 1, mana: 260 }] },
 ];
 /** At most this many power forms go into a battle. */
 export const KIT = 4;
@@ -1009,6 +1027,37 @@ export function castPower(s: Siege, card: number): boolean {
     for (let i = 1; i <= n; i++) s.hitq.push({ at: s.time + fall + i * time / n, x, r: r + 10, damage: form.damage * 0.15 });
     fx(s, 'crack-2', x, time + 1, { floor: true, size: 170 }, fall);
     hear(s, 'thunder', x);
+  } else if (id === 7) {
+    const r = form.radius ?? 110, x = thickest(foes, r) ?? (x0 + x1) / 2, time = form.time ?? 3.2;
+    push({ x, from: x, lane: 1, life: time, max: time, kind: 'anim', side: 0, art: 'glacial', size: 210 });
+    s.hitq.push({ at: s.time + PHASED.glacial.in, x, r, damage: form.damage, freeze: time - PHASED.glacial.in - PHASED.glacial.out * 0.5 });
+    hear(s, 'magic', x);
+  } else if (id === 8) {
+    // A step ahead of our foremost troop on screen, or a third of the way across.
+    const ours = s.units.filter(u => !u.side && !UNITS[u.id].air && u.x >= x0 && u.x <= x1), x = Math.min(x1 - 40, ours.length ? Math.max(...ours.map(u => u.x)) + 70 : x0 + span / 3), time = form.time ?? 6;
+    (s.zones ??= []).push({ kind: 'wall', x, r: 30, until: s.time + time });
+    push({ x, from: x, lane: 1, life: time, max: time, kind: 'anim', side: 0, art: 'wall', size: 170 });
+  } else if (id === 9) {
+    const r = form.radius ?? 160, x = thickest(foes, r) ?? (x0 + x1) / 2, time = form.time ?? 5;
+    (s.zones ??= []).push({ kind: 'slow', x, r, until: s.time + time });
+    push({ x, from: x, lane: 1, life: time, max: time, kind: 'anim', side: 0, art: 'rift', size: 230, up: 70 });
+  } else if (id === 10) {
+    // Across the screen from our side to theirs in `time`, burning a strip of ground and the flyers in its path.
+    const time = form.time ?? 2.4, r = form.radius ?? 55;
+    push({ x: x1 + 120, from: x0 - 120, lane: 1, life: time, max: time, kind: 'anim', side: 0, art: 'dragonpass', size: 230, up: 170 });
+    for (let x = x0 + 30; x <= x1; x += 70) {
+      const at = (x - (x0 - 120)) / (x1 - x0 + 240) * time + 0.15;
+      s.hitq.push({ at: s.time + at, x, r, damage: form.damage });
+      fx(s, 'dragonfire', x, 0.6, { size: 120 }, at);
+    }
+    hear(s, 'flame', (x0 + x1) / 2);
+  } else if (id === 11) {
+    // Behind the furthest enemy on screen; it hooks the ground and is hauled back, dragging them towards our army.
+    const back = foes.length ? Math.min(x1, Math.max(...foes.map(u => u.x)) + 50) : x1 - 40, throwT = 0.45, time = form.time ?? 1;
+    push({ x: back, from: x0, lane: 1, life: throwT + time, max: throwT + time, kind: 'anim', side: 0, art: 'anchor', size: 150, arc: throwT });
+    fx(s, 'anchor-hit', back, 0.4, { size: 130 }, throwT - 0.05);
+    (s.zones ??= []).push({ kind: 'drag', x: back, r: 0, from: s.time + throwT, until: s.time + throwT + time, speed: (form.push ?? 230) / time });
+    s.hitq.push({ at: s.time + throwT, x: back - 60, r: 110, damage: form.damage });
   } else if (id === 6) {
     // In front of our foremost troop on screen, or in the left third of the screen.
     const ours = s.units.filter(u => !u.side && u.x >= x0 && u.x <= x1), x = ours.length ? Math.max(...ours.map(u => u.x)) - 40 : x0 + span / 3, time = form.time ?? 6;
@@ -1029,6 +1078,15 @@ export function tick(s: Siege, dt: number) {
   if (s.zones?.length) {
     s.zones = s.zones.filter(z => z.until > s.time);
     for (const z of s.zones) {
+      if (z.kind === 'slow') { for (const u of s.units) if (u.side === 1 && Math.abs(u.x - z.x) <= z.r) u.slowed = s.time + 0.1; continue; }
+      if (z.kind === 'drag') {
+        if (s.time < (z.from ?? 0)) continue;
+        // The anchor is hauled back; whoever stands just in front of it is dragged along (not the guardians or the steady).
+        const step = (z.speed ?? 230) * dt;
+        for (const u of s.units) if (u.side === 1 && !u.boss && !UNITS[u.id].steady && u.x <= z.x + 10 && u.x >= z.x - 140) { u.x = Math.max(110, u.x - step); u.stun = Math.max(u.stun ?? 0, dt * 2); }
+        z.x -= step; continue;
+      }
+      if (z.kind === 'wall') continue;
       if (z.kind === 'pull') for (const u of s.units) { if (u.side !== 1 || u.boss || UNITS[u.id].steady || Math.abs(u.x - z.x) > z.r) continue; const d = z.x - u.x; u.x += Math.sign(d) * Math.min(Math.abs(d), PULL * dt); u.stun = Math.max(u.stun ?? 0, dt * 2); }
       else if (z.next !== undefined && s.time >= z.next) {
         z.next = s.time + 0.5;
@@ -1093,7 +1151,9 @@ export function tick(s: Siege, dt: number) {
   const alive = s.units.filter(u => u.hp > 0);
   const hits: { target: Fighter; damage: number; boss?: boolean; push?: number }[] = [];
   for (const u of alive) {
-    const a = specOf(u); u.attack -= dt; u.flash = Math.max(0, u.flash - dt); u.hit = Math.max(0, (u.hit ?? 0) - dt);
+    // In a time rift the enemy acts at a crawl: its attacks and its steps a third as fast.
+    const slow = u.slowed !== undefined && u.slowed > s.time ? 0.35 : 1;
+    const a = specOf(u); u.attack -= dt * slow; u.flash = Math.max(0, u.flash - dt); u.hit = Math.max(0, (u.hit ?? 0) - dt);
     u.moving = false;
     if (u.nudgeCd) u.nudgeCd = Math.max(0, u.nudgeCd - dt);
     // The ice block it is frozen in shatters when the cold wears off.
@@ -1208,7 +1268,7 @@ export function tick(s: Siege, dt: number) {
         // The first time our troops strike the enemy fortress, its war horn sounds.
         if (!u.side && !s.horned) { s.horned = true; fx(s, 'horn', FIELD - 200, 1.6, { hud: true, size: 90 }); } if (a.shot) launch(s, u, a, baseX + (u.side ? 30 : -30), 1, 40); hear(s, soundsOf(u)[0], u.x); }
     } else {
-      const movement = a.speed * dt; u.moving = true;
+      const movement = a.speed * dt * slow; u.moving = true;
       // Heavy walkers (the steady and the giants) raise dust at each step.
       if (!a.air && (a.steady || a.size > 100) && (u.dust = (u.dust ?? 0) - dt) <= 0) { u.dust = 0.55; fx(s, 'step', u.x, 0.5, { floor: true, size: Math.min(110, a.size * 0.7), flip: !!u.side }); }
       // Never step through an opponent, even during a long frame.
@@ -1252,6 +1312,8 @@ export function tick(s: Siege, dt: number) {
   }
   s.kills += s.units.filter(u => u.side && u.hp <= 0).length;
   s.units = s.units.filter(u => u.hp > 0);
+  // An emergency wall: the enemy on the ground stops at it.
+  for (const z of s.zones ?? []) if (z.kind === 'wall') for (const u of s.units) if (u.side === 1 && !UNITS[u.id].air && !u.boss && u.x < z.x + 40 && u.x > z.x - 60) u.x = z.x + 40;
   s.hp = s.hp.map(h => Math.max(0, h)) as [number, number];
   if (s.hp[0] <= 0 || (!prefs.untimed && s.time >= limitOf(s.world))) s.phase = 'lost';
   else if (s.hp[1] <= 0 && (!guarded(s.world) || (s.bossSpawned && !s.units.some(u => u.boss && u.side)))) s.phase = 'won';

@@ -614,6 +614,22 @@ test('mana reaches 1000 at the top, and the strongest cards need it', () => {
   assert.ok(m.POWERS.every(w => w.forms.every(f => f.mana > 0)), 'every power costs energy');
 });
 
+test('five more powers: glacial prison freezes, the wall holds, the rift slows, the dragon burns, the anchor drags back', () => {
+  const at = (id) => { const p = { ...m.freshProgress(), unlocked: 30 }; p.coins = 99999; assert.ok(m.buyPower(p, id)); const s = m.newSiege(p, 20); s.nextWave = 999; s.gusted = true; s.view = { x: 300, width: 800 }; s.energy = 999; return s; };
+  const foe = (s, uid, x, o = {}) => { const u = { uid, id: 15, side: 1, x, lane: 1, hp: 3000, maxHp: 3000, damage: 0, attack: 99, flash: 0, boss: false, ...o }; s.units.push(u); return u; };
+  let s = at(7); const a = foe(s, 1, 700), b = foe(s, 2, 730); assert.ok(m.castPower(s, 7)); run(s, 0.6);
+  assert.ok(a.frozen > 1 && b.frozen > 1 && a.hp < 3000, 'frozen and hurt');
+  s = at(8); s.units.push({ uid: 9, id: 0, side: 0, x: 400, lane: 1, hp: 999, maxHp: 999, damage: 0, attack: 99, flash: 0, boss: false, lv: 1, stun: 99 });
+  const walker = foe(s, 1, 700); assert.ok(m.castPower(s, 8)); const wall = s.zones[0].x; run(s, 4);
+  assert.ok(walker.x >= wall + 39, `held at the wall (${walker.x} vs ${wall})`);
+  s = at(9); const slowed = foe(s, 1, 700), free = foe(s, 2, 1060); assert.ok(m.castPower(s, 9)); const x0 = [slowed.x, free.x]; run(s, 2);
+  assert.ok(x0[0] - slowed.x < (x0[1] - free.x) * 0.5, 'the one in the rift walks far slower');
+  s = at(10); const ground = foe(s, 1, 600), flyer = foe(s, 2, 900, { id: 30, alt: 90 }); assert.ok(m.castPower(s, 10)); run(s, 3);
+  assert.ok(ground.hp < 3000 && flyer.hp < 3000, 'it burns the ground and the flyers in its path');
+  s = at(11); const near = foe(s, 1, 900), far = foe(s, 2, 1000); assert.ok(m.castPower(s, 11)); run(s, 1.6);
+  assert.ok(far.x < 900 && near.x < 850, `dragged back (${near.x}, ${far.x})`);
+});
+
 test('the catapult lobs its rock: it strikes where it lands, when it lands', () => {
   const s = m.newSiege({ ...m.freshProgress(), unlocked: 30, owned: [0, 51], deck: [51] }, 20); s.nextWave = 999; s.gusted = true; s.energy = 999;
   m.summon(s, 51); const cat = s.units[0]; cat.x = 400;
