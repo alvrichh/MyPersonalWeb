@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.2 - 2026-11-06
+
+- The Villain's claw button greys as its charge is spent and fills with colour again from the bottom as it reloads, as the hero's crossbow button does.
+
 ## 1.16.1 - 2026-11-06
 
 - The King's Jailer is drawn half as big again, a giant among the enemy.
