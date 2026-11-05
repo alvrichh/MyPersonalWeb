@@ -32,9 +32,8 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
   /** A second gun fired with every attack, drawn as a short burst beside the main shot (the heavy robot's last form:
       gatling bullets with its rocket salvo). The damage is the attack's own. */
   also?: string;
-  /** Where its shot leaves from, [ahead of its middle, height] in field units (the heavy robot's last form: the rockets
-      from the cannon on its back), and where the `also` gun fires from (the bullets from its hands). */
-  gun?: [number, number]; alsoGun?: [number, number];
+  /** The share of its damage the `also` gun deals, on top, to the one it aims at. */
+  alsoShare?: number;
   /** Its sheet has the six poses (walk A, walk B, ready, attack, hurt, dead) instead of three (stand, attack, hurt). */
   six?: boolean;
   /** Reaches flyers although it stands on the ground: the swordsman's master form, bows, guns, rockets, rays and spells (not
@@ -92,7 +91,7 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
 /** Spells that land on their target instead of flying to it (the wizard's). */
 export const SPELLS = ['lightning', 'tornado', 'meteor'];
 /** An upgrade form: its gold price in the workshop and what it changes. */
-export type Form = Partial<Pick<Spec, 'cost' | 'hp' | 'damage' | 'speed' | 'range' | 'rate' | 'splash' | 'hitsAir' | 'blast' | 'sweep' | 'ram' | 'ramHits' | 'siege' | 'infantry' | 'shot' | 'spin' | 'also' | 'gun' | 'alsoGun' | 'sprite' | 'size'>> & { price: number }
+export type Form = Partial<Pick<Spec, 'cost' | 'hp' | 'damage' | 'speed' | 'range' | 'rate' | 'splash' | 'hitsAir' | 'blast' | 'sweep' | 'ram' | 'ramHits' | 'siege' | 'infantry' | 'shot' | 'spin' | 'also' | 'alsoShare' | 'sprite' | 'size'>> & { price: number }
 /** Cartoon Wars 2's rosters (docs/siege-roster.md), every unit from the owner's six-pose sheets. Every unit's `id` is
     its place in this list: ours first (10 land, then 5 air), then the enemy's, each one stated as the ally it equals
     in the reference, then our flying mech and the enemy's guardians. */
@@ -167,9 +166,9 @@ export const UNITS: readonly Spec[] = [
   // The heavy armed robot's four forms (docs/cw2-reference.md): gatling bursts, small rockets added (MK2), a frozen
   // cannon on its back (from here it reaches flyers), and a huge one firing rocket salvos.
   { id: 9, cost: 200, hp: 1300, damage: 18, speed: 18, range: 200, rate: 0.5, cooldown: 22, unlock: 5, splash: 80, shot: 'bullet', steady: true, ...six('ally-heavy-robot-1', 158, 1.2975), forms: [
-    { price: 1200, cost: 240, hp: 1720, damage: 64, shot: 'rockets', hitsAir: true, rate: 1.4, ...six('ally-heavy-robot-2', 191, 1.1911) },
-    { price: 2200, cost: 290, hp: 2310, damage: 69, hitsAir: true, shot: 'ice', rate: 1.2, ...six('ally-heavy-robot-3', 196, 1.2245) },
-    { price: 4000, cost: 350, hp: 2960, damage: 55, splash: 100, hitsAir: true, blast: true, shot: 'salvo', also: 'bullet', gun: [60, 88], alsoGun: [40, 24], rate: 0.8, ...six('ally-heavy-robot-4', 273, 1.1355) },
+    { price: 1200, cost: 240, hp: 1720, damage: 64, shot: 'rockets', also: 'bullet', alsoShare: 0.2, hitsAir: true, rate: 1.4, ...six('ally-heavy-robot-2', 191, 1.1911) },
+    { price: 2200, cost: 290, hp: 2310, damage: 69, hitsAir: true, shot: 'ice', also: 'bullet', alsoShare: 0.2, rate: 1.2, ...six('ally-heavy-robot-3', 196, 1.2245) },
+    { price: 4000, cost: 350, hp: 2960, damage: 55, splash: 100, hitsAir: true, blast: true, shot: 'salvo', also: 'plasma-cyan', alsoShare: 0.35, rate: 0.8, ...six('ally-heavy-robot-4', 273, 1.1355) },
   ] },
   // Ours, air (Cartoon Wars 2's A row): they fly over the field, out of reach of melee troops; only ranged ones hit them.
   // The aircraft fighter's four forms: a sword under a propeller pack, then with goggles and scarf, two rotors and blue
@@ -443,6 +442,8 @@ export function upgrade(p: Progress, slot: number): boolean {
   p.coins -= cost; p.upgrades[slot]++; return true;
 }
 export interface Fighter { uid: number; id: number; side: 0 | 1; x: number; lane: number; hp: number; maxHp: number; damage: number; attack: number; flash: number; boss: boolean; hit?: number;
+  /** Shots it has fired, so its guns take turns. */
+  volley?: number;
   /** A breaking robot's stage (0 whole, 1 one arm and no gun, 2 a crawling wreck) and whether it is an elite (horned,
       shooting lightning). */
   stage?: number; elite?: boolean;
@@ -511,7 +512,10 @@ export interface Effect { x: number; from: number; lane: number; life: number; m
   /** A shot's own projectile picture (`Spec.shot`) and whether it spins. */
   art?: string; spin?: boolean;
   /** A shot from a flyer, or at one: the height (`Fighter.alt`) it leaves from, or flies to, instead of the ground's. */
-  fromUp?: number; toUp?: number }
+  fromUp?: number; toUp?: number;
+  /** Where it leaves from: the shooter's sheet (`+` for its second gun), which of its muzzles, its drawn size, and whether
+      its sheet faces left or it flies; the view finds the muzzle on its attack pose (`MUZZLE`). */
+  gun?: { sprite: string; i: number; size: number; left?: boolean; air?: boolean } }
 export interface Siege {
   world: number; phase: 'fight' | 'won' | 'lost'; time: number; energy: number; generator: number; cooldowns: Record<number, number>;
   /** The base's mana pool level (`MANA_STEP` more maximum energy each). */
@@ -762,8 +766,12 @@ function arrows(s: Siege, count: number) {
     meteors with their fire, and a blast where a rocket of the robots' last forms lands. Damage is dealt apart. */
 /** The shots that are rockets. */
 const ROCKET_SHOTS = new Set(['rocket', 'rockets', 'salvo', 'missile']);
+/** Where a troop's shot leaves from, for the view to find on its attack pose: its sheet (`+` for its second gun), which
+    of its muzzles (they take turns), and how it is drawn (the same size as `fighter` in the view). */
+const gunOf = (u: Fighter, a: Spec, i: number, which = '') => ({ sprite: a.sprite + which, i, size: a.size * (u.boss ? 1.6 : 1) * (u.grow ?? 1) * Math.pow(0.8, u.stage ?? 0), left: a.facesLeft, air: a.air });
 function launch(s: Siege, u: Fighter, a: Spec, x0: number, lane: number, toUp: number) {
-  const dir = u.side ? -1 : 1;
+  // Its guns take turns, shot after shot.
+  const v = (u.volley = (u.volley ?? 0) + 1);
   // A thrown or shot projectile of its own flies a little longer, so it is seen on its way.
   const flight = a.lob ?? (isBullet(a.shot) || isBeam(a.shot) ? 0.16 : SPELLS.includes(a.shot ?? '') ? 0.6 : a.shot ? 0.35 : 0.2);
   if (a.shot === 'meteor') {
@@ -774,9 +782,13 @@ function launch(s: Siege, u: Fighter, a: Spec, x0: number, lane: number, toUp: n
       s.effects.push({ x, from: u.x, lane: lane, life: flight + wait, max: flight, kind: 'shot', side: u.side, art: 'meteor', up: dy });
       s.effects.push({ x, from: x, lane: lane, life: flight + wait + FIRE, max: FIRE, kind: 'fire', side: u.side, size: 60, up: dy });
     }
-  } else s.effects.push({ x: x0, from: u.x + (a.gun ? a.gun[0] * dir : 0), lane: lane, life: flight, max: flight, kind: u.elite ? 'bolt' : 'shot', side: u.side, art: a.shot, spin: a.spin, fromUp: a.gun ? a.gun[1] : a.air ? u.alt ?? highOf(u) : 0, toUp, arc: a.lob ? Math.min(190, 60 + Math.abs(x0 - u.x) * 0.3) : undefined });
-  // A second gun (the heavy robot's last form): a burst of three bullets beside the rockets, one after another.
-  if (a.also) for (let k = 0; k < 3; k++) s.effects.push({ x: x0 + (k - 1) * 12, from: u.x + (a.alsoGun ? a.alsoGun[0] * dir : 0), lane: lane, life: 0.16 + k * 0.09, max: 0.16, kind: 'shot', side: u.side, art: a.also, fromUp: a.alsoGun ? a.alsoGun[1] : a.air ? u.alt ?? highOf(u) : 0, toUp: toUp + 4 + k * 10 });
+  } else s.effects.push({ x: x0, from: u.x, lane: lane, life: flight, max: flight, kind: u.elite ? 'bolt' : 'shot', side: u.side, art: a.shot, spin: a.spin, fromUp: a.air ? u.alt ?? highOf(u) : 0, toUp, arc: a.lob ? Math.min(190, 60 + Math.abs(x0 - u.x) * 0.3) : undefined, gun: gunOf(u, a, v) });
+  // A second gun (the heavy robot's): a burst of three bullets from its hands beside its rockets, one after another,
+  // or (its last form) one big cyan plasma ball.
+  if (a.also) {
+    const ball = !isBullet(a.also);
+    for (let k = 0; k < (ball ? 1 : 3); k++) s.effects.push({ x: x0 + (ball ? 0 : (k - 1) * 12), from: u.x, lane: lane, life: (ball ? 0.3 : 0.16) + k * 0.09, max: ball ? 0.3 : 0.16, kind: 'shot', side: u.side, art: a.also, fromUp: a.air ? u.alt ?? highOf(u) : 0, toUp: toUp + 4 + k * 10, gun: gunOf(u, a, v + k, '+') });
+  }
   // Every rocket blows up where it lands, with the explosion art (bigger for salvos and the robots' blasts).
   if (a.blast || ROCKET_SHOTS.has(a.shot ?? '')) s.effects.push({ x: x0, from: x0, lane: lane, life: flight + BOOM, max: BOOM, kind: 'boom', side: u.side, size: a.shot === 'salvo' ? 90 : a.blast ? 70 : 56, up: toUp, dark: true });
 }
@@ -1055,6 +1067,8 @@ export function tick(s: Siege, dt: number) {
         // A lobbed shot (the catapult's rock) strikes where it lands, when it lands; the rest strike at once.
         if (a.lob && !u.side) s.hitq.push({ at: s.time + a.lob, x: enemy.x, r: Math.max(24, area ?? 0), damage: u.damage / s.power, ground: true });
         else for (const v of alive) if (v.side !== u.side && reaches(u, v) && (scooped ? scooped.includes(v) : v === enemy || (area && Math.abs(v.x - enemy.x) < area) || (a.pierce && (v.x - u.x) * (enemy.x - u.x) > 0 && Math.abs(v.x - u.x) <= a.range + 40))) hits.push({ target: v, damage: u.damage, boss: u.boss, push: a.hook ? -a.hook : a.ram ?? a.shove });
+        // Its second gun (the heavy robot's bullets or plasma ball) strikes the one it aims at, on top.
+        if (a.also && !a.heal) hits.push({ target: enemy, damage: u.damage * (a.alsoShare ?? 0), boss: u.boss });
         if (a.pierce) {
           const end = u.x + (enemy.x > u.x ? 1 : -1) * (a.range + 40); u.aimAir = !!UNITS[enemy.id].air;
           // At walkers its beam strikes the ground ahead (its attack pose) and runs along it as far as it reaches.

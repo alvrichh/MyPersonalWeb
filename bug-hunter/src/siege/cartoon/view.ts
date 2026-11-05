@@ -416,8 +416,43 @@ function dirAt(at: (t: number) => { x: number; y: number }, p: number) {
 }
 /** The height a troop's shot leaves from or flies to: a hand's height on the ground, a flyer's middle in the air. */
 const shotY = (up: number | undefined, y: number) => y - 15 - Math.max(0, (up ?? 0) - 10);
+/** Each shooter's muzzles on its attack pose (`-3`), as shares of that picture's width and height, read off the sheet as
+    drawn (an enemy's facing left): the gun's mouth, the bow, the hand that throws, the cannon on its back. Several take
+    turns, shot after shot. `+` is a second gun (the heavy robot's hands). Spells fall on their target; flames, breath
+    and the enemy's shots are part of their attack pose. */
+const MUZZLE: Record<string, [number, number][]> = {
+  'ally-archer-1': [[0.69, 0.36]], 'ally-archer-2': [[0.71, 0.27]], 'ally-archer-3': [[0.75, 0.43]], 'ally-archer-4': [[0.86, 0.44]],
+  'ally-gunner-1': [[0.74, 0.45]], 'ally-gunner-2': [[0.73, 0.46]], 'ally-gunner-3': [[0.72, 0.35], [0.72, 0.52]], 'ally-gunner-4': [[0.74, 0.43]],
+  'ally-blaster-1': [[0.73, 0.33]], 'ally-blaster-2': [[0.74, 0.46]], 'ally-blaster-3': [[0.76, 0.44]],
+  'ally-robot-1': [[0.74, 0.2]], 'ally-robot-2': [[0.75, 0.31], [0.75, 0.46]], 'ally-robot-3': [[0.74, 0.41], [0.74, 0.59]],
+  'ally-heavy-robot-1': [[0.72, 0.54], [0.32, 0.61]],
+  'ally-heavy-robot-2': [[0.64, 0.17], [0.25, 0.16]], 'ally-heavy-robot-2+': [[0.74, 0.54], [0.44, 0.56]],
+  'ally-heavy-robot-3': [[0.69, 0.15], [0.37, 0.15]], 'ally-heavy-robot-3+': [[0.74, 0.56], [0.43, 0.58]],
+  'ally-heavy-robot-4': [[0.58, 0.14]], 'ally-heavy-robot-4+': [[0.72, 0.6], [0.36, 0.62]],
+  'ally-armed-fighter-1': [[0.74, 0.49]], 'ally-armed-fighter-2': [[0.7, 0.46]], 'ally-armed-fighter-3': [[0.58, 0.5]], 'ally-armed-fighter-4': [[0.6, 0.55]],
+  'ally-helicopter-1': [[0.66, 0.66]], 'ally-helicopter-2': [[0.48, 0.7], [0.86, 0.79]], 'ally-helicopter-3': [[0.58, 0.72], [0.88, 0.82]],
+  'ally-angel-2': [[0.85, 0.21]], 'ally-angel-3': [[0.7, 0.43]],
+  'ally-mech-2': [[0.62, 0.45]], 'ally-mech-3': [[0.82, 0.6]], 'ally-mech-5': [[0.5, 0.45]],
+  'foe-shooter-1': [[0.03, 0.52]], 'foe-archer-1': [[0.05, 0.5]],
+  'ally-catapult-1': [[0.32, 0.12]], 'ally-catapult-2': [[0.85, 0.12]], 'ally-balloon-1': [[0.5, 0.97]],
+};
+/** Where a shot leaves from (`e.gun`): its muzzle on the shooter's attack pose, placed as `fighter` draws that pose (the
+    same size, on its feet, or on its middle when it flies); otherwise the old height over the thrower's x. */
+function muzzle(e: Effect, y: number) {
+  const g = e.gun, base = g?.sprite.replace(/\+$/, ''), list = g && MUZZLE[g.sprite.slice('siege/units/'.length)];
+  if (g && base && list) {
+    const stand = picture(`${base}-0`).image, art = picture(`${base}-3`).image;
+    if (ok(stand) && ok(art)) {
+      const [mx, my] = list[g.i % list.length], k = g.size / stand.naturalHeight, anchor = POSE_ANCHOR[`${base}-3`];
+      const fx = anchor ? anchor[0] : g.air ? 0.5 : feetOf(art), ahead = (g.left ? fx - mx : mx - fx) * art.naturalWidth * k;
+      const ground = y + 26 - (g.air ? (e.fromUp ?? 0) + e.lane * 8 : 0);
+      return { x: e.from + (e.side ? -ahead : ahead), y: ground - (1 - my) * art.naturalHeight * k };
+    }
+  }
+  return { x: e.from, y: shotY(e.fromUp, y) };
+}
 /** Every picture a troop's attack shows on its way (`siege/units/shot-<name>`): thrown things, rockets, bullets, beams. */
-const SHOTS = ['rock', 'javelin', 'arrow', 'shuriken', 'rocket', 'rockets', 'salvo', 'ice', 'plasma', 'crescent', 'missile', 'bullet', 'bullet-rifle', 'bullet-uzi', 'bullet-sniper', 'ray', 'ray-blue', 'ray-gold', 'ray-pink', 'ray-red', 'arrow-red', 'boulder', 'boulder-blue', 'bomb'];
+const SHOTS = ['rock', 'javelin', 'arrow', 'shuriken', 'rocket', 'rockets', 'salvo', 'ice', 'plasma', 'crescent', 'missile', 'bullet', 'bullet-rifle', 'bullet-uzi', 'bullet-sniper', 'ray', 'ray-blue', 'ray-gold', 'ray-pink', 'ray-red', 'arrow-red', 'boulder', 'boulder-blue', 'bomb', 'plasma-cyan'];
 /** The effect art: our crossbow's Cartoon arrows (or rockets) and missile, the old painted arrows (water for our troops,
     leaf for theirs),
     impacts up close, and a blast with the yellow lightning for the discharge. */
@@ -627,16 +662,16 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     // A beam (the ray gun's cyan, the mech's blue, the archangel's gold, the air magician's pink lightning): its picture
     // stretched from the muzzle to the target at once, fading.
     const art = still(`siege/units/shot-${e.art}`); if (!ok(art)) return false;
-    const y0 = shotY(e.fromUp, y), y1 = shotY(e.toUp, y), len = Math.hypot(e.x - e.from, y1 - y0), h = 12;
-    ctx.save(); ctx.globalAlpha = 1 - p; ctx.translate(e.from, y0); ctx.rotate(Math.atan2(y1 - y0, e.x - e.from));
+    const { x: x0, y: y0 } = muzzle(e, y), y1 = shotY(e.toUp, y), len = Math.hypot(e.x - x0, y1 - y0), h = 12;
+    ctx.save(); ctx.globalAlpha = 1 - p; ctx.translate(x0, y0); ctx.rotate(Math.atan2(y1 - y0, e.x - x0));
     ctx.drawImage(art, 0, -h / 2, len, h); ctx.restore(); return true;
   }
   if (e.kind === 'shot' && isBullet(e.art)) {
     // A bullet (each gun its own: pistol, rifle, Uzis, sniper), straight and fast from the muzzle to the target.
     const art = still(`siege/units/shot-${e.art}`); if (!ok(art)) return false;
-    const y0 = shotY(e.fromUp, y), y1 = shotY(e.toUp, y), x = e.from + (e.x - e.from) * p;
+    const { x: x0, y: y0 } = muzzle(e, y), y1 = shotY(e.toUp, y), x = x0 + (e.x - x0) * p;
     const w = art.naturalWidth * 0.4, h = art.naturalHeight * 0.4;
-    ctx.save(); ctx.translate(x, y0 + (y1 - y0) * p); ctx.rotate(Math.atan2(y1 - y0, e.x - e.from));
+    ctx.save(); ctx.translate(x, y0 + (y1 - y0) * p); ctx.rotate(Math.atan2(y1 - y0, e.x - x0));
     ctx.drawImage(art, -w, -h / 2, w, h); ctx.restore(); return true;
   }
   if (e.kind === 'shot' && e.art) {
@@ -644,9 +679,10 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     // straight to the target, spinning or pointing along its path, drawn at the sheets' scale.
     const art = still(`siege/units/shot-${e.art}`); if (!ok(art)) return false;
     // Straight from the thrower's hand to the target, no gravity; a lobbed one (`arc`) climbs high and falls back down.
-    const y0 = shotY(e.fromUp, y), y1 = shotY(e.toUp, y), arc = e.arc ?? 0;
-    const at = (t: number) => ({ x: e.from + (e.x - e.from) * t, y: y0 + (y1 - y0) * t - 4 * arc * t * (1 - t) });
-    const here = at(p), ahead = dirAt(at, p), w = art.naturalWidth * 0.4, h = art.naturalHeight * 0.4;
+    const { x: x0, y: y0 } = muzzle(e, y), y1 = shotY(e.toUp, y), arc = e.arc ?? 0;
+    const at = (t: number) => ({ x: x0 + (e.x - x0) * t, y: y0 + (y1 - y0) * t - 4 * arc * t * (1 - t) });
+    // The heavy robot's cyan plasma ball is a big one.
+    const big = e.art === 'plasma-cyan' ? 0.7 : 0.4, here = at(p), ahead = dirAt(at, p), w = art.naturalWidth * big, h = art.naturalHeight * big;
     ctx.save(); ctx.translate(here.x, here.y);
     ctx.rotate(e.spin ? p * 14 * (e.x > e.from ? 1 : -1) : Math.atan2(ahead.y - here.y, ahead.x - here.x || 0.001));
     ctx.drawImage(art, -w / 2, -h / 2, w, h); ctx.restore(); return true;

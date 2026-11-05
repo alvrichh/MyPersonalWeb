@@ -548,8 +548,12 @@ test('heavy robots never get knocked back, and the last one fires bullets with i
   m.summon(s, m.card(9, 4)); const bot = s.units[0]; bot.x = 400;
   s.units.push({ uid: 98, id: 44, side: 1, x: 470, lane: 1, hp: 9e6, maxHp: 9e6, damage: 60, attack: 0, flash: 0, boss: false });
   let rockets = false, bullets = false;
-  for (let i = 0; i < 150; i++) { m.tick(s, 1 / 30); assert.ok(!bot.knock && !bot.nudge, 'never thrown back'); rockets ||= s.effects.some(e => e.art === 'salvo'); bullets ||= s.effects.some(e => e.art === 'bullet' && e.side === 0); }
-  assert.ok(rockets && bullets, 'rockets and bullets together');
+  for (let i = 0; i < 150; i++) { m.tick(s, 1 / 30); assert.ok(!bot.knock && !bot.nudge, 'never thrown back'); rockets ||= s.effects.some(e => e.art === 'salvo' && e.gun?.sprite === 'siege/units/ally-heavy-robot-4'); bullets ||= s.effects.some(e => e.art === 'plasma-cyan' && e.gun?.sprite === 'siege/units/ally-heavy-robot-4+'); }
+  assert.ok(rockets && bullets, 'rockets from its back cannon and a cyan plasma ball from its hands');
+  // The plasma ball strikes too: a strike is its rockets' damage and its share on top.
+  const a = m.specAt(9, 4), foe = s.units.find(u => u.uid === 98);
+  const before = foe.hp; bot.attack = 0; m.tick(s, 1 / 30);
+  assert.ok(Math.abs(before - foe.hp - bot.damage * (1 + a.alsoShare)) < 1, 'the second gun deals damage');
 });
 
 test('without the time limit a battle goes on past it', () => {
