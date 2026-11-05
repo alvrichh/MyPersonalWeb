@@ -1,4 +1,4 @@
-import { PHASED, actOf, stageIn, flight, bowReach, highOf, foesAt, FIELD, shotFor, FOE_AIR, FOE_LAND, GUARDIAN, KNOCK, POUNCE, SPELLS, UNITS, isBeam, isBullet, specAt, specOf, aimAt, enemyTier, castleTier, energyMax, looksTier, type Effect, type Fighter, type Siege } from './model';
+import { PHASED, HERO_AIR, HERO_GUARDIAN, HERO_LAND, heroLevel, actOf, stageIn, flight, bowReach, highOf, foesAt, FIELD, shotFor, FOE_AIR, FOE_LAND, GUARDIAN, KNOCK, POUNCE, SPELLS, UNITS, isBeam, isBullet, specAt, specOf, aimAt, enemyTier, castleTier, energyMax, looksTier, type Effect, type Fighter, type Siege } from './model';
 import { gloom } from './story';
 
 /** Each world's ground colours, under its floor while that loads (moss, embers, snow, mud, jungle, sand, iron,
@@ -37,9 +37,11 @@ function picture(path: string) {
 export function sprite(_s: Siege, u: Fighter) { return specOf(u).sprite; }
 /** A troop's card picture at its level. */
 export const portrait = (id: number, level = 1) => `/images/game/${specAt(id, level).sprite}-0.webp`;
-export function preload(world: number, deck: number[], _levels: number[] = []) {
-  const foes: number[] = [...foesAt(FOE_LAND, world), ...foesAt(FOE_AIR, world), GUARDIAN[actOf(world) - 1]];
-  const specs = [...deck.map(c => specAt(c % 100, Math.floor(c / 100) + 1)), ...foes.flatMap(id => (UNITS[id].phase2 !== undefined ? [UNITS[id], UNITS[UNITS[id].phase2!]] : [UNITS[id]]))];
+export function preload(world: number, deck: number[], _levels: number[] = [], villain = false) {
+  const foes: number[] = villain ? [] : [...foesAt(FOE_LAND, world), ...foesAt(FOE_AIR, world), GUARDIAN[actOf(world) - 1]];
+  // The Villain campaign's heroes, at the forms they come in.
+  const heroes = villain ? [...foesAt(HERO_LAND, world), ...foesAt(HERO_AIR, world)].map(id => specAt(id, heroLevel(id, world))).concat(specAt(HERO_GUARDIAN[actOf(world) - 1], 99)) : [];
+  const specs = [...heroes, ...deck.map(c => specAt(c % 100, Math.floor(c / 100) + 1)), ...deck.filter(c => UNITS[c % 100]?.phase2 !== undefined).map(c => UNITS[UNITS[c % 100].phase2!]), ...foes.flatMap(id => (UNITS[id].phase2 !== undefined ? [UNITS[id], UNITS[UNITS[id].phase2!]] : [UNITS[id]]))];
   specs.forEach(spec => { for (let f = 0; f < (spec.frames ?? (spec.six ? 6 : 3)); f++) picture(`${spec.sprite}-${f}`); });
   // The battlefield, and the fortresses and crossbow at every level (the workshop can change ours between battles).
   [sceneOf(world), ...[...SHOTS, ...SPELLS].map(n => `siege/units/shot-${n}`), ...[1, 2, 3, 4].map(n => `siege/units/bolt-${n}`), ...[1, 2, 3, 4, 5].flatMap(n => [`siege/castle-${n}`, ...(n < 5 ? [`siege/xbow-${n}`] : []), `siege/enemy-${n}`]), ...FX].forEach(still);
@@ -226,15 +228,17 @@ function damage(ctx: CanvasRenderingContext2D, w: number, h: number, left: numbe
 function base(ctx: CanvasRenderingContext2D, s: Siege, x: number, ground: number, color: string, enemy: boolean) {
   const hp = s.hp[enemy ? 1 : 0], max = s.maxHp[enemy ? 1 : 0];
   const tier = enemy ? enemyTier(s.world) : castleTier(s.fort);
-  const wall = still(`siege/${enemy ? 'enemy' : 'castle'}-${tier}`);
+  // The Villain campaign swaps the pictures: the dark fortress is ours (left, facing right), our castle theirs.
+  const dark = enemy !== !!s.villain;
+  const wall = still(`siege/${dark ? 'enemy' : 'castle'}-${tier}`);
   ctx.save(); ctx.translate(x, ground);
   let top = -169;
   if (ok(wall)) {
     // Never taller than the room above the deck under the HUD.
     const look = CASTLES[tier - 1];
-    const h = Math.min(enemy ? ENEMY_H[tier - 1] : look.h, ground - Math.max(30, hudRoom)), w = h * wall.naturalWidth / wall.naturalHeight;
+    const h = Math.min(dark ? ENEMY_H[tier - 1] : look.h, ground - Math.max(30, hudRoom)), w = h * wall.naturalWidth / wall.naturalHeight;
     // Kept whole on the field: a wide one moves in from the field's edge rather than past it.
-    const foot = enemy ? 10 : look.deck, left = enemy ? Math.min(-w / 2, FIELD - 4 - x - w) : Math.max(-w / 2, 4 - x);
+    const foot = dark ? 10 : look.deck, left = enemy ? Math.min(-w / 2, FIELD - 4 - x - w) : Math.max(-w / 2, 4 - x);
     // The enemy's pictures face front-right; the fortress is turned to face our side (left).
     // Fallen, it sinks into its dust cloud and is gone; a pile of rubble is left where it stood.
     const fall = enemy && s.razed ? s.effects.find(e => e.art === 'collapse') : undefined, sunk = enemy && s.razed ? (fall ? Math.min(1, (1 - fall.life / fall.max) / 0.45) : 1) : 0;
@@ -251,7 +255,7 @@ function base(ctx: CanvasRenderingContext2D, s: Siege, x: number, ground: number
       // The crossbow seated in the turret, turning on its wheel.
       const bowTier = looksTier(s.bow.level), arm = still(`siege/xbow-${bowTier}`), [fx, fy] = XBOW.pivot[bowTier - 1];
       bolt = `siege/units/bolt-${bowTier}`;
-      const px = left + w * look.bow[0], py = -h + foot + h * look.bow[1];
+      const spot = dark ? [0.72, 0.24] : look.bow, px = left + w * spot[0], py = -h + foot + h * spot[1];
       bowAt = { x: x + px, y: ground + py };
       if ((s.shots ?? 0) !== lastShots) { lastShots = s.shots ?? 0; kickUntil = s.time + 0.09; flashAt = s.time; }
       if (ok(arm)) {
@@ -352,10 +356,15 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   const ground = h / scale * camera.deck;
   // The backdrop (sky, far landscape, ground, gloom) is painted into its own canvas and only repainted when the view
   // moves or resizes; otherwise each frame copies it whole (one picture instead of a dozen large ones).
-  const key = `${sceneOf(s.world)}|${ok(scene)}|${camera.x.toFixed(2)}|${camera.width.toFixed(1)}|${canvas.width}x${canvas.height}|${ground.toFixed(2)}`;
+  const key = `${s.villain ? 'v' : ''}${sceneOf(s.world)}|${ok(scene)}|${camera.x.toFixed(2)}|${camera.width.toFixed(1)}|${canvas.width}x${canvas.height}|${ground.toFixed(2)}`;
   if (backdrop.key !== key) {
     backdrop.key = key; const c = backdrop.canvas; if (c.width !== canvas.width || c.height !== canvas.height) { c.width = canvas.width; c.height = canvas.height; }
     const b = c.getContext('2d')!; b.setTransform(dpr, 0, 0, dpr, 0, 0);
+    // The Villain campaign sees the world turned round: its own (corrupt) side on the left, where it stands.
+    const put = (img: CanvasImageSource, sx: number, sy: number, sw0: number, sh0: number, dx: number, dy: number, dw: number, dh: number) => {
+      if (!s.villain) { b.drawImage(img, sx, sy, sw0, sh0, dx, dy, dw, dh); return; }
+      b.save(); b.translate(dx * 2 + dw, 0); b.scale(-1, 1); b.drawImage(img, sx, sy, sw0, sh0, dx, dy, dw, dh); b.restore();
+    };
     const sky = b.createLinearGradient(0, 0, 0, h); sky.addColorStop(0, '#080f21'); sky.addColorStop(1, '#172c3c');
     b.fillStyle = sky; b.fillRect(0, 0, w, h);
     b.scale(scale, scale); b.translate(-camera.x + Math.max(0, (camera.width - FIELD) / 2), 0);
@@ -378,16 +387,16 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
       // When the view runs below the picture, its foreground (the part under the walking ground) is stretched down to
       // the view's foot, so the picture itself fills it (never one stretched row, which reads as a blur).
       const nw = scene.naturalWidth, nh = scene.naturalHeight, gRow = nh * feet, foot = Math.max(top + sh, viewH + 1);
-      b.drawImage(scene, 0, 0, nw, gRow, x0, top, sw, ground - top);
-      b.drawImage(scene, 0, gRow, nw, nh - gRow, x0, ground, sw, foot - ground);
+      put(scene, 0, 0, nw, gRow, x0, top, sw, ground - top);
+      put(scene, 0, gRow, nw, nh - gRow, x0, ground, sw, foot - ground);
       const band = groundOf(scene, sceneOf(s.world)), y0 = nh - band.height, layer = top + sh * (y0 / nh);
       const gx = Math.min(-SCENE_FIT.pad, left), gw = Math.max(FIELD + SCENE_FIT.pad, left + camera.width) - gx;
-      b.drawImage(band, 0, 0, nw, gRow - y0, gx, layer, gw, ground - layer);
-      b.drawImage(band, 0, gRow - y0, nw, nh - gRow, gx, ground, gw, foot - ground);
+      put(band, 0, 0, nw, gRow - y0, gx, layer, gw, ground - layer);
+      put(band, 0, gRow - y0, nw, nh - gRow, gx, ground, gw, foot - ground);
       if (top > 0) {
         const strip = topOf(scene), fade = 60;
-        b.drawImage(strip, 0, 0, 16, 1, x0, -1, sw, top + 2);
-        for (let i = 0; i < 12; i++) { b.globalAlpha = 1 - (i + 0.5) / 12; b.drawImage(strip, 0, 0, 16, 1, x0, top + (i * fade) / 12, sw, fade / 12 + 0.5); }
+        put(strip, 0, 0, 16, 1, x0, -1, sw, top + 2);
+        for (let i = 0; i < 12; i++) { b.globalAlpha = 1 - (i + 0.5) / 12; put(strip, 0, 0, 16, 1, x0, top + (i * fade) / 12, sw, fade / 12 + 0.5); }
         b.globalAlpha = 1;
       }
     } else {

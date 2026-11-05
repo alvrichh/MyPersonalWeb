@@ -642,6 +642,20 @@ test('the King of Darkness: flies with four attacks in turn, falls to the ground
   assert.equal(king.id, 60, 'on foot'); assert.ok(king.hp > 0 && king.hp < king.maxHp * 0.5, 'with the life he had left');
 });
 
+test('the Villain campaign: the enemy\'s troops and guardians against our heroes, opened act by act', () => {
+  const p = m.freshVillain(); assert.ok(p.villain && p.deck[0] === m.VILLAIN_START);
+  assert.ok(m.isOpen(p, 15) && !m.isOpen(p, 26) && !m.isOpen(p, 0) && !m.isOpen(p, 34), 'the first act\'s enemy troops, not ours nor a guardian yet');
+  p.victories = [5]; p.unlocked = 6; assert.ok(m.isOpen(p, 34) && m.isOpen(p, 22), 'the first guardian once its act is won');
+  assert.ok(m.VILLAINS.every(u => u.foe && u.cost > 0) && m.UNITS[39].cost >= 900, 'every card has an energy cost, the King the most');
+  const back = m.readProgress(JSON.stringify(p), true); assert.ok(back.villain && back.owned.includes(15));
+  p.coins = 99999; assert.ok(m.buyTroop(p, 22) && m.buyTroop(p, 34)); p.deck = [15, 34];
+  const s = m.newSiege(p, 6); s.energy = 9999; s.nextWave = 0; m.tick(s, 1 / 30);
+  assert.ok(s.villain && s.units.some(u => u.side === 1 && !m.UNITS[u.id].foe && u.lv >= 1), 'the heroes come against it');
+  s.energy = 9999; assert.ok(m.summon(s, 15) && !m.summon(s, 0), 'it sends the enemy\'s troops, not ours');
+  assert.ok(m.summon(s, 34)); s.cooldowns = {}; assert.ok(!m.summon(s, 34), 'a guardian once a battle');
+  assert.ok(s.units.some(u => !u.side && u.id === 34 && u.boss));
+});
+
 test('the catapult lobs its rock: it strikes where it lands, when it lands', () => {
   const s = m.newSiege({ ...m.freshProgress(), unlocked: 30, owned: [0, 51], deck: [51] }, 20); s.nextWave = 999; s.gusted = true; s.energy = 999;
   m.summon(s, 51); const cat = s.units[0]; cat.x = 400;

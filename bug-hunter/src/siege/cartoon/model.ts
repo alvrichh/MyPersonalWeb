@@ -4,6 +4,8 @@ export const LIMIT = 300;
 export const CAP = 36;
 /** Its own save, apart from Siege Legacy's (`bugHunter.siege.v1`); v2 since battles became stages within acts. */
 export const SAVE_KEY = 'bugHunter.siege.cartoon.v2';
+/** The Villain campaign's own save (opened by winning the last battle): the enemy's troops against our heroes. */
+export const VILLAIN_KEY = 'bugHunter.siege.cartoon.villain.v1';
 /** Cartoon Wars 2-style acts, each with its own guardian, each fought over `STAGES` battles: the guardian comes in the
     last. A battle's number (`world` in the model) runs from 1 to `LAST` across all the acts. */
 export const ACTS = 6;
@@ -210,24 +212,24 @@ export const UNITS: readonly Spec[] = [
     { price: 4000, cost: 520, hp: 1850, damage: 203, speed: 55, range: 120, rate: 1.5, splash: 0, shot: 'crescent-gold', sweep: { reach: 230, back: 170 }, ...six('ally-angel-3', 298, 0.7718) },
   ] },
   // The enemy's.
-  { id: 15, cost: 0, hp: 115, damage: 16, speed: 43, range: 35, rate: 0.8, cooldown: 0, unlock: 1, foe: true, infantry: true, ...foe('foe-swordsman-1', 141, 0.82) },
-  { id: 16, cost: 0, hp: 150, damage: 20, speed: 40, range: 55, rate: 0.9, cooldown: 0, unlock: 1, foe: true, infantry: true, ...foe('foe-spearman-1', 132, 0.87) },
-  { id: 17, cost: 0, hp: 130, damage: 18, speed: 70, range: 35, rate: 0.7, cooldown: 0, unlock: 1, foe: true, ...foe('foe-dog-1', 102, 0.98) },
-  { id: 18, cost: 0, hp: 480, damage: 26, speed: 24, range: 42, rate: 1.5, cooldown: 0, unlock: 1, foe: true, ...foe('foe-bear-1', 141, 1.19) },
-  { id: 19, cost: 0, hp: 240, damage: 32, speed: 40, range: 60, rate: 1, cooldown: 0, unlock: 1, foe: true, infantry: true, ...foe('foe-reaper-1', 140, 0.93) },
-  { id: 20, cost: 0, hp: 560, damage: 30, speed: 22, range: 45, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 40, infantry: true, ...foe('foe-hammer-1', 133, 1.03) },
-  { id: 21, cost: 0, hp: 720, damage: 34, speed: 21, range: 48, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 40, infantry: true, ...foe('foe-axeman-1', 147, 1.07) },
-  { id: 22, cost: 0, hp: 100, damage: 30, speed: 30, range: 185, rate: 1.5, cooldown: 0, unlock: 1, foe: true, infantry: true, hitsAir: true, ...foe('foe-gunner-1', 134, 0.86) },
-  { id: 23, cost: 0, hp: 300, damage: 38, speed: 28, range: 175, rate: 1.5, cooldown: 0, unlock: 1, foe: true, infantry: true, hitsAir: true, ...foe('foe-blaster-1', 125, 1.04) },
-  { id: 24, cost: 0, hp: 150, damage: 42, speed: 26, range: 190, rate: 1.9, cooldown: 0, unlock: 1, foe: true, splash: 60, infantry: true, hitsAir: true, ...foe('foe-wizard-1', 165, 0.77) },
-  { id: 25, cost: 0, hp: 280, damage: 36, speed: 60, range: 40, rate: 1, cooldown: 0, unlock: 1, foe: true, pounce: true, ...foe('foe-tiger-1', 115, 1.2) },
-  { id: 26, cost: 0, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, ...foe('foe-dragon-1', 120, 1.38) },
-  { id: 27, flyAt: 125, cost: 0, hp: 380, damage: 40, speed: 55, range: 45, rate: 0.9, cooldown: 0, unlock: 1, foe: true, air: true, ...foe('foe-death-angel-1', 156, 0.93) },
-  { id: 28, flyAt: 70, cost: 0, hp: 70, damage: 12, speed: 70, range: 40, rate: 0.7, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-eagle-1', 171, 0.7) },
-  { id: 29, flyAt: 70, cost: 0, hp: 110, damage: 18, speed: 60, range: 40, rate: 0.7, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-ninja-bat-1', 128, 0.7) },
-  { id: 30, flyAt: 70, cost: 0, hp: 130, damage: 24, speed: 45, range: 180, rate: 1.2, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-hypno-bat-1', 139, 0.83) },
-  { id: 31, flyAt: 70, cost: 0, hp: 900, damage: 55, speed: 40, range: 130, rate: 1.4, cooldown: 0, unlock: 1, foe: true, air: true, splash: 50, steady: true, ...foe('foe-red-dragon-rider-1', 179, 1.05) },
-  { id: 32, cost: 0, hp: 760, damage: 40, speed: 24, range: 180, rate: 1.4, cooldown: 0, unlock: 1, foe: true, steady: true, splits: 2, splash: 35, hitsAir: true, ...foe('foe-gatling-1', 123, 1.22) },
+  { id: 15, cost: 30, hp: 115, damage: 16, speed: 43, range: 35, rate: 0.8, cooldown: 0, unlock: 1, foe: true, infantry: true, ...foe('foe-swordsman-1', 141, 0.82) },
+  { id: 16, cost: 40, hp: 150, damage: 20, speed: 40, range: 55, rate: 0.9, cooldown: 0, unlock: 1, foe: true, infantry: true, ...foe('foe-spearman-1', 132, 0.87) },
+  { id: 17, cost: 40, hp: 130, damage: 18, speed: 70, range: 35, rate: 0.7, cooldown: 0, unlock: 1, foe: true, ...foe('foe-dog-1', 102, 0.98) },
+  { id: 18, cost: 65, hp: 480, damage: 26, speed: 24, range: 42, rate: 1.5, cooldown: 0, unlock: 1, foe: true, ...foe('foe-bear-1', 141, 1.19) },
+  { id: 19, cost: 65, hp: 240, damage: 32, speed: 40, range: 60, rate: 1, cooldown: 0, unlock: 1, foe: true, infantry: true, ...foe('foe-reaper-1', 140, 0.93) },
+  { id: 20, cost: 95, hp: 560, damage: 30, speed: 22, range: 45, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 40, infantry: true, ...foe('foe-hammer-1', 133, 1.03) },
+  { id: 21, cost: 120, hp: 720, damage: 34, speed: 21, range: 48, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 40, infantry: true, ...foe('foe-axeman-1', 147, 1.07) },
+  { id: 22, cost: 30, hp: 100, damage: 30, speed: 30, range: 185, rate: 1.5, cooldown: 0, unlock: 1, foe: true, infantry: true, hitsAir: true, ...foe('foe-gunner-1', 134, 0.86) },
+  { id: 23, cost: 70, hp: 300, damage: 38, speed: 28, range: 175, rate: 1.5, cooldown: 0, unlock: 1, foe: true, infantry: true, hitsAir: true, ...foe('foe-blaster-1', 125, 1.04) },
+  { id: 24, cost: 60, hp: 150, damage: 42, speed: 26, range: 190, rate: 1.9, cooldown: 0, unlock: 1, foe: true, splash: 60, infantry: true, hitsAir: true, ...foe('foe-wizard-1', 165, 0.77) },
+  { id: 25, cost: 75, hp: 280, damage: 36, speed: 60, range: 40, rate: 1, cooldown: 0, unlock: 1, foe: true, pounce: true, ...foe('foe-tiger-1', 115, 1.2) },
+  { id: 26, cost: 105, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, ...foe('foe-dragon-1', 120, 1.38) },
+  { id: 27, flyAt: 125, cost: 105, hp: 380, damage: 40, speed: 55, range: 45, rate: 0.9, cooldown: 0, unlock: 1, foe: true, air: true, ...foe('foe-death-angel-1', 156, 0.93) },
+  { id: 28, flyAt: 70, cost: 20, hp: 70, damage: 12, speed: 70, range: 40, rate: 0.7, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-eagle-1', 171, 0.7) },
+  { id: 29, flyAt: 70, cost: 35, hp: 110, damage: 18, speed: 60, range: 40, rate: 0.7, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-ninja-bat-1', 128, 0.7) },
+  { id: 30, flyAt: 70, cost: 40, hp: 130, damage: 24, speed: 45, range: 180, rate: 1.2, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-hypno-bat-1', 139, 0.83) },
+  { id: 31, flyAt: 70, cost: 205, hp: 900, damage: 55, speed: 40, range: 130, rate: 1.4, cooldown: 0, unlock: 1, foe: true, air: true, splash: 50, steady: true, ...foe('foe-red-dragon-rider-1', 179, 1.05) },
+  { id: 32, cost: 160, hp: 760, damage: 40, speed: 24, range: 180, rate: 1.4, cooldown: 0, unlock: 1, foe: true, steady: true, splits: 2, splash: 35, hitsAir: true, ...foe('foe-gatling-1', 123, 1.22) },
   // Ours again, appended (ids are places in this list):
   // The flying mech, in six forms: a rocket fist, a laser, a plasma beam, an ice burst, a gatling,
   // and a giant golden fist.
@@ -239,29 +241,29 @@ export const UNITS: readonly Spec[] = [
     { price: 3000, cost: 460, hp: 1140, damage: 72, range: 60, splash: 50, rate: 0.6, ...six('ally-mech-6', 259, 0.8398) },
   ] },
   // The guardians (`GUARDIAN`), each act's own picture; their stats are those of the troops that stood in for them.
-  { id: 34, cost: 0, hp: 480, damage: 26, speed: 24, range: 42, rate: 1.5, cooldown: 0, unlock: 1, foe: true, hitsAir: true, ...foe('boss-slinger-1', 221, 0.85) },
-  { id: 35, cost: 0, hp: 760, damage: 40, speed: 24, range: 180, rate: 1.4, cooldown: 0, unlock: 1, foe: true, steady: true, splash: 45, hitsAir: true, ...foe('boss-gatling-1', 224, 0.84) },
-  { id: 36, flyAt: 70, cost: 0, hp: 900, damage: 55, speed: 40, range: 130, rate: 1.4, cooldown: 0, unlock: 1, foe: true, air: true, splash: 50, steady: true, ...foe('boss-dragon-rider-1', 217, 0.92) },
-  { id: 37, cost: 0, hp: 720, damage: 34, speed: 21, range: 48, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 40, hitsAir: true, ...foe('boss-brute-eater-1', 176, 1.07) },
-  { id: 38, cost: 0, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, hitsAir: true, ...foe('boss-dino-1', 199, 1.0) },
+  { id: 34, cost: 450, hp: 480, damage: 26, speed: 24, range: 42, rate: 1.5, cooldown: 0, unlock: 1, foe: true, hitsAir: true, ...foe('boss-slinger-1', 221, 0.85) },
+  { id: 35, cost: 550, hp: 760, damage: 40, speed: 24, range: 180, rate: 1.4, cooldown: 0, unlock: 1, foe: true, steady: true, splash: 45, hitsAir: true, ...foe('boss-gatling-1', 224, 0.84) },
+  { id: 36, flyAt: 70, cost: 650, hp: 900, damage: 55, speed: 40, range: 130, rate: 1.4, cooldown: 0, unlock: 1, foe: true, air: true, splash: 50, steady: true, ...foe('boss-dragon-rider-1', 217, 0.92) },
+  { id: 37, cost: 700, hp: 720, damage: 34, speed: 21, range: 48, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 40, hitsAir: true, ...foe('boss-brute-eater-1', 176, 1.07) },
+  { id: 38, cost: 800, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, hitsAir: true, ...foe('boss-dino-1', 199, 1.0) },
   // The King of Darkness, the last guardian, in two forms: on his flying throne (a dark orb, a ray from his eyes, flaming
   // skulls, a portal that calls the enemy), then at half his life on foot (a sword slam, bone spikes, a pulse) — `phase2`.
-  { id: 39, flyAt: 75, cost: 0, hp: 560, damage: 46, speed: 30, range: 230, rate: 1.5, cooldown: 0, unlock: 1, foe: true, air: true, steady: true, splash: 50, hitsAir: true, frames: 12, phase2: 60,
+  { id: 39, flyAt: 75, cost: 950, hp: 560, damage: 46, speed: 30, range: 230, rate: 1.5, cooldown: 0, unlock: 1, foe: true, air: true, steady: true, splash: 50, hitsAir: true, frames: 12, phase2: 60,
     moves: [{ ready: 2, strike: 3, kind: 'orb' }, { ready: 6, strike: 7, kind: 'ray' }, { ready: 2, strike: 3, kind: 'orb' }, { ready: 8, strike: 9, kind: 'skulls' }, { ready: 2, strike: 3, kind: 'orb' }, { ready: 10, strike: 11, kind: 'summon' }],
     ...foe('boss-dark-king-air', 238, 1) },
   // The enemy's later arrivals (the owner's sheets of Cartoon Wars 2's roster, docs/siege-roster.md), appended: the
   // mountains' beasts, the Darkness's mammoth and alien shooter, a horned archer, an undead turkey, and three flyers.
-  { id: 40, cost: 0, hp: 520, damage: 34, speed: 38, range: 50, rate: 1.1, cooldown: 0, unlock: 1, foe: true, infantry: true, ...foe('foe-rex-head-1', 137, 1.168) },
-  { id: 41, cost: 0, hp: 260, damage: 30, speed: 72, range: 40, rate: 0.8, cooldown: 0, unlock: 1, foe: true, ...foe('foe-terror-bird-1', 141, 0.993) },
-  { id: 42, cost: 0, hp: 900, damage: 42, speed: 28, range: 45, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 30, charge: true, ...foe('foe-rhino-1', 104, 1.442) },
-  { id: 43, cost: 0, hp: 420, damage: 38, speed: 42, range: 70, rate: 1.2, cooldown: 0, unlock: 1, foe: true, ...foe('foe-spider-spearman-1', 121, 1.116) },
-  { id: 44, cost: 0, hp: 1600, damage: 60, speed: 18, range: 60, rate: 2, cooldown: 0, unlock: 1, foe: true, steady: true, sweep: { reach: 110, back: 210 }, ...foe('foe-mammoth-1', 149, 1.611) },
-  { id: 45, cost: 0, hp: 180, damage: 40, speed: 30, range: 190, rate: 1.3, cooldown: 0, unlock: 1, foe: true, infantry: true, hitsAir: true, shot: 'ray-red', ...foe('foe-shooter-1', 128, 0.977) },
-  { id: 46, cost: 0, hp: 130, damage: 26, speed: 32, range: 190, rate: 1.2, cooldown: 0, unlock: 1, foe: true, infantry: true, hitsAir: true, shot: 'arrow-red', spin: false, ...foe('foe-archer-1', 132, 0.909) },
-  { id: 47, cost: 0, hp: 200, damage: 22, speed: 50, range: 35, rate: 0.9, cooldown: 0, unlock: 1, foe: true, ...foe('foe-turkey-1', 150, 0.8) },
-  { id: 48, flyAt: 98, cost: 0, hp: 360, damage: 34, speed: 55, range: 45, rate: 1, cooldown: 0, unlock: 1, foe: true, air: true, ...foe('foe-pterodactyl-1', 176, 0.966) },
-  { id: 49, flyAt: 70, cost: 0, hp: 240, damage: 30, speed: 65, range: 40, rate: 0.7, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-green-bat-1', 160, 0.6875) },
-  { id: 50, flyAt: 125, cost: 0, hp: 520, damage: 46, speed: 50, range: 60, rate: 1, cooldown: 0, unlock: 1, foe: true, air: true, splash: 30, ...foe('foe-devil-1', 159, 0.975) },
+  { id: 40, cost: 100, hp: 520, damage: 34, speed: 38, range: 50, rate: 1.1, cooldown: 0, unlock: 1, foe: true, infantry: true, ...foe('foe-rex-head-1', 137, 1.168) },
+  { id: 41, cost: 75, hp: 260, damage: 30, speed: 72, range: 40, rate: 0.8, cooldown: 0, unlock: 1, foe: true, ...foe('foe-terror-bird-1', 141, 0.993) },
+  { id: 42, cost: 150, hp: 900, damage: 42, speed: 28, range: 45, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 30, charge: true, ...foe('foe-rhino-1', 104, 1.442) },
+  { id: 43, cost: 90, hp: 420, damage: 38, speed: 42, range: 70, rate: 1.2, cooldown: 0, unlock: 1, foe: true, ...foe('foe-spider-spearman-1', 121, 1.116) },
+  { id: 44, cost: 195, hp: 1600, damage: 60, speed: 18, range: 60, rate: 2, cooldown: 0, unlock: 1, foe: true, steady: true, sweep: { reach: 110, back: 210 }, ...foe('foe-mammoth-1', 149, 1.611) },
+  { id: 45, cost: 60, hp: 180, damage: 40, speed: 30, range: 190, rate: 1.3, cooldown: 0, unlock: 1, foe: true, infantry: true, hitsAir: true, shot: 'ray-red', ...foe('foe-shooter-1', 128, 0.977) },
+  { id: 46, cost: 40, hp: 130, damage: 26, speed: 32, range: 190, rate: 1.2, cooldown: 0, unlock: 1, foe: true, infantry: true, hitsAir: true, shot: 'arrow-red', spin: false, ...foe('foe-archer-1', 132, 0.909) },
+  { id: 47, cost: 50, hp: 200, damage: 22, speed: 50, range: 35, rate: 0.9, cooldown: 0, unlock: 1, foe: true, ...foe('foe-turkey-1', 150, 0.8) },
+  { id: 48, flyAt: 98, cost: 85, hp: 360, damage: 34, speed: 55, range: 45, rate: 1, cooldown: 0, unlock: 1, foe: true, air: true, ...foe('foe-pterodactyl-1', 176, 0.966) },
+  { id: 49, flyAt: 70, cost: 75, hp: 240, damage: 30, speed: 65, range: 40, rate: 0.7, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-green-bat-1', 160, 0.6875) },
+  { id: 50, flyAt: 125, cost: 150, hp: 520, damage: 46, speed: 50, range: 60, rate: 1, cooldown: 0, unlock: 1, foe: true, air: true, splash: 30, ...foe('foe-devil-1', 159, 0.975) },
   // Ours again, the later recruits (the owner's sheets): the catapult, the bomber balloon, the medic, the shield
   // bearer, the ninja and the dragon rider, the dearest of all.
   { id: 51, cost: 80, hp: 300, damage: 40, speed: 18, range: 400, rate: 3, lob: 0.9, cooldown: 11, unlock: 4, support: true, splash: 60, siege: 2, shot: 'boulder', spin: true, ...six('ally-catapult-1', 112, 1.43), forms: [
@@ -290,6 +292,18 @@ export const UNITS: readonly Spec[] = [
     from the first two of the land list. No flyers in the first world: they come from the second. */
 export const FOE_LAND = [[15, 16, 17], [22, 19, 46], [23, 18, 47], [24, 25, 20], [26, 21, 40, 41, 42], [32, 45, 44, 43]];
 export const FOE_AIR = [[], [28], [29, 27], [30], [48], [31, 49, 50]];
+/** The heroes the Villain campaign sends against it, act by act (our troops, in the order they join), each at the form
+    its act reaches (`heroLevel`), and the guardian of each act's last battle at its last form. */
+export const HERO_LAND = [[0, 2, 1], [4, 3, 53], [5, 54, 6], [7, 51], [8, 9], []];
+export const HERO_AIR = [[], [10], [11, 13], [12, 52], [33], [14]];
+export const HERO_GUARDIAN = [3, 5, 14, 57, 56, 58];
+/** A hero's form in a Villain battle: its first in the first act, its last by the last. */
+export const heroLevel = (id: number, stage: number) => Math.max(1, Math.min(levelsOf(id), 1 + Math.floor((levelsOf(id) - 1) * (actOf(stage) - 1) / VILLAIN_PACE.reach)));
+/** The Villain campaign's balance: the heroes' strength against the enemy's (`hero`, on top of the usual growth by
+    battle) and how many acts they take to reach their last form (`reach`). */
+export const VILLAIN_PACE = { hero: [0.7, 0.62, 0.52, 0.45, 0.3, 0.28], reach: 8 };
+/** Sends one of the enemy's troops, or (the Villain campaign) one of our heroes at its act's form. */
+function foeOut(s: Siege, id: number) { spawn(s, id, 1, false, s.villain ? heroLevel(id, s.world) : undefined); }
 /** What a stage throws at you most (its counter in brackets), stage by stage within each act; the fifth is the
     guardian's, and `normal`/`mixed` stages send the usual mix. `swarm` (area damage): many small fast troops; `wall`
     (flyers, or shooters behind a tank): tough close fighters that cannot reach the air; `sky` (troops that reach the
@@ -364,7 +378,8 @@ export function specAt(id: number, level = 1): Spec {
   return { ...spec, ...changes };
 }
 /** A fighter's own stats: ours at their level, the enemy's as listed. */
-export const specOf = (u: { id: number; side: number; lv?: number }) => (u.side ? UNITS[u.id] : specAt(u.id, u.lv));
+/** A unit's stats now: at its form when it has one (ours, and the heroes the Villain campaign sends), else its own. */
+export const specOf = (u: { id: number; side: number; lv?: number }) => (u.lv !== undefined ? specAt(u.id, u.lv) : UNITS[u.id]);
 /** Who can hit whom: troops on the ground reach flyers only when they say so (`hitsAir`: the master swordsman, the
     wizard's meteor, the heavy armed robot's last two forms); flyers reach each other, and the ground unless they only
     fight in the sky (`skyOnly`: the aircraft fighters, the eagle and the bats). */
@@ -396,8 +411,21 @@ export interface Progress { version: 1; unlocked: number; coins: number; victori
       can still bring its earlier forms. */
   kit: number[];
   /** Set once the deck holds cards (`card`), not troop ids. */
-  cards: 1 }
+  cards: 1;
+  /** The Villain campaign's save: its troops are the enemy's and the guardians, it fights our heroes. */
+  villain?: true }
 export const freshProgress = (): Progress => ({ version: 1, unlocked: 1, coins: 0, victories: [], upgrades: [0, 0, 0, 0, 0, 0, 0], deck: [0], levels: UNITS.map(() => 1), owned: [0], powers: POWERS.map(() => 0), kit: [], cards: 1 });
+/** The Villain's first troop: the enemy's swordsman. */
+export const VILLAIN_START = 15;
+export const freshVillain = (): Progress => ({ ...freshProgress(), deck: [VILLAIN_START], owned: [VILLAIN_START], villain: true });
+/** The Villain's troops, in the order they join the enemy act by act (land, then air), then the six guardians as cards. */
+export const VILLAINS = [...[...new Set([...FOE_LAND.flat(), ...FOE_AIR.flat()])].sort((a, b) => villainAct(a) - villainAct(b)), ...GUARDIAN].map(id => UNITS[id]);
+/** The act from which an enemy troop serves the Villain: the act it first comes in. */
+export function villainAct(id: number) { const k = [...FOE_LAND, ...FOE_AIR].findIndex((l, i) => l.includes(id) && i >= 0); return k < 0 ? 1 : (k % FOE_LAND.length) + 1; }
+/** The roster a save buys from: ours or (the Villain) the enemy's. */
+export const rosterOf = (p: Progress) => (p.villain ? VILLAINS : ALLIES);
+/** The Villain's gold prices: about nine times a troop's energy; the guardians from 1200 to 5000 (the King of Darkness). */
+const VILLAIN_PRICE = (id: number) => (id === VILLAIN_START ? 0 : GUARDIAN.includes(id) ? [1200, 1800, 2400, 3000, 3600, 5000][GUARDIAN.indexOf(id)] : Math.round(UNITS[id].cost * 9 / 50) * 50);
 /** Can this card go in the army: its troop recruited and its level bought? */
 export const hasCard = (p: Progress, c: number) => Number.isInteger(c) && c >= 0 && owns(p, cardId(c)) && cardLevel(c) <= (p.levels[cardId(c)] ?? 1);
 /** The owner's testing switch: every troop and power open from the start and recruited and levelled for free, the base's
@@ -407,9 +435,12 @@ export const testing = { free: false };
 /** The player's choice (settings): battles without the time limit, lost only when the base falls. */
 export const prefs = { untimed: false };
 /** Has the battles won opened this troop's act? */
-export const isOpen = (p: Progress, id: number) => !!UNITS[id] && !UNITS[id].foe && (testing.free || (UNITS[id].legend ? p.victories.includes(LAST) : UNITS[id].unlock <= actOf(p.unlocked)));
+export const isOpen = (p: Progress, id: number) => !!UNITS[id] && (p.villain
+  // The Villain: an enemy troop from the act it first comes in, a guardian once its act's last battle is won.
+  ? VILLAINS.includes(UNITS[id]) && (testing.free || (GUARDIAN.includes(id) ? p.victories.includes((GUARDIAN.indexOf(id) + 1) * STAGES) : villainAct(id) <= actOf(p.unlocked)))
+  : !UNITS[id].foe && (testing.free || (UNITS[id].legend ? p.victories.includes(LAST) : UNITS[id].unlock <= actOf(p.unlocked))));
 export const owns = (p: Progress, id: number) => p.owned.includes(id);
-export const troopPrice = (id: number) => (testing.free ? 0 : RECRUIT[id] ?? 0);
+export const troopPrice = (id: number) => (testing.free ? 0 : UNITS[id]?.foe ? VILLAIN_PRICE(id) : RECRUIT[id] ?? 0);
 /** Recruits a troop with gold, into the army if there is room. */
 export function buyTroop(p: Progress, id: number): boolean {
   if (owns(p, id) || !isOpen(p, id) || p.coins < troopPrice(id)) return false;
@@ -418,8 +449,8 @@ export function buyTroop(p: Progress, id: number): boolean {
   return true;
 }
 const integer = (v: unknown, min: number, max: number, fallback: number) => typeof v === 'number' && Number.isFinite(v) ? Math.max(min, Math.min(max, Math.floor(v))) : fallback;
-export function readProgress(raw: string | null): Progress {
-  const p = freshProgress();
+export function readProgress(raw: string | null, villain = false): Progress {
+  const p = villain ? freshVillain() : freshProgress();
   try {
     const v = JSON.parse(raw || 'null');
     if (!v || v.version !== 1) return p;
@@ -431,11 +462,12 @@ export function readProgress(raw: string | null): Progress {
     p.levels = UNITS.map(u => (u.foe ? 1 : integer(v.levels?.[u.id], 1, levelsOf(u.id), 1)));
     p.powers = POWERS.map((w, i) => integer(v.powers?.[i], 0, w.forms.length, 0));
     p.kit = Array.isArray(v.kit) ? [...new Set<number>(v.kit.filter((n: unknown): n is number => typeof n === 'number' && hasPower(p, n)))].slice(0, KIT) : [];
-    p.owned = [...new Set<number>([0, ...(Array.isArray(v.owned) ? v.owned.filter((n: unknown) => typeof n === 'number' && isOpen(p, n)) : [])])];
+    const start = villain ? VILLAIN_START : 0;
+    p.owned = [...new Set<number>([start, ...(Array.isArray(v.owned) ? v.owned.filter((n: unknown) => typeof n === 'number' && isOpen(p, n)) : [])])];
     // An older save's deck holds troop ids, each meaning the troop at its level then.
     const deck: number[] = Array.isArray(v.deck) ? v.deck.filter((n: unknown): n is number => typeof n === 'number').map((n: number) => (v.cards === 1 ? n : owns(p, n) ? card(n, p.levels[n]) : -1)) : [];
     p.deck = capDeck([...new Set<number>(deck.filter(c => hasCard(p, c)))]);
-    if (!p.deck.length) p.deck = [0];
+    if (!p.deck.length) p.deck = [start];
   } catch { /* corrupt or unavailable storage starts a safe, isolated preview */ }
   return p;
 }
@@ -574,6 +606,10 @@ export interface Siege {
   loot?: number;
   /** The corrupt wind has blown this battle. */
   gusted?: boolean;
+  /** The Villain campaign: our side is the enemy's troops, and the heroes come against it (`HERO_LAND`). */
+  villain?: boolean;
+  /** A guardian card has been played this battle (one each battle). */
+  bossUsed?: boolean;
   /** The enemy fortress has fallen (its collapse has been shown). */
   razed?: boolean;
   /** Our troops have reached the enemy fortress (the war horn has sounded). */
@@ -606,7 +642,7 @@ export const generatorPrice = (s: Siege) => 80 + s.generator * 60;
 export function newSiege(p: Progress, world: number): Siege {
   world = integer(world, 1, Math.min(LAST, p.unlocked), 1);
   const maxHp: [number, number] = [1700 + p.upgrades[1] * 200, 1700 + hard(world) * 150];
-  return { world, phase: 'fight', time: 0, energy: 80, generator: 0, pool: p.upgrades[6], cooldowns: {}, hp: [...maxHp], maxHp, units: [], effects: [], nextId: 1, nextWave: 7, waves: 0, kills: 0, spell: 0, rocket: 0, aim: 700, bossSpawned: false, paid: false, power: 1 + p.upgrades[0] * 0.08, economy: p.upgrades[2] * 0.6, deck: [...p.deck], bow: { quiver: BOW.max + p.upgrades[5] * BOW.storeStep, drawing: false, held: 0, next: 0, level: p.upgrades[3], speed: p.upgrades[4], store: p.upgrades[5] }, fort: p.upgrades[1], levels: [...(p.levels ?? [])], kit: p.kit.filter(c => hasPower(p, c)).map(c => ({ id: c % 100, level: Math.floor(c / 100) + 1, card: c })), kitCd: {}, hitq: [], view: { x: 0, width: 650 }, casts: 0 };
+  return { villain: p.villain, world, phase: 'fight', time: 0, energy: 80, generator: 0, pool: p.upgrades[6], cooldowns: {}, hp: [...maxHp], maxHp, units: [], effects: [], nextId: 1, nextWave: 7, waves: 0, kills: 0, spell: 0, rocket: 0, aim: 700, bossSpawned: false, paid: false, power: 1 + p.upgrades[0] * 0.08, economy: p.upgrades[2] * 0.6, deck: [...p.deck], bow: { quiver: BOW.max + p.upgrades[5] * BOW.storeStep, drawing: false, held: 0, next: 0, level: p.upgrades[3], speed: p.upgrades[4], store: p.upgrades[5] }, fort: p.upgrades[1], levels: [...(p.levels ?? [])], kit: p.kit.filter(c => hasPower(p, c)).map(c => ({ id: c % 100, level: Math.floor(c / 100) + 1, card: c })), kitCd: {}, hitq: [], view: { x: 0, width: 650 }, casts: 0 };
 }
 /** The guardian, Cartoon Wars 2-style: it only comes out once the enemy fortress falls, far tougher than a troop, and
     the battle is won when it falls too. */
@@ -628,18 +664,21 @@ export const ELITE = { from: 60, every: 4, hp: 1.6, damage: 1.8 };
 export const ELITE_ID = 22;
 function spawn(s: Siege, id: number, side: 0 | 1, boss = false, level?: number) {
   if (s.units.filter(u => u.side === side).length >= CAP) return;
-  const lv = side ? undefined : level ?? s.levels[id] ?? 1;
-  const spec = side ? UNITS[id] : specAt(id, lv); const scale = side ? 0.95 + hard(s.world) * FOE_PACE.grow : s.power;
-  const hp = spec.hp * scale * (boss ? BOSS_HP : 1);
+  const lv = side ? level : level ?? s.levels[id] ?? 1;
+  const spec = lv === undefined ? UNITS[id] : specAt(id, lv); const scale = side ? (0.95 + hard(s.world) * FOE_PACE.grow) * (s.villain ? VILLAIN_PACE.hero[actOf(s.world) - 1] : 1) : s.power;
+  // A hero guardian (the Villain campaign) is as tough as that act's own guardian; a guardian card of ours is a little
+  // less than a guardian in its own battle.
+  const ref = s.villain && side && boss ? UNITS[GUARDIAN[actOf(s.world) - 1]] : spec;
+  const hp = ref.hp * scale * (boss ? (side ? BOSS_HP : BOSS_HP * 0.6) : 1);
   // One gunner in every few (counted by its spawn number) comes horned.
-  const elite = !!side && !boss && id === ELITE_ID && s.time >= ELITE.from && s.nextId % ELITE.every === 0;
+  const elite = !!side && !s.villain && !boss && id === ELITE_ID && s.time >= ELITE.from && s.nextId % ELITE.every === 0;
   const life = hp * (elite ? ELITE.hp : 1);
-  s.units.push({ uid: s.nextId++, id, side, x: side ? FIELD - 120 : 120, lane: s.nextId % 3, hp: life, maxHp: life, damage: spec.damage * scale * (elite ? ELITE.damage : 1) * (boss ? BOSS.damage : 1), attack: 0, flash: 0, boss, elite: elite || undefined, lv, grow: side ? growAt(s.world) : undefined });
+  s.units.push({ uid: s.nextId++, id, side, x: side ? FIELD - 120 : 120, lane: s.nextId % 3, hp: life, maxHp: life, damage: ref.damage * scale * (elite ? ELITE.damage : 1) * (boss ? BOSS.damage : 1), attack: 0, flash: 0, boss, elite: elite || undefined, lv, grow: side ? growAt(s.world) : undefined });
   const nu = s.units[s.units.length - 1];
   if (spec.stealth) nu.hidden = spec.stealth;
   // It arrives with a flourish of its kind: a summoning circle, a whirl of wind for flyers, a thump for the heavy, a
   // red portal for the enemy (the ninja slips in unseen).
-  else fx(s, side ? 'arrive-foe' : spec.air ? 'arrive-air' : spec.steady || spec.size > 100 ? 'arrive-heavy' : 'arrive-land', nu.x, 0.55, { size: Math.min(150, Math.max(70, spec.size * (boss ? 1.6 : 1) * 0.9)), up: spec.air ? highOf(nu) - 20 : 0 });
+  else fx(s, spec.foe ? 'arrive-foe' : spec.air ? 'arrive-air' : spec.steady || spec.size > 100 ? 'arrive-heavy' : 'arrive-land', nu.x, 0.55, { size: Math.min(150, Math.max(70, spec.size * (boss ? 1.6 : 1) * 0.9)), up: spec.air ? highOf(nu) - 20 : 0 });
 }
 /** What a troop's attack sounds like (its weapon) and its death (its body), by id; an array is per level. Projectile
     troops sound like what they fire (`SHOT_SOUND`). Names are the audio engine's `SiegeSound`s. */
@@ -679,12 +718,14 @@ export const costOf = (_s: Siege, c: number) => specAt(cardId(c), cardLevel(c)).
     sent over and over the moment the energy is there. */
 export const cooldownOf = (id: number, level = 1) => Math.max(2, Math.min(30, Math.round(specAt(id, level).cost / 10)));
 export function canSummon(s: Siege, c: number): boolean {
-  return s.phase === 'fight' && !!UNITS[cardId(c)] && !UNITS[cardId(c)].foe && s.deck.includes(c) && s.energy >= costOf(s, c) && (s.cooldowns[c] ?? 0) <= 0 && s.units.filter(u => !u.side).length < CAP;
+  return s.phase === 'fight' && !!UNITS[cardId(c)] && !!UNITS[cardId(c)].foe === !!s.villain && !(s.bossUsed && GUARDIAN.includes(cardId(c))) && s.deck.includes(c) && s.energy >= costOf(s, c) && (s.cooldowns[c] ?? 0) <= 0 && s.units.filter(u => !u.side).length < CAP;
 }
 /** Sends a card's troop at its level; each card has its own cooldown. */
 export function summon(s: Siege, c: number): boolean {
   if (!canSummon(s, c)) return false;
-  s.energy -= costOf(s, c); s.cooldowns[c] = cooldownOf(cardId(c), cardLevel(c)); spawn(s, cardId(c), 0, false, cardLevel(c)); return true;
+  // A guardian card comes once a battle, as a guardian.
+  const guard = GUARDIAN.includes(cardId(c)); if (guard) s.bossUsed = true;
+  s.energy -= costOf(s, c); s.cooldowns[c] = cooldownOf(cardId(c), cardLevel(c)); spawn(s, cardId(c), 0, guard, cardLevel(c)); return true;
 }
 export function improveGenerator(s: Siege): boolean {
   if (s.phase !== 'fight' || s.generator >= 4 || s.energy < generatorPrice(s)) return false;
@@ -864,7 +905,7 @@ function kingMove(s: Siege, u: Fighter, a: Spec, enemy: Fighter, alive: Fighter[
     // A portal opens on the ground before him and two of his troops climb out of it.
     const x = Math.max(160, u.x + dir * 70), land = foesAt(FOE_LAND, s.world);
     fx(s, 'king-portal', x, 1.2, { size: 120 });
-    for (let i = 0; i < 2; i++) { const before = s.units.length; spawn(s, land[(s.nextId + i * 3) % land.length], 1); const n = s.units[s.units.length - 1]; if (s.units.length > before && n) { n.x = x + i * 18; n.stun = 0.6; } }
+    for (let i = 0; i < 2; i++) { const before = s.units.length; spawn(s, land[(s.nextId + i * 3) % land.length], u.side); const n = s.units[s.units.length - 1]; if (s.units.length > before && n) { n.x = x + i * 18; n.stun = 0.6; } }
     hear(s, 'roar', x);
   } else if (mv.kind === 'slam') {
     // His sword driven into the ground: everything round him struck and thrown back.
@@ -1167,12 +1208,12 @@ export function tick(s: Siege, dt: number) {
     s.waves++;
     s.nextWave = Math.max(FOE_PACE.gap, 9 - hard(s.world) * FOE_PACE.slope - s.time / 90);
     const count = Math.min(3, 1 + Math.floor(s.time / 70));
-    const land = foesAt(FOE_LAND, s.world), flyers = foesAt(FOE_AIR, s.world);
+    const land = foesAt(s.villain ? HERO_LAND : FOE_LAND, s.world), flyers = foesAt(s.villain ? HERO_AIR : FOE_AIR, s.world);
     // Early waves only the first two land troops; later the whole list, the newest (toughest) more often.
     const pick = s.time < 25 ? land.slice(0, 2) : [...land, ...land.slice(-2)];
     const plain = (i: number) => { const flyer = flyers.length > 0 && s.time >= airFrom(s.world) && (s.waves + i) % 3 === 2; return flyer ? flyers[(s.waves + i) % flyers.length] : pick[(s.waves * 3 + i) % pick.length]; };
-    const pool = threatPool(s.world);
-    if (!pool.length) for (let i = 0; i < count; i++) spawn(s, plain(i), 1);
+    const pool = s.villain ? [] : threatPool(s.world);
+    if (!pool.length) for (let i = 0; i < count; i++) foeOut(s, plain(i));
     else {
       // A stage with a threat (`THREATS`): about two of every three troops come from its pool, and the wave is the same
       // strength as a plain one (`foePower`), so a few giants or a swarm of small ones weigh alike.
@@ -1182,7 +1223,7 @@ export function tick(s: Siege, dt: number) {
       for (let i = 0; i < Math.min(8, count + FOE_PACE.extra) && spent < budget * 0.95; i++) {
         const id = (s.waves * 7 + i) % 3 < 2 ? pool[(s.waves + i) % pool.length] : plain(i);
         if (i > 0 && spent + foePower(id) > budget * 1.2) continue;
-        spawn(s, id, 1); spent += foePower(id);
+        foeOut(s, id); spent += foePower(id);
       }
     }
   }
@@ -1192,10 +1233,10 @@ export function tick(s: Siege, dt: number) {
     for (const u of s.units) if (!u.side) { u.blown = GUST.time; u.knock = 0; u.stun = 0; }
     s.effects.push({ x: FIELD - 120, from: FIELD - 120, lane: 1, life: 1.2, max: 1.2, kind: 'gust', side: 1 });
     hear(s, 'corrupt-wind', FIELD - 300);
-    const land = foesAt(FOE_LAND, s.world), tough = [...land].sort((a, b) => UNITS[b].hp - UNITS[a].hp);
+    const land = foesAt(s.villain ? HERO_LAND : FOE_LAND, s.world), tough = [...land].sort((a, b) => specAt(b, heroLevel(b, s.world)).hp - specAt(a, heroLevel(a, s.world)).hp);
     const horde = hordeOf(s.world);
-    for (let i = 0; i < horde.weak; i++) { spawn(s, land[i % Math.min(2, land.length)], 1); const u = s.units[s.units.length - 1]; if (u?.side) u.x -= i * 18; }
-    for (let i = 0; i < horde.strong; i++) spawn(s, tough[i % tough.length], 1);
+    for (let i = 0; i < horde.weak; i++) { foeOut(s, land[i % Math.min(2, land.length)]); const u = s.units[s.units.length - 1]; if (u?.side) u.x -= i * 18; }
+    for (let i = 0; i < horde.strong; i++) foeOut(s, tough[i % tough.length]);
   }
   // The enemy fortress falls: a cloud of dust and rubble where it stood, stones, beams and its flag thrown out.
   if (!s.razed && s.hp[1] <= 0) {
@@ -1205,7 +1246,7 @@ export function tick(s: Siege, dt: number) {
     fx(s, 'crack-2', at - 30, 6, { floor: true, size: 220 });
   }
   if (!s.bossSpawned && s.hp[1] <= 0 && guarded(s.world)) {
-    s.bossSpawned = true; spawn(s, GUARDIAN[actOf(s.world) - 1], 1, true);
+    s.bossSpawned = true; if (s.villain) { const g = HERO_GUARDIAN[actOf(s.world) - 1]; spawn(s, g, 1, true, levelsOf(g)); } else spawn(s, GUARDIAN[actOf(s.world) - 1], 1, true);
     fx(s, 'skull', FIELD - 200, 2, { hud: true, size: 110 });
     // Its arrival: a gust from the ruins blows our army back.
     for (const u of s.units) if (!u.side) { u.blown = BOSS.gust; u.knock = 0; u.stun = 0; }
@@ -1377,7 +1418,7 @@ export function tick(s: Siege, dt: number) {
       if (MACHINE.test(sp.sprite ?? '')) {
         fx(s, 'wreck', u.x, 0.7, { size: size * 1.1, up });
         ['piece-gear', 'piece-bolt', 'piece-plate'].forEach((art, k) => s.effects.push({ x: u.x + (k - 1) * 34 + back * 0.4, from: u.x, lane: u.lane, life: 0.75, max: 0.75, kind: 'piece', side: 0, art, size: 12 + k * 2, arc: 50 + k * 14, spin: true, up: up + 30 }));
-      } else if (u.side) fx(s, 'soul', u.x + back * 0.5, 0.9, { size: Math.min(70, size * 0.55), up: up + 10 });
+      } else if (sp.foe) fx(s, 'soul', u.x + back * 0.5, 0.9, { size: Math.min(70, size * 0.55), up: up + 10 });
       if (sp.air) fx(s, 'crash', u.x + back, 0.6, { size: Math.min(150, size * 1.1) }, 0.28);
     }
     hear(s, soundsOf(u)[1], u.x);

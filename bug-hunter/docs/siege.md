@@ -73,3 +73,8 @@ npm run build
 ## Special powers (Siege Cartoon)
 
 The shop's **Especial** tab sells powers (`POWERS` in `cartoon/model.ts`): arrow rain (arrows → ice → fire → rockets), lightning rain, tsunami and meteor shower. Level 1 costs the power's `price` (an act opens it), each later form its own `price`; the save keeps each power's level (`powers`) and the three taken into battle (`kit`). `castPower` spreads a power's blows over the stretch of field on screen (`Siege.view`, set by the view each frame): blows are queued (`hitq`) and land with their effects (`fall`, `ground`, `zap`, `wave`; meteors reuse `shot`/`fire`/`boom`). Add a power by adding to `POWERS`, its strings (`siegePower<id>`, `siegePower<id>F<level>`, `siegePower<id>Text`), its pictures in `POWER_PICS` (`siege/index.ts`) and its cast in `castPower`.
+
+## Villain campaign (v1.15.193)
+
+Opened by winning the hero's last battle (the map's top bar shows a **Villain** switch). It has its own save (`VILLAIN_KEY`) and plays the 30 stages from the other side: the player's troops are the enemy's (`VILLAINS`, opened act by act as they first come in `FOE_LAND`/`FOE_AIR`) and the six guardians as cards (each opened by winning its act's last stage, one a battle, `bossUsed`); our heroes come against it (`HERO_LAND`, `HERO_AIR` at `heroLevel`, `HERO_GUARDIAN` on the last stage of each act, as tough as that act's guardian). The model keeps the player on side 0 (left), so the screen is the hero's turned round: the dark fortress is drawn on the left, our castle on the right and the backdrop mirrored. Balance: `VILLAIN_PACE` (the heroes' strength per act and how fast they reach their last form), set with simulations without the crossbow, powers or guardian cards.
+

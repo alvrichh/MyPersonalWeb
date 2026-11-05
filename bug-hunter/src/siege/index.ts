@@ -87,7 +87,19 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   let battleAbort = new AbortController();
   const abort = new AbortController(); const options = { signal: abort.signal };
   const q = <E extends HTMLElement>(selector: string) => root.querySelector<E>(selector)!;
-  const persist = () => { storage.set(M.SAVE_KEY, JSON.stringify(progress)); };
+  /** The Villain campaign (opened by winning the hero's last battle): its own save, the enemy's troops against ours. */
+  let villain = false;
+  const persist = () => { storage.set(villain ? cartoonModel.VILLAIN_KEY : M.SAVE_KEY, JSON.stringify(progress)); };
+  /** Has the hero's campaign been won (which opens the Villain's)? */
+  const villainOpen = () => cartoonModel.testing.free || (villain ? true : progress.victories.includes(cartoonModel.LAST)) || cartoonModel.readProgress(storage.get(cartoonModel.SAVE_KEY)).victories.includes(cartoonModel.LAST);
+  /** Switches between the hero's campaign and the Villain's, each with its own save. */
+  function switchSide() {
+    villain = !villain; root.classList.toggle('is-villain', villain);
+    progress = villain ? cartoonModel.readProgress(storage.get(cartoonModel.VILLAIN_KEY), true) : M.readProgress(storage.get(M.SAVE_KEY));
+    selected = [...progress.deck]; world = progress.unlocked; mapAct = 0; prepTab = 'map'; prep();
+  }
+  /** Each act's guardian: the enemy's, or (the Villain campaign) the hero's. */
+  const guardianOf = (i: number) => (villain ? cartoonModel.HERO_GUARDIAN[i] : cartoonModel.GUARDIAN[i]);
   const name = (id: number) => t(`${mode === 'legacy' ? 'siegeLegacyUnit' : 'siegeUnit'}${id}` as Key);
   /** A troop's line in the shop: Cartoon's has one per level (the form it describes), Legacy's one per troop. */
   const role = (id: number, level = 1) => t((mode === 'cartoon' ? `siegeRole${id}L${Math.max(1, level)}` : `${mode === 'legacy' ? 'siegeLegacyRole' : 'siegeRole'}${id}`) as Key);
@@ -97,7 +109,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   /** The act a Cartoon battle belongs to. */
   const actNow = () => cartoonModel.actOf(world);
   /** Cartoon's act guardians, by their own names (their pictures stand in until each has its own sheet). */
-  const actBoss = (n: number) => t(`siegeActBoss${n}` as Key);
+  const actBoss = (n: number) => (villain ? name(cartoonModel.HERO_GUARDIAN[n - 1]) : t(`siegeActBoss${n}` as Key));
   const worldName = (n: number) => (mode === 'cartoon' ? t('siegeAct', { n }) : t(`world${n}Name` as Key));
   const focus = () => root.querySelector<HTMLElement>('.sg-overlay button, .sg-primary, .sg-play, button')?.focus();
   function close() {
@@ -201,7 +213,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       how much it needs, so the player knows to raise the mana. */
   const needMana = (cost: number) => { const most = 200 + progress.upgrades[6] * cartoonModel.MANA_STEP + 400; return cost > most ? ` · ${t('siegeNeedMana', { n: cost })}` : ''; };
   const powerName = (row: number, level: number) => t(`siegePower${row}F${Math.min(level, cartoonModel.POWERS[row].forms.length)}` as Key);
-  const shopRows = () => (shopTab === 'special' ? cartoonModel.POWERS.map(w => w.id) : shopTab === 'base' ? BASE_ROWS : M.ALLIES.filter(u => !!u.air === (shopTab === 'air')).map(u => u.id));
+  const shopRows = () => (shopTab === 'special' ? cartoonModel.POWERS.map(w => w.id) : shopTab === 'base' ? BASE_ROWS : (mode === 'cartoon' ? cartoonModel.rosterOf(progress) : M.ALLIES).filter(u => !!u.air === (shopTab === 'air')).map(u => u.id));
   const rowLevels = (row: number) => (shopTab === 'special' ? cartoonModel.POWERS[row].forms.length : shopTab === 'base' ? 5 : M.levelsOf(row));
   /** Cartoon's shop, laid out like Cartoon Wars 2's: tabs on top, a row of tiles per troop (each form, joined, its
       energy on it) or per upgrade, the equipped slots on the right, and below the picked tile's name, price, the gold,
@@ -304,13 +316,13 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       const n = i + 1, open = (cartoon ? (n - 1) * S + 1 : n) <= progress.unlocked, on = cartoon ? n === act : n === world;
       const pick = cartoon ? Math.min(n * S, progress.unlocked) : n, done = cartoon ? won(n * S) : won(n);
       return `<button class="sg-isle ${on ? 'is-on' : ''} ${open ? '' : 'is-locked'}" data-sg-world-pick="${pick}" ${open ? '' : 'disabled'} aria-pressed="${on}" aria-label="${n}. ${worldName(n)}${cartoon ? ` · ${t(`siegeCtAct${n}` as Key)}` : ''}">
-        ${cartoon ? `<img src="${V.portrait(cartoonModel.GUARDIAN[i])}" data-trim="${V.portrait(cartoonModel.GUARDIAN[i])}" alt="">` : `<img src="/images/game/map/${ISLES[i]}.webp" alt="">`}<span class="sg-isle-n">${n}</span>
+        ${cartoon ? `<img src="${V.portrait(guardianOf(i))}" data-trim="${V.portrait(guardianOf(i))}" alt="">` : `<img src="/images/game/map/${ISLES[i]}.webp" alt="">`}<span class="sg-isle-n">${n}</span>
         ${open ? done ? '<img class="sg-isle-ring" src="/images/game/ui/ring_check.webp" alt="">' : '' : '<img class="sg-isle-ring" src="/images/game/ui/ring_lock.webp" alt="">'}
         <b>${worldName(n)}</b></button>`;
     }).join('');
     const map = `<div class="sg-isles" role="list">${isles}</div>
       ${cartoon ? `<article class="sg-world is-act" style="--shade:${shade(act)}">
-        <img class="sg-world-boss" src="${V.portrait(cartoonModel.GUARDIAN[act - 1])}" data-trim="${V.portrait(cartoonModel.GUARDIAN[act - 1])}" alt="">
+        <img class="sg-world-boss" src="${V.portrait(guardianOf(act - 1))}" data-trim="${V.portrait(guardianOf(act - 1))}" alt="">
         <span class="sg-eyebrow">${worldName(act)} · ${t('siegeStage', { n: cartoonModel.stageIn(world), max: S })}</span><h2>${t(`siegeCtAct${act}` as Key)}</h2>
         <div class="sg-stages">${Array.from({ length: S }, (_, k) => { const n = (act - 1) * S + k + 1, open = n <= progress.unlocked; return `<button data-sg-world-pick="${n}" class="${n === world ? 'is-on' : ''} ${won(n) ? 'is-won' : ''}" ${open ? '' : 'disabled'} aria-pressed="${n === world}" aria-label="${t('siegeStage', { n: k + 1, max: S })}${k + 1 === S ? ` · ${t('siegeGuardian')}` : ''}">${k + 1 === S ? '★' : k + 1}</button>`; }).join('')}</div>
         <p class="sg-guard">${t('siegeGuardian')} (${t('siegeStage', { n: S, max: S })}): <b>${actBoss(act)}</b></p>` : `<article class="sg-world" style="background-image:linear-gradient(90deg,#08101ef2 30%,#08101e66),url('${backdropUrl(world)}')">
@@ -381,7 +393,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       ? Array.from({ length: S }, (_, k) => {
         const n = (act - 1) * S + k + 1, open = n <= progress.unlocked, boss = k + 1 === S;
         return `<button class="sg-spot ${boss ? 'is-boss' : ''} ${n === world ? 'is-on' : ''} ${open ? won(n) ? 'is-done' : '' : 'is-locked'}" ${at(k)} data-sg-world-pick="${n}" ${open ? '' : 'disabled'} aria-pressed="${n === world}" aria-label="${t('siegeStage', { n: k + 1, max: S })}${boss ? ` · ${t('siegeGuardian')}: ${actBoss(act)}` : ''}">
-          ${boss ? `<img class="sg-spot-boss" src="${V.portrait(cartoonModel.GUARDIAN[act - 1])}" data-trim="${V.portrait(cartoonModel.GUARDIAN[act - 1])}" alt="">` : ''}<b>${k + 1}</b>${ring(open, won(n))}</button>`;
+          ${boss ? `<img class="sg-spot-boss" src="${V.portrait(guardianOf(act - 1))}" data-trim="${V.portrait(guardianOf(act - 1))}" alt="">` : ''}<b>${k + 1}</b>${ring(open, won(n))}</button>`;
       }).join('')
       : Array.from({ length: cartoonModel.ACTS }, (_, i) => {
         const n = i + 1, open = (n - 1) * S + 1 <= progress.unlocked, on = n === actNow();
@@ -397,19 +409,20 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     return `<div class="sg-map" style="--map:url('${pic}')"><div class="sg-turn" role="status"><span aria-hidden="true">📱↻</span><b>${t('siegeTurn')}</b><button type="button" data-sg-turn aria-label="${t('siegeTurnOk')}">✕</button></div><div class="sg-map-pic"><img src="${pic}" alt="">${buttons}</div>
       <header class="sg-map-top"><button class="sg-back" ${act ? 'data-sg-map-act="0"' : 'data-sg="exit"'} aria-label="${act ? t('siegeShopBack') : t('siegeExit')}">←</button>
         <h1 class="sg-map-title">${act ? `<small>${worldName(act)}</small>${t(`siegeCtAct${act}` as Key)}` : title()}</h1>
-        <span class="sg-coins"><img src="/images/game/store/coins-2.webp" alt="">${progress.coins}</span><button class="sg-round is-gear" data-sg="settings" aria-label="${t('options')}"><span aria-hidden="true">⚙</span></button></header>
+        ${mode === 'cartoon' && villainOpen() ? `<button class="sg-side ${villain ? 'is-villain' : ''}" data-sg="side" aria-pressed="${villain}">${villain ? `🛡️ ${t('siegeHeroMode')}` : `😈 ${t('siegeVillainMode')}`}</button>` : ''}<span class="sg-coins"><img src="/images/game/store/coins-2.webp" alt="">${progress.coins}</span><button class="sg-round is-gear" data-sg="settings" aria-label="${t('options')}"><span aria-hidden="true">⚙</span></button></header>
       <button class="sg-map-shop" data-sg-prep="shop"><span>${t('siegeTabStore')}</span></button>${panel}</div>`;
   }
   /** The picked stage's threat on the map: what it sends most and what answers it, red with a way to the shop when the
       army has nothing that does. */
   function threatLine() {
-    const threat = cartoonModel.threatOf(world); if (threat === 'normal' || threat === 'mixed') return '';
+    const threat = cartoonModel.threatOf(world); if (villain || threat === 'normal' || threat === 'mixed') return '';
     const ready = selected.some(c => cartoonModel.counters(c, threat));
     return `<p class="sg-threat ${ready ? '' : 'is-missing'}"><b>${THREAT_ICONS[threat]} ${t(`siegeThreat_${threat}` as Key)}</b> · ${t(`siegeThreatTip_${threat}` as Key)}${ready ? '' : ` <button type="button" class="sg-threat-fix" data-sg-prep="shop">${t('siegePrepare')}</button>`}</p>`;
   }
   /** The HUD's pictures of both sides: Legacy's Town Hall and world guardian, Cartoon's two fortresses. */
+  // The Villain campaign's own fortress is the dark one (left), the one it attacks our castle.
   const vsPic = (side: 0 | 1) => mode === 'cartoon'
-    ? `/images/game/siege/${side ? `enemy-${cartoonModel.enemyTier(world)}` : `castle-${cartoonModel.castleTier(progress.upgrades[1])}`}.webp`
+    ? `/images/game/siege/${(side === 1) !== villain ? 'enemy' : 'castle'}-${side ? cartoonModel.enemyTier(world) : cartoonModel.castleTier(progress.upgrades[1])}.webp`
     : side ? guardianUrl(world) : '/images/game/fortress/backlog/town-hall.webp';
   function start() {
     cancelAnimationFrame(frame); battleAbort.abort(); battleAbort = new AbortController();
@@ -420,7 +433,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     for (const kind of ['touchend', 'click'] as const) root.addEventListener(kind, () => askTilt(), { ...battleOptions, capture: true });
     progress.deck = [...selected]; persist(); mapAct = mode === 'cartoon' ? actNow() : 0; state = M.newSiege(progress, world); shownGold = -1; wasFull = false; for (const k in ready) delete ready[k]; bossTalked = false; bossHalf = false; baseFell = false; lootHeard = 0; gustShown = false;
     if (mode === 'cartoon') music('battle');
-    V.preload(world, selected, progress.levels); paused = false; camera.x = -Infinity;
+    V.preload(world, selected, progress.levels, villain); paused = false; camera.x = -Infinity;
     // Laid out like Cartoon Wars 2: mana top left, both fortresses' health face to face in the middle, coins and pause
     // top right; the field with the bow's aim on our wall; one bar below with the magic, the troop cards and the bow.
     root.innerHTML = `<div class="sg-battle"><header class="sg-hud">
@@ -529,12 +542,12 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       if (now >= uiAt) { updateUi(); uiAt = now + 100; }
       if (state.phase !== 'fight' && !state.paid) result();
       // The guardian speaks the moment it joins, the battle held until the scene ends (Cartoon's long talk is when its stage opens; this is the short one).
-      else if (state.bossSpawned && !bossTalked && state.phase === 'fight') {
+      else if (state.bossSpawned && !bossTalked && state.phase === 'fight' && !villain) {
         bossTalked = true; paused = true; updateUi();
         talk(mode === 'cartoon' ? cartoonStory.bossArrive(actNow()) : bossTalk(world), () => { paused = false; last = performance.now(); accumulator = 0; q('canvas').focus(); });
       }
       // Cartoon's guardian, hurt, says a word at half its health, the battle held for it.
-      else if (mode === 'cartoon' && !bossHalf && state.phase === 'fight' && state.units.some(u => u.boss && u.side && u.hp > 0 && u.hp <= u.maxHp * 0.5)) {
+      else if (mode === 'cartoon' && !villain && !bossHalf && state.phase === 'fight' && state.units.some(u => u.boss && u.side && u.hp > 0 && u.hp <= u.maxHp * 0.5)) {
         bossHalf = true; paused = true; updateUi();
         talk(cartoonStory.bossHalf(actNow()), () => { paused = false; last = performance.now(); accumulator = 0; q('canvas').focus(); });
       }
@@ -740,7 +753,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     if (!state) return;
     const reward = M.settle(progress, state); persist(); paused = true;
     // The guardian's fall, then (after the last one) the ending.
-    if (mode === 'cartoon' && state.phase === 'won' && cartoonModel.guarded(world)) talk(cartoonStory.bossDown(actNow()), () => (world === lastWorld() ? talk(cartoonStory.ending, () => outcome(reward)) : outcome(reward)));
+    if (mode === 'cartoon' && !villain && state.phase === 'won' && cartoonModel.guarded(world)) talk(cartoonStory.bossDown(actNow()), () => (world === lastWorld() ? talk(cartoonStory.ending, () => outcome(reward)) : outcome(reward)));
     else outcome(reward);
   }
   function outcome(reward: number) {
@@ -753,7 +766,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   /** The map stage tapped last and when, to tell a double tap (it starts that battle). */
   let lastPick = { n: -1, at: -1e9 };
   /** Starts the picked stage's battle, after its act card and story when it has them. */
-  function launch() { mode === 'legacy' ? talk(intro(world), start) : cartoonModel.stageIn(world) === 1 ? actCard(actNow(), () => talk(cartoonStory.intro(actNow()), start)) : cartoonModel.guarded(world) ? talk(cartoonStory.bossTalk(actNow()), start) : start(); }
+  function launch() { if (villain) { start(); return; } mode === 'legacy' ? talk(intro(world), start) : cartoonModel.stageIn(world) === 1 ? actCard(actNow(), () => talk(cartoonStory.intro(actNow()), start)) : cartoonModel.guarded(world) ? talk(cartoonStory.bossTalk(actNow()), start) : start(); }
   /** Redraws the preparation screen keeping the shop grid's scroll, then focuses `focus` (without scrolling). */
   function redraw(focus: string) {
     const g = root.querySelector('.sg-st-grid')?.scrollTop ?? 0; prep();
@@ -895,6 +908,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     else if (action === 'next') { world = Math.min(lastWorld(), world + 1); prep(); }
     else if (action === 'pause') pause();
     else if (action === 'settings') settingsMenu();
+    else if (action === 'side' && !state) { switchSide(); sound('click'); }
     else if (action === 'pause-back') { if (state) pauseMenu(); else { root.querySelector('.sg-overlay')?.remove(); prep(); } }
     else if (action === 'tilt') { storage.set(TILT_KEY, tiltOn() ? '0' : ''); tilt = 0; tiltBase = null; if (tiltOn()) { tiltGranted = tiltGranted === false ? null : tiltGranted; askTilt(); } settingsMenu(); }
     else if (action === 'mute') { if (muted()) volumes.set(lastHeard[0] || 0.6, lastHeard[1] || 0.8); else { lastHeard = volumes.get(); volumes.set(0, 0); } settingsMenu(); }
@@ -951,7 +965,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   const mapPics = ['worlds', 1, 2, 3, 4, 5, 6].map(n => Object.assign(new Image(), { src: `/images/game/siege/map-${n}.webp` }));
   void mapPics; void Object.assign(new Image(), { src: '/images/game/siege/ui/shop-stall.webp' });
   function choose(next: Mode) {
-    mode = next; ({ m: M, v: V } = ENGINES[next]);
+    mode = next; ({ m: M, v: V } = ENGINES[next]); villain = false; root.classList.remove('is-villain');
     root.classList.toggle('is-cartoon', next === 'cartoon'); root.classList.toggle('is-legacy', next === 'legacy');
     progress = M.readProgress(storage.get(M.SAVE_KEY)); selected = [...progress.deck]; world = progress.unlocked; prepTab = 'map'; mapAct = 0;
     prep();
