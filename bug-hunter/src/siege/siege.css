@@ -1026,3 +1026,12 @@
 @media (max-width:600px){.sg-side-label{display:none}.siege-root.is-cartoon .sg-side{padding:0 7px;margin-right:4px}}
 @media (max-width:600px){.sg-map-top{gap:6px}.sg-map-top>.sg-back,.sg-map-top>.sg-round,.sg-map-top>.sg-side,.sg-map-top>.sg-coins{flex:none}.sg-map-top .sg-map-title{min-width:0;flex:1 1 0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:16px}}
 @media (max-width:440px){.sg-map-top .sg-map-title{visibility:hidden}}
+/* The Villain's battle bar (and its army bar in the shop): the owner's bar with its blue parts turned blood red
+   (`bar-dark`, `bar-tab-*-dark`), and its card slots red instead of blue. */
+.siege-root.is-cartoon.is-villain .sg-bar,.siege-root.is-cartoon.is-villain .sg-bar::before,.siege-root.is-cartoon.is-villain .sg-bar::after,.siege-root.is-villain .sg-wall i,.siege-root.is-cartoon.is-villain .sg-bar .sg-bow::before,.siege-root.is-cartoon.is-villain .sg-bar .sg-bow.is-drawing::before,.siege-root.is-villain .sg-st-army{background-image:url('/images/game/siege/bar-dark.webp')}
+.siege-root.is-cartoon.is-villain .sg-bar .sg-bow.is-drawing::before{background-image:url('/images/game/siege/bow.webp')}
+.siege-root.is-cartoon.is-villain .sg-tabs button[data-sg-tab="land"].is-on,.siege-root.is-cartoon.is-villain .sg-tabs button[data-sg-tab="land"].is-on:hover{background-image:url('/images/game/siege/bar-tab-l-dark.webp')}
+.siege-root.is-cartoon.is-villain .sg-tabs button[data-sg-tab="air"].is-on,.siege-root.is-cartoon.is-villain .sg-tabs button[data-sg-tab="air"].is-on:hover{background-image:url('/images/game/siege/bar-tab-a-dark.webp')}
+.siege-root.is-cartoon.is-villain .sg-tabs button[data-sg-tab="special"].is-on,.siege-root.is-cartoon.is-villain .sg-tabs button[data-sg-tab="special"].is-on:hover{background-image:url('/images/game/siege/bar-tab-s-dark.webp')}
+.siege-root.is-cartoon.is-villain .sg-bar .sg-deck button,.siege-root.is-cartoon.is-villain .sg-bar .sg-deck button:hover:not(:disabled),.siege-root.is-cartoon.is-villain .sg-bar .sg-deck [data-sg],.siege-root.is-cartoon.is-villain .sg-prep .sg-st-cell.is-full{background:linear-gradient(#ff6b6b8c,#a8181ca6);box-shadow:inset 0 0 calc(18 * var(--u)) #4a060699}
+.siege-root.is-cartoon.is-villain .sg-bar .sg-deck button:hover:not(:disabled),.siege-root.is-cartoon.is-villain .sg-prep .sg-st-cell.is-full:hover:not(:disabled){background:linear-gradient(#ff9a9a99,#d43a3ab3)}
