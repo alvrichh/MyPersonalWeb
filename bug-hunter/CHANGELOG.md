@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.187 - 2026-11-05
+
+- Siege Cartoon's war horn sounds once, the first time our troops strike the enemy fortress, instead of with every enemy wave.
+
 ## 1.15.186 - 2026-11-05
 
 - Siege Cartoon's lightning rain colours: white-yellow lightning, orange-yellow thunder, blue storm of wrath.

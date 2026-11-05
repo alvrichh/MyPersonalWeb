@@ -554,6 +554,8 @@ export interface Siege {
   gusted?: boolean;
   /** The enemy fortress has fallen (its collapse has been shown). */
   razed?: boolean;
+  /** Our troops have reached the enemy fortress (the war horn has sounded). */
+  horned?: boolean;
 }
 /** The gold an enemy drops when it falls: by its toughness, double for a horned one, a guardian far more. */
 export const dropOf = (u: Fighter) => (u.boss ? 120 : Math.max(3, Math.round((UNITS[u.id].hp / 30) ** 1.3 / 2.2)) * (u.elite ? 2 : 1));
@@ -984,7 +986,7 @@ export function tick(s: Siege, dt: number) {
   s.effects = s.effects.filter(e => (e.life -= dt) > 0);
   s.nextWave -= dt;
   if (s.nextWave <= 0) {
-    s.waves++; if (s.waves > 1) fx(s, 'horn', FIELD - 200, 1.3, { hud: true, size: 80 });
+    s.waves++;
     s.nextWave = Math.max(FOE_PACE.gap, 9 - hard(s.world) * FOE_PACE.slope - s.time / 90);
     const count = Math.min(3, 1 + Math.floor(s.time / 70));
     const land = foesAt(FOE_LAND, s.world), flyers = foesAt(FOE_AIR, s.world);
@@ -1146,7 +1148,9 @@ export function tick(s: Siege, dt: number) {
       }
     } else if (Math.abs(baseX - u.x) <= a.range + 35) {
       // At the fortress, what it throws or shoots flies into the wall (a little up it), as at a troop.
-      if (u.attack <= 0) { u.attack = a.rate; u.hit = 0.3; s.hp[u.side ? 0 : 1] -= u.damage * (a.siege ?? 1); if (a.shot) launch(s, u, a, baseX + (u.side ? 30 : -30), 1, 40); hear(s, soundsOf(u)[0], u.x); }
+      if (u.attack <= 0) { u.attack = a.rate; u.hit = 0.3; s.hp[u.side ? 0 : 1] -= u.damage * (a.siege ?? 1);
+        // The first time our troops strike the enemy fortress, its war horn sounds.
+        if (!u.side && !s.horned) { s.horned = true; fx(s, 'horn', FIELD - 200, 1.6, { hud: true, size: 90 }); } if (a.shot) launch(s, u, a, baseX + (u.side ? 30 : -30), 1, 40); hear(s, soundsOf(u)[0], u.x); }
     } else {
       const movement = a.speed * dt; u.moving = true;
       // Heavy walkers (the steady and the giants) raise dust at each step.
