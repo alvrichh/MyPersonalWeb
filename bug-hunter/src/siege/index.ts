@@ -43,7 +43,7 @@ let closeActive: (() => void) | undefined;
 /** Own root, event lifecycle and save: existing game modes are never entered or mutated. */
 /** `hero`: the player's hero picture and name, the commander who speaks in the story scenes. */
 /** `music`: Siege Cartoon's songs, its menus' or its battles', or null to go back to the player's pick. */
-export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' }, sound: (name: string, vol?: number, pan?: number) => void = () => {}, music: (song: 'menu' | 'battle' | 'boss' | null) => void = () => {}, volumes: { get: () => [number, number]; set: (music: number, sfx: number) => void; lang?: () => string; setLang?: (lang: 'es' | 'en') => T } = { get: () => [1, 1], set: () => {} }) {
+export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' }, sound: (name: string, vol?: number, pan?: number) => void = () => {}, music: (song: 'menu' | 'battle' | 'boss' | 'villain-menu' | 'villain' | null) => void = () => {}, volumes: { get: () => [number, number]; set: (music: number, sfx: number) => void; lang?: () => string; setLang?: (lang: 'es' | 'en') => T } = { get: () => [1, 1], set: () => {} }) {
   closeActive?.();
   /** The mode being played (null on the mode screen), its engine and its save. */
   let mode: Mode | null = null, M = ENGINES.cartoon.m, V = ENGINES.cartoon.v;
@@ -307,7 +307,8 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   const prize = (n: number, first: boolean) => (mode === 'cartoon' ? cartoonModel.prize(n, first) : first ? 160 + n * 30 : 45 + n * 5);
   function prep() {
     cancelAnimationFrame(frame); battleAbort.abort(); state = null; paused = false;
-    music(mode === 'cartoon' ? 'menu' : null);
+    // The Villain campaign has its own darker songs, in its menus and its battles.
+    music(mode === 'cartoon' ? (villain ? 'villain-menu' : 'menu') : null);
     const tabs = (mode === 'cartoon' ? ['map', 'shop'] as const : ['map', 'army', 'shop'] as const).map(k => `<button role="tab" class="${prepTab === k ? 'is-on' : ''}" aria-selected="${prepTab === k}" data-sg-prep="${k}"><img src="${mode === 'cartoon' ? (k === 'map' ? '/images/game/siege/enemy-1.webp' : k === 'army' ? V.portrait(0) : '/images/game/store/coins-2.webp') : `/images/game/${k === 'map' ? 'ui/ring_world' : k === 'army' ? 'enemies/original-bug-0' : 'store/coins-2'}.webp`}" alt="">${t(k === 'map' ? 'siegeTabMap' : k === 'army' ? 'siegeTabArmy' : mode === 'cartoon' ? 'siegeTabStore' : 'siegeTabShop')}</button>`).join('');
     // The map: the action modes' own islands, locked ones greyed with the padlock ring, won ones with the check ring.
     const cartoon = mode === 'cartoon';
@@ -433,7 +434,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     // A tap anywhere in the battle (a card, the stick, the field) asks iPhones for the motion, the one time they let us.
     for (const kind of ['touchend', 'click'] as const) root.addEventListener(kind, () => askTilt(), { ...battleOptions, capture: true });
     progress.deck = [...selected]; persist(); mapAct = mode === 'cartoon' ? actNow() : 0; state = M.newSiege(progress, world); shownGold = -1; wasFull = false; for (const k in ready) delete ready[k]; bossTalked = false; bossHalf = false; baseFell = false; lootHeard = 0; gustShown = false;
-    if (mode === 'cartoon') music('battle');
+    if (mode === 'cartoon') music(villain ? 'villain' : 'battle');
     V.preload(world, selected, progress.levels, villain); paused = false; camera.x = -Infinity;
     // Laid out like Cartoon Wars 2: mana top left, both fortresses' health face to face in the middle, coins and pause
     // top right; the field with the bow's aim on our wall; one bar below with the magic, the troop cards and the bow.

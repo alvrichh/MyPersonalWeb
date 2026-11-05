@@ -155,7 +155,7 @@ type V2 = {
 };
 export type V2Id = 'w1v2' | 'w2v2' | 'w3v2' | 'mudv2' | 'w4v2' | 'w5v2' | 'w6v2' | 'w7v2' | 'w8v2' | BossSongId | CartoonSongId;
 /** Siege Cartoon's songs: drum and bass with an orchestra on top (strings, horns, timpani, cymbals, a choir at the peaks). */
-export type CartoonSongId = 'cartoon-menu' | 'cartoon-battle' | 'cartoon-boss';
+export type CartoonSongId = 'cartoon-menu' | 'cartoon-battle' | 'cartoon-boss' | 'cartoon-villain-menu' | 'cartoon-villain';
 /** The final bosses' own songs: each its world's song as a boss version, the same key, sounds (`theme`), lead and
     melody, its bass line and chords darker and harder, with no calm intro (it starts on the drop). «By world» plays it while that boss is out. */
 export const BOSS_SONGS = ['kernel', 'archdemon', 'drakkar', 'medusa', 'queen', 'zeus', 'mech', 'wraith', 'chimera'] as const;
@@ -173,6 +173,28 @@ const V2S: Record<V2Id, V2> = {
     bass: 'sub', line: [0, null, null, null, null, null, 0, null, null, null, 7, null, null, null, 5, null, 0, null, null, null, null, null, 0, null, null, null, 3, null, 2, null, null, null],
     lead: 'horn', leadOct: 4,
     melody: [[12, null, null, 15, 19, null, 17, 15], [14, null, 12, null, 10, null, 'r', null], [12, null, 15, 19, 24, null, 22, 19], [19, null, null, 17, 19, null, 'r', null]],
+  },
+  'cartoon-villain-menu': { // The Villain's menus: C minor creeping in half-time, a music box with whispers and the choir
+    // (theme 7), the Phrygian Db and the tritone's F# lurking under its tune.
+    theme: 7, root: 32.7,
+    chords: [[0, 3, 7, 12], [5, 8, 12, 17], [1, 5, 8, 13], [7, 11, 14, 19]], roots: [0, 5, 1, 7],
+    chordsB: [[-4, 0, 3, 8], [5, 8, 12, 17], [6, 10, 13, 18], [7, 11, 14, 19]], rootsB: [-4, 5, 6, 7],
+    form: ['intro', 'roll', 'drop', 'roll', 'break', 'drop', 'peak', 'roll'],
+    grooves: { drop: 'halftime', roll: 'halftime', peak: 'techstep' }, kit: { drive: 0.5, snare: 1500, decay: 0.24, wet: 0.5 },
+    bass: 'sub', line: [0, null, null, null, null, null, 0, null, null, null, 1, null, null, null, 0, null, 0, null, null, null, null, null, 0, null, null, null, 6, null, 7, null, null, null],
+    lead: 'musicbox', leadOct: 8,
+    melody: [[12, null, 15, null, 14, null, 12, null], [11, null, 12, null, 'r', null, 'r', null], [15, null, 18, null, 17, null, 15, null], [14, null, 13, null, 12, null, 'r', null]],
+  },
+  'cartoon-villain': { // The Villain's battles: C harmonic minor marching on techstep, a driven bass grinding on the Db, a
+    // low brass theme with the tritone in it and the choir at every peak (theme 8: the dragon and its heart).
+    theme: 8, root: 32.7,
+    chords: [[0, 3, 7, 12], [-4, 0, 3, 8], [5, 8, 12, 17], [7, 11, 14, 19]], roots: [0, -4, 5, 7],
+    chordsB: [[0, 3, 7, 12], [1, 5, 8, 13], [-4, 0, 3, 8], [7, 11, 14, 19]], rootsB: [0, 1, -4, 7],
+    form: ['intro', 'drop', 'roll', 'peak', 'break', 'drop', 'peak', 'peak'],
+    grooves: { drop: 'halftime', roll: 'techstep', peak: 'techstep' }, kit: { drive: 1, snare: 1400, decay: 0.22, wet: 0.3 },
+    bass: 'dist', line: [0, null, null, 0, null, 'r', 1, null, 0, null, null, 0, null, 'r', -1, null, 0, null, null, 0, null, 'r', 1, null, 3, null, 1, null, 0, null, -1, null],
+    lead: 'brass', leadOct: 4,
+    melody: [[0, null, 0, 3, 7, null, 6, null], [5, null, 3, 2, 3, null, 'r', null], [0, null, 0, 3, 8, null, 7, 6], [7, null, null, null, 'r', null, 'r', null]],
   },
   'cartoon-boss': { // Siege Cartoon's guardians: Nocthrax's E minor wobble and its Phrygian pull, brass for its crystal bells,
     // the orchestra crashing in on top (theme 10) and the choir at every peak.
