@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.1 - 2026-11-06
+
+- The King's Jailer is drawn half as big again, a giant among the enemy.
+
 ## 1.16.0 - 2026-11-06
 
 - Version 1.16: Siege Cartoon's Villain update. It gathers 1.15.193–1.15.200: the Villain campaign (the enemy's troops in eight lines and the guardians as cards against our heroes, its own screen, music, mana monument, red bar, and the Eye of Darkness with hands from the ground), Hero against Villain duels between two players, the King of Darkness and the King's Jailer. No gameplay change in this release itself.
