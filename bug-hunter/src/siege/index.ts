@@ -197,6 +197,9 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   /** Each power form's icon: the owner's drawn badges (`siege/powers/power-<power>-<form>`), their rim richer per form. */
   const POWER_PICS = cartoonModel.POWERS.map((w, r) => w.forms.map((_, f) => `siege/powers/power-${r}-${f + 1}`));
   const powerPic = (row: number, level: number) => `/images/game/${POWER_PICS[row][Math.min(level, POWER_PICS[row].length) - 1]}.webp`;
+  /** A card dearer than the most energy a battle can hold with the shop's mana as it is (the generator at the top) says
+      how much it needs, so the player knows to raise the mana. */
+  const needMana = (cost: number) => { const most = 200 + progress.upgrades[6] * cartoonModel.MANA_STEP + 400; return cost > most ? ` · ${t('siegeNeedMana', { n: cost })}` : ''; };
   const powerName = (row: number, level: number) => t(`siegePower${row}F${Math.min(level, cartoonModel.POWERS[row].forms.length)}` as Key);
   const shopRows = () => (shopTab === 'special' ? cartoonModel.POWERS.map(w => w.id) : shopTab === 'base' ? BASE_ROWS : M.ALLIES.filter(u => !!u.air === (shopTab === 'air')).map(u => u.id));
   const rowLevels = (row: number) => (shopTab === 'special' ? cartoonModel.POWERS[row].forms.length : shopTab === 'base' ? 5 : M.levelsOf(row));
@@ -213,7 +216,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     const grid = rows.map((row, i) => `${groupHead(row, i)}<div class="sg-st-row">${Array.from({ length: rowLevels(row) }, (_, k) => {
       const level = k + 1, x = tile(row, level), on = pick.row === row && pick.level === level;
       const pic = shopTab === 'special' ? powerPic(row, level) : shopTab === 'base' ? `/images/game/${upgradePic('cartoon', row, level)}.webp` : V.portrait(row, level);
-      const corner = shopTab === 'special' ? t('siegePowerCd', { n: cartoonModel.POWERS[row].cooldown }) : shopTab === 'base' ? String(level) : String(M.specAt(row, level).cost);
+      const corner = shopTab === 'special' ? `${cartoonModel.powerMana(row, level)}` : shopTab === 'base' ? String(level) : String(M.specAt(row, level).cost);
       const worn = shopTab === 'special' ? progress.kit.includes(cartoonModel.powerCard(row, level)) : shopTab !== 'base' && selected.includes(cartoonModel.card(row, level));
       // What is still to come stays hidden as a «?» (only what is owned, the next one to buy, and every troop's first form show), for the hype.
       const hidden = !x.have && !x.next && !(shopTab !== 'base' && level === 1 && !secret(row));
@@ -221,7 +224,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     }).join('<span class="sg-st-link" aria-hidden="true"></span>')}</div>`).join('');
     const x = tile(pick.row, pick.level), troop = shopTab !== 'base', hid = !x.have && !x.next && !(troop && pick.level === 1 && !secret(pick.row));
     const title = hid ? '? ? ?' : `${shopTab === 'special' ? powerName(pick.row, pick.level) : troop ? name(pick.row) : t(`siegeBaseName${pick.row}` as Key)} · ${t('siegeLevel', { n: pick.level })}`;
-    const text = hid ? '' : shopTab === 'special' ? `${t(`siegePower${pick.row}Text` as Key)} · ${t('siegePowerCd', { n: cartoonModel.POWERS[pick.row].cooldown })}` : troop ? role(pick.row, pick.level) : t(`siegeBaseText${pick.row}` as Key);
+    const text = hid ? '' : shopTab === 'special' ? `${t(`siegePower${pick.row}Text` as Key)} · ⚡ ${cartoonModel.powerMana(pick.row, pick.level)} · ${t('siegePowerCd', { n: cartoonModel.POWERS[pick.row].cooldown })}` : troop ? `${role(pick.row, pick.level)}${mode === 'cartoon' ? needMana(M.specAt(pick.row, pick.level).cost) : ''}` : t(`siegeBaseText${pick.row}` as Key);
     const pic = shopTab === 'special' ? powerPic(pick.row, pick.level) : shopTab === 'base' ? `/images/game/${upgradePic('cartoon', pick.row, pick.level)}.webp` : V.portrait(pick.row, pick.level);
     const row = (label: string, value: string, n: number) => `<li><span>${label}</span><em>${value}</em><b class="sg-stars" style="--v:${n}" role="img" aria-label="${n}/5">★★★★★</b></li>`;
     const stats = hid || shopTab === 'special' ? '' : `<ul class="sg-st-stats">${troop
@@ -250,7 +253,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     if (row === 0) return [['siegeBaseArmy', `+${level * 8}%`]];
     if (row === 1) return [['siegeBaseFort', String(1700 + level * 200)]];
     if (row === 2) return [['siegeBaseEnergy', `+${(level * 0.6).toFixed(1)}/s`]];
-    if (row === 6) return [['siegeBaseMana', String(180 + level * cartoonModel.MANA_STEP)]];
+    if (row === 6) return [['siegeBaseMana', String(200 + level * cartoonModel.MANA_STEP)]];
     if (row === 3) return [['siegeBaseArrowDamage', String(cartoonModel.bowDamage(b))], ['siegeBaseArrows', String(cartoonModel.bowCount(b))]];
     if (row === 4) return [['siegeBaseRate', (1 / cartoonModel.bowEvery(b)).toFixed(1)], ['siegeBaseReach', `${Math.round(cartoonModel.bowReach(b) / cartoonModel.FIELD * 100)}%`]];
     return [['siegeBaseStore', String(Math.floor(cartoonModel.bowMax(b) / cartoonModel.BOW.cost))], ['siegeBaseRegen', (cartoonModel.bowRegen(b) / cartoonModel.BOW.cost).toFixed(1)]];
@@ -594,7 +597,8 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     for (const k of s.kit ?? []) {
       const button = root.querySelector<HTMLButtonElement>(`[data-sg-power="${k.card}"]`); if (!button) continue;
       const cd = s.kitCd[k.card] ?? 0, w = cartoonModel.POWERS[k.id];
-      setPicButton(button, powerPic(k.id, k.level), '', cd / w.cooldown); button.setAttribute('aria-label', powerName(k.id, k.level)); button.disabled = paused || s.phase !== 'fight' || cd > 0; button.classList.toggle('is-cooling', cd > 0);
+      const mana = cartoonModel.powerMana(k.id, k.level);
+      setPicButton(button, powerPic(k.id, k.level), `${mana}`, cd / w.cooldown); button.setAttribute('aria-label', `${powerName(k.id, k.level)} · ⚡ ${mana}`); button.disabled = paused || s.phase !== 'fight' || cd > 0 || s.energy < mana; button.classList.toggle('is-cooling', cd > 0);
     }
     for (const id of tabCards()) {
       const cd = s.cooldowns[id] ?? 0;

@@ -4,6 +4,14 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.189 - 2026-11-05
+
+- Siege Cartoon's energy rebalanced:
+  - a battle holds 200 energy, 80 more for each level of the shop's Mana and 100 for each generator step: 1000 with both at the top; it fills faster with each (8 a second, 3 more per generator step, 0.6 per Mana level); the generator costs 80, 140, 200 and 260;
+  - every power costs energy as well as its recharge: arrow rain 60/90/120/160, lightning rain 100/150/220, tsunami 150/230/330, meteors 180/280/420, sanctuary 150, sword of judgement 250, black hole 320 (shown on its card and in the shop);
+  - troop prices follow their strength (life × damage, reach): the first forms stay cheap, the last forms cost more (swordsman 5 and spearman 5 320, angel 3 520, heavy robot 4 700) and the legendaries need most of the 1000 (ninja 620–680, dragon 720, golem 780, reaper 860, star eater 900); the catapult, wizard, balloon and shield bearer are cheaper; a card dearer than the energy the player can reach says how much Mana it needs;
+  - a troop's recharge still follows its price (capped at 30 seconds).
+
 ## 1.15.188 - 2026-11-05
 
 - Siege Cartoon has three new powers, with the owner's icons and animations:
