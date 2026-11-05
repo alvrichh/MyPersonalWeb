@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.181 - 2026-11-05
+
+- Siege Cartoon's powers have their own icons (the owner's badges, steel to gold as the form rises): arrow, ice, fire and rocket rain; lightning, thunder and the storm of wrath; tsunami, great tsunami and the frozen mega tsunami; meteors, meteor storm and the apocalypse. They replace the main game's borrowed skill icons in the Special shop tab and the battle's S tab.
+
 ## 1.15.180 - 2026-11-05
 
 - Siege Cartoon's battle bar in portrait: each troop fills its card and its energy is a small corner tag (no lightning sign), so the cards show their troops on an upright phone.
