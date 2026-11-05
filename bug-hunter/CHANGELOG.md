@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.177 - 2026-11-05
+
+- New art from the owner's effects sheet: the heavy robot's cyan plasma ball flies with its trail, leaves the cannon with a cyan flash and bursts in its own eight-frame cyan plasma explosion; the attack helicopter's black-and-gold rockets are hand-drawn now (sharper, drawn at their old size).
+
 ## 1.15.176 - 2026-11-05
 
 - The heavy armed robot's last form fires its big cyan plasma ball from the cannon on its back (in place of the rocket salvo, with a bright blast) and gatling bullets from its arms (35% of its damage on top).
