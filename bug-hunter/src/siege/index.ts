@@ -192,7 +192,8 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     return { have: owned && level <= now, next, price: level === 1 || (mode === 'cartoon' && cartoonModel.testing.free) ? M.troopPrice(row) : M.UNITS[row].forms?.[level - 2]?.price ?? 0, why: !open ? (M.UNITS[row].legend ? t('siegeOpensLegend') : t('siegeOpensAct', { n: M.UNITS[row].unlock })) : t('siegeBuyFirst') };
   };
   /** A special power's picture at a form (the shop's tiles and the battle bar's buttons), under /images/game/. */
-  const POWER_PICS = [['skills/double', 'skills/frost', 'skills/fireball', 'skills/rocket'], ['skills/spark', 'skills/storm', 'skills/storm-evo'], ['skills/water', 'skills/water', 'skills/frost-evo'], ['skills/fireball', 'skills/fireball-evo', 'skills/nova']];
+  /** Each power form's icon: the owner's drawn badges (`siege/powers/power-<power>-<form>`), their rim richer per form. */
+  const POWER_PICS = cartoonModel.POWERS.map((w, r) => w.forms.map((_, f) => `siege/powers/power-${r}-${f + 1}`));
   const powerPic = (row: number, level: number) => `/images/game/${POWER_PICS[row][Math.min(level, POWER_PICS[row].length) - 1]}.webp`;
   const powerName = (row: number, level: number) => t(`siegePower${row}F${Math.min(level, cartoonModel.POWERS[row].forms.length)}` as Key);
   const shopRows = () => (shopTab === 'special' ? cartoonModel.POWERS.map(w => w.id) : shopTab === 'base' ? BASE_ROWS : M.ALLIES.filter(u => !!u.air === (shopTab === 'air')).map(u => u.id));
