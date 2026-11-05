@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.175 - 2026-11-05
+
+- Siege Cartoon: every troop's shot leaves from its own weapon, measured on its attack pose (the gun's mouth, the bow, the throwing hand, the cannon on the back, the catapult's cup, the helicopter's pods), at its drawn size; troops with two guns take turns.
+- The heavy armed robot's second gun deals damage now: gatling bullets from its hands in forms 2 and 3 (a fifth of its damage on top) and, in its last form, a big cyan plasma ball (35% on top).
+
 ## 1.15.174 - 2026-11-05
 
 - The heavy armed robot's last form fires its rockets from the cannon on its back and its bullets from the gatlings in its hands.
