@@ -899,6 +899,8 @@ function arrows(s: Siege, count: number) {
     }
     // Far shots are lobbed (the view draws them climbing and falling from the sky): they stay longer in the air.
     const air = 0.5 + 0.45 * lobOf(x, bowReach(s.bow));
+    // The Villain's Eye of Darkness: no arrows, but hands bursting out of the ground where they would land (its tier's).
+    if (s.villain) { fx(s, `hand-${looksTier(s.bow.level)}`, at, 0.75, { size: 46 + looksTier(s.bow.level) * 6, up: deep * SCATTER.deep }, i * 0.04); continue; }
     s.effects.push({ x: at, from: 80, lane: 1, life: air, max: air, kind: 'arrow', side: 0, up: deep * SCATTER.deep });
     // An arrow stays stuck in the ground where it lands, fading after a moment (rockets blow up instead).
     if (looksTier(s.bow.level) < 4) s.effects.push({ x: at, from: 80, lane: 1, life: air + STUCK, max: STUCK, kind: 'stuck', side: 0, up: deep * SCATTER.deep });

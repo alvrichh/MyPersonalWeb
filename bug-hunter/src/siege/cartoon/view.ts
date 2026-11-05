@@ -156,7 +156,7 @@ const FX_FRAMES: Record<string, number> = {
   'hit-bullet': 5, 'hit-thrown': 5, 'hit-energy': 5, 'hit-ice': 5, 'hit-magic': 5, 'hit-heavy': 5, stun: 4, shatter: 4, heal: 6, aura: 4,
   wreck: 7, soul: 6, crash: 6, loot: 6, trail: 6, smoke: 5, 'arrive-land': 6, 'arrive-air': 6, 'arrive-heavy': 6, 'arrive-foe': 6, 'rock-land': 5,
   burn: 6, collapse: 5, warn: 4, 'storm-bolt': 3, spray: 6, crater: 5, step: 5, charge: 6, horn: 4, skull: 5,
-  'dragonfire': 4, 'anchor-hit': 4, 'king-portal': 2,
+  'dragonfire': 4, 'anchor-hit': 4, 'hand-1': 6, 'hand-2': 6, 'hand-3': 6, 'hand-4': 6, 'king-portal': 2,
   'bowflash-1': 4, 'bowflash-2': 4, 'bowflash-3': 4, 'bowflash-4': 4, 'bird-blue': 4, 'bird-brown': 4,
 };
 /** Each world's drifting particles (`siege/fx/amb-<kind>-<n>`, six of each): how they move. */
@@ -165,7 +165,7 @@ const AMBIENT: Record<number, { kind: string; n: number; fall: number; drift: nu
   3: { kind: 'firefly', n: 6, fall: -4, drift: 14, spin: 0, size: 12 }, 4: { kind: 'sand', n: 6, fall: 4, drift: 120, spin: 0.6, size: 16 },
   5: { kind: 'snow', n: 6, fall: 30, drift: 12, spin: 0.8, size: 10 }, 6: { kind: 'ember', n: 6, fall: -26, drift: 10, spin: 1, size: 12 },
 };
-const FX_STILLS = ['ice-block', 'piece-gear', 'piece-bolt', 'piece-plate', 'casing', 'streak', 'storm-sky', 'rubble', 'piece-stone', 'piece-beam', 'piece-flag',
+const FX_STILLS = [...[1, 2, 3, 4].flatMap(n => [`eye-${n}`, `eye-fire-${n}`]), 'ice-block', 'piece-gear', 'piece-bolt', 'piece-plate', 'casing', 'streak', 'storm-sky', 'rubble', 'piece-stone', 'piece-beam', 'piece-flag',
   ...[0, 1, 2].flatMap(n => [`scorch-${n}`, `crack-${n}`]), ...Object.values(AMBIENT).flatMap(a => Array.from({ length: a.n }, (_, k) => `amb-${a.kind}-${k}`))];
 const fxFrame = (name: string, p: number) => still(`siege/fx/${name}-${Math.max(0, Math.min(FX_FRAMES[name] - 1, Math.floor(p * FX_FRAMES[name])))}`);
 const FX = [...Array.from({ length: 8 }, (_, f) => `siege/fx/dragonpass-${f}`), ...Array.from({ length: 12 }, (_, f) => `siege/fx/anchor-${f}`), ...Object.keys(PHASED).flatMap(n => Array.from({ length: 12 }, (_, f) => `siege/fx/${n}-${f}`)), ...Object.entries(FX_FRAMES).flatMap(([n, k]) => Array.from({ length: k }, (_, f) => `siege/fx/${n}-${f}`)), ...FX_STILLS.map(n => `siege/fx/${n}`), 'siege/mana', 'siege/mana-dark', ...[0, 1, 2, 3, 4, 5, 6, 7].flatMap(n => [`siege/fx-boom-${n}`, `siege/fx-boom-dark-${n}`, `siege/fx-boom-cyan-${n}`]), 'siege/units/shot-crescent-gold', 'fx/fire-pool.webp', 'fx/fireball.webp', 'fx/rocket.webp', 'fx/volt-burst.webp', 'fx/impact.webp', 'fx/ice-block.webp', 'siege/units/shot-arrow', 'siege/units/shot-ice', 'siege/units/shot-lightning', ...[0, 1, 2].map(n => `fx/wave-strip-${n}.webp`), ...[0, 1, 2, 3, 4, 5, 6].map(n => `fx/icicle-0-${n}.webp`), 'arrows/water.webp', 'arrows/leaf.webp', 'fx/boom-big.webp', 'fx/impact.webp', ...[1, 2, 3, 4, 5, 6].map(n => `fx/bolt-y-${n}.webp`)];
@@ -259,7 +259,14 @@ function base(ctx: CanvasRenderingContext2D, s: Siege, x: number, ground: number
       const spot = dark ? [0.72, 0.24] : look.bow, px = left + w * spot[0], py = -h + foot + h * spot[1];
       bowAt = { x: x + px, y: ground + py };
       if ((s.shots ?? 0) !== lastShots) { lastShots = s.shots ?? 0; kickUntil = s.time + 0.09; flashAt = s.time; }
-      if (ok(arm)) {
+      // The Villain's fortress has the Eye of Darkness in its turret instead: it glares (and flashes) as each volley of
+      // hands is sent; there are no arrows to aim, so it does not turn.
+      const eye = s.villain ? still(`siege/fx/${s.time < kickUntil + 0.12 ? 'eye-fire' : 'eye'}-${bowTier}`) : undefined;
+      if (eye && ok(eye)) {
+        const ew = XBOW.width * 1.05, eh = ew * eye.naturalHeight / eye.naturalWidth;
+        ctx.drawImage(eye, px - ew * 0.42, py - eh * 0.72, ew, eh);
+        bowTip = { x: bowAt.x + ew * 0.45, y: bowAt.y - eh * 0.3 }; s.bowFrom = { x: bowTip.x, up: ground - bowTip.y };
+      } else if (ok(arm)) {
         const aw = XBOW.width, ah = aw * arm.naturalHeight / arm.naturalWidth;
         ctx.save(); ctx.translate(px, py); ctx.rotate(bowAngle(s, ground));
         const kick = s.time < kickUntil ? -5 : 0;
