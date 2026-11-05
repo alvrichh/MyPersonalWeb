@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.195 - 2026-11-05
+
+- The Villain campaign has its own music: its menus a creeping C minor in half-time with a music box, whispers and the choir; its battles a C harmonic minor march on techstep with a driven bass and a low brass theme with the tritone in it, the choir at every peak.
+
 ## 1.15.194 - 2026-11-05
 
 - The Villain's troops come in eight lines that level up like ours, each level another enemy troop opened in the act it first comes in: skeletons (swordsman, spearman, reaper, spider spearman), fast beasts (undead turkey, war dog, tiger, terror bird), heavy beasts (bear, Rex Head, rhinoceratops, mammothsaurus), armoured (hammer, axeman, gatling robot), shooters (gunner, horned archer, inter-galactic shooter), dark artillery (spike blaster, wizard, fire dragon), fast wings (eagle, ninja bat, pterodactyl, green ninja bat) and dark wings (hypnotist bat, death angel, devil army, red dragon rider); the guardians stay single cards. An older Villain save keeps what it bought as levels of its lines. The heroes are a little stronger to match (simulated again).
