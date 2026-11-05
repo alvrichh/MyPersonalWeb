@@ -445,6 +445,8 @@ export function upgrade(p: Progress, slot: number): boolean {
 export interface Fighter { uid: number; id: number; side: 0 | 1; x: number; lane: number; hp: number; maxHp: number; damage: number; attack: number; flash: number; boss: boolean; hit?: number;
   /** Shots it has fired, so its guns take turns. */
   volley?: number;
+  /** Seconds to its next footstep dust (heavy walkers) or charge dust (a rushing charger). */
+  dust?: number;
   /** Seconds left frozen in a block of ice (it shatters when they run out). */
   frozen?: number;
   /** A breaking robot's stage (0 whole, 1 one arm and no gun, 2 a crawling wreck) and whether it is an elite (horned,
@@ -515,6 +517,9 @@ export interface Effect { x: number; from: number; lane: number; life: number; m
   /** An `anim` drawn round its middle (a hit at body height) rather than standing on the ground, or turned round (struck
       from the enemy's side). */
   centre?: boolean; flip?: boolean;
+  /** An `anim` lying on the ground under the troops (scorch marks, cracks, dust at their feet), or (`hud`) a moment
+      shown at the top of the screen (the war horn of a wave, the guardian's skull). */
+  floor?: boolean; hud?: boolean;
   /** A fallen enemy's bounty, shown rising where it fell. */
   gold?: number; mana?: number;
   /** A shot's own projectile picture (`Spec.shot`) and whether it spins. */
@@ -547,6 +552,8 @@ export interface Siege {
   loot?: number;
   /** The corrupt wind has blown this battle. */
   gusted?: boolean;
+  /** The enemy fortress has fallen (its collapse has been shown). */
+  razed?: boolean;
 }
 /** The gold an enemy drops when it falls: by its toughness, double for a horned one, a guardian far more. */
 export const dropOf = (u: Fighter) => (u.boss ? 120 : Math.max(3, Math.round((UNITS[u.id].hp / 30) ** 1.3 / 2.2)) * (u.elite ? 2 : 1));
@@ -820,6 +827,7 @@ function launch(s: Siege, u: Fighter, a: Spec, x0: number, lane: number, toUp: n
   if (isBullet(a.shot) || isBullet(a.also)) s.effects.push({ x: u.x - dir * (24 + (v % 3) * 9), from: u.x, lane, life: 0.55, max: 0.55, kind: 'piece', side: u.side, art: 'casing', size: 9, arc: 26, spin: true, fromUp: a.air ? u.alt ?? highOf(u) : 0, gun: gunOf(u, a, v, isBullet(a.shot) ? '' : '+') });
   if (a.shot && ROCKET_SHOTS.has(a.shot)) fx(s, 'smoke', u.x, 0.5, { centre: true, size: 30, fromUp: a.air ? u.alt ?? highOf(u) : 0, gun: gunOf(u, a, v) }, 0.05);
   // Every rocket blows up where it lands, with the explosion art (bigger for salvos and the robots' blasts).
+  if (a.blast || ROCKET_SHOTS.has(a.shot ?? '')) fx(s, `scorch-${a.shot?.startsWith('salvo') || a.blast ? 1 : 0}`, x0, 3, { floor: true, size: a.blast ? 80 : 56 }, flight);
   if (a.blast || ROCKET_SHOTS.has(a.shot ?? '')) s.effects.push({ x: x0, from: x0, lane: lane, life: flight + BOOM, max: BOOM, kind: 'boom', side: u.side, size: a.shot === 'plasma-cyan' ? 100 : a.shot?.startsWith('salvo') ? 90 : a.blast ? 70 : 56, up: toUp, dark: a.shot !== 'plasma-cyan', cyan: a.shot === 'plasma-cyan' || undefined });
 }
 /** Start (true) or stop (false) the archers; they only start with at least one shot in the quiver. */
@@ -924,13 +932,15 @@ export function castPower(s: Siege, card: number): boolean {
       const x = x0 + (i + 0.5) * span / n + (rnd(i * 3 + c) - 0.5) * 18, delay = rnd(i * 7 + c * 5) * 1.7, deep = Math.floor(rnd(i + c * 11) * 3) - 1, up = deep * 8, at = delay + fall;
       push({ x, from: x, lane: 1, life: at, max: fall, kind: 'fall', side: 0, art: form.art, up });
       s.hitq.push({ at: s.time + at, x, r, damage: form.damage, freeze: form.freeze });
-      if (form.art === 'rocket') push({ x, from: x, lane: 1, life: at + BOOM, max: BOOM, kind: 'boom', side: 0, size: 78 + (i % 3) * 10, up });
+      if (form.art === 'rocket') { push({ x, from: x, lane: 1, life: at + BOOM, max: BOOM, kind: 'boom', side: 0, size: 78 + (i % 3) * 10, up }); fx(s, 'warn', x, at, { floor: true, size: 70, up }); fx(s, 'scorch-1', x, 3, { floor: true, size: 80, up }, at); }
       else if (form.art === 'fire') push({ x, from: x, lane: 1, life: at + 1.4, max: 1.4, kind: 'fire', side: 0, size: 46, up });
       else if (form.art === 'ice') push({ x, from: x, lane: 1, life: at + 0.9, max: 0.9, kind: 'ground', side: 0, art: 'ice', up });
       else push({ x, from: x, lane: 1, life: at + 2.4, max: 2.4, kind: 'ground', side: 0, art: 'arrow', up });
     }
   } else if (id === 1) {
     const n = form.count ?? 9;
+    // A storm sky over the field while the bolts fall, flashing.
+    fx(s, 'storm-sky', (x0 + x1) / 2, 2.4, { hud: true, size: 0 });
     for (let i = 0; i < n; i++) {
       // Half the bolts go for the enemies on screen, the rest are spread over the field.
       const x = foes.length && i % 2 ? foes[(i >> 1) % foes.length].x : x0 + (i + 0.5) * span / n + (rnd(i * 3 + c) - 0.5) * 24, delay = rnd(i * 5 + c * 3) * 1.4;
@@ -943,6 +953,8 @@ export function castPower(s: Siege, card: number): boolean {
     // The wave runs from the left of the screen to the right in two seconds; each enemy is struck as the front reaches it.
     const dur = 2, seen = new Set<number>();
     push({ x: x1, from: x0 - 40, lane: 1, life: dur, max: dur, kind: 'wave', side: 0, art: String(k.level) });
+    // Foam bursting up along its front as it runs.
+    for (let i = 0; i < 7; i++) { const f = i / 6; fx(s, 'spray', x0 + 30 + (span - 60) * f, 0.6, { size: 120 }, f * dur * 0.8); }
     for (let x = x0; x <= x1 + 40; x += 45) s.hitq.push({ at: s.time + (x - x0) / span * dur * 0.8, x, r: 62, damage: form.damage, freeze: form.freeze, push: form.push, seen });
   } else if (id === 3) {
     const n = form.count ?? 6, flight = 0.6, r = form.radius ?? 62;
@@ -952,6 +964,8 @@ export function castPower(s: Siege, card: number): boolean {
       push({ x, from: x, lane: 1, life: flight + wait + FIRE, max: FIRE, kind: 'fire', side: 0, size: 60, up });
       push({ x, from: x, lane: 1, life: flight + wait + BOOM, max: BOOM, kind: 'boom', side: 0, size: 64, up });
       s.hitq.push({ at: s.time + wait + flight, x, r, damage: form.damage });
+      fx(s, 'warn', x, wait + flight, { floor: true, size: 90, up });
+      fx(s, 'crater', x, 4, { floor: true, size: 120, up }, wait + flight);
     }
     hear(s, 'meteor', (x0 + x1) / 2);
   }
@@ -970,7 +984,8 @@ export function tick(s: Siege, dt: number) {
   s.effects = s.effects.filter(e => (e.life -= dt) > 0);
   s.nextWave -= dt;
   if (s.nextWave <= 0) {
-    s.waves++; s.nextWave = Math.max(FOE_PACE.gap, 9 - hard(s.world) * FOE_PACE.slope - s.time / 90);
+    s.waves++; if (s.waves > 1) fx(s, 'horn', FIELD - 200, 1.3, { hud: true, size: 80 });
+    s.nextWave = Math.max(FOE_PACE.gap, 9 - hard(s.world) * FOE_PACE.slope - s.time / 90);
     const count = Math.min(3, 1 + Math.floor(s.time / 70));
     const land = foesAt(FOE_LAND, s.world), flyers = foesAt(FOE_AIR, s.world);
     // Early waves only the first two land troops; later the whole list, the newest (toughest) more often.
@@ -1002,8 +1017,16 @@ export function tick(s: Siege, dt: number) {
     for (let i = 0; i < horde.weak; i++) { spawn(s, land[i % Math.min(2, land.length)], 1); const u = s.units[s.units.length - 1]; if (u?.side) u.x -= i * 18; }
     for (let i = 0; i < horde.strong; i++) spawn(s, tough[i % tough.length], 1);
   }
+  // The enemy fortress falls: a cloud of dust and rubble where it stood, stones, beams and its flag thrown out.
+  if (!s.razed && s.hp[1] <= 0) {
+    s.razed = true; const at = FIELD - 80;
+    fx(s, 'collapse', at, 1.6, { size: 300 });
+    ['piece-stone', 'piece-beam', 'piece-stone', 'piece-flag', 'piece-beam', 'piece-stone'].forEach((art, k) => s.effects.push({ x: at - 70 - k * 34, from: at - 10 + (k % 3) * 20, lane: 1, life: 0.9 + k * 0.05, max: 0.9 + k * 0.05, kind: 'piece', side: 0, art, size: art === 'piece-flag' ? 34 : 26, arc: 90 + k * 12, spin: true, up: 120 + (k % 3) * 40 }));
+    fx(s, 'crack-2', at - 30, 6, { floor: true, size: 220 });
+  }
   if (!s.bossSpawned && s.hp[1] <= 0 && guarded(s.world)) {
     s.bossSpawned = true; spawn(s, GUARDIAN[actOf(s.world) - 1], 1, true);
+    fx(s, 'skull', FIELD - 200, 2, { hud: true, size: 110 });
     // Its arrival: a gust from the ruins blows our army back.
     for (const u of s.units) if (!u.side) { u.blown = BOSS.gust; u.knock = 0; u.stun = 0; }
     s.effects.push({ x: FIELD - 120, from: FIELD - 120, lane: 1, life: 1.2, max: 1.2, kind: 'gust', side: 1 });
@@ -1062,6 +1085,7 @@ export function tick(s: Siege, dt: number) {
           hits.push({ target: enemy, damage: u.damage, push: CHARGE.back }); u.attack = a.rate; u.hit = 0.3; u.stun = CHARGE.daze; u.rushing = false;
           hear(s, soundsOf(u)[0], u.x); continue;
         }
+        if ((u.dust = (u.dust ?? 0) - dt) <= 0) { u.dust = 0.18; fx(s, 'charge', u.x - (u.side ? -1 : 1) * a.size * 0.4, 0.45, { floor: true, size: 90, flip: !!u.side }); }
         u.moving = true; u.x += (u.side ? -1 : 1) * Math.min(a.speed * CHARGE.pace * dt, distance - reach); u.x = Math.max(110, Math.min(FIELD - 110, u.x)); continue;
       }
     } else if (u.rushing) u.rushing = false;
@@ -1085,7 +1109,8 @@ export function tick(s: Siege, dt: number) {
           if (a.aimPoses) u.aimAir = !!UNITS[enemy.id].air;
           if (!u.side && !a.quake && !a.aimPoses) s.effects.push({ x: u.x + dir * a.sweep.reach, from: u.x, lane: u.lane, life: 0.5, max: 0.5, kind: a.breath ? 'breath' : 'sweep', side: u.side, fromUp: a.air ? u.alt ?? highOf(u) : 0, colors: a.breath, size: a.size });
           if (a.breath) hear(s, 'flame', u.x);
-          else if (!a.aimPoses) fx(s, 'hit-heavy', u.x + dir * a.sweep.reach * 0.6, 0.32, { up: 30, centre: true, size: a.quake ? 96 : 72, flip: !!u.side });
+          else if (!a.aimPoses) { if (a.quake) fx(s, 'crack-1', u.x + dir * a.sweep.reach * 0.55, 3, { floor: true, size: 150 }); }
+          if (!a.breath && !a.aimPoses) fx(s, 'hit-heavy', u.x + dir * a.sweep.reach * 0.6, 0.32, { up: 30, centre: true, size: a.quake ? 96 : 72, flip: !!u.side });
         } else {
         // A scoop takes the nearest few (`ramHits`) in its reach; anyone else strikes its target, and round it when it has an area.
         const scooped = a.ram && (a.ramHits ?? 1) > 1 ? alive.filter(v => v.side !== u.side && reaches(u, v) && Math.abs(v.x - u.x) <= a.range + bodyOf(v) * 0.25 + 30).sort((p, q) => Math.abs(p.x - u.x) - Math.abs(q.x - u.x)).slice(0, a.ramHits) : null;
@@ -1098,7 +1123,7 @@ export function tick(s: Siege, dt: number) {
           s.effects.push({ x: u.x, from: u.x, lane: u.lane, life: 0.7, max: 0.7, kind: 'heal', side: u.side, size: 1 });
         } else
         // A lobbed shot (the catapult's rock) strikes where it lands, when it lands; the rest strike at once.
-        if (a.lob && !u.side) { s.hitq.push({ at: s.time + a.lob, x: enemy.x, r: Math.max(24, area ?? 0), damage: u.damage / s.power, ground: true }); fx(s, 'rock-land', enemy.x, 0.5, { size: 62 }, a.lob - 0.04); }
+        if (a.lob && !u.side) { s.hitq.push({ at: s.time + a.lob, x: enemy.x, r: Math.max(24, area ?? 0), damage: u.damage / s.power, ground: true }); fx(s, 'rock-land', enemy.x, 0.5, { size: 62 }, a.lob - 0.04); fx(s, 'crack-0', enemy.x, 3, { floor: true, size: 70 }, a.lob); }
         else for (const v of alive) if (v.side !== u.side && reaches(u, v) && (scooped ? scooped.includes(v) : v === enemy || (area && Math.abs(v.x - enemy.x) < area) || (a.pierce && (v.x - u.x) * (enemy.x - u.x) > 0 && Math.abs(v.x - u.x) <= a.range + 40))) hits.push({ target: v, damage: u.damage, boss: u.boss, push: a.hook ? -a.hook : a.ram ?? a.shove });
         // A blow (no shot) shows its hit on the target: a big comic star for the heavy and the guardians, a slash otherwise.
         if (!a.shot && !a.heal && !a.lob) {
@@ -1124,6 +1149,8 @@ export function tick(s: Siege, dt: number) {
       if (u.attack <= 0) { u.attack = a.rate; u.hit = 0.3; s.hp[u.side ? 0 : 1] -= u.damage * (a.siege ?? 1); if (a.shot) launch(s, u, a, baseX + (u.side ? 30 : -30), 1, 40); hear(s, soundsOf(u)[0], u.x); }
     } else {
       const movement = a.speed * dt; u.moving = true;
+      // Heavy walkers (the steady and the giants) raise dust at each step.
+      if (!a.air && (a.steady || a.size > 100) && (u.dust = (u.dust ?? 0) - dt) <= 0) { u.dust = 0.55; fx(s, 'step', u.x, 0.5, { floor: true, size: Math.min(110, a.size * 0.7), flip: !!u.side }); }
       // Never step through an opponent, even during a long frame.
       u.x += (u.side ? -1 : 1) * Math.max(0, Math.min(movement, distance - 24));
       u.x = Math.max(110, Math.min(FIELD - 110, u.x));
