@@ -496,13 +496,9 @@ const shotY = (up: number | undefined, y: number) => y - 15 - Math.max(0, (up ??
     drawn (an enemy's facing left): the gun's mouth, the bow, the hand that throws, the cannon on its back. Several take
     turns, shot after shot. `+` is a second gun (the heavy robot's hands). Spells fall on their target; flames, breath
     and the enemy's shots are part of their attack pose. */
-/** The lightning rain's colours by form, as filters on the blue bolt: yellow, white and cyan; then violet, gold,
-    pink and white; the storm of wrath blue, red, white and violet. */
-const BOLT_TINTS: Record<number, string[]> = {
-  1: ['hue-rotate(190deg) saturate(1.6) brightness(1.15)', 'saturate(.15) brightness(1.35)', 'hue-rotate(-30deg) brightness(1.1)'],
-  2: ['hue-rotate(40deg) saturate(1.2)', 'hue-rotate(190deg) saturate(1.6) brightness(1.15)', 'hue-rotate(105deg) saturate(1.3) brightness(1.1)', 'saturate(.15) brightness(1.35)'],
-  3: ['none', 'hue-rotate(140deg) saturate(1.8)', 'saturate(.15) brightness(1.35)', 'hue-rotate(60deg) saturate(1.4)'],
-};
+/** The lightning rain's colour by form, as a filter on the blue bolt: blue, then purple thunder, then the storm of
+    wrath's red. */
+const BOLT_TINTS: Record<number, string> = { 1: 'none', 2: 'hue-rotate(50deg) saturate(1.3)', 3: 'hue-rotate(140deg) saturate(1.8)' };
 /** The shot sheets drawn at a higher resolution than the first ones, and the scale that keeps them their size in battle. */
 const SHOT_SCALE: Record<string, number> = { 'plasma-cyan': 0.45, 'rocket-dark': 0.2, 'rockets-dark': 0.2, 'salvo-dark': 0.2 };
 const MUZZLE: Record<string, [number, number][]> = {
@@ -611,11 +607,11 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     }
     if (e.kind === 'zap') {
       // A column of lightning from the top of the screen to the ground, flickering as it fades.
-      // The lightning rain's bolts each take a colour from their form's palette (the drawing is blue: a hue turn recolours it).
+      // The lightning rain's bolts are its form's colour (the drawing is blue: a hue turn recolours it).
       const art = still('siege/units/shot-lightning'); if (!ok(art)) return false;
-      const h = at + 6, w = 130, flip = Math.floor(p * 10) % 2 ? -1 : 1, tints = BOLT_TINTS[Number(e.art) || 0];
+      const h = at + 6, w = 130, flip = Math.floor(p * 10) % 2 ? -1 : 1, tint = BOLT_TINTS[Number(e.art) || 0];
       ctx.save(); ctx.globalAlpha = p < 0.5 ? 1 : (1 - p) / 0.5; ctx.translate(e.x, 0); ctx.scale(flip, 1);
-      if (tints) ctx.filter = tints[(e.size ?? 0) % tints.length];
+      if (tint) ctx.filter = tint;
       ctx.drawImage(art, -w / 2, 0, w, h);
       // Drawn twice, the second time adding light, so the bolt blazes against the sky.
       ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha *= 0.7; ctx.drawImage(art, -w / 2, 0, w, h); ctx.restore(); return true;
