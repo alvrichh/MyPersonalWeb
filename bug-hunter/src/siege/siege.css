@@ -989,3 +989,10 @@
 .sg-toggles{display:contents}
 /* Short screens (phones lying down): the options fit with every switch shown. */
 @media (max-height:440px){.sg-overlay{padding:6px 20px}.sg-pausebox{gap:3px}.siege-root.is-cartoon .sg-pausebox .sg-kit,.siege-root.is-cartoon .sg-pausebox .sg-kit:hover{min-height:31px}.sg-pausebox .sg-vol{gap:0 10px}.sg-pausebox .sg-langs{gap:4px}.siege-root.is-cartoon .sg-dialog:has(.sg-toggles){width:min(600px,calc(100vw - 24px))}.sg-pausebox .sg-toggles{display:grid;grid-template-columns:1fr 1fr;gap:4px;width:100%}.siege-root.is-cartoon .sg-pausebox .sg-toggles>.sg-kit{font-size:13px;padding:4px 8px}}
+/* The army bar stays clear of the frames above it: the units' frame (drawn past its box) and, on a narrow phone, the
+   picked troop's card no longer reach down over the bar's wall. */
+.sg-shop-only .sg-st-frame{margin-bottom:-16px}
+@media (max-height:500px){.sg-shop-only .sg-st-frame{margin-bottom:-10px}}
+@media (max-width:600px){.sg-shop-only .sg-st-card{margin-bottom:0}.sg-shop-only .sg-st-actions{margin-top:2px}}
+/* The energy on each army card scales with the bar, so on a small bar it stays a corner tag and the troop shows. */
+.sg-st-army .sg-st-cell small{right:1px;bottom:1px;padding:0 .3em;font-size:max(8px,calc(34 * var(--u)));line-height:1.15;border-radius:4px}
