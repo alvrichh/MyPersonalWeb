@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.185 - 2026-11-05
+
+- Siege Cartoon's lightning rain takes its colours from its icons: yellow lightning, white-gold thunder, the storm of wrath's white-blue electricity.
+
 ## 1.15.184 - 2026-11-05
 
 - Siege Cartoon's lightning rain: one colour per form instead of many: blue lightning, magenta thunder, the storm of wrath red.
