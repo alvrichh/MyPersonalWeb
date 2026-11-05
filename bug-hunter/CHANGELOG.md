@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.174 - 2026-11-05
+
+- The heavy armed robot's last form fires its rockets from the cannon on its back and its bullets from the gatlings in its hands.
+
 ## 1.15.173 - 2026-11-05
 
 - Siege Cartoon's heavy robots (ours and the enemy's gatling robots) stand firm: no blow, charge or arrow knocks them back.
