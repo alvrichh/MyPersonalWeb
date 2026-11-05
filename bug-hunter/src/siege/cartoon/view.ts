@@ -168,7 +168,7 @@ const AMBIENT: Record<number, { kind: string; n: number; fall: number; drift: nu
 const FX_STILLS = ['ice-block', 'piece-gear', 'piece-bolt', 'piece-plate', 'casing', 'streak', 'storm-sky', 'rubble', 'piece-stone', 'piece-beam', 'piece-flag',
   ...[0, 1, 2].flatMap(n => [`scorch-${n}`, `crack-${n}`]), ...Object.values(AMBIENT).flatMap(a => Array.from({ length: a.n }, (_, k) => `amb-${a.kind}-${k}`))];
 const fxFrame = (name: string, p: number) => still(`siege/fx/${name}-${Math.max(0, Math.min(FX_FRAMES[name] - 1, Math.floor(p * FX_FRAMES[name])))}`);
-const FX = [...Array.from({ length: 8 }, (_, f) => `siege/fx/dragonpass-${f}`), ...Array.from({ length: 12 }, (_, f) => `siege/fx/anchor-${f}`), ...Object.keys(PHASED).flatMap(n => Array.from({ length: 12 }, (_, f) => `siege/fx/${n}-${f}`)), ...Object.entries(FX_FRAMES).flatMap(([n, k]) => Array.from({ length: k }, (_, f) => `siege/fx/${n}-${f}`)), ...FX_STILLS.map(n => `siege/fx/${n}`), 'siege/mana', ...[0, 1, 2, 3, 4, 5, 6, 7].flatMap(n => [`siege/fx-boom-${n}`, `siege/fx-boom-dark-${n}`, `siege/fx-boom-cyan-${n}`]), 'siege/units/shot-crescent-gold', 'fx/fire-pool.webp', 'fx/fireball.webp', 'fx/rocket.webp', 'fx/volt-burst.webp', 'fx/impact.webp', 'fx/ice-block.webp', 'siege/units/shot-arrow', 'siege/units/shot-ice', 'siege/units/shot-lightning', ...[0, 1, 2].map(n => `fx/wave-strip-${n}.webp`), ...[0, 1, 2, 3, 4, 5, 6].map(n => `fx/icicle-0-${n}.webp`), 'arrows/water.webp', 'arrows/leaf.webp', 'fx/boom-big.webp', 'fx/impact.webp', ...[1, 2, 3, 4, 5, 6].map(n => `fx/bolt-y-${n}.webp`)];
+const FX = [...Array.from({ length: 8 }, (_, f) => `siege/fx/dragonpass-${f}`), ...Array.from({ length: 12 }, (_, f) => `siege/fx/anchor-${f}`), ...Object.keys(PHASED).flatMap(n => Array.from({ length: 12 }, (_, f) => `siege/fx/${n}-${f}`)), ...Object.entries(FX_FRAMES).flatMap(([n, k]) => Array.from({ length: k }, (_, f) => `siege/fx/${n}-${f}`)), ...FX_STILLS.map(n => `siege/fx/${n}`), 'siege/mana', 'siege/mana-dark', ...[0, 1, 2, 3, 4, 5, 6, 7].flatMap(n => [`siege/fx-boom-${n}`, `siege/fx-boom-dark-${n}`, `siege/fx-boom-cyan-${n}`]), 'siege/units/shot-crescent-gold', 'fx/fire-pool.webp', 'fx/fireball.webp', 'fx/rocket.webp', 'fx/volt-burst.webp', 'fx/impact.webp', 'fx/ice-block.webp', 'siege/units/shot-arrow', 'siege/units/shot-ice', 'siege/units/shot-lightning', ...[0, 1, 2].map(n => `fx/wave-strip-${n}.webp`), ...[0, 1, 2, 3, 4, 5, 6].map(n => `fx/icicle-0-${n}.webp`), 'arrows/water.webp', 'arrows/leaf.webp', 'fx/boom-big.webp', 'fx/impact.webp', ...[1, 2, 3, 4, 5, 6].map(n => `fx/bolt-y-${n}.webp`)];
 /** Pictures drawn whole (backdrop, floor, effects): no alpha crop needed. */
 const stills = new Map<string, HTMLImageElement>();
 function still(path: string) {
@@ -886,11 +886,12 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
 const ANGEL_X = 290;
 function mana(ctx: CanvasRenderingContext2D, s: Siege, ground: number) {
   // The mana monument (the owner's winged crystal pillar): it glows brighter as the energy fills, and pulses when full.
-  const pillar = still('siege/mana'); if (!ok(pillar)) return;
+  // The Villain's is the same pillar in black stone with blood-red crystals.
+  const pillar = still(s.villain ? 'siege/mana-dark' : 'siege/mana'); if (!ok(pillar)) return;
   const fill = s.energy / energyMax(s), full = fill >= 0.999, beat = full ? 1 + Math.sin(s.time * 6) * 0.03 : 1;
   const h = 104 * beat, w = h * pillar.naturalWidth / pillar.naturalHeight, x = ANGEL_X - w / 2, y = ground + 4 - h;
   ctx.save();
-  ctx.shadowColor = '#5fd8ff'; ctx.shadowBlur = 6 + 26 * fill;
+  ctx.shadowColor = s.villain ? '#ff3b3b' : '#5fd8ff'; ctx.shadowBlur = 6 + 26 * fill;
   ctx.drawImage(pillar, x, y, w, h);
   { const m = ctx.getTransform(), d = Math.min(2, window.devicePixelRatio || 1); manaBox = { x: (m.a * x + m.e) / d, y: (m.d * y + m.f) / d, w: m.a * w / d, h: m.d * h / d }; }
   ctx.shadowBlur = 0; ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = 0.28 * fill * (full ? 0.8 + Math.sin(s.time * 6) * 0.2 : 1);
