@@ -508,6 +508,8 @@ export interface Effect { x: number; from: number; lane: number; life: number; m
   size?: number; up?: number;
   /** A `boom` with black smoke (the robots' rockets) instead of grey (our crossbow's). */
   dark?: boolean;
+  /** A `boom` of cyan plasma (the heavy robot's ball) instead of fire. */
+  cyan?: boolean;
   /** A fallen enemy's bounty, shown rising where it fell. */
   gold?: number; mana?: number;
   /** A shot's own projectile picture (`Spec.shot`) and whether it spins. */
@@ -791,7 +793,7 @@ function launch(s: Siege, u: Fighter, a: Spec, x0: number, lane: number, toUp: n
     for (let k = 0; k < (ball ? 1 : 3); k++) s.effects.push({ x: x0 + (ball ? 0 : (k - 1) * 12), from: u.x, lane: lane, life: (ball ? 0.3 : 0.16) + k * 0.09, max: ball ? 0.3 : 0.16, kind: 'shot', side: u.side, art: a.also, fromUp: a.air ? u.alt ?? highOf(u) : 0, toUp: toUp + 4 + k * 10, gun: gunOf(u, a, v + k, '+') });
   }
   // Every rocket blows up where it lands, with the explosion art (bigger for salvos and the robots' blasts).
-  if (a.blast || ROCKET_SHOTS.has(a.shot ?? '')) s.effects.push({ x: x0, from: x0, lane: lane, life: flight + BOOM, max: BOOM, kind: 'boom', side: u.side, size: a.shot?.startsWith('salvo') ? 90 : a.blast ? 70 : 56, up: toUp, dark: a.shot !== 'plasma-cyan' });
+  if (a.blast || ROCKET_SHOTS.has(a.shot ?? '')) s.effects.push({ x: x0, from: x0, lane: lane, life: flight + BOOM, max: BOOM, kind: 'boom', side: u.side, size: a.shot === 'plasma-cyan' ? 100 : a.shot?.startsWith('salvo') ? 90 : a.blast ? 70 : 56, up: toUp, dark: a.shot !== 'plasma-cyan', cyan: a.shot === 'plasma-cyan' || undefined });
 }
 /** Start (true) or stop (false) the archers; they only start with at least one shot in the quiver. */
 export function draw(s: Siege, on: boolean) { if (s.phase === 'fight') s.bow.drawing = on && s.bow.quiver >= BOW.cost; }

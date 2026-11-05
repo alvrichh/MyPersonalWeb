@@ -149,7 +149,7 @@ function topOf(image: HTMLImageElement) {
   if (!c) { c = document.createElement('canvas'); c.width = 16; c.height = 1; const t = c.getContext('2d'); if (t) { t.imageSmoothingQuality = 'high'; t.drawImage(image, 0, 0, image.naturalWidth, 8, 0, 0, 16, 1); } tops.set(image, c); }
   return c;
 }
-const FX = ['siege/mana', ...[0, 1, 2, 3, 4, 5, 6, 7].flatMap(n => [`siege/fx-boom-${n}`, `siege/fx-boom-dark-${n}`]), 'siege/units/shot-crescent-gold', 'fx/fire-pool.webp', 'fx/fireball.webp', 'fx/rocket.webp', 'fx/volt-burst.webp', 'fx/impact.webp', 'fx/ice-block.webp', 'siege/units/shot-arrow', 'siege/units/shot-ice', 'siege/units/shot-lightning', ...[0, 1, 2].map(n => `fx/wave-strip-${n}.webp`), ...[0, 1, 2, 3, 4, 5, 6].map(n => `fx/icicle-0-${n}.webp`), 'arrows/water.webp', 'arrows/leaf.webp', 'fx/boom-big.webp', 'fx/impact.webp', ...[1, 2, 3, 4, 5, 6].map(n => `fx/bolt-y-${n}.webp`)];
+const FX = ['siege/mana', ...[0, 1, 2, 3, 4, 5, 6, 7].flatMap(n => [`siege/fx-boom-${n}`, `siege/fx-boom-dark-${n}`, `siege/fx-boom-cyan-${n}`]), 'siege/units/shot-crescent-gold', 'fx/fire-pool.webp', 'fx/fireball.webp', 'fx/rocket.webp', 'fx/volt-burst.webp', 'fx/impact.webp', 'fx/ice-block.webp', 'siege/units/shot-arrow', 'siege/units/shot-ice', 'siege/units/shot-lightning', ...[0, 1, 2].map(n => `fx/wave-strip-${n}.webp`), ...[0, 1, 2, 3, 4, 5, 6].map(n => `fx/icicle-0-${n}.webp`), 'arrows/water.webp', 'arrows/leaf.webp', 'fx/boom-big.webp', 'fx/impact.webp', ...[1, 2, 3, 4, 5, 6].map(n => `fx/bolt-y-${n}.webp`)];
 /** Pictures drawn whole (backdrop, floor, effects): no alpha crop needed. */
 const stills = new Map<string, HTMLImageElement>();
 function still(path: string) {
@@ -420,6 +420,8 @@ const shotY = (up: number | undefined, y: number) => y - 15 - Math.max(0, (up ??
     drawn (an enemy's facing left): the gun's mouth, the bow, the hand that throws, the cannon on its back. Several take
     turns, shot after shot. `+` is a second gun (the heavy robot's hands). Spells fall on their target; flames, breath
     and the enemy's shots are part of their attack pose. */
+/** The shot sheets drawn at a higher resolution than the first ones, and the scale that keeps them their size in battle. */
+const SHOT_SCALE: Record<string, number> = { 'plasma-cyan': 0.45, 'rocket-dark': 0.2, 'rockets-dark': 0.2, 'salvo-dark': 0.2 };
 const MUZZLE: Record<string, [number, number][]> = {
   'ally-archer-1': [[0.69, 0.36]], 'ally-archer-2': [[0.71, 0.27]], 'ally-archer-3': [[0.75, 0.43]], 'ally-archer-4': [[0.86, 0.44]],
   'ally-gunner-1': [[0.74, 0.45]], 'ally-gunner-2': [[0.73, 0.46]], 'ally-gunner-3': [[0.72, 0.35], [0.72, 0.52]], 'ally-gunner-4': [[0.74, 0.43]],
@@ -452,7 +454,7 @@ function muzzle(e: Effect, y: number) {
   return { x: e.from, y: shotY(e.fromUp, y) };
 }
 /** Every picture a troop's attack shows on its way (`siege/units/shot-<name>`): thrown things, rockets, bullets, beams. */
-const SHOTS = ['rock', 'javelin', 'arrow', 'shuriken', 'rocket', 'rockets', 'salvo', 'ice', 'plasma', 'crescent', 'missile', 'bullet', 'bullet-rifle', 'bullet-uzi', 'bullet-sniper', 'ray', 'ray-blue', 'ray-gold', 'ray-pink', 'ray-red', 'arrow-red', 'boulder', 'boulder-blue', 'bomb', 'plasma-cyan', 'rocket-dark', 'rockets-dark', 'salvo-dark'];
+const SHOTS = ['rock', 'javelin', 'arrow', 'shuriken', 'rocket', 'rockets', 'salvo', 'ice', 'plasma', 'crescent', 'missile', 'bullet', 'bullet-rifle', 'bullet-uzi', 'bullet-sniper', 'ray', 'ray-blue', 'ray-gold', 'ray-pink', 'ray-red', 'arrow-red', 'boulder', 'boulder-blue', 'bomb', 'plasma-cyan', 'plasma-cyan-flash', 'rocket-dark', 'rockets-dark', 'salvo-dark'];
 /** The effect art: our crossbow's Cartoon arrows (or rockets) and missile, the old painted arrows (water for our troops,
     leaf for theirs),
     impacts up close, and a blast with the yellow lightning for the discharge. */
@@ -630,7 +632,7 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
   if (e.kind === 'boom') {
     // A rocket's explosion where it lands: the owner's eight frames (`siege/fx-boom-0..7`), a flash rising into a
     // mushroom cloud that turns to smoke, standing on the ground.
-    const art = still(`siege/fx-boom-${e.dark ? 'dark-' : ''}${Math.min(7, Math.floor(p * 8))}`); if (!ok(art)) return false;
+    const art = still(`siege/fx-boom-${e.cyan ? 'cyan-' : e.dark ? 'dark-' : ''}${Math.min(7, Math.floor(p * 8))}`); if (!ok(art)) return false;
     const w = (e.size ?? 70) * 0.85, h = w * art.naturalHeight / art.naturalWidth, at = ground + 4 - (e.up ?? 0);
     ctx.save(); ctx.globalAlpha = p < 0.85 ? 1 : (1 - p) / 0.15; ctx.drawImage(art, e.x - w / 2, at - h, w, h); ctx.restore(); return true;
   }
@@ -681,8 +683,13 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     // Straight from the thrower's hand to the target, no gravity; a lobbed one (`arc`) climbs high and falls back down.
     const { x: x0, y: y0 } = muzzle(e, y), y1 = shotY(e.toUp, y), arc = e.arc ?? 0;
     const at = (t: number) => ({ x: x0 + (e.x - x0) * t, y: y0 + (y1 - y0) * t - 4 * arc * t * (1 - t) });
-    // The heavy robot's cyan plasma ball is a big one.
-    const big = e.art === 'plasma-cyan' ? 0.7 : 0.4, here = at(p), ahead = dirAt(at, p), w = art.naturalWidth * big, h = art.naturalHeight * big;
+    // Most sheets are drawn at 0.4; the ones drawn later at a higher resolution have their own scale (`SHOT_SCALE`).
+    const big = SHOT_SCALE[e.art] ?? 0.4, here = at(p), ahead = dirAt(at, p), w = art.naturalWidth * big, h = art.naturalHeight * big;
+    // The heavy robot's plasma ball leaves its cannon with a cyan flash, pointing along the shot, fading.
+    if (e.art === 'plasma-cyan' && p < 0.4) {
+      const flash = still('siege/units/shot-plasma-cyan-flash');
+      if (ok(flash)) { const fw = 62, fh = fw * flash.naturalHeight / flash.naturalWidth; ctx.save(); ctx.globalAlpha = 1 - p / 0.4; ctx.translate(x0, y0); ctx.rotate(Math.atan2(y1 - y0, e.x - x0)); ctx.drawImage(flash, -fw * 0.15, -fh / 2, fw, fh); ctx.restore(); }
+    }
     ctx.save(); ctx.translate(here.x, here.y);
     ctx.rotate(e.spin ? p * 14 * (e.x > e.from ? 1 : -1) : Math.atan2(ahead.y - here.y, ahead.x - here.x || 0.001));
     ctx.drawImage(art, -w / 2, -h / 2, w, h); ctx.restore(); return true;
