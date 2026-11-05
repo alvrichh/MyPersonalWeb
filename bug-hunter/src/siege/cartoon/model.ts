@@ -289,7 +289,7 @@ export const UNITS: readonly Spec[] = [
     ...foe('boss-dark-king-ground', 250, 1) },
   // The King's Jailer (world 6): a hunched giant with no mouth and a cage of ribs on its back full of red souls. It throws
   // its chain from afar, hooks one of ours and drags it to its feet.
-  { id: 61, cost: 140, hp: 1100, damage: 45, speed: 22, range: 170, rate: 2.2, cooldown: 0, unlock: 1, foe: true, hook: 150, ...six('foe-jailer-1', 231, 0.92) },
+  { id: 61, cost: 140, hp: 1100, damage: 45, speed: 22, range: 170, rate: 2.2, cooldown: 0, unlock: 1, foe: true, hook: 150, ...six('foe-jailer-1', 231, 1.4) },
 ];
 /** The enemy's land and air troops by act, each act adding to the last (docs/siege-roster.md): early waves draw
     from the first two of the land list. No flyers in the first world: they come from the second. */
