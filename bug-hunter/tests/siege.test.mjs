@@ -576,10 +576,13 @@ test('the owner\'s drawn effects: arrivals, hits, frozen troops shatter, machine
   assert.ok(s.effects.some(e => e.art === 'soul') && s.effects.some(e => e.art === 'loot'), 'a foe gives up its soul and its loot');
 });
 
-test('the owner\'s second batch: the fortress collapses, waves sound the horn, meteors warn and leave craters, giants raise dust', () => {
+test('the owner\'s second batch: the fortress collapses, the horn sounds when we reach it, meteors warn and leave craters, giants raise dust', () => {
   const s = m.newSiege({ ...m.freshProgress(), unlocked: 30, owned: [0, 9], deck: [9] }, 3); s.gusted = true; s.energy = 999;
   s.nextWave = 0; m.tick(s, 1 / 30); s.nextWave = 0; m.tick(s, 1 / 30);
-  assert.ok(s.effects.some(e => e.art === 'horn' && e.hud), 'a new wave sounds the horn');
+  assert.ok(!s.effects.some(e => e.art === 'horn'), 'a new wave sounds no horn');
+  const h = m.newSiege({ ...m.freshProgress(), unlocked: 30, owned: [0], deck: [0] }, 3); h.gusted = true; h.energy = 999; h.nextWave = 999; m.summon(h, 0); h.units[0].x = m.FIELD - 130;
+  const horns = new Set(); for (let i = 0; i < 120; i++) { m.tick(h, 1 / 30); h.effects.filter(e => e.art === 'horn').forEach(e => horns.add(e)); }
+  assert.equal(horns.size, 1, 'the war horn sounds once, the first time our troops strike the enemy fortress');
   const g = m.newSiege({ ...m.freshProgress(), unlocked: 30, owned: [0, 9], deck: [9] }, 3); g.gusted = true; g.energy = 999; g.nextWave = 999;
   m.summon(g, 9); let dust = false; for (let i = 0; i < 60; i++) { m.tick(g, 1 / 30); dust ||= g.effects.some(e => e.art === 'step' && e.floor); }
   assert.ok(dust, 'a heavy walker raises dust at its steps');
