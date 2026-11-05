@@ -287,10 +287,13 @@ export const UNITS: readonly Spec[] = [
   { id: 60, cost: 0, hp: 560, damage: 46, speed: 32, range: 70, rate: 1.5, cooldown: 0, unlock: 1, foe: true, steady: true, splash: 60, hitsAir: true, frames: 10, tipOver: true,
     moves: [{ ready: 2, strike: 3, kind: 'slam' }, { ready: 6, strike: 7, kind: 'spikes' }, { ready: 2, strike: 3, kind: 'slam' }, { ready: 8, strike: 9, kind: 'pulse' }],
     ...foe('boss-dark-king-ground', 250, 1) },
+  // The King's Jailer (world 6): a hunched giant with no mouth and a cage of ribs on its back full of red souls. It throws
+  // its chain from afar, hooks one of ours and drags it to its feet.
+  { id: 61, cost: 140, hp: 1100, damage: 45, speed: 22, range: 170, rate: 2.2, cooldown: 0, unlock: 1, foe: true, hook: 150, ...six('foe-jailer-1', 231, 0.92) },
 ];
 /** The enemy's land and air troops by act, each act adding to the last (docs/siege-roster.md): early waves draw
     from the first two of the land list. No flyers in the first world: they come from the second. */
-export const FOE_LAND = [[15, 16, 17], [22, 19, 46], [23, 18, 47], [24, 25, 20], [26, 21, 40, 41, 42], [32, 45, 44, 43]];
+export const FOE_LAND = [[15, 16, 17], [22, 19, 46], [23, 18, 47], [24, 25, 20], [26, 21, 40, 41, 42], [32, 45, 44, 43, 61]];
 export const FOE_AIR = [[], [28], [29, 27], [30], [48], [31, 49, 50]];
 /** The heroes the Villain campaign sends against it, act by act (our troops, in the order they join), each at the form
     its act reaches (`heroLevel`), and the guardian of each act's last battle at its last form. */
@@ -372,7 +375,7 @@ export const ALLIES = UNITS.filter(u => !u.foe).sort((a, b) => groupOf(a) - grou
 export const levelsOf = (id: number) => LINE_OF[id]?.length ?? 1 + (UNITS[id]?.forms?.length ?? 0);
 /** The Villain's troop lines: each enemy troop is a level of one (its card is the line's first troop at that level),
     as our troops have forms; the guardians stand apart. */
-export const VILLAIN_LINES = [[15, 16, 19, 43], [47, 17, 25, 41], [18, 40, 42, 44], [20, 21, 32], [22, 46, 45], [23, 24, 26], [28, 29, 48, 49], [30, 27, 50, 31]];
+export const VILLAIN_LINES = [[15, 16, 19, 43], [47, 17, 25, 41], [18, 40, 42, 44], [20, 21, 32, 61], [22, 46, 45], [23, 24, 26], [28, 29, 48, 49], [30, 27, 50, 31]];
 const LINE_OF: Record<number, number[]> = Object.fromEntries(VILLAIN_LINES.map(l => [l[0], l]));
 /** The enemy troop a Villain line sends at a level (any other troop is itself). */
 export const memberOf = (id: number, level = 1) => LINE_OF[id]?.[Math.max(1, Math.min(level, LINE_OF[id].length)) - 1] ?? id;
@@ -747,7 +750,7 @@ const ATTACK_SOUND: Record<number, string | string[]> = {
   53: 'heal', 54: 'blunt', 55: 'slash', 56: 'roar', 57: 'meteor', 58: 'thunder', 59: 'slash',
   40: 'blunt', 41: 'bite', 42: 'blunt', 43: 'pierce', 44: 'blunt', 47: 'bite', 48: 'bite', 49: 'blade', 50: 'pierce',
   25: 'claw', 26: 'breath', 27: 'blade', 28: 'claw', 29: 'claw', 30: 'magic', 31: 'blade', 32: 'gatling',
-  34: 'throw', 35: 'gatling', 36: 'breath', 37: 'blunt', 38: 'bite', 39: 'magic', 60: 'blunt',
+  34: 'throw', 35: 'gatling', 36: 'breath', 37: 'blunt', 38: 'bite', 39: 'magic', 60: 'blunt', 61: 'throw',
 };
 const SHOT_SOUND: Record<string, string> = { 'crescent-gold': 'wind', rock: 'throw', javelin: 'throw', shuriken: 'throw', arrow: 'bow', rocket: 'rocket', rockets: 'rocket', salvo: 'rocket', 'rocket-dark': 'rocket', 'rockets-dark': 'rocket', 'salvo-dark': 'rocket', 'plasma-cyan': 'ray', ray: 'ray', 'ray-blue': 'ray', 'ray-gold': 'ray', 'ray-pink': 'thunder', 'ray-red': 'ray', 'arrow-red': 'bow', boulder: 'throw', 'boulder-blue': 'rocket', bomb: 'rocket', plasma: 'ray', ice: 'ray', crescent: 'magic', none: 'flame', lightning: 'thunder', tornado: 'wind', meteor: 'meteor' };
 /** Bullets (`bullet`, `bullet-rifle|uzi|sniper`) sound like the gun that fires them; beams (`ray`, `ray-blue|gold|pink`) reach at once. */
@@ -760,7 +763,7 @@ const DEATH_SOUND: Record<number, string | string[]> = {
   51: 'die-armor', 52: 'die-flyer', 54: 'die-armor', 56: 'die-dragon', 57: 'die-bot', 58: 'die-flyer', 59: 'die-armor',
   40: 'die-beast', 41: 'die-beast', 42: 'die-brute', 44: 'die-brute', 47: 'die-beast', 48: 'die-flyer', 49: 'die-flyer', 50: 'die-flyer',
   29: 'die-flyer', 30: 'die-flyer', 31: 'die-dragon', 32: 'die-bot',
-  34: 'die-brute', 35: 'die-bot', 36: 'die-dragon', 37: 'die-brute', 38: 'die-dragon', 39: 'die-brute', 60: 'die-brute',
+  34: 'die-brute', 35: 'die-bot', 36: 'die-dragon', 37: 'die-brute', 38: 'die-dragon', 39: 'die-brute', 60: 'die-brute', 61: 'die-brute',
 };
 const pickLevel = (v: string | string[] | undefined, lv: number) => (Array.isArray(v) ? v[Math.min(lv, v.length) - 1] : v);
 /** A fighter's attack and death sounds. */
@@ -1423,7 +1426,7 @@ export function tick(s: Siege, dt: number) {
         } else
         // A lobbed shot (the catapult's rock) strikes where it lands, when it lands; the rest strike at once.
         if (a.lob && !u.side) { s.hitq.push({ at: s.time + a.lob, x: enemy.x, r: Math.max(24, area ?? 0), damage: u.damage / s.power, ground: true }); fx(s, 'rock-land', enemy.x, 0.5, { size: 62 }, a.lob - 0.04); fx(s, 'crack-0', enemy.x, 3, { floor: true, size: 70 }, a.lob); }
-        else for (const v of alive) if (v.side !== u.side && reaches(u, v) && (scooped ? scooped.includes(v) : v === enemy || (area && Math.abs(v.x - enemy.x) < area) || (a.pierce && (v.x - u.x) * (enemy.x - u.x) > 0 && Math.abs(v.x - u.x) <= a.range + 40))) hits.push({ target: v, damage: u.damage, boss: u.boss, push: a.hook ? -a.hook : a.ram ?? a.shove });
+        else for (const v of alive) if (v.side !== u.side && reaches(u, v) && (scooped ? scooped.includes(v) : v === enemy || (area && Math.abs(v.x - enemy.x) < area) || (a.pierce && (v.x - u.x) * (enemy.x - u.x) > 0 && Math.abs(v.x - u.x) <= a.range + 40))) hits.push({ target: v, damage: u.damage, boss: u.boss, push: a.hook ? -Math.max(1, Math.min(a.hook, Math.abs(v.x - u.x) - 45)) : a.ram ?? a.shove });
         // A blow (no shot) shows its hit on the target: a big comic star for the heavy and the guardians, a slash otherwise.
         if (!a.shot && !a.heal && !a.lob) {
           const heavy = !!(a.ram || u.boss || a.size > 90);

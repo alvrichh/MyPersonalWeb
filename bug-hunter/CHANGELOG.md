@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.200 - 2026-11-06
+
+- New enemy in world 6, the King's Jailer (the owner's design): a hunched giant with no mouth and a cage of ribs full of red souls on its back; it throws its chain from afar, hooks one of ours and drags it to its feet (never past it). In the Villain campaign it is the armoured line's fourth level.
+- A hook (the weary reaper's too) drags what it catches at most to just in front of it.
+
 ## 1.15.199 - 2026-11-05
 
 - The Villain has no crossbow: the Eye of Darkness sits in its fortress's turret (bone, iron, black-gold or shadow, by the Bow level) and flashes as it sends each volley, and instead of arrows hands burst out of the ground where they would land (skeletal, fire-clawed, a giant demon claw, shadow hands with a skull), grabbing and sinking back; its bar button is a red ball with a claw. Same aim, damage and reload as the crossbow.
