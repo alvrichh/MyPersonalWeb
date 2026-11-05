@@ -562,6 +562,20 @@ test('without the time limit a battle goes on past it', () => {
   m.prefs.untimed = false; m.tick(s, 1 / 30); assert.equal(s.phase, 'lost');
 });
 
+test('the owner\'s drawn effects: arrivals, hits, frozen troops shatter, machines burst into scrap, foes give up their soul', () => {
+  const s = m.newSiege({ ...m.freshProgress(), unlocked: 30, owned: [0, 4], deck: [0, 4] }, 20); s.nextWave = 999; s.gusted = true; s.energy = 999;
+  m.summon(s, 0); assert.ok(s.effects.some(e => e.kind === 'anim' && e.art === 'arrive-land'), 'a troop arrives in a summoning circle');
+  m.summon(s, 4); const gun = s.units[1]; gun.x = 400;
+  const foe = { uid: 99, id: 15, side: 1, x: 560, lane: 1, hp: 9000, maxHp: 9000, damage: 0, attack: 99, flash: 0, boss: false }; s.units.push(foe);
+  let sparked = false, casing = false; for (let i = 0; i < 90; i++) { m.tick(s, 1 / 30); sparked ||= s.effects.some(e => e.art === 'hit-bullet'); casing ||= s.effects.some(e => e.kind === 'piece' && e.art === 'casing'); }
+  assert.ok(sparked && casing, 'bullets spark and throw casings');
+  m.tick(s, 0); foe.frozen = 0.05; foe.stun = 0.05; run(s, 0.2); assert.ok(s.effects.some(e => e.art === 'shatter'), 'the ice shatters');
+  const bot = { uid: 98, id: 32, side: 1, x: 600, lane: 1, hp: 0, maxHp: 760, damage: 0, attack: 99, flash: 0, boss: false, stage: 2 }; foe.hp = 0; s.units.push(bot);
+  m.tick(s, 1 / 30);
+  assert.ok(s.effects.some(e => e.art === 'wreck') && s.effects.some(e => e.art === 'piece-gear'), 'a robot bursts into scrap');
+  assert.ok(s.effects.some(e => e.art === 'soul') && s.effects.some(e => e.art === 'loot'), 'a foe gives up its soul and its loot');
+});
+
 test('the catapult lobs its rock: it strikes where it lands, when it lands', () => {
   const s = m.newSiege({ ...m.freshProgress(), unlocked: 30, owned: [0, 51], deck: [51] }, 20); s.nextWave = 999; s.gusted = true; s.energy = 999;
   m.summon(s, 51); const cat = s.units[0]; cat.x = 400;
