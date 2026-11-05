@@ -104,102 +104,102 @@ export const UNITS: readonly Spec[] = [
   // Ours, land.
   // The swordsman's five forms (the reference's six, its fifth dropped): club, dagger, sword and shield, greatsword,
   // and the master, whose slash leaves fire and reaches flyers. Energy follows the reference's mana, doubled.
-  { id: 0, cost: 20, hp: 115, damage: 16, speed: 43, range: 35, rate: 0.8, cooldown: 2, unlock: 1, infantry: true, ...six('ally-swordsman-1', 166, 0.7229), forms: [
-    { price: 120, cost: 30, hp: 150, damage: 22, speed: 46, rate: 0.75, ...six('ally-swordsman-2', 154, 0.8279) },
-    { price: 300, cost: 50, hp: 255, damage: 27, rate: 0.7, ...six('ally-swordsman-3', 168, 0.8185) },
-    { price: 400, cost: 60, hp: 305, damage: 34, range: 42, rate: 0.6, ...six('ally-swordsman-4', 200, 0.7625) },
-    { price: 2000, cost: 200, hp: 650, damage: 63, speed: 62, range: 45, splash: 30, hitsAir: true, rate: 0.45, ...six('ally-swordsman-5', 187, 0.9358) },
+  { id: 0, cost: 25, hp: 115, damage: 16, speed: 43, range: 35, rate: 0.8, cooldown: 2, unlock: 1, infantry: true, ...six('ally-swordsman-1', 166, 0.7229), forms: [
+    { price: 120, cost: 40, hp: 150, damage: 22, speed: 46, rate: 0.75, ...six('ally-swordsman-2', 154, 0.8279) },
+    { price: 300, cost: 60, hp: 255, damage: 27, rate: 0.7, ...six('ally-swordsman-3', 168, 0.8185) },
+    { price: 400, cost: 90, hp: 305, damage: 34, range: 42, rate: 0.6, ...six('ally-swordsman-4', 200, 0.7625) },
+    { price: 2000, cost: 320, hp: 650, damage: 63, speed: 62, range: 45, splash: 30, hitsAir: true, rate: 0.45, ...six('ally-swordsman-5', 187, 0.9358) },
   ] },
   // The spearman's five forms (docs/cw2-reference.md): basic spear, longer, longer still, the horned fox helmet, and the
   // lancer on a white horse. The reference gives no prices: a little above the swordsman's.
-  { id: 1, cost: 30, hp: 150, damage: 20, speed: 40, range: 55, rate: 0.9, cooldown: 3, unlock: 1, infantry: true, ...six('ally-spearman-1', 126, 0.9524), forms: [
-    { price: 250, cost: 40, hp: 190, damage: 25, range: 65, rate: 0.85, ...six('ally-spearman-2', 148, 0.9122) },
-    { price: 400, cost: 50, hp: 250, damage: 30, range: 75, rate: 0.8, ...six('ally-spearman-3', 153, 0.9804) },
-    { price: 600, cost: 65, hp: 340, damage: 33, range: 80, rate: 0.7, ...six('ally-spearman-4', 182, 0.9341) },
-    { price: 2200, cost: 220, hp: 900, damage: 48, speed: 70, range: 90, splash: 30, infantry: false, rate: 0.5, ...six('ally-spearman-5', 216, 0.9491) },
+  { id: 1, cost: 35, hp: 150, damage: 20, speed: 40, range: 55, rate: 0.9, cooldown: 3, unlock: 1, infantry: true, ...six('ally-spearman-1', 126, 0.9524), forms: [
+    { price: 250, cost: 50, hp: 190, damage: 25, range: 65, rate: 0.85, ...six('ally-spearman-2', 148, 0.9122) },
+    { price: 400, cost: 65, hp: 250, damage: 30, range: 75, rate: 0.8, ...six('ally-spearman-3', 153, 0.9804) },
+    { price: 600, cost: 95, hp: 340, damage: 33, range: 80, rate: 0.7, ...six('ally-spearman-4', 182, 0.9341) },
+    { price: 2200, cost: 320, hp: 900, damage: 48, speed: 70, range: 90, splash: 30, infantry: false, rate: 0.5, ...six('ally-spearman-5', 216, 0.9491) },
   ] },
   // The archer's four forms (docs/cw2-reference.md): rock thrower, javelin thrower, archer with a bow, and the ninja
   // throwing shurikens; each throws its own sheet's projectile. The reference gives no prices.
-  { id: 2, cost: 30, hp: 80, damage: 18, speed: 33, range: 150, rate: 1.3, cooldown: 4, unlock: 1, infantry: true, shot: 'rock', spin: true, ...six('ally-archer-1', 183, 0.6284), forms: [
-    { price: 250, cost: 40, hp: 95, damage: 23, range: 175, shot: 'javelin', spin: false, rate: 1.2, ...six('ally-archer-2', 182, 0.6731) },
-    { price: 400, cost: 50, hp: 120, damage: 25, range: 200, shot: 'arrow', spin: false, hitsAir: true, rate: 1.0, ...six('ally-archer-3', 189, 0.7672) },
-    { price: 1500, cost: 100, hp: 210, damage: 13, speed: 50, range: 195, rate: 0.22, shot: 'shuriken', spin: true, hitsAir: true, ...six('ally-archer-4', 156, 1.0256) },
+  { id: 2, cost: 25, hp: 80, damage: 18, speed: 33, range: 150, rate: 1.3, cooldown: 4, unlock: 1, infantry: true, shot: 'rock', spin: true, ...six('ally-archer-1', 183, 0.6284), forms: [
+    { price: 250, cost: 35, hp: 95, damage: 23, range: 175, shot: 'javelin', spin: false, rate: 1.2, ...six('ally-archer-2', 182, 0.6731) },
+    { price: 400, cost: 45, hp: 120, damage: 25, range: 200, shot: 'arrow', spin: false, hitsAir: true, rate: 1.0, ...six('ally-archer-3', 189, 0.7672) },
+    { price: 1500, cost: 95, hp: 210, damage: 13, speed: 50, range: 195, rate: 0.22, shot: 'shuriken', spin: true, hitsAir: true, ...six('ally-archer-4', 156, 1.0256) },
   ] },
   // The heavy armour swordsman's four forms (docs/cw2-reference.md): a knight with two swords, the armoured one who
   // punches, a bigger one with maces for hands, and the crowned giant (the King). The reference gives no prices.
-  { id: 3, cost: 65, hp: 430, damage: 24, speed: 22, range: 40, rate: 1.5, cooldown: 7, unlock: 1, infantry: true, ...six('ally-heavy-1', 167, 0.96), forms: [
-    { price: 300, cost: 80, hp: 570, damage: 29, rate: 1.4, ...six('ally-heavy-2', 185, 0.96) },
-    { price: 500, cost: 100, hp: 700, damage: 31, rate: 1.1, ...six('ally-heavy-3', 214, 0.96) },
-    { price: 1800, cost: 180, hp: 980, damage: 36, rate: 0.9, splash: 30, ...six('ally-heavy-4', 232, 0.96) },
+  { id: 3, cost: 60, hp: 430, damage: 24, speed: 22, range: 40, rate: 1.5, cooldown: 7, unlock: 1, infantry: true, ...six('ally-heavy-1', 167, 0.96), forms: [
+    { price: 300, cost: 85, hp: 570, damage: 29, rate: 1.4, ...six('ally-heavy-2', 185, 0.96) },
+    { price: 500, cost: 115, hp: 700, damage: 31, rate: 1.1, ...six('ally-heavy-3', 214, 0.96) },
+    { price: 1800, cost: 200, hp: 980, damage: 36, rate: 0.9, splash: 30, ...six('ally-heavy-4', 232, 0.96) },
   ] },
   // The gunner's four forms (docs/cw2-reference.md): pistol, rifle, two Uzis (fast), sniper rifle (long reach, slow and
   // heavy). They fire bullets, each gun its own (`shot: 'bullet'`, `bullet-rifle|uzi|sniper`). The reference gives no prices.
-  { id: 4, cost: 40, hp: 95, damage: 24, speed: 32, range: 200, rate: 1.2, cooldown: 6, unlock: 1, infantry: true, shot: 'bullet', ...six('ally-gunner-1', 246, 0.437), forms: [
-    { price: 300, cost: 55, hp: 130, damage: 25, range: 230, shot: 'bullet-rifle', hitsAir: true, rate: 1.0, ...six('ally-gunner-2', 277, 0.4242) },
-    { price: 500, cost: 70, hp: 155, damage: 14, range: 210, rate: 0.35, shot: 'bullet-uzi', hitsAir: true, ...six('ally-gunner-3', 278, 0.4676) },
-    { price: 1600, cost: 120, hp: 275, damage: 96, range: 320, rate: 1.4, shot: 'bullet-sniper', hitsAir: true, ...six('ally-gunner-4', 282, 0.4876) },
+  { id: 4, cost: 35, hp: 95, damage: 24, speed: 32, range: 200, rate: 1.2, cooldown: 6, unlock: 1, infantry: true, shot: 'bullet', ...six('ally-gunner-1', 246, 0.437), forms: [
+    { price: 300, cost: 50, hp: 130, damage: 25, range: 230, shot: 'bullet-rifle', hitsAir: true, rate: 1.0, ...six('ally-gunner-2', 277, 0.4242) },
+    { price: 500, cost: 65, hp: 155, damage: 14, range: 210, rate: 0.35, shot: 'bullet-uzi', hitsAir: true, ...six('ally-gunner-3', 278, 0.4676) },
+    { price: 1600, cost: 125, hp: 275, damage: 96, range: 320, rate: 1.4, shot: 'bullet-sniper', hitsAir: true, ...six('ally-gunner-4', 282, 0.4876) },
   ] },
   // The blaster's four forms (docs/cw2-reference.md): bazooka, rocket launcher, ray gun, flamethrower. Rockets fly as
   // their own pictures and blast an area; the ray is drawn in code; the flame is in the attack pose (no projectile).
-  { id: 5, cost: 75, hp: 260, damage: 34, speed: 28, range: 200, rate: 1.6, cooldown: 8, unlock: 2, infantry: true, splash: 40, shot: 'rocket', spin: false, hitsAir: true, ...six('ally-blaster-1', 256, 0.5469), forms: [
+  { id: 5, cost: 70, hp: 260, damage: 34, speed: 28, range: 200, rate: 1.6, cooldown: 8, unlock: 2, infantry: true, splash: 40, shot: 'rocket', spin: false, hitsAir: true, ...six('ally-blaster-1', 256, 0.5469), forms: [
     { price: 350, cost: 100, hp: 310, damage: 34, splash: 50, shot: 'rockets', hitsAir: true, rate: 1.2, ...six('ally-blaster-2', 278, 0.5396) },
-    { price: 600, cost: 120, hp: 420, damage: 42, range: 240, rate: 0.8, splash: 0, shot: 'ray', hitsAir: true, ...six('ally-blaster-3', 178, 0.8989) },
-    { price: 1800, cost: 170, hp: 500, damage: 16, range: 110, rate: 0.25, splash: 70, shot: 'none', hitsAir: false, ...six('ally-blaster-4', 249, 0.7028) },
+    { price: 600, cost: 135, hp: 420, damage: 42, range: 240, rate: 0.8, splash: 0, shot: 'ray', hitsAir: true, ...six('ally-blaster-3', 178, 0.8989) },
+    { price: 1800, cost: 210, hp: 500, damage: 16, range: 110, rate: 0.25, splash: 70, shot: 'none', hitsAir: false, ...six('ally-blaster-4', 249, 0.7028) },
   ] },
   // The wizard's three forms (docs/cw2-reference.md), the same staff: lightning striking the ground, a tornado, and a
   // meteor that leaves flames. The spell lands on the target from the sheet (`shot-lightning|tornado|meteor`); from
   // level 3 he reaches flyers. The reference gives no prices.
-  { id: 6, cost: 95, hp: 150, damage: 60, speed: 26, range: 220, rate: 1.9, cooldown: 10, unlock: 3, splash: 55, infantry: true, shot: 'lightning', ...six('ally-wizard-1', 220, 0.5227), forms: [
-    { price: 600, cost: 120, hp: 200, damage: 66, splash: 75, shot: 'tornado', hitsAir: true, rate: 1.7, ...six('ally-wizard-2', 251, 0.5179) },
-    { price: 2000, cost: 170, hp: 255, damage: 95, splash: 90, hitsAir: true, shot: 'meteor', rate: 1.4, ...six('ally-wizard-3', 258, 0.5814) },
+  { id: 6, cost: 80, hp: 150, damage: 60, speed: 26, range: 220, rate: 1.9, cooldown: 10, unlock: 3, splash: 55, infantry: true, shot: 'lightning', ...six('ally-wizard-1', 220, 0.5227), forms: [
+    { price: 600, cost: 110, hp: 200, damage: 66, splash: 75, shot: 'tornado', hitsAir: true, rate: 1.7, ...six('ally-wizard-2', 251, 0.5179) },
+    { price: 2000, cost: 175, hp: 255, damage: 95, splash: 90, hitsAir: true, shot: 'meteor', rate: 1.4, ...six('ally-wizard-3', 258, 0.5814) },
   ] },
   // The vulture rider: a knight with a spear on a walking vulture.
-  { id: 7, cost: 75, hp: 260, damage: 40, speed: 85, range: 38, rate: 0.8, cooldown: 7, unlock: 4, ...six('ally-vulture-1', 234, 0.7799), forms: [
-    { price: 1600, cost: 130, hp: 440, damage: 43, range: 46, splash: 30, rate: 0.55, ...six('ally-vulture-2', 290, 0.7586) },
+  { id: 7, cost: 90, hp: 260, damage: 40, speed: 85, range: 38, rate: 0.8, cooldown: 7, unlock: 4, ...six('ally-vulture-1', 234, 0.7799), forms: [
+    { price: 1600, cost: 180, hp: 440, damage: 43, range: 46, splash: 30, rate: 0.55, ...six('ally-vulture-2', 290, 0.7586) },
   ] },
   // The armed robot's three forms (docs/cw2-reference.md): claw and arm rocket, the walker with twin cannons (fast and
   // strong), and the walker behind a wall-like shield firing missiles.
-  { id: 8, cost: 110, hp: 320, damage: 38, speed: 50, range: 180, rate: 1.0, cooldown: 10, unlock: 5, splash: 35, shot: 'rocket', spin: false, ...six('ally-robot-1', 167, 0.82), forms: [
-    { price: 700, cost: 140, hp: 430, damage: 15, rate: 0.3, range: 190, splash: 25, shot: 'bullet', hitsAir: true, ...six('ally-robot-2', 231, 0.82) },
-    { price: 1800, cost: 180, hp: 800, damage: 54, rate: 1.0, range: 200, splash: 40, shot: 'rockets', blast: true, hitsAir: true, ...six('ally-robot-3', 253, 0.82) },
+  { id: 8, cost: 115, hp: 320, damage: 38, speed: 50, range: 180, rate: 1.0, cooldown: 10, unlock: 5, splash: 35, shot: 'rocket', spin: false, ...six('ally-robot-1', 167, 0.82), forms: [
+    { price: 700, cost: 155, hp: 430, damage: 15, rate: 0.3, range: 190, splash: 25, shot: 'bullet', hitsAir: true, ...six('ally-robot-2', 231, 0.82) },
+    { price: 1800, cost: 250, hp: 800, damage: 54, rate: 1.0, range: 200, splash: 40, shot: 'rockets', blast: true, hitsAir: true, ...six('ally-robot-3', 253, 0.82) },
   ] },
   // The heavy armed robot's four forms (docs/cw2-reference.md): gatling bursts, small rockets added (MK2), a frozen
   // cannon on its back (from here it reaches flyers), and a huge one with a big cyan plasma ball from the
   // cannon on its back and gatling bullets from its arms.
-  { id: 9, cost: 200, hp: 1300, damage: 18, speed: 18, range: 200, rate: 0.5, cooldown: 22, unlock: 5, splash: 80, shot: 'bullet', steady: true, ...six('ally-heavy-robot-1', 158, 1.2975), forms: [
-    { price: 1200, cost: 240, hp: 1720, damage: 64, shot: 'rockets', also: 'bullet', alsoShare: 0.2, hitsAir: true, rate: 1.4, ...six('ally-heavy-robot-2', 191, 1.1911) },
-    { price: 2200, cost: 290, hp: 2310, damage: 69, hitsAir: true, shot: 'ice', also: 'bullet', alsoShare: 0.2, rate: 1.2, ...six('ally-heavy-robot-3', 196, 1.2245) },
-    { price: 4000, cost: 350, hp: 2960, damage: 55, splash: 100, hitsAir: true, blast: true, shot: 'plasma-cyan', also: 'bullet', alsoShare: 0.35, rate: 0.8, ...six('ally-heavy-robot-4', 273, 1.1355) },
+  { id: 9, cost: 300, hp: 1300, damage: 18, speed: 18, range: 200, rate: 0.5, cooldown: 22, unlock: 5, splash: 80, shot: 'bullet', steady: true, ...six('ally-heavy-robot-1', 158, 1.2975), forms: [
+    { price: 1200, cost: 440, hp: 1720, damage: 64, shot: 'rockets', also: 'bullet', alsoShare: 0.2, hitsAir: true, rate: 1.4, ...six('ally-heavy-robot-2', 191, 1.1911) },
+    { price: 2200, cost: 580, hp: 2310, damage: 69, hitsAir: true, shot: 'ice', also: 'bullet', alsoShare: 0.2, rate: 1.2, ...six('ally-heavy-robot-3', 196, 1.2245) },
+    { price: 4000, cost: 700, hp: 2960, damage: 55, splash: 100, hitsAir: true, blast: true, shot: 'plasma-cyan', also: 'bullet', alsoShare: 0.35, rate: 0.8, ...six('ally-heavy-robot-4', 273, 1.1355) },
   ] },
   // Ours, air (Cartoon Wars 2's A row): they fly over the field, out of reach of melee troops; only ranged ones hit them.
   // The aircraft fighter's four forms: a sword under a propeller pack, then with goggles and scarf, two rotors and blue
   // steel, and gold rotors with a flaming sword.
-  { id: 10, flyAt: 70, cost: 30, hp: 70, damage: 12, speed: 70, range: 40, rate: 0.7, cooldown: 3, unlock: 2, air: true, skyOnly: true, ...six('ally-fighter-1', 242, 0.5062), forms: [
-    { price: 150, cost: 40, hp: 100, damage: 14, rate: 0.6, ...six('ally-fighter-2', 269, 0.4833) },
-    { price: 400, cost: 55, hp: 140, damage: 16, rate: 0.5, ...six('ally-fighter-3', 266, 0.5263) },
+  { id: 10, flyAt: 70, cost: 25, hp: 70, damage: 12, speed: 70, range: 40, rate: 0.7, cooldown: 3, unlock: 2, air: true, skyOnly: true, ...six('ally-fighter-1', 242, 0.5062), forms: [
+    { price: 150, cost: 35, hp: 100, damage: 14, rate: 0.6, ...six('ally-fighter-2', 269, 0.4833) },
+    { price: 400, cost: 50, hp: 140, damage: 16, rate: 0.5, ...six('ally-fighter-3', 266, 0.5263) },
     { price: 1200, cost: 90, hp: 220, damage: 17, speed: 80, splash: 25, rate: 0.35, ...six('ally-fighter-4', 272, 0.579) },
   ] },
   // The armed aircraft fighter's four forms (docs/cw2-reference.md): a rifleman under a propeller pack, a veteran
   // sniper, a laser gun, and the air magician casting pink lightning.
-  { id: 11, flyAt: 70, cost: 45, hp: 110, damage: 20, speed: 55, range: 190, rate: 0.8, cooldown: 5, unlock: 3, air: true, shot: 'bullet-rifle', ...six('ally-armed-fighter-1', 260, 0.4808), forms: [
-    { price: 400, cost: 70, hp: 145, damage: 38, range: 260, rate: 1.2, shot: 'bullet-sniper', ...six('ally-armed-fighter-2', 272, 0.4871) },
-    { price: 900, cost: 90, hp: 185, damage: 25, range: 230, rate: 0.6, shot: 'plasma', ...six('ally-armed-fighter-3', 257, 0.5642) },
-    { price: 2000, cost: 120, hp: 240, damage: 20, range: 220, rate: 0.5, splash: 60, shot: 'ray-pink', ...six('ally-armed-fighter-4', 285, 0.5702) },
+  { id: 11, flyAt: 70, cost: 40, hp: 110, damage: 20, speed: 55, range: 190, rate: 0.8, cooldown: 5, unlock: 3, air: true, shot: 'bullet-rifle', ...six('ally-armed-fighter-1', 260, 0.4808), forms: [
+    { price: 400, cost: 60, hp: 145, damage: 38, range: 260, rate: 1.2, shot: 'bullet-sniper', ...six('ally-armed-fighter-2', 272, 0.4871) },
+    { price: 900, cost: 80, hp: 185, damage: 25, range: 230, rate: 0.6, shot: 'plasma', ...six('ally-armed-fighter-3', 257, 0.5642) },
+    { price: 2000, cost: 115, hp: 240, damage: 20, range: 220, rate: 0.5, splash: 60, shot: 'ray-pink', ...six('ally-armed-fighter-4', 285, 0.5702) },
   ] },
   // The armed helicopter's three forms: green with one rocket, blue with a pair, and the black and gold gunship's salvo.
   { id: 12, flyAt: 125, cost: 95, hp: 320, damage: 22, speed: 50, range: 210, rate: 0.9, cooldown: 10, unlock: 4, air: true, splash: 50, shot: 'rocket-dark', spin: false, ...six('ally-helicopter-1', 169, 1.0355), forms: [
-    { price: 800, cost: 120, hp: 425, damage: 21, splash: 55, shot: 'rockets-dark', rate: 0.7, ...six('ally-helicopter-2', 196, 1.0204) },
-    { price: 2000, cost: 170, hp: 620, damage: 19, range: 230, splash: 70, shot: 'salvo-dark', rate: 0.5, ...six('ally-helicopter-3', 201, 1.1443) },
+    { price: 800, cost: 125, hp: 425, damage: 21, splash: 55, shot: 'rockets-dark', rate: 0.7, ...six('ally-helicopter-2', 196, 1.0204) },
+    { price: 2000, cost: 195, hp: 620, damage: 19, range: 230, splash: 70, shot: 'salvo-dark', rate: 0.5, ...six('ally-helicopter-3', 201, 1.1443) },
   ] },
   // The drill aircraft, the flying shield (docs/cw2-reference.md): a drill rocket that rams, then a heavier gold one.
-  { id: 13, flyAt: 98, cost: 80, hp: 360, damage: 27, speed: 55, range: 40, rate: 1.2, cooldown: 8, unlock: 3, air: true, ram: 90, ...six('ally-drill-1', 199, 0.5528), forms: [
-    { price: 1000, cost: 130, hp: 700, damage: 30, rate: 0.9, ram: 110, ramHits: 2, ...six('ally-drill-2', 242, 0.6095) },
+  { id: 13, flyAt: 98, cost: 70, hp: 360, damage: 27, speed: 55, range: 40, rate: 1.2, cooldown: 8, unlock: 3, air: true, ram: 90, ...six('ally-drill-1', 199, 0.5528), forms: [
+    { price: 1000, cost: 125, hp: 700, damage: 30, rate: 0.9, ram: 110, ramHits: 2, ...six('ally-drill-2', 242, 0.6095) },
   ] },
   // The angel army, the dearest: an axe and shield (very fast), a staff throwing a violet crescent, and the golden
   // archangel, bigger, whose sweeping golden crescent hits everything ahead of it and throws it far back.
-  { id: 14, flyAt: 125, cost: 220, hp: 700, damage: 47, speed: 75, range: 45, rate: 0.7, cooldown: 20, unlock: 6, air: true, splash: 40, ...six('ally-angel-1', 246, 0.5793), forms: [
-    { price: 1500, cost: 265, hp: 1020, damage: 60, speed: 55, range: 180, rate: 0.8, splash: 50, shot: 'crescent', ...six('ally-angel-2', 282, 0.594) },
-    { price: 4000, cost: 340, hp: 1850, damage: 203, speed: 55, range: 120, rate: 1.5, splash: 0, shot: 'crescent-gold', sweep: { reach: 230, back: 170 }, ...six('ally-angel-3', 298, 0.7718) },
+  { id: 14, flyAt: 125, cost: 240, hp: 700, damage: 47, speed: 75, range: 45, rate: 0.7, cooldown: 20, unlock: 6, air: true, splash: 40, ...six('ally-angel-1', 246, 0.5793), forms: [
+    { price: 1500, cost: 360, hp: 1020, damage: 60, speed: 55, range: 180, rate: 0.8, splash: 50, shot: 'crescent', ...six('ally-angel-2', 282, 0.594) },
+    { price: 4000, cost: 520, hp: 1850, damage: 203, speed: 55, range: 120, rate: 1.5, splash: 0, shot: 'crescent-gold', sweep: { reach: 230, back: 170 }, ...six('ally-angel-3', 298, 0.7718) },
   ] },
   // The enemy's.
   { id: 15, cost: 0, hp: 115, damage: 16, speed: 43, range: 35, rate: 0.8, cooldown: 0, unlock: 1, foe: true, infantry: true, ...foe('foe-swordsman-1', 141, 0.82) },
@@ -223,12 +223,12 @@ export const UNITS: readonly Spec[] = [
   // Ours again, appended (ids are places in this list):
   // The flying mech, in six forms: a rocket fist, a laser, a plasma beam, an ice burst, a gatling,
   // and a giant golden fist.
-  { id: 33, flyAt: 98, cost: 80, hp: 300, damage: 32, speed: 55, range: 45, rate: 0.9, cooldown: 8, unlock: 5, air: true, splash: 30, ...six('ally-mech-1', 215, 0.6977), forms: [
-    { price: 500, cost: 100, hp: 430, damage: 30, range: 130, splash: 30, shot: 'ray-blue', rate: 0.7, ...six('ally-mech-2', 242, 0.6612) },
-    { price: 800, cost: 125, hp: 520, damage: 34, range: 150, splash: 35, shot: 'plasma', rate: 0.6, ...six('ally-mech-3', 268, 0.6437) },
-    { price: 1200, cost: 155, hp: 640, damage: 37, range: 60, splash: 40, rate: 0.5, ...six('ally-mech-4', 280, 0.6518) },
-    { price: 1800, cost: 190, hp: 950, damage: 19, rate: 0.2, range: 160, splash: 30, shot: 'bullet', ...six('ally-mech-5', 212, 0.908) },
-    { price: 3000, cost: 260, hp: 1140, damage: 72, range: 60, splash: 50, rate: 0.6, ...six('ally-mech-6', 259, 0.8398) },
+  { id: 33, flyAt: 98, cost: 90, hp: 300, damage: 32, speed: 55, range: 45, rate: 0.9, cooldown: 8, unlock: 5, air: true, splash: 30, ...six('ally-mech-1', 215, 0.6977), forms: [
+    { price: 500, cost: 125, hp: 430, damage: 30, range: 130, splash: 30, shot: 'ray-blue', rate: 0.7, ...six('ally-mech-2', 242, 0.6612) },
+    { price: 800, cost: 175, hp: 520, damage: 34, range: 150, splash: 35, shot: 'plasma', rate: 0.6, ...six('ally-mech-3', 268, 0.6437) },
+    { price: 1200, cost: 235, hp: 640, damage: 37, range: 60, splash: 40, rate: 0.5, ...six('ally-mech-4', 280, 0.6518) },
+    { price: 1800, cost: 360, hp: 950, damage: 19, rate: 0.2, range: 160, splash: 30, shot: 'bullet', ...six('ally-mech-5', 212, 0.908) },
+    { price: 3000, cost: 460, hp: 1140, damage: 72, range: 60, splash: 50, rate: 0.6, ...six('ally-mech-6', 259, 0.8398) },
   ] },
   // The guardians (`GUARDIAN`), each act's own picture; their stats are those of the troops that stood in for them.
   { id: 34, cost: 0, hp: 480, damage: 26, speed: 24, range: 42, rate: 1.5, cooldown: 0, unlock: 1, foe: true, hitsAir: true, ...foe('boss-slinger-1', 221, 0.85) },
@@ -252,23 +252,23 @@ export const UNITS: readonly Spec[] = [
   { id: 50, flyAt: 125, cost: 0, hp: 520, damage: 46, speed: 50, range: 60, rate: 1, cooldown: 0, unlock: 1, foe: true, air: true, splash: 30, ...foe('foe-devil-1', 159, 0.975) },
   // Ours again, the later recruits (the owner's sheets): the catapult, the bomber balloon, the medic, the shield
   // bearer, the ninja and the dragon rider, the dearest of all.
-  { id: 51, cost: 110, hp: 300, damage: 40, speed: 18, range: 400, rate: 3, lob: 0.9, cooldown: 11, unlock: 4, support: true, splash: 60, siege: 2, shot: 'boulder', spin: true, ...six('ally-catapult-1', 112, 1.43), forms: [
-    { price: 1600, cost: 150, hp: 450, damage: 55, range: 440, splash: 80, shot: 'boulder-blue', ...six('ally-catapult-2', 157, 1.146) },
+  { id: 51, cost: 80, hp: 300, damage: 40, speed: 18, range: 400, rate: 3, lob: 0.9, cooldown: 11, unlock: 4, support: true, splash: 60, siege: 2, shot: 'boulder', spin: true, ...six('ally-catapult-1', 112, 1.43), forms: [
+    { price: 1600, cost: 110, hp: 450, damage: 55, range: 440, splash: 80, shot: 'boulder-blue', ...six('ally-catapult-2', 157, 1.146) },
   ] },
-  { id: 52, flyAt: 125, cost: 90, hp: 260, damage: 60, speed: 30, range: 30, rate: 2.2, cooldown: 9, unlock: 4, air: true, support: true, raid: true, shot: 'bomb', spin: false, ...six('ally-balloon-1', 272, 0.78) },
+  { id: 52, flyAt: 125, cost: 70, hp: 260, damage: 60, speed: 30, range: 30, rate: 2.2, cooldown: 9, unlock: 4, air: true, support: true, raid: true, shot: 'bomb', spin: false, ...six('ally-balloon-1', 272, 0.78) },
   { id: 53, cost: 45, hp: 140, damage: 0, speed: 38, range: 150, rate: 1.4, cooldown: 5, unlock: 2, infantry: true, support: true, heal: 16, ...six('ally-medic-1', 208, 0.6) },
-  { id: 54, cost: 90, hp: 950, damage: 12, speed: 24, range: 35, rate: 1.3, cooldown: 9, unlock: 3, support: true, steady: true, shove: 45, ...six('ally-shield-1', 175, 0.886) },
-  { id: 55, cost: 160, hp: 600, damage: 420, speed: 66, range: 35, rate: 1.4, cooldown: 25, unlock: 6, infantry: true, legend: true, stealth: 1, ...six('ally-ninja-1', 185, 0.676), forms: [
-    { price: 3000, cost: 180, hp: 700, damage: 490, rate: 1.3, ...six('ally-ninja-2', 179, 0.75) },
-    { price: 6000, cost: 200, hp: 800, damage: 560, rate: 1.2, ...six('ally-ninja-3', 182, 0.78) },
+  { id: 54, cost: 80, hp: 950, damage: 12, speed: 24, range: 35, rate: 1.3, cooldown: 9, unlock: 3, support: true, steady: true, shove: 45, ...six('ally-shield-1', 175, 0.886) },
+  { id: 55, cost: 620, hp: 600, damage: 420, speed: 66, range: 35, rate: 1.4, cooldown: 25, unlock: 6, infantry: true, legend: true, stealth: 1, ...six('ally-ninja-1', 185, 0.676), forms: [
+    { price: 3000, cost: 640, hp: 700, damage: 490, rate: 1.3, ...six('ally-ninja-2', 179, 0.75) },
+    { price: 6000, cost: 680, hp: 800, damage: 560, rate: 1.2, ...six('ally-ninja-3', 182, 0.78) },
   ] },
-  { id: 56, flyAt: 80, cost: 300, hp: 4000, damage: 150, speed: 40, range: 160, rate: 1.8, cooldown: 40, unlock: 6, air: true, legend: true, aimPoses: true, sweep: { reach: 340, back: 150 }, breath: ['#e8fbff', '#2fa8ff'], ...six('ally-dragon-1', 227, 1.6) },
+  { id: 56, flyAt: 80, cost: 720, hp: 4000, damage: 150, speed: 40, range: 160, rate: 1.8, cooldown: 40, unlock: 6, air: true, legend: true, aimPoses: true, sweep: { reach: 340, back: 150 }, breath: ['#e8fbff', '#2fa8ff'], ...six('ally-dragon-1', 227, 1.6) },
   // The golem, legendary: colossal gold and crystal; each punch sends a shockwave (in its attack pose) over everything in front.
-  { id: 57, cost: 260, hp: 6500, damage: 170, speed: 17, range: 60, rate: 2.3, cooldown: 35, unlock: 6, legend: true, steady: true, sweep: { reach: 170, back: 230 }, quake: true, ...six('ally-golem-1', 209, 1.45) },
+  { id: 57, cost: 780, hp: 6500, damage: 170, speed: 17, range: 60, rate: 2.3, cooldown: 35, unlock: 6, legend: true, steady: true, sweep: { reach: 170, back: 230 }, quake: true, ...six('ally-golem-1', 209, 1.45) },
   // The star eater, legendary flyer: its cosmic beam (in its attack pose) pierces everything in a line and bursts into a star.
-  { id: 58, flyAt: 82, cost: 280, hp: 3500, damage: 190, speed: 30, range: 320, rate: 2.2, cooldown: 35, unlock: 6, air: true, legend: true, hitsAir: true, pierce: true, aimPoses: true, splash: 90, shot: 'none', ...six('ally-star-eater-1', 237, 1.8) },
+  { id: 58, flyAt: 82, cost: 900, hp: 3500, damage: 190, speed: 30, range: 320, rate: 2.2, cooldown: 35, unlock: 6, air: true, legend: true, hitsAir: true, pierce: true, aimPoses: true, splash: 90, shot: 'none', ...six('ally-star-eater-1', 237, 1.8) },
   // The weary reaper, legendary: hunched and slow, it hurls its chained scythe far ahead and drags what it hooks to it.
-  { id: 59, cost: 220, hp: 3200, damage: 260, speed: 26, range: 185, rate: 2.4, cooldown: 30, unlock: 6, infantry: true, legend: true, splash: 50, hook: 160, ...six('ally-reaper-1', 154, 1.15) },
+  { id: 59, cost: 860, hp: 3200, damage: 260, speed: 26, range: 185, rate: 2.4, cooldown: 30, unlock: 6, infantry: true, legend: true, splash: 50, hook: 160, ...six('ally-reaper-1', 154, 1.15) },
 ];
 /** The enemy's land and air troops by act, each act adding to the last (docs/siege-roster.md): early waves draw
     from the first two of the land list. No flyers in the first world: they come from the second. */
@@ -368,7 +368,7 @@ export function capDeck(deck: number[]) { const land = deck.filter(id => !isAir(
 export type Upgrades = [number, number, number, number, number, number, number];
 export const UPGRADES = 7;
 /** The energy each level of the mana pool upgrade adds to the battle's maximum. */
-export const MANA_STEP = 40;
+export const MANA_STEP = 80;
 export interface Progress { version: 1; unlocked: number; coins: number; victories: number[]; upgrades: Upgrades; deck: number[];
   /** Each troop's level (index: its id), 1 to `levelsOf(id)`. */
   levels: number[];
@@ -578,9 +578,11 @@ export const castleTier = (level: number) => Math.max(1, Math.min(5, level));
 /** Which of the enemy fortress's five pictures a battle shows, by its act (six acts: 1, 2, 3, 4, 4, 5). */
 export const enemyTier = (stage: number) => [1, 2, 3, 4, 4, 5][Math.min(ACTS, Math.max(1, actOf(stage))) - 1];
 
-export const energyMax = (s: Siege) => 180 + (s.pool ?? 0) * MANA_STEP + s.generator * 70;
-export const energyRate = (s: Siege) => 7 + s.generator * 2.5 + s.economy;
-export const generatorPrice = (s: Siege) => 65 + s.generator * 45;
+/** The energy a battle can hold: 200, 80 more for each level of the shop's mana and 100 for each generator step in the
+    battle, so 1000 with both at the top; the strongest forms and the legendaries cost most of it. */
+export const energyMax = (s: Siege) => 200 + (s.pool ?? 0) * MANA_STEP + s.generator * 100;
+export const energyRate = (s: Siege) => 8 + s.generator * 3 + (s.pool ?? 0) * 0.6 + s.economy;
+export const generatorPrice = (s: Siege) => 80 + s.generator * 60;
 export function newSiege(p: Progress, world: number): Siege {
   world = integer(world, 1, Math.min(LAST, p.unlocked), 1);
   const maxHp: [number, number] = [1700 + p.upgrades[1] * 200, 1700 + hard(world) * 150];
@@ -876,22 +878,22 @@ export function strike(s: Siege): boolean {
 }
 /** The special powers (the shop's Especial tab): bought with gold, each covers the stretch of field on screen. Level 1
     is `price` gold, each later form its own `price`; `unlock` is the act that opens it. `damage` is per blow. */
-export interface PowerForm { price: number; damage: number; art?: string; freeze?: number; radius?: number; count?: number; push?: number; time?: number; heal?: number }
+export interface PowerForm { price: number; damage: number; art?: string; freeze?: number; radius?: number; count?: number; push?: number; time?: number; heal?: number; mana?: number }
 export const POWERS: { id: number; unlock: number; price: number; cooldown: number; forms: PowerForm[] }[] = [
   // Arrow rain: arrows, ice arrows (they freeze), fire arrows (they leave flames), rockets (they explode).
-  { id: 0, unlock: 1, price: 400, cooldown: 30, forms: [{ price: 0, damage: 24, art: 'arrow' }, { price: 500, damage: 28, art: 'ice', freeze: 1.3 }, { price: 900, damage: 34, art: 'fire' }, { price: 1500, damage: 46, art: 'rocket', radius: 52 }] },
+  { id: 0, unlock: 1, price: 400, cooldown: 30, forms: [{ price: 0, damage: 24, art: 'arrow', mana: 60 }, { price: 500, damage: 28, art: 'ice', freeze: 1.3, mana: 90 }, { price: 900, damage: 34, art: 'fire', mana: 120 }, { price: 1500, damage: 46, art: 'rocket', radius: 52, mana: 160 }] },
   // Lightning rain: bolts across the field, the later forms more of them and stunning.
-  { id: 1, unlock: 2, price: 600, cooldown: 34, forms: [{ price: 0, damage: 60, count: 12 }, { price: 800, damage: 66, count: 18, freeze: 0.8 }, { price: 1400, damage: 76, count: 26, freeze: 1.3 }] },
+  { id: 1, unlock: 2, price: 600, cooldown: 34, forms: [{ price: 0, damage: 60, count: 12, mana: 100 }, { price: 800, damage: 66, count: 18, freeze: 0.8, mana: 150 }, { price: 1400, damage: 76, count: 26, freeze: 1.3, mana: 220 }] },
   // Tsunami: a wall of water sweeping the field, throwing the enemy back.
-  { id: 2, unlock: 3, price: 900, cooldown: 42, forms: [{ price: 0, damage: 90, push: 240 }, { price: 1100, damage: 140, push: 360 }, { price: 1900, damage: 210, push: 520, freeze: 1.2 }] },
+  { id: 2, unlock: 3, price: 900, cooldown: 42, forms: [{ price: 0, damage: 90, push: 240, mana: 150 }, { price: 1100, damage: 140, push: 360, mana: 230 }, { price: 1900, damage: 210, push: 520, freeze: 1.2, mana: 330 }] },
   // Meteor shower: burning rocks across the field, each leaving a fire.
-  { id: 3, unlock: 4, price: 1200, cooldown: 40, forms: [{ price: 0, damage: 95, count: 6, radius: 62 }, { price: 1500, damage: 115, count: 9, radius: 66 }, { price: 2400, damage: 135, count: 13, radius: 70 }] },
+  { id: 3, unlock: 4, price: 1200, cooldown: 40, forms: [{ price: 0, damage: 95, count: 6, radius: 62, mana: 180 }, { price: 1500, damage: 115, count: 9, radius: 66, mana: 280 }, { price: 2400, damage: 135, count: 13, radius: 70, mana: 420 }] },
   // Black hole: a vortex where the enemy is thickest drags them into its centre for a moment, then bursts.
-  { id: 4, unlock: 5, price: 1600, cooldown: 46, forms: [{ price: 0, damage: 170, radius: 190, time: 2.4 }] },
+  { id: 4, unlock: 5, price: 1600, cooldown: 46, forms: [{ price: 0, damage: 170, radius: 190, time: 2.4, mana: 320 }] },
   // Sword of judgement: a huge sword falls on the strongest enemy in sight and stays stuck in the ground, striking round it.
-  { id: 5, unlock: 4, price: 1300, cooldown: 44, forms: [{ price: 0, damage: 200, radius: 80, time: 4, count: 8 }] },
+  { id: 5, unlock: 4, price: 1300, cooldown: 44, forms: [{ price: 0, damage: 200, radius: 80, time: 4, count: 8, mana: 250 }] },
   // Healing sanctuary: a ring of green light at the front of our army mends whoever stands in it.
-  { id: 6, unlock: 2, price: 700, cooldown: 40, forms: [{ price: 0, damage: 0, radius: 120, time: 6, heal: 0.08 }] },
+  { id: 6, unlock: 2, price: 700, cooldown: 40, forms: [{ price: 0, damage: 0, radius: 120, time: 6, heal: 0.08, mana: 150 }] },
 ];
 /** At most this many power forms go into a battle. */
 export const KIT = 4;
@@ -900,6 +902,8 @@ export const KIT = 4;
 export interface Hit { at: number; x: number; r: number; damage: number; freeze?: number; push?: number; seen?: Set<number>; ground?: boolean }
 const powerOpen = (p: Progress, id: number) => testing.free || POWERS[id].unlock <= actOf(p.unlocked);
 /** What a power's level costs in gold (level 1 is the power itself). */
+/** The energy a power's form costs in battle. */
+export const powerMana = (id: number, level: number) => POWERS[id]?.forms[Math.min(level, POWERS[id].forms.length) - 1]?.mana ?? 0;
 export const powerCost = (id: number, level: number) => (testing.free ? 0 : level <= 1 ? POWERS[id].price : POWERS[id].forms[level - 1]?.price ?? 0);
 export const isPowerOpen = (p: Progress, id: number) => !!POWERS[id] && powerOpen(p, id);
 /** A power form as a kit card: `id + (level - 1) * 100`, like a troop's. */
@@ -937,7 +941,10 @@ function land(s: Siege, h: Hit) {
 export function castPower(s: Siege, card: number): boolean {
   const k = s.kit.find(n => n.card === card), id = k?.id ?? -1, w = POWERS[id];
   if (!k || !w || s.phase !== 'fight' || (s.kitCd[card] ?? 0) > 0) return false;
-  const form = w.forms[Math.min(k.level, w.forms.length) - 1], c = ++s.casts;
+  const form = w.forms[Math.min(k.level, w.forms.length) - 1];
+  // Every power costs energy, more the stronger its form.
+  if (s.energy < (form.mana ?? 0)) return false;
+  s.energy -= form.mana ?? 0; const c = ++s.casts;
   let x0 = Math.max(110, s.view.x + 20), x1 = Math.min(FIELD - 90, s.view.x + s.view.width - 20);
   if (x1 - x0 < 160) { x0 = 110; x1 = FIELD - 90; }
   const span = x1 - x0, push = (e: Effect) => s.effects.push(e), foes = s.units.filter(u => u.side === 1 && u.x >= x0 && u.x <= x1);

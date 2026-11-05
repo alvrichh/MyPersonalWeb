@@ -23,7 +23,7 @@ test('summoning enforces energy, deck, cooldown and population', () => {
 });
 test('generator spends energy, raises capacity/rate and caps at four', () => {
   const s = m.newSiege(m.freshProgress(), 1); const rate = m.energyRate(s);
-  assert.equal(m.improveGenerator(s), true); assert.equal(s.energy, 15); assert.ok(m.energyRate(s) > rate);
+  const price = m.generatorPrice(s); assert.equal(m.improveGenerator(s), true); assert.equal(s.energy, 80 - price); assert.ok(m.energyRate(s) > rate);
   for (let i = 0; i < 4; i++) { s.energy = 999; m.improveGenerator(s); }
   assert.equal(s.generator, 4); assert.equal(m.improveGenerator(s), false);
   run(s, 1); assert.ok(s.energy <= m.energyMax(s));
@@ -33,7 +33,7 @@ test('weapons have separate recharge; neither arrows nor the spell strike our ow
   const enemy = { ...u, uid: 100, side: 1, hp: 200, maxHp: 200 }; s.units.push(enemy);
   u.damage = 0; enemy.damage = 0; u.hp = u.maxHp = 500; const energy = s.energy;
   m.draw(s, true); m.tick(s, 1 / 30); assert.equal(u.hp, 500, 'an arrow landing on ours passes over it'); assert.ok(enemy.hp < 200); m.draw(s, false); assert.ok(s.bow.quiver < m.BOW.max);
-  const hp = u.hp; assert.equal(m.strike(s), true); assert.equal(m.strike(s), false); assert.equal(u.hp, hp);
+  const hp = u.hp; s.energy = 200; assert.equal(m.strike(s), true); assert.equal(m.strike(s), false); assert.equal(u.hp, hp);
 });
 test('troops walk, engage opponents and cannot pass through them', () => {
   const s = m.newSiege(m.freshProgress(), 1); m.summon(s, 0); const a = s.units[0]; a.x = 500;
@@ -299,12 +299,13 @@ test('special powers cover the stretch of field on screen, then recharge', () =>
     const p = m.freshProgress(); p.unlocked = 30; p.coins = 99999; m.buyPower(p, id);
     const s = m.newSiege(p, 1); s.view = { x: 500, width: 700 };
     const foes = [300, 600, 900, 1150, 1500].map((x, i) => { const u = { ...s.units[0] ?? { id: 0, lane: 0, uid: 0, damage: 0, attack: 9, flash: 0, boss: false }, uid: 100 + i, side: 1, x, hp: 4000, maxHp: 4000, damage: 0, attack: 99 }; s.units.push(u); return u; });
-    assert.equal(m.castPower(s, id), true); assert.equal(s.energy, 80, 'it costs no energy'); assert.equal(m.castPower(s, id), false, 'it recharges first');
+    s.energy = 10; assert.equal(m.castPower(s, id), false, 'not without its energy');
+    s.energy = 999; assert.equal(m.castPower(s, id), true); assert.equal(s.energy, 999 - m.powerMana(id, 1), 'it costs its energy'); assert.equal(m.castPower(s, id), false, 'it recharges first');
     const fx = s.effects.filter(e => e.kind !== 'wave'); for (const e of fx) assert.ok(e.x >= 500 && e.x <= 1200, `${id}: every blow lands on screen (${e.x})`);
     run(s, 4);
     assert.ok(foes[1].hp < 4000 && foes[2].hp < 4000 && foes[3].hp < 4000, `${id}: the enemies on screen are hurt`);
     assert.equal(foes[0].hp, 4000, `${id}: not those off the left`); assert.equal(foes[4].hp, 4000, `${id}: nor off the right`);
-    s.kitCd[id] = 0; assert.equal(m.castPower(s, id), true);
+    s.kitCd[id] = 0; s.energy = 999; assert.equal(m.castPower(s, id), true);
   }
 });
 test('the tsunami throws the enemy back; ice and lightning freeze or stun; an unbought power cannot be cast', () => {
@@ -312,12 +313,12 @@ test('the tsunami throws the enemy back; ice and lightning freeze or stun; an un
   const s = m.newSiege(p, 1); s.view = { x: 400, width: 700 }; m.summon(s, 0);
   const foe = { ...s.units[0], uid: 50, side: 1, x: 700, hp: 9000, maxHp: 9000, damage: 0 }; s.units.push(foe); s.units[0].x = 150;
   assert.equal(m.castPower(s, 0), false, 'the arrow rain is not in the kit');
-  assert.equal(m.castPower(s, 2), true); run(s, 3); assert.ok(foe.x > 800, `pushed back (${foe.x})`);
+  s.energy = 999; assert.equal(m.castPower(s, 2), true); run(s, 3); assert.ok(foe.x > 800, `pushed back (${foe.x})`);
 });
 test('an upgraded power still casts its earlier form, with its own recharge', () => {
   const p = m.freshProgress(); p.coins = 9000; m.buyPower(p, 0); m.buyPower(p, 0);
   const s = m.newSiege(p, 1); s.view = { x: 300, width: 700 };
-  assert.equal(m.castPower(s, m.powerCard(0, 1)), true); assert.equal(m.castPower(s, m.powerCard(0, 2)), true, 'the other form is not on the same recharge'); assert.equal(m.castPower(s, m.powerCard(0, 1)), false);
+  s.energy = 999; assert.equal(m.castPower(s, m.powerCard(0, 1)), true); assert.equal(m.castPower(s, m.powerCard(0, 2)), true, 'the other form is not on the same recharge'); assert.equal(m.castPower(s, m.powerCard(0, 1)), false);
   assert.equal(m.castPower(s, m.powerCard(0, 3)), false, 'a form not in the kit');
 });
 test('the free test mode: free base upgrades, free powers and troops, endless energy in battle', () => {
@@ -406,7 +407,7 @@ test('the bow\'s three upgrades: power, speed (and reach) and quiver, each on it
 test('the mana pool upgrade raises the energy a battle can hold from the start', () => {
   const p = m.freshProgress(), plain = m.energyMax(m.newSiege(p, 1)); p.upgrades[6] = 5;
   const s = m.newSiege(p, 1); assert.equal(m.energyMax(s), plain + 5 * m.MANA_STEP);
-  s.generator = 1; assert.equal(m.energyMax(s), plain + 5 * m.MANA_STEP + 70, 'the generator still adds on top');
+  s.generator = 1; assert.equal(m.energyMax(s), plain + 5 * m.MANA_STEP + 100, 'the generator still adds on top');
 });
 test('the discharge lands at the aim, costs energy and waits for enough of it', () => {
   const s = m.newSiege(m.freshProgress(), 1); s.nextWave = 999; s.aim = 900; s.energy = m.STRIKE_COST - 1;
@@ -420,10 +421,10 @@ test('flyers cruise at heights by kind: people low, machines higher, the helicop
   for (const id of [10, 11, 28, 29, 30, 31]) assert.ok(at(id) > 32 && at(id) < at(33), `${id} flies low, as before, out of walkers' reach`);
 });
 test('a troop form recharges a second for every 10 energy it costs, 2 to 30 s', () => {
-  assert.equal(m.cooldownOf(0, 1), 2); assert.equal(m.cooldownOf(0, 5), 20, 'the master swordsman cannot be sent over and over');
-  assert.equal(m.cooldownOf(9, 4), 30, 'capped'); assert.equal(m.cooldownOf(6, 3), 17);
+  assert.equal(m.cooldownOf(0, 1), 3); assert.equal(m.cooldownOf(0, 5), 30, 'the master swordsman cannot be sent over and over');
+  assert.equal(m.cooldownOf(9, 4), 30, 'capped'); assert.equal(m.cooldownOf(6, 3), 18);
   const s = m.newSiege({ ...m.freshProgress(), owned: [0], levels: [5], deck: [400] }, 1); s.energy = 999;
-  assert.equal(m.summon(s, 400), true); assert.equal(s.cooldowns[400], 20);
+  assert.equal(m.summon(s, 400), true); assert.equal(s.cooldowns[400], 30);
 });
 test('flyers that shoot stay up at their height to fire on walkers; close fighters drop to strike', () => {
   const s = m.newSiege({ ...m.freshProgress(), owned: [0, 12, 13], deck: [12, 13] }, 1); s.nextWave = 999; s.gusted = true; s.energy = 999;
@@ -589,11 +590,11 @@ test('the owner\'s second batch: the fortress collapses, the horn sounds when we
   s.hp[1] = 0; m.tick(s, 1 / 30);
   assert.ok(s.razed && s.effects.some(e => e.art === 'collapse') && s.effects.some(e => e.kind === 'piece' && e.art === 'piece-flag'), 'the fortress collapses, its flag thrown out');
   const t = m.newSiege({ ...m.freshProgress(), unlocked: 30, powers: [0, 0, 0, 1], kit: [3] }, 20); t.nextWave = 999;
-  assert.ok(m.castPower(t, 3)); assert.ok(t.effects.some(e => e.art === 'warn') && t.effects.some(e => e.art === 'crater'), 'meteors warn where they will fall and leave craters');
+  t.energy = 999; assert.ok(m.castPower(t, 3)); assert.ok(t.effects.some(e => e.art === 'warn') && t.effects.some(e => e.art === 'crater'), 'meteors warn where they will fall and leave craters');
 });
 
 test('the new powers: a black hole drags the enemy in and bursts, the sword strikes the strongest, the sanctuary heals ours', () => {
-  const at = (id) => { const p = { ...m.freshProgress(), unlocked: 30 }; p.coins = 99999; assert.ok(m.buyPower(p, id)); const s = m.newSiege(p, 20); s.nextWave = 999; s.gusted = true; s.view = { x: 300, width: 800 }; return s; };
+  const at = (id) => { const p = { ...m.freshProgress(), unlocked: 30 }; p.coins = 99999; assert.ok(m.buyPower(p, id)); const s = m.newSiege(p, 20); s.nextWave = 999; s.gusted = true; s.view = { x: 300, width: 800 }; s.energy = 999; return s; };
   const foe = (s, uid, x, hp = 3000, o = {}) => { const u = { uid, id: 15, side: 1, x, lane: 1, hp, maxHp: hp, damage: 0, attack: 99, flash: 0, boss: false, ...o }; s.units.push(u); return u; };
   let s = at(4); const a = foe(s, 1, 600), b = foe(s, 2, 760), far = foe(s, 3, 1300);
   assert.ok(m.castPower(s, 4)); const mid = s.zones[0].x; run(s, 1.5);
@@ -603,6 +604,14 @@ test('the new powers: a black hole drags the enemy in and bursts, the sword stri
   assert.ok(m.castPower(s, 5)); run(s, 5); assert.ok(strong.hp < 6000 - 300 && weak.hp === 400, 'it falls on the strongest and keeps striking round it');
   s = at(6); s.units.push({ uid: 9, id: 0, side: 0, x: 600, lane: 1, hp: 50, maxHp: 200, damage: 0, attack: 99, flash: 0, boss: false, lv: 1, stun: 99 });
   assert.ok(m.castPower(s, 6)); run(s, 3); assert.ok(s.units[0].hp > 80, 'ours heal inside it');
+});
+
+test('mana reaches 1000 at the top, and the strongest cards need it', () => {
+  const p = m.freshProgress(); p.upgrades[6] = 5; const s = m.newSiege(p, 1); s.generator = 4;
+  assert.equal(m.energyMax(s), 1000); assert.equal(m.energyMax(m.newSiege(m.freshProgress(), 1)), 200);
+  const legends = m.UNITS.filter(u => u.legend);
+  assert.ok(legends.every(u => u.cost > 600), 'every legendary needs more than a battle holds without the mana upgrade');
+  assert.ok(m.POWERS.every(w => w.forms.every(f => f.mana > 0)), 'every power costs energy');
 });
 
 test('the catapult lobs its rock: it strikes where it lands, when it lands', () => {
