@@ -656,6 +656,16 @@ test('the Villain campaign: the enemy\'s troops and guardians against our heroes
   assert.ok(s.units.some(u => !u.side && u.id === 34 && u.boss));
 });
 
+test('the Villain\'s troops come in lines, each level another enemy troop that opens with its act', () => {
+  const p = m.freshVillain(); p.coins = 99999; p.unlocked = 6;
+  assert.equal(m.levelsOf(15), 4); assert.equal(m.specAt(15, 2).sprite, m.UNITS[16].sprite, 'the skeleton swordsman becomes the spearman');
+  assert.ok(m.levelUp(p, 15), 'level 2 in act 2'); assert.ok(m.levelUp(p, 15), 'level 3 (the reaper) in act 2'); assert.ok(!m.levelUp(p, 15), 'the spider spearman waits for act 6');
+  p.deck = [m.card(15, 3)]; const s = m.newSiege(p, 6); s.energy = 999; s.nextWave = 999;
+  assert.ok(m.summon(s, m.card(15, 3))); const u = s.units.find(u => !u.side); assert.equal(u.id, 19, 'it sends the reaper itself');
+  const old = m.readProgress(JSON.stringify({ version: 1, unlocked: 8, owned: [15, 16, 46], deck: [16, 46], cards: 1, villain: true }), true);
+  assert.ok(old.owned.includes(22) && old.levels[22] === 2 && old.levels[15] === 2, 'an older save keeps what it bought, as levels of its lines');
+});
+
 test('the catapult lobs its rock: it strikes where it lands, when it lands', () => {
   const s = m.newSiege({ ...m.freshProgress(), unlocked: 30, owned: [0, 51], deck: [51] }, 20); s.nextWave = 999; s.gusted = true; s.energy = 999;
   m.summon(s, 51); const cat = s.units[0]; cat.x = 400;
