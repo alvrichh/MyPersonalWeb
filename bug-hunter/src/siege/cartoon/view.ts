@@ -149,7 +149,14 @@ function topOf(image: HTMLImageElement) {
   if (!c) { c = document.createElement('canvas'); c.width = 16; c.height = 1; const t = c.getContext('2d'); if (t) { t.imageSmoothingQuality = 'high'; t.drawImage(image, 0, 0, image.naturalWidth, 8, 0, 0, 16, 1); } tops.set(image, c); }
   return c;
 }
-const FX = ['siege/mana', ...[0, 1, 2, 3, 4, 5, 6, 7].flatMap(n => [`siege/fx-boom-${n}`, `siege/fx-boom-dark-${n}`, `siege/fx-boom-cyan-${n}`]), 'siege/units/shot-crescent-gold', 'fx/fire-pool.webp', 'fx/fireball.webp', 'fx/rocket.webp', 'fx/volt-burst.webp', 'fx/impact.webp', 'fx/ice-block.webp', 'siege/units/shot-arrow', 'siege/units/shot-ice', 'siege/units/shot-lightning', ...[0, 1, 2].map(n => `fx/wave-strip-${n}.webp`), ...[0, 1, 2, 3, 4, 5, 6].map(n => `fx/icicle-0-${n}.webp`), 'arrows/water.webp', 'arrows/leaf.webp', 'fx/boom-big.webp', 'fx/impact.webp', ...[1, 2, 3, 4, 5, 6].map(n => `fx/bolt-y-${n}.webp`)];
+/** The owner's drawn effects (`siege/fx/<name>-<frame>`) and how many frames each plays. */
+const FX_FRAMES: Record<string, number> = {
+  'hit-bullet': 5, 'hit-thrown': 5, 'hit-energy': 5, 'hit-ice': 5, 'hit-magic': 5, 'hit-heavy': 5, stun: 4, shatter: 4, heal: 6, aura: 4,
+  wreck: 7, soul: 6, crash: 6, loot: 6, trail: 6, smoke: 5, 'arrive-land': 6, 'arrive-air': 6, 'arrive-heavy': 6, 'arrive-foe': 6, 'rock-land': 5,
+};
+const FX_STILLS = ['ice-block', 'piece-gear', 'piece-bolt', 'piece-plate', 'casing', 'streak'];
+const fxFrame = (name: string, p: number) => still(`siege/fx/${name}-${Math.max(0, Math.min(FX_FRAMES[name] - 1, Math.floor(p * FX_FRAMES[name])))}`);
+const FX = [...Object.entries(FX_FRAMES).flatMap(([n, k]) => Array.from({ length: k }, (_, f) => `siege/fx/${n}-${f}`)), ...FX_STILLS.map(n => `siege/fx/${n}`), 'siege/mana', ...[0, 1, 2, 3, 4, 5, 6, 7].flatMap(n => [`siege/fx-boom-${n}`, `siege/fx-boom-dark-${n}`, `siege/fx-boom-cyan-${n}`]), 'siege/units/shot-crescent-gold', 'fx/fire-pool.webp', 'fx/fireball.webp', 'fx/rocket.webp', 'fx/volt-burst.webp', 'fx/impact.webp', 'fx/ice-block.webp', 'siege/units/shot-arrow', 'siege/units/shot-ice', 'siege/units/shot-lightning', ...[0, 1, 2].map(n => `fx/wave-strip-${n}.webp`), ...[0, 1, 2, 3, 4, 5, 6].map(n => `fx/icicle-0-${n}.webp`), 'arrows/water.webp', 'arrows/leaf.webp', 'fx/boom-big.webp', 'fx/impact.webp', ...[1, 2, 3, 4, 5, 6].map(n => `fx/bolt-y-${n}.webp`)];
 /** Pictures drawn whole (backdrop, floor, effects): no alpha crop needed. */
 const stills = new Map<string, HTMLImageElement>();
 function still(path: string) {
@@ -459,6 +466,26 @@ const SHOTS = ['rock', 'javelin', 'arrow', 'shuriken', 'rocket', 'rockets', 'sal
     leaf for theirs),
     impacts up close, and a blast with the yellow lightning for the discharge. */
 function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, ground: number) {
+  if (e.kind === 'anim' && e.art && FX_FRAMES[e.art]) {
+    // One of the owner's drawn effects, frame by frame: standing on the ground (`up` above it), round its middle
+    // (`centre`: a hit at body height), or at a shooter's muzzle (`gun`); fading over its last frames.
+    if (p < 0) return true;
+    const art = fxFrame(e.art, p); if (!ok(art)) return false;
+    const w = e.size ?? 50, h = w * art.naturalHeight / art.naturalWidth;
+    const at = e.gun ? muzzle(e, y) : { x: e.x, y: ground - (e.up ?? 0) - (e.centre ? 0 : h / 2) };
+    ctx.save(); ctx.globalAlpha = p > 0.8 ? (1 - p) / 0.2 : 1; ctx.translate(at.x, at.y); if (e.flip) ctx.scale(-1, 1);
+    ctx.drawImage(art, -w / 2, -h / 2, w, h); ctx.restore(); return true;
+  }
+  if (e.kind === 'piece' && e.art) {
+    // A piece thrown out (a casing from a gun, scrap from a wreck): an arc from where it left down to the ground, spinning.
+    if (p < 0) return true;
+    const art = still(`siege/fx/${e.art}`); if (!ok(art)) return false;
+    const start = e.gun ? muzzle(e, y) : { x: e.from, y: ground - (e.up ?? 0) }, end = ground - 2;
+    const x = start.x + (e.x - start.x) * p, yy = start.y + (end - start.y) * p - 4 * (e.arc ?? 30) * p * (1 - p);
+    const w = e.size ?? 12, h = w * art.naturalHeight / art.naturalWidth;
+    ctx.save(); ctx.globalAlpha = p > 0.75 ? (1 - p) / 0.25 : 1; ctx.translate(x, yy); if (e.spin) ctx.rotate(p * 9 * (e.x < e.from ? -1 : 1));
+    ctx.drawImage(art, -w / 2, -h / 2, w, h); ctx.restore(); return true;
+  }
   if (e.kind === 'rocket') {
     const art = still('siege/units/shot-missile'); if (!ok(art)) return false;
     // From the crossbow on our battlement (`bowAt`) to the aim.
@@ -556,12 +583,8 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     // The medic's mending: green crosses rising off each troop it heals; round the medic, a soft green ring.
     ctx.save(); ctx.globalAlpha = p < 0.7 ? 1 : (1 - p) / 0.3;
     if (e.size) { ctx.strokeStyle = '#7dff9a'; ctx.lineWidth = 3; ctx.beginPath(); ctx.ellipse(e.x, ground - 4, 40 + 100 * p, 10 + 18 * p, 0, 0, Math.PI * 2); ctx.stroke(); ctx.restore(); return true; }
-    const cy = ground - 40 - (e.up ?? 0) - p * 34;
-    for (const [dx, k] of [[-12, 0.8], [10, 1], [0, 0.65]] as const) {
-      const s2 = 7 * k, x = e.x + dx, y = cy - (dx === 0 ? 14 : 0);
-      ctx.fillStyle = '#1d6b2c'; ctx.fillRect(x - s2 - 1.5, y - s2 / 3 - 1.5, s2 * 2 + 3, s2 * 2 / 3 + 3); ctx.fillRect(x - s2 / 3 - 1.5, y - s2 - 1.5, s2 * 2 / 3 + 3, s2 * 2 + 3);
-      ctx.fillStyle = '#6dff8c'; ctx.fillRect(x - s2, y - s2 / 3, s2 * 2, s2 * 2 / 3); ctx.fillRect(x - s2 / 3, y - s2, s2 * 2 / 3, s2 * 2);
-    }
+    // Each troop it heals: the owner's green crosses and sparkles rising off it.
+    const art = fxFrame('heal', p); if (ok(art)) { const w = 46, h = w * art.naturalHeight / art.naturalWidth; ctx.drawImage(art, e.x - w / 2, ground - (e.up ?? 0) - h, w, h); }
     ctx.restore(); return true;
   }
   if (e.kind === 'sweep') {
@@ -617,7 +640,7 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     ctx.stroke(); ctx.restore(); return true;
   }
   // Effects that wait for a shot to land (`life` past `max`) are not drawn yet.
-  if (p < 0 && (e.kind === 'boom' || e.kind === 'fire' || e.kind === 'shot' || e.kind === 'stuck')) return true;
+  if (p < 0 && (e.kind === 'boom' || e.kind === 'fire' || e.kind === 'shot' || e.kind === 'stuck' || e.kind === 'anim' || e.kind === 'piece')) return true;
   if (e.kind === 'stuck') {
     // A landed arrow stuck in the ground at the angle it came in, its head buried, fading out at the end.
     const art = still(bolt); if (!ok(art)) return false;
@@ -689,6 +712,16 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     if (e.art === 'plasma-cyan' && p < 0.4) {
       const flash = still('siege/units/shot-plasma-cyan-flash');
       if (ok(flash)) { const fw = 62, fh = fw * flash.naturalHeight / flash.naturalWidth; ctx.save(); ctx.globalAlpha = 1 - p / 0.4; ctx.translate(x0, y0); ctx.rotate(Math.atan2(y1 - y0, e.x - x0)); ctx.drawImage(flash, -fw * 0.15, -fh / 2, fw, fh); ctx.restore(); }
+    }
+    // Rockets leave puffs of smoke behind them; arrows and javelins a speed streak.
+    if (/rocket|salvo|missile/.test(e.art)) for (let k = 1; k <= 3; k++) {
+      const q = p - k * 0.09; if (q < 0) break;
+      const puff = fxFrame('trail', Math.min(0.99, k / 4 + p * 0.3)), at2 = at(q), pw = 18 + k * 4;
+      if (ok(puff)) { ctx.save(); ctx.globalAlpha = 0.85 - k * 0.2; ctx.drawImage(puff, at2.x - pw / 2, at2.y - pw * 0.3, pw, pw * puff.naturalHeight / puff.naturalWidth); ctx.restore(); }
+    }
+    if (e.art === 'arrow' || e.art === 'javelin' || e.art === 'arrow-red') {
+      const streak = still('siege/fx/streak');
+      if (ok(streak)) { const sw = 46, sh = sw * streak.naturalHeight / streak.naturalWidth, back = dirAt(at, p); ctx.save(); ctx.globalAlpha = 0.7; ctx.translate(here.x, here.y); ctx.rotate(Math.atan2(back.y - here.y, back.x - here.x || 0.001)); ctx.drawImage(streak, -sw - w * 0.3, -sh / 2, sw, sh); ctx.restore(); }
     }
     ctx.save(); ctx.translate(here.x, here.y);
     ctx.rotate(e.spin ? p * 14 * (e.x > e.from ? 1 : -1) : Math.atan2(ahead.y - here.y, ahead.x - here.x || 0.001));
@@ -881,8 +914,13 @@ function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: nu
     // own feet at the troop's x (flyers on their middle), so poses change without sliding.
     const fx = anchor ? anchor[0] : spec.air && gone === undefined ? 0.5 : feetOf(art.image), fy = anchor ? anchor[1] : 1;
     const paint = () => { if (spec.facesLeft) { ctx.save(); ctx.scale(-1, 1); ctx.drawImage(art.image, -fx * dw, -fy * dh, dw, dh); ctx.restore(); } else ctx.drawImage(art.image, -fx * dw, -fy * dh, dw, dh); };
+    // An elite stands in a gold flame aura (the owner's, looping behind it).
+    if (u.elite && gone === undefined && !reduced) { const art = fxFrame('aura', (s.time * 2) % 1); if (ok(art)) { const aw = size * 1.15, ah = aw * art.naturalHeight / art.naturalWidth; ctx.save(); ctx.shadowBlur = 0; ctx.globalAlpha *= 0.85; ctx.drawImage(art, -aw / 2, -ah + 6, aw, ah); ctx.restore(); } }
     paint();
     if (u.stage) ctx.filter = 'none';
+    // Frozen: a block of ice round it; stunned: stars and little birds circling over its head.
+    if (gone === undefined && u.frozen) { const art = still('siege/fx/ice-block'); if (ok(art)) { const bw = (spec.air ? dw * 0.7 : Math.max(sw, size * 0.7)) * 0.95, bh = Math.min(size * 1.05, bw * art.naturalHeight / art.naturalWidth * 1.3); ctx.save(); ctx.shadowBlur = 0; ctx.globalAlpha = 0.82; ctx.drawImage(art, -bw / 2, (spec.air ? dh * 0.15 : 4) - bh, bw, bh); ctx.restore(); } }
+    else if (gone === undefined && u.stun && !u.knock) { const art = fxFrame('stun', (s.time * 2.2) % 1); if (ok(art)) { const rw = Math.max(34, size * 0.45), rh = rw * art.naturalHeight / art.naturalWidth; ctx.save(); ctx.shadowBlur = 0; ctx.drawImage(art, -rw / 2, -size * 0.98 - rh / 2, rw, rh); ctx.restore(); } }
     if (flash) { ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha *= 0.45; paint(); ctx.restore(); }
     if (u.elite && gone === undefined) {
       ctx.shadowBlur = 0; ctx.fillStyle = '#f5e6c8'; ctx.strokeStyle = '#3a2a10'; ctx.lineWidth = 1.5;

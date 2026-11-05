@@ -4,6 +4,15 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.178 - 2026-11-05
+
+- Siege Cartoon uses the owner's new effect sheets (cut from chroma green into `siege/fx/`):
+  - every weapon has its own hit (sparks for bullets, splinters for thrown things and blades, a ring for energy, shards for ice, stars for magic, a big comic star for heavy blows and sweeps);
+  - frozen troops stand in a block of ice that shatters when the cold wears off; stunned ones have stars and birds circling their heads; elites stand in a gold flame aura; the medic's mending rises in green crosses;
+  - machines burst into scrap (gears, bolts, plates) when they fall, the enemy gives up a red soul, flyers crash in a cloud of dust and a fallen foe's loot bursts out;
+  - guns throw out casings, launchers smoke, rockets leave puffs behind them and arrows a speed streak; the catapult's rock lands in a dust ring;
+  - each troop arrives with a flourish of its kind (a summoning circle, a whirl of wind, a heavy thump, the enemy's red portal).
+
 ## 1.15.177 - 2026-11-05
 
 - New art from the owner's effects sheet: the heavy robot's cyan plasma ball flies with its trail, leaves the cannon with a cyan flash and bursts in its own eight-frame cyan plasma explosion; the attack helicopter's black-and-gold rockets are hand-drawn now (sharper, drawn at their old size).
