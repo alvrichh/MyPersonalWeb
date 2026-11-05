@@ -39,8 +39,8 @@ export function sprite(_s: Siege, u: Fighter) { return specOf(u).sprite; }
 export const portrait = (id: number, level = 1) => `/images/game/${specAt(id, level).sprite}-0.webp`;
 export function preload(world: number, deck: number[], _levels: number[] = []) {
   const foes: number[] = [...foesAt(FOE_LAND, world), ...foesAt(FOE_AIR, world), GUARDIAN[actOf(world) - 1]];
-  const specs = [...deck.map(c => specAt(c % 100, Math.floor(c / 100) + 1)), ...foes.map(id => UNITS[id])];
-  specs.forEach(spec => { for (let f = 0; f < (spec.six ? 6 : 3); f++) picture(`${spec.sprite}-${f}`); });
+  const specs = [...deck.map(c => specAt(c % 100, Math.floor(c / 100) + 1)), ...foes.flatMap(id => (UNITS[id].phase2 !== undefined ? [UNITS[id], UNITS[UNITS[id].phase2!]] : [UNITS[id]]))];
+  specs.forEach(spec => { for (let f = 0; f < (spec.frames ?? (spec.six ? 6 : 3)); f++) picture(`${spec.sprite}-${f}`); });
   // The battlefield, and the fortresses and crossbow at every level (the workshop can change ours between battles).
   [sceneOf(world), ...[...SHOTS, ...SPELLS].map(n => `siege/units/shot-${n}`), ...[1, 2, 3, 4].map(n => `siege/units/bolt-${n}`), ...[1, 2, 3, 4, 5].flatMap(n => [`siege/castle-${n}`, ...(n < 5 ? [`siege/xbow-${n}`] : []), `siege/enemy-${n}`]), ...FX].forEach(still);
 }
@@ -154,7 +154,7 @@ const FX_FRAMES: Record<string, number> = {
   'hit-bullet': 5, 'hit-thrown': 5, 'hit-energy': 5, 'hit-ice': 5, 'hit-magic': 5, 'hit-heavy': 5, stun: 4, shatter: 4, heal: 6, aura: 4,
   wreck: 7, soul: 6, crash: 6, loot: 6, trail: 6, smoke: 5, 'arrive-land': 6, 'arrive-air': 6, 'arrive-heavy': 6, 'arrive-foe': 6, 'rock-land': 5,
   burn: 6, collapse: 5, warn: 4, 'storm-bolt': 3, spray: 6, crater: 5, step: 5, charge: 6, horn: 4, skull: 5,
-  'dragonfire': 4, 'anchor-hit': 4,
+  'dragonfire': 4, 'anchor-hit': 4, 'king-portal': 2,
   'bowflash-1': 4, 'bowflash-2': 4, 'bowflash-3': 4, 'bowflash-4': 4, 'bird-blue': 4, 'bird-brown': 4,
 };
 /** Each world's drifting particles (`siege/fx/amb-<kind>-<n>`, six of each): how they move. */
@@ -505,7 +505,7 @@ const zoneX = (_e: Effect) => dragAt;
     and the storm of wrath's blue. */
 const BOLT_TINTS: Record<number, string> = { 1: 'hue-rotate(195deg) saturate(.75) brightness(1.35)', 2: 'hue-rotate(189deg) saturate(1.9) brightness(1.08)', 3: 'none' };
 /** The shot sheets drawn at a higher resolution than the first ones, and the scale that keeps them their size in battle. */
-const SHOT_SCALE: Record<string, number> = { 'plasma-cyan': 0.45, 'rocket-dark': 0.2, 'rockets-dark': 0.2, 'salvo-dark': 0.2 };
+const SHOT_SCALE: Record<string, number> = { darkorb: 0.75, skull: 0.7, 'plasma-cyan': 0.45, 'rocket-dark': 0.2, 'rockets-dark': 0.2, 'salvo-dark': 0.2 };
 const MUZZLE: Record<string, [number, number][]> = {
   'ally-archer-1': [[0.69, 0.36]], 'ally-archer-2': [[0.71, 0.27]], 'ally-archer-3': [[0.75, 0.43]], 'ally-archer-4': [[0.86, 0.44]],
   'ally-gunner-1': [[0.74, 0.45]], 'ally-gunner-2': [[0.73, 0.46]], 'ally-gunner-3': [[0.72, 0.35], [0.72, 0.52]], 'ally-gunner-4': [[0.74, 0.43]],
@@ -519,6 +519,7 @@ const MUZZLE: Record<string, [number, number][]> = {
   'ally-helicopter-1': [[0.66, 0.66]], 'ally-helicopter-2': [[0.48, 0.7], [0.86, 0.79]], 'ally-helicopter-3': [[0.58, 0.72], [0.88, 0.82]],
   'ally-angel-2': [[0.85, 0.21]], 'ally-angel-3': [[0.7, 0.43]],
   'ally-mech-2': [[0.62, 0.45]], 'ally-mech-3': [[0.82, 0.6]], 'ally-mech-5': [[0.5, 0.45]],
+  'boss-dark-king-air': [[0.3, 0.45]], 'boss-dark-king-air+': [[0.47, 0.21]],
   'foe-shooter-1': [[0.03, 0.52]], 'foe-archer-1': [[0.05, 0.5]],
   'ally-catapult-1': [[0.32, 0.12]], 'ally-catapult-2': [[0.85, 0.12]], 'ally-balloon-1': [[0.5, 0.97]],
 };
@@ -530,15 +531,15 @@ function muzzle(e: Effect, y: number) {
     const stand = picture(`${base}-0`).image, art = picture(`${base}-3`).image;
     if (ok(stand) && ok(art)) {
       const [mx, my] = list[g.i % list.length], k = g.size / stand.naturalHeight, anchor = POSE_ANCHOR[`${base}-3`];
-      const fx = anchor ? anchor[0] : g.air ? 0.5 : feetOf(art), ahead = (g.left ? fx - mx : mx - fx) * art.naturalWidth * k;
+      const fx = anchor ? anchor[0] : g.air ? 0.5 : feetOf(art), fy = anchor ? anchor[1] : 1, ahead = (g.left ? fx - mx : mx - fx) * art.naturalWidth * k;
       const ground = y + 26 - (g.air ? (e.fromUp ?? 0) + e.lane * 8 : 0);
-      return { x: e.from + (e.side ? -ahead : ahead), y: ground - (1 - my) * art.naturalHeight * k };
+      return { x: e.from + (e.side ? -ahead : ahead), y: ground - (fy - my) * art.naturalHeight * k };
     }
   }
   return { x: e.from, y: shotY(e.fromUp, y) };
 }
 /** Every picture a troop's attack shows on its way (`siege/units/shot-<name>`): thrown things, rockets, bullets, beams. */
-const SHOTS = ['rock', 'javelin', 'arrow', 'shuriken', 'rocket', 'rockets', 'salvo', 'ice', 'plasma', 'crescent', 'missile', 'bullet', 'bullet-rifle', 'bullet-uzi', 'bullet-sniper', 'ray', 'ray-blue', 'ray-gold', 'ray-pink', 'ray-red', 'arrow-red', 'boulder', 'boulder-blue', 'bomb', 'plasma-cyan', 'plasma-cyan-flash', 'rocket-dark', 'rockets-dark', 'salvo-dark'];
+const SHOTS = ['rock', 'javelin', 'arrow', 'shuriken', 'rocket', 'rockets', 'salvo', 'ice', 'plasma', 'crescent', 'missile', 'bullet', 'bullet-rifle', 'bullet-uzi', 'bullet-sniper', 'ray', 'ray-blue', 'ray-gold', 'ray-pink', 'ray-red', 'arrow-red', 'boulder', 'boulder-blue', 'bomb', 'darkorb', 'skull', 'plasma-cyan', 'plasma-cyan-flash', 'rocket-dark', 'rockets-dark', 'salvo-dark'];
 /** The effect art: our crossbow's Cartoon arrows (or rockets) and missile, the old painted arrows (water for our troops,
     leaf for theirs),
     impacts up close, and a blast with the yellow lightning for the discharge. */
@@ -839,6 +840,8 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
       const streak = still('siege/fx/streak');
       if (ok(streak)) { const sw = 46, sh = sw * streak.naturalHeight / streak.naturalWidth, back = dirAt(at, p); ctx.save(); ctx.globalAlpha = 0.7; ctx.translate(here.x, here.y); ctx.rotate(Math.atan2(back.y - here.y, back.x - here.x || 0.001)); ctx.drawImage(streak, -sw - w * 0.3, -sh / 2, sw, sh); ctx.restore(); }
     }
+    // The King's orb and skulls fly upright, flames trailing (drawn heading left; turned round heading right).
+    if (e.art === 'darkorb' || e.art === 'skull') { ctx.save(); ctx.translate(here.x, here.y); if (e.x > x0) ctx.scale(-1, 1); ctx.drawImage(art, -w / 2, -h / 2, w, h); ctx.restore(); return true; }
     ctx.save(); ctx.translate(here.x, here.y);
     ctx.rotate(e.spin ? p * 14 * (e.x > e.from ? 1 : -1) : Math.atan2(ahead.y - here.y, ahead.x - here.x || 0.001));
     ctx.drawImage(art, -w / 2, -h / 2, w, h); ctx.restore(); return true;
@@ -954,7 +957,9 @@ function fallen(s: Siege) {
     draws it fallen, fading at the end. */
 /** Where a pose wider or taller than its body stands: its body's middle and foot, as shares of the picture (the star
     eater's beam poses, whose beam reaches far ahead of and below it). */
-const POSE_ANCHOR: Record<string, [number, number]> = { 'siege/units/ally-star-eater-1-6': [0.183, 0.585], 'siege/units/ally-star-eater-1-7': [0.171, 0.796], 'siege/units/ally-dragon-1-6': [0.313, 0.712], 'siege/units/ally-dragon-1-7': [0.254, 0.848], 'siege/units/ally-reaper-1-3': [0.297, 1] };
+/** The King of Darkness's poses are anchored on his throne (in the air) or between his feet (on foot), measured on each. */
+const KING_ANCHOR: Record<string, [number, number]> = { 'siege/units/boss-dark-king-air-0': [0.551, 0.818], 'siege/units/boss-dark-king-air-1': [0.528, 0.807], 'siege/units/boss-dark-king-air-2': [0.551, 0.818], 'siege/units/boss-dark-king-air-3': [0.574, 0.819], 'siege/units/boss-dark-king-air-4': [0.536, 0.806], 'siege/units/boss-dark-king-air-5': [0.586, 0.838], 'siege/units/boss-dark-king-air-6': [0.552, 0.818], 'siege/units/boss-dark-king-air-7': [0.635, 0.804], 'siege/units/boss-dark-king-air-8': [0.548, 0.818], 'siege/units/boss-dark-king-air-9': [0.673, 0.822], 'siege/units/boss-dark-king-air-10': [0.501, 0.816], 'siege/units/boss-dark-king-air-11': [0.52, 0.818], 'siege/units/boss-dark-king-ground-0': [0.612, 0.986], 'siege/units/boss-dark-king-ground-1': [0.768, 0.986], 'siege/units/boss-dark-king-ground-2': [0.528, 0.989], 'siege/units/boss-dark-king-ground-3': [0.554, 0.972], 'siege/units/boss-dark-king-ground-4': [0.612, 0.986], 'siege/units/boss-dark-king-ground-5': [0.612, 0.986], 'siege/units/boss-dark-king-ground-6': [0.601, 0.989], 'siege/units/boss-dark-king-ground-7': [0.693, 0.986], 'siege/units/boss-dark-king-ground-8': [0.514, 0.989], 'siege/units/boss-dark-king-ground-9': [0.505, 0.987] };
+const POSE_ANCHOR: Record<string, [number, number]> = { ...KING_ANCHOR, 'siege/units/ally-star-eater-1-6': [0.183, 0.585], 'siege/units/ally-star-eater-1-7': [0.171, 0.796], 'siege/units/ally-dragon-1-6': [0.313, 0.712], 'siege/units/ally-dragon-1-7': [0.254, 0.848], 'siege/units/ally-reaper-1-3': [0.297, 1] };
 function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: number, reduced: boolean, color: string, gone?: number) {
   // Air troops fly above their lane, their shadow on the ground under them; the fallen lie on the ground.
   // Every troop on one line (the lanes only order who is drawn in front), so the card bar never hides one.
@@ -971,7 +976,10 @@ function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: nu
     ? gone !== undefined ? (gone < DEATH.fly ? 4 : 5) : thrown ? 4 : u.hit ? 3 : hurt ? 4 : ready ? 2 : u.moving && !reduced ? Math.floor(t * 5) % 2 : 0
     : gone !== undefined ? 2 : thrown ? 2 : u.hit ? 1 : hurt ? 2 : 0;
   // The dragon and the star eater have two attack poses of their own: down at the ground (6) or level at a flyer (7).
-  const shot = spec.aimPoses && pose === 3 ? (u.aimAir ? 7 : 6) : pose;
+  // A guardian with several attacks (`moves`) winds up and strikes in that attack's own poses; the King of Darkness falls
+  // in his throne's breaking pose between his two forms; one with no fallen pose stays hurt as it tips over.
+  const moves = spec.moves, next = moves ? moves[((u.move ?? -1) + 1) % moves.length] : undefined;
+  const shot = u.landing ? 5 : spec.tipOver && gone !== undefined ? 4 : moves && pose === 3 && u.move !== undefined ? moves[u.move].strike : moves && pose === 2 && next ? next.ready : spec.aimPoses && pose === 3 ? (u.aimAir ? 7 : 6) : pose;
   const stand = picture(`${path}-0`), art = picture(`${path}-${shot}`), anchor = POSE_ANCHOR[`${path}-${shot}`];
   const size = spec.size * (u.boss ? 1.6 : 1) * (u.grow ?? 1) * Math.pow(0.8, u.stage ?? 0);
   // The shadow under its feet (the troop's x is where its feet are), the feet standing on its middle.
@@ -987,7 +995,7 @@ function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: nu
       push = -DEATH.back * (1 - (1 - f) * (1 - f));
       if (!reduced && f < 1) { lift = Math.sin(f * Math.PI) * 22; lean = -Math.sin(f * Math.PI) * 0.5; }
       // Three-pose sheets have no dead pose: the hurt one tips over backwards as it falls.
-      if (!spec.six) lean = -Math.min(1, gone * 6) * 1.45;
+      if (!spec.six || spec.tipOver) lean = -Math.min(1, gone * 6) * 1.45;
     } else if (reduced) { /* still */ }
     else if (u.leap || u.bound) {
       // A pounce: up in an arc onto its prey, then the same arc back the other way (it turns, see below).

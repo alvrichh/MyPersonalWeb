@@ -75,6 +75,14 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
   hook?: number;
   /** Two attack poses of its own, aimed (6: down at walkers, 7: level at flyers), its blow drawn in them (the dragon, the star eater). */
   aimPoses?: boolean;
+  /** A guardian's attacks, taken in turn: each with its wind-up and strike poses on its sheet and what it does
+      (`kingMove`). */
+  moves?: { ready: number; strike: number; kind: 'orb' | 'ray' | 'skulls' | 'summon' | 'slam' | 'spikes' | 'pulse' }[];
+  /** The unit it becomes at half its life (the King of Darkness loses his wings and fights on foot), and how many poses
+      its sheet has (more than six with `moves`). */
+  phase2?: number; frames?: number;
+  /** Its sheet has no fallen pose: it tips over backwards as it dies. */
+  tipOver?: boolean;
   /** A breath (the dragon's): its sweep is drawn as fire of these two colours (core, edge) instead of a crescent. */
   breath?: [string, string];
   /** How many it scoops at once (the gold drill takes two); one if unsaid. */
@@ -236,7 +244,11 @@ export const UNITS: readonly Spec[] = [
   { id: 36, flyAt: 70, cost: 0, hp: 900, damage: 55, speed: 40, range: 130, rate: 1.4, cooldown: 0, unlock: 1, foe: true, air: true, splash: 50, steady: true, ...foe('boss-dragon-rider-1', 217, 0.92) },
   { id: 37, cost: 0, hp: 720, damage: 34, speed: 21, range: 48, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 40, hitsAir: true, ...foe('boss-brute-eater-1', 176, 1.07) },
   { id: 38, cost: 0, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, hitsAir: true, ...foe('boss-dino-1', 199, 1.0) },
-  { id: 39, cost: 0, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, hitsAir: true, ...foe('boss-king-dino-1', 258, 0.87) },
+  // The King of Darkness, the last guardian, in two forms: on his flying throne (a dark orb, a ray from his eyes, flaming
+  // skulls, a portal that calls the enemy), then at half his life on foot (a sword slam, bone spikes, a pulse) — `phase2`.
+  { id: 39, flyAt: 75, cost: 0, hp: 560, damage: 46, speed: 30, range: 230, rate: 1.5, cooldown: 0, unlock: 1, foe: true, air: true, steady: true, splash: 50, hitsAir: true, frames: 12, phase2: 60,
+    moves: [{ ready: 2, strike: 3, kind: 'orb' }, { ready: 6, strike: 7, kind: 'ray' }, { ready: 2, strike: 3, kind: 'orb' }, { ready: 8, strike: 9, kind: 'skulls' }, { ready: 2, strike: 3, kind: 'orb' }, { ready: 10, strike: 11, kind: 'summon' }],
+    ...foe('boss-dark-king-air', 238, 1) },
   // The enemy's later arrivals (the owner's sheets of Cartoon Wars 2's roster, docs/siege-roster.md), appended: the
   // mountains' beasts, the Darkness's mammoth and alien shooter, a horned archer, an undead turkey, and three flyers.
   { id: 40, cost: 0, hp: 520, damage: 34, speed: 38, range: 50, rate: 1.1, cooldown: 0, unlock: 1, foe: true, infantry: true, ...foe('foe-rex-head-1', 137, 1.168) },
@@ -269,6 +281,10 @@ export const UNITS: readonly Spec[] = [
   { id: 58, flyAt: 82, cost: 900, hp: 3500, damage: 190, speed: 30, range: 320, rate: 2.2, cooldown: 35, unlock: 6, air: true, legend: true, hitsAir: true, pierce: true, aimPoses: true, splash: 90, shot: 'none', ...six('ally-star-eater-1', 237, 1.8) },
   // The weary reaper, legendary: hunched and slow, it hurls its chained scythe far ahead and drags what it hooks to it.
   { id: 59, cost: 860, hp: 3200, damage: 260, speed: 26, range: 185, rate: 2.4, cooldown: 30, unlock: 6, infantry: true, legend: true, splash: 50, hook: 160, ...six('ally-reaper-1', 154, 1.15) },
+  // The King of Darkness on foot (`phase2` of the last guardian); he carries on with the life he has left.
+  { id: 60, cost: 0, hp: 560, damage: 46, speed: 32, range: 70, rate: 1.5, cooldown: 0, unlock: 1, foe: true, steady: true, splash: 60, hitsAir: true, frames: 10, tipOver: true,
+    moves: [{ ready: 2, strike: 3, kind: 'slam' }, { ready: 6, strike: 7, kind: 'spikes' }, { ready: 2, strike: 3, kind: 'slam' }, { ready: 8, strike: 9, kind: 'pulse' }],
+    ...foe('boss-dark-king-ground', 250, 1) },
 ];
 /** The enemy's land and air troops by act, each act adding to the last (docs/siege-roster.md): early waves draw
     from the first two of the land list. No flyers in the first world: they come from the second. */
@@ -445,6 +461,8 @@ export function upgrade(p: Progress, slot: number): boolean {
 export interface Fighter { uid: number; id: number; side: 0 | 1; x: number; lane: number; hp: number; maxHp: number; damage: number; attack: number; flash: number; boss: boolean; hit?: number;
   /** Shots it has fired, so its guns take turns. */
   volley?: number;
+  /** A guardian's last attack (`moves`), and the seconds left of its fall to the ground between its two forms. */
+  move?: number; landing?: number;
   /** Seconds to its next footstep dust (heavy walkers) or charge dust (a rushing charger). */
   dust?: number;
   /** Slowed by a time rift until this battle time. */
@@ -632,7 +650,7 @@ const ATTACK_SOUND: Record<number, string | string[]> = {
   53: 'heal', 54: 'blunt', 55: 'slash', 56: 'roar', 57: 'meteor', 58: 'thunder', 59: 'slash',
   40: 'blunt', 41: 'bite', 42: 'blunt', 43: 'pierce', 44: 'blunt', 47: 'bite', 48: 'bite', 49: 'blade', 50: 'pierce',
   25: 'claw', 26: 'breath', 27: 'blade', 28: 'claw', 29: 'claw', 30: 'magic', 31: 'blade', 32: 'gatling',
-  34: 'throw', 35: 'gatling', 36: 'breath', 37: 'blunt', 38: 'bite', 39: 'bite',
+  34: 'throw', 35: 'gatling', 36: 'breath', 37: 'blunt', 38: 'bite', 39: 'magic', 60: 'blunt',
 };
 const SHOT_SOUND: Record<string, string> = { 'crescent-gold': 'wind', rock: 'throw', javelin: 'throw', shuriken: 'throw', arrow: 'bow', rocket: 'rocket', rockets: 'rocket', salvo: 'rocket', 'rocket-dark': 'rocket', 'rockets-dark': 'rocket', 'salvo-dark': 'rocket', 'plasma-cyan': 'ray', ray: 'ray', 'ray-blue': 'ray', 'ray-gold': 'ray', 'ray-pink': 'thunder', 'ray-red': 'ray', 'arrow-red': 'bow', boulder: 'throw', 'boulder-blue': 'rocket', bomb: 'rocket', plasma: 'ray', ice: 'ray', crescent: 'magic', none: 'flame', lightning: 'thunder', tornado: 'wind', meteor: 'meteor' };
 /** Bullets (`bullet`, `bullet-rifle|uzi|sniper`) sound like the gun that fires them; beams (`ray`, `ray-blue|gold|pink`) reach at once. */
@@ -645,7 +663,7 @@ const DEATH_SOUND: Record<number, string | string[]> = {
   51: 'die-armor', 52: 'die-flyer', 54: 'die-armor', 56: 'die-dragon', 57: 'die-bot', 58: 'die-flyer', 59: 'die-armor',
   40: 'die-beast', 41: 'die-beast', 42: 'die-brute', 44: 'die-brute', 47: 'die-beast', 48: 'die-flyer', 49: 'die-flyer', 50: 'die-flyer',
   29: 'die-flyer', 30: 'die-flyer', 31: 'die-dragon', 32: 'die-bot',
-  34: 'die-brute', 35: 'die-bot', 36: 'die-dragon', 37: 'die-brute', 38: 'die-dragon', 39: 'die-dragon',
+  34: 'die-brute', 35: 'die-bot', 36: 'die-dragon', 37: 'die-brute', 38: 'die-dragon', 39: 'die-brute', 60: 'die-brute',
 };
 const pickLevel = (v: string | string[] | undefined, lv: number) => (Array.isArray(v) ? v[Math.min(lv, v.length) - 1] : v);
 /** A fighter's attack and death sounds. */
@@ -819,6 +837,52 @@ const MACHINE = /robot|gatling|mech|helicopter/;
 /** Where a troop's shot leaves from, for the view to find on its attack pose: its sheet (`+` for its second gun), which
     of its muzzles (they take turns), and how it is drawn (the same size as `fighter` in the view). */
 const gunOf = (u: Fighter, a: Spec, i: number, which = '') => ({ sprite: a.sprite + which, i, size: a.size * (u.boss ? 1.6 : 1) * (u.grow ?? 1) * Math.pow(0.8, u.stage ?? 0), left: a.facesLeft, air: a.air });
+/** How long the King of Darkness takes to fall to the ground between his two forms, in seconds. */
+const LANDING = 1.4;
+/** One of a guardian's attacks (`moves`), in turn: the King of Darkness's orb, eye ray, skulls and portal in the air,
+    and his slam, bone spikes and pulse on foot. */
+function kingMove(s: Siege, u: Fighter, a: Spec, enemy: Fighter, alive: Fighter[], hits: { target: Fighter; damage: number; boss?: boolean; push?: number }[]) {
+  const moves = a.moves!, mv = moves[(u.move = ((u.move ?? -1) + 1) % moves.length)], dir = u.side ? -1 : 1;
+  const foes = alive.filter(v => v.side !== u.side && v.hp > 0 && reaches(u, v)), upOf = (v: Fighter) => (UNITS[v.id].air ? v.alt ?? highOf(v) : 0);
+  const ahead = (v: Fighter, from: number, to: number) => (v.x - u.x) * dir >= from && (v.x - u.x) * dir <= to;
+  if (mv.kind === 'orb') {
+    launch(s, u, { ...a, shot: 'darkorb', spin: false }, enemy.x, enemy.lane, upOf(enemy));
+    for (const v of foes) if (Math.abs(v.x - enemy.x) <= 60) hits.push({ target: v, damage: u.damage, boss: u.boss });
+    hear(s, 'magic', u.x);
+  } else if (mv.kind === 'ray') {
+    // A ray from his eyes through everything ahead of him, flyers too.
+    const up = u.alt ?? highOf(u), end = u.x + dir * (a.range + 40);
+    s.effects.push({ x: end, from: u.x, lane: u.lane, life: 0.45, max: 0.45, kind: 'shot', side: u.side, art: 'ray-red', fromUp: up, toUp: Math.max(10, up * 0.35), gun: gunOf(u, a, 0, '+') });
+    for (const v of foes) if (ahead(v, -10, a.range + 40)) hits.push({ target: v, damage: u.damage * 0.8 });
+    hear(s, 'ray', u.x);
+  } else if (mv.kind === 'skulls') {
+    // Three flaming skulls at the three nearest.
+    const near = [...foes].sort((p, q) => Math.abs(p.x - u.x) - Math.abs(q.x - u.x)).slice(0, 3);
+    near.forEach((v, i) => { launch(s, u, { ...a, shot: 'skull', spin: false }, v.x + i * 6, v.lane, upOf(v)); hits.push({ target: v, damage: u.damage * 0.6, boss: u.boss }); });
+    hear(s, 'throw', u.x);
+  } else if (mv.kind === 'summon') {
+    // A portal opens on the ground before him and two of his troops climb out of it.
+    const x = Math.max(160, u.x + dir * 70), land = foesAt(FOE_LAND, s.world);
+    fx(s, 'king-portal', x, 1.2, { size: 120 });
+    for (let i = 0; i < 2; i++) { const before = s.units.length; spawn(s, land[(s.nextId + i * 3) % land.length], 1); const n = s.units[s.units.length - 1]; if (s.units.length > before && n) { n.x = x + i * 18; n.stun = 0.6; } }
+    hear(s, 'roar', x);
+  } else if (mv.kind === 'slam') {
+    // His sword driven into the ground: everything round him struck and thrown back.
+    for (const v of foes) if (ahead(v, -50, 130)) hits.push({ target: v, damage: u.damage, push: 160 });
+    fx(s, 'hit-heavy', u.x + dir * 50, 0.35, { up: 20, centre: true, size: 110, flip: !!u.side }); fx(s, 'crack-1', u.x + dir * 40, 3, { floor: true, size: 160 });
+    hear(s, 'blunt', u.x);
+  } else if (mv.kind === 'spikes') {
+    // Bone spikes burst from the ground ahead of him, out to his reach and beyond: walkers struck and stunned.
+    for (const v of foes) if (!UNITS[v.id].air && ahead(v, 20, 280)) { hits.push({ target: v, damage: u.damage * 1.2 }); if (!UNITS[v.id].steady) v.stun = Math.max(v.stun ?? 0, 0.8); }
+    for (let d = 90; d <= 280; d += 70) fx(s, 'crack-0', u.x + dir * d, 2.5, { floor: true, size: 80 }, d / 900);
+    hear(s, 'pierce', u.x);
+  } else {
+    // A pulse of dark energy all round him, flyers too, throwing them back.
+    for (const v of foes) if (Math.abs(v.x - u.x) <= 180) hits.push({ target: v, damage: u.damage * 0.9, push: 200 });
+    s.effects.push({ x: u.x, from: u.x, lane: u.lane, life: BOOM, max: BOOM, kind: 'boom', side: u.side, size: 160, up: 40 });
+    hear(s, 'thunder', u.x);
+  }
+}
 function launch(s: Siege, u: Fighter, a: Spec, x0: number, lane: number, toUp: number) {
   // Its guns take turns, shot after shot.
   const v = (u.volley = (u.volley ?? 0) + 1);
@@ -1155,6 +1219,20 @@ export function tick(s: Siege, dt: number) {
     const slow = u.slowed !== undefined && u.slowed > s.time ? 0.35 : 1;
     const a = specOf(u); u.attack -= dt * slow; u.flash = Math.max(0, u.flash - dt); u.hit = Math.max(0, (u.hit ?? 0) - dt);
     u.moving = false;
+    // The King of Darkness at half his life: his throne breaks and he falls to the ground (`LANDING`), then rises on foot.
+    if (a.phase2 !== undefined && !u.landing && u.hp <= u.maxHp * 0.5) { u.landing = LANDING; u.stun = 0; u.knock = 0; u.frozen = 0; hear(s, 'roar', u.x); }
+    if (u.landing) {
+      u.landing = Math.max(0, u.landing - dt); u.alt = (a.flyAt ?? FLY.high) * Math.pow(u.landing / LANDING, 0.6);
+      if (!u.landing && a.phase2 !== undefined) {
+        u.id = a.phase2; u.alt = undefined; u.move = undefined; u.attack = 1.2; u.stun = 0.5;
+        fx(s, 'crash', u.x, 0.7, { size: 220 }); fx(s, 'crack-2', u.x, 5, { floor: true, size: 240 });
+        s.effects.push({ x: u.x, from: u.x, lane: u.lane, life: BOOM, max: BOOM, kind: 'boom', side: u.side, size: 150, dark: true });
+        // The shock throws ours near him back.
+        for (const v of s.units) if (v.side !== u.side && v.hp > 0 && Math.abs(v.x - u.x) < 220 && !UNITS[v.id].steady) { v.knock = KNOCK.time; v.knockBack = 140; }
+        hear(s, 'meteor', u.x);
+      }
+      continue;
+    }
     if (u.nudgeCd) u.nudgeCd = Math.max(0, u.nudgeCd - dt);
     // The ice block it is frozen in shatters when the cold wears off.
     if (u.frozen && !(u.frozen = Math.max(0, u.frozen - dt))) fx(s, 'shatter', u.x, 0.45, { size: specOf(u).size * 1.1, up: a.air ? u.alt ?? highOf(u) : 0 });
@@ -1219,7 +1297,8 @@ export function tick(s: Siege, dt: number) {
       else if (u.attack <= 0 && (!a.ram || (u.alt ?? highOf(u)) <= STRIKING)) {
         u.attack = a.rate; u.hit = 0.3;
         const area = u.boss ? Math.max(a.splash ?? 0, BOSS.area) : a.splash;
-        if (a.sweep) {
+        if (a.moves) kingMove(s, u, a, enemy, alive, hits);
+        else if (a.sweep) {
           // Everything it can reach in front of it, out to `reach`, is struck and thrown back.
           const dir = u.side ? -1 : 1;
           for (const v of alive) if (v.side !== u.side && reaches(u, v) && (v.x - u.x) * dir >= -20 && (v.x - u.x) * dir <= a.sweep.reach) hits.push({ target: v, damage: u.damage, push: a.sweep.back });
