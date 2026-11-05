@@ -944,9 +944,9 @@ export function castPower(s: Siege, card: number): boolean {
     for (let i = 0; i < n; i++) {
       // Half the bolts go for the enemies on screen, the rest are spread over the field.
       const x = foes.length && i % 2 ? foes[(i >> 1) % foes.length].x : x0 + (i + 0.5) * span / n + (rnd(i * 3 + c) - 0.5) * 24, delay = rnd(i * 5 + c * 3) * 1.4;
-      push({ x, from: x, lane: 1, life: delay + 0.65, max: 0.65, kind: 'zap', side: 0, up: (i % 3 - 1) * 8 });
+      // Each bolt its own colour, from the form's palette (`art` the form, `size` the bolt).
+      push({ x, from: x, lane: 1, life: delay + 0.65, max: 0.65, kind: 'zap', side: 0, up: (i % 3 - 1) * 8, art: String(k.level), size: i });
       s.hitq.push({ at: s.time + delay, x, r: 44, damage: form.damage, freeze: form.freeze });
-      push({ x, from: x, lane: 1, life: delay + 0.8, max: 0.8, kind: 'ground', side: 0, art: 'volt', up: (i % 3 - 1) * 8 });
       hear(s, 'thunder', x);
     }
   } else if (id === 2) {

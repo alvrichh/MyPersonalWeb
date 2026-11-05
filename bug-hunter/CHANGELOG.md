@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.183 - 2026-11-05
+
+- Siege Cartoon's lightning rain: each bolt has its own colour from its form's palette (yellow, white and cyan; violet, gold, pink and white; the storm of wrath blue, red, white and violet); the burst where a bolt hits the ground is gone; the storm clouds sit at the top of the sky, clear of the field.
+
 ## 1.15.182 - 2026-11-05
 
 - Siege Cartoon uses the second batch of the owner's effects:
