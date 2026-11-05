@@ -77,6 +77,8 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     }
   }
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /** What the battle bar showed last frame: the gold, a full energy, each card ready; a change sets off its flourish. */
+  let shownGold = -1, wasFull = false; const ready: Record<number, boolean> = {};
   const previousFocus = document.activeElement as HTMLElement | null;
   const root = document.createElement('section'); root.className = 'siege-root'; root.setAttribute('role', 'dialog'); root.setAttribute('aria-modal', 'true'); root.setAttribute('aria-label', t('siegeName'));
   const siblings = [...document.body.children].filter((el): el is HTMLElement => el instanceof HTMLElement).map(el => ({ el, inert: el.inert }));
@@ -272,7 +274,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   function purchase() {
     const x = tile(pick.row, pick.level); if (!x.next || progress.coins < x.price) return;
     const ok = shopTab === 'special' ? cartoonModel.buyPower(progress, pick.row) : shopTab === 'base' ? M.upgrade(progress, pick.row) : pick.level === 1 ? M.buyTroop(progress, pick.row) : M.levelUp(progress, pick.row);
-    if (ok) { selected = [...progress.deck]; persist(); sound('click'); }
+    if (ok) { const at = root.querySelector(`[data-sg-tile="${pick.row}:${pick.level}"]`)?.getBoundingClientRect(); selected = [...progress.deck]; persist(); sound('click'); if (at) flourish('levelup', 6, 700, { x: at.left + at.width / 2 - at.width, y: at.top + at.height / 2 - at.width, w: at.width * 2, h: at.width * 2 }, 'object-fit:contain;'); }
   }
   /** A tap on a troop form the player has puts that card in the army, or takes it out; it returns false (and says
       so) when that kind's five places are full. */
@@ -413,7 +415,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     tilt = 0; tiltBase = null; if (!motionAsks()) askTilt();
     // A tap anywhere in the battle (a card, the stick, the field) asks iPhones for the motion, the one time they let us.
     for (const kind of ['touchend', 'click'] as const) root.addEventListener(kind, () => askTilt(), { ...battleOptions, capture: true });
-    progress.deck = [...selected]; persist(); mapAct = mode === 'cartoon' ? actNow() : 0; state = M.newSiege(progress, world); bossTalked = false; bossHalf = false; baseFell = false; lootHeard = 0; gustShown = false;
+    progress.deck = [...selected]; persist(); mapAct = mode === 'cartoon' ? actNow() : 0; state = M.newSiege(progress, world); shownGold = -1; wasFull = false; for (const k in ready) delete ready[k]; bossTalked = false; bossHalf = false; baseFell = false; lootHeard = 0; gustShown = false;
     if (mode === 'cartoon') music('battle');
     V.preload(world, selected, progress.levels); paused = false; camera.x = -Infinity;
     // Laid out like Cartoon Wars 2: mana top left, both fortresses' health face to face in the middle, coins and pause
@@ -568,7 +570,9 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     }
     q('.sg-hp.is-enemy').classList.toggle('is-boss', !!guard);
     q('[data-sg-clock]').textContent = mode === 'cartoon' && cartoonModel.prefs.untimed ? '∞' : clock(Math.max(0, M.limitOf(s.world) - s.time));
-    q('[data-sg-gold]').textContent = `${progress.coins + (s.loot ?? 0)}`;
+    const gold = progress.coins + (s.loot ?? 0); if (gold > shownGold && shownGold >= 0) flourishOn(root.querySelector('.sg-gold img'), 'coin', 5, 450, 1.6); shownGold = gold;
+    q('[data-sg-gold]').textContent = `${gold}`;
+    const full = s.energy >= M.energyMax(s) - 0.01; if (full && !wasFull) flourishOn(root.querySelector('.sg-mana img'), 'energy', 5, 600, 2); wasFull = full;
     q('[data-sg-energy]').textContent = `${Math.floor(s.energy)} / ${M.energyMax(s)}`;
     const meter = q<HTMLProgressElement>('[data-sg-meter]'); meter.max = M.energyMax(s); meter.value = s.energy;
     q('[data-sg-status]').textContent = `+${M.energyRate(s).toFixed(1)}/s · ${s.units.filter(u => !u.side).length}/${M.CAP}`;
@@ -594,13 +598,41 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     }
     for (const id of tabCards()) {
       const cd = s.cooldowns[id] ?? 0;
-      const card = q<HTMLButtonElement>(`[data-sg-summon="${id}"]`); card.disabled = paused || !M.canSummon(s, id); card.classList.toggle('is-cooling', cd > 0);
+      const card = q<HTMLButtonElement>(`[data-sg-summon="${id}"]`), can = M.canSummon(s, id); card.disabled = paused || !can; card.classList.toggle('is-cooling', cd > 0);
+      // A card that has just become ready shines once.
+      if (can && ready[id] === false && !paused) flourishOn(card, 'shine', 6, 500, 1.1); ready[id] = can;
       { const tag = q(`[data-sg-cost="${id}"]`), cost = `${M.costOf(s, id)}`; if (tag.lastChild?.textContent !== cost) tag.innerHTML = `<i class="sg-bolt" aria-hidden="true">⚡ </i>${cost}`; }
       const share = cd / (mode === 'cartoon' ? cartoonModel.cooldownOf(cid(id), clv(id)) : M.UNITS[cid(id)].cooldown), bar = q(`[data-sg-cooldown="${id}"]`);
       bar.style.width = `${share * 100}%`; bar.style.setProperty('--cd', `${(share * 100).toFixed(1)}%`);
     }
     q('[data-sg-aim]').setAttribute('aria-valuenow', String(Math.round(M.aimAt(s.aim))));
     q<HTMLInputElement>('[data-sg-camera]').value = String(Math.round(camera.x / Math.max(1, M.FIELD - camera.width) * 1000));
+  }
+  /** One of the owner's drawn moments played over the screen (`siege/fx/<name>-<frame>`): over `box` (screen pixels),
+      frame by frame over `ms`, then gone. Nothing plays when motion is reduced. */
+  function flourish(name: string, frames: number, ms: number, box: { x: number; y: number; w: number; h?: number }, extra = '') {
+    if (reduced || mode !== 'cartoon') return;
+    const img = document.createElement('img'); img.className = 'sg-flourish'; img.alt = ''; img.setAttribute('aria-hidden', 'true');
+    img.style.cssText = `left:${box.x}px;top:${box.y}px;width:${box.w}px;${box.h ? `height:${box.h}px;` : ''}${extra}`;
+    let f = 0; img.src = `/images/game/siege/fx/${name}-0.webp`; root.append(img);
+    const tick = setInterval(() => { if (++f >= frames) { clearInterval(tick); img.remove(); } else img.src = `/images/game/siege/fx/${name}-${f}.webp`; }, ms / frames);
+  }
+  /** `flourish` centred on an element (scaled to it). */
+  function flourishOn(el: Element | null, name: string, frames: number, ms: number, scale = 1.4) {
+    if (!el) return; const r = el.getBoundingClientRect(), w = Math.max(r.width, r.height) * scale;
+    flourish(name, frames, ms, { x: r.left + r.width / 2 - w / 2, y: r.top + r.height / 2 - w / 2, w, h: w }, 'object-fit:contain;');
+  }
+  /** The victory: fireworks bursting round the screen and confetti falling; the defeat: a shield breaking. */
+  function celebrate(won: boolean) {
+    if (reduced || mode !== 'cartoon') return;
+    const W = innerWidth, H = innerHeight, s = Math.min(W, H);
+    if (!won) { flourish('defeat', 5, 1100, { x: W / 2 - s * 0.16, y: H * 0.06, w: s * 0.32 }); return; }
+    for (let i = 0; i < 6; i++) setTimeout(() => flourish('firework', 6, 900, { x: W * (0.12 + 0.76 * ((i * 0.37) % 1)) - s * 0.12, y: H * (0.08 + 0.3 * ((i * 0.53) % 1)), w: s * 0.24 }), i * 260);
+    for (let i = 0; i < 26; i++) {
+      const c = document.createElement('img'); c.className = 'sg-confetti'; c.alt = ''; c.setAttribute('aria-hidden', 'true'); c.src = `/images/game/siege/fx/confetti-${i % 8}.webp`;
+      c.style.cssText = `left:${(i * 0.618) % 1 * 100}vw;width:${10 + (i % 3) * 4}px;animation-delay:${(i % 9) * 0.12}s;animation-duration:${2.2 + (i % 5) * 0.3}s`;
+      root.append(c); setTimeout(() => c.remove(), 4200);
+    }
   }
   function modal(content: string) {
     root.querySelector('.sg-overlay')?.remove();
@@ -709,6 +741,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   }
   function outcome(reward: number) {
     if (!state) return;
+    setTimeout(() => celebrate(state?.phase === 'won'), 60);
     modal(`<span class="sg-eyebrow">${t('siegeSoon')}</span><h2>${t(state.phase === 'won' ? 'siegeWon' : 'siegeLost')}</h2><p>${t('siegeResult', { kills: state.kills, time: clock(state.time) })}</p>${state.loot ? `<strong>${t('siegeLoot', { n: state.loot })}</strong>` : ''}${state.phase === 'won' ? `<strong>${t('siegeReward', { n: reward })}</strong>${world === lastWorld() ? `<p>${t(mode === 'cartoon' ? 'siegeCartoonComplete' : 'siegeComplete')}</p>` : ''}` : `<p>${t('siegeRetryHint')}</p>`}<div class="sg-dialog-actions">${state.phase === 'won' && world < lastWorld() ? `<button class="sg-primary" data-sg="next">${t('siegeNext')}</button>` : `<button class="sg-primary" data-sg="retry">${t('again')}</button>`}<button data-sg="prep">${t('siegeLeave')}</button></div>`);
   }
   /** The shop tile tapped last and when, to tell a double tap. */
@@ -793,6 +826,11 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     pressed = { button, at: event.timeStamp }; button.click();
   }, { ...options, capture: true });
   for (const type of ['pointerup', 'pointercancel'] as const) window.addEventListener(type, event => touches.delete(event.pointerId), { ...options, capture: true });
+  // A press on any of Cartoon's buttons sends out a soft gold ring from the finger.
+  root.addEventListener('pointerdown', event => {
+    const b = (event.target as Element | null)?.closest('.sg-kit, .sg-round, [data-sg-summon], [data-sg-power], .sg-st-tile, [data-sg-prep], .sg-bow');
+    if (b && !(b as HTMLButtonElement).disabled) flourish('ring', 4, 320, { x: event.clientX - 28, y: event.clientY - 28, w: 56, h: 56 });
+  }, { passive: true });
   root.addEventListener('click', event => {
     if (event.timeStamp - droppedAt < 400) return;
     // The real click after a bar button already pressed by its touch-down (see above).

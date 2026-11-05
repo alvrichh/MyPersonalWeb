@@ -4,6 +4,16 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.182 - 2026-11-05
+
+- Siege Cartoon uses the second batch of the owner's effects:
+  - fortresses smoke and burn with the owner's art as they lose health; the enemy fortress collapses in a cloud of dust, throwing out stones, beams and its flag, and leaves a pile of rubble and a crack;
+  - our crossbow flashes at the tip with each volley, in its tier's look;
+  - powers: red warning rings where rockets and meteors will fall, meteors leave cooling craters, a storm sky with bolts over the screen during the lightning rain, foam bursting along the tsunami's front;
+  - the ground: scorch marks where rockets blow up, cracks under the golem's quake and the catapult's rock, dust at the heavy walkers' steps and behind a charging rhino (drawn under the troops);
+  - each world's air: drifting leaves, fireflies, sand, snow or embers, and now and then a bird across the sky;
+  - moments: the war horn as a new wave comes, the guardian's skull as it arrives, fireworks and confetti on a victory, a breaking shield on a defeat, a gold star on a purchase in the shop, a shine when a card becomes ready, sparkles when the energy fills, a spinning coin as gold comes in and a gold ring under a button press (none with reduced motion).
+
 ## 1.15.181 - 2026-11-05
 
 - Siege Cartoon's powers have their own icons (the owner's badges, steel to gold as the form rises): arrow, ice, fire and rocket rain; lightning, thunder and the storm of wrath; tsunami, great tsunami and the frozen mega tsunami; meteors, meteor storm and the apocalypse. They replace the main game's borrowed skill icons in the Special shop tab and the battle's S tab.

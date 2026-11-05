@@ -576,6 +576,19 @@ test('the owner\'s drawn effects: arrivals, hits, frozen troops shatter, machine
   assert.ok(s.effects.some(e => e.art === 'soul') && s.effects.some(e => e.art === 'loot'), 'a foe gives up its soul and its loot');
 });
 
+test('the owner\'s second batch: the fortress collapses, waves sound the horn, meteors warn and leave craters, giants raise dust', () => {
+  const s = m.newSiege({ ...m.freshProgress(), unlocked: 30, owned: [0, 9], deck: [9] }, 3); s.gusted = true; s.energy = 999;
+  s.nextWave = 0; m.tick(s, 1 / 30); s.nextWave = 0; m.tick(s, 1 / 30);
+  assert.ok(s.effects.some(e => e.art === 'horn' && e.hud), 'a new wave sounds the horn');
+  const g = m.newSiege({ ...m.freshProgress(), unlocked: 30, owned: [0, 9], deck: [9] }, 3); g.gusted = true; g.energy = 999; g.nextWave = 999;
+  m.summon(g, 9); let dust = false; for (let i = 0; i < 60; i++) { m.tick(g, 1 / 30); dust ||= g.effects.some(e => e.art === 'step' && e.floor); }
+  assert.ok(dust, 'a heavy walker raises dust at its steps');
+  s.hp[1] = 0; m.tick(s, 1 / 30);
+  assert.ok(s.razed && s.effects.some(e => e.art === 'collapse') && s.effects.some(e => e.kind === 'piece' && e.art === 'piece-flag'), 'the fortress collapses, its flag thrown out');
+  const t = m.newSiege({ ...m.freshProgress(), unlocked: 30, powers: [0, 0, 0, 1], kit: [3] }, 20); t.nextWave = 999;
+  assert.ok(m.castPower(t, 3)); assert.ok(t.effects.some(e => e.art === 'warn') && t.effects.some(e => e.art === 'crater'), 'meteors warn where they will fall and leave craters');
+});
+
 test('the catapult lobs its rock: it strikes where it lands, when it lands', () => {
   const s = m.newSiege({ ...m.freshProgress(), unlocked: 30, owned: [0, 51], deck: [51] }, 20); s.nextWave = 999; s.gusted = true; s.energy = 999;
   m.summon(s, 51); const cat = s.units[0]; cat.x = 400;

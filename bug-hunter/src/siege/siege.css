@@ -1005,3 +1005,8 @@
 }
 @media (orientation:portrait){.siege-root.is-cartoon .sg-bar .sg-deck .sg-bolt{display:none}}
 .sg-bolt{font-style:normal}
+/* The owner's drawn moments over the screen (`flourish` in index.ts): above everything, never in the way of a tap. */
+.sg-flourish{position:fixed;z-index:70;pointer-events:none;height:auto}
+.sg-confetti{position:fixed;z-index:70;top:-30px;pointer-events:none;animation:sg-confetti 2.6s linear forwards}
+@keyframes sg-confetti{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(105vh) rotate(540deg)}}
+@media (prefers-reduced-motion:reduce){.sg-confetti,.sg-flourish{display:none}}

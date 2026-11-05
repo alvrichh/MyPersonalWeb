@@ -153,8 +153,17 @@ function topOf(image: HTMLImageElement) {
 const FX_FRAMES: Record<string, number> = {
   'hit-bullet': 5, 'hit-thrown': 5, 'hit-energy': 5, 'hit-ice': 5, 'hit-magic': 5, 'hit-heavy': 5, stun: 4, shatter: 4, heal: 6, aura: 4,
   wreck: 7, soul: 6, crash: 6, loot: 6, trail: 6, smoke: 5, 'arrive-land': 6, 'arrive-air': 6, 'arrive-heavy': 6, 'arrive-foe': 6, 'rock-land': 5,
+  burn: 6, collapse: 5, warn: 4, 'storm-bolt': 3, spray: 6, crater: 5, step: 5, charge: 6, horn: 4, skull: 5,
+  'bowflash-1': 4, 'bowflash-2': 4, 'bowflash-3': 4, 'bowflash-4': 4, 'bird-blue': 4, 'bird-brown': 4,
 };
-const FX_STILLS = ['ice-block', 'piece-gear', 'piece-bolt', 'piece-plate', 'casing', 'streak'];
+/** Each world's drifting particles (`siege/fx/amb-<kind>-<n>`, six of each): how they move. */
+const AMBIENT: Record<number, { kind: string; n: number; fall: number; drift: number; spin: number; size: number }> = {
+  1: { kind: 'leaf', n: 6, fall: 22, drift: 26, spin: 1.2, size: 13 }, 2: { kind: 'leaf', n: 6, fall: 20, drift: 30, spin: 1.4, size: 12 },
+  3: { kind: 'firefly', n: 6, fall: -4, drift: 14, spin: 0, size: 12 }, 4: { kind: 'sand', n: 6, fall: 4, drift: 120, spin: 0.6, size: 16 },
+  5: { kind: 'snow', n: 6, fall: 30, drift: 12, spin: 0.8, size: 10 }, 6: { kind: 'ember', n: 6, fall: -26, drift: 10, spin: 1, size: 12 },
+};
+const FX_STILLS = ['ice-block', 'piece-gear', 'piece-bolt', 'piece-plate', 'casing', 'streak', 'storm-sky', 'rubble', 'piece-stone', 'piece-beam', 'piece-flag',
+  ...[0, 1, 2].flatMap(n => [`scorch-${n}`, `crack-${n}`]), ...Object.values(AMBIENT).flatMap(a => Array.from({ length: a.n }, (_, k) => `amb-${a.kind}-${k}`))];
 const fxFrame = (name: string, p: number) => still(`siege/fx/${name}-${Math.max(0, Math.min(FX_FRAMES[name] - 1, Math.floor(p * FX_FRAMES[name])))}`);
 const FX = [...Object.entries(FX_FRAMES).flatMap(([n, k]) => Array.from({ length: k }, (_, f) => `siege/fx/${n}-${f}`)), ...FX_STILLS.map(n => `siege/fx/${n}`), 'siege/mana', ...[0, 1, 2, 3, 4, 5, 6, 7].flatMap(n => [`siege/fx-boom-${n}`, `siege/fx-boom-dark-${n}`, `siege/fx-boom-cyan-${n}`]), 'siege/units/shot-crescent-gold', 'fx/fire-pool.webp', 'fx/fireball.webp', 'fx/rocket.webp', 'fx/volt-burst.webp', 'fx/impact.webp', 'fx/ice-block.webp', 'siege/units/shot-arrow', 'siege/units/shot-ice', 'siege/units/shot-lightning', ...[0, 1, 2].map(n => `fx/wave-strip-${n}.webp`), ...[0, 1, 2, 3, 4, 5, 6].map(n => `fx/icicle-0-${n}.webp`), 'arrows/water.webp', 'arrows/leaf.webp', 'fx/boom-big.webp', 'fx/impact.webp', ...[1, 2, 3, 4, 5, 6].map(n => `fx/bolt-y-${n}.webp`)];
 /** Pictures drawn whole (backdrop, floor, effects): no alpha crop needed. */
@@ -193,26 +202,23 @@ let manaBox = { x: 0, y: 0, w: 0, h: 0 };
 export const onMana = (x: number, y: number) => x >= manaBox.x && x <= manaBox.x + manaBox.w && y >= manaBox.y && y <= manaBox.y + manaBox.h;
 /** What our crossbow shoots, by its look: Cartoon's arrow, or a rocket from the rocket launcher (level 4). */
 let bolt = 'siege/units/bolt-1';
-let lastShots = 0, kickUntil = 0;
-/** Smoke, then flames, on a fortress as it loses health (the game's steam and flame pictures, drifting). */
+let lastShots = 0, kickUntil = 0, flashAt = -9;
+/** Smoke, then flames, on a fortress as it loses health: the owner's drawn smoke puffs and flame loops, more of them
+    the lower it gets, each burning at its own pace. */
 function damage(ctx: CanvasRenderingContext2D, w: number, h: number, left: number, hp: number, max: number, t: number) {
   const k = hp / max;
-  if (k > 0.6) return;
-  const smoke = still('fx/steam-cloud.webp'), flame = still('fx/flame-orange.webp');
-  const spots = k > 0.3 ? [[0.35, 0.45]] : [[0.3, 0.4], [0.68, 0.55], [0.5, 0.75]];
+  if (k > 0.7) return;
+  const spots = k > 0.45 ? [[0.35, 0.45]] : k > 0.2 ? [[0.3, 0.4], [0.68, 0.55]] : [[0.3, 0.4], [0.68, 0.55], [0.5, 0.75], [0.2, 0.7]];
   spots.forEach(([fx, fy], i) => {
     const x = left + w * fx, y = -h * (1 - fy);
-    if (ok(smoke)) {
-      for (let n = 0; n < 2; n++) {
-        const p = (t * 0.35 + n * 0.5 + i * 0.3) % 1, sz = 30 + p * 40;
-        ctx.globalAlpha = 0.55 * (1 - p);
-        ctx.drawImage(smoke, x - sz / 2 + p * 10, y - 20 - p * 60 - sz / 2, sz, sz * smoke.naturalHeight / smoke.naturalWidth);
-      }
-      ctx.globalAlpha = 1;
+    for (let n = 0; n < 2; n++) {
+      const p = (t * 0.45 + n * 0.5 + i * 0.3) % 1, puff = fxFrame('smoke', p), sz = 26 + p * 30;
+      if (ok(puff)) { ctx.globalAlpha = 0.8 * (1 - p); ctx.drawImage(puff, x - sz / 2 + p * 8, y - 18 - p * 50 - sz / 2, sz, sz * puff.naturalHeight / puff.naturalWidth); }
     }
-    if (k <= 0.3 && ok(flame)) {
-      const fh = 30 + Math.sin(t * 9 + i) * 4, fw = fh * flame.naturalWidth / flame.naturalHeight;
-      ctx.drawImage(flame, x - fw / 2, y - fh + 6, fw, fh);
+    ctx.globalAlpha = 1;
+    if (k <= 0.45) {
+      const flame = fxFrame('burn', (t * 1.6 + i * 0.37) % 1);
+      if (ok(flame)) { const fw = 30 + (i % 2) * 8, fh = fw * flame.naturalHeight / flame.naturalWidth; ctx.drawImage(flame, x - fw / 2, y - fh + 8, fw, fh); }
     }
   });
 }
@@ -229,10 +235,16 @@ function base(ctx: CanvasRenderingContext2D, s: Siege, x: number, ground: number
     // Kept whole on the field: a wide one moves in from the field's edge rather than past it.
     const foot = enemy ? 10 : look.deck, left = enemy ? Math.min(-w / 2, FIELD - 4 - x - w) : Math.max(-w / 2, 4 - x);
     // The enemy's pictures face front-right; the fortress is turned to face our side (left).
-    if (enemy) { ctx.save(); ctx.translate(left + w / 2, 0); ctx.scale(-1, 1); ctx.translate(-(left + w / 2), 0); }
-    ctx.drawImage(wall, left, -h + foot, w, h);
-    if (enemy) ctx.restore();
-    damage(ctx, w, h - foot, left, hp, max, s.time);
+    // Fallen, it sinks into its dust cloud and is gone; a pile of rubble is left where it stood.
+    const fall = enemy && s.razed ? s.effects.find(e => e.art === 'collapse') : undefined, sunk = enemy && s.razed ? (fall ? Math.min(1, (1 - fall.life / fall.max) / 0.45) : 1) : 0;
+    if (sunk > 0) { const rubble = still('siege/fx/rubble'); if (ok(rubble)) { const rw = w * 0.95, rh = rw * rubble.naturalHeight / rubble.naturalWidth; ctx.drawImage(rubble, left + (w - rw) / 2, foot - rh + 4, rw, rh); } }
+    if (sunk < 1) {
+      if (enemy) { ctx.save(); ctx.translate(left + w / 2, 0); ctx.scale(-1, 1); ctx.translate(-(left + w / 2), 0); }
+      ctx.save(); ctx.globalAlpha = 1 - sunk; ctx.beginPath(); ctx.rect(left - 50, -h * 2, w + 100, h * 2 + foot); ctx.clip();
+      ctx.drawImage(wall, left, -h + foot + h * sunk * 0.8, w, h); ctx.restore();
+      if (enemy) ctx.restore();
+      if (!sunk) damage(ctx, w, h - foot, left, hp, max, s.time);
+    }
     top = -h + foot - 6;
     if (!enemy) {
       // The crossbow seated in the turret, turning on its wheel.
@@ -240,7 +252,7 @@ function base(ctx: CanvasRenderingContext2D, s: Siege, x: number, ground: number
       bolt = `siege/units/bolt-${bowTier}`;
       const px = left + w * look.bow[0], py = -h + foot + h * look.bow[1];
       bowAt = { x: x + px, y: ground + py };
-      if ((s.shots ?? 0) !== lastShots) { lastShots = s.shots ?? 0; kickUntil = s.time + 0.09; }
+      if ((s.shots ?? 0) !== lastShots) { lastShots = s.shots ?? 0; kickUntil = s.time + 0.09; flashAt = s.time; }
       if (ok(arm)) {
         const aw = XBOW.width, ah = aw * arm.naturalHeight / arm.naturalWidth;
         ctx.save(); ctx.translate(px, py); ctx.rotate(bowAngle(s, ground));
@@ -251,6 +263,9 @@ function base(ctx: CanvasRenderingContext2D, s: Siege, x: number, ground: number
         bowTip = { x: bowAt.x + Math.cos(ang) * reach, y: bowAt.y + Math.sin(ang) * reach };
         // The model sends the arrows along the same path, to strike the flyers it crosses.
         s.bowFrom = { x: bowTip.x, up: ground - bowTip.y };
+        // Each volley flashes at the tip, in the look of its tier (wood, steel, gold, energy).
+        const fp = (s.time - flashAt) / 0.16, flash = fp >= 0 && fp < 1 ? fxFrame(`bowflash-${bowTier}`, fp) : undefined;
+        if (flash && ok(flash)) { const fw = 34, fh = fw * flash.naturalHeight / flash.naturalWidth; ctx.drawImage(flash, bowTip.x - x - fw / 2, bowTip.y - ground - fh / 2, fw, fh); }
       }
       top = Math.min(top, py - 30);
     }
@@ -401,9 +416,11 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   // Beams (the ray gun's and the others') are drawn first, under the troops, so a shooter stands over its own ray.
   const beam = (e: Effect) => e.kind === 'shot' && isBeam(e.art);
   for (const e of s.effects) if (beam(e) && !(e.x < left - 500 && e.from < left - 500 || e.x > right + 500 && e.from > right + 500)) effect(ctx, e, 1 - e.life / e.max, ground - 26, ground);
+  // Marks and dust on the ground lie under the troops.
+  for (const e of s.effects) if (e.floor && seen(e.x)) effect(ctx, e, 1 - e.life / e.max, ground - 26, ground);
   for (const u of s.units.filter(u => seen(u.x)).sort((a, b) => a.lane - b.lane || a.x - b.x)) fighter(ctx, s, u, ground, reduced, color);
   for (const e of s.effects) {
-    if (beam(e) || e.x < left - 500 && e.from < left - 500 || e.x > right + 500 && e.from > right + 500) continue;
+    if (e.floor || beam(e) || e.x < left - 500 && e.from < left - 500 || e.x > right + 500 && e.from > right + 500) continue;
     const p = 1 - e.life / e.max; const y = ground - 26;
     if (effect(ctx, e, p, y, ground)) continue;
     ctx.globalAlpha = e.life / e.max; ctx.strokeStyle = e.side ? '#ff98b0' : '#fff0ae'; ctx.lineWidth = 3;
@@ -412,7 +429,58 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
     else ctx.ellipse(e.x, ground + 10, 30 + p * 100, 12 + p * 26, 0, 0, Math.PI * 2);
     ctx.stroke(); ctx.globalAlpha = 1;
   }
+  if (!reduced) ambient(ctx, s, camera, ground, viewH);
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  moments(ctx, s, w, h, reduced);
+}
+/** The world's air: its particles drifting over the battle (leaves, fireflies, sand, snow, embers), and now and then a
+    bird crossing the sky. Worked out from the time alone, so nothing is kept between frames. */
+function ambient(ctx: CanvasRenderingContext2D, s: Siege, camera: Camera, ground: number, viewH: number) {
+  const a = AMBIENT[actOf(s.world)]; if (!a) return;
+  const x0 = camera.x - 40, span = camera.width + 80, top = ground - viewH + 40, depth = viewH - 60;
+  ctx.save();
+  for (let i = 0; i < 16; i++) {
+    const seed = (i * 0.618034) % 1, speed = 0.6 + ((i * 0.37) % 1) * 0.8;
+    const fy = ((seed + s.time * a.fall * speed / depth) % 1 + 1) % 1, fx = ((seed * 7.3 + s.time * a.drift * speed / span) % 1 + 1) % 1;
+    const x = x0 + fx * span + Math.sin(s.time * 1.3 + i) * 10, y = a.fall ? top + fy * depth : top + depth * (0.35 + 0.5 * seed) + Math.sin(s.time * 2 + i * 3) * 8;
+    const art = still(`siege/fx/amb-${a.kind}-${i % a.n}`); if (!ok(art)) continue;
+    const w = a.size * (0.7 + seed * 0.6), h = w * art.naturalHeight / art.naturalWidth;
+    ctx.globalAlpha = a.kind === 'firefly' ? 0.55 + 0.45 * Math.sin(s.time * 4 + i * 2) : 0.85;
+    ctx.save(); ctx.translate(x, y); ctx.rotate(Math.sin(s.time * a.spin + i) * a.spin); ctx.drawImage(art, -w / 2, -h / 2, w, h); ctx.restore();
+  }
+  // A bird across the sky every twenty seconds or so, the far side to the near.
+  const cycle = 21, k = Math.floor(s.time / cycle), q = (s.time % cycle) / 7;
+  if (q < 1) {
+    const bird = fxFrame(k % 2 ? 'bird-brown' : 'bird-blue', (s.time * 3) % 1);
+    if (ok(bird)) { const bw = 30, bh = bw * bird.naturalHeight / bird.naturalWidth; ctx.globalAlpha = 0.95; ctx.drawImage(bird, camera.x - 40 + (camera.width + 80) * q, top + 20 + (k % 3) * 22 + Math.sin(q * 9) * 6, bw, bh); }
+  }
+  ctx.restore();
+}
+/** Moments shown on the screen itself, over the battle: the war horn of a new wave, the guardian's skull as it comes,
+    and the storm sky of the lightning power with its bolts. */
+function moments(ctx: CanvasRenderingContext2D, s: Siege, w: number, h: number, reduced: boolean) {
+  for (const e of s.effects) {
+    if (e.kind !== 'anim' || !e.hud || !e.art) continue;
+    const p = 1 - e.life / e.max; if (p < 0) continue;
+    ctx.save();
+    if (e.art === 'storm-sky') {
+      const sky = still('siege/fx/storm-sky'); if (!ok(sky)) { ctx.restore(); continue; }
+      const sh = Math.min(h * 0.32, w * sky.naturalHeight / sky.naturalWidth * 1.4), y = 34 - sh * 0.25 * (1 - Math.min(1, p * 6));
+      ctx.globalAlpha = Math.min(1, p * 6, (1 - p) * 4) * 0.95;
+      for (let x = -((s.time * 12) % (sh * sky.naturalWidth / sky.naturalHeight)); x < w; x += sh * sky.naturalWidth / sky.naturalHeight) ctx.drawImage(sky, x, y, sh * sky.naturalWidth / sky.naturalHeight, sh);
+      if (!reduced) for (let i = 0; i < 3; i++) {
+        const f = (p * 5 + i * 0.37) % 1, bolt = fxFrame('storm-bolt', f); if (!ok(bolt) || f > 0.6) continue;
+        const bw = Math.min(160, w * 0.22), bh = bw * bolt.naturalHeight / bolt.naturalWidth; ctx.globalAlpha = 1 - f / 0.6;
+        ctx.drawImage(bolt, ((i * 0.31 + Math.floor(p * 5) * 0.23) % 1) * (w - bw), y + sh * 0.2, bw, bh);
+      }
+    } else {
+      // A badge popping in at the top middle, pulsing, then fading.
+      const art = fxFrame(e.art, (p * 3) % 1); if (!ok(art)) { ctx.restore(); continue; }
+      const pop = p < 0.15 ? 0.6 + 0.4 * Math.sin(p / 0.15 * Math.PI / 2) * 1.1 : 1, size = Math.min(e.size ?? 90, h * 0.24) * pop, sh = size * art.naturalHeight / art.naturalWidth;
+      ctx.globalAlpha = p > 0.8 ? (1 - p) / 0.2 : 1; ctx.drawImage(art, w / 2 - size / 2, Math.max(70, h * 0.16), size, sh);
+    }
+    ctx.restore();
+  }
 }
 
 /** A point a little further along a flight's path, for its heading; at the very end (where a step forward is the same
@@ -466,13 +534,21 @@ const SHOTS = ['rock', 'javelin', 'arrow', 'shuriken', 'rocket', 'rockets', 'sal
     leaf for theirs),
     impacts up close, and a blast with the yellow lightning for the discharge. */
 function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, ground: number) {
+  if (e.kind === 'anim' && e.art && e.hud) return true;
+  if (e.kind === 'anim' && e.art && !FX_FRAMES[e.art] && FX_STILLS.includes(e.art)) {
+    // A mark left on the ground (a scorch, a crack): flat under the troops, fading out over its last third.
+    if (p < 0) return true;
+    const art = still(`siege/fx/${e.art}`); if (!ok(art)) return false;
+    const w = e.size ?? 60, h = w * art.naturalHeight / art.naturalWidth * (e.floor ? 0.6 : 1);
+    ctx.save(); ctx.globalAlpha = (p < 0.08 ? p / 0.08 : p > 0.66 ? (1 - p) / 0.34 : 1) * 0.85; ctx.drawImage(art, e.x - w / 2, ground + 6 - (e.up ?? 0) - h * 0.7, w, h); ctx.restore(); return true;
+  }
   if (e.kind === 'anim' && e.art && FX_FRAMES[e.art]) {
     // One of the owner's drawn effects, frame by frame: standing on the ground (`up` above it), round its middle
     // (`centre`: a hit at body height), or at a shooter's muzzle (`gun`); fading over its last frames.
     if (p < 0) return true;
     const art = fxFrame(e.art, p); if (!ok(art)) return false;
     const w = e.size ?? 50, h = w * art.naturalHeight / art.naturalWidth;
-    const at = e.gun ? muzzle(e, y) : { x: e.x, y: ground - (e.up ?? 0) - (e.centre ? 0 : h / 2) };
+    const at = e.gun ? muzzle(e, y) : { x: e.x, y: ground - (e.up ?? 0) - (e.centre ? 0 : h / 2) + (e.floor ? 8 : 0) };
     ctx.save(); ctx.globalAlpha = p > 0.8 ? (1 - p) / 0.2 : 1; ctx.translate(at.x, at.y); if (e.flip) ctx.scale(-1, 1);
     ctx.drawImage(art, -w / 2, -h / 2, w, h); ctx.restore(); return true;
   }
