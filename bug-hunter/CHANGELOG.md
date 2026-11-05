@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.198 - 2026-11-05
+
+- The Villain's battle bar is red: its L and A tabs, gems, banners and trims (the owner's bar recoloured), and its card slots red instead of blue, in battle and in the shop's army bar.
+
 ## 1.15.197 - 2026-11-05
 
 - The Villain's mana monument is black stone with blood-red crystals and a red glow (in its campaign and in duels).
