@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.199 - 2026-11-05
+
+- The Villain has no crossbow: the Eye of Darkness sits in its fortress's turret (bone, iron, black-gold or shadow, by the Bow level) and flashes as it sends each volley, and instead of arrows hands burst out of the ground where they would land (skeletal, fire-clawed, a giant demon claw, shadow hands with a skull), grabbing and sinking back; its bar button is a red ball with a claw. Same aim, damage and reload as the crossbow.
+
 ## 1.15.198 - 2026-11-05
 
 - The Villain's battle bar is red: its L and A tabs, gems, banners and trims (the owner's bar recoloured), and its card slots red instead of blue, in battle and in the shop's army bar.
