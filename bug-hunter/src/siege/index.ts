@@ -8,6 +8,8 @@ import * as legacyView from './legacy/view';
 import type { Camera } from './cartoon/view';
 import type { Progress, Siege } from './cartoon/model';
 import { GUARDIAN_NAMES, bossTalk, intro, type Line } from './legacy/story';
+import { openDuel, type DuelLink, type DuelMsg } from './duel';
+import { GAME_VERSION } from '../version';
 import * as cartoonStory from './cartoon/story';
 /** Siege's two modes, each its own engine and save: Legacy (the old troops, the nine worlds and their story) and
     Cartoon (the new troops, six acts). Legacy's engine answers the same calls, its troops on a single level. */
@@ -98,6 +100,62 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     progress = villain ? cartoonModel.readProgress(storage.get(cartoonModel.VILLAIN_KEY), true) : M.readProgress(storage.get(M.SAVE_KEY));
     selected = [...progress.deck]; world = progress.unlocked; mapAct = 0; prepTab = 'map'; prep();
   }
+  /** A duel with another player (`duel.ts`): the link, whether we made the room (and so run the battle), the
+      rival's army and name, and when the battle was last sent. */
+  let duel: { link: DuelLink; host: boolean; rival?: cartoonModel.DuelArmy; name?: string; sentAt: number; started?: boolean; done?: boolean } | null = null;
+  /** Leaves a duel (telling the rival), back to the plain game. */
+  function endDuel() { if (!duel) return; const d = duel; duel = null; root.classList.remove('is-duel'); try { d.link.send({ t: 'bye' }); } catch { /* gone */ } d.link.close(); }
+  /** Plays as the hero or the Villain, loading that side's save (a duel's joiner takes the side its rival leaves). */
+  function useSide(asVillain: boolean) {
+    if (villain === asVillain) return;
+    villain = asVillain; root.classList.toggle('is-villain', villain);
+    progress = villain ? cartoonModel.readProgress(storage.get(cartoonModel.VILLAIN_KEY), true) : M.readProgress(storage.get(M.SAVE_KEY));
+    selected = [...progress.deck];
+  }
+  /** Sends a card: in a duel we joined, to the rival who runs the battle; otherwise into ours. */
+  const summonCard = (c: number) => (duel && !duel.host ? (duel.link.send({ t: 'cmd', k: 'summon', c }), true) : !!state && M.summon(state, c));
+  const raiseGenerator = () => (duel && !duel.host ? (duel.link.send({ t: 'cmd', k: 'gen' }), true) : !!state && M.improveGenerator(state));
+  /** The duel menu: the side to play, make a room (its code to pass on) or join one by its code. */
+  function duelMenu(status = '') {
+    const side = (v: boolean) => `<button class="sg-kit ${villain === v ? 'is-gold' : 'is-blue'}" data-sg="duel-side" data-sg-v="${v ? 1 : 0}" aria-pressed="${villain === v}">${v ? `😈 ${t('siegeVillainMode')}` : `🛡️ ${t('siegeHeroMode')}`}</button>`;
+    modal(`<div class="sg-pausebox sg-duelbox"><button class="sg-round is-close" data-sg="duel-cancel" aria-label="${t('siegeCancel')}"><span aria-hidden="true">✕</span></button>
+      <h2>⚔️ ${t('siegeDuel')}</h2><p>${t('siegeDuelText')}</p>
+      ${villainOpen() ? `<div class="sg-langs" role="group" aria-label="${t('siegeDuelSide')}"><span>${t('siegeDuelSide')}</span>${side(false)}${side(true)}</div>` : ''}
+      <button class="sg-kit is-gold" data-sg="duel-host">${t('siegeDuelHost')}</button>
+      <div class="sg-duel-join"><input type="text" inputmode="text" autocapitalize="characters" maxlength="4" placeholder="ABCD" aria-label="${t('siegeDuelCode')}" data-sg-duel-code><button class="sg-kit is-blue" data-sg="duel-join">${t('siegeDuelJoin')}</button></div>
+      <p class="sg-duel-status" role="status">${status}</p></div>`);
+  }
+  const duelStatus = (text: string) => { const el = root.querySelector('.sg-duel-status'); if (el) el.textContent = text; };
+  /** What the duel's link says, both as the room's maker and as the one who joined. */
+  function duelHandlers(host: boolean) {
+    return {
+      code: (code: string) => duelStatus(t('siegeDuelWait', { code })),
+      open: () => { if (host && duel) { duelStatus(t('siegeDuelConnecting')); duel.link.send({ t: 'host', v: GAME_VERSION, villain, world, name: hero.name }); } },
+      error: () => { duelStatus(t('siegeDuelError')); if (duel) { duel.link.close(); duel = null; } },
+      close: () => { if (!duel) return; duel = null; root.classList.remove('is-duel'); if (state && state.phase === 'fight') { state.phase = 'lost'; state.paid = true; paused = true; modal(`<h2>${t('siegeDuelGone')}</h2><div class="sg-dialog-actions"><button class="sg-primary" data-sg="prep">${t('siegeLeave')}</button></div>`); } else duelStatus(t('siegeDuelGone')); },
+      msg: (m: DuelMsg) => {
+        if (!duel) return;
+        if (m.t === 'version') { duelStatus(t('siegeDuelVersion', { v: m.v })); endDuel(); return; }
+        if (m.t === 'host') {
+          // We joined: check the versions, take the other side and send our army.
+          if (m.v !== GAME_VERSION) { duel.link.send({ t: 'version', v: GAME_VERSION }); duelStatus(t('siegeDuelVersion', { v: m.v })); endDuel(); return; }
+          useSide(!m.villain); world = m.world; duel.name = m.name;
+          duel.link.send({ t: 'join', v: GAME_VERSION, army: cartoonModel.armyOf({ ...progress, deck: [...selected] }), name: hero.name }); duelStatus(t('siegeDuelConnecting'));
+        } else if (m.t === 'join' && duel.host) {
+          if (m.v !== GAME_VERSION) { duel.link.send({ t: 'version', v: GAME_VERSION }); duelStatus(t('siegeDuelVersion', { v: m.v })); endDuel(); return; }
+          duel.rival = m.army; duel.name = m.name; duel.link.send({ t: 'go' }); start();
+        } else if (m.t === 'go' && !duel.host) start();
+        else if (m.t === 'snap' && !duel.host && duel.started && !duel.done) { state = m.s; state.paid = false; if (state.phase !== 'fight') duelOutcome(); }
+        else if (m.t === 'cmd' && duel.host && state) { if (m.k === 'summon' && m.c !== undefined) cartoonModel.duelSummon(state as cartoonModel.Siege, m.c); else if (m.k === 'gen') cartoonModel.duelGenerator(state as cartoonModel.Siege); }
+      },
+    };
+  }
+  /** The end of a duel: who won, a little gold for each, back to the map. */
+  function duelOutcome() {
+    if (!state || duel?.done) return; state.paid = true; paused = true; if (duel) duel.done = true;
+    const won = state.phase === 'won', gold = won ? 120 : 40; progress.coins += gold; persist();
+    modal(`<span class="sg-eyebrow">⚔️ ${t('siegeDuel')}${duel?.name ? ` · ${duel.name}` : ''}</span><h2>${t(won ? 'siegeDuelWon' : 'siegeDuelLost')}</h2><strong>${t('siegeDuelReward', { n: gold })}</strong><div class="sg-dialog-actions"><button class="sg-primary" data-sg="prep">${t('siegeLeave')}</button></div>`);
+  }
   /** Each act's guardian: the enemy's, or (the Villain campaign) the hero's. */
   const guardianOf = (i: number) => (villain ? cartoonModel.HERO_GUARDIAN[i] : cartoonModel.GUARDIAN[i]);
   const name = (id: number) => t(`${mode === 'legacy' ? 'siegeLegacyUnit' : 'siegeUnit'}${id}` as Key);
@@ -114,7 +172,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   const worldName = (n: number) => (mode === 'cartoon' ? t('siegeAct', { n }) : t(`world${n}Name` as Key));
   const focus = () => root.querySelector<HTMLElement>('.sg-overlay button, .sg-primary, .sg-play, button')?.focus();
   function close() {
-    if (finished) return; finished = true;
+    if (finished) return; finished = true; endDuel();
     cancelAnimationFrame(frame); battleAbort.abort(); abort.abort(); root.remove(); siblings.forEach(({ el, inert }) => el.inert = inert);
     closeActive = undefined; music(null); onClose(); previousFocus?.isConnected && previousFocus.focus();
   }
@@ -306,6 +364,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   /** What winning pays (the model's `settle`): Cartoon's acts on the nine-world scale. */
   const prize = (n: number, first: boolean) => (mode === 'cartoon' ? cartoonModel.prize(n, first) : first ? 160 + n * 30 : 45 + n * 5);
   function prep() {
+    if (duel && state) { endDuel(); state = null; }
     cancelAnimationFrame(frame); battleAbort.abort(); state = null; paused = false;
     // The Villain campaign has its own darker songs, in its menus and its battles.
     music(mode === 'cartoon' ? (villain ? 'villain-menu' : 'menu') : null);
@@ -411,7 +470,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     return `<div class="sg-map" style="--map:url('${pic}')"><div class="sg-turn" role="status"><span aria-hidden="true">📱↻</span><b>${t('siegeTurn')}</b><button type="button" data-sg-turn aria-label="${t('siegeTurnOk')}">✕</button></div><div class="sg-map-pic"><img src="${pic}" alt="">${buttons}</div>
       <header class="sg-map-top"><button class="sg-back" ${act ? 'data-sg-map-act="0"' : 'data-sg="exit"'} aria-label="${act ? t('siegeShopBack') : t('siegeExit')}">←</button>
         <h1 class="sg-map-title">${act ? `<small>${worldName(act)}</small>${t(`siegeCtAct${act}` as Key)}` : title()}</h1>
-        ${mode === 'cartoon' && villainOpen() ? `<button class="sg-side ${villain ? 'is-villain' : ''}" data-sg="side" aria-pressed="${villain}">${villain ? `🛡️ ${t('siegeHeroMode')}` : `😈 ${t('siegeVillainMode')}`}</button>` : ''}<span class="sg-coins"><img src="/images/game/store/coins-2.webp" alt="">${progress.coins}</span><button class="sg-round is-gear" data-sg="settings" aria-label="${t('options')}"><span aria-hidden="true">⚙</span></button></header>
+        ${mode === 'cartoon' ? `<button class="sg-side is-duel" data-sg="duel" aria-label="${t('siegeDuel')}">⚔️<span class="sg-side-label"> ${t('siegeDuel')}</span></button>` : ''}${mode === 'cartoon' && villainOpen() ? `<button class="sg-side ${villain ? 'is-villain' : ''}" data-sg="side" aria-pressed="${villain}" aria-label="${t(villain ? 'siegeHeroMode' : 'siegeVillainMode')}">${villain ? `🛡️<span class="sg-side-label"> ${t('siegeHeroMode')}</span>` : `😈<span class="sg-side-label"> ${t('siegeVillainMode')}</span>`}</button>` : ''}<span class="sg-coins"><img src="/images/game/store/coins-2.webp" alt="">${progress.coins}</span><button class="sg-round is-gear" data-sg="settings" aria-label="${t('options')}"><span aria-hidden="true">⚙</span></button></header>
       <button class="sg-map-shop" data-sg-prep="shop"><span>${t('siegeTabStore')}</span></button>${panel}</div>`;
   }
   /** The picked stage's threat on the map: what it sends most and what answers it, red with a way to the shop when the
@@ -433,9 +492,12 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     tilt = 0; tiltBase = null; if (!motionAsks()) askTilt();
     // A tap anywhere in the battle (a card, the stick, the field) asks iPhones for the motion, the one time they let us.
     for (const kind of ['touchend', 'click'] as const) root.addEventListener(kind, () => askTilt(), { ...battleOptions, capture: true });
-    progress.deck = [...selected]; persist(); mapAct = mode === 'cartoon' ? actNow() : 0; state = M.newSiege(progress, world); shownGold = -1; wasFull = false; for (const k in ready) delete ready[k]; bossTalked = false; bossHalf = false; baseFell = false; lootHeard = 0; gustShown = false;
+    progress.deck = [...selected]; persist(); mapAct = mode === 'cartoon' ? actNow() : 0;
+    // A duel: the room's maker runs it against the rival's army; the one who joined plays on what it is sent.
+    if (duel) { duel.started = true; root.classList.add('is-duel'); root.querySelector('.sg-overlay')?.remove(); }
+    state = duel ? cartoonModel.newDuel(progress, duel.rival ?? { villain: !villain, deck: [], levels: [], upgrades: [] }, world) : M.newSiege(progress, world); shownGold = -1; wasFull = false; for (const k in ready) delete ready[k]; bossTalked = false; bossHalf = false; baseFell = false; lootHeard = 0; gustShown = false;
     if (mode === 'cartoon') music(villain ? 'villain' : 'battle');
-    V.preload(world, selected, progress.levels, villain); paused = false; camera.x = -Infinity;
+    V.preload(world, [...selected, ...(duel?.rival?.deck ?? [])], progress.levels, villain); paused = false; camera.x = -Infinity;
     // Laid out like Cartoon Wars 2: mana top left, both fortresses' health face to face in the middle, coins and pause
     // top right; the field with the bow's aim on our wall; one bar below with the magic, the troop cards and the bow.
     root.innerHTML = `<div class="sg-battle"><header class="sg-hud">
@@ -475,7 +537,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       if (!pointer.moved && state && !paused) {
         const rect = canvas.getBoundingClientRect();
         // Siege Cartoon: a tap on the mana monument raises the generator, as in Cartoon Wars 2.
-        if (mode === 'cartoon' && cartoonView.onMana(e.clientX - rect.left, e.clientY - rect.top)) { if (M.improveGenerator(state)) sound('click'); updateUi(); pointer = null; return; } state.aim = Math.max(120, Math.min(M.FIELD - 120, camera.x + (e.clientX - rect.left) * camera.width / rect.width - Math.max(0, (camera.width - M.FIELD) / 2)));
+        if (mode === 'cartoon' && cartoonView.onMana(e.clientX - rect.left, e.clientY - rect.top)) { if (raiseGenerator()) sound('click'); updateUi(); pointer = null; return; } state.aim = Math.max(120, Math.min(M.FIELD - 120, camera.x + (e.clientX - rect.left) * camera.width / rect.width - Math.max(0, (camera.width - M.FIELD) / 2)));
       }
       pointer = null;
     }, battleOptions);
@@ -506,7 +568,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     function loop(now: number) {
       if (!state || finished) return;
       const delta = Math.min(0.15, (now - last) / 1000); last = now;
-      if (!paused && state.phase === 'fight') {
+      if ((!paused || duel) && state.phase === 'fight') {
         if (aimPush) state.aim = M.aimAt(state.aim + aimPush * Math.abs(aimPush) * AIM_SPEED * delta);
         if (tilt && camera.width < M.FIELD) camera.x = Math.max(camera.min ?? 0, Math.min(Math.max(0, M.FIELD - camera.width), camera.x + tilt * TILT.speed * delta));
         accumulator += delta;
@@ -542,7 +604,11 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       // The aim control stands on the deck, wherever the field puts it.
       q<HTMLElement>('.sg-aim').style.bottom = `calc(${((1 - (camera.deck ?? 0.5)) * 100).toFixed(1)}% + 6px)`;
       if (now >= uiAt) { updateUi(); uiAt = now + 100; }
-      if (state.phase !== 'fight' && !state.paid) result();
+      // The duel's maker sends the battle, turned round, to the rival ten times a second.
+      if (duel?.host && now >= duel.sentAt) { duel.sentAt = now + 100; duel.link.send({ t: 'snap', s: cartoonModel.mirrorDuel(state as cartoonModel.Siege) }); }
+      // The one who joined a duel waits for its maker's word on how it ended (its own copy only fills the gaps).
+      if (duel && !duel.host && state.phase !== 'fight' && !state.paid) state.phase = 'fight';
+      if (state.phase !== 'fight' && !state.paid) { if (duel) duelOutcome(); else result(); }
       // The guardian speaks the moment it joins, the battle held until the scene ends (Cartoon's long talk is when its stage opens; this is the short one).
       else if (state.bossSpawned && !bossTalked && state.phase === 'fight' && !villain) {
         bossTalked = true; paused = true; updateUi();
@@ -580,14 +646,14 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   function updateUi() {
     if (!state) return; const s = state;
     // Once the fortress falls, the enemy's bar is its guardian's, as in Cartoon Wars 2.
-    const guard = s.units.find(u => u.boss && u.side);
+    const guard = s.duel ? undefined : s.units.find(u => u.boss && u.side);
     for (const side of [0, 1]) {
       const [hp, max] = side && guard ? [guard.hp, guard.maxHp] : [s.hp[side], s.maxHp[side]];
       q(`[data-sg-health="${side}"]`).textContent = `${Math.ceil(Math.max(0, hp))}`;
       q(`[data-sg-bar="${side}"]`).style.width = `${Math.max(0, hp) / max * 100}%`;
     }
     q('.sg-hp.is-enemy').classList.toggle('is-boss', !!guard);
-    q('[data-sg-clock]').textContent = mode === 'cartoon' && cartoonModel.prefs.untimed ? '∞' : clock(Math.max(0, M.limitOf(s.world) - s.time));
+    q('[data-sg-clock]').textContent = s.duel ? clock(Math.max(0, cartoonModel.DUEL_LIMIT - s.time)) : mode === 'cartoon' && cartoonModel.prefs.untimed ? '∞' : clock(Math.max(0, M.limitOf(s.world) - s.time));
     const gold = progress.coins + (s.loot ?? 0); if (gold > shownGold && shownGold >= 0) flourishOn(root.querySelector('.sg-gold img'), 'coin', 5, 450, 1.6); shownGold = gold;
     q('[data-sg-gold]').textContent = `${gold}`;
     const full = s.energy >= M.energyMax(s) - 0.01; if (full && !wasFull) flourishOn(root.querySelector('.sg-mana img'), 'energy', 5, 600, 2); wasFull = full;
@@ -901,7 +967,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     if (button.dataset.sgLang && volumes.setLang) { t = volumes.setLang(button.dataset.sgLang as 'es' | 'en'); settingsMenu(); return; }
     if (button.hasAttribute('data-sg-turn')) { turnSeen = true; button.parentElement?.remove(); return; }
     if (button.dataset.sgTab && state) { tab = button.dataset.sgTab as typeof tab; cards(); return; }
-    if (summonId !== undefined && state && !paused) { if (M.summon(state, Number(summonId))) sound('click'); updateUi(); return; }
+    if (summonId !== undefined && state && (!paused || duel)) { if (summonCard(Number(summonId))) sound('click'); updateUi(); return; }
     if (action === 'exit') close();
     else if (action === 'launch') launch();
     else if (action === 'modes') modes();
@@ -911,6 +977,11 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     else if (action === 'pause') pause();
     else if (action === 'settings') settingsMenu();
     else if (action === 'side' && !state) { switchSide(); sound('click'); }
+    else if (action === 'duel' && !state) duelMenu();
+    else if (action === 'duel-side' && !state && !duel) { useSide(button.dataset.sgV === '1'); duelMenu(); }
+    else if (action === 'duel-host' && !state && !duel) { duel = { link: openDuel(null, duelHandlers(true)), host: true, sentAt: 0 }; duelStatus(t('siegeDuelConnecting')); }
+    else if (action === 'duel-join' && !state && !duel) { const code = (root.querySelector<HTMLInputElement>('[data-sg-duel-code]')?.value ?? '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 4); if (code.length < 4) { duelStatus(t('siegeDuelCode')); return; } duel = { link: openDuel(code, duelHandlers(false)), host: false, sentAt: 0 }; duelStatus(t('siegeDuelConnecting')); }
+    else if (action === 'duel-cancel') { endDuel(); prep(); }
     else if (action === 'pause-back') { if (state) pauseMenu(); else { root.querySelector('.sg-overlay')?.remove(); prep(); } }
     else if (action === 'tilt') { storage.set(TILT_KEY, tiltOn() ? '0' : ''); tilt = 0; tiltBase = null; if (tiltOn()) { tiltGranted = tiltGranted === false ? null : tiltGranted; askTilt(); } settingsMenu(); }
     else if (action === 'mute') { if (muted()) volumes.set(lastHeard[0] || 0.6, lastHeard[1] || 0.8); else { lastHeard = volumes.get(); volumes.set(0, 0); } settingsMenu(); }
@@ -925,7 +996,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     else if (action === 'home') camera.x = -Infinity;
     else if (action === 'enemy') camera.x = Math.max(0, M.FIELD - camera.width);
     else if (state && !paused && button.dataset.sgPower !== undefined) { const id = Number(button.dataset.sgPower); if (cartoonModel.castPower(state as cartoonModel.Siege, id)) sound(id === 0 ? 'bow' : id === 2 ? 'boom' : 'strike'); updateUi(); }
-    else if (state && !paused) { if (action === 'generator') M.improveGenerator(state); if (action === 'strike' && M.strike(state)) sound('strike'); if (action === 'missile' && M.missile(state)) sound('boom'); updateUi(); }
+    else if (state && !paused) { if (action === 'generator') raiseGenerator(); if (action === 'strike' && M.strike(state)) sound('strike'); if (action === 'missile' && M.missile(state)) sound('boom'); updateUi(); }
   }, options);
   root.addEventListener('input', event => {
     const el = event.target as HTMLInputElement;
@@ -953,7 +1024,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     if (key === 'l' || key === 'a' || key === 's') { tab = key === 'l' ? 'land' : key === 'a' ? 'air' : 'special'; cards(); return; }
     if (/^[1-6]$/.test(key)) { const n = Number(key) - 1; if (tab === 'special') [() => M.improveGenerator(state!), () => M.strike(state!), ...(mode === 'cartoon' ? [] : [() => M.missile(state!)])][n]?.(); else { const id = tabCards()[n]; if (id !== undefined) M.summon(state, id); } }
     else if (key === 'r') M.missile(state);
-    else if (key === 'e') M.improveGenerator(state); else if (key === 'f' || key === ' ') M.toggleBow(state); else if (key === 'q') M.strike(state);
+    else if (key === 'e') raiseGenerator(); else if (key === 'f' || key === ' ') M.toggleBow(state); else if (key === 'q') M.strike(state);
     else if (key === 'arrowleft') camera.x = Math.max(camera.min ?? 0, camera.x - 100); else if (key === 'arrowright') camera.x = Math.min(Math.max(0, M.FIELD - camera.width), camera.x + 100);
     updateUi();
   };

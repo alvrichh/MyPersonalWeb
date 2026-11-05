@@ -1015,3 +1015,14 @@
 .siege-root.is-cartoon .sg-side.is-villain{background:linear-gradient(#2a6fb8,#123a6a)}
 .siege-root.is-cartoon.is-villain .sg-map-title{color:#ff8a8a}
 @media (max-height:500px){.siege-root.is-cartoon .sg-side{height:30px;font-size:12px;padding:0 8px}}
+/* Duels: the map's Duel button, the duel menu's code box, and no crossbow or powers in a duel's battle bar. */
+.siege-root.is-cartoon .sg-side.is-duel{background:linear-gradient(#b8642a,#6a2a12)}
+.sg-duel-join{display:flex;gap:8px;width:100%}
+.sg-duel-join input{flex:1;min-width:0;min-height:40px;padding:0 10px;border:2px solid #1b1b1b;border-radius:10px;background:#0f1626;color:#fff;font:800 18px system-ui;letter-spacing:.2em;text-transform:uppercase;text-align:center}
+.sg-duel-status{min-height:1.4em;color:#ffe9a8!important;font-weight:800!important}
+.sg-duelbox p{max-width:36ch}
+.siege-root.is-duel .sg-bar .sg-bow,.siege-root.is-duel [data-sg-tab="special"],.siege-root.is-duel .sg-aim{visibility:hidden}
+/* On a narrow screen the map's Duel and Villain switches are their icons only, so the title and the gold still fit. */
+@media (max-width:600px){.sg-side-label{display:none}.siege-root.is-cartoon .sg-side{padding:0 7px;margin-right:4px}}
+@media (max-width:600px){.sg-map-top{gap:6px}.sg-map-top>.sg-back,.sg-map-top>.sg-round,.sg-map-top>.sg-side,.sg-map-top>.sg-coins{flex:none}.sg-map-top .sg-map-title{min-width:0;flex:1 1 0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:16px}}
+@media (max-width:440px){.sg-map-top .sg-map-title{visibility:hidden}}

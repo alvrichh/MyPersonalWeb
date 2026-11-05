@@ -666,6 +666,18 @@ test('the Villain\'s troops come in lines, each level another enemy troop that o
   assert.ok(old.owned.includes(22) && old.levels[22] === 2 && old.levels[15] === 2, 'an older save keeps what it bought, as levels of its lines');
 });
 
+test('a duel: two players\' armies face each other, no waves; each sees the field from its own side', () => {
+  const hero = { ...m.freshProgress(), owned: [0, 2], deck: [0, 2] }, villain = { ...m.freshVillain(), deck: [15] };
+  const s = m.newDuel(hero, m.armyOf(villain), 10); s.energy = 999; s.duel.energy = 999;
+  run(s, 20); assert.equal(s.units.filter(u => u.side).length, 0, 'no waves in a duel');
+  assert.ok(m.summon(s, 0) && m.duelSummon(s, 15) && !m.duelSummon(s, 0), 'each side sends its own cards');
+  assert.ok(!m.strike(s) && !m.castPower(s, 0), 'no crossbow strike or powers');
+  const foe = s.units.find(u => u.side); const view = m.mirrorDuel(s);
+  const mine = view.units.find(u => u.uid === foe.uid); assert.equal(mine.side, 0); assert.equal(mine.x, m.FIELD - foe.x);
+  assert.equal(view.energy, s.duel.energy); assert.ok(view.villain && !view.duel.villain, 'the villain sees itself on the left');
+  s.hp[1] = 0; m.tick(s, 1 / 30); assert.equal(s.phase, 'won'); assert.equal(m.mirrorDuel(s).phase, 'lost');
+});
+
 test('the catapult lobs its rock: it strikes where it lands, when it lands', () => {
   const s = m.newSiege({ ...m.freshProgress(), unlocked: 30, owned: [0, 51], deck: [51] }, 20); s.nextWave = 999; s.gusted = true; s.energy = 999;
   m.summon(s, 51); const cat = s.units[0]; cat.x = 400;
