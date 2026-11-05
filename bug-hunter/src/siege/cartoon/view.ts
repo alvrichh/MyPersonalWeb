@@ -154,6 +154,7 @@ const FX_FRAMES: Record<string, number> = {
   'hit-bullet': 5, 'hit-thrown': 5, 'hit-energy': 5, 'hit-ice': 5, 'hit-magic': 5, 'hit-heavy': 5, stun: 4, shatter: 4, heal: 6, aura: 4,
   wreck: 7, soul: 6, crash: 6, loot: 6, trail: 6, smoke: 5, 'arrive-land': 6, 'arrive-air': 6, 'arrive-heavy': 6, 'arrive-foe': 6, 'rock-land': 5,
   burn: 6, collapse: 5, warn: 4, 'storm-bolt': 3, spray: 6, crater: 5, step: 5, charge: 6, horn: 4, skull: 5,
+  'dragonfire': 4, 'anchor-hit': 4,
   'bowflash-1': 4, 'bowflash-2': 4, 'bowflash-3': 4, 'bowflash-4': 4, 'bird-blue': 4, 'bird-brown': 4,
 };
 /** Each world's drifting particles (`siege/fx/amb-<kind>-<n>`, six of each): how they move. */
@@ -165,7 +166,7 @@ const AMBIENT: Record<number, { kind: string; n: number; fall: number; drift: nu
 const FX_STILLS = ['ice-block', 'piece-gear', 'piece-bolt', 'piece-plate', 'casing', 'streak', 'storm-sky', 'rubble', 'piece-stone', 'piece-beam', 'piece-flag',
   ...[0, 1, 2].flatMap(n => [`scorch-${n}`, `crack-${n}`]), ...Object.values(AMBIENT).flatMap(a => Array.from({ length: a.n }, (_, k) => `amb-${a.kind}-${k}`))];
 const fxFrame = (name: string, p: number) => still(`siege/fx/${name}-${Math.max(0, Math.min(FX_FRAMES[name] - 1, Math.floor(p * FX_FRAMES[name])))}`);
-const FX = [...Object.keys(PHASED).flatMap(n => Array.from({ length: 12 }, (_, f) => `siege/fx/${n}-${f}`)), ...Object.entries(FX_FRAMES).flatMap(([n, k]) => Array.from({ length: k }, (_, f) => `siege/fx/${n}-${f}`)), ...FX_STILLS.map(n => `siege/fx/${n}`), 'siege/mana', ...[0, 1, 2, 3, 4, 5, 6, 7].flatMap(n => [`siege/fx-boom-${n}`, `siege/fx-boom-dark-${n}`, `siege/fx-boom-cyan-${n}`]), 'siege/units/shot-crescent-gold', 'fx/fire-pool.webp', 'fx/fireball.webp', 'fx/rocket.webp', 'fx/volt-burst.webp', 'fx/impact.webp', 'fx/ice-block.webp', 'siege/units/shot-arrow', 'siege/units/shot-ice', 'siege/units/shot-lightning', ...[0, 1, 2].map(n => `fx/wave-strip-${n}.webp`), ...[0, 1, 2, 3, 4, 5, 6].map(n => `fx/icicle-0-${n}.webp`), 'arrows/water.webp', 'arrows/leaf.webp', 'fx/boom-big.webp', 'fx/impact.webp', ...[1, 2, 3, 4, 5, 6].map(n => `fx/bolt-y-${n}.webp`)];
+const FX = [...Array.from({ length: 8 }, (_, f) => `siege/fx/dragonpass-${f}`), ...Array.from({ length: 12 }, (_, f) => `siege/fx/anchor-${f}`), ...Object.keys(PHASED).flatMap(n => Array.from({ length: 12 }, (_, f) => `siege/fx/${n}-${f}`)), ...Object.entries(FX_FRAMES).flatMap(([n, k]) => Array.from({ length: k }, (_, f) => `siege/fx/${n}-${f}`)), ...FX_STILLS.map(n => `siege/fx/${n}`), 'siege/mana', ...[0, 1, 2, 3, 4, 5, 6, 7].flatMap(n => [`siege/fx-boom-${n}`, `siege/fx-boom-dark-${n}`, `siege/fx-boom-cyan-${n}`]), 'siege/units/shot-crescent-gold', 'fx/fire-pool.webp', 'fx/fireball.webp', 'fx/rocket.webp', 'fx/volt-burst.webp', 'fx/impact.webp', 'fx/ice-block.webp', 'siege/units/shot-arrow', 'siege/units/shot-ice', 'siege/units/shot-lightning', ...[0, 1, 2].map(n => `fx/wave-strip-${n}.webp`), ...[0, 1, 2, 3, 4, 5, 6].map(n => `fx/icicle-0-${n}.webp`), 'arrows/water.webp', 'arrows/leaf.webp', 'fx/boom-big.webp', 'fx/impact.webp', ...[1, 2, 3, 4, 5, 6].map(n => `fx/bolt-y-${n}.webp`)];
 /** Pictures drawn whole (backdrop, floor, effects): no alpha crop needed. */
 const stills = new Map<string, HTMLImageElement>();
 function still(path: string) {
@@ -320,6 +321,7 @@ function sizeOf(canvas: HTMLCanvasElement) {
   return size;
 }
 export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, s: Siege, camera: Camera, reduced: boolean) {
+  dragAt = s.zones?.find(z => z.kind === 'drag')?.x;
   hud = camera;
   const { w, h } = sizeOf(canvas);
   if (!w || !h) return;
@@ -496,6 +498,9 @@ const shotY = (up: number | undefined, y: number) => y - 15 - Math.max(0, (up ??
     drawn (an enemy's facing left): the gun's mouth, the bow, the hand that throws, the cannon on its back. Several take
     turns, shot after shot. `+` is a second gun (the heavy robot's hands). Spells fall on their target; flames, breath
     and the enemy's shots are part of their attack pose. */
+/** Where a reaper's anchor is being hauled back to now (its `drag` zone), for drawing it there. */
+let dragAt: number | undefined;
+const zoneX = (_e: Effect) => dragAt;
 /** The lightning rain's colour by form, as a filter on the blue bolt: white-yellow lightning, orange-yellow thunder,
     and the storm of wrath's blue. */
 const BOLT_TINTS: Record<number, string> = { 1: 'hue-rotate(195deg) saturate(.75) brightness(1.35)', 2: 'hue-rotate(189deg) saturate(1.9) brightness(1.08)', 3: 'none' };
@@ -547,6 +552,24 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     const art = still(`siege/fx/${e.art}-${f}`); if (!ok(art)) return false;
     const w = e.size ?? 180, h = w * art.naturalHeight / art.naturalWidth, base = ground + 6 - (e.up ?? 0);
     ctx.drawImage(art, e.x - w / 2, ph.ground ? base - h * ph.ground : base - h / 2, w, h); return true;
+  }
+  if (e.kind === 'anim' && e.art === 'dragonpass') {
+    // The dragon flies across, breathing its fire down ahead of it (looping its breath frames), its wings beating.
+    if (p < 0) return true;
+    const art = still(`siege/fx/dragonpass-${4 + Math.floor(p * e.max * 10) % 4}`); if (!ok(art)) return false;
+    const w = e.size ?? 230, h = w * art.naturalHeight / art.naturalWidth, x = e.from + (e.x - e.from) * p;
+    ctx.save(); ctx.globalAlpha = Math.min(1, p * 8, (1 - p) * 8); ctx.drawImage(art, x - w / 2, ground - (e.up ?? 0) - h / 2, w, h); ctx.restore(); return true;
+  }
+  if (e.kind === 'anim' && e.art === 'anchor') {
+    // The reaper's anchor: thrown in an arc from our side (spinning frames), it hooks the ground and is hauled back.
+    if (p < 0) return true;
+    const t = p * e.max, throwT = e.arc ?? 0.45, w = e.size ?? 150;
+    let x: number, y: number, f: number;
+    if (t < throwT) { const q = t / throwT; x = e.from + (e.x - e.from) * q; y = ground - 40 - Math.sin(q * Math.PI) * 140; f = Math.floor(t * 14) % 4; }
+    else { const q = (t - throwT) / (e.max - throwT), z = (zoneX(e) ?? e.x); x = z; y = ground + 4; f = 4 + Math.min(3, Math.floor(q * 4)); }
+    const art = still(`siege/fx/anchor-${f}`); if (!ok(art)) return false;
+    const h = w * art.naturalHeight / art.naturalWidth; ctx.save(); ctx.globalAlpha = p > 0.9 ? (1 - p) / 0.1 : 1;
+    ctx.drawImage(art, x - w / 2, f < 4 ? y - h / 2 : y - h, w, h); ctx.restore(); return true;
   }
   if (e.kind === 'anim' && e.art && e.hud) return true;
   if (e.kind === 'anim' && e.art && !FX_FRAMES[e.art] && FX_STILLS.includes(e.art)) {
