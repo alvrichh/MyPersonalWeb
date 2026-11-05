@@ -1029,12 +1029,14 @@
 /* The Villain's battle bar (and its army bar in the shop): the owner's bar with its blue parts turned blood red
    (`bar-dark`, `bar-tab-*-dark`), and its card slots red instead of blue. */
 .siege-root.is-cartoon.is-villain .sg-bar,.siege-root.is-cartoon.is-villain .sg-bar::before,.siege-root.is-cartoon.is-villain .sg-bar::after,.siege-root.is-villain .sg-wall i,.siege-root.is-cartoon.is-villain .sg-bar .sg-bow::before,.siege-root.is-cartoon.is-villain .sg-bar .sg-bow.is-drawing::before,.siege-root.is-villain .sg-st-army{background-image:url('/images/game/siege/bar-dark.webp')}
-.siege-root.is-cartoon.is-villain .sg-bar .sg-bow.is-drawing::before{background-image:url('/images/game/siege/bow.webp')}
+.siege-root.is-cartoon.is-villain .sg-bar .sg-bow.is-drawing::before{background-image:url('/images/game/siege/bow-dark.webp');filter:grayscale(1) brightness(.8)}
 .siege-root.is-cartoon.is-villain .sg-tabs button[data-sg-tab="land"].is-on,.siege-root.is-cartoon.is-villain .sg-tabs button[data-sg-tab="land"].is-on:hover{background-image:url('/images/game/siege/bar-tab-l-dark.webp')}
 .siege-root.is-cartoon.is-villain .sg-tabs button[data-sg-tab="air"].is-on,.siege-root.is-cartoon.is-villain .sg-tabs button[data-sg-tab="air"].is-on:hover{background-image:url('/images/game/siege/bar-tab-a-dark.webp')}
 .siege-root.is-cartoon.is-villain .sg-tabs button[data-sg-tab="special"].is-on,.siege-root.is-cartoon.is-villain .sg-tabs button[data-sg-tab="special"].is-on:hover{background-image:url('/images/game/siege/bar-tab-s-dark.webp')}
 .siege-root.is-cartoon.is-villain .sg-bar .sg-deck button,.siege-root.is-cartoon.is-villain .sg-bar .sg-deck button:hover:not(:disabled),.siege-root.is-cartoon.is-villain .sg-bar .sg-deck [data-sg],.siege-root.is-cartoon.is-villain .sg-prep .sg-st-cell.is-full{background:linear-gradient(#ff6b6b8c,#a8181ca6);box-shadow:inset 0 0 calc(18 * var(--u)) #4a060699}
 .siege-root.is-cartoon.is-villain .sg-bar .sg-deck button:hover:not(:disabled),.siege-root.is-cartoon.is-villain .sg-prep .sg-st-cell.is-full:hover:not(:disabled){background:linear-gradient(#ff9a9a99,#d43a3ab3)}
 /* The Villain's bow button: the owner's red ball with a black claw (`bow-dark`, three frames closing as it sends). */
-.siege-root.is-cartoon.is-villain .sg-bar .sg-bow::before{background:url('/images/game/siege/bow-dark.webp') 0 0 / 300% 100% no-repeat;filter:none}
-.siege-root.is-cartoon.is-villain .sg-bar .sg-bow.is-drawing::before,.siege-root.is-cartoon.is-villain .sg-bar .sg-bow.is-drawing::after{background:url('/images/game/siege/bow-dark.webp') 0 0 / 300% 100% no-repeat;animation:sg-bow-frames .36s steps(3) infinite}
+.siege-root.is-cartoon.is-villain .sg-bar .sg-bow,.siege-root.is-cartoon.is-villain .sg-bar .sg-bow:hover:not(:disabled){background:url('/images/game/siege/bow-dark.webp') 0 0 / 300% 100% no-repeat;border-radius:50%}
+/* As the hero's: the part of the ball already spent is grey, and refills from the bottom as the reload comes back. */
+.siege-root.is-cartoon.is-villain .sg-bar .sg-bow::before{background:url('/images/game/siege/bow-dark.webp') 0 0 / 300% 100% no-repeat;filter:grayscale(1) brightness(.8)}
+.siege-root.is-cartoon.is-villain .sg-bar .sg-bow.is-drawing::after{background:url('/images/game/siege/bow-dark.webp') 0 0 / 300% 100% no-repeat;animation:sg-bow-frames .36s steps(3) infinite}
