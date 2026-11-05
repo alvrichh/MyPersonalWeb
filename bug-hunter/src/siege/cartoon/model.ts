@@ -164,11 +164,12 @@ export const UNITS: readonly Spec[] = [
     { price: 1800, cost: 180, hp: 800, damage: 54, rate: 1.0, range: 200, splash: 40, shot: 'rockets', blast: true, hitsAir: true, ...six('ally-robot-3', 253, 0.82) },
   ] },
   // The heavy armed robot's four forms (docs/cw2-reference.md): gatling bursts, small rockets added (MK2), a frozen
-  // cannon on its back (from here it reaches flyers), and a huge one firing rocket salvos.
+  // cannon on its back (from here it reaches flyers), and a huge one with a big cyan plasma ball from the
+  // cannon on its back and gatling bullets from its arms.
   { id: 9, cost: 200, hp: 1300, damage: 18, speed: 18, range: 200, rate: 0.5, cooldown: 22, unlock: 5, splash: 80, shot: 'bullet', steady: true, ...six('ally-heavy-robot-1', 158, 1.2975), forms: [
     { price: 1200, cost: 240, hp: 1720, damage: 64, shot: 'rockets', also: 'bullet', alsoShare: 0.2, hitsAir: true, rate: 1.4, ...six('ally-heavy-robot-2', 191, 1.1911) },
     { price: 2200, cost: 290, hp: 2310, damage: 69, hitsAir: true, shot: 'ice', also: 'bullet', alsoShare: 0.2, rate: 1.2, ...six('ally-heavy-robot-3', 196, 1.2245) },
-    { price: 4000, cost: 350, hp: 2960, damage: 55, splash: 100, hitsAir: true, blast: true, shot: 'salvo', also: 'plasma-cyan', alsoShare: 0.35, rate: 0.8, ...six('ally-heavy-robot-4', 273, 1.1355) },
+    { price: 4000, cost: 350, hp: 2960, damage: 55, splash: 100, hitsAir: true, blast: true, shot: 'plasma-cyan', also: 'bullet', alsoShare: 0.35, rate: 0.8, ...six('ally-heavy-robot-4', 273, 1.1355) },
   ] },
   // Ours, air (Cartoon Wars 2's A row): they fly over the field, out of reach of melee troops; only ranged ones hit them.
   // The aircraft fighter's four forms: a sword under a propeller pack, then with goggles and scarf, two rotors and blue
@@ -186,9 +187,9 @@ export const UNITS: readonly Spec[] = [
     { price: 2000, cost: 120, hp: 240, damage: 20, range: 220, rate: 0.5, splash: 60, shot: 'ray-pink', ...six('ally-armed-fighter-4', 285, 0.5702) },
   ] },
   // The armed helicopter's three forms: green with one rocket, blue with a pair, and the black and gold gunship's salvo.
-  { id: 12, flyAt: 125, cost: 95, hp: 320, damage: 22, speed: 50, range: 210, rate: 0.9, cooldown: 10, unlock: 4, air: true, splash: 50, shot: 'rocket', spin: false, ...six('ally-helicopter-1', 169, 1.0355), forms: [
-    { price: 800, cost: 120, hp: 425, damage: 21, splash: 55, shot: 'rockets', rate: 0.7, ...six('ally-helicopter-2', 196, 1.0204) },
-    { price: 2000, cost: 170, hp: 620, damage: 19, range: 230, splash: 70, shot: 'salvo', rate: 0.5, ...six('ally-helicopter-3', 201, 1.1443) },
+  { id: 12, flyAt: 125, cost: 95, hp: 320, damage: 22, speed: 50, range: 210, rate: 0.9, cooldown: 10, unlock: 4, air: true, splash: 50, shot: 'rocket-dark', spin: false, ...six('ally-helicopter-1', 169, 1.0355), forms: [
+    { price: 800, cost: 120, hp: 425, damage: 21, splash: 55, shot: 'rockets-dark', rate: 0.7, ...six('ally-helicopter-2', 196, 1.0204) },
+    { price: 2000, cost: 170, hp: 620, damage: 19, range: 230, splash: 70, shot: 'salvo-dark', rate: 0.5, ...six('ally-helicopter-3', 201, 1.1443) },
   ] },
   // The drill aircraft, the flying shield (docs/cw2-reference.md): a drill rocket that rams, then a heavier gold one.
   { id: 13, flyAt: 98, cost: 80, hp: 360, damage: 27, speed: 55, range: 40, rate: 1.2, cooldown: 8, unlock: 3, air: true, ram: 90, ...six('ally-drill-1', 199, 0.5528), forms: [
@@ -607,7 +608,7 @@ const ATTACK_SOUND: Record<number, string | string[]> = {
   25: 'claw', 26: 'breath', 27: 'blade', 28: 'claw', 29: 'claw', 30: 'magic', 31: 'blade', 32: 'gatling',
   34: 'throw', 35: 'gatling', 36: 'breath', 37: 'blunt', 38: 'bite', 39: 'bite',
 };
-const SHOT_SOUND: Record<string, string> = { 'crescent-gold': 'wind', rock: 'throw', javelin: 'throw', shuriken: 'throw', arrow: 'bow', rocket: 'rocket', rockets: 'rocket', salvo: 'rocket', ray: 'ray', 'ray-blue': 'ray', 'ray-gold': 'ray', 'ray-pink': 'thunder', 'ray-red': 'ray', 'arrow-red': 'bow', boulder: 'throw', 'boulder-blue': 'rocket', bomb: 'rocket', plasma: 'ray', ice: 'ray', crescent: 'magic', none: 'flame', lightning: 'thunder', tornado: 'wind', meteor: 'meteor' };
+const SHOT_SOUND: Record<string, string> = { 'crescent-gold': 'wind', rock: 'throw', javelin: 'throw', shuriken: 'throw', arrow: 'bow', rocket: 'rocket', rockets: 'rocket', salvo: 'rocket', 'rocket-dark': 'rocket', 'rockets-dark': 'rocket', 'salvo-dark': 'rocket', 'plasma-cyan': 'ray', ray: 'ray', 'ray-blue': 'ray', 'ray-gold': 'ray', 'ray-pink': 'thunder', 'ray-red': 'ray', 'arrow-red': 'bow', boulder: 'throw', 'boulder-blue': 'rocket', bomb: 'rocket', plasma: 'ray', ice: 'ray', crescent: 'magic', none: 'flame', lightning: 'thunder', tornado: 'wind', meteor: 'meteor' };
 /** Bullets (`bullet`, `bullet-rifle|uzi|sniper`) sound like the gun that fires them; beams (`ray`, `ray-blue|gold|pink`) reach at once. */
 export const isBullet = (shot?: string) => !!shot?.startsWith('bullet');
 export const isBeam = (shot?: string) => !!shot?.startsWith('ray');
@@ -765,7 +766,7 @@ function arrows(s: Siege, count: number) {
 /** What a fighter's attack shows flying to `x` (a troop, or the enemy fortress): its own projectile, the wizard's three
     meteors with their fire, and a blast where a rocket of the robots' last forms lands. Damage is dealt apart. */
 /** The shots that are rockets. */
-const ROCKET_SHOTS = new Set(['rocket', 'rockets', 'salvo', 'missile']);
+const ROCKET_SHOTS = new Set(['rocket', 'rockets', 'salvo', 'missile', 'rocket-dark', 'rockets-dark', 'salvo-dark']);
 /** Where a troop's shot leaves from, for the view to find on its attack pose: its sheet (`+` for its second gun), which
     of its muzzles (they take turns), and how it is drawn (the same size as `fighter` in the view). */
 const gunOf = (u: Fighter, a: Spec, i: number, which = '') => ({ sprite: a.sprite + which, i, size: a.size * (u.boss ? 1.6 : 1) * (u.grow ?? 1) * Math.pow(0.8, u.stage ?? 0), left: a.facesLeft, air: a.air });
@@ -783,14 +784,14 @@ function launch(s: Siege, u: Fighter, a: Spec, x0: number, lane: number, toUp: n
       s.effects.push({ x, from: x, lane: lane, life: flight + wait + FIRE, max: FIRE, kind: 'fire', side: u.side, size: 60, up: dy });
     }
   } else s.effects.push({ x: x0, from: u.x, lane: lane, life: flight, max: flight, kind: u.elite ? 'bolt' : 'shot', side: u.side, art: a.shot, spin: a.spin, fromUp: a.air ? u.alt ?? highOf(u) : 0, toUp, arc: a.lob ? Math.min(190, 60 + Math.abs(x0 - u.x) * 0.3) : undefined, gun: gunOf(u, a, v) });
-  // A second gun (the heavy robot's): a burst of three bullets from its hands beside its rockets, one after another,
-  // or (its last form) one big cyan plasma ball.
+  // A second gun (the heavy robot's): a burst of three bullets from its hands beside what its back fires (rockets, ice,
+  // its last form's big cyan plasma ball from the cannon), one after another.
   if (a.also) {
     const ball = !isBullet(a.also);
     for (let k = 0; k < (ball ? 1 : 3); k++) s.effects.push({ x: x0 + (ball ? 0 : (k - 1) * 12), from: u.x, lane: lane, life: (ball ? 0.3 : 0.16) + k * 0.09, max: ball ? 0.3 : 0.16, kind: 'shot', side: u.side, art: a.also, fromUp: a.air ? u.alt ?? highOf(u) : 0, toUp: toUp + 4 + k * 10, gun: gunOf(u, a, v + k, '+') });
   }
   // Every rocket blows up where it lands, with the explosion art (bigger for salvos and the robots' blasts).
-  if (a.blast || ROCKET_SHOTS.has(a.shot ?? '')) s.effects.push({ x: x0, from: x0, lane: lane, life: flight + BOOM, max: BOOM, kind: 'boom', side: u.side, size: a.shot === 'salvo' ? 90 : a.blast ? 70 : 56, up: toUp, dark: true });
+  if (a.blast || ROCKET_SHOTS.has(a.shot ?? '')) s.effects.push({ x: x0, from: x0, lane: lane, life: flight + BOOM, max: BOOM, kind: 'boom', side: u.side, size: a.shot?.startsWith('salvo') ? 90 : a.blast ? 70 : 56, up: toUp, dark: a.shot !== 'plasma-cyan' });
 }
 /** Start (true) or stop (false) the archers; they only start with at least one shot in the quiver. */
 export function draw(s: Siege, on: boolean) { if (s.phase === 'fight') s.bow.drawing = on && s.bow.quiver >= BOW.cost; }

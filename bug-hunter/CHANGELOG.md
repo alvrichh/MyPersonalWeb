@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.176 - 2026-11-05
+
+- The heavy armed robot's last form fires its big cyan plasma ball from the cannon on its back (in place of the rocket salvo, with a bright blast) and gatling bullets from its arms (35% of its damage on top).
+- The attack helicopter's rockets are black and gold (their own art; the other troops' rockets keep theirs).
+
 ## 1.15.175 - 2026-11-05
 
 - Siege Cartoon: every troop's shot leaves from its own weapon, measured on its attack pose (the gun's mouth, the bow, the throwing hand, the cannon on the back, the catapult's cup, the helicopter's pods), at its drawn size; troops with two guns take turns.
