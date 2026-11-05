@@ -121,6 +121,9 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   /** The owner's "everything free" testing switch, remembered on this device. */
   const FREE_KEY = 'bugHunter.siege.cartoon.free';
   cartoonModel.testing.free = storage.get(FREE_KEY) === '1';
+  /** No time limit (settings): battles end only when a base falls, remembered on this device. */
+  const UNTIMED_KEY = 'bugHunter.siege.cartoon.untimed';
+  cartoonModel.prefs.untimed = storage.get(UNTIMED_KEY) === '1';
   // The view (settings): the whole field at once is offered on a wide screen with a mouse, where the troops stay legible.
   const WIDE_KEY = 'bugHunter.siege.cartoon.wide', wideScreen = () => matchMedia('(min-width: 900px) and (pointer: fine)').matches;
   V.viewPrefs.wide = storage.get(WIDE_KEY) === '1' && wideScreen();
@@ -563,7 +566,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       q(`[data-sg-bar="${side}"]`).style.width = `${Math.max(0, hp) / max * 100}%`;
     }
     q('.sg-hp.is-enemy').classList.toggle('is-boss', !!guard);
-    q('[data-sg-clock]').textContent = clock(Math.max(0, M.limitOf(s.world) - s.time));
+    q('[data-sg-clock]').textContent = mode === 'cartoon' && cartoonModel.prefs.untimed ? '∞' : clock(Math.max(0, M.limitOf(s.world) - s.time));
     q('[data-sg-gold]').textContent = `${progress.coins + (s.loot ?? 0)}`;
     q('[data-sg-energy]').textContent = `${Math.floor(s.energy)} / ${M.energyMax(s)}`;
     const meter = q<HTMLProgressElement>('[data-sg-meter]'); meter.max = M.energyMax(s); meter.value = s.energy;
@@ -682,9 +685,10 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       ${volumes.lang ? `<div class="sg-langs" role="group" aria-label="${t('language')}"><span>🌐 ${t('language')}</span>${(['es', 'en'] as const).map(l => `<button class="sg-kit ${volumes.lang!() === l ? 'is-gold' : 'is-blue'}" data-sg-lang="${l}" aria-pressed="${volumes.lang!() === l}">${l === 'es' ? 'Español' : 'English'}</button>`).join('')}</div>` : ''}
       ${wideScreen() ? `<div class="sg-langs" role="group" aria-label="${t('siegeView')}"><span>🔭 ${t('siegeView')}</span><button class="sg-kit ${V.viewPrefs.wide ? 'is-blue' : 'is-gold'}" data-sg="view-close" aria-pressed="${!V.viewPrefs.wide}">${t('siegeViewClose')}</button><button class="sg-kit ${V.viewPrefs.wide ? 'is-gold' : 'is-blue'}" data-sg="view-wide" aria-pressed="${V.viewPrefs.wide}">${t('siegeViewWide')}</button></div>` : ''}
       ${touchScreen() ? `<button class="sg-kit ${tiltOn() ? 'is-gold' : 'is-blue'}" data-sg="tilt" aria-pressed="${tiltOn()}">📱 ${t('siegeTilt')}: ${tiltOn() ? (tiltGranted === false ? t('siegeTiltRefused') : t('siegeOn')) : t('siegeOff')}</button>` : ''}
-      ${canFullscreen() ? `<button class="sg-kit ${fullscreenOn() ? 'is-gold' : 'is-blue'}" data-sg="fullscreen" aria-pressed="${fullscreenOn()}">⛶ ${t(fullscreenOn() ? 'siegeFullscreenOff' : 'siegeFullscreen')}</button>` : ''}
+      <div class="sg-toggles">${canFullscreen() ? `<button class="sg-kit ${fullscreenOn() ? 'is-gold' : 'is-blue'}" data-sg="fullscreen" aria-pressed="${fullscreenOn()}">⛶ ${t(fullscreenOn() ? 'siegeFullscreenOff' : 'siegeFullscreen')}</button>` : ''}
+      ${mode === 'cartoon' ? `<button class="sg-kit ${cartoonModel.prefs.untimed ? 'is-gold' : 'is-blue'}" data-sg="untimed" aria-pressed="${cartoonModel.prefs.untimed}">⏱ ${t('siegeUntimed')}: ${cartoonModel.prefs.untimed ? t('siegeOn') : t('siegeOff')}</button>` : ''}
       ${state ? '' : `<button class="sg-kit ${cartoonModel.testing.free ? 'is-gold' : 'is-blue'}" data-sg="free" aria-pressed="${cartoonModel.testing.free}">${t('siegeFreeAll')}: ${cartoonModel.testing.free ? t('siegeOn') : t('siegeOff')}</button>
-      <button class="sg-kit is-red" data-sg="reset">${t('siegeReset')}</button>`}
+      <button class="sg-kit is-red" data-sg="reset">${t('siegeReset')}</button>`}</div>
       <div class="sg-kit-actions"><button class="sg-kit is-blue" data-sg="pause-back">← ${t(state ? 'paused' : 'siegeTabMap')}</button></div></div>`);
     root.querySelectorAll<HTMLInputElement>('[data-sg-vol]').forEach(input => input.addEventListener('input', () => {
       const [mm, ff] = volumes.get(), v = Number(input.value) / 100;
@@ -844,6 +848,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     else if (action === 'mute') { if (muted()) volumes.set(lastHeard[0] || 0.6, lastHeard[1] || 0.8); else { lastHeard = volumes.get(); volumes.set(0, 0); } settingsMenu(); }
     else if (action === 'view-close' || action === 'view-wide') { V.viewPrefs.wide = action === 'view-wide'; storage.set(WIDE_KEY, V.viewPrefs.wide ? '1' : ''); settingsMenu(); }
     else if (action === 'fullscreen') { (fullscreenOn() ? document.exitFullscreen() : document.documentElement.requestFullscreen()).catch(() => {}).then(() => settingsMenu()); }
+    else if (action === 'untimed') { cartoonModel.prefs.untimed = !cartoonModel.prefs.untimed; storage.set(UNTIMED_KEY, cartoonModel.prefs.untimed ? '1' : ''); updateUi(); settingsMenu(); }
     else if (action === 'free') { cartoonModel.testing.free = !cartoonModel.testing.free; storage.set(FREE_KEY, cartoonModel.testing.free ? '1' : ''); settingsMenu(); }
     else if (action === 'reset') {
       modal(`<div class="sg-pausebox"><h2>${t('siegeReset')}</h2><p>${t('siegeResetAsk')}</p><div class="sg-kit-actions"><button class="sg-kit is-red" data-sg="reset-yes">${t('siegeReset')}</button><button class="sg-kit is-blue" data-sg="settings">${t('siegeCancel')}</button></div></div>`);
