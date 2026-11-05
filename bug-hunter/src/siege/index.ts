@@ -750,6 +750,10 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   }
   /** The shop tile tapped last and when, to tell a double tap. */
   let lastTile = { key: '', at: -1e9 };
+  /** The map stage tapped last and when, to tell a double tap (it starts that battle). */
+  let lastPick = { n: -1, at: -1e9 };
+  /** Starts the picked stage's battle, after its act card and story when it has them. */
+  function launch() { mode === 'legacy' ? talk(intro(world), start) : cartoonModel.stageIn(world) === 1 ? actCard(actNow(), () => talk(cartoonStory.intro(actNow()), start)) : cartoonModel.guarded(world) ? talk(cartoonStory.bossTalk(actNow()), start) : start(); }
   /** Redraws the preparation screen keeping the shop grid's scroll, then focuses `focus` (without scrolling). */
   function redraw(focus: string) {
     const g = root.querySelector('.sg-st-grid')?.scrollTop ?? 0; prep();
@@ -872,14 +876,19 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       if (mapAct && actNow() !== mapAct) world = Math.min(mapAct * cartoonModel.STAGES, progress.unlocked);
       sound('click'); prep(); return;
     }
-    if (button.dataset.sgWorldPick && !state) { world = Number(button.dataset.sgWorldPick); const left = root.querySelector('.sg-isles')?.scrollLeft ?? 0; prep(); const isles = root.querySelector('.sg-isles'); if (isles) isles.scrollLeft = left; root.querySelector<HTMLElement>(`[data-sg-world-pick="${world}"]`)?.focus(); return; }
+    if (button.dataset.sgWorldPick && !state) {
+      // A second tap on the same stage (not an island) goes straight into its battle, as Start would.
+      const n = Number(button.dataset.sgWorldPick), twice = !button.classList.contains('sg-isle') && lastPick.n === n && event.timeStamp - lastPick.at < 450;
+      lastPick = { n, at: twice ? -1e9 : event.timeStamp };
+      if (twice && n === world) { launch(); return; }
+      world = n; const left = root.querySelector('.sg-isles')?.scrollLeft ?? 0; prep(); const isles = root.querySelector('.sg-isles'); if (isles) isles.scrollLeft = left; root.querySelector<HTMLElement>(`[data-sg-world-pick="${world}"]`)?.focus(); return; }
     if (up !== undefined && !state) { if (M.upgrade(progress, Number(up))) { persist(); prep(); } return; }
     if (button.dataset.sgLang && volumes.setLang) { t = volumes.setLang(button.dataset.sgLang as 'es' | 'en'); settingsMenu(); return; }
     if (button.hasAttribute('data-sg-turn')) { turnSeen = true; button.parentElement?.remove(); return; }
     if (button.dataset.sgTab && state) { tab = button.dataset.sgTab as typeof tab; cards(); return; }
     if (summonId !== undefined && state && !paused) { if (M.summon(state, Number(summonId))) sound('click'); updateUi(); return; }
     if (action === 'exit') close();
-    else if (action === 'launch') mode === 'legacy' ? talk(intro(world), start) : cartoonModel.stageIn(world) === 1 ? actCard(actNow(), () => talk(cartoonStory.intro(actNow()), start)) : cartoonModel.guarded(world) ? talk(cartoonStory.bossTalk(actNow()), start) : start();
+    else if (action === 'launch') launch();
     else if (action === 'modes') modes();
     else if (action === 'retry') start();
     else if (action === 'prep') prep();

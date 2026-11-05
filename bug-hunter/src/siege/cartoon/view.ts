@@ -406,6 +406,8 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   }
   ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.drawImage(backdrop.canvas, 0, 0);
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.scale(scale, scale); ctx.translate(-camera.x + Math.max(0, (camera.width - FIELD) / 2), 0);
+  // The world's air (leaves, snow, embers, birds) drifts in the background, behind the fortresses and the troops.
+  if (!reduced) ambient(ctx, s, camera, ground, viewH);
   base(ctx, s, 80, ground, '#55e5c4', false);
   base(ctx, s, FIELD - 80, ground, '#ff718c', true);
   mana(ctx, s, ground);
@@ -431,7 +433,6 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
     else ctx.ellipse(e.x, ground + 10, 30 + p * 100, 12 + p * 26, 0, 0, Math.PI * 2);
     ctx.stroke(); ctx.globalAlpha = 1;
   }
-  if (!reduced) ambient(ctx, s, camera, ground, viewH);
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   moments(ctx, s, w, h, reduced);
 }
@@ -446,8 +447,9 @@ function ambient(ctx: CanvasRenderingContext2D, s: Siege, camera: Camera, ground
     const fy = ((seed + s.time * a.fall * speed / depth) % 1 + 1) % 1, fx = ((seed * 7.3 + s.time * a.drift * speed / span) % 1 + 1) % 1;
     const x = x0 + fx * span + Math.sin(s.time * 1.3 + i) * 10, y = a.fall ? top + fy * depth : top + depth * (0.35 + 0.5 * seed) + Math.sin(s.time * 2 + i * 3) * 8;
     const art = still(`siege/fx/amb-${a.kind}-${i % a.n}`); if (!ok(art)) continue;
-    const w = a.size * (0.7 + seed * 0.6), h = w * art.naturalHeight / art.naturalWidth;
-    ctx.globalAlpha = a.kind === 'firefly' ? 0.55 + 0.45 * Math.sin(s.time * 4 + i * 2) : 0.85;
+    // Far off: small and a little faded, so they read as the distance, not as things in front of the battle.
+    const w = a.size * (0.5 + seed * 0.35), h = w * art.naturalHeight / art.naturalWidth;
+    ctx.globalAlpha = a.kind === 'firefly' ? 0.4 + 0.35 * Math.sin(s.time * 4 + i * 2) : 0.6;
     ctx.save(); ctx.translate(x, y); ctx.rotate(Math.sin(s.time * a.spin + i) * a.spin); ctx.drawImage(art, -w / 2, -h / 2, w, h); ctx.restore();
   }
   // A bird across the sky every twenty seconds or so, the far side to the near.

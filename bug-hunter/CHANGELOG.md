@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.192 - 2026-11-05
+
+- Siege Cartoon: the world's drifting leaves, snow, embers and birds are drawn in the background (behind the fortresses and troops), smaller and fainter.
+- On the map, a double tap on a stage starts its battle straight away (no need to press Start).
+
 ## 1.15.191 - 2026-11-05
 
 - Siege Cartoon's final guardian is the King of Darkness (the owner's skeletal king, replacing the Giant King Dinosaur Brute):
