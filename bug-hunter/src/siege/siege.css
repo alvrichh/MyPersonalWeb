@@ -996,3 +996,12 @@
 @media (max-width:600px){.sg-shop-only .sg-st-card{margin-bottom:0}.sg-shop-only .sg-st-actions{margin-top:2px}}
 /* The energy on each army card scales with the bar, so on a small bar it stays a corner tag and the troop shows. */
 .sg-st-army .sg-st-cell small{right:1px;bottom:1px;padding:0 .3em;font-size:max(8px,calc(34 * var(--u)));line-height:1.15;border-radius:4px}
+/* Battle bar on a narrow (portrait) screen: the cards are small, so the troop fills its card and the energy is a small
+   tag in its corner, scaled with the bar, instead of a badge across its middle. */
+@media (orientation:portrait){
+  .siege-root.is-cartoon .sg-bar .sg-deck button,.siege-root.is-cartoon .sg-bar .sg-deck button:hover:not(:disabled){padding:0;justify-content:flex-start}
+  .siege-root.is-cartoon .sg-bar .sg-deck img{width:100%;height:100%}
+  .siege-root.is-cartoon .sg-bar .sg-deck small{position:absolute;right:0;bottom:0;z-index:3;padding:0 .25em;font-size:max(8px,calc(36 * var(--u)));line-height:1.1;border-radius:3px}
+}
+@media (orientation:portrait){.siege-root.is-cartoon .sg-bar .sg-deck .sg-bolt{display:none}}
+.sg-bolt{font-style:normal}

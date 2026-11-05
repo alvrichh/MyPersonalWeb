@@ -594,7 +594,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     for (const id of tabCards()) {
       const cd = s.cooldowns[id] ?? 0;
       const card = q<HTMLButtonElement>(`[data-sg-summon="${id}"]`); card.disabled = paused || !M.canSummon(s, id); card.classList.toggle('is-cooling', cd > 0);
-      q(`[data-sg-cost="${id}"]`).textContent = `⚡ ${M.costOf(s, id)}`;
+      { const tag = q(`[data-sg-cost="${id}"]`), cost = `${M.costOf(s, id)}`; if (tag.lastChild?.textContent !== cost) tag.innerHTML = `<i class="sg-bolt" aria-hidden="true">⚡ </i>${cost}`; }
       const share = cd / (mode === 'cartoon' ? cartoonModel.cooldownOf(cid(id), clv(id)) : M.UNITS[cid(id)].cooldown), bar = q(`[data-sg-cooldown="${id}"]`);
       bar.style.width = `${share * 100}%`; bar.style.setProperty('--cd', `${(share * 100).toFixed(1)}%`);
     }

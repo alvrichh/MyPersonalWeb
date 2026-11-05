@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.180 - 2026-11-05
+
+- Siege Cartoon's battle bar in portrait: each troop fills its card and its energy is a small corner tag (no lightning sign), so the cards show their troops on an upright phone.
+
 ## 1.15.179 - 2026-11-05
 
 - Siege Cartoon's shop: the army bar no longer sits under the units' stone frame (and, on a narrow phone, under the picked troop's card); the energy tag on each army card scales with the bar, so the troops show on a phone.
