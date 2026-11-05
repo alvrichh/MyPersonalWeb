@@ -4,6 +4,13 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.188 - 2026-11-05
+
+- Siege Cartoon has three new powers, with the owner's icons and animations:
+  - Black hole (act 5, 1600 gold): a vortex opens where the enemy on screen is thickest, drags them into its centre for 2.4 seconds (not the guardians or the steady) and bursts.
+  - Sword of judgement (act 4, 1300 gold): a huge sword falls on the strongest enemy on screen (a guardian first), stuns and strikes, then stays stuck for four seconds striking all round it.
+  - Healing sanctuary (act 2, 700 gold): a ring of green light at the front of our army heals the troops inside it for six seconds.
+
 ## 1.15.187 - 2026-11-05
 
 - Siege Cartoon's war horn sounds once, the first time our troops strike the enemy fortress, instead of with every enemy wave.
