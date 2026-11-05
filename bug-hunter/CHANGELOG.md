@@ -4,6 +4,14 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.193 - 2026-11-05
+
+- Siege Cartoon's Villain campaign, opened by winning the last battle (a Villain switch on the map):
+  - its own save and shop: the enemy's troops (each with an energy cost by its strength and a gold price), opened act by act, and the six guardians as cards (each once its act's last battle is won; one a battle, as a guardian; the King of Darkness keeps both his forms);
+  - the screen turned round: the dark fortress is ours on the left, our castle the one to take on the right, the world mirrored so the corrupt side is ours;
+  - our heroes come in waves at the forms their act reaches, and each act's last battle ends with a hero guardian (heavy armour, blaster, archangel, golem, dragon, star eater);
+  - no story in it; balanced with simulations (a moderately upgraded Villain wins every battle but the guardians' without the crossbow, powers or guardian cards).
+
 ## 1.15.192 - 2026-11-05
 
 - Siege Cartoon: the world's drifting leaves, snow, embers and birds are drawn in the background (behind the fortresses and troops), smaller and fainter.
