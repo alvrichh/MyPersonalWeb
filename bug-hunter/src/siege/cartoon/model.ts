@@ -625,6 +625,8 @@ export interface Siege {
   villain?: boolean;
   /** A guardian card has been played this battle (one each battle). */
   bossUsed?: boolean;
+  /** A duel with another player (side 1): their army, energy and fortress; no waves, guardians, crossbow or powers. */
+  duel?: DuelSide;
   /** The enemy fortress has fallen (its collapse has been shown). */
   razed?: boolean;
   /** Our troops have reached the enemy fortress (the war horn has sounded). */
@@ -654,6 +656,45 @@ export const enemyTier = (stage: number) => [1, 2, 3, 4, 4, 5][Math.min(ACTS, Ma
 export const energyMax = (s: Siege) => 200 + (s.pool ?? 0) * MANA_STEP + s.generator * 100;
 export const energyRate = (s: Siege) => 8 + s.generator * 3 + (s.pool ?? 0) * 0.6 + s.economy;
 export const generatorPrice = (s: Siege) => 80 + s.generator * 60;
+/** The other player in a duel: their cards, their troops' levels and their upgrades, and their energy as it stands. */
+export interface DuelSide { villain: boolean; deck: number[]; levels: number[]; power: number; pool: number; economy: number; fort: number; energy: number; generator: number; cooldowns: Record<number, number>; bossUsed?: boolean }
+/** What a duel needs of a player's save: their side, cards, levels and upgrades. */
+export type DuelArmy = { villain: boolean; deck: number[]; levels: number[]; upgrades: number[] };
+export const armyOf = (p: Progress): DuelArmy => ({ villain: !!p.villain, deck: [...p.deck], levels: [...p.levels], upgrades: [...p.upgrades] });
+/** How long a duel may last; then the fortress with more of its health left wins. */
+export const DUEL_LIMIT = 360;
+/** A duel between two players: ours (`p`) on the left, theirs on the right; the field of `world`. Each fortress as
+    strong as its own workshop has made it. */
+export function newDuel(p: Progress, rival: DuelArmy, world: number): Siege {
+  const s = newSiege({ ...p, unlocked: LAST }, world), fort = (u: number[]) => 1700 + (u[1] ?? 0) * 200;
+  s.maxHp = [fort(p.upgrades), fort(rival.upgrades)]; s.hp = [...s.maxHp]; s.nextWave = Infinity; s.gusted = true; s.villain = !!p.villain;
+  s.duel = { villain: rival.villain, deck: [...rival.deck], levels: [...rival.levels], power: 1 + (rival.upgrades[0] ?? 0) * 0.08, pool: rival.upgrades[6] ?? 0, economy: (rival.upgrades[2] ?? 0) * 0.6, fort: rival.upgrades[1] ?? 0, energy: 80, generator: 0, cooldowns: {} };
+  return s;
+}
+const duelMax = (d: DuelSide) => 200 + d.pool * MANA_STEP + d.generator * 100;
+/** The other player sends a card (their message, applied by the one running the duel). */
+export function duelSummon(s: Siege, c: number): boolean {
+  const d = s.duel, id = cardId(c), spec = UNITS[id] ? specAt(id, cardLevel(c)) : undefined;
+  if (!d || !spec || s.phase !== 'fight' || !!UNITS[id].foe !== d.villain || !d.deck.includes(c) || d.energy < spec.cost || (d.cooldowns[c] ?? 0) > 0 || s.units.filter(u => u.side).length >= CAP) return false;
+  const guard = GUARDIAN.includes(id); if (guard && d.bossUsed) return false; if (guard) d.bossUsed = true;
+  d.energy -= spec.cost; d.cooldowns[c] = cooldownOf(id, cardLevel(c)); spawn(s, id, 1, guard, cardLevel(c)); return true;
+}
+/** The other player raises their generator. */
+export function duelGenerator(s: Siege): boolean {
+  const d = s.duel; if (!d || s.phase !== 'fight' || d.generator >= 4) return false;
+  const price = 80 + d.generator * 60; if (d.energy < price) return false;
+  d.energy -= price; d.generator++; return true;
+}
+/** The duel as the other player sees it: everything turned round, their side on the left (sent to them). */
+export function mirrorDuel(s: Siege): Siege {
+  const d = s.duel!, flip = (x: number) => FIELD - x;
+  return { ...s, villain: d.villain, units: s.units.map(u => ({ ...u, side: (1 - u.side) as 0 | 1, x: flip(u.x) })),
+    effects: s.effects.map(e => ({ ...e, side: (1 - e.side) as 0 | 1, x: flip(e.x), from: flip(e.from) })),
+    hp: [s.hp[1], s.hp[0]], maxHp: [s.maxHp[1], s.maxHp[0]], energy: d.energy, generator: d.generator, pool: d.pool, economy: d.economy, fort: d.fort,
+    cooldowns: d.cooldowns, deck: d.deck, levels: d.levels, power: d.power, bossUsed: d.bossUsed, hitq: [], razed: s.hp[0] <= 0,
+    zones: s.zones?.map(z => ({ ...z, x: flip(z.x) })), phase: s.phase === 'won' ? 'lost' : s.phase === 'lost' ? 'won' : s.phase,
+    duel: { villain: !!s.villain, deck: s.deck, levels: s.levels, power: s.power, pool: s.pool ?? 0, economy: s.economy, fort: s.fort, energy: s.energy, generator: s.generator, cooldowns: s.cooldowns, bossUsed: s.bossUsed } };
+}
 export function newSiege(p: Progress, world: number): Siege {
   world = integer(world, 1, Math.min(LAST, p.unlocked), 1);
   const maxHp: [number, number] = [1700 + p.upgrades[1] * 200, 1700 + hard(world) * 150];
@@ -682,13 +723,13 @@ function spawn(s: Siege, id: number, side: 0 | 1, boss = false, level?: number) 
   if (LINE_OF[id] && level !== undefined) { id = memberOf(id, level); level = 1; }
   if (s.units.filter(u => u.side === side).length >= CAP) return;
   const lv = side ? level : level ?? s.levels[id] ?? 1;
-  const spec = lv === undefined ? UNITS[id] : specAt(id, lv); const scale = side ? (0.95 + hard(s.world) * FOE_PACE.grow) * (s.villain ? VILLAIN_PACE.hero[actOf(s.world) - 1] : 1) : s.power;
+  const spec = lv === undefined ? UNITS[id] : specAt(id, lv); const scale = side ? (s.duel ? s.duel.power : (0.95 + hard(s.world) * FOE_PACE.grow) * (s.villain ? VILLAIN_PACE.hero[actOf(s.world) - 1] : 1)) : s.power;
   // A hero guardian (the Villain campaign) is as tough as that act's own guardian; a guardian card of ours is a little
   // less than a guardian in its own battle.
-  const ref = s.villain && side && boss ? UNITS[GUARDIAN[actOf(s.world) - 1]] : spec;
-  const hp = ref.hp * scale * (boss ? (side ? BOSS_HP : BOSS_HP * 0.6) : 1);
+  const ref = s.villain && side && boss && !s.duel ? UNITS[GUARDIAN[actOf(s.world) - 1]] : spec;
+  const hp = ref.hp * scale * (boss ? (side && !s.duel ? BOSS_HP : BOSS_HP * 0.6) : 1);
   // One gunner in every few (counted by its spawn number) comes horned.
-  const elite = !!side && !s.villain && !boss && id === ELITE_ID && s.time >= ELITE.from && s.nextId % ELITE.every === 0;
+  const elite = !!side && !s.villain && !s.duel && !boss && id === ELITE_ID && s.time >= ELITE.from && s.nextId % ELITE.every === 0;
   const life = hp * (elite ? ELITE.hp : 1);
   s.units.push({ uid: s.nextId++, id, side, x: side ? FIELD - 120 : 120, lane: s.nextId % 3, hp: life, maxHp: life, damage: ref.damage * scale * (elite ? ELITE.damage : 1) * (boss ? BOSS.damage : 1), attack: 0, flash: 0, boss, elite: elite || undefined, lv, grow: side ? growAt(s.world) : undefined });
   const nu = s.units[s.units.length - 1];
@@ -972,7 +1013,7 @@ function launch(s: Siege, u: Fighter, a: Spec, x0: number, lane: number, toUp: n
   if (a.blast || ROCKET_SHOTS.has(a.shot ?? '')) s.effects.push({ x: x0, from: x0, lane: lane, life: flight + BOOM, max: BOOM, kind: 'boom', side: u.side, size: a.shot === 'plasma-cyan' ? 100 : a.shot?.startsWith('salvo') ? 90 : a.blast ? 70 : 56, up: toUp, dark: a.shot !== 'plasma-cyan', cyan: a.shot === 'plasma-cyan' || undefined });
 }
 /** Start (true) or stop (false) the archers; they only start with at least one shot in the quiver. */
-export function draw(s: Siege, on: boolean) { if (s.phase === 'fight') s.bow.drawing = on && s.bow.quiver >= BOW.cost; }
+export function draw(s: Siege, on: boolean) { if (s.phase === 'fight' && !s.duel) s.bow.drawing = on && s.bow.quiver >= BOW.cost; }
 /** The bow button: one tap starts the arrows, the next stops them. */
 export const toggleBow = (s: Siege) => draw(s, !s.bow.drawing);
 function bow(s: Siege, dt: number) {
@@ -1000,7 +1041,7 @@ export function missile(s: Siege): boolean {
   s.effects[s.effects.length - 1].life += 0.55; return true;
 }
 export function strike(s: Siege): boolean {
-  if (s.phase !== 'fight' || s.spell > 0 || s.energy < STRIKE_COST) return false;
+  if (s.phase !== 'fight' || s.duel || s.spell > 0 || s.energy < STRIKE_COST) return false;
   // It lands where the bow aims: three bolts across its blast.
   const x = aimAt(s.aim); s.energy -= STRIKE_COST;
   for (const d of [-60, 0, 60]) s.effects.push({ x: x + d, from: x + d, lane: 1, life: 0.65, max: 0.65, kind: 'zap', side: 0, up: d ? 8 : 0 });
@@ -1080,7 +1121,7 @@ function land(s: Siege, h: Hit) {
 /** Sets off a power from the kit: its blows spread over the stretch of field on screen. */
 export function castPower(s: Siege, card: number): boolean {
   const k = s.kit.find(n => n.card === card), id = k?.id ?? -1, w = POWERS[id];
-  if (!k || !w || s.phase !== 'fight' || (s.kitCd[card] ?? 0) > 0) return false;
+  if (!k || !w || s.phase !== 'fight' || s.duel || (s.kitCd[card] ?? 0) > 0) return false;
   const form = w.forms[Math.min(k.level, w.forms.length) - 1];
   // Every power costs energy, more the stronger its form.
   if (s.energy < (form.mana ?? 0)) return false;
@@ -1193,6 +1234,7 @@ export function tick(s: Siege, dt: number) {
   if (s.phase !== 'fight' || !Number.isFinite(dt) || dt <= 0) return;
   dt = Math.min(dt, 0.1); s.time += dt;
   s.energy = testing.free ? energyMax(s) : Math.min(energyMax(s), s.energy + energyRate(s) * dt);
+  if (s.duel) { const d = s.duel; d.energy = Math.min(duelMax(d), d.energy + (8 + d.generator * 3 + d.pool * 0.6 + d.economy) * dt); for (const k in d.cooldowns) d.cooldowns[k] = Math.max(0, d.cooldowns[k] - dt); }
   s.spell = Math.max(0, s.spell - dt); s.rocket = Math.max(0, s.rocket - dt);
   for (const k in s.kitCd) s.kitCd[k] = Math.max(0, s.kitCd[k] - dt);
   // Powers at work: a black hole drags the enemy round it into its centre (not the guardians or the steady); a sanctuary
@@ -1221,7 +1263,7 @@ export function tick(s: Siege, dt: number) {
   bow(s, dt);
   s.effects = s.effects.filter(e => (e.life -= dt) > 0);
   s.nextWave -= dt;
-  if (s.nextWave <= 0) {
+  if (s.nextWave <= 0 && !s.duel) {
     s.waves++;
     s.nextWave = Math.max(FOE_PACE.gap, 9 - hard(s.world) * FOE_PACE.slope - s.time / 90);
     const count = Math.min(3, 1 + Math.floor(s.time / 70));
@@ -1262,7 +1304,7 @@ export function tick(s: Siege, dt: number) {
     ['piece-stone', 'piece-beam', 'piece-stone', 'piece-flag', 'piece-beam', 'piece-stone'].forEach((art, k) => s.effects.push({ x: at - 70 - k * 34, from: at - 10 + (k % 3) * 20, lane: 1, life: 0.9 + k * 0.05, max: 0.9 + k * 0.05, kind: 'piece', side: 0, art, size: art === 'piece-flag' ? 34 : 26, arc: 90 + k * 12, spin: true, up: 120 + (k % 3) * 40 }));
     fx(s, 'crack-2', at - 30, 6, { floor: true, size: 220 });
   }
-  if (!s.bossSpawned && s.hp[1] <= 0 && guarded(s.world)) {
+  if (!s.bossSpawned && !s.duel && s.hp[1] <= 0 && guarded(s.world)) {
     s.bossSpawned = true; if (s.villain) { const g = HERO_GUARDIAN[actOf(s.world) - 1]; spawn(s, g, 1, true, levelsOf(g)); } else spawn(s, GUARDIAN[actOf(s.world) - 1], 1, true);
     fx(s, 'skull', FIELD - 200, 2, { hud: true, size: 110 });
     // Its arrival: a gust from the ruins blows our army back.
@@ -1440,7 +1482,7 @@ export function tick(s: Siege, dt: number) {
     }
     hear(s, soundsOf(u)[1], u.x);
     // A fallen enemy's bounty: gold (kept win or lose) and energy, shown rising where it fell.
-    if (u.side && !((u.stage ?? 0) < splitsOf(u))) {
+    if (u.side && !s.duel && !((u.stage ?? 0) < splitsOf(u))) {
       const gold = dropOf(u), mana = manaOf(u);
       s.loot = (s.loot ?? 0) + gold; s.energy = Math.min(energyMax(s), s.energy + mana);
       s.effects.push({ x: u.x, from: u.uid, lane: 0, life: 0.9, max: 0.9, kind: 'loot', side: 1, gold, mana });
@@ -1452,7 +1494,9 @@ export function tick(s: Siege, dt: number) {
   // An emergency wall: the enemy on the ground stops at it.
   for (const z of s.zones ?? []) if (z.kind === 'wall') for (const u of s.units) if (u.side === 1 && !UNITS[u.id].air && !u.boss && u.x < z.x + 40 && u.x > z.x - 60) u.x = z.x + 40;
   s.hp = s.hp.map(h => Math.max(0, h)) as [number, number];
-  if (s.hp[0] <= 0 || (!prefs.untimed && s.time >= limitOf(s.world))) s.phase = 'lost';
+  // A duel: the first fortress down loses; at the time limit, the one with less of its health left.
+  if (s.duel) { if (s.hp[0] <= 0) s.phase = 'lost'; else if (s.hp[1] <= 0) s.phase = 'won'; else if (s.time >= DUEL_LIMIT) s.phase = s.hp[0] / s.maxHp[0] >= s.hp[1] / s.maxHp[1] ? 'won' : 'lost'; }
+  else if (s.hp[0] <= 0 || (!prefs.untimed && s.time >= limitOf(s.world))) s.phase = 'lost';
   else if (s.hp[1] <= 0 && (!guarded(s.world) || (s.bossSpawned && !s.units.some(u => u.boss && u.side)))) s.phase = 'won';
 }
 /** Rewards settle once per battle; a reload cannot replay a settled result. */

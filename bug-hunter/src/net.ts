@@ -20,7 +20,9 @@ export type NetInvite = { t: 'invite'; mode?: Together; variant: Variant; world:
 export type NetState = { t: 'state'; mode: 'sprints' | 'horde'; world: number; room: number; x: number; y: number; vx: number; vy: number; hp: number; level: number; phase: string };
 export type NetMsg = NetHello | NetInvite | { t: 'accept' } | { t: 'decline' } | { t: 'uninvite' }
   | { t: 'ready'; round: number; army: Piece[] } | NetState | { t: 'quit' } | { t: 'bye' }
-  | ({ t: 'snap' } & CoopSnap) | { t: 'hits'; h: [number, number][] };
+  | ({ t: 'snap' } & CoopSnap) | { t: 'hits'; h: [number, number][] }
+  /** A Siege duel's own messages (`siege/duel.ts`), carried as they are. */
+  | { t: 'sg'; d: unknown };
 
 export type NetHandlers = {
   /** The host's code, once PeerJS has it. */

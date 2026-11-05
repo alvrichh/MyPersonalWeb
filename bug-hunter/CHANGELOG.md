@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.196 - 2026-11-05
+
+- Siege Cartoon duels, Hero against Villain with a friend (a Duel button on the map): one makes a room and passes on its four-letter code and picks the side, the other types the code and plays the other side; each plays with its own army, levels and upgrades, sees its own fortress on the left (the field turned round for the Villain), and the first fortress down loses (after six minutes, the one with more health left). No crossbow or powers in a duel, a guardian card once each; 120 gold for a win, 40 for a loss. Both players need the same version. On a narrow screen the map's Duel and Villain switches show their icons only.
+
 ## 1.15.195 - 2026-11-05
 
 - The Villain campaign has its own music: its menus a creeping C minor in half-time with a music box, whispers and the choir; its battles a C harmonic minor march on techstep with a driven bass and a low brass theme with the tritone in it, the choir at every peak.

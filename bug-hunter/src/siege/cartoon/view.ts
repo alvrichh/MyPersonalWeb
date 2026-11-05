@@ -227,7 +227,8 @@ function damage(ctx: CanvasRenderingContext2D, w: number, h: number, left: numbe
 }
 function base(ctx: CanvasRenderingContext2D, s: Siege, x: number, ground: number, color: string, enemy: boolean) {
   const hp = s.hp[enemy ? 1 : 0], max = s.maxHp[enemy ? 1 : 0];
-  const tier = enemy ? enemyTier(s.world) : castleTier(s.fort);
+  // In a duel the other fortress is the rival's own, as strong as its workshop made it.
+  const tier = enemy ? (s.duel ? castleTier(s.duel.fort) : enemyTier(s.world)) : castleTier(s.fort);
   // The Villain campaign swaps the pictures: the dark fortress is ours (left, facing right), our castle theirs.
   const dark = enemy !== !!s.villain;
   const wall = still(`siege/${dark ? 'enemy' : 'castle'}-${tier}`);
