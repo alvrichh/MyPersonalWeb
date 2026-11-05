@@ -363,7 +363,7 @@ test('an arrow passing through a tall enemy on the ground hits it; it flies over
   const s = m.newSiege(m.freshProgress(), 1); s.bowFrom = { x: 150, up: 140 }; s.aim = 900;
   const along = m.SCATTER.along, deep = m.SCATTER.deep; m.SCATTER.along = 0; m.SCATTER.deep = 0;
   const mk = (uid, id, x, boss) => ({ uid, id, side: 1, x, lane: 1, hp: 5000, maxHp: 5000, damage: 0, attack: 99, flash: 0, boss, grow: 1 });
-  const tall = mk(1, m.GUARDIAN[5], 860, true), short = mk(2, 17, 400, false); s.units.push(tall, short);
+  const tall = mk(1, 60, 860, true), short = mk(2, 17, 400, false); s.units.push(tall, short);
   m.draw(s, true); m.tick(s, 1 / 30); m.draw(s, false);
   m.SCATTER.along = along; m.SCATTER.deep = deep;
   assert.ok(tall.hp < 5000, 'the tall one, short of where it lands, is hit in the head'); assert.equal(short.hp, 5000, 'the short one far before is flown over');
@@ -628,6 +628,18 @@ test('five more powers: glacial prison freezes, the wall holds, the rift slows, 
   assert.ok(ground.hp < 3000 && flyer.hp < 3000, 'it burns the ground and the flyers in its path');
   s = at(11); const near = foe(s, 1, 900), far = foe(s, 2, 1000); assert.ok(m.castPower(s, 11)); run(s, 1.6);
   assert.ok(far.x < 900 && near.x < 850, `dragged back (${near.x}, ${far.x})`);
+});
+
+test('the King of Darkness: flies with four attacks in turn, falls to the ground at half his life and fights on foot', () => {
+  const k = m.UNITS[39]; assert.ok(k.air && k.phase2 === 60 && k.moves.length >= 4 && !m.UNITS[60].air && m.UNITS[60].moves.length >= 3);
+  const s = m.newSiege({ ...m.freshProgress(), unlocked: 30 }, 30); s.nextWave = 999; s.gusted = true; s.hp[1] = 0; s.razed = true;
+  for (let i = 0; i < 4; i++) s.units.push({ uid: 50 + i, id: 2, side: 0, x: 900 + i * 30, lane: 1, hp: 9e6, maxHp: 9e6, damage: 0, attack: 99, flash: 0, boss: false, lv: 1, stun: 999 });
+  m.tick(s, 1 / 30); const king = s.units.find(u => u.boss); assert.equal(king.id, 39); king.x = 1150;
+  const kinds = new Set(); for (let i = 0; i < 30 * 30; i++) { m.tick(s, 1 / 30); if (king.move !== undefined) kinds.add(k.moves[king.move].kind); if (kinds.size >= 4) break; }
+  assert.deepEqual([...kinds].sort(), ['orb', 'ray', 'skulls', 'summon'], 'every air attack in turn');
+  assert.ok(s.units.filter(u => u.side && !u.boss).length >= 2, 'the portal calls his troops');
+  king.hp = king.maxHp * 0.45; m.tick(s, 1 / 30); assert.ok(king.landing > 0, 'he falls'); run(s, 2);
+  assert.equal(king.id, 60, 'on foot'); assert.ok(king.hp > 0 && king.hp < king.maxHp * 0.5, 'with the life he had left');
 });
 
 test('the catapult lobs its rock: it strikes where it lands, when it lands', () => {

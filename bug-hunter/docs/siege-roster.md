@@ -48,7 +48,7 @@ Each enemy is "equivalent" to one of our units at a level: that sets its stats. 
 | 3 | Grim Reaper (scythe), Undead Turkey, Dragon Breather, Dragon Rider (air), Death Angel (air), Red-eyed Eagle (air) | Spearman 3, Archer 2, Vulture 1, Drill Aircraft 1, Angel 2, Aircraft 3-4 | Large Red Dragon Rider |
 | 4 | Bear (one eye, scratch), Heavy Armor Hammer Wielder (skeletal), Slinger, Heavy Armor Axeman, Wizard (ice; horned: shadows), Hypnotist Bat (land and air) | HAS 1, HAS 2, HAS 3, HAS 3, Wizard 1/3, Armed Aircraft 1 | Giant Brute Eater |
 | 5 | Rex Head, Rhinoceratops, Flightless Terror Bird, Tiger (leaps over and turns back), Spider Spearman | Spearman 4, about HAS 2, Spearman 4, Archer 4, Spearman 5 | Giant Dinosaur Brute |
-| 6 | Mammothsaurus, Giant Heavy Armor Axeman, Inter-Galactic Shooter, Green Ninja Bat, Red Dragon Rider (air, unstunnable), Devil Army (air) | Vulture 6, HAS 4, Gunner 2, Swordsman 6, Drill Aircraft 2, Angel | Giant King Dinosaur Brute |
+| 6 | Mammothsaurus, Giant Heavy Armor Axeman, Inter-Galactic Shooter, Green Ninja Bat, Red Dragon Rider (air, unstunnable), Devil Army (air) | Vulture 6, HAS 4, Gunner 2, Swordsman 6, Drill Aircraft 2, Angel | Giant King Dinosaur Brute (replaced in Siege Cartoon by the King of Darkness, the owner's own two-form final boss) |
 
 **Our later recruits (v1.15.146, new designs, not in the reference):** medic (world 2, heals), shield bearer (3, a wall that shoves), catapult (4, two forms, double on the fortress), bomber balloon (4, air, bombs only the fortress), ninja (5, unseen at first), dragon rider (6, air, fire over an area).
 

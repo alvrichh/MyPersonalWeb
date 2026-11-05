@@ -4,6 +4,13 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.191 - 2026-11-05
+
+- Siege Cartoon's final guardian is the King of Darkness (the owner's skeletal king, replacing the Giant King Dinosaur Brute):
+  - on his flying throne he takes four attacks in turn: a dark orb, a ray from his eyes through everything ahead, three flaming skulls at the three nearest, and a portal that calls two of his troops;
+  - at half his life his throne breaks and he falls to the ground (a crash that throws ours back), then fights on foot with the life he has left: a sword slam all round him, bone spikes bursting ahead (walkers stunned) and a dark pulse that throws everything back;
+  - every attack has its own wind-up and strike poses; his half-life line now speaks of his broken throne.
+
 ## 1.15.190 - 2026-11-05
 
 - Siege Cartoon has five more powers, with the owner's icons and animations:
