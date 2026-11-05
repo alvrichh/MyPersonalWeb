@@ -452,7 +452,7 @@ function muzzle(e: Effect, y: number) {
   return { x: e.from, y: shotY(e.fromUp, y) };
 }
 /** Every picture a troop's attack shows on its way (`siege/units/shot-<name>`): thrown things, rockets, bullets, beams. */
-const SHOTS = ['rock', 'javelin', 'arrow', 'shuriken', 'rocket', 'rockets', 'salvo', 'ice', 'plasma', 'crescent', 'missile', 'bullet', 'bullet-rifle', 'bullet-uzi', 'bullet-sniper', 'ray', 'ray-blue', 'ray-gold', 'ray-pink', 'ray-red', 'arrow-red', 'boulder', 'boulder-blue', 'bomb', 'plasma-cyan'];
+const SHOTS = ['rock', 'javelin', 'arrow', 'shuriken', 'rocket', 'rockets', 'salvo', 'ice', 'plasma', 'crescent', 'missile', 'bullet', 'bullet-rifle', 'bullet-uzi', 'bullet-sniper', 'ray', 'ray-blue', 'ray-gold', 'ray-pink', 'ray-red', 'arrow-red', 'boulder', 'boulder-blue', 'bomb', 'plasma-cyan', 'rocket-dark', 'rockets-dark', 'salvo-dark'];
 /** The effect art: our crossbow's Cartoon arrows (or rockets) and missile, the old painted arrows (water for our troops,
     leaf for theirs),
     impacts up close, and a blast with the yellow lightning for the discharge. */
