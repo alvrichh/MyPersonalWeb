@@ -537,7 +537,9 @@ export interface Siege {
   spell: number; rocket: number; aim: number; bow: Bow;
   /** The special powers taken into this battle (`POWERS`, at the level bought), their recharges, the blows each has
       scheduled to land (`Hit`), and the stretch of field on screen (set by the view) that they cover. */
-  kit: { id: number; level: number; card: number }[]; kitCd: Record<number, number>; hitq: Hit[]; view: { x: number; width: number }; casts: number;
+  kit: { id: number; level: number; card: number }[]; kitCd: Record<number, number>; hitq: Hit[];
+  /** Powers that act for a while where they were cast: a black hole pulling the enemy in, a sanctuary healing ours. */
+  zones?: { kind: 'pull' | 'heal'; x: number; r: number; until: number; heal?: number; next?: number }[]; view: { x: number; width: number }; casts: number;
   /** The troops' sounds since the view last took them (attacks and deaths, where they happened); kept short. */
   sounds?: { k: string; x: number }[];
   /** How many times the bow has shot this battle (the view plays a sound for each new one). */
@@ -787,6 +789,11 @@ function arrows(s: Siege, count: number) {
     meteors with their fire, and a blast where a rocket of the robots' last forms lands. Damage is dealt apart. */
 /** The shots that are rockets. */
 const ROCKET_SHOTS = new Set(['rocket', 'rockets', 'salvo', 'missile', 'rocket-dark', 'rockets-dark', 'salvo-dark']);
+/** How fast a black hole drags the enemy in, field units a second. */
+const PULL = 110;
+/** The new powers' drawn effects play in three parts: coming in (`in` seconds, frames 0–3), at work (4–7, looping) and
+    going (`out` seconds, frames 8–11). */
+export const PHASED: Record<string, { in: number; out: number; ground?: number }> = { blackhole: { in: 0.45, out: 0.5 }, judgement: { in: 0.35, out: 0.55, ground: 0.885 }, sanctuary: { in: 0.5, out: 0.5, ground: 0.81 } };
 /** One of the owner's drawn effects (`siege/fx/<art>-<frame>`): it waits `wait` seconds, then plays over `time`. */
 function fx(s: Siege, art: string, x: number, time: number, o: Partial<Effect> = {}, wait = 0) {
   s.effects.push({ x, from: x, lane: 1, life: time + wait, max: time, kind: 'anim', side: 0, art, ...o });
@@ -869,7 +876,7 @@ export function strike(s: Siege): boolean {
 }
 /** The special powers (the shop's Especial tab): bought with gold, each covers the stretch of field on screen. Level 1
     is `price` gold, each later form its own `price`; `unlock` is the act that opens it. `damage` is per blow. */
-export interface PowerForm { price: number; damage: number; art?: string; freeze?: number; radius?: number; count?: number; push?: number }
+export interface PowerForm { price: number; damage: number; art?: string; freeze?: number; radius?: number; count?: number; push?: number; time?: number; heal?: number }
 export const POWERS: { id: number; unlock: number; price: number; cooldown: number; forms: PowerForm[] }[] = [
   // Arrow rain: arrows, ice arrows (they freeze), fire arrows (they leave flames), rockets (they explode).
   { id: 0, unlock: 1, price: 400, cooldown: 30, forms: [{ price: 0, damage: 24, art: 'arrow' }, { price: 500, damage: 28, art: 'ice', freeze: 1.3 }, { price: 900, damage: 34, art: 'fire' }, { price: 1500, damage: 46, art: 'rocket', radius: 52 }] },
@@ -879,6 +886,12 @@ export const POWERS: { id: number; unlock: number; price: number; cooldown: numb
   { id: 2, unlock: 3, price: 900, cooldown: 42, forms: [{ price: 0, damage: 90, push: 240 }, { price: 1100, damage: 140, push: 360 }, { price: 1900, damage: 210, push: 520, freeze: 1.2 }] },
   // Meteor shower: burning rocks across the field, each leaving a fire.
   { id: 3, unlock: 4, price: 1200, cooldown: 40, forms: [{ price: 0, damage: 95, count: 6, radius: 62 }, { price: 1500, damage: 115, count: 9, radius: 66 }, { price: 2400, damage: 135, count: 13, radius: 70 }] },
+  // Black hole: a vortex where the enemy is thickest drags them into its centre for a moment, then bursts.
+  { id: 4, unlock: 5, price: 1600, cooldown: 46, forms: [{ price: 0, damage: 170, radius: 190, time: 2.4 }] },
+  // Sword of judgement: a huge sword falls on the strongest enemy in sight and stays stuck in the ground, striking round it.
+  { id: 5, unlock: 4, price: 1300, cooldown: 44, forms: [{ price: 0, damage: 200, radius: 80, time: 4, count: 8 }] },
+  // Healing sanctuary: a ring of green light at the front of our army mends whoever stands in it.
+  { id: 6, unlock: 2, price: 700, cooldown: 40, forms: [{ price: 0, damage: 0, radius: 120, time: 6, heal: 0.08 }] },
 ];
 /** At most this many power forms go into a battle. */
 export const KIT = 4;
@@ -970,6 +983,30 @@ export function castPower(s: Siege, card: number): boolean {
       fx(s, 'crater', x, 4, { floor: true, size: 120, up }, wait + flight);
     }
     hear(s, 'meteor', (x0 + x1) / 2);
+  } else if (id === 4) {
+    // Where the enemy on screen is thickest (their middle), or the middle of the screen.
+    const r = form.radius ?? 190, near = (x: number) => foes.filter(u => Math.abs(u.x - x) <= r);
+    const best = [...foes].sort((a, b) => near(b.x).length - near(a.x).length)[0], group = best ? near(best.x) : [];
+    const x = group.length ? group.reduce((n, u) => n + u.x, 0) / group.length : (x0 + x1) / 2, time = form.time ?? 2.4;
+    (s.zones ??= []).push({ kind: 'pull', x, r, until: s.time + time });
+    push({ x, from: x, lane: 1, life: time + PHASED.blackhole.out, max: time + PHASED.blackhole.out, kind: 'anim', side: 0, art: 'blackhole', size: 190, up: 60 });
+    s.hitq.push({ at: s.time + time, x, r: 120, damage: form.damage });
+    push({ x, from: x, lane: 1, life: time + BOOM, max: BOOM, kind: 'boom', side: 0, size: 120, up: 20 });
+    hear(s, 'corrupt-wind', x);
+  } else if (id === 5) {
+    // On the strongest enemy on screen (its guardian first), else the middle; it lands, then strikes round it in pulses.
+    const target = [...foes].sort((a, b) => Number(b.boss) - Number(a.boss) || b.hp - a.hp)[0], x = target ? target.x : (x0 + x1) / 2;
+    const fall = 0.35, time = form.time ?? 4, n = form.count ?? 8, r = form.radius ?? 80;
+    push({ x, from: x, lane: 1, life: fall + time + PHASED.judgement.out, max: fall + time + PHASED.judgement.out, kind: 'anim', side: 0, art: 'judgement', size: 200 });
+    s.hitq.push({ at: s.time + fall, x, r, damage: form.damage, freeze: 0.6 });
+    for (let i = 1; i <= n; i++) s.hitq.push({ at: s.time + fall + i * time / n, x, r: r + 10, damage: form.damage * 0.15 });
+    fx(s, 'crack-2', x, time + 1, { floor: true, size: 170 }, fall);
+    hear(s, 'thunder', x);
+  } else if (id === 6) {
+    // In front of our foremost troop on screen, or in the left third of the screen.
+    const ours = s.units.filter(u => !u.side && u.x >= x0 && u.x <= x1), x = ours.length ? Math.max(...ours.map(u => u.x)) - 40 : x0 + span / 3, time = form.time ?? 6;
+    (s.zones ??= []).push({ kind: 'heal', x, r: form.radius ?? 120, until: s.time + time, heal: form.heal ?? 0.05, next: s.time });
+    push({ x, from: x, lane: 1, life: time + PHASED.sanctuary.out, max: time + PHASED.sanctuary.out, kind: 'anim', side: 0, art: 'sanctuary', size: 170 });
   }
   s.kitCd[card] = w.cooldown; return true;
 }
@@ -980,6 +1017,18 @@ export function tick(s: Siege, dt: number) {
   s.energy = testing.free ? energyMax(s) : Math.min(energyMax(s), s.energy + energyRate(s) * dt);
   s.spell = Math.max(0, s.spell - dt); s.rocket = Math.max(0, s.rocket - dt);
   for (const k in s.kitCd) s.kitCd[k] = Math.max(0, s.kitCd[k] - dt);
+  // Powers at work: a black hole drags the enemy round it into its centre (not the guardians or the steady); a sanctuary
+  // heals ours inside it, twice a second.
+  if (s.zones?.length) {
+    s.zones = s.zones.filter(z => z.until > s.time);
+    for (const z of s.zones) {
+      if (z.kind === 'pull') for (const u of s.units) { if (u.side !== 1 || u.boss || UNITS[u.id].steady || Math.abs(u.x - z.x) > z.r) continue; const d = z.x - u.x; u.x += Math.sign(d) * Math.min(Math.abs(d), PULL * dt); u.stun = Math.max(u.stun ?? 0, dt * 2); }
+      else if (z.next !== undefined && s.time >= z.next) {
+        z.next = s.time + 0.5;
+        for (const u of s.units) if (!u.side && u.hp > 0 && Math.abs(u.x - z.x) <= z.r && u.hp < u.maxHp) { u.hp = Math.min(u.maxHp, u.hp + u.maxHp * (z.heal ?? 0.05) / 2); if (Math.random() < 0.5) s.effects.push({ x: u.x, from: u.x, lane: u.lane, life: 0.9, max: 0.9, kind: 'heal', side: 0, up: UNITS[u.id].air ? u.alt ?? highOf(u) : 0 }); }
+      }
+    }
+  }
   if (s.hitq.length) { const due = s.hitq.filter(h => h.at <= s.time); if (due.length) { s.hitq = s.hitq.filter(h => h.at > s.time); for (const h of due) land(s, h); } }
   for (const k in s.cooldowns) s.cooldowns[k] = Math.max(0, s.cooldowns[k] - dt);
   bow(s, dt);

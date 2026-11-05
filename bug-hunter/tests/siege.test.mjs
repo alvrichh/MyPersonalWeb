@@ -592,6 +592,19 @@ test('the owner\'s second batch: the fortress collapses, the horn sounds when we
   assert.ok(m.castPower(t, 3)); assert.ok(t.effects.some(e => e.art === 'warn') && t.effects.some(e => e.art === 'crater'), 'meteors warn where they will fall and leave craters');
 });
 
+test('the new powers: a black hole drags the enemy in and bursts, the sword strikes the strongest, the sanctuary heals ours', () => {
+  const at = (id) => { const p = { ...m.freshProgress(), unlocked: 30 }; p.coins = 99999; assert.ok(m.buyPower(p, id)); const s = m.newSiege(p, 20); s.nextWave = 999; s.gusted = true; s.view = { x: 300, width: 800 }; return s; };
+  const foe = (s, uid, x, hp = 3000, o = {}) => { const u = { uid, id: 15, side: 1, x, lane: 1, hp, maxHp: hp, damage: 0, attack: 99, flash: 0, boss: false, ...o }; s.units.push(u); return u; };
+  let s = at(4); const a = foe(s, 1, 600), b = foe(s, 2, 760), far = foe(s, 3, 1300);
+  assert.ok(m.castPower(s, 4)); const mid = s.zones[0].x; run(s, 1.5);
+  assert.ok(Math.abs(a.x - mid) < 40 && Math.abs(b.x - mid) < 40, 'pulled into the centre'); run(s, 1.2);
+  assert.ok(a.hp < 3000 && b.hp < 3000, 'then it bursts on them');
+  s = at(5); const weak = foe(s, 1, 500, 400), strong = foe(s, 2, 900, 6000);
+  assert.ok(m.castPower(s, 5)); run(s, 5); assert.ok(strong.hp < 6000 - 300 && weak.hp === 400, 'it falls on the strongest and keeps striking round it');
+  s = at(6); s.units.push({ uid: 9, id: 0, side: 0, x: 600, lane: 1, hp: 50, maxHp: 200, damage: 0, attack: 99, flash: 0, boss: false, lv: 1, stun: 99 });
+  assert.ok(m.castPower(s, 6)); run(s, 3); assert.ok(s.units[0].hp > 80, 'ours heal inside it');
+});
+
 test('the catapult lobs its rock: it strikes where it lands, when it lands', () => {
   const s = m.newSiege({ ...m.freshProgress(), unlocked: 30, owned: [0, 51], deck: [51] }, 20); s.nextWave = 999; s.gusted = true; s.energy = 999;
   m.summon(s, 51); const cat = s.units[0]; cat.x = 400;

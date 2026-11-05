@@ -1,4 +1,4 @@
-import { actOf, stageIn, flight, bowReach, highOf, foesAt, FIELD, shotFor, FOE_AIR, FOE_LAND, GUARDIAN, KNOCK, POUNCE, SPELLS, UNITS, isBeam, isBullet, specAt, specOf, aimAt, enemyTier, castleTier, energyMax, looksTier, type Effect, type Fighter, type Siege } from './model';
+import { PHASED, actOf, stageIn, flight, bowReach, highOf, foesAt, FIELD, shotFor, FOE_AIR, FOE_LAND, GUARDIAN, KNOCK, POUNCE, SPELLS, UNITS, isBeam, isBullet, specAt, specOf, aimAt, enemyTier, castleTier, energyMax, looksTier, type Effect, type Fighter, type Siege } from './model';
 import { gloom } from './story';
 
 /** Each world's ground colours, under its floor while that loads (moss, embers, snow, mud, jungle, sand, iron,
@@ -165,7 +165,7 @@ const AMBIENT: Record<number, { kind: string; n: number; fall: number; drift: nu
 const FX_STILLS = ['ice-block', 'piece-gear', 'piece-bolt', 'piece-plate', 'casing', 'streak', 'storm-sky', 'rubble', 'piece-stone', 'piece-beam', 'piece-flag',
   ...[0, 1, 2].flatMap(n => [`scorch-${n}`, `crack-${n}`]), ...Object.values(AMBIENT).flatMap(a => Array.from({ length: a.n }, (_, k) => `amb-${a.kind}-${k}`))];
 const fxFrame = (name: string, p: number) => still(`siege/fx/${name}-${Math.max(0, Math.min(FX_FRAMES[name] - 1, Math.floor(p * FX_FRAMES[name])))}`);
-const FX = [...Object.entries(FX_FRAMES).flatMap(([n, k]) => Array.from({ length: k }, (_, f) => `siege/fx/${n}-${f}`)), ...FX_STILLS.map(n => `siege/fx/${n}`), 'siege/mana', ...[0, 1, 2, 3, 4, 5, 6, 7].flatMap(n => [`siege/fx-boom-${n}`, `siege/fx-boom-dark-${n}`, `siege/fx-boom-cyan-${n}`]), 'siege/units/shot-crescent-gold', 'fx/fire-pool.webp', 'fx/fireball.webp', 'fx/rocket.webp', 'fx/volt-burst.webp', 'fx/impact.webp', 'fx/ice-block.webp', 'siege/units/shot-arrow', 'siege/units/shot-ice', 'siege/units/shot-lightning', ...[0, 1, 2].map(n => `fx/wave-strip-${n}.webp`), ...[0, 1, 2, 3, 4, 5, 6].map(n => `fx/icicle-0-${n}.webp`), 'arrows/water.webp', 'arrows/leaf.webp', 'fx/boom-big.webp', 'fx/impact.webp', ...[1, 2, 3, 4, 5, 6].map(n => `fx/bolt-y-${n}.webp`)];
+const FX = [...Object.keys(PHASED).flatMap(n => Array.from({ length: 12 }, (_, f) => `siege/fx/${n}-${f}`)), ...Object.entries(FX_FRAMES).flatMap(([n, k]) => Array.from({ length: k }, (_, f) => `siege/fx/${n}-${f}`)), ...FX_STILLS.map(n => `siege/fx/${n}`), 'siege/mana', ...[0, 1, 2, 3, 4, 5, 6, 7].flatMap(n => [`siege/fx-boom-${n}`, `siege/fx-boom-dark-${n}`, `siege/fx-boom-cyan-${n}`]), 'siege/units/shot-crescent-gold', 'fx/fire-pool.webp', 'fx/fireball.webp', 'fx/rocket.webp', 'fx/volt-burst.webp', 'fx/impact.webp', 'fx/ice-block.webp', 'siege/units/shot-arrow', 'siege/units/shot-ice', 'siege/units/shot-lightning', ...[0, 1, 2].map(n => `fx/wave-strip-${n}.webp`), ...[0, 1, 2, 3, 4, 5, 6].map(n => `fx/icicle-0-${n}.webp`), 'arrows/water.webp', 'arrows/leaf.webp', 'fx/boom-big.webp', 'fx/impact.webp', ...[1, 2, 3, 4, 5, 6].map(n => `fx/bolt-y-${n}.webp`)];
 /** Pictures drawn whole (backdrop, floor, effects): no alpha crop needed. */
 const stills = new Map<string, HTMLImageElement>();
 function still(path: string) {
@@ -538,6 +538,16 @@ const SHOTS = ['rock', 'javelin', 'arrow', 'shuriken', 'rocket', 'rockets', 'sal
     leaf for theirs),
     impacts up close, and a blast with the yellow lightning for the discharge. */
 function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, ground: number) {
+  if (e.kind === 'anim' && e.art && PHASED[e.art]) {
+    // A power at work, in three parts (`PHASED`): coming in, looping while it acts, going; standing on the ground (its
+    // drawn ground line on it) or floating `up` over it.
+    if (p < 0) return true;
+    const ph = PHASED[e.art], t = p * e.max, left = e.max - t;
+    const f = t < ph.in ? Math.min(3, Math.floor(t / ph.in * 4)) : left < ph.out ? 8 + Math.min(3, Math.floor((1 - left / ph.out) * 4)) : 4 + Math.floor(t * 8) % 4;
+    const art = still(`siege/fx/${e.art}-${f}`); if (!ok(art)) return false;
+    const w = e.size ?? 180, h = w * art.naturalHeight / art.naturalWidth, base = ground + 6 - (e.up ?? 0);
+    ctx.drawImage(art, e.x - w / 2, ph.ground ? base - h * ph.ground : base - h / 2, w, h); return true;
+  }
   if (e.kind === 'anim' && e.art && e.hud) return true;
   if (e.kind === 'anim' && e.art && !FX_FRAMES[e.art] && FX_STILLS.includes(e.art)) {
     // A mark left on the ground (a scorch, a crack): flat under the troops, fading out over its last third.
