@@ -678,6 +678,15 @@ test('a duel: two players\' armies face each other, no waves; each sees the fiel
   s.hp[1] = 0; m.tick(s, 1 / 30); assert.equal(s.phase, 'won'); assert.equal(m.mirrorDuel(s).phase, 'lost');
 });
 
+test('the King\'s Jailer throws its chain from afar and drags one of ours to its feet', () => {
+  assert.ok(m.FOE_LAND[5].includes(61) && m.VILLAIN_LINES.some(l => l.includes(61)));
+  const s = m.newSiege(m.freshProgress(), 26); s.nextWave = 999; s.gusted = true;
+  const ours = { uid: 1, id: 3, side: 0, x: 600, lane: 1, hp: 9000, maxHp: 9000, damage: 0, attack: 99, flash: 0, boss: false, lv: 1, stun: 99 };
+  const jailer = { uid: 2, id: 61, side: 1, x: 760, lane: 1, hp: 9000, maxHp: 9000, damage: 45, attack: 0, flash: 0, boss: false };
+  s.units.push(ours, jailer); run(s, 1.5); assert.ok(ours.hp < 9000 && ours.x > 640, `hooked and dragged towards it (${ours.x})`);
+  run(s, 5); assert.ok(ours.x < jailer.x, `never dragged past it (${ours.x})`);
+});
+
 test('the catapult lobs its rock: it strikes where it lands, when it lands', () => {
   const s = m.newSiege({ ...m.freshProgress(), unlocked: 30, owned: [0, 51], deck: [51] }, 20); s.nextWave = 999; s.gusted = true; s.energy = 999;
   m.summon(s, 51); const cat = s.units[0]; cat.x = 400;
