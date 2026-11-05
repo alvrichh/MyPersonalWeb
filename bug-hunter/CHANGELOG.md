@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.15.173 - 2026-11-05
+
+- Siege Cartoon's heavy robots (ours and the enemy's gatling robots) stand firm: no blow, charge or arrow knocks them back.
+- The heavy armed robot's last form fires a burst of gatling bullets with each rocket salvo, as its design shows.
+- New setting, "No time limit": battles end only when a base falls (remembered on this device; the clock shows ∞). On short screens the options' switches sit two to a row so the whole panel fits.
+
 ## 1.15.172 - 2026-11-04
 
 - Siege Cartoon's catapult lobs its rock high under gravity: it flies about a second in a parabola that grows with the distance and strikes where and when it lands (its splash, ground only).

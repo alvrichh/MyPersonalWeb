@@ -542,6 +542,22 @@ test('the weary reaper hooks from afar and drags its prey to it', () => {
   let struck = false; for (let i = 0; i < 60 && !struck; i++) { m.tick(s, 1 / 30); struck = foe.hp < 9000; }
   assert.ok(struck, 'it strikes from afar'); const at = foe.x; run(s, m.KNOCK.time + 0.05); assert.ok(foe.x < at - 100, 'and drags its prey towards it');
 });
+test('heavy robots never get knocked back, and the last one fires bullets with its rockets', () => {
+  for (const id of [9, 32, 35]) assert.ok(m.UNITS[id].steady, `robot ${id} stands firm`);
+  const s = m.newSiege({ ...m.freshProgress(), unlocked: 30, owned: [0, 9], deck: [m.card(9, 4)], levels: m.UNITS.map((_, i) => (i === 9 ? 4 : 1)) }, 20); s.nextWave = 999; s.gusted = true; s.energy = 999;
+  m.summon(s, m.card(9, 4)); const bot = s.units[0]; bot.x = 400;
+  s.units.push({ uid: 98, id: 44, side: 1, x: 470, lane: 1, hp: 9e6, maxHp: 9e6, damage: 60, attack: 0, flash: 0, boss: false });
+  let rockets = false, bullets = false;
+  for (let i = 0; i < 150; i++) { m.tick(s, 1 / 30); assert.ok(!bot.knock && !bot.nudge, 'never thrown back'); rockets ||= s.effects.some(e => e.art === 'salvo'); bullets ||= s.effects.some(e => e.art === 'bullet' && e.side === 0); }
+  assert.ok(rockets && bullets, 'rockets and bullets together');
+});
+
+test('without the time limit a battle goes on past it', () => {
+  const s = m.newSiege(m.freshProgress(), 1); s.nextWave = 999;
+  m.prefs.untimed = true; s.time = m.limitOf(1) + 5; m.tick(s, 1 / 30); assert.equal(s.phase, 'fight');
+  m.prefs.untimed = false; m.tick(s, 1 / 30); assert.equal(s.phase, 'lost');
+});
+
 test('the catapult lobs its rock: it strikes where it lands, when it lands', () => {
   const s = m.newSiege({ ...m.freshProgress(), unlocked: 30, owned: [0, 51], deck: [51] }, 20); s.nextWave = 999; s.gusted = true; s.energy = 999;
   m.summon(s, 51); const cat = s.units[0]; cat.x = 400;

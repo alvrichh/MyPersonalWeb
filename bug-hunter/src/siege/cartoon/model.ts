@@ -29,6 +29,9 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
   flyAt?: number;
   /** Cannot be stunned (the Red Dragon Rider). */
   steady?: boolean;
+  /** A second gun fired with every attack, drawn as a short burst beside the main shot (the heavy robot's last form:
+      gatling bullets with its rocket salvo). The damage is the attack's own. */
+  also?: string;
   /** Its sheet has the six poses (walk A, walk B, ready, attack, hurt, dead) instead of three (stand, attack, hurt). */
   six?: boolean;
   /** Reaches flyers although it stands on the ground: the swordsman's master form, bows, guns, rockets, rays and spells (not
@@ -86,7 +89,7 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
 /** Spells that land on their target instead of flying to it (the wizard's). */
 export const SPELLS = ['lightning', 'tornado', 'meteor'];
 /** An upgrade form: its gold price in the workshop and what it changes. */
-export type Form = Partial<Pick<Spec, 'cost' | 'hp' | 'damage' | 'speed' | 'range' | 'rate' | 'splash' | 'hitsAir' | 'blast' | 'sweep' | 'ram' | 'ramHits' | 'siege' | 'infantry' | 'shot' | 'spin' | 'sprite' | 'size'>> & { price: number }
+export type Form = Partial<Pick<Spec, 'cost' | 'hp' | 'damage' | 'speed' | 'range' | 'rate' | 'splash' | 'hitsAir' | 'blast' | 'sweep' | 'ram' | 'ramHits' | 'siege' | 'infantry' | 'shot' | 'spin' | 'also' | 'sprite' | 'size'>> & { price: number }
 /** Cartoon Wars 2's rosters (docs/siege-roster.md), every unit from the owner's six-pose sheets. Every unit's `id` is
     its place in this list: ours first (10 land, then 5 air), then the enemy's, each one stated as the ally it equals
     in the reference, then our flying mech and the enemy's guardians. */
@@ -160,10 +163,10 @@ export const UNITS: readonly Spec[] = [
   ] },
   // The heavy armed robot's four forms (docs/cw2-reference.md): gatling bursts, small rockets added (MK2), a frozen
   // cannon on its back (from here it reaches flyers), and a huge one firing rocket salvos.
-  { id: 9, cost: 200, hp: 1300, damage: 18, speed: 18, range: 200, rate: 0.5, cooldown: 22, unlock: 5, splash: 80, shot: 'bullet', ...six('ally-heavy-robot-1', 158, 1.2975), forms: [
+  { id: 9, cost: 200, hp: 1300, damage: 18, speed: 18, range: 200, rate: 0.5, cooldown: 22, unlock: 5, splash: 80, shot: 'bullet', steady: true, ...six('ally-heavy-robot-1', 158, 1.2975), forms: [
     { price: 1200, cost: 240, hp: 1720, damage: 64, shot: 'rockets', hitsAir: true, rate: 1.4, ...six('ally-heavy-robot-2', 191, 1.1911) },
     { price: 2200, cost: 290, hp: 2310, damage: 69, hitsAir: true, shot: 'ice', rate: 1.2, ...six('ally-heavy-robot-3', 196, 1.2245) },
-    { price: 4000, cost: 350, hp: 2960, damage: 55, splash: 100, hitsAir: true, blast: true, shot: 'salvo', rate: 0.8, ...six('ally-heavy-robot-4', 273, 1.1355) },
+    { price: 4000, cost: 350, hp: 2960, damage: 55, splash: 100, hitsAir: true, blast: true, shot: 'salvo', also: 'bullet', rate: 0.8, ...six('ally-heavy-robot-4', 273, 1.1355) },
   ] },
   // Ours, air (Cartoon Wars 2's A row): they fly over the field, out of reach of melee troops; only ranged ones hit them.
   // The aircraft fighter's four forms: a sword under a propeller pack, then with goggles and scarf, two rotors and blue
@@ -213,7 +216,7 @@ export const UNITS: readonly Spec[] = [
   { id: 29, flyAt: 70, cost: 0, hp: 110, damage: 18, speed: 60, range: 40, rate: 0.7, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-ninja-bat-1', 128, 0.7) },
   { id: 30, flyAt: 70, cost: 0, hp: 130, damage: 24, speed: 45, range: 180, rate: 1.2, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-hypno-bat-1', 139, 0.83) },
   { id: 31, flyAt: 70, cost: 0, hp: 900, damage: 55, speed: 40, range: 130, rate: 1.4, cooldown: 0, unlock: 1, foe: true, air: true, splash: 50, steady: true, ...foe('foe-red-dragon-rider-1', 179, 1.05) },
-  { id: 32, cost: 0, hp: 760, damage: 40, speed: 24, range: 180, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splits: 2, splash: 35, hitsAir: true, ...foe('foe-gatling-1', 123, 1.22) },
+  { id: 32, cost: 0, hp: 760, damage: 40, speed: 24, range: 180, rate: 1.4, cooldown: 0, unlock: 1, foe: true, steady: true, splits: 2, splash: 35, hitsAir: true, ...foe('foe-gatling-1', 123, 1.22) },
   // Ours again, appended (ids are places in this list):
   // The flying mech, in six forms: a rocket fist, a laser, a plasma beam, an ice burst, a gatling,
   // and a giant golden fist.
@@ -226,7 +229,7 @@ export const UNITS: readonly Spec[] = [
   ] },
   // The guardians (`GUARDIAN`), each act's own picture; their stats are those of the troops that stood in for them.
   { id: 34, cost: 0, hp: 480, damage: 26, speed: 24, range: 42, rate: 1.5, cooldown: 0, unlock: 1, foe: true, hitsAir: true, ...foe('boss-slinger-1', 221, 0.85) },
-  { id: 35, cost: 0, hp: 760, damage: 40, speed: 24, range: 180, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 45, hitsAir: true, ...foe('boss-gatling-1', 224, 0.84) },
+  { id: 35, cost: 0, hp: 760, damage: 40, speed: 24, range: 180, rate: 1.4, cooldown: 0, unlock: 1, foe: true, steady: true, splash: 45, hitsAir: true, ...foe('boss-gatling-1', 224, 0.84) },
   { id: 36, flyAt: 70, cost: 0, hp: 900, damage: 55, speed: 40, range: 130, rate: 1.4, cooldown: 0, unlock: 1, foe: true, air: true, splash: 50, steady: true, ...foe('boss-dragon-rider-1', 217, 0.92) },
   { id: 37, cost: 0, hp: 720, damage: 34, speed: 21, range: 48, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 40, hitsAir: true, ...foe('boss-brute-eater-1', 176, 1.07) },
   { id: 38, cost: 0, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, hitsAir: true, ...foe('boss-dino-1', 199, 1.0) },
@@ -382,6 +385,8 @@ export const hasCard = (p: Progress, c: number) => Number.isInteger(c) && c >= 0
     upgrades free, and endless energy in battle. Set `free` to
     false to bring back the act unlocks and the gold prices. */
 export const testing = { free: false };
+/** The player's choice (settings): battles without the time limit, lost only when the base falls. */
+export const prefs = { untimed: false };
 /** Has the battles won opened this troop's act? */
 export const isOpen = (p: Progress, id: number) => !!UNITS[id] && !UNITS[id].foe && (testing.free || (UNITS[id].legend ? p.victories.includes(LAST) : UNITS[id].unlock <= actOf(p.unlocked)));
 export const owns = (p: Progress, id: number) => p.owned.includes(id);
@@ -766,6 +771,8 @@ function launch(s: Siege, u: Fighter, a: Spec, x0: number, lane: number, toUp: n
       s.effects.push({ x, from: x, lane: lane, life: flight + wait + FIRE, max: FIRE, kind: 'fire', side: u.side, size: 60, up: dy });
     }
   } else s.effects.push({ x: x0, from: u.x, lane: lane, life: flight, max: flight, kind: u.elite ? 'bolt' : 'shot', side: u.side, art: a.shot, spin: a.spin, fromUp: a.air ? u.alt ?? highOf(u) : 0, toUp, arc: a.lob ? Math.min(190, 60 + Math.abs(x0 - u.x) * 0.3) : undefined });
+  // A second gun (the heavy robot's last form): a burst of three bullets beside the rockets, one after another.
+  if (a.also) for (let k = 0; k < 3; k++) s.effects.push({ x: x0 + (k - 1) * 12, from: u.x, lane: lane, life: 0.16 + k * 0.09, max: 0.16, kind: 'shot', side: u.side, art: a.also, fromUp: a.air ? u.alt ?? highOf(u) : 0, toUp: toUp + 4 + k * 10 });
   // Every rocket blows up where it lands, with the explosion art (bigger for salvos and the robots' blasts).
   if (a.blast || ROCKET_SHOTS.has(a.shot ?? '')) s.effects.push({ x: x0, from: x0, lane: lane, life: flight + BOOM, max: BOOM, kind: 'boom', side: u.side, size: a.shot === 'salvo' ? 90 : a.blast ? 70 : 56, up: toUp, dark: true });
 }
@@ -1093,7 +1100,7 @@ export function tick(s: Siege, dt: number) {
   s.kills += s.units.filter(u => u.side && u.hp <= 0).length;
   s.units = s.units.filter(u => u.hp > 0);
   s.hp = s.hp.map(h => Math.max(0, h)) as [number, number];
-  if (s.hp[0] <= 0 || s.time >= limitOf(s.world)) s.phase = 'lost';
+  if (s.hp[0] <= 0 || (!prefs.untimed && s.time >= limitOf(s.world))) s.phase = 'lost';
   else if (s.hp[1] <= 0 && (!guarded(s.world) || (s.bossSpawned && !s.units.some(u => u.boss && u.side)))) s.phase = 'won';
 }
 /** Rewards settle once per battle; a reload cannot replay a settled result. */
