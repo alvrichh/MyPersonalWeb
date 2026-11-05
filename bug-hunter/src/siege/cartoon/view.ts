@@ -496,9 +496,9 @@ const shotY = (up: number | undefined, y: number) => y - 15 - Math.max(0, (up ??
     drawn (an enemy's facing left): the gun's mouth, the bow, the hand that throws, the cannon on its back. Several take
     turns, shot after shot. `+` is a second gun (the heavy robot's hands). Spells fall on their target; flames, breath
     and the enemy's shots are part of their attack pose. */
-/** The lightning rain's colour by form, as on its icons, as a filter on the blue bolt: yellow lightning, white-gold
-    thunder, and the storm of wrath's white-blue electricity. */
-const BOLT_TINTS: Record<number, string> = { 1: 'hue-rotate(190deg) saturate(1.6) brightness(1.15)', 2: 'hue-rotate(195deg) saturate(.75) brightness(1.35)', 3: 'saturate(.75) brightness(1.3)' };
+/** The lightning rain's colour by form, as a filter on the blue bolt: white-yellow lightning, orange-yellow thunder,
+    and the storm of wrath's blue. */
+const BOLT_TINTS: Record<number, string> = { 1: 'hue-rotate(195deg) saturate(.75) brightness(1.35)', 2: 'hue-rotate(189deg) saturate(1.9) brightness(1.08)', 3: 'none' };
 /** The shot sheets drawn at a higher resolution than the first ones, and the scale that keeps them their size in battle. */
 const SHOT_SCALE: Record<string, number> = { 'plasma-cyan': 0.45, 'rocket-dark': 0.2, 'rockets-dark': 0.2, 'salvo-dark': 0.2 };
 const MUZZLE: Record<string, [number, number][]> = {
