@@ -301,7 +301,7 @@ export const HERO_GUARDIAN = [3, 5, 14, 57, 56, 58];
 export const heroLevel = (id: number, stage: number) => Math.max(1, Math.min(levelsOf(id), 1 + Math.floor((levelsOf(id) - 1) * (actOf(stage) - 1) / VILLAIN_PACE.reach)));
 /** The Villain campaign's balance: the heroes' strength against the enemy's (`hero`, on top of the usual growth by
     battle) and how many acts they take to reach their last form (`reach`). */
-export const VILLAIN_PACE = { hero: [0.7, 0.62, 0.52, 0.45, 0.3, 0.28], reach: 8 };
+export const VILLAIN_PACE = { hero: [0.75, 0.68, 0.58, 0.55, 0.34, 0.38], reach: 8 };
 /** Sends one of the enemy's troops, or (the Villain campaign) one of our heroes at its act's form. */
 function foeOut(s: Siege, id: number) { spawn(s, id, 1, false, s.villain ? heroLevel(id, s.world) : undefined); }
 /** What a stage throws at you most (its counter in brackets), stage by stage within each act; the fifth is the
@@ -369,9 +369,19 @@ export const groupOf = (u: Spec) => (u.legend ? 2 : u.support ? 1 : 0);
 /** Our troops in the order they arrive, world by world (the flying mech, listed last in `UNITS`, comes before the angels). */
 export const ALLIES = UNITS.filter(u => !u.foe).sort((a, b) => groupOf(a) - groupOf(b) || a.unlock - b.unlock);
 /** How many levels a troop has (its forms and the first). */
-export const levelsOf = (id: number) => 1 + (UNITS[id]?.forms?.length ?? 0);
+export const levelsOf = (id: number) => LINE_OF[id]?.length ?? 1 + (UNITS[id]?.forms?.length ?? 0);
+/** The Villain's troop lines: each enemy troop is a level of one (its card is the line's first troop at that level),
+    as our troops have forms; the guardians stand apart. */
+export const VILLAIN_LINES = [[15, 16, 19, 43], [47, 17, 25, 41], [18, 40, 42, 44], [20, 21, 32], [22, 46, 45], [23, 24, 26], [28, 29, 48, 49], [30, 27, 50, 31]];
+const LINE_OF: Record<number, number[]> = Object.fromEntries(VILLAIN_LINES.map(l => [l[0], l]));
+/** The enemy troop a Villain line sends at a level (any other troop is itself). */
+export const memberOf = (id: number, level = 1) => LINE_OF[id]?.[Math.max(1, Math.min(level, LINE_OF[id].length)) - 1] ?? id;
+/** The act from which a Villain line's level can be bought: the latest act any troop up to it first comes in (the undead
+    turkey, a joke, opens its line from the start). */
+export const lineAct = (id: number, level = 1) => Math.max(...(LINE_OF[id] ?? [id]).slice(0, Math.max(1, level)).map(m => (m === 47 ? 1 : villainAct(m))));
 /** A troop at a level: its stats and looks with that form's changes. */
 export function specAt(id: number, level = 1): Spec {
+  if (LINE_OF[id]) return UNITS[memberOf(id, level)];
   const spec = UNITS[id], form = spec.forms?.[Math.min(level, levelsOf(id)) - 2];
   if (!form) return spec;
   const { price: _price, ...changes } = form;
@@ -419,7 +429,7 @@ export const freshProgress = (): Progress => ({ version: 1, unlocked: 1, coins: 
 export const VILLAIN_START = 15;
 export const freshVillain = (): Progress => ({ ...freshProgress(), deck: [VILLAIN_START], owned: [VILLAIN_START], villain: true });
 /** The Villain's troops, in the order they join the enemy act by act (land, then air), then the six guardians as cards. */
-export const VILLAINS = [...[...new Set([...FOE_LAND.flat(), ...FOE_AIR.flat()])].sort((a, b) => villainAct(a) - villainAct(b)), ...GUARDIAN].map(id => UNITS[id]);
+export const VILLAINS = [...VILLAIN_LINES.map(l => l[0]), ...GUARDIAN].map(id => UNITS[id]);
 /** The act from which an enemy troop serves the Villain: the act it first comes in. */
 export function villainAct(id: number) { const k = [...FOE_LAND, ...FOE_AIR].findIndex((l, i) => l.includes(id) && i >= 0); return k < 0 ? 1 : (k % FOE_LAND.length) + 1; }
 /** The roster a save buys from: ours or (the Villain) the enemy's. */
@@ -437,7 +447,7 @@ export const prefs = { untimed: false };
 /** Has the battles won opened this troop's act? */
 export const isOpen = (p: Progress, id: number) => !!UNITS[id] && (p.villain
   // The Villain: an enemy troop from the act it first comes in, a guardian once its act's last battle is won.
-  ? VILLAINS.includes(UNITS[id]) && (testing.free || (GUARDIAN.includes(id) ? p.victories.includes((GUARDIAN.indexOf(id) + 1) * STAGES) : villainAct(id) <= actOf(p.unlocked)))
+  ? VILLAINS.includes(UNITS[id]) && (testing.free || (GUARDIAN.includes(id) ? p.victories.includes((GUARDIAN.indexOf(id) + 1) * STAGES) : lineAct(id) <= actOf(p.unlocked)))
   : !UNITS[id].foe && (testing.free || (UNITS[id].legend ? p.victories.includes(LAST) : UNITS[id].unlock <= actOf(p.unlocked))));
 export const owns = (p: Progress, id: number) => p.owned.includes(id);
 export const troopPrice = (id: number) => (testing.free ? 0 : UNITS[id]?.foe ? VILLAIN_PRICE(id) : RECRUIT[id] ?? 0);
@@ -459,7 +469,10 @@ export function readProgress(raw: string | null, villain = false): Progress {
     p.upgrades = Array.from({ length: UPGRADES }, (_, i) => integer(v.upgrades?.[i], 0, 5, 0)) as Upgrades;
     // A save from when the Bow was one upgrade (faster and more arrows): its level becomes both its power and its speed.
     if (Array.isArray(v.upgrades) && v.upgrades.length === 4) p.upgrades[4] = p.upgrades[3];
-    p.levels = UNITS.map(u => (u.foe ? 1 : integer(v.levels?.[u.id], 1, levelsOf(u.id), 1)));
+    p.levels = UNITS.map(u => (u.foe && !LINE_OF[u.id] ? 1 : integer(v.levels?.[u.id], 1, levelsOf(u.id), 1)));
+    // A Villain save from before its lines: a troop bought on its own opens its line up to that level.
+    if (villain && Array.isArray(v.owned)) { const heads: number[] = []; for (const n of v.owned) { const l = VILLAIN_LINES.find(l => l.includes(n)); if (l) { p.levels[l[0]] = Math.max(p.levels[l[0]], l.indexOf(n) + 1); heads.push(l[0]); } } v.owned = [...v.owned, ...heads]; }
+    if (villain && Array.isArray(v.deck)) v.deck = v.deck.map((c: number) => { const l = VILLAIN_LINES.find(l => l.includes(c % 100) && l[0] !== c % 100); return l ? card(l[0], l.indexOf(c % 100) + 1) : c; });
     p.powers = POWERS.map((w, i) => integer(v.powers?.[i], 0, w.forms.length, 0));
     p.kit = Array.isArray(v.kit) ? [...new Set<number>(v.kit.filter((n: unknown): n is number => typeof n === 'number' && hasPower(p, n)))].slice(0, KIT) : [];
     const start = villain ? VILLAIN_START : 0;
@@ -476,12 +489,14 @@ export function readProgress(raw: string | null, villain = false): Progress {
 export const UPGRADE_PRICES = [150, 400, 800, 1400, 2200];
 export const upgradePrice = (level: number) => (testing.free ? 0 : UPGRADE_PRICES[Math.max(0, Math.min(4, level))]);
 /** A troop's next form's gold price, or 0 at its last. */
-export const levelPrice = (p: Progress, id: number) => UNITS[id]?.forms?.[(p.levels[id] ?? 1) - 1]?.price ?? 0;
+export const levelPrice = (p: Progress, id: number) => (LINE_OF[id] ? ((p.levels[id] ?? 1) < LINE_OF[id].length ? VILLAIN_PRICE(memberOf(id, (p.levels[id] ?? 1) + 1)) : 0) : UNITS[id]?.forms?.[(p.levels[id] ?? 1) - 1]?.price ?? 0);
+/** Can this level of a troop be bought yet (a Villain line's level waits for its act)? */
+export const formOpen = (p: Progress, id: number, level: number) => !LINE_OF[id] || testing.free || lineAct(id, level) <= actOf(p.unlocked);
 /** Buys a troop's next form. */
 export function levelUp(p: Progress, id: number): boolean {
   const price = levelPrice(p, id);
   const pay = testing.free ? 0 : price;
-  if (!price || !owns(p, id) || p.coins < pay) return false;
+  if (!price || !owns(p, id) || p.coins < pay || !formOpen(p, id, (p.levels[id] ?? 1) + 1)) return false;
   p.coins -= pay; p.levels[id] = (p.levels[id] ?? 1) + 1; return true;
 }
 export function upgrade(p: Progress, slot: number): boolean {
@@ -663,6 +678,8 @@ export const ELITE = { from: 60, every: 4, hp: 1.6, damage: 1.8 };
 /** The enemy troop that comes horned: the gunner. */
 export const ELITE_ID = 22;
 function spawn(s: Siege, id: number, side: 0 | 1, boss = false, level?: number) {
+  // A Villain line's card sends the troop of its level, as itself.
+  if (LINE_OF[id] && level !== undefined) { id = memberOf(id, level); level = 1; }
   if (s.units.filter(u => u.side === side).length >= CAP) return;
   const lv = side ? level : level ?? s.levels[id] ?? 1;
   const spec = lv === undefined ? UNITS[id] : specAt(id, lv); const scale = side ? (0.95 + hard(s.world) * FOE_PACE.grow) * (s.villain ? VILLAIN_PACE.hero[actOf(s.world) - 1] : 1) : s.power;

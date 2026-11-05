@@ -102,7 +102,8 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   const guardianOf = (i: number) => (villain ? cartoonModel.HERO_GUARDIAN[i] : cartoonModel.GUARDIAN[i]);
   const name = (id: number) => t(`${mode === 'legacy' ? 'siegeLegacyUnit' : 'siegeUnit'}${id}` as Key);
   /** A troop's line in the shop: Cartoon's has one per level (the form it describes), Legacy's one per troop. */
-  const role = (id: number, level = 1) => t((mode === 'cartoon' ? `siegeRole${id}L${Math.max(1, level)}` : `${mode === 'legacy' ? 'siegeLegacyRole' : 'siegeRole'}${id}`) as Key);
+  const role = (id: number, level = 1) => (villain && cartoonModel.memberOf(id, level) !== id ? t(`siegeRole${cartoonModel.memberOf(id, level)}L1` as Key) : roleOf(id, level));
+  const roleOf = (id: number, level = 1) => t((mode === 'cartoon' ? `siegeRole${id}L${Math.max(1, level)}` : `${mode === 'legacy' ? 'siegeLegacyRole' : 'siegeRole'}${id}`) as Key);
   const title = () => t(mode === 'legacy' ? 'siegeLegacy' : mode === 'cartoon' ? 'siegeCartoon' : 'siegeName');
   /** The battle's last world or act. */
   const lastWorld = () => M.LAST;
@@ -202,8 +203,8 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       return { have: level <= have, next: level === have + 1, price: M.upgradePrice(level - 1), why: t('siegeBuyFirst') };
     }
     const owned = M.owns(progress, row), now = progress.levels[row] ?? 1, open = M.isOpen(progress, row);
-    const next = open && (owned ? level === now + 1 : level === 1);
-    return { have: owned && level <= now, next, price: level === 1 || (mode === 'cartoon' && cartoonModel.testing.free) ? M.troopPrice(row) : M.UNITS[row].forms?.[level - 2]?.price ?? 0, why: !open ? (M.UNITS[row].legend ? t('siegeOpensLegend') : t('siegeOpensAct', { n: M.UNITS[row].unlock })) : t('siegeBuyFirst') };
+    const formOk = mode !== 'cartoon' || cartoonModel.formOpen(progress, row, level), next = open && formOk && (owned ? level === now + 1 : level === 1);
+    return { have: owned && level <= now, next, price: level === 1 || (mode === 'cartoon' && cartoonModel.testing.free) ? M.troopPrice(row) : (mode === 'cartoon' && villain ? cartoonModel.troopPrice(cartoonModel.memberOf(row, level)) : M.UNITS[row].forms?.[level - 2]?.price ?? 0), why: !open || !formOk ? (M.UNITS[row].legend ? t('siegeOpensLegend') : t('siegeOpensAct', { n: villain ? cartoonModel.lineAct(row, level) : M.UNITS[row].unlock })) : t('siegeBuyFirst') };
   };
   /** A special power's picture at a form (the shop's tiles and the battle bar's buttons), under /images/game/. */
   /** Each power form's icon: the owner's drawn badges (`siege/powers/power-<power>-<form>`), their rim richer per form. */
@@ -235,7 +236,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       return `<button class="sg-st-tile ${x.have ? 'is-have' : x.next ? 'is-next' : 'is-locked'} ${on ? 'is-on' : ''} ${worn ? 'is-worn' : ''}" data-sg-tile="${row}:${level}" aria-pressed="${on}" aria-label="${hidden ? '?' : `${shopTab === 'special' ? powerName(row, level) : shopTab === 'base' ? t(`siegeBaseName${row}` as Key) : name(row)} · ${t('siegeLevel', { n: level })}`}">${hidden ? '<span class="sg-st-q" aria-hidden="true">?</span>' : `<img src="${pic}" ${shopTab === 'base' || shopTab === 'special' ? '' : `data-trim="${pic}"`} alt="">`}${corner && !hidden ? `<small>${corner}</small>` : ''}${worn ? '<b class="sg-st-worn" aria-hidden="true">✓</b>' : ''}</button>`;
     }).join('<span class="sg-st-link" aria-hidden="true"></span>')}</div>`).join('');
     const x = tile(pick.row, pick.level), troop = shopTab !== 'base', hid = !x.have && !x.next && !(troop && pick.level === 1 && !secret(pick.row));
-    const title = hid ? '? ? ?' : `${shopTab === 'special' ? powerName(pick.row, pick.level) : troop ? name(pick.row) : t(`siegeBaseName${pick.row}` as Key)} · ${t('siegeLevel', { n: pick.level })}`;
+    const title = hid ? '? ? ?' : `${shopTab === 'special' ? powerName(pick.row, pick.level) : troop ? name(villain ? cartoonModel.memberOf(pick.row, pick.level) : pick.row) : t(`siegeBaseName${pick.row}` as Key)} · ${t('siegeLevel', { n: pick.level })}`;
     const text = hid ? '' : shopTab === 'special' ? `${t(`siegePower${pick.row}Text` as Key)} · ⚡ ${cartoonModel.powerMana(pick.row, pick.level)} · ${t('siegePowerCd', { n: cartoonModel.POWERS[pick.row].cooldown })}` : troop ? `${role(pick.row, pick.level)}${mode === 'cartoon' ? needMana(M.specAt(pick.row, pick.level).cost) : ''}` : t(`siegeBaseText${pick.row}` as Key);
     const pic = shopTab === 'special' ? powerPic(pick.row, pick.level) : shopTab === 'base' ? `/images/game/${upgradePic('cartoon', pick.row, pick.level)}.webp` : V.portrait(pick.row, pick.level);
     const row = (label: string, value: string, n: number) => `<li><span>${label}</span><em>${value}</em><b class="sg-stars" style="--v:${n}" role="img" aria-label="${n}/5">★★★★★</b></li>`;
