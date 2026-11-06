@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-04T15:55:28.656Z",
+  "generatedAt": "2026-11-06T15:37:04.065Z",
   "candidates": [
     {
       "label": "Claude research and documentation flow",
@@ -10,19 +10,19 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-11-04"
+          "date": "2026-11-06"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-11-04"
+          "date": "2026-11-06"
         },
         {
-          "title": "The U.S. Census Bureau and “Super Intelligence”",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/2/census-bureau-super-intelligence/",
-          "date": "2026-11-02"
+          "title": "Claude AI can plug directly into your bank account",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1027652/anthropic-claude-plaid-personal-finance",
+          "date": "2026-11-05"
         }
       ]
     },
@@ -35,19 +35,19 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
-          "date": "2026-11-04"
+          "date": "2026-11-06"
         },
         {
-          "title": "Securing the agentic enterprise with data lineage",
-          "source": "MIT Technology Review AI",
-          "link": "https://www.technologyreview.com/2026/11/04/1147596/securing-the-agentic-enterprise-with-data-lineage/",
-          "date": "2026-11-04"
+          "title": "Airbnb is working on an AI travel agent",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/1028412/airbnb-ai-travel-agent-q3-2026-earnings",
+          "date": "2026-11-06"
         },
         {
-          "title": "Bring structured and unstructured data together with Amazon Quick",
+          "title": "Getting started with Web Answer on Amazon Bedrock AgentCore",
           "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/bring-structured-and-unstructured-data-together-with-amazon-quick/",
-          "date": "2026-11-03"
+          "link": "https://aws.amazon.com/blogs/machine-learning/getting-started-with-web-answer-on-amazon-bedrock-agentcore/",
+          "date": "2026-11-05"
         }
       ]
     },
@@ -57,22 +57,72 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "BYOK and enterprise custom models in the Copilot usage API",
+          "title": "Usage metrics API adds code review details and addressed rate",
           "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-03-byok-and-enterprise-custom-models-in-the-copilot-usage-api",
+          "link": "https://github.blog/changelog/2026-11-05-usage-metrics-api-adds-code-review-details-and-addressed-rate",
+          "date": "2026-11-06"
+        },
+        {
+          "title": "Usage metrics API flags telemetry and version gaps",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-05-usage-metrics-api-flags-telemetry-and-version-gaps",
+          "date": "2026-11-06"
+        },
+        {
+          "title": "GitHub Copilot is now available in Xcode’s coding assistant",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-04-github-copilot-is-now-available-in-xcodes-coding-assistant",
           "date": "2026-11-04"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Google: Schools can keep search while skipping Gemini, but AI search is non-negotiable",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/ai/2026/11/google-schools-can-keep-search-while-skipping-gemini-but-ai-search-is-non-negotiable/",
+          "date": "2026-11-05"
         },
         {
-          "title": "GitHub Copilot is now available in JetBrains Air",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-03-github-copilot-is-now-available-in-jetbrains-air",
-          "date": "2026-11-03"
+          "title": "Gemini Omni 1.2 Flash: Fast and cost-effective with longer clips",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/introducing-gemini-omni-1-2-flash/",
+          "date": "2026-11-05"
         },
         {
-          "title": "Introducing the Microsoft Copilot harness in Foundry Agent Service",
-          "source": "Azure Blog",
-          "link": "https://devblogs.microsoft.com/foundry/microsoft-copilot-harness-in-foundry/",
-          "date": "2026-10-28"
+          "title": "Gemini Omni 1.2 Flash: Fast and cost-effective with longer clips",
+          "source": "Google DeepMind",
+          "link": "https://deepmind.google/blog/gemini-omni-12-flash-fast-and-cost-effective-with-longer-clips/",
+          "date": "2026-11-05"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Australian universities are creating AI-native graduates",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/australian-universities-ai-native-graduates",
+          "date": "2026-11-05"
+        },
+        {
+          "title": "Merge builds product and business tools with OpenAI technology",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/merge-builds-with-openai",
+          "date": "2026-11-05"
+        },
+        {
+          "title": "Flipsnack grows product signups with conversion optimization",
+          "source": "OpenAI News",
+          "link": "https://openai.com/ads/customers/flipsnack",
+          "date": "2026-11-05"
         }
       ]
     },
@@ -81,6 +131,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "GitHub Copilot is now available in Xcode’s coding assistant",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-04-github-copilot-is-now-available-in-xcodes-coding-assistant",
+          "date": "2026-11-04"
+        },
         {
           "title": "GitHub Copilot is now available in JetBrains Air",
           "source": "GitHub Changelog",
@@ -92,37 +148,6 @@
           "source": "MIT Technology Review AI",
           "link": "https://www.technologyreview.com/2026/11/02/1147702/stop-counting-tokens-start-counting-what-ships/",
           "date": "2026-11-02"
-        },
-        {
-          "title": "The U.S. Census Bureau and “Super Intelligence”",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/2/census-bureau-super-intelligence/",
-          "date": "2026-11-02"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Accelerating engineering for the physical world",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/accelerating-engineering-for-the-physical-world",
-          "date": "2026-11-03"
-        },
-        {
-          "title": "Heimstaden is changing residential real estate management with AI",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/heimstaden",
-          "date": "2026-11-03"
-        },
-        {
-          "title": "OpenAI says ChatGPT is catching up to Google in search",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1025482/openai-says-chatgpt-is-catching-up-to-google-in-search",
-          "date": "2026-11-03"
         }
       ]
     },
@@ -131,12 +156,6 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
-        {
-          "title": "Apple starts giving Siri AI access to third-party apps",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/1025694/apple-siri-ai-third-party-apps",
-          "date": "2026-11-03"
-        },
         {
           "title": "Stop counting tokens, start counting what ships",
           "source": "MIT Technology Review AI",
@@ -152,45 +171,14 @@
       ]
     },
     {
-      "label": "Multimodal AI product workflows",
+      "label": "AI automation and workflow design",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Agentic engineering intelligence with Amazon Nova Multimodal Embeddings and Amazon Bedrock AgentCore",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/agentic-engineering-intelligence-with-amazon-nova-multimodal-embeddings-and-amazon-bedrock-agentcore/",
-          "date": "2026-11-02"
-        },
-        {
-          "title": "Build specialized multimodal models with LFM3",
-          "source": "Hugging Face",
-          "link": "https://huggingface.co/blog/LiquidAI/lfm3",
-          "date": "2026-10-27"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "llm 0.37",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/2/llm/",
-          "date": "2026-11-02"
-        },
-        {
-          "title": "Google announces Gemini 4 Carbon, its latest frontier AI model that you can't use",
-          "source": "Ars Technica AI",
-          "link": "https://arstechnica.com/ai/2026/10/google-announces-gemini-4-carbon-its-latest-frontier-ai-model-that-you-cant-use/",
-          "date": "2026-10-28"
-        },
-        {
-          "title": "Gemini 4 Carbon: Our next frontier model",
-          "source": "Google DeepMind",
-          "link": "https://deepmind.google/blog/gemini-4-carbon-our-next-frontier-model/",
+          "title": "Creating AI value with enterprise context",
+          "source": "MIT Technology Review AI",
+          "link": "https://www.technologyreview.com/2026/10/28/1147709/creating-ai-value-with-enterprise-context/",
           "date": "2026-10-28"
         }
       ]
