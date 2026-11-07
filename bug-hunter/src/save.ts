@@ -338,7 +338,12 @@ export function wipeProgress(save: Save) {
   delete save.extra;
 }
 
+/** Set once another saved game has been put in place (`transfer.ts`): nothing is written over it before the page
+    reloads. */
+let saveLocked = false;
+export const lockSave = () => { saveLocked = true; };
 export function writeSave(save: Save) {
+  if (saveLocked) return;
   storage.set(KEY, JSON.stringify(save));
 }
 

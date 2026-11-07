@@ -9,7 +9,7 @@ import { COIN_PACKS, currentOffers, grant, halloweenEnds, HALLOWEEN_OFFERS, pack
 import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPrize, type DailyResult } from './daily';
 import { audio, BOSS_SONGS, SIEGE_SOUNDS, type SiegeSound, type Sfx, type SongPick } from './audio';
 import { MID_ART, boardBackdropBounds, draw, drawRetroFigure, preloadBoardBossFx, preloadCast, preloadFx, type Palette, type View } from './draw';
-import { DEFAULT_NAME, NAME_MAX, NET_ID, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, STYLES, SKINS, WORLD_SKINS, SKIN_GATE, SKIN_GROUPS, SKIN_TALL, skinOpen, ownsSkin, skinPrice, worldOutfit, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
+import { DEFAULT_NAME, NAME_MAX, NET_ID, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, lockSave, STYLES, SKINS, WORLD_SKINS, SKIN_GATE, SKIN_GROUPS, SKIN_TALL, skinOpen, ownsSkin, skinPrice, worldOutfit, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
 import { ABILITY, ABIL_V, BENCH_CAP, canFight, moveBenchSeat, CELL, COLS, FINAL_ID, HOME_ROW, NATIVE_WORLD_BONUS, ROWS, ROUNDS, SYNERGY, TACTICS, armyCap, deployBench, sellBench, storeOnBench, toggleAutoMerge, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, startOnlineFight, unitStats, updateBoard, waveSpots, waveUnitStats, type BoardGame, type Online, type Piece, type Variant } from './board';
 import { cleanCode, dial, hostGame, joinGame, leave as netLeave, presence, presenceOn, presenceReady, send as netSend, type NetHandlers, type NetMsg, type NetProfile, type NetState, type Together } from './net';
 import { ABILITY_ICON, ABILITY_PIC, SYNERGY_PIC, FIREBALL, boardMerged, boardUnitBounds, drawBoard, mirrorFight, drawBoardDrag, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
@@ -19,6 +19,7 @@ import { Scene } from './scene';
 import { ACHIEVEMENTS, achEarned, achTotal, checkAchievements, tierKey, tiersDone, type Ach, type AchId } from './achievements';
 import { makeT, pickLang, type Key, type Lang } from './strings';
 import { qrSvg, startScan, stopScan, type QrTarget } from './qr';
+import { exportGame, readGame, restoreGame } from './transfer';
 import {
   CATEGORY, EVO_PARTNER, H, NIGHTMARE_WORLD, SECRET_WORLD, showcaseHit, startShowcase, canFuse, revivePrice, SKILLS, arrowLook, arrowOptions, bladeElement, bladeOptions, canEvolve, evoOf, fusionOf, fusionWith, evoLostBy, pairFusion, arrowElements, settleEffects, rerollChoices, adReroll, adRevive, canAdReroll, canAdRevive, maxLevel, pickArrow, pickBlade, pickSpirit, ROOMS, SHRINE_ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_LUCKY, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
   type ArrowLook, type Category, type Choice, type Fusion, type Game, type GameEvent, type Input, type Look, type SkillId, type WheelOutcome,
@@ -1226,11 +1227,55 @@ function optionsScreen() {
     <div class="lang-row"><span>🌐 ${t('language')}</span>
       <div class="mode-pick lang-pick" role="group" aria-label="${t('language')}">${(['es', 'en'] as Lang[]).map((l) => `<button type="button" class="mode-opt${l === lang ? ' is-on' : ''}" data-act="lang" data-lang="${l}" aria-pressed="${l === lang}">${l === 'es' ? 'Español' : 'English'}</button>`).join('')}</div>
     </div>
+    <button class="primary is-purple" type="button" data-act="transfer">📲 ${t('transferBtn')}</button>
     <nav class="privacy-links" aria-label="${lang === 'es' ? 'Privacidad y aspectos legales' : 'Privacy and legal'}">
       <button class="ghost small" type="button" data-act="privacy-settings">${lang === 'es' ? 'Preferencias de privacidad' : 'Privacy settings'}</button>
       <div><a href="/privacy.html">${lang === 'es' ? 'Privacidad' : 'Privacy'}</a><a href="/cookies.html">Cookies</a><a href="/legal.html">${lang === 'es' ? 'Aviso legal' : 'Legal notice'}</a></div>
     </nav>
     <button class="primary is-blue" data-act="${optionsFrom === 'pause' ? 'pause' : 'menu'}">← ${t(optionsFrom === 'pause' ? 'resume' : 'menu')}</button>`);
+}
+
+/* Moving the saved game (`transfer.ts`): on an iPhone the home-screen game and Safari keep separate games, and each
+   browser or phone its own. The code is made when the screen opens, so «Copy» writes it at once within the tap
+   (Safari refuses to copy after waiting on anything). */
+let transferCode = '';
+let transferIn: Record<string, string> | null = null;
+function transferScreen(note = '') {
+  transferIn = null;
+  show(`<button class="ui-close" type="button" data-act="options-keep" aria-label="${t('back')}"></button>
+    <h2>${t('transferBtn')}</h2>
+    <p class="how">${t('transferHow')}</p>
+    ${note ? `<p class="how">${note}</p>` : ''}
+    <h3 class="slot">${t('transferOut')}</h3>
+    <button class="primary" type="button" data-act="transfer-copy">📋 ${t('transferCopy')}</button>
+    <textarea class="transfer-code" id="transferOut" readonly hidden aria-label="${t('transferOut')}"></textarea>
+    <h3 class="slot">${t('transferIn')}</h3>
+    <textarea class="transfer-code" id="transferIn" rows="3" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="BH1:…" aria-label="${t('transferIn')}"></textarea>
+    <button class="primary is-purple" type="button" data-act="transfer-load">${t('transferLoad')}</button>
+    <button class="primary is-blue" type="button" data-act="options-keep">← ${t('options')}</button>`);
+  transferCode = '';
+  void exportGame().then((code) => { transferCode = code; });
+}
+function transferCopy() {
+  const code = transferCode;
+  if (!code) { flash(t('transferWait')); return; }
+  const out = document.getElementById('transferOut') as HTMLTextAreaElement | null;
+  // Shown as well, so it can be copied by hand if the phone will not.
+  const showCode = () => { if (out) { out.hidden = false; out.value = code; out.focus(); out.select(); } };
+  if (navigator.clipboard?.writeText) navigator.clipboard.writeText(code).then(() => flash(t('transferCopied')), () => { showCode(); flash(t('transferSelect')); });
+  else { showCode(); flash(t('transferSelect')); }
+}
+async function transferLoad() {
+  const raw = (document.getElementById('transferIn') as HTMLTextAreaElement | null)?.value ?? '';
+  const data = await readGame(raw);
+  if (!data) { flash(t('transferBad')); return; }
+  transferIn = data;
+  let who = '?', coins = 0, worlds = 1;
+  try { const m = JSON.parse(data.bugHunter) as { name?: string; coins?: number; unlocked?: number }; who = cleanName(String(m.name ?? '')) || '?'; coins = Math.floor(Number(m.coins) || 0); worlds = Math.round(Number(m.unlocked) || 1); } catch { /* read already */ }
+  show(`<h2>${t('transferLoad')}</h2>
+    <p>${t('transferSure', { name: esc(who), coins, worlds })}</p>
+    <button class="ghost is-danger" type="button" data-act="transfer-yes">${t('transferYes')}</button>
+    <button class="primary" type="button" data-act="transfer">${t('cancel')}</button>`);
 }
 
 /* The guide: the book on the cover, which replaced the painted gear (Options has its own card). Its first page
@@ -3346,6 +3391,17 @@ screen.addEventListener('click', (event) => {
     joinByCode(code);
   }
   else if (act === 'qr-scan') qrScreen();
+  else if (act === 'transfer') transferScreen();
+  // Back to Options as it was opened (from the cover or from the pause).
+  else if (act === 'options-keep') optionsScreen();
+  else if (act === 'transfer-copy') transferCopy();
+  else if (act === 'transfer-load') void transferLoad();
+  else if (act === 'transfer-yes' && transferIn) {
+    netLeave();
+    lockSave();
+    if (restoreGame(transferIn)) location.reload();
+    else transferScreen(`⚠ ${t('transferBad')}`);
+  }
   else if (act === 'board-pick') { menuScreen(); boardVariantScreen(worldIn('board')); }
   else if (act === 'invite' && friend) {
     const mode: Together = target.dataset.mode === 'sprints' || target.dataset.mode === 'horde' ? target.dataset.mode : 'board';
