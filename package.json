@@ -33,9 +33,10 @@
     "vite": "^6.4.5"
   },
   "dependencies": {
+    "jsqr": "^1.4.0",
     "peerjs": "^1.5.5",
+    "qrcode-generator": "^2.0.4",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   }
 }
-

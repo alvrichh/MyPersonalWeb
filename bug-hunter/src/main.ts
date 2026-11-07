@@ -18,6 +18,7 @@ import { ARMOUR_SLOTS, ARSENAL, ITEMS, SHOP_SHORT, itemLevel, type SpiritSkin, U
 import { Scene } from './scene';
 import { ACHIEVEMENTS, achEarned, achTotal, checkAchievements, tierKey, tiersDone, type Ach, type AchId } from './achievements';
 import { makeT, pickLang, type Key, type Lang } from './strings';
+import { qrSvg, startScan, stopScan, type QrTarget } from './qr';
 import {
   CATEGORY, EVO_PARTNER, H, NIGHTMARE_WORLD, SECRET_WORLD, showcaseHit, startShowcase, canFuse, revivePrice, SKILLS, arrowLook, arrowOptions, bladeElement, bladeOptions, canEvolve, evoOf, fusionOf, fusionWith, evoLostBy, pairFusion, arrowElements, settleEffects, rerollChoices, adReroll, adRevive, canAdReroll, canAdRevive, maxLevel, pickArrow, pickBlade, pickSpirit, ROOMS, SHRINE_ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_LUCKY, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
   type ArrowLook, type Category, type Choice, type Fusion, type Game, type GameEvent, type Input, type Look, type SkillId, type WheelOutcome,
@@ -370,6 +371,8 @@ const COIN_PIC = '<i class="coin-ic" aria-hidden="true"></i>';
 /** How long the run's last moment stays on the field before its dialog. */
 const END_PAUSE = 1100;
 function show(html: string, wide = false, menu = false, extra = '') {
+  // Any other screen turns the QR reader's camera off.
+  stopScan();
   // A dialog that opens (not one re-rendering itself) pops up with a zoom: over the game, or from the cover
   // (options, Customise, the shop, the map and the rest of the main menu's screens).
   const opening = screen.hidden || (screen.classList.contains('is-menu') && !menu);
@@ -2137,18 +2140,26 @@ async function shareProfile() {
   catch { window.prompt(t('shareCopy'), url); }
 }
 /** Opened from a friend's shared link (`#amigo=<id>&n=<name>`): they are saved and called. */
-function readShared() {
+/** Opened from a game's QR (`#unir=<code>`): that code, to be joined once the cover is up. */
+function readShared(): string {
   const q = new URLSearchParams(location.hash.slice(1));
+  const join = cleanCode(q.get('unir') ?? '');
+  if (join.length === 4) { history.replaceState(null, '', location.pathname + location.search); return join; }
   const id = q.get('amigo') ?? '';
-  if (!id) return;
+  if (!id) return '';
   history.replaceState(null, '', location.pathname + location.search);
-  if (!NET_ID.test(id) || id === save.netId) return;
-  const name = cleanName(q.get('n') ?? '') || '?';
+  if (addFriend(id, q.get('n') ?? '')) callFirst = id;
+  return '';
+}
+/** Saves a friend from their shared profile (a link or their QR); false for a bad id or your own. */
+function addFriend(id: string, rawName: string): boolean {
+  if (!NET_ID.test(id) || id === save.netId) return false;
+  const name = cleanName(rawName) || '?';
   const had = save.friends.find((f) => f.id === id);
   save.friends = [{ id, name, still: had?.still ?? '' }, ...save.friends.filter((f) => f.id !== id)].slice(0, 30);
   persist();
-  callFirst = id;
   flash(t('friendAdded', { name: esc(name) }));
+  return true;
 }
 const friendStill = (still: string) => `./images/game/hero/${still || 'boy-base-front'}.webp`;
 function friendsBlock() {
@@ -2189,13 +2200,41 @@ function linkScreen(note = '') {
     <button class="primary" type="button" data-act="share">🔗 ${t('shareProfile')}</button>
     <h3 class="slot">${t('onlineJoin')}</h3>
     <input class="online-code" id="onlineCode" maxlength="4" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ABCD" aria-label="${t('onlineCodeLabel')}">
-    <button class="primary" type="button" data-act="link-join">${t('onlineJoinBtn')}</button>`);
+    <button class="primary" type="button" data-act="link-join">${t('onlineJoinBtn')}</button>
+    <button class="primary is-purple" type="button" data-act="qr-scan">📷 ${t('qrScan')}</button>`);
+}
+/** The address a game's QR holds: opened by a phone's camera app it joins that game (`readShared`). */
+const joinUrl = (code: string) => `${location.origin}${location.pathname}#unir=${code}`;
+function joinByCode(code: string) {
+  show(`<h2>👥 ${t('onlineJoin')}</h2><p class="how">⏳ ${t('onlineJoining', { code })}</p><button class="ghost" data-act="link">${t('cancel')}</button>`);
+  joinGame(code, netHandlers());
+}
+/** Reads a friend's QR with the camera, in the game itself (the home-screen app on an iPhone keeps its own saved
+    game, apart from Safari's, so a link would open the wrong one). */
+function qrScreen() {
+  if (friend) { linkScreen(); return; }
+  netLeave();
+  show(`<button class="ui-close" type="button" data-act="link" aria-label="${t('back')}"></button>
+    <h2>${t('qrScan')}</h2>
+    <div class="qr-scan"><video id="qrVideo" playsinline muted></video><i aria-hidden="true"></i></div>
+    <p class="how">${t('qrAim')}</p>
+    <button class="ghost" type="button" data-act="link">${t('cancel')}</button>`);
+  const video = document.getElementById('qrVideo') as HTMLVideoElement | null;
+  if (!video) return;
+  void startScan(video, (found: QrTarget) => {
+    audio.play('levelup');
+    if ('code' in found) joinByCode(found.code);
+    else if (addFriend(found.friend, found.name)) callFriend(found.friend);
+    else linkScreen();
+  }, (why) => linkScreen(`⚠ ${t(why === 'denied' ? 'qrDenied' : 'qrNoCamera')}`));
 }
 const netHandlers = (): NetHandlers => ({
   code: (code) => show(`<button class="ui-close" type="button" data-act="link" aria-label="${t('back')}"></button>
       <h2>👥 ${t('onlineHost')}</h2>
       <p>${t('onlineGive')}</p>
       <p class="online-big">${code}</p>
+      <div class="online-qr" role="img" aria-label="${t('qrShow')}">${qrSvg(joinUrl(code))}</div>
+      <p class="how">${t('qrShow')}</p>
       <p class="how">⏳ ${t('onlineWait')}</p>`),
   open: () => netSend(hello()),
   msg: onNetMsg,
@@ -3304,9 +3343,9 @@ screen.addEventListener('click', (event) => {
   else if (act === 'link-join') {
     const code = cleanCode((document.getElementById('onlineCode') as HTMLInputElement | null)?.value ?? '');
     if (code.length !== 4) { flash(t('onlineCodeLabel')); return; }
-    show(`<h2>👥 ${t('onlineJoin')}</h2><p class="how">⏳ ${t('onlineJoining', { code })}</p><button class="ghost" data-act="link">${t('cancel')}</button>`);
-    joinGame(code, netHandlers());
+    joinByCode(code);
   }
+  else if (act === 'qr-scan') qrScreen();
   else if (act === 'board-pick') { menuScreen(); boardVariantScreen(worldIn('board')); }
   else if (act === 'invite' && friend) {
     const mode: Together = target.dataset.mode === 'sprints' || target.dataset.mode === 'horde' ? target.dataset.mode : 'board';
@@ -4292,8 +4331,9 @@ Promise.race([
   new Promise<void>((resolve) => setTimeout(resolve, 6000)),
 ]).then(() => {
   loadingFill.style.setProperty('--p', '1');
-  readShared();
+  const join = readShared();
   menuScreen();
+  if (join) joinByCode(join);
   loading.classList.add('is-done');
   setTimeout(() => loading.remove(), 400);
   musicOnLanding();
