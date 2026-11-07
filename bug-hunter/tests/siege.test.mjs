@@ -729,3 +729,21 @@ test('the map knows what answers a threat', () => {
   assert.equal(m.counters(m.card(5, 1), 'swarm'), true, 'a bazooka hits an area'); assert.equal(m.counters(m.card(12, 1), 'wall'), true, 'a helicopter shoots the wall from above');
   assert.equal(m.counters(m.card(3, 1), 'shooters'), true, 'a heavy knight takes the shots'); assert.equal(m.counters(m.card(6, 1), 'shooters'), true, 'the wizard\'s blow breaks them up');
 });
+test('rare champions come alone, now and then, never in the usual waves', () => {
+  const rare = m.UNITS.filter(u => u.rare).map(u => u.id);
+  assert.deepEqual(rare.sort(), [61, 62, 63]);
+  for (const stage of [20, 25, 30]) for (const id of rare) {
+    assert.equal(m.plainFoesAt(m.FOE_LAND, stage).includes(id), false); assert.equal(m.plainFoesAt(m.FOE_AIR, stage).includes(id), false);
+    assert.equal(m.threatPool(stage).includes(id), false);
+  }
+  const p = m.freshProgress(); p.unlocked = m.LAST;
+  const s = m.newSiege(p, 25); s.hp[0] = s.maxHp[0] = 1e9;
+  const seen = new Set(); let champions = 0, all = 0;
+  for (let i = 0; i < 300 * 30; i++) {
+    m.tick(s, 1 / 30);
+    for (const u of s.units) if (u.side && u.x < 700) u.hp = 0;
+    for (const u of s.units) if (u.side && !seen.has(u.uid)) { seen.add(u.uid); all++; if (m.UNITS[u.id].rare) champions++; }
+    assert.ok(s.units.filter(u => u.side && u.hp > 0 && m.UNITS[u.id].rare).length <= 1, 'never two at once');
+  }
+  assert.ok(champions >= 2 && champions <= 8 && champions / all < 0.08, `${champions} champions of ${all}`);
+});

@@ -4,6 +4,24 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.11 - 2026-11-07
+
+- The Bell Ringer, the Crowned Wraith and the King's Jailer are now rare champions:
+  - They are drawn bigger and have more than double their life and strength:
+    - the Jailer: 2800 life, 75 damage, a longer chain;
+    - the Bell Ringer: 2300 life, a longer toll that stuns for longer;
+    - the Wraith: 950 life, a scream that reaches further and slows for longer.
+  - The Jailer and the Bell Ringer cannot be thrown back.
+  - They no longer come in the usual waves. From 40 seconds in, one arrives every fifth wave, never two at once, taking turns, with a roar and a larger arrival: about four in a five-minute battle.
+  - In the Villain campaign their cards cost more to match.
+- The toll and the scream move:
+  - Their red rings are cut out of the attack poses and leave the bell's mouth or the Wraith's mouth.
+  - They run out across the reach of the blow, growing and fading.
+- Falls:
+  - A flyer killed in the air now falls from where it flew to the ground, instead of appearing on the ground at once.
+  - Its crash dust comes when it lands.
+  - The Bell Ringer lies on its body when dead: it no longer floats on the bone drawn in front of it.
+
 ## 1.16.10 - 2026-11-07
 
 - The King of Darkness always shows his new art. His redraw kept 22 of the 24 file names, so browsers that had the old pictures could go on showing them for days, mixed with the new ones. His pictures' addresses now carry a revision (`ART_REV` in the Siege Cartoon view), and every player fetches the new art at once.

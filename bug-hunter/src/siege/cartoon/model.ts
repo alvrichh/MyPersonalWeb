@@ -82,7 +82,12 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
   moves?: { ready: number; strike: number; kind: 'orb' | 'ray' | 'skulls' | 'summon' | 'slam' | 'spikes' | 'pulse' | 'slash' }[];
   /** A sound that strikes everything in front of it out to `reach`: the bell ringer's toll (walkers only, stunned for
       `stun` seconds), the crowned wraith's scream (walkers and flyers, slowed for `slow` seconds). */
-  wave?: { reach: number; stun?: number; slow?: number };
+  /** A toll or a scream (`art`, `siege/fx/<art>`), sent from its mouth (`mouth`: forward and up, in shares of its
+      size) out to `reach`: what it meets is struck, stunned or slowed. */
+  wave?: { reach: number; stun?: number; slow?: number; art: string; mouth: [number, number] };
+  /** One of the enemy's rare champions: big, tough and strong, never in the waves' rotation; one comes now and then
+      (`RARE`), with a roar, and only one at a time. */
+  rare?: boolean;
   /** The unit it becomes at half its life (the King of Darkness loses his wings and fights on foot), and how many poses
       its sheet has (more than six with `moves`). */
   phase2?: number; frames?: number;
@@ -292,13 +297,13 @@ export const UNITS: readonly Spec[] = [
     ...foe('boss-dark-king-ground', 250, 1) },
   // The King's Jailer (world 6): a hunched giant with no mouth and a cage of ribs on its back full of red souls. It throws
   // its chain from afar, hooks one of ours and drags it to its feet.
-  { id: 61, cost: 140, hp: 1100, damage: 45, speed: 22, range: 170, rate: 2.2, cooldown: 0, unlock: 1, foe: true, hook: 150, ...six('foe-jailer-1', 231, 1.4) },
+  { id: 61, cost: 230, hp: 2800, damage: 75, speed: 20, range: 190, rate: 2.2, cooldown: 0, unlock: 1, foe: true, rare: true, steady: true, hook: 170, ...six('foe-jailer-1', 231, 1.8) },
   // The Bell Ringer (world 4): a hunched skeleton with a huge black bell on its back; it strikes the bell with a bone and
   // the toll stuns our walkers in front of it.
-  { id: 62, cost: 90, hp: 900, damage: 18, speed: 22, range: 120, rate: 2.0, cooldown: 0, unlock: 1, foe: true, steady: true, wave: { reach: 130, stun: 0.8 }, ...foe('foe-bellringer-1', 258, 0.87) },
+  { id: 62, cost: 190, hp: 2300, damage: 40, speed: 20, range: 160, rate: 2.0, cooldown: 0, unlock: 1, foe: true, rare: true, steady: true, wave: { reach: 180, stun: 1.3, art: 'wave-toll', mouth: [0.515, 0.508] }, ...foe('foe-bellringer-1', 258, 1.25) },
   // The Crowned Wraith (world 5, air): a floating cloak with a crown and bone claws; its scream runs through everything
   // in front of it, walkers and flyers, and slows them.
-  { id: 63, flyAt: 62, cost: 80, hp: 260, damage: 22, speed: 40, range: 200, rate: 2.2, cooldown: 0, unlock: 1, foe: true, air: true, hitsAir: true, wave: { reach: 220, slow: 2.5 }, ...foe('foe-wraith-1', 261, 0.82) },
+  { id: 63, flyAt: 72, cost: 170, hp: 950, damage: 45, speed: 36, range: 230, rate: 2.2, cooldown: 0, unlock: 1, foe: true, rare: true, air: true, hitsAir: true, wave: { reach: 260, slow: 3.5, art: 'wave-scream', mouth: [0.205, 0.653] }, ...foe('foe-wraith-1', 261, 1.2) },
 ];
 /** The enemy's land and air troops by act, each act adding to the last (docs/siege-roster.md): early waves draw
     from the first two of the land list. No flyers in the first world: they come from the second. */
@@ -348,7 +353,8 @@ export const foePower = (id: number) => { const u = UNITS[id]; return u.hp * u.d
 /** The troops a stage's threat sends: from every act so far (the whole of this one, so a threat can show what is to come). */
 export function threatPool(stage: number): number[] {
   const t = threatOf(stage), act = actOf(stage);
-  const land = FOE_LAND.slice(0, act).flat(), air = FOE_AIR.slice(0, act).flat(), mine = FOE_LAND[act - 1];
+  const plain = (ids: number[]) => ids.filter(id => !UNITS[id].rare);
+  const land = plain(FOE_LAND.slice(0, act).flat()), air = plain(FOE_AIR.slice(0, act).flat()), mine = plain(FOE_LAND[act - 1]);
   const byHp = (ids: number[]) => [...new Set(ids)].sort((a, b) => UNITS[b].hp - UNITS[a].hp);
   // The swarm: the fastest close fighters, this act's first.
   if (t === 'swarm') { const fast = (ids: number[]) => ids.filter(id => UNITS[id].range <= 60 && UNITS[id].speed >= 40).sort((a, b) => UNITS[b].speed - UNITS[a].speed); return [...new Set([...fast(mine), ...fast(land)])].slice(0, 2); }
@@ -362,6 +368,10 @@ export function threatPool(stage: number): number[] {
 }
 /** The enemy's troops in a battle: every earlier act's, and its own act's coming in one more each stage. */
 export const foesAt = (lists: number[][], stage: number) => [...lists.slice(0, actOf(stage) - 1).flat(), ...(lists[actOf(stage) - 1] ?? []).slice(0, stageIn(stage))];
+/** The troops of a battle's usual waves (not the rare champions, which come on their own: `RARE`). */
+export const plainFoesAt = (lists: number[][], stage: number) => foesAt(lists, stage).filter(id => !UNITS[id].rare);
+/** The rare champions (`Spec.rare`): from this far into a battle, one every `every` waves, never two at once. */
+export const RARE = { from: 40, every: 5 };
 /** What recruiting each of our troops costs in gold (the swordsman is everyone's first). Bought once, kept. */
 export const RECRUIT: Record<number, number> = { 0: 0, 1: 100, 2: 120, 3: 350, 4: 300, 5: 600, 6: 900, 7: 700, 8: 900, 9: 1600, 10: 250, 11: 500, 12: 900, 13: 700, 14: 2000, 33: 1200, 51: 900, 52: 800, 53: 400, 54: 500, 55: 1100, 56: 3000, 57: 4000, 58: 4500, 59: 3500 };
 /** The guardian of each act, drawn bigger: Large Slinger, Large Gatling Robot, Large Red Dragon Rider, Giant Brute
@@ -582,7 +592,7 @@ function wince(u: Fighter, damage: number) {
   if (damage >= u.maxHp * WINCE.share && !u.winceCd) { u.wince = WINCE.time; u.winceCd = WINCE.every; }
 }
 export const CHARGE = { reach: 170, pace: 4, back: 130, daze: 0.9 };
-export interface Effect { x: number; from: number; lane: number; life: number; max: number; kind: 'shot' | 'anim' | 'piece' | 'burst' | 'arrow' | 'rocket' | 'bolt' | 'gust' | 'loot' | 'boom' | 'fire' | 'stuck' | 'fall' | 'ground' | 'zap' | 'wave' | 'sweep' | 'breath' | 'heal' | 'beam'; side: 0 | 1;
+export interface Effect { x: number; from: number; lane: number; life: number; max: number; kind: 'shot' | 'anim' | 'piece' | 'burst' | 'arrow' | 'rocket' | 'bolt' | 'gust' | 'loot' | 'boom' | 'fire' | 'stuck' | 'fall' | 'ground' | 'zap' | 'wave' | 'sweep' | 'breath' | 'heal' | 'beam' | 'ripple'; side: 0 | 1;
   /** A `breath`'s fire: core and edge colours. */
   colors?: [string, string];
   /** A lobbed shot's height at the top of its arc (field units), drawn falling under gravity. */
@@ -619,6 +629,8 @@ export interface Siege {
   kit: { id: number; level: number; card: number }[]; kitCd: Record<number, number>; hitq: Hit[];
   /** Powers that act for a while where they were cast: a black hole pulling the enemy in, a sanctuary healing ours. */
   zones?: { kind: 'pull' | 'heal' | 'wall' | 'slow' | 'drag'; x: number; r: number; until: number; heal?: number; next?: number; from?: number; speed?: number }[]; view: { x: number; width: number }; casts: number;
+  /** How many rare champions have come this battle, so they take turns (`RARE`). */
+  rares?: number;
   /** The troops' sounds since the view last took them (attacks and deaths, where they happened); kept short. */
   sounds?: { k: string; x: number }[];
   /** How many times the bow has shot this battle (the view plays a sound for each new one). */
@@ -749,7 +761,9 @@ function spawn(s: Siege, id: number, side: 0 | 1, boss = false, level?: number) 
   if (spec.stealth) nu.hidden = spec.stealth;
   // It arrives with a flourish of its kind: a summoning circle, a whirl of wind for flyers, a thump for the heavy, a
   // red portal for the enemy (the ninja slips in unseen).
-  else fx(s, spec.foe ? 'arrive-foe' : spec.air ? 'arrive-air' : spec.steady || spec.size > 100 ? 'arrive-heavy' : 'arrive-land', nu.x, 0.55, { size: Math.min(150, Math.max(70, spec.size * (boss ? 1.6 : 1) * 0.9)), up: spec.air ? highOf(nu) - 20 : 0 });
+  else fx(s, spec.foe ? 'arrive-foe' : spec.air ? 'arrive-air' : spec.steady || spec.size > 100 ? 'arrive-heavy' : 'arrive-land', nu.x, spec.rare ? 0.9 : 0.55, { size: spec.rare ? spec.size * 1.5 : Math.min(150, Math.max(70, spec.size * (boss ? 1.6 : 1) * 0.9)), up: spec.air ? highOf(nu) - 20 : 0 });
+  // A rare champion is heard coming.
+  if (spec.rare && side && !s.villain) hear(s, 'roar', nu.x);
 }
 /** What a troop's attack sounds like (its weapon) and its death (its body), by id; an array is per level. Projectile
     troops sound like what they fire (`SHOT_SOUND`). Names are the audio engine's `SiegeSound`s. */
@@ -976,7 +990,7 @@ function kingMove(s: Siege, u: Fighter, a: Spec, enemy: Fighter, alive: Fighter[
     hear(s, 'throw', u.x);
   } else if (mv.kind === 'summon') {
     // A portal opens on the ground before him and two of his troops climb out of it.
-    const x = Math.max(160, u.x + dir * 70), land = foesAt(FOE_LAND, s.world);
+    const x = Math.max(160, u.x + dir * 70), land = plainFoesAt(FOE_LAND, s.world);
     fx(s, 'king-portal', x, 1.2, { size: 120 });
     for (let i = 0; i < 2; i++) { const before = s.units.length; spawn(s, land[(s.nextId + i * 3) % land.length], u.side); const n = s.units[s.units.length - 1]; if (s.units.length > before && n) { n.x = x + i * 18; n.stun = 0.6; } }
     hear(s, 'roar', x);
@@ -1287,7 +1301,10 @@ export function tick(s: Siege, dt: number) {
     s.waves++;
     s.nextWave = Math.max(FOE_PACE.gap, 9 - hard(s.world) * FOE_PACE.slope - s.time / 90);
     const count = Math.min(3, 1 + Math.floor(s.time / 70));
-    const land = foesAt(s.villain ? HERO_LAND : FOE_LAND, s.world), flyers = foesAt(s.villain ? HERO_AIR : FOE_AIR, s.world);
+    const land = plainFoesAt(s.villain ? HERO_LAND : FOE_LAND, s.world), flyers = plainFoesAt(s.villain ? HERO_AIR : FOE_AIR, s.world);
+    // A rare champion now and then, alone (`RARE`): never in the villain's battles, where the heroes come.
+    const rares = s.villain ? [] : [...foesAt(FOE_LAND, s.world), ...foesAt(FOE_AIR, s.world)].filter(id => UNITS[id].rare);
+    if (rares.length && s.time >= RARE.from && s.waves % RARE.every === 0 && !s.units.some(u => u.side && u.hp > 0 && UNITS[u.id].rare)) { foeOut(s, rares[(s.rares ?? 0) % rares.length]); s.rares = (s.rares ?? 0) + 1; }
     // Early waves only the first two land troops; later the whole list, the newest (toughest) more often.
     const pick = s.time < 25 ? land.slice(0, 2) : [...land, ...land.slice(-2)];
     const plain = (i: number) => { const flyer = flyers.length > 0 && s.time >= airFrom(s.world) && (s.waves + i) % 3 === 2; return flyer ? flyers[(s.waves + i) % flyers.length] : pick[(s.waves * 3 + i) % pick.length]; };
@@ -1312,7 +1329,7 @@ export function tick(s: Siege, dt: number) {
     for (const u of s.units) if (!u.side) { u.blown = GUST.time; u.knock = 0; u.stun = 0; }
     s.effects.push({ x: FIELD - 120, from: FIELD - 120, lane: 1, life: 1.2, max: 1.2, kind: 'gust', side: 1 });
     hear(s, 'corrupt-wind', FIELD - 300);
-    const land = foesAt(s.villain ? HERO_LAND : FOE_LAND, s.world), tough = [...land].sort((a, b) => specAt(b, heroLevel(b, s.world)).hp - specAt(a, heroLevel(a, s.world)).hp);
+    const land = plainFoesAt(s.villain ? HERO_LAND : FOE_LAND, s.world), tough = [...land].sort((a, b) => specAt(b, heroLevel(b, s.world)).hp - specAt(a, heroLevel(a, s.world)).hp);
     const horde = hordeOf(s.world);
     for (let i = 0; i < horde.weak; i++) { foeOut(s, land[i % Math.min(2, land.length)]); const u = s.units[s.units.length - 1]; if (u?.side) u.x -= i * 18; }
     for (let i = 0; i < horde.strong; i++) foeOut(s, tough[i % tough.length]);
@@ -1426,7 +1443,9 @@ export function tick(s: Siege, dt: number) {
             if (!v.boss && !UNITS[v.id].steady && w.stun) v.stun = Math.max(v.stun ?? 0, w.stun);
             if (w.slow) v.slowed = Math.max(v.slowed ?? 0, s.time + w.slow);
           }
-          fx(s, 'hit-energy', u.x + dir * w.reach * 0.6, 0.35, { up: (a.air ? u.alt ?? highOf(u) : 0) + 30, centre: true, size: 70, flip: !!u.side });
+          // The rings leave its mouth and run out over its reach, growing and fading (`ripple` in the view).
+          const from = u.x + dir * w.mouth[0] * a.size;
+          s.effects.push({ x: u.x + dir * w.reach, from, lane: u.lane, life: 0.55, max: 0.55, kind: 'ripple', side: u.side, art: w.art, fromUp: (a.air ? u.alt ?? highOf(u) : 0) + w.mouth[1] * a.size, size: a.size });
           hear(s, w.stun ? 'blunt' : 'magic', u.x);
         }
         else if (a.sweep) {
@@ -1509,7 +1528,8 @@ export function tick(s: Siege, dt: number) {
         fx(s, 'wreck', u.x, 0.7, { size: size * 1.1, up });
         ['piece-gear', 'piece-bolt', 'piece-plate'].forEach((art, k) => s.effects.push({ x: u.x + (k - 1) * 34 + back * 0.4, from: u.x, lane: u.lane, life: 0.75, max: 0.75, kind: 'piece', side: 0, art, size: 12 + k * 2, arc: 50 + k * 14, spin: true, up: up + 30 }));
       } else if (sp.foe) fx(s, 'soul', u.x + back * 0.5, 0.9, { size: Math.min(70, size * 0.55), up: up + 10 });
-      if (sp.air) fx(s, 'crash', u.x + back, 0.6, { size: Math.min(150, size * 1.1) }, 0.28);
+      // The dust when it hits the ground, as it lands (the view lets it fall from where it flew over about 0.6 s).
+      if (sp.air) fx(s, 'crash', u.x + back, 0.6, { size: Math.min(150, size * 1.1) }, 0.5);
     }
     hear(s, soundsOf(u)[1], u.x);
     // A fallen enemy's bounty: gold (kept win or lose) and energy, shown rising where it fell.
