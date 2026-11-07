@@ -1928,6 +1928,8 @@ function friendPic(name: string) {
   if (!img) { img = new Image(); img.src = src; friendPics.set(src, img); }
   return img;
 }
+/** Seconds without the host's bugs before the guest of a shared shift goes on alone. */
+const COOP_SILENCE = 6;
 const friendMini = document.createElement('div');
 /** Where the HUD ends on screen, measured when the friend card is laid out (used to keep the friend's head below it). */
 let hudBottom = 0;
@@ -1936,6 +1938,8 @@ friendMini.hidden = true;
 document.body.append(friendMini);
 let overlayAt = 0;
 let coopSent = 0;
+/** When the guest of a shared shift last heard the host's bugs: silent too long, the guest makes its own. */
+let coopHeard = 0;
 let raceTold = false;
 function friendOverlay(g: Game, now: number, frozen: boolean) {
   const dt = Math.min(0.1, Math.max(0, now - overlayAt));
@@ -1948,6 +1952,12 @@ function friendOverlay(g: Game, now: number, frozen: boolean) {
   const fs = friendState;
   const fresh = !!friend && !!fs && now - fs.at < 3;
   if (g.coop) {
+    // The host left the shift or the link fell: its bugs stop coming, so this phone makes them from here on (the
+    // field would stand frozen otherwise).
+    if (!g.coop.host && g.phase === 'play' && !frozen && now - coopHeard > COOP_SILENCE) {
+      g.coop.host = true;
+      flash(t('linkHordeSolo'));
+    }
     g.coop.ally = fresh && fs && fs.mode === 'horde' && fs.phase !== 'over' ? { x: fs.sx, y: fs.sy } : null;
     if (friend && now - coopSent > 0.1) {
       coopSent = now;
@@ -2070,7 +2080,7 @@ function startTogether(mode: Together, variant: Variant, world: number, seed: nu
   raceTold = false;
   // On call: the same field of blocks for both, laid from the shared seed.
   // and the same bugs: the one who invited makes them, the other's follow (`Coop` in `world.ts`).
-  if (mode === 'horde') { game.fieldSeed = seed; game.fieldKey = ''; game.coop = { host: me === 0, ally: null, dealt: new Map(), known: new Set() }; }
+  if (mode === 'horde') { game.fieldSeed = seed; game.fieldKey = ''; game.coop = { host: me === 0, ally: null, dealt: new Map(), known: new Set() }; coopHeard = performance.now() / 1000; }
   flash(t(mode === 'horde' ? 'linkHordeStart' : 'linkSprintStart', { name: esc(friend.name) }));
 }
 const onCover = () => !board && !game && !!document.querySelector('.screen.is-menu');
@@ -2191,7 +2201,7 @@ const netHandlers = (): NetHandlers => ({
   msg: onNetMsg,
   drop: friendDropped,
   close: friendGone,
-  error: (why) => linkScreen(`⚠ ${t(why === 'peer-unavailable' ? 'onlineNoGame' : 'onlineError')}`),
+  error: (why) => linkScreen(`⚠ ${t(why === 'peer-unavailable' ? 'onlineNoGame' : why === 'no-route' ? 'onlineNoRoute' : 'onlineError')}`),
 });
 function onNetMsg(m: NetMsg) {
   if (m.t === 'hello') {
@@ -2240,6 +2250,7 @@ function onNetMsg(m: NetMsg) {
     const st: NetState = { t: 'state', mode: m.mode === 'horde' ? 'horde' : 'sprints', world: n(m.world, 1, WORLD_COUNT), room: n(m.room, 1, ROOMS), x: n(m.x, -1e6, 1e6), y: n(m.y, -1e6, 1e6), vx: n(m.vx, -1, 1), vy: n(m.vy, -1, 1), hp: n(m.hp, 0, 1), level: n(m.level, 1, 999), phase: String(m.phase).slice(0, 10) };
     friendState = { ...st, at, sx: prev && prev.mode === st.mode ? prev.sx : st.x, sy: prev && prev.mode === st.mode ? prev.sy : st.y };
   } else if (m.t === 'snap') {
+    if (game?.coop && !game.coop.host && Array.isArray(m.e)) coopHeard = performance.now() / 1000;
     if (game?.coop && !game.coop.host && Array.isArray(m.e)) coopApply(game, { time: Number(m.time) || 0, b: Math.round(Number(m.b)) || 0, won: !!m.won, e: m.e.slice(0, 400).filter((x) => Array.isArray(x) && ['bug', 'ticket', 'legacy', 'boss'].includes(x[1])).map((x) => [Number(x[0]) || 0, x[1], Number(x[2]) || 0, Number(x[3]) || 0, Number(x[4]) || 0, Math.max(1, Number(x[5]) || 1), Math.max(4, Math.min(120, Number(x[6]) || 12)), String(x[7] ?? '').replace(/[^a-z0-9]/g, ''), x[8] ? 1 : 0]) });
   } else if (m.t === 'hits') {
     if (game?.coop?.host && Array.isArray(m.h)) coopHits(game, m.h.slice(0, 500).map((x) => [Number(x?.[0]) || 0, Math.max(0, Number(x?.[1]) || 0)]));

@@ -38,6 +38,21 @@ export type NetHandlers = {
   error: (why: string) => void;
 };
 
+/** How the two phones find a way to each other. STUN finds each phone's public address (enough on most home Wi-Fi);
+    when both sit behind a carrier's NAT (mobile data) only a TURN relay gets through. PeerJS's own free relay is
+    kept, but it is often full or down, so a relay of our own can be set at build time (`VITE_TURN_URL`,
+    `VITE_TURN_USER`, `VITE_TURN_PASS`; several urls split by commas). */
+const env = (import.meta as unknown as { env?: Record<string, string | undefined> }).env ?? {};
+const ICE: RTCIceServer[] = [
+  { urls: ['stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302', 'stun:stun.cloudflare.com:3478'] },
+  ...(env.VITE_TURN_URL ? [{ urls: env.VITE_TURN_URL.split(',').map((u) => u.trim()).filter(Boolean), username: env.VITE_TURN_USER, credential: env.VITE_TURN_PASS }] : []),
+  { urls: ['turn:eu-0.turn.peerjs.com:3478', 'turn:us-0.turn.peerjs.com:3478'], username: 'peerjs', credential: 'peerjsp' },
+];
+const makePeer = (id?: string) => (id ? new Peer(id, { config: { iceServers: ICE } }) : new Peer({ config: { iceServers: ICE } }));
+/** The introduction server said nobody holds the id called: a wrong code. Without that, the game is there and only
+    the phones could not reach each other (`no-route`). */
+let noSuchPeer = false;
+
 const PREFIX = 'bughunter-board-';
 /** Where a player waits for friends while the game is open: their own id, the same every time. */
 const PERSONAL = 'bughunter-p-';
@@ -82,7 +97,7 @@ function joinAgain(h: NetHandlers): boolean {
       if (joined || quitting || conn !== c) return;
       conn = null;
       try { c.close(); } catch { /* never opened */ }
-      if (!joinAgain(h)) h.error('peer-unavailable');
+      if (!joinAgain(h)) h.error(noSuchPeer ? 'peer-unavailable' : 'no-route');
     }, JOIN.every);
   }, JOIN.every);
   return true;
@@ -102,7 +117,7 @@ function wire(c: DataConnection, h: NetHandlers) {
     gone = true;
     if (conn === c) conn = null;
     // Never joined: the guest's call simply failed.
-    if (!joined) { if (present) role = 'host'; if (joinAgain(h)) return; h.error('peer-unavailable'); return; }
+    if (!joined) { if (present) role = 'host'; if (joinAgain(h)) return; h.error(noSuchPeer || present ? 'peer-unavailable' : 'no-route'); return; }
     h.drop?.();
     if (role === 'guest') retry();
   };
@@ -121,7 +136,7 @@ function retry() {
     const h = handlers;
     const call = () => { if (peer && !quitting) { wire(peer.connect(target, { reliable: true }), h); window.setTimeout(() => { if (!conn?.open) { conn = null; retry(); } }, RETRY.every); } };
     if (peer && !peer.destroyed && peer.open) call();
-    else { peer?.destroy(); peer = new Peer(); peer.on('open', call); peer.on('error', () => retry()); }
+    else { peer?.destroy(); peer = makePeer(); peer.on('open', call); peer.on('error', () => retry()); }
   }, RETRY.every);
 }
 
@@ -130,6 +145,7 @@ function watchPeer(p: Peer, h: NetHandlers) {
   p.on('disconnected', () => { if (!quitting && !p.destroyed) { try { p.reconnect(); } catch { /* tried */ } } });
   p.on('error', (e) => {
     if (quitting) return;
+    if (typeOf(e) === 'peer-unavailable') noSuchPeer = true;
     // The code was taken by someone else: try another (only while making the game).
     if (typeOf(e) === 'unavailable-id' && role === 'host' && !joined) { hostGame(h); return; }
     // Before the first join an error means it could not be made; afterwards it is only a drop to ride out.
@@ -158,7 +174,7 @@ export function hostGame(h: NetHandlers) {
   handlers = h;
   code = makeCode();
   present = false;
-  peer = new Peer(PREFIX + code);
+  peer = makePeer(PREFIX + code);
   peer.on('open', () => { if (!joined) h.code?.(code); });
   peer.on('connection', (c) => {
     // One rival only: a third phone is turned away (the same friend calling again after a drop is let in).
@@ -178,9 +194,10 @@ export function joinGame(to: string, h: NetHandlers) {
   code = to;
   joinTries = 0;
   target = PREFIX + to;
+  noSuchPeer = false;
   present = false;
   retries = 0;
-  peer = new Peer();
+  peer = makePeer();
   peer.on('open', () => { if (peer) wire(peer.connect(target, { reliable: true }), h); });
   watchPeer(peer, h);
 }
@@ -195,7 +212,7 @@ export function presence(me: string, h: NetHandlers) {
   presentId = me;
   role = 'host';
   handlers = h;
-  peer = new Peer(PERSONAL + me);
+  peer = makePeer(PERSONAL + me);
   peer.on('connection', (c) => {
     if (conn?.open) { c.on('open', () => c.close()); return; }
     role = 'host';

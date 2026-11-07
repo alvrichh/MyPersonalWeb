@@ -4,6 +4,13 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.7 - 2026-11-07
+
+- Playing with a friend:
+  - On call (Guard), if the friend who invited leaves the shift or the link falls, the bugs no longer stand frozen on the other phone: after six seconds without them it makes its own and carries on alone, with a notice.
+  - The phones now try more ways to reach each other (more STUN servers, and an optional relay of our own set at build time with `VITE_TURN_URL`, `VITE_TURN_USER` and `VITE_TURN_PASS`) before PeerJS's free relay.
+  - When the code is right but the two phones cannot reach each other (often both on mobile data), the message now says so and suggests the same Wi-Fi, instead of saying there is no game with that code.
+
 ## 1.16.6 - 2026-11-07
 
 - Two new enemies with the owner's art, attacking with sound:
