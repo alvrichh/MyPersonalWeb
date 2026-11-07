@@ -3690,7 +3690,7 @@ screen.addEventListener('click', (event) => {
   else if (act === 'mastery-do') {
     if (masteryReady()) {
       save.masteries += 1;
-      wipeProgress(save);
+      wipeProgress(save, true);
       persist();
       netSend(hello());
       dressPalette();

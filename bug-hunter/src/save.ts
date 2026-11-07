@@ -333,9 +333,12 @@ export const worldOutfit = (n: number): HeroSkin | undefined => WORLD_SKINS[n];
 export const worldWon = (save: Save, n: number) => save.bestByWorld[n]?.time !== undefined || !!save.hordeBest[n]?.won;
 
 /** Back to a fresh start: progress, coins, gear and level go; name, skins bought, settings, masteries, star colour, the lifetime totals, the achievements and the extra charm's slot (empty: what it held goes with the items) stay. */
-export function wipeProgress(save: Save) {
+/** Puts the progress back to 0 (worlds, items, the forge, the level), keeping what a player is (name, settings,
+    masteries, achievements, purchases); a mastery (`keepCoins`) keeps the coins too, a reset does not. */
+export function wipeProgress(save: Save, keepCoins = false) {
+  const coins = keepCoins ? save.coins : 0;
   const keep = { name: save.name, skin: save.skin, skins: [...save.skins], retro: save.retro, style: save.style, scene: save.scene, song: save.song, music: save.music, sfx: save.sfx, mode: save.mode, masteries: save.masteries, extraSlot: save.extraSlot, starColor: save.starColor, playTime: save.playTime, dailyAt: save.dailyAt, purchases: [...save.purchases], stats: save.stats, achieved: save.achieved, achNew: save.achNew, bookSeen: save.bookSeen, siegeNewsSeen: save.siegeNewsSeen, netId: save.netId, friends: [...save.friends] };
-  Object.assign(save, fresh(), keep);
+  Object.assign(save, fresh(), keep, { coins });
   // `fresh()` has no `extra`, so the item the charm held would stay worn without being owned.
   delete save.extra;
 }
