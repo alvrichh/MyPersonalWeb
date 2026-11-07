@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.3 - 2026-11-07
+
+- Turning the music off or on from any settings (the game's, Siege's mute or a volume taken to zero and back) starts the song again from its beginning; moving the volume otherwise leaves it playing on.
+
 ## 1.16.2 - 2026-11-06
 
 - The Villain's claw button greys as its charge is spent and fills with colour again from the bottom as it reloads, as the hero's crossbow button does.

@@ -495,7 +495,10 @@ class Engine {
   }
 
   setVolumes(music: number, sfx: number) {
+    // Turning the music off or on (from any settings) starts the song again from its beginning.
+    const toggled = (music > 0) !== (this.volumes.music > 0);
     this.volumes = { music, sfx };
+    if (toggled) this.restartSong();
     if (!this.ready) return;
     this.musicBus.gain.setTargetAtTime(music * 0.5, this.ctx.currentTime, 0.05);
     this.sfxBus.gain.setTargetAtTime(sfx * 0.6, this.ctx.currentTime, 0.05);
@@ -507,9 +510,15 @@ class Engine {
     if (!this.ready || this.playing) return;
     if (this.ctx.state !== 'running') void this.ctx.resume();
     this.playing = true;
-    // Picks up where it stopped (muting and unmuting must not restart the song); only the very first start is at 0.
+    // Picks up where it stopped (turning the music off and on restarts it instead: `setVolumes`).
     this.next = this.ctx.currentTime + 0.1;
     this.tick();
+  }
+
+  /** The song from its first step, as soon as the next steps are scheduled. */
+  restartSong() {
+    this.step = 0; this.songNow = true;
+    if (this.ready) this.next = this.ctx.currentTime + 0.1;
   }
 
   stop() {
