@@ -687,6 +687,19 @@ test('the King\'s Jailer throws its chain from afar and drags one of ours to its
   run(s, 5); assert.ok(ours.x < jailer.x, `never dragged past it (${ours.x})`);
 });
 
+test('the Bell Ringer\'s toll stuns our walkers ahead; the Crowned Wraith\'s scream slows walkers and flyers', () => {
+  assert.ok(m.FOE_LAND[3].includes(62) && m.FOE_AIR[4].includes(63) && m.VILLAIN_LINES.some(l => l[0] === 62) && m.VILLAIN_LINES.some(l => l[0] === 63));
+  const s = m.newSiege(m.freshProgress(), 20); s.nextWave = 999; s.gusted = true;
+  const mk = (uid, id, x, o = {}) => { const u = { uid, id, side: 0, x, lane: 1, hp: 9000, maxHp: 9000, damage: 0, attack: 99, flash: 0, boss: false, lv: 1, ...o }; s.units.push(u); return u; };
+  const near = mk(1, 0, 640), flyer = mk(2, 10, 650, { alt: 80 });
+  s.units.push({ uid: 3, id: 62, side: 1, x: 740, lane: 1, hp: 9000, maxHp: 9000, damage: 20, attack: 0, flash: 0, boss: false });
+  m.tick(s, 1 / 30); assert.ok(near.stun > 0.5 && near.hp < 9000, 'the walker is stunned'); assert.ok(!(flyer.stun > 0.5), 'the flyer is not');
+  const t2 = m.newSiege(m.freshProgress(), 22); t2.nextWave = 999; t2.gusted = true;
+  const w = { uid: 9, id: 63, side: 1, x: 800, lane: 1, hp: 9000, maxHp: 9000, damage: 20, attack: 0, flash: 0, boss: false, alt: 62 };
+  const a1 = { uid: 1, id: 0, side: 0, x: 660, lane: 1, hp: 9000, maxHp: 9000, damage: 0, attack: 99, flash: 0, boss: false, lv: 1 }, a2 = { ...a1, uid: 2, id: 10, x: 700, alt: 80 };
+  t2.units.push(a1, a2, w); m.tick(t2, 1 / 30); assert.ok(a1.slowed > t2.time && a2.slowed > t2.time, 'both slowed by the scream');
+});
+
 test('the catapult lobs its rock: it strikes where it lands, when it lands', () => {
   const s = m.newSiege({ ...m.freshProgress(), unlocked: 30, owned: [0, 51], deck: [51] }, 20); s.nextWave = 999; s.gusted = true; s.energy = 999;
   m.summon(s, 51); const cat = s.units[0]; cat.x = 400;
