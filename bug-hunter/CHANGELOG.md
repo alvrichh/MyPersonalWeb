@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.12 - 2026-11-07
+
+- The Bell Ringer lying dead: its body (hands and feet) now rests on the ground line like every other troop's, with the bone thrown in front of it lower, nearer to us.
+
 ## 1.16.11 - 2026-11-07
 
 - The Bell Ringer, the Crowned Wraith and the King's Jailer are now rare champions:
