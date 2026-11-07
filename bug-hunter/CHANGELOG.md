@@ -4,6 +4,13 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.14 - 2026-11-07
+
+- Scanning a QR where the live camera cannot be opened (an iPhone's home-screen app often gives pages none):
+  - The reader stays open and says what went wrong (the error's name), instead of going back with «no camera».
+  - A new «Take a photo of the QR» opens the phone's own camera; the QR is read out of the photo (tried at several sizes), and the game joined.
+  - When the back camera cannot be chosen by name, any camera is tried before giving up.
+
 ## 1.16.13 - 2026-11-07
 
 - A run or a Siege battle is no longer lost when the browser throws the page away (an iPhone short of memory, or the game left in the background a while, loads it again from the start):

@@ -5320,3 +5320,7 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 /* Moving the saved game: the code to copy by hand, and the box to paste one in. */
 .transfer-code { display: block; box-sizing: border-box; width: 100%; min-height: 64px; margin: 6px 0 8px; padding: 8px 10px; border: 1px solid #c084fc88; border-radius: 10px; background: #0b0816; color: #e9e3f7; font: 12px/1.35 ui-monospace, monospace; word-break: break-all; resize: vertical; }
 .transfer-code[hidden] { display: none; }
+/* The QR reader's photo button (a file input dressed as a button) and the camera box when no camera could be opened. */
+.qr-photo { display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.qr-photo input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.qr-scan.is-off { display: none; }

@@ -40,21 +40,23 @@ export function stopScan() {
 
 /** Opens the back camera in that video and reads it until a QR the game knows turns up (`found`), or fails
     (`fail`: no camera, or permission refused). */
-export async function startScan(video: HTMLVideoElement, found: (t: QrTarget) => void, fail: (why: 'denied' | 'none') => void) {
+export async function startScan(video: HTMLVideoElement, found: (t: QrTarget) => void, fail: (why: 'denied' | 'none', detail: string) => void) {
   stopScan();
   const run = scanning;
-  if (!navigator.mediaDevices?.getUserMedia) { fail('none'); return; }
+  // The browser gives pages no camera here (an older iPhone's home-screen app, a web view inside another app).
+  if (!navigator.mediaDevices?.getUserMedia) { fail('none', 'no mediaDevices'); return; }
   let jsQR: typeof import('jsqr').default;
   try {
-    const [cam, lib] = await Promise.all([
-      navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false }),
-      import('jsqr'),
-    ]);
+    // The back camera, or failing that (a phone that does not name its cameras so) any camera.
+    const camera = navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false })
+      .catch((e: Error) => (e.name === 'NotAllowedError' ? Promise.reject(e) : navigator.mediaDevices.getUserMedia({ video: true, audio: false })));
+    const [cam, lib] = await Promise.all([camera, import('jsqr')]);
     if (run !== scanning) { cam.getTracks().forEach((tr) => tr.stop()); return; }
     stream = cam;
     jsQR = lib.default;
   } catch (e) {
-    if (run === scanning) fail((e as Error).name === 'NotAllowedError' ? 'denied' : 'none');
+    const err = e as Error;
+    if (run === scanning) fail(err.name === 'NotAllowedError' ? 'denied' : 'none', `${err.name || 'Error'}${err.message ? `: ${err.message}` : ''}`.slice(0, 120));
     return;
   }
   video.setAttribute('playsinline', '');
@@ -80,4 +82,29 @@ export async function startScan(video: HTMLVideoElement, found: (t: QrTarget) =>
     if (target) { stopScan(); found(target); }
   };
   frame = requestAnimationFrame(tick);
+}
+
+/** Reads a QR out of a photo (the phone's own camera app, through a file input: it works where the live camera does
+    not, as in an iPhone's home-screen app). */
+export async function scanPhoto(file: File): Promise<QrTarget | null> {
+  const { default: jsQR } = await import('jsqr');
+  const url = URL.createObjectURL(file);
+  try {
+    const img = new Image();
+    await new Promise<void>((ok, no) => { img.onload = () => ok(); img.onerror = () => no(new Error('bad image')); img.src = url; });
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    if (!ctx) return null;
+    // Tried at a few sizes: a big photo's QR reads best shrunk, a small one as it is.
+    for (const max of [800, 1400, 500]) {
+      const k = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+      canvas.width = Math.round(img.naturalWidth * k); canvas.height = Math.round(img.naturalHeight * k);
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      const data = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const hit = jsQR(data.data, data.width, data.height, { inversionAttempts: 'attemptBoth' });
+      const target = hit ? readQr(hit.data) : null;
+      if (target) return target;
+    }
+    return null;
+  } finally { URL.revokeObjectURL(url); }
 }

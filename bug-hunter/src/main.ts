@@ -18,7 +18,7 @@ import { ARMOUR_SLOTS, ARSENAL, ITEMS, SHOP_SHORT, itemLevel, type SpiritSkin, U
 import { Scene } from './scene';
 import { ACHIEVEMENTS, achEarned, achTotal, checkAchievements, tierKey, tiersDone, type Ach, type AchId } from './achievements';
 import { makeT, pickLang, type Key, type Lang } from './strings';
-import { qrSvg, startScan, stopScan, type QrTarget } from './qr';
+import { qrSvg, scanPhoto, startScan, stopScan, type QrTarget } from './qr';
 import { exportGame, readGame, restoreGame } from './transfer';
 import {
   CATEGORY, EVO_PARTNER, H, NIGHTMARE_WORLD, SECRET_WORLD, showcaseHit, startShowcase, canFuse, revivePrice, SKILLS, arrowLook, arrowOptions, bladeElement, bladeOptions, canEvolve, evoOf, fusionOf, fusionWith, evoLostBy, pairFusion, arrowElements, settleEffects, rerollChoices, adReroll, adRevive, canAdReroll, canAdRevive, maxLevel, pickArrow, pickBlade, pickSpirit, ROOMS, SHRINE_ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_LUCKY, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
@@ -2315,16 +2315,31 @@ function qrScreen() {
   show(`<button class="ui-close" type="button" data-act="link" aria-label="${t('back')}"></button>
     <h2>${t('qrScan')}</h2>
     <div class="qr-scan"><video id="qrVideo" playsinline muted></video><i aria-hidden="true"></i></div>
-    <p class="how">${t('qrAim')}</p>
+    <p class="how" id="qrNote">${t('qrAim')}</p>
+    <label class="primary is-purple qr-photo"><input type="file" accept="image/*" capture="environment" id="qrPhoto">📷 ${t('qrPhoto')}</label>
     <button class="ghost" type="button" data-act="link">${t('cancel')}</button>`);
   const video = document.getElementById('qrVideo') as HTMLVideoElement | null;
+  const note = document.getElementById('qrNote');
   if (!video) return;
-  void startScan(video, (found: QrTarget) => {
+  const onFound = (found: QrTarget) => {
     audio.play('levelup');
     if ('code' in found) joinByCode(found.code);
     else if (addFriend(found.friend, found.name)) callFriend(found.friend);
     else linkScreen();
-  }, (why) => linkScreen(`⚠ ${t(why === 'denied' ? 'qrDenied' : 'qrNoCamera')}`));
+  };
+  // The live camera; where the browser gives none (an iPhone's home-screen app often does not), the reason is shown
+  // and the photo stays as the way in.
+  void startScan(video, onFound, (why, detail) => {
+    video.parentElement?.classList.add('is-off');
+    if (note) note.innerHTML = `⚠ ${t(why === 'denied' ? 'qrDenied' : 'qrNoCamera')} <small>(${esc(detail)})</small>`;
+  });
+  // A photo of the QR, taken with the phone's own camera app.
+  document.getElementById('qrPhoto')?.addEventListener('change', (e) => {
+    const file = (e.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+    if (note) note.textContent = `⏳ ${t('qrReading')}`;
+    void scanPhoto(file).then((found) => { if (found) onFound(found); else if (note) note.textContent = `⚠ ${t('qrNotFound')}`; }, () => { if (note) note.textContent = `⚠ ${t('qrNotFound')}`; });
+  });
 }
 const netHandlers = (): NetHandlers => ({
   code: (code) => show(`<button class="ui-close" type="button" data-act="link" aria-label="${t('back')}"></button>
