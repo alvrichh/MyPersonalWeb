@@ -248,7 +248,7 @@ export const UNITS: readonly Spec[] = [
   { id: 38, cost: 800, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, hitsAir: true, ...foe('boss-dino-1', 199, 1.0) },
   // The King of Darkness, the last guardian, in two forms: on his flying throne (a dark orb, a ray from his eyes, flaming
   // skulls, a portal that calls the enemy), then at half his life on foot (a sword slam, bone spikes, a pulse) — `phase2`.
-  { id: 39, flyAt: 75, cost: 950, hp: 560, damage: 46, speed: 30, range: 230, rate: 1.5, cooldown: 0, unlock: 1, foe: true, air: true, steady: true, splash: 50, hitsAir: true, frames: 12, phase2: 60,
+  { id: 39, flyAt: 75, cost: 950, hp: 4000, damage: 46, speed: 30, range: 230, rate: 1.5, cooldown: 0, unlock: 1, foe: true, air: true, steady: true, splash: 50, hitsAir: true, frames: 12, phase2: 60,
     moves: [{ ready: 2, strike: 3, kind: 'orb' }, { ready: 6, strike: 7, kind: 'ray' }, { ready: 2, strike: 3, kind: 'orb' }, { ready: 8, strike: 9, kind: 'skulls' }, { ready: 2, strike: 3, kind: 'orb' }, { ready: 10, strike: 11, kind: 'summon' }],
     ...foe('boss-dark-king-air', 238, 1) },
   // The enemy's later arrivals (the owner's sheets of Cartoon Wars 2's roster, docs/siege-roster.md), appended: the
@@ -730,7 +730,8 @@ function spawn(s: Siege, id: number, side: 0 | 1, boss = false, level?: number) 
   // A hero guardian (the Villain campaign) is as tough as that act's own guardian; a guardian card of ours is a little
   // less than a guardian in its own battle.
   const ref = s.villain && side && boss && !s.duel ? UNITS[GUARDIAN[actOf(s.world) - 1]] : spec;
-  const hp = ref.hp * scale * (boss ? (side && !s.duel ? BOSS_HP : BOSS_HP * 0.6) : 1);
+  // As a card (the Villain's) the King of Darkness keeps the life of the others, not his own final battle's.
+  const hp = (boss && (!side || s.duel) ? Math.min(ref.hp, 900) : ref.hp) * scale * (boss ? (side && !s.duel ? BOSS_HP : BOSS_HP * 0.6) : 1);
   // One gunner in every few (counted by its spawn number) comes horned.
   const elite = !!side && !s.villain && !s.duel && !boss && id === ELITE_ID && s.time >= ELITE.from && s.nextId % ELITE.every === 0;
   const life = hp * (elite ? ELITE.hp : 1);
