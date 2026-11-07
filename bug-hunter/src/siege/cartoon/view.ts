@@ -46,7 +46,13 @@ export function preload(world: number, deck: number[], _levels: number[] = [], v
   // The Villain campaign's heroes, at the forms they come in.
   const heroes = villain ? [...foesAt(HERO_LAND, world), ...foesAt(HERO_AIR, world)].map(id => specAt(id, heroLevel(id, world))).concat(specAt(HERO_GUARDIAN[actOf(world) - 1], 99)) : [];
   const specs = [...heroes, ...deck.map(c => specAt(c % 100, Math.floor(c / 100) + 1)), ...deck.filter(c => UNITS[c % 100]?.phase2 !== undefined).map(c => UNITS[UNITS[c % 100].phase2!]), ...foes.flatMap(id => (UNITS[id].phase2 !== undefined ? [UNITS[id], UNITS[UNITS[id].phase2!]] : [UNITS[id]]))];
-  specs.forEach(spec => { for (let f = 0; f < (spec.frames ?? (spec.six ? 6 : 3)); f++) picture(`${spec.sprite}-${f}`); });
+  const keep = new Set<string>();
+  specs.forEach(spec => { for (let f = 0; f < (spec.frames ?? (spec.six ? 6 : 3)); f++) { const path = `${spec.sprite}-${f}`; keep.add(path); picture(path); } });
+  // The troops of other battles, and other worlds' battlefields, are let go: decoded pictures are what fills a phone's
+  // memory (the whole Siege's would be over 500 MB), and an iPhone throws a page away past its share.
+  for (const key of [...pictures.keys()]) if (key.startsWith('siege/units/') && !keep.has(key)) pictures.delete(key);
+  const scene = sceneOf(world);
+  for (const key of [...stills.keys()]) if (key.startsWith('siege/bg-') && key !== scene) stills.delete(key);
   // The battlefield, and the fortresses and crossbow at every level (the workshop can change ours between battles).
   [sceneOf(world), ...[...SHOTS, ...SPELLS].map(n => `siege/units/shot-${n}`), ...[1, 2, 3, 4].map(n => `siege/units/bolt-${n}`), ...[1, 2, 3, 4, 5].flatMap(n => [`siege/castle-${n}`, ...(n < 5 ? [`siege/xbow-${n}`] : []), `siege/enemy-${n}`]), ...FX].forEach(still);
 }

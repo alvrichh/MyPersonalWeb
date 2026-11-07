@@ -4,6 +4,14 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.13 - 2026-11-07
+
+- A run or a Siege battle is no longer lost when the browser throws the page away (an iPhone short of memory, or the game left in the background a while, loads it again from the start):
+  - The run under way (Sprints, Guard, Nightmare, Boss Rush, the secret shift) and the Siege Cartoon battle under way are kept every few seconds and the moment the page is hidden.
+  - On opening the game, or the Siege, again, a dialog offers to carry on where it was (or to start over). Quitting a run or a battle yourself drops the kept copy; so does finishing it.
+  - Not kept: runs played with a friend (their link is gone with the page), the board, and duels.
+- The Siege lets go of the pictures of other battles' troops and other worlds' battlefields when a battle starts: the whole Siege's pictures would take over 500 MB decoded, and an iPhone reloads a page past its share of memory.
+
 ## 1.16.12 - 2026-11-07
 
 - The Bell Ringer lying dead: its body (hands and feet) now rests on the ground line like every other troop's, with the bone thrown in front of it lower, nearer to us.
