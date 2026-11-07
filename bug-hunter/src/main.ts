@@ -11,7 +11,7 @@ import { audio, BOSS_SONGS, SIEGE_SOUNDS, type SiegeSound, type Sfx, type SongPi
 import { MID_ART, boardBackdropBounds, draw, drawRetroFigure, preloadBoardBossFx, preloadCast, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, NET_ID, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, lockSave, STYLES, SKINS, WORLD_SKINS, SKIN_GATE, SKIN_GROUPS, SKIN_TALL, skinOpen, ownsSkin, skinPrice, worldOutfit, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
 import { ABILITY, ABIL_V, BENCH_CAP, canFight, moveBenchSeat, CELL, COLS, FINAL_ID, HOME_ROW, NATIVE_WORLD_BONUS, ROWS, ROUNDS, SYNERGY, TACTICS, armyCap, deployBench, sellBench, storeOnBench, toggleAutoMerge, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, startOnlineFight, unitStats, updateBoard, waveSpots, waveUnitStats, type BoardGame, type Online, type Piece, type Variant } from './board';
-import { cleanCode, dial, hostGame, joinGame, leave as netLeave, presence, presenceOn, presenceReady, send as netSend, type NetHandlers, type NetMsg, type NetProfile, type NetState, type Together } from './net';
+import { cleanCode, dial, hostGame, joinGame, leave as netLeave, presence, presenceOn, presenceReady, send as netSend, type NetHandlers, type NetMsg, type NetProfile, type NetState, type NetWeapons, type Together } from './net';
 import { ABILITY_ICON, ABILITY_PIC, SYNERGY_PIC, FIREBALL, boardMerged, boardUnitBounds, drawBoard, mirrorFight, drawBoardDrag, layoutBoard, slotAt, type BoardDrag, type BoardLayout, type HeroPics } from './boardView';
 import type { Enemy } from './world';
 import { ARMOUR_SLOTS, ARSENAL, ITEMS, SHOP_SHORT, itemLevel, type SpiritSkin, UPGRADES, WEAPON_SLOTS, EXTRA_SLOT_PRICE, buildLoadout, itemById, upgradeById, upgradePic, upgradePrice, type ItemId, type Slot, type UpgradeId } from './shop';
@@ -22,7 +22,7 @@ import { qrSvg, scanPhoto, startScan, stopScan, type QrTarget } from './qr';
 import { exportGame, readGame, restoreGame } from './transfer';
 import {
   CATEGORY, EVO_PARTNER, H, NIGHTMARE_WORLD, SECRET_WORLD, showcaseHit, startShowcase, canFuse, revivePrice, SKILLS, arrowLook, arrowOptions, bladeElement, bladeOptions, canEvolve, evoOf, fusionOf, fusionWith, evoLostBy, pairFusion, arrowElements, settleEffects, rerollChoices, adReroll, adRevive, canAdReroll, canAdRevive, maxLevel, pickArrow, pickBlade, pickSpirit, ROOMS, SHRINE_ROOMS, W, WHEEL, WHEEL_COINS, WHEEL_GOOD, WHEEL_LUCKY, WHEEL_ROOM, WORLDS, WORLD_COUNT, applyWheel, chooseSkill, isBossRoom, leaveWheel, newGame, ownedWeapons, paidRevive, shrinePick, update,
-  type ArrowLook, type Category, type Choice, type Fusion, type Game, type GameEvent, type Input, type Look, type SkillId, type WheelOutcome,
+  type AllyView, type ArrowLook, type BladeElement, type Fx, type Shot, type Zap, type Category, type Choice, type Fusion, type Game, type GameEvent, type Input, type Look, type SkillId, type WheelOutcome,
   coopApply, coopDealt, coopHits, coopSnapshot,
 } from './world';
 
@@ -2019,7 +2019,41 @@ function syncFriendPortrait(before: string) {
 /** Playing a run together (`startTogether`): the mode and the shared seed (On call's field is laid from it). */
 let together: { mode: 'sprints' | 'horde'; seed: number } | null = null;
 /** The friend's last state in their run, and when it came (seconds on the frame clock). */
-let friendState: (NetState & { at: number; sx: number; sy: number }) | null = null;
+let friendState: (NetState & { at: number; sx: number; sy: number; view?: AllyView }) | null = null;
+/* On call together, what your weapons are doing goes with your place, a few times a second, so the friend's phone
+   draws them beside you (`drawAlly` in draw.ts): compact rows (`NetWeapons`), the looks only when they change. */
+let lookSent = '';
+let lookAt = 0;
+function allyWeapons(g: Game, now: number): NetWeapons {
+  const r = (v: number) => Math.round(v), r2 = (v: number) => Math.round(v * 100) / 100;
+  const sh = g.shots.slice(0, 24).map((a) => [a.kind, r(a.x), r(a.y), r(a.vx), r(a.vy), a.size ?? 0, a.elem ?? '', (a.bow ? 1 : 0) | (a.ghost ? 2 : 0), r2(a.spin ?? 0)]);
+  const fx = g.fx.filter((f) => !f.delay).slice(0, 12).map((f) => [f.kind, r(f.x), r(f.y), r(f.r), r2(f.a), r2(f.life), r2(f.max), f.blue ? 1 : 0, r2(f.spin ?? 0), r(f.w ?? 0), f.pic ?? '', f.top ? 1 : 0, f.big ? 1 : 0, r(f.foot ?? 0)]);
+  const zp = g.zaps.slice(0, 6).map((z) => [z.pts.slice(0, 20).flatMap((pt) => [r(pt.x), r(pt.y)]), r2(z.life), z.blue ? 1 : 0]);
+  const look = { sk: g.skills, ev: Object.keys(g.evolved), fu: g.fused, ap: g.arrowPick, bp: g.bladePick, sp: String(g.loadout.spirit ?? '') };
+  const key = JSON.stringify(look);
+  const w: NetWeapons = { sh, fx, zp, ba: r2(g.gear.bladeAngle) };
+  if (key !== lookSent || now - lookAt > 2) { lookSent = key; lookAt = now; w.look = look; }
+  return w;
+}
+const SHOT_KINDS = new Set<string>(['arrow', 'knife', 'boomerang', 'orb', 'crescent', 'brick', 'drill', 'durian', 'rocket', 'ball', 'molotov']);
+const FX_KINDS = new Set<string>(['slash', 'ring', 'boom', 'strike', 'halo', 'beam', 'rune', 'pic', 'phoenix']);
+/** What came over the link about the friend's weapons, checked before it is drawn: known kinds, numbers within
+    reason, at most a few of each; the looks kept from the last message that carried them. */
+function allyViewOf(w: NetWeapons | undefined, prev: AllyView | undefined, at: number): AllyView | undefined {
+  if (!w || typeof w !== 'object') return undefined;
+  const n = (v: unknown, lo = -1e6, hi = 1e6) => Math.max(lo, Math.min(hi, Number(v) || 0));
+  const str = (v: unknown, max = 24) => String(v ?? '').replace(/[^a-z0-9-]/gi, '').slice(0, max);
+  const rows = (v: unknown, max: number) => (Array.isArray(v) ? v : []).slice(0, max).filter((row) => Array.isArray(row)) as unknown[][];
+  const shots = rows(w.sh, 24).filter((a) => SHOT_KINDS.has(String(a[0]))).map((a) => ({ kind: a[0] as Shot['kind'], x: n(a[1]), y: n(a[2]), vx: n(a[3], -5000, 5000), vy: n(a[4], -5000, 5000), size: n(a[5], 0, 200) || undefined, elem: (str(a[6]) || undefined) as Shot['elem'], bow: (n(a[7]) & 1) > 0, ghost: (n(a[7]) & 2) > 0, spin: n(a[8], -100, 100), dmg: 0, pierce: 0, bounce: 0, hits: new Set<number>(), life: 1 }) as Shot);
+  const fx = rows(w.fx, 12).filter((f) => FX_KINDS.has(String(f[0]))).map((f) => ({ kind: f[0] as Fx['kind'], x: n(f[1]), y: n(f[2]), r: n(f[3], 0, 2000), a: n(f[4], -100, 100), life: n(f[5], 0, 30), max: Math.max(0.01, n(f[6], 0, 30)), blue: !!n(f[7]), spin: n(f[8], -100, 100) || undefined, w: n(f[9], 0, 2000) || undefined, pic: str(f[10]) || undefined, top: !!n(f[11]), big: !!n(f[12]), foot: n(f[13]) || undefined }) as Fx);
+  const zaps = rows(w.zp, 6).filter((z) => Array.isArray(z[0])).map((z) => { const pts = (z[0] as unknown[]).slice(0, 40); const out: Zap['pts'] = []; for (let i = 0; i + 1 < pts.length; i += 2) out.push({ x: n(pts[i]), y: n(pts[i + 1]) }); return { pts: out, life: n(z[1], 0, 5), blue: !!n(z[2]) } as Zap; }).filter((z) => z.pts.length >= 2);
+  const bladeAngle = n(w.ba, -1e9, 1e9);
+  const bladeTurn = prev && at > prev.at ? Math.max(0, Math.min(12, (bladeAngle - prev.bladeAngle) / (at - prev.at))) : 3.4;
+  const lk = w.look && typeof w.look === 'object' ? w.look : null;
+  const skills = lk ? Object.fromEntries(Object.entries(lk.sk && typeof lk.sk === 'object' ? lk.sk : {}).slice(0, 40).map(([k, v]) => [str(k), n(v, 0, 9)])) as Record<SkillId, number> : prev?.skills ?? ({} as Record<SkillId, number>);
+  const evolved = lk ? Object.fromEntries((Array.isArray(lk.ev) ? lk.ev : []).slice(0, 40).map((k: unknown) => [str(k), true])) as Partial<Record<SkillId, true>> : prev?.evolved ?? {};
+  return { at, shots, fx, zaps, bladeAngle, bladeTurn, skills, evolved, fused: lk ? !!lk.fu : prev?.fused ?? false, arrowPick: lk ? (str(lk.ap) || null) as ArrowLook | null : prev?.arrowPick ?? null, bladePick: lk ? (str(lk.bp) || null) as BladeElement | null : prev?.bladePick ?? null, spirit: lk ? str(lk.sp) as unknown as AllyView['spirit'] : prev?.spirit ?? ('' as unknown as AllyView['spirit']) };
+}
 let stateSent = 0;
 /* Playing with a friend, in a run of your own: your state goes to them a few times a second, and theirs is shown.
    On call, side by side on the same field of blocks, they are drawn where they stand (their hero as worn, walking
@@ -2051,7 +2085,8 @@ function friendOverlay(g: Game, now: number, frozen: boolean) {
   if (friend && now - stateSent > 0.15) {
     stateSent = now;
     const p = g.player;
-    netSend({ t: 'state', mode: g.mode, world: g.world, room: g.room, x: Math.round(p.x), y: Math.round(p.y), vx: p.moving ? Math.round(Math.cos(p.heading) * 100) / 100 : 0, vy: p.moving ? Math.round(Math.sin(p.heading) * 100) / 100 : 0, hp: Math.max(0, p.hp) / p.maxHp, level: g.level, phase: g.phase });
+    const w = g.coop && g.phase === 'play' ? allyWeapons(g, now) : undefined;
+    netSend({ t: 'state', mode: g.mode, world: g.world, room: g.room, x: Math.round(p.x), y: Math.round(p.y), vx: p.moving ? Math.round(Math.cos(p.heading) * 100) / 100 : 0, vy: p.moving ? Math.round(Math.sin(p.heading) * 100) / 100 : 0, hp: Math.max(0, p.hp) / p.maxHp, level: g.level, phase: g.phase, ...(w ? { w } : {}) });
   }
   const fs = friendState;
   const fresh = !!friend && !!fs && now - fs.at < 3;
@@ -2062,7 +2097,7 @@ function friendOverlay(g: Game, now: number, frozen: boolean) {
       g.coop.host = true;
       flash(t('linkHordeSolo'));
     }
-    g.coop.ally = fresh && fs && fs.mode === 'horde' && fs.phase !== 'over' ? { x: fs.sx, y: fs.sy } : null;
+    g.coop.ally = fresh && fs && fs.mode === 'horde' && fs.phase !== 'over' ? { x: fs.sx, y: fs.sy, hp: fs.hp, view: fs.view } : null;
     if (friend && now - coopSent > 0.1) {
       coopSent = now;
       if (g.coop.host) netSend({ t: 'snap', ...coopSnapshot(g) });
@@ -2139,6 +2174,14 @@ function friendOverlay(g: Game, now: number, frozen: boolean) {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(label, x, y - ph - 11.5);
+    // Their health, over the name.
+    const bw = 46, bh = 5, bx = x - bw / 2, by = y - ph - 29;
+    ctx.fillStyle = 'rgba(8,12,28,0.7)';
+    ctx.beginPath();
+    ctx.roundRect(bx - 1.5, by - 1.5, bw + 3, bh + 3, 3);
+    ctx.fill();
+    ctx.fillStyle = fs.hp > 0.5 ? '#4ade80' : fs.hp > 0.25 ? '#facc15' : '#f87171';
+    ctx.fillRect(bx, by, bw * Math.max(0, Math.min(1, fs.hp)), bh);
   } else {
     // Off the screen: their head in a ring at the edge, pointing to where they are.
     const R = 22;
@@ -2421,7 +2464,7 @@ function onNetMsg(m: NetMsg) {
     const prev = friendState;
     const n = (v: unknown, lo: number, hi: number) => Math.max(lo, Math.min(hi, Number(v) || 0));
     const st: NetState = { t: 'state', mode: m.mode === 'horde' ? 'horde' : 'sprints', world: n(m.world, 1, WORLD_COUNT), room: n(m.room, 1, ROOMS), x: n(m.x, -1e6, 1e6), y: n(m.y, -1e6, 1e6), vx: n(m.vx, -1, 1), vy: n(m.vy, -1, 1), hp: n(m.hp, 0, 1), level: n(m.level, 1, 999), phase: String(m.phase).slice(0, 10) };
-    friendState = { ...st, at, sx: prev && prev.mode === st.mode ? prev.sx : st.x, sy: prev && prev.mode === st.mode ? prev.sy : st.y };
+    friendState = { ...st, at, sx: prev && prev.mode === st.mode ? prev.sx : st.x, sy: prev && prev.mode === st.mode ? prev.sy : st.y, view: allyViewOf(m.w, prev?.view, at) };
   } else if (m.t === 'snap') {
     if (game?.coop && !game.coop.host && Array.isArray(m.e)) coopHeard = performance.now() / 1000;
     if (game?.coop && !game.coop.host && Array.isArray(m.e)) coopApply(game, { time: Number(m.time) || 0, b: Math.round(Number(m.b)) || 0, won: !!m.won, e: m.e.slice(0, 400).filter((x) => Array.isArray(x) && ['bug', 'ticket', 'legacy', 'boss'].includes(x[1])).map((x) => [Number(x[0]) || 0, x[1], Number(x[2]) || 0, Number(x[3]) || 0, Number(x[4]) || 0, Math.max(1, Number(x[5]) || 1), Math.max(4, Math.min(120, Number(x[6]) || 12)), String(x[7] ?? '').replace(/[^a-z0-9]/g, ''), x[8] ? 1 : 0]) });

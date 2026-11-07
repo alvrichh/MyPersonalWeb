@@ -527,7 +527,11 @@ export type Statue = { x: number; y: number; used: boolean };
 /** On call with a friend: the bugs are shared. The host's phone makes them and sends them (`coopSnapshot`); the
     guest's copies follow (`coopApply`) and the damage dealt to them goes back to the host (`coopHits`). Both heroes
     are chased, and the bugs are tougher (`COOP`). */
-export type Coop = { host: boolean; ally: Vec | null; dealt: Map<number, number>; known: Set<number> };
+/** What a friend's phone shows of their fighting, drawn beside them (`drawAlly` in draw.ts): their shots, effects
+    and lightning as last sent (`at`, seconds on this phone's clock, to carry them on), their saws' angle and turn, and
+    the looks their skills give their weapons. */
+export type AllyView = { at: number; shots: Shot[]; fx: Fx[]; zaps: Zap[]; bladeAngle: number; bladeTurn: number; skills: Record<SkillId, number>; evolved: Partial<Record<SkillId, true>>; fused: boolean; arrowPick: ArrowLook | null; bladePick: BladeElement | null; spirit: Loadout['spirit'] };
+export type Coop = { host: boolean; ally: (Vec & { hp?: number; view?: AllyView }) | null; dealt: Map<number, number>; known: Set<number> };
 export const COOP = { hp: 1.5, dmg: 1.3 };
 export type CoopSnap = { time: number; b: number; won: boolean; e: [number, EnemyKind, number, number, number, number, number, string, number][] };
 export type Game = {

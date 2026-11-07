@@ -4,6 +4,13 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.16 - 2026-11-07
+
+- On call with a friend, you now see them fight:
+  - Their health, as a bar over their name (green, yellow under half, red under a quarter).
+  - Their weapons at work: arrows (with their element or fusion), knives, boomerangs, rockets, bricks, drills, durians, balls, molotovs, their lightning, their sword cuts, rings, blasts, strikes and the other effects, and their saws turning round them, with the looks their skills and evolutions give them.
+  - Their phone sends it with their place, a few times a second, in a compact form; between messages the shots fly on, the effects fade and the saws keep turning, so it reads smoothly. What comes over the link is checked before it is drawn.
+
 ## 1.16.15 - 2026-11-07
 
 - Friends are kept up to date:

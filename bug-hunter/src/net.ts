@@ -17,7 +17,12 @@ export type Together = 'board' | 'sprints' | 'horde';
 export type NetInvite = { t: 'invite'; mode?: Together; variant: Variant; world: number; seed: number };
 /** Where you are in a run, a few times a second: the mode and world, the sprint (room), your place on the field,
     which way you walk, your health and level, and how the run stands. */
-export type NetState = { t: 'state'; mode: 'sprints' | 'horde'; world: number; room: number; x: number; y: number; vx: number; vy: number; hp: number; level: number; phase: string };
+export type NetState = { t: 'state'; mode: 'sprints' | 'horde'; world: number; room: number; x: number; y: number; vx: number; vy: number; hp: number; level: number; phase: string; w?: NetWeapons };
+/** On call together: what the friend's weapons are doing, so their phone draws them beside you. Shots as
+    [kind, x, y, vx, vy, size, element, flags (1 bow, 2 ghost), spin]; effects as [kind, x, y, r, a, life, max, blue,
+    spin, w, pic, top, big, foot]; lightning as [points (x, y, x, y, …), life, blue]; the saws' angle; and now and then
+    the looks (`look`: skill levels, evolved skills, the fusion, the arrow and blade picks, the spirit). */
+export type NetWeapons = { sh: (string | number)[][]; fx: (string | number)[][]; zp: (number | number[])[][]; ba: number; look?: { sk: Record<string, number>; ev: string[]; fu: boolean; ap: string | null; bp: string | null; sp: string } };
 export type NetMsg = NetHello | NetInvite | { t: 'accept' } | { t: 'decline' } | { t: 'uninvite' }
   | { t: 'ready'; round: number; army: Piece[] } | NetState | { t: 'quit' } | { t: 'bye' }
   | ({ t: 'snap' } & CoopSnap) | { t: 'hits'; h: [number, number][] }
