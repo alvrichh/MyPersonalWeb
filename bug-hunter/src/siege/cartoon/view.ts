@@ -28,15 +28,19 @@ function picture(path: string) {
         if (right >= left && bottom >= top) entry!.crop = [left, top, right - left + 1, bottom - top + 1];
       } catch { /* fallback still renders if pixel reads are unavailable */ }
     };
-    image.src = `/images/game/${path}.webp`;
+    image.src = art(`${path}.webp`);
   }
   return entry;
 }
+/** Pictures redrawn under the same file names: a browser keeps the old copy for days (`/images/` may be served stale
+    while it revalidates), so their address carries a revision, raised each time one is drawn again. */
+const ART_REV: [string, number][] = [['siege/units/boss-dark-king-', 2]];
+const art = (file: string) => { const r = ART_REV.find(([k]) => file.startsWith(k)); return `/images/game/${file}${r ? `?r=${r[1]}` : ''}`; };
 /** Every troop's sheet (`siege/units/...`): 0 standing, 1 attacking, 2 hurt. Walking, breathing, lunges and falls
     are animated here. */
 export function sprite(_s: Siege, u: Fighter) { return specOf(u).sprite; }
 /** A troop's card picture at its level. */
-export const portrait = (id: number, level = 1) => `/images/game/${specAt(id, level).sprite}-0.webp`;
+export const portrait = (id: number, level = 1) => art(`${specAt(id, level).sprite}-0.webp`);
 export function preload(world: number, deck: number[], _levels: number[] = [], villain = false) {
   const foes: number[] = villain ? [] : [...foesAt(FOE_LAND, world), ...foesAt(FOE_AIR, world), GUARDIAN[actOf(world) - 1]];
   // The Villain campaign's heroes, at the forms they come in.
@@ -173,7 +177,7 @@ const FX = [...Array.from({ length: 8 }, (_, f) => `siege/fx/dragonpass-${f}`), 
 const stills = new Map<string, HTMLImageElement>();
 function still(path: string) {
   let image = stills.get(path);
-  if (!image) { image = new Image(); image.src = `/images/game/${/\.\w+$/.test(path) ? path : `${path}.webp`}`; stills.set(path, image); }
+  if (!image) { image = new Image(); image.src = art(/\.\w+$/.test(path) ? path : `${path}.webp`); stills.set(path, image); }
   return image;
 }
 const ok = (image: HTMLImageElement) => image.complete && image.naturalWidth > 0;
