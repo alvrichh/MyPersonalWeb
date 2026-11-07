@@ -4,6 +4,13 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.6 - 2026-11-07
+
+- Two new enemies with the owner's art, attacking with sound:
+  - the Bell Ringer (world 4, land): a hunched skeleton with a huge bell on its back; its toll strikes our walkers in front of it and stuns them for a moment (not flyers, guardians or the steady);
+  - the Crowned Wraith (world 5, air): a floating cloak with a crown and bone claws; its scream runs through everything in front of it, walkers and flyers, and slows them for a few seconds.
+- In the Villain campaign each is a card of its own, in its tab.
+
 ## 1.16.5 - 2026-11-07
 
 - The King of Darkness has about seven times his life in the last battle (560 → 4000 before the guardians' bonus), a long final fight; as the Villain's card he keeps the life the other guardians have.

@@ -80,6 +80,9 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
   /** A guardian's attacks, taken in turn: each with its wind-up and strike poses on its sheet and what it does
       (`kingMove`). */
   moves?: { ready: number; strike: number; kind: 'orb' | 'ray' | 'skulls' | 'summon' | 'slam' | 'spikes' | 'pulse' | 'slash' }[];
+  /** A sound that strikes everything in front of it out to `reach`: the bell ringer's toll (walkers only, stunned for
+      `stun` seconds), the crowned wraith's scream (walkers and flyers, slowed for `slow` seconds). */
+  wave?: { reach: number; stun?: number; slow?: number };
   /** The unit it becomes at half its life (the King of Darkness loses his wings and fights on foot), and how many poses
       its sheet has (more than six with `moves`). */
   phase2?: number; frames?: number;
@@ -290,11 +293,17 @@ export const UNITS: readonly Spec[] = [
   // The King's Jailer (world 6): a hunched giant with no mouth and a cage of ribs on its back full of red souls. It throws
   // its chain from afar, hooks one of ours and drags it to its feet.
   { id: 61, cost: 140, hp: 1100, damage: 45, speed: 22, range: 170, rate: 2.2, cooldown: 0, unlock: 1, foe: true, hook: 150, ...six('foe-jailer-1', 231, 1.4) },
+  // The Bell Ringer (world 4): a hunched skeleton with a huge black bell on its back; it strikes the bell with a bone and
+  // the toll stuns our walkers in front of it.
+  { id: 62, cost: 90, hp: 900, damage: 18, speed: 22, range: 120, rate: 2.0, cooldown: 0, unlock: 1, foe: true, steady: true, wave: { reach: 130, stun: 0.8 }, ...foe('foe-bellringer-1', 258, 0.87) },
+  // The Crowned Wraith (world 5, air): a floating cloak with a crown and bone claws; its scream runs through everything
+  // in front of it, walkers and flyers, and slows them.
+  { id: 63, flyAt: 62, cost: 80, hp: 260, damage: 22, speed: 40, range: 200, rate: 2.2, cooldown: 0, unlock: 1, foe: true, air: true, hitsAir: true, wave: { reach: 220, slow: 2.5 }, ...foe('foe-wraith-1', 261, 0.82) },
 ];
 /** The enemy's land and air troops by act, each act adding to the last (docs/siege-roster.md): early waves draw
     from the first two of the land list. No flyers in the first world: they come from the second. */
-export const FOE_LAND = [[15, 16, 17], [22, 19, 46], [23, 18, 47], [24, 25, 20], [26, 21, 40, 41, 42], [32, 45, 44, 43, 61]];
-export const FOE_AIR = [[], [28], [29, 27], [30], [48], [31, 49, 50]];
+export const FOE_LAND = [[15, 16, 17], [22, 19, 46], [23, 18, 47], [24, 25, 20, 62], [26, 21, 40, 41, 42], [32, 45, 44, 43, 61]];
+export const FOE_AIR = [[], [28], [29, 27], [30], [48, 63], [31, 49, 50]];
 /** The heroes the Villain campaign sends against it, act by act (our troops, in the order they join), each at the form
     its act reaches (`heroLevel`), and the guardian of each act's last battle at its last form. */
 export const HERO_LAND = [[0, 2, 1], [4, 3, 53], [5, 54, 6], [7, 51], [8, 9], []];
@@ -375,7 +384,7 @@ export const ALLIES = UNITS.filter(u => !u.foe).sort((a, b) => groupOf(a) - grou
 export const levelsOf = (id: number) => LINE_OF[id]?.length ?? 1 + (UNITS[id]?.forms?.length ?? 0);
 /** The Villain's troop lines: each enemy troop is a level of one (its card is the line's first troop at that level),
     as our troops have forms; the guardians stand apart. */
-export const VILLAIN_LINES = [[15, 16, 19, 43], [47, 17, 25, 41], [18, 40, 42, 44], [20, 21, 32, 61], [22, 46, 45], [23, 24, 26], [28, 29, 48, 49], [30, 27, 50, 31]];
+export const VILLAIN_LINES = [[15, 16, 19, 43], [47, 17, 25, 41], [18, 40, 42, 44], [20, 21, 32, 61], [22, 46, 45], [23, 24, 26], [28, 29, 48, 49], [30, 27, 50, 31], [62], [63]];
 const LINE_OF: Record<number, number[]> = Object.fromEntries(VILLAIN_LINES.map(l => [l[0], l]));
 /** The enemy troop a Villain line sends at a level (any other troop is itself). */
 export const memberOf = (id: number, level = 1) => LINE_OF[id]?.[Math.max(1, Math.min(level, LINE_OF[id].length)) - 1] ?? id;
@@ -751,7 +760,7 @@ const ATTACK_SOUND: Record<number, string | string[]> = {
   53: 'heal', 54: 'blunt', 55: 'slash', 56: 'roar', 57: 'meteor', 58: 'thunder', 59: 'slash',
   40: 'blunt', 41: 'bite', 42: 'blunt', 43: 'pierce', 44: 'blunt', 47: 'bite', 48: 'bite', 49: 'blade', 50: 'pierce',
   25: 'claw', 26: 'breath', 27: 'blade', 28: 'claw', 29: 'claw', 30: 'magic', 31: 'blade', 32: 'gatling',
-  34: 'throw', 35: 'gatling', 36: 'breath', 37: 'blunt', 38: 'bite', 39: 'magic', 60: 'blunt', 61: 'throw',
+  34: 'throw', 35: 'gatling', 36: 'breath', 37: 'blunt', 38: 'bite', 39: 'magic', 60: 'blunt', 61: 'throw', 62: 'blunt', 63: 'magic',
 };
 const SHOT_SOUND: Record<string, string> = { 'crescent-gold': 'wind', rock: 'throw', javelin: 'throw', shuriken: 'throw', arrow: 'bow', rocket: 'rocket', rockets: 'rocket', salvo: 'rocket', 'rocket-dark': 'rocket', 'rockets-dark': 'rocket', 'salvo-dark': 'rocket', 'plasma-cyan': 'ray', ray: 'ray', 'ray-blue': 'ray', 'ray-gold': 'ray', 'ray-pink': 'thunder', 'ray-red': 'ray', 'arrow-red': 'bow', boulder: 'throw', 'boulder-blue': 'rocket', bomb: 'rocket', plasma: 'ray', ice: 'ray', crescent: 'magic', none: 'flame', lightning: 'thunder', tornado: 'wind', meteor: 'meteor' };
 /** Bullets (`bullet`, `bullet-rifle|uzi|sniper`) sound like the gun that fires them; beams (`ray`, `ray-blue|gold|pink`) reach at once. */
@@ -764,7 +773,7 @@ const DEATH_SOUND: Record<number, string | string[]> = {
   51: 'die-armor', 52: 'die-flyer', 54: 'die-armor', 56: 'die-dragon', 57: 'die-bot', 58: 'die-flyer', 59: 'die-armor',
   40: 'die-beast', 41: 'die-beast', 42: 'die-brute', 44: 'die-brute', 47: 'die-beast', 48: 'die-flyer', 49: 'die-flyer', 50: 'die-flyer',
   29: 'die-flyer', 30: 'die-flyer', 31: 'die-dragon', 32: 'die-bot',
-  34: 'die-brute', 35: 'die-bot', 36: 'die-dragon', 37: 'die-brute', 38: 'die-dragon', 39: 'die-brute', 60: 'die-brute', 61: 'die-brute',
+  34: 'die-brute', 35: 'die-bot', 36: 'die-dragon', 37: 'die-brute', 38: 'die-dragon', 39: 'die-brute', 60: 'die-brute', 61: 'die-brute', 62: 'die-brute', 63: 'die-brute',
 };
 const pickLevel = (v: string | string[] | undefined, lv: number) => (Array.isArray(v) ? v[Math.min(lv, v.length) - 1] : v);
 /** A fighter's attack and death sounds. */
@@ -1409,6 +1418,17 @@ export function tick(s: Siege, dt: number) {
         u.attack = a.rate; u.hit = 0.3;
         const area = u.boss ? Math.max(a.splash ?? 0, BOSS.area) : a.splash;
         if (a.moves) kingMove(s, u, a, enemy, alive, hits);
+        else if (a.wave) {
+          // A toll or a scream: everything in front of it out to its reach (walkers only for the toll), stunned or slowed.
+          const dir = u.side ? -1 : 1, w = a.wave;
+          for (const v of alive) if (v.side !== u.side && reaches(u, v) && (!w.stun || !UNITS[v.id].air) && (v.x - u.x) * dir >= -20 && (v.x - u.x) * dir <= w.reach) {
+            hits.push({ target: v, damage: u.damage, boss: u.boss });
+            if (!v.boss && !UNITS[v.id].steady && w.stun) v.stun = Math.max(v.stun ?? 0, w.stun);
+            if (w.slow) v.slowed = Math.max(v.slowed ?? 0, s.time + w.slow);
+          }
+          fx(s, 'hit-energy', u.x + dir * w.reach * 0.6, 0.35, { up: (a.air ? u.alt ?? highOf(u) : 0) + 30, centre: true, size: 70, flip: !!u.side });
+          hear(s, w.stun ? 'blunt' : 'magic', u.x);
+        }
         else if (a.sweep) {
           // Everything it can reach in front of it, out to `reach`, is struck and thrown back.
           const dir = u.side ? -1 : 1;
