@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.10 - 2026-11-07
+
+- The King of Darkness always shows his new art. His redraw kept 22 of the 24 file names, so browsers that had the old pictures could go on showing them for days, mixed with the new ones. His pictures' addresses now carry a revision (`ART_REV` in the Siege Cartoon view), and every player fetches the new art at once.
+
 ## 1.16.9 - 2026-11-07
 
 - Moving your game: Options has a new «Move my game». «Copy my game» puts the whole saved game (runs, Siege and Villain) in one short packed code; «Load this game» on the other side reads it, shows whose game it is (name, coins, worlds open) and, once confirmed, puts it in place of that device's game. It is meant for the iPhone, where the game added to the home screen and Safari keep separate games, and also works between browsers and phones. A code that is not a game, or was cut short, is turned away; if the phone will not copy, the code is shown selected to copy by hand.

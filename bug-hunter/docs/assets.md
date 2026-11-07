@@ -127,6 +127,8 @@ npm run build
 
 The production build verifies that the published game asset set matches the canonical source mapping and that copied bytes have not changed unexpectedly.
 
+Browsers may keep showing the old picture for days after a redraw that keeps its filename: `/images/` is served with `max-age=3600, stale-while-revalidate=604800`. When a Siege Cartoon sprite is redrawn under the same name, raise or add its revision in `ART_REV` (`src/siege/cartoon/view.ts`). Its URL then carries `?r=<n>`, and every player fetches the new art at once. Other parts of the game have no such revision yet: give a redrawn picture a new filename there.
+
 ## Adding a new asset
 
 Choose the source folder by ownership:
