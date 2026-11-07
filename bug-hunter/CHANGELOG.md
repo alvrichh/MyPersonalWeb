@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.17 - 2026-11-07
+
+- A mastery keeps your coins: worlds, items, the forge and the level still go back to 0, but what you had saved up stays (a reset from the profile still clears everything, as its text says).
+
 ## 1.16.16 - 2026-11-07
 
 - On call with a friend, you now see them fight:
