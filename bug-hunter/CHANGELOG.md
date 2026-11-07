@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.5 - 2026-11-07
+
+- The King of Darkness has about seven times his life in the last battle (560 → 4000 before the guardians' bonus), a long final fight; as the Villain's card he keeps the life the other guardians have.
+
 ## 1.16.4 - 2026-11-07
 
 - The King of Darkness has the owner's new art, in darker bone, black and blood-red colours that suit the last world: his flying throne with its poses for the orb, the eye ray, the skulls and the portal, his throne breaking, and on foot his walk, fist slam, bone spikes, pulse, a fall and his own death pose. On foot he has a fourth attack: a great sweep of his sword that strikes everything ahead and throws it back (taken between his other attacks); he no longer just tips over when he dies.
