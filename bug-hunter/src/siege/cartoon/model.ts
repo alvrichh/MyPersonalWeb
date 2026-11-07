@@ -79,7 +79,7 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
   aimPoses?: boolean;
   /** A guardian's attacks, taken in turn: each with its wind-up and strike poses on its sheet and what it does
       (`kingMove`). */
-  moves?: { ready: number; strike: number; kind: 'orb' | 'ray' | 'skulls' | 'summon' | 'slam' | 'spikes' | 'pulse' }[];
+  moves?: { ready: number; strike: number; kind: 'orb' | 'ray' | 'skulls' | 'summon' | 'slam' | 'spikes' | 'pulse' | 'slash' }[];
   /** The unit it becomes at half its life (the King of Darkness loses his wings and fights on foot), and how many poses
       its sheet has (more than six with `moves`). */
   phase2?: number; frames?: number;
@@ -284,8 +284,8 @@ export const UNITS: readonly Spec[] = [
   // The weary reaper, legendary: hunched and slow, it hurls its chained scythe far ahead and drags what it hooks to it.
   { id: 59, cost: 860, hp: 3200, damage: 260, speed: 26, range: 185, rate: 2.4, cooldown: 30, unlock: 6, infantry: true, legend: true, splash: 50, hook: 160, ...six('ally-reaper-1', 154, 1.15) },
   // The King of Darkness on foot (`phase2` of the last guardian); he carries on with the life he has left.
-  { id: 60, cost: 0, hp: 560, damage: 46, speed: 32, range: 70, rate: 1.5, cooldown: 0, unlock: 1, foe: true, steady: true, splash: 60, hitsAir: true, frames: 10, tipOver: true,
-    moves: [{ ready: 2, strike: 3, kind: 'slam' }, { ready: 6, strike: 7, kind: 'spikes' }, { ready: 2, strike: 3, kind: 'slam' }, { ready: 8, strike: 9, kind: 'pulse' }],
+  { id: 60, cost: 0, hp: 560, damage: 46, speed: 32, range: 70, rate: 1.5, cooldown: 0, unlock: 1, foe: true, steady: true, splash: 60, hitsAir: true, frames: 12,
+    moves: [{ ready: 10, strike: 11, kind: 'slash' }, { ready: 2, strike: 3, kind: 'slam' }, { ready: 10, strike: 11, kind: 'slash' }, { ready: 6, strike: 7, kind: 'spikes' }, { ready: 10, strike: 11, kind: 'slash' }, { ready: 8, strike: 9, kind: 'pulse' }],
     ...foe('boss-dark-king-ground', 250, 1) },
   // The King's Jailer (world 6): a hunched giant with no mouth and a cage of ribs on its back full of red souls. It throws
   // its chain from afar, hooks one of ours and drags it to its feet.
@@ -970,8 +970,13 @@ function kingMove(s: Siege, u: Fighter, a: Spec, enemy: Fighter, alive: Fighter[
     fx(s, 'king-portal', x, 1.2, { size: 120 });
     for (let i = 0; i < 2; i++) { const before = s.units.length; spawn(s, land[(s.nextId + i * 3) % land.length], u.side); const n = s.units[s.units.length - 1]; if (s.units.length > before && n) { n.x = x + i * 18; n.stun = 0.6; } }
     hear(s, 'roar', x);
+  } else if (mv.kind === 'slash') {
+    // A great sweep of his sword: everything ahead of him, out to a long reach, struck and thrown back.
+    for (const v of foes) if (ahead(v, -20, 170)) hits.push({ target: v, damage: u.damage * 1.1, push: 120 });
+    fx(s, 'hit-heavy', u.x + dir * 90, 0.3, { up: 30, centre: true, size: 90, flip: !!u.side });
+    hear(s, 'slash', u.x);
   } else if (mv.kind === 'slam') {
-    // His sword driven into the ground: everything round him struck and thrown back.
+    // His fist driven into the ground: everything round him struck and thrown back.
     for (const v of foes) if (ahead(v, -50, 130)) hits.push({ target: v, damage: u.damage, push: 160 });
     fx(s, 'hit-heavy', u.x + dir * 50, 0.35, { up: 20, centre: true, size: 110, flip: !!u.side }); fx(s, 'crack-1', u.x + dir * 40, 3, { floor: true, size: 160 });
     hear(s, 'blunt', u.x);
