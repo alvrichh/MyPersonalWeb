@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-06T15:37:04.065Z",
+  "generatedAt": "2026-11-07T14:37:40.441Z",
   "candidates": [
     {
       "label": "Claude research and documentation flow",
@@ -10,19 +10,19 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-11-06"
+          "date": "2026-11-07"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-11-06"
+          "date": "2026-11-07"
         },
         {
-          "title": "Claude AI can plug directly into your bank account",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1027652/anthropic-claude-plaid-personal-finance",
-          "date": "2026-11-05"
+          "title": "Extend Claude Code to remote sessions on Amazon Bedrock AgentCore with security controls",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/extend-claude-code-to-remote-sessions-on-amazon-bedrock-agentcore-with-security-controls/",
+          "date": "2026-11-06"
         }
       ]
     },
@@ -35,19 +35,19 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
-          "date": "2026-11-06"
+          "date": "2026-11-07"
         },
         {
-          "title": "Airbnb is working on an AI travel agent",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/1028412/airbnb-ai-travel-agent-q3-2026-earnings",
-          "date": "2026-11-06"
-        },
-        {
-          "title": "Getting started with Web Answer on Amazon Bedrock AgentCore",
+          "title": "Taxonomy of agentic primitives in Amazon Quick",
           "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/getting-started-with-web-answer-on-amazon-bedrock-agentcore/",
-          "date": "2026-11-05"
+          "link": "https://aws.amazon.com/blogs/machine-learning/taxonomy-of-agentic-primitives-in-amazon-quick/",
+          "date": "2026-11-06"
+        },
+        {
+          "title": "Serverless MCP server for AI agent data lake access on Amazon ECS Fargate",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/serverless-mcp-server-for-ai-agent-data-lake-access-on-amazon-ecs-fargate/",
+          "date": "2026-11-06"
         }
       ]
     },
@@ -57,15 +57,84 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Usage metrics API adds code review details and addressed rate",
+          "title": "Copilot code review: API management and review overview updates",
           "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-05-usage-metrics-api-adds-code-review-details-and-addressed-rate",
+          "link": "https://github.blog/changelog/2026-11-06-copilot-code-review-api-management-and-review-overview-updates",
+          "date": "2026-11-07"
+        },
+        {
+          "title": "Beyond code generation: A developer’s guide to agentic engineering",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/beyond-code-generation-a-developers-guide-to-agentic-engineering/",
           "date": "2026-11-06"
         },
         {
-          "title": "Usage metrics API flags telemetry and version gaps",
+          "title": "Copilot impact dashboard adds chat and VS Code agent usage",
           "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-05-usage-metrics-api-flags-telemetry-and-version-gaps",
+          "link": "https://github.blog/changelog/2026-11-06-copilot-impact-dashboard-adds-chat-and-vs-code-agent-usage",
+          "date": "2026-11-06"
+        }
+      ]
+    },
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Could potential AI clones of GTA VI force a quicker official port?",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/gaming/2026/11/could-potential-ai-clones-of-gta-vi-force-a-quicker-official-port/",
+          "date": "2026-11-06"
+        },
+        {
+          "title": "Beyond code generation: A developer’s guide to agentic engineering",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/beyond-code-generation-a-developers-guide-to-agentic-engineering/",
+          "date": "2026-11-06"
+        },
+        {
+          "title": "Speed Up Image Generation with FLUX 3 Image Klein on NVIDIA Blackwell GPUs",
+          "source": "NVIDIA Developer",
+          "link": "https://developer.nvidia.com/blog/speed-up-image-generation-with-flux-3-image-klein-on-nvidia-blackwell-gpus/",
+          "date": "2026-11-06"
+        }
+      ]
+    },
+    {
+      "label": "MCP / tool-connected assistants",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Serverless MCP server for AI agent data lake access on Amazon ECS Fargate",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/serverless-mcp-server-for-ai-agent-data-lake-access-on-amazon-ecs-fargate/",
+          "date": "2026-11-06"
+        },
+        {
+          "title": "Serverless MCP server for AI agent data lake access on Amazon ECS Fargate",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/serverless-mcp-server-for-ai-agent-data-lake-access-on-amazon-ecs-fargate/",
+          "date": "2026-11-06"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Extend Claude Code to remote sessions on Amazon Bedrock AgentCore with security controls",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/extend-claude-code-to-remote-sessions-on-amazon-bedrock-agentcore-with-security-controls/",
+          "date": "2026-11-06"
+        },
+        {
+          "title": "GitHub Copilot weekly releases — November 2",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-06-github-copilot-weekly-releases-november-2",
           "date": "2026-11-06"
         },
         {
@@ -123,63 +192,6 @@
           "source": "OpenAI News",
           "link": "https://openai.com/ads/customers/flipsnack",
           "date": "2026-11-05"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "GitHub Copilot is now available in Xcode’s coding assistant",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-04-github-copilot-is-now-available-in-xcodes-coding-assistant",
-          "date": "2026-11-04"
-        },
-        {
-          "title": "GitHub Copilot is now available in JetBrains Air",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-03-github-copilot-is-now-available-in-jetbrains-air",
-          "date": "2026-11-03"
-        },
-        {
-          "title": "Stop counting tokens, start counting what ships",
-          "source": "MIT Technology Review AI",
-          "link": "https://www.technologyreview.com/2026/11/02/1147702/stop-counting-tokens-start-counting-what-ships/",
-          "date": "2026-11-02"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Stop counting tokens, start counting what ships",
-          "source": "MIT Technology Review AI",
-          "link": "https://www.technologyreview.com/2026/11/02/1147702/stop-counting-tokens-start-counting-what-ships/",
-          "date": "2026-11-02"
-        },
-        {
-          "title": "Build World Models for Interactive Simulation with NVIDIA Cosmos",
-          "source": "NVIDIA Developer",
-          "link": "https://developer.nvidia.com/blog/build-world-models-for-interactive-simulation-with-nvidia-cosmos/",
-          "date": "2026-11-02"
-        }
-      ]
-    },
-    {
-      "label": "AI automation and workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Creating AI value with enterprise context",
-          "source": "MIT Technology Review AI",
-          "link": "https://www.technologyreview.com/2026/10/28/1147709/creating-ai-value-with-enterprise-context/",
-          "date": "2026-10-28"
         }
       ]
     }
