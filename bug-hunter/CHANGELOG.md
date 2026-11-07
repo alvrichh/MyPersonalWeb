@@ -4,6 +4,15 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.8 - 2026-11-07
+
+- Joining a friend by QR, inside the game:
+  - «Make a game» shows the game's code as a QR as well.
+  - A new «Scan QR» button in «Play with someone» opens the camera and joins the game it reads.
+  - No link is needed, so on an iPhone the game added to the home screen (whose saved game is its own, apart from Safari's) is the one that joins.
+  - A phone's own camera app reading the QR opens the game and joins too (in the browser).
+  - The reader (`jsqr`) loads only when the camera opens; the QR is drawn with `qrcode-generator`.
+
 ## 1.16.7 - 2026-11-07
 
 - Playing with a friend:
