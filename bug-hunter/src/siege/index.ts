@@ -92,6 +92,37 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   /** The Villain campaign (opened by winning the hero's last battle): its own save, the enemy's troops against ours. */
   let villain = false;
   const persist = () => { storage.set(villain ? cartoonModel.VILLAIN_KEY : M.SAVE_KEY, JSON.stringify(progress)); };
+  /* A battle under way is kept (every few seconds, and the moment the page is hidden), so that when the browser throws
+     the page away (an iPhone short of memory, or the game left in the background) and loads it again, the battle can
+     go on from where it was instead of being lost. Not duels: the rival's link is gone with the page. */
+  const RESUME_KEY = 'bugHunter.siege.cartoon.resume';
+  type Kept = { v: string; world: number; villain: boolean; selected: number[]; at: number; state: Siege };
+  let keptAt = -1e9;
+  function keepBattle(force = false) {
+    if (mode !== 'cartoon' || duel || !state || state.phase !== 'fight' || story) return;
+    const now = performance.now(); if (!force && now - keptAt < 4000) return; keptAt = now;
+    try { storage.set(RESUME_KEY, JSON.stringify({ v: GAME_VERSION, world, villain, selected, at: Date.now(), state } satisfies Kept)); } catch { /* full or blocked: nothing kept */ }
+  }
+  const dropBattle = () => storage.set(RESUME_KEY, '');
+  /** The kept battle, if it is this version's, unfinished and from the last day. */
+  function keptBattle(): Kept | null {
+    try {
+      const k = JSON.parse(storage.get(RESUME_KEY) || 'null') as Kept | null;
+      if (!k || k.v !== GAME_VERSION || !k.state || k.state.phase !== 'fight' || !Array.isArray(k.state.units) || typeof k.world !== 'number' || Date.now() - k.at > 86400e3) return null;
+      return k;
+    } catch { return null; }
+  }
+  /** On opening the Siege: a battle left half way is offered to be carried on. */
+  function offerResume() {
+    const k = keptBattle(); if (!k || state) return;
+    modal(`<div class="sg-pausebox"><h2>${t('siegeResumeTitle')}</h2><p>${t('siegeResumeText', { n: k.world, time: clock(k.state.time) })}</p><div class="sg-kit-actions"><button class="sg-kit is-green" data-sg="resume-battle">${t('siegeResumeGo')}</button><button class="sg-kit is-red" data-sg="resume-drop">${t('siegeResumeDrop')}</button></div></div>`);
+  }
+  function resumeBattle() {
+    const k = keptBattle(); root.querySelector('.sg-overlay')?.remove();
+    if (!k) { prep(); return; }
+    useSide(k.villain); world = k.world; selected = [...k.selected];
+    start(k.state);
+  }
   /** Has the hero's campaign been won (which opens the Villain's)? */
   const villainOpen = () => cartoonModel.testing.free || (villain ? true : progress.victories.includes(cartoonModel.LAST)) || cartoonModel.readProgress(storage.get(cartoonModel.SAVE_KEY)).victories.includes(cartoonModel.LAST);
   /** Switches between the hero's campaign and the Villain's, each with its own save. */
@@ -364,6 +395,8 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   /** What winning pays (the model's `settle`): Cartoon's acts on the nine-world scale. */
   const prize = (n: number, first: boolean) => (mode === 'cartoon' ? cartoonModel.prize(n, first) : first ? 160 + n * 30 : 45 + n * 5);
   function prep() {
+    // Leaving a battle under way (quitting it) drops the kept copy; with none under way (the page just loaded) it stays, to be offered.
+    if (state && !duel) dropBattle();
     if (duel && state) { endDuel(); state = null; }
     cancelAnimationFrame(frame); battleAbort.abort(); state = null; paused = false;
     // The Villain campaign has its own darker songs, in its menus and its battles.
@@ -485,7 +518,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   const vsPic = (side: 0 | 1) => mode === 'cartoon'
     ? `/images/game/siege/${(side === 1) !== villain ? 'enemy' : 'castle'}-${side ? cartoonModel.enemyTier(world) : cartoonModel.castleTier(progress.upgrades[1])}.webp`
     : side ? guardianUrl(world) : '/images/game/fortress/backlog/town-hall.webp';
-  function start() {
+  function start(from?: Siege) {
     cancelAnimationFrame(frame); battleAbort.abort(); battleAbort = new AbortController();
     const battleOptions = { signal: battleAbort.signal };
     if (!selected.length) return;
@@ -495,8 +528,11 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     progress.deck = [...selected]; persist(); mapAct = mode === 'cartoon' ? actNow() : 0;
     // A duel: the room's maker runs it against the rival's army; the one who joined plays on what it is sent.
     if (duel) { duel.started = true; root.classList.add('is-duel'); root.querySelector('.sg-overlay')?.remove(); }
-    state = duel ? cartoonModel.newDuel(progress, duel.rival ?? { villain: !villain, deck: [], levels: [], upgrades: [] }, world) : M.newSiege(progress, world); shownGold = -1; wasFull = false; for (const k in ready) delete ready[k]; bossTalked = false; bossHalf = false; baseFell = false; lootHeard = 0; gustShown = false;
-    if (mode === 'cartoon') music(villain ? 'villain' : 'battle');
+    state = from ?? (duel ? cartoonModel.newDuel(progress, duel.rival ?? { villain: !villain, deck: [], levels: [], upgrades: [] }, world) : M.newSiege(progress, world)); shownGold = -1; wasFull = false; for (const k in ready) delete ready[k]; lootHeard = 0;
+    // A battle carried on (`from`): what it had already said and shown is not said again.
+    bossTalked = !!from?.bossSpawned; bossHalf = !!from && from.units.some(u => u.boss && u.side && u.hp > 0 && u.hp <= u.maxHp * 0.5); baseFell = !!from && from.hp[1] <= 0; gustShown = !!from?.gusted;
+    keptAt = -1e9; if (!from) dropBattle();
+    if (mode === 'cartoon') music(from?.bossSpawned ? 'boss' : villain ? 'villain' : 'battle');
     V.preload(world, [...selected, ...(duel?.rival?.deck ?? [])], progress.levels, villain); paused = false; camera.x = -Infinity;
     // Laid out like Cartoon Wars 2: mana top left, both fortresses' health face to face in the middle, coins and pause
     // top right; the field with the bow's aim on our wall; one bar below with the magic, the troop cards and the bow.
@@ -604,6 +640,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       // The aim control stands on the deck, wherever the field puts it.
       q<HTMLElement>('.sg-aim').style.bottom = `calc(${((1 - (camera.deck ?? 0.5)) * 100).toFixed(1)}% + 6px)`;
       if (now >= uiAt) { updateUi(); uiAt = now + 100; }
+      keepBattle();
       // The duel's maker sends the battle, turned round, to the rival ten times a second.
       if (duel?.host && now >= duel.sentAt) { duel.sentAt = now + 100; duel.link.send({ t: 'snap', s: cartoonModel.mirrorDuel(state as cartoonModel.Siege) }); }
       // The one who joined a duel waits for its maker's word on how it ended (its own copy only fills the gaps).
@@ -819,6 +856,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   }
   function result() {
     if (!state) return;
+    dropBattle();
     const reward = M.settle(progress, state); persist(); paused = true;
     // The guardian's fall, then (after the last one) the ending.
     if (mode === 'cartoon' && !villain && state.phase === 'won' && cartoonModel.guarded(world)) talk(cartoonStory.bossDown(actNow()), () => (world === lastWorld() ? talk(cartoonStory.ending, () => outcome(reward)) : outcome(reward)));
@@ -993,6 +1031,8 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       modal(`<div class="sg-pausebox"><h2>${t('siegeReset')}</h2><p>${t('siegeResetAsk')}</p><div class="sg-kit-actions"><button class="sg-kit is-red" data-sg="reset-yes">${t('siegeReset')}</button><button class="sg-kit is-blue" data-sg="settings">${t('siegeCancel')}</button></div></div>`);
     } else if (action === 'reset-yes') { storage.set(M.SAVE_KEY, JSON.stringify(cartoonModel.freshProgress())); root.querySelector('.sg-overlay')?.remove(); choose('cartoon'); }
     else if (action === 'resume') resume();
+    else if (action === 'resume-battle' && !state) resumeBattle();
+    else if (action === 'resume-drop' && !state) { dropBattle(); root.querySelector('.sg-overlay')?.remove(); prep(); }
     else if (action === 'home') camera.x = -Infinity;
     else if (action === 'enemy') camera.x = Math.max(0, M.FIELD - camera.width);
     else if (state && !paused && button.dataset.sgPower !== undefined) { const id = Number(button.dataset.sgPower); if (cartoonModel.castPower(state as cartoonModel.Siege, id)) sound(id === 0 ? 'bow' : id === 2 ? 'boom' : 'strike'); updateUi(); }
@@ -1030,8 +1070,9 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
   };
   window.addEventListener('keydown', keyHandler, { ...options, capture: true });
   window.addEventListener('keyup', e => e.stopImmediatePropagation(), { ...options, capture: true });
-  document.addEventListener('visibilitychange', () => { if (document.hidden) pause(); }, options);
-  window.addEventListener('blur', pause, options);
+  document.addEventListener('visibilitychange', () => { if (document.hidden) { keepBattle(true); pause(); } }, options);
+  window.addEventListener('pagehide', () => keepBattle(true), options);
+  window.addEventListener('blur', () => { keepBattle(true); pause(); }, options);
   /** The first screen: Siege Cartoon's world map (Siege Legacy is no longer offered; its code and save stay). */
   function modes() { choose('cartoon'); }
   /** Every map picture and the stall loaded once, so moving between maps never shows one half-loaded. */
@@ -1042,6 +1083,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     root.classList.toggle('is-cartoon', next === 'cartoon'); root.classList.toggle('is-legacy', next === 'legacy');
     progress = M.readProgress(storage.get(M.SAVE_KEY)); selected = [...progress.deck]; world = progress.unlocked; prepTab = 'map'; mapAct = 0;
     prep();
+    if (next === 'cartoon') offerResume();
   }
   modes();
 }

@@ -470,6 +470,8 @@ const backButton = (act: string, label: Key = 'menu') => `<button class="ghost" 
 
 function menuScreen() {
   endBoard();
+  // Leaving a run for the cover (quitting it) drops its kept copy; with none under way (the page just loaded) it stays.
+  if (game) dropRun();
   friendMini.hidden = true;
   together = null;
   // Back on the cover: your profile may have grown in the run (a level, an item), so the friend gets it again.
@@ -1811,13 +1813,20 @@ function extraHubScreen() {
 }
 function startRun(world = worldIn(), mode: PlayMode = save.mode, endless = false, rush = 0, secret = false, rushFrom = 1) {
   if (mode === 'board') { boardVariantScreen(world); return; }
-  together = null;
-  game = newGame({ ...buildLoadout(save.equipped, save.upgrades, masteries(), save.arsenal, save.itemLevels, save.extra), sprintMastery: masteries() }, save.style, world, mode, endless, rush, secret, rushFrom);
+  dropRun();
+  const g = newGame({ ...buildLoadout(save.equipped, save.upgrades, masteries(), save.arsenal, save.itemLevels, save.extra), sprintMastery: masteries() }, save.style, world, mode, endless, rush, secret, rushFrom);
   // Boss Rush: every boss in its own world's floor and song (whatever Customise picked); the secret shift, the jungle's.
-  game.scene = rush || secret ? 0 : save.scene;
-  audio.setSong(rush ? 'worlds' : save.song);
+  g.scene = rush || secret ? 0 : save.scene;
+  beginRun(g);
+  flash(g.secret ? t('secretStart') : g.rush ? t('rushStart', { n: g.stages }) : g.endless ? t('nightmareStart') : g.mode === 'horde' ? t('hordeStart') : `${worldName(g.world)} · ${t('sprint', { room: 1 })}`);
+}
+/** Takes up a run, new or carried on: the HUD, the pictures, the music. */
+function beginRun(g: Game) {
+  together = null;
+  game = g;
+  audio.setSong(g.rush ? 'worlds' : save.song);
   preloadFx();
-  preloadCast(game);
+  preloadCast(g);
   paused = false;
   shownChoices = '';
   wheelShown = false;
@@ -1825,11 +1834,55 @@ function startRun(world = worldIn(), mode: PlayMode = save.mode, endless = false
   hud.hidden = false;
   hudGear.hidden = false;
   hide();
-  hudRoom.style.setProperty('--icon', JSON.stringify(WORLD_ICON[game.world - 1]));
+  hudRoom.style.setProperty('--icon', JSON.stringify(WORLD_ICON[g.world - 1]));
   resize(); // Reserve the live HUD + weapons row, including the iOS safe area.
-  flash(game.secret ? t('secretStart') : game.rush ? t('rushStart', { n: game.stages }) : game.endless ? t('nightmareStart') : game.mode === 'horde' ? t('hordeStart') : `${worldName(game.world)} · ${t('sprint', { room: 1 })}`);
   audio.start();
   audio.setIntensity(0.2);
+}
+/* A run under way is kept (every few seconds, and the moment the page is hidden), so that when the browser throws the
+   page away (an iPhone short of memory, or the game left in the background a while) and loads it again, the run can go
+   on from where it was instead of being lost. Not runs played with a friend (their link is gone with the page), nor the
+   board (its rounds are short). */
+const RUN_KEY = 'bugHunter.resume';
+type KeptRun = { v: string; at: number; g: Game };
+let runKeptAt = -1e9;
+let runKept = false;
+function keepRun(force = false) {
+  const g = game;
+  if (!g || g.phase !== 'play' || together || board) return;
+  const now = performance.now(); if (!force && now - runKeptAt < 5000) return; runKeptAt = now;
+  try { storage.set(RUN_KEY, JSON.stringify({ v: GAME_VERSION, at: Date.now(), g } satisfies KeptRun)); runKept = true; } catch { /* full or blocked: nothing kept */ }
+}
+function dropRun() { if (runKept || storage.get(RUN_KEY)) storage.set(RUN_KEY, ''); runKept = false; }
+/** The kept run, if it is this version's, unfinished and from the last day. */
+function keptRun(): Game | null {
+  try {
+    const k = JSON.parse(storage.get(RUN_KEY) || 'null') as KeptRun | null;
+    if (!k || k.v !== GAME_VERSION || !k.g || k.g.phase !== 'play' || !Array.isArray(k.g.enemies) || !k.g.player || !k.g.gear || Date.now() - k.at > 86400e3) return null;
+    return k.g;
+  } catch { return null; }
+}
+/** Once the page is up: a run left half way is offered to be carried on. */
+function offerRun() {
+  const g = keptRun(); if (!g || game || board) return;
+  const where = g.secret ? t('secretName') : g.rush ? `${t('rush')} · ${worldName(g.world)}` : `${worldName(g.world)} · ${modeName(g.mode)}`;
+  show(`<h2>${t('resumeTitle')}</h2>
+    <p class="how">${t('resumeText')}</p>
+    <p>${where} · ${g.mode === 'sprints' && !g.rush ? t('sprint', { room: g.room }) : clock(g.time)} · ${t('lvShort', { level: g.level })}</p>
+    <button class="primary" type="button" data-act="resume-run">▶ ${t('resumeGo')}</button>
+    <button class="ghost" type="button" data-act="resume-drop">${t('resumeDrop')}</button>`);
+}
+function resumeRun() {
+  const g = keptRun();
+  if (!g) { menuScreen(); return; }
+  // What JSON cannot carry: the blade's per-bug cooldowns and each shot's list of what it has hit, started afresh;
+  // the field is laid out again from its seed.
+  g.gear.bladeHits = new Map();
+  for (const sh of g.shots) sh.hits = new Set(Array.isArray(sh.hits) ? sh.hits : []);
+  g.fieldKey = '';
+  runKept = true; runKeptAt = -1e9;
+  beginRun(g);
+  flash(t('resumeGo'));
 }
 
 
@@ -3392,6 +3445,8 @@ screen.addEventListener('click', (event) => {
   }
   else if (act === 'qr-scan') qrScreen();
   else if (act === 'transfer') transferScreen();
+  else if (act === 'resume-run') resumeRun();
+  else if (act === 'resume-drop') { dropRun(); menuScreen(); }
   // Back to Options as it was opened (from the cover or from the pause).
   else if (act === 'options-keep') optionsScreen();
   else if (act === 'transfer-copy') transferCopy();
@@ -3981,8 +4036,10 @@ function togglePause(force?: boolean) {
   if (paused) pauseScreen();
   else hide();
 }
+window.addEventListener('pagehide', () => keepRun(true));
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) {
+    keepRun(true);
     togglePause(true);
     audio.stop();
   } else if (!document.hidden && save.music > 0) {
@@ -4182,9 +4239,10 @@ function step(now: number) {
   if (board) { boardStep(dt, now); return; }
   const g = game;
   // Once the run is over its sparks and effects still play out and fade.
-  if (g && (g.phase === 'over' || g.phase === 'won')) settleEffects(g, dt);
+  if (g && (g.phase === 'over' || g.phase === 'won')) { settleEffects(g, dt); if (runKept) dropRun(); }
   if (g && !paused && g.phase === 'play') {
     update(g, dt, readInput());
+    keepRun();
     if (calm) g.shake = 0;
     playEvents(g);
     for (const event of g.events) {
@@ -4347,6 +4405,7 @@ if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) {
   Object.defineProperty(window, 'bugHunter', { get: () => game });
   Object.defineProperty(window, 'bugHunterAudio', { get: () => audio });
   Object.defineProperty(window, 'bugHunterBoard', { get: () => board });
+  Object.defineProperty(window, 'bugHunterGame', { get: () => game });
   Object.defineProperty(window, 'bugHunterBoardLay', { get: () => boardLay });
 }
 
@@ -4390,6 +4449,7 @@ Promise.race([
   const join = readShared();
   menuScreen();
   if (join) joinByCode(join);
+  else offerRun();
   loading.classList.add('is-done');
   setTimeout(() => loading.remove(), 400);
   musicOnLanding();
