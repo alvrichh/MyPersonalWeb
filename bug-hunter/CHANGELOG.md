@@ -4,6 +4,13 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.15 - 2026-11-07
+
+- Friends are kept up to date:
+  - Each friend's level, masteries and when they were last seen are saved with their name and picture, from what their phone tells us whenever we link (and again after they change name, skin or gear).
+  - Opening the friends list calls the saved friends again: whoever is online is linked and their skin, level and gear refreshed on the spot, with the list redrawn in place (it used to jump to the cover). There is no server to ask: an offline friend stays as last seen, with «seen 5 min ago» under the name.
+  - On a phone the row's play button is narrower, so a name is no longer cut short.
+
 ## 1.16.14 - 2026-11-07
 
 - Scanning a QR where the live camera cannot be opened (an iPhone's home-screen app often gives pages none):

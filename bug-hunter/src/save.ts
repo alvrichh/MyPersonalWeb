@@ -63,7 +63,9 @@ export const heroStill = (skin: HeroSkin, head?: string) => {
 export type PlayMode = Mode | 'board';
 
 /** A friend kept in the save: their id, name and standing picture as last seen. */
-export type Friend = { id: string; name: string; still: string };
+/** A saved friend: their id, and what their phone last told us of them (name, standing picture, level, masteries,
+    and when: there is no server, so it is refreshed only when they are online and we link). */
+export type Friend = { id: string; name: string; still: string; level?: number; masteries?: number; seen?: number };
 export const NET_ID = /^[a-z0-9]{10}$/;
 export const makeNetId = () => Array.from({ length: 10 }, () => 'abcdefghijkmnpqrstuvwxyz23456789'[Math.floor(Math.random() * 32)]).join('');
 export type Save = {
@@ -230,7 +232,7 @@ export function loadSave(): Save {
     save.stats.nightmareLongest = Math.max(save.stats.nightmareLongest, data.nightmareBest?.time ?? 0);
     save.achieved = { ...data.achieved };
     if (!NET_ID.test(save.netId)) save.netId = makeNetId();
-    save.friends = (Array.isArray(data.friends) ? data.friends : []).filter((f) => f && NET_ID.test(f.id) && f.id !== save.netId).slice(0, 30).map((f) => ({ id: f.id, name: cleanName(String(f.name)) || '?', still: String(f.still ?? '').replace(/[^a-z-]/g, '') }));
+    save.friends = (Array.isArray(data.friends) ? data.friends : []).filter((f) => f && NET_ID.test(f.id) && f.id !== save.netId).slice(0, 30).map((f) => ({ id: f.id, name: cleanName(String(f.name)) || '?', still: String(f.still ?? '').replace(/[^a-z-]/g, ''), ...(Number(f.level) > 0 ? { level: Math.round(Number(f.level)) } : {}), ...(Number(f.masteries) > 0 ? { masteries: Math.round(Number(f.masteries)) } : {}), ...(Number(f.seen) > 0 ? { seen: Number(f.seen) } : {}) }));
     save.achNew = Array.isArray(data.achNew) ? data.achNew.filter((id) => typeof id === 'string') : [];
     // The mud world came in as world 4: what an older save kept for worlds 4–8 belongs to 5–9 now.
     if (!data.mudWorld) {

@@ -657,6 +657,9 @@ const notice = (icon: string, title: string, sub = '') =>
 
 function profileScreen(note = '') {
   const { level, progress } = profileLevel(save.xp);
+  // Opening the friends list calls the saved friends again: whoever is online is linked and their skin, level and
+  // gear brought up to date (there is no server to ask; an offline friend stays as last seen).
+  if (!friend && save.friends.length && !board && !game) { goOnline(); dialFriends(); }
   // While editing, the field takes the whole row under the hero.
   const name = editingName
     ? `<form class="profile-name is-editing" data-form="name" novalidate>
@@ -2199,16 +2202,28 @@ let dialled = false;
 /** A friend added from a shared link, called first. */
 let callFirst = '';
 function goOnline() {
-  if (friend || presenceOn()) return;
-  presence(save.netId, presenceHandlers());
+  if (friend) return;
+  if (!presenceOn()) presence(save.netId, presenceHandlers());
   if (dialled && !callFirst) return;
   dialled = true;
+  dialFriends();
+}
+/** Calls each saved friend in turn (a shared link's first): the first one online is linked, their news kept. */
+let dialing = false;
+/** Asked to call again while a round of calls was under way: another round follows it. */
+let dialAgain = false;
+function dialFriends() {
+  if (friend || !presenceOn()) return;
+  if (dialing) { dialAgain = true; return; }
   const queue = [...new Set([callFirst, ...save.friends.map((f) => f.id)].filter(Boolean))];
   callFirst = '';
+  if (!queue.length) return;
+  dialing = true; dialAgain = false;
   let waited = 0;
+  const done = () => { dialing = false; if (dialAgain && !friend) { dialAgain = false; dialFriends(); } };
   const next = () => {
-    if (friend || !presenceOn() || !queue.length) return;
-    if (!presenceReady()) { if ((waited += 1) < 40) window.setTimeout(next, 250); return; }
+    if (friend || !presenceOn() || !queue.length) { done(); return; }
+    if (!presenceReady()) { if ((waited += 1) < 40) window.setTimeout(next, 250); else done(); return; }
     dial(queue.shift()!, { ...presenceHandlers(), error: () => window.setTimeout(next, 200) });
   };
   next();
@@ -2259,13 +2274,15 @@ function addFriend(id: string, rawName: string): boolean {
   flash(t('friendAdded', { name: esc(name) }));
   return true;
 }
+/** How long ago, in round words: «3 min», «2 h», «5 d». */
+const ago = (at: number) => { const m = Math.max(1, Math.round((Date.now() - at) / 60000)); return m < 60 ? `${m} min` : m < 1440 ? `${Math.round(m / 60)} h` : `${Math.round(m / 1440)} d`; };
 const friendStill = (still: string) => `./images/game/hero/${still || 'boy-base-front'}.webp`;
 function friendsBlock() {
   const rows = save.friends.map((f) => {
     const on = friend?.id === f.id;
     return `<div class="friend-row${on ? ' is-on' : ''}">
-      <span class="friend-pic"><img${on ? ` data-friend-portrait-id="${f.id}"` : ""} src="${friendStill(on ? friend!.still : f.still)}" alt=""></span>
-      <b data-friend-id="${f.id}">${esc(f.name)}</b>${on ? '<i class="friend-dot" aria-hidden="true"></i>' : ''}
+      <span class="friend-pic"><img data-friend-portrait-id="${f.id}" src="${friendStill(on ? friend!.still : f.still)}" alt=""></span>
+      <b data-friend-id="${f.id}">${esc(f.name)}${on || f.level ? `<small>${on && friend!.profile ? t('lvShort', { level: friend!.profile.level }) : f.level ? t('lvShort', { level: f.level }) : ''}${(on ? friend!.profile?.masteries : f.masteries) ? ` · ★${on ? friend!.profile?.masteries : f.masteries}` : ''}${!on && f.seen ? ` · ${t('friendSeen', { when: ago(f.seen) })}` : ''}</small>` : ''}</b>${on ? '<i class="friend-dot" aria-hidden="true"></i>' : ''}
       <button class="friend-go" type="button" data-act="friend-call" data-id="${f.id}">${t(on ? 'friendPlay' : 'friendCall')}</button>
       <button class="friend-del" type="button" data-act="friend-del" data-id="${f.id}" aria-label="${t('friendRemove')}">✕</button>
     </div>`;
@@ -2365,11 +2382,15 @@ function onNetMsg(m: NetMsg) {
     if (NET_ID.test(id) && id !== save.netId) {
       friend.id = id;
       // Kept as a friend, to be found again without a code; the newest first.
-      save.friends = [{ id, name: friend.name, still: friend.still }, ...save.friends.filter((f) => f.id !== id)].slice(0, 30);
+      // What they are now, kept for the friends list (their phone says it again after a change of name, skin or gear).
+      save.friends = [{ id, name: friend.name, still: friend.still, ...(friend.profile ? { level: friend.profile.level, masteries: friend.profile.masteries } : {}), seen: Date.now() }, ...save.friends.filter((f) => f.id !== id)].slice(0, 30);
       persist();
     }
     refreshFriendName();
-    if (first) { flash(t('linkMade', { name: esc(friend.name) })); audio.play('door'); if (!board && !game) menuScreen(); }
+    // The friends list open: drawn again with what just came (the link made from there stays on the list).
+    const onFriends = !board && !game && !!document.querySelector('.pstats');
+    if (first) { flash(t('linkMade', { name: esc(friend.name) })); audio.play('door'); if (onFriends) profileScreen(); else if (!board && !game) menuScreen(); }
+    else if (onFriends) profileScreen();
   } else if (m.t === 'invite') {
     if (board || game || inviting) { netSend({ t: 'decline' }); return; }
     invitedBy = { mode: m.mode === 'sprints' || m.mode === 'horde' ? m.mode : 'board', variant: m.variant === 'tactics' ? 'tactics' : 'fusion', world: Math.max(1, Math.min(WORLD_COUNT, Math.round(m.world) || 1)), seed: m.seed >>> 0 };

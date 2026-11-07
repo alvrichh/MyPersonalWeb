@@ -5324,3 +5324,7 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .qr-photo { display: flex; align-items: center; justify-content: center; cursor: pointer; }
 .qr-photo input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
 .qr-scan.is-off { display: none; }
+/* A friend's row: their level, masteries and when they were last seen, under the name. */
+.friend-row > b small { display: block; font-size: 0.72em; font-weight: 500; color: #b8c7d9; }
+/* On a phone the row is tight: the play button gives the name room, so «Amigo» is not cut to «Ami…». */
+@media (max-width: 420px) { .friend-row .friend-go { min-width: 0; padding: 7px 10px; font-size: 0.9rem; } }
