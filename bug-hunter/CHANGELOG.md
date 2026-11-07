@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.4 - 2026-11-07
+
+- The King of Darkness has the owner's new art, in darker bone, black and blood-red colours that suit the last world: his flying throne with its poses for the orb, the eye ray, the skulls and the portal, his throne breaking, and on foot his walk, fist slam, bone spikes, pulse, a fall and his own death pose. On foot he has a fourth attack: a great sweep of his sword that strikes everything ahead and throws it back (taken between his other attacks); he no longer just tips over when he dies.
+
 ## 1.16.3 - 2026-11-07
 
 - Turning the music off or on from any settings (the game's, Siege's mute or a volume taken to zero and back) starts the song again from its beginning; moving the volume otherwise leaves it playing on.
