@@ -5317,3 +5317,6 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .qr-scan { position: relative; box-sizing: border-box; width: min(300px, 100%); aspect-ratio: 1; margin: 8px auto; overflow: hidden; border-radius: 16px; background: #000; box-shadow: 0 0 0 3px #c084fc88, 0 6px 18px #0008; }
 .qr-scan video { width: 100%; height: 100%; object-fit: cover; }
 .qr-scan i { position: absolute; inset: 16%; border: 3px solid #fde047cc; border-radius: 12px; box-shadow: 0 0 0 999px #0006; }
+/* Moving the saved game: the code to copy by hand, and the box to paste one in. */
+.transfer-code { display: block; box-sizing: border-box; width: 100%; min-height: 64px; margin: 6px 0 8px; padding: 8px 10px; border: 1px solid #c084fc88; border-radius: 10px; background: #0b0816; color: #e9e3f7; font: 12px/1.35 ui-monospace, monospace; word-break: break-all; resize: vertical; }
+.transfer-code[hidden] { display: none; }

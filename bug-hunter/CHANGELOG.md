@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.9 - 2026-11-07
+
+- Moving your game: Options has a new «Move my game». «Copy my game» puts the whole saved game (runs, Siege and Villain) in one short packed code; «Load this game» on the other side reads it, shows whose game it is (name, coins, worlds open) and, once confirmed, puts it in place of that device's game. It is meant for the iPhone, where the game added to the home screen and Safari keep separate games, and also works between browsers and phones. A code that is not a game, or was cut short, is turned away; if the phone will not copy, the code is shown selected to copy by hand.
+
 ## 1.16.8 - 2026-11-07
 
 - Joining a friend by QR, inside the game:
