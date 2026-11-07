@@ -34,7 +34,7 @@ function picture(path: string) {
 }
 /** Pictures redrawn under the same file names: a browser keeps the old copy for days (`/images/` may be served stale
     while it revalidates), so their address carries a revision, raised each time one is drawn again. */
-const ART_REV: [string, number][] = [['siege/units/boss-dark-king-', 2]];
+const ART_REV: [string, number][] = [['siege/units/boss-dark-king-', 2], ['siege/units/foe-bellringer-1-3', 2], ['siege/units/foe-wraith-1-3', 2]];
 const art = (file: string) => { const r = ART_REV.find(([k]) => file.startsWith(k)); return `/images/game/${file}${r ? `?r=${r[1]}` : ''}`; };
 /** Every troop's sheet (`siege/units/...`): 0 standing, 1 attacking, 2 hurt. Walking, breathing, lunges and falls
     are animated here. */
@@ -172,7 +172,7 @@ const AMBIENT: Record<number, { kind: string; n: number; fall: number; drift: nu
 const FX_STILLS = [...[1, 2, 3, 4].flatMap(n => [`eye-${n}`, `eye-fire-${n}`]), 'ice-block', 'piece-gear', 'piece-bolt', 'piece-plate', 'casing', 'streak', 'storm-sky', 'rubble', 'piece-stone', 'piece-beam', 'piece-flag',
   ...[0, 1, 2].flatMap(n => [`scorch-${n}`, `crack-${n}`]), ...Object.values(AMBIENT).flatMap(a => Array.from({ length: a.n }, (_, k) => `amb-${a.kind}-${k}`))];
 const fxFrame = (name: string, p: number) => still(`siege/fx/${name}-${Math.max(0, Math.min(FX_FRAMES[name] - 1, Math.floor(p * FX_FRAMES[name])))}`);
-const FX = [...Array.from({ length: 8 }, (_, f) => `siege/fx/dragonpass-${f}`), ...Array.from({ length: 12 }, (_, f) => `siege/fx/anchor-${f}`), ...Object.keys(PHASED).flatMap(n => Array.from({ length: 12 }, (_, f) => `siege/fx/${n}-${f}`)), ...Object.entries(FX_FRAMES).flatMap(([n, k]) => Array.from({ length: k }, (_, f) => `siege/fx/${n}-${f}`)), ...FX_STILLS.map(n => `siege/fx/${n}`), 'siege/mana', 'siege/mana-dark', ...[0, 1, 2, 3, 4, 5, 6, 7].flatMap(n => [`siege/fx-boom-${n}`, `siege/fx-boom-dark-${n}`, `siege/fx-boom-cyan-${n}`]), 'siege/units/shot-crescent-gold', 'fx/fire-pool.webp', 'fx/fireball.webp', 'fx/rocket.webp', 'fx/volt-burst.webp', 'fx/impact.webp', 'fx/ice-block.webp', 'siege/units/shot-arrow', 'siege/units/shot-ice', 'siege/units/shot-lightning', ...[0, 1, 2].map(n => `fx/wave-strip-${n}.webp`), ...[0, 1, 2, 3, 4, 5, 6].map(n => `fx/icicle-0-${n}.webp`), 'arrows/water.webp', 'arrows/leaf.webp', 'fx/boom-big.webp', 'fx/impact.webp', ...[1, 2, 3, 4, 5, 6].map(n => `fx/bolt-y-${n}.webp`)];
+const FX = [...Array.from({ length: 8 }, (_, f) => `siege/fx/dragonpass-${f}`), ...Array.from({ length: 12 }, (_, f) => `siege/fx/anchor-${f}`), ...Object.keys(PHASED).flatMap(n => Array.from({ length: 12 }, (_, f) => `siege/fx/${n}-${f}`)), ...Object.entries(FX_FRAMES).flatMap(([n, k]) => Array.from({ length: k }, (_, f) => `siege/fx/${n}-${f}`)), ...FX_STILLS.map(n => `siege/fx/${n}`), 'siege/mana', 'siege/mana-dark', ...[0, 1, 2, 3, 4, 5, 6, 7].flatMap(n => [`siege/fx-boom-${n}`, `siege/fx-boom-dark-${n}`, `siege/fx-boom-cyan-${n}`]), 'siege/units/shot-crescent-gold', 'fx/fire-pool.webp', 'fx/fireball.webp', 'fx/rocket.webp', 'fx/volt-burst.webp', 'fx/impact.webp', 'fx/ice-block.webp', 'siege/units/shot-arrow', 'siege/units/shot-ice', 'siege/units/shot-lightning', ...[0, 1, 2].map(n => `fx/wave-strip-${n}.webp`), ...[0, 1, 2, 3, 4, 5, 6].map(n => `fx/icicle-0-${n}.webp`), 'arrows/water.webp', 'arrows/leaf.webp', 'fx/boom-big.webp', 'fx/impact.webp', ...[1, 2, 3, 4, 5, 6].map(n => `fx/bolt-y-${n}.webp`), 'siege/fx/wave-toll', 'siege/fx/wave-scream'];
 /** Pictures drawn whole (backdrop, floor, effects): no alpha crop needed. */
 const stills = new Map<string, HTMLImageElement>();
 function still(path: string) {
@@ -727,6 +727,20 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     const art = fxFrame('heal', p); if (ok(art)) { const w = 46, h = w * art.naturalHeight / art.naturalWidth; ctx.drawImage(art, e.x - w / 2, ground - (e.up ?? 0) - h, w, h); }
     ctx.restore(); return true;
   }
+  if (e.kind === 'ripple') {
+    // The Bell Ringer's toll and the Crowned Wraith's scream: their rings (cut from the attack pose) leave the mouth
+    // and run out over the reach, growing and fading, a second pass adding light.
+    if (p < 0) return true;
+    const art = still(`siege/fx/${e.art}`); if (!ok(art)) return false;
+    const dir = e.x >= e.from ? 1 : -1, ease = 1 - (1 - p) * (1 - p), reach = Math.abs(e.x - e.from);
+    const h = (e.size ?? 100) * 0.42 * (1 + ease * 0.7), w = h * art.naturalWidth / art.naturalHeight;
+    // The rings' inner side starts at the mouth.
+    const cx = e.from + dir * (reach * ease + w / 2), cy = ground - (e.fromUp ?? 0);
+    ctx.save(); ctx.globalAlpha = Math.min(1, p / 0.12) * (p < 0.55 ? 1 : (1 - p) / 0.45); ctx.translate(cx, cy); ctx.scale(-dir, 1);
+    ctx.drawImage(art, -w / 2, -h / 2, w, h);
+    ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha *= 0.35; ctx.drawImage(art, -w / 2, -h / 2, w, h);
+    ctx.restore(); return true;
+  }
   if (e.kind === 'sweep') {
     // The archangel's golden crescent: a wide arc sweeping out from the angel over the ground ahead of it, growing, a
     // white-hot core and gold streaks behind, fading; it is drawn twice, the second time adding light.
@@ -983,12 +997,17 @@ function fallen(s: Siege) {
     eater's beam poses, whose beam reaches far ahead of and below it). */
 /** The King of Darkness's poses are anchored on his throne (in the air) or between his feet (on foot), measured on each. */
 const KING_ANCHOR: Record<string, [number, number]> = { 'siege/units/boss-dark-king-air-0': [0.407, 0.998], 'siege/units/boss-dark-king-air-1': [0.473, 0.998], 'siege/units/boss-dark-king-air-2': [0.443, 0.998], 'siege/units/boss-dark-king-air-3': [0.454, 0.998], 'siege/units/boss-dark-king-air-4': [0.392, 0.998], 'siege/units/boss-dark-king-air-5': [0.425, 0.875], 'siege/units/boss-dark-king-air-6': [0.421, 0.998], 'siege/units/boss-dark-king-air-7': [0.449, 0.998], 'siege/units/boss-dark-king-air-8': [0.42, 0.998], 'siege/units/boss-dark-king-air-9': [0.494, 0.998], 'siege/units/boss-dark-king-air-10': [0.457, 0.998], 'siege/units/boss-dark-king-air-11': [0.461, 0.998], 'siege/units/boss-dark-king-ground-0': [0.594, 0.998], 'siege/units/boss-dark-king-ground-1': [0.595, 0.998], 'siege/units/boss-dark-king-ground-2': [0.543, 0.998], 'siege/units/boss-dark-king-ground-3': [0.533, 0.998], 'siege/units/boss-dark-king-ground-4': [0.505, 0.998], 'siege/units/boss-dark-king-ground-5': [0.49, 0.995], 'siege/units/boss-dark-king-ground-6': [0.51, 0.997], 'siege/units/boss-dark-king-ground-7': [0.557, 0.995], 'siege/units/boss-dark-king-ground-8': [0.511, 0.998], 'siege/units/boss-dark-king-ground-9': [0.507, 0.998], 'siege/units/boss-dark-king-ground-10': [0.517, 0.998], 'siege/units/boss-dark-king-ground-11': [0.486, 0.998] };
-const POSE_ANCHOR: Record<string, [number, number]> = { ...KING_ANCHOR, 'siege/units/ally-star-eater-1-6': [0.183, 0.585], 'siege/units/ally-star-eater-1-7': [0.171, 0.796], 'siege/units/ally-dragon-1-6': [0.313, 0.712], 'siege/units/ally-dragon-1-7': [0.254, 0.848], 'siege/units/ally-reaper-1-3': [0.297, 1] };
+const POSE_ANCHOR: Record<string, [number, number]> = { ...KING_ANCHOR, 'siege/units/ally-star-eater-1-6': [0.183, 0.585], 'siege/units/ally-star-eater-1-7': [0.171, 0.796], 'siege/units/ally-dragon-1-6': [0.313, 0.712], 'siege/units/ally-dragon-1-7': [0.254, 0.848], 'siege/units/ally-reaper-1-3': [0.297, 1],
+  // The Bell Ringer lying dead: the bone thrown in front of it reaches lowest; it lies on its body, the bone a little in front.
+  'siege/units/foe-bellringer-1-5': [0.385, 0.92] };
 function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: number, reduced: boolean, color: string, gone?: number) {
   // Air troops fly above their lane, their shadow on the ground under them; the fallen lie on the ground.
   // Every troop on one line (the lanes only order who is drawn in front), so the card bar never hides one.
   const spec = specOf(u), floor = ground;
-  const y = gone !== undefined ? floor : spec.air ? floor - (u.alt ?? highOf(u)) - u.lane * 8 + (reduced ? 0 : spec.raid ? Math.sin(s.time * 0.9 + u.uid) * 2 : Math.sin(s.time * 4 + u.uid) * 5) : floor;
+  // A flyer killed in the air falls from where it was to the ground over the first part of its fall (it no longer
+  // drops there at once).
+  const fell = gone !== undefined && spec.air ? Math.min(1, gone / DEATH.fly) : 1;
+  const y = gone !== undefined ? floor - (u.alt ?? highOf(u)) * (1 - fell * fell) : spec.air ? floor - (u.alt ?? highOf(u)) - u.lane * 8 + (reduced ? 0 : spec.raid ? Math.sin(s.time * 0.9 + u.uid) * 2 : Math.sin(s.time * 4 + u.uid) * 5) : floor;
   const path = spec.sprite, t = s.time + u.uid * 0.37;
   // The pose. Six-pose sheets: walk A/B in turn while walking, the wind-up just before a blow, the blow, hurt, dead.
   // Three-pose sheets: stand (walking in code), attack, hurt.
