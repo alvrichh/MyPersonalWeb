@@ -73,6 +73,7 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   drawFireballs(ctx, g);
   drawZaps(ctx, g);
   if (g.skills.blades) drawBlades(ctx, g, accent);
+  drawAlly(ctx, g, accent, accent2, now);
   if (g.skills.frost) drawFrostTop(ctx, g, now);
   // The Core's dragon goes over its own attacks (its fire, its ring of orbs, their tracks); the others under theirs.
   const overShots = (e: Enemy) => e.bossId === 'chimera' && !e.clone;
@@ -2216,7 +2217,31 @@ function sawImage(el: BladeElement) {
   return img;
 }
 /** When the blades' angle last changed, so their motion trail shows only while they turn. */
-const bladeSeen = { angle: NaN, at: 0 };
+/** When each set of saws (the hero's gear, or an ally's) last turned, to show motion only while they turn. */
+const bladeSeenBy = new WeakMap<object, { angle: number; at: number }>();
+/* On call with a friend: their weapons at work beside them, from what their phone last sent (`AllyView`), carried on
+   between messages (shots fly on, effects fade, the saws keep turning). They are drawn by the hero's own functions
+   over a stand-in game that has the friend's skills and looks, so a fire arrow or an evolved saw looks the same as
+   theirs. The shots keep their objects between frames, so their trails build up as the hero's do. */
+const allyGear = { bladeAngle: 0 } as Game['gear'];
+const allyShots: Shot[] = [];
+function drawAlly(ctx: CanvasRenderingContext2D, g: Game, accent: string, accent2: string, now: number) {
+  const ally = g.coop?.ally, v = ally?.view;
+  if (!ally || !v) return;
+  const el = now - v.at;
+  if (el < 0 || el > 3) return;
+  allyGear.bladeAngle = v.bladeAngle + v.bladeTurn * el;
+  allyShots.length = v.shots.length;
+  v.shots.forEach((a, i) => { const o = allyShots[i] ?? (allyShots[i] = { ...a }); Object.assign(o, a, { x: a.x + a.vx * el, y: a.y + a.vy * el }); });
+  const ghost: Game = { ...g, player: { ...g.player, x: ally.x, y: ally.y }, shots: allyShots, fx: v.fx.map((f) => ({ ...f, life: f.life - el })).filter((f) => f.life > 0), zaps: v.zaps.map((z) => ({ ...z, life: z.life - el })).filter((z) => z.life > 0), gear: allyGear, skills: v.skills, evolved: v.evolved, fused: v.fused, arrowPick: v.arrowPick, bladePick: v.bladePick, loadout: { ...g.loadout, spirit: v.spirit } };
+  try {
+    drawFx(ctx, ghost, accent, 'under');
+    drawShots(ctx, ghost, accent, accent2);
+    drawZaps(ctx, ghost);
+    if (ghost.skills.blades) drawBlades(ctx, ghost, accent);
+    drawFx(ctx, ghost, accent, 'over');
+  } catch { /* a stray value from the other phone must never stop the frame */ }
+}
 function drawBlades(ctx: CanvasRenderingContext2D, g: Game, accent: string) {
   const el = bladeElement(g);
   const img = sawImage(el);
@@ -2233,6 +2258,8 @@ function drawBlades(ctx: CanvasRenderingContext2D, g: Game, accent: string) {
   // shows only while the blades really turn: not in a cleared room, nor
   // while the run waits on a level up or the pause.
   const now = performance.now();
+  let bladeSeen = bladeSeenBy.get(g.gear);
+  if (!bladeSeen) { bladeSeen = { angle: NaN, at: 0 }; bladeSeenBy.set(g.gear, bladeSeen); }
   if (g.gear.bladeAngle !== bladeSeen.angle) { bladeSeen.angle = g.gear.bladeAngle; bladeSeen.at = now; }
   const on = now - bladeSeen.at < 120;
   const tail = on ? 0.42 + 0.1 * (lv - 1) : 0;
