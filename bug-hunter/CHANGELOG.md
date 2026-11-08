@@ -4,6 +4,15 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.21 - 2026-11-08
+
+- The Villain's cards are priced by their strength (life, damage, rate, reach and area against ours, the dearer a little more efficient, as in Cartoon Wars), with the shop's gold following the mana:
+  - The cheap ones cost a little less (swordsman 25, spearman, dog and ninja bat 35, hypno bat 35, turkey 45).
+  - The strong ones, which were given away, cost more: rhino 195, mammoth 280, hammer 110, axeman 150, gatling 250, dragon 150, death angel 120, devil 200, red dragon rider 360.
+  - The rare champions as cards: the Jailer 650 (it gave five times a troop's worth for 230), the Bell Ringer 345, the Crowned Wraith 195.
+  - The rifleman and the archer, which fight from behind the line, cost 50 and 55.
+  - The guardians as cards stay as they were. Only the Villain's battles and duels change: the enemy's waves for the hero are the same.
+
 ## 1.16.20 - 2026-11-08
 
 - The sound gets a larger output buffer (the audio context's `latencyHint: 'balanced'`, instead of the default 'interactive'), so the music, made live note by note, keeps flowing when a phone slows down: warm after several minutes of a Siege battle, or in low-power mode, it ran out of time for it and the music came in jerks. Measured meanwhile, with the processor slowed to emulate a phone: nothing in the game grows over a long battle (troops, effects, memory) and the music's schedule never ran late.
