@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.23 - 2026-11-08
+
+- The music no longer turns jerky after a while on an iPhone. Every note and every sound effect made its own small chain of audio nodes and nothing ever took them out of the graph again: Chrome lets a finished chain go by itself, but Safari (every browser on an iPhone) kept them, and after a few minutes the thousands gathered were more than its audio thread could run. Now each chain is taken apart the moment it has played (its source ends, then every node downstream that nothing else still feeds); the long-lived buses stay. Measured over a three-minute Siege battle, the notes' nodes in the graph stay between about 100 and 230 instead of growing by about a hundred a second; the music measures the same as before.
+
 ## 1.16.22 - 2026-11-08
 
 - The Villain's shop:
