@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-07T14:37:40.441Z",
+  "generatedAt": "2026-11-08T14:43:04.796Z",
   "candidates": [
     {
       "label": "Claude research and documentation flow",
@@ -10,13 +10,13 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-11-07"
+          "date": "2026-11-08"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-11-07"
+          "date": "2026-11-08"
         },
         {
           "title": "Extend Claude Code to remote sessions on Amazon Bedrock AgentCore with security controls",
@@ -35,7 +35,7 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
-          "date": "2026-11-07"
+          "date": "2026-11-08"
         },
         {
           "title": "Taxonomy of agentic primitives in Amazon Quick",

@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-11-07
+# Daily AI maintenance report — 2026-11-08
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -17,26 +17,28 @@ This file is generated automatically by the daily maintenance workflow. It updat
 - NVIDIA Developer: OK (8 relevant items)
 - Ars Technica AI: OK (6 relevant items)
 - MIT Technology Review AI: OK (6 relevant items)
-- The Verge AI: OK (2 relevant items)
+- The Verge AI: OK (3 relevant items)
 
 ## Relevant AI updates
 
-- **Expanding our partnership with GSA to bring Claude to all levels of government** — Anthropic News · 2026-11-07
+- **Expanding our partnership with GSA to bring Claude to all levels of government** — Anthropic News · 2026-11-08
   https://www.anthropic.com/news/expanding-partnership-gsa
-- **Donating Agent Skills to the Agentic AI Foundation** — Anthropic News · 2026-11-07
+- **Donating Agent Skills to the Agentic AI Foundation** — Anthropic News · 2026-11-08
   https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation
-- **Introducing the Anthropic Cyber Mission** — Anthropic News · 2026-11-07
+- **Introducing the Anthropic Cyber Mission** — Anthropic News · 2026-11-08
   https://www.anthropic.com/news/anthropic-cyber-mission
-- **Security** — Anthropic News · 2026-11-07
+- **Security** — Anthropic News · 2026-11-08
   https://www.anthropic.com/news/security
-- **Expanding the Cyber Verification Program** — Anthropic News · 2026-11-07
+- **Expanding the Cyber Verification Program** — Anthropic News · 2026-11-08
   https://www.anthropic.com/news/cyber-verification-program
-- **Barclays scales Claude to upgrade operations and improve client experience** — Anthropic News · 2026-11-07
+- **Barclays scales Claude to upgrade operations and improve client experience** — Anthropic News · 2026-11-08
   https://www.anthropic.com/news/barclays-scales-claude
-- **Partnering with Accenture on embedded evaluation** — Anthropic News · 2026-11-07
+- **Partnering with Accenture on embedded evaluation** — Anthropic News · 2026-11-08
   https://www.anthropic.com/news/accenture-embedded-evaluation
 - **Copilot code review: API management and review overview updates** — GitHub Changelog · 2026-11-07
   https://github.blog/changelog/2026-11-06-copilot-code-review-api-management-and-review-overview-updates
+- **AI broke the cybersecurity world. What’s next?** — The Verge AI · 2026-11-07
+  https://www.theverge.com/podcast/1029038/ai-cybersecurity-hackers-data-breach-dark-age-alex-stamos
 - **Why a new report on Anthropic automating AI development is alarming researchers** — The Verge AI · 2026-11-07
   https://www.theverge.com/ai-artificial-intelligence/1029126/anthropic-metr-report-accelerating-ai-development
 - **Could potential AI clones of GTA VI force a quicker official port?** — Ars Technica AI · 2026-11-06
@@ -83,8 +85,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.theverge.com/tech/1029338/nvidia-ceo-jensen-huang-china-spy
 - **Google: Schools can keep search while skipping Gemini, but AI search is non-negotiable** — Ars Technica AI · 2026-11-05
   https://arstechnica.com/ai/2026/11/google-schools-can-keep-search-while-skipping-gemini-but-ai-search-is-non-negotiable/
-- **Stop treating agents as one-off projects and start running them as a continuous discipline** — Azure Blog · 2026-11-05
-  https://azure.microsoft.com/en-us/blog/stop-treating-agents-as-one-off-projects-and-start-running-them-as-a-continuous-discipline/
 - **Gemini Omni 1.2 Flash: Fast and cost-effective with longer clips** — Google AI Blog · 2026-11-05
   https://blog.google/innovation-and-ai/technology/developers-tools/introducing-gemini-omni-1-2-flash/
 - **Gemini Omni 1.2 Flash: Fast and cost-effective with longer clips** — Google DeepMind · 2026-11-05
