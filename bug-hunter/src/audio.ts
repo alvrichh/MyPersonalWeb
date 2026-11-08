@@ -424,6 +424,44 @@ const FINAL_REESE = [
 
 const semi = (base: number, n: number) => base * Math.pow(2, n / 12);
 
+/* Every note and every effect makes its own small chain of nodes (a source, its filters and gains, a panner) into the
+   buses, and nothing ever took them out again. Chrome lets a finished chain go by itself; Safari (every browser on an
+   iPhone) kept them in the graph, and after a few minutes of play the hundreds a second it had gathered were more than
+   its audio thread could run: the music came in jerks. So each chain is taken apart once it has played: when a source
+   ends it is disconnected, and so is every node downstream that nothing else still feeds (counted as they connect),
+   down to the long-lived buses, which are made before this starts and never touched. */
+type Swept = AudioNode & { __out?: AudioNode[]; __in?: number; __note?: boolean };
+let livingNotes = 0;
+/** How many notes' nodes are in the graph now (for the tests: it must not keep growing). */
+export const notesAlive = () => livingNotes;
+function sweepNotes(ctx: AudioContext) {
+  const release = (node: Swept) => {
+    if (!node.__note) return;
+    node.__note = false; livingNotes -= 1;
+    const next = node.__out ?? [];
+    node.__out = [];
+    try { node.disconnect(); } catch { /* already gone */ }
+    for (const t of next as Swept[]) if (t.__note && (t.__in = (t.__in ?? 1) - 1) <= 0) release(t);
+  };
+  const mark = <T extends AudioNode>(node: T): T => {
+    const n = node as Swept;
+    n.__note = true; n.__in = 0; n.__out = []; livingNotes += 1;
+    const connect = node.connect.bind(node) as (dest: AudioNode | AudioParam, ...rest: number[]) => AudioNode | void;
+    (node as unknown as { connect: typeof connect }).connect = (dest: AudioNode | AudioParam, ...rest: number[]) => {
+      if (dest instanceof AudioNode) { const d = dest as Swept; if (d.__note) d.__in = (d.__in ?? 0) + 1; n.__out!.push(dest); }
+      return connect(dest, ...rest);
+    };
+    // A source lets its chain go when it has played (an LFO feeding a parameter likewise, once stopped).
+    if (node instanceof AudioScheduledSourceNode) node.addEventListener('ended', () => release(n), { once: true });
+    return node;
+  };
+  const wrap = <K extends 'createOscillator' | 'createBufferSource' | 'createGain' | 'createBiquadFilter' | 'createStereoPanner' | 'createWaveShaper' | 'createDelay' | 'createConstantSource'>(name: K) => {
+    const make = (ctx[name] as (...a: unknown[]) => AudioNode).bind(ctx);
+    (ctx as unknown as Record<string, unknown>)[name] = (...args: unknown[]) => mark(make(...args));
+  };
+  (['createOscillator', 'createBufferSource', 'createGain', 'createBiquadFilter', 'createStereoPanner', 'createWaveShaper', 'createDelay', 'createConstantSource'] as const).forEach(wrap);
+}
+
 class Engine {
   ctx!: AudioContext;
   master!: GainNode;
@@ -488,8 +526,13 @@ class Engine {
     const data = this.noise.getChannelData(0);
     for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
     this.ready = true;
+    // From here on every node is a note's own (the buses above stay): each is let go once what feeds it has played.
+    sweepNotes(this.ctx);
     this.setVolumes(this.volumes.music, this.volumes.sfx);
   }
+
+  /** Notes' nodes in the graph now (it should stay about level however long the game is played). */
+  liveNotes() { return livingNotes; }
 
   /** Silence everything while an ad plays (`ads.ts`), and back. */
   duck(on: boolean) {
