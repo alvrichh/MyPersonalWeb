@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.18 - 2026-11-08
+
+- Siege Cartoon arrivals sit on the ground: the summoning circle, the enemy's red portal and the heavy troops' dust ring now circle the troop's feet (their picture's ground row goes on the ground line, measured on each sheet), instead of standing above them. Flyers' whirl of wind stays up where they fly.
+
 ## 1.16.17 - 2026-11-07
 
 - A mastery keeps your coins: worlds, items, the forge and the level still go back to 0, but what you had saved up stays (a reset from the profile still clears everything, as its text says).

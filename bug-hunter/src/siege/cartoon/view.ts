@@ -162,6 +162,9 @@ function topOf(image: HTMLImageElement) {
   return c;
 }
 /** The owner's drawn effects (`siege/fx/<name>-<frame>`) and how many frames each plays. */
+/** Effects drawn on the ground: the share of their height (from the top) where their ring or dust meets the ground,
+    measured on the sheets; that row is put on the ground line, so the ring circles the troop's feet. */
+const FX_GROUND: Record<string, number> = { 'arrive-land': 0.79, 'arrive-foe': 0.8, 'arrive-heavy': 0.71 };
 const FX_FRAMES: Record<string, number> = {
   'hit-bullet': 5, 'hit-thrown': 5, 'hit-energy': 5, 'hit-ice': 5, 'hit-magic': 5, 'hit-heavy': 5, stun: 4, shatter: 4, heal: 6, aura: 4,
   wreck: 7, soul: 6, crash: 6, loot: 6, trail: 6, smoke: 5, 'arrive-land': 6, 'arrive-air': 6, 'arrive-heavy': 6, 'arrive-foe': 6, 'rock-land': 5,
@@ -615,7 +618,9 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     if (p < 0) return true;
     const art = fxFrame(e.art, p); if (!ok(art)) return false;
     const w = e.size ?? 50, h = w * art.naturalHeight / art.naturalWidth;
-    const at = e.gun ? muzzle(e, y) : { x: e.x, y: ground - (e.up ?? 0) - (e.centre ? 0 : h / 2) + (e.floor ? 8 : 0) };
+    // An arrival's ring lies round the feet: the row of its picture that is the ground (`FX_GROUND`) goes on the ground line.
+    const base = FX_GROUND[e.art] !== undefined && !e.up ? h * (FX_GROUND[e.art] - 0.5) : e.centre ? 0 : h / 2;
+    const at = e.gun ? muzzle(e, y) : { x: e.x, y: ground - (e.up ?? 0) - base + (e.floor ? 8 : 0) };
     ctx.save(); ctx.globalAlpha = p > 0.8 ? (1 - p) / 0.2 : 1; ctx.translate(at.x, at.y); if (e.flip) ctx.scale(-1, 1);
     ctx.drawImage(art, -w / 2, -h / 2, w, h); ctx.restore(); return true;
   }
