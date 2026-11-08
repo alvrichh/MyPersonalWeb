@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.19 - 2026-11-08
+
+- Siege Cartoon arrivals are drawn behind the troop: the summoning circle's light, the enemy portal's smoke and eyes, the dust ring and the flyers' whirl no longer cover the troop stepping out of them.
+
 ## 1.16.18 - 2026-11-08
 
 - Siege Cartoon arrivals sit on the ground: the summoning circle, the enemy's red portal and the heavy troops' dust ring now circle the troop's feet (their picture's ground row goes on the ground line, measured on each sheet), instead of standing above them. Flyers' whirl of wind stays up where they fly.
