@@ -450,11 +450,13 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   // Beams (the ray gun's and the others') are drawn first, under the troops, so a shooter stands over its own ray.
   const beam = (e: Effect) => e.kind === 'shot' && isBeam(e.art);
   for (const e of s.effects) if (beam(e) && !(e.x < left - 500 && e.from < left - 500 || e.x > right + 500 && e.from > right + 500)) effect(ctx, e, 1 - e.life / e.max, ground - 26, ground);
-  // Marks and dust on the ground lie under the troops.
-  for (const e of s.effects) if (e.floor && seen(e.x)) effect(ctx, e, 1 - e.life / e.max, ground - 26, ground);
+  // Marks and dust on the ground lie under the troops, and so do the arrivals (the circle, the portal, the dust ring,
+  // the whirl): the troop steps out of them, drawn over.
+  const under = (e: Effect) => e.floor || (e.kind === 'anim' && !!e.art?.startsWith('arrive-'));
+  for (const e of s.effects) if (under(e) && seen(e.x)) effect(ctx, e, 1 - e.life / e.max, ground - 26, ground);
   for (const u of s.units.filter(u => seen(u.x)).sort((a, b) => a.lane - b.lane || a.x - b.x)) fighter(ctx, s, u, ground, reduced, color);
   for (const e of s.effects) {
-    if (e.floor || beam(e) || e.x < left - 500 && e.from < left - 500 || e.x > right + 500 && e.from > right + 500) continue;
+    if (under(e) || beam(e) || e.x < left - 500 && e.from < left - 500 || e.x > right + 500 && e.from > right + 500) continue;
     const p = 1 - e.life / e.max; const y = ground - 26;
     if (effect(ctx, e, p, y, ground)) continue;
     ctx.globalAlpha = e.life / e.max; ctx.strokeStyle = e.side ? '#ff98b0' : '#fff0ae'; ctx.lineWidth = 3;
