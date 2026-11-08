@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.20 - 2026-11-08
+
+- The sound gets a larger output buffer (the audio context's `latencyHint: 'balanced'`, instead of the default 'interactive'), so the music, made live note by note, keeps flowing when a phone slows down: warm after several minutes of a Siege battle, or in low-power mode, it ran out of time for it and the music came in jerks. Measured meanwhile, with the processor slowed to emulate a phone: nothing in the game grows over a long battle (troops, effects, memory) and the music's schedule never ran late.
+
 ## 1.16.19 - 2026-11-08
 
 - Siege Cartoon arrivals are drawn behind the troop: the summoning circle's light, the enemy portal's smoke and eyes, the dust ring and the flyers' whirl no longer cover the troop stepping out of them.

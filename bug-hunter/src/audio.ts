@@ -451,7 +451,10 @@ class Engine {
     }
     const Ctx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
     if (!Ctx) return;
-    this.ctx = new Ctx();
+    // A larger output buffer than the default ('interactive'): the music is made live, note by note, and a phone that
+    // slows down (warm after a few minutes of battle, or in low-power mode) ran out of time for it, the sound coming in
+    // jerks. 'balanced' rides those dips at the cost of a few milliseconds' delay on the effects.
+    try { this.ctx = new Ctx({ latencyHint: 'balanced' }); } catch { this.ctx = new Ctx(); }
     this.master = this.ctx.createGain();
     this.master.connect(this.ctx.destination);
     this.musicBus = this.ctx.createGain();
