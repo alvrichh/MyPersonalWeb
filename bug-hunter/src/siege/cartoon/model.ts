@@ -387,14 +387,17 @@ export const cardLevel = (c: number) => Math.floor(c / 100) + 1;
 const isAir = (c: number) => !!UNITS[cardId(c)]?.air;
 /** Ours: the units an army can hold. */
 /** A troop's group in the shop: the army (0), support (1), legendary (2). */
-export const groupOf = (u: Spec) => (u.legend ? 2 : u.support ? 1 : 0);
+/** A troop's group in the shop: the army (0), support (1), legendary (2); the Villain's rare champions (3) and its
+    guardians (4) come last. */
+export const groupOf = (u: Spec) => (u.legend ? 2 : u.support ? 1 : u.rare ? 3 : GUARDIAN.includes(u.id) ? 4 : 0);
 /** Our troops in the order they arrive, world by world (the flying mech, listed last in `UNITS`, comes before the angels). */
 export const ALLIES = UNITS.filter(u => !u.foe).sort((a, b) => groupOf(a) - groupOf(b) || a.unlock - b.unlock);
 /** How many levels a troop has (its forms and the first). */
 export const levelsOf = (id: number) => LINE_OF[id]?.length ?? 1 + (UNITS[id]?.forms?.length ?? 0);
 /** The Villain's troop lines: each enemy troop is a level of one (its card is the line's first troop at that level),
-    as our troops have forms; the guardians stand apart. */
-export const VILLAIN_LINES = [[15, 16, 19, 43], [47, 17, 25, 41], [18, 40, 42, 44], [20, 21, 32, 61], [22, 46, 45], [23, 24, 26], [28, 29, 48, 49], [30, 27, 50, 31], [62], [63]];
+    as our troops have forms. The guardians are one line too, a level per world (the first world's guardian at level 1,
+    the second's at 2, … the King of Darkness at 6), each opened by winning that world's last stage (`formOpen`). */
+export const VILLAIN_LINES = [[15, 16, 19, 43], [47, 17, 25, 41], [18, 40, 42, 44], [20, 21, 32, 61], [22, 46, 45], [23, 24, 26], [28, 29, 48, 49], [30, 27, 50, 31], [62], [63], [...GUARDIAN]];
 const LINE_OF: Record<number, number[]> = Object.fromEntries(VILLAIN_LINES.map(l => [l[0], l]));
 /** The enemy troop a Villain line sends at a level (any other troop is itself). */
 export const memberOf = (id: number, level = 1) => LINE_OF[id]?.[Math.max(1, Math.min(level, LINE_OF[id].length)) - 1] ?? id;
@@ -451,7 +454,9 @@ export const freshProgress = (): Progress => ({ version: 1, unlocked: 1, coins: 
 export const VILLAIN_START = 15;
 export const freshVillain = (): Progress => ({ ...freshProgress(), deck: [VILLAIN_START], owned: [VILLAIN_START], villain: true });
 /** The Villain's troops, in the order they join the enemy act by act (land, then air), then the six guardians as cards. */
-export const VILLAINS = [...VILLAIN_LINES.map(l => l[0]), ...GUARDIAN].map(id => UNITS[id]);
+/** The Villain's cards, in the shop's order: the troop lines by the act they open in and then by their energy, then
+    the champions, then the guardians' line. */
+export const VILLAINS = VILLAIN_LINES.map(l => UNITS[l[0]]).sort((a, b) => groupOf(a) - groupOf(b) || lineAct(a.id) - lineAct(b.id) || a.cost - b.cost);
 /** The act from which an enemy troop serves the Villain: the act it first comes in. */
 export function villainAct(id: number) { const k = [...FOE_LAND, ...FOE_AIR].findIndex((l, i) => l.includes(id) && i >= 0); return k < 0 ? 1 : (k % FOE_LAND.length) + 1; }
 /** The roster a save buys from: ours or (the Villain) the enemy's. */
@@ -513,7 +518,7 @@ export const upgradePrice = (level: number) => (testing.free ? 0 : UPGRADE_PRICE
 /** A troop's next form's gold price, or 0 at its last. */
 export const levelPrice = (p: Progress, id: number) => (LINE_OF[id] ? ((p.levels[id] ?? 1) < LINE_OF[id].length ? VILLAIN_PRICE(memberOf(id, (p.levels[id] ?? 1) + 1)) : 0) : UNITS[id]?.forms?.[(p.levels[id] ?? 1) - 1]?.price ?? 0);
 /** Can this level of a troop be bought yet (a Villain line's level waits for its act)? */
-export const formOpen = (p: Progress, id: number, level: number) => !LINE_OF[id] || testing.free || lineAct(id, level) <= actOf(p.unlocked);
+export const formOpen = (p: Progress, id: number, level: number) => !LINE_OF[id] || testing.free || (id === GUARDIAN[0] ? p.victories.includes(Math.min(level, ACTS) * STAGES) : lineAct(id, level) <= actOf(p.unlocked));
 /** Buys a troop's next form. */
 export function levelUp(p: Progress, id: number): boolean {
   const price = levelPrice(p, id);

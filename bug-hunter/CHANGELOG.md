@@ -4,6 +4,13 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.22 - 2026-11-08
+
+- The Villain's shop:
+  - In order: the troop lines by the world they open in and then by their energy (swordsman, turkey, gunner, bear, blaster, hammer on land; eagle, hypno bat in the air), then the Champions, then the Guardians, each group under its own title.
+  - The guardians are one card with a level per world: level 1 the first world's guardian, level 2 the second's, … level 6 the King of Darkness. Each level opens on winning that world's last stage and is bought one at a time, like the other lines.
+  - A save that had bought guardians one by one keeps the best of them as the card's level, in its army too.
+
 ## 1.16.21 - 2026-11-08
 
 - The Villain's cards are priced by their strength (life, damage, rate, reach and area against ours, the dearer a little more efficient, as in Cartoon Wars), with the shop's gold following the mana:
