@@ -4,6 +4,15 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.25 - 2026-11-08
+
+- The tiger fights differently:
+  - Its pounce is a long, low leap, nearly level (70 forward, 16 high, in 0.3 s, where it was a high 0.4 s arc of 45).
+  - It strikes its prey and the nearest foe beside it as it lands.
+  - It attacks about every 1.1 s (it was 1.8 s).
+  - It then hops a little way back still facing its foes, instead of bounding all the way back facing away and turning round, so it gains a little ground as it fights.
+  - As the Villain's card, it costs 110 energy (it was 80), its strength having about tripled.
+
 ## 1.16.24 - 2026-11-08
 
 - The Villain's guardians card said «Opens in world 1» at every level, though each level opens on winning its world. It now says «Opens when you win world N» (level 1 world 1, level 2 world 2, … level 6 world 6).

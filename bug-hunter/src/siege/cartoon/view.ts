@@ -1055,9 +1055,9 @@ function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: nu
       if (!spec.six || spec.tipOver) lean = -Math.min(1, gone * 6) * 1.45;
     } else if (reduced) { /* still */ }
     else if (u.leap || u.bound) {
-      // A pounce: up in an arc onto its prey, then the same arc back the other way (it turns, see below).
-      const p = 1 - (u.leap || u.bound || 0) / POUNCE.time;
-      lift = Math.sin(p * Math.PI) * POUNCE.height; lean = -0.35 * Math.cos(p * Math.PI);
+      // A pounce: a long low leap onto its prey, leaning into it, then a short low hop back, still facing its foes.
+      const p = u.leap ? 1 - u.leap / POUNCE.time : 1 - (u.bound ?? 0) / POUNCE.back;
+      lift = Math.sin(p * Math.PI) * (u.leap ? POUNCE.height : POUNCE.height * 0.5); lean = u.leap ? 0.18 * Math.sin(p * Math.PI) : -0.08 * Math.sin(p * Math.PI);
     } else if (u.knock) {
       // Flying back from a heavy blow: up in an arc, turned over backwards, down again (and the model gets it up).
       const p = 1 - u.knock / KNOCK.time;
@@ -1071,8 +1071,6 @@ function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: nu
       if (!spec.six) { sy = 1 - (1 - Math.abs(step)) * 0.05; sx = 1 + (1 - Math.abs(step)) * 0.03; lean = step * 0.05 + 0.04; }
     } else if (!spec.air) sy = 1 + Math.sin(t * 3) * 0.015;
     ctx.save(); ctx.translate(u.x + (u.side ? -push : push), y - lift); if (u.side) ctx.scale(-1, 1);
-    // Bounding back after a pounce it faces away, the way it goes.
-    if (u.bound) ctx.scale(-1, 1);
     if (gone !== undefined) ctx.globalAlpha = gone < 0.66 ? 1 : 1 - (gone - 0.66) / 0.34;
     // Unseen (the ninja): a little see-through, wrapped in drifting puffs of dark smoke, so it reads as stealth.
     else if (u.hidden) {

@@ -230,7 +230,7 @@ export const UNITS: readonly Spec[] = [
   { id: 22, cost: 50, hp: 100, damage: 30, speed: 30, range: 185, rate: 1.5, cooldown: 0, unlock: 1, foe: true, infantry: true, hitsAir: true, ...foe('foe-gunner-1', 134, 0.86) },
   { id: 23, cost: 85, hp: 300, damage: 38, speed: 28, range: 175, rate: 1.5, cooldown: 0, unlock: 1, foe: true, infantry: true, hitsAir: true, ...foe('foe-blaster-1', 125, 1.04) },
   { id: 24, cost: 65, hp: 150, damage: 42, speed: 26, range: 190, rate: 1.9, cooldown: 0, unlock: 1, foe: true, splash: 60, infantry: true, hitsAir: true, ...foe('foe-wizard-1', 165, 0.77) },
-  { id: 25, cost: 80, hp: 280, damage: 36, speed: 60, range: 40, rate: 1, cooldown: 0, unlock: 1, foe: true, pounce: true, ...foe('foe-tiger-1', 115, 1.2) },
+  { id: 25, cost: 110, hp: 280, damage: 36, speed: 60, range: 40, rate: 0.55, cooldown: 0, unlock: 1, foe: true, pounce: true, ...foe('foe-tiger-1', 115, 1.2) },
   { id: 26, cost: 150, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, ...foe('foe-dragon-1', 120, 1.38) },
   { id: 27, flyAt: 125, cost: 120, hp: 380, damage: 40, speed: 55, range: 45, rate: 0.9, cooldown: 0, unlock: 1, foe: true, air: true, ...foe('foe-death-angel-1', 156, 0.93) },
   { id: 28, flyAt: 70, cost: 20, hp: 70, damage: 12, speed: 70, range: 40, rate: 0.7, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-eagle-1', 171, 0.7) },
@@ -579,14 +579,16 @@ export interface Fighter { uid: number; id: number; side: 0 | 1; x: number; lane
 export const KNOCK = { share: 0.2, time: 0.55, back: 70, stun: 0.35 };
 /** A scooping blow (`ram`): the striker follows through this share of the throw, and stays low this long after. */
 export const RAM = { lunge: 0.6, low: 0.9 };
-/** A pounce: the leap (seconds, field units forward, how high); the bound back is the same leap the other way, so it
-    lands where it started and does not gain ground while it fights. */
+
 /** The enemy's pace: the shortest gap between waves, how much each world shortens it, how much tougher its troops grow
     world by world (`hard`), and two rules for a threat's waves: a troop's reach counts in its weight (`reach`: one more
     weight for every this many field units past melee, so a wave of shooters is not twice as many of them), and at most
     this many troops more than a plain wave (`extra`), so light troops never pile up into a wall. */
 export const FOE_PACE = { gap: 4.5, slope: 0.3, grow: 0.02, reach: 60, extra: 1 };
-export const POUNCE = { time: 0.4, forward: 45, height: 46 };
+/** A pounce: a long, low leap onto its prey (seconds, field units forward, how high), striking its prey and the next foe
+    beside it as it lands (`spread`: how far from the prey that one may be), then a short low hop back (`back` seconds,
+    `backward` units), facing its foes, so it gains a little ground as it fights. */
+export const POUNCE = { time: 0.3, forward: 70, height: 16, back: 0.25, backward: 55, spread: 50 };
 /** A charge: how far off it starts (beyond its reach), how many times its pace, how far it throws, how long it stands dazed. */
 /** How far a healer's mending reaches (field units either side). */
 export const HEAL_REACH = 140;
@@ -1392,14 +1394,19 @@ export function tick(s: Siege, dt: number) {
       u.x = Math.max(110, Math.min(FIELD - 110, u.x + dir * POUNCE.forward / POUNCE.time * step));
       if (u.leap <= 0) {
         u.leap = 0; const prey = alive.find(v => v.uid === u.prey);
-        if (prey && Math.abs(prey.x - u.x) <= a.range + bodyOf(prey) * 0.25 + 30) hits.push({ target: prey, damage: u.damage, boss: u.boss });
-        u.bound = POUNCE.time; hear(s, soundsOf(u)[0], u.x);
+        if (prey && Math.abs(prey.x - u.x) <= a.range + bodyOf(prey) * 0.25 + 30) {
+          hits.push({ target: prey, damage: u.damage, boss: u.boss });
+          // Its claws catch a second foe beside the first, the nearest one it can reach.
+          const next = alive.filter(v => v.side !== u.side && v.uid !== prey.uid && v.hp > 0 && reaches(u, v) && Math.abs(v.x - prey.x) <= POUNCE.spread).sort((x, y) => Math.abs(x.x - prey.x) - Math.abs(y.x - prey.x))[0];
+          if (next) hits.push({ target: next, damage: u.damage, boss: u.boss });
+        }
+        u.bound = POUNCE.back; hear(s, soundsOf(u)[0], u.x);
       }
       continue;
     }
     if (u.bound) {
       const dir = u.side ? -1 : 1, step = Math.min(u.bound, dt); u.bound -= step; u.moving = true;
-      u.x = Math.max(110, Math.min(FIELD - 110, u.x - dir * POUNCE.forward / POUNCE.time * step));
+      u.x = Math.max(110, Math.min(FIELD - 110, u.x - dir * POUNCE.backward / POUNCE.back * step));
       continue;
     }
     if (u.lunge) {
@@ -1435,7 +1442,7 @@ export function tick(s: Siege, dt: number) {
     }
     if (enemy && distance <= a.range + bodyOf(enemy) * 0.25) {
       // A scooping blow lands only once it has come down to its target.
-      if (u.attack <= 0 && a.pounce) { u.attack = a.rate + POUNCE.time * 2; u.leap = POUNCE.time; u.prey = enemy.uid; u.hit = POUNCE.time; }
+      if (u.attack <= 0 && a.pounce) { u.attack = a.rate + POUNCE.time + POUNCE.back; u.leap = POUNCE.time; u.prey = enemy.uid; u.hit = POUNCE.time; }
       else if (u.attack <= 0 && (!a.ram || (u.alt ?? highOf(u)) <= STRIKING)) {
         u.attack = a.rate; u.hit = 0.3;
         const area = u.boss ? Math.max(a.splash ?? 0, BOSS.area) : a.splash;
