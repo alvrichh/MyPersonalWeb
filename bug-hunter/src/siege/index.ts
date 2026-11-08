@@ -293,7 +293,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     }
     const owned = M.owns(progress, row), now = progress.levels[row] ?? 1, open = M.isOpen(progress, row);
     const formOk = mode !== 'cartoon' || cartoonModel.formOpen(progress, row, level), next = open && formOk && (owned ? level === now + 1 : level === 1);
-    return { have: owned && level <= now, next, price: level === 1 || (mode === 'cartoon' && cartoonModel.testing.free) ? M.troopPrice(row) : (mode === 'cartoon' && villain ? cartoonModel.troopPrice(cartoonModel.memberOf(row, level)) : M.UNITS[row].forms?.[level - 2]?.price ?? 0), why: !open || !formOk ? (M.UNITS[row].legend ? t('siegeOpensLegend') : t('siegeOpensAct', { n: villain ? cartoonModel.lineAct(row, level) : M.UNITS[row].unlock })) : t('siegeBuyFirst') };
+    return { have: owned && level <= now, next, price: level === 1 || (mode === 'cartoon' && cartoonModel.testing.free) ? M.troopPrice(row) : (mode === 'cartoon' && villain ? cartoonModel.troopPrice(cartoonModel.memberOf(row, level)) : M.UNITS[row].forms?.[level - 2]?.price ?? 0), why: !open || !formOk ? (M.UNITS[row].legend ? t('siegeOpensLegend') : (villain && row === cartoonModel.GUARDIAN[0] ? t('siegeOpensBoss', { n: level }) : t('siegeOpensAct', { n: villain ? cartoonModel.lineAct(row, level) : M.UNITS[row].unlock }))) : t('siegeBuyFirst') };
   };
   /** A special power's picture at a form (the shop's tiles and the battle bar's buttons), under /images/game/. */
   /** Each power form's icon: the owner's drawn badges (`siege/powers/power-<power>-<form>`), their rim richer per form. */
