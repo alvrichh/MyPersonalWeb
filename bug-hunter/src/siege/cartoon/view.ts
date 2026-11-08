@@ -45,7 +45,7 @@ export function preload(world: number, deck: number[], _levels: number[] = [], v
   const foes: number[] = villain ? [] : [...foesAt(FOE_LAND, world), ...foesAt(FOE_AIR, world), GUARDIAN[actOf(world) - 1]];
   // The Villain campaign's heroes, at the forms they come in.
   const heroes = villain ? [...foesAt(HERO_LAND, world), ...foesAt(HERO_AIR, world)].map(id => specAt(id, heroLevel(id, world))).concat(specAt(HERO_GUARDIAN[actOf(world) - 1], 99)) : [];
-  const specs = [...heroes, ...deck.map(c => specAt(c % 100, Math.floor(c / 100) + 1)), ...deck.filter(c => UNITS[c % 100]?.phase2 !== undefined).map(c => UNITS[UNITS[c % 100].phase2!]), ...foes.flatMap(id => (UNITS[id].phase2 !== undefined ? [UNITS[id], UNITS[UNITS[id].phase2!]] : [UNITS[id]]))];
+  const specs = [...heroes, ...deck.map(c => specAt(c % 100, Math.floor(c / 100) + 1)), ...deck.map(c => specAt(c % 100, Math.floor(c / 100) + 1)).filter(sp => sp.phase2 !== undefined).map(sp => UNITS[sp.phase2!]), ...foes.flatMap(id => (UNITS[id].phase2 !== undefined ? [UNITS[id], UNITS[UNITS[id].phase2!]] : [UNITS[id]]))];
   const keep = new Set<string>();
   specs.forEach(spec => { for (let f = 0; f < (spec.frames ?? (spec.six ? 6 : 3)); f++) { const path = `${spec.sprite}-${f}`; keep.add(path); picture(path); } });
   // The troops of other battles, and other worlds' battlefields, are let go: decoded pictures are what fills a phone's

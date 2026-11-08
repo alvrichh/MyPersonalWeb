@@ -747,3 +747,16 @@ test('rare champions come alone, now and then, never in the usual waves', () => 
   }
   assert.ok(champions >= 2 && champions <= 8 && champions / all < 0.08, `${champions} champions of ${all}`);
 });
+test("the Villain's guardians are one card, a level per world, opened one by one", () => {
+  const p = m.readProgress(JSON.stringify({ version: 1, unlocked: 30, victories: [5] }), true);
+  assert.equal(m.VILLAINS.filter(u => m.GUARDIAN.includes(u.id)).length, 1, 'one guardian card in the shop');
+  assert.equal(m.levelsOf(34), 6);
+  assert.equal(m.formOpen(p, 34, 1), true); assert.equal(m.formOpen(p, 34, 2), false, 'world 2 not won yet');
+  p.victories.push(10); assert.equal(m.formOpen(p, 34, 2), true); assert.equal(m.formOpen(p, 34, 3), false);
+  assert.equal(m.specAt(34, 6).id, 39, 'level 6 is the King of Darkness');
+  // An older save that bought guardians one by one: its best becomes the card's level, its army keeps it.
+  const old = m.readProgress(JSON.stringify({ version: 1, unlocked: 30, victories: [5, 10, 15], owned: [15, 34, 36], deck: [15, 36], cards: 1 }), true);
+  assert.equal(old.levels[34], 3); assert.ok(old.deck.includes(m.card(34, 3)));
+  // The shop's order: troops by act and energy, then the champions, then the guardians.
+  const g = m.VILLAINS.map(u => m.groupOf(u)); assert.deepEqual(g, [...g].sort((a, b) => a - b));
+});

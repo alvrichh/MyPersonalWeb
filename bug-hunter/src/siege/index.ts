@@ -314,7 +314,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     // A legendary troop stays a «?» (even its first form) until the game is won: hidden troops, for the hype.
     const secret = (row: number) => (shopTab === 'land' || shopTab === 'air') && !!M.UNITS[row]?.legend && !M.isOpen(progress, row);
     // Troops come in groups: the army, then support, then the legendary ones, each after its own heading.
-    const groupHead = (row: number, i: number) => { if (shopTab !== 'land' && shopTab !== 'air') return ''; const g = cartoonModel.groupOf(M.UNITS[row]); return g && (i === 0 || cartoonModel.groupOf(M.UNITS[rows[i - 1]]) !== g) ? `<h4 class="sg-st-group is-${g === 2 ? 'legend' : 'support'}">${t(g === 2 ? 'siegeGroupLegend' : 'siegeGroupSupport')}</h4>` : ''; };
+    const groupHead = (row: number, i: number) => { if (shopTab !== 'land' && shopTab !== 'air') return ''; const g = cartoonModel.groupOf(M.UNITS[row]); return g && (i === 0 || cartoonModel.groupOf(M.UNITS[rows[i - 1]]) !== g) ? `<h4 class="sg-st-group is-${g === 1 ? 'support' : 'legend'}">${t(g === 4 ? 'siegeGroupBosses' : g === 3 ? 'siegeGroupChampions' : g === 2 ? 'siegeGroupLegend' : 'siegeGroupSupport')}</h4>` : ''; };
     const grid = rows.map((row, i) => `${groupHead(row, i)}<div class="sg-st-row">${Array.from({ length: rowLevels(row) }, (_, k) => {
       const level = k + 1, x = tile(row, level), on = pick.row === row && pick.level === level;
       const pic = shopTab === 'special' ? powerPic(row, level) : shopTab === 'base' ? `/images/game/${upgradePic('cartoon', row, level)}.webp` : V.portrait(row, level);
