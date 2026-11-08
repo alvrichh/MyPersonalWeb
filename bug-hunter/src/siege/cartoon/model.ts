@@ -220,24 +220,24 @@ export const UNITS: readonly Spec[] = [
     { price: 4000, cost: 520, hp: 1850, damage: 203, speed: 55, range: 120, rate: 1.5, splash: 0, shot: 'crescent-gold', sweep: { reach: 230, back: 170 }, ...six('ally-angel-3', 298, 0.7718) },
   ] },
   // The enemy's.
-  { id: 15, cost: 30, hp: 115, damage: 16, speed: 43, range: 35, rate: 0.8, cooldown: 0, unlock: 1, foe: true, infantry: true, ...foe('foe-swordsman-1', 141, 0.82) },
-  { id: 16, cost: 40, hp: 150, damage: 20, speed: 40, range: 55, rate: 0.9, cooldown: 0, unlock: 1, foe: true, infantry: true, ...foe('foe-spearman-1', 132, 0.87) },
-  { id: 17, cost: 40, hp: 130, damage: 18, speed: 70, range: 35, rate: 0.7, cooldown: 0, unlock: 1, foe: true, ...foe('foe-dog-1', 102, 0.98) },
-  { id: 18, cost: 65, hp: 480, damage: 26, speed: 24, range: 42, rate: 1.5, cooldown: 0, unlock: 1, foe: true, ...foe('foe-bear-1', 141, 1.19) },
+  { id: 15, cost: 25, hp: 115, damage: 16, speed: 43, range: 35, rate: 0.8, cooldown: 0, unlock: 1, foe: true, infantry: true, ...foe('foe-swordsman-1', 141, 0.82) },
+  { id: 16, cost: 35, hp: 150, damage: 20, speed: 40, range: 55, rate: 0.9, cooldown: 0, unlock: 1, foe: true, infantry: true, ...foe('foe-spearman-1', 132, 0.87) },
+  { id: 17, cost: 35, hp: 130, damage: 18, speed: 70, range: 35, rate: 0.7, cooldown: 0, unlock: 1, foe: true, ...foe('foe-dog-1', 102, 0.98) },
+  { id: 18, cost: 70, hp: 480, damage: 26, speed: 24, range: 42, rate: 1.5, cooldown: 0, unlock: 1, foe: true, ...foe('foe-bear-1', 141, 1.19) },
   { id: 19, cost: 65, hp: 240, damage: 32, speed: 40, range: 60, rate: 1, cooldown: 0, unlock: 1, foe: true, infantry: true, ...foe('foe-reaper-1', 140, 0.93) },
-  { id: 20, cost: 95, hp: 560, damage: 30, speed: 22, range: 45, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 40, infantry: true, ...foe('foe-hammer-1', 133, 1.03) },
-  { id: 21, cost: 120, hp: 720, damage: 34, speed: 21, range: 48, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 40, infantry: true, ...foe('foe-axeman-1', 147, 1.07) },
+  { id: 20, cost: 110, hp: 560, damage: 30, speed: 22, range: 45, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 40, infantry: true, ...foe('foe-hammer-1', 133, 1.03) },
+  { id: 21, cost: 150, hp: 720, damage: 34, speed: 21, range: 48, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 40, infantry: true, ...foe('foe-axeman-1', 147, 1.07) },
   { id: 22, cost: 30, hp: 100, damage: 30, speed: 30, range: 185, rate: 1.5, cooldown: 0, unlock: 1, foe: true, infantry: true, hitsAir: true, ...foe('foe-gunner-1', 134, 0.86) },
-  { id: 23, cost: 70, hp: 300, damage: 38, speed: 28, range: 175, rate: 1.5, cooldown: 0, unlock: 1, foe: true, infantry: true, hitsAir: true, ...foe('foe-blaster-1', 125, 1.04) },
-  { id: 24, cost: 60, hp: 150, damage: 42, speed: 26, range: 190, rate: 1.9, cooldown: 0, unlock: 1, foe: true, splash: 60, infantry: true, hitsAir: true, ...foe('foe-wizard-1', 165, 0.77) },
-  { id: 25, cost: 75, hp: 280, damage: 36, speed: 60, range: 40, rate: 1, cooldown: 0, unlock: 1, foe: true, pounce: true, ...foe('foe-tiger-1', 115, 1.2) },
-  { id: 26, cost: 105, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, ...foe('foe-dragon-1', 120, 1.38) },
-  { id: 27, flyAt: 125, cost: 105, hp: 380, damage: 40, speed: 55, range: 45, rate: 0.9, cooldown: 0, unlock: 1, foe: true, air: true, ...foe('foe-death-angel-1', 156, 0.93) },
+  { id: 23, cost: 85, hp: 300, damage: 38, speed: 28, range: 175, rate: 1.5, cooldown: 0, unlock: 1, foe: true, infantry: true, hitsAir: true, ...foe('foe-blaster-1', 125, 1.04) },
+  { id: 24, cost: 65, hp: 150, damage: 42, speed: 26, range: 190, rate: 1.9, cooldown: 0, unlock: 1, foe: true, splash: 60, infantry: true, hitsAir: true, ...foe('foe-wizard-1', 165, 0.77) },
+  { id: 25, cost: 80, hp: 280, damage: 36, speed: 60, range: 40, rate: 1, cooldown: 0, unlock: 1, foe: true, pounce: true, ...foe('foe-tiger-1', 115, 1.2) },
+  { id: 26, cost: 150, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, ...foe('foe-dragon-1', 120, 1.38) },
+  { id: 27, flyAt: 125, cost: 120, hp: 380, damage: 40, speed: 55, range: 45, rate: 0.9, cooldown: 0, unlock: 1, foe: true, air: true, ...foe('foe-death-angel-1', 156, 0.93) },
   { id: 28, flyAt: 70, cost: 20, hp: 70, damage: 12, speed: 70, range: 40, rate: 0.7, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-eagle-1', 171, 0.7) },
-  { id: 29, flyAt: 70, cost: 35, hp: 110, damage: 18, speed: 60, range: 40, rate: 0.7, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-ninja-bat-1', 128, 0.7) },
-  { id: 30, flyAt: 70, cost: 40, hp: 130, damage: 24, speed: 45, range: 180, rate: 1.2, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-hypno-bat-1', 139, 0.83) },
-  { id: 31, flyAt: 70, cost: 205, hp: 900, damage: 55, speed: 40, range: 130, rate: 1.4, cooldown: 0, unlock: 1, foe: true, air: true, splash: 50, steady: true, ...foe('foe-red-dragon-rider-1', 179, 1.05) },
-  { id: 32, cost: 160, hp: 760, damage: 40, speed: 24, range: 180, rate: 1.4, cooldown: 0, unlock: 1, foe: true, steady: true, splits: 2, splash: 35, hitsAir: true, ...foe('foe-gatling-1', 123, 1.22) },
+  { id: 29, flyAt: 70, cost: 30, hp: 110, damage: 18, speed: 60, range: 40, rate: 0.7, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-ninja-bat-1', 128, 0.7) },
+  { id: 30, flyAt: 70, cost: 35, hp: 130, damage: 24, speed: 45, range: 180, rate: 1.2, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-hypno-bat-1', 139, 0.83) },
+  { id: 31, flyAt: 70, cost: 360, hp: 900, damage: 55, speed: 40, range: 130, rate: 1.4, cooldown: 0, unlock: 1, foe: true, air: true, splash: 50, steady: true, ...foe('foe-red-dragon-rider-1', 179, 1.05) },
+  { id: 32, cost: 250, hp: 760, damage: 40, speed: 24, range: 180, rate: 1.4, cooldown: 0, unlock: 1, foe: true, steady: true, splits: 2, splash: 35, hitsAir: true, ...foe('foe-gatling-1', 123, 1.22) },
   // Ours again, appended (ids are places in this list):
   // The flying mech, in six forms: a rocket fist, a laser, a plasma beam, an ice burst, a gatling,
   // and a giant golden fist.
@@ -261,17 +261,17 @@ export const UNITS: readonly Spec[] = [
     ...foe('boss-dark-king-air', 238, 1) },
   // The enemy's later arrivals (the owner's sheets of Cartoon Wars 2's roster, docs/siege-roster.md), appended: the
   // mountains' beasts, the Darkness's mammoth and alien shooter, a horned archer, an undead turkey, and three flyers.
-  { id: 40, cost: 100, hp: 520, damage: 34, speed: 38, range: 50, rate: 1.1, cooldown: 0, unlock: 1, foe: true, infantry: true, ...foe('foe-rex-head-1', 137, 1.168) },
-  { id: 41, cost: 75, hp: 260, damage: 30, speed: 72, range: 40, rate: 0.8, cooldown: 0, unlock: 1, foe: true, ...foe('foe-terror-bird-1', 141, 0.993) },
-  { id: 42, cost: 150, hp: 900, damage: 42, speed: 28, range: 45, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 30, charge: true, ...foe('foe-rhino-1', 104, 1.442) },
-  { id: 43, cost: 90, hp: 420, damage: 38, speed: 42, range: 70, rate: 1.2, cooldown: 0, unlock: 1, foe: true, ...foe('foe-spider-spearman-1', 121, 1.116) },
-  { id: 44, cost: 195, hp: 1600, damage: 60, speed: 18, range: 60, rate: 2, cooldown: 0, unlock: 1, foe: true, steady: true, sweep: { reach: 110, back: 210 }, ...foe('foe-mammoth-1', 149, 1.611) },
-  { id: 45, cost: 60, hp: 180, damage: 40, speed: 30, range: 190, rate: 1.3, cooldown: 0, unlock: 1, foe: true, infantry: true, hitsAir: true, shot: 'ray-red', ...foe('foe-shooter-1', 128, 0.977) },
+  { id: 40, cost: 115, hp: 520, damage: 34, speed: 38, range: 50, rate: 1.1, cooldown: 0, unlock: 1, foe: true, infantry: true, ...foe('foe-rex-head-1', 137, 1.168) },
+  { id: 41, cost: 80, hp: 260, damage: 30, speed: 72, range: 40, rate: 0.8, cooldown: 0, unlock: 1, foe: true, ...foe('foe-terror-bird-1', 141, 0.993) },
+  { id: 42, cost: 195, hp: 900, damage: 42, speed: 28, range: 45, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 30, charge: true, ...foe('foe-rhino-1', 104, 1.442) },
+  { id: 43, cost: 105, hp: 420, damage: 38, speed: 42, range: 70, rate: 1.2, cooldown: 0, unlock: 1, foe: true, ...foe('foe-spider-spearman-1', 121, 1.116) },
+  { id: 44, cost: 280, hp: 1600, damage: 60, speed: 18, range: 60, rate: 2, cooldown: 0, unlock: 1, foe: true, steady: true, sweep: { reach: 110, back: 210 }, ...foe('foe-mammoth-1', 149, 1.611) },
+  { id: 45, cost: 65, hp: 180, damage: 40, speed: 30, range: 190, rate: 1.3, cooldown: 0, unlock: 1, foe: true, infantry: true, hitsAir: true, shot: 'ray-red', ...foe('foe-shooter-1', 128, 0.977) },
   { id: 46, cost: 40, hp: 130, damage: 26, speed: 32, range: 190, rate: 1.2, cooldown: 0, unlock: 1, foe: true, infantry: true, hitsAir: true, shot: 'arrow-red', spin: false, ...foe('foe-archer-1', 132, 0.909) },
-  { id: 47, cost: 50, hp: 200, damage: 22, speed: 50, range: 35, rate: 0.9, cooldown: 0, unlock: 1, foe: true, ...foe('foe-turkey-1', 150, 0.8) },
-  { id: 48, flyAt: 98, cost: 85, hp: 360, damage: 34, speed: 55, range: 45, rate: 1, cooldown: 0, unlock: 1, foe: true, air: true, ...foe('foe-pterodactyl-1', 176, 0.966) },
-  { id: 49, flyAt: 70, cost: 75, hp: 240, damage: 30, speed: 65, range: 40, rate: 0.7, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-green-bat-1', 160, 0.6875) },
-  { id: 50, flyAt: 125, cost: 150, hp: 520, damage: 46, speed: 50, range: 60, rate: 1, cooldown: 0, unlock: 1, foe: true, air: true, splash: 30, ...foe('foe-devil-1', 159, 0.975) },
+  { id: 47, cost: 45, hp: 200, damage: 22, speed: 50, range: 35, rate: 0.9, cooldown: 0, unlock: 1, foe: true, ...foe('foe-turkey-1', 150, 0.8) },
+  { id: 48, flyAt: 98, cost: 95, hp: 360, damage: 34, speed: 55, range: 45, rate: 1, cooldown: 0, unlock: 1, foe: true, air: true, ...foe('foe-pterodactyl-1', 176, 0.966) },
+  { id: 49, flyAt: 70, cost: 80, hp: 240, damage: 30, speed: 65, range: 40, rate: 0.7, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-green-bat-1', 160, 0.6875) },
+  { id: 50, flyAt: 125, cost: 200, hp: 520, damage: 46, speed: 50, range: 60, rate: 1, cooldown: 0, unlock: 1, foe: true, air: true, splash: 30, ...foe('foe-devil-1', 159, 0.975) },
   // Ours again, the later recruits (the owner's sheets): the catapult, the bomber balloon, the medic, the shield
   // bearer, the ninja and the dragon rider, the dearest of all.
   { id: 51, cost: 80, hp: 300, damage: 40, speed: 18, range: 400, rate: 3, lob: 0.9, cooldown: 11, unlock: 4, support: true, splash: 60, siege: 2, shot: 'boulder', spin: true, ...six('ally-catapult-1', 112, 1.43), forms: [
@@ -297,13 +297,13 @@ export const UNITS: readonly Spec[] = [
     ...foe('boss-dark-king-ground', 250, 1) },
   // The King's Jailer (world 6): a hunched giant with no mouth and a cage of ribs on its back full of red souls. It throws
   // its chain from afar, hooks one of ours and drags it to its feet.
-  { id: 61, cost: 230, hp: 2800, damage: 75, speed: 20, range: 190, rate: 2.2, cooldown: 0, unlock: 1, foe: true, rare: true, steady: true, hook: 170, ...six('foe-jailer-1', 231, 1.8) },
+  { id: 61, cost: 650, hp: 2800, damage: 75, speed: 20, range: 190, rate: 2.2, cooldown: 0, unlock: 1, foe: true, rare: true, steady: true, hook: 170, ...six('foe-jailer-1', 231, 1.8) },
   // The Bell Ringer (world 4): a hunched skeleton with a huge black bell on its back; it strikes the bell with a bone and
   // the toll stuns our walkers in front of it.
-  { id: 62, cost: 190, hp: 2300, damage: 40, speed: 20, range: 160, rate: 2.0, cooldown: 0, unlock: 1, foe: true, rare: true, steady: true, wave: { reach: 180, stun: 1.3, art: 'wave-toll', mouth: [0.515, 0.508] }, ...foe('foe-bellringer-1', 258, 1.25) },
+  { id: 62, cost: 345, hp: 2300, damage: 40, speed: 20, range: 160, rate: 2.0, cooldown: 0, unlock: 1, foe: true, rare: true, steady: true, wave: { reach: 180, stun: 1.3, art: 'wave-toll', mouth: [0.515, 0.508] }, ...foe('foe-bellringer-1', 258, 1.25) },
   // The Crowned Wraith (world 5, air): a floating cloak with a crown and bone claws; its scream runs through everything
   // in front of it, walkers and flyers, and slows them.
-  { id: 63, flyAt: 72, cost: 170, hp: 950, damage: 45, speed: 36, range: 230, rate: 2.2, cooldown: 0, unlock: 1, foe: true, rare: true, air: true, hitsAir: true, wave: { reach: 260, slow: 3.5, art: 'wave-scream', mouth: [0.205, 0.653] }, ...foe('foe-wraith-1', 261, 1.2) },
+  { id: 63, flyAt: 72, cost: 195, hp: 950, damage: 45, speed: 36, range: 230, rate: 2.2, cooldown: 0, unlock: 1, foe: true, rare: true, air: true, hitsAir: true, wave: { reach: 260, slow: 3.5, art: 'wave-scream', mouth: [0.205, 0.653] }, ...foe('foe-wraith-1', 261, 1.2) },
 ];
 /** The enemy's land and air troops by act, each act adding to the last (docs/siege-roster.md): early waves draw
     from the first two of the land list. No flyers in the first world: they come from the second. */
