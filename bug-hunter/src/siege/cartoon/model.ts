@@ -1573,7 +1573,7 @@ export function tick(s: Siege, dt: number) {
 /** What winning a battle pays the first time (a guardian's half as much again), and again after (a third of it). */
 /** The first battle, to hook a new player: its enemy fortress this much weaker, so it is won in about a minute, and its
     first win paying enough (`gold`) to buy both the next two troops at once (the spearman and the archer). */
-export const FIRST = { fort: 0.65, gold: 200 };
+export const FIRST = { fort: 0.65, gold: 220 };
 export const prize = (stage: number, first: boolean) => { const full = Math.round((80 + stage * 10) * (guarded(stage) ? 1.5 : 1)); return first ? (stage === 1 ? FIRST.gold : full) : Math.round(full / 3); };
 /** Rewards settle once per battle; a reload cannot replay a settled result. The enemies' gold (`loot`) is kept win or
     lose; the return is the victory's prize alone. */

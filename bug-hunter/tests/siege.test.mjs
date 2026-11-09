@@ -88,7 +88,8 @@ test('Siege Cartoon: six acts of five stages, each with its foes and guardian, s
 });
 test('rewards are idempotent and unlock only the next world', () => {
   const p = m.freshProgress(), s = m.newSiege(p, 1); assert.equal(m.settle(p, s), 0);
-  s.phase = 'won'; assert.equal(m.settle(p, s), 90); assert.equal(m.settle(p, s), 0); assert.equal(p.coins, 90); assert.equal(p.unlocked, 2);
+  s.phase = 'won'; assert.equal(m.settle(p, s), m.FIRST.gold, 'the first battle pays for the next two troops'); assert.equal(m.settle(p, s), 0); assert.equal(p.coins, m.FIRST.gold); assert.equal(p.unlocked, 2);
+  assert.ok(m.FIRST.gold >= m.RECRUIT[1] + m.RECRUIT[2], 'enough for the spearman and the archer');
   const repeat = m.newSiege(p, 1); repeat.phase = 'won'; assert.equal(m.settle(p, repeat), 30);
   assert.equal(m.prize(5, true), 195, 'a guardian pays half as much again');
   const defeat = m.newSiege(p, 2); defeat.phase = 'lost'; assert.equal(m.settle(p, defeat), 0); assert.equal(p.unlocked, 2);
