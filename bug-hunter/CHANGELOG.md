@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.28 - 2026-11-09
+
+- The first battle's corrupt wind brings four weak troops at once (it was two), a moment of pressure in an easy battle, and then no wave for 25 s to answer it (`FIRST.horde`, `FIRST.calm`). Simulated with only the swordsman: every player but one who does nothing still wins, the slowest (a swordsman every 8 s) in about three minutes.
+
 ## 1.16.27 - 2026-11-09
 
 - The first battle hooks a new player (`FIRST` in the Siege Cartoon model):

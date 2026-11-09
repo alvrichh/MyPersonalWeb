@@ -676,7 +676,9 @@ export const GUST = { at: 0.5, back: 330, time: 0.7, weak: 3, strongEvery: 3 };
     smaller (none of its tough troops in the very first stage). From the fourth stage on, as before. Not in duels. */
 export const EASE: Record<number, number> = { 1: 2.2, 2: 1.6, 3: 1.25 };
 const easeOf = (s: Siege) => (s.duel ? 1 : EASE[s.world] ?? 1);
-export const hordeOf = (stage: number) => { const e = EASE[stage] ?? 1; return { weak: Math.round((GUST.weak + actOf(stage)) / e), strong: e >= 2 ? 0 : Math.ceil(actOf(stage) / GUST.strongEvery) }; };
+/** The corrupt wind's horde: weak troops and a few tough ones; in the first stage four weak ones at once (`FIRST.horde`),
+    a moment of pressure in an easy battle, and no tough one. */
+export const hordeOf = (stage: number) => { const e = EASE[stage] ?? 1; return { weak: stage === 1 ? FIRST.horde : Math.round((GUST.weak + actOf(stage)) / e), strong: e >= 2 ? 0 : Math.ceil(actOf(stage) / GUST.strongEvery) }; };
 /** How much bigger the enemy grows: 0 on the first battle, `GROW` at the last. */
 export const GROW = 0.3;
 const growAt = (stage: number) => 1 + GROW * (Math.min(LAST, Math.max(1, stage)) - 1) / (LAST - 1);
@@ -1345,6 +1347,8 @@ export function tick(s: Siege, dt: number) {
     hear(s, 'corrupt-wind', FIELD - 300);
     const land = plainFoesAt(s.villain ? HERO_LAND : FOE_LAND, s.world), tough = [...land].sort((a, b) => specAt(b, heroLevel(b, s.world)).hp - specAt(a, heroLevel(a, s.world)).hp);
     const horde = hordeOf(s.world);
+    // In the first battle the horde is the one big moment: no waves for a while after it (`FIRST.calm`), to answer it.
+    if (s.world === 1 && !s.duel) s.nextWave = Math.max(s.nextWave, FIRST.calm);
     for (let i = 0; i < horde.weak; i++) { foeOut(s, land[i % Math.min(2, land.length)]); const u = s.units[s.units.length - 1]; if (u?.side) u.x -= i * 18; }
     for (let i = 0; i < horde.strong; i++) foeOut(s, tough[i % tough.length]);
   }
@@ -1573,7 +1577,7 @@ export function tick(s: Siege, dt: number) {
 /** What winning a battle pays the first time (a guardian's half as much again), and again after (a third of it). */
 /** The first battle, to hook a new player: its enemy fortress this much weaker, so it is won in about a minute, and its
     first win paying enough (`gold`) to buy both the next two troops at once (the spearman and the archer). */
-export const FIRST = { fort: 0.65, gold: 220 };
+export const FIRST = { fort: 0.65, gold: 220, horde: 4, calm: 25 };
 export const prize = (stage: number, first: boolean) => { const full = Math.round((80 + stage * 10) * (guarded(stage) ? 1.5 : 1)); return first ? (stage === 1 ? FIRST.gold : full) : Math.round(full / 3); };
 /** Rewards settle once per battle; a reload cannot replay a settled result. The enemies' gold (`loot`) is kept win or
     lose; the return is the victory's prize alone. */
