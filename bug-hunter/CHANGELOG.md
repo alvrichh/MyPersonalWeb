@@ -4,6 +4,14 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.27 - 2026-11-09
+
+- The first battle hooks a new player (`FIRST` in the Siege Cartoon model):
+  - Its first win pays 200 gold (it was 90); with the enemies' loot about 220, enough to buy both the spearman and the archer at once.
+  - Its enemy fortress is 35% weaker, so it falls a little sooner.
+  - It stays a battle: doing nothing still loses it (at about 1:45).
+  - Simulated with only the swordsman: a slow player wins in 1:49, a usual one in 1:17, both with their fortress whole.
+
 ## 1.16.26 - 2026-11-09
 
 - The first stages are gentler, a new player starting with no gold and only the swordsman (`EASE` in the Siege Cartoon model; the hero's and the Villain's campaigns, not duels):
