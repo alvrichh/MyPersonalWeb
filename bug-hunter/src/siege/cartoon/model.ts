@@ -671,7 +671,12 @@ export const manaOf = (u: Fighter) => (u.boss ? 80 : Math.max(2, Math.round(UNIT
     (`back` field units a second for `time` seconds) and the enemy pours out a horde that grows world by world: `weak` of
     its first troops plus one a world, and one of its toughest every `strongEvery` worlds. */
 export const GUST = { at: 0.5, back: 330, time: 0.7, weak: 3, strongEvery: 3 };
-export const hordeOf = (stage: number) => ({ weak: GUST.weak + actOf(stage), strong: Math.ceil(actOf(stage) / GUST.strongEvery) });
+/** The first stages are gentler: a new player starts with no gold and only the swordsman. The waves come this many times
+    further apart (the first one later too), grow into groups this much later, and the corrupt wind's horde is this much
+    smaller (none of its tough troops in the very first stage). From the fourth stage on, as before. Not in duels. */
+export const EASE: Record<number, number> = { 1: 2.2, 2: 1.6, 3: 1.25 };
+const easeOf = (s: Siege) => (s.duel ? 1 : EASE[s.world] ?? 1);
+export const hordeOf = (stage: number) => { const e = EASE[stage] ?? 1; return { weak: Math.round((GUST.weak + actOf(stage)) / e), strong: e >= 2 ? 0 : Math.ceil(actOf(stage) / GUST.strongEvery) }; };
 /** How much bigger the enemy grows: 0 on the first battle, `GROW` at the last. */
 export const GROW = 0.3;
 const growAt = (stage: number) => 1 + GROW * (Math.min(LAST, Math.max(1, stage)) - 1) / (LAST - 1);
@@ -729,7 +734,7 @@ export function mirrorDuel(s: Siege): Siege {
 export function newSiege(p: Progress, world: number): Siege {
   world = integer(world, 1, Math.min(LAST, p.unlocked), 1);
   const maxHp: [number, number] = [1700 + p.upgrades[1] * 200, 1700 + hard(world) * 150];
-  return { villain: p.villain, world, phase: 'fight', time: 0, energy: 80, generator: 0, pool: p.upgrades[6], cooldowns: {}, hp: [...maxHp], maxHp, units: [], effects: [], nextId: 1, nextWave: 7, waves: 0, kills: 0, spell: 0, rocket: 0, aim: 700, bossSpawned: false, paid: false, power: 1 + p.upgrades[0] * 0.08, economy: p.upgrades[2] * 0.6, deck: [...p.deck], bow: { quiver: BOW.max + p.upgrades[5] * BOW.storeStep, drawing: false, held: 0, next: 0, level: p.upgrades[3], speed: p.upgrades[4], store: p.upgrades[5] }, fort: p.upgrades[1], levels: [...(p.levels ?? [])], kit: p.kit.filter(c => hasPower(p, c)).map(c => ({ id: c % 100, level: Math.floor(c / 100) + 1, card: c })), kitCd: {}, hitq: [], view: { x: 0, width: 650 }, casts: 0 };
+  return { villain: p.villain, world, phase: 'fight', time: 0, energy: 80, generator: 0, pool: p.upgrades[6], cooldowns: {}, hp: [...maxHp], maxHp, units: [], effects: [], nextId: 1, nextWave: 7 * (EASE[world] ?? 1), waves: 0, kills: 0, spell: 0, rocket: 0, aim: 700, bossSpawned: false, paid: false, power: 1 + p.upgrades[0] * 0.08, economy: p.upgrades[2] * 0.6, deck: [...p.deck], bow: { quiver: BOW.max + p.upgrades[5] * BOW.storeStep, drawing: false, held: 0, next: 0, level: p.upgrades[3], speed: p.upgrades[4], store: p.upgrades[5] }, fort: p.upgrades[1], levels: [...(p.levels ?? [])], kit: p.kit.filter(c => hasPower(p, c)).map(c => ({ id: c % 100, level: Math.floor(c / 100) + 1, card: c })), kitCd: {}, hitq: [], view: { x: 0, width: 650 }, casts: 0 };
 }
 /** The guardian, Cartoon Wars 2-style: it only comes out once the enemy fortress falls, far tougher than a troop, and
     the battle is won when it falls too. */
@@ -1306,8 +1311,9 @@ export function tick(s: Siege, dt: number) {
   s.nextWave -= dt;
   if (s.nextWave <= 0 && !s.duel) {
     s.waves++;
-    s.nextWave = Math.max(FOE_PACE.gap, 9 - hard(s.world) * FOE_PACE.slope - s.time / 90);
-    const count = Math.min(3, 1 + Math.floor(s.time / 70));
+    const ease = easeOf(s);
+    s.nextWave = Math.max(FOE_PACE.gap, 9 - hard(s.world) * FOE_PACE.slope - s.time / 90) * ease;
+    const count = Math.min(3, 1 + Math.floor(s.time / (70 * ease)));
     const land = plainFoesAt(s.villain ? HERO_LAND : FOE_LAND, s.world), flyers = plainFoesAt(s.villain ? HERO_AIR : FOE_AIR, s.world);
     // A rare champion now and then, alone (`RARE`): never in the villain's battles, where the heroes come.
     const rares = s.villain ? [] : [...foesAt(FOE_LAND, s.world), ...foesAt(FOE_AIR, s.world)].filter(id => UNITS[id].rare);
