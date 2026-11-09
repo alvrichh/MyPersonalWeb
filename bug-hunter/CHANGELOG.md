@@ -4,6 +4,13 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.26 - 2026-11-09
+
+- The first stages are gentler, a new player starting with no gold and only the swordsman (`EASE` in the Siege Cartoon model; the hero's and the Villain's campaigns, not duels):
+  - Stage 1: the first wave at 15 s (it was 7), then one about every 19 s (8.5), groups of two or three from 2:34 (1:10), and the corrupt wind's horde two weak troops and no tough one (four and one).
+  - Stage 2 and 3 a little less so (first wave at 11 s and 9 s, waves about 13 s and 10 s apart); from stage 4 on, as before.
+  - Simulated: a slow beginner sending a swordsman only every 8 s wins stage 1 without losing any of the fortress.
+
 ## 1.16.25 - 2026-11-08
 
 - The tiger fights differently:
