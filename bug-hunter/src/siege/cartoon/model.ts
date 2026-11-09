@@ -733,7 +733,8 @@ export function mirrorDuel(s: Siege): Siege {
 }
 export function newSiege(p: Progress, world: number): Siege {
   world = integer(world, 1, Math.min(LAST, p.unlocked), 1);
-  const maxHp: [number, number] = [1700 + p.upgrades[1] * 200, 1700 + hard(world) * 150];
+  // The very first battle is short, so it is won quickly (`FIRST`); the enemy fortress is that much weaker there.
+  const maxHp: [number, number] = [1700 + p.upgrades[1] * 200, Math.round((1700 + hard(world) * 150) * (world === 1 && !p.villain ? FIRST.fort : 1))];
   return { villain: p.villain, world, phase: 'fight', time: 0, energy: 80, generator: 0, pool: p.upgrades[6], cooldowns: {}, hp: [...maxHp], maxHp, units: [], effects: [], nextId: 1, nextWave: 7 * (EASE[world] ?? 1), waves: 0, kills: 0, spell: 0, rocket: 0, aim: 700, bossSpawned: false, paid: false, power: 1 + p.upgrades[0] * 0.08, economy: p.upgrades[2] * 0.6, deck: [...p.deck], bow: { quiver: BOW.max + p.upgrades[5] * BOW.storeStep, drawing: false, held: 0, next: 0, level: p.upgrades[3], speed: p.upgrades[4], store: p.upgrades[5] }, fort: p.upgrades[1], levels: [...(p.levels ?? [])], kit: p.kit.filter(c => hasPower(p, c)).map(c => ({ id: c % 100, level: Math.floor(c / 100) + 1, card: c })), kitCd: {}, hitq: [], view: { x: 0, width: 650 }, casts: 0 };
 }
 /** The guardian, Cartoon Wars 2-style: it only comes out once the enemy fortress falls, far tougher than a troop, and
@@ -1570,7 +1571,10 @@ export function tick(s: Siege, dt: number) {
 }
 /** Rewards settle once per battle; a reload cannot replay a settled result. */
 /** What winning a battle pays the first time (a guardian's half as much again), and again after (a third of it). */
-export const prize = (stage: number, first: boolean) => { const full = Math.round((80 + stage * 10) * (guarded(stage) ? 1.5 : 1)); return first ? full : Math.round(full / 3); };
+/** The first battle, to hook a new player: its enemy fortress this much weaker, so it is won in about a minute, and its
+    first win paying enough (`gold`) to buy both the next two troops at once (the spearman and the archer). */
+export const FIRST = { fort: 0.65, gold: 200 };
+export const prize = (stage: number, first: boolean) => { const full = Math.round((80 + stage * 10) * (guarded(stage) ? 1.5 : 1)); return first ? (stage === 1 ? FIRST.gold : full) : Math.round(full / 3); };
 /** Rewards settle once per battle; a reload cannot replay a settled result. The enemies' gold (`loot`) is kept win or
     lose; the return is the victory's prize alone. */
 export function settle(p: Progress, s: Siege): number {
