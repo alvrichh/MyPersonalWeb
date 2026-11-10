@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T14:43:04.796Z",
+  "generatedAt": "2026-11-10T16:01:23.300Z",
   "candidates": [
     {
       "label": "Claude research and documentation flow",
@@ -10,19 +10,19 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-11-08"
+          "date": "2026-11-10"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-11-08"
+          "date": "2026-11-10"
         },
         {
-          "title": "Extend Claude Code to remote sessions on Amazon Bedrock AgentCore with security controls",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/extend-claude-code-to-remote-sessions-on-amazon-bedrock-agentcore-with-security-controls/",
-          "date": "2026-11-06"
+          "title": "Introducing Our Smallest, Most Efficient Model: Muse Ember",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Nov/10/muse-ember/",
+          "date": "2026-11-10"
         }
       ]
     },
@@ -35,18 +35,137 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
-          "date": "2026-11-08"
+          "date": "2026-11-10"
         },
         {
-          "title": "Taxonomy of agentic primitives in Amazon Quick",
+          "title": "How skills and agents work in AWS Quick",
           "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/taxonomy-of-agentic-primitives-in-amazon-quick/",
+          "link": "https://aws.amazon.com/blogs/machine-learning/how-skills-and-agents-work-in-aws-quick/",
+          "date": "2026-11-10"
+        },
+        {
+          "title": "Introducing AlphaProof Code: a breakthrough in verifying complex software at depth",
+          "source": "Google DeepMind",
+          "link": "https://deepmind.google/blog/introducing-alphaproof-code/",
+          "date": "2026-11-10"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "DeepMind reveals Gemini Robotics 2.5 and open safety benchmark \"ASIMOV-jailbreak\"",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/google/2026/11/deepmind-reveals-gemini-robotics-2-5-and-open-safety-benchmark-asimov-jailbreak/",
+          "date": "2026-11-10"
+        },
+        {
+          "title": "We’re bringing Adobe’s creative and productivity tools closer to your everyday Google apps.",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/company-news/inside-google/company-announcements/adobe-google-partnership-integration/",
+          "date": "2026-11-10"
+        },
+        {
+          "title": "Google Cloud launches Gemini for healthcare.",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/infrastructure-and-cloud/google-cloud/gemini-for-healthcare/",
+          "date": "2026-11-10"
+        }
+      ]
+    },
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Running AV Reasoning Models Within Onboard Compute and Latency Limits",
+          "source": "NVIDIA Developer",
+          "link": "https://developer.nvidia.com/blog/running-av-reasoning-models-within-onboard-compute-and-latency-limits/",
+          "date": "2026-11-10"
+        },
+        {
+          "title": "Could potential AI clones of GTA VI force a quicker official port?",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/gaming/2026/11/could-potential-ai-clones-of-gta-vi-force-a-quicker-official-port/",
           "date": "2026-11-06"
         },
         {
-          "title": "Serverless MCP server for AI agent data lake access on Amazon ECS Fargate",
+          "title": "Building the next generation of multimodal AI experiences with fal in Microsoft Foundry",
+          "source": "Azure Blog",
+          "link": "https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/building-the-next-generation-of-multimodal-ai-experiences-with-fal-in-microsoft-/4570032",
+          "date": "2026-11-06"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Helping caregivers use AI in everyday life",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/helping-caregivers-use-ai-in-everyday-life",
+          "date": "2026-11-10"
+        },
+        {
+          "title": "ChatGPT Enterprise now available in AWS Marketplace",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/chatgpt-enterprise-aws-marketplace",
+          "date": "2026-11-09"
+        },
+        {
+          "title": "Australian universities are creating AI-native graduates",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/australian-universities-ai-native-graduates",
+          "date": "2026-11-05"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Introducing Our Smallest, Most Efficient Model: Muse Ember",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Nov/10/muse-ember/",
+          "date": "2026-11-10"
+        },
+        {
+          "title": "Quoting Prompting Claude Fable 5.2",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Nov/10/prompting-claude-fable-52/",
+          "date": "2026-11-10"
+        },
+        {
+          "title": "Claude Fable 5.2 in GitHub Copilot",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-09-claude-fable-5-2-in-github-copilot",
+          "date": "2026-11-09"
+        }
+      ]
+    },
+    {
+      "label": "Multimodal AI product workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "NVIDIA Nemotron 3.5 Super VL is now available in Amazon SageMaker JumpStart",
           "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/serverless-mcp-server-for-ai-agent-data-lake-access-on-amazon-ecs-fargate/",
+          "link": "https://aws.amazon.com/blogs/machine-learning/nvidia-nemotron-3-5-super-vl-is-now-available-in-amazon-sagemaker-jumpstart/",
+          "date": "2026-11-09"
+        },
+        {
+          "title": "Building the next generation of multimodal AI experiences with fal in Microsoft Foundry",
+          "source": "Azure Blog",
+          "link": "https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/building-the-next-generation-of-multimodal-ai-experiences-with-fal-in-microsoft-/4570032",
           "date": "2026-11-06"
         }
       ]
@@ -56,6 +175,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Claude Fable 5.2 in GitHub Copilot",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-09-claude-fable-5-2-in-github-copilot",
+          "date": "2026-11-09"
+        },
         {
           "title": "Copilot code review: API management and review overview updates",
           "source": "GitHub Changelog",
@@ -67,131 +192,6 @@
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/beyond-code-generation-a-developers-guide-to-agentic-engineering/",
           "date": "2026-11-06"
-        },
-        {
-          "title": "Copilot impact dashboard adds chat and VS Code agent usage",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-06-copilot-impact-dashboard-adds-chat-and-vs-code-agent-usage",
-          "date": "2026-11-06"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Could potential AI clones of GTA VI force a quicker official port?",
-          "source": "Ars Technica AI",
-          "link": "https://arstechnica.com/gaming/2026/11/could-potential-ai-clones-of-gta-vi-force-a-quicker-official-port/",
-          "date": "2026-11-06"
-        },
-        {
-          "title": "Beyond code generation: A developer’s guide to agentic engineering",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/beyond-code-generation-a-developers-guide-to-agentic-engineering/",
-          "date": "2026-11-06"
-        },
-        {
-          "title": "Speed Up Image Generation with FLUX 3 Image Klein on NVIDIA Blackwell GPUs",
-          "source": "NVIDIA Developer",
-          "link": "https://developer.nvidia.com/blog/speed-up-image-generation-with-flux-3-image-klein-on-nvidia-blackwell-gpus/",
-          "date": "2026-11-06"
-        }
-      ]
-    },
-    {
-      "label": "MCP / tool-connected assistants",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Serverless MCP server for AI agent data lake access on Amazon ECS Fargate",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/serverless-mcp-server-for-ai-agent-data-lake-access-on-amazon-ecs-fargate/",
-          "date": "2026-11-06"
-        },
-        {
-          "title": "Serverless MCP server for AI agent data lake access on Amazon ECS Fargate",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/serverless-mcp-server-for-ai-agent-data-lake-access-on-amazon-ecs-fargate/",
-          "date": "2026-11-06"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Extend Claude Code to remote sessions on Amazon Bedrock AgentCore with security controls",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/extend-claude-code-to-remote-sessions-on-amazon-bedrock-agentcore-with-security-controls/",
-          "date": "2026-11-06"
-        },
-        {
-          "title": "GitHub Copilot weekly releases — November 2",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-06-github-copilot-weekly-releases-november-2",
-          "date": "2026-11-06"
-        },
-        {
-          "title": "GitHub Copilot is now available in Xcode’s coding assistant",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-04-github-copilot-is-now-available-in-xcodes-coding-assistant",
-          "date": "2026-11-04"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Google: Schools can keep search while skipping Gemini, but AI search is non-negotiable",
-          "source": "Ars Technica AI",
-          "link": "https://arstechnica.com/ai/2026/11/google-schools-can-keep-search-while-skipping-gemini-but-ai-search-is-non-negotiable/",
-          "date": "2026-11-05"
-        },
-        {
-          "title": "Gemini Omni 1.2 Flash: Fast and cost-effective with longer clips",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/introducing-gemini-omni-1-2-flash/",
-          "date": "2026-11-05"
-        },
-        {
-          "title": "Gemini Omni 1.2 Flash: Fast and cost-effective with longer clips",
-          "source": "Google DeepMind",
-          "link": "https://deepmind.google/blog/gemini-omni-12-flash-fast-and-cost-effective-with-longer-clips/",
-          "date": "2026-11-05"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Australian universities are creating AI-native graduates",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/australian-universities-ai-native-graduates",
-          "date": "2026-11-05"
-        },
-        {
-          "title": "Merge builds product and business tools with OpenAI technology",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/merge-builds-with-openai",
-          "date": "2026-11-05"
-        },
-        {
-          "title": "Flipsnack grows product signups with conversion optimization",
-          "source": "OpenAI News",
-          "link": "https://openai.com/ads/customers/flipsnack",
-          "date": "2026-11-05"
         }
       ]
     }
