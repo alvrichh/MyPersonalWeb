@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-10T16:01:23.300Z",
-  "date": "2026-11-10",
+  "generatedAt": "2026-11-11T15:47:46.746Z",
+  "date": "2026-11-11",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
@@ -9,7 +9,7 @@
     {
       "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
       "source": "Anthropic News",
-      "date": "2026-11-10",
+      "date": "2026-11-11",
       "url": "https://www.anthropic.com/news/expanding-partnership-gsa",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -20,7 +20,7 @@
     {
       "title": "Donating Agent Skills to the Agentic AI Foundation",
       "source": "Anthropic News",
-      "date": "2026-11-10",
+      "date": "2026-11-11",
       "url": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -32,7 +32,7 @@
     {
       "title": "Introducing the Anthropic Cyber Mission",
       "source": "Anthropic News",
-      "date": "2026-11-10",
+      "date": "2026-11-11",
       "url": "https://www.anthropic.com/news/anthropic-cyber-mission",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -43,13 +43,117 @@
     {
       "title": "Security",
       "source": "Anthropic News",
-      "date": "2026-11-10",
+      "date": "2026-11-11",
       "url": "https://www.anthropic.com/news/security",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
         "Claude"
       ],
       "image": "https://www-cdn.anthropic.com/images/4zrzovbb/website/6d4a0d28992ade92d6fa63646fd9c9d318245c6c-2400x1260.jpg"
+    },
+    {
+      "title": "Introducing usage-based pricing for Amazon SageMaker AI bidirectional streaming",
+      "source": "AWS Machine Learning",
+      "date": "2026-11-11",
+      "url": "https://aws.amazon.com/blogs/machine-learning/introducing-usage-based-pricing-for-amazon-sagemaker-ai-bidirectional-streaming/",
+      "summary": "AWS Marketplace now supports usage-based metering for Amazon SageMaker bidirectional streaming inference, so model providers can charge for what customers actually consume during a live stream. Deepgram is the launch par...",
+      "tags": [
+        "Models"
+      ],
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/07/16/ML-21067-6.png"
+    },
+    {
+      "title": "Introducing Kimi K3.1 Pro on Amazon Bedrock",
+      "source": "AWS Machine Learning",
+      "date": "2026-11-11",
+      "url": "https://aws.amazon.com/blogs/machine-learning/introducing-kimi-k3-1-pro-on-amazon-bedrock/",
+      "summary": "Kimi K3.1 Pro from Moonshot AI is now available on Amazon Bedrock. Learn how to get started through the OpenAI-compatible Chat Completions, Responses, and Converse APIs, optimize inference with explicit prompt caching, a...",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Dev Tools",
+        "Models"
+      ],
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/11/ml-22229-opencode-connect-dialog.png"
+    },
+    {
+      "title": "GitHub App support for Enterprise Copilot seat management",
+      "source": "GitHub Changelog",
+      "date": "2026-11-11",
+      "url": "https://github.blog/changelog/2026-11-10-github-app-support-for-enterprise-copilot-seat-management",
+      "summary": "Enterprise GitHub Apps can now call the enterprise-level Copilot seat management APIs to control which users and enterprise teams are assigned Copilot seats. The Copilot seat management APIs are accessible… The post GitH...",
+      "tags": [
+        "Copilot"
+      ],
+      "image": "https://github.blog/wp-content/themes/github-2021-child/dist/img/social-v3-improvements.jpg"
+    },
+    {
+      "title": "BotPsy: On-Device Personal Assistant with a Sub-Billion-Parameter Agentic Language Model",
+      "source": "Hugging Face",
+      "date": "2026-11-11",
+      "url": "https://huggingface.co/blog/qvac/botpsy",
+      "summary": "AI update detected from an official or high-signal source.",
+      "tags": [
+        "Agents",
+        "Models"
+      ],
+      "image": "https://cdn-uploads.huggingface.co/production/uploads/6468b319b2321e47d3267049/Emr86qw6NAueYLdIEiTTD.png"
+    },
+    {
+      "title": "Token Pooling-Aware Training for Multi-Vector Embedding Models",
+      "source": "Hugging Face",
+      "date": "2026-11-11",
+      "url": "https://huggingface.co/blog/token-pooling",
+      "summary": "AI update detected from an official or high-signal source.",
+      "tags": [
+        "Models"
+      ],
+      "image": "https://huggingface.co/blog/assets/train-sentence-transformers/st-hf-thumbnail.png"
+    },
+    {
+      "title": "ChatGPT Plus for veterans and servicemembers",
+      "source": "OpenAI News",
+      "date": "2026-11-11",
+      "url": "https://openai.com/index/chatgpt-plus-for-veterans",
+      "summary": "More than 20,000 veterans and transitioning service members have claimed a free year of ChatGPT Plus. See how they use it to prepare for civilian careers.",
+      "tags": [
+        "ChatGPT"
+      ],
+      "image": ""
+    },
+    {
+      "title": "Google’s AlphaGenome 2 zooms in on the cellular roots of disease",
+      "source": "The Verge AI",
+      "date": "2026-11-11",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1031524/google-deepmind-alphagenome-2-genetic-ai-model",
+      "summary": "Researchers at Google DeepMind have unveiled a new AI model designed to unravel how changes in our DNA affect different cells, giving scientists a more detailed view of a notoriously difficult problem that could hold imp...",
+      "tags": [
+        "Models"
+      ],
+      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/09/alphagenome-atlas-cover__background.jpg?quality=90&strip=all&crop=0,0,100,100"
+    },
+    {
+      "title": "Ring cameras go mobile as Amazon debuts AI-powered security drone and robot",
+      "source": "Ars Technica AI",
+      "date": "2026-11-10",
+      "url": "https://arstechnica.com/ai/2026/11/ring-cameras-go-mobile-as-amazon-debuts-ai-powered-security-drone-and-robot/",
+      "summary": "Amazon's roaming Ring Robotics devices will debut in late 2026 and early 2027.",
+      "tags": [
+        "AI"
+      ],
+      "image": "https://cdn.arstechnica.net/wp-content/uploads/2026/11/Ring-Drone-1152x648.jpeg"
+    },
+    {
+      "title": "Grok Build coding agent leaks oodles of confidential info, some belonging to SpaceXSI",
+      "source": "Ars Technica AI",
+      "date": "2026-11-10",
+      "url": "https://arstechnica.com/security/2026/11/grok-build-coding-agent-leaks-oodles-of-confidential-info-some-belonging-to-spacexsi/",
+      "summary": "Researcher finds 35,000 Grok Build apps wide open to anyone who looked for them.",
+      "tags": [
+        "Agents",
+        "Dev Tools"
+      ],
+      "image": "https://cdn.arstechnica.net/wp-content/uploads/2026/11/grok-plugin-marketplace-1152x648.webp"
     },
     {
       "title": "DeepMind reveals Gemini Robotics 2.5 and open safety benchmark \"ASIMOV-jailbreak\"",
@@ -64,16 +168,64 @@
       "image": "https://cdn.arstechnica.net/wp-content/uploads/2026/11/Credit_-Apptronik_-Mercedes-Benz-Apollo-2-using-Gemini-Robotics-2.5-to-autonomously-perform-automotive-kitting-at-a-Mercedes-Benz-factory-1152x648.jpg"
     },
     {
-      "title": "How skills and agents work in AWS Quick",
+      "title": "Build a daily dependency watcher with LangGraph and Amazon Bedrock AgentCore web search",
       "source": "AWS Machine Learning",
       "date": "2026-11-10",
-      "url": "https://aws.amazon.com/blogs/machine-learning/how-skills-and-agents-work-in-aws-quick/",
-      "summary": "Repeatable tasks like status updates, release notes, and ticket creation can be encoded in AWS Quick through agents and skills. This post covers how agents, skills, and your data fit together in AWS Quick, how to build a...",
+      "url": "https://aws.amazon.com/blogs/machine-learning/build-a-daily-dependency-watcher-with-langgraph-and-amazon-bedrock-agentcore-web-search/",
+      "summary": "The Web Search API in Amazon Bedrock AgentCore gives agents current, cited web results signed with the AWS credentials they already use. In this post, build a daily dependency watcher as a LangGraph graph that researches...",
       "tags": [
         "Agents",
         "Dev Tools"
       ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/04/ML-22266-1.png"
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/06/ML-22037-1.png"
+    },
+    {
+      "title": "The agent evaluation playbook: Built-in, DeepEval, and AutoEval on Amazon Bedrock AgentCore Evaluations",
+      "source": "AWS Machine Learning",
+      "date": "2026-11-10",
+      "url": "https://aws.amazon.com/blogs/machine-learning/the-agent-evaluation-playbook-built-in-deepeval-and-autoeval-on-agentcore/",
+      "summary": "When you deploy an agent, whether it is working is really several questions: did it finish the task, stay on topic, leak data, or skip steps? This post shows how to evaluate agents on Amazon Bedrock AgentCore with built-...",
+      "tags": [
+        "Agents"
+      ],
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/10/ML-21893-1.png"
+    },
+    {
+      "title": "Gemini 4 Carbon in GitHub Copilot",
+      "source": "GitHub Changelog",
+      "date": "2026-11-10",
+      "url": "https://github.blog/changelog/2026-11-10-gemini-4-carbon-in-github-copilot",
+      "summary": "Gemini 4 Carbon, Google’s latest model, is now generally available in GitHub Copilot. It is designed for complex coding, agentic, and reasoning tasks, with a focus on secure code generation… The post Gemini 4 Carbon in G...",
+      "tags": [
+        "Agents",
+        "Copilot",
+        "Gemini",
+        "Dev Tools"
+      ],
+      "image": "https://github.blog/wp-content/uploads/2026/11/700374691-69ca0c74-ac8e-4638-82f6-46417790e655.png"
+    },
+    {
+      "title": "C++ language server now auto-configures MSBuild builds",
+      "source": "GitHub Changelog",
+      "date": "2026-11-10",
+      "url": "https://github.blog/changelog/2026-11-10-c-language-server-now-auto-configures-msbuild-builds",
+      "summary": "The Microsoft C++ Language Server for GitHub Copilot CLI now bundles its MSBuild compile commands extractor and invokes it automatically. An agent no longer needs to discover and run a… The post C++ language server now a...",
+      "tags": [
+        "Agents",
+        "Copilot"
+      ],
+      "image": "https://github.com/user-attachments/assets/56256011-8c02-4ef1-b572-b0af1007191b"
+    },
+    {
+      "title": "Gemini Intelligence: New features, on more devices",
+      "source": "Google AI Blog",
+      "date": "2026-11-10",
+      "url": "https://blog.google/products-and-platforms/platforms/android/gemini-intelligence-november-features-devices/",
+      "summary": "Gemini Intelligence is rolling out to more devices. See how expanded capabilities across these devices help you do more.",
+      "tags": [
+        "Gemini"
+      ],
+      "image": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Gemini_Intelligence_Signature27.max-600x600.format-webp.webp"
     },
     {
       "title": "We’re bringing Adobe’s creative and productivity tools closer to your everyday Google apps.",
@@ -86,164 +238,6 @@
         "Gemini"
       ],
       "image": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Adobe_snippet_hero.max-600x600.format-webp.webp"
-    },
-    {
-      "title": "Google Cloud launches Gemini for healthcare.",
-      "source": "Google AI Blog",
-      "date": "2026-11-10",
-      "url": "https://blog.google/innovation-and-ai/infrastructure-and-cloud/google-cloud/gemini-for-healthcare/",
-      "summary": "Google Cloud launches Gemini for healthcare to unify clinical data and automate workflows. Reduce administrative burnout. See how it works.",
-      "tags": [
-        "Gemini",
-        "Automation"
-      ],
-      "image": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/social_share_NWQpgus.max-600x600.format-webp.webp"
-    },
-    {
-      "title": "Introducing AlphaProof Code: a breakthrough in verifying complex software at depth",
-      "source": "Google DeepMind",
-      "date": "2026-11-10",
-      "url": "https://deepmind.google/blog/introducing-alphaproof-code/",
-      "summary": "AlphaProof Code agents wrote three million lines of proofs in Lean to verify Signal’s core encryption.",
-      "tags": [
-        "Agents",
-        "Dev Tools"
-      ],
-      "image": "https://lh3.googleusercontent.com/hn6AiI6lYFo6chi1mL6uJ9nOW9UXfsAKnSyOApiie2urHNU2tmSPUmGn0hNfWyYLRcsWCGjCIrBZSCt1ihZmvW-LDJPfyolsr5w-yvzlknZVzmaH=w528-h297-n-nu-rw-lo"
-    },
-    {
-      "title": "Decision Models in Hugging Face",
-      "source": "Hugging Face",
-      "date": "2026-11-10",
-      "url": "https://huggingface.co/blog/decision",
-      "summary": "AI update detected from an official or high-signal source.",
-      "tags": [
-        "Models"
-      ],
-      "image": "https://huggingface.co/blog/assets/decision/thumbnail.png"
-    },
-    {
-      "title": "Running AV Reasoning Models Within Onboard Compute and Latency Limits",
-      "source": "NVIDIA Developer",
-      "date": "2026-11-10",
-      "url": "https://developer.nvidia.com/blog/running-av-reasoning-models-within-onboard-compute-and-latency-limits/",
-      "summary": "Autonomous vehicle (AV) developers need reasoning models that can operate within the compute and latency constraints of an onboard system. Larger models provide...",
-      "tags": [
-        "Dev Tools",
-        "Models"
-      ],
-      "image": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/11/auto-alpamayo-2-edge-tech-blog-promo-600x338_r2-1.gif"
-    },
-    {
-      "title": "Agent Substrate: Advancing Kubernetes for Agents at Scale",
-      "source": "NVIDIA Developer",
-      "date": "2026-11-10",
-      "url": "https://developer.nvidia.com/blog/agent-substrate-advancing-kubernetes-for-agents-at-scale/",
-      "summary": "AI agents spend most of their time idle, waiting on a human prompt, a tool result or a model response. Kubernetes wasn’t built for that. Running one Pod per...",
-      "tags": [
-        "Agents",
-        "Dev Tools",
-        "Models"
-      ],
-      "image": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/11/image2-5-768x432.jpg"
-    },
-    {
-      "title": "Start and Restore GPU Workloads in Seconds with NVIDIA Snapshot",
-      "source": "NVIDIA Developer",
-      "date": "2026-11-10",
-      "url": "https://developer.nvidia.com/blog/start-and-restore-gpu-workloads-in-seconds-with-nvidia-snapshot/",
-      "summary": "NVIDIA Snapshot, a new open-source component of the NVIDIA DSX AI Factory Platform, makes initialized GPU workloads reusable across inference...",
-      "tags": [
-        "Dev Tools"
-      ],
-      "image": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/11/nvidia-snapshot-gpu-checkpoint-restore-768x432.jpg"
-    },
-    {
-      "title": "Helping caregivers use AI in everyday life",
-      "source": "OpenAI News",
-      "date": "2026-11-10",
-      "url": "https://openai.com/index/helping-caregivers-use-ai-in-everyday-life",
-      "summary": "OpenAI Academy is bringing free, hands-on ChatGPT workshops to caregivers in five U.S. cities, helping them build practical AI skills for everyday life.",
-      "tags": [
-        "ChatGPT"
-      ],
-      "image": ""
-    },
-    {
-      "title": "Introducing Our Smallest, Most Efficient Model: Muse Ember",
-      "source": "Simon Willison",
-      "date": "2026-11-10",
-      "url": "https://simonwillison.net/2026/Nov/10/muse-ember/",
-      "summary": "Introducing Our Smallest, Most Efficient Model: Muse Ember Meta AI just launched their entry in the Claude Haiku/GPT Luna category: Muse Ember, which they describe as: [...] our smallest and most efficient model designed...",
-      "tags": [
-        "Agents",
-        "ChatGPT",
-        "Claude",
-        "Dev Tools"
-      ],
-      "image": "https://static.simonwillison.net/static/2026/artificial-analysis-haiku-class.webp"
-    },
-    {
-      "title": "Quoting Prompting Claude Fable 5.2",
-      "source": "Simon Willison",
-      "date": "2026-11-10",
-      "url": "https://simonwillison.net/2026/Nov/10/prompting-claude-fable-52/",
-      "summary": "Claude Fable 5.2 responds closely to what the prompt says about who owns the code it works on. In Anthropic’s testing on small coding tasks, when a prompt said nothing about ownership or presented the code base as someon...",
-      "tags": [
-        "Claude",
-        "Dev Tools",
-        "Models"
-      ],
-      "image": "https://simonwillison.net/2026/Nov/10/prompting-claude-fable-52/"
-    },
-    {
-      "title": "Yonkers Rises",
-      "source": "Simon Willison",
-      "date": "2026-11-10",
-      "url": "https://simonwillison.net/2026/Nov/10/yonkers-rises/",
-      "summary": "Tool: Yonkers Rises I realized I didn't know where Yonkers was, so I looked it up on Google Maps and then, to help embed its location and shape in my head (and to try out Claude Fable 5.2's 3D modeling and animation skil...",
-      "tags": [
-        "Claude",
-        "Models"
-      ],
-      "image": "https://static.simonwillison.net/static/2026/yonkers.webp"
-    },
-    {
-      "title": "Google releases Gemini 4 Carbon with agent ‘swarm’ feature",
-      "source": "The Verge AI",
-      "date": "2026-11-10",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1030787/google-gemini-4-carbon-public-rollout",
-      "summary": "Google is rolling out its latest AI model, Gemini 4 Carbon, to the general public after releasing it to a select group of \"cybersecurity defenders\" two weeks ago. Google claims Carbon is its \"strongest model\" yet, and ca...",
-      "tags": [
-        "Agents",
-        "ChatGPT",
-        "Claude",
-        "Gemini"
-      ],
-      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/11/Gemini-4-Carbon-Key-Art.jpg?quality=90&strip=all&crop=0,0,100,100"
-    },
-    {
-      "title": "Adobe is going all in on agentic AI",
-      "source": "The Verge AI",
-      "date": "2026-11-10",
-      "url": "https://www.theverge.com/tech/1030593/adobe-max-ai-agents-mcp-firefly-assistant-updates",
-      "summary": "Adobe is committing itself to the notion that chatbots and AI agents could be your next design assistant, or even automate creative workflows and repetitive tasks on your behalf. Some of the tools and features announced ...",
-      "tags": [
-        "Agents",
-        "Automation"
-      ],
-      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/11/FF-AIA-No-Logo-4.jpg?quality=90&strip=all&crop=0,0,100,100"
-    },
-    {
-      "title": "Photoshop, Lightroom, and Premiere are making it easier to remove things",
-      "source": "The Verge AI",
-      "date": "2026-11-10",
-      "url": "https://www.theverge.com/tech/1030653/adobe-max-2026-photoshop-premiere-removal-updates",
-      "summary": "Adobe is expanding its Creative Cloud apps and Firefly AI platform with new capabilities that aim to make design and editing projects faster and less complicated. Some of the announcements from Adobe's Max event today in...",
-      "tags": [
-        "AI"
-      ],
-      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/11/PS-Remove-No-Logo-2.jpg?quality=90&strip=all&crop=0,0,100,100"
     }
   ],
   "candidates": [
@@ -256,18 +250,18 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-11-10"
+          "date": "2026-11-11"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-11-10"
+          "date": "2026-11-11"
         },
         {
-          "title": "Introducing Our Smallest, Most Efficient Model: Muse Ember",
+          "title": "llm-gemini 0.36",
           "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/10/muse-ember/",
+          "link": "https://simonwillison.net/2026/Nov/10/llm-gemini/",
           "date": "2026-11-10"
         }
       ]
@@ -281,18 +275,93 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
-          "date": "2026-11-10"
+          "date": "2026-11-11"
         },
         {
-          "title": "How skills and agents work in AWS Quick",
+          "title": "BotPsy: On-Device Personal Assistant with a Sub-Billion-Parameter Agentic Language Model",
+          "source": "Hugging Face",
+          "link": "https://huggingface.co/blog/qvac/botpsy",
+          "date": "2026-11-11"
+        },
+        {
+          "title": "Grok Build coding agent leaks oodles of confidential info, some belonging to SpaceXSI",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/security/2026/11/grok-build-coding-agent-leaks-oodles-of-confidential-info-some-belonging-to-spacexsi/",
+          "date": "2026-11-10"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Introducing Kimi K3.1 Pro on Amazon Bedrock",
           "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/how-skills-and-agents-work-in-aws-quick/",
+          "link": "https://aws.amazon.com/blogs/machine-learning/introducing-kimi-k3-1-pro-on-amazon-bedrock/",
+          "date": "2026-11-11"
+        },
+        {
+          "title": "Grok Build coding agent leaks oodles of confidential info, some belonging to SpaceXSI",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/security/2026/11/grok-build-coding-agent-leaks-oodles-of-confidential-info-some-belonging-to-spacexsi/",
           "date": "2026-11-10"
         },
         {
-          "title": "Introducing AlphaProof Code: a breakthrough in verifying complex software at depth",
-          "source": "Google DeepMind",
-          "link": "https://deepmind.google/blog/introducing-alphaproof-code/",
+          "title": "Gemini 4 Carbon in GitHub Copilot",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-10-gemini-4-carbon-in-github-copilot",
+          "date": "2026-11-10"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "GitHub App support for Enterprise Copilot seat management",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-10-github-app-support-for-enterprise-copilot-seat-management",
+          "date": "2026-11-11"
+        },
+        {
+          "title": "Gemini 4 Carbon in GitHub Copilot",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-10-gemini-4-carbon-in-github-copilot",
+          "date": "2026-11-10"
+        },
+        {
+          "title": "C++ language server now auto-configures MSBuild builds",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-10-c-language-server-now-auto-configures-msbuild-builds",
+          "date": "2026-11-10"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "ChatGPT Plus for veterans and servicemembers",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/chatgpt-plus-for-veterans",
+          "date": "2026-11-11"
+        },
+        {
+          "title": "Helping caregivers use AI in everyday life",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/helping-caregivers-use-ai-in-everyday-life",
+          "date": "2026-11-10"
+        },
+        {
+          "title": "Introducing Businesses in ChatGPT",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/introducing-businesses-chatgpt",
           "date": "2026-11-10"
         }
       ]
@@ -309,15 +378,15 @@
           "date": "2026-11-10"
         },
         {
-          "title": "We’re bringing Adobe’s creative and productivity tools closer to your everyday Google apps.",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/company-news/inside-google/company-announcements/adobe-google-partnership-integration/",
+          "title": "Gemini 4 Carbon in GitHub Copilot",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-10-gemini-4-carbon-in-github-copilot",
           "date": "2026-11-10"
         },
         {
-          "title": "Google Cloud launches Gemini for healthcare.",
+          "title": "Gemini Intelligence: New features, on more devices",
           "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/infrastructure-and-cloud/google-cloud/gemini-for-healthcare/",
+          "link": "https://blog.google/products-and-platforms/platforms/android/gemini-intelligence-november-features-devices/",
           "date": "2026-11-10"
         }
       ]
@@ -348,95 +417,14 @@
       ]
     },
     {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Helping caregivers use AI in everyday life",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/helping-caregivers-use-ai-in-everyday-life",
-          "date": "2026-11-10"
-        },
-        {
-          "title": "ChatGPT Enterprise now available in AWS Marketplace",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/chatgpt-enterprise-aws-marketplace",
-          "date": "2026-11-09"
-        },
-        {
-          "title": "Australian universities are creating AI-native graduates",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/australian-universities-ai-native-graduates",
-          "date": "2026-11-05"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Introducing Our Smallest, Most Efficient Model: Muse Ember",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/10/muse-ember/",
-          "date": "2026-11-10"
-        },
-        {
-          "title": "Quoting Prompting Claude Fable 5.2",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/10/prompting-claude-fable-52/",
-          "date": "2026-11-10"
-        },
-        {
-          "title": "Claude Fable 5.2 in GitHub Copilot",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-09-claude-fable-5-2-in-github-copilot",
-          "date": "2026-11-09"
-        }
-      ]
-    },
-    {
       "label": "Multimodal AI product workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "NVIDIA Nemotron 3.5 Super VL is now available in Amazon SageMaker JumpStart",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/nvidia-nemotron-3-5-super-vl-is-now-available-in-amazon-sagemaker-jumpstart/",
-          "date": "2026-11-09"
-        },
-        {
           "title": "Building the next generation of multimodal AI experiences with fal in Microsoft Foundry",
           "source": "Azure Blog",
           "link": "https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/building-the-next-generation-of-multimodal-ai-experiences-with-fal-in-microsoft-/4570032",
-          "date": "2026-11-06"
-        }
-      ]
-    },
-    {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Claude Fable 5.2 in GitHub Copilot",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-09-claude-fable-5-2-in-github-copilot",
-          "date": "2026-11-09"
-        },
-        {
-          "title": "Copilot code review: API management and review overview updates",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-06-copilot-code-review-api-management-and-review-overview-updates",
-          "date": "2026-11-07"
-        },
-        {
-          "title": "Beyond code generation: A developer’s guide to agentic engineering",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/beyond-code-generation-a-developers-guide-to-agentic-engineering/",
           "date": "2026-11-06"
         }
       ]

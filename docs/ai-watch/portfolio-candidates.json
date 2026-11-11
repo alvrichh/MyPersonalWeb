@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-10T16:01:23.300Z",
+  "generatedAt": "2026-11-11T15:47:46.746Z",
   "candidates": [
     {
       "label": "Claude research and documentation flow",
@@ -10,18 +10,18 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-11-10"
+          "date": "2026-11-11"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-11-10"
+          "date": "2026-11-11"
         },
         {
-          "title": "Introducing Our Smallest, Most Efficient Model: Muse Ember",
+          "title": "llm-gemini 0.36",
           "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/10/muse-ember/",
+          "link": "https://simonwillison.net/2026/Nov/10/llm-gemini/",
           "date": "2026-11-10"
         }
       ]
@@ -35,18 +35,93 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
-          "date": "2026-11-10"
+          "date": "2026-11-11"
         },
         {
-          "title": "How skills and agents work in AWS Quick",
+          "title": "BotPsy: On-Device Personal Assistant with a Sub-Billion-Parameter Agentic Language Model",
+          "source": "Hugging Face",
+          "link": "https://huggingface.co/blog/qvac/botpsy",
+          "date": "2026-11-11"
+        },
+        {
+          "title": "Grok Build coding agent leaks oodles of confidential info, some belonging to SpaceXSI",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/security/2026/11/grok-build-coding-agent-leaks-oodles-of-confidential-info-some-belonging-to-spacexsi/",
+          "date": "2026-11-10"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Introducing Kimi K3.1 Pro on Amazon Bedrock",
           "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/how-skills-and-agents-work-in-aws-quick/",
+          "link": "https://aws.amazon.com/blogs/machine-learning/introducing-kimi-k3-1-pro-on-amazon-bedrock/",
+          "date": "2026-11-11"
+        },
+        {
+          "title": "Grok Build coding agent leaks oodles of confidential info, some belonging to SpaceXSI",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/security/2026/11/grok-build-coding-agent-leaks-oodles-of-confidential-info-some-belonging-to-spacexsi/",
           "date": "2026-11-10"
         },
         {
-          "title": "Introducing AlphaProof Code: a breakthrough in verifying complex software at depth",
-          "source": "Google DeepMind",
-          "link": "https://deepmind.google/blog/introducing-alphaproof-code/",
+          "title": "Gemini 4 Carbon in GitHub Copilot",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-10-gemini-4-carbon-in-github-copilot",
+          "date": "2026-11-10"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "GitHub App support for Enterprise Copilot seat management",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-10-github-app-support-for-enterprise-copilot-seat-management",
+          "date": "2026-11-11"
+        },
+        {
+          "title": "Gemini 4 Carbon in GitHub Copilot",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-10-gemini-4-carbon-in-github-copilot",
+          "date": "2026-11-10"
+        },
+        {
+          "title": "C++ language server now auto-configures MSBuild builds",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-10-c-language-server-now-auto-configures-msbuild-builds",
+          "date": "2026-11-10"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "ChatGPT Plus for veterans and servicemembers",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/chatgpt-plus-for-veterans",
+          "date": "2026-11-11"
+        },
+        {
+          "title": "Helping caregivers use AI in everyday life",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/helping-caregivers-use-ai-in-everyday-life",
+          "date": "2026-11-10"
+        },
+        {
+          "title": "Introducing Businesses in ChatGPT",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/introducing-businesses-chatgpt",
           "date": "2026-11-10"
         }
       ]
@@ -63,15 +138,15 @@
           "date": "2026-11-10"
         },
         {
-          "title": "We’re bringing Adobe’s creative and productivity tools closer to your everyday Google apps.",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/company-news/inside-google/company-announcements/adobe-google-partnership-integration/",
+          "title": "Gemini 4 Carbon in GitHub Copilot",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-10-gemini-4-carbon-in-github-copilot",
           "date": "2026-11-10"
         },
         {
-          "title": "Google Cloud launches Gemini for healthcare.",
+          "title": "Gemini Intelligence: New features, on more devices",
           "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/infrastructure-and-cloud/google-cloud/gemini-for-healthcare/",
+          "link": "https://blog.google/products-and-platforms/platforms/android/gemini-intelligence-november-features-devices/",
           "date": "2026-11-10"
         }
       ]
@@ -102,95 +177,14 @@
       ]
     },
     {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Helping caregivers use AI in everyday life",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/helping-caregivers-use-ai-in-everyday-life",
-          "date": "2026-11-10"
-        },
-        {
-          "title": "ChatGPT Enterprise now available in AWS Marketplace",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/chatgpt-enterprise-aws-marketplace",
-          "date": "2026-11-09"
-        },
-        {
-          "title": "Australian universities are creating AI-native graduates",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/australian-universities-ai-native-graduates",
-          "date": "2026-11-05"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Introducing Our Smallest, Most Efficient Model: Muse Ember",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/10/muse-ember/",
-          "date": "2026-11-10"
-        },
-        {
-          "title": "Quoting Prompting Claude Fable 5.2",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/10/prompting-claude-fable-52/",
-          "date": "2026-11-10"
-        },
-        {
-          "title": "Claude Fable 5.2 in GitHub Copilot",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-09-claude-fable-5-2-in-github-copilot",
-          "date": "2026-11-09"
-        }
-      ]
-    },
-    {
       "label": "Multimodal AI product workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "NVIDIA Nemotron 3.5 Super VL is now available in Amazon SageMaker JumpStart",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/nvidia-nemotron-3-5-super-vl-is-now-available-in-amazon-sagemaker-jumpstart/",
-          "date": "2026-11-09"
-        },
-        {
           "title": "Building the next generation of multimodal AI experiences with fal in Microsoft Foundry",
           "source": "Azure Blog",
           "link": "https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/building-the-next-generation-of-multimodal-ai-experiences-with-fal-in-microsoft-/4570032",
-          "date": "2026-11-06"
-        }
-      ]
-    },
-    {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Claude Fable 5.2 in GitHub Copilot",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-09-claude-fable-5-2-in-github-copilot",
-          "date": "2026-11-09"
-        },
-        {
-          "title": "Copilot code review: API management and review overview updates",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-06-copilot-code-review-api-management-and-review-overview-updates",
-          "date": "2026-11-07"
-        },
-        {
-          "title": "Beyond code generation: A developer’s guide to agentic engineering",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/beyond-code-generation-a-developers-guide-to-agentic-engineering/",
           "date": "2026-11-06"
         }
       ]
