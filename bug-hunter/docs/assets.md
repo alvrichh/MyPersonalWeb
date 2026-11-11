@@ -4,6 +4,16 @@
 
 This is the canonical guide for locating and editing BUG HUNTER art. The asset files live under [`bug-hunter/assets/`](../assets/); there is intentionally **no README inside the asset folder** so the game's main README remains visible at `bug-hunter/README.md`.
 
+## Asset rights
+
+Original artwork, characters, sprites, animations, maps, music, sound effects
+and other original resources owned by Álvaro Rodríguez Molina are
+**proprietary — All Rights Reserved**, including their published copies.
+See the repository's [rights notice](../../LICENSE) for the full scope and
+exceptions. This guide grants no permission to copy, redistribute, modify or
+reuse assets. Third-party resources retain their own licenses; valid prior
+grants and applicable law and GitHub platform permissions are preserved.
+
 ## Asset tree
 
 ```text
