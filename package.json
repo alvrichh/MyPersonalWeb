@@ -22,7 +22,8 @@
   },
   "keywords": [],
   "author": "Alvaro Rodriguez Molina",
-  "license": "ISC",
+  "license": "UNLICENSED",
+  "private": true,
   "devDependencies": {
     "@types/node": "^20.17.57",
     "@types/react": "^19.1.6",

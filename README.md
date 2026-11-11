@@ -6,6 +6,20 @@ React 19, TypeScript and SCSS, built with Vite. The pages are prerendered at
 build time, so they read fine without JavaScript, and React takes over in the
 browser. Eleven languages, light and dark themes and eight accent colours.
 
+## Rights and licensing
+
+**Proprietary — All Rights Reserved.** The original code and content owned by
+Álvaro Rodríguez Molina, including BUG HUNTER's original art, characters,
+sprites, animations, maps, music and other original assets, are covered by
+[the rights notice](./LICENSE). No permission to copy, redistribute, modify
+or reuse that material is granted without prior written permission, subject
+to the exceptions stated there.
+
+Third-party dependencies and resources retain their own licenses and notices.
+Earlier package metadata declared ISC; the rights notice preserves any valid
+prior grants. GitHub's applicable platform permissions also remain in effect.
+The development and asset instructions below do not grant reuse rights.
+
 ## BUG HUNTER
 
 BUG HUNTER lives in its own top-level folder: **[bug-hunter/](./bug-hunter/)**.
