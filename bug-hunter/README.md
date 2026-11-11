@@ -18,6 +18,17 @@ Action roguelite + tactical auto-battler by **Álvaro Rodríguez Molina**, playa
   <img src="./assets/shared/readme/screenshot-menu.webp" alt="Bug Hunter main menu" width="720">
 </p>
 
+## Rights and licensing
+
+**Proprietary — All Rights Reserved.** BUG HUNTER's original code and assets
+owned by Álvaro Rodríguez Molina are covered by the repository's
+[rights notice](../LICENSE), including original art, characters, sprites,
+animations, maps, music and sound effects. No permission to copy, redistribute,
+modify or reuse them is granted without prior written permission, subject to
+the notice's exceptions for applicable law, third-party terms, valid prior
+grants and GitHub's platform permissions. Third-party material retains its
+own licenses. Development instructions and links to assets grant no reuse rights.
+
 ## Game modes
 
 | Mode | Core loop |
