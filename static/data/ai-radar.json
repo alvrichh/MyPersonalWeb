@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-11T15:47:46.746Z",
-  "date": "2026-11-11",
+  "generatedAt": "2026-11-12T16:31:06.562Z",
+  "date": "2026-11-12",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
@@ -9,7 +9,7 @@
     {
       "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
       "source": "Anthropic News",
-      "date": "2026-11-11",
+      "date": "2026-11-12",
       "url": "https://www.anthropic.com/news/expanding-partnership-gsa",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -20,7 +20,7 @@
     {
       "title": "Donating Agent Skills to the Agentic AI Foundation",
       "source": "Anthropic News",
-      "date": "2026-11-11",
+      "date": "2026-11-12",
       "url": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -32,7 +32,7 @@
     {
       "title": "Introducing the Anthropic Cyber Mission",
       "source": "Anthropic News",
-      "date": "2026-11-11",
+      "date": "2026-11-12",
       "url": "https://www.anthropic.com/news/anthropic-cyber-mission",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -43,7 +43,7 @@
     {
       "title": "Security",
       "source": "Anthropic News",
-      "date": "2026-11-11",
+      "date": "2026-11-12",
       "url": "https://www.anthropic.com/news/security",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -52,29 +52,84 @@
       "image": "https://www-cdn.anthropic.com/images/4zrzovbb/website/6d4a0d28992ade92d6fa63646fd9c9d318245c6c-2400x1260.jpg"
     },
     {
-      "title": "Introducing usage-based pricing for Amazon SageMaker AI bidirectional streaming",
-      "source": "AWS Machine Learning",
-      "date": "2026-11-11",
-      "url": "https://aws.amazon.com/blogs/machine-learning/introducing-usage-based-pricing-for-amazon-sagemaker-ai-bidirectional-streaming/",
-      "summary": "AWS Marketplace now supports usage-based metering for Amazon SageMaker bidirectional streaming inference, so model providers can charge for what customers actually consume during a live stream. Deepgram is the launch par...",
+      "title": "Google pushes privacy angle as Gemini-powered smartglasses debut starting at $395",
+      "source": "Ars Technica AI",
+      "date": "2026-11-12",
+      "url": "https://arstechnica.com/google/2026/11/google-pushes-privacy-angle-as-gemini-powered-smartglasses-debut-starting-at-395/",
+      "summary": "The first Gemini smartglasses are a collab between Google, Samsung, Gentle Monster, and Warby Parker.",
       "tags": [
-        "Models"
+        "Gemini"
       ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/07/16/ML-21067-6.png"
+      "image": "https://cdn.arstechnica.net/wp-content/uploads/2026/11/WP_ALDEN-Carousel_Lifestyle-copy-1152x648.jpg"
     },
     {
-      "title": "Introducing Kimi K3.1 Pro on Amazon Bedrock",
+      "title": "Migrate to Amazon Bedrock Managed Knowledge Base with your coding agent",
       "source": "AWS Machine Learning",
-      "date": "2026-11-11",
-      "url": "https://aws.amazon.com/blogs/machine-learning/introducing-kimi-k3-1-pro-on-amazon-bedrock/",
-      "summary": "Kimi K3.1 Pro from Moonshot AI is now available on Amazon Bedrock. Learn how to get started through the OpenAI-compatible Chat Completions, Responses, and Converse APIs, optimize inference with explicit prompt caching, a...",
+      "date": "2026-11-12",
+      "url": "https://aws.amazon.com/blogs/machine-learning/migrate-to-amazon-bedrock-managed-knowledge-base-with-your-coding-agent/",
+      "summary": "The migration guide in the amazon-bedrock skill helps you migrate a customer-managed Amazon Bedrock knowledge base to a Managed Knowledge Base. Your coding agent plans the move with read-only discovery, creates the new k...",
       "tags": [
         "Agents",
-        "ChatGPT",
-        "Dev Tools",
+        "Dev Tools"
+      ],
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/03/ML-22176-1.png"
+    },
+    {
+      "title": "Build composable, interoperable multi-agent systems with A2A on AWS",
+      "source": "AWS Machine Learning",
+      "date": "2026-11-12",
+      "url": "https://aws.amazon.com/blogs/machine-learning/build-composable-interoperable-multi-agent-systems-with-a2a-on-aws/",
+      "summary": "Build a composable, interoperable multi-agent system on AWS with the Agent-to-Agent (A2A) protocol. A LangChain orchestrator on Amazon ECS communicates with a Strands agent on Amazon Bedrock AgentCore across organization...",
+      "tags": [
+        "Agents"
+      ],
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/10/ML-21127-1.png"
+    },
+    {
+      "title": "Fine-grained access control for Amazon Bedrock Managed Knowledge Base tools",
+      "source": "AWS Machine Learning",
+      "date": "2026-11-12",
+      "url": "https://aws.amazon.com/blogs/machine-learning/fine-grained-access-control-for-amazon-bedrock-managed-knowledge-base-tools/",
+      "summary": "Learn how to expose an Amazon Bedrock Managed Knowledge Base to AI agents as MCP tools through Amazon Bedrock AgentCore Gateway while keeping per-user access control. A request interceptor injects verified identity, Poli...",
+      "tags": [
+        "Agents",
+        "MCP"
+      ],
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/11/21865-1.png"
+    },
+    {
+      "title": "From prototype to production: Engineering agents with Agent DLC",
+      "source": "AWS Machine Learning",
+      "date": "2026-11-12",
+      "url": "https://aws.amazon.com/blogs/machine-learning/from-prototype-to-production-engineering-agents-with-agent-dlc/",
+      "summary": "Agents stall between demo and release when teams lack a repeatable way to measure how good an agent is and whether the last change helped. This post covers three agent properties that break traditional CI/CD, a measured ...",
+      "tags": [
+        "Agents"
+      ],
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/10/ML-22085-1.png"
+    },
+    {
+      "title": "The Definitive Fine-Tuning Guide for 3D Generation Models",
+      "source": "Hugging Face",
+      "date": "2026-11-12",
+      "url": "https://huggingface.co/blog/3d-lora-finetuning",
+      "summary": "AI update detected from an official or high-signal source.",
+      "tags": [
         "Models"
       ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/11/ml-22229-opencode-connect-dialog.png"
+      "image": "https://huggingface.co/blog/assets/3d-lora-finetuning/thumbnail.gif"
+    },
+    {
+      "title": "Holiday Extras is rethinking what it can build with Codex",
+      "source": "OpenAI News",
+      "date": "2026-11-12",
+      "url": "https://openai.com/business/customer-stories/holidays-extras-codex",
+      "summary": "With Codex, Holiday Extras is turning customer expertise into better apps, higher booking conversion and new possibilities for growth.",
+      "tags": [
+        "ChatGPT",
+        "Dev Tools"
+      ],
+      "image": ""
     },
     {
       "title": "GitHub App support for Enterprise Copilot seat management",
@@ -86,6 +141,19 @@
         "Copilot"
       ],
       "image": "https://github.blog/wp-content/themes/github-2021-child/dist/img/social-v3-improvements.jpg"
+    },
+    {
+      "title": "Gemini Decisions API: Fast, calibrated multimodal decisions",
+      "source": "Google AI Blog",
+      "date": "2026-11-11",
+      "url": "https://blog.google/innovation-and-ai/technology/developers-tools/gemini-decisions-api/",
+      "summary": "Meet the Gemini Decisions API, powered by our state-of-the-art model Gemini Decision for fast, calibrated multimodal decisions.",
+      "tags": [
+        "Gemini",
+        "Multimodal",
+        "Models"
+      ],
+      "image": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/gemini__decisions__blog-header_2784x1566.width-1300.png"
     },
     {
       "title": "BotPsy: On-Device Personal Assistant with a Sub-Billion-Parameter Agentic Language Model",
@@ -122,122 +190,54 @@
       "image": ""
     },
     {
-      "title": "Google’s AlphaGenome 2 zooms in on the cellular roots of disease",
-      "source": "The Verge AI",
+      "title": "JioStar’s chief architect on AI discovery at 500M-user scale",
+      "source": "OpenAI News",
       "date": "2026-11-11",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1031524/google-deepmind-alphagenome-2-genetic-ai-model",
-      "summary": "Researchers at Google DeepMind have unveiled a new AI model designed to unravel how changes in our DNA affect different cells, giving scientists a more detailed view of a notoriously difficult problem that could hold imp...",
+      "url": "https://openai.com/index/jiostar-vijay-seshadri",
+      "summary": "JioStar’s Vijay Seshadri explains AI discovery at 500M-user scale. Read his lessons on evals, guardrails, and taking AI into production.",
       "tags": [
+        "ChatGPT"
+      ],
+      "image": ""
+    },
+    {
+      "title": "Gemini Decisions API",
+      "source": "Simon Willison",
+      "date": "2026-11-11",
+      "url": "https://simonwillison.net/2026/Nov/11/gemini-decisions-api/",
+      "summary": "Gemini Decisions API Google join Jev and OpenAI in the decision model category with \"Gemini Decision 1\". This new model API is almost identical to Jev: it supports the same three types of questions (yes/no, choice, and r...",
+      "tags": [
+        "ChatGPT",
+        "Gemini",
+        "Multimodal",
         "Models"
       ],
-      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/09/alphagenome-atlas-cover__background.jpg?quality=90&strip=all&crop=0,0,100,100"
+      "image": "https://simonwillison.net/2026/Nov/11/gemini-decisions-api/"
     },
     {
-      "title": "Ring cameras go mobile as Amazon debuts AI-powered security drone and robot",
-      "source": "Ars Technica AI",
-      "date": "2026-11-10",
-      "url": "https://arstechnica.com/ai/2026/11/ring-cameras-go-mobile-as-amazon-debuts-ai-powered-security-drone-and-robot/",
-      "summary": "Amazon's roaming Ring Robotics devices will debut in late 2026 and early 2027.",
-      "tags": [
-        "AI"
-      ],
-      "image": "https://cdn.arstechnica.net/wp-content/uploads/2026/11/Ring-Drone-1152x648.jpeg"
-    },
-    {
-      "title": "Grok Build coding agent leaks oodles of confidential info, some belonging to SpaceXSI",
-      "source": "Ars Technica AI",
-      "date": "2026-11-10",
-      "url": "https://arstechnica.com/security/2026/11/grok-build-coding-agent-leaks-oodles-of-confidential-info-some-belonging-to-spacexsi/",
-      "summary": "Researcher finds 35,000 Grok Build apps wide open to anyone who looked for them.",
+      "title": "aws-emulator",
+      "source": "Simon Willison",
+      "date": "2026-11-11",
+      "url": "https://simonwillison.net/2026/Nov/11/aws-emulator/",
+      "summary": "aws-emulator Finally, an official emulator from AWS to run tests against a local clone of their many different services without having to provision a paid API key to do so. It's written in Rust by a huge swarm of agents ...",
       "tags": [
         "Agents",
-        "Dev Tools"
-      ],
-      "image": "https://cdn.arstechnica.net/wp-content/uploads/2026/11/grok-plugin-marketplace-1152x648.webp"
-    },
-    {
-      "title": "DeepMind reveals Gemini Robotics 2.5 and open safety benchmark \"ASIMOV-jailbreak\"",
-      "source": "Ars Technica AI",
-      "date": "2026-11-10",
-      "url": "https://arstechnica.com/google/2026/11/deepmind-reveals-gemini-robotics-2-5-and-open-safety-benchmark-asimov-jailbreak/",
-      "summary": "The new model is up to twice as successful at some tasks.",
-      "tags": [
-        "Gemini",
+        "Multimodal",
         "Models"
       ],
-      "image": "https://cdn.arstechnica.net/wp-content/uploads/2026/11/Credit_-Apptronik_-Mercedes-Benz-Apollo-2-using-Gemini-Robotics-2.5-to-autonomously-perform-automotive-kitting-at-a-Mercedes-Benz-factory-1152x648.jpg"
+      "image": "https://simonwillison.net/2026/Nov/11/aws-emulator/"
     },
     {
-      "title": "Build a daily dependency watcher with LangGraph and Amazon Bedrock AgentCore web search",
-      "source": "AWS Machine Learning",
-      "date": "2026-11-10",
-      "url": "https://aws.amazon.com/blogs/machine-learning/build-a-daily-dependency-watcher-with-langgraph-and-amazon-bedrock-agentcore-web-search/",
-      "summary": "The Web Search API in Amazon Bedrock AgentCore gives agents current, cited web results signed with the AWS credentials they already use. In this post, build a daily dependency watcher as a LangGraph graph that researches...",
+      "title": "llm 0.37.2",
+      "source": "Simon Willison",
+      "date": "2026-11-11",
+      "url": "https://simonwillison.net/2026/Nov/11/llm/",
+      "summary": "Release: llm 0.37.2 Fixes a security issue reported by Daniel de Araujo in GHSA-v9h7-jj4g-f862 and GHSA-r639-rr7r-x72w . LLM has a mechanism called extra-openai-models.yaml - now managed by the new-in-0.37 llm openai end...",
       "tags": [
-        "Agents",
-        "Dev Tools"
+        "ChatGPT",
+        "Models"
       ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/06/ML-22037-1.png"
-    },
-    {
-      "title": "The agent evaluation playbook: Built-in, DeepEval, and AutoEval on Amazon Bedrock AgentCore Evaluations",
-      "source": "AWS Machine Learning",
-      "date": "2026-11-10",
-      "url": "https://aws.amazon.com/blogs/machine-learning/the-agent-evaluation-playbook-built-in-deepeval-and-autoeval-on-agentcore/",
-      "summary": "When you deploy an agent, whether it is working is really several questions: did it finish the task, stay on topic, leak data, or skip steps? This post shows how to evaluate agents on Amazon Bedrock AgentCore with built-...",
-      "tags": [
-        "Agents"
-      ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/10/ML-21893-1.png"
-    },
-    {
-      "title": "Gemini 4 Carbon in GitHub Copilot",
-      "source": "GitHub Changelog",
-      "date": "2026-11-10",
-      "url": "https://github.blog/changelog/2026-11-10-gemini-4-carbon-in-github-copilot",
-      "summary": "Gemini 4 Carbon, Google’s latest model, is now generally available in GitHub Copilot. It is designed for complex coding, agentic, and reasoning tasks, with a focus on secure code generation… The post Gemini 4 Carbon in G...",
-      "tags": [
-        "Agents",
-        "Copilot",
-        "Gemini",
-        "Dev Tools"
-      ],
-      "image": "https://github.blog/wp-content/uploads/2026/11/700374691-69ca0c74-ac8e-4638-82f6-46417790e655.png"
-    },
-    {
-      "title": "C++ language server now auto-configures MSBuild builds",
-      "source": "GitHub Changelog",
-      "date": "2026-11-10",
-      "url": "https://github.blog/changelog/2026-11-10-c-language-server-now-auto-configures-msbuild-builds",
-      "summary": "The Microsoft C++ Language Server for GitHub Copilot CLI now bundles its MSBuild compile commands extractor and invokes it automatically. An agent no longer needs to discover and run a… The post C++ language server now a...",
-      "tags": [
-        "Agents",
-        "Copilot"
-      ],
-      "image": "https://github.com/user-attachments/assets/56256011-8c02-4ef1-b572-b0af1007191b"
-    },
-    {
-      "title": "Gemini Intelligence: New features, on more devices",
-      "source": "Google AI Blog",
-      "date": "2026-11-10",
-      "url": "https://blog.google/products-and-platforms/platforms/android/gemini-intelligence-november-features-devices/",
-      "summary": "Gemini Intelligence is rolling out to more devices. See how expanded capabilities across these devices help you do more.",
-      "tags": [
-        "Gemini"
-      ],
-      "image": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Gemini_Intelligence_Signature27.max-600x600.format-webp.webp"
-    },
-    {
-      "title": "We’re bringing Adobe’s creative and productivity tools closer to your everyday Google apps.",
-      "source": "Google AI Blog",
-      "date": "2026-11-10",
-      "url": "https://blog.google/company-news/inside-google/company-announcements/adobe-google-partnership-integration/",
-      "summary": "Google and Adobe are integrating creative and productivity tools. Edit PDFs in Drive and use Adobe AI in Gemini. See what’s new in this partnership.",
-      "tags": [
-        "Agents",
-        "Gemini"
-      ],
-      "image": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Adobe_snippet_hero.max-600x600.format-webp.webp"
+      "image": "https://simonwillison.net/2026/Nov/11/llm/"
     }
   ],
   "candidates": [
@@ -250,19 +250,19 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-11-11"
+          "date": "2026-11-12"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-11-11"
+          "date": "2026-11-12"
         },
         {
-          "title": "llm-gemini 0.36",
+          "title": "Browse tools.simonwillison.net by tag",
           "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/10/llm-gemini/",
-          "date": "2026-11-10"
+          "link": "https://simonwillison.net/2026/Nov/11/tools-tags/",
+          "date": "2026-11-11"
         }
       ]
     },
@@ -275,12 +275,62 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
+          "date": "2026-11-12"
+        },
+        {
+          "title": "Migrate to Amazon Bedrock Managed Knowledge Base with your coding agent",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/migrate-to-amazon-bedrock-managed-knowledge-base-with-your-coding-agent/",
+          "date": "2026-11-12"
+        },
+        {
+          "title": "Build composable, interoperable multi-agent systems with A2A on AWS",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/build-composable-interoperable-multi-agent-systems-with-a2a-on-aws/",
+          "date": "2026-11-12"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Google pushes privacy angle as Gemini-powered smartglasses debut starting at $395",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/google/2026/11/google-pushes-privacy-angle-as-gemini-powered-smartglasses-debut-starting-at-395/",
+          "date": "2026-11-12"
+        },
+        {
+          "title": "Gemini Decisions API: Fast, calibrated multimodal decisions",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/gemini-decisions-api/",
           "date": "2026-11-11"
         },
         {
-          "title": "BotPsy: On-Device Personal Assistant with a Sub-Billion-Parameter Agentic Language Model",
-          "source": "Hugging Face",
-          "link": "https://huggingface.co/blog/qvac/botpsy",
+          "title": "Gemini Decisions API",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Nov/11/gemini-decisions-api/",
+          "date": "2026-11-11"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Migrate to Amazon Bedrock Managed Knowledge Base with your coding agent",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/migrate-to-amazon-bedrock-managed-knowledge-base-with-your-coding-agent/",
+          "date": "2026-11-12"
+        },
+        {
+          "title": "Browse tools.simonwillison.net by tag",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Nov/11/tools-tags/",
           "date": "2026-11-11"
         },
         {
@@ -292,26 +342,39 @@
       ]
     },
     {
-      "label": "AI coding assistant workflows",
+      "label": "MCP / tool-connected assistants",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Introducing Kimi K3.1 Pro on Amazon Bedrock",
+          "title": "Fine-grained access control for Amazon Bedrock Managed Knowledge Base tools",
           "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/introducing-kimi-k3-1-pro-on-amazon-bedrock/",
+          "link": "https://aws.amazon.com/blogs/machine-learning/fine-grained-access-control-for-amazon-bedrock-managed-knowledge-base-tools/",
+          "date": "2026-11-12"
+        }
+      ]
+    },
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Build autonomous AI agents with Amazon Bedrock and Spring AI",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/build-autonomous-ai-agents-with-amazon-bedrock-and-spring-ai/",
+          "date": "2026-11-12"
+        },
+        {
+          "title": "OpenAI Codex on Amazon Bedrock",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/openai-codex-on-amazon-bedrock/",
           "date": "2026-11-11"
         },
         {
-          "title": "Grok Build coding agent leaks oodles of confidential info, some belonging to SpaceXSI",
-          "source": "Ars Technica AI",
-          "link": "https://arstechnica.com/security/2026/11/grok-build-coding-agent-leaks-oodles-of-confidential-info-some-belonging-to-spacexsi/",
-          "date": "2026-11-10"
-        },
-        {
-          "title": "Gemini 4 Carbon in GitHub Copilot",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-10-gemini-4-carbon-in-github-copilot",
+          "title": "Running AV Reasoning Models Within Onboard Compute and Latency Limits",
+          "source": "NVIDIA Developer",
+          "link": "https://developer.nvidia.com/blog/running-av-reasoning-models-within-onboard-compute-and-latency-limits/",
           "date": "2026-11-10"
         }
       ]
@@ -342,85 +405,16 @@
       ]
     },
     {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "ChatGPT Plus for veterans and servicemembers",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/chatgpt-plus-for-veterans",
-          "date": "2026-11-11"
-        },
-        {
-          "title": "Helping caregivers use AI in everyday life",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/helping-caregivers-use-ai-in-everyday-life",
-          "date": "2026-11-10"
-        },
-        {
-          "title": "Introducing Businesses in ChatGPT",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/introducing-businesses-chatgpt",
-          "date": "2026-11-10"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "DeepMind reveals Gemini Robotics 2.5 and open safety benchmark \"ASIMOV-jailbreak\"",
-          "source": "Ars Technica AI",
-          "link": "https://arstechnica.com/google/2026/11/deepmind-reveals-gemini-robotics-2-5-and-open-safety-benchmark-asimov-jailbreak/",
-          "date": "2026-11-10"
-        },
-        {
-          "title": "Gemini 4 Carbon in GitHub Copilot",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-10-gemini-4-carbon-in-github-copilot",
-          "date": "2026-11-10"
-        },
-        {
-          "title": "Gemini Intelligence: New features, on more devices",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/products-and-platforms/platforms/android/gemini-intelligence-november-features-devices/",
-          "date": "2026-11-10"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Running AV Reasoning Models Within Onboard Compute and Latency Limits",
-          "source": "NVIDIA Developer",
-          "link": "https://developer.nvidia.com/blog/running-av-reasoning-models-within-onboard-compute-and-latency-limits/",
-          "date": "2026-11-10"
-        },
-        {
-          "title": "Could potential AI clones of GTA VI force a quicker official port?",
-          "source": "Ars Technica AI",
-          "link": "https://arstechnica.com/gaming/2026/11/could-potential-ai-clones-of-gta-vi-force-a-quicker-official-port/",
-          "date": "2026-11-06"
-        },
-        {
-          "title": "Building the next generation of multimodal AI experiences with fal in Microsoft Foundry",
-          "source": "Azure Blog",
-          "link": "https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/building-the-next-generation-of-multimodal-ai-experiences-with-fal-in-microsoft-/4570032",
-          "date": "2026-11-06"
-        }
-      ]
-    },
-    {
       "label": "Multimodal AI product workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Gemini Decisions API: Fast, calibrated multimodal decisions",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/gemini-decisions-api/",
+          "date": "2026-11-11"
+        },
         {
           "title": "Building the next generation of multimodal AI experiences with fal in Microsoft Foundry",
           "source": "Azure Blog",
