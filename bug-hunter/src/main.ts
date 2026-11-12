@@ -3,7 +3,7 @@ import { CONVERGENCE_SCENE, CONVERGENCE_IMAGE } from './scenery';
 import './game.css';
 import { GAME_BUILD, GAME_VERSION } from './version';
 import { storage } from '../lib/storage';
-import { ads, configureAds, type AdSpot, type PlayAd } from './ads';
+import { ads, configureAds, openPrivacySettings, type AdSpot, type PlayAd } from './ads';
 import { configurePayments, payments } from './payments';
 import { COIN_PACKS, currentOffers, grant, halloweenEnds, HALLOWEEN_OFFERS, packBonus, priceNow, SKIN_OFFERS, type CoinPack, type SkinOffer } from './store';
 import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPrize, type DailyResult } from './daily';
@@ -3705,7 +3705,7 @@ screen.addEventListener('click', (event) => {
   else if (act === 'styles') { dressSlot = null; stylesScreen(); }
   else if (act === 'options') { optionsFrom = 'menu'; optionsScreen(); }
   else if (act === 'options-pause') { optionsFrom = 'pause'; optionsScreen(); }
-  else if (act === 'privacy-settings') { (window as Window & { openPrivacyChoices?: () => void }).openPrivacyChoices?.(); }
+  else if (act === 'privacy-settings') openPrivacySettings();
   else if (act === 'lang') {
     const next = target.dataset.lang as Lang;
     if (next && next !== lang) { setLang(next); boardKey = ''; renderBoardUi(); optionsScreen(); }
