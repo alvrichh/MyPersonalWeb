@@ -65,16 +65,17 @@ declare global {
     adsbygoogle?: unknown[];
     adBreak?: AdBreak;
     adConfig?: AdBreak;
+    googlefc?: {
+      callbackQueue?: Array<Record<string, () => void>>;
+      showRevocationMessage?: () => void;
+    };
   }
 }
-function h5(client: string, test: boolean): Provider {
-  const tag = document.createElement('script');
-  tag.async = true;
-  tag.crossOrigin = 'anonymous';
-  tag.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${encodeURIComponent(client)}`;
-  tag.dataset.adFrequencyHint = '30s';
-  if (test) tag.dataset.adbreakTest = 'on';
-  document.head.append(tag);
+function h5(test: boolean): Provider {
+  // The AdSense loader is in game.html so Google's configured Privacy &
+  // messaging CMP can be the first consent layer on this document.
+  const tag = document.querySelector<HTMLScriptElement>('script[src*="adsbygoogle.js"]');
+  if (tag && test) tag.dataset.adbreakTest = 'on';
   window.adsbygoogle = window.adsbygoogle || [];
   const push: AdBreak = (o) => void window.adsbygoogle!.push(o);
   window.adBreak = window.adConfig = push;
@@ -112,20 +113,22 @@ function h5(client: string, test: boolean): Provider {
 const env = import.meta.env;
 const client = typeof env.VITE_ADSENSE_CLIENT === 'string' ? env.VITE_ADSENSE_CLIENT.trim() : '';
 const local = ['localhost', '127.0.0.1'].includes(location.hostname);
-const CONSENT_KEY = 'bughunter-ad-consent-v1';
-let consent = local || localStorage.getItem(CONSENT_KEY) === 'accept';
 let provider: Provider | null = null;
-export const adConsent = {
-  get status(): 'accept' | 'reject' | 'unset' { return local ? 'accept' : consent ? 'accept' : localStorage.getItem(CONSENT_KEY) === 'reject' ? 'reject' : 'unset'; },
-  set(value: 'accept' | 'reject') {
-    localStorage.setItem(CONSENT_KEY, value);
-    consent = value === 'accept';
-    provider = null;
-    if (consent && client) provider = h5(client, env.VITE_ADS_TEST === '1');
-  },
-};
-if (consent && client) provider = h5(client, env.VITE_ADS_TEST === '1');
+if (client) provider = h5(env.VITE_ADS_TEST === '1');
 const current = () => provider ?? (local ? (provider = dev) : none);
+
+/** Reopen Google's published privacy message so a player can change or
+ * withdraw their choice. Queue the call because the AdSense/CMP scripts load
+ * asynchronously. */
+export function openPrivacySettings() {
+  const googlefc = window.googlefc ?? (window.googlefc = {});
+  if (googlefc.showRevocationMessage) {
+    googlefc.showRevocationMessage();
+    return;
+  }
+  googlefc.callbackQueue = googlefc.callbackQueue || [];
+  googlefc.callbackQueue.push({ CONSENT_API_READY: () => window.googlefc?.showRevocationMessage?.() });
+}
 
 export const ads = {
   /** Whether any ad can ever show here (the page hides the ad buttons when not). */

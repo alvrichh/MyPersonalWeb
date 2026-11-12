@@ -13,6 +13,9 @@
   <link rel="icon" href="./images/game/icon-32.png?v=2" sizes="32x32" type="image/png">
   <link rel="icon" href="./images/game/icon-192.png?v=2" sizes="192x192" type="image/png">
   <link rel="apple-touch-icon" sizes="180x180" href="./images/game/apple-touch-icon.png?v=2">
+  <!-- Loads the Google CMP configured in AdSense Privacy & messaging. The
+       H5 Games placement API is initialized only when an ad is requested. -->
+  <script async data-ad-frequency-hint="30s" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9762505490002824" crossorigin="anonymous"></script>
   <script>
     // Vercel Web Analytics: page views only, no cookies. The script is served by
     // Vercel itself, so it is skipped on localhost (it would only 404 there).
@@ -24,16 +27,6 @@
       document.head.appendChild(insights);
     }
   </script>
-  <style>
-    .consent{position:fixed;z-index:10000;inset:0;display:grid;align-items:end;justify-items:center;padding:12px;box-sizing:border-box;background:#05020db8;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);font:15px/1.45 Fredoka,system-ui,sans-serif;color:#f7f3ff;animation:consent-dim .22s ease-out}.consent[hidden]{display:none}.consent-card{width:min(680px,100%);max-height:80dvh;overflow:auto;box-sizing:border-box;padding:24px clamp(20px,5vw,42px);border:1px solid #c084fc88;border-radius:20px;background:linear-gradient(155deg,#211239f7,#120b22f8 62%,#1d112ef8);box-shadow:0 0 0 4px #0c0814,0 0 28px #b34dff32,0 18px 55px #000b;animation:consent-rise .32s cubic-bezier(.2,.8,.25,1) both}.consent-card h2{margin:0 auto 10px;padding:6px 44px;background:url('/images/game/ui/row_purple.webp') center/100% 100% no-repeat;text-align:center;font-size:1.3rem;text-shadow:0 2px 4px #000}.consent-card p{margin:0 auto 14px;max-width:540px;text-align:center;color:#e6dcf5}.consent-actions{display:flex;gap:8px;flex-wrap:wrap}.consent button{flex:1 1 140px;min-height:46px;padding:10px 14px;border:1px solid #b8a3d1;border-radius:11px;background:linear-gradient(180deg,#55466b,#342744);box-shadow:inset 0 1px #ffffff22,0 3px 8px #0006;color:#fff;font:700 1rem Fredoka,system-ui,sans-serif;cursor:pointer}.consent #consentAccept{border-color:#d4bbff;background:linear-gradient(180deg,#8a55b9,#643994)}.consent #consentReject{border-color:#b8a3d1;background:linear-gradient(180deg,#55466b,#342744)}.consent #consentConfigure{border-color:#f2c777;background:linear-gradient(180deg,#a47735,#705020)}.consent #consentSettings[hidden]{display:none}.consent #consentSettings{padding:12px 0 0;display:grid;gap:9px}.consent #consentSettings label{display:flex;align-items:center;gap:8px}.consent #consentSave{flex-basis:100%}.legal-links{display:flex;gap:14px;justify-content:center;font-size:12px;margin-top:12px}.legal-links a{color:#e3cdfa}@keyframes consent-rise{from{transform:translateY(80px);opacity:.25}to{transform:translateY(0);opacity:1}}@keyframes consent-dim{from{background:#05020d00}to{background:#05020db8}}@media(max-width:520px){.consent-card{padding:18px 16px}.consent-card h2{padding:8px 20px;font-size:1.1rem}.consent-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.consent button{min-width:0;min-height:48px;padding:9px 6px;font-size:.94rem}.consent #consentConfigure{grid-column:1/-1}.legal-links{gap:10px;font-size:11px}}
-  </style>
-  <style>
-    .consent-card h2{position:relative;isolation:isolate;min-height:44px;display:grid;place-items:center;padding:4px 12px;background:none}
-    .consent-card{border-color:#36cafa88;background:linear-gradient(155deg,#101c35f7,#07101ff8 62%,#0b1930f8);box-shadow:0 0 0 4px #081122,0 0 28px #00c8ff40,0 18px 55px #000b}
-    .consent-card h2::before{content:"";position:absolute;inset:-2px 0;z-index:-1;background:url('/images/game/ui/sub_plate.webp') center/100% 100% no-repeat}
-    .consent-card p{color:#dce6ff}.consent #consentAccept{border-color:#a9d9ff;background:linear-gradient(180deg,#3186c4,#205a91)}.consent #consentReject{border-color:#aebbd0;background:linear-gradient(180deg,#59677c,#39465a)}.consent #consentConfigure{border-color:#7dd3fc;background:linear-gradient(180deg,#36a9df,#1765a5)}.legal-links a{color:#c9d8ff}
-    @media(max-width:520px){.consent-card h2{min-height:40px;padding:2px 8px;font-size:1rem}.consent-card h2::before{inset:-2px -4px}}
-  </style>
 </head>
 <body>
   <main class="game">
@@ -67,9 +60,6 @@
     <p class="toast" id="toast" role="status" hidden></p>
     <div class="ach-toast" id="achToast" role="status" hidden></div>
     <section class="screen" id="screen" hidden></section>
-    <section class="consent" id="consent" hidden aria-label="Privacy choices">
-      <div class="consent-card"><h2 id="consentTitle"></h2><p id="consentText"></p><div class="consent-actions"><button id="consentAccept"></button><button id="consentReject"></button><button id="consentConfigure"></button></div><div id="consentSettings" hidden><label><input type="checkbox" checked disabled> <span id="consentNecessary"></span></label><label><input type="checkbox" id="consentAds"> <span id="consentAdsLabel"></span></label><button id="consentSave"></button></div><nav class="legal-links"><a href="/privacy.html" id="privacyLink">Privacy</a><a href="/cookies.html" id="cookiesLink">Cookies</a><a href="/legal.html" id="legalLink">Legal notice</a></nav></div>
-    </section>
     <div class="loading" id="loading" role="status" aria-live="polite">
       <img class="loading-logo" src="./images/game/ui/logo.webp" alt="Bug Hunter">
       <i class="loading-bar"><b id="loadingFill"></b></i>
@@ -78,8 +68,5 @@
   </main>
   <noscript><p style="padding:24px;color:#f3f6fb">Bug Hunter needs JavaScript to run.</p></noscript>
   <script type="module" src="/src/game/main.ts"></script>
-  <script>
-    (()=>{const k='bughunter-ad-consent-v1',box=document.getElementById('consent'),es=(navigator.language||'').toLowerCase().startsWith('es'),s=document.getElementById('consentSettings');const txt=(id,a,b)=>document.getElementById(id).textContent=es?a:b;txt('consentTitle','Privacidad y anuncios','Privacy and advertising');txt('consentText','Usamos almacenamiento necesario para guardar tus preferencias. Si aceptas, Google podrá usar datos para anuncios recompensados. Puedes cambiar tu elección cuando quieras.','We use necessary storage to save your preferences. If you agree, Google may use data for rewarded ads. You can change your choice at any time.');txt('consentAccept','Aceptar','Accept');txt('consentReject','Rechazar','Reject');txt('consentConfigure','Configurar','Configure');txt('consentNecessary','Almacenamiento esencial (siempre activo)','Essential storage (always active)');txt('consentAdsLabel','Anuncios personalizados de Google','Personalized Google ads');txt('consentSave','Guardar preferencias','Save preferences');txt('privacyLink','Privacidad','Privacy');txt('cookiesLink','Cookies','Cookies');txt('legalLink','Aviso legal','Legal notice');const store=v=>{localStorage.setItem(k,v);box.hidden=true;window.dispatchEvent(new CustomEvent('bughunter-consent',{detail:v}))};window.openPrivacyChoices=()=>{s.hidden=false;box.hidden=false};document.getElementById('consentAccept').onclick=()=>store('accept');document.getElementById('consentReject').onclick=()=>store('reject');document.getElementById('consentConfigure').onclick=()=>s.hidden=!s.hidden;document.getElementById('consentSave').onclick=()=>store(document.getElementById('consentAds').checked?'accept':'reject');if(!localStorage.getItem(k))box.hidden=false})();
-  </script>
 </body>
 </html>

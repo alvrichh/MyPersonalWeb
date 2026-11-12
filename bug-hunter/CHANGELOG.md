@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.29 - 2026-11-12
+
+- The game page loads its AdSense tag before the game so Google's configured Privacy & messaging CMP can collect and manage advertising consent. Removed the separate game-made consent panel and connected Privacy settings to Google's consent-revocation message.
+- Rewarded placements remain opt-in: the game requests them only after the player chooses a reward button. Updated the privacy and cookie pages to describe the Google CMP flow.
+
 ## 1.16.28 - 2026-11-09
 
 - The first battle's corrupt wind brings four weak troops at once (it was two), a moment of pressure in an easy battle, and then no wave for 25 s to answer it (`FIRST.horde`, `FIRST.calm`). Simulated with only the swordsman: every player but one who does nothing still wins, the slowest (a swordsman every 8 s) in about three minutes.
