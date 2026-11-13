@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-12T16:31:06.562Z",
-  "date": "2026-11-12",
+  "generatedAt": "2026-11-13T15:52:33.381Z",
+  "date": "2026-11-13",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
@@ -9,47 +9,93 @@
     {
       "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
       "source": "Anthropic News",
-      "date": "2026-11-12",
+      "date": "2026-11-13",
       "url": "https://www.anthropic.com/news/expanding-partnership-gsa",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
         "Claude"
       ],
-      "image": "https://www-cdn.anthropic.com/images/4zrzovbb/website/4e3bfa972a8ec391977288fa36de3da1ecd78232-1920x1080.webp"
+      "image": "https://assets.claude.com/197a2df5664af9cd602fae73bb2ada3935444cbe.jpg"
     },
     {
       "title": "Donating Agent Skills to the Agentic AI Foundation",
       "source": "Anthropic News",
-      "date": "2026-11-12",
+      "date": "2026-11-13",
       "url": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
         "Agents",
         "Claude"
       ],
-      "image": "https://www-cdn.anthropic.com/images/4zrzovbb/website/6d4a0d28992ade92d6fa63646fd9c9d318245c6c-2400x1260.jpg"
+      "image": "https://assets.claude.com/6d4a0d28992ade92d6fa63646fd9c9d318245c6c.jpg"
     },
     {
       "title": "Introducing the Anthropic Cyber Mission",
       "source": "Anthropic News",
-      "date": "2026-11-12",
+      "date": "2026-11-13",
       "url": "https://www.anthropic.com/news/anthropic-cyber-mission",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
         "Claude"
       ],
-      "image": "https://www-cdn.anthropic.com/images/4zrzovbb/website/d2af4f6715cbe9766a47430a24420cfca0a2c588-1200x630.jpg"
+      "image": "https://assets.claude.com/5758e6c92662c56f208525e00acb800c702c79b6.jpg"
     },
     {
       "title": "Security",
       "source": "Anthropic News",
-      "date": "2026-11-12",
+      "date": "2026-11-13",
       "url": "https://www.anthropic.com/news/security",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
         "Claude"
       ],
-      "image": "https://www-cdn.anthropic.com/images/4zrzovbb/website/6d4a0d28992ade92d6fa63646fd9c9d318245c6c-2400x1260.jpg"
+      "image": "https://assets.claude.com/6d4a0d28992ade92d6fa63646fd9c9d318245c6c.jpg"
+    },
+    {
+      "title": "Manage AI Scan for repositories using the REST API",
+      "source": "GitHub Changelog",
+      "date": "2026-11-13",
+      "url": "https://github.blog/changelog/2026-11-13-manage-ai-scan-for-repositories-using-the-rest-api",
+      "summary": "You can now turn GitHub code scanning’s AI Scan for repositories on or off with the REST API at the organization and repository levels. This public preview adds a repository_scan… The post Manage AI Scan for repositories...",
+      "tags": [
+        "Dev Tools"
+      ],
+      "image": "https://github.blog/wp-content/themes/github-2021-child/dist/img/social-v3-improvements.jpg"
+    },
+    {
+      "title": "llama.cpp v1.0.0 : A stronger foundation for the local AI ecosystem",
+      "source": "Hugging Face",
+      "date": "2026-11-13",
+      "url": "https://huggingface.co/blog/ggml-org/llama-cpp-v1",
+      "summary": "AI update detected from an official or high-signal source.",
+      "tags": [
+        "AI"
+      ],
+      "image": "https://cdn-uploads.huggingface.co/production/uploads/63148d3b996c52bf0142cdbe/2PgU1GxpJX_LVORaP2RRy.png"
+    },
+    {
+      "title": "Claude’s Duet agent is a little neurotic and surprisingly helpful",
+      "source": "The Verge AI",
+      "date": "2026-11-13",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1032518/claude-duet-ai-agent-hands-on",
+      "summary": "Normally, the products I test don't offer to help me write up my experience with them. Duet is different. Claude Duet is Anthropic's AI agent for consumers, the latest attempt by an AI company to try to convince us that ...",
+      "tags": [
+        "Agents",
+        "Claude",
+        "Dev Tools"
+      ],
+      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/11/DSC04398_processed.jpg?quality=90&strip=all&crop=0,0,100,100"
+    },
+    {
+      "title": "Google rolls out Gemini 4 Hydrogen, finally replacing 3.8 Flash",
+      "source": "Ars Technica AI",
+      "date": "2026-11-12",
+      "url": "https://arstechnica.com/google/2026/11/google-rolls-out-gemini-4-hydrogen-finally-replacing-3-8-flash/",
+      "summary": "Gemini 4 Hydrogen isn't getting a slow, security-conscious release like Carbon and Argon.",
+      "tags": [
+        "Gemini"
+      ],
+      "image": "https://cdn.arstechnica.net/wp-content/uploads/2026/04/gemini-general-6-1152x648.jpg"
     },
     {
       "title": "Google pushes privacy angle as Gemini-powered smartglasses debut starting at $395",
@@ -63,50 +109,93 @@
       "image": "https://cdn.arstechnica.net/wp-content/uploads/2026/11/WP_ALDEN-Carousel_Lifestyle-copy-1152x648.jpg"
     },
     {
-      "title": "Migrate to Amazon Bedrock Managed Knowledge Base with your coding agent",
+      "title": "Deploy frontier AI models on AWS Trainium with SGLang-Neuron",
       "source": "AWS Machine Learning",
       "date": "2026-11-12",
-      "url": "https://aws.amazon.com/blogs/machine-learning/migrate-to-amazon-bedrock-managed-knowledge-base-with-your-coding-agent/",
-      "summary": "The migration guide in the amazon-bedrock skill helps you migrate a customer-managed Amazon Bedrock knowledge base to a Managed Knowledge Base. Your coding agent plans the move with read-only discovery, creates the new k...",
+      "url": "https://aws.amazon.com/blogs/machine-learning/deploy-frontier-ai-models-on-aws-trainium-with-sglang-neuron/",
+      "summary": "SGLang-Neuron is now publicly available through an AWS Deep Learning Container. With SGLang-Neuron, you can serve models and generate reinforcement learning rollouts with SGLang on AWS Trainium using the same SGLang inte...",
       "tags": [
-        "Agents",
-        "Dev Tools"
+        "Models"
       ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/03/ML-22176-1.png"
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/12/ML-22453-1.png"
     },
     {
-      "title": "Build composable, interoperable multi-agent systems with A2A on AWS",
+      "title": "How Natera designed an agentic AI system for lab ops with Amazon Bedrock AgentCore",
       "source": "AWS Machine Learning",
       "date": "2026-11-12",
-      "url": "https://aws.amazon.com/blogs/machine-learning/build-composable-interoperable-multi-agent-systems-with-a2a-on-aws/",
-      "summary": "Build a composable, interoperable multi-agent system on AWS with the Agent-to-Agent (A2A) protocol. A LangChain orchestrator on Amazon ECS communicates with a Strands agent on Amazon Bedrock AgentCore across organization...",
+      "url": "https://aws.amazon.com/blogs/machine-learning/how-natera-designed-an-agentic-ai-system-for-lab-ops-with-amazon-bedrock-agentcore/",
+      "summary": "Natera built SWARM, an agentic AI system on Amazon Bedrock AgentCore that captures institutional lab-operations knowledge and deploys it at scale. This post walks through the full architecture, from knowledge base constr...",
       "tags": [
         "Agents"
       ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/10/ML-21127-1.png"
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/10/ML-21653-1-1.png"
     },
     {
-      "title": "Fine-grained access control for Amazon Bedrock Managed Knowledge Base tools",
+      "title": "Four Amazon Bedrock inference choices that affect cost",
       "source": "AWS Machine Learning",
       "date": "2026-11-12",
-      "url": "https://aws.amazon.com/blogs/machine-learning/fine-grained-access-control-for-amazon-bedrock-managed-knowledge-base-tools/",
-      "summary": "Learn how to expose an Amazon Bedrock Managed Knowledge Base to AI agents as MCP tools through Amazon Bedrock AgentCore Gateway while keeping per-user access control. A request interceptor injects verified identity, Poli...",
+      "url": "https://aws.amazon.com/blogs/machine-learning/four-amazon-bedrock-inference-choices-that-affect-cost/",
+      "summary": "Your Amazon Bedrock inference bill can keep climbing even after you tune prompts and application logic. Four request-level choices (cache duration, service tier, reasoning effort, and maxTokens) change how many tokens th...",
+      "tags": [
+        "Models"
+      ],
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/10/ML-21479-1.jpg"
+    },
+    {
+      "title": "Optimizing cost per task and proving agent ROI on Amazon Bedrock",
+      "source": "AWS Machine Learning",
+      "date": "2026-11-12",
+      "url": "https://aws.amazon.com/blogs/machine-learning/optimizing-cost-per-task-and-proving-agent-roi-on-amazon-bedrock/",
+      "summary": "Comparing per-token prices hides the real cost of running a model on Amazon Bedrock. This post shows how to calculate the true cost per task across four hidden cost drivers, reduce it with caching, routing, and output co...",
       "tags": [
         "Agents",
-        "MCP"
+        "Models"
       ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/11/21865-1.png"
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/02/ML-21540-1.png"
     },
     {
-      "title": "From prototype to production: Engineering agents with Agent DLC",
-      "source": "AWS Machine Learning",
+      "title": "Build once, run on any agent: A practical guide to agent skills",
+      "source": "GitHub AI & ML Blog",
       "date": "2026-11-12",
-      "url": "https://aws.amazon.com/blogs/machine-learning/from-prototype-to-production-engineering-agents-with-agent-dlc/",
-      "summary": "Agents stall between demo and release when teams lack a repeatable way to measure how good an agent is and whether the last change helped. This post covers three agent properties that break traditional CI/CD, a measured ...",
+      "url": "https://github.blog/ai-and-ml/github-copilot/build-once-run-on-any-agent-a-practical-guide-to-agent-skills/",
+      "summary": "Agent skills capture repeatable engineering work in files teams can review and reuse, while tools, project context, and permissions remain specific to the host that runs them. The post Build once, run on any agent: A pra...",
       "tags": [
         "Agents"
       ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/10/ML-22085-1.png"
+      "image": "https://github.blog/wp-content/uploads/2026/11/5b5fed0ce69f241f469053d4f178383688adb2fb7ef44dff82c1a2dd6a626fa1-1920x1080-1.png"
+    },
+    {
+      "title": "Google Search gets a major upgrade with Gemini 4 Hydrogen",
+      "source": "Google AI Blog",
+      "date": "2026-11-12",
+      "url": "https://blog.google/products-and-platforms/products/search/gemini-4-hydrogen-search-upgrade/",
+      "summary": "We are bringing Gemini 4 Hydrogen to Google Search globally to provide you with more helpful, visual, and intuitive responses.",
+      "tags": [
+        "Gemini"
+      ],
+      "image": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/HydrogenUI_socialshare.max-600x600.format-webp.webp"
+    },
+    {
+      "title": "Introducing Gemini 4 Hydrogen",
+      "source": "Google DeepMind",
+      "date": "2026-11-12",
+      "url": "https://deepmind.google/blog/introducing-gemini-4-hydrogen/",
+      "summary": "AI update detected from an official or high-signal source.",
+      "tags": [
+        "Gemini"
+      ],
+      "image": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/gemini-4-hydrogen__key-art__lockup__16-9.width-1300.jpg"
+    },
+    {
+      "title": "LLMON: An LLM-Native Markup Language, now in Granite 4.1 3B and 8B",
+      "source": "Hugging Face",
+      "date": "2026-11-12",
+      "url": "https://huggingface.co/blog/ibm-granite/llmon-an-llm-native-markup-language-now-in-granite",
+      "summary": "AI update detected from an official or high-signal source.",
+      "tags": [
+        "Models"
+      ],
+      "image": "https://cdn-uploads.huggingface.co/production/uploads/6484ca4d5ff9a3d2ee52a83b/6KFZDHIJkxpICiErHLqAw.gif"
     },
     {
       "title": "The Definitive Fine-Tuning Guide for 3D Generation Models",
@@ -120,6 +209,20 @@
       "image": "https://huggingface.co/blog/assets/3d-lora-finetuning/thumbnail.gif"
     },
     {
+      "title": "How Amplitude ships product improvements in 1–2 days with OpenAI",
+      "source": "OpenAI News",
+      "date": "2026-11-12",
+      "url": "https://openai.com/business/customer-stories/amplitude",
+      "summary": "Built primarily on OpenAI models, Amplitude’s proactive product agent, Wave, identifies what to build, helps teams ship changes with coding agents, and measures the impact.",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Dev Tools",
+        "Models"
+      ],
+      "image": ""
+    },
+    {
       "title": "Holiday Extras is rethinking what it can build with Codex",
       "source": "OpenAI News",
       "date": "2026-11-12",
@@ -130,114 +233,6 @@
         "Dev Tools"
       ],
       "image": ""
-    },
-    {
-      "title": "GitHub App support for Enterprise Copilot seat management",
-      "source": "GitHub Changelog",
-      "date": "2026-11-11",
-      "url": "https://github.blog/changelog/2026-11-10-github-app-support-for-enterprise-copilot-seat-management",
-      "summary": "Enterprise GitHub Apps can now call the enterprise-level Copilot seat management APIs to control which users and enterprise teams are assigned Copilot seats. The Copilot seat management APIs are accessible… The post GitH...",
-      "tags": [
-        "Copilot"
-      ],
-      "image": "https://github.blog/wp-content/themes/github-2021-child/dist/img/social-v3-improvements.jpg"
-    },
-    {
-      "title": "Gemini Decisions API: Fast, calibrated multimodal decisions",
-      "source": "Google AI Blog",
-      "date": "2026-11-11",
-      "url": "https://blog.google/innovation-and-ai/technology/developers-tools/gemini-decisions-api/",
-      "summary": "Meet the Gemini Decisions API, powered by our state-of-the-art model Gemini Decision for fast, calibrated multimodal decisions.",
-      "tags": [
-        "Gemini",
-        "Multimodal",
-        "Models"
-      ],
-      "image": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/gemini__decisions__blog-header_2784x1566.width-1300.png"
-    },
-    {
-      "title": "BotPsy: On-Device Personal Assistant with a Sub-Billion-Parameter Agentic Language Model",
-      "source": "Hugging Face",
-      "date": "2026-11-11",
-      "url": "https://huggingface.co/blog/qvac/botpsy",
-      "summary": "AI update detected from an official or high-signal source.",
-      "tags": [
-        "Agents",
-        "Models"
-      ],
-      "image": "https://cdn-uploads.huggingface.co/production/uploads/6468b319b2321e47d3267049/Emr86qw6NAueYLdIEiTTD.png"
-    },
-    {
-      "title": "Token Pooling-Aware Training for Multi-Vector Embedding Models",
-      "source": "Hugging Face",
-      "date": "2026-11-11",
-      "url": "https://huggingface.co/blog/token-pooling",
-      "summary": "AI update detected from an official or high-signal source.",
-      "tags": [
-        "Models"
-      ],
-      "image": "https://huggingface.co/blog/assets/train-sentence-transformers/st-hf-thumbnail.png"
-    },
-    {
-      "title": "ChatGPT Plus for veterans and servicemembers",
-      "source": "OpenAI News",
-      "date": "2026-11-11",
-      "url": "https://openai.com/index/chatgpt-plus-for-veterans",
-      "summary": "More than 20,000 veterans and transitioning service members have claimed a free year of ChatGPT Plus. See how they use it to prepare for civilian careers.",
-      "tags": [
-        "ChatGPT"
-      ],
-      "image": ""
-    },
-    {
-      "title": "JioStar’s chief architect on AI discovery at 500M-user scale",
-      "source": "OpenAI News",
-      "date": "2026-11-11",
-      "url": "https://openai.com/index/jiostar-vijay-seshadri",
-      "summary": "JioStar’s Vijay Seshadri explains AI discovery at 500M-user scale. Read his lessons on evals, guardrails, and taking AI into production.",
-      "tags": [
-        "ChatGPT"
-      ],
-      "image": ""
-    },
-    {
-      "title": "Gemini Decisions API",
-      "source": "Simon Willison",
-      "date": "2026-11-11",
-      "url": "https://simonwillison.net/2026/Nov/11/gemini-decisions-api/",
-      "summary": "Gemini Decisions API Google join Jev and OpenAI in the decision model category with \"Gemini Decision 1\". This new model API is almost identical to Jev: it supports the same three types of questions (yes/no, choice, and r...",
-      "tags": [
-        "ChatGPT",
-        "Gemini",
-        "Multimodal",
-        "Models"
-      ],
-      "image": "https://simonwillison.net/2026/Nov/11/gemini-decisions-api/"
-    },
-    {
-      "title": "aws-emulator",
-      "source": "Simon Willison",
-      "date": "2026-11-11",
-      "url": "https://simonwillison.net/2026/Nov/11/aws-emulator/",
-      "summary": "aws-emulator Finally, an official emulator from AWS to run tests against a local clone of their many different services without having to provision a paid API key to do so. It's written in Rust by a huge swarm of agents ...",
-      "tags": [
-        "Agents",
-        "Multimodal",
-        "Models"
-      ],
-      "image": "https://simonwillison.net/2026/Nov/11/aws-emulator/"
-    },
-    {
-      "title": "llm 0.37.2",
-      "source": "Simon Willison",
-      "date": "2026-11-11",
-      "url": "https://simonwillison.net/2026/Nov/11/llm/",
-      "summary": "Release: llm 0.37.2 Fixes a security issue reported by Daniel de Araujo in GHSA-v9h7-jj4g-f862 and GHSA-r639-rr7r-x72w . LLM has a mechanism called extra-openai-models.yaml - now managed by the new-in-0.37 llm openai end...",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ],
-      "image": "https://simonwillison.net/2026/Nov/11/llm/"
     }
   ],
   "candidates": [
@@ -250,19 +245,19 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-11-12"
+          "date": "2026-11-13"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-11-12"
+          "date": "2026-11-13"
         },
         {
-          "title": "Browse tools.simonwillison.net by tag",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/11/tools-tags/",
-          "date": "2026-11-11"
+          "title": "Claude’s Duet agent is a little neurotic and surprisingly helpful",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1032518/claude-duet-ai-agent-hands-on",
+          "date": "2026-11-13"
         }
       ]
     },
@@ -275,18 +270,18 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
-          "date": "2026-11-12"
+          "date": "2026-11-13"
         },
         {
-          "title": "Migrate to Amazon Bedrock Managed Knowledge Base with your coding agent",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/migrate-to-amazon-bedrock-managed-knowledge-base-with-your-coding-agent/",
-          "date": "2026-11-12"
+          "title": "Claude’s Duet agent is a little neurotic and surprisingly helpful",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1032518/claude-duet-ai-agent-hands-on",
+          "date": "2026-11-13"
         },
         {
-          "title": "Build composable, interoperable multi-agent systems with A2A on AWS",
+          "title": "How Natera designed an agentic AI system for lab ops with Amazon Bedrock AgentCore",
           "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/build-composable-interoperable-multi-agent-systems-with-a2a-on-aws/",
+          "link": "https://aws.amazon.com/blogs/machine-learning/how-natera-designed-an-agentic-ai-system-for-lab-ops-with-amazon-bedrock-agentcore/",
           "date": "2026-11-12"
         }
       ]
@@ -297,22 +292,47 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "Google rolls out Gemini 4 Hydrogen, finally replacing 3.8 Flash",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/google/2026/11/google-rolls-out-gemini-4-hydrogen-finally-replacing-3-8-flash/",
+          "date": "2026-11-12"
+        },
+        {
           "title": "Google pushes privacy angle as Gemini-powered smartglasses debut starting at $395",
           "source": "Ars Technica AI",
           "link": "https://arstechnica.com/google/2026/11/google-pushes-privacy-angle-as-gemini-powered-smartglasses-debut-starting-at-395/",
           "date": "2026-11-12"
         },
         {
-          "title": "Gemini Decisions API: Fast, calibrated multimodal decisions",
+          "title": "Google Search gets a major upgrade with Gemini 4 Hydrogen",
           "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/gemini-decisions-api/",
-          "date": "2026-11-11"
+          "link": "https://blog.google/products-and-platforms/products/search/gemini-4-hydrogen-search-upgrade/",
+          "date": "2026-11-12"
+        }
+      ]
+    },
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Building a self-service LLM gateway with Amazon Bedrock and LiteLLM",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/building-a-self-service-llm-gateway-with-amazon-bedrock-and-litellm/",
+          "date": "2026-11-12"
         },
         {
-          "title": "Gemini Decisions API",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/11/gemini-decisions-api/",
-          "date": "2026-11-11"
+          "title": "Running AV Reasoning Models Within Onboard Compute and Latency Limits",
+          "source": "NVIDIA Developer",
+          "link": "https://developer.nvidia.com/blog/running-av-reasoning-models-within-onboard-compute-and-latency-limits/",
+          "date": "2026-11-10"
+        },
+        {
+          "title": "Could potential AI clones of GTA VI force a quicker official port?",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/gaming/2026/11/could-potential-ai-clones-of-gta-vi-force-a-quicker-official-port/",
+          "date": "2026-11-06"
         }
       ]
     },
@@ -328,53 +348,40 @@
           "date": "2026-11-12"
         },
         {
+          "title": "How Amplitude ships product improvements in 1–2 days with OpenAI",
+          "source": "OpenAI News",
+          "link": "https://openai.com/business/customer-stories/amplitude",
+          "date": "2026-11-12"
+        },
+        {
           "title": "Browse tools.simonwillison.net by tag",
           "source": "Simon Willison",
           "link": "https://simonwillison.net/2026/Nov/11/tools-tags/",
           "date": "2026-11-11"
-        },
-        {
-          "title": "Grok Build coding agent leaks oodles of confidential info, some belonging to SpaceXSI",
-          "source": "Ars Technica AI",
-          "link": "https://arstechnica.com/security/2026/11/grok-build-coding-agent-leaks-oodles-of-confidential-info-some-belonging-to-spacexsi/",
-          "date": "2026-11-10"
         }
       ]
     },
     {
-      "label": "MCP / tool-connected assistants",
+      "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Fine-grained access control for Amazon Bedrock Managed Knowledge Base tools",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/fine-grained-access-control-for-amazon-bedrock-managed-knowledge-base-tools/",
-          "date": "2026-11-12"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Build autonomous AI agents with Amazon Bedrock and Spring AI",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/build-autonomous-ai-agents-with-amazon-bedrock-and-spring-ai/",
+          "title": "AI chatbots are recommending fake retail websites, study finds",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1032020/gemini-chatgpt-perplexity-shopping-test-risky-fake-websites-citations",
           "date": "2026-11-12"
         },
         {
-          "title": "OpenAI Codex on Amazon Bedrock",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/openai-codex-on-amazon-bedrock/",
+          "title": "ChatGPT Plus for veterans and servicemembers",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/chatgpt-plus-for-veterans",
           "date": "2026-11-11"
         },
         {
-          "title": "Running AV Reasoning Models Within Onboard Compute and Latency Limits",
-          "source": "NVIDIA Developer",
-          "link": "https://developer.nvidia.com/blog/running-av-reasoning-models-within-onboard-compute-and-latency-limits/",
+          "title": "Helping caregivers use AI in everyday life",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/helping-caregivers-use-ai-in-everyday-life",
           "date": "2026-11-10"
         }
       ]
