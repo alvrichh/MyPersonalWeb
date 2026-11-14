@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-13T15:52:33.381Z",
+  "generatedAt": "2026-11-14T14:43:13.844Z",
   "candidates": [
     {
       "label": "Claude research and documentation flow",
@@ -10,13 +10,13 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-11-13"
+          "date": "2026-11-14"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-11-13"
+          "date": "2026-11-14"
         },
         {
           "title": "Claude’s Duet agent is a little neurotic and surprisingly helpful",
@@ -35,43 +35,43 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
-          "date": "2026-11-13"
+          "date": "2026-11-14"
         },
         {
-          "title": "Claude’s Duet agent is a little neurotic and surprisingly helpful",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1032518/claude-duet-ai-agent-hands-on",
-          "date": "2026-11-13"
-        },
-        {
-          "title": "How Natera designed an agentic AI system for lab ops with Amazon Bedrock AgentCore",
+          "title": "Route coding agent requests to the right model on Amazon Bedrock with NVIDIA NeMo Switchyard",
           "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/how-natera-designed-an-agentic-ai-system-for-lab-ops-with-amazon-bedrock-agentcore/",
-          "date": "2026-11-12"
+          "link": "https://aws.amazon.com/blogs/machine-learning/route-coding-agent-requests-to-the-right-model-on-amazon-bedrock-with-nvidia-nemo-switchyard/",
+          "date": "2026-11-13"
+        },
+        {
+          "title": "Upcoming deprecation of selected GitHub Copilot models in December",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-13-upcoming-deprecation-of-selected-github-copilot-models-in-december",
+          "date": "2026-11-13"
         }
       ]
     },
     {
-      "label": "Gemini multimodal exploration",
+      "label": "AI coding assistant workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Google rolls out Gemini 4 Hydrogen, finally replacing 3.8 Flash",
-          "source": "Ars Technica AI",
-          "link": "https://arstechnica.com/google/2026/11/google-rolls-out-gemini-4-hydrogen-finally-replacing-3-8-flash/",
-          "date": "2026-11-12"
+          "title": "Route coding agent requests to the right model on Amazon Bedrock with NVIDIA NeMo Switchyard",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/route-coding-agent-requests-to-the-right-model-on-amazon-bedrock-with-nvidia-nemo-switchyard/",
+          "date": "2026-11-13"
         },
         {
-          "title": "Google pushes privacy angle as Gemini-powered smartglasses debut starting at $395",
-          "source": "Ars Technica AI",
-          "link": "https://arstechnica.com/google/2026/11/google-pushes-privacy-angle-as-gemini-powered-smartglasses-debut-starting-at-395/",
-          "date": "2026-11-12"
+          "title": "Gemini 4 Hydrogen in GitHub Copilot",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-13-gemini-4-hydrogen-in-github-copilot",
+          "date": "2026-11-13"
         },
         {
-          "title": "Google Search gets a major upgrade with Gemini 4 Hydrogen",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/products-and-platforms/products/search/gemini-4-hydrogen-search-upgrade/",
+          "title": "How Amplitude ships product improvements in 1–2 days with OpenAI",
+          "source": "OpenAI News",
+          "link": "https://openai.com/business/customer-stories/amplitude",
           "date": "2026-11-12"
         }
       ]
@@ -82,10 +82,10 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Building a self-service LLM gateway with Amazon Bedrock and LiteLLM",
+          "title": "Cost attribution and controls for AI developer and productivity tools on Amazon Bedrock",
           "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/building-a-self-service-llm-gateway-with-amazon-bedrock-and-litellm/",
-          "date": "2026-11-12"
+          "link": "https://aws.amazon.com/blogs/machine-learning/cost-attribution-and-controls-for-ai-developer-and-productivity-tools-on-amazon-bedrock/",
+          "date": "2026-11-13"
         },
         {
           "title": "Running AV Reasoning Models Within Onboard Compute and Latency Limits",
@@ -102,27 +102,52 @@
       ]
     },
     {
-      "label": "AI coding assistant workflows",
+      "label": "GitHub Copilot developer loop",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Migrate to Amazon Bedrock Managed Knowledge Base with your coding agent",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/migrate-to-amazon-bedrock-managed-knowledge-base-with-your-coding-agent/",
+          "title": "Upcoming deprecation of selected GitHub Copilot models in December",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-13-upcoming-deprecation-of-selected-github-copilot-models-in-december",
+          "date": "2026-11-13"
+        },
+        {
+          "title": "GitHub Enterprise Server support in the GitHub Copilot app",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-13-github-enterprise-server-support-in-the-github-copilot-app",
+          "date": "2026-11-13"
+        },
+        {
+          "title": "Gemini 4 Hydrogen in GitHub Copilot",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-13-gemini-4-hydrogen-in-github-copilot",
+          "date": "2026-11-13"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Gemini 4 Hydrogen in GitHub Copilot",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-13-gemini-4-hydrogen-in-github-copilot",
+          "date": "2026-11-13"
+        },
+        {
+          "title": "Google rolls out Gemini 4 Hydrogen, finally replacing 3.8 Flash",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/google/2026/11/google-rolls-out-gemini-4-hydrogen-finally-replacing-3-8-flash/",
           "date": "2026-11-12"
         },
         {
-          "title": "How Amplitude ships product improvements in 1–2 days with OpenAI",
-          "source": "OpenAI News",
-          "link": "https://openai.com/business/customer-stories/amplitude",
+          "title": "Google pushes privacy angle as Gemini-powered smartglasses debut starting at $395",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/google/2026/11/google-pushes-privacy-angle-as-gemini-powered-smartglasses-debut-starting-at-395/",
           "date": "2026-11-12"
-        },
-        {
-          "title": "Browse tools.simonwillison.net by tag",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/11/tools-tags/",
-          "date": "2026-11-11"
         }
       ]
     },
@@ -132,47 +157,22 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "AI chatbots are recommending fake retail websites, study finds",
+          "title": "Introducing ChatGPT Wallet",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/introducing-chatgpt-wallet",
+          "date": "2026-11-13"
+        },
+        {
+          "title": "ChatGPT Wallet lets OpenAI’s Dots agents make purchases for you",
           "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1032020/gemini-chatgpt-perplexity-shopping-test-risky-fake-websites-citations",
-          "date": "2026-11-12"
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1033425/openai-chatgpt-wallet",
+          "date": "2026-11-13"
         },
         {
           "title": "ChatGPT Plus for veterans and servicemembers",
           "source": "OpenAI News",
           "link": "https://openai.com/index/chatgpt-plus-for-veterans",
           "date": "2026-11-11"
-        },
-        {
-          "title": "Helping caregivers use AI in everyday life",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/helping-caregivers-use-ai-in-everyday-life",
-          "date": "2026-11-10"
-        }
-      ]
-    },
-    {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "GitHub App support for Enterprise Copilot seat management",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-10-github-app-support-for-enterprise-copilot-seat-management",
-          "date": "2026-11-11"
-        },
-        {
-          "title": "Gemini 4 Carbon in GitHub Copilot",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-10-gemini-4-carbon-in-github-copilot",
-          "date": "2026-11-10"
-        },
-        {
-          "title": "C++ language server now auto-configures MSBuild builds",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-10-c-language-server-now-auto-configures-msbuild-builds",
-          "date": "2026-11-10"
         }
       ]
     },
