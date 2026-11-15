@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-14T14:43:13.844Z",
-  "date": "2026-11-14",
+  "generatedAt": "2026-11-15T15:14:59.444Z",
+  "date": "2026-11-15",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
@@ -9,7 +9,7 @@
     {
       "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
       "source": "Anthropic News",
-      "date": "2026-11-14",
+      "date": "2026-11-15",
       "url": "https://www.anthropic.com/news/expanding-partnership-gsa",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -20,7 +20,7 @@
     {
       "title": "Donating Agent Skills to the Agentic AI Foundation",
       "source": "Anthropic News",
-      "date": "2026-11-14",
+      "date": "2026-11-15",
       "url": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -32,7 +32,7 @@
     {
       "title": "Introducing the Anthropic Cyber Mission",
       "source": "Anthropic News",
-      "date": "2026-11-14",
+      "date": "2026-11-15",
       "url": "https://www.anthropic.com/news/anthropic-cyber-mission",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -43,13 +43,37 @@
     {
       "title": "Security",
       "source": "Anthropic News",
-      "date": "2026-11-14",
+      "date": "2026-11-15",
       "url": "https://www.anthropic.com/news/security",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
         "Claude"
       ],
       "image": "https://assets.claude.com/6d4a0d28992ade92d6fa63646fd9c9d318245c6c.jpg"
+    },
+    {
+      "title": "datasette-llm 0.1a11",
+      "source": "Simon Willison",
+      "date": "2026-11-14",
+      "url": "https://simonwillison.net/2026/Nov/14/datasette-llm/",
+      "summary": "Release: datasette-llm 0.1a11 datasette-llm is the intermediate plugin for Datasette that supports configuring LLMs for use with other Datasette plugins. This release adds support for OpenAI-compatible endpoints, so you ...",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Models"
+      ],
+      "image": "https://static.simonwillison.net/static/2026/lmstudio-datasette-agent.webp"
+    },
+    {
+      "title": "The OpenAI board member who fired Sam Altman says we still can’t trust AI CEOs",
+      "source": "The Verge AI",
+      "date": "2026-11-14",
+      "url": "https://www.theverge.com/podcast/1032907/helen-toner-openai-cset-ai-safety-policy-interview",
+      "summary": "Today, I’m talking with Helen Toner, the executive director of the Center for Security and Emerging Technology at Georgetown University. This episode is part two of our series on AI in real life. Helen is a well-known fi...",
+      "tags": [
+        "ChatGPT"
+      ],
+      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/11/DCD-Helen-Toner.jpg?quality=90&strip=all&crop=0,0,100,100"
     },
     {
       "title": "Production MLOps at GS Caltex with Amazon SageMaker Canvas, part 1",
@@ -218,30 +242,6 @@
         "ChatGPT"
       ],
       "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/10/STKS539_AI_AGENTS_SHOPPING_B.jpg?quality=90&strip=all&crop=0,0,100,100"
-    },
-    {
-      "title": "Claude’s Duet agent is a little neurotic and surprisingly helpful",
-      "source": "The Verge AI",
-      "date": "2026-11-13",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1032518/claude-duet-ai-agent-hands-on",
-      "summary": "Normally, the products I test don't offer to help me write up my experience with them. Duet is different. Claude Duet is Anthropic's AI agent for consumers, the latest attempt by an AI company to try to convince us that ...",
-      "tags": [
-        "Agents",
-        "Claude",
-        "Dev Tools"
-      ],
-      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/11/DSC04398_processed.jpg?quality=90&strip=all&crop=0,0,100,100"
-    },
-    {
-      "title": "Google rolls out Gemini 4 Hydrogen, finally replacing 3.8 Flash",
-      "source": "Ars Technica AI",
-      "date": "2026-11-12",
-      "url": "https://arstechnica.com/google/2026/11/google-rolls-out-gemini-4-hydrogen-finally-replacing-3-8-flash/",
-      "summary": "Gemini 4 Hydrogen isn't getting a slow, security-conscious release like Carbon and Argon.",
-      "tags": [
-        "Gemini"
-      ],
-      "image": "https://cdn.arstechnica.net/wp-content/uploads/2026/04/gemini-general-6-1152x648.jpg"
     }
   ],
   "candidates": [
@@ -254,13 +254,13 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-11-14"
+          "date": "2026-11-15"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-11-14"
+          "date": "2026-11-15"
         },
         {
           "title": "Claude’s Duet agent is a little neurotic and surprisingly helpful",
@@ -279,18 +279,18 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
+          "date": "2026-11-15"
+        },
+        {
+          "title": "datasette-llm 0.1a11",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Nov/14/datasette-llm/",
           "date": "2026-11-14"
         },
         {
           "title": "Route coding agent requests to the right model on Amazon Bedrock with NVIDIA NeMo Switchyard",
           "source": "AWS Machine Learning",
           "link": "https://aws.amazon.com/blogs/machine-learning/route-coding-agent-requests-to-the-right-model-on-amazon-bedrock-with-nvidia-nemo-switchyard/",
-          "date": "2026-11-13"
-        },
-        {
-          "title": "Upcoming deprecation of selected GitHub Copilot models in December",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-13-upcoming-deprecation-of-selected-github-copilot-models-in-december",
           "date": "2026-11-13"
         }
       ]
