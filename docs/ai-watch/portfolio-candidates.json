@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-14T14:43:13.844Z",
+  "generatedAt": "2026-11-15T15:14:59.444Z",
   "candidates": [
     {
       "label": "Claude research and documentation flow",
@@ -10,13 +10,13 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-11-14"
+          "date": "2026-11-15"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-11-14"
+          "date": "2026-11-15"
         },
         {
           "title": "Claude’s Duet agent is a little neurotic and surprisingly helpful",
@@ -35,18 +35,18 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
+          "date": "2026-11-15"
+        },
+        {
+          "title": "datasette-llm 0.1a11",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Nov/14/datasette-llm/",
           "date": "2026-11-14"
         },
         {
           "title": "Route coding agent requests to the right model on Amazon Bedrock with NVIDIA NeMo Switchyard",
           "source": "AWS Machine Learning",
           "link": "https://aws.amazon.com/blogs/machine-learning/route-coding-agent-requests-to-the-right-model-on-amazon-bedrock-with-nvidia-nemo-switchyard/",
-          "date": "2026-11-13"
-        },
-        {
-          "title": "Upcoming deprecation of selected GitHub Copilot models in December",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-13-upcoming-deprecation-of-selected-github-copilot-models-in-december",
           "date": "2026-11-13"
         }
       ]

@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-11-14
+# Daily AI maintenance report — 2026-11-15
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -17,24 +17,30 @@ This file is generated automatically by the daily maintenance workflow. It updat
 - NVIDIA Developer: OK (8 relevant items)
 - Ars Technica AI: OK (8 relevant items)
 - MIT Technology Review AI: OK (3 relevant items)
-- The Verge AI: OK (4 relevant items)
+- The Verge AI: OK (5 relevant items)
 
 ## Relevant AI updates
 
-- **Expanding our partnership with GSA to bring Claude to all levels of government** — Anthropic News · 2026-11-14
+- **Expanding our partnership with GSA to bring Claude to all levels of government** — Anthropic News · 2026-11-15
   https://www.anthropic.com/news/expanding-partnership-gsa
-- **Donating Agent Skills to the Agentic AI Foundation** — Anthropic News · 2026-11-14
+- **Donating Agent Skills to the Agentic AI Foundation** — Anthropic News · 2026-11-15
   https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation
-- **Introducing the Anthropic Cyber Mission** — Anthropic News · 2026-11-14
+- **Introducing the Anthropic Cyber Mission** — Anthropic News · 2026-11-15
   https://www.anthropic.com/news/anthropic-cyber-mission
-- **Security** — Anthropic News · 2026-11-14
+- **Security** — Anthropic News · 2026-11-15
   https://www.anthropic.com/news/security
-- **Expanding the Cyber Verification Program** — Anthropic News · 2026-11-14
+- **Expanding the Cyber Verification Program** — Anthropic News · 2026-11-15
   https://www.anthropic.com/news/cyber-verification-program
-- **Barclays scales Claude to upgrade operations and improve client experience** — Anthropic News · 2026-11-14
+- **Barclays scales Claude to upgrade operations and improve client experience** — Anthropic News · 2026-11-15
   https://www.anthropic.com/news/barclays-scales-claude
-- **Partnering with Accenture on embedded evaluation** — Anthropic News · 2026-11-14
+- **Partnering with Accenture on embedded evaluation** — Anthropic News · 2026-11-15
   https://www.anthropic.com/news/accenture-embedded-evaluation
+- **datasette-llm 0.1a11** — Simon Willison · 2026-11-14
+  https://simonwillison.net/2026/Nov/14/datasette-llm/
+- **datasette-vega 0.7** — Simon Willison · 2026-11-14
+  https://simonwillison.net/2026/Nov/14/datasette-vega/
+- **The OpenAI board member who fired Sam Altman says we still can’t trust AI CEOs** — The Verge AI · 2026-11-14
+  https://www.theverge.com/podcast/1032907/helen-toner-openai-cset-ai-safety-policy-interview
 - **Production MLOps at GS Caltex with Amazon SageMaker Canvas, part 1** — AWS Machine Learning · 2026-11-13
   https://aws.amazon.com/blogs/machine-learning/production-mlops-at-gs-caltex-with-amazon-sagemaker-canvas-part-1/
 - **Route coding agent requests to the right model on Amazon Bedrock with NVIDIA NeMo Switchyard** — AWS Machine Learning · 2026-11-13
@@ -153,10 +159,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/introducing-businesses-chatgpt
 - **llm-gemini 0.36** — Simon Willison · 2026-11-10
   https://simonwillison.net/2026/Nov/10/llm-gemini/
-- **Introducing Our Smallest, Most Efficient Model: Muse Ember** — Simon Willison · 2026-11-10
-  https://simonwillison.net/2026/Nov/10/muse-ember/
-- **Quoting Prompting Claude Fable 5.2** — Simon Willison · 2026-11-10
-  https://simonwillison.net/2026/Nov/10/prompting-claude-fable-52/
 - **Claude Code is accidentally exposing secrets all over GitHub** — Ars Technica AI · 2026-11-09
   https://arstechnica.com/ai/2026/11/claude-code-settings-files-expose-thousands-of-secrets-on-github/
 - **Gemini Robotics 2.5 accelerates real-world general dexterity** — Google DeepMind · 2026-11-09
@@ -179,8 +181,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://azure.microsoft.com/en-us/blog/stop-treating-agents-as-one-off-projects-and-start-running-them-as-a-continuous-discipline/
 - **Gemini Omni 1.2 Flash: Fast and cost-effective with longer clips** — Google AI Blog · 2026-11-05
   https://blog.google/innovation-and-ai/technology/developers-tools/introducing-gemini-omni-1-2-flash/
-- **Gemini Omni 1.2 Flash: Fast and cost-effective with longer clips** — Google DeepMind · 2026-11-05
-  https://deepmind.google/blog/gemini-omni-12-flash-fast-and-cost-effective-with-longer-clips/
 
 ## Portfolio candidates
 
