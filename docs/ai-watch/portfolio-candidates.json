@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-15T15:14:59.444Z",
+  "generatedAt": "2026-11-16T17:50:57.983Z",
   "candidates": [
     {
       "label": "Claude research and documentation flow",
@@ -10,19 +10,19 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-11-15"
+          "date": "2026-11-16"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-11-15"
+          "date": "2026-11-16"
         },
         {
-          "title": "Claude’s Duet agent is a little neurotic and surprisingly helpful",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1032518/claude-duet-ai-agent-hands-on",
-          "date": "2026-11-13"
+          "title": "datasette-maplibre 0.1a0",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Nov/15/datasette-maplibre/",
+          "date": "2026-11-15"
         }
       ]
     },
@@ -35,19 +35,19 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
-          "date": "2026-11-15"
+          "date": "2026-11-16"
         },
         {
-          "title": "datasette-llm 0.1a11",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/14/datasette-llm/",
-          "date": "2026-11-14"
-        },
-        {
-          "title": "Route coding agent requests to the right model on Amazon Bedrock with NVIDIA NeMo Switchyard",
+          "title": "Get answers from tables with tabular search in Amazon Bedrock Managed Knowledge Base",
           "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/route-coding-agent-requests-to-the-right-model-on-amazon-bedrock-with-nvidia-nemo-switchyard/",
-          "date": "2026-11-13"
+          "link": "https://aws.amazon.com/blogs/machine-learning/get-answers-from-tables-with-tabular-search-in-amazon-bedrock-managed-knowledge-base/",
+          "date": "2026-11-16"
+        },
+        {
+          "title": "Use prompt caching with open-weight models on Amazon Bedrock",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/use-prompt-caching-with-open-weight-models-on-amazon-bedrock/",
+          "date": "2026-11-16"
         }
       ]
     },
@@ -56,6 +56,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Use prompt caching with open-weight models on Amazon Bedrock",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/use-prompt-caching-with-open-weight-models-on-amazon-bedrock/",
+          "date": "2026-11-16"
+        },
         {
           "title": "Route coding agent requests to the right model on Amazon Bedrock with NVIDIA NeMo Switchyard",
           "source": "AWS Machine Learning",
@@ -67,11 +73,55 @@
           "source": "GitHub Changelog",
           "link": "https://github.blog/changelog/2026-11-13-gemini-4-hydrogen-in-github-copilot",
           "date": "2026-11-13"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Broadening access to AI for scientists",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/expanding-chatgpt-for-academic-researchers",
+          "date": "2026-11-16"
         },
         {
-          "title": "How Amplitude ships product improvements in 1–2 days with OpenAI",
+          "title": "Science at the Frontier: How scientists use ChatGPT",
           "source": "OpenAI News",
-          "link": "https://openai.com/business/customer-stories/amplitude",
+          "link": "https://openai.com/index/science-at-the-frontier",
+          "date": "2026-11-16"
+        },
+        {
+          "title": "LVMH’s Media Division announces strategic partnership with OpenAI",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/lvmh-media-division-partnership",
+          "date": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Google Maps can now create trip itineraries for you",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/1034110/google-ask-maps-ai-trip-planning",
+          "date": "2026-11-16"
+        },
+        {
+          "title": "Gemini 4 Hydrogen in GitHub Copilot",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-13-gemini-4-hydrogen-in-github-copilot",
+          "date": "2026-11-13"
+        },
+        {
+          "title": "Google rolls out Gemini 4 Hydrogen, finally replacing 3.8 Flash",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/google/2026/11/google-rolls-out-gemini-4-hydrogen-finally-replacing-3-8-flash/",
           "date": "2026-11-12"
         }
       ]
@@ -123,56 +173,6 @@
           "source": "GitHub Changelog",
           "link": "https://github.blog/changelog/2026-11-13-gemini-4-hydrogen-in-github-copilot",
           "date": "2026-11-13"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Gemini 4 Hydrogen in GitHub Copilot",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-13-gemini-4-hydrogen-in-github-copilot",
-          "date": "2026-11-13"
-        },
-        {
-          "title": "Google rolls out Gemini 4 Hydrogen, finally replacing 3.8 Flash",
-          "source": "Ars Technica AI",
-          "link": "https://arstechnica.com/google/2026/11/google-rolls-out-gemini-4-hydrogen-finally-replacing-3-8-flash/",
-          "date": "2026-11-12"
-        },
-        {
-          "title": "Google pushes privacy angle as Gemini-powered smartglasses debut starting at $395",
-          "source": "Ars Technica AI",
-          "link": "https://arstechnica.com/google/2026/11/google-pushes-privacy-angle-as-gemini-powered-smartglasses-debut-starting-at-395/",
-          "date": "2026-11-12"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Introducing ChatGPT Wallet",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/introducing-chatgpt-wallet",
-          "date": "2026-11-13"
-        },
-        {
-          "title": "ChatGPT Wallet lets OpenAI’s Dots agents make purchases for you",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1033425/openai-chatgpt-wallet",
-          "date": "2026-11-13"
-        },
-        {
-          "title": "ChatGPT Plus for veterans and servicemembers",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/chatgpt-plus-for-veterans",
-          "date": "2026-11-11"
         }
       ]
     },
