@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-15T15:14:59.444Z",
-  "date": "2026-11-15",
+  "generatedAt": "2026-11-16T17:50:57.983Z",
+  "date": "2026-11-16",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
@@ -9,7 +9,7 @@
     {
       "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
       "source": "Anthropic News",
-      "date": "2026-11-15",
+      "date": "2026-11-16",
       "url": "https://www.anthropic.com/news/expanding-partnership-gsa",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -20,7 +20,7 @@
     {
       "title": "Donating Agent Skills to the Agentic AI Foundation",
       "source": "Anthropic News",
-      "date": "2026-11-15",
+      "date": "2026-11-16",
       "url": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -32,7 +32,7 @@
     {
       "title": "Introducing the Anthropic Cyber Mission",
       "source": "Anthropic News",
-      "date": "2026-11-15",
+      "date": "2026-11-16",
       "url": "https://www.anthropic.com/news/anthropic-cyber-mission",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -43,7 +43,7 @@
     {
       "title": "Security",
       "source": "Anthropic News",
-      "date": "2026-11-15",
+      "date": "2026-11-16",
       "url": "https://www.anthropic.com/news/security",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -52,196 +52,195 @@
       "image": "https://assets.claude.com/6d4a0d28992ade92d6fa63646fd9c9d318245c6c.jpg"
     },
     {
-      "title": "datasette-llm 0.1a11",
-      "source": "Simon Willison",
-      "date": "2026-11-14",
-      "url": "https://simonwillison.net/2026/Nov/14/datasette-llm/",
-      "summary": "Release: datasette-llm 0.1a11 datasette-llm is the intermediate plugin for Datasette that supports configuring LLMs for use with other Datasette plugins. This release adds support for OpenAI-compatible endpoints, so you ...",
-      "tags": [
-        "Agents",
-        "ChatGPT",
-        "Models"
-      ],
-      "image": "https://static.simonwillison.net/static/2026/lmstudio-datasette-agent.webp"
-    },
-    {
-      "title": "The OpenAI board member who fired Sam Altman says we still can’t trust AI CEOs",
-      "source": "The Verge AI",
-      "date": "2026-11-14",
-      "url": "https://www.theverge.com/podcast/1032907/helen-toner-openai-cset-ai-safety-policy-interview",
-      "summary": "Today, I’m talking with Helen Toner, the executive director of the Center for Security and Emerging Technology at Georgetown University. This episode is part two of our series on AI in real life. Helen is a well-known fi...",
-      "tags": [
-        "ChatGPT"
-      ],
-      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/11/DCD-Helen-Toner.jpg?quality=90&strip=all&crop=0,0,100,100"
-    },
-    {
-      "title": "Production MLOps at GS Caltex with Amazon SageMaker Canvas, part 1",
+      "title": "Modernizing mainframe Assembler to Java using Amazon Bedrock and AWS Transform",
       "source": "AWS Machine Learning",
-      "date": "2026-11-13",
-      "url": "https://aws.amazon.com/blogs/machine-learning/production-mlops-at-gs-caltex-with-amazon-sagemaker-canvas-part-1/",
-      "summary": "GS Caltex connects Amazon SageMaker Canvas to Amazon SageMaker Pipelines so process engineers' no-code models run in production. This post shows how ML engineers reuse validated preprocessing flows and models, cutting de...",
-      "tags": [
-        "Dev Tools",
-        "Models"
-      ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/10/ML-21878-1.png"
-    },
-    {
-      "title": "Route coding agent requests to the right model on Amazon Bedrock with NVIDIA NeMo Switchyard",
-      "source": "AWS Machine Learning",
-      "date": "2026-11-13",
-      "url": "https://aws.amazon.com/blogs/machine-learning/route-coding-agent-requests-to-the-right-model-on-amazon-bedrock-with-nvidia-nemo-switchyard/",
-      "summary": "Coding agents work in tasks, and the number that matters is cost per solved task, not price per token. In this post, you use the AWS CDK to deploy LiteLLM with the NVIDIA NeMo Switchyard routing plugin on Amazon Bedrock,...",
-      "tags": [
-        "Agents",
-        "Dev Tools",
-        "Models"
-      ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/11/ML-22318-1.png"
-    },
-    {
-      "title": "OpenFold3 on Amazon SageMaker JumpStart: Predict biomolecular structures",
-      "source": "AWS Machine Learning",
-      "date": "2026-11-13",
-      "url": "https://aws.amazon.com/blogs/machine-learning/openfold3-on-amazon-sagemaker-jumpstart-predict-biomolecular-structures/",
-      "summary": "Deploy OpenFold3-preview from Amazon SageMaker JumpStart to predict 3D structures of proteins, DNA, RNA, and ligand complexes in your own AWS account. The post covers asynchronous inference, multi-GPU parallelism, bringi...",
+      "date": "2026-11-16",
+      "url": "https://aws.amazon.com/blogs/machine-learning/modernizing-mainframe-assembler-to-java-using-amazon-bedrock-and-aws-transform/",
+      "summary": "Legacy mainframe Assembler applications are costly to maintain and hard to staff. This post presents a multi-stage, AI-powered methodology using Amazon Bedrock, Kiro IDE, and AWS Transform to extract business rules, conv...",
       "tags": [
         "AI"
       ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/12/ML-22226-1.png"
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/10/ML-20283-1-1.png"
     },
     {
-      "title": "Cost-optimizing AssemblyAI speech-to-text inference on AWS with Amazon EC2 Spot",
+      "title": "Get answers from tables with tabular search in Amazon Bedrock Managed Knowledge Base",
       "source": "AWS Machine Learning",
-      "date": "2026-11-13",
-      "url": "https://aws.amazon.com/blogs/machine-learning/cost-optimizing-assemblyai-speech-to-text-inference-on-aws-with-amazon-ec2-spot/",
-      "summary": "Learn how AssemblyAI runs cost-optimized speech-to-text inference at scale on AWS, using Amazon ECS, Amazon EC2 Spot GPU instances, and an Amazon SQS-based retry architecture to achieve 70% cost savings while maintaining...",
+      "date": "2026-11-16",
+      "url": "https://aws.amazon.com/blogs/machine-learning/get-answers-from-tables-with-tabular-search-in-amazon-bedrock-managed-knowledge-base/",
+      "summary": "Amazon Bedrock Managed Knowledge Base now supports tabular search, so agentic retrieval can answer questions over CSV, XLSX, and XLS files. It looks up values and runs calculations across every relevant row, then combine...",
       "tags": [
-        "AI"
+        "Agents"
       ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/06/ML-20884-1.png"
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/10/ML-22293-1.png"
     },
     {
-      "title": "Upcoming deprecation of selected GitHub Copilot models in December",
-      "source": "GitHub Changelog",
-      "date": "2026-11-13",
-      "url": "https://github.blog/changelog/2026-11-13-upcoming-deprecation-of-selected-github-copilot-models-in-december",
-      "summary": "We will deprecate the following models across all GitHub Copilot experiences (including Copilot Chat, inline edits, ask and agent modes, and code completions) on December 14, 2026: Model Deprecation date… The post Upcomi...",
+      "title": "Use prompt caching with open-weight models on Amazon Bedrock",
+      "source": "AWS Machine Learning",
+      "date": "2026-11-16",
+      "url": "https://aws.amazon.com/blogs/machine-learning/use-prompt-caching-with-open-weight-models-on-amazon-bedrock/",
+      "summary": "Many generative AI applications resend the same long context on every request. Prompt caching lets open-weight models on Amazon Bedrock reuse it to reduce input cost and latency. This post shows implicit and explicit cac...",
       "tags": [
         "Agents",
-        "Copilot",
         "Dev Tools",
         "Models"
       ],
-      "image": "https://github.blog/wp-content/uploads/2026/11/645867806-878ea927-48c9-4765-a896-4a5f3d7b8f2e.jpg"
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/04/ML-22160-1.gif"
     },
     {
-      "title": "GitHub Enterprise Server support in the GitHub Copilot app",
+      "title": "Bulk start AI Scan for repositories",
       "source": "GitHub Changelog",
-      "date": "2026-11-13",
-      "url": "https://github.blog/changelog/2026-11-13-github-enterprise-server-support-in-the-github-copilot-app",
-      "summary": "You can now bring your work on GitHub Enterprise Server (GHES) into the GitHub Copilot app. Add your GHES account to work with remote repositories, issues, and pull requests. This… The post GitHub Enterprise Server suppo...",
-      "tags": [
-        "Copilot"
-      ],
-      "image": "https://github.com/user-attachments/assets/0db4bc3d-8d5c-456f-ac24-d6080eaad55f"
-    },
-    {
-      "title": "Gemini 4 Hydrogen in GitHub Copilot",
-      "source": "GitHub Changelog",
-      "date": "2026-11-13",
-      "url": "https://github.blog/changelog/2026-11-13-gemini-4-hydrogen-in-github-copilot",
-      "summary": "Gemini 4 Hydrogen, Google’s latest Flash model, is now generally available in GitHub Copilot. It is designed for fast, efficient agentic coding, tool use, and multistep workflows, with improved instruction… The post Gemi...",
-      "tags": [
-        "Agents",
-        "Copilot",
-        "Gemini",
-        "Dev Tools"
-      ],
-      "image": "https://github.blog/wp-content/uploads/2026/11/703838156-68e44341-f202-4a1d-8cec-072b5e8d1027.png"
-    },
-    {
-      "title": "Manage AI Scan for repositories using the REST API",
-      "source": "GitHub Changelog",
-      "date": "2026-11-13",
-      "url": "https://github.blog/changelog/2026-11-13-manage-ai-scan-for-repositories-using-the-rest-api",
-      "summary": "You can now turn GitHub code scanning’s AI Scan for repositories on or off with the REST API at the organization and repository levels. This public preview adds a repository_scan… The post Manage AI Scan for repositories...",
+      "date": "2026-11-16",
+      "url": "https://github.blog/changelog/2026-11-16-bulk-start-ai-scan-for-repositories",
+      "summary": "AI Scan for repositories finds security vulnerabilities on your repository’s default branch. It covers languages CodeQL doesn’t support and finds additional issues in languages CodeQL already analyzes. Findings appear in...",
       "tags": [
         "Dev Tools"
       ],
-      "image": "https://github.blog/wp-content/themes/github-2021-child/dist/img/social-v3-improvements.jpg"
+      "image": "https://github.blog/wp-content/uploads/2026/11/704888510-f6f002b4-825a-48c2-ad38-5256b8a3aafd.jpg"
     },
     {
-      "title": "llama.cpp v1.0.0 : A stronger foundation for the local AI ecosystem",
+      "title": "Hugging Face and OpenRouter join forces to make open-weight models easy to run",
       "source": "Hugging Face",
-      "date": "2026-11-13",
-      "url": "https://huggingface.co/blog/ggml-org/llama-cpp-v1",
+      "date": "2026-11-16",
+      "url": "https://huggingface.co/blog/openrouter",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
-        "AI"
+        "Models"
       ],
-      "image": "https://cdn-uploads.huggingface.co/production/uploads/63148d3b996c52bf0142cdbe/2PgU1GxpJX_LVORaP2RRy.png"
+      "image": "https://huggingface.co/blog/assets/openrouter/thumbnail.jpg"
     },
     {
-      "title": "Run Native DLA Inference in Python on NVIDIA Jetson AGX Orin Using cuDLA",
-      "source": "NVIDIA Developer",
-      "date": "2026-11-13",
-      "url": "https://developer.nvidia.com/blog/run-native-dla-inference-in-python-on-nvidia-jetson-agx-orin-using-cudla/",
-      "summary": "AI applications at the edge often need to run multiple neural networks within limited compute and power budgets. NVIDIA Deep Learning Accelerator (DLA)...",
+      "title": "Building trustworthy AI by fencing it in, not predicting it",
+      "source": "MIT Technology Review AI",
+      "date": "2026-11-16",
+      "url": "https://www.technologyreview.com/2026/11/16/1148565/building-trustworthy-ai-by-fencing-it-in-not-predicting-it/",
+      "summary": "In October this year, OpenAI disclosed that two of its AI agents had switched off the systems built to monitor them. One muted its own safety alerts after misreading an instruction not to send messages; the other removed...",
       "tags": [
+        "Agents",
+        "ChatGPT"
+      ],
+      "image": "https://wp.technologyreview.com/wp-content/uploads/2026/11/BA5098150_Post-NEXUS_MIT_1920x1080.jpg?w=840"
+    },
+    {
+      "title": "Building AI that can work across the enterprise",
+      "source": "MIT Technology Review AI",
+      "date": "2026-11-16",
+      "url": "https://www.technologyreview.com/2026/11/16/1146070/building-ai-that-can-work-across-the-enterprise/",
+      "summary": "For years, enterprises have approached AI as a series of discrete experiments. Now, as AI agents begin to move into the workflows that run the business, that model is starting to look inadequate. Organizations moving fro...",
+      "tags": [
+        "Agents",
+        "Automation",
+        "Models"
+      ],
+      "image": "https://wp.technologyreview.com/wp-content/uploads/2026/10/MITTRInfosysSAP-social-card.png?resize=1200,600"
+    },
+    {
+      "title": "Post-Training NVIDIA Nemotron to Increase Accuracy in Your Scientific Domain",
+      "source": "NVIDIA Developer",
+      "date": "2026-11-16",
+      "url": "https://developer.nvidia.com/blog/post-training-nvidia-nemotron-to-increase-accuracy-in-your-scientific-domain/",
+      "summary": "Agentic AI is reshaping scientific research and innovation. Researchers communicate complex scientific hypotheses in natural language and let autonomous agents...",
+      "tags": [
+        "Agents",
         "Dev Tools"
       ],
-      "image": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/08/dla-inference-768x432.jpg"
+      "image": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/11/image4-5-768x432.png"
     },
     {
-      "title": "When One GPU Isn’t Enough: Serving GLM-5.3 Across Two NVIDIA DGX Stations with vLLM",
+      "title": "NVIDIA Vera Rubin NVL72 Leads Agentic Inference Performance on MLPerf Endpoints v1.0",
       "source": "NVIDIA Developer",
-      "date": "2026-11-13",
-      "url": "https://developer.nvidia.com/blog/when-one-gpu-isnt-enough-serving-glm-5-3-across-two-nvidia-dgx-stations-with-vllm/",
-      "summary": "Running a frontier-scale model locally means keeping all its weights in GPU memory; the largest models no longer fit on one machine. Two NVIDIA DGX Stations...",
+      "date": "2026-11-16",
+      "url": "https://developer.nvidia.com/blog/nvidia-vera-rubin-nvl72-leads-agentic-inference-performance-on-mlperf-endpoints-v1-0/",
+      "summary": "Agentic workloads are demanding more from inference systems. AI agents carry growing conversation histories across turns and generate a mix of reasoning, tool...",
       "tags": [
+        "Agents",
         "Dev Tools",
         "Models"
       ],
-      "image": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/11/image3-3-768x432.png"
+      "image": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/11/mlperf-endpoints-vera-rubin-featured-768x432.png"
     },
     {
-      "title": "Introducing ChatGPT Wallet",
-      "source": "OpenAI News",
-      "date": "2026-11-13",
-      "url": "https://openai.com/index/introducing-chatgpt-wallet",
-      "summary": "Introducing ChatGPT Wallet, a secure way for agents in ChatGPT Work, Codex, and dots to complete purchases with user approval and existing card protections.",
+      "title": "NVIDIA Vera Rubin NVL72 Achieves up to 2x Blackwell Ultra Performance in MLPerf Training v6.1",
+      "source": "NVIDIA Developer",
+      "date": "2026-11-16",
+      "url": "https://developer.nvidia.com/blog/nvidia-vera-rubin-nvl72-achieves-up-to-2x-blackwell-ultra-performance-in-mlperf-training-v6-1/",
+      "summary": "As AI agents tackle increasingly complex workflows, reducing time-to-train is critical for rapidly iterating on both models and the agents they power. MLPerf...",
       "tags": [
         "Agents",
+        "Dev Tools",
+        "Automation",
+        "Models"
+      ],
+      "image": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/11/techblog_featured2_1520x855-768x432.jpg"
+    },
+    {
+      "title": "Broadening access to AI for scientists",
+      "source": "OpenAI News",
+      "date": "2026-11-16",
+      "url": "https://openai.com/index/expanding-chatgpt-for-academic-researchers",
+      "summary": "We’re expanding our ChatGPT for Academic Researchers program to offer 200,000 researchers worldwide free access to our frontier models.",
+      "tags": [
         "ChatGPT",
-        "Dev Tools"
+        "Models"
       ],
       "image": ""
     },
     {
-      "title": "Shield helps technicians hand off legacy portal work with OpenAI",
+      "title": "Science at the Frontier: How scientists use ChatGPT",
       "source": "OpenAI News",
-      "date": "2026-11-13",
-      "url": "https://openai.com/business/customer-stories/shield",
-      "summary": "Shield uses OpenAI to help IT technicians hand off work in legacy portals. Its Forge agents navigate systems so technicians can focus on issues needing their judgment.",
+      "date": "2026-11-16",
+      "url": "https://openai.com/index/science-at-the-frontier",
+      "summary": "Explore how more than 1,800 scientists use ChatGPT in research. See findings on daily workflows, reported productivity, and expectations for discovery.",
       "tags": [
-        "Agents",
-        "ChatGPT"
+        "ChatGPT",
+        "Automation"
       ],
       "image": ""
     },
     {
-      "title": "ChatGPT Wallet lets OpenAI’s Dots agents make purchases for you",
-      "source": "The Verge AI",
-      "date": "2026-11-13",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1033425/openai-chatgpt-wallet",
-      "summary": "After launching its Dots AI agents platform earlier this year, OpenAI is launching a wallet for the agents. ChatGPT Wallet is rolling out starting today for ChatGPT Pro subscribers in the US aged 18 and older using a US ...",
+      "title": "LVMH’s Media Division announces strategic partnership with OpenAI",
+      "source": "OpenAI News",
+      "date": "2026-11-16",
+      "url": "https://openai.com/index/lvmh-media-division-partnership",
+      "summary": "LVMH’s Media Division and OpenAI announce a partnership to support journalism with AI and make its publications more accessible through ChatGPT.",
       "tags": [
-        "Agents",
-        "ChatGPT"
+        "ChatGPT",
+        "Multimodal"
       ],
-      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/10/STKS539_AI_AGENTS_SHOPPING_B.jpg?quality=90&strip=all&crop=0,0,100,100"
+      "image": ""
+    },
+    {
+      "title": "Our first phase of embedded assessments",
+      "source": "OpenAI News",
+      "date": "2026-11-16",
+      "url": "https://openai.com/index/our-first-phase-of-embedded-assessments",
+      "summary": "OpenAI begins embedded assessments with Apollo Research, METR, and Transluce, and Goodfire to independently evaluate model alignment, safeguards, and monitoring systems.",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ],
+      "image": ""
+    },
+    {
+      "title": "Google Maps can now create trip itineraries for you",
+      "source": "The Verge AI",
+      "date": "2026-11-16",
+      "url": "https://www.theverge.com/tech/1034110/google-ask-maps-ai-trip-planning",
+      "summary": "Google is launching a new AI trip-planning feature for Maps that allows the app to create custom itineraries for you and provide real-time details about each stop. The update, which is rolling out to the Gemini-powered A...",
+      "tags": [
+        "Gemini"
+      ],
+      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/chorus/uploads/chorus_asset/file/25472454/STK270_GOOGLE_MAPS_D.png?quality=90&strip=all&crop=0,0,100,100"
+    },
+    {
+      "title": "The Nvidia scandal isn’t slowing down",
+      "source": "The Verge AI",
+      "date": "2026-11-16",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1031740/jensen-huang-nvidia-scandal-isnt-slowing-down",
+      "summary": "For years, Jensen Huang has had an almost unprecedented power to shape AI's advancement as Nvidia's CEO, cofounder, and president. As The Verge wrote last week, Nvidia's chips are \"the bedrock upon which advanced AI tech...",
+      "tags": [
+        "AI"
+      ],
+      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/08/STKP210_JENSEN_HUANG_D.jpg?quality=90&strip=all&crop=0,0,100,100"
     }
   ],
   "candidates": [
@@ -254,19 +253,19 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-11-15"
+          "date": "2026-11-16"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-11-15"
+          "date": "2026-11-16"
         },
         {
-          "title": "Claude’s Duet agent is a little neurotic and surprisingly helpful",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1032518/claude-duet-ai-agent-hands-on",
-          "date": "2026-11-13"
+          "title": "datasette-maplibre 0.1a0",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Nov/15/datasette-maplibre/",
+          "date": "2026-11-15"
         }
       ]
     },
@@ -279,19 +278,19 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
-          "date": "2026-11-15"
+          "date": "2026-11-16"
         },
         {
-          "title": "datasette-llm 0.1a11",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/14/datasette-llm/",
-          "date": "2026-11-14"
-        },
-        {
-          "title": "Route coding agent requests to the right model on Amazon Bedrock with NVIDIA NeMo Switchyard",
+          "title": "Get answers from tables with tabular search in Amazon Bedrock Managed Knowledge Base",
           "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/route-coding-agent-requests-to-the-right-model-on-amazon-bedrock-with-nvidia-nemo-switchyard/",
-          "date": "2026-11-13"
+          "link": "https://aws.amazon.com/blogs/machine-learning/get-answers-from-tables-with-tabular-search-in-amazon-bedrock-managed-knowledge-base/",
+          "date": "2026-11-16"
+        },
+        {
+          "title": "Use prompt caching with open-weight models on Amazon Bedrock",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/use-prompt-caching-with-open-weight-models-on-amazon-bedrock/",
+          "date": "2026-11-16"
         }
       ]
     },
@@ -300,6 +299,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Use prompt caching with open-weight models on Amazon Bedrock",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/use-prompt-caching-with-open-weight-models-on-amazon-bedrock/",
+          "date": "2026-11-16"
+        },
         {
           "title": "Route coding agent requests to the right model on Amazon Bedrock with NVIDIA NeMo Switchyard",
           "source": "AWS Machine Learning",
@@ -311,11 +316,55 @@
           "source": "GitHub Changelog",
           "link": "https://github.blog/changelog/2026-11-13-gemini-4-hydrogen-in-github-copilot",
           "date": "2026-11-13"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Broadening access to AI for scientists",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/expanding-chatgpt-for-academic-researchers",
+          "date": "2026-11-16"
         },
         {
-          "title": "How Amplitude ships product improvements in 1–2 days with OpenAI",
+          "title": "Science at the Frontier: How scientists use ChatGPT",
           "source": "OpenAI News",
-          "link": "https://openai.com/business/customer-stories/amplitude",
+          "link": "https://openai.com/index/science-at-the-frontier",
+          "date": "2026-11-16"
+        },
+        {
+          "title": "LVMH’s Media Division announces strategic partnership with OpenAI",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/lvmh-media-division-partnership",
+          "date": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Google Maps can now create trip itineraries for you",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/1034110/google-ask-maps-ai-trip-planning",
+          "date": "2026-11-16"
+        },
+        {
+          "title": "Gemini 4 Hydrogen in GitHub Copilot",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-13-gemini-4-hydrogen-in-github-copilot",
+          "date": "2026-11-13"
+        },
+        {
+          "title": "Google rolls out Gemini 4 Hydrogen, finally replacing 3.8 Flash",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/google/2026/11/google-rolls-out-gemini-4-hydrogen-finally-replacing-3-8-flash/",
           "date": "2026-11-12"
         }
       ]
@@ -367,56 +416,6 @@
           "source": "GitHub Changelog",
           "link": "https://github.blog/changelog/2026-11-13-gemini-4-hydrogen-in-github-copilot",
           "date": "2026-11-13"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Gemini 4 Hydrogen in GitHub Copilot",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-13-gemini-4-hydrogen-in-github-copilot",
-          "date": "2026-11-13"
-        },
-        {
-          "title": "Google rolls out Gemini 4 Hydrogen, finally replacing 3.8 Flash",
-          "source": "Ars Technica AI",
-          "link": "https://arstechnica.com/google/2026/11/google-rolls-out-gemini-4-hydrogen-finally-replacing-3-8-flash/",
-          "date": "2026-11-12"
-        },
-        {
-          "title": "Google pushes privacy angle as Gemini-powered smartglasses debut starting at $395",
-          "source": "Ars Technica AI",
-          "link": "https://arstechnica.com/google/2026/11/google-pushes-privacy-angle-as-gemini-powered-smartglasses-debut-starting-at-395/",
-          "date": "2026-11-12"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Introducing ChatGPT Wallet",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/introducing-chatgpt-wallet",
-          "date": "2026-11-13"
-        },
-        {
-          "title": "ChatGPT Wallet lets OpenAI’s Dots agents make purchases for you",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1033425/openai-chatgpt-wallet",
-          "date": "2026-11-13"
-        },
-        {
-          "title": "ChatGPT Plus for veterans and servicemembers",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/chatgpt-plus-for-veterans",
-          "date": "2026-11-11"
         }
       ]
     },
