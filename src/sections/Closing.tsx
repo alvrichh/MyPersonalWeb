@@ -151,6 +151,11 @@ export function Footer() {
       <div className="wrap footer-inner">
         <p>© <span suppressHydrationWarning>{new Date().getFullYear()}</span> Álvaro Rodríguez Molina</p>
         <p>{t('footer.note')}</p>
+        <nav className="footer-legal" aria-label={t('footer.legalNav')}>
+          <a href="./privacy.html">{t('footer.privacy')}</a>
+          <a href="./cookies.html">{t('footer.cookies')}</a>
+          <a href="./legal.html">{t('footer.legal')}</a>
+        </nav>
       </div>
     </footer>
   );

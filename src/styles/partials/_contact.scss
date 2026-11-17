@@ -104,6 +104,26 @@
   color: var(--muted);
 }
 
+/* Privacy, cookies and legal notice: the pages AdSense reviewers look for. */
+.footer-legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--rule);
+    text-underline-offset: 3px;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--ink);
+      text-decoration-color: currentColor;
+    }
+  }
+}
+
 /* Booking a call: its own line under the email, as the other quick way in. */
 .contact-call {
   display: flex;
