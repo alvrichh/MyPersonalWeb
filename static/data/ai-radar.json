@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-16T17:50:57.983Z",
-  "date": "2026-11-16",
+  "generatedAt": "2026-11-17T17:19:03.942Z",
+  "date": "2026-11-17",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
@@ -9,7 +9,7 @@
     {
       "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
       "source": "Anthropic News",
-      "date": "2026-11-16",
+      "date": "2026-11-17",
       "url": "https://www.anthropic.com/news/expanding-partnership-gsa",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -20,7 +20,7 @@
     {
       "title": "Donating Agent Skills to the Agentic AI Foundation",
       "source": "Anthropic News",
-      "date": "2026-11-16",
+      "date": "2026-11-17",
       "url": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -32,7 +32,7 @@
     {
       "title": "Introducing the Anthropic Cyber Mission",
       "source": "Anthropic News",
-      "date": "2026-11-16",
+      "date": "2026-11-17",
       "url": "https://www.anthropic.com/news/anthropic-cyber-mission",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -43,7 +43,7 @@
     {
       "title": "Security",
       "source": "Anthropic News",
-      "date": "2026-11-16",
+      "date": "2026-11-17",
       "url": "https://www.anthropic.com/news/security",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -52,50 +52,169 @@
       "image": "https://assets.claude.com/6d4a0d28992ade92d6fa63646fd9c9d318245c6c.jpg"
     },
     {
-      "title": "Modernizing mainframe Assembler to Java using Amazon Bedrock and AWS Transform",
-      "source": "AWS Machine Learning",
-      "date": "2026-11-16",
-      "url": "https://aws.amazon.com/blogs/machine-learning/modernizing-mainframe-assembler-to-java-using-amazon-bedrock-and-aws-transform/",
-      "summary": "Legacy mainframe Assembler applications are costly to maintain and hard to staff. This post presents a multi-stage, AI-powered methodology using Amazon Bedrock, Kiro IDE, and AWS Transform to extract business rules, conv...",
+      "title": "Google makes it easier to use Gemini without training AI on your data",
+      "source": "Ars Technica AI",
+      "date": "2026-11-17",
+      "url": "https://arstechnica.com/ai/2026/11/google-will-let-you-opt-out-of-ai-training-in-gemini-without-losing-your-history/",
+      "summary": "AI training and chat history will now have separate toggles in the Gemini activity settings.",
       "tags": [
-        "AI"
+        "Gemini"
       ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/10/ML-20283-1-1.png"
+      "image": "https://cdn.arstechnica.net/wp-content/uploads/2026/04/gemini-general-5-1152x648.jpg"
     },
     {
-      "title": "Get answers from tables with tabular search in Amazon Bedrock Managed Knowledge Base",
-      "source": "AWS Machine Learning",
-      "date": "2026-11-16",
-      "url": "https://aws.amazon.com/blogs/machine-learning/get-answers-from-tables-with-tabular-search-in-amazon-bedrock-managed-knowledge-base/",
-      "summary": "Amazon Bedrock Managed Knowledge Base now supports tabular search, so agentic retrieval can answer questions over CSV, XLSX, and XLS files. It looks up values and runs calculations across every relevant row, then combine...",
+      "title": "Grok Bot took unapproved actions, ignored orders to stop, and then denied it",
+      "source": "Ars Technica AI",
+      "date": "2026-11-17",
+      "url": "https://arstechnica.com/security/2026/11/grok-bot-took-unapproved-actions-ignored-orders-to-stop-and-then-denied-it/",
+      "summary": "AI agent takes unapproved actions even when laptop lid is closed and told not to.",
       "tags": [
         "Agents"
       ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/10/ML-22293-1.png"
+      "image": "https://cdn.arstechnica.net/wp-content/uploads/2026/11/grok-bot-barfs-code-1152x648.jpg"
     },
     {
-      "title": "Use prompt caching with open-weight models on Amazon Bedrock",
+      "title": "Your complete guide to AWS Quick at AWS re:Invent 2026",
       "source": "AWS Machine Learning",
-      "date": "2026-11-16",
-      "url": "https://aws.amazon.com/blogs/machine-learning/use-prompt-caching-with-open-weight-models-on-amazon-bedrock/",
-      "summary": "Many generative AI applications resend the same long context on every request. Prompt caching lets open-weight models on Amazon Bedrock reuse it to reduce input cost and latency. This post shows implicit and explicit cac...",
+      "date": "2026-11-17",
+      "url": "https://aws.amazon.com/blogs/machine-learning/your-complete-guide-to-aws-quick-at-aws-reinvent-2026/",
+      "summary": "AWS Quick gives your whole organization AI that knows your business, respects your security rules, and acts on your behalf. At AWS re:Invent 2026, customers including Allianz, Cox Automotive, and Southwest Airlines share...",
+      "tags": [
+        "AI"
+      ],
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/13/ML-22359-1.jpg"
+    },
+    {
+      "title": "How LoanPro built an agentic AI loan servicing assistant with Amazon Bedrock AgentCore",
+      "source": "AWS Machine Learning",
+      "date": "2026-11-17",
+      "url": "https://aws.amazon.com/blogs/machine-learning/how-loanpro-built-an-agentic-ai-loan-servicing-assistant-with-amazon-bedrock-agentcore/",
+      "summary": "LoanPro worked with AWS Partner AllCloud and the AWS Generative AI Innovation Center to build a multi-agent AI assistant on Amazon Bedrock and Amazon Bedrock AgentCore. It gives loan servicing agents instant borrower con...",
+      "tags": [
+        "Agents"
+      ],
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/11/ML-21891-1.png"
+    },
+    {
+      "title": "Responsible AI for agentic AI: A phased roadmap for platform and application teams",
+      "source": "AWS Machine Learning",
+      "date": "2026-11-17",
+      "url": "https://aws.amazon.com/blogs/machine-learning/responsible-ai-for-agentic-ai-a-phased-roadmap-for-platform-and-application-teams/",
+      "summary": "Enterprises adopting agentic AI at scale need platforms that embed responsible AI from the start. This post gives platform and application teams a three-phase roadmap (governance foundation, pilot deployment, and evaluat...",
+      "tags": [
+        "Agents"
+      ],
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/10/30/ML-21131-1.png"
+    },
+    {
+      "title": "How ArisGlobal scaled generative AI inference on Amazon Bedrock",
+      "source": "AWS Machine Learning",
+      "date": "2026-11-17",
+      "url": "https://aws.amazon.com/blogs/machine-learning/how-arisglobal-scaled-generative-ai-inference-on-amazon-bedrock/",
+      "summary": "ArisGlobal runs NavaX, its life-sciences AI engine, on Amazon Bedrock. By caching the shared prompt prefix instead of each per-case document, ArisGlobal cut effective input cost by about 50% and overall monthly inference...",
+      "tags": [
+        "AI"
+      ],
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/16/ML-21195-1.png"
+    },
+    {
+      "title": "Put Gemini to work for you",
+      "source": "Google AI Blog",
+      "date": "2026-11-17",
+      "url": "https://blog.google/innovation-and-ai/products/gemini-app/tasks-in-gemini-free-new-features/",
+      "summary": "Tasks in Gemini is now free of charge in six countries, with new features starting in the U.S. and deeper Google Workspace integration to get things done on your behalf.",
+      "tags": [
+        "Gemini"
+      ],
+      "image": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Hero_2784_x_1566.max-600x600.format-webp.webp"
+    },
+    {
+      "title": "Strengthening NATO and allied cyber defenses with AI",
+      "source": "OpenAI News",
+      "date": "2026-11-17",
+      "url": "https://openai.com/index/strengthening-nato-allied-cyber-defences-ai",
+      "summary": "How OpenAI is working with NATO and allied cyber agencies to help trusted defenders find vulnerabilities, test fixes and protect essential systems.",
+      "tags": [
+        "ChatGPT"
+      ],
+      "image": ""
+    },
+    {
+      "title": "Running the full server-side Datasette Python app in the browser with service workers and Pyodide",
+      "source": "Simon Willison",
+      "date": "2026-11-17",
+      "url": "https://simonwillison.net/2026/Nov/17/datasette-lite/",
+      "summary": "Datasette Lite is my port of the Datasette Python application to run directly in the browser using WebAssembly and Pyodide . I've released a complete rewrite of Datasette Lite using service workers, and it's now almost i...",
       "tags": [
         "Agents",
+        "Claude",
+        "Dev Tools"
+      ],
+      "image": "https://static.simonwillison.net/static/cors-allow/2026/datasette-maplibre.webp"
+    },
+    {
+      "title": "Quoting Go Proverbs",
+      "source": "Simon Willison",
+      "date": "2026-11-17",
+      "url": "https://simonwillison.net/2026/Nov/17/go-proverbs/",
+      "summary": "A little copying is better than a little dependency. &mdash; Go Proverbs , via Tags: go , programming",
+      "tags": [
+        "AI"
+      ],
+      "image": "https://simonwillison.net/2026/Nov/17/go-proverbs/"
+    },
+    {
+      "title": "GitHub Copilot weekly releases — November 9",
+      "source": "GitHub Changelog",
+      "date": "2026-11-16",
+      "url": "https://github.blog/changelog/2026-11-16-github-copilot-weekly-releases-november-9",
+      "summary": "This week, bring GitHub Enterprise Server repositories into the Copilot app and see which agent sessions need you first in VS Code. You can also try two new models, Claude… The post GitHub Copilot weekly releases — Novem...",
+      "tags": [
+        "Agents",
+        "Claude",
+        "Copilot",
+        "Dev Tools"
+      ],
+      "image": "https://github.blog/wp-content/uploads/2026/11/704388312-a81cb7a4-689b-4708-8038-6441ed0b733c.jpg"
+    },
+    {
+      "title": "GitHub Copilot models deprecated on November 16, 2026",
+      "source": "GitHub Changelog",
+      "date": "2026-11-16",
+      "url": "https://github.blog/changelog/2026-11-16-github-copilot-models-deprecated-on-november-16-2026",
+      "summary": "As of today, November 16, 2026, we have deprecated the following models across most GitHub Copilot experiences (including Copilot Chat, inline edits, ask and agent modes, and code completions). Note… The post GitHub Copi...",
+      "tags": [
+        "Agents",
+        "Copilot",
         "Dev Tools",
         "Models"
       ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/04/ML-22160-1.gif"
+      "image": "https://github.blog/wp-content/uploads/2026/11/708090845-dba83c99-f90a-44f8-b5dc-ea4d634a8dee.jpg"
     },
     {
-      "title": "Bulk start AI Scan for repositories",
+      "title": "Control where GitHub Copilot customizations come from",
       "source": "GitHub Changelog",
       "date": "2026-11-16",
-      "url": "https://github.blog/changelog/2026-11-16-bulk-start-ai-scan-for-repositories",
-      "summary": "AI Scan for repositories finds security vulnerabilities on your repository’s default branch. It covers languages CodeQL doesn’t support and finds additional issues in languages CodeQL already analyzes. Findings appear in...",
+      "url": "https://github.blog/changelog/2026-11-16-control-where-github-copilot-customizations-come-from",
+      "summary": "As an enterprise administrator, you can now require selected GitHub Copilot customizations to come from plugins or managed settings, rather than standalone user or project configuration. Combined with marketplace restric...",
       "tags": [
-        "Dev Tools"
+        "Copilot"
       ],
-      "image": "https://github.blog/wp-content/uploads/2026/11/704888510-f6f002b4-825a-48c2-ad38-5256b8a3aafd.jpg"
+      "image": "https://github.blog/wp-content/uploads/2026/11/703138145-4a20e6e7-211d-42bb-a45e-6a08d2ea3895.jpeg"
+    },
+    {
+      "title": "VS Code retires the Local harness in February 2027",
+      "source": "GitHub Changelog",
+      "date": "2026-11-16",
+      "url": "https://github.blog/changelog/2026-11-16-vs-code-retires-the-local-harness-in-february-2027",
+      "summary": "Visual Studio Code 1.146 deprecates the Local harness, the older software that coordinates the model, context, and tools for GitHub Copilot agent sessions in the editor. The Local harness will… The post VS Code retires t...",
+      "tags": [
+        "Agents",
+        "Copilot",
+        "Dev Tools",
+        "Models"
+      ],
+      "image": "https://github.blog/wp-content/uploads/2026/11/704252268-e600c177-84f0-438a-adfa-2b71cd22ea43.png"
     },
     {
       "title": "Hugging Face and OpenRouter join forces to make open-weight models easy to run",
@@ -109,138 +228,15 @@
       "image": "https://huggingface.co/blog/assets/openrouter/thumbnail.jpg"
     },
     {
-      "title": "Building trustworthy AI by fencing it in, not predicting it",
+      "title": "The open-source movement wants Jensen Huang back",
       "source": "MIT Technology Review AI",
       "date": "2026-11-16",
-      "url": "https://www.technologyreview.com/2026/11/16/1148565/building-trustworthy-ai-by-fencing-it-in-not-predicting-it/",
-      "summary": "In October this year, OpenAI disclosed that two of its AI agents had switched off the systems built to monitor them. One muted its own safety alerts after misreading an instruction not to send messages; the other removed...",
-      "tags": [
-        "Agents",
-        "ChatGPT"
-      ],
-      "image": "https://wp.technologyreview.com/wp-content/uploads/2026/11/BA5098150_Post-NEXUS_MIT_1920x1080.jpg?w=840"
-    },
-    {
-      "title": "Building AI that can work across the enterprise",
-      "source": "MIT Technology Review AI",
-      "date": "2026-11-16",
-      "url": "https://www.technologyreview.com/2026/11/16/1146070/building-ai-that-can-work-across-the-enterprise/",
-      "summary": "For years, enterprises have approached AI as a series of discrete experiments. Now, as AI agents begin to move into the workflows that run the business, that model is starting to look inadequate. Organizations moving fro...",
-      "tags": [
-        "Agents",
-        "Automation",
-        "Models"
-      ],
-      "image": "https://wp.technologyreview.com/wp-content/uploads/2026/10/MITTRInfosysSAP-social-card.png?resize=1200,600"
-    },
-    {
-      "title": "Post-Training NVIDIA Nemotron to Increase Accuracy in Your Scientific Domain",
-      "source": "NVIDIA Developer",
-      "date": "2026-11-16",
-      "url": "https://developer.nvidia.com/blog/post-training-nvidia-nemotron-to-increase-accuracy-in-your-scientific-domain/",
-      "summary": "Agentic AI is reshaping scientific research and innovation. Researchers communicate complex scientific hypotheses in natural language and let autonomous agents...",
-      "tags": [
-        "Agents",
-        "Dev Tools"
-      ],
-      "image": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/11/image4-5-768x432.png"
-    },
-    {
-      "title": "NVIDIA Vera Rubin NVL72 Leads Agentic Inference Performance on MLPerf Endpoints v1.0",
-      "source": "NVIDIA Developer",
-      "date": "2026-11-16",
-      "url": "https://developer.nvidia.com/blog/nvidia-vera-rubin-nvl72-leads-agentic-inference-performance-on-mlperf-endpoints-v1-0/",
-      "summary": "Agentic workloads are demanding more from inference systems. AI agents carry growing conversation histories across turns and generate a mix of reasoning, tool...",
-      "tags": [
-        "Agents",
-        "Dev Tools",
-        "Models"
-      ],
-      "image": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/11/mlperf-endpoints-vera-rubin-featured-768x432.png"
-    },
-    {
-      "title": "NVIDIA Vera Rubin NVL72 Achieves up to 2x Blackwell Ultra Performance in MLPerf Training v6.1",
-      "source": "NVIDIA Developer",
-      "date": "2026-11-16",
-      "url": "https://developer.nvidia.com/blog/nvidia-vera-rubin-nvl72-achieves-up-to-2x-blackwell-ultra-performance-in-mlperf-training-v6-1/",
-      "summary": "As AI agents tackle increasingly complex workflows, reducing time-to-train is critical for rapidly iterating on both models and the agents they power. MLPerf...",
-      "tags": [
-        "Agents",
-        "Dev Tools",
-        "Automation",
-        "Models"
-      ],
-      "image": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/11/techblog_featured2_1520x855-768x432.jpg"
-    },
-    {
-      "title": "Broadening access to AI for scientists",
-      "source": "OpenAI News",
-      "date": "2026-11-16",
-      "url": "https://openai.com/index/expanding-chatgpt-for-academic-researchers",
-      "summary": "We’re expanding our ChatGPT for Academic Researchers program to offer 200,000 researchers worldwide free access to our frontier models.",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ],
-      "image": ""
-    },
-    {
-      "title": "Science at the Frontier: How scientists use ChatGPT",
-      "source": "OpenAI News",
-      "date": "2026-11-16",
-      "url": "https://openai.com/index/science-at-the-frontier",
-      "summary": "Explore how more than 1,800 scientists use ChatGPT in research. See findings on daily workflows, reported productivity, and expectations for discovery.",
-      "tags": [
-        "ChatGPT",
-        "Automation"
-      ],
-      "image": ""
-    },
-    {
-      "title": "LVMH’s Media Division announces strategic partnership with OpenAI",
-      "source": "OpenAI News",
-      "date": "2026-11-16",
-      "url": "https://openai.com/index/lvmh-media-division-partnership",
-      "summary": "LVMH’s Media Division and OpenAI announce a partnership to support journalism with AI and make its publications more accessible through ChatGPT.",
-      "tags": [
-        "ChatGPT",
-        "Multimodal"
-      ],
-      "image": ""
-    },
-    {
-      "title": "Our first phase of embedded assessments",
-      "source": "OpenAI News",
-      "date": "2026-11-16",
-      "url": "https://openai.com/index/our-first-phase-of-embedded-assessments",
-      "summary": "OpenAI begins embedded assessments with Apollo Research, METR, and Transluce, and Goodfire to independently evaluate model alignment, safeguards, and monitoring systems.",
-      "tags": [
-        "ChatGPT",
-        "Models"
-      ],
-      "image": ""
-    },
-    {
-      "title": "Google Maps can now create trip itineraries for you",
-      "source": "The Verge AI",
-      "date": "2026-11-16",
-      "url": "https://www.theverge.com/tech/1034110/google-ask-maps-ai-trip-planning",
-      "summary": "Google is launching a new AI trip-planning feature for Maps that allows the app to create custom itineraries for you and provide real-time details about each stop. The update, which is rolling out to the Gemini-powered A...",
-      "tags": [
-        "Gemini"
-      ],
-      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/chorus/uploads/chorus_asset/file/25472454/STK270_GOOGLE_MAPS_D.png?quality=90&strip=all&crop=0,0,100,100"
-    },
-    {
-      "title": "The Nvidia scandal isn’t slowing down",
-      "source": "The Verge AI",
-      "date": "2026-11-16",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1031740/jensen-huang-nvidia-scandal-isnt-slowing-down",
-      "summary": "For years, Jensen Huang has had an almost unprecedented power to shape AI's advancement as Nvidia's CEO, cofounder, and president. As The Verge wrote last week, Nvidia's chips are \"the bedrock upon which advanced AI tech...",
+      "url": "https://www.technologyreview.com/2026/11/16/1148624/the-open-source-movement-wants-jensen-huang-back/",
+      "summary": "This story originally appeared in The Algorithm, our weekly newsletter on AI. To get stories like this in your inbox first, sign up here. On Friday, a petition to reinstate Jensen Huang as CEO of Nvidia began circulating...",
       "tags": [
         "AI"
       ],
-      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/08/STKP210_JENSEN_HUANG_D.jpg?quality=90&strip=all&crop=0,0,100,100"
+      "image": "https://wp.technologyreview.com/wp-content/uploads/2026/11/AP26289708196110.jpg?resize=1200,600"
     }
   ],
   "candidates": [
@@ -253,19 +249,19 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-11-16"
+          "date": "2026-11-17"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-11-16"
+          "date": "2026-11-17"
         },
         {
-          "title": "datasette-maplibre 0.1a0",
+          "title": "Running the full server-side Datasette Python app in the browser with service workers and Pyodide",
           "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/15/datasette-maplibre/",
-          "date": "2026-11-15"
+          "link": "https://simonwillison.net/2026/Nov/17/datasette-lite/",
+          "date": "2026-11-17"
         }
       ]
     },
@@ -278,19 +274,44 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
-          "date": "2026-11-16"
+          "date": "2026-11-17"
         },
         {
-          "title": "Get answers from tables with tabular search in Amazon Bedrock Managed Knowledge Base",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/get-answers-from-tables-with-tabular-search-in-amazon-bedrock-managed-knowledge-base/",
-          "date": "2026-11-16"
+          "title": "Grok Bot took unapproved actions, ignored orders to stop, and then denied it",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/security/2026/11/grok-bot-took-unapproved-actions-ignored-orders-to-stop-and-then-denied-it/",
+          "date": "2026-11-17"
         },
         {
-          "title": "Use prompt caching with open-weight models on Amazon Bedrock",
+          "title": "How LoanPro built an agentic AI loan servicing assistant with Amazon Bedrock AgentCore",
           "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/use-prompt-caching-with-open-weight-models-on-amazon-bedrock/",
-          "date": "2026-11-16"
+          "link": "https://aws.amazon.com/blogs/machine-learning/how-loanpro-built-an-agentic-ai-loan-servicing-assistant-with-amazon-bedrock-agentcore/",
+          "date": "2026-11-17"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Google makes it easier to use Gemini without training AI on your data",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/ai/2026/11/google-will-let-you-opt-out-of-ai-training-in-gemini-without-losing-your-history/",
+          "date": "2026-11-17"
+        },
+        {
+          "title": "Put Gemini to work for you",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/products/gemini-app/tasks-in-gemini-free-new-features/",
+          "date": "2026-11-17"
+        },
+        {
+          "title": "Google rolls out Gemini 4 Hydrogen, finally replacing 3.8 Flash",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/google/2026/11/google-rolls-out-gemini-4-hydrogen-finally-replacing-3-8-flash/",
+          "date": "2026-11-12"
         }
       ]
     },
@@ -300,22 +321,79 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Use prompt caching with open-weight models on Amazon Bedrock",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/use-prompt-caching-with-open-weight-models-on-amazon-bedrock/",
+          "title": "Running the full server-side Datasette Python app in the browser with service workers and Pyodide",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Nov/17/datasette-lite/",
+          "date": "2026-11-17"
+        },
+        {
+          "title": "How Revolut raises ambition without lowering the bar",
+          "source": "OpenAI News",
+          "link": "https://openai.com/business/customer-stories/revolut",
           "date": "2026-11-16"
         },
         {
-          "title": "Route coding agent requests to the right model on Amazon Bedrock with NVIDIA NeMo Switchyard",
+          "title": "Grok Build coding agent leaks oodles of confidential info, some belonging to SpaceXSI",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/security/2026/11/grok-build-coding-agent-leaks-oodles-of-confidential-info-some-belonging-to-spacexsi/",
+          "date": "2026-11-10"
+        }
+      ]
+    },
+    {
+      "label": "MCP / tool-connected assistants",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "How Duco transforms financial data automation with Amazon Bedrock AgentCore",
           "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/route-coding-agent-requests-to-the-right-model-on-amazon-bedrock-with-nvidia-nemo-switchyard/",
-          "date": "2026-11-13"
+          "link": "https://aws.amazon.com/blogs/machine-learning/how-duco-transforms-financial-data-automation-with-amazon-bedrock-agentcore/",
+          "date": "2026-11-16"
         },
         {
-          "title": "Gemini 4 Hydrogen in GitHub Copilot",
+          "title": "How MoEngage built agentic customer engagement on Amazon Bedrock AgentCore",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/how-moengage-built-agentic-customer-engagement-on-amazon-bedrock-agentcore/",
+          "date": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "label": "AI automation and workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "How Duco transforms financial data automation with Amazon Bedrock AgentCore",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/how-duco-transforms-financial-data-automation-with-amazon-bedrock-agentcore/",
+          "date": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "GitHub Copilot weekly releases — November 9",
           "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-13-gemini-4-hydrogen-in-github-copilot",
-          "date": "2026-11-13"
+          "link": "https://github.blog/changelog/2026-11-16-github-copilot-weekly-releases-november-9",
+          "date": "2026-11-16"
+        },
+        {
+          "title": "GitHub Copilot models deprecated on November 16, 2026",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-16-github-copilot-models-deprecated-on-november-16-2026",
+          "date": "2026-11-16"
+        },
+        {
+          "title": "Control where GitHub Copilot customizations come from",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-16-control-where-github-copilot-customizations-come-from",
+          "date": "2026-11-16"
         }
       ]
     },
@@ -341,100 +419,6 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/lvmh-media-division-partnership",
           "date": "2026-11-16"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Google Maps can now create trip itineraries for you",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/1034110/google-ask-maps-ai-trip-planning",
-          "date": "2026-11-16"
-        },
-        {
-          "title": "Gemini 4 Hydrogen in GitHub Copilot",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-13-gemini-4-hydrogen-in-github-copilot",
-          "date": "2026-11-13"
-        },
-        {
-          "title": "Google rolls out Gemini 4 Hydrogen, finally replacing 3.8 Flash",
-          "source": "Ars Technica AI",
-          "link": "https://arstechnica.com/google/2026/11/google-rolls-out-gemini-4-hydrogen-finally-replacing-3-8-flash/",
-          "date": "2026-11-12"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Cost attribution and controls for AI developer and productivity tools on Amazon Bedrock",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/cost-attribution-and-controls-for-ai-developer-and-productivity-tools-on-amazon-bedrock/",
-          "date": "2026-11-13"
-        },
-        {
-          "title": "Running AV Reasoning Models Within Onboard Compute and Latency Limits",
-          "source": "NVIDIA Developer",
-          "link": "https://developer.nvidia.com/blog/running-av-reasoning-models-within-onboard-compute-and-latency-limits/",
-          "date": "2026-11-10"
-        },
-        {
-          "title": "Could potential AI clones of GTA VI force a quicker official port?",
-          "source": "Ars Technica AI",
-          "link": "https://arstechnica.com/gaming/2026/11/could-potential-ai-clones-of-gta-vi-force-a-quicker-official-port/",
-          "date": "2026-11-06"
-        }
-      ]
-    },
-    {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Upcoming deprecation of selected GitHub Copilot models in December",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-13-upcoming-deprecation-of-selected-github-copilot-models-in-december",
-          "date": "2026-11-13"
-        },
-        {
-          "title": "GitHub Enterprise Server support in the GitHub Copilot app",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-13-github-enterprise-server-support-in-the-github-copilot-app",
-          "date": "2026-11-13"
-        },
-        {
-          "title": "Gemini 4 Hydrogen in GitHub Copilot",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-13-gemini-4-hydrogen-in-github-copilot",
-          "date": "2026-11-13"
-        }
-      ]
-    },
-    {
-      "label": "Multimodal AI product workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Gemini Decisions API: Fast, calibrated multimodal decisions",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/gemini-decisions-api/",
-          "date": "2026-11-11"
-        },
-        {
-          "title": "Building the next generation of multimodal AI experiences with fal in Microsoft Foundry",
-          "source": "Azure Blog",
-          "link": "https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/building-the-next-generation-of-multimodal-ai-experiences-with-fal-in-microsoft-/4570032",
-          "date": "2026-11-06"
         }
       ]
     }

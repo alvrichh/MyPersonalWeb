@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-16T17:50:57.983Z",
+  "generatedAt": "2026-11-17T17:19:03.942Z",
   "candidates": [
     {
       "label": "Claude research and documentation flow",
@@ -10,19 +10,19 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-11-16"
+          "date": "2026-11-17"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-11-16"
+          "date": "2026-11-17"
         },
         {
-          "title": "datasette-maplibre 0.1a0",
+          "title": "Running the full server-side Datasette Python app in the browser with service workers and Pyodide",
           "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/15/datasette-maplibre/",
-          "date": "2026-11-15"
+          "link": "https://simonwillison.net/2026/Nov/17/datasette-lite/",
+          "date": "2026-11-17"
         }
       ]
     },
@@ -35,19 +35,44 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
-          "date": "2026-11-16"
+          "date": "2026-11-17"
         },
         {
-          "title": "Get answers from tables with tabular search in Amazon Bedrock Managed Knowledge Base",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/get-answers-from-tables-with-tabular-search-in-amazon-bedrock-managed-knowledge-base/",
-          "date": "2026-11-16"
+          "title": "Grok Bot took unapproved actions, ignored orders to stop, and then denied it",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/security/2026/11/grok-bot-took-unapproved-actions-ignored-orders-to-stop-and-then-denied-it/",
+          "date": "2026-11-17"
         },
         {
-          "title": "Use prompt caching with open-weight models on Amazon Bedrock",
+          "title": "How LoanPro built an agentic AI loan servicing assistant with Amazon Bedrock AgentCore",
           "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/use-prompt-caching-with-open-weight-models-on-amazon-bedrock/",
-          "date": "2026-11-16"
+          "link": "https://aws.amazon.com/blogs/machine-learning/how-loanpro-built-an-agentic-ai-loan-servicing-assistant-with-amazon-bedrock-agentcore/",
+          "date": "2026-11-17"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Google makes it easier to use Gemini without training AI on your data",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/ai/2026/11/google-will-let-you-opt-out-of-ai-training-in-gemini-without-losing-your-history/",
+          "date": "2026-11-17"
+        },
+        {
+          "title": "Put Gemini to work for you",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/products/gemini-app/tasks-in-gemini-free-new-features/",
+          "date": "2026-11-17"
+        },
+        {
+          "title": "Google rolls out Gemini 4 Hydrogen, finally replacing 3.8 Flash",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/google/2026/11/google-rolls-out-gemini-4-hydrogen-finally-replacing-3-8-flash/",
+          "date": "2026-11-12"
         }
       ]
     },
@@ -57,22 +82,79 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Use prompt caching with open-weight models on Amazon Bedrock",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/use-prompt-caching-with-open-weight-models-on-amazon-bedrock/",
+          "title": "Running the full server-side Datasette Python app in the browser with service workers and Pyodide",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Nov/17/datasette-lite/",
+          "date": "2026-11-17"
+        },
+        {
+          "title": "How Revolut raises ambition without lowering the bar",
+          "source": "OpenAI News",
+          "link": "https://openai.com/business/customer-stories/revolut",
           "date": "2026-11-16"
         },
         {
-          "title": "Route coding agent requests to the right model on Amazon Bedrock with NVIDIA NeMo Switchyard",
+          "title": "Grok Build coding agent leaks oodles of confidential info, some belonging to SpaceXSI",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/security/2026/11/grok-build-coding-agent-leaks-oodles-of-confidential-info-some-belonging-to-spacexsi/",
+          "date": "2026-11-10"
+        }
+      ]
+    },
+    {
+      "label": "MCP / tool-connected assistants",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "How Duco transforms financial data automation with Amazon Bedrock AgentCore",
           "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/route-coding-agent-requests-to-the-right-model-on-amazon-bedrock-with-nvidia-nemo-switchyard/",
-          "date": "2026-11-13"
+          "link": "https://aws.amazon.com/blogs/machine-learning/how-duco-transforms-financial-data-automation-with-amazon-bedrock-agentcore/",
+          "date": "2026-11-16"
         },
         {
-          "title": "Gemini 4 Hydrogen in GitHub Copilot",
+          "title": "How MoEngage built agentic customer engagement on Amazon Bedrock AgentCore",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/how-moengage-built-agentic-customer-engagement-on-amazon-bedrock-agentcore/",
+          "date": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "label": "AI automation and workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "How Duco transforms financial data automation with Amazon Bedrock AgentCore",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/how-duco-transforms-financial-data-automation-with-amazon-bedrock-agentcore/",
+          "date": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "GitHub Copilot weekly releases — November 9",
           "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-13-gemini-4-hydrogen-in-github-copilot",
-          "date": "2026-11-13"
+          "link": "https://github.blog/changelog/2026-11-16-github-copilot-weekly-releases-november-9",
+          "date": "2026-11-16"
+        },
+        {
+          "title": "GitHub Copilot models deprecated on November 16, 2026",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-16-github-copilot-models-deprecated-on-november-16-2026",
+          "date": "2026-11-16"
+        },
+        {
+          "title": "Control where GitHub Copilot customizations come from",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-16-control-where-github-copilot-customizations-come-from",
+          "date": "2026-11-16"
         }
       ]
     },
@@ -98,100 +180,6 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/lvmh-media-division-partnership",
           "date": "2026-11-16"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Google Maps can now create trip itineraries for you",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/1034110/google-ask-maps-ai-trip-planning",
-          "date": "2026-11-16"
-        },
-        {
-          "title": "Gemini 4 Hydrogen in GitHub Copilot",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-13-gemini-4-hydrogen-in-github-copilot",
-          "date": "2026-11-13"
-        },
-        {
-          "title": "Google rolls out Gemini 4 Hydrogen, finally replacing 3.8 Flash",
-          "source": "Ars Technica AI",
-          "link": "https://arstechnica.com/google/2026/11/google-rolls-out-gemini-4-hydrogen-finally-replacing-3-8-flash/",
-          "date": "2026-11-12"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Cost attribution and controls for AI developer and productivity tools on Amazon Bedrock",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/cost-attribution-and-controls-for-ai-developer-and-productivity-tools-on-amazon-bedrock/",
-          "date": "2026-11-13"
-        },
-        {
-          "title": "Running AV Reasoning Models Within Onboard Compute and Latency Limits",
-          "source": "NVIDIA Developer",
-          "link": "https://developer.nvidia.com/blog/running-av-reasoning-models-within-onboard-compute-and-latency-limits/",
-          "date": "2026-11-10"
-        },
-        {
-          "title": "Could potential AI clones of GTA VI force a quicker official port?",
-          "source": "Ars Technica AI",
-          "link": "https://arstechnica.com/gaming/2026/11/could-potential-ai-clones-of-gta-vi-force-a-quicker-official-port/",
-          "date": "2026-11-06"
-        }
-      ]
-    },
-    {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Upcoming deprecation of selected GitHub Copilot models in December",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-13-upcoming-deprecation-of-selected-github-copilot-models-in-december",
-          "date": "2026-11-13"
-        },
-        {
-          "title": "GitHub Enterprise Server support in the GitHub Copilot app",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-13-github-enterprise-server-support-in-the-github-copilot-app",
-          "date": "2026-11-13"
-        },
-        {
-          "title": "Gemini 4 Hydrogen in GitHub Copilot",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-13-gemini-4-hydrogen-in-github-copilot",
-          "date": "2026-11-13"
-        }
-      ]
-    },
-    {
-      "label": "Multimodal AI product workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Gemini Decisions API: Fast, calibrated multimodal decisions",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/gemini-decisions-api/",
-          "date": "2026-11-11"
-        },
-        {
-          "title": "Building the next generation of multimodal AI experiences with fal in Microsoft Foundry",
-          "source": "Azure Blog",
-          "link": "https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/building-the-next-generation-of-multimodal-ai-experiences-with-fal-in-microsoft-/4570032",
-          "date": "2026-11-06"
         }
       ]
     }
