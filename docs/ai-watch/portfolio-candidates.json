@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-17T17:19:03.942Z",
+  "generatedAt": "2026-11-18T16:54:07.829Z",
   "candidates": [
     {
       "label": "Claude research and documentation flow",
@@ -10,18 +10,18 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-11-17"
+          "date": "2026-11-18"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-11-17"
+          "date": "2026-11-18"
         },
         {
-          "title": "Running the full server-side Datasette Python app in the browser with service workers and Pyodide",
+          "title": "External sandboxes for coding agents",
           "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/17/datasette-lite/",
+          "link": "https://simonwillison.net/2026/Nov/17/external-sandboxes-for-coding-agents/",
           "date": "2026-11-17"
         }
       ]
@@ -35,18 +35,112 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
-          "date": "2026-11-17"
+          "date": "2026-11-18"
         },
         {
-          "title": "Grok Bot took unapproved actions, ignored orders to stop, and then denied it",
+          "title": "Copilot is \"the new OS for work,\" and now Office runs inside of it",
           "source": "Ars Technica AI",
-          "link": "https://arstechnica.com/security/2026/11/grok-bot-took-unapproved-actions-ignored-orders-to-stop-and-then-denied-it/",
+          "link": "https://arstechnica.com/gadgets/2026/11/microsoft-calls-copilot-the-new-os-for-work-at-ignite-keynote/",
+          "date": "2026-11-18"
+        },
+        {
+          "title": "Quoting Daniel Stenberg",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Nov/18/daniel-stenberg/",
+          "date": "2026-11-18"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Copilot is \"the new OS for work,\" and now Office runs inside of it",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/gadgets/2026/11/microsoft-calls-copilot-the-new-os-for-work-at-ignite-keynote/",
+          "date": "2026-11-18"
+        },
+        {
+          "title": "OpenAI’s GPT-6.2 Astra and GPT-6.2 Sol now available",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-17-openais-gpt-6-2-astra-and-gpt-6-2-sol-now-available",
           "date": "2026-11-17"
         },
         {
-          "title": "How LoanPro built an agentic AI loan servicing assistant with Amazon Bedrock AgentCore",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/how-loanpro-built-an-agentic-ai-loan-servicing-assistant-with-amazon-bedrock-agentcore/",
+          "title": "GitHub Copilot Fusion updates: more availability, benchmarks, and models",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-17-github-copilot-fusion-updates-more-availability-benchmarks-and-models",
+          "date": "2026-11-17"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Le Groupe Figaro and OpenAI partner to bring Le Figaro journalism to ChatGPT",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/le-groupe-figaro-and-openai-announce-partnership",
+          "date": "2026-11-18"
+        },
+        {
+          "title": "Introducing GPT-6.2 Astra and Sol",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/introducing-gpt-6-2-astra-sol",
+          "date": "2026-11-17"
+        },
+        {
+          "title": "Introducing ChatGPT for Sales",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/introducing-chatgpt-for-sales",
+          "date": "2026-11-17"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Quoting Daniel Stenberg",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Nov/18/daniel-stenberg/",
+          "date": "2026-11-18"
+        },
+        {
+          "title": "OpenAI’s GPT-6.2 Astra and GPT-6.2 Sol now available",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-17-openais-gpt-6-2-astra-and-gpt-6-2-sol-now-available",
+          "date": "2026-11-17"
+        },
+        {
+          "title": "MAI Code 2 and MAI Code 2 Flash in GitHub Copilot",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-17-mai-code-2-and-mai-code-2-flash-in-github-copilot",
+          "date": "2026-11-17"
+        }
+      ]
+    },
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "The PSF end-of-year fundraiser",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Nov/18/psf-end-of-year-fundraiser/",
+          "date": "2026-11-18"
+        },
+        {
+          "title": "Azure Cobalt 200 VMs now available, proven on real workloads and built for the agentic era",
+          "source": "Azure Blog",
+          "link": "https://azure.microsoft.com/en-us/blog/azure-cobalt-200-vms-now-available-proven-on-real-workloads-and-built-for-the-agentic-era/",
           "date": "2026-11-17"
         }
       ]
@@ -69,35 +163,10 @@
           "date": "2026-11-17"
         },
         {
-          "title": "Google rolls out Gemini 4 Hydrogen, finally replacing 3.8 Flash",
-          "source": "Ars Technica AI",
-          "link": "https://arstechnica.com/google/2026/11/google-rolls-out-gemini-4-hydrogen-finally-replacing-3-8-flash/",
-          "date": "2026-11-12"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Running the full server-side Datasette Python app in the browser with service workers and Pyodide",
+          "title": "GPT‑6.2 Astra and GPT‑6.2 Sol",
           "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/17/datasette-lite/",
+          "link": "https://simonwillison.net/2026/Nov/17/gpt62-astra-and-sol/",
           "date": "2026-11-17"
-        },
-        {
-          "title": "How Revolut raises ambition without lowering the bar",
-          "source": "OpenAI News",
-          "link": "https://openai.com/business/customer-stories/revolut",
-          "date": "2026-11-16"
-        },
-        {
-          "title": "Grok Build coding agent leaks oodles of confidential info, some belonging to SpaceXSI",
-          "source": "Ars Technica AI",
-          "link": "https://arstechnica.com/security/2026/11/grok-build-coding-agent-leaks-oodles-of-confidential-info-some-belonging-to-spacexsi/",
-          "date": "2026-11-10"
         }
       ]
     },
@@ -107,79 +176,16 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "How Duco transforms financial data automation with Amazon Bedrock AgentCore",
+          "title": "Govern and discover records with common metadata in AWS Agent Registry",
           "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/how-duco-transforms-financial-data-automation-with-amazon-bedrock-agentcore/",
-          "date": "2026-11-16"
+          "link": "https://aws.amazon.com/blogs/machine-learning/govern-and-discover-records-with-common-metadata-in-aws-agent-registry/",
+          "date": "2026-11-17"
         },
         {
-          "title": "How MoEngage built agentic customer engagement on Amazon Bedrock AgentCore",
+          "title": "Secure OAuth patterns for Snowflake Cortex AI through Amazon Bedrock AgentCore",
           "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/how-moengage-built-agentic-customer-engagement-on-amazon-bedrock-agentcore/",
-          "date": "2026-11-16"
-        }
-      ]
-    },
-    {
-      "label": "AI automation and workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "How Duco transforms financial data automation with Amazon Bedrock AgentCore",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/how-duco-transforms-financial-data-automation-with-amazon-bedrock-agentcore/",
-          "date": "2026-11-16"
-        }
-      ]
-    },
-    {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "GitHub Copilot weekly releases — November 9",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-16-github-copilot-weekly-releases-november-9",
-          "date": "2026-11-16"
-        },
-        {
-          "title": "GitHub Copilot models deprecated on November 16, 2026",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-16-github-copilot-models-deprecated-on-november-16-2026",
-          "date": "2026-11-16"
-        },
-        {
-          "title": "Control where GitHub Copilot customizations come from",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-16-control-where-github-copilot-customizations-come-from",
-          "date": "2026-11-16"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Broadening access to AI for scientists",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/expanding-chatgpt-for-academic-researchers",
-          "date": "2026-11-16"
-        },
-        {
-          "title": "Science at the Frontier: How scientists use ChatGPT",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/science-at-the-frontier",
-          "date": "2026-11-16"
-        },
-        {
-          "title": "LVMH’s Media Division announces strategic partnership with OpenAI",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/lvmh-media-division-partnership",
-          "date": "2026-11-16"
+          "link": "https://aws.amazon.com/blogs/machine-learning/secure-oauth-patterns-for-snowflake-cortex-ai-through-amazon-bedrock-agentcore/",
+          "date": "2026-11-17"
         }
       ]
     }
