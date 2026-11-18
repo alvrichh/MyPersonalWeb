@@ -66,6 +66,16 @@ export const PROJECTS: Project[] = [
     image: './images/projects/radar.jpg',
   },
   {
+    title: 'NeuroLink AI',
+    href: 'https://neurolink-ai-omega.vercel.app',
+    external: true,
+    summary: 'work.neurolink',
+    stack: 'Next.js · React · Tailwind CSS · Vercel',
+    year: '2026',
+    status: 'work.liveSite',
+    image: './images/projects/neurolink.jpg',
+  },
+  {
     title: 'Spain Motorcars',
     href: 'https://spainmotorcars.vercel.app',
     external: true,
