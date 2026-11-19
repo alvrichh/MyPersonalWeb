@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-18T16:54:07.829Z",
+  "generatedAt": "2026-11-19T17:00:01.472Z",
   "candidates": [
     {
       "label": "Claude research and documentation flow",
@@ -10,19 +10,19 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-11-18"
+          "date": "2026-11-19"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-11-18"
+          "date": "2026-11-19"
         },
         {
-          "title": "External sandboxes for coding agents",
+          "title": "datasette-arrows 0.1a0",
           "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/17/external-sandboxes-for-coding-agents/",
-          "date": "2026-11-17"
+          "link": "https://simonwillison.net/2026/Nov/18/datasette-arrows/",
+          "date": "2026-11-18"
         }
       ]
     },
@@ -35,18 +35,43 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
+          "date": "2026-11-19"
+        },
+        {
+          "title": "Wait for pull request events with GitHub CLI",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-18-wait-for-pull-request-events-with-github-cli",
+          "date": "2026-11-19"
+        },
+        {
+          "title": "Build Tool-Calling Parsers in Rust with AI Agents",
+          "source": "NVIDIA Developer",
+          "link": "https://developer.nvidia.com/blog/build-tool-calling-parsers-in-rust-with-ai-agents/",
+          "date": "2026-11-19"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "ChatGPT can transcribe as you speak now with Live Dictation",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1037634/openai-chatgpt-live-dictation",
+          "date": "2026-11-19"
+        },
+        {
+          "title": "How Sumitomo Life’s leaders helped teams adopt ChatGPT Enterprise",
+          "source": "OpenAI News",
+          "link": "https://openai.com/business/customer-stories/sumitomo-life",
           "date": "2026-11-18"
         },
         {
-          "title": "Copilot is \"the new OS for work,\" and now Office runs inside of it",
-          "source": "Ars Technica AI",
-          "link": "https://arstechnica.com/gadgets/2026/11/microsoft-calls-copilot-the-new-os-for-work-at-ignite-keynote/",
-          "date": "2026-11-18"
-        },
-        {
-          "title": "Quoting Daniel Stenberg",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/18/daniel-stenberg/",
+          "title": "Le Groupe Figaro and OpenAI partner to bring Le Figaro journalism to ChatGPT",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/le-groupe-figaro-and-openai-announce-partnership",
           "date": "2026-11-18"
         }
       ]
@@ -63,41 +88,16 @@
           "date": "2026-11-18"
         },
         {
-          "title": "OpenAI’s GPT-6.2 Astra and GPT-6.2 Sol now available",
+          "title": "Connect Supabase, Box, Calendly, and more to Copilot",
           "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-17-openais-gpt-6-2-astra-and-gpt-6-2-sol-now-available",
-          "date": "2026-11-17"
-        },
-        {
-          "title": "GitHub Copilot Fusion updates: more availability, benchmarks, and models",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-17-github-copilot-fusion-updates-more-availability-benchmarks-and-models",
-          "date": "2026-11-17"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Le Groupe Figaro and OpenAI partner to bring Le Figaro journalism to ChatGPT",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/le-groupe-figaro-and-openai-announce-partnership",
+          "link": "https://github.blog/changelog/2026-11-18-connect-supabase-box-calendly-and-more-to-copilot",
           "date": "2026-11-18"
         },
         {
-          "title": "Introducing GPT-6.2 Astra and Sol",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/introducing-gpt-6-2-astra-sol",
-          "date": "2026-11-17"
-        },
-        {
-          "title": "Introducing ChatGPT for Sales",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/introducing-chatgpt-for-sales",
-          "date": "2026-11-17"
+          "title": "Gemini 4 Neon in GitHub Copilot",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-18-gemini-4-neon-in-github-copilot",
+          "date": "2026-11-18"
         }
       ]
     },
@@ -107,22 +107,60 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Quoting Daniel Stenberg",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/18/daniel-stenberg/",
+          "title": "How Airbnb uses cost per task to operate coding agents on Amazon Bedrock",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/how-airbnb-uses-cost-per-task-to-operate-coding-agents-on-amazon-bedrock/",
           "date": "2026-11-18"
         },
         {
-          "title": "OpenAI’s GPT-6.2 Astra and GPT-6.2 Sol now available",
+          "title": "Gemini 4 Neon in GitHub Copilot",
           "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-17-openais-gpt-6-2-astra-and-gpt-6-2-sol-now-available",
-          "date": "2026-11-17"
+          "link": "https://github.blog/changelog/2026-11-18-gemini-4-neon-in-github-copilot",
+          "date": "2026-11-18"
         },
         {
-          "title": "MAI Code 2 and MAI Code 2 Flash in GitHub Copilot",
+          "title": "Research acceleration: The jagged frontier",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/research-acceleration-jagged-frontier",
+          "date": "2026-11-18"
+        }
+      ]
+    },
+    {
+      "label": "MCP / tool-connected assistants",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Connect Supabase, Box, Calendly, and more to Copilot",
           "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-17-mai-code-2-and-mai-code-2-flash-in-github-copilot",
-          "date": "2026-11-17"
+          "link": "https://github.blog/changelog/2026-11-18-connect-supabase-box-calendly-and-more-to-copilot",
+          "date": "2026-11-18"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Gemini 4 Neon in GitHub Copilot",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-18-gemini-4-neon-in-github-copilot",
+          "date": "2026-11-18"
+        },
+        {
+          "title": "The Gemini app is now available on lower-memory Android devices.",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/products/gemini-app/gemini-lower-memory-devices/",
+          "date": "2026-11-18"
+        },
+        {
+          "title": "Introducing Gemini 4 Neon",
+          "source": "Google DeepMind",
+          "link": "https://deepmind.google/blog/introducing-gemini-4-neon/",
+          "date": "2026-11-18"
         }
       ]
     },
@@ -141,50 +179,6 @@
           "title": "Azure Cobalt 200 VMs now available, proven on real workloads and built for the agentic era",
           "source": "Azure Blog",
           "link": "https://azure.microsoft.com/en-us/blog/azure-cobalt-200-vms-now-available-proven-on-real-workloads-and-built-for-the-agentic-era/",
-          "date": "2026-11-17"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Google makes it easier to use Gemini without training AI on your data",
-          "source": "Ars Technica AI",
-          "link": "https://arstechnica.com/ai/2026/11/google-will-let-you-opt-out-of-ai-training-in-gemini-without-losing-your-history/",
-          "date": "2026-11-17"
-        },
-        {
-          "title": "Put Gemini to work for you",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/products/gemini-app/tasks-in-gemini-free-new-features/",
-          "date": "2026-11-17"
-        },
-        {
-          "title": "GPT‑6.2 Astra and GPT‑6.2 Sol",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/17/gpt62-astra-and-sol/",
-          "date": "2026-11-17"
-        }
-      ]
-    },
-    {
-      "label": "MCP / tool-connected assistants",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Govern and discover records with common metadata in AWS Agent Registry",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/govern-and-discover-records-with-common-metadata-in-aws-agent-registry/",
-          "date": "2026-11-17"
-        },
-        {
-          "title": "Secure OAuth patterns for Snowflake Cortex AI through Amazon Bedrock AgentCore",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/secure-oauth-patterns-for-snowflake-cortex-ai-through-amazon-bedrock-agentcore/",
           "date": "2026-11-17"
         }
       ]
