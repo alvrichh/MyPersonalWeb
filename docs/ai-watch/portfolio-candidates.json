@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-19T17:00:01.472Z",
+  "generatedAt": "2026-11-20T16:37:56.616Z",
   "candidates": [
     {
       "label": "Claude research and documentation flow",
@@ -10,19 +10,19 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-11-19"
+          "date": "2026-11-20"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-11-19"
+          "date": "2026-11-20"
         },
         {
-          "title": "datasette-arrows 0.1a0",
+          "title": "Quoting Levent Alpöge",
           "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/18/datasette-arrows/",
-          "date": "2026-11-18"
+          "link": "https://simonwillison.net/2026/Nov/20/levent-alpoge/",
+          "date": "2026-11-20"
         }
       ]
     },
@@ -35,19 +35,94 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
-          "date": "2026-11-19"
+          "date": "2026-11-20"
         },
         {
-          "title": "Wait for pull request events with GitHub CLI",
+          "title": "Use Kimi Code CLI with models on Amazon Bedrock",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/use-kimi-code-cli-with-models-on-amazon-bedrock/",
+          "date": "2026-11-20"
+        },
+        {
+          "title": "Token fraud is here and it’s BAD (YouTube)",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Nov/20/token-fraud-is-here-and-its-bad/",
+          "date": "2026-11-20"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Use Kimi Code CLI with models on Amazon Bedrock",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/use-kimi-code-cli-with-models-on-amazon-bedrock/",
+          "date": "2026-11-20"
+        },
+        {
+          "title": "Gemini 4 Neon in GitHub Copilot",
           "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-18-wait-for-pull-request-events-with-github-cli",
+          "link": "https://github.blog/changelog/2026-11-18-gemini-4-neon-in-github-copilot",
+          "date": "2026-11-18"
+        },
+        {
+          "title": "Research acceleration: The jagged frontier",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/research-acceleration-jagged-frontier",
+          "date": "2026-11-18"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Signal is blocking Gemini and Siri AI from reading your screen",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1038390/signal-blocking-ai-agent-screenshots-mobile-app",
+          "date": "2026-11-20"
+        },
+        {
+          "title": "Introducing Tool Retrieval in the Gemini API",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/gemini-api-tool-retrieval/",
           "date": "2026-11-19"
         },
         {
-          "title": "Build Tool-Calling Parsers in Rust with AI Agents",
-          "source": "NVIDIA Developer",
-          "link": "https://developer.nvidia.com/blog/build-tool-calling-parsers-in-rust-with-ai-agents/",
+          "title": "Gemini on Mac can now use your computer",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/1037902/google-gemini-macos-ai-computer-use",
           "date": "2026-11-19"
+        }
+      ]
+    },
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Enable AI agents to pay for AWS Marketplace x402 products with Amazon Bedrock AgentCore payments",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/enable-ai-agents-to-pay-for-aws-marketplace-x402-products-with-amazon-bedrock-agentcore-payments/",
+          "date": "2026-11-19"
+        },
+        {
+          "title": "How the BMW Group governs hundreds of agents across thousands of developers",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/how-the-bmw-group-governs-hundreds-of-agents-across-thousands-of-developers/",
+          "date": "2026-11-19"
+        },
+        {
+          "title": "The PSF end-of-year fundraiser",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Nov/18/psf-end-of-year-fundraiser/",
+          "date": "2026-11-18"
         }
       ]
     },
@@ -56,6 +131,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "How OpenAI’s Performance Factory keeps ChatGPT fast",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/how-openai-performance-factory-keeps-chatgpt-fast",
+          "date": "2026-11-19"
+        },
         {
           "title": "ChatGPT can transcribe as you speak now with Live Dictation",
           "source": "The Verge AI",
@@ -66,12 +147,6 @@
           "title": "How Sumitomo Life’s leaders helped teams adopt ChatGPT Enterprise",
           "source": "OpenAI News",
           "link": "https://openai.com/business/customer-stories/sumitomo-life",
-          "date": "2026-11-18"
-        },
-        {
-          "title": "Le Groupe Figaro and OpenAI partner to bring Le Figaro journalism to ChatGPT",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/le-groupe-figaro-and-openai-announce-partnership",
           "date": "2026-11-18"
         }
       ]
@@ -102,31 +177,6 @@
       ]
     },
     {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "How Airbnb uses cost per task to operate coding agents on Amazon Bedrock",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/how-airbnb-uses-cost-per-task-to-operate-coding-agents-on-amazon-bedrock/",
-          "date": "2026-11-18"
-        },
-        {
-          "title": "Gemini 4 Neon in GitHub Copilot",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-18-gemini-4-neon-in-github-copilot",
-          "date": "2026-11-18"
-        },
-        {
-          "title": "Research acceleration: The jagged frontier",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/research-acceleration-jagged-frontier",
-          "date": "2026-11-18"
-        }
-      ]
-    },
-    {
       "label": "MCP / tool-connected assistants",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
@@ -136,50 +186,6 @@
           "source": "GitHub Changelog",
           "link": "https://github.blog/changelog/2026-11-18-connect-supabase-box-calendly-and-more-to-copilot",
           "date": "2026-11-18"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Gemini 4 Neon in GitHub Copilot",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-18-gemini-4-neon-in-github-copilot",
-          "date": "2026-11-18"
-        },
-        {
-          "title": "The Gemini app is now available on lower-memory Android devices.",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/products/gemini-app/gemini-lower-memory-devices/",
-          "date": "2026-11-18"
-        },
-        {
-          "title": "Introducing Gemini 4 Neon",
-          "source": "Google DeepMind",
-          "link": "https://deepmind.google/blog/introducing-gemini-4-neon/",
-          "date": "2026-11-18"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "The PSF end-of-year fundraiser",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/18/psf-end-of-year-fundraiser/",
-          "date": "2026-11-18"
-        },
-        {
-          "title": "Azure Cobalt 200 VMs now available, proven on real workloads and built for the agentic era",
-          "source": "Azure Blog",
-          "link": "https://azure.microsoft.com/en-us/blog/azure-cobalt-200-vms-now-available-proven-on-real-workloads-and-built-for-the-agentic-era/",
-          "date": "2026-11-17"
         }
       ]
     }

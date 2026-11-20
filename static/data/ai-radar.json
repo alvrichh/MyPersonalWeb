@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-19T17:00:01.472Z",
-  "date": "2026-11-19",
+  "generatedAt": "2026-11-20T16:37:56.616Z",
+  "date": "2026-11-20",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
@@ -9,7 +9,7 @@
     {
       "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
       "source": "Anthropic News",
-      "date": "2026-11-19",
+      "date": "2026-11-20",
       "url": "https://www.anthropic.com/news/expanding-partnership-gsa",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -20,7 +20,7 @@
     {
       "title": "Donating Agent Skills to the Agentic AI Foundation",
       "source": "Anthropic News",
-      "date": "2026-11-19",
+      "date": "2026-11-20",
       "url": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -32,7 +32,7 @@
     {
       "title": "Introducing the Anthropic Cyber Mission",
       "source": "Anthropic News",
-      "date": "2026-11-19",
+      "date": "2026-11-20",
       "url": "https://www.anthropic.com/news/anthropic-cyber-mission",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -43,7 +43,7 @@
     {
       "title": "Security",
       "source": "Anthropic News",
-      "date": "2026-11-19",
+      "date": "2026-11-20",
       "url": "https://www.anthropic.com/news/security",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -52,26 +52,101 @@
       "image": "https://assets.claude.com/6d4a0d28992ade92d6fa63646fd9c9d318245c6c.jpg"
     },
     {
-      "title": "Using NVIDIA Run:ai GPU Fractioning on Amazon EKS",
+      "title": "Amazon SageMaker Inference: 2026 launches in review, part 2",
       "source": "AWS Machine Learning",
-      "date": "2026-11-19",
-      "url": "https://aws.amazon.com/blogs/machine-learning/using-nvidia-runai-gpu-fractioning-on-amazon-eks/",
-      "summary": "Learn how to run two memory-bounded Kubernetes Pods on a single NVIDIA A10G GPU using open-source NVIDIA Run:ai GPU Fractioning on Amazon EKS. This walkthrough builds a custom Amazon Linux 2023 image, installs KAI Schedu...",
-      "tags": [
-        "Multimodal"
-      ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/19/ML-22238-1.png"
-    },
-    {
-      "title": "Full Fine-Tuning (FFT) on SageMaker AI Serverless Model Customization",
-      "source": "AWS Machine Learning",
-      "date": "2026-11-19",
-      "url": "https://aws.amazon.com/blogs/machine-learning/full-fine-tuning-fft-on-sagemaker-ai-serverless-model-customization/",
-      "summary": "Amazon SageMaker AI Serverless Model Customization now supports Full Fine-Tuning (FFT). This post explores when FFT outperforms LoRA across key benchmarks, examines the spectral properties of model weight matrices behind...",
+      "date": "2026-11-20",
+      "url": "https://aws.amazon.com/blogs/machine-learning/amazon-sagemaker-inference-2026-launches-in-review-part-2/",
+      "summary": "This second installment reviews 13 more Amazon SageMaker AI inference launches from 2026, spanning configuration recommendations, fitting more models onto each GPU, serving models too large for one instance, cross-Region...",
       "tags": [
         "Models"
       ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/16/ML-21644-1.png"
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/19/ML-22497-1.png"
+    },
+    {
+      "title": "Use Kimi Code CLI with models on Amazon Bedrock",
+      "source": "AWS Machine Learning",
+      "date": "2026-11-20",
+      "url": "https://aws.amazon.com/blogs/machine-learning/use-kimi-code-cli-with-models-on-amazon-bedrock/",
+      "summary": "Kimi Code CLI v2.7.0 adds a native Amazon Bedrock provider, so you can connect the open source coding agent to models like Kimi K3.1 Pro using your standard AWS credential chain (named profiles or SSO) instead of a separ...",
+      "tags": [
+        "Agents",
+        "Dev Tools",
+        "Models"
+      ],
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/19/ML-22481-1.jpg"
+    },
+    {
+      "title": "Introducing harness adapters: adapt your favorite model to your harness to improve performance and cost",
+      "source": "Hugging Face",
+      "date": "2026-11-20",
+      "url": "https://huggingface.co/blog/harness-adapters-at-scale",
+      "summary": "AI update detected from an official or high-signal source.",
+      "tags": [
+        "Models"
+      ],
+      "image": "https://huggingface.co/blog/assets/harness-adapters-at-scale/thumbnail.png"
+    },
+    {
+      "title": "Quoting Levent Alpöge",
+      "source": "Simon Willison",
+      "date": "2026-11-20",
+      "url": "https://simonwillison.net/2026/Nov/20/levent-alpoge/",
+      "summary": "I believe I have, working with Claude, discovered a proof of the Riemann Hypothesis. In fact, the method easily extends much further, resolving the so-called Generalized Riemann Hypothesis, and I expect, with more time, ...",
+      "tags": [
+        "Claude",
+        "Models"
+      ],
+      "image": "https://simonwillison.net/2026/Nov/20/levent-alpoge/"
+    },
+    {
+      "title": "Token fraud is here and it’s BAD (YouTube)",
+      "source": "Simon Willison",
+      "date": "2026-11-20",
+      "url": "https://simonwillison.net/2026/Nov/20/token-fraud-is-here-and-its-bad/",
+      "summary": "Token fraud is here and it’s BAD (YouTube) Claire Vo runs ChatPRD , an AI platform that helps product managers \"turn an idea into a spec\". The product has been live since the GPT-4 era, and Claire has been building it in...",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Dev Tools",
+        "Multimodal"
+      ],
+      "image": "https://simonwillison.net/2026/Nov/20/token-fraud-is-here-and-its-bad/"
+    },
+    {
+      "title": "Signal is blocking Gemini and Siri AI from reading your screen",
+      "source": "The Verge AI",
+      "date": "2026-11-20",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1038390/signal-blocking-ai-agent-screenshots-mobile-app",
+      "summary": "Signal is restricting the ability to take screenshots on Android and iOS devices in an effort to prevent AI agents from reading users' messages and other data. The agentic AI capabilities built into operating systems tha...",
+      "tags": [
+        "Agents",
+        "Gemini"
+      ],
+      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/11/protecting-your-privacy-1.png?quality=90&strip=all&crop=0,0,100,100"
+    },
+    {
+      "title": "Enable AI agents to pay for AWS Marketplace x402 products with Amazon Bedrock AgentCore payments",
+      "source": "AWS Machine Learning",
+      "date": "2026-11-19",
+      "url": "https://aws.amazon.com/blogs/machine-learning/enable-ai-agents-to-pay-for-aws-marketplace-x402-products-with-amazon-bedrock-agentcore-payments/",
+      "summary": "Amazon Bedrock AgentCore payments now supports AWS Marketplace, so agents can discover and buy x402-enabled products, APIs, data, and content and pay in USD on the developer's AWS bill, with no stablecoin wallets or API ...",
+      "tags": [
+        "Agents",
+        "Dev Tools"
+      ],
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/19/awsbilling-ecosystem-transparent.png"
+    },
+    {
+      "title": "How the BMW Group governs hundreds of agents across thousands of developers",
+      "source": "AWS Machine Learning",
+      "date": "2026-11-19",
+      "url": "https://aws.amazon.com/blogs/machine-learning/how-the-bmw-group-governs-hundreds-of-agents-across-thousands-of-developers/",
+      "summary": "When hundreds of agents serve thousands of developers, governance cannot be an afterthought. The BMW Group shares the practices and patterns its R&amp;D teams use to build, govern, and operate AI agents at enterprise sca...",
+      "tags": [
+        "Agents",
+        "Dev Tools"
+      ],
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/16/ML-20698-1.png"
     },
     {
       "title": "Wait for pull request events with GitHub CLI",
@@ -82,7 +157,31 @@
       "tags": [
         "Agents"
       ],
-      "image": "https://github.blog/wp-content/themes/github-2021-child/dist/img/social-v3-new-releases.jpg"
+      "image": "https://github.blog/wp-content/uploads/2026/11/Changelog_NewRelease_Unfurl_Centered_PullRequestEvents.jpg"
+    },
+    {
+      "title": "Introducing Tool Retrieval in the Gemini API",
+      "source": "Google AI Blog",
+      "date": "2026-11-19",
+      "url": "https://blog.google/innovation-and-ai/technology/developers-tools/gemini-api-tool-retrieval/",
+      "summary": "Give your agents access to hundreds of tools while using fewer tokens with Tool Retrieval, now in preview in the Gemini API.",
+      "tags": [
+        "Agents",
+        "Gemini"
+      ],
+      "image": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Tool_retrieval_hero.max-600x600.format-webp.webp"
+    },
+    {
+      "title": "Reducing Rollout Bottlenecks in Reinforcement Learning with NVIDIA Dynamo",
+      "source": "NVIDIA Developer",
+      "date": "2026-11-19",
+      "url": "https://developer.nvidia.com/blog/reducing-rollout-bottlenecks-in-reinforcement-learning-with-nvidia-dynamo/",
+      "summary": "Reinforcement learning (RL) uses rewards to train models to solve problems and complete tasks more successfully. Inference drives this process. Workers generate...",
+      "tags": [
+        "Dev Tools",
+        "Models"
+      ],
+      "image": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/11/image3-17-768x432.png"
     },
     {
       "title": "Build Tool-Calling Parsers in Rust with AI Agents",
@@ -98,143 +197,53 @@
       "image": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/11/agentic-ai-rl-gym-1024x576-1-768x432.png"
     },
     {
-      "title": "ChatGPT can transcribe as you speak now with Live Dictation",
-      "source": "The Verge AI",
+      "title": "How OpenAI’s Performance Factory keeps ChatGPT fast",
+      "source": "OpenAI News",
       "date": "2026-11-19",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1037634/openai-chatgpt-live-dictation",
-      "summary": "ChatGPT can receive audio prompts from your microphone faster now with a Live Dictation feature that transcribes as you speak, rather than waiting until you finish recording. It's rolling out now globally on all ChatGPT ...",
+      "url": "https://openai.com/index/how-openai-performance-factory-keeps-chatgpt-fast",
+      "summary": "Learn how OpenAI built the Performance Factory, a system of Codex-powered workflows that finds and fixes performance issues to help keep ChatGPT fast.",
       "tags": [
         "ChatGPT",
-        "Multimodal"
+        "Dev Tools",
+        "Automation"
       ],
-      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/11/chatgpt-live-dictation-promo-screenshot.jpeg?quality=90&strip=all&crop=0,0,100,100"
+      "image": ""
     },
     {
-      "title": "Copilot is \"the new OS for work,\" and now Office runs inside of it",
-      "source": "Ars Technica AI",
-      "date": "2026-11-18",
-      "url": "https://arstechnica.com/gadgets/2026/11/microsoft-calls-copilot-the-new-os-for-work-at-ignite-keynote/",
-      "summary": "Word, Excel, and PowerPoint now live inside Copilot; always-on agents are next.",
+      "title": "Deploying Daybreak Red",
+      "source": "OpenAI News",
+      "date": "2026-11-19",
+      "url": "https://openai.com/business/learn/deploying-daybreak-red",
+      "summary": "Explore a reference architecture for supervised security investigations with Daybreak Red, including safety controls, setup, and monitoring.",
       "tags": [
-        "Agents",
-        "Copilot"
+        "ChatGPT"
       ],
-      "image": "https://cdn.arstechnica.net/wp-content/uploads/2026/11/MS_Ignite_Perception.png"
+      "image": ""
     },
     {
-      "title": "Exa boosts embedding throughput by 50% to index billions of documents on AWS AI chips",
-      "source": "AWS Machine Learning",
-      "date": "2026-11-18",
-      "url": "https://aws.amazon.com/blogs/machine-learning/exa-boosts-embedding-throughput-by-50-to-index-billions-of-documents-on-aws-ai-chips/",
-      "summary": "Exa's neural search engine is backed by an in-house vector database, so the unit economics of embedding tens of billions of web documents drive the business. This post shares how Exa optimized embedding inference on AWS ...",
+      "title": "See PR scans in action",
+      "source": "OpenAI News",
+      "date": "2026-11-19",
+      "url": "https://openai.com/business/learn/pr-scans-demo",
+      "summary": "Watch a walkthrough of PR scans and see how the presenter reviews scan results in a pull request workflow.",
       "tags": [
-        "AI"
+        "ChatGPT",
+        "Automation"
       ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/13/ML-22138-1-1.png"
+      "image": ""
     },
     {
-      "title": "Introducing the Amazon SageMaker JumpStart Model Leaderboard",
-      "source": "AWS Machine Learning",
-      "date": "2026-11-18",
-      "url": "https://aws.amazon.com/blogs/machine-learning/introducing-the-amazon-sagemaker-jumpstart-model-leaderboard/",
-      "summary": "The Amazon SageMaker JumpStart Model Leaderboard compares 70+ foundation models side by side on quality, speed, and cost, directly in SageMaker Studio. Learn what the leaderboard shows, how AWS benchmarks models, and how...",
+      "title": "Explore the Codex Security Plugin",
+      "source": "OpenAI News",
+      "date": "2026-11-19",
+      "url": "https://openai.com/business/learn/codex-security-plugin-demo",
+      "summary": "Watch a demo of the Codex Security Plugin and see the workflow in action, from getting started to reviewing the results shown in the recording.",
       "tags": [
-        "Models"
+        "ChatGPT",
+        "Dev Tools",
+        "Automation"
       ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/18/ML-22496-1-1.png"
-    },
-    {
-      "title": "Connect Supabase, Box, Calendly, and more to Copilot",
-      "source": "GitHub Changelog",
-      "date": "2026-11-18",
-      "url": "https://github.blog/changelog/2026-11-18-connect-supabase-box-calendly-and-more-to-copilot",
-      "summary": "You can now connect eight more services to Copilot using GitHub-verified MCP servers, or connectors, available in public preview. They join more than 25 services you can already connect, like… The post Connect Supabase, ...",
-      "tags": [
-        "MCP",
-        "Copilot"
-      ],
-      "image": "https://github.blog/wp-content/themes/github-2021-child/dist/img/social-v3-improvements.jpg"
-    },
-    {
-      "title": "Gemini 4 Neon in GitHub Copilot",
-      "source": "GitHub Changelog",
-      "date": "2026-11-18",
-      "url": "https://github.blog/changelog/2026-11-18-gemini-4-neon-in-github-copilot",
-      "summary": "Gemini 4 Neon is now generally available in GitHub Copilot. It is designed for agentic coding, multistep tool use, and knowledge work. According to Google, Gemini 4 Neon delivers quality… The post Gemini 4 Neon in GitHub...",
-      "tags": [
-        "Agents",
-        "Copilot",
-        "Gemini",
-        "Dev Tools"
-      ],
-      "image": "https://github.blog/wp-content/uploads/2026/11/710810976-7eb80d08-78b7-4fbe-b584-0995e1de504f.png"
-    },
-    {
-      "title": "Customize GitHub Copilot for your team",
-      "source": "GitHub Changelog",
-      "date": "2026-11-18",
-      "url": "https://github.blog/changelog/2026-11-18-customize-github-copilot-for-your-team",
-      "summary": "You can now share the GitHub Copilot plugins your team relies on without asking every member to repeat the same setup. Team customizations are generally available for organization teams. Team… The post Customize GitHub C...",
-      "tags": [
-        "Copilot"
-      ],
-      "image": "https://github.blog/wp-content/uploads/2026/11/682125868-f1b8f266-b7af-45d3-9337-bee8b85ea55a.png"
-    },
-    {
-      "title": "The Gemini app is now available on lower-memory Android devices.",
-      "source": "Google AI Blog",
-      "date": "2026-11-18",
-      "url": "https://blog.google/innovation-and-ai/products/gemini-app/gemini-lower-memory-devices/",
-      "summary": "The Google Gemini app now supports lower-memory Android devices. Access Gemini Live and custom image creation on your phone. Download the app today.",
-      "tags": [
-        "Gemini",
-        "Multimodal"
-      ],
-      "image": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Gemini_app_Android_social_share.max-600x600.format-webp.webp"
-    },
-    {
-      "title": "Introducing Gemini 4 Neon",
-      "source": "Google DeepMind",
-      "date": "2026-11-18",
-      "url": "https://deepmind.google/blog/introducing-gemini-4-neon/",
-      "summary": "AI update detected from an official or high-signal source.",
-      "tags": [
-        "Gemini"
-      ],
-      "image": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/gemini-4-neon__blog-header__sm.width-1300.png"
-    },
-    {
-      "title": "Why your fine-tuning job takes longer than the FLOPs say",
-      "source": "Hugging Face",
-      "date": "2026-11-18",
-      "url": "https://huggingface.co/blog/Dharma-AI/predicting-fine-tuning-time",
-      "summary": "AI update detected from an official or high-signal source.",
-      "tags": [
-        "AI"
-      ],
-      "image": "https://cdn-uploads.huggingface.co/production/uploads/6a725daa5ca641a21ab61956/J6DIf4Len_31Tj-CQlQXY.png"
-    },
-    {
-      "title": "Time-Series Models in the Streamhouse: A New Frontier and Use Cases",
-      "source": "Hugging Face",
-      "date": "2026-11-18",
-      "url": "https://huggingface.co/blog/ibm-research/time-series-powered-streamhouse",
-      "summary": "AI update detected from an official or high-signal source.",
-      "tags": [
-        "Models"
-      ],
-      "image": "https://cdn-uploads.huggingface.co/production/uploads/64e8143f6de557454220921e/yf6E9vJHIkGHG_toGSasb.gif"
-    },
-    {
-      "title": "180B Parameters, 32GB of RAM: Pushing MoE Inference to the Limit with Transformers",
-      "source": "Hugging Face",
-      "date": "2026-11-18",
-      "url": "https://huggingface.co/blog/moe-expert-streaming",
-      "summary": "AI update detected from an official or high-signal source.",
-      "tags": [
-        "AI"
-      ],
-      "image": "https://huggingface.co/blog/assets/moe-expert-streaming/thumbnail.png"
+      "image": ""
     }
   ],
   "candidates": [
@@ -247,19 +256,19 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-11-19"
+          "date": "2026-11-20"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-11-19"
+          "date": "2026-11-20"
         },
         {
-          "title": "datasette-arrows 0.1a0",
+          "title": "Quoting Levent Alpöge",
           "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/18/datasette-arrows/",
-          "date": "2026-11-18"
+          "link": "https://simonwillison.net/2026/Nov/20/levent-alpoge/",
+          "date": "2026-11-20"
         }
       ]
     },
@@ -272,19 +281,94 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
-          "date": "2026-11-19"
+          "date": "2026-11-20"
         },
         {
-          "title": "Wait for pull request events with GitHub CLI",
+          "title": "Use Kimi Code CLI with models on Amazon Bedrock",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/use-kimi-code-cli-with-models-on-amazon-bedrock/",
+          "date": "2026-11-20"
+        },
+        {
+          "title": "Token fraud is here and it’s BAD (YouTube)",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Nov/20/token-fraud-is-here-and-its-bad/",
+          "date": "2026-11-20"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Use Kimi Code CLI with models on Amazon Bedrock",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/use-kimi-code-cli-with-models-on-amazon-bedrock/",
+          "date": "2026-11-20"
+        },
+        {
+          "title": "Gemini 4 Neon in GitHub Copilot",
           "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-18-wait-for-pull-request-events-with-github-cli",
+          "link": "https://github.blog/changelog/2026-11-18-gemini-4-neon-in-github-copilot",
+          "date": "2026-11-18"
+        },
+        {
+          "title": "Research acceleration: The jagged frontier",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/research-acceleration-jagged-frontier",
+          "date": "2026-11-18"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Signal is blocking Gemini and Siri AI from reading your screen",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1038390/signal-blocking-ai-agent-screenshots-mobile-app",
+          "date": "2026-11-20"
+        },
+        {
+          "title": "Introducing Tool Retrieval in the Gemini API",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/gemini-api-tool-retrieval/",
           "date": "2026-11-19"
         },
         {
-          "title": "Build Tool-Calling Parsers in Rust with AI Agents",
-          "source": "NVIDIA Developer",
-          "link": "https://developer.nvidia.com/blog/build-tool-calling-parsers-in-rust-with-ai-agents/",
+          "title": "Gemini on Mac can now use your computer",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/tech/1037902/google-gemini-macos-ai-computer-use",
           "date": "2026-11-19"
+        }
+      ]
+    },
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Enable AI agents to pay for AWS Marketplace x402 products with Amazon Bedrock AgentCore payments",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/enable-ai-agents-to-pay-for-aws-marketplace-x402-products-with-amazon-bedrock-agentcore-payments/",
+          "date": "2026-11-19"
+        },
+        {
+          "title": "How the BMW Group governs hundreds of agents across thousands of developers",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/how-the-bmw-group-governs-hundreds-of-agents-across-thousands-of-developers/",
+          "date": "2026-11-19"
+        },
+        {
+          "title": "The PSF end-of-year fundraiser",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Nov/18/psf-end-of-year-fundraiser/",
+          "date": "2026-11-18"
         }
       ]
     },
@@ -293,6 +377,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "How OpenAI’s Performance Factory keeps ChatGPT fast",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/how-openai-performance-factory-keeps-chatgpt-fast",
+          "date": "2026-11-19"
+        },
         {
           "title": "ChatGPT can transcribe as you speak now with Live Dictation",
           "source": "The Verge AI",
@@ -303,12 +393,6 @@
           "title": "How Sumitomo Life’s leaders helped teams adopt ChatGPT Enterprise",
           "source": "OpenAI News",
           "link": "https://openai.com/business/customer-stories/sumitomo-life",
-          "date": "2026-11-18"
-        },
-        {
-          "title": "Le Groupe Figaro and OpenAI partner to bring Le Figaro journalism to ChatGPT",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/le-groupe-figaro-and-openai-announce-partnership",
           "date": "2026-11-18"
         }
       ]
@@ -339,31 +423,6 @@
       ]
     },
     {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "How Airbnb uses cost per task to operate coding agents on Amazon Bedrock",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/how-airbnb-uses-cost-per-task-to-operate-coding-agents-on-amazon-bedrock/",
-          "date": "2026-11-18"
-        },
-        {
-          "title": "Gemini 4 Neon in GitHub Copilot",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-18-gemini-4-neon-in-github-copilot",
-          "date": "2026-11-18"
-        },
-        {
-          "title": "Research acceleration: The jagged frontier",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/research-acceleration-jagged-frontier",
-          "date": "2026-11-18"
-        }
-      ]
-    },
-    {
       "label": "MCP / tool-connected assistants",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
@@ -373,50 +432,6 @@
           "source": "GitHub Changelog",
           "link": "https://github.blog/changelog/2026-11-18-connect-supabase-box-calendly-and-more-to-copilot",
           "date": "2026-11-18"
-        }
-      ]
-    },
-    {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Gemini 4 Neon in GitHub Copilot",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-18-gemini-4-neon-in-github-copilot",
-          "date": "2026-11-18"
-        },
-        {
-          "title": "The Gemini app is now available on lower-memory Android devices.",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/products/gemini-app/gemini-lower-memory-devices/",
-          "date": "2026-11-18"
-        },
-        {
-          "title": "Introducing Gemini 4 Neon",
-          "source": "Google DeepMind",
-          "link": "https://deepmind.google/blog/introducing-gemini-4-neon/",
-          "date": "2026-11-18"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "The PSF end-of-year fundraiser",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/18/psf-end-of-year-fundraiser/",
-          "date": "2026-11-18"
-        },
-        {
-          "title": "Azure Cobalt 200 VMs now available, proven on real workloads and built for the agentic era",
-          "source": "Azure Blog",
-          "link": "https://azure.microsoft.com/en-us/blog/azure-cobalt-200-vms-now-available-proven-on-real-workloads-and-built-for-the-agentic-era/",
-          "date": "2026-11-17"
         }
       ]
     }
