@@ -14,6 +14,13 @@ export function SectionHead({ index, id, title, intro, action }: { index: string
   );
 }
 
+// Keep the portfolio and its radar page together in the project list.
+const radarProject = PROJECTS.find(project => project.title === 'Live AI Radar');
+const displayedProjects = radarProject && PROJECTS.some(project => project.title === 'This site')
+  ? PROJECTS.filter(project => project !== radarProject).flatMap(project =>
+      project.title === 'This site' ? [project, radarProject] : [project])
+  : PROJECTS;
+
 export function Work() {
   const { t } = useI18n();
   return (
@@ -32,7 +39,7 @@ export function Work() {
       />
 
       <ol className="work-list">
-        {PROJECTS.map((project, index) => {
+        {displayedProjects.map((project, index) => {
           const title = typeof project.title === 'string' ? project.title : t(project.title.key);
           return (
             <li className="work-item" key={title}>
