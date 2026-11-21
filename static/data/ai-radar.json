@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-20T16:37:56.616Z",
-  "date": "2026-11-20",
+  "generatedAt": "2026-11-21T15:52:33.628Z",
+  "date": "2026-11-21",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
@@ -9,7 +9,7 @@
     {
       "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
       "source": "Anthropic News",
-      "date": "2026-11-20",
+      "date": "2026-11-21",
       "url": "https://www.anthropic.com/news/expanding-partnership-gsa",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -20,7 +20,7 @@
     {
       "title": "Donating Agent Skills to the Agentic AI Foundation",
       "source": "Anthropic News",
-      "date": "2026-11-20",
+      "date": "2026-11-21",
       "url": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -32,7 +32,7 @@
     {
       "title": "Introducing the Anthropic Cyber Mission",
       "source": "Anthropic News",
-      "date": "2026-11-20",
+      "date": "2026-11-21",
       "url": "https://www.anthropic.com/news/anthropic-cyber-mission",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -43,7 +43,7 @@
     {
       "title": "Security",
       "source": "Anthropic News",
-      "date": "2026-11-20",
+      "date": "2026-11-21",
       "url": "https://www.anthropic.com/news/security",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -52,28 +52,61 @@
       "image": "https://assets.claude.com/6d4a0d28992ade92d6fa63646fd9c9d318245c6c.jpg"
     },
     {
-      "title": "Amazon SageMaker Inference: 2026 launches in review, part 2",
+      "title": "New in AWS Quick: More capable flows, an updated web experience, and agents that work together",
       "source": "AWS Machine Learning",
-      "date": "2026-11-20",
-      "url": "https://aws.amazon.com/blogs/machine-learning/amazon-sagemaker-inference-2026-launches-in-review-part-2/",
-      "summary": "This second installment reviews 13 more Amazon SageMaker AI inference launches from 2026, spanning configuration recommendations, fitting more models onto each GPU, serving models too large for one instance, cross-Region...",
+      "date": "2026-11-21",
+      "url": "https://aws.amazon.com/blogs/machine-learning/new-in-aws-quick-more-capable-flows-an-updated-web-experience-and-agents-that-work-together/",
+      "summary": "AWS Quick is the AI workspace built only for work. Today we're releasing updates that help your team get more done: build and run business-process flows in chat, triage your day in the updated web app, get more complete ...",
       "tags": [
-        "Models"
+        "Agents"
       ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/19/ML-22497-1.png"
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/20/Screenshot-2026-11-20-at-4.58.42%E2%80%AFPM.png"
     },
     {
-      "title": "Use Kimi Code CLI with models on Amazon Bedrock",
+      "title": "Cut self-hosted LLM cost and latency with the distributed KV caching agent skill",
       "source": "AWS Machine Learning",
-      "date": "2026-11-20",
-      "url": "https://aws.amazon.com/blogs/machine-learning/use-kimi-code-cli-with-models-on-amazon-bedrock/",
-      "summary": "Kimi Code CLI v2.7.0 adds a native Amazon Bedrock provider, so you can connect the open source coding agent to models like Kimi K3.1 Pro using your standard AWS credential chain (named profiles or SSO) instead of a separ...",
+      "date": "2026-11-21",
+      "url": "https://aws.amazon.com/blogs/machine-learning/cut-self-hosted-llm-cost-and-latency-with-the-distributed-kv-caching-agent-skill/",
+      "summary": "Self-hosting LLMs on GPUs means paying to recompute the same context on every turn. Distributed KV caching with Amazon ElastiCache can cut inference cost by up to 40% and time to first token by up to 80%. This post walks...",
       "tags": [
         "Agents",
         "Dev Tools",
         "Models"
       ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/19/ML-22481-1.jpg"
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/20/ML-22449-1.png"
+    },
+    {
+      "title": "Researcher plants 2m canaries into the AI supply chain. A privacy disaster surfaced.",
+      "source": "Ars Technica AI",
+      "date": "2026-11-20",
+      "url": "https://arstechnica.com/security/2026/11/a-leaky-ai-supply-chain-is-exposing-secret-user-data-at-an-alarming-rate/",
+      "summary": "Test using prompts with unique, trackable secrets proves that data doesn't stay private.",
+      "tags": [
+        "AI"
+      ],
+      "image": "https://cdn.arstechnica.net/wp-content/uploads/2026/11/ai-privacy-leakage-1152x648.jpg"
+    },
+    {
+      "title": "Introducing Amazon SageMaker HyperPod Global Inference Gateway: One endpoint across Regions and clusters",
+      "source": "AWS Machine Learning",
+      "date": "2026-11-20",
+      "url": "https://aws.amazon.com/blogs/machine-learning/introducing-amazon-sagemaker-hyperpod-global-inference-gateway-one-endpoint-across-regions-and-clusters/",
+      "summary": "Amazon SageMaker HyperPod introduces the Global Inference Gateway, one managed endpoint that routes inference requests across your HyperPod clusters in one Region or across Regions. It picks the best cluster, fails over ...",
+      "tags": [
+        "AI"
+      ],
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/20/ML-22376-1-1.png"
+    },
+    {
+      "title": "How Standard Bank Group automates AI risk assessment for generative AI",
+      "source": "AWS Machine Learning",
+      "date": "2026-11-20",
+      "url": "https://aws.amazon.com/blogs/machine-learning/how-standard-bank-group-automates-ai-risk-assessment-for-generative-ai/",
+      "summary": "Standard Bank Group automated the evidence behind its generative AI approval gates. Working with AWS Professional Services, the bank built an assessment in its own AWS account that scores each use case against internatio...",
+      "tags": [
+        "Models"
+      ],
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/19/ML-22493-1.png"
     },
     {
       "title": "Introducing harness adapters: adapt your favorite model to your harness to improve performance and cost",
@@ -85,6 +118,53 @@
         "Models"
       ],
       "image": "https://huggingface.co/blog/assets/harness-adapters-at-scale/thumbnail.png"
+    },
+    {
+      "title": "The most misunderstood graph in AI just got a major update",
+      "source": "MIT Technology Review AI",
+      "date": "2026-11-20",
+      "url": "https://www.technologyreview.com/2026/11/20/1149399/the-most-misunderstood-graph-in-ai-just-got-a-major-update/",
+      "summary": "A new report from the AI evaluation nonprofit METR finds that some AI capabilities are continuing to improve along an exponential trajectory—but it also indicates that models aren’t quite as good at tasks that require ju...",
+      "tags": [
+        "Dev Tools",
+        "Models"
+      ],
+      "image": "https://wp.technologyreview.com/wp-content/uploads/2026/11/metr2a.jpg?resize=1200,600"
+    },
+    {
+      "title": "Combatting adversarial distillation",
+      "source": "OpenAI News",
+      "date": "2026-11-20",
+      "url": "https://openai.com/index/combatting-adversarial-distillation",
+      "summary": "OpenAI’s layered approach to adversarial distillation combines model training, safeguards, detection, and enforcement to protect against capability extraction.",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ],
+      "image": "https://images.ctfassets.net/kftzwdyauwt9/5SUtPGdssrttC7LfP1yoJ1/b6b000846ab3576c1735c29534ab20b0/combatting-adversarial-distillation-social.png?w=1600&h=900&fit=fill"
+    },
+    {
+      "title": "Hebbia sees improvements in financial research with GPT-6 Astra",
+      "source": "OpenAI News",
+      "date": "2026-11-20",
+      "url": "https://openai.com/business/customer-stories/hebbia",
+      "summary": "Hebbia tested GPT-6 Astra for financial research. Its prerelease evaluations found gains in source coverage, citation relevance, and presentation quality.",
+      "tags": [
+        "ChatGPT"
+      ],
+      "image": "https://images.ctfassets.net/kftzwdyauwt9/70gWqYyqb096it9EoD7OqI/5df8cad1c7fdf2a4e942c3183a10f405/hebbia-smoked-depth-social.png?w=1600&h=900&fit=fill"
+    },
+    {
+      "title": "Can AI help scientists identify promising drug candidates?",
+      "source": "OpenAI News",
+      "date": "2026-11-20",
+      "url": "https://openai.com/index/introducing-medchembench",
+      "summary": "MedChemBench evaluates how well AI models interpret molecular structures, reason from experimental evidence, and select compounds in early drug discovery.",
+      "tags": [
+        "ChatGPT",
+        "Models"
+      ],
+      "image": "https://images.ctfassets.net/kftzwdyauwt9/37ZvKdwVigsgJ7G3FMr4Nb/12854063a79d19d63278704bf54e3010/introducing-medchembench-social.png?w=1600&h=900&fit=fill"
     },
     {
       "title": "Quoting Levent Alpöge",
@@ -113,6 +193,17 @@
       "image": "https://simonwillison.net/2026/Nov/20/token-fraud-is-here-and-its-bad/"
     },
     {
+      "title": "Anthropic mathematician claims to have solved prestigious Millennium Prize problem with Claude",
+      "source": "The Verge AI",
+      "date": "2026-11-20",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1010051/anthropic-riemann-hypothesis-millennium-prize-problem",
+      "summary": "Anthropic mathematician Levent Alpöge claims he has proved the Riemann hypothesis, one of mathematics's most notoriously difficult problems, with the help of Claude, cracking a puzzle that has eluded some of the world's ...",
+      "tags": [
+        "Claude"
+      ],
+      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/11/gettyimages-2305894185.jpg?quality=90&strip=all&crop=0,0,100,100"
+    },
+    {
       "title": "Signal is blocking Gemini and Siri AI from reading your screen",
       "source": "The Verge AI",
       "date": "2026-11-20",
@@ -123,30 +214,6 @@
         "Gemini"
       ],
       "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/11/protecting-your-privacy-1.png?quality=90&strip=all&crop=0,0,100,100"
-    },
-    {
-      "title": "Enable AI agents to pay for AWS Marketplace x402 products with Amazon Bedrock AgentCore payments",
-      "source": "AWS Machine Learning",
-      "date": "2026-11-19",
-      "url": "https://aws.amazon.com/blogs/machine-learning/enable-ai-agents-to-pay-for-aws-marketplace-x402-products-with-amazon-bedrock-agentcore-payments/",
-      "summary": "Amazon Bedrock AgentCore payments now supports AWS Marketplace, so agents can discover and buy x402-enabled products, APIs, data, and content and pay in USD on the developer's AWS bill, with no stablecoin wallets or API ...",
-      "tags": [
-        "Agents",
-        "Dev Tools"
-      ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/19/awsbilling-ecosystem-transparent.png"
-    },
-    {
-      "title": "How the BMW Group governs hundreds of agents across thousands of developers",
-      "source": "AWS Machine Learning",
-      "date": "2026-11-19",
-      "url": "https://aws.amazon.com/blogs/machine-learning/how-the-bmw-group-governs-hundreds-of-agents-across-thousands-of-developers/",
-      "summary": "When hundreds of agents serve thousands of developers, governance cannot be an afterthought. The BMW Group shares the practices and patterns its R&amp;D teams use to build, govern, and operate AI agents at enterprise sca...",
-      "tags": [
-        "Agents",
-        "Dev Tools"
-      ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/16/ML-20698-1.png"
     },
     {
       "title": "Wait for pull request events with GitHub CLI",
@@ -170,80 +237,6 @@
         "Gemini"
       ],
       "image": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Tool_retrieval_hero.max-600x600.format-webp.webp"
-    },
-    {
-      "title": "Reducing Rollout Bottlenecks in Reinforcement Learning with NVIDIA Dynamo",
-      "source": "NVIDIA Developer",
-      "date": "2026-11-19",
-      "url": "https://developer.nvidia.com/blog/reducing-rollout-bottlenecks-in-reinforcement-learning-with-nvidia-dynamo/",
-      "summary": "Reinforcement learning (RL) uses rewards to train models to solve problems and complete tasks more successfully. Inference drives this process. Workers generate...",
-      "tags": [
-        "Dev Tools",
-        "Models"
-      ],
-      "image": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/11/image3-17-768x432.png"
-    },
-    {
-      "title": "Build Tool-Calling Parsers in Rust with AI Agents",
-      "source": "NVIDIA Developer",
-      "date": "2026-11-19",
-      "url": "https://developer.nvidia.com/blog/build-tool-calling-parsers-in-rust-with-ai-agents/",
-      "summary": "A tool call can arrive in pieces, an argument can be cut short, or model-specific markup can leak into the answer. A frontend parser turns that output, received...",
-      "tags": [
-        "Agents",
-        "Dev Tools",
-        "Models"
-      ],
-      "image": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/11/agentic-ai-rl-gym-1024x576-1-768x432.png"
-    },
-    {
-      "title": "How OpenAI’s Performance Factory keeps ChatGPT fast",
-      "source": "OpenAI News",
-      "date": "2026-11-19",
-      "url": "https://openai.com/index/how-openai-performance-factory-keeps-chatgpt-fast",
-      "summary": "Learn how OpenAI built the Performance Factory, a system of Codex-powered workflows that finds and fixes performance issues to help keep ChatGPT fast.",
-      "tags": [
-        "ChatGPT",
-        "Dev Tools",
-        "Automation"
-      ],
-      "image": ""
-    },
-    {
-      "title": "Deploying Daybreak Red",
-      "source": "OpenAI News",
-      "date": "2026-11-19",
-      "url": "https://openai.com/business/learn/deploying-daybreak-red",
-      "summary": "Explore a reference architecture for supervised security investigations with Daybreak Red, including safety controls, setup, and monitoring.",
-      "tags": [
-        "ChatGPT"
-      ],
-      "image": ""
-    },
-    {
-      "title": "See PR scans in action",
-      "source": "OpenAI News",
-      "date": "2026-11-19",
-      "url": "https://openai.com/business/learn/pr-scans-demo",
-      "summary": "Watch a walkthrough of PR scans and see how the presenter reviews scan results in a pull request workflow.",
-      "tags": [
-        "ChatGPT",
-        "Automation"
-      ],
-      "image": ""
-    },
-    {
-      "title": "Explore the Codex Security Plugin",
-      "source": "OpenAI News",
-      "date": "2026-11-19",
-      "url": "https://openai.com/business/learn/codex-security-plugin-demo",
-      "summary": "Watch a demo of the Codex Security Plugin and see the workflow in action, from getting started to reviewing the results shown in the recording.",
-      "tags": [
-        "ChatGPT",
-        "Dev Tools",
-        "Automation"
-      ],
-      "image": ""
     }
   ],
   "candidates": [
@@ -256,13 +249,13 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-11-20"
+          "date": "2026-11-21"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-11-20"
+          "date": "2026-11-21"
         },
         {
           "title": "Quoting Levent Alpöge",
@@ -281,19 +274,19 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
-          "date": "2026-11-20"
+          "date": "2026-11-21"
         },
         {
-          "title": "Use Kimi Code CLI with models on Amazon Bedrock",
+          "title": "New in AWS Quick: More capable flows, an updated web experience, and agents that work together",
           "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/use-kimi-code-cli-with-models-on-amazon-bedrock/",
-          "date": "2026-11-20"
+          "link": "https://aws.amazon.com/blogs/machine-learning/new-in-aws-quick-more-capable-flows-an-updated-web-experience-and-agents-that-work-together/",
+          "date": "2026-11-21"
         },
         {
-          "title": "Token fraud is here and it’s BAD (YouTube)",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/20/token-fraud-is-here-and-its-bad/",
-          "date": "2026-11-20"
+          "title": "Cut self-hosted LLM cost and latency with the distributed KV caching agent skill",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/cut-self-hosted-llm-cost-and-latency-with-the-distributed-kv-caching-agent-skill/",
+          "date": "2026-11-21"
         }
       ]
     },
@@ -303,22 +296,22 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "Cut self-hosted LLM cost and latency with the distributed KV caching agent skill",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/cut-self-hosted-llm-cost-and-latency-with-the-distributed-kv-caching-agent-skill/",
+          "date": "2026-11-21"
+        },
+        {
           "title": "Use Kimi Code CLI with models on Amazon Bedrock",
           "source": "AWS Machine Learning",
           "link": "https://aws.amazon.com/blogs/machine-learning/use-kimi-code-cli-with-models-on-amazon-bedrock/",
           "date": "2026-11-20"
         },
         {
-          "title": "Gemini 4 Neon in GitHub Copilot",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-18-gemini-4-neon-in-github-copilot",
-          "date": "2026-11-18"
-        },
-        {
-          "title": "Research acceleration: The jagged frontier",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/research-acceleration-jagged-frontier",
-          "date": "2026-11-18"
+          "title": "The most misunderstood graph in AI just got a major update",
+          "source": "MIT Technology Review AI",
+          "link": "https://www.technologyreview.com/2026/11/20/1149399/the-most-misunderstood-graph-in-ai-just-got-a-major-update/",
+          "date": "2026-11-20"
         }
       ]
     },
@@ -340,10 +333,10 @@
           "date": "2026-11-19"
         },
         {
-          "title": "Gemini on Mac can now use your computer",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/1037902/google-gemini-macos-ai-computer-use",
-          "date": "2026-11-19"
+          "title": "The Gemini app is now available on lower-memory Android devices.",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/products/gemini-app/gemini-lower-memory-devices/",
+          "date": "2026-11-18"
         }
       ]
     },
@@ -359,16 +352,16 @@
           "date": "2026-11-19"
         },
         {
-          "title": "How the BMW Group governs hundreds of agents across thousands of developers",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/how-the-bmw-group-governs-hundreds-of-agents-across-thousands-of-developers/",
-          "date": "2026-11-19"
-        },
-        {
           "title": "The PSF end-of-year fundraiser",
           "source": "Simon Willison",
           "link": "https://simonwillison.net/2026/Nov/18/psf-end-of-year-fundraiser/",
           "date": "2026-11-18"
+        },
+        {
+          "title": "Azure Cobalt 200 VMs now available, proven on real workloads and built for the agentic era",
+          "source": "Azure Blog",
+          "link": "https://azure.microsoft.com/en-us/blog/azure-cobalt-200-vms-now-available-proven-on-real-workloads-and-built-for-the-agentic-era/",
+          "date": "2026-11-17"
         }
       ]
     },
@@ -381,12 +374,6 @@
           "title": "How OpenAI’s Performance Factory keeps ChatGPT fast",
           "source": "OpenAI News",
           "link": "https://openai.com/index/how-openai-performance-factory-keeps-chatgpt-fast",
-          "date": "2026-11-19"
-        },
-        {
-          "title": "ChatGPT can transcribe as you speak now with Live Dictation",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1037634/openai-chatgpt-live-dictation",
           "date": "2026-11-19"
         },
         {
@@ -412,12 +399,6 @@
           "title": "Connect Supabase, Box, Calendly, and more to Copilot",
           "source": "GitHub Changelog",
           "link": "https://github.blog/changelog/2026-11-18-connect-supabase-box-calendly-and-more-to-copilot",
-          "date": "2026-11-18"
-        },
-        {
-          "title": "Gemini 4 Neon in GitHub Copilot",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-18-gemini-4-neon-in-github-copilot",
           "date": "2026-11-18"
         }
       ]

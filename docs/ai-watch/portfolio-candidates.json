@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-20T16:37:56.616Z",
+  "generatedAt": "2026-11-21T15:52:33.628Z",
   "candidates": [
     {
       "label": "Claude research and documentation flow",
@@ -10,13 +10,13 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-11-20"
+          "date": "2026-11-21"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-11-20"
+          "date": "2026-11-21"
         },
         {
           "title": "Quoting Levent Alpöge",
@@ -35,19 +35,19 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
-          "date": "2026-11-20"
+          "date": "2026-11-21"
         },
         {
-          "title": "Use Kimi Code CLI with models on Amazon Bedrock",
+          "title": "New in AWS Quick: More capable flows, an updated web experience, and agents that work together",
           "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/use-kimi-code-cli-with-models-on-amazon-bedrock/",
-          "date": "2026-11-20"
+          "link": "https://aws.amazon.com/blogs/machine-learning/new-in-aws-quick-more-capable-flows-an-updated-web-experience-and-agents-that-work-together/",
+          "date": "2026-11-21"
         },
         {
-          "title": "Token fraud is here and it’s BAD (YouTube)",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/20/token-fraud-is-here-and-its-bad/",
-          "date": "2026-11-20"
+          "title": "Cut self-hosted LLM cost and latency with the distributed KV caching agent skill",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/cut-self-hosted-llm-cost-and-latency-with-the-distributed-kv-caching-agent-skill/",
+          "date": "2026-11-21"
         }
       ]
     },
@@ -57,22 +57,22 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "Cut self-hosted LLM cost and latency with the distributed KV caching agent skill",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/cut-self-hosted-llm-cost-and-latency-with-the-distributed-kv-caching-agent-skill/",
+          "date": "2026-11-21"
+        },
+        {
           "title": "Use Kimi Code CLI with models on Amazon Bedrock",
           "source": "AWS Machine Learning",
           "link": "https://aws.amazon.com/blogs/machine-learning/use-kimi-code-cli-with-models-on-amazon-bedrock/",
           "date": "2026-11-20"
         },
         {
-          "title": "Gemini 4 Neon in GitHub Copilot",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-18-gemini-4-neon-in-github-copilot",
-          "date": "2026-11-18"
-        },
-        {
-          "title": "Research acceleration: The jagged frontier",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/research-acceleration-jagged-frontier",
-          "date": "2026-11-18"
+          "title": "The most misunderstood graph in AI just got a major update",
+          "source": "MIT Technology Review AI",
+          "link": "https://www.technologyreview.com/2026/11/20/1149399/the-most-misunderstood-graph-in-ai-just-got-a-major-update/",
+          "date": "2026-11-20"
         }
       ]
     },
@@ -94,10 +94,10 @@
           "date": "2026-11-19"
         },
         {
-          "title": "Gemini on Mac can now use your computer",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/tech/1037902/google-gemini-macos-ai-computer-use",
-          "date": "2026-11-19"
+          "title": "The Gemini app is now available on lower-memory Android devices.",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/products/gemini-app/gemini-lower-memory-devices/",
+          "date": "2026-11-18"
         }
       ]
     },
@@ -113,16 +113,16 @@
           "date": "2026-11-19"
         },
         {
-          "title": "How the BMW Group governs hundreds of agents across thousands of developers",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/how-the-bmw-group-governs-hundreds-of-agents-across-thousands-of-developers/",
-          "date": "2026-11-19"
-        },
-        {
           "title": "The PSF end-of-year fundraiser",
           "source": "Simon Willison",
           "link": "https://simonwillison.net/2026/Nov/18/psf-end-of-year-fundraiser/",
           "date": "2026-11-18"
+        },
+        {
+          "title": "Azure Cobalt 200 VMs now available, proven on real workloads and built for the agentic era",
+          "source": "Azure Blog",
+          "link": "https://azure.microsoft.com/en-us/blog/azure-cobalt-200-vms-now-available-proven-on-real-workloads-and-built-for-the-agentic-era/",
+          "date": "2026-11-17"
         }
       ]
     },
@@ -135,12 +135,6 @@
           "title": "How OpenAI’s Performance Factory keeps ChatGPT fast",
           "source": "OpenAI News",
           "link": "https://openai.com/index/how-openai-performance-factory-keeps-chatgpt-fast",
-          "date": "2026-11-19"
-        },
-        {
-          "title": "ChatGPT can transcribe as you speak now with Live Dictation",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1037634/openai-chatgpt-live-dictation",
           "date": "2026-11-19"
         },
         {
@@ -166,12 +160,6 @@
           "title": "Connect Supabase, Box, Calendly, and more to Copilot",
           "source": "GitHub Changelog",
           "link": "https://github.blog/changelog/2026-11-18-connect-supabase-box-calendly-and-more-to-copilot",
-          "date": "2026-11-18"
-        },
-        {
-          "title": "Gemini 4 Neon in GitHub Copilot",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-18-gemini-4-neon-in-github-copilot",
           "date": "2026-11-18"
         }
       ]
