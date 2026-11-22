@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-21T15:52:33.628Z",
-  "date": "2026-11-21",
+  "generatedAt": "2026-11-22T15:52:01.161Z",
+  "date": "2026-11-22",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
@@ -9,7 +9,7 @@
     {
       "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
       "source": "Anthropic News",
-      "date": "2026-11-21",
+      "date": "2026-11-22",
       "url": "https://www.anthropic.com/news/expanding-partnership-gsa",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -20,7 +20,7 @@
     {
       "title": "Donating Agent Skills to the Agentic AI Foundation",
       "source": "Anthropic News",
-      "date": "2026-11-21",
+      "date": "2026-11-22",
       "url": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -32,7 +32,7 @@
     {
       "title": "Introducing the Anthropic Cyber Mission",
       "source": "Anthropic News",
-      "date": "2026-11-21",
+      "date": "2026-11-22",
       "url": "https://www.anthropic.com/news/anthropic-cyber-mission",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -43,7 +43,7 @@
     {
       "title": "Security",
       "source": "Anthropic News",
-      "date": "2026-11-21",
+      "date": "2026-11-22",
       "url": "https://www.anthropic.com/news/security",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -74,6 +74,18 @@
         "Models"
       ],
       "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/20/ML-22449-1.png"
+    },
+    {
+      "title": "Muru",
+      "source": "Simon Willison",
+      "date": "2026-11-21",
+      "url": "https://simonwillison.net/2026/Nov/21/muru/",
+      "summary": "Muru Graham Dumpleton started mod_wsgi 20 years ago, and has been thinking about the ideal way to serve Python web applications in production ever since. Muru is his new, AI-assisted Rust server that aims to provide the ...",
+      "tags": [
+        "Agents",
+        "Models"
+      ],
+      "image": "https://simonwillison.net/2026/Nov/21/muru/"
     },
     {
       "title": "Researcher plants 2m canaries into the AI supply chain. A privacy disaster surfaced.",
@@ -179,6 +191,18 @@
       "image": "https://simonwillison.net/2026/Nov/20/levent-alpoge/"
     },
     {
+      "title": "llm-gemini 0.38.1",
+      "source": "Simon Willison",
+      "date": "2026-11-20",
+      "url": "https://simonwillison.net/2026/Nov/20/llm-gemini/",
+      "summary": "Release: llm-gemini 0.38.1 Gemini 4 Carbon only supports low , medium and high reasoning levels - but Gemini 4 Hydrogen and Gemini 4 Neon both have an extra xhigh level. I missed that when I added those models to the llm...",
+      "tags": [
+        "Gemini",
+        "Models"
+      ],
+      "image": "https://static.simonwillison.net/static/2026/gemini-4-xhigh-pelicans.webp"
+    },
+    {
       "title": "Token fraud is here and it’s BAD (YouTube)",
       "source": "Simon Willison",
       "date": "2026-11-20",
@@ -214,29 +238,6 @@
         "Gemini"
       ],
       "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/11/protecting-your-privacy-1.png?quality=90&strip=all&crop=0,0,100,100"
-    },
-    {
-      "title": "Wait for pull request events with GitHub CLI",
-      "source": "GitHub Changelog",
-      "date": "2026-11-19",
-      "url": "https://github.blog/changelog/2026-11-18-wait-for-pull-request-events-with-github-cli",
-      "summary": "GitHub CLI now supports GitHub Event Streams. With gh v2.105.0, you and your agents can wait for a pull request to change with a single command instead of polling it… The post Wait for pull request events with GitHub CLI...",
-      "tags": [
-        "Agents"
-      ],
-      "image": "https://github.blog/wp-content/uploads/2026/11/Changelog_NewRelease_Unfurl_Centered_PullRequestEvents.jpg"
-    },
-    {
-      "title": "Introducing Tool Retrieval in the Gemini API",
-      "source": "Google AI Blog",
-      "date": "2026-11-19",
-      "url": "https://blog.google/innovation-and-ai/technology/developers-tools/gemini-api-tool-retrieval/",
-      "summary": "Give your agents access to hundreds of tools while using fewer tokens with Tool Retrieval, now in preview in the Gemini API.",
-      "tags": [
-        "Agents",
-        "Gemini"
-      ],
-      "image": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Tool_retrieval_hero.max-600x600.format-webp.webp"
     }
   ],
   "candidates": [
@@ -249,13 +250,13 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-11-21"
+          "date": "2026-11-22"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-11-21"
+          "date": "2026-11-22"
         },
         {
           "title": "Quoting Levent Alpöge",
@@ -274,7 +275,7 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
-          "date": "2026-11-21"
+          "date": "2026-11-22"
         },
         {
           "title": "New in AWS Quick: More capable flows, an updated web experience, and agents that work together",
@@ -296,6 +297,12 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "The vibe-coding revolution is coming to all the gadgets",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/column/1039139/vibe-coding-gadgets-tv-camera",
+          "date": "2026-11-22"
+        },
+        {
           "title": "Cut self-hosted LLM cost and latency with the distributed KV caching agent skill",
           "source": "AWS Machine Learning",
           "link": "https://aws.amazon.com/blogs/machine-learning/cut-self-hosted-llm-cost-and-latency-with-the-distributed-kv-caching-agent-skill/",
@@ -306,12 +313,6 @@
           "source": "AWS Machine Learning",
           "link": "https://aws.amazon.com/blogs/machine-learning/use-kimi-code-cli-with-models-on-amazon-bedrock/",
           "date": "2026-11-20"
-        },
-        {
-          "title": "The most misunderstood graph in AI just got a major update",
-          "source": "MIT Technology Review AI",
-          "link": "https://www.technologyreview.com/2026/11/20/1149399/the-most-misunderstood-graph-in-ai-just-got-a-major-update/",
-          "date": "2026-11-20"
         }
       ]
     },
@@ -320,6 +321,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "llm-gemini 0.38.1",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Nov/20/llm-gemini/",
+          "date": "2026-11-20"
+        },
         {
           "title": "Signal is blocking Gemini and Siri AI from reading your screen",
           "source": "The Verge AI",
@@ -331,12 +338,6 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/developers-tools/gemini-api-tool-retrieval/",
           "date": "2026-11-19"
-        },
-        {
-          "title": "The Gemini app is now available on lower-memory Android devices.",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/products/gemini-app/gemini-lower-memory-devices/",
-          "date": "2026-11-18"
         }
       ]
     },
@@ -350,12 +351,6 @@
           "source": "AWS Machine Learning",
           "link": "https://aws.amazon.com/blogs/machine-learning/enable-ai-agents-to-pay-for-aws-marketplace-x402-products-with-amazon-bedrock-agentcore-payments/",
           "date": "2026-11-19"
-        },
-        {
-          "title": "The PSF end-of-year fundraiser",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/18/psf-end-of-year-fundraiser/",
-          "date": "2026-11-18"
         },
         {
           "title": "Azure Cobalt 200 VMs now available, proven on real workloads and built for the agentic era",

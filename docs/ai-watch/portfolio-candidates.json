@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-21T15:52:33.628Z",
+  "generatedAt": "2026-11-22T15:52:01.161Z",
   "candidates": [
     {
       "label": "Claude research and documentation flow",
@@ -10,13 +10,13 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-11-21"
+          "date": "2026-11-22"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-11-21"
+          "date": "2026-11-22"
         },
         {
           "title": "Quoting Levent Alpöge",
@@ -35,7 +35,7 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
-          "date": "2026-11-21"
+          "date": "2026-11-22"
         },
         {
           "title": "New in AWS Quick: More capable flows, an updated web experience, and agents that work together",
@@ -57,6 +57,12 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "The vibe-coding revolution is coming to all the gadgets",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/column/1039139/vibe-coding-gadgets-tv-camera",
+          "date": "2026-11-22"
+        },
+        {
           "title": "Cut self-hosted LLM cost and latency with the distributed KV caching agent skill",
           "source": "AWS Machine Learning",
           "link": "https://aws.amazon.com/blogs/machine-learning/cut-self-hosted-llm-cost-and-latency-with-the-distributed-kv-caching-agent-skill/",
@@ -67,12 +73,6 @@
           "source": "AWS Machine Learning",
           "link": "https://aws.amazon.com/blogs/machine-learning/use-kimi-code-cli-with-models-on-amazon-bedrock/",
           "date": "2026-11-20"
-        },
-        {
-          "title": "The most misunderstood graph in AI just got a major update",
-          "source": "MIT Technology Review AI",
-          "link": "https://www.technologyreview.com/2026/11/20/1149399/the-most-misunderstood-graph-in-ai-just-got-a-major-update/",
-          "date": "2026-11-20"
         }
       ]
     },
@@ -81,6 +81,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "llm-gemini 0.38.1",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Nov/20/llm-gemini/",
+          "date": "2026-11-20"
+        },
         {
           "title": "Signal is blocking Gemini and Siri AI from reading your screen",
           "source": "The Verge AI",
@@ -92,12 +98,6 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/developers-tools/gemini-api-tool-retrieval/",
           "date": "2026-11-19"
-        },
-        {
-          "title": "The Gemini app is now available on lower-memory Android devices.",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/products/gemini-app/gemini-lower-memory-devices/",
-          "date": "2026-11-18"
         }
       ]
     },
@@ -111,12 +111,6 @@
           "source": "AWS Machine Learning",
           "link": "https://aws.amazon.com/blogs/machine-learning/enable-ai-agents-to-pay-for-aws-marketplace-x402-products-with-amazon-bedrock-agentcore-payments/",
           "date": "2026-11-19"
-        },
-        {
-          "title": "The PSF end-of-year fundraiser",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/18/psf-end-of-year-fundraiser/",
-          "date": "2026-11-18"
         },
         {
           "title": "Azure Cobalt 200 VMs now available, proven on real workloads and built for the agentic era",

@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-11-21
+# Daily AI maintenance report — 2026-11-22
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -21,22 +21,26 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
-- **Expanding our partnership with GSA to bring Claude to all levels of government** — Anthropic News · 2026-11-21
+- **Expanding our partnership with GSA to bring Claude to all levels of government** — Anthropic News · 2026-11-22
   https://www.anthropic.com/news/expanding-partnership-gsa
-- **Donating Agent Skills to the Agentic AI Foundation** — Anthropic News · 2026-11-21
+- **Donating Agent Skills to the Agentic AI Foundation** — Anthropic News · 2026-11-22
   https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation
-- **Introducing the Anthropic Cyber Mission** — Anthropic News · 2026-11-21
+- **Introducing the Anthropic Cyber Mission** — Anthropic News · 2026-11-22
   https://www.anthropic.com/news/anthropic-cyber-mission
-- **Security** — Anthropic News · 2026-11-21
+- **Security** — Anthropic News · 2026-11-22
   https://www.anthropic.com/news/security
-- **Expanding the Cyber Verification Program** — Anthropic News · 2026-11-21
+- **Expanding the Cyber Verification Program** — Anthropic News · 2026-11-22
   https://www.anthropic.com/news/cyber-verification-program
-- **Barclays scales Claude to upgrade operations and improve client experience** — Anthropic News · 2026-11-21
+- **Barclays scales Claude to upgrade operations and improve client experience** — Anthropic News · 2026-11-22
   https://www.anthropic.com/news/barclays-scales-claude
+- **The vibe-coding revolution is coming to all the gadgets** — The Verge AI · 2026-11-22
+  https://www.theverge.com/column/1039139/vibe-coding-gadgets-tv-camera
 - **New in AWS Quick: More capable flows, an updated web experience, and agents that work together** — AWS Machine Learning · 2026-11-21
   https://aws.amazon.com/blogs/machine-learning/new-in-aws-quick-more-capable-flows-an-updated-web-experience-and-agents-that-work-together/
 - **Cut self-hosted LLM cost and latency with the distributed KV caching agent skill** — AWS Machine Learning · 2026-11-21
   https://aws.amazon.com/blogs/machine-learning/cut-self-hosted-llm-cost-and-latency-with-the-distributed-kv-caching-agent-skill/
+- **Muru** — Simon Willison · 2026-11-21
+  https://simonwillison.net/2026/Nov/21/muru/
 - **Researcher plants 2m canaries into the AI supply chain. A privacy disaster surfaced.** — Ars Technica AI · 2026-11-20
   https://arstechnica.com/security/2026/11/a-leaky-ai-supply-chain-is-exposing-secret-user-data-at-an-alarming-rate/
 - **Introducing Amazon SageMaker HyperPod Global Inference Gateway: One endpoint across Regions and clusters** — AWS Machine Learning · 2026-11-20
@@ -61,6 +65,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/index/introducing-medchembench
 - **Quoting Levent Alpöge** — Simon Willison · 2026-11-20
   https://simonwillison.net/2026/Nov/20/levent-alpoge/
+- **llm-gemini 0.38.1** — Simon Willison · 2026-11-20
+  https://simonwillison.net/2026/Nov/20/llm-gemini/
 - **Token fraud is here and it’s BAD (YouTube)** — Simon Willison · 2026-11-20
   https://simonwillison.net/2026/Nov/20/token-fraud-is-here-and-its-bad/
 - **Anthropic mathematician claims to have solved prestigious Millennium Prize problem with Claude** — The Verge AI · 2026-11-20
@@ -89,8 +95,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://simonwillison.net/2026/Nov/19/postgresql-19/
 - **Apple is hiring engineers to build its own AI agent** — The Verge AI · 2026-11-19
   https://www.theverge.com/tech/1038227/apple-ai-agent-engineer-job-listing
-- **Meta’s Muse Charm might cost $300** — The Verge AI · 2026-11-19
-  https://www.theverge.com/tech/1038087/meta-muse-charm-ai-price
 - **Copilot is "the new OS for work," and now Office runs inside of it** — Ars Technica AI · 2026-11-18
   https://arstechnica.com/gadgets/2026/11/microsoft-calls-copilot-the-new-os-for-work-at-ignite-keynote/
 - **Connect Supabase, Box, Calendly, and more to Copilot** — GitHub Changelog · 2026-11-18
@@ -119,8 +123,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://simonwillison.net/2026/Nov/18/datasette-arrows/
 - **Quoting Daniel Stenberg** — Simon Willison · 2026-11-18
   https://simonwillison.net/2026/Nov/18/daniel-stenberg/
-- **The PSF end-of-year fundraiser** — Simon Willison · 2026-11-18
-  https://simonwillison.net/2026/Nov/18/psf-end-of-year-fundraiser/
 - **Google makes it easier to use Gemini without training AI on your data** — Ars Technica AI · 2026-11-17
   https://arstechnica.com/ai/2026/11/google-will-let-you-opt-out-of-ai-training-in-gemini-without-losing-your-history/
 - **Grok Bot took unapproved actions, ignored orders to stop, and then denied it** — Ars Technica AI · 2026-11-17
@@ -141,8 +143,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blog.google/innovation-and-ai/products/gemini-app/tasks-in-gemini-free-new-features/
 - **Co-Designing Sparse Attention for Efficient Long-Context Inference** — NVIDIA Developer · 2026-11-17
   https://developer.nvidia.com/blog/co-designing-sparse-attention-for-efficient-long-context-inference/
-- **External sandboxes for coding agents** — Simon Willison · 2026-11-17
-  https://simonwillison.net/2026/Nov/17/external-sandboxes-for-coding-agents/
 - **Hugging Face and OpenRouter join forces to make open-weight models easy to run** — Hugging Face · 2026-11-16
   https://huggingface.co/blog/openrouter
 - **The open-source movement wants Jensen Huang back** — MIT Technology Review AI · 2026-11-16
