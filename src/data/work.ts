@@ -37,6 +37,15 @@ export const PROJECTS: Project[] = [
     private: true,
   },
   {
+    title: 'Bug Hunter',
+    href: './game.html',
+    summary: 'work.bugHunter',
+    stack: 'TypeScript · Canvas 2D · Web Audio · PeerJS (WebRTC) · Vite',
+    year: '2026',
+    status: 'work.playable',
+    image: './images/projects/bug-hunter.jpg',
+  },
+  {
     title: 'MonsterBroker',
     href: 'https://monsterbroker.onrender.com',
     external: true,
