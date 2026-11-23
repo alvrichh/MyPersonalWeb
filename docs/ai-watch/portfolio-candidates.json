@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-22T15:52:01.161Z",
+  "generatedAt": "2026-11-23T19:46:28.289Z",
   "candidates": [
     {
       "label": "Claude research and documentation flow",
@@ -10,19 +10,13 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-11-22"
+          "date": "2026-11-23"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-11-22"
-        },
-        {
-          "title": "Quoting Levent Alpöge",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/20/levent-alpoge/",
-          "date": "2026-11-20"
+          "date": "2026-11-23"
         }
       ]
     },
@@ -35,19 +29,69 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
+          "date": "2026-11-23"
+        },
+        {
+          "title": "Review: The Asus ProArt P16 offers a glimpse of a future powered by local AI",
+          "source": "Ars Technica AI",
+          "link": "https://arstechnica.com/reviews/2026/11/review-the-asus-proart-p16-offers-a-glimpse-of-a-future-powered-by-local-ai/",
+          "date": "2026-11-23"
+        },
+        {
+          "title": "Finding faster quantum algorithms with agents and formal verification",
+          "source": "Google DeepMind",
+          "link": "https://deepmind.google/blog/finding-faster-quantum-algorithms-with-agents-and-formal-verification/",
+          "date": "2026-11-23"
+        }
+      ]
+    },
+    {
+      "label": "Gemini multimodal exploration",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "A more tailored Google Search that’s uniquely yours",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/products-and-platforms/products/search/google-search-personal-intelligence-apps/",
+          "date": "2026-11-23"
+        },
+        {
+          "title": "Introducing Tool Retrieval in the Gemini API",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/gemini-api-tool-retrieval/",
+          "date": "2026-11-19"
+        },
+        {
+          "title": "The Gemini app is now available on lower-memory Android devices.",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/products/gemini-app/gemini-lower-memory-devices/",
+          "date": "2026-11-18"
+        }
+      ]
+    },
+    {
+      "label": "AI developer tooling",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "Perplexity and Intelligence",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/perplexity-and-intelligence",
           "date": "2026-11-22"
         },
         {
-          "title": "New in AWS Quick: More capable flows, an updated web experience, and agents that work together",
+          "title": "Enable AI agents to pay for AWS Marketplace x402 products with Amazon Bedrock AgentCore payments",
           "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/new-in-aws-quick-more-capable-flows-an-updated-web-experience-and-agents-that-work-together/",
-          "date": "2026-11-21"
+          "link": "https://aws.amazon.com/blogs/machine-learning/enable-ai-agents-to-pay-for-aws-marketplace-x402-products-with-amazon-bedrock-agentcore-payments/",
+          "date": "2026-11-19"
         },
         {
-          "title": "Cut self-hosted LLM cost and latency with the distributed KV caching agent skill",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/cut-self-hosted-llm-cost-and-latency-with-the-distributed-kv-caching-agent-skill/",
-          "date": "2026-11-21"
+          "title": "Azure Cobalt 200 VMs now available, proven on real workloads and built for the agentic era",
+          "source": "Azure Blog",
+          "link": "https://azure.microsoft.com/en-us/blog/azure-cobalt-200-vms-now-available-proven-on-real-workloads-and-built-for-the-agentic-era/",
+          "date": "2026-11-17"
         }
       ]
     },
@@ -77,50 +121,6 @@
       ]
     },
     {
-      "label": "Gemini multimodal exploration",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "llm-gemini 0.38.1",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/20/llm-gemini/",
-          "date": "2026-11-20"
-        },
-        {
-          "title": "Signal is blocking Gemini and Siri AI from reading your screen",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/ai-artificial-intelligence/1038390/signal-blocking-ai-agent-screenshots-mobile-app",
-          "date": "2026-11-20"
-        },
-        {
-          "title": "Introducing Tool Retrieval in the Gemini API",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/gemini-api-tool-retrieval/",
-          "date": "2026-11-19"
-        }
-      ]
-    },
-    {
-      "label": "AI developer tooling",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Enable AI agents to pay for AWS Marketplace x402 products with Amazon Bedrock AgentCore payments",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/enable-ai-agents-to-pay-for-aws-marketplace-x402-products-with-amazon-bedrock-agentcore-payments/",
-          "date": "2026-11-19"
-        },
-        {
-          "title": "Azure Cobalt 200 VMs now available, proven on real workloads and built for the agentic era",
-          "source": "Azure Blog",
-          "link": "https://azure.microsoft.com/en-us/blog/azure-cobalt-200-vms-now-available-proven-on-real-workloads-and-built-for-the-agentic-era/",
-          "date": "2026-11-17"
-        }
-      ]
-    },
-    {
       "label": "ChatGPT workflow design",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
@@ -130,12 +130,6 @@
           "source": "OpenAI News",
           "link": "https://openai.com/index/how-openai-performance-factory-keeps-chatgpt-fast",
           "date": "2026-11-19"
-        },
-        {
-          "title": "How Sumitomo Life’s leaders helped teams adopt ChatGPT Enterprise",
-          "source": "OpenAI News",
-          "link": "https://openai.com/business/customer-stories/sumitomo-life",
-          "date": "2026-11-18"
         }
       ]
     },
@@ -151,23 +145,35 @@
           "date": "2026-11-18"
         },
         {
-          "title": "Connect Supabase, Box, Calendly, and more to Copilot",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-18-connect-supabase-box-calendly-and-more-to-copilot",
-          "date": "2026-11-18"
+          "title": "Beyond code generation: A developer’s guide to agentic engineering",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/beyond-code-generation-a-developers-guide-to-agentic-engineering/",
+          "date": "2026-11-06"
+        },
+        {
+          "title": "How 3 Java Champions are using GitHub Copilot for increased productivity",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-3-java-champions-are-using-github-copilot-for-increased-productivity/",
+          "date": "2026-10-20"
         }
       ]
     },
     {
-      "label": "MCP / tool-connected assistants",
+      "label": "Multimodal AI product workflows",
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
-          "title": "Connect Supabase, Box, Calendly, and more to Copilot",
-          "source": "GitHub Changelog",
-          "link": "https://github.blog/changelog/2026-11-18-connect-supabase-box-calendly-and-more-to-copilot",
-          "date": "2026-11-18"
+          "title": "Gemini Decisions API: Fast, calibrated multimodal decisions",
+          "source": "Google AI Blog",
+          "link": "https://blog.google/innovation-and-ai/technology/developers-tools/gemini-decisions-api/",
+          "date": "2026-11-11"
+        },
+        {
+          "title": "Building the next generation of multimodal AI experiences with fal in Microsoft Foundry",
+          "source": "Azure Blog",
+          "link": "https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/building-the-next-generation-of-multimodal-ai-experiences-with-fal-in-microsoft-/4570032",
+          "date": "2026-11-06"
         }
       ]
     }
