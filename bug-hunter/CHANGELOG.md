@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.30 - 2026-11-22
+
+- The world's final boss is always drawn over everything on the field: the crowd, the other bosses, every warning, shot, orb and effect, the hero, and the fog and darkness too, so it never disappears behind anything. Its clones stay under it with the other bosses; the HUD and dialogs still sit above the canvas.
+
 ## 1.16.29 - 2026-11-12
 
 - The game page loads its AdSense tag before the game so Google's configured Privacy & messaging CMP can collect and manage advertising consent. Removed the separate game-made consent panel and connected Privacy settings to Google's consent-revocation message.

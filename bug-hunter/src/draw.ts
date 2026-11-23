@@ -64,7 +64,8 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   drawThreats(ctx, g, now, false);
   // Bosses come after the crowd and the hero's own weapons (saws, the frost's
   // ice), so neither a swarm nor the orbit hides them (the real one over its
-  // clones; the final boss on top); their warnings and shots, and the hero, go over them.
+  // clones); their warnings and shots, and the hero, go over them. The final
+  // boss (rank 3) is the exception: it is drawn last of all, below.
   const rank = (e: Enemy) => (e.kind !== 'boss' ? 0 : e.clone ? 1 : e.final ? 3 : 2);
   for (const e of g.enemies) if (rank(e) === 0 && onScreen(e, 120)) drawEnemy(ctx, e, now);
   // Fused arrows' tracks go under the arrows.
@@ -76,8 +77,8 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   drawAlly(ctx, g, accent, accent2, now);
   if (g.skills.frost) drawFrostTop(ctx, g, now);
   // The Core's dragon goes over its own attacks (its fire, its ring of orbs, their tracks); the others under theirs.
-  const overShots = (e: Enemy) => e.bossId === 'chimera' && !e.clone;
-  for (const r of [1, 2, 3]) for (const e of g.enemies) if (rank(e) === r && !overShots(e) && onScreen(e, 120)) drawEnemy(ctx, e, now);
+  const overShots = (e: Enemy) => e.bossId === 'chimera' && !e.clone && rank(e) !== 3;
+  for (const r of [1, 2]) for (const e of g.enemies) if (rank(e) === r && !overShots(e) && onScreen(e, 120)) drawEnemy(ctx, e, now);
   drawThreats(ctx, g, now, true);
   drawOrbs(ctx, g);
   for (const e of g.enemies) if (overShots(e) && onScreen(e, 120)) drawEnemy(ctx, e, now);
@@ -105,6 +106,12 @@ export function draw(ctx: CanvasRenderingContext2D, g: Game, view: View, pal: Pa
   ctx.globalAlpha = 1;
   if (g.hazard === 'fog' && !g.showcase) drawFog(ctx, g, vis);
   if (g.player.dark > 0 && g.phase === 'play') drawDark(ctx, g, vis);
+  // The world's final boss always shows over everything on the field: the crowd, the other bosses, every warning,
+  // shot and effect, the hero, and the fog and darkness too (its clones stay under, with the other bosses). The HUD
+  // and dialogs are page elements over the canvas, so they still sit above it.
+  ctx.globalAlpha = 1;
+  ctx.globalCompositeOperation = 'source-over';
+  for (const e of g.enemies) if (rank(e) === 3 && onScreen(e, 120)) drawEnemy(ctx, e, now);
 }
 
 /* Soft round glows (boss shots' tracks, the shots' halos, the bugs' world aura, plasma beads, steam puffs) used to be
