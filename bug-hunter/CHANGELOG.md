@@ -4,6 +4,16 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.38 - 2026-11-24
+
+- Siege Cartoon, the final boss on the ground: his blows are seen and felt.
+  - Sword sweep: a blood-red crescent sweeps out with the blade and a bigger hit; it throws our troops back 200 (was 120).
+  - Fist slam: a dark blast, a crater and a wide crack; it throws back 260 (was 160), the steady heavy troops too, half as far.
+  - Bone spikes: rocks burst out of each crack, the cracks bigger.
+  - Dark pulse: a blast half again as big and a crack round him; it throws back 300 (was 200) out to 200 (was 180), the steady ones too, half as far.
+  - His heaviest blows shake the field a moment (not with reduced motion).
+- A guardian's blow that also has its own push throws back by the larger of the two (it always used the guardians' 150).
+
 ## 1.16.37 - 2026-11-24
 
 - Siege Cartoon, meteor shower: the meteors fall from the sky above the top of the view (they started a little way up); the red marks warning where each would land are gone (meteors give no warning); the craters lie in the ground, their hole on the ground line with the fire, instead of standing on it.

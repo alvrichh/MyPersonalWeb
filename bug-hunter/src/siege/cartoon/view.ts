@@ -436,6 +436,8 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   }
   ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.drawImage(backdrop.canvas, 0, 0);
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.scale(scale, scale); ctx.translate(-camera.x + Math.max(0, (camera.width - FIELD) / 2), 0);
+  // The final boss's heaviest blows shake the field (not with reduced motion).
+  if (s.shake && !reduced) { const k = Math.min(1, s.shake / 0.3) * 7; ctx.translate((Math.random() - 0.5) * k, (Math.random() - 0.5) * k); }
   // The world's air (leaves, snow, embers, birds) drifts in the background, behind the fortresses and the troops.
   if (!reduced) ambient(ctx, s, camera, ground, viewH);
   base(ctx, s, 80, ground, '#55e5c4', false);
@@ -762,11 +764,13 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
   if (e.kind === 'sweep') {
     // The archangel's golden crescent: a wide arc sweeping out from the angel over the ground ahead of it, growing, a
     // white-hot core and gold streaks behind, fading; it is drawn twice, the second time adding light.
-    const art = still('siege/units/shot-crescent-gold'); if (!ok(art)) return false;
+    // (The final boss's sword sweep is the same arc in his dark crescent.)
+    const art = still(e.dark ? 'siege/units/shot-crescent' : 'siege/units/shot-crescent-gold'); if (!ok(art)) return false;
     const dir = e.x >= e.from ? 1 : -1, reach = Math.abs(e.x - e.from), q = Math.min(1, p / 0.8), ease = 1 - (1 - q) * (1 - q);
     const cx = e.from + dir * reach * ease, cy = ground - 36 - (e.fromUp ?? 0) * 0.4, h = 90 + 60 * ease, w = h * art.naturalWidth / art.naturalHeight;
     ctx.save(); ctx.globalAlpha = p < 0.7 ? 1 : (1 - p) / 0.3; ctx.translate(cx, cy); ctx.scale(dir, 1);
-    ctx.shadowColor = '#ffd84a'; ctx.shadowBlur = 26;
+    // The boss's crescent is turned blood red, his colours (the picture is pink).
+    ctx.shadowColor = e.dark ? '#ff2a2a' : '#ffd84a'; ctx.shadowBlur = 26; if (e.dark) ctx.filter = 'hue-rotate(60deg) saturate(1.8)';
     ctx.drawImage(art, -w / 2, -h / 2, w, h);
     ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha *= 0.45; ctx.drawImage(art, -w / 2, -h / 2, w, h);
     ctx.shadowBlur = 0; ctx.globalAlpha *= 0.8; ctx.strokeStyle = '#fff3b0'; ctx.lineWidth = 3; ctx.lineCap = 'round';

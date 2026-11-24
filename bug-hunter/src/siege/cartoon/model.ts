@@ -633,6 +633,8 @@ export interface Effect { x: number; from: number; lane: number; life: number; m
       its sheet faces left or it flies; the view finds the muzzle on its attack pose (`MUZZLE`). */
   gun?: { sprite: string; i: number; size: number; left?: boolean; air?: boolean } }
 export interface Siege {
+  /** Seconds left of the screen shaking (the final boss's heaviest blows). */
+  shake?: number;
   world: number; phase: 'fight' | 'won' | 'lost'; time: number; energy: number; generator: number; cooldowns: Record<number, number>;
   /** The base's mana pool level (`MANA_STEP` more maximum energy each). */
   pool?: number;
@@ -991,7 +993,7 @@ const gunOf = (u: Fighter, a: Spec, i: number, which = '') => ({ sprite: a.sprit
 const LANDING = 1.4;
 /** One of a guardian's attacks (`moves`), in turn: the King of Darkness's orb, eye ray, skulls and portal in the air,
     and his slam, bone spikes and pulse on foot. */
-function kingMove(s: Siege, u: Fighter, a: Spec, enemy: Fighter, alive: Fighter[], hits: { target: Fighter; damage: number; boss?: boolean; push?: number }[]) {
+function kingMove(s: Siege, u: Fighter, a: Spec, enemy: Fighter, alive: Fighter[], hits: { target: Fighter; damage: number; boss?: boolean; push?: number; force?: boolean }[]) {
   const moves = a.moves!, mv = moves[(u.move = ((u.move ?? -1) + 1) % moves.length)], dir = u.side ? -1 : 1;
   const foes = alive.filter(v => v.side !== u.side && v.hp > 0 && reaches(u, v)), upOf = (v: Fighter) => (UNITS[v.id].air ? v.alt ?? highOf(v) : 0);
   const ahead = (v: Fighter, from: number, to: number) => (v.x - u.x) * dir >= from && (v.x - u.x) * dir <= to;
@@ -1018,23 +1020,29 @@ function kingMove(s: Siege, u: Fighter, a: Spec, enemy: Fighter, alive: Fighter[
     hear(s, 'roar', x);
   } else if (mv.kind === 'slash') {
     // A great sweep of his sword: everything ahead of him, out to a long reach, struck and thrown back.
-    for (const v of foes) if (ahead(v, -20, 170)) hits.push({ target: v, damage: u.damage * 1.1, push: 120 });
-    fx(s, 'hit-heavy', u.x + dir * 90, 0.3, { up: 30, centre: true, size: 90, flip: !!u.side });
+    for (const v of foes) if (ahead(v, -20, 170)) hits.push({ target: v, damage: u.damage * 1.1, push: 200 });
+    // A dark crescent sweeps out with the blade, and the blow lands big.
+    s.effects.push({ x: u.x + dir * 190, from: u.x, lane: u.lane, life: 0.5, max: 0.5, kind: 'sweep', side: u.side, dark: true, size: a.size });
+    fx(s, 'hit-heavy', u.x + dir * 100, 0.35, { up: 34, centre: true, size: 140, flip: !!u.side }); s.shake = Math.max(s.shake ?? 0, 0.22);
     hear(s, 'slash', u.x);
   } else if (mv.kind === 'slam') {
     // His fist driven into the ground: everything round him struck and thrown back.
-    for (const v of foes) if (ahead(v, -50, 130)) hits.push({ target: v, damage: u.damage, push: 160 });
-    fx(s, 'hit-heavy', u.x + dir * 50, 0.35, { up: 20, centre: true, size: 110, flip: !!u.side }); fx(s, 'crack-1', u.x + dir * 40, 3, { floor: true, size: 160 });
+    for (const v of foes) if (ahead(v, -50, 150)) hits.push({ target: v, damage: u.damage, push: 260, force: true });
+    fx(s, 'hit-heavy', u.x + dir * 50, 0.4, { up: 20, centre: true, size: 160, flip: !!u.side }); fx(s, 'crack-1', u.x + dir * 40, 3, { floor: true, size: 200 });
+    s.effects.push({ x: u.x + dir * 50, from: u.x, lane: u.lane, life: BOOM, max: BOOM, kind: 'boom', side: u.side, size: 150, dark: true });
+    fx(s, 'crater', u.x + dir * 50, 3.5, { floor: true, size: 170 }); s.shake = Math.max(s.shake ?? 0, 0.45);
     hear(s, 'blunt', u.x);
   } else if (mv.kind === 'spikes') {
     // Bone spikes burst from the ground ahead of him, out to his reach and beyond: walkers struck and stunned.
     for (const v of foes) if (!UNITS[v.id].air && ahead(v, 20, 280)) { hits.push({ target: v, damage: u.damage * 1.2 }); if (!UNITS[v.id].steady) v.stun = Math.max(v.stun ?? 0, 0.8); }
-    for (let d = 90; d <= 280; d += 70) fx(s, 'crack-0', u.x + dir * d, 2.5, { floor: true, size: 80 }, d / 900);
+    for (let d = 90; d <= 280; d += 70) { fx(s, 'crack-0', u.x + dir * d, 2.5, { floor: true, size: 110 }, d / 900); fx(s, 'rock-land', u.x + dir * d, 0.5, { size: 96 }, d / 900); }
+    s.shake = Math.max(s.shake ?? 0, 0.2);
     hear(s, 'pierce', u.x);
   } else {
     // A pulse of dark energy all round him, flyers too, throwing them back.
-    for (const v of foes) if (Math.abs(v.x - u.x) <= 180) hits.push({ target: v, damage: u.damage * 0.9, push: 200 });
-    s.effects.push({ x: u.x, from: u.x, lane: u.lane, life: BOOM, max: BOOM, kind: 'boom', side: u.side, size: 160, up: 40 });
+    for (const v of foes) if (Math.abs(v.x - u.x) <= 200) hits.push({ target: v, damage: u.damage * 0.9, push: 300, force: true });
+    s.effects.push({ x: u.x, from: u.x, lane: u.lane, life: BOOM, max: BOOM, kind: 'boom', side: u.side, size: 240, up: 30, dark: true });
+    fx(s, 'crack-1', u.x, 3, { floor: true, size: 220 }); s.shake = Math.max(s.shake ?? 0, 0.4);
     hear(s, 'thunder', u.x);
   }
 }
@@ -1288,6 +1296,7 @@ export function castPower(s: Siege, card: number): boolean {
 export function tick(s: Siege, dt: number) {
   if (s.phase !== 'fight' || !Number.isFinite(dt) || dt <= 0) return;
   dt = Math.min(dt, 0.1); s.time += dt;
+  if (s.shake) s.shake = Math.max(0, s.shake - dt);
   s.energy = testing.free ? energyMax(s) : Math.min(energyMax(s), s.energy + energyRate(s) * dt);
   if (s.duel) { const d = s.duel; d.energy = Math.min(duelMax(d), d.energy + (8 + d.generator * 3 + d.pool * 0.6 + d.economy) * dt); for (const k in d.cooldowns) d.cooldowns[k] = Math.max(0, d.cooldowns[k] - dt); }
   s.spell = Math.max(0, s.spell - dt); s.rocket = Math.max(0, s.rocket - dt);
@@ -1374,7 +1383,7 @@ export function tick(s: Siege, dt: number) {
     hear(s, 'corrupt-wind', FIELD - 300);
   }
   const alive = s.units.filter(u => u.hp > 0);
-  const hits: { target: Fighter; damage: number; boss?: boolean; push?: number }[] = [];
+  const hits: { target: Fighter; damage: number; boss?: boolean; push?: number; force?: boolean }[] = [];
   for (const u of alive) {
     // In a time rift the enemy acts at a crawl: its attacks and its steps a third as fast.
     const slow = u.slowed !== undefined && u.slowed > s.time ? 0.35 : 1;
@@ -1553,8 +1562,9 @@ export function tick(s: Siege, dt: number) {
     const v = hit.target, spec = UNITS[v.id];
     v.hp -= hit.damage; v.flash = 0.12; wince(v, hit.damage);
     // A guardian's every blow throws back what it hits (stuns machines and flyers); others only a heavy blow.
-    if (v.hp > 0 && !v.boss && !spec.steady && (hit.boss || hit.push || hit.damage >= v.maxHp * KNOCK.share)) {
-      if (spec.infantry || hit.boss || hit.push) { v.knock = KNOCK.time; v.knockBack = hit.boss ? BOSS.knock : hit.push; } else v.stun = KNOCK.stun;
+    // The final boss's heaviest blows (`force`) throw back even the steady ones, half as far.
+    if (v.hp > 0 && !v.boss && (!spec.steady || hit.force) && (hit.boss || hit.push || hit.damage >= v.maxHp * KNOCK.share)) {
+      if (spec.infantry || hit.boss || hit.push) { v.knock = KNOCK.time; const back = hit.boss && !((hit.push ?? 0) < 0) ? Math.max(BOSS.knock, hit.push ?? 0) : hit.push; v.knockBack = back !== undefined && spec.steady ? back * 0.5 : back; } else v.stun = KNOCK.stun;
     }
   }
   // Breaking robots fall into a weaker wreck of themselves where they stood, with a blast.
