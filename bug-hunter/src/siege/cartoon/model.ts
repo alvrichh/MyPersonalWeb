@@ -294,7 +294,7 @@ export const UNITS: readonly Spec[] = [
   // The weary reaper, legendary: hunched and slow, it hurls its chained scythe far ahead and drags what it hooks to it.
   { id: 59, cost: 860, hp: 3200, damage: 260, speed: 26, range: 185, rate: 2.4, cooldown: 30, unlock: 6, infantry: true, legend: true, splash: 50, hook: 160, ...six('ally-reaper-1', 154, 1.15) },
   // The King of Darkness on foot (`phase2` of the last guardian); he carries on with the life he has left.
-  { id: 60, cost: 0, hp: 560, damage: 46, speed: 32, range: 70, rate: 1.5, cooldown: 0, unlock: 1, foe: true, steady: true, splash: 60, hitsAir: true, frames: 12,
+  { id: 60, cost: 0, hp: 560, damage: 46, speed: 32, range: 110, rate: 1.5, cooldown: 0, unlock: 1, foe: true, steady: true, splash: 60, hitsAir: true, frames: 12,
     moves: [{ ready: 10, strike: 11, kind: 'slash' }, { ready: 2, strike: 3, kind: 'slam' }, { ready: 10, strike: 11, kind: 'slash' }, { ready: 6, strike: 7, kind: 'spikes' }, { ready: 10, strike: 11, kind: 'slash' }, { ready: 8, strike: 9, kind: 'pulse' }],
     ...foe('boss-dark-king-ground', 250, 1) },
   // The King's Jailer (world 6): a hunched giant with no mouth and a cage of ribs on its back full of red souls. It throws

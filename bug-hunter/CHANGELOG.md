@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.44 - 2026-11-24
+
+- Siege Cartoon: winning the last world now says that Villain mode is open («All six worlds conquered! Now you can play in Villain mode 😈»).
+- Siege Cartoon: the final boss on the ground (his second form, the duel) strikes from a little further off (reach 70 → 110), his sword meeting our troops instead of stepping into them; his sweeps, slam, spikes and pulse still reach them from there.
+
 ## 1.16.43 - 2026-11-24
 
 - Siege Cartoon shop: the chosen tab (Land, Air, Special, Base) stays gold after it is tapped. The hover style, which a phone keeps on the tab just tapped, gave it the plain look, so the chosen tab looked like the others.
