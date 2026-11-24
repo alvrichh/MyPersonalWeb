@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.32 - 2026-11-24
+
+- Siege Cartoon: the master swordsman leaps at flyers. Instead of striking the air from the ground, he crouches, jumps up to the flyer, somersaults in a ring of fire and slashes up at the top of the jump, then lands where he left (`VAULT` in the model, poses 6-10 of `ally-swordsman-5`). The blow lands at the top of the jump at double damage, on its prey and the flyers within his splash; with the jump each one comes a little less often (about 110 damage a second at flyers, 140 at the ground). Simulated: he jumps when an eagle is in reach and hits it 0.45 s later, every 1.2 s.
+- Siege Cartoon: the Duel window's close button returns to the map again. It ended the duel and redrew the map, but left the window over it, so nothing could be pressed.
+
 ## 1.16.31 - 2026-11-24
 
 - The Siege is now its own game, Cartoon Siege, on its own site (https://cartoon-siege.onrender.com). The cover's last slot is titled Cartoon Siege and opens it in a new tab, in the game's language, instead of opening the Siege here (`cartoonSiege.ts`).

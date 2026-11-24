@@ -1019,7 +1019,8 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     else if (action === 'duel-side' && !state && !duel) { useSide(button.dataset.sgV === '1'); duelMenu(); }
     else if (action === 'duel-host' && !state && !duel) { duel = { link: openDuel(null, duelHandlers(true)), host: true, sentAt: 0 }; duelStatus(t('siegeDuelConnecting')); }
     else if (action === 'duel-join' && !state && !duel) { const code = (root.querySelector<HTMLInputElement>('[data-sg-duel-code]')?.value ?? '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 4); if (code.length < 4) { duelStatus(t('siegeDuelCode')); return; } duel = { link: openDuel(code, duelHandlers(false)), host: false, sentAt: 0 }; duelStatus(t('siegeDuelConnecting')); }
-    else if (action === 'duel-cancel') { endDuel(); prep(); }
+    // The duel window is closed too: the map is drawn again under it, not over it.
+    else if (action === 'duel-cancel') { endDuel(); root.querySelector('.sg-overlay')?.remove(); prep(); }
     else if (action === 'pause-back') { if (state) pauseMenu(); else { root.querySelector('.sg-overlay')?.remove(); prep(); } }
     else if (action === 'tilt') { storage.set(TILT_KEY, tiltOn() ? '0' : ''); tilt = 0; tiltBase = null; if (tiltOn()) { tiltGranted = tiltGranted === false ? null : tiltGranted; askTilt(); } settingsMenu(); }
     else if (action === 'mute') { if (muted()) volumes.set(lastHeard[0] || 0.6, lastHeard[1] || 0.8); else { lastHeard = volumes.get(); volumes.set(0, 0); } settingsMenu(); }

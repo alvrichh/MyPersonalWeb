@@ -1,4 +1,4 @@
-import { PHASED, HERO_AIR, HERO_GUARDIAN, HERO_LAND, heroLevel, actOf, stageIn, flight, bowReach, highOf, foesAt, FIELD, shotFor, FOE_AIR, FOE_LAND, GUARDIAN, KNOCK, POUNCE, SPELLS, UNITS, isBeam, isBullet, specAt, specOf, aimAt, enemyTier, castleTier, energyMax, looksTier, type Effect, type Fighter, type Siege } from './model';
+import { PHASED, HERO_AIR, HERO_GUARDIAN, HERO_LAND, heroLevel, actOf, stageIn, flight, bowReach, highOf, foesAt, FIELD, shotFor, FOE_AIR, FOE_LAND, GUARDIAN, KNOCK, POUNCE, VAULT, SPELLS, UNITS, isBeam, isBullet, specAt, specOf, aimAt, enemyTier, castleTier, energyMax, looksTier, type Effect, type Fighter, type Siege } from './model';
 import { gloom } from './story';
 
 /** Each world's ground colours, under its floor while that loads (moss, embers, snow, mud, jungle, sand, iron,
@@ -1010,7 +1010,7 @@ function fallen(s: Siege) {
     eater's beam poses, whose beam reaches far ahead of and below it). */
 /** The King of Darkness's poses are anchored on his throne (in the air) or between his feet (on foot), measured on each. */
 const KING_ANCHOR: Record<string, [number, number]> = { 'siege/units/boss-dark-king-air-0': [0.407, 0.998], 'siege/units/boss-dark-king-air-1': [0.473, 0.998], 'siege/units/boss-dark-king-air-2': [0.443, 0.998], 'siege/units/boss-dark-king-air-3': [0.454, 0.998], 'siege/units/boss-dark-king-air-4': [0.392, 0.998], 'siege/units/boss-dark-king-air-5': [0.425, 0.875], 'siege/units/boss-dark-king-air-6': [0.421, 0.998], 'siege/units/boss-dark-king-air-7': [0.449, 0.998], 'siege/units/boss-dark-king-air-8': [0.42, 0.998], 'siege/units/boss-dark-king-air-9': [0.494, 0.998], 'siege/units/boss-dark-king-air-10': [0.457, 0.998], 'siege/units/boss-dark-king-air-11': [0.461, 0.998], 'siege/units/boss-dark-king-ground-0': [0.594, 0.998], 'siege/units/boss-dark-king-ground-1': [0.595, 0.998], 'siege/units/boss-dark-king-ground-2': [0.543, 0.998], 'siege/units/boss-dark-king-ground-3': [0.533, 0.998], 'siege/units/boss-dark-king-ground-4': [0.505, 0.998], 'siege/units/boss-dark-king-ground-5': [0.49, 0.995], 'siege/units/boss-dark-king-ground-6': [0.51, 0.997], 'siege/units/boss-dark-king-ground-7': [0.557, 0.995], 'siege/units/boss-dark-king-ground-8': [0.511, 0.998], 'siege/units/boss-dark-king-ground-9': [0.507, 0.998], 'siege/units/boss-dark-king-ground-10': [0.517, 0.998], 'siege/units/boss-dark-king-ground-11': [0.486, 0.998] };
-const POSE_ANCHOR: Record<string, [number, number]> = { ...KING_ANCHOR, 'siege/units/ally-star-eater-1-6': [0.183, 0.585], 'siege/units/ally-star-eater-1-7': [0.171, 0.796], 'siege/units/ally-dragon-1-6': [0.313, 0.712], 'siege/units/ally-dragon-1-7': [0.254, 0.848], 'siege/units/ally-reaper-1-3': [0.297, 1],
+const POSE_ANCHOR: Record<string, [number, number]> = { ...KING_ANCHOR, 'siege/units/ally-star-eater-1-6': [0.183, 0.585], 'siege/units/ally-star-eater-1-7': [0.171, 0.796], 'siege/units/ally-dragon-1-6': [0.313, 0.712], 'siege/units/ally-swordsman-5-6': [0.62, 1], 'siege/units/ally-swordsman-5-7': [0.45, 1], 'siege/units/ally-swordsman-5-8': [0.5, 0.75], 'siege/units/ally-swordsman-5-9': [0.3, 1], 'siege/units/ally-swordsman-5-10': [0.4, 1], 'siege/units/ally-dragon-1-7': [0.254, 0.848], 'siege/units/ally-reaper-1-3': [0.297, 1],
   // The Bell Ringer lying dead: its body (hands and feet, row 165 of 201) lies on the ground line like every other
   // troop's; the bone thrown in front of it hangs lower, nearer to us.
   'siege/units/foe-bellringer-1-5': [0.385, 0.821] };
@@ -1036,7 +1036,9 @@ function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: nu
   // A guardian with several attacks (`moves`) winds up and strikes in that attack's own poses; the King of Darkness falls
   // in his throne's breaking pose between his two forms; one with no fallen pose stays hurt as it tips over.
   const moves = spec.moves, next = moves ? moves[((u.move ?? -1) + 1) % moves.length] : undefined;
-  const shot = u.landing ? 5 : spec.tipOver && gone !== undefined ? 4 : moves && pose === 3 && u.move !== undefined ? moves[u.move].strike : moves && pose === 2 && next ? next.ready : spec.aimPoses && pose === 3 ? (u.aimAir ? 7 : 6) : pose;
+  // A vault at a flyer (`VAULT`): crouch, leap, somersault, the slash up at the top, the landing.
+  const vaultAt = gone === undefined && u.vault ? 1 - u.vault / VAULT.time : -1;
+  const shot = vaultAt >= 0 ? (vaultAt < 0.14 ? 6 : vaultAt < 0.34 ? 7 : vaultAt < 0.52 ? 8 : vaultAt < 0.8 ? 9 : 10) : u.landing ? 5 : spec.tipOver && gone !== undefined ? 4 : moves && pose === 3 && u.move !== undefined ? moves[u.move].strike : moves && pose === 2 && next ? next.ready : spec.aimPoses && pose === 3 ? (u.aimAir ? 7 : 6) : pose;
   const stand = picture(`${path}-0`), art = picture(`${path}-${shot}`), anchor = POSE_ANCHOR[`${path}-${shot}`];
   const size = spec.size * (u.boss ? 1.6 : 1) * (u.grow ?? 1) * Math.pow(0.8, u.stage ?? 0);
   // The shadow under its feet (the troop's x is where its feet are), the feet standing on its middle.
@@ -1054,7 +1056,12 @@ function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: nu
       // Three-pose sheets have no dead pose: the hurt one tips over backwards as it falls.
       if (!spec.six || spec.tipOver) lean = -Math.min(1, gone * 6) * 1.45;
     } else if (reduced) { /* still */ }
-    else if (u.leap || u.bound) {
+    else if (vaultAt >= 0) {
+      // Up to the flyer's height (less its own reach), held for the slash, then down.
+      const top = Math.max(24, (u.vaultUp ?? 70) - 38), p = vaultAt;
+      const up = p < 0.14 ? 0 : p < 0.5 ? Math.sin((p - 0.14) / 0.36 * Math.PI / 2) : p < 0.68 ? 1 : p < 0.8 ? 1 - (p - 0.68) / 0.12 : 0;
+      lift = top * up * up * (3 - 2 * up);
+    } else if (u.leap || u.bound) {
       // A pounce: a long low leap onto its prey, leaning into it, then a short low hop back, still facing its foes.
       const p = u.leap ? 1 - u.leap / POUNCE.time : 1 - (u.bound ?? 0) / POUNCE.back;
       lift = Math.sin(p * Math.PI) * (u.leap ? POUNCE.height : POUNCE.height * 0.5); lean = u.leap ? 0.18 * Math.sin(p * Math.PI) : -0.08 * Math.sin(p * Math.PI);

@@ -51,6 +51,8 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
   ram?: number;
   /** A pouncer (the tiger): it leaps on its target, strikes as it lands, then bounds back facing away and turns round. */
   pounce?: boolean;
+  /** A vaulter (the master swordsman): it strikes a flyer by leaping up to it in a somersault (`VAULT`), poses 6-10. */
+  vault?: boolean;
   /** A charger (the rhinoceratops): from a little way off it rushes its target, throws it back, and stands dazed. */
   charge?: boolean;
   /** Its blows on a fortress count this many times over (the catapult). */
@@ -109,7 +111,7 @@ export interface Spec { id: number; cost: number; hp: number; damage: number; sp
 /** Spells that land on their target instead of flying to it (the wizard's). */
 export const SPELLS = ['lightning', 'tornado', 'meteor'];
 /** An upgrade form: its gold price in the workshop and what it changes. */
-export type Form = Partial<Pick<Spec, 'cost' | 'hp' | 'damage' | 'speed' | 'range' | 'rate' | 'splash' | 'hitsAir' | 'blast' | 'sweep' | 'ram' | 'ramHits' | 'siege' | 'infantry' | 'shot' | 'spin' | 'also' | 'alsoShare' | 'sprite' | 'size'>> & { price: number }
+export type Form = Partial<Pick<Spec, 'cost' | 'hp' | 'damage' | 'speed' | 'range' | 'rate' | 'splash' | 'hitsAir' | 'blast' | 'sweep' | 'ram' | 'ramHits' | 'siege' | 'infantry' | 'shot' | 'spin' | 'also' | 'alsoShare' | 'sprite' | 'size' | 'vault' | 'frames'>> & { price: number }
 /** Cartoon Wars 2's rosters (docs/siege-roster.md), every unit from the owner's six-pose sheets. Every unit's `id` is
     its place in this list: ours first (10 land, then 5 air), then the enemy's, each one stated as the ally it equals
     in the reference, then our flying mech and the enemy's guardians. */
@@ -126,7 +128,7 @@ export const UNITS: readonly Spec[] = [
     { price: 120, cost: 40, hp: 150, damage: 22, speed: 46, rate: 0.75, ...six('ally-swordsman-2', 154, 0.8279) },
     { price: 300, cost: 60, hp: 255, damage: 27, rate: 0.7, ...six('ally-swordsman-3', 168, 0.8185) },
     { price: 400, cost: 90, hp: 305, damage: 34, range: 42, rate: 0.6, ...six('ally-swordsman-4', 200, 0.7625) },
-    { price: 2000, cost: 320, hp: 650, damage: 63, speed: 62, range: 45, splash: 30, hitsAir: true, rate: 0.45, ...six('ally-swordsman-5', 187, 0.9358) },
+    { price: 2000, cost: 320, hp: 650, damage: 63, speed: 62, range: 45, splash: 30, hitsAir: true, rate: 0.45, vault: true, frames: 11, ...six('ally-swordsman-5', 187, 0.9358) },
   ] },
   // The spearman's five forms (docs/cw2-reference.md): basic spear, longer, longer still, the horned fox helmet, and the
   // lancer on a white horse. The reference gives no prices: a little above the swordsman's.
@@ -558,6 +560,8 @@ export interface Fighter { uid: number; id: number; side: 0 | 1; x: number; lane
   aimAir?: boolean;
   /** A pounce (`pounce`): seconds left of the leap on its prey, then of the bound back (facing away). */
   leap?: number; bound?: number; prey?: number;
+  /** A vault at a flyer (`vault`): seconds left of the jump, and the height it leaps to. */
+  vault?: number; vaultUp?: number;
   /** Rushing its target (`charge`). */
   rushing?: boolean;
   /** Seconds left unseen (`stealth`). */
@@ -589,6 +593,9 @@ export const FOE_PACE = { gap: 4.5, slope: 0.3, grow: 0.02, reach: 60, extra: 1 
     beside it as it lands (`spread`: how far from the prey that one may be), then a short low hop back (`back` seconds,
     `backward` units), facing its foes, so it gains a little ground as it fights. */
 export const POUNCE = { time: 0.3, forward: 70, height: 16, back: 0.25, backward: 55, spread: 50 };
+/** A vault at a flyer (seconds in all; the blow lands `strike` of the way through, at `power` times its damage, on its
+    prey and the flyers within its `splash` of it): crouch, leap, somersault, the slash up at the top, the landing. */
+export const VAULT = { time: 0.75, strike: 0.6, power: 2 };
 /** A charge: how far off it starts (beyond its reach), how many times its pace, how far it throws, how long it stands dazed. */
 /** How far a healer's mending reaches (field units either side). */
 export const HEAL_REACH = 140;
@@ -1399,6 +1406,20 @@ export function tick(s: Siege, dt: number) {
     if (u.hidden) u.hidden = Math.max(0, u.hidden - dt);
     if (u.wince) u.wince = Math.max(0, u.wince - dt);
     if (u.winceCd) u.winceCd = Math.max(0, u.winceCd - dt);
+    if (u.vault) {
+      // In the air at a flyer: the blow lands at the top of the jump, then it comes down where it left.
+      const before = u.vault, at = VAULT.time * (1 - VAULT.strike);
+      u.vault = Math.max(0, u.vault - dt);
+      if (before > at && u.vault <= at) {
+        const prey = alive.find(v => v.uid === u.prey);
+        if (prey && prey.hp > 0 && Math.abs(prey.x - u.x) <= a.range + bodyOf(prey) * 0.25 + 40) {
+          for (const v of alive) if (v.side !== u.side && v.hp > 0 && isAir(v.id) && reaches(u, v) && (v === prey || (a.splash && Math.abs(v.x - prey.x) < a.splash))) hits.push({ target: v, damage: u.damage * VAULT.power, boss: u.boss });
+          fx(s, 'hit-thrown', prey.x - (u.side ? -1 : 1) * 8, 0.3, { up: (prey.alt ?? highOf(prey)) + 30, centre: true, size: 56, flip: !!u.side });
+        }
+        hear(s, soundsOf(u)[0], u.x);
+      }
+      continue;
+    }
     if (u.leap) {
       // In the air on its prey; it strikes as it lands, then bounds back.
       const dir = u.side ? -1 : 1, step = Math.min(u.leap, dt); u.leap -= step; u.moving = true;
@@ -1453,7 +1474,8 @@ export function tick(s: Siege, dt: number) {
     }
     if (enemy && distance <= a.range + bodyOf(enemy) * 0.25) {
       // A scooping blow lands only once it has come down to its target.
-      if (u.attack <= 0 && a.pounce) { u.attack = a.rate + POUNCE.time + POUNCE.back; u.leap = POUNCE.time; u.prey = enemy.uid; u.hit = POUNCE.time; }
+      if (u.attack <= 0 && a.vault && isAir(enemy.id)) { u.attack = a.rate + VAULT.time; u.vault = VAULT.time; u.prey = enemy.uid; u.vaultUp = enemy.alt ?? highOf(enemy); }
+      else if (u.attack <= 0 && a.pounce) { u.attack = a.rate + POUNCE.time + POUNCE.back; u.leap = POUNCE.time; u.prey = enemy.uid; u.hit = POUNCE.time; }
       else if (u.attack <= 0 && (!a.ram || (u.alt ?? highOf(u)) <= STRIKING)) {
         u.attack = a.rate; u.hit = 0.3;
         const area = u.boss ? Math.max(a.splash ?? 0, BOSS.area) : a.splash;
