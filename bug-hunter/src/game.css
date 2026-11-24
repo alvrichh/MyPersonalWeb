@@ -5328,3 +5328,12 @@ canvas.hero-fig { height: 150px; width: 135px; filter: none; }
 .friend-row > b small { display: block; font-size: 0.72em; font-weight: 500; color: #b8c7d9; }
 /* On a phone the row is tight: the play button gives the name room, so «Amigo» is not cut to «Ami…». */
 @media (max-width: 420px) { .friend-row .friend-go { min-width: 0; padding: 7px 10px; font-size: 0.9rem; } }
+
+/* v1.16.33: the Siege choice (play here or apart) keeps its three buttons in view on phones held sideways. */
+/* Elsewhere the row is no box: its buttons stack like any panel's. */
+.siege-choice-row { display: contents; }
+@media (max-height: 500px) {
+  .siege-choice-text { display: none; }
+  .siege-choice-row { display: flex; gap: 10px; width: 100%; }
+  .siege-choice-row > button { flex: 1 1 0; min-width: 0; }
+}

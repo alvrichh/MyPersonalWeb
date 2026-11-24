@@ -1,3 +1,4 @@
+import { openSiege } from './siege';
 import { openCartoonSiege } from './cartoonSiege';
 import { CONVERGENCE_SCENE, CONVERGENCE_IMAGE } from './scenery';
 import './game.css';
@@ -7,7 +8,7 @@ import { ads, configureAds, openPrivacySettings, type AdSpot, type PlayAd } from
 import { configurePayments, payments } from './payments';
 import { COIN_PACKS, currentOffers, grant, halloweenEnds, HALLOWEEN_OFFERS, packBonus, priceNow, SKIN_OFFERS, type CoinPack, type SkinOffer } from './store';
 import { DAILY_ODDS, DAILY_WHEEL, dailyLeft, dailyReady, openDaily, type DailyPrize, type DailyResult } from './daily';
-import { audio, BOSS_SONGS, type Sfx, type SongPick } from './audio';
+import { audio, BOSS_SONGS, SIEGE_SOUNDS, type SiegeSound, type Sfx, type SongPick } from './audio';
 import { MID_ART, boardBackdropBounds, draw, drawRetroFigure, preloadBoardBossFx, preloadCast, preloadFx, type Palette, type View } from './draw';
 import { DEFAULT_NAME, NAME_MAX, NET_ID, STAR_COLORS, cleanName, wipeProgress, worldWon, loadSave, profileLevel, writeSave, lockSave, STYLES, SKINS, WORLD_SKINS, SKIN_GATE, SKIN_GROUPS, SKIN_TALL, skinOpen, ownsSkin, skinPrice, worldOutfit, type EnemyStyle, type HeroSkin, type PlayMode, heroKey, heroStill } from './save';
 import { ABILITY, ABIL_V, BENCH_CAP, canFight, moveBenchSeat, CELL, COLS, FINAL_ID, HOME_ROW, NATIVE_WORLD_BONUS, ROWS, ROUNDS, SYNERGY, TACTICS, armyCap, deployBench, sellBench, storeOnBench, toggleAutoMerge, tickMerge, autoMergePrice, buyAutoMerge, summon as boardSummon, summonPrice, commanderStrike, roundBonus, roundGold, synergies, TIER_KIND, boardCoins, buy as boardBuy, castLook, moveUnit, newBoard, nextRound, pieceAt, reroll as boardReroll, saleOf, sell as boardSell, startFight, startOnlineFight, unitStats, updateBoard, waveSpots, waveUnitStats, type BoardGame, type Online, type Piece, type Variant } from './board';
@@ -153,8 +154,8 @@ const MODES: PlayMode[] = ['sprints', 'horde', 'board'];
 let extraModePreview = window.matchMedia('(orientation: landscape) and (max-height: 500px)').matches;
 const coverModes = [...MODES, 'coming-soon'] as const;
 /** The last slot of the cover's carousel: Siege, the new mode (it used to be Coming Soon, with Fortress beside it). */
-const extraTitle = () => 'Cartoon Siege';
-const extraText = () => t('siegeSoon');
+const extraTitle = () => t('siegeName');
+const extraText = () => t('siegeHubModes');
 const NIGHTMARE_ICON = '☠️';
 /** Where the run is: the sprint, or the shift's clock. */
 const whereLine = (g: Game) => (g.rush ? `${g.showcase ? '👁' : RUSH_ICON} ${t('rushWhere', { n: g.rush, total: g.stages })}` : g.mode === 'horde' ? `${g.endless ? NIGHTMARE_ICON : MODE_ICON.horde} ${clock(g.time)}` : t('sprint', { room: g.room }));
@@ -634,6 +635,14 @@ function resetScreen() {
     <p>${t('resetText')}</p>
     <button class="ghost is-danger" data-act="reset-do">${t('resetDo')}</button>
     <button class="primary" data-act="profile">${t('cancel')}</button>`);
+}
+/** The Siege is also its own game (Cartoon Siege, on its own site): play it here, or open that site in a new tab. */
+function siegeChoiceScreen() {
+  show(`<h2>⚔️ Cartoon Siege</h2>
+    <p class="how siege-choice-text">${t('siegeChoiceText')}</p>
+    <div class="siege-choice-row"><button class="primary" data-act="siege-here">${t('siegeHere')}</button>
+    <button class="ghost" data-act="cartoon-siege-site">${t('siegeSite')}</button></div>
+    ${backButton('menu')}`);
 }
 function masteryScreen() {
   show(`<h2>★ ${t('masteryTitle')}</h2>
@@ -3465,7 +3474,10 @@ screen.addEventListener('click', (event) => {
   const act = target.dataset.act;
   if (act !== 'mute') audio.play('click');
   if (act === 'extra-hub') extraHubScreen();
-  else if (act === 'siege-preview') openCartoonSiege(lang);
+  else if (act === 'siege-preview') siegeChoiceScreen();
+  else if (act === 'siege-here') (siegeOpen = true, openSiege(t, () => { siegeOpen = false; menuScreen(); }, { pic: `/images/game/hero/${heroStill(save.skin, save.equipped.head)}.webp`, name: save.name || DEFAULT_NAME }, (name, vol, pan) => (SIEGE_SOUNDS as readonly string[]).includes(name) ? audio.siege(name as SiegeSound, vol, pan) : audio.play(name as Sfx), (song) => audio.setSong(song === 'menu' ? 'cartoon-menu' : song === 'battle' ? 'cartoon-battle' : song === 'boss' ? 'cartoon-boss' : song === 'villain-menu' ? 'cartoon-villain-menu' : song === 'villain' ? 'cartoon-villain' : save.song), { get: () => [save.music, save.sfx], set: (m, f) => { save.music = m; save.sfx = f; audio.setVolumes(m, f); persist(); }, lang: () => lang, setLang: (l) => { setLang(l); return t; } }));
+  // The Siege on its own site (Cartoon Siege), in a new tab, its progress here handed over.
+  else if (act === 'cartoon-siege-site') openCartoonSiege(lang);
   else if (act === 'play') startRun();
   // The world this run unlocked, in the same mode.
   else if (act === 'play-next') { const n = Number(target.dataset.next); setWorld(n, game?.mode ?? save.mode); persist(); startRun(n, game?.mode ?? save.mode); }

@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.33 - 2026-11-24
+
+- The Siege is played here again, as before 1.16.31, with its progress here. Tapping it (the cover's last slot, the book's «Launch siege») now asks first: «Play here» opens it inside Bug Hunter; «Open Cartoon Siege apart ↗» opens its own site in a new tab and hands this Siege progress over (`cartoonSiege.ts`, only the first time, when the site has none); Back returns to the menu. The Siege texts are back to what they were.
+
 ## 1.16.32 - 2026-11-24
 
 - Siege Cartoon: the master swordsman leaps at flyers. Instead of striking the air from the ground, he crouches, jumps up to the flyer, somersaults in a ring of fire and slashes up at the top of the jump, then lands where he left (`VAULT` in the model, poses 6-10 of `ally-swordsman-5`). The blow lands at the top of the jump at double damage, on its prey and the flyers within his splash; with the jump each one comes a little less often (about 110 damage a second at flyers, 140 at the ground). Simulated: he jumps when an eagle is in reach and hits it 0.45 s later, every 1.2 s.
