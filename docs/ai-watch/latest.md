@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-11-23
+# Daily AI maintenance report — 2026-11-24
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -9,32 +9,52 @@ This file is generated automatically by the daily maintenance workflow. It updat
 - Google AI Blog: OK (8 relevant items)
 - Google DeepMind: OK (8 relevant items)
 - Hugging Face: OK (8 relevant items)
-- Simon Willison: unavailable (HTTP Timeout)
+- Simon Willison: OK (8 relevant items)
 - GitHub AI & ML Blog: OK (8 relevant items)
-- GitHub Changelog: OK (0 relevant items)
+- GitHub Changelog: OK (1 relevant items)
 - Azure Blog: OK (8 relevant items)
 - AWS Machine Learning: OK (8 relevant items)
 - NVIDIA Developer: OK (8 relevant items)
 - Ars Technica AI: OK (6 relevant items)
-- MIT Technology Review AI: OK (5 relevant items)
-- The Verge AI: OK (3 relevant items)
+- MIT Technology Review AI: OK (6 relevant items)
+- The Verge AI: OK (1 relevant items)
 
 ## Relevant AI updates
 
-- **Expanding our partnership with GSA to bring Claude to all levels of government** — Anthropic News · 2026-11-23
+- **Expanding our partnership with GSA to bring Claude to all levels of government** — Anthropic News · 2026-11-24
   https://www.anthropic.com/news/expanding-partnership-gsa
-- **Donating Agent Skills to the Agentic AI Foundation** — Anthropic News · 2026-11-23
+- **Donating Agent Skills to the Agentic AI Foundation** — Anthropic News · 2026-11-24
   https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation
-- **Introducing the Anthropic Cyber Mission** — Anthropic News · 2026-11-23
+- **Introducing the Anthropic Cyber Mission** — Anthropic News · 2026-11-24
   https://www.anthropic.com/news/anthropic-cyber-mission
-- **Security** — Anthropic News · 2026-11-23
+- **Security** — Anthropic News · 2026-11-24
   https://www.anthropic.com/news/security
-- **Expanding the Cyber Verification Program** — Anthropic News · 2026-11-23
+- **Expanding the Cyber Verification Program** — Anthropic News · 2026-11-24
   https://www.anthropic.com/news/cyber-verification-program
-- **Barclays scales Claude to upgrade operations and improve client experience** — Anthropic News · 2026-11-23
+- **Barclays scales Claude to upgrade operations and improve client experience** — Anthropic News · 2026-11-24
   https://www.anthropic.com/news/barclays-scales-claude
+- **Amazon says hackers' AI agents found and exploited 0-day with little human input** — Ars Technica AI · 2026-11-24
+  https://arstechnica.com/security/2026/11/amazon-says-hackers-ai-agents-found-and-exploited-0-day-with-little-human-input/
+- **Introducing the Amazon Bedrock Trusted Access API with Anthropic’s Enterprise Frontier Safeguards and Enterprise Data Controls** — AWS Machine Learning · 2026-11-24
+  https://aws.amazon.com/blogs/machine-learning/introducing-the-amazon-bedrock-trusted-access-api-with-anthropics-enterprise-frontier-safeguards-and-enterprise-data-controls/
+- **Microduck Obstacle Avoidance: A Sim2Real Workflow with Isaac Lab and Newton** — Hugging Face · 2026-11-24
+  https://huggingface.co/blog/nvidia/microduck-obstacle-avoidance
+- **Raising the stakes for enterprise networks with AI modernization** — MIT Technology Review AI · 2026-11-24
+  https://www.technologyreview.com/2026/11/24/1148091/raising-the-stakes-for-enterprise-networks-with-ai-modernization/
+- **How to Run NVIDIA Cosmos 3 on Local AI Devices Using Hugging Face Diffusers** — NVIDIA Developer · 2026-11-24
+  https://developer.nvidia.com/blog/how-to-run-nvidia-cosmos-3-on-local-ai-devices-using-hugging-face-diffusers/
+- **How iFood scales coding agents across 15,000 repositories** — OpenAI News · 2026-11-24
+  https://openai.com/index/ifood
+- **GPT 6.2 Astra Solves a Historical Mystery** — Simon Willison · 2026-11-24
+  https://simonwillison.net/2026/Nov/24/astra-historical-mystery/
+- **datasette-charts 0.2a0** — Simon Willison · 2026-11-24
+  https://simonwillison.net/2026/Nov/24/datasette-charts/
+- **datasette-agent 0.7a1** — Simon Willison · 2026-11-24
+  https://simonwillison.net/2026/Nov/24/datasette-agent/
 - **Review: The Asus ProArt P16 offers a glimpse of a future powered by local AI** — Ars Technica AI · 2026-11-23
   https://arstechnica.com/reviews/2026/11/review-the-asus-proart-p16-offers-a-glimpse-of-a-future-powered-by-local-ai/
+- **Issue statuses and repository boards are in public preview** — GitHub Changelog · 2026-11-23
+  https://github.blog/changelog/2026-11-23-issue-statuses-and-repository-boards-are-in-public-preview
 - **A more tailored Google Search that’s uniquely yours** — Google AI Blog · 2026-11-23
   https://blog.google/products-and-platforms/products/search/google-search-personal-intelligence-apps/
 - **Finding faster quantum algorithms with agents and formal verification** — Google DeepMind · 2026-11-23
@@ -43,20 +63,30 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://huggingface.co/blog/agentic-evals
 - **A legendary philosopher isn’t buying Anthropic’s consciousness argument** — MIT Technology Review AI · 2026-11-23
   https://www.technologyreview.com/2026/11/23/1149569/a-legendary-philosopher-isnt-buying-anthropics-consciousness-argument/
+- **OpenAI and Cisco introduce Shirudo** — OpenAI News · 2026-11-23
+  https://openai.com/index/introducing-shirudo
 - **Connected intelligence for in-house legal** — OpenAI News · 2026-11-23
   https://openai.com/business/learn/connected-intelligence-for-in-house-legal
-- **Nothing’s upcoming Ear Note is a pair of earbuds with AI transcription** — The Verge AI · 2026-11-23
-  https://www.theverge.com/gadgets/1040357/nothing-ear-note-earbuds-ai-recording
-- **Meta Muse can do your Black Friday shopping at Walmart** — The Verge AI · 2026-11-23
-  https://www.theverge.com/ai-artificial-intelligence/1039874/walmart-agent-gateway-meta-muse-black-friday
+- **Richpanel helps companies automate 50% of support in 30 days** — OpenAI News · 2026-11-23
+  https://openai.com/business/customer-stories/richpanel-ai-customer-support
+- **GLM-5.4: Toward Generalized Coding with Our First Loop Transformer** — Simon Willison · 2026-11-23
+  https://simonwillison.net/2026/Nov/23/glm-54/
+- **Ladybird's first alpha release** — Simon Willison · 2026-11-23
+  https://simonwillison.net/2026/Nov/23/ladybird/
+- **datasette-charts 0.1a0** — Simon Willison · 2026-11-23
+  https://simonwillison.net/2026/Nov/23/datasette-charts/
+- **Claude AI can review pull requests and ship fixes on its own now** — The Verge AI · 2026-11-23
+  https://www.theverge.com/ai-artificial-intelligence/1040134/anthropic-claude-ship-ai-pull-requests
 - **Perplexity and Intelligence** — OpenAI News · 2026-11-22
   https://openai.com/index/perplexity-and-intelligence
-- **The vibe-coding revolution is coming to all the gadgets** — The Verge AI · 2026-11-22
-  https://www.theverge.com/column/1039139/vibe-coding-gadgets-tv-camera
+- **Select Styling Specimens** — Simon Willison · 2026-11-22
+  https://simonwillison.net/2026/Nov/22/select-styling/
 - **New in AWS Quick: More capable flows, an updated web experience, and agents that work together** — AWS Machine Learning · 2026-11-21
   https://aws.amazon.com/blogs/machine-learning/new-in-aws-quick-more-capable-flows-an-updated-web-experience-and-agents-that-work-together/
 - **Cut self-hosted LLM cost and latency with the distributed KV caching agent skill** — AWS Machine Learning · 2026-11-21
   https://aws.amazon.com/blogs/machine-learning/cut-self-hosted-llm-cost-and-latency-with-the-distributed-kv-caching-agent-skill/
+- **Muru** — Simon Willison · 2026-11-21
+  https://simonwillison.net/2026/Nov/21/muru/
 - **Researcher plants 2m canaries into the AI supply chain. A privacy disaster surfaced.** — Ars Technica AI · 2026-11-20
   https://arstechnica.com/security/2026/11/a-leaky-ai-supply-chain-is-exposing-secret-user-data-at-an-alarming-rate/
 - **Introducing Amazon SageMaker HyperPod Global Inference Gateway: One endpoint across Regions and clusters** — AWS Machine Learning · 2026-11-20
@@ -79,20 +109,12 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/business/customer-stories/hebbia
 - **Can AI help scientists identify promising drug candidates?** — OpenAI News · 2026-11-20
   https://openai.com/index/introducing-medchembench
-- **Enable AI agents to pay for AWS Marketplace x402 products with Amazon Bedrock AgentCore payments** — AWS Machine Learning · 2026-11-19
-  https://aws.amazon.com/blogs/machine-learning/enable-ai-agents-to-pay-for-aws-marketplace-x402-products-with-amazon-bedrock-agentcore-payments/
 - **Introducing Tool Retrieval in the Gemini API** — Google AI Blog · 2026-11-19
   https://blog.google/innovation-and-ai/technology/developers-tools/gemini-api-tool-retrieval/
 - **Reducing Rollout Bottlenecks in Reinforcement Learning with NVIDIA Dynamo** — NVIDIA Developer · 2026-11-19
   https://developer.nvidia.com/blog/reducing-rollout-bottlenecks-in-reinforcement-learning-with-nvidia-dynamo/
 - **Build Tool-Calling Parsers in Rust with AI Agents** — NVIDIA Developer · 2026-11-19
   https://developer.nvidia.com/blog/build-tool-calling-parsers-in-rust-with-ai-agents/
-- **How OpenAI’s Performance Factory keeps ChatGPT fast** — OpenAI News · 2026-11-19
-  https://openai.com/index/how-openai-performance-factory-keeps-chatgpt-fast
-- **Explore the Codex Security Plugin** — OpenAI News · 2026-11-19
-  https://openai.com/business/learn/codex-security-plugin-demo
-- **See PR scans in action** — OpenAI News · 2026-11-19
-  https://openai.com/business/learn/pr-scans-demo
 - **Copilot is "the new OS for work," and now Office runs inside of it** — Ars Technica AI · 2026-11-18
   https://arstechnica.com/gadgets/2026/11/microsoft-calls-copilot-the-new-os-for-work-at-ignite-keynote/
 - **The Gemini app is now available on lower-memory Android devices.** — Google AI Blog · 2026-11-18
@@ -143,12 +165,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://developer.nvidia.com/blog/nvidia-vera-rubin-nvl72-leads-agentic-inference-performance-on-mlperf-endpoints-v1-0/
 - **NVIDIA Vera Rubin NVL72 Achieves up to 2x Blackwell Ultra Performance in MLPerf Training v6.1** — NVIDIA Developer · 2026-11-16
   https://developer.nvidia.com/blog/nvidia-vera-rubin-nvl72-achieves-up-to-2x-blackwell-ultra-performance-in-mlperf-training-v6-1/
-- **llama.cpp v1.0.0 : A stronger foundation for the local AI ecosystem** — Hugging Face · 2026-11-13
-  https://huggingface.co/blog/ggml-org/llama-cpp-v1
-- **Run Native DLA Inference in Python on NVIDIA Jetson AGX Orin Using cuDLA** — NVIDIA Developer · 2026-11-13
-  https://developer.nvidia.com/blog/run-native-dla-inference-in-python-on-nvidia-jetson-agx-orin-using-cudla/
-- **Google rolls out Gemini 4 Hydrogen, finally replacing 3.8 Flash** — Ars Technica AI · 2026-11-12
-  https://arstechnica.com/google/2026/11/google-rolls-out-gemini-4-hydrogen-finally-replacing-3-8-flash/
 - **Build once, run on any agent: A practical guide to agent skills** — GitHub AI & ML Blog · 2026-11-12
   https://github.blog/ai-and-ml/github-copilot/build-once-run-on-any-agent-a-practical-guide-to-agent-skills/
 - **Google Search gets a major upgrade with Gemini 4 Hydrogen** — Google AI Blog · 2026-11-12
@@ -165,31 +181,14 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://deepmind.google/blog/gemini-4-carbon-is-now-available/
 - **Introducing AlphaProof Code: a breakthrough in verifying complex software at depth** — Google DeepMind · 2026-11-10
   https://deepmind.google/blog/introducing-alphaproof-code/
-- **Opening the datasets behind our AI weather models** — Google DeepMind · 2026-11-10
-  https://deepmind.google/blog/opening-the-datasets-behind-our-ai-weather-models/
-- **Gemini Robotics 2.5 accelerates real-world general dexterity** — Google DeepMind · 2026-11-09
-  https://deepmind.google/blog/gemini-robotics-2-5-accelerates-real-world-physical-intelligence/
-- **Building the next generation of multimodal AI experiences with fal in Microsoft Foundry** — Azure Blog · 2026-11-06
-  https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/building-the-next-generation-of-multimodal-ai-experiences-with-fal-in-microsoft-/4570032
-- **Beyond code generation: A developer’s guide to agentic engineering** — GitHub AI & ML Blog · 2026-11-06
-  https://github.blog/ai-and-ml/github-copilot/beyond-code-generation-a-developers-guide-to-agentic-engineering/
-- **Stop treating agents as one-off projects and start running them as a continuous discipline** — Azure Blog · 2026-11-05
-  https://azure.microsoft.com/en-us/blog/stop-treating-agents-as-one-off-projects-and-start-running-them-as-a-continuous-discipline/
-- **Gemini Omni 1.2 Flash: Fast and cost-effective with longer clips** — Google DeepMind · 2026-11-05
-  https://deepmind.google/blog/gemini-omni-12-flash-fast-and-cost-effective-with-longer-clips/
-- **How 3 Java Champions are using GitHub Copilot for increased productivity** — GitHub AI & ML Blog · 2026-10-20
-  https://github.blog/ai-and-ml/github-copilot/how-3-java-champions-are-using-github-copilot-for-increased-productivity/
-- **How to continue a GitHub Copilot app session in VS Code** — GitHub AI & ML Blog · 2026-10-19
-  https://github.blog/ai-and-ml/github-copilot/how-to-continue-a-github-copilot-app-session-in-vs-code/
 
 ## Portfolio candidates
 
 - **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Multimodal AI product workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-23T19:46:28.289Z",
+  "generatedAt": "2026-11-24T19:17:16.749Z",
   "candidates": [
     {
       "label": "Claude research and documentation flow",
@@ -10,13 +10,19 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-11-23"
+          "date": "2026-11-24"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-11-23"
+          "date": "2026-11-24"
+        },
+        {
+          "title": "Introducing the Amazon Bedrock Trusted Access API with Anthropic’s Enterprise Frontier Safeguards and Enterprise Data Controls",
+          "source": "AWS Machine Learning",
+          "link": "https://aws.amazon.com/blogs/machine-learning/introducing-the-amazon-bedrock-trusted-access-api-with-anthropics-enterprise-frontier-safeguards-and-enterprise-data-controls/",
+          "date": "2026-11-24"
         }
       ]
     },
@@ -29,18 +35,43 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
-          "date": "2026-11-23"
+          "date": "2026-11-24"
         },
         {
-          "title": "Review: The Asus ProArt P16 offers a glimpse of a future powered by local AI",
+          "title": "Amazon says hackers' AI agents found and exploited 0-day with little human input",
           "source": "Ars Technica AI",
-          "link": "https://arstechnica.com/reviews/2026/11/review-the-asus-proart-p16-offers-a-glimpse-of-a-future-powered-by-local-ai/",
+          "link": "https://arstechnica.com/security/2026/11/amazon-says-hackers-ai-agents-found-and-exploited-0-day-with-little-human-input/",
+          "date": "2026-11-24"
+        },
+        {
+          "title": "Raising the stakes for enterprise networks with AI modernization",
+          "source": "MIT Technology Review AI",
+          "link": "https://www.technologyreview.com/2026/11/24/1148091/raising-the-stakes-for-enterprise-networks-with-ai-modernization/",
+          "date": "2026-11-24"
+        }
+      ]
+    },
+    {
+      "label": "AI coding assistant workflows",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "How iFood scales coding agents across 15,000 repositories",
+          "source": "OpenAI News",
+          "link": "https://openai.com/index/ifood",
+          "date": "2026-11-24"
+        },
+        {
+          "title": "GLM-5.4: Toward Generalized Coding with Our First Loop Transformer",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Nov/23/glm-54/",
           "date": "2026-11-23"
         },
         {
-          "title": "Finding faster quantum algorithms with agents and formal verification",
-          "source": "Google DeepMind",
-          "link": "https://deepmind.google/blog/finding-faster-quantum-algorithms-with-agents-and-formal-verification/",
+          "title": "Ladybird's first alpha release",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Nov/23/ladybird/",
           "date": "2026-11-23"
         }
       ]
@@ -82,54 +113,10 @@
           "date": "2026-11-22"
         },
         {
-          "title": "Enable AI agents to pay for AWS Marketplace x402 products with Amazon Bedrock AgentCore payments",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/enable-ai-agents-to-pay-for-aws-marketplace-x402-products-with-amazon-bedrock-agentcore-payments/",
-          "date": "2026-11-19"
-        },
-        {
           "title": "Azure Cobalt 200 VMs now available, proven on real workloads and built for the agentic era",
           "source": "Azure Blog",
           "link": "https://azure.microsoft.com/en-us/blog/azure-cobalt-200-vms-now-available-proven-on-real-workloads-and-built-for-the-agentic-era/",
           "date": "2026-11-17"
-        }
-      ]
-    },
-    {
-      "label": "AI coding assistant workflows",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "The vibe-coding revolution is coming to all the gadgets",
-          "source": "The Verge AI",
-          "link": "https://www.theverge.com/column/1039139/vibe-coding-gadgets-tv-camera",
-          "date": "2026-11-22"
-        },
-        {
-          "title": "Cut self-hosted LLM cost and latency with the distributed KV caching agent skill",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/cut-self-hosted-llm-cost-and-latency-with-the-distributed-kv-caching-agent-skill/",
-          "date": "2026-11-21"
-        },
-        {
-          "title": "Use Kimi Code CLI with models on Amazon Bedrock",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/use-kimi-code-cli-with-models-on-amazon-bedrock/",
-          "date": "2026-11-20"
-        }
-      ]
-    },
-    {
-      "label": "ChatGPT workflow design",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "How OpenAI’s Performance Factory keeps ChatGPT fast",
-          "source": "OpenAI News",
-          "link": "https://openai.com/index/how-openai-performance-factory-keeps-chatgpt-fast",
-          "date": "2026-11-19"
         }
       ]
     },
@@ -143,18 +130,6 @@
           "source": "Ars Technica AI",
           "link": "https://arstechnica.com/gadgets/2026/11/microsoft-calls-copilot-the-new-os-for-work-at-ignite-keynote/",
           "date": "2026-11-18"
-        },
-        {
-          "title": "Beyond code generation: A developer’s guide to agentic engineering",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/beyond-code-generation-a-developers-guide-to-agentic-engineering/",
-          "date": "2026-11-06"
-        },
-        {
-          "title": "How 3 Java Champions are using GitHub Copilot for increased productivity",
-          "source": "GitHub AI & ML Blog",
-          "link": "https://github.blog/ai-and-ml/github-copilot/how-3-java-champions-are-using-github-copilot-for-increased-productivity/",
-          "date": "2026-10-20"
         }
       ]
     },
@@ -168,12 +143,6 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/developers-tools/gemini-decisions-api/",
           "date": "2026-11-11"
-        },
-        {
-          "title": "Building the next generation of multimodal AI experiences with fal in Microsoft Foundry",
-          "source": "Azure Blog",
-          "link": "https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/building-the-next-generation-of-multimodal-ai-experiences-with-fal-in-microsoft-/4570032",
-          "date": "2026-11-06"
         }
       ]
     }
