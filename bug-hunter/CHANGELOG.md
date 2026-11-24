@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.43 - 2026-11-24
+
+- Siege Cartoon shop: the chosen tab (Land, Air, Special, Base) stays gold after it is tapped. The hover style, which a phone keeps on the tab just tapped, gave it the plain look, so the chosen tab looked like the others.
+
 ## 1.16.42 - 2026-11-24
 
 - Siege Cartoon: enemy troops that strike from afar with no shot of their own flew a stand-in arrow (a blue or green one from the main game) at their target. Each now fires its own:
