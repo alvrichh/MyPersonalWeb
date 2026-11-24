@@ -486,11 +486,12 @@ function ambient(ctx: CanvasRenderingContext2D, s: Siege, camera: Camera, ground
     ctx.globalAlpha = a.kind === 'firefly' ? 0.4 + 0.35 * Math.sin(s.time * 4 + i * 2) : 0.6;
     ctx.save(); ctx.translate(x, y); ctx.rotate(Math.sin(s.time * a.spin + i) * a.spin); ctx.drawImage(art, -w / 2, -h / 2, w, h); ctx.restore();
   }
-  // A bird across the sky every twenty seconds or so, the far side to the near.
-  const cycle = 21, k = Math.floor(s.time / cycle), q = (s.time % cycle) / 7;
-  if (q < 1) {
+  // A bird across the sky every twenty seconds or so, the far side to the near: only over the green worlds (the
+  // meadows, the sky islands, the forest), not the desert, the snow or the last world. It flies under the HUD, in view.
+  const cycle = 21, k = Math.floor(s.time / cycle), q = (s.time % cycle) / 7, act = actOf(s.world);
+  if (q < 1 && act <= 3) {
     const bird = fxFrame(k % 2 ? 'bird-brown' : 'bird-blue', (s.time * 3) % 1);
-    if (ok(bird)) { const bw = 30, bh = bw * bird.naturalHeight / bird.naturalWidth; ctx.globalAlpha = 0.95; ctx.drawImage(bird, camera.x - 40 + (camera.width + 80) * q, top + 20 + (k % 3) * 22 + Math.sin(q * 9) * 6, bw, bh); }
+    if (ok(bird)) { const bw = 30, bh = bw * bird.naturalHeight / bird.naturalWidth; ctx.globalAlpha = 0.95; ctx.drawImage(bird, camera.x - 40 + (camera.width + 80) * q, hudRoom + 22 + (k % 3) * 22 + Math.sin(q * 9) * 6, bw, bh); }
   }
   ctx.restore();
 }

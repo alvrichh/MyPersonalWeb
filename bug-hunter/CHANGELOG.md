@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.36 - 2026-11-24
+
+- Siege Cartoon: the bird that crosses the sky now and then flies in view, just under the HUD (its height was worked out from above the top of the view, so it passed over the edge of the screen), and only over the green worlds (acts 1-3: the meadows, the sky islands, the forest), not the desert, the snow or the last world.
+
 ## 1.16.35 - 2026-11-24
 
 - Siege Cartoon: the enemy's guardian (each battle's boss) is drawn over every troop, whatever its lane or place, so it is always seen whole; it used to be hidden behind troops in the lanes in front.
