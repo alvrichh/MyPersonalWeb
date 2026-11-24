@@ -578,7 +578,7 @@ function muzzle(e: Effect, y: number) {
   return { x: e.from, y: shotY(e.fromUp, y) };
 }
 /** Every picture a troop's attack shows on its way (`siege/units/shot-<name>`): thrown things, rockets, bullets, beams. */
-const SHOTS = ['rock', 'javelin', 'arrow', 'shuriken', 'rocket', 'rockets', 'salvo', 'ice', 'plasma', 'crescent', 'missile', 'bullet', 'bullet-rifle', 'bullet-uzi', 'bullet-sniper', 'ray', 'ray-blue', 'ray-gold', 'ray-pink', 'ray-red', 'arrow-red', 'boulder', 'boulder-blue', 'bomb', 'darkorb', 'skull', 'plasma-cyan', 'plasma-cyan-flash', 'rocket-dark', 'rockets-dark', 'salvo-dark'];
+const SHOTS = ['rock', 'javelin', 'arrow', 'shuriken', 'rocket', 'rockets', 'salvo', 'ice', 'plasma', 'crescent', 'missile', 'bullet', 'bullet-rifle', 'bullet-uzi', 'bullet-sniper', 'ray', 'ray-blue', 'ray-gold', 'ray-pink', 'ray-red', 'arrow-red', 'boulder', 'boulder-blue', 'bomb', 'darkorb', 'skull', 'plasma-cyan', 'plasma-cyan-flash', 'rocket-dark', 'rockets-dark', 'salvo-dark', 'orb-red', 'blast-red'];
 /** The effect art: our crossbow's Cartoon arrows (or rockets) and missile, the old painted arrows (water for our troops,
     leaf for theirs),
     impacts up close, and a blast with the yellow lightning for the discharge. */
@@ -859,7 +859,8 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     ctx.drawImage(art, -w / 2, -h, w, h); ctx.restore(); return true;
   }
   // A flamethrower's flame is in its attack pose: nothing flies.
-  if (e.kind === 'shot' && e.art === 'none') return true;
+  // So does a dragon's fire, a roar or a hypnotic ring in its attack pose (`pose`): nothing flies, it strikes its target.
+  if (e.kind === 'shot' && (e.art === 'none' || e.art === 'pose')) return true;
   if (e.kind === 'shot' && isBeam(e.art)) {
     // A beam (the ray gun's cyan, the mech's blue, the archangel's gold, the air magician's pink lightning): its picture
     // stretched from the muzzle to the target at once, fading.
@@ -908,7 +909,9 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
   }
   if (e.kind === 'arrow' || e.kind === 'shot') {
     const close = e.kind === 'shot' && Math.abs(e.x - e.from) < 60;
-    const art = still(e.kind === 'arrow' ? bolt : close ? 'fx/impact.webp' : e.side ? 'arrows/leaf.webp' : 'arrows/water.webp');
+    // A troop with no shot of its own sends nothing visible from afar (it used to fly a stand-in arrow).
+    if (e.kind === 'shot' && !close) return true;
+    const art = still(e.kind === 'arrow' ? bolt : 'fx/impact.webp');
     if (!ok(art)) return false;
     if (close) { ctx.save(); ctx.globalAlpha = 1 - p; ctx.drawImage(art, e.x - 15, y - 15, 30, 30); ctx.restore(); return true; }
     // Our arrows leave the crossbow's tip and fly under gravity onto their spot (`flight`); a troop's shot flies straight.

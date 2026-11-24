@@ -4,6 +4,14 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.42 - 2026-11-24
+
+- Siege Cartoon: enemy troops that strike from afar with no shot of their own flew a stand-in arrow (a blue or green one from the main game) at their target. Each now fires its own:
+  - The wizard throws the red orb from his staff and the spike blaster its red blast (`shot-orb-red`, `shot-blast-red`, cut from their own attack poses), with a magic or ray sound and an energy hit.
+  - The gunner and the gatling robots (and their guardian) fire bullets.
+  - The fire dragon and the dragon riders breathe the fire of their attack poses, and the hypnotist bat's ring and the dinosaur's roar are in theirs: nothing flies, the blow lands on the target.
+  - Any troop still without a shot sends nothing visible from afar, never the stand-in arrow.
+
 ## 1.16.41 - 2026-11-24
 
 - Siege Cartoon: two more enemy troops of the last world, small beside the giants they march with, are bigger: the spider spearman (54 → 70) and the inter-galactic shooter (50 → 67). Checked by lining up every enemy troop, by world, on the field: the rest keep their size (the dog, the turkey and the bats are small on purpose).

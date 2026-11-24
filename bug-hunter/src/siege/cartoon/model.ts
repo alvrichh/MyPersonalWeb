@@ -229,17 +229,17 @@ export const UNITS: readonly Spec[] = [
   { id: 19, cost: 65, hp: 240, damage: 32, speed: 40, range: 60, rate: 1, cooldown: 0, unlock: 1, foe: true, infantry: true, ...foe('foe-reaper-1', 140, 0.93) },
   { id: 20, cost: 110, hp: 560, damage: 30, speed: 22, range: 45, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 40, infantry: true, ...foe('foe-hammer-1', 133, 1.3) },
   { id: 21, cost: 150, hp: 720, damage: 34, speed: 21, range: 48, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 40, infantry: true, ...foe('foe-axeman-1', 147, 1.3) },
-  { id: 22, cost: 50, hp: 100, damage: 30, speed: 30, range: 185, rate: 1.5, cooldown: 0, unlock: 1, foe: true, infantry: true, hitsAir: true, ...foe('foe-gunner-1', 134, 0.86) },
-  { id: 23, cost: 85, hp: 300, damage: 38, speed: 28, range: 175, rate: 1.5, cooldown: 0, unlock: 1, foe: true, infantry: true, hitsAir: true, ...foe('foe-blaster-1', 125, 1.04) },
-  { id: 24, cost: 65, hp: 150, damage: 42, speed: 26, range: 190, rate: 1.9, cooldown: 0, unlock: 1, foe: true, splash: 60, infantry: true, hitsAir: true, ...foe('foe-wizard-1', 165, 0.98) },
+  { id: 22, cost: 50, hp: 100, damage: 30, speed: 30, range: 185, rate: 1.5, cooldown: 0, unlock: 1, foe: true, infantry: true, hitsAir: true, shot: 'bullet', ...foe('foe-gunner-1', 134, 0.86) },
+  { id: 23, cost: 85, hp: 300, damage: 38, speed: 28, range: 175, rate: 1.5, cooldown: 0, unlock: 1, foe: true, infantry: true, hitsAir: true, shot: 'blast-red', ...foe('foe-blaster-1', 125, 1.04) },
+  { id: 24, cost: 65, hp: 150, damage: 42, speed: 26, range: 190, rate: 1.9, cooldown: 0, unlock: 1, foe: true, splash: 60, infantry: true, hitsAir: true, shot: 'orb-red', ...foe('foe-wizard-1', 165, 0.98) },
   { id: 25, cost: 110, hp: 280, damage: 36, speed: 60, range: 40, rate: 0.55, cooldown: 0, unlock: 1, foe: true, pounce: true, ...foe('foe-tiger-1', 115, 1.2) },
-  { id: 26, cost: 150, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, ...foe('foe-dragon-1', 120, 1.38) },
+  { id: 26, cost: 150, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, shot: 'none', ...foe('foe-dragon-1', 120, 1.38) },
   { id: 27, flyAt: 125, cost: 120, hp: 380, damage: 40, speed: 55, range: 45, rate: 0.9, cooldown: 0, unlock: 1, foe: true, air: true, ...foe('foe-death-angel-1', 156, 0.93) },
   { id: 28, flyAt: 70, cost: 20, hp: 70, damage: 12, speed: 70, range: 40, rate: 0.7, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-eagle-1', 171, 0.7) },
   { id: 29, flyAt: 70, cost: 30, hp: 110, damage: 18, speed: 60, range: 40, rate: 0.7, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-ninja-bat-1', 128, 0.7) },
-  { id: 30, flyAt: 70, cost: 35, hp: 130, damage: 24, speed: 45, range: 180, rate: 1.2, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, ...foe('foe-hypno-bat-1', 139, 0.83) },
-  { id: 31, flyAt: 70, cost: 360, hp: 900, damage: 55, speed: 40, range: 130, rate: 1.4, cooldown: 0, unlock: 1, foe: true, air: true, splash: 50, steady: true, ...foe('foe-red-dragon-rider-1', 179, 1.05) },
-  { id: 32, cost: 250, hp: 760, damage: 40, speed: 24, range: 180, rate: 1.4, cooldown: 0, unlock: 1, foe: true, steady: true, splits: 2, splash: 35, hitsAir: true, ...foe('foe-gatling-1', 123, 1.22) },
+  { id: 30, flyAt: 70, cost: 35, hp: 130, damage: 24, speed: 45, range: 180, rate: 1.2, cooldown: 0, unlock: 1, foe: true, air: true, skyOnly: true, shot: 'pose', ...foe('foe-hypno-bat-1', 139, 0.83) },
+  { id: 31, flyAt: 70, cost: 360, hp: 900, damage: 55, speed: 40, range: 130, rate: 1.4, cooldown: 0, unlock: 1, foe: true, air: true, splash: 50, steady: true, shot: 'none', ...foe('foe-red-dragon-rider-1', 179, 1.05) },
+  { id: 32, cost: 250, hp: 760, damage: 40, speed: 24, range: 180, rate: 1.4, cooldown: 0, unlock: 1, foe: true, steady: true, splits: 2, splash: 35, hitsAir: true, shot: 'bullet', ...foe('foe-gatling-1', 123, 1.22) },
   // Ours again, appended (ids are places in this list):
   // The flying mech, in six forms: a rocket fist, a laser, a plasma beam, an ice burst, a gatling,
   // and a giant golden fist.
@@ -252,10 +252,10 @@ export const UNITS: readonly Spec[] = [
   ] },
   // The guardians (`GUARDIAN`), each act's own picture; their stats are those of the troops that stood in for them.
   { id: 34, cost: 450, hp: 480, damage: 26, speed: 24, range: 42, rate: 1.5, cooldown: 0, unlock: 1, foe: true, hitsAir: true, ...foe('boss-slinger-1', 221, 0.85) },
-  { id: 35, cost: 550, hp: 760, damage: 40, speed: 24, range: 180, rate: 1.4, cooldown: 0, unlock: 1, foe: true, steady: true, splash: 45, hitsAir: true, ...foe('boss-gatling-1', 224, 0.84) },
-  { id: 36, flyAt: 70, cost: 650, hp: 900, damage: 55, speed: 40, range: 130, rate: 1.4, cooldown: 0, unlock: 1, foe: true, air: true, splash: 50, steady: true, ...foe('boss-dragon-rider-1', 217, 0.92) },
+  { id: 35, cost: 550, hp: 760, damage: 40, speed: 24, range: 180, rate: 1.4, cooldown: 0, unlock: 1, foe: true, steady: true, splash: 45, hitsAir: true, shot: 'bullet', ...foe('boss-gatling-1', 224, 0.84) },
+  { id: 36, flyAt: 70, cost: 650, hp: 900, damage: 55, speed: 40, range: 130, rate: 1.4, cooldown: 0, unlock: 1, foe: true, air: true, splash: 50, steady: true, shot: 'none', ...foe('boss-dragon-rider-1', 217, 0.92) },
   { id: 37, cost: 700, hp: 720, damage: 34, speed: 21, range: 48, rate: 1.6, cooldown: 0, unlock: 1, foe: true, splash: 40, hitsAir: true, ...foe('boss-brute-eater-1', 176, 1.07) },
-  { id: 38, cost: 800, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, hitsAir: true, ...foe('boss-dino-1', 199, 1.0) },
+  { id: 38, cost: 800, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, hitsAir: true, shot: 'pose', ...foe('boss-dino-1', 199, 1.0) },
   // The King of Darkness, the last guardian, in two forms: on his flying throne (a dark orb, a ray from his eyes, flaming
   // skulls, a portal that calls the enemy), then at half his life on foot (a sword slam, bone spikes, a pulse) — `phase2`.
   { id: 39, flyAt: 75, cost: 950, hp: 4000, damage: 46, speed: 30, range: 230, rate: 1.5, cooldown: 0, unlock: 1, foe: true, air: true, steady: true, splash: 50, hitsAir: true, frames: 12, phase2: 60,
@@ -800,7 +800,7 @@ const ATTACK_SOUND: Record<number, string | string[]> = {
   25: 'claw', 26: 'breath', 27: 'blade', 28: 'claw', 29: 'claw', 30: 'magic', 31: 'blade', 32: 'gatling',
   34: 'throw', 35: 'gatling', 36: 'breath', 37: 'blunt', 38: 'bite', 39: 'magic', 60: 'blunt', 61: 'throw', 62: 'blunt', 63: 'magic',
 };
-const SHOT_SOUND: Record<string, string> = { 'crescent-gold': 'wind', rock: 'throw', javelin: 'throw', shuriken: 'throw', arrow: 'bow', rocket: 'rocket', rockets: 'rocket', salvo: 'rocket', 'rocket-dark': 'rocket', 'rockets-dark': 'rocket', 'salvo-dark': 'rocket', 'plasma-cyan': 'cannon', ray: 'ray', 'ray-blue': 'ray', 'ray-gold': 'ray', 'ray-pink': 'thunder', 'ray-red': 'ray', 'arrow-red': 'bow', boulder: 'throw', 'boulder-blue': 'rocket', bomb: 'rocket', plasma: 'ray', ice: 'ray', crescent: 'magic', none: 'flame', lightning: 'thunder', tornado: 'wind', meteor: 'meteor' };
+const SHOT_SOUND: Record<string, string> = { 'crescent-gold': 'wind', rock: 'throw', javelin: 'throw', shuriken: 'throw', arrow: 'bow', rocket: 'rocket', rockets: 'rocket', salvo: 'rocket', 'rocket-dark': 'rocket', 'rockets-dark': 'rocket', 'salvo-dark': 'rocket', 'plasma-cyan': 'cannon', ray: 'ray', 'ray-blue': 'ray', 'ray-gold': 'ray', 'ray-pink': 'thunder', 'ray-red': 'ray', 'arrow-red': 'bow', boulder: 'throw', 'boulder-blue': 'rocket', bomb: 'rocket', plasma: 'ray', ice: 'ray', 'orb-red': 'magic', 'blast-red': 'ray', crescent: 'magic', none: 'flame', lightning: 'thunder', tornado: 'wind', meteor: 'meteor' };
 /** Bullets (`bullet`, `bullet-rifle|uzi|sniper`) sound like the gun that fires them; beams (`ray`, `ray-blue|gold|pink`) reach at once. */
 export const isBullet = (shot?: string) => !!shot?.startsWith('bullet');
 export const isBeam = (shot?: string) => !!shot?.startsWith('ray');
@@ -982,7 +982,7 @@ function fx(s: Siege, art: string, x: number, time: number, o: Partial<Effect> =
     shards for ice, stars for magic. Rockets, bombs, spells and lobbed rocks have blasts of their own. */
 function hitOf(shot?: string) {
   if (!shot || ROCKET_SHOTS.has(shot) || shot.startsWith('boulder') || ['none', 'bomb', 'meteor', 'lightning', 'tornado', 'plasma-cyan'].includes(shot)) return undefined;
-  return isBullet(shot) ? 'hit-bullet' : isBeam(shot) || shot.startsWith('plasma') ? 'hit-energy' : shot === 'ice' ? 'hit-ice' : shot.startsWith('crescent') ? 'hit-magic' : 'hit-thrown';
+  return isBullet(shot) ? 'hit-bullet' : isBeam(shot) || shot.startsWith('plasma') || shot === 'orb-red' || shot === 'blast-red' ? 'hit-energy' : shot === 'ice' ? 'hit-ice' : shot.startsWith('crescent') ? 'hit-magic' : 'hit-thrown';
 }
 /** Machines (robots, mechs, gatlings, helicopters) burst into scrap when they fall; the rest of the enemy gives up its soul. */
 const MACHINE = /robot|gatling|mech|helicopter/;
