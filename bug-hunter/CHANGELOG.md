@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.46 - 2026-11-24
+
+- Siege Cartoon: the King of Darkness's attacks hit hard, each one felt (`KING`, times his damage): the orb 1.6 (was 1, and a little wider), the ray 1.4 (0.8), each flaming skull 1.0 (0.6), the sword sweep 2.0 (1.1), the slam 2.2 (1.0), the bone spikes 1.8 (1.2), the pulse 1.6 (0.9). In the last battle that is about 185 for the orb and 160 for the ray on his throne, and on foot, enraged, about 345 for the sweep, 380 for the slam, 310 for the spikes and 275 for the pulse (a master swordsman has 650).
+
 ## 1.16.45 - 2026-11-24
 
 - Siege Cartoon: the King of Darkness, the final boss, is harder.

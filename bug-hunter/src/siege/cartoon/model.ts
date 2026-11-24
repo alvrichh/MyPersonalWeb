@@ -858,6 +858,8 @@ export const NUDGE = { back: 85, time: 0.14, every: 0.8 };
 export const BOOM = 0.8, FIRE = 2.4;
 /** The King of Darkness rising on foot: the share of his whole life he gets back, and how much harder he strikes. */
 export const RAGE = { heal: 0.2, damage: 1.5 };
+/** Each of the King of Darkness's attacks, times his damage: they are his great blows, each one felt. */
+export const KING = { orb: 1.6, ray: 1.4, skull: 1.0, slash: 2.0, slam: 2.2, spikes: 1.8, pulse: 1.6 };
 /** How long a crossbow arrow stays stuck in the ground after it lands (seconds), fading in its last part. */
 export const STUCK = 2.5;
 /** How far an arrow strays from the aim: up to `along` field units either way, and up to two steps of `deep` up or
@@ -1001,18 +1003,18 @@ function kingMove(s: Siege, u: Fighter, a: Spec, enemy: Fighter, alive: Fighter[
   const ahead = (v: Fighter, from: number, to: number) => (v.x - u.x) * dir >= from && (v.x - u.x) * dir <= to;
   if (mv.kind === 'orb') {
     launch(s, u, { ...a, shot: 'darkorb', spin: false }, enemy.x, enemy.lane, upOf(enemy));
-    for (const v of foes) if (Math.abs(v.x - enemy.x) <= 60) hits.push({ target: v, damage: u.damage, boss: u.boss });
+    for (const v of foes) if (Math.abs(v.x - enemy.x) <= 70) hits.push({ target: v, damage: u.damage * KING.orb, boss: u.boss });
     hear(s, 'magic', u.x);
   } else if (mv.kind === 'ray') {
     // A ray from his eyes through everything ahead of him, flyers too.
     const up = u.alt ?? highOf(u), end = u.x + dir * (a.range + 40);
     s.effects.push({ x: end, from: u.x, lane: u.lane, life: 0.45, max: 0.45, kind: 'shot', side: u.side, art: 'ray-red', fromUp: up, toUp: Math.max(10, up * 0.35), gun: gunOf(u, a, 0, '+') });
-    for (const v of foes) if (ahead(v, -10, a.range + 40)) hits.push({ target: v, damage: u.damage * 0.8 });
+    for (const v of foes) if (ahead(v, -10, a.range + 40)) hits.push({ target: v, damage: u.damage * KING.ray });
     hear(s, 'ray', u.x);
   } else if (mv.kind === 'skulls') {
     // Three flaming skulls at the three nearest.
     const near = [...foes].sort((p, q) => Math.abs(p.x - u.x) - Math.abs(q.x - u.x)).slice(0, 3);
-    near.forEach((v, i) => { launch(s, u, { ...a, shot: 'skull', spin: false }, v.x + i * 6, v.lane, upOf(v)); hits.push({ target: v, damage: u.damage * 0.6, boss: u.boss }); });
+    near.forEach((v, i) => { launch(s, u, { ...a, shot: 'skull', spin: false }, v.x + i * 6, v.lane, upOf(v)); hits.push({ target: v, damage: u.damage * KING.skull, boss: u.boss }); });
     hear(s, 'throw', u.x);
   } else if (mv.kind === 'summon') {
     // A portal opens on the ground before him and three of his troops climb out of it.
@@ -1022,27 +1024,27 @@ function kingMove(s: Siege, u: Fighter, a: Spec, enemy: Fighter, alive: Fighter[
     hear(s, 'roar', x);
   } else if (mv.kind === 'slash') {
     // A great sweep of his sword: everything ahead of him, out to a long reach, struck and thrown back.
-    for (const v of foes) if (ahead(v, -20, 170)) hits.push({ target: v, damage: u.damage * 1.1, push: 200 });
+    for (const v of foes) if (ahead(v, -20, 170)) hits.push({ target: v, damage: u.damage * KING.slash, push: 200 });
     // A dark crescent sweeps out with the blade, and the blow lands big.
     s.effects.push({ x: u.x + dir * 190, from: u.x, lane: u.lane, life: 0.5, max: 0.5, kind: 'sweep', side: u.side, dark: true, size: a.size });
     fx(s, 'hit-heavy', u.x + dir * 100, 0.35, { up: 34, centre: true, size: 140, flip: !!u.side }); s.shake = Math.max(s.shake ?? 0, 0.22);
     hear(s, 'slash', u.x);
   } else if (mv.kind === 'slam') {
     // His fist driven into the ground: everything round him struck and thrown back.
-    for (const v of foes) if (ahead(v, -50, 150)) hits.push({ target: v, damage: u.damage, push: 260, force: true });
+    for (const v of foes) if (ahead(v, -50, 150)) hits.push({ target: v, damage: u.damage * KING.slam, push: 260, force: true });
     fx(s, 'hit-heavy', u.x + dir * 50, 0.4, { up: 20, centre: true, size: 160, flip: !!u.side }); fx(s, 'crack-1', u.x + dir * 40, 3, { floor: true, size: 200 });
     s.effects.push({ x: u.x + dir * 50, from: u.x, lane: u.lane, life: BOOM, max: BOOM, kind: 'boom', side: u.side, size: 150, dark: true });
     fx(s, 'crater', u.x + dir * 50, 3.5, { floor: true, size: 170 }); s.shake = Math.max(s.shake ?? 0, 0.45);
     hear(s, 'blunt', u.x);
   } else if (mv.kind === 'spikes') {
     // Bone spikes burst from the ground ahead of him, out to his reach and beyond: walkers struck and stunned.
-    for (const v of foes) if (!UNITS[v.id].air && ahead(v, 20, 280)) { hits.push({ target: v, damage: u.damage * 1.2 }); if (!UNITS[v.id].steady) v.stun = Math.max(v.stun ?? 0, 0.8); }
+    for (const v of foes) if (!UNITS[v.id].air && ahead(v, 20, 280)) { hits.push({ target: v, damage: u.damage * KING.spikes }); if (!UNITS[v.id].steady) v.stun = Math.max(v.stun ?? 0, 0.8); }
     for (let d = 90; d <= 280; d += 70) { fx(s, 'crack-0', u.x + dir * d, 2.5, { floor: true, size: 110 }, d / 900); fx(s, 'rock-land', u.x + dir * d, 0.5, { size: 96 }, d / 900); }
     s.shake = Math.max(s.shake ?? 0, 0.2);
     hear(s, 'pierce', u.x);
   } else {
     // A pulse of dark energy all round him, flyers too, throwing them back.
-    for (const v of foes) if (Math.abs(v.x - u.x) <= 200) hits.push({ target: v, damage: u.damage * 0.9, push: 300, force: true });
+    for (const v of foes) if (Math.abs(v.x - u.x) <= 200) hits.push({ target: v, damage: u.damage * KING.pulse, push: 300, force: true });
     s.effects.push({ x: u.x, from: u.x, lane: u.lane, life: BOOM, max: BOOM, kind: 'boom', side: u.side, size: 240, up: 30, dark: true });
     fx(s, 'crack-1', u.x, 3, { floor: true, size: 220 }); s.shake = Math.max(s.shake ?? 0, 0.4);
     hear(s, 'thunder', u.x);
