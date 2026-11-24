@@ -798,7 +798,7 @@ const ATTACK_SOUND: Record<number, string | string[]> = {
   25: 'claw', 26: 'breath', 27: 'blade', 28: 'claw', 29: 'claw', 30: 'magic', 31: 'blade', 32: 'gatling',
   34: 'throw', 35: 'gatling', 36: 'breath', 37: 'blunt', 38: 'bite', 39: 'magic', 60: 'blunt', 61: 'throw', 62: 'blunt', 63: 'magic',
 };
-const SHOT_SOUND: Record<string, string> = { 'crescent-gold': 'wind', rock: 'throw', javelin: 'throw', shuriken: 'throw', arrow: 'bow', rocket: 'rocket', rockets: 'rocket', salvo: 'rocket', 'rocket-dark': 'rocket', 'rockets-dark': 'rocket', 'salvo-dark': 'rocket', 'plasma-cyan': 'ray', ray: 'ray', 'ray-blue': 'ray', 'ray-gold': 'ray', 'ray-pink': 'thunder', 'ray-red': 'ray', 'arrow-red': 'bow', boulder: 'throw', 'boulder-blue': 'rocket', bomb: 'rocket', plasma: 'ray', ice: 'ray', crescent: 'magic', none: 'flame', lightning: 'thunder', tornado: 'wind', meteor: 'meteor' };
+const SHOT_SOUND: Record<string, string> = { 'crescent-gold': 'wind', rock: 'throw', javelin: 'throw', shuriken: 'throw', arrow: 'bow', rocket: 'rocket', rockets: 'rocket', salvo: 'rocket', 'rocket-dark': 'rocket', 'rockets-dark': 'rocket', 'salvo-dark': 'rocket', 'plasma-cyan': 'cannon', ray: 'ray', 'ray-blue': 'ray', 'ray-gold': 'ray', 'ray-pink': 'thunder', 'ray-red': 'ray', 'arrow-red': 'bow', boulder: 'throw', 'boulder-blue': 'rocket', bomb: 'rocket', plasma: 'ray', ice: 'ray', crescent: 'magic', none: 'flame', lightning: 'thunder', tornado: 'wind', meteor: 'meteor' };
 /** Bullets (`bullet`, `bullet-rifle|uzi|sniper`) sound like the gun that fires them; beams (`ray`, `ray-blue|gold|pink`) reach at once. */
 export const isBullet = (shot?: string) => !!shot?.startsWith('bullet');
 export const isBeam = (shot?: string) => !!shot?.startsWith('ray');
@@ -1223,7 +1223,6 @@ export function castPower(s: Siege, card: number): boolean {
       push({ x, from: x, lane: 1, life: flight + wait + FIRE, max: FIRE, kind: 'fire', side: 0, size: 60, up });
       push({ x, from: x, lane: 1, life: flight + wait + BOOM, max: BOOM, kind: 'boom', side: 0, size: 64, up });
       s.hitq.push({ at: s.time + wait + flight, x, r, damage: form.damage });
-      fx(s, 'warn', x, wait + flight, { floor: true, size: 90, up });
       fx(s, 'crater', x, 4, { floor: true, size: 120, up }, wait + flight);
     }
     hear(s, 'meteor', (x0 + x1) / 2);
@@ -1491,7 +1490,7 @@ export function tick(s: Siege, dt: number) {
           // The rings leave its mouth and run out over its reach, growing and fading (`ripple` in the view).
           const from = u.x + dir * w.mouth[0] * a.size;
           s.effects.push({ x: u.x + dir * w.reach, from, lane: u.lane, life: 0.55, max: 0.55, kind: 'ripple', side: u.side, art: w.art, fromUp: (a.air ? u.alt ?? highOf(u) : 0) + w.mouth[1] * a.size, size: a.size });
-          hear(s, w.stun ? 'blunt' : 'magic', u.x);
+          hear(s, w.stun ? 'blunt' : 'scream', u.x);
         }
         else if (a.sweep) {
           // Everything it can reach in front of it, out to `reach`, is struck and thrown back.

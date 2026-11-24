@@ -164,7 +164,7 @@ function topOf(image: HTMLImageElement) {
 /** The owner's drawn effects (`siege/fx/<name>-<frame>`) and how many frames each plays. */
 /** Effects drawn on the ground: the share of their height (from the top) where their ring or dust meets the ground,
     measured on the sheets; that row is put on the ground line, so the ring circles the troop's feet. */
-const FX_GROUND: Record<string, number> = { 'arrive-land': 0.79, 'arrive-foe': 0.8, 'arrive-heavy': 0.71 };
+const FX_GROUND: Record<string, number> = { 'arrive-land': 0.79, 'arrive-foe': 0.8, 'arrive-heavy': 0.71, crater: 0.84 };
 const FX_FRAMES: Record<string, number> = {
   'hit-bullet': 5, 'hit-thrown': 5, 'hit-energy': 5, 'hit-ice': 5, 'hit-magic': 5, 'hit-heavy': 5, stun: 4, shatter: 4, heal: 6, aura: 4,
   wreck: 7, soul: 6, crash: 6, loot: 6, trail: 6, smoke: 5, 'arrive-land': 6, 'arrive-air': 6, 'arrive-heavy': 6, 'arrive-foe': 6, 'rock-land': 5,
@@ -624,8 +624,10 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     const art = fxFrame(e.art, p); if (!ok(art)) return false;
     const w = e.size ?? 50, h = w * art.naturalHeight / art.naturalWidth;
     // An arrival's ring lies round the feet: the row of its picture that is the ground (`FX_GROUND`) goes on the ground line.
-    const base = FX_GROUND[e.art] !== undefined && !e.up ? h * (FX_GROUND[e.art] - 0.5) : e.centre ? 0 : h / 2;
-    const at = e.gun ? muzzle(e, y) : { x: e.x, y: ground - (e.up ?? 0) - base + (e.floor ? 8 : 0) };
+    // A meteor's crater lies in the ground too, its hole on the ground line (set back or forward by `up`).
+    const sunk = FX_GROUND[e.art] !== undefined && (!e.up || e.art === 'crater');
+    const base = sunk ? h * (FX_GROUND[e.art] - 0.5) : e.centre ? 0 : h / 2;
+    const at = e.gun ? muzzle(e, y) : { x: e.x, y: ground - (e.up ?? 0) - base + (e.floor && !sunk ? 8 : 0) };
     ctx.save(); ctx.globalAlpha = p > 0.8 ? (1 - p) / 0.2 : 1; ctx.translate(at.x, at.y); if (e.flip) ctx.scale(-1, 1);
     ctx.drawImage(art, -w / 2, -h / 2, w, h); ctx.restore(); return true;
   }
@@ -842,7 +844,8 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     // the meteor comes down from above onto it; all fade at the end.
     const art = still(`siege/units/shot-${e.art}`); if (!ok(art)) return false;
     const h = e.art === 'meteor' ? 105 : 120, w = h * art.naturalWidth / art.naturalHeight, foot = ground - (e.up ?? 0);
-    const drop = e.art === 'meteor' ? Math.max(0, 1 - p * 1.6) * 170 : 0;
+    // The meteor falls from above the top of the view (the sky), not from a little way up.
+    const drop = e.art === 'meteor' ? Math.max(0, 1 - p * 1.6) * Math.max(170, foot + 10) : 0;
     ctx.save(); ctx.globalAlpha = p > 0.75 ? (1 - p) / 0.25 : 1;
     // The meteor comes down from the upper left, steeply (about 70° from the ground), its tail behind it on the left.
     ctx.translate(e.x - drop * 0.36, foot - drop);

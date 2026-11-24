@@ -14,7 +14,7 @@
  */
 
 /** Siege's troop sounds: attacks by weapon, deaths by body. */
-export const SIEGE_SOUNDS = ['blade', 'blunt', 'pierce', 'claw', 'bite', 'throw', 'bow', 'gun', 'rifle', 'uzi', 'sniper', 'gatling', 'rocket', 'ray', 'flame', 'thunder', 'wind', 'meteor', 'breath', 'drill', 'magic', 'heal', 'slash', 'roar',
+export const SIEGE_SOUNDS = ['blade', 'blunt', 'pierce', 'claw', 'bite', 'throw', 'bow', 'gun', 'rifle', 'uzi', 'sniper', 'gatling', 'cannon', 'scream', 'rocket', 'ray', 'flame', 'thunder', 'wind', 'meteor', 'breath', 'drill', 'magic', 'heal', 'slash', 'roar',
   'die-man', 'die-armor', 'die-beast', 'die-brute', 'die-bot', 'die-flyer', 'die-horse', 'die-dragon', 'base-falls', 'coin', 'corrupt-wind', 'death-ally', 'death-foe'] as const;
 export type SiegeSound = (typeof SIEGE_SOUNDS)[number];
 export type Sfx =
@@ -2282,6 +2282,14 @@ class Engine {
       case 'uzi': for (let i = 0; i < 4; i++) { crack(i * 0.055, 0.28, 0.14, 0.06); slide(i * 0.055, 1800, 700, 0.04, 0.06); } return;
       case 'sniper': crack(0, 0.7, 0.45, 0.32); slide(0, 2400, 500, 0.18, 0.1); return noise(0.05, 0.6, 0.12, 'lowpass', 700, 200, 0.5, 0.05);
       case 'gatling': for (let i = 0; i < 6; i++) crack(i * 0.045, 0.24, 0.11, 0.05); return;
+      // The heavy armed robot's last form: its big plasma cannon (a deep blast with a charged whine) and, under it, the
+      // machine gun in its hands rattling off a burst.
+      // The wraith's scream: a ghost's long shriek, two voices high up a little apart that rise and sink as it wails,
+      // a breath of cold air through it and an echo under it.
+      case 'scream': ouch(0, 1250 * r(0.03), 0.9, 0.2, 0.05); ouch(0.03, 1580 * r(0.03), 0.85, 0.12, 0.08);
+        noise(0, 0.95, 0.12, 'bandpass', 2600, 1500, 3, 0.06); return ouch(0.2, 640, 0.75, 0.06, 0.02);
+      case 'cannon': tone(0, 'sine', 95 * r(), 32, 0.5, 0.55); slide(0, 1500, 180, 0.32, 0.1); boom(0.02, 0.75, 0.8);
+        for (let i = 0; i < 8; i++) crack(0.1 + i * 0.05, 0.3, 0.13, 0.05); return;
       case 'rocket': tone(0, 'sine', 140, 60, 0.1, 0.3); slide(0.02, 300, 1100, 0.4, 0.06); return noise(0.02, 0.5, 0.24, 'bandpass', 500 * r(), 2600, 0.9, 0.03);
       case 'ray': tone(0, 'sine', 2200 * r(), 300, 0.24, 0.16); tone(0.02, 'sine', 1800, 250, 0.22, 0.08); return tone(0, 'square', 950, 160, 0.26, 0.04, 0.003, ['lowpass', 2500]);
       case 'flame': noise(0, 0.5, 0.48, 'lowpass', 1300 * r(), 700, 0.7, 0.05); return noise(0, 0.45, 0.16, 'bandpass', 420, 300, 1.2, 0.04);

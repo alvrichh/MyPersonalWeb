@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.37 - 2026-11-24
+
+- Siege Cartoon, meteor shower: the meteors fall from the sky above the top of the view (they started a little way up); the red marks warning where each would land are gone (meteors give no warning); the craters lie in the ground, their hole on the ground line with the fire, instead of standing on it.
+- Siege Cartoon sounds: the heavy armed robot's last form (the 700 one) fires with a sound of its own, `cannon`: a deep blast with a charged whine and a machine-gun burst under it, for the bullets it also fires (it sounded like a ray gun). The wraith screams (`scream`: two high ghostly voices wailing, cold air and an echo) instead of the magic chime.
+
 ## 1.16.36 - 2026-11-24
 
 - Siege Cartoon: the bird that crosses the sky now and then flies in view, just under the HUD (its height was worked out from above the top of the view, so it passed over the edge of the screen), and only over the green worlds (acts 1-3: the meadows, the sky islands, the forest), not the desert, the snow or the last world.
