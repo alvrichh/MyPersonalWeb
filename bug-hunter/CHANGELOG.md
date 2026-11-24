@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.48 - 2026-11-24
+
+- Siege Cartoon ending: in «Your army» the troops march from left to right, the way they face, the swordsman leading (they went right to left, walking backwards).
+
 ## 1.16.47 - 2026-11-24
 
 - Siege Cartoon: the King of Darkness strikes slowly and hard, and his attacks are seen.

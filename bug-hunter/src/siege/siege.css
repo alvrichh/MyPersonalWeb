@@ -1069,11 +1069,12 @@
 /* The parade: the army marches across, walking poses in turn, names under. */
 .sg-cr-army{position:absolute;left:0;right:0;bottom:6vh;top:14vh;display:flex;flex-direction:column;justify-content:space-between}
 /* Each row marches across as one, its troops a little apart, so no names overlap. */
-.sg-cr-train{display:flex;gap:28px;align-items:flex-end;width:max-content;transform:translateX(100vw)}
+.sg-cr-train{display:flex;flex-direction:row-reverse;gap:28px;align-items:flex-end;width:max-content;transform:translateX(-100%)}
 .sg-cr-train.is-air{gap:60px}
 .is-parade.is-on .sg-cr-train{animation:sg-cr-march 15s linear .3s forwards}
 .is-parade.is-on .sg-cr-train.is-air{animation-duration:13s;animation-delay:1.5s}
-@keyframes sg-cr-march{from{transform:translateX(100vw)}to{transform:translateX(-100%)}}
+/* Left to right, the way they face, the first troop leading. */
+@keyframes sg-cr-march{from{transform:translateX(-100%)}to{transform:translateX(100vw)}}
 .sg-cr-troop{margin:0;display:flex;flex-direction:column;align-items:center;width:150px;flex:none}
 .sg-cr-walk{position:relative;display:block;height:min(24vh,150px);width:150px}
 .sg-cr-walk img{position:absolute;bottom:0;left:50%;height:100%;width:auto;transform:translateX(-50%);filter:drop-shadow(0 4px 4px #0008)}
