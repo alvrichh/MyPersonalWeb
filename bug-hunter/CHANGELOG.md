@@ -4,6 +4,14 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.47 - 2026-11-24
+
+- Siege Cartoon: the King of Darkness strikes slowly and hard, and his attacks are seen.
+  - Slower: every 2.4 s on his throne (was 1.5) and every 2 s on foot (was 1.15).
+  - Each attack harder to match (`KING`): the orb 2.6, the ray 2.2, each skull 1.6, the sweep 3.4, the slam 3.6, the spikes 3.0, the pulse 2.6 times his damage: in the last battle about 300 for the orb and on foot, enraged, about 580 for the sweep and 615 for the slam. His damage over time stays about what it was.
+  - His poses are held longer (`windup`, `strikeFor`): the wind-up 0.7 s and the blow 0.65 s (0.3 for every troop), so each attack's drawing is seen; his sweep, impacts, rocks, ray and portal last longer too.
+  - The sweep's crescent is blood red (it showed pink).
+
 ## 1.16.46 - 2026-11-24
 
 - Siege Cartoon: the King of Darkness's attacks hit hard, each one felt (`KING`, times his damage): the orb 1.6 (was 1, and a little wider), the ray 1.4 (0.8), each flaming skull 1.0 (0.6), the sword sweep 2.0 (1.1), the slam 2.2 (1.0), the bone spikes 1.8 (1.2), the pulse 1.6 (0.9). In the last battle that is about 185 for the orb and 160 for the ray on his throne, and on foot, enraged, about 345 for the sweep, 380 for the slam, 310 for the spikes and 275 for the pulse (a master swordsman has 650).

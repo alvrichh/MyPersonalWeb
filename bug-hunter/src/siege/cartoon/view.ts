@@ -769,8 +769,8 @@ function effect(ctx: CanvasRenderingContext2D, e: Effect, p: number, y: number, 
     const dir = e.x >= e.from ? 1 : -1, reach = Math.abs(e.x - e.from), q = Math.min(1, p / 0.8), ease = 1 - (1 - q) * (1 - q);
     const cx = e.from + dir * reach * ease, cy = ground - 36 - (e.fromUp ?? 0) * 0.4, h = 90 + 60 * ease, w = h * art.naturalWidth / art.naturalHeight;
     ctx.save(); ctx.globalAlpha = p < 0.7 ? 1 : (1 - p) / 0.3; ctx.translate(cx, cy); ctx.scale(dir, 1);
-    // The boss's crescent is turned blood red, his colours (the picture is pink).
-    ctx.shadowColor = e.dark ? '#ff2a2a' : '#ffd84a'; ctx.shadowBlur = 26; if (e.dark) ctx.filter = 'hue-rotate(60deg) saturate(1.8)';
+    // The boss's crescent is turned blood red, his colours (the picture is violet).
+    ctx.shadowColor = e.dark ? '#ff2a2a' : '#ffd84a'; ctx.shadowBlur = 26; if (e.dark) ctx.filter = 'hue-rotate(110deg) saturate(2.2) brightness(0.9)';
     ctx.drawImage(art, -w / 2, -h / 2, w, h);
     ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha *= 0.45; ctx.drawImage(art, -w / 2, -h / 2, w, h);
     ctx.shadowBlur = 0; ctx.globalAlpha *= 0.8; ctx.strokeStyle = '#fff3b0'; ctx.lineWidth = 3; ctx.lineCap = 'round';
@@ -1041,7 +1041,7 @@ function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: nu
   // Hurt when thrown back, stunned or wincing at a heavy blow (`WINCE`), not at every scratch; its own blow shows
   // first (a charger strikes, then stands dazed).
   const thrown = !!u.knock, hurt = !!(u.stun || u.wince);
-  const ready = !u.moving && u.attack > 0 && u.attack < 0.3;
+  const ready = !u.moving && u.attack > 0 && u.attack < (spec.windup ?? 0.3);
   const pose = spec.six
     ? gone !== undefined ? (gone < DEATH.fly ? 4 : 5) : thrown ? 4 : u.hit ? 3 : hurt ? 4 : ready ? 2 : u.moving && !reduced ? Math.floor(t * 5) % 2 : 0
     : gone !== undefined ? 2 : thrown ? 2 : u.hit ? 1 : hurt ? 2 : 0;
@@ -1083,7 +1083,7 @@ function fighter(ctx: CanvasRenderingContext2D, s: Siege, u: Fighter, ground: nu
       const p = 1 - u.knock / KNOCK.time;
       lift = Math.sin(p * Math.PI) * 26; lean = -Math.sin(p * Math.PI) * 1.1;
     } else if (u.stun) lean = Math.sin(s.time * 60) * 0.06;
-    else if (u.hit) push = Math.sin((1 - u.hit / 0.3) * Math.PI) * 10;
+    else if (u.hit) push = Math.sin((1 - u.hit / (spec.strikeFor ?? 0.3)) * Math.PI) * 10;
     else if (u.moving && !spec.air) {
       // A stride: a hop on each step (and, without walking poses, a squash as the foot lands and a lean).
       const step = Math.sin(t * Math.PI * 5);
