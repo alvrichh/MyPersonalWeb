@@ -582,7 +582,7 @@ test('the owner\'s drawn effects: arrivals, hits, frozen troops shatter, machine
   assert.ok(s.effects.some(e => e.art === 'soul') && s.effects.some(e => e.art === 'loot'), 'a foe gives up its soul and its loot');
 });
 
-test('the owner\'s second batch: the fortress collapses, the horn sounds when we reach it, meteors warn and leave craters, giants raise dust', () => {
+test('the owner\'s second batch: the fortress collapses, the horn sounds when we reach it, meteors fall unannounced and leave craters, giants raise dust', () => {
   const s = m.newSiege({ ...m.freshProgress(), unlocked: 30, owned: [0, 9], deck: [9] }, 3); s.gusted = true; s.energy = 999;
   s.nextWave = 0; m.tick(s, 1 / 30); s.nextWave = 0; m.tick(s, 1 / 30);
   assert.ok(!s.effects.some(e => e.art === 'horn'), 'a new wave sounds no horn');
@@ -595,7 +595,7 @@ test('the owner\'s second batch: the fortress collapses, the horn sounds when we
   s.hp[1] = 0; m.tick(s, 1 / 30);
   assert.ok(s.razed && s.effects.some(e => e.art === 'collapse') && s.effects.some(e => e.kind === 'piece' && e.art === 'piece-flag'), 'the fortress collapses, its flag thrown out');
   const t = m.newSiege({ ...m.freshProgress(), unlocked: 30, powers: [0, 0, 0, 1], kit: [3] }, 20); t.nextWave = 999;
-  t.energy = 999; assert.ok(m.castPower(t, 3)); assert.ok(t.effects.some(e => e.art === 'warn') && t.effects.some(e => e.art === 'crater'), 'meteors warn where they will fall and leave craters');
+  t.energy = 999; assert.ok(m.castPower(t, 3)); assert.ok(!t.effects.some(e => e.art === 'warn') && t.effects.some(e => e.art === 'crater'), 'meteors fall with no warning mark and leave craters');
 });
 
 test('the new powers: a black hole drags the enemy in and bursts, the sword strikes the strongest, the sanctuary heals ours', () => {
