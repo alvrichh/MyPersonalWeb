@@ -4,6 +4,12 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.31 - 2026-11-24
+
+- The Siege is now its own game, Cartoon Siege, on its own site (https://cartoon-siege.onrender.com). The cover's last slot is titled Cartoon Siege and opens it in a new tab, in the game's language, instead of opening the Siege here (`cartoonSiege.ts`).
+- The Siege progress kept here (`bugHunter.siege.cartoon.*`: worlds, gold, troops, upgrades, Villain) travels in the link's hash, which never reaches a server; the new site copies it into its own save only the first time, when it has none. A battle left half-way is not carried over.
+- The Siege texts here say so (the slot, the book, the news card). The Siege code and its save stay in this repository, no longer opened.
+
 ## 1.16.30 - 2026-11-22
 
 - The world's final boss is always drawn over everything on the field: the crowd, the other bosses, every warning, shot, orb and effect, the hero, and the fog and darkness too, so it never disappears behind anything. Its clones stay under it with the other bosses; the HUD and dialogs still sit above the canvas.
