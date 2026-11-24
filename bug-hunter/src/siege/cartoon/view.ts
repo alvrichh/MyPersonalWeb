@@ -454,7 +454,9 @@ export function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement,
   // the whirl): the troop steps out of them, drawn over.
   const under = (e: Effect) => e.floor || (e.kind === 'anim' && !!e.art?.startsWith('arrive-'));
   for (const e of s.effects) if (under(e) && seen(e.x)) effect(ctx, e, 1 - e.life / e.max, ground - 26, ground);
-  for (const u of s.units.filter(u => seen(u.x)).sort((a, b) => a.lane - b.lane || a.x - b.x)) fighter(ctx, s, u, ground, reduced, color);
+  // The enemy's guardian (the battle's boss) is drawn last, over every troop, so it is always seen whole.
+  const onTop = (u: Fighter) => (u.boss && u.side ? 1 : 0);
+  for (const u of s.units.filter(u => seen(u.x)).sort((a, b) => onTop(a) - onTop(b) || a.lane - b.lane || a.x - b.x)) fighter(ctx, s, u, ground, reduced, color);
   for (const e of s.effects) {
     if (under(e) || beam(e) || e.x < left - 500 && e.from < left - 500 || e.x > right + 500 && e.from > right + 500) continue;
     const p = 1 - e.life / e.max; const y = ground - 26;

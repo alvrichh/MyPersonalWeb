@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.35 - 2026-11-24
+
+- Siege Cartoon: the enemy's guardian (each battle's boss) is drawn over every troop, whatever its lane or place, so it is always seen whole; it used to be hidden behind troops in the lanes in front.
+
 ## 1.16.34 - 2026-11-24
 
 - Siege Cartoon: the master swordsman's first pose (`ally-swordsman-5-0`, walk step A and his stance) is redrawn to match his other poses: gold winged helmet, round white face, blue cape, the flaming sword forward, the other foot leading so it alternates with step B. It was an older drawing. The sheet keeps its height, so every pose keeps its scale; its address carries a new revision so browsers fetch it again.
