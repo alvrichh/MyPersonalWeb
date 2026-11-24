@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.41 - 2026-11-24
+
+- Siege Cartoon: two more enemy troops of the last world, small beside the giants they march with, are bigger: the spider spearman (54 → 70) and the inter-galactic shooter (50 → 67). Checked by lining up every enemy troop, by world, on the field: the rest keep their size (the dog, the turkey and the bats are small on purpose).
+
 ## 1.16.40 - 2026-11-24
 
 - Siege Cartoon: three enemy troops were drawn small beside the rest and are bigger now, about the bear's height: the skeleton with the hammer (55 → 69), the axeman (63 → 76) and the wizard (51 → 65). Only their size on the field changes, not their stats.
