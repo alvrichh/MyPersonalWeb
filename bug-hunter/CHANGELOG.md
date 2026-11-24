@@ -4,6 +4,11 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## Moved - 2026-11-24
+
+- Bug Hunter has its own repository and site: https://github.com/alvrichh/bug-hunter, played at https://bug-hunter-game.onrender.com. Its changes are recorded there from now on.
+- The portfolio's `/game.html` is now a bridge (`src/bridge.ts`): it sends each player to the new site with their whole saved game in the address's hash (the transfer code), which the new site puts in place only when it has no saved game yet. Checked: a save with a name, coins and Siege progress arrived whole; a player with no save simply goes there.
+
 ## 1.16.50 - 2026-11-24
 
 - Siege Cartoon: a battle's result is a story card like the dialogues: the world's picture behind, the parchment panel (the dark one for a lost battle) and the Captain beside it, in his blow's pose when the fortress falls and hurt when ours does; the title big in green or red, the text lettered white with a black outline. Same buttons as before. Duels keep the plain dialog.
