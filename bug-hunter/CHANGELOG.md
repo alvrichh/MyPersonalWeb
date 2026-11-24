@@ -4,6 +4,16 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.39 - 2026-11-24
+
+- Siege Cartoon: the hero campaign has an ending film and credits (`siege/cartoon/credits.ts`), after the last guardian falls and the ending's dialogue, about a minute and a half:
+  - Victory: the enemy fortress shakes and sinks as the red sky clears to the Meadows, a flash, «Victory!».
+  - Your army: our troops in their last forms march across by name, the flyers above them.
+  - The way home: the six worlds go by, from the last back to the Meadows, the ending's lines over them.
+  - The credits roll, then «The end» and a word that Villain mode is open; Continue goes on to the result.
+  - Skip (or Escape) ends it at any time; with reduced motion the cards simply fade in. Once the campaign is won, the settings have a Credits button to watch it again.
+  - Texts in English and Spanish. Checked on a desktop and a phone held sideways (screenshots of every scene).
+
 ## 1.16.38 - 2026-11-24
 
 - Siege Cartoon, the final boss on the ground: his blows are seen and felt.

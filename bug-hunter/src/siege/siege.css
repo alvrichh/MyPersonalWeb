@@ -1040,3 +1040,62 @@
 /* As the hero's: the part of the ball already spent is grey, and refills from the bottom as the reload comes back. */
 .siege-root.is-cartoon.is-villain .sg-bar .sg-bow::before{background:url('/images/game/siege/bow-dark.webp') 0 0 / 300% 100% no-repeat;filter:grayscale(1) brightness(.8)}
 .siege-root.is-cartoon.is-villain .sg-bar .sg-bow.is-drawing::after{background:url('/images/game/siege/bow-dark.webp') 0 0 / 300% 100% no-repeat;animation:sg-bow-frames .36s steps(3) infinite}
+
+/* The end credits (credits.ts): one scene at a time over the whole screen, cross-fading. */
+.sg-credits{position:fixed;inset:0;z-index:10050;background:#05030a;color:#fff;overflow:hidden;font-family:system-ui,sans-serif;transition:opacity .4s}
+.sg-credits.is-leaving{opacity:0}
+.sg-cr-scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;transition:opacity 1s;pointer-events:none;padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}
+.sg-cr-scene.is-on{opacity:1;pointer-events:auto}
+.sg-cr-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-1}
+.sg-cr-scene.is-on .sg-cr-bg{animation:sg-cr-pan 6s ease-out both}
+@keyframes sg-cr-pan{from{transform:scale(1.12) translateX(2%)}to{transform:scale(1)}}
+.sg-cr-big{margin:0;font:900 clamp(38px,9vmin,96px)/1 "Arial Black",Impact,system-ui,sans-serif;color:#ffc83d;text-transform:uppercase;text-align:center;-webkit-text-stroke:3px #1b1426;paint-order:stroke fill;text-shadow:0 6px 0 #1b1426,0 0 30px #0009;position:relative;z-index:2}
+.sg-cr-title{position:absolute;top:max(18px,6vh);margin:0;font:900 clamp(22px,5vmin,44px)/1 "Arial Black",system-ui,sans-serif;color:#fff;-webkit-text-stroke:2px #1b1426;paint-order:stroke fill;text-shadow:0 4px 0 #1b1426}
+/* Victory: the red sky clears to blue, the dark fortress shakes and sinks, a flash. */
+.sg-cr-sky{position:absolute;inset:0;background:linear-gradient(#5a0c12,#1a0508)}
+.sg-cr-sky::after{content:"";position:absolute;inset:0;background:url(/images/game/siege/bg-clean.webp) center/cover;opacity:0}
+.is-victory.is-on .sg-cr-sky::after{animation:sg-cr-clear 3.5s 1s ease-in forwards}
+@keyframes sg-cr-clear{to{opacity:1}}
+.sg-cr-fort{position:absolute;bottom:0;height:min(70vh,420px);filter:drop-shadow(0 0 30px #f00a)}
+.is-victory.is-on .sg-cr-fort{animation:sg-cr-sink 3.2s .3s ease-in forwards}
+@keyframes sg-cr-sink{0%,30%{transform:translateX(0)}5%,15%,25%{transform:translateX(-8px)}10%,20%{transform:translateX(8px)}100%{transform:translateY(110%) rotate(4deg)}}
+.sg-cr-flash{position:absolute;inset:0;background:#fff;opacity:0}
+.is-victory.is-on .sg-cr-flash{animation:sg-cr-flash 1s 2.6s ease-out}
+@keyframes sg-cr-flash{0%{opacity:0}15%{opacity:.9}100%{opacity:0}}
+.is-victory .sg-cr-big{opacity:0}
+.is-victory.is-on .sg-cr-big{animation:sg-cr-pop .7s 2.9s cubic-bezier(.2,1.6,.4,1) forwards}
+@keyframes sg-cr-pop{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:scale(1)}}
+/* The parade: the army marches across, walking poses in turn, names under. */
+.sg-cr-army{position:absolute;left:0;right:0;bottom:6vh;top:14vh;display:flex;flex-direction:column;justify-content:space-between}
+/* Each row marches across as one, its troops a little apart, so no names overlap. */
+.sg-cr-train{display:flex;gap:28px;align-items:flex-end;width:max-content;transform:translateX(100vw)}
+.sg-cr-train.is-air{gap:60px}
+.is-parade.is-on .sg-cr-train{animation:sg-cr-march 15s linear .3s forwards}
+.is-parade.is-on .sg-cr-train.is-air{animation-duration:13s;animation-delay:1.5s}
+@keyframes sg-cr-march{from{transform:translateX(100vw)}to{transform:translateX(-100%)}}
+.sg-cr-troop{margin:0;display:flex;flex-direction:column;align-items:center;width:150px;flex:none}
+.sg-cr-walk{position:relative;display:block;height:min(24vh,150px);width:150px}
+.sg-cr-walk img{position:absolute;bottom:0;left:50%;height:100%;width:auto;transform:translateX(-50%);filter:drop-shadow(0 4px 4px #0008)}
+.sg-cr-walk img+img{opacity:0}
+.is-parade.is-on .sg-cr-walk img{animation:sg-cr-step .5s steps(1) infinite}
+.is-parade.is-on .sg-cr-walk img+img{animation-delay:.25s}
+@keyframes sg-cr-step{0%{opacity:1}50%{opacity:0}}
+.sg-cr-troop figcaption{margin-top:4px;max-width:150px;font:800 13px/1.15 system-ui;color:#fff;text-align:center;text-shadow:0 1px 0 #000,0 0 6px #000}
+/* The way home: each world, its line over it. */
+.sg-cr-line{position:absolute;bottom:10vh;max-width:min(760px,90vw);margin:0;padding:14px 22px;border-radius:16px;background:#000a;border:2px solid #ffc83d88;font:700 clamp(16px,2.6vmin,22px)/1.4 system-ui;text-align:center}
+.sg-cr-line:empty{display:none}
+/* The roll: up from below over the meadows. */
+.sg-cr-roll{position:absolute;top:100%;left:0;right:0;display:flex;flex-direction:column;align-items:center;text-align:center;gap:18px;padding:0 16px;text-shadow:0 2px 0 #000,0 0 10px #000}
+.is-roll.is-on .sg-cr-roll{animation:sg-cr-roll 18s linear forwards}
+@keyframes sg-cr-roll{from{transform:translateY(0)}to{transform:translateY(calc(-100% - 100vh))}}
+.sg-cr-logo{width:min(320px,60vw)}
+.sg-cr-roll dl{margin:0}.sg-cr-roll dt{font:700 14px/1.3 system-ui;color:#ffc83d;text-transform:uppercase;letter-spacing:.12em;margin-top:22px}.sg-cr-roll dd{margin:4px 0 0;font:800 clamp(18px,3vmin,26px)/1.3 system-ui}
+.sg-cr-thanks{font:900 clamp(22px,4vmin,34px)/1.2 system-ui;margin-top:30px}
+.sg-cr-hook{position:relative;z-index:2;margin:18px 0 0;padding:10px 18px;border-radius:14px;background:#2a0710dd;border:2px solid #ff4d6d;font:800 clamp(15px,2.4vmin,20px)/1.3 system-ui;text-align:center}
+.siege-root .sg-cr-go{position:relative;z-index:2;margin-top:22px;min-width:200px}
+.siege-root .sg-cr-skip{position:absolute;right:max(14px,env(safe-area-inset-right));bottom:max(14px,env(safe-area-inset-bottom));z-index:3;background:#000a;border:1px solid #fff6;color:#fff;min-height:40px}
+@media (max-height:500px){.sg-cr-army{bottom:3vh;top:12vh}.sg-cr-walk{height:24vh}.sg-cr-title{top:10px}.sg-cr-line{bottom:6vh}.sg-cr-big{font-size:clamp(30px,11vh,64px)}}
+.sg-credits.is-still *{animation:none!important}
+.sg-credits.is-still .sg-cr-train{transform:none;flex-wrap:wrap;justify-content:center;width:auto}
+.sg-credits.is-still .sg-cr-roll{top:auto;position:relative}
+.sg-credits.is-still .is-victory .sg-cr-big,.sg-credits.is-still .sg-cr-sky::after{opacity:1}

@@ -11,6 +11,7 @@ import { GUARDIAN_NAMES, bossTalk, intro, type Line } from './legacy/story';
 import { openDuel, type DuelLink, type DuelMsg } from './duel';
 import { GAME_VERSION } from '../version';
 import * as cartoonStory from './cartoon/story';
+import { openCredits } from './cartoon/credits';
 /** Siege's two modes, each its own engine and save: Legacy (the old troops, the nine worlds and their story) and
     Cartoon (the new troops, six acts). Legacy's engine answers the same calls, its troops on a single level. */
 type Mode = 'legacy' | 'cartoon';
@@ -843,7 +844,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       <div class="sg-toggles">${canFullscreen() ? `<button class="sg-kit ${fullscreenOn() ? 'is-gold' : 'is-blue'}" data-sg="fullscreen" aria-pressed="${fullscreenOn()}">⛶ ${t(fullscreenOn() ? 'siegeFullscreenOff' : 'siegeFullscreen')}</button>` : ''}
       ${mode === 'cartoon' ? `<button class="sg-kit ${cartoonModel.prefs.untimed ? 'is-gold' : 'is-blue'}" data-sg="untimed" aria-pressed="${cartoonModel.prefs.untimed}">⏱ ${t('siegeUntimed')}: ${cartoonModel.prefs.untimed ? t('siegeOn') : t('siegeOff')}</button>` : ''}
       ${state ? '' : `<button class="sg-kit ${cartoonModel.testing.free ? 'is-gold' : 'is-blue'}" data-sg="free" aria-pressed="${cartoonModel.testing.free}">${t('siegeFreeAll')}: ${cartoonModel.testing.free ? t('siegeOn') : t('siegeOff')}</button>
-      <button class="sg-kit is-red" data-sg="reset">${t('siegeReset')}</button>`}</div>
+      ${progress.victories.includes(cartoonModel.LAST) && !villain ? `<button class="sg-kit is-blue" data-sg="credits">🎬 ${t('siegeCredits')}</button>` : ''}<button class="sg-kit is-red" data-sg="reset">${t('siegeReset')}</button>`}</div>
       <div class="sg-kit-actions"><button class="sg-kit is-blue" data-sg="pause-back">← ${t(state ? 'paused' : 'siegeTabMap')}</button></div></div>`);
     root.querySelectorAll<HTMLInputElement>('[data-sg-vol]').forEach(input => input.addEventListener('input', () => {
       const [mm, ff] = volumes.get(), v = Number(input.value) / 100;
@@ -859,8 +860,13 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     dropBattle();
     const reward = M.settle(progress, state); persist(); paused = true;
     // The guardian's fall, then (after the last one) the ending.
-    if (mode === 'cartoon' && !villain && state.phase === 'won' && cartoonModel.guarded(world)) talk(cartoonStory.bossDown(actNow()), () => (world === lastWorld() ? talk(cartoonStory.ending, () => outcome(reward)) : outcome(reward)));
+    if (mode === 'cartoon' && !villain && state.phase === 'won' && cartoonModel.guarded(world)) talk(cartoonStory.bossDown(actNow()), () => (world === lastWorld() ? talk(cartoonStory.ending, () => credits(() => outcome(reward))) : outcome(reward)));
     else outcome(reward);
+  }
+  /** The end film and credits (`credits.ts`), the ending's lines over the worlds on the way home. */
+  function credits(then: () => void) {
+    const lines = cartoonStory.ending.map(l => t(l.key as Key));
+    openCredits(root, t, { lines, villain: true }, then);
   }
   function outcome(reward: number) {
     if (!state) return;
@@ -1014,6 +1020,7 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     else if (action === 'next') { world = Math.min(lastWorld(), world + 1); prep(); }
     else if (action === 'pause') pause();
     else if (action === 'settings') settingsMenu();
+    else if (action === 'credits' && !state) { root.querySelector('.sg-overlay')?.remove(); credits(() => prep()); }
     else if (action === 'side' && !state) { switchSide(); sound('click'); }
     else if (action === 'duel' && !state) duelMenu();
     else if (action === 'duel-side' && !state && !duel) { useSide(button.dataset.sgV === '1'); duelMenu(); }
