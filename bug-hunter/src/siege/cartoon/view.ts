@@ -34,7 +34,7 @@ function picture(path: string) {
 }
 /** Pictures redrawn under the same file names: a browser keeps the old copy for days (`/images/` may be served stale
     while it revalidates), so their address carries a revision, raised each time one is drawn again. */
-const ART_REV: [string, number][] = [['siege/units/boss-dark-king-', 2], ['siege/units/foe-bellringer-1-3', 2], ['siege/units/foe-wraith-1-3', 2]];
+const ART_REV: [string, number][] = [['siege/units/boss-dark-king-', 2], ['siege/units/foe-bellringer-1-3', 2], ['siege/units/foe-wraith-1-3', 2], ['siege/units/ally-swordsman-5-0', 2]];
 const art = (file: string) => { const r = ART_REV.find(([k]) => file.startsWith(k)); return `/images/game/${file}${r ? `?r=${r[1]}` : ''}`; };
 /** Every troop's sheet (`siege/units/...`): 0 standing, 1 attacking, 2 hurt. Walking, breathing, lunges and falls
     are animated here. */

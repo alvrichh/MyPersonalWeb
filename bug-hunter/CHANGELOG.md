@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.34 - 2026-11-24
+
+- Siege Cartoon: the master swordsman's first pose (`ally-swordsman-5-0`, walk step A and his stance) is redrawn to match his other poses: gold winged helmet, round white face, blue cape, the flaming sword forward, the other foot leading so it alternates with step B. It was an older drawing. The sheet keeps its height, so every pose keeps its scale; its address carries a new revision so browsers fetch it again.
+
 ## 1.16.33 - 2026-11-24
 
 - The Siege is played here again, as before 1.16.31, with its progress here. Tapping it (the cover's last slot, the book's «Launch siege») now asks first: «Play here» opens it inside Bug Hunter; «Open Cartoon Siege apart ↗» opens its own site in a new tab and hands this Siege progress over (`cartoonSiege.ts`, only the first time, when the site has none); Back returns to the menu. The Siege texts are back to what they were.
