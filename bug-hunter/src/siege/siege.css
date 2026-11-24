@@ -1101,3 +1101,13 @@
 .sg-credits.is-still .sg-cr-train{transform:none;flex-wrap:wrap;justify-content:center;width:auto}
 .sg-credits.is-still .sg-cr-roll{top:auto;position:relative}
 .sg-credits.is-still .is-victory .sg-cr-big,.sg-credits.is-still .sg-cr-sky::after{opacity:1}
+
+/* The battle's result as a story card (index.ts `outcome`), lettered like the dialogues: white with a black outline, its
+   title big in the Captain's green (won) or the enemy's red (lost), on the parchment or the dark panel. */
+.siege-root .sg-result .sg-line h2,.siege-root .sg-result .sg-line p,.siege-root .sg-result .sg-line strong,.siege-root .sg-result .sg-line .sg-eyebrow{color:#fff;text-shadow:-2px -2px 0 #000,2px -2px 0 #000,-2px 2px 0 #000,2px 2px 0 #000,0 2px 0 #000,0 -2px 0 #000,2px 0 0 #000,-2px 0 0 #000,0 3px 6px #000}
+.siege-root .sg-result .sg-line h2{margin:2px 0 6px;font:900 clamp(26px,4vw,36px)/1.1 system-ui}
+.siege-root .sg-result .sg-scene.is-won .sg-line h2{color:#7ff3d8}.siege-root .sg-result .sg-scene.is-lost .sg-line h2{color:#ff8a9c}
+.siege-root .sg-result .sg-line .sg-eyebrow{color:#ffd23f;font-size:13px}
+.siege-root .sg-result .sg-line p{margin:4px 0;font-weight:700}
+.siege-root .sg-result .sg-line strong{display:block;margin-top:4px;color:#ffd23f;font-weight:900}
+@media (max-height:500px){.sg-result .sg-scene{min-height:0}.sg-result .sg-speaker{height:min(40vh,200px)}}
