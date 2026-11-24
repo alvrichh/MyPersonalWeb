@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.49 - 2026-11-24
+
+- Siege Cartoon: the bird crossing the sky comes once every minute and a half (it came every 21 s), the first 40 s into the battle (`BIRD`), and it is worth catching: a tap on it drops 25 gold and 40 mana, which fly up to their counters like a fallen enemy's bounty, with the coin sound; it is gone once caught (`catchBird`). Not in duels. Still only over the green worlds.
+
 ## 1.16.48 - 2026-11-24
 
 - Siege Cartoon ending: in «Your army» the troops march from left to right, the way they face, the swordsman leading (they went right to left, walking backwards).

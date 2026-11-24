@@ -1,4 +1,4 @@
-import { PHASED, HERO_AIR, HERO_GUARDIAN, HERO_LAND, heroLevel, actOf, stageIn, flight, bowReach, highOf, foesAt, FIELD, shotFor, FOE_AIR, FOE_LAND, GUARDIAN, KNOCK, POUNCE, VAULT, SPELLS, UNITS, isBeam, isBullet, specAt, specOf, aimAt, enemyTier, castleTier, energyMax, looksTier, type Effect, type Fighter, type Siege } from './model';
+import { PHASED, HERO_AIR, HERO_GUARDIAN, HERO_LAND, heroLevel, actOf, stageIn, flight, bowReach, highOf, foesAt, FIELD, shotFor, FOE_AIR, FOE_LAND, GUARDIAN, KNOCK, POUNCE, VAULT, BIRD, SPELLS, UNITS, isBeam, isBullet, specAt, specOf, aimAt, enemyTier, castleTier, energyMax, looksTier, type Effect, type Fighter, type Siege } from './model';
 import { gloom } from './story';
 
 /** Each world's ground colours, under its floor while that loads (moss, embers, snow, mud, jungle, sand, iron,
@@ -215,6 +215,9 @@ const XBOW = { width: 83, pivot: [[0.35, 0.62], [0.28, 0.54], [0.34, 0.58], [0.2
 let bowAt = { x: 80, y: 0 };
 /** The mana monument's box on the canvas (CSS pixels), for taps: tapping it raises the generator. */
 let manaBox = { x: 0, y: 0, w: 0, h: 0 };
+/** The sky bird on screen now (CSS pixels), its crossing's number and field x; null when none flies. */
+let birdBox: { x: number; y: number; w: number; h: number; k: number; fx: number } | null = null;
+export const onBird = (x: number, y: number) => (birdBox && x >= birdBox.x - 18 && x <= birdBox.x + birdBox.w + 18 && y >= birdBox.y - 18 && y <= birdBox.y + birdBox.h + 18 ? { k: birdBox.k, x: birdBox.fx } : null);
 export const onMana = (x: number, y: number) => x >= manaBox.x && x <= manaBox.x + manaBox.w && y >= manaBox.y && y <= manaBox.y + manaBox.h;
 /** What our crossbow shoots, by its look: Cartoon's arrow, or a rocket from the rocket launcher (level 4). */
 let bolt = 'siege/units/bolt-1';
@@ -490,10 +493,17 @@ function ambient(ctx: CanvasRenderingContext2D, s: Siege, camera: Camera, ground
   }
   // A bird across the sky every twenty seconds or so, the far side to the near: only over the green worlds (the
   // meadows, the sky islands, the forest), not the desert, the snow or the last world. It flies under the HUD, in view.
-  const cycle = 21, k = Math.floor(s.time / cycle), q = (s.time % cycle) / 7, act = actOf(s.world);
-  if (q < 1 && act <= 3) {
+  // Tapped, it drops gold and mana (`catchBird`) and is gone.
+  const since = s.time - BIRD.first, k = Math.floor(since / BIRD.every), q = since < 0 ? 2 : (since % BIRD.every) / BIRD.cross, act = actOf(s.world);
+  birdBox = null;
+  if (q < 1 && act <= 3 && !s.duel && !s.birds?.includes(k)) {
     const bird = fxFrame(k % 2 ? 'bird-brown' : 'bird-blue', (s.time * 3) % 1);
-    if (ok(bird)) { const bw = 30, bh = bw * bird.naturalHeight / bird.naturalWidth; ctx.globalAlpha = 0.95; ctx.drawImage(bird, camera.x - 40 + (camera.width + 80) * q, hudRoom + 22 + (k % 3) * 22 + Math.sin(q * 9) * 6, bw, bh); }
+    if (ok(bird)) {
+      const bw = 30, bh = bw * bird.naturalHeight / bird.naturalWidth, bx = camera.x - 40 + (camera.width + 80) * q, by = hudRoom + 22 + (k % 3) * 22 + Math.sin(q * 9) * 6;
+      ctx.globalAlpha = 0.95; ctx.drawImage(bird, bx, by, bw, bh);
+      const m = ctx.getTransform(), d = Math.min(2, window.devicePixelRatio || 1);
+      birdBox = { x: (m.a * bx + m.e) / d, y: (m.d * by + m.f) / d, w: m.a * bw / d, h: m.d * bh / d, k, fx: bx + bw / 2 };
+    }
   }
   ctx.restore();
 }

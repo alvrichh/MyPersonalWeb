@@ -574,6 +574,9 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
       if (!pointer.moved && state && !paused) {
         const rect = canvas.getBoundingClientRect();
         // Siege Cartoon: a tap on the mana monument raises the generator, as in Cartoon Wars 2.
+        // A tap on the bird crossing the sky catches it: gold and mana.
+        const bird = mode === 'cartoon' ? cartoonView.onBird(e.clientX - rect.left, e.clientY - rect.top) : null;
+        if (bird && cartoonModel.catchBird(state, bird.k, bird.x)) { updateUi(); pointer = null; return; }
         if (mode === 'cartoon' && cartoonView.onMana(e.clientX - rect.left, e.clientY - rect.top)) { if (raiseGenerator()) sound('click'); updateUi(); pointer = null; return; } state.aim = Math.max(120, Math.min(M.FIELD - 120, camera.x + (e.clientX - rect.left) * camera.width / rect.width - Math.max(0, (camera.width - M.FIELD) / 2)));
       }
       pointer = null;

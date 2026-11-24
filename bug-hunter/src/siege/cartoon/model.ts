@@ -635,6 +635,8 @@ export interface Effect { x: number; from: number; lane: number; life: number; m
       its sheet faces left or it flies; the view finds the muzzle on its attack pose (`MUZZLE`). */
   gun?: { sprite: string; i: number; size: number; left?: boolean; air?: boolean } }
 export interface Siege {
+  /** The sky birds already caught this battle (by their crossing's number), each paying once (`BIRD`). */
+  birds?: number[];
   /** Seconds left of the screen shaking (the final boss's heaviest blows). */
   shake?: number;
   world: number; phase: 'fight' | 'won' | 'lost'; time: number; energy: number; generator: number; cooldowns: Record<number, number>;
@@ -858,6 +860,16 @@ export const NUDGE = { back: 85, time: 0.14, every: 0.8 };
     for one that strikes in close), changing height at `rate` a second. */
 /** How long a rocket's explosion and a meteor's fire on the ground last (seconds). */
 export const BOOM = 0.8, FIRE = 2.4;
+/** The bird crossing the sky: one every `every` seconds (the first `first` seconds in), `cross` seconds over the
+    screen; tapped, it drops gold and mana. */
+export const BIRD = { every: 90, first: 40, cross: 7, gold: 25, mana: 40 };
+/** Catches the sky bird number `k` (once): its gold and mana rise from where it was, like a fallen enemy's. */
+export function catchBird(s: Siege, k: number, x: number): boolean {
+  if (s.phase !== 'fight' || s.duel || (s.birds ??= []).includes(k)) return false;
+  s.birds.push(k); s.loot = (s.loot ?? 0) + BIRD.gold; s.energy = Math.min(energyMax(s), s.energy + BIRD.mana);
+  s.effects.push({ x, from: -1, lane: 0, life: 0.9, max: 0.9, kind: 'loot', side: 1, gold: BIRD.gold, mana: BIRD.mana });
+  hear(s, 'coin', x); return true;
+}
 /** The King of Darkness rising on foot: the share of his whole life he gets back, and how much harder he strikes. */
 export const RAGE = { heal: 0.2, damage: 1.5 };
 /** Each of the King of Darkness's attacks, times his damage: they are his great blows, each one felt. */
