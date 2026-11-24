@@ -46,6 +46,16 @@ export const PROJECTS: Project[] = [
     image: './images/projects/bug-hunter.jpg',
   },
   {
+    title: 'Cartoon Siege',
+    href: 'https://cartoon-siege.onrender.com',
+    external: true,
+    summary: 'work.cartoonSiege',
+    stack: 'TypeScript · Canvas 2D · Web Audio · PeerJS (WebRTC) · Vite · Render',
+    year: '2026',
+    status: 'work.playable',
+    image: './images/projects/cartoon-siege.jpg',
+  },
+  {
     title: 'MonsterBroker',
     href: 'https://monsterbroker.onrender.com',
     external: true,

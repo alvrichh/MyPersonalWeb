@@ -157,6 +157,7 @@
   "work.bugHunter": "Moja własna gra w przeglądarce, na telefon i komputer: akcyjny roguelite ze światami, ulepszeniami i bossami końcowymi, niekończący się tryb dyżuru, taktyczne walki auto-battler i tryb oblężenia, a do tego kooperacja online między dwoma telefonami. Zrobiona ręcznie w TypeScripcie na Canvasie, z własną grafiką, muzyką i dźwiękiem.",
   "work.butakeando": "Sklep internetowy full stack z fotelami i sofami: Stripe Checkout z podpisanymi webhookami, zamówienia zapisywane dopiero po potwierdzeniu płatności, PostgreSQL i powiadomienia e-mail, całość jako jedna aplikacja w Dockerze.",
   "work.calendar": "Mój własny kalendarz, w którym spotyka się wszystko inne z tej strony: kamienie milowe kariery, certyfikaty i urodziny, a do tego zadania z Bubble — w widoku miesiąca lub roku. Przesuń lub przewiń w bok, by poruszać się w czasie.",
+  "work.cartoonSiege": "Darmowa gra oblężnicza w przeglądarce: wysyłaj wojska, strzelaj z kuszy, przywołuj moce i szturmuj wrogą fortecę w sześciu światach. Do tego kampania złoczyńcy i pojedynki na żywo ze znajomym, po angielsku i hiszpańsku.",
   "work.degree": "Projekt dyplomowy",
   "work.devoo": "Landing page i frontend sklepu dla DEVOO Imports, greckiego klienta z ogromnymi gajami oliwnymi na południu Grecji, którego przedstawił mi znajomy z Teksasu. Animacje GSAP sterowane przewijaniem, treść i katalog ładowane z JSON.",
   "work.flow.title": "Platforma operacji celnych",

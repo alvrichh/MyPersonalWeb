@@ -157,6 +157,7 @@
   "work.bugHunter": "My own browser game, for phone and desktop: an action roguelite with worlds, upgrades and final bosses, an endless on-call survival mode, tactical auto-battler fights and a siege mode, plus online co-op between two phones. Hand-made in TypeScript on Canvas, with its own art, music and sound.",
   "work.butakeando": "A full-stack furniture storefront for armchairs and sofas: Stripe Checkout with signed webhooks, orders that only persist once payment is confirmed, PostgreSQL and email notifications, all served as a single Docker app.",
   "work.calendar": "My own calendar, where everything else on this page meets: career milestones, certificates and birthdays, plus the tasks from Bubble, by month or by year. Swipe or scroll sideways to move through time.",
+  "work.cartoonSiege": "A free cartoon siege game for the browser: send troops, fire the crossbow, call down powers and storm the enemy fortress across six worlds. It also has a villain campaign and live duels with a friend, in English and Spanish.",
   "work.degree": "Final degree project",
   "work.devoo": "Landing page and e-commerce frontend for DEVOO Imports, a Greek client with huge olive groves in southern Greece, introduced to me by a friend from Texas. Scroll-driven GSAP animations, with the content and catalogue loaded from JSON.",
   "work.flow.title": "Customs Operations Platform",

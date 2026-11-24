@@ -157,6 +157,7 @@
   "work.bugHunter": "Mo chluiche brabhsálaí féin, don fhón agus don ríomhaire: roguelite aicsin le saolta, uasghráduithe agus ollphéisteanna deiridh, mód gan deireadh ar dualgas le maireachtáil, cathanna taicticiúla auto-battler agus mód léigir, chomh maith le comhoibriú ar líne idir dhá fhón. Déanta de láimh in TypeScript ar Canvas, lena ealaín, a cheol agus a fhuaim féin.",
   "work.butakeando": "Siopa troscáin full stack do chathaoireacha uillinne agus tolganna: Stripe Checkout le webhooks sínithe, orduithe nach sábháiltear ach nuair a dheimhnítear an íocaíocht, PostgreSQL agus fógraí ríomhphoist, iad uile mar aip Docker amháin.",
   "work.calendar": "Mo fhéilire féin, áit a dtagann gach rud eile ar an leathanach seo le chéile: cloch mhíle gairme, teastais agus breithlaethanta, chomh maith le tascanna Bubble, de réir míosa nó bliana. Svaidhpeáil nó scrollaigh go cliathánach chun bogadh tríd an am.",
+  "work.cartoonSiege": "Cluiche léigir saor in aisce don bhrabhsálaí: seol trúpaí, scaoil an crosbhogha, glaoigh ar chumhachtaí agus ionsaigh daingean an namhad i sé shaol. Tá feachtas an bhithiúnaigh agus comhraic bheo le cara ann freisin, i mBéarla agus i Spáinnis.",
   "work.degree": "Tionscadal deiridh céime",
   "work.devoo": "Leathanach tuirlingthe agus tosach siopa ar líne do DEVOO Imports, cliant Gréagach le garráin olóige ollmhóra i ndeisceart na Gréige, a chuir cara as Texas in aithne dom. Beochan GSAP le scrollú, agus an t-ábhar agus an catalóg á lódáil ó JSON.",
   "work.flow.title": "Ardán oibríochtaí custaim",

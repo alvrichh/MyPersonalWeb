@@ -157,6 +157,7 @@
   "work.bugHunter": "Mein eigenes Browserspiel für Handy und Desktop: ein Action-Roguelite mit Welten, Upgrades und Endbossen, ein endloser Bereitschaftsmodus zum Überleben, taktische Auto-Battler-Kämpfe und ein Belagerungsmodus, dazu Online-Koop zwischen zwei Handys. Von Hand in TypeScript auf Canvas gebaut, mit eigener Grafik, Musik und eigenem Sound.",
   "work.butakeando": "Ein Full-Stack-Möbelshop für Sessel und Sofas: Stripe Checkout mit signierten Webhooks, Bestellungen, die erst nach bestätigter Zahlung gespeichert werden, PostgreSQL und E-Mail-Benachrichtigungen, alles als eine einzige Docker-App.",
   "work.calendar": "Mein eigener Kalender, in dem alles andere auf dieser Seite zusammenkommt: Meilensteine, Zertifikate und Geburtstage, dazu die Aufgaben aus Bubble, nach Monat oder Jahr. Wischen oder seitlich scrollen, um durch die Zeit zu blättern.",
+  "work.cartoonSiege": "Ein kostenloses Belagerungsspiel im Browser: Truppen schicken, die Armbrust abfeuern, Kräfte entfesseln und die feindliche Festung in sechs Welten stürmen. Dazu eine Schurken-Kampagne und Live-Duelle mit Freunden, auf Englisch und Spanisch.",
   "work.degree": "Abschlussprojekt",
   "work.devoo": "Landingpage und Shop-Frontend für DEVOO Imports, einen griechischen Kunden mit riesigen Olivenhainen in Südgriechenland, den mir ein Freund aus Texas vorgestellt hat. Scrollgesteuerte GSAP-Animationen, Inhalte und Katalog aus JSON geladen.",
   "work.flow.title": "Zollabwicklungsplattform",
