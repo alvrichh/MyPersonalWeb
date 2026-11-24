@@ -644,7 +644,7 @@ test('the King of Darkness: flies with four attacks in turn, falls to the ground
   assert.deepEqual([...kinds].sort(), ['orb', 'ray', 'skulls', 'summon'], 'every air attack in turn');
   assert.ok(s.units.filter(u => u.side && !u.boss).length >= 2, 'the portal calls his troops');
   king.hp = king.maxHp * 0.45; m.tick(s, 1 / 30); assert.ok(king.landing > 0, 'he falls'); run(s, 2);
-  assert.equal(king.id, 60, 'on foot'); assert.ok(king.hp > 0 && king.hp < king.maxHp * 0.5, 'with the life he had left');
+  assert.equal(king.id, 60, 'on foot'); assert.ok(Math.abs(king.hp - king.maxHp * (0.45 + m.RAGE.heal)) < king.maxHp * 0.02, 'with the life he had left and a fifth more, enraged');
 });
 
 test('the Villain campaign: the enemy\'s troops and guardians against our heroes, opened act by act', () => {

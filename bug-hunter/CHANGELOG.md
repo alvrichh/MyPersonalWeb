@@ -4,6 +4,13 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.45 - 2026-11-24
+
+- Siege Cartoon: the King of Darkness, the final boss, is harder.
+  - On his throne: 30% more life (4000 → 5200) and harder blows (46 → 52); his portal calls three of his troops (was two).
+  - On foot he rises enraged (`RAGE`): a fifth of his whole life back, his blows half again as hard, and he strikes more often (every 1.15 s, was 1.5).
+  - In all he takes about 55% more damage to bring down and hits about twice as hard on foot.
+
 ## 1.16.44 - 2026-11-24
 
 - Siege Cartoon: winning the last world now says that Villain mode is open («All six worlds conquered! Now you can play in Villain mode 😈»).

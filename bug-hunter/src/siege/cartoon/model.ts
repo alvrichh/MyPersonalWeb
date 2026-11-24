@@ -258,7 +258,7 @@ export const UNITS: readonly Spec[] = [
   { id: 38, cost: 800, hp: 420, damage: 40, speed: 45, range: 120, rate: 1.4, cooldown: 0, unlock: 1, foe: true, splash: 50, hitsAir: true, shot: 'pose', ...foe('boss-dino-1', 199, 1.0) },
   // The King of Darkness, the last guardian, in two forms: on his flying throne (a dark orb, a ray from his eyes, flaming
   // skulls, a portal that calls the enemy), then at half his life on foot (a sword slam, bone spikes, a pulse) — `phase2`.
-  { id: 39, flyAt: 75, cost: 950, hp: 4000, damage: 46, speed: 30, range: 230, rate: 1.5, cooldown: 0, unlock: 1, foe: true, air: true, steady: true, splash: 50, hitsAir: true, frames: 12, phase2: 60,
+  { id: 39, flyAt: 75, cost: 950, hp: 5200, damage: 52, speed: 30, range: 230, rate: 1.5, cooldown: 0, unlock: 1, foe: true, air: true, steady: true, splash: 50, hitsAir: true, frames: 12, phase2: 60,
     moves: [{ ready: 2, strike: 3, kind: 'orb' }, { ready: 6, strike: 7, kind: 'ray' }, { ready: 2, strike: 3, kind: 'orb' }, { ready: 8, strike: 9, kind: 'skulls' }, { ready: 2, strike: 3, kind: 'orb' }, { ready: 10, strike: 11, kind: 'summon' }],
     ...foe('boss-dark-king-air', 238, 1) },
   // The enemy's later arrivals (the owner's sheets of Cartoon Wars 2's roster, docs/siege-roster.md), appended: the
@@ -294,7 +294,7 @@ export const UNITS: readonly Spec[] = [
   // The weary reaper, legendary: hunched and slow, it hurls its chained scythe far ahead and drags what it hooks to it.
   { id: 59, cost: 860, hp: 3200, damage: 260, speed: 26, range: 185, rate: 2.4, cooldown: 30, unlock: 6, infantry: true, legend: true, splash: 50, hook: 160, ...six('ally-reaper-1', 154, 1.15) },
   // The King of Darkness on foot (`phase2` of the last guardian); he carries on with the life he has left.
-  { id: 60, cost: 0, hp: 560, damage: 46, speed: 32, range: 110, rate: 1.5, cooldown: 0, unlock: 1, foe: true, steady: true, splash: 60, hitsAir: true, frames: 12,
+  { id: 60, cost: 0, hp: 560, damage: 46, speed: 32, range: 110, rate: 1.15, cooldown: 0, unlock: 1, foe: true, steady: true, splash: 60, hitsAir: true, frames: 12,
     moves: [{ ready: 10, strike: 11, kind: 'slash' }, { ready: 2, strike: 3, kind: 'slam' }, { ready: 10, strike: 11, kind: 'slash' }, { ready: 6, strike: 7, kind: 'spikes' }, { ready: 10, strike: 11, kind: 'slash' }, { ready: 8, strike: 9, kind: 'pulse' }],
     ...foe('boss-dark-king-ground', 250, 1) },
   // The King's Jailer (world 6): a hunched giant with no mouth and a cage of ribs on its back full of red souls. It throws
@@ -856,6 +856,8 @@ export const NUDGE = { back: 85, time: 0.14, every: 0.8 };
     for one that strikes in close), changing height at `rate` a second. */
 /** How long a rocket's explosion and a meteor's fire on the ground last (seconds). */
 export const BOOM = 0.8, FIRE = 2.4;
+/** The King of Darkness rising on foot: the share of his whole life he gets back, and how much harder he strikes. */
+export const RAGE = { heal: 0.2, damage: 1.5 };
 /** How long a crossbow arrow stays stuck in the ground after it lands (seconds), fading in its last part. */
 export const STUCK = 2.5;
 /** How far an arrow strays from the aim: up to `along` field units either way, and up to two steps of `deep` up or
@@ -1013,10 +1015,10 @@ function kingMove(s: Siege, u: Fighter, a: Spec, enemy: Fighter, alive: Fighter[
     near.forEach((v, i) => { launch(s, u, { ...a, shot: 'skull', spin: false }, v.x + i * 6, v.lane, upOf(v)); hits.push({ target: v, damage: u.damage * 0.6, boss: u.boss }); });
     hear(s, 'throw', u.x);
   } else if (mv.kind === 'summon') {
-    // A portal opens on the ground before him and two of his troops climb out of it.
+    // A portal opens on the ground before him and three of his troops climb out of it.
     const x = Math.max(160, u.x + dir * 70), land = plainFoesAt(FOE_LAND, s.world);
     fx(s, 'king-portal', x, 1.2, { size: 120 });
-    for (let i = 0; i < 2; i++) { const before = s.units.length; spawn(s, land[(s.nextId + i * 3) % land.length], u.side); const n = s.units[s.units.length - 1]; if (s.units.length > before && n) { n.x = x + i * 18; n.stun = 0.6; } }
+    for (let i = 0; i < 3; i++) { const before = s.units.length; spawn(s, land[(s.nextId + i * 3) % land.length], u.side); const n = s.units[s.units.length - 1]; if (s.units.length > before && n) { n.x = x + i * 18; n.stun = 0.6; } }
     hear(s, 'roar', x);
   } else if (mv.kind === 'slash') {
     // A great sweep of his sword: everything ahead of him, out to a long reach, struck and thrown back.
@@ -1395,6 +1397,8 @@ export function tick(s: Siege, dt: number) {
       u.landing = Math.max(0, u.landing - dt); u.alt = (a.flyAt ?? FLY.high) * Math.pow(u.landing / LANDING, 0.6);
       if (!u.landing && a.phase2 !== undefined) {
         u.id = a.phase2; u.alt = undefined; u.move = undefined; u.attack = 1.2; u.stun = 0.5;
+        // He rises enraged: a fifth of his life back and his blows half again as hard (`RAGE`).
+        u.hp = Math.min(u.maxHp, u.hp + u.maxHp * RAGE.heal); u.damage *= RAGE.damage;
         fx(s, 'crash', u.x, 0.7, { size: 220 }); fx(s, 'crack-2', u.x, 5, { floor: true, size: 240 });
         s.effects.push({ x: u.x, from: u.x, lane: u.lane, life: BOOM, max: BOOM, kind: 'boom', side: u.side, size: 150, dark: true });
         // The shock throws ours near him back.
