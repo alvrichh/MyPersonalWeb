@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.40 - 2026-11-24
+
+- Siege Cartoon: three enemy troops were drawn small beside the rest and are bigger now, about the bear's height: the skeleton with the hammer (55 → 69), the axeman (63 → 76) and the wizard (51 → 65). Only their size on the field changes, not their stats.
+
 ## 1.16.39 - 2026-11-24
 
 - Siege Cartoon: the hero campaign has an ending film and credits (`siege/cartoon/credits.ts`), after the last guardian falls and the ending's dialogue, about a minute and a half:
