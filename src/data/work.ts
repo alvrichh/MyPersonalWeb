@@ -38,7 +38,8 @@ export const PROJECTS: Project[] = [
   },
   {
     title: 'Bug Hunter',
-    href: './game.html',
+    href: 'https://bug-hunter-game.onrender.com',
+    external: true,
     summary: 'work.bugHunter',
     stack: 'TypeScript · Canvas 2D · Web Audio · PeerJS (WebRTC) · Vite',
     year: '2026',
