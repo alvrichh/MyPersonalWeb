@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-24T19:17:16.749Z",
-  "date": "2026-11-24",
+  "generatedAt": "2026-11-25T18:22:08.465Z",
+  "date": "2026-11-25",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
@@ -9,7 +9,7 @@
     {
       "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
       "source": "Anthropic News",
-      "date": "2026-11-24",
+      "date": "2026-11-25",
       "url": "https://www.anthropic.com/news/expanding-partnership-gsa",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -20,7 +20,7 @@
     {
       "title": "Donating Agent Skills to the Agentic AI Foundation",
       "source": "Anthropic News",
-      "date": "2026-11-24",
+      "date": "2026-11-25",
       "url": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -32,7 +32,7 @@
     {
       "title": "Introducing the Anthropic Cyber Mission",
       "source": "Anthropic News",
-      "date": "2026-11-24",
+      "date": "2026-11-25",
       "url": "https://www.anthropic.com/news/anthropic-cyber-mission",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -43,13 +43,70 @@
     {
       "title": "Security",
       "source": "Anthropic News",
-      "date": "2026-11-24",
+      "date": "2026-11-25",
       "url": "https://www.anthropic.com/news/security",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
         "Claude"
       ],
       "image": "https://assets.claude.com/6d4a0d28992ade92d6fa63646fd9c9d318245c6c.jpg"
+    },
+    {
+      "title": "How to choose the next safe step in application modernization",
+      "source": "GitHub AI & ML Blog",
+      "date": "2026-11-25",
+      "url": "https://github.blog/ai-and-ml/github-copilot/how-to-choose-the-next-safe-step-in-application-modernization/",
+      "summary": "Learn how to assess a legacy application, choose a bounded modernization step, and reuse the method with a GitHub Copilot agent skill. The post How to choose the next safe step in application modernization appeared first...",
+      "tags": [
+        "Agents",
+        "Copilot"
+      ],
+      "image": "https://github.blog/wp-content/uploads/2026/11/38b3dc4817bfb01261d608e093dda2cdf3392f0886a14b95208bc6f1cd49e58d-1920x1080-1.png"
+    },
+    {
+      "title": "An Indic Voice Agent with CUGA",
+      "source": "Hugging Face",
+      "date": "2026-11-25",
+      "url": "https://huggingface.co/blog/ibm-research/an-indic-voice-agent-with-cuga",
+      "summary": "AI update detected from an official or high-signal source.",
+      "tags": [
+        "Agents"
+      ],
+      "image": "https://cdn-uploads.huggingface.co/production/uploads/67fe070a4e8cc28ba346f53c/-QNcrxSDbjI8VOCBlhi-C.png"
+    },
+    {
+      "title": "Hill-climbing Inkling 2 Mini inference on one RTX PRO 6000",
+      "source": "Hugging Face",
+      "date": "2026-11-25",
+      "url": "https://huggingface.co/blog/inkling-2-mini-inference-hillclimb",
+      "summary": "AI update detected from an official or high-signal source.",
+      "tags": [
+        "AI"
+      ],
+      "image": "https://huggingface.co/blog/assets/inkling-2-mini-inference-hillclimb/thumbnail.png"
+    },
+    {
+      "title": "Amazon is reportedly in talks to end Muse AI shopping block",
+      "source": "The Verge AI",
+      "date": "2026-11-25",
+      "url": "https://www.theverge.com/tech/1042071/meta-amazon-muse-ai-shopping-discussions",
+      "summary": "Amazon has held talks about letting Meta's Muse AI agent shop on its online marketplace, according to a report from Fortune. The discussions, which could end Amazon's block on Muse, reportedly center on the kinds of prod...",
+      "tags": [
+        "Agents"
+      ],
+      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/09/STKB394_MUSE_AI_CVIRGINIA_D.png?quality=90&strip=all&crop=0,0,100,100"
+    },
+    {
+      "title": "Has vibe coding made open source the new normal for synths?",
+      "source": "The Verge AI",
+      "date": "2026-11-25",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1040081/vibe-coding-open-source-music-firmware",
+      "summary": "The emergence of powerful vibe-coding agents and tools like Reverse Engineer Anything has caused chaos in the music gear world, leaving companies scrambling to figure out how to respond. While some, like Roland, have rem...",
+      "tags": [
+        "Agents",
+        "Dev Tools"
+      ],
+      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/11/vibe_coding_synths_.jpg?quality=90&strip=all&crop=0,0,100,100"
     },
     {
       "title": "Amazon says hackers' AI agents found and exploited 0-day with little human input",
@@ -63,7 +120,7 @@
       "image": "https://cdn.arstechnica.net/wp-content/uploads/2026/11/cairn-banner.jpg"
     },
     {
-      "title": "Introducing the Amazon Bedrock Trusted Access API with Anthropic’s Enterprise Frontier Safeguards and Enterprise Data Controls",
+      "title": "Introducing the Amazon Bedrock Trusted Access API, with Enterprise Frontier Safeguards and Enterprise Data Controls for Claude models",
       "source": "AWS Machine Learning",
       "date": "2026-11-24",
       "url": "https://aws.amazon.com/blogs/machine-learning/introducing-the-amazon-bedrock-trusted-access-api-with-anthropics-enterprise-frontier-safeguards-and-enterprise-data-controls/",
@@ -72,7 +129,7 @@
         "Claude",
         "Models"
       ],
-      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/23/ML-22385-1.png"
+      "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/24/ecf6fcd5b73dc5eb-efs-figure1-v10b.png"
     },
     {
       "title": "Microduck Obstacle Avoidance: A Sim2Real Workflow with Isaac Lab and Newton",
@@ -84,17 +141,6 @@
         "Automation"
       ],
       "image": "https://cdn-uploads.huggingface.co/production/uploads/6847ab8c06094fa4afb6ee38/M70tUMNd7N4KO5QGI37YZ.png"
-    },
-    {
-      "title": "Raising the stakes for enterprise networks with AI modernization",
-      "source": "MIT Technology Review AI",
-      "date": "2026-11-24",
-      "url": "https://www.technologyreview.com/2026/11/24/1148091/raising-the-stakes-for-enterprise-networks-with-ai-modernization/",
-      "summary": "Enterprise networks are under severe strain. As companies rush to deploy artificial intelligence, the technology is quickly becoming the biggest source of demand on the network. Now, agentic AI is adding to the load. Tas...",
-      "tags": [
-        "Agents"
-      ],
-      "image": "https://wp.technologyreview.com/wp-content/uploads/2026/11/MITTR-Tata-report-cover.jpg?w=840"
     },
     {
       "title": "How to Run NVIDIA Cosmos 3 on Local AI Devices Using Hugging Face Diffusers",
@@ -110,17 +156,69 @@
       "image": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/11/ai-model-768x432.jpg"
     },
     {
+      "title": "GPT-6 models demonstrate intrinsic protein-design capabilities",
+      "source": "OpenAI News",
+      "date": "2026-11-24",
+      "url": "https://openai.com/index/gpt-6-models-demonstrate-intrinsic-protein-design-capabilities",
+      "summary": "GPT-6 models design protein structures and sequences using reasoning and code. Lab tests found evidence of binding across five targets.",
+      "tags": [
+        "ChatGPT",
+        "Dev Tools",
+        "Models"
+      ],
+      "image": "https://images.ctfassets.net/kftzwdyauwt9/Eg5mCwwaA3KqnznOVCh0n/8e6deaef25fd508d9853ff86a95187c1/gpt-6-models-demonstrate-intrinsic-protein-design-capabilities-social.png?w=1600&h=900&fit=fill"
+    },
+    {
+      "title": "Searching for distant planets with Astra",
+      "source": "OpenAI News",
+      "date": "2026-11-24",
+      "url": "https://openai.com/index/searching-for-distant-planets-with-astra",
+      "summary": "See how two amateur astronomers used Codex and Astra to find potential exoplanets in public data from NASA’s Kepler and TESS space telescopes.",
+      "tags": [
+        "ChatGPT",
+        "Dev Tools"
+      ],
+      "image": "https://images.ctfassets.net/kftzwdyauwt9/318YLaAKlMKQFzOdMutjeX/8b6e4e516fd1a7894c97318838f43a0f/searching-for-distant-planets-with-astra-social.png?w=1600&h=900&fit=fill"
+    },
+    {
       "title": "How iFood scales coding agents across 15,000 repositories",
       "source": "OpenAI News",
       "date": "2026-11-24",
-      "url": "https://openai.com/index/ifood",
+      "url": "https://openai.com/business/customer-stories/ifood",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
         "Agents",
         "ChatGPT",
         "Dev Tools"
       ],
-      "image": ""
+      "image": "https://images.ctfassets.net/kftzwdyauwt9/4Ts7RsLLSU4iEOxQwBkGgg/cbf56c075004a9ae2c41af4d5f7b428b/ifood-customer-story-social.png?w=1600&h=900&fit=fill"
+    },
+    {
+      "title": "Clay helps sales teams win with Codex and ChatGPT",
+      "source": "OpenAI News",
+      "date": "2026-11-24",
+      "url": "https://openai.com/business/customer-stories/clay-plugins-openai",
+      "summary": "ChatGPT and Codex integrations help Clay’s users research deals and turn data into go-to-market plays, with GPT-6 models handling the reasoning.",
+      "tags": [
+        "ChatGPT",
+        "Dev Tools",
+        "Models"
+      ],
+      "image": "https://images.ctfassets.net/kftzwdyauwt9/24rUSNlLR8iXQysKA6dq12/38954f25812d30bf772691824f747b84/clay-seo-1920.png?w=1600&h=900&fit=fill"
+    },
+    {
+      "title": "Three LLM inflection points in twelve months",
+      "source": "Simon Willison",
+      "date": "2026-11-24",
+      "url": "https://simonwillison.net/2026/Nov/24/llm-inflection-points/",
+      "summary": "I gave a keynote at the AI Engineer Code Summit a couple of weeks ago, constructed around the idea that there have been three significant inflection points in the abilities of LLMs and coding agents in the past twelve mo...",
+      "tags": [
+        "Agents",
+        "ChatGPT",
+        "Claude",
+        "Gemini"
+      ],
+      "image": "https://static.simonwillison.net/static/2026/fable-class.webp"
     },
     {
       "title": "GPT 6.2 Astra Solves a Historical Mystery",
@@ -146,95 +244,6 @@
         "Multimodal"
       ],
       "image": "https://simonwillison.net/2026/Nov/24/datasette-charts/"
-    },
-    {
-      "title": "datasette-agent 0.7a1",
-      "source": "Simon Willison",
-      "date": "2026-11-24",
-      "url": "https://simonwillison.net/2026/Nov/24/datasette-agent/",
-      "summary": "Release: datasette-agent 0.7a1 A small improvement to Datasette Agent : chat sessions could already open an iframe side panel that could then navigate to different pages. This version improves navigation by fragment hash...",
-      "tags": [
-        "Agents"
-      ],
-      "image": "https://simonwillison.net/2026/Nov/24/datasette-agent/"
-    },
-    {
-      "title": "Review: The Asus ProArt P16 offers a glimpse of a future powered by local AI",
-      "source": "Ars Technica AI",
-      "date": "2026-11-23",
-      "url": "https://arstechnica.com/reviews/2026/11/review-the-asus-proart-p16-offers-a-glimpse-of-a-future-powered-by-local-ai/",
-      "summary": "The new Asus ProArt laptop costs up to $7,000, but it can run a gaggle of local AI agents.",
-      "tags": [
-        "Agents"
-      ],
-      "image": "https://cdn.arstechnica.net/wp-content/uploads/2026/11/Asus-P16-3-1152x648.jpg"
-    },
-    {
-      "title": "Issue statuses and repository boards are in public preview",
-      "source": "GitHub Changelog",
-      "date": "2026-11-23",
-      "url": "https://github.blog/changelog/2026-11-23-issue-statuses-and-repository-boards-are-in-public-preview",
-      "summary": "Open or closed doesn’t always tell you where an issue stands. You can now use more specific statuses to give your team and agents shared context about what’s in flight… The post Issue statuses and repository boards are i...",
-      "tags": [
-        "Agents"
-      ],
-      "image": "https://github.blog/wp-content/uploads/2026/11/716292665-b61bd263-dd28-430c-a147-fa22594ac67f.png"
-    },
-    {
-      "title": "A more tailored Google Search that’s uniquely yours",
-      "source": "Google AI Blog",
-      "date": "2026-11-23",
-      "url": "https://blog.google/products-and-platforms/products/search/google-search-personal-intelligence-apps/",
-      "summary": "Get more helpful Search responses by securely opting in to connect Google Wallet, Drive, and the Gemini app to Personal Intelligence in AI Mode.",
-      "tags": [
-        "Gemini"
-      ],
-      "image": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Blog_pContext_Drive_1118.max-600x600.format-webp.webp"
-    },
-    {
-      "title": "Finding faster quantum algorithms with agents and formal verification",
-      "source": "Google DeepMind",
-      "date": "2026-11-23",
-      "url": "https://deepmind.google/blog/finding-faster-quantum-algorithms-with-agents-and-formal-verification/",
-      "summary": "Using agent teams and formal verification to improve quantum algorithms for fusion and chemistry.",
-      "tags": [
-        "Agents"
-      ],
-      "image": "https://lh3.googleusercontent.com/jIoM2lo98EDqLMQjIaXBlXPmXgPbUPpM2GgtXcDsGekZBOPUY41IjBsnuZIhLac7MSOuRkklNBsp20a5M25oDz-xTIY0BIqoBxUqmmXvEHwlM3MJJw=w528-h297-n-nu-rw-lo"
-    },
-    {
-      "title": "How to build and maintain an agentic evaluation",
-      "source": "Hugging Face",
-      "date": "2026-11-23",
-      "url": "https://huggingface.co/blog/agentic-evals",
-      "summary": "AI update detected from an official or high-signal source.",
-      "tags": [
-        "Agents"
-      ],
-      "image": "https://huggingface.co/blog/assets/agentic-evals/thumbnail.png"
-    },
-    {
-      "title": "OpenAI and Cisco introduce Shirudo",
-      "source": "OpenAI News",
-      "date": "2026-11-23",
-      "url": "https://openai.com/index/introducing-shirudo",
-      "summary": "OpenAI and Cisco introduce Shirudo, an open-source runtime for Linux. It helps teams protect running systems while they roll out patches.",
-      "tags": [
-        "ChatGPT"
-      ],
-      "image": "https://images.ctfassets.net/kftzwdyauwt9/5K7gFDr3r8vgjdIcsW6RVY/aba5325ce7902e5d1499b907f8e78f0b/shirudo-partner-logos-landscape-2x.png?w=1600&h=900&fit=fill"
-    },
-    {
-      "title": "Connected intelligence for in-house legal",
-      "source": "OpenAI News",
-      "date": "2026-11-23",
-      "url": "https://openai.com/business/learn/connected-intelligence-for-in-house-legal",
-      "summary": "Watch OpenAI’s Stacey Wang and Craig Bruney, Mary O’Carroll of LECG, and Cooley’s Richard Segal explore how AI can help in-house legal teams connect business context, build reusable workflows and get more from outside co...",
-      "tags": [
-        "ChatGPT",
-        "Automation"
-      ],
-      "image": "https://images.ctfassets.net/kftzwdyauwt9/40q0vnGDp1zwWuJrVjXtu6/79ebb13b84e11ce1711a27adfd6ffafe/connected-intelligence-for-in-house-legal-cover.png?w=1600&h=900&fit=fill"
     }
   ],
   "candidates": [
@@ -247,16 +256,16 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-11-24"
+          "date": "2026-11-25"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-11-24"
+          "date": "2026-11-25"
         },
         {
-          "title": "Introducing the Amazon Bedrock Trusted Access API with Anthropic’s Enterprise Frontier Safeguards and Enterprise Data Controls",
+          "title": "Introducing the Amazon Bedrock Trusted Access API, with Enterprise Frontier Safeguards and Enterprise Data Controls for Claude models",
           "source": "AWS Machine Learning",
           "link": "https://aws.amazon.com/blogs/machine-learning/introducing-the-amazon-bedrock-trusted-access-api-with-anthropics-enterprise-frontier-safeguards-and-enterprise-data-controls/",
           "date": "2026-11-24"
@@ -272,19 +281,38 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
-          "date": "2026-11-24"
+          "date": "2026-11-25"
         },
         {
-          "title": "Amazon says hackers' AI agents found and exploited 0-day with little human input",
+          "title": "How to choose the next safe step in application modernization",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-to-choose-the-next-safe-step-in-application-modernization/",
+          "date": "2026-11-25"
+        },
+        {
+          "title": "An Indic Voice Agent with CUGA",
+          "source": "Hugging Face",
+          "link": "https://huggingface.co/blog/ibm-research/an-indic-voice-agent-with-cuga",
+          "date": "2026-11-25"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "How to choose the next safe step in application modernization",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-to-choose-the-next-safe-step-in-application-modernization/",
+          "date": "2026-11-25"
+        },
+        {
+          "title": "Copilot is \"the new OS for work,\" and now Office runs inside of it",
           "source": "Ars Technica AI",
-          "link": "https://arstechnica.com/security/2026/11/amazon-says-hackers-ai-agents-found-and-exploited-0-day-with-little-human-input/",
-          "date": "2026-11-24"
-        },
-        {
-          "title": "Raising the stakes for enterprise networks with AI modernization",
-          "source": "MIT Technology Review AI",
-          "link": "https://www.technologyreview.com/2026/11/24/1148091/raising-the-stakes-for-enterprise-networks-with-ai-modernization/",
-          "date": "2026-11-24"
+          "link": "https://arstechnica.com/gadgets/2026/11/microsoft-calls-copilot-the-new-os-for-work-at-ignite-keynote/",
+          "date": "2026-11-18"
         }
       ]
     },
@@ -294,22 +322,35 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "Has vibe coding made open source the new normal for synths?",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1040081/vibe-coding-open-source-music-firmware",
+          "date": "2026-11-25"
+        },
+        {
           "title": "How iFood scales coding agents across 15,000 repositories",
           "source": "OpenAI News",
-          "link": "https://openai.com/index/ifood",
+          "link": "https://openai.com/business/customer-stories/ifood",
           "date": "2026-11-24"
         },
         {
-          "title": "GLM-5.4: Toward Generalized Coding with Our First Loop Transformer",
+          "title": "Three LLM inflection points in twelve months",
           "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/23/glm-54/",
-          "date": "2026-11-23"
-        },
+          "link": "https://simonwillison.net/2026/Nov/24/llm-inflection-points/",
+          "date": "2026-11-24"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
         {
-          "title": "Ladybird's first alpha release",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/23/ladybird/",
-          "date": "2026-11-23"
+          "title": "Clay helps sales teams win with Codex and ChatGPT",
+          "source": "OpenAI News",
+          "link": "https://openai.com/business/customer-stories/clay-plugins-openai",
+          "date": "2026-11-24"
         }
       ]
     },
@@ -318,6 +359,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Three LLM inflection points in twelve months",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Nov/24/llm-inflection-points/",
+          "date": "2026-11-24"
+        },
         {
           "title": "A more tailored Google Search that’s uniquely yours",
           "source": "Google AI Blog",
@@ -329,12 +376,6 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/developers-tools/gemini-api-tool-retrieval/",
           "date": "2026-11-19"
-        },
-        {
-          "title": "The Gemini app is now available on lower-memory Android devices.",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/products/gemini-app/gemini-lower-memory-devices/",
-          "date": "2026-11-18"
         }
       ]
     },
@@ -354,19 +395,6 @@
           "source": "Azure Blog",
           "link": "https://azure.microsoft.com/en-us/blog/azure-cobalt-200-vms-now-available-proven-on-real-workloads-and-built-for-the-agentic-era/",
           "date": "2026-11-17"
-        }
-      ]
-    },
-    {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Copilot is \"the new OS for work,\" and now Office runs inside of it",
-          "source": "Ars Technica AI",
-          "link": "https://arstechnica.com/gadgets/2026/11/microsoft-calls-copilot-the-new-os-for-work-at-ignite-keynote/",
-          "date": "2026-11-18"
         }
       ]
     },

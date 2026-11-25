@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-24T19:17:16.749Z",
+  "generatedAt": "2026-11-25T18:22:08.465Z",
   "candidates": [
     {
       "label": "Claude research and documentation flow",
@@ -10,16 +10,16 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-11-24"
+          "date": "2026-11-25"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-11-24"
+          "date": "2026-11-25"
         },
         {
-          "title": "Introducing the Amazon Bedrock Trusted Access API with Anthropic’s Enterprise Frontier Safeguards and Enterprise Data Controls",
+          "title": "Introducing the Amazon Bedrock Trusted Access API, with Enterprise Frontier Safeguards and Enterprise Data Controls for Claude models",
           "source": "AWS Machine Learning",
           "link": "https://aws.amazon.com/blogs/machine-learning/introducing-the-amazon-bedrock-trusted-access-api-with-anthropics-enterprise-frontier-safeguards-and-enterprise-data-controls/",
           "date": "2026-11-24"
@@ -35,19 +35,38 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
-          "date": "2026-11-24"
+          "date": "2026-11-25"
         },
         {
-          "title": "Amazon says hackers' AI agents found and exploited 0-day with little human input",
+          "title": "How to choose the next safe step in application modernization",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-to-choose-the-next-safe-step-in-application-modernization/",
+          "date": "2026-11-25"
+        },
+        {
+          "title": "An Indic Voice Agent with CUGA",
+          "source": "Hugging Face",
+          "link": "https://huggingface.co/blog/ibm-research/an-indic-voice-agent-with-cuga",
+          "date": "2026-11-25"
+        }
+      ]
+    },
+    {
+      "label": "GitHub Copilot developer loop",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
+        {
+          "title": "How to choose the next safe step in application modernization",
+          "source": "GitHub AI & ML Blog",
+          "link": "https://github.blog/ai-and-ml/github-copilot/how-to-choose-the-next-safe-step-in-application-modernization/",
+          "date": "2026-11-25"
+        },
+        {
+          "title": "Copilot is \"the new OS for work,\" and now Office runs inside of it",
           "source": "Ars Technica AI",
-          "link": "https://arstechnica.com/security/2026/11/amazon-says-hackers-ai-agents-found-and-exploited-0-day-with-little-human-input/",
-          "date": "2026-11-24"
-        },
-        {
-          "title": "Raising the stakes for enterprise networks with AI modernization",
-          "source": "MIT Technology Review AI",
-          "link": "https://www.technologyreview.com/2026/11/24/1148091/raising-the-stakes-for-enterprise-networks-with-ai-modernization/",
-          "date": "2026-11-24"
+          "link": "https://arstechnica.com/gadgets/2026/11/microsoft-calls-copilot-the-new-os-for-work-at-ignite-keynote/",
+          "date": "2026-11-18"
         }
       ]
     },
@@ -57,22 +76,35 @@
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
         {
+          "title": "Has vibe coding made open source the new normal for synths?",
+          "source": "The Verge AI",
+          "link": "https://www.theverge.com/ai-artificial-intelligence/1040081/vibe-coding-open-source-music-firmware",
+          "date": "2026-11-25"
+        },
+        {
           "title": "How iFood scales coding agents across 15,000 repositories",
           "source": "OpenAI News",
-          "link": "https://openai.com/index/ifood",
+          "link": "https://openai.com/business/customer-stories/ifood",
           "date": "2026-11-24"
         },
         {
-          "title": "GLM-5.4: Toward Generalized Coding with Our First Loop Transformer",
+          "title": "Three LLM inflection points in twelve months",
           "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/23/glm-54/",
-          "date": "2026-11-23"
-        },
+          "link": "https://simonwillison.net/2026/Nov/24/llm-inflection-points/",
+          "date": "2026-11-24"
+        }
+      ]
+    },
+    {
+      "label": "ChatGPT workflow design",
+      "status": "safe-data-candidate",
+      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
+      "examples": [
         {
-          "title": "Ladybird's first alpha release",
-          "source": "Simon Willison",
-          "link": "https://simonwillison.net/2026/Nov/23/ladybird/",
-          "date": "2026-11-23"
+          "title": "Clay helps sales teams win with Codex and ChatGPT",
+          "source": "OpenAI News",
+          "link": "https://openai.com/business/customer-stories/clay-plugins-openai",
+          "date": "2026-11-24"
         }
       ]
     },
@@ -81,6 +113,12 @@
       "status": "safe-data-candidate",
       "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
       "examples": [
+        {
+          "title": "Three LLM inflection points in twelve months",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Nov/24/llm-inflection-points/",
+          "date": "2026-11-24"
+        },
         {
           "title": "A more tailored Google Search that’s uniquely yours",
           "source": "Google AI Blog",
@@ -92,12 +130,6 @@
           "source": "Google AI Blog",
           "link": "https://blog.google/innovation-and-ai/technology/developers-tools/gemini-api-tool-retrieval/",
           "date": "2026-11-19"
-        },
-        {
-          "title": "The Gemini app is now available on lower-memory Android devices.",
-          "source": "Google AI Blog",
-          "link": "https://blog.google/innovation-and-ai/products/gemini-app/gemini-lower-memory-devices/",
-          "date": "2026-11-18"
         }
       ]
     },
@@ -117,19 +149,6 @@
           "source": "Azure Blog",
           "link": "https://azure.microsoft.com/en-us/blog/azure-cobalt-200-vms-now-available-proven-on-real-workloads-and-built-for-the-agentic-era/",
           "date": "2026-11-17"
-        }
-      ]
-    },
-    {
-      "label": "GitHub Copilot developer loop",
-      "status": "safe-data-candidate",
-      "reason": "Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.",
-      "examples": [
-        {
-          "title": "Copilot is \"the new OS for work,\" and now Office runs inside of it",
-          "source": "Ars Technica AI",
-          "link": "https://arstechnica.com/gadgets/2026/11/microsoft-calls-copilot-the-new-os-for-work-at-ignite-keynote/",
-          "date": "2026-11-18"
         }
       ]
     },
