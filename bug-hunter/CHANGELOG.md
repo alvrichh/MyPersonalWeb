@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.54 - 2026-11-25
+
+- Siege Cartoon cards: troops drawn very wide (a long spear, a rifle, a cannon, a long beast) looked tiny fitted whole in a square card (the shop, the army slots and the battle bar), above all the Villain's skeleton spearman, gunner and spike blaster. Those cards zoom in round the body (up to half again, by how wide the drawing is) and only the weapon's tip is cut; the rest are unchanged.
+
 ## 1.16.53 - 2026-11-25
 
 - The game is played on the portfolio again (`/game.html`) as well as on its own site (https://bug-hunter-game.onrender.com): the portfolio's bridge page is gone. Both run the same code; the portfolio's `bug-hunter/` is the source and the own repository (https://github.com/alvrichh/bug-hunter) is kept in step with it.

@@ -922,6 +922,17 @@ export function openSiege(t: T, onClose: () => void, hero = { pic: '', name: '' 
     ghost.style.left = `${drag.x - r.width / 2}px`; ghost.style.top = `${drag.y - r.height / 2}px`;
     root.append(ghost); drag.ghost = ghost; root.classList.add('is-dragging'); navigator.vibrate?.(12);
   }
+  // A troop drawn very wide (a long spear, a rifle, a cannon) would be tiny fitted whole in a square card: there it is
+  // zoomed in round the body, and only the weapon's tip is cut.
+  root.addEventListener('load', event => {
+    const img = event.target; if (!(img instanceof HTMLImageElement) || !img.closest('.sg-st-tile, .sg-st-pic, .sg-st-cell, [data-sg-summon]')) return;
+    // Zoomed in a little (up to half again) round the body, clipped back to the card's square.
+    const ratio = img.naturalWidth / Math.max(1, img.naturalHeight), file = img.dataset.trim ?? img.src;
+    if (ratio <= 1.55) { img.style.transform = img.style.clipPath = img.style.transformOrigin = ''; return; }
+    const k = Math.min(1.5, ratio / 1.2), ox = /\/(foe|boss)-/.test(file) ? 0.66 : 0.34, cut = 1 - 1 / k;
+    img.style.transformOrigin = `${ox * 100}% 55%`; img.style.transform = `scale(${k.toFixed(3)})`;
+    img.style.clipPath = `inset(${(55 * cut).toFixed(1)}% ${((1 - ox) * 100 * cut).toFixed(1)}% ${(45 * cut).toFixed(1)}% ${(ox * 100 * cut).toFixed(1)}%)`;
+  }, true);
   function endDrag() { if (!drag) return; clearTimeout(drag.hold); drag.ghost?.remove(); root.classList.remove('is-dragging'); root.querySelector('.sg-st-army')?.classList.remove('is-over'); root.querySelectorAll('.sg-st-cell.is-target').forEach(c => c.classList.remove('is-target')); drag = null; }
   root.addEventListener('pointerdown', event => {
     endDrag(); if (state || shopTab === 'base' || event.button > 0) return;
