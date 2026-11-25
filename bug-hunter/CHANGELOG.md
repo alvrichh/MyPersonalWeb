@@ -4,10 +4,22 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
-## Moved - 2026-11-24
+## 1.16.53 - 2026-11-25
 
-- Bug Hunter has its own repository and site: https://github.com/alvrichh/bug-hunter, played at https://bug-hunter-game.onrender.com. Its changes are recorded there from now on.
-- The portfolio's `/game.html` is now a bridge (`src/bridge.ts`): it sends each player to the new site with their whole saved game in the address's hash (the transfer code), which the new site puts in place only when it has no saved game yet. Checked: a save with a name, coins and Siege progress arrived whole; a player with no save simply goes there.
+- The game is played on the portfolio again (`/game.html`) as well as on its own site (https://bug-hunter-game.onrender.com): the portfolio's bridge page is gone. Both run the same code; the portfolio's `bug-hunter/` is the source and the own repository (https://github.com/alvrichh/bug-hunter) is kept in step with it.
+- «Back» (the cover's ✕ and leaving the site) goes to the portfolio's front page from either place (`HOME`).
+
+## 1.16.52 - 2026-11-25
+
+- Moving a saved game works the way it looks:
+  - Messages over menus are seen: the toast sat under every screen, so after «Copy my game» nothing seemed to happen (the game was copied). It is drawn over them now.
+  - «Copy my game» opens a card, «Game copied!», saying what to do next, with Got it.
+  - A Paste button reads what was copied and loads it at once (to the «Load this game?» question); if the browser will not let the game read it, it says to touch and hold the box and paste.
+  - Checked on a phone-sized browser: a game copied on one device, pasted with Paste on another, arrived with its name and coins.
+
+## 1.16.51 - 2026-11-25
+
+- «Open Cartoon Siege apart ↗» opens Cartoon Siege on its front page (logo, Play, what the game is), still in the game's language and with the Siege progress handed over; it used to skip it and drop the player straight onto the world map (`?play`).
 
 ## 1.16.50 - 2026-11-24
 

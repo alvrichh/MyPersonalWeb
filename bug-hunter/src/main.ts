@@ -154,6 +154,8 @@ const MODES: PlayMode[] = ['sprints', 'horde', 'board'];
 let extraModePreview = window.matchMedia('(orientation: landscape) and (max-height: 500px)').matches;
 const coverModes = [...MODES, 'coming-soon'] as const;
 /** The last slot of the cover's carousel: Siege, the new mode (it used to be Coming Soon, with Fortress beside it). */
+/** Where «back» goes: the portfolio. The same code runs inside it (at /game.html) and on the game's own site. */
+const HOME = location.pathname.endsWith('/game.html') && !location.hostname.endsWith('onrender.com') ? './index.html' : 'https://alvrich.vercel.app/';
 const extraTitle = () => t('siegeName');
 const extraText = () => t('siegeHubModes');
 const NIGHTMARE_ICON = '☠️';
@@ -495,7 +497,7 @@ function menuScreen() {
   const copy = (cls: string, title: string, sub: string) => `<span class="cover-card-copy ${cls}"><b>${title}</b>${sub ? `<small>${sub}</small>` : ''}</span>`;
   show(`
     <div class="cover">
-      <a class="hot cover-x" href="./index.html" aria-label="${t('back')}"></a>
+      <a class="hot cover-x" href="${HOME}" aria-label="${t('back')}"></a>
       <button class="hot cover-more" data-act="options" aria-label="${t('options')}"></button>
       <div class="cover-in">
       <button class="cover-book${save.bookSeen ? '' : ' is-first'}" type="button" data-act="book" aria-label="${t('bookOpen')}"><img src="./images/game/items/seniorTome.webp" alt=""></button>
@@ -1265,6 +1267,7 @@ function transferScreen(note = '') {
     <textarea class="transfer-code" id="transferOut" readonly hidden aria-label="${t('transferOut')}"></textarea>
     <h3 class="slot">${t('transferIn')}</h3>
     <textarea class="transfer-code" id="transferIn" rows="3" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="BH1:…" aria-label="${t('transferIn')}"></textarea>
+    <button class="primary" type="button" data-act="transfer-paste">${t('transferPaste')}</button>
     <button class="primary is-purple" type="button" data-act="transfer-load">${t('transferLoad')}</button>
     <button class="primary is-blue" type="button" data-act="options-keep">← ${t('options')}</button>`);
   transferCode = '';
@@ -1276,8 +1279,23 @@ function transferCopy() {
   const out = document.getElementById('transferOut') as HTMLTextAreaElement | null;
   // Shown as well, so it can be copied by hand if the phone will not.
   const showCode = () => { if (out) { out.hidden = false; out.value = code; out.focus(); out.select(); } };
-  if (navigator.clipboard?.writeText) navigator.clipboard.writeText(code).then(() => flash(t('transferCopied')), () => { showCode(); flash(t('transferSelect')); });
+  if (navigator.clipboard?.writeText) navigator.clipboard.writeText(code).then(transferCopied, () => { showCode(); flash(t('transferSelect')); });
   else { showCode(); flash(t('transferSelect')); }
+}
+/** Copied: a card says so and what to do next (a toast was too easy to miss). */
+function transferCopied() {
+  show(`<h2>${t('transferCopiedTitle')}</h2>
+    <p class="how">${t('transferCopied')}</p>
+    <button class="primary" type="button" data-act="transfer">${t('transferOk')}</button>`);
+}
+/** Pastes what was copied into the box and reads it at once (the browser may ask first; if it refuses, by hand). */
+async function transferPaste() {
+  const box = document.getElementById('transferIn') as HTMLTextAreaElement | null;
+  try {
+    const text = await navigator.clipboard.readText();
+    if (box) box.value = text.trim();
+    if (text.trim()) await transferLoad(); else flash(t('transferBad'));
+  } catch { box?.focus(); flash(t('transferPasteFail')); }
 }
 async function transferLoad() {
   const raw = (document.getElementById('transferIn') as HTMLTextAreaElement | null)?.value ?? '';
@@ -3542,6 +3560,7 @@ screen.addEventListener('click', (event) => {
   else if (act === 'options-keep') optionsScreen();
   else if (act === 'transfer-copy') transferCopy();
   else if (act === 'transfer-load') void transferLoad();
+  else if (act === 'transfer-paste') void transferPaste();
   else if (act === 'transfer-yes' && transferIn) {
     netLeave();
     lockSave();
@@ -3690,7 +3709,7 @@ screen.addEventListener('click', (event) => {
     menuScreen();
   } else if (act === 'leave-site') {
     if (game) { bankRun(game); persist(); }
-    location.href = './index.html';
+    location.href = HOME;
   } else if (act === 'menu') menuScreen();
   else if (act === 'shop' && target.dataset.shopSlot) shopAt(target.dataset.shopSlot as Slot);
   else if (act === 'shop') shopScreen();

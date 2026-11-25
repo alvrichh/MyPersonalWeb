@@ -205,6 +205,9 @@ body {
   animation: toast 1.8s ease forwards;
 }
 
+/* Over every screen and panel (it sat under them, so a message from a menu, as «Copied!», was never seen). */
+.toast { z-index: 40; }
+
 @keyframes toast {
   0% { opacity: 0; scale: 0.9; }
   12%, 80% { opacity: 1; scale: 1; }

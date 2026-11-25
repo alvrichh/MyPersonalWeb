@@ -2,29 +2,71 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
   <meta name="theme-color" content="#07090f">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap">
   <title>Bug Hunter · alvrich</title>
-  <meta name="description" content="Bug Hunter has moved to its own site. Your saved game comes with you.">
-  <meta name="robots" content="noindex">
-  <link rel="canonical" href="https://bug-hunter-game.onrender.com/">
+  <meta name="description" content="Bug Hunter: a small Archero-style game by Álvaro Rodríguez Molina. Ten sprints of bugs; stand still to shoot.">
   <link rel="icon" href="./images/game/favicon.ico?v=2" sizes="any">
+  <link rel="icon" href="./images/game/icon-32.png?v=2" sizes="32x32" type="image/png">
+  <link rel="icon" href="./images/game/icon-192.png?v=2" sizes="192x192" type="image/png">
   <link rel="apple-touch-icon" sizes="180x180" href="./images/game/apple-touch-icon.png?v=2">
-  <style>
-    html,body{margin:0;height:100%;background:#07090f;color:#e8f0ff;font:16px/1.5 system-ui,sans-serif}
-    main{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center;box-sizing:border-box}
-    img{width:min(320px,70vw)}
-    a{color:#7ff3d8;font-weight:700}
-  </style>
+  <!-- Loads the Google CMP configured in AdSense Privacy & messaging. The
+       H5 Games placement API is initialized only when an ad is requested. -->
+  <script async data-ad-frequency-hint="30s" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9762505490002824" crossorigin="anonymous"></script>
+  <script>
+    // Vercel Web Analytics: page views only, no cookies. The script is served by
+    // Vercel itself, so it is skipped on localhost (it would only 404 there).
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    if (!/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) {
+      var insights = document.createElement('script');
+      insights.defer = true;
+      insights.src = '/_vercel/insights/script.js';
+      document.head.appendChild(insights);
+    }
+  </script>
 </head>
 <body>
-  <!-- Bug Hunter's old address: it sends players to the game's own site with their saved game (src/bridge.ts). -->
-  <main>
-    <img src="./images/game/ui/logo.webp" alt="Bug Hunter">
-    <p>Bug Hunter has moved to its own site. Taking you there with your saved game…<br>
-      Bug Hunter se ha mudado a su propia web. Te llevamos con tu partida…</p>
-    <p><a href="https://bug-hunter-game.onrender.com/">bug-hunter-game.onrender.com</a></p>
+  <main class="game">
+    <canvas id="stage" aria-label="Bug Hunter"></canvas>
+    <div class="board-ui" id="boardUi" hidden>
+      <header class="board-top" id="boardTop"></header>
+      <aside class="board-side" id="boardSide"></aside>
+      <div class="board-mobile-tray" id="boardMobileTray">
+        <aside class="board-bench-float" id="boardBench" hidden></aside>
+        <div class="board-mobile-acts" id="boardMobileActs"></div>
+      </div>
+      <footer class="board-shop" id="boardShop"></footer>
+    </div>
+    <canvas class="board-float" id="boardFloat" aria-hidden="true" hidden></canvas>
+    <aside class="board-tooltip" id="boardTooltip" role="tooltip" aria-live="polite" hidden></aside>
+    <header class="hud" id="hud" hidden>
+      <a class="hud-back" id="backLink" href="./index.html" aria-label="Back to portfolio"><span aria-hidden="true">←</span></a>
+      <span class="hud-room" id="hudRoom"></span>
+      <span class="hud-coins"><span class="hud-coin-orb" aria-hidden="true">🪙</span><b id="hudCoins">0</b></span>
+      <span class="hud-hp" aria-label="Health"><span aria-hidden="true">♥</span><i><b id="hudHp"></b></i></span>
+      <span class="hud-xp"><span id="hudLevel"></span><i><b id="hudXp"></b></i></span>
+      <button class="hud-pause" id="pauseBtn" type="button" aria-label="Pause"><span aria-hidden="true">Ⅱ</span></button>
+    </header>
+    <div class="gear" id="hudGear" role="button" tabindex="0" hidden></div>
+    <button class="showcase-hit" id="showcaseHit" type="button" hidden>⏭ −25%</button>
+    <aside class="gear-panel" id="gearPanel" aria-live="polite" hidden></aside>
+    <div class="boss" id="bossBar" hidden>
+      <div class="boss-title"><img src="./images/game/ui/header_boss.webp" alt=""><span id="bossName"></span></div>
+      <i class="boss-meter"><b id="bossHp"></b></i>
+    </div>
+    <p class="toast" id="toast" role="status" hidden></p>
+    <div class="ach-toast" id="achToast" role="status" hidden></div>
+    <section class="screen" id="screen" hidden></section>
+    <div class="loading" id="loading" role="status" aria-live="polite">
+      <img class="loading-logo" src="./images/game/ui/logo.webp" alt="Bug Hunter">
+      <i class="loading-bar"><b id="loadingFill"></b></i>
+      <small id="loadingText">Loading…</small>
+    </div>
   </main>
-  <script type="module" src="/src/game/bridge.ts"></script>
+  <noscript><p style="padding:24px;color:#f3f6fb">Bug Hunter needs JavaScript to run.</p></noscript>
+  <script type="module" src="/src/game/main.ts"></script>
 </body>
 </html>

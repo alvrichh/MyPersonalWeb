@@ -33,3 +33,7 @@ For game behavior/features/fixes, update the game version and changelog together
 Do not edit generated `dist/`, `public/`, `.cache/` or root `game.html`.
 
 Siege (the cover's last slot) opens on Siege Cartoon; Siege Legacy's code and save are kept but no longer offered ([`bug-hunter/docs/siege.md`](./bug-hunter/docs/siege.md)). Siege Cartoon's troops follow Cartoon Wars 2 — read [`bug-hunter/docs/siege-roster.md`](./bug-hunter/docs/siege-roster.md) and the owner's level/appearance reference [`bug-hunter/docs/cw2-reference.md`](./bug-hunter/docs/cw2-reference.md), plus the upgrade/cost/balance research [`bug-hunter/docs/cw2-upgrades.md`](./bug-hunter/docs/cw2-upgrades.md) (unconfirmed details there are not designs). Follow the layout rule in [`bug-hunter/docs/siege.md`](./bug-hunter/docs/siege.md#layout-rule-always) on every visual change: screenshot desktop and phone, check where each element sits, and keep everything inside the view.
+
+## Bug Hunter and Cartoon Siege repositories
+
+`bug-hunter/` here is the game's source. Its own repository, https://github.com/alvrichh/bug-hunter (site https://bug-hunter-game.onrender.com), is kept in step with it: after a game change is pushed here, run that repository's `scripts/sync-from-portfolio.sh`, check it there (typecheck, tests, build) and push it too. The Siege is also https://github.com/alvrichh/cartoon-siege: a change to `bug-hunter/src/siege/` or the Siege's sounds is made there as well (its save keys are `cartoonSiege.*`, its strings and version its own), unless the owner says it is for one game only.

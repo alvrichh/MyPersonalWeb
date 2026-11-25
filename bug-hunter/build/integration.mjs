@@ -10,9 +10,8 @@ export function within(parent, file) {
 
 /** Only the module URL moves; the page's public route remains /game.html. */
 export function pageHtml(template) {
-  // The page is the game (main.ts) or, now that the game has its own site, the bridge sending players there (bridge.ts).
-  const html = template.replaceAll('/src/game/main.ts', '/bug-hunter/src/main.ts').replaceAll('/src/game/bridge.ts', '/bug-hunter/src/bridge.ts');
-  if (!html.includes('src="/bug-hunter/src/main.ts"') && !html.includes('src="/bug-hunter/src/bridge.ts"')) throw new Error('Bug Hunter HTML is missing its module entry.');
+  const html = template.replaceAll('/src/game/main.ts', '/bug-hunter/src/main.ts');
+  if (!html.includes('src="/bug-hunter/src/main.ts"')) throw new Error('Bug Hunter HTML is missing its module entry.');
   return html;
 }
 const copyAsset = (entry, destination) => {
