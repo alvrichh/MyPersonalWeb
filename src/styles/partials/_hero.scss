@@ -243,6 +243,19 @@
   animation: ring-spin 8s linear infinite, coin-spin 0.6s cubic-bezier(0.25, 0.6, 0.3, 1);
 }
 
+/* The invitation under the photo (HeroAbout.tsx): small, centred, in the accent, a little playful. */
+.hero-hint {
+  margin: 18px auto 0;
+  max-width: 30ch;
+  font-family: var(--font-body);
+  font-size: 0.86rem;
+  line-height: 1.4;
+  text-align: center;
+  text-wrap: balance;
+  color: color-mix(in srgb, var(--accent) 70%, var(--ink));
+  pointer-events: none;
+}
+
 /* The phone hint for the same easter egg: one little wiggle, like a game
    saying "tap me". */
 .hero-figure.is-nudging .hero-portrait {
