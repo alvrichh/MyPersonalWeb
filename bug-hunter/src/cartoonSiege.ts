@@ -23,11 +23,11 @@ const toB64 = (text: string) => {
   return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 };
 
-/** The address that opens Cartoon Siege in this language, carrying the Siege progress if there is any. */
+/** The address that opens Cartoon Siege on its front page, in this language, carrying the Siege progress if there is any. */
 export function cartoonSiegeLink(lang: string): string {
   const data = siegeSave();
   const hash = Object.keys(data).length ? `#save=${toB64(JSON.stringify({ v: 1, data }))}` : '';
-  return `${CARTOON_SIEGE_URL}?play&lang=${lang === 'es' ? 'es' : 'en'}${hash}`;
+  return `${CARTOON_SIEGE_URL}?lang=${lang === 'es' ? 'es' : 'en'}${hash}`;
 }
 
 export function openCartoonSiege(lang: string) {
