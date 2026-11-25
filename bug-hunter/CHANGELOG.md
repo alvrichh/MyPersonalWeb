@@ -4,6 +4,10 @@
 
 This changelog tracks game-version changes starting with v1.12.55. Earlier releases are not reconstructed here.
 
+## 1.16.55 - 2026-11-25
+
+- Siege Cartoon: the enemy's troops stand on the field at a size that follows their strength (life × damage) and cost, so the weak are small and the strong big. Sixteen grew (none shrank; at most by two fifths, the fire dragon a little more): the fire dragon 66 → 88, the red dragon rider 75 → 105, the mammoth 96 → 116, the devil 62 → 87, the gatling robot and the rhinoceratops 60 → 84, the tiger 55 → 77, the death angel 58 → 77, the Rex Head 64 → 75, the terror bird 56 → 64, the green ninja bat 44 → 62, the spike blaster 52 → 61, the reaper 52 → 60, the turkey 48 → 53, the dog 40 → 48, the ninja bat 36 → 46. The rare giants (bell ringer, wraith, jailer) keep their size. Only how big they are drawn changes, not their stats.
+
 ## 1.16.54 - 2026-11-25
 
 - Siege Cartoon cards: troops drawn very wide (a long spear, a rifle, a cannon, a long beast) looked tiny fitted whole in a square card (the shop, the army slots and the battle bar), above all the Villain's skeleton spearman, gunner and spike blaster. Those cards zoom in round the body (up to half again, by how wide the drawing is) and only the weapon's tip is cut; the rest are unchanged.
