@@ -28,6 +28,10 @@ export function Hero() {
   const tapped = useRef(false);
   const bursts = useRef(0);
   const combo = useRef({ count: 0, last: 0 });
+  // The hover bubble's two steps: «click my photo», then (after a click) «change the accent and click again»; once
+  // clicked again with another accent it has done its job and stays hidden.
+  const [hintStep, setHintStep] = useState(0);
+  const hintAccent = useRef('');
 
   useEffect(() => {
     if (!window.matchMedia('(hover: none)').matches) return;
@@ -55,6 +59,9 @@ export function Hero() {
 
   const spin = (event: MouseEvent<HTMLElement>) => {
     tapped.current = true;
+    const accent = document.documentElement.dataset.accent ?? '';
+    if (hintStep === 0) { hintAccent.current = accent; setHintStep(1); }
+    else if (hintStep === 1 && accent !== hintAccent.current) setHintStep(2);
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     setNudging(false);
     if (!spinning) setSpinning(true);
@@ -130,8 +137,8 @@ export function Hero() {
         <span className="hero-fx" aria-hidden="true">
           {fx.map((piece) => <i key={piece.id} className={`fx-${piece.kind}`} style={piece.style} />)}
         </span>
-        {/* The easter egg's invitation: a bubble shown only while the pointer is over the photo. */}
-        <figcaption className="hero-hint" aria-hidden="true">{t('hero.hint')}</figcaption>
+        {/* The easter egg's invitation: a bubble shown only while the pointer is over the photo, in two steps. */}
+        {hintStep < 2 && <figcaption className="hero-hint" aria-hidden="true">{t(hintStep ? 'hero.hint2' : 'hero.hint')}</figcaption>}
       </figure>
     </section>
   );
