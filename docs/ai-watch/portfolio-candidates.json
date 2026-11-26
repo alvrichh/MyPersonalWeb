@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-25T18:22:08.465Z",
+  "generatedAt": "2026-11-26T18:03:42.200Z",
   "candidates": [
     {
       "label": "Claude research and documentation flow",
@@ -10,19 +10,19 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-11-25"
+          "date": "2026-11-26"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-11-25"
+          "date": "2026-11-26"
         },
         {
-          "title": "Introducing the Amazon Bedrock Trusted Access API, with Enterprise Frontier Safeguards and Enterprise Data Controls for Claude models",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/introducing-the-amazon-bedrock-trusted-access-api-with-anthropics-enterprise-frontier-safeguards-and-enterprise-data-controls/",
-          "date": "2026-11-24"
+          "title": "Quoting Jack Despain Zhou",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Nov/26/jack-despain-zhou/",
+          "date": "2026-11-26"
         }
       ]
     },
@@ -35,18 +35,18 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
-          "date": "2026-11-25"
+          "date": "2026-11-26"
+        },
+        {
+          "title": "Swarms, Flocks, Gangs: How to build, train, and evaluate multi-agent systems",
+          "source": "Hugging Face",
+          "link": "https://huggingface.co/blog/training-swarms",
+          "date": "2026-11-26"
         },
         {
           "title": "How to choose the next safe step in application modernization",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/how-to-choose-the-next-safe-step-in-application-modernization/",
-          "date": "2026-11-25"
-        },
-        {
-          "title": "An Indic Voice Agent with CUGA",
-          "source": "Hugging Face",
-          "link": "https://huggingface.co/blog/ibm-research/an-indic-voice-agent-with-cuga",
           "date": "2026-11-25"
         }
       ]
@@ -60,6 +60,12 @@
           "title": "How to choose the next safe step in application modernization",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/how-to-choose-the-next-safe-step-in-application-modernization/",
+          "date": "2026-11-25"
+        },
+        {
+          "title": "Copilot code review billing will default to the organization",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-25-copilot-code-review-billing-will-default-to-the-organization",
           "date": "2026-11-25"
         },
         {

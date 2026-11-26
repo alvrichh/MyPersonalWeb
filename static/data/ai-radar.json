@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-25T18:22:08.465Z",
-  "date": "2026-11-25",
+  "generatedAt": "2026-11-26T18:03:42.200Z",
+  "date": "2026-11-26",
   "mode": "rss-rules-fallback",
   "headline": "AI radar update",
   "insight": "Recent AI, agent and developer-tooling signals collected from official and high-signal feeds.",
@@ -9,7 +9,7 @@
     {
       "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
       "source": "Anthropic News",
-      "date": "2026-11-25",
+      "date": "2026-11-26",
       "url": "https://www.anthropic.com/news/expanding-partnership-gsa",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -20,7 +20,7 @@
     {
       "title": "Donating Agent Skills to the Agentic AI Foundation",
       "source": "Anthropic News",
-      "date": "2026-11-25",
+      "date": "2026-11-26",
       "url": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -32,7 +32,7 @@
     {
       "title": "Introducing the Anthropic Cyber Mission",
       "source": "Anthropic News",
-      "date": "2026-11-25",
+      "date": "2026-11-26",
       "url": "https://www.anthropic.com/news/anthropic-cyber-mission",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
@@ -43,13 +43,70 @@
     {
       "title": "Security",
       "source": "Anthropic News",
-      "date": "2026-11-25",
+      "date": "2026-11-26",
       "url": "https://www.anthropic.com/news/security",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
         "Claude"
       ],
       "image": "https://assets.claude.com/6d4a0d28992ade92d6fa63646fd9c9d318245c6c.jpg"
+    },
+    {
+      "title": "Introducing the llama.cpp benchmark dashboard for AMD Ryzen and Radeon",
+      "source": "Hugging Face",
+      "date": "2026-11-26",
+      "url": "https://huggingface.co/blog/ggml-org/llamacpp-amd-bench",
+      "summary": "AI update detected from an official or high-signal source.",
+      "tags": [
+        "AI"
+      ],
+      "image": "https://cdn-uploads.huggingface.co/production/uploads/67289c93ff90038d9a6e5675/tbIvyMSISXCm64WYP3atl.png"
+    },
+    {
+      "title": "Building on Nemotron 3.5 Parse: Open Data, Fine-Tuning, and Faster Inference",
+      "source": "Hugging Face",
+      "date": "2026-11-26",
+      "url": "https://huggingface.co/blog/nvidia/building-on-nemotron-35-parse-open-data-fine-tunin",
+      "summary": "AI update detected from an official or high-signal source.",
+      "tags": [
+        "AI"
+      ],
+      "image": "https://cdn-uploads.huggingface.co/production/uploads/6365c3f398da81987e2753f2/zArpuP9uLsLz9luMW0K2g.png"
+    },
+    {
+      "title": "Swarms, Flocks, Gangs: How to build, train, and evaluate multi-agent systems",
+      "source": "Hugging Face",
+      "date": "2026-11-26",
+      "url": "https://huggingface.co/blog/training-swarms",
+      "summary": "AI update detected from an official or high-signal source.",
+      "tags": [
+        "Agents"
+      ],
+      "image": "https://huggingface.co/blog/assets/training-swarms/thumbnail.png"
+    },
+    {
+      "title": "Quoting Jack Despain Zhou",
+      "source": "Simon Willison",
+      "date": "2026-11-26",
+      "url": "https://simonwillison.net/2026/Nov/26/jack-despain-zhou/",
+      "summary": "Among the many already existing effects of AI has been a great de-individualization. I open a YouTube video, and I hear Claude. I sit in a conference presentation, and I hear Claude. I open my email inbox, and I find pit...",
+      "tags": [
+        "Claude",
+        "Multimodal",
+        "Models"
+      ],
+      "image": "https://simonwillison.net/2026/Nov/26/jack-despain-zhou/"
+    },
+    {
+      "title": "sqlite3_rsync: Database Remote-Copy Tool For SQLite",
+      "source": "Simon Willison",
+      "date": "2026-11-26",
+      "url": "https://simonwillison.net/2026/Nov/26/sqlite3-rsync/",
+      "summary": "sqlite3_rsync: Database Remote-Copy Tool For SQLite This additional SQLite tool has been around for a while now - it was added as \"experimental\" in SQLite 3.47.0 in October 2024 and enhanced in SQLite 3.50.0 in May 2025 ...",
+      "tags": [
+        "AI"
+      ],
+      "image": "https://simonwillison.net/2026/Nov/26/sqlite3-rsync/"
     },
     {
       "title": "How to choose the next safe step in application modernization",
@@ -64,26 +121,39 @@
       "image": "https://github.blog/wp-content/uploads/2026/11/38b3dc4817bfb01261d608e093dda2cdf3392f0886a14b95208bc6f1cd49e58d-1920x1080-1.png"
     },
     {
-      "title": "An Indic Voice Agent with CUGA",
+      "title": "Copilot code review billing will default to the organization",
+      "source": "GitHub Changelog",
+      "date": "2026-11-25",
+      "url": "https://github.blog/changelog/2026-11-25-copilot-code-review-billing-will-default-to-the-organization",
+      "summary": "If you haven’t chosen how to bill Copilot code review for members with a Copilot license, those reviews will be billed to your organization starting December 30, 2026. To keep… The post Copilot code review billing will d...",
+      "tags": [
+        "Copilot",
+        "Dev Tools"
+      ],
+      "image": "https://github.blog/wp-content/themes/github-2021-child/dist/img/social-v3-improvements.jpg"
+    },
+    {
+      "title": "Where scientists draw the line on AI agents",
       "source": "Hugging Face",
       "date": "2026-11-25",
-      "url": "https://huggingface.co/blog/ibm-research/an-indic-voice-agent-with-cuga",
+      "url": "https://huggingface.co/blog/allenai/where-scientists-draw-the-line-on-ai-agents",
       "summary": "AI update detected from an official or high-signal source.",
       "tags": [
         "Agents"
       ],
-      "image": "https://cdn-uploads.huggingface.co/production/uploads/67fe070a4e8cc28ba346f53c/-QNcrxSDbjI8VOCBlhi-C.png"
+      "image": "https://cdn-uploads.huggingface.co/production/uploads/638e39b249de7ae552d977b5/F32BgZC_rj0kg99apJlto.png"
     },
     {
-      "title": "Hill-climbing Inkling 2 Mini inference on one RTX PRO 6000",
-      "source": "Hugging Face",
+      "title": "How to Optimize NVFP4 Attention on NVIDIA RTX Blackwell Through Register Recycling",
+      "source": "NVIDIA Developer",
       "date": "2026-11-25",
-      "url": "https://huggingface.co/blog/inkling-2-mini-inference-hillclimb",
-      "summary": "AI update detected from an official or high-signal source.",
+      "url": "https://developer.nvidia.com/blog/how-to-optimize-nvfp4-attention-on-nvidia-rtx-blackwell-through-register-recycling/",
+      "summary": "Attention can be a major bottleneck when serving world foundation models, where long sequences make inference computationally demanding. On NVIDIA Hopper and...",
       "tags": [
-        "AI"
+        "Dev Tools",
+        "Models"
       ],
-      "image": "https://huggingface.co/blog/assets/inkling-2-mini-inference-hillclimb/thumbnail.png"
+      "image": "https://developer-blogs.nvidia.com/wp-content/uploads/2025/10/floating-cubes-768x431.png"
     },
     {
       "title": "Amazon is reportedly in talks to end Muse AI shopping block",
@@ -132,17 +202,6 @@
       "image": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/11/24/ecf6fcd5b73dc5eb-efs-figure1-v10b.png"
     },
     {
-      "title": "Microduck Obstacle Avoidance: A Sim2Real Workflow with Isaac Lab and Newton",
-      "source": "Hugging Face",
-      "date": "2026-11-24",
-      "url": "https://huggingface.co/blog/nvidia/microduck-obstacle-avoidance",
-      "summary": "AI update detected from an official or high-signal source.",
-      "tags": [
-        "Automation"
-      ],
-      "image": "https://cdn-uploads.huggingface.co/production/uploads/6847ab8c06094fa4afb6ee38/M70tUMNd7N4KO5QGI37YZ.png"
-    },
-    {
       "title": "How to Run NVIDIA Cosmos 3 on Local AI Devices Using Hugging Face Diffusers",
       "source": "NVIDIA Developer",
       "date": "2026-11-24",
@@ -179,71 +238,6 @@
         "Dev Tools"
       ],
       "image": "https://images.ctfassets.net/kftzwdyauwt9/318YLaAKlMKQFzOdMutjeX/8b6e4e516fd1a7894c97318838f43a0f/searching-for-distant-planets-with-astra-social.png?w=1600&h=900&fit=fill"
-    },
-    {
-      "title": "How iFood scales coding agents across 15,000 repositories",
-      "source": "OpenAI News",
-      "date": "2026-11-24",
-      "url": "https://openai.com/business/customer-stories/ifood",
-      "summary": "AI update detected from an official or high-signal source.",
-      "tags": [
-        "Agents",
-        "ChatGPT",
-        "Dev Tools"
-      ],
-      "image": "https://images.ctfassets.net/kftzwdyauwt9/4Ts7RsLLSU4iEOxQwBkGgg/cbf56c075004a9ae2c41af4d5f7b428b/ifood-customer-story-social.png?w=1600&h=900&fit=fill"
-    },
-    {
-      "title": "Clay helps sales teams win with Codex and ChatGPT",
-      "source": "OpenAI News",
-      "date": "2026-11-24",
-      "url": "https://openai.com/business/customer-stories/clay-plugins-openai",
-      "summary": "ChatGPT and Codex integrations help Clay’s users research deals and turn data into go-to-market plays, with GPT-6 models handling the reasoning.",
-      "tags": [
-        "ChatGPT",
-        "Dev Tools",
-        "Models"
-      ],
-      "image": "https://images.ctfassets.net/kftzwdyauwt9/24rUSNlLR8iXQysKA6dq12/38954f25812d30bf772691824f747b84/clay-seo-1920.png?w=1600&h=900&fit=fill"
-    },
-    {
-      "title": "Three LLM inflection points in twelve months",
-      "source": "Simon Willison",
-      "date": "2026-11-24",
-      "url": "https://simonwillison.net/2026/Nov/24/llm-inflection-points/",
-      "summary": "I gave a keynote at the AI Engineer Code Summit a couple of weeks ago, constructed around the idea that there have been three significant inflection points in the abilities of LLMs and coding agents in the past twelve mo...",
-      "tags": [
-        "Agents",
-        "ChatGPT",
-        "Claude",
-        "Gemini"
-      ],
-      "image": "https://static.simonwillison.net/static/2026/fable-class.webp"
-    },
-    {
-      "title": "GPT 6.2 Astra Solves a Historical Mystery",
-      "source": "Simon Willison",
-      "date": "2026-11-24",
-      "url": "https://simonwillison.net/2026/Nov/24/astra-historical-mystery/",
-      "summary": "GPT 6.2 Astra Solves a Historical Mystery Here's an interesting case-study in using GPT-6.2 Astra for historical research, from history professor Mark Humphries: With only minimal prompting, GPT-6.2 Astra was able to aut...",
-      "tags": [
-        "Agents",
-        "ChatGPT",
-        "Models"
-      ],
-      "image": "https://simonwillison.net/2026/Nov/24/astra-historical-mystery/"
-    },
-    {
-      "title": "datasette-charts 0.2a0",
-      "source": "Simon Willison",
-      "date": "2026-11-24",
-      "url": "https://simonwillison.net/2026/Nov/24/datasette-charts/",
-      "summary": "Release: datasette-charts 0.2a0 I introduced this new charting plugin for Datasette yesterday . Today it's gained integration with Datasette Agent , so now you can ask chat for a chart and it will create one for you usin...",
-      "tags": [
-        "Agents",
-        "Multimodal"
-      ],
-      "image": "https://simonwillison.net/2026/Nov/24/datasette-charts/"
     }
   ],
   "candidates": [
@@ -256,19 +250,19 @@
           "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/expanding-partnership-gsa",
-          "date": "2026-11-25"
+          "date": "2026-11-26"
         },
         {
           "title": "Barclays scales Claude to upgrade operations and improve client experience",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/barclays-scales-claude",
-          "date": "2026-11-25"
+          "date": "2026-11-26"
         },
         {
-          "title": "Introducing the Amazon Bedrock Trusted Access API, with Enterprise Frontier Safeguards and Enterprise Data Controls for Claude models",
-          "source": "AWS Machine Learning",
-          "link": "https://aws.amazon.com/blogs/machine-learning/introducing-the-amazon-bedrock-trusted-access-api-with-anthropics-enterprise-frontier-safeguards-and-enterprise-data-controls/",
-          "date": "2026-11-24"
+          "title": "Quoting Jack Despain Zhou",
+          "source": "Simon Willison",
+          "link": "https://simonwillison.net/2026/Nov/26/jack-despain-zhou/",
+          "date": "2026-11-26"
         }
       ]
     },
@@ -281,18 +275,18 @@
           "title": "Donating Agent Skills to the Agentic AI Foundation",
           "source": "Anthropic News",
           "link": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
-          "date": "2026-11-25"
+          "date": "2026-11-26"
+        },
+        {
+          "title": "Swarms, Flocks, Gangs: How to build, train, and evaluate multi-agent systems",
+          "source": "Hugging Face",
+          "link": "https://huggingface.co/blog/training-swarms",
+          "date": "2026-11-26"
         },
         {
           "title": "How to choose the next safe step in application modernization",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/how-to-choose-the-next-safe-step-in-application-modernization/",
-          "date": "2026-11-25"
-        },
-        {
-          "title": "An Indic Voice Agent with CUGA",
-          "source": "Hugging Face",
-          "link": "https://huggingface.co/blog/ibm-research/an-indic-voice-agent-with-cuga",
           "date": "2026-11-25"
         }
       ]
@@ -306,6 +300,12 @@
           "title": "How to choose the next safe step in application modernization",
           "source": "GitHub AI & ML Blog",
           "link": "https://github.blog/ai-and-ml/github-copilot/how-to-choose-the-next-safe-step-in-application-modernization/",
+          "date": "2026-11-25"
+        },
+        {
+          "title": "Copilot code review billing will default to the organization",
+          "source": "GitHub Changelog",
+          "link": "https://github.blog/changelog/2026-11-25-copilot-code-review-billing-will-default-to-the-organization",
           "date": "2026-11-25"
         },
         {

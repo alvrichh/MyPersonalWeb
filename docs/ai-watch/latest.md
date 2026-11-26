@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-11-25
+# Daily AI maintenance report — 2026-11-26
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -11,7 +11,7 @@ This file is generated automatically by the daily maintenance workflow. It updat
 - Hugging Face: OK (8 relevant items)
 - Simon Willison: OK (8 relevant items)
 - GitHub AI & ML Blog: OK (8 relevant items)
-- GitHub Changelog: OK (1 relevant items)
+- GitHub Changelog: OK (2 relevant items)
 - Azure Blog: OK (8 relevant items)
 - AWS Machine Learning: OK (8 relevant items)
 - NVIDIA Developer: OK (8 relevant items)
@@ -21,24 +21,44 @@ This file is generated automatically by the daily maintenance workflow. It updat
 
 ## Relevant AI updates
 
-- **Expanding our partnership with GSA to bring Claude to all levels of government** — Anthropic News · 2026-11-25
+- **Expanding our partnership with GSA to bring Claude to all levels of government** — Anthropic News · 2026-11-26
   https://www.anthropic.com/news/expanding-partnership-gsa
-- **Donating Agent Skills to the Agentic AI Foundation** — Anthropic News · 2026-11-25
+- **Donating Agent Skills to the Agentic AI Foundation** — Anthropic News · 2026-11-26
   https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation
-- **Introducing the Anthropic Cyber Mission** — Anthropic News · 2026-11-25
+- **Introducing the Anthropic Cyber Mission** — Anthropic News · 2026-11-26
   https://www.anthropic.com/news/anthropic-cyber-mission
-- **Security** — Anthropic News · 2026-11-25
+- **Security** — Anthropic News · 2026-11-26
   https://www.anthropic.com/news/security
-- **Expanding the Cyber Verification Program** — Anthropic News · 2026-11-25
+- **Expanding the Cyber Verification Program** — Anthropic News · 2026-11-26
   https://www.anthropic.com/news/cyber-verification-program
-- **Barclays scales Claude to upgrade operations and improve client experience** — Anthropic News · 2026-11-25
+- **Barclays scales Claude to upgrade operations and improve client experience** — Anthropic News · 2026-11-26
   https://www.anthropic.com/news/barclays-scales-claude
+- **Introducing the llama.cpp benchmark dashboard for AMD Ryzen and Radeon** — Hugging Face · 2026-11-26
+  https://huggingface.co/blog/ggml-org/llamacpp-amd-bench
+- **Building on Nemotron 3.5 Parse: Open Data, Fine-Tuning, and Faster Inference** — Hugging Face · 2026-11-26
+  https://huggingface.co/blog/nvidia/building-on-nemotron-35-parse-open-data-fine-tunin
+- **Swarms, Flocks, Gangs: How to build, train, and evaluate multi-agent systems** — Hugging Face · 2026-11-26
+  https://huggingface.co/blog/training-swarms
+- **Quoting Jack Despain Zhou** — Simon Willison · 2026-11-26
+  https://simonwillison.net/2026/Nov/26/jack-despain-zhou/
+- **sqlite3_rsync: Database Remote-Copy Tool For SQLite** — Simon Willison · 2026-11-26
+  https://simonwillison.net/2026/Nov/26/sqlite3-rsync/
 - **How to choose the next safe step in application modernization** — GitHub AI & ML Blog · 2026-11-25
   https://github.blog/ai-and-ml/github-copilot/how-to-choose-the-next-safe-step-in-application-modernization/
+- **Copilot code review billing will default to the organization** — GitHub Changelog · 2026-11-25
+  https://github.blog/changelog/2026-11-25-copilot-code-review-billing-will-default-to-the-organization
+- **Where scientists draw the line on AI agents** — Hugging Face · 2026-11-25
+  https://huggingface.co/blog/allenai/where-scientists-draw-the-line-on-ai-agents
 - **An Indic Voice Agent with CUGA** — Hugging Face · 2026-11-25
   https://huggingface.co/blog/ibm-research/an-indic-voice-agent-with-cuga
 - **Hill-climbing Inkling 2 Mini inference on one RTX PRO 6000** — Hugging Face · 2026-11-25
   https://huggingface.co/blog/inkling-2-mini-inference-hillclimb
+- **How to Optimize NVFP4 Attention on NVIDIA RTX Blackwell Through Register Recycling** — NVIDIA Developer · 2026-11-25
+  https://developer.nvidia.com/blog/how-to-optimize-nvfp4-attention-on-nvidia-rtx-blackwell-through-register-recycling/
+- **Quoting Scott Aaronson** — Simon Willison · 2026-11-25
+  https://simonwillison.net/2026/Nov/25/scott-aaronson/
+- **datasette-charts 0.3a0** — Simon Willison · 2026-11-25
+  https://simonwillison.net/2026/Nov/25/datasette-charts/
 - **Amazon is reportedly in talks to end Muse AI shopping block** — The Verge AI · 2026-11-25
   https://www.theverge.com/tech/1042071/meta-amazon-muse-ai-shopping-discussions
 - **Has vibe coding made open source the new normal for synths?** — The Verge AI · 2026-11-25
@@ -47,8 +67,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://arstechnica.com/security/2026/11/amazon-says-hackers-ai-agents-found-and-exploited-0-day-with-little-human-input/
 - **Introducing the Amazon Bedrock Trusted Access API, with Enterprise Frontier Safeguards and Enterprise Data Controls for Claude models** — AWS Machine Learning · 2026-11-24
   https://aws.amazon.com/blogs/machine-learning/introducing-the-amazon-bedrock-trusted-access-api-with-anthropics-enterprise-frontier-safeguards-and-enterprise-data-controls/
-- **Microduck Obstacle Avoidance: A Sim2Real Workflow with Isaac Lab and Newton** — Hugging Face · 2026-11-24
-  https://huggingface.co/blog/nvidia/microduck-obstacle-avoidance
 - **How to Run NVIDIA Cosmos 3 on Local AI Devices Using Hugging Face Diffusers** — NVIDIA Developer · 2026-11-24
   https://developer.nvidia.com/blog/how-to-run-nvidia-cosmos-3-on-local-ai-devices-using-hugging-face-diffusers/
 - **GPT-6 models demonstrate intrinsic protein-design capabilities** — OpenAI News · 2026-11-24
@@ -85,16 +103,8 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://openai.com/business/learn/connected-intelligence-for-in-house-legal
 - **Richpanel helps companies automate 50% of support in 30 days** — OpenAI News · 2026-11-23
   https://openai.com/business/customer-stories/richpanel-ai-customer-support
-- **GLM-5.4: Toward Generalized Coding with Our First Loop Transformer** — Simon Willison · 2026-11-23
-  https://simonwillison.net/2026/Nov/23/glm-54/
-- **Ladybird's first alpha release** — Simon Willison · 2026-11-23
-  https://simonwillison.net/2026/Nov/23/ladybird/
-- **datasette-charts 0.1a0** — Simon Willison · 2026-11-23
-  https://simonwillison.net/2026/Nov/23/datasette-charts/
 - **Perplexity and Intelligence** — OpenAI News · 2026-11-22
   https://openai.com/index/perplexity-and-intelligence
-- **Select Styling Specimens** — Simon Willison · 2026-11-22
-  https://simonwillison.net/2026/Nov/22/select-styling/
 - **New in AWS Quick: More capable flows, an updated web experience, and agents that work together** — AWS Machine Learning · 2026-11-21
   https://aws.amazon.com/blogs/machine-learning/new-in-aws-quick-more-capable-flows-an-updated-web-experience-and-agents-that-work-together/
 - **Cut self-hosted LLM cost and latency with the distributed KV caching agent skill** — AWS Machine Learning · 2026-11-21
@@ -127,12 +137,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blog.google/innovation-and-ai/products/gemini-app/gemini-lower-memory-devices/
 - **Introducing Gemini 4 Neon** — Google DeepMind · 2026-11-18
   https://deepmind.google/blog/introducing-gemini-4-neon/
-- **Why your fine-tuning job takes longer than the FLOPs say** — Hugging Face · 2026-11-18
-  https://huggingface.co/blog/Dharma-AI/predicting-fine-tuning-time
-- **180B Parameters, 32GB of RAM: Pushing MoE Inference to the Limit with Transformers** — Hugging Face · 2026-11-18
-  https://huggingface.co/blog/moe-expert-streaming
-- **Rumble-2-Flash: an open 0.5B speech model for 40+ languages** — Hugging Face · 2026-11-18
-  https://huggingface.co/blog/rumble-2-flash
 - **Build Training-Ready Physical AI Datasets with Two Prompts in NVIDIA Cosmos** — NVIDIA Developer · 2026-11-18
   https://developer.nvidia.com/blog/build-training-ready-physical-ai-datasets-with-two-prompts-in-nvidia-cosmos/
 - **Tackling GPU Bottlenecks in Plane-Wave DFT with K-Point Batching and Mixed Precision** — NVIDIA Developer · 2026-11-18
@@ -161,8 +165,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://www.technologyreview.com/2026/11/16/1148565/building-trustworthy-ai-by-fencing-it-in-not-predicting-it/
 - **Building AI that can work across the enterprise** — MIT Technology Review AI · 2026-11-16
   https://www.technologyreview.com/2026/11/16/1146070/building-ai-that-can-work-across-the-enterprise/
-- **NVIDIA Vera Rubin NVL72 Achieves up to 2x Blackwell Ultra Performance in MLPerf Training v6.1** — NVIDIA Developer · 2026-11-16
-  https://developer.nvidia.com/blog/nvidia-vera-rubin-nvl72-achieves-up-to-2x-blackwell-ultra-performance-in-mlperf-training-v6-1/
 - **NVIDIA Vera Rubin NVL72 Leads Agentic Inference Performance on MLPerf Endpoints v1.0** — NVIDIA Developer · 2026-11-16
   https://developer.nvidia.com/blog/nvidia-vera-rubin-nvl72-leads-agentic-inference-performance-on-mlperf-endpoints-v1-0/
 - **Build once, run on any agent: A practical guide to agent skills** — GitHub AI & ML Blog · 2026-11-12
@@ -179,8 +181,6 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blog.google/company-news/inside-google/company-announcements/adobe-google-partnership-integration/
 - **Gemini 4 Carbon is now available** — Google DeepMind · 2026-11-10
   https://deepmind.google/blog/gemini-4-carbon-is-now-available/
-- **Introducing AlphaProof Code: a breakthrough in verifying complex software at depth** — Google DeepMind · 2026-11-10
-  https://deepmind.google/blog/introducing-alphaproof-code/
 
 ## Portfolio candidates
 
