@@ -130,8 +130,8 @@ export function Hero() {
         <span className="hero-fx" aria-hidden="true">
           {fx.map((piece) => <i key={piece.id} className={`fx-${piece.kind}`} style={piece.style} />)}
         </span>
-        {/* The easter egg's invitation, under the photo: click it, change the accent, click again. */}
-        <figcaption className="hero-hint">{t('hero.hint')}</figcaption>
+        {/* The easter egg's invitation: a bubble shown only while the pointer is over the photo. */}
+        <figcaption className="hero-hint" aria-hidden="true">{t('hero.hint')}</figcaption>
       </figure>
     </section>
   );
