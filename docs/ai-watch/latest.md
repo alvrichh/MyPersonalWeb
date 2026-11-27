@@ -1,4 +1,4 @@
-# Daily AI maintenance report — 2026-11-26
+# Daily AI maintenance report — 2026-11-27
 
 This file is generated automatically by the daily maintenance workflow. It updates safe research/data files and feeds the AI Radar card inside Portfolio.
 
@@ -17,22 +17,24 @@ This file is generated automatically by the daily maintenance workflow. It updat
 - NVIDIA Developer: OK (8 relevant items)
 - Ars Technica AI: OK (5 relevant items)
 - MIT Technology Review AI: OK (5 relevant items)
-- The Verge AI: OK (2 relevant items)
+- The Verge AI: OK (3 relevant items)
 
 ## Relevant AI updates
 
-- **Expanding our partnership with GSA to bring Claude to all levels of government** — Anthropic News · 2026-11-26
+- **Expanding our partnership with GSA to bring Claude to all levels of government** — Anthropic News · 2026-11-27
   https://www.anthropic.com/news/expanding-partnership-gsa
-- **Donating Agent Skills to the Agentic AI Foundation** — Anthropic News · 2026-11-26
+- **Donating Agent Skills to the Agentic AI Foundation** — Anthropic News · 2026-11-27
   https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation
-- **Introducing the Anthropic Cyber Mission** — Anthropic News · 2026-11-26
+- **Introducing the Anthropic Cyber Mission** — Anthropic News · 2026-11-27
   https://www.anthropic.com/news/anthropic-cyber-mission
-- **Security** — Anthropic News · 2026-11-26
+- **Security** — Anthropic News · 2026-11-27
   https://www.anthropic.com/news/security
-- **Expanding the Cyber Verification Program** — Anthropic News · 2026-11-26
+- **Expanding the Cyber Verification Program** — Anthropic News · 2026-11-27
   https://www.anthropic.com/news/cyber-verification-program
-- **Barclays scales Claude to upgrade operations and improve client experience** — Anthropic News · 2026-11-26
+- **Barclays scales Claude to upgrade operations and improve client experience** — Anthropic News · 2026-11-27
   https://www.anthropic.com/news/barclays-scales-claude
+- **Android’s DIY widgets are a bit of vibe-coding fun** — The Verge AI · 2026-11-27
+  https://www.theverge.com/tech/1041801/android-intelligence-create-my-widget-gemini
 - **Introducing the llama.cpp benchmark dashboard for AMD Ryzen and Radeon** — Hugging Face · 2026-11-26
   https://huggingface.co/blog/ggml-org/llamacpp-amd-bench
 - **Building on Nemotron 3.5 Parse: Open Data, Fine-Tuning, and Faster Inference** — Hugging Face · 2026-11-26
@@ -179,15 +181,13 @@ This file is generated automatically by the daily maintenance workflow. It updat
   https://blog.google/products-and-platforms/platforms/android/gemini-intelligence-november-features-devices/
 - **We’re bringing Adobe’s creative and productivity tools closer to your everyday Google apps.** — Google AI Blog · 2026-11-10
   https://blog.google/company-news/inside-google/company-announcements/adobe-google-partnership-integration/
-- **Gemini 4 Carbon is now available** — Google DeepMind · 2026-11-10
-  https://deepmind.google/blog/gemini-4-carbon-is-now-available/
 
 ## Portfolio candidates
 
 - **Claude research and documentation flow** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI agents / automation workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
-- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI coding assistant workflows** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
+- **GitHub Copilot developer loop** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **ChatGPT workflow design** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **Gemini multimodal exploration** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
 - **AI developer tooling** — Detected in AI/news feeds. Displayed as radar data, not as a personal certification claim.
